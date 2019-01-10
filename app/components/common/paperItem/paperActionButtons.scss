@@ -232,43 +232,6 @@
   }
 }
 
-.sourcesWrapper {
-  width: 198px;
-  border-radius: 5px;
-  background-color: white;
-  box-shadow: 0 0px 4px 0 rgba(0, 0, 0, 0.2);
-  margin-top: 6px;
-}
-
-.sourceItem {
-  @extend %one-line-overflow-ellipsis;
-
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 32px;
-  color: $navy0;
-  font-size: 13px;
-  border-bottom: 1px solid $gray1;
-  padding: 0 8px;
-
-  &:first-of-type {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-  }
-
-  &:last-of-type {
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-bottom: 0;
-  }
-
-  &:hover {
-    background-color: $gray0;
-    text-decoration: underline;
-  }
-}
-
 // Mobile
 @media (max-width: $mobile-width) {
   .citationIconWrapper {

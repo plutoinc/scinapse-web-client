@@ -29,7 +29,7 @@ const handleClickPDFButton = (paper: Paper) => {
   }
 };
 
-const PdfSourceButton = (props: PdfSourceButtonProps) => {
+const PdfButton = (props: PdfSourceButtonProps) => {
   const { paper, wrapperStyle } = props;
 
   if (!paper) {
@@ -65,48 +65,9 @@ const PdfSourceButton = (props: PdfSourceButtonProps) => {
         <span>Download PDF</span>
       </a>
     );
-  } else {
-    let source: string;
-    if (paper.doi) {
-      source = `https://doi.org/${paper.doi}`;
-    } else if (paper.urls && paper.urls[0]) {
-      source = paper.urls[0].url;
-    } else {
-      source = "";
-    }
-
-    if (source && source.length > 0) {
-      return (
-        <a
-          style={wrapperStyle}
-          className={styles.downloadButton}
-          href={source}
-          onClick={() => {
-            trackEvent({
-              category: "New Paper Show",
-              action: "Click View in Source in PaperContent Section",
-              label: `Link to ${source}`,
-            });
-
-            ActionTicketManager.trackTicket({
-              pageType: "paperShow",
-              actionType: "fire",
-              actionArea: "paperDescription",
-              actionTag: "source",
-              actionLabel: String(paper.id),
-            });
-          }}
-          rel="noopener"
-          target="_blank"
-        >
-          <Icon icon="EXTERNAL_SOURCE" />
-          <span>View in Source</span>
-        </a>
-      );
-    }
   }
 
   return null;
 };
 
-export default withStyles<typeof PdfSourceButton>(styles)(PdfSourceButton);
+export default withStyles<typeof PdfButton>(styles)(PdfButton);

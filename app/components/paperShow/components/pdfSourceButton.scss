@@ -2,7 +2,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 148px;
   height: 40px;
   font-size: 14px;
   font-weight: 500;
@@ -10,6 +9,7 @@
   line-height: 1.43;
   background-color: $gray8;
   border-radius: 4px;
+  padding: 0 8px;
 
   svg {
     width: 16px;

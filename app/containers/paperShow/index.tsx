@@ -99,7 +99,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isAboveRef: true,
       isOnRef: false,
       isOnCited: false,
-
       isRightBoxSmall: false,
       isRightBoxFixed: false,
       isTouchFooter: false,

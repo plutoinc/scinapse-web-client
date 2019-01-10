@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import * as URL from "url";
 import IconButton from "@material-ui/core/IconButton";
 import MenuItem from "@material-ui/core/MenuItem";
 import Popper from "@material-ui/core/Popper";
@@ -14,6 +13,7 @@ import { PaperSource } from "../../../model/paperSource";
 import EnvChecker from "../../../helpers/envChecker";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
+import SourceURLPopover from "../../common/sourceURLPopover";
 import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
 const styles = require("./paperActionButtons.scss");
 
@@ -107,69 +107,26 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
     const { paper, pageType, actionArea } = this.props;
     const { isSourceDropdownOpen } = this.state;
 
-    let paperSources: PaperSource[] = paper.urls;
-    if (!!paper.doi) {
-      const doiSource = { id: 0, paperId: paper.id, url: `https://doi.org/${paper.doi}` };
-      paperSources = [doiSource, ...paperSources];
-    }
-
-    const sources = paperSources.map(url => {
-      if (!url.url) {
-        return;
-      }
-
-      const urlObj = URL.parse(url.url);
-      return (
-        <a
-          className={styles.sourceItem}
-          onClick={() => {
-            trackAndOpenLink("search-item-source-button");
-            ActionTicketManager.trackTicket({
-              pageType,
-              actionType: "fire",
-              actionArea: actionArea || pageType,
-              actionTag: "source",
-              actionLabel: String(paper.id),
-            });
-          }}
-          target="_blank"
-          rel="noopener"
-          href={url.url}
-          key={url.id}
-        >
-          {urlObj.host}
-        </a>
-      );
-    });
-
     return (
-      <>
-        <div
-          className={styles.sourceButton}
-          ref={el => (this.sourceButton = el)}
-          onClick={this.handleToggleSourceDropdown}
-        >
-          <Icon className={styles.sourceButtonIcon} icon="EXTERNAL_SOURCE" />
-          <span>Source</span>
-        </div>
-        {isSourceDropdownOpen && (
-          <Popper
-            placement="bottom-end"
-            modifiers={{
-              preventOverflow: {
-                enabled: true,
-                boundariesElement: "window",
-              },
-            }}
-            open={isSourceDropdownOpen}
-            anchorEl={this.sourceButton}
+      <SourceURLPopover
+        buttonEl={
+          <div
+            className={styles.sourceButton}
+            ref={el => (this.sourceButton = el)}
+            onClick={this.handleToggleSourceDropdown}
           >
-            <ClickAwayListener onClickAway={this.handleCloseSourceDropdown}>
-              <div className={styles.sourcesWrapper}>{sources}</div>
-            </ClickAwayListener>
-          </Popper>
-        )}
-      </>
+            <Icon className={styles.sourceButtonIcon} icon="EXTERNAL_SOURCE" />
+            <span>Source</span>
+          </div>
+        }
+        isOpen={isSourceDropdownOpen}
+        handleCloseFunc={this.handleCloseSourceDropdown}
+        anchorEl={this.sourceButton!}
+        paperSources={paper.urls}
+        pageType={pageType}
+        paperId={paper.id}
+        actionArea={actionArea}
+      />
     );
   };
 

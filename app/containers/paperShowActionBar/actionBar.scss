@@ -3,6 +3,10 @@
   background-color: white;
   padding: 8px 0px;
 
+  .leftSide {
+    display: flex;
+  }
+
   .actions {
     position: relative;
     display: flex;
@@ -16,7 +20,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 148px;
         height: 40px;
         font-size: 14px;
         font-weight: 500;
@@ -25,6 +28,7 @@
         background-color: $gray8;
         border-radius: 4px;
         cursor: pointer;
+        padding: 0 8px;
 
         &:hover {
           background-color: $gray2;
@@ -52,6 +56,27 @@
 
   .actionItem + .actionItem {
     margin-left: 8px;
+  }
+}
+
+.sourceButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  font-size: 14px;
+  font-weight: 500;
+  color: $main_blue0;
+  line-height: 1.43;
+  background-color: $gray8;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0 8px;
+
+  .sourceButtonIcon {
+    width: 12px;
+    height: 12px;
+    vertical-align: middle;
   }
 }
 
