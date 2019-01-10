@@ -158,11 +158,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
       return educations;
     }
 
-    return (
-      <div className={styles.noItemSection}>
-        <p className={styles.noItemSectionContext}>There is no education information.</p>
-      </div>
-    );
+    return null;
   };
 
   private getExperienceArea = () => {
@@ -229,11 +225,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
       return experiences;
     }
 
-    return (
-      <div className={styles.noItemSection}>
-        <p className={styles.noItemSectionContext}>There is no experience information.</p>
-      </div>
-    );
+    return null;
   };
 
   private getAwardArea = () => {
@@ -292,11 +284,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
       return awards;
     }
-    return (
-      <div className={styles.noItemSection}>
-        <p className={styles.noItemSectionContext}>There is no award information.</p>
-      </div>
-    );
+    return null;
   };
 
   private handleDeleteCVInfo = (cvInfoType: keyof CVInfoType) => (cvInfoId: string) => {
