@@ -5,6 +5,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
 import ScinapseButton from "../common/scinapseButton";
 import scinapseFormikSelect from "../common/scinapseInput/scinapseFormikSelect";
+import { getFormattingDate } from "../../containers/authorCvSection";
 const styles = require("./authorCVForm.scss");
 
 export interface AwardFormState {
@@ -37,6 +38,13 @@ const validateForm = (values: AwardFormState) => {
 
   if (!values.received_date_year) {
     errors.received_date_month = "Please write valid year (ex. 2010)";
+  }
+
+  if (values.received_date_year && values.received_date_month) {
+    const currentDate = new Date().getTime();
+    const receivedDateStr = getFormattingDate(values.received_date_year, values.received_date_month);
+    const receivedDate = new Date(receivedDateStr);
+    currentDate - receivedDate.getTime() < 0 ? (errors.received_date_month = "Please write before current date") : "";
   }
 
   return errors;

@@ -70,6 +70,13 @@ const validateForm = (values: ExperienceFormState) => {
     startDate.getTime() - endDate.getTime() > 0 ? (errors.end_date_month = "Select a future date") : "";
   }
 
+  if (values.start_date_year && values.start_date_month) {
+    const currentDate = new Date().getTime();
+    const startDateStr = getFormattingDate(values.start_date_year, values.start_date_month);
+    const startDate = new Date(startDateStr);
+    currentDate - startDate.getTime() < 0 ? (errors.start_date_month = "Please write before current date") : "";
+  }
+
   return errors;
 };
 
