@@ -25,6 +25,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
         className="newTabIconWrapper"
         href="/papers/101"
         onClick={[Function]}
+        rel="noopener"
         target="_blank"
       >
         <i
@@ -165,16 +166,27 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
         className="pdfButton"
         href="https://www.nature.com/articles/nature06016.pdf"
         onClick={[Function]}
-        style={Object {}}
+        rel="noopener"
         target="_blank"
       >
         <i
           className="icon pdfIconWrapper"
         />
         <span>
-          Download Pdf
+          Download PDF
         </span>
       </a>
+      <div
+        className="sourceButton"
+        onClick={[Function]}
+      >
+        <i
+          className="icon sourceButtonIcon"
+        />
+        <span>
+          Source
+        </span>
+      </div>
       <button
         className="addCollectionBtnWrapper"
         onClick={[Function]}
@@ -250,6 +262,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
         className="newTabIconWrapper"
         href="/papers/101"
         onClick={[Function]}
+        rel="noopener"
         target="_blank"
       >
         <i
@@ -390,16 +403,27 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
         className="pdfButton"
         href="https://www.nature.com/articles/nature06016.pdf"
         onClick={[Function]}
-        style={Object {}}
+        rel="noopener"
         target="_blank"
       >
         <i
           className="icon pdfIconWrapper"
         />
         <span>
-          Download Pdf
+          Download PDF
         </span>
       </a>
+      <div
+        className="sourceButton"
+        onClick={[Function]}
+      >
+        <i
+          className="icon sourceButtonIcon"
+        />
+        <span>
+          Source
+        </span>
+      </div>
       <span
         className="DOIMetaButtonsWrapper"
       >

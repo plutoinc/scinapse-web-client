@@ -49,6 +49,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
           <a
             className="plutoLink"
             href="https://pluto.network"
+            rel="noopener"
             target="_blank"
           >
             Pluto Network
@@ -155,6 +156,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
         >
           <a
             href="https://aka.ms/msracad"
+            rel="noopener"
             target="_blank"
           >
             <img
@@ -167,6 +169,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
         >
           <a
             href="https://www.semanticscholar.org/"
+            rel="noopener"
             target="_blank"
           >
             <img
@@ -179,6 +182,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
         >
           <a
             href="https://www.springernature.com/gp/"
+            rel="noopener"
             target="_blank"
           >
             <img
@@ -191,6 +195,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
         >
           <a
             href="https://www.ncbi.nlm.nih.gov/pubmed/"
+            rel="noopener"
             target="_blank"
           >
             <img
@@ -218,6 +223,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
           className="link"
           href="https://www.facebook.com/PlutoNetwork/"
           onClick={[Function]}
+          rel="noopener"
           target="_blank"
         >
           Facebook
@@ -226,6 +232,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
           className="link"
           href="https://twitter.com/pluto_network"
           onClick={[Function]}
+          rel="noopener"
           target="_blank"
         >
           Twitter
@@ -234,6 +241,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
           className="link"
           href="https://medium.com/pluto-network"
           onClick={[Function]}
+          rel="noopener"
           target="_blank"
         >
           Blog
@@ -242,6 +250,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
           className="link"
           href="https://pluto.network"
           onClick={[Function]}
+          rel="noopener"
           target="_blank"
         >
           About us
@@ -250,6 +259,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
           className="link"
           href="mailto:team@pluto.network"
           onClick={[Function]}
+          rel="noopener"
           target="_blank"
         >
           Contact us
@@ -258,6 +268,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
           className="link"
           href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
           onClick={[Function]}
+          rel="noopener"
           target="_blank"
         >
           FAQ
