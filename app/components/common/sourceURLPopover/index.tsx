@@ -7,6 +7,7 @@ import { PaperSource } from "../../../model/paperSource";
 import { trackAndOpenLink } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
+import Icon from "../../../icons";
 const styles = require("./sourceURLPopover.scss");
 
 interface SourceURLPopover {
@@ -30,7 +31,7 @@ const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
     return (
       <a
         className={styles.sourceItem}
-        onClick={() => {
+        onClick={e => {
           trackAndOpenLink("search-item-source-button");
           ActionTicketManager.trackTicket({
             pageType: props.pageType,
@@ -39,13 +40,15 @@ const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
             actionTag: "source",
             actionLabel: String(props.paperId),
           });
+          props.handleCloseFunc(e);
         }}
         target="_blank"
         rel="noopener"
         href={url.url}
         key={url.id}
       >
-        {urlObj.host}
+        <span>{urlObj.host}</span>
+        <Icon icon="EXTERNAL_SOURCE" className={styles.sourceIcon} />
       </a>
     );
   });

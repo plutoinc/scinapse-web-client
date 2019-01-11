@@ -97,7 +97,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
           className={styles.pdfButton}
         >
           <Icon className={styles.pdfIconWrapper} icon="DOWNLOAD" />
-          <span>Download Pdf</span>
+          <span>Download PDF</span>
         </a>
       );
     }
@@ -106,6 +106,25 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   private getSourcesButton = () => {
     const { paper, pageType, actionArea } = this.props;
     const { isSourceDropdownOpen } = this.state;
+
+    if (paper.urls.length === 0) {
+      return null;
+    }
+
+    if (paper.urls.length === 1) {
+      return (
+        <a
+          href={paper.urls[0].url}
+          target="_blank"
+          rel="noopener"
+          className={styles.sourceButton}
+          onClick={this.handleToggleSourceDropdown}
+        >
+          <Icon className={styles.sourceButtonIcon} icon="EXTERNAL_SOURCE" />
+          <span>Source</span>
+        </a>
+      );
+    }
 
     return (
       <SourceURLPopover

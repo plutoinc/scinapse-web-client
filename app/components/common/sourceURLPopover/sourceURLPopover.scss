@@ -1,36 +1,38 @@
 .sourcesWrapper {
-  width: 198px;
-  border-radius: 5px;
-  background-color: white;
-  box-shadow: 0 0px 4px 0 rgba(0, 0, 0, 0.2);
-  margin-top: 6px;
+  @include popper-paper(198px);
 }
 
 .sourceItem {
   @extend %one-line-overflow-ellipsis;
+  @extend %popper-item;
+  position: relative;
 
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 32px;
-  color: $navy0;
-  font-size: 13px;
-  border-bottom: 1px solid $gray1;
-  padding: 0 8px;
+  .sourceIcon {
+    @include flex-center-vertical-horizontal(flex);
+    position: absolute;
+    top: 12px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    color: $gray5;
+    opacity: 0;
+    transition: opacity 150ms ease-in-out;
 
-  &:first-of-type {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-  }
-
-  &:last-of-type {
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-bottom: 0;
+    svg {
+      width: 13px;
+      height: 13px;
+    }
   }
 
   &:hover {
-    background-color: $gray0;
-    text-decoration: underline;
+    .sourceIcon {
+      opacity: 1;
+    }
+  }
+
+  span {
+    @extend %one-line-overflow-ellipsis;
+    display: inline-block;
+    width: 150px;
   }
 }

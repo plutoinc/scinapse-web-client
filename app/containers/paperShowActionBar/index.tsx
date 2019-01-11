@@ -7,32 +7,16 @@ import { trackEvent } from "../../helpers/handleGA";
 import { Paper } from "../../model/paper";
 import PaperShowCollectionControlButton from "../paperShowCollectionControlButton";
 import ActionTicketManager from "../../helpers/actionTicketManager";
-import SourceURLPopover from "../../components/common/sourceURLPopover";
 const styles = require("./actionBar.scss");
 
 interface PaperShowActionBarProps {
   paper: Paper | null;
 }
 
-interface PaperShowActionBarState {
-  isOpen: boolean;
-}
-
 @withStyles<typeof PaperShowActionBar>(styles)
-class PaperShowActionBar extends React.PureComponent<PaperShowActionBarProps, PaperShowActionBarState> {
-  private sourceButton: HTMLDivElement | null;
-
-  public constructor(props: PaperShowActionBarProps) {
-    super(props);
-
-    this.state = {
-      isOpen: false,
-    };
-  }
-
+class PaperShowActionBar extends React.PureComponent<PaperShowActionBarProps> {
   public render() {
     const { paper } = this.props;
-    const { isOpen } = this.state;
 
     if (paper) {
       return (
@@ -41,27 +25,6 @@ class PaperShowActionBar extends React.PureComponent<PaperShowActionBarProps, Pa
             <div className={styles.leftSide}>
               <li className={styles.actionItem}>
                 <PdfSourceButton paper={paper} />
-              </li>
-              <li className={styles.actionItem}>
-                <SourceURLPopover
-                  buttonEl={
-                    <div
-                      className={styles.sourceButton}
-                      ref={el => (this.sourceButton = el)}
-                      onClick={this.handleToggleSourceDropdown}
-                    >
-                      <Icon className={styles.sourceButtonIcon} icon="EXTERNAL_SOURCE" />
-                      <span>View in Source</span>
-                    </div>
-                  }
-                  isOpen={isOpen}
-                  handleCloseFunc={this.handleCloseSourceDropdown}
-                  anchorEl={this.sourceButton!}
-                  paperSources={paper.urls}
-                  pageType="paperShow"
-                  paperId={paper.id}
-                  actionArea="paperDescription"
-                />
               </li>
               <li className={styles.actionItem}>{this.getCitationBox()}</li>
             </div>
@@ -74,20 +37,6 @@ class PaperShowActionBar extends React.PureComponent<PaperShowActionBarProps, Pa
     }
     return null;
   }
-
-  private handleToggleSourceDropdown = () => {
-    this.setState(prevState => ({ ...prevState, isOpen: !this.state.isOpen }));
-  };
-
-  private handleCloseSourceDropdown = (e: any) => {
-    const path = e.path || (e.composedPath && e.composedPath());
-
-    if (path.includes(this.sourceButton)) {
-      return;
-    }
-
-    this.setState(prevState => ({ ...prevState, isOpen: false }));
-  };
 
   private getCitationBox = () => {
     const { paper } = this.props;
@@ -113,7 +62,7 @@ class PaperShowActionBar extends React.PureComponent<PaperShowActionBarProps, Pa
           }}
         >
           <div>
-            <Icon icon={"CITATION_QUOTE"} />
+            <Icon icon={"CITATION_QUOTE"} className={styles.citeIcon} />
             <span>Cite this paper</span>
           </div>
         </div>
