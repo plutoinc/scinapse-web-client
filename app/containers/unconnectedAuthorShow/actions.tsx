@@ -1,10 +1,29 @@
 import axios, { CancelToken } from "axios";
 import { Dispatch } from "react-redux";
 import AuthorAPI, { ConnectAuthorParams } from "../../api/author";
+import ProfileAPI from "../../api/profile";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { ActionCreators } from "../../actions/actionTypes";
 import { GetAuthorPapersParams } from "../../api/author/types";
 import PlutoAxios from "../../api/pluto";
+
+export function getProfile(authorId: number, cancelToken: CancelToken) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      const profileResponse = await ProfileAPI.getProfile(authorId, cancelToken);
+
+      dispatch(ActionCreators.addEntity(profileResponse));
+      dispatch(ActionCreators.getProfile({ authorId: profileResponse.result }));
+    } catch (err) {
+      if (!axios.isCancel(err)) {
+        alertToast({
+          type: "error",
+          message: "Failed to get profile information",
+        });
+      }
+    }
+  };
+}
 
 export function getCoAuthors(authorId: number, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
@@ -31,6 +50,10 @@ export function getAuthor(authorId: number, cancelToken: CancelToken) {
 
       dispatch(ActionCreators.addEntity(authorResponse));
       dispatch(ActionCreators.getAuthor({ authorId: authorResponse.result }));
+
+      if (authorResponse.entities.authors[authorResponse.result].isLayered) {
+        await dispatch(getProfile(authorId, cancelToken));
+      }
     } catch (err) {
       if (!axios.isCancel(err)) {
         alertToast({

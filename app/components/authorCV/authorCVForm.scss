@@ -1,0 +1,171 @@
+.contentSection {
+  width: 690px;
+  background-color: $gray1;
+  margin-bottom: 16px;
+  padding: 16px 24px;
+
+  .formControl {
+    .inlineInput + .inlineInput {
+      margin-top: 4px;
+    }
+  }
+
+  label {
+    display: inline-flex;
+    margin-right: 16px;
+    width: 90px;
+    height: 20px;
+    font-size: 13px;
+    line-height: 1.54;
+    color: $gray6;
+  }
+}
+
+.buttonsWrapper {
+  text-align: right;
+  margin-top: 8px;
+}
+
+.errorMessage {
+  color: $red0;
+  font-size: 12px;
+  margin-top: 4px;
+  display: inline-flex;
+}
+
+.textAreaWrapper {
+  width: 390px !important;
+  display: inline-flex !important;
+  color: $black0;
+  border-radius: 5px;
+  border: solid 1px $gray3;
+  background-color: white !important;
+  margin-top: 4px;
+
+  &:focus {
+    border-radius: 5px;
+    border: solid 1px $main_blue1;
+  }
+}
+
+.inputField {
+  @extend .textAreaWrapper;
+  height: 30px !important;
+}
+
+.dateWrapper {
+  display: flex;
+
+  .startDateInlineInput {
+    .errorMessage {
+      @extend .errorMessage;
+      width: 120px;
+    }
+
+    .dateMonthField {
+      @extend .inputField;
+      width: 65px !important;
+      padding: 8px;
+      font-size: 12px;
+
+      &::placeholder {
+        color: $gray6;
+        opacity: 0.5;
+      }
+    }
+
+    .dateYearField {
+      @extend .dateMonthField;
+      width: 45px !important;
+      margin-left: 4px;
+    }
+
+    .toSyntax {
+      margin: 0 8px;
+      color: $gray6;
+      font-size: 14px;
+    }
+  }
+
+  .endDateInlineInput {
+    @extend .startDateInlineInput;
+
+    .errorMessage {
+      @extend .errorMessage;
+      margin-left: 4px;
+    }
+  }
+
+  .noDateSyntax {
+    display: flex;
+    align-items: center;
+    margin-top: 2px;
+    color: $gray6;
+    font-size: 14px;
+    height: 32px;
+    width: 114px;
+  }
+
+  .dateCheckWrapper {
+    display: flex;
+    height: 30px;
+    margin-left: 16px;
+    margin-top: 4px;
+    align-items: center;
+  }
+}
+
+.errorInputField {
+  @extend .inputField;
+  border-color: $red0 !important;
+}
+
+.optionalText {
+  position: absolute;
+  margin-top: 16px;
+}
+
+.formInputBox {
+  display: inline-flex;
+}
+
+.dateInputWrapper {
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  border-radius: 5px;
+  width: 100%;
+
+  input {
+    display: block;
+    width: 100%;
+    border: 0;
+    height: 100%;
+    padding: 8px 32px 8px 8px;
+    margin: 0;
+    border-radius: 5px;
+    border: solid 1px $gray3;
+    background-color: transparent;
+
+    &.error {
+      border: solid 1px $red0;
+    }
+  }
+
+  ::placeholder {
+    color: $gray4;
+  }
+
+  .errorMessage {
+    color: $red0;
+    font-size: 12px;
+    display: flex;
+  }
+
+  .iconWrapper {
+    position: absolute;
+    width: 16px;
+    right: 0;
+    margin-right: 8px;
+  }
+}

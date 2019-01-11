@@ -6,6 +6,7 @@ import { GetCollectionsResponse } from "../api/member";
 import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
 import { Collection } from "../model/collection";
 import { Paper } from "../model/paper";
+import { CVInfoType, Award, Education, Experience } from "../model/profile";
 
 export enum ACTION_TYPES {
   GLOBAL_LOCATION_CHANGE = "@@router/LOCATION_CHANGE",
@@ -190,6 +191,7 @@ export enum ACTION_TYPES {
   AUTHOR_SHOW_FINISH_TO_LOAD_DATA_FOR_PAGE = "AUTHOR_SHOW_FINISH_TO_LOAD_DATA_FOR_PAGE",
   AUTHOR_SHOW_SUCCEEDED_GET_AUTHOR = "AUTHOR_SHOW_SUCCEEDED_GET_AUTHOR",
   AUTHOR_SHOW_SUCCEEDED_GET_CO_AUTHORS = "AUTHOR_SHOW_SUCCEEDED_GET_CO_AUTHORS",
+  AUTHOR_SHOW_SUCCEEDED_GET_PROFILE = "AUTHOR_SHOW_SUCCEEDED_GET_PROFILE",
   AUTHOR_SHOW_START_TO_GET_PAPERS = "AUTHOR_SHOW_START_TO_GET_PAPERS",
   AUTHOR_SHOW_FAILED_TO_GET_PAPERS = "AUTHOR_SHOW_FAILED_TO_GET_PAPERS",
   AUTHOR_SHOW_SUCCEEDED_TO_GET_PAPERS = "AUTHOR_SHOW_SUCCEEDED_TO_GET_PAPERS",
@@ -197,6 +199,16 @@ export enum ACTION_TYPES {
   AUTHOR_SHOW_START_TO_CONNECT_AUTHOR = "AUTHOR_SHOW_START_TO_CONNECT_AUTHOR",
   AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR = "AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR",
   AUTHOR_SHOW_FAIL_TO_CONNECT_AUTHOR = "AUTHOR_SHOW_FAIL_TO_CONNECT_AUTHOR",
+  AUTHOR_SHOW_START_TO_ADD_PROFILE_CV_DATA = "AUTHOR_SHOW_START_TO_ADD_PROFILE_CV_DATA",
+  AUTHOR_SHOW_SUCCEEDED_TO_ADD_PROFILE_CV_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_ADD_PROFILE_CV_DATA",
+  AUTHOR_SHOW_FAIL_TO_ADD_PROFILE_CV_DATA = "AUTHOR_SHOW_FAIL_TO_ADD_PROFILE_CV_DATA",
+  AUTHOR_SHOW_START_TO_UPDATE_PROFILE_CV_DATA = "AUTHOR_SHOW_START_TO_UPDATE_PROFILE_CV_DATA",
+  AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_CV_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_CV_DATA",
+  AUTHOR_SHOW_FAIL_TO_UPDATE_PROFILE_CV_DATA = "AUTHOR_SHOW_FAIL_TO_UPDATE_PROFILE_CV_DATA",
+  AUTHOR_SHOW_START_TO_REMOVE_PROFILE_CV_DATA = "AUTHOR_SHOW_START_TO_REMOVE_PROFILE_CV_DATA",
+  AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA",
+  AUTHOR_SHOW_FAIL_TO_REMOVE_PROFILE_CV_DATA = "AUTHOR_SHOW_FAIL_TO_REMOVE_PROFILE_CV_DATA",
+
   // tslint:disable-next-line:max-line-length
   CONNECTED_AUTHOR_SHOW_START_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST = "CONNECTED_AUTHOR_SHOW_START_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST",
   // tslint:disable-next-line:max-line-length
@@ -302,6 +314,13 @@ export const ActionCreators = {
 
   failToConnectAuthor() {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_CONNECT_AUTHOR });
+  },
+
+  getProfile(payload: { authorId: number }) {
+    return createAction({
+      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_PROFILE,
+      payload,
+    });
   },
 
   getCoAuthors(payload: { coAuthorIds: number[] }) {
@@ -971,6 +990,72 @@ export const ActionCreators = {
       type: ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_SELECT_COLLECTION,
       payload,
     });
+  },
+
+  startToAddProfileCvData(payload: { CVType: keyof CVInfoType }) {
+    return createAction({
+      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_ADD_PROFILE_CV_DATA,
+      payload,
+    });
+  },
+
+  succeedToAddProfileCvData(payload: {
+    authorId: number;
+    cvInfoType: keyof CVInfoType;
+    cvInformation: Award | Education | Experience;
+  }) {
+    return createAction({
+      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_ADD_PROFILE_CV_DATA,
+      payload,
+    });
+  },
+
+  failToAddProfileCvData() {
+    return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_ADD_PROFILE_CV_DATA });
+  },
+
+  startToUpdateProfileCvData(payload: { CVType: keyof CVInfoType }) {
+    return createAction({
+      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_UPDATE_PROFILE_CV_DATA,
+      payload,
+    });
+  },
+
+  succeededToUpdateProfileCvData(payload: {
+    authorId: number;
+    cvInfoType: keyof CVInfoType;
+    cvInformation: Award | Education | Experience;
+  }) {
+    return createAction({
+      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_CV_DATA,
+      payload,
+    });
+  },
+
+  failToUpdateProfileCvData() {
+    return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_UPDATE_PROFILE_CV_DATA });
+  },
+
+  startToRemoveProfileCvData(payload: { CVType: keyof CVInfoType }) {
+    return createAction({
+      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_REMOVE_PROFILE_CV_DATA,
+      payload,
+    });
+  },
+
+  succeededToRemoveProfileCvData(payload: {
+    authorId: number;
+    cvInfoType: keyof CVInfoType;
+    cvInformation: Award | Education | Experience;
+  }) {
+    return createAction({
+      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA,
+      payload,
+    });
+  },
+
+  failToRemoveProfileCvData() {
+    return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_REMOVE_PROFILE_CV_DATA });
   },
 
   addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {

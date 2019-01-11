@@ -2,18 +2,18 @@ import * as React from "react";
 import { debounce } from "lodash";
 import { FieldProps } from "formik";
 import * as classNames from "classnames";
-import SuggestAPI, { SuggestAffiliation } from "../../../../../api/suggest";
-import { withStyles } from "../../../../../helpers/withStylesHelper";
-import PlutoAxios from "../../../../../api/pluto";
-import alertToast from "../../../../../helpers/makePlutoToastAction";
-import Icon from "../../../../../icons";
-import { Affiliation } from "../../../../../model/affiliation";
-import InputWithSuggestionList, { DefaultItemComponentProps } from "../../../../common/InputWithSuggestionList";
-
-const styles = require("./affiliationSelectBox.scss");
+import SuggestAPI, { SuggestAffiliation } from "../../api/suggest";
+import { withStyles } from "../../helpers/withStylesHelper";
+import PlutoAxios from "../../api/pluto";
+import alertToast from "../../helpers/makePlutoToastAction";
+import Icon from "../../icons";
+import { Affiliation } from "../../model/affiliation";
+import InputWithSuggestionList, { DefaultItemComponentProps } from "../common/InputWithSuggestionList";
+const styles = require("./affiliationBox.scss");
 
 interface AffiliationSelectBoxProps extends FieldProps {
   className: string;
+  inputStyle: React.CSSProperties;
 }
 
 interface AffiliationSelectBoxState {
@@ -30,7 +30,7 @@ const DefaultItem: React.SFC<DefaultItemComponentProps> = props => {
           }}
           className={styles.enterAffiliationItemContext}
         >
-          <Icon className={styles.plusIcon} icon="SMALL_PLUS" />Enter <b>“{props.userInput}”</b> as your affiliation
+          <Icon className={styles.plusIcon} icon="SMALL_PLUS" />Enter <b>“{props.userInput}”</b> as your institution
         </div>
       )}
     </div>
@@ -48,7 +48,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
   }
 
   public render() {
-    const { field, form, className } = this.props;
+    const { field, form, className, inputStyle } = this.props;
     const { touched, errors } = form;
     const { availableAffiliations } = this.state;
     const rawFieldValue = field.value as Affiliation | SuggestAffiliation | string;
@@ -62,14 +62,14 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
           <InputWithSuggestionList
             defaultValue={displayValue}
             onChange={this.handleInputChange}
-            placeholder="Current Affiliation"
+            placeholder=""
             handleSubmit={this.handleClickSelectBox}
             suggestionList={availableAffiliations.slice(0, 5).map(affiliation => affiliation.keyword)}
             className={classNames({
               [className]: true,
               [styles.error]: !!touched && !!error,
             })}
-            style={{ height: "40px" }}
+            style={inputStyle}
             listItemStyle={{
               height: "30px",
               display: "block",
@@ -133,7 +133,8 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
     const customAffiliation: Affiliation = { id: null, name: newInput };
 
     form.setFieldTouched(field.name);
-    form.setFieldValue(field.name, customAffiliation);
+    form.setFieldValue("institution_id", customAffiliation.id);
+    form.setFieldValue(field.name, customAffiliation.name);
 
     if (newInput.length > 1) {
       this.delayedGetKeywordCompletion(newInput);
@@ -147,9 +148,11 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
 
     if (!targetAffiliation && affiliationName) {
       const customAffiliation: Affiliation = { id: null, name: affiliationName };
-      form.setFieldValue(field.name, customAffiliation);
+      form.setFieldValue("institution_id", customAffiliation.id);
+      form.setFieldValue(field.name, customAffiliation.name);
     } else if (targetAffiliation) {
-      form.setFieldValue(field.name, targetAffiliation);
+      form.setFieldValue("institution_id", targetAffiliation.affiliation_id);
+      form.setFieldValue(field.name, targetAffiliation.keyword);
     }
   };
 

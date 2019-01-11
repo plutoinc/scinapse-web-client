@@ -9,20 +9,20 @@ interface InputBoxProps extends React.HTMLProps<HTMLInputElement> {
   autoFocus?: boolean;
   icon?: string;
   wrapperStyle?: React.CSSProperties;
-  inputClassName?: string;
+  className?: string;
   inputStyle?: React.CSSProperties;
 }
 
 class ScinapseReduxInput extends React.PureComponent<InputBoxProps> {
   public render() {
-    const { wrapperStyle, inputClassName, inputStyle, placeholder, autoFocus = false } = this.props;
+    const { wrapperStyle, className, inputStyle, placeholder, autoFocus = false } = this.props;
 
     return (
       <div>
         <div style={wrapperStyle} className={styles.inputBox}>
           <input
             className={classNames({
-              [`${inputClassName}`]: true,
+              [`${className}`]: true,
             })}
             style={inputStyle}
             name={name}

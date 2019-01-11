@@ -1,0 +1,11 @@
+@import "../../components/dialog/components/modifyProfile/affiliationSelectBox/affiliationSelectBox";
+
+.affiliationSelectBox {
+  display: inline-flex;
+}
+
+.inputWrapper {
+  .errorMessage {
+    margin-top: 4px;
+  }
+}

@@ -1,5 +1,6 @@
 import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../../components/common/sortBox";
+import { CVInfoType } from "../../model/profile";
 
 export interface ConnectedAuthorShowState
   extends Readonly<{
@@ -18,6 +19,7 @@ export interface ConnectedAuthorShowState
       isLoadingToUpdateProfileImage: boolean;
       isLoadingToAddPaperToAuthorPaperList: boolean;
       hasFailedToAddPaperToAuthorPaperList: boolean;
+      isFetchingCVForm: keyof CVInfoType | null;
     }> {}
 
 export const CONNECTED_AUTHOR_SHOW_INITIAL_STATE: ConnectedAuthorShowState = {
@@ -36,6 +38,7 @@ export const CONNECTED_AUTHOR_SHOW_INITIAL_STATE: ConnectedAuthorShowState = {
   isLoadingToUpdateProfileImage: false,
   isLoadingToAddPaperToAuthorPaperList: false,
   hasFailedToAddPaperToAuthorPaperList: false,
+  isFetchingCVForm: null,
 };
 
 export function reducer(

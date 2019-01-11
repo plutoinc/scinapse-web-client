@@ -1,6 +1,5 @@
 .inputBox {
   position: relative;
-  height: 40px;
   border-radius: 5px;
 
   input {
@@ -13,6 +12,7 @@
     border-radius: 5px;
     border: solid 1px $gray3;
     background-color: transparent;
+    font-family: Roboto;
 
     &.error {
       border: solid 1px $red0;
@@ -46,5 +46,57 @@
     vertical-align: top;
     width: 16px;
     height: 16px;
+  }
+}
+
+select {
+  font-family: Roboto;
+  color: $gray6;
+}
+
+select:invalid {
+  color: rgba(30, 42, 53, 0.5) !important;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  border-radius: 5px;
+  width: 100%;
+
+  input {
+    display: block;
+    width: 100%;
+    border: 0;
+    height: 100%;
+    padding: 8px 32px 8px 8px;
+    margin: 0;
+    border-radius: 5px;
+    border: solid 1px $gray3;
+    background-color: transparent;
+
+    &.error {
+      border: solid 1px $red0;
+    }
+  }
+
+  ::placeholder {
+    color: $gray4;
+  }
+
+  .errorMessage {
+    color: $red0;
+    font-size: 12px;
+    display: inline-flex;
+    margin-top: 4px;
+  }
+
+  .iconWrapper {
+    position: absolute;
+    width: 16px;
+    right: 0;
+    margin-right: 8px;
   }
 }

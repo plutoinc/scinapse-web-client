@@ -106,7 +106,7 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                         type="text"
                         placeholder="Author Name"
                         component={ScinapseFormikInput}
-                        inputClassName={styles.inputField}
+                        className={styles.inputField}
                       />
                       <ErrorMessage name="authorName" className={styles.errorMessage} component="div" />
                     </div>
@@ -115,7 +115,7 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                       <Field
                         name="currentAffiliation"
                         component={AffiliationSelectBox}
-                        inputClassName={styles.inputField}
+                        className={styles.inputField}
                         format={this.formatAffiliation}
                       />
                     </div>
@@ -138,7 +138,7 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                       <label htmlFor="email">Email Address</label>
                       <Field
                         component={ScinapseFormikInput}
-                        inputClassName={styles.inputField}
+                        className={styles.inputField}
                         name="email"
                         type="email"
                         placeholder="Email Address"
@@ -162,7 +162,7 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                       </label>
                       <Field
                         component={ScinapseFormikInput}
-                        inputClassName={styles.inputField}
+                        className={styles.inputField}
                         name="website"
                         type="text"
                         placeholder="e.g. https://username.com"

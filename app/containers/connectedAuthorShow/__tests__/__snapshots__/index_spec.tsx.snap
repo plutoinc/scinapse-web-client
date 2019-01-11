@@ -123,11 +123,20 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
           <div
             className="tabNavigationWrapper"
           >
-            <span
-              className="tabNavigationItem"
+            <a
+              className="currentTabNavigationItem"
+              href="/authors/2258681040"
+              onClick={[Function]}
             >
               PUBLICATIONS
-            </span>
+            </a>
+            <a
+              className="tabNavigationItem"
+              href="/authors/2258681040/cv"
+              onClick={[Function]}
+            >
+              INFORMATION
+            </a>
           </div>
         </div>
       </div>
@@ -678,11 +687,20 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
           <div
             className="tabNavigationWrapper"
           >
-            <span
-              className="tabNavigationItem"
+            <a
+              className="currentTabNavigationItem"
+              href="/authors/2258681040"
+              onClick={[Function]}
             >
               PUBLICATIONS
-            </span>
+            </a>
+            <a
+              className="tabNavigationItem"
+              href="/authors/2258681040/cv"
+              onClick={[Function]}
+            >
+              INFORMATION
+            </a>
           </div>
         </div>
       </div>
@@ -1021,11 +1039,20 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
           <div
             className="tabNavigationWrapper"
           >
-            <span
-              className="tabNavigationItem"
+            <a
+              className="currentTabNavigationItem"
+              href="/authors/2258681040"
+              onClick={[Function]}
             >
               PUBLICATIONS
-            </span>
+            </a>
+            <a
+              className="tabNavigationItem"
+              href="/authors/2258681040/cv"
+              onClick={[Function]}
+            >
+              INFORMATION
+            </a>
           </div>
         </div>
       </div>
