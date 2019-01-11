@@ -211,25 +211,25 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
 
       return (
         <Helmet>
-          <title>{`${member.firstName} ${member.lastName || ""}'s paper collections | Sci-napse`}</title>
+          <title>{`${member.firstName} ${member.lastName || ""}'s paper collections | Scinapse`}</title>
           <meta
             itemProp="name"
-            content={`${member.firstName} ${member.lastName || ""}'s paper collections | Sci-napse`}
+            content={`${member.firstName} ${member.lastName || ""}'s paper collections | Scinapse`}
           />
           <meta name="description" content={headCollections} />
           <meta name="twitter:description" content={headCollections} />
           <meta property="og:description" content={headCollections} />
           <meta
             name="twitter:card"
-            content={`${member.firstName} ${member.lastName || ""}'s paper collections | Sci-napse`}
+            content={`${member.firstName} ${member.lastName || ""}'s paper collections | Scinapse`}
           />
           <meta
             name="twitter:title"
-            content={`${member.firstName} ${member.lastName || ""}'s paper collections | Sci-napse`}
+            content={`${member.firstName} ${member.lastName || ""}'s paper collections | Scinapse`}
           />
           <meta
             property="og:title"
-            content={`${member.firstName} ${member.lastName || ""}'s paper collections | Sci-napse`}
+            content={`${member.firstName} ${member.lastName || ""}'s paper collections | Scinapse`}
           />
           <meta property="og:type" content="article" />
           <meta property="og:url" content={`https://scinapse.io/collections/users/${member.id}/collections`} />

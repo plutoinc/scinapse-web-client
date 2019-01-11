@@ -183,8 +183,8 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     if (collection) {
       return (
         <Helmet>
-          <title>{collection.title} | Sci-napse</title>
-          <meta itemProp="name" content={`${collection.title} | Sci-napse`} />
+          <title>{collection.title} | Scinapse</title>
+          <meta itemProp="name" content={`${collection.title} | Scinapse`} />
           <meta
             name="description"
             content={`${collection.created_by.firstName} ${collection.created_by.lastName || ""}'s ${
@@ -197,9 +197,9 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
               collection.title
             } collection`}
           />
-          <meta name="twitter:card" content={`${collection.title} | Sci-napse`} />
-          <meta name="twitter:title" content={`${collection.title} | Sci-napse`} />
-          <meta property="og:title" content={`${collection.title} | Sci-napse`} />
+          <meta name="twitter:card" content={`${collection.title} | Scinapse`} />
+          <meta name="twitter:title" content={`${collection.title} | Scinapse`} />
+          <meta property="og:title" content={`${collection.title} | Scinapse`} />
           <meta property="og:type" content="article" />
           <meta property="og:url" content={`https://scinapse.io/collections/${collection.id}`} />
           <meta
