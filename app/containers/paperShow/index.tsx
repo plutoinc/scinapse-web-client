@@ -454,7 +454,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { paper } = this.props;
 
     if (!paper) {
-      return "sci-napse";
+      return "Scinapse";
     }
     const shortAbstract = paper.abstract ? `${paper.abstract.slice(0, 50)} | ` : "";
     const shortAuthors =
@@ -468,7 +468,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         : "";
     const shortJournals = paper.journal ? `${paper.journal!.fullTitle!.slice(0, 50)} | ` : "";
 
-    return `${shortAbstract}${shortAuthors}${shortJournals} | sci-napse`;
+    return `${shortAbstract}${shortAuthors}${shortJournals} | Scinapse`;
   };
 
   private makeStructuredData = (paper: Paper) => {
@@ -503,13 +503,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if (paper) {
       return (
         <Helmet>
-          <title>{paper.title} | Sci-napse | Academic search engine for paper</title>
-          <meta itemProp="name" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
+          <title>{paper.title} | Scinapse | Academic search engine for paper</title>
+          <meta itemProp="name" content={`${paper.title} | Scinapse | Academic search engine for paper`} />
           <meta name="description" content={this.buildPageDescription()} />
           <meta name="twitter:description" content={this.buildPageDescription()} />
-          <meta name="twitter:card" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
-          <meta name="twitter:title" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
-          <meta property="og:title" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
+          <meta name="twitter:card" content={`${paper.title} | Scinapse | Academic search engine for paper`} />
+          <meta name="twitter:title" content={`${paper.title} | Scinapse | Academic search engine for paper`} />
+          <meta property="og:title" content={`${paper.title} | Scinapse | Academic search engine for paper`} />
           <meta property="og:type" content="article" />
           <meta property="og:url" content={`https://scinapse.io/papers/${paper.id}`} />
           <meta property="og:description" content={this.buildPageDescription()} />
