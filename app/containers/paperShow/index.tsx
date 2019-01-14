@@ -197,7 +197,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public render() {
     const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers } = this.props;
-    const { isOnCited, isOnRef, isAboveRef } = this.state;
+    const { isOnCited, isOnRef, isAboveRef, isRightBoxFixed, isRightBoxSmall, isTouchFooter } = this.state;
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -303,9 +303,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             ref={el => (this.rightBoxWrapper = el)}
             className={classNames({
               [styles.sideNavigation]: true,
-              [styles.stick]: this.state.isRightBoxFixed,
-              [styles.smallThanVH]: this.state.isRightBoxSmall,
-              [styles.touchFooter]: this.state.isTouchFooter,
+              [styles.stick]: isRightBoxFixed,
+              [styles.smallThanVH]: isRightBoxSmall,
+              [styles.touchFooter]: isTouchFooter,
             })}
           >
             <CollectionNoteList />
