@@ -547,6 +547,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <meta property="og:type" content="article" />
           <meta property="og:url" content={`https://scinapse.io/papers/${paper.id}`} />
           <meta property="og:description" content={this.buildPageDescription()} />
+
+          <div itemScope={true} itemType="http://schema.org/CreativeWork">
+            by <span itemProp="author">{paper.authors[0]}</span> - in <span itemProp="dateCreated">{paper.year}</span>
+            - publisher : <span itemProp="publisher">{paper.journal}</span>
+          </div>
+
           <script type="application/ld+json">{JSON.stringify(this.makeStructuredData(paper))}</script>
         </Helmet>
       );
