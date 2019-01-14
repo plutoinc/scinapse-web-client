@@ -458,7 +458,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       return "Scinapse";
     }
 
-    const shortAbstract = paper.abstract ? `${paper.abstract.slice(0, 150)} | ` : "";
+    const shortAbstract = paper.abstract ? `${paper.abstract.slice(0, 110)} | ` : "";
     const shortAuthors =
       paper.authors && paper.authors.length > 0
         ? `${paper.authors
@@ -490,7 +490,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       name: "Scinapse",
       logo: {
         "@type": "ImageObject",
-        url: "https://google.com/logo.jpg",
+        url: "https://s3.amazonaws.com/pluto-asset/scinapse/scinapse-logo.png",
       },
     };
 
@@ -498,7 +498,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       "@context": "http://schema.org",
       "@type": "Article",
       headline: paper.title,
-      image: ["https://example.com/photos/1x1/photo.jpg"],
+      image: ["https://s3.amazonaws.com/pluto-asset/scinapse/scinapse-logo.png"],
       datePublished: paper.year,
       dateModified: paper.year,
       author: authorsForStructuredData,
@@ -547,7 +547,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <meta property="og:type" content="article" />
           <meta property="og:url" content={`https://scinapse.io/papers/${paper.id}`} />
           <meta property="og:description" content={this.buildPageDescription()} />
-
           <script type="application/ld+json">{JSON.stringify(this.makeStructuredData(paper))}</script>
         </Helmet>
       );
