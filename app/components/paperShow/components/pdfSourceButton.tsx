@@ -70,6 +70,7 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
                     marginLeft: "-8px",
                     paddingLeft: "8px",
                   },
+                  className: styles.linkClassName,
                   onClick: () => {
                     this.handleClickPDFOrSource(!!pdfSourceRecord);
                   },
@@ -81,6 +82,7 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
                     marginRight: "-8px",
                     paddingRight: "8px",
                   },
+                  className: styles.dropdownBtn,
                 }}
                 leftIconNode={<Icon icon="EXTERNAL_SOURCE" className={styles.sourceIcon} />}
               />

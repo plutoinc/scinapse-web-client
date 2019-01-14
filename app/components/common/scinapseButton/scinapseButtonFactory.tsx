@@ -32,7 +32,15 @@ const ButtonWithArrow: React.SFC<ButtonWithArrowProps> = ({
     display: "flex",
     height: "100%",
     alignItems: "center",
+    borderRadius: "4px 0 0 4px",
     ...linkProps.style,
+  };
+
+  const additionalBtnStyle = dropdownBtnProps && dropdownBtnProps.style ? dropdownBtnProps.style : {};
+  const defaultBtnStyle: React.CSSProperties = {
+    borderRadius: "0 4px 4px 0",
+    borderLeft: "1px solid #dde0e7",
+    ...additionalBtnStyle,
   };
 
   return (
@@ -42,11 +50,10 @@ const ButtonWithArrow: React.SFC<ButtonWithArrowProps> = ({
         <span className={textWrapperClassName}>{text}</span>
       </a>
       {hasArrow && (
-        <button {...dropdownBtnProps}>
+        <button {...dropdownBtnProps} style={defaultBtnStyle}>
           <span
             style={{
               width: "27px",
-              borderLeft: "1px solid #dde0e7",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",

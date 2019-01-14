@@ -6,13 +6,8 @@
   font-weight: 500;
   color: $main_blue0;
   line-height: 1.43;
-  background-color: $gray8;
   border-radius: 4px;
   padding: 0 10px;
-
-  &:hover {
-    background-color: $gray2;
-  }
 
   &:active {
     filter: brightness(95%);
@@ -42,6 +37,15 @@
       height: 12px;
       vertical-align: middle;
     }
+  }
+}
+
+.dropdownBtn,
+.linkClassName {
+  background-color: $gray8;
+
+  &:hover {
+    background-color: $gray2;
   }
 }
 
