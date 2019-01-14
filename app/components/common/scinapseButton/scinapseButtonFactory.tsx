@@ -32,7 +32,7 @@ const ButtonWithArrow: React.SFC<ButtonWithArrowProps> = ({
     display: "flex",
     height: "100%",
     alignItems: "center",
-    borderRadius: "4px 0 0 4px",
+    borderRadius: hasArrow ? "4px 0 0 4px" : "4px",
     ...linkProps.style,
   };
 
