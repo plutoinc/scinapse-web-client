@@ -56,7 +56,7 @@ class Home extends React.PureComponent<HomeProps> {
               </div>
               <div className={styles.searchSubTitle}>
                 Sci-napse is a free, nonprofit, Academic search engine <br /> for papers, serviced by{" "}
-                <a href="https://pluto.network" target="_blank" className={styles.plutoLink}>
+                <a href="https://pluto.network" target="_blank" className={styles.plutoLink} rel="noopener">
                   Pluto Network
                 </a>
               </div>
@@ -114,22 +114,22 @@ class Home extends React.PureComponent<HomeProps> {
             <div className={styles.sourceVendorSubtitle}>Metadata of papers comes from</div>
             <div className={styles.sourceVendorWrapper}>
               <div className={styles.sourceVendorItem}>
-                <a href="https://aka.ms/msracad" target="_blank">
+                <a href="https://aka.ms/msracad" target="_blank" rel="noopener">
                   <img src="https://assets.pluto.network/scinapse/microsoft-research.png" />
                 </a>
               </div>
               <div className={styles.sourceVendorItem}>
-                <a href="https://www.semanticscholar.org/" target="_blank">
+                <a href="https://www.semanticscholar.org/" target="_blank" rel="noopener">
                   <img src="https://assets.pluto.network/scinapse/semantic-scholar%402x.png" />
                 </a>
               </div>
               <div className={styles.sourceVendorItem}>
-                <a href="https://www.springernature.com/gp/" target="_blank">
+                <a href="https://www.springernature.com/gp/" target="_blank" rel="noopener">
                   <img src="https://assets.pluto.network/scinapse/springernature%402x.png" />
                 </a>
               </div>
               <div className={styles.sourceVendorItem}>
-                <a href="https://www.ncbi.nlm.nih.gov/pubmed/" target="_blank">
+                <a href="https://www.ncbi.nlm.nih.gov/pubmed/" target="_blank" rel="noopener">
                   <img src="https://assets.pluto.network/scinapse/pubmed%402x.png" />
                 </a>
               </div>

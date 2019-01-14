@@ -90,6 +90,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
               }}
               href="https://www.notion.so/pluto/Scinapse-updates-6a05160afde44ba1a6ed312899c23dae"
               target="_blank"
+              rel="noopener"
               className={styles.link}
             >
               Updates
@@ -100,6 +101,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
               }}
               href="https://medium.com/pluto-network"
               target="_blank"
+              rel="noopener"
               className={styles.link}
             >
               Blog
@@ -110,6 +112,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
               }}
               href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
               target="_blank"
+              rel="noopener"
               className={styles.link}
             >
               FAQ

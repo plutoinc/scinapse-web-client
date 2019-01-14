@@ -56,6 +56,7 @@ class Title extends React.PureComponent<TitleProps, {}> {
             className={styles.newTabIconWrapper}
             href={`/papers/${paperId}`}
             target="_blank"
+            rel="noopener"
           >
             <Icon className={styles.newTabIcon} icon="EXTERNAL_SOURCE" />
           </a>
@@ -83,6 +84,7 @@ class Title extends React.PureComponent<TitleProps, {}> {
           className={styles.newTabIconWrapper}
           href={`/papers/${paperId}`}
           target="_blank"
+          rel="noopener"
         >
           <Icon className={styles.newTabIcon} icon="EXTERNAL_SOURCE" />
         </a>

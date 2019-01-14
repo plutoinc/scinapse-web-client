@@ -144,7 +144,7 @@ class AdminComponent extends React.PureComponent<AdminComponentProps, AdminCompo
                           maxWidth: "600px",
                         }}
                       >
-                        <a href={blogInfo.link} target="_blank">
+                        <a href={blogInfo.link} rel="noopener" target="_blank">
                           {blogInfo.ogTitle}
                         </a>
                       </TableCell>

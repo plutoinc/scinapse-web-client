@@ -4,7 +4,6 @@ import { CompletionKeyword } from "../completion";
 
 class CompletionAPI extends PlutoAxios {
   public async getSuggestionKeyword(_query: string): Promise<SuggestionKeyword> {
-    console.log("==========================================");
     return { keyword: "papre", suggestion: "paper", highlighted: "<b>paper</b>" };
   }
 

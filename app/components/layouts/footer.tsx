@@ -23,6 +23,7 @@ export default class Footer extends React.PureComponent<FooterProps, {}> {
           <a
             href="https://www.facebook.com/PlutoNetwork/"
             target="_blank"
+            rel="noopener"
             onClick={() => {
               trackAndOpenLink("footerAboutUs");
             }}
@@ -33,6 +34,7 @@ export default class Footer extends React.PureComponent<FooterProps, {}> {
           <a
             href="https://twitter.com/pluto_network"
             target="_blank"
+            rel="noopener"
             onClick={() => {
               trackAndOpenLink("footerAboutUs");
             }}
@@ -43,6 +45,7 @@ export default class Footer extends React.PureComponent<FooterProps, {}> {
           <a
             href="https://medium.com/pluto-network"
             target="_blank"
+            rel="noopener"
             onClick={() => {
               trackAndOpenLink("footerAboutUs");
             }}
@@ -53,6 +56,7 @@ export default class Footer extends React.PureComponent<FooterProps, {}> {
           <a
             href="https://pluto.network"
             target="_blank"
+            rel="noopener"
             onClick={() => {
               trackAndOpenLink("footerAboutUs");
             }}
@@ -63,6 +67,7 @@ export default class Footer extends React.PureComponent<FooterProps, {}> {
           <a
             href="mailto:team@pluto.network"
             target="_blank"
+            rel="noopener"
             onClick={() => {
               trackAndOpenLink("footerContactUs");
             }}
@@ -73,6 +78,7 @@ export default class Footer extends React.PureComponent<FooterProps, {}> {
           <a
             href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
             target="_blank"
+            rel="noopener"
             onClick={() => {
               trackAndOpenLink("footerFAQ");
             }}

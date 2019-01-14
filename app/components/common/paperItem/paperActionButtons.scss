@@ -39,6 +39,8 @@
 
   .sourceButton {
     @include small-action-button($gray6);
+    position: relative;
+
     .sourceButtonIcon {
       display: flex;
       align-items: center;
@@ -229,6 +231,7 @@
     z-index: 2;
   }
 }
+
 // Mobile
 @media (max-width: $mobile-width) {
   .citationIconWrapper {
