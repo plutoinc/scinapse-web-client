@@ -275,7 +275,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
               height: "44px",
               border: 0,
               borderRadius: "4px",
-              paddingLeft: "16px",
+              padding: "0 44px 0 16px",
               backgroundColor: "white",
               overflow: "hidden",
               alignItems: "center",

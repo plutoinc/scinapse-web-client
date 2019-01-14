@@ -80,7 +80,7 @@ class Home extends React.PureComponent<HomeProps> {
                     backgroundColor: "white",
                     overflow: "hidden",
                     alignItems: "center",
-                    paddingLeft: "16px",
+                    padding: "0 44px 0 16px",
                   }}
                   listWrapperStyle={{
                     boxShadow: "0 1px 2px 0 #bbc2d0",
