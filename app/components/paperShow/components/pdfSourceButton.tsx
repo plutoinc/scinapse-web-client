@@ -58,7 +58,7 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
               <Button
                 isUpArrow={!isSourcePopoverOpen}
                 hasArrow={paper.urls.length > 1}
-                text={pdfSourceRecord ? "View PDF" : "View in Source"}
+                text={pdfSourceRecord ? "Download PDF" : "View in Source"}
                 arrowIconClassName={styles.arrowIcon}
                 className={styles.downloadButton}
                 textWrapperClassName={styles.sourceButtonTextWrapper}
@@ -84,7 +84,13 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
                   },
                   className: styles.dropdownBtn,
                 }}
-                leftIconNode={<Icon icon="EXTERNAL_SOURCE" className={styles.sourceIcon} />}
+                leftIconNode={
+                  pdfSourceRecord ? (
+                    <Icon className={styles.pdfIconWrapper} icon="DOWNLOAD" />
+                  ) : (
+                    <Icon icon="EXTERNAL_SOURCE" className={styles.sourceIcon} />
+                  )
+                }
               />
             </div>
           }

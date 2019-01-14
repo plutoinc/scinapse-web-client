@@ -58,7 +58,7 @@ const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
       {props.buttonEl}
       {props.isOpen && (
         <Popper
-          placement="bottom-end"
+          placement="bottom-start"
           modifiers={{
             preventOverflow: {
               enabled: true,
