@@ -33,6 +33,8 @@ import { trackEvent } from "../../helpers/handleGA";
 import { getMemoizedPaper, getReferencePapers, getCitedPapers } from "./select";
 import { formulaeToHTMLStr } from "../../helpers/displayFormula";
 import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
+import { PaperSource } from "../../model/paperSource";
+import { NewFOS } from "../../model/fos";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
@@ -456,7 +458,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if (!paper) {
       return "Scinapse";
     }
-    const shortAbstract = paper.abstract ? `${paper.abstract.slice(0, 50)} | ` : "";
+
+    const shortAbstract = paper.abstract ? `${paper.abstract.slice(0, 150)} | ` : "";
     const shortAuthors =
       paper.authors && paper.authors.length > 0
         ? `${paper.authors
@@ -468,7 +471,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         : "";
     const shortJournals = paper.journal ? `${paper.journal!.fullTitle!.slice(0, 50)} | ` : "";
 
-    return `${shortAbstract}${shortAuthors}${shortJournals} | Scinapse`;
+    return `${shortAbstract}${shortAuthors}${shortJournals}`;
+    // }
   };
 
   private makeStructuredData = (paper: Paper) => {
@@ -482,16 +486,27 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       };
     });
 
+    const publisherForStructuredData = {
+      "@type": "Organization",
+      name: "Scinapse",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://google.com/logo.jpg",
+      },
+    };
+
     const structuredData: any = {
       "@context": "http://schema.org",
       "@type": "Article",
       headline: paper.title,
-      image: [],
+      image: ["https://example.com/photos/1x1/photo.jpg"],
       datePublished: paper.year,
+      dateModified: paper.year,
       author: authorsForStructuredData,
       keywords: paper.fosList.map(fos => fos!.fos),
       description: paper.abstract,
       mainEntityOfPage: "https://scinapse.io",
+      publisher: publisherForStructuredData,
     };
 
     return structuredData;
@@ -501,15 +516,35 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { paper } = this.props;
 
     if (paper) {
+      const pdfSourceRecord =
+        paper.urls &&
+        paper.urls.find((paperSource: PaperSource) => {
+          return (
+            paperSource.url.startsWith("https://arxiv.org/pdf/") ||
+            (paperSource.url.startsWith("http") && paperSource.url.endsWith(".pdf"))
+          );
+        });
+
+      const metaTitleContent = pdfSourceRecord ? "[PDF] " + paper.title : paper.title;
+      const fosListContent =
+        paper.fosList &&
+        paper.fosList
+          .map(fos => {
+            return fos.fos;
+          })
+          .toString()
+          .replace(/,/gi, ", ");
+
       return (
         <Helmet>
-          <title>{paper.title} | Scinapse | Academic search engine for paper</title>
-          <meta itemProp="name" content={`${paper.title} | Scinapse | Academic search engine for paper`} />
+          <title>{metaTitleContent} | Scinapse | Academic search engine for paper}</title>
+          <meta itemProp="name" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
           <meta name="description" content={this.buildPageDescription()} />
+          <meta name="keyword" content={fosListContent} />
           <meta name="twitter:description" content={this.buildPageDescription()} />
-          <meta name="twitter:card" content={`${paper.title} | Scinapse | Academic search engine for paper`} />
-          <meta name="twitter:title" content={`${paper.title} | Scinapse | Academic search engine for paper`} />
-          <meta property="og:title" content={`${paper.title} | Scinapse | Academic search engine for paper`} />
+          <meta name="twitter:card" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
+          <meta name="twitter:title" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
+          <meta property="og:title" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
           <meta property="og:type" content="article" />
           <meta property="og:url" content={`https://scinapse.io/papers/${paper.id}`} />
           <meta property="og:description" content={this.buildPageDescription()} />
