@@ -1,5 +1,8 @@
 .sourcesWrapper {
   @include popper-paper(198px);
+  max-height: 202px;
+  overflow: scroll;
+  border-radius: 4px;
 }
 
 .sourceItem {
