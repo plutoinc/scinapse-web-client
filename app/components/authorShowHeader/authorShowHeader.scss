@@ -143,3 +143,29 @@
   color: $black0 !important;
   font-size: 12px;
 }
+
+// Mobile (0~768)
+@media (max-width: $mobile-width) {
+  .container {
+    display: block;
+    width: $mobile-container-width;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0 10px;
+    .rightBox {
+      display: none;
+    }
+  }
+
+  .headerBox {
+    padding-top: 28px;
+  }
+
+  .leftContentWrapper {
+    width: $mobile-content-width;
+  }
+
+  .bioSection {
+    margin-bottom: 24px;
+  }
+}
