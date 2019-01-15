@@ -34,7 +34,7 @@ interface AuthorCvSectionProps {
   author: Author;
   authorShow: ConnectedAuthorShowState;
   currentUser: CurrentUser;
-  profile: Profile;
+  profile: Profile | undefined;
   dispatch: Dispatch<any>;
 }
 
@@ -136,7 +136,8 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
   private getEducationList = () => {
     const { profile, author } = this.props;
-    if (profile.educations && profile.educations.length > 0) {
+
+    if (profile && profile.educations && profile.educations.length > 0) {
       const educations = profile.educations.map(education => {
         return (
           <EducationItem
@@ -212,7 +213,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
   private getExperienceList = () => {
     const { profile, author } = this.props;
-    if (profile.experiences && profile.experiences.length > 0) {
+    if (profile && profile.experiences && profile.experiences.length > 0) {
       const experiences = profile.experiences.map(experience => {
         return (
           <ExperienceItem
@@ -273,7 +274,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
   private getAwardList = () => {
     const { profile, author } = this.props;
 
-    if (profile.awards && profile.awards.length > 0) {
+    if (profile && profile.awards && profile.awards.length > 0) {
       const awards = profile.awards.map(award => {
         return (
           <AwardItem
