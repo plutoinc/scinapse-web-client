@@ -162,29 +162,15 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
           Cited 2909
         </span>
       </a>
-      <a
-        className="pdfButton"
-        href="https://www.nature.com/articles/nature06016.pdf"
+      <div
+        className="sourceButton"
         onClick={[Function]}
-        rel="noopener"
-        target="_blank"
       >
         <i
           className="icon pdfIconWrapper"
         />
         <span>
           Download PDF
-        </span>
-      </a>
-      <div
-        className="sourceButton"
-        onClick={[Function]}
-      >
-        <i
-          className="icon sourceButtonIcon"
-        />
-        <span>
-          Source
         </span>
       </div>
       <button
@@ -399,29 +385,15 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
           Cited 2909
         </span>
       </a>
-      <a
-        className="pdfButton"
-        href="https://www.nature.com/articles/nature06016.pdf"
+      <div
+        className="sourceButton"
         onClick={[Function]}
-        rel="noopener"
-        target="_blank"
       >
         <i
           className="icon pdfIconWrapper"
         />
         <span>
           Download PDF
-        </span>
-      </a>
-      <div
-        className="sourceButton"
-        onClick={[Function]}
-      >
-        <i
-          className="icon sourceButtonIcon"
-        />
-        <span>
-          Source
         </span>
       </div>
       <span
