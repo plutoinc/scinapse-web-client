@@ -57,15 +57,14 @@ $footer-default-vertical-padding: 20px;
 $small-container-width: 997px;
 $small-container-right-container-width: 284px;
 $margin-between-small-container: 31.5px;
-$small-container-left-container-width: $small-container-width -
-  $small-container-right-container-width - $margin-between-small-container;
+$small-container-left-container-width: $small-container-width - $small-container-right-container-width -
+  $margin-between-small-container;
 
 // normal-container
 $container_width: 1180px;
 $right-container-width: 385px;
 $margin-between-container: 21.5px;
-$left-container-width: $container_width - $right-container-width -
-  $margin-between-container;
+$left-container-width: $container_width - $right-container-width - $margin-between-container;
 
 // other-containers
 $search_container_width: 870px;
@@ -102,17 +101,14 @@ $paper-info-subText-lineHeight: 1.4;
 $regular-display-container-width: calc(100vw - #{$container-margin} * 2);
 $regular-display-paper-show-rightBox-width: 324px;
 $regular-display-paper-show-width: calc(
-  #{$regular-display-container-width} - #{$regular-display-paper-show-rightBox-width} -
-    #{$container-margin}
+  #{$regular-display-container-width} - #{$regular-display-paper-show-rightBox-width} - #{$container-margin}
 );
 
 // Mobile Variables
 $mobile-width: 767px;
 $mobile-side-margin: 16px;
 $mobile-container-width: 100%;
-$mobile-content-width: calc(
-  #{$mobile-container-width} - #{$mobile-side-margin} * 2
-);
+$mobile-content-width: calc(#{$mobile-container-width} - #{$mobile-side-margin} * 2);
 $mobile-paper-show-width: 100%;
 $mobile-paper-info-layout-width: 100%;
 // paper show
@@ -168,12 +164,7 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   overflow: hidden;
   text-overflow: ellipsis;
 }
-@mixin common-button(
-  $bgc: $main_blue0,
-  $width: 331px,
-  $height: 46.8px,
-  $fsize: 14px
-) {
+@mixin common-button($bgc: $main_blue0, $width: 331px, $height: 46.8px, $fsize: 14px) {
   display: flex;
   width: $width;
   height: $height;
@@ -186,8 +177,7 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
-    color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
   @if $bgc == $main_blue0 {
     color: #fff;
     &:hover {
