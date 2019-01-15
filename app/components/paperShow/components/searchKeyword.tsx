@@ -27,6 +27,7 @@ class SearchKeyword extends React.PureComponent<SearchKeywordProps, {}> {
                 filter: {},
               })}`}
               target="_blank"
+              rel="noopener"
               onClick={() => {
                 trackEvent({
                   category: "New Paper Show",

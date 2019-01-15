@@ -33,7 +33,7 @@ import { getMemoizedPaper, getReferencePapers, getCitedPapers } from "./select";
 import { formulaeToHTMLStr } from "../../helpers/displayFormula";
 import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
 import Helmet from "react-helmet";
-import { checkValidPDFLink } from "../../helpers/checkValidPDFLink";
+import { getPDFLink } from "../../helpers/getPDFLink";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
@@ -100,7 +100,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isAboveRef: true,
       isOnRef: false,
       isOnCited: false,
-
       isRightBoxSmall: false,
       isRightBoxFixed: false,
       isTouchFooter: false,
@@ -198,7 +197,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public render() {
     const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers } = this.props;
-    const { isOnCited, isOnRef, isAboveRef } = this.state;
+    const { isOnCited, isOnRef, isAboveRef, isRightBoxFixed, isRightBoxSmall, isTouchFooter } = this.state;
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -304,9 +303,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             ref={el => (this.rightBoxWrapper = el)}
             className={classNames({
               [styles.sideNavigation]: true,
-              [styles.stick]: this.state.isRightBoxFixed,
-              [styles.smallThanVH]: this.state.isRightBoxSmall,
-              [styles.touchFooter]: this.state.isTouchFooter,
+              [styles.stick]: isRightBoxFixed,
+              [styles.smallThanVH]: isRightBoxSmall,
+              [styles.touchFooter]: isTouchFooter,
             })}
           >
             <CollectionNoteList />
@@ -513,7 +512,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private getPageHelmet = () => {
     const { paper } = this.props;
     if (paper) {
-      const pdfSourceRecord = checkValidPDFLink(paper);
+      const pdfSourceRecord = getPDFLink(paper.urls);
 
       const metaTitleContent = pdfSourceRecord ? "[PDF] " + paper.title : paper.title;
       const fosListContent =

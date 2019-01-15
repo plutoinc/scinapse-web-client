@@ -3,6 +3,10 @@
   background-color: white;
   padding: 8px 0px;
 
+  .leftSide {
+    display: flex;
+  }
+
   .actions {
     position: relative;
     display: flex;
@@ -16,7 +20,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 148px;
         height: 40px;
         font-size: 14px;
         font-weight: 500;
@@ -25,6 +28,12 @@
         background-color: $gray8;
         border-radius: 4px;
         cursor: pointer;
+        padding: 0 10px;
+
+        span {
+          display: inline-block;
+          height: 20px;
+        }
 
         &:hover {
           background-color: $gray2;
@@ -34,17 +43,17 @@
           filter: brightness(95%);
         }
 
-        svg {
-          width: 12px;
-          height: 12px;
-          vertical-align: middle;
-        }
+        .citeIcon {
+          @include flex-center-vertical-horizontal(inline-flex);
 
-        span {
-          line-height: 16px;
-          font-size: 14px;
-          vertical-align: middle;
-          margin-left: 8px;
+          width: 20px;
+          height: 20px;
+          margin-right: 4px;
+
+          svg {
+            width: 12px;
+            height: 12px;
+          }
         }
       }
     }

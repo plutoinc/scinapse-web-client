@@ -2,15 +2,17 @@ import axios, { CancelToken } from "axios";
 import { normalize } from "normalizr";
 import { Dispatch } from "react-redux";
 import { ActionCreators } from "./actionTypes";
-import AuthorAPI, { ConnectAuthorParams, DEFAULT_AUTHOR_PAPERS_SIZE } from "../api/author";
-import { Paper, paperSchema } from "../model/paper";
-import PlutoAxios from "../api/pluto";
 import alertToast from "../helpers/makePlutoToastAction";
-import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
-import { getAuthor, getCoAuthors, getAuthorPapers } from "../containers/unconnectedAuthorShow/actions";
+import PlutoAxios from "../api/pluto";
+import AuthorAPI, { ConnectAuthorParams, DEFAULT_AUTHOR_PAPERS_SIZE } from "../api/author";
+import ProfileAPI, { AwardParams, EducationParams, ExperienceParams } from "../api/profile";
 import { GetAuthorPapersParams } from "../api/author/types";
+import { Paper, paperSchema } from "../model/paper";
+import { CVInfoType } from "../model/profile";
 import { CurrentUser } from "../model/currentUser";
+import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../components/common/sortBox";
+import { getAuthor, getCoAuthors, getAuthorPapers } from "../containers/unconnectedAuthorShow/actions";
 
 interface AddRemovePapersAndFetchPapersParams {
   authorId: number;
@@ -84,6 +86,71 @@ export function updateAuthor(params: ConnectAuthorParams) {
 
     dispatch(ActionCreators.addEntity(authorResponse));
     dispatch(ActionCreators.succeededToUpdateProfileData());
+  };
+}
+
+export function postNewAuthorCVInfo(
+  type: keyof CVInfoType,
+  authorId: number,
+  params: AwardParams | EducationParams | ExperienceParams
+) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch(ActionCreators.startToAddProfileCvData({ CVType: type }));
+
+    let result: any;
+    if (type === "awards") {
+      result = await ProfileAPI.postNewAwardInAuthor(authorId, params as AwardParams);
+    } else if (type === "educations") {
+      result = await ProfileAPI.postNewEducationInAuthor(authorId, params as EducationParams);
+    } else if (type === "experiences") {
+      result = await ProfileAPI.postNewExperienceInAuthor(authorId, params as ExperienceParams);
+    }
+
+    dispatch(ActionCreators.succeedToAddProfileCvData({ authorId, cvInfoType: type, cvInformation: result }));
+  };
+}
+
+export function removeAuthorCvInfo(type: keyof CVInfoType, authorId: number, id: string) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch(ActionCreators.startToRemoveProfileCvData({ CVType: type }));
+    let result: any;
+    try {
+      if (type === "awards") {
+        result = await ProfileAPI.deleteAwardInAuthor(id);
+      } else if (type === "educations") {
+        result = await ProfileAPI.deleteEducationInAuthor(id);
+      } else if (type === "experiences") {
+        result = await ProfileAPI.deleteExperienceInAuthor(id);
+      }
+
+      dispatch(ActionCreators.succeededToRemoveProfileCvData({ authorId, cvInfoType: type, cvInformation: result }));
+    } catch (err) {
+      dispatch(ActionCreators.failToRemoveProfileCvData());
+      alertToast({
+        type: "error",
+        message: `Had an error to delete ${type} data.`,
+      });
+    }
+  };
+}
+
+export function updateAuthorCvInfo(
+  type: keyof CVInfoType,
+  authorId: number,
+  params: AwardParams | EducationParams | ExperienceParams
+) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch(ActionCreators.startToUpdateProfileCvData({ CVType: type }));
+    let result: any;
+    if (type === "awards") {
+      result = await ProfileAPI.updateAwardInAuthor(params as AwardParams);
+    } else if (type === "educations") {
+      result = await ProfileAPI.updateEducationInAuthor(params as EducationParams);
+    } else if (type === "experiences") {
+      result = await ProfileAPI.updateExperienceInAuthor(params as ExperienceParams);
+    }
+
+    dispatch(ActionCreators.succeededToUpdateProfileCvData({ authorId, cvInfoType: type, cvInformation: result }));
   };
 }
 

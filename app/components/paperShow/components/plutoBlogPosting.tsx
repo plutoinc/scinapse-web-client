@@ -60,6 +60,7 @@ class PlutoBlogPosting extends React.PureComponent<PlutoBlogPostingProps, PlutoB
           href={BlogList.link}
           className={styles.postingTitle}
           target="_blank"
+          rel="noopener"
           onClick={() => {
             this.handleGaEvent(BlogList.ogTitle || "");
             this.handleClickLink(BlogList.link);
@@ -71,6 +72,7 @@ class PlutoBlogPosting extends React.PureComponent<PlutoBlogPostingProps, PlutoB
           href={BlogList.link}
           className={styles.postingTitle}
           target="_blank"
+          rel="noopener"
           onClick={() => {
             this.handleGaEvent(BlogList.ogTitle || "");
             this.handleClickLink(BlogList.link);

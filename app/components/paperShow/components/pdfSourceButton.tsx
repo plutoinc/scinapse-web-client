@@ -3,8 +3,10 @@ import { Paper } from "../../../model/paper";
 import { trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import SourceURLPopover from "../../common/sourceURLPopover";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { checkValidPDFLink } from "../../../helpers/checkValidPDFLink";
+import { getPDFLink } from "../../../helpers/getPDFLink";
+import ScinapseButtonFactory, { ScinapseButtonType } from "../../common/scinapseButton/scinapseButtonFactory";
 const styles = require("./pdfSourceButton.scss");
 
 interface PdfSourceButtonProps {
@@ -12,89 +14,131 @@ interface PdfSourceButtonProps {
   wrapperStyle?: React.CSSProperties;
 }
 
-const handleClickPDFButton = (paper: Paper) => {
-  if (paper) {
-    trackEvent({
-      category: "New Paper Show",
-      action: "Click PDF Download button in PaperContent Section",
-      label: `Link to Paper ID : ${paper.id} download`,
-    });
+interface PdfSourceButtonState {
+  isSourcePopoverOpen: boolean;
+}
 
-    ActionTicketManager.trackTicket({
-      pageType: "paperShow",
-      actionType: "fire",
-      actionArea: "paperDescription",
-      actionTag: "downloadPdf",
-      actionLabel: String(paper.id),
-    });
+class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButtonState> {
+  private sourceButton: HTMLDivElement | null;
+
+  public constructor(props: PdfSourceButtonProps) {
+    super(props);
+
+    this.state = {
+      isSourcePopoverOpen: false,
+    };
   }
-};
 
-const PdfSourceButton = (props: PdfSourceButtonProps) => {
-  const { paper, wrapperStyle } = props;
+  public render() {
+    const { paper } = this.props;
+    const { isSourcePopoverOpen } = this.state;
 
-  if (!paper) {
+    if (!paper) {
+      return null;
+    }
+
+    const pdfSourceRecord = getPDFLink(paper.urls);
+
+    if (paper.urls.length > 0) {
+      const Button = ScinapseButtonFactory(ScinapseButtonType.buttonWithArrow);
+      return (
+        <SourceURLPopover
+          buttonEl={
+            <div ref={el => (this.sourceButton = el)}>
+              <Button
+                isUpArrow={!isSourcePopoverOpen}
+                hasArrow={paper.urls.length > 1}
+                text={pdfSourceRecord ? "Download PDF" : "View in Source"}
+                arrowIconClassName={styles.arrowIcon}
+                className={styles.downloadButton}
+                textWrapperClassName={styles.sourceButtonTextWrapper}
+                linkProps={{
+                  href: pdfSourceRecord ? pdfSourceRecord.url : paper.urls[0].url,
+                  target: "_blank",
+                  rel: "noopener",
+                  style: {
+                    marginLeft: "-8px",
+                    paddingLeft: "8px",
+                  },
+                  className: styles.linkClassName,
+                  onClick: () => {
+                    this.handleClickPDFOrSource(!!pdfSourceRecord);
+                  },
+                }}
+                dropdownBtnProps={{
+                  onClick: this.handleToggleSourceDropdown,
+                  style: {
+                    height: "100%",
+                    marginRight: "-8px",
+                    paddingRight: "8px",
+                  },
+                  className: styles.dropdownBtn,
+                }}
+                leftIconNode={
+                  pdfSourceRecord ? (
+                    <Icon className={styles.pdfIconWrapper} icon="DOWNLOAD" />
+                  ) : (
+                    <Icon icon="EXTERNAL_SOURCE" className={styles.sourceIcon} />
+                  )
+                }
+              />
+            </div>
+          }
+          isOpen={isSourcePopoverOpen}
+          handleCloseFunc={this.handleCloseSourceDropdown}
+          anchorEl={this.sourceButton!}
+          paperSources={paper.urls}
+          pageType="paperShow"
+          paperId={paper.id}
+          actionArea="paperDescription"
+        />
+      );
+    }
+
     return null;
   }
 
-  const pdfSourceRecord = checkValidPDFLink(paper);
+  private handleToggleSourceDropdown = () => {
+    this.setState(prevState => ({ ...prevState, isSourcePopoverOpen: !this.state.isSourcePopoverOpen }));
+  };
 
-  if (!!pdfSourceRecord) {
-    return (
-      <a
-        onClick={() => {
-          handleClickPDFButton(paper);
-        }}
-        style={wrapperStyle}
-        className={styles.downloadButton}
-        href={pdfSourceRecord.url}
-        target="_blank"
-      >
-        <Icon icon="DOWNLOAD" />
-        <span>Download PDF</span>
-      </a>
-    );
-  } else {
-    let source: string;
-    if (paper.doi) {
-      source = `https://doi.org/${paper.doi}`;
-    } else if (paper.urls && paper.urls[0]) {
-      source = paper.urls[0].url;
+  private handleCloseSourceDropdown = (e: any) => {
+    const path = e.path || (e.composedPath && e.composedPath());
+
+    if (path && path.includes(this.sourceButton)) {
+      return;
+    }
+
+    this.setState(prevState => ({ ...prevState, isSourcePopoverOpen: false }));
+  };
+
+  private handleClickPDFOrSource = (isPdf: boolean) => {
+    const { paper } = this.props;
+
+    if (isPdf) {
+      trackEvent({
+        category: "New Paper Show",
+        action: "Click PDF Download button in PaperContent Section",
+        label: `Link to Paper ID : ${paper.id} download`,
+      });
+
+      ActionTicketManager.trackTicket({
+        pageType: "paperShow",
+        actionType: "fire",
+        actionArea: "paperDescription",
+        actionTag: "downloadPdf",
+        actionLabel: String(paper.id),
+      });
     } else {
-      source = "";
+      ActionTicketManager.trackTicket({
+        pageType: "paperShow",
+        actionType: "fire",
+        actionArea: "paperDescription",
+        actionTag: "source",
+        actionLabel: String(paper.id),
+      });
     }
+  };
+}
 
-    if (source && source.length > 0) {
-      return (
-        <a
-          style={wrapperStyle}
-          className={styles.downloadButton}
-          href={source}
-          onClick={() => {
-            trackEvent({
-              category: "New Paper Show",
-              action: "Click View in Source in PaperContent Section",
-              label: `Link to ${source}`,
-            });
-
-            ActionTicketManager.trackTicket({
-              pageType: "paperShow",
-              actionType: "fire",
-              actionArea: "paperDescription",
-              actionTag: "source",
-              actionLabel: String(paper.id),
-            });
-          }}
-          target="_blank"
-        >
-          <Icon icon="EXTERNAL_SOURCE" />
-          <span>View in Source</span>
-        </a>
-      );
-    }
-  }
-
-  return null;
-};
-
-export default withStyles<typeof PdfSourceButton>(styles)(PdfSourceButton);
+export default withStyles<typeof PdfButton>(styles)(PdfButton);

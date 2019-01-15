@@ -45,7 +45,11 @@ describe("ConnectedAuthorShow Component", () => {
       const tree = renderer
         .create(
           <Provider store={mockStore}>
-            <ConnectedAuthorShow />
+            <MemoryRouter initialIndex={0} initialEntries={["/authors/2258681040"]}>
+              <Route path={AUTHOR_SHOW_PATH}>
+                <ConnectedAuthorShow />
+              </Route>
+            </MemoryRouter>
           </Provider>
         )
         .toJSON();

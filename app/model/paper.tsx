@@ -22,7 +22,7 @@ export interface Paper {
   commentCount: number;
   comments: Comment[];
   journal: Journal | null;
-  urls?: PaperSource[];
+  urls: PaperSource[];
   is_author_included?: boolean;
 }
 

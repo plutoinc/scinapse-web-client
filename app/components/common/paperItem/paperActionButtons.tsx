@@ -2,6 +2,8 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import MenuItem from "@material-ui/core/MenuItem";
+import Popper from "@material-ui/core/Popper";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { trackAndOpenLink, trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { withStyles } from "../../../helpers/withStylesHelper";
@@ -9,11 +11,10 @@ import { CurrentUser } from "../../../model/currentUser";
 import { Paper } from "../../../model/paper";
 import EnvChecker from "../../../helpers/envChecker";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Popper from "@material-ui/core/Popper";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
+import SourceURLPopover from "../../common/sourceURLPopover";
 import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
-import { checkValidPDFLink } from "../../../helpers/checkValidPDFLink";
+import { getPDFLink } from "../../../helpers/getPDFLink";
 const styles = require("./paperActionButtons.scss");
 
 interface HandleClickClaim {
@@ -34,9 +35,11 @@ export interface PaperActionButtonsProps {
 export interface PaperActionButtonsState
   extends Readonly<{
       isAdditionalMenuOpen: boolean;
+      isSourceDropdownOpen: boolean;
     }> {}
 
 class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, PaperActionButtonsState> {
+  private sourceButton: HTMLDivElement | null;
   private additionalMenuAnchorEl: HTMLElement | null;
 
   public constructor(props: PaperActionButtonsProps) {
@@ -44,6 +47,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
 
     this.state = {
       isAdditionalMenuOpen: false,
+      isSourceDropdownOpen: false,
     };
   }
 
@@ -52,26 +56,26 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
       <div className={styles.infoList}>
         {this.getRefButton()}
         {this.getCitedButton()}
-
-        {this.getPaperLinkButton()}
+        {this.getPDFButton()}
+        {this.getSourcesButton()}
         {this.getCitationQuoteButton()}
-
         {this.getAddCollectionButton()}
         {this.getMoreButton()}
       </div>
     );
   }
 
-  private getPaperLinkButton = () => {
+  private getPDFButton = () => {
     const { paper, pageType, actionArea } = this.props;
 
-    const pdfSourceRecord = checkValidPDFLink(paper);
+    const pdfSourceRecord = getPDFLink(paper.urls);
 
     if (!!pdfSourceRecord) {
       return (
         <a
           href={pdfSourceRecord.url}
           target="_blank"
+          rel="noopener"
           onClick={() => {
             trackAndOpenLink("searchItemPdfButton");
             ActionTicketManager.trackTicket({
@@ -82,44 +86,74 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
               actionLabel: String(paper.id),
             });
           }}
-          style={!pdfSourceRecord.url ? { display: "none" } : {}}
+          style={!pdfSourceRecord.url ? { display: "none" } : undefined}
           className={styles.pdfButton}
         >
           <Icon className={styles.pdfIconWrapper} icon="DOWNLOAD" />
-          <span>Download Pdf</span>
+          <span>Download PDF</span>
+        </a>
+      );
+    }
+  };
+
+  private getSourcesButton = () => {
+    const { paper, pageType, actionArea } = this.props;
+    const { isSourceDropdownOpen } = this.state;
+
+    if (paper.urls.length === 0) {
+      return null;
+    }
+
+    if (paper.urls.length === 1) {
+      return (
+        <a
+          href={paper.urls[0].url}
+          target="_blank"
+          rel="noopener"
+          className={styles.sourceButton}
+          onClick={this.handleToggleSourceDropdown}
+        >
+          <Icon className={styles.sourceButtonIcon} icon="EXTERNAL_SOURCE" />
+          <span>Source</span>
         </a>
       );
     }
 
-    let paperSource;
-    if (!!paper.doi) {
-      paperSource = `https://doi.org/${paper.doi}`;
-    } else if (paper.urls && paper.urls.length > 0) {
-      paperSource = paper.urls[0].url;
-    } else {
-      return null;
+    return (
+      <SourceURLPopover
+        buttonEl={
+          <div
+            className={styles.sourceButton}
+            ref={el => (this.sourceButton = el)}
+            onClick={this.handleToggleSourceDropdown}
+          >
+            <Icon className={styles.sourceButtonIcon} icon="EXTERNAL_SOURCE" />
+            <span>Source</span>
+          </div>
+        }
+        isOpen={isSourceDropdownOpen}
+        handleCloseFunc={this.handleCloseSourceDropdown}
+        anchorEl={this.sourceButton!}
+        paperSources={paper.urls}
+        pageType={pageType}
+        paperId={paper.id}
+        actionArea={actionArea}
+      />
+    );
+  };
+
+  private handleCloseSourceDropdown = (e: any) => {
+    const path = e.path || (e.composedPath && e.composedPath());
+
+    if (path.includes(this.sourceButton)) {
+      return;
     }
 
-    return (
-      <a
-        onClick={() => {
-          trackAndOpenLink("search-item-source-button");
-          ActionTicketManager.trackTicket({
-            pageType,
-            actionType: "fire",
-            actionArea: actionArea || pageType,
-            actionTag: "source",
-            actionLabel: String(paper.id),
-          });
-        }}
-        className={styles.sourceButton}
-        target="_blank"
-        href={paperSource}
-      >
-        <Icon className={styles.sourceButtonIcon} icon="EXTERNAL_SOURCE" />
-        <span>Source</span>
-      </a>
-    );
+    this.setState(prevState => ({ ...prevState, isSourceDropdownOpen: false }));
+  };
+
+  private handleToggleSourceDropdown = () => {
+    this.setState(prevState => ({ ...prevState, isSourceDropdownOpen: !this.state.isSourceDropdownOpen }));
   };
 
   private getAddCollectionButton = () => {

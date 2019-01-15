@@ -27,11 +27,18 @@
   width: 120px;
   height: 48px;
   text-align: center;
-  box-shadow: inset 0 -3px 0 0 $main_blue0;
   font-size: 14px;
   font-weight: bold;
-  color: $main_blue1;
+  color: $gray6;
   padding: 14px 0;
+  margin-right: 16px;
+  cursor: pointer;
+}
+
+.currentTabNavigationItem {
+  @extend .tabNavigationItem;
+  box-shadow: inset 0 -3px 0 0 $main_blue0;
+  color: $main_blue1;
 }
 
 .sectionHeader {

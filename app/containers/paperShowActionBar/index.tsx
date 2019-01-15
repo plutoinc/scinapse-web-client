@@ -62,7 +62,7 @@ class PaperShowActionBar extends React.PureComponent<PaperShowActionBarProps> {
           }}
         >
           <div>
-            <Icon icon={"CITATION_QUOTE"} />
+            <Icon icon={"CITATION_QUOTE"} className={styles.citeIcon} />
             <span>Cite this paper</span>
           </div>
         </div>
