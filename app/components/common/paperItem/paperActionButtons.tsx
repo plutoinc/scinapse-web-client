@@ -145,7 +145,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   private handleCloseSourceDropdown = (e: any) => {
     const path = e.path || (e.composedPath && e.composedPath());
 
-    if (path.includes(this.sourceButton)) {
+    if (path && path.includes(this.sourceButton)) {
       return;
     }
 
