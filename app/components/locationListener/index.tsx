@@ -75,13 +75,18 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
   }
 
   private trackPageView() {
-    ActionTicketManager.trackTicket({
-      pageType: getCurrentPageType(),
-      actionType: "view",
-      actionArea: null,
-      actionTag: "pageView",
-      actionLabel: null,
-    });
+    if (!EnvChecker.isOnServer()) {
+      const urlArray = window.location.pathname.split("/");
+      const id = parseInt(urlArray[urlArray.length - 1], 10);
+
+      ActionTicketManager.trackTicket({
+        pageType: getCurrentPageType(),
+        actionType: "view",
+        actionArea: null,
+        actionTag: "pageView",
+        actionLabel: !isNaN(id) ? id : null,
+      });
+    }
   }
 }
 

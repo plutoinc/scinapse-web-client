@@ -104,7 +104,7 @@
     "webpack": "4.6.0",
     "webpack-bundle-analyzer": "2.11.1",
     "webpack-cli": "2.0.15",
-    "webpack-dev-server": "3.1.10",
+    "webpack-dev-server": "^3.1.14",
     "webpack-jarvis": "0.2.2"
   },
   "dependencies": {
