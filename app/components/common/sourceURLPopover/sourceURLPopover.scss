@@ -1,7 +1,7 @@
 .sourcesWrapper {
   @include popper-paper(198px);
   max-height: 202px;
-  overflow-y: scroll;
+  overflow-y: auto;
   border-radius: 4px;
 }
 
