@@ -16,6 +16,7 @@ interface EducationItemState {
 }
 
 interface EducationItemProps {
+  validConnection: boolean;
   authorId: number;
   education: Education;
   handleRemoveItem: (cvInfoId: string) => void;
@@ -33,7 +34,7 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
   }
 
   public render() {
-    const { education, handleRemoveItem } = this.props;
+    const { education } = this.props;
     const { isEditMode } = this.state;
     const { id, degree, department, start_date, end_date, is_current, institution_name, institution_id } = education;
     return isEditMode ? (
@@ -73,19 +74,7 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
           <span className={styles.dateContent}>- {end_date ? format(end_date, "MMM YYYY") : "Present"}</span>
         </div>
         <div className={styles.contentWrapper}>
-          <div className={styles.hoverButtonWrapper}>
-            <span className={styles.hoverEditButton} onClick={this.handelToggleEducationEditForm}>
-              <Icon icon="PEN" />
-            </span>
-            <span
-              className={styles.hoverDeleteButton}
-              onClick={() => {
-                handleRemoveItem(id);
-              }}
-            >
-              <Icon icon="X_BUTTON" />
-            </span>
-          </div>
+          {this.getEditItemButtons(id)}
           <span className={styles.affiliationContent}>{institution_name}</span>
           <span className={styles.subAffiliationContent}>
             {department}, {degree}
@@ -94,6 +83,29 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
       </div>
     );
   }
+
+  private getEditItemButtons = (id: string) => {
+    const { validConnection, handleRemoveItem } = this.props;
+
+    if (validConnection) {
+      return (
+        <div className={styles.hoverButtonWrapper}>
+          <span className={styles.hoverEditButton} onClick={this.handelToggleEducationEditForm}>
+            <Icon icon="PEN" />
+          </span>
+          <span
+            className={styles.hoverDeleteButton}
+            onClick={() => {
+              handleRemoveItem(id);
+            }}
+          >
+            <Icon icon="X_BUTTON" />
+          </span>
+        </div>
+      );
+    }
+    return null;
+  };
 
   private handelToggleEducationEditForm = () => {
     const { isEditMode } = this.state;

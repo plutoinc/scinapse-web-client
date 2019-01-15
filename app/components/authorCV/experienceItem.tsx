@@ -16,6 +16,7 @@ interface ExperienceItemState {
 }
 
 interface ExperienceItemProps {
+  validConnection: boolean;
   authorId: number;
   experience: Experience;
   handleRemoveItem: (cvInfoId: string) => void;
@@ -33,7 +34,7 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
   }
 
   public render() {
-    const { experience, handleRemoveItem } = this.props;
+    const { experience } = this.props;
     const { isEditMode } = this.state;
     const {
       id,
@@ -84,19 +85,7 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
           <span className={styles.dateContent}>- {end_date ? format(end_date, "MMM YYYY") : "Present"}</span>
         </div>
         <div className={styles.contentWrapper}>
-          <div className={styles.hoverButtonWrapper}>
-            <span className={styles.hoverEditButton} onClick={this.handelToggleExperienceEditForm}>
-              <Icon icon="PEN" />
-            </span>
-            <span
-              className={styles.hoverDeleteButton}
-              onClick={() => {
-                handleRemoveItem(id);
-              }}
-            >
-              <Icon icon="X_BUTTON" />
-            </span>
-          </div>
+          {this.getEditItemButtons(id)}
           <span className={styles.affiliationContent}>{position}</span>
           <span className={styles.subAffiliationContent}>
             {institution_name}, {department}
@@ -106,6 +95,29 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
       </div>
     );
   }
+
+  private getEditItemButtons = (id: string) => {
+    const { validConnection, handleRemoveItem } = this.props;
+
+    if (validConnection) {
+      return (
+        <div className={styles.hoverButtonWrapper}>
+          <span className={styles.hoverEditButton} onClick={this.handelToggleExperienceEditForm}>
+            <Icon icon="PEN" />
+          </span>
+          <span
+            className={styles.hoverDeleteButton}
+            onClick={() => {
+              handleRemoveItem(id);
+            }}
+          >
+            <Icon icon="X_BUTTON" />
+          </span>
+        </div>
+      );
+    }
+    return null;
+  };
 
   private handelToggleExperienceEditForm = () => {
     const { isEditMode } = this.state;

@@ -87,7 +87,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
           <span className={styles.sectionTitle}>Education</span>
         </div>
         <div className={styles.sectionDescription} />
-        {this.getEducationForm()}
+        {this.isValidConnected() ? this.getEducationForm() : null}
         {this.getEducationList()}
       </div>
     );
@@ -140,6 +140,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
       const educations = profile.educations.map(education => {
         return (
           <EducationItem
+            validConnection={this.isValidConnected()}
             authorId={author.id}
             key={education.id}
             education={education}
@@ -161,7 +162,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
           <span className={styles.sectionTitle}>Experience</span>
         </div>
         <div className={styles.sectionDescription} />
-        {this.getExperienceForm()}
+        {this.isValidConnected() ? this.getExperienceForm() : null}
         {this.getExperienceList()}
       </div>
     );
@@ -215,6 +216,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
       const experiences = profile.experiences.map(experience => {
         return (
           <ExperienceItem
+            validConnection={this.isValidConnected()}
             authorId={author.id}
             key={experience.id}
             experience={experience}
@@ -236,7 +238,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
           <span className={styles.sectionTitle}>Award</span>
         </div>
         <div className={styles.sectionDescription} />
-        {this.getAwardForm()}
+        {this.isValidConnected() ? this.getAwardForm() : null}
         {this.getAwardList()}
       </div>
     );
@@ -275,6 +277,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
       const awards = profile.awards.map(award => {
         return (
           <AwardItem
+            validConnection={this.isValidConnected()}
             authorId={author.id}
             key={award.id}
             award={award}
@@ -286,6 +289,11 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
       return awards;
     }
     return null;
+  };
+
+  private isValidConnected = () => {
+    const { author, currentUser } = this.props;
+    return currentUser.is_author_connected && author.id === currentUser.author_id;
   };
 
   private handleDeleteCVInfo = (cvInfoType: keyof CVInfoType) => (cvInfoId: string) => {

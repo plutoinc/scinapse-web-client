@@ -16,6 +16,7 @@ interface AwardItemState {
 }
 
 interface AwardItemProps {
+  validConnection: boolean;
   authorId: number;
   award: Award;
   handleRemoveItem: (cvInfoId: string) => void;
@@ -33,7 +34,7 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
   }
 
   public render() {
-    const { award, handleRemoveItem } = this.props;
+    const { award } = this.props;
     const { isEditMode } = this.state;
     const { id, title, received_date } = award;
     return isEditMode ? (
@@ -57,25 +58,36 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
           <span className={styles.dateContent}>{format(received_date, "MMM YYYY")}</span>
         </div>
         <div className={styles.contentWrapper}>
-          <div className={styles.hoverButtonWrapper}>
-            <span className={styles.hoverEditButton} onClick={this.handelToggleAwardEditForm}>
-              <Icon icon="PEN" />
-            </span>
-
-            <span
-              className={styles.hoverDeleteButton}
-              onClick={() => {
-                handleRemoveItem(id);
-              }}
-            >
-              <Icon icon="X_BUTTON" />
-            </span>
-          </div>
+          {this.getEditItemButtons(id)}
           <span className={styles.awardTitleContent}>{title}</span>
         </div>
       </div>
     );
   }
+
+  private getEditItemButtons = (id: string) => {
+    const { validConnection, handleRemoveItem } = this.props;
+
+    if (validConnection) {
+      return (
+        <div className={styles.hoverButtonWrapper}>
+          <span className={styles.hoverEditButton} onClick={this.handelToggleAwardEditForm}>
+            <Icon icon="PEN" />
+          </span>
+
+          <span
+            className={styles.hoverDeleteButton}
+            onClick={() => {
+              handleRemoveItem(id);
+            }}
+          >
+            <Icon icon="X_BUTTON" />
+          </span>
+        </div>
+      );
+    }
+    return null;
+  };
 
   private handelToggleAwardEditForm = () => {
     const { isEditMode } = this.state;
