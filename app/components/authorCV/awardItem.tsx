@@ -34,7 +34,7 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
   }
 
   public render() {
-    const { award, handleRemoveItem, validConnection } = this.props;
+    const { award } = this.props;
     const { isEditMode } = this.state;
     const { id, title, received_date } = award;
     return isEditMode ? (

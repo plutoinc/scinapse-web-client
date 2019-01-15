@@ -34,7 +34,7 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
   }
 
   public render() {
-    const { experience, handleRemoveItem } = this.props;
+    const { experience } = this.props;
     const { isEditMode } = this.state;
     const {
       id,

@@ -34,7 +34,7 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
   }
 
   public render() {
-    const { education, handleRemoveItem } = this.props;
+    const { education } = this.props;
     const { isEditMode } = this.state;
     const { id, degree, department, start_date, end_date, is_current, institution_name, institution_id } = education;
     return isEditMode ? (
