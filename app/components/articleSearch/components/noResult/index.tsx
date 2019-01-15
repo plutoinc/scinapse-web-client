@@ -14,7 +14,7 @@ const NoResult = (props: NoResultProps) => {
       <div className={styles.noPapersContainer}>
         <div className={styles.noPapersTitle}>Sorry :(</div>
         <div className={styles.noPapersContent}>
-          <b>Sci-napse</b> can't find any result for <span className={styles.keyword}>{props.searchText}.</span>
+          <b>Scinapse</b> can't find any result for <span className={styles.keyword}>{props.searchText}.</span>
         </div>
       </div>
     </div>

@@ -45,7 +45,7 @@ class Home extends React.PureComponent<HomeProps> {
     return (
       <div className={styles.articleSearchFormContainer}>
         {this.getHelmetNode()}
-        <h1 style={{ display: "none" }}>Sci-napse | Academic search engine for paper</h1>
+        <h1 style={{ display: "none" }}>Scinapse | Academic search engine for paper</h1>
         <div className={styles.searchFormInnerContainer}>
           <div className={styles.searchFormContainer}>
             <div className={styles.formWrapper}>
@@ -55,7 +55,7 @@ class Home extends React.PureComponent<HomeProps> {
                 <img src="https://assets.pluto.network/scinapse/underline%403x.png" className={styles.underlineImage} />
               </div>
               <div className={styles.searchSubTitle}>
-                Sci-napse is a free, nonprofit, Academic search engine <br /> for papers, serviced by{" "}
+                Scinapse is a free, nonprofit, Academic search engine <br /> for papers, serviced by{" "}
                 <a href="https://pluto.network" target="_blank" className={styles.plutoLink} rel="noopener">
                   Pluto Network
                 </a>
