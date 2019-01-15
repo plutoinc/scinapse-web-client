@@ -6,9 +6,9 @@
 }
 
 .sourceItem {
-  @extend %one-line-overflow-ellipsis;
   @extend %popper-item;
   position: relative;
+  white-space: pre;
 
   .sourceIcon {
     @include flex-center-vertical-horizontal(flex);
@@ -33,9 +33,13 @@
     }
   }
 
-  span {
+  .host {
     @extend %one-line-overflow-ellipsis;
     display: inline-block;
     width: 150px;
+
+    &.pdfHost {
+      width: 100px;
+    }
   }
 }
