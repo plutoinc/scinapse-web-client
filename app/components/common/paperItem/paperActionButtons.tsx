@@ -7,13 +7,13 @@ import Icon from "../../../icons";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { CurrentUser } from "../../../model/currentUser";
 import { Paper } from "../../../model/paper";
-import { PaperSource } from "../../../model/paperSource";
 import EnvChecker from "../../../helpers/envChecker";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Popper from "@material-ui/core/Popper";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
+import { checkValidPDFLink } from "../../../helpers/checkValidPDFLink";
 const styles = require("./paperActionButtons.scss");
 
 interface HandleClickClaim {
@@ -65,14 +65,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   private getPaperLinkButton = () => {
     const { paper, pageType, actionArea } = this.props;
 
-    const pdfSourceRecord =
-      paper.urls &&
-      paper.urls.find((paperSource: PaperSource) => {
-        return (
-          paperSource.url.startsWith("https://arxiv.org/pdf/") ||
-          (paperSource.url.startsWith("http") && paperSource.url.endsWith(".pdf"))
-        );
-      });
+    const pdfSourceRecord = checkValidPDFLink(paper);
 
     if (!!pdfSourceRecord) {
       return (

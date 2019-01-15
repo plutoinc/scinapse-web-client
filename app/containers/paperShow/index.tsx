@@ -32,7 +32,8 @@ import { trackEvent } from "../../helpers/handleGA";
 import { getMemoizedPaper, getReferencePapers, getCitedPapers } from "./select";
 import { formulaeToHTMLStr } from "../../helpers/displayFormula";
 import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
-import { getPageHelmet } from "../../helpers/getPageHalmet";
+import Helmet from "react-helmet";
+import { checkValidPDFLink } from "../../helpers/checkValidPDFLink";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
@@ -217,7 +218,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     return (
       <div className={styles.container}>
-        {getPageHelmet(paper, this.makeStructuredData(paper), this.buildPageDescription())}
+        {this.getPageHelmet()}
         <article className={styles.paperShow}>
           <div className={styles.paperShowContent}>
             <div className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.title) }} />
@@ -507,6 +508,47 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     };
 
     return structuredData;
+  };
+
+  private getPageHelmet = () => {
+    const { paper } = this.props;
+    if (paper) {
+      const pdfSourceRecord = checkValidPDFLink(paper);
+
+      const metaTitleContent = pdfSourceRecord ? "[PDF] " + paper.title : paper.title;
+      const fosListContent =
+        paper.fosList && typeof paper.fosList !== "undefined"
+          ? paper.fosList
+              .map(fos => {
+                return fos.fos;
+              })
+              .toString()
+              .replace(/,/gi, ", ")
+          : "";
+
+      return (
+        <Helmet>
+          <title>{metaTitleContent} | Scinapse | Academic search engine for paper}</title>
+          <meta itemProp="name" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
+          <meta name="description" content={this.buildPageDescription()} />
+          <meta name="keyword" content={fosListContent} />
+          <meta name="twitter:description" content={this.buildPageDescription()} />
+          <meta name="twitter:card" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
+          <meta name="twitter:title" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
+          <meta property="og:title" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
+          <meta property="og:type" content="article" />
+          <meta property="og:url" content={`https://scinapse.io/papers/${paper.id}`} />
+          <meta property="og:description" content={this.buildPageDescription()} />
+
+          <div itemScope={true} itemType="http://schema.org/CreativeWork">
+            by <span itemProp="author">{paper.authors[0]}</span> - in <span itemProp="dateCreated">{paper.year}</span>
+            - publisher : <span itemProp="publisher">{paper.journal}</span>
+          </div>
+
+          <script type="application/ld+json">{JSON.stringify(this.makeStructuredData(paper))}</script>
+        </Helmet>
+      );
+    }
   };
 }
 

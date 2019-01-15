@@ -4,6 +4,7 @@ import { trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
+import { checkValidPDFLink } from "../../../helpers/checkValidPDFLink";
 const styles = require("./pdfSourceButton.scss");
 
 interface PdfSourceButtonProps {
@@ -36,20 +37,9 @@ const PdfSourceButton = (props: PdfSourceButtonProps) => {
     return null;
   }
 
-  const pdfSourceRecord =
-    paper.urls &&
-    paper.urls.find(paperSource => {
-      if (paperSource && paperSource.url) {
-        return (
-          paperSource.url.startsWith("https://arxiv.org/pdf/") ||
-          (paperSource.url.startsWith("http") && paperSource.url.endsWith(".pdf"))
-        );
-      } else {
-        return false;
-      }
-    });
+  const pdfSourceRecord = checkValidPDFLink(paper);
 
-  if (pdfSourceRecord) {
+  if (!!pdfSourceRecord) {
     return (
       <a
         onClick={() => {
