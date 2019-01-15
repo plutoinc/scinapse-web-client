@@ -61,7 +61,7 @@ export interface ActionTicketParams {
   actionArea: ActionArea | PageType | null;
   actionType: "fire" | "view";
   actionTag: ActionTagType;
-  actionLabel: string | null;
+  actionLabel: string | number | null;
 }
 
 export interface FinalActionTicket extends ActionTicketParams {
@@ -83,7 +83,7 @@ export default class ActionTicket {
   private actionTag: ActionTagType;
   private actionArea: ActionArea | PageType | null;
   private pageType: PageType;
-  private actionLabel: string | null;
+  private actionLabel: string | number | null;
   private _errorCount = 0;
 
   public constructor(params: ActionTicketParams) {
