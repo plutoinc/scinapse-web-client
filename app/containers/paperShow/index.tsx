@@ -4,7 +4,6 @@ import { stringify } from "qs";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
 import * as classNames from "classnames";
-import { Helmet } from "react-helmet";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
@@ -33,6 +32,8 @@ import { trackEvent } from "../../helpers/handleGA";
 import { getMemoizedPaper, getReferencePapers, getCitedPapers } from "./select";
 import { formulaeToHTMLStr } from "../../helpers/displayFormula";
 import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
+import Helmet from "react-helmet";
+import { getPDFLink } from "../../helpers/getPDFLink";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
@@ -453,9 +454,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { paper } = this.props;
 
     if (!paper) {
-      return "sci-napse";
+      return "Scinapse";
     }
-    const shortAbstract = paper.abstract ? `${paper.abstract.slice(0, 50)} | ` : "";
+
+    const shortAbstract = paper.abstract ? `${paper.abstract.slice(0, 110)} | ` : "";
     const shortAuthors =
       paper.authors && paper.authors.length > 0
         ? `${paper.authors
@@ -466,8 +468,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             .slice(0, 50)}  | `
         : "";
     const shortJournals = paper.journal ? `${paper.journal!.fullTitle!.slice(0, 50)} | ` : "";
-
-    return `${shortAbstract}${shortAuthors}${shortJournals} | sci-napse`;
+    return `${shortAbstract}${shortAuthors}${shortJournals}`;
+    // }
   };
 
   private makeStructuredData = (paper: Paper) => {
@@ -481,16 +483,27 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       };
     });
 
+    const publisherForStructuredData = {
+      "@type": "Organization",
+      name: "Scinapse",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://assets.pluto.network/scinapse/scinapse-logo.png",
+      },
+    };
+
     const structuredData: any = {
       "@context": "http://schema.org",
       "@type": "Article",
       headline: paper.title,
-      image: [],
+      image: ["https://assets.pluto.network/scinapse/scinapse-logo.png"],
       datePublished: paper.year,
+      dateModified: paper.year,
       author: authorsForStructuredData,
       keywords: paper.fosList.map(fos => fos!.fos),
       description: paper.abstract,
       mainEntityOfPage: "https://scinapse.io",
+      publisher: publisherForStructuredData,
     };
 
     return structuredData;
@@ -498,20 +511,38 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private getPageHelmet = () => {
     const { paper } = this.props;
-
     if (paper) {
+      const pdfSourceRecord = getPDFLink(paper.urls);
+
+      const metaTitleContent = pdfSourceRecord ? "[PDF] " + paper.title : paper.title;
+      const fosListContent =
+        paper.fosList && typeof paper.fosList !== "undefined"
+          ? paper.fosList
+              .map(fos => {
+                return fos.fos;
+              })
+              .toString()
+              .replace(/,/gi, ", ")
+          : "";
+
       return (
         <Helmet>
-          <title>{paper.title} | Sci-napse | Academic search engine for paper</title>
-          <meta itemProp="name" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
+          <title>{metaTitleContent} | Scinapse | Academic search engine for paper}</title>
+          <meta itemProp="name" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
           <meta name="description" content={this.buildPageDescription()} />
+          <meta name="keyword" content={fosListContent} />
           <meta name="twitter:description" content={this.buildPageDescription()} />
-          <meta name="twitter:card" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
-          <meta name="twitter:title" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
-          <meta property="og:title" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
+          <meta name="twitter:card" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
+          <meta name="twitter:title" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
+          <meta property="og:title" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
           <meta property="og:type" content="article" />
           <meta property="og:url" content={`https://scinapse.io/papers/${paper.id}`} />
           <meta property="og:description" content={this.buildPageDescription()} />
+
+          <div itemScope={true} itemType="http://schema.org/CreativeWork">
+            by <span itemProp="author">{paper.authors[0]}</span> - in <span itemProp="dateCreated">{paper.year}</span>
+            - publisher : <span itemProp="publisher">{paper.journal}</span>
+          </div>
 
           <script type="application/ld+json">{JSON.stringify(this.makeStructuredData(paper))}</script>
         </Helmet>

@@ -5,6 +5,7 @@ import Icon from "../../../icons";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import SourceURLPopover from "../../common/sourceURLPopover";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
+import { getPDFLink } from "../../../helpers/getPDFLink";
 import ScinapseButtonFactory, { ScinapseButtonType } from "../../common/scinapseButton/scinapseButtonFactory";
 const styles = require("./pdfSourceButton.scss");
 
@@ -36,18 +37,7 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
       return null;
     }
 
-    const pdfSourceRecord =
-      paper.urls &&
-      paper.urls.find(paperSource => {
-        if (paperSource && paperSource.url) {
-          return (
-            paperSource.url.startsWith("https://arxiv.org/pdf/") ||
-            (paperSource.url.startsWith("http") && paperSource.url.endsWith(".pdf"))
-          );
-        } else {
-          return false;
-        }
-      });
+    const pdfSourceRecord = getPDFLink(paper.urls);
 
     if (paper.urls.length > 0) {
       const Button = ScinapseButtonFactory(ScinapseButtonType.buttonWithArrow);

@@ -315,12 +315,12 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
     return (
       <Helmet>
         <title>{author.name}</title>
-        <meta itemProp="name" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
+        <meta itemProp="name" content={`${author.name} | Scinapse | Academic search engine for paper`} />
         <meta name="description" content={description} />
         <meta name="twitter:description" content={description} />
-        <meta name="twitter:card" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
-        <meta name="twitter:title" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
-        <meta property="og:title" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
+        <meta name="twitter:card" content={`${author.name} | Scinapse | Academic search engine for paper`} />
+        <meta name="twitter:title" content={`${author.name} | Scinapse | Academic search engine for paper`} />
+        <meta property="og:title" content={`${author.name} | Scinapse | Academic search engine for paper`} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={`https://scinapse.io/authors/${author.id}`} />
         <meta property="og:description" content={description} />

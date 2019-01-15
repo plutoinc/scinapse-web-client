@@ -9,12 +9,12 @@ import Icon from "../../../icons";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { CurrentUser } from "../../../model/currentUser";
 import { Paper } from "../../../model/paper";
-import { PaperSource } from "../../../model/paperSource";
 import EnvChecker from "../../../helpers/envChecker";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import SourceURLPopover from "../../common/sourceURLPopover";
 import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
+import { getPDFLink } from "../../../helpers/getPDFLink";
 const styles = require("./paperActionButtons.scss");
 
 interface HandleClickClaim {
@@ -68,14 +68,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   private getPDFButton = () => {
     const { paper, pageType, actionArea } = this.props;
 
-    const pdfSourceRecord =
-      paper.urls &&
-      paper.urls.find((paperSource: PaperSource) => {
-        return (
-          paperSource.url.startsWith("https://arxiv.org/pdf/") ||
-          (paperSource.url.startsWith("http") && paperSource.url.endsWith(".pdf"))
-        );
-      });
+    const pdfSourceRecord = getPDFLink(paper.urls);
 
     if (!!pdfSourceRecord) {
       return (

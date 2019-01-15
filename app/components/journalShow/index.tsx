@@ -261,8 +261,8 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
     if (journal) {
       return (
         <Helmet>
-          <title>{journal.fullTitle} | Sci-napse</title>
-          <meta itemProp="name" content={`${journal.fullTitle} | Sci-napse`} />
+          <title>{journal.fullTitle} | Scinapse</title>
+          <meta itemProp="name" content={`${journal.fullTitle} | Scinapse`} />
           {/* tslint:disable-next-line:max-line-length */}
           <meta
             name="description"
@@ -273,9 +273,9 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
             name="twitter:description"
             content={`${journal.fullTitle} | IF: ${journal.impactFactor} | ${journal.paperCount} papers`}
           />
-          <meta name="twitter:card" content={`${journal.fullTitle} | Sci-napse`} />
-          <meta name="twitter:title" content={`${journal.fullTitle} | Sci-napse`} />
-          <meta property="og:title" content={`${journal.fullTitle} | Sci-napse`} />
+          <meta name="twitter:card" content={`${journal.fullTitle} | Scinapse`} />
+          <meta name="twitter:title" content={`${journal.fullTitle} | Scinapse`} />
+          <meta property="og:title" content={`${journal.fullTitle} | Scinapse`} />
           <meta property="og:type" content="article" />
           <meta property="og:url" content={`https://scinapse.io/journals/${journal.id}`} />
           {/* tslint:disable-next-line:max-line-length */}

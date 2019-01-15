@@ -182,7 +182,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
       <Helmet>
         <meta charSet="utf-8" />
         <link rel="shortcut icon" href="https://assets.pluto.network/scinapse/favicon.ico" />
-        <title>Sci-napse | Academic search engine for paper</title>
+        <title>Scinapse | Academic search engine for paper</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
         <meta itemProp="name" content="sci-napse | Academic search engine for paper" />
         <meta
@@ -198,10 +198,10 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         <meta itemProp="image" content="http://assets.pluto.network/og-image.png" />
         <meta name="twitter:card" content="Pluto Network" />
         <meta name="twitter:site" content="@pluto_network" />
-        <meta name="twitter:title" content="sci-napse | Academic search engine for paper" />
+        <meta name="twitter:title" content="Scinapse | Academic search engine for paper" />
         <meta name="twitter:creator" content="@pluto_network" />
         <meta name="twitter:image" content="http://assets.pluto.network/og-image.png" />
-        <meta property="og:title" content="sci-napse | Academic search engine for paper" />
+        <meta property="og:title" content="Scinapse | Academic search engine for paper" />
         <meta property="og:type" content="article" />
         <meta property="og:url" content="https://scinapse.io" />
         <meta property="og:image" content="http://assets.pluto.network/og-image.png" />
