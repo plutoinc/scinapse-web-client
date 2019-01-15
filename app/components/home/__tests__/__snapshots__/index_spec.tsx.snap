@@ -11,7 +11,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
       }
     }
   >
-    Sci-napse | Academic search engine for paper
+    Scinapse | Academic search engine for paper
   </h1>
   <div
     className="searchFormInnerContainer"
@@ -42,7 +42,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
         <div
           className="searchSubTitle"
         >
-          Sci-napse is a free, nonprofit, Academic search engine 
+          Scinapse is a free, nonprofit, Academic search engine 
           <br />
            for papers, serviced by
            
