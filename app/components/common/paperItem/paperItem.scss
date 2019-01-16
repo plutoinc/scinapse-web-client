@@ -61,4 +61,8 @@
   .claimButton {
     display: none !important;
   }
+
+  .contentSection {
+    width: $mobile-content-width;
+  }
 }
