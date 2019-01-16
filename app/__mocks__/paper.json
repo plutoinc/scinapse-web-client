@@ -18,7 +18,7 @@
   "fosCount": 7,
   "urlCount": 8,
   "commentCount": 1,
-  "journal": { "id": 10, "fullTitle": "Nature", "impactFactor": 40.137 },
+  "journal": { "id": 10, "fullTitle": "Nature", "impactFactor": 40.137, "title": "Nature" },
   "authors": [
     { "paperId": 0, "order": 1, "name": "Dmitriy A. Dikin", "organization": "Northwestern University" },
     { "paperId": 0, "order": 2, "name": "Sasha Stankovich", "organization": "Northwestern University" },
