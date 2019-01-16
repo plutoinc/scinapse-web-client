@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 import { push } from "connected-react-router";
 import AuthAPI from "../../../api/auth";
-import { IPostExchangeResult, OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/types/auth";
+import { PostExchangeResult, OAUTH_VENDOR, GetAuthorizeUriResult } from "../../../api/types/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import validateEmail from "../../../helpers/validateEmail";
 import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, SignUpState, SignUpOauthInfo, SignUpErrorCheck } from "./reducer";
@@ -383,7 +383,7 @@ export function signUpWithSocial(
         try {
           const origin = EnvChecker.getOrigin();
           const redirectUri = `${origin}/users/sign_up?vendor=${vendor}`;
-          const authorizeUriData: IGetAuthorizeUriResult = await AuthAPI.getAuthorizeUri({
+          const authorizeUriData: GetAuthorizeUriResult = await AuthAPI.getAuthorizeUri({
             vendor,
             redirectUri,
           });
@@ -565,7 +565,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
       const origin = EnvChecker.getOrigin();
       const redirectUri = `${origin}/users/sign_up?vendor=${vendor}`;
 
-      const postExchangeData: IPostExchangeResult = await AuthAPI.postExchange({
+      const postExchangeData: PostExchangeResult = await AuthAPI.postExchange({
         code,
         vendor,
         redirectUri,

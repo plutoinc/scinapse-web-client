@@ -111,7 +111,7 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
             </span>
           ) : null}
           <Link to={`/journals/${journal.id}`} className={styles.journalName}>
-            {journal.fullTitle}
+            {journal.title}
           </Link>
           {journal.impactFactor ? (
             <span className={styles.bold}>{` [IF: ${
@@ -150,8 +150,8 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
           authors: [...prevState.authors, ...res.data.content],
           isLoading: false,
           currentPage: page,
-          totalPage: res.data.page ? res.data.page.total_pages : 1,
-          totalElements: res.data.page ? res.data.page.total_elements : 0,
+          totalPage: res.data.page ? res.data.page.totalPages : 1,
+          totalElements: res.data.page ? res.data.page.totalElements : 0,
           isEnd: res.data.page ? res.data.page.last : true,
         }));
       } catch (err) {

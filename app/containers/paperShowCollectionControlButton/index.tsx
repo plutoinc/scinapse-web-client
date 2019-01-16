@@ -55,7 +55,7 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
       <span
         className={classNames({
           [styles.currentCollectionTitle]: true,
-          [styles.saved]: props.collection && props.collection.contains_selected,
+          [styles.saved]: props.collection && props.collection.containsSelected,
         })}
         style={{ textAlign: "center" }}
       >
@@ -92,7 +92,7 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
     <span
       className={classNames({
         [styles.currentCollectionTitle]: true,
-        [styles.saved]: props.collection && props.collection.contains_selected,
+        [styles.saved]: props.collection && props.collection.containsSelected,
       })}
       onClick={props.onClick}
     >
@@ -111,7 +111,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
 
     if (myCollections && myCollections.length > 0) {
       const defaultCollection =
-        myCollections.find(collection => collection.is_default) || myCollections[myCollections.length - 1];
+        myCollections.find(collection => collection.isDefault) || myCollections[myCollections.length - 1];
       this.handleSelectCollection(defaultCollection);
     }
   }
@@ -125,7 +125,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       myCollections.length > 0
     ) {
       const defaultCollection =
-        myCollections.find(collection => collection.is_default) || myCollections[myCollections.length - 1];
+        myCollections.find(collection => collection.isDefault) || myCollections[myCollections.length - 1];
       this.handleSelectCollection(defaultCollection);
     }
   }
@@ -133,7 +133,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   public render() {
     const { targetPaperId, selectedCollection, currentUser, myCollectionsState, myCollections } = this.props;
     const isLoadingCollection = currentUser.isLoggingIn || myCollectionsState.isLoadingCollections;
-    const isSelected = selectedCollection && selectedCollection.contains_selected;
+    const isSelected = selectedCollection && selectedCollection.containsSelected;
     let saveButtonBorderRadius: string;
     if (currentUser.isLoggedIn) {
       saveButtonBorderRadius = isSelected ? "0" : "0 4px 4px 0";
@@ -154,7 +154,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           key={collection.id}
         >
           <span className={styles.collectionTitle}>{collection.title}</span>
-          {collection.contains_selected && <Icon icon="BOOKMARK_GRAY" className={styles.bookmarkIcon} />}
+          {collection.containsSelected && <Icon icon="BOOKMARK_GRAY" className={styles.bookmarkIcon} />}
         </li>
       ));
 
@@ -447,7 +447,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       return this.handleUnsignedUser();
     }
 
-    if (selectedCollection && targetPaperId && !selectedCollection.contains_selected) {
+    if (selectedCollection && targetPaperId && !selectedCollection.containsSelected) {
       trackEvent({
         category: "New Paper Show",
         action: "Click save in collection button",
@@ -468,7 +468,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           paperId: targetPaperId,
         })
       );
-    } else if (selectedCollection && targetPaperId && selectedCollection.contains_selected) {
+    } else if (selectedCollection && targetPaperId && selectedCollection.containsSelected) {
       trackEvent({
         category: "New Paper Show",
         action: "Click saved in collection button",
@@ -500,7 +500,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       return <CircularProgress color="inherit" disableShrink={true} size={14} thickness={4} />;
     }
 
-    if (selectedCollection && selectedCollection.contains_selected) {
+    if (selectedCollection && selectedCollection.containsSelected) {
       return (
         <Tooltip
           disableFocusListener={true}

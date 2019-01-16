@@ -1,12 +1,13 @@
 import { CancelToken } from "axios";
 // import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
-import { CommonPaginationResponseV2, RawPageObjectV2 } from "./types/common";
+import { RawPaginationResponseV2, RawPageObjectV2 } from "./types/common";
 import { Paper } from "../model/paper";
 import { RawAggregation } from "../model/aggregation";
 import { RawSuggestion } from "../model/suggestion";
 import { BasePaperAuthor } from "../model/author";
 import { Affiliation } from "../model/affiliation";
+const camelcaseKeys = require("camelcase-keys");
 
 interface SearchParams {
   query: string;
@@ -29,7 +30,7 @@ interface MatchEntities {
   type: "AUTHOR";
 }
 
-export interface RawSearchResult extends CommonPaginationResponseV2<Paper[]> {
+export interface RawSearchResult extends RawPaginationResponseV2<Paper[]> {
   data: {
     content: Paper[];
     page: RawPageObjectV2 | null;
@@ -51,8 +52,9 @@ class SearchAPI extends PlutoAxios {
       },
       cancelToken,
     });
+    const camelizedRes = camelcaseKeys(res.data, { deep: true });
+    const searchRes: RawSearchResult = camelizedRes;
 
-    const searchRes: RawSearchResult = res.data;
     return {
       ...searchRes,
       data: {

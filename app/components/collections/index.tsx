@@ -90,7 +90,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
   private getCollections = (collections: Collection[]) => {
     if (collections && collections.length > 0) {
       const collectionNodes = collections.map(collection => {
-        const parsedUpdatedAt = parse(collection.updated_at);
+        const parsedUpdatedAt = parse(collection.updatedAt);
 
         return (
           <li className={styles.collectionItem} key={`collection_item_${collection.id}`}>
@@ -103,7 +103,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
             <div className={styles.description}>{collection.description}</div>
             <div className={styles.subInformation}>
               <span>
-                <b>{`${collection.paper_count} papers · `}</b>
+                <b>{`${collection.paperCount} papers · `}</b>
               </span>
               <span>{`Last updated `}</span>
               <span>

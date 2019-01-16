@@ -27,7 +27,7 @@ class PublishInfoList extends React.PureComponent<PublishInfoListProps> {
 
     return (
       <div className={styles.publishInfoList}>
-        {journal.fullTitle ? (
+        {journal.title ? (
           <div className={styles.journal}>
             <Icon icon="JOURNAL" />
 
@@ -45,7 +45,7 @@ class PublishInfoList extends React.PureComponent<PublishInfoListProps> {
                 }}
                 className={styles.journalName}
               >
-                {journal.fullTitle}
+                {journal.title}
               </Link>
               {journal.impactFactor ? (
                 <span className={styles.bold}>{` [IF: ${

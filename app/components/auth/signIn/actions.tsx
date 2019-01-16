@@ -8,7 +8,7 @@ import EnvChecker from "../../../helpers/envChecker";
 import { push } from "connected-react-router";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { AxiosError } from "axios";
-import { ISignInWithEmailParams, ISignInResult, OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/types/auth";
+import { SignInWithEmailParams, SignInResult, OAUTH_VENDOR, GetAuthorizeUriResult } from "../../../api/types/auth";
 import { trackDialogView } from "../../../helpers/handleGA";
 
 export function changeEmailInput(email: string) {
@@ -44,7 +44,7 @@ export function onBlurInput() {
   };
 }
 
-export function signInWithEmail(params: ISignInWithEmailParams, isDialog: boolean) {
+export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean) {
   return async (dispatch: Dispatch<Function>) => {
     const { email, password } = params;
 
@@ -68,7 +68,7 @@ export function signInWithEmail(params: ISignInWithEmailParams, isDialog: boolea
     });
 
     try {
-      const signInResult: ISignInResult = await AuthAPI.signInWithEmail({
+      const signInResult: SignInResult = await AuthAPI.signInWithEmail({
         email: params.email,
         password: params.password,
       });
@@ -111,7 +111,7 @@ export async function signInWithSocial(vendor: OAUTH_VENDOR) {
   try {
     const origin = EnvChecker.getOrigin();
     const redirectUri = `${origin}/users/sign_in?vendor=${vendor}`;
-    const authorizeUriData: IGetAuthorizeUriResult = await AuthAPI.getAuthorizeUri({
+    const authorizeUriData: GetAuthorizeUriResult = await AuthAPI.getAuthorizeUri({
       vendor,
       redirectUri,
     });
@@ -139,7 +139,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, oauthRedire
     try {
       const origin = EnvChecker.getOrigin();
       const redirectUri = `${origin}/users/sign_in?vendor=${vendor}`;
-      const signInResult: ISignInResult = await AuthAPI.signInWithSocial({
+      const signInResult: SignInResult = await AuthAPI.signInWithSocial({
         code,
         vendor,
         redirectUri,

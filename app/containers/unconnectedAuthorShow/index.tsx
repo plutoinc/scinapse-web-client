@@ -85,7 +85,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
     );
     let guideContext = null;
 
-    if (isTestMode && !currentUser.is_author_connected) {
+    if (isTestMode && !currentUser.isAuthorConnected) {
       itsMeButton = (
         <TransparentButton
           style={{

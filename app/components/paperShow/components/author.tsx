@@ -24,7 +24,7 @@ const PostAuthor = ({ author }: PostAuthorProps) => {
         <div className={styles.authorName}>
           <span className={styles.name}>
             {author.name}{" "}
-            {author.is_layered ? (
+            {author.isLayered ? (
               <MuiTooltip
                 classes={{ tooltip: styles.verificationTooltip }}
                 title="Verification Author"

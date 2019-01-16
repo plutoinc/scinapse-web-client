@@ -467,7 +467,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             .join(", ")
             .slice(0, 50)}  | `
         : "";
-    const shortJournals = paper.journal ? `${paper.journal!.fullTitle!.slice(0, 50)} | ` : "";
+    const shortJournals = paper.journal ? `${paper.journal!.title!.slice(0, 50)} | ` : "";
     return `${shortAbstract}${shortAuthors}${shortJournals}`;
     // }
   };

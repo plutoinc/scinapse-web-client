@@ -42,7 +42,7 @@ const PaperShowJournalItem: React.SFC<PaperShowJournalItemProps> = props => {
                 });
               }}
             >
-              <div className={styles.journalTitle}>{`${journal.fullTitle || paper.venue}`}</div>
+              <div className={styles.journalTitle}>{`${journal.title || paper.venue}`}</div>
               <div className={styles.journalYear}>
                 Year: <span className={styles.yearNumber}>{paper.year}</span>
               </div>

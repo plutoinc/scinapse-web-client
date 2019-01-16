@@ -59,7 +59,7 @@ export interface PageObjectV2 {
   totalPages: number;
 }
 
-export interface CommonPaginationResponseV2<C> {
+export interface RawPaginationResponseV2<C> {
   data: {
     content: C;
     page: RawPageObjectV2 | null;
@@ -67,7 +67,15 @@ export interface CommonPaginationResponseV2<C> {
   error: CommonError | null;
 }
 
-export interface CommonPaginationDataV2<E> {
+export interface PaginationResponseV2<C> {
+  data: {
+    content: C;
+    page: PageObjectV2 | null;
+  };
+  error: CommonError | null;
+}
+
+export interface NormalizedDataWithPaginationV2<E> {
   entities: E;
   result: number | number[];
   page: PageObjectV2 | null;

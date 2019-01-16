@@ -52,7 +52,7 @@ export function reFetchAuthorShowRelevantData(params: ReFetchAuthorShowRelevantD
       dispatch(ActionCreators.startToLoadAuthorShowPageData());
 
       const isMine =
-        currentUser && currentUser.isLoggedIn && currentUser.is_author_connected && currentUser.author_id === authorId;
+        currentUser && currentUser.isLoggedIn && currentUser.isAuthorConnected && currentUser.authorId === authorId;
       const promiseArr = [];
       promiseArr.push(dispatch(getAuthor(authorId, cancelToken)));
       promiseArr.push(dispatch(getCoAuthors(authorId, cancelToken)));

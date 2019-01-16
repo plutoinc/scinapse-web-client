@@ -2,11 +2,12 @@ import { normalize } from "normalizr";
 import { AxiosResponse, CancelToken } from "axios";
 import PlutoAxios from "./pluto";
 import { Paper, paperSchema } from "../model/paper";
-import { GetPapersParams, GetPapersResult, GetAggregationParams, GetRefOrCitedPapersParams } from "./types/paper";
-import { PaginationResponse, CommonPaginationResponsePart, CommonPaginationResponseV2 } from "./types/common";
+import { GetAggregationParams, GetRefOrCitedPapersParams } from "./types/paper";
+import { CommonPaginationResponsePart, PaginationResponseV2 } from "./types/common";
 import { RawAggregation, AggregationData } from "../model/aggregation";
 import { AvailableCitationType } from "../containers/paperShow/records";
 import { PaperAuthor } from "../model/author";
+const camelcaseKeys = require("camelcase-keys");
 
 interface GetRefOrCitedPapersBasicParams {
   size: number;
@@ -69,9 +70,9 @@ class PaperAPI extends PlutoAxios {
     paperId,
     page,
     cancelToken,
-  }: GetAuthorsOfPaperParams): Promise<CommonPaginationResponseV2<PaperAuthor[]>> {
+  }: GetAuthorsOfPaperParams): Promise<PaginationResponseV2<PaperAuthor[]>> {
     const res = await this.get(`/papers/${paperId}/authors`, { params: { page: page - 1 }, cancelToken });
-    const rawData: CommonPaginationResponseV2<PaperAuthor[]> = res.data;
+    const rawData: PaginationResponseV2<PaperAuthor[]> = camelcaseKeys(res.data, { deep: true });
 
     return rawData;
   }
@@ -86,52 +87,13 @@ class PaperAPI extends PlutoAxios {
     });
 
     const aggregationRawResult: RawAggregation = getAggregationResponse.data.data;
-    const aggregationData = this.setRawAggregationDataWithState(aggregationRawResult);
+    const aggregationData = camelcaseKeys(aggregationRawResult, { deep: true });
 
     return {
       data: aggregationData,
       meta: {
         available: getAggregationResponse.data.meta.available,
       },
-    };
-  }
-
-  // will be deprecated
-  public async getPapers({
-    size = 10,
-    page = 0,
-    sort,
-    query,
-    filter,
-    cancelToken,
-  }: GetPapersParams): Promise<GetPapersResult> {
-    const getPapersResponse: AxiosResponse = await this.get("/papers", {
-      params: {
-        size,
-        page,
-        sort,
-        filter,
-        query,
-      },
-      cancelToken,
-    });
-
-    const getPapersData: PaginationResponse = getPapersResponse.data;
-    const papers: Paper[] = getPapersData.content;
-    const authorSlicedPapers = papers.map(paper => {
-      return { ...paper, authors: paper.authors.slice(0, 10) };
-    });
-
-    return {
-      papers: authorSlicedPapers,
-      first: getPapersData.first,
-      last: getPapersData.last,
-      number: getPapersData.number,
-      numberOfElements: getPapersData.numberOfElements,
-      size: getPapersData.size,
-      sort: getPapersData.sort,
-      totalElements: getPapersData.totalElements,
-      totalPages: getPapersData.totalPages,
     };
   }
 
@@ -149,7 +111,8 @@ class PaperAPI extends PlutoAxios {
       cancelToken,
     });
 
-    const papers = getCitedPapersResponse.data.content as Paper[];
+    const camelizedRes = camelcaseKeys(getCitedPapersResponse.data, { deep: true });
+    const papers = camelizedRes.content as Paper[];
     const authorSlicedPapers = papers.map(paper => {
       return { ...paper, authors: paper.authors.slice(0, 10) };
     });
@@ -159,14 +122,14 @@ class PaperAPI extends PlutoAxios {
     return {
       entities: normalizedPapersData.entities,
       result: normalizedPapersData.result,
-      size: getCitedPapersResponse.data.size,
-      number: getCitedPapersResponse.data.number + 1,
-      sort: getCitedPapersResponse.data.sort,
-      first: getCitedPapersResponse.data.first,
-      last: getCitedPapersResponse.data.last,
-      numberOfElements: getCitedPapersResponse.data.numberOfElements,
-      totalPages: getCitedPapersResponse.data.totalPages,
-      totalElements: getCitedPapersResponse.data.totalElements,
+      size: camelizedRes.size,
+      number: camelizedRes.number + 1,
+      sort: camelizedRes.sort,
+      first: camelizedRes.first,
+      last: camelizedRes.last,
+      numberOfElements: camelizedRes.numberOfElements,
+      totalPages: camelizedRes.totalPages,
+      totalElements: camelizedRes.totalElements,
     };
   }
 
@@ -178,30 +141,28 @@ class PaperAPI extends PlutoAxios {
     cancelToken,
   }: GetRefOrCitedPapersParams): Promise<GetReferenceOrCitedPapersResult> {
     const params: GetRefOrCitedPapersBasicParams = { size, page: page - 1, filter };
-
     const getReferencePapersResponse: AxiosResponse = await this.get(`/papers/${paperId}/references`, {
       params,
       cancelToken,
     });
-
-    const papers = getReferencePapersResponse.data.content as Paper[];
+    const camelizedRes = camelcaseKeys(getReferencePapersResponse.data, { deep: true });
+    const papers = camelizedRes.content as Paper[];
     const authorSlicedPapers = papers.map(paper => {
       return { ...paper, authors: paper.authors.slice(0, 10) };
     });
-
     const normalizedPapersData = normalize(authorSlicedPapers, [paperSchema]);
 
     return {
       entities: normalizedPapersData.entities,
       result: normalizedPapersData.result,
-      size: getReferencePapersResponse.data.size,
-      number: getReferencePapersResponse.data.number + 1,
-      sort: getReferencePapersResponse.data.sort,
-      first: getReferencePapersResponse.data.first,
-      last: getReferencePapersResponse.data.last,
-      numberOfElements: getReferencePapersResponse.data.numberOfElements,
-      totalPages: getReferencePapersResponse.data.totalPages,
-      totalElements: getReferencePapersResponse.data.totalElements,
+      size: camelizedRes.size,
+      number: camelizedRes.number + 1,
+      sort: camelizedRes.sort,
+      first: camelizedRes.first,
+      last: camelizedRes.last,
+      numberOfElements: camelizedRes.numberOfElements,
+      totalPages: camelizedRes.totalPages,
+      totalElements: camelizedRes.totalElements,
     };
   }
 
@@ -214,12 +175,10 @@ class PaperAPI extends PlutoAxios {
     const getPaperResponse = await this.get(`/papers/${params.paperId}`, {
       cancelToken: params.cancelToken,
     });
-    const paper: Paper = getPaperResponse.data;
+    const camelizedRes = camelcaseKeys(getPaperResponse.data, { deep: true });
+    const paper: Paper = camelizedRes;
     const authorSlicedPaper = { ...paper, authors: paper.authors.slice(0, 10) };
-
-    const normalizedData = normalize(authorSlicedPaper, paperSchema);
-
-    return normalizedData;
+    return normalize(authorSlicedPaper, paperSchema);
   }
 
   public async getRelatedPapers(
@@ -231,14 +190,13 @@ class PaperAPI extends PlutoAxios {
     const getPapersResponse = await this.get(`/papers/${params.paperId}/related`, {
       cancelToken: params.cancelToken,
     });
-    const rawPapers: Paper[] = getPapersResponse.data.data;
+    const camelizedRes = camelcaseKeys(getPapersResponse.data, { deep: true });
+    const rawPapers: Paper[] = camelizedRes.data;
     const authorSlicedPapers = rawPapers.map(paper => {
       return { ...paper, authors: paper.authors.slice(0, 10) };
     });
 
-    const normalizedData = normalize(authorSlicedPapers, [paperSchema]);
-
-    return normalizedData;
+    return normalize(authorSlicedPapers, [paperSchema]);
   }
 
   public async getOtherPapersFromAuthor(
@@ -250,7 +208,8 @@ class PaperAPI extends PlutoAxios {
     const getPapersResponse = await this.get(`/papers/${params.paperId}/authors/${params.authorId}/related`, {
       cancelToken: params.cancelToken,
     });
-    const rawPapers: Paper[] = getPapersResponse.data.data;
+    const camelizedRes = camelcaseKeys(getPapersResponse.data, { deep: true });
+    const rawPapers: Paper[] = camelizedRes.data;
     const authorSlicedPapers = rawPapers.map(paper => {
       return { ...paper, authors: paper.authors.slice(0, 10) };
     });
@@ -266,19 +225,7 @@ class PaperAPI extends PlutoAxios {
 
     const rawResult: GetCitationTextRawResult = res.data.data;
 
-    return {
-      citationText: rawResult.citation_text || "",
-      format: rawResult.format || "",
-    };
-  }
-
-  private setRawAggregationDataWithState(rawAggregationResult: RawAggregation): AggregationData {
-    return {
-      journals: rawAggregationResult.journals,
-      fosList: rawAggregationResult.fos_list,
-      impactFactors: rawAggregationResult.impact_factors,
-      years: rawAggregationResult.years,
-    };
+    return camelcaseKeys(rawResult, { deep: true });
   }
 }
 

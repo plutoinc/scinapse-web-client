@@ -29,12 +29,12 @@ export interface FilterContainerProps {
 interface RangeSet {
   from: number;
   to: number;
-  doc_count: number;
+  docCount: number;
 }
 
 interface YearSet {
   year: number;
-  doc_count: number;
+  docCount: number;
 }
 
 interface CalculateIFCountParams {
@@ -58,7 +58,7 @@ function calculateIFCount({ rangeSetList, minIF, maxIF }: CalculateIFCountParams
   });
 
   return targetList.reduce((a, b) => {
-    return a! + b!.doc_count;
+    return a! + b!.docCount;
   }, 0);
 }
 
@@ -68,7 +68,7 @@ function calculateYearsCount({ rangeSetList, minYear }: CalculateYearsCountParam
   });
 
   return targetList.reduce((a, b) => {
-    return a! + b!.doc_count;
+    return a! + b!.docCount;
   }, 0);
 }
 
@@ -81,7 +81,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
   const overallFieldData = articleSearchState.aggregationData
     ? articleSearchState.aggregationData.years.find(year => year.year === null)
     : null;
-  const paperCountOfAllFilter = overallFieldData ? overallFieldData.doc_count : 0;
+  const paperCountOfAllFilter = overallFieldData ? overallFieldData.docCount : 0;
 
   const yearRangeList = articleSearchState.aggregationData ? articleSearchState.aggregationData.years : [];
 
@@ -251,7 +251,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
   const overallFieldData = articleSearchState.aggregationData
     ? articleSearchState.aggregationData.impactFactors.find(IF => IF.from === null && IF.to === null)
     : null;
-  const paperCountOfAllFilter = overallFieldData ? overallFieldData.doc_count : 0;
+  const paperCountOfAllFilter = overallFieldData ? overallFieldData.docCount : 0;
   const IFRange = articleSearchState.aggregationData
     ? (articleSearchState.aggregationData.impactFactors as RangeSet[])
     : [];
@@ -454,7 +454,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
           checked={alreadyHasFOSInFilter}
         />
         <span className={styles.linkTitle}>{fos!.name}</span>
-        <span className={styles.countBox}>{`(${formatNumber(fos!.doc_count)})`}</span>
+        <span className={styles.countBox}>{`(${formatNumber(fos!.docCount)})`}</span>
       </Link>
     );
   });
@@ -538,7 +538,7 @@ function getJournalFilter(props: FilterContainerProps) {
           checked={alreadyHasJournalInFilter}
         />
         <span className={styles.linkTitle}>{journal!.title}</span>
-        <span className={styles.countBox}>{`(${formatNumber(journal!.doc_count)})`}</span>
+        <span className={styles.countBox}>{`(${formatNumber(journal!.docCount)})`}</span>
       </Link>
     );
   });

@@ -98,7 +98,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
         </div>
       );
     } else if (collection) {
-      const parsedUpdatedAt = parse(collection.updated_at);
+      const parsedUpdatedAt = parse(collection.updatedAt);
 
       return (
         <div>
@@ -113,7 +113,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                   <div className={styles.description}>{collection.description}</div>
                   <div className={styles.infoWrapper}>
                     <span>Created by</span>
-                    <strong>{` ${collection.created_by.firstName} ${collection.created_by.lastName || ""} · `}</strong>
+                    <strong>{` ${collection.createdBy.firstName} ${collection.createdBy.lastName || ""} · `}</strong>
                     <span>{`Last updated `}</span>
                     <strong>{`${distanceInWordsToNow(parsedUpdatedAt)} `}</strong>
                     <span>ago</span>
@@ -129,7 +129,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                   <div className={styles.header}>
                     <div className={styles.listTitle}>
                       <span>{`Papers `}</span>
-                      <span className={styles.paperCount}>{collection.paper_count}</span>
+                      <span className={styles.paperCount}>{collection.paperCount}</span>
                     </div>
                   </div>
                   <div>{this.getPaperList()}</div>
@@ -149,7 +149,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   private getCollectionControlBtns = () => {
     const { currentUser, collection } = this.props;
 
-    if (collection && currentUser.isLoggedIn && collection.created_by.id === currentUser.id && !collection.is_default) {
+    if (collection && currentUser.isLoggedIn && collection.createdBy.id === currentUser.id && !collection.isDefault) {
       return (
         <div>
           <button
@@ -187,13 +187,13 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
           <meta itemProp="name" content={`${collection.title} | Scinapse`} />
           <meta
             name="description"
-            content={`${collection.created_by.firstName} ${collection.created_by.lastName || ""}'s ${
+            content={`${collection.createdBy.firstName} ${collection.createdBy.lastName || ""}'s ${
               collection.title
             } collection`}
           />
           <meta
             name="twitter:description"
-            content={`${collection.created_by.firstName} ${collection.created_by.lastName || ""}'s ${
+            content={`${collection.createdBy.firstName} ${collection.createdBy.lastName || ""}'s ${
               collection.title
             } collection`}
           />
@@ -204,7 +204,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
           <meta property="og:url" content={`https://scinapse.io/collections/${collection.id}`} />
           <meta
             property="og:description"
-            content={`${collection.created_by.firstName} ${collection.created_by.lastName || ""}'s ${
+            content={`${collection.createdBy.firstName} ${collection.createdBy.lastName || ""}'s ${
               collection.title
             } collection`}
           />
@@ -224,7 +224,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
               pageType="collectionShow"
               paperNote={paper.note ? paper.note : ""}
               paper={paper.paper}
-              key={paper.paper_id}
+              key={paper.paperId}
             />
           );
         }

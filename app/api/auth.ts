@@ -3,46 +3,47 @@ import { Member } from "../model/member";
 import {
   SignUpWithEmailParams,
   SignUpWithSocialParams,
-  ISignInWithEmailParams,
-  ISignInResult,
-  ISignInWithSocialParams,
-  ISignInData,
-  IGetAuthorizeUriParams,
-  IPostExchangeParams,
-  IGetAuthorizeUriResult,
-  IPostExchangeResult,
-  IVerifyEmailResult,
-  ICheckDuplicatedEmailResult,
+  SignInWithEmailParams,
+  SignInResult,
+  SignInWithSocialParams,
+  SignInData,
+  GetAuthorizeUriParams,
+  PostExchangeParams,
+  GetAuthorizeUriResult,
+  PostExchangeResult,
+  VerifyEmailResult,
+  CheckDuplicatedEmailResult,
 } from "./types/auth";
+const camelcaseKeys = require("camelcase-keys");
 
 class AuthAPI extends PlutoAxios {
   public async signUpWithEmail(userInfo: SignUpWithEmailParams): Promise<Member> {
     const signUpWithEmailResponse = await this.post("/members", userInfo);
-    return signUpWithEmailResponse.data;
+    return camelcaseKeys(signUpWithEmailResponse.data, { deep: true });
   }
 
   public async signUpWithSocial(userInfo: SignUpWithSocialParams): Promise<Member> {
     const signUpWithSocialResponse = await this.post("/members/oauth", userInfo);
-    return signUpWithSocialResponse.data;
+    return camelcaseKeys(signUpWithSocialResponse.data, { deep: true });
   }
 
-  public async signInWithEmail(userInfo: ISignInWithEmailParams): Promise<ISignInResult> {
+  public async signInWithEmail(userInfo: SignInWithEmailParams): Promise<SignInResult> {
     const signInWithEmailResponse = await this.post("/auth/login", {
       email: userInfo.email,
       password: userInfo.password,
     });
-    const signInData: ISignInData = signInWithEmailResponse.data;
-    return signInData;
+    const signInData: SignInData = signInWithEmailResponse.data;
+    return camelcaseKeys(signInData, { deep: true });
   }
 
-  public async signInWithSocial(exchangeData: ISignInWithSocialParams): Promise<ISignInResult> {
+  public async signInWithSocial(exchangeData: SignInWithSocialParams): Promise<SignInResult> {
     const signInWithSocialResponse = await this.post("/auth/oauth/login", {
       code: exchangeData.code,
       redirectUri: exchangeData.redirectUri,
       vendor: exchangeData.vendor,
     });
-    const signInData: ISignInData = signInWithSocialResponse.data;
-    return signInData;
+    const signInData: SignInData = signInWithSocialResponse.data;
+    return camelcaseKeys(signInData, { deep: true });
   }
 
   public async refresh() {
@@ -53,7 +54,7 @@ class AuthAPI extends PlutoAxios {
     await this.post("auth/logout");
   }
 
-  public async checkDuplicatedEmail(email: string): Promise<ICheckDuplicatedEmailResult> {
+  public async checkDuplicatedEmail(email: string): Promise<CheckDuplicatedEmailResult> {
     const checkDuplicatedEmailResponse = await this.get("/members/checkDuplication", {
       params: {
         email,
@@ -63,14 +64,14 @@ class AuthAPI extends PlutoAxios {
     return checkDuplicatedEmailResponse.data;
   }
 
-  public async checkLoggedIn(): Promise<ISignInResult> {
+  public async checkLoggedIn(): Promise<SignInResult> {
     const checkLoggedInResponse = await this.get("/auth/login");
-    const checkLoggedInData: ISignInData = checkLoggedInResponse.data;
+    const checkLoggedInData: SignInData = checkLoggedInResponse.data;
 
-    return checkLoggedInData;
+    return camelcaseKeys(checkLoggedInData, { deep: true });
   }
 
-  public async getAuthorizeUri({ vendor, redirectUri }: IGetAuthorizeUriParams): Promise<IGetAuthorizeUriResult> {
+  public async getAuthorizeUri({ vendor, redirectUri }: GetAuthorizeUriParams): Promise<GetAuthorizeUriResult> {
     const getAuthorizeUriResponse = await this.get("/auth/oauth/authorize-uri", {
       params: {
         vendor,
@@ -81,17 +82,17 @@ class AuthAPI extends PlutoAxios {
     return getAuthorizeUriResponse.data;
   }
 
-  public async postExchange({ code, redirectUri, vendor }: IPostExchangeParams): Promise<IPostExchangeResult> {
+  public async postExchange({ code, redirectUri, vendor }: PostExchangeParams): Promise<PostExchangeResult> {
     const postExchangeResponse = await this.post("/auth/oauth/exchange", {
       code,
       redirectUri,
       vendor,
     });
 
-    return postExchangeResponse.data;
+    return camelcaseKeys(postExchangeResponse.data, { deep: true });
   }
 
-  public async verifyToken(token: string): Promise<IVerifyEmailResult> {
+  public async verifyToken(token: string): Promise<VerifyEmailResult> {
     const verifyTokenResponse = await this.post("/email-verification", {
       token,
     });
@@ -99,7 +100,7 @@ class AuthAPI extends PlutoAxios {
     return verifyTokenResponse.data;
   }
 
-  public async resendVerificationEmail(email: string): Promise<IVerifyEmailResult> {
+  public async resendVerificationEmail(email: string): Promise<VerifyEmailResult> {
     const resendVerificationEmailResponse = await this.post("/email-verification/resend", {
       email,
     });

@@ -294,7 +294,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
   private isValidConnected = () => {
     const { author, currentUser } = this.props;
-    return currentUser.is_author_connected && author.id === currentUser.author_id;
+    return currentUser.isAuthorConnected && author.id === currentUser.authorId;
   };
 
   private handleDeleteCVInfo = (cvInfoType: keyof CVInfoType) => (cvInfoId: string) => {

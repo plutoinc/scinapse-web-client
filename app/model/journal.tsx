@@ -4,7 +4,6 @@ import { NewFOS } from "./fos";
 export interface Journal {
   citationCount: number;
   fosList: NewFOS[];
-  fullTitle: string;
   id: number;
   impactFactor: number | null;
   issn: string | null;

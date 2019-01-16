@@ -23,7 +23,7 @@ export interface Paper {
   comments: Comment[];
   journal: Journal | null;
   urls: PaperSource[];
-  is_author_included?: boolean;
+  isAuthorIncluded?: boolean;
 }
 
 export const paperSchema = new schema.Entity("papers", {

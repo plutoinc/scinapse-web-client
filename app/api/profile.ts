@@ -2,7 +2,7 @@ import { CancelToken } from "axios";
 import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
 import { Profile, profileSchema, RawProfile, mapRawProfile, Award, Education, Experience } from "../model/profile";
-import { CommonPaginationResponseV2 } from "./types/common";
+import { RawPaginationResponseV2 } from "./types/common";
 
 export interface CvBaseInfo {
   id?: string | undefined;
@@ -47,7 +47,7 @@ class ProfileAPI extends PlutoAxios {
   public postNewAwardInAuthor = async (authorId: number, params: AwardParams) => {
     const res = await this.post(`/authors/${authorId}/awards`, params);
 
-    const successResponse: CommonPaginationResponseV2<Award> = res.data;
+    const successResponse: RawPaginationResponseV2<Award> = res.data;
 
     return successResponse.data.content;
   };
@@ -60,7 +60,7 @@ class ProfileAPI extends PlutoAxios {
 
     const res = await this.post(`/authors/${authorId}/educations`, finalParams);
 
-    const successResponse: CommonPaginationResponseV2<Education> = res.data;
+    const successResponse: RawPaginationResponseV2<Education> = res.data;
 
     return successResponse.data.content;
   };
@@ -74,7 +74,7 @@ class ProfileAPI extends PlutoAxios {
 
     const res = await this.post(`/authors/${authorId}/experiences`, finalParams);
 
-    const successResponse: CommonPaginationResponseV2<Experience> = res.data;
+    const successResponse: RawPaginationResponseV2<Experience> = res.data;
 
     return successResponse.data.content;
   };
@@ -82,7 +82,7 @@ class ProfileAPI extends PlutoAxios {
   public deleteAwardInAuthor = async (awardId: string) => {
     const res = await this.delete(`/authors/awards/${awardId}`);
 
-    const successResponse: CommonPaginationResponseV2<Experience> = res.data;
+    const successResponse: RawPaginationResponseV2<Experience> = res.data;
 
     return successResponse.data.content;
   };
@@ -90,7 +90,7 @@ class ProfileAPI extends PlutoAxios {
   public deleteEducationInAuthor = async (educationId: string) => {
     const res = await this.delete(`/authors/educations/${educationId}`);
 
-    const successResponse: CommonPaginationResponseV2<Experience> = res.data;
+    const successResponse: RawPaginationResponseV2<Experience> = res.data;
 
     return successResponse.data.content;
   };
@@ -98,7 +98,7 @@ class ProfileAPI extends PlutoAxios {
   public deleteExperienceInAuthor = async (experienceId: string) => {
     const res = await this.delete(`/authors/experiences/${experienceId}`);
 
-    const successResponse: CommonPaginationResponseV2<Experience> = res.data;
+    const successResponse: RawPaginationResponseV2<Experience> = res.data;
 
     return successResponse.data.content;
   };
@@ -106,7 +106,7 @@ class ProfileAPI extends PlutoAxios {
   public updateAwardInAuthor = async (params: AwardParams) => {
     const res = await this.put(`/authors/awards/${params.id}`, params);
 
-    const successResponse: CommonPaginationResponseV2<Award> = res.data;
+    const successResponse: RawPaginationResponseV2<Award> = res.data;
 
     return successResponse.data.content;
   };
@@ -119,7 +119,7 @@ class ProfileAPI extends PlutoAxios {
 
     const res = await this.put(`/authors/educations/${finalParams.id}`, finalParams);
 
-    const successResponse: CommonPaginationResponseV2<Education> = res.data;
+    const successResponse: RawPaginationResponseV2<Education> = res.data;
 
     return successResponse.data.content;
   };
@@ -133,7 +133,7 @@ class ProfileAPI extends PlutoAxios {
 
     const res = await this.put(`/authors/experiences/${finalParams.id}`, finalParams);
 
-    const successResponse: CommonPaginationResponseV2<Experience> = res.data;
+    const successResponse: RawPaginationResponseV2<Experience> = res.data;
 
     return successResponse.data.content;
   };

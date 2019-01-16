@@ -20,12 +20,12 @@ export interface SignUpWithSocialParams {
   };
 }
 
-export interface ISignInWithEmailParams {
+export interface SignInWithEmailParams {
   email: string;
   password: string;
 }
 
-export interface ISignInWithSocialParams {
+export interface SignInWithSocialParams {
   code: string;
   redirectUri: string;
   vendor: OAUTH_VENDOR;
@@ -33,23 +33,23 @@ export interface ISignInWithSocialParams {
 
 export type OAUTH_VENDOR = "ORCID" | "FACEBOOK" | "GOOGLE";
 
-export interface IGetAuthorizeUriParams {
+export interface GetAuthorizeUriParams {
   vendor: OAUTH_VENDOR;
   redirectUri?: string;
 }
 
-export interface IGetAuthorizeUriResult {
+export interface GetAuthorizeUriResult {
   vendor: OAUTH_VENDOR;
   uri: string;
 }
 
-export interface IPostExchangeParams {
+export interface PostExchangeParams {
   vendor: OAUTH_VENDOR;
   code: string;
   redirectUri?: string;
 }
 
-export interface IPostExchangeResult {
+export interface PostExchangeResult {
   vendor: OAUTH_VENDOR;
   oauthId: string;
   userData: {
@@ -60,24 +60,24 @@ export interface IPostExchangeResult {
   connected: boolean;
 }
 
-export interface IVerifyEmailResult {
+export interface VerifyEmailResult {
   success: boolean;
 }
 
-export interface ISignInData {
+export interface SignInData {
   loggedIn: boolean;
   oauthLoggedIn: boolean;
   token: string;
   member: Member;
 }
 
-export interface ISignInResult {
+export interface SignInResult {
   loggedIn: boolean;
   oauthLoggedIn: boolean;
   token: string;
   member: Member | null;
 }
 
-export interface ICheckDuplicatedEmailResult {
+export interface CheckDuplicatedEmailResult {
   duplicated: boolean;
 }

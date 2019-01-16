@@ -2,7 +2,7 @@ import { Dispatch } from "react-redux";
 import { push } from "connected-react-router";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import AuthAPI from "../../../api/auth";
-import { IVerifyEmailResult } from "../../../api/types/auth";
+import { VerifyEmailResult } from "../../../api/types/auth";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { closeDialog } from "../../dialog/actions";
 import { trackDialogView } from "../../../helpers/handleGA";
@@ -14,7 +14,7 @@ export function verifyToken(token: string) {
     });
 
     try {
-      const verifyEmailResult: IVerifyEmailResult = await AuthAPI.verifyToken(token);
+      const verifyEmailResult: VerifyEmailResult = await AuthAPI.verifyToken(token);
 
       if (!verifyEmailResult.success) {
         throw new Error("Server result is failed");
@@ -47,7 +47,7 @@ export function resendVerificationEmail(email: string, isDialog: boolean) {
     });
 
     try {
-      const resendVerificationEmailResult: IVerifyEmailResult = await AuthAPI.resendVerificationEmail(email);
+      const resendVerificationEmailResult: VerifyEmailResult = await AuthAPI.resendVerificationEmail(email);
 
       if (!resendVerificationEmailResult.success) {
         throw new Error("Server result is failed");

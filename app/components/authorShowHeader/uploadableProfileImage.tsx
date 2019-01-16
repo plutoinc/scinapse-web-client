@@ -32,7 +32,7 @@ const CameraBackground: React.SFC = () => {
 class UploadableProfileImage extends React.PureComponent<UploadableProfileImageProps> {
   public render() {
     const { author, currentUser, isLoading } = this.props;
-    const isMine = author.isLayered && currentUser.author_id === author.id;
+    const isMine = author.isLayered && currentUser.authorId === author.id;
 
     if (isLoading) {
       return (
