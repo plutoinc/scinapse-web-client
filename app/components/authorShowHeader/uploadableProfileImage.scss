@@ -105,3 +105,10 @@
     height: 27px;
   }
 }
+
+@media (max-width: $mobile-width) {
+  .profileImgBoxWrapper {
+    margin-top: 0px;
+    margin-right: 24px;
+  }
+}

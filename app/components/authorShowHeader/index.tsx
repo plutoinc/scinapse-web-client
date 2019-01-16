@@ -60,32 +60,12 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
                 <div className={styles.affiliation}>
                   {author.lastKnownAffiliation ? author.lastKnownAffiliation.name || "" : ""}
                 </div>
-                <div className={styles.metricInformation}>
-                  {(author.paperCount || author.paperCount === 0) && (
-                    <div className={styles.metricWrapper}>
-                      <span className={styles.metricValue}>{formatNumber(author.paperCount)}</span>
-                      <span className={styles.metricLabel}>Publications</span>
-                    </div>
-                  )}
-
-                  {(author.hIndex || author.hIndex === 0) && (
-                    <div className={styles.metricWrapper}>
-                      <span className={styles.metricValue}>{formatNumber(author.hIndex)}</span>
-                      <span className={styles.metricLabel}>H-index</span>
-                    </div>
-                  )}
-
-                  {(author.citationCount || author.hIndex === 0) && (
-                    <div className={styles.metricWrapper}>
-                      <span className={styles.metricValue}>{formatNumber(author.citationCount)}</span>
-                      <span className={styles.metricLabel}>Citations</span>
-                    </div>
-                  )}
-                </div>
+                {this.getMetricInformation("pc")}
                 <div className={styles.rightBox}>{rightBoxContent}</div>
                 {guideBubbleSpeech}
               </span>
             </div>
+            {this.getMetricInformation("mobile")}
             {this.getProfileInformation()}
             {navigationContent}
           </div>
@@ -93,6 +73,36 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
       </div>
     );
   }
+
+  private getMetricInformation = (device: string) => {
+    const { author } = this.props;
+    const style = device === "mobile" ? styles.mobileMetricInformation : styles.metricInformation;
+
+    return (
+      <div className={style}>
+        {(author.paperCount || author.paperCount === 0) && (
+          <div className={styles.metricWrapper}>
+            <span className={styles.metricValue}>{formatNumber(author.paperCount)}</span>
+            <span className={styles.metricLabel}>Publications</span>
+          </div>
+        )}
+
+        {(author.hIndex || author.hIndex === 0) && (
+          <div className={styles.metricWrapper}>
+            <span className={styles.metricValue}>{formatNumber(author.hIndex)}</span>
+            <span className={styles.metricLabel}>H-index</span>
+          </div>
+        )}
+
+        {(author.citationCount || author.hIndex === 0) && (
+          <div className={styles.metricWrapper}>
+            <span className={styles.metricValue}>{formatNumber(author.citationCount)}</span>
+            <span className={styles.metricLabel}>Citations</span>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   private getProfileInformation = () => {
     const { author } = this.props;

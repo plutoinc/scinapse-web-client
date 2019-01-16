@@ -296,7 +296,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
         </div>
         <div className={styles.selectedPaperDescription} />
         {this.getSelectedPapers()}
-        <div style={{ display: "flex", justifyContent: "center" }}>{addSelectPublicationButton}</div>
+        <div className={styles.selectedPaperWrapper}>{addSelectPublicationButton}</div>
       </div>
     );
   };

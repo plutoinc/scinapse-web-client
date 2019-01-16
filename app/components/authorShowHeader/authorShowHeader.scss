@@ -81,6 +81,9 @@
 .metricInformation {
   margin-bottom: 24px;
 }
+.mobileMetricInformation {
+  display: none;
+}
 
 .bioSection {
   white-space: pre-wrap;
@@ -152,20 +155,47 @@
     margin-left: 0;
     margin-right: 0;
     padding: 0 10px;
-    .rightBox {
-      display: none;
-    }
   }
 
   .headerBox {
-    padding-top: 28px;
+    padding-top: 24px;
   }
 
   .leftContentWrapper {
-    width: $mobile-content-width;
+    width: $mobile-container-width;
   }
 
   .bioSection {
     margin-bottom: 24px;
+  }
+
+  .mobileMetricInformation {
+    display: inline-block;
+    margin-top: 24px;
+    margin-bottom: 16px;
+
+    .metricWrapper {
+      width: 100px;
+      display: inline-grid;
+      margin-right: 12px;
+    }
+  }
+
+  .contactSection {
+    margin-bottom: 4px;
+    display: block;
+
+    & + & {
+      margin-bottom: 40px;
+    }
+  }
+
+  .externalSource {
+    margin-left: 0 !important;
+  }
+
+  .rightBox,
+  .metricInformation {
+    display: none;
   }
 }

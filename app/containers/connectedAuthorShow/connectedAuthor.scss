@@ -221,6 +221,11 @@
   display: none;
 }
 
+.selectedPaperWrapper {
+  display: flex;
+  justify-content: center;
+}
+
 // Mobile (0~768)
 @media (max-width: $mobile-width) {
   .container {
@@ -228,20 +233,19 @@
     width: $mobile-container-width;
     margin-left: 0;
     margin-right: 0;
-    .rightBox {
-      width: $regular-display-paper-show-rightBox-width;
-    }
-    .rightContentWrapper {
-      display: none;
-    }
   }
+
   .leftContentWrapper {
-    width: $mobile-content-width;
+    width: $mobile-container-width;
     padding: 10px;
   }
+
   .rightBox,
+  .rightContentWrapper,
   .findPaperBtnWrapper,
-  .searchSortWrapper {
+  .searchSortWrapper,
+  .noPaperWrapper,
+  .selectedPaperWrapper {
     display: none;
   }
 }

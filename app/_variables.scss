@@ -111,6 +111,7 @@ $mobile-container-width: 100%;
 $mobile-content-width: calc(#{$mobile-container-width} - #{$mobile-side-margin} * 2);
 $mobile-paper-show-width: 100%;
 $mobile-paper-info-layout-width: 100%;
+$mobile-cv-info-layout-width: calc(#{$mobile-container-width} - 48px * 2);
 // paper show
 $ref-cited-bar-padding: 12px 0;
 // s3 url
