@@ -4,7 +4,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuItem from "@material-ui/core/MenuItem";
 import Popper from "@material-ui/core/Popper";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { trackAndOpenLink, trackEvent } from "../../../helpers/handleGA";
+import { trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { CurrentUser } from "../../../model/currentUser";
@@ -56,8 +56,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
       <div className={styles.infoList}>
         {this.getRefButton()}
         {this.getCitedButton()}
-        {this.getPDFButton()}
-        {this.getSourcesButton()}
+        {this.getPDFSourcesButton()}
         {this.getCitationQuoteButton()}
         {this.getAddCollectionButton()}
         {this.getMoreButton()}
@@ -65,40 +64,22 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
     );
   }
 
-  private getPDFButton = () => {
-    const { paper, pageType, actionArea } = this.props;
-
-    const pdfSourceRecord = getPDFLink(paper.urls);
-
-    if (!!pdfSourceRecord) {
-      return (
-        <a
-          href={pdfSourceRecord.url}
-          target="_blank"
-          rel="noopener"
-          onClick={() => {
-            trackAndOpenLink("searchItemPdfButton");
-            ActionTicketManager.trackTicket({
-              pageType,
-              actionType: "fire",
-              actionArea: actionArea || pageType,
-              actionTag: "downloadPdf",
-              actionLabel: String(paper.id),
-            });
-          }}
-          style={!pdfSourceRecord.url ? { display: "none" } : undefined}
-          className={styles.pdfButton}
-        >
-          <Icon className={styles.pdfIconWrapper} icon="DOWNLOAD" />
-          <span>Download PDF</span>
-        </a>
-      );
-    }
-  };
-
-  private getSourcesButton = () => {
+  private getPDFSourcesButton = () => {
     const { paper, pageType, actionArea } = this.props;
     const { isSourceDropdownOpen } = this.state;
+    const pdfSourceRecord = getPDFLink(paper.urls);
+
+    const buttonContent = pdfSourceRecord ? (
+      <>
+        <Icon className={styles.pdfIconWrapper} icon="DOWNLOAD" />
+        <span>Download PDF</span>
+      </>
+    ) : (
+      <>
+        <Icon className={styles.sourceButtonIcon} icon="EXTERNAL_SOURCE" />
+        <span>Source</span>
+      </>
+    );
 
     if (paper.urls.length === 0) {
       return null;
@@ -111,10 +92,17 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
           target="_blank"
           rel="noopener"
           className={styles.sourceButton}
-          onClick={this.handleToggleSourceDropdown}
+          onClick={() => {
+            ActionTicketManager.trackTicket({
+              pageType,
+              actionType: "fire",
+              actionArea: actionArea || pageType,
+              actionTag: pdfSourceRecord ? "downloadPdf" : "source",
+              actionLabel: String(paper.id),
+            });
+          }}
         >
-          <Icon className={styles.sourceButtonIcon} icon="EXTERNAL_SOURCE" />
-          <span>Source</span>
+          {buttonContent}
         </a>
       );
     }
@@ -127,8 +115,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             ref={el => (this.sourceButton = el)}
             onClick={this.handleToggleSourceDropdown}
           >
-            <Icon className={styles.sourceButtonIcon} icon="EXTERNAL_SOURCE" />
-            <span>Source</span>
+            {buttonContent}
           </div>
         }
         isOpen={isSourceDropdownOpen}
@@ -145,7 +132,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   private handleCloseSourceDropdown = (e: any) => {
     const path = e.path || (e.composedPath && e.composedPath());
 
-    if (path.includes(this.sourceButton)) {
+    if (path && path.includes(this.sourceButton)) {
       return;
     }
 

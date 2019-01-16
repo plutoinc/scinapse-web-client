@@ -7,18 +7,12 @@
   color: $main_blue0;
   line-height: 1.43;
   border-radius: 4px;
-  padding: 0 10px;
-
-  &:active {
-    filter: brightness(95%);
-  }
 
   .arrowIcon {
     @include flex-center-vertical-horizontal(flex);
     width: 24px;
     height: 24px;
     color: $gray4;
-    margin-left: 7px;
 
     svg {
       width: 14px;
@@ -31,6 +25,7 @@
     @include flex-center-vertical-horizontal(inline-flex);
     width: 20px;
     height: 20px;
+    margin-left: 10px;
     margin-right: 4px;
 
     svg {
@@ -47,6 +42,10 @@
 
   &:hover {
     background-color: $gray2;
+  }
+
+  &:active {
+    filter: brightness(95%);
   }
 }
 

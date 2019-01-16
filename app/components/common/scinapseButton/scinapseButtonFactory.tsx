@@ -53,7 +53,6 @@ const ButtonWithArrow: React.SFC<ButtonWithArrowProps> = ({
         <button {...dropdownBtnProps} style={defaultBtnStyle}>
           <span
             style={{
-              width: "27px",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",

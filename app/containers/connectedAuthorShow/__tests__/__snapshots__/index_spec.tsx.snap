@@ -383,29 +383,15 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                     Cited 2909
                   </span>
                 </a>
-                <a
-                  className="pdfButton"
-                  href="https://www.nature.com/articles/nature06016.pdf"
+                <div
+                  className="sourceButton"
                   onClick={[Function]}
-                  rel="noopener"
-                  target="_blank"
                 >
                   <i
                     className="icon pdfIconWrapper"
                   />
                   <span>
                     Download PDF
-                  </span>
-                </a>
-                <div
-                  className="sourceButton"
-                  onClick={[Function]}
-                >
-                  <i
-                    className="icon sourceButtonIcon"
-                  />
-                  <span>
-                    Source
                   </span>
                 </div>
                 <span

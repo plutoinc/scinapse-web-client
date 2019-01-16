@@ -56,10 +56,6 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
                   href: pdfSourceRecord ? pdfSourceRecord.url : paper.urls[0].url,
                   target: "_blank",
                   rel: "noopener",
-                  style: {
-                    marginLeft: "-8px",
-                    paddingLeft: "8px",
-                  },
                   className: styles.linkClassName,
                   onClick: () => {
                     this.handleClickPDFOrSource(!!pdfSourceRecord);
@@ -69,14 +65,13 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
                   onClick: this.handleToggleSourceDropdown,
                   style: {
                     height: "100%",
-                    marginRight: "-8px",
-                    paddingRight: "8px",
+                    width: "36px",
                   },
                   className: styles.dropdownBtn,
                 }}
                 leftIconNode={
                   pdfSourceRecord ? (
-                    <Icon className={styles.pdfIconWrapper} icon="DOWNLOAD" />
+                    <Icon icon="DOWNLOAD" className={styles.pdfIconWrapper} />
                   ) : (
                     <Icon icon="EXTERNAL_SOURCE" className={styles.sourceIcon} />
                   )

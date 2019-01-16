@@ -160,7 +160,7 @@ $openCollectionView-btn-width: 200px;
       &List {
         margin-top: 16px;
         max-height: 324px;
-        overflow-y: scroll;
+        overflow-y: auto;
         ul {
           padding: 0;
           li {

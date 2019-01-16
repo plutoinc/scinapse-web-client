@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as URL from "url";
+import * as classNames from "classnames";
 import Popper from "@material-ui/core/Popper";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { withStyles } from "../../../helpers/withStylesHelper";
@@ -8,6 +9,7 @@ import { trackAndOpenLink } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
 import Icon from "../../../icons";
+import { isPDFLink } from "../../../helpers/getPDFLink";
 const styles = require("./sourceURLPopover.scss");
 
 interface SourceURLPopover {
@@ -22,36 +24,51 @@ interface SourceURLPopover {
 }
 
 const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
-  const sources = props.paperSources.map(url => {
-    if (!url.url) {
-      return;
-    }
+  const sources = props.paperSources
+    .sort((a, _b) => {
+      if (isPDFLink(a.url)) {
+        return -1;
+      }
+      return 0;
+    })
+    .map(url => {
+      if (!url.url) {
+        return;
+      }
+      const urlObj = URL.parse(url.url);
 
-    const urlObj = URL.parse(url.url);
-    return (
-      <a
-        className={styles.sourceItem}
-        onClick={e => {
-          trackAndOpenLink("search-item-source-button");
-          ActionTicketManager.trackTicket({
-            pageType: props.pageType,
-            actionType: "fire",
-            actionArea: props.actionArea || props.pageType,
-            actionTag: "source",
-            actionLabel: String(props.paperId),
-          });
-          props.handleCloseFunc(e);
-        }}
-        target="_blank"
-        rel="noopener"
-        href={url.url}
-        key={url.id}
-      >
-        <span>{urlObj.host}</span>
-        <Icon icon="EXTERNAL_SOURCE" className={styles.sourceIcon} />
-      </a>
-    );
-  });
+      return (
+        <a
+          className={styles.sourceItem}
+          onClick={e => {
+            trackAndOpenLink("search-item-source-button");
+            ActionTicketManager.trackTicket({
+              pageType: props.pageType,
+              actionType: "fire",
+              actionArea: props.actionArea || props.pageType,
+              actionTag: "source",
+              actionLabel: String(props.paperId),
+            });
+            props.handleCloseFunc(e);
+          }}
+          target="_blank"
+          rel="noopener"
+          href={url.url}
+          key={url.id}
+        >
+          {isPDFLink(url.url) && <span>{`[PDF] `}</span>}
+          <span
+            className={classNames({
+              [styles.host]: true,
+              [styles.pdfHost]: isPDFLink(url.url),
+            })}
+          >
+            {urlObj.host}
+          </span>
+          <Icon icon="EXTERNAL_SOURCE" className={styles.sourceIcon} />
+        </a>
+      );
+    });
 
   return (
     <>
