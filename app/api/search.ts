@@ -1,10 +1,10 @@
 import { CancelToken } from "axios";
 // import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
-import { RawPaginationResponseV2, RawPageObjectV2 } from "./types/common";
+import { PaginationResponseV2, PageObjectV2 } from "./types/common";
 import { Paper } from "../model/paper";
-import { RawAggregation } from "../model/aggregation";
-import { RawSuggestion } from "../model/suggestion";
+import { AggregationData } from "../model/aggregation";
+import { Suggestion } from "../model/suggestion";
 import { BasePaperAuthor } from "../model/author";
 import { Affiliation } from "../model/affiliation";
 const camelcaseKeys = require("camelcase-keys");
@@ -18,11 +18,11 @@ interface SearchParams {
 }
 
 interface MatchEntityAuthor extends BasePaperAuthor {
-  last_known_affiliation: Affiliation;
-  paper_count: number;
-  citation_count: number;
-  profile_image_url: string | null;
-  representative_papers: Paper[];
+  lastKnownAffiliation: Affiliation;
+  paperCount: number;
+  citationCount: number;
+  profileImageUrl: string | null;
+  representativePapers: Paper[];
 }
 
 interface MatchEntities {
@@ -30,14 +30,14 @@ interface MatchEntities {
   type: "AUTHOR";
 }
 
-export interface RawSearchResult extends RawPaginationResponseV2<Paper[]> {
+export interface SearchResult extends PaginationResponseV2<Paper[]> {
   data: {
     content: Paper[];
-    page: RawPageObjectV2 | null;
-    aggregation: RawAggregation;
-    matched_entities: MatchEntities[];
-    result_modified: boolean;
-    suggestion: RawSuggestion;
+    page: PageObjectV2 | null;
+    aggregation: AggregationData;
+    matchedEntities: MatchEntities[];
+    resultModified: boolean;
+    suggestion: Suggestion | null;
   };
 }
 
@@ -53,7 +53,7 @@ class SearchAPI extends PlutoAxios {
       cancelToken,
     });
     const camelizedRes = camelcaseKeys(res.data, { deep: true });
-    const searchRes: RawSearchResult = camelizedRes;
+    const searchRes: SearchResult = camelizedRes;
 
     return {
       ...searchRes,

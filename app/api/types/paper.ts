@@ -1,12 +1,6 @@
 import { CancelToken } from "axios";
 import { Paper } from "../../model/paper";
 
-export interface GetAggregationParams {
-  query: string;
-  filter: string;
-  cancelToken: CancelToken;
-}
-
 export interface GetPapersParams {
   sort: string;
   page: number;

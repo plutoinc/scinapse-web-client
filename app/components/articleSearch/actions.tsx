@@ -2,8 +2,7 @@ import { Dispatch } from "redux";
 import axios from "axios";
 import { push } from "connected-react-router";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import { GetPapersParams, GetAggregationParams } from "../../api/types/paper";
-import PaperAPI from "../../api/paper";
+import { GetPapersParams } from "../../api/types/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 import { trackEvent } from "../../helpers/handleGA";
@@ -90,32 +89,6 @@ export function handleSearchPush(searchInput: string) {
           })}`
         )
       );
-    }
-  };
-}
-
-export function getAggregationData(params: GetAggregationParams) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch({
-      type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_AGGREGATION_DATA,
-    });
-
-    try {
-      const fetchResult = await PaperAPI.getAggregation(params);
-
-      dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_AGGREGATION_DATA,
-        payload: {
-          aggregationData: fetchResult.data,
-          available: fetchResult.meta.available,
-        },
-      });
-    } catch (err) {
-      if (!axios.isCancel(err)) {
-        dispatch({
-          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_AGGREGATION_DATA,
-        });
-      }
     }
   };
 }

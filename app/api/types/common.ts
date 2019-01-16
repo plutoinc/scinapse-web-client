@@ -81,15 +81,3 @@ export interface NormalizedDataWithPaginationV2<E> {
   page: PageObjectV2 | null;
   error: CommonError | null;
 }
-
-export function mapRawPageObjectToPageObject(rawPage: RawPageObjectV2): PageObjectV2 {
-  return {
-    size: rawPage.size,
-    page: rawPage.page + 1, // In Scinapse project, page object always start from 1. But index object start from 0.
-    first: rawPage.first,
-    last: rawPage.last,
-    numberOfElements: rawPage.number_of_elements,
-    totalElements: rawPage.total_elements,
-    totalPages: rawPage.total_pages,
-  };
-}

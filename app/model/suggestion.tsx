@@ -5,3 +5,11 @@ export interface RawSuggestion {
   suggest_query: string;
   suggestion: string;
 }
+
+export interface Suggestion {
+  highlighted: string;
+  keyword: string;
+  originalQuery: string;
+  suggestQuery: string;
+  suggestion: string;
+}

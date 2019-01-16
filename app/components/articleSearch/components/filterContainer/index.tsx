@@ -592,10 +592,6 @@ class FilterContainer extends React.PureComponent<FilterContainerProps, {}> {
       return null;
     }
 
-    if (!this.props.articleSearchState.isFilterAvailable) {
-      return <div className={styles.filterContainer}>{getPublicationFilterBox(this.props)}</div>;
-    }
-
     return (
       <div className={styles.filterContainer}>
         {getPublicationFilterBox(this.props)}

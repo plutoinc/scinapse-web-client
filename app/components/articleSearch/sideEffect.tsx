@@ -1,7 +1,6 @@
-import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import PaperSearchQueryFormatter from "../../helpers/papersQueryFormatter";
 import { LoadDataParams } from "../../routes";
-import { fetchSearchPapers, getAggregationData as getAggregation } from "./actions";
+import { fetchSearchPapers } from "./actions";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { GetPapersParams } from "../../api/types/paper";
 
@@ -14,15 +13,6 @@ export async function getSearchData(params: LoadDataParams<null>) {
     const promiseArray: Array<Promise<any>> = [];
 
     promiseArray.push(dispatch(fetchSearchPapers(searchQueryObject)));
-    promiseArray.push(
-      dispatch(
-        getAggregation({
-          query: SafeURIStringHandler.decode(queryParams.query),
-          filter: queryParams.filter,
-          cancelToken: params.cancelToken,
-        })
-      )
-    );
 
     await Promise.all(promiseArray);
 

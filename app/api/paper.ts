@@ -2,9 +2,8 @@ import { normalize } from "normalizr";
 import { AxiosResponse, CancelToken } from "axios";
 import PlutoAxios from "./pluto";
 import { Paper, paperSchema } from "../model/paper";
-import { GetAggregationParams, GetRefOrCitedPapersParams } from "./types/paper";
+import { GetRefOrCitedPapersParams } from "./types/paper";
 import { CommonPaginationResponsePart, PaginationResponseV2 } from "./types/common";
-import { RawAggregation, AggregationData } from "../model/aggregation";
 import { AvailableCitationType } from "../containers/paperShow/records";
 import { PaperAuthor } from "../model/author";
 const camelcaseKeys = require("camelcase-keys");
@@ -41,13 +40,6 @@ export interface GetCitationTextRawResult {
   format: string | null;
 }
 
-interface AggregationFetchingResult {
-  data: AggregationData;
-  meta: {
-    available: boolean;
-  };
-}
-
 export interface GetRelatedPapersParams {
   paperId: number;
   cancelToken: CancelToken;
@@ -75,26 +67,6 @@ class PaperAPI extends PlutoAxios {
     const rawData: PaginationResponseV2<PaperAuthor[]> = camelcaseKeys(res.data, { deep: true });
 
     return rawData;
-  }
-
-  public async getAggregation(params: GetAggregationParams): Promise<AggregationFetchingResult> {
-    const getAggregationResponse: AxiosResponse = await this.get("/papers/aggregate", {
-      params: {
-        filter: params.filter,
-        query: params.query,
-      },
-      cancelToken: params.cancelToken,
-    });
-
-    const aggregationRawResult: RawAggregation = getAggregationResponse.data.data;
-    const aggregationData = camelcaseKeys(aggregationRawResult, { deep: true });
-
-    return {
-      data: aggregationData,
-      meta: {
-        available: getAggregationResponse.data.meta.available,
-      },
-    };
   }
 
   public async getCitedPapers({
