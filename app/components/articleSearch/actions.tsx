@@ -2,12 +2,12 @@ import { Dispatch } from "redux";
 import axios from "axios";
 import { push } from "connected-react-router";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import { GetPapersParams, GetPapersResult, GetAggregationParams } from "../../api/types/paper";
+import { GetPapersParams, GetAggregationParams } from "../../api/types/paper";
 import PaperAPI from "../../api/paper";
-import CompletionAPI from "../../api/completion";
 import alertToast from "../../helpers/makePlutoToastAction";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 import { trackEvent } from "../../helpers/handleGA";
+import SearchAPI from "../../api/search";
 
 export enum FILTER_RANGE_TYPE {
   FROM,
@@ -94,14 +94,6 @@ export function handleSearchPush(searchInput: string) {
   };
 }
 
-function logFailedSearchQuery(stringifiedSearchQuery: string) {
-  trackEvent({
-    category: "Search",
-    action: "Not Found",
-    label: stringifiedSearchQuery,
-  });
-}
-
 export function getAggregationData(params: GetAggregationParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
@@ -142,66 +134,29 @@ export function fetchSearchPapers(params: GetPapersParams) {
     });
 
     try {
-      let papersData: GetPapersResult = await PaperAPI.getPapers(params);
-      const keyword = await dispatch(getSuggestionKeyword(params.query));
-
-      if (papersData.papers.length === 0 && keyword && keyword.suggestion) {
-        logFailedSearchQuery(JSON.stringify(params));
-
-        papersData = await PaperAPI.getPapers({ ...params, query: keyword.suggestion });
-
-        dispatch({
-          type: ACTION_TYPES.ARTICLE_SEARCH_SEARCHED_FROM_SUGGESTION_KEYWORD,
-        });
-      }
-
+      const res = await SearchAPI.search(params);
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS,
         payload: {
-          papers: papersData.papers,
-          nextPage: params.page + 1,
-          isEnd: papersData.last,
-          totalElements: papersData.totalElements,
-          totalPages: papersData.totalPages,
-          numberOfElements: papersData.numberOfElements,
+          papers: res.data.content,
+          nextPage: res.data.page && res.data.page.page + 1,
+          isEnd: res.data.page && res.data.page.last,
+          totalElements: res.data.page && res.data.page.total_elements,
+          totalPages: res.data.page && res.data.page.total_pages,
+          numberOfElements: res.data.page && res.data.page.number_of_elements,
         },
       });
 
-      return papersData.papers;
+      return res.data.content;
     } catch (err) {
       if (!axios.isCancel(err)) {
         console.error(err);
         alertToast({
           type: "error",
-          message: "Temporarily Unavailable",
+          message: "Sorry. Had an error to search articles",
         });
         dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_PAPERS });
       }
-    }
-  };
-}
-
-function getSuggestionKeyword(query: string) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch({
-      type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_SUGGESTION_KEYWORD,
-    });
-
-    try {
-      const keyword = await CompletionAPI.getSuggestionKeyword(query);
-
-      dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_SUGGESTION_KEYWORD,
-        payload: {
-          keyword,
-        },
-      });
-
-      return keyword;
-    } catch (err) {
-      dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_SUGGESTION_KEYWORD,
-      });
     }
   };
 }

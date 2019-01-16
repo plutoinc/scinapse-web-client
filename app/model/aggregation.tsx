@@ -21,7 +21,7 @@ interface RawImpactFactor {
   doc_count: number;
 }
 
-export interface GetAggregationRawResult {
+export interface RawAggregation {
   fos_list: RawAggregationFos[];
   journals: RawAggregationJournal[];
   impact_factors: RawImpactFactor[];

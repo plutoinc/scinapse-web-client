@@ -4,7 +4,7 @@ import PlutoAxios from "./pluto";
 import { Paper, paperSchema } from "../model/paper";
 import { GetPapersParams, GetPapersResult, GetAggregationParams, GetRefOrCitedPapersParams } from "./types/paper";
 import { PaginationResponse, CommonPaginationResponsePart, CommonPaginationResponseV2 } from "./types/common";
-import { GetAggregationRawResult, AggregationData } from "../model/aggregation";
+import { RawAggregation, AggregationData } from "../model/aggregation";
 import { AvailableCitationType } from "../containers/paperShow/records";
 import { PaperAuthor } from "../model/author";
 
@@ -85,7 +85,7 @@ class PaperAPI extends PlutoAxios {
       cancelToken: params.cancelToken,
     });
 
-    const aggregationRawResult: GetAggregationRawResult = getAggregationResponse.data.data;
+    const aggregationRawResult: RawAggregation = getAggregationResponse.data.data;
     const aggregationData = this.setRawAggregationDataWithState(aggregationRawResult);
 
     return {
@@ -272,7 +272,7 @@ class PaperAPI extends PlutoAxios {
     };
   }
 
-  private setRawAggregationDataWithState(rawAggregationResult: GetAggregationRawResult): AggregationData {
+  private setRawAggregationDataWithState(rawAggregationResult: RawAggregation): AggregationData {
     return {
       journals: rawAggregationResult.journals,
       fosList: rawAggregationResult.fos_list,

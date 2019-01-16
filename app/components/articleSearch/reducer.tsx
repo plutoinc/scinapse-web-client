@@ -7,7 +7,7 @@ import {
   FILTER_TYPE_HAS_RANGE,
   FILTER_TYPE_HAS_EXPANDING_OPTION,
 } from "./actions";
-import { SuggestionKeyword } from "../../model/suggestion";
+import { RawSuggestion } from "../../model/suggestion";
 
 export function reducer(
   state: ArticleSearchState = ARTICLE_SEARCH_INITIAL_STATE,
@@ -196,7 +196,7 @@ export function reducer(
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_SUGGESTION_KEYWORD: {
-      const keyword: SuggestionKeyword | null = action.payload.keyword;
+      const keyword: RawSuggestion | null = action.payload.keyword;
 
       if (keyword) {
         return {

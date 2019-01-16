@@ -1,11 +1,14 @@
 import { Affiliation } from "./affiliation";
 
-export interface PaperAuthor {
+export interface BasePaperAuthor {
   id: number;
-  order: number;
   name: string;
-  organization: string;
   is_layered: boolean;
   hindex: number;
+}
+
+export interface PaperAuthor extends BasePaperAuthor {
+  order: number;
+  organization: string;
   affiliation: Affiliation;
 }

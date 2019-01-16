@@ -7,8 +7,8 @@ import { GetPapersParams } from "../../api/types/paper";
 
 export async function getSearchData(params: LoadDataParams<null>) {
   const { queryParams, dispatch } = params;
+
   const searchQueryObject: GetPapersParams = PaperSearchQueryFormatter.makeSearchQueryFromParamsObject(queryParams);
-  searchQueryObject.cancelToken = params.cancelToken;
 
   try {
     const promiseArray: Array<Promise<any>> = [];
