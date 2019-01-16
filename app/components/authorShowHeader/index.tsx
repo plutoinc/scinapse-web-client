@@ -113,7 +113,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
     }
 
     return (
-      <div>
+      <div className={styles.profileInformationSection}>
         <div className={styles.bioSection}>
           <Truncate
             lines={!expanded && 3}

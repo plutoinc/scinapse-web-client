@@ -161,8 +161,16 @@
     padding-top: 24px;
   }
 
+  .nameHeaderBox {
+    min-width: 251px;
+  }
+
   .leftContentWrapper {
     width: $mobile-container-width;
+  }
+
+  .profileInformationSection {
+    margin-bottom: 40px;
   }
 
   .bioSection {
@@ -184,10 +192,6 @@
   .contactSection {
     margin-bottom: 4px;
     display: block;
-
-    & + & {
-      margin-bottom: 40px;
-    }
   }
 
   .externalSource {
