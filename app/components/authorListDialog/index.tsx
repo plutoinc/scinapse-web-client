@@ -147,12 +147,12 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
 
         this.setState(prevState => ({
           ...prevState,
-          authors: [...prevState.authors, ...res.content],
+          authors: [...prevState.authors, ...res.data.content],
           isLoading: false,
           currentPage: page,
-          totalPage: res.page ? res.page.total_pages : 1,
-          totalElements: res.page ? res.page.total_elements : 0,
-          isEnd: res.page ? res.page.last : true,
+          totalPage: res.data.page ? res.data.page.total_pages : 1,
+          totalElements: res.data.page ? res.data.page.total_elements : 0,
+          isEnd: res.data.page ? res.data.page.last : true,
         }));
       } catch (err) {
         if (!axios.isCancel(err)) {

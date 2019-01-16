@@ -69,9 +69,9 @@ class PaperAPI extends PlutoAxios {
     paperId,
     page,
     cancelToken,
-  }: GetAuthorsOfPaperParams): Promise<CommonPaginationResponseV2<PaperAuthor>> {
+  }: GetAuthorsOfPaperParams): Promise<CommonPaginationResponseV2<PaperAuthor[]>> {
     const res = await this.get(`/papers/${paperId}/authors`, { params: { page: page - 1 }, cancelToken });
-    const rawData: CommonPaginationResponseV2<PaperAuthor> = res.data.data;
+    const rawData: CommonPaginationResponseV2<PaperAuthor[]> = res.data;
 
     return rawData;
   }
@@ -96,6 +96,7 @@ class PaperAPI extends PlutoAxios {
     };
   }
 
+  // will be deprecated
   public async getPapers({
     size = 10,
     page = 0,

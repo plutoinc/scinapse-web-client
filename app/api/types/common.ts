@@ -60,8 +60,6 @@ export interface PageObjectV2 {
 }
 
 export interface CommonPaginationResponseV2<C> {
-  content: C[];
-  page: RawPageObjectV2;
   data: {
     content: C;
     page: RawPageObjectV2 | null;
