@@ -1,7 +1,7 @@
 import { CancelToken } from "axios";
 // import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
-import { PaginationResponse, CommonPaginationResponseV2, RawPageObjectV2 } from "./types/common";
+import { CommonPaginationResponseV2, RawPageObjectV2 } from "./types/common";
 import { Paper } from "../model/paper";
 import { RawAggregation } from "../model/aggregation";
 import { RawSuggestion } from "../model/suggestion";
@@ -29,7 +29,7 @@ interface MatchEntities {
   type: "AUTHOR";
 }
 
-interface RawSearchResult extends CommonPaginationResponseV2<Paper[]> {
+export interface RawSearchResult extends CommonPaginationResponseV2<Paper[]> {
   data: {
     content: Paper[];
     page: RawPageObjectV2 | null;
@@ -53,7 +53,16 @@ class SearchAPI extends PlutoAxios {
     });
 
     const searchRes: RawSearchResult = res.data;
-    return searchRes;
+    return {
+      ...searchRes,
+      data: {
+        ...searchRes.data,
+        page: {
+          ...searchRes.data.page,
+          page: searchRes.data.page ? searchRes.data.page.page + 1 : 1,
+        },
+      },
+    };
   }
 }
 

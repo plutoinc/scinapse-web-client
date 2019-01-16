@@ -137,14 +137,7 @@ export function fetchSearchPapers(params: GetPapersParams) {
       const res = await SearchAPI.search(params);
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS,
-        payload: {
-          papers: res.data.content,
-          nextPage: res.data.page && res.data.page.page + 1,
-          isEnd: res.data.page && res.data.page.last,
-          totalElements: res.data.page && res.data.page.total_elements,
-          totalPages: res.data.page && res.data.page.total_pages,
-          numberOfElements: res.data.page && res.data.page.number_of_elements,
-        },
+        payload: res,
       });
 
       return res.data.content;

@@ -8,6 +8,7 @@ import {
   FILTER_TYPE_HAS_EXPANDING_OPTION,
 } from "./actions";
 import { RawSuggestion } from "../../model/suggestion";
+import { RawSearchResult } from "../../api/search";
 
 export function reducer(
   state: ArticleSearchState = ARTICLE_SEARCH_INITIAL_STATE,
@@ -72,16 +73,22 @@ export function reducer(
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS: {
-      return {
-        ...state,
-        isEnd: action.payload.isEnd,
-        page: action.payload.nextPage,
-        totalElements: action.payload.totalElements,
-        totalPages: action.payload.totalPages,
-        isLoading: false,
-        hasError: false,
-        searchItemsToShow: action.payload.papers,
-      };
+      const payload: RawSearchResult = action.payload;
+
+      if (payload.data.page) {
+        return {
+          ...state,
+          isLoading: false,
+          hasError: false,
+          isEnd: payload.data.page.last,
+          page: payload.data.page.page,
+          totalElements: payload.data.page.total_elements,
+          totalPages: payload.data.page.total_pages,
+          searchItemsToShow: payload.data.content,
+        };
+      }
+
+      return state;
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_PAPERS: {
