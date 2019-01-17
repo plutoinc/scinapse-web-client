@@ -91,8 +91,8 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
         queryParams: location.search,
         cancelToken: this.cancelToken.token,
       });
+      this.restoreScroll();
     }
-    this.restoreScroll();
   }
 
   public componentWillUnmount() {
