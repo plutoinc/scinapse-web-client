@@ -41,7 +41,7 @@ class PaperShowActionBar extends React.PureComponent<PaperShowActionBarProps> {
   private getCitationBox = () => {
     const { paper } = this.props;
 
-    if (paper && paper.id) {
+    if (paper && paper.id && paper.doi) {
       return (
         <div
           className={styles.citeButton}
