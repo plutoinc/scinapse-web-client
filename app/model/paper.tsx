@@ -1,5 +1,5 @@
 import { schema } from "normalizr";
-import { Comment, commentSchema } from "./comment";
+import { Comment } from "./comment";
 import { PaperAuthor } from "./author";
 import { PaperSource } from "./paperSource";
 import { Fos } from "./fos";
@@ -27,6 +27,4 @@ export interface Paper {
   isAuthorIncluded?: boolean;
 }
 
-export const paperSchema = new schema.Entity("papers", {
-  comments: [commentSchema],
-});
+export const paperSchema = new schema.Entity("papers");
