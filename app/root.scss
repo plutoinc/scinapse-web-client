@@ -54,12 +54,10 @@ button {
   right: 0;
   bottom: 0;
   background-color: $gray1;
-  opacity: 0.95;
   z-index: 16777271;
-
-  .loadingContentWrapper {
-    margin-top: 10%;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   .loadingMessage {
     margin-top: 35px;
