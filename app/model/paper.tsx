@@ -10,6 +10,7 @@ export interface Paper {
   cognitivePaperId: number;
   title: string;
   year: number;
+  publishedDate: string;
   referenceCount: number;
   citedCount: number;
   lang: string;
