@@ -22,7 +22,6 @@ const browserSpecificSetting = {
       NODE_ENV: "production",
     }),
   ],
-  sideEffects: false,
 };
 
 const webpackOptionsForBrowser = { ...originalWebpackConfig, ...browserSpecificSetting };
