@@ -114,15 +114,15 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
         initialValues={{
           degree: "",
           department: "",
-          is_current: false,
-          institution_name: "",
-          institution_id: null,
-          start_date: "",
-          start_date_year: "",
-          start_date_month: "",
-          end_date: "",
-          end_date_year: "",
-          end_date_month: "",
+          isCurrent: false,
+          institutionName: "",
+          institutionId: null,
+          startDate: "",
+          startDateYear: "",
+          startDateMonth: "",
+          endDate: "",
+          endDateYear: "",
+          endDateMonth: "",
         }}
       />
     ) : (
@@ -191,15 +191,15 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
           department: "",
           description: "",
           position: "",
-          institution_id: null,
-          institution_name: "",
-          is_current: false,
-          start_date: "",
-          start_date_year: "",
-          start_date_month: "",
-          end_date: "",
-          end_date_year: "",
-          end_date_month: "",
+          institutionId: null,
+          institutionName: "",
+          isCurrent: false,
+          startDate: "",
+          startDateYear: "",
+          startDateMonth: "",
+          endDate: "",
+          endDateYear: "",
+          endDateMonth: "",
         }}
       />
     ) : (
@@ -257,9 +257,9 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
         handleSubmitForm={this.handleAddCVInfo("awards")}
         initialValues={{
           title: "",
-          received_date: "",
-          received_date_month: "",
-          received_date_year: "",
+          receivedDate: "",
+          receivedDateMonth: "",
+          receivedDateYear: "",
         }}
       />
     ) : (
@@ -315,27 +315,21 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
     if (cvInfoType === "awards") {
       const awardInfoType = cvInfo as AwardFormState;
-      awardInfoType.received_date = getFormattingDate(
-        awardInfoType.received_date_year,
-        awardInfoType.received_date_month
-      );
+      awardInfoType.receivedDate = getFormattingDate(awardInfoType.receivedDateYear, awardInfoType.receivedDateMonth);
     } else if (cvInfoType === "educations") {
       const educationInfoType = cvInfo as EducationFormState;
-      educationInfoType.start_date = getFormattingDate(
-        educationInfoType.start_date_year,
-        educationInfoType.start_date_month
+      educationInfoType.startDate = getFormattingDate(
+        educationInfoType.startDateYear,
+        educationInfoType.startDateMonth
       );
-      educationInfoType.end_date = getFormattingDate(educationInfoType.end_date_year, educationInfoType.end_date_month);
+      educationInfoType.endDate = getFormattingDate(educationInfoType.endDateYear, educationInfoType.endDateMonth);
     } else if (cvInfoType === "experiences") {
       const experienceInfoType = cvInfo as ExperienceFormState;
-      experienceInfoType.start_date = getFormattingDate(
-        experienceInfoType.start_date_year,
-        experienceInfoType.start_date_month
+      experienceInfoType.startDate = getFormattingDate(
+        experienceInfoType.startDateYear,
+        experienceInfoType.startDateMonth
       );
-      experienceInfoType.end_date = getFormattingDate(
-        experienceInfoType.end_date_year,
-        experienceInfoType.end_date_month
-      );
+      experienceInfoType.endDate = getFormattingDate(experienceInfoType.endDateYear, experienceInfoType.endDateMonth);
     }
 
     try {

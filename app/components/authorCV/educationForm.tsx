@@ -13,10 +13,10 @@ const styles = require("./authorCVForm.scss");
 
 export interface EducationFormState extends CvBaseInfo {
   degree: string;
-  start_date_month: string;
-  start_date_year: string;
-  end_date_month: string;
-  end_date_year: string;
+  startDateMonth: string;
+  startDateYear: string;
+  endDateMonth: string;
+  endDateYear: string;
 }
 
 interface EducationFormProps {
@@ -41,40 +41,40 @@ const validateForm = (values: EducationFormState) => {
     errors.degree = "Minimum length is 1";
   }
 
-  if (!values.institution_name && values.institution_name.length < 2) {
-    errors.institution_name = "Not available institution";
+  if (!values.institutionName && values.institutionName.length < 2) {
+    errors.institutionName = "Not available institution";
   }
 
-  if (!values.start_date_month) {
-    errors.start_date_month = "Please selected valid month";
+  if (!values.startDateMonth) {
+    errors.startDateMonth = "Please selected valid month";
   }
 
-  if (!values.start_date_year) {
-    errors.start_date_month = "Please write valid year (ex. 2010)";
+  if (!values.startDateYear) {
+    errors.startDateMonth = "Please write valid year (ex. 2010)";
   }
 
-  if (!values.is_current && !values.end_date_month) {
-    errors.end_date_month = "Please selected valid month";
+  if (!values.isCurrent && !values.endDateMonth) {
+    errors.endDateMonth = "Please selected valid month";
   }
 
-  if (!values.is_current && !values.end_date_year) {
-    errors.end_date_month = "Please write valid year (ex. 2010)";
+  if (!values.isCurrent && !values.endDateYear) {
+    errors.endDateMonth = "Please write valid year (ex. 2010)";
   }
 
-  if (!values.is_current && values.end_date_month && values.end_date_year) {
-    const startDateStr = getFormattingDate(values.start_date_year, values.start_date_month);
+  if (!values.isCurrent && values.endDateMonth && values.endDateYear) {
+    const startDateStr = getFormattingDate(values.startDateYear, values.startDateMonth);
     const startDate = new Date(startDateStr);
 
-    const endDateStr = getFormattingDate(values.end_date_year, values.end_date_month);
+    const endDateStr = getFormattingDate(values.endDateYear, values.endDateMonth);
     const endDate = new Date(endDateStr);
-    startDate.getTime() - endDate.getTime() > 0 ? (errors.end_date_month = "Select a future date") : "";
+    startDate.getTime() - endDate.getTime() > 0 ? (errors.endDateMonth = "Select a future date") : "";
   }
 
-  if (values.start_date_year && values.start_date_month) {
+  if (values.startDateYear && values.startDateMonth) {
     const currentDate = new Date().getTime();
-    const startDateStr = getFormattingDate(values.start_date_year, values.start_date_month);
+    const startDateStr = getFormattingDate(values.startDateYear, values.startDateMonth);
     const startDate = new Date(startDateStr);
-    currentDate - startDate.getTime() < 0 ? (errors.start_date_month = "Please write before current date") : "";
+    currentDate - startDate.getTime() < 0 ? (errors.startDateMonth = "Please write before current date") : "";
   }
 
   return errors;
@@ -116,15 +116,15 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
               <div className={styles.contentSection}>
                 <div className={styles.formControl}>
                   <div className={styles.inlineInput}>
-                    <label htmlFor="institution_name">Institution</label>
+                    <label htmlFor="institutionName">Institution</label>
                     <Field
-                      name="institution_name"
+                      name="institutionName"
                       type="text"
                       component={AffiliationBox}
                       inputStyle={inputStyle}
                       className={classNames({
                         [styles.inputField]: true,
-                        [styles.errorInputField]: !!errors.institution_name,
+                        [styles.errorInputField]: !!errors.institutionName,
                       })}
                     />
                   </div>
@@ -162,65 +162,65 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                   </div>
                   <div className={styles.dateWrapper}>
                     <div className={styles.startDateInlineInput}>
-                      <label htmlFor="start_date">Time period</label>
+                      <label htmlFor="startDate">Time period</label>
                       <div className={styles.formInputBox}>
                         <div className={styles.dateInputWrapper}>
                           <Field
-                            name="start_date_month"
+                            name="startDateMonth"
                             component={scinapseFormikSelect}
                             placeHolderContent="Month"
-                            defaultValue={values.start_date_month}
+                            defaultValue={values.startDateMonth}
                             inputStyle={inputStyle}
                             children={monthItems}
                             className={classNames({
                               [styles.dateMonthField]: true,
-                              [styles.errorInputField]: !!errors.start_date_month,
+                              [styles.errorInputField]: !!errors.startDateMonth,
                             })}
                           />
                           <Field
-                            name="start_date_year"
+                            name="startDateYear"
                             type="text"
                             placeholder="Year"
                             style={{ color: "#666d7c" }}
                             maxLength="4"
                             className={classNames({
                               [styles.dateYearField]: true,
-                              [styles.errorInputField]: !!errors.start_date_month,
+                              [styles.errorInputField]: !!errors.startDateMonth,
                             })}
                           />
                           <span className={styles.toSyntax}>to</span>
-                          <ErrorMessage name="start_date_month" className={styles.errorMessage} component="div" />
+                          <ErrorMessage name="startDateMonth" className={styles.errorMessage} component="div" />
                         </div>
                       </div>
                     </div>
-                    {!values.is_current ? (
+                    {!values.isCurrent ? (
                       <div className={styles.endDateInlineInput}>
                         <div className={styles.formInputBox}>
                           <div className={styles.dateInputWrapper}>
                             <Field
-                              name="end_date_month"
+                              name="endDateMonth"
                               component={scinapseFormikSelect}
                               placeHolderContent="Month"
-                              defaultValue={values.end_date_month}
+                              defaultValue={values.endDateMonth}
                               inputStyle={inputStyle}
                               children={monthItems}
                               className={classNames({
                                 [styles.dateMonthField]: true,
-                                [styles.errorInputField]: !!errors.end_date_month,
+                                [styles.errorInputField]: !!errors.endDateMonth,
                               })}
                             />
                             <Field
-                              name="end_date_year"
+                              name="endDateYear"
                               type="text"
                               placeholder="Year"
                               style={{ color: "#666d7c" }}
                               maxLength="4"
                               className={classNames({
                                 [styles.dateYearField]: true,
-                                [styles.errorInputField]: !!errors.end_date_month,
+                                [styles.errorInputField]: !!errors.endDateMonth,
                               })}
                             />
-                            <ErrorMessage name="end_date_month" className={styles.errorMessage} component="div" />
+                            <ErrorMessage name="endDateMonth" className={styles.errorMessage} component="div" />
                           </div>
                         </div>
                       </div>
@@ -233,11 +233,11 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                       <Field
                         className={styles.checkBox}
                         component={scinapseFormikCheckbox}
-                        name="is_current"
+                        name="isCurrent"
                         type="checkbox"
-                        checked={initialValues.is_current}
+                        checked={initialValues.isCurrent}
                       />
-                      <label htmlFor="is_current">Currently Doing</label>
+                      <label htmlFor="isCurrent">Currently Doing</label>
                     </div>
                   </div>
 

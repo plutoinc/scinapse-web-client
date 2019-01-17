@@ -36,7 +36,7 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
   public render() {
     const { education } = this.props;
     const { isEditMode } = this.state;
-    const { id, degree, department, start_date, end_date, is_current, institution_name, institution_id } = education;
+    const { id, degree, department, startDate, endDate, isCurrent, institutionName, institutionId } = education;
     return isEditMode ? (
       <EducationForm
         wrapperStyle={{ display: "inline-flex", position: "relative" }}
@@ -56,26 +56,26 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
           id,
           degree,
           department,
-          is_current,
-          institution_id,
-          institution_name,
-          start_date,
-          end_date,
-          start_date_year: start_date.split("-")[0],
-          start_date_month: start_date.split("-")[1],
-          end_date_year: end_date ? end_date.split("-")[0] : "",
-          end_date_month: end_date ? end_date.split("-")[1] : "",
+          isCurrent,
+          institutionId,
+          institutionName,
+          startDate,
+          endDate,
+          startDateYear: startDate.split("-")[0],
+          startDateMonth: startDate.split("-")[1],
+          endDateYear: endDate ? endDate.split("-")[0] : "",
+          endDateMonth: endDate ? endDate.split("-")[1] : "",
         }}
       />
     ) : (
       <div className={styles.itemWrapper}>
         <div className={styles.dateSectionWrapper}>
-          <span className={styles.dateContent}>{format(start_date, "MMM YYYY")}</span>
-          <span className={styles.dateContent}>- {end_date ? format(end_date, "MMM YYYY") : "Present"}</span>
+          <span className={styles.dateContent}>{format(startDate, "MMM YYYY")}</span>
+          <span className={styles.dateContent}>- {endDate ? format(endDate, "MMM YYYY") : "Present"}</span>
         </div>
         <div className={styles.contentWrapper}>
           {this.getEditItemButtons(id)}
-          <span className={styles.affiliationContent}>{institution_name}</span>
+          <span className={styles.affiliationContent}>{institutionName}</span>
           <span className={styles.subAffiliationContent}>
             {department}, {degree}
           </span>
@@ -118,8 +118,8 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
 
     const finalParams = {
       ...params,
-      start_date: getFormattingDate(params.start_date_year, params.start_date_month),
-      end_date: getFormattingDate(params.end_date_year, params.end_date_month),
+      startDate: getFormattingDate(params.startDateYear, params.startDateMonth),
+      endDate: getFormattingDate(params.endDateYear, params.endDateMonth),
     };
 
     try {
@@ -127,7 +127,7 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
         (await dispatch(
           updateAuthorCvInfo("educations", authorId, {
             ...finalParams,
-            end_date: finalParams.is_current ? null : finalParams.end_date,
+            endDate: finalParams.isCurrent ? null : finalParams.endDate,
           })
         ));
       this.handelToggleEducationEditForm();

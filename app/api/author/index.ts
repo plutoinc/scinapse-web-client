@@ -1,17 +1,18 @@
 import { CancelToken } from "axios";
 import { normalize } from "normalizr";
 import PlutoAxios from "../pluto";
-import { RawAuthor, Author, authorSchema, authorListSchema, mapRawAuthor } from "../../model/author/author";
+import { RawAuthor, Author, authorSchema, authorListSchema } from "../../model/author/author";
 import { GetAuthorPapersParams, AuthorPapersResponse, GetAuthorPaperResult } from "./types";
 import { paperSchema, Paper } from "../../model/paper";
 import { RawPaginationResponseV2 } from "../types/common";
+const camelcaseKeys = require("camelcase-keys");
 
 export const DEFAULT_AUTHOR_PAPERS_SIZE = 10;
 
 export interface SimplePaper {
-  paper_id: number;
+  paperId: number;
   title: string;
-  is_representative: boolean;
+  isRepresentative: boolean;
 }
 
 export interface UpdateRepresentativePapersParams {
@@ -54,8 +55,8 @@ class AuthorAPI extends PlutoAxios {
       is_email_hidden: params.isEmailHidden,
     });
     const rawAuthor: RawAuthor = res.data.data.content;
-
-    const normalizedData = normalize(mapRawAuthor(rawAuthor), authorSchema);
+    const camelizedAuthor: Author = camelcaseKeys(rawAuthor, { deep: true });
+    const normalizedData = normalize(camelizedAuthor, authorSchema);
     return normalizedData;
   };
 
@@ -79,7 +80,7 @@ class AuthorAPI extends PlutoAxios {
       cancelToken: params.cancelToken,
     });
 
-    const paperListResult: RawPaginationResponseV2<Paper[]> = res.data;
+    const paperListResult: RawPaginationResponseV2<Paper[]> = camelcaseKeys(res.data, { deep: true });
 
     return paperListResult;
   }
@@ -107,9 +108,10 @@ class AuthorAPI extends PlutoAxios {
       },
       cancelToken: params.cancelToken,
     });
+
     const paperResponse: AuthorPapersResponse = res.data;
     const authorSlicedResult = paperResponse.content.map(rawPaper => {
-      return { ...rawPaper, authors: rawPaper.authors.slice(0, 10) };
+      return camelcaseKeys({ ...rawPaper, authors: rawPaper.authors.slice(0, 10) }, { deep: true });
     });
 
     const normalizedPapersData = normalize(authorSlicedResult, [paperSchema]);
@@ -131,7 +133,7 @@ class AuthorAPI extends PlutoAxios {
   public async getSelectedPapers(authorId: number) {
     const res = await this.get(`/authors/${authorId}/papers/all`);
 
-    const simplePapersResponse: RawPaginationResponseV2<SimplePaper[]> = res.data;
+    const simplePapersResponse: RawPaginationResponseV2<SimplePaper[]> = camelcaseKeys(res.data, { deep: true });
 
     return simplePapersResponse;
   }
@@ -144,9 +146,8 @@ class AuthorAPI extends PlutoAxios {
     result: number;
   }> {
     const res = await this.get(`/authors/${authorId}`, { cancelToken });
-    const rawAuthor: RawAuthor = res.data.data;
-
-    const normalizedData = normalize(mapRawAuthor(rawAuthor), authorSchema);
+    const author: Author = camelcaseKeys(res.data.data, { deep: true });
+    const normalizedData = normalize(author, authorSchema);
     return normalizedData;
   }
 
@@ -165,9 +166,8 @@ class AuthorAPI extends PlutoAxios {
       web_page: params.webPage,
       is_email_hidden: params.isEmailHidden,
     });
-    const rawAuthor: RawAuthor = res.data.data.content;
-
-    const normalizedData = normalize(mapRawAuthor(rawAuthor), authorSchema);
+    const author: Author = camelcaseKeys(res.data.data.content, { deep: true });
+    const normalizedData = normalize(author, authorSchema);
     return normalizedData;
   }
 
@@ -178,7 +178,7 @@ class AuthorAPI extends PlutoAxios {
       },
     });
 
-    return res.data;
+    return camelcaseKeys(res.data, { deep: true });
   }
 
   public async getCoAuthors(
@@ -189,9 +189,9 @@ class AuthorAPI extends PlutoAxios {
     result: number[];
   }> {
     const res = await this.get(`/authors/${authorId}/co-authors`, { cancelToken });
-    const rawAuthors: RawAuthor[] = res.data.data;
+    const authors: Author[] = camelcaseKeys(res.data.data, { deep: true });
 
-    const authorsArray = rawAuthors.slice(0, 10).map(rawAuthor => mapRawAuthor(rawAuthor));
+    const authorsArray = authors.slice(0, 10);
     const normalizedData = normalize(authorsArray, authorListSchema);
     return normalizedData;
   }
@@ -201,7 +201,7 @@ class AuthorAPI extends PlutoAxios {
       paper_ids: params.paperIds,
     });
 
-    const paperResponse: RawPaginationResponseV2<Paper[]> = res.data;
+    const paperResponse: RawPaginationResponseV2<Paper[]> = camelcaseKeys(res.data, { deep: true });
     const papers = paperResponse.data.content;
 
     return papers;

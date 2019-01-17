@@ -1,23 +1,24 @@
 import { CancelToken } from "axios";
 import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
-import { Profile, profileSchema, RawProfile, mapRawProfile, Award, Education, Experience } from "../model/profile";
+import { Profile, profileSchema, Award, Education, Experience } from "../model/profile";
 import { RawPaginationResponseV2 } from "./types/common";
+const camelcaseKeys = require("camelcase-keys");
 
 export interface CvBaseInfo {
   id?: string | undefined;
-  start_date: string;
-  end_date: string | null;
-  is_current: boolean;
-  institution_id: number | null;
-  institution_name: string;
+  startDate: string;
+  endDate: string | null;
+  isCurrent: boolean;
+  institutionId: number | null;
+  institutionName: string;
   department: string;
 }
 
 export interface AwardParams {
   id?: string | undefined;
   title: string;
-  received_date: string;
+  receivedDate: string;
 }
 
 export interface EducationParams extends CvBaseInfo {
@@ -38,103 +39,112 @@ class ProfileAPI extends PlutoAxios {
     result: number;
   }> {
     const res = await this.get(`/authors/${authorId}/information`, { cancelToken });
-    const rawProfile: RawProfile = res.data.data.content;
-
-    const normalizedData = normalize(mapRawProfile(rawProfile), profileSchema);
+    const profile: Profile = camelcaseKeys(res.data.data.content, { deep: true });
+    const normalizedData = normalize(profile, profileSchema);
     return normalizedData;
   }
 
   public postNewAwardInAuthor = async (authorId: number, params: AwardParams) => {
-    const res = await this.post(`/authors/${authorId}/awards`, params);
-
-    const successResponse: RawPaginationResponseV2<Award> = res.data;
-
+    const res = await this.post(`/authors/${authorId}/awards`, {
+      id: params.id,
+      title: params.title,
+      received_date: params.receivedDate,
+    });
+    const successResponse: RawPaginationResponseV2<Award> = camelcaseKeys(res.data, { deep: true });
     return successResponse.data.content;
   };
 
   public postNewEducationInAuthor = async (authorId: number, params: EducationParams) => {
     const finalParams = {
-      ...params,
-      end_date: params.is_current ? null : params.end_date,
+      id: params.id,
+      start_date: params.startDate,
+      is_current: params.isCurrent,
+      institution_id: params.institutionId,
+      institution_name: params.institutionName,
+      department: params.department,
+      degree: params.degree,
+      end_date: params.isCurrent ? null : params.endDate,
     };
-
     const res = await this.post(`/authors/${authorId}/educations`, finalParams);
-
-    const successResponse: RawPaginationResponseV2<Education> = res.data;
-
+    const successResponse: RawPaginationResponseV2<Education> = camelcaseKeys(res.data, { deep: true });
     return successResponse.data.content;
   };
 
   public postNewExperienceInAuthor = async (authorId: number, params: ExperienceParams) => {
     const finalParams = {
-      ...params,
-      end_date: params.is_current ? null : params.end_date,
+      id: params.id,
+      start_date: params.startDate,
+      is_current: params.isCurrent,
+      institution_id: params.institutionId,
+      institution_name: params.institutionName,
+      department: params.department,
+      position: params.position,
+      end_date: params.isCurrent ? null : params.endDate,
       description: !params.description ? null : params.description,
     };
-
     const res = await this.post(`/authors/${authorId}/experiences`, finalParams);
-
-    const successResponse: RawPaginationResponseV2<Experience> = res.data;
-
+    const successResponse: RawPaginationResponseV2<Experience> = camelcaseKeys(res.data, { deep: true });
     return successResponse.data.content;
   };
 
   public deleteAwardInAuthor = async (awardId: string) => {
     const res = await this.delete(`/authors/awards/${awardId}`);
-
-    const successResponse: RawPaginationResponseV2<Experience> = res.data;
-
+    const successResponse: RawPaginationResponseV2<Experience> = camelcaseKeys(res.data, { deep: true });
     return successResponse.data.content;
   };
 
   public deleteEducationInAuthor = async (educationId: string) => {
     const res = await this.delete(`/authors/educations/${educationId}`);
-
-    const successResponse: RawPaginationResponseV2<Experience> = res.data;
-
+    const successResponse: RawPaginationResponseV2<Experience> = camelcaseKeys(res.data, { deep: true });
     return successResponse.data.content;
   };
 
   public deleteExperienceInAuthor = async (experienceId: string) => {
     const res = await this.delete(`/authors/experiences/${experienceId}`);
-
-    const successResponse: RawPaginationResponseV2<Experience> = res.data;
-
+    const successResponse: RawPaginationResponseV2<Experience> = camelcaseKeys(res.data, { deep: true });
     return successResponse.data.content;
   };
 
   public updateAwardInAuthor = async (params: AwardParams) => {
-    const res = await this.put(`/authors/awards/${params.id}`, params);
-
-    const successResponse: RawPaginationResponseV2<Award> = res.data;
-
+    const res = await this.put(`/authors/awards/${params.id}`, {
+      id: params.id,
+      title: params.title,
+      received_date: params.receivedDate,
+    });
+    const successResponse: RawPaginationResponseV2<Award> = camelcaseKeys(res.data, { deep: true });
     return successResponse.data.content;
   };
 
   public updateEducationInAuthor = async (params: EducationParams) => {
     const finalParams = {
-      ...params,
-      end_date: params.is_current ? null : params.end_date,
+      id: params.id,
+      start_date: params.startDate,
+      is_current: params.isCurrent,
+      institution_id: params.institutionId,
+      institution_name: params.institutionName,
+      department: params.department,
+      degree: params.degree,
+      end_date: params.isCurrent ? null : params.endDate,
     };
-
     const res = await this.put(`/authors/educations/${finalParams.id}`, finalParams);
-
-    const successResponse: RawPaginationResponseV2<Education> = res.data;
-
+    const successResponse: RawPaginationResponseV2<Education> = camelcaseKeys(res.data, { deep: true });
     return successResponse.data.content;
   };
 
   public updateExperienceInAuthor = async (params: ExperienceParams) => {
     const finalParams = {
-      ...params,
-      end_date: params.is_current ? null : params.end_date,
+      id: params.id,
+      start_date: params.startDate,
+      is_current: params.isCurrent,
+      institution_id: params.institutionId,
+      institution_name: params.institutionName,
+      department: params.department,
+      position: params.position,
+      end_date: params.isCurrent ? null : params.endDate,
       description: !params.description ? null : params.description,
     };
-
     const res = await this.put(`/authors/experiences/${finalParams.id}`, finalParams);
-
-    const successResponse: RawPaginationResponseV2<Experience> = res.data;
-
+    const successResponse: RawPaginationResponseV2<Experience> = camelcaseKeys(res.data, { deep: true });
     return successResponse.data.content;
   };
 }

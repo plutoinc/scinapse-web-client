@@ -41,11 +41,11 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
       position,
       department,
       description,
-      start_date,
-      end_date,
-      institution_id,
-      institution_name,
-      is_current,
+      startDate: startDate,
+      endDate: endDate,
+      institutionId: institutionId,
+      institutionName: institutionName,
+      isCurrent: isCurrent,
     } = experience;
     return isEditMode ? (
       <ExperienceForm
@@ -67,28 +67,28 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
           department,
           description,
           position,
-          institution_id,
-          institution_name,
-          is_current,
-          start_date,
-          end_date,
-          start_date_year: start_date.split("-")[0],
-          start_date_month: start_date.split("-")[1],
-          end_date_year: end_date ? end_date.split("-")[0] : "",
-          end_date_month: end_date ? end_date.split("-")[1] : "",
+          institutionId,
+          institutionName,
+          isCurrent,
+          startDate,
+          endDate,
+          startDateYear: startDate.split("-")[0],
+          startDateMonth: startDate.split("-")[1],
+          endDateYear: endDate ? endDate.split("-")[0] : "",
+          endDateMonth: endDate ? endDate.split("-")[1] : "",
         }}
       />
     ) : (
       <div className={styles.itemWrapper}>
         <div className={styles.dateSectionWrapper}>
-          <span className={styles.dateContent}>{format(start_date, "MMM YYYY")}</span>
-          <span className={styles.dateContent}>- {end_date ? format(end_date, "MMM YYYY") : "Present"}</span>
+          <span className={styles.dateContent}>{format(startDate, "MMM YYYY")}</span>
+          <span className={styles.dateContent}>- {endDate ? format(endDate, "MMM YYYY") : "Present"}</span>
         </div>
         <div className={styles.contentWrapper}>
           {this.getEditItemButtons(id)}
           <span className={styles.affiliationContent}>{position}</span>
           <span className={styles.subAffiliationContent}>
-            {institution_name}, {department}
+            {institutionName}, {department}
           </span>
           <span className={styles.detailDescriptionSection}>{description}</span>
         </div>
@@ -130,8 +130,8 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
 
     const finalParams = {
       ...params,
-      start_date: getFormattingDate(params.start_date_year, params.start_date_month),
-      end_date: getFormattingDate(params.end_date_year, params.end_date_month),
+      startDate: getFormattingDate(params.startDateYear, params.startDateMonth),
+      endDate: getFormattingDate(params.endDateYear, params.endDateMonth),
     };
 
     try {
@@ -139,7 +139,7 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
         (await dispatch(
           updateAuthorCvInfo("experiences", authorId, {
             ...finalParams,
-            end_date: finalParams.is_current ? null : finalParams.end_date,
+            endDate: finalParams.isCurrent ? null : finalParams.endDate,
           })
         ));
       this.handelToggleExperienceEditForm();

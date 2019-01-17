@@ -36,7 +36,7 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
   public render() {
     const { award } = this.props;
     const { isEditMode } = this.state;
-    const { id, title, received_date } = award;
+    const { id, title, receivedDate } = award;
     return isEditMode ? (
       <AwardForm
         monthItems={getMonthOptionItems()}
@@ -47,15 +47,15 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
         initialValues={{
           id,
           title,
-          received_date,
-          received_date_year: received_date.split("-")[0],
-          received_date_month: received_date.split("-")[1],
+          receivedDate,
+          receivedDateYear: receivedDate.split("-")[0],
+          receivedDateMonth: receivedDate.split("-")[1],
         }}
       />
     ) : (
       <div className={styles.itemWrapper}>
         <div className={styles.dateSectionWrapper}>
-          <span className={styles.dateContent}>{format(received_date, "MMM YYYY")}</span>
+          <span className={styles.dateContent}>{format(receivedDate, "MMM YYYY")}</span>
         </div>
         <div className={styles.contentWrapper}>
           {this.getEditItemButtons(id)}
@@ -100,7 +100,7 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
 
     const finalParams = {
       ...params,
-      received_date: getFormattingDate(params.received_date_year, params.received_date_month),
+      receivedDate: getFormattingDate(params.receivedDateYear, params.receivedDateMonth),
     };
 
     try {

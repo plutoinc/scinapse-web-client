@@ -133,7 +133,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
     const customAffiliation: Affiliation = { id: null, name: newInput };
 
     form.setFieldTouched(field.name);
-    form.setFieldValue("institution_id", customAffiliation.id);
+    form.setFieldValue("institutionId", customAffiliation.id);
     form.setFieldValue(field.name, customAffiliation.name);
 
     if (newInput.length > 1) {
@@ -148,10 +148,10 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
 
     if (!targetAffiliation && affiliationName) {
       const customAffiliation: Affiliation = { id: null, name: affiliationName };
-      form.setFieldValue("institution_id", customAffiliation.id);
+      form.setFieldValue("institutionId", customAffiliation.id);
       form.setFieldValue(field.name, customAffiliation.name);
     } else if (targetAffiliation) {
-      form.setFieldValue("institution_id", targetAffiliation.affiliation_id);
+      form.setFieldValue("institutionId", targetAffiliation.affiliationId);
       form.setFieldValue(field.name, targetAffiliation.keyword);
     }
   };

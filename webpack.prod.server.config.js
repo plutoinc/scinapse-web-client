@@ -11,6 +11,7 @@ const browserSpecificSetting = {
     minimize: true,
     minimizer: [new UglifyJsPlugin()],
   },
+  sideEffects: false,
   plugins: [new LodashModuleReplacementPlugin()],
 };
 
