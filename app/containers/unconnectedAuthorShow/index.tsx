@@ -59,7 +59,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
   }
 
   public render() {
-    const { author, authorShow, currentUser, isTestMode } = this.props;
+    const { author, authorShow, currentUser, isTestMode, layout } = this.props;
 
     if (!author) {
       return null;
@@ -127,6 +127,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
         {this.getPageHelmet()}
         <div className={styles.rootWrapper}>
           <AuthorShowHeader
+            userDevice={layout.userDevice}
             author={author}
             currentUser={currentUser}
             rightBoxContent={itsMeButton}

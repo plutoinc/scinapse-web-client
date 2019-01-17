@@ -81,9 +81,6 @@
 .metricInformation {
   margin-bottom: 24px;
 }
-.mobileMetricInformation {
-  display: none;
-}
 
 .bioSection {
   white-space: pre-wrap;
@@ -198,8 +195,7 @@
     margin-left: 0 !important;
   }
 
-  .rightBox,
-  .metricInformation {
+  .rightBox {
     display: none;
   }
 }
