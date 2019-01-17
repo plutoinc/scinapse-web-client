@@ -677,7 +677,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
         },
         description: `${coAuthorAffiliation ? `${coAuthorAffiliation},` : ""} citation: ${
           coAuthor.citationCount
-        }, h-index: ${coAuthor.hIndex}`,
+        }, h-index: ${coAuthor.hindex}`,
         mainEntityOfPage: "https://scinapse.io",
       };
     });
@@ -691,7 +691,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
       },
       colleague: colleagues,
       description: `${affiliationName ? `${affiliationName},` : ""} citation: ${author.citationCount}, h-index: ${
-        author.hIndex
+        author.hindex
       }`,
       mainEntityOfPage: "https://scinapse.io",
     };
@@ -704,7 +704,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
 
     const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "";
     const description = `${affiliationName ? `${affiliationName},` : ""} citation: ${author.citationCount}, h-index: ${
-      author.hIndex
+      author.hindex
     }`;
 
     return (

@@ -46,7 +46,7 @@ const CoAuthor = (props: CoAuthorProps) => {
           ) : null}
         </div>
         <div className={styles.hIndexWrapper}>
-          <HIndexBox hIndex={author.hIndex} />
+          <HIndexBox hIndex={author.hindex} />
         </div>
       </div>
       <span className={styles.coAuthorAffiliation}>

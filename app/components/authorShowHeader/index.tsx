@@ -94,14 +94,14 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
           </div>
         )}
 
-        {(author.hIndex || author.hIndex === 0) && (
+        {(author.hindex || author.hindex === 0) && (
           <div className={styles.metricWrapper}>
-            <span className={styles.metricValue}>{formatNumber(author.hIndex)}</span>
+            <span className={styles.metricValue}>{formatNumber(author.hindex)}</span>
             <span className={styles.metricLabel}>H-index</span>
           </div>
         )}
 
-        {(author.citationCount || author.hIndex === 0) && (
+        {(author.citationCount || author.hindex === 0) && (
           <div className={styles.metricWrapper}>
             <span className={styles.metricValue}>{formatNumber(author.citationCount)}</span>
             <span className={styles.metricLabel}>Citations</span>

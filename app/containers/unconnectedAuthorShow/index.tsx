@@ -284,7 +284,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
         },
         description: `${coAuthorAffiliation ? `${coAuthorAffiliation},` : ""} citation: ${
           coAuthor.citationCount
-        }, h-index: ${coAuthor.hIndex}`,
+        }, h-index: ${coAuthor.hindex}`,
         mainEntityOfPage: "https://scinapse.io",
       };
     });
@@ -298,7 +298,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
       },
       colleague: colleagues,
       description: `${affiliationName ? `${affiliationName},` : ""} citation: ${author.citationCount}, h-index: ${
-        author.hIndex
+        author.hindex
       }`,
       mainEntityOfPage: "https://scinapse.io",
     };
@@ -310,7 +310,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
     const { author } = this.props;
     const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "";
     const description = `${affiliationName ? `${affiliationName},` : ""} citation: ${author.citationCount}, h-index: ${
-      author.hIndex
+      author.hindex
     }`;
 
     return (

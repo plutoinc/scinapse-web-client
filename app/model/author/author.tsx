@@ -24,7 +24,7 @@ export interface RawAuthor {
 export interface Author {
   id: number;
   name: string;
-  hIndex: number;
+  hindex: number;
   lastKnownAffiliation?: Affiliation;
   paperCount: number;
   citationCount: number;
