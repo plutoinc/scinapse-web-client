@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 import AuthAPI from "../../api/auth";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import { ISignInResult } from "../../api/types/auth";
+import { SignInResult } from "../../api/types/auth";
 import alertToast from "../../helpers/makePlutoToastAction";
 
 export function signOut() {
@@ -28,7 +28,7 @@ export function signOut() {
 export function checkAuthStatus() {
   return async (dispatch: Dispatch<any>) => {
     try {
-      const checkLoggedInResult: ISignInResult = await AuthAPI.checkLoggedIn();
+      const checkLoggedInResult: SignInResult = await AuthAPI.checkLoggedIn();
       dispatch({
         type: ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN,
         payload: {

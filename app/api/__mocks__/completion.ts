@@ -1,10 +1,16 @@
 import PlutoAxios from "../pluto";
-import { SuggestionKeyword } from "../../model/suggestion";
+import { RawSuggestion } from "../../model/suggestion";
 import { CompletionKeyword } from "../completion";
 
 class CompletionAPI extends PlutoAxios {
-  public async getSuggestionKeyword(_query: string): Promise<SuggestionKeyword> {
-    return { keyword: "papre", suggestion: "paper", highlighted: "<b>paper</b>" };
+  public async getSuggestionKeyword(_query: string): Promise<RawSuggestion> {
+    return {
+      highlighted: "<b>para</b>",
+      keyword: "papre",
+      original_query: "papre",
+      suggest_query: "para",
+      suggestion: "para",
+    };
   }
 
   public async getKeywordCompletion(_query: string) {

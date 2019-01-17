@@ -79,7 +79,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
   public componentDidMount() {
     const { currentUser, author, authorShow } = this.props;
 
-    if (currentUser.isLoggedIn && currentUser.is_author_connected && currentUser.author_id === author.id) {
+    if (currentUser.isLoggedIn && currentUser.isAuthorConnected && currentUser.authorId === author.id) {
       this.fetchPapers(authorShow.papersCurrentPage, "RECENTLY_ADDED");
     }
   }
@@ -96,8 +96,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     if (
       hasAuthStatusChanged &&
       nextProps.currentUser.isLoggedIn &&
-      nextProps.currentUser.is_author_connected &&
-      nextProps.currentUser.author_id === author.id &&
+      nextProps.currentUser.isAuthorConnected &&
+      nextProps.currentUser.authorId === author.id &&
       wasDefaultSortOption
     ) {
       this.fetchPapers(authorShow.papersCurrentPage, "RECENTLY_ADDED");
@@ -198,7 +198,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                         <SortBox
                           sortOption={authorShow.papersSort}
                           handleClickSortOption={this.handleClickSort}
-                          exposeRecentlyUpdated={currentUser.author_id === author.id}
+                          exposeRecentlyUpdated={currentUser.authorId === author.id}
                           exposeRelevanceOption={false}
                         />
                       </div>
@@ -265,7 +265,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
   private getSelectedPublicationsArea = () => {
     const { author, currentUser } = this.props;
 
-    const isMine = currentUser && currentUser.author_id === author.id;
+    const isMine = currentUser && currentUser.authorId === author.id;
     const emptySelectedPapers = !author.representativePapers || author.representativePapers.length === 0;
 
     if (!isMine && emptySelectedPapers) {
@@ -304,7 +304,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
   private getAddPublicationsButton = () => {
     const { author, currentUser } = this.props;
 
-    if (currentUser.author_id === author.id) {
+    if (currentUser.authorId === author.id) {
       return (
         <TransparentButton
           onClick={this.handleOpenAllPublicationsDialog}
@@ -322,7 +322,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
   private getEditSelectedPaperButton = () => {
     const { author, currentUser } = this.props;
 
-    if (currentUser.author_id === author.id) {
+    if (currentUser.authorId === author.id) {
       return (
         <TransparentButton
           onClick={this.handleToggleRepresentativePublicationsDialog}
@@ -345,7 +345,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
   private getRightBoxContent = () => {
     const { author, currentUser } = this.props;
 
-    if (currentUser.author_id === author.id) {
+    if (currentUser.authorId === author.id) {
       return (
         <TransparentButton
           style={{
@@ -609,7 +609,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
       });
     }
 
-    const isMine = currentUser && currentUser.author_id === author.id;
+    const isMine = currentUser && currentUser.authorId === author.id;
     const addPublicationsBtn = isMine ? (
       <TransparentButton
         onClick={this.handleOpenAllPublicationsDialog}

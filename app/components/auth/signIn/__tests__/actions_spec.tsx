@@ -7,7 +7,7 @@ import * as Actions from "../actions";
 import { generateMockStore } from "../../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
 import { SIGN_IN_ON_FOCUS_TYPE } from "../reducer";
-import { ISignInWithEmailParams, OAUTH_VENDOR } from "../../../../api/types/auth";
+import { SignInWithEmailParams, OAUTH_VENDOR } from "../../../../api/types/auth";
 import { closeDialog } from "../../../dialog/actions";
 import { push } from "connected-react-router";
 import { RAW } from "../../../../__mocks__";
@@ -89,7 +89,7 @@ describe("signIn actions", () => {
     const mockValidPassword = "Pluto@134$$";
 
     it("should return SIGN_IN_FORM_ERROR action with inValid email", () => {
-      const mockSignInParams: ISignInWithEmailParams = {
+      const mockSignInParams: SignInWithEmailParams = {
         email: mockInValidEmail,
         password: mockValidPassword,
       };
@@ -101,7 +101,7 @@ describe("signIn actions", () => {
     });
 
     it("should return SIGN_IN_FORM_ERROR action with inValid password", () => {
-      const mockSignInParams: ISignInWithEmailParams = {
+      const mockSignInParams: SignInWithEmailParams = {
         email: mockValidEmail,
         password: mockInValidPassword,
       };
@@ -114,7 +114,7 @@ describe("signIn actions", () => {
 
     it("should return closeDialog action with valid email & password if isDialog is true", async () => {
       const mockTrueIsDialog = true;
-      const mockSignInParams: ISignInWithEmailParams = {
+      const mockSignInParams: SignInWithEmailParams = {
         email: mockValidEmail,
         password: mockValidPassword,
       };
@@ -125,7 +125,7 @@ describe("signIn actions", () => {
 
     it("should return push action to home page  with valid email & password if isDialog is false", async () => {
       const mockFalseIsDialog = false;
-      const mockSignInParams: ISignInWithEmailParams = {
+      const mockSignInParams: SignInWithEmailParams = {
         email: mockValidEmail,
         password: mockValidPassword,
       };
@@ -135,7 +135,7 @@ describe("signIn actions", () => {
     });
 
     it("should return SIGN_IN_SUCCEEDED_TO_SIGN_IN action with valid email & password", async () => {
-      const mockSignInParams: ISignInWithEmailParams = {
+      const mockSignInParams: SignInWithEmailParams = {
         email: mockValidEmail,
         password: mockValidPassword,
       };

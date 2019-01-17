@@ -52,7 +52,7 @@ class RepresentativePublicationsDialog extends React.PureComponent<
   public async componentDidMount() {
     const { author, currentUser } = this.props;
 
-    if (currentUser.is_author_connected && currentUser.author_id === author.id) {
+    if (currentUser.isAuthorConnected && currentUser.authorId === author.id) {
       this.setState(prevState => ({ ...prevState, isLoading: true }));
       try {
         const res = await AuthorAPI.getSelectedPapers(author.id);

@@ -7,7 +7,7 @@ import {
   FILTER_TYPE_HAS_RANGE,
   FILTER_TYPE_HAS_EXPANDING_OPTION,
 } from "./actions";
-import { SuggestionKeyword } from "../../model/suggestion";
+import { SearchResult } from "../../api/search";
 
 export function reducer(
   state: ArticleSearchState = ARTICLE_SEARCH_INITIAL_STATE,
@@ -18,33 +18,6 @@ export function reducer(
       return {
         ...state,
         lastSucceededParams: action.payload.params,
-      };
-    }
-
-    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_AGGREGATION_DATA: {
-      return {
-        ...state,
-        isLoadingAggregateData: true,
-        hasErrorOnFetchingAggregateData: false,
-        aggregationData: null,
-      };
-    }
-
-    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_AGGREGATION_DATA: {
-      return {
-        ...state,
-        isFilterAvailable: action.payload.available,
-        isLoadingAggregateData: false,
-        hasErrorOnFetchingAggregateData: false,
-        aggregationData: action.payload.aggregationData,
-      };
-    }
-
-    case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_AGGREGATION_DATA: {
-      return {
-        ...state,
-        isLoadingAggregateData: false,
-        hasErrorOnFetchingAggregateData: true,
       };
     }
 
@@ -68,20 +41,33 @@ export function reducer(
         IFFilterToValue: filters.journalIFTo || 0,
         fosFilter: filters.fos || [],
         journalFilter: filters.journal || [],
+        suggestionKeyword: "",
+        highlightedSuggestionKeyword: "",
+        aggregationData: null,
       };
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS: {
-      return {
-        ...state,
-        isEnd: action.payload.isEnd,
-        page: action.payload.nextPage,
-        totalElements: action.payload.totalElements,
-        totalPages: action.payload.totalPages,
-        isLoading: false,
-        hasError: false,
-        searchItemsToShow: action.payload.papers,
-      };
+      const payload: SearchResult = action.payload;
+
+      if (payload.data.page) {
+        return {
+          ...state,
+          isLoading: false,
+          hasError: false,
+          isEnd: payload.data.page.last,
+          page: payload.data.page.page,
+          totalElements: payload.data.page.totalElements,
+          totalPages: payload.data.page.totalPages,
+          searchItemsToShow: payload.data.content,
+          suggestionKeyword: payload.data.suggestion ? payload.data.suggestion.suggestion : "",
+          highlightedSuggestionKeyword: payload.data.suggestion ? payload.data.suggestion.highlighted : "",
+          searchFromSuggestion: payload.data.resultModified,
+          aggregationData: payload.data.aggregation,
+        };
+      }
+
+      return state;
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_PAPERS: {
@@ -185,35 +171,6 @@ export function reducer(
         default:
           return state;
       }
-    }
-
-    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_SUGGESTION_KEYWORD: {
-      return {
-        ...state,
-        suggestionKeyword: "",
-        highlightedSuggestionKeyword: "",
-      };
-    }
-
-    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_SUGGESTION_KEYWORD: {
-      const keyword: SuggestionKeyword | null = action.payload.keyword;
-
-      if (keyword) {
-        return {
-          ...state,
-          suggestionKeyword: keyword.suggestion,
-          highlightedSuggestionKeyword: keyword.highlighted,
-        };
-      }
-
-      return state;
-    }
-
-    case ACTION_TYPES.ARTICLE_SEARCH_SEARCHED_FROM_SUGGESTION_KEYWORD: {
-      return {
-        ...state,
-        searchFromSuggestion: true,
-      };
     }
 
     default: {

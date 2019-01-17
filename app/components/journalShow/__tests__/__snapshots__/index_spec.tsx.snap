@@ -20,7 +20,7 @@ exports[`JournalShow Container Component when journal data exist should render c
             href="/journals/2764552960"
             onClick={[Function]}
           >
-            Science & Engineering Faculty
+            Applied Mathematics and Computation
           </a>
         </div>
         <div
@@ -33,7 +33,7 @@ exports[`JournalShow Container Component when journal data exist should render c
               Papers
             </div>
             <strong>
-              8859
+              19555
             </strong>
           </span>
         </div>
@@ -157,30 +157,6 @@ exports[`JournalShow Container Component when journal data exist should render c
                 <div
                   className="publishInfoList"
                 >
-                  <div
-                    className="journal"
-                  >
-                    <i
-                      className="icon"
-                    />
-                    <div
-                      className="journalText"
-                    >
-                      <span
-                        className="bold"
-                      >
-                        2005
-                         in 
-                      </span>
-                      <a
-                        className="journalName"
-                        href="/journals/2764552960"
-                        onClick={[Function]}
-                      >
-                        Science & Engineering Faculty
-                      </a>
-                    </div>
-                  </div>
                   <div
                     className="author"
                   >
@@ -349,7 +325,53 @@ exports[`JournalShow Container Component when journal data exist should render c
           </div>
           <div
             className="fosWrapper"
-          />
+          >
+            <a
+              className="buttonWrapper"
+              href="/search?query=Mathematics&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
+              onClick={[Function]}
+              rel="noopener"
+              target="_blank"
+            >
+              Mathematics
+            </a>
+            <a
+              className="buttonWrapper"
+              href="/search?query=Numerical%2520analysis&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
+              onClick={[Function]}
+              rel="noopener"
+              target="_blank"
+            >
+              Numerical analysis
+            </a>
+            <a
+              className="buttonWrapper"
+              href="/search?query=Mathematical%2520optimization&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
+              onClick={[Function]}
+              rel="noopener"
+              target="_blank"
+            >
+              Mathematical optimization
+            </a>
+            <a
+              className="buttonWrapper"
+              href="/search?query=Mathematical%2520analysis&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
+              onClick={[Function]}
+              rel="noopener"
+              target="_blank"
+            >
+              Mathematical analysis
+            </a>
+            <a
+              className="buttonWrapper"
+              href="/search?query=Boundary%2520value%2520problem&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
+              onClick={[Function]}
+              rel="noopener"
+              target="_blank"
+            >
+              Boundary value problem
+            </a>
+          </div>
         </div>
       </div>
     </div>

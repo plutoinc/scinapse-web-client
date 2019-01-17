@@ -18,9 +18,9 @@ interface PaperItemJournalProps {
 }
 
 const PaperItemJournal = ({ journal, year, style, readOnly, pageType, actionArea }: PaperItemJournalProps) => {
-  if (journal && journal.fullTitle) {
+  if (journal && journal.title) {
     const title = readOnly ? (
-      <span className={styles.journalName}>{journal.fullTitle}</span>
+      <span className={styles.journalName}>{journal.title}</span>
     ) : (
       <Link
         to={`/journals/${journal.id}`}
@@ -36,7 +36,7 @@ const PaperItemJournal = ({ journal, year, style, readOnly, pageType, actionArea
         }}
         className={styles.journalName}
       >
-        {journal.fullTitle}
+        {journal.title}
       </Link>
     );
 

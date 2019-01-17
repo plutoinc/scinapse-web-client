@@ -9,14 +9,11 @@ export interface ArticleSearchState
       sort: SEARCH_SORT_OPTIONS;
       isLoading: boolean;
       hasError: boolean;
-      isLoadingAggregateData: boolean;
-      hasErrorOnFetchingAggregateData: boolean;
       searchInput: string;
       page: number;
       totalElements: number;
       totalPages: number;
       isEnd: boolean;
-      isFilterAvailable: boolean;
       isYearFilterOpen: boolean;
       isJournalIFFilterOpen: boolean;
       isFOSFilterOpen: boolean;
@@ -42,8 +39,6 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   sort: "RELEVANCE",
   isLoading: false,
   hasError: false,
-  isLoadingAggregateData: false,
-  hasErrorOnFetchingAggregateData: false,
   aggregationData: null,
   searchInput: "",
   searchItemsToShow: [],
@@ -52,7 +47,6 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   totalElements: 0,
   totalPages: 0,
   isEnd: false,
-  isFilterAvailable: false,
   isYearFilterOpen: true,
   isJournalIFFilterOpen: true,
   isFOSFilterOpen: true,

@@ -4,7 +4,7 @@ import PlutoAxios from "../pluto";
 import { RawAuthor, Author, authorSchema, authorListSchema, mapRawAuthor } from "../../model/author/author";
 import { GetAuthorPapersParams, AuthorPapersResponse, GetAuthorPaperResult } from "./types";
 import { paperSchema, Paper } from "../../model/paper";
-import { CommonPaginationResponseV2 } from "../types/common";
+import { RawPaginationResponseV2 } from "../types/common";
 
 export const DEFAULT_AUTHOR_PAPERS_SIZE = 10;
 
@@ -64,12 +64,12 @@ class AuthorAPI extends PlutoAxios {
       paper_ids: paperIds,
     });
 
-    const successResponse: CommonPaginationResponseV2<{ success: true }> = res.data;
+    const successResponse: RawPaginationResponseV2<{ success: true }> = res.data;
 
     return successResponse;
   }
 
-  public async queryAuthorPapers(params: QueryAuthorPapersParams): Promise<CommonPaginationResponseV2<Paper[]>> {
+  public async queryAuthorPapers(params: QueryAuthorPapersParams): Promise<RawPaginationResponseV2<Paper[]>> {
     const res = await this.get("/papers", {
       params: {
         query: params.query,
@@ -79,7 +79,7 @@ class AuthorAPI extends PlutoAxios {
       cancelToken: params.cancelToken,
     });
 
-    const paperListResult: CommonPaginationResponseV2<Paper[]> = res.data;
+    const paperListResult: RawPaginationResponseV2<Paper[]> = res.data;
 
     return paperListResult;
   }
@@ -92,7 +92,7 @@ class AuthorAPI extends PlutoAxios {
       },
       { cancelToken }
     );
-    const successResponse: CommonPaginationResponseV2<{ success: true }> = res.data;
+    const successResponse: RawPaginationResponseV2<{ success: true }> = res.data;
 
     return successResponse;
   }
@@ -131,7 +131,7 @@ class AuthorAPI extends PlutoAxios {
   public async getSelectedPapers(authorId: number) {
     const res = await this.get(`/authors/${authorId}/papers/all`);
 
-    const simplePapersResponse: CommonPaginationResponseV2<SimplePaper[]> = res.data;
+    const simplePapersResponse: RawPaginationResponseV2<SimplePaper[]> = res.data;
 
     return simplePapersResponse;
   }
@@ -201,7 +201,7 @@ class AuthorAPI extends PlutoAxios {
       paper_ids: params.paperIds,
     });
 
-    const paperResponse: CommonPaginationResponseV2<Paper[]> = res.data;
+    const paperResponse: RawPaginationResponseV2<Paper[]> = res.data;
     const papers = paperResponse.data.content;
 
     return papers;

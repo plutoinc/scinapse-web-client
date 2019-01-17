@@ -4,6 +4,7 @@ import PlutoAxios from "./pluto";
 import { Collection, collectionSchema } from "../model/collection";
 import { Paper } from "../model/paper";
 import { PaperInCollection, paperInCollectionSchema } from "../model/paperInCollection";
+const camelcaseKeys = require("camelcase-keys");
 
 export interface UpdatePaperNoteToCollectionParams {
   paperId: number;
@@ -40,15 +41,15 @@ interface RawCollectionPaperListResponse {
   paper: Paper;
 }
 
-interface RawUpdatePaperNoteResponse {
+interface UpdatePaperNoteResponse {
   note: string;
   paper: null;
-  collection_id: number;
-  paper_id: number;
+  collectionId: number;
+  paperId: number;
 }
 
 interface CollectionAPIGetPapersResult {
-  entities: { papersInCollection: { [paper_id: number]: PaperInCollection } };
+  entities: { papersInCollection: { [paperId: number]: PaperInCollection } };
   result: number[];
 }
 
@@ -57,7 +58,6 @@ class CollectionAPI extends PlutoAxios {
     const res = await this.get(`/collections/${collectionId}/papers`, { cancelToken });
 
     const resData: RawCollectionPaperListResponse[] = res.data.data;
-
     // Validation
     resData.forEach(datum => {
       if (
@@ -70,7 +70,8 @@ class CollectionAPI extends PlutoAxios {
         throw new Error("Collection API's getPapers method is broken.");
       }
     });
-    const normalizedData = normalize(resData, [paperInCollectionSchema]);
+    const camelizedData = camelcaseKeys(resData, { deep: true });
+    const normalizedData = normalize(camelizedData, [paperInCollectionSchema]);
     return normalizedData;
   }
 
@@ -94,11 +95,13 @@ class CollectionAPI extends PlutoAxios {
     return res.data;
   }
 
-  public async updatePaperNoteToCollection(params: UpdatePaperNoteToCollectionParams) {
+  public async updatePaperNoteToCollection(
+    params: UpdatePaperNoteToCollectionParams
+  ): Promise<UpdatePaperNoteResponse> {
     const res = await this.put(`/collections/${params.collectionId}/papers/${params.paperId}`, {
       note: params.note,
     });
-    const rawResData: RawUpdatePaperNoteResponse = res.data.data;
+    const rawResData: UpdatePaperNoteResponse = camelcaseKeys(res.data.data, { deep: true });
     return rawResData;
   }
 
@@ -110,9 +113,8 @@ class CollectionAPI extends PlutoAxios {
     result: number;
   }> {
     const res = await this.get(`/collections/${collectionId}`, { cancelToken });
-    const normalizedData = normalize(res.data.data, collectionSchema);
-
-    return normalizedData;
+    const camelizedRes = camelcaseKeys(res.data.data, { deep: true });
+    return normalize(camelizedRes, collectionSchema);
   }
 
   public async postCollection({
@@ -126,9 +128,8 @@ class CollectionAPI extends PlutoAxios {
       title,
       description,
     });
-
-    const normalizedData = normalize(res.data.data, collectionSchema);
-
+    const camelizedRes = camelcaseKeys(res.data.data, { deep: true });
+    const normalizedData = normalize(camelizedRes, collectionSchema);
     return normalizedData;
   }
 
@@ -148,9 +149,8 @@ class CollectionAPI extends PlutoAxios {
       title: params.title,
       description: params.description,
     });
-
-    const normalizedData = normalize(res.data.data, collectionSchema);
-
+    const camelizedRes = camelcaseKeys(res.data.data, { deep: true });
+    const normalizedData = normalize(camelizedRes, collectionSchema);
     return normalizedData;
   }
 }

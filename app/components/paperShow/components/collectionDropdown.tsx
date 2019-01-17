@@ -186,12 +186,12 @@ class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, Co
               root: styles.checkBox,
               checked: styles.checkedCheckboxIcon,
             }}
-            checked={collection.contains_selected}
+            checked={collection.containsSelected}
             value={collection.title}
             color="primary"
           />
           <span className={styles.collectionTitle}>{collection.title}</span>
-          <span className={styles.paperCount}>{collection.paper_count}</span>
+          <span className={styles.paperCount}>{collection.paperCount}</span>
         </li>
       );
     });
@@ -200,7 +200,7 @@ class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, Co
   private handleTogglingCollectionList = (collection: Collection) => {
     const { handleAddingPaperToCollection, handleRemovingPaperFromCollection } = this.props;
 
-    if (collection.contains_selected) {
+    if (collection.containsSelected) {
       handleRemovingPaperFromCollection(collection);
       trackEvent({ category: "Additional Action", action: "Remove Paper in Collection", label: `${collection.id}` });
     } else {

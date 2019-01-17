@@ -18,8 +18,8 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
     case ACTION_TYPES.AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR: {
       return {
         ...state,
-        is_author_connected: true,
-        author_id: action.payload.authorId,
+        isAuthorConnected: true,
+        authorId: action.payload.authorId,
       };
     }
 
@@ -50,7 +50,7 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
 
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA: {
       const { profileImageUrl } = action.payload;
-      return { ...state, profile_image_url: profileImageUrl };
+      return { ...state, profileImageUrl: profileImageUrl };
     }
 
     default:

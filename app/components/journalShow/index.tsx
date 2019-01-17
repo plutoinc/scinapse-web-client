@@ -118,7 +118,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
             <div className={styles.container}>
               <div className={styles.leftBox}>
                 <div className={styles.title}>
-                  <Link to={`/journals/${journal.id}`}>{journal.fullTitle}</Link>
+                  <Link to={`/journals/${journal.id}`}>{journal.title}</Link>
                   {this.getExternalLink()}
                 </div>
                 <div className={styles.infoWrapper}>
@@ -261,27 +261,27 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
     if (journal) {
       return (
         <Helmet>
-          <title>{journal.fullTitle} | Scinapse</title>
-          <meta itemProp="name" content={`${journal.fullTitle} | Scinapse`} />
+          <title>{journal.title} | Scinapse</title>
+          <meta itemProp="name" content={`${journal.title} | Scinapse`} />
           {/* tslint:disable-next-line:max-line-length */}
           <meta
             name="description"
-            content={`${journal.fullTitle} | IF: ${journal.impactFactor} | ${journal.paperCount} papers`}
+            content={`${journal.title} | IF: ${journal.impactFactor} | ${journal.paperCount} papers`}
           />
           {/* tslint:disable-next-line:max-line-length */}
           <meta
             name="twitter:description"
-            content={`${journal.fullTitle} | IF: ${journal.impactFactor} | ${journal.paperCount} papers`}
+            content={`${journal.title} | IF: ${journal.impactFactor} | ${journal.paperCount} papers`}
           />
-          <meta name="twitter:card" content={`${journal.fullTitle} | Scinapse`} />
-          <meta name="twitter:title" content={`${journal.fullTitle} | Scinapse`} />
-          <meta property="og:title" content={`${journal.fullTitle} | Scinapse`} />
+          <meta name="twitter:card" content={`${journal.title} | Scinapse`} />
+          <meta name="twitter:title" content={`${journal.title} | Scinapse`} />
+          <meta property="og:title" content={`${journal.title} | Scinapse`} />
           <meta property="og:type" content="article" />
           <meta property="og:url" content={`https://scinapse.io/journals/${journal.id}`} />
           {/* tslint:disable-next-line:max-line-length */}
           <meta
             property="og:description"
-            content={`${journal.fullTitle} | IF: ${journal.impactFactor} | ${journal.paperCount} papers`}
+            content={`${journal.title} | IF: ${journal.impactFactor} | ${journal.paperCount} papers`}
           />
         </Helmet>
       );

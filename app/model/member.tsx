@@ -7,11 +7,11 @@ export interface Member {
   emailVerified: boolean;
   firstName: string;
   lastName: string;
-  profile_image_url: string;
+  profileImageUrl: string;
   affiliation: string;
   oauth: MemberOAuth | null;
-  is_author_connected: boolean;
-  author_id: number;
+  isAuthorConnected: boolean;
+  authorId: number;
 }
 
 export const memberSchema = new schema.Entity("members");

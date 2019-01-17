@@ -92,8 +92,8 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
         ...state.collections,
         [targetCollection.id]: {
           ...targetCollection,
-          contains_selected: true,
-          paper_count: targetCollection.paper_count + 1,
+          containsSelected: true,
+          paperCount: targetCollection.paperCount + 1,
         },
       };
 
@@ -108,8 +108,8 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
         ...state.collections,
         [targetCollection.id]: {
           ...targetCollection,
-          contains_selected: false,
-          paper_count: targetCollection.paper_count - 1,
+          containsSelected: false,
+          paperCount: targetCollection.paperCount - 1,
           note: null,
         },
       };
@@ -133,7 +133,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
           ...state.collections,
           [targetCollectionId]: {
             ...state.collections[targetCollectionId],
-            contains_selected: true,
+            containsSelected: true,
             note: action.payload.note,
             noteUpdated: !!action.payload.note,
           },
@@ -206,7 +206,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
           ...state.members,
           [authorId]: {
             ...state.members[authorId],
-            profile_image_url: profileImageUrl,
+            profileImageUrl,
           },
         },
       };

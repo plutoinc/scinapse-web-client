@@ -59,9 +59,7 @@ export interface PageObjectV2 {
   totalPages: number;
 }
 
-export interface CommonPaginationResponseV2<C> {
-  content: C[];
-  page: RawPageObjectV2;
+export interface RawPaginationResponseV2<C> {
   data: {
     content: C;
     page: RawPageObjectV2 | null;
@@ -69,21 +67,17 @@ export interface CommonPaginationResponseV2<C> {
   error: CommonError | null;
 }
 
-export interface CommonPaginationDataV2<E> {
+export interface PaginationResponseV2<C> {
+  data: {
+    content: C;
+    page: PageObjectV2 | null;
+  };
+  error: CommonError | null;
+}
+
+export interface NormalizedDataWithPaginationV2<E> {
   entities: E;
   result: number | number[];
   page: PageObjectV2 | null;
   error: CommonError | null;
-}
-
-export function mapRawPageObjectToPageObject(rawPage: RawPageObjectV2): PageObjectV2 {
-  return {
-    size: rawPage.size,
-    page: rawPage.page + 1, // In Scinapse project, page object always start from 1. But index object start from 0.
-    first: rawPage.first,
-    last: rawPage.last,
-    numberOfElements: rawPage.number_of_elements,
-    totalElements: rawPage.total_elements,
-    totalPages: rawPage.total_pages,
-  };
 }

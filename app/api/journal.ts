@@ -5,6 +5,7 @@ import { Paper, paperSchema } from "../model/paper";
 import { Journal, journalSchema } from "../model/journal";
 import { CommonPaginationResponsePart } from "./types/common";
 import { PAPER_LIST_SORT_TYPES } from "../components/common/sortBox";
+const camelcaseKeys = require("camelcase-keys");
 
 interface PapersResult extends CommonPaginationResponsePart {
   entities: { papers: { [paperId: number]: Paper } };
@@ -29,7 +30,8 @@ class JournalAPI extends PlutoAxios {
     result: number;
   }> {
     const getJournalResponse: AxiosResponse = await this.get(`/journals/${journalId}`, { cancelToken });
-    const normalizedData = normalize(getJournalResponse.data.data, journalSchema);
+    const camelizedRes = camelcaseKeys(getJournalResponse.data.data, { deep: true });
+    const normalizedData = normalize(camelizedRes, journalSchema);
 
     return normalizedData;
   }
@@ -52,7 +54,8 @@ class JournalAPI extends PlutoAxios {
       cancelToken,
     });
 
-    const papers: Paper[] | undefined = getPapersResponse.data.data.content;
+    const camelizedRes = camelcaseKeys(getPapersResponse.data.data, { deep: true });
+    const papers: Paper[] | undefined = camelizedRes.content;
 
     const authorSlicedPapers = papers
       ? papers.map(paper => {
@@ -65,14 +68,14 @@ class JournalAPI extends PlutoAxios {
     return {
       entities: normalizedPapersData.entities,
       result: normalizedPapersData.result,
-      size: getPapersResponse.data.data.size,
-      number: getPapersResponse.data.data.number + 1,
-      sort: getPapersResponse.data.data.sort,
-      first: getPapersResponse.data.data.first,
-      last: getPapersResponse.data.data.last,
-      numberOfElements: getPapersResponse.data.data.numberOfElements,
-      totalPages: getPapersResponse.data.data.totalPages,
-      totalElements: getPapersResponse.data.data.totalElements,
+      size: camelizedRes.size,
+      number: camelizedRes.number + 1,
+      sort: camelizedRes.sort,
+      first: camelizedRes.first,
+      last: camelizedRes.last,
+      numberOfElements: camelizedRes.numberOfElements,
+      totalPages: camelizedRes.totalPages,
+      totalElements: camelizedRes.totalElements,
     };
   }
 }

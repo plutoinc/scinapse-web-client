@@ -169,7 +169,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
     if (myCollections && myCollections.length > 0 && currentPaperInCollection) {
       const selectedCollection = myCollections.find(obj => obj.id === selectedCollectionId);
       const note = currentPaperInCollection.note;
-      const containsSelected = selectedCollection ? selectedCollection.contains_selected : null;
+      const containsSelected = selectedCollection ? selectedCollection.containsSelected : null;
       if (containsSelected && note === inputValue) {
         return (
           <button className={styles.saveButtonSaved} onClick={() => this.addToPaper(selectedCollectionId, note)}>
@@ -217,7 +217,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
     const { myCollections, papersInCollection, paperId } = this.props;
     const containsSelected = selectedCollection ? selectedCollection.contains_selected : null;
     if (myCollections && containsSelected) {
-      return papersInCollection.find(obj => obj.paper_id == paperId) || null;
+      return papersInCollection.find(obj => obj.paperId == paperId) || null;
     }
     return null;
   }
@@ -337,9 +337,9 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       return papersInCollection.map(paperInCollection => {
         if (paperInCollection) {
           return (
-            <li className={styles.CollectionBoxPaperItem} key={paperInCollection.paper_id}>
+            <li className={styles.CollectionBoxPaperItem} key={paperInCollection.paperId}>
               <Link
-                to={`/papers/${paperInCollection.paper_id}`}
+                to={`/papers/${paperInCollection.paperId}`}
                 className={styles.CollectionBoxPaperItemPaperTitle}
                 onClick={() => {
                   trackEvent({ category: "Collection", action: "Click Collection to paper", label: "" });

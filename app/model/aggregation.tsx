@@ -21,7 +21,30 @@ interface RawImpactFactor {
   doc_count: number;
 }
 
-export interface GetAggregationRawResult {
+interface AggregationJournal {
+  id: number;
+  title: string;
+  docCount: number;
+}
+
+interface AggregationFos {
+  id: number;
+  name: string;
+  docCount: number;
+}
+
+interface Year {
+  year: number;
+  docCount: number;
+}
+
+interface ImpactFactor {
+  from: number;
+  to: number | null;
+  docCount: number;
+}
+
+export interface RawAggregation {
   fos_list: RawAggregationFos[];
   journals: RawAggregationJournal[];
   impact_factors: RawImpactFactor[];
@@ -29,8 +52,8 @@ export interface GetAggregationRawResult {
 }
 
 export interface AggregationData {
-  fosList: RawAggregationFos[];
-  journals: RawAggregationJournal[];
-  impactFactors: RawImpactFactor[];
-  years: RawYear[];
+  fosList: AggregationFos[];
+  journals: AggregationJournal[];
+  impactFactors: ImpactFactor[];
+  years: Year[];
 }

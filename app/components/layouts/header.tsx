@@ -332,12 +332,12 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
     return (
       <div className={styles.menuItems}>
-        {currentUserState.is_author_connected ? (
+        {currentUserState.isAuthorConnected ? (
           <MenuItem classes={{ root: styles.profileButton }}>
             <Link
               className={styles.buttonOnLink}
               onClick={this.handleRequestCloseUserDropdown}
-              to={`/authors/${currentUserState.author_id}?beta=true`}
+              to={`/authors/${currentUserState.authorId}?beta=true`}
             >
               Profile
             </Link>
@@ -367,7 +367,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     return (
       <div className={styles.rightBox}>
         <div>
-          {!currentUserState.profile_image_url ? (
+          {!currentUserState.profileImageUrl ? (
             <div
               className={styles.userDropdownChar}
               ref={el => (this.userDropdownAnchorRef = el)}
@@ -383,7 +383,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             >
               <div
                 style={{
-                  backgroundImage: `url(${currentUserState.profile_image_url})`,
+                  backgroundImage: `url(${currentUserState.profileImageUrl})`,
                 }}
                 className={styles.profileImage}
               />

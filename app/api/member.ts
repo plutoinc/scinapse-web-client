@@ -4,6 +4,7 @@ import PlutoAxios from "./pluto";
 import { CommonPaginationResponsePart } from "./types/common";
 import { Collection, collectionSchema } from "../model/collection";
 import { memberSchema, Member } from "../model/member";
+const camelcaseKeys = require("camelcase-keys");
 
 export interface GetCollectionsResponse extends CommonPaginationResponsePart {
   content: Collection[];
@@ -20,18 +21,16 @@ class MemberAPI extends PlutoAxios {
     result: number;
   }> {
     const res = await this.get(`/members/${memberId}`, { cancelToken });
-
-    const normalizedMember = normalize(res.data, memberSchema);
-
+    const camelizedRes = camelcaseKeys(res.data, { deep: true });
+    const normalizedMember = normalize(camelizedRes, memberSchema);
     return normalizedMember;
   }
 
   public async getCollections(memberId: number, cancelToken: CancelToken): Promise<GetCollectionsResponse> {
     const res = await this.get(`/members/${memberId}/collections`, { cancelToken });
-
-    const normalizedCollections = normalize(res.data.data.content, [collectionSchema]);
-
-    return { ...res.data.data, ...normalizedCollections };
+    const camelizedRes = camelcaseKeys(res.data.data, { deep: true });
+    const normalizedCollections = normalize(camelizedRes.content, [collectionSchema]);
+    return { ...camelizedRes, ...normalizedCollections };
   }
 
   public async getMyCollections(paperId: number, cancelToken: CancelToken): Promise<GetCollectionsResponse> {
@@ -41,10 +40,10 @@ class MemberAPI extends PlutoAxios {
       },
       cancelToken,
     });
+    const camelizedRes = camelcaseKeys(res.data.data, { deep: true });
+    const normalizedCollections = normalize(camelizedRes.content, [collectionSchema]);
 
-    const normalizedCollections = normalize(res.data.data.content, [collectionSchema]);
-
-    return { ...res.data.data, ...normalizedCollections };
+    return { ...camelizedRes, ...normalizedCollections };
   }
 }
 

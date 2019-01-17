@@ -36,13 +36,13 @@ class CollectionItem extends React.PureComponent<CollectionItemProps, Collection
   public render() {
     const { collection } = this.props;
 
-    const parsedUpdatedAt = parse(collection.updated_at);
+    const parsedUpdatedAt = parse(collection.updatedAt);
 
     return (
       <li
         className={classNames({
           [`${styles.collectionItem}`]: true,
-          [`${styles.selected}`]: collection.contains_selected,
+          [`${styles.selected}`]: collection.containsSelected,
         })}
         key={`collection_dialog_${collection.id}`}
         onClick={() => {
@@ -51,7 +51,7 @@ class CollectionItem extends React.PureComponent<CollectionItemProps, Collection
       >
         <div className={styles.collectionTitle}>{collection.title}</div>
         <div className={styles.paperCount}>
-          {`${collection.paper_count} papers · ${distanceInWordsToNow(parsedUpdatedAt)} ago`}
+          {`${collection.paperCount} papers · ${distanceInWordsToNow(parsedUpdatedAt)} ago`}
         </div>
 
         <div className={styles.collectionIconWrapper}>{this.getCollectionItemIcon(collection)}</div>
@@ -64,7 +64,7 @@ class CollectionItem extends React.PureComponent<CollectionItemProps, Collection
 
     if (isLoading) {
       return <Spinner thickness={4} className={styles.buttonSpinner} size={18} />;
-    } else if (collection.contains_selected) {
+    } else if (collection.containsSelected) {
       return <Icon icon="MINUS" />;
     } else {
       return <Icon icon="SMALL_PLUS" />;
@@ -82,7 +82,7 @@ class CollectionItem extends React.PureComponent<CollectionItemProps, Collection
     try {
       this.setState({ isLoading: true, hasFailed: false });
 
-      if (collection.contains_selected) {
+      if (collection.containsSelected) {
         await handleRemovingPaperFromCollection({
           collection,
           paperIds: [collectionDialogPaperId],
