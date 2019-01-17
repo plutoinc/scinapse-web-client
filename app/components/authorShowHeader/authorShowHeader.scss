@@ -143,3 +143,59 @@
   color: $black0 !important;
   font-size: 12px;
 }
+
+// Mobile (0~768)
+@media (max-width: $mobile-width) {
+  .container {
+    display: block;
+    width: $mobile-container-width;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0 10px;
+  }
+
+  .headerBox {
+    padding-top: 24px;
+  }
+
+  .nameHeaderBox {
+    min-width: 251px;
+  }
+
+  .leftContentWrapper {
+    width: $mobile-container-width;
+  }
+
+  .profileInformationSection {
+    margin-bottom: 40px;
+  }
+
+  .bioSection {
+    margin-bottom: 24px;
+  }
+
+  .mobileMetricInformation {
+    display: inline-block;
+    margin-top: 24px;
+    margin-bottom: 16px;
+
+    .metricWrapper {
+      width: 100px;
+      display: inline-grid;
+      margin-right: 12px;
+    }
+  }
+
+  .contactSection {
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  .externalSource {
+    margin-left: 0 !important;
+  }
+
+  .rightBox {
+    display: none;
+  }
+}

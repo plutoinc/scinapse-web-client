@@ -1,17 +1,20 @@
 import * as React from "react";
 import Truncate from "react-truncate";
 import MuiTooltip from "@material-ui/core/Tooltip";
+import * as classNames from "classnames";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { Author } from "../../model/author/author";
 import Icon from "../../icons";
 import formatNumber from "../../helpers/formatNumber";
 import UploadableProfileImage from "./uploadableProfileImage";
 import { CurrentUser } from "../../model/currentUser";
+import { UserDevice } from "../layouts/records";
 const styles = require("./authorShowHeader.scss");
 
 interface AuthorShowHeaderProps {
   author: Author;
   currentUser: CurrentUser;
+  userDevice: UserDevice;
   rightBoxContent: React.ReactNode;
   navigationContent: React.ReactNode;
   guideBubbleSpeech?: React.ReactNode;
@@ -34,7 +37,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
   }
 
   public render() {
-    const { author, rightBoxContent, navigationContent, guideBubbleSpeech } = this.props;
+    const { author, rightBoxContent, navigationContent, guideBubbleSpeech, userDevice } = this.props;
 
     return (
       <div className={styles.headerBox}>
@@ -60,32 +63,12 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
                 <div className={styles.affiliation}>
                   {author.lastKnownAffiliation ? author.lastKnownAffiliation.name || "" : ""}
                 </div>
-                <div className={styles.metricInformation}>
-                  {(author.paperCount || author.paperCount === 0) && (
-                    <div className={styles.metricWrapper}>
-                      <span className={styles.metricValue}>{formatNumber(author.paperCount)}</span>
-                      <span className={styles.metricLabel}>Publications</span>
-                    </div>
-                  )}
-
-                  {(author.hIndex || author.hIndex === 0) && (
-                    <div className={styles.metricWrapper}>
-                      <span className={styles.metricValue}>{formatNumber(author.hIndex)}</span>
-                      <span className={styles.metricLabel}>H-index</span>
-                    </div>
-                  )}
-
-                  {(author.citationCount || author.hIndex === 0) && (
-                    <div className={styles.metricWrapper}>
-                      <span className={styles.metricValue}>{formatNumber(author.citationCount)}</span>
-                      <span className={styles.metricLabel}>Citations</span>
-                    </div>
-                  )}
-                </div>
+                {userDevice === UserDevice.DESKTOP && this.getMetricInformation()}
                 <div className={styles.rightBox}>{rightBoxContent}</div>
                 {guideBubbleSpeech}
               </span>
             </div>
+            {userDevice !== UserDevice.DESKTOP && this.getMetricInformation()}
             {this.getProfileInformation()}
             {navigationContent}
           </div>
@@ -93,6 +76,40 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
       </div>
     );
   }
+
+  private getMetricInformation = () => {
+    const { author, userDevice } = this.props;
+
+    return (
+      <div
+        className={classNames({
+          [styles.metricInformation]: userDevice === UserDevice.DESKTOP,
+          [styles.mobileMetricInformation]: userDevice !== UserDevice.DESKTOP,
+        })}
+      >
+        {(author.paperCount || author.paperCount === 0) && (
+          <div className={styles.metricWrapper}>
+            <span className={styles.metricValue}>{formatNumber(author.paperCount)}</span>
+            <span className={styles.metricLabel}>Publications</span>
+          </div>
+        )}
+
+        {(author.hIndex || author.hIndex === 0) && (
+          <div className={styles.metricWrapper}>
+            <span className={styles.metricValue}>{formatNumber(author.hIndex)}</span>
+            <span className={styles.metricLabel}>H-index</span>
+          </div>
+        )}
+
+        {(author.citationCount || author.hIndex === 0) && (
+          <div className={styles.metricWrapper}>
+            <span className={styles.metricValue}>{formatNumber(author.citationCount)}</span>
+            <span className={styles.metricLabel}>Citations</span>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   private getProfileInformation = () => {
     const { author } = this.props;
@@ -103,7 +120,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
     }
 
     return (
-      <div>
+      <div className={styles.profileInformationSection}>
         <div className={styles.bioSection}>
           <Truncate
             lines={!expanded && 3}

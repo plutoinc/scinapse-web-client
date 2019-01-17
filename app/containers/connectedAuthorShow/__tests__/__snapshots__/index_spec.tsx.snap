@@ -96,7 +96,9 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
               />
             </span>
           </div>
-          <div>
+          <div
+            className="profileInformationSection"
+          >
             <div
               className="bioSection"
             />
@@ -666,7 +668,9 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
               />
             </span>
           </div>
-          <div>
+          <div
+            className="profileInformationSection"
+          >
             <div
               className="bioSection"
             />
@@ -1026,7 +1030,9 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
               />
             </span>
           </div>
-          <div>
+          <div
+            className="profileInformationSection"
+          >
             <div
               className="bioSection"
             />

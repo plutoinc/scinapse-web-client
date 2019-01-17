@@ -111,7 +111,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
   }
 
   public render() {
-    const { author, authorShow, currentUser, match, location } = this.props;
+    const { author, authorShow, currentUser, match, location, layout } = this.props;
     const { isOpenModifyProfileDialog, isOpenSelectedPaperDialog } = this.state;
     const pathArr = location.pathname.split("/");
     const isCVPage = pathArr[pathArr.length - 1] === "cv";
@@ -130,11 +130,11 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
         <div className={styles.rootWrapper}>
           <AuthorShowHeader
             author={author}
+            userDevice={layout.userDevice}
             currentUser={currentUser}
             rightBoxContent={this.getRightBoxContent()}
             navigationContent={
               <div className={styles.tabNavigationWrapper}>
-                {/* TODO: code refactoring */}
                 <Link
                   to={match.url}
                   className={classNames({
@@ -144,7 +144,6 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                 >
                   PUBLICATIONS
                 </Link>
-                {/* TODO: code refactoring */}
                 <Link
                   to={`${match.url}/cv`}
                   className={classNames({
@@ -296,7 +295,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
         </div>
         <div className={styles.selectedPaperDescription} />
         {this.getSelectedPapers()}
-        <div style={{ display: "flex", justifyContent: "center" }}>{addSelectPublicationButton}</div>
+        <div className={styles.selectedPaperWrapper}>{addSelectPublicationButton}</div>
       </div>
     );
   };

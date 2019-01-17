@@ -89,3 +89,45 @@
     }
   }
 }
+
+// Mobile (0~768)
+@media (max-width: $mobile-width) {
+  .container {
+    display: block;
+    width: $mobile-container-width;
+    margin-left: 0;
+    margin-right: 0;
+
+    .rightBox {
+      width: $regular-display-paper-show-rightBox-width;
+    }
+  }
+
+  .leftContentWrapper {
+    width: $mobile-container-width;
+    padding: 10px;
+  }
+
+  .itemWrapper {
+    padding: 0;
+
+    &:hover {
+      .hoverButtonWrapper {
+        display: none;
+      }
+    }
+
+    .dateSectionWrapper {
+      padding: 0;
+      margin-right: 24px;
+    }
+
+    .contentWrapper {
+      width: $mobile-cv-info-layout-width;
+    }
+  }
+
+  .rightContentWrapper {
+    display: none;
+  }
+}

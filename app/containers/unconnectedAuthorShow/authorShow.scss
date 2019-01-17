@@ -146,3 +146,21 @@
   margin-left: -13px;
   margin-top: -60px;
 }
+
+// Mobile (0~768)
+@media (max-width: $mobile-width) {
+  .container {
+    display: block;
+    width: $mobile-container-width;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .contentLeftBox {
+    padding: 10px;
+  }
+
+  .speechBubble {
+    display: none;
+  }
+}

@@ -105,3 +105,25 @@
     height: 27px;
   }
 }
+
+@media (max-width: $mobile-width) {
+  .profileImageBox {
+    width: 72px;
+    height: 72px;
+  }
+
+  .imgUploadBox {
+    width: 72px;
+    height: 72px;
+  }
+
+  .profileImgBoxWrapper {
+    margin-top: 0px;
+    margin-right: 16px;
+
+    .profileImage {
+      width: 72px;
+      height: 72px;
+    }
+  }
+}
