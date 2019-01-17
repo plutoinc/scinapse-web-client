@@ -97,38 +97,6 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
             </span>
           </div>
           <div
-            className="mobileMetricInformation"
-          >
-            <div
-              className="metricWrapper"
-            >
-              <span
-                className="metricValue"
-              >
-                19
-              </span>
-              <span
-                className="metricLabel"
-              >
-                Publications
-              </span>
-            </div>
-            <div
-              className="metricWrapper"
-            >
-              <span
-                className="metricValue"
-              >
-                3,398
-              </span>
-              <span
-                className="metricLabel"
-              >
-                Citations
-              </span>
-            </div>
-          </div>
-          <div
             className="profileInformationSection"
           >
             <div
@@ -715,38 +683,6 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
             </span>
           </div>
           <div
-            className="mobileMetricInformation"
-          >
-            <div
-              className="metricWrapper"
-            >
-              <span
-                className="metricValue"
-              >
-                19
-              </span>
-              <span
-                className="metricLabel"
-              >
-                Publications
-              </span>
-            </div>
-            <div
-              className="metricWrapper"
-            >
-              <span
-                className="metricValue"
-              >
-                3,398
-              </span>
-              <span
-                className="metricLabel"
-              >
-                Citations
-              </span>
-            </div>
-          </div>
-          <div
             className="profileInformationSection"
           >
             <div
@@ -1107,38 +1043,6 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
                 className="rightBox"
               />
             </span>
-          </div>
-          <div
-            className="mobileMetricInformation"
-          >
-            <div
-              className="metricWrapper"
-            >
-              <span
-                className="metricValue"
-              >
-                19
-              </span>
-              <span
-                className="metricLabel"
-              >
-                Publications
-              </span>
-            </div>
-            <div
-              className="metricWrapper"
-            >
-              <span
-                className="metricValue"
-              >
-                3,398
-              </span>
-              <span
-                className="metricLabel"
-              >
-                Citations
-              </span>
-            </div>
           </div>
           <div
             className="profileInformationSection"
