@@ -160,7 +160,7 @@ export function updateProfileImage(authorId: number, formData: FormData) {
       dispatch(ActionCreators.startToUpdateProfileImageData());
 
       const profileImg = await AuthorAPI.updateAuthorProfileImage(authorId, formData);
-      const profileImageUrl = profileImg.data.content["profile_image_url"];
+      const profileImageUrl = profileImg.data.content.profileImageUrl;
 
       dispatch(ActionCreators.addEntity(profileImg));
       dispatch(ActionCreators.succeededToUpdateProfileImageData({ authorId, profileImageUrl }));

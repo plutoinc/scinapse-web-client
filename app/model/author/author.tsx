@@ -39,25 +39,5 @@ export interface Author {
   fosList: NewFOS[];
 }
 
-export function mapRawAuthor(rawAuthor: RawAuthor): Author {
-  return {
-    id: rawAuthor.id,
-    name: rawAuthor.name,
-    hIndex: rawAuthor.hindex,
-    lastKnownAffiliation: rawAuthor.last_known_affiliation,
-    paperCount: rawAuthor.paper_count,
-    citationCount: rawAuthor.citation_count,
-    bio: rawAuthor.bio,
-    representativePapers: rawAuthor.representative_papers,
-    topPapers: rawAuthor.top_papers,
-    email: rawAuthor.email,
-    webPage: rawAuthor.web_page,
-    profileImageUrl: rawAuthor.profile_image_url,
-    isLayered: rawAuthor.is_layered,
-    isEmailHidden: rawAuthor.is_email_hidden,
-    fosList: rawAuthor.fos_list,
-  };
-}
-
 export const authorSchema = new schema.Entity("authors");
 export const authorListSchema = [authorSchema];

@@ -4,16 +4,16 @@ jest.mock("react-truncate");
 import * as React from "react";
 import * as renderer from "react-test-renderer";
 import { Provider } from "react-redux";
+import { MemoryRouter, Route } from "react-router-dom";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { initialState } from "../../../reducers";
 import ConnectedAuthorShow from "../../../containers/connectedAuthorShow";
 import { RAW } from "../../../__mocks__";
-import { mapRawAuthor } from "../../../model/author/author";
 import { AUTHOR_SHOW_PATH } from "../../../routes";
-import { MemoryRouter, Route } from "react-router-dom";
+const camelcaseKeys = require("camelcase-keys");
 
 describe("ConnectedAuthorShow Component", () => {
-  const mappedAuthor = mapRawAuthor(RAW.AUTHOR);
+  const mappedAuthor = camelcaseKeys(RAW.AUTHOR, { deep: true });
   let mockStore = generateMockStore(initialState);
   let mockState: any;
 

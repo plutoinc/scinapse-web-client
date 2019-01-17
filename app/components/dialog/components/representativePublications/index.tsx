@@ -59,8 +59,8 @@ class RepresentativePublicationsDialog extends React.PureComponent<
         this.setState(prevState => ({
           ...prevState,
           isLoading: false,
-          papers: res.data.content.filter(paper => !paper.is_representative),
-          representativePapers: res.data.content.filter(paper => paper.is_representative),
+          papers: res.data.content.filter(paper => !paper.isRepresentative),
+          representativePapers: res.data.content.filter(paper => paper.isRepresentative),
         }));
       } catch (err) {
         console.error(err);
@@ -155,8 +155,8 @@ class RepresentativePublicationsDialog extends React.PureComponent<
   private getRemainedPaperCount = () => {
     const { papers, representativePapers } = this.state;
 
-    const selectedPaperCount = papers.filter(paper => paper.is_representative).length;
-    const alreadySelectedPaperCount = representativePapers.filter(paper => paper.is_representative).length;
+    const selectedPaperCount = papers.filter(paper => paper.isRepresentative).length;
+    const alreadySelectedPaperCount = representativePapers.filter(paper => paper.isRepresentative).length;
 
     const remainingPaperCount = MAXIMUM_SELECT_COUNT - (selectedPaperCount + alreadySelectedPaperCount);
 
@@ -176,10 +176,10 @@ class RepresentativePublicationsDialog extends React.PureComponent<
 
     this.setState(prevState => ({ ...prevState, isLoading: true }));
     try {
-      const selectedPaperIds = papers.filter(paper => paper.is_representative).map(paper => paper.paper_id);
+      const selectedPaperIds = papers.filter(paper => paper.isRepresentative).map(paper => paper.paperId);
       const alreadySelectedPaperIds = representativePapers
-        .filter(paper => paper.is_representative)
-        .map(paper => paper.paper_id);
+        .filter(paper => paper.isRepresentative)
+        .map(paper => paper.paperId);
 
       const fullPapers = await AuthorAPI.updateRepresentativePapers({
         authorId: author.id,
@@ -209,9 +209,9 @@ class RepresentativePublicationsDialog extends React.PureComponent<
             onClick={() => {
               this.handleTogglePaper(paper);
             }}
-            key={paper.paper_id}
+            key={paper.paperId}
             className={classNames({
-              [styles.disabledSelectItem]: this.getRemainedPaperCount() === 0 && !paper.is_representative,
+              [styles.disabledSelectItem]: this.getRemainedPaperCount() === 0 && !paper.isRepresentative,
               [styles.paperItemWrapper]: true,
             })}
           >
@@ -221,7 +221,7 @@ class RepresentativePublicationsDialog extends React.PureComponent<
                 checked: styles.checkedCheckboxIcon,
               }}
               color="primary"
-              checked={paper.is_representative}
+              checked={paper.isRepresentative}
             />
             <div className={styles.paperItemTitle}>{paper.title}</div>
           </div>
@@ -235,14 +235,14 @@ class RepresentativePublicationsDialog extends React.PureComponent<
   private handleTogglePaper = (paper: SimplePaper) => {
     const { papers, representativePapers } = this.state;
 
-    if (this.getRemainedPaperCount() === 0 && !paper.is_representative) {
+    if (this.getRemainedPaperCount() === 0 && !paper.isRepresentative) {
       window.alert("You have exceeded the number of choices available.");
       return null;
     }
 
     const index = papers.indexOf(paper);
     if (index !== -1) {
-      const newPaper = { ...papers[index], is_representative: !papers[index].is_representative };
+      const newPaper = { ...papers[index], isRepresentative: !papers[index].isRepresentative };
       const newPapers = [...papers.slice(0, index), newPaper, ...papers.slice(index + 1)];
       return this.setState(prevState => ({ ...prevState, papers: newPapers }));
     }
@@ -251,7 +251,7 @@ class RepresentativePublicationsDialog extends React.PureComponent<
     if (selectedPaperIndex !== -1) {
       const newPaper = {
         ...representativePapers[selectedPaperIndex],
-        is_representative: !representativePapers[selectedPaperIndex].is_representative,
+        isRepresentative: !representativePapers[selectedPaperIndex].isRepresentative,
       };
       const newPapers = [
         ...representativePapers.slice(0, selectedPaperIndex),
