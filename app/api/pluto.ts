@@ -3,7 +3,7 @@ import getAPIHost from "./getHost";
 import EnvChecker from "../helpers/envChecker";
 import { CommonError } from "../model/error";
 
-export const TIMEOUT_FOR_SAFE_RENDERING = 29500;
+export const TIMEOUT_FOR_SAFE_RENDERING = 15000;
 
 export default class PlutoAxios {
   public static getGlobalError(axiosResponse: AxiosError) {
