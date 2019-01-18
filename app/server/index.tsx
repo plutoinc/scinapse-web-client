@@ -178,8 +178,6 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
       Empty content HTML with <script> tag which contains bundled javascript address for client.
 
   ******** */
-  console.log(event, "=== event at child function");
-
   const LAMBDA_SERVICE_NAME = "pluto-web-client";
   const path = event.path;
   const queryParamsObj = event.queryStringParameters;
@@ -225,46 +223,39 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
   }
 
   const normalRender = async (): Promise<string> => {
-    let html: string;
-    try {
-      html = await serverSideRender({
-        requestUrl: requestPath,
-        scriptVersion: bundledJsForBrowserPath,
-        queryParamsObject: queryParamsObj,
-        version,
-      });
+    const html = await serverSideRender({
+      requestUrl: requestPath,
+      scriptVersion: bundledJsForBrowserPath,
+      queryParamsObject: queryParamsObj,
+      version,
+    });
 
-      if (html) {
-        const buf = new Buffer(html);
-        if (buf.byteLength > 6291456 /* 6MB */) {
-          throw new Error("The result HTML size is more than AWS Lambda limitation.");
-        }
-
-        succeededToServerRendering = true;
-
-        if (succeededToServerRendering) {
-          await new Promise(resolve => {
-            cloudwatch.putMetricData(makeRenderingCloudWatchMetricLog("NORMAL RENDERING"), err => {
-              if (err) {
-                console.log(err);
-              }
-              resolve();
-            });
-          });
-        }
-
-        return html;
-      } else {
-        throw new Error("No HTML");
+    if (html) {
+      const buf = new Buffer(html);
+      if (buf.byteLength > 6291456 /* 6MB */) {
+        throw new Error("The result HTML size is more than AWS Lambda limitation.");
       }
-    } catch (err) {
-      console.error(`Had error during the normal rendering with ${err}`);
-      cloudwatch.putMetricData(makeRenderingCloudWatchMetricLog("ERROR HANDLING RENDERING"));
-      return renderJavaScriptOnly(bundledJsForBrowserPath, version);
+
+      succeededToServerRendering = true;
+
+      if (succeededToServerRendering) {
+        await new Promise(resolve => {
+          cloudwatch.putMetricData(makeRenderingCloudWatchMetricLog("NORMAL RENDERING"), err => {
+            if (err) {
+              console.log(err);
+            }
+            resolve();
+          });
+        });
+      }
+
+      return html;
+    } else {
+      throw new Error("No HTML");
     }
   };
 
-  const fallbackRender = new Promise((resolve, _reject) => {
+  const fallbackRender: Promise<string> = new Promise((resolve, _reject) => {
     const html = renderJavaScriptOnly(bundledJsForBrowserPath, version);
     setTimeout(
       () => {
@@ -281,8 +272,15 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
     );
   });
 
-  const resBody = await Promise.race([normalRender(), fallbackRender]);
-  console.log(resBody);
+  let resBody: string;
+  try {
+    resBody = await Promise.race([normalRender(), fallbackRender]);
+  } catch (err) {
+    console.error(`Had error during the normal rendering with ${err}`);
+    cloudwatch.putMetricData(makeRenderingCloudWatchMetricLog("ERROR HANDLING RENDERING"));
+    resBody = renderJavaScriptOnly(bundledJsForBrowserPath, version);
+  }
+
   return {
     statusCode: 200,
     headers: {
