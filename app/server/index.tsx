@@ -282,7 +282,7 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
   });
 
   const resBody = await Promise.race([normalRender(), fallbackRender]);
-
+  console.log(resBody);
   return {
     statusCode: 200,
     headers: {

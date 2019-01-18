@@ -5,6 +5,7 @@ provider:
   runtime: nodejs8.10
   region: us-east-1
   role: LambdaEdgeRole
+  logRetentionInDays: 30
 
 plugins:
   - serverless-lambda-version-custom
@@ -27,7 +28,7 @@ functions:
   render:
     handler: ${file(./env/${opt:stage}.yml):HANDLER}
     memorySize: 512
-    timeout: 30
+    timeout: 20
     package:
       artifact: dist.zip
     events:
@@ -88,10 +89,6 @@ resources:
                   Action:
                     - cloudwatch:PutMetricData
                   Resource: "*"
-
-    RenderLogGroup:
-      Properties:
-        RetentionInDays: "30"
 
     CloudFrontDistribution:
       Type: AWS::CloudFront::Distribution
