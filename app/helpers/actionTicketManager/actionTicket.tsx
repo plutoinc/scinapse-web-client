@@ -71,6 +71,7 @@ export interface FinalActionTicket extends ActionTicketParams {
   sessionId: string;
   createdAt: string;
   userId: string | null;
+  clientVersion: string | null;
 }
 
 export default class ActionTicket {
@@ -109,6 +110,10 @@ export default class ActionTicket {
       actionTag: this.actionTag,
       actionArea: this.actionArea,
       actionLabel: this.actionLabel,
+      clientVersion:
+        EnvChecker.isProdBrowser() && (window as any)._script_version_
+          ? (window as any)._script_version_.version
+          : null,
     };
   }
 
