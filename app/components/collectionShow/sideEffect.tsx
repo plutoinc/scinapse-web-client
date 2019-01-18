@@ -13,7 +13,16 @@ export async function fetchCollectionShowData(params: LoadDataParams<CollectionS
     try {
       const promiseArr: Array<Promise<any>> = [];
       promiseArr.push(dispatch(getCollection(collectionId, params.cancelToken)));
-      promiseArr.push(dispatch(getPapers(collectionId, params.cancelToken)));
+      promiseArr.push(
+        dispatch(
+          getPapers({
+            collectionId,
+            cancelToken: params.cancelToken,
+            sort: "RECENTLY_ADDED",
+            page: 1,
+          })
+        )
+      );
       await Promise.all(promiseArr);
     } catch (err) {
       // TODO: add redirect logic

@@ -19,6 +19,8 @@ import { PaperInCollection, paperInCollectionSchema } from "../../model/paperInC
 import Footer from "../layouts/footer";
 import Icon from "../../icons";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
+import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from "../common/sortBox";
+import { getPapers } from "./actions";
 const styles = require("./collectionShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -131,6 +133,14 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                       <span>{`Papers `}</span>
                       <span className={styles.paperCount}>{collection.paperCount}</span>
                     </div>
+                    <div className={styles.collectionSortBoxWrapper}>
+                      <SortBox
+                        sortOption={collectionShow.sortType}
+                        handleClickSortOption={this.handleClickSort}
+                        exposeRecentlyUpdated={true}
+                        exposeRelevanceOption={false}
+                      />
+                    </div>
                   </div>
                   <div>{this.getPaperList()}</div>
                 </div>
@@ -145,6 +155,19 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
       return null;
     }
   }
+
+  private handleClickSort = (option: AUTHOR_PAPER_LIST_SORT_TYPES) => {
+    const { collectionShow, dispatch } = this.props;
+    console.log(collectionShow.mainCollectionId);
+    dispatch(
+      getPapers({
+        collectionId: collectionShow.mainCollectionId,
+        page: 1,
+        sort: option,
+        cancelToken: this.cancelToken.token,
+      })
+    );
+  };
 
   private getCollectionControlBtns = () => {
     const { currentUser, collection } = this.props;

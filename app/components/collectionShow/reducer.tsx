@@ -1,12 +1,15 @@
 import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
-import { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
+import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 
 export interface CollectionShowState
   extends Readonly<{
       isLoadingCollection: boolean;
       failedToLoadingCollection: boolean;
       mainCollectionId: number;
-      sortType: PAPER_LIST_SORT_TYPES;
+      papersTotalPage: number;
+      papersCurrentPage: number;
+      papersTotalCount: number;
+      sortType: AUTHOR_PAPER_LIST_SORT_TYPES;
       paperIds: number[];
     }> {}
 
@@ -14,7 +17,10 @@ export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
   isLoadingCollection: false,
   failedToLoadingCollection: false,
   mainCollectionId: 0,
-  sortType: "MOST_CITATIONS",
+  papersTotalPage: 0,
+  papersCurrentPage: 1,
+  papersTotalCount: 0,
+  sortType: "RECENTLY_ADDED",
   paperIds: [],
 };
 
