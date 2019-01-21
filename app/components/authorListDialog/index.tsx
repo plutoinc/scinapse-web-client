@@ -64,7 +64,7 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
           </div>
         </div>
         <div className={styles.subHeader}>
-          <div className={styles.paperTitle}>{paper.title}</div>
+          <div className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: paper.title }} />
           {this.getJournalText()}
         </div>
         <div className={styles.contentBox}>
