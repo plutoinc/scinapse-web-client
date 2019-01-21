@@ -1,6 +1,6 @@
 import { ActionCreatorsMapObject } from "redux";
 import { AppEntities } from "../reducers/entity";
-import { CommonPaginationResponsePart } from "../api/types/common";
+import { CommonPaginationResponsePart, PageObjectV2 } from "../api/types/common";
 import { AvailableCitationType } from "../containers/paperShow/records";
 import { GetCollectionsResponse } from "../api/member";
 import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
@@ -244,8 +244,9 @@ export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
   return d;
 }
 
-interface GetMultiPapersInCollection extends CommonPaginationResponsePart {
-  paperIds: number[];
+interface GetMultiPapersInCollection extends PageObjectV2 {
+  paperIds: number | number[];
+  sort?: string;
 }
 
 interface GetMultiPapers extends CommonPaginationResponsePart {

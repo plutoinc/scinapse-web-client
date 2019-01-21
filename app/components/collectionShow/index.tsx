@@ -164,14 +164,14 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
 
   private getPaginationComponent = () => {
     const { collectionShow, layout } = this.props;
-    const { papersCurrentPage, papersTotalPage } = collectionShow;
+    const { currentPaperListPage, totalPaperListPage } = collectionShow;
 
-    const currentPageIndex: number = papersCurrentPage - 1;
+    const currentPageIndex: number = currentPaperListPage - 1;
 
     if (layout.userDevice !== UserDevice.DESKTOP) {
       return (
         <MobilePagination
-          totalPageCount={papersTotalPage}
+          totalPageCount={totalPaperListPage}
           currentPageIndex={currentPageIndex}
           onItemClick={this.fetchPapers}
           wrapperStyle={{
@@ -183,7 +183,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
       return (
         <DesktopPagination
           type="search_result_papers"
-          totalPage={papersTotalPage}
+          totalPage={totalPaperListPage}
           currentPageIndex={currentPageIndex}
           onItemClick={this.fetchPapers}
           wrapperStyle={{

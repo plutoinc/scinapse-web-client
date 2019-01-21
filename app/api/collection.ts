@@ -4,9 +4,9 @@ import PlutoAxios from "./pluto";
 import { Collection, collectionSchema } from "../model/collection";
 import { Paper } from "../model/paper";
 import { PaperInCollection, paperInCollectionSchema } from "../model/paperInCollection";
-import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../components/common/sortBox/index";
-import { DEFAULT_AUTHOR_PAPERS_SIZE } from "./author/index";
-import { CommonPaginationResponsePart } from "./types/common";
+import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../components/common/sortBox";
+import { DEFAULT_AUTHOR_PAPERS_SIZE } from "./author";
+import { NormalizedDataWithPaginationV2, RawPaginationResponseV2 } from "./types/common";
 const camelcaseKeys = require("camelcase-keys");
 
 export interface UpdatePaperNoteToCollectionParams {
@@ -46,17 +46,6 @@ export interface GetCollectionsPapersParams {
   size?: number;
 }
 
-interface RawCollectionPapersResponse {
-  content: RawCollectionPaperListResponse[];
-}
-
-interface RawCollectionPaperListResponse {
-  note: string | null;
-  collection_id: number;
-  paper_id: number;
-  paper: Paper;
-}
-
 interface UpdatePaperNoteResponse {
   note: string;
   paper: null;
@@ -64,10 +53,12 @@ interface UpdatePaperNoteResponse {
   paperId: number;
 }
 
-interface CollectionAPIGetPapersResult extends CommonPaginationResponsePart {
-  entities: { papersInCollection: { [paperId: number]: PaperInCollection } };
-  result: number[];
-}
+interface CollectionAPIGetPapersResult
+  extends NormalizedDataWithPaginationV2<{
+      papersInCollection: {
+        [paperId: number]: PaperInCollection;
+      };
+    }> {}
 
 class CollectionAPI extends PlutoAxios {
   public async getPapers(params: GetCollectionsPapersParams): Promise<CollectionAPIGetPapersResult> {
@@ -81,11 +72,10 @@ class CollectionAPI extends PlutoAxios {
       cancelToken: params.cancelToken,
     });
 
-    const resData: RawCollectionPapersResponse = res.data.data;
-    const resPaperData = resData.content;
+    const resData: RawPaginationResponseV2<Paper[]> = res.data;
 
     // Validation
-    resPaperData.forEach(datum => {
+    resData.data.content.forEach(datum => {
       if (
         !datum.hasOwnProperty("note") ||
         !datum.hasOwnProperty("collection_id") ||
@@ -96,20 +86,13 @@ class CollectionAPI extends PlutoAxios {
         throw new Error("Collection API's getPapers method is broken.");
       }
     });
-    const camelizedPaperData = camelcaseKeys(resPaperData, { deep: true });
-    const camelizedPageData = camelcaseKeys(res.data.data.page, { deep: true });
-    const normalizedData = normalize(camelizedPaperData, [paperInCollectionSchema]);
+    const camelizedData = camelcaseKeys(resData.data, { deep: true });
+    const normalizedData = normalize(camelizedData.content, [paperInCollectionSchema]);
     return {
       entities: normalizedData.entities,
       result: normalizedData.result,
-      number: camelizedPageData.page,
-      sort: params.sort,
-      size: camelizedPageData.size,
-      first: camelizedPageData.first,
-      last: camelizedPageData.last,
-      numberOfElements: camelizedPageData.numberOfElements,
-      totalPages: camelizedPageData.totalPages,
-      totalElements: camelizedPageData.totalElements,
+      page: camelizedData.page,
+      error: resData.error,
     };
   }
 

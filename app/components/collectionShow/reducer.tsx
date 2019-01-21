@@ -6,19 +6,19 @@ export interface CollectionShowState
       isLoadingCollection: boolean;
       failedToLoadingCollection: boolean;
       mainCollectionId: number;
-      papersTotalPage: number;
-      papersCurrentPage: number;
+      totalPaperListPage: number;
+      currentPaperListPage: number;
       papersTotalCount: number;
       sortType: AUTHOR_PAPER_LIST_SORT_TYPES;
-      paperIds: number[];
+      paperIds: number | number[];
     }> {}
 
 export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
   isLoadingCollection: false,
   failedToLoadingCollection: false,
   mainCollectionId: 0,
-  papersTotalPage: 0,
-  papersCurrentPage: 1,
+  totalPaperListPage: 0,
+  currentPaperListPage: 1,
   papersTotalCount: 0,
   sortType: "RECENTLY_ADDED",
   paperIds: [],
@@ -58,8 +58,8 @@ export function reducer(
         ...state,
         paperIds: action.payload.paperIds,
         sortType: action.payload.sort as AUTHOR_PAPER_LIST_SORT_TYPES,
-        papersTotalPage: action.payload.totalPages,
-        papersCurrentPage: action.payload.number + 1,
+        totalPaperListPage: action.payload.totalPages,
+        currentPaperListPage: action.payload.page + 1,
         papersTotalCount: action.payload.totalElements,
       };
     }
