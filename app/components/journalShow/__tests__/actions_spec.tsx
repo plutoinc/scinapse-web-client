@@ -125,7 +125,14 @@ describe("Journal Show actions spec", () => {
       it("should return JOURNAL_SHOW_SUCCEEDED_TO_GET_PAPERS", () => {
         expect(actions[2]).toEqual({
           type: ACTION_TYPES.JOURNAL_SHOW_SUCCEEDED_TO_GET_PAPERS,
-          payload: { currentPage: 1, paperCount: 1, paperIds: [8107], totalPage: 1, filteredPaperCount: 1 },
+          payload: {
+            currentPage: 1,
+            paperCount: 1,
+            paperIds: [8107],
+            totalPage: 1,
+            filteredPaperCount: 1,
+            searchKeyword: "",
+          },
         });
       });
     });
