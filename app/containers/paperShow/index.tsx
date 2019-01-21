@@ -106,16 +106,17 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     };
   }
 
-  public componentDidMount() {
-    const { configuration, currentUser, dispatch, match, location } = this.props;
+  public async componentDidMount() {
+    const { configuration, currentUser, dispatch, match, location, paperShow } = this.props;
     const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
     const notRenderedAtServerOrJSAlreadyInitialized =
       !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
 
     window.addEventListener("scroll", this.handleScroll, { passive: true });
+    this.handleScrollEvent();
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
-      fetchPaperShowData(
+      await fetchPaperShowData(
         {
           dispatch,
           match,
@@ -125,8 +126,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         },
         currentUser
       );
+
+      if (paperShow.citedPaperCurrentPage === 0 && location.hash === "#cited") {
+        this.scrollToCitedPapersNode();
+      } else if (paperShow.referencePaperCurrentPage === 0 && location.hash === "#references") {
+        this.scrollToReferencePapersNode();
+      }
     }
-    this.handleScrollEvent();
   }
 
   public componentWillReceiveProps(nextProps: PaperShowProps) {
@@ -160,29 +166,19 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
 
     if (nextProps.paper && changeRefPage) {
-      this.scrollToReferencePapersNode();
       dispatch(fetchRefPaperData(nextProps.paper.id, nextQueryParams["ref-page"], this.cancelToken.token));
     } else if (nextProps.paper && changeCitedPage) {
-      this.scrollToCitedPapersNode();
       dispatch(fetchCitedPaperData(nextProps.paper.id, nextQueryParams["cited-page"], this.cancelToken.token));
     }
   }
 
   public componentDidUpdate(prevProps: PaperShowProps) {
-    const { paper, location, paperShow } = this.props;
+    const { paper, location } = this.props;
 
     const isPaperChanged = paper && prevProps.paper && paper.id !== prevProps.paper.id;
-    const gotCitedPapers = prevProps.paperShow.isLoadingCitedPapers && !paperShow.isLoadingCitedPapers;
-    const gotRefPapers = prevProps.paperShow.isLoadingReferencePapers && !paperShow.isLoadingReferencePapers;
 
     if ((!prevProps.paper && paper) || (isPaperChanged && !location.hash)) {
       this.restorationScroll();
-      this.handleScrollEvent();
-    } else if (gotCitedPapers && paperShow.citedPaperCurrentPage === 1 && location.hash === "#cited") {
-      this.scrollToCitedPapersNode();
-      this.handleScrollEvent();
-    } else if (gotRefPapers && paperShow.referencePaperCurrentPage === 1 && location.hash === "#references") {
-      this.scrollToReferencePapersNode();
       this.handleScrollEvent();
     }
   }
@@ -426,7 +422,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         block: "start",
         behavior: "smooth",
       });
-      // window.scrollTo({ top: this.citedTabWrapper.offsetTop - NAVBAR_HEIGHT, behavior: "smooth" });
       trackEvent({
         category: "New Paper Show",
         action: "Click Cited by Tab in Paper Show refBar",
@@ -441,7 +436,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         block: "start",
         behavior: "smooth",
       });
-      // window.scrollTo({ top: this.refTabWrapper.offsetTop - NAVBAR_HEIGHT, behavior: "smooth" });
       trackEvent({
         category: "New Paper Show",
         action: "Click References Tab in Paper Show refBar",
