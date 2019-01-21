@@ -57,6 +57,10 @@ export function reducer(
       return {
         ...state,
         paperIds: action.payload.paperIds,
+        sortType: action.payload.sort as AUTHOR_PAPER_LIST_SORT_TYPES,
+        papersTotalPage: action.payload.totalPages,
+        papersCurrentPage: action.payload.number + 1,
+        papersTotalCount: action.payload.totalElements,
       };
     }
 

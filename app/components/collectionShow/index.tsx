@@ -9,6 +9,8 @@ import { Helmet } from "react-helmet";
 import { AppState } from "../../reducers";
 import CollectionPaperItem from "./collectionPaperItem";
 import ArticleSpinner from "../common/spinner/articleSpinner";
+import MobilePagination from "../common/mobilePagination";
+import DesktopPagination from "../common/desktopPagination";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import { CollectionShowState } from "./reducer";
@@ -21,10 +23,12 @@ import Icon from "../../icons";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 import { getPapers } from "./actions";
+import { LayoutState, UserDevice } from "../layouts/records";
 const styles = require("./collectionShow.scss");
 
 function mapStateToProps(state: AppState) {
   return {
+    layout: state.layout,
     currentUser: state.currentUser,
     collectionShow: state.collectionShow,
     configuration: state.configuration,
@@ -40,6 +44,7 @@ export interface CollectionShowMatchParams {
 export interface CollectionShowProps
   extends RouteComponentProps<CollectionShowMatchParams>,
     Readonly<{
+      layout: LayoutState;
       currentUser: CurrentUser;
       configuration: Configuration;
       collectionShow: CollectionShowState;
@@ -143,6 +148,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                     </div>
                   </div>
                   <div>{this.getPaperList()}</div>
+                  <div>{this.getPaginationComponent()}</div>
                 </div>
               </div>
               <div className={styles.rightBox} />
@@ -156,9 +162,53 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     }
   }
 
+  private getPaginationComponent = () => {
+    const { collectionShow, layout } = this.props;
+    const { papersCurrentPage, papersTotalPage } = collectionShow;
+
+    const currentPageIndex: number = papersCurrentPage - 1;
+
+    if (layout.userDevice !== UserDevice.DESKTOP) {
+      return (
+        <MobilePagination
+          totalPageCount={papersTotalPage}
+          currentPageIndex={currentPageIndex}
+          onItemClick={this.fetchPapers}
+          wrapperStyle={{
+            margin: "12px 0",
+          }}
+        />
+      );
+    } else {
+      return (
+        <DesktopPagination
+          type="search_result_papers"
+          totalPage={papersTotalPage}
+          currentPageIndex={currentPageIndex}
+          onItemClick={this.fetchPapers}
+          wrapperStyle={{
+            margin: "24px 0",
+          }}
+        />
+      );
+    }
+  };
+
+  private fetchPapers = (page: number, sort?: AUTHOR_PAPER_LIST_SORT_TYPES) => {
+    const { dispatch, collectionShow } = this.props;
+
+    dispatch(
+      getPapers({
+        collectionId: collectionShow.mainCollectionId,
+        page,
+        sort: sort || collectionShow.sortType,
+        cancelToken: this.cancelToken.token,
+      })
+    );
+  };
+
   private handleClickSort = (option: AUTHOR_PAPER_LIST_SORT_TYPES) => {
     const { collectionShow, dispatch } = this.props;
-    console.log(collectionShow.mainCollectionId);
     dispatch(
       getPapers({
         collectionId: collectionShow.mainCollectionId,

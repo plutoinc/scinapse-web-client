@@ -33,15 +33,22 @@ export function getPapers(params: GetCollectionsPapersParams) {
     try {
       dispatch(ActionCreators.startToGetPapersInCollectionShow());
 
-      const res = await CollectionAPI.getPapers(params);
+      const paperResponse = await CollectionAPI.getPapers(params);
 
-      dispatch(ActionCreators.addEntity(res));
+      dispatch(ActionCreators.addEntity({ entities: paperResponse.entities, result: paperResponse.result }));
       dispatch(
         ActionCreators.succeededToGetPapersInCollectionShow({
-          paperIds: res.result,
+          paperIds: paperResponse.result,
+          sort: params.sort,
+          number: paperResponse.number,
+          size: paperResponse.size,
+          first: paperResponse.first,
+          last: paperResponse.last,
+          numberOfElements: paperResponse.numberOfElements,
+          totalPages: paperResponse.totalPages,
+          totalElements: paperResponse.totalElements,
         })
       );
-      return res;
     } catch (err) {
       if (!axios.isCancel(err)) {
         alertToast({

@@ -244,6 +244,10 @@ export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
   return d;
 }
 
+interface GetMultiPapersInCollection extends CommonPaginationResponsePart {
+  paperIds: number[];
+}
+
 interface GetMultiPapers extends CommonPaginationResponsePart {
   paperIds: number[];
   query?: string;
@@ -759,7 +763,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToGetPapersInCollectionShow(payload: { paperIds: number[] }) {
+  succeededToGetPapersInCollectionShow(payload: GetMultiPapersInCollection) {
     return createAction({
       type: ACTION_TYPES.COLLECTION_SHOW_SUCCEEDED_GET_PAPERS,
       payload,

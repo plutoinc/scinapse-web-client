@@ -6,6 +6,7 @@ import { Paper } from "../model/paper";
 import { PaperInCollection, paperInCollectionSchema } from "../model/paperInCollection";
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../components/common/sortBox/index";
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from "./author/index";
+import { CommonPaginationResponsePart } from "./types/common";
 const camelcaseKeys = require("camelcase-keys");
 
 export interface UpdatePaperNoteToCollectionParams {
@@ -63,7 +64,7 @@ interface UpdatePaperNoteResponse {
   paperId: number;
 }
 
-interface CollectionAPIGetPapersResult {
+interface CollectionAPIGetPapersResult extends CommonPaginationResponsePart {
   entities: { papersInCollection: { [paperId: number]: PaperInCollection } };
   result: number[];
 }
@@ -95,9 +96,21 @@ class CollectionAPI extends PlutoAxios {
         throw new Error("Collection API's getPapers method is broken.");
       }
     });
-    const camelizedData = camelcaseKeys(resPaperData, { deep: true });
-    const normalizedData = normalize(camelizedData, [paperInCollectionSchema]);
-    return normalizedData;
+    const camelizedPaperData = camelcaseKeys(resPaperData, { deep: true });
+    const camelizedPageData = camelcaseKeys(res.data.data.page, { deep: true });
+    const normalizedData = normalize(camelizedPaperData, [paperInCollectionSchema]);
+    return {
+      entities: normalizedData.entities,
+      result: normalizedData.result,
+      number: camelizedPageData.page,
+      sort: params.sort,
+      size: camelizedPageData.size,
+      first: camelizedPageData.first,
+      last: camelizedPageData.last,
+      numberOfElements: camelizedPageData.numberOfElements,
+      totalPages: camelizedPageData.totalPages,
+      totalElements: camelizedPageData.totalElements,
+    };
   }
 
   public async addPaperToCollection(params: AddPaperToCollectionParams): Promise<{ success: true }> {
