@@ -55,6 +55,7 @@
 }
 
 .searchInputForm {
+  width: 590px;
   position: relative;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.07);
 
@@ -251,8 +252,8 @@
   }
 
   .searchInputForm {
-    width: auto;
-    margin: 0 15px;
+    width: 100%;
+    padding: 0 15px;
   }
 }
 

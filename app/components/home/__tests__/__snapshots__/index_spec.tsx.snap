@@ -85,7 +85,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
                     "height": "44px",
                     "overflow": "hidden",
                     "padding": "0 44px 0 16px",
-                    "width": "590px",
+                    "width": "100%",
                   }
                 }
                 value=""
