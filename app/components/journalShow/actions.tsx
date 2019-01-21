@@ -42,6 +42,7 @@ export function getPapers(params: GetPapersParams) {
           currentPage: res.number,
           paperCount: res.numberOfElements,
           filteredPaperCount: res.totalElements,
+          searchKeyword: params.query || "",
         })
       );
     } catch (err) {

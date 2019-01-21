@@ -27,6 +27,7 @@ import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import PaperShowKeyword from "../paperShow/components/keyword";
 import ActionTicketManager from "../../helpers/actionTicketManager";
+import { getPapers } from "./actions";
 const styles = require("./journalShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -300,9 +301,12 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
     });
 
     dispatch(
-      push({
-        pathname: `/journals/${journalShow.journalId}`,
-        search: `q=${query}`,
+      getPapers({
+        journalId: journalShow.journalId,
+        cancelToken: this.cancelToken.token,
+        size: 10,
+        page: journalShow.paperCurrentPage,
+        query,
       })
     );
   };

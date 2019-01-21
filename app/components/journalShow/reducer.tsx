@@ -12,6 +12,7 @@ export interface JournalShowState
       paperTotalPage: number;
       paperCurrentPage: number;
       filteredPaperCount: number;
+      searchKeyword?: string;
     }> {}
 
 export const JOURNAL_SHOW_INITIAL_STATE: JournalShowState = {
@@ -25,6 +26,7 @@ export const JOURNAL_SHOW_INITIAL_STATE: JournalShowState = {
   paperIds: [],
   totalPaperCount: 0,
   filteredPaperCount: 0,
+  searchKeyword: "",
 };
 
 export function reducer(state: JournalShowState = JOURNAL_SHOW_INITIAL_STATE, action: Actions): JournalShowState {
@@ -54,6 +56,7 @@ export function reducer(state: JournalShowState = JOURNAL_SHOW_INITIAL_STATE, ac
         paperCurrentPage: action.payload.currentPage,
         totalPaperCount: action.payload.paperCount,
         filteredPaperCount: action.payload.filteredPaperCount,
+        searchKeyword: action.payload.searchKeyword,
       };
     }
 
