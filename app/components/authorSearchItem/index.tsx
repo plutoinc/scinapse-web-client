@@ -1,6 +1,9 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
+import MuiTooltip from "@material-ui/core/Tooltip";
 import { MatchEntity } from "../../api/search";
 import { withStyles } from "../../helpers/withStylesHelper";
+import Icon from "../../icons";
 const styles = require("./authorSearchItem.scss");
 
 interface AuthorSearchItemProps {
@@ -9,8 +12,9 @@ interface AuthorSearchItemProps {
 
 const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
   const author = props.authorEntity.entity;
+
   return (
-    <div className={styles.itemWrapper}>
+    <Link to={`authors/${author.id}`} className={styles.itemWrapper}>
       {author.profileImageUrl && (
         <span
           style={{
@@ -20,7 +24,16 @@ const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
         />
       )}
       <span className={styles.nameAffiliationBox}>
-        <div className={styles.name}>{author.name}</div>
+        <div className={styles.name}>
+          {author.name}{" "}
+          {author.isLayered ? (
+            <MuiTooltip classes={{ tooltip: styles.verificationTooltip }} title="Verification Author" placement="right">
+              <div className={styles.contactIconWrapper}>
+                <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
+              </div>
+            </MuiTooltip>
+          ) : null}
+        </div>
         <div className={styles.affiliation}>{author.lastKnownAffiliation && author.lastKnownAffiliation.name}</div>
       </span>
       <div className={styles.metaBox}>
@@ -37,7 +50,7 @@ const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
           <div className={styles.metaContent}>{author.hindex || "-"}</div>
         </span>
       </div>
-    </div>
+    </Link>
   );
 };
 

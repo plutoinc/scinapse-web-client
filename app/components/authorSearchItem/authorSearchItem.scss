@@ -69,8 +69,27 @@
     line-height: 1.33;
     color: $black0;
   }
+
+  & + & {
+    margin-left: 16px;
+  }
 }
 
-.metaItem + .metaItem {
-  margin-left: 16px;
+.contactIconWrapper {
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+
+  .occupiedIcon {
+    display: inline-block;
+    vertical-align: top;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.verificationTooltip {
+  background-color: $gray2 !important;
+  color: $black0 !important;
+  font-size: 12px;
 }
