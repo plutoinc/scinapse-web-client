@@ -24,6 +24,8 @@ import GlobalDialogManager from "../../helpers/globalDialogManager";
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 import { getPapers } from "./actions";
 import { LayoutState, UserDevice } from "../layouts/records";
+import ScinapseInput from "../common/scinapseInput";
+import formatNumber from "../../helpers/formatNumber";
 const styles = require("./collectionShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -138,13 +140,27 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                       <span>{`Papers `}</span>
                       <span className={styles.paperCount}>{collection.paperCount}</span>
                     </div>
-                    <div className={styles.collectionSortBoxWrapper}>
-                      <SortBox
-                        sortOption={collectionShow.sortType}
-                        handleClickSortOption={this.handleClickSort}
-                        exposeRecentlyUpdated={true}
-                        exposeRelevanceOption={false}
+                    <div className={styles.searchInputWrapper}>
+                      <ScinapseInput
+                        onSubmit={this.handleSubmitSearch}
+                        placeholder="Search papers in this collection"
+                        icon="SEARCH_ICON"
                       />
+                    </div>
+                    <div className={styles.subHeader}>
+                      <div className={styles.resultPaperCount}>{`${
+                        collectionShow.currentPaperListPage
+                      } page of ${formatNumber(collectionShow.totalPaperListPage)} pages (${formatNumber(
+                        collectionShow.totalPaperListPage
+                      )} results)`}</div>
+                      <div className={styles.sortBoxWrapper}>
+                        <SortBox
+                          sortOption={collectionShow.sortType}
+                          handleClickSortOption={this.handleClickSort}
+                          exposeRecentlyUpdated={true}
+                          exposeRelevanceOption={false}
+                        />
+                      </div>
                     </div>
                   </div>
                   <div>{this.getPaperList()}</div>
@@ -194,14 +210,36 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     }
   };
 
-  private fetchPapers = (page: number, sort?: AUTHOR_PAPER_LIST_SORT_TYPES) => {
+  private handleSubmitSearch = (query: string) => {
+    const { dispatch, collectionShow } = this.props;
+
+    // ActionTicketManager.trackTicket({
+    //   pageType: "journalShow",
+    //   actionType: "fire",
+    //   actionArea: "paperList",
+    //   actionTag: "queryInJournal",
+    //   actionLabel: query,
+    // });
+
+    dispatch(
+      getPapers({
+        collectionId: collectionShow.mainCollectionId,
+        page: 1,
+        sort: collectionShow.sortType,
+        cancelToken: this.cancelToken.token,
+        query,
+      })
+    );
+  };
+
+  private fetchPapers = (page: number) => {
     const { dispatch, collectionShow } = this.props;
 
     dispatch(
       getPapers({
         collectionId: collectionShow.mainCollectionId,
         page,
-        sort: sort || collectionShow.sortType,
+        sort: collectionShow.sortType,
         cancelToken: this.cancelToken.token,
       })
     );
