@@ -5,6 +5,7 @@ export interface CollectionShowState
   extends Readonly<{
       isLoadingCollection: boolean;
       failedToLoadingCollection: boolean;
+      isLoadingPaperToCollection: boolean;
       mainCollectionId: number;
       totalPaperListPage: number;
       currentPaperListPage: number;
@@ -16,6 +17,7 @@ export interface CollectionShowState
 export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
   isLoadingCollection: false,
   failedToLoadingCollection: false,
+  isLoadingPaperToCollection: false,
   mainCollectionId: 0,
   totalPaperListPage: 0,
   currentPaperListPage: 1,
@@ -52,10 +54,22 @@ export function reducer(
         failedToLoadingCollection: true,
       };
     }
-
+    case ACTION_TYPES.COLLECTION_SHOW_START_TO_GET_PAPERS: {
+      return {
+        ...state,
+        isLoadingPaperToCollection: true,
+      };
+    }
+    case ACTION_TYPES.COLLECTION_SHOW_FAILED_TO_GET_PAPERS: {
+      return {
+        ...state,
+        isLoadingPaperToCollection: false,
+      };
+    }
     case ACTION_TYPES.COLLECTION_SHOW_SUCCEEDED_GET_PAPERS: {
       return {
         ...state,
+        isLoadingPaperToCollection: false,
         paperIds: action.payload.paperIds,
         sortType: action.payload.sort as AUTHOR_PAPER_LIST_SORT_TYPES,
         totalPaperListPage: action.payload.totalPages,

@@ -96,7 +96,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   public render() {
     const { collectionShow, collection } = this.props;
 
-    if (collectionShow.isLoadingCollection) {
+    if (collectionShow.isLoadingCollection || collectionShow.isLoadingPaperToCollection) {
       return (
         <div className={styles.container}>
           <div className={styles.loadingContainer}>
