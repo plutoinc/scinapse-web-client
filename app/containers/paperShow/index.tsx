@@ -107,7 +107,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public async componentDidMount() {
-    const { configuration, currentUser, dispatch, match, location, paperShow } = this.props;
+    const { configuration, currentUser, dispatch, match, location } = this.props;
     const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
     const notRenderedAtServerOrJSAlreadyInitialized =
       !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
@@ -127,15 +127,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         currentUser
       );
 
-      if (paperShow.citedPaperCurrentPage === 0 && location.hash === "#cited") {
-        this.scrollToCitedPapersNode();
-      } else if (paperShow.referencePaperCurrentPage === 0 && location.hash === "#references") {
-        this.scrollToReferencePapersNode();
-      }
+      this.scrollToRefCitedSection();
     }
   }
 
-  public componentWillReceiveProps(nextProps: PaperShowProps) {
+  public async componentWillReceiveProps(nextProps: PaperShowProps) {
     const { dispatch, match, location, currentUser } = this.props;
     const prevQueryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
     const nextQueryParams: PaperShowPageQueryParams = getQueryParamsObject(nextProps.location.search);
@@ -145,7 +141,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const changeCitedPage = prevQueryParams["cited-page"] !== nextQueryParams["cited-page"];
 
     if (moveToDifferentPage) {
-      return fetchPaperShowData(
+      await fetchPaperShowData(
         {
           dispatch,
           match: nextProps.match,
@@ -155,6 +151,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         },
         currentUser
       );
+      return this.scrollToRefCitedSection();
     }
 
     if (
@@ -314,6 +311,16 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       </div>
     );
   }
+
+  private scrollToRefCitedSection = () => {
+    const { paperShow, location } = this.props;
+
+    if (paperShow.citedPaperCurrentPage === 1 && location.hash === "#cited") {
+      this.scrollToCitedPapersNode();
+    } else if (paperShow.referencePaperCurrentPage === 1 && location.hash === "#references") {
+      this.scrollToReferencePapersNode();
+    }
+  };
 
   private restorationScroll = () => {
     window.scrollTo(0, 0);
