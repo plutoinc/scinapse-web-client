@@ -98,7 +98,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   public render() {
     const { collectionShow, collection } = this.props;
 
-    if (collectionShow.isLoadingCollection || collectionShow.isLoadingPaperToCollection) {
+    if (collectionShow.isLoadingCollection) {
       return (
         <div className={styles.container}>
           <div className={styles.loadingContainer}>
@@ -213,14 +213,6 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   private handleSubmitSearch = (query: string) => {
     const { dispatch, collectionShow } = this.props;
 
-    // ActionTicketManager.trackTicket({
-    //   pageType: "journalShow",
-    //   actionType: "fire",
-    //   actionArea: "paperList",
-    //   actionTag: "queryInJournal",
-    //   actionLabel: query,
-    // });
-
     dispatch(
       getPapers({
         collectionId: collectionShow.mainCollectionId,
@@ -325,7 +317,16 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   };
 
   private getPaperList = () => {
-    const { papersInCollection, currentUser } = this.props;
+    const { papersInCollection, currentUser, collectionShow } = this.props;
+
+    if (collectionShow.isLoadingPaperToCollection) {
+      return (
+        <div className={styles.loadingContainer}>
+          <ArticleSpinner className={styles.loadingSpinner} />
+        </div>
+      );
+    }
+
     if (papersInCollection && papersInCollection.length > 0) {
       return papersInCollection.map(paper => {
         if (paper) {
