@@ -67,15 +67,20 @@ export function reducer(
       };
     }
     case ACTION_TYPES.COLLECTION_SHOW_SUCCEEDED_GET_PAPERS: {
-      return {
-        ...state,
-        isLoadingPaperToCollection: false,
-        paperIds: action.payload.paperIds,
-        sortType: action.payload.sort as AUTHOR_PAPER_LIST_SORT_TYPES,
-        totalPaperListPage: action.payload.totalPages,
-        currentPaperListPage: action.payload.page + 1,
-        papersTotalCount: action.payload.totalElements,
-      };
+      const pageRes = action.payload.paperResponse.page;
+      const paperIds = action.payload.paperResponse.result;
+
+      return pageRes
+        ? {
+            ...state,
+            isLoadingPaperToCollection: false,
+            paperIds,
+            sortType: action.payload.sort as AUTHOR_PAPER_LIST_SORT_TYPES,
+            totalPaperListPage: pageRes.totalPages,
+            currentPaperListPage: pageRes.page,
+            papersTotalCount: pageRes.totalElements,
+          }
+        : { ...state, isLoadingPaperToCollection: false, paperIds };
     }
 
     default:

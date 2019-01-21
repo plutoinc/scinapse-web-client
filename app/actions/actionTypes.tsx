@@ -1,12 +1,13 @@
 import { ActionCreatorsMapObject } from "redux";
 import { AppEntities } from "../reducers/entity";
-import { CommonPaginationResponsePart, PageObjectV2 } from "../api/types/common";
+import { CommonPaginationResponsePart, NormalizedDataWithPaginationV2 } from "../api/types/common";
 import { AvailableCitationType } from "../containers/paperShow/records";
 import { GetCollectionsResponse } from "../api/member";
 import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
 import { Collection } from "../model/collection";
 import { Paper } from "../model/paper";
 import { CVInfoType, Award, Education, Experience } from "../model/profile";
+import { PaperInCollection } from "../model/paperInCollection";
 
 export enum ACTION_TYPES {
   GLOBAL_LOCATION_CHANGE = "@@router/LOCATION_CHANGE",
@@ -244,8 +245,12 @@ export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
   return d;
 }
 
-interface GetMultiPapersInCollection extends PageObjectV2 {
-  paperIds: number | number[];
+interface GetMultiPapersInCollection {
+  paperResponse: NormalizedDataWithPaginationV2<{
+    papersInCollection: {
+      [paperId: number]: PaperInCollection;
+    };
+  }>;
   sort?: string;
 }
 

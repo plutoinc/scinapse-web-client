@@ -91,7 +91,7 @@ class CollectionAPI extends PlutoAxios {
     return {
       entities: normalizedData.entities,
       result: normalizedData.result,
-      page: camelizedData.page,
+      page: { ...camelizedData.page, page: camelizedData.page.page + 1 },
       error: resData.error,
     };
   }
