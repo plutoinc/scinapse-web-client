@@ -18,14 +18,14 @@ interface SearchParams {
 }
 
 interface MatchEntityAuthor extends BasePaperAuthor {
-  lastKnownAffiliation: Affiliation;
+  lastKnownAffiliation: Affiliation | null;
   paperCount: number;
   citationCount: number;
   profileImageUrl: string | null;
   representativePapers: Paper[];
 }
 
-interface MatchEntities {
+export interface MatchEntity {
   entity: MatchEntityAuthor;
   type: "AUTHOR";
 }
@@ -35,7 +35,7 @@ export interface SearchResult extends PaginationResponseV2<Paper[]> {
     content: Paper[];
     page: PageObjectV2 | null;
     aggregation: AggregationData;
-    matchedEntities: MatchEntities[];
+    matchedEntities: MatchEntity[];
     resultModified: boolean;
     suggestion: Suggestion | null;
   };

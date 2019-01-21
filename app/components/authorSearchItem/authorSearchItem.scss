@@ -1,0 +1,76 @@
+.itemWrapper {
+  display: inline-block;
+  width: 386px;
+  height: 140px;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.08);
+  background-color: white;
+  padding: 16px;
+
+  & + & {
+    margin-left: 20px;
+  }
+}
+
+.userImg {
+  display: inline-block;
+  vertical-align: top;
+  width: 48px;
+  height: 48px;
+  border-radius: 5px;
+  border: 1px solid $gray2;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  margin-right: 16px;
+}
+
+.nameAffiliationBox {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: bold;
+  color: $black0;
+  margin-bottom: 4px;
+  height: 24px;
+  line-height: 24px;
+}
+
+.affiliation {
+  height: 20px;
+  line-height: 20px;
+  font-size: 14px;
+  color: $gray6;
+  margin-bottom: 16px;
+}
+
+.metaItem {
+  display: inline-block;
+  vertical-align: top;
+  width: 106px;
+
+  .metaTitle {
+    height: 20px;
+    line-height: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: $gray5;
+    margin-bottom: 4px;
+  }
+
+  .metaContent {
+    height: 24px;
+    line-height: 24px;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.33;
+    color: $black0;
+  }
+}
+
+.metaItem + .metaItem {
+  margin-left: 16px;
+}

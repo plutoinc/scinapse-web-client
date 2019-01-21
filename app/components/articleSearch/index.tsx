@@ -23,6 +23,7 @@ import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import { UserDevice } from "../layouts/records";
 import { SEARCH_SORT_OPTIONS } from "./records";
+import AuthorSearchItem from "../authorSearchItem";
 const styles = require("./articleSearch.scss");
 
 export interface RawQueryParams {
@@ -101,6 +102,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
           <div className={styles.articleSearchContainer}>
             {this.getResultHelmet(queryParams.query)}
             <div className={styles.innerContainer}>
+              {this.getAuthorEntitiesSection()}
               {this.getSuggestionKeywordBox()}
               <div className={styles.searchSummary}>
                 <span className={styles.searchPage}>
@@ -190,6 +192,19 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     } else {
       return null;
     }
+  };
+
+  private getAuthorEntitiesSection = () => {
+    const { articleSearchState } = this.props;
+
+    const authorItems = articleSearchState.matchEntities
+      .filter(matchEntity => matchEntity.type === "AUTHOR")
+      .slice(0, 2)
+      .map(matchEntity => {
+        return <AuthorSearchItem authorEntity={matchEntity} key={matchEntity.entity.id} />;
+      });
+
+    return <div className={styles.authorItemsWrapper}>{authorItems}</div>;
   };
 
   private getResultHelmet = (query: string) => {
