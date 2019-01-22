@@ -11,6 +11,7 @@ export interface CollectionShowState
       currentPaperListPage: number;
       papersTotalCount: number;
       sortType: AUTHOR_PAPER_LIST_SORT_TYPES;
+      searchKeyword: string;
       paperIds: number | number[];
     }> {}
 
@@ -23,6 +24,7 @@ export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
   currentPaperListPage: 1,
   papersTotalCount: 0,
   sortType: "RECENTLY_ADDED",
+  searchKeyword: "",
   paperIds: [],
 };
 
@@ -79,6 +81,7 @@ export function reducer(
             totalPaperListPage: pageRes.totalPages,
             currentPaperListPage: pageRes.page,
             papersTotalCount: pageRes.totalElements,
+            searchKeyword: action.payload.query ? action.payload.query : "",
           }
         : { ...state, isLoadingPaperToCollection: false, paperIds };
     }

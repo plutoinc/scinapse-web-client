@@ -40,6 +40,7 @@ export function getPapers(params: GetCollectionsPapersParams) {
         ActionCreators.succeededToGetPapersInCollectionShow({
           paperResponse,
           sort: params.sort,
+          query: params.query,
         })
       );
     } catch (err) {

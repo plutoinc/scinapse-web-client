@@ -252,6 +252,7 @@ interface GetMultiPapersInCollection {
     };
   }>;
   sort?: string;
+  query?: string;
 }
 
 interface GetMultiPapers extends CommonPaginationResponsePart {

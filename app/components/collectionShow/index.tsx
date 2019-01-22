@@ -233,6 +233,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
         page,
         sort: collectionShow.sortType,
         cancelToken: this.cancelToken.token,
+        query: collectionShow.searchKeyword,
       })
     );
   };
@@ -242,9 +243,10 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     dispatch(
       getPapers({
         collectionId: collectionShow.mainCollectionId,
-        page: 1,
+        page: collectionShow.currentPaperListPage,
         sort: option,
         cancelToken: this.cancelToken.token,
+        query: collectionShow.searchKeyword,
       })
     );
   };
