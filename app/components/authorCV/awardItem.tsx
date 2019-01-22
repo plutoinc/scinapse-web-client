@@ -8,7 +8,6 @@ import { Award } from "../../model/profile";
 import AwardForm, { AwardFormState } from "./awardForm";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { getFormattingDate, getMonthOptionItems } from "../../containers/authorCvSection";
 const styles = require("./authorCVItem.scss");
 
 interface AwardItemState {
@@ -39,7 +38,6 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
     const { id, title, receivedDate } = award;
     return isEditMode ? (
       <AwardForm
-        monthItems={getMonthOptionItems()}
         handleClose={this.handelToggleAwardEditForm}
         isOpen={isEditMode}
         handleSubmitForm={this.handelUpdateAward}
@@ -48,14 +46,12 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
           id,
           title,
           receivedDate,
-          receivedDateYear: receivedDate.split("-")[0],
-          receivedDateMonth: receivedDate.split("-")[1],
         }}
       />
     ) : (
       <div className={styles.itemWrapper}>
         <div className={styles.dateSectionWrapper}>
-          <span className={styles.dateContent}>{format(receivedDate, "MMM YYYY")}</span>
+          <span className={styles.dateContent}>{receivedDate}</span>
         </div>
         <div className={styles.contentWrapper}>
           {this.getEditItemButtons(id)}
@@ -98,13 +94,8 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
   private handelUpdateAward = async (params: AwardFormState) => {
     const { dispatch, authorId } = this.props;
 
-    const finalParams = {
-      ...params,
-      receivedDate: getFormattingDate(params.receivedDateYear, params.receivedDateMonth),
-    };
-
     try {
-      finalParams.id && (await dispatch(updateAuthorCvInfo("awards", authorId, finalParams)));
+      await dispatch(updateAuthorCvInfo("awards", authorId, params));
       this.handelToggleAwardEditForm();
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);

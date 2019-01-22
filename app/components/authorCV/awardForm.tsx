@@ -4,20 +4,15 @@ import * as classNames from "classnames";
 import { withStyles } from "../../helpers/withStylesHelper";
 import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
 import ScinapseButton from "../common/scinapseButton";
-import scinapseFormikSelect from "../common/scinapseInput/scinapseFormikSelect";
-import { getFormattingDate } from "../../containers/authorCvSection";
 const styles = require("./authorCVForm.scss");
 
 export interface AwardFormState {
   id?: string;
   title: string;
   receivedDate: string;
-  receivedDateYear: string;
-  receivedDateMonth: string;
 }
 
 interface AwardFormProps {
-  monthItems: JSX.Element[];
   isOpen: boolean;
   isLoading: boolean;
   initialValues: AwardFormState;
@@ -27,24 +22,18 @@ interface AwardFormProps {
 
 const validateForm = (values: AwardFormState) => {
   const errors: FormikErrors<AwardFormState> = {};
+  const currentYear = new Date().getFullYear();
 
   if (!values.title && values.title.length < 2) {
     errors.title = "Minimum length is 1";
   }
 
-  if (!values.receivedDateMonth) {
-    errors.receivedDateMonth = "Please selected valid month";
+  if (!values.receivedDate) {
+    errors.receivedDate = "Please write valid year (ex. 2010)";
   }
 
-  if (!values.receivedDateYear) {
-    errors.receivedDateMonth = "Please write valid year (ex. 2010)";
-  }
-
-  if (values.receivedDateYear && values.receivedDateMonth) {
-    const currentDate = new Date().getTime();
-    const receivedDateStr = getFormattingDate(values.receivedDateYear, values.receivedDateMonth);
-    const receivedDate = new Date(receivedDateStr);
-    currentDate - receivedDate.getTime() < 0 ? (errors.receivedDateMonth = "Please write before current date") : "";
+  if (values.receivedDate && currentYear - parseInt(values.receivedDate, 10) < 0) {
+    errors.receivedDate = "Please write before current date";
   }
 
   return errors;
@@ -61,7 +50,7 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
   }
 
   public render() {
-    const { handleClose, handleSubmitForm, initialValues, isLoading, monthItems } = this.props;
+    const { handleClose, handleSubmitForm, initialValues, isLoading } = this.props;
     const wrapperStyle: React.CSSProperties = { display: "inline-flex", position: "relative" };
     const inputStyle: React.CSSProperties = {
       color: "#666d7c",
@@ -80,7 +69,7 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
         validateOnChange={false}
         validateOnBlur={false}
         enableReinitialize={true}
-        render={({ errors, values }) => {
+        render={({ errors }) => {
           return (
             <Form>
               <div className={styles.contentSection}>
@@ -107,29 +96,17 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                       <div className={styles.formInputBox}>
                         <div className={styles.dateInputWrapper}>
                           <Field
-                            name="receivedDateMonth"
-                            component={scinapseFormikSelect}
-                            placeHolderContent="Month"
-                            defaultValue={values.receivedDateMonth}
-                            inputStyle={inputStyle}
-                            children={monthItems}
-                            className={classNames({
-                              [styles.dateMonthField]: true,
-                              [styles.errorInputField]: !!errors.receivedDateMonth,
-                            })}
-                          />
-                          <Field
-                            name="receivedDateYear"
+                            name="receivedDate"
                             type="text"
                             placeholder="Year"
                             style={{ color: "#666d7c" }}
                             maxLength="4"
                             className={classNames({
                               [styles.dateYearField]: true,
-                              [styles.errorInputField]: !!errors.receivedDateMonth,
+                              [styles.errorInputField]: !!errors.receivedDate,
                             })}
                           />
-                          <ErrorMessage name="receivedDateMonth" className={styles.errorMessage} component="div" />
+                          <ErrorMessage name="receivedDate" className={styles.errorMessage} component="div" />
                         </div>
                       </div>
                     </div>

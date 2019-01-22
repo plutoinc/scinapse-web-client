@@ -8,7 +8,6 @@ import ExperienceForm, { ExperienceFormState } from "./experienceForm";
 import PlutoAxios from "../../api/pluto";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { updateAuthorCvInfo } from "../../actions/author";
-import { getFormattingDate, getMonthOptionItems } from "../../containers/authorCvSection";
 const styles = require("./authorCVItem.scss");
 
 interface ExperienceItemState {
@@ -57,7 +56,6 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
           fontFamily: "Roboto",
           padding: "8px",
         }}
-        monthItems={getMonthOptionItems()}
         handleClose={this.handelToggleExperienceEditForm}
         isOpen={true}
         isLoading={false}
@@ -72,17 +70,13 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
           isCurrent,
           startDate,
           endDate,
-          startDateYear: startDate.split("-")[0],
-          startDateMonth: startDate.split("-")[1],
-          endDateYear: endDate ? endDate.split("-")[0] : "",
-          endDateMonth: endDate ? endDate.split("-")[1] : "",
         }}
       />
     ) : (
       <div className={styles.itemWrapper}>
         <div className={styles.dateSectionWrapper}>
-          <span className={styles.dateContent}>{format(startDate, "MMM YYYY")}</span>
-          <span className={styles.dateContent}>- {endDate ? format(endDate, "MMM YYYY") : "Present"}</span>
+          <span className={styles.dateContent}>{startDate}</span>
+          <span className={styles.dateContent}>- {endDate ? endDate : "Present"}</span>
         </div>
         <div className={styles.contentWrapper}>
           {this.getEditItemButtons(id)}
@@ -128,20 +122,13 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
   private handelUpdateExperience = async (params: ExperienceFormState) => {
     const { dispatch, authorId } = this.props;
 
-    const finalParams = {
-      ...params,
-      startDate: getFormattingDate(params.startDateYear, params.startDateMonth),
-      endDate: getFormattingDate(params.endDateYear, params.endDateMonth),
-    };
-
     try {
-      finalParams.id &&
-        (await dispatch(
-          updateAuthorCvInfo("experiences", authorId, {
-            ...finalParams,
-            endDate: finalParams.isCurrent ? null : finalParams.endDate,
-          })
-        ));
+      await dispatch(
+        updateAuthorCvInfo("experiences", authorId, {
+          ...params,
+          endDate: params.isCurrent ? null : params.endDate,
+        })
+      );
       this.handelToggleExperienceEditForm();
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
