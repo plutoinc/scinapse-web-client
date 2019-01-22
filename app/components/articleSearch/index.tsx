@@ -102,8 +102,8 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
           <div className={styles.articleSearchContainer}>
             {this.getResultHelmet(queryParams.query)}
             <div className={styles.innerContainer}>
-              {this.getAuthorEntitiesSection()}
               {this.getSuggestionKeywordBox()}
+              {this.getAuthorEntitiesSection()}
               <div className={styles.searchSummary}>
                 <span className={styles.searchPage}>
                   {articleSearchState.page} page of {formatNumber(totalPages)} pages ({formatNumber(totalElements)}{" "}
