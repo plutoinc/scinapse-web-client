@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Dispatch, connect } from "react-redux";
-import * as format from "date-fns/format";
 import { Experience } from "../../model/profile";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
