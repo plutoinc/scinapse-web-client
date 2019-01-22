@@ -74,16 +74,16 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
     ) : (
       <div className={styles.itemWrapper}>
         <div className={styles.dateSectionWrapper}>
-          <span className={styles.dateContent}>{startDate}</span>
-          <span className={styles.dateContent}>- {endDate ? endDate : "Present"}</span>
+          <span className={styles.dateContent}>
+            {startDate} - {endDate ? endDate : "Present"}
+          </span>
         </div>
         <div className={styles.contentWrapper}>
           {this.getEditItemButtons(id)}
           <span className={styles.affiliationContent}>{position}</span>
-          <span className={styles.subAffiliationContent}>
-            {institutionName}, {department}
-          </span>
-          <span className={styles.detailDescriptionSection}>{description}</span>
+          <span className={styles.mainAffiliationContent}>{institutionName}</span>
+          <span className={styles.subAffiliationContent}>{department}</span>
+          <span className={styles.subDescriptionContent}>{description}</span>
         </div>
       </div>
     );

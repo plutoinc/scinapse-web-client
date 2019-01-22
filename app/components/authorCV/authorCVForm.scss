@@ -21,6 +21,10 @@
   }
 }
 
+.optionalLabel {
+  vertical-align: top;
+}
+
 .buttonsWrapper {
   text-align: right;
   margin-top: 8px;
@@ -154,8 +158,9 @@
     }
   }
 
-  ::placeholder {
-    color: $gray4;
+  input::placeholder {
+    color: $gray6;
+    opacity: 0.5;
   }
 
   .errorMessage {

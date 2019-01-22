@@ -11,6 +11,7 @@ import AffiliationBox from "./affiliationBox";
 const styles = require("./authorCVForm.scss");
 
 export interface ExperienceFormState extends CvBaseInfo {
+  department: string | null;
   description: string | null;
   position: string;
   startDate: string;
@@ -30,10 +31,6 @@ interface ExperienceFormProps {
 const validateForm = (values: ExperienceFormState) => {
   const errors: FormikErrors<ExperienceFormState> = {};
   const currentYear = new Date().getFullYear();
-
-  if (!values.department && values.department.length < 2) {
-    errors.department = "Minimum length is 1";
-  }
 
   if (!values.position && values.position.length < 2) {
     errors.position = "Minimum length is 1";
@@ -123,7 +120,10 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                     />
                   </div>
                   <div className={styles.inlineInput}>
-                    <label htmlFor="department">Department</label>
+                    <label htmlFor="department" className={styles.optionalLabel}>
+                      Department
+                      <small className={styles.optionalText}>(Optional)</small>
+                    </label>
                     <div className={styles.formInputBox}>
                       <Field
                         name="department"

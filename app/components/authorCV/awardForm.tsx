@@ -10,6 +10,7 @@ export interface AwardFormState {
   id?: string;
   title: string;
   receivedDate: string;
+  relatedLink: string | null;
 }
 
 interface AwardFormProps {
@@ -90,6 +91,27 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                       />
                     </div>
                   </div>
+                  <div className={styles.inlineInput}>
+                    <label htmlFor="relatedLink" className={styles.optionalLabel}>
+                      Related Link
+                      <small className={styles.optionalText}>(Optional)</small>
+                    </label>
+                    <div className={styles.formInputBox}>
+                      <Field
+                        name="relatedLink"
+                        type="text"
+                        placeholder="https://"
+                        component={ScinapseFormikInput}
+                        inputStyle={inputStyle}
+                        wrapperStyle={wrapperStyle}
+                        className={classNames({
+                          [styles.inputField]: true,
+                          [styles.errorInputField]: !!errors.relatedLink,
+                        })}
+                      />
+                    </div>
+                  </div>
+
                   <div className={styles.dateWrapper}>
                     <div className={styles.startDateInlineInput}>
                       <label htmlFor="receivedDate">Date</label>

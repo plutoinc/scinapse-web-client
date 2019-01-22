@@ -230,6 +230,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
         initialValues={{
           title: "",
           receivedDate: "",
+          relatedLink: "",
         }}
       />
     ) : (

@@ -11,6 +11,7 @@ const styles = require("./authorCVForm.scss");
 
 export interface EducationFormState extends CvBaseInfo {
   degree: string;
+  department: string;
   startDate: string;
   endDate: string;
 }

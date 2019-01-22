@@ -34,7 +34,7 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
   public render() {
     const { award } = this.props;
     const { isEditMode } = this.state;
-    const { id, title, receivedDate } = award;
+    const { id, title, receivedDate, relatedLink } = award;
     return isEditMode ? (
       <AwardForm
         handleClose={this.handelToggleAwardEditForm}
@@ -45,6 +45,7 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
           id,
           title,
           receivedDate,
+          relatedLink,
         }}
       />
     ) : (
