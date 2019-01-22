@@ -151,7 +151,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                       <div className={styles.resultPaperCount}>{`${
                         collectionShow.currentPaperListPage
                       } page of ${formatNumber(collectionShow.totalPaperListPage)} pages (${formatNumber(
-                        collectionShow.totalPaperListPage
+                        collectionShow.papersTotalCount
                       )} results)`}</div>
                       <div className={styles.sortBoxWrapper}>
                         <SortBox
