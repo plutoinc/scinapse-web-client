@@ -46,15 +46,18 @@ const validateForm = (values: EducationFormState) => {
   }
 
   if (!values.isCurrent && !values.endDate) {
-    errors.endDate = "Please write valid year (ex. 2010)";
+    errors.startDate = "Please write valid year (ex. 2010)";
+    errors.endDate = " ";
   }
 
   if (!values.isCurrent && values.endDate && parseInt(values.startDate, 10) - parseInt(values.endDate, 10) > 0) {
-    errors.endDate = "Select a future date";
+    errors.endDate = "Please write a future date";
+    errors.startDate = " ";
   }
 
   if (values.startDate && currentYear - parseInt(values.startDate, 10) < 0) {
     errors.startDate = "Please write before current date";
+    errors.endDate = " ";
   }
 
   return errors;
@@ -150,6 +153,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                           />
                           <span className={styles.toSyntax}>to</span>
                           <ErrorMessage name="startDate" className={styles.errorMessage} component="div" />
+                          <ErrorMessage name="endDate" className={styles.errorMessage} component="div" />
                         </div>
                       </div>
                     </div>
@@ -168,7 +172,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                                 [styles.errorInputField]: !!errors.endDate,
                               })}
                             />
-                            <ErrorMessage name="endDate" className={styles.errorMessage} component="div" />
+                            {/* <ErrorMessage name="endDate" className={styles.errorMessage} component="div" /> */}
                           </div>
                         </div>
                       </div>

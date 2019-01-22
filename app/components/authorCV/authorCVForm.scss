@@ -61,7 +61,7 @@
   .startDateInlineInput {
     .errorMessage {
       @extend .errorMessage;
-      width: 120px;
+      width: 200px;
     }
 
     .dateMonthField {
@@ -162,6 +162,7 @@
     color: $red0;
     font-size: 12px;
     display: flex;
+    position: absolute;
   }
 
   .iconWrapper {
