@@ -11,6 +11,7 @@ console.log("START SERVER");
 server.disable("x-powered-by").all("/*", async (req: express.Request, res: express.Response) => {
   let succeededToServerRendering = false;
   console.log(`Get request for ${req.method} :  ${req.url}`);
+  console.log(`request headres === ${JSON.stringify(req.headers, null, 2)}`);
 
   if (req.method !== "GET") {
     return res.send("Nice Try");
