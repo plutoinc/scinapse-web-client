@@ -25,6 +25,7 @@ class DevRenderer {
       result = await render(event);
     }
 
+    console.log(result);
     return result;
   }
 
