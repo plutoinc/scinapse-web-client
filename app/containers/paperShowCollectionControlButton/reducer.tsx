@@ -70,6 +70,7 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
         isLoadingCollections: false,
       };
     }
+
     case ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_POST_COLLECTION: {
       return {
         ...state,
