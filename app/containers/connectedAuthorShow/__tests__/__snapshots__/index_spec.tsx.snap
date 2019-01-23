@@ -246,32 +246,6 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
             <div
               className="contentSection"
             >
-              <div>
-                <a
-                  className="title"
-                  href="/papers/101"
-                  onClick={[Function]}
-                >
-                  <span
-                    dangerouslySetInnerHTML={
-                      Object {
-                        "__html": "Preparation and characterization of graphene oxide paper.",
-                      }
-                    }
-                  />
-                </a>
-                <a
-                  className="newTabIconWrapper"
-                  href="/papers/101"
-                  onClick={[Function]}
-                  rel="noopener"
-                  target="_blank"
-                >
-                  <i
-                    className="icon newTabIcon"
-                  />
-                </a>
-              </div>
               <div
                 className="publishInfoList"
               >
