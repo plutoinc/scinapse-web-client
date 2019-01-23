@@ -119,8 +119,20 @@ async function handler(event: Lambda.Event, _context: Lambda.Context) {
   console.log(path, "=== path at parent function");
 
   const devRenderer = new DevRenderer();
-  const result = await devRenderer.render(event);
-  return result;
+  try {
+    const result = await devRenderer.render(event);
+    return result;
+  } catch (err) {
+    console.error(err);
+    return {
+      statusCode: 200,
+      headers: {
+        "Content-Type": "text/html",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: err.message,
+    };
+  }
 }
 
 export const ssr = handler;
