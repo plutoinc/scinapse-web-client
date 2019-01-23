@@ -6,6 +6,7 @@ export interface MyCollectionsState
       isFetchingMemo: boolean;
       collectionIds: number[];
       isLoadingCollections: boolean;
+      isLoadingCollectionsInDropdown: boolean;
       isPositingNewCollection: boolean;
       hasFailedToPositingNewCollection: boolean;
       selectedCollectionId: number;
@@ -19,6 +20,7 @@ export const MY_COLLECTIONS_INITIAL_STATE: MyCollectionsState = {
   isFetchingPaper: false,
   isFetchingMemo: false,
   isLoadingCollections: false,
+  isLoadingCollectionsInDropdown: false,
   isPositingNewCollection: false,
   hasFailedToPositingNewCollection: false,
   collectionIds: [],
@@ -56,10 +58,18 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
       };
     }
 
+    case ACTION_TYPES.PAPER_SHOW_START_TO_GET_COLLECTIONS_IN_DROPDOWN: {
+      return {
+        ...state,
+        isLoadingCollectionsInDropdown: true,
+      };
+    }
+
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_COLLECTIONS: {
       return {
         ...state,
         isLoadingCollections: false,
+        isLoadingCollectionsInDropdown: false,
       };
     }
 
@@ -68,6 +78,7 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
         ...state,
         collectionIds: action.payload.collectionIds,
         isLoadingCollections: false,
+        isLoadingCollectionsInDropdown: false,
       };
     }
 

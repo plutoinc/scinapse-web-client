@@ -170,7 +170,11 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
               <TitleArea
                 currentUser={currentUser}
                 collection={selectedCollection}
-                isLoading={currentUser.isLoggingIn || myCollectionsState.isLoadingCollections}
+                isLoading={
+                  currentUser.isLoggingIn ||
+                  myCollectionsState.isLoadingCollections ||
+                  myCollectionsState.isLoadingCollectionsInDropdown
+                }
                 handleUnsignedUser={this.handleUnsignedUser}
                 onClick={this.handleToggleCollectionDropdown}
               />
@@ -209,7 +213,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
               minWidth: "83px",
               height: "40px",
               borderRadius: saveButtonBorderRadius,
-              padding: "12px 16px",
+              padding: "12px 0",
               backgroundColor: isSelected ? "#34495e" : "#3e7fff",
               fontSize: "16px",
               fontWeight: 500,
@@ -277,6 +281,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     const isLoading =
       currentUser.isLoggingIn ||
       myCollectionsState.isLoadingCollections ||
+      myCollectionsState.isLoadingCollectionsInDropdown ||
       myCollectionsState.isFetchingPaper ||
       myCollectionsState.isPostingNote;
 
@@ -419,7 +424,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     if (myCollectionsState.isCollectionDropdownOpen) {
       dispatch(closeCollectionDropdown());
     } else {
-      dispatch(getMyCollections(targetPaperId, this.cancelToken.token));
+      dispatch(getMyCollections(targetPaperId, this.cancelToken.token, true));
       dispatch(openCollectionDropdown());
     }
   };
@@ -499,7 +504,10 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   private getSaveButtonContent = () => {
     const { currentUser, myCollectionsState, selectedCollection } = this.props;
     const isLoading =
-      currentUser.isLoggingIn || myCollectionsState.isLoadingCollections || myCollectionsState.isFetchingPaper;
+      currentUser.isLoggingIn ||
+      myCollectionsState.isLoadingCollections ||
+      myCollectionsState.isLoadingCollectionsInDropdown ||
+      myCollectionsState.isFetchingPaper;
 
     if (isLoading) {
       return <CircularProgress color="inherit" disableShrink={true} size={14} thickness={4} />;

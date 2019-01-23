@@ -62,10 +62,6 @@
   transition: width 150ms ease;
   cursor: pointer;
 
-  &.saved {
-    width: 100%;
-  }
-
   &:hover {
     background-color: $gray2;
   }
