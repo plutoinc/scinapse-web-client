@@ -11,7 +11,6 @@ console.log("START SERVER");
 server.disable("x-powered-by").all("/*", async (req: express.Request, res: express.Response) => {
   let succeededToServerRendering = false;
   console.log(`Get request for ${req.method} :  ${req.url}`);
-  console.log(`request headres === ${JSON.stringify(req.headers, null, 2)}`);
 
   if (req.method !== "GET") {
     return res.send("Nice Try");
@@ -21,6 +20,8 @@ server.disable("x-powered-by").all("/*", async (req: express.Request, res: expre
     const resultHTML = await serverSideRender({
       requestUrl: req.url,
       scriptVersion: "http://localhost:8080/bundle.js",
+      userAgent: req.headers["User-Agent"] || req.headers["user-agent"],
+      xForwardedFor: req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"],
     });
     succeededToServerRendering = true;
 

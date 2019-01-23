@@ -31,9 +31,10 @@ type RENDERING_TYPE = "NORMAL RENDERING" | "ERROR HANDLING RENDERING" | "FALLBAC
 export interface ServerSideRenderParams {
   requestUrl: string;
   scriptVersion: string;
-  userAgent?: string;
+  userAgent?: string | string[];
   queryParamsObject?: object;
   version?: string;
+  xForwardedFor?: string | string[];
 }
 
 const SITEMAP_REGEX = /\/sitemap.*/;
@@ -55,6 +56,8 @@ export async function serverSideRender({
   scriptVersion,
   queryParamsObject,
   version,
+  userAgent,
+  xForwardedFor,
 }: ServerSideRenderParams) {
   // Parse request pathname and queryParams
   const url = URL.parse(requestUrl);
@@ -71,6 +74,17 @@ export async function serverSideRender({
     },
   });
   const generateClassName = createGenerateClassName();
+
+  console.log(axios.defaults.headers.common);
+
+  axios.defaults.headers.common = {
+    ...axios.defaults.headers.common,
+    "User-Agent": userAgent || "",
+    "X-Forwarded-For": xForwardedFor || "",
+  };
+
+  console.log("===========");
+  console.log(axios.defaults.headers.common);
 
   // Load data from API server
   const promises: Array<Promise<any>> = [];
@@ -185,12 +199,6 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
   let succeededToServerRendering = false;
   let version: string;
 
-  axios.defaults.headers.common = {
-    ...axios.defaults.headers.common,
-    "User-Agent": event.headers["User-Agent"],
-    "X-Forwarded-For": event.headers["X-Forwarded-For"],
-  };
-
   let bundledJsForBrowserPath: string;
   if (queryParamsObj && queryParamsObj.branch && queryParamsObj.branch === "master") {
     bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX}/${
@@ -234,6 +242,8 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
       scriptVersion: bundledJsForBrowserPath,
       queryParamsObject: queryParamsObj,
       version,
+      userAgent: event.headers["User-Agent"],
+      xForwardedFor: event.headers["X-Forwarded-For"],
     });
 
     if (html) {
