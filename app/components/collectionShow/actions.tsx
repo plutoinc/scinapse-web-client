@@ -1,6 +1,6 @@
 import axios, { CancelToken } from "axios";
 import { Dispatch } from "react-redux";
-import CollectionAPI from "../../api/collection";
+import CollectionAPI, { GetCollectionsPapersParams } from "../../api/collection";
 import { ActionCreators } from "../../actions/actionTypes";
 import alertToast from "../../helpers/__mocks__/makePlutoToastAction";
 
@@ -28,19 +28,21 @@ export function getCollection(collectionId: number, cancelToken: CancelToken) {
   };
 }
 
-export function getPapers(collectionId: number, cancelToken: CancelToken) {
+export function getPapers(params: GetCollectionsPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToGetPapersInCollectionShow());
 
-      const res = await CollectionAPI.getPapers(collectionId, cancelToken);
-      dispatch(ActionCreators.addEntity(res));
+      const paperResponse = await CollectionAPI.getPapers(params);
+
+      dispatch(ActionCreators.addEntity({ entities: paperResponse.entities, result: paperResponse.result }));
       dispatch(
         ActionCreators.succeededToGetPapersInCollectionShow({
-          paperIds: res.result,
+          paperResponse,
+          sort: params.sort,
+          query: params.query,
         })
       );
-      return res;
     } catch (err) {
       if (!axios.isCancel(err)) {
         alertToast({

@@ -452,7 +452,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
           name: profile.authorName,
           webPage: profile.website || null,
           affiliationId,
-          affiliationName: affiliationName,
+          affiliationName,
           isEmailHidden: profile.isEmailHidden,
         })
       );
