@@ -31,6 +31,8 @@
 }
 
 .name {
+  @extend %one-line-overflow-ellipsis;
+  width: 290px;
   font-size: 18px;
   font-weight: bold;
   color: $black0;
@@ -40,6 +42,8 @@
 }
 
 .affiliation {
+  @extend %one-line-overflow-ellipsis;
+  width: 280px;
   height: 20px;
   line-height: 20px;
   font-size: 14px;
