@@ -27,6 +27,7 @@ export default async function handleSiteMapRequest(requestPath: string) {
         "Content-Type": "text/xml",
         "Access-Control-Allow-Origin": "*",
       },
+      isBase64Encoded: false,
       body,
     };
   } else {
@@ -52,6 +53,7 @@ export default async function handleSiteMapRequest(requestPath: string) {
         "Content-Type": "text/plain",
         "Access-Control-Allow-Origin": "*",
       },
+      isBase64Encoded: false,
       body,
     };
   }
