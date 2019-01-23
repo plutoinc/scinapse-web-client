@@ -1,5 +1,6 @@
 import { Paper } from "../../model/paper";
 import { AggregationData } from "../../model/aggregation";
+import { MatchEntity } from "../../api/search";
 
 export type SEARCH_SORT_OPTIONS = "RELEVANCE" | "MOST_CITATIONS" | "OLDEST_FIRST" | "NEWEST_FIRST";
 
@@ -29,6 +30,7 @@ export interface ArticleSearchState
       journalFilter: number[];
       highlightedSuggestionKeyword: string;
       searchItemsToShow: Paper[];
+      matchEntities: MatchEntity[];
       targetPaper: Paper | null;
       aggregationData: AggregationData | null;
       searchFromSuggestion: boolean;
@@ -58,6 +60,7 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   IFFilterFromValue: 0,
   IFFilterToValue: 0,
   fosFilter: [],
+  matchEntities: [],
   journalFilter: [],
   suggestionKeyword: "",
   highlightedSuggestionKeyword: "",
