@@ -63,8 +63,9 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
     ) : (
       <div className={styles.itemWrapper}>
         <div className={styles.dateSectionWrapper}>
-          <span className={styles.dateContent}>{startDate}</span>
-          <span className={styles.dateContent}>- {endDate ? endDate : "Present"}</span>
+          <span className={styles.dateContent}>
+            {startDate} - {endDate ? endDate : "Present"}
+          </span>
         </div>
         <div className={styles.contentWrapper}>
           {this.getEditItemButtons(id)}
