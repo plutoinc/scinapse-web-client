@@ -7,6 +7,32 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
   <div
     className="contentSection"
   >
+    <div>
+      <a
+        className="title"
+        href="/papers/101"
+        onClick={[Function]}
+      >
+        <span
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "Preparation and characterization of <b>graphene</b> oxide paper.",
+            }
+          }
+        />
+      </a>
+      <a
+        className="newTabIconWrapper"
+        href="/papers/101"
+        onClick={[Function]}
+        rel="noopener"
+        target="_blank"
+      >
+        <i
+          className="icon newTabIcon"
+        />
+      </a>
+    </div>
     <div
       className="publishInfoList"
     >
@@ -99,6 +125,22 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
         </span>
       </div>
     </div>
+    <span
+      className="abstract"
+      style={Object {}}
+    >
+      <span>
+        Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: &lt;b&gt;graphene&lt;/b&gt; ...
+      </span>
+      <label
+        className="moreOrLess"
+        onClick={[Function]}
+      >
+        <span>
+          more
+        </span>
+      </label>
+    </span>
     <div
       className="infoList"
     >
@@ -188,6 +230,32 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
   <div
     className="contentSection"
   >
+    <div>
+      <a
+        className="title"
+        href="/papers/101"
+        onClick={[Function]}
+      >
+        <span
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "Preparation and characterization of <b>graphene</b> oxide paper.",
+            }
+          }
+        />
+      </a>
+      <a
+        className="newTabIconWrapper"
+        href="/papers/101"
+        onClick={[Function]}
+        rel="noopener"
+        target="_blank"
+      >
+        <i
+          className="icon newTabIcon"
+        />
+      </a>
+    </div>
     <div
       className="publishInfoList"
     >
@@ -280,6 +348,22 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
         </span>
       </div>
     </div>
+    <span
+      className="abstract"
+      style={Object {}}
+    >
+      <span>
+        Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: &lt;b&gt;graphene&lt;/b&gt; ...
+      </span>
+      <label
+        className="moreOrLess"
+        onClick={[Function]}
+      >
+        <span>
+          more
+        </span>
+      </label>
+    </span>
     <div
       className="infoList"
     >
