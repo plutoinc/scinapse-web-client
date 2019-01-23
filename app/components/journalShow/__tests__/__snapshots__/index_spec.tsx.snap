@@ -128,6 +128,32 @@ exports[`JournalShow Container Component when journal data exist should render c
               <div
                 className="contentSection"
               >
+                <div>
+                  <a
+                    className="title"
+                    href="/papers/8107"
+                    onClick={[Function]}
+                  >
+                    <span
+                      dangerouslySetInnerHTML={
+                        Object {
+                          "__html": "Understanding the very nature of Project Management : a praxiological approach",
+                        }
+                      }
+                    />
+                  </a>
+                  <a
+                    className="newTabIconWrapper"
+                    href="/papers/8107"
+                    onClick={[Function]}
+                    rel="noopener"
+                    target="_blank"
+                  >
+                    <i
+                      className="icon newTabIcon"
+                    />
+                  </a>
+                </div>
                 <div
                   className="publishInfoList"
                 >
@@ -173,6 +199,22 @@ exports[`JournalShow Container Component when journal data exist should render c
                     </span>
                   </div>
                 </div>
+                <span
+                  className="abstract"
+                  style={Object {}}
+                >
+                  <span>
+                    Foreword: In this paper I call upon a praxiological approach. Praxeology (early alteration of praxiology) is the study of human action and conduct. The name praxeology/praxiologyakes is root in praxis, Medieval Latin, from Greek, doing, action, from prassein to do, practice (Merriam-Webster Dictionary). Having been involved in project management education, research and practice for the last twenty years, I have constantly tried to improve and to provide a better understanding/knowledge of the fi...
+                  </span>
+                  <label
+                    className="moreOrLess"
+                    onClick={[Function]}
+                  >
+                    <span>
+                      more
+                    </span>
+                  </label>
+                </span>
                 <div
                   className="infoList"
                 >
