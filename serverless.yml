@@ -130,7 +130,6 @@ resources:
               Headers:
                 - "User-Agent"
                 - "X-Forwarded-For"
-                - "Referer"
               QueryString: true
             TargetOriginId: "${self:service}-${opt:stage}-api-gateway"
             ViewerProtocolPolicy: redirect-to-https

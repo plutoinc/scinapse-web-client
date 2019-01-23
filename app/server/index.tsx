@@ -185,6 +185,12 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
   let succeededToServerRendering = false;
   let version: string;
 
+  axios.defaults.headers.common = {
+    ...axios.defaults.headers.common,
+    "User-Agent": event.headers["User-Agent"],
+    "X-Forwarded-For": event.headers["X-Forwarded-For"],
+  };
+
   let bundledJsForBrowserPath: string;
   if (queryParamsObj && queryParamsObj.branch && queryParamsObj.branch === "master") {
     bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX}/${
