@@ -62,7 +62,7 @@ export function getAuthor(authorId: number, cancelToken: CancelToken) {
         if (error) {
           alertToast({
             type: "error",
-            message: "Failed to get author information",
+            message: error.message,
           });
         }
       }
