@@ -15,11 +15,14 @@ export function clearPaperShowState() {
   return ActionCreators.clearPaperShowState();
 }
 
-export function getMyCollections(paperId: number, cancelToken: CancelToken) {
+export function getMyCollections(paperId: number, cancelToken: CancelToken, isOpenDropdown?: boolean) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      dispatch(ActionCreators.startToGetCollectionsInPaperShow());
-
+      if (isOpenDropdown) {
+        dispatch(ActionCreators.startToGetCollectionsInPaperShowDropdown());
+      } else {
+        dispatch(ActionCreators.startToGetCollectionsInPaperShow());
+      }
       const res = await MemberAPI.getMyCollections(paperId, cancelToken);
       dispatch(ActionCreators.addEntity(res));
       dispatch(

@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios from "axios";
 import { denormalize } from "normalizr";
 import { connect, Dispatch } from "react-redux";
 import * as classNames from "classnames";
@@ -27,6 +28,7 @@ import {
   openCollectionDropdown,
   openNoteDropdown,
   closeNoteDropdown,
+  getMyCollections,
 } from "../../actions/paperShow";
 import { trackEvent } from "../../helpers/handleGA";
 import ActionTicketManager from "../../helpers/actionTicketManager";
@@ -105,6 +107,7 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
 @withStyles<typeof PaperShowCollectionControlButton>(styles)
 class PaperShowCollectionControlButton extends React.PureComponent<PaperShowCollectionControlButtonProps> {
   private popoverAnchorEl: HTMLDivElement | null;
+  private cancelToken = axios.CancelToken.source();
 
   public componentDidMount() {
     const { myCollections } = this.props;
@@ -126,6 +129,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     ) {
       const defaultCollection =
         myCollections.find(collection => collection.isDefault) || myCollections[myCollections.length - 1];
+
       this.handleSelectCollection(defaultCollection);
     }
   }
@@ -166,7 +170,11 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
               <TitleArea
                 currentUser={currentUser}
                 collection={selectedCollection}
-                isLoading={currentUser.isLoggingIn || myCollectionsState.isLoadingCollections}
+                isLoading={
+                  currentUser.isLoggingIn ||
+                  myCollectionsState.isLoadingCollections ||
+                  myCollectionsState.isLoadingCollectionsInDropdown
+                }
                 handleUnsignedUser={this.handleUnsignedUser}
                 onClick={this.handleToggleCollectionDropdown}
               />
@@ -205,7 +213,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
               minWidth: "83px",
               height: "40px",
               borderRadius: saveButtonBorderRadius,
-              padding: "12px 16px",
+              padding: "12px 0",
               backgroundColor: isSelected ? "#34495e" : "#3e7fff",
               fontSize: "16px",
               fontWeight: 500,
@@ -273,6 +281,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     const isLoading =
       currentUser.isLoggingIn ||
       myCollectionsState.isLoadingCollections ||
+      myCollectionsState.isLoadingCollectionsInDropdown ||
       myCollectionsState.isFetchingPaper ||
       myCollectionsState.isPostingNote;
 
@@ -410,11 +419,12 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private handleToggleCollectionDropdown = () => {
-    const { dispatch, myCollectionsState } = this.props;
+    const { dispatch, myCollectionsState, targetPaperId } = this.props;
 
     if (myCollectionsState.isCollectionDropdownOpen) {
       dispatch(closeCollectionDropdown());
     } else {
+      dispatch(getMyCollections(targetPaperId, this.cancelToken.token, true));
       dispatch(openCollectionDropdown());
     }
   };
@@ -494,7 +504,10 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   private getSaveButtonContent = () => {
     const { currentUser, myCollectionsState, selectedCollection } = this.props;
     const isLoading =
-      currentUser.isLoggingIn || myCollectionsState.isLoadingCollections || myCollectionsState.isFetchingPaper;
+      currentUser.isLoggingIn ||
+      myCollectionsState.isLoadingCollections ||
+      myCollectionsState.isLoadingCollectionsInDropdown ||
+      myCollectionsState.isFetchingPaper;
 
     if (isLoading) {
       return <CircularProgress color="inherit" disableShrink={true} size={14} thickness={4} />;
