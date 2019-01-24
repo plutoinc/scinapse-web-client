@@ -195,7 +195,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                     </div>
                   </div>
                   <div className={styles.bioWrapper}>
-                    <label htmlFor="bio">
+                    <label htmlFor="bio" className={styles.descriptLabel}>
                       Description
                       <small className={styles.optionalText}>(Optional)</small>
                     </label>

@@ -12,6 +12,7 @@
 
   label {
     display: inline-flex;
+    position: relative;
     margin-right: 16px;
     width: 90px;
     height: 20px;
@@ -23,6 +24,11 @@
 
 .optionalLabel {
   vertical-align: top;
+}
+
+.descriptLabel {
+  @extend .optionalLabel;
+  margin-top: 6px;
 }
 
 .buttonsWrapper {
@@ -129,6 +135,7 @@
 .optionalText {
   position: absolute;
   margin-top: 16px;
+  left: 0;
 }
 
 .formInputBox {
