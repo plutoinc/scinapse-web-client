@@ -24,6 +24,7 @@ export type ActionTagType =
   | "blogPost"
   | "journalHomepage"
   | "queryInJournal"
+  | "authorEntityItem"
   | "";
 
 export type PageType =
@@ -54,7 +55,8 @@ export type ActionArea =
   | "coAuthor"
   | "topFos"
   | "authorDialog"
-  | "allPublications";
+  | "allPublications"
+  | "authorEntity";
 
 export interface ActionTicketParams {
   pageType: PageType;
