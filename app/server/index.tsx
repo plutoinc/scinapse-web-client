@@ -31,10 +31,9 @@ type RENDERING_TYPE = "NORMAL RENDERING" | "ERROR HANDLING RENDERING" | "FALLBAC
 export interface ServerSideRenderParams {
   requestUrl: string;
   scriptVersion: string;
-  userAgent?: string | string[];
   queryParamsObject?: object;
   version?: string;
-  xForwardedFor?: string | string[];
+  headers?: any;
 }
 
 const SITEMAP_REGEX = /\/sitemap.*/;
@@ -56,8 +55,7 @@ export async function serverSideRender({
   scriptVersion,
   queryParamsObject,
   version,
-  userAgent,
-  xForwardedFor,
+  headers,
 }: ServerSideRenderParams) {
   // Parse request pathname and queryParams
   const url = URL.parse(requestUrl);
@@ -79,8 +77,7 @@ export async function serverSideRender({
 
   axios.defaults.headers.common = {
     ...axios.defaults.headers.common,
-    "User-Agent": userAgent || "",
-    "X-Forwarded-For": xForwardedFor || "",
+    ...headers,
   };
 
   console.log("===========");
@@ -238,8 +235,7 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
       scriptVersion: bundledJsForBrowserPath,
       queryParamsObject: queryParamsObj,
       version,
-      userAgent: event.headers["User-Agent"],
-      xForwardedFor: event.headers["X-Forwarded-For"],
+      headers: event.headers,
     });
 
     if (html) {
