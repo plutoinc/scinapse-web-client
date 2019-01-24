@@ -20,6 +20,7 @@ server.disable("x-powered-by").all("/*", async (req: express.Request, res: expre
     const resultHTML = await serverSideRender({
       requestUrl: req.url,
       scriptVersion: "http://localhost:8080/bundle.js",
+      headers: req.headers,
     });
     succeededToServerRendering = true;
 

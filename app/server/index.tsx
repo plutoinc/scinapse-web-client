@@ -31,9 +31,9 @@ type RENDERING_TYPE = "NORMAL RENDERING" | "ERROR HANDLING RENDERING" | "FALLBAC
 export interface ServerSideRenderParams {
   requestUrl: string;
   scriptVersion: string;
-  userAgent?: string;
   queryParamsObject?: object;
   version?: string;
+  headers?: any;
 }
 
 const SITEMAP_REGEX = /\/sitemap.*/;
@@ -55,6 +55,7 @@ export async function serverSideRender({
   scriptVersion,
   queryParamsObject,
   version,
+  headers,
 }: ServerSideRenderParams) {
   // Parse request pathname and queryParams
   const url = URL.parse(requestUrl);
@@ -71,6 +72,11 @@ export async function serverSideRender({
     },
   });
   const generateClassName = createGenerateClassName();
+
+  axios.defaults.headers.common = {
+    ...axios.defaults.headers.common,
+    ...headers,
+  };
 
   // Load data from API server
   const promises: Array<Promise<any>> = [];
@@ -178,7 +184,6 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
       Empty content HTML with <script> tag which contains bundled javascript address for client.
 
   ******** */
-  const LAMBDA_SERVICE_NAME = "pluto-web-client";
   const path = event.path;
   const queryParamsObj = event.queryStringParameters;
   const isDevDemoRequest = queryParamsObj && queryParamsObj.branch;
@@ -205,35 +210,31 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
     }/${version}/bundleBrowser.js`;
   }
 
-  console.log(path, "=== path");
-
-  const isHomeRequest = path === `/${LAMBDA_SERVICE_NAME}`;
-  const requestPath = !path || isHomeRequest ? "/" : path.replace(`/${LAMBDA_SERVICE_NAME}`, "");
-
-  console.log(`The user requested at: ${requestPath} with ${JSON.stringify(queryParamsObj)}`);
+  console.log(`The user requested at: ${path} with ${JSON.stringify(queryParamsObj)}`);
 
   // Handling '/robots.txt' path
-  if (requestPath === "/robots.txt") {
-    return getResponseObjectForRobot(event.requestContext!.stage);
+  if (path === "/robots.txt") {
+    return getResponseObjectForRobot(event.headers.host === "scinapse.io");
   }
 
   // handling '/sitemap' path
-  if (requestPath.search(SITEMAP_REGEX) !== -1) {
-    return handleSiteMapRequest(requestPath);
+  if (path.search(SITEMAP_REGEX) !== -1) {
+    return handleSiteMapRequest(path);
   }
 
   const normalRender = async (): Promise<string> => {
     const html = await serverSideRender({
-      requestUrl: requestPath,
+      requestUrl: path,
       scriptVersion: bundledJsForBrowserPath,
       queryParamsObject: queryParamsObj,
       version,
+      headers: event.headers,
     });
 
     if (html) {
       const buf = new Buffer(html);
-      if (buf.byteLength > 6291456 /* 6MB */) {
-        throw new Error("The result HTML size is more than AWS Lambda limitation.");
+      if (buf.byteLength > 1024 /* 1MB */) {
+        throw new Error("The result HTML size is more than AWS ELB limitation.");
       }
 
       succeededToServerRendering = true;
@@ -284,9 +285,10 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
   return {
     statusCode: 200,
     headers: {
-      "Content-Type": "text/html",
+      "Content-Type": "text/html; charset=utf-8",
       "Access-Control-Allow-Origin": "*",
     },
+    isBase64Encoded: false,
     body: resBody,
   };
 }

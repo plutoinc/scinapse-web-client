@@ -1,5 +1,5 @@
-export default function getResponseObjectForRobot(stage: string) {
-  if (stage === "prod") {
+export default function getResponseObjectForRobot(isProd: boolean) {
+  if (isProd) {
     const content = `
     User-agent: *
     Disallow: /papers/*/cited
@@ -11,9 +11,10 @@ export default function getResponseObjectForRobot(stage: string) {
         "Cache-Control": "max-age=100",
         "Content-Type": "text/plain",
       },
+      isBase64Encoded: false,
       body: content,
     };
-  } else if (stage === "dev") {
+  } else {
     const content = `
     User-agent: *
     Disallow: /
@@ -24,6 +25,7 @@ export default function getResponseObjectForRobot(stage: string) {
         "Cache-Control": "max-age=100",
         "Content-Type": "text/plain",
       },
+      isBase64Encoded: false,
       body: content,
     };
   }

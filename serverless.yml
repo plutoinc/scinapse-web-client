@@ -7,37 +7,16 @@ provider:
   role: LambdaEdgeRole
   logRetentionInDays: 30
 
-plugins:
-  - serverless-lambda-version-custom
-
 package:
   individually: true
 
 functions:
-  edgeFunction:
-    memorySize: 128
-    timeout: 1
-    package:
-      individually: true
-      exclude:
-        - "**/*"
-      include:
-        - "lambdaEdge${opt:stage}.js"
-        - "node_modules/isbot/**/*"
-    handler: "lambdaEdge${opt:stage}.handler"
   render:
     handler: ${file(./env/${opt:stage}.yml):HANDLER}
     memorySize: 512
     timeout: 20
     package:
       artifact: dist.zip
-    events:
-      - http:
-          method: get
-          path: ${self:service}
-      - http:
-          method: any
-          path: "${self:service}/{proxy+}"
 
 resources:
   Resources:
@@ -62,16 +41,6 @@ resources:
                   Action:
                     - s3:*
                   Resource: "arn:aws:s3:::pluto-academic/*"
-          - PolicyName: LambdaEdgeExecutionRole
-            PolicyDocument:
-              Version: "2012-10-17"
-              Statement:
-                - Effect: Allow
-                  Action:
-                    - logs:CreateLogGroup
-                    - logs:CreateLogStream
-                    - logs:PutLogEvents
-                  Resource: "*"
           - PolicyName: XRayRole
             PolicyDocument:
               Version: "2012-10-17"
@@ -89,61 +58,3 @@ resources:
                   Action:
                     - cloudwatch:PutMetricData
                   Resource: "*"
-
-    CloudFrontDistribution:
-      Type: AWS::CloudFront::Distribution
-      Properties:
-        DistributionConfig:
-          ViewerCertificate:
-            AcmCertificateArn: arn:aws:acm:us-east-1:966390130392:certificate/29cc1730-015b-4296-9400-d0ef21981966
-            SslSupportMethod: sni-only
-          DefaultRootObject: ""
-          HttpVersion: "http2"
-          Enabled: true
-          CustomErrorResponses:
-            - ErrorCode: 400
-              ErrorCachingMinTTL: 0
-            - ErrorCode: 403
-              ErrorCachingMinTTL: 0
-            - ErrorCode: 404
-              ErrorCachingMinTTL: 0
-            - ErrorCode: 500
-              ErrorCachingMinTTL: 0
-            - ErrorCode: 502
-              ErrorCachingMinTTL: 0
-            - ErrorCode: 503
-              ErrorCachingMinTTL: 0
-            - ErrorCode: 504
-              ErrorCachingMinTTL: 0
-          DefaultCacheBehavior:
-            DefaultTTL: 0
-            MaxTTL: 0
-            MinTTL: 0
-            Compress: true
-            AllowedMethods:
-              - GET
-              - HEAD
-            CachedMethods:
-              - HEAD
-              - GET
-            ForwardedValues:
-              QueryString: true
-            TargetOriginId: "${self:service}-${opt:stage}-api-gateway"
-            ViewerProtocolPolicy: redirect-to-https
-            LambdaFunctionAssociations:
-              - EventType: viewer-request
-                LambdaFunctionARN: EdgeFunctionLambdaFunction
-          Aliases:
-            - ${file(./env/${opt:stage}.yml):DNS_ALIAS1}
-            - ${file(./env/${opt:stage}.yml):DNS_ALIAS2}
-            - ${file(./env/${opt:stage}.yml):DNS_ALIAS3}
-            - ${file(./env/${opt:stage}.yml):DNS_ALIAS4}
-            - ${file(./env/${opt:stage}.yml):DNS_ALIAS5}
-          Origins:
-            - CustomOriginConfig:
-                HTTPSPort: 443
-                OriginProtocolPolicy: https-only
-              DomainName:
-                "Fn::Join": ["", [{ "Ref": "ApiGatewayRestApi" }, ".execute-api.${self:provider.region}.amazonaws.com"]]
-              Id: "${self:service}-${opt:stage}-api-gateway"
-              OriginPath: /${opt:stage}/${self:service}
