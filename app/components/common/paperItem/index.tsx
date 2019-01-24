@@ -73,9 +73,11 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
       handleToggleRepresentative,
       actionArea,
     } = this.props;
-    const { title, authors, year, doi, urls, journal } = paper;
+    const { title, titleHighlighted, authors, year, doi, urls, journal } = paper;
 
-    const abstract = !omitAbstract ? <Abstract abstract={paper.abstract} searchQueryText={searchQueryText} /> : null;
+    const abstract = !omitAbstract ? (
+      <Abstract abstract={paper.abstractHighlighted || paper.abstract} searchQueryText={searchQueryText} />
+    ) : null;
     const buttons =
       !omitButtons && currentUser ? (
         <PaperActionButtons
@@ -109,7 +111,7 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
           <Title
             pageType={pageType}
             actionArea={actionArea}
-            title={title}
+            title={titleHighlighted || title}
             paperId={paper.id}
             searchQueryText={searchQueryText}
             source={source}

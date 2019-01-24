@@ -48,11 +48,14 @@ declare global {
       "CloudFront-Is-Tablet-Viewer"?: string;
       "CloudFront-Viewer-Country"?: string;
       Host?: string;
+      host?: string;
       "Upgrade-Insecure-Requests"?: string;
       "User-Agent"?: string;
+      "user-agent"?: string;
       Via?: string;
       "X-Amz-Cf-Id"?: string;
       "X-Forwarded-For"?: string;
+      "x-forwarded-for"?: string;
       "X-Forwarded-Port"?: string;
       "X-Forwarded-Proto"?: string;
       "original-uri"?: string;
