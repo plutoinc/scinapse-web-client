@@ -1,20 +1,30 @@
 import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
-import { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
+import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 
 export interface CollectionShowState
   extends Readonly<{
       isLoadingCollection: boolean;
       failedToLoadingCollection: boolean;
+      isLoadingPaperToCollection: boolean;
       mainCollectionId: number;
-      sortType: PAPER_LIST_SORT_TYPES;
-      paperIds: number[];
+      totalPaperListPage: number;
+      currentPaperListPage: number;
+      papersTotalCount: number;
+      sortType: AUTHOR_PAPER_LIST_SORT_TYPES;
+      searchKeyword: string;
+      paperIds: number | number[];
     }> {}
 
 export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
   isLoadingCollection: false,
   failedToLoadingCollection: false,
+  isLoadingPaperToCollection: false,
   mainCollectionId: 0,
-  sortType: "MOST_CITATIONS",
+  totalPaperListPage: 0,
+  currentPaperListPage: 1,
+  papersTotalCount: 0,
+  sortType: "RECENTLY_ADDED",
+  searchKeyword: "",
   paperIds: [],
 };
 
@@ -46,12 +56,34 @@ export function reducer(
         failedToLoadingCollection: true,
       };
     }
-
-    case ACTION_TYPES.COLLECTION_SHOW_SUCCEEDED_GET_PAPERS: {
+    case ACTION_TYPES.COLLECTION_SHOW_START_TO_GET_PAPERS: {
       return {
         ...state,
-        paperIds: action.payload.paperIds,
+        isLoadingPaperToCollection: true,
       };
+    }
+    case ACTION_TYPES.COLLECTION_SHOW_FAILED_TO_GET_PAPERS: {
+      return {
+        ...state,
+        isLoadingPaperToCollection: false,
+      };
+    }
+    case ACTION_TYPES.COLLECTION_SHOW_SUCCEEDED_GET_PAPERS: {
+      const pageRes = action.payload.paperResponse.page;
+      const paperIds = action.payload.paperResponse.result;
+
+      return pageRes
+        ? {
+            ...state,
+            isLoadingPaperToCollection: false,
+            paperIds,
+            sortType: action.payload.sort as AUTHOR_PAPER_LIST_SORT_TYPES,
+            totalPaperListPage: pageRes.totalPages,
+            currentPaperListPage: pageRes.page,
+            papersTotalCount: pageRes.totalElements,
+            searchKeyword: action.payload.query ? action.payload.query : "",
+          }
+        : { ...state, isLoadingPaperToCollection: false, paperIds };
     }
 
     default:

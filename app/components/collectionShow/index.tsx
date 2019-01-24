@@ -9,6 +9,8 @@ import { Helmet } from "react-helmet";
 import { AppState } from "../../reducers";
 import CollectionPaperItem from "./collectionPaperItem";
 import ArticleSpinner from "../common/spinner/articleSpinner";
+import MobilePagination from "../common/mobilePagination";
+import DesktopPagination from "../common/desktopPagination";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import { CollectionShowState } from "./reducer";
@@ -19,10 +21,16 @@ import { PaperInCollection, paperInCollectionSchema } from "../../model/paperInC
 import Footer from "../layouts/footer";
 import Icon from "../../icons";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
+import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from "../common/sortBox";
+import { getPapers } from "./actions";
+import { LayoutState, UserDevice } from "../layouts/records";
+import ScinapseInput from "../common/scinapseInput";
+import formatNumber from "../../helpers/formatNumber";
 const styles = require("./collectionShow.scss");
 
 function mapStateToProps(state: AppState) {
   return {
+    layout: state.layout,
     currentUser: state.currentUser,
     collectionShow: state.collectionShow,
     configuration: state.configuration,
@@ -38,6 +46,7 @@ export interface CollectionShowMatchParams {
 export interface CollectionShowProps
   extends RouteComponentProps<CollectionShowMatchParams>,
     Readonly<{
+      layout: LayoutState;
       currentUser: CurrentUser;
       configuration: Configuration;
       collectionShow: CollectionShowState;
@@ -131,8 +140,31 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                       <span>{`Papers `}</span>
                       <span className={styles.paperCount}>{collection.paperCount}</span>
                     </div>
+                    <div className={styles.searchInputWrapper}>
+                      <ScinapseInput
+                        onSubmit={this.handleSubmitSearch}
+                        placeholder="Search papers in this collection"
+                        icon="SEARCH_ICON"
+                      />
+                    </div>
+                    <div className={styles.subHeader}>
+                      <div className={styles.resultPaperCount}>{`${
+                        collectionShow.currentPaperListPage
+                      } page of ${formatNumber(collectionShow.totalPaperListPage)} pages (${formatNumber(
+                        collectionShow.papersTotalCount
+                      )} results)`}</div>
+                      <div className={styles.sortBoxWrapper}>
+                        <SortBox
+                          sortOption={collectionShow.sortType}
+                          handleClickSortOption={this.handleClickSort}
+                          exposeRecentlyUpdated={true}
+                          exposeRelevanceOption={false}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div>{this.getPaperList()}</div>
+                  <div>{this.getPaginationComponent()}</div>
                 </div>
               </div>
               <div className={styles.rightBox} />
@@ -145,6 +177,79 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
       return null;
     }
   }
+
+  private getPaginationComponent = () => {
+    const { collectionShow, layout } = this.props;
+    const { currentPaperListPage, totalPaperListPage } = collectionShow;
+
+    const currentPageIndex: number = currentPaperListPage - 1;
+
+    if (layout.userDevice !== UserDevice.DESKTOP) {
+      return (
+        <MobilePagination
+          totalPageCount={totalPaperListPage}
+          currentPageIndex={currentPageIndex}
+          onItemClick={this.fetchPapers}
+          wrapperStyle={{
+            margin: "12px 0",
+          }}
+        />
+      );
+    } else {
+      return (
+        <DesktopPagination
+          type="search_result_papers"
+          totalPage={totalPaperListPage}
+          currentPageIndex={currentPageIndex}
+          onItemClick={this.fetchPapers}
+          wrapperStyle={{
+            margin: "24px 0",
+          }}
+        />
+      );
+    }
+  };
+
+  private handleSubmitSearch = (query: string) => {
+    const { dispatch, collectionShow } = this.props;
+
+    dispatch(
+      getPapers({
+        collectionId: collectionShow.mainCollectionId,
+        page: 1,
+        sort: collectionShow.sortType,
+        cancelToken: this.cancelToken.token,
+        query,
+      })
+    );
+  };
+
+  private fetchPapers = (page: number) => {
+    const { dispatch, collectionShow } = this.props;
+
+    dispatch(
+      getPapers({
+        collectionId: collectionShow.mainCollectionId,
+        page,
+        sort: collectionShow.sortType,
+        cancelToken: this.cancelToken.token,
+        query: collectionShow.searchKeyword,
+      })
+    );
+  };
+
+  private handleClickSort = (option: AUTHOR_PAPER_LIST_SORT_TYPES) => {
+    const { collectionShow, dispatch } = this.props;
+    dispatch(
+      getPapers({
+        collectionId: collectionShow.mainCollectionId,
+        page: collectionShow.currentPaperListPage,
+        sort: option,
+        cancelToken: this.cancelToken.token,
+        query: collectionShow.searchKeyword,
+      })
+    );
+  };
 
   private getCollectionControlBtns = () => {
     const { currentUser, collection } = this.props;
@@ -214,7 +319,16 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   };
 
   private getPaperList = () => {
-    const { papersInCollection, currentUser } = this.props;
+    const { papersInCollection, currentUser, collectionShow } = this.props;
+
+    if (collectionShow.isLoadingPaperToCollection) {
+      return (
+        <div className={styles.loadingContainer}>
+          <ArticleSpinner className={styles.loadingSpinner} />
+        </div>
+      );
+    }
+
     if (papersInCollection && papersInCollection.length > 0) {
       return papersInCollection.map(paper => {
         if (paper) {

@@ -25,6 +25,7 @@ class DevRenderer {
       result = await render(event);
     }
 
+    console.log(result);
     return result;
   }
 
@@ -119,8 +120,22 @@ async function handler(event: Lambda.Event, _context: Lambda.Context) {
   console.log(path, "=== path at parent function");
 
   const devRenderer = new DevRenderer();
-  const result = await devRenderer.render(event);
-  return result;
+  try {
+    const result = await devRenderer.render(event);
+    console.log("====== succeeded to rendering!");
+    return result;
+  } catch (err) {
+    console.error(err);
+    return {
+      statusCode: 200,
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
+      },
+      isBase64Encoded: false,
+      body: err.message,
+    };
+  }
 }
 
 export const ssr = handler;

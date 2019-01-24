@@ -23,6 +23,7 @@ import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import { UserDevice } from "../layouts/records";
 import { SEARCH_SORT_OPTIONS } from "./records";
+import AuthorSearchItem from "../authorSearchItem";
 const styles = require("./articleSearch.scss");
 
 export interface RawQueryParams {
@@ -102,6 +103,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
             {this.getResultHelmet(queryParams.query)}
             <div className={styles.innerContainer}>
               {this.getSuggestionKeywordBox()}
+              {this.getAuthorEntitiesSection()}
               <div className={styles.searchSummary}>
                 <span className={styles.searchPage}>
                   {articleSearchState.page} page of {formatNumber(totalPages)} pages ({formatNumber(totalElements)}{" "}
@@ -190,6 +192,19 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     } else {
       return null;
     }
+  };
+
+  private getAuthorEntitiesSection = () => {
+    const { articleSearchState } = this.props;
+
+    const authorItems = articleSearchState.matchEntities
+      .filter(matchEntity => matchEntity.type === "AUTHOR")
+      .slice(0, 2)
+      .map(matchEntity => {
+        return <AuthorSearchItem authorEntity={matchEntity} key={matchEntity.entity.id} />;
+      });
+
+    return <div className={styles.authorItemsWrapper}>{authorItems}</div>;
   };
 
   private getResultHelmet = (query: string) => {

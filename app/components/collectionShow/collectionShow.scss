@@ -175,3 +175,29 @@ $semi_full_width: 997px;
     margin-top: 24px;
   }
 }
+
+.subHeader {
+  position: relative;
+  margin-top: 21px;
+}
+
+.resultPaperCount {
+  font-size: 14px;
+  line-height: 1.43;
+  color: $gray6;
+}
+
+.sortBoxWrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.searchInputWrapper {
+  position: absolute;
+  top: 0;
+  right: 0px;
+  bottom: 0;
+  width: 291px;
+}
