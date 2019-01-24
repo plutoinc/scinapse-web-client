@@ -75,9 +75,9 @@ export async function serverSideRender({
 
   axios.defaults.headers.common = {
     ...axios.defaults.headers.common,
-    "user-agent": headers["user-agent"],
-    "x-forwarded-for": headers["x-forwarded-for"],
-    referer: headers.referer,
+    "user-agent": headers["user-agent"] || "",
+    "x-forwarded-for": headers["x-forwarded-for"] || "",
+    referer: headers.referer || "",
   };
 
   // Load data from API server

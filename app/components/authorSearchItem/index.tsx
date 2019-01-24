@@ -4,6 +4,8 @@ import MuiTooltip from "@material-ui/core/Tooltip";
 import { MatchEntity } from "../../api/search";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
+import { trackEvent } from "../../helpers/handleGA";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 const styles = require("./authorSearchItem.scss");
 
 interface AuthorSearchItemProps {
@@ -25,7 +27,24 @@ const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
   );
 
   return (
-    <Link to={`authors/${author.id}`} className={styles.itemWrapper}>
+    <Link
+      onClick={() => {
+        trackEvent({
+          category: "Flow to Author Show",
+          action: "Click Author Entity",
+          label: `Click Author ID : ${author.id}`,
+        });
+        ActionTicketManager.trackTicket({
+          pageType: "searchResult",
+          actionType: "fire",
+          actionArea: "authorEntity",
+          actionTag: "authorEntityItem",
+          actionLabel: String(author.id),
+        });
+      }}
+      to={`authors/${author.id}`}
+      className={styles.itemWrapper}
+    >
       {profileImage}
       <span className={styles.nameAffiliationBox}>
         <div className={styles.name}>
