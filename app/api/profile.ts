@@ -51,7 +51,7 @@ class ProfileAPI extends PlutoAxios {
       id: params.id,
       title: params.title,
       received_date: params.receivedDate,
-      related_link: params.relatedLink,
+      related_link: !params.relatedLink ? null : params.relatedLink,
     });
     const successResponse: RawPaginationResponseV2<Award> = camelcaseKeys(res.data, { deep: true });
     return successResponse.data.content;

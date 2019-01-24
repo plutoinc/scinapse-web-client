@@ -293,7 +293,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
       this.handleLoadingFlagAuthorCVForm(cvInfoType);
       alertToast({
         type: "error",
-        message: `Had an error to delete ${cvInfoType} data.`,
+        message: `Had an error to add ${cvInfoType} data.`,
       });
     }
   };
