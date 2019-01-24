@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     parameters {
+        disableConcurrentBuilds()
         string(name: 'version', defaultValue: '', description: 'target version to deploy')
     }
 
