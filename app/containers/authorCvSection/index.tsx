@@ -38,23 +38,6 @@ interface AuthorCvSectionProps {
   dispatch: Dispatch<any>;
 }
 
-export function getFormattingDate(year: string, month: string) {
-  return `${year}-${month}`;
-}
-
-export function getMonthOptionItems() {
-  const monthArr = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
-  const monthItems = monthArr.map(m => {
-    return (
-      <option value={m} key={m}>
-        {parseInt(m, 10)}
-      </option>
-    );
-  });
-
-  return monthItems;
-}
-
 @withStyles<typeof AuthorCvSection>(styles)
 class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCvSectionState> {
   public constructor(props: AuthorCvSectionProps) {
@@ -106,7 +89,6 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
           fontFamily: "Roboto",
           padding: "8px",
         }}
-        monthItems={getMonthOptionItems()}
         handleClose={this.handleToggleAuthorCVForm("educations")}
         isOpen={true}
         isLoading={isLoadingEducationForm}
@@ -118,11 +100,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
           institutionName: "",
           institutionId: null,
           startDate: "",
-          startDateYear: "",
-          startDateMonth: "",
           endDate: "",
-          endDateYear: "",
-          endDateMonth: "",
         }}
       />
     ) : (
@@ -182,7 +160,6 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
           fontFamily: "Roboto",
           padding: "8px",
         }}
-        monthItems={getMonthOptionItems()}
         handleClose={this.handleToggleAuthorCVForm("experiences")}
         isOpen={true}
         isLoading={isLoadingExperienceForm}
@@ -195,11 +172,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
           institutionName: "",
           isCurrent: false,
           startDate: "",
-          startDateYear: "",
-          startDateMonth: "",
           endDate: "",
-          endDateYear: "",
-          endDateMonth: "",
         }}
       />
     ) : (
@@ -250,7 +223,6 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
     return isOpenAwardForm ? (
       <AwardForm
-        monthItems={getMonthOptionItems()}
         handleClose={this.handleToggleAuthorCVForm("awards")}
         isOpen={true}
         isLoading={isLoadingAwardForm}
@@ -258,8 +230,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
         initialValues={{
           title: "",
           receivedDate: "",
-          receivedDateMonth: "",
-          receivedDateYear: "",
+          relatedLink: "",
         }}
       />
     ) : (
@@ -313,25 +284,6 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
     this.handleLoadingFlagAuthorCVForm(cvInfoType);
 
-    if (cvInfoType === "awards") {
-      const awardInfoType = cvInfo as AwardFormState;
-      awardInfoType.receivedDate = getFormattingDate(awardInfoType.receivedDateYear, awardInfoType.receivedDateMonth);
-    } else if (cvInfoType === "educations") {
-      const educationInfoType = cvInfo as EducationFormState;
-      educationInfoType.startDate = getFormattingDate(
-        educationInfoType.startDateYear,
-        educationInfoType.startDateMonth
-      );
-      educationInfoType.endDate = getFormattingDate(educationInfoType.endDateYear, educationInfoType.endDateMonth);
-    } else if (cvInfoType === "experiences") {
-      const experienceInfoType = cvInfo as ExperienceFormState;
-      experienceInfoType.startDate = getFormattingDate(
-        experienceInfoType.startDateYear,
-        experienceInfoType.startDateMonth
-      );
-      experienceInfoType.endDate = getFormattingDate(experienceInfoType.endDateYear, experienceInfoType.endDateMonth);
-    }
-
     try {
       await dispatch(postNewAuthorCVInfo(cvInfoType, author.id, cvInfo));
       this.handleLoadingFlagAuthorCVForm(cvInfoType);
@@ -341,7 +293,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
       this.handleLoadingFlagAuthorCVForm(cvInfoType);
       alertToast({
         type: "error",
-        message: `Had an error to delete ${cvInfoType} data.`,
+        message: `Had an error to add ${cvInfoType} data.`,
       });
     }
   };

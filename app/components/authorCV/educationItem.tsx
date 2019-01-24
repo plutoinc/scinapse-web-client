@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Dispatch, connect } from "react-redux";
-import * as format from "date-fns/format";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
 import { Education } from "../../model/profile";
@@ -8,7 +7,6 @@ import EducationForm, { EducationFormState } from "./educationForm";
 import PlutoAxios from "../../api/pluto";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { updateAuthorCvInfo } from "../../actions/author";
-import { getFormattingDate, getMonthOptionItems } from "../../containers/authorCvSection";
 const styles = require("./authorCVItem.scss");
 
 interface EducationItemState {
@@ -47,7 +45,6 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
           fontFamily: "Roboto",
           padding: "8px",
         }}
-        monthItems={getMonthOptionItems()}
         handleClose={this.handelToggleEducationEditForm}
         isOpen={true}
         isLoading={false}
@@ -61,17 +58,14 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
           institutionName,
           startDate,
           endDate,
-          startDateYear: startDate.split("-")[0],
-          startDateMonth: startDate.split("-")[1],
-          endDateYear: endDate ? endDate.split("-")[0] : "",
-          endDateMonth: endDate ? endDate.split("-")[1] : "",
         }}
       />
     ) : (
       <div className={styles.itemWrapper}>
         <div className={styles.dateSectionWrapper}>
-          <span className={styles.dateContent}>{format(startDate, "MMM YYYY")}</span>
-          <span className={styles.dateContent}>- {endDate ? format(endDate, "MMM YYYY") : "Present"}</span>
+          <span className={styles.dateContent}>
+            {startDate} - {endDate ? endDate : "Present"}
+          </span>
         </div>
         <div className={styles.contentWrapper}>
           {this.getEditItemButtons(id)}
@@ -116,27 +110,20 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
   private handelUpdateEducation = async (params: EducationFormState) => {
     const { dispatch, authorId } = this.props;
 
-    const finalParams = {
-      ...params,
-      startDate: getFormattingDate(params.startDateYear, params.startDateMonth),
-      endDate: getFormattingDate(params.endDateYear, params.endDateMonth),
-    };
-
     try {
-      finalParams.id &&
-        (await dispatch(
-          updateAuthorCvInfo("educations", authorId, {
-            ...finalParams,
-            endDate: finalParams.isCurrent ? null : finalParams.endDate,
-          })
-        ));
+      await dispatch(
+        updateAuthorCvInfo("educations", authorId, {
+          ...params,
+          endDate: params.isCurrent ? null : params.endDate,
+        })
+      );
       this.handelToggleEducationEditForm();
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
       console.error(error);
       alertToast({
         type: "error",
-        message: "Had an error to add award data.",
+        message: "Had an error to add education data.",
       });
     }
   };

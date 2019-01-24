@@ -7,24 +7,20 @@ import ScinapseButton from "../common/scinapseButton";
 import ReduxAutoSizeTextarea from "../common/autoSizeTextarea/reduxAutoSizeTextarea";
 import scinapseFormikCheckbox from "../common/scinapseInput/scinapseFormikCheckbox";
 import { withStyles } from "../../helpers/withStylesHelper";
-import scinapseFormikSelect from "../common/scinapseInput/scinapseFormikSelect";
-import { getFormattingDate } from "../../containers/authorCvSection";
 import AffiliationBox from "./affiliationBox";
 const styles = require("./authorCVForm.scss");
 
 export interface ExperienceFormState extends CvBaseInfo {
+  department: string | null;
   description: string | null;
   position: string;
-  startDateMonth: string;
-  startDateYear: string;
-  endDateMonth: string;
-  endDateYear: string;
+  startDate: string;
+  endDate: string;
 }
 
 interface ExperienceFormProps {
   wrapperStyle: React.CSSProperties;
   inputStyle: React.CSSProperties;
-  monthItems: JSX.Element[];
   isOpen: boolean;
   isLoading: boolean;
   initialValues: ExperienceFormState;
@@ -34,10 +30,7 @@ interface ExperienceFormProps {
 
 const validateForm = (values: ExperienceFormState) => {
   const errors: FormikErrors<ExperienceFormState> = {};
-
-  if (!values.department && values.department.length < 2) {
-    errors.department = "Minimum length is 1";
-  }
+  const currentYear = new Date().getFullYear();
 
   if (!values.position && values.position.length < 2) {
     errors.position = "Minimum length is 1";
@@ -47,36 +40,23 @@ const validateForm = (values: ExperienceFormState) => {
     errors.institutionName = "Not available institution";
   }
 
-  if (!values.startDateMonth) {
-    errors.startDateMonth = "Please selected valid month";
+  if (!values.startDate) {
+    errors.startDate = "Please write valid year (ex. 2010)";
   }
 
-  if (!values.startDateYear) {
-    errors.startDateMonth = "Please write valid year (ex. 2010)";
+  if (!values.isCurrent && !values.endDate) {
+    errors.startDate = "Please write valid year (ex. 2010)";
+    errors.endDate = " ";
   }
 
-  if (!values.isCurrent && !values.endDateMonth) {
-    errors.endDateMonth = "Please selected valid month";
+  if (!values.isCurrent && values.endDate && parseInt(values.startDate, 10) - parseInt(values.endDate, 10) > 0) {
+    errors.endDate = "Please write a future date";
+    errors.startDate = " ";
   }
 
-  if (!values.isCurrent && !values.endDateYear) {
-    errors.endDateMonth = "Please write valid year (ex. 2010)";
-  }
-
-  if (!values.isCurrent && values.endDateMonth && values.endDateYear) {
-    const startDateStr = getFormattingDate(values.startDateYear, values.startDateMonth);
-    const startDate = new Date(startDateStr);
-
-    const endDateStr = getFormattingDate(values.endDateYear, values.endDateMonth);
-    const endDate = new Date(endDateStr);
-    startDate.getTime() - endDate.getTime() > 0 ? (errors.endDateMonth = "Select a future date") : "";
-  }
-
-  if (values.startDateYear && values.startDateMonth) {
-    const currentDate = new Date().getTime();
-    const startDateStr = getFormattingDate(values.startDateYear, values.startDateMonth);
-    const startDate = new Date(startDateStr);
-    currentDate - startDate.getTime() < 0 ? (errors.startDateMonth = "Please write before current date") : "";
+  if (values.startDate && currentYear - parseInt(values.startDate, 10) < 0) {
+    errors.startDate = "Please write before current date";
+    errors.endDate = " ";
   }
 
   return errors;
@@ -93,15 +73,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
   }
 
   public render() {
-    const {
-      handleClose,
-      isLoading,
-      handleSubmitForm,
-      initialValues,
-      monthItems,
-      wrapperStyle,
-      inputStyle,
-    } = this.props;
+    const { handleClose, isLoading, handleSubmitForm, initialValues, wrapperStyle, inputStyle } = this.props;
 
     return (
       <Formik
@@ -148,7 +120,10 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                     />
                   </div>
                   <div className={styles.inlineInput}>
-                    <label htmlFor="department">Department</label>
+                    <label htmlFor="department" className={styles.optionalLabel}>
+                      Department
+                      <small className={styles.optionalText}>(Optional)</small>
+                    </label>
                     <div className={styles.formInputBox}>
                       <Field
                         name="department"
@@ -169,30 +144,19 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                       <div className={styles.formInputBox}>
                         <div className={styles.dateInputWrapper}>
                           <Field
-                            name="startDateMonth"
-                            component={scinapseFormikSelect}
-                            placeHolderContent="Month"
-                            defaultValue={values.startDateMonth}
-                            inputStyle={inputStyle}
-                            children={monthItems}
-                            className={classNames({
-                              [styles.dateMonthField]: true,
-                              [styles.errorInputField]: !!errors.startDateMonth,
-                            })}
-                          />
-                          <Field
-                            name="startDateYear"
+                            name="startDate"
                             type="text"
                             placeholder="Year"
                             style={{ color: "#666d7c" }}
                             maxLength="4"
                             className={classNames({
                               [styles.dateYearField]: true,
-                              [styles.errorInputField]: !!errors.startDateMonth,
+                              [styles.errorInputField]: !!errors.startDate,
                             })}
                           />
                           <span className={styles.toSyntax}>to</span>
-                          <ErrorMessage name="startDateMonth" className={styles.errorMessage} component="div" />
+                          <ErrorMessage name="startDate" className={styles.errorMessage} component="div" />
+                          <ErrorMessage name="endDate" className={styles.errorMessage} component="div" />
                         </div>
                       </div>
                     </div>
@@ -201,30 +165,16 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                         <div className={styles.formInputBox}>
                           <div className={styles.dateInputWrapper}>
                             <Field
-                              name="endDateMonth"
-                              component={scinapseFormikSelect}
-                              placeHolderContent="Month"
-                              defaultValue={values.endDateMonth}
-                              inputStyle={inputStyle}
-                              children={monthItems}
-                              className={classNames({
-                                [styles.dateMonthField]: true,
-                                [styles.errorInputField]: !!errors.endDateMonth,
-                              })}
-                            />
-                            <Field
-                              name="endDateYear"
+                              name="endDate"
                               type="text"
                               placeholder="Year"
                               style={{ color: "#666d7c" }}
                               maxLength="4"
                               className={classNames({
                                 [styles.dateYearField]: true,
-                                [styles.errorInputField]: !!errors.endDateMonth,
+                                [styles.errorInputField]: !!errors.endDate,
                               })}
                             />
-
-                            <ErrorMessage name="endDateMonth" className={styles.errorMessage} component="div" />
                           </div>
                         </div>
                       </div>
@@ -245,7 +195,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                     </div>
                   </div>
                   <div className={styles.bioWrapper}>
-                    <label htmlFor="bio">
+                    <label htmlFor="bio" className={styles.descriptLabel}>
                       Description
                       <small className={styles.optionalText}>(Optional)</small>
                     </label>

@@ -44,20 +44,21 @@
     vertical-align: top;
     display: inline-block;
     padding: 0 8px;
-    margin-right: 16px;
+    margin-right: 14px;
+    margin-top: 2px;
     font-size: 13px;
     line-height: 1.54;
     color: $gray6;
 
     .dateContent {
-      width: 70px;
+      width: 88px;
       display: flex;
     }
   }
 
   .contentWrapper {
     display: inline-block;
-    width: 570px;
+    width: 550px;
 
     .affiliationContent {
       display: flex;
@@ -74,6 +75,14 @@
       color: $black0;
     }
 
+    .mainAffiliationContent {
+      display: flex;
+      font-size: 14px;
+      line-height: 0.93;
+      color: $black0;
+      margin-top: 8px;
+    }
+
     .subAffiliationContent {
       display: flex;
       font-size: 13px;
@@ -81,11 +90,28 @@
       color: $gray6;
     }
 
+    .relatedLinkContent {
+      @extend .subAffiliationContent;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
     .detailDescriptionSection {
+      display: flex;
       font-size: 12px;
       line-height: 1.33;
       word-break: break-all;
       color: $black0;
+    }
+
+    .subDescriptionContent {
+      display: flex;
+      font-size: 12px;
+      line-height: 1.33;
+      color: $gray5;
+      margin-top: 8px;
     }
   }
 }

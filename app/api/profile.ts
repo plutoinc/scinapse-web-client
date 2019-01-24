@@ -12,21 +12,23 @@ export interface CvBaseInfo {
   isCurrent: boolean;
   institutionId: number | null;
   institutionName: string;
-  department: string;
 }
 
 export interface AwardParams {
   id?: string | undefined;
   title: string;
   receivedDate: string;
+  relatedLink: string | null;
 }
 
 export interface EducationParams extends CvBaseInfo {
   degree: string;
+  department: string;
 }
 
 export interface ExperienceParams extends CvBaseInfo {
   description: string | null;
+  department: string | null;
   position: string;
 }
 
@@ -49,6 +51,7 @@ class ProfileAPI extends PlutoAxios {
       id: params.id,
       title: params.title,
       received_date: params.receivedDate,
+      related_link: params.relatedLink ? params.relatedLink : null,
     });
     const successResponse: RawPaginationResponseV2<Award> = camelcaseKeys(res.data, { deep: true });
     return successResponse.data.content;
@@ -77,10 +80,10 @@ class ProfileAPI extends PlutoAxios {
       is_current: params.isCurrent,
       institution_id: params.institutionId,
       institution_name: params.institutionName,
-      department: params.department,
+      department: params.department ? params.department : null,
       position: params.position,
       end_date: params.isCurrent ? null : params.endDate,
-      description: !params.description ? null : params.description,
+      description: params.description ? params.description : null,
     };
     const res = await this.post(`/authors/${authorId}/experiences`, finalParams);
     const successResponse: RawPaginationResponseV2<Experience> = camelcaseKeys(res.data, { deep: true });
@@ -110,6 +113,7 @@ class ProfileAPI extends PlutoAxios {
       id: params.id,
       title: params.title,
       received_date: params.receivedDate,
+      related_link: !params.relatedLink ? null : params.relatedLink,
     });
     const successResponse: RawPaginationResponseV2<Award> = camelcaseKeys(res.data, { deep: true });
     return successResponse.data.content;
@@ -138,7 +142,7 @@ class ProfileAPI extends PlutoAxios {
       is_current: params.isCurrent,
       institution_id: params.institutionId,
       institution_name: params.institutionName,
-      department: params.department,
+      department: !params.department ? null : params.department,
       position: params.position,
       end_date: params.isCurrent ? null : params.endDate,
       description: !params.description ? null : params.description,

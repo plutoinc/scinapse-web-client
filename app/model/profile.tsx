@@ -17,23 +17,24 @@ interface CvBaseInfo {
   isCurrent: boolean;
   institutionId: number;
   institutionName: string;
-  department: string;
 }
 
 export interface Award {
   id: string;
   title: string;
-  description: string | null;
+  relatedLink: string | null;
   receivedDate: string;
 }
 
 export interface Education extends CvBaseInfo {
   degree: string;
+  department: string;
 }
 
 export interface Experience extends CvBaseInfo {
   description: string | null;
   position: string;
+  department: string | null;
 }
 
 export const profileSchema = new schema.Entity(

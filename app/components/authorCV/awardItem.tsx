@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as format from "date-fns/format";
 import { Dispatch, connect } from "react-redux";
 import Icon from "../../icons";
 import PlutoAxios from "../../api/pluto";
@@ -8,7 +7,6 @@ import { Award } from "../../model/profile";
 import AwardForm, { AwardFormState } from "./awardForm";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { getFormattingDate, getMonthOptionItems } from "../../containers/authorCvSection";
 const styles = require("./authorCVItem.scss");
 
 interface AwardItemState {
@@ -36,10 +34,9 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
   public render() {
     const { award } = this.props;
     const { isEditMode } = this.state;
-    const { id, title, receivedDate } = award;
+    const { id, title, receivedDate, relatedLink } = award;
     return isEditMode ? (
       <AwardForm
-        monthItems={getMonthOptionItems()}
         handleClose={this.handelToggleAwardEditForm}
         isOpen={isEditMode}
         handleSubmitForm={this.handelUpdateAward}
@@ -48,18 +45,20 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
           id,
           title,
           receivedDate,
-          receivedDateYear: receivedDate.split("-")[0],
-          receivedDateMonth: receivedDate.split("-")[1],
+          relatedLink,
         }}
       />
     ) : (
       <div className={styles.itemWrapper}>
         <div className={styles.dateSectionWrapper}>
-          <span className={styles.dateContent}>{format(receivedDate, "MMM YYYY")}</span>
+          <span className={styles.dateContent}>{receivedDate}</span>
         </div>
         <div className={styles.contentWrapper}>
           {this.getEditItemButtons(id)}
           <span className={styles.awardTitleContent}>{title}</span>
+          <a className={styles.relatedLinkContent} href={relatedLink ? relatedLink : ""}>
+            {relatedLink}
+          </a>
         </div>
       </div>
     );
@@ -98,13 +97,8 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
   private handelUpdateAward = async (params: AwardFormState) => {
     const { dispatch, authorId } = this.props;
 
-    const finalParams = {
-      ...params,
-      receivedDate: getFormattingDate(params.receivedDateYear, params.receivedDateMonth),
-    };
-
     try {
-      finalParams.id && (await dispatch(updateAuthorCvInfo("awards", authorId, finalParams)));
+      await dispatch(updateAuthorCvInfo("awards", authorId, params));
       this.handelToggleAwardEditForm();
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
