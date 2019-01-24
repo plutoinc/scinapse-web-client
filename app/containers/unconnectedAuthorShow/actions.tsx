@@ -56,10 +56,15 @@ export function getAuthor(authorId: number, cancelToken: CancelToken) {
       }
     } catch (err) {
       if (!axios.isCancel(err)) {
-        alertToast({
-          type: "error",
-          message: "Failed to get author information",
-        });
+        const error = PlutoAxios.getGlobalError(err);
+        dispatch(ActionCreators.failedToGetAuthor());
+
+        if (error) {
+          alertToast({
+            type: "error",
+            message: "Failed to get author information",
+          });
+        }
       }
     }
   };
