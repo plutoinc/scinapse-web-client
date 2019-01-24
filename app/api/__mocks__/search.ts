@@ -44,6 +44,10 @@ export interface SearchResult extends PaginationResponseV2<Paper[]> {
 
 class SearchAPI extends PlutoAxios {
   public async search(params: SearchParams) {
+    if (!params.query) {
+      throw new Error("FAKE ERROR");
+    }
+
     const searchResult = {
       content: RAW.PAPER,
       page: null,
@@ -52,10 +56,6 @@ class SearchAPI extends PlutoAxios {
       resultModified: true,
       suggestion: null,
     };
-
-    if (!params.query) {
-      throw new Error("FAKE ERROR");
-    }
 
     const camelizedRes = camelcaseKeys(searchResult, { deep: true });
     const searchRes: SearchResult = camelizedRes;
