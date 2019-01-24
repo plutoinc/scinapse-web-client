@@ -173,7 +173,6 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                                 [styles.errorInputField]: !!errors.endDate,
                               })}
                             />
-                            {/* <ErrorMessage name="endDate" className={styles.errorMessage} component="div" /> */}
                           </div>
                         </div>
                       </div>

@@ -156,7 +156,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                           />
                           <span className={styles.toSyntax}>to</span>
                           <ErrorMessage name="startDate" className={styles.errorMessage} component="div" />
-                          <ErrorMessage name="endYaer" className={styles.errorMessage} component="div" />
+                          <ErrorMessage name="endDate" className={styles.errorMessage} component="div" />
                         </div>
                       </div>
                     </div>

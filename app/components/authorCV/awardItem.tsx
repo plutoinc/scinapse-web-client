@@ -56,7 +56,7 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
         <div className={styles.contentWrapper}>
           {this.getEditItemButtons(id)}
           <span className={styles.awardTitleContent}>{title}</span>
-          <a className={styles.relatedLinkContent} href={!relatedLink ? "" : relatedLink}>
+          <a className={styles.relatedLinkContent} href={relatedLink ? relatedLink : ""}>
             {relatedLink}
           </a>
         </div>
