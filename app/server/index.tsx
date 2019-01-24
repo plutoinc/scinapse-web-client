@@ -73,15 +73,10 @@ export async function serverSideRender({
   });
   const generateClassName = createGenerateClassName();
 
-  console.log(axios.defaults.headers.common);
-
   axios.defaults.headers.common = {
     ...axios.defaults.headers.common,
     ...headers,
   };
-
-  console.log("===========");
-  console.log(axios.defaults.headers.common);
 
   // Load data from API server
   const promises: Array<Promise<any>> = [];
