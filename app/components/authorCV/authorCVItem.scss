@@ -90,6 +90,14 @@
       color: $gray6;
     }
 
+    .relatedLinkContent {
+      @extend .subAffiliationContent;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
     .detailDescriptionSection {
       display: flex;
       font-size: 12px;

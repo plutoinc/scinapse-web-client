@@ -134,7 +134,7 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
       console.error(error);
       alertToast({
         type: "error",
-        message: "Had an error to add award data.",
+        message: "Had an error to add experience data.",
       });
     }
   };

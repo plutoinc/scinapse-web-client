@@ -113,6 +113,7 @@ class ProfileAPI extends PlutoAxios {
       id: params.id,
       title: params.title,
       received_date: params.receivedDate,
+      related_link: !params.relatedLink ? null : params.relatedLink,
     });
     const successResponse: RawPaginationResponseV2<Award> = camelcaseKeys(res.data, { deep: true });
     return successResponse.data.content;
@@ -141,7 +142,7 @@ class ProfileAPI extends PlutoAxios {
       is_current: params.isCurrent,
       institution_id: params.institutionId,
       institution_name: params.institutionName,
-      department: params.department,
+      department: !params.department ? null : params.department,
       position: params.position,
       end_date: params.isCurrent ? null : params.endDate,
       description: !params.description ? null : params.description,

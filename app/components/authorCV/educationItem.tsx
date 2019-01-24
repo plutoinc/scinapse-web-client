@@ -123,7 +123,7 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
       console.error(error);
       alertToast({
         type: "error",
-        message: "Had an error to add award data.",
+        message: "Had an error to add education data.",
       });
     }
   };
