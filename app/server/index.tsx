@@ -210,13 +210,11 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
     }/${version}/bundleBrowser.js`;
   }
 
-  console.log(path, "=== path");
-
   console.log(`The user requested at: ${path} with ${JSON.stringify(queryParamsObj)}`);
 
   // Handling '/robots.txt' path
   if (path === "/robots.txt") {
-    return getResponseObjectForRobot(event.requestContext!.stage);
+    return getResponseObjectForRobot(event.headers.host === "scinapse.io");
   }
 
   // handling '/sitemap' path

@@ -48,6 +48,7 @@ declare global {
       "CloudFront-Is-Tablet-Viewer"?: string;
       "CloudFront-Viewer-Country"?: string;
       Host?: string;
+      host?: string;
       "Upgrade-Insecure-Requests"?: string;
       "User-Agent"?: string;
       "user-agent"?: string;
