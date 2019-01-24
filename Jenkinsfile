@@ -4,6 +4,7 @@ pipeline {
     tools {nodejs "Node810"}
 
     options {
+        disableConcurrentBuilds() 
         buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
     }
 

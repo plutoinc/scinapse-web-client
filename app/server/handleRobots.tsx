@@ -11,6 +11,7 @@ export default function getResponseObjectForRobot(stage: string) {
         "Cache-Control": "max-age=100",
         "Content-Type": "text/plain",
       },
+      isBase64Encoded: false,
       body: content,
     };
   } else if (stage === "dev") {
@@ -24,6 +25,7 @@ export default function getResponseObjectForRobot(stage: string) {
         "Cache-Control": "max-age=100",
         "Content-Type": "text/plain",
       },
+      isBase64Encoded: false,
       body: content,
     };
   }
