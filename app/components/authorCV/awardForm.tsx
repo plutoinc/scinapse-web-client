@@ -37,6 +37,10 @@ const validateForm = (values: AwardFormState) => {
     errors.receivedDate = "Please write before current date";
   }
 
+  if (values.relatedLink && values.relatedLink.match(/(http(s)?:\/\/.)/g) === null) {
+    errors.relatedLink = "Please write start to http:// or https://";
+  }
+
   return errors;
 };
 
@@ -100,7 +104,7 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                       <Field
                         name="relatedLink"
                         type="text"
-                        placeholder="https://"
+                        placeholder="http:// or https://"
                         component={ScinapseFormikInput}
                         inputStyle={inputStyle}
                         wrapperStyle={wrapperStyle}
