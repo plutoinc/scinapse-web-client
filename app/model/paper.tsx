@@ -9,6 +9,7 @@ export interface Paper {
   id: number;
   cognitivePaperId: number;
   title: string;
+  titleHighlighted: string;
   year: number;
   publishedDate: string;
   referenceCount: number;
@@ -20,6 +21,7 @@ export interface Paper {
   fosList: Fos[];
   authors: PaperAuthor[];
   abstract: string;
+  abstractHighlighted: string;
   commentCount: number;
   comments: Comment[];
   journal: Journal | null;

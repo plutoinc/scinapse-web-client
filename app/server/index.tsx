@@ -31,10 +31,9 @@ type RENDERING_TYPE = "NORMAL RENDERING" | "ERROR HANDLING RENDERING" | "FALLBAC
 export interface ServerSideRenderParams {
   requestUrl: string;
   scriptVersion: string;
-  userAgent?: string | string[];
   queryParamsObject?: object;
   version?: string;
-  xForwardedFor?: string | string[];
+  headers?: any;
 }
 
 const SITEMAP_REGEX = /\/sitemap.*/;
@@ -56,8 +55,7 @@ export async function serverSideRender({
   scriptVersion,
   queryParamsObject,
   version,
-  userAgent,
-  xForwardedFor,
+  headers,
 }: ServerSideRenderParams) {
   // Parse request pathname and queryParams
   const url = URL.parse(requestUrl);
@@ -75,16 +73,10 @@ export async function serverSideRender({
   });
   const generateClassName = createGenerateClassName();
 
-  console.log(axios.defaults.headers.common);
-
   axios.defaults.headers.common = {
     ...axios.defaults.headers.common,
-    "User-Agent": userAgent || "",
-    "X-Forwarded-For": xForwardedFor || "",
+    ...headers,
   };
-
-  console.log("===========");
-  console.log(axios.defaults.headers.common);
 
   // Load data from API server
   const promises: Array<Promise<any>> = [];
@@ -218,13 +210,11 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
     }/${version}/bundleBrowser.js`;
   }
 
-  console.log(path, "=== path");
-
   console.log(`The user requested at: ${path} with ${JSON.stringify(queryParamsObj)}`);
 
   // Handling '/robots.txt' path
   if (path === "/robots.txt") {
-    return getResponseObjectForRobot(event.requestContext!.stage);
+    return getResponseObjectForRobot(event.headers.host === "scinapse.io");
   }
 
   // handling '/sitemap' path
@@ -238,8 +228,7 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
       scriptVersion: bundledJsForBrowserPath,
       queryParamsObject: queryParamsObj,
       version,
-      userAgent: event.headers["User-Agent"],
-      xForwardedFor: event.headers["X-Forwarded-For"],
+      headers: event.headers,
     });
 
     if (html) {

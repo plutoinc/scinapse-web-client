@@ -255,7 +255,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                   <span
                     dangerouslySetInnerHTML={
                       Object {
-                        "__html": "Preparation and characterization of graphene oxide paper.",
+                        "__html": "Preparation and characterization of <b>graphene</b> oxide paper.",
                       }
                     }
                   />

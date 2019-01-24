@@ -16,7 +16,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
         <span
           dangerouslySetInnerHTML={
             Object {
-              "__html": "Preparation and characterization of graphene oxide paper.",
+              "__html": "Preparation and characterization of <b>graphene</b> oxide paper.",
             }
           }
         />
@@ -130,7 +130,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
       style={Object {}}
     >
       <span>
-        Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: graphene oxide p...
+        Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: &lt;b&gt;graphene&lt;/b&gt; ...
       </span>
       <label
         className="moreOrLess"
@@ -239,7 +239,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
         <span
           dangerouslySetInnerHTML={
             Object {
-              "__html": "Preparation and characterization of graphene oxide paper.",
+              "__html": "Preparation and characterization of <b>graphene</b> oxide paper.",
             }
           }
         />
@@ -353,7 +353,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
       style={Object {}}
     >
       <span>
-        Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: graphene oxide p...
+        Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: &lt;b&gt;graphene&lt;/b&gt; ...
       </span>
       <label
         className="moreOrLess"

@@ -13,16 +13,20 @@ interface AuthorSearchItemProps {
 const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
   const author = props.authorEntity.entity;
 
+  const profileImage = author.profileImageUrl ? (
+    <span
+      style={{
+        backgroundImage: `url(${author.profileImageUrl})`,
+      }}
+      className={styles.userImg}
+    />
+  ) : (
+    <Icon className={styles.userImg} icon="DEFAULT_PROFILE_IMAGE" />
+  );
+
   return (
     <Link to={`authors/${author.id}`} className={styles.itemWrapper}>
-      {author.profileImageUrl && (
-        <span
-          style={{
-            backgroundImage: `url(${author.profileImageUrl})`,
-          }}
-          className={styles.userImg}
-        />
-      )}
+      {profileImage}
       <span className={styles.nameAffiliationBox}>
         <div className={styles.name}>
           {author.name}{" "}

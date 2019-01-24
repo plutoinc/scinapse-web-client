@@ -2,6 +2,7 @@
   "id": 101,
   "cognitivePaperId": 2108376819,
   "title": "Preparation and characterization of graphene oxide paper.",
+  "titleHighlighted": "Preparation and characterization of <b>graphene</b> oxide paper.",
   "year": 2007,
   "lang": null,
   "doi": "10.1038/nature06016",
@@ -82,5 +83,6 @@
     }
   ],
   "abstract":
-    "Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: graphene oxide paper. It is based on nanoscale graphene oxide sheets that are interlocked and tiled together in a near-parallel fashion."
+    "Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: graphene oxide paper. It is based on nanoscale graphene oxide sheets that are interlocked and tiled together in a near-parallel fashion.",
+  "abstractHighlighted" : "Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: <b>graphene</b> oxide paper. It is based on nanoscale <b>graphene</b> oxide sheets that are interlocked and tiled together in a near-parallel fashion."
 }
