@@ -41,6 +41,16 @@ resources:
                   Action:
                     - s3:*
                   Resource: "arn:aws:s3:::pluto-academic/*"
+          - PolicyName: LambdaEdgeExecutionRole
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource: "*"
           - PolicyName: XRayRole
             PolicyDocument:
               Version: "2012-10-17"

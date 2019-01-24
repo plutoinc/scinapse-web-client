@@ -233,7 +233,8 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
 
     if (html) {
       const buf = new Buffer(html);
-      if (buf.byteLength > 1024 /* 1MB */) {
+
+      if (buf.byteLength > 1048576 /* 1MB */) {
         throw new Error("The result HTML size is more than AWS ELB limitation.");
       }
 
