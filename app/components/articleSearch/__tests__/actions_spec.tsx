@@ -94,7 +94,7 @@ describe("articleSearch actions", () => {
         const mockInValidSearchInput = "t";
 
         store.dispatch(Actions.handleSearchPush(mockInValidSearchInput));
-        expect(store.getActions().length).toBe(0);
+        expect(store.getActions().length).toBe(1);
       });
     });
 
