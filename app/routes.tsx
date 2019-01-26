@@ -2,7 +2,7 @@ import * as React from "react";
 import { Route, Switch, match, withRouter, RouteComponentProps } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { connect, Dispatch } from "react-redux";
-import loadable from "@loadable/component";
+import Home from "./components/home";
 import { Header, FeedbackButton } from "./components/layouts";
 import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
@@ -60,13 +60,11 @@ interface ServerRoutesMap {
   render?: any;
 }
 
-const Home = loadable(() => import("./components/home"), { fallback: <div>Loading ... </div> });
-
 export const routesMap: ServerRoutesMap[] = [
   {
     path: HOME_PATH,
     exact: true,
-    render: () => <Home />,
+    component: Home,
   },
   {
     path: SEARCH_RESULT_PATH,
