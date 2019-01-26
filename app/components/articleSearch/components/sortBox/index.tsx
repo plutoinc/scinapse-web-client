@@ -4,13 +4,12 @@ import Popover from "@material-ui/core/Popover/Popover";
 import MenuItem from "@material-ui/core/MenuItem";
 import PaperSearchQueryFormatter from "../../../../helpers/papersQueryFormatter";
 import { withStyles } from "../../../../helpers/withStylesHelper";
-import { SEARCH_SORT_OPTIONS } from "../../records";
 import Icon from "../../../../icons";
 const styles = require("./sortBox.scss");
 
 interface SortBoxProps {
   query: string;
-  sortOption: SEARCH_SORT_OPTIONS;
+  sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS;
 }
 
 interface SortBoxStates {
@@ -111,7 +110,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
     );
   }
 
-  private getSortOptionToShow = (sortOption: SEARCH_SORT_OPTIONS) => {
+  private getSortOptionToShow = (sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS) => {
     // tslint:disable-next-line:switch-default
     switch (sortOption) {
       case "RELEVANCE": {

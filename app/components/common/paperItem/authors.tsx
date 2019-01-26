@@ -6,7 +6,6 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import { trackEvent } from "../../../helpers/handleGA";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { Paper } from "../../../model/paper";
-import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./authors.scss");
 
@@ -15,8 +14,8 @@ const MINIMUM_SHOWING_AUTHOR_NUMBER = 3;
 export interface AuthorsProps {
   authors: PaperAuthor[];
   paper: Paper;
-  pageType: PageType;
-  actionArea?: ActionArea;
+  pageType: Scinapse.ActionTicket.PageType;
+  actionArea?: Scinapse.ActionTicket.ActionArea;
   style?: React.CSSProperties;
   readOnly?: boolean;
   disableTruncate?: boolean;

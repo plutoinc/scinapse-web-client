@@ -1,13 +1,13 @@
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from "./records";
+import { SearchResult } from "../../api/search";
 import {
-  FILTER_RANGE_TYPE,
-  FILTER_BOX_TYPE,
   ChangeRangeInputParams,
   FILTER_TYPE_HAS_RANGE,
+  FILTER_RANGE_TYPE,
+  FILTER_BOX_TYPE,
   FILTER_TYPE_HAS_EXPANDING_OPTION,
-} from "./actions";
-import { SearchResult } from "../../api/search";
+} from "../../constants/paperSearch";
 
 export function reducer(
   state: ArticleSearchState = ARTICLE_SEARCH_INITIAL_STATE,

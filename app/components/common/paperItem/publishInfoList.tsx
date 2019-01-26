@@ -6,12 +6,11 @@ import { trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { Journal } from "../../../model/journal";
 import { Paper } from "../../../model/paper";
-import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
 const styles = require("./publishInfoList.scss");
 
 export interface PublishInfoListProps extends Readonly<AuthorsProps> {
-  pageType: PageType;
-  actionArea?: ActionArea;
+  pageType: Scinapse.ActionTicket.PageType;
+  actionArea?: Scinapse.ActionTicket.ActionArea;
   journal: Journal | null;
   paper: Paper;
   year: number;

@@ -1,6 +1,7 @@
 import * as store from "store";
-import ActionTicketManager, { DEVICE_ID_KEY, SESSION_ID_KEY, TICKET_QUEUE_KEY } from "..";
+import ActionTicketManager from "..";
 import ActionTicket, { ActionTicketParams, FinalActionTicket } from "../actionTicket";
+import { TICKET_QUEUE_KEY, DEVICE_ID_KEY, SESSION_ID_KEY } from "../../../constants/actionTicket";
 
 describe("ActionTicketManager helper", () => {
   const mockTicketParams: ActionTicketParams = {

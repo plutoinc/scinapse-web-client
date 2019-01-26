@@ -4,7 +4,7 @@ import * as Sentry from "@sentry/browser";
 import { ACTION_TYPES } from "../actions/actionTypes";
 import { CurrentUser } from "../model/currentUser";
 import EnvChecker from "../helpers/envChecker";
-import { USER_ID_KEY } from "../helpers/actionTicketManager";
+import { USER_ID_KEY } from "../constants/actionTicket";
 
 const setUserToTracker = (_store: any) => (next: any) => (action: any) => {
   try {

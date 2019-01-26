@@ -4,18 +4,18 @@ import * as classNames from "classnames";
 import Checkbox from "@material-ui/core/Checkbox";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import { FilterObject } from "../../../../helpers/papersQueryFormatter";
-import {
-  FILTER_RANGE_TYPE,
-  FILTER_BOX_TYPE,
-  ChangeRangeInputParams,
-  FILTER_TYPE_HAS_RANGE,
-  FILTER_TYPE_HAS_EXPANDING_OPTION,
-} from "../../actions";
 import Icon from "../../../../icons";
 import { toggleElementFromArray } from "../../../../helpers/toggleElementFromArray";
 import { trackEvent } from "../../../../helpers/handleGA";
 import formatNumber from "../../../../helpers/formatNumber";
 import { ArticleSearchState } from "../../records";
+import {
+  ChangeRangeInputParams,
+  FILTER_BOX_TYPE,
+  FILTER_TYPE_HAS_EXPANDING_OPTION,
+  FILTER_RANGE_TYPE,
+  FILTER_TYPE_HAS_RANGE,
+} from "../../../../constants/paperSearch";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {

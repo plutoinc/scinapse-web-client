@@ -1,16 +1,12 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-
-<body>
-  <div id="react-app"></div>
-  <% if (htmlWebpackPlugin.options.NODE_ENV == 'development') { %>
-    <script src="<%= htmlWebpackPlugin.files.js[0] %>"></script>
-    <% } else if (htmlWebpackPlugin.options.NODE_ENV == 'dev') { %>
-      <script src="https://d2kuw7b5ntygvd.cloudfront.net/dev/<%= htmlWebpackPlugin.files.js[0] %>?<%= Math.floor(Math.random() * 100000000000) %>"></script>
-      <% } else { %>
-        <script src="https://d2kuw7b5ntygvd.cloudfront.net/<%= htmlWebpackPlugin.files.js[0] %>?<%= Math.floor(Math.random() * 100000000000) %>"></script>
-        <% } %>
-
-</body>
-
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="react-app"></div>
+    <% htmlWebpackPlugin.files.js.forEach(function(js) { %>
+    <script src="<%= js %>"></script>
+    <% }) %>
+  </body>
 </html>

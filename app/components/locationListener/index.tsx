@@ -4,21 +4,20 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import EnvChecker from "../../helpers/envChecker";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import {
-  HOME_PATH,
   SEARCH_RESULT_PATH,
+  HOME_PATH,
   TERMS_OF_SERVICE_PATH,
   PAPER_SHOW_PATH,
   COLLECTION_SHOW_PATH,
-  COLLECTION_LIST_PATH,
-  AUTH_PATH,
   JOURNAL_SHOW_PATH,
   AUTHOR_SHOW_PATH,
-} from "../../routes";
-import { PageType } from "../../helpers/actionTicketManager/actionTicket";
+  COLLECTION_LIST_PATH,
+  AUTH_PATH,
+} from "../../constants/routes";
 
 interface LocationListenerProps extends RouteComponentProps<{}> {}
 
-export function getCurrentPageType(): PageType {
+export function getCurrentPageType(): Scinapse.ActionTicket.PageType {
   if (!EnvChecker.isOnServer()) {
     const { pathname } = window.location;
     if (pathname === HOME_PATH) {

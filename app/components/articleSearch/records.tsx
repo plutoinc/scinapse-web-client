@@ -2,12 +2,10 @@ import { Paper } from "../../model/paper";
 import { AggregationData } from "../../model/aggregation";
 import { MatchEntity } from "../../api/search";
 
-export type SEARCH_SORT_OPTIONS = "RELEVANCE" | "MOST_CITATIONS" | "OLDEST_FIRST" | "NEWEST_FIRST";
-
 export interface ArticleSearchState
   extends Readonly<{
       lastSucceededParams: string;
-      sort: SEARCH_SORT_OPTIONS;
+      sort: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS;
       isLoading: boolean;
       hasError: boolean;
       searchInput: string;

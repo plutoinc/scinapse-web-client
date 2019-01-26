@@ -2,7 +2,6 @@ import { Dispatch } from "redux";
 import AuthAPI from "../../api/auth";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { SignInResult } from "../../api/types/auth";
-import alertToast from "../../helpers/makePlutoToastAction";
 
 export function signOut() {
   return async (dispatch: Dispatch<any>) => {
@@ -13,14 +12,11 @@ export function signOut() {
           type: ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT,
         });
       }
-    } catch (_err) {
-      alertToast({
-        type: "error",
-        message: `Failed to sign out.`,
-      });
+    } catch (err) {
       dispatch({
         type: ACTION_TYPES.AUTH_FAILED_TO_SIGN_OUT,
       });
+      throw err;
     }
   };
 }
@@ -38,10 +34,6 @@ export function checkAuthStatus() {
         },
       });
     } catch (err) {
-      alertToast({
-        type: "error",
-        message: `Failed to check logged in state. ${err}`,
-      });
       dispatch({
         type: ACTION_TYPES.AUTH_FAILED_TO_CHECK_LOGGED_IN,
       });

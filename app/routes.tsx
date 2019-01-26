@@ -2,8 +2,8 @@ import * as React from "react";
 import { Route, Switch, match, withRouter, RouteComponentProps } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { connect, Dispatch } from "react-redux";
+import loadable from "@loadable/component";
 import { Header, FeedbackButton } from "./components/layouts";
-import Home from "./components/home";
 import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
 import PaperShow, { PaperShowMatchParams } from "./containers/paperShow";
@@ -29,19 +29,20 @@ import { CurrentUser } from "./model/currentUser";
 import { Configuration } from "./reducers/configuration";
 import { CancelToken } from "axios";
 import AdminComponent from "./containers/admin";
+import {
+  HOME_PATH,
+  SEARCH_RESULT_PATH,
+  PAPER_SHOW_PATH,
+  AUTHOR_SHOW_PATH,
+  COLLECTION_SHOW_PATH,
+  JOURNAL_SHOW_PATH,
+  COLLECTION_LIST_PATH,
+  AUTH_PATH,
+  ADMIN_PATH,
+  TERMS_OF_SERVICE_PATH,
+  ERROR_PATH,
+} from "./constants/routes";
 const styles = require("./root.scss");
-
-export const HOME_PATH = "/";
-export const SEARCH_RESULT_PATH = "/search";
-export const AUTHOR_SHOW_PATH = "/authors/:authorId";
-export const COLLECTION_LIST_PATH = "/users/:userId/collections";
-export const AUTH_PATH = "/users";
-export const PAPER_SHOW_PATH = "/papers/:paperId";
-export const JOURNAL_SHOW_PATH = "/journals/:journalId";
-export const COLLECTION_SHOW_PATH = "/collections/:collectionId";
-const ERROR_PATH = "/:errorNum";
-export const TERMS_OF_SERVICE_PATH = "/terms-of-service";
-const ADMIN_PATH = "/admin";
 
 export interface LoadDataParams<P> {
   dispatch: Dispatch<any>;
@@ -53,16 +54,19 @@ export interface LoadDataParams<P> {
 
 interface ServerRoutesMap {
   path: string;
-  component: React.ComponentClass;
+  component?: any;
   exact?: boolean;
   loadData?: (params: LoadDataParams<any>) => Promise<any>;
+  render?: any;
 }
+
+const Home = loadable(() => import("./components/home"), { fallback: <div>Loading ... </div> });
 
 export const routesMap: ServerRoutesMap[] = [
   {
     path: HOME_PATH,
-    component: Home,
     exact: true,
+    render: () => <Home />,
   },
   {
     path: SEARCH_RESULT_PATH,

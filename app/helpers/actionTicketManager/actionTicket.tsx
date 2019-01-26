@@ -1,74 +1,19 @@
 import * as store from "store";
 import * as format from "date-fns/format";
-import { DEVICE_ID_KEY, SESSION_ID_KEY, USER_ID_KEY } from ".";
 import EnvChecker from "../envChecker";
-
-export type ActionTagType =
-  | "pageView"
-  | "authorShow"
-  | "paperShow"
-  | "refList"
-  | "citedList"
-  | "journalShow"
-  | "query"
-  | "downloadPdf"
-  | "source"
-  | "addToCollection"
-  | "removeFromCollection"
-  | "citePaper"
-  | "signUp"
-  | "signIn"
-  | "fos"
-  | "copyDoi"
-  | "signInViaCollection"
-  | "blogPost"
-  | "journalHomepage"
-  | "queryInJournal"
-  | "authorEntityItem"
-  | "";
-
-export type PageType =
-  | "paperShow"
-  | "authorShow"
-  | "home"
-  | "searchResult"
-  | "journalShow"
-  | "collectionShow"
-  | "collectionList"
-  | "signIn"
-  | "signUp"
-  | "resetPassword"
-  | "emailVerification"
-  | "terms"
-  | "unknown";
-
-export type ActionArea =
-  | "topBar"
-  | "refList"
-  | "citedList"
-  | "paperList"
-  | "paperDescription"
-  | "otherPaperList"
-  | "relatedPaperList"
-  | "fosSuggestion"
-  | "ourStory"
-  | "coAuthor"
-  | "topFos"
-  | "authorDialog"
-  | "allPublications"
-  | "authorEntity";
+import { DEVICE_ID_KEY, SESSION_ID_KEY, USER_ID_KEY } from "../../constants/actionTicket";
 
 export interface ActionTicketParams {
-  pageType: PageType;
-  actionArea: ActionArea | PageType | null;
+  pageType: Scinapse.ActionTicket.PageType;
+  actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType | null;
   actionType: "fire" | "view";
-  actionTag: ActionTagType;
+  actionTag: Scinapse.ActionTicket.ActionTagType;
   actionLabel: string | number | null;
 }
 
 export interface FinalActionTicket extends ActionTicketParams {
   pageUrl: string;
-  pageType: PageType;
+  pageType: Scinapse.ActionTicket.PageType;
   deviceId: string;
   sessionId: string;
   createdAt: string;
@@ -83,9 +28,9 @@ export default class ActionTicket {
   private createdAt = format(new Date());
   private pageUrl: string;
   private actionType: "fire" | "view";
-  private actionTag: ActionTagType;
-  private actionArea: ActionArea | PageType | null;
-  private pageType: PageType;
+  private actionTag: Scinapse.ActionTicket.ActionTagType;
+  private actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType | null;
+  private pageType: Scinapse.ActionTicket.PageType;
   private actionLabel: string | number | null;
   private _errorCount = 0;
 

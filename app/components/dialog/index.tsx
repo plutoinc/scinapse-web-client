@@ -28,6 +28,7 @@ import CitationBox from "../paperShow/components/citationBox";
 import { AvailableCitationType } from "../../containers/paperShow/records";
 import { push } from "connected-react-router";
 import AuthorListDialog from "../authorListDialog";
+import alertToast from "../../helpers/makePlutoToastAction";
 const styles = require("./dialog.scss");
 
 function mapStateToProps(state: AppState) {
@@ -92,13 +93,27 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   private handleAddingPaperToCollection = async (params: AddPaperToCollectionParams) => {
     const { dispatch } = this.props;
 
-    await dispatch(Actions.addPaperToCollection(params));
+    try {
+      await dispatch(Actions.addPaperToCollection(params));
+    } catch (err) {
+      alertToast({
+        type: "error",
+        message: err.message,
+      });
+    }
   };
 
   private handleRemovingPaperFromCollection = async (params: RemovePapersFromCollectionParams) => {
     const { dispatch } = this.props;
 
-    await dispatch(Actions.removePaperFromCollection(params));
+    try {
+      await dispatch(Actions.removePaperFromCollection(params));
+    } catch (err) {
+      alertToast({
+        type: "error",
+        message: err.message,
+      });
+    }
   };
 
   private validateCollection = (params: PostCollectionParams | UpdateCollectionParams) => {
@@ -121,15 +136,29 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   private handleDeleteCollection = async (collectionId: number) => {
     const { dispatch, currentUser } = this.props;
 
-    await dispatch(Actions.deleteCollection(collectionId));
-    dispatch(push(`/users/${currentUser.id}/collections`));
+    try {
+      await dispatch(Actions.deleteCollection(collectionId));
+      dispatch(push(`/users/${currentUser.id}/collections`));
+    } catch (err) {
+      alertToast({
+        type: "error",
+        message: err.message,
+      });
+    }
   };
 
   private handleUpdateCollection = async (params: UpdateCollectionParams) => {
     const { dispatch } = this.props;
 
-    this.validateCollection(params);
-    await dispatch(Actions.updateCollection(params));
+    try {
+      this.validateCollection(params);
+      await dispatch(Actions.updateCollection(params));
+    } catch (err) {
+      alertToast({
+        type: "error",
+        message: `Failed to update collection. ${err.message}`,
+      });
+    }
   };
 
   private fetchCitationText = () => {
