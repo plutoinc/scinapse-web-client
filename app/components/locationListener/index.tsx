@@ -83,7 +83,6 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
     if (!EnvChecker.isOnServer() && location !== nextProps.location) {
       let historyStack: HistoryInformation[] = JSON.parse(window.sessionStorage.getItem(HISTORY_SESSION_KEY) || "[]");
       const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-      console.log("SCROLL TOP", scrollTop);
       const historyInformation = { key: location.key || "initial", scrollPosition: scrollTop };
 
       const index = historyStack.findIndex(history => history.key === location.key);
@@ -97,7 +96,6 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
         historyStack = historyStack.slice(0, MAXIMUM_COUNT_TO_SAVE_HISTORY);
       }
 
-      console.log(`save history information ${JSON.stringify(historyInformation)}`);
       window.sessionStorage.setItem(HISTORY_SESSION_KEY, JSON.stringify(historyStack));
     }
   }

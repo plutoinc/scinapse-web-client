@@ -3,7 +3,6 @@ import axios from "axios";
 import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
-import { isEqual } from "lodash";
 import { AppState } from "../../reducers";
 import * as Actions from "./actions";
 import SearchList from "./components/searchList";
@@ -24,6 +23,7 @@ import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import { UserDevice } from "../layouts/records";
 import { SEARCH_SORT_OPTIONS } from "./records";
 import AuthorSearchItem from "../authorSearchItem";
+import restoreScroll from "../../helpers/scrollRestoration";
 const styles = require("./articleSearch.scss");
 
 export interface RawQueryParams {
@@ -46,21 +46,22 @@ function mapStateToProps(state: AppState) {
 class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
   private cancelToken = axios.CancelToken.source();
 
-  public componentDidMount() {
-    const { articleSearchState, dispatch, match, location } = this.props;
-    const currentParams = {
-      dispatch,
-      match,
-      pathname: location.pathname,
-      queryParams: getQueryParamsObject(location.search),
-      cancelToken: this.cancelToken.token,
-    };
+  public async componentDidMount() {
+    const { configuration, dispatch, match, location } = this.props;
+    const notRenderedAtServerOrJSAlreadyInitialized =
+      !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
 
-    const beforeParams = JSON.parse(articleSearchState.lastSucceededParams);
-    const hasSameResult = isEqual(currentParams.queryParams, beforeParams);
+    if (notRenderedAtServerOrJSAlreadyInitialized) {
+      const currentParams = {
+        dispatch,
+        match,
+        pathname: location.pathname,
+        queryParams: getQueryParamsObject(location.search),
+        cancelToken: this.cancelToken.token,
+      };
 
-    if (!hasSameResult) {
-      getSearchData(currentParams);
+      await getSearchData(currentParams);
+      restoreScroll(location.key);
     }
   }
 
@@ -70,13 +71,14 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     const afterSearch = nextProps.location.search;
 
     if (!!afterSearch && beforeSearch !== afterSearch) {
-      getSearchData({
+      await getSearchData({
         dispatch,
         match,
         pathname: nextProps.location.pathname,
         queryParams: getQueryParamsObject(afterSearch),
         cancelToken: this.cancelToken.token,
       });
+      restoreScroll(nextProps.location.key);
     }
   }
 

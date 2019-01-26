@@ -18,6 +18,7 @@ import { trackEvent } from "../../helpers/handleGA";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import { deleteCollection } from "../dialog/actions";
 import { CurrentUser } from "../../model/currentUser";
+import restoreScroll from "../../helpers/scrollRestoration";
 const styles = require("./collections.scss");
 
 export interface UserCollectionsProps extends RouteComponentProps<{ userId: string }> {
@@ -43,14 +44,17 @@ function mapStateToProps(state: AppState) {
 class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
   private cancelToken = axios.CancelToken.source();
 
-  public componentDidMount() {
-    this.fetchCollections();
+  public async componentDidMount() {
+    const { location } = this.props;
+    await this.fetchCollections();
+    restoreScroll(location.key);
   }
 
-  public componentWillReceiveProps(nextProps: UserCollectionsProps) {
+  public async componentWillReceiveProps(nextProps: UserCollectionsProps) {
     if (this.props.match.params.userId !== nextProps.match.params.userId) {
       const userId = parseInt(nextProps.match.params.userId, 10);
-      this.fetchCollections(userId);
+      await this.fetchCollections(userId);
+      restoreScroll(nextProps.location.key);
     }
   }
 

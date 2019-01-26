@@ -11,6 +11,7 @@ import { fetchAuthorShowPageData } from "./sideEffect";
 import { CurrentUser } from "../../model/currentUser";
 import { authorSchema, Author } from "../../model/author/author";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
+import restoreScroll from "../../helpers/scrollRestoration";
 
 export interface AuthorShowMatchParams {
   authorId: string;
@@ -38,13 +39,13 @@ function mapStateToProps(state: AppState) {
 class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
   private cancelToken = axios.CancelToken.source();
 
-  public componentDidMount() {
+  public async componentDidMount() {
     const { dispatch, location, match, configuration, currentUser } = this.props;
     const notRenderedAtServerOrJSAlreadyInitialized =
       !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
-      fetchAuthorShowPageData(
+      await fetchAuthorShowPageData(
         {
           dispatch,
           match,
@@ -53,6 +54,7 @@ class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
         },
         currentUser
       );
+      restoreScroll(location.key);
     }
   }
 
@@ -60,11 +62,11 @@ class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
     this.cancelToken.cancel();
   }
 
-  public componentWillReceiveProps(nextProps: AuthorShowPageProps) {
+  public async componentWillReceiveProps(nextProps: AuthorShowPageProps) {
     const { match, dispatch, location, currentUser } = nextProps;
 
     if (this.props.match.params.authorId !== nextProps.match.params.authorId) {
-      fetchAuthorShowPageData(
+      await fetchAuthorShowPageData(
         {
           dispatch,
           match,
@@ -73,6 +75,7 @@ class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
         },
         currentUser
       );
+      restoreScroll(location.key);
     }
   }
 

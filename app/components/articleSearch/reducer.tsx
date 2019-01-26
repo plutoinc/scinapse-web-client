@@ -14,13 +14,6 @@ export function reducer(
   action: ReduxAction<any>
 ): ArticleSearchState {
   switch (action.type) {
-    case ACTION_TYPES.ARTICLE_SEARCH_SAVE_LAST_SUCCEEDED_PARAMS: {
-      return {
-        ...state,
-        lastSucceededParams: action.payload.params,
-      };
-    }
-
     case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SEARCH_INPUT: {
       return { ...state, searchInput: action.payload.searchInput };
     }

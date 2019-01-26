@@ -28,6 +28,7 @@ import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import PaperShowKeyword from "../paperShow/components/keyword";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { getPapers } from "./actions";
+import restoreScroll from "../../helpers/scrollRestoration";
 const styles = require("./journalShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -61,7 +62,7 @@ export interface JournalShowProps
 class JournalShowContainer extends React.PureComponent<JournalShowProps> {
   private cancelToken = axios.CancelToken.source();
 
-  public componentDidMount() {
+  public async componentDidMount() {
     const { dispatch, match, configuration, location, journalShow } = this.props;
 
     const notRenderedAtServerOrJSAlreadyInitialized =
@@ -69,30 +70,31 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
     const alreadyFetchedData = journalShow.journalId.toString() === match.params.journalId;
 
     if (notRenderedAtServerOrJSAlreadyInitialized && !alreadyFetchedData) {
-      fetchJournalShowPageData({
+      await fetchJournalShowPageData({
         dispatch,
         match,
         pathname: location.pathname,
         queryParams: location.search,
         cancelToken: this.cancelToken.token,
       });
+      restoreScroll(location.key);
     }
   }
 
-  public componentWillReceiveProps(nextProps: JournalShowProps) {
+  public async componentWillReceiveProps(nextProps: JournalShowProps) {
     const { dispatch, match, location } = nextProps;
     const currentJournalId = this.props.match.params.journalId;
     const nextJournalId = match.params.journalId;
 
     if (currentJournalId !== nextJournalId || this.props.location.search !== location.search) {
-      fetchJournalShowPageData({
+      await fetchJournalShowPageData({
         dispatch,
         match,
         pathname: location.pathname,
         queryParams: location.search,
         cancelToken: this.cancelToken.token,
       });
-      this.restoreScroll();
+      restoreScroll(location.key);
     }
   }
 
@@ -309,10 +311,6 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
         query,
       })
     );
-  };
-
-  private restoreScroll = () => {
-    window.scrollTo(0, 0);
   };
 
   private getPaperList = () => {
