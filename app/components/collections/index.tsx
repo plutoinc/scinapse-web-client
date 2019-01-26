@@ -19,6 +19,7 @@ import GlobalDialogManager from "../../helpers/globalDialogManager";
 import { deleteCollection } from "../dialog/actions";
 import { CurrentUser } from "../../model/currentUser";
 import restoreScroll from "../../helpers/scrollRestoration";
+import alertToast from "../../helpers/makePlutoToastAction";
 const styles = require("./collections.scss");
 
 export interface UserCollectionsProps extends RouteComponentProps<{ userId: string }> {
@@ -166,11 +167,18 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
     return null;
   };
 
-  private handleDeleteCollection = (collection: Collection) => {
+  private handleDeleteCollection = async (collection: Collection) => {
     const { dispatch } = this.props;
 
     if (confirm(`Do you really want to DELETE collection ${collection.title}?`)) {
-      dispatch(deleteCollection(collection.id));
+      try {
+        await dispatch(deleteCollection(collection.id));
+      } catch (err) {
+        alertToast({
+          type: "error",
+          message: err.message,
+        });
+      }
     }
   };
 

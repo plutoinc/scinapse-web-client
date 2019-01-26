@@ -13,7 +13,6 @@ import EnvChecker from "../../../helpers/envChecker";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import SourceURLPopover from "../../common/sourceURLPopover";
-import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
 import { getPDFLink } from "../../../helpers/getPDFLink";
 const styles = require("./paperActionButtons.scss");
 
@@ -24,8 +23,8 @@ interface HandleClickClaim {
 export interface PaperActionButtonsProps {
   paper: Paper;
   currentUser: CurrentUser;
-  pageType: PageType;
-  actionArea?: ActionArea;
+  pageType: Scinapse.ActionTicket.PageType;
+  actionArea?: Scinapse.ActionTicket.ActionArea;
   hasRemoveButton?: boolean;
   handleRemovePaper?: (paper: Paper) => void;
   isRepresentative?: boolean;

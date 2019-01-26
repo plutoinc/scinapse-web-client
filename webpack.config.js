@@ -1,7 +1,7 @@
 const path = require("path");
-const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CheckerPlugin } = require("awesome-typescript-loader");
+const CircularDependencyPlugin = require("circular-dependency-plugin");
 require("extract-text-webpack-plugin");
 
 module.exports = {
@@ -92,18 +92,27 @@ module.exports = {
   },
   plugins: [
     new CheckerPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: "app/index.ejs",
       inject: false,
       NODE_ENV: "development",
     }),
+    new CircularDependencyPlugin({
+      // exclude detection of files based on a RegExp
+      exclude: /a\.js|node_modules/,
+      // add errors to webpack instead of warnings
+      failOnError: true,
+      // allow import cycles that include an asyncronous import,
+      // e.g. via import(/* webpackMode: "weak" */ './file.js')
+      allowAsyncCycles: false,
+      // set the current working directory for displaying module paths
+      cwd: process.cwd(),
+    }),
   ],
   devServer: {
-    contentBase: path.join(__dirname, "app"),
+    contentBase: path.join(__dirname, "dist"),
     compress: true,
     host: "0.0.0.0",
-    hot: true,
     allowedHosts: ["localhost", "lvh.me"],
   },
 };

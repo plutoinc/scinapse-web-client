@@ -10,7 +10,6 @@ import CollectionAPI, {
   RemovePapersFromCollectionParams,
   UpdateCollectionParams,
 } from "../../api/collection";
-import alertToast from "../../helpers/makePlutoToastAction";
 import { AvailableCitationType } from "../../containers/paperShow/records";
 import PlutoAxios from "../../api/pluto";
 
@@ -67,12 +66,6 @@ export function addPaperToCollection(params: AddPaperToCollectionParams) {
         })
       );
       const error = PlutoAxios.getGlobalError(err);
-      if (error) {
-        alertToast({
-          type: "error",
-          message: error.message,
-        });
-      }
       throw error;
     }
   };
@@ -96,11 +89,6 @@ export function removePaperFromCollection(params: RemovePapersFromCollectionPara
         })
       );
       const error = PlutoAxios.getGlobalError(err);
-      alertToast({
-        type: "error",
-        message: error.message,
-      });
-
       throw error;
     }
   };
@@ -169,11 +157,8 @@ export function deleteCollection(collectionId: number) {
       dispatch(ActionCreators.succeededToDeleteCollection({ collectionId }));
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
-      alertToast({
-        type: "error",
-        message: `Failed to delete collection. ${error.message}`,
-      });
       dispatch(ActionCreators.failedToDeleteCollection());
+      throw error;
     }
   };
 }
@@ -188,11 +173,8 @@ export function updateCollection(params: UpdateCollectionParams) {
       dispatch(ActionCreators.succeededToUpdateCollection({ collectionId: res.result }));
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
-      alertToast({
-        type: "error",
-        message: `Failed to update collection. ${error.message}`,
-      });
       dispatch(ActionCreators.failedToUpdateCollection());
+      throw error;
     }
   };
 }

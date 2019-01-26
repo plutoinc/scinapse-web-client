@@ -119,6 +119,7 @@
     "aws-xray-sdk": "2.1.0",
     "axios": "0.16.2",
     "camelcase-keys": "^5.0.0",
+    "circular-dependency-plugin": "^5.0.2",
     "classnames": "2.2.5",
     "connected-react-router": "4.3.0",
     "date-fns": "1.29.0",

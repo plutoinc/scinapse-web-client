@@ -6,15 +6,14 @@ import Title from "./title";
 import JournalAndAuthors from "./journalAndAuthors";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Paper } from "../../../model/paper";
-import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
 import EnvChecker from "../../../helpers/envChecker";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./paperItem.scss");
 
 export interface PaperItemProps {
   paper: Paper;
-  pageType: PageType;
-  actionArea?: ActionArea;
+  pageType: Scinapse.ActionTicket.PageType;
+  actionArea?: Scinapse.ActionTicket.ActionArea;
   paperNote?: string;
   searchQueryText?: string;
   wrapperClassName?: string;

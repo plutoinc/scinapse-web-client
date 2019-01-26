@@ -9,7 +9,7 @@ import { generateMockStore } from "../../../__tests__/mockStore";
 import { initialState } from "../../../reducers";
 import ConnectedAuthorShow from "../../../containers/connectedAuthorShow";
 import { RAW } from "../../../__mocks__";
-import { AUTHOR_SHOW_PATH } from "../../../routes";
+import { AUTHOR_SHOW_PATH } from "../../../constants/routes";
 const camelcaseKeys = require("camelcase-keys");
 
 describe("ConnectedAuthorShow Component", () => {

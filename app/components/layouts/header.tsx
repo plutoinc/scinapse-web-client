@@ -19,14 +19,14 @@ import { handleSearchPush } from "../articleSearch/actions";
 import { HeaderProps } from "./types/header";
 import { withStyles } from "../../helpers/withStylesHelper";
 import EnvChecker from "../../helpers/envChecker";
-import { HOME_PATH } from "../../routes";
 import { UserDevice } from "./records";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { getCurrentPageType } from "../locationListener";
 import InputWithSuggestionList from "../common/InputWithSuggestionList";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
-import { RawQueryParams } from "../articleSearch";
+import { HOME_PATH } from "../../constants/routes";
+import { ACTION_TYPES } from "../../actions/actionTypes";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -222,6 +222,16 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private handleSearchPush = (query: string) => {
     const { dispatch } = this.props;
 
+    if (query.length < 2) {
+      return dispatch({
+        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
+        payload: {
+          type: "error",
+          message: "You should search more than 2 characters.",
+        },
+      });
+    }
+
     ActionTicketManager.trackTicket({
       pageType: getCurrentPageType(),
       actionType: "fire",
@@ -256,7 +266,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     const { location, layoutState } = this.props;
 
     const isShowSearchFormContainer = location.pathname !== HOME_PATH;
-    const rawQueryParamsObj: RawQueryParams = getQueryParamsObject(location.search);
+    const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
     const query = SafeURIStringHandler.decode(rawQueryParamsObj.query || "");
 
     return (
@@ -295,11 +305,21 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     );
   };
 
-  private handleClickSignOut = () => {
+  private handleClickSignOut = async () => {
     const { dispatch } = this.props;
 
-    dispatch(signOut());
-    this.handleRequestCloseUserDropdown();
+    try {
+      await dispatch(signOut());
+      this.handleRequestCloseUserDropdown();
+    } catch (_err) {
+      dispatch({
+        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
+        payload: {
+          type: "error",
+          message: `Failed to sign out.`,
+        },
+      });
+    }
   };
 
   private handleOpenSignIn = () => {

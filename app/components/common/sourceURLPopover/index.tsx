@@ -7,7 +7,6 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import { PaperSource } from "../../../model/paperSource";
 import { trackAndOpenLink } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
 import Icon from "../../../icons";
 import { isPDFLink } from "../../../helpers/getPDFLink";
 const styles = require("./sourceURLPopover.scss");
@@ -18,9 +17,9 @@ interface SourceURLPopover {
   handleCloseFunc: (e: any) => void;
   anchorEl: HTMLElement;
   paperSources: PaperSource[];
-  pageType: PageType;
+  pageType: Scinapse.ActionTicket.PageType;
   paperId: number;
-  actionArea?: ActionArea;
+  actionArea?: Scinapse.ActionTicket.ActionArea;
 }
 
 const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
