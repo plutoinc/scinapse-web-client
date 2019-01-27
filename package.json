@@ -40,6 +40,7 @@
     "@types/jest": "22.0.1",
     "@types/js-cookie": "2.2.0",
     "@types/katex": "^0.5.0",
+    "@types/loadable__component": "^5.2.0",
     "@types/lodash": "4.14.92",
     "@types/node": "8.5.9",
     "@types/notie": "0.0.27",
@@ -109,6 +110,7 @@
     "webpack-jarvis": "0.2.2"
   },
   "dependencies": {
+    "@loadable/component": "^5.5.0",
     "@material-ui/core": "3.5.1",
     "@pluto_network/scinapse-feedback": "0.0.4",
     "@sentry/browser": "4.1.1",

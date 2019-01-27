@@ -1,10 +1,10 @@
 import * as React from "react";
 import { Route, Switch, match, withRouter, RouteComponentProps } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import loadable from "@loadable/component";
 import { connect, Dispatch } from "react-redux";
-import Home from "./components/home";
 import { Header, FeedbackButton } from "./components/layouts";
-import ArticleSearch from "./components/articleSearch";
+// import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
 import PaperShow, { PaperShowMatchParams } from "./containers/paperShow";
 import AuthorShowContainer, { AuthorShowMatchParams } from "./containers/authorShow";
@@ -42,6 +42,7 @@ import {
   TERMS_OF_SERVICE_PATH,
   ERROR_PATH,
 } from "./constants/routes";
+import Loader from "./components/componentLoader";
 const styles = require("./root.scss");
 
 export interface LoadDataParams<P> {
@@ -60,15 +61,21 @@ interface ServerRoutesMap {
   render?: any;
 }
 
+const LoadableHome = loadable(() => import("./components/home"), {
+  fallback: <Loader />,
+});
+
 export const routesMap: ServerRoutesMap[] = [
   {
     path: HOME_PATH,
     exact: true,
-    component: Home,
+    component: LoadableHome,
   },
   {
     path: SEARCH_RESULT_PATH,
-    component: ArticleSearch,
+    component: loadable(() => import("./components/articleSearch"), {
+      fallback: <Loader />,
+    }),
     loadData: async (params: LoadDataParams<null>) => {
       await Promise.all([getSearchData(params)]);
     },

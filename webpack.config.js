@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 const CircularDependencyPlugin = require("circular-dependency-plugin");
@@ -9,7 +10,7 @@ module.exports = {
   entry: ["babel-polyfill", "./app/clientIndex.tsx"],
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js",
+    filename: "[name].[contenthash].js",
   },
   devtool: "inline-source-map",
   resolve: {
@@ -24,6 +25,16 @@ module.exports = {
     noEmitOnErrors: false, // production true
     providedExports: true,
     minimize: false,
+    runtimeChunk: "single",
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendors",
+          chunks: "all",
+        },
+      },
+    },
   },
   module: {
     rules: [
@@ -97,6 +108,7 @@ module.exports = {
       inject: false,
       NODE_ENV: "development",
     }),
+    new webpack.HashedModuleIdsPlugin(),
     new CircularDependencyPlugin({
       // exclude detection of files based on a RegExp
       exclude: /a\.js|node_modules/,
