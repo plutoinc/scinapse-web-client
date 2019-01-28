@@ -126,11 +126,11 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
 
   private handleActionTicketFireInSorting = (sortOption: SEARCH_SORT_OPTIONS) => {
     ActionTicketManager.trackTicket({
-      pageType: "collectionShow",
+      pageType: "searchResult",
       actionType: "fire",
       actionArea: "sortBox",
       actionTag: "paperSorting",
-      actionLabel: String(sortOption),
+      actionLabel: sortOption,
     });
   };
 
