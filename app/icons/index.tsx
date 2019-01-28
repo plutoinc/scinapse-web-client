@@ -73,6 +73,8 @@ const ICONS: { [key: string]: any } = {
   OCCUPIED: require("./occupied.svg").default,
   CAMERA: require("./camera.svg").default,
   DEFAULT_PROFILE_IMAGE: require("./defaultProfileImage.svg").default,
+  MASK: require("./mask.svg").default,
+  LINK: require("./link.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)
