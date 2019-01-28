@@ -3,6 +3,7 @@ jest.mock("../../../api/paper");
 jest.mock("../../../api/completion");
 jest.mock("../../../api/comment");
 jest.mock("../../../helpers/handleGA");
+jest.mock("../../../api/search");
 jest.mock("../../../helpers/makePlutoToastAction");
 // tslint:disable-next-line:no-empty
 jest.mock("normalize.css", () => {});

@@ -1,5 +1,4 @@
 import { CancelToken } from "axios";
-// import { normalize } from "normalizr";
 import PlutoAxios from "../pluto";
 import { RAW } from "../../__mocks__";
 import { PaginationResponseV2, PageObjectV2 } from "../types/common";
