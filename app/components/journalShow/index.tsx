@@ -115,62 +115,64 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
       );
     } else if (journal) {
       return (
-        <div className={styles.journalShowWrapper}>
-          {this.getPageHelmet()}
-          <div className={styles.headSection}>
-            <div className={styles.container}>
-              <div className={styles.leftBox}>
-                <div className={styles.title}>
-                  <Link to={`/journals/${journal.id}`}>{journal.title}</Link>
-                  {this.getExternalLink()}
-                </div>
-                <div className={styles.infoWrapper}>
-                  {journal.impactFactor ? (
+        <div>
+          <div className={styles.journalShowWrapper}>
+            {this.getPageHelmet()}
+            <div className={styles.headSection}>
+              <div className={styles.container}>
+                <div className={styles.leftBox}>
+                  <div className={styles.title}>
+                    <Link to={`/journals/${journal.id}`}>{journal.title}</Link>
+                    {this.getExternalLink()}
+                  </div>
+                  <div className={styles.infoWrapper}>
+                    {journal.impactFactor ? (
+                      <span>
+                        <div className={styles.subtitle}>IF</div>
+                        <strong>{journal.impactFactor}</strong>
+                      </span>
+                    ) : null}
                     <span>
-                      <div className={styles.subtitle}>IF</div>
-                      <strong>{journal.impactFactor}</strong>
+                      <div className={styles.subtitle}>Papers</div>
+                      <strong>{journal.paperCount}</strong>
                     </span>
-                  ) : null}
-                  <span>
-                    <div className={styles.subtitle}>Papers</div>
-                    <strong>{journal.paperCount}</strong>
-                  </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className={styles.paperListContainer}>
-            <div className={styles.container}>
-              <div className={styles.leftBox}>
-                <div className={styles.paperListBox}>
-                  <div className={styles.header}>
-                    <div className={styles.listTitle}>
-                      <span>{`Papers `}</span>
-                      <span className={styles.paperCount}>{journalShow.filteredPaperCount}</span>
+            <div className={styles.paperListContainer}>
+              <div className={styles.container}>
+                <div className={styles.leftBox}>
+                  <div className={styles.paperListBox}>
+                    <div className={styles.header}>
+                      <div className={styles.listTitle}>
+                        <span>{`Papers `}</span>
+                        <span className={styles.paperCount}>{journalShow.filteredPaperCount}</span>
+                      </div>
+                      <div className={styles.searchInputWrapper}>
+                        <ScinapseInput
+                          onSubmit={this.handleSubmitSearch}
+                          placeholder="Search papers in this journal"
+                          icon="SEARCH_ICON"
+                        />
+                      </div>
                     </div>
-                    <div className={styles.searchInputWrapper}>
-                      <ScinapseInput
-                        onSubmit={this.handleSubmitSearch}
-                        placeholder="Search papers in this journal"
-                        icon="SEARCH_ICON"
-                      />
+                    <div className={styles.subHeader}>
+                      <div className={styles.resultPaperCount}>{`${journalShow.paperCurrentPage} page of ${formatNumber(
+                        journalShow.paperTotalPage
+                      )} pages (${formatNumber(journalShow.totalPaperCount)} results)`}</div>
+                      <div className={styles.sortBoxWrapper}>{this.getSortBox()}</div>
                     </div>
+                    <div>{this.getPaperList()}</div>
+                    <div>{this.getPagination()}</div>
                   </div>
-                  <div className={styles.subHeader}>
-                    <div className={styles.resultPaperCount}>{`${journalShow.paperCurrentPage} page of ${formatNumber(
-                      journalShow.paperTotalPage
-                    )} pages (${formatNumber(journalShow.totalPaperCount)} results)`}</div>
-                    <div className={styles.sortBoxWrapper}>{this.getSortBox()}</div>
-                  </div>
-                  <div>{this.getPaperList()}</div>
-                  <div>{this.getPagination()}</div>
                 </div>
-              </div>
-              <div className={styles.rightBox}>
-                <div className={styles.fosSection}>
-                  <div className={styles.topFosTitle}>Top fields of study</div>
-                  <div className={styles.fosWrapper}>{this.getTopFOSList()}</div>
+                <div className={styles.rightBox}>
+                  <div className={styles.fosSection}>
+                    <div className={styles.topFosTitle}>Top fields of study</div>
+                    <div className={styles.fosWrapper}>{this.getTopFOSList()}</div>
+                  </div>
                 </div>
               </div>
             </div>
