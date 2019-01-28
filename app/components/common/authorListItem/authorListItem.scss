@@ -57,3 +57,32 @@
     padding: 4px 8px;
   }
 }
+
+@media (max-width: $mobile-width) {
+  .itemWrapper {
+    height: unset;
+    padding: 8px 4px 8px 4px;
+    position: relative;
+  }
+
+  .authorName {
+    width: 150px;
+  }
+
+  .affiliation {
+    margin-left: 0;
+    margin-top: 2px;
+  }
+
+  .hIndexBox {
+    margin-left: 0;
+    margin-top: 8px;
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    span {
+      margin-left: 0;
+    }
+  }
+}
