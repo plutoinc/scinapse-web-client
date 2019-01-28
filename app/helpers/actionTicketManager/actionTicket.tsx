@@ -25,6 +25,7 @@ export type ActionTagType =
   | "journalHomepage"
   | "queryInJournal"
   | "authorEntityItem"
+  | "paperSorting"
   | "";
 
 export type PageType =
@@ -56,7 +57,8 @@ export type ActionArea =
   | "topFos"
   | "authorDialog"
   | "allPublications"
-  | "authorEntity";
+  | "authorEntity"
+  | "sortBox";
 
 export interface ActionTicketParams {
   pageType: PageType;
