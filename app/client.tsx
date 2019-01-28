@@ -1,10 +1,10 @@
+import { BrowserRouter } from "react-router-dom";
 import "intersection-observer";
 import * as React from "react";
 import * as ReactGA from "react-ga";
 import * as ReactDom from "react-dom";
 import { Provider, Store } from "react-redux";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import { ConnectedRouter } from "connected-react-router";
 import * as Sentry from "@sentry/browser";
 import CssInjector from "./helpers/cssInjector";
 import EnvChecker from "./helpers/envChecker";
@@ -104,11 +104,11 @@ class PlutoRenderer {
       <CssInjector context={context}>
         <ErrorTracker>
           <Provider store={this.store}>
-            <ConnectedRouter history={StoreManager.history}>
+            <BrowserRouter>
               <MuiThemeProvider theme={theme}>
                 <Main />
               </MuiThemeProvider>
-            </ConnectedRouter>
+            </BrowserRouter>
           </Provider>
         </ErrorTracker>
       </CssInjector>,

@@ -150,7 +150,9 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         <Header />
         {this.getLoadingComponent()}
         <div>
-          <Switch location={location}>{routesMap.map(route => <Route {...route} key={route.path} />)}</Switch>
+          <Switch location={location}>
+            {routesMap.map(route => <Route {...route} key={route.path || "errorPage"} />)}
+          </Switch>
         </div>
         <DeviceDetector />
         <LocationListener />
