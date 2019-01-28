@@ -150,6 +150,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
                         <SortBox
                           sortOption={authorShow.papersSort}
                           handleClickSortOption={this.handleClickSortOption}
+                          currentPage="authorShow"
                         />
                       </div>
                     </div>
@@ -335,14 +336,6 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
     const { dispatch, author } = this.props;
 
     if (author) {
-      ActionTicketManager.trackTicket({
-        pageType: "authorShow",
-        actionType: "fire",
-        actionArea: "sortBox",
-        actionTag: "paperSorting",
-        actionLabel: String(sortOption),
-      });
-
       dispatch!(
         getAuthorPapers({
           authorId: author.id,

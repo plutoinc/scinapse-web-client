@@ -198,6 +198,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                         <SortBox
                           sortOption={authorShow.papersSort}
                           handleClickSortOption={this.handleClickSort}
+                          currentPage="authorShow"
                           exposeRecentlyUpdated={currentUser.authorId === author.id}
                           exposeRelevanceOption={false}
                         />
@@ -536,14 +537,6 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
 
   private handleClickSort = (option: AUTHOR_PAPER_LIST_SORT_TYPES) => {
     const { dispatch, authorShow, author } = this.props;
-
-    ActionTicketManager.trackTicket({
-      pageType: "authorShow",
-      actionType: "fire",
-      actionArea: "sortBox",
-      actionTag: "paperSorting",
-      actionLabel: String(option),
-    });
 
     dispatch(
       fetchAuthorPapers({

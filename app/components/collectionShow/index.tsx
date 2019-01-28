@@ -158,6 +158,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                         <SortBox
                           sortOption={collectionShow.sortType}
                           handleClickSortOption={this.handleClickSort}
+                          currentPage="collectionShow"
                           exposeRecentlyUpdated={true}
                           exposeRelevanceOption={false}
                         />
@@ -241,14 +242,6 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
 
   private handleClickSort = (option: AUTHOR_PAPER_LIST_SORT_TYPES) => {
     const { collectionShow, dispatch } = this.props;
-
-    ActionTicketManager.trackTicket({
-      pageType: "collectionShow",
-      actionType: "fire",
-      actionArea: "sortBox",
-      actionTag: "paperSorting",
-      actionLabel: String(option),
-    });
 
     dispatch(
       getPapers({
