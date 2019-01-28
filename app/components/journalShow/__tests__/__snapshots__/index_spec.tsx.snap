@@ -337,7 +337,7 @@ exports[`JournalShow Container Component when journal data exist should render c
             </a>
             <a
               className="buttonWrapper"
-              href="/search?query=Numerical%2520analysis&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
+              href="/search?query=Numerical%20analysis&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
               onClick={[Function]}
               rel="noopener"
               target="_blank"
@@ -346,7 +346,7 @@ exports[`JournalShow Container Component when journal data exist should render c
             </a>
             <a
               className="buttonWrapper"
-              href="/search?query=Mathematical%2520optimization&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
+              href="/search?query=Mathematical%20optimization&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
               onClick={[Function]}
               rel="noopener"
               target="_blank"
@@ -355,7 +355,7 @@ exports[`JournalShow Container Component when journal data exist should render c
             </a>
             <a
               className="buttonWrapper"
-              href="/search?query=Mathematical%2520analysis&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
+              href="/search?query=Mathematical%20analysis&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
               onClick={[Function]}
               rel="noopener"
               target="_blank"
@@ -364,7 +364,7 @@ exports[`JournalShow Container Component when journal data exist should render c
             </a>
             <a
               className="buttonWrapper"
-              href="/search?query=Boundary%2520value%2520problem&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
+              href="/search?query=Boundary%20value%20problem&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
               onClick={[Function]}
               rel="noopener"
               target="_blank"
