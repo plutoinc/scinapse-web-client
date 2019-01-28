@@ -323,7 +323,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                       >
                         Dmitriy A. Dikin
                       </a>
-                       (Northwestern University)
+                       
                       <span>
                         , 
                       </span>
@@ -338,7 +338,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                       >
                         Sasha Stankovich
                       </a>
-                       (Northwestern University)
+                       
                       <span>
                         , 
                       </span>
@@ -353,7 +353,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                       >
                         Eric J. Zimney
                       </a>
-                       (Northwestern University)
+                       
                     </span>
                     <span
                       className="toggleAuthorsButton"
