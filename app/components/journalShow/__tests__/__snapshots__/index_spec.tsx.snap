@@ -1,376 +1,378 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`JournalShow Container Component when journal data exist should render correctly 1`] = `
-<div
-  className="journalShowWrapper"
->
+<div>
   <div
-    className="headSection"
+    className="journalShowWrapper"
   >
     <div
-      className="container"
+      className="headSection"
     >
       <div
-        className="leftBox"
+        className="container"
       >
         <div
-          className="title"
+          className="leftBox"
         >
-          <a
-            href="/journals/2764552960"
-            onClick={[Function]}
+          <div
+            className="title"
           >
-            Applied Mathematics and Computation
-          </a>
-        </div>
-        <div
-          className="infoWrapper"
-        >
-          <span>
-            <div
-              className="subtitle"
+            <a
+              href="/journals/2764552960"
+              onClick={[Function]}
             >
-              Papers
-            </div>
-            <strong>
-              19555
-            </strong>
-          </span>
+              Applied Mathematics and Computation
+            </a>
+          </div>
+          <div
+            className="infoWrapper"
+          >
+            <span>
+              <div
+                className="subtitle"
+              >
+                Papers
+              </div>
+              <strong>
+                19555
+              </strong>
+            </span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    className="paperListContainer"
-  >
     <div
-      className="container"
+      className="paperListContainer"
     >
       <div
-        className="leftBox"
+        className="container"
       >
         <div
-          className="paperListBox"
+          className="leftBox"
         >
           <div
-            className="header"
+            className="paperListBox"
           >
             <div
-              className="listTitle"
-            >
-              <span>
-                Papers 
-              </span>
-              <span
-                className="paperCount"
-              >
-                0
-              </span>
-            </div>
-            <div
-              className="searchInputWrapper"
+              className="header"
             >
               <div
-                className="inputBox"
+                className="listTitle"
               >
-                <input
-                  autoFocus={false}
-                  onChange={[Function]}
-                  onKeyDown={[Function]}
-                  placeholder="Search papers in this journal"
-                  value=""
-                />
-                <div
-                  className="icon"
-                  onClick={[Function]}
+                <span>
+                  Papers 
+                </span>
+                <span
+                  className="paperCount"
                 >
-                  <i
-                    className="icon"
-                  />
-                </div>
+                  0
+                </span>
               </div>
-            </div>
-          </div>
-          <div
-            className="subHeader"
-          >
-            <div
-              className="resultPaperCount"
-            >
-              1 page of 1 pages (0 results)
-            </div>
-            <div
-              className="sortBoxWrapper"
-            >
               <div
-                className="sortBoxWrapper"
+                className="searchInputWrapper"
               >
                 <div
-                  className="currentOption"
-                  onClick={[Function]}
+                  className="inputBox"
                 >
-                  <span
-                    className="sortOptionText"
-                  >
-                    Newest
-                  </span>
-                  <i
-                    className="icon downArrow"
+                  <input
+                    autoFocus={false}
+                    onChange={[Function]}
+                    onKeyDown={[Function]}
+                    placeholder="Search papers in this journal"
+                    value=""
                   />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div
-              className="paperItemWrapper"
-            >
-              <div
-                className="contentSection"
-              >
-                <div>
-                  <a
-                    className="title"
-                    href="/papers/8107"
-                    onClick={[Function]}
-                  >
-                    <span
-                      dangerouslySetInnerHTML={
-                        Object {
-                          "__html": "Understanding the very nature of Project Management : a praxiological approach",
-                        }
-                      }
-                    />
-                  </a>
-                  <a
-                    className="newTabIconWrapper"
-                    href="/papers/8107"
-                    onClick={[Function]}
-                    rel="noopener"
-                    target="_blank"
-                  >
-                    <i
-                      className="icon newTabIcon"
-                    />
-                  </a>
-                </div>
-                <div
-                  className="publishInfoList"
-                >
                   <div
-                    className="author"
+                    className="icon"
+                    onClick={[Function]}
                   >
                     <i
                       className="icon"
                     />
-                    <span
-                      className="authors"
-                    >
-                      <span
-                        className="author"
-                      >
-                        <a
-                          className="authorName"
-                          href="/authors/538589259"
-                          onClick={[Function]}
-                        >
-                          Christophe Bredillet
-                        </a>
-                        <span
-                          className="authorHIndex"
-                        >
-                          <span
-                            className="hIndexChar"
-                          >
-                            13
-                          </span>
-                          <div
-                            className="detailHIndexBox"
-                          >
-                            <div
-                              className="contentWrapper"
-                            >
-                              Estimated H-index: 13
-                            </div>
-                          </div>
-                        </span>
-                         (Queensland University of Technology)
-                      </span>
-                    </span>
                   </div>
                 </div>
-                <span
-                  className="abstract"
-                  style={Object {}}
-                >
-                  <span>
-                    Foreword: In this paper I call upon a praxiological approach. Praxeology (early alteration of praxiology) is the study of human action and conduct. The name praxeology/praxiologyakes is root in praxis, Medieval Latin, from Greek, doing, action, from prassein to do, practice (Merriam-Webster Dictionary). Having been involved in project management education, research and practice for the last twenty years, I have constantly tried to improve and to provide a better understanding/knowledge of the fi...
-                  </span>
-                  <label
-                    className="moreOrLess"
-                    onClick={[Function]}
-                  >
-                    <span>
-                      more
-                    </span>
-                  </label>
-                </span>
+              </div>
+            </div>
+            <div
+              className="subHeader"
+            >
+              <div
+                className="resultPaperCount"
+              >
+                1 page of 1 pages (0 results)
+              </div>
+              <div
+                className="sortBoxWrapper"
+              >
                 <div
-                  className="infoList"
+                  className="sortBoxWrapper"
                 >
-                  <a
-                    className="citedButton"
-                    href="/papers/8107#cited"
-                    onClick={[Function]}
-                  >
-                    <span>
-                      Cited 6
-                    </span>
-                  </a>
-                  <a
-                    className="sourceButton"
-                    href="http://eprints.qut.edu.au/49501/"
-                    onClick={[Function]}
-                    rel="noopener"
-                    target="_blank"
-                  >
-                    <i
-                      className="icon sourceButtonIcon"
-                    />
-                    <span>
-                      Source
-                    </span>
-                  </a>
-                  <button
-                    className="addCollectionBtnWrapper"
-                    onClick={[Function]}
-                  >
-                    <i
-                      className="icon plusIcon"
-                    />
-                    <span>
-                      Add To Collection
-                    </span>
-                  </button>
                   <div
-                    className="claimButton"
+                    className="currentOption"
+                    onClick={[Function]}
                   >
-                    <div>
-                      <button
-                        className="MuiButtonBase-root-10 MuiIconButton-root-4 additionalMenuIcon"
-                        disabled={false}
-                        onBlur={[Function]}
-                        onClick={[Function]}
-                        onFocus={[Function]}
-                        onKeyDown={[Function]}
-                        onKeyUp={[Function]}
-                        onMouseDown={[Function]}
-                        onMouseLeave={[Function]}
-                        onMouseUp={[Function]}
-                        onTouchEnd={[Function]}
-                        onTouchMove={[Function]}
-                        onTouchStart={[Function]}
-                        tabIndex="0"
-                        type="button"
+                    <span
+                      className="sortOptionText"
+                    >
+                      Newest
+                    </span>
+                    <i
+                      className="icon downArrow"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div
+                className="paperItemWrapper"
+              >
+                <div
+                  className="contentSection"
+                >
+                  <div>
+                    <a
+                      className="title"
+                      href="/papers/8107"
+                      onClick={[Function]}
+                    >
+                      <span
+                        dangerouslySetInnerHTML={
+                          Object {
+                            "__html": "Understanding the very nature of Project Management : a praxiological approach",
+                          }
+                        }
+                      />
+                    </a>
+                    <a
+                      className="newTabIconWrapper"
+                      href="/papers/8107"
+                      onClick={[Function]}
+                      rel="noopener"
+                      target="_blank"
+                    >
+                      <i
+                        className="icon newTabIcon"
+                      />
+                    </a>
+                  </div>
+                  <div
+                    className="publishInfoList"
+                  >
+                    <div
+                      className="author"
+                    >
+                      <i
+                        className="icon"
+                      />
+                      <span
+                        className="authors"
                       >
                         <span
-                          className="MuiIconButton-label-9"
+                          className="author"
                         >
-                          <i
-                            className="icon ellipsisIcon"
-                          />
+                          <a
+                            className="authorName"
+                            href="/authors/538589259"
+                            onClick={[Function]}
+                          >
+                            Christophe Bredillet
+                          </a>
+                          <span
+                            className="authorHIndex"
+                          >
+                            <span
+                              className="hIndexChar"
+                            >
+                              13
+                            </span>
+                            <div
+                              className="detailHIndexBox"
+                            >
+                              <div
+                                className="contentWrapper"
+                              >
+                                Estimated H-index: 13
+                              </div>
+                            </div>
+                          </span>
+                           (Queensland University of Technology)
                         </span>
-                        <span
-                          className="MuiTouchRipple-root-13"
-                        />
-                      </button>
+                      </span>
+                    </div>
+                  </div>
+                  <span
+                    className="abstract"
+                    style={Object {}}
+                  >
+                    <span>
+                      Foreword: In this paper I call upon a praxiological approach. Praxeology (early alteration of praxiology) is the study of human action and conduct. The name praxeology/praxiologyakes is root in praxis, Medieval Latin, from Greek, doing, action, from prassein to do, practice (Merriam-Webster Dictionary). Having been involved in project management education, research and practice for the last twenty years, I have constantly tried to improve and to provide a better understanding/knowledge of the fi...
+                    </span>
+                    <label
+                      className="moreOrLess"
+                      onClick={[Function]}
+                    >
+                      <span>
+                        more
+                      </span>
+                    </label>
+                  </span>
+                  <div
+                    className="infoList"
+                  >
+                    <a
+                      className="citedButton"
+                      href="/papers/8107#cited"
+                      onClick={[Function]}
+                    >
+                      <span>
+                        Cited 6
+                      </span>
+                    </a>
+                    <a
+                      className="sourceButton"
+                      href="http://eprints.qut.edu.au/49501/"
+                      onClick={[Function]}
+                      rel="noopener"
+                      target="_blank"
+                    >
+                      <i
+                        className="icon sourceButtonIcon"
+                      />
+                      <span>
+                        Source
+                      </span>
+                    </a>
+                    <button
+                      className="addCollectionBtnWrapper"
+                      onClick={[Function]}
+                    >
+                      <i
+                        className="icon plusIcon"
+                      />
+                      <span>
+                        Add To Collection
+                      </span>
+                    </button>
+                    <div
+                      className="claimButton"
+                    >
+                      <div>
+                        <button
+                          className="MuiButtonBase-root-10 MuiIconButton-root-4 additionalMenuIcon"
+                          disabled={false}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onKeyDown={[Function]}
+                          onKeyUp={[Function]}
+                          onMouseDown={[Function]}
+                          onMouseLeave={[Function]}
+                          onMouseUp={[Function]}
+                          onTouchEnd={[Function]}
+                          onTouchMove={[Function]}
+                          onTouchStart={[Function]}
+                          tabIndex="0"
+                          type="button"
+                        >
+                          <span
+                            className="MuiIconButton-label-9"
+                          >
+                            <i
+                              className="icon ellipsisIcon"
+                            />
+                          </span>
+                          <span
+                            className="MuiTouchRipple-root-13"
+                          />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div>
-            <div
-              className="paginationWrapper"
-              style={
-                Object {
-                  "margin": "24px 0",
-                }
-              }
-            >
+            <div>
               <div
-                className="prevButtons"
-              />
-              <span
-                className="pageItem active"
-                onClick={[Function]}
+                className="paginationWrapper"
+                style={
+                  Object {
+                    "margin": "24px 0",
+                  }
+                }
               >
-                1
-              </span>
+                <div
+                  className="prevButtons"
+                />
+                <span
+                  className="pageItem active"
+                  onClick={[Function]}
+                >
+                  1
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div
-        className="rightBox"
-      >
         <div
-          className="fosSection"
+          className="rightBox"
         >
           <div
-            className="topFosTitle"
+            className="fosSection"
           >
-            Top fields of study
-          </div>
-          <div
-            className="fosWrapper"
-          >
-            <a
-              className="buttonWrapper"
-              href="/search?query=Mathematics&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
-              onClick={[Function]}
-              rel="noopener"
-              target="_blank"
+            <div
+              className="topFosTitle"
             >
-              Mathematics
-            </a>
-            <a
-              className="buttonWrapper"
-              href="/search?query=Numerical%2520analysis&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
-              onClick={[Function]}
-              rel="noopener"
-              target="_blank"
+              Top fields of study
+            </div>
+            <div
+              className="fosWrapper"
             >
-              Numerical analysis
-            </a>
-            <a
-              className="buttonWrapper"
-              href="/search?query=Mathematical%2520optimization&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
-              onClick={[Function]}
-              rel="noopener"
-              target="_blank"
-            >
-              Mathematical optimization
-            </a>
-            <a
-              className="buttonWrapper"
-              href="/search?query=Mathematical%2520analysis&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
-              onClick={[Function]}
-              rel="noopener"
-              target="_blank"
-            >
-              Mathematical analysis
-            </a>
-            <a
-              className="buttonWrapper"
-              href="/search?query=Boundary%2520value%2520problem&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
-              onClick={[Function]}
-              rel="noopener"
-              target="_blank"
-            >
-              Boundary value problem
-            </a>
+              <a
+                className="buttonWrapper"
+                href="/search?query=Mathematics&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
+                onClick={[Function]}
+                rel="noopener"
+                target="_blank"
+              >
+                Mathematics
+              </a>
+              <a
+                className="buttonWrapper"
+                href="/search?query=Numerical%2520analysis&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
+                onClick={[Function]}
+                rel="noopener"
+                target="_blank"
+              >
+                Numerical analysis
+              </a>
+              <a
+                className="buttonWrapper"
+                href="/search?query=Mathematical%2520optimization&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
+                onClick={[Function]}
+                rel="noopener"
+                target="_blank"
+              >
+                Mathematical optimization
+              </a>
+              <a
+                className="buttonWrapper"
+                href="/search?query=Mathematical%2520analysis&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
+                onClick={[Function]}
+                rel="noopener"
+                target="_blank"
+              >
+                Mathematical analysis
+              </a>
+              <a
+                className="buttonWrapper"
+                href="/search?query=Boundary%2520value%2520problem&sort=RELEVANCE&page=1&filter=year%3D%3A%2Cif%3D%3A%2Cfos%3D%2Cjournal%3D"
+                onClick={[Function]}
+                rel="noopener"
+                target="_blank"
+              >
+                Boundary value problem
+              </a>
+            </div>
           </div>
         </div>
       </div>
