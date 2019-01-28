@@ -6,6 +6,5 @@ export const AUTH_PATH = "/users";
 export const PAPER_SHOW_PATH = "/papers/:paperId";
 export const JOURNAL_SHOW_PATH = "/journals/:journalId";
 export const COLLECTION_SHOW_PATH = "/collections/:collectionId";
-export const ERROR_PATH = "/:errorNum";
 export const TERMS_OF_SERVICE_PATH = "/terms-of-service";
 export const ADMIN_PATH = "/admin";

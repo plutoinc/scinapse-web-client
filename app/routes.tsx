@@ -40,7 +40,6 @@ import {
   AUTH_PATH,
   ADMIN_PATH,
   TERMS_OF_SERVICE_PATH,
-  ERROR_PATH,
 } from "./constants/routes";
 const styles = require("./root.scss");
 
@@ -53,7 +52,7 @@ export interface LoadDataParams<P> {
 }
 
 interface ServerRoutesMap {
-  path: string;
+  path?: string;
   component?: any;
   exact?: boolean;
   loadData?: (params: LoadDataParams<any>) => Promise<any>;
@@ -121,7 +120,6 @@ export const routesMap: ServerRoutesMap[] = [
     exact: true,
   },
   {
-    path: ERROR_PATH,
     component: ErrorPage,
   },
 ];
