@@ -6,6 +6,7 @@ import PaperSearchQueryFormatter from "../../../../helpers/papersQueryFormatter"
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import { SEARCH_SORT_OPTIONS } from "../../records";
 import Icon from "../../../../icons";
+import ActionTicketManager from "../../../../helpers/actionTicketManager";
 const styles = require("./sortBox.scss");
 
 interface SortBoxProps {
@@ -57,6 +58,9 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
                   filter: {},
                 }),
               }}
+              onClick={() => {
+                this.handleActionTicketFireInSorting("RELEVANCE");
+              }}
             >
               Relevance
             </Link>
@@ -71,6 +75,9 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
                   sort: "MOST_CITATIONS",
                   filter: {},
                 }),
+              }}
+              onClick={() => {
+                this.handleActionTicketFireInSorting("MOST_CITATIONS");
               }}
             >
               Most Citations
@@ -87,6 +94,9 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
                   filter: {},
                 }),
               }}
+              onClick={() => {
+                this.handleActionTicketFireInSorting("OLDEST_FIRST");
+              }}
             >
               Oldest
             </Link>
@@ -102,6 +112,9 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
                   filter: {},
                 }),
               }}
+              onClick={() => {
+                this.handleActionTicketFireInSorting("NEWEST_FIRST");
+              }}
             >
               Newest
             </Link>
@@ -110,6 +123,16 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
       </div>
     );
   }
+
+  private handleActionTicketFireInSorting = (sortOption: SEARCH_SORT_OPTIONS) => {
+    ActionTicketManager.trackTicket({
+      pageType: "searchResult",
+      actionType: "fire",
+      actionArea: "sortBox",
+      actionTag: "paperSorting",
+      actionLabel: sortOption,
+    });
+  };
 
   private getSortOptionToShow = (sortOption: SEARCH_SORT_OPTIONS) => {
     // tslint:disable-next-line:switch-default

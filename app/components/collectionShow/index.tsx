@@ -160,6 +160,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                         <SortBox
                           sortOption={collectionShow.sortType}
                           handleClickSortOption={this.handleClickSort}
+                          currentPage="collectionShow"
                           exposeRecentlyUpdated={true}
                           exposeRelevanceOption={false}
                         />
@@ -243,6 +244,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
 
   private handleClickSort = (option: AUTHOR_PAPER_LIST_SORT_TYPES) => {
     const { collectionShow, dispatch } = this.props;
+
     dispatch(
       getPapers({
         collectionId: collectionShow.mainCollectionId,
