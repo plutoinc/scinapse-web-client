@@ -3,6 +3,8 @@ import Popover from "@material-ui/core/Popover/Popover";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
+import { PageType } from "../../../helpers/actionTicketManager/actionTicket";
 const styles = require("./sortBox.scss");
 
 export type PAPER_LIST_SORT_TYPES = "MOST_CITATIONS" | "NEWEST_FIRST" | "OLDEST_FIRST" | "RELEVANCE";
@@ -11,6 +13,7 @@ export type AUTHOR_PAPER_LIST_SORT_TYPES = PAPER_LIST_SORT_TYPES | "RECENTLY_ADD
 interface SortBoxProps {
   sortOption: AUTHOR_PAPER_LIST_SORT_TYPES;
   handleClickSortOption: (option: AUTHOR_PAPER_LIST_SORT_TYPES) => void;
+  currentPage: PageType;
   exposeRelevanceOption?: boolean;
   exposeRecentlyUpdated?: boolean;
 }
@@ -57,6 +60,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
               <div
                 onClick={() => {
                   handleClickSortOption("RECENTLY_ADDED");
+                  this.fireActionTicketInPaperSort("RECENTLY_ADDED");
                   this.handleRequestClose();
                 }}
               >
@@ -68,6 +72,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
             <div
               onClick={() => {
                 handleClickSortOption("MOST_CITATIONS");
+                this.fireActionTicketInPaperSort("MOST_CITATIONS");
                 this.handleRequestClose();
               }}
             >
@@ -78,6 +83,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
             <div
               onClick={() => {
                 handleClickSortOption("NEWEST_FIRST");
+                this.fireActionTicketInPaperSort("NEWEST_FIRST");
                 this.handleRequestClose();
               }}
             >
@@ -88,6 +94,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
             <div
               onClick={() => {
                 handleClickSortOption("OLDEST_FIRST");
+                this.fireActionTicketInPaperSort("OLDEST_FIRST");
                 this.handleRequestClose();
               }}
             >
@@ -109,6 +116,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
           <div
             onClick={() => {
               handleClickSortOption("RELEVANCE");
+              this.fireActionTicketInPaperSort("RELEVANCE");
               this.handleRequestClose();
             }}
           >
@@ -143,6 +151,18 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
         return "Recently Added";
       }
     }
+  };
+
+  private fireActionTicketInPaperSort = (sortOption: AUTHOR_PAPER_LIST_SORT_TYPES) => {
+    const { currentPage } = this.props;
+
+    ActionTicketManager.trackTicket({
+      pageType: currentPage,
+      actionType: "fire",
+      actionArea: "sortBox",
+      actionTag: "paperSorting",
+      actionLabel: sortOption,
+    });
   };
 
   private handleToggleDropdown = () => {
