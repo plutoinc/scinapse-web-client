@@ -10,6 +10,7 @@ import {
 } from "../../actions/paperShow";
 import { CurrentUser } from "../../model/currentUser";
 import { PaperShowPageQueryParams, PaperShowMatchParams } from ".";
+import { ActionCreators } from "../../actions/actionTypes";
 
 export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchParams>, currentUser?: CurrentUser) {
   const { dispatch, match } = params;
@@ -17,6 +18,10 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
   const queryParamsObject: PaperShowPageQueryParams = params.queryParams
     ? params.queryParams
     : { "cited-page": 1, "ref-page": 1 };
+
+  if (isNaN(paperId)) {
+    return dispatch(ActionCreators.failedToGetPaper({ statusCode: 400 }));
+  }
 
   try {
     const promiseArray = [];

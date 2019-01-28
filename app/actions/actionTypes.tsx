@@ -367,8 +367,8 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_PAPER });
   },
 
-  failedToGetPaper() {
-    return createAction({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER });
+  failedToGetPaper(payload: { statusCode: number }) {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER, payload });
   },
 
   getPaper(payload: { paperId: number }) {

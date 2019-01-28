@@ -7,7 +7,7 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
       return {
         ...state,
         ...{
-          hasErrorOnFetchingPaper: false,
+          hasErrorOnFetchingPaper: null,
           isLoadingPaper: false,
           paperId: action.payload.paperId,
         },
@@ -17,7 +17,7 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_PAPER: {
       return {
         ...state,
-        ...{ hasErrorOnFetchingPaper: false, isLoadingPaper: true },
+        ...{ hasErrorOnFetchingPaper: null, isLoadingPaper: true },
       };
     }
 
@@ -25,7 +25,7 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
       return {
         ...state,
         ...{
-          hasErrorOnFetchingPaper: true,
+          hasErrorOnFetchingPaper: action.payload.statusCode,
           isLoadingPaper: false,
           paperId: 0,
         },
