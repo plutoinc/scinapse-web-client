@@ -40,7 +40,7 @@ class PaperSearchQueryFormatter {
       const formattedFilter = this.getStringifiedPaperFilterParams(queryParamsObject.filter);
       const formattedQueryParamsObject = {
         ...queryParamsObject,
-        ...{ filter: formattedFilter, query: encodeURIComponent(queryParamsObject.query) },
+        ...{ filter: formattedFilter, query: queryParamsObject.query },
       };
 
       return stringify(formattedQueryParamsObject);
