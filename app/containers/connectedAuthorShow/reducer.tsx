@@ -20,6 +20,7 @@ export interface ConnectedAuthorShowState
       isLoadingToAddPaperToAuthorPaperList: boolean;
       hasFailedToAddPaperToAuthorPaperList: boolean;
       isFetchingCVForm: keyof CVInfoType | null;
+      pageErrorStatusCode: number | null;
     }> {}
 
 export const CONNECTED_AUTHOR_SHOW_INITIAL_STATE: ConnectedAuthorShowState = {
@@ -39,6 +40,7 @@ export const CONNECTED_AUTHOR_SHOW_INITIAL_STATE: ConnectedAuthorShowState = {
   isLoadingToAddPaperToAuthorPaperList: false,
   hasFailedToAddPaperToAuthorPaperList: false,
   isFetchingCVForm: null,
+  pageErrorStatusCode: null,
 };
 
 export function reducer(
@@ -50,6 +52,7 @@ export function reducer(
       return {
         ...state,
         isLoadingPage: true,
+        pageErrorStatusCode: null,
       };
     }
 
@@ -57,6 +60,14 @@ export function reducer(
       return {
         ...state,
         isLoadingPage: false,
+        pageErrorStatusCode: null,
+      };
+    }
+
+    case ACTION_TYPES.AUTHOR_SHOW_FAILED_TO_LOAD_DATA_FOR_PAGE: {
+      return {
+        ...state,
+        pageErrorStatusCode: action.payload.statusCode,
       };
     }
 

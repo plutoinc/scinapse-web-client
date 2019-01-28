@@ -28,6 +28,7 @@ import { AUTH_LEVEL, checkAuth } from "../../helpers/checkAuthDialog";
 import { AppState } from "../../reducers";
 import { fetchAuthorPapers } from "../../actions/author";
 import EnvChecker from "../../helpers/envChecker";
+import ErrorPage from "../../components/error/errorPage";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowMatchParams {
@@ -60,6 +61,10 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
 
   public render() {
     const { author, authorShow, currentUser, isTestMode, layout } = this.props;
+
+    if (authorShow.pageErrorStatusCode) {
+      return <ErrorPage errorNum={authorShow.pageErrorStatusCode} />;
+    }
 
     if (!author) {
       return null;

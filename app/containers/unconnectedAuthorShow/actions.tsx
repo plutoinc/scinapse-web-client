@@ -58,13 +58,11 @@ export function getAuthor(authorId: number, cancelToken: CancelToken) {
       if (!axios.isCancel(err)) {
         const error = PlutoAxios.getGlobalError(err);
         dispatch(ActionCreators.failedToGetAuthor());
-
-        if (error) {
-          alertToast({
-            type: "error",
-            message: error.message,
-          });
-        }
+        alertToast({
+          type: "error",
+          message: error.message,
+        });
+        throw err;
       }
     }
   };
