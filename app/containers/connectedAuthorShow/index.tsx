@@ -41,7 +41,6 @@ import { AppState } from "../../reducers";
 import { trackEvent } from "../../helpers/handleGA";
 import AuthorCvSection from "../authorCvSection";
 import { getAuthor } from "../unconnectedAuthorShow/actions";
-import ActionTicketManager from "../../helpers/actionTicketManager";
 const styles = require("./connectedAuthor.scss");
 
 export interface ConnectedAuthorShowMatchParams {

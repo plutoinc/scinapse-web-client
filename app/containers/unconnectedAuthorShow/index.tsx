@@ -28,7 +28,6 @@ import { AUTH_LEVEL, checkAuth } from "../../helpers/checkAuthDialog";
 import { AppState } from "../../reducers";
 import { fetchAuthorPapers } from "../../actions/author";
 import EnvChecker from "../../helpers/envChecker";
-import ActionTicketManager from "../../helpers/actionTicketManager";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowMatchParams {

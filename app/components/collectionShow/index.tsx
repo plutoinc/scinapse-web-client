@@ -11,7 +11,6 @@ import CollectionPaperItem from "./collectionPaperItem";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import MobilePagination from "../common/mobilePagination";
 import DesktopPagination from "../common/desktopPagination";
-import ActionTicketManager from "../../helpers/actionTicketManager";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import { CollectionShowState } from "./reducer";
