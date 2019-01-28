@@ -11,6 +11,7 @@ import CollectionPaperItem from "./collectionPaperItem";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import MobilePagination from "../common/mobilePagination";
 import DesktopPagination from "../common/desktopPagination";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import { CollectionShowState } from "./reducer";
@@ -240,6 +241,15 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
 
   private handleClickSort = (option: AUTHOR_PAPER_LIST_SORT_TYPES) => {
     const { collectionShow, dispatch } = this.props;
+
+    ActionTicketManager.trackTicket({
+      pageType: "collectionShow",
+      actionType: "fire",
+      actionArea: "sortBox",
+      actionTag: "paperSorting",
+      actionLabel: String(option),
+    });
+
     dispatch(
       getPapers({
         collectionId: collectionShow.mainCollectionId,
