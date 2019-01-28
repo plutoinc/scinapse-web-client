@@ -41,6 +41,7 @@ import { AppState } from "../../reducers";
 import { trackEvent } from "../../helpers/handleGA";
 import AuthorCvSection from "../authorCvSection";
 import { getAuthor } from "../unconnectedAuthorShow/actions";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 const styles = require("./connectedAuthor.scss");
 
 export interface ConnectedAuthorShowMatchParams {
@@ -535,6 +536,14 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
 
   private handleClickSort = (option: AUTHOR_PAPER_LIST_SORT_TYPES) => {
     const { dispatch, authorShow, author } = this.props;
+
+    ActionTicketManager.trackTicket({
+      pageType: "authorShow",
+      actionType: "fire",
+      actionArea: "sortBox",
+      actionTag: "paperSorting",
+      actionLabel: String(option),
+    });
 
     dispatch(
       fetchAuthorPapers({

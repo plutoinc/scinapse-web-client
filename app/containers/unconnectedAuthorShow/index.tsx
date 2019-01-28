@@ -28,6 +28,7 @@ import { AUTH_LEVEL, checkAuth } from "../../helpers/checkAuthDialog";
 import { AppState } from "../../reducers";
 import { fetchAuthorPapers } from "../../actions/author";
 import EnvChecker from "../../helpers/envChecker";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowMatchParams {
@@ -334,6 +335,14 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
     const { dispatch, author } = this.props;
 
     if (author) {
+      ActionTicketManager.trackTicket({
+        pageType: "authorShow",
+        actionType: "fire",
+        actionArea: "sortBox",
+        actionTag: "paperSorting",
+        actionLabel: String(sortOption),
+      });
+
       dispatch!(
         getAuthorPapers({
           authorId: author.id,
