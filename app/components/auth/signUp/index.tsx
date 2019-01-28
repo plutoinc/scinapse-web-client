@@ -35,6 +35,19 @@ class SignUp extends React.PureComponent<SignUpContainerProps> {
     }
   }
 
+  public componentWillReceiveProps(nextProps: SignUpContainerProps) {
+    const { dispatch, location } = this.props;
+
+    if (location !== nextProps.location) {
+      dispatch(Actions.goBack());
+    }
+  }
+
+  public componentWillUnmount() {
+    const { dispatch } = this.props;
+    dispatch(Actions.goBack());
+  }
+
   public render() {
     const { signUpState, handleChangeDialogType } = this.props;
     const {

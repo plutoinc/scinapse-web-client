@@ -10,7 +10,6 @@ import { CVInfoType, Award, Education, Experience } from "../model/profile";
 import { PaperInCollection } from "../model/paperInCollection";
 
 export enum ACTION_TYPES {
-  GLOBAL_LOCATION_CHANGE = "@@router/LOCATION_CHANGE",
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = "GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING",
   GLOBAL_SUCCEEDED_TO_RENDER_AT_THE_CLIENT_SIDE = "GLOBAL_SUCCEEDED_TO_RENDER_AT_THE_CLIENT_SIDE",
   GLOBAL_CHANGE_DIALOG_TYPE = "GLOBAL_CHANGE_DIALOG_TYPE",
@@ -1083,10 +1082,6 @@ export const ActionCreators = {
 
   flushEntities() {
     return createAction({ type: ACTION_TYPES.GLOBAL_FLUSH_ENTITIES });
-  },
-
-  globalLocationChange() {
-    return createAction({ type: ACTION_TYPES.GLOBAL_LOCATION_CHANGE });
   },
 };
 

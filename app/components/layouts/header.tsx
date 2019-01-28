@@ -72,7 +72,17 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
   public componentWillUnmount() {
     if (!EnvChecker.isOnServer()) {
+      const { dispatch } = this.props;
+      dispatch(Actions.clearKeywordCompletion());
       window.removeEventListener("scroll", this.handleScrollEvent);
+    }
+  }
+
+  public componentWillReceiveProps(nextProps: HeaderProps) {
+    const { dispatch, location } = this.props;
+
+    if (location !== nextProps.location) {
+      dispatch(Actions.clearKeywordCompletion());
     }
   }
 

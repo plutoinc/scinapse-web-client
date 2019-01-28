@@ -1,5 +1,6 @@
 import * as React from "react";
 import { connect, Dispatch } from "react-redux";
+import { withRouter, RouteComponentProps } from "react-router";
 import { debounce } from "lodash";
 import Helmet from "react-helmet";
 import * as Actions from "../articleSearch/actions";
@@ -15,7 +16,7 @@ import Icon from "../../icons";
 import alertToast from "../../helpers/makePlutoToastAction";
 const styles = require("./home.scss");
 
-export interface HomeProps {
+export interface HomeProps extends RouteComponentProps<null> {
   layout: LayoutState;
   home: HomeState;
   dispatch: Dispatch<any>;
@@ -32,6 +33,19 @@ function mapStateToProps(state: AppState) {
 class Home extends React.PureComponent<HomeProps> {
   public componentDidMount() {
     this.clearSearchInput();
+  }
+
+  public componentWillReceiveProps(nextProps: HomeProps) {
+    const { dispatch, location } = this.props;
+
+    if (location !== nextProps.location) {
+      dispatch(clearKeywordCompletion());
+    }
+  }
+
+  public componentWillUnmount() {
+    const { dispatch } = this.props;
+    dispatch(clearKeywordCompletion());
   }
 
   public render() {
@@ -216,4 +230,4 @@ class Home extends React.PureComponent<HomeProps> {
   };
 }
 
-export default connect(mapStateToProps)(Home);
+export default withRouter(connect(mapStateToProps)(Home));

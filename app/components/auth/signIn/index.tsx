@@ -27,7 +27,7 @@ function mapStateToProps(state: AppState) {
 }
 
 @withStyles<typeof SignIn>(styles)
-class SignIn extends React.PureComponent<SignInContainerProps, {}> {
+class SignIn extends React.PureComponent<SignInContainerProps> {
   public componentDidMount() {
     const { dispatch } = this.props;
     const searchString = this.getCurrentSearchParamsString();
@@ -40,6 +40,20 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
 
       dispatch(Actions.getAuthorizeCode(searchCode, searchVendor, oauthRedirectPathCookie));
     }
+  }
+
+  public componentWillReceiveProps(nextProps: SignInContainerProps) {
+    const { location, dispatch } = this.props;
+
+    if (location !== nextProps.location) {
+      dispatch(Actions.goBack());
+    }
+  }
+
+  public componentWillUnmount() {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.goBack());
   }
 
   public render() {
