@@ -21,17 +21,10 @@ import { getSearchData } from "./sideEffect";
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import { UserDevice } from "../layouts/records";
-import { SEARCH_SORT_OPTIONS } from "./records";
 import AuthorSearchItem from "../authorSearchItem";
 import restoreScroll from "../../helpers/scrollRestoration";
+import { ChangeRangeInputParams, FILTER_BOX_TYPE, FILTER_TYPE_HAS_EXPANDING_OPTION } from "../../constants/paperSearch";
 const styles = require("./articleSearch.scss");
-
-export interface RawQueryParams {
-  query: string;
-  filter: string;
-  page: string;
-  sort: SEARCH_SORT_OPTIONS;
-}
 
 function mapStateToProps(state: AppState) {
   return {
@@ -280,19 +273,19 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     return `/search?${queryParams}`;
   };
 
-  private setRangeInput = (params: Actions.ChangeRangeInputParams) => {
+  private setRangeInput = (params: ChangeRangeInputParams) => {
     const { dispatch } = this.props;
 
     dispatch(Actions.changeRangeInput(params));
   };
 
-  private handleToggleFilterBox = (type: Actions.FILTER_BOX_TYPE) => {
+  private handleToggleFilterBox = (type: FILTER_BOX_TYPE) => {
     const { dispatch } = this.props;
 
     dispatch(Actions.toggleFilterBox(type));
   };
 
-  private handleToggleExpandingFilter = (type: Actions.FILTER_TYPE_HAS_EXPANDING_OPTION) => {
+  private handleToggleExpandingFilter = (type: FILTER_TYPE_HAS_EXPANDING_OPTION) => {
     const { dispatch } = this.props;
 
     dispatch(Actions.toggleExpandingFilter(type));
@@ -310,7 +303,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
 
   private getUrlDecodedQueryParamsObject(): SearchPageQueryParamsObject {
     const { location } = this.props;
-    const rawQueryParamsObj: RawQueryParams = getQueryParamsObject(location.search);
+    const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
 
     return {
       query: SafeURIStringHandler.decode(rawQueryParamsObj.query),

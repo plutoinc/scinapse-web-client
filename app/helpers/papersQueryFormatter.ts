@@ -2,7 +2,6 @@ import { stringify } from "qs";
 import { ArticleSearchSearchParams } from "../components/articleSearch/types";
 import { GetPapersParams } from "../api/types/paper";
 import SafeURIStringHandler from "./safeURIStringHandler";
-import { SEARCH_SORT_OPTIONS } from "../components/articleSearch/records";
 
 export interface FilterObject {
   yearFrom?: number | string;
@@ -17,7 +16,7 @@ export interface SearchPageQueryParamsObject {
   query: string;
   filter: FilterObject;
   page: number;
-  sort: SEARCH_SORT_OPTIONS;
+  sort: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS;
 }
 
 class PaperSearchQueryFormatter {

@@ -4,15 +4,14 @@ import { Journal } from "../../../model/journal";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 import { trackEvent } from "../../../helpers/handleGA";
-import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./journalAndAuthors.scss");
 
 interface PaperItemJournalProps {
   journal: Journal | null;
   year: number | null;
-  pageType: PageType;
-  actionArea?: ActionArea;
+  pageType: Scinapse.ActionTicket.PageType;
+  actionArea?: Scinapse.ActionTicket.ActionArea;
   readOnly?: boolean;
   style?: React.CSSProperties;
 }

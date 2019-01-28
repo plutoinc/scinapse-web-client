@@ -8,15 +8,14 @@ import Icon from "../../../icons";
 import EnvChecker from "../../../helpers/envChecker";
 import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
 import actionTicketManager from "../../../helpers/actionTicketManager";
-import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
 const styles = require("./title.scss");
 
 export interface TitleProps {
   title: string;
   paperId: number;
   source: string;
-  pageType: PageType;
-  actionArea?: ActionArea;
+  pageType: Scinapse.ActionTicket.PageType;
+  actionArea?: Scinapse.ActionTicket.ActionArea;
   searchQueryText?: string;
 }
 

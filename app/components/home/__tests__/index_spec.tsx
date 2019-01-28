@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { initialState } from "../../../reducers";
 import HomeContainer from "..";
-import { HOME_PATH } from "../../../routes";
+import { HOME_PATH } from "../../../constants/routes";
 
 describe("HomeContainer Component", () => {
   const mockStore = generateMockStore(initialState);

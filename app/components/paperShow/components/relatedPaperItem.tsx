@@ -6,14 +6,13 @@ import Icon from "../../../icons";
 import { trackEvent } from "../../../helpers/handleGA";
 import EnvChecker from "../../../helpers/envChecker";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
 const styles = require("./relatedPaperItem.scss");
 
 const MAX_AUTHOR_COUNT_TO_SHOW = 2;
 
 interface PaperShowRelatedPaperItemProps {
   paper: Paper;
-  actionArea: ActionArea;
+  actionArea: Scinapse.ActionTicket.ActionArea;
 }
 
 class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPaperItemProps> {

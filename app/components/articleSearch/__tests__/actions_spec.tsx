@@ -3,6 +3,7 @@ jest.mock("../../../api/paper");
 jest.mock("../../../api/completion");
 jest.mock("../../../api/comment");
 jest.mock("../../../helpers/handleGA");
+jest.mock("../../../api/search");
 jest.mock("../../../helpers/makePlutoToastAction");
 // tslint:disable-next-line:no-empty
 jest.mock("normalize.css", () => {});
@@ -20,6 +21,12 @@ import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { GetPapersParams } from "../../../api/types/paper";
+import {
+  FILTER_BOX_TYPE,
+  FILTER_TYPE_HAS_EXPANDING_OPTION,
+  FILTER_RANGE_TYPE,
+  FILTER_TYPE_HAS_RANGE,
+} from "../../../constants/paperSearch";
 
 describe("articleSearch actions", () => {
   let store: any;
@@ -41,13 +48,13 @@ describe("articleSearch actions", () => {
 
   describe("toggleFilterBox action", () => {
     it("should return ARTICLE_SEARCH_TOGGLE_FILTER_BOX action with payload of target type", () => {
-      store.dispatch(Actions.toggleFilterBox(Actions.FILTER_BOX_TYPE.PUBLISHED_YEAR));
+      store.dispatch(Actions.toggleFilterBox(FILTER_BOX_TYPE.PUBLISHED_YEAR));
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX,
         payload: {
-          type: Actions.FILTER_BOX_TYPE.PUBLISHED_YEAR,
+          type: FILTER_BOX_TYPE.PUBLISHED_YEAR,
         },
       });
     });
@@ -55,13 +62,13 @@ describe("articleSearch actions", () => {
 
   describe("toggleExpandingFilter action", () => {
     it("should return ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX action with payload of target type", () => {
-      store.dispatch(Actions.toggleExpandingFilter(Actions.FILTER_TYPE_HAS_EXPANDING_OPTION.FOS));
+      store.dispatch(Actions.toggleExpandingFilter(FILTER_TYPE_HAS_EXPANDING_OPTION.FOS));
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX,
         payload: {
-          type: Actions.FILTER_TYPE_HAS_EXPANDING_OPTION.FOS,
+          type: FILTER_TYPE_HAS_EXPANDING_OPTION.FOS,
         },
       });
     });
@@ -87,7 +94,7 @@ describe("articleSearch actions", () => {
         const mockInValidSearchInput = "t";
 
         store.dispatch(Actions.handleSearchPush(mockInValidSearchInput));
-        expect(store.getActions().length).toBe(0);
+        expect(store.getActions().length).toBe(1);
       });
     });
 
@@ -163,14 +170,14 @@ describe("articleSearch actions", () => {
 
   describe("changeRangeInput action", () => {
     it("should return ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT action with type and year payload", () => {
-      const mockRangeType = Actions.FILTER_RANGE_TYPE.FROM;
+      const mockRangeType = FILTER_RANGE_TYPE.FROM;
       const mockYear = 2000;
 
       store.dispatch(
         Actions.changeRangeInput({
           rangeType: mockRangeType,
           numberValue: mockYear,
-          type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
+          type: FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
         })
       );
       const actions = store.getActions();
@@ -180,7 +187,7 @@ describe("articleSearch actions", () => {
         payload: {
           rangeType: mockRangeType,
           numberValue: mockYear,
-          type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
+          type: FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
         },
       });
     });

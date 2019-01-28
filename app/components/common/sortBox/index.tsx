@@ -4,7 +4,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { PageType } from "../../../helpers/actionTicketManager/actionTicket";
 const styles = require("./sortBox.scss");
 
 export type PAPER_LIST_SORT_TYPES = "MOST_CITATIONS" | "NEWEST_FIRST" | "OLDEST_FIRST" | "RELEVANCE";
@@ -13,7 +12,7 @@ export type AUTHOR_PAPER_LIST_SORT_TYPES = PAPER_LIST_SORT_TYPES | "RECENTLY_ADD
 interface SortBoxProps {
   sortOption: AUTHOR_PAPER_LIST_SORT_TYPES;
   handleClickSortOption: (option: AUTHOR_PAPER_LIST_SORT_TYPES) => void;
-  currentPage: PageType;
+  currentPage: Scinapse.ActionTicket.PageType;
   exposeRelevanceOption?: boolean;
   exposeRecentlyUpdated?: boolean;
 }

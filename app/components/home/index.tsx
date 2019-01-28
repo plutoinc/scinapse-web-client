@@ -12,6 +12,7 @@ import { getKeywordCompletion, clearKeywordCompletion, openKeywordCompletion } f
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import InputWithSuggestionList from "../common/InputWithSuggestionList";
 import Icon from "../../icons";
+import alertToast from "../../helpers/makePlutoToastAction";
 const styles = require("./home.scss");
 
 export interface HomeProps {
@@ -185,6 +186,13 @@ class Home extends React.PureComponent<HomeProps> {
 
   private handleSearchPush = (query: string) => {
     const { dispatch } = this.props;
+
+    if (query.length < 2) {
+      return alertToast({
+        type: "error",
+        message: "You should search more than 2 characters.",
+      });
+    }
 
     ActionTicketManager.trackTicket({
       pageType: "home",

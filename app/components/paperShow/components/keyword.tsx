@@ -3,14 +3,13 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import { Fos, NewFOS } from "../../../model/fos";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { trackEvent } from "../../../helpers/handleGA";
-import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./keyword.scss");
 
 interface PaperShowKeywordProps {
   fos: Fos | NewFOS;
-  pageType: PageType;
-  actionArea?: ActionArea;
+  pageType: Scinapse.ActionTicket.PageType;
+  actionArea?: Scinapse.ActionTicket.ActionArea;
 }
 
 function isOldFos(fos: Fos | NewFOS): fos is Fos {

@@ -1,5 +1,4 @@
 import { CancelToken } from "axios";
-// import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
 import { PaginationResponseV2, PageObjectV2 } from "./types/common";
 import { Paper } from "../model/paper";
@@ -9,7 +8,7 @@ import { BasePaperAuthor } from "../model/author";
 import { Affiliation } from "../model/affiliation";
 const camelcaseKeys = require("camelcase-keys");
 
-interface SearchParams {
+export interface SearchParams {
   query: string;
   sort: string;
   filter: string;

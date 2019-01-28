@@ -5,8 +5,8 @@ import { Provider } from "react-redux";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { initialState } from "../../../reducers";
 import JournalShowContainer from "..";
-import { JOURNAL_SHOW_PATH } from "../../../routes";
 import { RAW } from "../../../__mocks__";
+import { JOURNAL_SHOW_PATH } from "../../../constants/routes";
 
 jest.mock("../../../api/journal");
 
