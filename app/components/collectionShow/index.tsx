@@ -26,6 +26,7 @@ import { getPapers } from "./actions";
 import { LayoutState, UserDevice } from "../layouts/records";
 import ScinapseInput from "../common/scinapseInput";
 import formatNumber from "../../helpers/formatNumber";
+import restoreScroll from "../../helpers/scrollRestoration";
 const styles = require("./collectionShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -59,35 +60,37 @@ export interface CollectionShowProps
 class CollectionShow extends React.PureComponent<CollectionShowProps> {
   private cancelToken = axios.CancelToken.source();
 
-  public componentDidMount() {
+  public async componentDidMount() {
     const { dispatch, match, location, configuration } = this.props;
 
     const notRenderedAtServerOrJSAlreadyInitialized =
       !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
-      fetchCollectionShowData({
+      await fetchCollectionShowData({
         dispatch,
         match,
         pathname: location.pathname,
         cancelToken: this.cancelToken.token,
       });
+      restoreScroll(location.key);
     }
   }
 
-  public componentWillReceiveProps(nextProps: CollectionShowProps) {
+  public async componentWillReceiveProps(nextProps: CollectionShowProps) {
     const { dispatch, match, location } = nextProps;
 
     const currentCollectionId = this.props.match.params.collectionId;
     const nextCollectionId = match.params.collectionId;
 
     if (currentCollectionId !== nextCollectionId) {
-      fetchCollectionShowData({
+      await fetchCollectionShowData({
         dispatch,
         match,
         pathname: location.pathname,
         cancelToken: this.cancelToken.token,
       });
+      restoreScroll(location.key);
     }
   }
 

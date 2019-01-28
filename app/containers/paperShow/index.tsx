@@ -4,6 +4,7 @@ import { stringify } from "qs";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
 import * as classNames from "classnames";
+import Helmet from "react-helmet";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
@@ -32,8 +33,8 @@ import { trackEvent } from "../../helpers/handleGA";
 import { getMemoizedPaper, getReferencePapers, getCitedPapers } from "./select";
 import { formulaeToHTMLStr } from "../../helpers/displayFormula";
 import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
-import Helmet from "react-helmet";
 import { getPDFLink } from "../../helpers/getPDFLink";
+import restoreScroll from "../../helpers/scrollRestoration";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
@@ -175,7 +176,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const isPaperChanged = paper && prevProps.paper && paper.id !== prevProps.paper.id;
 
     if ((!prevProps.paper && paper) || (isPaperChanged && !location.hash)) {
-      this.restorationScroll();
       this.handleScrollEvent();
     }
   }
@@ -319,11 +319,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       this.scrollToCitedPapersNode();
     } else if (paperShow.referencePaperCurrentPage === 1 && location.hash === "#references") {
       this.scrollToReferencePapersNode();
+    } else {
+      restoreScroll(location.key);
     }
-  };
-
-  private restorationScroll = () => {
-    window.scrollTo(0, 0);
   };
 
   private handleScroll = () => {

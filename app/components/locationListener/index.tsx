@@ -17,6 +17,13 @@ import {
 import { PageType } from "../../helpers/actionTicketManager/actionTicket";
 
 interface LocationListenerProps extends RouteComponentProps<{}> {}
+export interface HistoryInformation {
+  key: string;
+  scrollPosition: number;
+}
+
+export const HISTORY_SESSION_KEY = "historyStack";
+const MAXIMUM_COUNT_TO_SAVE_HISTORY = 100;
 
 export function getCurrentPageType(): PageType {
   if (!EnvChecker.isOnServer()) {
@@ -67,6 +74,29 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
     if (!EnvChecker.isOnServer() && this.props.location !== prevProps.location && EnvChecker.isProdBrowser()) {
       this.trackPageView();
       ReactGA.pageview(window.location.pathname + window.location.search);
+    }
+  }
+
+  public componentWillReceiveProps(nextProps: LocationListenerProps) {
+    const { location } = this.props;
+
+    if (!EnvChecker.isOnServer() && location !== nextProps.location) {
+      let historyStack: HistoryInformation[] = JSON.parse(window.sessionStorage.getItem(HISTORY_SESSION_KEY) || "[]");
+      const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+      const historyInformation = { key: location.key || "initial", scrollPosition: scrollTop };
+
+      const index = historyStack.findIndex(history => history.key === location.key);
+      if (index === -1) {
+        historyStack = [historyInformation, ...historyStack];
+      } else {
+        historyStack = [...historyStack.slice(0, index), historyInformation, ...historyStack.slice(index + 1)];
+      }
+
+      if (historyStack.length > MAXIMUM_COUNT_TO_SAVE_HISTORY) {
+        historyStack = historyStack.slice(0, MAXIMUM_COUNT_TO_SAVE_HISTORY);
+      }
+
+      window.sessionStorage.setItem(HISTORY_SESSION_KEY, JSON.stringify(historyStack));
     }
   }
 
