@@ -13,6 +13,7 @@ import Icon from "../../../icons";
 import { OAUTH_VENDOR } from "../../../api/types/auth";
 import { SignUpContainerProps, SignUpSearchParams } from "./types";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import alertToast from "../../../helpers/makePlutoToastAction";
 const store = require("store");
 const styles = require("./signUp.scss");
 
@@ -25,13 +26,16 @@ function mapStateToProps(state: AppState) {
 @withStyles<typeof SignUp>(styles)
 class SignUp extends React.PureComponent<SignUpContainerProps> {
   public componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch, history } = this.props;
     const searchParams = this.getParsedSearchParamsObject();
     const searchCode = searchParams.code;
     const searchVendor = searchParams.vendor;
 
     if (!!searchCode && searchVendor) {
-      dispatch(Actions.getAuthorizeCode(searchCode, searchVendor));
+      const alreadySignUpCB = () => {
+        history.push("/users/sign_in");
+      };
+      dispatch(Actions.getAuthorizeCode(searchCode, searchVendor, alreadySignUpCB));
     }
   }
 
@@ -453,21 +457,49 @@ class SignUp extends React.PureComponent<SignUpContainerProps> {
     dispatch(Actions.onBlurInput());
   };
 
-  private signUpWithEmail = (currentStep: SIGN_UP_STEP) => {
-    const { signUpState, dispatch, handleChangeDialogType } = this.props;
+  private signUpWithEmail = async (currentStep: SIGN_UP_STEP) => {
+    const { signUpState, dispatch, handleChangeDialogType, history } = this.props;
     const isDialog = !!handleChangeDialogType;
 
-    dispatch(Actions.signUpWithEmail(currentStep, signUpState, isDialog));
+    try {
+      await dispatch(Actions.signUpWithEmail(currentStep, signUpState, isDialog));
+      if (currentStep === SIGN_UP_STEP.FINAL_WITH_EMAIL && !isDialog) {
+        history.push("/");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  private signUpWithSocial = (currentStep: SIGN_UP_STEP, vendor: OAUTH_VENDOR) => {
-    const { signUpState, dispatch, location } = this.props;
+  private signUpWithSocial = async (currentStep: SIGN_UP_STEP, vendor: OAUTH_VENDOR) => {
+    const { signUpState, dispatch, location, history } = this.props;
     if (currentStep === SIGN_UP_STEP.FIRST) {
       store.set("oauthRedirectPath", `${location.pathname}${location.search}`);
     }
-    const oauthRedirectPathCookie = store.get("oauthRedirectPath");
 
-    dispatch(Actions.signUpWithSocial(currentStep, vendor, oauthRedirectPathCookie, signUpState));
+    try {
+      const oauthRedirectPathCookie = store.get("oauthRedirectPath");
+      await dispatch(Actions.signUpWithSocial(currentStep, vendor, signUpState));
+      const hasToRedirectToHome =
+        !oauthRedirectPathCookie ||
+        oauthRedirectPathCookie.includes("users/sign_in") ||
+        oauthRedirectPathCookie.includes("users/sign_up");
+      if (hasToRedirectToHome) {
+        history.push("/");
+        alertToast({
+          type: "success",
+          message: "Succeeded to Sign Up!!",
+        });
+      } else {
+        history.push(oauthRedirectPathCookie);
+        alertToast({
+          type: "success",
+          message: "Succeeded to Sign Up!!",
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void) => {

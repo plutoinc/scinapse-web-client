@@ -14,6 +14,8 @@ import ActionTicketManager from "../../helpers/actionTicketManager";
 import InputWithSuggestionList from "../common/InputWithSuggestionList";
 import Icon from "../../icons";
 import alertToast from "../../helpers/makePlutoToastAction";
+import { trackEvent } from "../../helpers/handleGA";
+import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 const styles = require("./home.scss");
 
 export interface HomeProps extends RouteComponentProps<null> {
@@ -199,7 +201,7 @@ class Home extends React.PureComponent<HomeProps> {
   private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 200);
 
   private handleSearchPush = (query: string) => {
-    const { dispatch } = this.props;
+    const { history } = this.props;
 
     if (query.length < 2) {
       return alertToast({
@@ -216,7 +218,16 @@ class Home extends React.PureComponent<HomeProps> {
       actionLabel: query,
     });
 
-    dispatch(Actions.handleSearchPush(query));
+    trackEvent({ category: "Search", action: "Query", label: "" });
+
+    history.push(
+      `/search?${PapersQueryFormatter.stringifyPapersQuery({
+        query,
+        sort: "RELEVANCE",
+        filter: {},
+        page: 1,
+      })}`
+    );
   };
 
   private getContainerStyle = (): React.CSSProperties => {

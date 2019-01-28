@@ -1,11 +1,9 @@
 import * as React from "react";
-import { goBack } from "connected-react-router";
-import { connect, Dispatch } from "react-redux";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./errorPage.scss");
 
-interface ErrorPageProps {
-  dispatch: Dispatch<any>;
+interface ErrorPageProps extends RouteComponentProps<null> {
   errorNum?: number;
 }
 
@@ -43,10 +41,10 @@ class ErrorPage extends React.PureComponent<ErrorPageProps> {
   }
 
   private handleGoBack = () => {
-    const { dispatch } = this.props;
+    const { history } = this.props;
 
-    dispatch!(goBack());
+    history.goBack();
   };
 }
 
-export default connect()(ErrorPage);
+export default withRouter(ErrorPage);

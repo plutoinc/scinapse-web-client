@@ -28,8 +28,8 @@ function mapStateToProps(state: AppState) {
 
 @withStyles<typeof SignIn>(styles)
 class SignIn extends React.PureComponent<SignInContainerProps> {
-  public componentDidMount() {
-    const { dispatch } = this.props;
+  public async componentDidMount() {
+    const { dispatch, history } = this.props;
     const searchString = this.getCurrentSearchParamsString();
     const searchParams: SignInSearchParams = this.getParsedSearchParamsObject(searchString);
     const searchCode = searchParams.code;
@@ -38,7 +38,20 @@ class SignIn extends React.PureComponent<SignInContainerProps> {
     if (!!searchCode && searchVendor) {
       const oauthRedirectPathCookie = store.get("oauthRedirectPath");
 
-      dispatch(Actions.getAuthorizeCode(searchCode, searchVendor, oauthRedirectPathCookie));
+      try {
+        await dispatch(Actions.getAuthorizeCode(searchCode, searchVendor));
+        if (
+          !!oauthRedirectPathCookie &&
+          !oauthRedirectPathCookie.includes("users/sign_in") &&
+          !oauthRedirectPathCookie.includes("users/sign_up")
+        ) {
+          history.push(oauthRedirectPathCookie);
+        } else {
+          history.push("/");
+        }
+      } catch (err) {
+        console.error(err);
+      }
     }
   }
 
@@ -233,21 +246,28 @@ class SignIn extends React.PureComponent<SignInContainerProps> {
     dispatch(Actions.goBack());
   };
 
-  private signInWithEmail = () => {
-    const { signInState, dispatch, handleChangeDialogType } = this.props;
+  private signInWithEmail = async () => {
+    const { signInState, dispatch, handleChangeDialogType, history } = this.props;
     const email = signInState.email;
     const password = signInState.password;
     const isDialog = !!handleChangeDialogType;
 
-    dispatch(
-      Actions.signInWithEmail(
-        {
-          email,
-          password,
-        },
-        isDialog
-      )
-    );
+    try {
+      await dispatch(
+        Actions.signInWithEmail(
+          {
+            email,
+            password,
+          },
+          isDialog
+        )
+      );
+      if (!isDialog) {
+        history.push("/");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   private storeOauthRedirectPath = () => {
@@ -350,14 +370,13 @@ class SignIn extends React.PureComponent<SignInContainerProps> {
   };
   private getSocialSignUpButton = (vendor: OAUTH_VENDOR | undefined) => {
     const { dispatch } = this.props;
-    const storedOauthRedirectPath = store.get("oauthRedirectPath");
 
     switch (vendor) {
       case "FACEBOOK":
         return (
           <div
             onClick={() => {
-              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, storedOauthRedirectPath));
+              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor));
             }}
             className={styles.facebookLogin}
           >
@@ -370,7 +389,7 @@ class SignIn extends React.PureComponent<SignInContainerProps> {
         return (
           <div
             onClick={() => {
-              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, storedOauthRedirectPath));
+              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor));
             }}
             className={styles.googleLogin}
           >
@@ -383,7 +402,7 @@ class SignIn extends React.PureComponent<SignInContainerProps> {
         return (
           <div
             onClick={() => {
-              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, storedOauthRedirectPath));
+              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor));
             }}
             className={styles.orcidLogin}
           >
@@ -397,7 +416,7 @@ class SignIn extends React.PureComponent<SignInContainerProps> {
           <div>
             <div
               onClick={() => {
-                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "FACEBOOK", storedOauthRedirectPath));
+                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "FACEBOOK"));
               }}
               className={styles.facebookLogin}
             >
@@ -406,7 +425,7 @@ class SignIn extends React.PureComponent<SignInContainerProps> {
             </div>
             <div
               onClick={() => {
-                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "GOOGLE", storedOauthRedirectPath));
+                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "GOOGLE"));
               }}
               className={styles.googleLogin}
             >
@@ -415,7 +434,7 @@ class SignIn extends React.PureComponent<SignInContainerProps> {
             </div>
             <div
               onClick={() => {
-                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "ORCID", storedOauthRedirectPath));
+                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "ORCID"));
               }}
               className={`${styles.orcidLogin} ${styles.signUpButton}`}
             >

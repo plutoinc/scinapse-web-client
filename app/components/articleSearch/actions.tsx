@@ -1,10 +1,8 @@
 import { Dispatch } from "redux";
 import axios from "axios";
-import { push } from "connected-react-router";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { GetPapersParams } from "../../api/types/paper";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
-import { trackEvent } from "../../helpers/handleGA";
 import SearchAPI from "../../api/search";
 import { FILTER_BOX_TYPE, FILTER_TYPE_HAS_EXPANDING_OPTION, ChangeRangeInputParams } from "../../constants/paperSearch";
 
@@ -39,22 +37,6 @@ export function changeSearchInput(searchInput: string) {
     payload: {
       searchInput,
     },
-  };
-}
-
-export function handleSearchPush(searchInput: string) {
-  return (dispatch: Dispatch<any>) => {
-    trackEvent({ category: "Search", action: "Query", label: "" });
-    dispatch(
-      push(
-        `/search?${PapersQueryFormatter.stringifyPapersQuery({
-          query: searchInput,
-          sort: "RELEVANCE",
-          filter: {},
-          page: 1,
-        })}`
-      )
-    );
   };
 }
 
