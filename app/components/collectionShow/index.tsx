@@ -1,7 +1,7 @@
 import * as React from "react";
 import axios from "axios";
 import { connect, Dispatch } from "react-redux";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { withRouter, RouteComponentProps, Link } from "react-router-dom";
 import * as distanceInWordsToNow from "date-fns/distance_in_words_to_now";
 import * as parse from "date-fns/parse";
 import { denormalize } from "normalizr";
@@ -22,11 +22,12 @@ import Footer from "../layouts/footer";
 import Icon from "../../icons";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from "../common/sortBox";
-import { getPapers } from "./actions";
+import { getPapers, openShareDropdown, closeShareDropdown } from "./actions";
 import { LayoutState, UserDevice } from "../layouts/records";
 import ScinapseInput from "../common/scinapseInput";
 import formatNumber from "../../helpers/formatNumber";
 import restoreScroll from "../../helpers/scrollRestoration";
+import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
 const styles = require("./collectionShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -256,8 +257,48 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     );
   };
 
+  private getCollectionShareBtns = () => {
+    const { collection } = this.props;
+    return collection ? (
+      <div className={styles.shareBtnWrapper}>
+        <button
+          className={styles.shareBtn}
+          onClick={() => {
+            copySelectedTextToClipboard(`https://scinapse.io/collections/${collection.id}`);
+          }}
+        >
+          <Icon icon="LINK" className={styles.shareIcon} />
+        </button>
+        <a
+          className={styles.shareBtn}
+          href={`https://twitter.com/intent/tweet?url=https://scinapse.io/collections/${collection.id}`}
+        >
+          <Icon icon="TWITTER_LOGO" className={styles.shareIcon} />
+        </a>
+        <a
+          className={styles.shareBtn}
+          href={`http://www.facebook.com/sharer/sharer.php?u=https://scinapse.io/collections/${collection.id}`}
+        >
+          <Icon icon="FACEBOOK_LOGO" className={styles.shareIcon} />
+        </a>
+      </div>
+    ) : null;
+  };
+
   private getCollectionControlBtns = () => {
-    const { currentUser, collection } = this.props;
+    const { currentUser, collection, collectionShow } = this.props;
+
+    const collectionShareButton = (
+      <button
+        className={styles.collectionShareBtn}
+        onClick={() => {
+          this.handleToggleShareDropdown();
+        }}
+      >
+        <Icon icon="MASK" />
+        <span>Share</span>
+      </button>
+    );
 
     if (collection && currentUser.isLoggedIn && collection.createdBy.id === currentUser.id && !collection.isDefault) {
       return (
@@ -271,20 +312,28 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
             <Icon icon="PEN" />
             <span>Edit</span>
           </button>
-          {/* <button
-            onClick={() => {
-              GlobalDialogManager.openCollectionEditDialog(collection);
-            }}
-            className={styles.collectionControlBtn}
-          >
-            <Icon icon="TRASH_CAN" />
-            <span>Delete</span>
-          </button> */}
+          {collectionShareButton}
+          {collectionShow.isShareDropdownOpen ? this.getCollectionShareBtns() : null}
         </div>
       );
     }
 
-    return null;
+    return (
+      <div>
+        <div>{collectionShareButton}</div>
+        <div>{collectionShow.isShareDropdownOpen ? this.getCollectionShareBtns() : null}</div>
+      </div>
+    );
+  };
+
+  private handleToggleShareDropdown = () => {
+    const { dispatch, collectionShow } = this.props;
+
+    if (collectionShow.isShareDropdownOpen) {
+      dispatch(closeShareDropdown());
+    } else {
+      dispatch(openShareDropdown());
+    }
   };
 
   private getPageHelmet = () => {

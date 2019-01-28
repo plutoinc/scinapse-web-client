@@ -102,9 +102,21 @@ $semi_full_width: 997px;
       }
     }
 
-    .collectionControlBtn + .collectionControlBtn {
+    .collectionShareBtn {
+      @extend .collectionControlBtn;
       margin-top: 8px;
+      color: $gray6;
+
+      i,
+      svg {
+        width: 12px;
+        height: 14px;
+      }
     }
+
+    // .collectionControlBtn + .collectionControlBtn {
+    //   margin-top: 8px;
+    // }
   }
 }
 
@@ -200,4 +212,31 @@ $semi_full_width: 997px;
   right: 0px;
   bottom: 0;
   width: 291px;
+}
+
+.shareBtnWrapper {
+  width: 210px;
+  height: 110px;
+  border-radius: 4px;
+  background-color: white;
+  display: inline-flex;
+  position: absolute;
+  z-index: 9999;
+
+  .shareBtn {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    background-color: $gray8;
+
+    i,
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .shareIcon {
+    color: $main_blue1;
+  }
 }
