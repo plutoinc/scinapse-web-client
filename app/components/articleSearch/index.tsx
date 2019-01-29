@@ -24,6 +24,7 @@ import { UserDevice } from "../layouts/records";
 import AuthorSearchItem from "../authorSearchItem";
 import restoreScroll from "../../helpers/scrollRestoration";
 import { ChangeRangeInputParams, FILTER_BOX_TYPE, FILTER_TYPE_HAS_EXPANDING_OPTION } from "../../constants/paperSearch";
+import ErrorPage from "../error/errorPage";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -83,6 +84,10 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     const { articleSearchState, currentUserState } = this.props;
     const { isLoading, totalElements, totalPages, searchItemsToShow } = articleSearchState;
     const queryParams = this.getUrlDecodedQueryParamsObject();
+
+    if (articleSearchState.pageErrorCode) {
+      return <ErrorPage errorNum={articleSearchState.pageErrorCode} />;
+    }
 
     const hasNoSearchResult =
       !articleSearchState.searchItemsToShow || articleSearchState.searchItemsToShow.length === 0;

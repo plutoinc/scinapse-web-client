@@ -7,7 +7,7 @@ export interface ArticleSearchState
       lastSucceededParams: string;
       sort: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS;
       isLoading: boolean;
-      hasError: boolean;
+      pageErrorCode: number | null;
       searchInput: string;
       page: number;
       totalElements: number;
@@ -38,7 +38,7 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   lastSucceededParams: "{}",
   sort: "RELEVANCE",
   isLoading: false,
-  hasError: false,
+  pageErrorCode: null,
   aggregationData: null,
   searchInput: "",
   searchItemsToShow: [],

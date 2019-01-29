@@ -5,6 +5,8 @@ import { GetPapersParams } from "../../api/types/paper";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 import SearchAPI from "../../api/search";
 import { FILTER_BOX_TYPE, FILTER_TYPE_HAS_EXPANDING_OPTION, ChangeRangeInputParams } from "../../constants/paperSearch";
+import PlutoAxios from "../../api/pluto";
+import { CommonError } from "../../model/error";
 
 export function toggleFilterBox(type: FILTER_BOX_TYPE) {
   return {
@@ -63,8 +65,14 @@ export function fetchSearchPapers(params: GetPapersParams) {
       return res.data.content;
     } catch (err) {
       if (!axios.isCancel(err)) {
-        console.error(err);
-        dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_PAPERS });
+        const error = PlutoAxios.getGlobalError(err);
+
+        dispatch({
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_PAPERS,
+          payload: {
+            statusCode: (error as CommonError).status,
+          },
+        });
         throw err;
       }
     }
