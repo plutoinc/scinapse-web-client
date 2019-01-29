@@ -14,6 +14,7 @@ import { OAUTH_VENDOR } from "../../../api/types/auth";
 import { SignUpContainerProps, SignUpSearchParams } from "./types";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import alertToast from "../../../helpers/makePlutoToastAction";
+import { closeDialog } from "../../dialog/actions";
 const store = require("store");
 const styles = require("./signUp.scss");
 
@@ -484,6 +485,7 @@ class SignUp extends React.PureComponent<SignUpContainerProps> {
         !oauthRedirectPathCookie ||
         oauthRedirectPathCookie.includes("users/sign_in") ||
         oauthRedirectPathCookie.includes("users/sign_up");
+      dispatch(closeDialog());
       if (hasToRedirectToHome) {
         history.push("/");
         alertToast({
