@@ -615,9 +615,10 @@ export const ActionCreators = {
     });
   },
 
-  failedToGetCollectionInCollectionShow() {
+  failedToGetCollectionInCollectionShow(payload: { statusCode: number }) {
     return createAction({
       type: ACTION_TYPES.COLLECTION_SHOW_FAILED_TO_GET_COLLECTION,
+      payload,
     });
   },
 

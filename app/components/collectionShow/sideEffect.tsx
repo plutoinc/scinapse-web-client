@@ -1,32 +1,31 @@
 import { LoadDataParams } from "../../routes";
 import { CollectionShowMatchParams } from ".";
 import { getCollection, getPapers } from "./actions";
+import { ActionCreators } from "../../actions/actionTypes";
 
 export async function fetchCollectionShowData(params: LoadDataParams<CollectionShowMatchParams>) {
   const { dispatch, match } = params;
 
   const collectionId = parseInt(match.params.collectionId, 10);
   if (isNaN(collectionId)) {
-    // TODO: Add redirect logic
-    return;
+    return dispatch(
+      ActionCreators.failedToGetCollectionInCollectionShow({
+        statusCode: 400,
+      })
+    );
   } else {
-    try {
-      const promiseArr: Array<Promise<any>> = [];
-      promiseArr.push(dispatch(getCollection(collectionId, params.cancelToken)));
-      promiseArr.push(
-        dispatch(
-          getPapers({
-            collectionId,
-            cancelToken: params.cancelToken,
-            sort: "RECENTLY_ADDED",
-            page: 1,
-          })
-        )
-      );
-      await Promise.all(promiseArr);
-    } catch (err) {
-      // TODO: add redirect logic
-      console.error(`Error for fetching collection list page data`, err);
-    }
+    const promiseArr: Array<Promise<any>> = [];
+    promiseArr.push(dispatch(getCollection(collectionId, params.cancelToken)));
+    promiseArr.push(
+      dispatch(
+        getPapers({
+          collectionId,
+          cancelToken: params.cancelToken,
+          sort: "RECENTLY_ADDED",
+          page: 1,
+        })
+      )
+    );
+    await Promise.all(promiseArr);
   }
 }
