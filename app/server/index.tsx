@@ -132,9 +132,6 @@ export async function serverSideRender({
     </CssInjector>
   );
 
-  console.log("=======================================================================================");
-  console.log(routeContext);
-
   const materialUICss = sheetsRegistry.toString();
   const cssArr = Array.from(css);
   const helmet = Helmet.renderStatic();
