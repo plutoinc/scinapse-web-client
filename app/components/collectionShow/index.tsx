@@ -29,6 +29,7 @@ import ScinapseInput from "../common/scinapseInput";
 import formatNumber from "../../helpers/formatNumber";
 import restoreScroll from "../../helpers/scrollRestoration";
 import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 const styles = require("./collectionShow.scss");
 
 const FACEBOOK_SHARE_URL = "http://www.facebook.com/sharer/sharer.php?u=";
@@ -270,7 +271,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
           <a
             className={styles.shareBtn}
             onClick={() => {
-              copySelectedTextToClipboard(`https://scinapse.io/collections/${collection.id}`);
+              this.getPageToSharing("COPIED", collection.id);
             }}
           >
             <Icon icon="LINK" className={styles.shareIcon} />
@@ -300,13 +301,29 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     ) : null;
   };
 
+  private handleActionTicketInShared = (platform: string, id: number) => {
+    ActionTicketManager.trackTicket({
+      pageType: "collectionShow",
+      actionType: "fire",
+      actionArea: "shareBox",
+      actionTag: "collectionSharing",
+      actionLabel: `platform : ${platform}, collectionId: ${id}`,
+    });
+  };
+
   private getPageToSharing = (platform: string, id: number) => {
     switch (platform) {
+      case "COPIED":
+        copySelectedTextToClipboard(`https://scinapse.io/collections/${id}`);
+        this.handleActionTicketInShared(platform, id);
+        break;
       case "FACEBOOK":
         window.open(`${FACEBOOK_SHARE_URL}=https://scinapse.io/collections/${id}`, "_blank", "width=600, height=400");
+        this.handleActionTicketInShared(platform, id);
         break;
       case "TWITTER":
         window.open(`${TWITTER_SHARE_URL}=https://scinapse.io/collections/${id}`, "_blank", "width=600, height=400");
+        this.handleActionTicketInShared(platform, id);
         break;
       default:
         break;
