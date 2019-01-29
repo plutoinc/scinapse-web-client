@@ -31,6 +31,9 @@ import restoreScroll from "../../helpers/scrollRestoration";
 import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
 const styles = require("./collectionShow.scss");
 
+const FACEBOOK_SHARE_URL = "http://www.facebook.com/sharer/sharer.php?u=";
+const TWITTER_SHARE_URL = "https://twitter.com/intent/tweet?url=";
+
 function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
@@ -300,18 +303,10 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   private getPageToSharing = (platform: string, id: number) => {
     switch (platform) {
       case "FACEBOOK":
-        window.open(
-          `http://www.facebook.com/sharer/sharer.php?u=https://scinapse.io/collections/${id}`,
-          "_blank",
-          "width=600, height=400"
-        );
+        window.open(`${FACEBOOK_SHARE_URL}=https://scinapse.io/collections/${id}`, "_blank", "width=600, height=400");
         break;
       case "TWITTER":
-        window.open(
-          `https://twitter.com/intent/tweet?url=https://scinapse.io/collections/${id}`,
-          "_blank",
-          "width=600, height=400"
-        );
+        window.open(`${TWITTER_SHARE_URL}=https://scinapse.io/collections/${id}`, "_blank", "width=600, height=400");
         break;
       default:
         break;
