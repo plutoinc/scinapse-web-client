@@ -84,7 +84,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
             >
               Dmitriy A. Dikin
             </a>
-             (Northwestern University)
+             
             <span>
               , 
             </span>
@@ -99,7 +99,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
             >
               Sasha Stankovich
             </a>
-             (Northwestern University)
+             
             <span>
               , 
             </span>
@@ -114,7 +114,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
             >
               Eric J. Zimney
             </a>
-             (Northwestern University)
+             
           </span>
           <span
             className="toggleAuthorsButton"
@@ -307,7 +307,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
             >
               Dmitriy A. Dikin
             </a>
-             (Northwestern University)
+             
             <span>
               , 
             </span>
@@ -322,7 +322,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
             >
               Sasha Stankovich
             </a>
-             (Northwestern University)
+             
             <span>
               , 
             </span>
@@ -337,7 +337,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
             >
               Eric J. Zimney
             </a>
-             (Northwestern University)
+             
           </span>
           <span
             className="toggleAuthorsButton"

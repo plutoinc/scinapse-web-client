@@ -7,6 +7,7 @@ import { trackEvent } from "../../../helpers/handleGA";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { Paper } from "../../../model/paper";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
+import { Affiliation } from "../../../model/affiliation";
 const styles = require("./authors.scss");
 
 const MINIMUM_SHOWING_AUTHOR_NUMBER = 3;
@@ -72,9 +73,9 @@ class Authors extends React.PureComponent<AuthorsProps> {
     }
   };
 
-  private getAuthorOrganization = (organization: string) => {
-    if (!!organization) {
-      const trimmedOrganization = organization
+  private getAuthorOrganization = (affiliation: Affiliation) => {
+    if (!!affiliation) {
+      const trimmedOrganization = affiliation.name
         .split(",")
         .slice(0, 2)
         .join();
@@ -129,7 +130,7 @@ class Authors extends React.PureComponent<AuthorsProps> {
           <span style={style} className={styles.author} key={`author_${index}`}>
             {authorNode}
             {this.getHIndexTooltip(author.hindex)}
-            {` ${this.getAuthorOrganization(author.organization)}`}
+            {` ${this.getAuthorOrganization(author.affiliation)}`}
             {!isLastAuthor ? <span>{`, `}</span> : null}
           </span>
         );
