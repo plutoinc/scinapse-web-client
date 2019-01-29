@@ -276,7 +276,9 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
             className={styles.shareBtn}
             target="_blank"
             rel="noopener"
-            href={`http://www.facebook.com/sharer/sharer.php?u=https://scinapse.io/collections/${collection.id}`}
+            onClick={() => {
+              this.getPageToSharing("FACEBOOK", collection.id);
+            }}
           >
             <Icon icon="FACEBOOK_LOGO" className={styles.facebookShareIcon} />
           </a>
@@ -284,13 +286,36 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
             className={styles.shareBtn}
             target="_blank"
             rel="noopener"
-            href={`https://twitter.com/intent/tweet?url=https://scinapse.io/collections/${collection.id}`}
+            onClick={() => {
+              this.getPageToSharing("TWITTER", collection.id);
+            }}
           >
             <Icon icon="TWITTER_LOGO" className={styles.twitterShareIcon} />
           </a>
         </div>
       </div>
     ) : null;
+  };
+
+  private getPageToSharing = (platform: string, id: number) => {
+    switch (platform) {
+      case "FACEBOOK":
+        window.open(
+          `http://www.facebook.com/sharer/sharer.php?u=https://scinapse.io/collections/${id}`,
+          "_blank",
+          "width=600, height=400"
+        );
+        break;
+      case "TWITTER":
+        window.open(
+          `https://twitter.com/intent/tweet?url=https://scinapse.io/collections/${id}`,
+          "_blank",
+          "width=600, height=400"
+        );
+        break;
+      default:
+        break;
+    }
   };
 
   private getCollectionControlBtns = () => {
