@@ -301,13 +301,13 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     ) : null;
   };
 
-  private handleActionTicketInShared = (platform: string, id: number) => {
+  private handleActionTicketInShared = (id: number) => {
     ActionTicketManager.trackTicket({
       pageType: "collectionShow",
       actionType: "fire",
       actionArea: "shareBox",
       actionTag: "collectionSharing",
-      actionLabel: `platform : ${platform}, collectionId: ${id}`,
+      actionLabel: id,
     });
   };
 
@@ -315,15 +315,15 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     switch (platform) {
       case "COPIED":
         copySelectedTextToClipboard(`https://scinapse.io/collections/${id}`);
-        this.handleActionTicketInShared(platform, id);
+        this.handleActionTicketInShared(id);
         break;
       case "FACEBOOK":
         window.open(`${FACEBOOK_SHARE_URL}=https://scinapse.io/collections/${id}`, "_blank", "width=600, height=400");
-        this.handleActionTicketInShared(platform, id);
+        this.handleActionTicketInShared(id);
         break;
       case "TWITTER":
         window.open(`${TWITTER_SHARE_URL}=https://scinapse.io/collections/${id}`, "_blank", "width=600, height=400");
-        this.handleActionTicketInShared(platform, id);
+        this.handleActionTicketInShared(id);
         break;
       default:
         break;
