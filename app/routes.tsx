@@ -41,6 +41,7 @@ import {
   ADMIN_PATH,
   TERMS_OF_SERVICE_PATH,
 } from "./constants/routes";
+import { getCollections } from "./components/collections/sideEffect";
 const styles = require("./root.scss");
 
 export interface LoadDataParams<P> {
@@ -104,6 +105,9 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: COLLECTION_LIST_PATH,
     component: UserCollections,
+    loadData: async (params: LoadDataParams<{ userId: string }>) => {
+      await getCollections(params);
+    },
     exact: true,
   },
   {

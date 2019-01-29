@@ -25,6 +25,7 @@ export function getMember(memberId: number, cancelToken: CancelToken) {
           type: "error",
           message: `Sorry. Temporarily unavailable to get collections.`,
         });
+        throw err;
       }
     }
   };
@@ -47,6 +48,7 @@ export function getCollections(memberId: number, cancelToken: CancelToken) {
           type: "error",
           message: `Sorry. Temporarily unavailable to get collections.`,
         });
+        throw err;
       }
     }
   };

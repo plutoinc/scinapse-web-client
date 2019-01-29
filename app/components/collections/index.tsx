@@ -20,6 +20,7 @@ import { deleteCollection } from "../dialog/actions";
 import { CurrentUser } from "../../model/currentUser";
 import restoreScroll from "../../helpers/scrollRestoration";
 import alertToast from "../../helpers/makePlutoToastAction";
+import ErrorPage from "../error/errorPage";
 const styles = require("./collections.scss");
 
 export interface UserCollectionsProps extends RouteComponentProps<{ userId: string }> {
@@ -42,7 +43,7 @@ function mapStateToProps(state: AppState) {
 }
 
 @withStyles<typeof UserCollections>(styles)
-class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
+class UserCollections extends React.PureComponent<UserCollectionsProps> {
   private cancelToken = axios.CancelToken.source();
 
   public async componentDidMount() {
@@ -65,6 +66,10 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
 
   public render() {
     const { userCollections, member, collections } = this.props;
+
+    if (userCollections.pageErrorCode) {
+      return <ErrorPage errorNum={userCollections.pageErrorCode} />;
+    }
 
     if (member && collections) {
       return (
