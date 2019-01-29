@@ -1,7 +1,6 @@
 import * as React from "react";
 import { parse } from "qs";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { push } from "connected-react-router";
 import AuthAPI from "../../../api/auth";
 import { connect, Dispatch } from "react-redux";
 import { AppState } from "../../../reducers";
@@ -52,7 +51,7 @@ class ResetPasswordPage extends React.PureComponent<ResetPasswordPageProps, Rese
   }
 
   public componentDidMount() {
-    const { dispatch, location } = this.props;
+    const { location, history } = this.props;
     const queryParams = parse(location.search, { ignoreQueryPrefix: true });
 
     if (!queryParams.token) {
@@ -60,7 +59,7 @@ class ResetPasswordPage extends React.PureComponent<ResetPasswordPageProps, Rese
         type: "error",
         message: "Invalid access. You need a proper reset password token from e-mail.",
       });
-      dispatch(push("/users/sign_in"));
+      history.push("/users/sign_in");
     }
   }
 
@@ -108,7 +107,7 @@ class ResetPasswordPage extends React.PureComponent<ResetPasswordPageProps, Rese
   }
 
   private handleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
-    const { dispatch, location } = this.props;
+    const { location, history } = this.props;
     const { passwordInput, confirmPasswordInput, hasError } = this.state;
     e.preventDefault();
 
@@ -122,7 +121,7 @@ class ResetPasswordPage extends React.PureComponent<ResetPasswordPageProps, Rese
         this.setState({
           isLoading: false,
         });
-        dispatch(push("/users/sign_in"));
+        history.push("/users/sign_in");
       } catch (err) {
         this.setState({
           hasError: true,

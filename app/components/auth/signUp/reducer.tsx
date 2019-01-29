@@ -188,10 +188,6 @@ export function reducer(state: SignUpState = SIGN_UP_INITIAL_STATE, action: Redu
       return SIGN_UP_INITIAL_STATE;
     }
 
-    case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
-      return SIGN_UP_INITIAL_STATE;
-    }
-
     default:
       return state;
   }

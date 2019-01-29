@@ -84,6 +84,9 @@ describe("Journal Show actions spec", () => {
       it("should return JOURNAL_SHOW_FAILED_TO_GET_JOURNAL with proper payload", async () => {
         expect(actions[1]).toEqual({
           type: ACTION_TYPES.JOURNAL_SHOW_FAILED_TO_GET_JOURNAL,
+          payload: {
+            statusCode: undefined,
+          },
         });
       });
     });

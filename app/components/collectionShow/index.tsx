@@ -27,6 +27,7 @@ import { LayoutState, UserDevice } from "../layouts/records";
 import ScinapseInput from "../common/scinapseInput";
 import formatNumber from "../../helpers/formatNumber";
 import restoreScroll from "../../helpers/scrollRestoration";
+import ErrorPage from "../error/errorPage";
 const styles = require("./collectionShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -100,6 +101,10 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
 
   public render() {
     const { collectionShow, collection } = this.props;
+
+    if (collectionShow.pageErrorCode) {
+      return <ErrorPage errorNum={collectionShow.pageErrorCode} />;
+    }
 
     if (collectionShow.isLoadingCollection) {
       return (

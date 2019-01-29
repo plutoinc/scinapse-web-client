@@ -26,10 +26,6 @@ export function reducer(state: LayoutState = LAYOUT_INITIAL_STATE, action: Redux
       return { ...state, completionKeywordList: [] };
     }
 
-    case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
-      return { ...state, completionKeywordList: [] };
-    }
-
     default:
       return state;
   }

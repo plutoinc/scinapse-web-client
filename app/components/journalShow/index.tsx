@@ -2,7 +2,6 @@ import * as React from "react";
 import axios from "axios";
 import { parse, stringify } from "qs";
 import { connect, Dispatch } from "react-redux";
-import { push } from "connected-react-router";
 import { withRouter, RouteComponentProps, Link } from "react-router-dom";
 import { denormalize } from "normalizr";
 import { Helmet } from "react-helmet";
@@ -29,6 +28,7 @@ import PaperShowKeyword from "../paperShow/components/keyword";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { getPapers } from "./actions";
 import restoreScroll from "../../helpers/scrollRestoration";
+import ErrorPage from "../error/errorPage";
 const styles = require("./journalShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -104,6 +104,10 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
 
   public render() {
     const { journalShow, journal } = this.props;
+
+    if (journalShow.pageErrorCode) {
+      return <ErrorPage errorNum={journalShow.pageErrorCode} />;
+    }
 
     if (journalShow.isLoadingJournal) {
       return (
@@ -242,17 +246,15 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
   };
 
   private handleSortOptionChange = (sortOption: PAPER_LIST_SORT_TYPES) => {
-    const { dispatch, journalShow } = this.props;
+    const { journalShow, history } = this.props;
 
     const currentQueryParams = this.getQueryParamsObject();
     const nextQueryParams = { ...currentQueryParams, s: sortOption };
 
-    dispatch(
-      push({
-        pathname: `/journals/${journalShow.journalId}`,
-        search: stringify(nextQueryParams, { addQueryPrefix: true }),
-      })
-    );
+    history.push({
+      pathname: `/journals/${journalShow.journalId}`,
+      search: stringify(nextQueryParams, { addQueryPrefix: true }),
+    });
   };
 
   private getQueryParamsObject = () => {
@@ -357,17 +359,15 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
   };
 
   private handleClickPage = (page: number) => {
-    const { dispatch, journalShow } = this.props;
+    const { history, journalShow } = this.props;
 
     const currentQueryParams = this.getQueryParamsObject();
     const nextQueryParams = { ...currentQueryParams, p: page };
 
-    dispatch(
-      push({
-        pathname: `/journals/${journalShow.journalId}`,
-        search: stringify(nextQueryParams, { addQueryPrefix: true }),
-      })
-    );
+    history.push({
+      pathname: `/journals/${journalShow.journalId}`,
+      search: stringify(nextQueryParams, { addQueryPrefix: true }),
+    });
   };
 
   private getPagination = () => {

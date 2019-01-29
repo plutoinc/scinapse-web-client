@@ -1,12 +1,12 @@
 import { Dispatch } from "redux";
 import axios from "axios";
-import { push } from "connected-react-router";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { GetPapersParams } from "../../api/types/paper";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
-import { trackEvent } from "../../helpers/handleGA";
 import SearchAPI from "../../api/search";
 import { FILTER_BOX_TYPE, FILTER_TYPE_HAS_EXPANDING_OPTION, ChangeRangeInputParams } from "../../constants/paperSearch";
+import PlutoAxios from "../../api/pluto";
+import { CommonError } from "../../model/error";
 
 export function toggleFilterBox(type: FILTER_BOX_TYPE) {
   return {
@@ -42,22 +42,6 @@ export function changeSearchInput(searchInput: string) {
   };
 }
 
-export function handleSearchPush(searchInput: string) {
-  return (dispatch: Dispatch<any>) => {
-    trackEvent({ category: "Search", action: "Query", label: "" });
-    dispatch(
-      push(
-        `/search?${PapersQueryFormatter.stringifyPapersQuery({
-          query: searchInput,
-          sort: "RELEVANCE",
-          filter: {},
-          page: 1,
-        })}`
-      )
-    );
-  };
-}
-
 export function fetchSearchPapers(params: GetPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     const filters = PapersQueryFormatter.objectifyPapersFilter(params.filter);
@@ -81,8 +65,14 @@ export function fetchSearchPapers(params: GetPapersParams) {
       return res.data.content;
     } catch (err) {
       if (!axios.isCancel(err)) {
-        console.error(err);
-        dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_PAPERS });
+        const error = PlutoAxios.getGlobalError(err);
+
+        dispatch({
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_PAPERS,
+          payload: {
+            statusCode: (error as CommonError).status,
+          },
+        });
         throw err;
       }
     }

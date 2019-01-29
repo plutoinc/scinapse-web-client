@@ -41,6 +41,7 @@ import { AppState } from "../../reducers";
 import { trackEvent } from "../../helpers/handleGA";
 import AuthorCvSection from "../authorCvSection";
 import { getAuthor } from "../unconnectedAuthorShow/actions";
+import ErrorPage from "../../components/error/errorPage";
 const styles = require("./connectedAuthor.scss");
 
 export interface ConnectedAuthorShowMatchParams {
@@ -122,6 +123,10 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
           <ArticleSpinner style={{ margin: "200px auto" }} />
         </div>
       );
+    }
+
+    if (authorShow.pageErrorStatusCode) {
+      return <ErrorPage errorNum={authorShow.pageErrorStatusCode} />;
     }
 
     return (

@@ -7,8 +7,7 @@ import { stringify } from "qs";
 import { Provider } from "react-redux";
 import { Helmet } from "react-helmet";
 import * as ReactDOMServer from "react-dom/server";
-import * as ReactRouterRedux from "connected-react-router";
-import { matchPath } from "react-router-dom";
+import { matchPath, StaticRouter } from "react-router-dom";
 import { createMuiTheme, createGenerateClassName, MuiThemeProvider } from "@material-ui/core/styles";
 import { generateFullHTML } from "../helpers/htmlWrapper";
 import CssInjector from "../helpers/cssInjector";
@@ -27,6 +26,11 @@ const JssProvider = require("react-jss/lib/JssProvider").default;
 const cloudwatch = new AWS.CloudWatch();
 
 type RENDERING_TYPE = "NORMAL RENDERING" | "ERROR HANDLING RENDERING" | "FALLBACK RENDERING";
+
+export interface SSRResult {
+  html: string;
+  statusCode?: number;
+}
 
 export interface ServerSideRenderParams {
   requestUrl: string;
@@ -112,17 +116,18 @@ export async function serverSideRender({
   const context = {
     insertCss: (...styles: any[]) => styles.forEach(style => css.add(style._getCss())),
   };
+  const routeContext: { statusCode?: number } = {};
 
   const renderedHTML = ReactDOMServer.renderToString(
     <CssInjector context={context}>
       <Provider store={store}>
-        <ReactRouterRedux.ConnectedRouter history={StoreManager.history}>
+        <StaticRouter location={url} context={routeContext}>
           <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
             <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
               <RootRoutes />
             </MuiThemeProvider>
           </JssProvider>
-        </ReactRouterRedux.ConnectedRouter>
+        </StaticRouter>
       </Provider>
     </CssInjector>
   );
@@ -133,7 +138,7 @@ export async function serverSideRender({
   const currentState = store.getState();
   const stringifiedInitialReduxState = JSON.stringify(currentState);
 
-  const fullHTML: string = await generateFullHTML({
+  const html: string = await generateFullHTML({
     reactDom: renderedHTML,
     scriptPath: scriptVersion,
     helmet,
@@ -142,7 +147,10 @@ export async function serverSideRender({
     version,
   });
 
-  return fullHTML;
+  return {
+    html,
+    statusCode: routeContext.statusCode,
+  };
 }
 
 export function renderJavaScriptOnly(scriptPath: string, version: string) {
@@ -224,8 +232,8 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
     return handleSiteMapRequest(path);
   }
 
-  const normalRender = async (): Promise<string> => {
-    const html = await serverSideRender({
+  const normalRender = async (): Promise<SSRResult> => {
+    const ssrResult = await serverSideRender({
       requestUrl: path,
       scriptVersion: bundledJsForBrowserPath,
       queryParamsObject: queryParamsObj,
@@ -233,8 +241,8 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
       headers: event.headers,
     });
 
-    if (html) {
-      const buf = new Buffer(html);
+    if (ssrResult.html) {
+      const buf = new Buffer(ssrResult.html);
 
       if (buf.byteLength > 1048576 /* 1MB */) {
         throw new Error("The result HTML size is more than AWS ELB limitation.");
@@ -253,13 +261,13 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
         });
       }
 
-      return html;
+      return ssrResult;
     } else {
       throw new Error("No HTML");
     }
   };
 
-  const fallbackRender: Promise<string> = new Promise((resolve, _reject) => {
+  const fallbackRender: Promise<SSRResult> = new Promise((resolve, _reject) => {
     const html = renderJavaScriptOnly(bundledJsForBrowserPath, version);
     setTimeout(
       () => {
@@ -269,7 +277,9 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
           cloudwatch.putMetricData(makeRenderingCloudWatchMetricLog("FALLBACK RENDERING"));
         }
 
-        resolve(html);
+        resolve({
+          html,
+        });
       },
       TIMEOUT_FOR_SAFE_RENDERING,
       html
@@ -277,8 +287,11 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
   });
 
   let resBody: string;
+  let statusCode: number = 200;
   try {
-    resBody = await Promise.race([normalRender(), fallbackRender]);
+    const ssrResult = await Promise.race([normalRender(), fallbackRender]);
+    resBody = ssrResult.html;
+    statusCode = ssrResult.statusCode || 200;
   } catch (err) {
     console.error(`Had error during the normal rendering with ${err}`);
     cloudwatch.putMetricData(makeRenderingCloudWatchMetricLog("ERROR HANDLING RENDERING"));
@@ -286,7 +299,7 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
   }
 
   return {
-    statusCode: 200,
+    statusCode,
     headers: {
       "Content-Type": "text/html; charset=utf-8",
       "Access-Control-Allow-Origin": "*",

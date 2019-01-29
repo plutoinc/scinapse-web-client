@@ -10,6 +10,7 @@ import { GetRefOrCitedPapersParams } from "../api/types/paper";
 import alertToast from "../helpers/makePlutoToastAction";
 import { trackEvent } from "../helpers/handleGA";
 import PlutoAxios from "../api/pluto";
+import { CommonError } from "../model/error";
 
 export function clearPaperShowState() {
   return ActionCreators.clearPaperShowState();
@@ -93,7 +94,7 @@ export function getPaper(params: GetPaperParams) {
             message: error.message,
           });
         }
-        dispatch(ActionCreators.failedToGetPaper());
+        dispatch(ActionCreators.failedToGetPaper({ statusCode: (error as CommonError).status }));
       }
     }
   };

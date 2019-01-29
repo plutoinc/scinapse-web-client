@@ -40,8 +40,8 @@ import {
   AUTH_PATH,
   ADMIN_PATH,
   TERMS_OF_SERVICE_PATH,
-  ERROR_PATH,
 } from "./constants/routes";
+import { getCollections } from "./components/collections/sideEffect";
 const styles = require("./root.scss");
 
 export interface LoadDataParams<P> {
@@ -53,7 +53,7 @@ export interface LoadDataParams<P> {
 }
 
 interface ServerRoutesMap {
-  path: string;
+  path?: string;
   component?: any;
   exact?: boolean;
   loadData?: (params: LoadDataParams<any>) => Promise<any>;
@@ -105,6 +105,9 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: COLLECTION_LIST_PATH,
     component: UserCollections,
+    loadData: async (params: LoadDataParams<{ userId: string }>) => {
+      await getCollections(params);
+    },
     exact: true,
   },
   {
@@ -121,7 +124,6 @@ export const routesMap: ServerRoutesMap[] = [
     exact: true,
   },
   {
-    path: ERROR_PATH,
     component: ErrorPage,
   },
 ];
@@ -152,7 +154,9 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         <Header />
         {this.getLoadingComponent()}
         <div>
-          <Switch location={location}>{routesMap.map(route => <Route {...route} key={route.path} />)}</Switch>
+          <Switch location={location}>
+            {routesMap.map(route => <Route {...route} key={route.path || "errorPage"} />)}
+          </Switch>
         </div>
         <DeviceDetector />
         <LocationListener />

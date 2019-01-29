@@ -1,5 +1,4 @@
 import * as Redux from "redux";
-import { RouterState } from "connected-react-router";
 import * as ConfigurationReducer from "./configuration";
 import * as currentUserReducer from "./currentUser";
 import * as signUpReducer from "../components/auth/signUp/reducer";
@@ -48,7 +47,6 @@ import {
 } from "../containers/connectedAuthorShow/reducer";
 
 export interface AppState {
-  router?: RouterState;
   configuration: ConfigurationReducer.Configuration;
   signUp: signUpReducer.SignUpState;
   signIn: signInReducer.SignInState;

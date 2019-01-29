@@ -3,7 +3,7 @@ import { Actions, ACTION_TYPES } from "../../actions/actionTypes";
 export interface JournalShowState
   extends Readonly<{
       isLoadingJournal: boolean;
-      failedToLoadJournal: boolean;
+      pageErrorCode: number | null;
       isLoadingPapers: boolean;
       failedToLoadPapers: boolean;
       journalId: number;
@@ -17,7 +17,7 @@ export interface JournalShowState
 
 export const JOURNAL_SHOW_INITIAL_STATE: JournalShowState = {
   isLoadingJournal: false,
-  failedToLoadJournal: false,
+  pageErrorCode: null,
   isLoadingPapers: false,
   failedToLoadPapers: false,
   journalId: 0,
@@ -32,7 +32,7 @@ export const JOURNAL_SHOW_INITIAL_STATE: JournalShowState = {
 export function reducer(state: JournalShowState = JOURNAL_SHOW_INITIAL_STATE, action: Actions): JournalShowState {
   switch (action.type) {
     case ACTION_TYPES.JOURNAL_SHOW_START_TO_GET_JOURNAL: {
-      return { ...state, isLoadingJournal: true, failedToLoadJournal: false };
+      return { ...state, isLoadingJournal: true, pageErrorCode: null };
     }
 
     case ACTION_TYPES.JOURNAL_SHOW_SUCCEEDED_TO_GET_JOURNAL: {
@@ -40,7 +40,7 @@ export function reducer(state: JournalShowState = JOURNAL_SHOW_INITIAL_STATE, ac
     }
 
     case ACTION_TYPES.JOURNAL_SHOW_FAILED_TO_GET_JOURNAL: {
-      return { ...state, isLoadingJournal: false, failedToLoadJournal: true };
+      return { ...state, isLoadingJournal: false, pageErrorCode: action.payload.statusCode };
     }
 
     case ACTION_TYPES.JOURNAL_SHOW_START_TO_GET_PAPERS: {

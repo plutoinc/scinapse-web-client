@@ -4,7 +4,7 @@ import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 export interface CollectionShowState
   extends Readonly<{
       isLoadingCollection: boolean;
-      failedToLoadingCollection: boolean;
+      pageErrorCode: number | null;
       isLoadingPaperToCollection: boolean;
       mainCollectionId: number;
       totalPaperListPage: number;
@@ -17,7 +17,7 @@ export interface CollectionShowState
 
 export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
   isLoadingCollection: false,
-  failedToLoadingCollection: false,
+  pageErrorCode: null,
   isLoadingPaperToCollection: false,
   mainCollectionId: 0,
   totalPaperListPage: 0,
@@ -37,7 +37,7 @@ export function reducer(
       return {
         ...state,
         isLoadingCollection: true,
-        failedToLoadingCollection: false,
+        pageErrorCode: null,
       };
     }
 
@@ -53,7 +53,7 @@ export function reducer(
       return {
         ...state,
         isLoadingCollection: false,
-        failedToLoadingCollection: true,
+        pageErrorCode: action.payload.statusCode,
       };
     }
     case ACTION_TYPES.COLLECTION_SHOW_START_TO_GET_PAPERS: {

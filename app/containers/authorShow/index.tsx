@@ -81,18 +81,12 @@ class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
 
   public render() {
     const { author, location } = this.props;
-
-    if (!author) {
-      // TODO: Add 404 page
-      return null;
-    }
-
     const queryParams = getQueryParamsObject(location.search);
     const isTestMode = queryParams.beta === "true";
 
-    if (this.props.author && !author.isLayered) {
+    if (!author || !author.isLayered) {
       return <AuthorShow isTestMode={isTestMode} />;
-    } else if (this.props.author && author.isLayered) {
+    } else if (author && author.isLayered) {
       return <ConnectedAuthorShow />;
     }
 

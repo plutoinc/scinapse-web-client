@@ -7,7 +7,6 @@ import * as Actions from "../actions";
 import { generateMockStore } from "../../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
 import { closeDialog } from "../../../dialog/actions";
-import { push } from "connected-react-router";
 
 describe("emailVerification actions", () => {
   let store: any;
@@ -62,13 +61,6 @@ describe("emailVerification actions", () => {
       await store.dispatch(Actions.resendVerificationEmail(mockEmail, mockTrueIsDialog));
       const actions = store.getActions();
       expect(actions[2]).toEqual(closeDialog());
-    });
-
-    it("should return push action to home page if isDialog is false", async () => {
-      const mockFalseIsDialog = false;
-      await store.dispatch(Actions.resendVerificationEmail(mockEmail, mockFalseIsDialog));
-      const actions = store.getActions();
-      expect(actions[2]).toEqual(push("/"));
     });
   });
 });

@@ -13,6 +13,7 @@ import { CurrentUser } from "../model/currentUser";
 import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../components/common/sortBox";
 import { getAuthor, getCoAuthors, getAuthorPapers } from "../containers/unconnectedAuthorShow/actions";
+import { CommonError } from "../model/error";
 
 interface AddRemovePapersAndFetchPapersParams {
   authorId: number;
@@ -21,7 +22,7 @@ interface AddRemovePapersAndFetchPapersParams {
   cancelToken: CancelToken;
 }
 
-interface ReFetchAuthorShowRelevantDataParams {
+interface FetchAuthorShowRelevantDataParams {
   authorId: number;
   cancelToken: CancelToken;
   currentUser?: CurrentUser;
@@ -44,13 +45,12 @@ export function fetchAuthorPapers(params: GetAuthorPapersParams) {
   };
 }
 
-export function reFetchAuthorShowRelevantData(params: ReFetchAuthorShowRelevantDataParams) {
+export function fetchAuthorShowRelevantData(params: FetchAuthorShowRelevantDataParams) {
   return async (dispatch: Dispatch<any>) => {
     const { currentUser, authorId, cancelToken } = params;
 
     try {
       dispatch(ActionCreators.startToLoadAuthorShowPageData());
-
       const isMine =
         currentUser && currentUser.isLoggedIn && currentUser.isAuthorConnected && currentUser.authorId === authorId;
       const promiseArr = [];
@@ -72,7 +72,9 @@ export function reFetchAuthorShowRelevantData(params: ReFetchAuthorShowRelevantD
       dispatch(ActionCreators.finishToLoadAuthorShowPageData());
     } catch (err) {
       if (!axios.isCancel(err)) {
-        console.error(`Error for fetching author show page data`, err);
+        const error = PlutoAxios.getGlobalError(err);
+        console.error(`Error for fetching author show page data`, error);
+        dispatch(ActionCreators.failedToLoadAuthorShowPageData({ statusCode: (error as CommonError).status }));
       }
     }
   };
@@ -190,7 +192,7 @@ export function addPapersAndFetchPapers(params: AddRemovePapersAndFetchPapersPar
     try {
       await dispatch(addPaperToAuthorPaperList(params.authorId, params.papers, params.cancelToken));
       await dispatch(
-        reFetchAuthorShowRelevantData({
+        fetchAuthorShowRelevantData({
           authorId: params.authorId,
           currentUser: params.currentUser,
           cancelToken: params.cancelToken,
@@ -209,7 +211,7 @@ export function removePaperFromPaperList(params: AddRemovePapersAndFetchPapersPa
     try {
       await AuthorAPI.removeAuthorPapers(params.authorId, [paper.id]);
       await dispatch(
-        reFetchAuthorShowRelevantData({
+        fetchAuthorShowRelevantData({
           authorId: params.authorId,
           currentUser: params.currentUser,
           cancelToken: params.cancelToken,

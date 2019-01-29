@@ -1,6 +1,5 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { push } from "connected-react-router";
 import * as Actions from "./actions";
 import { AppState } from "../../../reducers";
 import { parse } from "qs";
@@ -23,7 +22,7 @@ export function mapStateToProps(state: AppState) {
 @withStyles<typeof EmailVerification>(styles)
 class EmailVerification extends React.PureComponent<EmailVerificationContainerProps, {}> {
   public componentDidMount() {
-    const { dispatch } = this.props;
+    const { history } = this.props;
     const searchString = this.getCurrentSearchParamsString();
     const searchParams: EmailVerificationParams = this.getParsedSearchParamsObject(searchString);
     const searchToken = searchParams.token;
@@ -36,7 +35,7 @@ class EmailVerification extends React.PureComponent<EmailVerificationContainerPr
         type: "error",
         message: "Email verifying token or email doesn't exist.",
       });
-      dispatch(push("/"));
+      history.push("/");
     }
   }
 
@@ -104,26 +103,27 @@ class EmailVerification extends React.PureComponent<EmailVerificationContainerPr
     dispatch(Actions.verifyToken(token));
   };
 
-  private resendVerificationEmail = () => {
-    const { dispatch, handleChangeDialogType } = this.props;
+  private resendVerificationEmail = async () => {
+    const { dispatch, handleChangeDialogType, history } = this.props;
     const searchString = this.getCurrentSearchParamsString();
     const searchParams: EmailVerificationParams = this.getParsedSearchParamsObject(searchString);
 
     const searchEmail = searchParams.email;
     if (searchEmail) {
-      dispatch(Actions.resendVerificationEmail(searchEmail, !!handleChangeDialogType));
+      await dispatch(Actions.resendVerificationEmail(searchEmail, !!handleChangeDialogType));
+      history.push("/");
     }
   };
 
   private confirm = () => {
-    const { dispatch, handleChangeDialogType } = this.props;
+    const { dispatch, handleChangeDialogType, history } = this.props;
     const isDialog = !!handleChangeDialogType;
 
     if (isDialog) {
       dispatch(closeDialog());
       trackDialogView("emailConfirmClose");
     } else {
-      dispatch(push("/"));
+      history.push("/");
     }
   };
 }

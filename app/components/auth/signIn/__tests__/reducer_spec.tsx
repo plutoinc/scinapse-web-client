@@ -173,16 +173,4 @@ describe("signIn reducer", () => {
       expect(state).toEqual(SIGN_IN_INITIAL_STATE);
     });
   });
-
-  describe("when receive GLOBAL_LOCATION_CHANGE", () => {
-    it("should set state to SIGN_IN_INITIAL_STATE", () => {
-      mockAction = {
-        type: ACTION_TYPES.GLOBAL_LOCATION_CHANGE,
-      };
-
-      state = reduceState(mockAction);
-
-      expect(state).toEqual(SIGN_IN_INITIAL_STATE);
-    });
-  });
 });

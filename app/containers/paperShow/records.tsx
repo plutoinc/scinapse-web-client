@@ -13,7 +13,7 @@ export interface PaperShowState
   extends Readonly<{
       isAuthorBoxExtended: boolean;
       isLoadingPaper: boolean;
-      hasErrorOnFetchingPaper: boolean;
+      hasErrorOnFetchingPaper: number | null;
       isLoadingComments: boolean;
       hasErrorOnFetchingComments: boolean;
       currentCommentPage: number;
@@ -45,7 +45,7 @@ export interface PaperShowState
 export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
   isAuthorBoxExtended: false,
   isLoadingPaper: false,
-  hasErrorOnFetchingPaper: false,
+  hasErrorOnFetchingPaper: null,
   paperId: 0,
   isLoadingComments: false,
   hasErrorOnFetchingComments: false,

@@ -28,13 +28,13 @@ import { fetchPaperShowData, fetchRefPaperData, fetchCitedPaperData, fetchMyColl
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import CollectionNoteList from "../../components/paperShow/components/collectionNoteList";
 import { LayoutState, UserDevice } from "../../components/layouts/records";
-import FailedToLoadPaper from "../../components/paperShow/failedToLoadPaper";
 import { trackEvent } from "../../helpers/handleGA";
 import { getMemoizedPaper, getReferencePapers, getCitedPapers } from "./select";
 import { formulaeToHTMLStr } from "../../helpers/displayFormula";
 import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
 import { getPDFLink } from "../../helpers/getPDFLink";
 import restoreScroll from "../../helpers/scrollRestoration";
+import ErrorPage from "../../components/error/errorPage";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
@@ -201,7 +201,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
 
     if (paperShow.hasErrorOnFetchingPaper) {
-      return <FailedToLoadPaper />;
+      return <ErrorPage errorNum={paperShow.hasErrorOnFetchingPaper} />;
     }
 
     if (!paper) {

@@ -10,7 +10,6 @@ import { CVInfoType, Award, Education, Experience } from "../model/profile";
 import { PaperInCollection } from "../model/paperInCollection";
 
 export enum ACTION_TYPES {
-  GLOBAL_LOCATION_CHANGE = "@@router/LOCATION_CHANGE",
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = "GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING",
   GLOBAL_SUCCEEDED_TO_RENDER_AT_THE_CLIENT_SIDE = "GLOBAL_SUCCEEDED_TO_RENDER_AT_THE_CLIENT_SIDE",
   GLOBAL_CHANGE_DIALOG_TYPE = "GLOBAL_CHANGE_DIALOG_TYPE",
@@ -184,6 +183,7 @@ export enum ACTION_TYPES {
 
   AUTHOR_SHOW_START_TO_LOAD_DATA_FOR_PAGE = "AUTHOR_SHOW_START_TO_LOAD_DATA_FOR_PAGE",
   AUTHOR_SHOW_FINISH_TO_LOAD_DATA_FOR_PAGE = "AUTHOR_SHOW_FINISH_TO_LOAD_DATA_FOR_PAGE",
+  AUTHOR_SHOW_FAILED_TO_LOAD_DATA_FOR_PAGE = "AUTHOR_SHOW_FAILED_TO_LOAD_DATA_FOR_PAGE",
   AUTHOR_SHOW_SUCCEEDED_GET_AUTHOR = "AUTHOR_SHOW_SUCCEEDED_GET_AUTHOR",
   AUTHOR_SHOW_FAILED_GET_AUTHOR = "AUTHOR_SHOW_FAILED_GET_AUTHOR",
   AUTHOR_SHOW_SUCCEEDED_GET_CO_AUTHORS = "AUTHOR_SHOW_SUCCEEDED_GET_CO_AUTHORS",
@@ -228,6 +228,7 @@ export enum ACTION_TYPES {
   COLLECTIONS_START_TO_GET_MEMBER = "COLLECTIONS_START_TO_GET_MEMBER",
   COLLECTIONS_SUCCEEDED_GET_MEMBER = "COLLECTIONS_SUCCEEDED_GET_MEMBER",
   COLLECTIONS_FAILED_TO_GET_MEMBER = "COLLECTIONS_FAILED_TO_GET_MEMBER",
+  COLLECTIONS_FAILED_TO_GET_PAGE_DATA = "COLLECTIONS_FAILED_TO_GET_PAGE_DATA",
 
   COLLECTION_SHOW_START_TO_GET_COLLECTION = "COLLECTION_SHOW_START_TO_GET_COLLECTION",
   COLLECTION_SHOW_SUCCEEDED_GET_COLLECTION = "COLLECTION_SHOW_SUCCEEDED_GET_COLLECTION",
@@ -295,6 +296,10 @@ export const ActionCreators = {
 
   finishToLoadAuthorShowPageData() {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FINISH_TO_LOAD_DATA_FOR_PAGE });
+  },
+
+  failedToLoadAuthorShowPageData(payload: { statusCode: number }) {
+    return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAILED_TO_LOAD_DATA_FOR_PAGE, payload });
   },
 
   toggleConnectAuthorDialog() {
@@ -368,8 +373,8 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_PAPER });
   },
 
-  failedToGetPaper() {
-    return createAction({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER });
+  failedToGetPaper(payload: { statusCode: number }) {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER, payload });
   },
 
   getPaper(payload: { paperId: number }) {
@@ -611,9 +616,10 @@ export const ActionCreators = {
     });
   },
 
-  failedToGetCollectionInCollectionShow() {
+  failedToGetCollectionInCollectionShow(payload: { statusCode: number }) {
     return createAction({
       type: ACTION_TYPES.COLLECTION_SHOW_FAILED_TO_GET_COLLECTION,
+      payload,
     });
   },
 
@@ -777,6 +783,13 @@ export const ActionCreators = {
     });
   },
 
+  failedToGetCollectionsPageData(payload: { statusCode: number }) {
+    return createAction({
+      type: ACTION_TYPES.COLLECTIONS_FAILED_TO_GET_PAGE_DATA,
+      payload,
+    });
+  },
+
   startToGetPapersInCollectionShow() {
     return createAction({
       type: ACTION_TYPES.COLLECTION_SHOW_START_TO_GET_PAPERS,
@@ -841,9 +854,10 @@ export const ActionCreators = {
     });
   },
 
-  failedToGetJournal() {
+  failedToGetJournal(payload: { statusCode: number }) {
     return createAction({
       type: ACTION_TYPES.JOURNAL_SHOW_FAILED_TO_GET_JOURNAL,
+      payload,
     });
   },
 
@@ -1083,10 +1097,6 @@ export const ActionCreators = {
 
   flushEntities() {
     return createAction({ type: ACTION_TYPES.GLOBAL_FLUSH_ENTITIES });
-  },
-
-  globalLocationChange() {
-    return createAction({ type: ACTION_TYPES.GLOBAL_LOCATION_CHANGE });
   },
 };
 
