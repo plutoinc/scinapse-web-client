@@ -1,12 +1,13 @@
 import * as React from "react";
 import axios from "axios";
 import { connect, Dispatch } from "react-redux";
-import { withRouter, RouteComponentProps, Link } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import * as distanceInWordsToNow from "date-fns/distance_in_words_to_now";
 import * as parse from "date-fns/parse";
 import { denormalize } from "normalizr";
 import { Helmet } from "react-helmet";
 import { AppState } from "../../reducers";
+import TransparentButton from "../../components/common/transparentButton";
 import CollectionPaperItem from "./collectionPaperItem";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import MobilePagination from "../common/mobilePagination";
@@ -260,27 +261,34 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   private getCollectionShareBtns = () => {
     const { collection } = this.props;
     return collection ? (
-      <div className={styles.shareBtnWrapper}>
-        <button
-          className={styles.shareBtn}
-          onClick={() => {
-            copySelectedTextToClipboard(`https://scinapse.io/collections/${collection.id}`);
-          }}
-        >
-          <Icon icon="LINK" className={styles.shareIcon} />
-        </button>
-        <a
-          className={styles.shareBtn}
-          href={`https://twitter.com/intent/tweet?url=https://scinapse.io/collections/${collection.id}`}
-        >
-          <Icon icon="TWITTER_LOGO" className={styles.shareIcon} />
-        </a>
-        <a
-          className={styles.shareBtn}
-          href={`http://www.facebook.com/sharer/sharer.php?u=https://scinapse.io/collections/${collection.id}`}
-        >
-          <Icon icon="FACEBOOK_LOGO" className={styles.shareIcon} />
-        </a>
+      <div className={styles.shareAreaWrapper}>
+        <span className={styles.shareGuideMessage}>Share this Collection to SNS!</span>
+        <div className={styles.shareBtnsWrapper}>
+          <a
+            className={styles.shareBtn}
+            onClick={() => {
+              copySelectedTextToClipboard(`https://scinapse.io/collections/${collection.id}`);
+            }}
+          >
+            <Icon icon="LINK" className={styles.shareIcon} />
+          </a>
+          <a
+            className={styles.shareBtn}
+            target="_blank"
+            rel="noopener"
+            href={`http://www.facebook.com/sharer/sharer.php?u=https://scinapse.io/collections/${collection.id}`}
+          >
+            <Icon icon="FACEBOOK_LOGO" className={styles.facebookShareIcon} />
+          </a>
+          <a
+            className={styles.shareBtn}
+            target="_blank"
+            rel="noopener"
+            href={`https://twitter.com/intent/tweet?url=https://scinapse.io/collections/${collection.id}`}
+          >
+            <Icon icon="TWITTER_LOGO" className={styles.twitterShareIcon} />
+          </a>
+        </div>
       </div>
     ) : null;
   };
@@ -289,29 +297,54 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     const { currentUser, collection, collectionShow } = this.props;
 
     const collectionShareButton = (
-      <button
-        className={styles.collectionShareBtn}
+      <TransparentButton
+        style={{
+          width: "103px",
+          height: "36px",
+          fontWeight: "bold",
+          padding: "0 16px 0 8px",
+          marginTop: "4px",
+        }}
+        iconStyle={{
+          marginRight: "8px",
+          width: "20px",
+          height: "16px",
+          color: "#666d7c",
+        }}
         onClick={() => {
           this.handleToggleShareDropdown();
         }}
-      >
-        <Icon icon="MASK" />
-        <span>Share</span>
-      </button>
+        gaCategory="Collection Show"
+        gaAction="Click Share Collection"
+        content="Share"
+        icon="MASK"
+      />
     );
 
     if (collection && currentUser.isLoggedIn && collection.createdBy.id === currentUser.id && !collection.isDefault) {
       return (
         <div>
-          <button
-            className={styles.collectionControlBtn}
+          <TransparentButton
+            style={{
+              width: "103px",
+              height: "36px",
+              fontWeight: "bold",
+              padding: "0 16px 0 8px",
+            }}
+            iconStyle={{
+              marginRight: "8px",
+              width: "20px",
+              height: "20px",
+              color: "#666d7c",
+            }}
             onClick={() => {
               GlobalDialogManager.openEditCollectionDialog(collection);
             }}
-          >
-            <Icon icon="PEN" />
-            <span>Edit</span>
-          </button>
+            gaCategory="Collection Show"
+            gaAction="Click Edit Collection"
+            content="Edit"
+            icon="PEN"
+          />
           {collectionShareButton}
           {collectionShow.isShareDropdownOpen ? this.getCollectionShareBtns() : null}
         </div>
