@@ -215,7 +215,6 @@ $semi_full_width: 997px;
 }
 
 .shareAreaWrapper {
-  width: 210px;
   height: 110px;
   border-radius: 4px;
   border: 1px solid $gray2;
@@ -225,6 +224,8 @@ $semi_full_width: 997px;
   z-index: 9999;
   margin-left: -105px;
   margin-top: 14px;
+  padding: 16px;
+  justify-content: center;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
 
   &:before {
@@ -260,19 +261,12 @@ $semi_full_width: 997px;
   .shareGuideMessage {
     font-size: 14px;
     color: $gray6;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 22px;
   }
 
   .shareBtnsWrapper {
     display: flex;
     position: absolute;
-    bottom: 0;
-    width: 100%;
-    justify-content: center;
-    margin-bottom: 16px;
+    align-self: flex-end;
   }
 
   .shareBtn {
