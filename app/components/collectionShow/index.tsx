@@ -323,11 +323,11 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
         this.handleActionTicketInShared(id);
         break;
       case "FACEBOOK":
-        window.open(`${FACEBOOK_SHARE_URL}=https://scinapse.io/collections/${id}`, "_blank", "width=600, height=400");
+        window.open(`${FACEBOOK_SHARE_URL}https://scinapse.io/collections/${id}`, "_blank", "width=600, height=400");
         this.handleActionTicketInShared(id);
         break;
       case "TWITTER":
-        window.open(`${TWITTER_SHARE_URL}=https://scinapse.io/collections/${id}`, "_blank", "width=600, height=400");
+        window.open(`${TWITTER_SHARE_URL}https://scinapse.io/collections/${id}`, "_blank", "width=600, height=400");
         this.handleActionTicketInShared(id);
         break;
       default:
