@@ -28,6 +28,7 @@ import PaperShowKeyword from "../paperShow/components/keyword";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { getPapers } from "./actions";
 import restoreScroll from "../../helpers/scrollRestoration";
+import ErrorPage from "../error/errorPage";
 const styles = require("./journalShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -103,6 +104,10 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
 
   public render() {
     const { journalShow, journal } = this.props;
+
+    if (journalShow.pageErrorCode) {
+      return <ErrorPage errorNum={journalShow.pageErrorCode} />;
+    }
 
     if (journalShow.isLoadingJournal) {
       return (

@@ -846,9 +846,10 @@ export const ActionCreators = {
     });
   },
 
-  failedToGetJournal() {
+  failedToGetJournal(payload: { statusCode: number }) {
     return createAction({
       type: ACTION_TYPES.JOURNAL_SHOW_FAILED_TO_GET_JOURNAL,
+      payload,
     });
   },
 
