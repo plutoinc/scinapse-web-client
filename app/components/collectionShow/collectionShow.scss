@@ -76,47 +76,6 @@ $semi_full_width: 997px;
 
   .rightBox {
     flex: 1;
-
-    .collectionControlBtn {
-      display: block;
-      background-color: transparent;
-      width: 103px;
-      height: 36px;
-      border-radius: 5px;
-      border: solid 1px $gray3;
-      font-size: 14px;
-      font-weight: bold;
-      line-height: 1.43;
-      color: $gray6;
-      padding: 8px;
-      text-align: left;
-      cursor: pointer;
-
-      i,
-      svg {
-        display: inline-block;
-        vertical-align: top;
-        width: 20px;
-        height: 20px;
-        margin-right: 8px;
-      }
-    }
-
-    .collectionShareBtn {
-      @extend .collectionControlBtn;
-      margin-top: 8px;
-      color: $gray6;
-
-      i,
-      svg {
-        width: 12px;
-        height: 14px;
-      }
-    }
-
-    // .collectionControlBtn + .collectionControlBtn {
-    //   margin-top: 8px;
-    // }
   }
 }
 
