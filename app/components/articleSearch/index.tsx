@@ -96,7 +96,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
       return this.renderLoadingSpinner();
     } else if (hasNoSearchResult && queryParams) {
       return <NoResult searchText={queryParams.query} articleSearchState={articleSearchState} />;
-    } else if (queryParams && articleSearchState.aggregationData) {
+    } else if (queryParams) {
       return (
         <div className={styles.rootWrapper}>
           <div className={styles.articleSearchContainer}>
