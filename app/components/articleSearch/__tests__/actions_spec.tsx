@@ -15,11 +15,9 @@ jest.mock("../../../helpers/handleGA", () => {
 jest.unmock("../actions");
 
 import axios from "axios";
-import { push } from "connected-react-router";
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { GetPapersParams } from "../../../api/types/paper";
 import {
   FILTER_BOX_TYPE,
@@ -84,37 +82,6 @@ describe("articleSearch actions", () => {
         payload: {
           searchInput: mockSearchInput,
         },
-      });
-    });
-  });
-
-  describe("handleSearchPush action", () => {
-    describe("if searchInput.length < 2", () => {
-      it("should not change location to the search result page", () => {
-        const mockInValidSearchInput = "t";
-
-        store.dispatch(Actions.handleSearchPush(mockInValidSearchInput));
-        expect(store.getActions().length).toBe(1);
-      });
-    });
-
-    describe("if searchInput.length >= 2", () => {
-      it("should return push to query", () => {
-        const mockValidSearchInput = "tfsdfdsf";
-
-        store.dispatch(Actions.handleSearchPush(mockValidSearchInput));
-
-        const actions = store.getActions();
-        expect(actions[0]).toEqual(
-          push(
-            `/search?${papersQueryFormatter.stringifyPapersQuery({
-              query: mockValidSearchInput,
-              sort: "RELEVANCE",
-              filter: {},
-              page: 1,
-            })}`
-          )
-        );
       });
     });
   });

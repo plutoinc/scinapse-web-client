@@ -11,18 +11,6 @@ describe("dialog reducer", () => {
   let mockAction: any;
   let state: DialogState;
 
-  describe("when GLOBAL_LOCATION_CHANGE", () => {
-    it("should set isOpen to false", () => {
-      mockAction = {
-        type: ACTION_TYPES.GLOBAL_LOCATION_CHANGE,
-      };
-
-      state = reduceState(mockAction);
-
-      expect(state.isOpen).toBeFalsy();
-    });
-  });
-
   describe("when receive GLOBAL_DIALOG_OPEN", () => {
     const mockType: GLOBAL_DIALOG_TYPE = GLOBAL_DIALOG_TYPE.SIGN_IN;
     beforeEach(() => {

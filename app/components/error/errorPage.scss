@@ -25,6 +25,20 @@
   display: inline-block;
   width: 120px;
   height: 44px;
+  background-color: white;
+  color: $black0;
+  border-radius: 5px;
+  line-height: 44px;
+  border: 1px solid $gray3;
+  cursor: pointer;
+}
+
+.homeButton {
+  margin-left: 16px;
+  margin-top: 62px;
+  display: inline-block;
+  width: 120px;
+  height: 44px;
   background-color: $main_blue0;
   color: white;
   border-radius: 5px;

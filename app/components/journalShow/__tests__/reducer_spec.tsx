@@ -8,17 +8,17 @@ describe("JournalShow reducer", () => {
 
   describe("when receive JOURNAL_SHOW_START_TO_GET_JOURNAL", () => {
     it("should set failedToLoadJournal state to false", () => {
-      mockState = { ...JOURNAL_SHOW_INITIAL_STATE, failedToLoadJournal: true };
+      mockState = { ...JOURNAL_SHOW_INITIAL_STATE, pageErrorCode: null };
       mockAction = {
         type: ACTION_TYPES.JOURNAL_SHOW_START_TO_GET_JOURNAL,
       };
 
       state = reducer(mockState, mockAction);
-      expect(state.failedToLoadJournal).toBeFalsy();
+      expect(state.pageErrorCode).toBeFalsy();
     });
 
     it("should set isLoadingJournal state to true", () => {
-      mockState = { ...JOURNAL_SHOW_INITIAL_STATE, failedToLoadJournal: true };
+      mockState = { ...JOURNAL_SHOW_INITIAL_STATE, pageErrorCode: null };
       mockAction = {
         type: ACTION_TYPES.JOURNAL_SHOW_START_TO_GET_JOURNAL,
       };
@@ -33,16 +33,9 @@ describe("JournalShow reducer", () => {
       mockState = { ...JOURNAL_SHOW_INITIAL_STATE, isLoadingJournal: true };
       mockAction = {
         type: ACTION_TYPES.JOURNAL_SHOW_FAILED_TO_GET_JOURNAL,
-      };
-
-      state = reducer(mockState, mockAction);
-      expect(state.isLoadingJournal).toBeFalsy();
-    });
-
-    it("should set isLoadingJournal state to false", () => {
-      mockState = { ...JOURNAL_SHOW_INITIAL_STATE, failedToLoadJournal: true };
-      mockAction = {
-        type: ACTION_TYPES.JOURNAL_SHOW_FAILED_TO_GET_JOURNAL,
+        payload: {
+          statusCode: 400,
+        },
       };
 
       state = reducer(mockState, mockAction);

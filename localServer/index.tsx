@@ -1,6 +1,6 @@
 // tslint:disable-next-line:no-implicit-dependencies
 import * as express from "express";
-import { serverSideRender, renderJavaScriptOnly } from "../app/server";
+import { serverSideRender, renderJavaScriptOnly, SSRResult } from "../app/server";
 import { TIMEOUT_FOR_SAFE_RENDERING } from "../app/api/pluto";
 
 const server = express();
@@ -16,16 +16,16 @@ server.disable("x-powered-by").all("/*", async (req: express.Request, res: expre
     return res.send("Nice Try");
   }
 
-  const normalRender = async () => {
-    const resultHTML = await serverSideRender({
+  const normalRender = async (): Promise<SSRResult> => {
+    const ssrResult = await serverSideRender({
       requestUrl: req.url,
       scriptVersion: "http://localhost:8080/bundle.js",
       headers: req.headers,
     });
     succeededToServerRendering = true;
 
-    const buf = new Buffer(resultHTML);
-    if (buf.byteLength > 6291456 /* 6MB */) {
+    const buf = new Buffer(ssrResult.html);
+    if (buf.byteLength > 1048576 /* 6MB */) {
       throw new Error("HTML SIZE IS OVER LAMBDA LIMITATION");
     }
 
@@ -33,10 +33,10 @@ server.disable("x-powered-by").all("/*", async (req: express.Request, res: expre
       console.log("============== NORMAL RENDERING FIRED! ============== ");
     }
 
-    return resultHTML;
+    return ssrResult;
   };
 
-  const safeTimeout = new Promise((resolve, _reject) => {
+  const safeTimeout: Promise<SSRResult> = new Promise((resolve, _reject) => {
     const jsOnlyHTML = renderJavaScriptOnly("http://localhost:8080/bundle.js", "");
     setTimeout(
       () => {
@@ -44,7 +44,9 @@ server.disable("x-powered-by").all("/*", async (req: express.Request, res: expre
           console.log("============== FALLBACK RENDERING FIRED! ==============");
         }
         succeededToServerRendering = false;
-        resolve(jsOnlyHTML);
+        resolve({
+          html: jsOnlyHTML,
+        });
       },
       TIMEOUT_FOR_SAFE_RENDERING,
       jsOnlyHTML
@@ -52,8 +54,8 @@ server.disable("x-powered-by").all("/*", async (req: express.Request, res: expre
   });
 
   return Promise.race([normalRender(), safeTimeout])
-    .then(html => {
-      res.send(html);
+    .then(ssrResult => {
+      res.status(ssrResult.statusCode || 200).send(ssrResult.html);
     })
     .catch(err => {
       console.log(err);

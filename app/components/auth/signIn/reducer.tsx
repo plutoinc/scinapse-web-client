@@ -76,10 +76,6 @@ export function reducer(state: SignInState = SIGN_IN_INITIAL_STATE, action: Redu
       return SIGN_IN_INITIAL_STATE;
     }
 
-    case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
-      return SIGN_IN_INITIAL_STATE;
-    }
-
     default:
       return state;
   }

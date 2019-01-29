@@ -30,6 +30,7 @@ import formatNumber from "../../helpers/formatNumber";
 import restoreScroll from "../../helpers/scrollRestoration";
 import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
 import ActionTicketManager from "../../helpers/actionTicketManager";
+import ErrorPage from "../error/errorPage";
 const styles = require("./collectionShow.scss");
 
 const FACEBOOK_SHARE_URL = "http://www.facebook.com/sharer/sharer.php?u=";
@@ -106,6 +107,10 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
 
   public render() {
     const { collectionShow, collection } = this.props;
+
+    if (collectionShow.pageErrorCode) {
+      return <ErrorPage errorNum={collectionShow.pageErrorCode} />;
+    }
 
     if (collectionShow.isLoadingCollection) {
       return (

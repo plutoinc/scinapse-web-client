@@ -3,7 +3,7 @@ import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
 export interface UserCollectionsState
   extends Readonly<{
       isLoadingCollections: boolean;
-      hasFailedToLoadCollections: boolean;
+      pageErrorCode: number | null;
       collectionIds: number[];
       maxCollectionCount: number;
       targetMemberId: number;
@@ -11,7 +11,7 @@ export interface UserCollectionsState
 
 export const USER_COLLECTIONS_INITIAL_STATE: UserCollectionsState = {
   isLoadingCollections: false,
-  hasFailedToLoadCollections: false,
+  pageErrorCode: null,
   collectionIds: [],
   maxCollectionCount: 0,
   targetMemberId: 0,
@@ -26,7 +26,7 @@ export function reducer(
       return {
         ...state,
         isLoadingCollections: true,
-        hasFailedToLoadCollections: false,
+        pageErrorCode: null,
       };
     }
 
@@ -36,7 +36,7 @@ export function reducer(
         collectionIds: action.payload.result,
         maxCollectionCount: action.payload.numberOfElements,
         isLoadingCollections: false,
-        hasFailedToLoadCollections: false,
+        pageErrorCode: null,
       };
     }
 
@@ -44,7 +44,6 @@ export function reducer(
       return {
         ...state,
         isLoadingCollections: false,
-        hasFailedToLoadCollections: true,
       };
     }
 
@@ -59,6 +58,13 @@ export function reducer(
       return {
         ...state,
         collectionIds: [action.payload.collectionId, ...state.collectionIds],
+      };
+    }
+
+    case ACTION_TYPES.COLLECTIONS_FAILED_TO_GET_PAGE_DATA: {
+      return {
+        ...state,
+        pageErrorCode: action.payload.statusCode,
       };
     }
 

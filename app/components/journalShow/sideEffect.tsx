@@ -5,6 +5,7 @@ import { LoadDataParams } from "../../routes";
 import { JournalShowMatchParams } from ".";
 import { getJournal, getPapers } from "./actions";
 import { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
+import { ActionCreators } from "../../actions/actionTypes";
 
 export interface JournalShowQueryParams {
   q?: string; // search query string
@@ -18,18 +19,13 @@ export async function fetchJournalShowPageData(params: LoadDataParams<JournalSho
 
   const journalId = parseInt(match.params.journalId, 10);
   if (isNaN(journalId)) {
-    // TODO: Add redirect logic
+    dispatch(ActionCreators.failedToGetJournal({ statusCode: 400 }));
     return;
   } else {
-    try {
-      const promiseArr: Array<Promise<any>> = [];
-      promiseArr.push(dispatch(getJournal(journalId, params.cancelToken)));
-      promiseArr.push(dispatch(fetchPapers(journalId, queryParamsObj, params.cancelToken)));
-      await Promise.all(promiseArr);
-    } catch (err) {
-      // TODO: add redirect logic
-      console.error(`Error for fetching collection list page data`, err);
-    }
+    const promiseArr: Array<Promise<any>> = [];
+    promiseArr.push(dispatch(getJournal(journalId, params.cancelToken)));
+    promiseArr.push(dispatch(fetchPapers(journalId, queryParamsObj, params.cancelToken)));
+    await Promise.all(promiseArr);
   }
 }
 

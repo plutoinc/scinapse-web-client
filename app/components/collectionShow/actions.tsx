@@ -3,6 +3,8 @@ import { Dispatch } from "react-redux";
 import CollectionAPI, { GetCollectionsPapersParams } from "../../api/collection";
 import { ActionCreators } from "../../actions/actionTypes";
 import alertToast from "../../helpers/__mocks__/makePlutoToastAction";
+import PlutoAxios from "../../api/pluto";
+import { CommonError } from "../../model/error";
 
 export function getCollection(collectionId: number, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
@@ -18,11 +20,16 @@ export function getCollection(collectionId: number, cancelToken: CancelToken) {
       );
     } catch (err) {
       if (!axios.isCancel(err)) {
+        const error = PlutoAxios.getGlobalError(err);
         alertToast({
           type: "error",
-          message: `Failed to get collection information: ${err}`,
+          message: `Failed to get collection information: ${error.message}`,
         });
-        dispatch(ActionCreators.failedToGetCollectionInCollectionShow());
+        dispatch(
+          ActionCreators.failedToGetCollectionInCollectionShow({
+            statusCode: (error as CommonError).status,
+          })
+        );
       }
     }
   };

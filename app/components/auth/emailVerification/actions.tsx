@@ -1,5 +1,4 @@
 import { Dispatch } from "react-redux";
-import { push } from "connected-react-router";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import AuthAPI from "../../../api/auth";
 import { VerifyEmailResult } from "../../../api/types/auth";
@@ -65,8 +64,6 @@ export function resendVerificationEmail(email: string, isDialog: boolean) {
       if (isDialog) {
         dispatch(closeDialog());
         trackDialogView("resendVerificationEmailClose");
-      } else {
-        dispatch(push("/"));
       }
     } catch (err) {
       alertToast({

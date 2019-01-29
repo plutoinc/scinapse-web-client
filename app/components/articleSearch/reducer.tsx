@@ -24,7 +24,7 @@ export function reducer(
       return {
         ...state,
         isLoading: true,
-        hasError: false,
+        pageErrorCode: null,
         searchFromSuggestion: false,
         searchInput: action.payload.query,
         sort: action.payload.sort,
@@ -47,7 +47,7 @@ export function reducer(
         return {
           ...state,
           isLoading: false,
-          hasError: false,
+          pageErrorCode: null,
           isEnd: payload.data.page.last,
           page: payload.data.page.page,
           totalElements: payload.data.page.totalElements,
@@ -68,7 +68,7 @@ export function reducer(
       return {
         ...state,
         isLoading: false,
-        hasError: true,
+        pageErrorCode: action.payload.statusCode,
       };
     }
 
@@ -77,7 +77,7 @@ export function reducer(
       return {
         ...state,
         isLoading: true,
-        hasError: false,
+        pageErrorCode: null,
       };
     }
 
@@ -91,7 +91,7 @@ export function reducer(
         totalElements: action.payload.totalElements,
         totalPages: action.payload.totalPages,
         isLoading: false,
-        hasError: false,
+        pageErrorCode: null,
       };
     }
 
@@ -100,7 +100,6 @@ export function reducer(
       return {
         ...state,
         isLoading: false,
-        hasError: true,
       };
     }
 

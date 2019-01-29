@@ -1,3 +1,4 @@
+import { RouteComponentProps } from "react-router-dom";
 import { Dispatch } from "react-redux";
 import { DialogState } from "../reducer";
 import { CurrentUser } from "../../../model/currentUser";
@@ -9,4 +10,5 @@ export interface DialogContainerProps
       myCollections: Collection[];
       currentUser: CurrentUser;
       dispatch: Dispatch<any>;
-    }> {}
+    }>,
+    RouteComponentProps<null> {}

@@ -5,7 +5,6 @@ import validateEmail from "../../../helpers/validateEmail";
 import { SIGN_IN_ON_FOCUS_TYPE } from "./reducer";
 import { closeDialog } from "../../dialog/actions";
 import EnvChecker from "../../../helpers/envChecker";
-import { push } from "connected-react-router";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { AxiosError } from "axios";
 import { SignInWithEmailParams, SignInResult, OAUTH_VENDOR, GetAuthorizeUriResult } from "../../../api/types/auth";
@@ -52,7 +51,7 @@ export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean
       dispatch({
         type: ACTION_TYPES.SIGN_IN_FORM_ERROR,
       });
-      return;
+      throw new Error();
     }
 
     const isPasswordTooShort = password === "" || password.length <= 0 || password.length < 8;
@@ -60,7 +59,7 @@ export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean
       dispatch({
         type: ACTION_TYPES.SIGN_IN_FORM_ERROR,
       });
-      return;
+      throw new Error();
     }
 
     dispatch({
@@ -76,8 +75,6 @@ export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean
       if (isDialog) {
         dispatch(closeDialog());
         trackDialogView("signInWithEmailClose");
-      } else {
-        dispatch(push("/"));
       }
       alertToast({
         type: "success",
@@ -91,7 +88,7 @@ export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean
           oauthLoggedIn: signInResult.oauthLoggedIn,
         },
       });
-    } catch (_err) {
+    } catch (err) {
       alertToast({
         type: "error",
         message: `Failed to sign in.`,
@@ -99,6 +96,7 @@ export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean
       dispatch({
         type: ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN,
       });
+      throw err;
     }
   };
 }
@@ -126,7 +124,7 @@ export async function signInWithSocial(vendor: OAUTH_VENDOR) {
   }
 }
 
-export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, oauthRedirectPath: string) {
+export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.SIGN_IN_GET_AUTHORIZE_CODE,
@@ -144,16 +142,6 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, oauthRedire
         vendor,
         redirectUri,
       });
-
-      if (
-        !!oauthRedirectPath &&
-        !oauthRedirectPath.includes("users/sign_in") &&
-        !oauthRedirectPath.includes("users/sign_up")
-      ) {
-        dispatch(push(oauthRedirectPath));
-      } else {
-        dispatch(push("/"));
-      }
 
       alertToast({
         type: "success",
@@ -186,6 +174,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, oauthRedire
           });
         }
       }
+      throw err;
     }
   };
 }

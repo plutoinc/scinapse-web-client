@@ -1,5 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { denormalize } from "normalizr";
 import Dialog from "@material-ui/core/Dialog";
 import { AppState } from "../../reducers";
@@ -26,7 +27,6 @@ import {
 } from "../../api/collection";
 import CitationBox from "../paperShow/components/citationBox";
 import { AvailableCitationType } from "../../containers/paperShow/records";
-import { push } from "connected-react-router";
 import AuthorListDialog from "../authorListDialog";
 import alertToast from "../../helpers/makePlutoToastAction";
 const styles = require("./dialog.scss");
@@ -134,11 +134,11 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   };
 
   private handleDeleteCollection = async (collectionId: number) => {
-    const { dispatch, currentUser } = this.props;
+    const { dispatch, currentUser, history } = this.props;
 
     try {
       await dispatch(Actions.deleteCollection(collectionId));
-      dispatch(push(`/users/${currentUser.id}/collections`));
+      history.push(`/users/${currentUser.id}/collections`);
     } catch (err) {
       alertToast({
         type: "error",
@@ -287,4 +287,4 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     }
   };
 }
-export default connect(mapStateToProps)(DialogComponent);
+export default withRouter(connect(mapStateToProps)(DialogComponent));

@@ -1,5 +1,4 @@
 import { createStore, applyMiddleware, compose } from "redux";
-import { connectRouter, routerMiddleware } from "connected-react-router";
 import { History, createBrowserHistory, createMemoryHistory } from "history";
 import thunkMiddleware from "redux-thunk";
 import { Store } from "react-redux";
@@ -36,27 +35,22 @@ class StoreManager {
 
   public initializeStore(initialRequest?: string) {
     this.setHistoryObject(initialRequest);
-    const routeMiddleware = routerMiddleware(this.history);
 
     if (EnvChecker.isOnServer()) {
-      this._store = createStore<AppState>(
-        connectRouter(this.history)(rootReducer),
-        initialState,
-        compose(applyMiddleware(routeMiddleware, thunkMiddleware))
-      );
+      this._store = createStore<AppState>(rootReducer, initialState, compose(applyMiddleware(thunkMiddleware)));
     } else {
       if (EnvChecker.isLocal() || EnvChecker.isDev()) {
         const loggerMiddleware = createLogger({});
         this._store = createStore(
-          connectRouter(this.history)(rootReducer),
+          rootReducer,
           this.getBrowserInitialState(),
-          compose(applyMiddleware(routeMiddleware, thunkMiddleware, ReduxNotifier, loggerMiddleware))
+          compose(applyMiddleware(thunkMiddleware, ReduxNotifier, loggerMiddleware))
         );
       } else {
         this._store = createStore(
-          connectRouter(this.history)(rootReducer),
+          rootReducer,
           this.getBrowserInitialState(),
-          compose(applyMiddleware(routeMiddleware, thunkMiddleware, ReduxNotifier, setUserToTracker))
+          compose(applyMiddleware(thunkMiddleware, ReduxNotifier, setUserToTracker))
         );
       }
     }

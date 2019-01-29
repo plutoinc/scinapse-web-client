@@ -1,5 +1,4 @@
 import { Dispatch } from "redux";
-import { push } from "connected-react-router";
 import AuthAPI from "../../../api/auth";
 import { PostExchangeResult, OAUTH_VENDOR, GetAuthorizeUriResult } from "../../../api/types/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
@@ -192,7 +191,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
             } else {
               dispatch(removeFormErrorMessage("password"));
             }
-          } catch (_err) {
+          } catch (err) {
             alertToast({
               type: "error",
               message: `Failed to sign up with email.`,
@@ -200,6 +199,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
             dispatch({
               type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
             });
+            throw err;
           }
         }
 
@@ -216,7 +216,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
 
         if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort) {
           trackEvent({ category: "sign_up", action: "failed_to_sign_up_step_1", label: "with_email" });
-          return;
+          throw new Error();
         }
 
         dispatch(changeSignUpStep(SIGN_UP_STEP.WITH_EMAIL));
@@ -248,7 +248,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
             } else {
               dispatch(removeFormErrorMessage("password"));
             }
-          } catch (_err) {
+          } catch (err) {
             alertToast({
               type: "error",
               message: `Failed to sign up with email.`,
@@ -256,6 +256,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
             dispatch({
               type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
             });
+            throw err;
           }
         }
 
@@ -302,7 +303,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
           isFirstNameTooShort ||
           isLastNameTooShort
         ) {
-          return;
+          throw new Error();
         }
 
         dispatch({
@@ -340,7 +341,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
             message: "Succeeded to Sign Up!!",
           });
           trackEvent({ category: "sign_up", action: "succeed_to_sign_up", label: "with_email" });
-        } catch (_err) {
+        } catch (err) {
           trackEvent({ category: "sign_up", action: "failed_to_sign_up", label: "with_email" });
           alertToast({
             type: "error",
@@ -349,6 +350,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
           dispatch({
             type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
           });
+          throw err;
         }
         break;
       }
@@ -356,8 +358,6 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
         if (isDialog) {
           dispatch(closeDialog());
           trackDialogView("signUpWithEmailClose");
-        } else {
-          dispatch(push("/"));
         }
         break;
       }
@@ -368,17 +368,12 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
   };
 }
 
-export function signUpWithSocial(
-  currentStep: SIGN_UP_STEP,
-  vendor: OAUTH_VENDOR,
-  oauthRedirectPath: string,
-  signUpState?: SignUpState
-) {
+export function signUpWithSocial(currentStep: SIGN_UP_STEP, vendor: OAUTH_VENDOR, signUpState?: SignUpState) {
   return async (dispatch: Dispatch<any>) => {
     switch (currentStep) {
       case SIGN_UP_STEP.FIRST: {
         if (!vendor) {
-          return;
+          throw new Error();
         }
         try {
           const origin = EnvChecker.getOrigin();
@@ -393,7 +388,7 @@ export function signUpWithSocial(
           if (!EnvChecker.isOnServer()) {
             window.location.replace(authorizeUriData.uri);
           }
-        } catch (_err) {
+        } catch (err) {
           alertToast({
             type: "error",
             message: `Failed to sign up with social account.`,
@@ -404,6 +399,7 @@ export function signUpWithSocial(
           dispatch({
             type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
           });
+          throw err;
         }
         break;
       }
@@ -436,7 +432,7 @@ export function signUpWithSocial(
               } else {
                 dispatch(removeFormErrorMessage("email"));
               }
-            } catch (_err) {
+            } catch (err) {
               alertToast({
                 type: "error",
                 message: `Failed to sign up with social account.`,
@@ -444,6 +440,7 @@ export function signUpWithSocial(
               dispatch({
                 type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
               });
+              throw err;
             }
           }
 
@@ -476,7 +473,7 @@ export function signUpWithSocial(
             isAffiliationTooShort ||
             isLastNameTooShort
           ) {
-            return;
+            throw new Error();
           }
 
           dispatch({
@@ -504,24 +501,6 @@ export function signUpWithSocial(
 
             trackEvent({ category: "sign_up", action: "succeed_to_sign_up", label: `with_${vendor}` });
 
-            const hasToRedirectToHome =
-              !oauthRedirectPath ||
-              oauthRedirectPath.includes("users/sign_in") ||
-              oauthRedirectPath.includes("users/sign_up");
-            if (hasToRedirectToHome) {
-              dispatch(push("/"));
-              alertToast({
-                type: "success",
-                message: "Succeeded to Sign Up!!",
-              });
-            } else {
-              dispatch(push(oauthRedirectPath));
-              alertToast({
-                type: "success",
-                message: "Succeeded to Sign Up!!",
-              });
-            }
-
             // Auto Sign in after Sign up at API Server. So we don't need to call sign in api again.
             dispatch({
               type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
@@ -531,7 +510,7 @@ export function signUpWithSocial(
                 oauthLoggedIn: true, // Because this method is signUpWithSocial
               },
             });
-          } catch (_err) {
+          } catch (err) {
             alertToast({
               type: "error",
               message: `Failed to sign up!`,
@@ -540,6 +519,7 @@ export function signUpWithSocial(
             dispatch({
               type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
             });
+            throw err;
           }
         }
         break;
@@ -551,7 +531,7 @@ export function signUpWithSocial(
   };
 }
 
-export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
+export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, alreadySignUpCB: () => void) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.SIGN_UP_GET_AUTHORIZE_CODE,
@@ -579,7 +559,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
         dispatch({
           type: ACTION_TYPES.SIGN_UP_FAILED_TO_EXCHANGE,
         });
-        dispatch(push("/users/sign_in"));
+        alreadySignUpCB();
 
         return;
       }

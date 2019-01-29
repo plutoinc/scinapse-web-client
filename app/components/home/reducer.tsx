@@ -11,10 +11,6 @@ export function reducer(state: HomeState = HOME_INITIAL_STATE, action: ReduxActi
       return { ...state, completionKeywordList: [] };
     }
 
-    case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
-      return { ...state, completionKeywordList: [] };
-    }
-
     default:
       return state;
   }

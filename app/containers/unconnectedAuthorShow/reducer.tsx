@@ -15,6 +15,7 @@ export interface AuthorShowState
       isLoadingPapers: boolean;
       isLoadingToUpdateProfile: boolean;
       hasFailedToUpdateProfile: boolean;
+      pageErrorStatusCode: number | null;
     }> {}
 
 export const AUTHOR_SHOW_INITIAL_STATE: AuthorShowState = {
@@ -30,6 +31,7 @@ export const AUTHOR_SHOW_INITIAL_STATE: AuthorShowState = {
   isLoadingPapers: false,
   isLoadingToUpdateProfile: false,
   hasFailedToUpdateProfile: false,
+  pageErrorStatusCode: null,
 };
 
 export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, action: Actions): AuthorShowState {
@@ -53,6 +55,7 @@ export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, acti
       return {
         ...state,
         isLoadingPage: true,
+        pageErrorStatusCode: null,
       };
     }
 
@@ -60,6 +63,14 @@ export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, acti
       return {
         ...state,
         isLoadingPage: false,
+        pageErrorStatusCode: null,
+      };
+    }
+
+    case ACTION_TYPES.AUTHOR_SHOW_FAILED_TO_LOAD_DATA_FOR_PAGE: {
+      return {
+        ...state,
+        pageErrorStatusCode: action.payload.statusCode,
       };
     }
 

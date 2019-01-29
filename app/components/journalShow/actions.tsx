@@ -4,6 +4,7 @@ import JournalAPI, { GetPapersParams } from "../../api/journal";
 import { ActionCreators } from "../../actions/actionTypes";
 import alertToast from "../../helpers/makePlutoToastAction";
 import PlutoAxios from "../../api/pluto";
+import { CommonError } from "../../model/error";
 
 export function getJournal(journalId: number, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
@@ -23,7 +24,7 @@ export function getJournal(journalId: number, cancelToken: CancelToken) {
           type: "error",
           message: error.message,
         });
-        dispatch(ActionCreators.failedToGetJournal());
+        dispatch(ActionCreators.failedToGetJournal({ statusCode: (error as CommonError).status }));
       }
     }
   };

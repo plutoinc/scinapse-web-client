@@ -15,7 +15,6 @@ import { signOut } from "../auth/actions";
 import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
 import { trackAction, trackDialogView, trackAndOpenLink, trackEvent } from "../../helpers/handleGA";
-import { handleSearchPush } from "../articleSearch/actions";
 import { HeaderProps } from "./types/header";
 import { withStyles } from "../../helpers/withStylesHelper";
 import EnvChecker from "../../helpers/envChecker";
@@ -27,6 +26,7 @@ import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import { HOME_PATH } from "../../constants/routes";
 import { ACTION_TYPES } from "../../actions/actionTypes";
+import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -72,7 +72,17 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
   public componentWillUnmount() {
     if (!EnvChecker.isOnServer()) {
+      const { dispatch } = this.props;
+      dispatch(Actions.clearKeywordCompletion());
       window.removeEventListener("scroll", this.handleScrollEvent);
+    }
+  }
+
+  public componentWillReceiveProps(nextProps: HeaderProps) {
+    const { dispatch, location } = this.props;
+
+    if (location !== nextProps.location) {
+      dispatch(Actions.clearKeywordCompletion());
     }
   }
 
@@ -220,7 +230,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 200);
 
   private handleSearchPush = (query: string) => {
-    const { dispatch } = this.props;
+    const { dispatch, history } = this.props;
 
     if (query.length < 2) {
       return dispatch({
@@ -240,7 +250,16 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
       actionLabel: query,
     });
 
-    dispatch(handleSearchPush(query));
+    trackEvent({ category: "Search", action: "Query", label: "" });
+
+    history.push(
+      `/search?${PapersQueryFormatter.stringifyPapersQuery({
+        query,
+        sort: "RELEVANCE",
+        filter: {},
+        page: 1,
+      })}`
+    );
   };
 
   private getHeaderLogo = () => {
