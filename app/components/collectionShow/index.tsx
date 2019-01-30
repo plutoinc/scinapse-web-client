@@ -322,15 +322,23 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   private getPageToSharing = (platform: string, id: number) => {
     switch (platform) {
       case "COPIED":
-        copySelectedTextToClipboard(`https://scinapse.io/collections/${id}`);
+        copySelectedTextToClipboard(`https://scinapse.io/collections/${id}?share=copylink`);
         this.handleActionTicketInShared(platform, id);
         break;
       case "FACEBOOK":
-        window.open(`${FACEBOOK_SHARE_URL}https://scinapse.io/collections/${id}`, "_blank", "width=600, height=400");
+        window.open(
+          `${FACEBOOK_SHARE_URL}https://scinapse.io/collections/${id}?share=facebook`,
+          "_blank",
+          "width=600, height=400"
+        );
         this.handleActionTicketInShared(platform, id);
         break;
       case "TWITTER":
-        window.open(`${TWITTER_SHARE_URL}https://scinapse.io/collections/${id}`, "_blank", "width=600, height=400");
+        window.open(
+          `${TWITTER_SHARE_URL}https://scinapse.io/collections/${id}?share=twitter`,
+          "_blank",
+          "width=600, height=400"
+        );
         this.handleActionTicketInShared(platform, id);
         break;
       default:
