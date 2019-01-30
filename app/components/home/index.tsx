@@ -121,9 +121,9 @@ class Home extends React.PureComponent<HomeProps> {
               </div>
             </div>
             <div className={styles.featureItem}>
-              <div className={styles.featureName}>Powered by community</div>
+              <div className={styles.featureName}>Save to Collection</div>
               <div className={styles.featureContents}>
-                Comments on the paper make it easy to find relevant papers for my research and comprehend them better
+                When you meet interesting papers, just save it to your Collection.
               </div>
             </div>
           </div>
