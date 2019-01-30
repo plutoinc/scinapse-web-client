@@ -31,6 +31,7 @@ import restoreScroll from "../../helpers/scrollRestoration";
 import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import ErrorPage from "../error/errorPage";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 const styles = require("./collectionShow.scss");
 
 const FACEBOOK_SHARE_URL = "http://www.facebook.com/sharer/sharer.php?u=";
@@ -270,39 +271,41 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   private getCollectionShareBtns = () => {
     const { collection } = this.props;
     return collection ? (
-      <div className={styles.shareAreaWrapper}>
-        <span className={styles.shareGuideMessage}>Share this Collection to SNS!</span>
-        <div className={styles.shareBtnsWrapper}>
-          <a
-            className={styles.shareBtn}
-            onClick={() => {
-              this.getPageToSharing("COPIED", collection.id);
-            }}
-          >
-            <Icon icon="LINK" className={styles.shareIcon} />
-          </a>
-          <a
-            className={styles.shareBtn}
-            target="_blank"
-            rel="noopener"
-            onClick={() => {
-              this.getPageToSharing("FACEBOOK", collection.id);
-            }}
-          >
-            <Icon icon="FACEBOOK_LOGO" className={styles.facebookShareIcon} />
-          </a>
-          <a
-            className={styles.shareBtn}
-            target="_blank"
-            rel="noopener"
-            onClick={() => {
-              this.getPageToSharing("TWITTER", collection.id);
-            }}
-          >
-            <Icon icon="TWITTER_LOGO" className={styles.twitterShareIcon} />
-          </a>
+      <ClickAwayListener onClickAway={this.handleToggleShareDropdown}>
+        <div className={styles.shareAreaWrapper}>
+          <span className={styles.shareGuideMessage}>Share this Collection to SNS!</span>
+          <div className={styles.shareBtnsWrapper}>
+            <a
+              className={styles.shareBtn}
+              onClick={() => {
+                this.getPageToSharing("COPIED", collection.id);
+              }}
+            >
+              <Icon icon="LINK" className={styles.shareIcon} />
+            </a>
+            <a
+              className={styles.shareBtn}
+              target="_blank"
+              rel="noopener"
+              onClick={() => {
+                this.getPageToSharing("FACEBOOK", collection.id);
+              }}
+            >
+              <Icon icon="FACEBOOK_LOGO" className={styles.facebookShareIcon} />
+            </a>
+            <a
+              className={styles.shareBtn}
+              target="_blank"
+              rel="noopener"
+              onClick={() => {
+                this.getPageToSharing("TWITTER", collection.id);
+              }}
+            >
+              <Icon icon="TWITTER_LOGO" className={styles.twitterShareIcon} />
+            </a>
+          </div>
         </div>
-      </div>
+      </ClickAwayListener>
     ) : null;
   };
 
