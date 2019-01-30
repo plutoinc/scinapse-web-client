@@ -122,6 +122,7 @@
     "circular-dependency-plugin": "^5.0.2",
     "classnames": "2.2.5",
     "connected-react-router": "4.3.0",
+    "cookie": "^0.3.1",
     "date-fns": "1.29.0",
     "formik": "^1.4.0",
     "history": "4.7.2",
