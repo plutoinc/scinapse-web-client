@@ -49,6 +49,7 @@ declare global {
       "CloudFront-Viewer-Country"?: string;
       Host?: string;
       host?: string;
+      cookie?: string;
       "Upgrade-Insecure-Requests"?: string;
       "User-Agent"?: string;
       "user-agent"?: string;
