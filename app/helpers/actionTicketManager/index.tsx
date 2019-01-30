@@ -35,7 +35,7 @@ class ActionTicketManager {
   }
 
   public trackTicket(params: ActionTicketParams) {
-    if (!EnvChecker.isOnServer() && EnvChecker.isProdBrowser()) {
+    if (!EnvChecker.isOnServer()) {
       this.checkSessionAlive();
       const ticket = new ActionTicket(params);
       this.addToQueue([ticket]);
@@ -156,7 +156,7 @@ class ActionTicketManager {
 store.addPlugin(expirePlugin);
 const actionTicketManager = new ActionTicketManager();
 
-if (!EnvChecker.isOnServer() && EnvChecker.isProdBrowser()) {
+if (!EnvChecker.isOnServer()) {
   setInterval(() => {
     actionTicketManager.sendTickets();
   }, TIME_INTERVAL_TO_SEND_TICKETS);
