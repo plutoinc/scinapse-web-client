@@ -6,8 +6,10 @@ import * as distanceInWordsToNow from "date-fns/distance_in_words_to_now";
 import * as parse from "date-fns/parse";
 import { denormalize } from "normalizr";
 import { Helmet } from "react-helmet";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { AppState } from "../../reducers";
 import CollectionPaperItem from "./collectionPaperItem";
+import TransparentButton from "../../components/common/transparentButton";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import MobilePagination from "../common/mobilePagination";
 import DesktopPagination from "../common/desktopPagination";
@@ -22,13 +24,18 @@ import Footer from "../layouts/footer";
 import Icon from "../../icons";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from "../common/sortBox";
-import { getPapers } from "./actions";
+import { getPapers, openShareDropdown, closeShareDropdown } from "./actions";
 import { LayoutState, UserDevice } from "../layouts/records";
 import ScinapseInput from "../common/scinapseInput";
 import formatNumber from "../../helpers/formatNumber";
 import restoreScroll from "../../helpers/scrollRestoration";
+import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 import ErrorPage from "../error/errorPage";
 const styles = require("./collectionShow.scss");
+
+const FACEBOOK_SHARE_URL = "http://www.facebook.com/sharer/sharer.php?u=";
+const TWITTER_SHARE_URL = "https://twitter.com/intent/tweet?url=";
 
 function mapStateToProps(state: AppState) {
   return {
@@ -261,35 +268,150 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     );
   };
 
+  private getCollectionShareBtns = () => {
+    const { collection } = this.props;
+    return collection ? (
+      <ClickAwayListener onClickAway={this.handleToggleShareDropdown}>
+        <div className={styles.shareAreaWrapper}>
+          <span className={styles.shareGuideMessage}>Share this Collection to SNS!</span>
+          <div className={styles.shareBtnsWrapper}>
+            <a
+              className={styles.shareBtn}
+              onClick={() => {
+                this.getPageToSharing("COPIED", collection.id);
+              }}
+            >
+              <Icon icon="LINK" className={styles.shareIcon} />
+            </a>
+            <a
+              className={styles.shareBtn}
+              target="_blank"
+              rel="noopener"
+              onClick={() => {
+                this.getPageToSharing("FACEBOOK", collection.id);
+              }}
+            >
+              <Icon icon="FACEBOOK_LOGO" className={styles.facebookShareIcon} />
+            </a>
+            <a
+              className={styles.shareBtn}
+              target="_blank"
+              rel="noopener"
+              onClick={() => {
+                this.getPageToSharing("TWITTER", collection.id);
+              }}
+            >
+              <Icon icon="TWITTER_LOGO" className={styles.twitterShareIcon} />
+            </a>
+          </div>
+        </div>
+      </ClickAwayListener>
+    ) : null;
+  };
+
+  private handleActionTicketInShared = (platform: string, id: number) => {
+    ActionTicketManager.trackTicket({
+      pageType: "collectionShow",
+      actionType: "fire",
+      actionArea: "shareBox",
+      actionTag: "collectionSharing",
+      actionLabel: `${platform}, ${id}`,
+    });
+  };
+
+  private getPageToSharing = (platform: string, id: number) => {
+    switch (platform) {
+      case "COPIED":
+        copySelectedTextToClipboard(`https://scinapse.io/collections/${id}`);
+        this.handleActionTicketInShared(platform, id);
+        break;
+      case "FACEBOOK":
+        window.open(`${FACEBOOK_SHARE_URL}https://scinapse.io/collections/${id}`, "_blank", "width=600, height=400");
+        this.handleActionTicketInShared(platform, id);
+        break;
+      case "TWITTER":
+        window.open(`${TWITTER_SHARE_URL}https://scinapse.io/collections/${id}`, "_blank", "width=600, height=400");
+        this.handleActionTicketInShared(platform, id);
+        break;
+      default:
+        break;
+    }
+  };
+
   private getCollectionControlBtns = () => {
-    const { currentUser, collection } = this.props;
+    const { currentUser, collection, collectionShow } = this.props;
+
+    const collectionShareButton = (
+      <TransparentButton
+        style={{
+          width: "103px",
+          height: "36px",
+          fontWeight: "bold",
+          padding: "0 16px 0 8px",
+          marginTop: "4px",
+        }}
+        iconStyle={{
+          marginRight: "8px",
+          width: "20px",
+          height: "16px",
+          color: "#666d7c",
+        }}
+        onClick={() => {
+          this.handleToggleShareDropdown();
+        }}
+        gaCategory="Collection Show"
+        gaAction="Click Share Collection"
+        content="Share"
+        icon="MASK"
+      />
+    );
 
     if (collection && currentUser.isLoggedIn && collection.createdBy.id === currentUser.id && !collection.isDefault) {
       return (
         <div>
-          <button
-            className={styles.collectionControlBtn}
+          <TransparentButton
+            style={{
+              width: "103px",
+              height: "36px",
+              fontWeight: "bold",
+              padding: "0 16px 0 8px",
+            }}
+            iconStyle={{
+              marginRight: "8px",
+              width: "20px",
+              height: "20px",
+              color: "#666d7c",
+            }}
             onClick={() => {
               GlobalDialogManager.openEditCollectionDialog(collection);
             }}
-          >
-            <Icon icon="PEN" />
-            <span>Edit</span>
-          </button>
-          {/* <button
-            onClick={() => {
-              GlobalDialogManager.openCollectionEditDialog(collection);
-            }}
-            className={styles.collectionControlBtn}
-          >
-            <Icon icon="TRASH_CAN" />
-            <span>Delete</span>
-          </button> */}
+            gaCategory="Collection Show"
+            gaAction="Click Edit Collection"
+            content="Edit"
+            icon="PEN"
+          />
+          {collectionShareButton}
+          {collectionShow.isShareDropdownOpen ? this.getCollectionShareBtns() : null}
         </div>
       );
     }
 
-    return null;
+    return (
+      <div>
+        <div>{collectionShareButton}</div>
+        <div>{collectionShow.isShareDropdownOpen ? this.getCollectionShareBtns() : null}</div>
+      </div>
+    );
+  };
+
+  private handleToggleShareDropdown = () => {
+    const { dispatch, collectionShow } = this.props;
+
+    if (collectionShow.isShareDropdownOpen) {
+      dispatch(closeShareDropdown());
+    } else {
+      dispatch(openShareDropdown());
+    }
   };
 
   private getPageHelmet = () => {

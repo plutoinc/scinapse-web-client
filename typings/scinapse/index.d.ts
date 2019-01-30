@@ -52,6 +52,7 @@ declare namespace Scinapse {
       | "queryInJournal"
       | "authorEntityItem"
       | "paperSorting"
+      | "collectionSharing"
       | "";
 
     type ActionArea =
@@ -69,7 +70,8 @@ declare namespace Scinapse {
       | "authorDialog"
       | "allPublications"
       | "authorEntity"
-      | "sortBox";
+      | "sortBox"
+      | "shareBox";
 
     type PageType =
       | "paperShow"
