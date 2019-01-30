@@ -30,7 +30,7 @@ import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
-const LAST_UPDATE_DATE = "2018-09-28T11:14:57.119Z";
+const LAST_UPDATE_DATE = "2019-01-30T08:13:33.079Z";
 let ticking = false;
 
 function mapStateToProps(state: AppState) {
@@ -138,7 +138,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
   private checkTopToast = () => {
     const old = new Date(LAST_UPDATE_DATE);
-    const comparisonDate = addDays(old, 3);
+    const comparisonDate = addDays(old, 5);
     const now = new Date();
     const updateIsStaled = isAfter(now, comparisonDate);
     const alreadyOpenedTopToast = !!Cookies.get("alreadyOpenedTopToast");
