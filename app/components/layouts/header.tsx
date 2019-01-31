@@ -145,10 +145,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     const shouldOpenToast = !updateIsStaled && !alreadyOpenedTopToast;
 
     if (shouldOpenToast) {
-      trackEvent({
-        category: "Top Toast Action",
-        action: "Open Update Top Toast",
-      });
       this.setState(prevState => ({
         ...prevState,
         openTopToast: true,
