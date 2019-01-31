@@ -220,7 +220,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
 
     const relatedKeywordItems = keywordList.filter(k => queryParams.query.indexOf(k) === -1).map((keyword, idx) => (
       <Link
-        key={idx}
+        key={`keyword-${idx}`}
         to={{
           pathname: "/search",
           search: PapersQueryFormatter.stringifyPapersQuery({
