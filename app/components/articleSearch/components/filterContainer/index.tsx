@@ -428,7 +428,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
   const pastFosIdList = articleSearchState.fosFilter;
   const targetFOSList = articleSearchState.isFOSFilterExpanding ? fosList : fosList.slice(0, 5);
 
-  const fosItems = targetFOSList.map(fos => {
+  const fosItems = targetFOSList.slice(0, 10).map(fos => {
     const alreadyHasFOSInFilter = pastFosIdList.includes(fos!.id);
     const newFOSFilterArray = toggleElementFromArray<number>(fos!.id, pastFosIdList);
 

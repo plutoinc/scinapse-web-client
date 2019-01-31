@@ -102,6 +102,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
           <div className={styles.articleSearchContainer}>
             {this.getResultHelmet(queryParams.query)}
             <div className={styles.innerContainer}>
+              {this.getRelatedKeywordBox()}
               {this.getSuggestionKeywordBox()}
               {this.getAuthorEntitiesSection()}
               <div className={styles.searchSummary}>
@@ -205,6 +206,38 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
       });
 
     return <div className={styles.authorItemsWrapper}>{authorItems}</div>;
+  };
+
+  private getRelatedKeywordBox = () => {
+    const { articleSearchState } = this.props;
+    const queryParams = this.getUrlDecodedQueryParamsObject();
+
+    const keywordList = articleSearchState.aggregationData ? articleSearchState.aggregationData.keywordList : [];
+
+    if (keywordList.length === 0) {
+      return null;
+    }
+
+    const relatedKeywordItems = keywordList.filter(k => queryParams.query.indexOf(k) === -1).map((keyword, idx) => (
+      <div className={styles.relatedKeywords}>
+        <Link
+          key={`keyword-${idx}`}
+          to={{
+            pathname: "/search",
+            search: PapersQueryFormatter.stringifyPapersQuery({
+              query: `${queryParams.query} ${keyword.toLowerCase()}`,
+              sort: "RELEVANCE",
+              filter: {},
+              page: 1,
+            }),
+          }}
+        >
+          {keyword.toLowerCase()}
+        </Link>
+      </div>
+    ));
+
+    return <div className={styles.relatedKeywordsContainer}>{relatedKeywordItems}</div>;
   };
 
   private getResultHelmet = (query: string) => {

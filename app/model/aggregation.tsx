@@ -30,6 +30,7 @@ interface AggregationJournal {
 interface AggregationFos {
   id: number;
   name: string;
+  level: number;
   docCount: number;
 }
 
@@ -56,4 +57,5 @@ export interface AggregationData {
   journals: AggregationJournal[];
   impactFactors: ImpactFactor[];
   years: Year[];
+  keywordList: string[];
 }
