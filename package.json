@@ -142,6 +142,7 @@
     "react-helmet": "5.2.0",
     "react-intersection-observing-infinity-scroll": "^1.0.0",
     "react-jss": "8.5.1",
+    "react-pdf": "^4.0.2",
     "react-redux": "5.0.6",
     "react-router-dom": "4.3.1",
     "react-truncate": "2.4.0",

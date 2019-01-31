@@ -5,6 +5,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
 import * as classNames from "classnames";
 import Helmet from "react-helmet";
+import PDFViewer from "../../components/pdfViewer";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
@@ -84,6 +85,8 @@ interface PaperShowStates
       isRightBoxSmall: boolean;
       isRightBoxFixed: boolean;
       isTouchFooter: boolean;
+
+      isLoadPDF: boolean;
     }> {}
 
 @withStyles<typeof PaperShow>(styles)
@@ -104,6 +107,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isRightBoxSmall: false,
       isRightBoxFixed: false,
       isTouchFooter: false,
+      isLoadPDF: false,
     };
   }
 
@@ -190,7 +194,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public render() {
     const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers } = this.props;
-    const { isOnCited, isOnRef, isAboveRef, isRightBoxFixed, isRightBoxSmall, isTouchFooter } = this.state;
+    const { isOnCited, isOnRef, isAboveRef, isRightBoxFixed, isRightBoxSmall, isTouchFooter, isLoadPDF } = this.state;
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -207,6 +211,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if (!paper) {
       return null;
     }
+
+    const pdfSourceRecord = getPDFLink(paper.urls);
 
     return (
       <div className={styles.container}>
@@ -248,8 +254,17 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   isFixed={isOnRef && !isOnCited}
                   isOnRef={isAboveRef || isOnRef}
                   isOnCited={isOnCited}
+                  showFullText={isLoadPDF}
                 />
               </div>
+
+              <PDFViewer
+                onLoadSuccess={() => {
+                  this.setState(prevState => ({ ...prevState, isLoadPDF: true }));
+                }}
+                filename={paper.title}
+                pdfURL={pdfSourceRecord && pdfSourceRecord.url}
+              />
 
               <div className={styles.references}>
                 <ReferencePapers
@@ -272,6 +287,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     isFixed={!isOnRef && isOnCited}
                     isOnRef={false}
                     isOnCited={true}
+                    showFullText={isLoadPDF}
                   />
                 </div>
               </div>
