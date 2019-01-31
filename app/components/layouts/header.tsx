@@ -14,7 +14,7 @@ import Icon from "../../icons";
 import { signOut } from "../auth/actions";
 import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
-import { trackAction, trackDialogView, trackAndOpenLink, trackEvent } from "../../helpers/handleGA";
+import { trackAction, trackDialogView, trackEvent } from "../../helpers/handleGA";
 import { HeaderProps } from "./types/header";
 import { withStyles } from "../../helpers/withStylesHelper";
 import EnvChecker from "../../helpers/envChecker";
