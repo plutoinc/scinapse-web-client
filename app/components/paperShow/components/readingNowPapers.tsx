@@ -73,10 +73,6 @@ class ReadingNowPaperList extends React.PureComponent<ReadingNowPaperListProps, 
       </div>
     );
   }
-
-  private fetchReadingNowPapers = () => {
-    dispatch(getReadingNowPapers({ paperId, cancelToken: params.cancelToken }));
-  };
 }
 
 function getPaperIds(state: AppState) {
