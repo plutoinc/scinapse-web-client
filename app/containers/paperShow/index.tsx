@@ -19,7 +19,6 @@ import OtherPaperListFromAuthor from "../otherPapersFromAuthor";
 import PaperShowActionBar from "../paperShowActionBar";
 import FOSList from "../../components/paperShow/components/fosList";
 import ReferencePapers from "../../components/paperShow/components/relatedPapers";
-import SearchKeyword from "../../components/paperShow/components/searchKeyword";
 import PaperShowRefCitedTab from "../../components/paperShow/refCitedTab";
 import { Footer } from "../../components/layouts";
 import { Configuration } from "../../reducers/configuration";
@@ -31,7 +30,6 @@ import { LayoutState, UserDevice } from "../../components/layouts/records";
 import { trackEvent } from "../../helpers/handleGA";
 import { getMemoizedPaper, getReferencePapers, getCitedPapers } from "./select";
 import { formulaeToHTMLStr } from "../../helpers/displayFormula";
-import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
 import { getPDFLink } from "../../helpers/getPDFLink";
 import restoreScroll from "../../helpers/scrollRestoration";
 import ErrorPage from "../../components/error/errorPage";
@@ -306,8 +304,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             <OtherPaperListFromAuthor />
             <RelatedPaperList />
             <ReadingNowPapers paperId={paper.id} cancelToken={this.cancelToken.token} />
-            <SearchKeyword FOSList={paper.fosList} />
-            <PlutoBlogPosting paperId={paperShow.paperId} />
           </div>
         </div>
       </div>
