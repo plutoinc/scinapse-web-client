@@ -129,12 +129,12 @@ exports[`HomeContainer Component should render content correctly 1`] = `
         <div
           className="featureName"
         >
-          Powered by community
+          Save to Collection
         </div>
         <div
           className="featureContents"
         >
-          Comments on the paper make it easy to find relevant papers for my research and comprehend them better
+          When you meet interesting papers, just save it to your Collection.
         </div>
       </div>
     </div>

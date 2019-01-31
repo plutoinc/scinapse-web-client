@@ -16,7 +16,7 @@ class TopToastBar extends React.PureComponent<TopToastBarProps> {
         <div className={styles.container}>
           <span className={styles.content}>Scinapse Grows Everyday 😎</span>
           <a
-            href="https://www.notion.so/pluto/Scinapse-updates-6a05160afde44ba1a6ed312899c23dae"
+            href="https://www.notion.so/pluto/Scinapse-Updates-6a05160afde44ba1a6ed312899c23dae"
             target="_blank"
             rel="noopener"
             className={styles.updateLinkBtn}

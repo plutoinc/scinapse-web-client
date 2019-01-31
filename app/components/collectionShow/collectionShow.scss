@@ -231,6 +231,7 @@ $semi_full_width: 997px;
   .shareBtn {
     width: 40px;
     height: 40px;
+    cursor: pointer;
     border-radius: 4px;
     background-color: $gray8;
     display: inline-flex;
@@ -251,7 +252,6 @@ $semi_full_width: 997px;
   }
 
   .shareIcon {
-    cursor: pointer;
     width: 24px;
     height: 24px;
 
