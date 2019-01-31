@@ -67,8 +67,6 @@ class InnerSearchBox extends React.PureComponent<InnerSearchBoxProps> {
                 page: 1,
                 filter: {},
               })}`}
-              target="_blank"
-              rel="noopener"
               onClick={() => {
                 ActionTicketManager.trackTicket({
                   pageType: "paperShow",
