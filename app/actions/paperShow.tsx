@@ -11,6 +11,7 @@ import alertToast from "../helpers/makePlutoToastAction";
 import { trackEvent } from "../helpers/handleGA";
 import PlutoAxios from "../api/pluto";
 import { CommonError } from "../model/error";
+import ReadingPaperAPI from "../api/readingPaper";
 
 export function clearPaperShowState() {
   return ActionCreators.clearPaperShowState();
@@ -229,6 +230,22 @@ export function deleteComment(params: DeleteCommentParams) {
         message: `Failed to delete the comment. ${err}`,
       });
       dispatch(ActionCreators.failedToDeleteComment());
+    }
+  };
+}
+
+export function getReadingNowPapers(params: GetPaperParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch(ActionCreators.startToGetReadingNowPapers());
+    try {
+      const responseData = await ReadingPaperAPI.getReadingNowPapers(params);
+
+      dispatch(ActionCreators.addEntity(responseData));
+      dispatch(ActionCreators.succeededToGetReadingNowPapers({ paperIds: responseData.result }));
+    } catch (err) {
+      if (!axios.isCancel(err)) {
+        dispatch(ActionCreators.failedToGetReadingNowPapers());
+      }
     }
   };
 }

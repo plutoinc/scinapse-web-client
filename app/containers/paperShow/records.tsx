@@ -24,6 +24,7 @@ export interface PaperShowState
       isFailedToPostingComment: boolean;
 
       relatedPaperIds: number[];
+      readingNowPaperIds: number[];
       otherPaperIdsFromAuthor: number[];
       referencePaperIds: number[];
       citedPaperIds: number[];
@@ -57,6 +58,7 @@ export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
   isFailedToPostingComment: false,
 
   relatedPaperIds: [],
+  readingNowPaperIds: [],
   otherPaperIdsFromAuthor: [],
 
   hasFailedToLoadMyCollections: false,
