@@ -7,6 +7,7 @@ import {
   getReferencePapers,
   getRelatedPapers,
   getMyCollections,
+  getReadingNowPapers,
 } from "../../actions/paperShow";
 import { CurrentUser } from "../../model/currentUser";
 import { PaperShowPageQueryParams, PaperShowMatchParams } from ".";
@@ -28,6 +29,7 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
 
     promiseArray.push(dispatch(getPaper({ paperId, cancelToken: params.cancelToken })));
     promiseArray.push(dispatch(getRelatedPapers({ paperId, cancelToken: params.cancelToken })));
+    promiseArray.push(dispatch(getReadingNowPapers({ paperId, cancelToken: params.cancelToken })));
     promiseArray.push(dispatch(fetchCitedPaperData(paperId, queryParamsObject["cited-page"], params.cancelToken)));
     promiseArray.push(dispatch(fetchRefPaperData(paperId, queryParamsObject["ref-page"], params.cancelToken)));
 
