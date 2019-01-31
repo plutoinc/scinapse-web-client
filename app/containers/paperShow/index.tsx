@@ -35,6 +35,7 @@ import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPos
 import { getPDFLink } from "../../helpers/getPDFLink";
 import restoreScroll from "../../helpers/scrollRestoration";
 import ErrorPage from "../../components/error/errorPage";
+import ReadingNowPapers from "../../components/paperShow/components/readingNowPapers";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
@@ -304,6 +305,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             <CollectionNoteList />
             <OtherPaperListFromAuthor />
             <RelatedPaperList />
+            <ReadingNowPapers paperId={paper.id} cancelToken={this.cancelToken.token} />
             <SearchKeyword FOSList={paper.fosList} />
             <PlutoBlogPosting paperId={paperShow.paperId} />
           </div>
