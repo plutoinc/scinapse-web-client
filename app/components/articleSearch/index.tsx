@@ -102,8 +102,8 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
           <div className={styles.articleSearchContainer}>
             {this.getResultHelmet(queryParams.query)}
             <div className={styles.innerContainer}>
-              {this.getSuggestionKeywordBox()}
               {this.getRelatedKeywordBox()}
+              {this.getSuggestionKeywordBox()}
               {this.getAuthorEntitiesSection()}
               <div className={styles.searchSummary}>
                 <span className={styles.searchPage}>
@@ -219,23 +219,25 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     }
 
     const relatedKeywordItems = keywordList.filter(k => queryParams.query.indexOf(k) === -1).map((keyword, idx) => (
-      <Link
-        key={`keyword-${idx}`}
-        to={{
-          pathname: "/search",
-          search: PapersQueryFormatter.stringifyPapersQuery({
-            query: `${queryParams.query} ${keyword}`,
-            sort: "RELEVANCE",
-            filter: {},
-            page: 1,
-          }),
-        }}
-      >
-        {keyword}
-      </Link>
+      <div className={styles.relatedKeywords}>
+        <Link
+          key={`keyword-${idx}`}
+          to={{
+            pathname: "/search",
+            search: PapersQueryFormatter.stringifyPapersQuery({
+              query: `${queryParams.query} ${keyword.toLowerCase()}`,
+              sort: "RELEVANCE",
+              filter: {},
+              page: 1,
+            }),
+          }}
+        >
+          {keyword.toLowerCase()}
+        </Link>
+      </div>
     ));
 
-    return <div>{relatedKeywordItems}</div>;
+    return <div className={styles.relatedKeywordsContainer}>{relatedKeywordItems}</div>;
   };
 
   private getResultHelmet = (query: string) => {
