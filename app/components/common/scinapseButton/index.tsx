@@ -21,11 +21,24 @@ interface ScinapseButtonProps {
   disabled?: boolean;
   isLoading?: boolean;
   disableGA?: boolean;
+  downloadAttr?: boolean;
+  target?: string;
 }
 
 class ScinapseButton extends React.PureComponent<ScinapseButtonProps> {
   public render() {
-    const { type, content, isReactRouterLink, isExternalLink, to, href, style, disabled } = this.props;
+    const {
+      type,
+      content,
+      isReactRouterLink,
+      isExternalLink,
+      to,
+      href,
+      style,
+      disabled,
+      target,
+      downloadAttr,
+    } = this.props;
 
     if (isReactRouterLink && to) {
       return (
@@ -35,7 +48,14 @@ class ScinapseButton extends React.PureComponent<ScinapseButtonProps> {
       );
     } else if (isExternalLink && href) {
       return (
-        <a style={style} onClick={this.handleClickEvent} className={styles.button} href={href}>
+        <a
+          target={target}
+          download={downloadAttr}
+          style={style}
+          onClick={this.handleClickEvent}
+          className={styles.button}
+          href={href}
+        >
           {content}
         </a>
       );
