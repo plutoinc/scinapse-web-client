@@ -14,15 +14,19 @@
     display: flex;
   }
 
-  .journal {
+  .venue {
     display: flex;
   }
 
-  .journalName {
+  .venueNameReadonly {
     color: $gray9;
     font-weight: 400;
-    text-decoration: underline;
     margin-right: 3px;
+  }
+
+  .venueName {
+    @extend .venueNameReadonly;
+    text-decoration: underline;
     &:hover {
       color: $black1;
     }

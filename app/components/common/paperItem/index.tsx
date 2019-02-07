@@ -3,7 +3,7 @@ import { CurrentUser } from "../../../model/currentUser";
 import Abstract from "./abstract";
 import PaperActionButtons from "./paperActionButtons";
 import Title from "./title";
-import JournalAndAuthors from "./journalAndAuthors";
+import VenueAndAuthors from "./venueAndAuthors";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Paper } from "../../../model/paper";
 import EnvChecker from "../../../helpers/envChecker";
@@ -72,7 +72,7 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
       handleToggleRepresentative,
       actionArea,
     } = this.props;
-    const { title, titleHighlighted, authors, year, doi, urls, journal } = paper;
+    const { title, titleHighlighted, authors, year, doi, urls, journal, conferenceInstance } = paper;
 
     const abstract = !omitAbstract ? (
       <Abstract abstract={paper.abstractHighlighted || paper.abstract} searchQueryText={searchQueryText} />
@@ -115,11 +115,12 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
             searchQueryText={searchQueryText}
             source={source}
           />
-          <JournalAndAuthors
+          <VenueAndAuthors
             pageType={pageType}
             actionArea={actionArea}
             paper={paper}
             journal={journal}
+            conferenceInstance={conferenceInstance}
             year={year}
             authors={authors}
           />
