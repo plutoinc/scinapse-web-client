@@ -11,7 +11,6 @@ import alertToast from "../helpers/makePlutoToastAction";
 import { trackEvent } from "../helpers/handleGA";
 import PlutoAxios from "../api/pluto";
 import { CommonError } from "../model/error";
-import ReadingPaperAPI from "../api/readingPaper";
 
 export function clearPaperShowState() {
   return ActionCreators.clearPaperShowState();
@@ -238,7 +237,7 @@ export function getReadingNowPapers(params: GetPaperParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToGetReadingNowPapers());
     try {
-      const responseData = await ReadingPaperAPI.getReadingNowPapers(params);
+      const responseData = await PaperAPI.getReadingNowPapers(params);
 
       dispatch(ActionCreators.addEntity(responseData));
       dispatch(ActionCreators.succeededToGetReadingNowPapers({ paperIds: responseData.result }));

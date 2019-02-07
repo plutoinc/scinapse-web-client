@@ -34,11 +34,14 @@ import { getPDFLink } from "../../helpers/getPDFLink";
 import restoreScroll from "../../helpers/scrollRestoration";
 import ErrorPage from "../../components/error/errorPage";
 import ReadingNowPapers from "../../components/paperShow/components/readingNowPapers";
+import getExpUserType from "../../helpers/getExpUserType";
+import EnvChecker from "../../helpers/envChecker";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10);
 const SIDE_NAVIGATION_BOTTOM_PADDING = parseInt(styles.sideNavigationBottomPadding, 10);
+const EXP_USER = getExpUserType(EnvChecker.isOnServer() ? "" : document.cookie);
 
 let ticking = false;
 
