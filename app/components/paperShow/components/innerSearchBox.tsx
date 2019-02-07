@@ -42,7 +42,7 @@ class InnerSearchBox extends React.PureComponent<InnerSearchBoxProps> {
     return (
       <div className={styles.innerSearchBoxWrapper}>
         <>
-          <h3 className={styles.innerSearchBoxTitle}>Search by Your Keyword</h3>
+          <h3 className={styles.innerSearchBoxTitle}>You will get better papers this time</h3>
         </>
         {this.getSearchBox()}
         <div className={styles.fosWrapper}>
@@ -102,7 +102,7 @@ class InnerSearchBox extends React.PureComponent<InnerSearchBoxProps> {
       <InputWithSuggestionList
         defaultValue={query}
         onChange={this.changeSearchInput}
-        placeholder="Search papers by title, author, doi or keyword"
+        placeholder="+2 million scholars searched in Scinapse during 2018!"
         handleSubmit={this.handleSearchPush}
         suggestionList={layout.completionKeywordList.map(keyword => keyword.keyword).slice(0, 3)}
         wrapperClassName={styles.searchWrapper}
