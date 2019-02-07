@@ -1,4 +1,8 @@
 export function camelCaseKeys(rawObject: any): any {
+  if (!rawObject) {
+    return rawObject;
+  }
+
   const newObject: any = {};
   const calculatedObject = { ...rawObject };
 
