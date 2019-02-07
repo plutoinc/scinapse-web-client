@@ -1,69 +1,80 @@
 import * as React from "react";
-import { createSelector } from "reselect";
-import { connect, Dispatch } from "react-redux";
+import { CancelToken } from "axios";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import PaperShowReadingNowPapersItem from "./readingNowPapersItem";
 import { Paper } from "../../../model/paper";
-import { AppState } from "../../../reducers";
-import { getPaperEntities, getDenormalizedPapers } from "../../../selectors/papersSelector";
-import { CancelToken } from "axios";
-import { getReadingNowPapers } from "../../../actions/paperShow";
+import PaperAPI from "../../../api/paper";
 const styles = require("./readingNowPapers.scss");
 
 interface ReadingNowPaperListState {
-  readingPaperList: Paper[];
+  page: number;
+  rawPaperList: Paper[];
+  paperListToShow: Paper[];
 }
 
 interface ReadingNowPaperListProps {
-  paperList: Paper[];
   paperId: number;
   cancelToken: CancelToken;
-  dispatch: Dispatch<any>;
 }
 
 @withStyles<typeof ReadingNowPaperList>(styles)
 class ReadingNowPaperList extends React.PureComponent<ReadingNowPaperListProps, ReadingNowPaperListState> {
   constructor(props: ReadingNowPaperListProps) {
     super(props);
-    this.state = { readingPaperList: [this.props.paperList[0]] };
+    this.state = {
+      page: 0,
+      rawPaperList: [],
+      paperListToShow: [],
+    };
   }
 
   public componentDidMount() {
-    const { paperList } = this.props;
-
-    const rawPaperList = paperList;
-    let calculatedPaperList: Paper[] = [];
+    // 1. isFirstCall true / index 0 - > 1개
+    // 2. isFirstCall true / index 1 - > 2개
+    // 3. 그게 아니면 3개씩
+    // 4. isFirstCall false 면 무조건 3개
+    const { paperId } = this.props;
+    this.fetchReadingNowPaperList(paperId);
 
     setInterval(() => {
-      calculatedPaperList = this.getCalculatedReadingPaperList(rawPaperList.splice(0, 1), calculatedPaperList);
-      console.log(paperList);
-      this.setState({ readingPaperList: calculatedPaperList });
-      // if (startIndex === 0) {
-      //   this.setState({ readingPaperList: calculatedPaperList });
-      // } else if (startIndex === 1) {
-      //   this.setState({ readingPaperList: paperList.slice(0, startIndex + 1).reverse() });
-      //   startIndex++;
-      // } else {
-      //   this.setState({ readingPaperList: paperList.slice(startIndex - 2, startIndex + 1).reverse() });
-      //   startIndex++;
-      // }
+      this.setState(prevState => {
+        if (prevState.paperListToShow.length <= 2) {
+          return {
+            ...prevState,
+            paperListToShow: prevState.rawPaperList.slice(0, prevState.paperListToShow.length + 1),
+          };
+        } else {
+          const index = prevState.rawPaperList.findIndex(paper => {
+            return paper.id === prevState.paperListToShow[0].id;
+          });
 
-      // if (startIndex + 2 === paperList.length) {
-      //   startIndex = 0;
-      //   dispatch(getReadingNowPapers({ paperId, cancelToken }));
-      // }
+          if (index === prevState.rawPaperList.length - 3 - 1) {
+            this.fetchReadingNowPaperList(paperId);
+          }
+
+          return {
+            ...prevState,
+            rawPaperList: prevState.rawPaperList.slice(1),
+            paperListToShow: prevState.rawPaperList.slice(index + 1, index + 3 + 1),
+          };
+        }
+      });
     }, Math.random() * 1800 + 1200);
   }
 
+  // public componentWillUnmount() {
+  //   //TODO: clear Interval
+  // }
+
   public render() {
-    const { readingPaperList } = this.state;
-    const { paperList } = this.props;
+    const { paperListToShow } = this.state;
+    console.log(paperListToShow);
 
-    if (!paperList || paperList.length === 0) {
-      return null;
-    }
+    // if (!paperList || paperList.length === 0) {
+    //   return null;
+    // }
 
-    const papers = readingPaperList.map((paper, index) => {
+    const papers = paperListToShow.map((paper, index) => {
       if (paper) {
         return (
           <PaperShowReadingNowPapersItem index={index} actionArea="readingNowPaperList" key={paper.id} paper={paper} />
@@ -79,30 +90,21 @@ class ReadingNowPaperList extends React.PureComponent<ReadingNowPaperListProps, 
     );
   }
 
-  private getCalculatedReadingPaperList = (newPaper: Paper[], calculatedPaperList: Paper[]) => {
-    if (newPaper) {
-      switch (calculatedPaperList.length) {
-        case 0 || 1 || 2:
-          calculatedPaperList.push(newPaper[0]);
-          return calculatedPaperList;
-        default:
-          return calculatedPaperList;
-      }
+  private fetchReadingNowPaperList = async (paperId: number) => {
+    const { cancelToken } = this.props;
+
+    try {
+      const papers = await PaperAPI.getReadingNowPapers({ paperId, cancelToken });
+      console.log(papers);
+      this.setState(prevState => ({
+        ...prevState,
+        page: prevState.page + 1,
+        rawPaperList: [...prevState.rawPaperList, ...papers],
+      }));
+    } catch (err) {
+      console.log(err);
     }
-    return calculatedPaperList;
   };
 }
 
-function getPaperIds(state: AppState) {
-  return state.paperShow.readingNowPaperIds;
-}
-
-const getMemoizedRelatedPapers = createSelector([getPaperIds, getPaperEntities], getDenormalizedPapers);
-
-function mapStateToProps(state: AppState) {
-  return {
-    paperList: getMemoizedRelatedPapers(state),
-  };
-}
-
-export default connect(mapStateToProps)(ReadingNowPaperList);
+export default ReadingNowPaperList;
