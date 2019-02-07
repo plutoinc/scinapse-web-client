@@ -41,7 +41,9 @@ class InnerSearchBox extends React.PureComponent<InnerSearchBoxProps> {
   public render() {
     return (
       <div className={styles.innerSearchBoxWrapper}>
-        <h3 className={styles.innerSearchBoxTitle}>Search by Your Keyword</h3>
+        <>
+          <h3 className={styles.innerSearchBoxTitle}>Search by Your Keyword</h3>
+        </>
         {this.getSearchBox()}
         <div className={styles.fosWrapper}>
           <small className={styles.fosGuideContent}>Or are you looking for…</small>
