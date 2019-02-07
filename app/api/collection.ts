@@ -7,7 +7,7 @@ import { PaperInCollection, paperInCollectionSchema } from "../model/paperInColl
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../components/common/sortBox";
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from "./author";
 import { NormalizedDataWithPaginationV2, RawPaginationResponseV2 } from "./types/common";
-const camelcaseKeys = require("camelcase-keys");
+import { camelCaseKeys } from "../helpers/camelCaseKeys";
 
 export interface UpdatePaperNoteToCollectionParams {
   paperId: number;
@@ -86,7 +86,7 @@ class CollectionAPI extends PlutoAxios {
         throw new Error("Collection API's getPapers method is broken.");
       }
     });
-    const camelizedData = camelcaseKeys(resData.data, { deep: true });
+    const camelizedData = camelCaseKeys(resData.data);
     const normalizedData = normalize(camelizedData.content, [paperInCollectionSchema]);
     return {
       entities: normalizedData.entities,
@@ -122,7 +122,7 @@ class CollectionAPI extends PlutoAxios {
     const res = await this.put(`/collections/${params.collectionId}/papers/${params.paperId}`, {
       note: params.note,
     });
-    const rawResData: UpdatePaperNoteResponse = camelcaseKeys(res.data.data, { deep: true });
+    const rawResData: UpdatePaperNoteResponse = camelCaseKeys(res.data.data);
     return rawResData;
   }
 
@@ -134,7 +134,7 @@ class CollectionAPI extends PlutoAxios {
     result: number;
   }> {
     const res = await this.get(`/collections/${collectionId}`, { cancelToken });
-    const camelizedRes = camelcaseKeys(res.data.data, { deep: true });
+    const camelizedRes = camelCaseKeys(res.data.data);
     return normalize(camelizedRes, collectionSchema);
   }
 
@@ -149,7 +149,7 @@ class CollectionAPI extends PlutoAxios {
       title,
       description,
     });
-    const camelizedRes = camelcaseKeys(res.data.data, { deep: true });
+    const camelizedRes = camelCaseKeys(res.data.data);
     const normalizedData = normalize(camelizedRes, collectionSchema);
     return normalizedData;
   }
@@ -170,7 +170,7 @@ class CollectionAPI extends PlutoAxios {
       title: params.title,
       description: params.description,
     });
-    const camelizedRes = camelcaseKeys(res.data.data, { deep: true });
+    const camelizedRes = camelCaseKeys(res.data.data);
     const normalizedData = normalize(camelizedRes, collectionSchema);
     return normalizedData;
   }

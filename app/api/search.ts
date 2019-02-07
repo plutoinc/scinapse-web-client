@@ -6,7 +6,7 @@ import { AggregationData } from "../model/aggregation";
 import { Suggestion } from "../model/suggestion";
 import { BasePaperAuthor } from "../model/author";
 import { Affiliation } from "../model/affiliation";
-const camelcaseKeys = require("camelcase-keys");
+import { camelCaseKeys } from "../helpers/camelCaseKeys";
 
 export interface SearchParams {
   query: string;
@@ -51,7 +51,7 @@ class SearchAPI extends PlutoAxios {
       },
       cancelToken,
     });
-    const camelizedRes = camelcaseKeys(res.data, { deep: true });
+    const camelizedRes = camelCaseKeys(res.data);
     const searchRes: SearchResult = camelizedRes;
 
     return {

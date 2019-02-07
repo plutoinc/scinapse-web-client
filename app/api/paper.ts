@@ -6,7 +6,7 @@ import { GetRefOrCitedPapersParams } from "./types/paper";
 import { CommonPaginationResponsePart, PaginationResponseV2 } from "./types/common";
 import { AvailableCitationType } from "../containers/paperShow/records";
 import { PaperAuthor } from "../model/author";
-const camelcaseKeys = require("camelcase-keys");
+import { camelCaseKeys } from "../helpers/camelCaseKeys";
 
 interface GetRefOrCitedPapersBasicParams {
   size: number;
@@ -64,7 +64,7 @@ class PaperAPI extends PlutoAxios {
     cancelToken,
   }: GetAuthorsOfPaperParams): Promise<PaginationResponseV2<PaperAuthor[]>> {
     const res = await this.get(`/papers/${paperId}/authors`, { params: { page: page - 1 }, cancelToken });
-    const rawData: PaginationResponseV2<PaperAuthor[]> = camelcaseKeys(res.data, { deep: true });
+    const rawData: PaginationResponseV2<PaperAuthor[]> = camelCaseKeys(res.data);
 
     return rawData;
   }
@@ -83,7 +83,7 @@ class PaperAPI extends PlutoAxios {
       cancelToken,
     });
 
-    const camelizedRes = camelcaseKeys(getCitedPapersResponse.data, { deep: true });
+    const camelizedRes = camelCaseKeys(getCitedPapersResponse.data);
     const papers = camelizedRes.content as Paper[];
     const authorSlicedPapers = papers.map(paper => {
       return { ...paper, authors: paper.authors.slice(0, 10) };
@@ -117,7 +117,7 @@ class PaperAPI extends PlutoAxios {
       params,
       cancelToken,
     });
-    const camelizedRes = camelcaseKeys(getReferencePapersResponse.data, { deep: true });
+    const camelizedRes = camelCaseKeys(getReferencePapersResponse.data);
     const papers = camelizedRes.content as Paper[];
     const authorSlicedPapers = papers.map(paper => {
       return { ...paper, authors: paper.authors.slice(0, 10) };
@@ -147,7 +147,7 @@ class PaperAPI extends PlutoAxios {
     const getPaperResponse = await this.get(`/papers/${params.paperId}`, {
       cancelToken: params.cancelToken,
     });
-    const camelizedRes = camelcaseKeys(getPaperResponse.data, { deep: true });
+    const camelizedRes = camelCaseKeys(getPaperResponse.data);
     const paper: Paper = camelizedRes;
     const authorSlicedPaper = { ...paper, authors: paper.authors.slice(0, 10) };
     return normalize(authorSlicedPaper, paperSchema);
@@ -162,7 +162,7 @@ class PaperAPI extends PlutoAxios {
     const getPapersResponse = await this.get(`/papers/${params.paperId}/related`, {
       cancelToken: params.cancelToken,
     });
-    const camelizedRes = camelcaseKeys(getPapersResponse.data, { deep: true });
+    const camelizedRes = camelCaseKeys(getPapersResponse.data);
     const rawPapers: Paper[] = camelizedRes.data;
     const authorSlicedPapers = rawPapers.map(paper => {
       return { ...paper, authors: paper.authors.slice(0, 10) };
@@ -180,7 +180,7 @@ class PaperAPI extends PlutoAxios {
     const getPapersResponse = await this.get(`/papers/${params.paperId}/authors/${params.authorId}/related`, {
       cancelToken: params.cancelToken,
     });
-    const camelizedRes = camelcaseKeys(getPapersResponse.data, { deep: true });
+    const camelizedRes = camelCaseKeys(getPapersResponse.data);
     const rawPapers: Paper[] = camelizedRes.data;
     const authorSlicedPapers = rawPapers.map(paper => {
       return { ...paper, authors: paper.authors.slice(0, 10) };
@@ -197,7 +197,7 @@ class PaperAPI extends PlutoAxios {
 
     const rawResult: GetCitationTextRawResult = res.data.data;
 
-    return camelcaseKeys(rawResult, { deep: true });
+    return camelCaseKeys(rawResult);
   }
 }
 

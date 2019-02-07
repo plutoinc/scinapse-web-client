@@ -10,10 +10,10 @@ import { initialState } from "../../../reducers";
 import ConnectedAuthorShow from "../../../containers/connectedAuthorShow";
 import { RAW } from "../../../__mocks__";
 import { AUTHOR_SHOW_PATH } from "../../../constants/routes";
-const camelcaseKeys = require("camelcase-keys");
+import { camelCaseKeys } from "../../../helpers/camelCaseKeys";
 
 describe("ConnectedAuthorShow Component", () => {
-  const mappedAuthor = camelcaseKeys(RAW.AUTHOR, { deep: true });
+  const mappedAuthor = camelCaseKeys(RAW.AUTHOR);
   let mockStore = generateMockStore(initialState);
   let mockState: any;
 
