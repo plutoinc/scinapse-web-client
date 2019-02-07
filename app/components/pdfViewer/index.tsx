@@ -5,7 +5,9 @@ import EnvChecker from "../../helpers/envChecker";
 import { AppState } from "../../reducers";
 import { LayoutState, UserDevice } from "../layouts/records";
 import ScinapseButton from "../common/scinapseButton";
+import { withStyles } from "../../helpers/withStylesHelper";
 const { Document, Page } = require("react-pdf");
+const styles = require("./pdfViewer.scss");
 
 interface PDFViewerProps {
   layout: LayoutState;
@@ -13,14 +15,17 @@ interface PDFViewerProps {
   filename: string;
   pdfURL?: string;
   onLoadSuccess: () => void;
+  onFailed: () => void;
 }
 
 interface PDFViewerState {
   isFullNode: boolean;
   hadError: boolean;
+  succeeded: boolean;
   numPages: number | null;
 }
 
+@withStyles<typeof PDFViewer>(styles)
 class PDFViewer extends React.PureComponent<PDFViewerProps, PDFViewerState> {
   private wrapperNode: HTMLDivElement | null;
   public constructor(props: PDFViewerProps) {
@@ -29,12 +34,14 @@ class PDFViewer extends React.PureComponent<PDFViewerProps, PDFViewerState> {
     this.state = {
       isFullNode: false,
       hadError: false,
+      succeeded: false,
       numPages: null,
     };
   }
 
   public render() {
-    const { layout, pdfURL, filename, onLoadSuccess } = this.props;
+    const { layout, pdfURL, filename, onLoadSuccess, onFailed } = this.props;
+    const { succeeded } = this.state;
 
     if (pdfURL && !EnvChecker.isOnServer() && layout.userDevice === UserDevice.DESKTOP) {
       return (
@@ -45,44 +52,48 @@ class PDFViewer extends React.PureComponent<PDFViewerProps, PDFViewerState> {
             error={null}
             loading={<ArticleSpinner style={{ margin: "200px auto" }} />}
             onLoadError={() => {
+              onFailed();
               this.setState(prevState => ({ ...prevState, hadError: true }));
             }}
             onLoadSuccess={(document: any) => {
               this.onDocumentLoadSuccess(document);
+              this.setState(prevState => ({ ...prevState, succeeded: true }));
               onLoadSuccess();
             }}
           >
             {this.getContent()}
           </Document>
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: "48px" }}>
-            <ScinapseButton
-              style={{
-                backgroundColor: "#3e7fff",
-              }}
-              content="View More"
-              onClick={() => {
-                this.setState(
-                  prevState => ({ ...prevState, isFullNode: !this.state.isFullNode }),
-                  () => {
-                    if (this.wrapperNode && !this.state.isFullNode) {
-                      this.wrapperNode.scrollIntoView();
+          {succeeded && (
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: "48px" }}>
+              <ScinapseButton
+                style={{
+                  backgroundColor: "#3e7fff",
+                }}
+                content="View More"
+                onClick={() => {
+                  this.setState(
+                    prevState => ({ ...prevState, isFullNode: !this.state.isFullNode }),
+                    () => {
+                      if (this.wrapperNode && !this.state.isFullNode) {
+                        this.wrapperNode.scrollIntoView();
+                      }
                     }
-                  }
-                );
-              }}
-            />
-            <ScinapseButton
-              style={{
-                color: "#3e7fff",
-              }}
-              isExternalLink={true}
-              downloadAttr={true}
-              target={"_blank"}
-              // tslint:disable-next-line:max-line-length
-              href={`https://xsn4er593c.execute-api.us-east-1.amazonaws.com/dev/getPdf?pdfUrl=${pdfURL}&title=${filename}`}
-              content="Download PDF"
-            />
-          </div>
+                  );
+                }}
+              />
+              <ScinapseButton
+                style={{
+                  color: "#3e7fff",
+                }}
+                isExternalLink={true}
+                downloadAttr={true}
+                target={"_blank"}
+                // tslint:disable-next-line:max-line-length
+                href={`https://xsn4er593c.execute-api.us-east-1.amazonaws.com/dev/getPdf?pdfUrl=${pdfURL}&title=${filename}`}
+                content="Download PDF"
+              />
+            </div>
+          )}
         </div>
       );
     }
@@ -95,7 +106,7 @@ class PDFViewer extends React.PureComponent<PDFViewerProps, PDFViewerState> {
     if (isFullNode) {
       return Array.from(new Array(numPages), (_el, index) => <Page key={`page_${index + 1}`} pageNumber={index + 1} />);
     } else {
-      return <Page pageNumber={1} />;
+      return <Page style={{ display: "flex", flexDirecton: "row" }} pageNumber={1} />;
     }
   };
 

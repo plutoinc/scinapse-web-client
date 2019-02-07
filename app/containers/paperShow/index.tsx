@@ -88,6 +88,7 @@ interface PaperShowStates
       isTouchFooter: boolean;
 
       isLoadPDF: boolean;
+      failedToLoadPDF: boolean;
     }> {}
 
 @withStyles<typeof PaperShow>(styles)
@@ -111,6 +112,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isRightBoxFixed: false,
       isTouchFooter: false,
       isLoadPDF: false,
+      failedToLoadPDF: false,
     };
   }
 
@@ -254,6 +256,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 onLoadSuccess={() => {
                   this.setState(prevState => ({ ...prevState, isLoadPDF: true }));
                 }}
+                onFailed={() => {
+                  this.setState(prevState => ({ ...prevState, failedToLoadPDF: true }));
+                }}
                 filename={paper.title}
                 pdfURL={pdfSourceRecord && pdfSourceRecord.url}
               />
@@ -338,9 +343,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private getFullTextNavBar = () => {
     const { paper } = this.props;
-    const { isOnFullText, isOnCited, isOnRef, isLoadPDF } = this.state;
+    const { isOnFullText, isOnCited, isOnRef, isLoadPDF, failedToLoadPDF } = this.state;
 
-    if (paper && isLoadPDF) {
+    if (paper && !failedToLoadPDF) {
       return (
         <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
           <PaperShowRefCitedTab
@@ -353,7 +358,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             isOnRef={false}
             isOnCited={false}
             isOnFullText={isOnFullText || (!isOnFullText && !isOnRef && !isOnCited)}
-            showFullText={isLoadPDF}
+            showFullText={!failedToLoadPDF}
           />
         </div>
       );
