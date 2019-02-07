@@ -12,6 +12,7 @@ import ArticleSpinner from "../../components/common/spinner/articleSpinner";
 import { clearPaperShowState } from "../../actions/paperShow";
 import PaperShowJournalItem from "../../components/paperShow/journalItem";
 import PaperShowDOI from "../../components/paperShow/DOI";
+import SearchKeyword from "../../components/paperShow/components/searchKeyword";
 import { PaperShowState } from "./records";
 import AuthorList from "../../components/paperShow/components/authorList";
 import RelatedPaperList from "../relatedPapers";
@@ -35,11 +36,16 @@ import { getPDFLink } from "../../helpers/getPDFLink";
 import restoreScroll from "../../helpers/scrollRestoration";
 import ErrorPage from "../../components/error/errorPage";
 import InnerSearchBox from "../../components/paperShow/components/innerSearchBox";
+import getExpUserType from "../../helpers/getExpUserType";
+import EnvChecker from "../../helpers/envChecker";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10);
 const SIDE_NAVIGATION_BOTTOM_PADDING = parseInt(styles.sideNavigationBottomPadding, 10);
+const EXP_USER = getExpUserType(EnvChecker.isOnServer() ? "" : document.cookie);
+
+console.log(EXP_USER);
 
 let ticking = false;
 
@@ -237,7 +243,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <FOSList FOSList={paper.fosList} />
               </div>
             </div>
-            <InnerSearchBox FOSList={paper.fosList} />
+            {EXP_USER === "B" ? <InnerSearchBox FOSList={paper.fosList} /> : null}
             <div className={styles.paperContentBlockDivider} />
             <div className={styles.otherPapers}>
               <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)}>
@@ -285,7 +291,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 getLinkDestination={this.getCitedPaperPaginationLink}
                 location={location}
               />
-              <InnerSearchBox FOSList={paper.fosList} />
+              {EXP_USER === "B" ? <InnerSearchBox FOSList={paper.fosList} /> : null}
             </div>
           </div>
 
@@ -306,7 +312,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             <CollectionNoteList />
             <OtherPaperListFromAuthor />
             <RelatedPaperList />
-            <PlutoBlogPosting paperId={paperShow.paperId} />
+            {EXP_USER === "B" ? null : (
+              <>
+                <SearchKeyword FOSList={paper.fosList} />
+                <PlutoBlogPosting paperId={paperShow.paperId} />
+              </>
+            )}
           </div>
         </div>
       </div>
