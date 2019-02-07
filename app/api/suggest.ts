@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import PlutoAxios from "./pluto";
 import { RawPaginationResponseV2 } from "./types/common";
-const camelcaseKeys = require("camelcase-keys");
+import { camelCaseKeys } from "../helpers/camelCaseKeys";
 
 export interface SuggestAffiliation {
   type: string;
@@ -17,7 +17,7 @@ class SuggestAPI extends PlutoAxios {
       },
     });
 
-    const suggestionData: RawPaginationResponseV2<SuggestAffiliation[]> = camelcaseKeys(res.data, { deep: true });
+    const suggestionData: RawPaginationResponseV2<SuggestAffiliation[]> = camelCaseKeys(res.data);
 
     return suggestionData;
   }
