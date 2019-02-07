@@ -45,8 +45,6 @@ const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10);
 const SIDE_NAVIGATION_BOTTOM_PADDING = parseInt(styles.sideNavigationBottomPadding, 10);
 const EXP_USER = getExpUserType(EnvChecker.isOnServer() ? "" : document.cookie);
 
-console.log(EXP_USER);
-
 let ticking = false;
 
 function mapStateToProps(state: AppState) {
