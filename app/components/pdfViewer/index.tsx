@@ -1,13 +1,16 @@
 import * as React from "react";
 import { connect, Dispatch } from "react-redux";
 import ArticleSpinner from "../common/spinner/articleSpinner";
-import EnvChecker from "../../helpers/envChecker";
 import { AppState } from "../../reducers";
 import { LayoutState, UserDevice } from "../layouts/records";
 import ScinapseButton from "../common/scinapseButton";
 import { withStyles } from "../../helpers/withStylesHelper";
+import getExpUserType from "../../helpers/getExpUserType";
+import EnvChecker from "../../helpers/envChecker";
 const { Document, Page } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
+
+const COOKIE_STRING = EnvChecker.isOnServer() ? "" : document.cookie;
 
 interface PDFViewerProps {
   layout: LayoutState;
@@ -26,7 +29,7 @@ interface PDFViewerState {
 }
 
 @withStyles<typeof PDFViewer>(styles)
-class PDFViewer extends React.PureComponent<PDFViewerProps, PDFViewerState> {
+class PDFViewer extends React.Component<PDFViewerProps, PDFViewerState> {
   private wrapperNode: HTMLDivElement | null;
   public constructor(props: PDFViewerProps) {
     super(props);
@@ -39,11 +42,20 @@ class PDFViewer extends React.PureComponent<PDFViewerProps, PDFViewerState> {
     };
   }
 
+  public shouldComponentUpdate(nextProps: PDFViewerProps) {
+    return this.props.pdfURL !== nextProps.pdfURL || this.props.layout.userDevice !== nextProps.layout.userDevice;
+  }
+
   public render() {
     const { layout, pdfURL, filename, onLoadSuccess, onFailed } = this.props;
     const { succeeded, hadError } = this.state;
 
-    if (pdfURL && !EnvChecker.isOnServer() && layout.userDevice === UserDevice.DESKTOP) {
+    if (
+      pdfURL &&
+      !EnvChecker.isOnServer() &&
+      getExpUserType(COOKIE_STRING) === "A" &&
+      layout.userDevice === UserDevice.DESKTOP
+    ) {
       return (
         <div ref={el => (this.wrapperNode = el)}>
           <Document
