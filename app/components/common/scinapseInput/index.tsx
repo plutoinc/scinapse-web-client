@@ -39,7 +39,7 @@ class ScinapseCommonInput extends React.PureComponent<InputBoxProps, InputBoxSta
           onKeyDown={onKeydown || this.handleKeyDown}
           onChange={onChange || this.handleChange}
           autoFocus={autoFocus}
-          value={value === undefined ? inputValue : value}
+          defaultValue={value === undefined ? inputValue : value}
           placeholder={placeholder}
         />
         {this.getIcon()}
@@ -55,10 +55,14 @@ class ScinapseCommonInput extends React.PureComponent<InputBoxProps, InputBoxSta
   };
 
   private handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+    const { onChange } = this.props;
+
     const newStringValue = e.currentTarget.value;
     this.setState({
       inputValue: newStringValue,
     });
+
+    onChange && onChange(e);
   };
 
   private handleSubmit = () => {
