@@ -343,7 +343,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private getFullTextNavBar = () => {
     const { paper } = this.props;
-    const { isOnFullText, isOnCited, isOnRef, isLoadPDF, failedToLoadPDF } = this.state;
+    const { isOnFullText, isOnCited, isOnRef, failedToLoadPDF } = this.state;
 
     if (paper && !failedToLoadPDF) {
       return (
