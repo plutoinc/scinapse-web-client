@@ -36,11 +36,14 @@ import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPos
 import { getPDFLink } from "../../helpers/getPDFLink";
 import restoreScroll from "../../helpers/scrollRestoration";
 import ErrorPage from "../../components/error/errorPage";
+import getExpUserType from "../../helpers/getExpUserType";
+import EnvChecker from "../../helpers/envChecker";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10);
 const SIDE_NAVIGATION_BOTTOM_PADDING = parseInt(styles.sideNavigationBottomPadding, 10);
+const COOKIE_STRING = EnvChecker.isOnServer() ? "" : document.cookie;
 
 let ticking = false;
 
@@ -216,7 +219,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if (!paper) {
       return null;
     }
-
     const pdfSourceRecord = getPDFLink(paper.urls);
 
     return (
@@ -250,19 +252,21 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             </div>
             <div className={styles.paperContentBlockDivider} />
 
-            <div>
-              {this.getFullTextNavBar()}
-              <PDFViewer
-                onLoadSuccess={() => {
-                  this.setState(prevState => ({ ...prevState, isLoadPDF: true }));
-                }}
-                onFailed={() => {
-                  this.setState(prevState => ({ ...prevState, failedToLoadPDF: true }));
-                }}
-                filename={paper.title}
-                pdfURL={pdfSourceRecord && pdfSourceRecord.url}
-              />
-            </div>
+            {getExpUserType(COOKIE_STRING) === "A" && (
+              <div>
+                {this.getFullTextNavBar()}
+                <PDFViewer
+                  onLoadSuccess={() => {
+                    this.setState(prevState => ({ ...prevState, isLoadPDF: true }));
+                  }}
+                  onFailed={() => {
+                    this.setState(prevState => ({ ...prevState, failedToLoadPDF: true }));
+                  }}
+                  filename={paper.title}
+                  pdfURL={pdfSourceRecord && pdfSourceRecord.url}
+                />
+              </div>
+            )}
 
             <div className={styles.otherPapers}>
               <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)}>
