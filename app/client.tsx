@@ -14,6 +14,9 @@ import { checkAuthStatus } from "./components/auth/actions";
 import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
 import { AppState } from "./reducers";
+import getExpUserType from "./helpers/getExpUserType";
+const { pdfjs } = require("react-pdf");
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 class Main extends React.Component {
   public componentDidMount() {
@@ -69,7 +72,11 @@ class PlutoRenderer {
         ReactGA.initialize(reactGATraceCode);
       }
 
-      ReactGA.set({ page: window.location.pathname + window.location.search });
+      ReactGA.set({
+        page: window.location.pathname + window.location.search,
+        expUserType: getExpUserType(document.cookie),
+      });
+
       ReactGA.pageview(window.location.pathname + window.location.search);
     }
   }
@@ -99,8 +106,8 @@ class PlutoRenderer {
         };
       },
     };
-
-    ReactDom.hydrate(
+    // TODO: Change below method to hydrate it will be deprecated at React 17
+    ReactDom.render(
       <CssInjector context={context}>
         <ErrorTracker>
           <Provider store={this.store}>

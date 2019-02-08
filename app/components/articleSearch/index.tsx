@@ -25,7 +25,11 @@ import AuthorSearchItem from "../authorSearchItem";
 import restoreScroll from "../../helpers/scrollRestoration";
 import { ChangeRangeInputParams, FILTER_BOX_TYPE, FILTER_TYPE_HAS_EXPANDING_OPTION } from "../../constants/paperSearch";
 import ErrorPage from "../error/errorPage";
+import EnvChecker from "../../helpers/envChecker";
+import getExpUserType from "../../helpers/getExpUserType";
 const styles = require("./articleSearch.scss");
+
+const COOKIE_STRING = EnvChecker.isOnServer() ? "" : document.cookie;
 
 function mapStateToProps(state: AppState) {
   return {
@@ -102,6 +106,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
           <div className={styles.articleSearchContainer}>
             {this.getResultHelmet(queryParams.query)}
             <div className={styles.innerContainer}>
+              {this.getRelatedKeywordBox()}
               {this.getSuggestionKeywordBox()}
               {this.getAuthorEntitiesSection()}
               <div className={styles.searchSummary}>
@@ -205,6 +210,39 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
       });
 
     return <div className={styles.authorItemsWrapper}>{authorItems}</div>;
+  };
+
+  private getRelatedKeywordBox = () => {
+    const { articleSearchState } = this.props;
+    const queryParams = this.getUrlDecodedQueryParamsObject();
+
+    if (!EnvChecker.isOnServer() || getExpUserType(COOKIE_STRING) === "A") {
+      const keywordList = articleSearchState.aggregationData ? articleSearchState.aggregationData.keywordList : [];
+
+      if (keywordList.length === 0) {
+        return null;
+      }
+
+      const relatedKeywordItems = keywordList.filter(k => queryParams.query.indexOf(k) === -1).map(keyword => (
+        <div key={keyword} className={styles.relatedKeywords}>
+          <Link
+            to={{
+              pathname: "/search",
+              search: PapersQueryFormatter.stringifyPapersQuery({
+                query: `${queryParams.query} ${keyword.toLowerCase()}`,
+                sort: "RELEVANCE",
+                filter: {},
+                page: 1,
+              }),
+            }}
+          >
+            {keyword.toLowerCase()}
+          </Link>
+        </div>
+      ));
+
+      return <div className={styles.relatedKeywordsContainer}>{relatedKeywordItems}</div>;
+    }
   };
 
   private getResultHelmet = (query: string) => {

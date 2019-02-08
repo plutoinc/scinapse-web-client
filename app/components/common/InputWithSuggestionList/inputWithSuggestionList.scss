@@ -3,6 +3,10 @@
   width: 100%;
 }
 
+input::placeholder {
+  color: $gray4;
+}
+
 .suggestionList {
   position: absolute;
   list-style: none;

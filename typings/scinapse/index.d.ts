@@ -71,7 +71,9 @@ declare namespace Scinapse {
       | "allPublications"
       | "authorEntity"
       | "sortBox"
-      | "shareBox";
+      | "shareBox"
+      | "innerSearchBox"
+      | "readingNowPaperList";
 
     type PageType =
       | "paperShow"
