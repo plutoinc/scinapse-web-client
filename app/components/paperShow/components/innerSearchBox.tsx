@@ -1,21 +1,20 @@
 import * as React from "react";
-import { AppState } from "../../../reducers";
 import { withRouter, RouteComponentProps } from "react-router";
 import { connect, Dispatch } from "react-redux";
-import { Fos } from "../../../model/fos";
-import { withStyles } from "../../../helpers/withStylesHelper";
+import { debounce } from "lodash";
 import { LayoutState } from "../../layouts/records";
+import * as Actions from "../../layouts/actions";
 import { ArticleSearchState } from "../../articleSearch/records";
-import SafeURIStringHandler from "../../../helpers/safeURIStringHandler";
+import InputWithSuggestionList from "../../common/InputWithSuggestionList";
 import Icon from "../../../icons";
+import { AppState } from "../../../reducers";
+import { Fos } from "../../../model/fos";
+import { ACTION_TYPES } from "../../../actions/actionTypes";
+import { withStyles } from "../../../helpers/withStylesHelper";
+import SafeURIStringHandler from "../../../helpers/safeURIStringHandler";
 import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
-import InputWithSuggestionList from "../../common/InputWithSuggestionList";
-import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { debounce } from "lodash";
-import * as Actions from "../../layouts/actions";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-
 const styles = require("./innerSearchBox.scss");
 
 function mapStateToProps(state: AppState) {
