@@ -8,7 +8,10 @@ export function camelCaseKeys(rawObject: any): any {
 
   if (Array.isArray(rawObject)) {
     return rawObject.map(elem => {
-      return camelCaseKeys(elem);
+      if (typeof elem === "object") {
+        return camelCaseKeys(elem);
+      }
+      return elem;
     });
   }
 

@@ -215,35 +215,34 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
   private getRelatedKeywordBox = () => {
     const { articleSearchState } = this.props;
     const queryParams = this.getUrlDecodedQueryParamsObject();
-    if (EnvChecker.isOnServer() || getExpUserType(COOKIE_STRING) !== "A") {
-      return null;
+
+    if (!EnvChecker.isOnServer() || getExpUserType(COOKIE_STRING) === "A") {
+      const keywordList = articleSearchState.aggregationData ? articleSearchState.aggregationData.keywordList : [];
+
+      if (keywordList.length === 0) {
+        return null;
+      }
+
+      const relatedKeywordItems = keywordList.filter(k => queryParams.query.indexOf(k) === -1).map(keyword => (
+        <div key={keyword} className={styles.relatedKeywords}>
+          <Link
+            to={{
+              pathname: "/search",
+              search: PapersQueryFormatter.stringifyPapersQuery({
+                query: `${queryParams.query} ${keyword.toLowerCase()}`,
+                sort: "RELEVANCE",
+                filter: {},
+                page: 1,
+              }),
+            }}
+          >
+            {keyword.toLowerCase()}
+          </Link>
+        </div>
+      ));
+
+      return <div className={styles.relatedKeywordsContainer}>{relatedKeywordItems}</div>;
     }
-
-    const keywordList = articleSearchState.aggregationData ? articleSearchState.aggregationData.keywordList : [];
-
-    if (keywordList.length === 0) {
-      return null;
-    }
-
-    const relatedKeywordItems = keywordList.filter(k => queryParams.query.indexOf(k) === -1).map(keyword => (
-      <div key={keyword} className={styles.relatedKeywords}>
-        <Link
-          to={{
-            pathname: "/search",
-            search: PapersQueryFormatter.stringifyPapersQuery({
-              query: `${queryParams.query} ${keyword.toLowerCase()}`,
-              sort: "RELEVANCE",
-              filter: {},
-              page: 1,
-            }),
-          }}
-        >
-          {keyword.toLowerCase()}
-        </Link>
-      </div>
-    ));
-
-    return <div className={styles.relatedKeywordsContainer}>{relatedKeywordItems}</div>;
   };
 
   private getResultHelmet = (query: string) => {
