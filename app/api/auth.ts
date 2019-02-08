@@ -14,17 +14,17 @@ import {
   VerifyEmailResult,
   CheckDuplicatedEmailResult,
 } from "./types/auth";
-const camelcaseKeys = require("camelcase-keys");
+import { camelCaseKeys } from "../helpers/camelCaseKeys";
 
 class AuthAPI extends PlutoAxios {
   public async signUpWithEmail(userInfo: SignUpWithEmailParams): Promise<Member> {
     const signUpWithEmailResponse = await this.post("/members", userInfo);
-    return camelcaseKeys(signUpWithEmailResponse.data, { deep: true });
+    return camelCaseKeys(signUpWithEmailResponse.data);
   }
 
   public async signUpWithSocial(userInfo: SignUpWithSocialParams): Promise<Member> {
     const signUpWithSocialResponse = await this.post("/members/oauth", userInfo);
-    return camelcaseKeys(signUpWithSocialResponse.data, { deep: true });
+    return camelCaseKeys(signUpWithSocialResponse.data);
   }
 
   public async signInWithEmail(userInfo: SignInWithEmailParams): Promise<SignInResult> {
@@ -33,7 +33,7 @@ class AuthAPI extends PlutoAxios {
       password: userInfo.password,
     });
     const signInData: SignInData = signInWithEmailResponse.data;
-    return camelcaseKeys(signInData, { deep: true });
+    return camelCaseKeys(signInData);
   }
 
   public async signInWithSocial(exchangeData: SignInWithSocialParams): Promise<SignInResult> {
@@ -43,7 +43,7 @@ class AuthAPI extends PlutoAxios {
       vendor: exchangeData.vendor,
     });
     const signInData: SignInData = signInWithSocialResponse.data;
-    return camelcaseKeys(signInData, { deep: true });
+    return camelCaseKeys(signInData);
   }
 
   public async refresh() {
@@ -68,7 +68,7 @@ class AuthAPI extends PlutoAxios {
     const checkLoggedInResponse = await this.get("/auth/login");
     const checkLoggedInData: SignInData = checkLoggedInResponse.data;
 
-    return camelcaseKeys(checkLoggedInData, { deep: true });
+    return camelCaseKeys(checkLoggedInData);
   }
 
   public async getAuthorizeUri({ vendor, redirectUri }: GetAuthorizeUriParams): Promise<GetAuthorizeUriResult> {
@@ -89,7 +89,7 @@ class AuthAPI extends PlutoAxios {
       vendor,
     });
 
-    return camelcaseKeys(postExchangeResponse.data, { deep: true });
+    return camelCaseKeys(postExchangeResponse.data);
   }
 
   public async verifyToken(token: string): Promise<VerifyEmailResult> {

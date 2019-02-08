@@ -1,7 +1,7 @@
 import PlutoAxios from "../pluto";
 import { RAW } from "../../__mocks__";
 import { SearchResult, SearchParams } from "../search";
-const camelcaseKeys = require("camelcase-keys");
+import { camelCaseKeys } from "../../helpers/camelCaseKeys";
 
 class SearchAPI extends PlutoAxios {
   public async search(params: SearchParams) {
@@ -20,7 +20,7 @@ class SearchAPI extends PlutoAxios {
       },
     };
 
-    const camelizedRes = camelcaseKeys(searchResult, { deep: true });
+    const camelizedRes = camelCaseKeys(searchResult);
     const searchRes: SearchResult = camelizedRes;
 
     return {
