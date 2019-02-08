@@ -8,6 +8,7 @@
   transition: all ease 0.5s;
   animation-duration: 1.5s;
   animation-name: flash;
+
   @keyframes flash {
     0% {
       background-color: #fffcd9;
@@ -49,7 +50,6 @@
 }
 
 .journalLink {
-  // text-decoration: underline;
   color: $gray9;
 
   &:hover {

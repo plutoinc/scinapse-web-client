@@ -1,20 +1,20 @@
 import { CancelToken } from "axios";
 import { Paper } from "../model/paper";
-import WorkingshopAxios from "./workingshop";
-const camelcaseKeys = require("camelcase-keys");
+import PlutoAxios from "./pluto";
+import { camelCaseKeys } from "../helpers/camelCaseKeys";
 
 export interface GetPaperParams {
   paperId: number;
   cancelToken: CancelToken;
 }
 
-class ReadingPaperAPI extends WorkingshopAxios {
+class ReadingPaperAPI extends PlutoAxios {
   public async getReadingNowPapers(params: GetPaperParams): Promise<Paper[]> {
     const getPapersResponse = await this.get(`/papers/${params.paperId}/reading-now`, {
       cancelToken: params.cancelToken,
     });
 
-    const camelizedRes = camelcaseKeys(getPapersResponse.data, { deep: true });
+    const camelizedRes = camelCaseKeys(getPapersResponse.data);
     const papers: Paper[] = camelizedRes.data.content;
 
     return papers;
