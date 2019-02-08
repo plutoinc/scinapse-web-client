@@ -4,15 +4,15 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import { trackEvent } from "../../../helpers/handleGA";
 import { Paper } from "../../../model/paper";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-const styles = require("./journalItem.scss");
+const styles = require("./venueItem.scss");
 
-interface PaperShowJournalItemProps {
+interface PaperShowVenueItemProps {
   paper: Paper;
 }
 
-const PaperShowJournalItem: React.SFC<PaperShowJournalItemProps> = props => {
+const PaperShowVenueItem: React.SFC<PaperShowVenueItemProps> = props => {
   const { paper } = props;
-  const { journal } = paper;
+  const { journal, conferenceInstance } = paper;
 
   if (!paper || !paper.year) {
     return null;
@@ -21,9 +21,9 @@ const PaperShowJournalItem: React.SFC<PaperShowJournalItemProps> = props => {
   return (
     <div className={styles.published}>
       <div className={styles.paperContentBlockHeader}>Published</div>
-      <ul className={styles.journalList}>
+      <ul className={styles.venueList}>
         {journal ? (
-          <li className={styles.journalItem}>
+          <li className={styles.venueItem}>
             <Link
               to={`/journals/${journal.id}`}
               onClick={() => {
@@ -42,11 +42,11 @@ const PaperShowJournalItem: React.SFC<PaperShowJournalItemProps> = props => {
                 });
               }}
             >
-              <div className={styles.journalTitle}>{`${journal.title || paper.venue}`}</div>
-              <div className={styles.journalYear}>
+              <div className={styles.venueTitle}>{`${journal.title || paper.venue}`}</div>
+              <div className={styles.venueYear}>
                 Year: <span className={styles.yearNumber}>{paper.year}</span>
               </div>
-              <div className={styles.journalIF}>
+              <div className={styles.venueIF}>
                 {journal.impactFactor && (
                   <span>
                     {`Impact Factor: `}
@@ -57,8 +57,13 @@ const PaperShowJournalItem: React.SFC<PaperShowJournalItemProps> = props => {
             </Link>
           </li>
         ) : (
-          <li className={styles.journalItem}>
-            <div className={styles.journalYear}>
+          <li className={styles.venueItem}>
+            {conferenceInstance &&
+              conferenceInstance.conferenceSeries &&
+              conferenceInstance.conferenceSeries.name && (
+                <div className={styles.venueTitleReadonly}>{`${conferenceInstance.conferenceSeries.name}`}</div>
+              )}
+            <div className={styles.venueYear}>
               Year: <span className={styles.yearNumber}>{paper.year}</span>
             </div>
           </li>
@@ -68,4 +73,4 @@ const PaperShowJournalItem: React.SFC<PaperShowJournalItemProps> = props => {
   );
 };
 
-export default withStyles<typeof PaperShowJournalItem>(styles)(PaperShowJournalItem);
+export default withStyles<typeof PaperShowVenueItem>(styles)(PaperShowVenueItem);

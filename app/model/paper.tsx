@@ -4,6 +4,7 @@ import { PaperAuthor } from "./author";
 import { PaperSource } from "./paperSource";
 import { Fos } from "./fos";
 import { Journal } from "./journal";
+import { ConferenceInstance } from "./conferenceInstance";
 
 export interface Paper {
   id: number;
@@ -25,6 +26,7 @@ export interface Paper {
   commentCount: number;
   comments: Comment[];
   journal: Journal | null;
+  conferenceInstance: ConferenceInstance | null;
   urls: PaperSource[];
   isAuthorIncluded?: boolean;
 }
