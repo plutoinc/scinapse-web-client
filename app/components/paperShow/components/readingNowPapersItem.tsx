@@ -8,6 +8,8 @@ import EnvChecker from "../../../helpers/envChecker";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./readingNowPapersItem.scss");
 
+const MAX_LENGTH_OF_AUTHOR = 90;
+
 interface PaperShowReadingNowPapersItemProps {
   paper: Paper;
   actionArea: Scinapse.ActionTicket.ActionArea;
@@ -23,6 +25,15 @@ class PaperShowReadingNowPapersItem extends React.PureComponent<PaperShowReading
         }`
       : "";
 
+    let finalTitle;
+    const paperTitle = paper.title;
+
+    if (paperTitle.length > MAX_LENGTH_OF_AUTHOR) {
+      finalTitle = paperTitle.slice(0, MAX_LENGTH_OF_AUTHOR) + "...";
+    } else {
+      finalTitle = paperTitle;
+    }
+
     return (
       <div className={styles.paperItemWrapper}>
         <Link
@@ -32,7 +43,7 @@ class PaperShowReadingNowPapersItem extends React.PureComponent<PaperShowReading
           onClick={this.trackClickTitle}
           className={styles.title}
         >
-          {paper.title}
+          {finalTitle}
         </Link>
         <div className={styles.description}>
           {paper.journal ? (

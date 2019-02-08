@@ -32,13 +32,6 @@
   color: $navy0;
   line-height: 20px;
   font-weight: 500;
-  -webkit-line-clamp: 2;
-  /* autoprefixer: off */
-  -webkit-box-orient: vertical;
-  /* autoprefixer: on */
-  display: -webkit-box;
-  overflow: hidden;
-  text-overflow: ellipsis;
 
   &:hover {
     text-decoration: underline;
