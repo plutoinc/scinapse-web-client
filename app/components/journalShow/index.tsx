@@ -26,7 +26,6 @@ import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import PaperShowKeyword from "../paperShow/components/keyword";
 import ActionTicketManager from "../../helpers/actionTicketManager";
-import { getPapers } from "./actions";
 import restoreScroll from "../../helpers/scrollRestoration";
 import ErrorPage from "../error/errorPage";
 const styles = require("./journalShow.scss");
@@ -156,6 +155,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
                       </div>
                       <div className={styles.searchInputWrapper}>
                         <ScinapseInput
+                          value={journalShow.searchKeyword}
                           onSubmit={this.handleSubmitSearch}
                           placeholder="Search papers in this journal"
                           icon="SEARCH_ICON"
@@ -249,7 +249,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
     const { journalShow, history } = this.props;
 
     const currentQueryParams = this.getQueryParamsObject();
-    const nextQueryParams = { ...currentQueryParams, s: sortOption };
+    const nextQueryParams = { ...currentQueryParams, s: sortOption, q: journalShow.searchKeyword };
 
     history.push({
       pathname: `/journals/${journalShow.journalId}`,
@@ -297,25 +297,15 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
   };
 
   private handleSubmitSearch = (query: string) => {
-    const { dispatch, journalShow } = this.props;
+    const { journalShow, history } = this.props;
 
-    ActionTicketManager.trackTicket({
-      pageType: "journalShow",
-      actionType: "fire",
-      actionArea: "paperList",
-      actionTag: "queryInJournal",
-      actionLabel: query,
+    const currentQueryParams = this.getQueryParamsObject();
+    const nextQueryParams = { ...currentQueryParams, q: query };
+
+    history.push({
+      pathname: `/journals/${journalShow.journalId}`,
+      search: stringify(nextQueryParams, { addQueryPrefix: true }),
     });
-
-    dispatch(
-      getPapers({
-        journalId: journalShow.journalId,
-        cancelToken: this.cancelToken.token,
-        size: 10,
-        page: journalShow.paperCurrentPage,
-        query,
-      })
-    );
   };
 
   private getPaperList = () => {
