@@ -192,10 +192,10 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
               >
                 <input
                   autoFocus={false}
+                  defaultValue=""
                   onChange={[Function]}
                   onKeyDown={[Function]}
                   placeholder="Search paper in author's publication list"
-                  value=""
                 />
                 <div
                   className="icon"
@@ -764,10 +764,10 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
               >
                 <input
                   autoFocus={false}
+                  defaultValue=""
                   onChange={[Function]}
                   onKeyDown={[Function]}
                   placeholder="Search paper in author's publication list"
-                  value=""
                 />
                 <div
                   className="icon"
@@ -1126,10 +1126,10 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
               >
                 <input
                   autoFocus={false}
+                  defaultValue=""
                   onChange={[Function]}
                   onKeyDown={[Function]}
                   placeholder="Search paper in author's publication list"
-                  value=""
                 />
                 <div
                   className="icon"

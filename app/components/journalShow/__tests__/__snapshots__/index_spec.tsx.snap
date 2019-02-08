@@ -76,10 +76,10 @@ exports[`JournalShow Container Component when journal data exist should render c
                 >
                   <input
                     autoFocus={false}
+                    defaultValue=""
                     onChange={[Function]}
                     onKeyDown={[Function]}
                     placeholder="Search papers in this journal"
-                    value=""
                   />
                   <div
                     className="icon"
