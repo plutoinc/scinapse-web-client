@@ -257,16 +257,18 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
             <div>
               {this.getFullTextNavBar()}
-              <PDFViewer
-                onLoadSuccess={() => {
-                  this.setState(prevState => ({ ...prevState, isLoadPDF: true }));
-                }}
-                onFailed={() => {
-                  this.setState(prevState => ({ ...prevState, failedToLoadPDF: true }));
-                }}
-                filename={paper.title}
-                pdfURL={pdfSourceRecord && pdfSourceRecord.url}
-              />
+              {!this.state.failedToLoadPDF && (
+                <PDFViewer
+                  onLoadSuccess={() => {
+                    this.setState(prevState => ({ ...prevState, isLoadPDF: true }));
+                  }}
+                  onFailed={() => {
+                    this.setState(prevState => ({ ...prevState, failedToLoadPDF: true }));
+                  }}
+                  filename={paper.title}
+                  pdfURL={pdfSourceRecord && pdfSourceRecord.url}
+                />
+              )}
             </div>
 
             <div className={styles.otherPapers}>

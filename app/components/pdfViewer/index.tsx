@@ -48,7 +48,6 @@ class PDFViewer extends React.Component<PDFViewerProps, PDFViewerState> {
 
   public render() {
     const { layout, pdfURL, filename, onLoadSuccess, onFailed } = this.props;
-    const { succeeded, hadError } = this.state;
 
     if (
       pdfURL &&
@@ -75,50 +74,48 @@ class PDFViewer extends React.Component<PDFViewerProps, PDFViewerState> {
           >
             {this.getContent()}
           </Document>
-          {succeeded &&
-            !hadError && (
-              <div style={{ display: "flex", justifyContent: "center", marginBottom: "65px" }}>
-                <ScinapseButton
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "#3e7fff",
-                    width: "154px",
-                    height: "40px",
-                  }}
-                  content="View More"
-                  onClick={() => {
-                    this.setState(
-                      prevState => ({ ...prevState, isFullNode: !this.state.isFullNode }),
-                      () => {
-                        if (this.wrapperNode && !this.state.isFullNode) {
-                          this.wrapperNode.scrollIntoView();
-                        }
-                      }
-                    );
-                  }}
-                />
-                <ScinapseButton
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    color: "#3e7fff",
-                    width: "154px",
-                    height: "40px",
-                    border: "1px solid #3e7fff",
-                    marginLeft: "16px",
-                  }}
-                  isExternalLink={true}
-                  downloadAttr={true}
-                  target={"_blank"}
-                  // tslint:disable-next-line:max-line-length
-                  href={`https://xsn4er593c.execute-api.us-east-1.amazonaws.com/dev/getPdf?pdfUrl=${pdfURL}&title=${filename}`}
-                  content="Download PDF"
-                />
-              </div>
-            )}
+
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: "65px" }}>
+            <ScinapseButton
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#3e7fff",
+                width: "154px",
+                height: "40px",
+              }}
+              content="View More"
+              onClick={() => {
+                this.setState(
+                  prevState => ({ ...prevState, isFullNode: !this.state.isFullNode }),
+                  () => {
+                    if (this.wrapperNode && !this.state.isFullNode) {
+                      this.wrapperNode.scrollIntoView();
+                    }
+                  }
+                );
+              }}
+            />
+            <ScinapseButton
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                color: "#3e7fff",
+                width: "154px",
+                height: "40px",
+                border: "1px solid #3e7fff",
+                marginLeft: "16px",
+              }}
+              isExternalLink={true}
+              downloadAttr={true}
+              target={"_blank"}
+              // tslint:disable-next-line:max-line-length
+              href={`https://xsn4er593c.execute-api.us-east-1.amazonaws.com/dev/getPdf?pdfUrl=${pdfURL}&title=${filename}`}
+              content="Download PDF"
+            />
+          </div>
         </div>
       );
     }

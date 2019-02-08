@@ -216,7 +216,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     const { articleSearchState } = this.props;
     const queryParams = this.getUrlDecodedQueryParamsObject();
 
-    if (!EnvChecker.isOnServer() || getExpUserType(COOKIE_STRING) === "A") {
+    if (!EnvChecker.isOnServer() && getExpUserType(COOKIE_STRING) === "A") {
       const keywordList = articleSearchState.aggregationData ? articleSearchState.aggregationData.keywordList : [];
 
       if (keywordList.length === 0) {
