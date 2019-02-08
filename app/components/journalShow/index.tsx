@@ -302,6 +302,14 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
     const currentQueryParams = this.getQueryParamsObject();
     const nextQueryParams = { ...currentQueryParams, q: query };
 
+    ActionTicketManager.trackTicket({
+      pageType: "journalShow",
+      actionType: "fire",
+      actionArea: "paperList",
+      actionTag: "queryInJournal",
+      actionLabel: query,
+    });
+
     history.push({
       pathname: `/journals/${journalShow.journalId}`,
       search: stringify(nextQueryParams, { addQueryPrefix: true }),
