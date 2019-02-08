@@ -357,7 +357,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { paper } = this.props;
     const { isOnFullText, isOnCited, isOnRef, failedToLoadPDF } = this.state;
 
-    if (paper && !failedToLoadPDF) {
+    if (paper && !!getPDFLink(paper.urls) && !failedToLoadPDF && EXP_USER === "A") {
       return (
         <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
           <PaperShowRefCitedTab
