@@ -37,7 +37,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
       className="publishInfoList"
     >
       <div
-        className="journal"
+        className="venue"
       >
         <i
           className="icon"
@@ -52,7 +52,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
              in 
           </span>
           <a
-            className="journalName"
+            className="venueName"
             href="/journals/10"
             onClick={[Function]}
           >
@@ -260,7 +260,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
       className="publishInfoList"
     >
       <div
-        className="journal"
+        className="venue"
       >
         <i
           className="icon"
@@ -275,7 +275,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
              in 
           </span>
           <a
-            className="journalName"
+            className="venueName"
             href="/journals/10"
             onClick={[Function]}
           >

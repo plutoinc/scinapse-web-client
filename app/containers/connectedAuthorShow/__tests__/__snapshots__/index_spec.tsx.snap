@@ -276,7 +276,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                 className="publishInfoList"
               >
                 <div
-                  className="journal"
+                  className="venue"
                 >
                   <i
                     className="icon"
@@ -291,7 +291,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                        in 
                     </span>
                     <a
-                      className="journalName"
+                      className="venueName"
                       href="/journals/10"
                       onClick={[Function]}
                     >
