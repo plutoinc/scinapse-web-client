@@ -31,13 +31,14 @@ import { LayoutState, UserDevice } from "../../components/layouts/records";
 import { trackEvent } from "../../helpers/handleGA";
 import { getMemoizedPaper, getReferencePapers, getCitedPapers } from "./select";
 import { formulaeToHTMLStr } from "../../helpers/displayFormula";
-import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
 import { getPDFLink } from "../../helpers/getPDFLink";
 import restoreScroll from "../../helpers/scrollRestoration";
 import ErrorPage from "../../components/error/errorPage";
 import InnerSearchBox from "../../components/paperShow/components/innerSearchBox";
+import ReadingNowPapers from "../../components/paperShow/components/readingNowPapers";
 import getExpUserType from "../../helpers/getExpUserType";
 import EnvChecker from "../../helpers/envChecker";
+import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
@@ -310,7 +311,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             <CollectionNoteList />
             <OtherPaperListFromAuthor />
             <RelatedPaperList />
-            {EXP_USER === "B" ? null : (
+            {EXP_USER === "B" ? (
+              <ReadingNowPapers paperId={paper.id} cancelToken={this.cancelToken.token} />
+            ) : (
               <>
                 <SearchKeyword FOSList={paper.fosList} />
                 <PlutoBlogPosting paperId={paperShow.paperId} />
