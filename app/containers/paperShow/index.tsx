@@ -10,7 +10,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import ArticleSpinner from "../../components/common/spinner/articleSpinner";
 import { clearPaperShowState } from "../../actions/paperShow";
-import PaperShowJournalItem from "../../components/paperShow/journalItem";
+import PaperShowVenueItem from "../../components/paperShow/venueItem";
 import PaperShowDOI from "../../components/paperShow/DOI";
 import { PaperShowState } from "./records";
 import AuthorList from "../../components/paperShow/components/authorList";
@@ -221,7 +221,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             <div className={styles.paperContentBlockDivider} />
             <div className={styles.paperInfo}>
               <AuthorList paper={paper} authors={paper.authors} />
-              <PaperShowJournalItem paper={paper} />
+              <PaperShowVenueItem paper={paper} />
               <PaperShowDOI paper={paper} DOI={paper.doi} />
             </div>
             <div className={styles.paperContentBlockDivider} />

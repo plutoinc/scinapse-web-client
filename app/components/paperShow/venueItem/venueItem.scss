@@ -1,22 +1,26 @@
 @import "../common";
 
-.journalList {
-  .journalItem {
+.venueList {
+  .venueItem {
     &:hover {
-      .journalTitle {
+      .venueTitle {
         color: $main_blue1;
       }
     }
 
-    .journalTitle {
-      cursor: pointer;
+    .venueTitleReadonly {
       font-size: $paper-info-maintext-fontSize;
       color: $paper-info-maintext-color;
       line-height: $paper-info-maintext-lineHeight;
+    }
+
+    .venueTitle {
+      @extend .venueTitleReadonly;
+      cursor: pointer;
       transition: $transition-ease;
     }
 
-    .journalYear {
+    .venueYear {
       margin-top: 4px;
       font-size: $paper-info-subText-fontSize;
       color: $paper-info-subText-color;
@@ -28,7 +32,7 @@
       }
     }
 
-    .journalIF {
+    .venueIF {
       margin-top: 0px;
       font-size: $paper-info-subText-fontSize;
       color: $paper-info-subText-color;
