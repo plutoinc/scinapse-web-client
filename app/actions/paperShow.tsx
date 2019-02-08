@@ -234,22 +234,6 @@ export function deleteComment(params: DeleteCommentParams) {
   };
 }
 
-export function getReadingNowPapers(params: GetPaperParams) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToGetReadingNowPapers());
-    try {
-      const responseData = await ReadingPaperAPI.getReadingNowPapers(params);
-
-      dispatch(ActionCreators.addEntity(responseData));
-      dispatch(ActionCreators.succeededToGetReadingNowPapers({ paperIds: responseData.result }));
-    } catch (err) {
-      if (!axios.isCancel(err)) {
-        dispatch(ActionCreators.failedToGetReadingNowPapers());
-      }
-    }
-  };
-}
-
 export function getRelatedPapers(params: GetRelatedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToGetRelatedPapers());
