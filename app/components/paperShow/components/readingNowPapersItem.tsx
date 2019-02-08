@@ -11,7 +11,6 @@ const styles = require("./readingNowPapersItem.scss");
 interface PaperShowReadingNowPapersItemProps {
   paper: Paper;
   actionArea: Scinapse.ActionTicket.ActionArea;
-  index: number;
 }
 
 class PaperShowReadingNowPapersItem extends React.PureComponent<PaperShowReadingNowPapersItemProps> {

@@ -3,13 +3,14 @@ import { CancelToken } from "axios";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import PaperShowReadingNowPapersItem from "./readingNowPapersItem";
 import { Paper } from "../../../model/paper";
-import PaperAPI from "../../../api/paper";
+import ReadingPaperAPI from "../../../api/readingPaper";
 const styles = require("./readingNowPapers.scss");
 
+const MAXIMUM_COUNT_TO_RENDER = 3;
+
 interface ReadingNowPaperListState {
-  page: number;
-  rawPaperList: Paper[];
-  paperListToShow: Paper[];
+  paperQueue: Paper[];
+  renderingQueue: Paper[];
 }
 
 interface ReadingNowPaperListProps {
@@ -21,64 +22,31 @@ interface ReadingNowPaperListProps {
 class ReadingNowPaperList extends React.PureComponent<ReadingNowPaperListProps, ReadingNowPaperListState> {
   constructor(props: ReadingNowPaperListProps) {
     super(props);
+
     this.state = {
-      page: 0,
-      rawPaperList: [],
-      paperListToShow: [],
+      paperQueue: [],
+      renderingQueue: [],
     };
   }
 
   public componentDidMount() {
-    // 1. isFirstCall true / index 0 - > 1개
-    // 2. isFirstCall true / index 1 - > 2개
-    // 3. 그게 아니면 3개씩
-    // 4. isFirstCall false 면 무조건 3개
-    const { paperId } = this.props;
-    this.fetchReadingNowPaperList(paperId);
-
-    setInterval(() => {
-      this.setState(prevState => {
-        if (prevState.paperListToShow.length <= 2) {
-          return {
-            ...prevState,
-            paperListToShow: prevState.rawPaperList.slice(0, prevState.paperListToShow.length + 1),
-          };
-        } else {
-          const index = prevState.rawPaperList.findIndex(paper => {
-            return paper.id === prevState.paperListToShow[0].id;
-          });
-
-          if (index === prevState.rawPaperList.length - 3 - 1) {
-            this.fetchReadingNowPaperList(paperId);
-          }
-
-          return {
-            ...prevState,
-            rawPaperList: prevState.rawPaperList.slice(1),
-            paperListToShow: prevState.rawPaperList.slice(index + 1, index + 3 + 1),
-          };
-        }
-      });
-    }, Math.random() * 1800 + 1200);
+    this.fetchPaperList();
   }
 
-  // public componentWillUnmount() {
-  //   //TODO: clear Interval
-  // }
+  public componentWillUnmount() {
+    clearInterval(this.intervalRender);
+  }
 
   public render() {
-    const { paperListToShow } = this.state;
-    console.log(paperListToShow);
+    const { paperQueue, renderingQueue } = this.state;
 
-    // if (!paperList || paperList.length === 0) {
-    //   return null;
-    // }
+    if (!paperQueue || paperQueue.length === 0) {
+      return null;
+    }
 
-    const papers = paperListToShow.map((paper, index) => {
+    const papers = renderingQueue.map(paper => {
       if (paper) {
-        return (
-          <PaperShowReadingNowPapersItem index={index} actionArea="readingNowPaperList" key={paper.id} paper={paper} />
-        );
+        return <PaperShowReadingNowPapersItem actionArea="readingNowPaperList" key={paper.id} paper={paper} />;
       }
     });
 
@@ -90,19 +58,43 @@ class ReadingNowPaperList extends React.PureComponent<ReadingNowPaperListProps, 
     );
   }
 
-  private fetchReadingNowPaperList = async (paperId: number) => {
-    const { cancelToken } = this.props;
+  private intervalRender = setInterval(() => {
+    this.renderNewPaper();
+  }, Math.random() * 1800 + 3000);
+
+  private fetchPaperList = async () => {
+    const { paperId, cancelToken } = this.props;
 
     try {
-      const papers = await PaperAPI.getReadingNowPapers({ paperId, cancelToken });
-      console.log(papers);
-      this.setState(prevState => ({
-        ...prevState,
-        page: prevState.page + 1,
-        rawPaperList: [...prevState.rawPaperList, ...papers],
-      }));
+      const papers = await ReadingPaperAPI.getReadingNowPapers({
+        paperId,
+        cancelToken,
+      });
+      this.setState(prevState => ({ ...prevState, paperQueue: [...prevState.paperQueue, ...papers] }));
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  private renderNewPaper = () => {
+    if (this.state.paperQueue.length > 0) {
+      if (this.state.paperQueue.length < 4) {
+        this.fetchPaperList();
+      }
+
+      this.setState(prevState => {
+        const slicedQueue =
+          prevState.renderingQueue.length < MAXIMUM_COUNT_TO_RENDER
+            ? prevState.renderingQueue
+            : prevState.renderingQueue.slice(0, prevState.renderingQueue.length - 1);
+        const renderingQueue = [prevState.paperQueue[0], ...slicedQueue];
+
+        return {
+          ...prevState,
+          renderingQueue,
+          paperQueue: prevState.paperQueue.slice(1),
+        };
+      });
     }
   };
 }

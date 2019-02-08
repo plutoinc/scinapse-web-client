@@ -199,16 +199,6 @@ class PaperAPI extends PlutoAxios {
 
     return camelCaseKeys(rawResult);
   }
-
-  public async getReadingNowPapers(params: GetPaperParams): Promise<Paper[]> {
-    const getPapersResponse = await this.get(`/papers/${params.paperId}/reading-now`, {
-      cancelToken: params.cancelToken,
-    });
-
-    const camelizedRes = camelCaseKeys(getPapersResponse.data);
-    const rawPapers: Paper[] = camelizedRes.data.content;
-    return rawPapers;
-  }
 }
 
 const paperAPI = new PaperAPI();
