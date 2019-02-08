@@ -48,9 +48,7 @@
 .keywordList {
   display: inline-block;
   font-size: 0;
-  .keywordItem + .keywordItem {
-    margin-left: 8px;
-  }
+
   .keywordItem {
     display: inline-block;
     margin-bottom: 8px;
@@ -62,5 +60,9 @@
     &:hover {
       text-decoration: underline;
     }
+  }
+
+  .keywordItem + .keywordItem {
+    margin-left: 8px;
   }
 }
