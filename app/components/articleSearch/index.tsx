@@ -25,7 +25,11 @@ import AuthorSearchItem from "../authorSearchItem";
 import restoreScroll from "../../helpers/scrollRestoration";
 import { ChangeRangeInputParams, FILTER_BOX_TYPE, FILTER_TYPE_HAS_EXPANDING_OPTION } from "../../constants/paperSearch";
 import ErrorPage from "../error/errorPage";
+import EnvChecker from "../../helpers/envChecker";
+import getExpUserType from "../../helpers/getExpUserType";
 const styles = require("./articleSearch.scss");
+
+const COOKIE_STRING = EnvChecker.isOnServer() ? "" : document.cookie;
 
 function mapStateToProps(state: AppState) {
   return {
@@ -211,6 +215,9 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
   private getRelatedKeywordBox = () => {
     const { articleSearchState } = this.props;
     const queryParams = this.getUrlDecodedQueryParamsObject();
+    if (EnvChecker.isOnServer() || getExpUserType(COOKIE_STRING) !== "A") {
+      return null;
+    }
 
     const keywordList = articleSearchState.aggregationData ? articleSearchState.aggregationData.keywordList : [];
 
@@ -218,10 +225,9 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
       return null;
     }
 
-    const relatedKeywordItems = keywordList.filter(k => queryParams.query.indexOf(k) === -1).map((keyword, idx) => (
-      <div className={styles.relatedKeywords}>
+    const relatedKeywordItems = keywordList.filter(k => queryParams.query.indexOf(k) === -1).map(keyword => (
+      <div key={keyword} className={styles.relatedKeywords}>
         <Link
-          key={`keyword-${idx}`}
           to={{
             pathname: "/search",
             search: PapersQueryFormatter.stringifyPapersQuery({
