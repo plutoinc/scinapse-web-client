@@ -14,6 +14,8 @@ import { checkAuthStatus } from "./components/auth/actions";
 import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
 import { AppState } from "./reducers";
+const { pdfjs } = require("react-pdf");
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 class Main extends React.Component {
   public componentDidMount() {
@@ -99,8 +101,8 @@ class PlutoRenderer {
         };
       },
     };
-
-    ReactDom.hydrate(
+    // TODO: Change below method to hydrate it will be deprecated at React 17
+    ReactDom.render(
       <CssInjector context={context}>
         <ErrorTracker>
           <Provider store={this.store}>
