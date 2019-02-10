@@ -107,7 +107,7 @@ class PlutoRenderer {
       },
     };
     // TODO: Change below method to hydrate it will be deprecated at React 17
-    ReactDom.render(
+    ReactDom.hydrate(
       <CssInjector context={context}>
         <ErrorTracker>
           <Provider store={this.store}>
