@@ -14,7 +14,7 @@ class SearchAPI extends PlutoAxios {
         content: RAW.PAPER,
         page: null,
         aggregation: RAW.AGGREGATION_RESPONSE,
-        matchedEntities: null,
+        matchedAuthor: null,
         resultModified: true,
         suggestion: null,
       },

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import MuiTooltip from "@material-ui/core/Tooltip";
-import { MatchEntity } from "../../api/search";
+import { MatchEntityAuthor } from "../../api/search";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
 import { trackEvent } from "../../helpers/handleGA";
@@ -9,11 +9,11 @@ import ActionTicketManager from "../../helpers/actionTicketManager";
 const styles = require("./authorSearchItem.scss");
 
 interface AuthorSearchItemProps {
-  authorEntity: MatchEntity;
+  authorEntity: MatchEntityAuthor;
 }
 
 const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
-  const author = props.authorEntity.entity;
+  const author = props.authorEntity;
 
   const profileImage = author.profileImageUrl ? (
     <span

@@ -16,7 +16,7 @@ export interface SearchParams {
   cancelToken?: CancelToken;
 }
 
-interface MatchEntityAuthor extends BasePaperAuthor {
+export interface MatchEntityAuthor extends BasePaperAuthor {
   lastKnownAffiliation: Affiliation | null;
   paperCount: number;
   citationCount: number;
@@ -24,9 +24,9 @@ interface MatchEntityAuthor extends BasePaperAuthor {
   representativePapers: Paper[];
 }
 
-export interface MatchEntity {
-  entity: MatchEntityAuthor;
-  type: "AUTHOR";
+export interface MatchAuthor {
+  content: MatchEntityAuthor[];
+  totalElements: number;
 }
 
 export interface SearchResult extends PaginationResponseV2<Paper[]> {
@@ -34,7 +34,7 @@ export interface SearchResult extends PaginationResponseV2<Paper[]> {
     content: Paper[];
     page: PageObjectV2 | null;
     aggregation: AggregationData;
-    matchedEntities: MatchEntity[];
+    matchedAuthor: MatchAuthor;
     resultModified: boolean;
     suggestion: Suggestion | null;
   };
