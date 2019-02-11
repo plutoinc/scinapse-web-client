@@ -8,6 +8,7 @@ import * as dialogReducer from "../components/dialog/reducer";
 import * as layoutReducer from "../components/layouts/reducer";
 import { LAYOUT_INITIAL_STATE, LayoutState } from "../components/layouts/records";
 import * as articleSearchReducer from "../components/articleSearch/reducer";
+import * as authorSearchReducer from "../containers/authorSearch/reducer";
 import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from "../components/articleSearch/records";
 import * as emailVerificationReducer from "../components/auth/emailVerification/reducer";
 import { PaperShowState, PAPER_SHOW_INITIAL_STATE } from "../containers/paperShow/records";
@@ -45,6 +46,7 @@ import {
   ConnectedAuthorShowState,
   CONNECTED_AUTHOR_SHOW_INITIAL_STATE,
 } from "../containers/connectedAuthorShow/reducer";
+import { AuthorSearchState, AUTHOR_SEARCH_INITIAL_STATE } from "../containers/authorSearch/records";
 
 export interface AppState {
   configuration: ConfigurationReducer.Configuration;
@@ -56,6 +58,7 @@ export interface AppState {
   emailVerification: emailVerificationReducer.EmailVerificationState;
   currentUser: CurrentUser;
   articleSearch: ArticleSearchState;
+  authorSearch: AuthorSearchState;
   paperShow: PaperShowState;
   authorShow: AuthorShowState;
   connectedAuthorShow: ConnectedAuthorShowState;
@@ -76,6 +79,7 @@ export const initialState: AppState = {
   emailVerification: emailVerificationReducer.EMAIL_VERIFICATION_INITIAL_STATE,
   currentUser: CURRENT_USER_INITIAL_STATE,
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
+  authorSearch: AUTHOR_SEARCH_INITIAL_STATE,
   paperShow: PAPER_SHOW_INITIAL_STATE,
   authorShow: AUTHOR_SHOW_INITIAL_STATE,
   connectedAuthorShow: CONNECTED_AUTHOR_SHOW_INITIAL_STATE,
@@ -94,6 +98,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   home: homeReducer.reducer,
   layout: layoutReducer.reducer,
   articleSearch: articleSearchReducer.reducer,
+  authorSearch: authorSearchReducer.reducer,
   emailVerification: emailVerificationReducer.reducer,
   paperShow: paperShowReducer,
   authorShow: AuthorShowReducer,
