@@ -7,6 +7,7 @@ import SearchAPI from "../../api/search";
 import { FILTER_BOX_TYPE, FILTER_TYPE_HAS_EXPANDING_OPTION, ChangeRangeInputParams } from "../../constants/paperSearch";
 import PlutoAxios from "../../api/pluto";
 import { CommonError } from "../../model/error";
+import { GetAuthorsParam } from "../../api/types/author";
 
 export function toggleFilterBox(type: FILTER_BOX_TYPE) {
   return {
@@ -42,6 +43,7 @@ export function changeSearchInput(searchInput: string) {
   };
 }
 
+//TODO: code 정리
 export function fetchSearchPapers(params: GetPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     const filters = PapersQueryFormatter.objectifyPapersFilter(params.filter);
@@ -69,6 +71,40 @@ export function fetchSearchPapers(params: GetPapersParams) {
 
         dispatch({
           type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_PAPERS,
+          payload: {
+            statusCode: (error as CommonError).status,
+          },
+        });
+        throw err;
+      }
+    }
+  };
+}
+
+export function fetchSearchAuthors(params: GetAuthorsParam) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_AUTHORS,
+      payload: {
+        query: params.query,
+        sort: params.sort,
+      },
+    });
+
+    try {
+      const res = await SearchAPI.authorSearch(params);
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_AUTHORS,
+        payload: res,
+      });
+
+      return res.data.content;
+    } catch (err) {
+      if (!axios.isCancel(err)) {
+        const error = PlutoAxios.getGlobalError(err);
+
+        dispatch({
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_AUTHORS,
           payload: {
             statusCode: (error as CommonError).status,
           },
