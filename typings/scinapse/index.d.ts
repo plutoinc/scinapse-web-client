@@ -55,6 +55,10 @@ declare namespace Scinapse {
       | "collectionSharing"
       | "extendAbstract"
       | "collapseAbstract"
+      | "PUBLISHED_YEAR"
+      | "JOURNAL_IF"
+      | "FOS"
+      | "JOURNAL"
       | "";
 
     type ActionArea =
@@ -75,7 +79,8 @@ declare namespace Scinapse {
       | "sortBox"
       | "shareBox"
       | "innerSearchBox"
-      | "readingNowPaperList";
+      | "readingNowPaperList"
+      | "filter";
 
     type PageType =
       | "paperShow"

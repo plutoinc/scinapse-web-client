@@ -6,7 +6,6 @@ import { withStyles } from "../../../../helpers/withStylesHelper";
 import { FilterObject } from "../../../../helpers/papersQueryFormatter";
 import Icon from "../../../../icons";
 import { toggleElementFromArray } from "../../../../helpers/toggleElementFromArray";
-import { trackEvent } from "../../../../helpers/handleGA";
 import formatNumber from "../../../../helpers/formatNumber";
 import { ArticleSearchState } from "../../records";
 import {
@@ -16,6 +15,8 @@ import {
   FILTER_RANGE_TYPE,
   FILTER_TYPE_HAS_RANGE,
 } from "../../../../constants/paperSearch";
+import YearFilter from "./yearFilter";
+import { trackSelectFilter } from "./trackSelectFilter";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {
@@ -95,7 +96,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
       <div
         className={styles.filterTitleBox}
         onClick={() => {
-          handleToggleFilterBox(FILTER_BOX_TYPE.PUBLISHED_YEAR);
+          handleToggleFilterBox("PUBLISHED_YEAR");
         }}
       >
         <div className={styles.filterTitle}>Publication Year</div>
@@ -110,7 +111,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
       </div>
       <Link
         onClick={() => {
-          trackEvent({ category: "Search", action: "Filter", label: "Publication Year" });
+          trackSelectFilter("PUBLISHED_YEAR", "all");
         }}
         className={classNames({
           [`${styles.filterItem}`]: true,
@@ -124,69 +125,48 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         <span className={styles.linkTitle}>All</span>
         <span className={styles.countBox}>{`(${formatNumber(paperCountOfAllFilter)})`}</span>
       </Link>
-      <Link
-        onClick={() => {
-          trackEvent({ category: "Search", action: "Filter", label: "Publication Year" });
-        }}
-        to={props.makeNewFilterLink({
-          yearFrom: currentYear - 3,
-          yearTo: undefined,
-        })}
-        className={classNames({
-          [`${styles.filterItem}`]: true,
-          [`${styles.isSelected}`]: fromToCurrentYearDiff === 3 && !articleSearchState.yearFilterToValue,
-        })}
-      >
-        <span className={styles.linkTitle}>Last 3 years</span>
-        <span className={styles.countBox}>{`(${formatNumber(
+      <YearFilter
+        fromNow={3}
+        isSelected={fromToCurrentYearDiff === 3 && !articleSearchState.yearFilterToValue}
+        paperCount={`(${formatNumber(
           calculateYearsCount({
             rangeSetList: yearRangeList,
             minYear: currentYear - 3,
           })
-        )})`}</span>
-      </Link>
-      <Link
-        onClick={() => {
-          trackEvent({ category: "Search", action: "Filter", label: "Publication Year" });
-        }}
+        )})`}
         to={props.makeNewFilterLink({
-          yearFrom: currentYear - 5,
+          yearFrom: currentYear - 3,
           yearTo: undefined,
         })}
-        className={classNames({
-          [`${styles.filterItem}`]: true,
-          [`${styles.isSelected}`]: fromToCurrentYearDiff === 5 && !articleSearchState.yearFilterToValue,
-        })}
-      >
-        <span className={styles.linkTitle}>Last 5 years</span>
-        <span className={styles.countBox}>{`(${formatNumber(
+      />
+      <YearFilter
+        fromNow={5}
+        isSelected={fromToCurrentYearDiff === 5 && !articleSearchState.yearFilterToValue}
+        paperCount={`(${formatNumber(
           calculateYearsCount({
             rangeSetList: yearRangeList,
             minYear: currentYear - 5,
           })
-        )})`}</span>
-      </Link>
-      <Link
-        onClick={() => {
-          trackEvent({ category: "Search", action: "Filter", label: "Publication Year" });
-        }}
+        )})`}
         to={props.makeNewFilterLink({
-          yearFrom: currentYear - 10,
+          yearFrom: currentYear - 5,
           yearTo: undefined,
         })}
-        className={classNames({
-          [`${styles.filterItem}`]: true,
-          [`${styles.isSelected}`]: fromToCurrentYearDiff === 10 && !articleSearchState.yearFilterToValue,
-        })}
-      >
-        <span className={styles.linkTitle}>Last 10 years</span>
-        <span className={styles.countBox}>{`(${formatNumber(
+      />
+      <YearFilter
+        fromNow={10}
+        isSelected={fromToCurrentYearDiff === 10 && !articleSearchState.yearFilterToValue}
+        paperCount={`(${formatNumber(
           calculateYearsCount({
             rangeSetList: yearRangeList,
             minYear: currentYear - 10,
           })
-        )})`}</span>
-      </Link>
+        )})`}
+        to={props.makeNewFilterLink({
+          yearFrom: currentYear - 10,
+          yearTo: undefined,
+        })}
+      />
       <div
         className={classNames({
           [`${styles.filterItem}`]: true,
@@ -226,11 +206,10 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         />
         <Link
           onClick={() => {
-            trackEvent({
-              category: "Search",
-              action: "Filter",
-              label: "",
-            });
+            trackSelectFilter(
+              "PUBLISHED_YEAR",
+              `${articleSearchState.yearFilterFromValue} ~ ${articleSearchState.yearFilterToValue}`
+            );
           }}
           className={styles.yearSubmitLink}
           to={props.makeNewFilterLink({
@@ -266,7 +245,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
       <div
         className={styles.filterTitleBox}
         onClick={() => {
-          handleToggleFilterBox(FILTER_BOX_TYPE.JOURNAL_IF);
+          handleToggleFilterBox("JOURNAL_IF");
         }}
       >
         <div className={styles.filterTitle}>Journal IF</div>
@@ -281,7 +260,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
       </div>
       <Link
         onClick={() => {
-          trackEvent({ category: "Search", action: "Filter", label: "Journal IF" });
+          trackSelectFilter("JOURNAL_IF", "all");
         }}
         to={props.makeNewFilterLink({
           journalIFFrom: undefined,
@@ -297,7 +276,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
       </Link>
       <Link
         onClick={() => {
-          trackEvent({ category: "Search", action: "Filter", label: "Journal IF" });
+          trackSelectFilter("JOURNAL_IF", "10");
         }}
         to={props.makeNewFilterLink({
           journalIFFrom: 10,
@@ -319,7 +298,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
       </Link>
       <Link
         onClick={() => {
-          trackEvent({ category: "Search", action: "Filter", label: "Journal IF" });
+          trackSelectFilter("JOURNAL_IF", "5");
         }}
         to={props.makeNewFilterLink({
           journalIFFrom: 5,
@@ -341,7 +320,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
       </Link>
       <Link
         onClick={() => {
-          trackEvent({ category: "Search", action: "Filter", label: "Journal IF" });
+          trackSelectFilter("JOURNAL_IF", "1");
         }}
         to={props.makeNewFilterLink({
           journalIFFrom: 1,
@@ -402,7 +381,10 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         />
         <Link
           onClick={() => {
-            trackEvent({ category: "Search", action: "Filter", label: "Journal IF" });
+            trackSelectFilter(
+              "JOURNAL_IF",
+              `${articleSearchState.IFFilterFromValue} ~ ${articleSearchState.IFFilterToValue}`
+            );
           }}
           className={styles.yearSubmitLink}
           to={props.makeNewFilterLink({
@@ -435,7 +417,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
     return (
       <Link
         onClick={() => {
-          trackEvent({ category: "Search", action: "Filter", label: "FoS" });
+          trackSelectFilter("FOS", fos!.name);
         }}
         key={`fos_${fos!.id}`}
         to={props.makeNewFilterLink({
@@ -482,7 +464,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
       <div
         className={styles.filterTitleBox}
         onClick={() => {
-          handleToggleFilterBox(FILTER_BOX_TYPE.FOS);
+          handleToggleFilterBox("FOS");
         }}
       >
         <div className={styles.filterTitle}>Field of study</div>
@@ -519,7 +501,7 @@ function getJournalFilter(props: FilterContainerProps) {
     return (
       <Link
         onClick={() => {
-          trackEvent({ category: "Search", action: "Filter", label: "Journal" });
+          trackSelectFilter("JOURNAL", journal!.title);
         }}
         key={`journal_${journal!.id}`}
         to={props.makeNewFilterLink({
@@ -567,7 +549,7 @@ function getJournalFilter(props: FilterContainerProps) {
       <div
         className={styles.filterTitleBox}
         onClick={() => {
-          handleToggleFilterBox(FILTER_BOX_TYPE.JOURNAL);
+          handleToggleFilterBox("JOURNAL");
         }}
       >
         <div className={styles.filterTitle}>Journal</div>
@@ -586,21 +568,19 @@ function getJournalFilter(props: FilterContainerProps) {
   );
 }
 
-class FilterContainer extends React.PureComponent<FilterContainerProps, {}> {
-  public render() {
-    if (!this.props.articleSearchState.aggregationData) {
-      return null;
-    }
-
-    return (
-      <div className={styles.filterContainer}>
-        {getPublicationFilterBox(this.props)}
-        {getJournalIFFilterBox(this.props)}
-        {getFOSFilterBox(this.props)}
-        {getJournalFilter(this.props)}
-      </div>
-    );
+const FilterContainer: React.SFC<FilterContainerProps> = props => {
+  if (!props.articleSearchState.aggregationData) {
+    return null;
   }
-}
+
+  return (
+    <div className={styles.filterContainer}>
+      {getPublicationFilterBox(props)}
+      {getJournalIFFilterBox(props)}
+      {getFOSFilterBox(props)}
+      {getJournalFilter(props)}
+    </div>
+  );
+};
 
 export default withStyles<typeof FilterContainer>(styles)(FilterContainer);
