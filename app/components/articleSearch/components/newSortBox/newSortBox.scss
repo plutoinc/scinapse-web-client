@@ -1,0 +1,76 @@
+.articleSortBoxWrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  border: 1px solid $gray3;
+  border-radius: 16px;
+  padding: 0 16px;
+}
+
+.currentOption {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  span {
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+
+.downArrow {
+  display: inline-block;
+  vertical-align: top;
+  width: 8px;
+  height: 4.5px;
+  object-fit: contain;
+
+  svg {
+    display: inline-block;
+    vertical-align: top;
+    transform: rotate(180deg);
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.sortByText {
+  font-size: 14px;
+  color: $gray5;
+  margin-right: 11px;
+}
+
+.sortOptionText {
+  font-size: 14px;
+  color: $gray6;
+  margin-right: 10.5px;
+}
+
+.menuItem {
+  @extend %default-sort-dropdown-menuitem;
+}
+
+.nonActiveSortOption {
+  font-size: 14px;
+  color: $gray5;
+  padding: 0 8px;
+
+  &:hover {
+    color: $main_blue_light0;
+  }
+}
+
+.activeSortOption {
+  @extend .nonActiveSortOption;
+  font-weight: 500;
+  color: $main_blue0;
+}
+
+@media (max-width: $mobile-width) {
+  .sortByText {
+    visibility: hidden;
+  }
+}
