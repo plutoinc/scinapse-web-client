@@ -12,8 +12,6 @@ interface SortBoxProps {
 }
 
 class SortBox extends React.PureComponent<SortBoxProps> {
-  private anchorElement: HTMLDivElement | null;
-
   public constructor(props: SortBoxProps) {
     super(props);
 
@@ -27,7 +25,7 @@ class SortBox extends React.PureComponent<SortBoxProps> {
 
     return (
       <div className={styles.articleSortBoxWrapper}>
-        <div ref={el => (this.anchorElement = el)} className={styles.currentOption}>
+        <div className={styles.currentOption}>
           <Link
             to={{
               pathname: "/search",
@@ -123,26 +121,27 @@ class SortBox extends React.PureComponent<SortBoxProps> {
     });
   };
 
-  private getSortOptionToShow = (sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS) => {
-    // tslint:disable-next-line:switch-default
-    switch (sortOption) {
-      case "RELEVANCE": {
-        return "Relevance";
-      }
+  //TODO: Clean code
+  // private getSortOptionToShow = (sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS) => {
+  //   // tslint:disable-next-line:switch-default
+  //   switch (sortOption) {
+  //     case "RELEVANCE": {
+  //       return "Relevance";
+  //     }
 
-      case "MOST_CITATIONS": {
-        return "Most Citations";
-      }
+  //     case "MOST_CITATIONS": {
+  //       return "Most Citations";
+  //     }
 
-      case "OLDEST_FIRST": {
-        return "Oldest";
-      }
+  //     case "OLDEST_FIRST": {
+  //       return "Oldest";
+  //     }
 
-      case "NEWEST_FIRST": {
-        return "Newest";
-      }
-    }
-  };
+  //     case "NEWEST_FIRST": {
+  //       return "Newest";
+  //     }
+  //   }
+  // };
 }
 
 export default withStyles<typeof SortBox>(styles)(SortBox);

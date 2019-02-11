@@ -84,8 +84,8 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
   }
 
   public render() {
-    const { authorSearch, currentUser } = this.props;
-    const { isLoading, totalElements, totalPages, searchItemsToShow } = authorSearch;
+    const { authorSearch } = this.props;
+    const { isLoading } = authorSearch;
     const queryParams = this.getUrlDecodedQueryParamsObject();
 
     if (authorSearch.pageErrorCode) {
