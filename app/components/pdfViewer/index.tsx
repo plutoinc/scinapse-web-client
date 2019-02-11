@@ -26,6 +26,7 @@ interface PDFViewerState {
   hadError: boolean;
   succeeded: boolean;
   numPages: number | null;
+  expUserType: string;
 }
 
 @withStyles<typeof PDFViewer>(styles)
@@ -39,22 +40,19 @@ class PDFViewer extends React.Component<PDFViewerProps, PDFViewerState> {
       hadError: false,
       succeeded: false,
       numPages: null,
+      expUserType: "",
     };
   }
 
-  public shouldComponentUpdate(nextProps: PDFViewerProps) {
-    return this.props.pdfURL !== nextProps.pdfURL || this.props.layout.userDevice !== nextProps.layout.userDevice;
+  public componentDidMount() {
+    this.setState(prevState => ({ ...prevState, expUserType: getExpUserType(COOKIE_STRING) }));
   }
 
   public render() {
     const { layout, pdfURL, filename, onLoadSuccess, onFailed } = this.props;
+    const { expUserType } = this.state;
 
-    if (
-      pdfURL &&
-      !EnvChecker.isOnServer() &&
-      getExpUserType(COOKIE_STRING) === "A" &&
-      layout.userDevice === UserDevice.DESKTOP
-    ) {
+    if (pdfURL && expUserType === "A" && layout.userDevice === UserDevice.DESKTOP) {
       return (
         <div ref={el => (this.wrapperNode = el)}>
           <Document
