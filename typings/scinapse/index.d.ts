@@ -78,6 +78,7 @@ declare namespace Scinapse {
       | "authorShow"
       | "home"
       | "searchResult"
+      | "authorSearchResult"
       | "journalShow"
       | "collectionShow"
       | "collectionList"
