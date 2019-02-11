@@ -12,7 +12,6 @@ import { Paper } from "../../../model/paper";
 import EnvChecker from "../../../helpers/envChecker";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import SourceURLPopover from "../../common/sourceURLPopover";
 import { getPDFLink } from "../../../helpers/getPDFLink";
 const styles = require("./paperActionButtons.scss");
 
@@ -34,11 +33,9 @@ export interface PaperActionButtonsProps {
 export interface PaperActionButtonsState
   extends Readonly<{
       isAdditionalMenuOpen: boolean;
-      isSourceDropdownOpen: boolean;
     }> {}
 
 class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, PaperActionButtonsState> {
-  private sourceButton: HTMLDivElement | null;
   private additionalMenuAnchorEl: HTMLElement | null;
 
   public constructor(props: PaperActionButtonsProps) {
@@ -46,7 +43,6 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
 
     this.state = {
       isAdditionalMenuOpen: false,
-      isSourceDropdownOpen: false,
     };
   }
 
@@ -65,7 +61,6 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
 
   private getPDFSourcesButton = () => {
     const { paper, pageType, actionArea } = this.props;
-    const { isSourceDropdownOpen } = this.state;
     const pdfSourceRecord = getPDFLink(paper.urls);
 
     const buttonContent = pdfSourceRecord ? (
@@ -83,63 +78,25 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
     if (paper.urls.length === 0) {
       return null;
     }
-
-    if (paper.urls.length === 1) {
-      return (
-        <a
-          href={paper.urls[0].url}
-          target="_blank"
-          rel="noopener"
-          className={styles.sourceButton}
-          onClick={() => {
-            ActionTicketManager.trackTicket({
-              pageType,
-              actionType: "fire",
-              actionArea: actionArea || pageType,
-              actionTag: pdfSourceRecord ? "downloadPdf" : "source",
-              actionLabel: String(paper.id),
-            });
-          }}
-        >
-          {buttonContent}
-        </a>
-      );
-    }
-
     return (
-      <SourceURLPopover
-        buttonEl={
-          <div
-            className={styles.sourceButton}
-            ref={el => (this.sourceButton = el)}
-            onClick={this.handleToggleSourceDropdown}
-          >
-            {buttonContent}
-          </div>
-        }
-        isOpen={isSourceDropdownOpen}
-        handleCloseFunc={this.handleCloseSourceDropdown}
-        anchorEl={this.sourceButton!}
-        paperSources={paper.urls}
-        pageType={pageType}
-        paperId={paper.id}
-        actionArea={actionArea}
-      />
+      <a
+        href={paper.urls[0].url}
+        target="_blank"
+        rel="noopener"
+        className={styles.sourceButton}
+        onClick={() => {
+          ActionTicketManager.trackTicket({
+            pageType,
+            actionType: "fire",
+            actionArea: actionArea || pageType,
+            actionTag: pdfSourceRecord ? "downloadPdf" : "source",
+            actionLabel: String(paper.id),
+          });
+        }}
+      >
+        {buttonContent}
+      </a>
     );
-  };
-
-  private handleCloseSourceDropdown = (e: any) => {
-    const path = e.path || (e.composedPath && e.composedPath());
-
-    if (path && path.includes(this.sourceButton)) {
-      return;
-    }
-
-    this.setState(prevState => ({ ...prevState, isSourceDropdownOpen: false }));
-  };
-
-  private handleToggleSourceDropdown = () => {
-    this.setState(prevState => ({ ...prevState, isSourceDropdownOpen: !this.state.isSourceDropdownOpen }));
   };
 
   private getAddCollectionButton = () => {

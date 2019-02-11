@@ -20,7 +20,6 @@ import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { GetPapersParams } from "../../../api/types/paper";
 import {
-  FILTER_BOX_TYPE,
   FILTER_TYPE_HAS_EXPANDING_OPTION,
   FILTER_RANGE_TYPE,
   FILTER_TYPE_HAS_RANGE,
@@ -46,13 +45,13 @@ describe("articleSearch actions", () => {
 
   describe("toggleFilterBox action", () => {
     it("should return ARTICLE_SEARCH_TOGGLE_FILTER_BOX action with payload of target type", () => {
-      store.dispatch(Actions.toggleFilterBox(FILTER_BOX_TYPE.PUBLISHED_YEAR));
+      store.dispatch(Actions.toggleFilterBox("PUBLISHED_YEAR"));
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX,
         payload: {
-          type: FILTER_BOX_TYPE.PUBLISHED_YEAR,
+          type: "PUBLISHED_YEAR",
         },
       });
     });

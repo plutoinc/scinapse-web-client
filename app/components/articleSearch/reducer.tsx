@@ -131,16 +131,16 @@ export function reducer(
       const type: FILTER_BOX_TYPE = action.payload.type;
 
       switch (type) {
-        case FILTER_BOX_TYPE.PUBLISHED_YEAR:
+        case "PUBLISHED_YEAR":
           return { ...state, isYearFilterOpen: !state.isYearFilterOpen };
-        case FILTER_BOX_TYPE.JOURNAL_IF:
+        case "JOURNAL_IF":
           return {
             ...state,
             isJournalIFFilterOpen: !state.isJournalIFFilterOpen,
           };
-        case FILTER_BOX_TYPE.FOS:
+        case "FOS":
           return { ...state, isFOSFilterOpen: !state.isFOSFilterOpen };
-        case FILTER_BOX_TYPE.JOURNAL:
+        case "JOURNAL":
           return { ...state, isJournalFilterOpen: !state.isJournalFilterOpen };
         default:
           return state;

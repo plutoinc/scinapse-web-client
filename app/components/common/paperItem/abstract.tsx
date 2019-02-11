@@ -4,12 +4,16 @@ import HighLightedContent from "../highLightedContent";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./abstract.scss");
 import { trackEvent } from "../../../helpers/handleGA";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
 
 const MAX_LENGTH_OF_ABSTRACT = 500;
 
 export interface AbstractProps {
+  paperId: number;
   abstract: string;
   searchQueryText?: string;
+  pageType: Scinapse.ActionTicket.PageType;
+  actionArea?: Scinapse.ActionTicket.ActionArea;
 }
 export interface AbstractStates extends Readonly<{}> {
   isExtendContent: boolean;
@@ -58,22 +62,28 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
       />
     );
   }
+
   public handelExtendContent = () => {
+    const { pageType, actionArea, paperId } = this.props;
     const { isExtendContent } = this.state;
+
     this.setState({ isExtendContent: !isExtendContent });
-    if (isExtendContent) {
-      trackEvent({
-        category: "Search",
-        action: "Extend Abstract",
-        label: location.pathname,
-      });
-    } else {
-      trackEvent({
-        category: "Search",
-        action: "collapse Abstract",
-        label: location.pathname,
-      });
-    }
+
+    console.log(isExtendContent ? "collapse Abstract" : "Extend Abstract");
+
+    ActionTicketManager.trackTicket({
+      pageType,
+      actionType: "fire",
+      actionArea: actionArea || pageType,
+      actionTag: isExtendContent ? "collapseAbstract" : "extendAbstract",
+      actionLabel: String(paperId),
+    });
+
+    trackEvent({
+      category: "Search",
+      action: isExtendContent ? "collapse Abstract" : "Extend Abstract",
+      label: location.pathname,
+    });
   };
 }
 

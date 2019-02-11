@@ -146,6 +146,7 @@ article.paperShow {
   }
 
   &.smallThanVH {
+    position: fixed;
     bottom: unset;
   }
 

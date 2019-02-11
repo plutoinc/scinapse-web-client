@@ -162,9 +162,12 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
           Cited 2909
         </span>
       </a>
-      <div
+      <a
         className="sourceButton"
+        href="https://www.ncbi.nlm.nih.gov/pubmed/17653188"
         onClick={[Function]}
+        rel="noopener"
+        target="_blank"
       >
         <i
           className="icon pdfIconWrapper"
@@ -172,7 +175,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
         <span>
           Download PDF
         </span>
-      </div>
+      </a>
       <button
         className="addCollectionBtnWrapper"
         onClick={[Function]}
@@ -385,9 +388,12 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
           Cited 2909
         </span>
       </a>
-      <div
+      <a
         className="sourceButton"
+        href="https://www.ncbi.nlm.nih.gov/pubmed/17653188"
         onClick={[Function]}
+        rel="noopener"
+        target="_blank"
       >
         <i
           className="icon pdfIconWrapper"
@@ -395,7 +401,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
         <span>
           Download PDF
         </span>
-      </div>
+      </a>
       <span
         className="DOIMetaButtonsWrapper"
       >

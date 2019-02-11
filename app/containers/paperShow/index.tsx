@@ -364,7 +364,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             ref={el => (this.rightBoxWrapper = el)}
             className={classNames({
               [styles.sideNavigation]: true,
-              [styles.stick]: isRightBoxFixed,
+              [styles.stick]: isRightBoxFixed && !isRightBoxSmall,
               [styles.smallThanVH]: isRightBoxSmall,
               [styles.touchFooter]: isTouchFooter,
             })}
