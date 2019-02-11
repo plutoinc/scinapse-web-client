@@ -60,17 +60,8 @@ class PlutoRenderer {
   }
 
   private initializeGA() {
-    if (!EnvChecker.isOnServer() && !EnvChecker.isBot()) {
-      let reactGATraceCode;
-      if (EnvChecker.isDev()) {
-        reactGATraceCode = "UA-109822865-2";
-        ReactGA.initialize(reactGATraceCode, {
-          debug: true,
-        });
-      } else if (EnvChecker.isProdBrowser()) {
-        reactGATraceCode = "UA-109822865-1";
-        ReactGA.initialize(reactGATraceCode);
-      }
+    if (EnvChecker.isProdBrowser() && !EnvChecker.isBot()) {
+      ReactGA.initialize("UA-109822865-1");
 
       ReactGA.set({
         page: window.location.pathname + window.location.search,
@@ -106,8 +97,8 @@ class PlutoRenderer {
         };
       },
     };
-    // TODO: Change below method to hydrate it will be deprecated at React 17
-    ReactDom.render(
+
+    ReactDom.hydrate(
       <CssInjector context={context}>
         <ErrorTracker>
           <Provider store={this.store}>

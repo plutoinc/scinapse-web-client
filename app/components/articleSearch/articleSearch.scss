@@ -44,31 +44,6 @@
   }
 }
 
-.relatedKeywords {
-  font-size: 13px;
-  color: $main_blue0;
-  background-color: white;
-  display: inline-block;
-  padding: 6px 8px;
-  border-radius: 16px;
-  margin: 4px 4px;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
-  border: solid 1px $gray2;
-
-  &:hover {
-    background-color: $gray7;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
-    transition: ease-in-out 0.2s;
-  }
-}
-
-.relatedKeywordsContainer {
-  margin-top: 4px;
-  height: 40px;
-  overflow: hidden;
-  margin-left: 136px;
-}
-
 .suggestionBox {
   margin-top: 24px;
   padding-bottom: 16px;

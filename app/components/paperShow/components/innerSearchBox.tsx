@@ -24,20 +24,23 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-interface InnerSearchBoxProps extends RouteComponentProps<any> {
-  FOSList?: Fos[];
+interface InnerSearchBoxProps extends RouteComponentProps<null> {
   layout: LayoutState;
   articleSearchState: ArticleSearchState;
   dispatch: Dispatch<any>;
+  shouldRender: boolean;
+  FOSList?: Fos[];
 }
 
 @withStyles<typeof InnerSearchBox>(styles)
 class InnerSearchBox extends React.PureComponent<InnerSearchBoxProps> {
-  public constructor(props: InnerSearchBoxProps) {
-    super(props);
-  }
-
   public render() {
+    const { shouldRender } = this.props;
+
+    if (!shouldRender) {
+      return null;
+    }
+
     return (
       <div className={styles.innerSearchBoxWrapper}>
         <>
