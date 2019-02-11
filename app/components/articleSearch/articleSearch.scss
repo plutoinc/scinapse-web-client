@@ -18,10 +18,6 @@
   }
 }
 
-.authorItemsWrapper {
-  margin-top: 24px;
-}
-
 .loadingContainer {
   display: flex;
   flex-direction: column;
@@ -94,9 +90,38 @@
     margin-left: 12px;
     margin-right: 12px;
   }
+}
 
-  .searchPage {
-    color: $gray6;
+.categoryHeader {
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 16px;
+  color: $black1;
+}
+
+.categoryCount {
+  font-size: 20px;
+  font-weight: bold;
+  color: $gray5;
+}
+
+.authorItemsHeader {
+  position: relative;
+  padding: 32px 0 24px 0;
+
+  .moreAuthorLink {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    font-size: 14px;
+    color: $main_blue1;
+
+    &:hover {
+      color: $main_blue_light0;
+    }
   }
 }
 
