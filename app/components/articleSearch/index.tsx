@@ -7,7 +7,7 @@ import { AppState } from "../../reducers";
 import * as Actions from "./actions";
 import SearchList from "./components/searchList";
 import ArticleSpinner from "../common/spinner/articleSpinner";
-import SortBox from "./components/sortBox";
+import SortBox from "./components/newSortBox";
 import FilterContainer from "./components/filterContainer";
 import NoResult from "./components/noResult";
 import PapersQueryFormatter, { SearchPageQueryParamsObject, FilterObject } from "../../helpers/papersQueryFormatter";
@@ -105,10 +105,8 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
               {this.getSuggestionKeywordBox()}
               {this.getAuthorEntitiesSection()}
               <div className={styles.searchSummary}>
-                <span className={styles.searchPage}>
-                  {articleSearchState.page} page of {formatNumber(totalPages)} pages ({formatNumber(totalElements)}{" "}
-                  results)
-                </span>
+                <span className={styles.categoryHeader}>Paper</span>
+                <span className={styles.categoryCount}>{formatNumber(totalElements)}</span>
                 <SortBox query={queryParams.query} sortOption={queryParams.sort} />
               </div>
               <SearchList
@@ -196,15 +194,43 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
 
   private getAuthorEntitiesSection = () => {
     const { articleSearchState } = this.props;
+    const matchAuthorEntities = articleSearchState.matchAuthors;
 
-    const authorItems = articleSearchState.matchEntities
-      .filter(matchEntity => matchEntity.type === "AUTHOR")
-      .slice(0, 2)
-      .map(matchEntity => {
-        return <AuthorSearchItem authorEntity={matchEntity} key={matchEntity.entity.id} />;
+    if (matchAuthorEntities && matchAuthorEntities.content.length > 0 && articleSearchState.page === 1) {
+      const matchAuthorCount = matchAuthorEntities.totalElements;
+      const matchAuthorContent = matchAuthorEntities.content;
+      const moreAuthorPage = (
+        <Link
+          to={{
+            pathname: "/search/authors",
+            search: PapersQueryFormatter.stringifyPapersQuery({
+              query: articleSearchState.searchInput,
+              sort: "RELEVANCE",
+              filter: {},
+              page: 1,
+            }),
+          }}
+          className={styles.moreAuthorLink}
+        >
+          Show All Author Results >
+        </Link>
+      );
+      const authorItems = matchAuthorContent.slice(0, 2).map(matchEntity => {
+        return <AuthorSearchItem authorEntity={matchEntity} key={matchEntity.id} />;
       });
+      return (
+        <div>
+          <div className={styles.authorItemsHeader}>
+            <span className={styles.categoryHeader}>Author</span>
+            <span className={styles.categoryCount}>{matchAuthorCount}</span>
+            {matchAuthorCount <= 2 ? null : moreAuthorPage}
+          </div>
+          <div className={styles.authorItemsWrapper}>{authorItems}</div>
+        </div>
+      );
+    }
 
-    return <div className={styles.authorItemsWrapper}>{authorItems}</div>;
+    return null;
   };
 
   private getResultHelmet = (query: string) => {
