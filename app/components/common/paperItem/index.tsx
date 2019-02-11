@@ -75,7 +75,13 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
     const { title, titleHighlighted, authors, year, doi, urls, journal, conferenceInstance } = paper;
 
     const abstract = !omitAbstract ? (
-      <Abstract abstract={paper.abstractHighlighted || paper.abstract} searchQueryText={searchQueryText} />
+      <Abstract
+        paperId={paper.id}
+        pageType={pageType}
+        actionArea={actionArea}
+        abstract={paper.abstractHighlighted || paper.abstract}
+        searchQueryText={searchQueryText}
+      />
     ) : null;
     const buttons =
       !omitButtons && currentUser ? (

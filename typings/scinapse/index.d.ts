@@ -53,6 +53,8 @@ declare namespace Scinapse {
       | "authorEntityItem"
       | "paperSorting"
       | "collectionSharing"
+      | "extendAbstract"
+      | "collapseAbstract"
       | "";
 
     type ActionArea =
