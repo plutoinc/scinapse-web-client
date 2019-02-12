@@ -32,6 +32,7 @@ import {
 } from "../../actions/paperShow";
 import { trackEvent } from "../../helpers/handleGA";
 import ActionTicketManager from "../../helpers/actionTicketManager";
+import { ActionCreators } from "../../actions/actionTypes";
 const styles = require("./paperShowCollectionControlButton.scss");
 
 interface PaperShowCollectionControlButtonProps {
@@ -320,6 +321,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
             onClickCancel={this.closeNoteDropdown}
             onSubmit={this.handleSubmitNote}
             isLoading={myCollectionsState.isPostingNote}
+            autoFocus={true}
           />
         </div>
       );
@@ -365,17 +367,19 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     }
   };
 
-  private handleSubmitNote = (note: string) => {
+  private handleSubmitNote = async (note: string) => {
     const { dispatch, targetPaperId, selectedCollection } = this.props;
 
     if (selectedCollection) {
-      dispatch(
+      await dispatch(
         updatePaperNote({
           paperId: targetPaperId,
           collectionId: selectedCollection.id,
           note,
         })
       );
+
+      dispatch(ActionCreators.closeNoteDropdownInPaperShow());
     }
   };
 

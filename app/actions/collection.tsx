@@ -74,7 +74,6 @@ export function updatePaperNote(params: UpdatePaperNoteToCollectionParams) {
     try {
       await CollectionAPI.updatePaperNoteToCollection(params);
       dispatch(ActionCreators.succeededToUpdatePaperNote(params));
-      dispatch(ActionCreators.closeNoteDropdownInPaperShow());
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
       console.error(error);
@@ -83,6 +82,7 @@ export function updatePaperNote(params: UpdatePaperNoteToCollectionParams) {
         type: "error",
         message: "Had an error when update the paper note to collection",
       });
+      throw error;
     }
   };
 }

@@ -129,6 +129,13 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
 
       return {
         ...state,
+        papersInCollection: {
+          ...state.papersInCollection,
+          [action.payload.paperId]: {
+            ...state.papersInCollection[action.payload.paperId],
+            note: action.payload.note,
+          },
+        },
         collections: {
           ...state.collections,
           [targetCollectionId]: {
