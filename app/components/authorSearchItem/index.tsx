@@ -26,6 +26,10 @@ const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
     <Icon className={styles.userImg} icon="DEFAULT_PROFILE_IMAGE" />
   );
 
+  const fosContent = author.fosList.slice(0, 3).map((fos, index) => {
+    return index === 0 ? fos.name : ` · ${fos.name}`;
+  });
+
   return (
     <Link
       onClick={() => {
@@ -58,21 +62,8 @@ const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
           ) : null}
         </div>
         <div className={styles.affiliation}>{author.lastKnownAffiliation && author.lastKnownAffiliation.name}</div>
+        <div className={styles.fosList}>{fosContent}</div>
       </span>
-      <div className={styles.metaBox}>
-        <span className={styles.metaItem}>
-          <div className={styles.metaTitle}>PUBLICATIONS</div>
-          <div className={styles.metaContent}>{author.paperCount || "-"}</div>
-        </span>
-        <span className={styles.metaItem}>
-          <div className={styles.metaTitle}>CITATIONS</div>
-          <div className={styles.metaContent}>{author.citationCount || "-"}</div>
-        </span>
-        <span className={styles.metaItem}>
-          <div className={styles.metaTitle}>H-INDEX</div>
-          <div className={styles.metaContent}>{author.hindex || "-"}</div>
-        </span>
-      </div>
     </Link>
   );
 };
