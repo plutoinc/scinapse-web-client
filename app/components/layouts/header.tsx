@@ -27,6 +27,7 @@ import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import { HOME_PATH } from "../../constants/routes";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
+import TabNavigationBar, { TabItem } from "../common/tabNavigationBar";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -38,6 +39,7 @@ function mapStateToProps(state: AppState) {
     currentUserState: state.currentUser,
     layoutState: state.layout,
     articleSearchState: state.articleSearch,
+    authorSearchState: state.authorSearch,
   };
 }
 
@@ -131,10 +133,65 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           {this.getSearchFormContainer()}
           {this.getHeaderButtons()}
         </div>
+        {location.pathname === "/search" || location.pathname === "/search/authors"
+          ? this.getTabNavigationInSearch()
+          : null}
         {this.getToastBar()}
       </nav>
     );
   }
+
+  private getTabNavigationInSearch = () => {
+    const { articleSearchState, authorSearchState } = this.props;
+    const authorEntitiesInArticleSearch = articleSearchState.matchAuthors;
+    let authorCount: number;
+    let tabNaviItems: TabItem[];
+
+    if (location.pathname === "/search" && authorEntitiesInArticleSearch) {
+      authorCount = authorEntitiesInArticleSearch.totalElements;
+      tabNaviItems = this.getTabNavigationItems(articleSearchState.searchInput, authorCount);
+      return <TabNavigationBar tabItemsData={tabNaviItems} />;
+    } else if (location.pathname === "/search/authors") {
+      authorCount = authorSearchState.totalElements;
+      tabNaviItems = this.getTabNavigationItems(authorSearchState.searchInput, authorCount);
+      return <TabNavigationBar tabItemsData={tabNaviItems} />;
+    }
+
+    return null;
+  };
+
+  private getTabNavigationItems = (searchKeyword: string, authorCount: number): TabItem[] => {
+    const tabNavigationItems = [
+      {
+        tabName: "All",
+        tabLink: {
+          pathname: "/search",
+          search: PapersQueryFormatter.stringifyPapersQuery({
+            query: searchKeyword,
+            sort: "RELEVANCE",
+            filter: {},
+            page: 1,
+          }),
+        },
+      },
+    ];
+
+    if (authorCount && authorCount > 0) {
+      tabNavigationItems.push({
+        tabName: `Authors(${authorCount})`,
+        tabLink: {
+          pathname: "/search/authors",
+          search: PapersQueryFormatter.stringifyPapersQuery({
+            query: searchKeyword,
+            sort: "RELEVANCE",
+            filter: {},
+            page: 1,
+          }),
+        },
+      });
+    }
+    return tabNavigationItems;
+  };
 
   private checkTopToast = () => {
     const old = new Date(LAST_UPDATE_DATE);
@@ -248,14 +305,25 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
     trackEvent({ category: "Search", action: "Query", label: "" });
 
-    history.push(
-      `/search?${PapersQueryFormatter.stringifyPapersQuery({
-        query,
-        sort: "RELEVANCE",
-        filter: {},
-        page: 1,
-      })}`
-    );
+    if (location.pathname === "/search/authors") {
+      history.push(
+        `/search/authors?${PapersQueryFormatter.stringifyPapersQuery({
+          query,
+          sort: "RELEVANCE",
+          filter: {},
+          page: 1,
+        })}`
+      );
+    } else {
+      history.push(
+        `/search?${PapersQueryFormatter.stringifyPapersQuery({
+          query,
+          sort: "RELEVANCE",
+          filter: {},
+          page: 1,
+        })}`
+      );
+    }
   };
 
   private getHeaderLogo = () => {
@@ -307,6 +375,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             }}
             listWrapperStyle={{
               boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 8px 1px",
+              zIndex: 998,
             }}
             listItemStyle={{
               height: "44px",
