@@ -150,22 +150,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         },
       },
       {
-        tabName: isLoading ? (
-          <>
-            Authors {"("}
-            <CircularProgress
-              style={{
-                width: "12px",
-                height: "16px",
-                margin: "0 4px",
-                color: "#9aa3b5",
-              }}
-            />
-            {")"}
-          </>
-        ) : (
-          `Authors ( ${authorCount} )`
-        ),
+        tabName: `Authors`,
         tabLink: {
           pathname: "/search/authors",
           search: PapersQueryFormatter.stringifyPapersQuery({

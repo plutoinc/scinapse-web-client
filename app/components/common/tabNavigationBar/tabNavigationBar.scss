@@ -7,18 +7,19 @@
   padding: 0 16px;
   position: relative;
   margin: 0 auto;
-  height: 48px;
+  height: 40px;
   z-index: 997;
   box-shadow: 0 2px 4px 0 rgba (0, 0, 0, 0.1);
   background-color: #ffffff;
+  border-top: solid 1px $gray1;
 }
 
 .nonActiveTabItem {
-  padding: 16px 32px;
+  padding: 8px 24px;
   font-size: 16px;
   font-weight: bold;
-  margin-right: 24px;
   color: $gray5;
+  line-height: 24px;
 
   &:hover {
     color: $gray6;

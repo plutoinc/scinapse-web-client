@@ -9,12 +9,12 @@
   padding: 16px;
 
   & + & {
-    margin-top: 20px;
+    margin-top: 16px;
   }
 
   &:hover {
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.08);
-    transition: 0.2s;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+    transition: 0.2s ease-in-out;
   }
 }
 
@@ -24,7 +24,6 @@
   width: 64px;
   height: 64px;
   border-radius: 4px;
-  border: 1px solid $gray2;
   background-size: cover;
   background-position: 50% 50%;
   background-repeat: no-repeat;
@@ -40,7 +39,7 @@
   @extend %one-line-overflow-ellipsis;
   width: 290px;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 500;
   color: $black0;
   margin-bottom: 2px;
   height: 24px;

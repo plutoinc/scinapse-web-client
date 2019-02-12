@@ -76,9 +76,11 @@
 .searchSummary {
   position: relative;
   display: flex;
-  margin-top: 24px;
+  margin-top: 32px;
   font-size: 15px;
   align-items: center;
+  line-height: 28px;
+  margin-bottom: 16px;
 
   .searchResult {
     color: $main_blue0;
@@ -93,27 +95,29 @@
 }
 
 .categoryHeader {
-  font-size: 24px;
-  font-weight: bold;
-  margin-right: 16px;
+  font-size: 20px;
+  font-weight: 600;
+  margin-right: 8px;
   color: $black1;
 }
 
 .categoryCount {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 18px;
+  font-weight: 500;
   color: $gray5;
 }
 
 .authorItemsHeader {
   position: relative;
-  padding: 12px 0 24px 0;
+  padding: 32px 0 16px 0;
 
   .moreAuthorLink {
-    display: flex;
+    display: inline;
     align-items: center;
     position: absolute;
-    top: 0;
+    top: 32px;
+    line-height: 24px;
+    text-align: center;
     bottom: 0;
     right: 0;
     font-size: 14px;
@@ -121,6 +125,7 @@
 
     &:hover {
       color: $main_blue_light0;
+      cursor: pointer;
     }
   }
 }

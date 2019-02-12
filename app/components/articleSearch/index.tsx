@@ -134,7 +134,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
               {this.getSuggestionKeywordBox()}
               {this.getAuthorEntitiesSection()}
               <div className={styles.searchSummary}>
-                <span className={styles.categoryHeader}>Paper</span>
+                <span className={styles.categoryHeader}>Publication</span>
                 <span className={styles.categoryCount}>{formatNumber(totalElements)}</span>
                 <SortBox query={queryParams.query} sortOption={queryParams.sort} />
               </div>

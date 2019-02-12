@@ -41,12 +41,7 @@ class SortBox extends React.PureComponent<SortBoxProps> {
   private getSortBoxItems = () => {
     const { sortOption, query } = this.props;
 
-    const sortOptions: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS[] = [
-      "RELEVANCE",
-      "MOST_CITATIONS",
-      "OLDEST_FIRST",
-      "NEWEST_FIRST",
-    ];
+    const sortOptions: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS[] = ["RELEVANCE", "MOST_CITATIONS", "NEWEST_FIRST"];
 
     const transformSortOptionsToHtml = sortOptions.map((sort, index) => {
       return (
@@ -83,16 +78,12 @@ class SortBox extends React.PureComponent<SortBoxProps> {
         return "Relevance";
       }
 
-      case "MOST_CITATIONS": {
-        return "Most Citations";
-      }
-
-      case "OLDEST_FIRST": {
-        return "Oldest";
-      }
-
       case "NEWEST_FIRST": {
         return "Newest";
+      }
+
+      case "MOST_CITATIONS": {
+        return "Most Citations";
       }
     }
   };
