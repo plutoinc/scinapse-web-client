@@ -8,6 +8,7 @@ import { BasePaperAuthor } from "../model/author";
 import { Affiliation } from "../model/affiliation";
 import { camelCaseKeys } from "../helpers/camelCaseKeys";
 import { Author } from "../model/author/author";
+import { NewFOS } from "../model/fos";
 
 export interface AuthorSearchParams {
   query: string;
@@ -22,6 +23,7 @@ export interface SearchParams extends AuthorSearchParams {
 
 export interface MatchEntityAuthor extends BasePaperAuthor {
   lastKnownAffiliation: Affiliation | null;
+  fosList: NewFOS[];
   paperCount: number;
   citationCount: number;
   profileImageUrl: string | null;
@@ -87,9 +89,7 @@ class SearchAPI extends PlutoAxios {
       cancelToken,
     });
     const camelizedRes = camelCaseKeys(res.data);
-    console.log(camelizedRes);
     const searchRes: AuthorSearchResult = camelizedRes;
-    console.log(searchRes);
 
     return {
       ...searchRes,
