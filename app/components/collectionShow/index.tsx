@@ -24,7 +24,7 @@ import Footer from "../layouts/footer";
 import Icon from "../../icons";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from "../common/sortBox";
-import { getPapers, openShareDropdown, closeShareDropdown } from "./actions";
+import { getPapers, openShareDropdown, closeShareDropdown, removePaperFromCollection } from "./actions";
 import { LayoutState, UserDevice } from "../layouts/records";
 import ScinapseInput from "../common/scinapseInput";
 import formatNumber from "../../helpers/formatNumber";
@@ -412,6 +412,19 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     );
   };
 
+  private removePaperFromCollection = async (paperId: number) => {
+    const { dispatch, collection } = this.props;
+
+    if (collection && confirm(`Are you sure to remove this paper from '${collection.title}'?`)) {
+      await dispatch(
+        removePaperFromCollection({
+          paperIds: [paperId],
+          collection,
+        })
+      );
+    }
+  };
+
   private handleToggleShareDropdown = () => {
     const { dispatch, collectionShow } = this.props;
 
@@ -479,6 +492,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
               paperNote={paper.note ? paper.note : ""}
               paper={paper.paper}
               collectionId={collection.id}
+              onRemovePaperCollection={this.removePaperFromCollection}
               key={paper.paperId}
             />
           );

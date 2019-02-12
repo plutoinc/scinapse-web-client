@@ -1,0 +1,32 @@
+%button-icon {
+  margin-right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: $gray6;
+}
+
+.addCollectionBtnWrapper {
+  @include small-action-button($gray6);
+  height: 100%;
+
+  .plusIcon {
+    @extend %button-icon;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  .buttonIcon {
+    @extend %button-icon;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}

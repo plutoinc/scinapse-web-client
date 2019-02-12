@@ -11,7 +11,7 @@ interface CollectionPaperItemProps extends PaperItemProps {
 
 class CollectionPaperItem extends React.PureComponent<CollectionPaperItemProps> {
   public render() {
-    const { paper, paperNote, collectionId } = this.props;
+    const { paper, paperNote, collectionId, onRemovePaperCollection } = this.props;
 
     const paperItemProps = {
       ...this.props,
@@ -25,7 +25,7 @@ class CollectionPaperItem extends React.PureComponent<CollectionPaperItemProps> 
     return (
       <div className={styles.CollectionPaperItemWrapper}>
         <div className={styles.paper}>
-          <PaperItem {...paperItemProps} />
+          <PaperItem {...paperItemProps} hasCollection={true} onRemovePaperCollection={onRemovePaperCollection} />
         </div>
         <CollectionPaperNote note={paperNote} collectionId={collectionId} paperId={paper.id} />
       </div>

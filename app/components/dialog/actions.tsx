@@ -75,16 +75,16 @@ export function removePaperFromCollection(params: RemovePapersFromCollectionPara
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(
-        ActionCreators.startToRemovePaperToCollection({
+        ActionCreators.startToRemovePaperFromCollection({
           collection: params.collection,
         })
       );
 
       await CollectionAPI.removePapersFromCollection(params);
-      dispatch(ActionCreators.succeededToRemovePaperToCollection());
+      dispatch(ActionCreators.succeededToRemovePaperFromCollection());
     } catch (err) {
       dispatch(
-        ActionCreators.failedToRemovePaperToCollection({
+        ActionCreators.failedToRemovePaperFromCollection({
           collection: params.collection,
         })
       );

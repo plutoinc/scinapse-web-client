@@ -22,9 +22,9 @@ export enum ACTION_TYPES {
   GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION = "GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION",
   GLOBAL_SUCCEEDED_ADD_PAPER_TO_COLLECTION = "GLOBAL_SUCCEEDED_ADD_PAPER_TO_COLLECTION",
   GLOBAL_FAILED_TO_ADD_PAPER_TO_COLLECTION = "GLOBAL_FAILED_TO_ADD_PAPER_TO_COLLECTION",
-  GLOBAL_START_TO_REMOVE_PAPER_TO_COLLECTION = "GLOBAL_START_TO_REMOVE_PAPER_TO_COLLECTION",
-  GLOBAL_SUCCEEDED_REMOVE_PAPER_TO_COLLECTION = "GLOBAL_SUCCEEDED_REMOVE_PAPER_TO_COLLECTION",
-  GLOBAL_FAILED_TO_REMOVE_PAPER_TO_COLLECTION = "GLOBAL_FAILED_TO_REMOVE_PAPER_TO_COLLECTION",
+  GLOBAL_START_TO_REMOVE_PAPER_FROM_COLLECTION = "GLOBAL_START_TO_REMOVE_PAPER_FROM_COLLECTION",
+  GLOBAL_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION = "GLOBAL_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION",
+  GLOBAL_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION = "GLOBAL_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION",
 
   GLOBAL_DIALOG_OPEN = "GLOBAL_DIALOG_OPEN",
   GLOBAL_DIALOG_CLOSE = "GLOBAL_DIALOG_CLOSE",
@@ -238,6 +238,9 @@ export enum ACTION_TYPES {
   COLLECTION_SHOW_FAILED_TO_GET_PAPERS = "COLLECTION_SHOW_FAILED_TO_GET_PAPERS",
   COLLECTION_SHOW_OPEN_SHARE_DROPDOWN = "COLLECTION_SHOW_OPEN_SHARE_DROPDOWN",
   COLLECTION_SHOW_CLOSE_SHARE_DROPDOWN = "COLLECTION_SHOW_CLOSE_SHARE_DROPDOWN",
+  COLLECTION_SHOW_START_TO_REMOVE_PAPER_FROM_COLLECTION = "COLLECTION_SHOW_START_TO_REMOVE_PAPER_FROM_COLLECTION",
+  COLLECTION_SHOW_SUCCEEDED_TO_REMOVE_PAPER_FROM_COLLECTION = "COLLECTION_SHOW_SUCCEEDED_TO_REMOVE_PAPER_FROM_COLLECTION",
+  COLLECTION_SHOW_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION = "COLLECTION_SHOW_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION",
 
   JOURNAL_SHOW_START_TO_GET_JOURNAL = "JOURNAL_SHOW_START_TO_GET_JOURNAL",
   JOURNAL_SHOW_SUCCEEDED_TO_GET_JOURNAL = "JOURNAL_SHOW_SUCCEEDED_TO_GET_JOURNAL",
@@ -683,23 +686,42 @@ export const ActionCreators = {
     });
   },
 
-  startToRemovePaperToCollection(payload: { collection: Collection }) {
+  startToRemovePaperFromCollection(payload: { collection: Collection }) {
     return createAction({
-      type: ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_TO_COLLECTION,
+      type: ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_FROM_COLLECTION,
       payload,
     });
   },
 
-  succeededToRemovePaperToCollection() {
+  succeededToRemovePaperFromCollection() {
     return createAction({
-      type: ACTION_TYPES.GLOBAL_SUCCEEDED_REMOVE_PAPER_TO_COLLECTION,
+      type: ACTION_TYPES.GLOBAL_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION,
     });
   },
 
-  failedToRemovePaperToCollection(payload: { collection: Collection }) {
+  failedToRemovePaperFromCollection(payload: { collection: Collection }) {
     return createAction({
-      type: ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_PAPER_TO_COLLECTION,
+      type: ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION,
       payload,
+    });
+  },
+
+  startToRemovePaperFromCollectionInCollectionShow() {
+    return createAction({
+      type: ACTION_TYPES.COLLECTION_SHOW_START_TO_REMOVE_PAPER_FROM_COLLECTION,
+    });
+  },
+
+  succeededToRemovePaperFromCollectionInCollectionShow(payload: { paperId: number }) {
+    return createAction({
+      type: ACTION_TYPES.COLLECTION_SHOW_SUCCEEDED_TO_REMOVE_PAPER_FROM_COLLECTION,
+      payload,
+    });
+  },
+
+  failedToRemovePaperFromCollectionInCollectionShow() {
+    return createAction({
+      type: ACTION_TYPES.COLLECTION_SHOW_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION,
     });
   },
 
@@ -981,20 +1003,20 @@ export const ActionCreators = {
     });
   },
 
-  startToRemovePaperFromCollection() {
+  startToRemovePaperFromCollectionInPaperShow() {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_START_TO_REMOVE_PAPER_FROM_COLLECTION,
     });
   },
 
-  succeededToRemovePaperFromCollection(payload: { collection: Collection }) {
+  succeededToRemovePaperFromCollectionInPaperShow(payload: { collection: Collection }) {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION,
       payload,
     });
   },
 
-  failedToRemovePaperFromCollection() {
+  failedToRemovePaperFromCollectionInPaperShow() {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION,
     });

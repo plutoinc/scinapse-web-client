@@ -37,17 +37,17 @@ export function savePaperToCollection(params: AddPaperToCollectionParams) {
 export function removePaperFromCollection(params: RemovePapersFromCollectionParams) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      dispatch(ActionCreators.startToRemovePaperFromCollection());
+      dispatch(ActionCreators.startToRemovePaperFromCollectionInPaperShow());
 
       await CollectionAPI.removePapersFromCollection(params);
       dispatch(
-        ActionCreators.succeededToRemovePaperFromCollection({
+        ActionCreators.succeededToRemovePaperFromCollectionInPaperShow({
           collection: params.collection,
         })
       );
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
-      dispatch(ActionCreators.failedToRemovePaperFromCollection());
+      dispatch(ActionCreators.failedToRemovePaperFromCollectionInPaperShow());
       alertToast({
         type: "error",
         message: error.message,

@@ -1,7 +1,7 @@
 .form {
   border-radius: 8px;
   background-color: white;
-  border: solid 1px $gray3;
+  border: solid 1px $gray2;
 
   &:hover {
     .editButtonWrapper.hideEditButtonWrapper {
@@ -10,7 +10,7 @@
   }
 
   &:focus-within {
-    border: solid 3px $gray3;
+    border: solid 3px $gray2;
   }
 }
 
