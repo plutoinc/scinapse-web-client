@@ -28,7 +28,6 @@ import { HOME_PATH } from "../../constants/routes";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 import TabNavigationBar, { TabItem } from "../common/tabNavigationBar";
-import CircularProgress from "@material-ui/core/CircularProgress";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -112,30 +111,19 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     const { articleSearchState, authorSearchState } = this.props;
     const authorEntitiesInArticleSearch = articleSearchState.matchAuthors;
     let tabNaviItems: TabItem[];
-    let authorCount: number;
 
     if (location.pathname === "/search" && authorEntitiesInArticleSearch) {
-      authorCount = authorEntitiesInArticleSearch.totalElements;
-      tabNaviItems = this.getTabNavigationItems(
-        articleSearchState.searchInput,
-        authorCount,
-        articleSearchState.isLoading
-      );
+      tabNaviItems = this.getTabNavigationItems(articleSearchState.searchInput);
       return <TabNavigationBar tabItemsData={tabNaviItems} />;
     } else if (location.pathname === "/search/authors") {
-      authorCount = authorSearchState.totalElements;
-      tabNaviItems = this.getTabNavigationItems(
-        authorSearchState.searchInput,
-        authorCount,
-        authorSearchState.isLoading
-      );
+      tabNaviItems = this.getTabNavigationItems(authorSearchState.searchInput);
       return <TabNavigationBar tabItemsData={tabNaviItems} />;
     }
 
     return null;
   };
 
-  private getTabNavigationItems = (searchKeyword: string, authorCount: number, isLoading: boolean): TabItem[] => {
+  private getTabNavigationItems = (searchKeyword: string): TabItem[] => {
     const tabNavigationItems = [
       {
         tabName: "All",
