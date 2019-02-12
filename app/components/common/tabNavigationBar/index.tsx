@@ -4,9 +4,14 @@ import { Link } from "react-router-dom";
 import * as classNames from "classnames";
 const styles = require("./tabNavigationBar.scss");
 
+interface TabLinkParams {
+  pathname: string;
+  search: string;
+}
+
 export interface TabItem {
   tabName: string;
-  tabLink: Location;
+  tabLink: TabLinkParams;
 }
 
 interface TabNavigationBarProps {
