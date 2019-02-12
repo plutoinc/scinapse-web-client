@@ -15,21 +15,24 @@ interface CollectionPaperNoteProps {
 }
 
 interface CollectionPaperNoteState {
+  isLoading: boolean;
   isEdit: boolean;
 }
+
 @withStyles<typeof CollectionPaperNote>(styles)
 class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, CollectionPaperNoteState> {
   constructor(props: CollectionPaperNoteProps) {
     super(props);
 
     this.state = {
+      isLoading: false,
       isEdit: false,
     };
   }
 
   public render() {
     const { note } = this.props;
-    const { isEdit } = this.state;
+    const { isEdit, isLoading } = this.state;
 
     if (note && !isEdit) {
       return (
@@ -53,7 +56,7 @@ class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, 
           hideButton={true}
           omitCancel={true}
           initialValue={note}
-          isLoading={false}
+          isLoading={isLoading}
           onSubmit={this.handleSubmitNote}
         />
       </div>
@@ -82,6 +85,7 @@ class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, 
     const { dispatch, paperId, collectionId } = this.props;
 
     try {
+      this.setState(prevState => ({ ...prevState, isLoading: true }));
       await dispatch(
         updatePaperNote({
           paperId: paperId,
@@ -89,8 +93,10 @@ class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, 
           note,
         })
       );
-      this.toggleNoteEditMode();
-    } catch (err) {}
+      this.setState(prevState => ({ ...prevState, isLoading: false, isEdit: false }));
+    } catch (err) {
+      this.setState(prevState => ({ ...prevState, isLoading: false }));
+    }
   };
 }
 
