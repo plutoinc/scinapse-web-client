@@ -484,7 +484,8 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
 
     if (collection && papersInCollection && papersInCollection.length > 0) {
       return papersInCollection.map(paper => {
-        if (paper) {
+        const isRemoved = collectionShow.removedPaperIds && collectionShow.removedPaperIds.has(paper.paperId);
+        if (paper && !isRemoved) {
           return (
             <CollectionPaperItem
               currentUser={currentUser}

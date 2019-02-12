@@ -213,9 +213,27 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   };
 
   private additionalMenuItems = () => {
-    const { paper, handleRemovePaper, hasRemoveButton, isRepresentative, handleToggleRepresentative } = this.props;
+    const {
+      paper,
+      handleRemovePaper,
+      hasRemoveButton,
+      isRepresentative,
+      handleToggleRepresentative,
+      hasCollection,
+    } = this.props;
     return (
       <div className={styles.menuItems}>
+        {hasCollection && (
+          <MenuItem
+            classes={{ root: styles.additionalMenuItem }}
+            onClick={() => {
+              GlobalDialogManager.openCollectionDialog(paper.id);
+              this.closeAdditionalMenu();
+            }}
+          >
+            Add to other collections
+          </MenuItem>
+        )}
         {hasRemoveButton ? (
           <MenuItem
             classes={{ root: styles.additionalMenuItem }}

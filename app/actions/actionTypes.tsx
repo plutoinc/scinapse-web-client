@@ -666,7 +666,7 @@ export const ActionCreators = {
     });
   },
 
-  startToAddPaperToCollectionInGlobalDialog(payload: { collection: Collection }) {
+  startToAddPaperToCollectionInGlobalDialog(payload: { collection: Collection; paperIds: number[] }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION,
       payload,
@@ -679,14 +679,14 @@ export const ActionCreators = {
     });
   },
 
-  failedToAddPaperToCollectionInGlobalDialog(payload: { collection: Collection }) {
+  failedToAddPaperToCollectionInGlobalDialog(payload: { collection: Collection; paperIds: number[] }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_FAILED_TO_ADD_PAPER_TO_COLLECTION,
       payload,
     });
   },
 
-  startToRemovePaperFromCollection(payload: { collection: Collection }) {
+  startToRemovePaperFromCollection(payload: { collection: Collection; paperIds: number[] }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_FROM_COLLECTION,
       payload,
@@ -699,7 +699,7 @@ export const ActionCreators = {
     });
   },
 
-  failedToRemovePaperFromCollection(payload: { collection: Collection }) {
+  failedToRemovePaperFromCollection(payload: { collection: Collection; paperIds: number[] }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION,
       payload,
