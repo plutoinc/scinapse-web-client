@@ -1,0 +1,28 @@
+.tabItemWrapper {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  position: relative;
+  margin: 0 auto;
+  height: 48px;
+  z-index: 997;
+  box-shadow: 0 2px 4px 0 rgba (0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+
+.nonActiveTabItem {
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 24px;
+  color: $gray5;
+}
+
+.activeTabItem {
+  @extend .nonActiveTabItem;
+  box-shadow: inset 0 -3px 0 0 $black1;
+  color: $black1;
+}
