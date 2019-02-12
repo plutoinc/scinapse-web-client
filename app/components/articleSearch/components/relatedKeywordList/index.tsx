@@ -1,29 +1,35 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { LocationDescriptorObject } from "history";
 import { withStyles } from "../../../../helpers/withStylesHelper";
+import PapersQueryFormatter from "../../../../helpers/papersQueryFormatter";
 const styles = require("./relatedKeywordList.scss");
 
 interface RelatedKeywordListProps {
   keywordList: string[];
   shouldRender: boolean;
-  locationDescriptor: LocationDescriptorObject;
   query: string;
 }
 
-const RelatedKeywordList: React.SFC<RelatedKeywordListProps> = ({
-  keywordList,
-  shouldRender,
-  locationDescriptor,
-  query,
-}) => {
+const RelatedKeywordList: React.SFC<RelatedKeywordListProps> = ({ keywordList, shouldRender, query }) => {
   if (!shouldRender || keywordList.length === 0) {
     return null;
   }
 
   const relatedKeywordItems = keywordList.filter(k => query.indexOf(k) === -1).map(keyword => (
     <div key={keyword} className={styles.relatedKeywords}>
-      <Link to={locationDescriptor}>{keyword.toLowerCase()}</Link>
+      <Link
+        to={{
+          pathname: "/search",
+          search: PapersQueryFormatter.stringifyPapersQuery({
+            query: `${query} ${keyword}`,
+            sort: "RELEVANCE",
+            filter: {},
+            page: 1,
+          }),
+        }}
+      >
+        {keyword.toLowerCase()}
+      </Link>
     </div>
   ));
 

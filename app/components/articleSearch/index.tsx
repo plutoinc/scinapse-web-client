@@ -128,15 +128,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
             <div className={styles.innerContainer}>
               <RelatedKeywordList
                 shouldRender={isClient && expUserType === "A"}
-                locationDescriptor={{
-                  pathname: "/search",
-                  search: PapersQueryFormatter.stringifyPapersQuery({
-                    query: articleSearchState.suggestionKeyword,
-                    sort: "RELEVANCE",
-                    filter: {},
-                    page: 1,
-                  }),
-                }}
                 query={queryParams.query}
                 keywordList={articleSearchState.aggregationData ? articleSearchState.aggregationData.keywordList : []}
               />
