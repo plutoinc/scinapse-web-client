@@ -148,15 +148,6 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       };
     }
 
-    case ACTION_TYPES.COLLECTION_SHOW_SUCCEEDED_TO_REMOVE_PAPER_FROM_COLLECTION: {
-      const { [action.payload.paperId]: deletedItem, ...papersInCollection } = state.papersInCollection;
-
-      return {
-        ...state,
-        papersInCollection,
-      };
-    }
-
     case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_STALE_UPDATED_COLLECTION_NOTE: {
       const targetCollectionId = action.payload.collectionId;
 

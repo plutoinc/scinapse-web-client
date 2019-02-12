@@ -24,7 +24,7 @@ import Footer from "../layouts/footer";
 import Icon from "../../icons";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from "../common/sortBox";
-import { getPapers, openShareDropdown, closeShareDropdown, removePaperFromCollection } from "./actions";
+import { getPapers, openShareDropdown, closeShareDropdown } from "./actions";
 import { LayoutState, UserDevice } from "../layouts/records";
 import ScinapseInput from "../common/scinapseInput";
 import formatNumber from "../../helpers/formatNumber";
@@ -32,6 +32,7 @@ import restoreScroll from "../../helpers/scrollRestoration";
 import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import ErrorPage from "../error/errorPage";
+import { removePaperFromCollection } from "../dialog/actions";
 const styles = require("./collectionShow.scss");
 
 const FACEBOOK_SHARE_URL = "http://www.facebook.com/sharer/sharer.php?u=";
@@ -416,12 +417,14 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     const { dispatch, collection } = this.props;
 
     if (collection && confirm(`Are you sure to remove this paper from '${collection.title}'?`)) {
-      await dispatch(
-        removePaperFromCollection({
-          paperIds: [paperId],
-          collection,
-        })
-      );
+      try {
+        await dispatch(
+          removePaperFromCollection({
+            paperIds: [paperId],
+            collection,
+          })
+        );
+      } catch (err) {}
     }
   };
 

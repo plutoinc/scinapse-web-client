@@ -1,6 +1,6 @@
 import axios, { CancelToken } from "axios";
 import { Dispatch } from "react-redux";
-import CollectionAPI, { GetCollectionsPapersParams, RemovePapersFromCollectionParams } from "../../api/collection";
+import CollectionAPI, { GetCollectionsPapersParams } from "../../api/collection";
 import { ActionCreators } from "../../actions/actionTypes";
 import alertToast from "../../helpers/__mocks__/makePlutoToastAction";
 import PlutoAxios from "../../api/pluto";
@@ -31,23 +31,6 @@ export function getCollection(collectionId: number, cancelToken: CancelToken) {
           })
         );
       }
-    }
-  };
-}
-
-export function removePaperFromCollection(params: RemovePapersFromCollectionParams) {
-  return async (dispatch: Dispatch<any>) => {
-    try {
-      dispatch(ActionCreators.startToRemovePaperFromCollectionInCollectionShow());
-      await CollectionAPI.removePapersFromCollection(params);
-      dispatch(ActionCreators.succeededToRemovePaperFromCollectionInCollectionShow({ paperId: params.paperIds[0] }));
-    } catch (err) {
-      const error = PlutoAxios.getGlobalError(err);
-      dispatch(ActionCreators.failedToRemovePaperFromCollectionInCollectionShow());
-      alertToast({
-        type: "error",
-        message: error.message,
-      });
     }
   };
 }
