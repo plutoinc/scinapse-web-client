@@ -21,92 +21,9 @@ class SortBox extends React.PureComponent<SortBoxProps> {
   }
 
   public render() {
-    const { sortOption, query } = this.props;
-
     return (
       <div className={styles.articleSortBoxWrapper}>
-        <div className={styles.currentOption}>
-          <Link
-            to={{
-              pathname: "/search",
-              search: PaperSearchQueryFormatter.stringifyPapersQuery({
-                query,
-                page: 1,
-                sort: "RELEVANCE",
-                filter: {},
-              }),
-            }}
-            onClick={() => {
-              this.handleActionTicketFireInSorting("RELEVANCE");
-            }}
-            className={classNames({
-              [styles.nonActiveSortOption]: true,
-              [styles.activeSortOption]: sortOption === "RELEVANCE",
-            })}
-          >
-            Relevance
-          </Link>
-          <Link
-            to={{
-              pathname: "/search",
-              search: PaperSearchQueryFormatter.stringifyPapersQuery({
-                query,
-                page: 1,
-                sort: "MOST_CITATIONS",
-                filter: {},
-              }),
-            }}
-            onClick={() => {
-              this.handleActionTicketFireInSorting("MOST_CITATIONS");
-            }}
-            className={classNames({
-              [styles.nonActiveSortOption]: true,
-              [styles.activeSortOption]: sortOption === "MOST_CITATIONS",
-            })}
-          >
-            Most Citations
-          </Link>
-          <Link
-            to={{
-              pathname: "/search",
-              search: PaperSearchQueryFormatter.stringifyPapersQuery({
-                query,
-                page: 1,
-                sort: "OLDEST_FIRST",
-                filter: {},
-              }),
-            }}
-            onClick={() => {
-              this.handleActionTicketFireInSorting("OLDEST_FIRST");
-            }}
-            className={classNames({
-              [styles.nonActiveSortOption]: true,
-              [styles.activeSortOption]: sortOption === "OLDEST_FIRST",
-            })}
-          >
-            Oldest
-          </Link>
-          <Link
-            to={{
-              pathname: "/search",
-              search: PaperSearchQueryFormatter.stringifyPapersQuery({
-                query,
-                page: 1,
-                sort: "NEWEST_FIRST",
-                filter: {},
-              }),
-            }}
-            onClick={() => {
-              this.handleActionTicketFireInSorting("NEWEST_FIRST");
-            }}
-            className={classNames({
-              [styles.nonActiveSortOption]: true,
-              [styles.activeSortOption]: sortOption === "NEWEST_FIRST",
-            })}
-          >
-            Newest
-          </Link>
-        </div>
+        <div className={styles.currentOption}>{this.getSortBoxItems()}</div>
       </div>
     );
   }
@@ -121,27 +38,64 @@ class SortBox extends React.PureComponent<SortBoxProps> {
     });
   };
 
-  //TODO: Clean code
-  // private getSortOptionToShow = (sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS) => {
-  //   // tslint:disable-next-line:switch-default
-  //   switch (sortOption) {
-  //     case "RELEVANCE": {
-  //       return "Relevance";
-  //     }
+  private getSortBoxItems = () => {
+    const { sortOption, query } = this.props;
 
-  //     case "MOST_CITATIONS": {
-  //       return "Most Citations";
-  //     }
+    const sortOptions: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS[] = [
+      "RELEVANCE",
+      "MOST_CITATIONS",
+      "OLDEST_FIRST",
+      "NEWEST_FIRST",
+    ];
 
-  //     case "OLDEST_FIRST": {
-  //       return "Oldest";
-  //     }
+    const transformSortOptionsToHtml = sortOptions.map((sort, index) => {
+      return (
+        <Link
+          key={index}
+          to={{
+            pathname: "/search",
+            search: PaperSearchQueryFormatter.stringifyPapersQuery({
+              query,
+              page: 1,
+              sort,
+              filter: {},
+            }),
+          }}
+          onClick={() => {
+            this.handleActionTicketFireInSorting(sort);
+          }}
+          className={classNames({
+            [styles.nonActiveSortOption]: true,
+            [styles.activeSortOption]: sortOption === sort,
+          })}
+        >
+          {this.getSortOptionToShow(sort)}
+        </Link>
+      );
+    });
 
-  //     case "NEWEST_FIRST": {
-  //       return "Newest";
-  //     }
-  //   }
-  // };
+    return transformSortOptionsToHtml;
+  };
+  private getSortOptionToShow = (sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS) => {
+    // tslint:disable-next-line:switch-default
+    switch (sortOption) {
+      case "RELEVANCE": {
+        return "Relevance";
+      }
+
+      case "MOST_CITATIONS": {
+        return "Most Citations";
+      }
+
+      case "OLDEST_FIRST": {
+        return "Oldest";
+      }
+
+      case "NEWEST_FIRST": {
+        return "Newest";
+      }
+    }
+  };
 }
 
 export default withStyles<typeof SortBox>(styles)(SortBox);
