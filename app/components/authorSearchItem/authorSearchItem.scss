@@ -1,22 +1,27 @@
 .itemWrapper {
   display: inline-block;
   width: 386px;
-  height: 140px;
+  height: 98px;
   border-radius: 4px;
-  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   background-color: white;
   padding: 16px;
 
   & + & {
     margin-left: 20px;
   }
+
+  &:hover {
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.08);
+    transition: 0.2s;
+  }
 }
 
 .userImg {
   display: inline-block;
   vertical-align: top;
-  width: 48px;
-  height: 48px;
+  width: 61px;
+  height: 60px;
   border-radius: 5px;
   border: 1px solid $gray2;
   background-size: cover;
@@ -32,7 +37,7 @@
 
 .name {
   @extend %one-line-overflow-ellipsis;
-  width: 290px;
+  width: 274px;
   font-size: 18px;
   font-weight: bold;
   color: $black0;
@@ -43,40 +48,22 @@
 
 .affiliation {
   @extend %one-line-overflow-ellipsis;
-  width: 280px;
+  width: 274px;
   height: 20px;
   line-height: 20px;
   font-size: 14px;
   color: $gray6;
-  margin-bottom: 16px;
+  margin-bottom: 4px;
 }
 
-.metaItem {
-  display: inline-block;
-  vertical-align: top;
-  width: 106px;
-
-  .metaTitle {
-    height: 20px;
-    line-height: 20px;
-    font-size: 13px;
-    font-weight: 500;
-    color: $gray5;
-    margin-bottom: 4px;
-  }
-
-  .metaContent {
-    height: 24px;
-    line-height: 24px;
-    font-size: 18px;
-    font-weight: bold;
-    line-height: 1.33;
-    color: $black0;
-  }
-
-  & + & {
-    margin-left: 16px;
-  }
+.fosList {
+  @extend %one-line-overflow-ellipsis;
+  width: 274px;
+  height: 16px;
+  font-size: 12px;
+  line-height: 16px;
+  margin-bottom: 16px;
+  color: $gray5;
 }
 
 .contactIconWrapper {
@@ -90,11 +77,6 @@
     width: 16px;
     height: 16px;
   }
-}
-
-.metaBox {
-  display: flex;
-  justify-content: space-between;
 }
 
 .verificationTooltip {
@@ -112,14 +94,14 @@
     width: 190px;
   }
 
-  .metaItem {
-    width: 80px;
+  .fosList {
+    width: 190px;
   }
 
   .itemWrapper {
     display: block;
     width: 100%;
-    height: 140px;
+    height: 96px;
     border-radius: 4px;
     box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.08);
     background-color: white;
@@ -129,11 +111,5 @@
       margin-top: 16px;
       margin-left: 0;
     }
-  }
-}
-
-@media (max-width: 360px) {
-  .metaItem {
-    width: 60px;
   }
 }
