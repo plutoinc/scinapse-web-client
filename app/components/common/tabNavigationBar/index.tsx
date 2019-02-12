@@ -10,7 +10,7 @@ interface TabLinkParams {
 }
 
 export interface TabItem {
-  tabName: string;
+  tabName: string | JSX.Element;
   tabLink: TabLinkParams;
 }
 

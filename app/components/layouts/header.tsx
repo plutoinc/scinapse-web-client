@@ -28,6 +28,7 @@ import { HOME_PATH } from "../../constants/routes";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 import TabNavigationBar, { TabItem } from "../common/tabNavigationBar";
+import CircularProgress from "@material-ui/core/CircularProgress";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -144,23 +145,31 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private getTabNavigationInSearch = () => {
     const { articleSearchState, authorSearchState } = this.props;
     const authorEntitiesInArticleSearch = articleSearchState.matchAuthors;
-    let authorCount: number;
     let tabNaviItems: TabItem[];
+    let authorCount: number;
 
     if (location.pathname === "/search" && authorEntitiesInArticleSearch) {
       authorCount = authorEntitiesInArticleSearch.totalElements;
-      tabNaviItems = this.getTabNavigationItems(articleSearchState.searchInput, authorCount);
+      tabNaviItems = this.getTabNavigationItems(
+        articleSearchState.searchInput,
+        authorCount,
+        articleSearchState.isLoading
+      );
       return <TabNavigationBar tabItemsData={tabNaviItems} />;
     } else if (location.pathname === "/search/authors") {
       authorCount = authorSearchState.totalElements;
-      tabNaviItems = this.getTabNavigationItems(authorSearchState.searchInput, authorCount);
+      tabNaviItems = this.getTabNavigationItems(
+        authorSearchState.searchInput,
+        authorCount,
+        authorSearchState.isLoading
+      );
       return <TabNavigationBar tabItemsData={tabNaviItems} />;
     }
 
     return null;
   };
 
-  private getTabNavigationItems = (searchKeyword: string, authorCount: number): TabItem[] => {
+  private getTabNavigationItems = (searchKeyword: string, authorCount: number, isLoading: boolean): TabItem[] => {
     const tabNavigationItems = [
       {
         tabName: "All",
@@ -174,11 +183,23 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           }),
         },
       },
-    ];
-
-    if (authorCount && authorCount > 0) {
-      tabNavigationItems.push({
-        tabName: `Authors(${authorCount})`,
+      {
+        tabName: isLoading ? (
+          <>
+            Authors {"("}
+            <CircularProgress
+              style={{
+                width: "12px",
+                height: "16px",
+                margin: "0 4px",
+                color: "#9aa3b5",
+              }}
+            />
+            {")"}
+          </>
+        ) : (
+          `Authors ( ${authorCount} )`
+        ),
         tabLink: {
           pathname: "/search/authors",
           search: PapersQueryFormatter.stringifyPapersQuery({
@@ -188,8 +209,8 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             page: 1,
           }),
         },
-      });
-    }
+      },
+    ];
     return tabNavigationItems;
   };
 
