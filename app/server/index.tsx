@@ -20,6 +20,7 @@ import handleSiteMapRequest from "./handleSitemap";
 import { ACTION_TYPES } from "../actions/actionTypes";
 import getQueryParamsObject from "../helpers/getQueryParamsObject";
 import { TIMEOUT_FOR_SAFE_RENDERING } from "../api/pluto";
+import getExpUserType, { USER_EXPERIMENT_TYPE_KEY } from "../helpers/getExpUserType";
 const AWSXRay = require("aws-xray-sdk");
 const { SheetsRegistry } = require("react-jss/lib/jss");
 const JssProvider = require("react-jss/lib/JssProvider").default;
@@ -200,6 +201,9 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
   let succeededToServerRendering = false;
   let version: string;
 
+  const rawCookie = event.headers.cookie;
+  const userType = getExpUserType(rawCookie || "");
+
   let bundledJsForBrowserPath: string;
   if (queryParamsObj && queryParamsObj.branch && queryParamsObj.branch === "master") {
     bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX}/${
@@ -303,6 +307,7 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
     headers: {
       "Content-Type": "text/html; charset=utf-8",
       "Access-Control-Allow-Origin": "*",
+      "Set-Cookie": `${USER_EXPERIMENT_TYPE_KEY}=${userType}; Max-Age=1209600; Secure;`,
     },
     isBase64Encoded: false,
     body: resBody,

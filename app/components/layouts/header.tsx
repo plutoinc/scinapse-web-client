@@ -14,7 +14,7 @@ import Icon from "../../icons";
 import { signOut } from "../auth/actions";
 import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
-import { trackAction, trackDialogView, trackAndOpenLink, trackEvent } from "../../helpers/handleGA";
+import { trackAction, trackDialogView, trackEvent } from "../../helpers/handleGA";
 import { HeaderProps } from "./types/header";
 import { withStyles } from "../../helpers/withStylesHelper";
 import EnvChecker from "../../helpers/envChecker";
@@ -96,41 +96,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
       <nav className={`${navClassName} mui-fixed`}>
         <div className={styles.headerContainer}>
           {this.getHeaderLogo()}
-          <div className={styles.leftBox}>
-            <a
-              onClick={() => {
-                trackAndOpenLink("updates-in-header");
-              }}
-              href="https://www.notion.so/pluto/Scinapse-updates-6a05160afde44ba1a6ed312899c23dae"
-              target="_blank"
-              rel="noopener"
-              className={styles.link}
-            >
-              Updates
-            </a>
-            <a
-              onClick={() => {
-                trackAndOpenLink("blog-in-header");
-              }}
-              href="https://medium.com/pluto-network"
-              target="_blank"
-              rel="noopener"
-              className={styles.link}
-            >
-              Blog
-            </a>
-            <a
-              onClick={() => {
-                trackAndOpenLink("FAQ-in-header");
-              }}
-              href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
-              target="_blank"
-              rel="noopener"
-              className={styles.link}
-            >
-              FAQ
-            </a>
-          </div>
+          <div className={styles.leftBox} />
           {this.getSearchFormContainer()}
           {this.getHeaderButtons()}
         </div>

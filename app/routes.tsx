@@ -45,6 +45,7 @@ import {
 import { getCollections } from "./components/collections/sideEffect";
 import AuthorSearch from "./containers/authorSearch";
 import { getAuthorSearchData } from "./containers/authorSearch/sideEffect";
+import { checkAuthStatus } from "./components/auth/actions";
 const styles = require("./root.scss");
 
 export interface LoadDataParams<P> {
@@ -155,7 +156,12 @@ function mapStateToProps(state: AppState) {
 }
 
 @withStyles<typeof RootRoutes>(styles)
-class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
+class RootRoutes extends React.PureComponent<RootRoutesProps> {
+  public componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(checkAuthStatus());
+  }
+
   public render() {
     const { location } = this.props;
 

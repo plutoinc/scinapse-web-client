@@ -276,7 +276,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                 className="publishInfoList"
               >
                 <div
-                  className="journal"
+                  className="venue"
                 >
                   <i
                     className="icon"
@@ -291,7 +291,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                        in 
                     </span>
                     <a
-                      className="journalName"
+                      className="venueName"
                       href="/journals/10"
                       onClick={[Function]}
                     >
@@ -385,9 +385,12 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                     Cited 2909
                   </span>
                 </a>
-                <div
+                <a
                   className="sourceButton"
+                  href="https://www.ncbi.nlm.nih.gov/pubmed/17653188"
                   onClick={[Function]}
+                  rel="noopener"
+                  target="_blank"
                 >
                   <i
                     className="icon pdfIconWrapper"
@@ -395,7 +398,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                   <span>
                     Download PDF
                   </span>
-                </div>
+                </a>
                 <span
                   className="DOIMetaButtonsWrapper"
                 >

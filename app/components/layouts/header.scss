@@ -53,25 +53,6 @@
   }
 }
 
-.leftBox {
-  display: flex;
-  font-size: 14px;
-  margin-right: 16px;
-
-  .link {
-    margin: 0 16px;
-    color: $gray5;
-    &:hover {
-      color: $black1;
-      transition: 0.2s ease-in-out;
-    }
-  }
-
-  @media (max-width: $tablet-width) {
-    display: none;
-  }
-}
-
 .searchFormContainer {
   position: relative;
   display: flex;
@@ -79,7 +60,7 @@
 }
 
 .searchInputBoxWrapper {
-  width: 550px;
+  width: 656px;
 
   &:focus {
     outline: none;

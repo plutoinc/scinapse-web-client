@@ -6,7 +6,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import AuthorAPI from "../../../../api/author";
 import ScinapseInput from "../../../common/scinapseInput";
 import Authors from "../../../common/paperItem/authors";
-import PaperItemJournal from "../../../common/paperItem/journal";
+import PaperItemVenue from "../../../common/paperItem/venue";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import ScinapseButton from "../../../common/scinapseButton";
 import Icon from "../../../../icons";
@@ -214,10 +214,11 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
               />
             </div>
             <div className={styles.paperMeta}>
-              <PaperItemJournal
+              <PaperItemVenue
                 pageType={getCurrentPageType()}
                 actionArea="allPublications"
                 journal={paper.journal}
+                conferenceInstance={paper.conferenceInstance}
                 year={paper.year}
                 readOnly={true}
                 style={{ display: "flex", color: "#bbc2d0", fontSize: "14px" }}
@@ -259,10 +260,11 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
             />
           </div>
           <div className={styles.paperMeta}>
-            <PaperItemJournal
+            <PaperItemVenue
               pageType={getCurrentPageType()}
               actionArea="allPublications"
               journal={paper.journal}
+              conferenceInstance={paper.conferenceInstance}
               year={paper.year}
               readOnly={true}
               style={{ display: "flex", color: "#77828c", fontSize: "14px" }}

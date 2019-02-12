@@ -56,11 +56,11 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
         }
       });
 
-    const journal = paper.journal
-      ? `${paper.journal.title || paper.venue} ${
-          paper.journal.impactFactor ? `[IF: ${paper.journal.impactFactor.toFixed(2)}]` : ""
-        }`
-      : "";
+    const venue = paper.journal
+      ? `${paper.journal.title} ${paper.journal.impactFactor ? `[IF: ${paper.journal.impactFactor.toFixed(2)}]` : ""}`
+      : paper.conferenceInstance && paper.conferenceInstance.conferenceSeries
+        ? `${paper.conferenceInstance.conferenceSeries.name}`
+        : "";
 
     return (
       <div className={styles.paperItemWrapper}>
@@ -91,7 +91,7 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
                 }}
                 className={styles.journalLink}
               >
-                {`${journal}`}
+                {`${venue}`}
               </Link>
             </div>
           ) : null}

@@ -53,6 +53,12 @@ declare namespace Scinapse {
       | "authorEntityItem"
       | "paperSorting"
       | "collectionSharing"
+      | "extendAbstract"
+      | "collapseAbstract"
+      | "PUBLISHED_YEAR"
+      | "JOURNAL_IF"
+      | "FOS"
+      | "JOURNAL"
       | "";
 
     type ActionArea =
@@ -71,7 +77,10 @@ declare namespace Scinapse {
       | "allPublications"
       | "authorEntity"
       | "sortBox"
-      | "shareBox";
+      | "shareBox"
+      | "innerSearchBox"
+      | "readingNowPaperList"
+      | "filter";
 
     type PageType =
       | "paperShow"

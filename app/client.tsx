@@ -10,10 +10,12 @@ import CssInjector from "./helpers/cssInjector";
 import EnvChecker from "./helpers/envChecker";
 import ErrorTracker from "./helpers/errorHandler";
 import { ConnectedRootRoutes as RootRoutes } from "./routes";
-import { checkAuthStatus } from "./components/auth/actions";
 import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
 import { AppState } from "./reducers";
+import getExpUserType from "./helpers/getExpUserType";
+const { pdfjs } = require("react-pdf");
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 class Main extends React.Component {
   public componentDidMount() {
@@ -43,8 +45,7 @@ class PlutoRenderer {
   public async renderPlutoApp() {
     this.initializeGA();
     this.initSentry();
-    this.checkAuthStatus();
-    this.renderAfterCheckAuthStatus();
+    this.renderAtClient();
     this.checkRender();
   }
 
@@ -57,25 +58,16 @@ class PlutoRenderer {
   }
 
   private initializeGA() {
-    if (!EnvChecker.isOnServer() && !EnvChecker.isBot()) {
-      let reactGATraceCode;
-      if (EnvChecker.isDev()) {
-        reactGATraceCode = "UA-109822865-2";
-        ReactGA.initialize(reactGATraceCode, {
-          debug: true,
-        });
-      } else if (EnvChecker.isProdBrowser()) {
-        reactGATraceCode = "UA-109822865-1";
-        ReactGA.initialize(reactGATraceCode);
-      }
+    if (EnvChecker.isProdBrowser() && !EnvChecker.isBot()) {
+      ReactGA.initialize("UA-109822865-1");
 
-      ReactGA.set({ page: window.location.pathname + window.location.search });
+      ReactGA.set({
+        page: window.location.pathname + window.location.search,
+        expUserType: getExpUserType(document.cookie),
+      });
+
       ReactGA.pageview(window.location.pathname + window.location.search);
     }
-  }
-
-  private checkAuthStatus() {
-    this.store.dispatch(checkAuthStatus());
   }
 
   private checkRender() {
@@ -84,7 +76,7 @@ class PlutoRenderer {
     });
   }
 
-  private renderAfterCheckAuthStatus() {
+  private renderAtClient() {
     const theme = createMuiTheme({
       typography: {
         useNextVariants: true,
