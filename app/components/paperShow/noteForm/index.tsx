@@ -4,10 +4,10 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
 const styles = require("./noteForm.scss");
 
-interface PaperNoteFormProps {
+export interface PaperNoteFormProps {
   isLoading: boolean;
-  handleSubmit: (note: string) => void;
-  handleCloseDropdown: () => void;
+  onSubmit: (note: string) => void;
+  onClickCancel?: () => void;
   initialValue?: string | null;
 }
 
@@ -33,7 +33,7 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
   }
 
   public render() {
-    const { isLoading, handleCloseDropdown } = this.props;
+    const { isLoading } = this.props;
     const { note } = this.state;
 
     return (
@@ -69,13 +69,23 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
               <span className={styles.doneButton}>Done</span>
             )}
           </NoteEditButton>
-          <NoteEditButton isLoading={isLoading} type="button" onClick={handleCloseDropdown}>
+          <NoteEditButton isLoading={isLoading} type="button" onClick={this.handleClickCancel}>
             <span className={styles.cancelButton}>Cancel</span>
           </NoteEditButton>
         </div>
       </form>
     );
   }
+
+  private handleClickCancel = () => {
+    const { onClickCancel } = this.props;
+
+    if (onClickCancel) {
+      onClickCancel();
+    } else {
+      this.setState(prevState => ({ ...prevState, note: "" }));
+    }
+  };
 
   private handleKeyDownNoteTextarea = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if ((e.keyCode === 13 && e.ctrlKey) || (e.keyCode === 13 && e.metaKey)) {
@@ -90,7 +100,7 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
   };
 
   private handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
-    const { handleSubmit } = this.props;
+    const { onSubmit: handleSubmit } = this.props;
     const { note } = this.state;
 
     e && e.preventDefault();

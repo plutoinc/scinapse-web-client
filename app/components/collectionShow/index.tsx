@@ -459,7 +459,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   };
 
   private getPaperList = () => {
-    const { papersInCollection, currentUser, collectionShow } = this.props;
+    const { papersInCollection, currentUser, collectionShow, collection } = this.props;
 
     if (collectionShow.isLoadingPaperToCollection) {
       return (
@@ -469,7 +469,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
       );
     }
 
-    if (papersInCollection && papersInCollection.length > 0) {
+    if (collection && papersInCollection && papersInCollection.length > 0) {
       return papersInCollection.map(paper => {
         if (paper) {
           return (
@@ -478,6 +478,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
               pageType="collectionShow"
               paperNote={paper.note ? paper.note : ""}
               paper={paper.paper}
+              collectionId={collection.id}
               key={paper.paperId}
             />
           );

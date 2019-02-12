@@ -317,8 +317,8 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         <div className={styles.editNoteBox}>
           <PaperNoteForm
             initialValue={selectedCollection && selectedCollection.note}
-            handleCloseDropdown={this.closeNoteDropdown}
-            handleSubmit={this.handleSubmitNote}
+            onClickCancel={this.closeNoteDropdown}
+            onSubmit={this.handleSubmitNote}
             isLoading={myCollectionsState.isPostingNote}
           />
         </div>
