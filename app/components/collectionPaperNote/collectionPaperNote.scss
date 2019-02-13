@@ -69,3 +69,11 @@
   position: relative;
   border-radius: 8px;
 }
+
+.memoTextarea {
+  height: 21px;
+
+  &::placeholder {
+    color: $gray3;
+  }
+}

@@ -322,6 +322,16 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
             onSubmit={this.handleSubmitNote}
             isLoading={myCollectionsState.isPostingNote}
             autoFocus={true}
+            textAreaClassName={styles.textarea}
+            textareaStyle={{
+              border: 0,
+              padding: 0,
+              borderRadius: "8px",
+              fontSize: "14px",
+              width: "100%",
+              maxHeight: "105px",
+            }}
+            row={2}
           />
         </div>
       );

@@ -58,6 +58,16 @@ class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, 
           initialValue={note}
           isLoading={isLoading}
           onSubmit={this.handleSubmitNote}
+          textareaStyle={{
+            border: 0,
+            padding: 0,
+            borderRadius: "8px",
+            fontSize: "14px",
+            width: "100%",
+            height: "21px",
+            maxHeight: "500px",
+          }}
+          textAreaClassName={styles.memoTextarea}
         />
       </div>
     );

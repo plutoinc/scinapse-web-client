@@ -9,9 +9,12 @@ const styles = require("./noteForm.scss");
 export interface PaperNoteFormProps {
   isLoading: boolean;
   onSubmit: (note: string) => void;
+  textareaStyle?: React.CSSProperties;
+  textAreaClassName?: string;
   omitCancel?: boolean;
   hideButton?: boolean;
   autoFocus?: boolean;
+  row?: number;
   onClickCancel?: () => void;
   initialValue?: string | null;
 }
@@ -19,6 +22,7 @@ export interface PaperNoteFormProps {
 interface PaperNoteFormState {
   note: string;
   isBlocking: boolean;
+  isFocus: boolean;
 }
 
 interface ButtonsProps {
@@ -71,35 +75,38 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
     this.state = {
       note: props.initialValue || "",
       isBlocking: false,
+      isFocus: false,
     };
   }
 
   public render() {
-    const { isLoading, autoFocus, hideButton, omitCancel } = this.props;
-    const { note, isBlocking } = this.state;
+    const { isLoading, autoFocus, hideButton, omitCancel, textareaStyle, textAreaClassName, row } = this.props;
+    const { note, isBlocking, isFocus } = this.state;
 
     return (
-      <form className={styles.form} onSubmit={this.handleSubmit}>
+      <form
+        style={{
+          border: isFocus ? "solid 3px #e7eaef" : "solid 1px #e7eaef",
+        }}
+        onFocus={this.handleFocus}
+        onBlur={this.handleBlur}
+        className={styles.form}
+        onSubmit={this.handleSubmit}
+      >
         <AutoSizeTextarea
           wrapperStyle={{
             borderRadius: "8px",
-            margin: "12px 12px 24px 12px",
+            margin: isFocus ? "10px 10px 22px 10px" : "12px 12px 24px 12px",
           }}
-          textareaStyle={{
-            border: 0,
-            padding: 0,
-            borderRadius: "8px",
-            fontSize: "14px",
-            width: "100%",
-            maxHeight: "105px",
-          }}
-          textAreaClassName={styles.noteTextArea}
+          textareaStyle={textareaStyle}
+          textAreaClassName={textAreaClassName || styles.noteTextArea}
           value={note}
           disabled={isLoading}
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDownNoteTextarea}
           autoFocus={autoFocus}
           placeholder="Write a memo..."
+          rows={row}
         />
         <Buttons
           omitCancel={omitCancel}
@@ -111,6 +118,14 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
       </form>
     );
   }
+
+  private handleFocus = () => {
+    this.setState(prevState => ({ ...prevState, isFocus: true }));
+  };
+
+  private handleBlur = () => {
+    this.setState(prevState => ({ ...prevState, isFocus: false }));
+  };
 
   private handleClickCancel = () => {
     const { onClickCancel } = this.props;
