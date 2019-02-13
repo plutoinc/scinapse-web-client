@@ -107,22 +107,25 @@ export function reducer(
 
     case ACTION_TYPES.GLOBAL_FAILED_TO_ADD_PAPER_TO_COLLECTION:
     case ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_FROM_COLLECTION: {
-      const paperIds = action.payload.paperIds;
-      const removedPaperIds = state.removedPaperIds
-        ? new Set([...Array.from(state.removedPaperIds), ...paperIds])
-        : new Set(paperIds);
+      if (action.payload.collection.id === state.mainCollectionId) {
+        const paperIds = action.payload.paperIds;
+        const removedPaperIds = state.removedPaperIds
+          ? new Set([...Array.from(state.removedPaperIds), ...paperIds])
+          : new Set(paperIds);
 
-      return {
-        ...state,
-        removedPaperIds,
-      };
+        return {
+          ...state,
+          removedPaperIds,
+        };
+      }
+      return state;
     }
 
     case ACTION_TYPES.GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION:
     case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION: {
       const paperIds = action.payload.paperIds;
 
-      if (state.removedPaperIds) {
+      if (state.removedPaperIds && action.payload.collection.id === state.mainCollectionId) {
         const newRemovedPaperIdsArray = [...Array.from(state.removedPaperIds)].filter(id => {
           return !paperIds.includes(id);
         });
