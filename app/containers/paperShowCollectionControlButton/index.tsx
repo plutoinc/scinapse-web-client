@@ -1,5 +1,6 @@
 import * as React from "react";
 import axios from "axios";
+import * as store from "store";
 import { denormalize } from "normalizr";
 import { connect, Dispatch } from "react-redux";
 import * as classNames from "classnames";
@@ -34,6 +35,8 @@ import { trackEvent } from "../../helpers/handleGA";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { ActionCreators } from "../../actions/actionTypes";
 const styles = require("./paperShowCollectionControlButton.scss");
+
+const LAST_USER_COLLECTION_ID = "l_u_c_id";
 
 interface PaperShowCollectionControlButtonProps {
   targetPaperId: number;
@@ -114,9 +117,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     const { myCollections } = this.props;
 
     if (myCollections && myCollections.length > 0) {
-      const defaultCollection =
-        myCollections.find(collection => collection.isDefault) || myCollections[myCollections.length - 1];
-      this.handleSelectCollection(defaultCollection);
+      this.selectDefaultCollection(myCollections);
     }
   }
 
@@ -128,10 +129,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       myCollections &&
       myCollections.length > 0
     ) {
-      const defaultCollection =
-        myCollections.find(collection => collection.isDefault) || myCollections[myCollections.length - 1];
-
-      this.handleSelectCollection(defaultCollection);
+      this.selectDefaultCollection(myCollections);
     }
   }
 
@@ -271,6 +269,16 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       </div>
     );
   }
+
+  private selectDefaultCollection = (myCollections: Collection[]) => {
+    const lastId = parseInt(store.get(LAST_USER_COLLECTION_ID), 10);
+
+    let defaultCollection: Collection;
+    defaultCollection =
+      myCollections.find(c => c.id === lastId || c.isDefault) || myCollections[myCollections.length - 1];
+
+    this.handleSelectCollection(defaultCollection);
+  };
 
   private handleUnsignedUser = () => {
     GlobalDialogManager.openSignInDialog();
@@ -493,6 +501,8 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           paperId: targetPaperId,
         })
       );
+
+      store.set(LAST_USER_COLLECTION_ID, selectedCollection.id);
     } else if (selectedCollection && targetPaperId && selectedCollection.containsSelected) {
       trackEvent({
         category: "New Paper Show",
