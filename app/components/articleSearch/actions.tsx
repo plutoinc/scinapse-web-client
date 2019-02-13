@@ -43,7 +43,6 @@ export function changeSearchInput(searchInput: string) {
   };
 }
 
-//TODO: code 정리
 export function fetchSearchPapers(params: GetPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     const filters = PapersQueryFormatter.objectifyPapersFilter(params.filter);
