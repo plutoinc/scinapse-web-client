@@ -11,6 +11,7 @@
   margin: $double_navbar_height auto 0 auto;
   max-width: $container_width;
   display: flex;
+  flex-wrap: wrap;
 
   .innerContainer {
     flex: $search_container_width;

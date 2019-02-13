@@ -125,14 +125,14 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
         <div className={styles.rootWrapper}>
           <div className={styles.articleSearchContainer}>
             {this.getResultHelmet(queryParams.query)}
+            <RelatedKeywordList
+              shouldRender={isClient && expUserType === "A"}
+              query={queryParams.query}
+              keywordList={articleSearchState.aggregationData ? articleSearchState.aggregationData.keywordList : []}
+            />
+            {this.getSuggestionKeywordBox()}
+            {this.getAuthorEntitiesSection()}
             <div className={styles.innerContainer}>
-              <RelatedKeywordList
-                shouldRender={isClient && expUserType === "A"}
-                query={queryParams.query}
-                keywordList={articleSearchState.aggregationData ? articleSearchState.aggregationData.keywordList : []}
-              />
-              {this.getSuggestionKeywordBox()}
-              {this.getAuthorEntitiesSection()}
               <div className={styles.searchSummary}>
                 <span className={styles.categoryHeader}>Publication</span>
                 <span className={styles.categoryCount}>{formatNumber(totalElements)}</span>
