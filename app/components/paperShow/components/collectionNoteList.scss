@@ -4,15 +4,20 @@
   }
 
   .memoItem {
-    padding: 12px;
+    max-height: 108px;
+    overflow-y: auto;
     background-color: $gray2;
     border-radius: 8px;
     color: $black0;
     font-size: 14px;
     white-space: pre-wrap;
 
+    .memoContent {
+      padding: 12px;
+    }
+
     .memoCollectionName {
-      margin-top: 8px;
+      padding: 8px 12px 12px 12px;
       font-style: italic;
       color: $gray6;
       width: 100%;

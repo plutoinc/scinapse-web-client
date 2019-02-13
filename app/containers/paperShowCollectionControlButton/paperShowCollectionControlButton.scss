@@ -226,6 +226,8 @@
 
 .renderNoteBox {
   @extend .noteBox;
+  max-height: 108px;
+  overflow-y: auto;
   position: relative;
   background-color: $gray2;
   padding: 10px 12px;

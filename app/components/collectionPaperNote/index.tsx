@@ -54,10 +54,11 @@ class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, 
       <div className={styles.memoForm}>
         <PaperNoteForm
           hideButton={true}
-          omitCancel={true}
+          omitCancel={!isEdit}
           initialValue={note}
           isLoading={isLoading}
           onSubmit={this.handleSubmitNote}
+          onClickCancel={this.toggleNoteEditMode}
           textareaStyle={{
             border: 0,
             padding: 0,
