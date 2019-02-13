@@ -20,11 +20,15 @@ import { Footer } from "../../components/layouts";
 import AuthorSearchLongItem from "../../components/authorSearchLongItem";
 import MobilePagination from "../../components/common/mobilePagination";
 import DesktopPagination from "../../components/common/desktopPagination";
+import { ArticleSearchState } from "../../components/articleSearch/records";
+import NoResult from "../../components/articleSearch/components/noResult";
+import NoResultInSearch from "../../components/articleSearch/components/noResultInSearch";
 const styles = require("./authorSearch.scss");
 
 function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
+    articleSearch: state.articleSearch,
     authorSearch: state.authorSearch,
     currentUser: state.currentUser,
     configuration: state.configuration,
@@ -34,6 +38,7 @@ function mapStateToProps(state: AppState) {
 export interface AuthorSearchProps extends RouteComponentProps<null> {
   layout: LayoutState;
   currentUser: CurrentUser;
+  articleSearch: ArticleSearchState;
   authorSearch: AuthorSearchState;
   configuration: Configuration;
   dispatch: Dispatch<any>;
@@ -84,9 +89,12 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
   }
 
   public render() {
-    const { authorSearch } = this.props;
+    const { authorSearch, articleSearch } = this.props;
     const { isLoading } = authorSearch;
     const queryParams = this.getUrlDecodedQueryParamsObject();
+
+    const hasNoAuthorSearchResult = !authorSearch.searchItemsToShow || authorSearch.searchItemsToShow.length === 0;
+    const hasNoSearchResult = !articleSearch.searchItemsToShow || articleSearch.searchItemsToShow.length === 0;
 
     if (authorSearch.pageErrorCode) {
       return <ErrorPage errorNum={authorSearch.pageErrorCode} />;
@@ -94,6 +102,16 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
 
     if (isLoading) {
       return this.renderLoadingSpinner();
+    } else if (hasNoAuthorSearchResult && queryParams) {
+      return (
+        <NoResultInSearch
+          searchText={queryParams.query}
+          otherCategoryCount={authorSearch.totalElements}
+          type="author"
+        />
+      );
+    } else if (hasNoSearchResult && hasNoAuthorSearchResult && queryParams) {
+      return <NoResult searchText={queryParams.query} articleSearchState={articleSearch} />;
     } else if (queryParams) {
       return (
         <div className={styles.rootWrapper}>

@@ -28,6 +28,7 @@ import ErrorPage from "../error/errorPage";
 import EnvChecker from "../../helpers/envChecker";
 import getExpUserType from "../../helpers/getExpUserType";
 import RelatedKeywordList from "./components/relatedKeywordList";
+import NoResultInSearch from "./components/noResultInSearch";
 const styles = require("./articleSearch.scss");
 
 const COOKIE_STRING = EnvChecker.isOnServer() ? "" : document.cookie;
@@ -118,6 +119,26 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
 
     if (isLoading) {
       return this.renderLoadingSpinner();
+    } else if (
+      hasNoSearchResult &&
+      queryParams &&
+      articleSearchState.matchAuthors &&
+      articleSearchState.matchAuthors.totalElements >= 0
+    ) {
+      return (
+        <div className={styles.rootWrapper}>
+          <div className={styles.articleSearchContainer}>
+            {this.isFilterEmpty(queryParams.filter) ? this.getAuthorEntitiesSection() : null}
+            <div className={styles.innerContainer}>
+              <NoResultInSearch
+                searchText={queryParams.query}
+                otherCategoryCount={articleSearchState.totalElements}
+                type="paper"
+              />
+            </div>
+          </div>
+        </div>
+      );
     } else if (hasNoSearchResult && queryParams) {
       return <NoResult searchText={queryParams.query} articleSearchState={articleSearchState} />;
     } else if (queryParams) {

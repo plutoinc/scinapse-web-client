@@ -1,0 +1,89 @@
+.rootWrapper {
+  background-color: $gray0;
+  position: relative;
+  min-height: calc(100vh - #{$navbar_height});
+  padding-bottom: 60px;
+}
+
+.noAuthorItemResultContainer {
+  margin: $double_navbar_height auto 0 auto;
+  max-width: $container_width;
+  position: relative;
+}
+
+.noPaperItemResultContainer {
+  margin: 32px auto 0 auto;
+  max-width: $container_width;
+  position: relative;
+}
+
+.noItemContainer {
+  display: flex;
+  padding-top: 16px;
+  min-height: 738.5px;
+
+  .noItemAlertWrapper {
+    height: 100%;
+    margin-left: 24px;
+    display: inline-block;
+  }
+
+  .noItemTitle {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.25;
+    color: #5d6575;
+  }
+
+  .noItemContent {
+    font-size: 14px;
+    line-height: 1.43;
+    color: #5d6575;
+    margin-top: 4px;
+  }
+
+  .noItemButton {
+    display: inline-block;
+    margin-top: 16px;
+    border-radius: 4px;
+    border: 1px solid $main_blue1;
+    font-size: 14px;
+    text-align: center;
+    color: $main_blue0;
+    padding: 10px 16px;
+
+    &:hover {
+      color: $main_blue_light0;
+      border: 1px solid $main_blue_light0;
+    }
+  }
+}
+
+.categoryHeader {
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 8px;
+  color: $black1;
+}
+
+.categoryCount {
+  font-size: 18px;
+  font-weight: 500;
+  color: $gray5;
+}
+
+.categoryItemHeader {
+  position: relative;
+  padding: 36px 0 16px 0;
+}
+
+.noResultItemIcon {
+  width: 69px;
+  height: 69px;
+}
+
+@media (max-width: $mobile-width) {
+  .articleSearchContainer {
+    margin-top: $search-mobile-navbar-height;
+  }
+}
