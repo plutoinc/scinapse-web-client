@@ -10,6 +10,7 @@ const styles = require("./collectionPaperNote.scss");
 interface CollectionPaperNoteProps {
   paperId: number;
   collectionId: number;
+  maxHeight: number;
   note?: string;
   dispatch: Dispatch<any>;
 }
@@ -31,13 +32,17 @@ class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, 
   }
 
   public render() {
-    const { note } = this.props;
+    const { note, maxHeight } = this.props;
     const { isEdit, isLoading } = this.state;
+
+    if (!maxHeight) return null;
 
     if (note && !isEdit) {
       return (
         <div className={styles.memo}>
-          <div className={styles.memoItem}>{note}</div>
+          <div style={{ maxHeight }} className={styles.memoItem}>
+            {note}
+          </div>
           <div className={styles.noteButtonWrapper}>
             <span className={styles.noteControlIconWrapper} onClick={this.toggleNoteEditMode}>
               <Icon icon="PEN" className={`${styles.noteControlIcon} ${styles.penIcon}`} />

@@ -9,9 +9,30 @@ interface CollectionPaperItemProps extends PaperItemProps {
   collectionId: number;
 }
 
-class CollectionPaperItem extends React.PureComponent<CollectionPaperItemProps> {
+interface CollectionPaperItemState {
+  paperItemHeight: number;
+}
+
+class CollectionPaperItem extends React.PureComponent<CollectionPaperItemProps, CollectionPaperItemState> {
+  private paperItemNode: HTMLDivElement | null;
+
+  public constructor(props: CollectionPaperItemProps) {
+    super(props);
+    this.state = {
+      paperItemHeight: 0,
+    };
+  }
+
+  public componentDidMount() {
+    this.setState(prevState => ({
+      ...prevState,
+      paperItemHeight: this.paperItemNode ? this.paperItemNode.offsetHeight : 0,
+    }));
+  }
+
   public render() {
     const { paper, paperNote, collectionId, onRemovePaperCollection } = this.props;
+    const { paperItemHeight } = this.state;
 
     const paperItemProps = {
       ...this.props,
@@ -24,10 +45,15 @@ class CollectionPaperItem extends React.PureComponent<CollectionPaperItemProps> 
 
     return (
       <div className={styles.CollectionPaperItemWrapper}>
-        <div className={styles.paper}>
+        <div ref={el => (this.paperItemNode = el)} className={styles.paper}>
           <PaperItem {...paperItemProps} hasCollection={true} onRemovePaperCollection={onRemovePaperCollection} />
         </div>
-        <CollectionPaperNote note={paperNote} collectionId={collectionId} paperId={paper.id} />
+        <CollectionPaperNote
+          maxHeight={paperItemHeight}
+          note={paperNote}
+          collectionId={collectionId}
+          paperId={paper.id}
+        />
       </div>
     );
   }
