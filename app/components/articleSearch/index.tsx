@@ -123,7 +123,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
       hasNoSearchResult &&
       queryParams &&
       articleSearchState.matchAuthors &&
-      articleSearchState.matchAuthors.totalElements >= 0
+      articleSearchState.matchAuthors.totalElements > 0
     ) {
       return (
         <div className={styles.rootWrapper}>
@@ -139,7 +139,12 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
           </div>
         </div>
       );
-    } else if (hasNoSearchResult && queryParams) {
+    } else if (
+      hasNoSearchResult &&
+      articleSearchState.matchAuthors &&
+      articleSearchState.matchAuthors.totalElements === 0 &&
+      queryParams
+    ) {
       return <NoResult searchText={queryParams.query} articleSearchState={articleSearchState} />;
     } else if (queryParams) {
       return (

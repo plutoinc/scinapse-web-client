@@ -96,13 +96,16 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
     const hasNoAuthorSearchResult = !authorSearch.searchItemsToShow || authorSearch.searchItemsToShow.length === 0;
     const hasNoSearchResult = !articleSearch.searchItemsToShow || articleSearch.searchItemsToShow.length === 0;
 
+    console.log(hasNoAuthorSearchResult);
+    console.log(hasNoSearchResult);
+
     if (authorSearch.pageErrorCode) {
       return <ErrorPage errorNum={authorSearch.pageErrorCode} />;
     }
 
     if (isLoading) {
       return this.renderLoadingSpinner();
-    } else if (hasNoAuthorSearchResult && queryParams) {
+    } else if (hasNoAuthorSearchResult && queryParams && articleSearch.totalElements > 0) {
       return (
         <NoResultInSearch
           searchText={queryParams.query}
