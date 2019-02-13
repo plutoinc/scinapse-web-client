@@ -142,9 +142,15 @@
     margin-bottom: 32px;
   }
 
+  .authorItemSectionWrapper {
+    width: 100%;
+  }
+
   .searchSummary {
     font-size: 14px;
     color: $gray3;
+    flex-flow: column;
+    align-items: start;
   }
 
   .inflowRouteContainer {

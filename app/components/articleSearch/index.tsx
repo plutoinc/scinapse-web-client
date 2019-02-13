@@ -134,8 +134,10 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
             {this.isFilterEmpty(queryParams.filter) ? this.getAuthorEntitiesSection() : null}
             <div className={styles.innerContainer}>
               <div className={styles.searchSummary}>
-                <span className={styles.categoryHeader}>Publication</span>
-                <span className={styles.categoryCount}>{formatNumber(totalElements)}</span>
+                <div>
+                  <span className={styles.categoryHeader}>Publication</span>
+                  <span className={styles.categoryCount}>{formatNumber(totalElements)}</span>
+                </div>
                 <SortBox query={queryParams.query} sortOption={queryParams.sort} />
               </div>
               <SearchList
@@ -259,7 +261,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
         return <AuthorSearchItem authorEntity={matchEntity} key={matchEntity.id} />;
       });
       return (
-        <div>
+        <div className={styles.authorItemSectionWrapper}>
           <div className={styles.authorItemsHeader}>
             <span className={styles.categoryHeader}>Author</span>
             <span className={styles.categoryCount}>{matchAuthorCount}</span>
