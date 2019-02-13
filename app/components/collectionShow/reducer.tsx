@@ -109,7 +109,7 @@ export function reducer(
     case ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_FROM_COLLECTION: {
       const paperIds = action.payload.paperIds;
       const removedPaperIds = state.removedPaperIds
-        ? new Set([...state.removedPaperIds, ...paperIds])
+        ? new Set([...Array.from(state.removedPaperIds), ...paperIds])
         : new Set(paperIds);
 
       return {
@@ -123,7 +123,7 @@ export function reducer(
       const paperIds = action.payload.paperIds;
 
       if (state.removedPaperIds) {
-        const newRemovedPaperIdsArray = [...state.removedPaperIds].filter(id => {
+        const newRemovedPaperIdsArray = [...Array.from(state.removedPaperIds)].filter(id => {
           return !paperIds.includes(id);
         });
         return {
