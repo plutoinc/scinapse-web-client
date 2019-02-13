@@ -89,15 +89,11 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
   }
 
   public render() {
-    const { authorSearch, articleSearch } = this.props;
+    const { authorSearch } = this.props;
     const { isLoading } = authorSearch;
     const queryParams = this.getUrlDecodedQueryParamsObject();
 
     const hasNoAuthorSearchResult = !authorSearch.searchItemsToShow || authorSearch.searchItemsToShow.length === 0;
-    const hasNoSearchResult = !articleSearch.searchItemsToShow || articleSearch.searchItemsToShow.length === 0;
-
-    console.log(hasNoAuthorSearchResult);
-    console.log(hasNoSearchResult);
 
     if (authorSearch.pageErrorCode) {
       return <ErrorPage errorNum={authorSearch.pageErrorCode} />;
@@ -105,7 +101,7 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
 
     if (isLoading) {
       return this.renderLoadingSpinner();
-    } else if (hasNoAuthorSearchResult && queryParams && articleSearch.totalElements > 0) {
+    } else if (hasNoAuthorSearchResult && queryParams) {
       return (
         <NoResultInSearch
           searchText={queryParams.query}
@@ -113,8 +109,6 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
           type="author"
         />
       );
-    } else if (hasNoSearchResult && hasNoAuthorSearchResult && queryParams) {
-      return <NoResult searchText={queryParams.query} articleSearchState={articleSearch} />;
     } else if (queryParams) {
       return (
         <div className={styles.rootWrapper}>
