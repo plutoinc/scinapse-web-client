@@ -1,17 +1,10 @@
 .infoList {
-  margin-top: 18px;
+  margin-top: 12px;
   margin-bottom: 8px;
   display: flex;
   align-items: center;
   font-size: 13px;
   height: 30px;
-
-  .referenceButton {
-    @include small-button($gray6);
-    .referenceIconWrapper {
-      margin-right: 6px;
-    }
-  }
 
   .citedButton {
     @include small-button($gray6);

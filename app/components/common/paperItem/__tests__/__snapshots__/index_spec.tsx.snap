@@ -145,15 +145,6 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
       className="infoList"
     >
       <a
-        className="referenceButton"
-        href="/papers/101#references"
-        onClick={[Function]}
-      >
-        <span>
-          Ref 23
-        </span>
-      </a>
-      <a
         className="citedButton"
         href="/papers/101#cited"
         onClick={[Function]}
@@ -184,7 +175,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
           className="icon plusIcon"
         />
         <span>
-          Add To Collection
+          Save to Collection
         </span>
       </button>
       <div
@@ -371,15 +362,6 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
       className="infoList"
     >
       <a
-        className="referenceButton"
-        href="/papers/101#references"
-        onClick={[Function]}
-      >
-        <span>
-          Ref 23
-        </span>
-      </a>
-      <a
         className="citedButton"
         href="/papers/101#cited"
         onClick={[Function]}
@@ -413,7 +395,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
             className="icon citationIcon"
           />
           <span>
-            Cite this paper
+            Cite
           </span>
         </span>
       </span>
@@ -425,7 +407,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
           className="icon plusIcon"
         />
         <span>
-          Add To Collection
+          Save to Collection
         </span>
       </button>
       <div

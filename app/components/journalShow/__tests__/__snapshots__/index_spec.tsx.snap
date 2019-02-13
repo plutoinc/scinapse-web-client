@@ -250,7 +250,7 @@ exports[`JournalShow Container Component when journal data exist should render c
                         className="icon plusIcon"
                       />
                       <span>
-                        Add To Collection
+                        Save to Collection
                       </span>
                     </button>
                     <div

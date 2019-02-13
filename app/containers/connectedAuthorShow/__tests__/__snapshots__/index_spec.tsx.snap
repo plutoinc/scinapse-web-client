@@ -368,15 +368,6 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                 className="infoList"
               >
                 <a
-                  className="referenceButton"
-                  href="/papers/101#references"
-                  onClick={[Function]}
-                >
-                  <span>
-                    Ref 23
-                  </span>
-                </a>
-                <a
                   className="citedButton"
                   href="/papers/101#cited"
                   onClick={[Function]}
@@ -410,7 +401,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                       className="icon citationIcon"
                     />
                     <span>
-                      Cite this paper
+                      Cite
                     </span>
                   </span>
                 </span>
@@ -422,7 +413,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                     className="icon plusIcon"
                   />
                   <span>
-                    Add To Collection
+                    Save to Collection
                   </span>
                 </button>
                 <div
