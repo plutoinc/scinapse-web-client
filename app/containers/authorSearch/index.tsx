@@ -21,7 +21,6 @@ import AuthorSearchLongItem from "../../components/authorSearchLongItem";
 import MobilePagination from "../../components/common/mobilePagination";
 import DesktopPagination from "../../components/common/desktopPagination";
 import { ArticleSearchState } from "../../components/articleSearch/records";
-import NoResult from "../../components/articleSearch/components/noResult";
 import NoResultInSearch from "../../components/articleSearch/components/noResultInSearch";
 const styles = require("./authorSearch.scss");
 
