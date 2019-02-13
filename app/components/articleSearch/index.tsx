@@ -131,7 +131,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
               keywordList={articleSearchState.aggregationData ? articleSearchState.aggregationData.keywordList : []}
             />
             {this.getSuggestionKeywordBox()}
-            {this.getAuthorEntitiesSection()}
+            {this.isFilterEmpty(queryParams.filter) ? this.getAuthorEntitiesSection() : null}
             <div className={styles.innerContainer}>
               <div className={styles.searchSummary}>
                 <span className={styles.categoryHeader}>Publication</span>
@@ -163,6 +163,17 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
       return null;
     }
   }
+
+  private isFilterEmpty = (filter: FilterObject) => {
+    for (const key of Object.keys(filter)) {
+      if (typeof filter[key] === "number" && !isNaN(filter[key])) {
+        return false;
+      } else if (typeof filter[key] === "object" && filter[key].length !== 0) {
+        return false;
+      }
+    }
+    return true;
+  };
 
   private getSuggestionKeywordBox = () => {
     const { articleSearchState } = this.props;
