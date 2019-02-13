@@ -9,6 +9,7 @@ const styles = require("./noteForm.scss");
 export interface PaperNoteFormProps {
   isLoading: boolean;
   onSubmit: (note: string) => void;
+  isEdit: boolean;
   textareaStyle?: React.CSSProperties;
   textAreaClassName?: string;
   omitCancel?: boolean;
@@ -27,12 +28,25 @@ interface PaperNoteFormState {
 
 interface ButtonsProps {
   isLoading: boolean;
+  isEdit: boolean;
   handleClickCancel: () => void;
+  disabled: boolean;
   hideButton?: boolean;
   omitCancel?: boolean;
 }
 
-const Buttons: React.SFC<ButtonsProps> = ({ isLoading, handleClickCancel, hideButton, omitCancel }) => {
+interface NoteEditButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  isLoading: boolean;
+}
+
+const Buttons: React.SFC<ButtonsProps> = ({
+  isLoading,
+  handleClickCancel,
+  hideButton,
+  omitCancel,
+  isEdit,
+  disabled,
+}) => {
   return (
     <div
       className={classNames({
@@ -40,13 +54,13 @@ const Buttons: React.SFC<ButtonsProps> = ({ isLoading, handleClickCancel, hideBu
         [styles.hideEditButtonWrapper]: hideButton,
       })}
     >
-      <NoteEditButton isLoading={isLoading} type="submit">
+      <NoteEditButton disabled={disabled} isLoading={isLoading} type="submit">
         {isLoading ? (
           <span>
             <ArticleSpinner className={styles.loadingButton} />
           </span>
         ) : (
-          <span className={styles.doneButton}>Done</span>
+          <span className={styles.doneButton}>{isEdit ? "Done" : "Add"}</span>
         )}
       </NoteEditButton>
 
@@ -59,9 +73,14 @@ const Buttons: React.SFC<ButtonsProps> = ({ isLoading, handleClickCancel, hideBu
   );
 };
 
-const NoteEditButton: React.SFC<{ type: "button" | "submit"; onClick?: () => void; isLoading: boolean }> = props => {
+const NoteEditButton: React.SFC<NoteEditButtonProps> = props => {
   return (
-    <button className={styles.noteEditButton} type={props.type} onClick={props.onClick} disabled={props.isLoading}>
+    <button
+      className={styles.noteEditButton}
+      type={props.type}
+      onClick={props.onClick}
+      disabled={props.disabled || props.isLoading}
+    >
       {props.children}
     </button>
   );
@@ -80,7 +99,7 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
   }
 
   public render() {
-    const { isLoading, autoFocus, hideButton, omitCancel, textareaStyle, textAreaClassName, row } = this.props;
+    const { isLoading, autoFocus, hideButton, omitCancel, textareaStyle, textAreaClassName, row, isEdit } = this.props;
     const { note, isBlocking, isFocus } = this.state;
 
     return (
@@ -98,6 +117,7 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
             borderRadius: "8px",
             margin: isFocus ? "10px 10px 22px 10px" : "12px 12px 24px 12px",
           }}
+          tabIndex={0}
           textareaStyle={textareaStyle}
           textAreaClassName={textAreaClassName || styles.noteTextArea}
           value={note}
@@ -109,10 +129,12 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
           rows={row}
         />
         <Buttons
+          isEdit={isEdit}
           omitCancel={omitCancel}
           hideButton={hideButton}
           isLoading={isLoading}
           handleClickCancel={this.handleClickCancel}
+          disabled={!note && !isEdit}
         />
         <Prompt when={isBlocking} message={`Are you sure to leave?\nEditing content would not be saved.`} />
       </form>
@@ -134,9 +156,10 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
       onClickCancel();
       this.setState({
         isBlocking: false,
+        isFocus: false,
       });
     } else {
-      this.setState(prevState => ({ ...prevState, note: "", isBlocking: false }));
+      this.setState(prevState => ({ ...prevState, note: "", isBlocking: false, isFocus: false }));
     }
   };
 
@@ -154,22 +177,23 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
   };
 
   private handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
-    const { onSubmit: handleSubmit } = this.props;
+    const { onSubmit } = this.props;
     const { note } = this.state;
 
     e && e.preventDefault();
 
     // validate form
-    if (!note) {
-      return alert("You should enter memo!");
+    if (!note && !confirm("Do you want to discard this memo?")) {
+      return;
     }
     if (note && note.length > 500) {
       return alert("The maximum length of memo is 500 characters.");
     }
 
-    handleSubmit(note);
+    onSubmit(note);
     this.setState({
       isBlocking: false,
+      isFocus: false,
     });
   };
 }

@@ -53,6 +53,7 @@ class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, 
     return (
       <div className={styles.memoForm}>
         <PaperNoteForm
+          isEdit={isEdit}
           hideButton={true}
           omitCancel={!isEdit}
           initialValue={note}

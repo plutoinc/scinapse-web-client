@@ -41,6 +41,10 @@
 
   &:disabled {
     cursor: not-allowed;
+
+    .doneButton {
+      color: $gray4;
+    }
   }
 
   & + & {
