@@ -413,7 +413,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                     className="icon plusIcon"
                   />
                   <span>
-                    Save to Collection
+                    Add To Collection
                   </span>
                 </button>
                 <div
