@@ -40,58 +40,6 @@
   }
 }
 
-.suggestionBox {
-  margin-top: 32px;
-  padding-bottom: 16px;
-  font-size: 16px;
-  text-align: left;
-  color: $gray6;
-  border-bottom: 1px solid $gray3;
-
-  .noResult {
-    font-size: 18px;
-    margin-bottom: 4px;
-  }
-
-  .suggestionResult {
-    font-size: 14px;
-
-    b {
-      font-weight: normal;
-      color: $red0;
-    }
-  }
-
-  .suggestionLink {
-    color: $navy0;
-    font-style: italic;
-    text-decoration: underline;
-  }
-
-  b {
-    font-weight: bold;
-  }
-}
-
-.searchSummary {
-  position: relative;
-  display: flex;
-  margin-top: 32px;
-  font-size: 15px;
-  align-items: center;
-
-  .searchResult {
-    color: $main_blue0;
-  }
-
-  .separatorLine {
-    height: 25px;
-    border-left: solid 1px $gray3;
-    margin-left: 12px;
-    margin-right: 12px;
-  }
-}
-
 .categoryHeader {
   font-size: 20px;
   font-weight: bold;
@@ -108,17 +56,6 @@
 .authorItemsHeader {
   position: relative;
   padding: 32px 0 16px 0;
-
-  .moreAuthorLink {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    font-size: 14px;
-    color: $main_blue1;
-  }
 }
 
 // Mobile
@@ -129,35 +66,5 @@
 
   .articleSearchContainer {
     margin-bottom: 32px;
-  }
-
-  .searchSummary {
-    font-size: 14px;
-    color: $gray3;
-  }
-
-  .inflowRouteContainer {
-    padding-top: 18px;
-    padding-left: 15px;
-    padding-right: 15px;
-    margin-bottom: 0;
-
-    .inflowRoute {
-      font-size: 16px;
-    }
-
-    .citedIconWrapper {
-      margin-right: 12px;
-
-      svg {
-        width: 8px;
-        height: 14px;
-      }
-    }
-
-    .inflowArticleInfo {
-      margin-top: 12px;
-      font-size: 12px;
-    }
   }
 }

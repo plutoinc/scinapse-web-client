@@ -10,49 +10,6 @@
   padding: 4px 8px;
 }
 
-.currentOption {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-
-  span {
-    display: inline-block;
-    vertical-align: top;
-  }
-}
-
-.downArrow {
-  display: inline-block;
-  vertical-align: top;
-  width: 8px;
-  height: 4.5px;
-  object-fit: contain;
-
-  svg {
-    display: inline-block;
-    vertical-align: top;
-    transform: rotate(180deg);
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.sortByText {
-  font-size: 14px;
-  color: $gray5;
-  margin-right: 11px;
-}
-
-.sortOptionText {
-  font-size: 14px;
-  color: $gray6;
-  margin-right: 10.5px;
-}
-
-.menuItem {
-  @extend %default-sort-dropdown-menuitem;
-}
-
 .nonActiveSortOption {
   font-size: 14px;
   color: $gray5;
@@ -70,10 +27,6 @@
 }
 
 @media (max-width: $mobile-width) {
-  .sortByText {
-    visibility: hidden;
-  }
-
   .articleSortBoxWrapper {
     position: relative;
     padding: 2px 8px;
