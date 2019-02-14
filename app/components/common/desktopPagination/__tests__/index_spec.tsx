@@ -73,8 +73,8 @@ describe("DesktopPagination", () => {
       beforeEach(() => {
         mockPagination = {
           type: "event",
-          currentPageIndex: 12,
-          totalPage: 15,
+          currentPageIndex: 10,
+          totalPage: 17,
           onItemClick: () => {},
         };
       });

@@ -117,6 +117,8 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
         </div>
       );
     } else if (journal) {
+      const currentQueryParams = this.getQueryParamsObject();
+
       return (
         <div>
           <div className={styles.journalShowWrapper}>
@@ -155,7 +157,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
                       </div>
                       <div className={styles.searchInputWrapper}>
                         <ScinapseInput
-                          value={journalShow.searchKeyword}
+                          value={currentQueryParams.q}
                           onSubmit={this.handleSubmitSearch}
                           placeholder="Search papers in this journal"
                           icon="SEARCH_ICON"
@@ -165,7 +167,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
                     <div className={styles.subHeader}>
                       <div className={styles.resultPaperCount}>{`${journalShow.paperCurrentPage} page of ${formatNumber(
                         journalShow.paperTotalPage
-                      )} pages (${formatNumber(journalShow.totalPaperCount)} results)`}</div>
+                      )} pages (${formatNumber(journalShow.filteredPaperCount)} results)`}</div>
                       <div className={styles.sortBoxWrapper}>{this.getSortBox()}</div>
                     </div>
                     <div>{this.getPaperList()}</div>
@@ -300,7 +302,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
     const { journalShow, history } = this.props;
 
     const currentQueryParams = this.getQueryParamsObject();
-    const nextQueryParams = { ...currentQueryParams, q: query };
+    const nextQueryParams = { ...currentQueryParams, q: query, p: 0 };
 
     ActionTicketManager.trackTicket({
       pageType: "journalShow",
