@@ -338,7 +338,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
               borderRadius: "8px",
               fontSize: "14px",
               width: "100%",
-              maxHeight: "105px",
+              maxHeight: "200px",
             }}
             row={2}
           />
@@ -347,7 +347,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     } else if (selectedCollection && selectedCollection.note) {
       return (
         <div className={styles.renderNoteBox}>
-          <div>{selectedCollection.note}</div>
+          <div className={styles.noteContent}>{selectedCollection.note}</div>
           <div className={styles.noteButtonWrapper}>
             <span className={styles.noteControlIconWrapper} onClick={this.toggleNoteEditMode}>
               <Icon icon="PEN" className={`${styles.noteControlIcon} ${styles.penIcon}`} />

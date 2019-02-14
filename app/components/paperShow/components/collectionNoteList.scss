@@ -10,6 +10,8 @@
     color: $black0;
     font-size: 14px;
     white-space: pre-wrap;
+    max-height: 400px;
+    overflow-y: auto;
 
     &:hover {
       .noteButtonWrapper {

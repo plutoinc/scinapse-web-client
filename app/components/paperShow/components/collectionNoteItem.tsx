@@ -83,7 +83,7 @@ class CollectionNoteItem extends React.PureComponent<CollectionNoteItemProps, Co
             borderRadius: "8px",
             fontSize: "14px",
             width: "100%",
-            maxHeight: "105px",
+            maxHeight: "200px",
           }}
           onClickCancel={this.toggleNoteEditMode}
           initialValue={collection.note}
