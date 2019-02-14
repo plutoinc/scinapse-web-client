@@ -300,7 +300,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
     const { journalShow, history } = this.props;
 
     const currentQueryParams = this.getQueryParamsObject();
-    const nextQueryParams = { ...currentQueryParams, q: query };
+    const nextQueryParams = { ...currentQueryParams, q: query, p: 0 };
 
     ActionTicketManager.trackTicket({
       pageType: "journalShow",
