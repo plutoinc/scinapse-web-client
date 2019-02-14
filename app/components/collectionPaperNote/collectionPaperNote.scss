@@ -1,12 +1,12 @@
-%common-memo {
+%common-note {
   display: inline-block;
   margin: auto;
   width: 284px;
   vertical-align: top;
 }
 
-.memo {
-  @extend %common-memo;
+.note {
+  @extend %common-note;
   border-radius: 8px;
   overflow-x: hidden;
 
@@ -72,7 +72,7 @@
 }
 
 .memoForm {
-  @extend %common-memo;
+  @extend %common-note;
   position: relative;
   border-radius: 8px;
 }

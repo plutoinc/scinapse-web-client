@@ -369,7 +369,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               [styles.touchFooter]: isTouchFooter,
             })}
           >
-            <CollectionNoteList />
+            <CollectionNoteList paperId={paper.id} />
             <OtherPaperListFromAuthor />
             <RelatedPaperList />
             <RightBoxContent expUserType={expUserType} paper={paper} cancelToken={this.cancelToken.token} />

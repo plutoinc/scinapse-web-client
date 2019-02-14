@@ -4,13 +4,19 @@
   }
 
   .memoItem {
-    max-height: 108px;
-    overflow-y: auto;
+    position: relative;
     background-color: $gray2;
     border-radius: 8px;
     color: $black0;
     font-size: 14px;
     white-space: pre-wrap;
+
+    &:hover {
+      .noteButtonWrapper {
+        opacity: 1;
+        transition: opacity 200ms cubic-bezier(0, 0, 0.2, 1);
+      }
+    }
 
     .memoContent {
       padding: 12px;
@@ -50,6 +56,46 @@
 
 .spinner {
   text-align: center;
+}
+
+.noteButtonWrapper {
+  position: absolute;
+  opacity: 0;
+  display: inline-block;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+
+  .noteControlIcon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    background-color: $gray2;
+    border-radius: 2px;
+    color: $gray5;
+    cursor: pointer;
+
+    &:hover {
+      &.penIcon {
+        color: $main_blue1;
+      }
+
+      &.trashIcon {
+        color: $red0;
+      }
+    }
+
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  .noteControlIconWrapper + .noteControlIconWrapper {
+    margin-left: 4px;
+  }
 }
 
 @keyframes blink {

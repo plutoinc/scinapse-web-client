@@ -8,11 +8,12 @@ import { CurrentUser } from "../../../model/currentUser";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { MyCollectionsState } from "../../../containers/paperShowCollectionControlButton/reducer";
 import CollectionNoteItem from "./collectionNoteItem";
-import { staleUpdatedCollectionNote } from "../../../actions/collection";
+import { staleUpdatedCollectionNote, updatePaperNote } from "../../../actions/collection";
 const styles = require("./collectionNoteList.scss");
 
 export interface CollectionNoteListProps
   extends Readonly<{
+      paperId: number;
       currentUser: CurrentUser;
       myCollections: MyCollectionsState;
       collections: Collection[] | null;
@@ -29,11 +30,45 @@ const CollectionNoteList: React.SFC<CollectionNoteListProps> = props => {
     dispatch(staleUpdatedCollectionNote(collection.id));
   };
 
+  const handleDeleteNote = (collection: Collection) => {
+    const { dispatch, paperId } = props;
+
+    if (confirm("Are you SURE to remove this memo?")) {
+      dispatch(
+        updatePaperNote({
+          paperId,
+          collectionId: collection.id,
+          note: null,
+        })
+      );
+    }
+  };
+
+  const handleSubmitNote = async (note: string, collection: Collection) => {
+    const { dispatch, paperId } = props;
+
+    await dispatch(
+      updatePaperNote({
+        paperId,
+        collectionId: collection.id,
+        note,
+      })
+    );
+  };
+
   const memoList =
     props.collections &&
     props.collections.length > 0 &&
     props.collections.filter(collection => !!collection.note).map(collection => {
-      return <CollectionNoteItem handleAnimationEnd={staleUpdatedStatus} collection={collection} key={collection.id} />;
+      return (
+        <CollectionNoteItem
+          onDeleteNote={handleDeleteNote}
+          onSubmitNote={handleSubmitNote}
+          handleAnimationEnd={staleUpdatedStatus}
+          collection={collection}
+          key={collection.id}
+        />
+      );
     });
 
   if (!memoList || memoList.length === 0) {

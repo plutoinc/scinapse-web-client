@@ -3,8 +3,7 @@ import { connect, Dispatch } from "react-redux";
 import { updatePaperNote } from "../../actions/collection";
 import PaperNoteForm from "../paperShow/noteForm";
 import { withStyles } from "../../helpers/withStylesHelper";
-import Icon from "../../icons";
-
+import NoteContent from "./noteContent";
 const styles = require("./collectionPaperNote.scss");
 
 interface CollectionPaperNoteProps {
@@ -39,19 +38,12 @@ class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, 
 
     if (note && !isEdit) {
       return (
-        <div className={styles.memo}>
-          <div style={{ maxHeight }} className={styles.memoItem}>
-            {note}
-          </div>
-          <div className={styles.noteButtonWrapper}>
-            <span className={styles.noteControlIconWrapper} onClick={this.toggleNoteEditMode}>
-              <Icon icon="PEN" className={`${styles.noteControlIcon} ${styles.penIcon}`} />
-            </span>
-            <span className={styles.noteControlIconWrapper} onClick={this.handleDeleteNote}>
-              <Icon icon="TRASH_CAN" className={`${styles.noteControlIcon} ${styles.trashIcon}`} />
-            </span>
-          </div>
-        </div>
+        <NoteContent
+          note={note}
+          maxHeight={maxHeight}
+          toggleNoteEditMode={this.toggleNoteEditMode}
+          handleDeleteNote={this.handleDeleteNote}
+        />
       );
     }
 
