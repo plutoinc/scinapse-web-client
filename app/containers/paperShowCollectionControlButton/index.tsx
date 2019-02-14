@@ -1,5 +1,6 @@
 import * as React from "react";
 import axios from "axios";
+import * as store from "store";
 import { denormalize } from "normalizr";
 import { connect, Dispatch } from "react-redux";
 import * as classNames from "classnames";
@@ -32,7 +33,10 @@ import {
 } from "../../actions/paperShow";
 import { trackEvent } from "../../helpers/handleGA";
 import ActionTicketManager from "../../helpers/actionTicketManager";
+import { ActionCreators } from "../../actions/actionTypes";
 const styles = require("./paperShowCollectionControlButton.scss");
+
+const LAST_USER_COLLECTION_ID = "l_u_c_id";
 
 interface PaperShowCollectionControlButtonProps {
   targetPaperId: number;
@@ -113,9 +117,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     const { myCollections } = this.props;
 
     if (myCollections && myCollections.length > 0) {
-      const defaultCollection =
-        myCollections.find(collection => collection.isDefault) || myCollections[myCollections.length - 1];
-      this.handleSelectCollection(defaultCollection);
+      this.selectDefaultCollection(myCollections);
     }
   }
 
@@ -127,10 +129,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       myCollections &&
       myCollections.length > 0
     ) {
-      const defaultCollection =
-        myCollections.find(collection => collection.isDefault) || myCollections[myCollections.length - 1];
-
-      this.handleSelectCollection(defaultCollection);
+      this.selectDefaultCollection(myCollections);
     }
   }
 
@@ -271,6 +270,16 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     );
   }
 
+  private selectDefaultCollection = (myCollections: Collection[]) => {
+    const lastId = parseInt(store.get(LAST_USER_COLLECTION_ID), 10);
+
+    let defaultCollection: Collection;
+    defaultCollection =
+      myCollections.find(c => c.id === lastId || c.isDefault) || myCollections[myCollections.length - 1];
+
+    this.handleSelectCollection(defaultCollection);
+  };
+
   private handleUnsignedUser = () => {
     GlobalDialogManager.openSignInDialog();
   };
@@ -316,17 +325,29 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       return (
         <div className={styles.editNoteBox}>
           <PaperNoteForm
+            isEdit={myCollectionsState.isNoteEditMode}
             initialValue={selectedCollection && selectedCollection.note}
-            handleCloseDropdown={this.closeNoteDropdown}
-            handleSubmit={this.handleSubmitNote}
+            onClickCancel={this.closeNoteDropdown}
+            onSubmit={this.handleSubmitNote}
             isLoading={myCollectionsState.isPostingNote}
+            autoFocus={true}
+            textAreaClassName={styles.textarea}
+            textareaStyle={{
+              border: 0,
+              padding: 0,
+              borderRadius: "8px",
+              fontSize: "14px",
+              width: "100%",
+              maxHeight: "200px",
+            }}
+            row={2}
           />
         </div>
       );
     } else if (selectedCollection && selectedCollection.note) {
       return (
         <div className={styles.renderNoteBox}>
-          <div>{selectedCollection.note}</div>
+          <div className={styles.noteContent}>{selectedCollection.note}</div>
           <div className={styles.noteButtonWrapper}>
             <span className={styles.noteControlIconWrapper} onClick={this.toggleNoteEditMode}>
               <Icon icon="PEN" className={`${styles.noteControlIcon} ${styles.penIcon}`} />
@@ -365,17 +386,19 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     }
   };
 
-  private handleSubmitNote = (note: string) => {
+  private handleSubmitNote = async (note: string) => {
     const { dispatch, targetPaperId, selectedCollection } = this.props;
 
     if (selectedCollection) {
-      dispatch(
+      await dispatch(
         updatePaperNote({
           paperId: targetPaperId,
           collectionId: selectedCollection.id,
           note,
         })
       );
+
+      dispatch(ActionCreators.closeNoteDropdownInPaperShow());
     }
   };
 
@@ -478,6 +501,8 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           paperId: targetPaperId,
         })
       );
+
+      store.set(LAST_USER_COLLECTION_ID, selectedCollection.id);
     } else if (selectedCollection && targetPaperId && selectedCollection.containsSelected) {
       trackEvent({
         category: "New Paper Show",

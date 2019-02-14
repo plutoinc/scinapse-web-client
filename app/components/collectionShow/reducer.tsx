@@ -14,6 +14,7 @@ export interface CollectionShowState
       sortType: AUTHOR_PAPER_LIST_SORT_TYPES;
       searchKeyword: string;
       paperIds: number | number[];
+      removedPaperIds: Set<number> | null;
     }> {}
 
 export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
@@ -28,6 +29,7 @@ export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
   sortType: "RECENTLY_ADDED",
   searchKeyword: "",
   paperIds: [],
+  removedPaperIds: null,
 };
 
 export function reducer(
@@ -70,6 +72,7 @@ export function reducer(
         isLoadingPaperToCollection: false,
       };
     }
+
     case ACTION_TYPES.COLLECTION_SHOW_SUCCEEDED_GET_PAPERS: {
       const pageRes = action.payload.paperResponse.page;
       const paperIds = action.payload.paperResponse.result;
@@ -100,6 +103,38 @@ export function reducer(
         ...state,
         isShareDropdownOpen: false,
       };
+    }
+
+    case ACTION_TYPES.GLOBAL_FAILED_TO_ADD_PAPER_TO_COLLECTION:
+    case ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_FROM_COLLECTION: {
+      if (action.payload.collection.id === state.mainCollectionId) {
+        const paperIds = action.payload.paperIds;
+        const removedPaperIds = state.removedPaperIds
+          ? new Set([...Array.from(state.removedPaperIds), ...paperIds])
+          : new Set(paperIds);
+
+        return {
+          ...state,
+          removedPaperIds,
+        };
+      }
+      return state;
+    }
+
+    case ACTION_TYPES.GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION:
+    case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION: {
+      const paperIds = action.payload.paperIds;
+
+      if (state.removedPaperIds && action.payload.collection.id === state.mainCollectionId) {
+        const newRemovedPaperIdsArray = [...Array.from(state.removedPaperIds)].filter(id => {
+          return !paperIds.includes(id);
+        });
+        return {
+          ...state,
+          removedPaperIds: new Set(newRemovedPaperIdsArray),
+        };
+      }
+      return state;
     }
 
     default:

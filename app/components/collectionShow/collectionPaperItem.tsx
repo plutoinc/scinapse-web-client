@@ -1,13 +1,41 @@
 import * as React from "react";
 import PaperItem, { PaperItemProps } from "../common/paperItem";
 import { withStyles } from "../../helpers/withStylesHelper";
+import CollectionPaperNote from "../collectionPaperNote";
+import { Collection } from "../../model/collection";
 const styles = require("./collectionPaperItem.scss");
 
 // tslint:disable-next-line:no-empty-interface
-export interface CollectionPaperItemProps extends PaperItemProps {}
+interface CollectionPaperItemProps extends PaperItemProps {
+  collection: Collection;
+}
 
-class CollectionPaperItem extends React.PureComponent<CollectionPaperItemProps, {}> {
+interface CollectionPaperItemState {
+  paperItemHeight: number;
+}
+
+class CollectionPaperItem extends React.PureComponent<CollectionPaperItemProps, CollectionPaperItemState> {
+  private paperItemNode: HTMLDivElement | null;
+
+  public constructor(props: CollectionPaperItemProps) {
+    super(props);
+    this.state = {
+      paperItemHeight: 0,
+    };
+  }
+
+  public componentDidMount() {
+    this.setState(prevState => ({
+      ...prevState,
+      paperItemHeight: this.paperItemNode ? this.paperItemNode.offsetHeight : 0,
+    }));
+  }
+
   public render() {
+    const { paper, paperNote, collection, onRemovePaperCollection, currentUser } = this.props;
+    const { paperItemHeight } = this.state;
+    const isMine = currentUser && currentUser.id === collection.createdBy.id;
+
     const paperItemProps = {
       ...this.props,
       wrapperStyle: {
@@ -19,13 +47,16 @@ class CollectionPaperItem extends React.PureComponent<CollectionPaperItemProps, 
 
     return (
       <div className={styles.CollectionPaperItemWrapper}>
-        <div className={styles.paper}>
-          <PaperItem {...paperItemProps} />
+        <div ref={el => (this.paperItemNode = el)} className={styles.paper}>
+          <PaperItem {...paperItemProps} hasCollection={true} onRemovePaperCollection={onRemovePaperCollection} />
         </div>
-        {this.props.paperNote && (
-          <div className={styles.memo}>
-            <div className={styles.memo_item}>{this.props.paperNote}</div>
-          </div>
+        {isMine && (
+          <CollectionPaperNote
+            maxHeight={paperItemHeight}
+            note={paperNote}
+            collectionId={collection.id}
+            paperId={paper.id}
+          />
         )}
       </div>
     );

@@ -85,7 +85,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       };
 
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_POST_PAPER_TO_COLLECTION:
-    case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_PAPER_TO_COLLECTION:
+    case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION:
     case ACTION_TYPES.GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION: {
       const targetCollection = action.payload.collection;
       const newCollections = {
@@ -102,7 +102,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
 
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION:
     case ACTION_TYPES.GLOBAL_FAILED_TO_ADD_PAPER_TO_COLLECTION:
-    case ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_TO_COLLECTION: {
+    case ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_FROM_COLLECTION: {
       const targetCollection = action.payload.collection;
       const newCollections = {
         ...state.collections,
@@ -129,6 +129,13 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
 
       return {
         ...state,
+        papersInCollection: {
+          ...state.papersInCollection,
+          [action.payload.paperId]: {
+            ...state.papersInCollection[action.payload.paperId],
+            note: action.payload.note,
+          },
+        },
         collections: {
           ...state.collections,
           [targetCollectionId]: {

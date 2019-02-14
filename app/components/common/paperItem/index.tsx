@@ -14,6 +14,7 @@ export interface PaperItemProps {
   paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea?: Scinapse.ActionTicket.ActionArea;
+  hasCollection?: boolean;
   paperNote?: string;
   searchQueryText?: string;
   wrapperClassName?: string;
@@ -25,6 +26,7 @@ export interface PaperItemProps {
   handleRemovePaper?: (paper: Paper) => void;
   isRepresentative?: boolean;
   handleToggleRepresentative?: (paper: Paper) => void;
+  onRemovePaperCollection?: (paperId: number) => Promise<void>;
 }
 
 class RawPaperItem extends React.PureComponent<PaperItemProps> {
@@ -71,6 +73,8 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
       isRepresentative,
       handleToggleRepresentative,
       actionArea,
+      hasCollection,
+      onRemovePaperCollection,
     } = this.props;
     const { title, titleHighlighted, authors, year, doi, urls, journal, conferenceInstance } = paper;
 
@@ -88,12 +92,14 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
         <PaperActionButtons
           currentUser={currentUser}
           paper={paper}
+          hasCollection={!!hasCollection}
           pageType={pageType}
           actionArea={actionArea}
           hasRemoveButton={hasRemoveButton}
           handleRemovePaper={handleRemovePaper}
           isRepresentative={isRepresentative}
           handleToggleRepresentative={handleToggleRepresentative}
+          onRemovePaperCollection={onRemovePaperCollection}
         />
       ) : null;
 

@@ -330,7 +330,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               [styles.touchFooter]: isTouchFooter,
             })}
           >
-            <CollectionNoteList />
+            <CollectionNoteList paperId={paper.id} />
             <OtherPaperListFromAuthor />
             <RelatedPaperList />
             <SearchKeyword FOSList={paper.fosList} />

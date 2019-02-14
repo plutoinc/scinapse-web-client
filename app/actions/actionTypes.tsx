@@ -22,9 +22,9 @@ export enum ACTION_TYPES {
   GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION = "GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION",
   GLOBAL_SUCCEEDED_ADD_PAPER_TO_COLLECTION = "GLOBAL_SUCCEEDED_ADD_PAPER_TO_COLLECTION",
   GLOBAL_FAILED_TO_ADD_PAPER_TO_COLLECTION = "GLOBAL_FAILED_TO_ADD_PAPER_TO_COLLECTION",
-  GLOBAL_START_TO_REMOVE_PAPER_TO_COLLECTION = "GLOBAL_START_TO_REMOVE_PAPER_TO_COLLECTION",
-  GLOBAL_SUCCEEDED_REMOVE_PAPER_TO_COLLECTION = "GLOBAL_SUCCEEDED_REMOVE_PAPER_TO_COLLECTION",
-  GLOBAL_FAILED_TO_REMOVE_PAPER_TO_COLLECTION = "GLOBAL_FAILED_TO_REMOVE_PAPER_TO_COLLECTION",
+  GLOBAL_START_TO_REMOVE_PAPER_FROM_COLLECTION = "GLOBAL_START_TO_REMOVE_PAPER_FROM_COLLECTION",
+  GLOBAL_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION = "GLOBAL_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION",
+  GLOBAL_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION = "GLOBAL_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION",
 
   GLOBAL_DIALOG_OPEN = "GLOBAL_DIALOG_OPEN",
   GLOBAL_DIALOG_CLOSE = "GLOBAL_DIALOG_CLOSE",
@@ -663,7 +663,7 @@ export const ActionCreators = {
     });
   },
 
-  startToAddPaperToCollectionInGlobalDialog(payload: { collection: Collection }) {
+  startToAddPaperToCollectionInGlobalDialog(payload: { collection: Collection; paperIds: number[] }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION,
       payload,
@@ -676,29 +676,29 @@ export const ActionCreators = {
     });
   },
 
-  failedToAddPaperToCollectionInGlobalDialog(payload: { collection: Collection }) {
+  failedToAddPaperToCollectionInGlobalDialog(payload: { collection: Collection; paperIds: number[] }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_FAILED_TO_ADD_PAPER_TO_COLLECTION,
       payload,
     });
   },
 
-  startToRemovePaperToCollection(payload: { collection: Collection }) {
+  startToRemovePaperFromCollection(payload: { collection: Collection; paperIds: number[] }) {
     return createAction({
-      type: ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_TO_COLLECTION,
+      type: ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_FROM_COLLECTION,
       payload,
     });
   },
 
-  succeededToRemovePaperToCollection() {
+  succeededToRemovePaperFromCollection() {
     return createAction({
-      type: ACTION_TYPES.GLOBAL_SUCCEEDED_REMOVE_PAPER_TO_COLLECTION,
+      type: ACTION_TYPES.GLOBAL_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION,
     });
   },
 
-  failedToRemovePaperToCollection(payload: { collection: Collection }) {
+  failedToRemovePaperFromCollection(payload: { collection: Collection; paperIds: number[] }) {
     return createAction({
-      type: ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_PAPER_TO_COLLECTION,
+      type: ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION,
       payload,
     });
   },
@@ -981,20 +981,20 @@ export const ActionCreators = {
     });
   },
 
-  startToRemovePaperFromCollection() {
+  startToRemovePaperFromCollectionInPaperShow() {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_START_TO_REMOVE_PAPER_FROM_COLLECTION,
     });
   },
 
-  succeededToRemovePaperFromCollection(payload: { collection: Collection }) {
+  succeededToRemovePaperFromCollectionInPaperShow(payload: { collection: Collection }) {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION,
       payload,
     });
   },
 
-  failedToRemovePaperFromCollection() {
+  failedToRemovePaperFromCollectionInPaperShow() {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION,
     });

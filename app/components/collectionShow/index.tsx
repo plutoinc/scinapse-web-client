@@ -32,6 +32,7 @@ import restoreScroll from "../../helpers/scrollRestoration";
 import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import ErrorPage from "../error/errorPage";
+import { removePaperFromCollection } from "../dialog/actions";
 const styles = require("./collectionShow.scss");
 
 const FACEBOOK_SHARE_URL = "http://www.facebook.com/sharer/sharer.php?u=";
@@ -412,6 +413,21 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     );
   };
 
+  private removePaperFromCollection = async (paperId: number) => {
+    const { dispatch, collection } = this.props;
+
+    if (collection && confirm(`Are you sure to remove this paper from '${collection.title}'?`)) {
+      try {
+        await dispatch(
+          removePaperFromCollection({
+            paperIds: [paperId],
+            collection,
+          })
+        );
+      } catch (err) {}
+    }
+  };
+
   private handleToggleShareDropdown = () => {
     const { dispatch, collectionShow } = this.props;
 
@@ -459,7 +475,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   };
 
   private getPaperList = () => {
-    const { papersInCollection, currentUser, collectionShow } = this.props;
+    const { papersInCollection, currentUser, collectionShow, collection } = this.props;
 
     if (collectionShow.isLoadingPaperToCollection) {
       return (
@@ -469,15 +485,18 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
       );
     }
 
-    if (papersInCollection && papersInCollection.length > 0) {
+    if (collection && papersInCollection && papersInCollection.length > 0) {
       return papersInCollection.map(paper => {
-        if (paper) {
+        const isRemoved = collectionShow.removedPaperIds && collectionShow.removedPaperIds.has(paper.paperId);
+        if (paper && !isRemoved) {
           return (
             <CollectionPaperItem
               currentUser={currentUser}
               pageType="collectionShow"
               paperNote={paper.note ? paper.note : ""}
               paper={paper.paper}
+              collection={collection}
+              onRemovePaperCollection={this.removePaperFromCollection}
               key={paper.paperId}
             />
           );

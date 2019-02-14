@@ -193,6 +193,7 @@
 .noteBoxWrapper {
   position: relative;
   margin-bottom: 6px;
+  overflow-x: hidden;
 }
 
 .noteBox {
@@ -221,8 +222,7 @@
 
 .editNoteBox {
   @extend .noteBox;
-  background-color: white;
-  border: solid 3px $gray2;
+  border: 0;
 }
 
 .renderNoteBox {
@@ -233,6 +233,8 @@
   color: $black0;
   word-break: break-all;
   white-space: pre-wrap;
+  max-height: 200px;
+  overflow-y: auto;
 
   &:hover {
     .noteButtonWrapper {

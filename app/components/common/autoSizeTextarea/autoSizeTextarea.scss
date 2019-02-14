@@ -1,17 +1,9 @@
 .textarea {
   width: 100%;
-  height: 80px;
   border: solid 1px $gray3;
-  font-size: 15px;
-  box-sizing: border-box;
-  border-radius: 5px;
-  line-height: 1.5;
+  font-size: 14px;
+  border-radius: 4px;
+  line-height: 1.4;
   margin: 0;
-  padding: 13px 15.5px;
   resize: none;
-  margin-top: 4px;
-
-  &::placeholder {
-    color: $gray4;
-  }
 }

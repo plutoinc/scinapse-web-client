@@ -13,6 +13,7 @@ import EnvChecker from "../../../helpers/envChecker";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { getPDFLink } from "../../../helpers/getPDFLink";
+import CollectionButton from "./collectionButton";
 import formatNumber from "../../../helpers/formatNumber";
 const styles = require("./paperActionButtons.scss");
 
@@ -23,12 +24,14 @@ interface HandleClickClaim {
 export interface PaperActionButtonsProps {
   paper: Paper;
   currentUser: CurrentUser;
+  hasCollection: boolean;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea?: Scinapse.ActionTicket.ActionArea;
   hasRemoveButton?: boolean;
   handleRemovePaper?: (paper: Paper) => void;
   isRepresentative?: boolean;
   handleToggleRepresentative?: (paper: Paper) => void;
+  onRemovePaperCollection?: (paperId: number) => Promise<void>;
 }
 
 export interface PaperActionButtonsState
@@ -48,12 +51,19 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   }
 
   public render() {
+    const { paper, pageType, actionArea, hasCollection, onRemovePaperCollection } = this.props;
     return (
       <div className={styles.infoList}>
         {this.getCitedButton()}
         {this.getPDFSourcesButton()}
         {this.getCitationQuoteButton()}
-        {this.getAddCollectionButton()}
+        <CollectionButton
+          hasCollection={hasCollection}
+          paperId={paper.id}
+          pageType={pageType}
+          actionArea={actionArea}
+          onRemove={onRemovePaperCollection}
+        />
         {this.getMoreButton()}
       </div>
     );
@@ -96,33 +106,6 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
       >
         {buttonContent}
       </a>
-    );
-  };
-
-  private getAddCollectionButton = () => {
-    const { paper, pageType, actionArea } = this.props;
-
-    return (
-      <button
-        className={styles.addCollectionBtnWrapper}
-        onClick={() => {
-          GlobalDialogManager.openCollectionDialog(paper.id);
-          trackEvent({
-            category: "Additional Action",
-            action: "Click [Add To Collection] Button",
-          });
-          ActionTicketManager.trackTicket({
-            pageType,
-            actionType: "fire",
-            actionArea: actionArea || pageType,
-            actionTag: "addToCollection",
-            actionLabel: String(paper.id),
-          });
-        }}
-      >
-        <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
-        <span>Save to Collection</span>
-      </button>
     );
   };
 
@@ -194,9 +177,27 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   };
 
   private additionalMenuItems = () => {
-    const { paper, handleRemovePaper, hasRemoveButton, isRepresentative, handleToggleRepresentative } = this.props;
+    const {
+      paper,
+      handleRemovePaper,
+      hasRemoveButton,
+      isRepresentative,
+      handleToggleRepresentative,
+      hasCollection,
+    } = this.props;
     return (
       <div className={styles.menuItems}>
+        {hasCollection && (
+          <MenuItem
+            classes={{ root: styles.additionalMenuItem }}
+            onClick={() => {
+              GlobalDialogManager.openCollectionDialog(paper.id);
+              this.closeAdditionalMenu();
+            }}
+          >
+            Add to other collections
+          </MenuItem>
+        )}
         {hasRemoveButton ? (
           <MenuItem
             classes={{ root: styles.additionalMenuItem }}

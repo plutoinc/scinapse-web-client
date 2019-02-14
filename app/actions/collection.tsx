@@ -37,17 +37,17 @@ export function savePaperToCollection(params: AddPaperToCollectionParams) {
 export function removePaperFromCollection(params: RemovePapersFromCollectionParams) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      dispatch(ActionCreators.startToRemovePaperFromCollection());
+      dispatch(ActionCreators.startToRemovePaperFromCollectionInPaperShow());
 
       await CollectionAPI.removePapersFromCollection(params);
       dispatch(
-        ActionCreators.succeededToRemovePaperFromCollection({
+        ActionCreators.succeededToRemovePaperFromCollectionInPaperShow({
           collection: params.collection,
         })
       );
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
-      dispatch(ActionCreators.failedToRemovePaperFromCollection());
+      dispatch(ActionCreators.failedToRemovePaperFromCollectionInPaperShow());
       alertToast({
         type: "error",
         message: error.message,
@@ -74,7 +74,6 @@ export function updatePaperNote(params: UpdatePaperNoteToCollectionParams) {
     try {
       await CollectionAPI.updatePaperNoteToCollection(params);
       dispatch(ActionCreators.succeededToUpdatePaperNote(params));
-      dispatch(ActionCreators.closeNoteDropdownInPaperShow());
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
       console.error(error);
@@ -83,6 +82,7 @@ export function updatePaperNote(params: UpdatePaperNoteToCollectionParams) {
         type: "error",
         message: "Had an error when update the paper note to collection",
       });
+      throw error;
     }
   };
 }

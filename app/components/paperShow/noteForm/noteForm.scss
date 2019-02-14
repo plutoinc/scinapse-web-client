@@ -1,7 +1,29 @@
+.form {
+  border-radius: 8px;
+  background-color: white;
+  border: solid 1px $gray2;
+
+  &:hover {
+    .editButtonWrapper.hideEditButtonWrapper {
+      opacity: 1;
+    }
+  }
+
+  &:focus-within {
+    border: solid 3px #e7eaef;
+  }
+}
+
 .editButtonWrapper {
   position: absolute;
   bottom: 8px;
   right: 8px;
+  display: flex;
+
+  &.hideEditButtonWrapper {
+    opacity: 0;
+    transition: opacity 200ms cubic-bezier(0, 0, 0.2, 1);
+  }
 }
 
 .noteTextArea {
@@ -16,9 +38,14 @@
   background-color: $gray8;
   font-size: 12px;
   font-weight: 500;
+  cursor: pointer;
 
   &:disabled {
     cursor: not-allowed;
+
+    .doneButton {
+      color: $gray4;
+    }
   }
 
   & + & {
