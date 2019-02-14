@@ -495,7 +495,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
               pageType="collectionShow"
               paperNote={paper.note ? paper.note : ""}
               paper={paper.paper}
-              collectionId={collection.id}
+              collection={collection}
               onRemovePaperCollection={this.removePaperFromCollection}
               key={paper.paperId}
             />
