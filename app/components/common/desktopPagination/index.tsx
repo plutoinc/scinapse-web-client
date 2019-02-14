@@ -42,14 +42,14 @@ export function makePageNumberArray(props: DesktopPaginationProps): number[] {
   let startPage: number;
   let endPage: number;
 
-  if (currentPage - 5 < 1) {
+  if (currentPage - 5 <= 1) {
     startPage = 1;
     endPage = totalPage >= 10 ? 10 + 1 : totalPage + 1;
   } else if (totalPage > currentPage + 5) {
     startPage = currentPage - 5;
     endPage = currentPage + 5;
   } else {
-    startPage = totalPage - 9;
+    startPage = totalPage - 6;
     endPage = totalPage + 1;
   }
 
