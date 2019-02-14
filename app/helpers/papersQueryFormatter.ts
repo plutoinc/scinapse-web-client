@@ -10,7 +10,6 @@ export interface FilterObject {
   journalIFTo?: number | string;
   fos?: number[] | string[];
   journal?: number[] | string[];
-  [key: string]: any;
 }
 
 export interface SearchPageQueryParamsObject {

@@ -194,9 +194,10 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
 
   private isFilterEmpty = (filter: FilterObject) => {
     for (const key of Object.keys(filter)) {
-      if (typeof filter[key] === "number" && !isNaN(filter[key])) {
+      const filterValue: any = filter[key];
+      if (typeof filterValue === "number" && !isNaN(filterValue)) {
         return false;
-      } else if (typeof filter[key] === "object" && filter[key].length !== 0) {
+      } else if (typeof filterValue === "object" && filterValue.length !== 0) {
         return false;
       }
     }

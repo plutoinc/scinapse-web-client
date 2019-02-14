@@ -89,6 +89,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   }
 
   public render() {
+    const { location } = this.props;
     const navClassName = this.getNavbarClassName();
 
     return (
@@ -106,7 +107,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   }
 
   private getTabNavigationInSearch = () => {
-    const { articleSearchState, authorSearchState } = this.props;
+    const { articleSearchState, authorSearchState, location } = this.props;
     const authorEntitiesInArticleSearch = articleSearchState.matchAuthors;
     let tabNaviItems: TabItem[];
 
@@ -241,7 +242,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 200);
 
   private handleSearchPush = (query: string) => {
-    const { dispatch, history } = this.props;
+    const { dispatch, history, location } = this.props;
 
     if (query.length < 2) {
       return dispatch({
