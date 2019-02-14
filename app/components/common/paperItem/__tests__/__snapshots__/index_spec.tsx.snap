@@ -150,7 +150,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
         onClick={[Function]}
       >
         <span>
-          Cited 2909
+          2,909 Citations
         </span>
       </a>
       <a
@@ -367,7 +367,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
         onClick={[Function]}
       >
         <span>
-          Cited 2909
+          2,909 Citations
         </span>
       </a>
       <a

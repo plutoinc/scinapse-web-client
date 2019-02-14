@@ -225,7 +225,7 @@ exports[`JournalShow Container Component when journal data exist should render c
                       onClick={[Function]}
                     >
                       <span>
-                        Cited 6
+                        6 Citations
                       </span>
                     </a>
                     <a

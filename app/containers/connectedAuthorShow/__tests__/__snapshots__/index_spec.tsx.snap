@@ -373,7 +373,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                   onClick={[Function]}
                 >
                   <span>
-                    Cited 2909
+                    2,909 Citations
                   </span>
                 </a>
                 <a

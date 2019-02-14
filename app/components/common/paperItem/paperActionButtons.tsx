@@ -13,6 +13,7 @@ import EnvChecker from "../../../helpers/envChecker";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { getPDFLink } from "../../../helpers/getPDFLink";
+import formatNumber from "../../../helpers/formatNumber";
 const styles = require("./paperActionButtons.scss");
 
 interface HandleClickClaim {
@@ -153,7 +154,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
           }}
           className={styles.citedButton}
         >
-          <span>{`Cited ${paper.citedCount}`}</span>
+          <span>{`${formatNumber(paper.citedCount)} Citations`}</span>
         </Link>
       );
     }
