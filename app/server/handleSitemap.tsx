@@ -2,59 +2,40 @@ import * as AWS from "aws-sdk";
 
 export default async function handleSiteMapRequest(requestPath: string) {
   const s3 = new AWS.S3();
+  const responseHeader = {
+    "Content-Type": "text/xml",
+    "Content-Encoding": "gzip",
+    "Access-Control-Allow-Origin": "*",
+  };
 
+  let s3ObjKey: string;
   if (requestPath === "/sitemap") {
-    // sitemap index
-    const body = await new Promise((resolve, reject) => {
-      s3.getObject(
-        {
-          Bucket: "pluto-academic",
-          Key: "sitemap/sitemapindex.xml",
-        },
-        (err: Error, data: any) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(data.Body.toString("utf8"));
-          }
-        }
-      );
-    });
-
-    return {
-      statusCode: 200,
-      headers: {
-        "Content-Type": "text/xml",
-        "Access-Control-Allow-Origin": "*",
-      },
-      isBase64Encoded: false,
-      body,
-    };
+    s3ObjKey = "sitemap.xml.gz";
   } else {
-    const body = await new Promise((resolve, reject) => {
-      s3.getObject(
-        {
-          Bucket: "pluto-academic",
-          Key: `sitemap/${requestPath.substring(1)}`,
-        },
-        (err: Error, data: any) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(data.Body.toString("utf8"));
-          }
-        }
-      );
-    });
-
-    return {
-      statusCode: 200,
-      headers: {
-        "Content-Type": "text/plain",
-        "Access-Control-Allow-Origin": "*",
-      },
-      isBase64Encoded: false,
-      body,
-    };
+    const reqPathToken = requestPath.split("/");
+    s3ObjKey = `${reqPathToken[reqPathToken.length - 1]}.gz`;
   }
+
+  const body = await new Promise((resolve, reject) => {
+    s3.getObject(
+      {
+        Bucket: "scinapse-sitemap",
+        Key: s3ObjKey,
+      },
+      (err: Error, data: any) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data.Body);
+        }
+      }
+    );
+  });
+
+  return {
+    statusCode: 200,
+    headers: responseHeader,
+    isBase64Encoded: false,
+    body,
+  };
 }
