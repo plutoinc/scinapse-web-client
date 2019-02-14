@@ -111,12 +111,7 @@ class CollectionNoteItem extends React.PureComponent<CollectionNoteItemProps, Co
   private handleDeleteNote = async () => {
     const { onDeleteNote, collection } = this.props;
 
-    this.setState(prevState => ({ ...prevState, isLoading: true }));
-    try {
-      onDeleteNote(collection);
-    } catch (err) {
-      this.setState(prevState => ({ ...prevState, isLoading: false }));
-    }
+    onDeleteNote(collection);
   };
 
   private handleSubmitNote = async (note: string) => {
