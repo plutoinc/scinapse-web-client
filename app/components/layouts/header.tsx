@@ -99,9 +99,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           {this.getSearchFormContainer()}
           {this.getHeaderButtons()}
         </div>
-        {location.pathname === "/search" || location.pathname === "/search/authors"
-          ? this.getTabNavigationInSearch()
-          : null}
+        {location.pathname.includes("/search") ? this.getTabNavigationInSearch() : null}
         {this.getToastBar()}
       </nav>
     );
@@ -138,7 +136,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         },
       },
       {
-        tabName: `Authors`,
+        tabName: "Authors",
         tabLink: {
           pathname: "/search/authors",
           search: PapersQueryFormatter.stringifyPapersQuery({
