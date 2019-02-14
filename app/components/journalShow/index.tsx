@@ -117,6 +117,8 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
         </div>
       );
     } else if (journal) {
+      const currentQueryParams = this.getQueryParamsObject();
+
       return (
         <div>
           <div className={styles.journalShowWrapper}>
@@ -155,7 +157,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
                       </div>
                       <div className={styles.searchInputWrapper}>
                         <ScinapseInput
-                          value={journalShow.searchKeyword}
+                          value={currentQueryParams.q}
                           onSubmit={this.handleSubmitSearch}
                           placeholder="Search papers in this journal"
                           icon="SEARCH_ICON"
