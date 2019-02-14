@@ -73,14 +73,14 @@ describe("DesktopPagination", () => {
       beforeEach(() => {
         mockPagination = {
           type: "event",
-          currentPageIndex: 12,
-          totalPage: 15,
+          currentPageIndex: 10,
+          totalPage: 17,
           onItemClick: () => {},
         };
       });
 
       it("should return 6~15 range result", () => {
-        expect(makePageNumberArray(mockPagination)).toEqual([9, 10, 11, 12, 13, 14, 15]);
+        expect(makePageNumberArray(mockPagination)).toEqual([6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
       });
     });
   });
