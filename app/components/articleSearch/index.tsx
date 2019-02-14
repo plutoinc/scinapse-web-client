@@ -25,12 +25,7 @@ import AuthorSearchItem from "../authorSearchItem";
 import restoreScroll from "../../helpers/scrollRestoration";
 import { ChangeRangeInputParams, FILTER_BOX_TYPE, FILTER_TYPE_HAS_EXPANDING_OPTION } from "../../constants/paperSearch";
 import ErrorPage from "../error/errorPage";
-import EnvChecker from "../../helpers/envChecker";
-import getExpUserType from "../../helpers/getExpUserType";
-import RelatedKeywordList from "./components/relatedKeywordList";
 const styles = require("./articleSearch.scss");
-
-const COOKIE_STRING = EnvChecker.isOnServer() ? "" : document.cookie;
 
 function mapStateToProps(state: AppState) {
   return {
@@ -41,30 +36,16 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-interface ArticleSearchState {
-  isClient: boolean;
-  expUserType: string;
-}
-
 @withStyles<typeof ArticleSearch>(styles)
-class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, ArticleSearchState> {
+class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
   private cancelToken = axios.CancelToken.source();
 
   public constructor(props: ArticleSearchContainerProps) {
     super(props);
-
-    this.state = {
-      isClient: false,
-      expUserType: "",
-    };
   }
 
   public async componentDidMount() {
     const { configuration, dispatch, match, location } = this.props;
-
-    if (!EnvChecker.isOnServer()) {
-      this.setState(prevState => ({ ...prevState, isClient: true, expUserType: getExpUserType(COOKIE_STRING) }));
-    }
 
     const notRenderedAtServerOrJSAlreadyInitialized =
       !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
@@ -105,7 +86,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
 
   public render() {
     const { articleSearchState, currentUserState } = this.props;
-    const { isClient, expUserType } = this.state;
     const { isLoading, totalElements, totalPages, searchItemsToShow } = articleSearchState;
     const queryParams = this.getUrlDecodedQueryParamsObject();
 
@@ -126,11 +106,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
           <div className={styles.articleSearchContainer}>
             {this.getResultHelmet(queryParams.query)}
             <div className={styles.innerContainer}>
-              <RelatedKeywordList
-                shouldRender={isClient && expUserType === "A"}
-                query={queryParams.query}
-                keywordList={articleSearchState.aggregationData ? articleSearchState.aggregationData.keywordList : []}
-              />
               {this.getSuggestionKeywordBox()}
               {this.getAuthorEntitiesSection()}
               <div className={styles.searchSummary}>

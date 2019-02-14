@@ -5,12 +5,8 @@ import { AppState } from "../../reducers";
 import { LayoutState, UserDevice } from "../layouts/records";
 import ScinapseButton from "../common/scinapseButton";
 import { withStyles } from "../../helpers/withStylesHelper";
-import getExpUserType from "../../helpers/getExpUserType";
-import EnvChecker from "../../helpers/envChecker";
 const { Document, Page } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
-
-const COOKIE_STRING = EnvChecker.isOnServer() ? "" : document.cookie;
 
 interface PDFViewerProps {
   layout: LayoutState;
@@ -26,7 +22,6 @@ interface PDFViewerState {
   hadError: boolean;
   succeeded: boolean;
   numPages: number | null;
-  expUserType: string;
 }
 
 @withStyles<typeof PDFViewer>(styles)
@@ -40,19 +35,14 @@ class PDFViewer extends React.Component<PDFViewerProps, PDFViewerState> {
       hadError: false,
       succeeded: false,
       numPages: null,
-      expUserType: "",
     };
-  }
-
-  public componentDidMount() {
-    this.setState(prevState => ({ ...prevState, expUserType: getExpUserType(COOKIE_STRING) }));
   }
 
   public render() {
     const { layout, pdfURL, filename, onLoadSuccess, onFailed } = this.props;
-    const { expUserType, isFullNode, succeeded, hadError } = this.state;
+    const { isFullNode, succeeded, hadError } = this.state;
 
-    if (pdfURL && expUserType === "A" && layout.userDevice === UserDevice.DESKTOP) {
+    if (pdfURL && layout.userDevice === UserDevice.DESKTOP) {
       return (
         <div ref={el => (this.wrapperNode = el)}>
           <Document

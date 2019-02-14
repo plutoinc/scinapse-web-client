@@ -13,8 +13,8 @@ import { ConnectedRootRoutes as RootRoutes } from "./routes";
 import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
 import { AppState } from "./reducers";
-import getExpUserType from "./helpers/getExpUserType";
 const { pdfjs } = require("react-pdf");
+import "./helpers/rafPolyfill";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 class Main extends React.Component {
@@ -63,7 +63,6 @@ class PlutoRenderer {
 
       ReactGA.set({
         page: window.location.pathname + window.location.search,
-        expUserType: getExpUserType(document.cookie),
       });
 
       ReactGA.pageview(window.location.pathname + window.location.search);

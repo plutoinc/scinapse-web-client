@@ -14,6 +14,7 @@ import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { getPDFLink } from "../../../helpers/getPDFLink";
 import CollectionButton from "./collectionButton";
+import formatNumber from "../../../helpers/formatNumber";
 const styles = require("./paperActionButtons.scss");
 
 interface HandleClickClaim {
@@ -53,7 +54,6 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
     const { paper, pageType, actionArea, hasCollection, onRemovePaperCollection } = this.props;
     return (
       <div className={styles.infoList}>
-        {this.getRefButton()}
         {this.getCitedButton()}
         {this.getPDFSourcesButton()}
         {this.getCitationQuoteButton()}
@@ -109,42 +109,6 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
     );
   };
 
-  private getRefButton = () => {
-    const { paper, pageType, actionArea } = this.props;
-
-    if (!paper.referenceCount) {
-      return null;
-    } else {
-      return (
-        <Link
-          to={{
-            pathname: `/papers/${paper.id}`,
-            hash: "references",
-          }}
-          onClick={() => {
-            if (!EnvChecker.isOnServer()) {
-              trackEvent({
-                category: "New Paper Show",
-                action: "Click Ref Button in paperItem",
-                label: `Link to references paper - /papers/${paper.id} `,
-              });
-              ActionTicketManager.trackTicket({
-                pageType,
-                actionType: "fire",
-                actionArea: actionArea || pageType,
-                actionTag: "refList",
-                actionLabel: String(paper.id),
-              });
-            }
-          }}
-          className={styles.referenceButton}
-        >
-          <span>{`Ref ${paper.referenceCount}`}</span>
-        </Link>
-      );
-    }
-  };
-
   private getCitedButton = () => {
     const { paper, pageType, actionArea } = this.props;
 
@@ -173,7 +137,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
           }}
           className={styles.citedButton}
         >
-          <span>{`Cited ${paper.citedCount}`}</span>
+          <span>{`${formatNumber(paper.citedCount)} Citations`}</span>
         </Link>
       );
     }
@@ -203,7 +167,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             }}
           >
             <Icon className={styles.citationIcon} icon="CITATION_QUOTE" />
-            <span>Cite this paper</span>
+            <span>Cite</span>
           </span>
         </span>
       );
