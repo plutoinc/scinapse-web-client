@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as classNames from "classnames";
 import { Link } from "react-router-dom";
-import PaperSearchQueryFormatter from "../../../../helpers/papersQueryFormatter";
+import PaperSearchQueryFormatter, { FilterObject } from "../../../../helpers/papersQueryFormatter";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import ActionTicketManager from "../../../../helpers/actionTicketManager";
 const styles = require("./newSortBox.scss");
@@ -15,6 +15,7 @@ const ARTICLE_SEARCH_SORT_OPTIONS: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS[] 
 interface SortBoxProps {
   query: string;
   sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS;
+  filter: FilterObject;
 }
 
 function trackSorting(sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS) {
@@ -30,6 +31,7 @@ function trackSorting(sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS) {
 function getSortBoxItems(props: SortBoxProps) {
   const sortOption = props.sortOption;
   const query = props.query;
+  const filter = props.filter;
 
   const sortOptionNodes = ARTICLE_SEARCH_SORT_OPTIONS.map((sort, index) => {
     return (
@@ -41,7 +43,7 @@ function getSortBoxItems(props: SortBoxProps) {
             query,
             page: 1,
             sort,
-            filter: {},
+            filter,
           }),
         }}
         onClick={() => {

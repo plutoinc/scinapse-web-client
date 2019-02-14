@@ -164,7 +164,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
                   <span className={styles.categoryHeader}>Publication</span>
                   <span className={styles.categoryCount}>{formatNumber(totalElements)}</span>
                 </div>
-                <SortBox query={queryParams.query} sortOption={queryParams.sort} />
+                <SortBox query={queryParams.query} sortOption={queryParams.sort} filter={queryParams.filter} />
               </div>
               <SearchList
                 currentUser={currentUserState}
