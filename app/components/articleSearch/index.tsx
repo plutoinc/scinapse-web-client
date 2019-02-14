@@ -7,7 +7,7 @@ import { AppState } from "../../reducers";
 import * as Actions from "./actions";
 import SearchList from "./components/searchList";
 import ArticleSpinner from "../common/spinner/articleSpinner";
-import SortBox from "./components/sortBar";
+import SortBar from "./components/sortBar";
 import FilterContainer from "./components/filterContainer";
 import NoResult from "./components/noResult";
 import PapersQueryFormatter, { SearchPageQueryParamsObject, FilterObject } from "../../helpers/papersQueryFormatter";
@@ -142,7 +142,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
                   <span className={styles.categoryHeader}>Publication</span>
                   <span className={styles.categoryCount}>{formatNumber(totalElements)}</span>
                 </div>
-                <SortBox query={queryParams.query} sortOption={queryParams.sort} filter={queryParams.filter} />
+                <SortBar query={queryParams.query} sortOption={queryParams.sort} filter={queryParams.filter} />
               </div>
               <SearchList
                 currentUser={currentUserState}
