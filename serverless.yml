@@ -40,7 +40,7 @@ resources:
                 - Effect: Allow
                   Action:
                     - s3:*
-                  Resource: "arn:aws:s3:::pluto-academic/*"
+                  Resource: "arn:aws:s3:::scinapse-sitemap/*"
           - PolicyName: LambdaEdgeExecutionRole
             PolicyDocument:
               Version: "2012-10-17"
