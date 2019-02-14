@@ -1,10 +1,16 @@
 import * as React from "react";
+import * as classNames from "classnames";
 import { Link } from "react-router-dom";
 import PaperSearchQueryFormatter from "../../../../helpers/papersQueryFormatter";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import ActionTicketManager from "../../../../helpers/actionTicketManager";
-import * as classNames from "classnames";
 const styles = require("./newSortBox.scss");
+
+const ARTICLE_SEARCH_SORT_OPTIONS: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS[] = [
+  "RELEVANCE",
+  "MOST_CITATIONS",
+  "NEWEST_FIRST",
+];
 
 interface SortBoxProps {
   query: string;
@@ -25,9 +31,7 @@ function getSortBoxItems(props: SortBoxProps) {
   const sortOption = props.sortOption;
   const query = props.query;
 
-  const sortOptions: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS[] = ["RELEVANCE", "MOST_CITATIONS", "NEWEST_FIRST"];
-
-  const transformSortOptionsToHtml = sortOptions.map((sort, index) => {
+  const sortOptionNodes = ARTICLE_SEARCH_SORT_OPTIONS.map((sort, index) => {
     return (
       <Link
         key={index}
@@ -53,7 +57,7 @@ function getSortBoxItems(props: SortBoxProps) {
     );
   });
 
-  return transformSortOptionsToHtml;
+  return sortOptionNodes;
 }
 
 function getSortOptionToShow(sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS) {
