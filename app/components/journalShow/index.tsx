@@ -167,7 +167,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
                     <div className={styles.subHeader}>
                       <div className={styles.resultPaperCount}>{`${journalShow.paperCurrentPage} page of ${formatNumber(
                         journalShow.paperTotalPage
-                      )} pages (${formatNumber(journalShow.totalPaperCount)} results)`}</div>
+                      )} pages (${formatNumber(journalShow.filteredPaperCount)} results)`}</div>
                       <div className={styles.sortBoxWrapper}>{this.getSortBox()}</div>
                     </div>
                     <div>{this.getPaperList()}</div>
