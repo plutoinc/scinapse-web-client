@@ -11,7 +11,7 @@ interface SortBoxProps {
   sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS;
 }
 
-function handleActionTicketFireInSorting(sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS) {
+function trackSorting(sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS) {
   ActionTicketManager.trackTicket({
     pageType: "searchResult",
     actionType: "fire",
@@ -41,7 +41,7 @@ function getSortBoxItems(props: SortBoxProps) {
           }),
         }}
         onClick={() => {
-          handleActionTicketFireInSorting(sort);
+          trackSorting(sort);
         }}
         className={classNames({
           [styles.nonActiveSortOption]: true,
