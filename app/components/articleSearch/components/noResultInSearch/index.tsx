@@ -2,12 +2,13 @@ import * as React from "react";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import Icon from "../../../../icons";
 import { Link } from "react-router-dom";
-import PapersQueryFormatter from "../../../../helpers/papersQueryFormatter";
+import PapersQueryFormatter, { FilterObject } from "../../../../helpers/papersQueryFormatter";
 import * as classNames from "classnames";
 const styles = require("./noResultInSearch.scss");
 
 interface NoResultInSearchProps {
   searchText?: string;
+  filter?: FilterObject;
   otherCategoryCount: number;
   type: string;
 }
@@ -18,8 +19,8 @@ const NoResultInSearch = (props: NoResultInSearchProps) => {
     <div className={styles.rootWrapper}>
       <div
         className={classNames({
-          [`${styles.noAuthorItemResultContainer}`]: isAuthorType,
-          [`${styles.noPaperItemResultContainer}`]: !isAuthorType,
+          [styles.noAuthorItemResultContainer]: isAuthorType,
+          [styles.noPaperItemResultContainer]: !isAuthorType,
         })}
       >
         <div className={styles.categoryItemHeader}>

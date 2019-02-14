@@ -18,32 +18,26 @@ interface TabNavigationBarProps {
   tabItemsData: TabItem[];
 }
 
-class TabNavigationBar extends React.PureComponent<TabNavigationBarProps> {
-  constructor(props: TabNavigationBarProps) {
-    super(props);
-  }
+const TabNavigationBar: React.SFC<TabNavigationBarProps> = props => {
+  const tabItemsData = props.tabItemsData;
+  const currentPage = location.pathname;
 
-  public render() {
-    const { tabItemsData } = this.props;
-    const currentPage = location.pathname;
+  const transformTabItemDataToHtml = tabItemsData.map((item, index) => {
+    return (
+      <Link
+        className={classNames({
+          [styles.nonActiveTabItem]: true,
+          [styles.activeTabItem]: currentPage === item.tabLink.pathname,
+        })}
+        to={item.tabLink}
+        key={index}
+      >
+        {item.tabName}
+      </Link>
+    );
+  });
 
-    const transformTabItemDataToHtml = tabItemsData.map((item, index) => {
-      return (
-        <Link
-          className={classNames({
-            [styles.nonActiveTabItem]: true,
-            [styles.activeTabItem]: currentPage === item.tabLink.pathname,
-          })}
-          to={item.tabLink}
-          key={index}
-        >
-          {item.tabName}
-        </Link>
-      );
-    });
-
-    return <div className={styles.tabItemWrapper}>{transformTabItemDataToHtml}</div>;
-  }
-}
+  return <div className={styles.tabItemWrapper}>{transformTabItemDataToHtml}</div>;
+};
 
 export default withStyles<typeof TabNavigationBar>(styles)(TabNavigationBar);
