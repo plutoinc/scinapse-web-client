@@ -118,7 +118,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
 
   public render() {
     const { articleSearchState, currentUserState } = this.props;
-    const { isLoading, totalElements, totalPages, searchItemsToShow } = articleSearchState;
+    const { isLoading, totalElements, searchItemsToShow } = articleSearchState;
     const queryParams = this.getUrlDecodedQueryParamsObject();
 
     const tabNaviItems = getTabNavigationItems(articleSearchState.searchInput);
@@ -201,12 +201,12 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     }
   }
 
-  private isFilterEmpty = (filter: FilterObject) => {
-    for (const key of Object.keys(filter)) {
-      const filterValue: any = filter[key];
-      if (typeof filterValue === "number" && !isNaN(filterValue)) {
+  private isFilterEmpty = (filter: any) => {
+    const keys = Object.keys(filter);
+    for (let key of keys) {
+      if (typeof filter[key] === "number" && !isNaN(filter[key])) {
         return false;
-      } else if (typeof filterValue === "object" && filterValue.length !== 0) {
+      } else if (typeof filter[key] === "object" && filter[key].length !== 0) {
         return false;
       }
     }
