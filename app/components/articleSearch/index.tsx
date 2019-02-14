@@ -7,7 +7,6 @@ import { AppState } from "../../reducers";
 import * as Actions from "./actions";
 import SearchList from "./components/searchList";
 import ArticleSpinner from "../common/spinner/articleSpinner";
-import SortBar from "./components/sortBar";
 import FilterContainer from "./components/filterContainer";
 import NoResult from "./components/noResult";
 import PapersQueryFormatter, { SearchPageQueryParamsObject, FilterObject } from "../../helpers/papersQueryFormatter";
@@ -27,6 +26,7 @@ import { ChangeRangeInputParams, FILTER_BOX_TYPE, FILTER_TYPE_HAS_EXPANDING_OPTI
 import ErrorPage from "../error/errorPage";
 import NoResultInSearch from "./components/noResultInSearch";
 import TabNavigationBar from "../common/tabNavigationBar";
+import SortBar from "./components/SortBar";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
