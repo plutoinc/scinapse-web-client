@@ -2,7 +2,6 @@
 import * as express from "express";
 import { serverSideRender, renderJavaScriptOnly, SSRResult } from "../app/server";
 import { TIMEOUT_FOR_SAFE_RENDERING } from "../app/api/pluto";
-import getExpUserType, { USER_EXPERIMENT_TYPE_KEY } from "../app/helpers/getExpUserType";
 var cookieParser = require("cookie-parser");
 
 const server = express();
@@ -58,13 +57,7 @@ server.disable("x-powered-by").all("/*", async (req: express.Request, res: expre
 
   return Promise.race([normalRender(), safeTimeout])
     .then(ssrResult => {
-      res
-        .status(ssrResult.statusCode || 200)
-        .cookie(USER_EXPERIMENT_TYPE_KEY, getExpUserType(req.cookies[USER_EXPERIMENT_TYPE_KEY] || ""), {
-          domain: "",
-          maxAge: 900000,
-        })
-        .send(ssrResult.html);
+      res.status(ssrResult.statusCode || 200).send(ssrResult.html);
     })
     .catch(err => {
       console.log(err);

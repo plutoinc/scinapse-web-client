@@ -1,5 +1,5 @@
 import * as React from "react";
-import axios, { CancelToken } from "axios";
+import axios from "axios";
 import { stringify } from "qs";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
@@ -36,9 +36,6 @@ import { getPDFLink } from "../../helpers/getPDFLink";
 import restoreScroll from "../../helpers/scrollRestoration";
 import ErrorPage from "../../components/error/errorPage";
 import InnerSearchBox from "../../components/paperShow/components/innerSearchBox";
-import ReadingNowPapers from "../../components/paperShow/components/readingNowPapers";
-import getExpUserType from "../../helpers/getExpUserType";
-import EnvChecker from "../../helpers/envChecker";
 import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
 const styles = require("./paperShow.scss");
 
@@ -93,28 +90,7 @@ interface PaperShowStates
 
       isLoadPDF: boolean;
       failedToLoadPDF: boolean;
-
-      expUserType: string;
     }> {}
-
-const RightBoxContent: React.SFC<{ expUserType: string; paper: Paper; cancelToken: CancelToken }> = ({
-  expUserType,
-  paper,
-  cancelToken,
-}) => {
-  if (expUserType === "B") {
-    return <ReadingNowPapers paperId={paper.id} cancelToken={cancelToken} />;
-  } else if (expUserType === "A") {
-    return (
-      <>
-        <SearchKeyword FOSList={paper.fosList} />
-        <PlutoBlogPosting paperId={paper.id} />
-      </>
-    );
-  } else {
-    return null;
-  }
-};
 
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
@@ -138,7 +114,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isTouchFooter: false,
       isLoadPDF: false,
       failedToLoadPDF: false,
-      expUserType: "",
     };
   }
 
@@ -147,11 +122,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
     const notRenderedAtServerOrJSAlreadyInitialized =
       !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
-
-    this.setState(prevState => ({
-      ...prevState,
-      expUserType: getExpUserType(EnvChecker.isOnServer() ? "" : document.cookie),
-    }));
 
     window.addEventListener("scroll", this.handleScroll, { passive: true });
     this.handleScrollEvent();
@@ -230,16 +200,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public render() {
     const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers } = this.props;
-    const {
-      isOnCited,
-      isOnRef,
-      isAboveRef,
-      isRightBoxFixed,
-      isRightBoxSmall,
-      isTouchFooter,
-      isLoadPDF,
-      expUserType,
-    } = this.state;
+    const { isOnCited, isOnRef, isAboveRef, isRightBoxFixed, isRightBoxSmall, isTouchFooter, isLoadPDF } = this.state;
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -287,7 +248,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <FOSList FOSList={paper.fosList} />
               </div>
             </div>
-            <InnerSearchBox FOSList={paper.fosList} shouldRender={expUserType === "B"} />
+            <InnerSearchBox FOSList={paper.fosList} shouldRender={true} />
             <div className={styles.paperContentBlockDivider} />
 
             <div>
@@ -351,7 +312,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 getLinkDestination={this.getCitedPaperPaginationLink}
                 location={location}
               />
-              <InnerSearchBox FOSList={paper.fosList} shouldRender={expUserType === "B"} />
+              <InnerSearchBox FOSList={paper.fosList} shouldRender={true} />
             </div>
           </div>
 
@@ -372,7 +333,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             <CollectionNoteList />
             <OtherPaperListFromAuthor />
             <RelatedPaperList />
-            <RightBoxContent expUserType={expUserType} paper={paper} cancelToken={this.cancelToken.token} />
+            <SearchKeyword FOSList={paper.fosList} />
+            <PlutoBlogPosting paperId={paper.id} />
           </div>
         </div>
       </div>
@@ -389,9 +351,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private getFullTextNavBar = () => {
     const { paper } = this.props;
-    const { isOnFullText, isOnCited, isOnRef, failedToLoadPDF, expUserType } = this.state;
+    const { isOnFullText, isOnCited, isOnRef, failedToLoadPDF } = this.state;
 
-    if (paper && !!getPDFLink(paper.urls) && !failedToLoadPDF && expUserType === "A") {
+    if (paper && !!getPDFLink(paper.urls) && !failedToLoadPDF) {
       return (
         <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
           <PaperShowRefCitedTab
