@@ -132,7 +132,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
                     {journal.impactFactor ? (
                       <span>
                         <div className={styles.subtitle}>IF</div>
-                        <strong>{journal.impactFactor}</strong>
+                        <strong>{journal.impactFactor.toFixed(2)}</strong>
                       </span>
                     ) : null}
                     <span>
@@ -274,12 +274,12 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
           {/* tslint:disable-next-line:max-line-length */}
           <meta
             name="description"
-            content={`${journal.title} | IF: ${journal.impactFactor} | ${journal.paperCount} papers`}
+            content={`${journal.title} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ${journal.paperCount} papers`}
           />
           {/* tslint:disable-next-line:max-line-length */}
           <meta
             name="twitter:description"
-            content={`${journal.title} | IF: ${journal.impactFactor} | ${journal.paperCount} papers`}
+            content={`${journal.title} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ${journal.paperCount} papers`}
           />
           <meta name="twitter:card" content={`${journal.title} | Scinapse`} />
           <meta name="twitter:title" content={`${journal.title} | Scinapse`} />
@@ -289,7 +289,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
           {/* tslint:disable-next-line:max-line-length */}
           <meta
             property="og:description"
-            content={`${journal.title} | IF: ${journal.impactFactor} | ${journal.paperCount} papers`}
+            content={`${journal.title} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ${journal.paperCount} papers`}
           />
         </Helmet>
       );

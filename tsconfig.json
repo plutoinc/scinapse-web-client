@@ -4,6 +4,7 @@
     "sourceMap": true,
     "noImplicitAny": true,
     "allowUnusedLabels": false,
+    "allowJs": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "target": "es2015",
