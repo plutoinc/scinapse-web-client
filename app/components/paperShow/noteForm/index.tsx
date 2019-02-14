@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as classNames from "classnames";
+import { Prompt } from "react-router-dom";
 import AutoSizeTextarea from "../../common/autoSizeTextarea";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
-import { Prompt } from "react-router-dom";
 const styles = require("./noteForm.scss");
 
 export interface PaperNoteFormProps {
