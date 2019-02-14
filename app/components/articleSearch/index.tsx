@@ -7,7 +7,7 @@ import { AppState } from "../../reducers";
 import * as Actions from "./actions";
 import SearchList from "./components/searchList";
 import ArticleSpinner from "../common/spinner/articleSpinner";
-import SortBox from "./components/newSortBox";
+import SortBox from "./components/sortBar";
 import FilterContainer from "./components/filterContainer";
 import NoResult from "./components/noResult";
 import PapersQueryFormatter, { SearchPageQueryParamsObject, FilterObject } from "../../helpers/papersQueryFormatter";
@@ -26,7 +26,7 @@ import restoreScroll from "../../helpers/scrollRestoration";
 import { ChangeRangeInputParams, FILTER_BOX_TYPE, FILTER_TYPE_HAS_EXPANDING_OPTION } from "../../constants/paperSearch";
 import ErrorPage from "../error/errorPage";
 import NoResultInSearch from "./components/noResultInSearch";
-import TabNavigationBar, { TabItem } from "../common/tabNavigationBar";
+import TabNavigationBar from "../common/tabNavigationBar";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -36,36 +36,6 @@ function mapStateToProps(state: AppState) {
     currentUserState: state.currentUser,
     configuration: state.configuration,
   };
-}
-
-export function getTabNavigationItems(searchKeyword: string): TabItem[] {
-  const tabNavigationItems = [
-    {
-      tabName: "All",
-      tabLink: {
-        pathname: "/search",
-        search: PapersQueryFormatter.stringifyPapersQuery({
-          query: searchKeyword,
-          sort: "RELEVANCE",
-          filter: {},
-          page: 1,
-        }),
-      },
-    },
-    {
-      tabName: "Authors",
-      tabLink: {
-        pathname: "/search/authors",
-        search: PapersQueryFormatter.stringifyPapersQuery({
-          query: searchKeyword,
-          sort: "RELEVANCE",
-          filter: {},
-          page: 1,
-        }),
-      },
-    },
-  ];
-  return tabNavigationItems;
 }
 
 @withStyles<typeof ArticleSearch>(styles)
@@ -121,8 +91,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     const { isLoading, totalElements, searchItemsToShow } = articleSearchState;
     const queryParams = this.getUrlDecodedQueryParamsObject();
 
-    const tabNaviItems = getTabNavigationItems(articleSearchState.searchInput);
-
     if (articleSearchState.pageErrorCode) {
       return <ErrorPage errorNum={articleSearchState.pageErrorCode} />;
     }
@@ -140,6 +108,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     ) {
       return (
         <div className={styles.rootWrapper}>
+          <TabNavigationBar searchKeyword={articleSearchState.searchInput} />
           <div className={styles.articleSearchContainer}>
             {this.isFilterEmpty(queryParams.filter) ? this.getAuthorEntitiesSection() : null}
             <div className={styles.innerContainer}>
@@ -162,7 +131,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     } else if (queryParams) {
       return (
         <div className={styles.rootWrapper}>
-          <TabNavigationBar tabItemsData={tabNaviItems} />
+          <TabNavigationBar searchKeyword={articleSearchState.searchInput} />
           <div className={styles.articleSearchContainer}>
             {this.getResultHelmet(queryParams.query)}
             {this.getSuggestionKeywordBox()}

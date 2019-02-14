@@ -77,6 +77,7 @@ declare namespace Scinapse {
       | "allPublications"
       | "authorEntity"
       | "sortBox"
+      | "sortBar"
       | "shareBox"
       | "innerSearchBox"
       | "readingNowPaperList"

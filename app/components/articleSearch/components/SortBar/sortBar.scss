@@ -1,4 +1,4 @@
-.articleSortBoxWrapper {
+.articleSortBarWrapper {
   position: absolute;
   top: 0;
   right: 0;
@@ -27,7 +27,7 @@
 }
 
 @media (max-width: $mobile-width) {
-  .articleSortBoxWrapper {
+  .articleSortBarWrapper {
     position: relative;
     padding: 2px 8px;
     margin-top: 8px;

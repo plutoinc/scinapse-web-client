@@ -2,6 +2,7 @@ import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Link } from "react-router-dom";
 import * as classNames from "classnames";
+import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 const styles = require("./tabNavigationBar.scss");
 
 interface TabLinkParams {
@@ -15,11 +16,41 @@ export interface TabItem {
 }
 
 interface TabNavigationBarProps {
-  tabItemsData: TabItem[];
+  searchKeyword: string;
+}
+
+function getTabNavigationItems(searchKeyword: string): TabItem[] {
+  const tabNavigationItems = [
+    {
+      tabName: "All",
+      tabLink: {
+        pathname: "/search",
+        search: PapersQueryFormatter.stringifyPapersQuery({
+          query: searchKeyword,
+          sort: "RELEVANCE",
+          filter: {},
+          page: 1,
+        }),
+      },
+    },
+    {
+      tabName: "Authors",
+      tabLink: {
+        pathname: "/search/authors",
+        search: PapersQueryFormatter.stringifyPapersQuery({
+          query: searchKeyword,
+          sort: "RELEVANCE",
+          filter: {},
+          page: 1,
+        }),
+      },
+    },
+  ];
+  return tabNavigationItems;
 }
 
 const TabNavigationBar: React.SFC<TabNavigationBarProps> = props => {
-  const tabItemsData = props.tabItemsData;
+  const tabItemsData: TabItem[] = getTabNavigationItems(props.searchKeyword);
   const currentPage = location.pathname;
 
   const transformTabItemDataToHtml = tabItemsData.map((item, index) => {

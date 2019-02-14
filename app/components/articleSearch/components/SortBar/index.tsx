@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import PaperSearchQueryFormatter, { FilterObject } from "../../../../helpers/papersQueryFormatter";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import ActionTicketManager from "../../../../helpers/actionTicketManager";
-const styles = require("./newSortBox.scss");
+const styles = require("./sortBar.scss");
 
 const ARTICLE_SEARCH_SORT_OPTIONS: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS[] = [
   "RELEVANCE",
@@ -12,7 +12,7 @@ const ARTICLE_SEARCH_SORT_OPTIONS: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS[] 
   "NEWEST_FIRST",
 ];
 
-interface SortBoxProps {
+interface SortBarProps {
   query: string;
   sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS;
   filter: FilterObject;
@@ -22,13 +22,13 @@ function trackSorting(sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS) {
   ActionTicketManager.trackTicket({
     pageType: "searchResult",
     actionType: "fire",
-    actionArea: "sortBox",
+    actionArea: "sortBar",
     actionTag: "paperSorting",
     actionLabel: sortOption,
   });
 }
 
-function getSortBoxItems(props: SortBoxProps) {
+function getSortBarItems(props: SortBarProps) {
   const sortOption = props.sortOption;
   const query = props.query;
   const filter = props.filter;
@@ -79,12 +79,12 @@ function getSortOptionToShow(sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTI
   }
 }
 
-const SortBox: React.SFC<SortBoxProps> = props => {
+const SortBar: React.SFC<SortBarProps> = props => {
   return (
-    <div className={styles.articleSortBoxWrapper}>
-      <div className={styles.currentOption}>{getSortBoxItems(props)}</div>
+    <div className={styles.articleSortBarWrapper}>
+      <div className={styles.currentOption}>{getSortBarItems(props)}</div>
     </div>
   );
 };
 
-export default withStyles<typeof SortBox>(styles)(SortBox);
+export default withStyles<typeof SortBar>(styles)(SortBar);
