@@ -91,7 +91,7 @@ export function fetchSearchAuthors(params: GetAuthorsParam) {
     });
 
     try {
-      const res = await SearchAPI.authorSearch(params);
+      const res = await SearchAPI.searchAuthor(params);
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_AUTHORS,
         payload: res,

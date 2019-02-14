@@ -10,14 +10,14 @@ import { camelCaseKeys } from "../helpers/camelCaseKeys";
 import { Author } from "../model/author/author";
 import { NewFOS } from "../model/fos";
 
-export interface AuthorSearchParams {
+export interface BaseSearchParams {
   query: string;
   sort: string;
   page?: number;
   cancelToken?: CancelToken;
 }
 
-export interface SearchParams extends AuthorSearchParams {
+export interface PaperSearchParams extends BaseSearchParams {
   filter: string;
 }
 
@@ -54,7 +54,7 @@ export interface AuthorSearchResult extends PaginationResponseV2<Author[]> {
 }
 
 class SearchAPI extends PlutoAxios {
-  public async search({ query, sort, filter, page = 0, cancelToken }: SearchParams) {
+  public async search({ query, sort, filter, page = 0, cancelToken }: PaperSearchParams) {
     const res = await this.get("/search", {
       params: {
         q: query,
@@ -79,7 +79,7 @@ class SearchAPI extends PlutoAxios {
     };
   }
 
-  public async authorSearch({ query, sort, page = 0, cancelToken }: AuthorSearchParams) {
+  public async searchAuthor({ query, sort, page = 0, cancelToken }: BaseSearchParams) {
     const res = await this.get("/search/authors", {
       params: {
         q: query,
