@@ -27,7 +27,6 @@ import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import { HOME_PATH } from "../../constants/routes";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
-import TabNavigationBar, { TabItem } from "../common/tabNavigationBar";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -89,7 +88,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   }
 
   public render() {
-    const { location } = this.props;
     const navClassName = this.getNavbarClassName();
 
     return (
@@ -100,57 +98,10 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           {this.getSearchFormContainer()}
           {this.getHeaderButtons()}
         </div>
-        {location.pathname.includes("/search") ? this.getTabNavigationInSearch() : null}
         {this.getToastBar()}
       </nav>
     );
   }
-
-  private getTabNavigationInSearch = () => {
-    const { articleSearchState, authorSearchState, location } = this.props;
-    const authorEntitiesInArticleSearch = articleSearchState.matchAuthors;
-    let tabNaviItems: TabItem[];
-
-    if (location.pathname === "/search" && authorEntitiesInArticleSearch) {
-      tabNaviItems = this.getTabNavigationItems(articleSearchState.searchInput);
-      return <TabNavigationBar tabItemsData={tabNaviItems} />;
-    } else if (location.pathname === "/search/authors") {
-      tabNaviItems = this.getTabNavigationItems(authorSearchState.searchInput);
-      return <TabNavigationBar tabItemsData={tabNaviItems} />;
-    }
-
-    return null;
-  };
-
-  private getTabNavigationItems = (searchKeyword: string): TabItem[] => {
-    const tabNavigationItems = [
-      {
-        tabName: "All",
-        tabLink: {
-          pathname: "/search",
-          search: PapersQueryFormatter.stringifyPapersQuery({
-            query: searchKeyword,
-            sort: "RELEVANCE",
-            filter: {},
-            page: 1,
-          }),
-        },
-      },
-      {
-        tabName: "Authors",
-        tabLink: {
-          pathname: "/search/authors",
-          search: PapersQueryFormatter.stringifyPapersQuery({
-            query: searchKeyword,
-            sort: "RELEVANCE",
-            filter: {},
-            page: 1,
-          }),
-        },
-      },
-    ];
-    return tabNavigationItems;
-  };
 
   private checkTopToast = () => {
     const old = new Date(LAST_UPDATE_DATE);

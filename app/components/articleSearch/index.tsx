@@ -29,6 +29,7 @@ import EnvChecker from "../../helpers/envChecker";
 import getExpUserType from "../../helpers/getExpUserType";
 import RelatedKeywordList from "./components/relatedKeywordList";
 import NoResultInSearch from "./components/noResultInSearch";
+import TabNavigationBar, { TabItem } from "../common/tabNavigationBar";
 const styles = require("./articleSearch.scss");
 
 const COOKIE_STRING = EnvChecker.isOnServer() ? "" : document.cookie;
@@ -45,6 +46,36 @@ function mapStateToProps(state: AppState) {
 interface ArticleSearchState {
   isClient: boolean;
   expUserType: string;
+}
+
+export function getTabNavigationItems(searchKeyword: string): TabItem[] {
+  const tabNavigationItems = [
+    {
+      tabName: "All",
+      tabLink: {
+        pathname: "/search",
+        search: PapersQueryFormatter.stringifyPapersQuery({
+          query: searchKeyword,
+          sort: "RELEVANCE",
+          filter: {},
+          page: 1,
+        }),
+      },
+    },
+    {
+      tabName: "Authors",
+      tabLink: {
+        pathname: "/search/authors",
+        search: PapersQueryFormatter.stringifyPapersQuery({
+          query: searchKeyword,
+          sort: "RELEVANCE",
+          filter: {},
+          page: 1,
+        }),
+      },
+    },
+  ];
+  return tabNavigationItems;
 }
 
 @withStyles<typeof ArticleSearch>(styles)
@@ -110,6 +141,8 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
     const { isLoading, totalElements, searchItemsToShow } = articleSearchState;
     const queryParams = this.getUrlDecodedQueryParamsObject();
 
+    const tabNaviItems = getTabNavigationItems(articleSearchState.searchInput);
+
     if (articleSearchState.pageErrorCode) {
       return <ErrorPage errorNum={articleSearchState.pageErrorCode} />;
     }
@@ -149,6 +182,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
     } else if (queryParams) {
       return (
         <div className={styles.rootWrapper}>
+          <TabNavigationBar tabItemsData={tabNaviItems} />
           <div className={styles.articleSearchContainer}>
             {this.getResultHelmet(queryParams.query)}
             <RelatedKeywordList

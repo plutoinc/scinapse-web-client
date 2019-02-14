@@ -37,7 +37,11 @@ const TabNavigationBar: React.SFC<TabNavigationBarProps> = props => {
     );
   });
 
-  return <div className={styles.tabItemWrapper}>{transformTabItemDataToHtml}</div>;
+  return (
+    <div className={styles.tabItemWrapper}>
+      <div className={styles.tabItemContainer}>{transformTabItemDataToHtml}</div>
+    </div>
+  );
 };
 
 export default withStyles<typeof TabNavigationBar>(styles)(TabNavigationBar);

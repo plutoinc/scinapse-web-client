@@ -22,6 +22,8 @@ import MobilePagination from "../../components/common/mobilePagination";
 import DesktopPagination from "../../components/common/desktopPagination";
 import { ArticleSearchState } from "../../components/articleSearch/records";
 import NoResultInSearch from "../../components/articleSearch/components/noResultInSearch";
+import { getTabNavigationItems } from "../../components/articleSearch";
+import TabNavigationBar from "../../components/common/tabNavigationBar";
 const styles = require("./authorSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -92,6 +94,8 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
     const { isLoading } = authorSearch;
     const queryParams = this.getUrlDecodedQueryParamsObject();
 
+    const tabNaviItems = getTabNavigationItems(authorSearch.searchInput);
+
     const hasNoAuthorSearchResult = !authorSearch.searchItemsToShow || authorSearch.searchItemsToShow.length === 0;
 
     if (authorSearch.pageErrorCode) {
@@ -111,6 +115,7 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
     } else if (queryParams) {
       return (
         <div className={styles.rootWrapper}>
+          <TabNavigationBar tabItemsData={tabNaviItems} />
           <div className={styles.articleSearchContainer}>
             {this.getResultHelmet(queryParams.query)}
             <div className={styles.innerContainer}>
