@@ -22,11 +22,12 @@ export default async function handleSiteMapRequest(requestPath: string) {
         Bucket: "scinapse-sitemap",
         Key: s3ObjKey,
       },
-      (err: Error, data: any) => {
+      (err: AWS.AWSError, data: any) => {
         if (err) {
+          console.error("Error occured while retriving sitemap object from S3", err);
           reject(err);
         } else {
-          resolve(data.Body);
+          resolve(data.Body.toString("base64"));
         }
       }
     );
@@ -35,7 +36,7 @@ export default async function handleSiteMapRequest(requestPath: string) {
   return {
     statusCode: 200,
     headers: responseHeader,
-    isBase64Encoded: false,
+    isBase64Encoded: true,
     body,
   };
 }
