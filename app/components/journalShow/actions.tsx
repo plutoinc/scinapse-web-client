@@ -36,7 +36,6 @@ export function getPapers(params: GetPapersParams) {
       dispatch(ActionCreators.startToGetJournalPapers());
       const res = await JournalAPI.getPapers(params);
       dispatch(ActionCreators.addEntity(res));
-      console.log(res);
       dispatch(
         ActionCreators.succeededToGetJournalPapers({
           paperIds: res.result,
