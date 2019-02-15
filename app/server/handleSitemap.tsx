@@ -28,7 +28,7 @@ export default async function handleSiteMapRequest(requestPath: string) {
             console.error("Error occured while retriving sitemap object from S3", err);
             reject(err);
           } else {
-            resolve(data.Body);
+            resolve(data.Body.toString("base64"));
           }
         }
       );
@@ -37,7 +37,7 @@ export default async function handleSiteMapRequest(requestPath: string) {
     return {
       statusCode: 200,
       headers: responseHeader,
-      isBase64Encoded: false,
+      isBase64Encoded: true,
       body,
     };
   } catch (error) {
