@@ -1,15 +1,16 @@
-const path = require("path");
-const webpack = require("webpack");
 const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 const originalWebpackConfig = require("./webpack.dev.server.config");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-
+const TerserPlugin = require("terser-webpack-plugin");
 const browserSpecificSetting = {
   mode: "production",
   entry: ["babel-polyfill", "./app/index.tsx"],
   optimization: {
     minimize: true,
-    minimizer: [new UglifyJsPlugin()],
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+      }),
+    ],
   },
   plugins: [new LodashModuleReplacementPlugin()],
 };
