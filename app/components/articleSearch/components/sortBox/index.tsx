@@ -58,7 +58,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
                 }),
               }}
               onClick={() => {
-                this.handleActionTicketFireInSorting("RELEVANCE");
+                this.trackSorting("RELEVANCE");
               }}
             >
               Relevance
@@ -76,7 +76,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
                 }),
               }}
               onClick={() => {
-                this.handleActionTicketFireInSorting("MOST_CITATIONS");
+                this.trackSorting("MOST_CITATIONS");
               }}
             >
               Most Citations
@@ -94,7 +94,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
                 }),
               }}
               onClick={() => {
-                this.handleActionTicketFireInSorting("OLDEST_FIRST");
+                this.trackSorting("OLDEST_FIRST");
               }}
             >
               Oldest
@@ -112,7 +112,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
                 }),
               }}
               onClick={() => {
-                this.handleActionTicketFireInSorting("NEWEST_FIRST");
+                this.trackSorting("NEWEST_FIRST");
               }}
             >
               Newest
@@ -123,7 +123,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
     );
   }
 
-  private handleActionTicketFireInSorting = (sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS) => {
+  private trackSorting = (sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS) => {
     ActionTicketManager.trackTicket({
       pageType: "searchResult",
       actionType: "fire",

@@ -32,6 +32,7 @@ import AdminComponent from "./containers/admin";
 import {
   HOME_PATH,
   SEARCH_RESULT_PATH,
+  AUTHOR_SEARCH_RESULT_PATH,
   PAPER_SHOW_PATH,
   AUTHOR_SHOW_PATH,
   COLLECTION_SHOW_PATH,
@@ -42,6 +43,8 @@ import {
   TERMS_OF_SERVICE_PATH,
 } from "./constants/routes";
 import { getCollections } from "./components/collections/sideEffect";
+import AuthorSearch from "./containers/authorSearch";
+import { getAuthorSearchData } from "./containers/authorSearch/sideEffect";
 import { checkAuthStatus } from "./components/auth/actions";
 const styles = require("./root.scss");
 
@@ -72,6 +75,14 @@ export const routesMap: ServerRoutesMap[] = [
     component: ArticleSearch,
     loadData: async (params: LoadDataParams<null>) => {
       await Promise.all([getSearchData(params)]);
+    },
+    exact: true,
+  },
+  {
+    path: AUTHOR_SEARCH_RESULT_PATH,
+    component: AuthorSearch,
+    loadData: async (params: LoadDataParams<null>) => {
+      await Promise.all([getAuthorSearchData(params)]);
     },
     exact: true,
   },

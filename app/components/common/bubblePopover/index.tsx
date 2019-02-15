@@ -17,7 +17,7 @@ const BubblePopover: React.SFC<BubblePopoverProps> = props => {
   };
 
   return (
-    <Popper {...popperProps}>
+    <Popper {...popperProps} style={{ zIndex: 9999 }}>
       <div className={`${styles.speechBubble} ${props.className}`}>
         <div className={styles.contentWrapper}>{props.children}</div>
       </div>

@@ -7,26 +7,32 @@ import { Suggestion } from "../model/suggestion";
 import { BasePaperAuthor } from "../model/author";
 import { Affiliation } from "../model/affiliation";
 import { camelCaseKeys } from "../helpers/camelCaseKeys";
+import { Author } from "../model/author/author";
+import { NewFOS } from "../model/fos";
 
-export interface SearchParams {
+export interface BaseSearchParams {
   query: string;
   sort: string;
-  filter: string;
   page?: number;
   cancelToken?: CancelToken;
 }
 
-interface MatchEntityAuthor extends BasePaperAuthor {
+export interface PaperSearchParams extends BaseSearchParams {
+  filter: string;
+}
+
+export interface MatchEntityAuthor extends BasePaperAuthor {
   lastKnownAffiliation: Affiliation | null;
+  fosList: NewFOS[];
   paperCount: number;
   citationCount: number;
   profileImageUrl: string | null;
   representativePapers: Paper[];
 }
 
-export interface MatchEntity {
-  entity: MatchEntityAuthor;
-  type: "AUTHOR";
+export interface MatchAuthor {
+  content: MatchEntityAuthor[];
+  totalElements: number;
 }
 
 export interface SearchResult extends PaginationResponseV2<Paper[]> {
@@ -34,14 +40,21 @@ export interface SearchResult extends PaginationResponseV2<Paper[]> {
     content: Paper[];
     page: PageObjectV2 | null;
     aggregation: AggregationData;
-    matchedEntities: MatchEntity[];
+    matchedAuthor: MatchAuthor;
     resultModified: boolean;
     suggestion: Suggestion | null;
   };
 }
 
+export interface AuthorSearchResult extends PaginationResponseV2<Author[]> {
+  data: {
+    content: Author[];
+    page: PageObjectV2 | null;
+  };
+}
+
 class SearchAPI extends PlutoAxios {
-  public async search({ query, sort, filter, page = 0, cancelToken }: SearchParams) {
+  public async search({ query, sort, filter, page = 0, cancelToken }: PaperSearchParams) {
     const res = await this.get("/search", {
       params: {
         q: query,
@@ -53,6 +66,30 @@ class SearchAPI extends PlutoAxios {
     });
     const camelizedRes = camelCaseKeys(res.data);
     const searchRes: SearchResult = camelizedRes;
+
+    return {
+      ...searchRes,
+      data: {
+        ...searchRes.data,
+        page: {
+          ...searchRes.data.page,
+          page: searchRes.data.page ? searchRes.data.page.page + 1 : 1,
+        },
+      },
+    };
+  }
+
+  public async searchAuthor({ query, sort, page = 0, cancelToken }: BaseSearchParams) {
+    const res = await this.get("/search/authors", {
+      params: {
+        q: query,
+        sort,
+        page,
+      },
+      cancelToken,
+    });
+    const camelizedRes = camelCaseKeys(res.data);
+    const searchRes: AuthorSearchResult = camelizedRes;
 
     return {
       ...searchRes,

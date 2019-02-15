@@ -7,19 +7,16 @@
 
 .articleSearchContainer {
   padding: 0 16px;
+  margin: 0 auto;
   position: relative;
-  margin: $navbar_height auto 0 auto;
   max-width: $container_width;
   display: flex;
+  flex-wrap: wrap;
 
   .innerContainer {
     flex: $search_container_width;
     max-width: $search_container_width;
   }
-}
-
-.authorItemsWrapper {
-  margin-top: 24px;
 }
 
 .loadingContainer {
@@ -50,6 +47,7 @@
   font-size: 16px;
   text-align: left;
   color: $gray6;
+  width: 100%;
   border-bottom: 1px solid $gray3;
 
   .noResult {
@@ -80,9 +78,11 @@
 .searchSummary {
   position: relative;
   display: flex;
-  margin-top: 24px;
+  margin-top: 32px;
   font-size: 15px;
   align-items: center;
+  line-height: 28px;
+  margin-bottom: 16px;
 
   .searchResult {
     color: $main_blue0;
@@ -94,9 +94,41 @@
     margin-left: 12px;
     margin-right: 12px;
   }
+}
 
-  .searchPage {
-    color: $gray6;
+.categoryHeader {
+  font-size: 20px;
+  font-weight: 600;
+  margin-right: 8px;
+  color: $black1;
+}
+
+.categoryCount {
+  font-size: 18px;
+  font-weight: 500;
+  color: $gray5;
+}
+
+.authorItemsHeader {
+  position: relative;
+  padding: 32px 0 16px 0;
+
+  .moreAuthorLink {
+    display: inline;
+    align-items: center;
+    position: absolute;
+    top: 32px;
+    line-height: 24px;
+    text-align: center;
+    bottom: 0;
+    right: 0;
+    font-size: 14px;
+    color: $main_blue1;
+
+    &:hover {
+      color: $main_blue_light0;
+      cursor: pointer;
+    }
   }
 }
 
@@ -110,9 +142,15 @@
     margin-bottom: 32px;
   }
 
+  .authorItemSectionWrapper {
+    width: 100%;
+  }
+
   .searchSummary {
     font-size: 14px;
     color: $gray3;
+    flex-flow: column;
+    align-items: start;
   }
 
   .inflowRouteContainer {

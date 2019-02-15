@@ -1,10 +1,10 @@
 import PlutoAxios from "../pluto";
 import { RAW } from "../../__mocks__";
-import { SearchResult, SearchParams } from "../search";
+import { SearchResult, PaperSearchParams } from "../search";
 import { camelCaseKeys } from "../../helpers/camelCaseKeys";
 
 class SearchAPI extends PlutoAxios {
-  public async search(params: SearchParams) {
+  public async search(params: PaperSearchParams) {
     if (!params.query) {
       throw new Error("FAKE ERROR");
     }
@@ -14,7 +14,7 @@ class SearchAPI extends PlutoAxios {
         content: RAW.PAPER,
         page: null,
         aggregation: RAW.AGGREGATION_RESPONSE,
-        matchedEntities: null,
+        matchedAuthor: null,
         resultModified: true,
         suggestion: null,
       },

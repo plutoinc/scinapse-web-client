@@ -57,7 +57,7 @@ export function reducer(
           highlightedSuggestionKeyword: payload.data.suggestion ? payload.data.suggestion.highlighted : "",
           searchFromSuggestion: payload.data.resultModified,
           aggregationData: payload.data.aggregation,
-          matchEntities: payload.data.matchedEntities,
+          matchAuthors: payload.data.matchedAuthor,
         };
       }
 

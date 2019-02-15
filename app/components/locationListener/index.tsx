@@ -13,6 +13,7 @@ import {
   AUTHOR_SHOW_PATH,
   COLLECTION_LIST_PATH,
   AUTH_PATH,
+  AUTHOR_SEARCH_RESULT_PATH,
 } from "../../constants/routes";
 
 interface LocationListenerProps extends RouteComponentProps<{}> {}
@@ -31,6 +32,8 @@ export function getCurrentPageType(): Scinapse.ActionTicket.PageType {
       return "home";
     } else if (pathname === SEARCH_RESULT_PATH) {
       return "searchResult";
+    } else if (pathname === AUTHOR_SEARCH_RESULT_PATH) {
+      return "authorSearchResult";
     } else if (pathname === TERMS_OF_SERVICE_PATH) {
       return "terms";
     } else if (pathname.startsWith(`/${PAPER_SHOW_PATH.split("/")[1]}`)) {

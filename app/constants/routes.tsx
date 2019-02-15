@@ -1,5 +1,6 @@
 export const HOME_PATH = "/";
 export const SEARCH_RESULT_PATH = "/search";
+export const AUTHOR_SEARCH_RESULT_PATH = "/search/authors";
 export const AUTHOR_SHOW_PATH = "/authors/:authorId";
 export const COLLECTION_LIST_PATH = "/users/:userId/collections";
 export const AUTH_PATH = "/users";

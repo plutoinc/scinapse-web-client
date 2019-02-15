@@ -1,0 +1,35 @@
+.articleSortBarWrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  border: 1px solid $gray3;
+  border-radius: 16px;
+  padding: 4px 8px;
+}
+
+.nonActiveSortOption {
+  font-size: 14px;
+  color: $gray5;
+  padding: 0 8px;
+
+  &:hover {
+    color: $main_blue_light0;
+  }
+}
+
+.activeSortOption {
+  @extend .nonActiveSortOption;
+  font-weight: 500;
+  color: $main_blue0;
+}
+
+@media (max-width: $mobile-width) {
+  .articleSortBarWrapper {
+    position: relative;
+    padding: 2px 8px;
+    margin-top: 8px;
+  }
+}

@@ -75,6 +75,8 @@ const ICONS: { [key: string]: any } = {
   DEFAULT_PROFILE_IMAGE: require("./defaultProfileImage.svg").default,
   MASK: require("./mask.svg").default,
   LINK: require("./link.svg").default,
+  NO_AUTHOR_RESULT: require("./no-author-result.svg").default,
+  NO_PAPER_RESULT: require("./no-result-paper.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)

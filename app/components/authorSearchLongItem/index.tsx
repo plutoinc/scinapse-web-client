@@ -1,18 +1,18 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import MuiTooltip from "@material-ui/core/Tooltip";
-import { MatchEntityAuthor } from "../../api/search";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
 import { trackEvent } from "../../helpers/handleGA";
 import ActionTicketManager from "../../helpers/actionTicketManager";
-const styles = require("./authorSearchItem.scss");
+import { Author } from "../../model/author/author";
+const styles = require("./authorSearchLongItem.scss");
 
-interface AuthorSearchItemProps {
-  authorEntity: MatchEntityAuthor;
+interface AuthorSearchLongItemProps {
+  authorEntity: Author;
 }
 
-const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
+const AuthorSearchLongItem: React.SFC<AuthorSearchLongItemProps> = props => {
   const author = props.authorEntity;
 
   const profileImage = author.profileImageUrl ? (
@@ -46,7 +46,7 @@ const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
           actionLabel: String(author.id),
         });
       }}
-      to={`authors/${author.id}`}
+      to={`/authors/${author.id}`}
       className={styles.itemWrapper}
     >
       {profileImage}
@@ -64,8 +64,22 @@ const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
         <div className={styles.affiliation}>{author.lastKnownAffiliation && author.lastKnownAffiliation.name}</div>
         <div className={styles.fosList}>{fosContent}</div>
       </span>
+      <div className={styles.metaBox}>
+        <span className={styles.metaItem}>
+          <div className={styles.metaTitle}>PUBLICATIONS</div>
+          <div className={styles.metaContent}>{author.paperCount || "-"}</div>
+        </span>
+        <span className={styles.metaItem}>
+          <div className={styles.metaTitle}>CITATIONS</div>
+          <div className={styles.metaContent}>{author.citationCount || "-"}</div>
+        </span>
+        <span className={styles.metaItem}>
+          <div className={styles.metaTitle}>H-INDEX</div>
+          <div className={styles.metaContent}>{author.hindex || "-"}</div>
+        </span>
+      </div>
     </Link>
   );
 };
 
-export default withStyles<typeof AuthorSearchItem>(styles)(AuthorSearchItem);
+export default withStyles<typeof AuthorSearchLongItem>(styles)(AuthorSearchLongItem);

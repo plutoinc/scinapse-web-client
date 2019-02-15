@@ -7,7 +7,6 @@ import { AppState } from "../../reducers";
 import * as Actions from "./actions";
 import SearchList from "./components/searchList";
 import ArticleSpinner from "../common/spinner/articleSpinner";
-import SortBox from "./components/sortBox";
 import FilterContainer from "./components/filterContainer";
 import NoResult from "./components/noResult";
 import PapersQueryFormatter, { SearchPageQueryParamsObject, FilterObject } from "../../helpers/papersQueryFormatter";
@@ -25,6 +24,9 @@ import AuthorSearchItem from "../authorSearchItem";
 import restoreScroll from "../../helpers/scrollRestoration";
 import { ChangeRangeInputParams, FILTER_BOX_TYPE, FILTER_TYPE_HAS_EXPANDING_OPTION } from "../../constants/paperSearch";
 import ErrorPage from "../error/errorPage";
+import NoResultInSearch from "./components/noResultInSearch";
+import TabNavigationBar from "../common/tabNavigationBar";
+import SortBar from "./components/SortBar";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -86,7 +88,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
 
   public render() {
     const { articleSearchState, currentUserState } = this.props;
-    const { isLoading, totalElements, totalPages, searchItemsToShow } = articleSearchState;
+    const { isLoading, totalElements, searchItemsToShow } = articleSearchState;
     const queryParams = this.getUrlDecodedQueryParamsObject();
 
     if (articleSearchState.pageErrorCode) {
@@ -98,22 +100,49 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
 
     if (isLoading) {
       return this.renderLoadingSpinner();
-    } else if (hasNoSearchResult && queryParams) {
+    } else if (
+      hasNoSearchResult &&
+      queryParams &&
+      articleSearchState.matchAuthors &&
+      articleSearchState.matchAuthors.totalElements > 0
+    ) {
+      return (
+        <div className={styles.rootWrapper}>
+          <TabNavigationBar searchKeyword={articleSearchState.searchInput} />
+          <div className={styles.articleSearchContainer}>
+            {this.isFilterEmpty(queryParams.filter) ? this.getAuthorEntitiesSection() : null}
+            <div className={styles.innerContainer}>
+              <NoResultInSearch
+                searchText={queryParams.query}
+                otherCategoryCount={articleSearchState.totalElements}
+                type="paper"
+              />
+            </div>
+          </div>
+        </div>
+      );
+    } else if (
+      hasNoSearchResult &&
+      articleSearchState.matchAuthors &&
+      articleSearchState.matchAuthors.totalElements === 0 &&
+      queryParams
+    ) {
       return <NoResult searchText={queryParams.query} articleSearchState={articleSearchState} />;
     } else if (queryParams) {
       return (
         <div className={styles.rootWrapper}>
+          <TabNavigationBar searchKeyword={articleSearchState.searchInput} />
           <div className={styles.articleSearchContainer}>
             {this.getResultHelmet(queryParams.query)}
+            {this.getSuggestionKeywordBox()}
+            {this.isFilterEmpty(queryParams.filter) ? this.getAuthorEntitiesSection() : null}
             <div className={styles.innerContainer}>
-              {this.getSuggestionKeywordBox()}
-              {this.getAuthorEntitiesSection()}
               <div className={styles.searchSummary}>
-                <span className={styles.searchPage}>
-                  {articleSearchState.page} page of {formatNumber(totalPages)} pages ({formatNumber(totalElements)}{" "}
-                  results)
-                </span>
-                <SortBox query={queryParams.query} sortOption={queryParams.sort} />
+                <div>
+                  <span className={styles.categoryHeader}>Publication</span>
+                  <span className={styles.categoryCount}>{formatNumber(totalElements)}</span>
+                </div>
+                <SortBar query={queryParams.query} sortOption={queryParams.sort} filter={queryParams.filter} />
               </div>
               <SearchList
                 currentUser={currentUserState}
@@ -140,6 +169,18 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
       return null;
     }
   }
+
+  private isFilterEmpty = (filter: any) => {
+    const keys = Object.keys(filter);
+    for (let key of keys) {
+      if (typeof filter[key] === "number" && !isNaN(filter[key])) {
+        return false;
+      } else if (typeof filter[key] === "object" && filter[key].length !== 0) {
+        return false;
+      }
+    }
+    return true;
+  };
 
   private getSuggestionKeywordBox = () => {
     const { articleSearchState } = this.props;
@@ -200,15 +241,43 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
 
   private getAuthorEntitiesSection = () => {
     const { articleSearchState } = this.props;
+    const matchAuthorEntities = articleSearchState.matchAuthors;
 
-    const authorItems = articleSearchState.matchEntities
-      .filter(matchEntity => matchEntity.type === "AUTHOR")
-      .slice(0, 2)
-      .map(matchEntity => {
-        return <AuthorSearchItem authorEntity={matchEntity} key={matchEntity.entity.id} />;
+    if (matchAuthorEntities && matchAuthorEntities.content.length > 0 && articleSearchState.page === 1) {
+      const matchAuthorCount = matchAuthorEntities.totalElements;
+      const matchAuthorContent = matchAuthorEntities.content;
+      const moreAuthorPage = (
+        <Link
+          to={{
+            pathname: "/search/authors",
+            search: PapersQueryFormatter.stringifyPapersQuery({
+              query: articleSearchState.searchInput,
+              sort: "RELEVANCE",
+              filter: {},
+              page: 1,
+            }),
+          }}
+          className={styles.moreAuthorLink}
+        >
+          Show All Author Results >
+        </Link>
+      );
+      const authorItems = matchAuthorContent.slice(0, 2).map(matchEntity => {
+        return <AuthorSearchItem authorEntity={matchEntity} key={matchEntity.id} />;
       });
+      return (
+        <div className={styles.authorItemSectionWrapper}>
+          <div className={styles.authorItemsHeader}>
+            <span className={styles.categoryHeader}>Author</span>
+            <span className={styles.categoryCount}>{matchAuthorCount}</span>
+            {matchAuthorCount <= 2 ? null : moreAuthorPage}
+          </div>
+          <div className={styles.authorItemsWrapper}>{authorItems}</div>
+        </div>
+      );
+    }
 
-    return <div className={styles.authorItemsWrapper}>{authorItems}</div>;
+    return null;
   };
 
   private getResultHelmet = (query: string) => {

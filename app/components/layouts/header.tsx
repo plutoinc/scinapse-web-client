@@ -38,6 +38,7 @@ function mapStateToProps(state: AppState) {
     currentUserState: state.currentUser,
     layoutState: state.layout,
     articleSearchState: state.articleSearch,
+    authorSearchState: state.authorSearch,
   };
 }
 
@@ -192,7 +193,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 200);
 
   private handleSearchPush = (query: string) => {
-    const { dispatch, history } = this.props;
+    const { dispatch, history, location } = this.props;
 
     if (query.length < 2) {
       return dispatch({
@@ -214,14 +215,25 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
     trackEvent({ category: "Search", action: "Query", label: "" });
 
-    history.push(
-      `/search?${PapersQueryFormatter.stringifyPapersQuery({
-        query,
-        sort: "RELEVANCE",
-        filter: {},
-        page: 1,
-      })}`
-    );
+    if (location.pathname === "/search/authors") {
+      history.push(
+        `/search/authors?${PapersQueryFormatter.stringifyPapersQuery({
+          query,
+          sort: "RELEVANCE",
+          filter: {},
+          page: 1,
+        })}`
+      );
+    } else {
+      history.push(
+        `/search?${PapersQueryFormatter.stringifyPapersQuery({
+          query,
+          sort: "RELEVANCE",
+          filter: {},
+          page: 1,
+        })}`
+      );
+    }
   };
 
   private getHeaderLogo = () => {
@@ -273,6 +285,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             }}
             listWrapperStyle={{
               boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 8px 1px",
+              zIndex: 998,
             }}
             listItemStyle={{
               height: "44px",

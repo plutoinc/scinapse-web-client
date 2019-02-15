@@ -1,0 +1,39 @@
+.tabItemWrapper {
+  background-color: #ffffff;
+}
+
+.tabItemContainer {
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  margin: $navbar_height auto 0 auto;
+  padding: 0 16px;
+  position: relative;
+  height: 40px;
+  z-index: 997;
+  box-shadow: 0 2px 4px -3px rgba(0, 0, 0, 0.1);
+  border-top: solid 1px $gray1;
+}
+
+.nonActiveTabItem {
+  padding: 8px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  color: $gray5;
+  line-height: 24px;
+
+  &:hover {
+    color: $gray6;
+  }
+}
+
+.activeTabItem {
+  @extend .nonActiveTabItem;
+  box-shadow: inset 0 -3px 0 0 $black1;
+  color: $black1;
+
+  &:hover {
+    color: $gray6;
+    box-shadow: inset 0 -3px 0 0 $gray6;
+  }
+}
