@@ -1,16 +1,18 @@
-const path = require("path");
-const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const originalWebpackConfig = require("./webpack.dev.browser.config");
 const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 // const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 const browserSpecificSetting = {
   mode: "production",
   optimization: {
     minimize: true,
-    minimizer: [new UglifyJsPlugin()],
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+      }),
+    ],
   },
   devtool: false,
   plugins: [
