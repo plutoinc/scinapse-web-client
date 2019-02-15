@@ -3,11 +3,11 @@ import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
 import { Paper, paperSchema } from "../model/paper";
 import { Journal, journalSchema } from "../model/journal";
-import { CommonPaginationResponsePart } from "./types/common";
+import { PageObjectV2 } from "./types/common";
 import { PAPER_LIST_SORT_TYPES } from "../components/common/sortBox";
 import { camelCaseKeys } from "../helpers/camelCaseKeys";
 
-interface PapersResult extends CommonPaginationResponsePart {
+interface PapersResult extends PageObjectV2 {
   entities: { papers: { [paperId: number]: Paper } };
   result: number[];
 }
@@ -44,12 +44,13 @@ class JournalAPI extends PlutoAxios {
     sort,
     cancelToken,
   }: GetPapersParams): Promise<PapersResult> {
-    const getPapersResponse: AxiosResponse = await this.get(`/journals/${journalId}/papers`, {
+    const getPapersResponse: AxiosResponse = await this.get(`/search/in-journal`, {
       params: {
         size,
         page: page - 1,
-        query,
+        q: query,
         sort,
+        journal_id: journalId,
       },
       cancelToken,
     });
@@ -68,14 +69,13 @@ class JournalAPI extends PlutoAxios {
     return {
       entities: normalizedPapersData.entities,
       result: normalizedPapersData.result,
-      size: camelizedRes.size,
-      number: camelizedRes.number + 1,
-      sort: camelizedRes.sort,
-      first: camelizedRes.first,
-      last: camelizedRes.last,
-      numberOfElements: camelizedRes.numberOfElements,
-      totalPages: camelizedRes.totalPages,
-      totalElements: camelizedRes.totalElements,
+      size: camelizedRes.page.size,
+      page: camelizedRes.page.page + 1,
+      first: camelizedRes.page.first,
+      last: camelizedRes.page.last,
+      numberOfElements: camelizedRes.page.numberOfElements,
+      totalPages: camelizedRes.page.totalPages,
+      totalElements: camelizedRes.page.totalElements,
     };
   }
 }
