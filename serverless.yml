@@ -4,7 +4,7 @@ provider:
   name: aws
   runtime: nodejs8.10
   region: us-east-1
-  role: LambdaEdgeRole
+  role: WebClientRole
   logRetentionInDays: 30
 
 package:
@@ -20,7 +20,7 @@ functions:
 
 resources:
   Resources:
-    LambdaEdgeRole:
+    WebClientRole:
       Type: AWS::IAM::Role
       Properties:
         AssumeRolePolicyDocument:
@@ -33,7 +33,7 @@ resources:
               Action:
                 - sts:AssumeRole
         Policies:
-          - PolicyName: PlutoAcademicS3Role
+          - PolicyName: SiteMapS3Role
             PolicyDocument:
               Version: "2012-10-17"
               Statement:
