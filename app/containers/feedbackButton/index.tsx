@@ -67,10 +67,6 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     };
   }
 
-  public componentDidMount() {
-    this.countAndOpenFeedback();
-  }
-
   public componentWillReceiveProps(nextProps: FeedbackButtonProps) {
     if (this.props.location !== nextProps.location) {
       const rawPVCount = Cookies.get(FEEDBACK_PV_COOKIE_KEY);
@@ -81,8 +77,6 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
       } else {
         Cookies.set(FEEDBACK_PV_COOKIE_KEY, (PVCount + 1).toString());
       }
-
-      this.countAndOpenFeedback();
     }
 
     if (this.props.currentUser.isLoggedIn !== nextProps.currentUser.isLoggedIn) {
@@ -234,33 +228,6 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
       action: `Click Feedback Menu ${menu}`,
       label: `pv: ${rawPVCount}, autoOpen: ${isAutoOpen}`,
     });
-  };
-
-  private countAndOpenFeedback = () => {
-    const targetPVList = [30, 50, 70, 100];
-
-    const alreadySentFeedbackRecently = Cookies.get(FEEDBACK_ALREADY_SENT);
-
-    if (alreadySentFeedbackRecently) {
-      return;
-    }
-
-    const rawPVCount = Cookies.get(FEEDBACK_PV_COOKIE_KEY);
-    const PVCount = parseInt(rawPVCount || "0", 10);
-
-    if (targetPVList.includes(PVCount)) {
-      this.setState(prevState => ({
-        ...prevState,
-        isAutoOpen: true,
-      }));
-
-      this.toggleFeedbackDropdown();
-    } else {
-      this.setState(prevState => ({
-        ...prevState,
-        isAutoOpen: false,
-      }));
-    }
   };
 
   private handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
