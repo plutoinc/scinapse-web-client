@@ -5,10 +5,10 @@ const browserSpecificSetting = {
   mode: "production",
   entry: ["babel-polyfill", "./app/index.tsx"],
   optimization: {
-    minimize: true,
     minimizer: [
       new TerserPlugin({
         parallel: true,
+        cache: true,
       }),
     ],
   },
