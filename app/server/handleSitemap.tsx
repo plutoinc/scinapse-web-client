@@ -16,26 +16,34 @@ export default async function handleSiteMapRequest(requestPath: string) {
     s3ObjKey = `${reqPathToken[reqPathToken.length - 1]}.gz`;
   }
 
-  const body = await new Promise((resolve, reject) => {
-    s3.getObject(
-      {
-        Bucket: "scinapse-sitemap",
-        Key: s3ObjKey,
-      },
-      (err: Error, data: any) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(data.Body);
+  try {
+    const body = await new Promise((resolve, reject) => {
+      s3.getObject(
+        {
+          Bucket: "scinapse-sitemap",
+          Key: s3ObjKey,
+        },
+        (err: AWS.AWSError, data: any) => {
+          if (err) {
+            console.error("Error occured while retriving sitemap object from S3", err);
+            reject(err);
+          } else {
+            resolve(data.Body);
+          }
         }
-      }
-    );
-  });
+      );
+    });
 
-  return {
-    statusCode: 200,
-    headers: responseHeader,
-    isBase64Encoded: false,
-    body,
-  };
+    return {
+      statusCode: 200,
+      headers: responseHeader,
+      isBase64Encoded: false,
+      body,
+    };
+  } catch (error) {
+    if (error.code && (error.code === "NoSuchKey" || error.code === "NoSuchBucket")) {
+      return { statusCode: 404 };
+    }
+    throw error;
+  }
 }
