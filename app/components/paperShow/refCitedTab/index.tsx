@@ -10,8 +10,6 @@ interface PaperShowRefCitedTabProps {
   isFixed: boolean;
   isOnRef: boolean;
   isOnCited: boolean;
-  showFullText?: boolean;
-  isOnFullText?: boolean;
 
   handleClickRef: () => void;
   handleClickCited: () => void;
@@ -19,22 +17,6 @@ interface PaperShowRefCitedTabProps {
 }
 
 const PaperShowRefCitedTab: React.SFC<PaperShowRefCitedTabProps> = props => {
-  let fullTextNode;
-
-  if (props.showFullText) {
-    fullTextNode = (
-      <li
-        className={classNames({
-          [styles.headerTabItem]: true,
-          [styles.active]: props.isOnFullText,
-        })}
-        onClick={props.handleClickFullText}
-      >
-        Full text
-      </li>
-    );
-  }
-
   return (
     <div
       className={classNames({
@@ -43,7 +25,6 @@ const PaperShowRefCitedTab: React.SFC<PaperShowRefCitedTabProps> = props => {
       })}
     >
       <ul className={styles.headerTabList}>
-        {fullTextNode}
         <li
           className={classNames({
             [styles.headerTabItem]: true,
