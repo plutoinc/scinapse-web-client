@@ -71,9 +71,9 @@ class AuthorAPI extends PlutoAxios {
   }
 
   public async queryAuthorPapers(params: QueryAuthorPapersParams): Promise<RawPaginationResponseV2<Paper[]>> {
-    const res = await this.get("/papers", {
+    const res = await this.get("/search/to-add", {
       params: {
-        query: params.query,
+        q: params.query,
         check_author_included: params.authorId,
         page: params.page - 1,
       },

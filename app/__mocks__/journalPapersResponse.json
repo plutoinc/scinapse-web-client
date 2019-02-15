@@ -47,7 +47,8 @@
           }
         ],
         "comments": [],
-        "abstract": "Foreword: In this paper I call upon a praxiological approach. Praxeology (early alteration of praxiology) is the study of human action and conduct. The name praxeology/praxiologyakes is root in praxis, Medieval Latin, from Greek, doing, action, from prassein to do, practice (Merriam-Webster Dictionary).\r\n\r\nHaving been involved in project management education, research and practice for the last twenty years, I have constantly tried to improve and to provide a better understanding/knowledge of the field and related practice, and as a consequence widen and deepen the competencies of the people I was working with (and my own competencies as well!), assuming that better project management lead to more efficient and effective use of resources, development of people and at the end to a better world.\r\n\r\nFor some time I have perceived a need to clarify the foundations of the discipline of project management, or at least elucidate what these foundations could be. An immodest task, one might say! But not a neutral one! I am constantly surprised by the way the world (i.e., organizations, universities, students and professional bodies) sees project management: as a set of methods, techniques, tools, interacting with others fields – general management, engineering, construction, information systems, etc. – bringing some effective ways of dealing with various sets of problems – from launching a new satellite to product development through to organizational change."
+        "abstract":
+          "Foreword: In this paper I call upon a praxiological approach. Praxeology (early alteration of praxiology) is the study of human action and conduct. The name praxeology/praxiologyakes is root in praxis, Medieval Latin, from Greek, doing, action, from prassein to do, practice (Merriam-Webster Dictionary).\r\n\r\nHaving been involved in project management education, research and practice for the last twenty years, I have constantly tried to improve and to provide a better understanding/knowledge of the field and related practice, and as a consequence widen and deepen the competencies of the people I was working with (and my own competencies as well!), assuming that better project management lead to more efficient and effective use of resources, development of people and at the end to a better world.\r\n\r\nFor some time I have perceived a need to clarify the foundations of the discipline of project management, or at least elucidate what these foundations could be. An immodest task, one might say! But not a neutral one! I am constantly surprised by the way the world (i.e., organizations, universities, students and professional bodies) sees project management: as a set of methods, techniques, tools, interacting with others fields – general management, engineering, construction, information systems, etc. – bringing some effective ways of dealing with various sets of problems – from launching a new satellite to product development through to organizational change."
       }
     ],
     "last": true,
@@ -57,6 +58,6 @@
     "first": true,
     "numberOfElements": 1,
     "size": 10,
-    "number": 0
+    "page": 0
   }
 }

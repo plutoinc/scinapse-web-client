@@ -40,7 +40,7 @@ export function getPapers(params: GetPapersParams) {
         ActionCreators.succeededToGetJournalPapers({
           paperIds: res.result,
           totalPage: res.totalPages,
-          currentPage: res.number,
+          currentPage: res.page,
           paperCount: res.numberOfElements,
           filteredPaperCount: res.totalElements,
           searchKeyword: params.query || "",

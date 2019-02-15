@@ -4,9 +4,9 @@ import { Journal, journalSchema } from "../../model/journal";
 import { RAW } from "../../__mocks__";
 import { Paper, paperSchema } from "../../model/paper";
 import { GetPapersParams } from "../journal";
-import { CommonPaginationResponsePart } from "../types/common";
+import { PageObjectV2 } from "../types/common";
 
-interface PapersResult extends CommonPaginationResponsePart {
+interface PapersResult extends PageObjectV2 {
   entities: { papers: { [paperId: number]: Paper } };
   result: number[];
 }
@@ -47,8 +47,7 @@ class JournalAPI extends PlutoAxios {
       entities: normalizedPapersData.entities,
       result: normalizedPapersData.result,
       size: getPapersResponse.data.size,
-      number: getPapersResponse.data.number + 1,
-      sort: getPapersResponse.data.sort,
+      page: getPapersResponse.data.page + 1,
       first: getPapersResponse.data.first,
       last: getPapersResponse.data.last,
       numberOfElements: getPapersResponse.data.numberOfElements,
