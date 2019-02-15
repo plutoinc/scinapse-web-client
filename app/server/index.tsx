@@ -40,7 +40,7 @@ export interface ServerSideRenderParams {
   headers?: any;
 }
 
-const SITEMAP_REGEX = /\/sitemap(\/sitemap_[0-9]+\.xml)?/;
+const SITEMAP_REGEX = /^\/sitemap(\/sitemap_[0-9]+\.xml)?\/?$/;
 
 export function getPathWithQueryParams(pathName: string, queryParams: object | null) {
   if (queryParams) {
