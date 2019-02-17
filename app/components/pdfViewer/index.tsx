@@ -42,12 +42,14 @@ class PDFViewer extends React.Component<PDFViewerProps, PDFViewerState> {
     const { layout, pdfURL, filename, onLoadSuccess, onFailed } = this.props;
     const { isFullNode, succeeded, hadError } = this.state;
 
+    console.log("PDF VIEWER RENDER FIRED!");
+
     if (pdfURL && layout.userDevice === UserDevice.DESKTOP) {
       return (
         <div ref={el => (this.wrapperNode = el)}>
           <Document
             // tslint:disable-next-line:max-line-length
-            file={`https://xsn4er593c.execute-api.us-east-1.amazonaws.com/dev/getPdf?pdfUrl=${pdfURL}&title=${filename}`}
+            file={`https://u5ctiiqdab.execute-api.us-east-1.amazonaws.com/dev/get-pdf?pdf_url=${pdfURL}&title=${filename}`}
             error={null}
             loading={
               <div className={styles.loadingContainer}>
