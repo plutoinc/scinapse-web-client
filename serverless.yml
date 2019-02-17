@@ -14,7 +14,7 @@ functions:
   render:
     handler: ${file(./env/${opt:stage}.yml):HANDLER}
     memorySize: 512
-    timeout: 20
+    timeout: 60
     package:
       artifact: dist.zip
 
