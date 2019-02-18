@@ -5,7 +5,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
 import * as classNames from "classnames";
 import Helmet from "react-helmet";
-import PDFViewer from "../../components/pdfViewer";
+import PDFViewer from "../../components/pdfViewer/pdfViewer";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
@@ -253,14 +253,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
             <div>
               {this.getFullTextNavBar()}
-              {!this.state.failedToLoadPDF && (
-                <PDFViewer
-                  onLoadSuccess={this.handleSucceedToLoadPDF}
-                  onFailed={this.handleFailedToLoadPDF}
-                  filename={paper.title}
-                  pdfURL={pdfSourceRecord && pdfSourceRecord.url}
-                />
-              )}
+              <PDFViewer
+                onLoadSuccess={this.handleSucceedToLoadPDF}
+                onFailed={this.handleFailedToLoadPDF}
+                filename={paper.title}
+                pdfURL={pdfSourceRecord && pdfSourceRecord.url}
+                shouldShow={layout.userDevice === UserDevice.DESKTOP}
+              />
             </div>
 
             <div className={styles.otherPapers}>
