@@ -10,6 +10,7 @@ interface PaperShowRefCitedTabProps {
   isFixed: boolean;
   isOnRef: boolean;
   isOnCited: boolean;
+  width: number;
   showFullText?: boolean;
   isOnFullText?: boolean;
 
@@ -41,6 +42,7 @@ const PaperShowRefCitedTab: React.SFC<PaperShowRefCitedTabProps> = props => {
         [`${styles.paperContentBlockHeaderTabs}`]: !props.isFixed,
         [`${styles.paperContentBlockHeaderTabs} ${styles.stick}`]: props.isFixed,
       })}
+      style={{ width: props.width }}
     >
       <ul className={styles.headerTabList}>
         {fullTextNode}

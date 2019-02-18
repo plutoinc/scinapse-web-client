@@ -24,8 +24,8 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   const [pageCountToShow, setPageCountToShow] = React.useState(0);
   const wrapperNode = React.useRef<HTMLDivElement | null>(null);
 
-  React.useEffect(() => {
-    if (!PDFBinary && !isFetching && pdfURL) {
+  React.useEffect(
+    () => {
       setIsFetching(true);
       Axios.get(
         `https://u5ctiiqdab.execute-api.us-east-1.amazonaws.com/dev/get-pdf?pdf_url=${pdfURL}&title=${filename}`,
@@ -40,8 +40,9 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
         .catch(_err => {
           setIsFetching(false);
         });
-    }
-  });
+    },
+    [pdfURL]
+  );
 
   const getContent = () => {
     if (extend) {
