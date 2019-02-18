@@ -10,5 +10,8 @@ export function getPDFLink(urls: PaperSource[]): PaperSource | undefined {
 }
 
 export function isPDFLink(url: string) {
-  return url.startsWith("https://arxiv.org/pdf/") || (url.startsWith("http") && url.endsWith(".pdf"));
+  return (
+    url.startsWith("https://arxiv.org/pdf/") ||
+    (url.startsWith("http") && url.endsWith(".pdf") && !url.includes("springer"))
+  );
 }
