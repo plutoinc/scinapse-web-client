@@ -24,6 +24,14 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   const [pageCountToShow, setPageCountToShow] = React.useState(0);
   const wrapperNode = React.useRef<HTMLDivElement | null>(null);
 
+  const baseBtnStyle: React.CSSProperties = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "154px",
+    height: "40px",
+  };
+
   React.useEffect(
     () => {
       if (shouldShow) {
@@ -93,14 +101,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
           {succeedToLoad && (
             <>
               <ScinapseButton
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: "#3e7fff",
-                  width: "154px",
-                  height: "40px",
-                }}
+                style={{ ...baseBtnStyle, backgroundColor: "#3e7fff" }}
                 content={extend ? "View Less" : "View More"}
                 isLoading={!succeedToLoad && !hadErrorToLoad}
                 disabled={!succeedToLoad}
@@ -113,12 +114,8 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
               />
               <ScinapseButton
                 style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  ...baseBtnStyle,
                   color: "#3e7fff",
-                  width: "154px",
-                  height: "40px",
                   border: "1px solid #3e7fff",
                   marginLeft: "16px",
                 }}
