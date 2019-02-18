@@ -4,28 +4,10 @@ import { ACTION_TYPES } from "../../actions/actionTypes";
 import { GetPapersParams } from "../../api/types/paper";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 import SearchAPI from "../../api/search";
-import { FILTER_BOX_TYPE, FILTER_TYPE_HAS_EXPANDING_OPTION, ChangeRangeInputParams } from "../../constants/paperSearch";
+import { ChangeRangeInputParams } from "../../constants/paperSearch";
 import PlutoAxios from "../../api/pluto";
 import { CommonError } from "../../model/error";
 import { GetAuthorsParam } from "../../api/types/author";
-
-export function toggleFilterBox(type: FILTER_BOX_TYPE) {
-  return {
-    type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX,
-    payload: {
-      type,
-    },
-  };
-}
-
-export function toggleExpandingFilter(type: FILTER_TYPE_HAS_EXPANDING_OPTION) {
-  return {
-    type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX,
-    payload: {
-      type,
-    },
-  };
-}
 
 export function changeRangeInput(params: ChangeRangeInputParams) {
   return {

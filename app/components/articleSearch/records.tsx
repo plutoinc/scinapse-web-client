@@ -13,12 +13,6 @@ export interface ArticleSearchState
       totalElements: number;
       totalPages: number;
       isEnd: boolean;
-      isYearFilterOpen: boolean;
-      isJournalIFFilterOpen: boolean;
-      isFOSFilterOpen: boolean;
-      isJournalFilterOpen: boolean;
-      isFOSFilterExpanding: boolean;
-      isJournalFilterExpanding: boolean;
       yearFilterFromValue: number;
       yearFilterToValue: number;
       IFFilterFromValue: number;
@@ -47,12 +41,6 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   totalElements: 0,
   totalPages: 0,
   isEnd: false,
-  isYearFilterOpen: true,
-  isJournalIFFilterOpen: true,
-  isFOSFilterOpen: true,
-  isJournalFilterOpen: true,
-  isFOSFilterExpanding: false,
-  isJournalFilterExpanding: false,
   yearFilterFromValue: 0,
   yearFilterToValue: 0,
   IFFilterFromValue: 0,

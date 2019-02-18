@@ -1,13 +1,7 @@
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from "./records";
 import { SearchResult } from "../../api/search";
-import {
-  ChangeRangeInputParams,
-  FILTER_TYPE_HAS_RANGE,
-  FILTER_RANGE_TYPE,
-  FILTER_BOX_TYPE,
-  FILTER_TYPE_HAS_EXPANDING_OPTION,
-} from "../../constants/paperSearch";
+import { ChangeRangeInputParams, FILTER_TYPE_HAS_RANGE, FILTER_RANGE_TYPE } from "../../constants/paperSearch";
 
 export function reducer(
   state: ArticleSearchState = ARTICLE_SEARCH_INITIAL_STATE,
@@ -124,45 +118,6 @@ export function reducer(
         }
       } else {
         return state;
-      }
-    }
-
-    case ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX: {
-      const type: FILTER_BOX_TYPE = action.payload.type;
-
-      switch (type) {
-        case "PUBLISHED_YEAR":
-          return { ...state, isYearFilterOpen: !state.isYearFilterOpen };
-        case "JOURNAL_IF":
-          return {
-            ...state,
-            isJournalIFFilterOpen: !state.isJournalIFFilterOpen,
-          };
-        case "FOS":
-          return { ...state, isFOSFilterOpen: !state.isFOSFilterOpen };
-        case "JOURNAL":
-          return { ...state, isJournalFilterOpen: !state.isJournalFilterOpen };
-        default:
-          return state;
-      }
-    }
-
-    case ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX: {
-      const type: FILTER_TYPE_HAS_EXPANDING_OPTION = action.payload.type;
-
-      switch (type) {
-        case FILTER_TYPE_HAS_EXPANDING_OPTION.FOS:
-          return {
-            ...state,
-            isFOSFilterExpanding: !state.isFOSFilterExpanding,
-          };
-        case FILTER_TYPE_HAS_EXPANDING_OPTION.JOURNAL:
-          return {
-            ...state,
-            isJournalFilterExpanding: !state.isJournalFilterExpanding,
-          };
-        default:
-          return state;
       }
     }
 
