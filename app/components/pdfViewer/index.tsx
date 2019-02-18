@@ -26,20 +26,22 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
 
   React.useEffect(
     () => {
-      setIsFetching(true);
-      Axios.get(
-        `https://u5ctiiqdab.execute-api.us-east-1.amazonaws.com/dev/get-pdf?pdf_url=${pdfURL}&title=${filename}`,
-        {
-          responseType: "blob",
-        }
-      )
-        .then(res => {
-          setPDFBinary(res.data);
-          setIsFetching(false);
-        })
-        .catch(_err => {
-          setIsFetching(false);
-        });
+      if (shouldShow) {
+        setIsFetching(true);
+        Axios.get(
+          `https://u5ctiiqdab.execute-api.us-east-1.amazonaws.com/dev/get-pdf?pdf_url=${pdfURL}&title=${filename}`,
+          {
+            responseType: "blob",
+          }
+        )
+          .then(res => {
+            setPDFBinary(res.data);
+            setIsFetching(false);
+          })
+          .catch(_err => {
+            setIsFetching(false);
+          });
+      }
     },
     [pdfURL]
   );
@@ -104,8 +106,8 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                 disabled={!succeedToLoad}
                 onClick={() => {
                   setExtend(!extend);
-                  if (extend) {
-                    wrapperNode.current && wrapperNode.current.scrollIntoView();
+                  if (extend && wrapperNode.current) {
+                    wrapperNode.current.scrollIntoView();
                   }
                 }}
               />

@@ -37,6 +37,7 @@ import restoreScroll from "../../helpers/scrollRestoration";
 import ErrorPage from "../../components/error/errorPage";
 import InnerSearchBox from "../../components/paperShow/components/innerSearchBox";
 import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
+import EnvChecker from "../../helpers/envChecker";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
@@ -258,7 +259,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 onFailed={this.handleFailedToLoadPDF}
                 filename={paper.title}
                 pdfURL={pdfSourceRecord && pdfSourceRecord.url}
-                shouldShow={layout.userDevice === UserDevice.DESKTOP}
+                shouldShow={!EnvChecker.isOnServer() && layout.userDevice === UserDevice.DESKTOP}
               />
             </div>
 
