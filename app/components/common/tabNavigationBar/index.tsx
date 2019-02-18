@@ -1,6 +1,6 @@
 import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import { Link } from "react-router-dom";
+import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 import * as classNames from "classnames";
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 const styles = require("./tabNavigationBar.scss");
@@ -15,7 +15,7 @@ export interface TabItem {
   tabLink: TabLinkParams;
 }
 
-interface TabNavigationBarProps {
+interface TabNavigationBarProps extends RouteComponentProps<null> {
   searchKeyword: string;
 }
 
@@ -51,7 +51,7 @@ function getTabNavigationItems(searchKeyword: string): TabItem[] {
 
 const TabNavigationBar: React.SFC<TabNavigationBarProps> = props => {
   const tabItemsData: TabItem[] = getTabNavigationItems(props.searchKeyword);
-  const currentPage = location.pathname;
+  const currentPage = props.location.pathname;
 
   const transformTabItemDataToHtml = tabItemsData.map((item, index) => {
     return (
@@ -75,4 +75,4 @@ const TabNavigationBar: React.SFC<TabNavigationBarProps> = props => {
   );
 };
 
-export default withStyles<typeof TabNavigationBar>(styles)(TabNavigationBar);
+export default withRouter(withStyles<typeof TabNavigationBar>(styles)(TabNavigationBar));
