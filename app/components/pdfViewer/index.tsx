@@ -103,7 +103,9 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                 disabled={!succeedToLoad}
                 onClick={() => {
                   setExtend(!extend);
-                  wrapperNode.current && wrapperNode.current.scrollIntoView();
+                  if (extend) {
+                    wrapperNode.current && wrapperNode.current.scrollIntoView();
+                  }
                 }}
               />
               <ScinapseButton
