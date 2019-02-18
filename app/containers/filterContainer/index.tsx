@@ -2,15 +2,15 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import * as classNames from "classnames";
 import Checkbox from "@material-ui/core/Checkbox";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import { FilterObject } from "../../../../helpers/papersQueryFormatter";
-import Icon from "../../../../icons";
-import { toggleElementFromArray } from "../../../../helpers/toggleElementFromArray";
-import formatNumber from "../../../../helpers/formatNumber";
-import { ArticleSearchState } from "../../records";
-import { ChangeRangeInputParams, FILTER_RANGE_TYPE, FILTER_TYPE_HAS_RANGE } from "../../../../constants/paperSearch";
-import YearFilter from "./yearFilter";
-import { trackSelectFilter } from "./trackSelectFilter";
+import { withStyles } from "../../helpers/withStylesHelper";
+import { ChangeRangeInputParams, FILTER_RANGE_TYPE, FILTER_TYPE_HAS_RANGE } from "../../constants/paperSearch";
+import YearFilter from "../../components/filterContainer/yearFilter";
+import { FilterObject } from "../../helpers/papersQueryFormatter";
+import { trackSelectFilter } from "../../components/filterContainer/trackSelectFilter";
+import { ArticleSearchState } from "../../components/articleSearch/records";
+import formatNumber from "../../helpers/formatNumber";
+import { toggleElementFromArray } from "../../helpers/toggleElementFromArray";
+import Icon from "../../icons";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {

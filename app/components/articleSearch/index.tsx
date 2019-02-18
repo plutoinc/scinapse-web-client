@@ -7,7 +7,7 @@ import { AppState } from "../../reducers";
 import * as Actions from "./actions";
 import SearchList from "./components/searchList";
 import ArticleSpinner from "../common/spinner/articleSpinner";
-import FilterContainer from "./components/filterContainer";
+import FilterContainer from "../../containers/filterContainer";
 import NoResult from "./components/noResult";
 import PapersQueryFormatter, { SearchPageQueryParamsObject, FilterObject } from "../../helpers/papersQueryFormatter";
 import formatNumber from "../../helpers/formatNumber";

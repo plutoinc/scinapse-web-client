@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import * as classNames from "classnames";
-import { withStyles } from "../../../../helpers/withStylesHelper";
+import { withStyles } from "../../helpers/withStylesHelper";
 import { trackSelectFilter } from "./trackSelectFilter";
 const styles = require("./filterContainer.scss");
 
