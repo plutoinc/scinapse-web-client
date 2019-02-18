@@ -5,7 +5,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
 import * as classNames from "classnames";
 import Helmet from "react-helmet";
-import PDFViewer from "../../components/pdfViewer/pdfViewer";
+import PDFViewer from "../../components/pdfViewer";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
