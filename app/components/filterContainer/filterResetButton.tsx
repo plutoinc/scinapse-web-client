@@ -6,14 +6,14 @@ import { Link } from "react-router-dom";
 const styles = require("./filterResetButton.scss");
 
 interface FilterResetButtonProps {
-  filterType: FILTER_BOX_TYPE;
+  filterType?: FILTER_BOX_TYPE;
   makeNewFilterLink: (newFilter: FilterObject) => string;
 }
 
 const FilterResetButton: React.FunctionComponent<FilterResetButtonProps> = props => {
   const { filterType, makeNewFilterLink } = props;
 
-  const resetButton = (
+  const resetButton = !!filterType ? (
     <Link
       to={makeNewFilterLink(
         filterType === "PUBLISHED_YEAR"
@@ -21,11 +21,23 @@ const FilterResetButton: React.FunctionComponent<FilterResetButtonProps> = props
               yearFrom: undefined,
               yearTo: undefined,
             }
-          : { [filterType.toLowerCase()]: null }
+          : { [filterType.toLowerCase()]: [] }
       )}
       className={styles.resetButtonWrapper}
     >
       Reset
+    </Link>
+  ) : (
+    <Link
+      to={makeNewFilterLink({
+        yearFrom: undefined,
+        yearTo: undefined,
+        fos: [],
+        journal: [],
+      })}
+      className={styles.resetButtonWrapper}
+    >
+      Reset All
     </Link>
   );
 

@@ -8,6 +8,13 @@ export function reducer(
   action: ReduxAction<any>
 ): ArticleSearchState {
   switch (action.type) {
+    case ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX: {
+      return {
+        ...state,
+        isJournalFilterExpanding: !state.isJournalFilterExpanding,
+      };
+    }
+
     case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SEARCH_INPUT: {
       return { ...state, searchInput: action.payload.searchInput };
     }

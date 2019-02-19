@@ -16,6 +16,7 @@ const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {
   handleChangeRangeInput: (params: ChangeRangeInputParams) => void;
+  handleToggleExpandingFilter: () => void;
   makeNewFilterLink: (newFilter: FilterObject) => string;
   articleSearchState: ArticleSearchState;
 }
@@ -228,7 +229,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
 }
 
 function getJournalFilter(props: FilterContainerProps) {
-  const { articleSearchState, makeNewFilterLink } = props;
+  const { articleSearchState, makeNewFilterLink, handleToggleExpandingFilter } = props;
 
   const journals = articleSearchState.aggregationData ? articleSearchState.aggregationData.journals : [];
 
@@ -237,7 +238,7 @@ function getJournalFilter(props: FilterContainerProps) {
   }
 
   const journalIdList = articleSearchState.journalFilter;
-  const targetJournals = journals.slice(0, 6);
+  const targetJournals = articleSearchState.isJournalFilterExpanding ? journals : journals.slice(0, 6);
   const journalItems = targetJournals.map(journal => {
     const alreadyHasJournalInFilter = journalIdList.includes(journal!.id);
     const newJournalFilterArray = toggleElementFromArray<number>(journal!.id, journalIdList);
@@ -271,13 +272,31 @@ function getJournalFilter(props: FilterContainerProps) {
     );
   });
 
+  const moreButton =
+    journals.length <= 6 ? null : (
+      <div
+        onClick={() => {
+          handleToggleExpandingFilter();
+        }}
+        className={styles.moreItem}
+      >
+        {articleSearchState.isJournalFilterExpanding ? "Show less" : "Show more"}
+      </div>
+    );
+
   return (
-    <div className={styles.filterBox}>
+    <div
+      className={classNames({
+        [`${styles.filterBox}`]: true,
+        [`${styles.ExpandingJournalFilter}`]: articleSearchState.isJournalFilterExpanding,
+      })}
+    >
       <div className={styles.filterTitleBox}>
         <div className={styles.filterTitle}>Journal</div>
         <FilterResetButton filterType="JOURNAL" makeNewFilterLink={makeNewFilterLink} />
       </div>
       {journalItems}
+      {moreButton}
     </div>
   );
 }
@@ -290,8 +309,11 @@ const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => 
   return (
     <div className={styles.filterContainer}>
       <div className={styles.filterContainerTitleBox}>
-        <Icon className={styles.filterResultButton} icon="FILTER_RESULT_BUTTON" />
-        <span className={styles.filterContainerTitle}>PAPER FILTERS</span>
+        <div className={styles.filterTitleBox}>
+          <Icon className={styles.filterResultButton} icon="FILTER_RESULT_BUTTON" />
+          <span className={styles.filterContainerTitle}>PAPER FILTERS</span>
+          <FilterResetButton makeNewFilterLink={props.makeNewFilterLink} />
+        </div>
       </div>
       {getPublicationFilterBox(props)}
       {getFOSFilterBox(props)}
