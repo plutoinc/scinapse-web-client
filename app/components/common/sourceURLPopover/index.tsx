@@ -24,8 +24,8 @@ interface SourceURLPopover {
 
 const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
   const sources = props.paperSources
-    .sort((a, _b) => {
-      if (isPDFLink(a.url)) {
+    .sort((a, b) => {
+      if (isPDFLink(a.url) && !isPDFLink(b.url)) {
         return -1;
       }
       return 0;
