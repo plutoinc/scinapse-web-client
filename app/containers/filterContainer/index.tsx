@@ -189,6 +189,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
   const fosItems = targetFOSList.map(fos => {
     const alreadyHasFOSInFilter = pastFosIdList.includes(fos!.id);
     const newFOSFilterArray = toggleElementFromArray<number>(fos!.id, pastFosIdList);
+    const fosCount = formatNumber(fos!.docCount);
 
     return (
       <Link
@@ -200,8 +201,9 @@ function getFOSFilterBox(props: FilterContainerProps) {
           fos: newFOSFilterArray as number[],
         })}
         className={classNames({
-          [`${styles.filterItem}`]: true,
-          [`${styles.isSelected}`]: alreadyHasFOSInFilter,
+          [styles.filterItem]: true,
+          [styles.isSelected]: alreadyHasFOSInFilter,
+          [styles.zeroCountFilterItem]: fosCount === "0",
         })}
       >
         <Checkbox
@@ -212,7 +214,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
           checked={alreadyHasFOSInFilter}
         />
         <span className={styles.linkTitle}>{fos!.name}</span>
-        <span className={styles.countBox}>{`(${formatNumber(fos!.docCount)})`}</span>
+        <span className={styles.countBox}>{`(${fosCount})`}</span>
       </Link>
     );
   });
@@ -242,6 +244,7 @@ function getJournalFilter(props: FilterContainerProps) {
   const journalItems = targetJournals.map(journal => {
     const alreadyHasJournalInFilter = journalIdList.includes(journal!.id);
     const newJournalFilterArray = toggleElementFromArray<number>(journal!.id, journalIdList);
+    const journalCount = formatNumber(journal!.docCount);
 
     return (
       <Link
@@ -253,8 +256,9 @@ function getJournalFilter(props: FilterContainerProps) {
           journal: newJournalFilterArray as number[],
         })}
         className={classNames({
-          [`${styles.filterItem}`]: true,
-          [`${styles.isSelected}`]: alreadyHasJournalInFilter,
+          [styles.filterItem]: true,
+          [styles.isSelected]: alreadyHasJournalInFilter,
+          [styles.zeroCountFilterItem]: journalCount === "0",
         })}
       >
         <Checkbox
@@ -267,7 +271,7 @@ function getJournalFilter(props: FilterContainerProps) {
         <span className={styles.linkTitle}>
           {journal!.title} {journal!.impactFactor ? `[IF : ${journal!.impactFactor.toFixed(2)}]` : ""}
         </span>
-        <span className={styles.countBox}>{`(${formatNumber(journal!.docCount)})`}</span>
+        <span className={styles.countBox}>{`(${journalCount})`}</span>
       </Link>
     );
   });

@@ -56,6 +56,11 @@
   }
 }
 
+.zeroCountFilterItem {
+  pointer-events: none;
+  color: $gray5;
+}
+
 .linkTitle {
   display: inline-block;
   vertical-align: top;
