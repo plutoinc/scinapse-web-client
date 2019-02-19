@@ -90,8 +90,6 @@ describe("articleSearch actions", () => {
           filters: {
             fos: [],
             journal: [],
-            journalIFFrom: undefined,
-            journalIFTo: undefined,
             yearFrom: undefined,
             yearTo: undefined,
           },

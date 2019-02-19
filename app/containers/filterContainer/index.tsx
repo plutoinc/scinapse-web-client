@@ -291,8 +291,8 @@ function getJournalFilter(props: FilterContainerProps) {
   return (
     <div
       className={classNames({
-        [`${styles.filterBox}`]: true,
-        [`${styles.ExpandingJournalFilter}`]: articleSearchState.isJournalFilterExpanding,
+        [styles.filterBox]: true,
+        [styles.ExpandingJournalFilter]: articleSearchState.isJournalFilterExpanding,
       })}
     >
       <div className={styles.filterTitleBox}>
@@ -306,7 +306,8 @@ function getJournalFilter(props: FilterContainerProps) {
 }
 
 const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => {
-  if (!props.articleSearchState.aggregationData) {
+  const { articleSearchState, makeNewFilterLink } = props;
+  if (!articleSearchState.aggregationData) {
     return null;
   }
 
@@ -316,7 +317,7 @@ const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => 
         <div className={styles.filterTitleBox}>
           <Icon className={styles.filterResultButton} icon="FILTER_RESULT_BUTTON" />
           <span className={styles.filterContainerTitle}>PAPER FILTERS</span>
-          <FilterResetButton makeNewFilterLink={props.makeNewFilterLink} />
+          <FilterResetButton makeNewFilterLink={makeNewFilterLink} />
         </div>
       </div>
       {getPublicationFilterBox(props)}
