@@ -173,19 +173,6 @@
   cursor: pointer;
 }
 
-.resetButtonWrapper {
-  position: absolute;
-  right: 0;
-  top: 3px;
-  font-size: 13px;
-  color: $gray5;
-  cursor: pointer;
-
-  &:hover {
-    color: $gray4;
-  }
-}
-
 .isClosed {
   svg {
     transform: rotate(180deg);
