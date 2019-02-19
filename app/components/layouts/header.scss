@@ -213,7 +213,8 @@
 
 @media (max-width: $tablet-width) {
   .searchFormContainer {
-    width: 75%;
+    width: 100%;
+    margin-right: 32px;
 
     .inputBox {
       width: 100%;
@@ -225,46 +226,11 @@
   }
 
   .rightBox {
+    position: relative;
+    justify-content: flex-end;
+
     .signInButton {
       display: none;
     }
-  }
-}
-
-@media (max-width: $mobile-width) {
-  .searchFormContainer {
-    width: 55%;
-
-    .inputBox {
-      width: 100%;
-    }
-  }
-
-  .searchInputBoxWrapper {
-    width: 100%;
-  }
-
-  .rightBox {
-    .signInButton {
-      display: none;
-    }
-  }
-}
-
-@media (max-width: 400px) {
-  .searchFormContainer {
-    width: 100%;
-
-    .inputBox {
-      width: 100%;
-    }
-  }
-
-  .searchInputBoxWrapper {
-    width: 100%;
-  }
-
-  .rightBox {
-    display: none;
   }
 }
