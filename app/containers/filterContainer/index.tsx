@@ -57,11 +57,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
     <div className={styles.filterBox}>
       <div className={styles.filterTitleBox}>
         <div className={styles.filterTitle}>Publication Year</div>
-        <FilterResetButton
-          filterType="PUBLISHED_YEAR"
-          articleSearchState={articleSearchState}
-          makeNewFilterLink={makeNewFilterLink}
-        />
+        <FilterResetButton filterType="PUBLISHED_YEAR" makeNewFilterLink={makeNewFilterLink} />
       </div>
       <Link
         onClick={() => {
@@ -224,11 +220,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
     <div className={styles.filterBox}>
       <div className={styles.filterTitleBox}>
         <div className={styles.filterTitle}>Field of study</div>
-        <FilterResetButton
-          filterType="FOS"
-          articleSearchState={articleSearchState}
-          makeNewFilterLink={makeNewFilterLink}
-        />
+        <FilterResetButton filterType="FOS" makeNewFilterLink={makeNewFilterLink} />
       </div>
       {fosItems}
     </div>
@@ -283,11 +275,7 @@ function getJournalFilter(props: FilterContainerProps) {
     <div className={styles.filterBox}>
       <div className={styles.filterTitleBox}>
         <div className={styles.filterTitle}>Journal</div>
-        <FilterResetButton
-          filterType="JOURNAL"
-          articleSearchState={articleSearchState}
-          makeNewFilterLink={makeNewFilterLink}
-        />
+        <FilterResetButton filterType="JOURNAL" makeNewFilterLink={makeNewFilterLink} />
       </div>
       {journalItems}
     </div>
