@@ -8,6 +8,13 @@ export function reducer(
   action: ReduxAction<any>
 ): ArticleSearchState {
   switch (action.type) {
+    case ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX: {
+      return {
+        ...state,
+        isJournalFilterExpanding: !state.isJournalFilterExpanding,
+      };
+    }
+
     case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SEARCH_INPUT: {
       return { ...state, searchInput: action.payload.searchInput };
     }
@@ -24,8 +31,6 @@ export function reducer(
         sort: action.payload.sort,
         yearFilterFromValue: filters.yearFrom || 0,
         yearFilterToValue: filters.yearTo || 0,
-        IFFilterFromValue: filters.journalIFFrom || 0,
-        IFFilterToValue: filters.journalIFTo || 0,
         fosFilter: filters.fos || [],
         journalFilter: filters.journal || [],
         suggestionKeyword: "",
@@ -105,14 +110,6 @@ export function reducer(
           return { ...state, yearFilterFromValue: payload.numberValue };
         } else if (payload.rangeType === FILTER_RANGE_TYPE.TO && payload.numberValue) {
           return { ...state, yearFilterToValue: payload.numberValue };
-        } else {
-          return state;
-        }
-      } else if (payload.type === FILTER_TYPE_HAS_RANGE.JOURNAL_IF) {
-        if (payload.rangeType === FILTER_RANGE_TYPE.FROM && payload.numberValue) {
-          return { ...state, IFFilterFromValue: payload.numberValue };
-        } else if (payload.rangeType === FILTER_RANGE_TYPE.TO && payload.numberValue) {
-          return { ...state, IFFilterToValue: payload.numberValue };
         } else {
           return state;
         }

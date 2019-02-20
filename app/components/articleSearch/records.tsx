@@ -15,8 +15,7 @@ export interface ArticleSearchState
       isEnd: boolean;
       yearFilterFromValue: number;
       yearFilterToValue: number;
-      IFFilterFromValue: number;
-      IFFilterToValue: number;
+      isJournalFilterExpanding: boolean;
       suggestionKeyword: string;
       fosFilter: number[];
       journalFilter: number[];
@@ -43,8 +42,7 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   isEnd: false,
   yearFilterFromValue: 0,
   yearFilterToValue: 0,
-  IFFilterFromValue: 0,
-  IFFilterToValue: 0,
+  isJournalFilterExpanding: false,
   fosFilter: [],
   matchAuthors: null,
   journalFilter: [],

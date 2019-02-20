@@ -11,10 +11,12 @@ import { ArticleSearchState } from "../../components/articleSearch/records";
 import formatNumber from "../../helpers/formatNumber";
 import { toggleElementFromArray } from "../../helpers/toggleElementFromArray";
 import Icon from "../../icons";
+import FilterResetButton from "../../components/filterContainer/filterResetButton";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {
   handleChangeRangeInput: (params: ChangeRangeInputParams) => void;
+  handleToggleExpandingFilter: () => void;
   makeNewFilterLink: (newFilter: FilterObject) => string;
   articleSearchState: ArticleSearchState;
 }
@@ -40,7 +42,7 @@ function calculateYearsCount({ rangeSetList, minYear }: CalculateYearsCountParam
 }
 
 function getPublicationFilterBox(props: FilterContainerProps) {
-  const { articleSearchState, handleChangeRangeInput } = props;
+  const { articleSearchState, makeNewFilterLink, handleChangeRangeInput } = props;
 
   const currentYear = new Date().getFullYear();
   const fromToCurrentYearDiff = currentYear - articleSearchState.yearFilterFromValue;
@@ -56,7 +58,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
     <div className={styles.filterBox}>
       <div className={styles.filterTitleBox}>
         <div className={styles.filterTitle}>Publication Year</div>
-        <span className={styles.resetButtonWrapper}>Reset</span>
+        <FilterResetButton filterType="PUBLISHED_YEAR" makeNewFilterLink={makeNewFilterLink} />
       </div>
       <Link
         onClick={() => {
@@ -66,7 +68,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
           [`${styles.filterItem}`]: true,
           [`${styles.isSelected}`]: !articleSearchState.yearFilterFromValue && !articleSearchState.yearFilterToValue,
         })}
-        to={props.makeNewFilterLink({
+        to={makeNewFilterLink({
           yearFrom: undefined,
           yearTo: undefined,
         })}
@@ -83,7 +85,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
             minYear: currentYear - 3,
           })
         )})`}
-        to={props.makeNewFilterLink({
+        to={makeNewFilterLink({
           yearFrom: currentYear - 3,
           yearTo: undefined,
         })}
@@ -97,7 +99,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
             minYear: currentYear - 5,
           })
         )})`}
-        to={props.makeNewFilterLink({
+        to={makeNewFilterLink({
           yearFrom: currentYear - 5,
           yearTo: undefined,
         })}
@@ -111,7 +113,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
             minYear: currentYear - 10,
           })
         )})`}
-        to={props.makeNewFilterLink({
+        to={makeNewFilterLink({
           yearFrom: currentYear - 10,
           yearTo: undefined,
         })}
@@ -161,7 +163,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
             );
           }}
           className={styles.yearSubmitLink}
-          to={props.makeNewFilterLink({
+          to={makeNewFilterLink({
             yearFrom: articleSearchState.yearFilterFromValue,
             yearTo: articleSearchState.yearFilterToValue,
           })}
@@ -174,7 +176,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
 }
 
 function getFOSFilterBox(props: FilterContainerProps) {
-  const { articleSearchState } = props;
+  const { articleSearchState, makeNewFilterLink } = props;
   const fosList = articleSearchState.aggregationData ? articleSearchState.aggregationData.fosList : [];
 
   if (!articleSearchState.aggregationData || !fosList || fosList.length === 0) {
@@ -184,9 +186,10 @@ function getFOSFilterBox(props: FilterContainerProps) {
   const pastFosIdList = articleSearchState.fosFilter;
   const targetFOSList = fosList.slice(0, 6);
 
-  const fosItems = targetFOSList.slice(0, 10).map(fos => {
+  const fosItems = targetFOSList.map(fos => {
     const alreadyHasFOSInFilter = pastFosIdList.includes(fos!.id);
     const newFOSFilterArray = toggleElementFromArray<number>(fos!.id, pastFosIdList);
+    const fosCount = formatNumber(fos!.docCount);
 
     return (
       <Link
@@ -194,12 +197,13 @@ function getFOSFilterBox(props: FilterContainerProps) {
           trackSelectFilter("FOS", fos!.name);
         }}
         key={`fos_${fos!.id}`}
-        to={props.makeNewFilterLink({
+        to={makeNewFilterLink({
           fos: newFOSFilterArray as number[],
         })}
         className={classNames({
-          [`${styles.filterItem}`]: true,
-          [`${styles.isSelected}`]: alreadyHasFOSInFilter,
+          [styles.filterItem]: true,
+          [styles.isSelected]: alreadyHasFOSInFilter,
+          [styles.zeroCountFilterItem]: fosCount === "0",
         })}
       >
         <Checkbox
@@ -210,7 +214,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
           checked={alreadyHasFOSInFilter}
         />
         <span className={styles.linkTitle}>{fos!.name}</span>
-        <span className={styles.countBox}>{`(${formatNumber(fos!.docCount)})`}</span>
+        <span className={styles.countBox}>{`(${fosCount})`}</span>
       </Link>
     );
   });
@@ -219,7 +223,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
     <div className={styles.filterBox}>
       <div className={styles.filterTitleBox}>
         <div className={styles.filterTitle}>Field of study</div>
-        <span className={styles.resetButtonWrapper}>Reset</span>
+        <FilterResetButton filterType="FOS" makeNewFilterLink={makeNewFilterLink} />
       </div>
       {fosItems}
     </div>
@@ -227,7 +231,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
 }
 
 function getJournalFilter(props: FilterContainerProps) {
-  const { articleSearchState } = props;
+  const { articleSearchState, makeNewFilterLink, handleToggleExpandingFilter } = props;
 
   const journals = articleSearchState.aggregationData ? articleSearchState.aggregationData.journals : [];
 
@@ -236,10 +240,11 @@ function getJournalFilter(props: FilterContainerProps) {
   }
 
   const journalIdList = articleSearchState.journalFilter;
-  const targetJournals = journals.slice(0, 6);
+  const targetJournals = articleSearchState.isJournalFilterExpanding ? journals : journals.slice(0, 6);
   const journalItems = targetJournals.map(journal => {
     const alreadyHasJournalInFilter = journalIdList.includes(journal!.id);
     const newJournalFilterArray = toggleElementFromArray<number>(journal!.id, journalIdList);
+    const journalCount = formatNumber(journal!.docCount);
 
     return (
       <Link
@@ -247,12 +252,13 @@ function getJournalFilter(props: FilterContainerProps) {
           trackSelectFilter("JOURNAL", journal!.title);
         }}
         key={`journal_${journal!.id}`}
-        to={props.makeNewFilterLink({
+        to={makeNewFilterLink({
           journal: newJournalFilterArray as number[],
         })}
         className={classNames({
-          [`${styles.filterItem}`]: true,
-          [`${styles.isSelected}`]: alreadyHasJournalInFilter,
+          [styles.filterItem]: true,
+          [styles.isSelected]: alreadyHasJournalInFilter,
+          [styles.zeroCountFilterItem]: journalCount === "0",
         })}
       >
         <Checkbox
@@ -265,32 +271,54 @@ function getJournalFilter(props: FilterContainerProps) {
         <span className={styles.linkTitle}>
           {journal!.title} {journal!.impactFactor ? `[IF : ${journal!.impactFactor.toFixed(2)}]` : ""}
         </span>
-        <span className={styles.countBox}>{`(${formatNumber(journal!.docCount)})`}</span>
+        <span className={styles.countBox}>{`(${journalCount})`}</span>
       </Link>
     );
   });
 
+  const moreButton =
+    journals.length <= 6 ? null : (
+      <div
+        onClick={() => {
+          handleToggleExpandingFilter();
+        }}
+        className={styles.moreItem}
+      >
+        {articleSearchState.isJournalFilterExpanding ? "Show less" : "Show more"}
+      </div>
+    );
+
   return (
-    <div className={styles.filterBox}>
+    <div
+      className={classNames({
+        [styles.filterBox]: true,
+        [styles.ExpandingJournalFilter]: articleSearchState.isJournalFilterExpanding,
+      })}
+    >
       <div className={styles.filterTitleBox}>
         <div className={styles.filterTitle}>Journal</div>
-        <span className={styles.resetButtonWrapper}>Reset</span>
+        <FilterResetButton filterType="JOURNAL" makeNewFilterLink={makeNewFilterLink} />
       </div>
       {journalItems}
+      {moreButton}
     </div>
   );
 }
 
 const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => {
-  if (!props.articleSearchState.aggregationData) {
+  const { articleSearchState, makeNewFilterLink } = props;
+  if (!articleSearchState.aggregationData) {
     return null;
   }
 
   return (
     <div className={styles.filterContainer}>
       <div className={styles.filterContainerTitleBox}>
-        <Icon className={styles.filterResultButton} icon="FILTER_RESULT_BUTTON" />
-        <span className={styles.filterContainerTitle}>PAPER FILTERS</span>
+        <div className={styles.filterTitleBox}>
+          <Icon className={styles.filterResultButton} icon="FILTER_RESULT_BUTTON" />
+          <span className={styles.filterContainerTitle}>PAPER FILTERS</span>
+          <FilterResetButton makeNewFilterLink={makeNewFilterLink} />
+        </div>
       </div>
       {getPublicationFilterBox(props)}
       {getFOSFilterBox(props)}
