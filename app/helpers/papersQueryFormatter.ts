@@ -62,19 +62,17 @@ class PaperSearchQueryFormatter {
     // tslint:disable-next-line:one-variable-per-declaration
     let yearFrom: number | undefined;
     let yearTo: number | undefined;
-    let fos: number[];
-    let journal: number[];
+    let fos: number[] = [];
+    let journal: number[] = [];
     if (!!queryMap.year) {
       yearFrom = parseInt(queryMap.year.split(":")[0], 10);
       yearTo = parseInt(queryMap.year.split(":")[1], 10);
     }
 
     if (!!queryMap.fos) {
-      fos = queryMap.fos.split("|").map(field => {
-        if (!!field) {
-          return parseInt(field, 10);
-        } else {
-          return 0;
+      queryMap.fos.split("|").forEach(f => {
+        if (!!f) {
+          fos.push(parseInt(f, 10));
         }
       });
     } else {
@@ -82,11 +80,9 @@ class PaperSearchQueryFormatter {
     }
 
     if (!!queryMap.journal) {
-      journal = queryMap.journal.split("|").map(j => {
+      queryMap.journal.split("|").forEach(j => {
         if (!!j) {
-          return parseInt(j, 10);
-        } else {
-          return 0;
+          journal.push(parseInt(j, 10));
         }
       });
     } else {
