@@ -55,10 +55,11 @@ class GlobalDialogManager {
     );
   }
 
-  public openNewCollectionDialog() {
+  public openNewCollectionDialog(targetPaperId?: number) {
     StoreManager.store.dispatch(
       ActionCreators.openGlobalDialog({
         type: GLOBAL_DIALOG_TYPE.NEW_COLLECTION,
+        collectionDialogTargetPaperId: targetPaperId,
       })
     );
   }

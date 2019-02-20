@@ -6,9 +6,13 @@ import alertToast from "../../../../helpers/makePlutoToastAction";
 import PlutoAxios from "../../../../api/pluto";
 const styles = require("./newCollection.scss");
 import * as Cookies from "js-cookie";
+import { Collection } from "../../../../model/collection";
+import GlobalDialogManager from "../../../../helpers/globalDialogManager/index";
 
 interface NewCollectionDialogProps {
   currentUser: CurrentUser;
+  myCollections: Collection[] | null;
+  targetPaperId?: number;
   handleCloseDialogRequest: () => void;
   handleMakeCollection: (params: PostCollectionParams) => Promise<void>;
 }
@@ -31,7 +35,7 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
   }
 
   public render() {
-    const { handleCloseDialogRequest } = this.props;
+    const { handleCloseDialogRequest, myCollections } = this.props;
     const { title, description } = this.state;
 
     return (
@@ -45,7 +49,7 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
                 <span className={styles.textCounter}>{`${title.length} / 100`}</span>
               </label>
               <input
-                value={title}
+                value={!myCollections || myCollections.length === 0 ? "Read Later" : title}
                 autoFocus
                 onChange={this.handleTitleChange}
                 onKeyPress={this.handleKeyPressName}
@@ -86,7 +90,7 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
   };
 
   private makeCollection = async () => {
-    const { handleMakeCollection, handleCloseDialogRequest } = this.props;
+    const { handleMakeCollection, handleCloseDialogRequest, myCollections, targetPaperId } = this.props;
     const { title, description } = this.state;
 
     try {
@@ -94,6 +98,9 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
 
       Cookies.set(SELECTED_COLLECTION_ID, "0");
       handleCloseDialogRequest();
+      if (targetPaperId && (!myCollections || myCollections.length === 0)) {
+        GlobalDialogManager.openCollectionDialog(targetPaperId);
+      }
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
       alertToast({

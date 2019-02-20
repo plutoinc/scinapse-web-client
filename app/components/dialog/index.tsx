@@ -257,6 +257,8 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
           <NewCollectionDialog
             handleCloseDialogRequest={this.closeDialog}
             currentUser={currentUser}
+            myCollections={myCollections}
+            targetPaperId={dialogState.collectionDialogTargetPaperId}
             handleMakeCollection={this.handleSubmitNewCollection}
           />
         );
