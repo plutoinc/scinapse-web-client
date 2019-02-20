@@ -19,11 +19,7 @@ import * as Actions from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { GetPapersParams } from "../../../api/types/paper";
-import {
-  FILTER_TYPE_HAS_EXPANDING_OPTION,
-  FILTER_RANGE_TYPE,
-  FILTER_TYPE_HAS_RANGE,
-} from "../../../constants/paperSearch";
+import { FILTER_RANGE_TYPE, FILTER_TYPE_HAS_RANGE } from "../../../constants/paperSearch";
 
 describe("articleSearch actions", () => {
   let store: any;
@@ -41,34 +37,6 @@ describe("articleSearch actions", () => {
     store = generateMockStore({});
     store.clearActions();
     mockFn.mockClear();
-  });
-
-  describe("toggleFilterBox action", () => {
-    it("should return ARTICLE_SEARCH_TOGGLE_FILTER_BOX action with payload of target type", () => {
-      store.dispatch(Actions.toggleFilterBox("PUBLISHED_YEAR"));
-      const actions = store.getActions();
-
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX,
-        payload: {
-          type: "PUBLISHED_YEAR",
-        },
-      });
-    });
-  });
-
-  describe("toggleExpandingFilter action", () => {
-    it("should return ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX action with payload of target type", () => {
-      store.dispatch(Actions.toggleExpandingFilter(FILTER_TYPE_HAS_EXPANDING_OPTION.FOS));
-      const actions = store.getActions();
-
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX,
-        payload: {
-          type: FILTER_TYPE_HAS_EXPANDING_OPTION.FOS,
-        },
-      });
-    });
   });
 
   describe("changeSearchInput action", () => {
@@ -122,8 +90,6 @@ describe("articleSearch actions", () => {
           filters: {
             fos: [],
             journal: [],
-            journalIFFrom: undefined,
-            journalIFTo: undefined,
             yearFrom: undefined,
             yearTo: undefined,
           },

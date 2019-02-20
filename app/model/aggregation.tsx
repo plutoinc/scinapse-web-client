@@ -2,6 +2,7 @@ interface RawAggregationJournal {
   id: number;
   title: string;
   doc_count: number;
+  impact_factor: number;
 }
 
 interface RawAggregationFos {
@@ -25,6 +26,7 @@ interface AggregationJournal {
   id: number;
   title: string;
   docCount: number;
+  impactFactor: number;
 }
 
 interface AggregationFos {

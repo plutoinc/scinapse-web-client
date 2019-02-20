@@ -77,6 +77,7 @@ const ICONS: { [key: string]: any } = {
   LINK: require("./link.svg").default,
   NO_AUTHOR_RESULT: require("./no-author-result.svg").default,
   NO_PAPER_RESULT: require("./no-result-paper.svg").default,
+  FILTER_RESULT_BUTTON: require("./filter-results-button.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)

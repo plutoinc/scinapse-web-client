@@ -7,7 +7,7 @@ import { AppState } from "../../reducers";
 import * as Actions from "./actions";
 import SearchList from "./components/searchList";
 import ArticleSpinner from "../common/spinner/articleSpinner";
-import FilterContainer from "./components/filterContainer";
+import FilterContainer from "../../containers/filterContainer";
 import NoResult from "./components/noResult";
 import PapersQueryFormatter, { SearchPageQueryParamsObject, FilterObject } from "../../helpers/papersQueryFormatter";
 import formatNumber from "../../helpers/formatNumber";
@@ -22,7 +22,7 @@ import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import { UserDevice } from "../layouts/records";
 import AuthorSearchItem from "../authorSearchItem";
 import restoreScroll from "../../helpers/scrollRestoration";
-import { ChangeRangeInputParams, FILTER_BOX_TYPE, FILTER_TYPE_HAS_EXPANDING_OPTION } from "../../constants/paperSearch";
+import { ChangeRangeInputParams } from "../../constants/paperSearch";
 import ErrorPage from "../error/errorPage";
 import NoResultInSearch from "./components/noResultInSearch";
 import TabNavigationBar from "../common/tabNavigationBar";
@@ -156,9 +156,8 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
             <FilterContainer
               makeNewFilterLink={this.makeNewFilterLink}
               handleChangeRangeInput={this.setRangeInput}
-              handleToggleExpandingFilter={this.handleToggleExpandingFilter}
-              handleToggleFilterBox={this.handleToggleFilterBox}
               articleSearchState={articleSearchState}
+              handleToggleExpandingFilter={this.handleToggleExpandingFilter}
             />
           </div>
           <Footer containerStyle={this.getContainerStyle()} />
@@ -330,6 +329,12 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     }
   };
 
+  private handleToggleExpandingFilter = () => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.toggleExpandingFilter());
+  };
+
   private makeNewFilterLink = (newFilter: FilterObject) => {
     const queryParamsObject = this.getUrlDecodedQueryParamsObject();
 
@@ -355,18 +360,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     const { dispatch } = this.props;
 
     dispatch(Actions.changeRangeInput(params));
-  };
-
-  private handleToggleFilterBox = (type: FILTER_BOX_TYPE) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.toggleFilterBox(type));
-  };
-
-  private handleToggleExpandingFilter = (type: FILTER_TYPE_HAS_EXPANDING_OPTION) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.toggleExpandingFilter(type));
   };
 
   private renderLoadingSpinner = () => {
