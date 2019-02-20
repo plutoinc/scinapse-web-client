@@ -1,0 +1,40 @@
+.yearFilterBox {
+  padding: 0 8px;
+  width: 352px;
+}
+
+.columnBox {
+  display: flex;
+  height: 70px;
+  align-items: flex-end;
+}
+
+.column {
+  display: inline-block;
+  vertical-align: bottom;
+  width: 2px;
+  cursor: pointer;
+
+  & + & {
+    margin-left: 1px;
+  }
+}
+
+.droppable {
+  margin-top: 2px;
+}
+
+.slider {
+  position: relative;
+  height: 3px;
+  background-color: $gray4;
+}
+
+.sliderBubble {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
+  border: 1px solid $main_blue0;
+  cursor: pointer;
+}
