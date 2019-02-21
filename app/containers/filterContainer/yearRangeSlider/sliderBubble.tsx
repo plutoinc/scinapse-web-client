@@ -13,6 +13,7 @@ interface SliderBubbleProps extends RouteComponentProps<null> {
   min: number;
   max: number;
   setValues: React.Dispatch<React.SetStateAction<number[]>>;
+  onSelectingColumn: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const SliderBubble: React.FunctionComponent<SliderBubbleProps> = props => {
@@ -53,8 +54,11 @@ const SliderBubble: React.FunctionComponent<SliderBubbleProps> = props => {
     }
 
     props.setValues(nextValues);
+    props.onSelectingColumn(nextValue);
 
     if (e.type === "dragend") {
+      props.onSelectingColumn(0);
+
       const qp: SearchPageQueryParams = getQueryParamsObject(props.location.search);
       const filter = PapersQueryFormatter.objectifyPapersFilter(qp.filter);
       const newFilter = { ...filter, yearFrom: Math.min(...nextValues), yearTo: Math.max(...nextValues) };
@@ -65,8 +69,6 @@ const SliderBubble: React.FunctionComponent<SliderBubbleProps> = props => {
         sort: qp.sort || "RELEVANCE",
       };
       const newSearch = PapersQueryFormatter.stringifyPapersQuery(newQP);
-      console.log(filter);
-      console.log(newFilter);
       props.history.push({
         pathname: `/search`,
         search: newSearch,

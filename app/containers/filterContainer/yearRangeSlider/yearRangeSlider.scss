@@ -37,6 +37,10 @@
     border: 1px solid $gray3;
     border-radius: 4px;
 
+    &.isSelecting {
+      display: flex;
+    }
+
     &:before {
       content: "";
       position: absolute;

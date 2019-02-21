@@ -1,5 +1,6 @@
 import * as React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import * as classNames from "classnames";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { MIN_YEAR } from "./constants";
 import SliderBubble from "./sliderBubble";
@@ -22,6 +23,7 @@ const Column: React.FunctionComponent<{
   height: string;
   active: boolean;
   yearSet: YearSet;
+  isSelecting: boolean;
   onClick: () => void;
 }> = props => {
   return (
@@ -35,7 +37,12 @@ const Column: React.FunctionComponent<{
       className={styles.column}
       onClick={props.onClick}
     >
-      <div className={styles.columnLabel}>
+      <div
+        className={classNames({
+          [styles.columnLabel]: true,
+          [styles.isSelecting]: props.isSelecting,
+        })}
+      >
         <div className={styles.docCount}>{`${props.yearSet.docCount} Papers`}</div>
         <div className={styles.yearNum}>{`${props.yearSet.year} Year`}</div>
       </div>
@@ -49,6 +56,7 @@ const Slider: React.FunctionComponent<{
   minValue: number;
   maxValue: number;
   setValues: React.Dispatch<React.SetStateAction<number[]>>;
+  onSelectingColumn: React.Dispatch<React.SetStateAction<number>>;
 }> = props => {
   const bubbles = props.values.map((cv, i) => {
     return (
@@ -60,6 +68,7 @@ const Slider: React.FunctionComponent<{
         step={props.step}
         left={(cv - MIN_YEAR) * props.step}
         value={cv}
+        onSelectingColumn={props.onSelectingColumn}
       />
     );
   });
@@ -89,7 +98,10 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
     filter.yearTo && !isNaN(filter.yearTo as number)
       ? (filter.yearTo as number)
       : yearSetSortByYear[yearSetSortByYear.length - 1].year;
+
   const [values, setValues] = React.useState([minYear, maxYear]);
+  const [selectingColumn, setSelectingColumn] = React.useState(0);
+
   const minValue = Math.min(...values);
   const maxValue = Math.max(...values);
 
@@ -121,6 +133,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
               width={`${stepWidth}px`}
               height={`${(yearSet.docCount / maxYearSet.docCount) * 100}%`}
               active={minValue <= yearSet.year && yearSet.year <= maxValue}
+              isSelecting={selectingColumn === yearSet.year}
               yearSet={yearSet}
               onClick={() => {
                 setValues([yearSet.year, yearSet.year]);
@@ -130,7 +143,14 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
         })}
       </div>
       <div className={styles.droppable}>
-        <Slider minValue={minValue} maxValue={maxValue} values={values} setValues={setValues} step={stepWidth} />
+        <Slider
+          minValue={minValue}
+          maxValue={maxValue}
+          values={values}
+          setValues={setValues}
+          step={stepWidth}
+          onSelectingColumn={setSelectingColumn}
+        />
       </div>
     </div>
   );
