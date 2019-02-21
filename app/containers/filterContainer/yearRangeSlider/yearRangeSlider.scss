@@ -17,7 +17,9 @@
 
   &:hover {
     .columnLabel {
-      display: flex;
+      &:not(.isSelectMode) {
+        display: flex;
+      }
     }
   }
 
@@ -36,6 +38,7 @@
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
     border: 1px solid $gray3;
     border-radius: 4px;
+    z-index: 2;
 
     &.isSelecting {
       display: flex;
@@ -79,25 +82,32 @@
   }
 }
 
-.droppable {
-  margin-top: 2px;
-}
-
 .slider {
   position: relative;
-  height: 2px;
+  height: 4px;
+  border-radius: 2.5px;
   background-color: $gray3;
+
+  .activeLine {
+    position: absolute;
+    height: 4px;
+    z-index: 2;
+    border-radius: 2.5px;
+    background-color: $main_blue1;
+  }
 }
 
 .sliderBubble {
   position: absolute;
-  width: 20px;
-  height: 20px;
-  margin-left: -10px;
-  margin-top: 5px;
+  width: 23px;
+  height: 23px;
+  margin-left: -9.5px;
+  bottom: -9.5px;
   border-radius: 100%;
-  border: 1px solid $main_blue0;
+  border: 1px solid $gray9;
   cursor: pointer;
+  background-color: white;
+  z-index: 3;
 }
 
 .bubbleLabel {

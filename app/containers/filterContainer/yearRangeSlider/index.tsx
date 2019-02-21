@@ -24,6 +24,7 @@ const Column: React.FunctionComponent<{
   active: boolean;
   yearSet: YearSet;
   isSelecting: boolean;
+  isSelectMode: boolean;
   onClick: () => void;
 }> = props => {
   return (
@@ -31,7 +32,7 @@ const Column: React.FunctionComponent<{
       style={{
         width: props.width,
         height: props.height,
-        backgroundColor: props.active ? "#6096ff" : "#d8dde7",
+        backgroundColor: props.active ? "rgba(96, 150, 255, 0.5)" : "#d8dde7",
         borderRight: "solid 1px #f9f9fa",
       }}
       className={styles.column}
@@ -40,6 +41,7 @@ const Column: React.FunctionComponent<{
       <div
         className={classNames({
           [styles.columnLabel]: true,
+          [styles.isSelectMode]: props.isSelectMode,
           [styles.isSelecting]: props.isSelecting,
         })}
       >
@@ -73,7 +75,16 @@ const Slider: React.FunctionComponent<{
     );
   });
 
-  return <div className={styles.slider}>{bubbles}</div>;
+  const minLeft = (props.minValue - MIN_YEAR) * props.step;
+  const maxLeft = (props.maxValue - MIN_YEAR) * props.step;
+  const activeLineWidth = maxLeft - minLeft;
+
+  return (
+    <div className={styles.slider}>
+      <div style={{ left: `${minLeft}px`, width: `${activeLineWidth}px` }} className={styles.activeLine} />
+      {bubbles}
+    </div>
+  );
 };
 
 const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => {
@@ -134,6 +145,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
               height={`${(yearSet.docCount / maxYearSet.docCount) * 100}%`}
               active={minValue <= yearSet.year && yearSet.year <= maxValue}
               isSelecting={selectingColumn === yearSet.year}
+              isSelectMode={selectingColumn !== 0}
               yearSet={yearSet}
               onClick={() => {
                 setValues([yearSet.year, yearSet.year]);
@@ -142,16 +154,14 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
           );
         })}
       </div>
-      <div className={styles.droppable}>
-        <Slider
-          minValue={minValue}
-          maxValue={maxValue}
-          values={values}
-          setValues={setValues}
-          step={stepWidth}
-          onSelectingColumn={setSelectingColumn}
-        />
-      </div>
+      <Slider
+        minValue={minValue}
+        maxValue={maxValue}
+        values={values}
+        setValues={setValues}
+        step={stepWidth}
+        onSelectingColumn={setSelectingColumn}
+      />
     </div>
   );
 };
