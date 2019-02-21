@@ -21,6 +21,7 @@ const Column: React.FunctionComponent<{
   width: string;
   height: string;
   active: boolean;
+  yearSet: YearSet;
   onClick: () => void;
 }> = props => {
   return (
@@ -29,11 +30,15 @@ const Column: React.FunctionComponent<{
         width: props.width,
         height: props.height,
         backgroundColor: props.active ? "#6096ff" : "#d8dde7",
+        borderRight: "solid 1px #f9f9fa",
       }}
       className={styles.column}
       onClick={props.onClick}
     >
-      <div style={{ display: "none" }}>popup</div>
+      <div className={styles.columnLabel}>
+        <div className={styles.docCount}>{`${props.yearSet.docCount} Papers`}</div>
+        <div className={styles.yearNum}>{`${props.yearSet.year} Year`}</div>
+      </div>
     </div>
   );
 };
@@ -109,13 +114,14 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
       className={styles.yearFilterBox}
     >
       <div className={styles.columnBox}>
-        {yearSetSortByYear.map((yearSet, i) => {
+        {yearSetSortByYear.map(yearSet => {
           return (
             <Column
               key={yearSet.year}
-              width={`${stepWidth - 1}px`}
+              width={`${stepWidth}px`}
               height={`${(yearSet.docCount / maxYearSet.docCount) * 100}%`}
               active={minValue <= yearSet.year && yearSet.year <= maxValue}
+              yearSet={yearSet}
               onClick={() => {
                 setValues([yearSet.year, yearSet.year]);
               }}

@@ -9,13 +9,69 @@
 }
 
 .column {
+  position: relative;
   display: inline-block;
   vertical-align: bottom;
   width: 2px;
   cursor: pointer;
 
-  & + & {
-    margin-left: 1px;
+  &:hover {
+    .columnLabel {
+      display: flex;
+    }
+  }
+
+  .columnLabel {
+    display: none;
+    width: 88px;
+    height: 49px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: -44px;
+    top: -65px;
+    background-color: white;
+    overflow: unset;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+    border: 1px solid $gray3;
+    border-radius: 4px;
+
+    &:before {
+      content: "";
+      position: absolute;
+      bottom: -12px;
+      width: 0;
+      height: 0;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-top: 12px solid $gray3;
+    }
+
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: -11px;
+      width: 0;
+      height: 0;
+      border-left: 11px solid transparent;
+      border-right: 11px solid transparent;
+      border-top: 11px solid white;
+    }
+  }
+
+  .docCount {
+    height: 14px;
+    font-size: 12px;
+    text-align: center;
+    color: $gray6;
+    margin-bottom: 4px;
+  }
+
+  .yearNum {
+    height: 11px;
+    font-size: 10px;
+    color: $gray5;
   }
 }
 
