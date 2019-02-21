@@ -31,13 +31,13 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
     super(props);
 
     this.state = {
-      title: "",
+      title: !props.userCollections || props.userCollections.collectionIds.length === 0 ? "Read Later" : "",
       description: "",
     };
   }
 
   public render() {
-    const { handleCloseDialogRequest, userCollections } = this.props;
+    const { handleCloseDialogRequest } = this.props;
     const { title, description } = this.state;
 
     return (
@@ -51,7 +51,7 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
                 <span className={styles.textCounter}>{`${title.length} / 100`}</span>
               </label>
               <input
-                value={!userCollections || userCollections.collectionIds.length === 0 ? "Read Later" : title}
+                value={title}
                 autoFocus
                 onChange={this.handleTitleChange}
                 onKeyPress={this.handleKeyPressName}
