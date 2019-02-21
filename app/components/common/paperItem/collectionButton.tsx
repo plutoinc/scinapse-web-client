@@ -66,17 +66,17 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
         } else {
           GlobalDialogManager.openCollectionDialog(paperId);
         }
-        // trackEvent({
-        //   category: "Additional Action",
-        //   action: "Click [Add To Collection] Button",
-        // });
-        // ActionTicketManager.trackTicket({
-        //   pageType,
-        //   actionType: "fire",
-        //   actionArea: actionArea || pageType,
-        //   actionTag: "addToCollection",
-        //   actionLabel: String(paperId),
-        // });
+        trackEvent({
+          category: "Additional Action",
+          action: "Click [Add To Collection] Button",
+        });
+        ActionTicketManager.trackTicket({
+          pageType,
+          actionType: "fire",
+          actionArea: actionArea || pageType,
+          actionTag: "addToCollection",
+          actionLabel: String(paperId),
+        });
       }}
     >
       <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
