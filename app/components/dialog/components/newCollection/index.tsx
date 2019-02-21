@@ -1,20 +1,22 @@
 import * as React from "react";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import { CurrentUser } from "../../../../model/currentUser";
-import { PostCollectionParams } from "../../../../api/collection";
+import { PostCollectionParams, AddPaperToCollectionParams } from "../../../../api/collection";
 import alertToast from "../../../../helpers/makePlutoToastAction";
 import PlutoAxios from "../../../../api/pluto";
 const styles = require("./newCollection.scss");
 import * as Cookies from "js-cookie";
-import { Collection } from "../../../../model/collection";
-import GlobalDialogManager from "../../../../helpers/globalDialogManager/index";
+import { AppState } from "../../../../reducers";
+import { connect } from "react-redux";
+import { UserCollectionsState } from "../../../collections/reducer";
 
 interface NewCollectionDialogProps {
   currentUser: CurrentUser;
-  myCollections: Collection[] | null;
+  userCollections: UserCollectionsState;
   targetPaperId?: number;
   handleCloseDialogRequest: () => void;
-  handleMakeCollection: (params: PostCollectionParams) => Promise<void>;
+  handleAddingPaperToCollections: (params: AddPaperToCollectionParams) => Promise<void>;
+  handleMakeCollection: (params: PostCollectionParams, targetPaperId?: number) => Promise<void>;
 }
 
 interface NewCollectionDialogStates {
@@ -35,7 +37,7 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
   }
 
   public render() {
-    const { handleCloseDialogRequest, myCollections } = this.props;
+    const { handleCloseDialogRequest, userCollections } = this.props;
     const { title, description } = this.state;
 
     return (
@@ -49,7 +51,7 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
                 <span className={styles.textCounter}>{`${title.length} / 100`}</span>
               </label>
               <input
-                value={!myCollections || myCollections.length === 0 ? "Read Later" : title}
+                value={!userCollections || userCollections.collectionIds.length === 0 ? "Read Later" : title}
                 autoFocus
                 onChange={this.handleTitleChange}
                 onKeyPress={this.handleKeyPressName}
@@ -90,17 +92,19 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
   };
 
   private makeCollection = async () => {
-    const { handleMakeCollection, handleCloseDialogRequest, myCollections, targetPaperId } = this.props;
+    const { handleMakeCollection, handleCloseDialogRequest, userCollections, targetPaperId } = this.props;
     const { title, description } = this.state;
 
     try {
-      await handleMakeCollection({ title, description });
+      if (targetPaperId && userCollections.collectionIds.length === 0) {
+        await handleMakeCollection({ title, description }, targetPaperId);
+      } else {
+        await handleMakeCollection({ title, description });
+      }
 
       Cookies.set(SELECTED_COLLECTION_ID, "0");
+
       handleCloseDialogRequest();
-      if (targetPaperId && (!myCollections || myCollections.length === 0)) {
-        GlobalDialogManager.openCollectionDialog(targetPaperId);
-      }
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
       alertToast({
@@ -126,4 +130,12 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
     });
   };
 }
-export default NewCollectionDialog;
+
+function mapStateToProps(state: AppState) {
+  return {
+    userCollections: state.userCollections,
+    currentUser: state.currentUser,
+  };
+}
+
+export default connect(mapStateToProps)(NewCollectionDialog);

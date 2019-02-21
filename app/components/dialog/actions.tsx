@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Dispatch } from "react-redux";
-import { ActionCreators } from "../../actions/actionTypes";
+import { ActionCreators, ACTION_TYPES } from "../../actions/actionTypes";
 import { GLOBAL_DIALOG_TYPE } from "./reducer";
 import PaperAPI, { GetCitationTextParams } from "../../api/paper";
 import MemberAPI from "../../api/member";
@@ -88,7 +88,7 @@ export function removePaperFromCollection(params: RemovePapersFromCollectionPara
   };
 }
 
-export function postNewCollection(params: PostCollectionParams) {
+export function postNewCollection(params: PostCollectionParams, targetPaperId?: number) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToPostCollectionInGlobalDialog());
@@ -100,6 +100,19 @@ export function postNewCollection(params: PostCollectionParams) {
           collectionId: res.result,
         })
       );
+
+      if (targetPaperId) {
+        await dispatch(
+          addPaperToCollection({ collection: res.entities.collections[res.result], paperId: targetPaperId })
+        );
+        dispatch({
+          type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
+          payload: {
+            type: "success",
+            message: "Succeeded to add paper to 'Read Later' Collection!!",
+          },
+        });
+      }
     } catch (err) {
       dispatch(ActionCreators.failedToPostCollectionInGlobalDialog());
       const error = PlutoAxios.getGlobalError(err);

@@ -126,11 +126,15 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     }
   };
 
-  private handleSubmitNewCollection = async (params: PostCollectionParams) => {
+  private handleSubmitNewCollection = async (params: PostCollectionParams, targetPaperId?: number) => {
     const { dispatch } = this.props;
 
     this.validateCollection(params);
-    await dispatch(Actions.postNewCollection(params));
+    if (targetPaperId) {
+      await dispatch(Actions.postNewCollection(params, targetPaperId));
+    } else {
+      await dispatch(Actions.postNewCollection(params));
+    }
   };
 
   private handleDeleteCollection = async (collectionId: number) => {
@@ -256,10 +260,9 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         return (
           <NewCollectionDialog
             handleCloseDialogRequest={this.closeDialog}
-            currentUser={currentUser}
-            myCollections={myCollections}
             targetPaperId={dialogState.collectionDialogTargetPaperId}
             handleMakeCollection={this.handleSubmitNewCollection}
+            handleAddingPaperToCollections={this.handleAddingPaperToCollection}
           />
         );
       case GLOBAL_DIALOG_TYPE.EDIT_COLLECTION:
