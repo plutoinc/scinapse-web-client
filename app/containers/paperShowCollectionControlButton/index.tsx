@@ -380,7 +380,8 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private handleClickNewCollectionButton = () => {
-    GlobalDialogManager.openNewCollectionDialog();
+    const { targetPaperId } = this.props;
+    GlobalDialogManager.openNewCollectionDialog(targetPaperId);
     this.handleCloseCollectionDropdown();
     trackEvent({
       category: "Additional Action",

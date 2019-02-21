@@ -9,6 +9,7 @@ import * as Cookies from "js-cookie";
 import { AppState } from "../../../../reducers";
 import { connect } from "react-redux";
 import { UserCollectionsState } from "../../../collections/reducer";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 interface NewCollectionDialogProps {
   currentUser: CurrentUser;
@@ -22,6 +23,7 @@ interface NewCollectionDialogProps {
 interface NewCollectionDialogStates {
   title: string;
   description: string;
+  isLoading: boolean;
 }
 const SELECTED_COLLECTION_ID = "selectedCollectionId";
 
@@ -33,12 +35,13 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
     this.state = {
       title: !props.userCollections || props.userCollections.collectionIds.length === 0 ? "Read Later" : "",
       description: "",
+      isLoading: false,
     };
   }
 
   public render() {
     const { handleCloseDialogRequest } = this.props;
-    const { title, description } = this.state;
+    const { title, description, isLoading } = this.state;
 
     return (
       <div className={styles.dialogWrapper}>
@@ -77,8 +80,8 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
             <button onClick={handleCloseDialogRequest} className={styles.cancelBtn}>
               Cancel
             </button>
-            <button onClick={this.makeCollection} className={styles.saveBtn}>
-              Save
+            <button onClick={this.makeCollection} className={styles.saveBtn} disabled={isLoading}>
+              {isLoading ? <CircularProgress color="inherit" disableShrink={true} size={14} thickness={4} /> : `Create`}
             </button>
           </div>
         </div>
@@ -95,6 +98,8 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
     const { handleMakeCollection, handleCloseDialogRequest, userCollections, targetPaperId } = this.props;
     const { title, description } = this.state;
 
+    this.setState(prevState => ({ ...prevState, isLoading: true }));
+
     try {
       if (targetPaperId && userCollections.collectionIds.length === 0) {
         await handleMakeCollection({ title, description }, targetPaperId);
@@ -105,12 +110,14 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
       Cookies.set(SELECTED_COLLECTION_ID, "0");
 
       handleCloseDialogRequest();
+      this.setState(prevState => ({ ...prevState, isLoading: false }));
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
       alertToast({
         type: "error",
         message: error.message,
       });
+      this.setState(prevState => ({ ...prevState, isLoading: false }));
     }
   };
 
