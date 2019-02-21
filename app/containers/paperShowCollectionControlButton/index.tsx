@@ -92,6 +92,12 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
         <span>{` and Save the paper in Collection`}</span>
       </div>
     );
+  } else if (!props.collection) {
+    return (
+      <div className={styles.signInTextWrapper}>
+        <span>{`Save the paper in Collection`}</span>
+      </div>
+    );
   }
 
   return (
@@ -138,7 +144,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     const isLoadingCollection = currentUser.isLoggingIn || myCollectionsState.isLoadingCollections;
     const isSelected = selectedCollection && selectedCollection.containsSelected;
     let saveButtonBorderRadius: string;
-    if (currentUser.isLoggedIn && !myCollections) {
+    if (currentUser.isLoggedIn && (myCollections && myCollections.length > 0)) {
       saveButtonBorderRadius = isSelected ? "0" : "0 4px 4px 0";
     } else {
       saveButtonBorderRadius = "4px";
@@ -166,7 +172,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
             }}
             disabled={isLoadingCollection || myCollectionsState.isFetchingPaper}
             onClick={
-              myCollections && myCollections.length > 0
+              (myCollections && myCollections.length > 0) || !currentUser.isLoggedIn
                 ? this.handleClickSaveButton
                 : this.handleClickNewCollectionButton
             }
@@ -220,10 +226,6 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
 
   private getCollectionItemInDropdown = () => {
     const { selectedCollection, currentUser, myCollectionsState, myCollections } = this.props;
-
-    if (!myCollections || myCollections.length === 0) {
-      return null;
-    }
 
     const collections =
       myCollections &&
