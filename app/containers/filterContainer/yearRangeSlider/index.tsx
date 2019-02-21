@@ -1,15 +1,19 @@
 import * as React from "react";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import { MIN_YEAR } from "./constants";
+import SliderBubble from "./sliderBubble";
+import { SearchPageQueryParams } from "../../../components/articleSearch/types";
+import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
+import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 const styles = require("./yearRangeSlider.scss");
-
-const MIN_YEAR = 1960;
 
 interface YearSet {
   year: number;
   docCount: number;
 }
 
-interface YearRangeSliderProps {
+interface YearRangeSliderProps extends RouteComponentProps<null> {
   yearInfo: YearSet[];
 }
 
@@ -28,104 +32,39 @@ const Column: React.FunctionComponent<{
       }}
       className={styles.column}
       onClick={props.onClick}
-    />
-  );
-};
-
-const SliderBubble: React.FunctionComponent<{
-  value: number;
-  left: number;
-  step: number;
-  min: number;
-  max: number;
-  limitLeft: number;
-  setLeft: React.Dispatch<React.SetStateAction<number>>;
-  setValues: React.Dispatch<React.SetStateAction<number[]>>;
-}> = props => {
-  function handleDragEvent(e: React.DragEvent<HTMLDivElement>) {
-    e.preventDefault();
-    if (props.min === props.value) {
-      const diff = e.screenX - Math.round(e.currentTarget.getBoundingClientRect().left);
-      const fromLeft = Math.min(Math.max(e.currentTarget.offsetLeft + diff, 0), props.limitLeft);
-      const nextStep = Math.floor(fromLeft / props.step);
-      const nextLeft = nextStep * props.step;
-      const nextValue = nextStep + MIN_YEAR;
-      const nextValues = [nextValue, props.max];
-      props.setValues(nextValues);
-      props.setLeft(nextLeft);
-    } else {
-      const diff = e.screenX - Math.round(e.currentTarget.getBoundingClientRect().left);
-      const fromLeft = Math.min(e.currentTarget.offsetLeft + diff, props.limitLeft);
-      const nextStep = Math.floor(fromLeft / props.step);
-      const nextLeft = nextStep * props.step;
-      const nextValue = nextStep + MIN_YEAR;
-      const nextValues = [props.min, nextValue];
-      props.setValues(nextValues);
-      props.setLeft(nextLeft);
-
-      console.log(e.clientX, "E.clientX");
-      console.log(e.pageX, "pageX");
-      console.log(e.screenX, "screenX");
-      console.log(e.currentTarget.offsetLeft, "=== offsetleft, ", diff, "=== diff");
-      console.log(fromLeft, "fromLeft");
-      console.log(diff, "diff");
-      console.log(nextStep, "nextStep");
-      console.log(nextLeft, "nextLeft");
-    }
-  }
-
-  return (
-    <div
-      draggable
-      onDrag={handleDragEvent}
-      onDragEnd={handleDragEvent}
-      style={{ left: `${props.left}px` }}
-      className={styles.sliderBubble}
-    />
+    >
+      <div style={{ display: "none" }}>popup</div>
+    </div>
   );
 };
 
 const Slider: React.FunctionComponent<{
   values: number[];
   step: number;
+  minValue: number;
+  maxValue: number;
   setValues: React.Dispatch<React.SetStateAction<number[]>>;
 }> = props => {
-  const minValue = Math.min(...props.values);
-  const maxValue = Math.max(...props.values);
-
-  const [minLeft, setMinLeft] = React.useState((minValue - MIN_YEAR) * props.step);
-  const [maxLeft, setMaxLeft] = React.useState((maxValue - MIN_YEAR) * props.step);
-  const currentYear = new Date().getFullYear();
-  const limitLeft = (currentYear - MIN_YEAR) * props.step;
-
-  return (
-    <div className={styles.slider}>
+  const bubbles = props.values.map((cv, i) => {
+    return (
       <SliderBubble
-        min={minValue}
-        max={maxValue}
-        limitLeft={limitLeft}
+        key={i}
+        min={props.minValue}
+        max={props.maxValue}
         setValues={props.setValues}
         step={props.step}
-        setLeft={setMinLeft}
-        left={minLeft}
-        value={minValue}
+        left={(cv - MIN_YEAR) * props.step}
+        value={cv}
       />
-      <SliderBubble
-        min={minValue}
-        max={maxValue}
-        limitLeft={limitLeft}
-        setValues={props.setValues}
-        step={props.step}
-        setLeft={setMaxLeft}
-        left={maxLeft}
-        value={maxValue}
-      />
-    </div>
-  );
+    );
+  });
+
+  return <div className={styles.slider}>{bubbles}</div>;
 };
 
 const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => {
   if (!props.yearInfo) return null;
+
   const yearInfoWithoutAll = props.yearInfo.filter(yearSet => !!yearSet.year && yearSet.year >= 1960);
   const yearSetSortByYear = [...yearInfoWithoutAll].sort((a, b) => {
     if (a.year < b.year) {
@@ -137,10 +76,15 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
     return 0;
   });
 
-  const [values, setValues] = React.useState([
-    yearSetSortByYear[0].year,
-    yearSetSortByYear[yearSetSortByYear.length - 1].year,
-  ]);
+  const qp: SearchPageQueryParams = getQueryParamsObject(props.location.search);
+  const filter = PapersQueryFormatter.objectifyPapersFilter(qp.filter);
+  const minYear =
+    filter.yearFrom && !isNaN(filter.yearFrom as number) ? (filter.yearFrom as number) : yearSetSortByYear[0].year;
+  const maxYear =
+    filter.yearTo && !isNaN(filter.yearTo as number)
+      ? (filter.yearTo as number)
+      : yearSetSortByYear[yearSetSortByYear.length - 1].year;
+  const [values, setValues] = React.useState([minYear, maxYear]);
   const minValue = Math.min(...values);
   const maxValue = Math.max(...values);
 
@@ -168,7 +112,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
         {yearSetSortByYear.map((yearSet, i) => {
           return (
             <Column
-              key={i}
+              key={yearSet.year}
               width={`${stepWidth - 1}px`}
               height={`${(yearSet.docCount / maxYearSet.docCount) * 100}%`}
               active={minValue <= yearSet.year && yearSet.year <= maxValue}
@@ -180,10 +124,10 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
         })}
       </div>
       <div className={styles.droppable}>
-        <Slider values={values} setValues={setValues} step={stepWidth} />
+        <Slider minValue={minValue} maxValue={maxValue} values={values} setValues={setValues} step={stepWidth} />
       </div>
     </div>
   );
 };
 
-export default withStyles<typeof YearRangeSlider>(styles)(YearRangeSlider);
+export default withRouter(withStyles<typeof YearRangeSlider>(styles)(YearRangeSlider));

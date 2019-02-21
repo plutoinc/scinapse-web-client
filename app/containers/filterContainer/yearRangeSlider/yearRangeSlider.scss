@@ -1,6 +1,7 @@
 .yearFilterBox {
-  padding: 0 8px;
+  padding: 0 24px;
   width: 352px;
+  margin-bottom: 54px;
 }
 
 .columnBox {
@@ -24,15 +25,25 @@
 
 .slider {
   position: relative;
-  height: 3px;
-  background-color: $gray4;
+  height: 2px;
+  background-color: $gray3;
 }
 
 .sliderBubble {
   position: absolute;
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
+  margin-left: -10px;
+  margin-top: 5px;
   border-radius: 100%;
   border: 1px solid $main_blue0;
   cursor: pointer;
+}
+
+.bubbleLabel {
+  position: absolute;
+  bottom: -20px;
+  left: -6px;
+  color: $gray9;
+  font-size: 12px;
 }
