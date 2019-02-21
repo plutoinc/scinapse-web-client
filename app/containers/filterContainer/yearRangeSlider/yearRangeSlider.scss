@@ -5,7 +5,15 @@
 }
 
 .columnBox {
+  position: relative;
   height: 70px;
+}
+
+.filterColumn {
+  position: absolute;
+  display: inline-block;
+  vertical-align: bottom;
+  bottom: 0;
 }
 
 .column {

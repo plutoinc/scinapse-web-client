@@ -21,10 +21,11 @@ export interface FilterContainerProps {
 
 function getPublicationFilterBox(props: FilterContainerProps) {
   const { articleSearchState } = props;
-
-  // const currentYear = new Date().getFullYear();
   const yearRangeList = articleSearchState.aggregationData ? articleSearchState.aggregationData.yearAll || [] : [];
-  return <YearRangeSlider yearInfo={yearRangeList} />;
+  const filteredYearRangeList = articleSearchState.aggregationData
+    ? articleSearchState.aggregationData.yearFiltered || []
+    : [];
+  return <YearRangeSlider yearInfo={yearRangeList} filteredYearInfo={filteredYearRangeList} />;
 }
 
 function getFOSFilterBox(props: FilterContainerProps) {

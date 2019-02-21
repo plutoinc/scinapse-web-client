@@ -16,6 +16,7 @@ interface YearSet {
 
 interface YearRangeSliderProps extends RouteComponentProps<null> {
   yearInfo: YearSet[];
+  filteredYearInfo: YearSet[];
 }
 
 const Column: React.FunctionComponent<{
@@ -25,30 +26,46 @@ const Column: React.FunctionComponent<{
   yearSet: YearSet;
   isSelecting: boolean;
   isSelectMode: boolean;
+  filteredYearSet: YearSet | undefined;
+  filterHeight: string;
   onClick: () => void;
 }> = props => {
   return (
-    <div
-      style={{
-        width: props.width,
-        height: props.height,
-        backgroundColor: props.active ? "rgba(96, 150, 255, 0.5)" : "#d8dde7",
-        borderRight: "solid 1px #f9f9fa",
-      }}
-      className={styles.column}
-      onClick={props.onClick}
-    >
+    <>
+      {props.filteredYearSet && (
+        <div
+          style={{
+            width: props.width,
+            height: props.filterHeight,
+            backgroundColor: "#3e7fff",
+            borderRight: "solid 1px #f9f9fa",
+          }}
+          className={styles.filterColumn}
+          onClick={props.onClick}
+        />
+      )}
       <div
-        className={classNames({
-          [styles.columnLabel]: true,
-          [styles.isSelectMode]: props.isSelectMode,
-          [styles.isSelecting]: props.isSelecting,
-        })}
+        style={{
+          width: props.width,
+          height: props.height,
+          backgroundColor: props.active ? "rgba(96, 150, 255, 0.5)" : "#d8dde7",
+          borderRight: "solid 1px #f9f9fa",
+        }}
+        className={styles.column}
+        onClick={props.onClick}
       >
-        <div className={styles.docCount}>{`${props.yearSet.docCount} Papers`}</div>
-        <div className={styles.yearNum}>{`${props.yearSet.year} Year`}</div>
+        <div
+          className={classNames({
+            [styles.columnLabel]: true,
+            [styles.isSelectMode]: props.isSelectMode,
+            [styles.isSelecting]: props.isSelecting,
+          })}
+        >
+          <div className={styles.docCount}>{`${props.yearSet.docCount} Papers`}</div>
+          <div className={styles.yearNum}>{`${props.yearSet.year} Year`}</div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -138,6 +155,8 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
     >
       <div className={styles.columnBox}>
         {yearSetSortByYear.map(yearSet => {
+          const filteredYearSet = props.filteredYearInfo.find(ys => ys.docCount > 0 && ys.year === yearSet.year);
+          const filterHeight = filteredYearSet ? `${(filteredYearSet.docCount / maxYearSet.docCount) * 100}%` : "0px";
           return (
             <Column
               key={yearSet.year}
@@ -147,6 +166,8 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
               isSelecting={selectingColumn === yearSet.year}
               isSelectMode={selectingColumn !== 0}
               yearSet={yearSet}
+              filteredYearSet={filteredYearSet}
+              filterHeight={filterHeight}
               onClick={() => {
                 setValues([yearSet.year, yearSet.year]);
               }}
