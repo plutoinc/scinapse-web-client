@@ -234,3 +234,9 @@
     }
   }
 }
+
+@media (max-width: $mobile-width) {
+  .rightBox {
+    display: none;
+  }
+}
