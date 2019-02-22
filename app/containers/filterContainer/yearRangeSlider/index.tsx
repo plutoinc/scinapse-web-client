@@ -79,6 +79,8 @@ const Slider: React.FunctionComponent<{
   setValues: React.Dispatch<React.SetStateAction<number[]>>;
   onSelectingColumn: React.Dispatch<React.SetStateAction<number>>;
 }> = props => {
+  const [isDragging, setIsDragging] = React.useState(false);
+
   const bubbles = props.values.map((cv, i) => {
     return (
       <SliderBubble
@@ -89,6 +91,8 @@ const Slider: React.FunctionComponent<{
         step={props.step}
         left={(cv - props.minLimitValue) * props.step}
         value={cv}
+        isDragging={isDragging}
+        onDrag={setIsDragging}
         onSelectingColumn={props.onSelectingColumn}
         minLimitValue={props.minLimitValue}
       />
@@ -136,14 +140,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
   const stepWidth = Math.floor(boxWidth / yearSetSortByYear.length);
 
   return (
-    <div
-      onDragOver={e => {
-        e.preventDefault();
-        return;
-      }}
-      onDrop={e => e.preventDefault()}
-      className={styles.yearFilterBox}
-    >
+    <div className={styles.yearFilterBox}>
       <div ref={columnBoxNode} className={styles.columnBox}>
         {yearSetSortByYear.map(yearSet => {
           const filteredYearSet = props.filteredYearInfo.find(ys => ys.year === yearSet.year);
