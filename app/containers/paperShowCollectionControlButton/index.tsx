@@ -89,7 +89,13 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
         >
           Sign in
         </span>
-        <span>{` and Save the paper in Collection`}</span>
+        <span>and Save the paper in Collection</span>
+      </div>
+    );
+  } else if (!props.collection) {
+    return (
+      <div className={styles.signInTextWrapper}>
+        <span>Save the paper in Collection</span>
       </div>
     );
   }
@@ -138,71 +144,16 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     const isLoadingCollection = currentUser.isLoggingIn || myCollectionsState.isLoadingCollections;
     const isSelected = selectedCollection && selectedCollection.containsSelected;
     let saveButtonBorderRadius: string;
-    if (currentUser.isLoggedIn) {
+    if (currentUser.isLoggedIn && (myCollections && myCollections.length > 0)) {
       saveButtonBorderRadius = isSelected ? "0" : "0 4px 4px 0";
     } else {
       saveButtonBorderRadius = "4px";
     }
 
-    const collections =
-      myCollections &&
-      myCollections.length > 0 &&
-      myCollections.map(collection => (
-        <li
-          className={styles.collectionItem}
-          onClick={() => {
-            this.handleSelectCollection(collection);
-            this.handleCloseCollectionDropdown();
-          }}
-          key={collection.id}
-        >
-          <span className={styles.collectionTitle}>{collection.title}</span>
-          {collection.containsSelected && <Icon icon="BOOKMARK_GRAY" className={styles.bookmarkIcon} />}
-        </li>
-      ));
-
     return (
       <div ref={el => (this.popoverAnchorEl = el)} className={styles.buttonWrapper}>
         <li className={styles.actionItem}>
-          <ClickAwayListener onClickAway={this.handleCloseCollectionDropdown}>
-            <div className={styles.actionItemWrapper}>
-              <TitleArea
-                currentUser={currentUser}
-                collection={selectedCollection}
-                isLoading={
-                  currentUser.isLoggingIn ||
-                  myCollectionsState.isLoadingCollections ||
-                  myCollectionsState.isLoadingCollectionsInDropdown
-                }
-                handleUnsignedUser={this.handleUnsignedUser}
-                onClick={this.handleToggleCollectionDropdown}
-              />
-              <Popper
-                open={myCollectionsState.isCollectionDropdownOpen}
-                anchorEl={this.popoverAnchorEl!}
-                placement="bottom-start"
-                disablePortal={true}
-                modifiers={{
-                  flip: {
-                    enabled: false,
-                  },
-                }}
-              >
-                <ul className={styles.popperPaper}>
-                  <li className={styles.newCollectionWrapper}>
-                    <div className={styles.newCollectionItem} onClick={this.handleClickNewCollectionButton}>
-                      <Icon icon="SMALL_PLUS" className={styles.plusIcon} />
-                      <span className={styles.newCollectionContext}>New Collection</span>
-                    </div>
-                    <div className={styles.newCollectionCancel} onClick={this.handleCloseCollectionDropdown}>
-                      <span className={styles.newCollectionCancelContext}>Cancel</span>
-                    </div>
-                  </li>
-                  {collections}
-                </ul>
-              </Popper>
-            </div>
-          </ClickAwayListener>
+          {this.getCollectionItemInDropdown()}
           <ScinapseButton
             content={this.getSaveButtonContent()}
             style={{
@@ -220,9 +171,12 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
               whiteSpace: "nowrap",
             }}
             disabled={isLoadingCollection || myCollectionsState.isFetchingPaper}
-            onClick={this.handleClickSaveButton}
+            onClick={
+              (myCollections && myCollections.length > 0) || !currentUser.isLoggedIn
+                ? this.handleClickSaveButton
+                : this.handleClickNewCollectionButton
+            }
           />
-
           <ClickAwayListener onClickAway={this.handleClickNoteBoxBackdrop}>
             <div>
               {isSelected && (
@@ -269,6 +223,69 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       </div>
     );
   }
+
+  private getCollectionItemInDropdown = () => {
+    const { selectedCollection, currentUser, myCollectionsState, myCollections } = this.props;
+
+    const collections =
+      myCollections &&
+      myCollections.length > 0 &&
+      myCollections.map(collection => (
+        <li
+          className={styles.collectionItem}
+          onClick={() => {
+            this.handleSelectCollection(collection);
+            this.handleCloseCollectionDropdown();
+          }}
+          key={collection.id}
+        >
+          <span className={styles.collectionTitle}>{collection.title}</span>
+          {collection.containsSelected && <Icon icon="BOOKMARK_GRAY" className={styles.bookmarkIcon} />}
+        </li>
+      ));
+
+    return (
+      <ClickAwayListener onClickAway={this.handleCloseCollectionDropdown}>
+        <div className={styles.actionItemWrapper}>
+          <TitleArea
+            currentUser={currentUser}
+            collection={selectedCollection}
+            isLoading={
+              currentUser.isLoggingIn ||
+              myCollectionsState.isLoadingCollections ||
+              myCollectionsState.isLoadingCollectionsInDropdown
+            }
+            handleUnsignedUser={this.handleUnsignedUser}
+            onClick={this.handleToggleCollectionDropdown}
+          />
+          <Popper
+            open={myCollectionsState.isCollectionDropdownOpen}
+            anchorEl={this.popoverAnchorEl!}
+            placement="bottom-start"
+            disablePortal={true}
+            modifiers={{
+              flip: {
+                enabled: false,
+              },
+            }}
+          >
+            <ul className={styles.popperPaper}>
+              <li className={styles.newCollectionWrapper}>
+                <div className={styles.newCollectionItem} onClick={this.handleClickNewCollectionButton}>
+                  <Icon icon="SMALL_PLUS" className={styles.plusIcon} />
+                  <span className={styles.newCollectionContext}>New Collection</span>
+                </div>
+                <div className={styles.newCollectionCancel} onClick={this.handleCloseCollectionDropdown}>
+                  <span className={styles.newCollectionCancelContext}>Cancel</span>
+                </div>
+              </li>
+              {collections}
+            </ul>
+          </Popper>
+        </div>
+      </ClickAwayListener>
+    );
+  };
 
   private selectDefaultCollection = (myCollections: Collection[]) => {
     const lastId = parseInt(store.get(LAST_USER_COLLECTION_ID), 10);
@@ -363,7 +380,8 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private handleClickNewCollectionButton = () => {
-    GlobalDialogManager.openNewCollectionDialog();
+    const { targetPaperId } = this.props;
+    GlobalDialogManager.openNewCollectionDialog(targetPaperId);
     this.handleCloseCollectionDropdown();
     trackEvent({
       category: "Additional Action",

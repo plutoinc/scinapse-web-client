@@ -4,7 +4,16 @@ import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import Icon from "../../../icons";
+import { connect } from "react-redux";
+import { AppState } from "../../../reducers";
+import { UserCollectionsState } from "../../collections/reducer";
 const styles = require("./collectionButton.scss");
+
+function mapStateToProps(state: AppState) {
+  return {
+    userCollections: state.userCollections,
+  };
+}
 
 interface CollectionButtonProps {
   paperId: number;
@@ -12,6 +21,15 @@ interface CollectionButtonProps {
   hasCollection: boolean;
   actionArea?: Scinapse.ActionTicket.ActionArea;
   onRemove?: (paperId: number) => Promise<void>;
+  userCollections: UserCollectionsState;
+}
+
+function handleAddToCollection(userCollections: UserCollectionsState, paperId: number) {
+  if (!userCollections.collectionIds || userCollections.collectionIds.length === 0) {
+    GlobalDialogManager.openNewCollectionDialog(paperId);
+  } else {
+    GlobalDialogManager.openCollectionDialog(paperId);
+  }
 }
 
 const CollectionButton: React.SFC<CollectionButtonProps> = ({
@@ -20,6 +38,7 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
   actionArea,
   hasCollection,
   onRemove,
+  userCollections,
 }) => {
   if (hasCollection && onRemove) {
     return (
@@ -50,7 +69,7 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
     <button
       className={styles.addCollectionBtnWrapper}
       onClick={() => {
-        GlobalDialogManager.openCollectionDialog(paperId);
+        handleAddToCollection(userCollections, paperId);
         trackEvent({
           category: "Additional Action",
           action: "Click [Add To Collection] Button",
@@ -70,4 +89,4 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
   );
 };
 
-export default withStyles<typeof CollectionButton>(styles)(CollectionButton);
+export default connect(mapStateToProps)(withStyles<typeof CollectionButton>(styles)(CollectionButton));

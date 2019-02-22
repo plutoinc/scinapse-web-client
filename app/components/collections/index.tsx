@@ -81,7 +81,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
                 <div className={styles.leftBox}>
                   <div className={styles.titleBox}>
                     <span>{`${member.firstName} ${member.lastName || ""}'s collections`}</span>
-                    <span className={styles.collectionCount}>{userCollections.maxCollectionCount}</span>
+                    <span className={styles.collectionCount}>{userCollections.collectionIds.length}</span>
                   </div>
                 </div>
                 <div className={styles.rightBox}>{this.getNewCollectionBtn()}</div>

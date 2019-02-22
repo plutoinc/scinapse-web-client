@@ -30,3 +30,9 @@
     }
   }
 }
+
+@media (max-width: $mobile-width) {
+  .addCollectionBtnWrapper {
+    display: none;
+  }
+}
