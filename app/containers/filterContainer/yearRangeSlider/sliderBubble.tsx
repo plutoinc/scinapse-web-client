@@ -1,6 +1,5 @@
 import * as React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import { MIN_YEAR } from "./constants";
 import PapersQueryFormatter, { SearchPageQueryParamsObject } from "../../../helpers/papersQueryFormatter";
 import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
 import { SearchPageQueryParams } from "../../../components/articleSearch/types";
@@ -12,6 +11,7 @@ interface SliderBubbleProps extends RouteComponentProps<null> {
   step: number;
   min: number;
   max: number;
+  minLimitValue: number;
   setValues: React.Dispatch<React.SetStateAction<number[]>>;
   onSelectingColumn: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -24,9 +24,9 @@ const SliderBubble: React.FunctionComponent<SliderBubbleProps> = props => {
     const fromLeft = e.currentTarget.offsetLeft + diff;
     const nextStep = Math.floor(fromLeft / props.step);
 
-    let nextValue: number = nextStep + MIN_YEAR;
-    if (nextValue < MIN_YEAR) {
-      nextValue = MIN_YEAR;
+    let nextValue: number = nextStep + props.minLimitValue;
+    if (nextValue < props.minLimitValue) {
+      nextValue = props.minLimitValue;
     } else if (nextValue > currentYear) {
       nextValue = currentYear;
     }
@@ -79,6 +79,12 @@ const SliderBubble: React.FunctionComponent<SliderBubbleProps> = props => {
   return (
     <div
       draggable
+      onDragStart={e => {
+        const fakeImg = new Image();
+        e.dataTransfer.setData("text/plain", String(props.value));
+        e.dataTransfer.setDragImage(fakeImg, 0, 0);
+        e.dataTransfer.dropEffect = "move";
+      }}
       onDrag={handleDragEvent}
       onDragEnd={handleDragEvent}
       style={{ left: `${props.left}px` }}

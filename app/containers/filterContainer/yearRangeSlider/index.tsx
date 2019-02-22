@@ -32,18 +32,19 @@ const Column: React.FunctionComponent<{
 }> = props => {
   return (
     <>
-      {props.filteredYearSet && (
-        <div
-          style={{
-            width: props.width,
-            height: props.filterHeight,
-            backgroundColor: "#3e7fff",
-            borderRight: "solid 1px #f9f9fa",
-          }}
-          className={styles.filterColumn}
-          onClick={props.onClick}
-        />
-      )}
+      {props.filteredYearSet &&
+        props.filteredYearSet.docCount > 0 && (
+          <div
+            style={{
+              width: props.width,
+              height: props.filterHeight,
+              backgroundColor: "#3e7fff",
+              borderRight: "solid 1px #f9f9fa",
+            }}
+            className={styles.filterColumn}
+            onClick={props.onClick}
+          />
+        )}
       <div
         style={{
           width: props.width,
@@ -74,6 +75,7 @@ const Slider: React.FunctionComponent<{
   step: number;
   minValue: number;
   maxValue: number;
+  minLimitValue: number;
   setValues: React.Dispatch<React.SetStateAction<number[]>>;
   onSelectingColumn: React.Dispatch<React.SetStateAction<number>>;
 }> = props => {
@@ -85,15 +87,16 @@ const Slider: React.FunctionComponent<{
         max={props.maxValue}
         setValues={props.setValues}
         step={props.step}
-        left={(cv - MIN_YEAR) * props.step}
+        left={(cv - props.minLimitValue) * props.step}
         value={cv}
         onSelectingColumn={props.onSelectingColumn}
+        minLimitValue={props.minLimitValue}
       />
     );
   });
 
-  const minLeft = (props.minValue - MIN_YEAR) * props.step;
-  const maxLeft = (props.maxValue - MIN_YEAR) * props.step;
+  const minLeft = (props.minValue - props.minLimitValue) * props.step;
+  const maxLeft = (props.maxValue - props.minLimitValue) * props.step;
   const activeLineWidth = maxLeft - minLeft;
 
   return (
@@ -105,16 +108,10 @@ const Slider: React.FunctionComponent<{
 };
 
 const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => {
-  if (!props.yearInfo) return null;
-
-  const yearInfoWithoutAll = props.yearInfo.filter(yearSet => !!yearSet.year && yearSet.year >= 1960);
-  const yearSetSortByYear = [...yearInfoWithoutAll].sort((a, b) => {
-    if (a.year < b.year) {
-      return -1;
-    }
-    if (a.year > b.year) {
-      return 1;
-    }
+  const yearSetListToShow = props.yearInfo.filter(yearSet => !!yearSet.year && yearSet.year >= MIN_YEAR);
+  const yearSetSortByYear = [...yearSetListToShow].sort((a, b) => {
+    if (a.year < b.year) return -1;
+    if (a.year > b.year) return 1;
     return 0;
   });
 
@@ -129,39 +126,32 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
 
   const [values, setValues] = React.useState([minYear, maxYear]);
   const [selectingColumn, setSelectingColumn] = React.useState(0);
-
   const minValue = Math.min(...values);
   const maxValue = Math.max(...values);
 
   // TODO: Add React Memoized function
-  const maxYearSet = [...yearInfoWithoutAll].sort((a, b) => {
-    if (a.docCount > b.docCount) {
-      return -1;
-    } else if (a.docCount === b.docCount) {
-      return 0;
-    } else {
-      return 1;
-    }
-  })[0];
-
-  const stepWidth = Math.floor(336 / yearSetSortByYear.length);
+  const maxDocCount = Math.max(...yearSetListToShow.map(yearSet => yearSet.docCount));
+  const columnBoxNode = React.useRef<HTMLDivElement | null>(null);
+  const boxWidth = columnBoxNode.current ? columnBoxNode.current.offsetWidth : 304;
+  const stepWidth = Math.floor(boxWidth / yearSetSortByYear.length);
 
   return (
     <div
       onDragOver={e => {
         e.preventDefault();
+        return;
       }}
       className={styles.yearFilterBox}
     >
-      <div className={styles.columnBox}>
+      <div ref={columnBoxNode} className={styles.columnBox}>
         {yearSetSortByYear.map(yearSet => {
-          const filteredYearSet = props.filteredYearInfo.find(ys => ys.docCount > 0 && ys.year === yearSet.year);
-          const filterHeight = filteredYearSet ? `${(filteredYearSet.docCount / maxYearSet.docCount) * 100}%` : "0px";
+          const filteredYearSet = props.filteredYearInfo.find(ys => ys.year === yearSet.year);
+          const filterHeight = filteredYearSet ? `${(filteredYearSet.docCount / maxDocCount) * 100}%` : "0px";
           return (
             <Column
               key={yearSet.year}
               width={`${stepWidth}px`}
-              height={`${(yearSet.docCount / maxYearSet.docCount) * 100}%`}
+              height={`${(yearSet.docCount / maxDocCount) * 100}%`}
               active={minValue <= yearSet.year && yearSet.year <= maxValue}
               isSelecting={selectingColumn === yearSet.year}
               isSelectMode={selectingColumn !== 0}
@@ -176,6 +166,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
         })}
       </div>
       <Slider
+        minLimitValue={yearSetSortByYear[0].year}
         minValue={minValue}
         maxValue={maxValue}
         values={values}
