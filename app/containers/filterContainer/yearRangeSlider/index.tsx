@@ -141,6 +141,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
         e.preventDefault();
         return;
       }}
+      onDrop={e => e.preventDefault()}
       className={styles.yearFilterBox}
     >
       <div ref={columnBoxNode} className={styles.columnBox}>

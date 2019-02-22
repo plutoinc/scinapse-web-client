@@ -18,7 +18,9 @@ interface SliderBubbleProps extends RouteComponentProps<null> {
 
 const SliderBubble: React.FunctionComponent<SliderBubbleProps> = props => {
   function handleDragEvent(e: React.DragEvent<HTMLDivElement>) {
-    e.preventDefault();
+    console.log(e.screenX);
+    if (!e.screenX) return;
+
     const currentYear = new Date().getFullYear();
     const diff = e.screenX - Math.round(e.currentTarget.getBoundingClientRect().left);
     const fromLeft = e.currentTarget.offsetLeft + diff;
@@ -53,27 +55,29 @@ const SliderBubble: React.FunctionComponent<SliderBubbleProps> = props => {
       }
     }
 
+    console.log(nextValues);
+
     props.setValues(nextValues);
     props.onSelectingColumn(nextValue);
+  }
 
-    if (e.type === "dragend") {
-      props.onSelectingColumn(0);
+  function handleDragEnd(_e: React.DragEvent<HTMLDivElement>) {
+    props.onSelectingColumn(0);
 
-      const qp: SearchPageQueryParams = getQueryParamsObject(props.location.search);
-      const filter = PapersQueryFormatter.objectifyPapersFilter(qp.filter);
-      const newFilter = { ...filter, yearFrom: Math.min(...nextValues), yearTo: Math.max(...nextValues) };
-      const newQP: SearchPageQueryParamsObject = {
-        query: qp.query || "",
-        filter: newFilter,
-        page: parseInt(qp.page || "1", 10),
-        sort: qp.sort || "RELEVANCE",
-      };
-      const newSearch = PapersQueryFormatter.stringifyPapersQuery(newQP);
-      props.history.push({
-        pathname: `/search`,
-        search: newSearch,
-      });
-    }
+    const qp: SearchPageQueryParams = getQueryParamsObject(props.location.search);
+    const filter = PapersQueryFormatter.objectifyPapersFilter(qp.filter);
+    const newFilter = { ...filter, yearFrom: props.min, yearTo: props.max };
+    const newQP: SearchPageQueryParamsObject = {
+      query: qp.query || "",
+      filter: newFilter,
+      page: parseInt(qp.page || "1", 10),
+      sort: qp.sort || "RELEVANCE",
+    };
+    const newSearch = PapersQueryFormatter.stringifyPapersQuery(newQP);
+    props.history.push({
+      pathname: `/search`,
+      search: newSearch,
+    });
   }
 
   return (
@@ -86,7 +90,7 @@ const SliderBubble: React.FunctionComponent<SliderBubbleProps> = props => {
         e.dataTransfer.dropEffect = "move";
       }}
       onDrag={handleDragEvent}
-      onDragEnd={handleDragEvent}
+      onDragEnd={handleDragEnd}
       style={{ left: `${props.left}px` }}
       className={styles.sliderBubble}
     >
