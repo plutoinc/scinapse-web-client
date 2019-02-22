@@ -1,4 +1,5 @@
 import * as React from "react";
+import Axios from "axios";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { denormalize } from "normalizr";
@@ -41,6 +42,7 @@ function mapStateToProps(state: AppState) {
 
 @withStyles<typeof DialogComponent>(styles)
 class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
+  private cancleToken = Axios.CancelToken.source().token;
   public render() {
     const { dialogState } = this.props;
 
@@ -86,7 +88,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       dialogState.collectionDialogTargetPaperId &&
       (currentUser.oauthLoggedIn || currentUser.emailVerified)
     ) {
-      dispatch(Actions.getMyCollections(dialogState.collectionDialogTargetPaperId));
+      dispatch(Actions.getMyCollections(dialogState.collectionDialogTargetPaperId, this.cancleToken));
     }
   };
 

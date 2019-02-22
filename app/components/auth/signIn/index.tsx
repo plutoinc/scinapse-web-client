@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { parse } from "qs";
+import axios from "axios";
 import * as Actions from "./actions";
 import { AppState } from "../../../reducers";
 import { SIGN_IN_ON_FOCUS_TYPE } from "./reducer";
@@ -28,6 +29,8 @@ function mapStateToProps(state: AppState) {
 
 @withStyles<typeof SignIn>(styles)
 class SignIn extends React.PureComponent<SignInContainerProps> {
+  private cancelToken = axios.CancelToken.source();
+
   public async componentDidMount() {
     const { dispatch, history } = this.props;
     const searchString = this.getCurrentSearchParamsString();
@@ -259,7 +262,8 @@ class SignIn extends React.PureComponent<SignInContainerProps> {
             email,
             password,
           },
-          isDialog
+          isDialog,
+          this.cancelToken.token
         )
       );
       if (!isDialog) {

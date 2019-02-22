@@ -1,4 +1,4 @@
-import axios from "axios";
+import { CancelToken } from "axios";
 import { Dispatch } from "react-redux";
 import { ActionCreators, ACTION_TYPES } from "../../actions/actionTypes";
 import { GLOBAL_DIALOG_TYPE } from "./reducer";
@@ -109,7 +109,7 @@ export function postNewCollection(params: PostCollectionParams, targetPaperId?: 
           type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
           payload: {
             type: "success",
-            message: "Succeeded to add paper to 'Read Later' Collection!!",
+            message: "Saved to 'Read Later' Collection!",
           },
         });
       }
@@ -121,12 +121,10 @@ export function postNewCollection(params: PostCollectionParams, targetPaperId?: 
   };
 }
 
-export function getMyCollections(paperId: number) {
+export function getMyCollections(paperId: number, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToGetCollectionsInGlobalDialog());
-      // HACK: Below token should be made and controlled at the container component.
-      const cancelToken = axios.CancelToken.source().token;
       const res = await MemberAPI.getMyCollections(paperId, cancelToken);
       dispatch(ActionCreators.addEntity(res));
       dispatch(

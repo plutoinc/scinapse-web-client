@@ -1,4 +1,5 @@
 import { Dispatch } from "redux";
+import { AxiosError, CancelToken } from "axios";
 import AuthAPI from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import validateEmail from "../../../helpers/validateEmail";
@@ -6,7 +7,6 @@ import { SIGN_IN_ON_FOCUS_TYPE } from "./reducer";
 import { closeDialog } from "../../dialog/actions";
 import EnvChecker from "../../../helpers/envChecker";
 import alertToast from "../../../helpers/makePlutoToastAction";
-import axios, { AxiosError } from "axios";
 import { SignInWithEmailParams, SignInResult, OAUTH_VENDOR, GetAuthorizeUriResult } from "../../../api/types/auth";
 import { trackDialogView } from "../../../helpers/handleGA";
 import { getCollections } from "../../collections/actions";
@@ -44,10 +44,9 @@ export function onBlurInput() {
   };
 }
 
-export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean) {
+export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<Function>) => {
     const { email, password } = params;
-    const cancelToken = axios.CancelToken.source();
 
     if (!validateEmail(email)) {
       dispatch({
@@ -91,7 +90,7 @@ export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean
         },
       });
       if (signInResult.member) {
-        dispatch(getCollections(signInResult.member.id, cancelToken.token));
+        dispatch(getCollections(signInResult.member.id, cancelToken));
       }
     } catch (err) {
       alertToast({

@@ -2,6 +2,7 @@ import * as React from "react";
 import { Route, Switch, match, withRouter, RouteComponentProps } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { connect, Dispatch } from "react-redux";
+import { CancelToken } from "axios";
 import Home from "./components/home";
 import { Header, FeedbackButton } from "./components/layouts";
 import ArticleSearch from "./components/articleSearch";
@@ -27,7 +28,6 @@ import { fetchCollectionShowData } from "./components/collectionShow/sideEffect"
 import { fetchJournalShowPageData } from "./components/journalShow/sideEffect";
 import { CurrentUser } from "./model/currentUser";
 import { Configuration } from "./reducers/configuration";
-import { CancelToken } from "axios";
 import AdminComponent from "./containers/admin";
 import {
   HOME_PATH,
@@ -46,6 +46,7 @@ import { getCollections } from "./components/collections/sideEffect";
 import AuthorSearch from "./containers/authorSearch";
 import { getAuthorSearchData } from "./containers/authorSearch/sideEffect";
 import { checkAuthStatus } from "./components/auth/actions";
+import axios from "axios";
 const styles = require("./root.scss");
 
 export interface LoadDataParams<P> {
@@ -157,9 +158,10 @@ function mapStateToProps(state: AppState) {
 
 @withStyles<typeof RootRoutes>(styles)
 class RootRoutes extends React.PureComponent<RootRoutesProps> {
+  private cancelToken = axios.CancelToken.source().token;
   public componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(checkAuthStatus());
+    dispatch(checkAuthStatus(this.cancelToken));
   }
 
   public render() {

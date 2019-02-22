@@ -12,13 +12,14 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { CurrentUser } from "../../../model/currentUser";
 import { Collection } from "../../../model/collection";
+import Axios, { CancelToken } from "axios";
 const styles = require("./collection.scss");
 
 interface CollectionDialogProps {
   currentUser: CurrentUser;
   myCollections: Collection[];
   collectionDialogPaperId: number;
-  getMyCollections: () => void;
+  getMyCollections: (cancelToken: CancelToken) => void;
   handleCloseDialogRequest: () => void;
   handleSubmitNewCollection: (params: PostCollectionParams) => void;
   handleAddingPaperToCollections: (params: AddPaperToCollectionParams) => Promise<void>;
@@ -35,6 +36,7 @@ interface CollectionDialogStates {
 class CollectionDialog extends React.PureComponent<CollectionDialogProps, CollectionDialogStates> {
   private contentBox: HTMLDivElement | null;
   private newCollectionAnchor: HTMLDivElement | null;
+  private cancelToken = Axios.CancelToken.source().token;
 
   public constructor(props: CollectionDialogProps) {
     super(props);
@@ -47,7 +49,7 @@ class CollectionDialog extends React.PureComponent<CollectionDialogProps, Collec
   }
 
   public async componentDidMount() {
-    this.props.getMyCollections();
+    this.props.getMyCollections(this.cancelToken);
   }
 
   public render() {
