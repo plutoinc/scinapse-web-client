@@ -24,6 +24,14 @@ interface CollectionButtonProps {
   userCollections: UserCollectionsState;
 }
 
+function handleAddToCollection(userCollections: UserCollectionsState, paperId: number) {
+  if (!userCollections.collectionIds || userCollections.collectionIds.length === 0) {
+    GlobalDialogManager.openNewCollectionDialog(paperId);
+  } else {
+    GlobalDialogManager.openCollectionDialog(paperId);
+  }
+}
+
 const CollectionButton: React.SFC<CollectionButtonProps> = ({
   paperId,
   pageType,
@@ -61,11 +69,7 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
     <button
       className={styles.addCollectionBtnWrapper}
       onClick={() => {
-        if (!userCollections.collectionIds || userCollections.collectionIds.length === 0) {
-          GlobalDialogManager.openNewCollectionDialog(paperId);
-        } else {
-          GlobalDialogManager.openCollectionDialog(paperId);
-        }
+        handleAddToCollection(userCollections, paperId);
         trackEvent({
           category: "Additional Action",
           action: "Click [Add To Collection] Button",

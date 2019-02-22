@@ -42,7 +42,12 @@ function mapStateToProps(state: AppState) {
 
 @withStyles<typeof DialogComponent>(styles)
 class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
-  private cancleToken = Axios.CancelToken.source().token;
+  private cancelToken = Axios.CancelToken.source();
+
+  public componentWillUnmount() {
+    this.cancelToken.cancel();
+  }
+
   public render() {
     const { dialogState } = this.props;
 
@@ -88,7 +93,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       dialogState.collectionDialogTargetPaperId &&
       (currentUser.oauthLoggedIn || currentUser.emailVerified)
     ) {
-      dispatch(Actions.getMyCollections(dialogState.collectionDialogTargetPaperId, this.cancleToken));
+      dispatch(Actions.getMyCollections(dialogState.collectionDialogTargetPaperId, this.cancelToken.token));
     }
   };
 
@@ -132,11 +137,8 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     const { dispatch } = this.props;
 
     this.validateCollection(params);
-    if (targetPaperId) {
-      await dispatch(Actions.postNewCollection(params, targetPaperId));
-    } else {
-      await dispatch(Actions.postNewCollection(params));
-    }
+
+    await dispatch(Actions.postNewCollection(params, targetPaperId));
   };
 
   private handleDeleteCollection = async (collectionId: number) => {

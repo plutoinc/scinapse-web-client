@@ -2,7 +2,7 @@ import * as React from "react";
 import { Route, Switch, match, withRouter, RouteComponentProps } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { connect, Dispatch } from "react-redux";
-import { CancelToken } from "axios";
+import axios, { CancelToken } from "axios";
 import Home from "./components/home";
 import { Header, FeedbackButton } from "./components/layouts";
 import ArticleSearch from "./components/articleSearch";
@@ -42,11 +42,11 @@ import {
   ADMIN_PATH,
   TERMS_OF_SERVICE_PATH,
 } from "./constants/routes";
-import { getCollections } from "./components/collections/sideEffect";
 import AuthorSearch from "./containers/authorSearch";
 import { getAuthorSearchData } from "./containers/authorSearch/sideEffect";
 import { checkAuthStatus } from "./components/auth/actions";
-import axios from "axios";
+import { getCollections } from "./components/collections/actions";
+import { getCollections as sideEffectGetCollections } from "./components/collections/sideEffect";
 const styles = require("./root.scss");
 
 export interface LoadDataParams<P> {
@@ -119,7 +119,7 @@ export const routesMap: ServerRoutesMap[] = [
     path: COLLECTION_LIST_PATH,
     component: UserCollections,
     loadData: async (params: LoadDataParams<{ userId: string }>) => {
-      await getCollections(params);
+      await Promise.all([sideEffectGetCollections(params)]);
     },
     exact: true,
   },
@@ -158,10 +158,18 @@ function mapStateToProps(state: AppState) {
 
 @withStyles<typeof RootRoutes>(styles)
 class RootRoutes extends React.PureComponent<RootRoutesProps> {
-  private cancelToken = axios.CancelToken.source().token;
-  public componentDidMount() {
+  private cancelToken = axios.CancelToken.source();
+  public componentDidMount = async () => {
     const { dispatch } = this.props;
-    dispatch(checkAuthStatus(this.cancelToken));
+    const user = await dispatch(checkAuthStatus());
+
+    if (user && user.member) {
+      dispatch(getCollections(user.member.id, this.cancelToken.token));
+    }
+  };
+
+  public componentWillUnmount() {
+    this.cancelToken.cancel();
   }
 
   public render() {

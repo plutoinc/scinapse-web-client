@@ -17,6 +17,7 @@ import { SignInContainerProps, SignInSearchParams } from "./types";
 import { OAUTH_VENDOR } from "../../../api/types/auth";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
+import { getCollections } from "../../collections/actions";
 
 const store = require("store");
 const styles = require("./signIn.scss");
@@ -256,16 +257,20 @@ class SignIn extends React.PureComponent<SignInContainerProps> {
     const isDialog = !!handleChangeDialogType;
 
     try {
-      await dispatch(
+      const user = await dispatch(
         Actions.signInWithEmail(
           {
             email,
             password,
           },
-          isDialog,
-          this.cancelToken.token
+          isDialog
         )
       );
+
+      if (user && user.member) {
+        dispatch(getCollections(user.member.id, this.cancelToken.token));
+      }
+
       if (!isDialog) {
         history.push("/");
       }

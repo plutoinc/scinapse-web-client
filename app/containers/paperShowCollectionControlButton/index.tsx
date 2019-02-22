@@ -89,13 +89,13 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
         >
           Sign in
         </span>
-        <span>{` and Save the paper in Collection`}</span>
+        <span>and Save the paper in Collection</span>
       </div>
     );
   } else if (!props.collection) {
     return (
       <div className={styles.signInTextWrapper}>
-        <span>{`Save the paper in Collection`}</span>
+        <span>Save the paper in Collection</span>
       </div>
     );
   }

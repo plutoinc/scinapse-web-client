@@ -1,15 +1,15 @@
 import * as React from "react";
+import * as Cookies from "js-cookie";
+import { connect } from "react-redux";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import { CurrentUser } from "../../../../model/currentUser";
 import { PostCollectionParams, AddPaperToCollectionParams } from "../../../../api/collection";
 import alertToast from "../../../../helpers/makePlutoToastAction";
 import PlutoAxios from "../../../../api/pluto";
 const styles = require("./newCollection.scss");
-import * as Cookies from "js-cookie";
 import { AppState } from "../../../../reducers";
-import { connect } from "react-redux";
 import { UserCollectionsState } from "../../../collections/reducer";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 interface NewCollectionDialogProps {
   currentUser: CurrentUser;

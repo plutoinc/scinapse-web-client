@@ -1,10 +1,10 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
+import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
 import PaperItem from "..";
 import { RAW } from "../../../../__mocks__";
 import { CURRENT_USER_INITIAL_STATE } from "../../../../model/currentUser";
-import { Provider } from "react-redux";
 import { generateMockStore } from "../../../../__tests__/mockStore";
 import { initialState } from "../../../../reducers";
 

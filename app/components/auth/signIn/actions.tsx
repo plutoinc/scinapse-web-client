@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { AxiosError, CancelToken } from "axios";
+import { AxiosError } from "axios";
 import AuthAPI from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import validateEmail from "../../../helpers/validateEmail";
@@ -9,7 +9,6 @@ import EnvChecker from "../../../helpers/envChecker";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { SignInWithEmailParams, SignInResult, OAUTH_VENDOR, GetAuthorizeUriResult } from "../../../api/types/auth";
 import { trackDialogView } from "../../../helpers/handleGA";
-import { getCollections } from "../../collections/actions";
 
 export function changeEmailInput(email: string) {
   return {
@@ -44,7 +43,7 @@ export function onBlurInput() {
   };
 }
 
-export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean, cancelToken: CancelToken) {
+export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean) {
   return async (dispatch: Dispatch<Function>) => {
     const { email, password } = params;
 
@@ -89,9 +88,7 @@ export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean
           oauthLoggedIn: signInResult.oauthLoggedIn,
         },
       });
-      if (signInResult.member) {
-        dispatch(getCollections(signInResult.member.id, cancelToken));
-      }
+      return signInResult;
     } catch (err) {
       alertToast({
         type: "error",

@@ -1,9 +1,7 @@
 import { Dispatch } from "redux";
-import { CancelToken } from "axios";
 import AuthAPI from "../../api/auth";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { SignInResult } from "../../api/types/auth";
-import { getCollections } from "../collections/actions";
 
 export function signOut() {
   return async (dispatch: Dispatch<any>) => {
@@ -23,7 +21,7 @@ export function signOut() {
   };
 }
 
-export function checkAuthStatus(cancelToken: CancelToken) {
+export function checkAuthStatus() {
   return async (dispatch: Dispatch<any>) => {
     try {
       const checkLoggedInResult: SignInResult = await AuthAPI.checkLoggedIn();
@@ -36,9 +34,8 @@ export function checkAuthStatus(cancelToken: CancelToken) {
           oauthLoggedIn: checkLoggedInResult.oauthLoggedIn,
         },
       });
-      if (checkLoggedInResult.member) {
-        dispatch(getCollections(checkLoggedInResult.member.id, cancelToken));
-      }
+
+      return checkLoggedInResult;
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.AUTH_FAILED_TO_CHECK_LOGGED_IN,

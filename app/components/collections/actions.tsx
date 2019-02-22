@@ -23,7 +23,7 @@ export function getMember(memberId: number, cancelToken: CancelToken) {
           type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
           payload: {
             type: "error",
-            message: "Sorry. Temporarily unavailable to get collections.",
+            message: "Sorry. Temporarily unavailable to get members.",
           },
         });
         throw err;
