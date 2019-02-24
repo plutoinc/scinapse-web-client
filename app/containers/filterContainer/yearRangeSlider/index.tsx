@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import * as classNames from "classnames";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { MIN_YEAR } from "./constants";
-import SliderBubble from "./sliderBubble";
+import Slider from "./slider";
 import { SearchPageQueryParams } from "../../../components/articleSearch/types";
 import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
@@ -67,47 +67,6 @@ const Column: React.FunctionComponent<{
         </div>
       </div>
     </>
-  );
-};
-
-const Slider: React.FunctionComponent<{
-  values: number[];
-  step: number;
-  minValue: number;
-  maxValue: number;
-  minLimitValue: number;
-  setValues: React.Dispatch<React.SetStateAction<number[]>>;
-  onSelectingColumn: React.Dispatch<React.SetStateAction<number>>;
-}> = props => {
-  const [isDragging, setIsDragging] = React.useState(false);
-
-  const bubbles = props.values.map((cv, i) => {
-    return (
-      <SliderBubble
-        key={i}
-        min={props.minValue}
-        max={props.maxValue}
-        setValues={props.setValues}
-        step={props.step}
-        left={(cv - props.minLimitValue) * props.step}
-        value={cv}
-        isDragging={isDragging}
-        onDrag={setIsDragging}
-        onSelectingColumn={props.onSelectingColumn}
-        minLimitValue={props.minLimitValue}
-      />
-    );
-  });
-
-  const minLeft = (props.minValue - props.minLimitValue) * props.step;
-  const maxLeft = (props.maxValue - props.minLimitValue) * props.step;
-  const activeLineWidth = maxLeft - minLeft;
-
-  return (
-    <div className={styles.slider}>
-      <div style={{ left: `${minLeft}px`, width: `${activeLineWidth}px` }} className={styles.activeLine} />
-      {bubbles}
-    </div>
   );
 };
 
