@@ -7,6 +7,7 @@ import Slider from "./slider";
 import { SearchPageQueryParams } from "../../../components/articleSearch/types";
 import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
+import { goToYearFilteredSearchResultPage } from "./helper";
 const styles = require("./yearRangeSlider.scss");
 
 interface YearSet {
@@ -119,6 +120,12 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
               filterHeight={filterHeight}
               onClick={() => {
                 setValues([yearSet.year, yearSet.year]);
+                goToYearFilteredSearchResultPage({
+                  qs: props.location.search,
+                  min: yearSet.year,
+                  max: yearSet.year,
+                  history: props.history,
+                });
               }}
             />
           );

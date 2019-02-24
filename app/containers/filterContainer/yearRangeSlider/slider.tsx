@@ -1,8 +1,6 @@
 import * as React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import PapersQueryFormatter, { SearchPageQueryParamsObject } from "../../../helpers/papersQueryFormatter";
-import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
-import { SearchPageQueryParams } from "../../../components/articleSearch/types";
+import { goToYearFilteredSearchResultPage } from "./helper";
 const styles = require("./yearRangeSlider.scss");
 
 interface SliderBubbleProps {
@@ -126,21 +124,13 @@ class Slider extends React.PureComponent<SliderProps, SliderState> {
   };
 
   private handleDragEnd = () => {
-    this.props.onSelectingColumn(0);
-
-    const qp: SearchPageQueryParams = getQueryParamsObject(this.props.location.search);
-    const filter = PapersQueryFormatter.objectifyPapersFilter(qp.filter);
-    const newFilter = { ...filter, yearFrom: this.props.minValue, yearTo: this.props.maxValue };
-    const newQP: SearchPageQueryParamsObject = {
-      query: qp.query || "",
-      filter: newFilter,
-      page: parseInt(qp.page || "1", 10),
-      sort: qp.sort || "RELEVANCE",
-    };
-    const newSearch = PapersQueryFormatter.stringifyPapersQuery(newQP);
-    this.props.history.push({
-      pathname: `/search`,
-      search: newSearch,
+    const { location, minValue, maxValue, history, onSelectingColumn } = this.props;
+    onSelectingColumn(0);
+    goToYearFilteredSearchResultPage({
+      qs: location.search,
+      min: minValue,
+      max: maxValue,
+      history,
     });
   };
 }
