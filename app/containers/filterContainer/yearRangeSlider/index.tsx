@@ -103,12 +103,14 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
       <div ref={columnBoxNode} className={styles.columnBox}>
         {yearSetSortByYear.map(yearSet => {
           const filteredYearSet = props.filteredYearInfo.find(ys => ys.year === yearSet.year);
-          const filterHeight = filteredYearSet ? `${(filteredYearSet.docCount / maxDocCount) * 100}%` : "0px";
+          const filterHeight = filteredYearSet
+            ? `${Math.round((filteredYearSet.docCount / maxDocCount) * 100)}%`
+            : "0px";
           return (
             <Column
               key={yearSet.year}
               width={`${stepWidth}px`}
-              height={`${(yearSet.docCount / maxDocCount) * 100}%`}
+              height={`${Math.round((yearSet.docCount / maxDocCount) * 100)}%`}
               active={minValue <= yearSet.year && yearSet.year <= maxValue}
               isSelecting={selectingColumn === yearSet.year}
               isSelectMode={selectingColumn !== 0}

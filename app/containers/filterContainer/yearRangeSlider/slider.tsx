@@ -90,10 +90,10 @@ class Slider extends React.PureComponent<SliderProps, SliderState> {
 
   private handleDragEvent = (e: any) => {
     const { minValue, maxValue } = this.props;
-    if (!e.screenX || !this.state.bubbleNode) return;
+    if (!e.clientX || !this.state.bubbleNode) return;
 
     const currentYear = new Date().getFullYear();
-    const diff = e.screenX - Math.round(this.state.bubbleNode.getBoundingClientRect().left);
+    const diff = e.clientX - Math.round(this.state.bubbleNode.getBoundingClientRect().left);
     const fromLeft = this.state.bubbleNode.offsetLeft + diff;
     const nextStep = Math.floor(fromLeft / this.props.step);
 
