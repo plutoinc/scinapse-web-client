@@ -1,6 +1,6 @@
-import axios from "axios";
+import { CancelToken } from "axios";
 import { Dispatch } from "react-redux";
-import { ActionCreators } from "../../actions/actionTypes";
+import { ActionCreators, ACTION_TYPES } from "../../actions/actionTypes";
 import { GLOBAL_DIALOG_TYPE } from "./reducer";
 import PaperAPI, { GetCitationTextParams } from "../../api/paper";
 import MemberAPI from "../../api/member";
@@ -88,7 +88,7 @@ export function removePaperFromCollection(params: RemovePapersFromCollectionPara
   };
 }
 
-export function postNewCollection(params: PostCollectionParams) {
+export function postNewCollection(params: PostCollectionParams, targetPaperId?: number) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToPostCollectionInGlobalDialog());
@@ -100,6 +100,19 @@ export function postNewCollection(params: PostCollectionParams) {
           collectionId: res.result,
         })
       );
+
+      if (targetPaperId) {
+        await dispatch(
+          addPaperToCollection({ collection: res.entities.collections[res.result], paperId: targetPaperId })
+        );
+        dispatch({
+          type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
+          payload: {
+            type: "success",
+            message: "Saved to 'Read Later' Collection!",
+          },
+        });
+      }
     } catch (err) {
       dispatch(ActionCreators.failedToPostCollectionInGlobalDialog());
       const error = PlutoAxios.getGlobalError(err);
@@ -108,12 +121,10 @@ export function postNewCollection(params: PostCollectionParams) {
   };
 }
 
-export function getMyCollections(paperId: number) {
+export function getMyCollections(paperId: number, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToGetCollectionsInGlobalDialog());
-      // HACK: Below token should be made and controlled at the container component.
-      const cancelToken = axios.CancelToken.source().token;
       const res = await MemberAPI.getMyCollections(paperId, cancelToken);
       dispatch(ActionCreators.addEntity(res));
       dispatch(

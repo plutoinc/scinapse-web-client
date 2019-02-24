@@ -9,6 +9,12 @@ import PlutoAxios from "../../api/pluto";
 import { CommonError } from "../../model/error";
 import { GetAuthorsParam } from "../../api/types/author";
 
+export function toggleExpandingFilter() {
+  return {
+    type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX,
+  };
+}
+
 export function changeRangeInput(params: ChangeRangeInputParams) {
   return {
     type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT,

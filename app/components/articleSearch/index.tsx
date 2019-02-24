@@ -157,6 +157,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
               makeNewFilterLink={this.makeNewFilterLink}
               handleChangeRangeInput={this.setRangeInput}
               articleSearchState={articleSearchState}
+              handleToggleExpandingFilter={this.handleToggleExpandingFilter}
             />
           </div>
           <Footer containerStyle={this.getContainerStyle()} />
@@ -326,6 +327,12 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
         />
       );
     }
+  };
+
+  private handleToggleExpandingFilter = () => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.toggleExpandingFilter());
   };
 
   private makeNewFilterLink = (newFilter: FilterObject) => {

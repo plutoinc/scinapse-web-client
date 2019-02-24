@@ -6,8 +6,6 @@ import SafeURIStringHandler from "./safeURIStringHandler";
 export interface FilterObject {
   yearFrom?: number | string;
   yearTo?: number | string;
-  journalIFFrom?: number | string;
-  journalIFTo?: number | string;
   fos?: number[] | string[];
   journal?: number[] | string[];
 }
@@ -64,26 +62,17 @@ class PaperSearchQueryFormatter {
     // tslint:disable-next-line:one-variable-per-declaration
     let yearFrom: number | undefined;
     let yearTo: number | undefined;
-    let journalIFFrom: number | undefined;
-    let journalIFTo: number | undefined;
-    let fos: number[];
-    let journal: number[];
+    let fos: number[] = [];
+    let journal: number[] = [];
     if (!!queryMap.year) {
       yearFrom = parseInt(queryMap.year.split(":")[0], 10);
       yearTo = parseInt(queryMap.year.split(":")[1], 10);
     }
 
-    if (!!queryMap.if) {
-      journalIFFrom = parseInt(queryMap.if.split(":")[0], 10);
-      journalIFTo = parseInt(queryMap.if.split(":")[1], 10);
-    }
-
     if (!!queryMap.fos) {
-      fos = queryMap.fos.split("|").map(field => {
-        if (!!field) {
-          return parseInt(field, 10);
-        } else {
-          return 0;
+      queryMap.fos.split("|").forEach(f => {
+        if (!!f) {
+          fos.push(parseInt(f, 10));
         }
       });
     } else {
@@ -91,11 +80,9 @@ class PaperSearchQueryFormatter {
     }
 
     if (!!queryMap.journal) {
-      journal = queryMap.journal.split("|").map(j => {
+      queryMap.journal.split("|").forEach(j => {
         if (!!j) {
-          return parseInt(j, 10);
-        } else {
-          return 0;
+          journal.push(parseInt(j, 10));
         }
       });
     } else {
@@ -105,24 +92,15 @@ class PaperSearchQueryFormatter {
     return {
       yearFrom,
       yearTo,
-      journalIFFrom,
-      journalIFTo,
       fos,
       journal,
     };
   }
 
-  private getStringifiedPaperFilterParams({
-    yearFrom,
-    yearTo,
-    journalIFFrom,
-    journalIFTo,
-    fos,
-    journal,
-  }: FilterObject) {
-    const resultQuery = `year=${yearFrom || ""}:${yearTo || ""},if=${journalIFFrom || ""}:${journalIFTo || ""},fos=${
-      fos ? fos.join("|") : ""
-    },journal=${journal ? journal.join("|") : ""}`;
+  private getStringifiedPaperFilterParams({ yearFrom, yearTo, fos, journal }: FilterObject) {
+    const resultQuery = `year=${yearFrom || ""}:${yearTo || ""},fos=${fos ? fos.join("|") : ""},journal=${
+      journal ? journal.join("|") : ""
+    }`;
 
     return resultQuery;
   }

@@ -1,4 +1,5 @@
 import * as React from "react";
+import Axios from "axios";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { denormalize } from "normalizr";
@@ -41,6 +42,12 @@ function mapStateToProps(state: AppState) {
 
 @withStyles<typeof DialogComponent>(styles)
 class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
+  private cancelToken = Axios.CancelToken.source();
+
+  public componentWillUnmount() {
+    this.cancelToken.cancel();
+  }
+
   public render() {
     const { dialogState } = this.props;
 
@@ -86,7 +93,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       dialogState.collectionDialogTargetPaperId &&
       (currentUser.oauthLoggedIn || currentUser.emailVerified)
     ) {
-      dispatch(Actions.getMyCollections(dialogState.collectionDialogTargetPaperId));
+      dispatch(Actions.getMyCollections(dialogState.collectionDialogTargetPaperId, this.cancelToken.token));
     }
   };
 
@@ -126,11 +133,12 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     }
   };
 
-  private handleSubmitNewCollection = async (params: PostCollectionParams) => {
+  private handleSubmitNewCollection = async (params: PostCollectionParams, targetPaperId?: number) => {
     const { dispatch } = this.props;
 
     this.validateCollection(params);
-    await dispatch(Actions.postNewCollection(params));
+
+    await dispatch(Actions.postNewCollection(params, targetPaperId));
   };
 
   private handleDeleteCollection = async (collectionId: number) => {
@@ -256,8 +264,9 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         return (
           <NewCollectionDialog
             handleCloseDialogRequest={this.closeDialog}
-            currentUser={currentUser}
+            targetPaperId={dialogState.collectionDialogTargetPaperId}
             handleMakeCollection={this.handleSubmitNewCollection}
+            handleAddingPaperToCollections={this.handleAddingPaperToCollection}
           />
         );
       case GLOBAL_DIALOG_TYPE.EDIT_COLLECTION:

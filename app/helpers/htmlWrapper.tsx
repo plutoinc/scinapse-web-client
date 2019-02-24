@@ -1,4 +1,5 @@
 import { HelmetData } from "react-helmet";
+import EnvChecker from "./envChecker";
 const sprite = require("svg-sprite-loader/runtime/sprite.build");
 
 interface GenerateFullHTMLParams {
@@ -11,6 +12,20 @@ interface GenerateFullHTMLParams {
 }
 
 export function generateFullHTML({ reactDom, scriptPath, helmet, initialState, css, version }: GenerateFullHTMLParams) {
+  let gTagScript: string = "";
+  if (EnvChecker.isOnServer() && !EnvChecker.isDev() && !EnvChecker.isLocal()) {
+    gTagScript = `
+    <!-- Global site tag (gtag.js) - Google Ads: 817738370 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-817738370"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'AW-817738370');
+</script>`;
+  }
+
   return `
     <!doctype html>
     <html lang="en">
@@ -20,6 +35,7 @@ export function generateFullHTML({ reactDom, scriptPath, helmet, initialState, c
       ${helmet.script.toString()}
       ${helmet.meta.toString()}
       ${helmet.link.toString()}
+      ${gTagScript}
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet" />
         <style id="jss-server-side" type="text/css">${css}</style>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.css" 

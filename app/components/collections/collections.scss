@@ -179,3 +179,10 @@ $collections-container-width: 793px;
 .collectionItem + .collectionItem {
   margin-top: 16px;
 }
+
+@media (max-width: $mobile-width) {
+  .container {
+    width: 100%;
+    padding: 8px 16px;
+  }
+}

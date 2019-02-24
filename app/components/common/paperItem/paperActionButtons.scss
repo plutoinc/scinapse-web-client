@@ -8,6 +8,8 @@
 
   .citedButton {
     @include small-button($gray6);
+    font-size: 14px;
+
     .citedIconWrapper {
       margin-right: 6px;
     }

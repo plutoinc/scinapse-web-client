@@ -1,4 +1,5 @@
 import { Dispatch } from "redux";
+import { AxiosError } from "axios";
 import AuthAPI from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import validateEmail from "../../../helpers/validateEmail";
@@ -6,7 +7,6 @@ import { SIGN_IN_ON_FOCUS_TYPE } from "./reducer";
 import { closeDialog } from "../../dialog/actions";
 import EnvChecker from "../../../helpers/envChecker";
 import alertToast from "../../../helpers/makePlutoToastAction";
-import { AxiosError } from "axios";
 import { SignInWithEmailParams, SignInResult, OAUTH_VENDOR, GetAuthorizeUriResult } from "../../../api/types/auth";
 import { trackDialogView } from "../../../helpers/handleGA";
 
@@ -88,6 +88,7 @@ export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean
           oauthLoggedIn: signInResult.oauthLoggedIn,
         },
       });
+      return signInResult;
     } catch (err) {
       alertToast({
         type: "error",

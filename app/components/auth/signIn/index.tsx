@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { parse } from "qs";
+import axios from "axios";
 import * as Actions from "./actions";
 import { AppState } from "../../../reducers";
 import { SIGN_IN_ON_FOCUS_TYPE } from "./reducer";
@@ -16,6 +17,7 @@ import { SignInContainerProps, SignInSearchParams } from "./types";
 import { OAUTH_VENDOR } from "../../../api/types/auth";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
+import { getCollections } from "../../collections/actions";
 
 const store = require("store");
 const styles = require("./signIn.scss");
@@ -28,6 +30,8 @@ function mapStateToProps(state: AppState) {
 
 @withStyles<typeof SignIn>(styles)
 class SignIn extends React.PureComponent<SignInContainerProps> {
+  private cancelToken = axios.CancelToken.source();
+
   public async componentDidMount() {
     const { dispatch, history } = this.props;
     const searchString = this.getCurrentSearchParamsString();
@@ -253,7 +257,7 @@ class SignIn extends React.PureComponent<SignInContainerProps> {
     const isDialog = !!handleChangeDialogType;
 
     try {
-      await dispatch(
+      const user = await dispatch(
         Actions.signInWithEmail(
           {
             email,
@@ -262,6 +266,11 @@ class SignIn extends React.PureComponent<SignInContainerProps> {
           isDialog
         )
       );
+
+      if (user && user.member) {
+        dispatch(getCollections(user.member.id, this.cancelToken.token));
+      }
+
       if (!isDialog) {
         history.push("/");
       }

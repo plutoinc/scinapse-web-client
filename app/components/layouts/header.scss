@@ -214,6 +214,7 @@
 @media (max-width: $tablet-width) {
   .searchFormContainer {
     width: 100%;
+    margin-right: 32px;
 
     .inputBox {
       width: 100%;
@@ -225,6 +226,11 @@
   }
 
   .rightBox {
-    display: none;
+    position: relative;
+    justify-content: flex-end;
+
+    .signInButton {
+      display: none;
+    }
   }
 }

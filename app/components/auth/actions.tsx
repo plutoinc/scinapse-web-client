@@ -25,6 +25,7 @@ export function checkAuthStatus() {
   return async (dispatch: Dispatch<any>) => {
     try {
       const checkLoggedInResult: SignInResult = await AuthAPI.checkLoggedIn();
+
       dispatch({
         type: ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN,
         payload: {
@@ -33,6 +34,8 @@ export function checkAuthStatus() {
           oauthLoggedIn: checkLoggedInResult.oauthLoggedIn,
         },
       });
+
+      return checkLoggedInResult;
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.AUTH_FAILED_TO_CHECK_LOGGED_IN,

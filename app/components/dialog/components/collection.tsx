@@ -1,6 +1,7 @@
 import * as React from "react";
 import Popover from "@material-ui/core/Popover/Popover";
 import * as classNames from "classnames";
+import Axios, { CancelToken } from "axios";
 import {
   PostCollectionParams,
   AddPaperToCollectionParams,
@@ -18,7 +19,7 @@ interface CollectionDialogProps {
   currentUser: CurrentUser;
   myCollections: Collection[];
   collectionDialogPaperId: number;
-  getMyCollections: () => void;
+  getMyCollections: (cancelToken: CancelToken) => void;
   handleCloseDialogRequest: () => void;
   handleSubmitNewCollection: (params: PostCollectionParams) => void;
   handleAddingPaperToCollections: (params: AddPaperToCollectionParams) => Promise<void>;
@@ -35,6 +36,7 @@ interface CollectionDialogStates {
 class CollectionDialog extends React.PureComponent<CollectionDialogProps, CollectionDialogStates> {
   private contentBox: HTMLDivElement | null;
   private newCollectionAnchor: HTMLDivElement | null;
+  private cancelToken = Axios.CancelToken.source();
 
   public constructor(props: CollectionDialogProps) {
     super(props);
@@ -47,7 +49,11 @@ class CollectionDialog extends React.PureComponent<CollectionDialogProps, Collec
   }
 
   public async componentDidMount() {
-    this.props.getMyCollections();
+    this.props.getMyCollections(this.cancelToken.token);
+  }
+
+  public componentWillUnmount() {
+    this.cancelToken.cancel();
   }
 
   public render() {

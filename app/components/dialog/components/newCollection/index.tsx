@@ -1,21 +1,29 @@
 import * as React from "react";
+import * as Cookies from "js-cookie";
+import { connect } from "react-redux";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import { CurrentUser } from "../../../../model/currentUser";
-import { PostCollectionParams } from "../../../../api/collection";
+import { PostCollectionParams, AddPaperToCollectionParams } from "../../../../api/collection";
 import alertToast from "../../../../helpers/makePlutoToastAction";
 import PlutoAxios from "../../../../api/pluto";
 const styles = require("./newCollection.scss");
-import * as Cookies from "js-cookie";
+import { AppState } from "../../../../reducers";
+import { UserCollectionsState } from "../../../collections/reducer";
 
 interface NewCollectionDialogProps {
   currentUser: CurrentUser;
+  userCollections: UserCollectionsState;
+  targetPaperId?: number;
   handleCloseDialogRequest: () => void;
-  handleMakeCollection: (params: PostCollectionParams) => Promise<void>;
+  handleAddingPaperToCollections: (params: AddPaperToCollectionParams) => Promise<void>;
+  handleMakeCollection: (params: PostCollectionParams, targetPaperId?: number) => Promise<void>;
 }
 
 interface NewCollectionDialogStates {
   title: string;
   description: string;
+  isLoading: boolean;
 }
 const SELECTED_COLLECTION_ID = "selectedCollectionId";
 
@@ -25,14 +33,15 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
     super(props);
 
     this.state = {
-      title: "",
+      title: !props.userCollections || props.userCollections.collectionIds.length === 0 ? "Read Later" : "",
       description: "",
+      isLoading: false,
     };
   }
 
   public render() {
     const { handleCloseDialogRequest } = this.props;
-    const { title, description } = this.state;
+    const { title, description, isLoading } = this.state;
 
     return (
       <div className={styles.dialogWrapper}>
@@ -71,8 +80,8 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
             <button onClick={handleCloseDialogRequest} className={styles.cancelBtn}>
               Cancel
             </button>
-            <button onClick={this.makeCollection} className={styles.saveBtn}>
-              Save
+            <button onClick={this.makeCollection} className={styles.saveBtn} disabled={isLoading}>
+              {isLoading ? <CircularProgress color="inherit" disableShrink={true} size={14} thickness={4} /> : `Create`}
             </button>
           </div>
         </div>
@@ -86,20 +95,29 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
   };
 
   private makeCollection = async () => {
-    const { handleMakeCollection, handleCloseDialogRequest } = this.props;
+    const { handleMakeCollection, handleCloseDialogRequest, userCollections, targetPaperId } = this.props;
     const { title, description } = this.state;
 
+    this.setState(prevState => ({ ...prevState, isLoading: true }));
+
     try {
-      await handleMakeCollection({ title, description });
+      if (targetPaperId && userCollections.collectionIds.length === 0) {
+        await handleMakeCollection({ title, description }, targetPaperId);
+      } else {
+        await handleMakeCollection({ title, description });
+      }
 
       Cookies.set(SELECTED_COLLECTION_ID, "0");
+
       handleCloseDialogRequest();
+      this.setState(prevState => ({ ...prevState, isLoading: false }));
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
       alertToast({
         type: "error",
         message: error.message,
       });
+      this.setState(prevState => ({ ...prevState, isLoading: false }));
     }
   };
 
@@ -119,4 +137,12 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
     });
   };
 }
-export default NewCollectionDialog;
+
+function mapStateToProps(state: AppState) {
+  return {
+    userCollections: state.userCollections,
+    currentUser: state.currentUser,
+  };
+}
+
+export default connect(mapStateToProps)(NewCollectionDialog);
