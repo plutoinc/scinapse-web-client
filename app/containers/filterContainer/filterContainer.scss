@@ -129,6 +129,7 @@
 
 .filterBox {
   padding: 24px 16px;
+  padding-bottom: 0;
   border-top: solid 1px $gray3;
   max-height: 300px;
   transition: max-height 200ms cubic-bezier(0.4, 0, 0.6, 1);
@@ -141,7 +142,7 @@
 
 .filterContainerTitleBox {
   @extend .filterBox;
-  padding: 19px 16px;
+  padding: 18px 16px;
 }
 
 .filterResultButton {

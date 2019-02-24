@@ -1,8 +1,43 @@
+.yearFilter {
+  padding-top: 24px;
+  border-top: solid 1px $gray3;
+}
+
+.content {
+  padding: 0 16px;
+}
+
 .yearFilterBox {
-  padding: 0 24px;
+  padding: 0 16px;
   width: 352px;
   margin-bottom: 54px;
   user-select: none;
+}
+
+.title {
+  position: relative;
+  height: 18px;
+  font-size: 15px;
+  font-weight: bold;
+  color: $gray6;
+  margin-bottom: 24px;
+
+  .resetBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 13px;
+    text-align: right;
+    color: $gray5;
+    font-weight: normal;
+    cursor: pointer;
+  }
+}
+
+.btnsWrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .columnBox {

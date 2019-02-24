@@ -8,6 +8,7 @@ import { SearchPageQueryParams } from "../../../components/articleSearch/types";
 import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { goToYearFilteredSearchResultPage } from "./helper";
+import FilterButton from "../filterButton";
 const styles = require("./yearRangeSlider.scss");
 
 interface YearSet {
@@ -93,53 +94,114 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
   const minValue = Math.min(...values);
   const maxValue = Math.max(...values);
 
-  // TODO: Add React Memoized function
+  const currentYaer = new Date().getFullYear();
   const maxDocCount = Math.max(...yearSetListToShow.map(yearSet => yearSet.docCount));
   const columnBoxNode = React.useRef<HTMLDivElement | null>(null);
   const boxWidth = columnBoxNode.current ? columnBoxNode.current.offsetWidth : 304;
   const stepWidth = Math.floor(boxWidth / yearSetSortByYear.length);
+  console.log(currentYaer, minValue, maxValue);
 
   return (
-    <div className={styles.yearFilterBox}>
-      <div ref={columnBoxNode} className={styles.columnBox}>
-        {yearSetSortByYear.map(yearSet => {
-          const filteredYearSet = props.filteredYearInfo.find(ys => ys.year === yearSet.year);
-          const filterHeight = filteredYearSet
-            ? `${Math.round((filteredYearSet.docCount / maxDocCount) * 100)}%`
-            : "0px";
-          return (
-            <Column
-              key={yearSet.year}
-              width={`${stepWidth}px`}
-              height={`${Math.round((yearSet.docCount / maxDocCount) * 100)}%`}
-              active={minValue <= yearSet.year && yearSet.year <= maxValue}
-              isSelecting={selectingColumn === yearSet.year}
-              isSelectMode={selectingColumn !== 0}
-              yearSet={yearSet}
-              filteredYearSet={filteredYearSet}
-              filterHeight={filterHeight}
-              onClick={() => {
-                setValues([yearSet.year, yearSet.year]);
-                goToYearFilteredSearchResultPage({
-                  qs: props.location.search,
-                  min: yearSet.year,
-                  max: yearSet.year,
-                  history: props.history,
-                });
-              }}
-            />
-          );
-        })}
+    <div className={styles.yearFilter}>
+      <div className={styles.content}>
+        <div className={styles.title}>
+          Published Year
+          <div
+            onClick={() => {
+              goToYearFilteredSearchResultPage({
+                qs: props.location.search,
+                history: props.history,
+                max: yearSetSortByYear[yearSetSortByYear.length - 1].year,
+                min: yearSetSortByYear[0].year,
+              });
+            }}
+            className={styles.resetBtn}
+          >
+            Reset
+          </div>
+        </div>
+
+        <div className={styles.btnsWrapper}>
+          <FilterButton
+            onClick={() => {
+              goToYearFilteredSearchResultPage({
+                qs: props.location.search,
+                history: props.history,
+                max: maxValue,
+                min: currentYaer,
+              });
+            }}
+            isActive={minValue === currentYaer && maxValue === currentYaer}
+            text="This Year"
+          />
+          <FilterButton
+            onClick={() => {
+              goToYearFilteredSearchResultPage({
+                qs: props.location.search,
+                history: props.history,
+                max: maxValue,
+                min: currentYaer - 3,
+              });
+            }}
+            isActive={minValue === currentYaer - 3 && maxValue === currentYaer}
+            text="Last 3 Years"
+          />
+          <FilterButton
+            onClick={() => {
+              goToYearFilteredSearchResultPage({
+                qs: props.location.search,
+                history: props.history,
+                max: maxValue,
+                min: currentYaer - 5,
+              });
+            }}
+            isActive={minValue === currentYaer - 5 && maxValue === currentYaer}
+            text="Last 5 Years"
+          />
+        </div>
+
+        <div className={styles.yearFilterBox}>
+          <div ref={columnBoxNode} className={styles.columnBox}>
+            {yearSetSortByYear.map(yearSet => {
+              const filteredYearSet = props.filteredYearInfo.find(ys => ys.year === yearSet.year);
+              const filterHeight = filteredYearSet
+                ? `${Math.round((filteredYearSet.docCount / maxDocCount) * 100)}%`
+                : "0px";
+              return (
+                <Column
+                  key={yearSet.year}
+                  width={`${stepWidth}px`}
+                  height={`${Math.round((yearSet.docCount / maxDocCount) * 100)}%`}
+                  active={minValue <= yearSet.year && yearSet.year <= maxValue}
+                  isSelecting={selectingColumn === yearSet.year}
+                  isSelectMode={selectingColumn !== 0}
+                  yearSet={yearSet}
+                  filteredYearSet={filteredYearSet}
+                  filterHeight={filterHeight}
+                  onClick={() => {
+                    setValues([yearSet.year, yearSet.year]);
+                    goToYearFilteredSearchResultPage({
+                      qs: props.location.search,
+                      min: yearSet.year,
+                      max: yearSet.year,
+                      history: props.history,
+                    });
+                  }}
+                />
+              );
+            })}
+          </div>
+          <Slider
+            minLimitValue={yearSetSortByYear[0].year}
+            minValue={minValue}
+            maxValue={maxValue}
+            values={values}
+            setValues={setValues}
+            step={stepWidth}
+            onSelectingColumn={setSelectingColumn}
+          />
+        </div>
       </div>
-      <Slider
-        minLimitValue={yearSetSortByYear[0].year}
-        minValue={minValue}
-        maxValue={maxValue}
-        values={values}
-        setValues={setValues}
-        step={stepWidth}
-        onSelectingColumn={setSelectingColumn}
-      />
     </div>
   );
 };
