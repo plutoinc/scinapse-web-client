@@ -556,6 +556,15 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
         FAQ
       </a>
       <a
+        className="link"
+        href="https://www.notion.so/pluto/Scinapse-Updates-6a05160afde44ba1a6ed312899c23dae"
+        onClick={[Function]}
+        rel="noopener"
+        target="_blank"
+      >
+        Updates
+      </a>
+      <a
         className="termsOfServiceLink"
         href="https://scinapse.io/terms-of-service"
       >
@@ -916,6 +925,15 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
         target="_blank"
       >
         FAQ
+      </a>
+      <a
+        className="link"
+        href="https://www.notion.so/pluto/Scinapse-Updates-6a05160afde44ba1a6ed312899c23dae"
+        onClick={[Function]}
+        rel="noopener"
+        target="_blank"
+      >
+        Updates
       </a>
       <a
         className="termsOfServiceLink"
@@ -1287,6 +1305,15 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
         target="_blank"
       >
         FAQ
+      </a>
+      <a
+        className="link"
+        href="https://www.notion.so/pluto/Scinapse-Updates-6a05160afde44ba1a6ed312899c23dae"
+        onClick={[Function]}
+        rel="noopener"
+        target="_blank"
+      >
+        Updates
       </a>
       <a
         className="termsOfServiceLink"
