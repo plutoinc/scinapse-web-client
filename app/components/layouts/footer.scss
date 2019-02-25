@@ -40,6 +40,11 @@
 @media (max-width: $tablet-width) {
   .footerContainer {
     width: 100%;
+    display: block;
+  }
+
+  .rightBox {
+    position: static;
   }
 }
 
