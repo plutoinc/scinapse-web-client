@@ -225,7 +225,7 @@
   .username {
     @extend %one-line-overflow-ellipsis;
 
-    width: 120px;
+    width: 168px;
     height: 20px;
     font-size: 13px;
     font-weight: 500;
@@ -236,7 +236,7 @@
   .email {
     @extend %one-line-overflow-ellipsis;
 
-    width: 120px;
+    width: 168px;
     height: 20px;
     font-size: 12px;
     line-height: 1.67;
