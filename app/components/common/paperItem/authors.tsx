@@ -45,11 +45,11 @@ class Authors extends React.PureComponent<AuthorsProps> {
 
       return (
         <span className={styles.authors}>
-          {authorItems[0]}
+          {authorItems.slice(0, 2)}
           <span className={styles.toggleAuthorsButton} onClick={this.toggleAuthors}>
-            {`+ ${paper.authorCount - 2} Authors`}
+            {`+ ${paper.authorCount - 3} Authors`}
           </span>
-          {authorItems[1]}
+          {authorItems[2]}
         </span>
       );
     }
@@ -89,10 +89,17 @@ class Authors extends React.PureComponent<AuthorsProps> {
     const { style, readOnly, pageType, actionArea } = this.props;
 
     const slicedAuthors = authors.slice(0, endIndex + 1);
+    let finalAuthors: PaperAuthor[];
 
-    return slicedAuthors.map((author, index) => {
+    if (isSliced) {
+      finalAuthors = [...slicedAuthors, authors[authors.length - 1]];
+    } else {
+      finalAuthors = [...slicedAuthors];
+    }
+
+    return finalAuthors.map((author, index) => {
       if (author) {
-        const isLastAuthor = index === endIndex || index === slicedAuthors.length - 1;
+        const isLastAuthor = index === endIndex || index === finalAuthors.length - 1;
 
         const authorNode = readOnly ? (
           <span
@@ -131,7 +138,7 @@ class Authors extends React.PureComponent<AuthorsProps> {
             {authorNode}
             {this.getHIndexTooltip(author.hindex)}
             {` ${this.getAuthorOrganization(author.affiliation)}`}
-            {!isLastAuthor && !isSliced ? <span>{`, `}</span> : null}
+            {!isLastAuthor ? <span>{`, `}</span> : null}
           </span>
         );
       }

@@ -85,12 +85,9 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
               Dmitriy A. Dikin
             </a>
              
-          </span>
-          <span
-            className="toggleAuthorsButton"
-            onClick={[Function]}
-          >
-            + 6 Authors
+            <span>
+              , 
+            </span>
           </span>
           <span
             className="author"
@@ -101,6 +98,24 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
               onClick={[Function]}
             >
               Sasha Stankovich
+            </a>
+             
+          </span>
+          <span
+            className="toggleAuthorsButton"
+            onClick={[Function]}
+          >
+            + 5 Authors
+          </span>
+          <span
+            className="author"
+          >
+            <a
+              className="authorName"
+              href="/authors/undefined"
+              onClick={[Function]}
+            >
+              Rodney S. Ruoff
             </a>
              
           </span>
@@ -284,12 +299,9 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
               Dmitriy A. Dikin
             </a>
              
-          </span>
-          <span
-            className="toggleAuthorsButton"
-            onClick={[Function]}
-          >
-            + 6 Authors
+            <span>
+              , 
+            </span>
           </span>
           <span
             className="author"
@@ -300,6 +312,24 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
               onClick={[Function]}
             >
               Sasha Stankovich
+            </a>
+             
+          </span>
+          <span
+            className="toggleAuthorsButton"
+            onClick={[Function]}
+          >
+            + 5 Authors
+          </span>
+          <span
+            className="author"
+          >
+            <a
+              className="authorName"
+              href="/authors/undefined"
+              onClick={[Function]}
+            >
+              Rodney S. Ruoff
             </a>
              
           </span>
