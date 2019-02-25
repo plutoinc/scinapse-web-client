@@ -1,4 +1,5 @@
 import { Dispatch } from "redux";
+import * as ReactGA from "react-ga";
 import { AxiosError } from "axios";
 import AuthAPI from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
@@ -114,7 +115,9 @@ export async function signInWithSocial(vendor: OAUTH_VENDOR) {
       vendor,
       redirectUri,
     });
+
     if (!EnvChecker.isOnServer()) {
+      ReactGA.set({ referrer: EnvChecker.getOrigin() });
       window.location.replace(authorizeUriData.uri);
     }
   } catch (_err) {
