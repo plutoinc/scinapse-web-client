@@ -324,9 +324,12 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                         Dmitriy A. Dikin
                       </a>
                        
-                      <span>
-                        , 
-                      </span>
+                    </span>
+                    <span
+                      className="toggleAuthorsButton"
+                      onClick={[Function]}
+                    >
+                      + 6 Authors
                     </span>
                     <span
                       className="author"
@@ -339,27 +342,6 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                         Sasha Stankovich
                       </a>
                        
-                      <span>
-                        , 
-                      </span>
-                    </span>
-                    <span
-                      className="author"
-                    >
-                      <a
-                        className="authorName"
-                        href="/authors/undefined"
-                        onClick={[Function]}
-                      >
-                        Eric J. Zimney
-                      </a>
-                       
-                    </span>
-                    <span
-                      className="toggleAuthorsButton"
-                      onClick={[Function]}
-                    >
-                      ... more
                     </span>
                   </span>
                 </div>

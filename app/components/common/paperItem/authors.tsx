@@ -24,32 +24,32 @@ export interface AuthorsProps {
 
 class Authors extends React.PureComponent<AuthorsProps> {
   public render() {
-    const { authors, disableTruncate } = this.props;
+    const { authors, disableTruncate, paper } = this.props;
 
     const isAuthorsSameLessThanMinimumShowingAuthorNumber = authors.length <= MINIMUM_SHOWING_AUTHOR_NUMBER;
 
     if (disableTruncate) {
       const endIndex = MINIMUM_SHOWING_AUTHOR_NUMBER - 1;
-      const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex);
+      const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex, false);
 
       return <span className={styles.authors}>{authorItems}</span>;
     }
 
     if (isAuthorsSameLessThanMinimumShowingAuthorNumber) {
       const endIndex = authors.length - 1;
-      const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex);
+      const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex, false);
 
       return <span className={styles.authors}>{authorItems}</span>;
     } else {
-      const endIndex = MINIMUM_SHOWING_AUTHOR_NUMBER - 1;
-      const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex);
+      const authorItems = this.mapAuthorNodeToEndIndex(authors, 1, true);
 
       return (
         <span className={styles.authors}>
-          {authorItems}
+          {authorItems[0]}
           <span className={styles.toggleAuthorsButton} onClick={this.toggleAuthors}>
-            ... more
+            {`+ ${paper.authorCount - 2} Authors`}
           </span>
+          {authorItems[1]}
         </span>
       );
     }
@@ -85,7 +85,7 @@ class Authors extends React.PureComponent<AuthorsProps> {
     return "";
   };
 
-  private mapAuthorNodeToEndIndex = (authors: PaperAuthor[], endIndex: number) => {
+  private mapAuthorNodeToEndIndex = (authors: PaperAuthor[], endIndex: number, isSliced: boolean) => {
     const { style, readOnly, pageType, actionArea } = this.props;
 
     const slicedAuthors = authors.slice(0, endIndex + 1);
@@ -131,7 +131,7 @@ class Authors extends React.PureComponent<AuthorsProps> {
             {authorNode}
             {this.getHIndexTooltip(author.hindex)}
             {` ${this.getAuthorOrganization(author.affiliation)}`}
-            {!isLastAuthor ? <span>{`, `}</span> : null}
+            {!isLastAuthor && !isSliced ? <span>{`, `}</span> : null}
           </span>
         );
       }

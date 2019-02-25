@@ -85,9 +85,12 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
               Dmitriy A. Dikin
             </a>
              
-            <span>
-              , 
-            </span>
+          </span>
+          <span
+            className="toggleAuthorsButton"
+            onClick={[Function]}
+          >
+            + 6 Authors
           </span>
           <span
             className="author"
@@ -100,27 +103,6 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
               Sasha Stankovich
             </a>
              
-            <span>
-              , 
-            </span>
-          </span>
-          <span
-            className="author"
-          >
-            <a
-              className="authorName"
-              href="/authors/undefined"
-              onClick={[Function]}
-            >
-              Eric J. Zimney
-            </a>
-             
-          </span>
-          <span
-            className="toggleAuthorsButton"
-            onClick={[Function]}
-          >
-            ... more
           </span>
         </span>
       </div>
@@ -302,9 +284,12 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
               Dmitriy A. Dikin
             </a>
              
-            <span>
-              , 
-            </span>
+          </span>
+          <span
+            className="toggleAuthorsButton"
+            onClick={[Function]}
+          >
+            + 6 Authors
           </span>
           <span
             className="author"
@@ -317,27 +302,6 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
               Sasha Stankovich
             </a>
              
-            <span>
-              , 
-            </span>
-          </span>
-          <span
-            className="author"
-          >
-            <a
-              className="authorName"
-              href="/authors/undefined"
-              onClick={[Function]}
-            >
-              Eric J. Zimney
-            </a>
-             
-          </span>
-          <span
-            className="toggleAuthorsButton"
-            onClick={[Function]}
-          >
-            ... more
           </span>
         </span>
       </div>
