@@ -246,6 +246,25 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
             <div
               className="contentSection"
             >
+              <div
+                className="itemWrapper"
+              >
+                <i
+                  className="icon bookmarkIcon"
+                />
+                <span
+                  className="subContext"
+                >
+                  Saved in 
+                </span>
+                <a
+                  className="collectionTitle"
+                  href="/collections/22"
+                  onClick={[Function]}
+                >
+                  Read Later
+                </a>
+              </div>
               <div>
                 <a
                   className="title"
