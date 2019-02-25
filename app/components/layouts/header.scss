@@ -211,6 +211,39 @@
   }
 }
 
+.userInfoMenuItem {
+  opacity: 1 !important;
+  border-bottom: solid 1px $gray2 !important;
+  height: auto !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.userInfoWrapper {
+  padding: 8px 16px;
+
+  .username {
+    @extend %one-line-overflow-ellipsis;
+
+    width: 120px;
+    height: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.54;
+    color: $black0;
+  }
+
+  .email {
+    @extend %one-line-overflow-ellipsis;
+
+    width: 120px;
+    height: 20px;
+    font-size: 12px;
+    line-height: 1.67;
+    color: $gray6;
+  }
+}
+
 @media (max-width: $tablet-width) {
   .searchFormContainer {
     width: 100%;
