@@ -339,9 +339,12 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                         Sasha Stankovich
                       </a>
                        
-                      <span>
-                        , 
-                      </span>
+                    </span>
+                    <span
+                      className="toggleAuthorsButton"
+                      onClick={[Function]}
+                    >
+                      + 5 Authors
                     </span>
                     <span
                       className="author"
@@ -351,15 +354,9 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                         href="/authors/undefined"
                         onClick={[Function]}
                       >
-                        Eric J. Zimney
+                        Rodney S. Ruoff
                       </a>
                        
-                    </span>
-                    <span
-                      className="toggleAuthorsButton"
-                      onClick={[Function]}
-                    >
-                      ... more
                     </span>
                   </span>
                 </div>

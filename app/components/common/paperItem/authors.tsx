@@ -24,32 +24,32 @@ export interface AuthorsProps {
 
 class Authors extends React.PureComponent<AuthorsProps> {
   public render() {
-    const { authors, disableTruncate } = this.props;
+    const { authors, disableTruncate, paper } = this.props;
 
     const isAuthorsSameLessThanMinimumShowingAuthorNumber = authors.length <= MINIMUM_SHOWING_AUTHOR_NUMBER;
 
     if (disableTruncate) {
       const endIndex = MINIMUM_SHOWING_AUTHOR_NUMBER - 1;
-      const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex);
+      const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex, false);
 
       return <span className={styles.authors}>{authorItems}</span>;
     }
 
     if (isAuthorsSameLessThanMinimumShowingAuthorNumber) {
       const endIndex = authors.length - 1;
-      const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex);
+      const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex, false);
 
       return <span className={styles.authors}>{authorItems}</span>;
     } else {
-      const endIndex = MINIMUM_SHOWING_AUTHOR_NUMBER - 1;
-      const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex);
+      const authorItems = this.mapAuthorNodeToEndIndex(authors, 1, true);
 
       return (
         <span className={styles.authors}>
-          {authorItems}
+          {authorItems.slice(0, 2)}
           <span className={styles.toggleAuthorsButton} onClick={this.toggleAuthors}>
-            ... more
+            {`+ ${paper.authorCount - 3} Authors`}
           </span>
+          {authorItems[2]}
         </span>
       );
     }
@@ -85,14 +85,21 @@ class Authors extends React.PureComponent<AuthorsProps> {
     return "";
   };
 
-  private mapAuthorNodeToEndIndex = (authors: PaperAuthor[], endIndex: number) => {
+  private mapAuthorNodeToEndIndex = (authors: PaperAuthor[], endIndex: number, isSliced: boolean) => {
     const { style, readOnly, pageType, actionArea } = this.props;
 
     const slicedAuthors = authors.slice(0, endIndex + 1);
+    let finalAuthors: PaperAuthor[];
 
-    return slicedAuthors.map((author, index) => {
+    if (isSliced) {
+      finalAuthors = [...slicedAuthors, authors[authors.length - 1]];
+    } else {
+      finalAuthors = [...slicedAuthors];
+    }
+
+    return finalAuthors.map((author, index) => {
       if (author) {
-        const isLastAuthor = index === endIndex || index === slicedAuthors.length - 1;
+        const isLastAuthor = index === endIndex || index === finalAuthors.length - 1;
 
         const authorNode = readOnly ? (
           <span
