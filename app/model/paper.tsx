@@ -5,6 +5,7 @@ import { PaperSource } from "./paperSource";
 import { Fos } from "./fos";
 import { Journal } from "./journal";
 import { ConferenceInstance } from "./conferenceInstance";
+import { SavedInCollections } from "./savedInCollecctions";
 
 export interface Paper {
   id: number;
@@ -29,6 +30,7 @@ export interface Paper {
   conferenceInstance: ConferenceInstance | null;
   urls: PaperSource[];
   isAuthorIncluded?: boolean;
+  relation: { savedInCollections: SavedInCollections[] };
 }
 
 export const paperSchema = new schema.Entity("papers");
