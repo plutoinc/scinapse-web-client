@@ -1,6 +1,7 @@
 import * as React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { goToYearFilteredSearchResultPage } from "./helper";
+import { MIN_YEAR } from "./constants";
 const styles = require("./yearRangeSlider.scss");
 
 interface SliderBubbleProps {
@@ -44,7 +45,6 @@ interface SliderProps extends RouteComponentProps<null> {
   step: number;
   minValue: number;
   maxValue: number;
-  minLimitValue: number;
   setValues: React.Dispatch<React.SetStateAction<number[]>>;
   onSelectingColumn: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -64,13 +64,14 @@ class Slider extends React.PureComponent<SliderProps, SliderState> {
   }
 
   public render() {
-    const { values, minValue, maxValue, step, minLimitValue } = this.props;
+    const { values, minValue, maxValue, step } = this.props;
+    const currentYear = new Date().getFullYear();
 
     const bubbles = values.map((cv, i) => {
       return (
         <SliderBubble
           key={i}
-          left={(cv - minLimitValue) * step}
+          left={(cv - MIN_YEAR) * step}
           value={cv}
           type={cv === minValue ? "min" : "max"}
           onMouseDown={this.handleMouseDown}
@@ -79,12 +80,12 @@ class Slider extends React.PureComponent<SliderProps, SliderState> {
       );
     });
 
-    const minLeft = (minValue - minLimitValue) * step;
-    const maxLeft = (maxValue - minLimitValue) * step;
+    const minLeft = (minValue - MIN_YEAR) * step;
+    const maxLeft = (maxValue - MIN_YEAR + 1) * step;
     const activeLineWidth = maxLeft - minLeft;
 
     return (
-      <div className={styles.slider}>
+      <div style={{ width: `${(currentYear - MIN_YEAR + 1) * step}px` }} className={styles.slider}>
         <div style={{ left: `${minLeft}px`, width: `${activeLineWidth}px` }} className={styles.activeLine} />
         {bubbles}
       </div>
@@ -120,9 +121,9 @@ class Slider extends React.PureComponent<SliderProps, SliderState> {
     const fromLeft = this.state.bubbleNode.offsetLeft + diff;
     const nextStep = Math.floor(fromLeft / this.props.step);
 
-    let nextValue: number = nextStep + this.props.minLimitValue;
-    if (nextValue < this.props.minLimitValue) {
-      nextValue = this.props.minLimitValue;
+    let nextValue: number = nextStep + MIN_YEAR;
+    if (nextValue < MIN_YEAR) {
+      nextValue = MIN_YEAR;
     } else if (nextValue > currentYear) {
       nextValue = currentYear;
     }

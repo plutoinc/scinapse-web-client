@@ -199,7 +199,6 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
             })}
           </div>
           <Slider
-            minLimitValue={yearSetListToShow[0].year}
             minValue={minValue}
             maxValue={maxValue}
             values={values}
