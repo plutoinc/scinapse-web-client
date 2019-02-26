@@ -16,6 +16,7 @@ import {
   AUTHOR_SEARCH_RESULT_PATH,
 } from "../../constants/routes";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
+import { stringify } from "qs";
 
 interface LocationListenerProps extends RouteComponentProps<{}> {}
 export interface HistoryInformation {
@@ -24,7 +25,6 @@ export interface HistoryInformation {
 }
 
 export const HISTORY_SESSION_KEY = "historyStack";
-let DEV_BRANCH_NAME: string = "";
 const MAXIMUM_COUNT_TO_SAVE_HISTORY = 100;
 
 export function getCurrentPageType(): Scinapse.ActionTicket.PageType {
@@ -102,22 +102,12 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
 
       window.sessionStorage.setItem(HISTORY_SESSION_KEY, JSON.stringify(historyStack));
 
-      const queryObject = getQueryParamsObject(location.search);
+      const qs = getQueryParamsObject(location.search);
+      const nextQS = getQueryParamsObject(nextProps.location.search);
 
-      if (DEV_BRANCH_NAME === "") {
-        DEV_BRANCH_NAME = queryObject.branch;
-      }
-
-      if (queryObject.branch || DEV_BRANCH_NAME !== "") {
-        if (nextProps.location.search) {
-          history.replaceState(
-            null,
-            "",
-            `${nextProps.location.pathname}${nextProps.location.search}&branch=${DEV_BRANCH_NAME}`
-          );
-        } else {
-          history.replaceState(null, "", `${nextProps.location.pathname}?branch=${DEV_BRANCH_NAME}`);
-        }
+      if (qs["branch"] && !nextQS["branch"]) {
+        const nextQPString = stringify({ ...nextQS, branch: qs["branch"] }, { addQueryPrefix: true });
+        nextProps.history.replace(nextProps.location.pathname + nextQPString);
       }
     }
   }
