@@ -105,7 +105,14 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
 
       if (queryObject.branch) {
         console.log(nextProps.location.pathname + nextProps.location.search + `&branch=${queryObject.branch}`);
-        history.push(nextProps.location.pathname + nextProps.location.search + `&branch=${queryObject.branch}`);
+
+        if (nextProps.location.search) {
+          history.push(
+            `${nextProps.location.pathname}?${nextProps.location.search.replace("?", "")}&branch=${queryObject.branch}`
+          );
+        } else {
+          history.push(`${nextProps.location.pathname}?branch=${queryObject.branch}`);
+        }
       }
     }
   }
