@@ -15,6 +15,7 @@ import {
   AUTH_PATH,
   AUTHOR_SEARCH_RESULT_PATH,
 } from "../../constants/routes";
+import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 
 interface LocationListenerProps extends RouteComponentProps<{}> {}
 export interface HistoryInformation {
@@ -99,6 +100,12 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
       }
 
       window.sessionStorage.setItem(HISTORY_SESSION_KEY, JSON.stringify(historyStack));
+
+      const queryObject = getQueryParamsObject(location.search);
+
+      if (queryObject.branch) {
+        console.log(queryObject.branch);
+      }
     }
   }
 
