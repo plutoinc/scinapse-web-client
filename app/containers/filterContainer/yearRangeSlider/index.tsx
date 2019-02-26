@@ -139,7 +139,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
               goToYearFilteredSearchResultPage({
                 qs: props.location.search,
                 history: props.history,
-                max: maxValue,
+                max: currentYear,
                 min: currentYear,
               });
             }}
@@ -151,7 +151,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
               goToYearFilteredSearchResultPage({
                 qs: props.location.search,
                 history: props.history,
-                max: maxValue,
+                max: currentYear,
                 min: currentYear - 3,
               });
             }}
@@ -163,7 +163,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
               goToYearFilteredSearchResultPage({
                 qs: props.location.search,
                 history: props.history,
-                max: maxValue,
+                max: currentYear,
                 min: currentYear - 5,
               });
             }}
