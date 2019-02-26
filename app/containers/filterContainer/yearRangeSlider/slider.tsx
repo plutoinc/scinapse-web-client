@@ -6,10 +6,19 @@ const styles = require("./yearRangeSlider.scss");
 interface SliderBubbleProps {
   value: number;
   left: number;
+  isNarrow: boolean;
+  type: "min" | "max";
   onMouseDown: (e: React.MouseEvent<HTMLDivElement>, value: number) => void;
 }
 
 const SliderBubble: React.FunctionComponent<SliderBubbleProps> = props => {
+  let labelLeft: number = -6;
+  if (props.isNarrow && props.type === "min") {
+    labelLeft = -14;
+  } else if (props.isNarrow && props.type === "max") {
+    labelLeft = 8;
+  }
+
   return (
     <div
       style={{ left: `${props.left}px` }}
@@ -18,7 +27,14 @@ const SliderBubble: React.FunctionComponent<SliderBubbleProps> = props => {
         props.onMouseDown(e, props.value);
       }}
     >
-      <div className={styles.bubbleLabel}>{props.value}</div>
+      <div
+        style={{
+          left: labelLeft,
+        }}
+        className={styles.bubbleLabel}
+      >
+        {props.value}
+      </div>
     </div>
   );
 };
@@ -51,7 +67,16 @@ class Slider extends React.PureComponent<SliderProps, SliderState> {
     const { values, minValue, maxValue, step, minLimitValue } = this.props;
 
     const bubbles = values.map((cv, i) => {
-      return <SliderBubble key={i} left={(cv - minLimitValue) * step} value={cv} onMouseDown={this.handleMouseDown} />;
+      return (
+        <SliderBubble
+          key={i}
+          left={(cv - minLimitValue) * step}
+          value={cv}
+          type={cv === minValue ? "min" : "max"}
+          onMouseDown={this.handleMouseDown}
+          isNarrow={maxValue - minValue < 6}
+        />
+      );
     });
 
     const minLeft = (minValue - minLimitValue) * step;

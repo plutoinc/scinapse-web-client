@@ -8,8 +8,6 @@
 }
 
 .yearFilterBox {
-  padding: 0 16px;
-  width: 352px;
   margin-bottom: 54px;
   user-select: none;
 }
@@ -57,9 +55,16 @@
   display: inline-block;
   vertical-align: bottom;
   width: 2px;
+  background-color: #d8dde7;
   cursor: pointer;
 
+  &.activeColumn {
+    background-color: rgba(96, 150, 255, 0.3);
+  }
+
   &:hover {
+    background-color: $gray5;
+
     .columnLabel {
       &:not(.isSelectMode) {
         display: flex;
@@ -160,4 +165,5 @@
   left: -6px;
   color: $gray9;
   font-size: 12px;
+  transition: left 200ms ease;
 }

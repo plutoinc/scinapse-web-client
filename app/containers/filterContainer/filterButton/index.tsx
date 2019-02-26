@@ -11,7 +11,6 @@ interface FilterButtonProps {
 }
 
 const FilterButton: React.FunctionComponent<FilterButtonProps> = props => {
-  console.log("isActive === ", props.isActive);
   return (
     <button
       className={classNames({

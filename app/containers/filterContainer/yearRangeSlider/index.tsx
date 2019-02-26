@@ -51,10 +51,12 @@ const Column: React.FunctionComponent<{
         style={{
           width: props.width,
           height: props.height,
-          backgroundColor: props.active ? "rgba(96, 150, 255, 0.5)" : "#d8dde7",
           borderRight: "solid 1px #f9f9fa",
         }}
-        className={styles.column}
+        className={classNames({
+          [styles.column]: true,
+          [styles.activeColumn]: props.active,
+        })}
         onClick={props.onClick}
       >
         <div
@@ -73,33 +75,37 @@ const Column: React.FunctionComponent<{
 };
 
 const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => {
-  const yearSetListToShow = props.yearInfo.filter(yearSet => !!yearSet.year && yearSet.year >= MIN_YEAR);
-  const yearSetSortByYear = [...yearSetListToShow].sort((a, b) => {
-    if (a.year < b.year) return -1;
-    if (a.year > b.year) return 1;
-    return 0;
-  });
+  const currentYear = new Date().getFullYear();
+  const yearSetListToShow: YearSet[] = React.useMemo(
+    () =>
+      new Array(currentYear - MIN_YEAR).fill("").map((_, i) => {
+        const yearSet = props.yearInfo.find(ys => ys.year === MIN_YEAR + i);
+        return {
+          year: MIN_YEAR + i,
+          docCount: yearSet ? yearSet.docCount : 0,
+        };
+      }),
+    [props.yearInfo]
+  );
 
   const qp: SearchPageQueryParams = getQueryParamsObject(props.location.search);
   const filter = PapersQueryFormatter.objectifyPapersFilter(qp.filter);
   const minYear =
-    filter.yearFrom && !isNaN(filter.yearFrom as number) ? (filter.yearFrom as number) : yearSetSortByYear[0].year;
+    filter.yearFrom && !isNaN(filter.yearFrom as number) ? (filter.yearFrom as number) : yearSetListToShow[0].year;
   const maxYear =
     filter.yearTo && !isNaN(filter.yearTo as number)
       ? (filter.yearTo as number)
-      : yearSetSortByYear[yearSetSortByYear.length - 1].year;
+      : yearSetListToShow[yearSetListToShow.length - 1].year;
 
   const [values, setValues] = React.useState([minYear, maxYear]);
   const [selectingColumn, setSelectingColumn] = React.useState(0);
+
   const minValue = Math.min(...values);
   const maxValue = Math.max(...values);
-
-  const currentYaer = new Date().getFullYear();
   const maxDocCount = Math.max(...yearSetListToShow.map(yearSet => yearSet.docCount));
   const columnBoxNode = React.useRef<HTMLDivElement | null>(null);
-  const boxWidth = columnBoxNode.current ? columnBoxNode.current.offsetWidth : 304;
-  const stepWidth = Math.floor(boxWidth / yearSetSortByYear.length);
-  console.log(currentYaer, minValue, maxValue);
+  const boxWidth = columnBoxNode.current ? columnBoxNode.current.offsetWidth : 321;
+  const stepWidth = Math.floor(boxWidth / yearSetListToShow.length);
 
   return (
     <div className={styles.yearFilter}>
@@ -111,8 +117,8 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
               goToYearFilteredSearchResultPage({
                 qs: props.location.search,
                 history: props.history,
-                max: yearSetSortByYear[yearSetSortByYear.length - 1].year,
-                min: yearSetSortByYear[0].year,
+                max: yearSetListToShow[yearSetListToShow.length - 1].year,
+                min: yearSetListToShow[0].year,
               });
             }}
             className={styles.resetBtn}
@@ -128,10 +134,10 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
                 qs: props.location.search,
                 history: props.history,
                 max: maxValue,
-                min: currentYaer,
+                min: currentYear,
               });
             }}
-            isActive={minValue === currentYaer && maxValue === currentYaer}
+            isActive={minValue === currentYear && maxValue === currentYear}
             text="This Year"
           />
           <FilterButton
@@ -140,10 +146,10 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
                 qs: props.location.search,
                 history: props.history,
                 max: maxValue,
-                min: currentYaer - 3,
+                min: currentYear - 3,
               });
             }}
-            isActive={minValue === currentYaer - 3 && maxValue === currentYaer}
+            isActive={minValue === currentYear - 3 && maxValue === currentYear}
             text="Last 3 Years"
           />
           <FilterButton
@@ -152,21 +158,22 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
                 qs: props.location.search,
                 history: props.history,
                 max: maxValue,
-                min: currentYaer - 5,
+                min: currentYear - 5,
               });
             }}
-            isActive={minValue === currentYaer - 5 && maxValue === currentYaer}
+            isActive={minValue === currentYear - 5 && maxValue === currentYear}
             text="Last 5 Years"
           />
         </div>
 
         <div className={styles.yearFilterBox}>
           <div ref={columnBoxNode} className={styles.columnBox}>
-            {yearSetSortByYear.map(yearSet => {
+            {yearSetListToShow.map(yearSet => {
               const filteredYearSet = props.filteredYearInfo.find(ys => ys.year === yearSet.year);
               const filterHeight = filteredYearSet
-                ? `${Math.round((filteredYearSet.docCount / maxDocCount) * 100)}%`
+                ? `${Math.max(Math.round((filteredYearSet.docCount / maxDocCount) * 100), 4.5)}%`
                 : "0px";
+
               return (
                 <Column
                   key={yearSet.year}
@@ -192,7 +199,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
             })}
           </div>
           <Slider
-            minLimitValue={yearSetSortByYear[0].year}
+            minLimitValue={yearSetListToShow[0].year}
             minValue={minValue}
             maxValue={maxValue}
             values={values}
