@@ -24,6 +24,7 @@ export interface HistoryInformation {
 }
 
 export const HISTORY_SESSION_KEY = "historyStack";
+let DEV_BRANCH_NAME: string = "";
 const MAXIMUM_COUNT_TO_SAVE_HISTORY = 100;
 
 export function getCurrentPageType(): Scinapse.ActionTicket.PageType {
@@ -81,7 +82,7 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
   }
 
   public componentWillReceiveProps(nextProps: LocationListenerProps) {
-    const { location, history } = this.props;
+    const { location } = this.props;
 
     if (!EnvChecker.isOnServer() && location !== nextProps.location) {
       let historyStack: HistoryInformation[] = JSON.parse(window.sessionStorage.getItem(HISTORY_SESSION_KEY) || "[]");
@@ -103,15 +104,19 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
 
       const queryObject = getQueryParamsObject(location.search);
 
-      if (queryObject.branch) {
-        console.log(nextProps.location.pathname + nextProps.location.search + `&branch=${queryObject.branch}`);
+      if (DEV_BRANCH_NAME === "") {
+        DEV_BRANCH_NAME = queryObject.branch;
+      }
 
+      if (queryObject.branch || DEV_BRANCH_NAME !== "") {
         if (nextProps.location.search) {
-          location.search = `${nextProps.location.search}&branch=${queryObject.branch}`;
-          history.replace(`${nextProps.location.pathname}${nextProps.location.search}&branch=${queryObject.branch}`);
+          history.replaceState(
+            null,
+            "",
+            `${nextProps.location.pathname}${nextProps.location.search}&branch=${DEV_BRANCH_NAME}`
+          );
         } else {
-          location.search = `?branch=${queryObject.branch}`;
-          history.replace(`${nextProps.location.pathname}?branch=${queryObject.branch}`);
+          history.replaceState(null, "", `${nextProps.location.pathname}?branch=${DEV_BRANCH_NAME}`);
         }
       }
     }
