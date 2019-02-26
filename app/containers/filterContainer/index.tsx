@@ -269,7 +269,10 @@ function getJournalFilter(props: FilterContainerProps) {
           checked={alreadyHasJournalInFilter}
         />
         <span className={styles.linkTitle}>
-          {journal!.title} {journal!.impactFactor ? `[IF : ${journal!.impactFactor.toFixed(2)}]` : ""}
+          {journal!.title}
+          <span className={styles.ifLabel}>
+            {journal!.impactFactor ? `IF : ${journal!.impactFactor.toFixed(2)}` : ""}
+          </span>
         </span>
         <span className={styles.countBox}>{`(${journalCount})`}</span>
       </Link>

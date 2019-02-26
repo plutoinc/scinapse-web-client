@@ -56,15 +56,34 @@
   }
 }
 
+.ifLabel {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  color: #6096ff;
+  border-radius: 4px;
+  background-color: rgba(96, 150, 255, 0.1);
+  padding: 0 8px;
+  margin-left: 4px;
+}
+
 .zeroCountFilterItem {
   pointer-events: none;
   color: $gray5;
+
+  .ifLabel {
+    @extend .ifLabel;
+    color: $gray3;
+    background-color: $gray1;
+  }
 }
 
 .linkTitle {
   display: inline-block;
   vertical-align: top;
   max-width: 240px;
+  line-height: 20px;
 }
 
 .countBox {
@@ -172,7 +191,6 @@
 .checkboxIcon {
   display: inline-flex;
   padding: 0;
-  padding-bottom: 4px;
   margin-right: 4px;
   width: 20px;
   height: 20px;
