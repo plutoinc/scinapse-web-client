@@ -107,17 +107,21 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
         console.log(nextProps.location.pathname + nextProps.location.search + `&branch=${queryObject.branch}`);
 
         if (nextProps.location.search) {
-          history.pushState(
-            { path: nextProps.location.pathname, search: `${nextProps.location.search}&branch=${queryObject.branch}` },
-            "",
-            `${nextProps.location.pathname}${nextProps.location.search}&branch=${queryObject.branch}`
-          );
+          location.search = `${nextProps.location.search}&branch=${queryObject.branch}`;
+          // history.pushState(
+          //   { path: nextProps.loca
+          // tion.pathname, search: `${nextProps.location.search}&branch=${queryObject.branch}` },
+          //   "",
+          //   `${nextProps.location.pathname}${nextProps.location.search}&branch=${queryObject.branch}`
+          // );
         } else {
-          history.pushState(
-            { path: nextProps.location.pathname, search: `?branch=${queryObject.branch}` },
-            "",
-            `${nextProps.location.pathname}?branch=${queryObject.branch}`
-          );
+          location.search = `?branch=${queryObject.branch}`;
+
+          // history.pushState(
+          //   { path: nextProps.location.pathname, search: `?branch=${queryObject.branch}` },
+          //   "",
+          //   `${nextProps.location.pathname}?branch=${queryObject.branch}`
+          // );
         }
       }
     }
