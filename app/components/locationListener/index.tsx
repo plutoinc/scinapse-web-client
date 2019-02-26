@@ -81,7 +81,7 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
   }
 
   public componentWillReceiveProps(nextProps: LocationListenerProps) {
-    const { location } = this.props;
+    const { location, history } = this.props;
 
     if (!EnvChecker.isOnServer() && location !== nextProps.location) {
       let historyStack: HistoryInformation[] = JSON.parse(window.sessionStorage.getItem(HISTORY_SESSION_KEY) || "[]");
@@ -104,7 +104,8 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
       const queryObject = getQueryParamsObject(location.search);
 
       if (queryObject.branch) {
-        console.log(queryObject.branch);
+        console.log(nextProps.location.pathname + nextProps.location.search + `&branch=${queryObject.branch}`);
+        history.push(nextProps.location.pathname + nextProps.location.search + `&branch=${queryObject.branch}`);
       }
     }
   }
