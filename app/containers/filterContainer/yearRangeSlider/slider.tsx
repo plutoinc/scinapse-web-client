@@ -74,7 +74,7 @@ class Slider extends React.PureComponent<SliderProps, SliderState> {
           value={cv}
           type={cv === minValue ? "min" : "max"}
           onMouseDown={this.handleMouseDown}
-          isNarrow={maxValue - minValue < 6}
+          isNarrow={maxValue - minValue < 6 && maxValue !== minValue}
         />
       );
     });
