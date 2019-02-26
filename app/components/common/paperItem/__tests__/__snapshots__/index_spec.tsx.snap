@@ -119,9 +119,12 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
               Sasha Stankovich
             </a>
              
-            <span>
-              , 
-            </span>
+          </span>
+          <span
+            className="toggleAuthorsButton"
+            onClick={[Function]}
+          >
+            + 5 Authors
           </span>
           <span
             className="author"
@@ -131,15 +134,9 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
               href="/authors/undefined"
               onClick={[Function]}
             >
-              Eric J. Zimney
+              Rodney S. Ruoff
             </a>
              
-          </span>
-          <span
-            className="toggleAuthorsButton"
-            onClick={[Function]}
-          >
-            ... more
           </span>
         </span>
       </div>
@@ -355,9 +352,12 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
               Sasha Stankovich
             </a>
              
-            <span>
-              , 
-            </span>
+          </span>
+          <span
+            className="toggleAuthorsButton"
+            onClick={[Function]}
+          >
+            + 5 Authors
           </span>
           <span
             className="author"
@@ -367,15 +367,9 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
               href="/authors/undefined"
               onClick={[Function]}
             >
-              Eric J. Zimney
+              Rodney S. Ruoff
             </a>
              
-          </span>
-          <span
-            className="toggleAuthorsButton"
-            onClick={[Function]}
-          >
-            ... more
           </span>
         </span>
       </div>

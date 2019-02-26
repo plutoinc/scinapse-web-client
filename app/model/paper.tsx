@@ -16,6 +16,7 @@ export interface Paper {
   publishedDate: string;
   referenceCount: number;
   citedCount: number;
+  authorCount: number;
   lang: string;
   doi: string;
   publisher: string;

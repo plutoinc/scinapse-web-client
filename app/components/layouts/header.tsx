@@ -27,6 +27,7 @@ import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import { HOME_PATH } from "../../constants/routes";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
+import { CurrentUser } from "../../model/currentUser";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -48,6 +49,17 @@ interface HeaderStates {
   userDropdownAnchorElement: HTMLElement | null;
   openTopToast: boolean;
 }
+
+const UserInformation: React.FunctionComponent<{ user: CurrentUser }> = props => {
+  const { user } = props;
+
+  return (
+    <div className={styles.userInfoWrapper}>
+      <div className={styles.username}>{`${user.firstName} ${user.lastName || ""}`}</div>
+      <div className={styles.email}>{user.email}</div>
+    </div>
+  );
+};
 
 @withStyles<typeof Header>(styles)
 class Header extends React.PureComponent<HeaderProps, HeaderStates> {
@@ -346,6 +358,9 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
     return (
       <div className={styles.menuItems}>
+        <MenuItem classes={{ root: styles.userInfoMenuItem }} disabled disableGutters>
+          <UserInformation user={currentUserState} />
+        </MenuItem>
         {currentUserState.isAuthorConnected ? (
           <MenuItem classes={{ root: styles.profileButton }}>
             <Link

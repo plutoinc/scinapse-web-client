@@ -451,6 +451,15 @@ exports[`JournalShow Container Component when journal data exist should render c
         FAQ
       </a>
       <a
+        className="link"
+        href="https://www.notion.so/pluto/Scinapse-Updates-6a05160afde44ba1a6ed312899c23dae"
+        onClick={[Function]}
+        rel="noopener"
+        target="_blank"
+      >
+        Updates
+      </a>
+      <a
         className="termsOfServiceLink"
         href="https://scinapse.io/terms-of-service"
       >

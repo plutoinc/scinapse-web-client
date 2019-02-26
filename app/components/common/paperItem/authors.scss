@@ -21,11 +21,21 @@
   }
 
   .toggleAuthorsButton {
+    height: 26px;
+    display: inline-block;
+    font-size: 13px;
+    text-align: center;
+    color: $gray6;
+    border-radius: 4px;
+    background-color: $gray8;
     font-weight: 400;
+    padding: 4px;
     cursor: pointer;
+    margin: 0 8px;
 
     &:hover {
-      text-decoration: underline;
+      background-color: $gray2;
+      transition: 0.2s;
     }
   }
 

@@ -358,9 +358,12 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                         Sasha Stankovich
                       </a>
                        
-                      <span>
-                        , 
-                      </span>
+                    </span>
+                    <span
+                      className="toggleAuthorsButton"
+                      onClick={[Function]}
+                    >
+                      + 5 Authors
                     </span>
                     <span
                       className="author"
@@ -370,15 +373,9 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                         href="/authors/undefined"
                         onClick={[Function]}
                       >
-                        Eric J. Zimney
+                        Rodney S. Ruoff
                       </a>
                        
-                    </span>
-                    <span
-                      className="toggleAuthorsButton"
-                      onClick={[Function]}
-                    >
-                      ... more
                     </span>
                   </span>
                 </div>
@@ -573,6 +570,15 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
         target="_blank"
       >
         FAQ
+      </a>
+      <a
+        className="link"
+        href="https://www.notion.so/pluto/Scinapse-Updates-6a05160afde44ba1a6ed312899c23dae"
+        onClick={[Function]}
+        rel="noopener"
+        target="_blank"
+      >
+        Updates
       </a>
       <a
         className="termsOfServiceLink"
@@ -935,6 +941,15 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
         target="_blank"
       >
         FAQ
+      </a>
+      <a
+        className="link"
+        href="https://www.notion.so/pluto/Scinapse-Updates-6a05160afde44ba1a6ed312899c23dae"
+        onClick={[Function]}
+        rel="noopener"
+        target="_blank"
+      >
+        Updates
       </a>
       <a
         className="termsOfServiceLink"
@@ -1306,6 +1321,15 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
         target="_blank"
       >
         FAQ
+      </a>
+      <a
+        className="link"
+        href="https://www.notion.so/pluto/Scinapse-Updates-6a05160afde44ba1a6ed312899c23dae"
+        onClick={[Function]}
+        rel="noopener"
+        target="_blank"
+      >
+        Updates
       </a>
       <a
         className="termsOfServiceLink"

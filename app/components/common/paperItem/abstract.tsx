@@ -69,8 +69,6 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
 
     this.setState({ isExtendContent: !isExtendContent });
 
-    console.log(isExtendContent ? "collapse Abstract" : "Extend Abstract");
-
     ActionTicketManager.trackTicket({
       pageType,
       actionType: "fire",

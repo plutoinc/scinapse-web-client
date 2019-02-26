@@ -1,4 +1,5 @@
 import { Dispatch } from "redux";
+import * as ReactGA from "react-ga";
 import AuthAPI from "../../../api/auth";
 import { PostExchangeResult, OAUTH_VENDOR, GetAuthorizeUriResult } from "../../../api/types/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
@@ -386,6 +387,7 @@ export function signUpWithSocial(currentStep: SIGN_UP_STEP, vendor: OAUTH_VENDOR
           trackEvent({ category: "sign_up", action: "try_to_sign_up_step_1", label: `with_${vendor}` });
 
           if (!EnvChecker.isOnServer()) {
+            ReactGA.set({ referrer: origin });
             window.location.replace(authorizeUriData.uri);
           }
         } catch (err) {

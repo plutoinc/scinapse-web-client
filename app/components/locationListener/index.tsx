@@ -15,6 +15,8 @@ import {
   AUTH_PATH,
   AUTHOR_SEARCH_RESULT_PATH,
 } from "../../constants/routes";
+import getQueryParamsObject from "../../helpers/getQueryParamsObject";
+import { stringify } from "qs";
 
 interface LocationListenerProps extends RouteComponentProps<{}> {}
 export interface HistoryInformation {
@@ -99,6 +101,14 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
       }
 
       window.sessionStorage.setItem(HISTORY_SESSION_KEY, JSON.stringify(historyStack));
+
+      const qs = getQueryParamsObject(location.search);
+      const nextQS = getQueryParamsObject(nextProps.location.search);
+
+      if (qs["branch"] && !nextQS["branch"]) {
+        const nextQPString = stringify({ ...nextQS, branch: qs["branch"] }, { addQueryPrefix: true });
+        nextProps.history.replace(nextProps.location.pathname + nextQPString);
+      }
     }
   }
 
