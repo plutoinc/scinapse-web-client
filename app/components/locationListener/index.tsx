@@ -81,7 +81,7 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
   }
 
   public componentWillReceiveProps(nextProps: LocationListenerProps) {
-    const { location } = this.props;
+    const { location, history } = this.props;
 
     if (!EnvChecker.isOnServer() && location !== nextProps.location) {
       let historyStack: HistoryInformation[] = JSON.parse(window.sessionStorage.getItem(HISTORY_SESSION_KEY) || "[]");
@@ -108,20 +108,10 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
 
         if (nextProps.location.search) {
           location.search = `${nextProps.location.search}&branch=${queryObject.branch}`;
-          // history.pushState(
-          //   { path: nextProps.loca
-          // tion.pathname, search: `${nextProps.location.search}&branch=${queryObject.branch}` },
-          //   "",
-          //   `${nextProps.location.pathname}${nextProps.location.search}&branch=${queryObject.branch}`
-          // );
+          history.replace(`${nextProps.location.pathname}${nextProps.location.search}&branch=${queryObject.branch}`);
         } else {
           location.search = `?branch=${queryObject.branch}`;
-
-          // history.pushState(
-          //   { path: nextProps.location.pathname, search: `?branch=${queryObject.branch}` },
-          //   "",
-          //   `${nextProps.location.pathname}?branch=${queryObject.branch}`
-          // );
+          history.replace(`${nextProps.location.pathname}?branch=${queryObject.branch}`);
         }
       }
     }
