@@ -123,8 +123,9 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
               goToYearFilteredSearchResultPage({
                 qs: props.location.search,
                 history: props.history,
-                max: yearSetListToShow[yearSetListToShow.length - 1].year,
-                min: yearSetListToShow[0].year,
+                max: currentYear,
+                min: MIN_YEAR,
+                fromBtn: true,
               });
             }}
             className={styles.resetBtn}
@@ -141,6 +142,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
                 history: props.history,
                 max: currentYear,
                 min: currentYear,
+                fromBtn: true,
               });
             }}
             isActive={minValue === currentYear && maxValue === currentYear}
@@ -152,10 +154,11 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
                 qs: props.location.search,
                 history: props.history,
                 max: currentYear,
-                min: currentYear - 3,
+                min: currentYear - 2,
+                fromBtn: true,
               });
             }}
-            isActive={minValue === currentYear - 3 && maxValue === currentYear}
+            isActive={minValue === currentYear - 2 && maxValue === currentYear}
             text="Last 3 Years"
           />
           <FilterButton
@@ -164,10 +167,11 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
                 qs: props.location.search,
                 history: props.history,
                 max: currentYear,
-                min: currentYear - 5,
+                min: currentYear - 4,
+                fromBtn: true,
               });
             }}
-            isActive={minValue === currentYear - 5 && maxValue === currentYear}
+            isActive={minValue === currentYear - 4 && maxValue === currentYear}
             text="Last 5 Years"
           />
         </div>
