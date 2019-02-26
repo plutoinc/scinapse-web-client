@@ -2,7 +2,8 @@ import { History } from "history";
 import { SearchPageQueryParams } from "../../../components/articleSearch/types";
 import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
 import PapersQueryFormatter, { SearchPageQueryParamsObject } from "../../../helpers/papersQueryFormatter";
-interface GoToYearFilteredSearchResultPageParams {
+
+export interface GoToYearFilteredSearchResultPageParams {
   qs: string;
   min: number;
   max: number;

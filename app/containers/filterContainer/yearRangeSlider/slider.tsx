@@ -4,6 +4,8 @@ import { goToYearFilteredSearchResultPage } from "./helper";
 import { MIN_YEAR } from "./constants";
 const styles = require("./yearRangeSlider.scss");
 
+let ticking = false;
+
 interface SliderBubbleProps {
   value: number;
   left: number;
@@ -12,7 +14,7 @@ interface SliderBubbleProps {
   onMouseDown: (e: React.MouseEvent<HTMLDivElement>, value: number) => void;
 }
 
-const SliderBubble: React.FunctionComponent<SliderBubbleProps> = props => {
+const SliderBubble: React.FunctionComponent<SliderBubbleProps> = React.memo(props => {
   let labelLeft: number = -6;
   if (props.isNarrow && props.type === "min") {
     labelLeft = -14;
@@ -38,7 +40,7 @@ const SliderBubble: React.FunctionComponent<SliderBubbleProps> = props => {
       </div>
     </div>
   );
-};
+});
 
 interface SliderProps extends RouteComponentProps<null> {
   values: number[];
@@ -113,40 +115,46 @@ class Slider extends React.PureComponent<SliderProps, SliderState> {
   };
 
   private handleDragEvent = (e: any) => {
-    const { minValue, maxValue } = this.props;
-    if (!e.clientX || !this.state.bubbleNode) return;
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const { minValue, maxValue } = this.props;
+        if (!e.clientX || !this.state.bubbleNode) return;
 
-    const currentYear = new Date().getFullYear();
-    const diff = e.clientX - Math.round(this.state.bubbleNode.getBoundingClientRect().left);
-    const fromLeft = this.state.bubbleNode.offsetLeft + diff;
-    const nextStep = Math.floor(fromLeft / this.props.step);
+        const currentYear = new Date().getFullYear();
+        const diff = e.clientX - Math.round(this.state.bubbleNode.getBoundingClientRect().left);
+        const fromLeft = this.state.bubbleNode.offsetLeft + diff;
+        const nextStep = Math.floor(fromLeft / this.props.step);
 
-    let nextValue: number = nextStep + MIN_YEAR;
-    if (nextValue < MIN_YEAR) {
-      nextValue = MIN_YEAR;
-    } else if (nextValue > currentYear) {
-      nextValue = currentYear;
+        let nextValue: number = nextStep + MIN_YEAR;
+        if (nextValue < MIN_YEAR) {
+          nextValue = MIN_YEAR;
+        } else if (nextValue > currentYear) {
+          nextValue = currentYear;
+        }
+
+        let nextValues: number[] = [];
+        if (this.state.currentBubble === "min") {
+          nextValues = [Math.min(maxValue, nextValue), maxValue];
+
+          if (nextValue > maxValue) {
+            this.setState(prevState => ({ ...prevState, currentBubble: "max" }));
+            nextValues = [maxValue, nextValue];
+          }
+        } else {
+          nextValues = [minValue, Math.max(minValue, nextValue)];
+
+          if (nextValue < minValue) {
+            this.setState(prevState => ({ ...prevState, currentBubble: "min" }));
+            nextValues = [nextValue, minValue];
+          }
+        }
+
+        this.props.setValues(nextValues);
+        this.props.onSelectingColumn(nextValue);
+        ticking = false;
+      });
+      ticking = true;
     }
-
-    let nextValues: number[] = [];
-    if (this.state.currentBubble === "min") {
-      nextValues = [Math.min(maxValue, nextValue), maxValue];
-
-      if (nextValue > maxValue) {
-        this.setState(prevState => ({ ...prevState, currentBubble: "max" }));
-        nextValues = [maxValue, nextValue];
-      }
-    } else {
-      nextValues = [minValue, Math.max(minValue, nextValue)];
-
-      if (nextValue < minValue) {
-        this.setState(prevState => ({ ...prevState, currentBubble: "min" }));
-        nextValues = [nextValue, minValue];
-      }
-    }
-
-    this.props.setValues(nextValues);
-    this.props.onSelectingColumn(nextValue);
   };
 
   private handleDragEnd = () => {
