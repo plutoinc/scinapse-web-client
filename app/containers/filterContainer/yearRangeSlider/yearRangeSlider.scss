@@ -65,6 +65,10 @@
   &:hover {
     background-color: $gray5;
 
+    &.activeColumn {
+      background-color: $main_blue0;
+    }
+
     .columnLabel {
       &:not(.isSelectMode) {
         display: flex;
