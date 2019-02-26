@@ -47,7 +47,9 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
             setIsFetching(false);
           })
           .catch(_err => {
+            setLoadError(true);
             setIsFetching(false);
+            onFailed();
           });
       }
     },
@@ -84,10 +86,6 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
               <ArticleSpinner />
             </div>
           }
-          onLoadError={() => {
-            setLoadError(true);
-            onFailed();
-          }}
           onLoadSuccess={(document: any) => {
             setPageCountToShow(document.numPages);
             setSucceed(true);
