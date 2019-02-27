@@ -1,8 +1,8 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { SavedInCollections } from "../../../model/savedInCollecctions";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
-import { Link } from "react-router-dom";
 const styles = require("./savedCollections.scss");
 
 const MAX_LENGTH_OF_COLLECTION_NAME = 45;
