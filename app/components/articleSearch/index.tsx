@@ -72,10 +72,10 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     const beforeSearch = location.search;
     const afterSearch = nextLocation.search;
 
-    const isChangeSearchKeyword = !!afterSearch && beforeSearch !== afterSearch;
-    const isChangeLoggedInState = currentUserState.isLoggedIn !== nextProps.currentUserState.isLoggedIn;
+    const hasSearchKeywordChanged = !!afterSearch && beforeSearch !== afterSearch;
+    const hasAuthStateChanged = currentUserState.isLoggedIn !== nextProps.currentUserState.isLoggedIn;
 
-    if (isChangeSearchKeyword || isChangeLoggedInState) {
+    if (hasSearchKeywordChanged || hasAuthStateChanged) {
       await getSearchData({
         dispatch,
         match,
