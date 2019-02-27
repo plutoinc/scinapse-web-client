@@ -32,7 +32,7 @@ export function getMember(memberId: number, cancelToken: CancelToken) {
   };
 }
 
-export function getCollections(memberId: number, cancelToken: CancelToken) {
+export function getCollections(memberId: number, cancelToken?: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToGetCollectionsInCollectionsPage());
 

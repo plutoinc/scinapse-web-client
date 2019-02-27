@@ -8,6 +8,7 @@ import validateEmail from "../../../helpers/validateEmail";
 import Icon from "../../../icons";
 import { changeDialogType } from "../../dialog/actions";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/reducer";
+import { Field } from "formik";
 const styles = require("./resetPassword.scss");
 
 interface ResetPasswordProps
@@ -78,16 +79,7 @@ class ResetPasswordContainer extends React.PureComponent<ResetPasswordProps, Res
     } else {
       return (
         <form onSubmit={this.handleSubmitForm} className={styles.formContainer}>
-          <AuthInputBox
-            isFocused={isFocused}
-            onFocusFunc={this.handleFocusInput}
-            onChangeFunc={this.handleChangeInput}
-            onBlurFunc={this.handleBlurInput}
-            placeHolder="E-mail"
-            hasError={hasError}
-            inputType="email"
-            iconName="EMAIL_ICON"
-          />
+          {/* <Field name="email" type="email" component={AuthInputBox} placeholder="E-mail" iconName="EMAIL_ICON" /> */}
           {this.getErrorMessage()}
           <button className={styles.submitButton}>RESET PASSWORD</button>
           <button onClick={this.handleClickGoBackButton} className={styles.backButton}>

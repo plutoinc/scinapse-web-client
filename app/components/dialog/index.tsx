@@ -6,7 +6,7 @@ import { denormalize } from "normalizr";
 import Dialog from "@material-ui/core/Dialog";
 import { AppState } from "../../reducers";
 import * as Actions from "./actions";
-import SignIn from "../auth/signIn";
+import SignIn from "../auth/signIn/temp";
 import SignUp from "../auth/signUp";
 import ResetPassword from "../auth/resetPasswordDialog";
 import VerificationNeeded from "../auth/verificationNeeded";
@@ -201,7 +201,11 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
 
     switch (type) {
       case GLOBAL_DIALOG_TYPE.SIGN_IN:
-        return <SignIn handleChangeDialogType={this.changeDialogType} />;
+        return (
+          <div style={{ padding: "0 36px" }}>
+            <SignIn handleChangeDialogType={this.changeDialogType} />
+          </div>
+        );
       case GLOBAL_DIALOG_TYPE.SIGN_UP:
         return <SignUp handleChangeDialogType={this.changeDialogType} />;
 

@@ -81,7 +81,7 @@ const ICONS: { [key: string]: any } = {
 };
 
 @withStyles<typeof Icon>(styles)
-class Icon extends React.PureComponent<IconProps, {}> {
+class Icon extends React.PureComponent<IconProps> {
   public render() {
     let className = styles.icon;
     if (this.props.className) {

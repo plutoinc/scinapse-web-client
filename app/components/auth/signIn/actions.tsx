@@ -10,6 +10,7 @@ import EnvChecker from "../../../helpers/envChecker";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { SignInWithEmailParams, SignInResult, OAUTH_VENDOR, GetAuthorizeUriResult } from "../../../api/types/auth";
 import { trackDialogView } from "../../../helpers/handleGA";
+import PlutoAxios from "../../../api/pluto";
 
 export function changeEmailInput(email: string) {
   return {
@@ -45,42 +46,22 @@ export function onBlurInput() {
 }
 
 export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean) {
-  return async (dispatch: Dispatch<Function>) => {
+  return async (dispatch: Dispatch<any>) => {
     const { email, password } = params;
 
-    if (!validateEmail(email)) {
-      dispatch({
-        type: ACTION_TYPES.SIGN_IN_FORM_ERROR,
-      });
-      throw new Error();
-    }
-
-    const isPasswordTooShort = password === "" || password.length <= 0 || password.length < 8;
-    if (isPasswordTooShort) {
-      dispatch({
-        type: ACTION_TYPES.SIGN_IN_FORM_ERROR,
-      });
-      throw new Error();
-    }
-
-    dispatch({
-      type: ACTION_TYPES.SIGN_IN_START_TO_SIGN_IN,
-    });
-
     try {
-      const signInResult: SignInResult = await AuthAPI.signInWithEmail({
-        email: params.email,
-        password: params.password,
-      });
+      const signInResult: SignInResult = await AuthAPI.signInWithEmail({ email, password });
 
       if (isDialog) {
         dispatch(closeDialog());
         trackDialogView("signInWithEmailClose");
       }
+
       alertToast({
         type: "success",
-        message: "Welcome to sci-napse.",
+        message: "Welcome to scinapse",
       });
+
       dispatch({
         type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
         payload: {
@@ -89,16 +70,15 @@ export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean
           oauthLoggedIn: signInResult.oauthLoggedIn,
         },
       });
+
       return signInResult;
     } catch (err) {
       alertToast({
         type: "error",
         message: `Failed to sign in.`,
       });
-      dispatch({
-        type: ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN,
-      });
-      throw err;
+      const error = PlutoAxios.getGlobalError(err);
+      throw error;
     }
   };
 }

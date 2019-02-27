@@ -8,6 +8,7 @@ import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import AuthInputBox from "../../common/inputBox/authInputBox";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import alertToast from "../../../helpers/makePlutoToastAction";
+import { Field } from "formik";
 const styles = require("./resetPassword.scss");
 
 interface ResetPasswordPageProps
@@ -64,8 +65,6 @@ class ResetPasswordPage extends React.PureComponent<ResetPasswordPageProps, Rese
   }
 
   public render() {
-    const { isFocusOn, hasError } = this.state;
-
     return (
       <div className={styles.signInContainer}>
         <form onSubmit={this.handleSubmitForm} className={styles.formContainer}>
@@ -75,28 +74,18 @@ class ResetPasswordPage extends React.PureComponent<ResetPasswordPageProps, Rese
           Must be at least 8 characters!`}
           </div>
 
-          <AuthInputBox
-            isFocused={isFocusOn === ResetPasswordInputTypes.PASSWORD}
-            onFocusFunc={() => {
-              this.onFocusInput(ResetPasswordInputTypes.PASSWORD);
-            }}
-            onChangeFunc={this.handlePasswordChange}
-            onBlurFunc={this.onBlurPasswordInput}
-            placeHolder="New password"
-            hasError={hasError}
-            inputType="password"
+          <Field
+            name="password"
+            type="password"
+            component={AuthInputBox}
+            placeholder="New password"
             iconName="PASSWORD_ICON"
           />
-          <AuthInputBox
-            isFocused={isFocusOn === ResetPasswordInputTypes.CONFIRM_PASSWORD}
-            onFocusFunc={() => {
-              this.onFocusInput(ResetPasswordInputTypes.CONFIRM_PASSWORD);
-            }}
-            onChangeFunc={this.handleConfirmPasswordChange}
-            onBlurFunc={this.onBlurConfirmPasswordInput}
-            placeHolder="Confirm password"
-            hasError={hasError}
-            inputType="password"
+          <Field
+            name="confirmPassword"
+            type="password"
+            component={AuthInputBox}
+            placeholder="Confirm password"
             iconName="PASSWORD_ICON"
           />
           {this.getErrorContent()}
@@ -146,57 +135,57 @@ class ResetPasswordPage extends React.PureComponent<ResetPasswordPageProps, Rese
     }
   };
 
-  private handleConfirmPasswordChange = (password: string) => {
-    this.setState({
-      confirmPasswordInput: password,
-      hasError: false,
-      errorMessage: "",
-    });
-  };
+  // private handleConfirmPasswordChange = (password: string) => {
+  //   this.setState({
+  //     confirmPasswordInput: password,
+  //     hasError: false,
+  //     errorMessage: "",
+  //   });
+  // };
 
-  private handlePasswordChange = (password: string) => {
-    this.setState({
-      passwordInput: password,
-      hasError: false,
-      errorMessage: "",
-    });
-  };
+  // private handlePasswordChange = (password: string) => {
+  //   this.setState({
+  //     passwordInput: password,
+  //     hasError: false,
+  //     errorMessage: "",
+  //   });
+  // };
 
-  private onFocusInput = (type: ResetPasswordInputTypes) => {
-    this.setState({
-      isFocusOn: type,
-    });
-  };
+  // private onFocusInput = (type: ResetPasswordInputTypes) => {
+  //   this.setState({
+  //     isFocusOn: type,
+  //   });
+  // };
 
-  private onBlurPasswordInput = () => {
-    const { passwordInput } = this.state;
+  // private onBlurPasswordInput = () => {
+  //   const { passwordInput } = this.state;
 
-    this.setState({
-      isFocusOn: null,
-    });
+  //   this.setState({
+  //     isFocusOn: null,
+  //   });
 
-    if (passwordInput.length < 8) {
-      this.setState({
-        hasError: true,
-        errorMessage: "Password should be at least 8 characters.",
-      });
-    }
-  };
+  //   if (passwordInput.length < 8) {
+  //     this.setState({
+  //       hasError: true,
+  //       errorMessage: "Password should be at least 8 characters.",
+  //     });
+  //   }
+  // };
 
-  private onBlurConfirmPasswordInput = () => {
-    const { passwordInput, confirmPasswordInput } = this.state;
+  // private onBlurConfirmPasswordInput = () => {
+  //   const { passwordInput, confirmPasswordInput } = this.state;
 
-    this.setState({
-      isFocusOn: null,
-    });
+  //   this.setState({
+  //     isFocusOn: null,
+  //   });
 
-    if (passwordInput !== confirmPasswordInput) {
-      this.setState({
-        hasError: true,
-        errorMessage: "The passwords must match!",
-      });
-    }
-  };
+  //   if (passwordInput !== confirmPasswordInput) {
+  //     this.setState({
+  //       hasError: true,
+  //       errorMessage: "The passwords must match!",
+  //     });
+  //   }
+  // };
 
   private getSubmitButton = () => {
     const { isLoading } = this.state;

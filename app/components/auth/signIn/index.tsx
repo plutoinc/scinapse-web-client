@@ -5,7 +5,6 @@ import { parse } from "qs";
 import axios from "axios";
 import * as Actions from "./actions";
 import { AppState } from "../../../reducers";
-import { SIGN_IN_ON_FOCUS_TYPE } from "./reducer";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/reducer";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import AuthInputBox from "../../common/inputBox/authInputBox";
@@ -18,6 +17,7 @@ import { OAUTH_VENDOR } from "../../../api/types/auth";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { getCollections } from "../../collections/actions";
+import { Field } from "formik";
 
 const store = require("store");
 const styles = require("./signIn.scss");
@@ -133,30 +133,17 @@ class SignIn extends React.PureComponent<SignInContainerProps> {
           className={styles.formContainer}
         >
           {this.getAuthNavBar(handleChangeDialogType)}
-          <AuthInputBox
-            isFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.EMAIL}
-            onFocusFunc={() => {
-              this.onFocusInput(SIGN_IN_ON_FOCUS_TYPE.EMAIL);
-            }}
-            onChangeFunc={this.handleEmailChange}
-            onBlurFunc={this.onBlurInput}
-            placeHolder="E-mail"
-            hasError={hasError}
-            inputType="email"
-            iconName="EMAIL_ICON"
-          />
-          <AuthInputBox
-            isFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.PASSWORD}
-            onFocusFunc={() => {
-              this.onFocusInput(SIGN_IN_ON_FOCUS_TYPE.PASSWORD);
-            }}
-            onChangeFunc={this.handlePasswordChange}
-            onBlurFunc={this.onBlurInput}
-            placeHolder="Password"
-            hasError={hasError}
-            inputType="password"
+
+          <Field name="email" type="email" component={AuthInputBox} placeholder="E-mail" iconName="EMAIL_ICON" />
+
+          <Field
+            name="password"
+            type="password"
+            component={AuthInputBox}
+            placeholder="Password"
             iconName="PASSWORD_ICON"
           />
+
           {this.getForgotPasswordContent()}
           {this.getErrorContent(hasError)}
           {this.getSubmitButton(isLoading)}
@@ -218,30 +205,6 @@ class SignIn extends React.PureComponent<SignInContainerProps> {
 
   private getParsedSearchParamsObject = (searchString: string): SignInSearchParams => {
     return parse(searchString, { ignoreQueryPrefix: true });
-  };
-
-  private handleEmailChange = (email: string) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changeEmailInput(email));
-  };
-
-  private handlePasswordChange = (password: string) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changePasswordInput(password));
-  };
-
-  private onFocusInput = (type: SIGN_IN_ON_FOCUS_TYPE) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.onFocusInput(type));
-  };
-
-  private onBlurInput = () => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.onBlurInput());
   };
 
   private goBack = () => {
@@ -372,7 +335,7 @@ class SignIn extends React.PureComponent<SignInContainerProps> {
     } else {
       return (
         <button type="submit" className={styles.submitButton}>
-          SIGN IN
+          SIGN IN1
         </button>
       );
     }

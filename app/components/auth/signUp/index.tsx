@@ -15,6 +15,7 @@ import { SignUpContainerProps, SignUpSearchParams } from "./types";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { closeDialog } from "../../dialog/actions";
+import { Field } from "formik";
 const store = require("store");
 const styles = require("./signUp.scss");
 
@@ -87,59 +88,29 @@ class SignUp extends React.PureComponent<SignUpContainerProps> {
                 {email}
               </div>
               <div className={styles.nameInputBox}>
-                <AuthInputBox
-                  isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.FIRST_NAME}
-                  onFocusFunc={() => {
-                    this.removeFormErrorMessage("firstName");
-                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.FIRST_NAME);
-                  }}
-                  onChangeFunc={this.handleFirstNameChange}
-                  onBlurFunc={() => {
-                    this.checkFirstValidNameInput();
-                    this.onBlurInput();
-                  }}
-                  defaultValue={firstName}
-                  placeHolder="First Name"
-                  hasError={hasErrorCheck.firstName.hasError}
-                  inputType="string"
+                <Field
+                  name="firstName"
+                  type="text"
+                  component={AuthInputBox}
+                  placeholder="First Name"
                   iconName="FULL_NAME_ICON"
                 />
-                <AuthInputBox
-                  isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.LASTNAME}
-                  onFocusFunc={() => {
-                    this.removeFormErrorMessage("lastName");
-                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.LASTNAME);
-                  }}
-                  onChangeFunc={this.handleLastNameChange}
-                  onBlurFunc={() => {
-                    this.checkLastValidNameInput();
-                    this.onBlurInput();
-                  }}
-                  defaultValue={lastName}
-                  placeHolder="LastName"
-                  hasError={hasErrorCheck.lastName.hasError}
-                  inputType="string"
+                <Field
+                  name="lastName"
+                  type="text"
+                  component={AuthInputBox}
+                  placeholder="Last Name"
                   iconName="FULL_NAME_ICON"
                   wrapperStyles={{ marginLeft: "10px" }}
                 />
               </div>
               {this.getErrorContent(hasErrorCheck.firstName)}
               {this.getErrorContent(hasErrorCheck.lastName)}
-              <AuthInputBox
-                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
-                onFocusFunc={() => {
-                  this.removeFormErrorMessage("affiliation");
-                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.AFFILIATION);
-                }}
-                onChangeFunc={this.handleAffiliationChange}
-                onBlurFunc={() => {
-                  this.checkValidAffiliationInput();
-                  this.onBlurInput();
-                }}
-                defaultValue={affiliation}
-                placeHolder="Affiliation / Company"
-                hasError={hasErrorCheck.affiliation.hasError}
-                inputType="string"
+              <Field
+                name="affiliation"
+                type="text"
+                component={AuthInputBox}
+                placeholder="Affiliation / Company"
                 iconName="AFFILIATION_ICON"
               />
               {this.getErrorContent(hasErrorCheck.affiliation)}
@@ -167,81 +138,36 @@ class SignUp extends React.PureComponent<SignUpContainerProps> {
               {this.getAuthNavBar(handleChangeDialogType)}
               <div className={styles.additionalInformation}>ADDITIONAL INFORMATION</div>
               <div className={styles.subHeader}>No abbreviation preferred</div>
-              <AuthInputBox
-                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
-                onFocusFunc={() => {
-                  this.removeFormErrorMessage("email");
-                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.EMAIL);
-                }}
-                onChangeFunc={this.handleEmailChange}
-                onBlurFunc={() => {
-                  this.checkValidEmailInput();
-                  this.checkDuplicatedEmail();
-                  this.onBlurInput();
-                }}
-                defaultValue={email}
-                placeHolder="E-mail"
-                hasError={hasErrorCheck.email.hasError}
-                inputType="email"
-                iconName="EMAIL_ICON"
-              />
+              <Field name="email" type="email" component={AuthInputBox} placeholder="E-mail" iconName="EMAIL_ICON" />
+
               {this.getErrorContent(hasErrorCheck.email)}
               <div className={styles.nameInputBox}>
-                <AuthInputBox
-                  isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.FIRST_NAME}
-                  onFocusFunc={() => {
-                    this.removeFormErrorMessage("firstName");
-                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.FIRST_NAME);
-                  }}
-                  onChangeFunc={this.handleFirstNameChange}
-                  onBlurFunc={() => {
-                    this.checkFirstValidNameInput();
-                    this.onBlurInput();
-                  }}
-                  defaultValue={firstName}
-                  placeHolder="First Name"
-                  hasError={hasErrorCheck.firstName.hasError}
-                  inputType="string"
+                <Field
+                  name="firstName"
+                  type="text"
+                  component={AuthInputBox}
+                  placeholder="First Name"
                   iconName="FULL_NAME_ICON"
                 />
-                <AuthInputBox
-                  isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.LASTNAME}
-                  onFocusFunc={() => {
-                    this.removeFormErrorMessage("lastName");
-                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.LASTNAME);
-                  }}
-                  onChangeFunc={this.handleLastNameChange}
-                  onBlurFunc={() => {
-                    this.checkLastValidNameInput();
-                    this.onBlurInput();
-                  }}
-                  defaultValue={lastName}
-                  placeHolder="LastName"
-                  hasError={hasErrorCheck.lastName.hasError}
-                  inputType="string"
+                <Field
+                  name="lastName"
+                  type="text"
+                  component={AuthInputBox}
+                  placeholder="Last Name"
                   iconName="FULL_NAME_ICON"
                   wrapperStyles={{ marginLeft: "10px" }}
                 />
               </div>
               {this.getErrorContent(hasErrorCheck.firstName)}
               {this.getErrorContent(hasErrorCheck.lastName)}
-              <AuthInputBox
-                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
-                onFocusFunc={() => {
-                  this.removeFormErrorMessage("affiliation");
-                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.AFFILIATION);
-                }}
-                onChangeFunc={this.handleAffiliationChange}
-                onBlurFunc={() => {
-                  this.checkValidAffiliationInput();
-                  this.onBlurInput();
-                }}
-                defaultValue={affiliation}
-                placeHolder="Affiliation / Company"
-                hasError={hasErrorCheck.affiliation.hasError}
-                inputType="string"
+              <Field
+                name="affiliation"
+                type="text"
+                component={AuthInputBox}
+                placeholder="Affiliation / Company"
                 iconName="AFFILIATION_ICON"
               />
+
               {this.getErrorContent(hasErrorCheck.affiliation)}
               <div style={{ height: 63 }} />
               {this.getSubmitButton(isLoading)}
@@ -286,42 +212,17 @@ class SignUp extends React.PureComponent<SignUpContainerProps> {
               className={styles.formContainer}
             >
               {this.getAuthNavBar(handleChangeDialogType)}
-              <AuthInputBox
-                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
-                onFocusFunc={() => {
-                  this.removeFormErrorMessage("email");
-                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.EMAIL);
-                }}
-                onChangeFunc={this.handleEmailChange}
-                onBlurFunc={() => {
-                  this.checkValidEmailInput();
-                  this.checkDuplicatedEmail();
-                  this.onBlurInput();
-                }}
-                defaultValue={email}
-                placeHolder="E-mail"
-                hasError={hasErrorCheck.email.hasError}
-                inputType="email"
-                iconName="EMAIL_ICON"
-              />
+
+              <Field name="email" type="email" component={AuthInputBox} placeholder="E-mail" iconName="EMAIL_ICON" />
               {this.getErrorContent(hasErrorCheck.email)}
-              <AuthInputBox
-                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.PASSWORD}
-                onFocusFunc={() => {
-                  this.removeFormErrorMessage("password");
-                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.PASSWORD);
-                }}
-                onChangeFunc={this.handlePasswordChange}
-                onBlurFunc={() => {
-                  this.checkValidPasswordInput();
-                  this.onBlurInput();
-                }}
-                defaultValue={password}
-                placeHolder="Password"
-                hasError={hasErrorCheck.password.hasError}
-                inputType="password"
+              <Field
+                name="password"
+                type="password"
+                component={AuthInputBox}
+                placeholder="Password"
                 iconName="PASSWORD_ICON"
               />
+
               {this.getErrorContent(hasErrorCheck.password)}
               {this.getSubmitButton(isLoading)}
               <div className={styles.orSeparatorBox}>

@@ -1,0 +1,21 @@
+.orSeparatorBox {
+  display: flex;
+  align-items: center;
+  margin-top: 10.2px;
+
+  .dashedSeparator {
+    width: 156.5px;
+    height: 1.2px;
+    border-top: dashed 0.8px $gray3;
+    margin-left: 3.9px;
+    margin-right: 3.9px;
+  }
+
+  .orContent {
+    width: 11px;
+    height: 14px;
+    font-size: 12px;
+    text-align: center;
+    color: $gray3;
+  }
+}
