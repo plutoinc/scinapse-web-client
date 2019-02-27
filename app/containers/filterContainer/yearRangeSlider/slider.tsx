@@ -15,21 +15,22 @@ interface SliderBubbleProps {
 }
 
 const SliderBubble: React.FunctionComponent<SliderBubbleProps> = React.memo(props => {
-  let labelLeft: number = -6;
+  let labelLeft: number = props.left - 12;
   if (props.isNarrow && props.type === "min") {
-    labelLeft = -14;
+    labelLeft = props.left - 24;
   } else if (props.isNarrow && props.type === "max") {
-    labelLeft = 8;
+    labelLeft = props.left - 2;
   }
 
   return (
-    <div
-      style={{ left: `${props.left}px` }}
-      className={styles.sliderBubble}
-      onMouseDown={e => {
-        props.onMouseDown(e, props.value);
-      }}
-    >
+    <>
+      <div
+        onMouseDown={e => {
+          props.onMouseDown(e, props.value);
+        }}
+        className={styles.sliderBubble}
+        style={{ left: `${props.left}px` }}
+      />
       <div
         style={{
           left: labelLeft,
@@ -38,7 +39,7 @@ const SliderBubble: React.FunctionComponent<SliderBubbleProps> = React.memo(prop
       >
         {props.value}
       </div>
-    </div>
+    </>
   );
 });
 
@@ -102,6 +103,7 @@ class Slider extends React.PureComponent<SliderProps, SliderState> {
         bubbleNode: target,
         currentBubble: cv === this.props.minValue ? "min" : "max",
       }));
+      ticking = false;
       document.addEventListener("mousemove", this.handleDragEvent);
       document.addEventListener("mouseup", this.handleMouseUp, { passive: true });
     }
@@ -117,9 +119,9 @@ class Slider extends React.PureComponent<SliderProps, SliderState> {
   private handleDragEvent = (e: any) => {
     if (!ticking) {
       window.requestAnimationFrame(() => {
-        const { minValue, maxValue } = this.props;
         if (!e.clientX || !this.state.bubbleNode) return;
 
+        const { minValue, maxValue } = this.props;
         const currentYear = new Date().getFullYear();
         const diff = e.clientX - Math.round(this.state.bubbleNode.getBoundingClientRect().left);
         const fromLeft = this.state.bubbleNode.offsetLeft + diff;

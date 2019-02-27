@@ -161,16 +161,16 @@
   bottom: -9.5px;
   border-radius: 100%;
   border: 1px solid $gray9;
-  cursor: pointer;
   background-color: white;
   z-index: 3;
+  cursor: pointer;
 }
 
 .bubbleLabel {
   position: absolute;
-  bottom: -20px;
+  bottom: -28px;
   left: -6px;
   color: $gray9;
   font-size: 12px;
-  transition: left 200ms ease;
+  cursor: default;
 }
