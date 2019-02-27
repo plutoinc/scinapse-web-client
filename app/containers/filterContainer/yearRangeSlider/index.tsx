@@ -21,7 +21,7 @@ interface YearRangeSliderProps extends RouteComponentProps<null> {
   filteredYearInfo: YearSet[];
 }
 
-const Column: React.FunctionComponent<{
+interface ColumnProps {
   width: string;
   height: string;
   active: boolean;
@@ -31,18 +31,29 @@ const Column: React.FunctionComponent<{
   filteredYearSet: YearSet | undefined;
   filterHeight: string;
   destinationParams: GoToYearFilteredSearchResultPageParams;
-}> = React.memo(props => {
+}
+
+const Column: React.FunctionComponent<ColumnProps> = React.memo(props => {
+  const baseColumnStyle: React.CSSProperties = {
+    width: props.width,
+    borderRight: "solid 1px #f9f9fa",
+  };
+  const filterColumnStyle: React.CSSProperties = {
+    ...baseColumnStyle,
+    height: props.filterHeight,
+    backgroundColor: "#3e7fff",
+  };
+  const normalColumnStyle: React.CSSProperties = {
+    ...baseColumnStyle,
+    height: props.height,
+  };
+
   return (
     <>
       {props.filteredYearSet &&
         props.filteredYearSet.docCount > 0 && (
           <div
-            style={{
-              width: props.width,
-              height: props.filterHeight,
-              backgroundColor: "#3e7fff",
-              borderRight: "solid 1px #f9f9fa",
-            }}
+            style={filterColumnStyle}
             className={styles.filterColumn}
             onClick={() => {
               goToYearFilteredSearchResultPage(props.destinationParams);
@@ -50,11 +61,7 @@ const Column: React.FunctionComponent<{
           />
         )}
       <div
-        style={{
-          width: props.width,
-          height: props.height,
-          borderRight: "solid 1px #f9f9fa",
-        }}
+        style={normalColumnStyle}
         className={classNames({
           [styles.column]: true,
           [styles.activeColumn]: props.active,
@@ -92,7 +99,8 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
     [props.yearInfo]
   );
 
-  const qp: SearchPageQueryParams = getQueryParamsObject(props.location.search);
+  const queryParamsStr = props.location.search;
+  const qp: SearchPageQueryParams = getQueryParamsObject(queryParamsStr);
   const filter = PapersQueryFormatter.objectifyPapersFilter(qp.filter);
   const minYear =
     filter.yearFrom && !isNaN(filter.yearFrom as number) ? (filter.yearFrom as number) : yearSetListToShow[0].year;
@@ -121,7 +129,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
           <div
             onClick={() => {
               goToYearFilteredSearchResultPage({
-                qs: props.location.search,
+                qs: queryParamsStr,
                 history: props.history,
                 max: currentYear,
                 min: MIN_YEAR,
@@ -138,7 +146,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
           <FilterButton
             onClick={() => {
               goToYearFilteredSearchResultPage({
-                qs: props.location.search,
+                qs: queryParamsStr,
                 history: props.history,
                 max: currentYear,
                 min: currentYear,
@@ -151,7 +159,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
           <FilterButton
             onClick={() => {
               goToYearFilteredSearchResultPage({
-                qs: props.location.search,
+                qs: queryParamsStr,
                 history: props.history,
                 max: currentYear,
                 min: currentYear - 2,
@@ -164,7 +172,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
           <FilterButton
             onClick={() => {
               goToYearFilteredSearchResultPage({
-                qs: props.location.search,
+                qs: queryParamsStr,
                 history: props.history,
                 max: currentYear,
                 min: currentYear - 4,
@@ -196,7 +204,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
                   filteredYearSet={filteredYearSet}
                   filterHeight={filterHeight}
                   destinationParams={{
-                    qs: props.location.search,
+                    qs: queryParamsStr,
                     min: yearSet.year,
                     max: yearSet.year,
                     history: props.history,
