@@ -287,8 +287,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                     <span
                       className="bold"
                     >
-                      2007
-                       in 
+                      2007 in 
                     </span>
                     <a
                       className="venueName"
