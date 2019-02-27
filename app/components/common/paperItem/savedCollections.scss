@@ -1,0 +1,36 @@
+.itemWrapper {
+  margin-bottom: 4px;
+}
+
+.bookmarkIcon {
+  display: inline-flex;
+  justify-content: center;
+  vertical-align: middle;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 4px;
+
+  svg {
+    display: inline-block;
+    height: 24px;
+    vertical-align: top;
+    color: $main_blue0;
+  }
+}
+
+.subContext {
+  color: $gray5;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.collectionTitle {
+  color: $gray9;
+  font-weight: 500;
+  font-size: 14px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
