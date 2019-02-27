@@ -51,13 +51,15 @@ export interface RawAggregation {
   fos_list: RawAggregationFos[];
   journals: RawAggregationJournal[];
   impact_factors: RawImpactFactor[];
-  years: RawYear[];
+  year_all: RawYear[] | null;
+  year_filtered: RawYear[] | null;
 }
 
 export interface AggregationData {
   fosList: AggregationFos[];
   journals: AggregationJournal[];
   impactFactors: ImpactFactor[];
-  years: Year[];
   keywordList: string[];
+  yearAll: Year[] | null;
+  yearFiltered: Year[] | null;
 }

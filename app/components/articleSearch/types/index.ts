@@ -15,7 +15,7 @@ export interface ArticleSearchContainerProps extends RouteComponentProps<any> {
   dispatch: Dispatch<any>;
 }
 
-export interface ArticleSearchSearchParams {
+export interface SearchPageQueryParams {
   query?: string;
   filter?: string;
   page?: string;
