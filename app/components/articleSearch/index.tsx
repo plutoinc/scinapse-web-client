@@ -67,9 +67,11 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
 
   public async componentWillReceiveProps(nextProps: ArticleSearchContainerProps) {
     const { dispatch, match, location, currentUserState } = this.props;
+
     const nextLocation = nextProps.location;
     const beforeSearch = location.search;
     const afterSearch = nextLocation.search;
+
     const isChangeSearchKeyword = !!afterSearch && beforeSearch !== afterSearch;
     const isChangeLoggedInState = currentUserState.isLoggedIn !== nextProps.currentUserState.isLoggedIn;
 
