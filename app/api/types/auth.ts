@@ -35,7 +35,7 @@ export type OAUTH_VENDOR = "ORCID" | "FACEBOOK" | "GOOGLE";
 
 export interface GetAuthorizeUriParams {
   vendor: OAUTH_VENDOR;
-  redirectUri?: string;
+  redirectURI?: string;
 }
 
 export interface GetAuthorizeUriResult {

@@ -1,15 +1,21 @@
 import * as React from "react";
 import { debounce } from "lodash";
+import * as ReactGA from "react-ga";
 import { Formik, Form, Field, FormikErrors } from "formik";
+import AuthAPI from "../../../../api/auth";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import AuthInputBox from "../../../common/inputBox/authInputBox";
-import { OAUTH_VENDOR } from "../../../../api/types/auth";
+import { OAUTH_VENDOR, GetAuthorizeUriResult } from "../../../../api/types/auth";
 import AuthButton from "../../authButton";
 import ORSeparator from "../../separator";
 import AuthTabs from "../../authTabs";
 import validateEmail from "../../../../helpers/validateEmail";
 import { checkDuplicatedEmail } from "../actions";
 import { GLOBAL_DIALOG_TYPE } from "../../../dialog/reducer";
+import EnvChecker from "../../../../helpers/envChecker";
+import alertToast from "../../../../helpers/makePlutoToastAction";
+import PlutoAxios from "../../../../api/pluto";
+const store = require("store");
 const s = require("./firstForm.scss");
 
 interface FirstFormProps {
@@ -21,11 +27,30 @@ interface FormValues {
   password: string;
 }
 
-function handleClickOAuthBtn(_vendor: OAUTH_VENDOR) {
-  return () => {
-    store.set("oauthRedirectPath", `${location.pathname}${location.search}`);
+function handleClickOAuthBtn(vendor: OAUTH_VENDOR) {
+  return async () => {
+    store.set("oauthRedirectPath", location.pathname + location.search);
+
+    const origin = EnvChecker.getOrigin();
+    const redirectURI = `${origin}/users/sign_up?vendor=${vendor}`;
+    try {
+      const authroizedData: GetAuthorizeUriResult = await AuthAPI.getAuthorizeURI({
+        vendor,
+        redirectURI,
+      });
+
+      ReactGA.set({ referrer: origin });
+      window.location.replace(authroizedData.uri);
+    } catch (err) {
+      const error = PlutoAxios.getGlobalError(err);
+      alertToast({
+        type: "error",
+        message: error.message,
+      });
+    }
   };
 }
+
 const oAuthBtnBaseStyle: React.CSSProperties = { position: "relative", fontSize: "13px", marginTop: "10px" };
 const debouncedCheckDuplicate = debounce(checkDuplicatedEmail, 200);
 
@@ -76,7 +101,6 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
                   placeholder="Password"
                   iconName="PASSWORD_ICON"
                 />
-                {/* {networkError && <div className={s.errorContent}>{networkError}</div>} */}
                 <AuthButton
                   type="submit"
                   isLoading={isLoading}

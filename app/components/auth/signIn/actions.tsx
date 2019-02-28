@@ -91,7 +91,7 @@ export async function signInWithSocial(vendor: OAUTH_VENDOR) {
   try {
     const origin = EnvChecker.getOrigin();
     const redirectUri = `${origin}/users/sign_in?vendor=${vendor}`;
-    const authorizeUriData: GetAuthorizeUriResult = await AuthAPI.getAuthorizeUri({
+    const authorizeUriData: GetAuthorizeUriResult = await AuthAPI.getAuthorizeURI({
       vendor,
       redirectUri,
     });

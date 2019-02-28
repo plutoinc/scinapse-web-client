@@ -143,10 +143,6 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
           try {
             const checkDuplicatedEmailResult = await AuthAPI.checkDuplicatedEmail(email);
 
-            dispatch({
-              type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CHECK_DUPLICATED_EMAIL,
-            });
-
             if (checkDuplicatedEmailResult.duplicated) {
               dispatch(makeFormErrorMessage("email", "Email address already exists"));
               isDuplicatedEmail = true;
@@ -158,10 +154,6 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
               type: "error",
               message: `Failed to sign up with email.`,
             });
-            dispatch({
-              type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
-            });
-            throw err;
           }
         }
 
@@ -200,10 +192,6 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
           try {
             const checkDuplicatedEmailResult = await AuthAPI.checkDuplicatedEmail(email);
 
-            dispatch({
-              type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CHECK_DUPLICATED_EMAIL,
-            });
-
             if (checkDuplicatedEmailResult.duplicated) {
               dispatch(makeFormErrorMessage("email", "Email address already exists"));
               isDuplicatedEmail = true;
@@ -214,9 +202,6 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
             alertToast({
               type: "error",
               message: `Failed to sign up with email.`,
-            });
-            dispatch({
-              type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
             });
             throw err;
           }
@@ -340,7 +325,7 @@ export function signUpWithSocial(currentStep: SIGN_UP_STEP, vendor: OAUTH_VENDOR
         try {
           const origin = EnvChecker.getOrigin();
           const redirectUri = `${origin}/users/sign_up?vendor=${vendor}`;
-          const authorizeUriData: GetAuthorizeUriResult = await AuthAPI.getAuthorizeUri({
+          const authorizeUriData: GetAuthorizeUriResult = await AuthAPI.getAuthorizeURI({
             vendor,
             redirectUri,
           });
