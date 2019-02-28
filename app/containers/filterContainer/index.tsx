@@ -3,15 +3,15 @@ import { Link } from "react-router-dom";
 import * as classNames from "classnames";
 import Checkbox from "@material-ui/core/Checkbox";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { ChangeRangeInputParams, FILTER_RANGE_TYPE, FILTER_TYPE_HAS_RANGE } from "../../constants/paperSearch";
-import YearFilter from "../../components/filterContainer/yearFilter";
+import { ChangeRangeInputParams } from "../../constants/paperSearch";
 import { FilterObject } from "../../helpers/papersQueryFormatter";
 import { trackSelectFilter } from "../../components/filterContainer/trackSelectFilter";
 import { ArticleSearchState } from "../../components/articleSearch/records";
 import formatNumber from "../../helpers/formatNumber";
 import { toggleElementFromArray } from "../../helpers/toggleElementFromArray";
-import Icon from "../../icons";
 import FilterResetButton from "../../components/filterContainer/filterResetButton";
+import YearRangeSlider from "./yearRangeSlider";
+import Icon from "../../icons";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {
@@ -21,158 +21,13 @@ export interface FilterContainerProps {
   articleSearchState: ArticleSearchState;
 }
 
-interface YearSet {
-  year: number;
-  docCount: number;
-}
-
-interface CalculateYearsCountParams {
-  rangeSetList: YearSet[];
-  minYear: number;
-}
-
-function calculateYearsCount({ rangeSetList, minYear }: CalculateYearsCountParams) {
-  const targetList = rangeSetList.filter(rangeSet => {
-    return rangeSet.year >= minYear;
-  });
-
-  return targetList.reduce((a, b) => {
-    return a! + b!.docCount;
-  }, 0);
-}
-
 function getPublicationFilterBox(props: FilterContainerProps) {
-  const { articleSearchState, makeNewFilterLink, handleChangeRangeInput } = props;
-
-  const currentYear = new Date().getFullYear();
-  const fromToCurrentYearDiff = currentYear - articleSearchState.yearFilterFromValue;
-
-  const overallFieldData = articleSearchState.aggregationData
-    ? articleSearchState.aggregationData.years.find(year => year.year === null)
-    : null;
-  const paperCountOfAllFilter = overallFieldData ? overallFieldData.docCount : 0;
-
-  const yearRangeList = articleSearchState.aggregationData ? articleSearchState.aggregationData.years : [];
-
-  return (
-    <div className={styles.filterBox}>
-      <div className={styles.filterTitleBox}>
-        <div className={styles.filterTitle}>Publication Year</div>
-        <FilterResetButton filterType="PUBLISHED_YEAR" makeNewFilterLink={makeNewFilterLink} />
-      </div>
-      <Link
-        onClick={() => {
-          trackSelectFilter("PUBLISHED_YEAR", "all");
-        }}
-        className={classNames({
-          [`${styles.filterItem}`]: true,
-          [`${styles.isSelected}`]: !articleSearchState.yearFilterFromValue && !articleSearchState.yearFilterToValue,
-        })}
-        to={makeNewFilterLink({
-          yearFrom: undefined,
-          yearTo: undefined,
-        })}
-      >
-        <span className={styles.linkTitle}>All</span>
-        <span className={styles.countBox}>{`(${formatNumber(paperCountOfAllFilter)})`}</span>
-      </Link>
-      <YearFilter
-        fromNow={3}
-        isSelected={fromToCurrentYearDiff === 3 && !articleSearchState.yearFilterToValue}
-        paperCount={`(${formatNumber(
-          calculateYearsCount({
-            rangeSetList: yearRangeList,
-            minYear: currentYear - 3,
-          })
-        )})`}
-        to={makeNewFilterLink({
-          yearFrom: currentYear - 3,
-          yearTo: undefined,
-        })}
-      />
-      <YearFilter
-        fromNow={5}
-        isSelected={fromToCurrentYearDiff === 5 && !articleSearchState.yearFilterToValue}
-        paperCount={`(${formatNumber(
-          calculateYearsCount({
-            rangeSetList: yearRangeList,
-            minYear: currentYear - 5,
-          })
-        )})`}
-        to={makeNewFilterLink({
-          yearFrom: currentYear - 5,
-          yearTo: undefined,
-        })}
-      />
-      <YearFilter
-        fromNow={10}
-        isSelected={fromToCurrentYearDiff === 10 && !articleSearchState.yearFilterToValue}
-        paperCount={`(${formatNumber(
-          calculateYearsCount({
-            rangeSetList: yearRangeList,
-            minYear: currentYear - 10,
-          })
-        )})`}
-        to={makeNewFilterLink({
-          yearFrom: currentYear - 10,
-          yearTo: undefined,
-        })}
-      />
-      <div
-        className={classNames({
-          [`${styles.filterItem}`]: true,
-          [`${styles.rangeFilterItem}`]: true,
-          [`${styles.isSelected}`]: !!articleSearchState.yearFilterFromValue && !!articleSearchState.yearFilterToValue,
-        })}
-      >
-        Set Range
-      </div>
-      <div className={styles.yearFilterRangeBox}>
-        <input
-          className={styles.yearInput}
-          onChange={e => {
-            handleChangeRangeInput({
-              rangeType: FILTER_RANGE_TYPE.FROM,
-              type: FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
-              numberValue: parseInt(e.currentTarget.value, 10),
-            });
-          }}
-          placeholder="YYYY"
-          value={articleSearchState.yearFilterFromValue || 0}
-          type="number"
-        />
-        <span className={styles.yearDash}> - </span>
-        <input
-          className={styles.yearInput}
-          onChange={e => {
-            handleChangeRangeInput({
-              rangeType: FILTER_RANGE_TYPE.TO,
-              type: FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
-              numberValue: parseInt(e.currentTarget.value, 10),
-            });
-          }}
-          type="number"
-          placeholder="YYYY"
-          value={articleSearchState.yearFilterToValue || 0}
-        />
-        <Link
-          onClick={() => {
-            trackSelectFilter(
-              "PUBLISHED_YEAR",
-              `${articleSearchState.yearFilterFromValue} ~ ${articleSearchState.yearFilterToValue}`
-            );
-          }}
-          className={styles.yearSubmitLink}
-          to={makeNewFilterLink({
-            yearFrom: articleSearchState.yearFilterFromValue,
-            yearTo: articleSearchState.yearFilterToValue,
-          })}
-        >
-          Apply
-        </Link>
-      </div>
-    </div>
-  );
+  const { articleSearchState } = props;
+  const yearRangeList = articleSearchState.aggregationData ? articleSearchState.aggregationData.yearAll || [] : [];
+  const filteredYearRangeList = articleSearchState.aggregationData
+    ? articleSearchState.aggregationData.yearFiltered || []
+    : [];
+  return <YearRangeSlider yearInfo={yearRangeList} filteredYearInfo={filteredYearRangeList} />;
 }
 
 function getFOSFilterBox(props: FilterContainerProps) {

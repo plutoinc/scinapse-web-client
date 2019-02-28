@@ -66,19 +66,24 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
   }
 
   public async componentWillReceiveProps(nextProps: ArticleSearchContainerProps) {
-    const { dispatch, match, location } = this.props;
-    const beforeSearch = location.search;
-    const afterSearch = nextProps.location.search;
+    const { dispatch, match, location, currentUserState } = this.props;
 
-    if (!!afterSearch && beforeSearch !== afterSearch) {
+    const nextLocation = nextProps.location;
+    const beforeSearch = location.search;
+    const afterSearch = nextLocation.search;
+
+    const hasSearchKeywordChanged = !!afterSearch && beforeSearch !== afterSearch;
+    const hasAuthStateChanged = currentUserState.isLoggedIn !== nextProps.currentUserState.isLoggedIn;
+
+    if (hasSearchKeywordChanged || hasAuthStateChanged) {
       await getSearchData({
         dispatch,
         match,
-        pathname: nextProps.location.pathname,
+        pathname: nextLocation.pathname,
         queryParams: getQueryParamsObject(afterSearch),
         cancelToken: this.cancelToken.token,
       });
-      restoreScroll(nextProps.location.key);
+      restoreScroll(nextLocation.key);
     }
   }
 
@@ -171,7 +176,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
 
   private isFilterEmpty = (filter: any) => {
     const keys = Object.keys(filter);
-    for (let key of keys) {
+    for (const key of keys) {
       if (typeof filter[key] === "number" && !isNaN(filter[key])) {
         return false;
       } else if (typeof filter[key] === "object" && filter[key].length !== 0) {

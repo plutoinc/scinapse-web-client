@@ -221,76 +221,51 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const pdfSourceRecord = getPDFLink(paper.urls);
 
     return (
-      <div className={styles.container}>
-        {this.getPageHelmet()}
-        <article className={styles.paperShow}>
-          <div className={styles.paperShowContent}>
-            <div className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.title) }} />
-            <div className={styles.paperContentBlockDivider} />
-            <div className={styles.actionBarWrapper}>
-              <PaperShowActionBar paper={paper} />
-            </div>
-            <div className={styles.paperContentBlockDivider} />
-            <div className={styles.paperInfo}>
-              <AuthorList paper={paper} authors={paper.authors} />
-              <PaperShowVenueItem paper={paper} />
-              <PaperShowDOI paper={paper} DOI={paper.doi} />
-            </div>
-            <div className={styles.paperContentBlockDivider} />
-            <div className={styles.paperContent}>
-              <div className={styles.abstract}>
-                <div className={styles.paperContentBlockHeader}>Abstract</div>
+      <>
+        <div className={styles.container}>
+          {this.getPageHelmet()}
+          <article className={styles.paperShow}>
+            <div className={styles.paperShowContent}>
+              <div className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.title) }} />
+              <div className={styles.paperContentBlockDivider} />
+              <div className={styles.actionBarWrapper}>
+                <PaperShowActionBar paper={paper} />
               </div>
-              <div
-                className={styles.abstractContent}
-                dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.abstract) }}
-              />
-              <div className={styles.fos}>
-                <FOSList FOSList={paper.fosList} />
+              <div className={styles.paperContentBlockDivider} />
+              <div className={styles.paperInfo}>
+                <AuthorList paper={paper} authors={paper.authors} />
+                <PaperShowVenueItem paper={paper} />
+                <PaperShowDOI paper={paper} DOI={paper.doi} />
               </div>
-            </div>
-            <InnerSearchBox FOSList={paper.fosList} shouldRender={true} />
-            <div className={styles.paperContentBlockDivider} />
+              <div className={styles.paperContentBlockDivider} />
+              <div className={styles.paperContent}>
+                <div className={styles.abstract}>
+                  <div className={styles.paperContentBlockHeader}>Abstract</div>
+                </div>
+                <div
+                  className={styles.abstractContent}
+                  dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.abstract) }}
+                />
+                <div className={styles.fos}>
+                  <FOSList FOSList={paper.fosList} />
+                </div>
+              </div>
+              <InnerSearchBox FOSList={paper.fosList} shouldRender={true} />
+              <div className={styles.paperContentBlockDivider} />
 
-            <div>
-              {this.getFullTextNavBar()}
-              <PDFViewer
-                onLoadSuccess={this.handleSucceedToLoadPDF}
-                onFailed={this.handleFailedToLoadPDF}
-                filename={paper.title}
-                pdfURL={pdfSourceRecord && pdfSourceRecord.url}
-                shouldShow={!EnvChecker.isOnServer() && layout.userDevice === UserDevice.DESKTOP}
-              />
-            </div>
-
-            <div className={styles.otherPapers}>
-              <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)}>
-                <PaperShowRefCitedTab
-                  width={this.refTabWrapper ? this.refTabWrapper.offsetWidth : 0}
-                  referenceCount={paper.referenceCount}
-                  citedCount={paper.citedCount}
-                  handleClickRef={this.scrollToReferencePapersNode}
-                  handleClickCited={this.scrollToCitedPapersNode}
-                  handleClickFullText={this.scrollToFullTextNode}
-                  isFixed={isOnRef && !isOnCited}
-                  isOnRef={isAboveRef || isOnRef}
-                  isOnCited={isOnCited}
-                  showFullText={isLoadPDF}
+              <div>
+                {this.getFullTextNavBar()}
+                <PDFViewer
+                  onLoadSuccess={this.handleSucceedToLoadPDF}
+                  onFailed={this.handleFailedToLoadPDF}
+                  filename={paper.title}
+                  pdfURL={pdfSourceRecord && pdfSourceRecord.url}
+                  shouldShow={!EnvChecker.isOnServer() && layout.userDevice === UserDevice.DESKTOP}
                 />
               </div>
-              <div className={styles.references}>
-                <ReferencePapers
-                  type="reference"
-                  isMobile={layout.userDevice !== UserDevice.DESKTOP}
-                  papers={referencePapers}
-                  currentUser={currentUser}
-                  paperShow={paperShow}
-                  getLinkDestination={this.getReferencePaperPaginationLink}
-                  location={location}
-                />
-              </div>
-              <div className={styles.citedBy}>
-                <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)}>
+
+              <div className={styles.otherPapers}>
+                <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)}>
                   <PaperShowRefCitedTab
                     width={this.refTabWrapper ? this.refTabWrapper.offsetWidth : 0}
                     referenceCount={paper.referenceCount}
@@ -298,48 +273,74 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     handleClickRef={this.scrollToReferencePapersNode}
                     handleClickCited={this.scrollToCitedPapersNode}
                     handleClickFullText={this.scrollToFullTextNode}
-                    isFixed={!isOnRef && isOnCited}
-                    isOnRef={false}
-                    isOnCited={true}
+                    isFixed={isOnRef && !isOnCited}
+                    isOnRef={isAboveRef || isOnRef}
+                    isOnCited={isOnCited}
                     showFullText={isLoadPDF}
                   />
                 </div>
+                <div className={styles.references}>
+                  <ReferencePapers
+                    type="reference"
+                    isMobile={layout.userDevice !== UserDevice.DESKTOP}
+                    papers={referencePapers}
+                    currentUser={currentUser}
+                    paperShow={paperShow}
+                    getLinkDestination={this.getReferencePaperPaginationLink}
+                    location={location}
+                  />
+                </div>
+                <div className={styles.citedBy}>
+                  <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)}>
+                    <PaperShowRefCitedTab
+                      width={this.refTabWrapper ? this.refTabWrapper.offsetWidth : 0}
+                      referenceCount={paper.referenceCount}
+                      citedCount={paper.citedCount}
+                      handleClickRef={this.scrollToReferencePapersNode}
+                      handleClickCited={this.scrollToCitedPapersNode}
+                      handleClickFullText={this.scrollToFullTextNode}
+                      isFixed={!isOnRef && isOnCited}
+                      isOnRef={false}
+                      isOnCited={true}
+                      showFullText={isLoadPDF}
+                    />
+                  </div>
+                </div>
+                <ReferencePapers
+                  type="cited"
+                  isMobile={layout.userDevice !== UserDevice.DESKTOP}
+                  papers={citedPapers}
+                  currentUser={currentUser}
+                  paperShow={paperShow}
+                  getLinkDestination={this.getCitedPaperPaginationLink}
+                  location={location}
+                />
+                <InnerSearchBox FOSList={paper.fosList} shouldRender={true} />
               </div>
-              <ReferencePapers
-                type="cited"
-                isMobile={layout.userDevice !== UserDevice.DESKTOP}
-                papers={citedPapers}
-                currentUser={currentUser}
-                paperShow={paperShow}
-                getLinkDestination={this.getCitedPaperPaginationLink}
-                location={location}
-              />
-              <InnerSearchBox FOSList={paper.fosList} shouldRender={true} />
+            </div>
+          </article>
+          <div className={styles.rightBox}>
+            <div
+              ref={el => (this.rightBoxWrapper = el)}
+              className={classNames({
+                [styles.sideNavigation]: true,
+                [styles.stick]: isRightBoxFixed && !isRightBoxSmall,
+                [styles.smallThanVH]: isRightBoxSmall,
+                [styles.touchFooter]: isTouchFooter,
+              })}
+            >
+              <CollectionNoteList paperId={paper.id} />
+              <OtherPaperListFromAuthor />
+              <RelatedPaperList />
+              <SearchKeyword FOSList={paper.fosList} />
+              <PlutoBlogPosting paperId={paper.id} />
             </div>
           </div>
-
-          <div ref={el => (this.footerWrapper = el)}>
-            <Footer />
-          </div>
-        </article>
-        <div className={styles.rightBox}>
-          <div
-            ref={el => (this.rightBoxWrapper = el)}
-            className={classNames({
-              [styles.sideNavigation]: true,
-              [styles.stick]: isRightBoxFixed && !isRightBoxSmall,
-              [styles.smallThanVH]: isRightBoxSmall,
-              [styles.touchFooter]: isTouchFooter,
-            })}
-          >
-            <CollectionNoteList paperId={paper.id} />
-            <OtherPaperListFromAuthor />
-            <RelatedPaperList />
-            <SearchKeyword FOSList={paper.fosList} />
-            <PlutoBlogPosting paperId={paper.id} />
-          </div>
         </div>
-      </div>
+        <div ref={el => (this.footerWrapper = el)}>
+          <Footer />
+        </div>
+      </>
     );
   }
 

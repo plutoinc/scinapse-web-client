@@ -8,6 +8,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import { Paper } from "../../../model/paper";
 import EnvChecker from "../../../helpers/envChecker";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
+import SavedCollections from "./savedCollections";
 const styles = require("./paperItem.scss");
 
 export interface PaperItemProps {
@@ -76,7 +77,7 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
       hasCollection,
       onRemovePaperCollection,
     } = this.props;
-    const { title, titleHighlighted, authors, year, doi, urls, journal, conferenceInstance } = paper;
+    const { title, titleHighlighted, authors, year, doi, urls, journal, conferenceInstance, relation } = paper;
 
     const abstract = !omitAbstract ? (
       <Abstract
@@ -119,6 +120,7 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
         className={`${wrapperClassName ? wrapperClassName : styles.paperItemWrapper}`}
       >
         <div className={styles.contentSection}>
+          {!!relation ? <SavedCollections collections={relation.savedInCollections} /> : null}
           <Title
             pageType={pageType}
             actionArea={actionArea}

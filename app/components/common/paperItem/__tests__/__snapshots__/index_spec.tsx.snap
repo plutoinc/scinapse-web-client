@@ -7,6 +7,25 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
   <div
     className="contentSection"
   >
+    <div
+      className="itemWrapper"
+    >
+      <i
+        className="icon bookmarkIcon"
+      />
+      <span
+        className="subContext"
+      >
+        Saved in 
+      </span>
+      <a
+        className="collectionTitle"
+        href="/collections/22"
+        onClick={[Function]}
+      >
+        Read Later
+      </a>
+    </div>
     <div>
       <a
         className="title"
@@ -48,8 +67,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
           <span
             className="bold"
           >
-            2007
-             in 
+            2007 in 
           </span>
           <a
             className="venueName"
@@ -221,6 +239,25 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
   <div
     className="contentSection"
   >
+    <div
+      className="itemWrapper"
+    >
+      <i
+        className="icon bookmarkIcon"
+      />
+      <span
+        className="subContext"
+      >
+        Saved in 
+      </span>
+      <a
+        className="collectionTitle"
+        href="/collections/22"
+        onClick={[Function]}
+      >
+        Read Later
+      </a>
+    </div>
     <div>
       <a
         className="title"
@@ -262,8 +299,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
           <span
             className="bold"
           >
-            2007
-             in 
+            2007 in 
           </span>
           <a
             className="venueName"

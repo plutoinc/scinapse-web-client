@@ -62,6 +62,7 @@ pipeline {
                     def targetUrl;
                     targetUrl = "https://scinapse.io"
                     slackSend color: 'good', channel: "#ci-build", message: "Build DONE! Finish to production deploy version: ${params.version}"
+                    slackSend color: 'good', channel: "#front-end-prod-deploy", message: "Build DONE! Finish to production deploy version: ${params.version}"
                 }
             }
         }

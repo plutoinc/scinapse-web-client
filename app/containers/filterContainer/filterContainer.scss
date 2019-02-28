@@ -22,7 +22,7 @@
     display: inline-block;
     vertical-align: top;
     font-size: 15px;
-    font-weight: 500;
+    font-weight: bold;
     color: $gray6;
     margin-top: 37.5px;
 
@@ -160,7 +160,7 @@
 
 .filterContainerTitleBox {
   @extend .filterBox;
-  padding: 19px 16px;
+  padding: 18px 16px;
 }
 
 .filterResultButton {
