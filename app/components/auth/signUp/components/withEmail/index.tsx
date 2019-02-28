@@ -80,6 +80,8 @@ const WithEmailForm: React.FunctionComponent<WithEmailFormProps> = props => {
           validate={validateForm}
           render={() => (
             <Form>
+              <div className={s.additionalInformation}>ADDITIONAL INFORMATION</div>
+              <div className={s.subHeader}>No abbreviation preferred</div>
               <Field name="email" type="email" component={AuthInputBox} placeholder="E-mail" iconName="EMAIL_ICON" />
               <Field
                 name="password"
