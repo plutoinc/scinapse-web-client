@@ -7,7 +7,8 @@ import { AppState } from "../../../reducers";
 import { SIGN_UP_STEP } from "./reducer";
 import { SignUpContainerProps } from "./types";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import FirstForm from "./firstForm";
+import FirstForm from "./components/firstForm";
+import WithEmailForm from "./components/withEmail";
 const styles = require("./signUp.scss");
 
 function mapStateToProps(state: AppState) {
@@ -19,7 +20,9 @@ function mapStateToProps(state: AppState) {
 const AlternativeSignUp: React.FunctionComponent<SignUpContainerProps> = props => {
   const { dispatch, location, history } = props;
 
-  const [signUpStep, setSignUpStep] = React.useState(SIGN_UP_STEP.FIRST);
+  const [signUpStep, setSignUpStep] = React.useState(SIGN_UP_STEP.WITH_EMAIL);
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
   React.useEffect(() => {
     const queryParams = parse(location.search, { ignoreQueryPrefix: true });
@@ -36,7 +39,19 @@ const AlternativeSignUp: React.FunctionComponent<SignUpContainerProps> = props =
 
   switch (signUpStep) {
     case SIGN_UP_STEP.WITH_EMAIL:
-      return <div>HELLO EMAIL SIGN UP</div>;
+      return (
+        <WithEmailForm
+          onSucceed={() => {
+            setSignUpStep(SIGN_UP_STEP.FINAL_WITH_EMAIL);
+          }}
+          onClickBack={() => {
+            setSignUpStep(SIGN_UP_STEP.FIRST);
+          }}
+          email={email}
+          password={password}
+          onClickTab={props.handleChangeDialogType}
+        />
+      );
 
     case SIGN_UP_STEP.WITH_SOCIAL:
       return null;
@@ -47,7 +62,9 @@ const AlternativeSignUp: React.FunctionComponent<SignUpContainerProps> = props =
     default:
       return (
         <FirstForm
-          onSubmit={() => {
+          onSubmit={values => {
+            setEmail(values.email);
+            setPassword(values.password);
             setSignUpStep(SIGN_UP_STEP.WITH_EMAIL);
           }}
           onClickTab={props.handleChangeDialogType}

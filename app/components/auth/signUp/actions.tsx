@@ -1,7 +1,12 @@
 import { Dispatch } from "redux";
 import * as ReactGA from "react-ga";
 import AuthAPI from "../../../api/auth";
-import { PostExchangeResult, OAUTH_VENDOR, GetAuthorizeUriResult } from "../../../api/types/auth";
+import {
+  PostExchangeResult,
+  OAUTH_VENDOR,
+  GetAuthorizeUriResult,
+  SignUpWithEmailParams,
+} from "../../../api/types/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import validateEmail from "../../../helpers/validateEmail";
 import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, SignUpState, SignUpOauthInfo, SignUpErrorCheck } from "./reducer";
@@ -125,193 +130,38 @@ export function changeSignUpStep(step: SIGN_UP_STEP) {
   };
 }
 
-export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpState, isDialog: boolean) {
+export function signUpWithEmail(params: SignUpWithEmailParams) {
   return async (dispatch: Dispatch<any>) => {
-    const { email, password, affiliation, firstName, lastName } = signUpState;
-
-    switch (currentStep) {
-      case SIGN_UP_STEP.FIRST: {
-        const isInValidEmail: boolean = !validateEmail(email);
-        if (isInValidEmail) {
-          dispatch(makeFormErrorMessage("email", "Please enter a valid email address"));
-        } else {
-          dispatch(removeFormErrorMessage("email"));
-        }
-
-        let isDuplicatedEmail: boolean = false;
-        if (!isInValidEmail) {
-          try {
-            const checkDuplicatedEmailResult = await AuthAPI.checkDuplicatedEmail(email);
-
-            if (checkDuplicatedEmailResult.duplicated) {
-              dispatch(makeFormErrorMessage("email", "Email address already exists"));
-              isDuplicatedEmail = true;
-            } else {
-              dispatch(removeFormErrorMessage("password"));
-            }
-          } catch (err) {
-            alertToast({
-              type: "error",
-              message: `Failed to sign up with email.`,
-            });
-          }
-        }
-
-        const isPasswordTooShort = password.length < 8;
-        if (password === "" || password.length <= 0) {
-          dispatch(makeFormErrorMessage("password", "Please enter password"));
-        } else if (password.length < 8) {
-          dispatch(makeFormErrorMessage("password", "Must have at least 8 characters!"));
-        } else {
-          dispatch(removeFormErrorMessage("password"));
-        }
-
-        trackEvent({ category: "sign_up", action: "try_to_sign_up_step_1", label: "with_email" });
-
-        if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort) {
-          trackEvent({ category: "sign_up", action: "failed_to_sign_up_step_1", label: "with_email" });
-          throw new Error();
-        }
-
-        dispatch(changeSignUpStep(SIGN_UP_STEP.WITH_EMAIL));
-        break;
-      }
-
-      case SIGN_UP_STEP.WITH_EMAIL: {
-        const isInValidEmail: boolean = !validateEmail(email);
-
-        if (isInValidEmail) {
-          dispatch(makeFormErrorMessage("email", "Please enter a valid email address"));
-        } else {
-          dispatch(removeFormErrorMessage("email"));
-        }
-
-        let isDuplicatedEmail: boolean = false;
-
-        if (!isInValidEmail) {
-          try {
-            const checkDuplicatedEmailResult = await AuthAPI.checkDuplicatedEmail(email);
-
-            if (checkDuplicatedEmailResult.duplicated) {
-              dispatch(makeFormErrorMessage("email", "Email address already exists"));
-              isDuplicatedEmail = true;
-            } else {
-              dispatch(removeFormErrorMessage("password"));
-            }
-          } catch (err) {
-            alertToast({
-              type: "error",
-              message: `Failed to sign up with email.`,
-            });
-            throw err;
-          }
-        }
-
-        const isPasswordEmpty = password === "" || password.length <= 0;
-        const isPasswordShort = password.length < 8;
-        const isPasswordNotValid = isPasswordEmpty || isPasswordShort;
-
-        if (isPasswordEmpty) {
-          dispatch(makeFormErrorMessage("password", "Please enter password"));
-        } else if (isPasswordShort) {
-          dispatch(makeFormErrorMessage("password", "Must have at least 8 characters!"));
-        } else {
-          dispatch(removeFormErrorMessage("password"));
-        }
-
-        const isFirstNameTooShort = firstName === "" || firstName.length <= 0;
-
-        if (isFirstNameTooShort) {
-          dispatch(makeFormErrorMessage("firstName", "Please enter the first name"));
-        } else {
-          dispatch(removeFormErrorMessage("firstName"));
-        }
-
-        const isLastNameTooShort = lastName === "" || lastName.length <= 0;
-        if (isLastNameTooShort) {
-          dispatch(makeFormErrorMessage("lastName", "Please enter the last name"));
-        } else {
-          dispatch(removeFormErrorMessage("lastName"));
-        }
-
-        const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
-
-        if (isAffiliationTooShort) {
-          dispatch(makeFormErrorMessage("affiliation", "Please enter affiliation"));
-        } else {
-          dispatch(removeFormErrorMessage("affiliation"));
-        }
-
-        if (
-          isInValidEmail ||
-          isDuplicatedEmail ||
-          isPasswordNotValid ||
-          isAffiliationTooShort ||
-          isFirstNameTooShort ||
-          isLastNameTooShort
-        ) {
-          throw new Error();
-        }
-
-        dispatch({
-          type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
-        });
-
-        trackEvent({ category: "sign_up", action: "try_to_sign_up", label: "with_email" });
-
-        try {
-          const signUpResult: Member = await AuthAPI.signUpWithEmail({
-            email,
-            password,
-            firstName,
-            affiliation,
-            lastName,
-          });
-
-          dispatch({
-            type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
-          });
-
-          // Auto Sign in after Sign up at API Server. So we don't need to call sign in api again.
-          dispatch({
-            type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
-            payload: {
-              user: signUpResult,
-              loggedIn: true,
-              oauthLoggedIn: false, // Because this method is signUpWithEmail
-            },
-          });
-
-          dispatch(changeSignUpStep(SIGN_UP_STEP.FINAL_WITH_EMAIL));
-          alertToast({
-            type: "success",
-            message: "Succeeded to Sign Up!!",
-          });
-          trackEvent({ category: "sign_up", action: "succeed_to_sign_up", label: "with_email" });
-        } catch (err) {
-          trackEvent({ category: "sign_up", action: "failed_to_sign_up", label: "with_email" });
-          alertToast({
-            type: "error",
-            message: `Failed to sign up with email.`,
-          });
-          dispatch({
-            type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
-          });
-          throw err;
-        }
-        break;
-      }
-      case SIGN_UP_STEP.FINAL_WITH_EMAIL: {
-        if (isDialog) {
-          dispatch(closeDialog());
-          trackDialogView("signUpWithEmailClose");
-        }
-        break;
-      }
-
-      default:
-        break;
+    trackEvent({ category: "sign_up", action: "try_to_sign_up", label: "with_email" });
+    try {
+      const signUpResult: Member = await AuthAPI.signUpWithEmail(params);
+      dispatch({
+        type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+        payload: {
+          user: signUpResult,
+          loggedIn: true,
+          oauthLoggedIn: false,
+        },
+      });
+      alertToast({
+        type: "success",
+        message: "Succeeded to Sign Up!!",
+      });
+      trackEvent({ category: "sign_up", action: "succeed_to_sign_up", label: "with_email" });
+    } catch (err) {
+      trackEvent({ category: "sign_up", action: "failed_to_sign_up", label: "with_email" });
+      alertToast({
+        type: "error",
+        message: `Failed to sign up with email.`,
+      });
+      throw err;
     }
+    // case SIGN_UP_STEP.FINAL_WITH_EMAIL: {
+    //   if (isDialog) {
+    //     dispatch(closeDialog());
+    //     trackDialogView("signUpWithEmailClose");
+    //   }
+    //   break;
   };
 }
 

@@ -1,25 +1,24 @@
 import * as React from "react";
-import { debounce } from "lodash";
 import * as ReactGA from "react-ga";
 import { Formik, Form, Field, FormikErrors } from "formik";
-import AuthAPI from "../../../../api/auth";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import AuthInputBox from "../../../common/inputBox/authInputBox";
-import { OAUTH_VENDOR, GetAuthorizeUriResult } from "../../../../api/types/auth";
-import AuthButton from "../../authButton";
-import ORSeparator from "../../separator";
-import AuthTabs from "../../authTabs";
-import validateEmail from "../../../../helpers/validateEmail";
-import { checkDuplicatedEmail } from "../actions";
-import { GLOBAL_DIALOG_TYPE } from "../../../dialog/reducer";
-import EnvChecker from "../../../../helpers/envChecker";
-import alertToast from "../../../../helpers/makePlutoToastAction";
-import PlutoAxios from "../../../../api/pluto";
+import AuthAPI from "../../../../../api/auth";
+import { withStyles } from "../../../../../helpers/withStylesHelper";
+import AuthInputBox from "../../../../common/inputBox/authInputBox";
+import { OAUTH_VENDOR, GetAuthorizeUriResult } from "../../../../../api/types/auth";
+import AuthButton from "../../../authButton";
+import ORSeparator from "../../../separator";
+import AuthTabs from "../../../authTabs";
+import validateEmail from "../../../../../helpers/validateEmail";
+import { GLOBAL_DIALOG_TYPE } from "../../../../dialog/reducer";
+import EnvChecker from "../../../../../helpers/envChecker";
+import alertToast from "../../../../../helpers/makePlutoToastAction";
+import PlutoAxios from "../../../../../api/pluto";
+import { debouncedCheckDuplicate } from "../../helpers/checkDuplicateEmail";
 const store = require("store");
 const s = require("./firstForm.scss");
 
 interface FirstFormProps {
-  onSubmit: () => void;
+  onSubmit: (values: FormValues) => void;
   onClickTab: (type: GLOBAL_DIALOG_TYPE) => void;
 }
 interface FormValues {
@@ -52,7 +51,6 @@ function handleClickOAuthBtn(vendor: OAUTH_VENDOR) {
 }
 
 const oAuthBtnBaseStyle: React.CSSProperties = { position: "relative", fontSize: "13px", marginTop: "10px" };
-const debouncedCheckDuplicate = debounce(checkDuplicatedEmail, 200);
 
 const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
   const [isLoading, setIsLoading] = React.useState(false);
