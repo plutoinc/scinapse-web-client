@@ -86,46 +86,6 @@ describe("signIn reducer", () => {
     });
   });
 
-  describe("when receive SIGN_IN_START_TO_SIGN_IN", () => {
-    beforeEach(() => {
-      const mockState = { ...SIGN_IN_INITIAL_STATE, hasError: true };
-
-      mockAction = {
-        type: ACTION_TYPES.SIGN_IN_START_TO_SIGN_IN,
-      };
-
-      state = reduceState(mockAction, mockState);
-    });
-
-    it("should set isLoading to true", () => {
-      expect(state.isLoading).toBeTruthy();
-    });
-
-    it("should set hasError to false", () => {
-      expect(state.hasError).toBeFalsy();
-    });
-  });
-
-  describe("when receive SIGN_IN_FAILED_TO_SIGN_IN", () => {
-    beforeEach(() => {
-      const mockState = { ...SIGN_IN_INITIAL_STATE, isLoading: true };
-
-      mockAction = {
-        type: ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN,
-      };
-
-      state = reduceState(mockAction, mockState);
-    });
-
-    it("should set isLoading to false", () => {
-      expect(state.isLoading).toBeFalsy();
-    });
-
-    it("should set hasError to true", () => {
-      expect(state.hasError).toBeTruthy();
-    });
-  });
-
   describe("when receive SIGN_IN_SUCCEEDED_TO_SIGN_IN", () => {
     beforeEach(() => {
       const mockState = {

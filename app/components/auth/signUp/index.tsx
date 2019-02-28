@@ -50,6 +50,7 @@ const AlternativeSignUp: React.FunctionComponent<SignUpContainerProps> = props =
           onSubmit={() => {
             setSignUpStep(SIGN_UP_STEP.WITH_EMAIL);
           }}
+          onClickTab={props.handleChangeDialogType}
         />
       );
   }

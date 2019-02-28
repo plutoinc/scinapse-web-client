@@ -9,10 +9,12 @@ import ORSeparator from "../../separator";
 import AuthTabs from "../../authTabs";
 import validateEmail from "../../../../helpers/validateEmail";
 import { checkDuplicatedEmail } from "../actions";
+import { GLOBAL_DIALOG_TYPE } from "../../../dialog/reducer";
 const s = require("./firstForm.scss");
 
 interface FirstFormProps {
   onSubmit: () => void;
+  onClickTab: (type: GLOBAL_DIALOG_TYPE) => void;
 }
 interface FormValues {
   email: string;
@@ -57,7 +59,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
 
   return (
     <>
-      <AuthTabs />
+      <AuthTabs onClickTab={props.onClickTab} activeTab={"sign up"} />
       <div className={s.formWrapper}>
         <Formik
           initialValues={{ email: "", password: "" }}
