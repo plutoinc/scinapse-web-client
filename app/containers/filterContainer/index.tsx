@@ -12,6 +12,7 @@ import { toggleElementFromArray } from "../../helpers/toggleElementFromArray";
 import FilterResetButton from "../../components/filterContainer/filterResetButton";
 import YearRangeSlider from "./yearRangeSlider";
 import Icon from "../../icons";
+import Tooltip from "@material-ui/core/Tooltip";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {
@@ -126,7 +127,24 @@ function getJournalFilter(props: FilterContainerProps) {
         <span className={styles.linkTitle}>
           {journal!.title}
           <span className={styles.ifLabel}>
-            {journal!.impactFactor ? `IF : ${journal!.impactFactor.toFixed(2)}` : ""}
+            {journal!.impactFactor ? (
+              <span>
+                <Tooltip
+                  disableFocusListener={true}
+                  disableTouchListener={true}
+                  title="Imfact Factor"
+                  placement="top"
+                  classes={{ tooltip: styles.arrowBottomTooltip }}
+                >
+                  <span>
+                    <Icon className={styles.ifIconWrapper} icon="IMFACT_FACTOR" />
+                  </span>
+                </Tooltip>
+                {journal!.impactFactor.toFixed(2)}
+              </span>
+            ) : (
+              ""
+            )}
           </span>
         </span>
         <span className={styles.countBox}>{`(${journalCount})`}</span>
