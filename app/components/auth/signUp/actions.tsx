@@ -20,39 +20,13 @@ export function changeEmailInput(email: string) {
   };
 }
 
-export function checkValidEmailInput(email: string) {
-  const isInValidEmail: boolean = !validateEmail(email);
-
-  if (isInValidEmail) {
-    return makeFormErrorMessage("email", "Please enter a valid email address");
-  } else {
-    return removeFormErrorMessage("email");
+export const checkDuplicatedEmail = async (email: string) => {
+  const checkDuplicatedEmailResult = await AuthAPI.checkDuplicatedEmail(email);
+  if (checkDuplicatedEmailResult.duplicated) {
+    return "Email address already exists";
   }
-}
-
-export function checkDuplicatedEmail(email: string) {
-  return async (dispatch: Dispatch<any>) => {
-    try {
-      const checkDuplicatedEmailResult = await AuthAPI.checkDuplicatedEmail(email);
-
-      dispatch({
-        type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CHECK_DUPLICATED_EMAIL,
-      });
-      if (checkDuplicatedEmailResult.duplicated) {
-        dispatch(makeFormErrorMessage("email", "Email address already exists"));
-      }
-    } catch (err) {
-      alertToast({
-        type: "error",
-        message: `Failed to check duplicated email! ${err}`,
-      });
-      dispatch({
-        type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
-      });
-      dispatch(removeFormErrorMessage("password"));
-    }
-  };
-}
+  return null;
+};
 
 export function changePasswordInput(password: string) {
   return {
@@ -61,19 +35,6 @@ export function changePasswordInput(password: string) {
       password,
     },
   };
-}
-
-export function checkValidPasswordInput(password: string) {
-  const isPasswordEmpty = password === "" || password.length <= 0;
-  const isPasswordShort = password.length < 8;
-
-  if (isPasswordEmpty) {
-    return makeFormErrorMessage("password", "Please enter password");
-  } else if (isPasswordShort) {
-    return makeFormErrorMessage("password", "Must have at least 8 characters!");
-  } else {
-    return removeFormErrorMessage("password");
-  }
 }
 
 export function changeFirstNameInput(name: string) {
@@ -562,7 +523,6 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, alreadySign
           type: ACTION_TYPES.SIGN_UP_FAILED_TO_EXCHANGE,
         });
         alreadySignUpCB();
-
         return;
       }
 
