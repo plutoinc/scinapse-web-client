@@ -73,21 +73,6 @@ pipeline {
         stage('Notify') {
             steps {
                 script {
-                    def deployedCommits = ""
-                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'GITHUB_HTTPS_CREDENTIALS', usernameVariable: 'GIT_AUTHOR_NAME', passwordVariable: 'GIT_PASSWORD']]) {
-                        sh 'git fetch --tags'
-                        deployedCommits = sh (
-                            script: "git log --pretty=oneline production..HEAD",
-                            returnStdout: true
-                        ).trim()
-                        sh 'echo ${GIT_AUTHOR_NAME} pushing '
-                        sh 'git config --global user.email "dev@pluto.netwrok"'
-                        sh 'git config --global user.name "Jenkins"'
-                        sh 'git config --global push.default simple'
-                        sh 'git tag production -f'
-                        sh('git push https://${GIT_AUTHOR_NAME}:${GIT_PASSWORD}@github.com/pluto-net/scinapse-web-client.git --tags -f')
-                    } 
-
                     def targetUrl;
                     if (env.BRANCH_NAME == 'master') {
                         targetUrl = "https://scinapse.io"
@@ -100,7 +85,6 @@ pipeline {
                     } else {
                         targetUrl = "https://dev.scinapse.io?branch=${env.BRANCH_NAME}"
                         slackSend color: 'good', channel: "#ci-build", message: "Build DONE! ${env.BRANCH_NAME} please check ${targetUrl}"
-                        slackSend color: 'good', channel: "#ci-build", message: deployedCommits
                     }
 
                 }
