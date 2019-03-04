@@ -156,12 +156,6 @@ export function signUpWithEmail(params: SignUpWithEmailParams) {
       });
       throw err;
     }
-    // case SIGN_UP_STEP.FINAL_WITH_EMAIL: {
-    //   if (isDialog) {
-    //     dispatch(closeDialog());
-    //     trackDialogView("signUpWithEmailClose");
-    //   }
-    //   break;
   };
 }
 

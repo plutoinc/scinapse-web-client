@@ -48,18 +48,6 @@ export function reducer(state: SignInState = SIGN_IN_INITIAL_STATE, action: Redu
       return { ...state, hasError: true };
     }
 
-    case ACTION_TYPES.SIGN_IN_START_TO_SIGN_IN: {
-      return {
-        ...state,
-        isLoading: true,
-        hasError: false,
-      };
-    }
-
-    case ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN: {
-      return { ...state, isLoading: false, hasError: true };
-    }
-
     case ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN: {
       return { ...state, isLoading: false, hasError: false };
     }
