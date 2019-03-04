@@ -174,10 +174,10 @@ export function signUpWithSocial(currentStep: SIGN_UP_STEP, vendor: OAUTH_VENDOR
         }
         try {
           const origin = EnvChecker.getOrigin();
-          const redirectUri = `${origin}/users/sign_up?vendor=${vendor}`;
+          const redirectURI = `${origin}/users/sign_up?vendor=${vendor}`;
           const authorizeUriData: GetAuthorizeUriResult = await AuthAPI.getAuthorizeURI({
             vendor,
-            redirectUri,
+            redirectURI,
           });
 
           trackEvent({ category: "sign_up", action: "try_to_sign_up_step_1", label: `with_${vendor}` });
@@ -205,74 +205,6 @@ export function signUpWithSocial(currentStep: SIGN_UP_STEP, vendor: OAUTH_VENDOR
       case SIGN_UP_STEP.WITH_SOCIAL: {
         if (signUpState) {
           const { email, affiliation, firstName, oauth, lastName } = signUpState;
-
-          const isInValidEmail: boolean = !validateEmail(email);
-
-          if (isInValidEmail) {
-            dispatch(makeFormErrorMessage("email", "Please enter a valid email address"));
-          } else {
-            dispatch(removeFormErrorMessage("email"));
-          }
-
-          let isDuplicatedEmail: boolean = false;
-
-          if (!isInValidEmail) {
-            try {
-              const checkDuplicatedEmailResult = await AuthAPI.checkDuplicatedEmail(email);
-
-              dispatch({
-                type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CHECK_DUPLICATED_EMAIL,
-              });
-
-              if (checkDuplicatedEmailResult.duplicated) {
-                dispatch(makeFormErrorMessage("email", "Email address already exists"));
-                isDuplicatedEmail = true;
-              } else {
-                dispatch(removeFormErrorMessage("email"));
-              }
-            } catch (err) {
-              alertToast({
-                type: "error",
-                message: `Failed to sign up with social account.`,
-              });
-              dispatch({
-                type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
-              });
-              throw err;
-            }
-          }
-
-          const isFirstNameTooShort = firstName === "" || firstName.length <= 0;
-          if (isFirstNameTooShort) {
-            dispatch(makeFormErrorMessage("firstName", "Please enter the first name"));
-          } else {
-            dispatch(removeFormErrorMessage("firstName"));
-          }
-
-          const isLastNameTooShort = lastName === "" || lastName.length <= 0;
-          if (isLastNameTooShort) {
-            dispatch(makeFormErrorMessage("lastName", "Please enter the last name"));
-          } else {
-            dispatch(removeFormErrorMessage("lastName"));
-          }
-
-          const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
-
-          if (isAffiliationTooShort) {
-            dispatch(makeFormErrorMessage("affiliation", "Please enter affiliation"));
-          } else {
-            dispatch(removeFormErrorMessage("affiliation"));
-          }
-
-          if (
-            isInValidEmail ||
-            isDuplicatedEmail ||
-            isFirstNameTooShort ||
-            isAffiliationTooShort ||
-            isLastNameTooShort
-          ) {
-            throw new Error();
-          }
 
           dispatch({
             type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
