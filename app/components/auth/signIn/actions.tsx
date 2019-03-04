@@ -89,10 +89,10 @@ export async function signInWithSocial(vendor: OAUTH_VENDOR) {
 
   try {
     const origin = EnvChecker.getOrigin();
-    const redirectUri = `${origin}/users/sign_in?vendor=${vendor}`;
+    const redirectURI = `${origin}/users/sign_in?vendor=${vendor}`;
     const authorizeUriData: GetAuthorizeUriResult = await AuthAPI.getAuthorizeURI({
       vendor,
-      redirectUri,
+      redirectURI,
     });
 
     if (!EnvChecker.isOnServer()) {
@@ -111,10 +111,6 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.SIGN_IN_GET_AUTHORIZE_CODE,
-    });
-
-    dispatch({
-      type: ACTION_TYPES.SIGN_IN_START_TO_SIGN_IN,
     });
 
     try {
@@ -151,9 +147,6 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
           alertToast({
             type: "error",
             message: `Failed to sign in.`,
-          });
-          dispatch({
-            type: ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN,
           });
         }
       }
