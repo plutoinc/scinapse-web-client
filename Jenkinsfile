@@ -76,7 +76,7 @@ pipeline {
                     def deployedCommits = ""
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'GITHUB_HTTPS_CREDENTIALS', usernameVariable: 'GIT_AUTHOR_NAME', passwordVariable: 'GIT_PASSWORD']]) {
                         deployedCommits = sh (
-                            script: "git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative | sed -n '1, /tag: production/'p",
+                            script: "git log --pretty=oneline production..HEAD",
                             returnStdout: true
                         ).trim()
                         sh 'echo ${GIT_AUTHOR_NAME} pushing '
