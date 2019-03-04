@@ -16,7 +16,7 @@ interface FailedToSignInProps {
 
 const FailedToSignIn: React.FunctionComponent<FailedToSignInProps & RouteComponentProps<any>> = props => {
   const queryParams = parse(props.location.search, { ignoreQueryPrefix: true });
-  const vendor = queryParams.vendor;
+  const vendor = queryParams.vendor && queryParams.vendor.toUpperCase();
 
   let vendorContent;
   let socialBtn = null;

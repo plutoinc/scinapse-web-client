@@ -31,24 +31,26 @@ class AuthComponent extends React.PureComponent<AuthComponentProps, {}> {
       <div className={styles.pageWrapper}>
         <div className={styles.authWrapper}>
           <Switch>
-            <div className={styles.contentWrapper}>
-              <AuthRedirect
-                path={`${match.url}/sign_in`}
-                component={SignIn}
-                isLoggedIn={isLoggedIn}
-                needAuthType={AuthType.ShouldLoggedOut}
-                exact={true}
-              />
-              <AuthRedirect
-                path={`${match.url}/sign_up`}
-                component={SignUp}
-                isLoggedIn={isLoggedIn}
-                needAuthType={AuthType.ShouldLoggedOut}
-                exact={true}
-              />
-              <Route path={`${match.url}/reset-password`} component={ResetPassword} exact={true} />
-              <Route path={`${match.url}/email_verification`} component={EmailVerification} exact={true} />
-            </div>
+            <>
+              <div className={styles.contentWrapper}>
+                <AuthRedirect
+                  path={`${match.url}/sign_in`}
+                  component={SignIn}
+                  isLoggedIn={isLoggedIn}
+                  needAuthType={AuthType.ShouldLoggedOut}
+                  exact={true}
+                />
+                <AuthRedirect
+                  path={`${match.url}/sign_up`}
+                  component={SignUp}
+                  isLoggedIn={isLoggedIn}
+                  needAuthType={AuthType.ShouldLoggedOut}
+                  exact={true}
+                />
+                <Route path={`${match.url}/reset-password`} component={ResetPassword} exact={true} />
+                <Route path={`${match.url}/email_verification`} component={EmailVerification} exact={true} />
+              </div>
+            </>
           </Switch>
         </div>
       </div>

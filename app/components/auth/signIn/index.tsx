@@ -1,4 +1,5 @@
 import * as React from "react";
+import { parse } from "qs";
 import { connect, Dispatch } from "react-redux";
 import { Formik, Form, Field, FormikErrors } from "formik";
 import { withRouter, RouteComponentProps } from "react-router-dom";
@@ -14,7 +15,6 @@ import { getCollections } from "../../collections/actions";
 import { closeDialog } from "../../dialog/actions";
 import { signInWithEmail, signInWithSocial, getAuthorizeCode } from "./actions";
 import validateEmail from "../../../helpers/validateEmail";
-import { parse } from "qs";
 import FailedToSignIn from "./components/failedToSignIn";
 const s = require("./signIn.scss");
 const store = require("store");
@@ -58,6 +58,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
   const isDialog = !!props.handleChangeDialogType;
 
   const [notRegisteredWithSocial, setNotRegisteredWithSocial] = React.useState(false);
+
   React.useEffect(() => {
     const queryParams = parse(props.location.search, { ignoreQueryPrefix: true });
     const { code, vendor } = queryParams;
@@ -94,7 +95,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
     }
   }
 
-  if (!notRegisteredWithSocial) {
+  if (notRegisteredWithSocial) {
     return (
       <>
         <FailedToSignIn
