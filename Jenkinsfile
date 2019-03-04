@@ -75,6 +75,7 @@ pipeline {
                 script {
                     def deployedCommits = ""
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'GITHUB_HTTPS_CREDENTIALS', usernameVariable: 'GIT_AUTHOR_NAME', passwordVariable: 'GIT_PASSWORD']]) {
+                        sh 'git fetch --tags'
                         deployedCommits = sh (
                             script: "git log --pretty=oneline production..HEAD",
                             returnStdout: true
