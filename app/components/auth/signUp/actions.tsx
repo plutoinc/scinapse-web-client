@@ -8,13 +8,11 @@ import {
   SignUpWithEmailParams,
 } from "../../../api/types/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import validateEmail from "../../../helpers/validateEmail";
 import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, SignUpState, SignUpOauthInfo, SignUpErrorCheck } from "./reducer";
-import { closeDialog } from "../../dialog/actions";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
 import { Member } from "../../../model/member";
-import { trackEvent, trackDialogView } from "../../../helpers/handleGA";
+import { trackEvent } from "../../../helpers/handleGA";
 
 export function changeEmailInput(email: string) {
   return {
