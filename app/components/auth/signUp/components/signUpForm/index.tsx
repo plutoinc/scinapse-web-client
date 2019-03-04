@@ -11,7 +11,7 @@ import { signUpWithEmail } from "../../actions";
 import { debouncedCheckDuplicate } from "../../helpers/checkDuplicateEmail";
 const s = require("./style.scss");
 
-interface WithEmailFormProps {
+interface SignUpFormProps {
   onClickTab: (type: GLOBAL_DIALOG_TYPE) => void;
   onSucceed: () => void;
   onClickBack: () => void;
@@ -57,7 +57,7 @@ const validateForm = async (values: FormValues) => {
   }
 };
 
-const WithEmailForm: React.FunctionComponent<WithEmailFormProps> = props => {
+const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
   const [isLoading, setIsLoading] = React.useState(false);
 
   const handleSubmit = async (values: FormValues) => {
@@ -144,4 +144,4 @@ const WithEmailForm: React.FunctionComponent<WithEmailFormProps> = props => {
   );
 };
 
-export default connect()(withStyles<typeof WithEmailForm>(s)(WithEmailForm));
+export default connect()(withStyles<typeof SignUpForm>(s)(SignUpForm));
