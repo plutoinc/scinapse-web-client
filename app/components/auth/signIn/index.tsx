@@ -14,9 +14,6 @@ import { getCollections } from "../../collections/actions";
 import { closeDialog } from "../../dialog/actions";
 import { signInWithEmail, signInWithSocial } from "./actions";
 import validateEmail from "../../../helpers/validateEmail";
-import { AppState } from "../../../reducers";
-import { SignInState } from "./reducer";
-import SignInFailed from "./components/signInFailed";
 const s = require("./newSignIn.scss");
 const store = require("store");
 
@@ -25,16 +22,9 @@ interface EmailFormValues {
   password: string;
 }
 
-function mapStateToProps(state: AppState) {
-  return {
-    signIn: state.signIn,
-  };
-}
-
 interface SignInProps {
   handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void;
   dispatch: Dispatch<any>;
-  signIn: SignInState;
 }
 
 const oAuthBtnBaseStyle: React.CSSProperties = { position: "relative", fontSize: "13px", marginTop: "10px" };
@@ -92,7 +82,6 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
   return (
     <>
       <AuthTabs onClickTab={props.handleChangeDialogType} activeTab="sign in" />
-      {props.signIn.isNotUnsignedUpWithSocial ? <SignInFailed vendor="FACEBOOK" /> : null}
       <div className={s.formWrapper}>
         <Formik
           initialValues={{ email: "", password: "" }}
@@ -163,4 +152,4 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
   );
 };
 
-export default withRouter(connect(mapStateToProps)(withStyles<typeof SignIn>(s)(SignIn)));
+export default withRouter(connect()(withStyles<typeof SignIn>(s)(SignIn)));
