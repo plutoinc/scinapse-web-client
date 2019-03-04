@@ -73,13 +73,19 @@ pipeline {
         stage('Notify') {
             steps {
                 script {
-                    
-                    deployedCommits = sh (
-                        script: "git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative | sed -n '1, /tag: production/'p",
-                        returnStdout: true
-                    ).trim()
-
-                    sh 'git tag production -f && git push origin production -f'
+                    def deployedCommits = ""
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'GITHUB_HTTPS_CREDENTIALS', usernameVariable: 'GIT_AUTHOR_NAME', passwordVariable: 'GIT_PASSWORD']]) {
+                        deployedCommits = sh (
+                            script: "git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative | sed -n '1, /tag: production/'p",
+                            returnStdout: true
+                        ).trim()
+                        sh 'echo ${GIT_AUTHOR_NAME} pushing '
+                        sh 'git config --global user.email "dev@pluto.netwrok"'
+                        sh 'git config --global user.name "Jenkins"'
+                        sh 'git config --global push.default simple'
+                        sh 'git tag production -f'
+                        sh('git push https://${GIT_AUTHOR_NAME}:${GIT_PASSWORD}@github.com/pluto-net/scinapse-web-client.git --tags -f')
+                    } 
 
                     def targetUrl;
                     if (env.BRANCH_NAME == 'master') {
