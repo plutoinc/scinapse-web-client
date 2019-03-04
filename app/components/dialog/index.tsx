@@ -6,7 +6,7 @@ import { denormalize } from "normalizr";
 import Dialog from "@material-ui/core/Dialog";
 import { AppState } from "../../reducers";
 import * as Actions from "./actions";
-import SignIn from "../auth/signIn/temp";
+import SignIn from "../auth/signIn";
 import SignUp from "../auth/signUp";
 import ResetPassword from "../auth/resetPasswordDialog";
 import VerificationNeeded from "../auth/verificationNeeded";
