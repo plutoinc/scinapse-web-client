@@ -73,6 +73,11 @@ pipeline {
         stage('Notify') {
             steps {
                 script {
+                    
+                    sh "git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative | sed -n '1, /tag: production/'p > temp"
+                    String gitHistory = new File('temp').getText('UTF-8')
+                    sh 'rm temp && git tag production -f && git push origin production -f'
+
                     def targetUrl;
                     if (env.BRANCH_NAME == 'master') {
                         targetUrl = "https://scinapse.io"
@@ -85,6 +90,7 @@ pipeline {
                     } else {
                         targetUrl = "https://dev.scinapse.io?branch=${env.BRANCH_NAME}"
                         slackSend color: 'good', channel: "#ci-build", message: "Build DONE! ${env.BRANCH_NAME} please check ${targetUrl}"
+                        slackSend color: 'good', channel: "#ci-build", message: gitHistory
                     }
 
                 }
