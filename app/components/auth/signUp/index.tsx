@@ -9,6 +9,7 @@ import { SignUpContainerProps } from "./types";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import FirstForm from "./components/firstForm";
 import WithEmailForm from "./components/withEmail";
+import FinalWithEmail from "./components/finalWithEmail";
 const styles = require("./signUp.scss");
 
 function mapStateToProps(state: AppState) {
@@ -57,7 +58,13 @@ const AlternativeSignUp: React.FunctionComponent<SignUpContainerProps> = props =
       return null;
 
     case SIGN_UP_STEP.FINAL_WITH_EMAIL:
-      return null;
+      return (
+        <FinalWithEmail
+          onSubmit={() => {
+            history.push("/");
+          }}
+        />
+      );
 
     default:
       return (
