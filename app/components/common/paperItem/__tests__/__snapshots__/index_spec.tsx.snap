@@ -77,9 +77,9 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
             Nature
           </a>
           <span
-            className="bold"
+            className="ifLabel"
           >
-             [IF: 40.14]
+            IF: 40.14
           </span>
         </div>
       </div>
@@ -309,9 +309,9 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
             Nature
           </a>
           <span
-            className="bold"
+            className="ifLabel"
           >
-             [IF: 40.14]
+            IF: 40.14
           </span>
         </div>
       </div>

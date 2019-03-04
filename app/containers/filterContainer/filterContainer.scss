@@ -56,15 +56,48 @@
   }
 }
 
+.ifIconWrapper {
+  margin-right: 4px;
+
+  svg {
+    width: 10px;
+    height: 10px;
+    color: $main_blue0;
+  }
+}
+
+.ifLabel {
+  display: inline-block;
+  font-size: 12px;
+  text-align: center;
+  color: $main_blue0;
+  padding: 0 8px;
+  margin-left: 4px;
+}
+
 .zeroCountFilterItem {
   pointer-events: none;
   color: $gray5;
+
+  .ifLabel {
+    @extend .ifLabel;
+    color: $gray3;
+
+    .ifIconWrapper {
+      @extend .ifIconWrapper;
+
+      svg {
+        color: $gray3;
+      }
+    }
+  }
 }
 
 .linkTitle {
   display: inline-block;
   vertical-align: top;
   max-width: 240px;
+  line-height: 20px;
 }
 
 .countBox {
@@ -172,7 +205,6 @@
 .checkboxIcon {
   display: inline-flex;
   padding: 0;
-  padding-bottom: 4px;
   margin-right: 4px;
   width: 20px;
   height: 20px;
@@ -185,4 +217,26 @@
 
 .checkedCheckboxIcon {
   color: $main_blue0 !important;
+}
+
+.arrowBottomTooltip {
+  background-color: #606269 !important;
+  color: white !important;
+  font-size: 10px !important;
+  margin-bottom: 6px !important;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 55%;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-top-color: #606269;
+    border-bottom: 0;
+    margin-left: -13px;
+    margin-top: 20px;
+    z-index: 2;
+  }
 }

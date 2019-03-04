@@ -66,7 +66,7 @@ const PaperItemVenue = ({
         {year ? <span className={styles.bold}>{yearStr}</span> : null}
         {title}
         {impactFactor ? (
-          <span className={styles.bold}>{` [IF: ${impactFactor ? impactFactor.toFixed(2) : 0}]`}</span>
+          <span className={styles.ifLabel}>{`IF: ${impactFactor ? impactFactor.toFixed(2) : 0}`}</span>
         ) : null}
       </div>
     </div>
