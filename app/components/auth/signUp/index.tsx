@@ -21,7 +21,7 @@ function mapStateToProps(state: AppState) {
 const AlternativeSignUp: React.FunctionComponent<SignUpContainerProps> = props => {
   const { dispatch, location, history } = props;
 
-  const [signUpStep, setSignUpStep] = React.useState(SIGN_UP_STEP.WITH_SOCIAL);
+  const [signUpStep, setSignUpStep] = React.useState(SIGN_UP_STEP.FIRST);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
