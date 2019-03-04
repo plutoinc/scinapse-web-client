@@ -335,7 +335,7 @@ class SignIn extends React.PureComponent<SignInContainerProps> {
     } else {
       return (
         <button type="submit" className={styles.submitButton}>
-          SIGN IN1
+          SIGN IN
         </button>
       );
     }
