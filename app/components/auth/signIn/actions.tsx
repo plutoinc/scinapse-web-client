@@ -1,6 +1,5 @@
 import { Dispatch } from "redux";
 import * as ReactGA from "react-ga";
-import { AxiosError } from "axios";
 import AuthAPI from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { SIGN_IN_ON_FOCUS_TYPE } from "./reducer";
@@ -109,10 +108,6 @@ export async function signInWithSocial(vendor: OAUTH_VENDOR) {
 
 export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch({
-      type: ACTION_TYPES.SIGN_IN_GET_AUTHORIZE_CODE,
-    });
-
     try {
       const origin = EnvChecker.getOrigin();
       const redirectUri = `${origin}/users/sign_in?vendor=${vendor}`;
@@ -124,7 +119,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
 
       alertToast({
         type: "success",
-        message: "Welcome to sci-napse.",
+        message: "Welcome to Scinapse.",
       });
       dispatch({
         type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
@@ -135,21 +130,10 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
         },
       });
     } catch (err) {
-      const errObject: AxiosError = err as AxiosError;
-      if (errObject.response) {
-        const errCode = errObject.response.status;
-
-        if (errCode === 401) {
-          dispatch({
-            type: ACTION_TYPES.SIGN_IN_FAILED_DUE_TO_NOT_UNSIGNED_UP_WITH_SOCIAL,
-          });
-        } else {
-          alertToast({
-            type: "error",
-            message: `Failed to sign in.`,
-          });
-        }
-      }
+      alertToast({
+        type: "error",
+        message: `Failed to sign in.`,
+      });
       throw err;
     }
   };

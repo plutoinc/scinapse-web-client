@@ -52,10 +52,6 @@ export function reducer(state: SignInState = SIGN_IN_INITIAL_STATE, action: Redu
       return { ...state, isLoading: false, hasError: false };
     }
 
-    case ACTION_TYPES.SIGN_IN_FAILED_DUE_TO_NOT_UNSIGNED_UP_WITH_SOCIAL: {
-      return { ...state, isNotUnsignedUpWithSocial: true };
-    }
-
     case ACTION_TYPES.SIGN_IN_GO_BACK: {
       return SIGN_IN_INITIAL_STATE;
     }

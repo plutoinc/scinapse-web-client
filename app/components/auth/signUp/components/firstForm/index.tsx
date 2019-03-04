@@ -26,7 +26,7 @@ interface FormValues {
   password: string;
 }
 
-function handleClickOAuthBtn(vendor: OAUTH_VENDOR) {
+export function handleClickOAuthBtn(vendor: OAUTH_VENDOR) {
   return async () => {
     store.set("oauthRedirectPath", location.pathname + location.search);
 
@@ -50,7 +50,7 @@ function handleClickOAuthBtn(vendor: OAUTH_VENDOR) {
   };
 }
 
-const oAuthBtnBaseStyle: React.CSSProperties = { position: "relative", fontSize: "13px", marginTop: "10px" };
+export const oAuthBtnBaseStyle: React.CSSProperties = { position: "relative", fontSize: "13px", marginTop: "10px" };
 
 const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
   const [isLoading, setIsLoading] = React.useState(false);

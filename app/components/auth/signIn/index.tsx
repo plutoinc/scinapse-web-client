@@ -12,9 +12,11 @@ import AuthTabs from "../authTabs";
 import { SignInResult, OAUTH_VENDOR } from "../../../api/types/auth";
 import { getCollections } from "../../collections/actions";
 import { closeDialog } from "../../dialog/actions";
-import { signInWithEmail, signInWithSocial } from "./actions";
+import { signInWithEmail, signInWithSocial, getAuthorizeCode } from "./actions";
 import validateEmail from "../../../helpers/validateEmail";
-const s = require("./newSignIn.scss");
+import { parse } from "qs";
+import FailedToSignIn from "./components/failedToSignIn";
+const s = require("./signIn.scss");
 const store = require("store");
 
 interface EmailFormValues {
@@ -53,8 +55,21 @@ const validateForm = (values: EmailFormValues) => {
 const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = props => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [networkError, setNetworkError] = React.useState("");
-
   const isDialog = !!props.handleChangeDialogType;
+
+  const [notRegisteredWithSocial, setNotRegisteredWithSocial] = React.useState(false);
+  React.useEffect(() => {
+    const queryParams = parse(props.location.search, { ignoreQueryPrefix: true });
+    const { code, vendor } = queryParams;
+
+    if (code && vendor) {
+      props.dispatch(getAuthorizeCode(code, vendor)).catch(err => {
+        if (err.response && err.response.status && err.response.status === 401) {
+          setNotRegisteredWithSocial(true);
+        }
+      });
+    }
+  }, []);
 
   async function handleSubmit(formValues: EmailFormValues) {
     const { email, password } = formValues;
@@ -77,6 +92,19 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
       setIsLoading(false);
       setNetworkError(err.message);
     }
+  }
+
+  if (!notRegisteredWithSocial) {
+    return (
+      <>
+        <FailedToSignIn
+          onClickTab={props.handleChangeDialogType}
+          onClickGoBack={() => {
+            setNotRegisteredWithSocial(false);
+          }}
+        />
+      </>
+    );
   }
 
   return (
