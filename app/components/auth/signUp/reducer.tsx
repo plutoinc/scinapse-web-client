@@ -6,6 +6,7 @@ export enum SIGN_UP_STEP {
   WITH_EMAIL,
   WITH_SOCIAL,
   FINAL_WITH_EMAIL,
+  FINAL_WITH_SOCIAL,
 }
 
 export enum SIGN_UP_ON_FOCUS_TYPE {

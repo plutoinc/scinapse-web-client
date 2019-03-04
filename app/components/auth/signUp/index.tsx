@@ -8,8 +8,8 @@ import { SIGN_UP_STEP } from "./reducer";
 import { SignUpContainerProps } from "./types";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import FirstForm from "./components/firstForm";
-import WithEmailForm from "./components/withEmail";
-import FinalWithEmail from "./components/finalWithEmail";
+import SignUpForm from "./components/signUpForm";
+import FinalSignUpContent from "./components/finalSignUpContent";
 const styles = require("./signUp.scss");
 
 function mapStateToProps(state: AppState) {
@@ -21,7 +21,7 @@ function mapStateToProps(state: AppState) {
 const AlternativeSignUp: React.FunctionComponent<SignUpContainerProps> = props => {
   const { dispatch, location, history } = props;
 
-  const [signUpStep, setSignUpStep] = React.useState(SIGN_UP_STEP.WITH_EMAIL);
+  const [signUpStep, setSignUpStep] = React.useState(SIGN_UP_STEP.WITH_SOCIAL);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -41,7 +41,7 @@ const AlternativeSignUp: React.FunctionComponent<SignUpContainerProps> = props =
   switch (signUpStep) {
     case SIGN_UP_STEP.WITH_EMAIL:
       return (
-        <WithEmailForm
+        <SignUpForm
           onSucceed={() => {
             setSignUpStep(SIGN_UP_STEP.FINAL_WITH_EMAIL);
           }}
@@ -55,14 +55,37 @@ const AlternativeSignUp: React.FunctionComponent<SignUpContainerProps> = props =
       );
 
     case SIGN_UP_STEP.WITH_SOCIAL:
-      return null;
+      return (
+        <SignUpForm
+          onSucceed={() => {
+            setSignUpStep(SIGN_UP_STEP.FINAL_WITH_SOCIAL);
+          }}
+          onClickBack={() => {
+            setSignUpStep(SIGN_UP_STEP.FIRST);
+          }}
+          email={email}
+          password={password}
+          onClickTab={props.handleChangeDialogType}
+        />
+      );
 
     case SIGN_UP_STEP.FINAL_WITH_EMAIL:
       return (
-        <FinalWithEmail
+        <FinalSignUpContent
           onSubmit={() => {
             history.push("/");
           }}
+          contentType="email"
+        />
+      );
+
+    case SIGN_UP_STEP.FINAL_WITH_SOCIAL:
+      return (
+        <FinalSignUpContent
+          onSubmit={() => {
+            history.push("/");
+          }}
+          contentType="social"
         />
       );
 
