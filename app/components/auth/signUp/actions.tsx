@@ -1,8 +1,12 @@
 import { Dispatch } from "redux";
 import AuthAPI from "../../../api/auth";
-import { PostExchangeResult, OAUTH_VENDOR, SignUpWithEmailParams } from "../../../api/types/auth";
+import {
+  PostExchangeResult,
+  OAUTH_VENDOR,
+  SignUpWithEmailParams,
+  SignUpWithSocialParams,
+} from "../../../api/types/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { SignUpOauthInfo } from "./reducer";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
 import { Member } from "../../../model/member";
@@ -15,6 +19,34 @@ export const checkDuplicatedEmail = async (email: string) => {
   }
   return null;
 };
+
+export function signUpWithSocial(params: SignUpWithSocialParams, vendor: OAUTH_VENDOR) {
+  return async (dispatch: Dispatch<any>) => {
+    trackEvent({ category: "sign_up", action: "try_to_sign_up", label: `with_${vendor}` });
+    try {
+      const signUpResult: Member = await AuthAPI.signUpWithSocial(params);
+      dispatch({
+        type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
+      });
+      trackEvent({ category: "sign_up", action: "succeed_to_sign_up", label: `with_${vendor}` });
+      dispatch({
+        type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+        payload: {
+          user: signUpResult,
+          loggedIn: true,
+          oauthLoggedIn: true,
+        },
+      });
+    } catch (err) {
+      alertToast({
+        type: "error",
+        message: `Failed to sign up!`,
+      });
+      trackEvent({ category: "sign_up", action: "failed_to_sign_up", label: `with_${vendor}` });
+      throw err;
+    }
+  };
+}
 
 export function signUpWithEmail(params: SignUpWithEmailParams) {
   return async (dispatch: Dispatch<any>) => {
@@ -45,64 +77,36 @@ export function signUpWithEmail(params: SignUpWithEmailParams) {
   };
 }
 
-export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, alreadySignUpCB: () => void) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch({
-      type: ACTION_TYPES.SIGN_UP_GET_AUTHORIZE_CODE,
+export async function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, alreadySignUpCB: () => void) {
+  try {
+    const origin = EnvChecker.getOrigin();
+    const redirectUri = `${origin}/users/sign_up?vendor=${vendor}`;
+
+    const postExchangeData: PostExchangeResult = await AuthAPI.postExchange({
+      code,
+      vendor,
+      redirectUri,
     });
 
-    dispatch({
-      type: ACTION_TYPES.SIGN_UP_START_TO_EXCHANGE,
-    });
-
-    try {
-      const origin = EnvChecker.getOrigin();
-      const redirectUri = `${origin}/users/sign_up?vendor=${vendor}`;
-
-      const postExchangeData: PostExchangeResult = await AuthAPI.postExchange({
-        code,
-        vendor,
-        redirectUri,
-      });
-
-      if (postExchangeData.connected) {
-        alertToast({
-          type: "error",
-          message: "You already did sign up with this account.",
-        });
-        dispatch({
-          type: ACTION_TYPES.SIGN_UP_FAILED_TO_EXCHANGE,
-        });
-        alreadySignUpCB();
-        return;
-      }
-
-      const oAuth: SignUpOauthInfo = {
-        code,
-        oauthId: postExchangeData.oauthId,
-        uuid: postExchangeData.uuid,
-        vendor,
-      };
-
-      dispatch({
-        type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_EXCHANGE,
-        payload: {
-          vendor,
-          email: postExchangeData.userData.email || "",
-          firstName: postExchangeData.userData.name || "",
-          lastName: "",
-          oauth: oAuth,
-        },
-      });
-    } catch (_err) {
+    if (postExchangeData.connected) {
       alertToast({
         type: "error",
-        message: `Failed to sign up with social account.`,
+        message: "You already did sign up with this account.",
       });
-      dispatch({
-        type: ACTION_TYPES.SIGN_UP_FAILED_TO_EXCHANGE,
-      });
-      // go back
+      alreadySignUpCB();
+      return;
     }
-  };
+
+    return {
+      email: postExchangeData.userData.email,
+      oauthId: postExchangeData.oauthId,
+      uuid: postExchangeData.uuid,
+      vendor,
+    };
+  } catch (err) {
+    alertToast({
+      type: "error",
+      message: `Failed to sign up with social account.`,
+    });
+  }
 }

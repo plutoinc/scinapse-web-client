@@ -7,7 +7,6 @@ import AuthTabs from "../../../authTabs";
 import AuthInputBox from "../../../../common/inputBox/authInputBox";
 import AuthButton from "../../../authButton";
 import validateEmail from "../../../../../helpers/validateEmail";
-import { signUpWithEmail } from "../../actions";
 import { debouncedCheckDuplicate } from "../../helpers/checkDuplicateEmail";
 const s = require("./style.scss");
 
@@ -15,12 +14,13 @@ interface SignUpFormProps {
   onClickTab: (type: GLOBAL_DIALOG_TYPE) => void;
   onSucceed: () => void;
   onClickBack: () => void;
+  onSubmit: (values: SignUpFormValues) => Promise<void>;
   email: string;
   password: string;
   dispatch: Dispatch<any>;
 }
 
-interface FormValues {
+export interface SignUpFormValues {
   email: string;
   password: string;
   firstName: string;
@@ -28,8 +28,8 @@ interface FormValues {
   affiliation: string;
 }
 
-const validateForm = async (values: FormValues) => {
-  const errors: FormikErrors<FormValues> = {};
+const validateForm = async (values: SignUpFormValues) => {
+  const errors: FormikErrors<SignUpFormValues> = {};
   if (!validateEmail(values.email)) {
     errors.email = "Please enter a valid email address";
   }
@@ -60,10 +60,10 @@ const validateForm = async (values: FormValues) => {
 const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const handleSubmit = async (values: FormValues) => {
+  const handleSubmit = async (values: SignUpFormValues) => {
     setIsLoading(true);
     try {
-      await props.dispatch(signUpWithEmail(values));
+      await props.onSubmit(values);
       props.onSucceed();
     } catch (err) {
       setIsLoading(false);

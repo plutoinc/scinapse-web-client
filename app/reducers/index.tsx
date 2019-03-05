@@ -1,7 +1,6 @@
 import * as Redux from "redux";
 import * as ConfigurationReducer from "./configuration";
 import * as currentUserReducer from "./currentUser";
-import * as signUpReducer from "../components/auth/signUp/reducer";
 import * as signInReducer from "../components/auth/signIn/reducer";
 import { CURRENT_USER_INITIAL_STATE, CurrentUser } from "../model/currentUser";
 import * as dialogReducer from "../components/dialog/reducer";
@@ -50,7 +49,6 @@ import { AuthorSearchState, AUTHOR_SEARCH_INITIAL_STATE } from "../containers/au
 
 export interface AppState {
   configuration: ConfigurationReducer.Configuration;
-  signUp: signUpReducer.SignUpState;
   signIn: signInReducer.SignInState;
   dialog: dialogReducer.DialogState;
   layout: LayoutState;
@@ -71,7 +69,6 @@ export interface AppState {
 
 export const initialState: AppState = {
   configuration: ConfigurationReducer.CONFIGURATION_INITIAL_STATE,
-  signUp: signUpReducer.SIGN_UP_INITIAL_STATE,
   signIn: signInReducer.SIGN_IN_INITIAL_STATE,
   dialog: dialogReducer.DIALOG_INITIAL_STATE,
   home: HOME_INITIAL_STATE,
@@ -92,7 +89,6 @@ export const initialState: AppState = {
 
 export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   configuration: ConfigurationReducer.reducer,
-  signUp: signUpReducer.reducer,
   signIn: signInReducer.reducer,
   dialog: dialogReducer.reducer,
   home: homeReducer.reducer,
