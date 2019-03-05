@@ -371,16 +371,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     dispatch(Actions.changeRangeInput(params));
   };
 
-  private renderLoadingSpinner = () => {
-    return (
-      <div className={styles.articleSearchContainer}>
-        <div className={styles.loadingContainer}>
-          <ArticleSpinner className={styles.loadingSpinner} />
-        </div>
-      </div>
-    );
-  };
-
   private getUrlDecodedQueryParamsObject(): SearchPageQueryParamsObject {
     const { location } = this.props;
     const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
