@@ -47,8 +47,14 @@ export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean
   };
 }
 
-export async function signInWithSocial(vendor: OAUTH_VENDOR, redirectURI: string) {
+export async function signInWithSocial(vendor: OAUTH_VENDOR) {
+  if (!vendor) {
+    return;
+  }
+
   try {
+    const origin = EnvChecker.getOrigin();
+    const redirectURI = `${origin}/users/sign_in?vendor=${vendor}`;
     const authorizeUriData: GetAuthorizeUriResult = await AuthAPI.getAuthorizeURI({
       vendor,
       redirectURI,
@@ -56,25 +62,25 @@ export async function signInWithSocial(vendor: OAUTH_VENDOR, redirectURI: string
 
     if (!EnvChecker.isOnServer()) {
       ReactGA.set({ referrer: EnvChecker.getOrigin() });
+      window.location.replace(authorizeUriData.uri);
     }
-
-    return authorizeUriData;
-  } catch (err) {
+  } catch (_err) {
     alertToast({
       type: "error",
       message: `Failed to sign in.`,
     });
-    throw err;
   }
 }
 
-export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, redirectURI: string) {
+export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
   return async (dispatch: Dispatch<any>) => {
     try {
+      const origin = EnvChecker.getOrigin();
+      const redirectUri = `${origin}/users/sign_in?vendor=${vendor}`;
       const signInResult: SignInResult = await AuthAPI.signInWithSocial({
         code,
         vendor,
-        redirectURI,
+        redirectUri,
       });
 
       alertToast({

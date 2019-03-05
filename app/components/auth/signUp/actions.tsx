@@ -8,6 +8,7 @@ import {
 } from "../../../api/types/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import alertToast from "../../../helpers/makePlutoToastAction";
+import EnvChecker from "../../../helpers/envChecker";
 import { Member } from "../../../model/member";
 import { trackEvent } from "../../../helpers/handleGA";
 
@@ -73,17 +74,15 @@ export function signUpWithEmail(params: SignUpWithEmailParams) {
   };
 }
 
-export async function getAuthorizeCode(
-  code: string,
-  vendor: OAUTH_VENDOR,
-  redirectURI: string,
-  alreadySignUpCB: () => void
-) {
+export async function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, alreadySignUpCB: () => void) {
   try {
+    const origin = EnvChecker.getOrigin();
+    const redirectUri = `${origin}/users/sign_up?vendor=${vendor}`;
+
     const postExchangeData: PostExchangeResult = await AuthAPI.postExchange({
       code,
       vendor,
-      redirectURI,
+      redirectUri,
     });
 
     if (postExchangeData.connected) {

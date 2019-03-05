@@ -1,5 +1,5 @@
 import * as React from "react";
-import { parse, stringify } from "qs";
+import { parse } from "qs";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import * as Actions from "./actions";
@@ -9,7 +9,6 @@ import FirstForm from "./components/firstForm";
 import SignUpForm, { SignUpFormValues } from "./components/signUpForm";
 import FinalSignUpContent from "./components/finalSignUpContent";
 import { OAuthInfo } from "../../../api/types/auth";
-import EnvChecker from "../../../helpers/envChecker";
 const styles = require("./signUp.scss");
 
 const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
@@ -27,13 +26,8 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
       history.push("/users/sign_in");
     };
     if (code && vendor) {
-      const origin = EnvChecker.getOrigin();
-      const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
-      const nextQueryParams = { ...currentQueryParams, vendor };
-      const redirectURI = `${origin}/users/sign_up${stringify(nextQueryParams, { addQueryPrefix: true })}`;
-
       setSignUpStep(SIGN_UP_STEP.WITH_SOCIAL);
-      Actions.getAuthorizeCode(code, vendor, redirectURI, alreadySignUpCB).then(OAuthRes => {
+      Actions.getAuthorizeCode(code, vendor, alreadySignUpCB).then(OAuthRes => {
         if (OAuthRes) {
           setOAuth({ oauthId: OAuthRes.oauthId, uuid: OAuthRes.uuid, vendor: OAuthRes.vendor });
           setEmail(OAuthRes.email || "");

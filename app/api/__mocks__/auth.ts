@@ -122,8 +122,8 @@ class AuthAPI extends PlutoAxios {
     }
   }
 
-  public async postExchange({ code, redirectURI, vendor }: PostExchangeParams): Promise<PostExchangeResult> {
-    if (!code || !vendor || !redirectURI) {
+  public async postExchange({ code, redirectUri, vendor }: PostExchangeParams): Promise<PostExchangeResult> {
+    if (!code || !vendor || !redirectUri) {
       throw new Error("FAKE ERROR");
     } else {
       let connected = false;

@@ -1,9 +1,8 @@
 import * as React from "react";
-import { parse, stringify } from "qs";
+import { parse } from "qs";
 import { connect, Dispatch } from "react-redux";
 import { Formik, Form, Field, FormikErrors } from "formik";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import { Location } from "history";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import AuthInputBox from "../../common/inputBox/authInputBox";
@@ -17,7 +16,6 @@ import { closeDialog } from "../../dialog/actions";
 import { signInWithEmail, signInWithSocial, getAuthorizeCode } from "./actions";
 import validateEmail from "../../../helpers/validateEmail";
 import FailedToSignIn from "./components/failedToSignIn";
-import EnvChecker from "../../../helpers/envChecker";
 const s = require("./signIn.scss");
 const store = require("store");
 
@@ -33,22 +31,10 @@ interface SignInProps {
 
 const oAuthBtnBaseStyle: React.CSSProperties = { position: "relative", fontSize: "13px", marginTop: "10px" };
 
-function getRedirectURI(vendor: OAUTH_VENDOR, location: Location) {
-  const origin = EnvChecker.getOrigin();
-  const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
-  const nextQueryParams = { ...currentQueryParams, vendor };
-  return `${origin}/users/sign_in${stringify(nextQueryParams, { addQueryPrefix: true })}`;
-}
-
-function handleClickOAuthBtn(vendor: OAUTH_VENDOR, location: Location) {
+function handleClickOAuthBtn(vendor: OAUTH_VENDOR) {
   return () => {
     store.set("oauthRedirectPath", `${location.pathname}${location.search}`);
-
-    signInWithSocial(vendor, getRedirectURI(vendor, location))
-      .then(res => {
-        window.location.replace(res.uri);
-      })
-      .catch(console.error);
+    signInWithSocial(vendor);
   };
 }
 
@@ -78,7 +64,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
     const { code, vendor } = queryParams;
 
     if (code && vendor) {
-      props.dispatch(getAuthorizeCode(code, vendor, getRedirectURI(vendor, props.location))).catch(err => {
+      props.dispatch(getAuthorizeCode(code, vendor)).catch(err => {
         if (err.response && err.response.status && err.response.status === 401) {
           setNotRegisteredWithSocial(true);
         }
@@ -172,7 +158,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
           style={{ ...oAuthBtnBaseStyle, backgroundColor: "#3859ab", marginTop: "18px" }}
           iconName="FACEBOOK_LOGO"
           iconClassName={s.fbIconWrapper}
-          onClick={handleClickOAuthBtn("FACEBOOK", props.location)}
+          onClick={handleClickOAuthBtn("FACEBOOK")}
         />
         <AuthButton
           isLoading={isLoading}
@@ -180,7 +166,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
           style={{ ...oAuthBtnBaseStyle, backgroundColor: "#dc5240" }}
           iconName="GOOGLE_LOGO"
           iconClassName={s.googleIconWrapper}
-          onClick={handleClickOAuthBtn("GOOGLE", props.location)}
+          onClick={handleClickOAuthBtn("GOOGLE")}
         />
         <AuthButton
           isLoading={isLoading}
@@ -188,7 +174,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
           style={{ ...oAuthBtnBaseStyle, backgroundColor: "#a5d027", marginBottom: "34px" }}
           iconName="ORCID_LOGO"
           iconClassName={s.orcidIconWrapper}
-          onClick={handleClickOAuthBtn("ORCID", props.location)}
+          onClick={handleClickOAuthBtn("ORCID")}
         />
       </div>
     </>
