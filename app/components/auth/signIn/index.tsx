@@ -1,459 +1,184 @@
 import * as React from "react";
-import { Link, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
 import { parse } from "qs";
-import axios from "axios";
-import * as Actions from "./actions";
-import { AppState } from "../../../reducers";
-import { SIGN_IN_ON_FOCUS_TYPE } from "./reducer";
-import { GLOBAL_DIALOG_TYPE } from "../../dialog/reducer";
-import ButtonSpinner from "../../common/spinner/buttonSpinner";
-import AuthInputBox from "../../common/inputBox/authInputBox";
-import { trackAction, trackDialogView } from "../../../helpers/handleGA";
-import Icon from "../../../icons";
-import { signUpWithSocial } from "../signUp/actions";
-import { SIGN_UP_STEP } from "../signUp/reducer";
-import { SignInContainerProps, SignInSearchParams } from "./types";
-import { OAUTH_VENDOR } from "../../../api/types/auth";
-import { withStyles } from "../../../helpers/withStylesHelper";
+import { connect, Dispatch } from "react-redux";
+import { Formik, Form, Field, FormikErrors } from "formik";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
+import { withStyles } from "../../../helpers/withStylesHelper";
+import AuthInputBox from "../../common/inputBox/authInputBox";
+import { GLOBAL_DIALOG_TYPE } from "../../dialog/reducer";
+import AuthButton from "../authButton";
+import ORSeparator from "../separator";
+import AuthTabs from "../authTabs";
+import { SignInResult, OAUTH_VENDOR } from "../../../api/types/auth";
 import { getCollections } from "../../collections/actions";
-
+import { closeDialog } from "../../dialog/actions";
+import { signInWithEmail, signInWithSocial, getAuthorizeCode } from "./actions";
+import validateEmail from "../../../helpers/validateEmail";
+import FailedToSignIn from "./components/failedToSignIn";
+const s = require("./signIn.scss");
 const store = require("store");
-const styles = require("./signIn.scss");
 
-function mapStateToProps(state: AppState) {
-  return {
-    signInState: state.signIn,
+interface EmailFormValues {
+  email: string;
+  password: string;
+}
+
+interface SignInProps {
+  handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void;
+  dispatch: Dispatch<any>;
+}
+
+const oAuthBtnBaseStyle: React.CSSProperties = { position: "relative", fontSize: "13px", marginTop: "10px" };
+
+function handleClickOAuthBtn(vendor: OAUTH_VENDOR) {
+  return () => {
+    store.set("oauthRedirectPath", `${location.pathname}${location.search}`);
+    signInWithSocial(vendor);
   };
 }
 
-@withStyles<typeof SignIn>(styles)
-class SignIn extends React.PureComponent<SignInContainerProps> {
-  private cancelToken = axios.CancelToken.source();
+const validateForm = (values: EmailFormValues) => {
+  const errors: FormikErrors<EmailFormValues> = {};
 
-  public async componentDidMount() {
-    const { dispatch, history } = this.props;
-    const searchString = this.getCurrentSearchParamsString();
-    const searchParams: SignInSearchParams = this.getParsedSearchParamsObject(searchString);
-    const searchCode = searchParams.code;
-    const searchVendor = searchParams.vendor;
+  if (!validateEmail(values.email)) {
+    errors.email = "E-Mail is invalid";
+  }
 
-    if (!!searchCode && searchVendor) {
-      const oauthRedirectPathCookie = store.get("oauthRedirectPath");
+  if (!values.password || values.password.length < 8) {
+    errors.password = "Minimum length is 8";
+  }
 
-      try {
-        await dispatch(Actions.getAuthorizeCode(searchCode, searchVendor));
-        if (
-          !!oauthRedirectPathCookie &&
-          !oauthRedirectPathCookie.includes("users/sign_in") &&
-          !oauthRedirectPathCookie.includes("users/sign_up")
-        ) {
-          history.push(oauthRedirectPathCookie);
-        } else {
-          history.push("/");
+  return errors;
+};
+
+const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = props => {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [networkError, setNetworkError] = React.useState("");
+  const isDialog = !!props.handleChangeDialogType;
+
+  const [notRegisteredWithSocial, setNotRegisteredWithSocial] = React.useState(false);
+
+  React.useEffect(() => {
+    const queryParams = parse(props.location.search, { ignoreQueryPrefix: true });
+    const { code, vendor } = queryParams;
+
+    if (code && vendor) {
+      props.dispatch(getAuthorizeCode(code, vendor)).catch(err => {
+        if (err.response && err.response.status && err.response.status === 401) {
+          setNotRegisteredWithSocial(true);
         }
-      } catch (err) {
-        console.error(err);
-      }
+      });
     }
-  }
+  }, []);
 
-  public componentWillReceiveProps(nextProps: SignInContainerProps) {
-    const { location, dispatch } = this.props;
-
-    if (location !== nextProps.location) {
-      dispatch(Actions.goBack());
-    }
-  }
-
-  public componentWillUnmount() {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.goBack());
-  }
-
-  public render() {
-    const { signInState, handleChangeDialogType } = this.props;
-    const { hasError, onFocus, isLoading, isNotUnsignedUpWithSocial } = signInState;
-
-    if (isNotUnsignedUpWithSocial) {
-      const searchString = this.getCurrentSearchParamsString();
-      const searchParams: SignInSearchParams = this.getParsedSearchParamsObject(searchString);
-      const searchVendor = searchParams.vendor;
-
-      let vendorContent;
-      switch (searchVendor) {
-        case "FACEBOOK":
-          vendorContent = "Facebook";
-          break;
-        case "GOOGLE":
-          vendorContent = "Google";
-          break;
-        case "ORCID":
-          vendorContent = "Orcid";
-          break;
-        default:
-          vendorContent = "Social service";
-          break;
-      }
-
-      return (
-        <div className={styles.signInContainer}>
-          <form
-            onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-              e.preventDefault();
-              this.signInWithEmail();
-            }}
-            className={styles.formContainer}
-          >
-            {this.getAuthNavBar(handleChangeDialogType)}
-            <Icon className={styles.unsignedWithSocialIconWrapper} icon="UNSIGNED_WITH_SOCIAL" />
-            <div className={styles.unsignedWithSocialTitle}>SIGN IN FAILED</div>
-            <div className={styles.unsignedWithSocialContent}>
-              {`You are unsigned user.
-              Would you like to sign up with ${vendorContent}?`}
-            </div>
-            {this.getSocialSignUpButton(searchVendor)}
-            <div onClick={this.goBack} className={styles.goBackButton}>
-              GO BACK
-            </div>
-          </form>
-        </div>
-      );
-    }
-
-    return (
-      <div className={styles.signInContainer}>
-        <form
-          onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-            this.signInWithEmail();
-          }}
-          className={styles.formContainer}
-        >
-          {this.getAuthNavBar(handleChangeDialogType)}
-          <AuthInputBox
-            isFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.EMAIL}
-            onFocusFunc={() => {
-              this.onFocusInput(SIGN_IN_ON_FOCUS_TYPE.EMAIL);
-            }}
-            onChangeFunc={this.handleEmailChange}
-            onBlurFunc={this.onBlurInput}
-            placeHolder="E-mail"
-            hasError={hasError}
-            inputType="email"
-            iconName="EMAIL_ICON"
-          />
-          <AuthInputBox
-            isFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.PASSWORD}
-            onFocusFunc={() => {
-              this.onFocusInput(SIGN_IN_ON_FOCUS_TYPE.PASSWORD);
-            }}
-            onChangeFunc={this.handlePasswordChange}
-            onBlurFunc={this.onBlurInput}
-            placeHolder="Password"
-            hasError={hasError}
-            inputType="password"
-            iconName="PASSWORD_ICON"
-          />
-          {this.getForgotPasswordContent()}
-          {this.getErrorContent(hasError)}
-          {this.getSubmitButton(isLoading)}
-          <div className={styles.orSeparatorBox}>
-            <div className={styles.dashedSeparator} />
-            <div className={styles.orContent}>or</div>
-            <div className={styles.dashedSeparator} />
-          </div>
-          <div
-            onClick={() => {
-              this.signInWithSocial("FACEBOOK");
-            }}
-            className={styles.facebookLogin}
-          >
-            <Icon className={styles.iconWrapper} icon="FACEBOOK_LOGO" />
-            SIGN IN WITH FACEBOOK
-          </div>
-          <div
-            onClick={() => {
-              this.signInWithSocial("GOOGLE");
-            }}
-            className={styles.googleLogin}
-          >
-            <Icon className={styles.iconWrapper} icon="GOOGLE_LOGO" />
-            SIGN IN WITH GOOGLE
-          </div>
-          <div
-            onClick={() => {
-              this.signInWithSocial("ORCID");
-            }}
-            className={styles.orcidLogin}
-          >
-            <Icon className={styles.iconWrapper} icon="ORCID_LOGO" />
-            SIGN IN WITH ORCID
-          </div>
-        </form>
-      </div>
-    );
-  }
-
-  private getForgotPasswordContent() {
-    const { signInState } = this.props;
-
-    if (signInState.hasError) {
-      return null;
-    }
-
-    return (
-      <div onClick={this.handleClickForgotPassword} className={styles.forgotPasswordBox}>
-        Forgot Password?
-      </div>
-    );
-  }
-
-  private getCurrentSearchParamsString = () => {
-    const { location } = this.props;
-    return location!.search;
-  };
-
-  private getParsedSearchParamsObject = (searchString: string): SignInSearchParams => {
-    return parse(searchString, { ignoreQueryPrefix: true });
-  };
-
-  private handleEmailChange = (email: string) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changeEmailInput(email));
-  };
-
-  private handlePasswordChange = (password: string) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changePasswordInput(password));
-  };
-
-  private onFocusInput = (type: SIGN_IN_ON_FOCUS_TYPE) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.onFocusInput(type));
-  };
-
-  private onBlurInput = () => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.onBlurInput());
-  };
-
-  private goBack = () => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.goBack());
-  };
-
-  private signInWithEmail = async () => {
-    const { signInState, dispatch, handleChangeDialogType, history } = this.props;
-    const email = signInState.email;
-    const password = signInState.password;
-    const isDialog = !!handleChangeDialogType;
+  async function handleSubmit(formValues: EmailFormValues) {
+    const { email, password } = formValues;
 
     try {
-      const user = await dispatch(
-        Actions.signInWithEmail(
-          {
-            email,
-            password,
-          },
-          isDialog
-        )
-      );
-
-      if (user && user.member) {
-        dispatch(getCollections(user.member.id, this.cancelToken.token));
+      setIsLoading(true);
+      setNetworkError("");
+      const res: SignInResult = await props.dispatch(signInWithEmail({ email, password }, isDialog));
+      if (res.member) {
+        await props.dispatch(getCollections(res.member.id));
       }
+      setIsLoading(false);
 
-      if (!isDialog) {
-        history.push("/");
+      if (isDialog) {
+        props.dispatch(closeDialog());
+      } else {
+        props.history.push("/");
       }
     } catch (err) {
-      console.error(err);
+      setIsLoading(false);
+      setNetworkError(err.message);
     }
-  };
+  }
 
-  private storeOauthRedirectPath = () => {
-    const { location } = this.props;
+  if (notRegisteredWithSocial) {
+    return (
+      <>
+        <FailedToSignIn
+          onClickTab={props.handleChangeDialogType}
+          onClickGoBack={() => {
+            setNotRegisteredWithSocial(false);
+          }}
+        />
+      </>
+    );
+  }
 
-    store.set("oauthRedirectPath", `${location.pathname}${location.search}`);
-  };
+  return (
+    <>
+      <AuthTabs onClickTab={props.handleChangeDialogType} activeTab="sign in" />
+      <div className={s.formWrapper}>
+        <Formik
+          initialValues={{ email: "", password: "" }}
+          onSubmit={handleSubmit}
+          validate={validateForm}
+          validateOnChange={false}
+          render={() => {
+            return (
+              <Form>
+                <Field name="email" type="email" component={AuthInputBox} placeholder="E-mail" iconName="EMAIL_ICON" />
+                <Field
+                  name="password"
+                  type="password"
+                  component={AuthInputBox}
+                  placeholder="Password"
+                  iconName="PASSWORD_ICON"
+                />
+                {networkError && <div className={s.errorContent}>{networkError}</div>}
+                <div
+                  onClick={() => {
+                    if (props.handleChangeDialogType) {
+                      props.handleChangeDialogType(GLOBAL_DIALOG_TYPE.RESET_PASSWORD);
+                    } else {
+                      GlobalDialogManager.openResetPasswordDialog();
+                    }
+                  }}
+                  className={s.forgotPasswordBox}
+                >
+                  Forgot Password?
+                </div>
+                <AuthButton
+                  type="submit"
+                  isLoading={isLoading}
+                  text="SIGN IN"
+                  style={{ backgroundColor: "#6096ff", marginTop: "10px", fontSize: "14px" }}
+                />
+              </Form>
+            );
+          }}
+        />
+        <ORSeparator />
+        <AuthButton
+          isLoading={isLoading}
+          text="SIGN IN WITH FACEBOOK"
+          style={{ ...oAuthBtnBaseStyle, backgroundColor: "#3859ab", marginTop: "18px" }}
+          iconName="FACEBOOK_LOGO"
+          iconClassName={s.fbIconWrapper}
+          onClick={handleClickOAuthBtn("FACEBOOK")}
+        />
+        <AuthButton
+          isLoading={isLoading}
+          text="SIGN IN WITH GOOGLE"
+          style={{ ...oAuthBtnBaseStyle, backgroundColor: "#dc5240" }}
+          iconName="GOOGLE_LOGO"
+          iconClassName={s.googleIconWrapper}
+          onClick={handleClickOAuthBtn("GOOGLE")}
+        />
+        <AuthButton
+          isLoading={isLoading}
+          text="SIGN IN WITH ORCID"
+          style={{ ...oAuthBtnBaseStyle, backgroundColor: "#a5d027", marginBottom: "34px" }}
+          iconName="ORCID_LOGO"
+          iconClassName={s.orcidIconWrapper}
+          onClick={handleClickOAuthBtn("ORCID")}
+        />
+      </div>
+    </>
+  );
+};
 
-  private signInWithSocial = (vendor: OAUTH_VENDOR) => {
-    this.storeOauthRedirectPath();
-    Actions.signInWithSocial(vendor);
-  };
-
-  private getAuthNavBar = (handleChangeDialogType: ((type: GLOBAL_DIALOG_TYPE) => void) | undefined) => {
-    if (!!handleChangeDialogType) {
-      return (
-        <div className={styles.authNavBar}>
-          <div
-            className={styles.signInLink}
-            onClick={() => {
-              handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_IN);
-              trackDialogView("fromSignInToSignInChange");
-            }}
-          >
-            SIGN IN
-          </div>
-          <div
-            className={styles.signUpLink}
-            onClick={() => {
-              handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
-              trackDialogView("fromSignInToSignUpChange");
-            }}
-          >
-            SIGN UP
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <div className={styles.authNavBar}>
-          <Link
-            to="/users/sign_in"
-            onClick={() => trackAction("/users/sign_in", "signInNavBar")}
-            className={styles.signInLink}
-          >
-            SIGN IN
-          </Link>
-          <Link
-            to="/users/sign_up"
-            onClick={() => trackAction("/users/sign_up", "signInNavBar")}
-            className={styles.signUpLink}
-          >
-            SIGN UP
-          </Link>
-        </div>
-      );
-    }
-  };
-
-  private getErrorContent = (hasError: boolean) => {
-    if (hasError) {
-      return (
-        <div className={styles.errorContent}>
-          <span>{`Invalid combination. `}</span>
-          <span onClick={this.handleClickForgotPassword} className={styles.forgetPassword}>
-            Forgot Password?
-          </span>
-        </div>
-      );
-    } else {
-      return null;
-    }
-  };
-
-  private handleClickForgotPassword = () => {
-    const { handleChangeDialogType } = this.props;
-
-    if (handleChangeDialogType) {
-      handleChangeDialogType(GLOBAL_DIALOG_TYPE.RESET_PASSWORD);
-    } else {
-      GlobalDialogManager.openResetPasswordDialog();
-    }
-  };
-
-  private getSubmitButton = (isLoading: boolean) => {
-    if (isLoading) {
-      return (
-        <div className={styles.loadingSubmitButton}>
-          <ButtonSpinner className={styles.buttonSpinner} />
-          SIGN IN
-        </div>
-      );
-    } else {
-      return (
-        <button type="submit" className={styles.submitButton}>
-          SIGN IN
-        </button>
-      );
-    }
-  };
-  private getSocialSignUpButton = (vendor: OAUTH_VENDOR | undefined) => {
-    const { dispatch } = this.props;
-
-    switch (vendor) {
-      case "FACEBOOK":
-        return (
-          <div
-            onClick={() => {
-              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor));
-            }}
-            className={styles.facebookLogin}
-          >
-            <Icon className={styles.iconWrapper} icon="FACEBOOK_LOGO" />
-            SIGN UP WITH FACEBOOK
-          </div>
-        );
-
-      case "GOOGLE":
-        return (
-          <div
-            onClick={() => {
-              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor));
-            }}
-            className={styles.googleLogin}
-          >
-            <Icon className={styles.iconWrapper} icon="GOOGLE_LOGO" />
-            SIGN UP WITH GOOGLE
-          </div>
-        );
-
-      case "ORCID":
-        return (
-          <div
-            onClick={() => {
-              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor));
-            }}
-            className={styles.orcidLogin}
-          >
-            <Icon className={styles.iconWrapper} icon="ORCID_LOGO" />
-            SIGN UP WITH ORCID
-          </div>
-        );
-
-      default:
-        return (
-          <div>
-            <div
-              onClick={() => {
-                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "FACEBOOK"));
-              }}
-              className={styles.facebookLogin}
-            >
-              <Icon className={styles.iconWrapper} icon="FACEBOOK_LOGO" />
-              SIGN UP WITH FACEBOOK
-            </div>
-            <div
-              onClick={() => {
-                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "GOOGLE"));
-              }}
-              className={styles.googleLogin}
-            >
-              <Icon className={styles.iconWrapper} icon="GOOGLE_LOGO" />
-              SIGN UP WITH GOOGLE
-            </div>
-            <div
-              onClick={() => {
-                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "ORCID"));
-              }}
-              className={`${styles.orcidLogin} ${styles.signUpButton}`}
-            >
-              <Icon className={styles.iconWrapper} icon="ORCID_LOGO" />
-              SIGN UP WITH ORCID
-            </div>
-          </div>
-        );
-    }
-  };
-}
-
-export default withRouter(connect(mapStateToProps)(SignIn));
+export default withRouter(connect()(withStyles<typeof SignIn>(s)(SignIn)));

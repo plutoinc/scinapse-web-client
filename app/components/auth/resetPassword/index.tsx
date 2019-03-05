@@ -1,57 +1,41 @@
 import * as React from "react";
-import { parse } from "qs";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { parse } from "qs";
+import { Field, Form, Formik, FormikErrors } from "formik";
 import AuthAPI from "../../../api/auth";
-import { connect, Dispatch } from "react-redux";
-import { AppState } from "../../../reducers";
-import ButtonSpinner from "../../common/spinner/buttonSpinner";
+import AuthButton from "../authButton";
 import AuthInputBox from "../../common/inputBox/authInputBox";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import alertToast from "../../../helpers/makePlutoToastAction";
+import PlutoAxios from "../../../api/pluto";
 const styles = require("./resetPassword.scss");
 
-interface ResetPasswordPageProps
-  extends Readonly<{
-      dispatch: Dispatch<any>;
-    }>,
-    RouteComponentProps<{}> {}
-
-interface ResetPasswordPageStates
-  extends Readonly<{
-      isLoading: boolean;
-      isFocusOn: ResetPasswordInputTypes | null;
-      hasError: boolean;
-      errorMessage: string;
-      passwordInput: string;
-      confirmPasswordInput: string;
-    }> {}
-
-enum ResetPasswordInputTypes {
-  PASSWORD,
-  CONFIRM_PASSWORD,
+interface FormValues {
+  password: string;
+  confirmPassword: string;
 }
 
-function mapStateToProps(_state: AppState) {
-  return {};
-}
+const validateForm = (values: FormValues) => {
+  const errors: FormikErrors<FormValues> = {};
 
-@withStyles<typeof ResetPasswordPage>(styles)
-class ResetPasswordPage extends React.PureComponent<ResetPasswordPageProps, ResetPasswordPageStates> {
-  public constructor(props: ResetPasswordPageProps) {
-    super(props);
-
-    this.state = {
-      isLoading: false,
-      isFocusOn: null,
-      hasError: false,
-      errorMessage: "",
-      passwordInput: "",
-      confirmPasswordInput: "",
-    };
+  if (!values.password || values.password.length < 8) {
+    errors.password = "Minimum length is 8";
   }
 
-  public componentDidMount() {
-    const { location, history } = this.props;
+  if (!values.confirmPassword || values.confirmPassword.length < 8) {
+    errors.confirmPassword = "Minimum length is 8";
+  }
+
+  if (values.password !== values.confirmPassword) {
+    errors.confirmPassword = "Password is different from confirm password";
+  }
+
+  return errors;
+};
+
+const ResetPasswordPage: React.FunctionComponent<RouteComponentProps<any>> = props => {
+  React.useEffect(() => {
+    const { location, history } = props;
     const queryParams = parse(location.search, { ignoreQueryPrefix: true });
 
     if (!queryParams.token) {
@@ -61,161 +45,66 @@ class ResetPasswordPage extends React.PureComponent<ResetPasswordPageProps, Rese
       });
       history.push("/users/sign_in");
     }
+  }, []);
+
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [networkError, setNetworkError] = React.useState("");
+  async function handleSubmitForm(values: FormValues) {
+    const queryParams = parse(props.location.search, { ignoreQueryPrefix: true });
+    try {
+      setIsLoading(true);
+      await AuthAPI.resetPassword(values.password, queryParams.token);
+      props.history.push("/users/sign_in");
+    } catch (err) {
+      const error = PlutoAxios.getGlobalError(err);
+      setIsLoading(false);
+      setNetworkError(error.message);
+    }
   }
 
-  public render() {
-    const { isFocusOn, hasError } = this.state;
-
-    return (
-      <div className={styles.signInContainer}>
-        <form onSubmit={this.handleSubmitForm} className={styles.formContainer}>
+  return (
+    <div className={styles.signInContainer}>
+      <Formik
+        initialValues={{ password: "", confirmPassword: "" }}
+        onSubmit={handleSubmitForm}
+        validate={validateForm}
+        validateOnChange={false}
+      >
+        <Form className={styles.formContainer}>
           <div className={styles.title}>RESET YOUR PASSWORD</div>
           <div className={styles.subtitle}>
             {`Almost done, just enter your new password below.
           Must be at least 8 characters!`}
           </div>
+          <div className={styles.content}>
+            <Field
+              name="password"
+              type="password"
+              component={AuthInputBox}
+              placeholder="New password"
+              iconName="PASSWORD_ICON"
+              wrapperStyles={{ width: "100%" }}
+            />
+            <Field
+              name="confirmPassword"
+              type="password"
+              component={AuthInputBox}
+              placeholder="Confirm password"
+              iconName="PASSWORD_ICON"
+              wrapperStyles={{ width: "100%" }}
+            />
+            {networkError && <div className={styles.errorContent}>{networkError}</div>}
+            <AuthButton
+              type="submit"
+              isLoading={isLoading}
+              text="RESET PASSWORD & SIGN IN"
+              style={{ backgroundColor: "#6096ff", marginTop: "42px", fontSize: "14px", width: "100%" }}
+            />
+          </div>
+        </Form>
+      </Formik>
+    </div>
+  );
+};
 
-          <AuthInputBox
-            isFocused={isFocusOn === ResetPasswordInputTypes.PASSWORD}
-            onFocusFunc={() => {
-              this.onFocusInput(ResetPasswordInputTypes.PASSWORD);
-            }}
-            onChangeFunc={this.handlePasswordChange}
-            onBlurFunc={this.onBlurPasswordInput}
-            placeHolder="New password"
-            hasError={hasError}
-            inputType="password"
-            iconName="PASSWORD_ICON"
-          />
-          <AuthInputBox
-            isFocused={isFocusOn === ResetPasswordInputTypes.CONFIRM_PASSWORD}
-            onFocusFunc={() => {
-              this.onFocusInput(ResetPasswordInputTypes.CONFIRM_PASSWORD);
-            }}
-            onChangeFunc={this.handleConfirmPasswordChange}
-            onBlurFunc={this.onBlurConfirmPasswordInput}
-            placeHolder="Confirm password"
-            hasError={hasError}
-            inputType="password"
-            iconName="PASSWORD_ICON"
-          />
-          {this.getErrorContent()}
-          {this.getSubmitButton()}
-        </form>
-      </div>
-    );
-  }
-
-  private handleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
-    const { location, history } = this.props;
-    const { passwordInput, confirmPasswordInput, hasError } = this.state;
-    e.preventDefault();
-
-    const queryParams = parse(location.search, { ignoreQueryPrefix: true });
-    if (!hasError && queryParams.token && passwordInput === confirmPasswordInput && passwordInput.length >= 8) {
-      try {
-        this.setState({
-          isLoading: true,
-        });
-        await AuthAPI.resetPassword(passwordInput, queryParams.token);
-        this.setState({
-          isLoading: false,
-        });
-        history.push("/users/sign_in");
-      } catch (err) {
-        this.setState({
-          hasError: true,
-          errorMessage: `Network Error: ${err}`,
-        });
-      }
-    } else {
-      this.setState({
-        hasError: true,
-        errorMessage: "Something went wrong. Check the fields are proper.",
-      });
-    }
-  };
-
-  private getErrorContent = () => {
-    const { hasError, errorMessage } = this.state;
-
-    if (hasError && errorMessage) {
-      return <div className={styles.errorContent}>{errorMessage}</div>;
-    } else {
-      return null;
-    }
-  };
-
-  private handleConfirmPasswordChange = (password: string) => {
-    this.setState({
-      confirmPasswordInput: password,
-      hasError: false,
-      errorMessage: "",
-    });
-  };
-
-  private handlePasswordChange = (password: string) => {
-    this.setState({
-      passwordInput: password,
-      hasError: false,
-      errorMessage: "",
-    });
-  };
-
-  private onFocusInput = (type: ResetPasswordInputTypes) => {
-    this.setState({
-      isFocusOn: type,
-    });
-  };
-
-  private onBlurPasswordInput = () => {
-    const { passwordInput } = this.state;
-
-    this.setState({
-      isFocusOn: null,
-    });
-
-    if (passwordInput.length < 8) {
-      this.setState({
-        hasError: true,
-        errorMessage: "Password should be at least 8 characters.",
-      });
-    }
-  };
-
-  private onBlurConfirmPasswordInput = () => {
-    const { passwordInput, confirmPasswordInput } = this.state;
-
-    this.setState({
-      isFocusOn: null,
-    });
-
-    if (passwordInput !== confirmPasswordInput) {
-      this.setState({
-        hasError: true,
-        errorMessage: "The passwords must match!",
-      });
-    }
-  };
-
-  private getSubmitButton = () => {
-    const { isLoading } = this.state;
-
-    if (isLoading) {
-      return (
-        <div className={styles.loadingSubmitButton}>
-          <ButtonSpinner className={styles.buttonSpinner} />
-          RESET PASSWORD & SIGN IN
-        </div>
-      );
-    } else {
-      return (
-        <button type="submit" className={styles.submitButton}>
-          RESET PASSWORD & SIGN IN
-        </button>
-      );
-    }
-  };
-}
-
-export default connect(mapStateToProps)(withRouter(ResetPasswordPage));
+export default withRouter(withStyles<typeof ResetPasswordPage>(styles)(ResetPasswordPage));

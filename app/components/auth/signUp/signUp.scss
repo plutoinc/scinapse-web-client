@@ -191,36 +191,3 @@
   margin-top: 6px;
   width: 234px;
 }
-
-.finalWithEmailTitle {
-  margin-top: 50px;
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: 2.7px;
-  text-align: center;
-  color: #666d7c;
-}
-
-.finalWithEmailContent {
-  margin-top: 23px;
-  font-size: 15px;
-  line-height: 1.47;
-  text-align: center;
-  color: #9aa3b5;
-  white-space: pre-line;
-}
-
-.finalWithEmailIconWrapper {
-  margin-top: 49px;
-
-  svg {
-    width: 98px;
-    height: 83px;
-  }
-}
-
-.finalWithEmailSubmitButton {
-  @include common-button($gray2);
-  margin-top: 46.5px;
-  margin-bottom: 28.7px;
-}

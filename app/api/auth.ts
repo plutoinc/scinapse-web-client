@@ -71,15 +71,15 @@ class AuthAPI extends PlutoAxios {
     return camelCaseKeys(checkLoggedInData);
   }
 
-  public async getAuthorizeUri({ vendor, redirectUri }: GetAuthorizeUriParams): Promise<GetAuthorizeUriResult> {
-    const getAuthorizeUriResponse = await this.get("/auth/oauth/authorize-uri", {
+  public async getAuthorizeURI({ vendor, redirectURI }: GetAuthorizeUriParams): Promise<GetAuthorizeUriResult> {
+    const res = await this.get("/auth/oauth/authorize-uri", {
       params: {
         vendor,
-        redirectUri,
+        redirectUri: redirectURI,
       },
     });
 
-    return getAuthorizeUriResponse.data;
+    return res.data;
   }
 
   public async postExchange({ code, redirectUri, vendor }: PostExchangeParams): Promise<PostExchangeResult> {
@@ -109,9 +109,7 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async requestResetPasswordToken(email: string): Promise<{ success: boolean }> {
-    const response = await this.post("/members/password-token", {
-      email,
-    });
+    const response = await this.post("/members/password-token", email);
 
     return response.data;
   }

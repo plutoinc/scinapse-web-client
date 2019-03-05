@@ -1,0 +1,27 @@
+.authTab {
+  width: 100%;
+  display: flex;
+  text-align: center;
+  justify-content: space-evenly;
+  margin-bottom: 30px;
+
+  .authTabItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 73px;
+    border-radius: 2px;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    cursor: pointer;
+    background-color: $gray1;
+    color: $gray3;
+    width: 100%;
+
+    &.active {
+      background-color: white;
+      color: $main_blue0;
+    }
+  }
+}

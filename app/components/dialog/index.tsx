@@ -202,6 +202,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     switch (type) {
       case GLOBAL_DIALOG_TYPE.SIGN_IN:
         return <SignIn handleChangeDialogType={this.changeDialogType} />;
+
       case GLOBAL_DIALOG_TYPE.SIGN_UP:
         return <SignUp handleChangeDialogType={this.changeDialogType} />;
 
