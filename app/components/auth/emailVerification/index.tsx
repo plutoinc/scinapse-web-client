@@ -1,16 +1,16 @@
 import * as React from "react";
 import { connect } from "react-redux";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { withRouter } from "react-router-dom";
+import { parse } from "qs";
 import * as Actions from "./actions";
 import { AppState } from "../../../reducers";
-import { parse } from "qs";
 import Icon from "../../../icons";
 import { closeDialog } from "../../dialog/actions";
-import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { EmailVerificationContainerProps, EmailVerificationParams } from "./types";
 import { trackDialogView } from "../../../helpers/handleGA";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import alertToast from "../../../helpers/makePlutoToastAction";
-import { withRouter } from "react-router-dom";
 const styles = require("./emailVerification.scss");
 
 export function mapStateToProps(state: AppState) {
@@ -49,8 +49,11 @@ class EmailVerification extends React.PureComponent<EmailVerificationContainerPr
     if (isLoading) {
       return (
         <div className={styles.emailVerificationContainer}>
-          <div className={styles.isLoadingContainer}>
-            <ButtonSpinner size={50} thickness={4} />
+          <div
+            className={styles.innerContainer}
+            style={{ color: "#6096ff", height: "470px", display: "flex", justifyContent: "center" }}
+          >
+            <CircularProgress size={50} thickness={4} color="inherit" />
           </div>
         </div>
       );

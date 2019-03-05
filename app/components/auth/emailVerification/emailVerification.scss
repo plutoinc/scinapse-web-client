@@ -10,6 +10,7 @@
     margin: 0 auto;
     border-radius: 2px;
     background-color: #fff;
+    margin-bottom: 40px;
   }
 }
 
@@ -69,18 +70,4 @@
   .email {
     color: $black0;
   }
-}
-
-.isLoadingContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-  margin-top: 125.5px;
-  width: 403px;
-  height: 392.5px;
-  border-radius: 2px;
-  background-color: #fff;
-  border: solid 1px $gray3;
 }
