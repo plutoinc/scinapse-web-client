@@ -67,8 +67,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
           <span
             className="bold"
           >
-            2007
-             in 
+            2007 in 
           </span>
           <a
             className="venueName"
@@ -78,9 +77,9 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
             Nature
           </a>
           <span
-            className="bold"
+            className="ifLabel"
           >
-             [IF: 40.14]
+            IF: 40.14
           </span>
         </div>
       </div>
@@ -300,8 +299,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
           <span
             className="bold"
           >
-            2007
-             in 
+            2007 in 
           </span>
           <a
             className="venueName"
@@ -311,9 +309,9 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
             Nature
           </a>
           <span
-            className="bold"
+            className="ifLabel"
           >
-             [IF: 40.14]
+            IF: 40.14
           </span>
         </div>
       </div>

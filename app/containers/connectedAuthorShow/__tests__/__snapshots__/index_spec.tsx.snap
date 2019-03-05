@@ -306,8 +306,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                     <span
                       className="bold"
                     >
-                      2007
-                       in 
+                      2007 in 
                     </span>
                     <a
                       className="venueName"
@@ -317,9 +316,9 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                       Nature
                     </a>
                     <span
-                      className="bold"
+                      className="ifLabel"
                     >
-                       [IF: 40.14]
+                      IF: 40.14
                     </span>
                   </div>
                 </div>

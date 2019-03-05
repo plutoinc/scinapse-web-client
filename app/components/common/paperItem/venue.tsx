@@ -29,6 +29,7 @@ const PaperItemVenue = ({
 }: PaperItemVenueProps) => {
   let title = null;
   let impactFactor = null;
+
   if (journal && journal.title) {
     title = readOnly ? (
       <span className={styles.venueNameReadonly}>{journal.title}</span>
@@ -53,24 +54,19 @@ const PaperItemVenue = ({
     impactFactor = journal.impactFactor;
   } else if (conferenceInstance && conferenceInstance.conferenceSeries && conferenceInstance.conferenceSeries.name) {
     title = <span className={styles.venueNameReadonly}>{conferenceInstance.conferenceSeries.name}</span>;
-  } else {
-    return null;
   }
+
+  const yearStr = title && year ? `${year} in ` : year || "";
 
   return (
     <div style={style} className={styles.venue}>
       <Icon icon="JOURNAL" />
 
       <div className={styles.journalText}>
-        {year ? (
-          <span className={styles.bold}>
-            {year}
-            {` in `}
-          </span>
-        ) : null}
+        {year ? <span className={styles.bold}>{yearStr}</span> : null}
         {title}
         {impactFactor ? (
-          <span className={styles.bold}>{` [IF: ${impactFactor ? impactFactor.toFixed(2) : 0}]`}</span>
+          <span className={styles.ifLabel}>{`IF: ${impactFactor ? impactFactor.toFixed(2) : 0}`}</span>
         ) : null}
       </div>
     </div>

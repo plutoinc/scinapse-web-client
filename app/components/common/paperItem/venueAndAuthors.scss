@@ -39,6 +39,18 @@
   .author {
     display: flex;
   }
+
+  .ifLabel {
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-block;
+    text-align: center;
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: #9aa3b5;
+    background-color: #f1f3f6;
+    margin-left: 2px;
+  }
 }
 
 // Mobile

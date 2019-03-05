@@ -159,6 +159,22 @@ exports[`JournalShow Container Component when journal data exist should render c
                     className="publishInfoList"
                   >
                     <div
+                      className="venue"
+                    >
+                      <i
+                        className="icon"
+                      />
+                      <div
+                        className="journalText"
+                      >
+                        <span
+                          className="bold"
+                        >
+                          2005
+                        </span>
+                      </div>
+                    </div>
+                    <div
                       className="author"
                     >
                       <i
