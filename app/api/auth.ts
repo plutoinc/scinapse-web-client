@@ -39,7 +39,7 @@ class AuthAPI extends PlutoAxios {
   public async signInWithSocial(exchangeData: SignInWithSocialParams): Promise<SignInResult> {
     const signInWithSocialResponse = await this.post("/auth/oauth/login", {
       code: exchangeData.code,
-      redirectUri: exchangeData.redirectUri,
+      redirectUri: exchangeData.redirectURI,
       vendor: exchangeData.vendor,
     });
     const signInData: SignInData = signInWithSocialResponse.data;
@@ -82,12 +82,8 @@ class AuthAPI extends PlutoAxios {
     return res.data;
   }
 
-  public async postExchange({ code, redirectUri, vendor }: PostExchangeParams): Promise<PostExchangeResult> {
-    const postExchangeResponse = await this.post("/auth/oauth/exchange", {
-      code,
-      redirectUri,
-      vendor,
-    });
+  public async postExchange(params: PostExchangeParams): Promise<PostExchangeResult> {
+    const postExchangeResponse = await this.post("/auth/oauth/exchange", params);
 
     return camelCaseKeys(postExchangeResponse.data);
   }

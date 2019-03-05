@@ -29,7 +29,7 @@ export interface SignInWithEmailParams {
 
 export interface SignInWithSocialParams {
   code: string;
-  redirectUri: string;
+  redirectURI: string;
   vendor: OAUTH_VENDOR;
 }
 
@@ -48,7 +48,7 @@ export interface GetAuthorizeUriResult {
 export interface PostExchangeParams {
   vendor: OAUTH_VENDOR;
   code: string;
-  redirectUri?: string;
+  redirectURI?: string;
 }
 
 export interface PostExchangeResult {
