@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactGA from "react-ga";
+import { parse, stringify } from "qs";
 import { Formik, Form, Field, FormikErrors } from "formik";
 import AuthAPI from "../../../../../api/auth";
 import { withStyles } from "../../../../../helpers/withStylesHelper";
@@ -31,7 +32,10 @@ export function handleClickOAuthBtn(vendor: OAUTH_VENDOR) {
     store.set("oauthRedirectPath", location.pathname + location.search);
 
     const origin = EnvChecker.getOrigin();
-    const redirectURI = `${origin}/users/sign_up?vendor=${vendor}`;
+    const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
+    const nextQueryParams = { ...currentQueryParams, vendor };
+    const redirectURI = `${origin}/users/sign_up${stringify(nextQueryParams, { addQueryPrefix: true })}`;
+
     try {
       const authroizedData: GetAuthorizeUriResult = await AuthAPI.getAuthorizeURI({
         vendor,

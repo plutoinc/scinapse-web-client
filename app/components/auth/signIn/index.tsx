@@ -3,7 +3,7 @@ import { parse, stringify } from "qs";
 import { connect, Dispatch } from "react-redux";
 import { Formik, Form, Field, FormikErrors } from "formik";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import { History, Location } from "history";
+import { Location } from "history";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import AuthInputBox from "../../common/inputBox/authInputBox";
@@ -37,16 +37,16 @@ function getRedirectURI(vendor: OAUTH_VENDOR, location: Location) {
   const origin = EnvChecker.getOrigin();
   const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
   const nextQueryParams = { ...currentQueryParams, vendor };
-  return `${origin}/users/sign_in?${stringify(nextQueryParams, { addQueryPrefix: true })}`;
+  return `${origin}/users/sign_in${stringify(nextQueryParams, { addQueryPrefix: true })}`;
 }
 
-function handleClickOAuthBtn(vendor: OAUTH_VENDOR, history: History, location: Location) {
+function handleClickOAuthBtn(vendor: OAUTH_VENDOR, location: Location) {
   return () => {
     store.set("oauthRedirectPath", `${location.pathname}${location.search}`);
 
     signInWithSocial(vendor, getRedirectURI(vendor, location))
       .then(res => {
-        history.push(res.uri);
+        window.location.replace(res.uri);
       })
       .catch(console.error);
   };
@@ -172,7 +172,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
           style={{ ...oAuthBtnBaseStyle, backgroundColor: "#3859ab", marginTop: "18px" }}
           iconName="FACEBOOK_LOGO"
           iconClassName={s.fbIconWrapper}
-          onClick={handleClickOAuthBtn("FACEBOOK", props.history, props.location)}
+          onClick={handleClickOAuthBtn("FACEBOOK", props.location)}
         />
         <AuthButton
           isLoading={isLoading}
@@ -180,7 +180,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
           style={{ ...oAuthBtnBaseStyle, backgroundColor: "#dc5240" }}
           iconName="GOOGLE_LOGO"
           iconClassName={s.googleIconWrapper}
-          onClick={handleClickOAuthBtn("GOOGLE", props.history, props.location)}
+          onClick={handleClickOAuthBtn("GOOGLE", props.location)}
         />
         <AuthButton
           isLoading={isLoading}
@@ -188,7 +188,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
           style={{ ...oAuthBtnBaseStyle, backgroundColor: "#a5d027", marginBottom: "34px" }}
           iconName="ORCID_LOGO"
           iconClassName={s.orcidIconWrapper}
-          onClick={handleClickOAuthBtn("ORCID", props.history, props.location)}
+          onClick={handleClickOAuthBtn("ORCID", props.location)}
         />
       </div>
     </>

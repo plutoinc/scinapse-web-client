@@ -30,7 +30,7 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
       const origin = EnvChecker.getOrigin();
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
       const nextQueryParams = { ...currentQueryParams, vendor };
-      const redirectURI = `${origin}/users/sign_up?${stringify(nextQueryParams, { addQueryPrefix: true })}`;
+      const redirectURI = `${origin}/users/sign_up${stringify(nextQueryParams, { addQueryPrefix: true })}`;
 
       setSignUpStep(SIGN_UP_STEP.WITH_SOCIAL);
       Actions.getAuthorizeCode(code, vendor, redirectURI, alreadySignUpCB).then(OAuthRes => {
