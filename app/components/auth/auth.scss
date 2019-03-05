@@ -4,6 +4,15 @@
 }
 
 .authWrapper {
-  margin-top: 90px;
+  width: 100%;
+  min-height: 100vh;
+  background-color: $gray0;
+}
+
+.contentWrapper {
+  margin: 180px auto;
   width: 403px;
+  border-radius: 1.7px;
+  background-color: #fff;
+  border: solid 1px #d8dde7;
 }

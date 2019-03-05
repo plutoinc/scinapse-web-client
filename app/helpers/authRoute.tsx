@@ -7,13 +7,14 @@ export enum AuthType {
   ShouldLoggedOut,
 }
 
-interface AuthRouteParam extends RouteProps {
+interface AuthRouteParam {
   isLoggedIn: boolean;
   needAuthType: AuthType;
 }
 
-export const AuthRoute = (params: AuthRouteParam) => {
-  const { path, component, children, isLoggedIn, needAuthType } = params;
+export const AuthRoute: React.FunctionComponent<AuthRouteParam & RouteProps> = props => {
+  const { path, component, children, isLoggedIn, needAuthType } = props;
+
   let redirectPath;
   let notificationMessage;
   if (needAuthType === AuthType.ShouldLoggedIn) {
@@ -44,9 +45,9 @@ export const AuthRoute = (params: AuthRouteParam) => {
       />
     );
   } else if (isComponent) {
-    return <Route path={path} {...params} component={component} />;
+    return <Route path={path} component={component} exact={true} />;
   } else if (isChildren) {
-    return <Route path={path} {...params} children={children} />;
+    return <Route path={path} children={children} exact={true} />;
   } else {
     return null;
   }

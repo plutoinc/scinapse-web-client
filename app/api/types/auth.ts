@@ -8,16 +8,18 @@ export interface SignUpWithEmailParams {
   affiliation: string;
 }
 
+export interface OAuthInfo {
+  oauthId: string;
+  uuid: string;
+  vendor: OAUTH_VENDOR | null;
+}
+
 export interface SignUpWithSocialParams {
   email: string;
   firstName: string;
   lastName: string;
   affiliation: string;
-  oauth: {
-    oauthId: string;
-    uuid: string;
-    vendor: OAUTH_VENDOR;
-  };
+  oauth: OAuthInfo;
 }
 
 export interface SignInWithEmailParams {
@@ -35,7 +37,7 @@ export type OAUTH_VENDOR = "ORCID" | "FACEBOOK" | "GOOGLE";
 
 export interface GetAuthorizeUriParams {
   vendor: OAUTH_VENDOR;
-  redirectUri?: string;
+  redirectURI?: string;
 }
 
 export interface GetAuthorizeUriResult {

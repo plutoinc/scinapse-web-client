@@ -111,8 +111,8 @@ class AuthAPI extends PlutoAxios {
     return mockCheckLoggedInResult;
   }
 
-  public async getAuthorizeUri({ vendor, redirectUri }: GetAuthorizeUriParams): Promise<GetAuthorizeUriResult> {
-    if (!vendor || !redirectUri) {
+  public async getAuthorizeURI({ vendor, redirectURI }: GetAuthorizeUriParams): Promise<GetAuthorizeUriResult> {
+    if (!vendor || !redirectURI) {
       throw new Error("FAKE ERROR");
     } else {
       return {

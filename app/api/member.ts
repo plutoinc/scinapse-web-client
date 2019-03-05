@@ -26,7 +26,7 @@ class MemberAPI extends PlutoAxios {
     return normalizedMember;
   }
 
-  public async getCollections(memberId: number, cancelToken: CancelToken): Promise<GetCollectionsResponse> {
+  public async getCollections(memberId: number, cancelToken?: CancelToken): Promise<GetCollectionsResponse> {
     const res = await this.get(`/members/${memberId}/collections`, { cancelToken });
     const camelizedRes = camelCaseKeys(res.data.data);
     const normalizedCollections = normalize(camelizedRes.content, [collectionSchema]);
