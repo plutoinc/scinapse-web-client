@@ -2,46 +2,12 @@ import { Dispatch } from "redux";
 import * as ReactGA from "react-ga";
 import AuthAPI from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { SIGN_IN_ON_FOCUS_TYPE } from "./reducer";
 import { closeDialog } from "../../dialog/actions";
 import EnvChecker from "../../../helpers/envChecker";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { SignInWithEmailParams, SignInResult, OAUTH_VENDOR, GetAuthorizeUriResult } from "../../../api/types/auth";
 import { trackDialogView } from "../../../helpers/handleGA";
 import PlutoAxios from "../../../api/pluto";
-
-export function changeEmailInput(email: string) {
-  return {
-    type: ACTION_TYPES.SIGN_IN_CHANGE_EMAIL_INPUT,
-    payload: {
-      email,
-    },
-  };
-}
-
-export function changePasswordInput(password: string) {
-  return {
-    type: ACTION_TYPES.SIGN_IN_CHANGE_PASSWORD_INPUT,
-    payload: {
-      password,
-    },
-  };
-}
-
-export function onFocusInput(type: SIGN_IN_ON_FOCUS_TYPE) {
-  return {
-    type: ACTION_TYPES.SIGN_IN_ON_FOCUS_INPUT,
-    payload: {
-      type,
-    },
-  };
-}
-
-export function onBlurInput() {
-  return {
-    type: ACTION_TYPES.SIGN_IN_ON_BLUR_INPUT,
-  };
-}
 
 export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean) {
   return async (dispatch: Dispatch<any>) => {
@@ -57,7 +23,7 @@ export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean
 
       alertToast({
         type: "success",
-        message: "Welcome to scinapse",
+        message: "Welcome to Scinapse",
       });
 
       dispatch({
@@ -136,11 +102,5 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
       });
       throw err;
     }
-  };
-}
-
-export function goBack() {
-  return {
-    type: ACTION_TYPES.SIGN_IN_GO_BACK,
   };
 }
