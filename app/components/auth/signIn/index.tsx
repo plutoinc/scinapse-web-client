@@ -46,7 +46,7 @@ const validateForm = (values: EmailFormValues) => {
   }
 
   if (!values.password || values.password.length < 8) {
-    errors.password = "Minimum length is 1";
+    errors.password = "Minimum length is 8";
   }
 
   return errors;
