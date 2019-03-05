@@ -93,7 +93,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
 
   public render() {
     const { articleSearchState, currentUserState } = this.props;
-    const { isLoading, totalElements, searchItemsToShow } = articleSearchState;
+    const { isContentLoading, totalElements, searchItemsToShow } = articleSearchState;
     const queryParams = this.getUrlDecodedQueryParamsObject();
 
     if (articleSearchState.pageErrorCode) {
@@ -103,9 +103,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     const hasNoSearchResult =
       !articleSearchState.searchItemsToShow || articleSearchState.searchItemsToShow.length === 0;
 
-    if (isLoading) {
-      return this.renderLoadingSpinner();
-    } else if (
+    if (
       hasNoSearchResult &&
       queryParams &&
       articleSearchState.matchAuthors &&
@@ -149,13 +147,19 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
                 </div>
                 <SortBar query={queryParams.query} sortOption={queryParams.sort} filter={queryParams.filter} />
               </div>
-              <SearchList
-                currentUser={currentUserState}
-                papers={searchItemsToShow}
-                searchQueryText={
-                  articleSearchState.searchFromSuggestion ? articleSearchState.suggestionKeyword : queryParams.query
-                }
-              />
+              {isContentLoading ? (
+                <div className={styles.loadingContainer}>
+                  <ArticleSpinner className={styles.loadingSpinner} />
+                </div>
+              ) : (
+                <SearchList
+                  currentUser={currentUserState}
+                  papers={searchItemsToShow}
+                  searchQueryText={
+                    articleSearchState.searchFromSuggestion ? articleSearchState.suggestionKeyword : queryParams.query
+                  }
+                />
+              )}
               {this.getPaginationComponent()}
             </div>
             <FilterContainer

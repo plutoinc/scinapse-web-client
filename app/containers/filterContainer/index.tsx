@@ -13,6 +13,7 @@ import FilterResetButton from "../../components/filterContainer/filterResetButto
 import YearRangeSlider from "./yearRangeSlider";
 import Icon from "../../icons";
 import Tooltip from "@material-ui/core/Tooltip";
+import CircularProgress from "@material-ui/core/CircularProgress";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {
@@ -196,9 +197,17 @@ const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => 
           <FilterResetButton makeNewFilterLink={makeNewFilterLink} />
         </div>
       </div>
-      {getPublicationFilterBox(props)}
-      {getFOSFilterBox(props)}
-      {getJournalFilter(props)}
+      {articleSearchState.isFilterLoading ? (
+        <div className={styles.spinnerWrapper}>
+          <CircularProgress className={styles.loadingSpinner} disableShrink={true} size={20} thickness={5} />
+        </div>
+      ) : (
+        <>
+          {getPublicationFilterBox(props)}
+          {getFOSFilterBox(props)}
+          {getJournalFilter(props)}
+        </>
+      )}
     </div>
   );
 };
