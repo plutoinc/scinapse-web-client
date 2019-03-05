@@ -24,7 +24,8 @@ export function reducer(
 
       return {
         ...state,
-        isLoading: true,
+        isContentLoading: true,
+        isFilterLoading: true,
         pageErrorCode: null,
         searchFromSuggestion: false,
         searchInput: action.payload.query,
@@ -35,7 +36,6 @@ export function reducer(
         journalFilter: filters.journal || [],
         suggestionKeyword: "",
         highlightedSuggestionKeyword: "",
-        aggregationData: null,
       };
     }
 
@@ -45,7 +45,8 @@ export function reducer(
       if (payload.data.page) {
         return {
           ...state,
-          isLoading: false,
+          isContentLoading: false,
+          isFilterLoading: false,
           pageErrorCode: null,
           isEnd: payload.data.page.last,
           page: payload.data.page.page,
@@ -66,7 +67,8 @@ export function reducer(
     case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_PAPERS: {
       return {
         ...state,
-        isLoading: false,
+        isContentLoading: false,
+        isFilterLoading: false,
         pageErrorCode: action.payload.statusCode,
       };
     }
@@ -75,7 +77,8 @@ export function reducer(
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS: {
       return {
         ...state,
-        isLoading: true,
+        isContentLoading: true,
+        isFilterLoading: false,
         pageErrorCode: null,
       };
     }
@@ -89,7 +92,8 @@ export function reducer(
         searchItemsToShow: action.payload.papers,
         totalElements: action.payload.totalElements,
         totalPages: action.payload.totalPages,
-        isLoading: false,
+        isContentLoading: false,
+        isFilterLoading: false,
         pageErrorCode: null,
       };
     }
@@ -98,7 +102,8 @@ export function reducer(
     case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CITED_PAPERS: {
       return {
         ...state,
-        isLoading: false,
+        isContentLoading: false,
+        isFilterLoading: false,
       };
     }
 
