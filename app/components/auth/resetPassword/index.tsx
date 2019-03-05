@@ -1,5 +1,4 @@
 import * as React from "react";
-import { connect, Dispatch } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { parse } from "qs";
 import { Field, Form, Formik, FormikErrors } from "formik";
@@ -10,10 +9,6 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import PlutoAxios from "../../../api/pluto";
 const styles = require("./resetPassword.scss");
-
-interface ResetPasswordPageProps {
-  dispatch: Dispatch<any>;
-}
 
 interface FormValues {
   password: string;
@@ -38,7 +33,7 @@ const validateForm = (values: FormValues) => {
   return errors;
 };
 
-const ResetPasswordPage: React.FunctionComponent<ResetPasswordPageProps & RouteComponentProps<any>> = props => {
+const ResetPasswordPage: React.FunctionComponent<RouteComponentProps<any>> = props => {
   React.useEffect(() => {
     const { location, history } = props;
     const queryParams = parse(location.search, { ignoreQueryPrefix: true });
@@ -112,4 +107,4 @@ const ResetPasswordPage: React.FunctionComponent<ResetPasswordPageProps & RouteC
   );
 };
 
-export default connect()(withRouter(withStyles<typeof ResetPasswordPage>(styles)(ResetPasswordPage)));
+export default withRouter(withStyles<typeof ResetPasswordPage>(styles)(ResetPasswordPage));
