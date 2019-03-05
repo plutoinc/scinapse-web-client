@@ -56,7 +56,9 @@
 }
 
 @media (max-width: 1024px) {
-  .downloadButton {
+  .downloadButton,
+  .linkClassName {
     width: 100%;
+    justify-content: center;
   }
 }
