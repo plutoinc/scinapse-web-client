@@ -24,9 +24,6 @@ export function signUpWithSocial(params: SignUpWithSocialParams, vendor: OAUTH_V
     trackEvent({ category: "sign_up", action: "try_to_sign_up", label: `with_${vendor}` });
     try {
       const signUpResult: Member = await AuthAPI.signUpWithSocial(params);
-      dispatch({
-        type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
-      });
       trackEvent({ category: "sign_up", action: "succeed_to_sign_up", label: `with_${vendor}` });
       dispatch({
         type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
