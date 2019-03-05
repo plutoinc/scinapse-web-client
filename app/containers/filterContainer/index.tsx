@@ -182,6 +182,16 @@ function getJournalFilter(props: FilterContainerProps) {
   );
 }
 
+function getLoadingBoxWrapper() {
+  return (
+    <div className={styles.filterLoadingWrapper}>
+      <div className={styles.spinnerWrapper}>
+        <CircularProgress className={styles.loadingSpinner} disableShrink={true} size={24} thickness={4} />
+      </div>
+    </div>
+  );
+}
+
 const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => {
   const { articleSearchState, makeNewFilterLink } = props;
   if (!articleSearchState.aggregationData) {
@@ -189,7 +199,13 @@ const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => 
   }
 
   return (
-    <div className={styles.filterContainer}>
+    <div
+      className={classNames({
+        [styles.filterContainer]: true,
+        [`${styles.filterContainer} ${styles.loading}`]: articleSearchState.isContentLoading,
+      })}
+    >
+      {articleSearchState.isContentLoading ? getLoadingBoxWrapper() : null}
       <div className={styles.filterContainerTitleBox}>
         <div className={styles.filterTitleBox}>
           <Icon className={styles.filterResultButton} icon="FILTER_RESULT_BUTTON" />
@@ -197,17 +213,9 @@ const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => 
           <FilterResetButton makeNewFilterLink={makeNewFilterLink} />
         </div>
       </div>
-      {articleSearchState.isFilterLoading ? (
-        <div className={styles.spinnerWrapper}>
-          <CircularProgress className={styles.loadingSpinner} disableShrink={true} size={20} thickness={5} />
-        </div>
-      ) : (
-        <>
-          {getPublicationFilterBox(props)}
-          {getFOSFilterBox(props)}
-          {getJournalFilter(props)}
-        </>
-      )}
+      {getPublicationFilterBox(props)}
+      {getFOSFilterBox(props)}
+      {getJournalFilter(props)}
     </div>
   );
 };

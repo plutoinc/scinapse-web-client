@@ -6,6 +6,7 @@
   flex: 1;
   max-width: $filter-container-width;
   height: 100%;
+  position: relative;
 
   @media (max-width: 1200px) {
     display: none;
@@ -240,14 +241,26 @@
   }
 }
 
-.spinnerWrapper {
-  display: flex;
-  height: 100%;
-  padding-bottom: 24px;
-  align-items: center;
-  justify-content: center;
+.loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
 
-  .loadingSpinner {
-    color: $gray5;
+.filterLoadingWrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: $gray1;
+  opacity: 0.9;
+
+  .spinnerWrapper {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+
+    .loadingSpinner {
+      color: $gray5;
+    }
   }
 }
