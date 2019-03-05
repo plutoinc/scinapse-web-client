@@ -7,6 +7,7 @@ const styles = require("./refCitedTab.scss");
 interface PaperShowRefCitedTabProps {
   referenceCount: number;
   citedCount: number;
+  width: number;
   isFixed: boolean;
   isOnRef: boolean;
   isOnCited: boolean;
@@ -41,6 +42,7 @@ const PaperShowRefCitedTab: React.SFC<PaperShowRefCitedTabProps> = props => {
         [styles.paperContentBlockHeaderTabs]: !props.isFixed,
         [`${styles.paperContentBlockHeaderTabs} ${styles.stick}`]: props.isFixed,
       })}
+      style={{ width: props.width }}
     >
       <ul className={styles.headerTabList}>
         {fullTextNode}

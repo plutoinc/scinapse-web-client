@@ -267,6 +267,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               <div className={styles.otherPapers}>
                 <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)}>
                   <PaperShowRefCitedTab
+                    width={this.refTabWrapper ? this.refTabWrapper.offsetWidth : 0}
                     referenceCount={paper.referenceCount}
                     citedCount={paper.citedCount}
                     handleClickRef={this.scrollToReferencePapersNode}
@@ -292,6 +293,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <div className={styles.citedBy}>
                   <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)}>
                     <PaperShowRefCitedTab
+                      width={this.refTabWrapper ? this.refTabWrapper.offsetWidth : 0}
                       referenceCount={paper.referenceCount}
                       citedCount={paper.citedCount}
                       handleClickRef={this.scrollToReferencePapersNode}
@@ -358,6 +360,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       return (
         <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
           <PaperShowRefCitedTab
+            width={this.refTabWrapper ? this.refTabWrapper.offsetWidth : 0}
             referenceCount={paper.referenceCount}
             citedCount={paper.citedCount}
             handleClickFullText={this.scrollToFullTextNode}
