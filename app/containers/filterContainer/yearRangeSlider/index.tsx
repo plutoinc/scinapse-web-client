@@ -85,7 +85,7 @@ const Column: React.FunctionComponent<ColumnProps> = React.memo(props => {
   );
 });
 
-function getMinMaxYears(qp: SearchPageQueryParams, yearSetListToShow: YearSet[]) {
+function getYearsData(qp: SearchPageQueryParams, yearSetListToShow: YearSet[]) {
   const filter = PapersQueryFormatter.objectifyPapersFilter(qp.filter);
   const minYear =
     filter.yearFrom && !isNaN(filter.yearFrom as number) ? (filter.yearFrom as number) : yearSetListToShow[0].year;
@@ -114,12 +114,12 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
   const queryParamsStr = props.location.search;
   const qp: SearchPageQueryParams = getQueryParamsObject(queryParamsStr);
 
-  const [values, setValues] = React.useState(getMinMaxYears(qp, yearSetListToShow));
+  const [values, setValues] = React.useState(getYearsData(qp, yearSetListToShow));
   const [selectingColumn, setSelectingColumn] = React.useState(0);
 
   React.useEffect(
     () => {
-      setValues(getMinMaxYears(qp, yearSetListToShow));
+      setValues(getYearsData(qp, yearSetListToShow));
     },
     [props.location]
   );
