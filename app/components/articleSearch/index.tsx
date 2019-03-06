@@ -113,7 +113,9 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
         <div className={styles.rootWrapper}>
           <TabNavigationBar searchKeyword={articleSearchState.searchInput} />
           <div className={styles.articleSearchContainer}>
-            {this.isFilterEmpty(queryParams.filter) ? this.getAuthorEntitiesSection() : null}
+            {this.isFilterEmpty(queryParams.filter) && articleSearchState.sort === "RELEVANCE"
+              ? this.getAuthorEntitiesSection()
+              : null}
             <div className={styles.innerContainer}>
               <NoResultInSearch
                 searchText={queryParams.query}
@@ -138,7 +140,9 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
           <div className={styles.articleSearchContainer}>
             {this.getResultHelmet(queryParams.query)}
             {this.getSuggestionKeywordBox()}
-            {this.isFilterEmpty(queryParams.filter) ? this.getAuthorEntitiesSection() : null}
+            {this.isFilterEmpty(queryParams.filter) && articleSearchState.sort === "RELEVANCE"
+              ? this.getAuthorEntitiesSection()
+              : null}
             <div className={styles.innerContainer}>
               <div className={styles.searchSummary}>
                 <div>
