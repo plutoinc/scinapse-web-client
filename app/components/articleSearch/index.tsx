@@ -147,17 +147,14 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
                 </div>
                 <SortBar query={queryParams.query} sortOption={queryParams.sort} filter={queryParams.filter} />
               </div>
-              {isContentLoading ? (
-                this.renderLoadingSpinner("PAPER")
-              ) : (
-                <SearchList
-                  currentUser={currentUserState}
-                  papers={searchItemsToShow}
-                  searchQueryText={
-                    articleSearchState.searchFromSuggestion ? articleSearchState.suggestionKeyword : queryParams.query
-                  }
-                />
-              )}
+              <SearchList
+                currentUser={currentUserState}
+                papers={searchItemsToShow}
+                isLoading={isContentLoading}
+                searchQueryText={
+                  articleSearchState.searchFromSuggestion ? articleSearchState.suggestionKeyword : queryParams.query
+                }
+              />
               {this.getPaginationComponent()}
             </div>
             <FilterContainer
@@ -270,7 +267,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
       );
 
       const authorItems = articleSearchState.isContentLoading
-        ? this.renderLoadingSpinner("AUTHOR")
+        ? this.renderAuthorItemLoadingSpinner()
         : matchAuthorContent.slice(0, 2).map(matchEntity => {
             return <AuthorSearchItem authorEntity={matchEntity} key={matchEntity.id} />;
           });
@@ -290,23 +287,12 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     return null;
   };
 
-  private renderLoadingSpinner = (type: string) => {
-    switch (type) {
-      case "PAPER":
-        return (
-          <div className={styles.loadingContainer}>
-            <ArticleSpinner className={styles.loadingSpinner} />
-          </div>
-        );
-      case "AUTHOR":
-        return (
-          <div className={styles.authorItemLoadingContainer}>
-            <ArticleSpinner className={styles.loadingSpinner} />
-          </div>
-        );
-      default:
-        return null;
-    }
+  private renderAuthorItemLoadingSpinner = () => {
+    return (
+      <div className={styles.loadingContainer}>
+        <ArticleSpinner className={styles.loadingSpinner} />
+      </div>
+    );
   };
 
   private getResultHelmet = (query: string) => {
