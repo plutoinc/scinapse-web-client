@@ -251,7 +251,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
     const { journalShow, history } = this.props;
 
     const currentQueryParams = this.getQueryParamsObject();
-    const nextQueryParams = { ...currentQueryParams, s: sortOption, q: journalShow.searchKeyword };
+    const nextQueryParams = { ...currentQueryParams, s: sortOption, q: journalShow.searchKeyword, p: 1 };
 
     history.push({
       pathname: `/journals/${journalShow.journalId}`,
