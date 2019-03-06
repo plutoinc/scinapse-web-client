@@ -117,12 +117,12 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
   const [values, setValues] = React.useState(getMinMaxYears(qp, yearSetListToShow));
   const [selectingColumn, setSelectingColumn] = React.useState(0);
 
-  // React.useEffect(
-  //   () => {
-  //     setValues(getMinMaxYears(qp, yearSetListToShow));
-  //   },
-  //   [props.location]
-  // );
+  React.useEffect(
+    () => {
+      setValues(getMinMaxYears(qp, yearSetListToShow));
+    },
+    [props.location]
+  );
 
   const minValue = Math.min(...values);
   const maxValue = Math.max(...values);
