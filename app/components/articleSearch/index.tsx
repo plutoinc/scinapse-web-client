@@ -270,9 +270,17 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
           Show All Author Results >
         </Link>
       );
-      const authorItems = matchAuthorContent.slice(0, 2).map(matchEntity => {
-        return <AuthorSearchItem authorEntity={matchEntity} key={matchEntity.id} />;
-      });
+
+      const authorItems = !articleSearchState.isContentLoading ? (
+        matchAuthorContent.slice(0, 2).map(matchEntity => {
+          return <AuthorSearchItem authorEntity={matchEntity} key={matchEntity.id} />;
+        })
+      ) : (
+        <div className={styles.authorItemLoadingContainer}>
+          <ArticleSpinner className={styles.loadingSpinner} />
+        </div>
+      );
+
       return (
         <div className={styles.authorItemSectionWrapper}>
           <div className={styles.authorItemsHeader}>
