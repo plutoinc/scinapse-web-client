@@ -93,6 +93,8 @@ class Home extends React.PureComponent<HomeProps> {
                     width: "100%",
                     border: 0,
                     borderRadius: "4px",
+                    lineHeight: 1.5,
+                    color: "#1e2a35",
                     backgroundColor: "white",
                     overflow: "hidden",
                     alignItems: "center",
