@@ -148,9 +148,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
                 <SortBar query={queryParams.query} sortOption={queryParams.sort} filter={queryParams.filter} />
               </div>
               {isContentLoading ? (
-                <div className={styles.loadingContainer}>
-                  <ArticleSpinner className={styles.loadingSpinner} />
-                </div>
+                this.getLoadingContainer("PAPER")
               ) : (
                 <SearchList
                   currentUser={currentUserState}
@@ -271,15 +269,11 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
         </Link>
       );
 
-      const authorItems = !articleSearchState.isContentLoading ? (
-        matchAuthorContent.slice(0, 2).map(matchEntity => {
-          return <AuthorSearchItem authorEntity={matchEntity} key={matchEntity.id} />;
-        })
-      ) : (
-        <div className={styles.authorItemLoadingContainer}>
-          <ArticleSpinner className={styles.loadingSpinner} />
-        </div>
-      );
+      const authorItems = articleSearchState.isContentLoading
+        ? this.getLoadingContainer("AUTHOR")
+        : matchAuthorContent.slice(0, 2).map(matchEntity => {
+            return <AuthorSearchItem authorEntity={matchEntity} key={matchEntity.id} />;
+          });
 
       return (
         <div className={styles.authorItemSectionWrapper}>
@@ -294,6 +288,25 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     }
 
     return null;
+  };
+
+  private getLoadingContainer = (type: string) => {
+    switch (type) {
+      case "PAPER":
+        return (
+          <div className={styles.loadingContainer}>
+            <ArticleSpinner className={styles.loadingSpinner} />
+          </div>
+        );
+      case "AUTHOR":
+        return (
+          <div className={styles.authorItemLoadingContainer}>
+            <ArticleSpinner className={styles.loadingSpinner} />
+          </div>
+        );
+      default:
+        return null;
+    }
   };
 
   private getResultHelmet = (query: string) => {

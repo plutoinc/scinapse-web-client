@@ -252,15 +252,4 @@
   height: 100%;
   background-color: $gray1;
   opacity: 0.9;
-
-  .spinnerWrapper {
-    display: flex;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-
-    .loadingSpinner {
-      color: $gray5;
-    }
-  }
 }

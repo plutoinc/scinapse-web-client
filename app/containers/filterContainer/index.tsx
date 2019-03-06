@@ -13,7 +13,6 @@ import FilterResetButton from "../../components/filterContainer/filterResetButto
 import YearRangeSlider from "./yearRangeSlider";
 import Icon from "../../icons";
 import Tooltip from "@material-ui/core/Tooltip";
-import CircularProgress from "@material-ui/core/CircularProgress";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {
@@ -182,16 +181,6 @@ function getJournalFilter(props: FilterContainerProps) {
   );
 }
 
-function getLoadingBoxWrapper() {
-  return (
-    <div className={styles.filterLoadingWrapper}>
-      <div className={styles.spinnerWrapper}>
-        <CircularProgress className={styles.loadingSpinner} disableShrink={true} size={24} thickness={4} />
-      </div>
-    </div>
-  );
-}
-
 const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => {
   const { articleSearchState, makeNewFilterLink } = props;
   if (!articleSearchState.aggregationData) {
@@ -205,7 +194,7 @@ const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => 
         [`${styles.filterContainer} ${styles.loading}`]: articleSearchState.isContentLoading,
       })}
     >
-      {articleSearchState.isContentLoading ? getLoadingBoxWrapper() : null}
+      {articleSearchState.isContentLoading ? <div className={styles.filterLoadingWrapper} /> : null}
       <div className={styles.filterContainerTitleBox}>
         <div className={styles.filterTitleBox}>
           <Icon className={styles.filterResultButton} icon="FILTER_RESULT_BUTTON" />
