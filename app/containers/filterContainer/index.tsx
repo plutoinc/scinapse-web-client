@@ -132,12 +132,12 @@ function getJournalFilter(props: FilterContainerProps) {
                 <Tooltip
                   disableFocusListener={true}
                   disableTouchListener={true}
-                  title="Imfact Factor"
+                  title="Impact Factor"
                   placement="top"
                   classes={{ tooltip: styles.arrowBottomTooltip }}
                 >
                   <span>
-                    <Icon className={styles.ifIconWrapper} icon="IMFACT_FACTOR" />
+                    <Icon className={styles.ifIconWrapper} icon="IMPACT_FACTOR" />
                   </span>
                 </Tooltip>
                 {journal!.impactFactor.toFixed(2)}
@@ -188,7 +188,13 @@ const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => 
   }
 
   return (
-    <div className={styles.filterContainer}>
+    <div
+      className={classNames({
+        [styles.filterContainer]: true,
+        [`${styles.filterContainer} ${styles.loading}`]: articleSearchState.isContentLoading,
+      })}
+    >
+      {articleSearchState.isContentLoading ? <div className={styles.filterLoadingWrapper} /> : null}
       <div className={styles.filterContainerTitleBox}>
         <div className={styles.filterTitleBox}>
           <Icon className={styles.filterResultButton} icon="FILTER_RESULT_BUTTON" />

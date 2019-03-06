@@ -3,17 +3,28 @@ import { Paper } from "../../../../model/paper";
 import { CurrentUser } from "../../../../model/currentUser";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import PaperItem from "../../../common/paperItem";
+import ArticleSpinner from "../../../common/spinner/articleSpinner";
 const styles = require("./searchList.scss");
 
 interface SearchListProps {
   currentUser: CurrentUser;
   papers: Paper[];
   searchQueryText: string;
+  isLoading: boolean;
 }
 
 class SearchList extends React.PureComponent<SearchListProps> {
   public render() {
-    const { currentUser, papers, searchQueryText } = this.props;
+    const { currentUser, papers, searchQueryText, isLoading } = this.props;
+
+    if (isLoading) {
+      return (
+        <div className={styles.loadingContainer}>
+          <ArticleSpinner className={styles.loadingSpinner} />
+        </div>
+      );
+    }
+
     const searchItems =
       papers &&
       papers.map(paper => {

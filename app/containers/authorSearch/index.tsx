@@ -99,9 +99,7 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
       return <ErrorPage errorNum={authorSearch.pageErrorCode} />;
     }
 
-    if (isLoading) {
-      return this.renderLoadingSpinner();
-    } else if (hasNoAuthorSearchResult && queryParams) {
+    if (hasNoAuthorSearchResult && queryParams) {
       return (
         <>
           <TabNavigationBar searchKeyword={authorSearch.searchInput} />
@@ -119,7 +117,7 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
           <div className={styles.articleSearchContainer}>
             {this.getResultHelmet(queryParams.query)}
             <div className={styles.innerContainer}>
-              {this.getAuthorEntitiesSection()}
+              {isLoading ? this.renderLoadingSpinner() : this.getAuthorEntitiesSection()}
               {this.getPaginationComponent()}
             </div>
           </div>
@@ -198,10 +196,8 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
 
   private renderLoadingSpinner = () => {
     return (
-      <div className={styles.articleSearchContainer}>
-        <div className={styles.loadingContainer}>
-          <ArticleSpinner className={styles.loadingSpinner} />
-        </div>
+      <div className={styles.loadingContainer}>
+        <ArticleSpinner className={styles.loadingSpinner} />
       </div>
     );
   };

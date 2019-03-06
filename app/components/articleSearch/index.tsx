@@ -93,7 +93,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
 
   public render() {
     const { articleSearchState, currentUserState } = this.props;
-    const { isLoading, totalElements, searchItemsToShow } = articleSearchState;
+    const { isContentLoading, totalElements, searchItemsToShow } = articleSearchState;
     const queryParams = this.getUrlDecodedQueryParamsObject();
 
     if (articleSearchState.pageErrorCode) {
@@ -103,9 +103,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     const hasNoSearchResult =
       !articleSearchState.searchItemsToShow || articleSearchState.searchItemsToShow.length === 0;
 
-    if (isLoading) {
-      return this.renderLoadingSpinner();
-    } else if (
+    if (
       hasNoSearchResult &&
       queryParams &&
       articleSearchState.matchAuthors &&
@@ -152,6 +150,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
               <SearchList
                 currentUser={currentUserState}
                 papers={searchItemsToShow}
+                isLoading={isContentLoading}
                 searchQueryText={
                   articleSearchState.searchFromSuggestion ? articleSearchState.suggestionKeyword : queryParams.query
                 }
@@ -266,9 +265,13 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
           Show All Author Results >
         </Link>
       );
-      const authorItems = matchAuthorContent.slice(0, 2).map(matchEntity => {
-        return <AuthorSearchItem authorEntity={matchEntity} key={matchEntity.id} />;
-      });
+
+      const authorItems = articleSearchState.isContentLoading
+        ? this.renderAuthorItemLoadingSpinner()
+        : matchAuthorContent.slice(0, 2).map(matchEntity => {
+            return <AuthorSearchItem authorEntity={matchEntity} key={matchEntity.id} />;
+          });
+
       return (
         <div className={styles.authorItemSectionWrapper}>
           <div className={styles.authorItemsHeader}>
@@ -282,6 +285,14 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     }
 
     return null;
+  };
+
+  private renderAuthorItemLoadingSpinner = () => {
+    return (
+      <div className={styles.loadingContainer}>
+        <ArticleSpinner className={styles.loadingSpinner} />
+      </div>
+    );
   };
 
   private getResultHelmet = (query: string) => {
@@ -365,16 +376,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     const { dispatch } = this.props;
 
     dispatch(Actions.changeRangeInput(params));
-  };
-
-  private renderLoadingSpinner = () => {
-    return (
-      <div className={styles.articleSearchContainer}>
-        <div className={styles.loadingContainer}>
-          <ArticleSpinner className={styles.loadingSpinner} />
-        </div>
-      </div>
-    );
   };
 
   private getUrlDecodedQueryParamsObject(): SearchPageQueryParamsObject {

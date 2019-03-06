@@ -21,11 +21,11 @@
 
 .loadingContainer {
   display: flex;
+  width: $search_container_width;
+  padding: 24px 0;
+  min-height: 98px;
   flex-direction: column;
-  width: 100%;
-  padding-top: 250px;
   align-items: center;
-  min-height: 738.5px;
 
   .loadingSpinner {
     div {
@@ -151,6 +151,10 @@
     color: $gray3;
     flex-flow: column;
     align-items: start;
+  }
+
+  .loadingContainer {
+    width: 100%;
   }
 
   .inflowRouteContainer {

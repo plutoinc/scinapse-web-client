@@ -6,6 +6,7 @@
   flex: 1;
   max-width: $filter-container-width;
   height: 100%;
+  position: relative;
 
   @media (max-width: 1200px) {
     display: none;
@@ -238,4 +239,17 @@
     margin-top: 20px;
     z-index: 2;
   }
+}
+
+.loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.filterLoadingWrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: $gray1;
+  opacity: 0.9;
 }
