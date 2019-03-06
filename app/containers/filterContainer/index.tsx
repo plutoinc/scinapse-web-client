@@ -133,12 +133,12 @@ function getJournalFilter(props: FilterContainerProps) {
                 <Tooltip
                   disableFocusListener={true}
                   disableTouchListener={true}
-                  title="Imfact Factor"
+                  title="Impact Factor"
                   placement="top"
                   classes={{ tooltip: styles.arrowBottomTooltip }}
                 >
                   <span>
-                    <Icon className={styles.ifIconWrapper} icon="IMFACT_FACTOR" />
+                    <Icon className={styles.ifIconWrapper} icon="IMPACT_FACTOR" />
                   </span>
                 </Tooltip>
                 {journal!.impactFactor.toFixed(2)}
