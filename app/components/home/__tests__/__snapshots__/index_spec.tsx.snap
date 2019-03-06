@@ -65,7 +65,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
               style={
                 Object {
                   "backgroundColor": "white",
-                  "boxShadow": "rgba(0, 0, 0, 0.15) 0px 3px 8px 1px",
+                  "borderRadius": "4px",
                 }
               }
             >
@@ -81,10 +81,11 @@ exports[`HomeContainer Component should render content correctly 1`] = `
                     "backgroundColor": "white",
                     "border": 0,
                     "borderRadius": "4px",
+                    "color": "#1e2a35",
                     "display": "flex",
-                    "height": "44px",
+                    "lineHeight": 1.5,
                     "overflow": "hidden",
-                    "padding": "0 44px 0 16px",
+                    "padding": "12px 44px 12px 16px",
                     "width": "100%",
                   }
                 }

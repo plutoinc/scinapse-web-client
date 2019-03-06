@@ -4,7 +4,9 @@
 }
 
 input::placeholder {
-  color: $gray4;
+  color: $black0;
+  opacity: 0.25;
+  font-size: 16px;
 }
 
 .suggestionList {

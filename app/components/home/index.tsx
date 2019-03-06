@@ -86,18 +86,19 @@ class Home extends React.PureComponent<HomeProps> {
                   suggestionList={home.completionKeywordList.map(keyword => keyword.keyword)}
                   wrapperStyle={{
                     backgroundColor: "white",
-                    boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 8px 1px",
+                    borderRadius: "4px",
                   }}
                   style={{
                     display: "flex",
                     width: "100%",
-                    height: "44px",
                     border: 0,
                     borderRadius: "4px",
+                    lineHeight: 1.5,
+                    color: "#1e2a35",
                     backgroundColor: "white",
                     overflow: "hidden",
                     alignItems: "center",
-                    padding: "0 44px 0 16px",
+                    padding: "12px 44px 12px 16px",
                   }}
                   listWrapperStyle={{
                     boxShadow: "0 1px 2px 0 #bbc2d0",
