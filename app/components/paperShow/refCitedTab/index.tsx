@@ -7,10 +7,10 @@ const styles = require("./refCitedTab.scss");
 interface PaperShowRefCitedTabProps {
   referenceCount: number;
   citedCount: number;
+  width: number;
   isFixed: boolean;
   isOnRef: boolean;
   isOnCited: boolean;
-  width: number;
   showFullText?: boolean;
   isOnFullText?: boolean;
 

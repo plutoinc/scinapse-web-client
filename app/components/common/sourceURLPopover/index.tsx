@@ -74,7 +74,7 @@ const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
       {props.buttonEl}
       {props.isOpen && (
         <Popper
-          placement="bottom-start"
+          placement="bottom-end"
           modifiers={{
             preventOverflow: {
               enabled: true,
@@ -83,6 +83,7 @@ const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
           }}
           open={props.isOpen}
           anchorEl={props.anchorEl}
+          style={{ zIndex: 10 }}
         >
           <ClickAwayListener onClickAway={props.handleCloseFunc}>
             <div className={styles.sourcesWrapper}>{sources}</div>

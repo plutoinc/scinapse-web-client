@@ -107,7 +107,6 @@ article.paperShow {
   }
 
   .paperContent {
-    // margin-top: $paper-show-interblock-margin;
     line-height: 1.5;
     color: $black1;
     .fos {
@@ -225,6 +224,21 @@ article.paperShow {
 }
 // SmallDisplay (768~1024)
 @media (max-width: $tablet_width) {
+  .container {
+    width: $mobile-paper-show-width;
+
+    article.paperShow {
+      width: calc(100vw - 24px * 2);
+    }
+
+    .rightBox {
+      display: none;
+    }
+  }
+
+  .refCitedTabWrapper {
+    width: 100%;
+  }
 }
 // Mobile (0~768)
 @media (max-width: $mobile-width) {

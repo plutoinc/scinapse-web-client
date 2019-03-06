@@ -89,7 +89,7 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
         >
           Sign in
         </span>
-        <span>and Save the paper in Collection</span>
+        <span> and Save the paper in Collection</span>
       </div>
     );
   } else if (!props.collection) {
