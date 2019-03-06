@@ -6,7 +6,7 @@ import { Link, withRouter } from "react-router-dom";
 import { AppState } from "../../reducers";
 import * as Actions from "./actions";
 import SearchList from "./components/searchList";
-import ArticleSpinner from "../common/spinner/articleSpinner";
+// import ArticleSpinner from "../common/spinner/articleSpinner";
 import FilterContainer from "../../containers/filterContainer";
 import NoResult from "./components/noResult";
 import PapersQueryFormatter, { SearchPageQueryParamsObject, FilterObject } from "../../helpers/papersQueryFormatter";
@@ -113,9 +113,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
         <div className={styles.rootWrapper}>
           <TabNavigationBar searchKeyword={articleSearchState.searchInput} />
           <div className={styles.articleSearchContainer}>
-            {this.isFilterEmpty(queryParams.filter) && articleSearchState.sort === "RELEVANCE"
-              ? this.getAuthorEntitiesSection()
-              : null}
+            {this.isFilterEmpty(queryParams.filter) ? this.getAuthorEntitiesSection() : null}
             <div className={styles.innerContainer}>
               <NoResultInSearch
                 searchText={queryParams.query}
@@ -140,9 +138,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
           <div className={styles.articleSearchContainer}>
             {this.getResultHelmet(queryParams.query)}
             {this.getSuggestionKeywordBox()}
-            {this.isFilterEmpty(queryParams.filter) && articleSearchState.sort === "RELEVANCE"
-              ? this.getAuthorEntitiesSection()
-              : null}
+            {this.isFilterEmpty(queryParams.filter) ? this.getAuthorEntitiesSection() : null}
             <div className={styles.innerContainer}>
               <div className={styles.searchSummary}>
                 <div>
@@ -270,11 +266,9 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
         </Link>
       );
 
-      const authorItems = articleSearchState.isContentLoading
-        ? this.renderAuthorItemLoadingSpinner()
-        : matchAuthorContent.slice(0, 2).map(matchEntity => {
-            return <AuthorSearchItem authorEntity={matchEntity} key={matchEntity.id} />;
-          });
+      const authorItems = matchAuthorContent.slice(0, 2).map(matchEntity => {
+        return <AuthorSearchItem authorEntity={matchEntity} key={matchEntity.id} />;
+      });
 
       return (
         <div className={styles.authorItemSectionWrapper}>
@@ -291,13 +285,13 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     return null;
   };
 
-  private renderAuthorItemLoadingSpinner = () => {
-    return (
-      <div className={styles.loadingContainer}>
-        <ArticleSpinner className={styles.loadingSpinner} />
-      </div>
-    );
-  };
+  // private renderAuthorItemLoadingSpinner = () => {
+  //   return (
+  //     <div className={styles.loadingContainer}>
+  //       <ArticleSpinner className={styles.loadingSpinner} />
+  //     </div>
+  //   );
+  // };
 
   private getResultHelmet = (query: string) => {
     return (
