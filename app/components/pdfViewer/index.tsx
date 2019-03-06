@@ -37,7 +37,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
       if (shouldShow) {
         setIsFetching(true);
         Axios.get(
-          `https://u5ctiiqdab.execute-api.us-east-1.amazonaws.com/dev/get-pdf?pdf_url=${pdfURL}&title=${filename}`,
+          `https://lvr8qqubzk.execute-api.us-east-1.amazonaws.com/prod/get-pdf?pdf_url=${pdfURL}&title=${filename}`,
           {
             responseType: "blob",
           }

@@ -63,7 +63,7 @@ pipeline {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'GITHUB_HTTPS_CREDENTIALS', usernameVariable: 'GIT_AUTHOR_NAME', passwordVariable: 'GIT_PASSWORD']]) {
                         sh 'git fetch --tags'
                         deployedCommits = sh (
-                            script: "git log --oneline production..HEAD",
+                            script: 'git log --oneline --pretty=format:"%cd(%cr)] <https://github.com/pluto-net/scinapse-web-client/commit/%H|%s> - (By %an)" production..HEAD',
                             returnStdout: true
                         ).trim()
                         sh 'git config --global user.email "dev@pluto.netwrok"'
@@ -76,7 +76,6 @@ pipeline {
                     def targetUrl;
                     targetUrl = "https://scinapse.io"
                     slackSend color: 'good', channel: "#ci-build", message: "Build DONE! Finish to production deploy version: ${params.version}"
-                    slackSend color: 'good', channel: "#front-end-prod-deploy", message: "Build DONE! Finish to production deploy version: ${params.version}"
                     slackSend color: 'good', channel: "#front-end-prod-deploy", message: deployedCommits
                 }
             }
