@@ -148,7 +148,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
                 <SortBar query={queryParams.query} sortOption={queryParams.sort} filter={queryParams.filter} />
               </div>
               {isContentLoading ? (
-                this.getLoadingContainer("PAPER")
+                this.renderLoadingSpinner("PAPER")
               ) : (
                 <SearchList
                   currentUser={currentUserState}
@@ -270,7 +270,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
       );
 
       const authorItems = articleSearchState.isContentLoading
-        ? this.getLoadingContainer("AUTHOR")
+        ? this.renderLoadingSpinner("AUTHOR")
         : matchAuthorContent.slice(0, 2).map(matchEntity => {
             return <AuthorSearchItem authorEntity={matchEntity} key={matchEntity.id} />;
           });
@@ -290,7 +290,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     return null;
   };
 
-  private getLoadingContainer = (type: string) => {
+  private renderLoadingSpinner = (type: string) => {
     switch (type) {
       case "PAPER":
         return (
