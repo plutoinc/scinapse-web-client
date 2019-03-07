@@ -17,9 +17,9 @@ export function serveOpenSearchXML() {
   return {
     statusCode: 200,
     headers: {
-      "Content-Type": "application/opensearchdescription+xml",
+      "Content-Type": "text/xml",
     },
-    isBase64Encoded: true,
+    isBase64Encoded: false,
     body: xmlString,
   };
 }
