@@ -217,7 +217,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
         <link rel="shortcut icon" href="https://assets.pluto.network/scinapse/favicon.ico" />
         <link
           rel="search"
-          href={`${location.origin}/openSearchSetting.xml`}
+          href="https://scinapse.io/opensearch.xml"
           type="application/opensearchdescription+xml"
           title="Scinapse.io"
         />

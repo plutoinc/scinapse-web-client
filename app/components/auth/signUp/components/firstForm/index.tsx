@@ -38,8 +38,10 @@ export function handleClickOAuthBtn(vendor: OAUTH_VENDOR) {
         redirectURI,
       });
 
-      ReactGA.set({ referrer: origin });
-      window.location.replace(authroizedData.uri);
+      if (!EnvChecker.isOnServer()) {
+        ReactGA.set({ referrer: origin });
+        window.location.replace(authroizedData.uri);
+      }
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
       alertToast({
