@@ -6,7 +6,6 @@ import { Link, withRouter } from "react-router-dom";
 import { AppState } from "../../reducers";
 import * as Actions from "./actions";
 import SearchList from "./components/searchList";
-import ArticleSpinner from "../common/spinner/articleSpinner";
 import FilterContainer from "../../containers/filterContainer";
 import NoResult from "./components/noResult";
 import PapersQueryFormatter, { SearchPageQueryParamsObject, FilterObject } from "../../helpers/papersQueryFormatter";
@@ -266,11 +265,9 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
         </Link>
       );
 
-      const authorItems = articleSearchState.isContentLoading
-        ? this.renderAuthorItemLoadingSpinner()
-        : matchAuthorContent.slice(0, 2).map(matchEntity => {
-            return <AuthorSearchItem authorEntity={matchEntity} key={matchEntity.id} />;
-          });
+      const authorItems = matchAuthorContent.slice(0, 2).map(matchEntity => {
+        return <AuthorSearchItem authorEntity={matchEntity} key={matchEntity.id} />;
+      });
 
       return (
         <div className={styles.authorItemSectionWrapper}>
@@ -285,14 +282,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     }
 
     return null;
-  };
-
-  private renderAuthorItemLoadingSpinner = () => {
-    return (
-      <div className={styles.loadingContainer}>
-        <ArticleSpinner className={styles.loadingSpinner} />
-      </div>
-    );
   };
 
   private getResultHelmet = (query: string) => {
