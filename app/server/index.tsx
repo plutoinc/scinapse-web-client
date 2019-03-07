@@ -20,6 +20,7 @@ import handleSiteMapRequest from "./handleSitemap";
 import { ACTION_TYPES } from "../actions/actionTypes";
 import getQueryParamsObject from "../helpers/getQueryParamsObject";
 import { TIMEOUT_FOR_SAFE_RENDERING } from "../api/pluto";
+import { serveOpenSearchXML } from "./serveOpenSearchXml";
 const AWSXRay = require("aws-xray-sdk");
 const { SheetsRegistry } = require("react-jss/lib/jss");
 const JssProvider = require("react-jss/lib/JssProvider").default;
@@ -230,6 +231,10 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
   // handling '/sitemap' path
   if (path.search(SITEMAP_REGEX) !== -1) {
     return handleSiteMapRequest(path);
+  }
+
+  if (path === "/openSearchSetting.xml") {
+    return serveOpenSearchXML();
   }
 
   const normalRender = async (): Promise<SSRResult> => {
