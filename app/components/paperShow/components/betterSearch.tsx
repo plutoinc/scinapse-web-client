@@ -10,7 +10,7 @@ import Icon from "../../../icons";
 import InputWithSuggestionList from "../../common/InputWithSuggestionList";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { ACTION_TYPES } from "../../../actions/actionTypes";
+import { ACTION_TYPES, ActionCreators } from "../../../actions/actionTypes";
 import { CompletionKeyword } from "../../../api/completion";
 import { getKeywordCompletion } from "../../layouts/actions";
 import EnvChecker from "../../../helpers/envChecker";
@@ -83,6 +83,7 @@ const BetterSearch: React.FunctionComponent<BetterSearchProps & RouteComponentPr
     () => {
       if (isFromGoogle) {
         setShouldAnimate(true);
+        props.dispatch(ActionCreators.animateBetterSearchTitle());
       }
     },
     [isFromGoogle]

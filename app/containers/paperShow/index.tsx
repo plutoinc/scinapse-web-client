@@ -38,7 +38,6 @@ import ErrorPage from "../../components/error/errorPage";
 import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
 import EnvChecker from "../../helpers/envChecker";
 import BetterSearch from "../../components/paperShow/components/betterSearch";
-import { ActionCreators } from "../../actions/actionTypes";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
@@ -165,7 +164,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         currentUser
       );
 
-      dispatch(ActionCreators.animateBetterSearchTitle());
       return this.scrollToRefCitedSection();
     }
 
@@ -198,7 +196,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { dispatch } = this.props;
 
     this.cancelToken.cancel();
-    dispatch(ActionCreators.animateBetterSearchTitle());
     dispatch(clearPaperShowState());
     window.removeEventListener("scroll", this.handleScroll);
   }
