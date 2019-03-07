@@ -215,6 +215,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
       <Helmet>
         <meta charSet="utf-8" />
         <link rel="shortcut icon" href="https://assets.pluto.network/scinapse/favicon.ico" />
+        <link rel="search" href="./test.xml" type="application/opensearchdescription+xml" title="Scinapse.io" />
         <title>Scinapse | Academic search engine for paper</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
         <meta itemProp="name" content="sci-napse | Academic search engine for paper" />
