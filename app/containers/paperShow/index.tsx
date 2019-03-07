@@ -35,9 +35,10 @@ import { formulaeToHTMLStr } from "../../helpers/displayFormula";
 import { getPDFLink } from "../../helpers/getPDFLink";
 import restoreScroll from "../../helpers/scrollRestoration";
 import ErrorPage from "../../components/error/errorPage";
-import InnerSearchBox from "../../components/paperShow/components/innerSearchBox";
 import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
 import EnvChecker from "../../helpers/envChecker";
+import BetterSearch from "../../components/paperShow/components/betterSearch";
+import { ActionCreators } from "../../actions/actionTypes";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
@@ -163,6 +164,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         },
         currentUser
       );
+
+      dispatch(ActionCreators.animateBetterSearchTitle());
       return this.scrollToRefCitedSection();
     }
 
@@ -195,6 +198,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { dispatch } = this.props;
 
     this.cancelToken.cancel();
+    dispatch(ActionCreators.animateBetterSearchTitle());
     dispatch(clearPaperShowState());
     window.removeEventListener("scroll", this.handleScroll);
   }
@@ -250,7 +254,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   <FOSList FOSList={paper.fosList} />
                 </div>
               </div>
-              <InnerSearchBox FOSList={paper.fosList} shouldRender={true} />
+              <BetterSearch
+                isAnimated={paperShow.betterSearchIsAnimated}
+                FOSList={paper.fosList}
+                suggestionKeywords={layout.completionKeywordList}
+              />
               <div className={styles.paperContentBlockDivider} />
 
               <div>
@@ -315,7 +323,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   getLinkDestination={this.getCitedPaperPaginationLink}
                   location={location}
                 />
-                <InnerSearchBox FOSList={paper.fosList} shouldRender={true} />
               </div>
             </div>
           </article>
