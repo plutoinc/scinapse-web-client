@@ -5,5 +5,5 @@
  <Description>Use Scinapse Search</Description>
  <Tags>Scinapse</Tags>
  <Url type="text/html"
-      template="http://dev.scinapse.io/search?query={searchTerms}&sort=RELEVANCE&filter=year%3D%3A%2Cfos%3D%2Cjournal%3D&page=1"/>
+      template="http://scinapse.io/search?query={searchTerms}&sort=RELEVANCE&filter=year%3D%3A%2Cfos%3D%2Cjournal%3D&page=1"/>
 </OpenSearchDescription>
