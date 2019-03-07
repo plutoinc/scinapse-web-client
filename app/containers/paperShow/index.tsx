@@ -252,6 +252,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 </div>
               </div>
               <BetterSearch
+                paperId={paper.id}
                 isAnimated={paperShow.betterSearchIsAnimated}
                 FOSList={paper.fosList}
                 suggestionKeywords={layout.completionKeywordList}

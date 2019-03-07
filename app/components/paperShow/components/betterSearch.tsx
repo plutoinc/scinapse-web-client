@@ -20,6 +20,7 @@ interface BetterSearchProps {
   FOSList: Fos[];
   suggestionKeywords: CompletionKeyword[];
   isAnimated: boolean;
+  paperId: number;
   dispatch: Dispatch<any>;
 }
 
@@ -72,7 +73,7 @@ const BetterSearch: React.FunctionComponent<BetterSearchProps & RouteComponentPr
 
   React.useEffect(
     () => {
-      if (isClient && document.referrer.includes("google") && !props.isAnimated) {
+      if (isClient && document.referrer.includes("google")) {
         setIsFromGoogle(true);
       }
     },
@@ -81,12 +82,20 @@ const BetterSearch: React.FunctionComponent<BetterSearchProps & RouteComponentPr
 
   React.useEffect(
     () => {
-      if (isFromGoogle) {
+      if (isFromGoogle && !props.isAnimated) {
         setShouldAnimate(true);
-        props.dispatch(ActionCreators.animateBetterSearchTitle());
       }
     },
     [isFromGoogle]
+  );
+
+  React.useEffect(
+    () => {
+      return () => {
+        props.dispatch(ActionCreators.animateBetterSearchTitle());
+      };
+    },
+    [props.paperId]
   );
 
   const placeholderWord = props.FOSList.length > 0 ? props.FOSList[0].fos : "";
@@ -111,7 +120,7 @@ const BetterSearch: React.FunctionComponent<BetterSearchProps & RouteComponentPr
     );
   });
 
-  if (!isClient) return <div className={s.wrapper} style={{ height: "217px" }} />;
+  if (!isClient || !isFromGoogle) return null;
 
   return (
     <div className={s.wrapper}>
@@ -119,8 +128,8 @@ const BetterSearch: React.FunctionComponent<BetterSearchProps & RouteComponentPr
         ref={titleNode}
         className={classNames({
           [s.smallTitle]: !isFromGoogle || props.isAnimated,
-          [s.title]: isFromGoogle,
-          [s.animatedTitle]: isFromGoogle && shouldAnimate,
+          [s.title]: isFromGoogle && !props.isAnimated,
+          [s.animatedTitle]: isFromGoogle && shouldAnimate && !props.isAnimated,
         })}
       >
         <div>Trust Me.</div>
