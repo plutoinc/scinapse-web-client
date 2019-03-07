@@ -180,8 +180,12 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
       return { ...state, ...{ otherPaperIdsFromAuthor: action.payload.paperIds } };
     }
 
+    case ACTION_TYPES.PAPER_SHOW_ANIMATE_BETTER_SEARCH_TITLE: {
+      return { ...state, betterSearchIsAnimated: true };
+    }
+
     case ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE: {
-      return PAPER_SHOW_INITIAL_STATE;
+      return { ...PAPER_SHOW_INITIAL_STATE, betterSearchIsAnimated: state.betterSearchIsAnimated };
     }
 
     default:

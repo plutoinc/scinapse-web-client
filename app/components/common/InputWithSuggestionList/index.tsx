@@ -10,9 +10,9 @@ export interface DefaultItemComponentProps {
   onClick: () => void;
 }
 
-interface InputWithSuggestionListProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputWithSuggestionListProps {
   suggestionList: string[];
-  handleSubmit: (inputValue: string) => void;
+  onSubmitQuery: (inputValue: string) => void;
   wrapperClassName?: string;
   iconNode?: React.ReactNode;
   deleteIconNode?: React.ReactNode;
@@ -32,8 +32,11 @@ interface InputWithSuggestionListState {
 }
 
 @withStyles<typeof InputWithSuggestionList>(styles)
-class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionListProps, InputWithSuggestionListState> {
-  public constructor(props: InputWithSuggestionListProps) {
+class InputWithSuggestionList extends React.PureComponent<
+  InputWithSuggestionListProps & React.InputHTMLAttributes<HTMLInputElement>,
+  InputWithSuggestionListState
+> {
+  public constructor(props: InputWithSuggestionListProps & React.InputHTMLAttributes<HTMLInputElement>) {
     super(props);
 
     this.state = {
@@ -55,7 +58,7 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
     const {
       wrapperStyle,
       listWrapperStyle,
-      handleSubmit,
+      onSubmitQuery,
       iconNode,
       deleteIconNode,
       wrapperClassName,
@@ -76,13 +79,13 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
               onChange={this.handleChangeInput}
               onKeyDown={this.handleKeydown}
               onSubmit={() => {
-                handleSubmit(inputValue);
+                onSubmitQuery(inputValue);
               }}
               value={inputValue}
             />
             <span
               onClick={() => {
-                handleSubmit(inputValue);
+                onSubmitQuery(inputValue);
               }}
             >
               {iconNode}
@@ -90,7 +93,7 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
             {inputValue ? (
               <span
                 onClick={() => {
-                  handleSubmit("");
+                  onSubmitQuery("");
                   this.handleCloseList();
                 }}
               >
@@ -115,7 +118,7 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
   };
 
   private getHighlightedList = () => {
-    const { suggestionList, listItemStyle, handleSubmit, DefaultItemComponent } = this.props;
+    const { suggestionList, listItemStyle, onSubmitQuery, DefaultItemComponent } = this.props;
     const { highlightValue, focus } = this.state;
 
     const suggestions = suggestionList.map((suggestion, index) => {
@@ -126,7 +129,7 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
             [styles.highLightKeywordCompletionItem]: focus === index,
           })}
           onClick={() => {
-            handleSubmit(suggestion);
+            onSubmitQuery(suggestion);
             this.handleCloseList();
           }}
           style={listItemStyle}
@@ -152,7 +155,7 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
             <DefaultItemComponent
               userInput={highlightValue}
               onClick={() => {
-                handleSubmit(highlightValue);
+                onSubmitQuery(highlightValue);
                 this.handleCloseList();
               }}
             />
@@ -165,7 +168,7 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
   };
 
   private handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const { suggestionList, handleSubmit, DefaultItemComponent } = this.props;
+    const { suggestionList, onSubmitQuery, DefaultItemComponent } = this.props;
     const { focus, inputValue, highlightValue, isOpen } = this.state;
     const maxFocusIndex = DefaultItemComponent ? suggestionList.length : suggestionList.length - 1;
     const minFocusIndex = -1;
@@ -177,7 +180,7 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
         // enter
         e.preventDefault();
         this.handleCloseList();
-        handleSubmit(inputValue);
+        onSubmitQuery(inputValue);
         break;
       }
 

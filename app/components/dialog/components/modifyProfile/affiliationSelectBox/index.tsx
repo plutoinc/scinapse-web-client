@@ -63,7 +63,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
             defaultValue={displayValue}
             onChange={this.handleInputChange}
             placeholder="Current Affiliation"
-            handleSubmit={this.handleClickSelectBox}
+            onSubmitQuery={this.handleClickSelectBox}
             suggestionList={availableAffiliations.slice(0, 5).map(affiliation => affiliation.keyword)}
             className={classNames({
               [className]: true,

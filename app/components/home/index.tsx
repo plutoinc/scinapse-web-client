@@ -82,7 +82,7 @@ class Home extends React.PureComponent<HomeProps> {
                   autoFocus={true}
                   onChange={this.handleChangeSearchInput}
                   placeholder={searchBoxPlaceHolder}
-                  handleSubmit={this.handleSearchPush}
+                  onSubmitQuery={this.handleSearchPush}
                   suggestionList={home.completionKeywordList.map(keyword => keyword.keyword)}
                   wrapperStyle={{
                     backgroundColor: "white",

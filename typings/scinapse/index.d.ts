@@ -81,7 +81,8 @@ declare namespace Scinapse {
       | "shareBox"
       | "innerSearchBox"
       | "readingNowPaperList"
-      | "filter";
+      | "filter"
+      | "betterThanGoogle";
 
     type PageType =
       | "paperShow"

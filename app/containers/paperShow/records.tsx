@@ -40,6 +40,8 @@ export interface PaperShowState
       isFailedToGetCitedPapers: boolean;
       citedPaperTotalPage: number;
       citedPaperCurrentPage: number;
+
+      betterSearchIsAnimated: boolean;
     }> {}
 
 export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
@@ -73,4 +75,6 @@ export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
   isFailedToGetCitedPapers: false,
   citedPaperTotalPage: 0,
   citedPaperCurrentPage: 0,
+
+  betterSearchIsAnimated: false,
 };
