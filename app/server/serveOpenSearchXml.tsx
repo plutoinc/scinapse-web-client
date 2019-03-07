@@ -9,7 +9,7 @@ const xmlString = `
 <Contact>dev@pluto.network</Contact>
 <Url type="text/html" template="http://scinapse.io/search?query={searchTerms}&sort=RELEVANCE&filter=year%3D%3A%2Cfos%3D%2Cjournal%3D&page=1"/>
 <moz:SearchForm>https://scinapse.io</moz:SearchForm>
-<Url type="application/opensearchdescription+xml" rel="self" template="https://scinapse.io/openSearchSetting.xml" />
+<Url type="application/opensearchdescription+xml" rel="self" template="https://scinapse.io/" />
 </OpenSearchDescription>
 `;
 
@@ -17,7 +17,7 @@ export function serveOpenSearchXML() {
   return {
     statusCode: 200,
     headers: {
-      "Content-Type": "text/xml",
+      "Content-Type": "application/xml; charset=utf-8",
     },
     isBase64Encoded: false,
     body: xmlString,
