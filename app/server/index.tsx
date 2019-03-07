@@ -233,7 +233,7 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
     return handleSiteMapRequest(path);
   }
 
-  if (path === "/openSearchSetting.xml") {
+  if (path === "/opensearch.xml") {
     return serveOpenSearchXML();
   }
 
