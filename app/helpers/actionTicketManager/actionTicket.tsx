@@ -8,7 +8,7 @@ export interface ActionTicketParams {
   actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType | null;
   actionType: "fire" | "view";
   actionTag: Scinapse.ActionTicket.ActionTagType;
-  actionLabel: string | number | null;
+  actionLabel: string | null;
 }
 
 export interface FinalActionTicket extends ActionTicketParams {
@@ -31,7 +31,7 @@ export default class ActionTicket {
   private actionTag: Scinapse.ActionTicket.ActionTagType;
   private actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType | null;
   private pageType: Scinapse.ActionTicket.PageType;
-  private actionLabel: string | number | null;
+  private actionLabel: string | null;
   private _errorCount = 0;
 
   public constructor(params: ActionTicketParams) {

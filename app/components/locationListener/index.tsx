@@ -126,7 +126,7 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
         actionType: "view",
         actionArea: null,
         actionTag: "pageView",
-        actionLabel: !isNaN(id) ? id : null,
+        actionLabel: !isNaN(id) ? String(id) : null,
       });
     }
   }
