@@ -3,10 +3,12 @@ import Axios from "axios";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import { withStyles } from "../../helpers/withStylesHelper";
 import ScinapseButton from "../common/scinapseButton";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 const { Document, Page } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
 interface PDFViewerProps {
+  paperId: number;
   shouldShow: boolean;
   filename: string;
   pdfURL?: string;
@@ -23,6 +25,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   const [succeedToLoad, setSucceed] = React.useState(false);
   const [pageCountToShow, setPageCountToShow] = React.useState(0);
   const wrapperNode = React.useRef<HTMLDivElement | null>(null);
+  const actionTag = extend ? "viewLessPDF" : "viewMorePDF";
 
   const baseBtnStyle: React.CSSProperties = {
     display: "flex",
@@ -99,11 +102,14 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
           {succeedToLoad && (
             <>
               <ScinapseButton
+                gaCategory="PDF viewer"
+                gaAction={actionTag}
                 style={{ ...baseBtnStyle, backgroundColor: "#3e7fff" }}
                 content={extend ? "View Less" : "View More"}
                 isLoading={!succeedToLoad && !hadErrorToLoad}
                 disabled={!succeedToLoad}
                 onClick={() => {
+                  trackClickButton(actionTag, props.paperId);
                   setExtend(!extend);
                   if (extend && wrapperNode.current) {
                     wrapperNode.current.scrollIntoView();
@@ -111,17 +117,22 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                 }}
               />
               <ScinapseButton
+                gaCategory="PDF viewer"
+                gaAction="download PDF"
                 style={{
                   ...baseBtnStyle,
                   color: "#3e7fff",
                   border: "1px solid #3e7fff",
                   marginLeft: "16px",
                 }}
-                isExternalLink={true}
-                downloadAttr={true}
-                target={"_blank"}
+                target="_blank"
                 href={pdfURL}
                 content="Download PDF"
+                onClick={() => {
+                  trackClickButton("downloadPdf", props.paperId);
+                }}
+                isExternalLink
+                downloadAttr
               />
             </>
           )}
@@ -131,5 +142,15 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   }
   return null;
 };
+
+function trackClickButton(actionTag: Scinapse.ActionTicket.ActionTagType, paperId: number) {
+  ActionTicketManager.trackTicket({
+    pageType: "paperShow",
+    actionType: "fire",
+    actionArea: "pdfViewer",
+    actionTag,
+    actionLabel: String(paperId),
+  });
+}
 
 export default withStyles<typeof PDFViewer>(styles)(PDFViewer);

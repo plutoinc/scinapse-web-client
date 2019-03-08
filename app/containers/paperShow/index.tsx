@@ -262,6 +262,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               <div>
                 {this.getFullTextNavBar()}
                 <PDFViewer
+                  paperId={paper.id}
                   onLoadSuccess={this.handleSucceedToLoadPDF}
                   onFailed={this.handleFailedToLoadPDF}
                   filename={paper.title}
