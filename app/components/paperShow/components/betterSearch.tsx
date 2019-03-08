@@ -108,9 +108,9 @@ const BetterSearch: React.FunctionComponent<BetterSearchProps & RouteComponentPr
           ActionTicketManager.trackTicket({
             pageType: "paperShow",
             actionType: "fire",
-            actionArea: "fosSuggestion",
+            actionArea: "betterThanGoogle",
             actionTag: "fos",
-            actionLabel: String(fos.id),
+            actionLabel: fos.fos,
           });
           handleSubmitQuery(fos.fos, props.dispatch, props.history);
         }}

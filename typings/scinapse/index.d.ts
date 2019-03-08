@@ -39,6 +39,8 @@ declare namespace Scinapse {
       | "query"
       | "downloadPdf"
       | "source"
+      | "viewMorePDF"
+      | "viewLessPDF"
       | "addToCollection"
       | "removeFromCollection"
       | "citePaper"
@@ -82,7 +84,8 @@ declare namespace Scinapse {
       | "innerSearchBox"
       | "readingNowPaperList"
       | "filter"
-      | "betterThanGoogle";
+      | "betterThanGoogle"
+      | "pdfViewer";
 
     type PageType =
       | "paperShow"
