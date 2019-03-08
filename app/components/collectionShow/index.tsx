@@ -487,21 +487,17 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
 
     if (collection && papersInCollection && papersInCollection.length > 0) {
       return papersInCollection.map(paper => {
-        const isRemoved = collectionShow.removedPaperIds && collectionShow.removedPaperIds.has(paper.paperId);
-        if (paper && !isRemoved) {
-          return (
-            <CollectionPaperItem
-              currentUser={currentUser}
-              pageType="collectionShow"
-              paperNote={paper.note ? paper.note : ""}
-              paper={paper.paper}
-              collection={collection}
-              onRemovePaperCollection={this.removePaperFromCollection}
-              key={paper.paperId}
-            />
-          );
-        }
-        return null;
+        return (
+          <CollectionPaperItem
+            currentUser={currentUser}
+            pageType="collectionShow"
+            paperNote={paper.note ? paper.note : ""}
+            paper={paper.paper}
+            collection={collection}
+            onRemovePaperCollection={this.removePaperFromCollection}
+            key={paper.paperId}
+          />
+        );
       });
     } else {
       return (

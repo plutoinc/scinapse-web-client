@@ -14,7 +14,6 @@ export interface CollectionShowState
       sortType: AUTHOR_PAPER_LIST_SORT_TYPES;
       searchKeyword: string;
       paperIds: number | number[];
-      removedPaperIds: Set<number> | null;
     }> {}
 
 export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
@@ -29,7 +28,6 @@ export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
   sortType: "RECENTLY_ADDED",
   searchKeyword: "",
   paperIds: [],
-  removedPaperIds: null,
 };
 
 export function reducer(
@@ -108,31 +106,28 @@ export function reducer(
     case ACTION_TYPES.GLOBAL_FAILED_TO_ADD_PAPER_TO_COLLECTION:
     case ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_FROM_COLLECTION: {
       if (action.payload.collection.id === state.mainCollectionId) {
-        const paperIds = action.payload.paperIds;
-        const removedPaperIds = state.removedPaperIds
-          ? new Set([...Array.from(state.removedPaperIds), ...paperIds])
-          : new Set(paperIds);
+        const removePaperIds = action.payload.paperIds;
+        if (typeof state.paperIds === "object") {
+          const paperIndex = state.paperIds.indexOf(removePaperIds[0]);
+          const paperIdsLength = state.paperIds.length;
 
-        return {
-          ...state,
-          removedPaperIds,
-        };
-      }
-      return state;
-    }
+          const newPaperIds = [
+            ...state.paperIds.slice(0, paperIndex),
+            ...state.paperIds.slice(paperIndex + 1, paperIdsLength),
+          ];
 
-    case ACTION_TYPES.GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION:
-    case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION: {
-      const paperIds = action.payload.paperIds;
-
-      if (state.removedPaperIds && action.payload.collection.id === state.mainCollectionId) {
-        const newRemovedPaperIdsArray = [...Array.from(state.removedPaperIds)].filter(id => {
-          return !paperIds.includes(id);
-        });
-        return {
-          ...state,
-          removedPaperIds: new Set(newRemovedPaperIdsArray),
-        };
+          return {
+            ...state,
+            paperIds: newPaperIds,
+            papersTotalCount: newPaperIds.length,
+          };
+        } else {
+          return {
+            ...state,
+            paperIds: [],
+            papersTotalCount: 0,
+          };
+        }
       }
       return state;
     }
