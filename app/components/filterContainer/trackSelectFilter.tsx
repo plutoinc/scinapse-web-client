@@ -9,6 +9,6 @@ export function trackSelectFilter(actionType: FILTER_BOX_TYPE, actionValue: stri
     actionType: "fire",
     actionArea: "filter",
     actionTag: actionType,
-    actionLabel: actionValue,
+    actionLabel: String(actionValue),
   });
 }
