@@ -131,7 +131,7 @@ export async function serverSideRender({
   const renderedHTML = ReactDOMServer.renderToString(
     <CssInjector context={context}>
       <Provider store={store}>
-        <StaticRouter location={url} context={routeContext}>
+        <StaticRouter location={pathname + stringify(queryParams, { addQueryPrefix: true })} context={routeContext}>
           <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
             <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
               <RootRoutes />
