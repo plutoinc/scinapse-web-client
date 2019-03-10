@@ -205,7 +205,13 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
 
   ******** */
   const path = event.path;
-  const queryParamsObj = event.queryStringParameters;
+
+  const rawQueryParamsObj = event.queryStringParameters;
+  let queryParamsObj: any = {};
+  if (rawQueryParamsObj) {
+    queryParamsObj = JSON.parse(decodeURIComponent(JSON.stringify(rawQueryParamsObj)));
+  }
+
   const isDevDemoRequest = queryParamsObj && queryParamsObj.branch;
   let succeededToServerRendering = false;
   let version: string;
