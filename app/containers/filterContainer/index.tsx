@@ -183,14 +183,14 @@ function getJournalFilter(props: FilterContainerProps) {
 }
 
 const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => {
-  const [isClient, setIsClient] = React.useState(!EnvChecker.isOnServer());
+  const { articleSearchState, makeNewFilterLink } = props;
+  const [isClient, setIsClient] = React.useState(false);
 
   React.useEffect(() => {
     setIsClient(!EnvChecker.isOnServer());
   }, []);
 
-  const { articleSearchState, makeNewFilterLink } = props;
-  if (!articleSearchState.aggregationData || !isClient) {
+  if (!isClient) {
     return null;
   }
 
@@ -198,7 +198,7 @@ const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => 
     <div
       className={classNames({
         [styles.filterContainer]: true,
-        [`${styles.filterContainer} ${styles.loading}`]: articleSearchState.isContentLoading,
+        [styles.loading]: articleSearchState.isContentLoading,
       })}
     >
       {articleSearchState.isContentLoading ? <div className={styles.filterLoadingWrapper} /> : null}
