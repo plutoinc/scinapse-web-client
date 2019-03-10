@@ -44,6 +44,7 @@ export interface ServerSideRenderParams {
 const SITEMAP_REGEX = /^\/sitemap(\/sitemap_[0-9]+\.xml)?\/?$/;
 
 export function getPathWithQueryParams(pathName: string, queryParams: object | null) {
+  console.log("QUERYPARAMS???????", queryParams);
   if (queryParams) {
     const stringifiedQueryParams = stringify(queryParams, {
       addQueryPrefix: true,
@@ -66,6 +67,14 @@ export async function serverSideRender({
   const url = URL.parse(requestUrl);
   const pathname = url.pathname!;
   const queryParams = getQueryParamsObject(queryParamsObject || url.search || "");
+  console.log(url, " ============================== parsed requestUrl");
+  console.log(pathname, " ========================== pathname");
+  console.log(queryParams, " = =================================== queryParams");
+  console.log(queryParamsObject, " = = == = == = = =queryParamsObj", url.search, " ======== url search");
+  console.log(
+    getPathWithQueryParams(pathname, queryParams),
+    "====================== getPathWithQueryParams(pathname, queryParams)"
+  );
   // Initialize and make Redux store per each request
   StoreManager.initializeStore(getPathWithQueryParams(pathname, queryParams));
   const store = StoreManager.store;

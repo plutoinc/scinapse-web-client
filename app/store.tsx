@@ -25,6 +25,7 @@ class StoreManager {
 
   public setHistoryObject(initialRequest?: string) {
     if (EnvChecker.isOnServer()) {
+      console.log("INITIAL REQUEST????? ==== ", initialRequest);
       this._history = createMemoryHistory({
         initialEntries: [initialRequest || "/"],
       });
