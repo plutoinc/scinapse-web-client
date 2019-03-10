@@ -60,6 +60,7 @@ interface SliderState {
 class Slider extends React.PureComponent<SliderProps, SliderState> {
   public constructor(props: SliderProps) {
     super(props);
+
     this.state = {
       bubbleNode: null,
       currentBubble: null,
