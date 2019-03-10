@@ -4,11 +4,9 @@ import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import { AppState } from "../../reducers";
-import * as Actions from "./actions";
 import SearchList from "./components/searchList";
-import FilterContainer from "../../containers/filterContainer";
 import NoResult from "./components/noResult";
-import PapersQueryFormatter, { SearchPageQueryParamsObject, FilterObject } from "../../helpers/papersQueryFormatter";
+import PapersQueryFormatter, { SearchPageQueryParamsObject } from "../../helpers/papersQueryFormatter";
 import formatNumber from "../../helpers/formatNumber";
 import { ArticleSearchContainerProps } from "./types";
 import { Footer } from "../layouts";
@@ -21,7 +19,6 @@ import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import { UserDevice } from "../layouts/records";
 import AuthorSearchItem from "../authorSearchItem";
 import restoreScroll from "../../helpers/scrollRestoration";
-import { ChangeRangeInputParams } from "../../constants/paperSearch";
 import ErrorPage from "../error/errorPage";
 import NoResultInSearch from "./components/noResultInSearch";
 import TabNavigationBar from "../common/tabNavigationBar";
@@ -156,12 +153,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
               />
               {this.getPaginationComponent()}
             </div>
-            <FilterContainer
-              makeNewFilterLink={this.makeNewFilterLink}
-              handleChangeRangeInput={this.setRangeInput}
-              articleSearchState={articleSearchState}
-              handleToggleExpandingFilter={this.handleToggleExpandingFilter}
-            />
           </div>
           <Footer containerStyle={this.getContainerStyle()} />
         </div>
@@ -334,23 +325,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     }
   };
 
-  private handleToggleExpandingFilter = () => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.toggleExpandingFilter());
-  };
-
-  private makeNewFilterLink = (newFilter: FilterObject) => {
-    const queryParamsObject = this.getUrlDecodedQueryParamsObject();
-
-    return `/search?${PapersQueryFormatter.stringifyPapersQuery({
-      query: queryParamsObject.query,
-      page: 1,
-      sort: queryParamsObject.sort,
-      filter: { ...queryParamsObject.filter, ...newFilter },
-    })}`;
-  };
-
   private makePaginationLink = (page: number) => {
     const queryParamsObject = this.getUrlDecodedQueryParamsObject();
     const queryParams = PapersQueryFormatter.stringifyPapersQuery({
@@ -359,12 +333,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     });
 
     return `/search?${queryParams}`;
-  };
-
-  private setRangeInput = (params: ChangeRangeInputParams) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changeRangeInput(params));
   };
 
   private getUrlDecodedQueryParamsObject(): SearchPageQueryParamsObject {
