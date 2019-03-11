@@ -63,6 +63,7 @@ export async function serverSideRender({
   headers,
 }: ServerSideRenderParams) {
   // Parse request pathname and queryParams
+  console.log(requestUrl);
   const url = URL.parse(requestUrl);
   const pathname = url.pathname!;
   const queryParams = getQueryParamsObject(queryParamsObject || url.search || "");
