@@ -84,7 +84,7 @@ export function removePaperFromCollection(params: RemovePapersFromCollectionPara
       dispatch(ActionCreators.startToRemovePaperFromCollection(params));
 
       await CollectionAPI.removePapersFromCollection(params);
-      dispatch(ActionCreators.succeededToRemovePaperFromCollection());
+      dispatch(ActionCreators.succeededToRemovePaperFromCollection(params));
     } catch (err) {
       dispatch(ActionCreators.failedToRemovePaperFromCollection(params));
       const error = PlutoAxios.getGlobalError(err);

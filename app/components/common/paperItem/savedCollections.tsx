@@ -15,9 +15,11 @@ class SavedCollections extends React.PureComponent<SavedCollectionsProps> {
   public render() {
     const { collections } = this.props;
 
-    const itemsLength = collections.length;
+    const targetCollections = collections.slice(0, 2);
 
-    const collectionItems = collections.map((collection, index) => {
+    const itemsLength = targetCollections.length;
+
+    const collectionItems = targetCollections.map((collection, index) => {
       const isLast = index === itemsLength - 1;
       const rawTitle = collection.title;
       let finalTitle;

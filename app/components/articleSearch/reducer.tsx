@@ -2,7 +2,7 @@ import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from "./records";
 import { SearchResult } from "../../api/search";
 import { ChangeRangeInputParams, FILTER_TYPE_HAS_RANGE, FILTER_RANGE_TYPE } from "../../constants/paperSearch";
-import { AddPaperToCollectionParams } from "../../api/collection";
+import { AddPaperToCollectionParams, RemovePapersFromCollectionParams } from "../../api/collection";
 import { Paper } from "../../model/paper";
 
 export function reducer(
@@ -128,11 +128,7 @@ export function reducer(
     case ACTION_TYPES.GLOBAL_SUCCEEDED_ADD_PAPER_TO_COLLECTION: {
       const payload: AddPaperToCollectionParams = action.payload;
 
-      const collection = payload.collection;
-      const newSavedInCollection = {
-        id: collection.id,
-        title: collection.title,
-      };
+      const newSavedInCollection = payload.collection;
       const paperId = payload.paperId;
 
       const newSearchItemsToShow: Paper[] = state.searchItemsToShow.map(paper => {
@@ -142,8 +138,45 @@ export function reducer(
             relation: {
               savedInCollections:
                 !!paper.relation && paper.relation.savedInCollections.length >= 1
-                  ? [newSavedInCollection, ...paper.relation.savedInCollections].slice(0, 2)
+                  ? [newSavedInCollection, ...paper.relation.savedInCollections]
                   : [newSavedInCollection],
+            },
+          };
+          return newPaper;
+        } else {
+          return paper;
+        }
+      });
+
+      return {
+        ...state,
+        searchItemsToShow: newSearchItemsToShow,
+      };
+    }
+
+    case ACTION_TYPES.GLOBAL_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION: {
+      const payload: RemovePapersFromCollectionParams = action.payload;
+
+      const removedSavedInCollection = payload.collection;
+      const paperId = payload.paperIds[0];
+
+      const newSearchItemsToShow: Paper[] = state.searchItemsToShow.map(paper => {
+        if (paper.id === paperId) {
+          const removedCollectionIndex: number = paper.relation.savedInCollections
+            .map(data => {
+              return data.id;
+            })
+            .indexOf(removedSavedInCollection.id);
+          const newPaper = {
+            ...paper,
+            relation: {
+              savedInCollections: [
+                ...paper.relation.savedInCollections.slice(0, removedCollectionIndex),
+                ...paper.relation.savedInCollections.slice(
+                  removedCollectionIndex + 1,
+                  paper.relation.savedInCollections.length
+                ),
+              ],
             },
           };
           return newPaper;

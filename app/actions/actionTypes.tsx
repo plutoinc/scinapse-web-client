@@ -654,9 +654,10 @@ export const ActionCreators = {
     });
   },
 
-  succeededToRemovePaperFromCollection() {
+  succeededToRemovePaperFromCollection(payload: { collection: Collection; paperIds: number[] }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION,
+      payload,
     });
   },
 
