@@ -15,6 +15,11 @@ interface NextPaperTabProps {
 
 const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = props => {
   const { paperList } = props;
+
+  if (!paperList || paperList.length === 0) {
+    return null;
+  }
+
   const nextPaper = paperList[0];
 
   return (
