@@ -34,7 +34,7 @@ export interface SSRResult {
 }
 
 export interface ServerSideRenderParams {
-  requestUrl: string;
+  requestPath: string;
   scriptVersion: string;
   queryParamsObject?: object;
   version?: string;
@@ -56,15 +56,15 @@ export function getPathWithQueryParams(pathName: string, queryParams: object | n
 }
 
 export async function serverSideRender({
-  requestUrl,
+  requestPath,
   scriptVersion,
   queryParamsObject,
   version,
   headers,
 }: ServerSideRenderParams) {
   // Parse request pathname and queryParams
-  const url = URL.parse(requestUrl);
-  const pathname = url.pathname!;
+  const url = URL.parse(requestPath + stringify(queryParamsObject, { addQueryPrefix: true }));
+  const pathname = url.pathname || "/";
   const queryParams = getQueryParamsObject(queryParamsObject || url.search || "");
   // Initialize and make Redux store per each request
   StoreManager.initializeStore(getPathWithQueryParams(pathname, queryParams));
@@ -196,7 +196,13 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
 
   ******** */
   const path = event.path;
-  const queryParamsObj = event.queryStringParameters;
+
+  const rawQueryParamsObj = event.queryStringParameters;
+  let queryParamsObj: any = {};
+  if (rawQueryParamsObj) {
+    queryParamsObj = JSON.parse(decodeURIComponent(JSON.stringify(rawQueryParamsObj)));
+  }
+
   const isDevDemoRequest = queryParamsObj && queryParamsObj.branch;
   let succeededToServerRendering = false;
   let version: string;
@@ -239,7 +245,7 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
 
   const normalRender = async (): Promise<SSRResult> => {
     const ssrResult = await serverSideRender({
-      requestUrl: path,
+      requestPath: path,
       scriptVersion: bundledJsForBrowserPath,
       queryParamsObject: queryParamsObj,
       version,

@@ -41,10 +41,6 @@ function mapStateToProps(state: AppState) {
 class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
   private cancelToken = axios.CancelToken.source();
 
-  public constructor(props: ArticleSearchContainerProps) {
-    super(props);
-  }
-
   public async componentDidMount() {
     const { configuration, dispatch, match, location } = this.props;
 

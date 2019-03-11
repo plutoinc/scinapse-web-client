@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import * as classNames from "classnames";
 import Checkbox from "@material-ui/core/Checkbox";
+import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { ChangeRangeInputParams } from "../../constants/paperSearch";
 import { FilterObject } from "../../helpers/papersQueryFormatter";
@@ -12,7 +13,7 @@ import { toggleElementFromArray } from "../../helpers/toggleElementFromArray";
 import FilterResetButton from "../../components/filterContainer/filterResetButton";
 import YearRangeSlider from "./yearRangeSlider";
 import Icon from "../../icons";
-import Tooltip from "@material-ui/core/Tooltip";
+import EnvChecker from "../../helpers/envChecker";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {
@@ -183,7 +184,13 @@ function getJournalFilter(props: FilterContainerProps) {
 
 const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => {
   const { articleSearchState, makeNewFilterLink } = props;
-  if (!articleSearchState.aggregationData) {
+  const [isClient, setIsClient] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsClient(!EnvChecker.isOnServer());
+  }, []);
+
+  if (!isClient) {
     return null;
   }
 
@@ -191,7 +198,7 @@ const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => 
     <div
       className={classNames({
         [styles.filterContainer]: true,
-        [`${styles.filterContainer} ${styles.loading}`]: articleSearchState.isContentLoading,
+        [styles.loading]: articleSearchState.isContentLoading,
       })}
     >
       {articleSearchState.isContentLoading ? <div className={styles.filterLoadingWrapper} /> : null}
