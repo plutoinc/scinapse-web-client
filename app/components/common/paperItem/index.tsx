@@ -120,7 +120,9 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
         className={`${wrapperClassName ? wrapperClassName : styles.paperItemWrapper}`}
       >
         <div className={styles.contentSection}>
-          {!!relation ? <SavedCollections collections={relation.savedInCollections} /> : null}
+          {!!relation && relation.savedInCollections.length >= 1 ? (
+            <SavedCollections collections={relation.savedInCollections} />
+          ) : null}
           <Title
             pageType={pageType}
             actionArea={actionArea}
