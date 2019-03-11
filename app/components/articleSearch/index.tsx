@@ -91,8 +91,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     const { isContentLoading, totalElements, searchItemsToShow } = articleSearchState;
     const queryParams = this.getUrlDecodedQueryParamsObject();
 
-    console.log(queryParams, " =============================================================================== ");
-
     if (articleSearchState.pageErrorCode) {
       return <ErrorPage errorNum={articleSearchState.pageErrorCode} />;
     }
@@ -367,11 +365,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
 
   private getUrlDecodedQueryParamsObject(): SearchPageQueryParamsObject {
     const { location } = this.props;
-
-    console.log(JSON.stringify(location, null, 2), " ======= =========== location ");
     const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
-
-    console.log(JSON.stringify(rawQueryParamsObj, null, 2), "========== rawQueryParamsObj");
 
     return {
       query: SafeURIStringHandler.decode(rawQueryParamsObj.query),
