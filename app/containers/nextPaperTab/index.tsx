@@ -23,15 +23,13 @@ const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = props => {
   const nextPaper = paperList[0];
 
   return (
-    <div className={styles.nextPaperTabWrapper}>
+    <Link className={styles.nextPaperTabWrapper} to={`/papers/${nextPaper.id}`}>
       <div className={styles.nextPaperTab}>
         <span className={styles.nextPaperTabTitle}>View next paper</span>
-        <Link className={styles.nextPaperTabContent} to={`/papers/${nextPaper.id}`}>
-          {nextPaper.title}
-        </Link>
+        <span className={styles.nextPaperTabContent}>{nextPaper.title}</span>
         <Icon className={styles.arrowRightIcon} icon="ARROW_RIGHT" />
       </div>
-    </div>
+    </Link>
   );
 };
 
