@@ -38,6 +38,7 @@ import ErrorPage from "../../components/error/errorPage";
 import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
 import EnvChecker from "../../helpers/envChecker";
 import BetterSearch from "../../components/paperShow/components/betterSearch";
+import NextPaperTab from "../nextPaperTab";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
@@ -346,6 +347,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         <div ref={el => (this.footerWrapper = el)}>
           <Footer />
         </div>
+        <NextPaperTab />
       </>
     );
   }
