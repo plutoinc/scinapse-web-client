@@ -1,4 +1,5 @@
 import * as React from "react";
+import { History } from "history";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import * as classNames from "classnames";
 import { withStyles } from "../../../helpers/withStylesHelper";
@@ -22,6 +23,8 @@ interface YearRangeSliderProps extends RouteComponentProps<null> {
 }
 
 interface ColumnProps {
+  queryParamsString: string;
+  history: History;
   width: string;
   height: string;
   active: boolean;
@@ -30,7 +33,6 @@ interface ColumnProps {
   isSelectMode: boolean;
   filteredYearSet: YearSet | undefined;
   filterHeight: string;
-  onClickColumn: () => void;
 }
 
 const Column: React.FunctionComponent<ColumnProps> = React.memo(props => {
@@ -48,11 +50,21 @@ const Column: React.FunctionComponent<ColumnProps> = React.memo(props => {
     height: props.height,
   };
 
+  function handleClickColumn() {
+    goToYearFilteredSearchResultPage({
+      qs: props.queryParamsString,
+      history: props.history,
+      min: props.yearSet.year,
+      max: props.yearSet.year,
+    });
+  }
+
   return (
     <>
       {props.filteredYearSet &&
+        props.active &&
         props.filteredYearSet.docCount > 0 && (
-          <div style={filterColumnStyle} className={styles.filterColumn} onClick={props.onClickColumn} />
+          <div style={filterColumnStyle} className={styles.filterColumn} onClick={handleClickColumn} />
         )}
       <div
         style={normalColumnStyle}
@@ -60,7 +72,7 @@ const Column: React.FunctionComponent<ColumnProps> = React.memo(props => {
           [styles.column]: true,
           [styles.activeColumn]: props.active,
         })}
-        onClick={props.onClickColumn}
+        onClick={handleClickColumn}
       >
         <div
           className={classNames({
@@ -132,6 +144,8 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
         return (
           <Column
             key={yearSet.year}
+            queryParamsString={queryParamsStr}
+            history={props.history}
             width={`${stepWidth}px`}
             height={`${Math.round((yearSet.docCount / maxDocCount) * 100)}%`}
             active={minValue <= yearSet.year && yearSet.year <= maxValue}
@@ -140,14 +154,6 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
             yearSet={yearSet}
             filteredYearSet={filteredYearSet}
             filterHeight={filterHeight}
-            onClickColumn={() =>
-              goToYearFilteredSearchResultPage({
-                qs: queryParamsStr,
-                min: yearSet.year,
-                max: yearSet.year,
-                history: props.history,
-              })
-            }
           />
         );
       });
