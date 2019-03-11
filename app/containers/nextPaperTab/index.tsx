@@ -1,10 +1,10 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { Paper } from "../../model/paper";
+import { createSelector } from "reselect";
 import { connect } from "react-redux";
+import { Paper } from "../../model/paper";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { AppState } from "../../reducers";
-import { createSelector } from "reselect";
 import { getPaperEntities, getDenormalizedPapers } from "../../selectors/papersSelector";
 import Icon from "../../icons";
 const styles = require("./nextPaperTab.scss");
