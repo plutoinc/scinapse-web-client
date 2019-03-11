@@ -64,7 +64,6 @@ export async function serverSideRender({
 }: ServerSideRenderParams) {
   // Parse request pathname and queryParams
   const url = URL.parse(requestPath + stringify(queryParamsObject, { addQueryPrefix: true }));
-  console.log(url, "parsed URL");
   const pathname = url.pathname || "/";
   const queryParams = getQueryParamsObject(queryParamsObject || url.search || "");
   // Initialize and make Redux store per each request
