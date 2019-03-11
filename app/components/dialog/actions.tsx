@@ -58,7 +58,12 @@ export function addPaperToCollection(params: AddPaperToCollectionParams) {
       );
 
       const res = await CollectionAPI.addPaperToCollection(params);
-      dispatch(ActionCreators.succeededToAddPaperToCollectionInGlobalDialog());
+      dispatch(
+        ActionCreators.succeededToAddPaperToCollectionInGlobalDialog({
+          paperId: params.paperId,
+          collection: params.collection,
+        })
+      );
       return res;
     } catch (err) {
       dispatch(

@@ -633,9 +633,10 @@ export const ActionCreators = {
     });
   },
 
-  succeededToAddPaperToCollectionInGlobalDialog() {
+  succeededToAddPaperToCollectionInGlobalDialog(payload: { collection: Collection; paperId: number }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_SUCCEEDED_ADD_PAPER_TO_COLLECTION,
+      payload,
     });
   },
 
