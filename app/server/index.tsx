@@ -34,7 +34,7 @@ export interface SSRResult {
 }
 
 export interface ServerSideRenderParams {
-  requestUrl: string;
+  requestPath: string;
   scriptVersion: string;
   queryParamsObject?: object;
   version?: string;
@@ -56,16 +56,16 @@ export function getPathWithQueryParams(pathName: string, queryParams: object | n
 }
 
 export async function serverSideRender({
-  requestUrl,
+  requestPath,
   scriptVersion,
   queryParamsObject,
   version,
   headers,
 }: ServerSideRenderParams) {
   // Parse request pathname and queryParams
-  console.log(requestUrl);
-  const url = URL.parse(requestUrl);
-  const pathname = url.pathname!;
+  const url = URL.parse(requestPath + stringify(queryParamsObject, { addQueryPrefix: true }));
+  console.log(url, "parsed URL");
+  const pathname = url.pathname || "/";
   const queryParams = getQueryParamsObject(queryParamsObject || url.search || "");
   // Initialize and make Redux store per each request
   StoreManager.initializeStore(getPathWithQueryParams(pathname, queryParams));
@@ -123,7 +123,7 @@ export async function serverSideRender({
   const renderedHTML = ReactDOMServer.renderToString(
     <CssInjector context={context}>
       <Provider store={store}>
-        <StaticRouter location={pathname + stringify(queryParams, { addQueryPrefix: true })} context={routeContext}>
+        <StaticRouter location={url} context={routeContext}>
           <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
             <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
               <RootRoutes />
@@ -246,7 +246,7 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
 
   const normalRender = async (): Promise<SSRResult> => {
     const ssrResult = await serverSideRender({
-      requestUrl: path,
+      requestPath: path,
       scriptVersion: bundledJsForBrowserPath,
       queryParamsObject: queryParamsObj,
       version,
