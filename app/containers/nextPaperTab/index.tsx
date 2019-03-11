@@ -34,7 +34,7 @@ const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = props => {
 };
 
 function getPaperIds(state: AppState) {
-  return state.paperShow.otherPaperIdsFromAuthor;
+  return state.paperShow.relatedPaperIds;
 }
 
 const getMemoizedRelatedPapers = createSelector([getPaperIds, getPaperEntities], getDenormalizedPapers);
