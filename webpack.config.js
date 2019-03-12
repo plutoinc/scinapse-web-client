@@ -6,7 +6,7 @@ require("extract-text-webpack-plugin");
 
 module.exports = {
   mode: "development",
-  entry: ["babel-polyfill", "./app/clientIndex.tsx"],
+  entry: ["@babel/polyfill", "./app/clientIndex.tsx"],
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
