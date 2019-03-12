@@ -80,6 +80,7 @@ const ICONS: { [key: string]: any } = {
   FILTER_RESULT_BUTTON: require("./filter-results-button.svg").default,
   COMPLETE: require("./complete.svg").default,
   IMPACT_FACTOR: require("./impact-factor.svg").default,
+  ARROW_RIGHT: require("./arrow-right.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)
