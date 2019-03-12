@@ -162,23 +162,24 @@ export function reducer(
 
       const newSearchItemsToShow: Paper[] = state.searchItemsToShow.map(paper => {
         if (paper.id === paperId) {
-          const removedCollectionIndex: number = paper.relation.savedInCollections
+          const savedInCollection = paper.relation.savedInCollections;
+
+          const removedIndex: number = savedInCollection
             .map(data => {
               return data.id;
             })
             .indexOf(removedSavedInCollection.id);
+
           const newPaper = {
             ...paper,
             relation: {
               savedInCollections: [
-                ...paper.relation.savedInCollections.slice(0, removedCollectionIndex),
-                ...paper.relation.savedInCollections.slice(
-                  removedCollectionIndex + 1,
-                  paper.relation.savedInCollections.length
-                ),
+                ...savedInCollection.slice(0, removedIndex),
+                ...savedInCollection.slice(removedIndex + 1, savedInCollection.length),
               ],
             },
           };
+
           return newPaper;
         } else {
           return paper;
