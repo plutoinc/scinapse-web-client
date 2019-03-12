@@ -26,7 +26,6 @@ import ErrorPage from "../error/errorPage";
 import NoResultInSearch from "./components/noResultInSearch";
 import TabNavigationBar from "../common/tabNavigationBar";
 import SortBar from "./components/SortBar";
-import { ArticleSearchState } from "./records";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
