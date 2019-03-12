@@ -200,13 +200,11 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
   const rawQueryParamsObj = event.queryStringParameters;
   const queryParamsObj: any = {};
   if (rawQueryParamsObj) {
-    console.log("========== Trying to URI decode query params ==========");
     for (const key in rawQueryParamsObj) {
       if (rawQueryParamsObj.hasOwnProperty(key)) {
         queryParamsObj[key] = decodeURIComponent(rawQueryParamsObj[key]);
       }
     }
-    console.log("========== Succeeded to URI decode query params ==========", queryParamsObj);
   }
 
   const isDevDemoRequest = queryParamsObj && queryParamsObj.branch;
