@@ -14,6 +14,7 @@ import FilterResetButton from "../../components/filterContainer/filterResetButto
 import YearRangeSlider from "./yearRangeSlider";
 import Icon from "../../icons";
 import EnvChecker from "../../helpers/envChecker";
+import FilterSaveBox from "./filterSaveBox";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {
@@ -202,13 +203,7 @@ const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => 
       })}
     >
       {articleSearchState.isContentLoading ? <div className={styles.filterLoadingWrapper} /> : null}
-      <div className={styles.filterContainerTitleBox}>
-        <div className={styles.filterTitleBox}>
-          <Icon className={styles.filterResultButton} icon="FILTER_RESULT_BUTTON" />
-          <span className={styles.filterContainerTitle}>PAPER FILTERS</span>
-          <FilterResetButton makeNewFilterLink={makeNewFilterLink} />
-        </div>
-      </div>
+      <FilterSaveBox makeNewFilterLink={makeNewFilterLink} />
       {getPublicationFilterBox(props)}
       {getFOSFilterBox(props)}
       {getJournalFilter(props)}

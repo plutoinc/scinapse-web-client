@@ -1,0 +1,115 @@
+.filterTitleBox {
+  position: relative;
+}
+
+.filterResultButton {
+  margin-right: 14px;
+  color: $gray6;
+
+  svg {
+    width: 13px;
+    height: 9px;
+  }
+}
+
+.filterContainerTitle {
+  font-size: 14px;
+  font-weight: bold;
+  color: $gray6;
+}
+
+.filterContainerTitleBox {
+  padding: 12px;
+  border-top: solid 1px $gray3;
+  max-height: 100%;
+  overflow: hidden;
+  cursor: pointer;
+
+  &:first-of-type {
+    border-top: 0;
+  }
+}
+
+.openFilterContainerTitleBox {
+  @extend .filterContainerTitleBox;
+  border-bottom: solid 1px $gray2;
+  background-color: white;
+}
+
+.popperWrapper {
+  @include popper-paper(100%);
+  padding: 0;
+  margin: 0;
+
+  .defaultFilterItemTitle {
+    font-size: 14px;
+    color: $gray5;
+    margin-left: 12px;
+  }
+
+  .defaultFilterItemIcon {
+    color: $gray5;
+    svg {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: top;
+    }
+  }
+
+  .filterItemTitle {
+    @extend .defaultFilterItemTitle;
+    color: $gray6;
+  }
+
+  .filterItemIcon {
+    color: $gray4;
+    display: inline-block;
+    vertical-align: top;
+
+    svg {
+      width: 20px;
+      height: 10px;
+    }
+  }
+
+  .filterItemWrapper {
+    @extend %popper-item;
+    height: 32px;
+    border: none;
+    padding: 8px 12px;
+
+    &:hover {
+      background-color: $gray1;
+      transition: 0.2s;
+    }
+  }
+}
+
+.upArrow {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  color: #979797;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  margin-right: 8px;
+
+  svg {
+    display: inline-block;
+    vertical-align: top;
+    width: 12px;
+    height: 7px;
+  }
+}
+
+.downArrow {
+  @extend .upArrow;
+
+  svg {
+    transform: rotate(180deg);
+  }
+}
