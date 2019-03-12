@@ -198,10 +198,14 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
   const path = event.path;
 
   const rawQueryParamsObj = event.queryStringParameters;
-  let queryParamsObj: any = {};
+  const queryParamsObj: any = {};
   if (rawQueryParamsObj) {
     console.log("========== Trying to URI decode query params ==========");
-    queryParamsObj = JSON.parse(decodeURIComponent(JSON.stringify(rawQueryParamsObj)));
+    for (const key in rawQueryParamsObj) {
+      if (rawQueryParamsObj.hasOwnProperty(key)) {
+        queryParamsObj[key] = decodeURIComponent(rawQueryParamsObj[key]);
+      }
+    }
     console.log("========== Succeeded to URI decode query params ==========", queryParamsObj);
   }
 
