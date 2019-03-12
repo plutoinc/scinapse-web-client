@@ -58,7 +58,12 @@ export function addPaperToCollection(params: AddPaperToCollectionParams) {
       );
 
       const res = await CollectionAPI.addPaperToCollection(params);
-      dispatch(ActionCreators.succeededToAddPaperToCollectionInGlobalDialog());
+      dispatch(
+        ActionCreators.succeededToAddPaperToCollectionInGlobalDialog({
+          paperId: params.paperId,
+          collection: params.collection,
+        })
+      );
       return res;
     } catch (err) {
       dispatch(
@@ -79,7 +84,7 @@ export function removePaperFromCollection(params: RemovePapersFromCollectionPara
       dispatch(ActionCreators.startToRemovePaperFromCollection(params));
 
       await CollectionAPI.removePapersFromCollection(params);
-      dispatch(ActionCreators.succeededToRemovePaperFromCollection());
+      dispatch(ActionCreators.succeededToRemovePaperFromCollection(params));
     } catch (err) {
       dispatch(ActionCreators.failedToRemovePaperFromCollection(params));
       const error = PlutoAxios.getGlobalError(err);

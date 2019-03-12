@@ -633,9 +633,10 @@ export const ActionCreators = {
     });
   },
 
-  succeededToAddPaperToCollectionInGlobalDialog() {
+  succeededToAddPaperToCollectionInGlobalDialog(payload: { collection: Collection; paperId: number }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_SUCCEEDED_ADD_PAPER_TO_COLLECTION,
+      payload,
     });
   },
 
@@ -653,9 +654,10 @@ export const ActionCreators = {
     });
   },
 
-  succeededToRemovePaperFromCollection() {
+  succeededToRemovePaperFromCollection(payload: { collection: Collection; paperIds: number[] }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION,
+      payload,
     });
   },
 

@@ -2,6 +2,8 @@ import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from "./records";
 import { SearchResult } from "../../api/search";
 import { ChangeRangeInputParams, FILTER_TYPE_HAS_RANGE, FILTER_RANGE_TYPE } from "../../constants/paperSearch";
+import { AddPaperToCollectionParams, RemovePapersFromCollectionParams } from "../../api/collection";
+import { Paper } from "../../model/paper";
 
 export function reducer(
   state: ArticleSearchState = ARTICLE_SEARCH_INITIAL_STATE,
@@ -121,6 +123,73 @@ export function reducer(
       } else {
         return state;
       }
+    }
+
+    case ACTION_TYPES.GLOBAL_SUCCEEDED_ADD_PAPER_TO_COLLECTION: {
+      const payload: AddPaperToCollectionParams = action.payload;
+
+      const newSavedInCollection = payload.collection;
+      const paperId = payload.paperId;
+
+      const newSearchItemsToShow: Paper[] = state.searchItemsToShow.map(paper => {
+        if (paper.id === paperId) {
+          const newPaper = {
+            ...paper,
+            relation: {
+              savedInCollections:
+                !!paper.relation && paper.relation.savedInCollections.length >= 1
+                  ? [newSavedInCollection, ...paper.relation.savedInCollections]
+                  : [newSavedInCollection],
+            },
+          };
+          return newPaper;
+        } else {
+          return paper;
+        }
+      });
+
+      return {
+        ...state,
+        searchItemsToShow: newSearchItemsToShow,
+      };
+    }
+
+    case ACTION_TYPES.GLOBAL_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION: {
+      const payload: RemovePapersFromCollectionParams = action.payload;
+
+      const removedSavedInCollection = payload.collection;
+      const paperId = payload.paperIds[0];
+
+      const newSearchItemsToShow: Paper[] = state.searchItemsToShow.map(paper => {
+        if (paper.id === paperId) {
+          const savedInCollection = paper.relation.savedInCollections;
+
+          const removedIndex: number = savedInCollection
+            .map(data => {
+              return data.id;
+            })
+            .indexOf(removedSavedInCollection.id);
+
+          const newPaper = {
+            ...paper,
+            relation: {
+              savedInCollections: [
+                ...savedInCollection.slice(0, removedIndex),
+                ...savedInCollection.slice(removedIndex + 1, savedInCollection.length),
+              ],
+            },
+          };
+
+          return newPaper;
+        } else {
+          return paper;
+        }
+      });
+
+      return {
+        ...state,
+        searchItemsToShow: newSearchItemsToShow,
+      };
     }
 
     default: {
