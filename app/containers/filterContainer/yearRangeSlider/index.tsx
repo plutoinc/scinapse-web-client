@@ -192,6 +192,8 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
                 fromBtn: true,
               });
             }}
+            currentYear={currentYear}
+            queryParamsStr={queryParamsStr}
             isActive={minValue === currentYear && maxValue === currentYear}
             text="This Year"
           />
@@ -205,6 +207,8 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
                 fromBtn: true,
               });
             }}
+            currentYear={currentYear}
+            queryParamsStr={queryParamsStr}
             isActive={minValue === currentYear - 2 && maxValue === currentYear}
             text="Last 3 Years"
           />
@@ -218,6 +222,8 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
                 fromBtn: true,
               });
             }}
+            currentYear={currentYear}
+            queryParamsStr={queryParamsStr}
             isActive={minValue === currentYear - 4 && maxValue === currentYear}
             text="Last 5 Years"
           />

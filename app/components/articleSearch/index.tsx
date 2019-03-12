@@ -87,13 +87,38 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
   }
 
   public render() {
-    const { articleSearchState, currentUserState } = this.props;
-    const { isContentLoading, totalElements, searchItemsToShow } = articleSearchState;
+    const { articleSearchState } = this.props;
     const queryParams = this.getUrlDecodedQueryParamsObject();
 
     if (articleSearchState.pageErrorCode) {
       return <ErrorPage errorNum={articleSearchState.pageErrorCode} />;
     }
+
+    return (
+      <div className={styles.rootWrapper}>
+        <TabNavigationBar searchKeyword={articleSearchState.searchInput} />
+        <div className={styles.articleSearchContainer}>
+          {this.getResultHelmet(queryParams.query)}
+          {this.getSuggestionKeywordBox()}
+          {this.isFilterEmpty(queryParams.filter) ? this.getAuthorEntitiesSection() : null}
+          {this.getInnerContainerContent()}
+          <FilterContainer
+            makeNewFilterLink={this.makeNewFilterLink}
+            handleChangeRangeInput={this.setRangeInput}
+            articleSearchState={articleSearchState}
+            handleToggleExpandingFilter={this.handleToggleExpandingFilter}
+          />
+        </div>
+        <Footer containerStyle={this.getContainerStyle()} />
+      </div>
+    );
+  }
+
+  private getInnerContainerContent = () => {
+    const { articleSearchState, currentUserState } = this.props;
+    const { isContentLoading, totalElements, searchItemsToShow } = articleSearchState;
+
+    const queryParams = this.getUrlDecodedQueryParamsObject();
 
     const hasNoSearchResult =
       !articleSearchState.searchItemsToShow || articleSearchState.searchItemsToShow.length === 0;
@@ -105,18 +130,12 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
       articleSearchState.matchAuthors.totalElements > 0
     ) {
       return (
-        <div className={styles.rootWrapper}>
-          <TabNavigationBar searchKeyword={articleSearchState.searchInput} />
-          <div className={styles.articleSearchContainer}>
-            {this.isFilterEmpty(queryParams.filter) ? this.getAuthorEntitiesSection() : null}
-            <div className={styles.innerContainer}>
-              <NoResultInSearch
-                searchText={queryParams.query}
-                otherCategoryCount={articleSearchState.totalElements}
-                type="paper"
-              />
-            </div>
-          </div>
+        <div className={styles.innerContainer}>
+          <NoResultInSearch
+            searchText={queryParams.query}
+            otherCategoryCount={articleSearchState.totalElements}
+            type="paper"
+          />
         </div>
       );
     } else if (
@@ -125,48 +144,36 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
       articleSearchState.matchAuthors.totalElements === 0 &&
       queryParams
     ) {
-      return <NoResult searchText={queryParams.query} articleSearchState={articleSearchState} />;
+      return (
+        <div className={styles.innerContainer}>
+          <NoResult searchText={queryParams.query} articleSearchState={articleSearchState} />
+        </div>
+      );
     } else if (queryParams) {
       return (
-        <div className={styles.rootWrapper}>
-          <TabNavigationBar searchKeyword={articleSearchState.searchInput} />
-          <div className={styles.articleSearchContainer}>
-            {this.getResultHelmet(queryParams.query)}
-            {this.getSuggestionKeywordBox()}
-            {this.isFilterEmpty(queryParams.filter) ? this.getAuthorEntitiesSection() : null}
-            <div className={styles.innerContainer}>
-              <div className={styles.searchSummary}>
-                <div>
-                  <span className={styles.categoryHeader}>Publication</span>
-                  <span className={styles.categoryCount}>{formatNumber(totalElements)}</span>
-                </div>
-                <SortBar query={queryParams.query} sortOption={queryParams.sort} filter={queryParams.filter} />
-              </div>
-              <SearchList
-                currentUser={currentUserState}
-                papers={searchItemsToShow}
-                isLoading={isContentLoading}
-                searchQueryText={
-                  articleSearchState.searchFromSuggestion ? articleSearchState.suggestionKeyword : queryParams.query
-                }
-              />
-              {this.getPaginationComponent()}
+        <div className={styles.innerContainer}>
+          <div className={styles.searchSummary}>
+            <div>
+              <span className={styles.categoryHeader}>Publication</span>
+              <span className={styles.categoryCount}>{formatNumber(totalElements)}</span>
             </div>
-            <FilterContainer
-              makeNewFilterLink={this.makeNewFilterLink}
-              handleChangeRangeInput={this.setRangeInput}
-              articleSearchState={articleSearchState}
-              handleToggleExpandingFilter={this.handleToggleExpandingFilter}
-            />
+            <SortBar query={queryParams.query} sortOption={queryParams.sort} filter={queryParams.filter} />
           </div>
-          <Footer containerStyle={this.getContainerStyle()} />
+          <SearchList
+            currentUser={currentUserState}
+            papers={searchItemsToShow}
+            isLoading={isContentLoading}
+            searchQueryText={
+              articleSearchState.searchFromSuggestion ? articleSearchState.suggestionKeyword : queryParams.query
+            }
+          />
+          {this.getPaginationComponent()}
         </div>
       );
     } else {
-      // TODO: Make an error alerting page
       return null;
     }
-  }
+  };
 
   private isFilterEmpty = (filter: any) => {
     const keys = Object.keys(filter);
