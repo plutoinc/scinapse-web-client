@@ -328,7 +328,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             </div>
           </article>
           <div className={styles.rightBox}>
-            <ResearchHistory />
             <div
               ref={el => (this.rightBoxWrapper = el)}
               className={classNames({
@@ -338,6 +337,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 [styles.touchFooter]: isTouchFooter,
               })}
             >
+              <ResearchHistory paper={paper} />
               <CollectionNoteList paperId={paper.id} />
               <OtherPaperListFromAuthor />
               <RelatedPaperList />

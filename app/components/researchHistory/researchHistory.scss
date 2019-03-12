@@ -1,10 +1,30 @@
-.sectionWrapper {
+.openBoxWrapper {
+  position: relative;
+  height: 51px + 16px;
+  z-index: 25;
+}
+
+.boxWrapper {
+  border-radius: 4px;
+  box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.1);
+  width: 588px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: white;
+}
+
+.headerWrapper {
   position: relative;
   height: 51px;
   border-radius: 4px;
   background-color: $gray0;
-  margin-top: 36px;
   padding: 16px;
+  cursor: pointer;
+
+  &.openHeaderWrapper {
+    background-color: white;
+  }
 }
 
 .historyIcon {
@@ -40,9 +60,11 @@
   font-size: 12px;
   font-weight: 500;
   line-height: 1;
+  text-align: center;
   color: white;
   padding: 4px 8px;
   margin-right: 8px;
+  cursor: pointer;
 }
 
 .arrowIcon {
@@ -52,10 +74,17 @@
   width: 20px;
   height: 20px;
   color: $gray5;
+  cursor: pointer;
 
   svg {
-    transform: rotate(180deg);
     width: 12px;
     height: 7px;
   }
+}
+
+.paperListWrapper {
+  padding: 0 16px;
+  max-height: 535px;
+  padding-bottom: 16px;
+  overflow-y: auto;
 }
