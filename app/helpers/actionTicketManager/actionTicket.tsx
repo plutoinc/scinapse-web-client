@@ -19,6 +19,7 @@ export interface FinalActionTicket extends ActionTicketParams {
   createdAt: string;
   userId: string | null;
   clientVersion: string | null;
+  referral: string;
 }
 
 export default class ActionTicket {
@@ -57,6 +58,7 @@ export default class ActionTicket {
       actionTag: this.actionTag,
       actionArea: this.actionArea,
       actionLabel: this.actionLabel,
+      referral: EnvChecker.isProdBrowser() ? document.referrer : "",
       clientVersion:
         EnvChecker.isProdBrowser() && (window as any)._script_version_
           ? (window as any)._script_version_.version
