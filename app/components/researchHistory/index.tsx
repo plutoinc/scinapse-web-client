@@ -5,12 +5,12 @@ const s = require("./researchHistory.scss");
 
 const ResearchHistory: React.FunctionComponent = () => {
   return (
-    <div>
-      <Icon icon="HISTORY" />
-      <div>Your Research History</div>
-      <div>
-        <div>16 Today</div>
-        <div>arrow down icon</div>
+    <div className={s.sectionWrapper}>
+      <Icon className={s.historyIcon} icon="HISTORY" />
+      <div className={s.sectionTitle}>Your Research History</div>
+      <div className={s.rightSection}>
+        <div className={s.countBtn}>16 Today</div>
+        <Icon icon="ARROW_POINT_TO_UP" className={s.arrowIcon} />
       </div>
     </div>
   );

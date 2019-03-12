@@ -1,0 +1,61 @@
+.sectionWrapper {
+  position: relative;
+  height: 51px;
+  border-radius: 4px;
+  background-color: $gray0;
+  margin-top: 36px;
+  padding: 16px;
+}
+
+.historyIcon {
+  display: inline-block;
+  vertical-align: top;
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.sectionTitle {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.25;
+  color: $black1;
+}
+
+.rightSection {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.countBtn {
+  display: inline-block;
+  vertical-align: top;
+  width: 66px;
+  height: 19px;
+  border-radius: 9.5px;
+  background-color: $main_blue0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  color: white;
+  padding: 4px 8px;
+  margin-right: 8px;
+}
+
+.arrowIcon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  color: $gray5;
+
+  svg {
+    transform: rotate(180deg);
+    width: 12px;
+    height: 7px;
+  }
+}
