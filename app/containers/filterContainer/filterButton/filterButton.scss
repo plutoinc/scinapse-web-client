@@ -13,8 +13,17 @@
     margin-left: 10px;
   }
 
+  &:hover {
+    border-color: $gray4;
+  }
+
   &.isActive {
     color: $main_blue1;
     border-color: $main_blue1;
+  }
+
+  &.isActive:hover {
+    color: $main_blue_light0;
+    border-color: $main_blue_light0;
   }
 }
