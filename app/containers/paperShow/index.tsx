@@ -39,6 +39,7 @@ import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPos
 import EnvChecker from "../../helpers/envChecker";
 import BetterSearch from "../../components/paperShow/components/betterSearch";
 import NextPaperTab from "../nextPaperTab";
+import ResearchHistory from "../../components/researchHistory";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
@@ -327,6 +328,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             </div>
           </article>
           <div className={styles.rightBox}>
+            <ResearchHistory />
             <div
               ref={el => (this.rightBoxWrapper = el)}
               className={classNames({
