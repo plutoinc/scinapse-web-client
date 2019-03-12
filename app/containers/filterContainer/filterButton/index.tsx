@@ -8,6 +8,7 @@ interface FilterButtonProps {
   text: string;
   isActive: boolean;
   onClick: () => void;
+  onToggleClick: () => void;
 }
 
 const FilterButton: React.FunctionComponent<FilterButtonProps> = props => {
@@ -17,7 +18,7 @@ const FilterButton: React.FunctionComponent<FilterButtonProps> = props => {
         [styles.button]: true,
         [styles.isActive]: props.isActive,
       })}
-      onClick={props.onClick}
+      onClick={props.isActive ? props.onToggleClick : props.onClick}
     >
       {props.text}
     </button>

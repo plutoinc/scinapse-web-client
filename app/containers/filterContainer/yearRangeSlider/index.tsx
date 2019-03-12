@@ -192,6 +192,15 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
                 fromBtn: true,
               });
             }}
+            onToggleClick={() => {
+              goToYearFilteredSearchResultPage({
+                qs: queryParamsStr,
+                history: props.history,
+                max: currentYear,
+                min: MIN_YEAR,
+                fromBtn: true,
+              });
+            }}
             isActive={minValue === currentYear && maxValue === currentYear}
             text="This Year"
           />
@@ -205,6 +214,15 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
                 fromBtn: true,
               });
             }}
+            onToggleClick={() => {
+              goToYearFilteredSearchResultPage({
+                qs: queryParamsStr,
+                history: props.history,
+                max: currentYear,
+                min: MIN_YEAR,
+                fromBtn: true,
+              });
+            }}
             isActive={minValue === currentYear - 2 && maxValue === currentYear}
             text="Last 3 Years"
           />
@@ -215,6 +233,15 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
                 history: props.history,
                 max: currentYear,
                 min: currentYear - 4,
+                fromBtn: true,
+              });
+            }}
+            onToggleClick={() => {
+              goToYearFilteredSearchResultPage({
+                qs: queryParamsStr,
+                history: props.history,
+                max: currentYear,
+                min: MIN_YEAR,
                 fromBtn: true,
               });
             }}
