@@ -1,9 +1,9 @@
 {
-  "plugins": ["lodash", "babel-plugin-syntax-dynamic-import"],
+  "plugins": ["lodash", "@babel/plugin-syntax-dynamic-import"],
   "presets": [
-    "react",
+    "@babel/preset-react",
     [
-      "env",
+      "@babel/preset-env",
       {
         "targets": {
           "browsers": ["last 2 versions", "safari >= 7"]

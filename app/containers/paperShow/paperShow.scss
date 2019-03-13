@@ -146,11 +146,13 @@ article.paperShow {
     position: fixed;
     bottom: $side-navigation-bottom-padding;
     transition: bottom 150ms ease;
+    z-index: 27;
   }
 
   &.smallThanVH {
     position: fixed;
     bottom: unset;
+    z-index: 27;
   }
 
   &.touchFooter {
@@ -164,20 +166,6 @@ article.paperShow {
     color: $black1;
     padding-bottom: 4px;
     margin-bottom: 8px;
-  }
-
-  & > {
-    div + div {
-      margin-top: 16px;
-    }
-  }
-
-  & > div {
-    padding: 16px;
-    background-color: $gray0;
-    width: 384px;
-    border-radius: 4px;
-    border: 1px solid $gray7;
   }
 }
 
@@ -216,7 +204,7 @@ article.paperShow {
     .sideNavigation {
       right: calc(calc((100% - #{$regular-display-container-width}) / 2 - 0px));
 
-      & > div {
+      & > .rightSection {
         width: $regular-display-paper-show-rightBox-width;
       }
     }

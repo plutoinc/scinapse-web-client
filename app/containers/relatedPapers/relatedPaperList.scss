@@ -7,6 +7,13 @@
 }
 
 .relatedPapers {
+  margin-top: 16px;
+  padding: 16px;
+  background-color: $gray0;
+  width: 384px;
+  border-radius: 4px;
+  border: 1px solid $gray7;
+
   .relatedPaperList {
     .relatedPaperItem + .relatedPaperItem {
       margin-top: 16px;

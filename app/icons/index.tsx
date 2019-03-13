@@ -81,6 +81,7 @@ const ICONS: { [key: string]: any } = {
   COMPLETE: require("./complete.svg").default,
   IMPACT_FACTOR: require("./impact-factor.svg").default,
   ARROW_RIGHT: require("./arrow-right.svg").default,
+  HISTORY: require("./history.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)

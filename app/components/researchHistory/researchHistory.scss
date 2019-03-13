@@ -1,0 +1,89 @@
+.openBoxWrapper {
+  position: relative;
+  height: 51px;
+  z-index: 25;
+}
+
+.boxWrapper {
+  border-radius: 4px;
+  box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.1);
+  width: 588px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: white;
+}
+
+.headerWrapper {
+  position: relative;
+  height: 51px;
+  border-radius: 4px;
+  background-color: $gray0;
+  padding: 16px;
+  cursor: pointer;
+
+  &.openHeaderWrapper {
+    background-color: white;
+  }
+}
+
+.historyIcon {
+  display: inline-block;
+  vertical-align: top;
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  color: $black1;
+}
+
+.sectionTitle {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.25;
+  color: $black1;
+}
+
+.rightSection {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.countBtn {
+  display: inline-block;
+  vertical-align: top;
+  border-radius: 9.5px;
+  background-color: $main_blue0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  text-align: center;
+  color: white;
+  padding: 4px 8px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.arrowIcon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  color: $gray5;
+  cursor: pointer;
+
+  svg {
+    width: 12px;
+    height: 7px;
+  }
+}
+
+.paperListWrapper {
+  padding: 0 16px;
+  max-height: 535px;
+  padding-bottom: 16px;
+  overflow-y: auto;
+}
