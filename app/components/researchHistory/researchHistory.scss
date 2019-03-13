@@ -33,6 +33,7 @@
   width: 20px;
   height: 20px;
   margin-right: 8px;
+  color: $black1;
 }
 
 .sectionTitle {
@@ -53,8 +54,6 @@
 .countBtn {
   display: inline-block;
   vertical-align: top;
-  width: 66px;
-  height: 19px;
   border-radius: 9.5px;
   background-color: $main_blue0;
   font-size: 12px;
