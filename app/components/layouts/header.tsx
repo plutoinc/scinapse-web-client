@@ -282,7 +282,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             onChange={this.changeSearchInput}
             placeholder="Search papers by title, author, doi or keyword"
             onSubmitQuery={this.handleSearchPush}
-            suggestionList={layoutState.completionKeywordList.map(keyword => keyword.keyword)}
+            suggestionList={layoutState.completionKeywordList.map(keyword => ({ text: keyword.keyword }))}
             wrapperClassName={styles.searchWrapper}
             style={{
               display: "flex",

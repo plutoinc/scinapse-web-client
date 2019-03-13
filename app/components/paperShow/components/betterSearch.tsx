@@ -146,7 +146,7 @@ const BetterSearch: React.FunctionComponent<BetterSearchProps & RouteComponentPr
         onSubmitQuery={(q: string) => {
           handleSubmitQuery(q, props.dispatch, props.history);
         }}
-        suggestionList={props.suggestionKeywords.map(keyword => keyword.keyword).slice(0, 3)}
+        suggestionList={props.suggestionKeywords.map(keyword => ({ text: keyword.keyword })).slice(0, 3)}
         wrapperClassName={s.searchWrapper}
         style={{
           display: "flex",

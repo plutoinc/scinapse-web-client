@@ -3,6 +3,7 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import * as classNames from "classnames";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { getHighlightedContent } from "../highLightedContent";
+import Icon from "../../../icons";
 const styles = require("./inputWithSuggestionList.scss");
 
 export interface DefaultItemComponentProps {
@@ -10,8 +11,13 @@ export interface DefaultItemComponentProps {
   onClick: () => void;
 }
 
+interface SuggestionItem {
+  text: string;
+  removable?: boolean;
+}
+
 interface InputWithSuggestionListProps {
-  suggestionList: string[];
+  suggestionList: SuggestionItem[];
   onSubmitQuery: (inputValue: string) => void;
   wrapperClassName?: string;
   iconNode?: React.ReactNode;
@@ -21,6 +27,7 @@ interface InputWithSuggestionListProps {
   listWrapperStyle?: React.CSSProperties;
   listItemStyle?: React.CSSProperties;
   DefaultItemComponent?: React.SFC<DefaultItemComponentProps>;
+  onClickRemoveBtn?: (inputValue: string) => void;
 }
 
 interface InputWithSuggestionListState {
@@ -66,6 +73,7 @@ class InputWithSuggestionList extends React.PureComponent<
       suggestionList,
       listItemStyle,
       DefaultItemComponent,
+      onClickRemoveBtn,
       ...inputProps
     } = this.props;
     const { inputValue, isOpen } = this.state;
@@ -118,10 +126,23 @@ class InputWithSuggestionList extends React.PureComponent<
   };
 
   private getHighlightedList = () => {
-    const { suggestionList, listItemStyle, onSubmitQuery, DefaultItemComponent } = this.props;
+    const { suggestionList, listItemStyle, onSubmitQuery, DefaultItemComponent, onClickRemoveBtn } = this.props;
     const { highlightValue, focus } = this.state;
 
     const suggestions = suggestionList.map((suggestion, index) => {
+      const removeBtn = suggestion.removable ? (
+        <Icon
+          onClick={e => {
+            e.stopPropagation();
+            if (onClickRemoveBtn) {
+              onClickRemoveBtn(suggestion.text);
+            }
+            console.log("CLICK CLOSE BUTTON");
+          }}
+          className={styles.removeBtn}
+          icon="X_BUTTON"
+        />
+      ) : null;
       return (
         <li
           className={classNames({
@@ -129,15 +150,19 @@ class InputWithSuggestionList extends React.PureComponent<
             [styles.highLightKeywordCompletionItem]: focus === index,
           })}
           onClick={() => {
-            onSubmitQuery(suggestion);
+            onSubmitQuery(suggestion.text);
             this.handleCloseList();
           }}
           style={listItemStyle}
           key={index}
-          dangerouslySetInnerHTML={{
-            __html: getHighlightedContent(suggestion, highlightValue),
-          }}
-        />
+        >
+          <span
+            dangerouslySetInnerHTML={{
+              __html: getHighlightedContent(suggestion.text, highlightValue),
+            }}
+          />
+          {removeBtn}
+        </li>
       );
     });
 
@@ -192,7 +217,7 @@ class InputWithSuggestionList extends React.PureComponent<
           this.setState(prevState => ({
             ...prevState,
             focus: nextFocusIndex,
-            inputValue: suggestionList[nextFocusIndex] || highlightValue,
+            inputValue: suggestionList[nextFocusIndex].text || highlightValue,
           }));
         }
         break;
@@ -204,7 +229,7 @@ class InputWithSuggestionList extends React.PureComponent<
         this.setState(prevState => ({
           ...prevState,
           focus: prevFocusIndex,
-          inputValue: suggestionList[prevFocusIndex] || highlightValue,
+          inputValue: suggestionList[prevFocusIndex].text || highlightValue,
         }));
         break;
       }
@@ -226,7 +251,7 @@ class InputWithSuggestionList extends React.PureComponent<
       isOpen: value.length > 1,
     }));
 
-    onChange && onChange(e);
+    if (onChange) onChange(e);
   };
 }
 

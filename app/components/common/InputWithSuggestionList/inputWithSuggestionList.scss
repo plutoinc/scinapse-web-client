@@ -25,6 +25,7 @@ input::placeholder {
 }
 
 .keywordCompletionItem {
+  position: relative;
   text-align: left;
   width: 100%;
   overflow: hidden;
@@ -58,4 +59,21 @@ input::placeholder {
   @extend .keywordCompletionItem;
 
   background-color: $gray0;
+}
+
+.removeBtn {
+  position: absolute;
+  top: 16px;
+  right: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  color: $gray4;
+
+  svg {
+    width: 8px;
+    height: 8px;
+  }
 }

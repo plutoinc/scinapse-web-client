@@ -16,12 +16,19 @@ import Icon from "../../icons";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { trackEvent } from "../../helpers/handleGA";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
+import { getRecentQueries, saveQuery } from "../../helpers/recentQueryManager";
 const styles = require("./home.scss");
+
+const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 10;
 
 export interface HomeProps extends RouteComponentProps<null> {
   layout: LayoutState;
   home: HomeState;
   dispatch: Dispatch<any>;
+}
+
+interface HomeCompState {
+  searchKeyword: string;
 }
 
 function mapStateToProps(state: AppState) {
@@ -32,7 +39,15 @@ function mapStateToProps(state: AppState) {
 }
 
 @withStyles<typeof Home>(styles)
-class Home extends React.PureComponent<HomeProps> {
+class Home extends React.PureComponent<HomeProps, HomeCompState> {
+  public constructor(props: HomeProps) {
+    super(props);
+
+    this.state = {
+      searchKeyword: "",
+    };
+  }
+
   public componentDidMount() {
     this.clearSearchInput();
   }
@@ -52,12 +67,17 @@ class Home extends React.PureComponent<HomeProps> {
 
   public render() {
     const { layout, home } = this.props;
+    const { searchKeyword } = this.state;
 
     const containerStyle = this.getContainerStyle();
     const searchBoxPlaceHolder =
       layout.userDevice !== UserDevice.DESKTOP
         ? "Search papers by keyword"
         : "Search papers by title, author, doi or keyword";
+
+    const suggestionList = home.completionKeywordList.map(keyword => ({ text: keyword.keyword }));
+    const recentQueries = getRecentQueries(searchKeyword).map(q => ({ text: q, removable: true }));
+    const keywordList = [...recentQueries, ...suggestionList].slice(0, MAX_KEYWORD_SUGGESTION_LIST_COUNT);
 
     return (
       <div className={styles.articleSearchFormContainer}>
@@ -83,7 +103,7 @@ class Home extends React.PureComponent<HomeProps> {
                   onChange={this.handleChangeSearchInput}
                   placeholder={searchBoxPlaceHolder}
                   onSubmitQuery={this.handleSearchPush}
-                  suggestionList={home.completionKeywordList.map(keyword => keyword.keyword)}
+                  suggestionList={keywordList}
                   wrapperStyle={{
                     backgroundColor: "white",
                     borderRadius: "4px",
@@ -220,6 +240,8 @@ class Home extends React.PureComponent<HomeProps> {
     });
 
     trackEvent({ category: "Search", action: "Query", label: "" });
+
+    saveQuery(query);
 
     history.push(
       `/search?${PapersQueryFormatter.stringifyPapersQuery({
