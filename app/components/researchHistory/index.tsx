@@ -1,5 +1,6 @@
 import * as React from "react";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import * as isToday from "date-fns/is_today";
 import * as classNames from "classnames";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
@@ -9,26 +10,37 @@ const store = require("store");
 const s = require("./researchHistory.scss");
 
 const RESEARCH_HISTORY_KEY = "r_h_list";
+const MAXIMUM_COUNT = 50;
+
+interface HistoryPaper extends Paper {
+  savedAt: number; // Unix time
+}
 
 interface ResearchHistoryProps {
   paper: Paper;
 }
 const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper }) => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [papers, setPapers] = React.useState<Paper[]>([]);
+  const [papers, setPapers] = React.useState<HistoryPaper[]>([]);
 
   React.useEffect(
     () => {
-      const oldPapers: Paper[] = store.get(RESEARCH_HISTORY_KEY) || [];
+      const now = Date.now();
+      const newPaper: HistoryPaper = { ...paper, savedAt: now };
+      const oldPapers: HistoryPaper[] = store.get(RESEARCH_HISTORY_KEY) || [];
       const i = oldPapers.findIndex(p => String(p.id) === String(paper.id));
-      const newPapers = i > -1 ? [...oldPapers.slice(0, i), paper, ...oldPapers.slice(i + 1)] : [paper, ...oldPapers];
+      const newPapers =
+        i > -1
+          ? [newPaper, ...oldPapers.slice(0, i), ...oldPapers.slice(i + 1)]
+          : [newPaper, ...oldPapers].slice(0, MAXIMUM_COUNT);
       store.set(RESEARCH_HISTORY_KEY, newPapers);
       setPapers(newPapers);
     },
     [paper]
   );
 
-  const countBtn = isOpen ? null : <div className={s.countBtn}>{`${papers.length} Today`}</div>;
+  const todayPapers = papers.filter(p => p.savedAt && isToday(p.savedAt));
+  const countBtn = isOpen ? null : <div className={s.countBtn}>{`${todayPapers.length} Today`}</div>;
   const paperList = isOpen
     ? papers.map(p => <RelatedPaperItem key={p.id} paper={p} actionArea="researchHistory" />)
     : null;

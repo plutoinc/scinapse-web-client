@@ -433,7 +433,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         this.setState(prevState => ({ ...prevState, isRightBoxFixed: true }));
       }
 
-      if (!isTouchFooter && isScrollOverRightBox && isScrollTouchFooter && !isRightBoxSmall) {
+      if (!isTouchFooter && isScrollOverRightBox && isScrollTouchFooter && !isShorterThanScreenHeight) {
         this.setState(prevState => ({ ...prevState, isTouchFooter: true }));
       } else if (isTouchFooter && isScrollOverRightBox && !isScrollTouchFooter) {
         this.setState(prevState => ({ ...prevState, isTouchFooter: false }));
