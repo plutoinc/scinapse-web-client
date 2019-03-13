@@ -166,7 +166,9 @@
   "jest": {
     "preset": "ts-jest",
     "testURL": "https://scinapse.io/",
-    "setupTestFrameworkScriptFile": "<rootDir>/jest/jestReporter.js",
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest/jestReporter.js"
+    ],
     "verbose": true,
     "rootDir": "",
     "moduleFileExtensions": [

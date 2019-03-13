@@ -408,7 +408,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private handleScrollEvent = () => {
-    const { isRightBoxFixed, isTouchFooter, isRightBoxSmall } = this.state;
+    const { isRightBoxFixed, isTouchFooter } = this.state;
     const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
     const viewportHeight = window.innerHeight;
     const windowBottom = scrollTop + viewportHeight;
