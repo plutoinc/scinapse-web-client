@@ -43,7 +43,7 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper 
   const countBtn = isOpen ? null : <div className={s.countBtn}>{`${todayPapers.length} Today`}</div>;
   const paperList = isOpen ? (
     <div className={s.paperListWrapper}>
-      {papers.map(p => <RelatedPaperItem key={p.id} paper={p} actionArea="researchHistory" />)}
+      {papers.map(p => <RelatedPaperItem key={p.id} paper={p} actionArea="researchHistory" disableVisitedColour />)}
     </div>
   ) : null;
 
