@@ -4,6 +4,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 import { FilterObject } from "../../../helpers/papersQueryFormatter";
 import Popper from "@material-ui/core/Popper";
+import memberAPI from "../../../api/member";
 const styles = require("./filterSaveBox.scss");
 
 interface FilterSaveBoxProps {
@@ -22,6 +23,8 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps> = props => {
         })}
         onClick={() => {
           setIsOpen(!isOpen);
+          memberAPI.getMyFilters();
+          memberAPI.addMyFilters({ name: "test", emoji: "star", filter: "year=:,fos=41008148,journal=" });
         }}
       >
         <div className={styles.filterTitleBox}>
