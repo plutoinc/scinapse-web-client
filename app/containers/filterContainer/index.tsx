@@ -5,7 +5,6 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { ChangeRangeInputParams } from "../../constants/paperSearch";
-import { FilterObject } from "../../helpers/papersQueryFormatter";
 import { trackSelectFilter } from "../../components/filterContainer/trackSelectFilter";
 import { ArticleSearchState } from "../../components/articleSearch/records";
 import formatNumber from "../../helpers/formatNumber";
@@ -15,12 +14,12 @@ import YearRangeSlider from "./yearRangeSlider";
 import Icon from "../../icons";
 import EnvChecker from "../../helpers/envChecker";
 import FilterSaveBox from "./filterSaveBox";
+import makeNewFilterLink from "../../helpers/makeNewFilterLink";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {
   handleChangeRangeInput: (params: ChangeRangeInputParams) => void;
   handleToggleExpandingFilter: () => void;
-  makeNewFilterLink: (newFilter: FilterObject) => string;
   articleSearchState: ArticleSearchState;
 }
 
@@ -34,7 +33,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
 }
 
 function getFOSFilterBox(props: FilterContainerProps) {
-  const { articleSearchState, makeNewFilterLink } = props;
+  const { articleSearchState } = props;
   const fosList = articleSearchState.aggregationData ? articleSearchState.aggregationData.fosList : [];
 
   if (!articleSearchState.aggregationData || !fosList || fosList.length === 0) {
@@ -81,7 +80,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
     <div className={styles.filterBox}>
       <div className={styles.filterTitleBox}>
         <div className={styles.filterTitle}>Field of study</div>
-        <FilterResetButton filterType="FOS" makeNewFilterLink={makeNewFilterLink} />
+        <FilterResetButton filterType="FOS" />
       </div>
       {fosItems}
     </div>
@@ -89,7 +88,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
 }
 
 function getJournalFilter(props: FilterContainerProps) {
-  const { articleSearchState, makeNewFilterLink, handleToggleExpandingFilter } = props;
+  const { articleSearchState, handleToggleExpandingFilter } = props;
 
   const journals = articleSearchState.aggregationData ? articleSearchState.aggregationData.journals : [];
 
@@ -175,7 +174,7 @@ function getJournalFilter(props: FilterContainerProps) {
     >
       <div className={styles.filterTitleBox}>
         <div className={styles.filterTitle}>Journal</div>
-        <FilterResetButton filterType="JOURNAL" makeNewFilterLink={makeNewFilterLink} />
+        <FilterResetButton filterType="JOURNAL" />
       </div>
       {journalItems}
       {moreButton}
@@ -184,7 +183,7 @@ function getJournalFilter(props: FilterContainerProps) {
 }
 
 const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => {
-  const { articleSearchState, makeNewFilterLink } = props;
+  const { articleSearchState } = props;
   const [isClient, setIsClient] = React.useState(false);
 
   React.useEffect(() => {
@@ -203,7 +202,7 @@ const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => 
       })}
     >
       {articleSearchState.isContentLoading ? <div className={styles.filterLoadingWrapper} /> : null}
-      <FilterSaveBox makeNewFilterLink={makeNewFilterLink} />
+      <FilterSaveBox articleSearchState={articleSearchState} />
       {getPublicationFilterBox(props)}
       {getFOSFilterBox(props)}
       {getJournalFilter(props)}

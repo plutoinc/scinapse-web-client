@@ -23,6 +23,7 @@ import DesktopPagination from "../../components/common/desktopPagination";
 import { ArticleSearchState } from "../../components/articleSearch/records";
 import NoResultInSearch from "../../components/articleSearch/components/noResultInSearch";
 import TabNavigationBar from "../../components/common/tabNavigationBar";
+import { getUrlDecodedQueryParamsObject } from "../../helpers/makeNewFilterLink";
 const styles = require("./authorSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -91,7 +92,7 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
   public render() {
     const { authorSearch } = this.props;
     const { isLoading } = authorSearch;
-    const queryParams = this.getUrlDecodedQueryParamsObject();
+    const queryParams = getUrlDecodedQueryParamsObject();
 
     const hasNoAuthorSearchResult = !authorSearch.searchItemsToShow || authorSearch.searchItemsToShow.length === 0;
 
@@ -185,7 +186,7 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
   };
 
   private makePaginationLink = (page: number) => {
-    const queryParamsObject = this.getUrlDecodedQueryParamsObject();
+    const queryParamsObject = getUrlDecodedQueryParamsObject();
     const queryParams = PapersQueryFormatter.stringifyPapersQuery({
       ...queryParamsObject,
       page,
@@ -219,17 +220,5 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
       return { position: "absolute", left: "0", right: "0", bottom: "0" };
     }
   };
-
-  private getUrlDecodedQueryParamsObject(): SearchPageQueryParamsObject {
-    const { location } = this.props;
-    const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
-
-    return {
-      query: SafeURIStringHandler.decode(rawQueryParamsObj.query),
-      page: parseInt(rawQueryParamsObj.page, 10),
-      filter: PapersQueryFormatter.objectifyPapersFilter(rawQueryParamsObj.filter),
-      sort: rawQueryParamsObj.sort,
-    };
-  }
 }
 export default connect(mapStateToProps)(withRouter(AuthorSearch));

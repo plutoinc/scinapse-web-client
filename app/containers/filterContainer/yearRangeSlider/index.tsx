@@ -10,6 +10,7 @@ import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { goToYearFilteredSearchResultPage } from "./helper";
 import FilterButton from "../filterButton";
+import FilterResetButton from "../../../components/filterContainer/filterResetButton";
 const styles = require("./yearRangeSlider.scss");
 
 interface YearSet {
@@ -165,20 +166,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
       <div className={styles.content}>
         <div className={styles.title}>
           Published Year
-          <div
-            onClick={() => {
-              goToYearFilteredSearchResultPage({
-                qs: queryParamsStr,
-                history: props.history,
-                max: currentYear,
-                min: MIN_YEAR,
-                fromBtn: true,
-              });
-            }}
-            className={styles.resetBtn}
-          >
-            Reset
-          </div>
+          <FilterResetButton filterType="PUBLISHED_YEAR" />
         </div>
 
         <div className={styles.btnsWrapper}>

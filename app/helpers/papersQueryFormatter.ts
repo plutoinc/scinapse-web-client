@@ -2,6 +2,7 @@ import { stringify } from "qs";
 import { SearchPageQueryParams } from "../components/articleSearch/types";
 import { GetPapersParams } from "../api/types/paper";
 import SafeURIStringHandler from "./safeURIStringHandler";
+import { sortBy } from "lodash";
 
 export interface FilterObject {
   yearFrom?: number | string;
@@ -92,8 +93,8 @@ class PaperSearchQueryFormatter {
     return {
       yearFrom,
       yearTo,
-      fos,
-      journal,
+      fos: sortBy(fos),
+      journal: sortBy(journal),
     };
   }
 
