@@ -137,7 +137,6 @@ class InputWithSuggestionList extends React.PureComponent<
             if (onClickRemoveBtn) {
               onClickRemoveBtn(suggestion.text);
             }
-            console.log("CLICK CLOSE BUTTON");
           }}
           className={styles.removeBtn}
           icon="X_BUTTON"

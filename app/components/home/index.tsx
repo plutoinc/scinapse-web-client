@@ -16,7 +16,11 @@ import Icon from "../../icons";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { trackEvent } from "../../helpers/handleGA";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
-import { getRecentQueries, saveQuery } from "../../helpers/recentQueryManager";
+import {
+  getRecentQueries,
+  saveQueryToRecentHistory,
+  deleteQueryFromRecentList,
+} from "../../helpers/recentQueryManager";
 const styles = require("./home.scss");
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 10;
@@ -75,8 +79,10 @@ class Home extends React.PureComponent<HomeProps, HomeCompState> {
         ? "Search papers by keyword"
         : "Search papers by title, author, doi or keyword";
 
-    const suggestionList = home.completionKeywordList.map(keyword => ({ text: keyword.keyword }));
     const recentQueries = getRecentQueries(searchKeyword).map(q => ({ text: q, removable: true }));
+    const suggestionList = home.completionKeywordList
+      .filter(k => !getRecentQueries(searchKeyword).includes(k.keyword))
+      .map(k => ({ text: k.keyword }));
     const keywordList = [...recentQueries, ...suggestionList].slice(0, MAX_KEYWORD_SUGGESTION_LIST_COUNT);
 
     return (
@@ -104,6 +110,10 @@ class Home extends React.PureComponent<HomeProps, HomeCompState> {
                   placeholder={searchBoxPlaceHolder}
                   onSubmitQuery={this.handleSearchPush}
                   suggestionList={keywordList}
+                  onClickRemoveBtn={q => {
+                    deleteQueryFromRecentList(q);
+                    this.forceUpdate();
+                  }}
                   wrapperStyle={{
                     backgroundColor: "white",
                     borderRadius: "4px",
@@ -241,7 +251,7 @@ class Home extends React.PureComponent<HomeProps, HomeCompState> {
 
     trackEvent({ category: "Search", action: "Query", label: "" });
 
-    saveQuery(query);
+    saveQueryToRecentHistory(query);
 
     history.push(
       `/search?${PapersQueryFormatter.stringifyPapersQuery({

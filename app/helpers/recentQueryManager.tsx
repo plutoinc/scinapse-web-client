@@ -20,7 +20,7 @@ export function getRecentQueries(searchText?: string): string[] {
   return recentQueries;
 }
 
-export function saveQuery(searchText: string) {
+export function saveQueryToRecentHistory(searchText: string) {
   const oldQueries: string[] = store.get(RECENT_QUERY_LIST_KEY) || [];
   const querySet = new Set(oldQueries);
   querySet.add(searchText);

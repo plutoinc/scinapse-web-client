@@ -28,10 +28,16 @@ import { HOME_PATH } from "../../constants/routes";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 import { CurrentUser } from "../../model/currentUser";
+import {
+  getRecentQueries,
+  deleteQueryFromRecentList,
+  saveQueryToRecentHistory,
+} from "../../helpers/recentQueryManager";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
 const LAST_UPDATE_DATE = "2019-01-30T08:13:33.079Z";
+const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 10;
 let ticking = false;
 
 function mapStateToProps(state: AppState) {
@@ -48,6 +54,7 @@ interface HeaderStates {
   isUserDropdownOpen: boolean;
   userDropdownAnchorElement: HTMLElement | null;
   openTopToast: boolean;
+  searchKeyword: string;
 }
 
 const UserInformation: React.FunctionComponent<{ user: CurrentUser }> = props => {
@@ -68,11 +75,13 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   constructor(props: HeaderProps) {
     super(props);
 
+    const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(props.location.search);
     this.state = {
       isTop: true,
       isUserDropdownOpen: false,
       userDropdownAnchorElement: this.userDropdownAnchorRef,
       openTopToast: false,
+      searchKeyword: SafeURIStringHandler.decode(rawQueryParamsObj.query || ""),
     };
   }
 
@@ -190,6 +199,8 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private changeSearchInput = (e: React.FormEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value;
 
+    this.setState({ searchKeyword: value });
+
     if (value.length > 1) {
       this.delayedGetKeywordCompletion(value);
     }
@@ -226,6 +237,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     });
 
     trackEvent({ category: "Search", action: "Query", label: "" });
+    saveQueryToRecentHistory(query);
 
     if (location.pathname === "/search/authors") {
       history.push(
@@ -269,10 +281,17 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
   private getSearchFormContainer = () => {
     const { location, layoutState } = this.props;
+    const { searchKeyword } = this.state;
 
     const isShowSearchFormContainer = location.pathname !== HOME_PATH;
     const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
     const query = SafeURIStringHandler.decode(rawQueryParamsObj.query || "");
+
+    const recentQueries = getRecentQueries(searchKeyword).map(q => ({ text: q, removable: true }));
+    const suggestionList = layoutState.completionKeywordList
+      .filter(k => !getRecentQueries(searchKeyword).includes(k.keyword))
+      .map(k => ({ text: k.keyword }));
+    const keywordList = [...recentQueries, ...suggestionList].slice(0, MAX_KEYWORD_SUGGESTION_LIST_COUNT);
 
     return (
       <div style={!isShowSearchFormContainer ? { visibility: "hidden" } : {}} className={styles.searchFormContainer}>
@@ -280,9 +299,13 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           <InputWithSuggestionList
             defaultValue={query}
             onChange={this.changeSearchInput}
+            onClickRemoveBtn={q => {
+              deleteQueryFromRecentList(q);
+              this.forceUpdate();
+            }}
             placeholder="Search papers by title, author, doi or keyword"
             onSubmitQuery={this.handleSearchPush}
-            suggestionList={layoutState.completionKeywordList.map(keyword => ({ text: keyword.keyword }))}
+            suggestionList={keywordList}
             wrapperClassName={styles.searchWrapper}
             style={{
               display: "flex",
