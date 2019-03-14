@@ -8,33 +8,76 @@ interface SearchQueryInputProps {
   initialValue?: string;
 }
 
-const lazyFetchKeywords = debounce(fetchSuggestionKeyword, 200);
+const lazyFetchKeywords = debounce(fetchSuggestionKeyword, 200, { leading: true });
 
-function fetchSuggestionKeyword(q: string) {
-  return CompletionAPI.fetchSuggestionKeyword(q);
+async function fetchSuggestionKeyword(q: string, cb: (res: CompletionKeyword[]) => void) {
+  const res = await CompletionAPI.fetchSuggestionKeyword(q);
+  cb(res);
+  return res;
 }
+
+const dataFetchReducer: React.Reducer<
+  { isLoading: boolean; isError: boolean; data: CompletionKeyword[] },
+  { type: string; payload?: CompletionKeyword[] }
+> = (state, action) => {
+  switch (action.type) {
+    case "FETCH_INIT":
+      return {
+        ...state,
+        isLoading: true,
+        isError: false,
+      };
+    case "FETCH_SUCCESS":
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        data: action.payload || [],
+      };
+    case "FETCH_FAILURE":
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      };
+    default:
+      throw new Error();
+  }
+};
 
 function useDebouncedFetch(initialQuery: string) {
   const [query, setQuery] = React.useState(initialQuery);
-  const [data, setData] = React.useState<CompletionKeyword[]>([]);
+  const [state, dispatch] = React.useReducer(dataFetchReducer, {
+    isLoading: false,
+    isError: false,
+    data: [],
+  });
 
   React.useEffect(
     () => {
-      if (!query || query.length < 1) return;
-
       let cancel = false;
 
-      lazyFetchKeywords(query)
-        .then(res => {
-          if (!cancel) {
-            setData(res);
-          }
-        })
-        .catch(err => {
+      if (!query || query.length < 2) return;
+
+      async function lazyFetch() {
+        dispatch({ type: "FETCH_INIT" });
+        console.log(query);
+        try {
+          await lazyFetchKeywords(query, res => {
+            if (!cancel) {
+              dispatch({ type: "FETCH_SUCCESS", payload: res });
+              console.log("cancel, ", cancel, res);
+            }
+          });
+        } catch (err) {
           if (!cancel) {
             console.error(err);
+            dispatch({ type: "FETCH_FAILURE" });
           }
-        });
+        }
+      }
+
+      lazyFetch();
 
       return () => {
         cancel = true;
@@ -43,7 +86,7 @@ function useDebouncedFetch(initialQuery: string) {
     [query]
   );
 
-  return { data, setQuery };
+  return { ...state, setQuery };
 }
 
 const SearchQueryInput: React.FunctionComponent<
@@ -51,11 +94,15 @@ const SearchQueryInput: React.FunctionComponent<
 > = props => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState(props.initialValue || "");
-  const { data, setQuery } = useDebouncedFetch(inputValue);
+  const { data, setQuery } = useDebouncedFetch(props.initialValue || "");
 
-  const keywordList = data.map((k, i) => {
-    return <li key={i}>{k}</li>;
-  });
+  console.log(data);
+
+  const keywordList =
+    data &&
+    data.map((k, i) => {
+      return <li key={i}>{k.keyword}</li>;
+    });
 
   return (
     <div>

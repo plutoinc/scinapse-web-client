@@ -11,16 +11,16 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { HomeState } from "./records";
 import { getKeywordCompletion, clearKeywordCompletion } from "./actions";
 import ActionTicketManager from "../../helpers/actionTicketManager";
-import InputWithSuggestionList from "../common/InputWithSuggestionList";
+// import InputWithSuggestionList from "../common/InputWithSuggestionList";
 import SearchQueryInput from "../common/InputWithSuggestionList/searchQueryInput";
-import Icon from "../../icons";
+// import Icon from "../../icons";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { trackEvent } from "../../helpers/handleGA";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 import {
   getRecentQueries,
   saveQueryToRecentHistory,
-  deleteQueryFromRecentList,
+  // deleteQueryFromRecentList,
 } from "../../helpers/recentQueryManager";
 const styles = require("./home.scss");
 
