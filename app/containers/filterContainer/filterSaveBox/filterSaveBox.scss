@@ -113,3 +113,17 @@
     transform: rotate(180deg);
   }
 }
+
+.filterSaveButton {
+  position: absolute;
+  right: 44px;
+  top: 1px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: right;
+  color: $main_blue1;
+
+  &:hover {
+    color: $main_blue_light0;
+  }
+}
