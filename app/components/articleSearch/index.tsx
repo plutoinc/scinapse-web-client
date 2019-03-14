@@ -26,6 +26,7 @@ import ErrorPage from "../error/errorPage";
 import NoResultInSearch from "./components/noResultInSearch";
 import TabNavigationBar from "../common/tabNavigationBar";
 import SortBar from "./components/SortBar";
+import { getUrlDecodedQueryParamsObject } from "../../helpers/makeNewFilterLink";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -88,7 +89,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
 
   public render() {
     const { articleSearchState } = this.props;
-    const queryParams = this.getUrlDecodedQueryParamsObject();
+    const queryParams = getUrlDecodedQueryParamsObject();
 
     if (articleSearchState.pageErrorCode) {
       return <ErrorPage errorNum={articleSearchState.pageErrorCode} />;
@@ -103,7 +104,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
           {this.isFilterEmpty(queryParams.filter) ? this.getAuthorEntitiesSection() : null}
           {this.getInnerContainerContent()}
           <FilterContainer
-            makeNewFilterLink={this.makeNewFilterLink}
             handleChangeRangeInput={this.setRangeInput}
             articleSearchState={articleSearchState}
             handleToggleExpandingFilter={this.handleToggleExpandingFilter}
@@ -118,7 +118,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     const { articleSearchState, currentUserState } = this.props;
     const { isContentLoading, totalElements, searchItemsToShow } = articleSearchState;
 
-    const queryParams = this.getUrlDecodedQueryParamsObject();
+    const queryParams = getUrlDecodedQueryParamsObject();
 
     const hasNoSearchResult =
       !articleSearchState.searchItemsToShow || articleSearchState.searchItemsToShow.length === 0;
@@ -189,7 +189,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
 
   private getSuggestionKeywordBox = () => {
     const { articleSearchState } = this.props;
-    const queryParams = this.getUrlDecodedQueryParamsObject();
+    const queryParams = getUrlDecodedQueryParamsObject();
 
     if (articleSearchState.searchFromSuggestion) {
       return (
@@ -343,19 +343,8 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     dispatch(Actions.toggleExpandingFilter());
   };
 
-  private makeNewFilterLink = (newFilter: FilterObject) => {
-    const queryParamsObject = this.getUrlDecodedQueryParamsObject();
-
-    return `/search?${PapersQueryFormatter.stringifyPapersQuery({
-      query: queryParamsObject.query,
-      page: 1,
-      sort: queryParamsObject.sort,
-      filter: { ...queryParamsObject.filter, ...newFilter },
-    })}`;
-  };
-
   private makePaginationLink = (page: number) => {
-    const queryParamsObject = this.getUrlDecodedQueryParamsObject();
+    const queryParamsObject = getUrlDecodedQueryParamsObject();
     const queryParams = PapersQueryFormatter.stringifyPapersQuery({
       ...queryParamsObject,
       page,
@@ -369,17 +358,5 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
 
     dispatch(Actions.changeRangeInput(params));
   };
-
-  private getUrlDecodedQueryParamsObject(): SearchPageQueryParamsObject {
-    const { location } = this.props;
-    const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
-
-    return {
-      query: SafeURIStringHandler.decode(rawQueryParamsObj.query),
-      page: parseInt(rawQueryParamsObj.page, 10),
-      filter: PapersQueryFormatter.objectifyPapersFilter(rawQueryParamsObj.filter),
-      sort: rawQueryParamsObj.sort,
-    };
-  }
 }
 export default withRouter(connect(mapStateToProps)(ArticleSearch));

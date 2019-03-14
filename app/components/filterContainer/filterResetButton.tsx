@@ -1,47 +1,41 @@
 import * as React from "react";
 import { FILTER_BOX_TYPE } from "../../constants/paperSearch";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { FilterObject } from "../../helpers/papersQueryFormatter";
 import { Link } from "react-router-dom";
+import makeNewFilterLink from "../../helpers/makeNewFilterLink";
 const styles = require("./filterResetButton.scss");
 
 interface FilterResetButtonProps {
   filterType?: FILTER_BOX_TYPE;
-  makeNewFilterLink: (newFilter: FilterObject) => string;
+}
+
+function getFilterObject(filterType?: FILTER_BOX_TYPE) {
+  if (!!filterType) {
+    const returnValue =
+      filterType === "PUBLISHED_YEAR" ? { yearFrom: undefined, yearTo: undefined } : { [filterType.toLowerCase()]: [] };
+
+    return returnValue;
+  } else {
+    return {
+      yearFrom: undefined,
+      yearTo: undefined,
+      fos: [],
+      journal: [],
+    };
+  }
 }
 
 const FilterResetButton: React.FunctionComponent<FilterResetButtonProps> = props => {
-  const { filterType, makeNewFilterLink } = props;
+  const { filterType } = props;
 
-  const resetButton = !!filterType ? (
+  return (
     <Link
-      to={makeNewFilterLink(
-        filterType === "PUBLISHED_YEAR"
-          ? {
-              yearFrom: undefined,
-              yearTo: undefined,
-            }
-          : { [filterType.toLowerCase()]: [] }
-      )}
+      to={makeNewFilterLink(!!filterType ? getFilterObject(filterType) : getFilterObject())}
       className={styles.resetButtonWrapper}
     >
       Reset
     </Link>
-  ) : (
-    <Link
-      to={makeNewFilterLink({
-        yearFrom: undefined,
-        yearTo: undefined,
-        fos: [],
-        journal: [],
-      })}
-      className={styles.resetButtonWrapper}
-    >
-      Reset All
-    </Link>
   );
-
-  return resetButton;
 };
 
 export default withStyles<typeof FilterResetButton>(styles)(FilterResetButton);
