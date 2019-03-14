@@ -8,6 +8,7 @@ import { ChangeRangeInputParams } from "../../constants/paperSearch";
 import PlutoAxios from "../../api/pluto";
 import { CommonError } from "../../model/error";
 import { GetAuthorsParam } from "../../api/types/author";
+import memberAPI from "../../api/member";
 
 export function toggleExpandingFilter() {
   return {
@@ -92,6 +93,34 @@ export function fetchSearchAuthors(params: GetAuthorsParam) {
 
         dispatch({
           type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_AUTHORS,
+          payload: {
+            statusCode: (error as CommonError).status,
+          },
+        });
+        throw err;
+      }
+    }
+  };
+}
+
+export function fetchMyFilters() {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_MY_FILTERS });
+
+    try {
+      const res = await memberAPI.getMyFilters();
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MY_FILTERS,
+        payload: res,
+      });
+
+      return res;
+    } catch (err) {
+      if (!axios.isCancel(err)) {
+        const error = PlutoAxios.getGlobalError(err);
+
+        dispatch({
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_MY_FILTERS,
           payload: {
             statusCode: (error as CommonError).status,
           },

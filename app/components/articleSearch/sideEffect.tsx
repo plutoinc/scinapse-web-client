@@ -1,6 +1,6 @@
 import PaperSearchQueryFormatter from "../../helpers/papersQueryFormatter";
 import { LoadDataParams } from "../../routes";
-import { fetchSearchPapers } from "./actions";
+import { fetchSearchPapers, fetchMyFilters } from "./actions";
 import { GetPapersParams } from "../../api/types/paper";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 
@@ -22,6 +22,7 @@ export async function getSearchData(params: LoadDataParams<null>) {
     const promiseArray: Array<Promise<any>> = [];
 
     promiseArray.push(dispatch(fetchSearchPapers(searchQueryObject)));
+    promiseArray.push(dispatch(fetchMyFilters()));
 
     await Promise.all(promiseArray);
   } catch (err) {

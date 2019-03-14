@@ -4,6 +4,7 @@ import { SearchResult } from "../../api/search";
 import { ChangeRangeInputParams, FILTER_TYPE_HAS_RANGE, FILTER_RANGE_TYPE } from "../../constants/paperSearch";
 import { AddPaperToCollectionParams, RemovePapersFromCollectionParams } from "../../api/collection";
 import { Paper } from "../../model/paper";
+import { Filter } from "../../api/member";
 
 export function reducer(
   state: ArticleSearchState = ARTICLE_SEARCH_INITIAL_STATE,
@@ -189,6 +190,24 @@ export function reducer(
       return {
         ...state,
         searchItemsToShow: newSearchItemsToShow,
+      };
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MY_FILTERS: {
+      const payload: Filter[] = action.payload;
+
+      return {
+        ...state,
+        myFilters: payload,
+      };
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_SET_FILTER_IN_MY_FILTER_SET: {
+      const payload: Filter = action.payload;
+
+      return {
+        ...state,
+        currentFilterSet: payload,
       };
     }
 

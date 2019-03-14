@@ -1,6 +1,7 @@
 import { Paper } from "../../model/paper";
 import { AggregationData } from "../../model/aggregation";
 import { MatchAuthor } from "../../api/search";
+import { Filter } from "../../api/member";
 
 export interface ArticleSearchState
   extends Readonly<{
@@ -26,6 +27,8 @@ export interface ArticleSearchState
       targetPaper: Paper | null;
       aggregationData: AggregationData | null;
       searchFromSuggestion: boolean;
+      myFilters: Filter[];
+      currentFilterSet: Filter | null;
     }> {}
 
 export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
@@ -51,4 +54,6 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   suggestionKeyword: "",
   highlightedSuggestionKeyword: "",
   searchFromSuggestion: false,
+  myFilters: [],
+  currentFilterSet: null,
 };
