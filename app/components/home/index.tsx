@@ -9,7 +9,7 @@ import { Footer } from "../layouts";
 import { LayoutState, UserDevice } from "../layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { HomeState } from "./records";
-import { getKeywordCompletion, clearKeywordCompletion, openKeywordCompletion } from "./actions";
+import { getKeywordCompletion, clearKeywordCompletion } from "./actions";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import InputWithSuggestionList from "../common/InputWithSuggestionList";
 import Icon from "../../icons";
@@ -105,7 +105,6 @@ class Home extends React.PureComponent<HomeProps, HomeCompState> {
               </div>
               <div tabIndex={0} className={styles.searchInputForm}>
                 <InputWithSuggestionList
-                  autoFocus={true}
                   onChange={this.handleChangeSearchInput}
                   placeholder={searchBoxPlaceHolder}
                   onSubmitQuery={this.handleSearchPush}
@@ -139,6 +138,8 @@ class Home extends React.PureComponent<HomeProps, HomeCompState> {
                     padding: "0 18px",
                   }}
                   iconNode={<Icon icon="SEARCH_ICON" className={styles.searchIcon} />}
+                  autoFocus
+                  openListAtFocus
                 />
               </div>
               <div className={styles.searchTryKeyword} />
@@ -207,7 +208,6 @@ class Home extends React.PureComponent<HomeProps, HomeCompState> {
   };
 
   private handleChangeSearchInput = (e: React.FormEvent<HTMLInputElement>) => {
-    const { dispatch } = this.props;
     const searchInput = e.currentTarget.value;
 
     this.setState({
@@ -216,9 +216,6 @@ class Home extends React.PureComponent<HomeProps, HomeCompState> {
 
     if (searchInput.length > 1) {
       this.delayedGetKeywordCompletion(searchInput);
-      dispatch(openKeywordCompletion);
-    } else if (searchInput.length <= 1) {
-      dispatch(clearKeywordCompletion());
     }
   };
 

@@ -328,6 +328,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
               padding: "0 18px",
             }}
             iconNode={<Icon icon="SEARCH_ICON" className={styles.searchIcon} />}
+            openListAtFocus
           />
         </div>
       </div>

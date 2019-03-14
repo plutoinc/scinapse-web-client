@@ -28,10 +28,11 @@ interface InputWithSuggestionListProps {
   listItemStyle?: React.CSSProperties;
   DefaultItemComponent?: React.SFC<DefaultItemComponentProps>;
   onClickRemoveBtn?: (inputValue: string) => void;
+  openListAtFocus?: boolean;
 }
 
 interface InputWithSuggestionListState {
-  focus: number;
+  highlightedListItemIndex: number;
   isOpen: boolean;
   isLoading: boolean;
   inputValue: string;
@@ -47,7 +48,7 @@ class InputWithSuggestionList extends React.PureComponent<
     super(props);
 
     this.state = {
-      focus: -1,
+      highlightedListItemIndex: -1,
       isOpen: false,
       isLoading: false,
       inputValue: props.defaultValue || "",
@@ -74,6 +75,7 @@ class InputWithSuggestionList extends React.PureComponent<
       listItemStyle,
       DefaultItemComponent,
       onClickRemoveBtn,
+      openListAtFocus,
       ...inputProps
     } = this.props;
     const { inputValue, isOpen } = this.state;
@@ -84,6 +86,7 @@ class InputWithSuggestionList extends React.PureComponent<
           <div style={wrapperStyle} className={`${styles.inputWithListWrapper} ${wrapperClassName}`}>
             <input
               {...inputProps}
+              onFocus={this.handleFocus}
               onChange={this.handleChangeInput}
               onKeyDown={this.handleKeydown}
               onSubmit={() => {
@@ -121,13 +124,25 @@ class InputWithSuggestionList extends React.PureComponent<
     );
   }
 
+  private handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { onFocus, openListAtFocus } = this.props;
+
+    if (openListAtFocus) {
+      this.setState({ isOpen: true });
+    }
+
+    if (onFocus) {
+      onFocus(e);
+    }
+  };
+
   private handleCloseList = () => {
     this.setState(prevState => ({ ...prevState, isOpen: false }));
   };
 
   private getHighlightedList = () => {
     const { suggestionList, listItemStyle, onSubmitQuery, DefaultItemComponent, onClickRemoveBtn } = this.props;
-    const { highlightValue, focus } = this.state;
+    const { highlightValue, highlightedListItemIndex: focus } = this.state;
 
     const suggestions = suggestionList.map((suggestion, index) => {
       const removeBtn = suggestion.removable ? (
@@ -193,7 +208,10 @@ class InputWithSuggestionList extends React.PureComponent<
 
   private handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const { suggestionList, onSubmitQuery, DefaultItemComponent } = this.props;
-    const { focus, inputValue, highlightValue, isOpen } = this.state;
+    const { highlightedListItemIndex: focus, inputValue, highlightValue, isOpen } = this.state;
+
+    if (!suggestionList || suggestionList.length === 0) return;
+
     const maxFocusIndex = DefaultItemComponent ? suggestionList.length : suggestionList.length - 1;
     const minFocusIndex = -1;
     const nextFocusIndex = focus + 1 > maxFocusIndex ? -1 : focus + 1;
@@ -215,8 +233,8 @@ class InputWithSuggestionList extends React.PureComponent<
           e.preventDefault();
           this.setState(prevState => ({
             ...prevState,
-            focus: nextFocusIndex,
-            inputValue: suggestionList[nextFocusIndex].text || highlightValue,
+            highlightedListItemIndex: nextFocusIndex,
+            inputValue: (suggestionList[nextFocusIndex] && suggestionList[nextFocusIndex].text) || highlightValue,
           }));
         }
         break;
@@ -227,8 +245,8 @@ class InputWithSuggestionList extends React.PureComponent<
         e.preventDefault();
         this.setState(prevState => ({
           ...prevState,
-          focus: prevFocusIndex,
-          inputValue: suggestionList[prevFocusIndex].text || highlightValue,
+          highlightedListItemIndex: prevFocusIndex,
+          inputValue: (suggestionList[nextFocusIndex] && suggestionList[nextFocusIndex].text) || highlightValue,
         }));
         break;
       }
@@ -239,15 +257,15 @@ class InputWithSuggestionList extends React.PureComponent<
   };
 
   private handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { onChange } = this.props;
+    const { onChange, openListAtFocus } = this.props;
     const value = e.currentTarget.value;
 
     this.setState(prevState => ({
       ...prevState,
       inputValue: value,
       highlightValue: value,
-      focus: -1,
-      isOpen: value.length > 1,
+      highlightedListItemIndex: -1,
+      isOpen: openListAtFocus ? true : value.length > 1,
     }));
 
     if (onChange) onChange(e);
