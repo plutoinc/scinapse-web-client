@@ -11,7 +11,7 @@ const CancelToken = Axios.CancelToken;
 let cancel: Canceler | null = null;
 
 class CompletionAPI extends PlutoAxios {
-  public async getKeywordCompletion(query: string) {
+  public async fetchSuggestionKeyword(query: string) {
     if (!!cancel) {
       cancel();
     }

@@ -9,7 +9,7 @@ export function getKeywordCompletion(query: string) {
     });
 
     try {
-      const keywordList = await CompletionAPI.getKeywordCompletion(query);
+      const keywordList = await CompletionAPI.fetchSuggestionKeyword(query);
       const slicedKeywordList = keywordList.slice(0, 5);
 
       dispatch({

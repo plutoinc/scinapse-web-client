@@ -12,6 +12,7 @@ import { HomeState } from "./records";
 import { getKeywordCompletion, clearKeywordCompletion } from "./actions";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import InputWithSuggestionList from "../common/InputWithSuggestionList";
+import SearchQueryInput from "../common/InputWithSuggestionList/searchQueryInput";
 import Icon from "../../icons";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { trackEvent } from "../../helpers/handleGA";
@@ -104,7 +105,8 @@ class Home extends React.PureComponent<HomeProps, HomeCompState> {
                 </a>
               </div>
               <div tabIndex={0} className={styles.searchInputForm}>
-                <InputWithSuggestionList
+                <SearchQueryInput />
+                {/* <InputWithSuggestionList
                   onChange={this.handleChangeSearchInput}
                   placeholder={searchBoxPlaceHolder}
                   onSubmitQuery={this.handleSearchPush}
@@ -140,7 +142,7 @@ class Home extends React.PureComponent<HomeProps, HomeCompState> {
                   iconNode={<Icon icon="SEARCH_ICON" className={styles.searchIcon} />}
                   autoFocus
                   openListAtFocus
-                />
+                /> */}
               </div>
               <div className={styles.searchTryKeyword} />
             </div>

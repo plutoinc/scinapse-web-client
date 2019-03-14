@@ -27,7 +27,7 @@ export function getKeywordCompletion(query: string) {
     });
 
     try {
-      const keywordList = await CompletionAPI.getKeywordCompletion(query);
+      const keywordList = await CompletionAPI.fetchSuggestionKeyword(query);
 
       dispatch({
         type: ACTION_TYPES.HEADER_SUCCEEDED_TO_GET_KEYWORD_COMPLETION,
