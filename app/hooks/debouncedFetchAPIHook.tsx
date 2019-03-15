@@ -39,7 +39,6 @@ export function useDebouncedAsyncFetch<P, T>({
       }, wait);
 
       return () => {
-        console.log(timeout);
         clearTimeout(timeout);
       };
     },
