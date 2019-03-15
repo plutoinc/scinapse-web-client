@@ -11,7 +11,6 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { HomeState } from "./records";
 import { getKeywordCompletion, clearKeywordCompletion } from "./actions";
 import ActionTicketManager from "../../helpers/actionTicketManager";
-// import InputWithSuggestionList from "../common/InputWithSuggestionList";
 import SearchQueryInput from "../common/InputWithSuggestionList/searchQueryInput";
 // import Icon from "../../icons";
 import alertToast from "../../helpers/makePlutoToastAction";

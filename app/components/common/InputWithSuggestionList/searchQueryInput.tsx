@@ -1,92 +1,17 @@
 import * as React from "react";
-import { debounce } from "lodash";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import CompletionAPI, { CompletionKeyword } from "../../../api/completion";
+import { useDebouncedAsyncFetch } from "../../../hooks/debouncedFetchAPIHook";
 const s = require("./inputWithSuggestionList.scss");
 
 interface SearchQueryInputProps {
   initialValue?: string;
 }
 
-const lazyFetchKeywords = debounce(fetchSuggestionKeyword, 200, { leading: true });
-
-async function fetchSuggestionKeyword(q: string, cb: (res: CompletionKeyword[]) => void) {
+async function fetchSuggestionKeyword(q: string) {
   const res = await CompletionAPI.fetchSuggestionKeyword(q);
-  cb(res);
+  console.log("RES in fetchSuggestionKeyword function, ", res);
   return res;
-}
-
-const dataFetchReducer: React.Reducer<
-  { isLoading: boolean; isError: boolean; data: CompletionKeyword[] },
-  { type: string; payload?: CompletionKeyword[] }
-> = (state, action) => {
-  switch (action.type) {
-    case "FETCH_INIT":
-      return {
-        ...state,
-        isLoading: true,
-        isError: false,
-      };
-    case "FETCH_SUCCESS":
-      return {
-        ...state,
-        isLoading: false,
-        isError: false,
-        data: action.payload || [],
-      };
-    case "FETCH_FAILURE":
-      return {
-        ...state,
-        isLoading: false,
-        isError: true,
-      };
-    default:
-      throw new Error();
-  }
-};
-
-function useDebouncedFetch(initialQuery: string) {
-  const [query, setQuery] = React.useState(initialQuery);
-  const [state, dispatch] = React.useReducer(dataFetchReducer, {
-    isLoading: false,
-    isError: false,
-    data: [],
-  });
-
-  React.useEffect(
-    () => {
-      let cancel = false;
-
-      if (!query || query.length < 2) return;
-
-      async function lazyFetch() {
-        dispatch({ type: "FETCH_INIT" });
-        console.log(query);
-        try {
-          await lazyFetchKeywords(query, res => {
-            if (!cancel) {
-              dispatch({ type: "FETCH_SUCCESS", payload: res });
-              console.log("cancel, ", cancel, res);
-            }
-          });
-        } catch (err) {
-          if (!cancel) {
-            console.error(err);
-            dispatch({ type: "FETCH_FAILURE" });
-          }
-        }
-      }
-
-      lazyFetch();
-
-      return () => {
-        cancel = true;
-      };
-    },
-    [query]
-  );
-
-  return { ...state, setQuery };
 }
 
 const SearchQueryInput: React.FunctionComponent<
@@ -94,11 +19,17 @@ const SearchQueryInput: React.FunctionComponent<
 > = props => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState(props.initialValue || "");
-  const { data, setQuery } = useDebouncedFetch(props.initialValue || "");
-
-  console.log(data);
+  const { data, setParams } = useDebouncedAsyncFetch<string, CompletionKeyword[]>({
+    initialParams: props.initialValue || "",
+    fetchFunc: fetchSuggestionKeyword,
+    validateFunc: (query: string) => {
+      if (!query || query.length < 2) throw new Error("keyword is too short");
+    },
+    wait: 200,
+  });
 
   const keywordList =
+    isOpen &&
     data &&
     data.map((k, i) => {
       return <li key={i}>{k.keyword}</li>;
@@ -115,7 +46,7 @@ const SearchQueryInput: React.FunctionComponent<
           const { value } = e.currentTarget;
           setInputValue(value);
           setIsOpen(true);
-          setQuery(value);
+          setParams(value);
         }}
         placeholder="Search papers by title, author, doi or keyword"
         autoFocus={props.autoFocus}
