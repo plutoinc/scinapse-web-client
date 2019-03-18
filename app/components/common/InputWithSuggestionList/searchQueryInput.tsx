@@ -1,5 +1,5 @@
 import * as React from "react";
-import axios from "axios";
+import axios, { CancelTokenSource } from "axios";
 import * as classNames from "classnames";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { withRouter, RouteComponentProps } from "react-router-dom";
@@ -86,7 +86,8 @@ const SearchQueryInput: React.FunctionComponent<
   const [inputValue, setInputValue] = React.useState(props.initialValue || "");
   const [genuineInputValue, setGenuineInputValue] = React.useState(props.initialValue || "");
   const [highlightIdx, setHighlightIdx] = React.useState(-1);
-  const cancelTokenSource = React.useRef(axios.CancelToken.source());
+  const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
+
   const { data: keywords, setParams } = useDebouncedAsyncFetch<string, CompletionKeyword[]>({
     initialParams: props.initialValue || "",
     fetchFunc: async (q: string) => {
@@ -133,9 +134,12 @@ const SearchQueryInput: React.FunctionComponent<
 
   React.useEffect(
     () => {
-      cancelTokenSource.current.cancel();
-      setTouched(false);
-      setIsOpen(false);
+      return () => {
+        setTouched(false);
+        setIsOpen(false);
+        cancelTokenSource.current.cancel();
+        cancelTokenSource.current = axios.CancelToken.source();
+      };
     },
     [props.location]
   );
@@ -244,6 +248,7 @@ const SearchQueryInput: React.FunctionComponent<
           }}
           onChange={e => {
             const { value } = e.currentTarget;
+            setHighlightIdx(-1);
             setInputValue(value);
             setGenuineInputValue(value);
             setIsOpen(true);

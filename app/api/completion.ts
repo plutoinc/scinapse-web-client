@@ -18,7 +18,6 @@ class CompletionAPI extends PlutoAxios {
     });
 
     const completionKeywords: CompletionKeyword[] = getCompleteKeywordResponse.data.data;
-
     return completionKeywords;
   }
 }

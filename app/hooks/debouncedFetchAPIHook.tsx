@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios from "axios";
 import { UseDebouncedAsyncFetchParams, dataFetchReducer, ReducerState, ReducerAction } from "./types";
 
 export function useDebouncedAsyncFetch<P, T>({
@@ -31,7 +32,9 @@ export function useDebouncedAsyncFetch<P, T>({
             const res = await fetchFunc(params);
             dispatch({ type: "FETCH_SUCCESS", payload: { data: res } });
           } catch (err) {
-            dispatch({ type: "FETCH_FAILURE" });
+            if (!axios.isCancel(err)) {
+              dispatch({ type: "FETCH_FAILURE" });
+            }
           }
         }
 
