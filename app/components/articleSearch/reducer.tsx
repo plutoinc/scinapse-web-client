@@ -193,31 +193,38 @@ export function reducer(
       };
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MY_FILTERS: {
-      const payload: Filter[] = action.payload;
-
+    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_MY_FILTERS:
+    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_PUT_MY_FILTERS: {
       return {
         ...state,
-        myFilters: payload,
+        isFilterSaveBoxLoading: true,
       };
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_SET_FILTER_IN_MY_FILTER_SET: {
-      const payload: Filter = action.payload;
-
+    case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_MY_FILTERS:
+    case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_PUT_MY_FILTERS: {
       return {
         ...state,
-        savedFilterSet: payload,
+        isFilterSaveBoxLoading: false,
       };
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MY_FILTERS: {
+      const payload: Filter[] = action.payload;
+
+      return { ...state, myFilters: payload, isFilterSaveBoxLoading: false };
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_PUT_MY_FILTERS: {
       const payload: Filter[] = action.payload;
 
-      return {
-        ...state,
-        myFilters: payload,
-      };
+      return { ...state, myFilters: payload, isFilterSaveBoxLoading: false };
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_SET_FILTER_IN_MY_FILTER_SET: {
+      const payload: Filter = action.payload;
+
+      return { ...state, savedFilterSet: payload };
     }
 
     default: {

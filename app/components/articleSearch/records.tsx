@@ -9,6 +9,7 @@ export interface ArticleSearchState
       sort: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS;
       isContentLoading: boolean;
       isFilterLoading: boolean;
+      isFilterSaveBoxLoading: boolean;
       pageErrorCode: number | null;
       searchInput: string;
       page: number;
@@ -36,6 +37,7 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   sort: "RELEVANCE",
   isContentLoading: false,
   isFilterLoading: false,
+  isFilterSaveBoxLoading: false,
   pageErrorCode: null,
   aggregationData: null,
   searchInput: "",
