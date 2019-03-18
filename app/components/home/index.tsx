@@ -9,6 +9,8 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import SearchQueryInput from "../common/InputWithSuggestionList/searchQueryInput";
 const styles = require("./home.scss");
 
+const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
+
 export interface HomeProps extends RouteComponentProps<null> {
   layout: LayoutState;
   dispatch: Dispatch<any>;
@@ -44,7 +46,7 @@ class Home extends React.PureComponent<HomeProps> {
                 </a>
               </div>
               <div tabIndex={0} className={styles.searchInputForm}>
-                <SearchQueryInput actionArea="home" autoFocus />
+                <SearchQueryInput maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT} actionArea="home" autoFocus />
               </div>
               <div className={styles.searchTryKeyword} />
             </div>

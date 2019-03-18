@@ -29,6 +29,7 @@ const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
 const LAST_UPDATE_DATE = "2019-01-30T08:13:33.079Z";
+const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 10;
 let ticking = false;
 
 function mapStateToProps(state: AppState) {
@@ -205,7 +206,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
       const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
       currentQuery = SafeURIStringHandler.decode(rawQueryParamsObj.query || "");
     }
-    console.log(currentQuery);
 
     return (
       <div style={!isShowSearchFormContainer ? { visibility: "hidden" } : {}} className={styles.searchFormContainer}>
@@ -215,6 +215,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           inputClassName={styles.searchInput}
           initialValue={currentQuery}
           actionArea="topBar"
+          maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
         />
       </div>
     );

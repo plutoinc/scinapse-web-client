@@ -1,5 +1,5 @@
 import PlutoAxios from "./pluto";
-import Axios, { AxiosResponse, Canceler, CancelToken } from "axios";
+import Axios, { AxiosResponse, CancelToken } from "axios";
 
 export interface CompletionKeyword
   extends Readonly<{
@@ -8,26 +8,16 @@ export interface CompletionKeyword
     }> {}
 
 const CancelToken = Axios.CancelToken;
-let cancel: Canceler | null = null;
-
 class CompletionAPI extends PlutoAxios {
-  public async fetchSuggestionKeyword(query: string) {
-    if (!!cancel) {
-      cancel();
-    }
-
+  public async fetchSuggestionKeyword(query: string, cancelToken: CancelToken) {
     const getCompleteKeywordResponse: AxiosResponse = await this.get("/complete", {
       params: {
         q: query,
       },
-      cancelToken: new CancelToken(function executor(c: Canceler) {
-        cancel = c;
-      }),
+      cancelToken,
     });
 
     const completionKeywords: CompletionKeyword[] = getCompleteKeywordResponse.data.data;
-
-    cancel = null;
 
     return completionKeywords;
   }

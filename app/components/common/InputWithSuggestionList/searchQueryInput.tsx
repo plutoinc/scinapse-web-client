@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios from "axios";
 import * as classNames from "classnames";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { withRouter, RouteComponentProps } from "react-router-dom";
@@ -21,21 +22,15 @@ import { AppState } from "../../../reducers";
 import { LayoutState, UserDevice } from "../../layouts/records";
 const s = require("./searchQueryInput.scss");
 
-const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 10;
-
 interface SearchQueryInputProps extends RouteComponentProps<any> {
   dispatch: Dispatch<any>;
   layout: LayoutState;
   actionArea: "home" | "topBar";
+  maxCount: number;
   initialValue?: string;
   wrapperClassName?: string;
   listWrapperClassName?: string;
   inputClassName?: string;
-}
-
-async function fetchSuggestionKeyword(q: string) {
-  const res = await CompletionAPI.fetchSuggestionKeyword(q);
-  return res;
 }
 
 interface HandleInputKeydownParams<L> {
@@ -43,7 +38,7 @@ interface HandleInputKeydownParams<L> {
   list: L[];
   currentIdx: number;
   onMove: (i: number) => void;
-  onSelect: () => void;
+  onSelect: (currentIdx: number) => void;
 }
 
 function handleInputKeydown<L>({ e, list, currentIdx, onMove, onSelect }: HandleInputKeydownParams<L>) {
@@ -56,7 +51,7 @@ function handleInputKeydown<L>({ e, list, currentIdx, onMove, onSelect }: Handle
     case 13: {
       // enter
       e.preventDefault();
-      onSelect();
+      onSelect(currentIdx);
       e.currentTarget.blur();
       break;
     }
@@ -64,6 +59,7 @@ function handleInputKeydown<L>({ e, list, currentIdx, onMove, onSelect }: Handle
     case 9: // tab
     case 40: {
       // down
+      if (!list.length) return;
       e.preventDefault();
       onMove(nextIdx);
       break;
@@ -71,6 +67,7 @@ function handleInputKeydown<L>({ e, list, currentIdx, onMove, onSelect }: Handle
 
     case 38: {
       // up
+      if (!list.length) return;
       e.preventDefault();
       onMove(prevIdx);
       break;
@@ -89,9 +86,13 @@ const SearchQueryInput: React.FunctionComponent<
   const [inputValue, setInputValue] = React.useState(props.initialValue || "");
   const [genuineInputValue, setGenuineInputValue] = React.useState(props.initialValue || "");
   const [highlightIdx, setHighlightIdx] = React.useState(-1);
+  const cancelTokenSource = React.useRef(axios.CancelToken.source());
   const { data: keywords, setParams } = useDebouncedAsyncFetch<string, CompletionKeyword[]>({
     initialParams: props.initialValue || "",
-    fetchFunc: fetchSuggestionKeyword,
+    fetchFunc: async (q: string) => {
+      const res = await CompletionAPI.fetchSuggestionKeyword(q, cancelTokenSource.current.token);
+      return res;
+    },
     validateFunc: (query: string) => {
       if (!query || query.length < 2) throw new Error("keyword is too short");
     },
@@ -108,7 +109,7 @@ const SearchQueryInput: React.FunctionComponent<
             .filter(k => !getRecentQueries(genuineInputValue).includes(k.keyword))
             .map(k => ({ text: k.keyword, removable: false }))
         : [];
-      setKeywordsToShow([...recentQueries, ...suggestionList].slice(0, MAX_KEYWORD_SUGGESTION_LIST_COUNT));
+      setKeywordsToShow([...recentQueries, ...suggestionList]);
     },
     [keywords]
   );
@@ -132,6 +133,7 @@ const SearchQueryInput: React.FunctionComponent<
 
   React.useEffect(
     () => {
+      cancelTokenSource.current.cancel();
       setTouched(false);
       setIsOpen(false);
     },
@@ -139,7 +141,9 @@ const SearchQueryInput: React.FunctionComponent<
   );
 
   function handleSubmit(query?: string) {
-    if (inputValue.length < 2) {
+    const searchKeyword = query || inputValue;
+
+    if (searchKeyword.length < 2) {
       return props.dispatch({
         type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
         payload: {
@@ -148,25 +152,21 @@ const SearchQueryInput: React.FunctionComponent<
         },
       });
     }
-
     ActionTicketManager.trackTicket({
       pageType: "home",
       actionType: "fire",
       actionArea: props.actionArea,
       actionTag: "query",
-      actionLabel: query || inputValue,
+      actionLabel: searchKeyword,
     });
-
-    trackEvent({ category: "Search", action: "Query", label: "" });
-
-    saveQueryToRecentHistory(inputValue);
-
+    trackEvent({ category: "Search", action: "Query", label: searchKeyword });
+    saveQueryToRecentHistory(searchKeyword);
     setTouched(false);
     setIsOpen(false);
 
     props.history.push(
       `/search?${PapersQueryFormatter.stringifyPapersQuery({
-        query: query || inputValue,
+        query: searchKeyword,
         sort: "RELEVANCE",
         filter: {},
         page: 1,
@@ -174,7 +174,7 @@ const SearchQueryInput: React.FunctionComponent<
     );
   }
 
-  const keywordItems = keywordsToShow.map((k, i) => {
+  const keywordItems = keywordsToShow.slice(0, props.maxCount).map((k, i) => {
     return (
       <li
         key={i}
@@ -183,7 +183,6 @@ const SearchQueryInput: React.FunctionComponent<
           [s.highlight]: highlightIdx === i,
         })}
         onClick={() => {
-          setInputValue(k.text);
           handleSubmit(k.text);
         }}
       >
@@ -223,7 +222,6 @@ const SearchQueryInput: React.FunctionComponent<
         <input
           value={inputValue}
           onKeyDown={e => {
-            if (!keywordsToShow || !keywordsToShow.length) return;
             handleInputKeydown({
               e,
               list: keywordsToShow,
@@ -232,7 +230,9 @@ const SearchQueryInput: React.FunctionComponent<
                 setHighlightIdx(i);
                 setInputValue(keywordsToShow[i] ? keywordsToShow[i].text : genuineInputValue);
               },
-              onSelect: handleSubmit,
+              onSelect: i => {
+                handleSubmit(keywordsToShow[i] ? keywordsToShow[i].text : genuineInputValue);
+              },
             });
           }}
           onFocus={() => {
@@ -244,7 +244,6 @@ const SearchQueryInput: React.FunctionComponent<
           }}
           onChange={e => {
             const { value } = e.currentTarget;
-
             setInputValue(value);
             setGenuineInputValue(value);
             setIsOpen(true);

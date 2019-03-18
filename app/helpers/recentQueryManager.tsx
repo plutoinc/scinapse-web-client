@@ -22,9 +22,15 @@ export function getRecentQueries(searchText?: string): string[] {
 
 export function saveQueryToRecentHistory(searchText: string) {
   const oldQueries: string[] = store.get(RECENT_QUERY_LIST_KEY) || [];
-  const querySet = new Set(oldQueries);
-  querySet.add(searchText);
-  const newQueries = Array.from(querySet);
+
+  const i = oldQueries.findIndex(q => q === searchText);
+  let newQueries;
+  if (i > -1) {
+    newQueries = [searchText, ...oldQueries.slice(0, i), ...oldQueries.slice(i + 1)];
+  } else {
+    newQueries = [searchText, ...oldQueries];
+  }
+
   store.set(RECENT_QUERY_LIST_KEY, newQueries);
 }
 

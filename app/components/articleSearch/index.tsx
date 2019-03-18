@@ -71,6 +71,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     const hasAuthStateChanged = currentUserState.isLoggedIn !== nextProps.currentUserState.isLoggedIn;
 
     if (hasSearchKeywordChanged || hasAuthStateChanged) {
+      this.cancelToken.cancel();
       await getSearchData({
         dispatch,
         match,
