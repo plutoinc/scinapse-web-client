@@ -41,6 +41,11 @@
   font-size: 14px;
   font-weight: bold;
   color: $gray6;
+  width: 150px;
+  display: inline-flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .filterContainerEmoji {

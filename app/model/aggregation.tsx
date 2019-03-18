@@ -22,14 +22,14 @@ interface RawImpactFactor {
   doc_count: number;
 }
 
-interface AggregationJournal {
+export interface AggregationJournal {
   id: number;
   title: string;
   docCount: number;
   impactFactor: number;
 }
 
-interface AggregationFos {
+export interface AggregationFos {
   id: number;
   name: string;
   level: number;

@@ -1,5 +1,6 @@
 import { Dispatch } from "redux";
 import axios from "axios";
+import * as store from "store";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { GetPapersParams } from "../../api/types/paper";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
@@ -159,6 +160,7 @@ export function putMyFilters(params: Filter[]) {
 
 export function setSavedFilterSet(params: Filter | null) {
   return async (dispatch: Dispatch<any>) => {
+    store.set("previousFilter", params);
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_SET_FILTER_IN_MY_FILTER_SET, payload: params });
   };
 }

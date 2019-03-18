@@ -205,7 +205,8 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 200);
 
   private handleSearchPush = (query: string) => {
-    const { dispatch, history, location } = this.props;
+    const { dispatch, history, location, articleSearchState } = this.props;
+    const { savedFilterSet } = articleSearchState;
 
     if (query.length < 2) {
       return dispatch({
@@ -241,7 +242,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         `/search?${PapersQueryFormatter.stringifyPapersQuery({
           query,
           sort: "RELEVANCE",
-          filter: {},
+          filter: !!savedFilterSet ? PapersQueryFormatter.objectifyPapersFilter(savedFilterSet.filter) : {},
           page: 1,
         })}`
       );

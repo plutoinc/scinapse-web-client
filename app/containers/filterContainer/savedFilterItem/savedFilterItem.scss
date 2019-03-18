@@ -1,15 +1,3 @@
-.filterItemWrapper {
-  @extend %popper-item;
-  height: 32px;
-  border: none;
-  padding: 8px 12px;
-
-  &:hover {
-    background-color: $gray1;
-    transition: 0.2s;
-  }
-}
-
 .defaultFilterItemTitle {
   font-size: 14px;
   color: $gray5;
@@ -39,5 +27,43 @@
   svg {
     width: 20px;
     height: 10px;
+  }
+}
+
+.filterItemWrapper {
+  @extend %popper-item;
+  height: 32px;
+  border: none;
+  padding: 8px 12px;
+
+  &:hover {
+    background-color: $gray1;
+    transition: 0.2s;
+
+    .deleteIconWrapper {
+      transition: 0.2s;
+      opacity: 1;
+    }
+  }
+
+  .deleteIconWrapper {
+    vertical-align: middle;
+    position: absolute;
+    right: 8px;
+    cursor: pointer;
+    opacity: 0;
+
+    .trashIcon {
+      color: $gray4;
+
+      &:hover {
+        color: $gray5;
+      }
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
   }
 }

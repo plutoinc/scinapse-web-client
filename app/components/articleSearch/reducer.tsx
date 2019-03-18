@@ -45,6 +45,11 @@ export function reducer(
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS: {
       const payload: SearchResult = action.payload;
 
+      const journalFilterObject = payload.data.aggregation.journals.filter(journal =>
+        state.journalFilter.includes(journal.id)
+      );
+      const fosFilterObject = payload.data.aggregation.fosList.filter(fos => state.fosFilter.includes(fos.id));
+
       if (payload.data.page) {
         return {
           ...state,
@@ -60,6 +65,8 @@ export function reducer(
           highlightedSuggestionKeyword: payload.data.suggestion ? payload.data.suggestion.highlighted : "",
           searchFromSuggestion: payload.data.resultModified,
           aggregationData: payload.data.aggregation,
+          journalFilterObject,
+          fosFilterObject,
           matchAuthors: payload.data.matchedAuthor,
         };
       }

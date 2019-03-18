@@ -1,5 +1,5 @@
 import { Paper } from "../../model/paper";
-import { AggregationData } from "../../model/aggregation";
+import { AggregationData, AggregationJournal, AggregationFos } from "../../model/aggregation";
 import { MatchAuthor } from "../../api/search";
 import { Filter } from "../../api/member";
 
@@ -22,6 +22,8 @@ export interface ArticleSearchState
       suggestionKeyword: string;
       fosFilter: number[];
       journalFilter: number[];
+      fosFilterObject: AggregationFos[];
+      journalFilterObject: AggregationJournal[];
       highlightedSuggestionKeyword: string;
       searchItemsToShow: Paper[];
       matchAuthors: MatchAuthor | null;
@@ -53,6 +55,8 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   fosFilter: [],
   matchAuthors: null,
   journalFilter: [],
+  fosFilterObject: [],
+  journalFilterObject: [],
   suggestionKeyword: "",
   highlightedSuggestionKeyword: "",
   searchFromSuggestion: false,

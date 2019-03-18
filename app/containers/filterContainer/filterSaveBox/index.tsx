@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as store from "store";
 import * as classNames from "classnames";
 import { connect, Dispatch } from "react-redux";
 import { withRouter, RouteComponentProps } from "react-router";
@@ -19,6 +20,7 @@ import alertToast from "../../../helpers/makePlutoToastAction";
 import SavedFilterItem from "../savedFilterItem";
 import ScinapseInput from "../../../components/common/scinapseInput";
 import Icon from "../../../icons";
+import makeNewFilterSetTitle from "../../../helpers/makeNewFilterSetTitle";
 const styles = require("./filterSaveBox.scss");
 
 interface FilterSaveBoxProps {
@@ -42,6 +44,16 @@ function handleClickSaveButton(changedFilter: Filter | any, props: FilterSaveBox
 
   dispatch(putMyFilters(newFilters));
   dispatch(setSavedFilterSet(changedFilter));
+}
+
+function handleClickDeleteButton(props: FilterSaveBoxProps, deleteIndex: number) {
+  const { articleSearchState, dispatch } = props;
+  const { savedFilterSet, myFilters } = articleSearchState;
+
+  const newFilters = [...myFilters.slice(0, deleteIndex), ...myFilters.slice(deleteIndex + 1, myFilters.length)];
+
+  dispatch(putMyFilters(newFilters));
+  dispatch(setSavedFilterSet(!!savedFilterSet ? savedFilterSet : null));
 }
 
 const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponentProps<any>> = props => {
@@ -71,7 +83,16 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
   function getTitleBoxContent(currentFilterStr: string, props: FilterSaveBoxProps) {
     const changedFilter = !!savedFilterSet
       ? { ...savedFilterSet, filter: currentFilterStr }
-      : { name: `${Math.floor(Math.random() * 100)}`, emoji: "😃", filter: currentFilterStr };
+      : {
+          name: makeNewFilterSetTitle({
+            fos: props.articleSearchState.fosFilterObject,
+            journal: props.articleSearchState.journalFilterObject,
+            yearFrom: props.articleSearchState.yearFilterFromValue,
+            yearTo: props.articleSearchState.yearFilterToValue,
+          }),
+          emoji: "😃",
+          filter: currentFilterStr,
+        };
 
     const saveAndReset = isChange ? (
       <>
@@ -81,19 +102,30 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
             handleClickSaveButton(changedFilter, props);
           }}
         />
-        <FilterResetButton />
+        <FilterResetButton currentSavedFilterSet={!!savedFilterSet ? savedFilterSet.filter : ""} />
       </>
     ) : (
-      <Icon
-        onClick={() => {
-          setIsOpen(!isOpen);
-        }}
-        className={classNames({
-          [styles.downArrow]: !isOpen,
-          [styles.upArrow]: isOpen,
-        })}
-        icon="ARROW_POINT_TO_UP"
-      />
+      <>
+        {!!store.get("previousFilter") && savedFilterSet === null ? (
+          <FilterSaveButton
+            text="Apply previous Filter"
+            buttonStyle={{ textDecoration: "underline" }}
+            handleClickSaveBtn={() => {
+              handleClickFilterItem(searchInput, sort, store.get("previousFilter"));
+            }}
+          />
+        ) : null}
+        <Icon
+          onClick={() => {
+            setIsOpen(!isOpen);
+          }}
+          className={classNames({
+            [styles.downArrow]: !isOpen,
+            [styles.upArrow]: isOpen,
+          })}
+          icon="ARROW_POINT_TO_UP"
+        />
+      </>
     );
 
     if (savedFilterSet === null) {
@@ -157,6 +189,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
         sort={sort}
         savedFilter={filter}
         handleClickItem={handleClickFilterItem}
+        handleDeleteItem={() => handleClickDeleteButton(props, index)}
         key={index}
       />
     );
