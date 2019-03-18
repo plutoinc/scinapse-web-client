@@ -3,7 +3,6 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import * as classNames from "classnames";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { getHighlightedContent } from "../highLightedContent";
-import Icon from "../../../icons";
 const styles = require("./inputWithSuggestionList.scss");
 
 export interface DefaultItemComponentProps {
@@ -27,8 +26,6 @@ interface InputWithSuggestionListProps {
   listWrapperStyle?: React.CSSProperties;
   listItemStyle?: React.CSSProperties;
   DefaultItemComponent?: React.SFC<DefaultItemComponentProps>;
-  onClickRemoveBtn?: (inputValue: string) => void;
-  openListAtFocus?: boolean;
 }
 
 interface InputWithSuggestionListState {
@@ -74,8 +71,6 @@ class InputWithSuggestionList extends React.PureComponent<
       suggestionList,
       listItemStyle,
       DefaultItemComponent,
-      onClickRemoveBtn,
-      openListAtFocus,
       ...inputProps
     } = this.props;
     const { inputValue, isOpen } = this.state;
@@ -86,7 +81,6 @@ class InputWithSuggestionList extends React.PureComponent<
           <div style={wrapperStyle} className={`${styles.inputWithListWrapper} ${wrapperClassName}`}>
             <input
               {...inputProps}
-              onFocus={this.handleFocus}
               onChange={this.handleChangeInput}
               onKeyDown={this.handleKeydown}
               onSubmit={() => {
@@ -124,39 +118,15 @@ class InputWithSuggestionList extends React.PureComponent<
     );
   }
 
-  private handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    const { onFocus, openListAtFocus } = this.props;
-
-    if (openListAtFocus) {
-      this.setState({ isOpen: true });
-    }
-
-    if (onFocus) {
-      onFocus(e);
-    }
-  };
-
   private handleCloseList = () => {
     this.setState(prevState => ({ ...prevState, isOpen: false }));
   };
 
   private getHighlightedList = () => {
-    const { suggestionList, listItemStyle, onSubmitQuery, DefaultItemComponent, onClickRemoveBtn } = this.props;
+    const { suggestionList, listItemStyle, onSubmitQuery, DefaultItemComponent } = this.props;
     const { highlightValue, highlightedListItemIndex: focus } = this.state;
 
     const suggestions = suggestionList.map((suggestion, index) => {
-      const removeBtn = suggestion.removable ? (
-        <Icon
-          onClick={e => {
-            e.stopPropagation();
-            if (onClickRemoveBtn) {
-              onClickRemoveBtn(suggestion.text);
-            }
-          }}
-          className={styles.removeBtn}
-          icon="X_BUTTON"
-        />
-      ) : null;
       return (
         <li
           className={classNames({
@@ -175,7 +145,6 @@ class InputWithSuggestionList extends React.PureComponent<
               __html: getHighlightedContent(suggestion.text, highlightValue),
             }}
           />
-          {removeBtn}
         </li>
       );
     });
@@ -257,7 +226,7 @@ class InputWithSuggestionList extends React.PureComponent<
   };
 
   private handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { onChange, openListAtFocus } = this.props;
+    const { onChange } = this.props;
     const value = e.currentTarget.value;
 
     this.setState(prevState => ({
@@ -265,7 +234,7 @@ class InputWithSuggestionList extends React.PureComponent<
       inputValue: value,
       highlightValue: value,
       highlightedListItemIndex: -1,
-      isOpen: openListAtFocus ? true : value.length > 1,
+      isOpen: value.length > 1,
     }));
 
     if (onChange) onChange(e);
