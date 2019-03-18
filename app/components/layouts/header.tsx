@@ -200,12 +200,12 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     const { location } = this.props;
     const isShowSearchFormContainer = location.pathname !== HOME_PATH;
 
-    console.log(location.pathname);
     let currentQuery = "";
     if (location.pathname === "/search") {
       const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
       currentQuery = SafeURIStringHandler.decode(rawQueryParamsObj.query || "");
     }
+    console.log(currentQuery);
 
     return (
       <div style={!isShowSearchFormContainer ? { visibility: "hidden" } : {}} className={styles.searchFormContainer}>

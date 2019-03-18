@@ -85,6 +85,7 @@ const SearchQueryInput: React.FunctionComponent<
   SearchQueryInputProps & React.InputHTMLAttributes<HTMLInputElement>
 > = props => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [touched, setTouched] = React.useState(false);
   const [inputValue, setInputValue] = React.useState(props.initialValue || "");
   const [genuineInputValue, setGenuineInputValue] = React.useState(props.initialValue || "");
   const [highlightIdx, setHighlightIdx] = React.useState(-1);
@@ -96,8 +97,6 @@ const SearchQueryInput: React.FunctionComponent<
     },
     wait: 200,
   });
-
-  const [touched, setTouched] = React.useState(false);
 
   const recentQueries = getRecentQueries(genuineInputValue).map(q => ({ text: q, removable: true }));
   const [keywordsToShow, setKeywordsToShow] = React.useState(recentQueries);
@@ -119,6 +118,16 @@ const SearchQueryInput: React.FunctionComponent<
       setKeywordsToShow(getRecentQueries(genuineInputValue).map(q => ({ text: q, removable: true })));
     },
     [genuineInputValue]
+  );
+
+  React.useEffect(
+    () => {
+      if (props.initialValue) {
+        setInputValue(props.initialValue);
+        setGenuineInputValue(props.initialValue);
+      }
+    },
+    [props.initialValue]
   );
 
   React.useEffect(
