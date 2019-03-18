@@ -207,7 +207,16 @@ export function reducer(
 
       return {
         ...state,
-        currentFilterSet: payload,
+        savedFilterSet: payload,
+      };
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_PUT_MY_FILTERS: {
+      const payload: Filter[] = action.payload;
+
+      return {
+        ...state,
+        myFilters: payload,
       };
     }
 

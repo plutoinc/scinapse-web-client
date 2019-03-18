@@ -8,7 +8,7 @@ import { ChangeRangeInputParams } from "../../constants/paperSearch";
 import PlutoAxios from "../../api/pluto";
 import { CommonError } from "../../model/error";
 import { GetAuthorsParam } from "../../api/types/author";
-import memberAPI from "../../api/member";
+import memberAPI, { Filter } from "../../api/member";
 
 export function toggleExpandingFilter() {
   return {
@@ -128,5 +128,37 @@ export function fetchMyFilters() {
         throw err;
       }
     }
+  };
+}
+
+export function putMyFilters(params: Filter[]) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_PUT_MY_FILTERS });
+
+    try {
+      const res = await memberAPI.addMyFilters(params);
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_PUT_MY_FILTERS,
+        payload: res,
+      });
+    } catch (err) {
+      if (!axios.isCancel(err)) {
+        const error = PlutoAxios.getGlobalError(err);
+
+        dispatch({
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_PUT_MY_FILTERS,
+          payload: {
+            statusCode: (error as CommonError).status,
+          },
+        });
+        throw err;
+      }
+    }
+  };
+}
+
+export function setSavedFilterSet(params: Filter) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_SET_FILTER_IN_MY_FILTER_SET, payload: params });
   };
 }
