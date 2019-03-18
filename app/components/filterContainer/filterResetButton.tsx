@@ -1,7 +1,7 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { FILTER_BOX_TYPE } from "../../constants/paperSearch";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { Link } from "react-router-dom";
 import makeNewFilterLink from "../../helpers/makeNewFilterLink";
 const styles = require("./filterResetButton.scss");
 
