@@ -59,13 +59,14 @@ class MemberAPI extends PlutoAxios {
     return camelizedRes;
   }
 
-  public async addMyFilters(params: Filter) {
+  public async addMyFilters(params: Filter[]) {
     const res = await this.put(`/members/me/saved-filters`, {
-      saved_filters: [params],
+      saved_filters: params,
     });
 
-    console.log(res);
-    return res.data;
+    const camelizedRes = camelCaseKeys(res.data.data.content);
+
+    return camelizedRes;
   }
 }
 
