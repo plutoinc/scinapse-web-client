@@ -27,10 +27,6 @@ function mapStateToProps(state: AppState) {
 class Home extends React.PureComponent<HomeProps> {
   public render() {
     const containerStyle = this.getContainerStyle();
-    // const searchBoxPlaceHolder =
-    //   layout.userDevice !== UserDevice.DESKTOP
-    //     ? "Search papers by keyword"
-    //     : "Search papers by title, author, doi or keyword";
 
     return (
       <div className={styles.articleSearchFormContainer}>

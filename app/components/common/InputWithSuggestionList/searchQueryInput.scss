@@ -27,7 +27,8 @@
   right: 0;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  box-shadow: 0 1px 2px 0 #bbc2d0;
+  box-shadow: 0 1px 2px 0 $gray4;
+  z-index: 4;
 
   &:focus {
     outline: none;
@@ -35,10 +36,12 @@
 }
 
 .listItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   height: 44px;
   line-height: 44px;
   padding: 0 18px;
-  position: relative;
   text-align: left;
   width: 100%;
   overflow: hidden;
@@ -73,15 +76,14 @@
 }
 
 .removeBtn {
-  position: absolute;
-  top: 16px;
-  right: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 16px;
-  height: 16px;
+  width: 32px;
+  height: 100%;
   color: $gray4;
+  margin-left: 12px;
+  margin-right: -12px;
 
   svg {
     width: 8px;
