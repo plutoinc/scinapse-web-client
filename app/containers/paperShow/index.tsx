@@ -37,7 +37,6 @@ import restoreScroll from "../../helpers/scrollRestoration";
 import ErrorPage from "../../components/error/errorPage";
 import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
 import EnvChecker from "../../helpers/envChecker";
-import BetterSearch from "../../components/paperShow/components/betterSearch";
 import NextPaperTab from "../nextPaperTab";
 import ResearchHistory from "../../components/researchHistory";
 const styles = require("./paperShow.scss");
@@ -253,14 +252,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   <FOSList FOSList={paper.fosList} />
                 </div>
               </div>
-              <BetterSearch
-                paperId={paper.id}
-                isAnimated={paperShow.betterSearchIsAnimated}
-                FOSList={paper.fosList}
-                suggestionKeywords={layout.completionKeywordList}
-              />
               <div className={styles.paperContentBlockDivider} />
-
               <div>
                 {this.getFullTextNavBar()}
                 <PDFViewer
