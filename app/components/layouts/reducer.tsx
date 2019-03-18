@@ -15,17 +15,6 @@ export function reducer(state: LayoutState = LAYOUT_INITIAL_STATE, action: Redux
       return { ...state, userDevice: UserDevice.MOBILE };
     }
 
-    case ACTION_TYPES.HEADER_SUCCEEDED_TO_GET_KEYWORD_COMPLETION: {
-      return {
-        ...state,
-        completionKeywordList: action.payload.keywordList,
-      };
-    }
-
-    case ACTION_TYPES.HEADER_CLEAR_KEYWORD_COMPLETION: {
-      return { ...state, completionKeywordList: [] };
-    }
-
     default:
       return state;
   }

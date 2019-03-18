@@ -11,7 +11,6 @@ import BubblePopover from "../common/bubblePopover";
 import { AppState } from "../../reducers";
 import Icon from "../../icons";
 import { signOut } from "../auth/actions";
-import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
 import { trackAction, trackDialogView } from "../../helpers/handleGA";
 import { HeaderProps } from "./types/header";
@@ -86,17 +85,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
   public componentWillUnmount() {
     if (!EnvChecker.isOnServer()) {
-      const { dispatch } = this.props;
-      dispatch(Actions.clearKeywordCompletion());
       window.removeEventListener("scroll", this.handleScrollEvent);
-    }
-  }
-
-  public componentWillReceiveProps(nextProps: HeaderProps) {
-    const { dispatch, location } = this.props;
-
-    if (location !== nextProps.location) {
-      dispatch(Actions.clearKeywordCompletion());
     }
   }
 

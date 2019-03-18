@@ -6,20 +6,17 @@ import { AppState } from "../../reducers";
 import { Footer } from "../layouts";
 import { LayoutState, UserDevice } from "../layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { HomeState } from "./records";
 import SearchQueryInput from "../common/InputWithSuggestionList/searchQueryInput";
 const styles = require("./home.scss");
 
 export interface HomeProps extends RouteComponentProps<null> {
   layout: LayoutState;
-  home: HomeState;
   dispatch: Dispatch<any>;
 }
 
 function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
-    home: state.home,
   };
 }
 
