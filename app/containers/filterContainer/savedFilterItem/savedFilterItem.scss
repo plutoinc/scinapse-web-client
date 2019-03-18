@@ -1,0 +1,43 @@
+.filterItemWrapper {
+  @extend %popper-item;
+  height: 32px;
+  border: none;
+  padding: 8px 12px;
+
+  &:hover {
+    background-color: $gray1;
+    transition: 0.2s;
+  }
+}
+
+.defaultFilterItemTitle {
+  font-size: 14px;
+  color: $gray5;
+  margin-left: 12px;
+}
+
+.defaultFilterItemIcon {
+  color: $gray5;
+  svg {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+
+.filterItemTitle {
+  @extend .defaultFilterItemTitle;
+  color: $gray6;
+}
+
+.filterItemIcon {
+  color: $gray4;
+  display: inline-block;
+  vertical-align: top;
+
+  svg {
+    width: 20px;
+    height: 10px;
+  }
+}
