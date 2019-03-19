@@ -48,7 +48,12 @@ export function reducer(
       const journalFilterObject = payload.data.aggregation.journals.filter(journal =>
         state.journalFilter.includes(journal.id)
       );
+      const journalNonFilterObject = payload.data.aggregation.journals.filter(
+        journal => !state.journalFilter.includes(journal.id)
+      );
+
       const fosFilterObject = payload.data.aggregation.fosList.filter(fos => state.fosFilter.includes(fos.id));
+      const fosNonFilterObject = payload.data.aggregation.fosList.filter(fos => !state.fosFilter.includes(fos.id));
 
       if (payload.data.page) {
         return {
@@ -64,7 +69,11 @@ export function reducer(
           suggestionKeyword: payload.data.suggestion ? payload.data.suggestion.suggestion : "",
           highlightedSuggestionKeyword: payload.data.suggestion ? payload.data.suggestion.highlighted : "",
           searchFromSuggestion: payload.data.resultModified,
-          aggregationData: payload.data.aggregation,
+          aggregationData: {
+            ...payload.data.aggregation,
+            journals: [...journalFilterObject, ...journalNonFilterObject],
+            fosList: [...fosFilterObject, ...fosNonFilterObject],
+          },
           journalFilterObject,
           fosFilterObject,
           matchAuthors: payload.data.matchedAuthor,
@@ -200,7 +209,6 @@ export function reducer(
       };
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_MY_FILTERS:
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_PUT_MY_FILTERS: {
       return {
         ...state,
@@ -208,7 +216,6 @@ export function reducer(
       };
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_MY_FILTERS:
     case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_PUT_MY_FILTERS: {
       return {
         ...state,
@@ -219,7 +226,7 @@ export function reducer(
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MY_FILTERS: {
       const payload: Filter[] = action.payload;
 
-      return { ...state, myFilters: payload, isFilterSaveBoxLoading: false };
+      return { ...state, myFilters: payload };
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_PUT_MY_FILTERS: {
@@ -229,7 +236,7 @@ export function reducer(
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_SET_FILTER_IN_MY_FILTER_SET: {
-      const payload: Filter = action.payload;
+      const payload: Filter | null = action.payload;
 
       return { ...state, savedFilterSet: payload };
     }

@@ -5,12 +5,12 @@ const styles = require("./filterSaveButton.scss");
 interface FilterSaveButtonProps {
   text: string;
   buttonStyle?: React.CSSProperties;
-  handleClickSaveBtn: () => void;
+  onClickButton: () => void;
 }
 
 const FilterSaveButton: React.FunctionComponent<FilterSaveButtonProps> = props => {
   return (
-    <div onClick={() => props.handleClickSaveBtn()} style={props.buttonStyle} className={styles.filterSaveButton}>
+    <div onClick={props.onClickButton} style={props.buttonStyle} className={styles.filterSaveButton}>
       {props.text}
     </div>
   );

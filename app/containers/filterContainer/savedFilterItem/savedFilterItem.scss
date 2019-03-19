@@ -17,6 +17,12 @@
 .filterItemTitle {
   @extend .defaultFilterItemTitle;
   color: $gray6;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  width: 280px;
+  vertical-align: top;
 }
 
 .filterItemIcon {

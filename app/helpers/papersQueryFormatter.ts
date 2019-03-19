@@ -61,8 +61,8 @@ class PaperSearchQueryFormatter {
     }
 
     // tslint:disable-next-line:one-variable-per-declaration
-    let yearFrom: number | undefined;
-    let yearTo: number | undefined;
+    let yearFrom: number | any;
+    let yearTo: number | any;
     let fos: number[] = [];
     let journal: number[] = [];
     if (!!queryMap.year) {
@@ -91,8 +91,8 @@ class PaperSearchQueryFormatter {
     }
 
     return {
-      yearFrom,
-      yearTo,
+      yearFrom: isNaN(yearFrom) ? undefined : yearFrom,
+      yearTo: isNaN(yearTo) ? undefined : yearTo,
       fos: sortBy(fos),
       journal: sortBy(journal),
     };

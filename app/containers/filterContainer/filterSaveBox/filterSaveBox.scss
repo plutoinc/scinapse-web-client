@@ -1,5 +1,7 @@
 .filterTitleBox {
   position: relative;
+  height: 42px;
+  padding: 12px;
 
   &:hover {
     .titleControlIconWrapper {
@@ -10,18 +12,19 @@
 
   .titleControlIconWrapper {
     opacity: 0;
-    margin-left: 8px;
+    margin-left: 4px;
 
     .titleControlIcon {
       justify-content: center;
       align-items: center;
       vertical-align: middle;
+      display: inline-flex;
       color: $gray5;
       cursor: pointer;
 
       svg {
         width: 12px;
-        height: 12px;
+        height: 14px;
       }
     }
   }
@@ -41,19 +44,26 @@
   font-size: 14px;
   font-weight: bold;
   color: $gray6;
-  width: 150px;
-  display: inline-flex;
+  max-width: 150px;
+  display: inline-block;
+  vertical-align: middle;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+.loadingFilterContainerTitle {
+  @extend .filterContainerTitle;
+  color: $gray5;
+}
+
 .filterContainerEmoji {
   width: 16px;
-  height: 20px;
-  font-size: 12px;
+  font-size: 14px;
   border-radius: 10px;
-  margin-right: 12px;
+  margin-right: 10px;
+  vertical-align: middle;
+  cursor: pointer;
 
   &:hover {
     background-color: $gray2;
@@ -163,30 +173,36 @@
   }
 }
 
-.filterSaveButton {
-  position: absolute;
-  right: 44px;
-  top: 1px;
-  font-size: 14px;
-  font-weight: 500;
-  text-align: right;
-  color: $main_blue1;
-
-  &:hover {
-    color: $main_blue_light0;
-  }
-}
-
 .titleInputCancelBtn {
-  position: absolute;
-  top: 13px;
-  right: 8px;
   font-size: 14px;
   font-weight: 500;
   color: $gray4;
   cursor: pointer;
+  margin-left: 8px;
 
   &:hover {
     color: $gray3;
   }
+}
+
+.titleBtnWrapper {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  margin-right: 12px;
+}
+
+.buttonSpinner {
+  position: absolute;
+  color: $gray5;
+}
+
+.buttonSpinnerWrapper {
+  margin-right: 29px;
+  display: inline-block;
+  height: 14px;
+  vertical-align: middle;
 }
