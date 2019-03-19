@@ -7,11 +7,12 @@ import NoteContent from "./noteContent";
 const styles = require("./collectionPaperNote.scss");
 
 interface CollectionPaperNoteProps {
+  dispatch: Dispatch<any>;
   paperId: number;
   collectionId: number;
   maxHeight: number;
+  isMine: boolean;
   note?: string;
-  dispatch: Dispatch<any>;
 }
 
 interface CollectionPaperNoteState {
@@ -31,12 +32,37 @@ class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, 
   }
 
   public render() {
-    const { note, maxHeight } = this.props;
+    const { note, maxHeight, isMine } = this.props;
     const { isEdit, isLoading } = this.state;
 
     if (!maxHeight) return null;
 
-    if (note && !isEdit) {
+    if ((!note && isMine) || (isEdit && isMine)) {
+      return (
+        <div className={styles.memoForm}>
+          <PaperNoteForm
+            isEdit={isEdit}
+            hideButton={true}
+            omitCancel={!isEdit}
+            initialValue={note}
+            isLoading={isLoading}
+            onSubmit={this.handleSubmitNote}
+            onClickCancel={this.toggleNoteEditMode}
+            textareaStyle={{
+              border: 0,
+              padding: 0,
+              borderRadius: "8px",
+              fontSize: "14px",
+              width: "100%",
+              height: "21px",
+              maxHeight: "500px",
+            }}
+            textAreaClassName={styles.memoTextarea}
+          />
+        </div>
+      );
+    }
+    if (note) {
       return (
         <NoteContent
           note={note}
@@ -47,29 +73,7 @@ class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, 
       );
     }
 
-    return (
-      <div className={styles.memoForm}>
-        <PaperNoteForm
-          isEdit={isEdit}
-          hideButton={true}
-          omitCancel={!isEdit}
-          initialValue={note}
-          isLoading={isLoading}
-          onSubmit={this.handleSubmitNote}
-          onClickCancel={this.toggleNoteEditMode}
-          textareaStyle={{
-            border: 0,
-            padding: 0,
-            borderRadius: "8px",
-            fontSize: "14px",
-            width: "100%",
-            height: "21px",
-            maxHeight: "500px",
-          }}
-          textAreaClassName={styles.memoTextarea}
-        />
-      </div>
-    );
+    return null;
   }
 
   private toggleNoteEditMode = () => {

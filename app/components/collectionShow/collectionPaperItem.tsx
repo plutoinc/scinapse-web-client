@@ -32,7 +32,7 @@ class CollectionPaperItem extends React.PureComponent<CollectionPaperItemProps, 
   }
 
   public render() {
-    const { paper, paperNote, collection, onRemovePaperCollection } = this.props;
+    const { paper, paperNote, collection, onRemovePaperCollection, currentUser } = this.props;
     const { paperItemHeight } = this.state;
 
     const paperItemProps = {
@@ -43,6 +43,8 @@ class CollectionPaperItem extends React.PureComponent<CollectionPaperItemProps, 
         paddingBottom: "0",
       },
     };
+
+    const isMine = currentUser && currentUser.id === collection.createdBy.id;
 
     return (
       <div className={styles.CollectionPaperItemWrapper}>
@@ -55,6 +57,7 @@ class CollectionPaperItem extends React.PureComponent<CollectionPaperItemProps, 
             note={paperNote}
             collectionId={collection.id}
             paperId={paper.id}
+            isMine={!!isMine}
           />
         }
       </div>
