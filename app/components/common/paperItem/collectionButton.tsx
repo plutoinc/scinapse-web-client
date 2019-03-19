@@ -7,10 +7,12 @@ import Icon from "../../../icons";
 import { connect } from "react-redux";
 import { AppState } from "../../../reducers";
 import { UserCollectionsState } from "../../collections/reducer";
+import { CurrentUser } from "../../../model/currentUser";
 const styles = require("./collectionButton.scss");
 
 function mapStateToProps(state: AppState) {
   return {
+    currentUser: state.currentUser,
     userCollections: state.userCollections,
   };
 }
@@ -19,6 +21,7 @@ interface CollectionButtonProps {
   paperId: number;
   pageType: Scinapse.ActionTicket.PageType;
   hasCollection: boolean;
+  currentUser: CurrentUser;
   actionArea?: Scinapse.ActionTicket.ActionArea;
   onRemove?: (paperId: number) => Promise<void>;
   userCollections: UserCollectionsState;
@@ -39,6 +42,7 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
   hasCollection,
   onRemove,
   userCollections,
+  currentUser,
 }) => {
   if (hasCollection && onRemove) {
     return (
@@ -69,7 +73,11 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
     <button
       className={styles.addCollectionBtnWrapper}
       onClick={() => {
-        handleAddToCollection(userCollections, paperId);
+        if (currentUser.isLoggedIn) {
+          handleAddToCollection(userCollections, paperId);
+        } else {
+          GlobalDialogManager.openSignInDialog();
+        }
         trackEvent({
           category: "Additional Action",
           action: "Click [Add To Collection] Button",
