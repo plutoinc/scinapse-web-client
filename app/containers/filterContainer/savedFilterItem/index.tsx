@@ -14,7 +14,7 @@ interface SavedFilterItemProps {
 }
 
 const SavedFilterItem: React.FunctionComponent<SavedFilterItemProps> = props => {
-  const { searchInput, sort, onClickFilterItem, savedFilter, onClickDeleteBtn, key } = props;
+  const { searchInput, sort, onClickFilterItem, savedFilter, onClickDeleteBtn } = props;
 
   return (
     <li onClick={() => onClickFilterItem(searchInput, sort, savedFilter)} className={styles.filterItemWrapper}>
