@@ -181,7 +181,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
               }}
             />
             <span
-              onClick={e => {
+              onClick={() => {
                 setIsOpenTitleInput(!isOpenTitleInput);
               }}
               className={styles.titleInputCancelBtn}
