@@ -45,9 +45,8 @@
 
 .filterItemWrapper {
   @extend %popper-item;
-  height: 32px;
   border: none;
-  padding: 8px 12px;
+  padding: 12px;
 
   &:hover {
     background-color: $gray1;

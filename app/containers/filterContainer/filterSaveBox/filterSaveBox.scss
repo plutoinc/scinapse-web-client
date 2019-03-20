@@ -3,6 +3,7 @@
   height: 42px;
   padding: 12px;
   cursor: pointer;
+  background-color: white;
 
   &:hover {
     .titleControlIconWrapper {
@@ -34,7 +35,7 @@
 }
 
 .filterResultButton {
-  margin-right: 14px;
+  margin-right: 12px;
   color: $gray6;
 
   svg {
@@ -44,7 +45,7 @@
 }
 
 .filterContainerTitle {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   color: $gray6;
   max-width: 150px;
@@ -136,9 +137,8 @@
 
   .filterItemWrapper {
     @extend %popper-item;
-    height: 32px;
     border: none;
-    padding: 8px 12px;
+    padding: 12px;
 
     &:hover {
       background-color: $gray1;
@@ -157,7 +157,7 @@
   top: 0;
   bottom: 0;
   right: 0;
-  margin-right: 8px;
+  margin-right: 12px;
   cursor: pointer;
 
   svg {
