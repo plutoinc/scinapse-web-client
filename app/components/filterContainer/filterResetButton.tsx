@@ -36,7 +36,14 @@ function getFilterObject(props: FilterResetButtonProps) {
 
 const FilterResetButton: React.FunctionComponent<FilterResetButtonProps> = props => {
   return (
-    <Link to={makeNewFilterLink(getFilterObject(props))} className={styles.resetButtonWrapper} style={props.btnStyle}>
+    <Link
+      to={makeNewFilterLink(getFilterObject(props))}
+      onClick={e => {
+        e.stopPropagation();
+      }}
+      className={styles.resetButtonWrapper}
+      style={props.btnStyle}
+    >
       Reset
     </Link>
   );

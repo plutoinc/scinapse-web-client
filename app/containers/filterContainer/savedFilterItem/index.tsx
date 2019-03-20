@@ -19,7 +19,7 @@ const SavedFilterItem: React.FunctionComponent<SavedFilterItemProps> = props => 
   return (
     <li onClick={() => onClickFilterItem(searchInput, sort, savedFilter)} className={styles.filterItemWrapper}>
       <div className={styles.filterItem}>
-        <Icon icon="FILTER_RESULT_BUTTON" className={styles.filterItemIcon} />
+        <span className={styles.filterItemEmoji}>{savedFilter.emoji}</span>
         <span className={styles.filterItemTitle}>{savedFilter.name}</span>
         <span
           className={styles.deleteIconWrapper}

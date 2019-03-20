@@ -50,6 +50,8 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
 
   function handleClickSaveButton(changedFilterReq: Filter | string) {
     let changedFilter: Filter | null = null;
+    const baseEmojis = ["🐺", "🐶", "🦊", "🐱", "🦌", "🦒", "🐹", "🐰"];
+    const randomEmoji = baseEmojis[Math.floor(Math.random() * baseEmojis.length)];
 
     if (typeof changedFilterReq === "string") {
       changedFilter = !!savedFilterSet
@@ -61,7 +63,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
               yearFrom: articleSearchState.yearFilterFromValue,
               yearTo: articleSearchState.yearFilterToValue,
             }),
-            emoji: "😃",
+            emoji: randomEmoji,
             filter: changedFilterReq,
           };
     } else {

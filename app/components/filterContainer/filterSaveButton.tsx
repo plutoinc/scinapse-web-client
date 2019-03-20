@@ -10,7 +10,14 @@ interface FilterSaveButtonProps {
 
 const FilterSaveButton: React.FunctionComponent<FilterSaveButtonProps> = props => {
   return (
-    <div onClick={props.onClickButton} style={props.buttonStyle} className={styles.filterSaveButton}>
+    <div
+      onClick={e => {
+        e.stopPropagation();
+        props.onClickButton();
+      }}
+      style={props.buttonStyle}
+      className={styles.filterSaveButton}
+    >
       {props.text}
     </div>
   );

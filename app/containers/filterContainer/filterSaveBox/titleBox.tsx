@@ -76,9 +76,6 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
           />
         ) : null}
         <Icon
-          onClick={() => {
-            onClickDropdownOpen(!isDropdownOpen);
-          }}
           className={classNames({
             [styles.downArrow]: !isDropdownOpen,
             [styles.upArrow]: isDropdownOpen,
@@ -120,7 +117,9 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
           ) : (
             <span
               className={styles.filterContainerEmoji}
-              onClick={() => {
+              onClick={e => {
+                e.stopPropagation();
+                onClickDropdownOpen(false);
                 setIsOpenEmojiPicker(!isOpenEmojiPicker);
               }}
             >
@@ -136,7 +135,8 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
             {savedFilterSet.name}
           </span>
           <span
-            onClick={() => {
+            onClick={e => {
+              e.stopPropagation();
               setIsOpenTitleInput(!isOpenTitleInput);
             }}
             className={styles.titleControlIconWrapper}
@@ -162,7 +162,14 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
               setFilterTitle(e.currentTarget.value);
             }}
             value={savedFilterSet.name}
-            inputStyle={{ width: "240px", fontSize: "14px", border: "none", padding: "8px 32px 8px 0px" }}
+            inputStyle={{
+              width: "200px",
+              fontSize: "14px",
+              border: "none",
+              padding: "8px 0 8px 0px",
+              borderRadius: 0,
+              borderBottom: "1px solid #bbc2d0",
+            }}
           />
           <div className={styles.titleBtnWrapper}>
             <FilterSaveButton
@@ -174,7 +181,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
               }}
             />
             <span
-              onClick={() => {
+              onClick={e => {
                 setIsOpenTitleInput(!isOpenTitleInput);
               }}
               className={styles.titleInputCancelBtn}
@@ -193,10 +200,14 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
         {isOpenTitleInput ? (
           getEditTitleBox(props.articleSearchState.savedFilterSet)
         ) : (
-          <>
+          <div
+            onClick={() => {
+              onClickDropdownOpen(!isDropdownOpen);
+            }}
+          >
             {getInnerContent(props.articleSearchState.savedFilterSet)}
             {getSaveAndResetBtns(currentFilterStr)}
-          </>
+          </div>
         )}
       </div>
       {isOpenEmojiPicker ? (
@@ -209,8 +220,9 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
             set="emojione"
             onSelect={(emoji: BaseEmoji) => {
               if (!!props.articleSearchState.savedFilterSet) {
-                props.onClickSaveBtn({ ...props.articleSearchState.savedFilterSet, emoji: emoji.native });
-                setIsOpenEmojiPicker(!isOpenEmojiPicker);
+                console.log(emoji.native);
+                // props.onClickSaveBtn({ ...props.articleSearchState.savedFilterSet, emoji: emoji.native });
+                // setIsOpenEmojiPicker(!isOpenEmojiPicker);
               } else {
                 alertToast({ type: "error", message: "Had an error to update emoji" });
               }
@@ -218,6 +230,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
             style={{
               position: "absolute",
               zIndex: 9,
+              boxShadow: "0 2px 20px rgba(0,0,0,0.1)",
             }}
           />
         </ClickAwayListener>

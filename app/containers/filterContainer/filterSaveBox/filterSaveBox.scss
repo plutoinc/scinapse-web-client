@@ -2,6 +2,7 @@
   position: relative;
   height: 42px;
   padding: 12px;
+  cursor: pointer;
 
   &:hover {
     .titleControlIconWrapper {
@@ -19,8 +20,10 @@
       align-items: center;
       vertical-align: middle;
       display: inline-flex;
+      background-color: $gray2;
+      padding: 1px;
+      border-radius: 8px;
       color: $gray5;
-      cursor: pointer;
 
       svg {
         width: 12px;
@@ -59,14 +62,14 @@
 
 .filterContainerEmoji {
   width: 16px;
-  font-size: 14px;
+  font-size: 20px;
   border-radius: 10px;
-  margin-right: 10px;
-  vertical-align: middle;
+  margin-right: 6px;
+  vertical-align: top;
   cursor: pointer;
 
   &:hover {
-    background-color: $gray2;
+    opacity: 0.7;
   }
 }
 

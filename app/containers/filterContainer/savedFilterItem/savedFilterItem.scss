@@ -25,6 +25,13 @@
   vertical-align: top;
 }
 
+.filterItemEmoji {
+  display: inline-block;
+  height: 100%;
+  width: 14px;
+  margin: 0 3px;
+}
+
 .filterItemIcon {
   color: $gray4;
   display: inline-block;
