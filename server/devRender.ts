@@ -1,5 +1,7 @@
+import * as express from "express";
 import * as AWS from "aws-sdk";
-import * as DeployConfig from "../../scripts/deploy/config";
+import * as DeployConfig from "../scripts/deploy/config";
+const compression = require("compression");
 const fs = require("fs");
 const s3 = new AWS.S3();
 
@@ -107,28 +109,25 @@ class DevRenderer {
   }
 }
 
-async function handler(event: Lambda.Event, _context: Lambda.Context) {
-  const path = event.path;
-  console.log(event, "=== event at parent function");
-  console.log(path, "=== path at parent function");
+const awsServerlessExpress = require("aws-serverless-express");
+const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 
+const app = express();
+app.use(compression());
+app.use(awsServerlessExpressMiddleware.eventContext({ fromALB: true }));
+app.get("*", async (req: any, res) => {
   const devRenderer = new DevRenderer();
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
   try {
-    const result = await devRenderer.render(event);
+    const result = await devRenderer.render(req.alb.event);
     console.log("====== succeeded to rendering!");
-    return result;
+    res.send((result as any).body);
   } catch (err) {
     console.error(err);
-    return {
-      statusCode: 200,
-      headers: {
-        "Content-Type": "text/html; charset=utf-8",
-        "Access-Control-Allow-Origin": "*",
-      },
-      isBase64Encoded: false,
-      body: err.message,
-    };
+    res.send(err.message);
   }
-}
+});
 
-export const ssr = handler;
+const binaryMimeTypes = ["application/xml"];
+const server = awsServerlessExpress.createServer(app, null, binaryMimeTypes);
+exports.ssr = (event: any, context: any) => awsServerlessExpress.proxy(server, event, context);

@@ -172,7 +172,6 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
   /* ******
   *********  ABOUT RENDERING METHODS *********
   There are 3 kinds of the rendering methods in Scinapse server rendering.
-
   *********************************************************************************
   ** NAME **** NORMAL RENDERING ** ERROR HANDLING RENDERING ** FALLBACK REDERING **
   *********************************************************************************
@@ -181,19 +180,16 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
       Succeeded to rendering everything.
     - RESULT
       FULL HTML
-
   * ERROR HANDLING RENDERING
     - CAUSE
       An error occurred during the rendering process.
     - RESULT
       Empty content HTML with <script> tag which contains bundled javascript address for client.
-
   * FALLBACK RENDERING
     - CAUSE
       Timeout occurred during the rendering process.
     - RESULT
       Empty content HTML with <script> tag which contains bundled javascript address for client.
-
   ******** */
   const path = event.path;
 

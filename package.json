@@ -128,6 +128,7 @@
     "aws-serverless-express": "git+https://github.com/TylorShin/aws-serverless-express.git",
     "axios": "0.16.2",
     "classnames": "2.2.5",
+    "compression": "^1.7.4",
     "cookie": "^0.3.1",
     "date-fns": "1.29.0",
     "formik": "^1.4.0",

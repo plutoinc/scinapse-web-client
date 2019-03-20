@@ -5,7 +5,7 @@ const originalWebpackConfig = require("./webpack.config");
 
 const browserSpecificSetting = {
   mode: "production",
-  entry: ["./app/server/devRenderer.tsx"],
+  entry: ["./server/devRenderer.tsx"],
   output: {
     libraryTarget: "commonjs",
     path: path.resolve(__dirname, "dist"),
