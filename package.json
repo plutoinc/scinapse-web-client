@@ -125,6 +125,7 @@
     "@types/react-truncate": "2.3.3",
     "ajv": "6.5.4",
     "autosize": "4.0.0",
+    "aws-serverless-express": "git+https://github.com/TylorShin/aws-serverless-express.git",
     "axios": "0.16.2",
     "classnames": "2.2.5",
     "cookie": "^0.3.1",
