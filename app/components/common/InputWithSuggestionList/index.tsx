@@ -10,8 +10,13 @@ export interface DefaultItemComponentProps {
   onClick: () => void;
 }
 
+interface SuggestionItem {
+  text: string;
+  removable?: boolean;
+}
+
 interface InputWithSuggestionListProps {
-  suggestionList: string[];
+  suggestionList: SuggestionItem[];
   onSubmitQuery: (inputValue: string) => void;
   wrapperClassName?: string;
   iconNode?: React.ReactNode;
@@ -24,7 +29,7 @@ interface InputWithSuggestionListProps {
 }
 
 interface InputWithSuggestionListState {
-  focus: number;
+  highlightedListItemIndex: number;
   isOpen: boolean;
   isLoading: boolean;
   inputValue: string;
@@ -40,7 +45,7 @@ class InputWithSuggestionList extends React.PureComponent<
     super(props);
 
     this.state = {
-      focus: -1,
+      highlightedListItemIndex: -1,
       isOpen: false,
       isLoading: false,
       inputValue: props.defaultValue || "",
@@ -119,7 +124,7 @@ class InputWithSuggestionList extends React.PureComponent<
 
   private getHighlightedList = () => {
     const { suggestionList, listItemStyle, onSubmitQuery, DefaultItemComponent } = this.props;
-    const { highlightValue, focus } = this.state;
+    const { highlightValue, highlightedListItemIndex: focus } = this.state;
 
     const suggestions = suggestionList.map((suggestion, index) => {
       return (
@@ -129,15 +134,18 @@ class InputWithSuggestionList extends React.PureComponent<
             [styles.highLightKeywordCompletionItem]: focus === index,
           })}
           onClick={() => {
-            onSubmitQuery(suggestion);
+            onSubmitQuery(suggestion.text);
             this.handleCloseList();
           }}
           style={listItemStyle}
           key={index}
-          dangerouslySetInnerHTML={{
-            __html: getHighlightedContent(suggestion, highlightValue),
-          }}
-        />
+        >
+          <span
+            dangerouslySetInnerHTML={{
+              __html: getHighlightedContent(suggestion.text, highlightValue),
+            }}
+          />
+        </li>
       );
     });
 
@@ -169,7 +177,10 @@ class InputWithSuggestionList extends React.PureComponent<
 
   private handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const { suggestionList, onSubmitQuery, DefaultItemComponent } = this.props;
-    const { focus, inputValue, highlightValue, isOpen } = this.state;
+    const { highlightedListItemIndex: focus, inputValue, highlightValue, isOpen } = this.state;
+
+    if (!suggestionList || suggestionList.length === 0) return;
+
     const maxFocusIndex = DefaultItemComponent ? suggestionList.length : suggestionList.length - 1;
     const minFocusIndex = -1;
     const nextFocusIndex = focus + 1 > maxFocusIndex ? -1 : focus + 1;
@@ -191,8 +202,8 @@ class InputWithSuggestionList extends React.PureComponent<
           e.preventDefault();
           this.setState(prevState => ({
             ...prevState,
-            focus: nextFocusIndex,
-            inputValue: suggestionList[nextFocusIndex] || highlightValue,
+            highlightedListItemIndex: nextFocusIndex,
+            inputValue: (suggestionList[nextFocusIndex] && suggestionList[nextFocusIndex].text) || highlightValue,
           }));
         }
         break;
@@ -203,8 +214,8 @@ class InputWithSuggestionList extends React.PureComponent<
         e.preventDefault();
         this.setState(prevState => ({
           ...prevState,
-          focus: prevFocusIndex,
-          inputValue: suggestionList[prevFocusIndex] || highlightValue,
+          highlightedListItemIndex: prevFocusIndex,
+          inputValue: (suggestionList[nextFocusIndex] && suggestionList[nextFocusIndex].text) || highlightValue,
         }));
         break;
       }
@@ -222,11 +233,11 @@ class InputWithSuggestionList extends React.PureComponent<
       ...prevState,
       inputValue: value,
       highlightValue: value,
-      focus: -1,
+      highlightedListItemIndex: -1,
       isOpen: value.length > 1,
     }));
 
-    onChange && onChange(e);
+    if (onChange) onChange(e);
   };
 }
 

@@ -11,7 +11,7 @@
                     <use xlink:href="#path-1"></use>
                 </mask>
                 <g id="Mask" fill-rule="nonzero"></g>
-                <g id="Mixin/Fill/Black" mask="url(#mask-2)" fill="#1E2A35" fill-rule="evenodd">
+                <g id="Mixin/Fill/Black" mask="url(#mask-2)" fill="currentColor" fill-rule="evenodd">
                     <rect id="Rectangle" x="0" y="0" width="19" height="19" rx="5"></rect>
                 </g>
             </g>

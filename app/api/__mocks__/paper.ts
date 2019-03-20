@@ -1,5 +1,5 @@
 import PlutoAxios from "../pluto";
-import { GetPapersParams, GetPapersResult, GetRefOrCitedPapersParams } from "../types/paper";
+import { SearchPapersParams, GetPapersResult, GetRefOrCitedPapersParams } from "../types/paper";
 import { RAW } from "../../__mocks__";
 import { GetPaperParams, GetCitationTextParams, GetCitationTextResult } from "../paper";
 import { Paper } from "../../model/paper";
@@ -17,7 +17,7 @@ const mockGetPapersResult: GetPapersResult = {
 };
 
 class PaperAPI extends PlutoAxios {
-  public async getPapers({ query }: GetPapersParams): Promise<GetPapersResult> {
+  public async getPapers({ query }: SearchPapersParams): Promise<GetPapersResult> {
     if (!query) {
       throw new Error("FAKE ERROR");
     } else if (query === "empty") {

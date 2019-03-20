@@ -17,8 +17,6 @@ import {
   AUTHOR_SHOW_INITIAL_STATE,
 } from "../containers/unconnectedAuthorShow/reducer";
 import { reducer as EntityReducer, INITIAL_ENTITY_STATE, EntityState } from "./entity";
-import * as homeReducer from "../components/home/reducer";
-import { HomeState, HOME_INITIAL_STATE } from "../components/home/records";
 import {
   reducer as MyCollectionsReducer,
   MyCollectionsState,
@@ -50,7 +48,6 @@ export interface AppState {
   configuration: ConfigurationReducer.Configuration;
   dialog: dialogReducer.DialogState;
   layout: LayoutState;
-  home: HomeState;
   emailVerification: emailVerificationReducer.EmailVerificationState;
   currentUser: CurrentUser;
   articleSearch: ArticleSearchState;
@@ -68,7 +65,6 @@ export interface AppState {
 export const initialState: AppState = {
   configuration: ConfigurationReducer.CONFIGURATION_INITIAL_STATE,
   dialog: dialogReducer.DIALOG_INITIAL_STATE,
-  home: HOME_INITIAL_STATE,
   layout: LAYOUT_INITIAL_STATE,
   emailVerification: emailVerificationReducer.EMAIL_VERIFICATION_INITIAL_STATE,
   currentUser: CURRENT_USER_INITIAL_STATE,
@@ -87,7 +83,6 @@ export const initialState: AppState = {
 export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   configuration: ConfigurationReducer.reducer,
   dialog: dialogReducer.reducer,
-  home: homeReducer.reducer,
   layout: layoutReducer.reducer,
   articleSearch: articleSearchReducer.reducer,
   authorSearch: authorSearchReducer.reducer,
