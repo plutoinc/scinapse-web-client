@@ -37,10 +37,12 @@
 .filterResultButton {
   margin-right: 12px;
   color: $gray6;
+  vertical-align: middle;
+  display: inline-flex;
 
   svg {
-    width: 13px;
-    height: 9px;
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -163,8 +165,8 @@
   svg {
     display: inline-block;
     vertical-align: top;
-    width: 12px;
-    height: 7px;
+    width: 20px;
+    height: 20px;
   }
 }
 
