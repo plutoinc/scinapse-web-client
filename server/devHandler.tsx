@@ -91,5 +91,6 @@ exports.ssr = async (event: any, context: any) => {
   const binaryMimeTypes = ["application/xml", "text/xml"];
   console.log(event);
   const server = awsServerlessExpress.createServer(app, null, binaryMimeTypes);
+  console.log(app);
   return awsServerlessExpress.proxy(server, event, context);
 };
