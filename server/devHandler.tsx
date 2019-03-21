@@ -88,7 +88,7 @@ class DevRenderer {
 exports.ssr = async (event: any, context: any) => {
   const devRenderer = new DevRenderer();
   const app = await devRenderer.getApp(event);
-  const binaryMimeTypes = ["application/xml", "text/xml"];
+  const binaryMimeTypes = ["application/xml", "text/xml", "text/html", "application/xml"];
   const server = awsServerlessExpress.createServer(app, null, binaryMimeTypes);
-  return awsServerlessExpress.proxy(server, event, context, "PROMISE").promise.then((res: any) => context.succeed(res));
+  return awsServerlessExpress.proxy(server, event, context, "PROMISE").promise;
 };

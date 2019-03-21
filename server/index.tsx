@@ -18,7 +18,6 @@ app.use(morgan("dev"));
 
 app.get(SITEMAP_REGEX, async (req, res) => {
   res.setHeader("Content-Type", "text/xml");
-  res.setHeader("Content-Encoding", "gzip");
   res.setHeader("Access-Contrl-Allow-Origin", "*");
   const sitemap = await getSitemap(req.path);
   res.send(sitemap);
