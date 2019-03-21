@@ -220,9 +220,8 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
             set="emojione"
             onSelect={(emoji: BaseEmoji) => {
               if (!!props.articleSearchState.savedFilterSet) {
-                console.log(emoji.native);
-                // props.onClickSaveBtn({ ...props.articleSearchState.savedFilterSet, emoji: emoji.native });
-                // setIsOpenEmojiPicker(!isOpenEmojiPicker);
+                props.onClickSaveBtn({ ...props.articleSearchState.savedFilterSet, emoji: emoji.native });
+                setIsOpenEmojiPicker(!isOpenEmojiPicker);
               } else {
                 alertToast({ type: "error", message: "Had an error to update emoji" });
               }
