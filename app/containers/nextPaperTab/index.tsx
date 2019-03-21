@@ -7,7 +7,10 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { AppState } from "../../reducers";
 import { getPaperEntities, getDenormalizedPapers } from "../../selectors/papersSelector";
 import Icon from "../../icons";
+const store = require("store");
 const styles = require("./nextPaperTab.scss");
+
+const RESEARCH_HISTORY_KEY = "r_h_list";
 
 interface NextPaperTabProps {
   paperList: Paper[];
@@ -15,14 +18,20 @@ interface NextPaperTabProps {
 
 const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = props => {
   const { paperList } = props;
+  let nextPaper: Paper = paperList[0];
 
   if (!paperList || paperList.length === 0) {
     return null;
   }
 
-  const nextPaper = paperList[0];
+  const prevVisitPapers: Paper[] = store.get(RESEARCH_HISTORY_KEY);
+  const prevVisitPaper: Paper = prevVisitPapers[1];
 
-  return (
+  if (prevVisitPaper && paperList[0].id === prevVisitPaper.id) {
+    nextPaper = paperList[Math.floor(Math.random() * (paperList.length - 1)) + 1];
+  }
+
+  return !!nextPaper ? (
     <Link className={styles.nextPaperTabWrapper} to={`/papers/${nextPaper.id}`}>
       <div className={styles.nextPaperTab}>
         <span className={styles.nextPaperTabTitle}>View next paper</span>
@@ -30,11 +39,11 @@ const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = props => {
         <Icon className={styles.arrowRightIcon} icon="ARROW_RIGHT" />
       </div>
     </Link>
-  );
+  ) : null;
 };
 
 function getPaperIds(state: AppState) {
-  return state.paperShow.relatedPaperIds;
+  return state.paperShow.otherPaperIdsFromAuthor;
 }
 
 const getMemoizedRelatedPapers = createSelector([getPaperIds, getPaperEntities], getDenormalizedPapers);
