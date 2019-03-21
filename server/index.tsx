@@ -1,4 +1,5 @@
 import * as express from "express";
+import * as morgan from "morgan";
 import ssr from "./ssr";
 import { TIMEOUT_FOR_SAFE_RENDERING } from "../app/api/pluto";
 import fallbackRender from "./fallbackRender";
@@ -13,7 +14,7 @@ const SITEMAP_REGEX = /^\/sitemap(\/sitemap_[0-9]+\.xml)?\/?$/;
 const app = express();
 app.use(awsServerlessExpressMiddleware.eventContext({ fromALB: true }));
 app.use(compression());
-// morgan(':method :url :status :res[content-length] - :response-time ms')
+morgan(":method :url :status :res[content-length] - :response-time ms");
 
 app.get(SITEMAP_REGEX, async (req, res) => {
   res.setHeader("Content-Type", "text/xml");
