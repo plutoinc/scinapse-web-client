@@ -27,7 +27,7 @@ const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = props => {
   const prevVisitPapers: Paper[] = store.get(RESEARCH_HISTORY_KEY);
   if (prevVisitPapers && prevVisitPapers.length >= 2) {
     const prevVisitPaper: Paper = prevVisitPapers[1];
-    if (prevVisitPaper && paperList[0].id === prevVisitPaper.id) {
+    if (paperList[0].id === prevVisitPaper.id) {
       nextPaper = paperList[Math.floor(Math.random() * (paperList.length - 1)) + 1];
     }
   }
