@@ -14,7 +14,7 @@ const SITEMAP_REGEX = /^\/sitemap(\/sitemap_[0-9]+\.xml)?\/?$/;
 const app = express();
 app.use(awsServerlessExpressMiddleware.eventContext({ fromALB: true }));
 app.use(compression());
-morgan(":method :url :status :res[content-length] - :response-time ms");
+app.use(morgan("dev"));
 
 app.get(SITEMAP_REGEX, async (req, res) => {
   res.setHeader("Content-Type", "text/xml");
@@ -64,7 +64,7 @@ app.get("*", async (req, res) => {
     const { jsPath, version } = await getClientJSURL(req.query ? req.query.branch : null);
     const lazyRender = new Promise((resolve, _reject) => {
       setTimeout(() => {
-        resolve(fallbackRender);
+        resolve(fallbackRender(jsPath, version));
       }, TIMEOUT_FOR_SAFE_RENDERING);
     });
 
