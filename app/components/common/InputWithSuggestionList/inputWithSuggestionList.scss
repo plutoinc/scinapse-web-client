@@ -25,6 +25,7 @@ input::placeholder {
 }
 
 .keywordCompletionItem {
+  position: relative;
   text-align: left;
   width: 100%;
   overflow: hidden;

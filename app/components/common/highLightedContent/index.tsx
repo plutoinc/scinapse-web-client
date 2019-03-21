@@ -55,6 +55,7 @@ export const STOP_WORDS = [
 
 export function getWordsArraySplitBySpaceWithoutStopWords(text: string) {
   return text
+    .trim()
     .split(" ")
     .filter(word => !STOP_WORDS.includes(word))
     .map(word => word.trim());

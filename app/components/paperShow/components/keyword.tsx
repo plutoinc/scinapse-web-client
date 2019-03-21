@@ -16,7 +16,7 @@ function isOldFos(fos: Fos | NewFOS): fos is Fos {
   return (fos as Fos).fos !== undefined;
 }
 
-const PaperShowKeyword = (props: PaperShowKeywordProps) => {
+const PaperShowKeyword: React.FunctionComponent<PaperShowKeywordProps> = props => {
   const fos = props.fos;
 
   if (isOldFos(fos)) {

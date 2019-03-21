@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import * as classNames from "classnames";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Paper } from "../../../model/paper";
 import Icon from "../../../icons";
@@ -13,11 +14,12 @@ const MAX_AUTHOR_COUNT_TO_SHOW = 2;
 interface PaperShowRelatedPaperItemProps {
   paper: Paper;
   actionArea: Scinapse.ActionTicket.ActionArea;
+  disableVisitedColour?: boolean;
 }
 
 class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPaperItemProps> {
   public render() {
-    const { paper, actionArea } = this.props;
+    const { paper, actionArea, disableVisitedColour } = this.props;
 
     const authorNames =
       paper.authors &&
@@ -69,7 +71,10 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
             pathname: `/papers/${paper.id}`,
           }}
           onClick={this.trackClickTitle}
-          className={styles.title}
+          className={classNames({
+            [styles.title]: true,
+            [styles.notVisitedTitle]: disableVisitedColour,
+          })}
         >
           {paper.title}
         </Link>

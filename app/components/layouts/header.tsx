@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { debounce } from "lodash";
 import * as Cookies from "js-cookie";
 import MenuItem from "@material-ui/core/MenuItem";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
@@ -12,26 +11,25 @@ import BubblePopover from "../common/bubblePopover";
 import { AppState } from "../../reducers";
 import Icon from "../../icons";
 import { signOut } from "../auth/actions";
-import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
-import { trackAction, trackDialogView, trackEvent } from "../../helpers/handleGA";
+import { trackAction, trackDialogView } from "../../helpers/handleGA";
 import { HeaderProps } from "./types/header";
 import { withStyles } from "../../helpers/withStylesHelper";
 import EnvChecker from "../../helpers/envChecker";
 import { UserDevice } from "./records";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { getCurrentPageType } from "../locationListener";
-import InputWithSuggestionList from "../common/InputWithSuggestionList";
+import SearchQueryInput from "../common/InputWithSuggestionList/searchQueryInput";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import { HOME_PATH } from "../../constants/routes";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 import { CurrentUser } from "../../model/currentUser";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
 const LAST_UPDATE_DATE = "2019-01-30T08:13:33.079Z";
+const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 10;
 let ticking = false;
 
 function mapStateToProps(state: AppState) {
@@ -48,6 +46,7 @@ interface HeaderStates {
   isUserDropdownOpen: boolean;
   userDropdownAnchorElement: HTMLElement | null;
   openTopToast: boolean;
+  searchKeyword: string;
 }
 
 const UserInformation: React.FunctionComponent<{ user: CurrentUser }> = props => {
@@ -68,11 +67,13 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   constructor(props: HeaderProps) {
     super(props);
 
+    const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(props.location.search);
     this.state = {
       isTop: true,
       isUserDropdownOpen: false,
       userDropdownAnchorElement: this.userDropdownAnchorRef,
       openTopToast: false,
+      searchKeyword: SafeURIStringHandler.decode(rawQueryParamsObj.query || ""),
     };
   }
 
@@ -85,17 +86,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
   public componentWillUnmount() {
     if (!EnvChecker.isOnServer()) {
-      const { dispatch } = this.props;
-      dispatch(Actions.clearKeywordCompletion());
       window.removeEventListener("scroll", this.handleScrollEvent);
-    }
-  }
-
-  public componentWillReceiveProps(nextProps: HeaderProps) {
-    const { dispatch, location } = this.props;
-
-    if (location !== nextProps.location) {
-      dispatch(Actions.clearKeywordCompletion());
     }
   }
 
@@ -187,68 +178,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     ticking = false;
   };
 
-  private changeSearchInput = (e: React.FormEvent<HTMLInputElement>) => {
-    const value = e.currentTarget.value;
-
-    if (value.length > 1) {
-      this.delayedGetKeywordCompletion(value);
-    }
-  };
-
-  private getKeywordCompletion = (searchInput: string) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.getKeywordCompletion(searchInput));
-  };
-
-  // tslint:disable-next-line:member-ordering
-  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 200);
-
-  private handleSearchPush = (query: string) => {
-    const { dispatch, history, location, articleSearchState } = this.props;
-    const { savedFilterSet } = articleSearchState;
-
-    if (query.length < 2) {
-      return dispatch({
-        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
-        payload: {
-          type: "error",
-          message: "You should search more than 2 characters.",
-        },
-      });
-    }
-
-    ActionTicketManager.trackTicket({
-      pageType: getCurrentPageType(),
-      actionType: "fire",
-      actionArea: "topBar",
-      actionTag: "query",
-      actionLabel: query,
-    });
-
-    trackEvent({ category: "Search", action: "Query", label: "" });
-
-    if (location.pathname === "/search/authors") {
-      history.push(
-        `/search/authors?${PapersQueryFormatter.stringifyPapersQuery({
-          query,
-          sort: "RELEVANCE",
-          filter: {},
-          page: 1,
-        })}`
-      );
-    } else {
-      history.push(
-        `/search?${PapersQueryFormatter.stringifyPapersQuery({
-          query,
-          sort: "RELEVANCE",
-          filter: !!savedFilterSet ? PapersQueryFormatter.objectifyPapersFilter(savedFilterSet.filter) : {},
-          page: 1,
-        })}`
-      );
-    }
-  };
-
   private getHeaderLogo = () => {
     const { location, layoutState } = this.props;
     const isNotHome = location.pathname !== HOME_PATH;
@@ -269,45 +198,25 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private getSearchFormContainer = () => {
-    const { location, layoutState } = this.props;
-
+    const { location } = this.props;
     const isShowSearchFormContainer = location.pathname !== HOME_PATH;
-    const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
-    const query = SafeURIStringHandler.decode(rawQueryParamsObj.query || "");
+
+    let currentQuery = "";
+    if (location.pathname === "/search") {
+      const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
+      currentQuery = SafeURIStringHandler.decode(rawQueryParamsObj.query || "");
+    }
 
     return (
       <div style={!isShowSearchFormContainer ? { visibility: "hidden" } : {}} className={styles.searchFormContainer}>
-        <div className={styles.searchInputBoxWrapper} tabIndex={0}>
-          <InputWithSuggestionList
-            defaultValue={query}
-            onChange={this.changeSearchInput}
-            placeholder="Search papers by title, author, doi or keyword"
-            onSubmitQuery={this.handleSearchPush}
-            suggestionList={layoutState.completionKeywordList.map(keyword => keyword.keyword)}
-            wrapperClassName={styles.searchWrapper}
-            style={{
-              display: "flex",
-              width: "100%",
-              height: "44px",
-              border: 0,
-              borderRadius: "4px",
-              padding: "0 44px 0 16px",
-              backgroundColor: "white",
-              overflow: "hidden",
-              alignItems: "center",
-            }}
-            listWrapperStyle={{
-              boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 8px 1px",
-              zIndex: 998,
-            }}
-            listItemStyle={{
-              height: "44px",
-              lineHeight: "44px",
-              padding: "0 18px",
-            }}
-            iconNode={<Icon icon="SEARCH_ICON" className={styles.searchIcon} />}
-          />
-        </div>
+        <SearchQueryInput
+          wrapperClassName={styles.searchWrapper}
+          listWrapperClassName={styles.suggestionListWrapper}
+          inputClassName={styles.searchInput}
+          initialValue={currentQuery}
+          actionArea="topBar"
+          maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
+        />
       </div>
     );
   };

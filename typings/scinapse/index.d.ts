@@ -85,7 +85,8 @@ declare namespace Scinapse {
       | "readingNowPaperList"
       | "filter"
       | "betterThanGoogle"
-      | "pdfViewer";
+      | "pdfViewer"
+      | "researchHistory";
 
     type PageType =
       | "paperShow"

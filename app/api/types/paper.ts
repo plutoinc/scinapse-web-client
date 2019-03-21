@@ -1,7 +1,7 @@
 import { CancelToken } from "axios";
 import { Paper } from "../../model/paper";
 
-export interface GetPapersParams {
+export interface SearchPapersParams {
   sort: string;
   page: number;
   query: string;

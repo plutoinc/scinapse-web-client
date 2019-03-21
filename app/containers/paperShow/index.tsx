@@ -37,8 +37,8 @@ import restoreScroll from "../../helpers/scrollRestoration";
 import ErrorPage from "../../components/error/errorPage";
 import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
 import EnvChecker from "../../helpers/envChecker";
-import BetterSearch from "../../components/paperShow/components/betterSearch";
 import NextPaperTab from "../nextPaperTab";
+import ResearchHistory from "../../components/researchHistory";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
@@ -252,14 +252,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   <FOSList FOSList={paper.fosList} />
                 </div>
               </div>
-              <BetterSearch
-                paperId={paper.id}
-                isAnimated={paperShow.betterSearchIsAnimated}
-                FOSList={paper.fosList}
-                suggestionKeywords={layout.completionKeywordList}
-              />
               <div className={styles.paperContentBlockDivider} />
-
               <div>
                 {this.getFullTextNavBar()}
                 <PDFViewer
@@ -336,6 +329,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 [styles.touchFooter]: isTouchFooter,
               })}
             >
+              <ResearchHistory paper={paper} />
               <CollectionNoteList paperId={paper.id} />
               <OtherPaperListFromAuthor />
               <RelatedPaperList />
@@ -406,7 +400,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private handleScrollEvent = () => {
-    const { isRightBoxFixed, isTouchFooter, isRightBoxSmall } = this.state;
+    const { isRightBoxFixed, isTouchFooter } = this.state;
     const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
     const viewportHeight = window.innerHeight;
     const windowBottom = scrollTop + viewportHeight;
@@ -431,7 +425,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         this.setState(prevState => ({ ...prevState, isRightBoxFixed: true }));
       }
 
-      if (!isTouchFooter && isScrollOverRightBox && isScrollTouchFooter && !isRightBoxSmall) {
+      if (!isTouchFooter && isScrollOverRightBox && isScrollTouchFooter && !isShorterThanScreenHeight) {
         this.setState(prevState => ({ ...prevState, isTouchFooter: true }));
       } else if (isTouchFooter && isScrollOverRightBox && !isScrollTouchFooter) {
         this.setState(prevState => ({ ...prevState, isTouchFooter: false }));

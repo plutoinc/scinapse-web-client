@@ -1,6 +1,6 @@
 import { stringify } from "qs";
 import { SearchPageQueryParams } from "../components/articleSearch/types";
-import { GetPapersParams } from "../api/types/paper";
+import { SearchPapersParams } from "../api/types/paper";
 import SafeURIStringHandler from "./safeURIStringHandler";
 import { sortBy } from "lodash";
 
@@ -19,7 +19,7 @@ export interface SearchPageQueryParamsObject {
 }
 
 class PaperSearchQueryFormatter {
-  public makeSearchQueryFromParamsObject(queryParams: SearchPageQueryParams): GetPapersParams {
+  public makeSearchQueryFromParamsObject(queryParams: SearchPageQueryParams): SearchPapersParams {
     const query = SafeURIStringHandler.decode(queryParams.query ? queryParams.query : "");
     const searchPage = parseInt(queryParams.page ? queryParams.page : "0", 10) - 1 || 0;
     const filter = queryParams.filter;

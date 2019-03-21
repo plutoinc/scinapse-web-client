@@ -2,7 +2,7 @@ import { Dispatch } from "redux";
 import axios from "axios";
 import * as store from "store";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import { GetPapersParams } from "../../api/types/paper";
+import { SearchPapersParams } from "../../api/types/paper";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 import SearchAPI from "../../api/search";
 import { ChangeRangeInputParams } from "../../constants/paperSearch";
@@ -33,7 +33,7 @@ export function changeSearchInput(searchInput: string) {
   };
 }
 
-export function fetchSearchPapers(params: GetPapersParams) {
+export function searchPapers(params: SearchPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     const filters = PapersQueryFormatter.objectifyPapersFilter(params.filter);
 

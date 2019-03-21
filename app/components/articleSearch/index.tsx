@@ -60,25 +60,27 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     }
   }
 
-  public async componentWillReceiveProps(nextProps: ArticleSearchContainerProps) {
+  public async componentDidUpdate(prevProps: ArticleSearchContainerProps) {
     const { dispatch, match, location, currentUserState } = this.props;
 
-    const nextLocation = nextProps.location;
-    const beforeSearch = location.search;
-    const afterSearch = nextLocation.search;
+    const prevLocation = prevProps.location;
+    const beforeSearch = prevLocation.search;
+    const afterSearch = location.search;
 
     const hasSearchKeywordChanged = !!afterSearch && beforeSearch !== afterSearch;
-    const hasAuthStateChanged = currentUserState.isLoggedIn !== nextProps.currentUserState.isLoggedIn;
+    const hasAuthStateChanged = currentUserState.isLoggedIn !== prevProps.currentUserState.isLoggedIn;
 
     if (hasSearchKeywordChanged || hasAuthStateChanged) {
+      this.cancelToken.cancel();
+      this.cancelToken = axios.CancelToken.source();
       await getSearchData({
         dispatch,
         match,
-        pathname: nextLocation.pathname,
+        pathname: location.pathname,
         queryParams: getQueryParamsObject(afterSearch),
         cancelToken: this.cancelToken.token,
       });
-      restoreScroll(nextLocation.key);
+      restoreScroll(location.key);
     }
   }
 

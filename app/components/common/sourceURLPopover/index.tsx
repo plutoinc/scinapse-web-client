@@ -25,16 +25,16 @@ interface SourceURLPopover {
 const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
   const sources = props.paperSources
     .sort((a, b) => {
-      if (isPDFLink(a.url) && !isPDFLink(b.url)) {
+      if (isPDFLink(a) && !isPDFLink(b)) {
         return -1;
       }
       return 0;
     })
-    .map(url => {
-      if (!url.url) {
+    .map(source => {
+      if (!source.url) {
         return;
       }
-      const urlObj = URL.parse(url.url);
+      const urlObj = URL.parse(source.url);
 
       return (
         <a
@@ -52,14 +52,14 @@ const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
           }}
           target="_blank"
           rel="noopener"
-          href={url.url}
-          key={url.id}
+          href={source.url}
+          key={source.id}
         >
-          {isPDFLink(url.url) && <span>{`[PDF] `}</span>}
+          {isPDFLink(source) && <span>{`[PDF] `}</span>}
           <span
             className={classNames({
               [styles.host]: true,
-              [styles.pdfHost]: isPDFLink(url.url),
+              [styles.pdfHost]: isPDFLink(source),
             })}
           >
             {urlObj.host}
