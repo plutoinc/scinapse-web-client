@@ -89,6 +89,7 @@ exports.ssr = async (event: any, context: any) => {
   const devRenderer = new DevRenderer();
   const app = await devRenderer.getApp(event);
   const binaryMimeTypes = ["application/xml", "text/xml"];
+  console.log(event);
   const server = awsServerlessExpress.createServer(app, null, binaryMimeTypes);
   return awsServerlessExpress.proxy(server, event, context);
 };
