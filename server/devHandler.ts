@@ -1,59 +1,35 @@
-import * as express from "express";
 import * as AWS from "aws-sdk";
 import * as DeployConfig from "../scripts/deploy/config";
-const compression = require("compression");
+const awsServerlessExpress = require("aws-serverless-express");
 const fs = require("fs");
 const s3 = new AWS.S3();
 
 class DevRenderer {
-  public async render(event: Lambda.Event) {
-    const branch = this.getTargetBranch(event);
-    const version = await this.getVersion(event, branch);
+  public async getApp(event: any) {
+    let branch: string = "master";
+
+    if (event.queryStringParameters && event.queryStringParameters.branch) {
+      try {
+        const demoBranch = decodeURIComponent(event.queryStringParameters.branch);
+        branch = demoBranch;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    const version = await this.getVersion(branch);
 
     if (version) {
       await this.downloadJSFromS3(version, branch);
     }
 
     const bundle = require("/tmp/bundle.js");
-    const render = bundle.ssr;
-
-    let result: string;
-    if (branch === "master") {
-      result = await render({
-        ...event,
-        queryStringParameters: { ...event.queryStringParameters, branch: "master", version },
-      });
-    } else {
-      result = await render(event);
-    }
-
-    console.log(result);
-    return result;
+    const handler = bundle.ssr;
+    return handler;
   }
 
-  private getTargetBranch(event: Lambda.Event) {
-    let targetBranch: string = "master";
-
-    if (event.queryStringParameters && event.queryStringParameters.branch) {
-      try {
-        console.log("GET BRANCH_NAME FROM BRANCH QUERYPARAMS");
-        const demoBranch = decodeURIComponent(event.queryStringParameters.branch);
-        targetBranch = demoBranch;
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    console.log(`targetBranch is ${targetBranch}`);
-
-    return targetBranch;
-  }
-
-  private async getVersion(event: Lambda.Event, targetBranch: string): Promise<string | undefined> {
-    console.log(event.queryStringParameters);
-    if (targetBranch !== "master") {
-      return targetBranch;
-    }
+  private async getVersion(branch: string): Promise<string | undefined> {
+    if (branch !== "master") return branch;
 
     try {
       const versionResponse = await s3
@@ -109,25 +85,10 @@ class DevRenderer {
   }
 }
 
-const awsServerlessExpress = require("aws-serverless-express");
-const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
-
-const app = express();
-app.use(compression());
-app.use(awsServerlessExpressMiddleware.eventContext({ fromALB: true }));
-app.get("*", async (req: any, res) => {
+exports.ssr = async (event: any, context: any) => {
   const devRenderer = new DevRenderer();
-  res.setHeader("Content-Type", "text/html; charset=utf-8");
-  try {
-    const result = await devRenderer.render(req.alb.event);
-    console.log("====== succeeded to rendering!");
-    res.send((result as any).body);
-  } catch (err) {
-    console.error(err);
-    res.send(err.message);
-  }
-});
-
-const binaryMimeTypes = ["application/xml"];
-const server = awsServerlessExpress.createServer(app, null, binaryMimeTypes);
-exports.ssr = (event: any, context: any) => awsServerlessExpress.proxy(server, event, context);
+  const app = await devRenderer.getApp(event);
+  const binaryMimeTypes = ["application/xml", "text/xml"];
+  const server = awsServerlessExpress.createServer(app, null, binaryMimeTypes);
+  return awsServerlessExpress.proxy(server, event, context);
+};

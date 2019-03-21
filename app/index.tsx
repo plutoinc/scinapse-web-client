@@ -1,3 +1,3 @@
-import { handler as lambdaHandler } from "./server";
+import app from "../server";
 
-export const ssr = lambdaHandler;
+export const ssr = app;
