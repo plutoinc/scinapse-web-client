@@ -26,17 +26,6 @@ const ssr = async (req: express.Request, scriptPath: string, version: string) =>
   // Initialize and make Redux store per each request
   StoreManager.initializeStore(req.originalUrl);
   const store = StoreManager.store;
-  // Create Material-UI theme and sheet
-  const sheetsRegistry = new SheetsRegistry();
-  const theme = createMuiTheme({
-    typography: {
-      useNextVariants: true,
-    },
-  });
-  const generateClassName = createGenerateClassName();
-
-  // TODO: REMOVE BELOW LOG
-  console.log("REQ QUERY!!!!!!!!!", req.query);
 
   // Load data from API server
   const promises: Array<Promise<any>> = [];
@@ -71,6 +60,16 @@ const ssr = async (req: express.Request, scriptPath: string, version: string) =>
     insertCss: (...styles: any[]) => styles.forEach(style => css.add(style._getCss())),
   };
   const routeContext: { statusCode?: number } = {};
+
+  // Create Material-UI theme and sheet
+  const sheetsRegistry = new SheetsRegistry();
+  const theme = createMuiTheme({
+    typography: {
+      useNextVariants: true,
+    },
+  });
+
+  const generateClassName = createGenerateClassName();
 
   const renderedHTML = ReactDOMServer.renderToString(
     <CssInjector context={context}>
