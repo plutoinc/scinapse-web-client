@@ -92,5 +92,5 @@ exports.ssr = async (event: any, context: any) => {
   console.log(event);
   const server = awsServerlessExpress.createServer(app, null, binaryMimeTypes);
   console.log(app);
-  return awsServerlessExpress.proxy(server, event, context);
+  return awsServerlessExpress.proxy(server, event, context, "PROMISE");
 };
