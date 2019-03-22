@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import * as classNames from "classnames";
 import Checkbox from "@material-ui/core/Checkbox";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -17,7 +17,7 @@ import FilterSaveBox from "./filterSaveBox";
 import makeNewFilterLink from "../../helpers/makeNewFilterLink";
 const styles = require("./filterContainer.scss");
 
-export interface FilterContainerProps {
+export interface FilterContainerProps extends RouteComponentProps<any> {
   handleChangeRangeInput: (params: ChangeRangeInputParams) => void;
   handleToggleExpandingFilter: () => void;
   articleSearchState: ArticleSearchState;
@@ -54,9 +54,12 @@ function getFOSFilterBox(props: FilterContainerProps) {
           trackSelectFilter("FOS", fos!.name);
         }}
         key={`fos_${fos!.id}`}
-        to={makeNewFilterLink({
-          fos: newFOSFilterArray as number[],
-        })}
+        to={makeNewFilterLink(
+          {
+            fos: newFOSFilterArray as number[],
+          },
+          props.location
+        )}
         className={classNames({
           [styles.filterItem]: true,
           [styles.isSelected]: alreadyHasFOSInFilter,
@@ -109,9 +112,12 @@ function getJournalFilter(props: FilterContainerProps) {
           trackSelectFilter("JOURNAL", journal!.title);
         }}
         key={`journal_${journal!.id}`}
-        to={makeNewFilterLink({
-          journal: newJournalFilterArray as number[],
-        })}
+        to={makeNewFilterLink(
+          {
+            journal: newJournalFilterArray as number[],
+          },
+          props.location
+        )}
         className={classNames({
           [styles.filterItem]: true,
           [styles.isSelected]: alreadyHasJournalInFilter,
@@ -210,4 +216,4 @@ const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => 
   );
 };
 
-export default withStyles<typeof FilterContainer>(styles)(FilterContainer);
+export default withRouter(withStyles<typeof FilterContainer>(styles)(FilterContainer));

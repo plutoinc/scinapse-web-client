@@ -89,8 +89,8 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
   }
 
   public render() {
-    const { articleSearchState } = this.props;
-    const queryParams = getUrlDecodedQueryParamsObject();
+    const { articleSearchState, location } = this.props;
+    const queryParams = getUrlDecodedQueryParamsObject(location);
 
     if (articleSearchState.pageErrorCode) {
       return <ErrorPage errorNum={articleSearchState.pageErrorCode} />;
@@ -116,10 +116,10 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
   }
 
   private getInnerContainerContent = () => {
-    const { articleSearchState, currentUserState } = this.props;
+    const { articleSearchState, currentUserState, location } = this.props;
     const { isContentLoading, totalElements, searchItemsToShow } = articleSearchState;
 
-    const queryParams = getUrlDecodedQueryParamsObject();
+    const queryParams = getUrlDecodedQueryParamsObject(location);
 
     const hasNoSearchResult =
       !articleSearchState.searchItemsToShow || articleSearchState.searchItemsToShow.length === 0;
@@ -189,8 +189,8 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
   };
 
   private getSuggestionKeywordBox = () => {
-    const { articleSearchState } = this.props;
-    const queryParams = getUrlDecodedQueryParamsObject();
+    const { articleSearchState, location } = this.props;
+    const queryParams = getUrlDecodedQueryParamsObject(location);
 
     if (articleSearchState.searchFromSuggestion) {
       return (
@@ -345,7 +345,9 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
   };
 
   private makePaginationLink = (page: number) => {
-    const queryParamsObject = getUrlDecodedQueryParamsObject();
+    const { location } = this.props;
+
+    const queryParamsObject = getUrlDecodedQueryParamsObject(location);
     const queryParams = PapersQueryFormatter.stringifyPapersQuery({
       ...queryParamsObject,
       page,

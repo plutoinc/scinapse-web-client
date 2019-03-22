@@ -89,9 +89,9 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
   }
 
   public render() {
-    const { authorSearch } = this.props;
+    const { authorSearch, location } = this.props;
     const { isLoading } = authorSearch;
-    const queryParams = getUrlDecodedQueryParamsObject();
+    const queryParams = getUrlDecodedQueryParamsObject(location);
 
     const hasNoAuthorSearchResult = !authorSearch.searchItemsToShow || authorSearch.searchItemsToShow.length === 0;
 
@@ -185,7 +185,8 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
   };
 
   private makePaginationLink = (page: number) => {
-    const queryParamsObject = getUrlDecodedQueryParamsObject();
+    const { location } = this.props;
+    const queryParamsObject = getUrlDecodedQueryParamsObject(location);
     const queryParams = PapersQueryFormatter.stringifyPapersQuery({
       ...queryParamsObject,
       page,

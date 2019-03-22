@@ -1,12 +1,12 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import { FILTER_BOX_TYPE } from "../../constants/paperSearch";
 import { withStyles } from "../../helpers/withStylesHelper";
 import makeNewFilterLink from "../../helpers/makeNewFilterLink";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 const styles = require("./filterResetButton.scss");
 
-interface FilterResetButtonProps {
+interface FilterResetButtonProps extends RouteComponentProps<any> {
   filterType?: FILTER_BOX_TYPE;
   currentSavedFilterSet?: string;
   btnStyle?: React.CSSProperties;
@@ -38,7 +38,7 @@ function getFilterObject(props: FilterResetButtonProps) {
 const FilterResetButton: React.FunctionComponent<FilterResetButtonProps> = props => {
   return (
     <Link
-      to={makeNewFilterLink(getFilterObject(props))}
+      to={makeNewFilterLink(getFilterObject(props), props.location)}
       onClick={e => {
         e.stopPropagation();
       }}
@@ -50,4 +50,4 @@ const FilterResetButton: React.FunctionComponent<FilterResetButtonProps> = props
   );
 };
 
-export default withStyles<typeof FilterResetButton>(styles)(FilterResetButton);
+export default withRouter(withStyles<typeof FilterResetButton>(styles)(FilterResetButton));

@@ -1,9 +1,10 @@
+import { Location } from "history";
 import PapersQueryFormatter, { FilterObject, SearchPageQueryParamsObject } from "./papersQueryFormatter";
 import getQueryParamsObject from "./getQueryParamsObject";
 import SafeURIStringHandler from "./safeURIStringHandler";
 
-export function getUrlDecodedQueryParamsObject(): SearchPageQueryParamsObject {
-  const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(window.location.search);
+export function getUrlDecodedQueryParamsObject(location: Location): SearchPageQueryParamsObject {
+  const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
 
   return {
     query: SafeURIStringHandler.decode(rawQueryParamsObj.query),
@@ -13,8 +14,8 @@ export function getUrlDecodedQueryParamsObject(): SearchPageQueryParamsObject {
   };
 }
 
-export default function makeNewFilterLink(newFilter: FilterObject) {
-  const queryParamsObject = getUrlDecodedQueryParamsObject();
+export default function makeNewFilterLink(newFilter: FilterObject, location: Location) {
+  const queryParamsObject = getUrlDecodedQueryParamsObject(location);
 
   return `/search?${PapersQueryFormatter.stringifyPapersQuery({
     query: queryParamsObject.query,
