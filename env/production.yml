@@ -1,6 +1,2 @@
 HANDLER: bundle.ssr
-DNS_ALIAS1: search.pluto.network
-DNS_ALIAS2: scinapse.io
-DNS_ALIAS3: sci-napse.io
-DNS_ALIAS4: www.scinapse.io
-DNS_ALIAS5: www.sci-napse.io
+
