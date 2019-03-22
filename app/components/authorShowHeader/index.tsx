@@ -46,7 +46,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
             <div className={styles.nameBox}>
               {author.isLayered && <UploadableProfileImage />}
               <span className={styles.nameHeaderBox}>
-                <div>
+                <div className={styles.usernameWrapper}>
                   <span className={styles.username}>{author.name}</span>{" "}
                   {author.isLayered ? (
                     <MuiTooltip

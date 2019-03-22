@@ -9,11 +9,11 @@ import alertToast from "../../../../helpers/makePlutoToastAction";
 import PlutoAxios from "../../../../api/pluto";
 const styles = require("./newCollection.scss");
 import { AppState } from "../../../../reducers";
-import { UserCollectionsState } from "../../../collections/reducer";
+import { MyCollectionsState } from "../../../../containers/paperShowCollectionControlButton/reducer";
 
 interface NewCollectionDialogProps {
   currentUser: CurrentUser;
-  userCollections: UserCollectionsState;
+  myCollections: MyCollectionsState;
   targetPaperId?: number;
   handleCloseDialogRequest: () => void;
   handleAddingPaperToCollections: (params: AddPaperToCollectionParams) => Promise<void>;
@@ -33,7 +33,7 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
     super(props);
 
     this.state = {
-      title: !props.userCollections || props.userCollections.collectionIds.length === 0 ? "Read Later" : "",
+      title: !props.myCollections || props.myCollections.collectionIds.length === 0 ? "Read Later" : "",
       description: "",
       isLoading: false,
     };
@@ -95,13 +95,13 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
   };
 
   private makeCollection = async () => {
-    const { handleMakeCollection, handleCloseDialogRequest, userCollections, targetPaperId } = this.props;
+    const { handleMakeCollection, handleCloseDialogRequest, myCollections, targetPaperId } = this.props;
     const { title, description } = this.state;
 
     this.setState(prevState => ({ ...prevState, isLoading: true }));
 
     try {
-      if (targetPaperId && userCollections.collectionIds.length === 0) {
+      if (targetPaperId && myCollections.collectionIds.length === 0) {
         await handleMakeCollection({ title, description }, targetPaperId);
       } else {
         await handleMakeCollection({ title, description });
@@ -140,7 +140,7 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
 
 function mapStateToProps(state: AppState) {
   return {
-    userCollections: state.userCollections,
+    myCollections: state.myCollections,
     currentUser: state.currentUser,
   };
 }

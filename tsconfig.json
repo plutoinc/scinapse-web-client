@@ -17,7 +17,7 @@
     "strictNullChecks": true,
     "typeRoots": ["./node_modules/@types", "./typings"]
   },
-  "include": ["app/**/*", "e2eTest/**/*", "localServer/**/*"],
+  "include": ["app/**/*", "e2eTest/**/*", "localServer/**/*", "server/**/*"],
   "exclude": ["node_modules/**/*"],
   "awesomeTypescriptLoaderOptions": {
     "useCache": true,

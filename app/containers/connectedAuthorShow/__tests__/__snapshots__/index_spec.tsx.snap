@@ -31,7 +31,9 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
             <span
               className="nameHeaderBox"
             >
-              <div>
+              <div
+                className="usernameWrapper"
+              >
                 <span
                   className="username"
                 >
@@ -621,7 +623,9 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
             <span
               className="nameHeaderBox"
             >
-              <div>
+              <div
+                className="usernameWrapper"
+              >
                 <span
                   className="username"
                 >
@@ -992,7 +996,9 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
             <span
               className="nameHeaderBox"
             >
-              <div>
+              <div
+                className="usernameWrapper"
+              >
                 <span
                   className="username"
                 >

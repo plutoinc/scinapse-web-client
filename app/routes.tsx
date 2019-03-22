@@ -164,7 +164,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
     const user = await dispatch(checkAuthStatus());
 
     if (user && user.member) {
-      dispatch(getCollections(user.member.id, this.cancelToken.token));
+      dispatch(getCollections(user.member.id, this.cancelToken.token, true));
     }
   };
 
