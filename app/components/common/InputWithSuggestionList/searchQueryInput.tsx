@@ -258,7 +258,13 @@ const SearchQueryInput: React.FunctionComponent<
           autoFocus={props.autoFocus}
           className={inputClassName}
         />
-        <Icon onClick={handleSubmit} icon="SEARCH_ICON" className={s.searchIcon} />
+        <Icon
+          onClick={() => {
+            handleSubmit();
+          }}
+          icon="SEARCH_ICON"
+          className={s.searchIcon}
+        />
         {keywordList}
       </div>
     </ClickAwayListener>
