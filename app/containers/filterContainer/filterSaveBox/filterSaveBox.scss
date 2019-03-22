@@ -3,42 +3,42 @@
   height: 42px;
   padding: 12px;
   cursor: pointer;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
   background-color: white;
+}
+
+.titleControlIconWrapper {
+  opacity: 0;
+  margin-left: 4px;
+  cursor: pointer;
 
   &:hover {
-    .titleControlIconWrapper {
-      opacity: 1;
-      transition: opacity 200ms cubic-bezier(0, 0, 0.2, 1);
-    }
+    opacity: 1;
+    transition: opacity 200ms cubic-bezier(0, 0, 0.2, 1);
   }
 
-  .titleControlIconWrapper {
-    opacity: 0;
-    margin-left: 4px;
+  .titleControlIcon {
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+    display: inline-flex;
+    background-color: $gray2;
+    padding: 1px;
+    border-radius: 8px;
+    color: $gray5;
 
-    .titleControlIcon {
-      justify-content: center;
-      align-items: center;
-      vertical-align: middle;
-      display: inline-flex;
-      background-color: $gray2;
-      padding: 1px;
-      border-radius: 8px;
-      color: $gray5;
-
-      svg {
-        width: 12px;
-        height: 14px;
-      }
+    svg {
+      width: 12px;
+      height: 14px;
     }
   }
 }
 
 .filterResultButton {
   margin-right: 12px;
+  margin-top: -2px;
   color: $gray6;
-  vertical-align: middle;
-  display: inline-flex;
 
   svg {
     width: 20px;
@@ -46,12 +46,17 @@
   }
 }
 
-.filterContainerTitle {
+.filterContainerDefaultTitle {
   font-size: 16px;
   font-weight: bold;
   color: $gray6;
-  max-width: 150px;
+  width: 100%;
   display: inline-block;
+}
+
+.filterContainerTitle {
+  @extend .filterContainerDefaultTitle;
+  max-width: 69%;
   vertical-align: middle;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -64,15 +69,17 @@
 }
 
 .filterContainerEmoji {
-  width: 16px;
   font-size: 20px;
-  border-radius: 10px;
+  border-radius: 14px;
   margin-right: 6px;
+  margin-top: -4px;
   vertical-align: top;
+  padding: 4px 2px 1px 3px;
   cursor: pointer;
 
   &:hover {
-    opacity: 0.7;
+    background-color: $gray2;
+    transition: 0.2s;
   }
 }
 
@@ -191,13 +198,12 @@
 }
 
 .titleBtnWrapper {
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  margin-right: 12px;
+  width: 100%;
+  text-align: right;
+}
+
+.titleEditBtnWrapper {
+  float: right;
 }
 
 .buttonSpinner {
@@ -210,4 +216,15 @@
   display: inline-block;
   height: 14px;
   vertical-align: middle;
+}
+
+.titleContentWrapper {
+  min-width: 58%;
+  width: 90%;
+  text-align: left;
+}
+
+.filterTitleBoxWrapper {
+  display: flex;
+  justify-content: space-between;
 }

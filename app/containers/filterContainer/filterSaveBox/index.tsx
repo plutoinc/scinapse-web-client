@@ -107,7 +107,8 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
     const newFilters = [...myFilters.slice(0, deleteIndex), ...myFilters.slice(deleteIndex + 1, myFilters.length)];
 
     dispatch(putMyFilters(newFilters));
-    if (!savedFilterSet || (!!savedFilterSet && !myFilters.includes(savedFilterSet))) {
+
+    if (!!savedFilterSet && findIndex(newFilters, savedFilterSet) === -1) {
       dispatch(setSavedFilterSet(null));
     }
   }

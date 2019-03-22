@@ -56,6 +56,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
           }}
         />
         <FilterResetButton
+          text={!!savedFilterSet ? "Cancel" : null}
           currentSavedFilterSet={currentSavedFilterStr}
           btnStyle={{ position: "relative", top: "1px", marginLeft: "8px" }}
         />
@@ -69,6 +70,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
               textDecoration: "underline",
               float: "right",
               marginRight: "16px",
+              width: "100%",
             }}
             onClickButton={() => {
               onClickFilterItem(searchInput, sort, store.get("previousFilter"));
@@ -99,7 +101,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
           )}
           <span
             className={classNames({
-              [styles.filterContainerTitle]: !isFilterSaveBoxLoading,
+              [styles.filterContainerDefaultTitle]: !isFilterSaveBoxLoading,
               [styles.loadingFilterContainerTitle]: isFilterSaveBoxLoading,
             })}
           >
@@ -109,7 +111,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
       );
     } else {
       return (
-        <div>
+        <div className={styles.titleContentWrapper}>
           {isFilterSaveBoxLoading ? (
             <div className={styles.buttonSpinnerWrapper}>
               <CircularProgress size={14} thickness={4} color="inherit" className={styles.buttonSpinner} />
@@ -171,7 +173,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
               borderBottom: "1px solid #bbc2d0",
             }}
           />
-          <div className={styles.titleBtnWrapper}>
+          <div className={styles.titleEditBtnWrapper}>
             <FilterSaveButton
               text="+ Save"
               buttonStyle={{ top: "13px", right: "58px" }}
@@ -201,6 +203,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
           getEditTitleBox(props.articleSearchState.savedFilterSet)
         ) : (
           <div
+            className={styles.filterTitleBoxWrapper}
             onClick={() => {
               onClickDropdownOpen(!isDropdownOpen);
             }}

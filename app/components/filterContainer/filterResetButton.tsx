@@ -10,6 +10,7 @@ interface FilterResetButtonProps {
   filterType?: FILTER_BOX_TYPE;
   currentSavedFilterSet?: string;
   btnStyle?: React.CSSProperties;
+  text?: string | null;
 }
 
 function getFilterObject(props: FilterResetButtonProps) {
@@ -44,7 +45,7 @@ const FilterResetButton: React.FunctionComponent<FilterResetButtonProps> = props
       className={styles.resetButtonWrapper}
       style={props.btnStyle}
     >
-      Reset
+      {!!props.text ? props.text : "Reset"}
     </Link>
   );
 };
