@@ -1,7 +1,7 @@
 import * as AWS from "aws-sdk";
+import * as fs from "fs";
 import * as DeployConfig from "../scripts/deploy/config";
 const awsServerlessExpress = require("aws-serverless-express");
-const fs = require("fs");
 const s3 = new AWS.S3();
 
 class DevRenderer {
@@ -42,6 +42,7 @@ class DevRenderer {
       console.log("SUCCEEDED GET THE LATEST VERSION FILE TO GET MASTER BRANCH VERSION", versionResponse);
       if (versionResponse.Body) {
         const version = (versionResponse.Body as Buffer).toString("utf8");
+        fs.writeFileSync("/tmp/version", version);
         console.log("SUCCEEDED SET THE LATEST VERSION FILE TO GET MASTER BRANCH VERSION ===", version);
         return version;
       }
