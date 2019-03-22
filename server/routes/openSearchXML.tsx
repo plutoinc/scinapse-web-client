@@ -1,4 +1,5 @@
-const xmlString = `<?xml version="1.0" encoding="UTF-8"?>
+export default function getOpenSearchXML() {
+  return `<?xml version="1.0" encoding="UTF-8"?>
   <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
     <ShortName>Scinapse</ShortName>
     <Description>Search for academic information on scinapse.io</Description>
@@ -9,14 +10,4 @@ const xmlString = `<?xml version="1.0" encoding="UTF-8"?>
     <moz:SearchForm>https://scinapse.io</moz:SearchForm>
   </OpenSearchDescription>
 `;
-
-export function serveOpenSearchXML() {
-  return {
-    statusCode: 200,
-    headers: {
-      "Content-Type": "application/xml; charset=utf-8",
-    },
-    isBase64Encoded: false,
-    body: xmlString,
-  };
 }
