@@ -1,4 +1,5 @@
 import * as React from "react";
+import { denormalize } from "normalizr";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { trackEvent } from "../../../helpers/handleGA";
@@ -6,14 +7,16 @@ import ActionTicketManager from "../../../helpers/actionTicketManager";
 import Icon from "../../../icons";
 import { connect } from "react-redux";
 import { AppState } from "../../../reducers";
-import { UserCollectionsState } from "../../collections/reducer";
 import { CurrentUser } from "../../../model/currentUser";
+import { collectionSchema, Collection } from "../../../model/collection";
+import { MyCollectionsState } from "../../../containers/paperShowCollectionControlButton/reducer";
 const styles = require("./collectionButton.scss");
 
 function mapStateToProps(state: AppState) {
   return {
     currentUser: state.currentUser,
-    userCollections: state.userCollections,
+    myCollections: state.myCollections,
+    collection: denormalize(state.collectionShow.mainCollectionId, collectionSchema, state.entities),
   };
 }
 
@@ -22,13 +25,14 @@ interface CollectionButtonProps {
   pageType: Scinapse.ActionTicket.PageType;
   hasCollection: boolean;
   currentUser: CurrentUser;
+  collection: Collection | undefined;
   actionArea?: Scinapse.ActionTicket.ActionArea;
   onRemove?: (paperId: number) => Promise<void>;
-  userCollections: UserCollectionsState;
+  myCollections: MyCollectionsState;
 }
 
-function handleAddToCollection(userCollections: UserCollectionsState, paperId: number) {
-  if (!userCollections.collectionIds || userCollections.collectionIds.length === 0) {
+function handleAddToCollection(myCollections: MyCollectionsState, paperId: number) {
+  if (!myCollections.collectionIds || myCollections.collectionIds.length === 0) {
     GlobalDialogManager.openNewCollectionDialog(paperId);
   } else {
     GlobalDialogManager.openCollectionDialog(paperId);
@@ -41,19 +45,19 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
   actionArea,
   hasCollection,
   onRemove,
-  userCollections,
+  myCollections,
   currentUser,
+  collection,
 }) => {
-  if (hasCollection && onRemove) {
+  const itsMine = collection && collection.createdBy.id === currentUser.id ? true : false;
+
+  if (hasCollection && onRemove && itsMine) {
     return (
       <button
         className={styles.addCollectionBtnWrapper}
         onClick={() => {
           onRemove(paperId);
-          trackEvent({
-            category: "Additional Action",
-            action: "Click [Remove from Collection] Button",
-          });
+          trackEvent({ category: "Additional Action", action: "Click [Remove from Collection] Button" });
           ActionTicketManager.trackTicket({
             pageType,
             actionType: "fire",
@@ -74,7 +78,7 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
       className={styles.addCollectionBtnWrapper}
       onClick={() => {
         if (currentUser.isLoggedIn) {
-          handleAddToCollection(userCollections, paperId);
+          handleAddToCollection(myCollections, paperId);
         } else {
           GlobalDialogManager.openSignInDialog();
         }

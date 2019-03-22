@@ -35,42 +35,26 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
   switch (action.type) {
     case ACTION_TYPES.PAPER_SHOW_START_TO_REMOVE_PAPER_FROM_COLLECTION:
     case ACTION_TYPES.PAPER_SHOW_START_TO_POST_PAPER_TO_COLLECTION: {
-      return {
-        ...state,
-        isFetchingPaper: true,
-      };
+      return { ...state, isFetchingPaper: true };
     }
 
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION:
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION:
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_PAPER_TO_COLLECTION:
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_POST_PAPER_TO_COLLECTION: {
-      return {
-        ...state,
-        isFetchingPaper: false,
-      };
+      return { ...state, isFetchingPaper: false };
     }
 
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_COLLECTIONS: {
-      return {
-        ...state,
-        isLoadingCollections: true,
-      };
+      return { ...state, isLoadingCollections: true };
     }
 
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_COLLECTIONS_IN_DROPDOWN: {
-      return {
-        ...state,
-        isLoadingCollectionsInDropdown: true,
-      };
+      return { ...state, isLoadingCollectionsInDropdown: true };
     }
 
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_COLLECTIONS: {
-      return {
-        ...state,
-        isLoadingCollections: false,
-        isLoadingCollectionsInDropdown: false,
-      };
+      return { ...state, isLoadingCollections: false, isLoadingCollectionsInDropdown: false };
     }
 
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_GET_COLLECTIONS: {
@@ -93,76 +77,47 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
     }
 
     case ACTION_TYPES.GLOBAL_DIALOG_START_TO_POST_COLLECTION: {
-      return {
-        ...state,
-        isPositingNewCollection: true,
-        hasFailedToPositingNewCollection: false,
-      };
+      return { ...state, isPositingNewCollection: true, hasFailedToPositingNewCollection: false };
     }
 
     case ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_POST_COLLECTION: {
-      return {
-        ...state,
-        isPositingNewCollection: false,
-        hasFailedToPositingNewCollection: true,
-      };
+      return { ...state, isPositingNewCollection: false, hasFailedToPositingNewCollection: true };
     }
 
     case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_SELECT_COLLECTION: {
-      return {
-        ...state,
-        selectedCollectionId: action.payload.collection.id,
-      };
+      return { ...state, selectedCollectionId: action.payload.collection.id };
     }
 
     case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_OPEN_COLLECTION_DROPDOWN: {
-      return {
-        ...state,
-        isCollectionDropdownOpen: true,
-      };
+      return { ...state, isCollectionDropdownOpen: true };
     }
 
     case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_CLOSE_COLLECTION_DROPDOWN: {
-      return {
-        ...state,
-        isCollectionDropdownOpen: false,
-      };
+      return { ...state, isCollectionDropdownOpen: false };
     }
 
     case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_OPEN_NOTE_DROPDOWN: {
-      return {
-        ...state,
-        isNoteDropdownOpen: true,
-      };
+      return { ...state, isNoteDropdownOpen: true };
     }
 
     case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_CLOSE_NOTE_DROPDOWN: {
-      return {
-        ...state,
-        isNoteDropdownOpen: false,
-        isNoteEditMode: false,
-      };
+      return { ...state, isNoteDropdownOpen: false, isNoteEditMode: false };
     }
 
     case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_TOGGLE_NOTE_EDIT_MODE: {
-      return {
-        ...state,
-        isNoteEditMode: !state.isNoteEditMode,
-      };
+      return { ...state, isNoteEditMode: !state.isNoteEditMode };
     }
 
     case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_START_TO_UPDATE_PAPER_NOTE: {
-      return {
-        ...state,
-        isPostingNote: true,
-      };
+      return { ...state, isPostingNote: true };
     }
     case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_FAILED_TO_UPDATE_PAPER_NOTE:
     case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_SUCCEEDED_TO_UPDATE_PAPER_NOTE: {
-      return {
-        ...state,
-        isPostingNote: false,
-      };
+      return { ...state, isPostingNote: false };
+    }
+
+    case ACTION_TYPES.COLLECTIONS_SUCCEEDED_GET_MEMBER_COLLECTIONS: {
+      return { ...state, collectionIds: action.payload.result };
     }
 
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT: {
