@@ -12,7 +12,7 @@ package:
 
 functions:
   render:
-    handler: bundle.ssr
+    handler: ${file(./env/${opt:stage}.yml):HANDLER}
     memorySize: 512
     timeout: 60
     package:
