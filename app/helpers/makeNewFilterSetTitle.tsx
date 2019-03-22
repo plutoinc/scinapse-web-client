@@ -39,10 +39,10 @@ function makeYearTitle(yearFrom: number, yearTo: number) {
     return `recent3`;
   } else if (currentYear - yearFrom === 0) {
     return `current`;
-  } else if (yearFrom <= 1980) {
-    return `1980${yearTo === 0 || yearTo === currentYear - 1 ? "current" : ""}`;
+  } else if (yearFrom >= 1980) {
+    return `1980${yearTo === 0 || yearTo === currentYear ? "current" : ""}`;
   } else {
-    return `${yearFrom}${yearTo}`;
+    return `${yearFrom}${yearTo === 0 || yearTo === currentYear ? "current" : yearTo}`;
   }
 }
 

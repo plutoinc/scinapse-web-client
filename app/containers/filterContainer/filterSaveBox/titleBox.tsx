@@ -44,7 +44,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
   const rawQueryParamsObj = getQueryParamsObject(props.location.search);
   const currentFilterStr = rawQueryParamsObj.filter;
 
-  function getSaveAndResetBtns(currentFilterStr: string) {
+  function getSaveAndResetBtns() {
     const currentSavedFilterStr = !!savedFilterSet ? savedFilterSet.filter : "";
 
     return hasFilterChanged ? (
@@ -88,7 +88,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
     );
   }
 
-  function getInnerContent(savedFilterSet: Filter | null) {
+  function getInnerContent() {
     if (!savedFilterSet) {
       return (
         <>
@@ -152,7 +152,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
     }
   }
 
-  function getEditTitleBox(savedFilterSet: Filter | null) {
+  function getEditTitleBox() {
     if (!savedFilterSet) {
       return null;
     } else {
@@ -203,7 +203,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
     <>
       <div className={styles.filterTitleBox}>
         {isOpenTitleInput ? (
-          getEditTitleBox(props.articleSearchState.savedFilterSet)
+          getEditTitleBox()
         ) : (
           <div
             className={styles.filterTitleBoxWrapper}
@@ -211,8 +211,8 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
               onClickDropdownOpen(!isDropdownOpen);
             }}
           >
-            {getInnerContent(props.articleSearchState.savedFilterSet)}
-            {getSaveAndResetBtns(currentFilterStr)}
+            {getInnerContent()}
+            {getSaveAndResetBtns()}
           </div>
         )}
       </div>

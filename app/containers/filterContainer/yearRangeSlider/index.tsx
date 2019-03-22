@@ -104,7 +104,7 @@ function getYearsData(qp: SearchPageQueryParams, yearSetListToShow: YearSet[]) {
 
 const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => {
   const currentYear = new Date().getFullYear();
-  const yearSetListToShow: YearSet[] = new Array(currentYear - MIN_YEAR).fill("").map((_, i) => {
+  const yearSetListToShow: YearSet[] = new Array(currentYear - MIN_YEAR + 1).fill("").map((_, i) => {
     const yearSet = props.yearInfo.find(ys => ys.year === MIN_YEAR + i);
     return {
       year: MIN_YEAR + i,
