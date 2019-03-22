@@ -136,15 +136,17 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
           >
             {savedFilterSet.name}
           </span>
-          <span
-            onClick={e => {
-              e.stopPropagation();
-              setIsOpenTitleInput(!isOpenTitleInput);
-            }}
-            className={styles.titleControlIconWrapper}
-          >
-            <Icon icon="PEN" className={styles.titleControlIcon} />
-          </span>
+          {hasFilterChanged ? null : (
+            <span
+              onClick={e => {
+                e.stopPropagation();
+                setIsOpenTitleInput(!isOpenTitleInput);
+              }}
+              className={styles.titleControlIconWrapper}
+            >
+              <Icon icon="PEN" className={styles.titleControlIcon} />
+            </span>
+          )}
         </div>
       );
     }
@@ -163,6 +165,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
             onChange={e => {
               setFilterTitle(e.currentTarget.value);
             }}
+            autoFocus={true}
             value={savedFilterSet.name}
             inputStyle={{
               width: "200px",
