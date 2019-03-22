@@ -22,7 +22,7 @@ export default async function getSitemap(pathname: string) {
           console.error("Error occured while retriving sitemap object from S3", err);
           reject(err);
         } else {
-          resolve(data.Body.toString("utf8"));
+          resolve(data.Body);
         }
       }
     );

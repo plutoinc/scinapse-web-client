@@ -17,7 +17,7 @@ class DevRenderer {
       }
     }
 
-    const version = await this.getVersion(branch);
+    const version = await this.getVersion(branch || "master");
 
     if (version) {
       await this.downloadJSFromS3(version, branch);

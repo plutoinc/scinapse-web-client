@@ -13,14 +13,20 @@ const SITEMAP_REGEX = /^\/sitemap(\/sitemap_[0-9]+\.xml)?\/?$/;
 
 const app = express();
 app.use(awsServerlessExpressMiddleware.eventContext({ fromALB: true }));
-app.use(compression());
+app.use(compression({ filter: shouldCompress }));
 app.use(morgan("dev"));
 
+function shouldCompress(req: express.Request, res: express.Response) {
+  if (SITEMAP_REGEX.test(req.path)) return false;
+  return compression.filter(req, res);
+}
+
 app.get(SITEMAP_REGEX, async (req, res) => {
+  res.setHeader("Content-Encoding", "gzip");
   res.setHeader("Content-Type", "text/xml");
   res.setHeader("Access-Contrl-Allow-Origin", "*");
   const sitemap = await getSitemap(req.path);
-  res.send(sitemap);
+  res.send(sitemap.body);
 });
 
 app.get("/robots.txt", (req, res) => {
