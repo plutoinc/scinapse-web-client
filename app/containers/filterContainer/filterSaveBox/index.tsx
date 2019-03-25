@@ -48,30 +48,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
     [props.location, savedFilterSet]
   );
 
-  function handleClickSaveButton(changedFilterReq: Filter | string) {
-    let changedFilter: Filter | null = null;
-    const baseEmojis = ["🐺", "🐶", "🦊", "🐱", "🦌", "🦒", "🐹", "🐰"];
-    const randomEmoji = baseEmojis[Math.floor(Math.random() * baseEmojis.length)];
-
-    if (typeof changedFilterReq === "string") {
-      changedFilter = !!savedFilterSet
-        ? { ...savedFilterSet, filter: changedFilterReq }
-        : {
-            name: newFilterSetTitleGenerator({
-              fos: articleSearchState.fosFilterObject,
-              journal: articleSearchState.journalFilterObject,
-              yearFrom: articleSearchState.yearFilterFromValue,
-              yearTo: articleSearchState.yearFilterToValue,
-            }),
-            emoji: randomEmoji,
-            filter: changedFilterReq,
-          };
-    } else {
-      changedFilter = changedFilterReq;
-    }
-
-    const changedFilterIndex = savedFilterSet ? findIndex(myFilters, savedFilterSet) : undefined;
-
+  function newFiltersGenerator(changedFilterIndex: number | undefined, changedFilter: Filter) {
     const newFilters =
       changedFilterIndex !== undefined && changedFilterIndex >= 0
         ? [
@@ -81,6 +58,39 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
           ]
         : [changedFilter, ...myFilters];
 
+    return newFilters;
+  }
+
+  function handleClickSaveChangesBtn(changedFilterReq: Filter | string, currentSavedFilterSet: Filter) {
+    const changedFilter =
+      typeof changedFilterReq === "string" ? { ...currentSavedFilterSet, filter: changedFilterReq } : changedFilterReq;
+
+    const changedFilterIndex = !!savedFilterSet ? findIndex(myFilters, savedFilterSet) : undefined;
+
+    const newFilters = newFiltersGenerator(changedFilterIndex, changedFilter);
+    dispatch(putMyFilters(newFilters));
+    dispatch(setSavedFilterSet(changedFilter));
+  }
+
+  function handleClickCreateNewFilterBtn(changedFilterReq: Filter | string) {
+    const baseEmojis = ["🐺", "🐶", "🦊", "🐱", "🦌", "🦒", "🐹", "🐰"];
+    const randomEmoji = baseEmojis[Math.floor(Math.random() * baseEmojis.length)];
+
+    const changedFilter =
+      typeof changedFilterReq === "string"
+        ? {
+            name: newFilterSetTitleGenerator({
+              fos: articleSearchState.fosFilterObject,
+              journal: articleSearchState.journalFilterObject,
+              yearFrom: articleSearchState.yearFilterFromValue,
+              yearTo: articleSearchState.yearFilterToValue,
+            }),
+            emoji: randomEmoji,
+            filter: changedFilterReq,
+          }
+        : changedFilterReq;
+
+    const newFilters = newFiltersGenerator(undefined, changedFilter);
     dispatch(putMyFilters(newFilters));
     dispatch(setSavedFilterSet(changedFilter));
   }
@@ -137,7 +147,8 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
           hasFilterChanged={isChange}
           isDropdownOpen={isOpen}
           onClickDropdownOpen={setIsOpen}
-          onClickSaveBtn={handleClickSaveButton}
+          onClickSaveChangesBtn={handleClickSaveChangesBtn}
+          onClickCreateNewFilterBtn={handleClickCreateNewFilterBtn}
           onClickFilterItem={handleClickFilterItem}
           articleSearchState={articleSearchState}
         />

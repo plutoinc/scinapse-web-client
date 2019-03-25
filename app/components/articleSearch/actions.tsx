@@ -159,7 +159,7 @@ export function putMyFilters(params: Filter[]) {
 }
 
 export function setSavedFilterSet(params: Filter | null) {
-  return async (dispatch: Dispatch<any>) => {
+  return (dispatch: Dispatch<any>) => {
     store.set("previousFilter", params);
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_SET_FILTER_IN_MY_FILTER_SET, payload: params });
   };

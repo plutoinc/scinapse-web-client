@@ -25,6 +25,7 @@ import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import { HOME_PATH } from "../../constants/routes";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { CurrentUser } from "../../model/currentUser";
+import PapersQueryFormatter, { FilterObject } from "../../helpers/papersQueryFormatter";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -198,13 +199,18 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private getSearchFormContainer = () => {
-    const { location } = this.props;
+    const { location, articleSearchState } = this.props;
     const isShowSearchFormContainer = location.pathname !== HOME_PATH;
 
     let currentQuery = "";
+    let currentFilter: FilterObject = {};
     if (location.pathname === "/search") {
       const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
       currentQuery = SafeURIStringHandler.decode(rawQueryParamsObj.query || "");
+    }
+
+    if (!!articleSearchState.savedFilterSet) {
+      currentFilter = PapersQueryFormatter.objectifyPapersFilter(articleSearchState.savedFilterSet.filter);
     }
 
     return (
@@ -214,6 +220,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           listWrapperClassName={styles.suggestionListWrapper}
           inputClassName={styles.searchInput}
           initialValue={currentQuery}
+          initialFilter={currentFilter}
           actionArea="topBar"
           maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
         />

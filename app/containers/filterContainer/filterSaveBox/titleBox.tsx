@@ -3,26 +3,27 @@ import * as classNames from "classnames";
 import * as store from "store";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { Picker } from "emoji-mart";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import FilterTitleInnerContent from "./titleInnerContent";
+import FilterSaveButton from "../../../components/filterContainer/filterSaveButton";
+import FilterResetButton from "../../../components/filterContainer/filterResetButton";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { BaseEmoji } from "emoji-mart/dist-es/utils/emoji-index/nimble-emoji-index";
 import { Filter } from "../../../api/member";
 import { ArticleSearchState } from "../../../components/articleSearch/records";
-import FilterSaveButton from "../../../components/filterContainer/filterSaveButton";
-import FilterResetButton from "../../../components/filterContainer/filterResetButton";
 import ScinapseInput from "../../../components/common/scinapseInput";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
-import Icon from "../../../icons";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
+import Icon from "../../../icons";
 const styles = require("./filterSaveBox.scss");
 
 interface TitleBoxProps {
   hasFilterChanged: boolean;
   isDropdownOpen: boolean;
   onClickDropdownOpen: (value: React.SetStateAction<boolean>) => void;
-  onClickSaveBtn: (changedFilterReq: Filter | string) => void;
+  onClickCreateNewFilterBtn: (changedFilterReq: Filter | string) => void;
+  onClickSaveChangesBtn: (changedFilterReq: Filter | string, currentSavedFilterSet: Filter) => void;
   onClickFilterItem: (query: string, sort: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS, filter: Filter | null) => void;
   articleSearchState: ArticleSearchState;
 }
@@ -30,13 +31,14 @@ interface TitleBoxProps {
 const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProps<any>> = props => {
   const {
     hasFilterChanged,
-    onClickSaveBtn,
+    onClickCreateNewFilterBtn,
+    onClickSaveChangesBtn,
     onClickFilterItem,
     onClickDropdownOpen,
     articleSearchState,
     isDropdownOpen,
   } = props;
-  const { savedFilterSet, searchInput, sort, isFilterSaveBoxLoading } = articleSearchState;
+  const { savedFilterSet, searchInput, sort } = articleSearchState;
 
   const [isOpenTitleInput, setIsOpenTitleInput] = React.useState(false);
   const [isOpenEmojiPicker, setIsOpenEmojiPicker] = React.useState(false);
@@ -48,130 +50,72 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
   function getSaveAndResetBtns() {
     const currentSavedFilterStr = !!savedFilterSet ? savedFilterSet.filter : "";
 
-    return hasFilterChanged ? (
-      <div className={styles.titleBtnWrapper}>
-        <FilterSaveButton
-          text={!!savedFilterSet ? "Save Changes" : "+ Save this Filter"}
-          onClickButton={() => {
-            onClickSaveBtn(currentFilterStr);
-            if (!savedFilterSet) {
-              ActionTicketManager.trackTicket({
-                pageType: "searchResult",
-                actionType: "fire",
-                actionArea: "filter",
-                actionTag: "addFilter",
-                actionLabel: currentFilterStr,
-              });
-            }
-          }}
-        />
-        <FilterResetButton
-          text={!!savedFilterSet ? "Cancel" : null}
-          currentSavedFilterSet={currentSavedFilterStr}
-          btnStyle={{ position: "relative", top: "1px", marginLeft: "8px" }}
-        />
-      </div>
-    ) : (
-      <>
-        {!!store.get("previousFilter") && savedFilterSet === null ? (
+    if (hasFilterChanged) {
+      return (
+        <div className={styles.titleBtnWrapper}>
           <FilterSaveButton
-            text="Apply previous Filter"
-            buttonStyle={{
-              textDecoration: "underline",
-              float: "right",
-              marginRight: "16px",
-              width: "100%",
-            }}
+            text={!!savedFilterSet ? "Save Changes" : "+ Save this Filter"}
             onClickButton={() => {
-              onClickFilterItem(searchInput, sort, store.get("previousFilter"));
-              ActionTicketManager.trackTicket({
-                pageType: "searchResult",
-                actionType: "fire",
-                actionArea: "filter",
-                actionTag: "applySavedFilter",
-                actionLabel: store.get("previousFilter"),
-              });
-              ActionTicketManager.trackTicket({
-                pageType: "searchResult",
-                actionType: "fire",
-                actionArea: "filter",
-                actionTag: "applyPreviousFilter",
-                actionLabel: store.get("previousFilter"),
-              });
+              if (!savedFilterSet) {
+                onClickCreateNewFilterBtn(currentFilterStr);
+                ActionTicketManager.trackTicket({
+                  pageType: "searchResult",
+                  actionType: "fire",
+                  actionArea: "filter",
+                  actionTag: "addFilter",
+                  actionLabel: currentFilterStr,
+                });
+              } else {
+                onClickSaveChangesBtn(currentFilterStr, savedFilterSet);
+              }
             }}
           />
-        ) : null}
-        <Icon
-          className={classNames({
-            [styles.downArrow]: !isDropdownOpen,
-            [styles.upArrow]: isDropdownOpen,
-          })}
-          icon="ARROW_POINT_TO_UP"
-        />
-      </>
-    );
-  }
-
-  function getInnerContent() {
-    if (!savedFilterSet) {
-      return (
-        <>
-          {isFilterSaveBoxLoading ? (
-            <div className={styles.buttonSpinnerWrapper}>
-              <CircularProgress size={14} thickness={4} color="inherit" className={styles.buttonSpinner} />
-            </div>
-          ) : (
-            <Icon className={styles.filterResultButton} icon="FILTER_RESULT_BUTTON" />
-          )}
-          <span
-            className={classNames({
-              [styles.filterContainerDefaultTitle]: !isFilterSaveBoxLoading,
-              [styles.loadingFilterContainerTitle]: isFilterSaveBoxLoading,
-            })}
-          >
-            PAPER FILTERS
-          </span>
-        </>
+          <FilterResetButton
+            text={!!savedFilterSet ? "Cancel" : null}
+            currentSavedFilterSet={currentSavedFilterStr}
+            btnStyle={{ position: "relative", top: "1px", marginLeft: "8px" }}
+          />
+        </div>
       );
     } else {
       return (
-        <div className={styles.titleContentWrapper}>
-          {isFilterSaveBoxLoading ? (
-            <div className={styles.buttonSpinnerWrapper}>
-              <CircularProgress size={14} thickness={4} color="inherit" className={styles.buttonSpinner} />
-            </div>
-          ) : (
-            <span
-              className={styles.filterContainerEmoji}
-              onClick={e => {
-                e.stopPropagation();
-                onClickDropdownOpen(false);
-                setIsOpenEmojiPicker(!isOpenEmojiPicker);
+        <>
+          {!!store.get("previousFilter") && savedFilterSet === null ? (
+            <FilterSaveButton
+              text="Apply previous Filter"
+              buttonStyle={{
+                textDecoration: "underline",
+                float: "right",
+                marginRight: "16px",
+                width: "100%",
               }}
-            >
-              {savedFilterSet.emoji}
-            </span>
-          )}
-          <span
+              onClickButton={() => {
+                onClickFilterItem(searchInput, sort, store.get("previousFilter"));
+                ActionTicketManager.trackTicket({
+                  pageType: "searchResult",
+                  actionType: "fire",
+                  actionArea: "filter",
+                  actionTag: "applySavedFilter",
+                  actionLabel: store.get("previousFilter"),
+                });
+                ActionTicketManager.trackTicket({
+                  pageType: "searchResult",
+                  actionType: "fire",
+                  actionArea: "filter",
+                  actionTag: "applyPreviousFilter",
+                  actionLabel: store.get("previousFilter"),
+                });
+              }}
+            />
+          ) : null}
+          <Icon
             className={classNames({
-              [styles.filterContainerTitle]: !isFilterSaveBoxLoading,
-              [styles.loadingFilterContainerTitle]: isFilterSaveBoxLoading,
+              [styles.downArrow]: !isDropdownOpen,
+              [styles.upArrow]: isDropdownOpen,
             })}
-          >
-            {savedFilterSet.name}
-          </span>
-          {hasFilterChanged ? null : (
-            <span
-              onClick={e => {
-                e.stopPropagation();
-                setIsOpenTitleInput(!isOpenTitleInput);
-              }}
-              className={styles.titleControlIconWrapper}
-            >
-              <Icon icon="PEN" className={styles.titleControlIcon} />
-            </span>
-          )}
-        </div>
+            icon="ARROW_POINT_TO_UP"
+          />
+        </>
       );
     }
   }
@@ -205,7 +149,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
               text="+ Save"
               buttonStyle={{ top: "13px", right: "58px" }}
               onClickButton={() => {
-                onClickSaveBtn({ ...savedFilterSet, name: filterTitle });
+                onClickSaveChangesBtn({ ...savedFilterSet, name: filterTitle }, savedFilterSet);
                 setIsOpenTitleInput(!isOpenTitleInput);
               }}
             />
@@ -235,7 +179,15 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
               onClickDropdownOpen(!isDropdownOpen);
             }}
           >
-            {getInnerContent()}
+            <FilterTitleInnerContent
+              articleSearchState={articleSearchState}
+              hasFilterChanged={hasFilterChanged}
+              hasOpenEmojiPicker={isOpenEmojiPicker}
+              hasOpenTitleInput={isOpenTitleInput}
+              onClickDropDownOpen={onClickDropdownOpen}
+              onClickSetIsOpenEmojiPicker={setIsOpenEmojiPicker}
+              onClickSetIsTitleInput={setIsOpenTitleInput}
+            />
             {getSaveAndResetBtns()}
           </div>
         )}
@@ -249,8 +201,11 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
           <Picker
             set="emojione"
             onSelect={(emoji: BaseEmoji) => {
-              if (!!props.articleSearchState.savedFilterSet) {
-                props.onClickSaveBtn({ ...props.articleSearchState.savedFilterSet, emoji: emoji.native });
+              if (!!articleSearchState.savedFilterSet) {
+                onClickSaveChangesBtn(
+                  { ...articleSearchState.savedFilterSet, emoji: emoji.native },
+                  articleSearchState.savedFilterSet
+                );
                 setIsOpenEmojiPicker(!isOpenEmojiPicker);
               } else {
                 alertToast({ type: "error", message: "Had an error to update emoji" });

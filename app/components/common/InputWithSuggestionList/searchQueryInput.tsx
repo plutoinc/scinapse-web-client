@@ -15,7 +15,7 @@ import {
   deleteQueryFromRecentList,
   getRecentQueries,
 } from "../../../helpers/recentQueryManager";
-import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
+import PapersQueryFormatter, { FilterObject } from "../../../helpers/papersQueryFormatter";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { AppState } from "../../../reducers";
@@ -28,6 +28,7 @@ interface SearchQueryInputProps extends RouteComponentProps<any> {
   actionArea: "home" | "topBar";
   maxCount: number;
   initialValue?: string;
+  initialFilter?: FilterObject;
   wrapperClassName?: string;
   listWrapperClassName?: string;
   inputClassName?: string;
@@ -144,7 +145,7 @@ const SearchQueryInput: React.FunctionComponent<
     [props.location]
   );
 
-  function handleSubmit(query?: string) {
+  function handleSubmit(query?: string, filter?: FilterObject) {
     const searchKeyword = query || inputValue;
 
     if (searchKeyword.length < 2) {
@@ -172,7 +173,7 @@ const SearchQueryInput: React.FunctionComponent<
       `/search?${PapersQueryFormatter.stringifyPapersQuery({
         query: searchKeyword,
         sort: "RELEVANCE",
-        filter: {},
+        filter: filter || {},
         page: 1,
       })}`
     );
@@ -187,7 +188,7 @@ const SearchQueryInput: React.FunctionComponent<
           [s.highlight]: highlightIdx === i,
         })}
         onClick={() => {
-          handleSubmit(k.text);
+          handleSubmit(k.text, props.initialFilter);
         }}
       >
         <span dangerouslySetInnerHTML={{ __html: getHighlightedContent(k.text, genuineInputValue) }} />
@@ -235,7 +236,7 @@ const SearchQueryInput: React.FunctionComponent<
                 setInputValue(keywordsToShow[i] ? keywordsToShow[i].text : genuineInputValue);
               },
               onSelect: i => {
-                handleSubmit(keywordsToShow[i] ? keywordsToShow[i].text : genuineInputValue);
+                handleSubmit(keywordsToShow[i] ? keywordsToShow[i].text : genuineInputValue, props.initialFilter);
               },
             });
           }}
@@ -260,7 +261,7 @@ const SearchQueryInput: React.FunctionComponent<
         />
         <Icon
           onClick={() => {
-            handleSubmit();
+            handleSubmit(undefined, props.initialFilter);
           }}
           icon="SEARCH_ICON"
           className={s.searchIcon}

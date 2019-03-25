@@ -45,15 +45,30 @@ export function reducer(
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS: {
       const payload: SearchResult = action.payload;
 
+      const sortedFosList = payload.data.aggregation.fosList.sort((a, b) => {
+        if (state.fosFilter.includes(a.id) && !state.fosFilter.includes(b.id)) {
+          return -1;
+        } else if (!state.fosFilter.includes(a.id) && state.fosFilter.includes(b.id)) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+
+      const sortedJournals = payload.data.aggregation.journals.sort((a, b) => {
+        if (state.journalFilter.includes(a.id) && !state.journalFilter.includes(b.id)) {
+          return -1;
+        } else if (!state.journalFilter.includes(a.id) && state.journalFilter.includes(b.id)) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+
       const journalFilterObject = payload.data.aggregation.journals.filter(journal =>
         state.journalFilter.includes(journal.id)
       );
-      const journalNonFilterObject = payload.data.aggregation.journals.filter(
-        journal => !state.journalFilter.includes(journal.id)
-      );
-
       const fosFilterObject = payload.data.aggregation.fosList.filter(fos => state.fosFilter.includes(fos.id));
-      const fosNonFilterObject = payload.data.aggregation.fosList.filter(fos => !state.fosFilter.includes(fos.id));
 
       if (payload.data.page) {
         return {
@@ -71,8 +86,8 @@ export function reducer(
           searchFromSuggestion: payload.data.resultModified,
           aggregationData: {
             ...payload.data.aggregation,
-            journals: [...journalFilterObject, ...journalNonFilterObject],
-            fosList: [...fosFilterObject, ...fosNonFilterObject],
+            journals: sortedJournals,
+            fosList: sortedFosList,
           },
           journalFilterObject,
           fosFilterObject,
