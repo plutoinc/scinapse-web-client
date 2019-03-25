@@ -20,6 +20,7 @@ import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { AppState } from "../../../reducers";
 import { LayoutState, UserDevice } from "../../layouts/records";
+import { getCurrentPageType } from "../../locationListener";
 const s = require("./searchQueryInput.scss");
 
 interface SearchQueryInputProps extends RouteComponentProps<any> {
@@ -157,12 +158,13 @@ const SearchQueryInput: React.FunctionComponent<
       });
     }
     ActionTicketManager.trackTicket({
-      pageType: "home",
+      pageType: getCurrentPageType(),
       actionType: "fire",
       actionArea: props.actionArea,
       actionTag: "query",
       actionLabel: searchKeyword,
     });
+
     trackEvent({ category: "Search", action: "Query", label: searchKeyword });
     saveQueryToRecentHistory(searchKeyword);
     setTouched(false);
