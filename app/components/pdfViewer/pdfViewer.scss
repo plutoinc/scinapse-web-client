@@ -1,15 +1,4 @@
 :global {
-  .react-pdf__Document {
-    padding: 0 8px;
-  }
-
-  .react-pdf__Page__canvas {
-    width: 100% !important;
-    height: 100% !important;
-    box-shadow: 0 4px 10px 0 rgba(12, 0, 51, 0.2);
-    margin: 0 auto;
-  }
-
   .react-pdf__Page + .react-pdf__Page {
     margin-top: 8px;
   }

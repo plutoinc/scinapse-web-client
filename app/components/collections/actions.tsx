@@ -32,7 +32,7 @@ export function getMember(memberId: number, cancelToken: CancelToken) {
   };
 }
 
-export function getCollections(memberId: number, cancelToken?: CancelToken) {
+export function getCollections(memberId: number, cancelToken?: CancelToken, itsMe?: boolean) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToGetCollectionsInCollectionsPage());
 
@@ -40,7 +40,11 @@ export function getCollections(memberId: number, cancelToken?: CancelToken) {
       const res = await MemberAPI.getCollections(memberId, cancelToken);
 
       dispatch(ActionCreators.addEntity(res));
-      dispatch(ActionCreators.succeededToGetCollectionsInCollectionsPage(res));
+      if (itsMe) {
+        dispatch(ActionCreators.succeedToGetCollectionsInMember(res));
+      } else {
+        dispatch(ActionCreators.succeededToGetCollectionsInCollectionsPage(res));
+      }
     } catch (err) {
       if (!axios.isCancel(err)) {
         dispatch(ActionCreators.failedToGetCollectionsInCollectionsPage());

@@ -1,57 +1,35 @@
 import * as AWS from "aws-sdk";
-import * as DeployConfig from "../../scripts/deploy/config";
-const fs = require("fs");
+import * as fs from "fs";
+import * as DeployConfig from "../scripts/deploy/config";
+const awsServerlessExpress = require("aws-serverless-express");
 const s3 = new AWS.S3();
 
 class DevRenderer {
-  public async render(event: Lambda.Event) {
-    const branch = this.getTargetBranch(event);
-    const version = await this.getVersion(event, branch);
+  public async getApp(event: any) {
+    let branch: string = "master";
+
+    if (event.queryStringParameters && event.queryStringParameters.branch) {
+      try {
+        const demoBranch = decodeURIComponent(event.queryStringParameters.branch);
+        branch = demoBranch;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    const version = await this.getVersion(branch || "master");
 
     if (version) {
       await this.downloadJSFromS3(version, branch);
     }
 
     const bundle = require("/tmp/bundle.js");
-    const render = bundle.ssr;
-
-    let result: string;
-    if (branch === "master") {
-      result = await render({
-        ...event,
-        queryStringParameters: { ...event.queryStringParameters, branch: "master", version },
-      });
-    } else {
-      result = await render(event);
-    }
-
-    console.log(result);
-    return result;
+    const handler = bundle.ssr;
+    return handler;
   }
 
-  private getTargetBranch(event: Lambda.Event) {
-    let targetBranch: string = "master";
-
-    if (event.queryStringParameters && event.queryStringParameters.branch) {
-      try {
-        console.log("GET BRANCH_NAME FROM BRANCH QUERYPARAMS");
-        const demoBranch = decodeURIComponent(event.queryStringParameters.branch);
-        targetBranch = demoBranch;
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    console.log(`targetBranch is ${targetBranch}`);
-
-    return targetBranch;
-  }
-
-  private async getVersion(event: Lambda.Event, targetBranch: string): Promise<string | undefined> {
-    console.log(event.queryStringParameters);
-    if (targetBranch !== "master") {
-      return targetBranch;
-    }
+  private async getVersion(branch: string): Promise<string | undefined> {
+    if (branch !== "master") return branch;
 
     try {
       const versionResponse = await s3
@@ -64,6 +42,7 @@ class DevRenderer {
       console.log("SUCCEEDED GET THE LATEST VERSION FILE TO GET MASTER BRANCH VERSION", versionResponse);
       if (versionResponse.Body) {
         const version = (versionResponse.Body as Buffer).toString("utf8");
+        fs.writeFileSync("/tmp/version", version);
         console.log("SUCCEEDED SET THE LATEST VERSION FILE TO GET MASTER BRANCH VERSION ===", version);
         return version;
       }
@@ -107,28 +86,10 @@ class DevRenderer {
   }
 }
 
-async function handler(event: Lambda.Event, _context: Lambda.Context) {
-  const path = event.path;
-  console.log(event, "=== event at parent function");
-  console.log(path, "=== path at parent function");
-
+exports.ssr = async (event: any, context: any) => {
   const devRenderer = new DevRenderer();
-  try {
-    const result = await devRenderer.render(event);
-    console.log("====== succeeded to rendering!");
-    return result;
-  } catch (err) {
-    console.error(err);
-    return {
-      statusCode: 200,
-      headers: {
-        "Content-Type": "text/html; charset=utf-8",
-        "Access-Control-Allow-Origin": "*",
-      },
-      isBase64Encoded: false,
-      body: err.message,
-    };
-  }
-}
-
-export const ssr = handler;
+  const app = await devRenderer.getApp(event);
+  const binaryMimeTypes = ["application/xml", "text/xml", "text/html", "application/xml"];
+  const server = awsServerlessExpress.createServer(app, null, binaryMimeTypes);
+  return awsServerlessExpress.proxy(server, event, context, "PROMISE").promise;
+};

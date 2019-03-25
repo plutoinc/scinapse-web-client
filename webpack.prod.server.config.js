@@ -3,7 +3,7 @@ const originalWebpackConfig = require("./webpack.dev.server.config");
 const TerserPlugin = require("terser-webpack-plugin");
 const browserSpecificSetting = {
   mode: "production",
-  entry: ["@babel/polyfill", "./app/index.tsx"],
+  entry: ["@babel/polyfill", "./server/prodHandler.tsx"],
   optimization: {
     minimizer: [
       new TerserPlugin({
