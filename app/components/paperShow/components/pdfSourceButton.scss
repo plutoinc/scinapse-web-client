@@ -8,6 +8,10 @@
   line-height: 1.43;
   border-radius: 4px;
 
+  &.reverseDownloadBtn {
+    color: white;
+  }
+
   .arrowIcon {
     @include flex-center-vertical-horizontal(flex);
     width: 24px;
@@ -33,6 +37,26 @@
       height: 12px;
       vertical-align: middle;
     }
+  }
+}
+
+.reverseDownloadBtn {
+  .dropdownBtn,
+  .linkClassName {
+    background-color: $main_blue1;
+
+    &:hover {
+      background-color: $main_blue0;
+    }
+
+    &:active {
+      filter: brightness(95%);
+    }
+  }
+
+  .arrowIcon {
+    color: white;
+    opacity: 0.6;
   }
 }
 

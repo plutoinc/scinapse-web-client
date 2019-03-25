@@ -18,7 +18,7 @@ import { PaperShowState } from "./records";
 import AuthorList from "../../components/paperShow/components/authorList";
 import RelatedPaperList from "../relatedPapers";
 import OtherPaperListFromAuthor from "../otherPapersFromAuthor";
-import PaperShowActionBar from "../paperShowActionBar";
+import PaperShowActionBar from "../paperShowActionBar/newActionbar";
 import FOSList from "../../components/paperShow/components/fosList";
 import ReferencePapers from "../../components/paperShow/components/relatedPapers";
 import PaperShowRefCitedTab from "../../components/paperShow/refCitedTab";
