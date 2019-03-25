@@ -15,6 +15,7 @@ import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
 import Icon from "../../../icons";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./filterSaveBox.scss");
 
 interface TitleBoxProps {
@@ -53,6 +54,15 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
           text={!!savedFilterSet ? "Save Changes" : "+ Save this Filter"}
           onClickButton={() => {
             onClickSaveBtn(currentFilterStr);
+            if (!savedFilterSet) {
+              ActionTicketManager.trackTicket({
+                pageType: "searchResult",
+                actionType: "fire",
+                actionArea: "filter",
+                actionTag: "addFilter",
+                actionLabel: currentFilterStr,
+              });
+            }
           }}
         />
         <FilterResetButton
@@ -74,6 +84,20 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
             }}
             onClickButton={() => {
               onClickFilterItem(searchInput, sort, store.get("previousFilter"));
+              ActionTicketManager.trackTicket({
+                pageType: "searchResult",
+                actionType: "fire",
+                actionArea: "filter",
+                actionTag: "applySavedFilter",
+                actionLabel: store.get("previousFilter"),
+              });
+              ActionTicketManager.trackTicket({
+                pageType: "searchResult",
+                actionType: "fire",
+                actionArea: "filter",
+                actionTag: "applyPreviousFilter",
+                actionLabel: store.get("previousFilter"),
+              });
             }}
           />
         ) : null}

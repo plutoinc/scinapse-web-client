@@ -2,6 +2,7 @@ import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Filter } from "../../../api/member";
 import Icon from "../../../icons";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./savedFilterItem.scss");
 
 interface SavedFilterItemProps {
@@ -17,7 +18,19 @@ const SavedFilterItem: React.FunctionComponent<SavedFilterItemProps> = props => 
   const { searchInput, sort, onClickFilterItem, savedFilter, onClickDeleteBtn } = props;
 
   return (
-    <li onClick={() => onClickFilterItem(searchInput, sort, savedFilter)} className={styles.filterItemWrapper}>
+    <li
+      onClick={() => {
+        onClickFilterItem(searchInput, sort, savedFilter);
+        ActionTicketManager.trackTicket({
+          pageType: "searchResult",
+          actionType: "fire",
+          actionArea: "filter",
+          actionTag: "applySavedFilter",
+          actionLabel: savedFilter.filter,
+        });
+      }}
+      className={styles.filterItemWrapper}
+    >
       <div className={styles.filterItem}>
         <span className={styles.filterItemEmoji}>{savedFilter.emoji}</span>
         <span className={styles.filterItemTitle}>{savedFilter.name}</span>

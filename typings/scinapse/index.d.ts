@@ -61,6 +61,9 @@ declare namespace Scinapse {
       | "JOURNAL_IF"
       | "FOS"
       | "JOURNAL"
+      | "applySavedFilter"
+      | "applyPreviousFilter"
+      | "addFilter"
       | "";
 
     type ActionArea =
