@@ -1,5 +1,8 @@
 import * as React from "react";
+import { withStyles } from "../../helpers/withStylesHelper";
 import PdfSourceButton from "../../components/paperShow/components/pdfSourceButton";
+import FullTextDialog from "./components/fullTextDialog";
+import CiteBox from "./components/citeBox";
 import { Paper } from "../../model/paper";
 const s = require("./actionBar.scss");
 
@@ -8,6 +11,8 @@ interface PaperShowActionBarProps {
 }
 
 const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = props => {
+  const [isOpen, setIsOpen] = React.useState(false);
+
   if (!props.paper) return null;
 
   return (
@@ -15,10 +20,22 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
       <div className={s.actionItem}>
         <PdfSourceButton paper={props.paper} reverseColor />
       </div>
-      <div>request txt btn</div>
-      <div>cite btn</div>
+      <div
+        onClick={() => {
+          setIsOpen(true);
+        }}
+      >
+        request txt btn
+      </div>
+      <CiteBox paper={props.paper} />
+      <FullTextDialog
+        isOpen={isOpen}
+        onClose={() => {
+          setIsOpen(false);
+        }}
+      />
     </div>
   );
 };
 
-export default PaperShowActionBar;
+export default withStyles<typeof PaperShowActionBar>(s)(PaperShowActionBar);
