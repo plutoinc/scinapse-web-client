@@ -11,7 +11,7 @@ import { setSavedFilterSet, putMyFilters } from "../../../components/articleSear
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
 import SavedFilterItem from "../savedFilterItem";
-import makeNewFilterSetTitle from "../../../helpers/makeNewFilterSetTitle";
+import newFilterSetTitleGenerator from "../../../helpers/newFilterSetTitleGenerator";
 import FilterTitleBox from "./titleBox";
 import Icon from "../../../icons";
 const styles = require("./filterSaveBox.scss");
@@ -57,7 +57,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
       changedFilter = !!savedFilterSet
         ? { ...savedFilterSet, filter: changedFilterReq }
         : {
-            name: makeNewFilterSetTitle({
+            name: newFilterSetTitleGenerator({
               fos: articleSearchState.fosFilterObject,
               journal: articleSearchState.journalFilterObject,
               yearFrom: articleSearchState.yearFilterFromValue,
@@ -87,7 +87,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
 
   function handleClickFilterItem(
     query: string,
-    sort: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS,
+    currentSort: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS,
     filter: Filter | null
   ) {
     dispatch(setSavedFilterSet(!!filter ? filter : null));
@@ -96,7 +96,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
       search: PapersQueryFormatter.stringifyPapersQuery({
         query,
         page: 1,
-        sort,
+        sort: currentSort,
         filter: !!filter ? PapersQueryFormatter.objectifyPapersFilter(filter.filter) : {},
       }),
     });

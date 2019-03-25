@@ -44,7 +44,7 @@ function makeYearTitle(yearFrom: number, yearTo: number) {
   }
 }
 
-export default function makeNewFilterSetTitle(params: FilterSet) {
+export default function newFilterSetTitleGenerator(params: FilterSet) {
   const journalTitle = makeJournalTitle(params.journal);
   const fosTitle = makeFosTitle(params.fos);
   const yearTitle = makeYearTitle(params.yearFrom, params.yearTo);
