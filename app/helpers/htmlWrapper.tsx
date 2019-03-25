@@ -36,12 +36,20 @@ gtag('config', 'AW-817738370');
       ${helmet.meta.toString()}
       ${helmet.link.toString()}
       ${gTagScript}
-        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet" />
         <style id="jss-server-side" type="text/css">${css}</style>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.css" 
         integrity="sha384-xNwWFq3SIvM4dq/1RUyWumk8nj/0KFg4TOnNcfzUU4X2gNn3WoRML69gO7waf3xh" crossorigin="anonymous">
       </head>
       <body>
+        <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+        <script>
+          WebFont.load({
+            custom: {
+              families: ['Roboto'],
+              urls: ['https://assets.pluto.network/font/roboto.css']
+            }
+          });
+        </script>
         ${sprite.stringify()}
         <script>window.__INITIAL_STATE__="${encodeURIComponent(initialState)}"</script>
         <div id="react-app">${reactDom}</div>
