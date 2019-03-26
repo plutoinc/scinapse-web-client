@@ -89,7 +89,21 @@
 
   .submitBtn {
     @extend %baseBtn;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: $main_blue1;
     color: white;
+    padding: 0 16px 0 12px;
+
+    .sendIcon {
+      width: 24px;
+      height: 24px;
+  
+      svg {
+        width: 24px;
+        height: 24px;
+      }
+    }
   }
 }

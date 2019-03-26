@@ -4,6 +4,7 @@ import PdfSourceButton from "../../components/paperShow/components/pdfSourceButt
 import FullTextDialog from "./components/fullTextDialog";
 import CiteBox from "./components/citeBox";
 import { Paper } from "../../model/paper";
+import Icon from "../../icons";
 const s = require("./actionBar.scss");
 
 interface PaperShowActionBarProps {
@@ -27,6 +28,7 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
           }}
           className={s.fullTextBtn}
         >
+          <Icon icon="SEND" className={s.sendIcon} />
           Request Full-text
         </button>
       </div>

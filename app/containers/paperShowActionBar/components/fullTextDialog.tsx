@@ -6,6 +6,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import validateEmail from "../../../helpers/validateEmail";
 import ReduxAutoSizeTextarea from "../../../components/common/autoSizeTextarea/reduxAutoSizeTextarea";
 import ScinapseFormikInput from "../../../components/common/scinapseInput/scinapseFormikInput";
+import Icon from "../../../icons";
 const s = require("./fullTextDialog.scss");
 
 interface RequestFullTextProps {
@@ -80,6 +81,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
                 cancel
               </button>
               <button disabled={isLoading} className={s.submitBtn} type="submit">
+                <Icon icon="SEND" className={s.sendIcon} />
                 Send
               </button>
             </div>

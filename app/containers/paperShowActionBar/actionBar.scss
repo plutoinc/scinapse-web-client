@@ -25,6 +25,8 @@
 }
 
 .fullTextBtn {
+  display: flex;
+  align-items: center;
   height: 40px;
   padding: 7px 8px;
   border-radius: 4px;
@@ -33,11 +35,25 @@
   text-align: center;
   background-color: white;
   color: $main_blue1;
+  border: solid 1px $gray3;
   cursor: pointer;
 
   &:disabled {
     cursor: not-allowed;
     opacity: 0.2;
+  }
+
+  .sendIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
   }
 }
 
