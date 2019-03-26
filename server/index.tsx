@@ -8,6 +8,7 @@ import getSitemap from "./routes/sitemap";
 import getRobotTxt from "./routes/robots";
 import getOpenSearchXML from "./routes/openSearchXML";
 import getClientJSURL from "./helpers/getClientJSURL";
+import setABTest from "./helpers/setABTest";
 const compression = require("compression");
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 const SITEMAP_REGEX = /^\/sitemap(\/sitemap_[0-9]+\.xml)?\/?$/;
@@ -45,6 +46,8 @@ app.get("/opensearch.xml", (_req, res) => {
 });
 
 app.get("*", async (req, res) => {
+  setABTest(req, res);
+
   try {
     const { jsPath, version } = await getClientJSURL(req.query ? req.query.branch : null);
     const lazyRender = new Promise((resolve, _reject) => {
