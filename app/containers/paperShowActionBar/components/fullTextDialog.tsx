@@ -31,7 +31,9 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
   const [isLoading, setIsLoading] = React.useState(false);
 
   function handleSubmitForm(values: FormState) {
+    setIsLoading(true);
     console.log(values);
+    setIsLoading(false);
   }
 
   return (

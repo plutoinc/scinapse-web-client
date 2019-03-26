@@ -19,7 +19,6 @@ import { PaperShowState } from "./records";
 import AuthorList from "../../components/paperShow/components/authorList";
 import RelatedPaperList from "../relatedPapers";
 import OtherPaperListFromAuthor from "../otherPapersFromAuthor";
-import ActionBar from "../paperShowActionBar";
 import NewActionBar from "../paperShowActionBar/newActionbar";
 import FOSList from "../../components/paperShow/components/fosList";
 import ReferencePapers from "../../components/paperShow/components/relatedPapers";
@@ -251,7 +250,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               <div className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.title) }} />
               <div className={styles.paperContentBlockDivider} />
               <div className={styles.actionBarWrapper}>
-                <NoSsr>{fullTextAB === "A" ? <ActionBar paper={paper} /> : <NewActionBar paper={paper} />}</NoSsr>
+                <NoSsr>{fullTextAB === "A" ? <NewActionBar paper={paper} /> : <NewActionBar paper={paper} />}</NoSsr>
               </div>
               <div className={styles.paperContentBlockDivider} />
               <div className={styles.paperInfo}>
