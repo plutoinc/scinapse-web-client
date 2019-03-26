@@ -28,7 +28,7 @@
   display: flex;
   align-items: center;
   height: 40px;
-  padding: 7px 8px;
+  padding: 7px 12px 7px 8px;
   border-radius: 4px;
   font-size: 14px;
   font-weight: bold;
@@ -37,6 +37,10 @@
   color: $main_blue1;
   border: solid 1px $gray3;
   cursor: pointer;
+
+  &:hover {
+    background-color: $gray2;
+  }
 
   &:disabled {
     cursor: not-allowed;

@@ -39,7 +39,7 @@ const ButtonWithArrow: React.SFC<ButtonWithArrowProps> = ({
   const additionalBtnStyle = dropdownBtnProps && dropdownBtnProps.style ? dropdownBtnProps.style : {};
   const defaultBtnStyle: React.CSSProperties = {
     borderRadius: "0 4px 4px 0",
-    borderLeft: "1px solid #dde0e7",
+    borderLeft: "1px solid #6096ff",
     ...additionalBtnStyle,
   };
 

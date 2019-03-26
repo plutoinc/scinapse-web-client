@@ -1,17 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
-    <title>Icon/List</title>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
     <defs>
-        <path d="M5,7 L19,7 C19.5522847,7 20,7.44771525 20,8 C20,8.55228475 19.5522847,9 19,9 L5,9 C4.44771525,9 4,8.55228475 4,8 C4,7.44771525 4.44771525,7 5,7 Z M5,11 L19,11 C19.5522847,11 20,11.4477153 20,12 C20,12.5522847 19.5522847,13 19,13 L5,13 C4.44771525,13 4,12.5522847 4,12 C4,11.4477153 4.44771525,11 5,11 Z M5,15 L11,15 C11.5522847,15 12,15.4477153 12,16 C12,16.5522847 11.5522847,17 11,17 L5,17 C4.44771525,17 4,16.5522847 4,16 C4,15.4477153 4.44771525,15 5,15 Z" id="path-1"></path>
+        <path id="a" d="M4 5h14a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 4h14a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 4h6a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm16 4.04v-.046c0 .549-.447 1.004-.999 1.004H17V20c0 .557-.448 1-1 1-.557 0-1-.448-1-1v-2.002h-2.001A.998.998 0 0 1 12 16.994v.046c0-.549.447-1.004.999-1.004h2v-2.042A1 1 0 0 1 16 13c.557 0 1.001.445 1.001.994v2.042h2.001c.556 0 .999.45.999 1.004z"/>
     </defs>
-    <g id="Icon/List" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <mask id="mask-2" fill="white">
-            <use xlink:href="#path-1"></use>
-        </mask>
-        <g id="Combined-Shape" fill-rule="nonzero"></g>
-        <g id="Mixin/Fill/Black" mask="url(#mask-2)" fill="currentColor">
-            <rect id="Rectangle" x="0" y="0" width="24" height="24" rx="5"></rect>
-        </g>
-    </g>
+    <use fill="currentColor" fill-rule="evenodd" xlink:href="#a"/>
 </svg>
