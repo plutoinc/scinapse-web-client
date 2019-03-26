@@ -12,15 +12,34 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-
-    .actionItem {
-      display: inline-block;
-    }
   }
+}
 
-  .actionItem + .actionItem {
+.actionItem {
+  display: inline-block;
+  vertical-align: top;
+
+  & + & {
     margin-left: 8px;
   }
+}
+
+.fullTextBtn {
+  height: 40px;
+  padding: 7px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  background-color: white;
+  color: $main_blue1;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.2;
+  }
+  
 }
 
 // RegularDisplay (1024~1200)

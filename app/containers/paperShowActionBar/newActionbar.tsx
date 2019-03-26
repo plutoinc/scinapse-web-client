@@ -20,14 +20,20 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
       <div className={s.actionItem}>
         <PdfSourceButton paper={props.paper} reverseColor />
       </div>
-      <div
-        onClick={() => {
-          setIsOpen(true);
-        }}
-      >
-        request txt btn
+      <div className={s.actionItem}>
+        <button
+          onClick={() => {
+            setIsOpen(true);
+          }}
+          className={s.fullTextBtn}
+        >
+          Request Full-text
+        </button>
       </div>
-      <CiteBox paper={props.paper} />
+      <div className={s.actionItem}>
+        <CiteBox paper={props.paper} />
+      </div>
+
       <FullTextDialog
         isOpen={isOpen}
         onClose={() => {

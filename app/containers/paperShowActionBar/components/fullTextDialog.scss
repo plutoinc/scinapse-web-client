@@ -1,5 +1,25 @@
+%baseBtn {
+  display: inline-flex;
+  height: 40px;
+  border-radius: 4px;
+  padding: 10px 16px;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.43;
+  
+  &:hover {
+    opacity: 0.75;
+  }
+
+  &:disabled {
+    opacity: 0.2;
+    cursor: not-allowed;
+  }
+}
+
 .dialogPaper {
-  width: 484px;
   height: 330px;
   border-radius: 4px;
   box-shadow: 0 7px 32px 0 rgba(12, 0, 51, 0.15);
@@ -32,6 +52,10 @@
     font-size: 13px;
     padding: 8px;
     color: $black0;
+
+    &.emailInputError {
+      border: 1px solid $red0;
+    }
   }
 
   .textAreaWrapper {
@@ -41,6 +65,31 @@
 
   label {
     display: block;
+    color: $gray6;
+    font-size: 12px;
+    letter-spacing: 0.7px;
     margin-bottom: 3px;
+  }
+
+  .messageLabel {
+    margin-top: 16px;
+  }
+}
+
+.btnWrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+
+  .cancelBtn {
+    @extend %baseBtn;
+    background-color: white;
+    color: $main_blue1;
+  }
+  
+  .submitBtn {
+    @extend %baseBtn;
+    background-color: $main_blue1;
+    color: white;
   }
 }

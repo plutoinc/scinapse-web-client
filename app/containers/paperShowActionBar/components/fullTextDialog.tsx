@@ -1,9 +1,11 @@
 import * as React from "react";
 import Dialog from "@material-ui/core/Dialog";
+import * as classNames from "classnames";
 import { Formik, Form, Field, FormikErrors } from "formik";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import validateEmail from "../../../helpers/validateEmail";
 import ReduxAutoSizeTextarea from "../../../components/common/autoSizeTextarea/reduxAutoSizeTextarea";
+import ScinapseFormikInput from "../../../components/common/scinapseInput/scinapseFormikInput";
 const s = require("./fullTextDialog.scss");
 
 interface RequestFullTextProps {
@@ -25,6 +27,8 @@ function validateForm(values: FormState) {
 }
 
 const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => {
+  const [isLoading, setIsLoading] = React.useState(false);
+
   function handleSubmitForm(values: FormState) {
     console.log(values);
   }
@@ -45,28 +49,43 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
         validate={validateForm}
         onSubmit={handleSubmitForm}
         enableReinitialize
-      >
-        <Form className={s.form}>
-          <label htmlFor="email" className={s.label}>
-            YOUR EMAIL*
-          </label>
-          <Field name="email" type="email" className={s.emailInput} placeholder="ex) researcher@university.com" />
-          <label htmlFor="message" className={s.label}>
-            ADD YOUR MESSAGE (Optional)
-          </label>
-          <Field
-            name="message"
-            component={ReduxAutoSizeTextarea}
-            textareaClassName={s.textAreaWrapper}
-            textareaStyle={{ padding: "8px" }}
-            rows={3}
-            placeholder="ex) I'm interested in this paper - Could you provide the full-text for it?"
-          />
-
-          <button onClick={props.onClose}>cancel</button>
-          <button type="submit">Send</button>
-        </Form>
-      </Formik>
+        render={({ errors }) => (
+          <Form className={s.form}>
+            <label htmlFor="email" className={s.label}>
+              YOUR EMAIL*
+            </label>
+            <Field
+              name="email"
+              type="email"
+              className={classNames({
+                [s.emailInput]: true,
+                [s.emailInputError]: !!errors.email,
+              })}
+              placeholder="ex) researcher@university.com"
+              component={ScinapseFormikInput}
+            />
+            <label htmlFor="message" className={s.messageLabel}>
+              ADD YOUR MESSAGE (Optional)
+            </label>
+            <Field
+              name="message"
+              component={ReduxAutoSizeTextarea}
+              textareaClassName={s.textAreaWrapper}
+              textareaStyle={{ padding: "8px" }}
+              rows={3}
+              placeholder="ex) I'm interested in this paper - Could you provide the full-text for it?"
+            />
+            <div className={s.btnWrapper}>
+              <button className={s.cancelBtn} type="button" onClick={props.onClose}>
+                cancel
+              </button>
+              <button disabled={isLoading} className={s.submitBtn} type="submit">
+                Send
+              </button>
+            </div>
+          </Form>
+        )}
+      />
     </Dialog>
   );
 };
