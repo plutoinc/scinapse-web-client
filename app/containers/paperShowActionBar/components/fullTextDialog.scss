@@ -8,7 +8,7 @@
   font-size: 14px;
   font-weight: 500;
   line-height: 1.43;
-  
+
   &:hover {
     opacity: 0.75;
   }
@@ -86,7 +86,7 @@
     background-color: white;
     color: $main_blue1;
   }
-  
+
   .submitBtn {
     @extend %baseBtn;
     background-color: $main_blue1;
