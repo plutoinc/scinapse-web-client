@@ -40,7 +40,7 @@ import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPos
 import EnvChecker from "../../helpers/envChecker";
 import NextPaperTab from "../nextPaperTab";
 import ResearchHistory from "../../components/researchHistory";
-import { FULL_PAPER_TEST } from "../../constants/abtest";
+import { FULL_PAPER_TEST } from "../../constants/abTest";
 import getABType from "../../helpers/getABType";
 
 const styles = require("./paperShow.scss");

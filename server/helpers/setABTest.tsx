@@ -1,5 +1,5 @@
 import * as express from "express";
-import { LIVE_TESTS } from "../../app/constants/abtest";
+import { LIVE_TESTS } from "../../app/constants/abTest";
 
 export default function setABTest(req: express.Request, res: express.Response) {
   if (req.cookies) {
