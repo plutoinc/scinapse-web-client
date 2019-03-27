@@ -9,6 +9,7 @@ const s = require("./citeBox.scss");
 
 interface CiteBoxProps {
   paper: Paper;
+  fullTextAB: "A" | "B";
 }
 
 const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
@@ -29,6 +30,8 @@ const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
           actionArea: "paperDescription",
           actionTag: "citePaper",
           actionLabel: String(props.paper.id),
+          expName: "requestFullText",
+          expUser: props.fullTextAB,
         });
       }}
     >

@@ -47,10 +47,11 @@ app.get("/opensearch.xml", (_req, res) => {
 });
 
 app.get("*", async (req, res) => {
+  const { jsPath, version } = await getClientJSURL(req.query ? req.query.branch : null);
+
   setABTest(req, res);
 
   try {
-    const { jsPath, version } = await getClientJSURL(req.query ? req.query.branch : null);
     const lazyRender = new Promise((resolve, _reject) => {
       setTimeout(() => {
         resolve(fallbackRender(jsPath, version));
@@ -62,7 +63,8 @@ app.get("*", async (req, res) => {
     res.send(html);
   } catch (err) {
     console.error(err);
-    res.send(err.message);
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.send(fallbackRender(jsPath, version));
   }
 });
 

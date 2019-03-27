@@ -3,6 +3,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import PdfSourceButton from "../../components/paperShow/components/pdfSourceButton";
 import FullTextDialog from "./components/fullTextDialog";
 import PaperShowCollectionControlButton from "../paperShowCollectionControlButton";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 import CiteBox from "./components/citeBox";
 import { Paper } from "../../model/paper";
 import Icon from "../../icons";
@@ -27,13 +28,22 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
         <div className={s.leftSide}>
           {hasSource && (
             <div className={s.actionItem}>
-              <PdfSourceButton paper={props.paper} reverseColor />
+              <PdfSourceButton paper={props.paper} fullTextAB="B" reverseColor />
             </div>
           )}
           {!pdfSource && (
             <div className={s.actionItem}>
               <button
                 onClick={() => {
+                  ActionTicketManager.trackTicket({
+                    pageType: "paperShow",
+                    actionType: "fire",
+                    actionArea: "paperDescription",
+                    actionTag: "clickRequestFullTextBtn",
+                    actionLabel: String(props.paper!.id),
+                    expName: "requestFullText",
+                    expUser: "B",
+                  });
                   setIsOpen(true);
                 }}
                 className={s.fullTextBtn}
@@ -44,7 +54,7 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
             </div>
           )}
           <div className={s.actionItem}>
-            <CiteBox paper={props.paper} />
+            <CiteBox paper={props.paper} fullTextAB="B" />
           </div>
           <FullTextDialog
             paperId={props.paper.id}
@@ -52,6 +62,7 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
             onClose={() => {
               setIsOpen(false);
             }}
+            fullTextAB="B"
           />
         </div>
         <div className={s.rightSide}>

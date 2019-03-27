@@ -14,6 +14,7 @@ interface PdfSourceButtonProps {
   paper: Paper;
   wrapperStyle?: React.CSSProperties;
   reverseColor?: boolean;
+  fullTextAB: "A" | "B";
 }
 
 interface PdfSourceButtonState {
@@ -32,7 +33,7 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
   }
 
   public render() {
-    const { paper, reverseColor } = this.props;
+    const { paper, reverseColor, fullTextAB } = this.props;
     const { isSourcePopoverOpen } = this.state;
 
     if (!paper) {
@@ -71,6 +72,7 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
                   style: {
                     height: "100%",
                     width: "36px",
+                    borderLeft: fullTextAB === "A" ? "1px solid rgba(222, 225, 232, 0.35)" : "1px solid #6096ff",
                   },
                   className: styles.dropdownBtn,
                 }}
@@ -113,7 +115,7 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
   };
 
   private handleClickPDFOrSource = (isPdf: boolean) => {
-    const { paper } = this.props;
+    const { paper, fullTextAB } = this.props;
 
     if (isPdf) {
       trackEvent({
@@ -128,6 +130,8 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
         actionArea: "paperDescription",
         actionTag: "downloadPdf",
         actionLabel: String(paper.id),
+        expName: "requestFullText",
+        expUser: fullTextAB,
       });
     } else {
       ActionTicketManager.trackTicket({
@@ -136,6 +140,8 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
         actionArea: "paperDescription",
         actionTag: "source",
         actionLabel: String(paper.id),
+        expName: "requestFullText",
+        expUser: fullTextAB,
       });
     }
   };
