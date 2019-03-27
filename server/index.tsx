@@ -14,10 +14,11 @@ const awsServerlessExpressMiddleware = require("aws-serverless-express/middlewar
 const SITEMAP_REGEX = /^\/sitemap(\/sitemap_[0-9]+\.xml)?\/?$/;
 
 const app = express();
+app.disable("x-powered-by");
 app.use(awsServerlessExpressMiddleware.eventContext({ fromALB: true }));
 app.use(cookieParser());
 app.use(compression({ filter: shouldCompress }));
-app.use(morgan("dev"));
+app.use(morgan("combined"));
 
 function shouldCompress(req: express.Request, res: express.Response) {
   if (SITEMAP_REGEX.test(req.path)) return false;
