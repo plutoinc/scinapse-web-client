@@ -115,7 +115,6 @@ export function fetchCurrentUserFilters() {
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CURRENT_USER_FILTERS,
         payload: res,
       });
-      dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_MERGE_LOCAL_TO_SERVER_FILTERS, payload: res });
 
       return res;
     } catch (err) {
@@ -215,12 +214,6 @@ export function putLocalStorageFilters(params: RawFilter[]) {
     }
   };
 }
-
-// export function mergeServerToLocalFilters(params: FilterRequest[]) {
-//   return async (dispatch: Dispatch<any>) => {
-//     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_MERGE_LOCAL_TO_SERVER_FILTERS, payload: params });
-//   };
-// }
 
 export function setSavedFilterSet(params: Filter | null) {
   return (dispatch: Dispatch<any>) => {
