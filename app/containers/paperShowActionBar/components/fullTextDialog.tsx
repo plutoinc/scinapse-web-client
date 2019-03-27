@@ -12,6 +12,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import ScinapseFormikInput from "../../../components/common/scinapseInput/scinapseFormikInput";
 import ReduxAutoSizeTextarea from "../../../components/common/autoSizeTextarea/reduxAutoSizeTextarea";
 import Icon from "../../../icons";
+import { ACTION_TYPES } from "../../../actions/actionTypes";
 const s = require("./fullTextDialog.scss");
 
 const LAST_SUCCEEDED_EMAIL_KEY = "l_s_e_k";
@@ -51,6 +52,13 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
         name: props.currentUser.firstName + props.currentUser.lastName,
       });
       Cookies.set(LAST_SUCCEEDED_EMAIL_KEY, values.email);
+      props.dispatch({
+        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
+        payload: {
+          type: "success",
+          message: "Sent request successfully.",
+        },
+      });
       props.onClose();
     } catch (err) {
       console.error(err);
