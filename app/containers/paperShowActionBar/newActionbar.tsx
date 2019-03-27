@@ -6,6 +6,7 @@ import PaperShowCollectionControlButton from "../paperShowCollectionControlButto
 import CiteBox from "./components/citeBox";
 import { Paper } from "../../model/paper";
 import Icon from "../../icons";
+import { getPDFLink } from "../../helpers/getPDFLink";
 const s = require("./actionBar.scss");
 
 interface PaperShowActionBarProps {
@@ -17,28 +18,34 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
 
   if (!props.paper) return null;
 
+  const pdfSource = getPDFLink(props.paper.urls);
+  const hasSource = props.paper.urls.length > 0;
+
   return (
     <div className={s.actionBar}>
       <div className={s.actions}>
         <div className={s.leftSide}>
-          <div className={s.actionItem}>
-            <PdfSourceButton paper={props.paper} reverseColor />
-          </div>
-          <div className={s.actionItem}>
-            <button
-              onClick={() => {
-                setIsOpen(true);
-              }}
-              className={s.fullTextBtn}
-            >
-              <Icon icon="SEND" className={s.sendIcon} />
-              Request Full-text
-            </button>
-          </div>
+          {hasSource && (
+            <div className={s.actionItem}>
+              <PdfSourceButton paper={props.paper} reverseColor />
+            </div>
+          )}
+          {!pdfSource && (
+            <div className={s.actionItem}>
+              <button
+                onClick={() => {
+                  setIsOpen(true);
+                }}
+                className={s.fullTextBtn}
+              >
+                <Icon icon="SEND" className={s.sendIcon} />
+                Request Full-text
+              </button>
+            </div>
+          )}
           <div className={s.actionItem}>
             <CiteBox paper={props.paper} />
           </div>
-
           <FullTextDialog
             paperId={props.paper.id}
             isOpen={isOpen}
