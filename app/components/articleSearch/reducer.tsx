@@ -4,10 +4,11 @@ import { SearchResult } from "../../api/search";
 import { ChangeRangeInputParams, FILTER_TYPE_HAS_RANGE, FILTER_RANGE_TYPE } from "../../constants/paperSearch";
 import { AddPaperToCollectionParams, RemovePapersFromCollectionParams } from "../../api/collection";
 import { Paper } from "../../model/paper";
-import { Filter } from "../../api/member";
-// import { isEqual } from "lodash";
-// const store = require("store");
-// const LOCAL_STORAGE_FILTERS = "l_s_filters";
+import { Filter, RawFilter } from "../../api/member";
+import { isEqual } from "lodash";
+import { ResponseFilterObjectGenerator } from "../../helpers/FilterObjectGenerator";
+const store = require("store");
+const LOCAL_STORAGE_FILTERS = "l_s_filters";
 
 export function reducer(
   state: ArticleSearchState = ARTICLE_SEARCH_INITIAL_STATE,
@@ -15,10 +16,7 @@ export function reducer(
 ): ArticleSearchState {
   switch (action.type) {
     case ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX: {
-      return {
-        ...state,
-        isJournalFilterExpanding: !state.isJournalFilterExpanding,
-      };
+      return { ...state, isJournalFilterExpanding: !state.isJournalFilterExpanding };
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SEARCH_INPUT: {
@@ -87,11 +85,7 @@ export function reducer(
           suggestionKeyword: payload.data.suggestion ? payload.data.suggestion.suggestion : "",
           highlightedSuggestionKeyword: payload.data.suggestion ? payload.data.suggestion.highlighted : "",
           searchFromSuggestion: payload.data.resultModified,
-          aggregationData: {
-            ...payload.data.aggregation,
-            journals: sortedJournals,
-            fosList: sortedFosList,
-          },
+          aggregationData: { ...payload.data.aggregation, journals: sortedJournals, fosList: sortedFosList },
           journalFilterObject,
           fosFilterObject,
           matchAuthors: payload.data.matchedAuthor,
@@ -102,22 +96,12 @@ export function reducer(
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_PAPERS: {
-      return {
-        ...state,
-        isContentLoading: false,
-        isFilterLoading: false,
-        pageErrorCode: action.payload.statusCode,
-      };
+      return { ...state, isContentLoading: false, isFilterLoading: false, pageErrorCode: action.payload.statusCode };
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_REFERENCE_PAPERS:
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS: {
-      return {
-        ...state,
-        isContentLoading: true,
-        isFilterLoading: false,
-        pageErrorCode: null,
-      };
+      return { ...state, isContentLoading: true, isFilterLoading: false, pageErrorCode: null };
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_REFERENCE_PAPERS:
@@ -137,11 +121,7 @@ export function reducer(
 
     case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_REFERENCE_PAPERS:
     case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CITED_PAPERS: {
-      return {
-        ...state,
-        isContentLoading: false,
-        isFilterLoading: false,
-      };
+      return { ...state, isContentLoading: false, isFilterLoading: false };
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT: {
@@ -183,10 +163,7 @@ export function reducer(
         }
       });
 
-      return {
-        ...state,
-        searchItemsToShow: newSearchItemsToShow,
-      };
+      return { ...state, searchItemsToShow: newSearchItemsToShow };
     }
 
     case ACTION_TYPES.GLOBAL_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION: {
@@ -221,44 +198,49 @@ export function reducer(
         }
       });
 
-      return {
-        ...state,
-        searchItemsToShow: newSearchItemsToShow,
-      };
+      return { ...state, searchItemsToShow: newSearchItemsToShow };
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_PUT_CURRENT_USER_FILTERS: {
-      return {
-        ...state,
-        isFilterSaveBoxLoading: true,
-      };
+      return { ...state, isFilterSaveBoxLoading: true };
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_PUT_CURRENT_USER_FILTERS: {
-      return {
-        ...state,
-        isFilterSaveBoxLoading: false,
-      };
+      return { ...state, isFilterSaveBoxLoading: false };
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_LOCAL_STORAGE_FILTERS:
-    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CURRENT_USER_FILTERS: {
-      const payload: Filter[] = action.payload;
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_LOCAL_STORAGE_FILTERS: {
+      const payload: RawFilter[] = action.payload;
+      const migrationFilters = ResponseFilterObjectGenerator(payload);
 
-      return { ...state, myFilters: payload };
+      return { ...state, myFilters: migrationFilters };
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CURRENT_USER_FILTERS: {
+      const payload: RawFilter[] = action.payload;
+      const localFilters: RawFilter[] = store.get(LOCAL_STORAGE_FILTERS);
+      const mergedFilters = payload.concat(localFilters);
+      const migrationFilters = ResponseFilterObjectGenerator(mergedFilters);
+
+      const uniqMigrationFilters = migrationFilters.filter((item, i) => {
+        return (
+          migrationFilters.findIndex(item2 => {
+            return isEqual(item.filter, item2.filter);
+          }) === i
+        );
+      });
+
+      store.set(LOCAL_STORAGE_FILTERS, []);
+
+      return { ...state, myFilters: uniqMigrationFilters };
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_PUT_LOCAL_STORAGE_FILTERS:
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_PUT_CURRENT_USER_FILTERS: {
-      const payload: Filter[] = action.payload;
+      const payload: RawFilter[] = action.payload;
+      const migrationFilters = ResponseFilterObjectGenerator(payload);
 
-      return { ...state, myFilters: payload, isFilterSaveBoxLoading: false };
-    }
-
-    case ACTION_TYPES.ARTICLE_SEARCH_MERGE_LOCAL_TO_SERVER_FILTERS: {
-      const mergedFilter: Filter[] = action.payload;
-
-      return { ...state, myFilters: mergedFilter };
+      return { ...state, myFilters: migrationFilters, isFilterSaveBoxLoading: false };
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_SET_FILTER_IN_FILTER_SET: {

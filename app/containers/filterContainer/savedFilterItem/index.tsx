@@ -3,6 +3,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import { Filter } from "../../../api/member";
 import Icon from "../../../icons";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
+import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 const styles = require("./savedFilterItem.scss");
 
 interface SavedFilterItemProps {
@@ -26,7 +27,7 @@ const SavedFilterItem: React.FunctionComponent<SavedFilterItemProps> = props => 
           actionType: "fire",
           actionArea: "filter",
           actionTag: "applySavedFilter",
-          actionLabel: savedFilter.filter,
+          actionLabel: PapersQueryFormatter.getStringifiedPaperFilterParams(savedFilter.filter),
         });
       }}
       className={styles.filterItemWrapper}

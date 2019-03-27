@@ -98,7 +98,7 @@ class PaperSearchQueryFormatter {
     };
   }
 
-  private getStringifiedPaperFilterParams({ yearFrom, yearTo, fos, journal }: FilterObject) {
+  public getStringifiedPaperFilterParams({ yearFrom, yearTo, fos, journal }: FilterObject) {
     const resultQuery = `year=${yearFrom || ""}:${yearTo || ""},fos=${fos ? fos.join("|") : ""},journal=${
       journal ? journal.join("|") : ""
     }`;

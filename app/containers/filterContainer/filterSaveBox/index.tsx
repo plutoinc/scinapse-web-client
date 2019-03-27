@@ -20,6 +20,7 @@ import FilterTitleBox from "./titleBox";
 import { CurrentUser } from "../../../model/currentUser";
 import Icon from "../../../icons";
 import { openSignIn } from "../../../components/dialog/actions";
+import { RequestFilterObjectGenerator } from "../../../helpers/FilterObjectGenerator";
 const styles = require("./filterSaveBox.scss");
 
 interface FilterSaveBoxProps {
@@ -42,9 +43,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
   React.useEffect(
     () => {
       const currentFilter = PapersQueryFormatter.objectifyPapersFilter(rawQueryParamsObj.filter);
-      const savedFilter = !!savedFilterSet
-        ? PapersQueryFormatter.objectifyPapersFilter(savedFilterSet.filter)
-        : PapersQueryFormatter.objectifyPapersFilter();
+      const savedFilter = !!savedFilterSet ? savedFilterSet.filter : PapersQueryFormatter.objectifyPapersFilter();
 
       if (isEqual(savedFilter, currentFilter)) {
         setIsChange(false);
@@ -53,6 +52,21 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
       }
     },
     [props.location, savedFilterSet]
+  );
+
+  const lastSavedFilters = React.useRef(myFilters);
+
+  React.useEffect(
+    () => {
+      if (currentUserState.isLoggedIn) {
+        if (!isEqual(lastSavedFilters.current, myFilters)) {
+          const newFiltersReq = RequestFilterObjectGenerator(myFilters);
+          putCurrentUserFilters(newFiltersReq);
+          lastSavedFilters.current = myFilters;
+        }
+      }
+    },
+    [currentUserState.isLoggedIn, myFilters]
   );
 
   function newFiltersGenerator(changedFilterIndex: number | undefined, changedFilter: Filter) {
@@ -65,12 +79,16 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
           ]
         : [changedFilter, ...myFilters];
 
-    return newFilters;
+    const newFiltersReq = RequestFilterObjectGenerator(newFilters);
+
+    return newFiltersReq;
   }
 
   function handleClickSaveChangesBtn(changedFilterReq: Filter | string, currentSavedFilterSet: Filter) {
     const changedFilter =
-      typeof changedFilterReq === "string" ? { ...currentSavedFilterSet, filter: changedFilterReq } : changedFilterReq;
+      typeof changedFilterReq === "string"
+        ? { ...currentSavedFilterSet, filter: PapersQueryFormatter.objectifyPapersFilter(changedFilterReq) }
+        : changedFilterReq;
 
     const changedFilterIndex = !!savedFilterSet ? findIndex(myFilters, savedFilterSet) : undefined;
 
@@ -101,7 +119,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
               yearTo: articleSearchState.yearFilterToValue,
             }),
             emoji: randomEmoji,
-            filter: changedFilterReq,
+            filter: PapersQueryFormatter.objectifyPapersFilter(changedFilterReq),
           }
         : changedFilterReq;
 
@@ -127,7 +145,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
         query,
         page: 1,
         sort: currentSort,
-        filter: !!filter ? PapersQueryFormatter.objectifyPapersFilter(filter.filter) : {},
+        filter: !!filter ? filter.filter : PapersQueryFormatter.objectifyPapersFilter(),
       }),
     });
     setIsOpen(false);
@@ -136,10 +154,12 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
   function handleClickDeleteButton(deleteIndex: number) {
     const newFilters = [...myFilters.slice(0, deleteIndex), ...myFilters.slice(deleteIndex + 1, myFilters.length)];
 
+    const newFiltersReq = RequestFilterObjectGenerator(newFilters);
+
     if (currentUserState.isLoggedIn) {
-      dispatch(putCurrentUserFilters(newFilters));
+      dispatch(putCurrentUserFilters(newFiltersReq));
     } else {
-      dispatch(putLocalStorageFilters(newFilters));
+      dispatch(putLocalStorageFilters(newFiltersReq));
     }
 
     if (!!savedFilterSet && findIndex(newFilters, savedFilterSet) === -1) {

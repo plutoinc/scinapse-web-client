@@ -16,6 +16,7 @@ import alertToast from "../../../helpers/makePlutoToastAction";
 import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import Icon from "../../../icons";
+import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 const styles = require("./filterSaveBox.scss");
 
 interface TitleBoxProps {
@@ -48,7 +49,9 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
   const currentFilterStr = rawQueryParamsObj.filter;
 
   function getSaveAndResetBtns() {
-    const currentSavedFilterStr = !!savedFilterSet ? savedFilterSet.filter : "";
+    const currentSavedFilterStr = !!savedFilterSet
+      ? PapersQueryFormatter.getStringifiedPaperFilterParams(savedFilterSet.filter)
+      : "";
 
     if (hasFilterChanged) {
       return (

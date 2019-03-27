@@ -25,7 +25,7 @@ import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import { HOME_PATH } from "../../constants/routes";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { CurrentUser } from "../../model/currentUser";
-import PapersQueryFormatter, { FilterObject } from "../../helpers/papersQueryFormatter";
+import { FilterObject } from "../../helpers/papersQueryFormatter";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -210,7 +210,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     }
 
     if (!!articleSearchState.savedFilterSet) {
-      currentFilter = PapersQueryFormatter.objectifyPapersFilter(articleSearchState.savedFilterSet.filter);
+      currentFilter = articleSearchState.savedFilterSet.filter;
     }
 
     return (

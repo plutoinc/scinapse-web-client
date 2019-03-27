@@ -8,7 +8,7 @@ import { ChangeRangeInputParams } from "../../constants/paperSearch";
 import PlutoAxios from "../../api/pluto";
 import { CommonError } from "../../model/error";
 import { GetAuthorsParam } from "../../api/types/author";
-import memberAPI, { Filter } from "../../api/member";
+import memberAPI, { Filter, RawFilter } from "../../api/member";
 const store = require("store");
 const LOCAL_STORAGE_FILTERS = "l_s_filters";
 
@@ -163,7 +163,7 @@ export function fetchLocalStorageFilters() {
   };
 }
 
-export function putCurrentUserFilters(params: Filter[]) {
+export function putCurrentUserFilters(params: RawFilter[]) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_PUT_CURRENT_USER_FILTERS });
 
@@ -189,14 +189,17 @@ export function putCurrentUserFilters(params: Filter[]) {
   };
 }
 
-export function putLocalStorageFilters(params: Filter[]) {
+export function putLocalStorageFilters(params: RawFilter[]) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_PUT_LOCAL_STORAGE_FILTERS });
 
     try {
       store.set(LOCAL_STORAGE_FILTERS, params);
       const res = store.get(LOCAL_STORAGE_FILTERS);
-      dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_PUT_LOCAL_STORAGE_FILTERS, payload: res });
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_PUT_LOCAL_STORAGE_FILTERS,
+        payload: res,
+      });
     } catch (err) {
       if (!axios.isCancel(err)) {
         const error = PlutoAxios.getGlobalError(err);
