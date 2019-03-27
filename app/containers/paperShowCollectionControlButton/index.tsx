@@ -45,6 +45,7 @@ interface PaperShowCollectionControlButtonProps {
   myCollections: Collection[] | null;
   selectedCollection: Collection | null;
   dispatch: Dispatch<any>;
+  isTestVersion?: boolean;
 }
 
 interface TitleAreaProps {
@@ -53,6 +54,7 @@ interface TitleAreaProps {
   isLoading: boolean;
   handleUnsignedUser: () => void;
   onClick: () => void;
+  isTestVersion?: boolean;
 }
 
 const TitleArea: React.SFC<TitleAreaProps> = props => {
@@ -72,6 +74,26 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
   }
 
   if (!props.currentUser.isLoggedIn) {
+    if (props.isTestVersion) {
+      return (
+        <button
+          onClick={() => {
+            props.handleUnsignedUser();
+            ActionTicketManager.trackTicket({
+              pageType: "paperShow",
+              actionType: "fire",
+              actionArea: "paperDescription",
+              actionTag: "signIn",
+              actionLabel: null,
+            });
+          }}
+          className={styles.unsignedTitleBtn}
+        >
+          <Icon icon="COLLECITON_LIST" className={styles.collectionIcon} />
+          Add to Collection
+        </button>
+      );
+    }
     return (
       <div className={styles.signInTextWrapper}>
         <span
@@ -140,7 +162,14 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   }
 
   public render() {
-    const { targetPaperId, selectedCollection, currentUser, myCollectionsState, myCollections } = this.props;
+    const {
+      targetPaperId,
+      selectedCollection,
+      currentUser,
+      myCollectionsState,
+      myCollections,
+      isTestVersion,
+    } = this.props;
     const isLoadingCollection = currentUser.isLoggingIn || myCollectionsState.isLoadingCollections;
     const isSelected = selectedCollection && selectedCollection.containsSelected;
     let saveButtonBorderRadius: string;
@@ -150,33 +179,37 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       saveButtonBorderRadius = "4px";
     }
 
+    const hideSaveBtn = isTestVersion && !currentUser.isLoggedIn;
+
     return (
       <div ref={el => (this.popoverAnchorEl = el)} className={styles.buttonWrapper}>
         <li className={styles.actionItem}>
           {this.getCollectionItemInDropdown()}
-          <ScinapseButton
-            content={this.getSaveButtonContent()}
-            style={{
-              display: "inline-flex",
-              justifyContent: "center",
-              alignItems: "center",
-              minWidth: "83px",
-              height: "40px",
-              borderRadius: saveButtonBorderRadius,
-              padding: "12px 0",
-              backgroundColor: isSelected ? "#34495e" : "#3e7fff",
-              fontSize: "16px",
-              fontWeight: 500,
-              overflow: "hidden",
-              whiteSpace: "nowrap",
-            }}
-            disabled={isLoadingCollection || myCollectionsState.isFetchingPaper}
-            onClick={
-              (myCollections && myCollections.length > 0) || !currentUser.isLoggedIn
-                ? this.handleClickSaveButton
-                : this.handleClickNewCollectionButton
-            }
-          />
+          {!hideSaveBtn && (
+            <ScinapseButton
+              content={this.getSaveButtonContent()}
+              style={{
+                display: "inline-flex",
+                justifyContent: "center",
+                alignItems: "center",
+                minWidth: "83px",
+                height: "40px",
+                borderRadius: saveButtonBorderRadius,
+                padding: "12px 0",
+                backgroundColor: isSelected ? "#34495e" : "#3e7fff",
+                fontSize: "16px",
+                fontWeight: 500,
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+              }}
+              disabled={isLoadingCollection || myCollectionsState.isFetchingPaper}
+              onClick={
+                (myCollections && myCollections.length > 0) || !currentUser.isLoggedIn
+                  ? this.handleClickSaveButton
+                  : this.handleClickNewCollectionButton
+              }
+            />
+          )}
           <ClickAwayListener onClickAway={this.handleClickNoteBoxBackdrop}>
             <div>
               {isSelected && (
@@ -225,7 +258,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   }
 
   private getCollectionItemInDropdown = () => {
-    const { selectedCollection, currentUser, myCollectionsState, myCollections } = this.props;
+    const { selectedCollection, currentUser, myCollectionsState, myCollections, isTestVersion } = this.props;
 
     const collections =
       myCollections &&
@@ -248,6 +281,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       <ClickAwayListener onClickAway={this.handleCloseCollectionDropdown}>
         <div className={styles.actionItemWrapper}>
           <TitleArea
+            isTestVersion={isTestVersion}
             currentUser={currentUser}
             collection={selectedCollection}
             isLoading={

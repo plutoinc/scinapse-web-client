@@ -164,6 +164,7 @@ const SearchQueryInput: React.FunctionComponent<
       actionTag: "query",
       actionLabel: searchKeyword,
     });
+
     trackEvent({ category: "Search", action: "Query", label: searchKeyword });
     saveQueryToRecentHistory(searchKeyword);
     setTouched(false);

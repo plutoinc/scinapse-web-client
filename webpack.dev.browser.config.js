@@ -30,6 +30,7 @@ const browserSpecificSetting = {
         loader: "awesome-typescript-loader",
         options: {
           useBabel: true,
+          useCache: false,
         },
       },
       {

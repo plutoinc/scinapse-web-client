@@ -63,7 +63,7 @@ const ICONS: { [key: string]: any } = {
   TWITTER_LOGO: require("./twitter-logo-blue.svg").default,
   COLLECTION_BOX: require("./collection-box.svg").default,
   CLOSE_BUTTON: require("./close-button.svg").default,
-  LIST: require("./list.svg").default,
+  COLLECITON_LIST: require("./list.svg").default,
   AUTHOR_MORE_ICON: require("./author-more-item.svg").default,
   TILDE: require("./tilde.svg").default,
   COPY_DOI: require("./copy-doi.svg").default,
@@ -82,6 +82,7 @@ const ICONS: { [key: string]: any } = {
   IMPACT_FACTOR: require("./impact-factor.svg").default,
   ARROW_RIGHT: require("./arrow-right.svg").default,
   HISTORY: require("./history.svg").default,
+  SEND: require("./send.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)
