@@ -9,6 +9,7 @@ import { AppState } from "../../../reducers";
 import { CurrentUser } from "../../../model/currentUser";
 import validateEmail from "../../../helpers/validateEmail";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
 import ScinapseFormikInput from "../../../components/common/scinapseInput/scinapseFormikInput";
 import ReduxAutoSizeTextarea from "../../../components/common/autoSizeTextarea/reduxAutoSizeTextarea";
 import Icon from "../../../icons";
@@ -23,6 +24,7 @@ interface RequestFullTextProps {
   onClose: () => void;
   currentUser: CurrentUser;
   dispatch: Dispatch<any>;
+  fullTextAB: "A" | "B";
 }
 
 interface FormState {
@@ -51,6 +53,17 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
         message: values.message,
         name: props.currentUser.firstName + props.currentUser.lastName,
       });
+
+      ActionTicketManager.trackTicket({
+        pageType: "paperShow",
+        actionType: "fire",
+        actionArea: "paperDescription",
+        actionTag: "sendRequestFullText",
+        actionLabel: String(props.paperId),
+        expName: "requestFullText",
+        expUser: props.fullTextAB,
+      });
+
       Cookies.set(LAST_SUCCEEDED_EMAIL_KEY, values.email);
       props.dispatch({
         type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
