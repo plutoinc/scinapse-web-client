@@ -20,6 +20,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   const { pdfURL, shouldShow, onFailed, onLoadSuccess, filename } = props;
   const [isFetching, setIsFetching] = React.useState(false);
   const [PDFBinary, setPDFBinary] = React.useState(null);
+  const [PDFObject, setPDFObject] = React.useState(null);
   const [extend, setExtend] = React.useState(false);
   const [hadErrorToLoad, setLoadError] = React.useState(false);
   const [succeedToLoad, setSucceed] = React.useState(false);
@@ -60,12 +61,18 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   );
 
   const getContent = () => {
+    if (!PDFObject) return null;
+
     if (extend) {
-      return Array.from(new Array(pageCountToShow), (_el, index) => (
-        <Page key={`page_${index + 1}`} pageNumber={index + 1} />
+      return Array.from(new Array(pageCountToShow), (_el, i) => (
+        <Page pdf={PDFObject} width={792} key={i} pageNumber={i + 1} />
       ));
     } else {
-      return <Page pageNumber={1} />;
+      return (
+        <>
+          <Page pdf={PDFObject} width={792} pageNumber={1} />
+        </>
+      );
     }
   };
 
@@ -81,7 +88,6 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     return (
       <div ref={wrapperNode}>
         <Document
-          // tslint:disable-next-line:max-line-length
           file={PDFBinary}
           error={null}
           loading={
@@ -89,11 +95,13 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
               <ArticleSpinner />
             </div>
           }
-          onLoadSuccess={(document: any) => {
-            setPageCountToShow(document.numPages);
+          onLoadSuccess={(pdf: any) => {
+            setPageCountToShow(pdf.numPages);
+            setPDFObject(pdf);
             setSucceed(true);
             onLoadSuccess();
           }}
+          onLoadError={console.error}
         >
           {getContent()}
         </Document>
