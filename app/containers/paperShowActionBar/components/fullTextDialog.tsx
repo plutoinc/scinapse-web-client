@@ -1,17 +1,27 @@
 import * as React from "react";
-import Dialog from "@material-ui/core/Dialog";
+import * as Cookies from "js-cookie";
+import { connect, Dispatch } from "react-redux";
 import * as classNames from "classnames";
+import Dialog from "@material-ui/core/Dialog";
 import { Formik, Form, Field, FormikErrors } from "formik";
-import { withStyles } from "../../../helpers/withStylesHelper";
+import PaperAPI from "../../../api/paper";
+import { AppState } from "../../../reducers";
+import { CurrentUser } from "../../../model/currentUser";
 import validateEmail from "../../../helpers/validateEmail";
-import ReduxAutoSizeTextarea from "../../../components/common/autoSizeTextarea/reduxAutoSizeTextarea";
+import { withStyles } from "../../../helpers/withStylesHelper";
 import ScinapseFormikInput from "../../../components/common/scinapseInput/scinapseFormikInput";
+import ReduxAutoSizeTextarea from "../../../components/common/autoSizeTextarea/reduxAutoSizeTextarea";
 import Icon from "../../../icons";
 const s = require("./fullTextDialog.scss");
 
+const LAST_SUCCEEDED_EMAIL_KEY = "l_s_e_k";
+
 interface RequestFullTextProps {
   isOpen: boolean;
+  paperId: number;
   onClose: () => void;
+  currentUser: CurrentUser;
+  dispatch: Dispatch<any>;
 }
 
 interface FormState {
@@ -28,13 +38,36 @@ function validateForm(values: FormState) {
 }
 
 const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => {
+  const [email, setEmail] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
 
-  function handleSubmitForm(values: FormState) {
+  async function handleSubmitForm(values: FormState) {
     setIsLoading(true);
-    console.log(values);
+    try {
+      await PaperAPI.requestFullText({
+        paperId: props.paperId,
+        email: values.email,
+        message: values.message,
+        name: props.currentUser.firstName + props.currentUser.lastName,
+      });
+      Cookies.set(LAST_SUCCEEDED_EMAIL_KEY, values.email);
+      props.onClose();
+    } catch (err) {
+      console.error(err);
+    }
     setIsLoading(false);
   }
+
+  React.useEffect(
+    () => {
+      if (props.currentUser.isLoggedIn) {
+        setEmail(props.currentUser.email);
+      } else {
+        setEmail(Cookies.get(LAST_SUCCEEDED_EMAIL_KEY) || "");
+      }
+    },
+    [props.currentUser.isLoggedIn]
+  );
 
   return (
     <Dialog
@@ -48,7 +81,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
       <div className={s.subtitle}>We will send you a checked paper by sending a request to the authors instead.</div>
 
       <Formik
-        initialValues={{ email: "", message: "" }}
+        initialValues={{ email, message: "" }}
         validate={validateForm}
         onSubmit={handleSubmitForm}
         enableReinitialize
@@ -94,4 +127,10 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
   );
 };
 
-export default withStyles<typeof RequestFullText>(s)(RequestFullText);
+function mapStateToProps(state: AppState) {
+  return {
+    currentUser: state.currentUser,
+  };
+}
+
+export default connect(mapStateToProps)(withStyles<typeof RequestFullText>(s)(RequestFullText));

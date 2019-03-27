@@ -40,6 +40,7 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
           </div>
 
           <FullTextDialog
+            paperId={props.paper.id}
             isOpen={isOpen}
             onClose={() => {
               setIsOpen(false);
