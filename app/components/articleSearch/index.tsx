@@ -42,7 +42,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
   private cancelToken = axios.CancelToken.source();
 
   public async componentDidMount() {
-    const { configuration, dispatch, match, location } = this.props;
+    const { configuration, dispatch, match, location, currentUserState } = this.props;
 
     const notRenderedAtServerOrJSAlreadyInitialized =
       !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
@@ -55,7 +55,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
         cancelToken: this.cancelToken.token,
       };
 
-      await getSearchData(currentParams);
+      await getSearchData(currentParams, currentUserState.isLoggedIn);
       restoreScroll(location.key);
     }
   }
@@ -73,13 +73,16 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     if (hasSearchKeywordChanged || hasAuthStateChanged) {
       this.cancelToken.cancel();
       this.cancelToken = axios.CancelToken.source();
-      await getSearchData({
-        dispatch,
-        match,
-        pathname: location.pathname,
-        queryParams: getQueryParamsObject(afterSearch),
-        cancelToken: this.cancelToken.token,
-      });
+      await getSearchData(
+        {
+          dispatch,
+          match,
+          pathname: location.pathname,
+          queryParams: getQueryParamsObject(afterSearch),
+          cancelToken: this.cancelToken.token,
+        },
+        currentUserState.isLoggedIn
+      );
       restoreScroll(location.key);
     }
   }
@@ -89,7 +92,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
   }
 
   public render() {
-    const { articleSearchState, location } = this.props;
+    const { articleSearchState, currentUserState, location } = this.props;
     const queryParams = getUrlDecodedQueryParamsObject(location);
 
     if (articleSearchState.pageErrorCode) {
@@ -107,6 +110,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
           <FilterContainer
             handleChangeRangeInput={this.setRangeInput}
             articleSearchState={articleSearchState}
+            currentUserState={currentUserState}
             handleToggleExpandingFilter={this.handleToggleExpandingFilter}
           />
         </div>

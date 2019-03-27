@@ -15,12 +15,14 @@ import Icon from "../../icons";
 import EnvChecker from "../../helpers/envChecker";
 import FilterSaveBox from "./filterSaveBox";
 import makeNewFilterLink from "../../helpers/makeNewFilterLink";
+import { CurrentUser } from "../../model/currentUser";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps extends RouteComponentProps<any> {
   handleChangeRangeInput: (params: ChangeRangeInputParams) => void;
   handleToggleExpandingFilter: () => void;
   articleSearchState: ArticleSearchState;
+  currentUserState: CurrentUser;
 }
 
 function getPublicationFilterBox(props: FilterContainerProps) {
@@ -189,7 +191,7 @@ function getJournalFilter(props: FilterContainerProps) {
 }
 
 const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => {
-  const { articleSearchState } = props;
+  const { articleSearchState, currentUserState } = props;
   const [isClient, setIsClient] = React.useState(false);
 
   React.useEffect(() => {
@@ -208,7 +210,7 @@ const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => 
       })}
     >
       {articleSearchState.isContentLoading ? <div className={styles.filterLoadingWrapper} /> : null}
-      <FilterSaveBox articleSearchState={articleSearchState} />
+      <FilterSaveBox articleSearchState={articleSearchState} currentUserState={currentUserState} />
       {getPublicationFilterBox(props)}
       {getFOSFilterBox(props)}
       {getJournalFilter(props)}

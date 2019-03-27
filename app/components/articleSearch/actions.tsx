@@ -1,6 +1,5 @@
 import { Dispatch } from "redux";
 import axios from "axios";
-import * as store from "store";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { SearchPapersParams } from "../../api/types/paper";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
@@ -10,6 +9,8 @@ import PlutoAxios from "../../api/pluto";
 import { CommonError } from "../../model/error";
 import { GetAuthorsParam } from "../../api/types/author";
 import memberAPI, { Filter } from "../../api/member";
+const store = require("store");
+const LOCAL_STORAGE_FILTERS = "l_s_filters";
 
 export function toggleExpandingFilter() {
   return {
@@ -104,16 +105,17 @@ export function fetchSearchAuthors(params: GetAuthorsParam) {
   };
 }
 
-export function fetchMyFilters() {
+export function fetchCurrentUserFilters() {
   return async (dispatch: Dispatch<any>) => {
-    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_MY_FILTERS });
+    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CURRENT_USER_FILTERS });
 
     try {
       const res = await memberAPI.getMyFilters();
       dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MY_FILTERS,
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CURRENT_USER_FILTERS,
         payload: res,
       });
+      dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_MERGE_LOCAL_TO_SERVER_FILTERS, payload: res });
 
       return res;
     } catch (err) {
@@ -121,7 +123,7 @@ export function fetchMyFilters() {
         const error = PlutoAxios.getGlobalError(err);
 
         dispatch({
-          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_MY_FILTERS,
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CURRENT_USER_FILTERS,
           payload: {
             statusCode: (error as CommonError).status,
           },
@@ -132,14 +134,43 @@ export function fetchMyFilters() {
   };
 }
 
-export function putMyFilters(params: Filter[]) {
+export function fetchLocalStorageFilters() {
   return async (dispatch: Dispatch<any>) => {
-    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_PUT_MY_FILTERS });
+    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_LOCAL_STORAGE_FILTERS });
+
+    try {
+      const res = store.get(LOCAL_STORAGE_FILTERS);
+      if (res !== undefined) {
+        dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_LOCAL_STORAGE_FILTERS, payload: res });
+      } else {
+        dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_LOCAL_STORAGE_FILTERS, payload: [] });
+      }
+
+      return res;
+    } catch (err) {
+      if (!axios.isCancel(err)) {
+        const error = PlutoAxios.getGlobalError(err);
+
+        dispatch({
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_LOCAL_STORAGE_FILTERS,
+          payload: {
+            statusCode: (error as CommonError).status,
+          },
+        });
+        throw err;
+      }
+    }
+  };
+}
+
+export function putCurrentUserFilters(params: Filter[]) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_PUT_CURRENT_USER_FILTERS });
 
     try {
       const res = await memberAPI.addMyFilters(params);
       dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_PUT_MY_FILTERS,
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_PUT_CURRENT_USER_FILTERS,
         payload: res,
       });
     } catch (err) {
@@ -147,7 +178,7 @@ export function putMyFilters(params: Filter[]) {
         const error = PlutoAxios.getGlobalError(err);
 
         dispatch({
-          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_PUT_MY_FILTERS,
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_PUT_CURRENT_USER_FILTERS,
           payload: {
             statusCode: (error as CommonError).status,
           },
@@ -158,9 +189,39 @@ export function putMyFilters(params: Filter[]) {
   };
 }
 
+export function putLocalStorageFilters(params: Filter[]) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_PUT_LOCAL_STORAGE_FILTERS });
+
+    try {
+      store.set(LOCAL_STORAGE_FILTERS, params);
+      const res = store.get(LOCAL_STORAGE_FILTERS);
+      dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_PUT_LOCAL_STORAGE_FILTERS, payload: res });
+    } catch (err) {
+      if (!axios.isCancel(err)) {
+        const error = PlutoAxios.getGlobalError(err);
+
+        dispatch({
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_PUT_LOCAL_STORAGE_FILTERS,
+          payload: {
+            statusCode: (error as CommonError).status,
+          },
+        });
+        throw err;
+      }
+    }
+  };
+}
+
+// export function mergeServerToLocalFilters(params: FilterRequest[]) {
+//   return async (dispatch: Dispatch<any>) => {
+//     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_MERGE_LOCAL_TO_SERVER_FILTERS, payload: params });
+//   };
+// }
+
 export function setSavedFilterSet(params: Filter | null) {
   return (dispatch: Dispatch<any>) => {
     store.set("previousFilter", params);
-    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_SET_FILTER_IN_MY_FILTER_SET, payload: params });
+    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_SET_FILTER_IN_FILTER_SET, payload: params });
   };
 }

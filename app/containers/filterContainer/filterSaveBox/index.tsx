@@ -7,22 +7,29 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { ArticleSearchState } from "../../../components/articleSearch/records";
 import { Filter } from "../../../api/member";
-import { setSavedFilterSet, putMyFilters } from "../../../components/articleSearch/actions";
+import {
+  setSavedFilterSet,
+  putCurrentUserFilters,
+  putLocalStorageFilters,
+} from "../../../components/articleSearch/actions";
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
 import SavedFilterItem from "../savedFilterItem";
 import newFilterSetTitleGenerator from "../../../helpers/newFilterSetTitleGenerator";
 import FilterTitleBox from "./titleBox";
+import { CurrentUser } from "../../../model/currentUser";
 import Icon from "../../../icons";
+import { openSignIn } from "../../../components/dialog/actions";
 const styles = require("./filterSaveBox.scss");
 
 interface FilterSaveBoxProps {
   articleSearchState: ArticleSearchState;
+  currentUserState: CurrentUser;
   dispatch: Dispatch<any>;
 }
 
 const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponentProps<any>> = props => {
-  const { articleSearchState, dispatch, history, location } = props;
+  const { articleSearchState, currentUserState, dispatch, history, location } = props;
   const { savedFilterSet, myFilters, searchInput, sort } = articleSearchState;
 
   let popoverAnchorEl: HTMLDivElement | null;
@@ -68,11 +75,19 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
     const changedFilterIndex = !!savedFilterSet ? findIndex(myFilters, savedFilterSet) : undefined;
 
     const newFilters = newFiltersGenerator(changedFilterIndex, changedFilter);
-    dispatch(putMyFilters(newFilters));
+    if (currentUserState.isLoggedIn) {
+      dispatch(putCurrentUserFilters(newFilters));
+    } else {
+      dispatch(putLocalStorageFilters(newFilters));
+    }
     dispatch(setSavedFilterSet(changedFilter));
   }
 
   function handleClickCreateNewFilterBtn(changedFilterReq: Filter | string) {
+    if (myFilters.length === 5 && !currentUserState.isLoggedIn) {
+      return dispatch(openSignIn());
+    }
+
     const baseEmojis = ["🐺", "🐶", "🦊", "🐱", "🦌", "🦒", "🐹", "🐰"];
     const randomEmoji = baseEmojis[Math.floor(Math.random() * baseEmojis.length)];
 
@@ -91,7 +106,12 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
         : changedFilterReq;
 
     const newFilters = newFiltersGenerator(undefined, changedFilter);
-    dispatch(putMyFilters(newFilters));
+
+    if (currentUserState.isLoggedIn) {
+      dispatch(putCurrentUserFilters(newFilters));
+    } else {
+      dispatch(putLocalStorageFilters(newFilters));
+    }
     dispatch(setSavedFilterSet(changedFilter));
   }
 
@@ -116,25 +136,32 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
   function handleClickDeleteButton(deleteIndex: number) {
     const newFilters = [...myFilters.slice(0, deleteIndex), ...myFilters.slice(deleteIndex + 1, myFilters.length)];
 
-    dispatch(putMyFilters(newFilters));
+    if (currentUserState.isLoggedIn) {
+      dispatch(putCurrentUserFilters(newFilters));
+    } else {
+      dispatch(putLocalStorageFilters(newFilters));
+    }
 
     if (!!savedFilterSet && findIndex(newFilters, savedFilterSet) === -1) {
       dispatch(setSavedFilterSet(null));
     }
   }
 
-  const filterItems = props.articleSearchState.myFilters.map((filter, index) => {
-    return (
-      <SavedFilterItem
-        searchInput={searchInput}
-        sort={sort}
-        savedFilter={filter}
-        onClickFilterItem={handleClickFilterItem}
-        onClickDeleteBtn={() => handleClickDeleteButton(index)}
-        key={index}
-      />
-    );
-  });
+  const filterItems =
+    !!myFilters && myFilters.length > 0
+      ? myFilters.map((filter, index) => {
+          return (
+            <SavedFilterItem
+              searchInput={searchInput}
+              sort={sort}
+              savedFilter={filter}
+              onClickFilterItem={handleClickFilterItem}
+              onClickDeleteBtn={() => handleClickDeleteButton(index)}
+              key={index}
+            />
+          );
+        })
+      : null;
 
   return (
     <ClickAwayListener

@@ -5,6 +5,9 @@ import { ChangeRangeInputParams, FILTER_TYPE_HAS_RANGE, FILTER_RANGE_TYPE } from
 import { AddPaperToCollectionParams, RemovePapersFromCollectionParams } from "../../api/collection";
 import { Paper } from "../../model/paper";
 import { Filter } from "../../api/member";
+// import { isEqual } from "lodash";
+// const store = require("store");
+// const LOCAL_STORAGE_FILTERS = "l_s_filters";
 
 export function reducer(
   state: ArticleSearchState = ARTICLE_SEARCH_INITIAL_STATE,
@@ -224,33 +227,41 @@ export function reducer(
       };
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_PUT_MY_FILTERS: {
+    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_PUT_CURRENT_USER_FILTERS: {
       return {
         ...state,
         isFilterSaveBoxLoading: true,
       };
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_PUT_MY_FILTERS: {
+    case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_PUT_CURRENT_USER_FILTERS: {
       return {
         ...state,
         isFilterSaveBoxLoading: false,
       };
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MY_FILTERS: {
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_LOCAL_STORAGE_FILTERS:
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CURRENT_USER_FILTERS: {
       const payload: Filter[] = action.payload;
 
       return { ...state, myFilters: payload };
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_PUT_MY_FILTERS: {
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_PUT_LOCAL_STORAGE_FILTERS:
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_PUT_CURRENT_USER_FILTERS: {
       const payload: Filter[] = action.payload;
 
       return { ...state, myFilters: payload, isFilterSaveBoxLoading: false };
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_SET_FILTER_IN_MY_FILTER_SET: {
+    case ACTION_TYPES.ARTICLE_SEARCH_MERGE_LOCAL_TO_SERVER_FILTERS: {
+      const mergedFilter: Filter[] = action.payload;
+
+      return { ...state, myFilters: mergedFilter };
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_SET_FILTER_IN_FILTER_SET: {
       const payload: Filter | null = action.payload;
 
       return { ...state, savedFilterSet: payload };

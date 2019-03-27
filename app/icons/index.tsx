@@ -83,6 +83,7 @@ const ICONS: { [key: string]: any } = {
   ARROW_RIGHT: require("./arrow-right.svg").default,
   DEFAULT: require("./default.svg").default,
   HISTORY: require("./history.svg").default,
+  LOCAL: require("./local.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)
