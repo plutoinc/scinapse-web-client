@@ -13,7 +13,6 @@ import ArticleSpinner from "../../components/common/spinner/articleSpinner";
 import { clearPaperShowState } from "../../actions/paperShow";
 import PaperShowVenueItem from "../../components/paperShow/venueItem";
 import PaperShowDOI from "../../components/paperShow/DOI";
-import SearchKeyword from "../../components/paperShow/components/searchKeyword";
 import { PaperShowState } from "./records";
 import AuthorList from "../../components/paperShow/components/authorList";
 import RelatedPaperList from "../relatedPapers";
@@ -333,7 +332,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               <CollectionNoteList paperId={paper.id} />
               <OtherPaperListFromAuthor />
               <RelatedPaperList />
-              <SearchKeyword FOSList={paper.fosList} />
               <PlutoBlogPosting paperId={paper.id} />
             </div>
           </div>
