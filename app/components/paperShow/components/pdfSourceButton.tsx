@@ -33,7 +33,7 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
   }
 
   public render() {
-    const { paper, reverseColor } = this.props;
+    const { paper, reverseColor, fullTextAB } = this.props;
     const { isSourcePopoverOpen } = this.state;
 
     if (!paper) {
@@ -72,6 +72,7 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
                   style: {
                     height: "100%",
                     width: "36px",
+                    borderLeft: fullTextAB === "A" ? "1px solid rgba(222, 225, 232, 0.35)" : "1px solid #6096ff",
                   },
                   className: styles.dropdownBtn,
                 }}
