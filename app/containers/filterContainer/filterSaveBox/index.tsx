@@ -34,13 +34,10 @@ interface FilterSaveBoxProps {
 const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponentProps<any>> = props => {
   const { articleSearchState, currentUserState, dispatch, history, location } = props;
   const { currentSavedFilter, myFilters, searchInput, sort } = articleSearchState;
-
-  let popoverAnchorEl: HTMLDivElement | null;
-
   const [isOpen, setIsOpen] = React.useState(false);
   const [isChange, setIsChange] = React.useState(false);
-
   const rawQueryParamsObj = getQueryParamsObject(location.search);
+  const popoverAnchorEl = React.useRef<HTMLDivElement | null>(null);
 
   React.useEffect(
     () => {
@@ -182,7 +179,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
         setIsOpen(false);
       }}
     >
-      <div ref={el => (popoverAnchorEl = el)}>
+      <div ref={popoverAnchorEl}>
         <FilterTitleBox
           hasFilterChanged={isChange}
           isDropdownOpen={isOpen}
@@ -194,7 +191,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
         />
         <Popper
           open={isOpen}
-          anchorEl={popoverAnchorEl!}
+          anchorEl={popoverAnchorEl.current}
           placement="bottom-end"
           disablePortal={true}
           modifiers={{ flip: { enabled: false } }}
