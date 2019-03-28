@@ -7,8 +7,8 @@ import { Paper } from "../../model/paper";
 import { Filter, RawFilter } from "../../api/member";
 import { isEqual } from "lodash";
 import { objectifyRawFilterList } from "../../helpers/FilterObjectGenerator";
+import { LOCAL_STORAGE_FILTERS } from "./constants";
 const store = require("store");
-const LOCAL_STORAGE_FILTERS = "l_s_filters";
 
 export function reducer(
   state: ArticleSearchState = ARTICLE_SEARCH_INITIAL_STATE,
@@ -209,12 +209,12 @@ export function reducer(
       return { ...state, isFilterSaveBoxLoading: false };
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_LOCAL_STORAGE_FILTERS: {
-      const payload: RawFilter[] = action.payload;
-      const migrationFilters = objectifyRawFilterList(payload);
+    // case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_LOCAL_STORAGE_FILTERS: {
+    //   const payload: RawFilter[] = action.payload;
+    //   const migrationFilters = objectifyRawFilterList(payload);
 
-      return { ...state, myFilters: migrationFilters };
-    }
+    //   return { ...state, myFilters: migrationFilters };
+    // }
 
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CURRENT_USER_FILTERS: {
       const rawFilterList: RawFilter[] = action.payload.rawFilter;
@@ -232,7 +232,6 @@ export function reducer(
       return { ...state, myFilters: [...fetchedFilterList, ...localOnlyFilters] };
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_PUT_LOCAL_STORAGE_FILTERS:
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_PUT_CURRENT_USER_FILTERS: {
       const payload: RawFilter[] = action.payload;
       const migrationFilters = objectifyRawFilterList(payload);

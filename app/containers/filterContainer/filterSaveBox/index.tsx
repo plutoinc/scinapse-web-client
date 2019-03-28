@@ -7,11 +7,7 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { ArticleSearchState } from "../../../components/articleSearch/records";
 import { Filter } from "../../../api/member";
-import {
-  setSavedFilterSet,
-  putCurrentUserFilters,
-  putLocalStorageFilters,
-} from "../../../components/articleSearch/actions";
+import { setSavedFilterSet, putCurrentUserFilters } from "../../../components/articleSearch/actions";
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
 import SavedFilterItem from "../savedFilterItem";
@@ -21,6 +17,7 @@ import { CurrentUser } from "../../../model/currentUser";
 import Icon from "../../../icons";
 import { openSignIn } from "../../../components/dialog/actions";
 import { stringifyFullFilterList } from "../../../helpers/FilterObjectGenerator";
+import { AppState } from "../../../reducers";
 const styles = require("./filterSaveBox.scss");
 
 interface FilterSaveBoxProps {
@@ -95,8 +92,6 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
     const newFilters = newFiltersGenerator(changedFilterIndex, changedFilter);
     if (currentUserState.isLoggedIn) {
       dispatch(putCurrentUserFilters(newFilters));
-    } else {
-      dispatch(putLocalStorageFilters(newFilters));
     }
     dispatch(setSavedFilterSet(changedFilter));
   }
@@ -127,8 +122,6 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
 
     if (currentUserState.isLoggedIn) {
       dispatch(putCurrentUserFilters(newFilters));
-    } else {
-      dispatch(putLocalStorageFilters(newFilters));
     }
     dispatch(setSavedFilterSet(changedFilter));
   }
@@ -158,8 +151,6 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
 
     if (currentUserState.isLoggedIn) {
       dispatch(putCurrentUserFilters(newFiltersReq));
-    } else {
-      dispatch(putLocalStorageFilters(newFiltersReq));
     }
 
     if (!!savedFilterSet && findIndex(newFilters, savedFilterSet) === -1) {
@@ -222,4 +213,11 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
   );
 };
 
-export default withRouter(connect()(withStyles<typeof FilterSaveBox>(styles)(FilterSaveBox)));
+function mapStateToProps(state: AppState) {
+  return {
+    articleSearchState: state.articleSearch,
+    currentUserState: state.currentUser,
+  };
+}
+
+export default withRouter(connect(mapStateToProps)(withStyles<typeof FilterSaveBox>(styles)(FilterSaveBox)));

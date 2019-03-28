@@ -210,7 +210,7 @@ const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => 
       })}
     >
       {articleSearchState.isContentLoading ? <div className={styles.filterLoadingWrapper} /> : null}
-      <FilterSaveBox articleSearchState={articleSearchState} currentUserState={currentUserState} />
+      <FilterSaveBox />
       {getPublicationFilterBox(props)}
       {getFOSFilterBox(props)}
       {getJournalFilter(props)}

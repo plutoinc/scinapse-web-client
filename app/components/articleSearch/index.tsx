@@ -140,9 +140,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
   private fetchFilters = () => {
     const { dispatch, currentUserState } = this.props;
 
-    if (!currentUserState.isLoggedIn) {
-      dispatch(Actions.fetchLocalStorageFilters());
-    } else {
+    if (currentUserState.isLoggedIn) {
       dispatch(Actions.fetchCurrentUserFilters());
     }
   };
