@@ -6,7 +6,7 @@ import { AddPaperToCollectionParams, RemovePapersFromCollectionParams } from "..
 import { Paper } from "../../model/paper";
 import { Filter, RawFilter } from "../../api/member";
 import { isEqual } from "lodash";
-import { ResponseFilterObjectGenerator } from "../../helpers/FilterObjectGenerator";
+import { objectifyRawFilterList } from "../../helpers/FilterObjectGenerator";
 const store = require("store");
 const LOCAL_STORAGE_FILTERS = "l_s_filters";
 
@@ -211,34 +211,31 @@ export function reducer(
 
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_LOCAL_STORAGE_FILTERS: {
       const payload: RawFilter[] = action.payload;
-      const migrationFilters = ResponseFilterObjectGenerator(payload);
+      const migrationFilters = objectifyRawFilterList(payload);
 
       return { ...state, myFilters: migrationFilters };
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CURRENT_USER_FILTERS: {
-      const payload: RawFilter[] = action.payload;
-      const localFilters: RawFilter[] = store.get(LOCAL_STORAGE_FILTERS);
-      const mergedFilters = payload.concat(localFilters);
-      const migrationFilters = ResponseFilterObjectGenerator(mergedFilters);
+      const rawFilterList: RawFilter[] = action.payload.rawFilter;
+      const localRawFilterList: RawFilter[] = store.get(LOCAL_STORAGE_FILTERS);
 
-      const uniqMigrationFilters = migrationFilters.filter((item, i) => {
-        return (
-          migrationFilters.findIndex(item2 => {
-            return isEqual(item.filter, item2.filter);
-          }) === i
-        );
-      });
+      const fetchedFilterList = objectifyRawFilterList(rawFilterList);
+      const localFilterList = objectifyRawFilterList(localRawFilterList);
+
+      const localOnlyFilters = localFilterList.filter(
+        localFilter => !fetchedFilterList.some(fetchedFilter => isEqual(fetchedFilter.filter, localFilter.filter))
+      );
 
       store.set(LOCAL_STORAGE_FILTERS, []);
 
-      return { ...state, myFilters: uniqMigrationFilters };
+      return { ...state, myFilters: [...fetchedFilterList, ...localOnlyFilters] };
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_PUT_LOCAL_STORAGE_FILTERS:
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_PUT_CURRENT_USER_FILTERS: {
       const payload: RawFilter[] = action.payload;
-      const migrationFilters = ResponseFilterObjectGenerator(payload);
+      const migrationFilters = objectifyRawFilterList(payload);
 
       return { ...state, myFilters: migrationFilters, isFilterSaveBoxLoading: false };
     }

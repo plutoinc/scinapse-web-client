@@ -114,22 +114,20 @@ export function fetchCurrentUserFilters() {
       const res = await memberAPI.getMyFilters();
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CURRENT_USER_FILTERS,
-        payload: res,
+        payload: {
+          rawFilter: res,
+        },
       });
 
       return res;
     } catch (err) {
-      if (!axios.isCancel(err)) {
-        const error = PlutoAxios.getGlobalError(err);
-
-        dispatch({
-          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CURRENT_USER_FILTERS,
-          payload: {
-            statusCode: (error as CommonError).status,
-          },
-        });
-        throw err;
-      }
+      const error = PlutoAxios.getGlobalError(err);
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CURRENT_USER_FILTERS,
+        payload: {
+          statusCode: (error as CommonError).status,
+        },
+      });
     }
   };
 }

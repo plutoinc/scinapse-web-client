@@ -20,7 +20,7 @@ import FilterTitleBox from "./titleBox";
 import { CurrentUser } from "../../../model/currentUser";
 import Icon from "../../../icons";
 import { openSignIn } from "../../../components/dialog/actions";
-import { RequestFilterObjectGenerator } from "../../../helpers/FilterObjectGenerator";
+import { stringifyFullFilterList } from "../../../helpers/FilterObjectGenerator";
 const styles = require("./filterSaveBox.scss");
 
 interface FilterSaveBoxProps {
@@ -60,7 +60,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
     () => {
       if (currentUserState.isLoggedIn) {
         if (!isEqual(lastSavedFilters.current, myFilters)) {
-          const newFiltersReq = RequestFilterObjectGenerator(myFilters);
+          const newFiltersReq = stringifyFullFilterList(myFilters);
           putCurrentUserFilters(newFiltersReq);
           lastSavedFilters.current = myFilters;
         }
@@ -79,7 +79,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
           ]
         : [changedFilter, ...myFilters];
 
-    const newFiltersReq = RequestFilterObjectGenerator(newFilters);
+    const newFiltersReq = stringifyFullFilterList(newFilters);
 
     return newFiltersReq;
   }
@@ -154,7 +154,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
   function handleClickDeleteButton(deleteIndex: number) {
     const newFilters = [...myFilters.slice(0, deleteIndex), ...myFilters.slice(deleteIndex + 1, myFilters.length)];
 
-    const newFiltersReq = RequestFilterObjectGenerator(newFilters);
+    const newFiltersReq = stringifyFullFilterList(newFilters);
 
     if (currentUserState.isLoggedIn) {
       dispatch(putCurrentUserFilters(newFiltersReq));
