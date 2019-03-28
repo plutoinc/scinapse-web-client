@@ -57,6 +57,13 @@ export interface GetAuthorsOfPaperParams {
   cancelToken: CancelToken;
 }
 
+interface RequestFullTextParams {
+  paperId: number;
+  email: string;
+  name?: string;
+  message?: string;
+}
+
 class PaperAPI extends PlutoAxios {
   public async getAuthorsOfPaper({
     paperId,
@@ -198,6 +205,15 @@ class PaperAPI extends PlutoAxios {
     const rawResult: GetCitationTextRawResult = res.data.data;
 
     return camelCaseKeys(rawResult);
+  }
+
+  public async requestFullText(params: RequestFullTextParams) {
+    const res = await this.post(`/papers/${params.paperId}/request`, {
+      email: params.email,
+      message: params.message || null,
+      name: params.name || null,
+    });
+    return res;
   }
 }
 

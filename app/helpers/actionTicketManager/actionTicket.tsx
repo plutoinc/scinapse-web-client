@@ -2,6 +2,8 @@ import * as store from "store";
 import * as format from "date-fns/format";
 import EnvChecker from "../envChecker";
 import { DEVICE_ID_KEY, SESSION_ID_KEY, USER_ID_KEY } from "../../constants/actionTicket";
+import getABType from "../getABType";
+import { FULL_PAPER_TEST } from "../../constants/abTest";
 
 export interface ActionTicketParams {
   pageType: Scinapse.ActionTicket.PageType;
@@ -9,6 +11,8 @@ export interface ActionTicketParams {
   actionType: "fire" | "view";
   actionTag: Scinapse.ActionTicket.ActionTagType;
   actionLabel: string | null;
+  expName?: string;
+  expUser?: string;
 }
 
 export interface FinalActionTicket extends ActionTicketParams {
@@ -20,6 +24,8 @@ export interface FinalActionTicket extends ActionTicketParams {
   userId: string | null;
   clientVersion: string | null;
   referral: string;
+  expName: string;
+  expUser: string;
 }
 
 export default class ActionTicket {
@@ -34,6 +40,8 @@ export default class ActionTicket {
   private pageType: Scinapse.ActionTicket.PageType;
   private actionLabel: string | null;
   private _errorCount = 0;
+  private expName: string;
+  private expUser: string;
 
   public constructor(params: ActionTicketParams) {
     if (!EnvChecker.isOnServer()) {
@@ -43,6 +51,8 @@ export default class ActionTicket {
       this.actionArea = params.actionArea;
       this.pageType = params.pageType;
       this.actionLabel = params.actionLabel;
+      this.expName = "requestFullText";
+      this.expUser = getABType(FULL_PAPER_TEST);
     }
   }
 
@@ -58,6 +68,8 @@ export default class ActionTicket {
       actionTag: this.actionTag,
       actionArea: this.actionArea,
       actionLabel: this.actionLabel,
+      expName: this.expName,
+      expUser: this.expUser,
       referral: EnvChecker.isProdBrowser() ? document.referrer : "",
       clientVersion:
         EnvChecker.isProdBrowser() && (window as any)._script_version_

@@ -1,6 +1,7 @@
 import * as React from "react";
 import axios from "axios";
 import { stringify } from "qs";
+import { NoSsr } from "@material-ui/core";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
 import * as classNames from "classnames";
@@ -13,12 +14,12 @@ import ArticleSpinner from "../../components/common/spinner/articleSpinner";
 import { clearPaperShowState } from "../../actions/paperShow";
 import PaperShowVenueItem from "../../components/paperShow/venueItem";
 import PaperShowDOI from "../../components/paperShow/DOI";
-import SearchKeyword from "../../components/paperShow/components/searchKeyword";
 import { PaperShowState } from "./records";
 import AuthorList from "../../components/paperShow/components/authorList";
 import RelatedPaperList from "../relatedPapers";
 import OtherPaperListFromAuthor from "../otherPapersFromAuthor";
-import PaperShowActionBar from "../paperShowActionBar";
+import ActionBar from "../paperShowActionBar";
+import NewActionBar from "../paperShowActionBar/newActionbar";
 import FOSList from "../../components/paperShow/components/fosList";
 import ReferencePapers from "../../components/paperShow/components/relatedPapers";
 import PaperShowRefCitedTab from "../../components/paperShow/refCitedTab";
@@ -39,6 +40,9 @@ import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPos
 import EnvChecker from "../../helpers/envChecker";
 import NextPaperTab from "../nextPaperTab";
 import ResearchHistory from "../../components/researchHistory";
+import { FULL_PAPER_TEST } from "../../constants/abTest";
+import getABType from "../../helpers/getABType";
+
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
@@ -92,6 +96,8 @@ interface PaperShowStates
 
       isLoadPDF: boolean;
       failedToLoadPDF: boolean;
+
+      fullTextAB: string;
     }> {}
 
 @withStyles<typeof PaperShow>(styles)
@@ -116,6 +122,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isTouchFooter: false,
       isLoadPDF: false,
       failedToLoadPDF: false,
+      fullTextAB: "",
     };
   }
 
@@ -127,6 +134,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     window.addEventListener("scroll", this.handleScroll, { passive: true });
     this.handleScrollEvent();
+
+    this.setState(prevState => ({ ...prevState, fullTextAB: getABType(FULL_PAPER_TEST) }));
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       await fetchPaperShowData(
@@ -203,7 +212,16 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public render() {
     const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers } = this.props;
-    const { isOnCited, isOnRef, isAboveRef, isRightBoxFixed, isRightBoxSmall, isTouchFooter, isLoadPDF } = this.state;
+    const {
+      isOnCited,
+      isOnRef,
+      isAboveRef,
+      isRightBoxFixed,
+      isRightBoxSmall,
+      isTouchFooter,
+      isLoadPDF,
+      fullTextAB,
+    } = this.state;
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -220,6 +238,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if (!paper) {
       return null;
     }
+
     const pdfSourceRecord = getPDFLink(paper.urls);
 
     return (
@@ -231,7 +250,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               <div className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.title) }} />
               <div className={styles.paperContentBlockDivider} />
               <div className={styles.actionBarWrapper}>
-                <PaperShowActionBar paper={paper} />
+                <NoSsr>{fullTextAB === "A" ? <ActionBar paper={paper} /> : <NewActionBar paper={paper} />}</NoSsr>
               </div>
               <div className={styles.paperContentBlockDivider} />
               <div className={styles.paperInfo}>
@@ -333,7 +352,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               <CollectionNoteList paperId={paper.id} />
               <OtherPaperListFromAuthor />
               <RelatedPaperList />
-              <SearchKeyword FOSList={paper.fosList} />
               <PlutoBlogPosting paperId={paper.id} />
             </div>
           </div>

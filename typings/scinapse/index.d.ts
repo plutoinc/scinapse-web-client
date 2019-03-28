@@ -64,6 +64,9 @@ declare namespace Scinapse {
       | "applySavedFilter"
       | "applyPreviousFilter"
       | "addFilter"
+      | "sendRequestFullText"
+      | "clickRequestFullTextBtn"
+      | "collectionBtn"
       | "";
 
     type ActionArea =
