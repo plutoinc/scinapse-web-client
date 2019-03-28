@@ -85,8 +85,6 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
               actionArea: "paperDescription",
               actionTag: "collectionBtn",
               actionLabel: null,
-              expName: "requestFullText",
-              expUser: "B",
             });
           }}
           className={styles.unsignedTitleBtn}
@@ -107,8 +105,6 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
               actionArea: "paperDescription",
               actionTag: "signIn",
               actionLabel: null,
-              expName: "requestFullText",
-              expUser: "A",
             });
           }}
           className={styles.signInText}

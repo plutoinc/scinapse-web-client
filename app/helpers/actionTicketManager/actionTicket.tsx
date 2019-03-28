@@ -2,6 +2,8 @@ import * as store from "store";
 import * as format from "date-fns/format";
 import EnvChecker from "../envChecker";
 import { DEVICE_ID_KEY, SESSION_ID_KEY, USER_ID_KEY } from "../../constants/actionTicket";
+import getABType from "../getABType";
+import { FULL_PAPER_TEST } from "../../constants/abTest";
 
 export interface ActionTicketParams {
   pageType: Scinapse.ActionTicket.PageType;
@@ -49,8 +51,8 @@ export default class ActionTicket {
       this.actionArea = params.actionArea;
       this.pageType = params.pageType;
       this.actionLabel = params.actionLabel;
-      this.expName = params.expName || "";
-      this.expUser = params.expUser || "";
+      this.expName = "requestFullText";
+      this.expUser = getABType(FULL_PAPER_TEST);
     }
   }
 

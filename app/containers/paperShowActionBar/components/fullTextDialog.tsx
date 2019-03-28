@@ -24,7 +24,6 @@ interface RequestFullTextProps {
   onClose: () => void;
   currentUser: CurrentUser;
   dispatch: Dispatch<any>;
-  fullTextAB: "A" | "B";
 }
 
 interface FormState {
@@ -60,8 +59,6 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
         actionArea: "paperDescription",
         actionTag: "sendRequestFullText",
         actionLabel: String(props.paperId),
-        expName: "requestFullText",
-        expUser: props.fullTextAB,
       });
 
       Cookies.set(LAST_SUCCEEDED_EMAIL_KEY, values.email);

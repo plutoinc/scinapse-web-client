@@ -41,8 +41,6 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
                     actionArea: "paperDescription",
                     actionTag: "clickRequestFullTextBtn",
                     actionLabel: String(props.paper!.id),
-                    expName: "requestFullText",
-                    expUser: "B",
                   });
                   setIsOpen(true);
                 }}
@@ -54,7 +52,7 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
             </div>
           )}
           <div className={s.actionItem}>
-            <CiteBox paper={props.paper} fullTextAB="B" />
+            <CiteBox paper={props.paper} />
           </div>
           <FullTextDialog
             paperId={props.paper.id}
@@ -62,7 +60,6 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
             onClose={() => {
               setIsOpen(false);
             }}
-            fullTextAB="B"
           />
         </div>
         <div className={s.rightSide}>

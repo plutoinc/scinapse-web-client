@@ -24,7 +24,7 @@ class PaperShowActionBar extends React.PureComponent<PaperShowActionBarProps> {
                 <PdfSourceButton paper={paper} fullTextAB="A" />
               </li>
               <li className={styles.actionItem}>
-                <CiteBox paper={paper} fullTextAB="A" />
+                <CiteBox paper={paper} />
               </li>
             </div>
             <div className={styles.rightSide}>
