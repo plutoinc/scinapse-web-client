@@ -242,7 +242,7 @@ export function reducer(
     case ACTION_TYPES.ARTICLE_SEARCH_SET_FILTER_IN_FILTER_SET: {
       const payload: Filter | null = action.payload;
 
-      return { ...state, savedFilterSet: payload };
+      return { ...state, currentSavedFilter: payload };
     }
 
     default: {

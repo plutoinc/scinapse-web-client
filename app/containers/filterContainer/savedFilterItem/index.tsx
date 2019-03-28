@@ -12,7 +12,6 @@ interface SavedFilterItemProps {
   savedFilter: Filter;
   onClickFilterItem: (query: string, sort: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS, filter: Filter) => void;
   onClickDeleteBtn: () => void;
-  key: number;
 }
 
 const SavedFilterItem: React.FunctionComponent<SavedFilterItemProps> = props => {

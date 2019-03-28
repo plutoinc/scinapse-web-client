@@ -191,7 +191,7 @@ function getJournalFilter(props: FilterContainerProps) {
 }
 
 const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => {
-  const { articleSearchState, currentUserState } = props;
+  const { articleSearchState } = props;
   const [isClient, setIsClient] = React.useState(false);
 
   React.useEffect(() => {

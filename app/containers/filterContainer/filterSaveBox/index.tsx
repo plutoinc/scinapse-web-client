@@ -1,13 +1,16 @@
 import * as React from "react";
 import { connect, Dispatch } from "react-redux";
 import { withRouter, RouteComponentProps } from "react-router";
-import { isEqual, findIndex } from "lodash";
+import { isEqual } from "lodash";
 import Popper from "@material-ui/core/Popper";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { ArticleSearchState } from "../../../components/articleSearch/records";
-import { Filter } from "../../../api/member";
-import { setSavedFilterSet, putCurrentUserFilters } from "../../../components/articleSearch/actions";
+import { Filter, RawFilter } from "../../../api/member";
+import {
+  setSavedFilterSet as setCurrentSavedFilter,
+  putCurrentUserFilters,
+} from "../../../components/articleSearch/actions";
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
 import SavedFilterItem from "../savedFilterItem";
@@ -16,8 +19,10 @@ import FilterTitleBox from "./titleBox";
 import { CurrentUser } from "../../../model/currentUser";
 import Icon from "../../../icons";
 import { openSignIn } from "../../../components/dialog/actions";
-import { stringifyFullFilterList } from "../../../helpers/FilterObjectGenerator";
+import { stringifyFullFilterList, objectifyRawFilterList } from "../../../helpers/FilterObjectGenerator";
 import { AppState } from "../../../reducers";
+import { LOCAL_STORAGE_FILTERS } from "../../../components/articleSearch/constants";
+const store = require("store");
 const styles = require("./filterSaveBox.scss");
 
 interface FilterSaveBoxProps {
@@ -28,7 +33,7 @@ interface FilterSaveBoxProps {
 
 const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponentProps<any>> = props => {
   const { articleSearchState, currentUserState, dispatch, history, location } = props;
-  const { savedFilterSet, myFilters, searchInput, sort } = articleSearchState;
+  const { currentSavedFilter, myFilters, searchInput, sort } = articleSearchState;
 
   let popoverAnchorEl: HTMLDivElement | null;
 
@@ -40,7 +45,9 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
   React.useEffect(
     () => {
       const currentFilter = PapersQueryFormatter.objectifyPapersFilter(rawQueryParamsObj.filter);
-      const savedFilter = !!savedFilterSet ? savedFilterSet.filter : PapersQueryFormatter.objectifyPapersFilter();
+      const savedFilter = !!currentSavedFilter
+        ? currentSavedFilter.filter
+        : PapersQueryFormatter.objectifyPapersFilter();
 
       if (isEqual(savedFilter, currentFilter)) {
         setIsChange(false);
@@ -48,7 +55,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
         setIsChange(true);
       }
     },
-    [props.location, savedFilterSet]
+    [props.location, currentSavedFilter]
   );
 
   const lastSavedFilters = React.useRef(myFilters);
@@ -66,46 +73,46 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
     [currentUserState.isLoggedIn, myFilters]
   );
 
-  function newFiltersGenerator(changedFilterIndex: number | undefined, changedFilter: Filter) {
-    const newFilters =
-      changedFilterIndex !== undefined && changedFilterIndex >= 0
-        ? [
-            changedFilter,
-            ...myFilters.slice(0, changedFilterIndex),
-            ...myFilters.slice(changedFilterIndex + 1, myFilters.length),
-          ]
-        : [changedFilter, ...myFilters];
+  function mergeNewFilterToFilterList(filterList: Filter[], newFilter: Filter) {
+    const i = filterList.findIndex(f => isEqual(f.filter, newFilter.filter));
 
-    const newFiltersReq = stringifyFullFilterList(newFilters);
-
-    return newFiltersReq;
-  }
-
-  function handleClickSaveChangesBtn(changedFilterReq: Filter | string, currentSavedFilterSet: Filter) {
-    const changedFilter =
-      typeof changedFilterReq === "string"
-        ? { ...currentSavedFilterSet, filter: PapersQueryFormatter.objectifyPapersFilter(changedFilterReq) }
-        : changedFilterReq;
-
-    const changedFilterIndex = !!savedFilterSet ? findIndex(myFilters, savedFilterSet) : undefined;
-
-    const newFilters = newFiltersGenerator(changedFilterIndex, changedFilter);
-    if (currentUserState.isLoggedIn) {
-      dispatch(putCurrentUserFilters(newFilters));
+    if (i > -1) {
+      return [newFilter, ...filterList.slice(0, i), ...filterList.slice(i + 1)];
+    } else {
+      return [newFilter, ...filterList];
     }
-    dispatch(setSavedFilterSet(changedFilter));
   }
 
-  function handleClickCreateNewFilterBtn(changedFilterReq: Filter | string) {
+  function saveNewFilter(newFilter: Filter) {
+    if (currentUserState.isLoggedIn) {
+      const newFilters = mergeNewFilterToFilterList(myFilters, newFilter);
+      dispatch(putCurrentUserFilters(stringifyFullFilterList(newFilters)));
+    } else {
+      const rawFilters: RawFilter[] = store.get(LOCAL_STORAGE_FILTERS) || [];
+      const filters = objectifyRawFilterList(rawFilters);
+      const newFilters = mergeNewFilterToFilterList(filters, newFilter);
+      store.set(LOCAL_STORAGE_FILTERS, stringifyFullFilterList(newFilters));
+    }
+    dispatch(setCurrentSavedFilter(newFilter));
+  }
+
+  function handleClickSaveChangesBtn(newFilter: Filter | string, savedFilter: Filter) {
+    const newFilterObj =
+      typeof newFilter === "string"
+        ? { ...savedFilter, filter: PapersQueryFormatter.objectifyPapersFilter(newFilter) }
+        : newFilter;
+    saveNewFilter(newFilterObj);
+  }
+
+  function handleClickCreateNewFilterBtn(filter: Filter | string) {
     if (myFilters.length === 5 && !currentUserState.isLoggedIn) {
       return dispatch(openSignIn());
     }
 
     const baseEmojis = ["🐺", "🐶", "🦊", "🐱", "🦌", "🦒", "🐹", "🐰"];
     const randomEmoji = baseEmojis[Math.floor(Math.random() * baseEmojis.length)];
-
-    const changedFilter =
-      typeof changedFilterReq === "string"
+    const newFilter =
+      typeof filter === "string"
         ? {
             name: newFilterSetTitleGenerator({
               fos: articleSearchState.fosFilterObject,
@@ -114,16 +121,11 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
               yearTo: articleSearchState.yearFilterToValue,
             }),
             emoji: randomEmoji,
-            filter: PapersQueryFormatter.objectifyPapersFilter(changedFilterReq),
+            filter: PapersQueryFormatter.objectifyPapersFilter(filter),
           }
-        : changedFilterReq;
+        : filter;
 
-    const newFilters = newFiltersGenerator(undefined, changedFilter);
-
-    if (currentUserState.isLoggedIn) {
-      dispatch(putCurrentUserFilters(newFilters));
-    }
-    dispatch(setSavedFilterSet(changedFilter));
+    saveNewFilter(newFilter);
   }
 
   function handleClickFilterItem(
@@ -131,7 +133,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
     currentSort: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS,
     filter: Filter | null
   ) {
-    dispatch(setSavedFilterSet(!!filter ? filter : null));
+    dispatch(setCurrentSavedFilter(!!filter ? filter : null));
     history.push({
       pathname: "/search",
       search: PapersQueryFormatter.stringifyPapersQuery({
@@ -144,35 +146,35 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
     setIsOpen(false);
   }
 
-  function handleClickDeleteButton(deleteIndex: number) {
-    const newFilters = [...myFilters.slice(0, deleteIndex), ...myFilters.slice(deleteIndex + 1, myFilters.length)];
-
-    const newFiltersReq = stringifyFullFilterList(newFilters);
+  function handleClickDeleteButton(index: number) {
+    const newFilters = [...myFilters.slice(0, index), ...myFilters.slice(index + 1, myFilters.length)];
+    const stringifiedNewFilters = stringifyFullFilterList(newFilters);
 
     if (currentUserState.isLoggedIn) {
-      dispatch(putCurrentUserFilters(newFiltersReq));
+      dispatch(putCurrentUserFilters(stringifiedNewFilters));
     }
-
-    if (!!savedFilterSet && findIndex(newFilters, savedFilterSet) === -1) {
-      dispatch(setSavedFilterSet(null));
-    }
+    dispatch(setCurrentSavedFilter(null));
   }
 
-  const filterItems =
-    !!myFilters && myFilters.length > 0
-      ? myFilters.map((filter, index) => {
-          return (
-            <SavedFilterItem
-              searchInput={searchInput}
-              sort={sort}
-              savedFilter={filter}
-              onClickFilterItem={handleClickFilterItem}
-              onClickDeleteBtn={() => handleClickDeleteButton(index)}
-              key={index}
-            />
-          );
-        })
-      : null;
+  let finalFilters;
+  if (currentUserState.isLoggedIn) {
+    finalFilters = myFilters;
+  } else {
+    finalFilters = objectifyRawFilterList(store.get(LOCAL_STORAGE_FILTERS) || []);
+  }
+
+  const filterItems = finalFilters.map((filter, i) => {
+    return (
+      <SavedFilterItem
+        searchInput={searchInput}
+        sort={sort}
+        savedFilter={filter}
+        onClickFilterItem={handleClickFilterItem}
+        onClickDeleteBtn={() => handleClickDeleteButton(i)}
+        key={i}
+      />
+    );
+  });
 
   return (
     <ClickAwayListener
