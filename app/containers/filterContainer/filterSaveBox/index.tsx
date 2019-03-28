@@ -144,11 +144,14 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
   }
 
   function handleClickDeleteButton(index: number) {
-    const newFilters = [...myFilters.slice(0, index), ...myFilters.slice(index + 1, myFilters.length)];
-    const stringifiedNewFilters = stringifyFullFilterList(newFilters);
-
     if (currentUserState.isLoggedIn) {
+      const newFilters = [...myFilters.slice(0, index), ...myFilters.slice(index + 1, myFilters.length)];
+      const stringifiedNewFilters = stringifyFullFilterList(newFilters);
       dispatch(putCurrentUserFilters(stringifiedNewFilters));
+    } else {
+      const oldFilters = objectifyRawFilterList(store.get(LOCAL_STORAGE_FILTERS) || []);
+      const newFilters = [...oldFilters.slice(0, index), ...oldFilters.slice(index + 1, oldFilters.length)];
+      store.set(LOCAL_STORAGE_FILTERS, stringifyFullFilterList(newFilters));
     }
     dispatch(setCurrentSavedFilter(null));
   }
