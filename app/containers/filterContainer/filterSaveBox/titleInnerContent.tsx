@@ -26,8 +26,8 @@ const FilterTitleInnerContent: React.FunctionComponent<FilterTitleInnerContnetPr
     onClickSetIsOpenEmojiPicker,
     onClickSetIsTitleInput,
   } = props;
-  const { currentSavedFilter, isFilterSaveBoxLoading } = articleSearchState;
-  if (!currentSavedFilter) {
+  const { selectedFilter, isFilterSaveBoxLoading } = articleSearchState;
+  if (!selectedFilter) {
     return (
       <>
         {isFilterSaveBoxLoading ? (
@@ -63,7 +63,7 @@ const FilterTitleInnerContent: React.FunctionComponent<FilterTitleInnerContnetPr
               onClickSetIsOpenEmojiPicker(!hasOpenEmojiPicker);
             }}
           >
-            {currentSavedFilter.emoji}
+            {selectedFilter.emoji}
           </span>
         )}
         <span
@@ -72,7 +72,7 @@ const FilterTitleInnerContent: React.FunctionComponent<FilterTitleInnerContnetPr
             [styles.loadingFilterContainerTitle]: isFilterSaveBoxLoading,
           })}
         >
-          {currentSavedFilter.name}
+          {selectedFilter.name}
         </span>
         {hasFilterChanged ? null : (
           <span

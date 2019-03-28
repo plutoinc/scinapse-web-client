@@ -209,8 +209,8 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
       currentQuery = SafeURIStringHandler.decode(rawQueryParamsObj.query || "");
     }
 
-    if (!!articleSearchState.currentSavedFilter) {
-      currentFilter = articleSearchState.currentSavedFilter.filter;
+    if (!!articleSearchState.selectedFilter) {
+      currentFilter = articleSearchState.selectedFilter.filter;
     }
 
     return (

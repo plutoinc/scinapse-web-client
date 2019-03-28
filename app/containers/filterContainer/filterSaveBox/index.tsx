@@ -7,10 +7,7 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { ArticleSearchState } from "../../../components/articleSearch/records";
 import { Filter, RawFilter } from "../../../api/member";
-import {
-  setSavedFilterSet as setCurrentSavedFilter,
-  putCurrentUserFilters,
-} from "../../../components/articleSearch/actions";
+import { selectFilter, putCurrentUserFilters } from "../../../components/articleSearch/actions";
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
 import SavedFilterItem from "../savedFilterItem";
@@ -33,30 +30,50 @@ interface FilterSaveBoxProps {
 
 const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponentProps<any>> = props => {
   const { articleSearchState, currentUserState, dispatch, history, location } = props;
-  const { currentSavedFilter, myFilters, searchInput, sort } = articleSearchState;
+  const { selectedFilter, myFilters, searchInput, sort } = articleSearchState;
   const [isOpen, setIsOpen] = React.useState(false);
   const [isChange, setIsChange] = React.useState(false);
   const rawQueryParamsObj = getQueryParamsObject(location.search);
+  const filterFromQueryParams = PapersQueryFormatter.objectifyPapersFilter(rawQueryParamsObj.filter);
   const popoverAnchorEl = React.useRef<HTMLDivElement | null>(null);
+
+  let finalFilters: Filter[];
+  if (currentUserState.isLoggedIn) {
+    finalFilters = myFilters;
+  } else {
+    finalFilters = objectifyRawFilterList(store.get(LOCAL_STORAGE_FILTERS) || []);
+  }
 
   React.useEffect(
     () => {
-      const currentFilter = PapersQueryFormatter.objectifyPapersFilter(rawQueryParamsObj.filter);
-      const savedFilter = !!currentSavedFilter
-        ? currentSavedFilter.filter
-        : PapersQueryFormatter.objectifyPapersFilter();
+      const savedFilter = !!selectedFilter ? selectedFilter.filter : PapersQueryFormatter.objectifyPapersFilter();
 
-      if (isEqual(savedFilter, currentFilter)) {
+      if (isEqual(savedFilter, filterFromQueryParams)) {
         setIsChange(false);
       } else {
         setIsChange(true);
       }
     },
-    [props.location, currentSavedFilter]
+    [props.location, selectedFilter]
+  );
+
+  React.useEffect(
+    () => {
+      if (!selectedFilter || !isEqual(filterFromQueryParams, selectedFilter.filter)) {
+        const matchedFilter = finalFilters.find(filter => isEqual(filter.filter, filterFromQueryParams));
+        if (matchedFilter) {
+          dispatch(selectFilter(matchedFilter));
+        }
+      } else {
+        if (!finalFilters.some(f => isEqual(f, selectedFilter))) {
+          dispatch(selectFilter(null));
+        }
+      }
+    },
+    [props.location.search, finalFilters, selectedFilter]
   );
 
   const lastSavedFilters = React.useRef(myFilters);
-
   React.useEffect(
     () => {
       if (currentUserState.isLoggedIn) {
@@ -71,13 +88,15 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
   );
 
   function mergeNewFilterToFilterList(filterList: Filter[], newFilter: Filter) {
-    const i = filterList.findIndex(f => isEqual(f.filter, newFilter.filter));
+    if (selectedFilter) {
+      const i = filterList.findIndex(f => isEqual(f, selectedFilter));
 
-    if (i > -1) {
-      return [newFilter, ...filterList.slice(0, i), ...filterList.slice(i + 1)];
-    } else {
+      if (i > -1) {
+        return [newFilter, ...filterList.slice(0, i), ...filterList.slice(i + 1)];
+      }
       return [newFilter, ...filterList];
     }
+    return [newFilter, ...filterList];
   }
 
   function saveNewFilter(newFilter: Filter) {
@@ -89,20 +108,20 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
       const filters = objectifyRawFilterList(rawFilters);
       const newFilters = mergeNewFilterToFilterList(filters, newFilter);
       store.set(LOCAL_STORAGE_FILTERS, stringifyFullFilterList(newFilters));
+      dispatch(selectFilter(newFilter));
     }
-    dispatch(setCurrentSavedFilter(newFilter));
   }
 
-  function handleClickSaveChangesBtn(newFilter: Filter | string, savedFilter: Filter) {
+  function handleClickSaveChangesBtn(newFilter: Filter | string, oldFilter: Filter) {
     const newFilterObj =
       typeof newFilter === "string"
-        ? { ...savedFilter, filter: PapersQueryFormatter.objectifyPapersFilter(newFilter) }
+        ? { ...oldFilter, filter: PapersQueryFormatter.objectifyPapersFilter(newFilter) }
         : newFilter;
     saveNewFilter(newFilterObj);
   }
 
   function handleClickCreateNewFilterBtn(filter: Filter | string) {
-    if (myFilters.length === 5 && !currentUserState.isLoggedIn) {
+    if (myFilters.length >= 5 && !currentUserState.isLoggedIn) {
       return dispatch(openSignIn());
     }
 
@@ -121,7 +140,6 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
             filter: PapersQueryFormatter.objectifyPapersFilter(filter),
           }
         : filter;
-
     saveNewFilter(newFilter);
   }
 
@@ -130,7 +148,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
     currentSort: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS,
     filter: Filter | null
   ) {
-    dispatch(setCurrentSavedFilter(!!filter ? filter : null));
+    dispatch(selectFilter(!!filter ? filter : null));
     history.push({
       pathname: "/search",
       search: PapersQueryFormatter.stringifyPapersQuery({
@@ -152,15 +170,8 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
       const oldFilters = objectifyRawFilterList(store.get(LOCAL_STORAGE_FILTERS) || []);
       const newFilters = [...oldFilters.slice(0, index), ...oldFilters.slice(index + 1, oldFilters.length)];
       store.set(LOCAL_STORAGE_FILTERS, stringifyFullFilterList(newFilters));
+      dispatch(selectFilter(null));
     }
-    dispatch(setCurrentSavedFilter(null));
-  }
-
-  let finalFilters;
-  if (currentUserState.isLoggedIn) {
-    finalFilters = myFilters;
-  } else {
-    finalFilters = objectifyRawFilterList(store.get(LOCAL_STORAGE_FILTERS) || []);
   }
 
   const filterItems = finalFilters.map((filter, i) => {

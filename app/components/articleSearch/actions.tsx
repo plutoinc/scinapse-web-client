@@ -157,7 +157,7 @@ export function putCurrentUserFilters(params: RawFilter[]) {
   };
 }
 
-export function setSavedFilterSet(params: Filter | null) {
+export function selectFilter(params: Filter | null) {
   return (dispatch: Dispatch<any>) => {
     store.set(PREVIOUS_FILTER, params);
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_SET_FILTER_IN_FILTER_SET, payload: params });

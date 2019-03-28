@@ -209,13 +209,6 @@ export function reducer(
       return { ...state, isFilterSaveBoxLoading: false };
     }
 
-    // case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_LOCAL_STORAGE_FILTERS: {
-    //   const payload: RawFilter[] = action.payload;
-    //   const migrationFilters = objectifyRawFilterList(payload);
-
-    //   return { ...state, myFilters: migrationFilters };
-    // }
-
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CURRENT_USER_FILTERS: {
       const rawFilterList: RawFilter[] = action.payload.rawFilter;
       const localRawFilterList: RawFilter[] = store.get(LOCAL_STORAGE_FILTERS);
@@ -242,7 +235,11 @@ export function reducer(
     case ACTION_TYPES.ARTICLE_SEARCH_SET_FILTER_IN_FILTER_SET: {
       const payload: Filter | null = action.payload;
 
-      return { ...state, currentSavedFilter: payload };
+      return { ...state, selectedFilter: payload };
+    }
+
+    case ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT: {
+      return { ...state, selectedFilter: null };
     }
 
     default: {

@@ -17,8 +17,8 @@ import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import Icon from "../../../icons";
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
+import { PREVIOUS_FILTER } from "../../../components/articleSearch/constants";
 const styles = require("./filterSaveBox.scss");
-const PREVIOUS_FILTER = "prev_filters";
 
 interface TitleBoxProps {
   hasFilterChanged: boolean;
@@ -40,27 +40,25 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
     articleSearchState,
     isDropdownOpen,
   } = props;
-  const { currentSavedFilter, searchInput, sort } = articleSearchState;
-
+  const { selectedFilter, searchInput, sort } = articleSearchState;
   const [isOpenTitleInput, setIsOpenTitleInput] = React.useState(false);
   const [isOpenEmojiPicker, setIsOpenEmojiPicker] = React.useState(false);
   const [filterTitle, setFilterTitle] = React.useState("");
-
   const rawQueryParamsObj = getQueryParamsObject(props.location.search);
   const currentFilterStr = rawQueryParamsObj.filter;
 
   function getSaveAndResetBtns() {
-    const currentSavedFilterStr = !!currentSavedFilter
-      ? PapersQueryFormatter.getStringifiedPaperFilterParams(currentSavedFilter.filter)
+    const currentSavedFilterStr = !!selectedFilter
+      ? PapersQueryFormatter.getStringifiedPaperFilterParams(selectedFilter.filter)
       : "";
 
     if (hasFilterChanged) {
       return (
         <div className={styles.titleBtnWrapper}>
           <FilterSaveButton
-            text={!!currentSavedFilter ? "Save Changes" : "+ Save this Filter"}
+            text={!!selectedFilter ? "Save Changes" : "+ Save this Filter"}
             onClickButton={() => {
-              if (!currentSavedFilter) {
+              if (!selectedFilter) {
                 onClickCreateNewFilterBtn(currentFilterStr);
                 ActionTicketManager.trackTicket({
                   pageType: "searchResult",
@@ -70,12 +68,12 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
                   actionLabel: currentFilterStr,
                 });
               } else {
-                onClickSaveChangesBtn(currentFilterStr, currentSavedFilter);
+                onClickSaveChangesBtn(currentFilterStr, selectedFilter);
               }
             }}
           />
           <FilterResetButton
-            text={!!currentSavedFilter ? "Cancel" : null}
+            text={!!selectedFilter ? "Cancel" : null}
             currentSavedFilterSet={currentSavedFilterStr}
             btnStyle={{ position: "relative", top: "1px", marginLeft: "8px" }}
           />
@@ -84,7 +82,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
     } else {
       return (
         <>
-          {!!store.get(PREVIOUS_FILTER) && currentSavedFilter === null ? (
+          {!!store.get(PREVIOUS_FILTER) && selectedFilter === null ? (
             <FilterSaveButton
               text="Apply previous Filter"
               buttonStyle={{ textDecoration: "underline", float: "right", marginRight: "16px", width: "100%" }}
@@ -120,12 +118,12 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
   }
 
   function getEditTitleBox() {
-    if (!currentSavedFilter) {
+    if (!selectedFilter) {
       return null;
     } else {
       return (
         <>
-          <span className={styles.filterContainerEmoji}>{currentSavedFilter.emoji}</span>
+          <span className={styles.filterContainerEmoji}>{selectedFilter.emoji}</span>
           <ScinapseInput
             placeholder="Write a Name for this filter"
             wrapperStyle={{ position: "absolute", display: "inline-flex", height: "100%", top: 0 }}
@@ -133,7 +131,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
               setFilterTitle(e.currentTarget.value);
             }}
             autoFocus={true}
-            value={currentSavedFilter.name}
+            value={selectedFilter.name}
             inputStyle={{
               width: "200px",
               fontSize: "14px",
@@ -148,7 +146,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
               text="+ Save"
               buttonStyle={{ top: "13px", right: "58px" }}
               onClickButton={() => {
-                onClickSaveChangesBtn({ ...currentSavedFilter, name: filterTitle }, currentSavedFilter);
+                onClickSaveChangesBtn({ ...selectedFilter, name: filterTitle }, selectedFilter);
                 setIsOpenTitleInput(!isOpenTitleInput);
               }}
             />
@@ -200,10 +198,10 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
           <Picker
             set="emojione"
             onSelect={(emoji: BaseEmoji) => {
-              if (!!articleSearchState.currentSavedFilter) {
+              if (!!articleSearchState.selectedFilter) {
                 onClickSaveChangesBtn(
-                  { ...articleSearchState.currentSavedFilter, emoji: emoji.native },
-                  articleSearchState.currentSavedFilter
+                  { ...articleSearchState.selectedFilter, emoji: emoji.native },
+                  articleSearchState.selectedFilter
                 );
                 setIsOpenEmojiPicker(!isOpenEmojiPicker);
               } else {

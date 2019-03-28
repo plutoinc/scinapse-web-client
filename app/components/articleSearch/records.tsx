@@ -31,7 +31,7 @@ export interface ArticleSearchState
       aggregationData: AggregationData | null;
       searchFromSuggestion: boolean;
       myFilters: Filter[];
-      currentSavedFilter: Filter | null;
+      selectedFilter: Filter | null;
     }> {}
 
 export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
@@ -61,5 +61,5 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   highlightedSuggestionKeyword: "",
   searchFromSuggestion: false,
   myFilters: [],
-  currentSavedFilter: null,
+  selectedFilter: null,
 };
