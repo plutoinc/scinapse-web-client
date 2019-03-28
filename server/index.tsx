@@ -1,5 +1,6 @@
 import * as express from "express";
 import * as morgan from "morgan";
+import * as cookieParser from "cookie-parser";
 import ssr from "./ssr";
 import { TIMEOUT_FOR_SAFE_RENDERING } from "../app/api/pluto";
 import fallbackRender from "./fallbackRender";
@@ -7,14 +8,17 @@ import getSitemap from "./routes/sitemap";
 import getRobotTxt from "./routes/robots";
 import getOpenSearchXML from "./routes/openSearchXML";
 import getClientJSURL from "./helpers/getClientJSURL";
+import setABTest from "./helpers/setABTest";
 const compression = require("compression");
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 const SITEMAP_REGEX = /^\/sitemap(\/sitemap_[0-9]+\.xml)?\/?$/;
 
 const app = express();
+app.disable("x-powered-by");
 app.use(awsServerlessExpressMiddleware.eventContext({ fromALB: true }));
+app.use(cookieParser());
 app.use(compression({ filter: shouldCompress }));
-app.use(morgan("dev"));
+app.use(morgan("combined"));
 
 function shouldCompress(req: express.Request, res: express.Response) {
   if (SITEMAP_REGEX.test(req.path)) return false;
@@ -43,30 +47,11 @@ app.get("/opensearch.xml", (_req, res) => {
 });
 
 app.get("*", async (req, res) => {
-  /* ******
-  *********  ABOUT SSR *********
-  There are 3 kinds of the rendering methods in Scinapse server rendering.
-  *********************************************************************************
-  ** NAME **** NORMAL RENDERING ** ERROR HANDLING RENDERING ** FALLBACK REDERING **
-  *********************************************************************************
-  * NORMAL RENDERING
-    - CAUSE
-      Succeeded to rendering everything.
-    - RESULT
-      FULL HTML
-  * ERROR HANDLING RENDERING
-    - CAUSE
-      An error occurred during the rendering process.
-    - RESULT
-      Empty content HTML with <script> tag which contains bundled javascript address for client.
-  * FALLBACK RENDERING
-    - CAUSE
-      Timeout occurred during the rendering process.
-    - RESULT
-      Empty content HTML with <script> tag which contains bundled javascript address for client.
-  ******** */
+  const { jsPath, version } = await getClientJSURL(req.query ? req.query.branch : null);
+
+  setABTest(req, res);
+
   try {
-    const { jsPath, version } = await getClientJSURL(req.query ? req.query.branch : null);
     const lazyRender = new Promise((resolve, _reject) => {
       setTimeout(() => {
         resolve(fallbackRender(jsPath, version));
@@ -78,7 +63,8 @@ app.get("*", async (req, res) => {
     res.send(html);
   } catch (err) {
     console.error(err);
-    res.send(err.message);
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.send(fallbackRender(jsPath, version));
   }
 });
 

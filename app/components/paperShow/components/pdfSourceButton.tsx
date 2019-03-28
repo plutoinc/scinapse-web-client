@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as classNames from "classnames";
 import { Paper } from "../../../model/paper";
 import { trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
@@ -12,6 +13,8 @@ const styles = require("./pdfSourceButton.scss");
 interface PdfSourceButtonProps {
   paper: Paper;
   wrapperStyle?: React.CSSProperties;
+  reverseColor?: boolean;
+  fullTextAB: "A" | "B";
 }
 
 interface PdfSourceButtonState {
@@ -30,7 +33,7 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
   }
 
   public render() {
-    const { paper } = this.props;
+    const { paper, reverseColor, fullTextAB } = this.props;
     const { isSourcePopoverOpen } = this.state;
 
     if (!paper) {
@@ -50,7 +53,10 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
                 hasArrow={paper.urls.length > 1}
                 text={pdfSourceRecord ? "Download PDF" : "View in Source"}
                 arrowIconClassName={styles.arrowIcon}
-                className={styles.downloadButton}
+                className={classNames({
+                  [styles.downloadButton]: true,
+                  [styles.reverseDownloadBtn]: reverseColor,
+                })}
                 textWrapperClassName={styles.sourceButtonTextWrapper}
                 linkProps={{
                   href: pdfSourceRecord ? pdfSourceRecord.url : paper.urls[0].url,
@@ -66,6 +72,7 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
                   style: {
                     height: "100%",
                     width: "36px",
+                    borderLeft: fullTextAB === "A" ? "1px solid rgba(222, 225, 232, 0.35)" : "1px solid #6096ff",
                   },
                   className: styles.dropdownBtn,
                 }}

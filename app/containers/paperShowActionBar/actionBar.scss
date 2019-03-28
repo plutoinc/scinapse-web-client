@@ -12,55 +12,52 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+  }
+}
 
-    .actionItem {
-      display: inline-block;
+.actionItem {
+  display: inline-block;
+  vertical-align: top;
 
-      .citeButton {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 40px;
-        font-size: 14px;
-        font-weight: 500;
-        color: $main_blue0;
-        line-height: 1.43;
-        background-color: $gray8;
-        border-radius: 4px;
-        cursor: pointer;
-        padding: 0 12px 0 10px;
+  & + & {
+    margin-left: 8px;
+  }
+}
 
-        span {
-          display: inline-block;
-          height: 20px;
-        }
+.fullTextBtn {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 7px 12px 7px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  background-color: white;
+  color: $main_blue1;
+  border: solid 1px $gray3;
+  cursor: pointer;
 
-        &:hover {
-          background-color: $gray2;
-        }
-
-        &:active {
-          filter: brightness(95%);
-        }
-
-        .citeIcon {
-          @include flex-center-vertical-horizontal(inline-flex);
-
-          width: 20px;
-          height: 20px;
-          margin-right: 4px;
-
-          svg {
-            width: 12px;
-            height: 12px;
-          }
-        }
-      }
-    }
+  &:hover {
+    background-color: $gray2;
   }
 
-  .actionItem + .actionItem {
-    margin-left: 8px;
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.2;
+  }
+
+  .sendIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
   }
 }
 

@@ -9,7 +9,7 @@ const browserSpecificSetting = {
     minimizer: [
       new TerserPlugin({
         parallel: true,
-        cache: true,
+        cache: false,
       }),
     ],
   },
