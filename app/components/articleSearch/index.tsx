@@ -37,12 +37,27 @@ function mapStateToProps(state: AppState) {
   };
 }
 
+interface ArticleSearchState {
+  isClient: boolean;
+}
+
 @withStyles<typeof ArticleSearch>(styles)
-class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
+class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, ArticleSearchState> {
   private cancelToken = axios.CancelToken.source();
 
+  public constructor(props: ArticleSearchContainerProps) {
+    super(props);
+
+    this.state = {
+      isClient: false,
+    };
+  }
+
   public async componentDidMount() {
-    const { configuration, dispatch, match, location, currentUserState } = this.props;
+    const { configuration, dispatch, match, location } = this.props;
+
+    this.setState({ isClient: true });
+    this.fetchFilters();
 
     const notRenderedAtServerOrJSAlreadyInitialized =
       !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
@@ -55,13 +70,14 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
         cancelToken: this.cancelToken.token,
       };
 
-      await getSearchData(currentParams, currentUserState.isLoggedIn);
+      await getSearchData(currentParams);
       restoreScroll(location.key);
     }
   }
 
   public async componentDidUpdate(prevProps: ArticleSearchContainerProps) {
     const { dispatch, match, location, currentUserState } = this.props;
+    const { isClient } = this.state;
 
     const prevLocation = prevProps.location;
     const beforeSearch = prevLocation.search;
@@ -71,18 +87,20 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     const hasAuthStateChanged = currentUserState.isLoggedIn !== prevProps.currentUserState.isLoggedIn;
 
     if (hasSearchKeywordChanged || hasAuthStateChanged) {
+      if (isClient) {
+        this.fetchFilters();
+      }
+
       this.cancelToken.cancel();
       this.cancelToken = axios.CancelToken.source();
-      await getSearchData(
-        {
-          dispatch,
-          match,
-          pathname: location.pathname,
-          queryParams: getQueryParamsObject(afterSearch),
-          cancelToken: this.cancelToken.token,
-        },
-        currentUserState.isLoggedIn
-      );
+
+      await getSearchData({
+        dispatch,
+        match,
+        pathname: location.pathname,
+        queryParams: getQueryParamsObject(afterSearch),
+        cancelToken: this.cancelToken.token,
+      });
       restoreScroll(location.key);
     }
   }
@@ -118,6 +136,16 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
       </div>
     );
   }
+
+  private fetchFilters = () => {
+    const { dispatch, currentUserState } = this.props;
+
+    if (!currentUserState.isLoggedIn) {
+      dispatch(Actions.fetchLocalStorageFilters());
+    } else {
+      dispatch(Actions.fetchCurrentUserFilters());
+    }
+  };
 
   private getInnerContainerContent = () => {
     const { articleSearchState, currentUserState, location } = this.props;

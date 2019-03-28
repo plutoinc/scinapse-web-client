@@ -1,10 +1,10 @@
 import PaperSearchQueryFormatter from "../../helpers/papersQueryFormatter";
 import { LoadDataParams } from "../../routes";
-import { searchPapers, fetchCurrentUserFilters, fetchLocalStorageFilters } from "./actions";
+import { searchPapers } from "./actions";
 import { SearchPapersParams } from "../../api/types/paper";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 
-export async function getSearchData(params: LoadDataParams<null>, isLoggedIn?: boolean) {
+export async function getSearchData(params: LoadDataParams<null>) {
   const { queryParams, dispatch } = params;
   const searchQueryObject: SearchPapersParams = PaperSearchQueryFormatter.makeSearchQueryFromParamsObject(queryParams);
 
@@ -19,13 +19,6 @@ export async function getSearchData(params: LoadDataParams<null>, isLoggedIn?: b
 
   try {
     const promiseArray: Array<Promise<any>> = [];
-
-    if (isLoggedIn === false) {
-      promiseArray.push(dispatch(fetchLocalStorageFilters()));
-    } else {
-      promiseArray.push(dispatch(fetchCurrentUserFilters()));
-    }
-
     promiseArray.push(dispatch(searchPapers({ ...searchQueryObject, cancelToken: params.cancelToken })));
     await Promise.all(promiseArray);
   } catch (err) {

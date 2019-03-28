@@ -140,7 +140,7 @@ export function fetchLocalStorageFilters() {
 
     const res = store.get(LOCAL_STORAGE_FILTERS);
 
-    if (res !== undefined || res.length > 0) {
+    if (res && res.length > 0) {
       dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_LOCAL_STORAGE_FILTERS, payload: res });
     } else {
       dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_LOCAL_STORAGE_FILTERS, payload: [] });
