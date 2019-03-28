@@ -18,6 +18,7 @@ import ActionTicketManager from "../../../helpers/actionTicketManager";
 import Icon from "../../../icons";
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 const styles = require("./filterSaveBox.scss");
+const PREVIOUS_FILTER = "prev_filters";
 
 interface TitleBoxProps {
   hasFilterChanged: boolean;
@@ -83,30 +84,25 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
     } else {
       return (
         <>
-          {!!store.get("previousFilter") && savedFilterSet === null ? (
+          {!!store.get(PREVIOUS_FILTER) && savedFilterSet === null ? (
             <FilterSaveButton
               text="Apply previous Filter"
-              buttonStyle={{
-                textDecoration: "underline",
-                float: "right",
-                marginRight: "16px",
-                width: "100%",
-              }}
+              buttonStyle={{ textDecoration: "underline", float: "right", marginRight: "16px", width: "100%" }}
               onClickButton={() => {
-                onClickFilterItem(searchInput, sort, store.get("previousFilter"));
+                onClickFilterItem(searchInput, sort, store.get(PREVIOUS_FILTER));
                 ActionTicketManager.trackTicket({
                   pageType: "searchResult",
                   actionType: "fire",
                   actionArea: "filter",
                   actionTag: "applySavedFilter",
-                  actionLabel: store.get("previousFilter"),
+                  actionLabel: store.get(PREVIOUS_FILTER),
                 });
                 ActionTicketManager.trackTicket({
                   pageType: "searchResult",
                   actionType: "fire",
                   actionArea: "filter",
                   actionTag: "applyPreviousFilter",
-                  actionLabel: store.get("previousFilter"),
+                  actionLabel: store.get(PREVIOUS_FILTER),
                 });
               }}
             />
