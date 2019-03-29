@@ -14,6 +14,13 @@ export interface FOSSuggestion {
   fosId: number;
 }
 
+export interface JournalSuggestion {
+  keyword: string;
+  type: string;
+  journalId: number;
+  impactFactor: number;
+}
+
 const CancelToken = Axios.CancelToken;
 class CompletionAPI extends PlutoAxios {
   public async fetchSuggestionKeyword(query: string, cancelToken: CancelToken) {
@@ -28,7 +35,7 @@ class CompletionAPI extends PlutoAxios {
     return completionKeywords;
   }
 
-  public async fetchSuggestionFOS(query: string, cancelToken: CancelToken) {
+  public async fetchFOSSuggestion(query: string, cancelToken: CancelToken) {
     const res: AxiosResponse = await this.get("/complete/fos", {
       params: {
         q: query,
@@ -38,6 +45,18 @@ class CompletionAPI extends PlutoAxios {
 
     const fosList: FOSSuggestion[] = camelCaseKeys(res.data.data.content);
     return fosList;
+  }
+
+  public async fetchJournalSuggestion(query: string, cancelToken: CancelToken) {
+    const res: AxiosResponse = await this.get("/complete/journal", {
+      params: {
+        q: query,
+      },
+      cancelToken,
+    });
+
+    const journalList: JournalSuggestion[] = camelCaseKeys(res.data.data.content);
+    return journalList;
   }
 }
 
