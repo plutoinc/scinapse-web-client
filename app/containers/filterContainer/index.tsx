@@ -16,6 +16,7 @@ import EnvChecker from "../../helpers/envChecker";
 import FilterSaveBox from "./filterSaveBox";
 import makeNewFilterLink from "../../helpers/makeNewFilterLink";
 import { CurrentUser } from "../../model/currentUser";
+import FOSFilterBox from "./fosFilter";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps extends RouteComponentProps<any> {
@@ -212,7 +213,8 @@ const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => 
       {articleSearchState.isContentLoading ? <div className={styles.filterLoadingWrapper} /> : null}
       <FilterSaveBox />
       {getPublicationFilterBox(props)}
-      {getFOSFilterBox(props)}
+      {/* {getFOSFilterBox(props)} */}
+      <FOSFilterBox />
       {getJournalFilter(props)}
     </div>
   );

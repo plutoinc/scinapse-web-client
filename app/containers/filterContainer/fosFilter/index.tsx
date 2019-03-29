@@ -2,6 +2,8 @@ import * as React from "react";
 import axios, { CancelTokenSource } from "axios";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import { useDebouncedAsyncFetch } from "../../../hooks/debouncedFetchAPIHook";
+import CompletionAPI, { FOSSuggestion } from "../../../api/completion";
 const s = require("./fosFilter.scss");
 
 interface FOSFilterBoxProps extends RouteComponentProps<any> {}
@@ -56,15 +58,30 @@ const FOSFilterBox: React.FunctionComponent<FOSFilterBoxProps> = props => {
   });
   const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
 
+  const { data: fosList, setParams: setKeyword } = useDebouncedAsyncFetch<string, FOSSuggestion[]>({
+    initialParams: "",
+    fetchFunc: async (q: string) => {
+      const res = await CompletionAPI.fetchSuggestionFOS(q, cancelTokenSource.current.token);
+      return res;
+    },
+    validateFunc: (query: string) => {
+      if (!query || query.length < 2) throw new Error("keyword is too short");
+    },
+    wait: 200,
+  });
+
   React.useEffect(
     () => {
+      setKeyword(state.inputValue);
       return () => {
         cancelTokenSource.current.cancel();
         cancelTokenSource.current = axios.CancelToken.source();
       };
     },
-    [props.location]
+    [state.inputValue]
   );
+
+  const fosListNode = fosList && fosList.map(fos => <div key={fos.fosId}>{fos.keyword}</div>);
 
   return (
     <div>
@@ -82,6 +99,7 @@ const FOSFilterBox: React.FunctionComponent<FOSFilterBoxProps> = props => {
         placeholder="Search Field Of Study..."
         className={s.input}
       />
+      <div>{fosListNode}</div>
     </div>
   );
 };

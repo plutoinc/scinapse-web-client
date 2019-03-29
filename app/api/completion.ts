@@ -1,11 +1,18 @@
-import PlutoAxios from "./pluto";
 import Axios, { AxiosResponse, CancelToken } from "axios";
+import PlutoAxios from "./pluto";
+import { camelCaseKeys } from "../helpers/camelCaseKeys";
 
 export interface CompletionKeyword
   extends Readonly<{
       keyword: string;
       type: string;
     }> {}
+
+export interface FOSSuggestion {
+  keyword: string;
+  type: "FOS";
+  fosId: number;
+}
 
 const CancelToken = Axios.CancelToken;
 class CompletionAPI extends PlutoAxios {
@@ -19,6 +26,18 @@ class CompletionAPI extends PlutoAxios {
 
     const completionKeywords: CompletionKeyword[] = getCompleteKeywordResponse.data.data;
     return completionKeywords;
+  }
+
+  public async fetchSuggestionFOS(query: string, cancelToken: CancelToken) {
+    const res: AxiosResponse = await this.get("/complete/fos", {
+      params: {
+        q: query,
+      },
+      cancelToken,
+    });
+
+    const fosList: FOSSuggestion[] = camelCaseKeys(res.data.data.content);
+    return fosList;
   }
 }
 
