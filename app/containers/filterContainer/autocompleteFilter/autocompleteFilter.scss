@@ -1,3 +1,15 @@
+.wrapper {
+  position: absolute;
+  z-index: 99999;
+  left: 16px;
+  right: 16px;
+  border-radius: 16.5px;
+
+  &.listOpened {
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
+  }
+}
+
 .inputWrapper {
   position: relative;
 }
@@ -12,6 +24,9 @@
   background-color: $gray0;
   padding: 8px 12px;
   padding-left: 36px;
+  font-size: 14px;
+  color: $black0;
+  transition: border-radius 200ms ease;
 
   &:hover {
     border: solid 1px $gray4;
@@ -23,7 +38,13 @@
 
   &:focus {
     background-color: white;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  &.listOpened {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: 0;
+    box-shadow: 0;
   }
 }
 
@@ -47,9 +68,9 @@
   padding: 12px;
   border-bottom-left-radius: 16.5px;
   border-bottom-right-radius: 16.5px;
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
   border-top: solid 1px $gray2;
   background-color: white;
+  margin: 0 1px;
 }
 
 .listItem {
@@ -62,6 +83,10 @@
 
   & + & {
     margin-top: 8px;
+  }
+
+  &:hover {
+    background-color: $gray2;
   }
 }
 

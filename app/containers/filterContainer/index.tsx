@@ -88,6 +88,9 @@ function getFOSFilterBox(props: FilterContainerProps) {
         <div className={styles.filterTitle}>Field of study</div>
         <FilterResetButton filterType="FOS" />
       </div>
+      <div className={styles.autocompleteFilterWrapper}>
+        <AutocompleteFilter type="FOS" />
+      </div>
       {fosItems}
     </div>
   );
@@ -185,6 +188,9 @@ function getJournalFilter(props: FilterContainerProps) {
         <div className={styles.filterTitle}>Journal</div>
         <FilterResetButton filterType="JOURNAL" />
       </div>
+      <div className={styles.autocompleteFilterWrapper}>
+        <AutocompleteFilter type="JOURNAL" />
+      </div>
       {journalItems}
       {moreButton}
     </div>
@@ -213,9 +219,7 @@ const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => 
       {articleSearchState.isContentLoading ? <div className={styles.filterLoadingWrapper} /> : null}
       <FilterSaveBox />
       {getPublicationFilterBox(props)}
-      <AutocompleteFilter type="FOS" />
       {getFOSFilterBox(props)}
-      <AutocompleteFilter type="JOURNAL" />
       {getJournalFilter(props)}
     </div>
   );

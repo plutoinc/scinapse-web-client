@@ -1,21 +1,26 @@
 import * as React from "react";
 import axios, { CancelTokenSource } from "axios";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { RouteComponentProps, withRouter, Link } from "react-router-dom";
+import * as classNames from "classnames";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Checkbox from "@material-ui/core/Checkbox";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import PapersQueryFormatter, { FilterObject } from "../../../helpers/papersQueryFormatter";
 import { useDebouncedAsyncFetch } from "../../../hooks/debouncedFetchAPIHook";
 import CompletionAPI, { FOSSuggestion, JournalSuggestion } from "../../../api/completion";
 import Icon from "../../../icons";
+import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
+import makeNewFilterLink from "../../../helpers/makeNewFilterLink";
 const s = require("./autocompleteFilter.scss");
 
-interface FOSFilterBoxProps extends RouteComponentProps<any> {
+interface AutocompleteFilterProps extends RouteComponentProps<any> {
   type: "FOS" | "JOURNAL";
 }
 
 interface ReducerState {
   isOpen: boolean;
   inputValue: string;
+  currentFilter: FilterObject;
 }
 
 interface ReducerAction<T> {
@@ -24,12 +29,14 @@ interface ReducerAction<T> {
     suggestions?: T;
     inputValue?: string;
     errorMsg?: string;
+    filter?: FilterObject;
   };
 }
 
 interface FilterItemProps {
   content: string;
   checked: boolean;
+  to: string;
 }
 
 function reducer<T>(state: ReducerState, action: ReducerAction<T>) {
@@ -58,6 +65,16 @@ function reducer<T>(state: ReducerState, action: ReducerAction<T>) {
       return state;
     }
 
+    case "CHANGE_LOCATION": {
+      if (action.payload) {
+        return {
+          ...state,
+          currentFilter: action.payload.filter,
+        };
+      }
+      return state;
+    }
+
     default:
       throw new Error();
   }
@@ -65,7 +82,7 @@ function reducer<T>(state: ReducerState, action: ReducerAction<T>) {
 
 const FilterItem: React.FunctionComponent<FilterItemProps> = props => {
   return (
-    <div className={s.listItem}>
+    <Link to={props.to} className={s.listItem}>
       <Checkbox
         classes={{
           root: s.checkboxIcon,
@@ -74,16 +91,17 @@ const FilterItem: React.FunctionComponent<FilterItemProps> = props => {
         checked={props.checked}
       />
       {props.content}
-    </div>
+    </Link>
   );
 };
 
-const FOSFilterBox: React.FunctionComponent<FOSFilterBoxProps> = props => {
+const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = props => {
   const [state, dispatch] = React.useReducer(
     reducer as React.Reducer<ReducerState, ReducerAction<FOSSuggestion[] | JournalSuggestion[]>>,
     {
       isOpen: false,
       inputValue: "",
+      currentFilter: PapersQueryFormatter.objectifyPapersFilter(getQueryParamsObject(props.location.search).filter),
     }
   );
   const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
@@ -106,6 +124,18 @@ const FOSFilterBox: React.FunctionComponent<FOSFilterBoxProps> = props => {
 
   React.useEffect(
     () => {
+      dispatch({
+        type: "CHANGE_LOCATION",
+        payload: {
+          filter: PapersQueryFormatter.objectifyPapersFilter(getQueryParamsObject(props.location.search).filter),
+        },
+      });
+    },
+    [props.location]
+  );
+
+  React.useEffect(
+    () => {
       setKeyword(state.inputValue);
       return () => {
         cancelTokenSource.current.cancel();
@@ -115,15 +145,43 @@ const FOSFilterBox: React.FunctionComponent<FOSFilterBoxProps> = props => {
     [state.inputValue]
   );
 
+  const currentFOS = state.currentFilter && state.currentFilter.fos ? (state.currentFilter.fos as number[]) : [];
+  const currentJournal =
+    state.currentFilter && state.currentFilter.journal ? (state.currentFilter.journal as number[]) : [];
+
   let listNode;
   if (props.type === "FOS") {
     listNode =
-      data && (data as FOSSuggestion[]).map(fos => <FilterItem key={fos.fosId} content={fos.keyword} checked />);
+      data &&
+      (data as FOSSuggestion[]).map(fos => (
+        <FilterItem
+          to={makeNewFilterLink(
+            {
+              fos: [fos.fosId, ...currentFOS],
+            },
+            props.location
+          )}
+          key={fos.fosId}
+          content={fos.keyword}
+          checked={currentFOS.includes(fos.fosId)}
+        />
+      ));
   } else {
     listNode =
       data &&
+      data.length > 0 &&
       (data as JournalSuggestion[]).map(journal => (
-        <FilterItem key={journal.journalId} content={journal.keyword} checked={false} />
+        <FilterItem
+          key={journal.journalId}
+          to={makeNewFilterLink(
+            {
+              journal: [journal.journalId, ...currentJournal],
+            },
+            props.location
+          )}
+          content={journal.keyword}
+          checked={currentJournal.includes(journal.journalId)}
+        />
       ));
   }
 
@@ -135,7 +193,12 @@ const FOSFilterBox: React.FunctionComponent<FOSFilterBoxProps> = props => {
         }
       }}
     >
-      <div>
+      <div
+        className={classNames({
+          [s.wrapper]: true,
+          [s.listOpened]: state.isOpen && !!listNode,
+        })}
+      >
         <div className={s.inputWrapper}>
           <Icon icon="SEARCH_ICON" className={s.searchIcon} />
           <input
@@ -155,7 +218,10 @@ const FOSFilterBox: React.FunctionComponent<FOSFilterBoxProps> = props => {
               });
             }}
             placeholder={props.type === "FOS" ? "Search Field Of Study..." : "Search Journal..."}
-            className={s.input}
+            className={classNames({
+              [s.input]: true,
+              [s.listOpened]: state.isOpen && !!listNode,
+            })}
           />
         </div>
         {state.isOpen && listNode && <div className={s.listWrapper}>{listNode}</div>}
@@ -164,4 +230,4 @@ const FOSFilterBox: React.FunctionComponent<FOSFilterBoxProps> = props => {
   );
 };
 
-export default withRouter(withStyles<typeof FOSFilterBox>(s)(FOSFilterBox));
+export default withRouter(withStyles<typeof AutocompleteFilter>(s)(AutocompleteFilter));
