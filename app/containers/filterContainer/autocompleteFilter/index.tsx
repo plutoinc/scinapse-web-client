@@ -11,6 +11,7 @@ import CompletionAPI, { FOSSuggestion, JournalSuggestion } from "../../../api/co
 import Icon from "../../../icons";
 import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
 import makeNewFilterLink from "../../../helpers/makeNewFilterLink";
+import { toggleElementFromArray } from "../../../helpers/toggleElementFromArray";
 const s = require("./autocompleteFilter.scss");
 
 interface AutocompleteFilterProps extends RouteComponentProps<any> {
@@ -153,19 +154,21 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
   if (props.type === "FOS") {
     listNode =
       data &&
-      (data as FOSSuggestion[]).map(fos => (
-        <FilterItem
-          to={makeNewFilterLink(
-            {
-              fos: [fos.fosId, ...currentFOS],
-            },
-            props.location
-          )}
-          key={fos.fosId}
-          content={fos.keyword}
-          checked={currentFOS.includes(fos.fosId)}
-        />
-      ));
+      (data as FOSSuggestion[]).map(fos => {
+        return (
+          <FilterItem
+            to={makeNewFilterLink(
+              {
+                fos: toggleElementFromArray(fos.fosId, currentFOS, true),
+              },
+              props.location
+            )}
+            key={fos.fosId}
+            content={fos.keyword}
+            checked={currentFOS.includes(fos.fosId)}
+          />
+        );
+      });
   } else {
     listNode =
       data &&
@@ -175,7 +178,7 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
           key={journal.journalId}
           to={makeNewFilterLink(
             {
-              journal: [journal.journalId, ...currentJournal],
+              journal: toggleElementFromArray(journal.journalId, currentJournal, true),
             },
             props.location
           )}
