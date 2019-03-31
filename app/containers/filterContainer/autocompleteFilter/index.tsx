@@ -21,7 +21,6 @@ interface AutocompleteFilterProps extends RouteComponentProps<any> {
 interface ReducerState {
   isOpen: boolean;
   inputValue: string;
-  currentFilter: FilterObject;
 }
 
 interface ReducerAction<T> {
@@ -41,7 +40,6 @@ interface FilterItemProps {
 }
 
 function reducer<T>(state: ReducerState, action: ReducerAction<T>) {
-  console.log(action.type);
   switch (action.type) {
     case "OPEN_BOX":
       return {
@@ -61,16 +59,6 @@ function reducer<T>(state: ReducerState, action: ReducerAction<T>) {
           ...state,
           inputValue: action.payload.inputValue,
           isOpen: true,
-        };
-      }
-      return state;
-    }
-
-    case "CHANGE_LOCATION": {
-      if (action.payload) {
-        return {
-          ...state,
-          currentFilter: action.payload.filter,
         };
       }
       return state;
@@ -97,12 +85,16 @@ const FilterItem: React.FunctionComponent<FilterItemProps> = props => {
 };
 
 const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = props => {
+  const currentFilter = React.useMemo(
+    () => PapersQueryFormatter.objectifyPapersFilter(getQueryParamsObject(props.location.search).filter),
+    [props.location.search]
+  );
+
   const [state, dispatch] = React.useReducer(
     reducer as React.Reducer<ReducerState, ReducerAction<FOSSuggestion[] | JournalSuggestion[]>>,
     {
       isOpen: false,
       inputValue: "",
-      currentFilter: PapersQueryFormatter.objectifyPapersFilter(getQueryParamsObject(props.location.search).filter),
     }
   );
   const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
@@ -125,18 +117,6 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
 
   React.useEffect(
     () => {
-      dispatch({
-        type: "CHANGE_LOCATION",
-        payload: {
-          filter: PapersQueryFormatter.objectifyPapersFilter(getQueryParamsObject(props.location.search).filter),
-        },
-      });
-    },
-    [props.location]
-  );
-
-  React.useEffect(
-    () => {
       setKeyword(state.inputValue);
       return () => {
         cancelTokenSource.current.cancel();
@@ -146,9 +126,8 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
     [state.inputValue]
   );
 
-  const currentFOS = state.currentFilter && state.currentFilter.fos ? (state.currentFilter.fos as number[]) : [];
-  const currentJournal =
-    state.currentFilter && state.currentFilter.journal ? (state.currentFilter.journal as number[]) : [];
+  const currentFOS = currentFilter && currentFilter.fos ? (currentFilter.fos as number[]) : [];
+  const currentJournal = currentFilter && currentFilter.journal ? (currentFilter.journal as number[]) : [];
 
   let listNode;
   if (props.type === "FOS") {

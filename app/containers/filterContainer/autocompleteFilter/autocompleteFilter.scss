@@ -1,6 +1,5 @@
 .wrapper {
   position: absolute;
-  z-index: 99999;
   left: 16px;
   right: 16px;
   border-radius: 16.5px;
@@ -65,25 +64,24 @@
 }
 
 .listWrapper {
-  padding: 12px;
+  position: relative;
+  padding: 12px 0;
   border-bottom-left-radius: 16.5px;
   border-bottom-right-radius: 16.5px;
   border-top: solid 1px $gray2;
   background-color: white;
   margin: 0 1px;
+  z-index: 1;
 }
 
 .listItem {
   display: flex;
   align-items: center;
-  height: 20px;
+  height: 28px;
   font-size: 14px;
   line-height: 1.43;
   color: $gray6;
-
-  & + & {
-    margin-top: 8px;
-  }
+  padding: 0 12px;
 
   &:hover {
     background-color: $gray2;
