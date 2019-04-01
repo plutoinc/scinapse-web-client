@@ -2,7 +2,6 @@ import { stringify } from "qs";
 import { SearchPageQueryParams } from "../components/articleSearch/types";
 import { SearchPapersParams } from "../api/types/paper";
 import SafeURIStringHandler from "./safeURIStringHandler";
-import { sortBy } from "lodash";
 
 export interface FilterObject {
   yearFrom?: number | string;
@@ -93,8 +92,8 @@ class PaperSearchQueryFormatter {
     return {
       yearFrom: isNaN(yearFrom) ? undefined : yearFrom,
       yearTo: isNaN(yearTo) ? undefined : yearTo,
-      fos: sortBy(fos),
-      journal: sortBy(journal),
+      fos: fos.sort((a, b) => a - b),
+      journal: journal.sort((a, b) => a - b),
     };
   }
 
