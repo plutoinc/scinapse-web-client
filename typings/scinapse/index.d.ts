@@ -67,6 +67,8 @@ declare namespace Scinapse {
       | "sendRequestFullText"
       | "clickRequestFullTextBtn"
       | "collectionBtn"
+      | "journalSearch"
+      | "fosSearch"
       | "";
 
     type ActionArea =

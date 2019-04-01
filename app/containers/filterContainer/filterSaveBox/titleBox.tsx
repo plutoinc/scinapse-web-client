@@ -65,7 +65,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
                   actionType: "fire",
                   actionArea: "filter",
                   actionTag: "addFilter",
-                  actionLabel: currentFilterStr,
+                  actionLabel: JSON.stringify(PapersQueryFormatter.objectifyPapersFilter(currentFilterStr)),
                 });
               } else {
                 onClickSaveChangesBtn(currentFilterStr, selectedFilter);
@@ -92,15 +92,8 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
                   pageType: "searchResult",
                   actionType: "fire",
                   actionArea: "filter",
-                  actionTag: "applySavedFilter",
-                  actionLabel: store.get(PREVIOUS_FILTER),
-                });
-                ActionTicketManager.trackTicket({
-                  pageType: "searchResult",
-                  actionType: "fire",
-                  actionArea: "filter",
                   actionTag: "applyPreviousFilter",
-                  actionLabel: store.get(PREVIOUS_FILTER),
+                  actionLabel: JSON.stringify(store.get(PREVIOUS_FILTER)),
                 });
               }}
             />

@@ -66,7 +66,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
         className={classNames({
           [styles.filterItem]: true,
           [styles.isSelected]: alreadyHasFOSInFilter,
-          [styles.zeroCountFilterItem]: fosCount === "0",
+          [styles.zeroCountFilterItem]: fosCount === "0" && !alreadyHasFOSInFilter,
         })}
       >
         <Checkbox

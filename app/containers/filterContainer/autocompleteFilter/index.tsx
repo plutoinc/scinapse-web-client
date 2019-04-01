@@ -7,6 +7,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import PapersQueryFormatter, { FilterObject } from "../../../helpers/papersQueryFormatter";
 import { useDebouncedAsyncFetch } from "../../../hooks/debouncedFetchAPIHook";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
 import CompletionAPI, { FOSSuggestion, JournalSuggestion } from "../../../api/completion";
 import Icon from "../../../icons";
 import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
@@ -79,7 +80,7 @@ const FilterItem: React.FunctionComponent<FilterItemProps> = props => {
         }}
         checked={props.checked}
       />
-      {props.content}
+      <span className={s.itemContent}>{props.content}</span>
     </Link>
   );
 };
@@ -101,6 +102,14 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
   const { data, setParams: setKeyword } = useDebouncedAsyncFetch<string, FOSSuggestion[] | JournalSuggestion[]>({
     initialParams: "",
     fetchFunc: async (q: string) => {
+      ActionTicketManager.trackTicket({
+        pageType: "searchResult",
+        actionType: "fire",
+        actionArea: "filter",
+        actionTag: props.type === "JOURNAL" ? "journalSearch" : "fosSearch",
+        actionLabel: q,
+      });
+
       if (props.type === "JOURNAL") {
         const res = await CompletionAPI.fetchJournalSuggestion(q, cancelTokenSource.current.token);
         return res;
@@ -199,7 +208,7 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
                 },
               });
             }}
-            placeholder={props.type === "FOS" ? "Search Field Of Study..." : "Search Journal..."}
+            placeholder={props.type === "FOS" ? "Search Field of study..." : "Search Journal..."}
             className={classNames({
               [s.input]: true,
               [s.listOpened]: state.isOpen && !!listNode,

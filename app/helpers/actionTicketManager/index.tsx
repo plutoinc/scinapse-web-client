@@ -35,6 +35,10 @@ class ActionTicketManager {
   }
 
   public trackTicket(params: ActionTicketParams) {
+    // if (!EnvChecker.isOnServer() && EnvChecker.isDev()) {
+    if (!EnvChecker.isOnServer() && !EnvChecker.isProdBrowser()) {
+      console.log(params);
+    }
     if (!EnvChecker.isOnServer() && EnvChecker.isProdBrowser()) {
       this.checkSessionAlive();
       const ticket = new ActionTicket(params);

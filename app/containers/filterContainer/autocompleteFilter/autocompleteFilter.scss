@@ -39,10 +39,13 @@
     background-color: white;
   }
 
+  &::placeholder {
+    color: $gray4;
+  }
+
   &.listOpened {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    border-bottom: 0;
     box-shadow: 0;
   }
 }
@@ -65,10 +68,9 @@
 
 .listWrapper {
   position: relative;
-  padding: 12px 0;
+  padding: 8px 0;
   border-bottom-left-radius: 16.5px;
   border-bottom-right-radius: 16.5px;
-  border-top: solid 1px $gray2;
   background-color: white;
   margin: 0 1px;
   z-index: 1;
@@ -76,15 +78,19 @@
 
 .listItem {
   display: flex;
-  align-items: center;
-  height: 28px;
+  align-items: flex-start;
   font-size: 14px;
   line-height: 1.43;
   color: $gray6;
-  padding: 0 12px;
+  padding: 4px 12px;
 
   &:hover {
-    background-color: $gray2;
+    background-color: $gray8;
+  }
+
+  .itemContent {
+    display: inline-block;
+    vertical-align: top;
   }
 }
 
