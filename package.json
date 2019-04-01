@@ -120,6 +120,7 @@
     "webpack-jarvis": "0.2.2"
   },
   "dependencies": {
+    "@loadable/component": "^5.7.0",
     "@material-ui/core": "3.5.1",
     "@pluto_network/scinapse-feedback": "0.0.4",
     "@sentry/browser": "4.1.1",
