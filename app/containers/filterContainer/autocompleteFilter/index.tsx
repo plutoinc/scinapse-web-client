@@ -162,12 +162,12 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
           <input
             value={state.inputValue}
             onKeyDown={e => {
-              handleInputKeydown<FOSSuggestion | JournalSuggestion>({
-                e,
-                list: data || [],
-                currentIdx: state.highlightIdx,
-                onMove: i => {
-                  if (data) {
+              if (data && data.length > 0) {
+                handleInputKeydown<FOSSuggestion | JournalSuggestion>({
+                  e,
+                  list: data || [],
+                  currentIdx: state.highlightIdx,
+                  onMove: i => {
                     dispatch({
                       type: "ARROW_KEYDOWN",
                       payload: {
@@ -175,12 +175,12 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
                         inputValue: data[i] ? data[i].keyword : state.genuineInputValue,
                       },
                     });
-                  }
-                },
-                onSelect: i => {
-                  handleSelectItem(i);
-                },
-              });
+                  },
+                  onSelect: i => {
+                    handleSelectItem(i);
+                  },
+                });
+              }
             }}
             onFocus={() => {
               dispatch({ type: "OPEN_BOX" });
