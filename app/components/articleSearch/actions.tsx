@@ -8,6 +8,9 @@ import { ChangeRangeInputParams } from "../../constants/paperSearch";
 import PlutoAxios from "../../api/pluto";
 import { CommonError } from "../../model/error";
 import { GetAuthorsParam } from "../../api/types/author";
+import memberAPI, { Filter, RawFilter } from "../../api/member";
+import { PREVIOUS_FILTER } from "./constants";
+const store = require("store");
 
 export function toggleExpandingFilter() {
   return {
@@ -99,5 +102,64 @@ export function fetchSearchAuthors(params: GetAuthorsParam) {
         throw err;
       }
     }
+  };
+}
+
+export function fetchCurrentUserFilters() {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CURRENT_USER_FILTERS });
+
+    try {
+      const res = await memberAPI.getMyFilters();
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CURRENT_USER_FILTERS,
+        payload: {
+          rawFilter: res,
+        },
+      });
+
+      return res;
+    } catch (err) {
+      const error = PlutoAxios.getGlobalError(err);
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CURRENT_USER_FILTERS,
+        payload: {
+          statusCode: (error as CommonError).status,
+        },
+      });
+    }
+  };
+}
+
+export function putCurrentUserFilters(params: RawFilter[]) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_PUT_CURRENT_USER_FILTERS });
+
+    try {
+      const res = await memberAPI.addMyFilters(params);
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_PUT_CURRENT_USER_FILTERS,
+        payload: res,
+      });
+    } catch (err) {
+      if (!axios.isCancel(err)) {
+        const error = PlutoAxios.getGlobalError(err);
+
+        dispatch({
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_PUT_CURRENT_USER_FILTERS,
+          payload: {
+            statusCode: (error as CommonError).status,
+          },
+        });
+        throw err;
+      }
+    }
+  };
+}
+
+export function selectFilter(params: Filter | null) {
+  return (dispatch: Dispatch<any>) => {
+    store.set(PREVIOUS_FILTER, params);
+    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_SET_FILTER_IN_FILTER_SET, payload: params });
   };
 }

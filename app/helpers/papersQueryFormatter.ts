@@ -2,6 +2,7 @@ import { stringify } from "qs";
 import { SearchPageQueryParams } from "../components/articleSearch/types";
 import { SearchPapersParams } from "../api/types/paper";
 import SafeURIStringHandler from "./safeURIStringHandler";
+import { sortBy } from "lodash";
 
 export interface FilterObject {
   yearFrom?: number | string;
@@ -60,8 +61,8 @@ class PaperSearchQueryFormatter {
     }
 
     // tslint:disable-next-line:one-variable-per-declaration
-    let yearFrom: number | undefined;
-    let yearTo: number | undefined;
+    let yearFrom: number | any;
+    let yearTo: number | any;
     let fos: number[] = [];
     let journal: number[] = [];
     if (!!queryMap.year) {
@@ -90,14 +91,14 @@ class PaperSearchQueryFormatter {
     }
 
     return {
-      yearFrom,
-      yearTo,
-      fos,
-      journal,
+      yearFrom: isNaN(yearFrom) ? undefined : yearFrom,
+      yearTo: isNaN(yearTo) ? undefined : yearTo,
+      fos: sortBy(fos),
+      journal: sortBy(journal),
     };
   }
 
-  private getStringifiedPaperFilterParams({ yearFrom, yearTo, fos, journal }: FilterObject) {
+  public getStringifiedPaperFilterParams({ yearFrom, yearTo, fos, journal }: FilterObject) {
     const resultQuery = `year=${yearFrom || ""}:${yearTo || ""},fos=${fos ? fos.join("|") : ""},journal=${
       journal ? journal.join("|") : ""
     }`;
