@@ -5,7 +5,15 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 const browserSpecificSetting = {
   mode: "production",
-  devtool: "inline-source-map",
+  optimization: {
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+        cache: false,
+      }),
+    ],
+  },
+  devtool: false,
   plugins: [
     // new BundleAnalyzerPlugin(),
     new LodashModuleReplacementPlugin(),
