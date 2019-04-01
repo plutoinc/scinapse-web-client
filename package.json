@@ -15,7 +15,7 @@
     "deploy": "node dist-sls/deploy/deployToDev.js",
     "deploy:dev": "npm run build:dev && npm run build-sls && NODE_ENV=dev npm run deploy && npm run pack && serverless deploy -s dev",
     "build:prod": "npm run build-src:prod && npm run build-sls && NODE_ENV=production npm run deploy",
-    "deploy:prod": "npm run build-sls && node dist-sls/deploy/buildForDeploy.js && npm run pack && serverless deploy -s production",
+    "deploy:prod": "npm run build-sls && node dist-sls/deploy/buildForDeploy.js && npm run pack && serverless deploy -s prod",
     "dev": "webpack-dev-server",
     "test": "jest --coverage",
     "pretty": "prettier --write \"app/**/*.{ts,tsx,scss}\"",
