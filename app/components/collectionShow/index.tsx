@@ -1,7 +1,7 @@
 import * as React from "react";
 import axios from "axios";
 import { connect, Dispatch } from "react-redux";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { withRouter, RouteComponentProps, Link } from "react-router-dom";
 import * as distanceInWordsToNow from "date-fns/distance_in_words_to_now";
 import * as parse from "date-fns/parse";
 import { denormalize } from "normalizr";
@@ -33,6 +33,8 @@ import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboa
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import ErrorPage from "../error/errorPage";
 import { removePaperFromCollection } from "../dialog/actions";
+import { MyCollectionsState } from "../../containers/paperShowCollectionControlButton/reducer";
+import CollectionSideNaviBar from "../collectionSideNaviBar";
 const styles = require("./collectionShow.scss");
 
 const FACEBOOK_SHARE_URL = "http://www.facebook.com/sharer/sharer.php?u=";
@@ -44,6 +46,7 @@ function mapStateToProps(state: AppState) {
     currentUser: state.currentUser,
     collectionShow: state.collectionShow,
     configuration: state.configuration,
+    myCollections: state.myCollections,
     collection: denormalize(state.collectionShow.mainCollectionId, collectionSchema, state.entities),
     papersInCollection: denormalize(state.collectionShow.paperIds, [paperInCollectionSchema], state.entities),
   };
@@ -60,6 +63,7 @@ export interface CollectionShowProps
       currentUser: CurrentUser;
       configuration: Configuration;
       collectionShow: CollectionShowState;
+      myCollections: MyCollectionsState;
       collection: Collection | undefined;
       papersInCollection: PaperInCollection[] | undefined;
       dispatch: Dispatch<any>;
@@ -128,63 +132,74 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
       return (
         <div>
           <div className={styles.collectionShowWrapper}>
-            {this.getPageHelmet()}
-            <div className={styles.headSection}>
-              <div className={styles.container}>
-                <div className={styles.leftBox}>
-                  <div className={styles.title}>
-                    <span>{collection.title}</span>
+            <CollectionSideNaviBar currentCollectionId={collectionShow.mainCollectionId} />
+            <div className={styles.collectionShowContentsWrapper}>
+              {this.getPageHelmet()}
+              <div className={styles.headSection}>
+                <div className={styles.container}>
+                  <div className={styles.leftBox}>
+                    <div className={styles.title}>
+                      <span>{collection.title}</span>
+                    </div>
+                    <div className={styles.description}>{collection.description}</div>
+                    <div className={styles.infoWrapper}>
+                      <span>Created by </span>
+                      <Link
+                        className={styles.collectionCreatedUser}
+                        to={`/users/${collection.createdBy.id}/collections`}
+                      >
+                        <strong>{`${collection.createdBy.firstName} ${collection.createdBy.lastName || ""}`}</strong>
+                      </Link>
+                      <span>{` · Last updated `}</span>
+                      <strong>{`${distanceInWordsToNow(parsedUpdatedAt)} `}</strong>
+                      <span>ago</span>
+                    </div>
                   </div>
-                  <div className={styles.description}>{collection.description}</div>
-                  <div className={styles.infoWrapper}>
-                    <span>Created by</span>
-                    <strong>{` ${collection.createdBy.firstName} ${collection.createdBy.lastName || ""} · `}</strong>
-                    <span>{`Last updated `}</span>
-                    <strong>{`${distanceInWordsToNow(parsedUpdatedAt)} `}</strong>
-                    <span>ago</span>
-                  </div>
+                  <div className={styles.rightBox}>{this.getCollectionControlBtns()}</div>
                 </div>
-                <div className={styles.rightBox}>{this.getCollectionControlBtns()}</div>
               </div>
-            </div>
 
-            <div className={styles.paperListContainer}>
-              <div className={styles.leftBox}>
-                <div className={styles.paperListBox}>
-                  <div className={styles.header}>
-                    <div className={styles.listTitle}>
-                      <span>{`Papers `}</span>
-                      <span className={styles.paperCount}>{collection.paperCount}</span>
-                    </div>
-                    <div className={styles.searchInputWrapper}>
-                      <ScinapseInput
-                        onSubmit={this.handleSubmitSearch}
-                        placeholder="Search papers in this collection"
-                        icon="SEARCH_ICON"
-                      />
-                    </div>
-                    <div className={styles.subHeader}>
-                      <div className={styles.resultPaperCount}>{`${
-                        collectionShow.currentPaperListPage
-                      } page of ${formatNumber(collectionShow.totalPaperListPage)} pages (${formatNumber(
-                        collectionShow.papersTotalCount
-                      )} results)`}</div>
-                      <div className={styles.sortBoxWrapper}>
-                        <SortBox
-                          sortOption={collectionShow.sortType}
-                          handleClickSortOption={this.handleClickSort}
-                          currentPage="collectionShow"
-                          exposeRecentlyUpdated={true}
-                          exposeRelevanceOption={false}
+              <div className={styles.paperListContainer}>
+                <div className={styles.leftBox}>
+                  <div className={styles.paperListBox}>
+                    <div className={styles.header}>
+                      <div className={styles.searchInputWrapper}>
+                        <ScinapseInput
+                          onSubmit={this.handleSubmitSearch}
+                          placeholder="Search papers in this collection"
+                          icon="SEARCH_ICON"
+                          inputStyle={{ maxWidth: "486px", height: "40px" }}
                         />
                       </div>
+                      <div className={styles.subHeader}>
+                        <div>
+                          <span className={styles.resultPaperCount}>
+                            {`${formatNumber(collectionShow.papersTotalCount)} Papers `}
+                          </span>
+                          <span className={styles.resultPaperPageCount}>
+                            {`(${collectionShow.currentPaperListPage} page of ${formatNumber(
+                              collectionShow.totalPaperListPage
+                            )} pages)`}
+                          </span>
+                        </div>
+                        <div className={styles.sortBoxWrapper}>
+                          <SortBox
+                            sortOption={collectionShow.sortType}
+                            handleClickSortOption={this.handleClickSort}
+                            currentPage="collectionShow"
+                            exposeRecentlyUpdated={true}
+                            exposeRelevanceOption={false}
+                          />
+                        </div>
+                      </div>
                     </div>
+                    <div>{this.getPaperList()}</div>
+                    <div>{this.getPaginationComponent()}</div>
                   </div>
-                  <div>{this.getPaperList()}</div>
-                  <div>{this.getPaginationComponent()}</div>
                 </div>
+                {/* <div className={styles.rightBox}>
+              </div> */}
               </div>
-              <div className={styles.rightBox} />
             </div>
           </div>
           <Footer containerStyle={{ backgroundColor: "white" }} />
@@ -353,9 +368,9 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     const collectionShareButton = (
       <TransparentButton
         style={{
-          width: "103px",
-          height: "36px",
-          fontWeight: "bold",
+          width: "123px",
+          height: "40px",
+          fontWeight: 500,
           padding: "0 16px 0 8px",
           marginTop: "4px",
         }}
@@ -377,12 +392,12 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
 
     if (collection && currentUser.isLoggedIn && collection.createdBy.id === currentUser.id && !collection.isDefault) {
       return (
-        <div>
+        <div className={styles.collectionHeaderBtnWrapper}>
           <TransparentButton
             style={{
-              width: "103px",
-              height: "36px",
-              fontWeight: "bold",
+              width: "123px",
+              height: "40px",
+              fontWeight: 500,
               padding: "0 16px 0 8px",
             }}
             iconStyle={{
@@ -406,7 +421,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     }
 
     return (
-      <div>
+      <div className={styles.collectionHeaderBtnWrapper}>
         <div>{collectionShareButton}</div>
         <div>{collectionShow.isShareDropdownOpen ? this.getCollectionShareBtns() : null}</div>
       </div>

@@ -1,0 +1,93 @@
+.sideNaviBarWrapper {
+  width: 180px;
+  margin-top: 91px;
+  margin-left: 120px;
+  position: absolute;
+  border-radius: 8px;
+  background-color: $gray1;
+  padding: 16px;
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.collectionIcon {
+  width: 24px;
+  height: 24px;
+  margin-right: 4px;
+}
+
+.naviBarTitle {
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.43;
+  color: #1b2a36;
+  padding-bottom: 12px;
+  border-bottom: 1px solid $gray2;
+
+  .naviBarTitleLink {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.naviBarContent {
+  padding-top: 12px;
+}
+
+.collectionItemTitle {
+  width: 148px;
+  display: block;
+  word-break: break-word;
+  font-size: 14px;
+  line-height: 1.43;
+  color: $gray6;
+
+  &:hover {
+    color: $gray5;
+    text-decoration: underline;
+  }
+
+  & + & {
+    margin-top: 16px;
+  }
+}
+
+.currentCollectionItemTitle {
+  @extend .collectionItemTitle;
+  font-weight: 500;
+  color: #1b2a36;
+
+  &:hover {
+    color: $black1;
+  }
+}
+
+.createNewCollectionBtn {
+  @extend .collectionItemTitle;
+  color: $main_blue1;
+  cursor: pointer;
+  text-align: left;
+
+  &:hover {
+    color: $main_blue_light0;
+  }
+}
+
+.spinnerWrapper {
+  display: flex;
+  height: 24px;
+  margin-bottom: 12px;
+  align-items: center;
+  justify-content: center;
+
+  .loadingSpinner {
+    color: $gray6;
+  }
+}
+
+// Tablet
+@media (max-width: $tablet-width) {
+  .sideNaviBarWrapper {
+    display: none;
+  }
+}

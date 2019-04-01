@@ -38,6 +38,7 @@ function mapStateToProps(state: AppState) {
     layoutState: state.layout,
     articleSearchState: state.articleSearch,
     authorSearchState: state.authorSearch,
+    myCollectionsState: state.myCollections,
   };
 }
 
@@ -264,7 +265,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private userDropdownMenuItems = () => {
-    const { currentUserState } = this.props;
+    const { currentUserState, myCollectionsState } = this.props;
 
     return (
       <div className={styles.menuItems}>
@@ -286,7 +287,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           <Link
             className={styles.buttonOnLink}
             onClick={this.handleRequestCloseUserDropdown}
-            to={`/users/${currentUserState.id}/collections`}
+            to={`/collections/${myCollectionsState.collectionIds[0]}`}
           >
             Collection
           </Link>
