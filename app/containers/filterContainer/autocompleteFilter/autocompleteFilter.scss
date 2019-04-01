@@ -28,7 +28,7 @@
   transition: border-radius 200ms ease;
 
   &:hover {
-    border: solid 1px $gray4;
+    border: solid 1px $gray3;
   }
 
   &:active {
@@ -85,6 +85,10 @@
   padding: 4px 12px;
 
   &:hover {
+    background-color: $gray8;
+  }
+
+  &.highlighted {
     background-color: $gray8;
   }
 

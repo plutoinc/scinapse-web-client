@@ -1,11 +1,10 @@
 import * as React from "react";
 import axios, { CancelTokenSource } from "axios";
-import { RouteComponentProps, withRouter, Link } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import * as classNames from "classnames";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Checkbox from "@material-ui/core/Checkbox";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import PapersQueryFormatter, { FilterObject } from "../../../helpers/papersQueryFormatter";
+import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { useDebouncedAsyncFetch } from "../../../hooks/debouncedFetchAPIHook";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import CompletionAPI, { FOSSuggestion, JournalSuggestion } from "../../../api/completion";
@@ -13,77 +12,14 @@ import Icon from "../../../icons";
 import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
 import makeNewFilterLink from "../../../helpers/makeNewFilterLink";
 import { toggleElementFromArray } from "../../../helpers/toggleElementFromArray";
+import { handleInputKeydown } from "../../../components/common/InputWithSuggestionList/helpers/handleInputKeydown";
+import FilterItem from "./filterItem";
+import reducer, { ReducerState, ReducerAction } from "./reducer";
 const s = require("./autocompleteFilter.scss");
 
 interface AutocompleteFilterProps extends RouteComponentProps<any> {
   type: "FOS" | "JOURNAL";
 }
-
-interface ReducerState {
-  isOpen: boolean;
-  inputValue: string;
-}
-
-interface ReducerAction<T> {
-  type: string;
-  payload?: {
-    suggestions?: T;
-    inputValue?: string;
-    errorMsg?: string;
-    filter?: FilterObject;
-  };
-}
-
-interface FilterItemProps {
-  content: string;
-  checked: boolean;
-  to: string;
-}
-
-function reducer<T>(state: ReducerState, action: ReducerAction<T>) {
-  switch (action.type) {
-    case "OPEN_BOX":
-      return {
-        ...state,
-        isOpen: true,
-      };
-
-    case "CLOSE_BOX":
-      return {
-        ...state,
-        isOpen: false,
-      };
-
-    case "CHANGE_INPUT": {
-      if (action.payload) {
-        return {
-          ...state,
-          inputValue: action.payload.inputValue,
-          isOpen: true,
-        };
-      }
-      return state;
-    }
-
-    default:
-      throw new Error();
-  }
-}
-
-const FilterItem: React.FunctionComponent<FilterItemProps> = props => {
-  return (
-    <Link to={props.to} className={s.listItem}>
-      <Checkbox
-        classes={{
-          root: s.checkboxIcon,
-          checked: s.checkedCheckboxIcon,
-        }}
-        checked={props.checked}
-      />
-      <span className={s.itemContent}>{props.content}</span>
-    </Link>
-  );
-};
 
 const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = props => {
   const currentFilter = React.useMemo(
@@ -95,7 +31,9 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
     reducer as React.Reducer<ReducerState, ReducerAction<FOSSuggestion[] | JournalSuggestion[]>>,
     {
       isOpen: false,
+      genuineInputValue: "",
       inputValue: "",
+      highlightIdx: -1,
     }
   );
   const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
@@ -126,13 +64,13 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
 
   React.useEffect(
     () => {
-      setKeyword(state.inputValue);
+      setKeyword(state.genuineInputValue);
       return () => {
         cancelTokenSource.current.cancel();
         cancelTokenSource.current = axios.CancelToken.source();
       };
     },
-    [state.inputValue]
+    [state.genuineInputValue]
   );
 
   const currentFOS = currentFilter && currentFilter.fos ? (currentFilter.fos as number[]) : [];
@@ -142,7 +80,7 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
   if (props.type === "FOS") {
     listNode =
       data &&
-      (data as FOSSuggestion[]).map(fos => {
+      (data as FOSSuggestion[]).map((fos, i) => {
         return (
           <FilterItem
             to={makeNewFilterLink(
@@ -154,14 +92,14 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
             key={fos.fosId}
             content={fos.keyword}
             checked={currentFOS.includes(fos.fosId)}
+            isHighlight={i === state.highlightIdx}
           />
         );
       });
   } else {
     listNode =
       data &&
-      data.length > 0 &&
-      (data as JournalSuggestion[]).map(journal => (
+      (data as JournalSuggestion[]).map((journal, i) => (
         <FilterItem
           key={journal.journalId}
           to={makeNewFilterLink(
@@ -172,9 +110,38 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
           )}
           content={journal.keyword}
           checked={currentJournal.includes(journal.journalId)}
+          isHighlight={i === state.highlightIdx}
         />
       ));
   }
+
+  function handleSelectItem(index: number) {
+    if (index > -1 && data) {
+      if (data[index].type === "FOS") {
+        const fos = data[index] as FOSSuggestion;
+        props.history.push(
+          makeNewFilterLink(
+            {
+              fos: toggleElementFromArray(fos.fosId, currentFOS, true),
+            },
+            props.location
+          )
+        );
+      } else {
+        const journal = data[index] as JournalSuggestion;
+        props.history.push(
+          makeNewFilterLink(
+            {
+              journal: toggleElementFromArray(journal.journalId, currentJournal, true),
+            },
+            props.location
+          )
+        );
+      }
+    }
+  }
+
+  const shouldShowList = state.isOpen && listNode && listNode.length > 0;
 
   return (
     <ClickAwayListener
@@ -194,10 +161,29 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
           <Icon icon="SEARCH_ICON" className={s.searchIcon} />
           <input
             value={state.inputValue}
+            onKeyDown={e => {
+              handleInputKeydown<FOSSuggestion | JournalSuggestion>({
+                e,
+                list: data || [],
+                currentIdx: state.highlightIdx,
+                onMove: i => {
+                  if (data) {
+                    dispatch({
+                      type: "ARROW_KEYDOWN",
+                      payload: {
+                        targetIndex: i,
+                        inputValue: data[i] ? data[i].keyword : state.genuineInputValue,
+                      },
+                    });
+                  }
+                },
+                onSelect: i => {
+                  handleSelectItem(i);
+                },
+              });
+            }}
             onFocus={() => {
-              if (data && data.length > 0) {
-                dispatch({ type: "OPEN_BOX" });
-              }
+              dispatch({ type: "OPEN_BOX" });
             }}
             onChange={e => {
               const { value } = e.currentTarget;
@@ -211,11 +197,11 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
             placeholder={props.type === "FOS" ? "Search Field of study..." : "Search Journal..."}
             className={classNames({
               [s.input]: true,
-              [s.listOpened]: state.isOpen && !!listNode,
+              [s.listOpened]: shouldShowList,
             })}
           />
         </div>
-        {state.isOpen && listNode && <div className={s.listWrapper}>{listNode}</div>}
+        {shouldShowList && <div className={s.listWrapper}>{listNode}</div>}
       </div>
     </ClickAwayListener>
   );
