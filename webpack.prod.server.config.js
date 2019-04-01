@@ -4,9 +4,6 @@ const TerserPlugin = require("terser-webpack-plugin");
 const browserSpecificSetting = {
   mode: "production",
   entry: ["@babel/polyfill", "./server/prodHandler.tsx"],
-  optimization: {
-    nodeEnv: "production",
-  },
   plugins: [new LodashModuleReplacementPlugin()],
 };
 
