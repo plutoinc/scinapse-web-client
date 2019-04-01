@@ -2,10 +2,15 @@ const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 const originalWebpackConfig = require("./webpack.dev.server.config");
 const TerserPlugin = require("terser-webpack-plugin");
 const browserSpecificSetting = {
-  mode: "development",
+  mode: "production",
   entry: ["@babel/polyfill", "./server/prodHandler.tsx"],
   optimization: {
-    nodeEnv: "production",
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+        cache: false,
+      }),
+    ],
   },
   plugins: [new LodashModuleReplacementPlugin()],
 };

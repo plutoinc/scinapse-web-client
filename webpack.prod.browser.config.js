@@ -4,9 +4,14 @@ const TerserPlugin = require("terser-webpack-plugin");
 // const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 const browserSpecificSetting = {
-  mode: "development",
+  mode: "production",
   optimization: {
-    nodeEnv: "production",
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+        cache: false,
+      }),
+    ],
   },
   devtool: false,
   plugins: [
