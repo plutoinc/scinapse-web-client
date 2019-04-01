@@ -1,9 +1,9 @@
 import * as React from "react";
+import loadable from "@loadable/component";
 import { Route, Switch, match, withRouter, RouteComponentProps } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { connect, Dispatch } from "react-redux";
 import axios, { CancelToken } from "axios";
-import Home from "./components/home";
 import { Header, FeedbackButton } from "./components/layouts";
 import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
@@ -69,7 +69,7 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: HOME_PATH,
     exact: true,
-    component: Home,
+    component: loadable(() => import("./components/home")),
   },
   {
     path: SEARCH_RESULT_PATH,
