@@ -90,7 +90,7 @@ $paper-info-subText-lineHeight: 1.4;
 
 // regularDisplay Variables
 $regular-display-container-width: calc(100vw - #{$container-margin} * 2);
-$regular-display-paper-show-rightBox-width: 324px;
+$regular-display-paper-show-rightBox-width: 384px;
 $regular-display-paper-show-width: calc(
   #{$regular-display-container-width} - #{$regular-display-paper-show-rightBox-width} - #{$container-margin}
 );

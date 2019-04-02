@@ -333,8 +333,8 @@
   }
 }
 
-// SmallDisplay (768~1024)
-@media (max-width: 1024px) {
+// regular_width (1200)
+@media (max-width: $regular_width) {
   .buttonWrapper {
     width: 100%;
     margin-top: 8px;
