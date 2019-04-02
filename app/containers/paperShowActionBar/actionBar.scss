@@ -1,5 +1,5 @@
 .actionBar {
-  width: $paper-show-width;
+  width: 100%;
   background-color: white;
   padding: 8px 0px;
 
@@ -61,14 +61,8 @@
   }
 }
 
-// RegularDisplay (1024~1200)
+// // RegularDisplay (1024~1200)
 @media (max-width: $regular_width) {
-  .actionBar {
-    width: 100%;
-  }
-}
-// SmallDisplay (768~1024)
-@media (max-width: $tablet_width) {
   .actionBar {
     .actions {
       display: block;
@@ -84,6 +78,21 @@
     }
   }
 }
+
 // Mobile (0~768)
 @media (max-width: $mobile-width) {
+  .leftSide {
+    flex-direction: column;
+  }
+
+  .actionItem {
+    & + & {
+      margin: 4px 0 0 0;
+    }
+  }
+
+  .fullTextBtn {
+    width: 100%;
+    justify-content: center;
+  }
 }
