@@ -551,9 +551,9 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         savePaperToCollection({
           collection: selectedCollection,
           paperId: targetPaperId,
+          cancelToken: this.cancelToken.token,
         })
       );
-
       store.set(LAST_USER_COLLECTION_ID, selectedCollection.id);
     } else if (selectedCollection && targetPaperId && selectedCollection.containsSelected) {
       trackEvent({
@@ -573,6 +573,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         removePaperFromCollection({
           collection: selectedCollection,
           paperIds: [targetPaperId],
+          cancelToken: this.cancelToken.token,
         })
       );
     }
