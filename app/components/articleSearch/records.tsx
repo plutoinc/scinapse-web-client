@@ -1,6 +1,7 @@
 import { Paper } from "../../model/paper";
-import { AggregationData } from "../../model/aggregation";
+import { AggregationData, AggregationJournal, AggregationFos } from "../../model/aggregation";
 import { MatchAuthor } from "../../api/search";
+import { Filter } from "../../api/member";
 
 export interface ArticleSearchState
   extends Readonly<{
@@ -8,6 +9,7 @@ export interface ArticleSearchState
       sort: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS;
       isContentLoading: boolean;
       isFilterLoading: boolean;
+      isFilterSaveBoxLoading: boolean;
       pageErrorCode: number | null;
       searchInput: string;
       page: number;
@@ -20,12 +22,16 @@ export interface ArticleSearchState
       suggestionKeyword: string;
       fosFilter: number[];
       journalFilter: number[];
+      fosFilterObject: AggregationFos[];
+      journalFilterObject: AggregationJournal[];
       highlightedSuggestionKeyword: string;
       searchItemsToShow: Paper[];
       matchAuthors: MatchAuthor | null;
       targetPaper: Paper | null;
       aggregationData: AggregationData | null;
       searchFromSuggestion: boolean;
+      myFilters: Filter[];
+      selectedFilter: Filter | null;
     }> {}
 
 export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
@@ -33,6 +39,7 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   sort: "RELEVANCE",
   isContentLoading: false,
   isFilterLoading: false,
+  isFilterSaveBoxLoading: false,
   pageErrorCode: null,
   aggregationData: null,
   searchInput: "",
@@ -48,7 +55,11 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   fosFilter: [],
   matchAuthors: null,
   journalFilter: [],
+  fosFilterObject: [],
+  journalFilterObject: [],
   suggestionKeyword: "",
   highlightedSuggestionKeyword: "",
   searchFromSuggestion: false,
+  myFilters: [],
+  selectedFilter: null,
 };

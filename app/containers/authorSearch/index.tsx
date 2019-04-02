@@ -3,10 +3,9 @@ import axios from "axios";
 import { connect, Dispatch } from "react-redux";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { AppState } from "../../reducers";
-import PapersQueryFormatter, { SearchPageQueryParamsObject } from "../../helpers/papersQueryFormatter";
+import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { getAuthorSearchData } from "./sideEffect";
-import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import restoreScroll from "../../helpers/scrollRestoration";
 import ArticleSpinner from "../../components/common/spinner/articleSpinner";
@@ -23,6 +22,7 @@ import DesktopPagination from "../../components/common/desktopPagination";
 import { ArticleSearchState } from "../../components/articleSearch/records";
 import NoResultInSearch from "../../components/articleSearch/components/noResultInSearch";
 import TabNavigationBar from "../../components/common/tabNavigationBar";
+import { getUrlDecodedQueryParamsObject } from "../../helpers/makeNewFilterLink";
 const styles = require("./authorSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -89,9 +89,9 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
   }
 
   public render() {
-    const { authorSearch } = this.props;
+    const { authorSearch, location } = this.props;
     const { isLoading } = authorSearch;
-    const queryParams = this.getUrlDecodedQueryParamsObject();
+    const queryParams = getUrlDecodedQueryParamsObject(location);
 
     const hasNoAuthorSearchResult = !authorSearch.searchItemsToShow || authorSearch.searchItemsToShow.length === 0;
 
@@ -185,7 +185,8 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
   };
 
   private makePaginationLink = (page: number) => {
-    const queryParamsObject = this.getUrlDecodedQueryParamsObject();
+    const { location } = this.props;
+    const queryParamsObject = getUrlDecodedQueryParamsObject(location);
     const queryParams = PapersQueryFormatter.stringifyPapersQuery({
       ...queryParamsObject,
       page,
@@ -219,17 +220,5 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
       return { position: "absolute", left: "0", right: "0", bottom: "0" };
     }
   };
-
-  private getUrlDecodedQueryParamsObject(): SearchPageQueryParamsObject {
-    const { location } = this.props;
-    const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
-
-    return {
-      query: SafeURIStringHandler.decode(rawQueryParamsObj.query),
-      page: parseInt(rawQueryParamsObj.page, 10),
-      filter: PapersQueryFormatter.objectifyPapersFilter(rawQueryParamsObj.filter),
-      sort: rawQueryParamsObj.sort,
-    };
-  }
 }
 export default connect(mapStateToProps)(withRouter(AuthorSearch));
