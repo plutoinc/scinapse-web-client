@@ -71,6 +71,30 @@
   font-size: 14px;
   color: $black1;
 
+  .externalCollectionButton {
+    margin-right: 8px;
+    width: 109px;
+    height: 46px;
+    border-radius: 4px;
+    background-color: $gray1;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: $gray6;
+    display: flex;
+
+    &:hover {
+      background-color: $gray2;
+    }
+
+    .collectionIcon {
+      width: 20px;
+      height: 20px;
+      margin-right: 4px;
+    }
+  }
+
   .signInButton {
     margin-right: 15.5px;
     cursor: pointer;

@@ -310,48 +310,50 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private getUserDropdown = () => {
-    const { currentUserState } = this.props;
+    const { currentUserState, myCollectionsState } = this.props;
 
     const firstCharacterOfUsername = currentUserState.firstName.slice(0, 1).toUpperCase();
 
     return (
       <div className={styles.rightBox}>
-        <div>
-          {!currentUserState.profileImageUrl ? (
-            <div
-              className={styles.userDropdownChar}
-              ref={el => (this.userDropdownAnchorRef = el)}
-              onClick={this.handleToggleUserDropdown}
-            >
-              {firstCharacterOfUsername}
-            </div>
-          ) : (
-            <div
-              className={styles.userDropdownImg}
-              ref={el => (this.userDropdownAnchorRef = el)}
-              onClick={this.handleToggleUserDropdown}
-            >
-              <div
-                style={{
-                  backgroundImage: `url(${currentUserState.profileImageUrl})`,
-                }}
-                className={styles.profileImage}
-              />
-            </div>
-          )}
-          <BubblePopover
-            open={this.state.isUserDropdownOpen}
-            anchorEl={this.state.userDropdownAnchorElement!}
-            placement="bottom-end"
-            popperOptions={{
-              positionFixed: true,
-            }}
+        <Link
+          className={styles.externalCollectionButton}
+          onClick={this.handleRequestCloseUserDropdown}
+          to={`/collections/${myCollectionsState.collectionIds[0]}`}
+        >
+          <Icon className={styles.collectionIcon} icon="COLLECTION" />Collection
+        </Link>
+
+        {!currentUserState.profileImageUrl ? (
+          <div
+            className={styles.userDropdownChar}
+            ref={el => (this.userDropdownAnchorRef = el)}
+            onClick={this.handleToggleUserDropdown}
           >
-            <ClickAwayListener onClickAway={this.handleRequestCloseUserDropdown}>
-              {this.userDropdownMenuItems()}
-            </ClickAwayListener>
-          </BubblePopover>
-        </div>
+            {firstCharacterOfUsername}
+          </div>
+        ) : (
+          <div
+            className={styles.userDropdownImg}
+            ref={el => (this.userDropdownAnchorRef = el)}
+            onClick={this.handleToggleUserDropdown}
+          >
+            <div
+              style={{ backgroundImage: `url(${currentUserState.profileImageUrl})` }}
+              className={styles.profileImage}
+            />
+          </div>
+        )}
+        <BubblePopover
+          open={this.state.isUserDropdownOpen}
+          anchorEl={this.state.userDropdownAnchorElement!}
+          placement="bottom-end"
+          popperOptions={{ positionFixed: true }}
+        >
+          <ClickAwayListener onClickAway={this.handleRequestCloseUserDropdown}>
+            {this.userDropdownMenuItems()}
+          </ClickAwayListener>
+        </BubblePopover>
       </div>
     );
   };
