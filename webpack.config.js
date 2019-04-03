@@ -4,17 +4,33 @@ const { CheckerPlugin } = require("awesome-typescript-loader");
 const CircularDependencyPlugin = require("circular-dependency-plugin");
 const LoadablePlugin = require("@loadable/webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 require("extract-text-webpack-plugin");
 
 module.exports = {
-  mode: "development",
+  mode: "production",
   entry: ["@babel/polyfill", "./app/clientIndex.tsx"],
   output: {
     path: path.resolve(__dirname, "dist", "client"),
     publicPath: "http://localhost:8080/client/",
     filename: "[name].js",
+    chunkFilename: "[name].chunk.js",
   },
   devtool: "inline-source-map",
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+            return `npm.${packageName.replace("@", "")}`;
+          },
+        },
+      },
+    },
+  },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
@@ -101,10 +117,11 @@ module.exports = {
       filename: "[name].css",
       chunkFilename: "[id].css",
     }),
+    new BundleAnalyzerPlugin()
   ],
   devServer: {
     contentBase: path.join(__dirname, "dist"),
-    writeToDisk: (filePath) => {
+    writeToDisk: filePath => {
       return /loadable-stats\.json/.test(filePath);
     },
     compress: true,

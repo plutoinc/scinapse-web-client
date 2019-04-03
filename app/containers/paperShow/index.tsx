@@ -1,7 +1,7 @@
 import * as React from "react";
 import axios from "axios";
 import { stringify } from "qs";
-import { NoSsr } from "@material-ui/core";
+import NoSsr from "@material-ui/core/NoSsr";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
 import * as classNames from "classnames";
