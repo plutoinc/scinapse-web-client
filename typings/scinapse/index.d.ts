@@ -76,6 +76,7 @@ declare namespace Scinapse {
       | "refList"
       | "citedList"
       | "paperList"
+      | "authorList"
       | "paperDescription"
       | "otherPaperList"
       | "relatedPaperList"

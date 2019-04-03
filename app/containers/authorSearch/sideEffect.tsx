@@ -3,6 +3,7 @@ import { LoadDataParams } from "../../routes";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { fetchSearchAuthors } from "../../components/articleSearch/actions";
 import { GetAuthorsParam } from "../../api/types/author";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 
 export async function getAuthorSearchData(params: LoadDataParams<null>) {
   const { queryParams, dispatch } = params;
@@ -20,8 +21,27 @@ export async function getAuthorSearchData(params: LoadDataParams<null>) {
 
   try {
     const promiseArray: Array<Promise<any>> = [];
-
-    promiseArray.push(dispatch(fetchSearchAuthors(searchQueryObject)));
+    const authorSearchResults = dispatch(fetchSearchAuthors(searchQueryObject));
+    authorSearchResults.then(result => {
+      if (!result) {
+        ActionTicketManager.trackTicket({
+          pageType: "authorSearchResult",
+          actionType: "fire",
+          actionArea: "authorList",
+          actionTag: "pageView",
+          actionLabel: String(0),
+        });
+      } else {
+        ActionTicketManager.trackTicket({
+          pageType: "authorSearchResult",
+          actionType: "fire",
+          actionArea: "authorList",
+          actionTag: "pageView",
+          actionLabel: String(result.length),
+        });
+      }
+    });
+    promiseArray.push(authorSearchResults);
 
     await Promise.all(promiseArray);
   } catch (err) {
