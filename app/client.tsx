@@ -1,4 +1,5 @@
 import { BrowserRouter } from "react-router-dom";
+import { loadableReady } from "@loadable/component";
 import "intersection-observer";
 import * as React from "react";
 import * as ReactGA from "react-ga";
@@ -91,20 +92,22 @@ class PlutoRenderer {
       },
     };
 
-    ReactDom.hydrate(
-      <CssInjector context={context}>
-        <ErrorTracker>
-          <Provider store={this.store}>
-            <BrowserRouter>
-              <MuiThemeProvider theme={theme}>
-                <Main />
-              </MuiThemeProvider>
-            </BrowserRouter>
-          </Provider>
-        </ErrorTracker>
-      </CssInjector>,
-      document.getElementById("react-app")
-    );
+    loadableReady(() => {
+      ReactDom.hydrate(
+        <CssInjector context={context}>
+          <ErrorTracker>
+            <Provider store={this.store}>
+              <BrowserRouter>
+                <MuiThemeProvider theme={theme}>
+                  <Main />
+                </MuiThemeProvider>
+              </BrowserRouter>
+            </Provider>
+          </ErrorTracker>
+        </CssInjector>,
+        document.getElementById("react-app")
+      );
+    });
   }
 }
 

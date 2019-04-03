@@ -1,29 +1,19 @@
 const path = require("path");
-const webpack = require("webpack");
 const { CheckerPlugin } = require("awesome-typescript-loader");
-require("extract-text-webpack-plugin");
+const LoadablePlugin = require("@loadable/webpack-plugin");
+const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
   mode: "development",
   entry: ["@babel/polyfill", "./server/localServer.tsx"],
   output: {
-    libraryTarget: "commonjs",
-    path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js",
+    libraryTarget: "commonjs2",
+    path: path.resolve(__dirname, "dist", "server"),
+    filename: "[name].js",
   },
   devtool: "inline-source-map",
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
-  },
-  optimization: {
-    removeAvailableModules: true,
-    removeEmptyChunks: true,
-    mergeDuplicateChunks: true,
-    flagIncludedChunks: false,
-    occurrenceOrder: false,
-    noEmitOnErrors: false,
-    providedExports: true,
-    minimize: false,
   },
   module: {
     rules: [
@@ -83,17 +73,10 @@ module.exports = {
     ],
   },
   target: "node",
-  externals: {
-    "react/lib/ExecutionEnvironment": true,
-    "react/lib/ReactContext": true,
-    "react/addons": true,
+  node: {
+    __dirname: false,
+    __filename: false,
   },
-  plugins: [new CheckerPlugin(), new webpack.HotModuleReplacementPlugin()],
-  devServer: {
-    contentBase: path.join(__dirname, "app"),
-    compress: true,
-    host: "0.0.0.0",
-    hot: true,
-    allowedHosts: ["localhost", "lvh.me"],
-  },
+  plugins: [new CheckerPlugin()],
+  externals: [nodeExternals()],
 };

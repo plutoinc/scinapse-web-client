@@ -2,28 +2,20 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 const CircularDependencyPlugin = require("circular-dependency-plugin");
+const LoadablePlugin = require('@loadable/webpack-plugin')
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 require("extract-text-webpack-plugin");
 
 module.exports = {
   mode: "development",
   entry: ["@babel/polyfill", "./app/clientIndex.tsx"],
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist", "client"),
+    filename: "[name].js",
   },
   devtool: "inline-source-map",
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
-  },
-  optimization: {
-    removeAvailableModules: true,
-    removeEmptyChunks: true,
-    mergeDuplicateChunks: true,
-    flagIncludedChunks: false, // production true
-    occurrenceOrder: false, // production true
-    noEmitOnErrors: false, // production true
-    providedExports: true,
-    minimize: false,
   },
   module: {
     rules: [
@@ -85,11 +77,6 @@ module.exports = {
   node: {
     fs: "empty",
   },
-  externals: {
-    "react/lib/ExecutionEnvironment": true,
-    "react/lib/ReactContext": true,
-    "react/addons": true,
-  },
   plugins: [
     new CheckerPlugin(),
     new HtmlWebpackPlugin({
@@ -108,6 +95,11 @@ module.exports = {
       // set the current working directory for displaying module paths
       cwd: process.cwd(),
     }),
+    new LoadablePlugin(),
+    new MiniCssExtractPlugin({
+			filename: "[name].css",
+			chunkFilename: "[id].css",
+		}),
   ],
   devServer: {
     contentBase: path.join(__dirname, "dist"),

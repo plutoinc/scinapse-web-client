@@ -1,3 +1,4 @@
+import * as path from "path";
 import * as React from "react";
 import * as express from "express";
 import { Provider } from "react-redux";
@@ -6,6 +7,7 @@ import { Helmet } from "react-helmet";
 import { matchPath, StaticRouter } from "react-router-dom";
 import { createMuiTheme, createGenerateClassName, MuiThemeProvider } from "@material-ui/core/styles";
 import * as ReactDOMServer from "react-dom/server";
+import { ChunkExtractor } from "@loadable/server";
 import StoreManager from "../app/store";
 import { ConnectedRootRoutes as RootRoutes, routesMap } from "../app/routes";
 import { ACTION_TYPES } from "../app/actions/actionTypes";
@@ -13,6 +15,9 @@ import CssInjector from "../app/helpers/cssInjector";
 import { generateFullHTML } from "../app/helpers/htmlWrapper";
 const JssProvider = require("react-jss/lib/JssProvider").default;
 const { SheetsRegistry } = require("react-jss/lib/jss");
+
+const statsFile = path.resolve(__dirname, "../client/loadable-stats.json");
+const extractor = new ChunkExtractor({ statsFile, outputPath: "http://localhost:8000/client" });
 
 const ssr = async (req: express.Request, scriptPath: string, version: string) => {
   // override user request
@@ -70,8 +75,7 @@ const ssr = async (req: express.Request, scriptPath: string, version: string) =>
   });
 
   const generateClassName = createGenerateClassName();
-
-  const renderedHTML = ReactDOMServer.renderToString(
+  const jsx = extractor.collectChunks(
     <CssInjector context={context}>
       <Provider store={store}>
         <StaticRouter location={req.url} context={routeContext}>
@@ -84,6 +88,10 @@ const ssr = async (req: express.Request, scriptPath: string, version: string) =>
       </Provider>
     </CssInjector>
   );
+
+  const renderedHTML = ReactDOMServer.renderToString(jsx);
+  const scriptTags = extractor.getScriptTags();
+  console.log(scriptTags);
 
   const materialUICss = sheetsRegistry.toString();
   const cssArr = Array.from(css);
