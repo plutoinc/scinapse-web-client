@@ -70,7 +70,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
         cancelToken: this.cancelToken.token,
       };
 
-      await getSearchData(currentParams);
+      await getSearchData(currentParams, true);
       restoreScroll(location.key);
     }
   }
@@ -94,13 +94,16 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
       this.cancelToken.cancel();
       this.cancelToken = axios.CancelToken.source();
 
-      await getSearchData({
-        dispatch,
-        match,
-        pathname: location.pathname,
-        queryParams: getQueryParamsObject(afterSearch),
-        cancelToken: this.cancelToken.token,
-      });
+      await getSearchData(
+        {
+          dispatch,
+          match,
+          pathname: location.pathname,
+          queryParams: getQueryParamsObject(afterSearch),
+          cancelToken: this.cancelToken.token,
+        },
+        hasSearchKeywordChanged && !hasAuthStateChanged
+      );
       restoreScroll(location.key);
     }
   }

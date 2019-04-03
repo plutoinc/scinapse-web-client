@@ -62,7 +62,7 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
         cancelToken: this.cancelToken.token,
       };
 
-      await getAuthorSearchData(currentParams);
+      await getAuthorSearchData(currentParams, true);
       restoreScroll(location.key);
     }
   }
@@ -73,13 +73,16 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
     const afterSearch = nextProps.location.search;
 
     if (!!afterSearch && beforeSearch !== afterSearch) {
-      await getAuthorSearchData({
-        dispatch,
-        match,
-        pathname: nextProps.location.pathname,
-        queryParams: getQueryParamsObject(afterSearch),
-        cancelToken: this.cancelToken.token,
-      });
+      await getAuthorSearchData(
+        {
+          dispatch,
+          match,
+          pathname: nextProps.location.pathname,
+          queryParams: getQueryParamsObject(afterSearch),
+          cancelToken: this.cancelToken.token,
+        },
+        true
+      );
       restoreScroll(nextProps.location.key);
     }
   }

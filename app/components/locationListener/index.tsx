@@ -121,13 +121,17 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
       const urlArray = window.location.pathname.split("/");
       const id = parseInt(urlArray[urlArray.length - 1], 10);
 
-      ActionTicketManager.trackTicket({
-        pageType: getCurrentPageType(),
-        actionType: "view",
-        actionArea: null,
-        actionTag: "pageView",
-        actionLabel: !isNaN(id) ? String(id) : null,
-      });
+      const currentPageType = getCurrentPageType();
+
+      if (currentPageType !== "searchResult" && currentPageType !== "authorSearchResult") {
+        ActionTicketManager.trackTicket({
+          pageType: getCurrentPageType(),
+          actionType: "view",
+          actionArea: null,
+          actionTag: "pageView",
+          actionLabel: !isNaN(id) ? String(id) : null,
+        });
+      }
     }
   }
 }
