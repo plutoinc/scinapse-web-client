@@ -8,8 +8,6 @@ export interface RawSuggestion {
 
 export interface Suggestion {
   highlighted: string;
-  keyword: string;
   originalQuery: string;
   suggestQuery: string;
-  suggestion: string;
 }

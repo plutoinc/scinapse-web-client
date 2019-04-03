@@ -82,7 +82,7 @@ export function reducer(
           totalElements: payload.data.page.totalElements,
           totalPages: payload.data.page.totalPages,
           searchItemsToShow: payload.data.content,
-          suggestionKeyword: payload.data.suggestion ? payload.data.suggestion.suggestion : "",
+          suggestionKeyword: payload.data.suggestion ? payload.data.suggestion.suggestQuery : "",
           highlightedSuggestionKeyword: payload.data.suggestion ? payload.data.suggestion.highlighted : "",
           searchFromSuggestion: payload.data.resultModified,
           aggregationData: { ...payload.data.aggregation, journals: sortedJournals, fosList: sortedFosList },
