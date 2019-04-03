@@ -13,8 +13,8 @@ $semi_full_width: 997px;
 
 .container {
   position: relative;
-  margin-left: 324px;
   width: 100%;
+  max-width: $small-container-width;
 }
 
 .loadingContainer {
@@ -37,19 +37,23 @@ $semi_full_width: 997px;
   background-color: $gray0;
   padding: 32px 0;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 
   .container {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    margin-left: 324px;
-    margin-right: 120px;
+    max-width: $regular_width;
+  }
+
+  .rightBox {
+    margin-right: 24px;
   }
 
   .leftBox {
-    max-width: $left_box_width;
+    max-width: $small-container-width;
     margin-right: 12px;
+    margin-left: 244px;
 
     .title {
       word-break: break-all;
@@ -96,12 +100,14 @@ $semi_full_width: 997px;
 .paperListContainer {
   display: flex;
   flex: 1;
-  flex-direction: row-reverse;
+  flex-direction: row;
   margin: 0 auto 60px auto;
+  max-width: 1200px;
 
   .leftBox {
-    margin-left: 324px;
-    margin-right: 120px;
+    max-width: $small-container-width;
+    margin-left: 228px;
+    margin-right: 24px;
     width: 100%;
   }
 }
@@ -309,6 +315,9 @@ $semi_full_width: 997px;
   .headSection {
     .container {
       margin: 0 48px;
+      .leftBox {
+        margin-left: 0px;
+      }
     }
   }
 

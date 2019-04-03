@@ -131,7 +131,6 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
       return (
         <div>
           <div className={styles.collectionShowWrapper}>
-            <CollectionSideNaviBar currentCollectionId={collectionShow.mainCollectionId} />
             <div className={styles.collectionShowContentsWrapper}>
               {this.getPageHelmet()}
               <div className={styles.headSection}>
@@ -160,6 +159,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
               </div>
 
               <div className={styles.paperListContainer}>
+                <CollectionSideNaviBar currentCollectionId={collectionShow.mainCollectionId} />
                 <div className={styles.leftBox}>
                   <div className={styles.paperListBox}>
                     <div className={styles.header}>
