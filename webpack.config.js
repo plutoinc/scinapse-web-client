@@ -2,7 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 const CircularDependencyPlugin = require("circular-dependency-plugin");
-const LoadablePlugin = require('@loadable/webpack-plugin')
+const LoadablePlugin = require("@loadable/webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 require("extract-text-webpack-plugin");
 
@@ -11,6 +11,7 @@ module.exports = {
   entry: ["@babel/polyfill", "./app/clientIndex.tsx"],
   output: {
     path: path.resolve(__dirname, "dist", "client"),
+    publicPath: "http://localhost:8080/client/",
     filename: "[name].js",
   },
   devtool: "inline-source-map",
@@ -97,12 +98,15 @@ module.exports = {
     }),
     new LoadablePlugin(),
     new MiniCssExtractPlugin({
-			filename: "[name].css",
-			chunkFilename: "[id].css",
-		}),
+      filename: "[name].css",
+      chunkFilename: "[id].css",
+    }),
   ],
   devServer: {
     contentBase: path.join(__dirname, "dist"),
+    writeToDisk: (filePath) => {
+      return /loadable-stats\.json/.test(filePath);
+    },
     compress: true,
     host: "0.0.0.0",
     allowedHosts: ["localhost", "lvh.me"],

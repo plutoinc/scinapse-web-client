@@ -19,7 +19,7 @@ const { SheetsRegistry } = require("react-jss/lib/jss");
 const statsFile = path.resolve(__dirname, "../client/loadable-stats.json");
 const extractor = new ChunkExtractor({ statsFile, outputPath: "http://localhost:8000/client" });
 
-const ssr = async (req: express.Request, scriptPath: string, version: string) => {
+const ssr = async (req: express.Request, _scriptPath: string, version: string) => {
   // override user request
   axios.defaults.headers.common = {
     ...axios.defaults.headers.common,
@@ -91,8 +91,11 @@ const ssr = async (req: express.Request, scriptPath: string, version: string) =>
 
   const renderedHTML = ReactDOMServer.renderToString(jsx);
   const scriptTags = extractor.getScriptTags();
-  console.log(scriptTags);
-
+  const linkTags = extractor.getLinkTags();
+  const styleTags = extractor.getStyleTags();
+  console.log("scriptTags === ", scriptTags);
+  console.log("linkTags === ", linkTags);
+  console.log("styleTags === ", styleTags);
   const materialUICss = sheetsRegistry.toString();
   const cssArr = Array.from(css);
   const helmet = Helmet.renderStatic();
@@ -101,7 +104,7 @@ const ssr = async (req: express.Request, scriptPath: string, version: string) =>
 
   const html: string = await generateFullHTML({
     reactDom: renderedHTML,
-    scriptPath,
+    scriptTags,
     helmet,
     initialState: stringifiedInitialReduxState,
     css: cssArr.join("") + materialUICss,

@@ -5,7 +5,6 @@ import { Helmet } from "react-helmet";
 import { connect, Dispatch } from "react-redux";
 import axios, { CancelToken } from "axios";
 import { Header, FeedbackButton } from "./components/layouts";
-import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
 import PaperShow, { PaperShowMatchParams } from "./containers/paperShow";
 import AuthorShowContainer, { AuthorShowMatchParams } from "./containers/authorShow";
@@ -69,11 +68,11 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: HOME_PATH,
     exact: true,
-    component: loadable(() => import("./components/home")),
+    component: loadable(() => import(/* webpackPrefetch: true */ "./components/home")),
   },
   {
     path: SEARCH_RESULT_PATH,
-    component: ArticleSearch,
+    component: loadable(() => import(/* webpackPrefetch: true */ "./components/articleSearch")),
     loadData: async (params: LoadDataParams<null>) => {
       await Promise.all([getSearchData(params)]);
     },

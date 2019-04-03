@@ -4,14 +4,14 @@ const sprite = require("svg-sprite-loader/runtime/sprite.build");
 
 interface GenerateFullHTMLParams {
   reactDom: string;
-  scriptPath: string;
+  scriptTags: string;
   helmet: HelmetData;
   initialState: string;
   css: string;
   version?: string;
 }
 
-export function generateFullHTML({ reactDom, scriptPath, helmet, initialState, css, version }: GenerateFullHTMLParams) {
+export function generateFullHTML({ reactDom, scriptTags, helmet, initialState, css, version }: GenerateFullHTMLParams) {
   let gTagScript: string = "";
   if (EnvChecker.isOnServer() && !EnvChecker.isDev() && !EnvChecker.isLocal()) {
     gTagScript = `
@@ -54,7 +54,7 @@ gtag('config', 'AW-817738370');
         ${sprite.stringify()}
         <script>window.__INITIAL_STATE__="${encodeURIComponent(initialState)}"</script>
         <div id="react-app">${reactDom}</div>
-        <script type="application/javascript" src="${scriptPath}"></script>
+        ${scriptTags}
       </body>
     </html>
   `;
