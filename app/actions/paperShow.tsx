@@ -26,11 +26,7 @@ export function getMyCollections(paperId: number, cancelToken: CancelToken, isOp
       }
       const res = await MemberAPI.getMyCollections(paperId, cancelToken);
       dispatch(ActionCreators.addEntity(res));
-      dispatch(
-        ActionCreators.succeededToGetCollectionsInPaperShow({
-          collectionIds: res.result,
-        })
-      );
+      dispatch(ActionCreators.succeededToGetCollectionsInPaperShow(res));
       return res;
     } catch (err) {
       if (!axios.isCancel(err)) {

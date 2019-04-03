@@ -46,6 +46,7 @@ import AuthorSearch from "./containers/authorSearch";
 import { getAuthorSearchData } from "./containers/authorSearch/sideEffect";
 import { checkAuthStatus } from "./components/auth/actions";
 import { getCollections as sideEffectGetCollections } from "./components/collections/sideEffect";
+import { getCollections } from "./components/collections/actions";
 const styles = require("./root.scss");
 
 export interface LoadDataParams<P> {
@@ -160,7 +161,11 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
   private cancelToken = axios.CancelToken.source();
   public componentDidMount = async () => {
     const { dispatch } = this.props;
-    await dispatch(checkAuthStatus());
+    const user = await dispatch(checkAuthStatus());
+
+    if (user && user.member) {
+      dispatch(getCollections(user.member.id, this.cancelToken.token, true));
+    }
   };
 
   public componentWillUnmount() {

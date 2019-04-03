@@ -60,7 +60,7 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_GET_COLLECTIONS: {
       return {
         ...state,
-        collectionIds: action.payload.collectionIds,
+        collectionIds: action.payload.result,
         isLoadingCollections: false,
         isLoadingCollectionsInDropdown: false,
       };

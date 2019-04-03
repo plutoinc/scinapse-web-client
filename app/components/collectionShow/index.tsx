@@ -16,7 +16,7 @@ import DesktopPagination from "../common/desktopPagination";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import { CollectionShowState } from "./reducer";
-import { collectionSchema, Collection } from "../../model/collection";
+import { Collection, userCollectionSchema } from "../../model/collection";
 import { fetchCollectionShowData } from "./sideEffect";
 import { Configuration } from "../../reducers/configuration";
 import { PaperInCollection, paperInCollectionSchema } from "../../model/paperInCollection";
@@ -33,7 +33,6 @@ import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboa
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import ErrorPage from "../error/errorPage";
 import { removePaperFromCollection } from "../dialog/actions";
-import { MyCollectionsState } from "../../containers/paperShowCollectionControlButton/reducer";
 import CollectionSideNaviBar from "../collectionSideNaviBar";
 const styles = require("./collectionShow.scss");
 
@@ -46,8 +45,8 @@ function mapStateToProps(state: AppState) {
     currentUser: state.currentUser,
     collectionShow: state.collectionShow,
     configuration: state.configuration,
-    myCollections: state.myCollections,
-    collection: denormalize(state.collectionShow.mainCollectionId, collectionSchema, state.entities),
+    userCollections: denormalize(state.myCollections.collectionIds, [userCollectionSchema], state.entities),
+    userCollection: denormalize(state.collectionShow.mainCollectionId, userCollectionSchema, state.entities),
     papersInCollection: denormalize(state.collectionShow.paperIds, [paperInCollectionSchema], state.entities),
   };
 }
@@ -63,8 +62,8 @@ export interface CollectionShowProps
       currentUser: CurrentUser;
       configuration: Configuration;
       collectionShow: CollectionShowState;
-      myCollections: MyCollectionsState;
-      collection: Collection | undefined;
+      userCollections: Collection[];
+      userCollection: Collection | undefined;
       papersInCollection: PaperInCollection[] | undefined;
       dispatch: Dispatch<any>;
     }> {}
@@ -112,7 +111,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   }
 
   public render() {
-    const { collectionShow, collection } = this.props;
+    const { collectionShow, userCollection } = this.props;
 
     if (collectionShow.pageErrorCode) {
       return <ErrorPage errorNum={collectionShow.pageErrorCode} />;
@@ -126,8 +125,8 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
           </div>
         </div>
       );
-    } else if (collection) {
-      const parsedUpdatedAt = parse(collection.updatedAt);
+    } else if (userCollection) {
+      const parsedUpdatedAt = parse(userCollection.updatedAt);
 
       return (
         <div>
@@ -139,16 +138,17 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                 <div className={styles.container}>
                   <div className={styles.leftBox}>
                     <div className={styles.title}>
-                      <span>{collection.title}</span>
+                      <span>{userCollection.title}</span>
                     </div>
-                    <div className={styles.description}>{collection.description}</div>
+                    <div className={styles.description}>{userCollection.description}</div>
                     <div className={styles.infoWrapper}>
                       <span>Created by </span>
                       <Link
                         className={styles.collectionCreatedUser}
-                        to={`/users/${collection.createdBy.id}/collections`}
+                        to={`/users/${userCollection.createdBy.id}/collections`}
                       >
-                        <strong>{`${collection.createdBy.firstName} ${collection.createdBy.lastName || ""}`}</strong>
+                        <strong>{`${userCollection.createdBy.firstName} ${userCollection.createdBy.lastName ||
+                          ""}`}</strong>
                       </Link>
                       <span>{` · Last updated `}</span>
                       <strong>{`${distanceInWordsToNow(parsedUpdatedAt)} `}</strong>
@@ -285,8 +285,8 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   };
 
   private getCollectionShareBtns = () => {
-    const { collection } = this.props;
-    return collection ? (
+    const { userCollection } = this.props;
+    return userCollection ? (
       <ClickAwayListener onClickAway={this.handleToggleShareDropdown}>
         <div className={styles.shareAreaWrapper}>
           <span className={styles.shareGuideMessage}>Share this Collection to SNS!</span>
@@ -294,7 +294,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
             <a
               className={styles.shareBtn}
               onClick={() => {
-                this.getPageToSharing("COPIED", collection.id);
+                this.getPageToSharing("COPIED", userCollection.id);
               }}
             >
               <Icon icon="LINK" className={styles.shareIcon} />
@@ -304,7 +304,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
               target="_blank"
               rel="noopener"
               onClick={() => {
-                this.getPageToSharing("FACEBOOK", collection.id);
+                this.getPageToSharing("FACEBOOK", userCollection.id);
               }}
             >
               <Icon icon="FACEBOOK_LOGO" className={styles.facebookShareIcon} />
@@ -314,7 +314,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
               target="_blank"
               rel="noopener"
               onClick={() => {
-                this.getPageToSharing("TWITTER", collection.id);
+                this.getPageToSharing("TWITTER", userCollection.id);
               }}
             >
               <Icon icon="TWITTER_LOGO" className={styles.twitterShareIcon} />
@@ -363,7 +363,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   };
 
   private getCollectionControlBtns = () => {
-    const { currentUser, collection, collectionShow } = this.props;
+    const { currentUser, userCollection, collectionShow } = this.props;
 
     const collectionShareButton = (
       <TransparentButton
@@ -390,24 +390,19 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
       />
     );
 
-    if (collection && currentUser.isLoggedIn && collection.createdBy.id === currentUser.id && !collection.isDefault) {
+    if (
+      userCollection &&
+      currentUser.isLoggedIn &&
+      userCollection.createdBy.id === currentUser.id &&
+      !userCollection.isDefault
+    ) {
       return (
         <div className={styles.collectionHeaderBtnWrapper}>
           <TransparentButton
-            style={{
-              width: "123px",
-              height: "40px",
-              fontWeight: 500,
-              padding: "0 16px 0 8px",
-            }}
-            iconStyle={{
-              marginRight: "8px",
-              width: "20px",
-              height: "20px",
-              color: "#666d7c",
-            }}
+            style={{ width: "123px", height: "40px", fontWeight: 500, padding: "0 16px 0 8px" }}
+            iconStyle={{ marginRight: "8px", width: "20px", height: "20px", color: "#666d7c" }}
             onClick={() => {
-              GlobalDialogManager.openEditCollectionDialog(collection);
+              GlobalDialogManager.openEditCollectionDialog(userCollection);
             }}
             gaCategory="Collection Show"
             gaAction="Click Edit Collection"
@@ -429,16 +424,11 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   };
 
   private removePaperFromCollection = async (paperId: number) => {
-    const { dispatch, collection } = this.props;
+    const { dispatch, userCollection } = this.props;
 
-    if (collection && confirm(`Are you sure to remove this paper from '${collection.title}'?`)) {
+    if (userCollection && confirm(`Are you sure to remove this paper from '${userCollection.title}'?`)) {
       try {
-        await dispatch(
-          removePaperFromCollection({
-            paperIds: [paperId],
-            collection,
-          })
-        );
+        await dispatch(removePaperFromCollection({ paperIds: [paperId], collection: userCollection }));
       } catch (err) {}
     }
   };
@@ -454,34 +444,34 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   };
 
   private getPageHelmet = () => {
-    const { collection } = this.props;
+    const { userCollection } = this.props;
 
-    if (collection) {
+    if (userCollection) {
       return (
         <Helmet>
-          <title>{collection.title} | Scinapse</title>
-          <meta itemProp="name" content={`${collection.title} | Scinapse`} />
+          <title>{userCollection.title} | Scinapse</title>
+          <meta itemProp="name" content={`${userCollection.title} | Scinapse`} />
           <meta
             name="description"
-            content={`${collection.createdBy.firstName} ${collection.createdBy.lastName || ""}'s ${
-              collection.title
+            content={`${userCollection.createdBy.firstName} ${userCollection.createdBy.lastName || ""}'s ${
+              userCollection.title
             } collection`}
           />
           <meta
             name="twitter:description"
-            content={`${collection.createdBy.firstName} ${collection.createdBy.lastName || ""}'s ${
-              collection.title
+            content={`${userCollection.createdBy.firstName} ${userCollection.createdBy.lastName || ""}'s ${
+              userCollection.title
             } collection`}
           />
-          <meta name="twitter:card" content={`${collection.title} | Scinapse`} />
-          <meta name="twitter:title" content={`${collection.title} | Scinapse`} />
-          <meta property="og:title" content={`${collection.title} | Scinapse`} />
+          <meta name="twitter:card" content={`${userCollection.title} | Scinapse`} />
+          <meta name="twitter:title" content={`${userCollection.title} | Scinapse`} />
+          <meta property="og:title" content={`${userCollection.title} | Scinapse`} />
           <meta property="og:type" content="article" />
-          <meta property="og:url" content={`https://scinapse.io/collections/${collection.id}`} />
+          <meta property="og:url" content={`https://scinapse.io/collections/${userCollection.id}`} />
           <meta
             property="og:description"
-            content={`${collection.createdBy.firstName} ${collection.createdBy.lastName || ""}'s ${
-              collection.title
+            content={`${userCollection.createdBy.firstName} ${userCollection.createdBy.lastName || ""}'s ${
+              userCollection.title
             } collection`}
           />
         </Helmet>
@@ -490,7 +480,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   };
 
   private getPaperList = () => {
-    const { papersInCollection, currentUser, collectionShow, collection } = this.props;
+    const { papersInCollection, currentUser, collectionShow, userCollection } = this.props;
 
     if (collectionShow.isLoadingPaperToCollection) {
       return (
@@ -500,7 +490,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
       );
     }
 
-    if (collection && papersInCollection && papersInCollection.length > 0) {
+    if (userCollection && papersInCollection && papersInCollection.length > 0) {
       return papersInCollection.map(paper => {
         return (
           <CollectionPaperItem
@@ -508,7 +498,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
             pageType="collectionShow"
             paperNote={paper.note ? paper.note : ""}
             paper={paper.paper}
-            collection={collection}
+            collection={userCollection}
             onRemovePaperCollection={this.removePaperFromCollection}
             key={paper.paperId}
           />

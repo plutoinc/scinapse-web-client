@@ -17,3 +17,4 @@ export interface Collection {
 }
 
 export const collectionSchema = new schema.Entity("collections");
+export const userCollectionSchema = new schema.Entity("userCollections");

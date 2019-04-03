@@ -39,6 +39,9 @@ export type AppEntities = {
   collections: {
     [collectionId: number]: Collection;
   };
+  userCollections: {
+    [collectionId: number]: Collection;
+  };
   members: {
     [memberId: number]: Member;
   };
@@ -58,6 +61,7 @@ export const INITIAL_ENTITY_STATE = {
   papersInCollection: {},
   comments: {},
   collections: {},
+  userCollections: {},
   members: {},
   journals: {},
   profiles: {},
@@ -79,6 +83,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
         papersInCollection: { ...state.papersInCollection, ...entities.papersInCollection },
         comments: { ...state.comments, ...entities.comments },
         collections: { ...state.collections, ...entities.collections },
+        userCollections: { ...state.userCollections, ...entities.userCollections },
         members: { ...state.members, ...entities.members },
         journals: { ...state.journals, ...entities.journals },
         profiles: { ...state.profiles, ...entities.profiles },

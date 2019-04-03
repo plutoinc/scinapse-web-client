@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Collection, collectionSchema } from "../../model/collection";
+import { Collection, userCollectionSchema } from "../../model/collection";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { connect } from "react-redux";
 import { AppState } from "../../reducers";
@@ -15,13 +15,13 @@ const styles = require("./collectionSideNaviBar.scss");
 
 interface CollectionSideNaviBarProps {
   myCollections: MyCollectionsState;
-  collections: Collection[] | undefined;
+  userCollections: Collection[] | undefined;
   currentCollectionId: number;
   currentUser: CurrentUser;
 }
 
 function getCollectionsList(
-  collections: Collection[] | undefined,
+  userCollections: Collection[] | undefined,
   isLoadingCollections: boolean,
   currentCollectionId: number
 ) {
@@ -34,8 +34,8 @@ function getCollectionsList(
   }
 
   const collectionsList =
-    collections &&
-    collections.map((collection, index) => {
+    userCollections &&
+    userCollections.map((collection, index) => {
       return (
         <Link
           key={index}
@@ -54,7 +54,7 @@ function getCollectionsList(
 }
 
 const CollectionSideNaviBar: React.FunctionComponent<CollectionSideNaviBarProps> = props => {
-  const { collections, myCollections, currentCollectionId, currentUser } = props;
+  const { userCollections, myCollections, currentCollectionId, currentUser } = props;
 
   return (
     <div className={styles.sideNaviBarWrapper}>
@@ -64,7 +64,7 @@ const CollectionSideNaviBar: React.FunctionComponent<CollectionSideNaviBarProps>
         </Link>
       </div>
       <div className={styles.naviBarContent}>
-        {getCollectionsList(collections, myCollections.isLoadingCollections, currentCollectionId)}
+        {getCollectionsList(userCollections, myCollections.isLoadingCollections, currentCollectionId)}
         <button
           className={styles.createNewCollectionBtn}
           onClick={() => {
@@ -81,7 +81,7 @@ const CollectionSideNaviBar: React.FunctionComponent<CollectionSideNaviBarProps>
 function mapStateToProps(state: AppState) {
   return {
     myCollections: state.myCollections,
-    collections: denormalize(state.myCollections.collectionIds, [collectionSchema], state.entities).filter(
+    userCollections: denormalize(state.myCollections.collectionIds, [userCollectionSchema], state.entities).filter(
       (c: Collection) => !!c
     ),
     currentUser: state.currentUser,

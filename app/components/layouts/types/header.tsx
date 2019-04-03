@@ -5,6 +5,7 @@ import { ArticleSearchState } from "../../articleSearch/records";
 import { RouteComponentProps } from "react-router";
 import { AuthorSearchState } from "../../../containers/authorSearch/records";
 import { MyCollectionsState } from "../../../containers/paperShowCollectionControlButton/reducer";
+import { Collection } from "../../../model/collection";
 
 export interface HeaderProps extends RouteComponentProps<any> {
   layoutState: LayoutState;
@@ -12,5 +13,6 @@ export interface HeaderProps extends RouteComponentProps<any> {
   articleSearchState: ArticleSearchState;
   authorSearchState: AuthorSearchState;
   myCollectionsState: MyCollectionsState;
+  userCollections: Collection[];
   dispatch: Dispatch<any>;
 }
