@@ -60,8 +60,8 @@ class PaperSearchQueryFormatter {
     }
 
     // tslint:disable-next-line:one-variable-per-declaration
-    let yearFrom: number | undefined;
-    let yearTo: number | undefined;
+    let yearFrom: number | any;
+    let yearTo: number | any;
     let fos: number[] = [];
     let journal: number[] = [];
     if (!!queryMap.year) {
@@ -90,14 +90,14 @@ class PaperSearchQueryFormatter {
     }
 
     return {
-      yearFrom,
-      yearTo,
-      fos,
-      journal,
+      yearFrom: isNaN(yearFrom) ? undefined : yearFrom,
+      yearTo: isNaN(yearTo) ? undefined : yearTo,
+      fos: fos.sort((a, b) => a - b),
+      journal: journal.sort((a, b) => a - b),
     };
   }
 
-  private getStringifiedPaperFilterParams({ yearFrom, yearTo, fos, journal }: FilterObject) {
+  public getStringifiedPaperFilterParams({ yearFrom, yearTo, fos, journal }: FilterObject) {
     const resultQuery = `year=${yearFrom || ""}:${yearTo || ""},fos=${fos ? fos.join("|") : ""},journal=${
       journal ? journal.join("|") : ""
     }`;

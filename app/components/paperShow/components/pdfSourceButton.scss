@@ -14,13 +14,11 @@
 
   .arrowIcon {
     @include flex-center-vertical-horizontal(flex);
-    width: 24px;
-    height: 24px;
     color: $gray4;
 
     svg {
-      width: 14px;
-      height: 8px;
+      width: 24px;
+      height: 24px;
     }
   }
 

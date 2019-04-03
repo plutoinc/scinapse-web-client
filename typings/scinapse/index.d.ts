@@ -61,9 +61,14 @@ declare namespace Scinapse {
       | "JOURNAL_IF"
       | "FOS"
       | "JOURNAL"
+      | "applySavedFilter"
+      | "applyPreviousFilter"
+      | "addFilter"
       | "sendRequestFullText"
       | "clickRequestFullTextBtn"
       | "collectionBtn"
+      | "journalSearch"
+      | "fosSearch"
       | "";
 
     type ActionArea =

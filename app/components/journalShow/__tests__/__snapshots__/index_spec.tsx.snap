@@ -17,12 +17,9 @@ exports[`JournalShow Container Component when journal data exist should render c
           <div
             className="title"
           >
-            <a
-              href="/journals/2764552960"
-              onClick={[Function]}
-            >
+            <span>
               Applied Mathematics and Computation
-            </a>
+            </span>
           </div>
           <div
             className="infoWrapper"

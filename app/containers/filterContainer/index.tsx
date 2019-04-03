@@ -1,11 +1,10 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import * as classNames from "classnames";
 import Checkbox from "@material-ui/core/Checkbox";
 import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { ChangeRangeInputParams } from "../../constants/paperSearch";
-import { FilterObject } from "../../helpers/papersQueryFormatter";
 import { trackSelectFilter } from "../../components/filterContainer/trackSelectFilter";
 import { ArticleSearchState } from "../../components/articleSearch/records";
 import formatNumber from "../../helpers/formatNumber";
@@ -14,13 +13,17 @@ import FilterResetButton from "../../components/filterContainer/filterResetButto
 import YearRangeSlider from "./yearRangeSlider";
 import Icon from "../../icons";
 import EnvChecker from "../../helpers/envChecker";
+import FilterSaveBox from "./filterSaveBox";
+import makeNewFilterLink from "../../helpers/makeNewFilterLink";
+import { CurrentUser } from "../../model/currentUser";
+import AutocompleteFilter from "./autocompleteFilter";
 const styles = require("./filterContainer.scss");
 
-export interface FilterContainerProps {
+export interface FilterContainerProps extends RouteComponentProps<any> {
   handleChangeRangeInput: (params: ChangeRangeInputParams) => void;
   handleToggleExpandingFilter: () => void;
-  makeNewFilterLink: (newFilter: FilterObject) => string;
   articleSearchState: ArticleSearchState;
+  currentUserState: CurrentUser;
 }
 
 function getPublicationFilterBox(props: FilterContainerProps) {
@@ -33,7 +36,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
 }
 
 function getFOSFilterBox(props: FilterContainerProps) {
-  const { articleSearchState, makeNewFilterLink } = props;
+  const { articleSearchState } = props;
   const fosList = articleSearchState.aggregationData ? articleSearchState.aggregationData.fosList : [];
 
   if (!articleSearchState.aggregationData || !fosList || fosList.length === 0) {
@@ -54,13 +57,16 @@ function getFOSFilterBox(props: FilterContainerProps) {
           trackSelectFilter("FOS", fos!.name);
         }}
         key={`fos_${fos!.id}`}
-        to={makeNewFilterLink({
-          fos: newFOSFilterArray as number[],
-        })}
+        to={makeNewFilterLink(
+          {
+            fos: newFOSFilterArray as number[],
+          },
+          props.location
+        )}
         className={classNames({
           [styles.filterItem]: true,
           [styles.isSelected]: alreadyHasFOSInFilter,
-          [styles.zeroCountFilterItem]: fosCount === "0",
+          [styles.zeroCountFilterItem]: fosCount === "0" && !alreadyHasFOSInFilter,
         })}
       >
         <Checkbox
@@ -80,7 +86,10 @@ function getFOSFilterBox(props: FilterContainerProps) {
     <div className={styles.filterBox}>
       <div className={styles.filterTitleBox}>
         <div className={styles.filterTitle}>Field of study</div>
-        <FilterResetButton filterType="FOS" makeNewFilterLink={makeNewFilterLink} />
+        <FilterResetButton filterType="FOS" />
+      </div>
+      <div className={styles.autocompleteFilterWrapper}>
+        <AutocompleteFilter type="FOS" />
       </div>
       {fosItems}
     </div>
@@ -88,7 +97,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
 }
 
 function getJournalFilter(props: FilterContainerProps) {
-  const { articleSearchState, makeNewFilterLink, handleToggleExpandingFilter } = props;
+  const { articleSearchState, handleToggleExpandingFilter } = props;
 
   const journals = articleSearchState.aggregationData ? articleSearchState.aggregationData.journals : [];
 
@@ -109,9 +118,12 @@ function getJournalFilter(props: FilterContainerProps) {
           trackSelectFilter("JOURNAL", journal!.title);
         }}
         key={`journal_${journal!.id}`}
-        to={makeNewFilterLink({
-          journal: newJournalFilterArray as number[],
-        })}
+        to={makeNewFilterLink(
+          {
+            journal: newJournalFilterArray as number[],
+          },
+          props.location
+        )}
         className={classNames({
           [styles.filterItem]: true,
           [styles.isSelected]: alreadyHasJournalInFilter,
@@ -174,7 +186,10 @@ function getJournalFilter(props: FilterContainerProps) {
     >
       <div className={styles.filterTitleBox}>
         <div className={styles.filterTitle}>Journal</div>
-        <FilterResetButton filterType="JOURNAL" makeNewFilterLink={makeNewFilterLink} />
+        <FilterResetButton filterType="JOURNAL" />
+      </div>
+      <div className={styles.autocompleteFilterWrapper}>
+        <AutocompleteFilter type="JOURNAL" />
       </div>
       {journalItems}
       {moreButton}
@@ -183,7 +198,7 @@ function getJournalFilter(props: FilterContainerProps) {
 }
 
 const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => {
-  const { articleSearchState, makeNewFilterLink } = props;
+  const { articleSearchState } = props;
   const [isClient, setIsClient] = React.useState(false);
 
   React.useEffect(() => {
@@ -202,13 +217,7 @@ const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => 
       })}
     >
       {articleSearchState.isContentLoading ? <div className={styles.filterLoadingWrapper} /> : null}
-      <div className={styles.filterContainerTitleBox}>
-        <div className={styles.filterTitleBox}>
-          <Icon className={styles.filterResultButton} icon="FILTER_RESULT_BUTTON" />
-          <span className={styles.filterContainerTitle}>PAPER FILTERS</span>
-          <FilterResetButton makeNewFilterLink={makeNewFilterLink} />
-        </div>
-      </div>
+      <FilterSaveBox />
       {getPublicationFilterBox(props)}
       {getFOSFilterBox(props)}
       {getJournalFilter(props)}
@@ -216,4 +225,4 @@ const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => 
   );
 };
 
-export default withStyles<typeof FilterContainer>(styles)(FilterContainer);
+export default withRouter(withStyles<typeof FilterContainer>(styles)(FilterContainer));

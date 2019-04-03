@@ -2,7 +2,7 @@ import * as React from "react";
 import axios from "axios";
 import { parse, stringify } from "qs";
 import { connect, Dispatch } from "react-redux";
-import { withRouter, RouteComponentProps, Link } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import { denormalize } from "normalizr";
 import { Helmet } from "react-helmet";
 import { AppState } from "../../reducers";
@@ -127,8 +127,10 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
               <div className={styles.container}>
                 <div className={styles.leftBox}>
                   <div className={styles.title}>
-                    <Link to={`/journals/${journal.id}`}>{journal.title}</Link>
-                    {this.getExternalLink()}
+                    <span>
+                      {journal.title}
+                      {this.getExternalLink()}
+                    </span>
                   </div>
                   <div className={styles.infoWrapper}>
                     {journal.impactFactor ? (

@@ -15,12 +15,13 @@ import {
   deleteQueryFromRecentList,
   getRecentQueries,
 } from "../../../helpers/recentQueryManager";
-import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
+import PapersQueryFormatter, { FilterObject } from "../../../helpers/papersQueryFormatter";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { AppState } from "../../../reducers";
 import { LayoutState, UserDevice } from "../../layouts/records";
 import { getCurrentPageType } from "../../locationListener";
+import { handleInputKeydown } from "./helpers/handleInputKeydown";
 const s = require("./searchQueryInput.scss");
 
 interface SearchQueryInputProps extends RouteComponentProps<any> {
@@ -29,54 +30,10 @@ interface SearchQueryInputProps extends RouteComponentProps<any> {
   actionArea: "home" | "topBar";
   maxCount: number;
   initialValue?: string;
+  initialFilter?: FilterObject;
   wrapperClassName?: string;
   listWrapperClassName?: string;
   inputClassName?: string;
-}
-
-interface HandleInputKeydownParams<L> {
-  e: React.KeyboardEvent<HTMLInputElement>;
-  list: L[];
-  currentIdx: number;
-  onMove: (i: number) => void;
-  onSelect: (currentIdx: number) => void;
-}
-
-function handleInputKeydown<L>({ e, list, currentIdx, onMove, onSelect }: HandleInputKeydownParams<L>) {
-  const maxIndex = list.length - 1;
-  const minIdx = -1;
-  const nextIdx = currentIdx + 1 > maxIndex ? -1 : currentIdx + 1;
-  const prevIdx = currentIdx - 1 < minIdx ? maxIndex : currentIdx - 1;
-
-  switch (e.keyCode) {
-    case 13: {
-      // enter
-      e.preventDefault();
-      onSelect(currentIdx);
-      e.currentTarget.blur();
-      break;
-    }
-
-    case 9: // tab
-    case 40: {
-      // down
-      if (!list.length) return;
-      e.preventDefault();
-      onMove(nextIdx);
-      break;
-    }
-
-    case 38: {
-      // up
-      if (!list.length) return;
-      e.preventDefault();
-      onMove(prevIdx);
-      break;
-    }
-
-    default:
-      break;
-  }
 }
 
 const SearchQueryInput: React.FunctionComponent<
@@ -145,7 +102,7 @@ const SearchQueryInput: React.FunctionComponent<
     [props.location]
   );
 
-  function handleSubmit(query?: string) {
+  function handleSubmit(query?: string, filter?: FilterObject) {
     const searchKeyword = query || inputValue;
 
     if (searchKeyword.length < 2) {
@@ -174,7 +131,7 @@ const SearchQueryInput: React.FunctionComponent<
       `/search?${PapersQueryFormatter.stringifyPapersQuery({
         query: searchKeyword,
         sort: "RELEVANCE",
-        filter: {},
+        filter: filter || {},
         page: 1,
       })}`
     );
@@ -189,7 +146,7 @@ const SearchQueryInput: React.FunctionComponent<
           [s.highlight]: highlightIdx === i,
         })}
         onClick={() => {
-          handleSubmit(k.text);
+          handleSubmit(k.text, props.initialFilter);
         }}
       >
         <span dangerouslySetInnerHTML={{ __html: getHighlightedContent(k.text, genuineInputValue) }} />
@@ -237,7 +194,7 @@ const SearchQueryInput: React.FunctionComponent<
                 setInputValue(keywordsToShow[i] ? keywordsToShow[i].text : genuineInputValue);
               },
               onSelect: i => {
-                handleSubmit(keywordsToShow[i] ? keywordsToShow[i].text : genuineInputValue);
+                handleSubmit(keywordsToShow[i] ? keywordsToShow[i].text : genuineInputValue, props.initialFilter);
               },
             });
           }}
@@ -262,7 +219,7 @@ const SearchQueryInput: React.FunctionComponent<
         />
         <Icon
           onClick={() => {
-            handleSubmit();
+            handleSubmit(undefined, props.initialFilter);
           }}
           icon="SEARCH_ICON"
           className={s.searchIcon}

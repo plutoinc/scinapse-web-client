@@ -8,7 +8,7 @@ import * as Actions from "./actions";
 import SearchList from "./components/searchList";
 import FilterContainer from "../../containers/filterContainer";
 import NoResult from "./components/noResult";
-import PapersQueryFormatter, { SearchPageQueryParamsObject, FilterObject } from "../../helpers/papersQueryFormatter";
+import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 import formatNumber from "../../helpers/formatNumber";
 import { ArticleSearchContainerProps } from "./types";
 import { Footer } from "../layouts";
@@ -16,7 +16,6 @@ import DesktopPagination from "../common/desktopPagination";
 import MobilePagination from "../common/mobilePagination";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { getSearchData } from "./sideEffect";
-import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import { UserDevice } from "../layouts/records";
 import AuthorSearchItem from "../authorSearchItem";
@@ -26,6 +25,7 @@ import ErrorPage from "../error/errorPage";
 import NoResultInSearch from "./components/noResultInSearch";
 import TabNavigationBar from "../common/tabNavigationBar";
 import SortBar from "./components/SortBar";
+import { getUrlDecodedQueryParamsObject } from "../../helpers/makeNewFilterLink";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -37,12 +37,27 @@ function mapStateToProps(state: AppState) {
   };
 }
 
+interface ArticleSearchState {
+  isClient: boolean;
+}
+
 @withStyles<typeof ArticleSearch>(styles)
-class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
+class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, ArticleSearchState> {
   private cancelToken = axios.CancelToken.source();
+
+  public constructor(props: ArticleSearchContainerProps) {
+    super(props);
+
+    this.state = {
+      isClient: false,
+    };
+  }
 
   public async componentDidMount() {
     const { configuration, dispatch, match, location } = this.props;
+
+    this.setState({ isClient: true });
+    this.fetchFilters();
 
     const notRenderedAtServerOrJSAlreadyInitialized =
       !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
@@ -62,6 +77,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
 
   public async componentDidUpdate(prevProps: ArticleSearchContainerProps) {
     const { dispatch, match, location, currentUserState } = this.props;
+    const { isClient } = this.state;
 
     const prevLocation = prevProps.location;
     const beforeSearch = prevLocation.search;
@@ -71,8 +87,13 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     const hasAuthStateChanged = currentUserState.isLoggedIn !== prevProps.currentUserState.isLoggedIn;
 
     if (hasSearchKeywordChanged || hasAuthStateChanged) {
+      if (isClient) {
+        this.fetchFilters();
+      }
+
       this.cancelToken.cancel();
       this.cancelToken = axios.CancelToken.source();
+
       await getSearchData({
         dispatch,
         match,
@@ -89,8 +110,8 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
   }
 
   public render() {
-    const { articleSearchState } = this.props;
-    const queryParams = this.getUrlDecodedQueryParamsObject();
+    const { articleSearchState, currentUserState, location } = this.props;
+    const queryParams = getUrlDecodedQueryParamsObject(location);
 
     if (articleSearchState.pageErrorCode) {
       return <ErrorPage errorNum={articleSearchState.pageErrorCode} />;
@@ -105,9 +126,9 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
           {this.isFilterEmpty(queryParams.filter) ? this.getAuthorEntitiesSection() : null}
           {this.getInnerContainerContent()}
           <FilterContainer
-            makeNewFilterLink={this.makeNewFilterLink}
             handleChangeRangeInput={this.setRangeInput}
             articleSearchState={articleSearchState}
+            currentUserState={currentUserState}
             handleToggleExpandingFilter={this.handleToggleExpandingFilter}
           />
         </div>
@@ -116,11 +137,19 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     );
   }
 
+  private fetchFilters = () => {
+    const { dispatch, currentUserState } = this.props;
+
+    if (currentUserState.isLoggedIn) {
+      dispatch(Actions.fetchCurrentUserFilters());
+    }
+  };
+
   private getInnerContainerContent = () => {
-    const { articleSearchState, currentUserState } = this.props;
+    const { articleSearchState, currentUserState, location } = this.props;
     const { isContentLoading, totalElements, searchItemsToShow } = articleSearchState;
 
-    const queryParams = this.getUrlDecodedQueryParamsObject();
+    const queryParams = getUrlDecodedQueryParamsObject(location);
 
     const hasNoSearchResult =
       !articleSearchState.searchItemsToShow || articleSearchState.searchItemsToShow.length === 0;
@@ -190,8 +219,8 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
   };
 
   private getSuggestionKeywordBox = () => {
-    const { articleSearchState } = this.props;
-    const queryParams = this.getUrlDecodedQueryParamsObject();
+    const { articleSearchState, location } = this.props;
+    const queryParams = getUrlDecodedQueryParamsObject(location);
 
     if (articleSearchState.searchFromSuggestion) {
       return (
@@ -345,19 +374,10 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
     dispatch(Actions.toggleExpandingFilter());
   };
 
-  private makeNewFilterLink = (newFilter: FilterObject) => {
-    const queryParamsObject = this.getUrlDecodedQueryParamsObject();
-
-    return `/search?${PapersQueryFormatter.stringifyPapersQuery({
-      query: queryParamsObject.query,
-      page: 1,
-      sort: queryParamsObject.sort,
-      filter: { ...queryParamsObject.filter, ...newFilter },
-    })}`;
-  };
-
   private makePaginationLink = (page: number) => {
-    const queryParamsObject = this.getUrlDecodedQueryParamsObject();
+    const { location } = this.props;
+
+    const queryParamsObject = getUrlDecodedQueryParamsObject(location);
     const queryParams = PapersQueryFormatter.stringifyPapersQuery({
       ...queryParamsObject,
       page,
@@ -371,17 +391,5 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
 
     dispatch(Actions.changeRangeInput(params));
   };
-
-  private getUrlDecodedQueryParamsObject(): SearchPageQueryParamsObject {
-    const { location } = this.props;
-    const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
-
-    return {
-      query: SafeURIStringHandler.decode(rawQueryParamsObj.query),
-      page: parseInt(rawQueryParamsObj.page, 10),
-      filter: PapersQueryFormatter.objectifyPapersFilter(rawQueryParamsObj.filter),
-      sort: rawQueryParamsObj.sort,
-    };
-  }
 }
 export default withRouter(connect(mapStateToProps)(ArticleSearch));

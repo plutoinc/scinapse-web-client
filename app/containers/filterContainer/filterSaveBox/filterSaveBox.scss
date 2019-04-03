@@ -1,0 +1,236 @@
+.filterTitleBox {
+  position: relative;
+  height: 42px;
+  padding: 12px;
+  cursor: pointer;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background-color: white;
+
+  &:hover {
+    .titleControlIconWrapper {
+      opacity: 1;
+      transition: opacity 200ms cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+
+  .titleControlIconWrapper {
+    opacity: 0;
+    margin-left: 12px;
+    cursor: pointer;
+
+    .titleControlIcon {
+      justify-content: center;
+      align-items: center;
+      vertical-align: middle;
+      display: inline-flex;
+      padding: 1px;
+      border-radius: 8px;
+      color: $gray5;
+
+      &:hover {
+        background-color: $gray2;
+      }
+
+      svg {
+        width: 12px;
+        height: 14px;
+      }
+    }
+  }
+}
+
+.filterResultButton {
+  margin-right: 12px;
+  margin-top: -2px;
+  color: $gray6;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.filterContainerDefaultTitle {
+  font-size: 16px;
+  font-weight: bold;
+  color: $gray6;
+  width: 100%;
+  display: inline-block;
+}
+
+.filterContainerTitle {
+  @extend .filterContainerDefaultTitle;
+  width: auto;
+  max-width: 80%;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.loadingFilterContainerTitle {
+  @extend .filterContainerTitle;
+  color: $gray5;
+}
+
+.filterContainerEmoji {
+  font-size: 20px;
+  border-radius: 13px;
+  margin-right: 6px;
+  margin-top: -4px;
+  vertical-align: top;
+  padding: 3px 1px 1px 3px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $gray2;
+    transition: 0.2s;
+  }
+}
+
+.filterTitleContainerEmoji {
+  @extend .filterContainerEmoji;
+  position: absolute;
+  top: 16px;
+  left: 12px;
+}
+
+.filterContainerTitleBox {
+  padding: 12px;
+  border-top: solid 1px $gray3;
+  max-height: 100%;
+  overflow: hidden;
+
+  &:first-of-type {
+    border-top: 0;
+  }
+}
+
+.openFilterContainerTitleBox {
+  @extend .filterContainerTitleBox;
+  border-bottom: solid 1px $gray2;
+  background-color: white;
+}
+
+.popperWrapper {
+  @include popper-paper(100%);
+  padding: 0;
+  margin: 0;
+
+  .defaultFilterItemTitle {
+    font-size: 14px;
+    color: $gray5;
+    margin-left: 12px;
+  }
+
+  .defaultFilterItemIcon {
+    color: $gray5;
+    svg {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: top;
+    }
+  }
+
+  .filterItemTitle {
+    @extend .defaultFilterItemTitle;
+    color: $gray6;
+  }
+
+  .filterItemIcon {
+    color: $gray4;
+    display: inline-block;
+    vertical-align: top;
+
+    svg {
+      width: 20px;
+      height: 10px;
+    }
+  }
+
+  .filterItemWrapper {
+    @extend %popper-item;
+    border: none;
+    padding: 12px;
+
+    &:hover {
+      background-color: $gray1;
+      transition: 0.2s;
+    }
+  }
+}
+
+.upArrow {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  color: #979797;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  margin-right: 12px;
+  cursor: pointer;
+
+  svg {
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.downArrow {
+  @extend .upArrow;
+
+  svg {
+    transform: rotate(180deg);
+  }
+}
+
+.titleInputCancelBtn {
+  font-size: 14px;
+  font-weight: 500;
+  color: $gray4;
+  cursor: pointer;
+  margin-left: 8px;
+
+  &:hover {
+    color: $gray3;
+  }
+}
+
+.titleBtnWrapper {
+  width: 100%;
+  text-align: right;
+}
+
+.titleEditBtnWrapper {
+  float: right;
+}
+
+.buttonSpinner {
+  position: absolute;
+  color: $gray5;
+}
+
+.buttonSpinnerWrapper {
+  margin-right: 29px;
+  display: inline-block;
+  height: 14px;
+  vertical-align: middle;
+}
+
+.titleContentWrapper {
+  min-width: 58%;
+  width: 90%;
+  text-align: left;
+}
+
+.filterTitleBoxWrapper {
+  display: flex;
+  justify-content: flex-start;
+}

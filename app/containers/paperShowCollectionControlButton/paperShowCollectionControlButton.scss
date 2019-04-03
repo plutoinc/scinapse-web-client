@@ -74,13 +74,11 @@
   align-items: center;
   top: 12px;
   right: 12px;
-  width: 16px;
-  height: 16px;
 
   svg {
     transform: rotate(180deg);
-    width: 9px;
-    height: 5px;
+    width: 16px;
+    height: 16px;
   }
 }
 
@@ -335,8 +333,8 @@
   }
 }
 
-// SmallDisplay (768~1024)
-@media (max-width: 1024px) {
+// regular_width (1200)
+@media (max-width: $regular_width) {
   .buttonWrapper {
     width: 100%;
     margin-top: 8px;
