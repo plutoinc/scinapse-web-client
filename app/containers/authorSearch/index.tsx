@@ -23,6 +23,9 @@ import { ArticleSearchState } from "../../components/articleSearch/records";
 import NoResultInSearch from "../../components/articleSearch/components/noResultInSearch";
 import TabNavigationBar from "../../components/common/tabNavigationBar";
 import { getUrlDecodedQueryParamsObject } from "../../helpers/makeNewFilterLink";
+import EnvChecker from "../../helpers/envChecker";
+import ActionTicketManager from "../../helpers/actionTicketManager";
+import { Author } from "../../model/author/author";
 const styles = require("./authorSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -49,7 +52,7 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
   private cancelToken = axios.CancelToken.source();
 
   public async componentDidMount() {
-    const { configuration, dispatch, match, location } = this.props;
+    const { configuration, dispatch, match, location, authorSearch } = this.props;
     const notRenderedAtServerOrJSAlreadyInitialized =
       !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
 
@@ -62,8 +65,13 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
         cancelToken: this.cancelToken.token,
       };
 
-      await getAuthorSearchData(currentParams);
+      const authors = await getAuthorSearchData(currentParams);
+      // TODO: change logging logic much easier after chainging the class component to React hooks.
+      this.logSearchResult(authors);
       restoreScroll(location.key);
+    } else {
+      // TODO: change logging logic much easier after chainging the class component to React hooks.
+      this.logSearchResult(authorSearch.searchItemsToShow);
     }
   }
 
@@ -73,13 +81,14 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
     const afterSearch = nextProps.location.search;
 
     if (!!afterSearch && beforeSearch !== afterSearch) {
-      await getAuthorSearchData({
+      const authors = await getAuthorSearchData({
         dispatch,
         match,
         pathname: nextProps.location.pathname,
         queryParams: getQueryParamsObject(afterSearch),
         cancelToken: this.cancelToken.token,
       });
+      this.logSearchResult(authors);
       restoreScroll(nextProps.location.key);
     }
   }
@@ -129,6 +138,29 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
       return null;
     }
   }
+
+  private logSearchResult = (searchResult?: Author[] | null) => {
+    if (!EnvChecker.isOnServer()) {
+      // TODO: replace almost same logic with ArticleSearch container's same method
+      if (!searchResult || searchResult.length === 0) {
+        ActionTicketManager.trackTicket({
+          pageType: "authorSearchResult",
+          actionType: "fire",
+          actionArea: "authorList",
+          actionTag: "pageView",
+          actionLabel: String(0),
+        });
+      } else {
+        ActionTicketManager.trackTicket({
+          pageType: "authorSearchResult",
+          actionType: "fire",
+          actionArea: "authorList",
+          actionTag: "pageView",
+          actionLabel: String(searchResult.length),
+        });
+      }
+    }
+  };
 
   private getAuthorEntitiesSection = () => {
     const { authorSearch } = this.props;
