@@ -254,6 +254,14 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
         query,
       })
     );
+
+    ActionTicketManager.trackTicket({
+      pageType: "collectionShow",
+      actionType: "fire",
+      actionArea: "paperList",
+      actionTag: "queryInCollection",
+      actionLabel: query,
+    });
   };
 
   private fetchPapers = (page: number) => {

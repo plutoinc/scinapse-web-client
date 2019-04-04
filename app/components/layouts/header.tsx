@@ -322,7 +322,16 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
       <div className={styles.rightBox}>
         <Link
           className={styles.externalCollectionButton}
-          onClick={this.handleRequestCloseUserDropdown}
+          onClick={() => {
+            this.handleRequestCloseUserDropdown();
+            ActionTicketManager.trackTicket({
+              pageType: getCurrentPageType(),
+              actionType: "fire",
+              actionArea: "topBar",
+              actionTag: "collectionShow",
+              actionLabel: String(myCollectionsState.collectionIds[0]),
+            });
+          }}
           to={
             !!myCollectionsState && myCollectionsState.collectionIds.length > 0
               ? `/collections/${myCollectionsState.collectionIds[0]}`

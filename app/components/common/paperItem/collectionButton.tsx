@@ -82,6 +82,15 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
             className={styles.addCollectionNoteBtnWrapper}
             onClick={() => {
               setIsOpenNotePopover(!isOpenNotePopover);
+              if (!!paperNote) {
+                ActionTicketManager.trackTicket({
+                  pageType,
+                  actionType: "fire",
+                  actionArea: actionArea || pageType,
+                  actionTag: "viewNote",
+                  actionLabel: String(paperId),
+                });
+              }
             }}
           >
             {paperNote ? (

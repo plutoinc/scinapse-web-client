@@ -11,6 +11,7 @@ import * as classNames from "classnames";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import { CurrentUser } from "../../model/currentUser";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 const styles = require("./collectionSideNaviBar.scss");
 
 interface CollectionSideNaviBarProps {
@@ -40,6 +41,15 @@ function getCollectionsList(
         <Link
           key={index}
           to={`/collections/${collection.id}`}
+          onClick={() => {
+            ActionTicketManager.trackTicket({
+              pageType: "collectionShow",
+              actionType: "fire",
+              actionArea: "sideNavigator",
+              actionTag: "collectionShow",
+              actionLabel: String(collection.id),
+            });
+          }}
           className={classNames({
             [styles.collectionItemTitle]: true,
             [styles.currentCollectionItemTitle]: currentCollectionId === collection.id,
