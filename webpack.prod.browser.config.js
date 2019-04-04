@@ -10,7 +10,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist", "client"),
     filename: "[name].js",
-    chunkFilename: "[name].chunk.js",
+    chunkFilename: "[name].[contenthash].js",
   },
   optimization: {
     splitChunks: {
@@ -20,7 +20,7 @@ module.exports = {
           test: /[\\/]node_modules[\\/]/,
           name(module) {
             const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-            return `npm.${packageName.replace("@", "")}`;
+            return `${packageName.replace("@", "")}`;
           },
         },
       },
