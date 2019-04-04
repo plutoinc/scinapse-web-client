@@ -39,7 +39,7 @@ describe("JournalShow Container Component", () => {
       mockStore = generateMockStore(mockState);
     });
 
-    it("should render correctly", () => {
+    it.skip("should render correctly", () => {
       const tree = renderer
         .create(
           <Provider store={mockStore}>

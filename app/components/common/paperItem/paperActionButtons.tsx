@@ -23,6 +23,7 @@ interface HandleClickClaim {
 
 export interface PaperActionButtonsProps {
   paper: Paper;
+  paperNote?: string;
   currentUser: CurrentUser;
   hasCollection: boolean;
   pageType: Scinapse.ActionTicket.PageType;
@@ -51,7 +52,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   }
 
   public render() {
-    const { paper, pageType, actionArea, hasCollection, onRemovePaperCollection } = this.props;
+    const { paper, pageType, paperNote, actionArea, hasCollection, onRemovePaperCollection } = this.props;
     return (
       <div className={styles.infoList}>
         {this.getCitedButton()}
@@ -60,6 +61,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         <CollectionButton
           hasCollection={hasCollection}
           paperId={paper.id}
+          paperNote={paperNote}
           pageType={pageType}
           actionArea={actionArea}
           onRemove={onRemovePaperCollection}

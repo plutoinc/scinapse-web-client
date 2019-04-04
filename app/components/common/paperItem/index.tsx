@@ -63,6 +63,7 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
     const {
       searchQueryText,
       paper,
+      paperNote,
       wrapperClassName,
       currentUser,
       wrapperStyle,
@@ -93,6 +94,7 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
         <PaperActionButtons
           currentUser={currentUser}
           paper={paper}
+          paperNote={paperNote}
           hasCollection={!!hasCollection}
           pageType={pageType}
           actionArea={actionArea}

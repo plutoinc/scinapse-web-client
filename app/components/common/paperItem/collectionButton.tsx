@@ -1,15 +1,17 @@
 import * as React from "react";
+import { connect } from "react-redux";
 import { denormalize } from "normalizr";
+import Popover from "@material-ui/core/Popover";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import Icon from "../../../icons";
-import { connect } from "react-redux";
 import { AppState } from "../../../reducers";
 import { CurrentUser } from "../../../model/currentUser";
 import { collectionSchema, Collection } from "../../../model/collection";
 import { MyCollectionsState } from "../../../containers/paperShowCollectionControlButton/reducer";
+import CollectionPaperNote from "../../collectionPaperNote";
 const styles = require("./collectionButton.scss");
 
 function mapStateToProps(state: AppState) {
@@ -22,6 +24,7 @@ function mapStateToProps(state: AppState) {
 
 interface CollectionButtonProps {
   paperId: number;
+  paperNote?: string;
   pageType: Scinapse.ActionTicket.PageType;
   hasCollection: boolean;
   currentUser: CurrentUser;
@@ -42,6 +45,7 @@ function handleAddToCollection(myCollections: MyCollectionsState, paperId: numbe
 const CollectionButton: React.SFC<CollectionButtonProps> = ({
   paperId,
   pageType,
+  paperNote,
   actionArea,
   hasCollection,
   onRemove,
@@ -50,26 +54,71 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
   collection,
 }) => {
   const itsMine = collection && collection.createdBy.id === currentUser.id ? true : false;
+  const newMemoAnchor = React.useRef<HTMLDivElement | null>(null);
+  const [isOpenNotePopover, setIsOpenNotePopover] = React.useState(false);
 
-  if (hasCollection && onRemove && itsMine) {
+  if (hasCollection && onRemove && itsMine && collection) {
     return (
-      <button
-        className={styles.addCollectionBtnWrapper}
-        onClick={() => {
-          onRemove(paperId);
-          trackEvent({ category: "Additional Action", action: "Click [Remove from Collection] Button" });
-          ActionTicketManager.trackTicket({
-            pageType,
-            actionType: "fire",
-            actionArea: actionArea || pageType,
-            actionTag: "removeFromCollection",
-            actionLabel: String(paperId),
-          });
-        }}
-      >
-        <Icon className={styles.buttonIcon} icon="TRASH_CAN" />
-        <span>Remove from Collection</span>
-      </button>
+      <>
+        <button
+          className={styles.addCollectionBtnWrapper}
+          onClick={() => {
+            onRemove(paperId);
+            trackEvent({ category: "Additional Action", action: "Click [Remove from Collection] Button" });
+            ActionTicketManager.trackTicket({
+              pageType,
+              actionType: "fire",
+              actionArea: actionArea || pageType,
+              actionTag: "removeFromCollection",
+              actionLabel: String(paperId),
+            });
+          }}
+        >
+          <Icon className={styles.buttonIcon} icon="TRASH_CAN" />
+          <span>Remove from Collection</span>
+        </button>
+        <div ref={newMemoAnchor}>
+          <button
+            className={styles.addCollectionNoteBtnWrapper}
+            onClick={() => {
+              setIsOpenNotePopover(!isOpenNotePopover);
+              if (!!paperNote) {
+                ActionTicketManager.trackTicket({
+                  pageType,
+                  actionType: "fire",
+                  actionArea: actionArea || pageType,
+                  actionTag: "viewNote",
+                  actionLabel: String(paperId),
+                });
+              }
+            }}
+          >
+            {paperNote ? (
+              <Icon className={styles.addNoteIcon} icon="NOTED" />
+            ) : (
+              <Icon className={styles.addNoteIcon} icon="ADD_NOTE" />
+            )}
+          </button>
+          <Popover
+            open={isOpenNotePopover}
+            classes={{ paper: styles.collectionNoteForm }}
+            anchorEl={newMemoAnchor.current!}
+            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+            transformOrigin={{ horizontal: "right", vertical: "top" }}
+            onClose={() => {
+              setIsOpenNotePopover(false);
+            }}
+          >
+            <CollectionPaperNote
+              maxHeight={120}
+              note={paperNote}
+              collectionId={collection.id}
+              paperId={paperId}
+              isMine={!!itsMine}
+            />
+          </Popover>
+        </div>
+      </>
     );
   }
 

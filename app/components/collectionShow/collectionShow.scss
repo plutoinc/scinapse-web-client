@@ -2,14 +2,19 @@ $left_box_width: 691px;
 $semi_full_width: 997px;
 
 .collectionShowWrapper {
+  display: flex;
+}
+
+.collectionShowContentsWrapper {
   margin-top: $navbar_height;
   min-height: calc(100vh - #{$navbar_height} - #{$footer-height});
+  width: 100%;
 }
 
 .container {
   position: relative;
-  margin: 0 auto;
-  width: $semi_full_width;
+  width: 100%;
+  max-width: $small-container-width;
 }
 
 .loadingContainer {
@@ -31,16 +36,27 @@ $semi_full_width: 997px;
 .headSection {
   background-color: $gray0;
   padding: 32px 0;
+  display: flex;
+  justify-content: center;
 
   .container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: $regular_width;
+  }
+
+  .rightBox {
+    margin-right: 24px;
   }
 
   .leftBox {
-    width: $left_box_width;
+    max-width: $small-container-width;
+    margin-right: 12px;
+    margin-left: 244px;
 
     .title {
+      word-break: break-all;
       font-size: 26px;
       font-weight: bold;
       line-height: 1.38;
@@ -71,26 +87,28 @@ $semi_full_width: 997px;
       strong {
         font-weight: bold;
       }
-    }
-  }
 
-  .rightBox {
-    flex: 1;
+      .collectionCreatedUser {
+        strong {
+          text-decoration: underline;
+        }
+      }
+    }
   }
 }
 
 .paperListContainer {
   display: flex;
   flex: 1;
-  width: $semi_full_width;
+  flex-direction: row;
   margin: 0 auto 60px auto;
+  max-width: 1200px;
 
   .leftBox {
-    width: $semi_full_width;
-  }
-
-  .rightBox {
-    flex: 1;
+    max-width: $small-container-width;
+    margin-left: 228px;
+    margin-right: 24px;
+    width: 100%;
   }
 }
 
@@ -99,8 +117,6 @@ $semi_full_width: 997px;
 
   .header {
     position: relative;
-    padding-bottom: 11px;
-    border-bottom: 1px solid rgba(187, 194, 208, 0.5);
     margin-bottom: 16px;
   }
 
@@ -149,13 +165,20 @@ $semi_full_width: 997px;
 
 .subHeader {
   position: relative;
-  margin-top: 21px;
+  margin-top: 28px;
 }
 
 .resultPaperCount {
-  font-size: 14px;
-  line-height: 1.43;
-  color: $gray6;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 500;
+  color: $black1;
+  margin-left: 12px;
+}
+.resultPaperPageCount {
+  font-size: 16px;
+  line-height: 1.5;
+  color: $black1;
 }
 
 .sortBoxWrapper {
@@ -166,11 +189,10 @@ $semi_full_width: 997px;
 }
 
 .searchInputWrapper {
-  position: absolute;
-  top: 0;
-  right: 0px;
-  bottom: 0;
-  width: 291px;
+  position: relative;
+  max-width: 486px;
+  height: 40px;
+  border-radius: 4px;
 }
 
 .shareAreaWrapper {
@@ -279,5 +301,36 @@ $semi_full_width: 997px;
       width: 20px;
       height: 16px;
     }
+  }
+}
+
+.collectionHeaderBtnWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+// Tablet
+@media (max-width: $tablet-width) {
+  .headSection {
+    .container {
+      margin: 0 48px;
+      .leftBox {
+        margin-left: 0px;
+      }
+    }
+  }
+
+  .paperListContainer {
+    .leftBox {
+      margin: 0 48px;
+    }
+  }
+}
+
+// Mobile
+@media (max-width: $mobile-width) {
+  .rightBox {
+    display: none;
   }
 }

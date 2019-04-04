@@ -1,7 +1,6 @@
 import * as React from "react";
 import PaperItem, { PaperItemProps } from "../common/paperItem";
 import { withStyles } from "../../helpers/withStylesHelper";
-import CollectionPaperNote from "../collectionPaperNote";
 import { Collection } from "../../model/collection";
 const styles = require("./collectionPaperItem.scss");
 
@@ -32,8 +31,7 @@ class CollectionPaperItem extends React.PureComponent<CollectionPaperItemProps, 
   }
 
   public render() {
-    const { paper, paperNote, collection, onRemovePaperCollection, currentUser } = this.props;
-    const { paperItemHeight } = this.state;
+    const { onRemovePaperCollection } = this.props;
 
     const paperItemProps = {
       ...this.props,
@@ -41,25 +39,15 @@ class CollectionPaperItem extends React.PureComponent<CollectionPaperItemProps, 
         borderBottom: "none",
         marginBottom: "0",
         paddingBottom: "0",
+        maxWidth: "100%",
       },
     };
-
-    const isMine = currentUser && currentUser.id === collection.createdBy.id;
 
     return (
       <div className={styles.CollectionPaperItemWrapper}>
         <div ref={el => (this.paperItemNode = el)} className={styles.paper}>
           <PaperItem {...paperItemProps} hasCollection={true} onRemovePaperCollection={onRemovePaperCollection} />
         </div>
-        {
-          <CollectionPaperNote
-            maxHeight={paperItemHeight}
-            note={paperNote}
-            collectionId={collection.id}
-            paperId={paper.id}
-            isMine={!!isMine}
-          />
-        }
       </div>
     );
   }
