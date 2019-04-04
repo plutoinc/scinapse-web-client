@@ -1,17 +1,17 @@
 import * as React from "react";
+import * as classNames from "classnames";
+import { connect } from "react-redux";
+import { denormalize } from "normalizr";
+import { Link } from "react-router-dom";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { Collection, userCollectionSchema } from "../../model/collection";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { connect } from "react-redux";
 import { AppState } from "../../reducers";
-import { denormalize } from "normalizr";
 import { MyCollectionsState } from "../../containers/paperShowCollectionControlButton/reducer";
-import Icon from "../../icons";
-import { Link } from "react-router-dom";
-import * as classNames from "classnames";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import { CurrentUser } from "../../model/currentUser";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import ActionTicketManager from "../../helpers/actionTicketManager";
+import Icon from "../../icons";
 const styles = require("./collectionSideNaviBar.scss");
 
 interface CollectionSideNaviBarProps {
