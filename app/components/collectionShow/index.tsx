@@ -33,6 +33,7 @@ import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboa
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import ErrorPage from "../error/errorPage";
 import { removePaperFromCollection } from "../dialog/actions";
+import { CollectionShowMatchParams } from "./types";
 const styles = require("./collectionShow.scss");
 
 const FACEBOOK_SHARE_URL = "http://www.facebook.com/sharer/sharer.php?u=";
@@ -47,10 +48,6 @@ function mapStateToProps(state: AppState) {
     collection: denormalize(state.collectionShow.mainCollectionId, collectionSchema, state.entities),
     papersInCollection: denormalize(state.collectionShow.paperIds, [paperInCollectionSchema], state.entities),
   };
-}
-
-export interface CollectionShowMatchParams {
-  collectionId: string;
 }
 
 export interface CollectionShowProps

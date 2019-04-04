@@ -42,6 +42,7 @@ import NextPaperTab from "../nextPaperTab";
 import ResearchHistory from "../../components/researchHistory";
 import { FULL_PAPER_TEST } from "../../constants/abTest";
 import getABType from "../../helpers/getABType";
+import { PaperShowMatchParams, PaperShowPageQueryParams } from "./types";
 
 const styles = require("./paperShow.scss");
 
@@ -61,15 +62,6 @@ function mapStateToProps(state: AppState) {
     referencePapers: getReferencePapers(state),
     citedPapers: getCitedPapers(state),
   };
-}
-
-export interface PaperShowPageQueryParams {
-  "ref-page"?: number;
-  "cited-page"?: number;
-}
-
-export interface PaperShowMatchParams {
-  paperId: string;
 }
 
 export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams> {

@@ -9,7 +9,7 @@ import {
   getMyCollections,
 } from "../../actions/paperShow";
 import { CurrentUser } from "../../model/currentUser";
-import { PaperShowPageQueryParams, PaperShowMatchParams } from ".";
+import { PaperShowPageQueryParams, PaperShowMatchParams } from "./types";
 import { ActionCreators } from "../../actions/actionTypes";
 
 export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchParams>, currentUser?: CurrentUser) {
