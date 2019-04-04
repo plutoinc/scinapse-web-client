@@ -101,7 +101,7 @@ declare namespace Scinapse {
       | "betterThanGoogle"
       | "pdfViewer"
       | "researchHistory"
-      | "sideNavigator";
+      | "sideNavigator"
       | "nextPaper";
 
     type PageType =
