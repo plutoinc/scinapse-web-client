@@ -1,6 +1,5 @@
 const path = require("path");
 const { CheckerPlugin } = require("awesome-typescript-loader");
-const LoadablePlugin = require("@loadable/webpack-plugin");
 const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
