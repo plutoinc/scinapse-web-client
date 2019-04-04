@@ -1,16 +1,16 @@
 import * as React from "react";
+import { connect } from "react-redux";
 import { denormalize } from "normalizr";
+import Popover from "@material-ui/core/Popover";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import Icon from "../../../icons";
-import { connect } from "react-redux";
 import { AppState } from "../../../reducers";
 import { CurrentUser } from "../../../model/currentUser";
 import { collectionSchema, Collection } from "../../../model/collection";
 import { MyCollectionsState } from "../../../containers/paperShowCollectionControlButton/reducer";
-import Popover from "@material-ui/core/Popover";
 import CollectionPaperNote from "../../collectionPaperNote";
 const styles = require("./collectionButton.scss");
 
