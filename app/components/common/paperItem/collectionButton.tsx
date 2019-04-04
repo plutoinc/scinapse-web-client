@@ -54,7 +54,7 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
   collection,
 }) => {
   const itsMine = collection && collection.createdBy.id === currentUser.id ? true : false;
-  const newMemoAnchor = React.useRef<HTMLDivElement | undefined>(undefined);
+  const newMemoAnchor = React.useRef<HTMLDivElement | null>(null);
   const [isOpenNotePopover, setIsOpenNotePopover] = React.useState(false);
 
   if (hasCollection && onRemove && itsMine && collection) {
@@ -77,7 +77,7 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
           <Icon className={styles.buttonIcon} icon="TRASH_CAN" />
           <span>Remove from Collection</span>
         </button>
-        <div ref={el => (newMemoAnchor.current = el as HTMLDivElement)}>
+        <div ref={newMemoAnchor}>
           <button
             className={styles.addCollectionNoteBtnWrapper}
             onClick={() => {

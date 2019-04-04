@@ -36,10 +36,10 @@ function getCollectionsList(
 
   const collectionsList =
     userCollections &&
-    userCollections.map((collection, index) => {
+    userCollections.map(collection => {
       return (
         <Link
-          key={index}
+          key={collection.id}
           to={`/collections/${collection.id}`}
           onClick={() => {
             ActionTicketManager.trackTicket({
