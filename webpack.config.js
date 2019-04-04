@@ -8,7 +8,7 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 require("extract-text-webpack-plugin");
 
 module.exports = {
-  mode: "production",
+  mode: "development",
   entry: ["@babel/polyfill", "./app/clientIndex.tsx"],
   output: {
     path: path.resolve(__dirname, "dist", "client"),

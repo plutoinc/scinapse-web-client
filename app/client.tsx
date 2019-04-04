@@ -6,7 +6,6 @@ import * as ReactGA from "react-ga";
 import * as ReactDom from "react-dom";
 import { Provider, Store } from "react-redux";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import * as Sentry from "@sentry/browser";
 import CssInjector from "./helpers/cssInjector";
 import EnvChecker from "./helpers/envChecker";
 import ErrorTracker from "./helpers/errorHandler";
@@ -17,6 +16,7 @@ import { AppState } from "./reducers";
 const { pdfjs } = require("react-pdf");
 import "./helpers/rafPolyfill";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+declare var Sentry: any;
 
 class Main extends React.Component {
   public componentDidMount() {

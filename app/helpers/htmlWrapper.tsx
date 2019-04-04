@@ -32,6 +32,7 @@ gtag('config', 'AW-817738370');
       <head>
       ${helmet.title.toString()}
       <script type="text/javascript">window._script_version_ = { version: '${version}' };</script>
+      <script src="https://browser.sentry-cdn.com/5.0.5/bundle.min.js" crossorigin="anonymous"></script>
       ${helmet.script.toString()}
       ${helmet.meta.toString()}
       ${helmet.link.toString()}
