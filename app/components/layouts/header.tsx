@@ -297,7 +297,11 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           <Link
             className={styles.buttonOnLink}
             onClick={this.handleRequestCloseUserDropdown}
-            to={`/collections/${myCollectionsState.collectionIds[0]}`}
+            to={
+              !!myCollectionsState && myCollectionsState.collectionIds.length > 0
+                ? `/collections/${myCollectionsState.collectionIds[0]}`
+                : `/users/${currentUserState.id}/collections`
+            }
           >
             Collection
           </Link>
@@ -319,11 +323,14 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         <Link
           className={styles.externalCollectionButton}
           onClick={this.handleRequestCloseUserDropdown}
-          to={`/collections/${myCollectionsState.collectionIds[0]}`}
+          to={
+            !!myCollectionsState && myCollectionsState.collectionIds.length > 0
+              ? `/collections/${myCollectionsState.collectionIds[0]}`
+              : `/users/${currentUserState.id}/collections`
+          }
         >
           <Icon className={styles.collectionIcon} icon="COLLECTION" />Collection
         </Link>
-
         {!currentUserState.profileImageUrl ? (
           <div
             className={styles.userDropdownChar}

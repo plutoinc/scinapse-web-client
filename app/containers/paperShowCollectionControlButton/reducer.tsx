@@ -33,6 +33,22 @@ export const MY_COLLECTIONS_INITIAL_STATE: MyCollectionsState = {
 
 export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE, action: Actions): MyCollectionsState {
   switch (action.type) {
+    case ACTION_TYPES.COLLECTIONS_START_TO_GET_COLLECTIONS: {
+      return { ...state, isLoadingCollections: true };
+    }
+
+    case ACTION_TYPES.COLLECTIONS_SUCCEEDED_GET_COLLECTIONS: {
+      return {
+        ...state,
+        collectionIds: action.payload.result,
+        isLoadingCollections: false,
+      };
+    }
+
+    case ACTION_TYPES.COLLECTIONS_FAILED_TO_GET_COLLECTIONS: {
+      return { ...state, isLoadingCollections: false };
+    }
+
     case ACTION_TYPES.PAPER_SHOW_START_TO_REMOVE_PAPER_FROM_COLLECTION:
     case ACTION_TYPES.PAPER_SHOW_START_TO_POST_PAPER_TO_COLLECTION: {
       return { ...state, isFetchingPaper: true };
@@ -117,7 +133,11 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
     }
 
     case ACTION_TYPES.COLLECTIONS_SUCCEEDED_GET_MEMBER_COLLECTIONS: {
-      return { ...state, collectionIds: action.payload.result };
+      return { ...state, collectionIds: action.payload.result, isLoadingCollections: false };
+    }
+
+    case ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_GET_COLLECTIONS: {
+      return { ...state, collectionIds: action.payload.collectionIds };
     }
 
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT: {

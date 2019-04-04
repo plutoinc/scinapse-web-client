@@ -630,7 +630,9 @@ const mapStateToProps = (appState: AppState) => {
     targetPaperId: appState.paperShow.paperId,
     currentUser: appState.currentUser,
     myCollectionsState: appState.myCollections,
-    myCollections: denormalize(appState.myCollections.collectionIds, [collectionSchema], appState.entities),
+    myCollections: denormalize(appState.myCollections.collectionIds, [collectionSchema], appState.entities).filter(
+      (collection: Collection) => collection
+    ),
     selectedCollection: denormalize(appState.myCollections.selectedCollectionId, collectionSchema, appState.entities),
   };
 };
