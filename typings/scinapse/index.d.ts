@@ -81,6 +81,7 @@ declare namespace Scinapse {
       | "refList"
       | "citedList"
       | "paperList"
+      | "authorList"
       | "paperDescription"
       | "otherPaperList"
       | "relatedPaperList"
@@ -101,6 +102,7 @@ declare namespace Scinapse {
       | "pdfViewer"
       | "researchHistory"
       | "sideNavigator";
+      | "nextPaper";
 
     type PageType =
       | "paperShow"

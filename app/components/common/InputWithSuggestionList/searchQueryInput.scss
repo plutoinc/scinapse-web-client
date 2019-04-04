@@ -3,6 +3,7 @@
   position: relative;
   width: 100%;
   border-radius: 4px;
+  box-shadow: 0 2px 20px -2px rgba(0, 0, 0, 0.15), 0 2px 4px 0px rgba(0, 0, 0, 0.05);
 }
 
 .input {
@@ -52,6 +53,12 @@
   border-bottom: solid 1px $gray1;
   cursor: pointer;
   white-space: pre;
+
+  span {
+    @extend %one-line-overflow-ellipsis;
+    display: block;
+    width: 95%;
+  }
 
   &:last-of-type {
     border-bottom: none;

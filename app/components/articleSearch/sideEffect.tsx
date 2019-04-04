@@ -9,18 +9,18 @@ export async function getSearchData(params: LoadDataParams<null>) {
   const searchQueryObject: SearchPapersParams = PaperSearchQueryFormatter.makeSearchQueryFromParamsObject(queryParams);
 
   if (!searchQueryObject.query) {
-    return dispatch({
+    dispatch({
       type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_PAPERS,
       payload: {
         statusCode: 400,
       },
     });
+    return null;
   }
 
   try {
-    const promiseArray: Array<Promise<any>> = [];
-    promiseArray.push(dispatch(searchPapers({ ...searchQueryObject, cancelToken: params.cancelToken })));
-    await Promise.all(promiseArray);
+    const searchResults = await dispatch(searchPapers({ ...searchQueryObject, cancelToken: params.cancelToken }));
+    return searchResults;
   } catch (err) {
     console.error(`Error for fetching search result page data`, err);
   }

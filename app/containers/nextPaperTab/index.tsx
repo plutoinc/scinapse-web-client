@@ -7,6 +7,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { AppState } from "../../reducers";
 import { getPaperEntities, getDenormalizedPapers } from "../../selectors/papersSelector";
 import Icon from "../../icons";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 const store = require("store");
 const styles = require("./nextPaperTab.scss");
 
@@ -33,7 +34,19 @@ const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = props => {
   }
 
   return !!nextPaper ? (
-    <Link className={styles.nextPaperTabWrapper} to={`/papers/${nextPaper.id}`}>
+    <Link
+      className={styles.nextPaperTabWrapper}
+      onClick={() => {
+        ActionTicketManager.trackTicket({
+          pageType: "paperShow",
+          actionType: "fire",
+          actionArea: "nextPaper",
+          actionTag: "paperShow",
+          actionLabel: nextPaper.id.toString(),
+        });
+      }}
+      to={`/papers/${nextPaper.id}`}
+    >
       <div className={styles.nextPaperTab}>
         <span className={styles.nextPaperTabTitle}>View next paper</span>
         <span className={styles.nextPaperTabContent}>{nextPaper.title}</span>
@@ -44,7 +57,7 @@ const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = props => {
 };
 
 function getPaperIds(state: AppState) {
-  return state.paperShow.otherPaperIdsFromAuthor;
+  return state.paperShow.relatedPaperIds;
 }
 
 const getMemoizedRelatedPapers = createSelector([getPaperIds, getPaperEntities], getDenormalizedPapers);
