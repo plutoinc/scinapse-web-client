@@ -15,8 +15,8 @@ interface NoResultProps {
 }
 
 const NoResult: React.FunctionComponent<NoResultProps> = props => {
-  const { hasFilterEmpty, articleSearchState, isLoading } = props;
-  const { doiPatternMatched, doi, searchInput } = articleSearchState;
+  const { hasFilterEmpty, articleSearchState, isLoading, searchText } = props;
+  const { doiPatternMatched, doi } = articleSearchState;
   const [isOpen, setIsOpen] = React.useState(false);
   const query = props.articleSearchState.doiPatternMatched
     ? props.articleSearchState.doi
@@ -53,7 +53,7 @@ const NoResult: React.FunctionComponent<NoResultProps> = props => {
     if (doiPatternMatched && !!doi) {
       return (
         <>
-          <b>Scinapse</b> found no result for <b className={styles.keyword}>"{searchInput}".</b>
+          <b>Scinapse</b> found no result for <b className={styles.keyword}>"{searchText}".</b>
           <ul className={styles.contextWrapper}>
             {disabledFilterMessage}
             <li>
@@ -85,7 +85,7 @@ const NoResult: React.FunctionComponent<NoResultProps> = props => {
     } else {
       return (
         <>
-          <b>Scinapse</b> found no result for <b className={styles.keyword}>"{searchInput}".</b>
+          <b>Scinapse</b> found no result for <b className={styles.keyword}>"{searchText}".</b>
           <ul className={styles.contextWrapper}>
             {disabledFilterMessage}
             <li>
