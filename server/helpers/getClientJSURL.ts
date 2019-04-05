@@ -7,17 +7,17 @@ export default async function getClientJSURL(branch: string | null) {
 
   if (process.env.NODE_ENV === "production") {
     version = fs.readFileSync("./version").toString("utf8");
-    jsPath = `${DeployConfig.CDN_BASE_PATH}/${
+    jsPath = `${DeployConfig.CDN_BASE_HOST}/${
       DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX
     }/${version}/bundleBrowser.js`;
   } else if (process.env.NODE_ENV === "dev") {
     if (!branch) {
       version = fs.readFileSync("/tmp/version").toString("utf8");
-      jsPath = `${DeployConfig.CDN_BASE_PATH}/${
+      jsPath = `${DeployConfig.CDN_BASE_HOST}/${
         DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX
       }/${version}/bundleBrowser.js`;
     } else if (branch && branch !== "master") {
-      jsPath = `${DeployConfig.CDN_BASE_PATH}/${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${decodeURIComponent(
+      jsPath = `${DeployConfig.CDN_BASE_HOST}/${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${decodeURIComponent(
         branch
       )}/bundleBrowser.js`;
       version = branch;

@@ -19,7 +19,7 @@ const { SheetsRegistry } = require("react-jss/lib/jss");
 const statsFile = path.resolve(__dirname, "../client/loadable-stats.json");
 const extractor = new ChunkExtractor({ statsFile, outputPath: "http://localhost:8000/client" });
 
-const ssr = async (req: express.Request, _scriptPath: string, version: string) => {
+const ssr = async (req: express.Request, version: string) => {
   // override user request
   axios.defaults.headers.common = {
     ...axios.defaults.headers.common,

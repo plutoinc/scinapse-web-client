@@ -7,7 +7,7 @@ import fallbackRender from "./fallbackRender";
 import getSitemap from "./routes/sitemap";
 import getRobotTxt from "./routes/robots";
 import getOpenSearchXML from "./routes/openSearchXML";
-import getClientJSURL from "./helpers/getClientJSURL";
+import getVersion from "./helpers/getClientJSURL";
 import setABTest from "./helpers/setABTest";
 const compression = require("compression");
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
@@ -47,7 +47,7 @@ app.get("/opensearch.xml", (_req, res) => {
 });
 
 app.get("*", async (req, res) => {
-  const { jsPath, version } = await getClientJSURL(req.query ? req.query.branch : null);
+  const { jsPath, version } = await getVersion(req.query ? req.query.branch : null);
 
   setABTest(req, res);
 
@@ -58,7 +58,7 @@ app.get("*", async (req, res) => {
       }, TIMEOUT_FOR_SAFE_RENDERING);
     });
 
-    const html = await Promise.race([ssr(req, jsPath, version), lazyRender]);
+    const html = await Promise.race([ssr(req, version), lazyRender]);
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.send(html);
   } catch (err) {

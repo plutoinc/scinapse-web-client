@@ -9,7 +9,7 @@ module.exports = {
   entry: ["@babel/polyfill", "./app/clientIndex.tsx"],
   output: {
     path: path.resolve(__dirname, "dist", "client"),
-    filename: "[name].js",
+    filename: "[name].[contenthash].js",
     chunkFilename: "[name].[contenthash].js",
   },
   optimization: {
