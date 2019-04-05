@@ -151,6 +151,23 @@
   font-size: 12px;
 }
 
+@media (max-width: $tablet-width) {
+  .headerBox {
+    padding-left: 12px;
+  }
+
+  .mobileMetricInformation {
+    display: inline-block;
+    margin-top: 24px;
+    margin-bottom: 16px;
+
+    .metricWrapper {
+      width: 100px;
+      display: inline-grid;
+      margin-right: 12px;
+    }
+  }
+}
 // Mobile (0~768)
 @media (max-width: $mobile-width) {
   .container {
@@ -179,18 +196,6 @@
 
   .bioSection {
     margin-bottom: 24px;
-  }
-
-  .mobileMetricInformation {
-    display: inline-block;
-    margin-top: 24px;
-    margin-bottom: 16px;
-
-    .metricWrapper {
-      width: 100px;
-      display: inline-grid;
-      margin-right: 12px;
-    }
   }
 
   .contactSection {
