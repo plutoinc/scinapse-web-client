@@ -75,6 +75,8 @@ declare namespace Scinapse {
       | "removeNote"
       | "viewNote"
       | "sendRequestPaper"
+      | "searchHistoryQuery"
+      | "searchSuggestionQuery"
       | "";
 
     type ActionArea =
