@@ -211,7 +211,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
       return (
         <div className={styles.innerContainer}>
           <NoResult
-            searchText={queryParams.query}
+            searchText={articleSearchState.suggestionKeyword ? articleSearchState.suggestionKeyword : queryParams.query}
             articleSearchState={articleSearchState}
             hasFilterEmpty={this.isFilterEmpty(queryParams.filter)}
           />
@@ -231,9 +231,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
             currentUser={currentUserState}
             papers={searchItemsToShow}
             isLoading={isContentLoading}
-            searchQueryText={
-              articleSearchState.searchFromSuggestion ? articleSearchState.suggestionKeyword : queryParams.query
-            }
+            searchQueryText={articleSearchState.suggestionKeyword || queryParams.query}
           />
           {this.getPaginationComponent()}
         </div>
