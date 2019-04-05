@@ -16,7 +16,8 @@ export interface ArticleSearchState
       totalElements: number;
       totalPages: number;
       isEnd: boolean;
-      isDoiPattern: boolean;
+      doi: string | null;
+      doiPatternMatched: boolean;
       yearFilterFromValue: number;
       yearFilterToValue: number;
       isJournalFilterExpanding: boolean;
@@ -50,7 +51,8 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   totalElements: 0,
   totalPages: 0,
   isEnd: false,
-  isDoiPattern: false,
+  doi: null,
+  doiPatternMatched: false,
   yearFilterFromValue: 0,
   yearFilterToValue: 0,
   isJournalFilterExpanding: false,
