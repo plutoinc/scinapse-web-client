@@ -74,6 +74,7 @@ declare namespace Scinapse {
       | "addNote"
       | "removeNote"
       | "viewNote"
+      | "sendRequestPaper"
       | "";
 
     type ActionArea =
@@ -102,7 +103,8 @@ declare namespace Scinapse {
       | "pdfViewer"
       | "researchHistory"
       | "sideNavigator"
-      | "nextPaper";
+      | "nextPaper"
+      | "noPaperNotiPage";
 
     type PageType =
       | "paperShow"

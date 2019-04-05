@@ -14,20 +14,20 @@
   min-height: 738.5px;
 
   .noPapersContentWrapper {
-    margin-left: 24px;
+    margin-left: 32px;
   }
 
   .noPapersTitle {
     font-size: 24px;
-    line-height: 1.8;
+    line-height: 2;
     color: $red0;
   }
 
   .noPapersContent {
     margin-top: 4px;
     font-size: 15px;
-    line-height: 1.7;
-    color: $black0;
+    line-height: 1.8;
+    color: $black1;
 
     .keyword {
       color: $gray6;
@@ -39,8 +39,38 @@
   }
 }
 
+.doiLink {
+  color: $main_blue1;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+    color: $main_blue_light0;
+  }
+}
+
+.paperRequestBtn {
+  height: 42px;
+  font-weight: 500;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  background-color: $main_blue1;
+  color: #ffffff;
+  border: none;
+  display: inline-block;
+  margin-top: 12px;
+
+  &:hover {
+    background-color: $main_blue_light0;
+    transition: $button-hover-transition;
+  }
+}
+
 .iconWrapper {
   width: 140px;
+  margin-top: 12px;
 }
 
 @media (max-width: $mobile-width) {

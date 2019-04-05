@@ -204,9 +204,9 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
       );
     } else if (
       hasNoSearchResult &&
-      articleSearchState.matchAuthors &&
-      articleSearchState.matchAuthors.totalElements === 0 &&
-      queryParams
+      queryParams &&
+      (!articleSearchState.matchAuthors ||
+        (articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements === 0))
     ) {
       return (
         <div className={styles.innerContainer}>
