@@ -36,6 +36,14 @@ interface SearchQueryInputProps extends RouteComponentProps<any> {
   inputClassName?: string;
 }
 
+type SearchSourceType = "history" | "suggestion" | "raw";
+
+interface SubmitParams {
+  from: SearchSourceType;
+  query?: string;
+  filter?: FilterObject;
+}
+
 const SearchQueryInput: React.FunctionComponent<
   SearchQueryInputProps & React.InputHTMLAttributes<HTMLInputElement>
 > = props => {
@@ -102,7 +110,7 @@ const SearchQueryInput: React.FunctionComponent<
     [props.location]
   );
 
-  function handleSubmit(query?: string, filter?: FilterObject) {
+  function handleSubmit({ query, filter, from }: SubmitParams) {
     const searchKeyword = query || inputValue;
 
     if (searchKeyword.length < 2) {
@@ -114,6 +122,7 @@ const SearchQueryInput: React.FunctionComponent<
         },
       });
     }
+
     ActionTicketManager.trackTicket({
       pageType: getCurrentPageType(),
       actionType: "fire",
@@ -121,6 +130,16 @@ const SearchQueryInput: React.FunctionComponent<
       actionTag: "query",
       actionLabel: searchKeyword,
     });
+
+    if (from === "history" || from === "suggestion") {
+      ActionTicketManager.trackTicket({
+        pageType: getCurrentPageType(),
+        actionType: "fire",
+        actionArea: props.actionArea,
+        actionTag: from === "history" ? "searchHistoryQuery" : "searchSuggestionQuery",
+        actionLabel: searchKeyword,
+      });
+    }
 
     trackEvent({ category: "Search", action: "Query", label: searchKeyword });
     saveQueryToRecentHistory(searchKeyword);
@@ -146,7 +165,7 @@ const SearchQueryInput: React.FunctionComponent<
           [s.highlight]: highlightIdx === i,
         })}
         onClick={() => {
-          handleSubmit(k.text, props.initialFilter);
+          handleSubmit({ query: k.text, filter: props.initialFilter, from: k.removable ? "history" : "suggestion" });
         }}
       >
         <span dangerouslySetInnerHTML={{ __html: getHighlightedContent(k.text, genuineInputValue) }} />
@@ -194,7 +213,18 @@ const SearchQueryInput: React.FunctionComponent<
                 setInputValue(keywordsToShow[i] ? keywordsToShow[i].text : genuineInputValue);
               },
               onSelect: i => {
-                handleSubmit(keywordsToShow[i] ? keywordsToShow[i].text : genuineInputValue, props.initialFilter);
+                let from: SearchSourceType = "raw";
+                if (keywordsToShow[i] && keywordsToShow[i].removable) {
+                  from = "history";
+                } else if (keywordsToShow[i] && !keywordsToShow[i].removable) {
+                  from = "suggestion";
+                }
+
+                handleSubmit({
+                  query: keywordsToShow[i] ? keywordsToShow[i].text : genuineInputValue,
+                  filter: props.initialFilter,
+                  from,
+                });
               },
             });
           }}
@@ -219,7 +249,18 @@ const SearchQueryInput: React.FunctionComponent<
         />
         <Icon
           onClick={() => {
-            handleSubmit(undefined, props.initialFilter);
+            let from: SearchSourceType = "raw";
+            const matchKeyword = keywordsToShow.find(k => k.text === inputValue);
+            if (matchKeyword && matchKeyword.removable) {
+              from = "history";
+            } else if (matchKeyword && !matchKeyword.removable) {
+              from = "suggestion";
+            }
+
+            handleSubmit({
+              filter: props.initialFilter,
+              from,
+            });
           }}
           icon="SEARCH_ICON"
           className={s.searchIcon}
