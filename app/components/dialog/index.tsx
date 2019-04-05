@@ -107,6 +107,8 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         type: "error",
         message: err.message,
       });
+    } finally {
+      this.getMyCollections();
     }
   };
 
@@ -120,6 +122,8 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         type: "error",
         message: err.message,
       });
+    } finally {
+      this.getMyCollections();
     }
   };
 

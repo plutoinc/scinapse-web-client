@@ -87,7 +87,9 @@ const mapStateToProps = (state: AppState) => {
   return {
     currentUser: state.currentUser,
     myCollections: state.myCollections,
-    collections: denormalize(state.myCollections.collectionIds, [collectionSchema], state.entities),
+    collections: denormalize(state.myCollections.collectionIds, [collectionSchema], state.entities).filter(
+      (collection: Collection) => collection
+    ),
   };
 };
 

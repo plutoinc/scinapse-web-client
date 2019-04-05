@@ -2,7 +2,7 @@ import { ActionCreatorsMapObject } from "redux";
 import { AppEntities } from "../reducers/entity";
 import { CommonPaginationResponsePart, NormalizedDataWithPaginationV2 } from "../api/types/common";
 import { AvailableCitationType } from "../containers/paperShow/records";
-import { GetCollectionsResponse } from "../api/member";
+import { GetCollectionsResponse, GetUserCollectionsResponse } from "../api/member";
 import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
 import { Collection } from "../model/collection";
 import { Paper } from "../model/paper";
@@ -678,7 +678,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToGetCollectionsInPaperShow(payload: { collectionIds: number[] }) {
+  succeededToGetCollectionsInPaperShow(payload: GetCollectionsResponse) {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_GET_COLLECTIONS,
       payload,
@@ -716,7 +716,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToGetCollectionsInCollectionsPage(payload: GetCollectionsResponse) {
+  succeededToGetCollectionsInCollectionsPage(payload: GetUserCollectionsResponse) {
     return createAction({
       type: ACTION_TYPES.COLLECTIONS_SUCCEEDED_GET_COLLECTIONS,
       payload,
@@ -729,7 +729,7 @@ export const ActionCreators = {
     });
   },
 
-  succeedToGetCollectionsInMember(payload: GetCollectionsResponse) {
+  succeedToGetCollectionsInMember(payload: GetUserCollectionsResponse) {
     return createAction({
       type: ACTION_TYPES.COLLECTIONS_SUCCEEDED_GET_MEMBER_COLLECTIONS,
       payload,

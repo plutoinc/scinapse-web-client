@@ -8,6 +8,7 @@ import CollectionAPI, {
   UpdatePaperNoteToCollectionParams,
 } from "../api/collection";
 import { Collection } from "../model/collection";
+import { fetchMyCollection } from "../containers/paperShow/sideEffect";
 
 export function savePaperToCollection(params: AddPaperToCollectionParams) {
   return async (dispatch: Dispatch<any>) => {
@@ -21,6 +22,10 @@ export function savePaperToCollection(params: AddPaperToCollectionParams) {
           collection: params.collection,
         })
       );
+
+      if (params.cancelToken) {
+        dispatch(fetchMyCollection(params.paperId, params.cancelToken));
+      }
     } catch (err) {
       dispatch(ActionCreators.failedToPostPaperToCollection());
       const error = PlutoAxios.getGlobalError(err);
@@ -45,6 +50,10 @@ export function removePaperFromCollection(params: RemovePapersFromCollectionPara
           collection: params.collection,
         })
       );
+
+      if (params.cancelToken) {
+        dispatch(fetchMyCollection(params.paperIds[0], params.cancelToken));
+      }
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
       dispatch(ActionCreators.failedToRemovePaperFromCollectionInPaperShow());

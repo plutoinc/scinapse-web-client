@@ -185,6 +185,9 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ],
+    "watchPathIgnorePatterns": [
+      "/node_modules/"
+    ],
     "coverageDirectory": "output/coverage",
     "testMatch": null,
     "testRegex": "__tests__/.*_spec.tsx$",
