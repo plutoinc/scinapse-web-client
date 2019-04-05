@@ -8,6 +8,28 @@
   }
 }
 
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-top: 250px;
+  align-items: center;
+  min-height: 738.5px;
+
+  .loadingSpinner {
+    div {
+      background-color: $gray3;
+    }
+  }
+
+  .loadingContent {
+    margin-top: 27.5px;
+    font-size: 15px;
+    line-height: 2.4;
+    color: $black0;
+  }
+}
+
 .noPapersContainer {
   display: flex;
   padding-top: 45px;
@@ -26,7 +48,7 @@
   .noPapersContent {
     margin-top: 4px;
     font-size: 15px;
-    line-height: 1.8;
+    line-height: 1.6;
     color: $black1;
 
     .keyword {
@@ -39,6 +61,11 @@
   }
 }
 
+.contextWrapper {
+  margin-top: 10px;
+  padding-left: 30px;
+}
+
 .doiLink {
   color: $main_blue1;
   font-weight: 500;
@@ -47,6 +74,11 @@
     text-decoration: underline;
     color: $main_blue_light0;
   }
+}
+
+.paperRequestLink {
+  @extend .doiLink;
+  cursor: pointer;
 }
 
 .paperRequestBtn {

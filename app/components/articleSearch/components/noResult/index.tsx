@@ -4,66 +4,123 @@ import { withStyles } from "../../../../helpers/withStylesHelper";
 import Icon from "../../../../icons";
 import FilterResetButton from "../../../filterContainer/filterResetButton";
 import RequestPaperDialog from "../requestPaperDialog";
+import ArticleSpinner from "../../../common/spinner/articleSpinner";
 const styles = require("./noResult.scss");
 
 interface NoResultProps {
   searchText: string;
+  isLoading: boolean;
   articleSearchState: ArticleSearchState;
   hasFilterEmpty: boolean;
 }
 
-function getNoResultNotiContent(
-  hasFilterEmpty: boolean,
-  isDoiPattern: boolean,
-  searchInput: string,
-  doi: string | null
-) {
-  const disabledFilterMessage = !hasFilterEmpty ? (
-    <span className={styles.noPapersText}>
-      Try disabling the filter.
-      <FilterResetButton
-        text="Reset All"
-        btnStyle={{ position: "relative", top: 0, fontSize: "15px", marginLeft: "4px" }}
-      />
-    </span>
-  ) : null;
-
-  if (isDoiPattern && !!doi) {
-    return (
-      <>
-        <b>Scinapse</b> found no result for <span className={styles.keyword}>"{searchInput}".</span>
-        {disabledFilterMessage}
-        <span className={styles.noPapersText}>Please double-check the DOI is correct.</span>
-        <span className={styles.noPapersText}>
-          Scinapse may not include the paper. Try visiting{" "}
-          <a className={styles.doiLink} target="_blank" rel="noopener" href={`https://doi.org/${doi}`}>
-            the original
-          </a>{" "}
-          or Request inclusion.
-        </span>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <b>Scinapse</b> found no result for <span className={styles.keyword}>"{searchInput}".</span>
-        {disabledFilterMessage}
-        <span className={styles.noPapersText}>Please check if all words are spelled correctly.</span>
-        <span className={styles.noPapersText}>Please check the spacing between keywords.</span>
-        <span className={styles.noPapersText}>Try reducing the number of keywords or using more common terms.</span>
-        <span className={styles.noPapersText}>
-          Scinapse may not include the paper you're looking for. We will comply ASAP to requests!
-        </span>
-      </>
-    );
-  }
-}
-
 const NoResult: React.FunctionComponent<NoResultProps> = props => {
+  const { hasFilterEmpty, articleSearchState, isLoading } = props;
+  const { doiPatternMatched, doi, searchInput } = articleSearchState;
   const [isOpen, setIsOpen] = React.useState(false);
   const query = props.articleSearchState.doiPatternMatched
     ? props.articleSearchState.doi
     : props.articleSearchState.searchInput;
+
+  if (isLoading) {
+    return (
+      <div className={styles.loadingContainer}>
+        <ArticleSpinner className={styles.loadingSpinner} />
+      </div>
+    );
+  }
+
+  function getNoResultNotiContent() {
+    const disabledFilterMessage = !hasFilterEmpty ? (
+      <li>
+        <span className={styles.noPapersText}>
+          Try <b>disabling</b> the filter.
+          <FilterResetButton
+            text="Reset All"
+            btnStyle={{
+              position: "relative",
+              top: 0,
+              fontSize: "15px",
+              marginLeft: "4px",
+              fontWeight: 500,
+              color: "#3e7fff",
+            }}
+          />
+        </span>
+      </li>
+    ) : null;
+
+    if (doiPatternMatched && !!doi) {
+      return (
+        <>
+          <b>Scinapse</b> found no result for <b className={styles.keyword}>"{searchInput}".</b>
+          <ul className={styles.contextWrapper}>
+            {disabledFilterMessage}
+            <li>
+              <span className={styles.noPapersText}>
+                Please <b>double-check</b> the DOI is correct.
+              </span>
+            </li>
+            <li>
+              <span className={styles.noPapersText}>
+                Scinapse may not include the paper. Try visiting{" "}
+                <a className={styles.doiLink} target="_blank" rel="noopener" href={`https://doi.org/${doi}`}>
+                  the original
+                </a>{" "}
+                or{" "}
+                <b
+                  className={styles.paperRequestLink}
+                  onClick={() => {
+                    setIsOpen(true);
+                  }}
+                >
+                  Request
+                </b>{" "}
+                inclusion.
+              </span>
+            </li>
+          </ul>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <b>Scinapse</b> found no result for <b className={styles.keyword}>"{searchInput}".</b>
+          <ul className={styles.contextWrapper}>
+            {disabledFilterMessage}
+            <li>
+              <span className={styles.noPapersText}>
+                Please check if all words are <b>spelled</b> correctly.
+              </span>
+            </li>
+            <li>
+              <span className={styles.noPapersText}>
+                Please check the <b>spacing</b> between keywords.
+              </span>
+            </li>
+            <li>
+              <span className={styles.noPapersText}>
+                Try to reduce <b>the number of keywords</b> or use <b>common terms</b>.
+              </span>
+            </li>
+            <li>
+              <span className={styles.noPapersText}>
+                Sometimes we may not include the paper you're looking for. We will comply when you{" "}
+                <b
+                  className={styles.paperRequestLink}
+                  onClick={() => {
+                    setIsOpen(true);
+                  }}
+                >
+                  request.
+                </b>
+              </span>
+            </li>
+          </ul>
+        </>
+      );
+    }
+  }
 
   return (
     <div className={styles.articleSearchContainer}>
@@ -74,21 +131,7 @@ const NoResult: React.FunctionComponent<NoResultProps> = props => {
         <div className={styles.noPapersContentWrapper}>
           <div className={styles.noPapersTitle}>Sorry</div>
           <div className={styles.noPapersContent}>
-            {getNoResultNotiContent(
-              props.hasFilterEmpty,
-              props.articleSearchState.doiPatternMatched,
-              props.searchText,
-              props.articleSearchState.doi
-            )}
-            <button
-              type="button"
-              onClick={() => {
-                setIsOpen(true);
-              }}
-              className={styles.paperRequestBtn}
-            >
-              Request Paper
-            </button>
+            {getNoResultNotiContent()}
             <RequestPaperDialog
               isOpen={isOpen}
               query={query}
