@@ -10,7 +10,9 @@
 
 .container {
   margin: 0 auto;
-  max-width: $small-container-width;
+  max-width: $container-width;
+  display: flex;
+  justify-content: center;
 }
 
 .rootWrapper {
@@ -224,6 +226,16 @@
 .selectedPaperWrapper {
   display: flex;
   justify-content: center;
+}
+
+@media (max-width: $tablet-width) {
+  .leftContentWrapper {
+    padding: 0 12px;
+  }
+
+  .rightContentWrapper {
+    padding: 0 12px;
+  }
 }
 
 // Mobile (0~768)
