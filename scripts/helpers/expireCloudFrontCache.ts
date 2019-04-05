@@ -28,7 +28,7 @@ function expireCloudFrontCache() {
         } else {
           resolve(data);
         }
-      },
+      }
     );
   }).then(function(invalidation: any) {
     return new Promise(function(resolve, _reject) {
@@ -46,7 +46,7 @@ function expireCloudFrontCache() {
             } else {
               console.log("*");
             }
-          },
+          }
         );
       }, 1000);
     });

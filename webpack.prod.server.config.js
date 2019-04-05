@@ -1,6 +1,5 @@
 const path = require("path");
 const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
-const nodeExternals = require("webpack-node-externals");
 const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
@@ -85,5 +84,4 @@ module.exports = {
     ],
   },
   plugins: [new LodashModuleReplacementPlugin()],
-  externals: [nodeExternals()],
 };

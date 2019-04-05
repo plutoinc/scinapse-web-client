@@ -8,10 +8,10 @@ export interface Response {}
 // Definitions by: James Darbyshire (http://darb.io)
 
 /************************************************
-*                                               *
-*               AWS Lambda API                  *
-*                                               *
-************************************************/
+ *                                               *
+ *               AWS Lambda API                  *
+ *                                               *
+ ************************************************/
 
 interface LambdaIntegrationResponse {
   statusCode: number;

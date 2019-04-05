@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import * as path from "path";
 import * as DeployConfig from "../../scripts/deploy/config";
 
 export default async function getClientJSURL(branch: string | null) {
@@ -6,7 +7,7 @@ export default async function getClientJSURL(branch: string | null) {
   let jsPath: string = "";
 
   if (process.env.NODE_ENV === "production") {
-    version = fs.readFileSync("./version").toString("utf8");
+    version = fs.readFileSync(path.resolve(__dirname, "./version")).toString("utf8");
     jsPath = `${DeployConfig.CDN_BASE_HOST}/${
       DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX
     }/${version}/bundleBrowser.js`;

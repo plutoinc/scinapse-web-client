@@ -13,7 +13,7 @@ interface ScinapseButtonProps {
   gaLabel?: string;
   isReactRouterLink?: boolean;
   isExternalLink?: boolean;
-  type?: string;
+  type?: "reset" | "button" | "submit";
   href?: string;
   to?: H.LocationDescriptor;
   style?: React.CSSProperties;

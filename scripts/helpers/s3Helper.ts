@@ -27,7 +27,7 @@ export default class S3Helper {
             console.log(`Fetching ${bucket}/${key} took ${new Date().getTime() - startTime.getTime()}`);
             resolve(data.Body.toString("utf8"));
           }
-        },
+        }
       );
     });
   }

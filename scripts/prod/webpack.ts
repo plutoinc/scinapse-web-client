@@ -38,8 +38,6 @@ async function buildAndUploadToS3() {
   });
 }
 
-buildAndUploadToS3()
-  .then(() => {
-    console.log("DONE");
-  })
-  .catch(console.error);
+buildAndUploadToS3().then(() => {
+  console.log("DONE");
+});

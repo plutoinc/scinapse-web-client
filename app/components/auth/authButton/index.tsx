@@ -4,7 +4,8 @@ import Icon from "../../../icons";
 import CircularProgress from "@material-ui/core/CircularProgress";
 const s = require("./authButton.scss");
 
-interface AuthButtonProps extends React.HTMLProps<HTMLButtonElement> {
+interface AuthButtonProps
+  extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
   isLoading: boolean;
   text: string;
   iconName?: string;
