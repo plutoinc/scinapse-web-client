@@ -210,7 +210,11 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
     ) {
       return (
         <div className={styles.innerContainer}>
-          <NoResult searchText={queryParams.query} articleSearchState={articleSearchState} />
+          <NoResult
+            searchText={queryParams.query}
+            articleSearchState={articleSearchState}
+            hasFilterEmpty={this.isFilterEmpty(queryParams.filter)}
+          />
         </div>
       );
     } else if (queryParams) {

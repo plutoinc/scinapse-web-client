@@ -10,27 +10,37 @@
 
 .noPapersContainer {
   display: flex;
-  flex-direction: column;
-  padding-top: 90px;
-  align-items: center;
+  padding-top: 45px;
   min-height: 738.5px;
 
+  .noPapersContentWrapper {
+    margin-left: 24px;
+  }
+
   .noPapersTitle {
-    font-size: 20px;
+    font-size: 24px;
     line-height: 1.8;
     color: $red0;
   }
 
   .noPapersContent {
-    margin-top: 15px;
+    margin-top: 4px;
     font-size: 15px;
-    line-height: 2.4;
+    line-height: 1.7;
     color: $black0;
 
     .keyword {
       color: $gray6;
     }
+
+    .noPapersText {
+      display: block;
+    }
   }
+}
+
+.iconWrapper {
+  width: 140px;
 }
 
 @media (max-width: $mobile-width) {

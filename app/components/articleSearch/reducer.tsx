@@ -87,6 +87,7 @@ export function reducer(
           isFilterLoading: false,
           pageErrorCode: null,
           isEnd: payload.data.page.last,
+          isDoiPattern: payload.data.isDoiPattern,
           page: payload.data.page.page,
           totalElements: payload.data.page.totalElements,
           totalPages: payload.data.page.totalPages,

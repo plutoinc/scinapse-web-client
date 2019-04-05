@@ -39,6 +39,7 @@ export interface SearchResult extends PaginationResponseV2<Paper[]> {
   data: {
     content: Paper[];
     page: PageObjectV2 | null;
+    isDoiPattern: boolean;
     aggregation: AggregationData | null;
     matchedAuthor: MatchAuthor;
     resultModified: boolean;
