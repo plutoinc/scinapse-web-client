@@ -212,7 +212,9 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
         <div className={styles.innerContainer}>
           <NoResult
             isLoading={isContentLoading}
-            searchText={articleSearchState.suggestionKeyword ? articleSearchState.suggestionKeyword : queryParams.query}
+            searchText={
+              articleSearchState.suggestionKeyword.length > 0 ? articleSearchState.suggestionKeyword : queryParams.query
+            }
             articleSearchState={articleSearchState}
             hasFilterEmpty={this.isFilterEmpty(queryParams.filter)}
           />
