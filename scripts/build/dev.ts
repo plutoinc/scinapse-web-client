@@ -2,7 +2,7 @@ import * as webpack from "webpack";
 import * as path from "path";
 import * as rimraf from "rimraf";
 import { CDN_BASE_HOST, AWS_S3_DEV_FOLDER_PREFIX } from "../deploy/config";
-import { uploadDevClientFiles } from "../helpers/pushToS3";
+import { uploadDevFiles } from "../helpers/pushToS3";
 const clientConfig = require("../../webpack.dev.browser.config");
 const serverConfig = require("../../webpack.dev.server.config");
 const handlerConfig = require("../../webpack.dev.handler.config");
@@ -29,7 +29,7 @@ async function build() {
 
 (async () => {
   await build();
-  await uploadDevClientFiles();
+  await uploadDevFiles();
   cleanArtifacts();
 
   console.log("DONE");

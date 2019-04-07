@@ -11,7 +11,7 @@ const s3client = s3.createClient({
 
 http.globalAgent.maxSockets = https.globalAgent.maxSockets = 20;
 
-export async function uploadProdClientFiles() {
+export async function uploadProdFiles() {
   return await new Promise((resolve, reject) => {
     const prefix = DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX;
     const cacheControl = "public, max-age=604800";
@@ -39,7 +39,7 @@ export async function uploadProdClientFiles() {
   });
 }
 
-export function uploadDevClientFiles() {
+export function uploadDevFiles() {
   return new Promise((resolve, reject) => {
     const prefix = `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${process.env.BRANCH_NAME}`;
     const cacheControl = "public, max-age=0";
