@@ -1,13 +1,12 @@
 import * as express from "express";
+import * as fs from "fs";
 import * as morgan from "morgan";
 import * as cookieParser from "cookie-parser";
+import * as path from "path";
 import ssr from "./ssr";
-import { TIMEOUT_FOR_SAFE_RENDERING } from "../app/api/pluto";
-import fallbackRender from "./fallbackRender";
 import getSitemap from "./routes/sitemap";
 import getRobotTxt from "./routes/robots";
 import getOpenSearchXML from "./routes/openSearchXML";
-import getVersion from "./helpers/getClientJSURL";
 import setABTest from "./helpers/setABTest";
 const compression = require("compression");
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
@@ -47,24 +46,22 @@ app.get("/opensearch.xml", (_req, res) => {
 });
 
 app.get("*", async (req, res) => {
-  const { jsPath, version } = await getVersion(req.query ? req.query.branch : null);
+  let version = "";
+  if (process.env.NODE_ENV === "production") {
+    version = fs.readFileSync(path.resolve(__dirname, "./version")).toString("utf8");
+  }
 
   setABTest(req, res);
 
   try {
-    const lazyRender = new Promise((resolve, _reject) => {
-      setTimeout(() => {
-        resolve(fallbackRender(jsPath, version));
-      }, TIMEOUT_FOR_SAFE_RENDERING);
-    });
-
-    const html = await Promise.race([ssr(req, version), lazyRender]);
+    const html = await ssr(req, version);
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.send(html);
   } catch (err) {
     console.error(err);
     res.setHeader("Content-Type", "text/html; charset=utf-8");
-    res.send(fallbackRender(jsPath, version));
+    // TODO: make error page
+    res.send("<h1>Something went wrong.</h1>");
   }
 });
 

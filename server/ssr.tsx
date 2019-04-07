@@ -17,7 +17,7 @@ const JssProvider = require("react-jss/lib/JssProvider").default;
 const { SheetsRegistry } = require("react-jss/lib/jss");
 
 const statsFile = path.resolve(__dirname, "../client/loadable-stats.json");
-const extractor = new ChunkExtractor({ statsFile, outputPath: "http://localhost:8000/client" });
+const extractor = new ChunkExtractor({ statsFile });
 
 const ssr = async (req: express.Request, version: string) => {
   // override user request
@@ -93,6 +93,9 @@ const ssr = async (req: express.Request, version: string) => {
   const scriptTags = extractor.getScriptTags();
   const linkTags = extractor.getLinkTags();
   const styleTags = extractor.getStyleTags();
+
+  // TODO: remove below console
+  // TODO: add prefetch
   console.log("scriptTags === ", scriptTags);
   console.log("linkTags === ", linkTags);
   console.log("styleTags === ", styleTags);

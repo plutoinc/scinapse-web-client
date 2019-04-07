@@ -1,8 +1,9 @@
 const path = require("path");
+const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
-  mode: "production",
-  entry: ["./server/devHandler.tsx"],
+  mode: "development",
+  entry: ["@babel/polyfill", "./server/devHandler.tsx"],
   output: {
     libraryTarget: "commonjs2",
     path: path.resolve(__dirname, "dist"),
@@ -11,6 +12,7 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
+  devtool: "inline-source-map",
   module: {
     rules: [
       {
@@ -18,14 +20,20 @@ module.exports = {
         exclude: /node_modules/,
         loader: "awesome-typescript-loader",
         options: {
-          configFileName: "devHandlerTsconfig.json",
+          useBabel: true,
+          useCache: false,
         },
       },
     ]
   },
   optimization: {
+    minimize: false,
     nodeEnv: "dev",
   },
   target: "node",
-  externals: /(tmp\/bundle\.js)/i,
+  node: {
+    __dirname: false,
+    __filename: false,
+  },
+  externals: [/(tmp\/server\/main\.js)/i, nodeExternals()],
 };

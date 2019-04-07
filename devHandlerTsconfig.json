@@ -6,8 +6,8 @@
     "allowUnusedLabels": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "target": "es5",
-    "module": "es2015",
+    "target": "es2015",
+    "module": "esnext",
     "moduleResolution": "node",
     "jsx": "react",
     "lib": ["es6", "es2016", "dom", "esnext.asynciterable"],
@@ -17,9 +17,5 @@
     "typeRoots": ["./node_modules/@types", "./typings"]
   },
   "include": ["server/devHandler"],
-  "exclude": ["node_modules/**/*"],
-  "awesomeTypescriptLoaderOptions": {
-    "useCache": true,
-    "useBabel": true
-  }
+  "exclude": ["node_modules/**/*"]
 }

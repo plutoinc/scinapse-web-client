@@ -2,11 +2,11 @@ import * as webpack from "webpack";
 import * as path from "path";
 import * as fs from "fs";
 import { CDN_BASE_HOST, AWS_S3_PRODUCTION_FOLDER_PREFIX } from "../deploy/config";
-import { uploadClientFilesToS3 } from "../deploy/helpers/pushToS3";
+import { uploadProdClientFiles } from "../helpers/pushToS3";
 const clientConfig = require("../../webpack.prod.browser.config");
 const serverConfig = require("../../webpack.prod.server.config");
 const version = new Date().toISOString().replace(/:/g, "-");
-clientConfig.output.publicPath = `${CDN_BASE_HOST}/${AWS_S3_PRODUCTION_FOLDER_PREFIX}/`;
+clientConfig.output.publicPath = `${CDN_BASE_HOST}/${AWS_S3_PRODUCTION_FOLDER_PREFIX}/client/`;
 
 console.log("version is ", version);
 
@@ -20,8 +20,7 @@ function cleanArtifacts() {
   });
 }
 
-// TODO: Remove async
-async function buildAndUploadToS3() {
+function buildAndUploadToS3() {
   return new Promise((resolve, reject) => {
     webpack([clientConfig, serverConfig], async (err, stats) => {
       if (err) {
@@ -29,7 +28,7 @@ async function buildAndUploadToS3() {
         reject(err);
       } else {
         console.log(stats);
-        await uploadClientFilesToS3();
+        await uploadProdClientFiles();
         cleanArtifacts();
         fs.writeFileSync(path.resolve(__dirname, "../../dist/server/version"), version);
         resolve();
