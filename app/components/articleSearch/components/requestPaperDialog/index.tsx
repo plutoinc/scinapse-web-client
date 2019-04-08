@@ -14,8 +14,8 @@ import ScinapseFormikInput from "../../../common/scinapseInput/scinapseFormikInp
 import ReduxAutoSizeTextarea from "../../../common/autoSizeTextarea/reduxAutoSizeTextarea";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
 import ActionTicketManager from "../../../../helpers/actionTicketManager";
-import { LAST_SUCCEEDED_EMAIL_KEY } from "../../../../containers/paperShowActionBar/components/constant";
 import Icon from "../../../../icons";
+import { LAST_SUCCEEDED_EMAIL_KEY } from "../../../../constants/requestDialogConstant";
 declare var ga: any;
 const styles = require("./requestPaperDialog.scss");
 
