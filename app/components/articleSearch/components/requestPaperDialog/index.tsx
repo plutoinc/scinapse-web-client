@@ -1,20 +1,20 @@
 import * as React from "react";
+import * as Cookies from "js-cookie";
+import * as classNames from "classnames";
+import { connect, Dispatch } from "react-redux";
+import { Formik, FormikErrors, Form, Field } from "formik";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import FeedbackManager from "@pluto_network/scinapse-feedback";
+import Dialog from "@material-ui/core/Dialog";
 import { CurrentUser } from "../../../../model/currentUser";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import { AppState } from "../../../../reducers";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import FeedbackManager from "@pluto_network/scinapse-feedback";
-import { connect, Dispatch } from "react-redux";
-import * as Cookies from "js-cookie";
-import Dialog from "@material-ui/core/Dialog";
-import { Formik, FormikErrors, Form, Field } from "formik";
 import validateEmail from "../../../../helpers/validateEmail";
-import * as classNames from "classnames";
-import Icon from "../../../../icons";
 import ScinapseFormikInput from "../../../common/scinapseInput/scinapseFormikInput";
 import ReduxAutoSizeTextarea from "../../../common/autoSizeTextarea/reduxAutoSizeTextarea";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
 import ActionTicketManager from "../../../../helpers/actionTicketManager";
+import Icon from "../../../../icons";
 declare var ga: any;
 const styles = require("./requestPaperDialog.scss");
 
