@@ -44,9 +44,11 @@ var s3client = s3.createClient({
         region: "us-east-1"
     }
 });
-function donwloadSourcesFromS3(branch) {
+function downloadSrcFromS3(branch) {
     return new Promise(function (resolve, reject) {
-        var prefix = branch ? DeployConfig.AWS_S3_DEV_FOLDER_PREFIX + "/" + branch : DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX;
+        var prefix = branch
+            ? DeployConfig.AWS_S3_DEV_FOLDER_PREFIX + "/" + branch
+            : DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX;
         var params = {
             localDir: "/tmp",
             s3Params: {
@@ -71,7 +73,7 @@ exports.ssr = function (event, context) { return __awaiter(_this, void 0, void 0
         switch (_a.label) {
             case 0:
                 branch = event.queryStringParameters && event.queryStringParameters.branch;
-                return [4 /*yield*/, donwloadSourcesFromS3(branch)];
+                return [4 /*yield*/, downloadSrcFromS3(branch)];
             case 1:
                 _a.sent();
                 bundle = require("/tmp/server/main.js");

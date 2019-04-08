@@ -18,9 +18,5 @@
     "typeRoots": ["./node_modules/@types", "./typings"]
   },
   "include": ["app/**/*", "e2eTest/**/*", "localServer/**/*", "server/**/*"],
-  "exclude": ["node_modules/**/*"],
-  "awesomeTypescriptLoaderOptions": {
-    "useCache": true,
-    "useBabel": true
-  }
+  "exclude": ["node_modules/**/*"]
 }

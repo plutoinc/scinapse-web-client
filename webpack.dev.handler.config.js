@@ -3,7 +3,7 @@ const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
   mode: "development",
-  entry: ["@babel/polyfill", "./server/devHandler.tsx"],
+  entry: ["./server/devHandler.tsx"],
   output: {
     libraryTarget: "commonjs2",
     path: path.resolve(__dirname, "dist"),
@@ -19,10 +19,6 @@ module.exports = {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         loader: "awesome-typescript-loader",
-        options: {
-          useBabel: true,
-          useCache: false,
-        },
       },
     ]
   },
