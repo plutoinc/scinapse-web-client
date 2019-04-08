@@ -26,6 +26,9 @@ import NoResultInSearch from "./components/noResultInSearch";
 import TabNavigationBar from "../common/tabNavigationBar";
 import SortBar from "./components/SortBar";
 import { getUrlDecodedQueryParamsObject } from "../../helpers/makeNewFilterLink";
+import { Paper } from "../../model/paper";
+import EnvChecker from "../../helpers/envChecker";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -54,7 +57,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
   }
 
   public async componentDidMount() {
-    const { configuration, dispatch, match, location } = this.props;
+    const { configuration, dispatch, match, location, articleSearchState } = this.props;
 
     this.setState({ isClient: true });
     this.fetchFilters();
@@ -70,8 +73,13 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
         cancelToken: this.cancelToken.token,
       };
 
-      await getSearchData(currentParams);
+      const papers = await getSearchData(currentParams);
+      // TODO: change logging logic much easier after chainging the class component to React hooks.
+      this.logSearchResult(papers);
       restoreScroll(location.key);
+    } else {
+      // TODO: change logging logic much easier after chainging the class component to React hooks.
+      this.logSearchResult(articleSearchState.searchItemsToShow);
     }
   }
 
@@ -94,13 +102,16 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
       this.cancelToken.cancel();
       this.cancelToken = axios.CancelToken.source();
 
-      await getSearchData({
+      const papers = await getSearchData({
         dispatch,
         match,
         pathname: location.pathname,
         queryParams: getQueryParamsObject(afterSearch),
         cancelToken: this.cancelToken.token,
       });
+      if (!hasAuthStateChanged) {
+        this.logSearchResult(papers);
+      }
       restoreScroll(location.key);
     }
   }
@@ -136,6 +147,28 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
       </div>
     );
   }
+
+  private logSearchResult = (searchResult?: Paper[] | null) => {
+    if (!EnvChecker.isOnServer()) {
+      if (!searchResult || searchResult.length === 0) {
+        ActionTicketManager.trackTicket({
+          pageType: "searchResult",
+          actionType: "view",
+          actionArea: "paperList",
+          actionTag: "pageView",
+          actionLabel: String(0),
+        });
+      } else {
+        ActionTicketManager.trackTicket({
+          pageType: "searchResult",
+          actionType: "view",
+          actionArea: "paperList",
+          actionTag: "pageView",
+          actionLabel: String(searchResult.length),
+        });
+      }
+    }
+  };
 
   private fetchFilters = () => {
     const { dispatch, currentUserState } = this.props;

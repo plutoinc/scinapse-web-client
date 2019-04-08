@@ -39,8 +39,8 @@ import {
 } from "./constants/routes";
 import { getAuthorSearchData } from "./containers/authorSearch/sideEffect";
 import { checkAuthStatus } from "./components/auth/actions";
-import { getCollections } from "./components/collections/actions";
 import { getCollections as sideEffectGetCollections } from "./components/collections/sideEffect";
+import { getCollections } from "./components/collections/actions";
 const styles = require("./root.scss");
 
 export interface LoadDataParams<P> {

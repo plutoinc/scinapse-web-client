@@ -71,6 +71,30 @@
   font-size: 14px;
   color: $black1;
 
+  .externalCollectionButton {
+    margin-left: 8px;
+    width: 109px;
+    height: 44px;
+    border-radius: 4px;
+    background-color: $gray1;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: $gray6;
+    display: flex;
+
+    &:hover {
+      background-color: $gray2;
+    }
+
+    .collectionIcon {
+      width: 20px;
+      height: 20px;
+      margin-right: 4px;
+    }
+  }
+
   .signInButton {
     margin-right: 15.5px;
     cursor: pointer;
@@ -108,7 +132,7 @@
   width: 44px;
   height: 44px;
   border-radius: 5px;
-  margin-left: 10px;
+  margin-left: 8px;
   background-color: $main_blue0;
   font-size: 18.5px;
   justify-content: center;
@@ -123,7 +147,7 @@
   width: 44px;
   height: 44px;
   border-radius: 5px;
-  margin-left: 10px;
+  margin-left: 8px;
   background-color: white;
   font-size: 18.5px;
   justify-content: center;

@@ -31,6 +31,28 @@
   }
 }
 
+.addCollectionNoteBtnWrapper {
+  @include small-action-button($gray6);
+  height: 100%;
+  padding: 4px;
+
+  .addNoteIcon {
+    @extend %button-icon;
+    margin: 0;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+.collectionNoteForm {
+  border-radius: 8px;
+  margin-top: 4px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
+}
+
 @media (max-width: $mobile-width) {
   .addCollectionBtnWrapper {
     display: none;

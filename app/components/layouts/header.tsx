@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import * as Cookies from "js-cookie";
+import { denormalize } from "normalizr";
 import MenuItem from "@material-ui/core/MenuItem";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import * as addDays from "date-fns/add_days";
@@ -26,6 +27,7 @@ import { HOME_PATH } from "../../constants/routes";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { CurrentUser } from "../../model/currentUser";
 import { FilterObject } from "../../helpers/papersQueryFormatter";
+import { userCollectionSchema } from "../../model/collection";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -39,6 +41,8 @@ function mapStateToProps(state: AppState) {
     layoutState: state.layout,
     articleSearchState: state.articleSearch,
     authorSearchState: state.authorSearch,
+    myCollectionsState: state.myCollections,
+    userCollections: denormalize(state.myCollections.collectionIds, [userCollectionSchema], state.entities),
   };
 }
 
@@ -271,7 +275,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private userDropdownMenuItems = () => {
-    const { currentUserState } = this.props;
+    const { currentUserState, myCollectionsState } = this.props;
 
     return (
       <div className={styles.menuItems}>
@@ -293,7 +297,11 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           <Link
             className={styles.buttonOnLink}
             onClick={this.handleRequestCloseUserDropdown}
-            to={`/users/${currentUserState.id}/collections`}
+            to={
+              !!myCollectionsState && myCollectionsState.collectionIds.length > 0
+                ? `/collections/${myCollectionsState.collectionIds[0]}`
+                : `/users/${currentUserState.id}/collections`
+            }
           >
             Collection
           </Link>
@@ -306,48 +314,62 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private getUserDropdown = () => {
-    const { currentUserState } = this.props;
+    const { currentUserState, myCollectionsState } = this.props;
 
     const firstCharacterOfUsername = currentUserState.firstName.slice(0, 1).toUpperCase();
 
     return (
       <div className={styles.rightBox}>
-        <div>
-          {!currentUserState.profileImageUrl ? (
-            <div
-              className={styles.userDropdownChar}
-              ref={el => (this.userDropdownAnchorRef = el)}
-              onClick={this.handleToggleUserDropdown}
-            >
-              {firstCharacterOfUsername}
-            </div>
-          ) : (
-            <div
-              className={styles.userDropdownImg}
-              ref={el => (this.userDropdownAnchorRef = el)}
-              onClick={this.handleToggleUserDropdown}
-            >
-              <div
-                style={{
-                  backgroundImage: `url(${currentUserState.profileImageUrl})`,
-                }}
-                className={styles.profileImage}
-              />
-            </div>
-          )}
-          <BubblePopover
-            open={this.state.isUserDropdownOpen}
-            anchorEl={this.state.userDropdownAnchorElement!}
-            placement="bottom-end"
-            popperOptions={{
-              positionFixed: true,
-            }}
+        <Link
+          className={styles.externalCollectionButton}
+          onClick={() => {
+            this.handleRequestCloseUserDropdown();
+            ActionTicketManager.trackTicket({
+              pageType: getCurrentPageType(),
+              actionType: "fire",
+              actionArea: "topBar",
+              actionTag: "collectionShow",
+              actionLabel: String(myCollectionsState.collectionIds[0]),
+            });
+          }}
+          to={
+            !!myCollectionsState && myCollectionsState.collectionIds.length > 0
+              ? `/collections/${myCollectionsState.collectionIds[0]}`
+              : `/users/${currentUserState.id}/collections`
+          }
+        >
+          <Icon className={styles.collectionIcon} icon="COLLECTION" />Collection
+        </Link>
+        {!currentUserState.profileImageUrl ? (
+          <div
+            className={styles.userDropdownChar}
+            ref={el => (this.userDropdownAnchorRef = el)}
+            onClick={this.handleToggleUserDropdown}
           >
-            <ClickAwayListener onClickAway={this.handleRequestCloseUserDropdown}>
-              {this.userDropdownMenuItems()}
-            </ClickAwayListener>
-          </BubblePopover>
-        </div>
+            {firstCharacterOfUsername}
+          </div>
+        ) : (
+          <div
+            className={styles.userDropdownImg}
+            ref={el => (this.userDropdownAnchorRef = el)}
+            onClick={this.handleToggleUserDropdown}
+          >
+            <div
+              style={{ backgroundImage: `url(${currentUserState.profileImageUrl})` }}
+              className={styles.profileImage}
+            />
+          </div>
+        )}
+        <BubblePopover
+          open={this.state.isUserDropdownOpen}
+          anchorEl={this.state.userDropdownAnchorElement!}
+          placement="bottom-end"
+          popperOptions={{ positionFixed: true }}
+        >
+          <ClickAwayListener onClickAway={this.handleRequestCloseUserDropdown}>
+            {this.userDropdownMenuItems()}
+          </ClickAwayListener>
+        </BubblePopover>
       </div>
     );
   };

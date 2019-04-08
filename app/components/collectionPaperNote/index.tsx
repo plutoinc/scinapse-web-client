@@ -4,6 +4,7 @@ import { updatePaperNote } from "../../actions/collection";
 import PaperNoteForm from "../paperShow/noteForm";
 import { withStyles } from "../../helpers/withStylesHelper";
 import NoteContent from "./noteContent";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 const styles = require("./collectionPaperNote.scss");
 
 interface CollectionPaperNoteProps {
@@ -86,11 +87,18 @@ class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, 
     if (confirm("Are you SURE to remove this memo?")) {
       dispatch(
         updatePaperNote({
-          paperId: paperId,
-          collectionId: collectionId,
+          paperId,
+          collectionId,
           note: null,
         })
       );
+      ActionTicketManager.trackTicket({
+        pageType: "collectionShow",
+        actionType: "fire",
+        actionArea: "paperList",
+        actionTag: "removeNote",
+        actionLabel: String(paperId),
+      });
     }
   };
 
@@ -101,11 +109,19 @@ class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, 
       this.setState(prevState => ({ ...prevState, isLoading: true }));
       await dispatch(
         updatePaperNote({
-          paperId: paperId,
+          paperId,
           collectionId,
           note,
         })
       );
+      ActionTicketManager.trackTicket({
+        pageType: "collectionShow",
+        actionType: "fire",
+        actionArea: "paperList",
+        actionTag: "addNote",
+        actionLabel: String(paperId),
+      });
+
       this.setState(prevState => ({ ...prevState, isLoading: false, isEdit: false }));
     } catch (err) {
       this.setState(prevState => ({ ...prevState, isLoading: false }));

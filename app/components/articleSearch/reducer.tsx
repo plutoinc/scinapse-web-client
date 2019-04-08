@@ -3,6 +3,7 @@ import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from "./records";
 import { SearchResult } from "../../api/search";
 import { ChangeRangeInputParams, FILTER_TYPE_HAS_RANGE, FILTER_RANGE_TYPE } from "../../constants/paperSearch";
 import { AddPaperToCollectionParams, RemovePapersFromCollectionParams } from "../../api/collection";
+import { AggregationFos, AggregationJournal, AggregationData } from "../../model/aggregation";
 import { Paper } from "../../model/paper";
 import { Filter, RawFilter } from "../../api/member";
 import { isEqual } from "lodash";
@@ -46,30 +47,38 @@ export function reducer(
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS: {
       const payload: SearchResult = action.payload;
 
-      const sortedFosList = payload.data.aggregation.fosList.sort((a, b) => {
-        if (state.fosFilter.includes(a.id) && !state.fosFilter.includes(b.id)) {
-          return -1;
-        } else if (!state.fosFilter.includes(a.id) && state.fosFilter.includes(b.id)) {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
+      let sortedFosList: AggregationFos[] = [];
+      let sortedJournals: AggregationJournal[] = [];
+      let fosFilterObject: AggregationFos[] = [];
+      let journalFilterObject: AggregationJournal[] = [];
+      let aggregationData: AggregationData | null = null;
+      if (payload.data.aggregation) {
+        sortedFosList = payload.data.aggregation.fosList.sort((a, b) => {
+          if (state.fosFilter.includes(a.id) && !state.fosFilter.includes(b.id)) {
+            return -1;
+          } else if (!state.fosFilter.includes(a.id) && state.fosFilter.includes(b.id)) {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
 
-      const sortedJournals = payload.data.aggregation.journals.sort((a, b) => {
-        if (state.journalFilter.includes(a.id) && !state.journalFilter.includes(b.id)) {
-          return -1;
-        } else if (!state.journalFilter.includes(a.id) && state.journalFilter.includes(b.id)) {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
+        sortedJournals = payload.data.aggregation.journals.sort((a, b) => {
+          if (state.journalFilter.includes(a.id) && !state.journalFilter.includes(b.id)) {
+            return -1;
+          } else if (!state.journalFilter.includes(a.id) && state.journalFilter.includes(b.id)) {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
 
-      const journalFilterObject = payload.data.aggregation.journals.filter(journal =>
-        state.journalFilter.includes(journal.id)
-      );
-      const fosFilterObject = payload.data.aggregation.fosList.filter(fos => state.fosFilter.includes(fos.id));
+        journalFilterObject = payload.data.aggregation.journals.filter(journal =>
+          state.journalFilter.includes(journal.id)
+        );
+        fosFilterObject = payload.data.aggregation.fosList.filter(fos => state.fosFilter.includes(fos.id));
+        aggregationData = { ...payload.data.aggregation, journals: sortedJournals, fosList: sortedFosList };
+      }
 
       if (payload.data.page) {
         return {
@@ -85,7 +94,7 @@ export function reducer(
           suggestionKeyword: payload.data.suggestion ? payload.data.suggestion.suggestQuery : "",
           highlightedSuggestionKeyword: payload.data.suggestion ? payload.data.suggestion.highlighted : "",
           searchFromSuggestion: payload.data.resultModified,
-          aggregationData: { ...payload.data.aggregation, journals: sortedJournals, fosList: sortedFosList },
+          aggregationData,
           journalFilterObject,
           fosFilterObject,
           matchAuthors: payload.data.matchedAuthor,

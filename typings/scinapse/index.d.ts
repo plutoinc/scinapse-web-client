@@ -52,6 +52,7 @@ declare namespace Scinapse {
       | "blogPost"
       | "journalHomepage"
       | "queryInJournal"
+      | "queryInCollection"
       | "authorEntityItem"
       | "paperSorting"
       | "collectionSharing"
@@ -69,6 +70,12 @@ declare namespace Scinapse {
       | "collectionBtn"
       | "journalSearch"
       | "fosSearch"
+      | "collectionShow"
+      | "addNote"
+      | "removeNote"
+      | "viewNote"
+      | "searchHistoryQuery"
+      | "searchSuggestionQuery"
       | "";
 
     type ActionArea =
@@ -76,6 +83,7 @@ declare namespace Scinapse {
       | "refList"
       | "citedList"
       | "paperList"
+      | "authorList"
       | "paperDescription"
       | "otherPaperList"
       | "relatedPaperList"
@@ -94,7 +102,9 @@ declare namespace Scinapse {
       | "filter"
       | "betterThanGoogle"
       | "pdfViewer"
-      | "researchHistory";
+      | "researchHistory"
+      | "sideNavigator"
+      | "nextPaper";
 
     type PageType =
       | "paperShow"

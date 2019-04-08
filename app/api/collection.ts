@@ -30,11 +30,13 @@ export interface AddPaperToCollectionParams {
   collection: Collection;
   paperId: number;
   note?: string;
+  cancelToken?: CancelToken;
 }
 
 export interface RemovePapersFromCollectionParams {
   collection: Collection;
   paperIds: number[];
+  cancelToken?: CancelToken;
 }
 
 export interface GetCollectionsPapersParams {
