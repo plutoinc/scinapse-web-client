@@ -124,9 +124,9 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
 
     case ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_DELETE_COLLECTION: {
       const targetCollectionId = action.payload.collectionId;
-      const { [targetCollectionId]: deletedItem, ...newCollections } = state.collections;
+      const { [targetCollectionId]: deletedItem, ...newCollections } = state.userCollections;
 
-      return { ...state, collections: newCollections };
+      return { ...state, userCollections: newCollections };
     }
 
     case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_SUCCEEDED_TO_UPDATE_PAPER_NOTE: {
