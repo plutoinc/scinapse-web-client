@@ -145,7 +145,7 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
       if (!searchResult || searchResult.length === 0) {
         ActionTicketManager.trackTicket({
           pageType: "authorSearchResult",
-          actionType: "fire",
+          actionType: "view",
           actionArea: "authorList",
           actionTag: "pageView",
           actionLabel: String(0),
@@ -153,7 +153,7 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
       } else {
         ActionTicketManager.trackTicket({
           pageType: "authorSearchResult",
-          actionType: "fire",
+          actionType: "view",
           actionArea: "authorList",
           actionTag: "pageView",
           actionLabel: String(searchResult.length),

@@ -153,7 +153,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
       if (!searchResult || searchResult.length === 0) {
         ActionTicketManager.trackTicket({
           pageType: "searchResult",
-          actionType: "fire",
+          actionType: "view",
           actionArea: "paperList",
           actionTag: "pageView",
           actionLabel: String(0),
@@ -161,7 +161,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
       } else {
         ActionTicketManager.trackTicket({
           pageType: "searchResult",
-          actionType: "fire",
+          actionType: "view",
           actionArea: "paperList",
           actionTag: "pageView",
           actionLabel: String(searchResult.length),
