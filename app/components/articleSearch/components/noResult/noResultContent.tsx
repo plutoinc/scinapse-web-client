@@ -11,7 +11,8 @@ interface NoResultContentProps {
   handleSetIsOpen: () => void;
 }
 
-function disabledFilterMessage(hasEmptyFilter: boolean) {
+const DisabledFilterMessage: React.FunctionComponent<{ hasEmptyFilter: boolean }> = React.memo(props => {
+  const { hasEmptyFilter } = props;
   if (hasEmptyFilter) {
     return null;
   } else {
@@ -34,7 +35,7 @@ function disabledFilterMessage(hasEmptyFilter: boolean) {
       </li>
     );
   }
-}
+});
 
 function noResultDoiSearchContent(
   searchText: string | null,
@@ -46,7 +47,7 @@ function noResultDoiSearchContent(
     <>
       <b>Scinapse</b> found no result for <b className={styles.keyword}>"{searchText}".</b>
       <ul className={styles.contextWrapper}>
-        {disabledFilterMessage(hasEmptyFilter)}
+        <DisabledFilterMessage hasEmptyFilter={hasEmptyFilter} />
         <li>
           <span className={styles.noPapersText}>
             Please <b>double-check</b> the DOI is correct.
@@ -75,7 +76,7 @@ function noResultGeneralSearchContent(searchText: string | null, hasEmptyFilter:
     <>
       <b>Scinapse</b> found no result for <b className={styles.keyword}>"{searchText}".</b>
       <ul className={styles.contextWrapper}>
-        {disabledFilterMessage(hasEmptyFilter)}
+        <DisabledFilterMessage hasEmptyFilter={hasEmptyFilter} />
         <li>
           <span className={styles.noPapersText}>
             Please check if all words are <b>spelled</b> correctly.
