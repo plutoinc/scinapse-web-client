@@ -61,6 +61,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         classes={{
           paper: styles.dialogPaper,
         }}
+        maxWidth={"lg"}
       >
         {this.getDialogContent(dialogState.type) || ""}
       </Dialog>

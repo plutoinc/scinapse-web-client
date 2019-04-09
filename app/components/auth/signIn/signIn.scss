@@ -1,3 +1,7 @@
+.authContainer {
+  display: flex;
+}
+
 .forgotPasswordBox {
   text-decoration: underline;
   cursor: pointer;
@@ -9,7 +13,7 @@
 }
 
 .formWrapper {
-  padding: 0 36px;
+  padding: 22px 32px 32px 24px;
 }
 
 .fbIconWrapper {

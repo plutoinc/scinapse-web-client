@@ -16,6 +16,7 @@ import { closeDialog } from "../../dialog/actions";
 import { signInWithEmail, signInWithSocial, getAuthorizeCode } from "./actions";
 import validateEmail from "../../../helpers/validateEmail";
 import FailedToSignIn from "./components/failedToSignIn";
+import AuthGuideContext from "../authGuideContext";
 const s = require("./signIn.scss");
 const store = require("store");
 
@@ -109,75 +110,84 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
   }
 
   return (
-    <>
-      <AuthTabs onClickTab={props.handleChangeDialogType} activeTab="sign in" />
-      <div className={s.formWrapper}>
-        <Formik
-          initialValues={{ email: "", password: "" }}
-          onSubmit={handleSubmit}
-          validate={validateForm}
-          validateOnChange={false}
-          render={() => {
-            return (
-              <Form>
-                <Field name="email" type="email" component={AuthInputBox} placeholder="E-mail" iconName="EMAIL_ICON" />
-                <Field
-                  name="password"
-                  type="password"
-                  component={AuthInputBox}
-                  placeholder="Password"
-                  iconName="PASSWORD_ICON"
-                />
-                {networkError && <div className={s.errorContent}>{networkError}</div>}
-                <div
-                  onClick={() => {
-                    if (props.handleChangeDialogType) {
-                      props.handleChangeDialogType(GLOBAL_DIALOG_TYPE.RESET_PASSWORD);
-                    } else {
-                      GlobalDialogManager.openResetPasswordDialog();
-                    }
-                  }}
-                  className={s.forgotPasswordBox}
-                >
-                  Forgot Password?
-                </div>
-                <AuthButton
-                  type="submit"
-                  isLoading={isLoading}
-                  text="SIGN IN"
-                  style={{ backgroundColor: "#6096ff", marginTop: "10px", fontSize: "14px" }}
-                />
-              </Form>
-            );
-          }}
-        />
-        <ORSeparator />
-        <AuthButton
-          isLoading={isLoading}
-          text="SIGN IN WITH FACEBOOK"
-          style={{ ...oAuthBtnBaseStyle, backgroundColor: "#3859ab", marginTop: "18px" }}
-          iconName="FACEBOOK_LOGO"
-          iconClassName={s.fbIconWrapper}
-          onClick={handleClickOAuthBtn("FACEBOOK")}
-        />
-        <AuthButton
-          isLoading={isLoading}
-          text="SIGN IN WITH GOOGLE"
-          style={{ ...oAuthBtnBaseStyle, backgroundColor: "#dc5240" }}
-          iconName="GOOGLE_LOGO"
-          iconClassName={s.googleIconWrapper}
-          onClick={handleClickOAuthBtn("GOOGLE")}
-        />
-        <AuthButton
-          isLoading={isLoading}
-          text="SIGN IN WITH ORCID"
-          style={{ ...oAuthBtnBaseStyle, backgroundColor: "#a5d027", marginBottom: "34px" }}
-          iconName="ORCID_LOGO"
-          iconClassName={s.orcidIconWrapper}
-          onClick={handleClickOAuthBtn("ORCID")}
-        />
+    <div className={s.authContainer}>
+      <AuthGuideContext />
+      <div className={s.authFormWrapper}>
+        <AuthTabs onClickTab={props.handleChangeDialogType} activeTab="sign in" />
+        <div className={s.formWrapper}>
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            onSubmit={handleSubmit}
+            validate={validateForm}
+            validateOnChange={false}
+            render={() => {
+              return (
+                <Form>
+                  <Field
+                    name="email"
+                    type="email"
+                    component={AuthInputBox}
+                    placeholder="E-mail"
+                    iconName="EMAIL_ICON"
+                  />
+                  <Field
+                    name="password"
+                    type="password"
+                    component={AuthInputBox}
+                    placeholder="Password"
+                    iconName="PASSWORD_ICON"
+                  />
+                  {networkError && <div className={s.errorContent}>{networkError}</div>}
+                  <div
+                    onClick={() => {
+                      if (props.handleChangeDialogType) {
+                        props.handleChangeDialogType(GLOBAL_DIALOG_TYPE.RESET_PASSWORD);
+                      } else {
+                        GlobalDialogManager.openResetPasswordDialog();
+                      }
+                    }}
+                    className={s.forgotPasswordBox}
+                  >
+                    Forgot Password?
+                  </div>
+                  <AuthButton
+                    type="submit"
+                    isLoading={isLoading}
+                    text="SIGN IN"
+                    style={{ backgroundColor: "#6096ff", marginTop: "10px", fontSize: "14px" }}
+                  />
+                </Form>
+              );
+            }}
+          />
+          <ORSeparator />
+          <AuthButton
+            isLoading={isLoading}
+            text="SIGN IN WITH FACEBOOK"
+            style={{ ...oAuthBtnBaseStyle, backgroundColor: "#3859ab", marginTop: "18px" }}
+            iconName="FACEBOOK_LOGO"
+            iconClassName={s.fbIconWrapper}
+            onClick={handleClickOAuthBtn("FACEBOOK")}
+          />
+          <AuthButton
+            isLoading={isLoading}
+            text="SIGN IN WITH GOOGLE"
+            style={{ ...oAuthBtnBaseStyle, backgroundColor: "#dc5240" }}
+            iconName="GOOGLE_LOGO"
+            iconClassName={s.googleIconWrapper}
+            onClick={handleClickOAuthBtn("GOOGLE")}
+          />
+          <AuthButton
+            isLoading={isLoading}
+            text="SIGN IN WITH ORCID"
+            style={{ ...oAuthBtnBaseStyle, backgroundColor: "#a5d027" }}
+            iconName="ORCID_LOGO"
+            iconClassName={s.orcidIconWrapper}
+            onClick={handleClickOAuthBtn("ORCID")}
+          />
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
