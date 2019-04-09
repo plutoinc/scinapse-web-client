@@ -40,7 +40,6 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
     case ACTION_TYPES.COLLECTIONS_SUCCEEDED_GET_COLLECTIONS: {
       return {
         ...state,
-        collectionIds: action.payload.result,
         isLoadingCollections: false,
       };
     }
