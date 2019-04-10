@@ -92,13 +92,7 @@ const ssr = async (req: express.Request, version: string) => {
   const renderedHTML = ReactDOMServer.renderToString(jsx);
   const scriptTags = extractor.getScriptTags();
   const linkTags = extractor.getLinkTags();
-  const styleTags = extractor.getStyleTags();
-
-  // TODO: remove below console
-  // TODO: add prefetch
-  console.log("scriptTags === ", scriptTags);
-  console.log("linkTags === ", linkTags);
-  console.log("styleTags === ", styleTags);
+  // const styleTags = extractor.getStyleTags();
   const materialUICss = sheetsRegistry.toString();
   const cssArr = Array.from(css);
   const helmet = Helmet.renderStatic();
@@ -108,6 +102,7 @@ const ssr = async (req: express.Request, version: string) => {
   const html: string = await generateFullHTML({
     reactDom: renderedHTML,
     scriptTags,
+    linkTags,
     helmet,
     initialState: stringifiedInitialReduxState,
     css: cssArr.join("") + materialUICss,

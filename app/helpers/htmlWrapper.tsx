@@ -5,13 +5,22 @@ const sprite = require("svg-sprite-loader/runtime/sprite.build");
 interface GenerateFullHTMLParams {
   reactDom: string;
   scriptTags: string;
+  linkTags: string;
   helmet: HelmetData;
   initialState: string;
   css: string;
   version?: string;
 }
 
-export function generateFullHTML({ reactDom, scriptTags, helmet, initialState, css, version }: GenerateFullHTMLParams) {
+export function generateFullHTML({
+  reactDom,
+  linkTags,
+  scriptTags,
+  helmet,
+  initialState,
+  css,
+  version,
+}: GenerateFullHTMLParams) {
   let gTagScript: string = "";
   if (EnvChecker.isOnServer() && !EnvChecker.isDev() && !EnvChecker.isLocal()) {
     gTagScript = `
@@ -35,12 +44,13 @@ gtag('config', 'AW-817738370');
       ${helmet.script.toString()}
       ${helmet.meta.toString()}
       ${helmet.link.toString()}
+      ${linkTags}
       ${gTagScript}
         <style id="jss-server-side" type="text/css">${css}</style>
         <link rel="stylesheet" href=" https://missive.github.io/emoji-mart/emoji-mart.css" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.css" 
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
         integrity="sha384-xNwWFq3SIvM4dq/1RUyWumk8nj/0KFg4TOnNcfzUU4X2gNn3WoRML69gO7waf3xh" crossorigin="anonymous">
-        <script defer src="https://browser.sentry-cdn.com/5.0.5/bundle.min.js" crossorigin="anonymous"></script>
+        <script src="https://browser.sentry-cdn.com/5.0.6/bundle.min.js" crossorigin="anonymous"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
       </head>
       <body>
