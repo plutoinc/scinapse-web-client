@@ -1,87 +1,35 @@
 const path = require("path");
-const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const originalWebpackConfig = require("./webpack.config");
+const nodeExternals = require("webpack-node-externals");
 
-const browserSpecificSetting = {
-  mode: "production",
+module.exports = {
+  mode: "development",
   entry: ["./server/devHandler.tsx"],
   output: {
-    libraryTarget: "commonjs",
+    libraryTarget: "commonjs2",
     path: path.resolve(__dirname, "dist"),
     filename: "handler.js",
   },
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
+  },
+  devtool: "inline-source-map",
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         loader: "awesome-typescript-loader",
-        options: {
-          configFileName: "devHandlerTsconfig.json",
-        },
       },
-      {
-        test: /\.svg$/,
-        loader: "svg-sprite-loader",
-        options: {
-          classPrefix: false,
-          idPrefix: true,
-        },
-      },
-      {
-        test: /\.html$/,
-        use: ["raw-loader"],
-      },
-      {
-        test: /\.css$/,
-        use: ["isomorphic-style-loader", "css-loader"],
-      },
-      {
-        test: /\.scss$/,
-        use: [
-          { loader: "isomorphic-style-loader" },
-          {
-            loader: "css-loader",
-            options: {
-              modules: true,
-              localIdentName: "[name]_[local]_[hash:base64:5]",
-            },
-          },
-          {
-            loader: "postcss-loader",
-            options: {
-              plugins: () => {
-                return [require("postcss-flexbugs-fixes"), require("precss"), require("autoprefixer")];
-              },
-            },
-          },
-          { loader: "sass-loader" },
-          {
-            loader: "sass-resources-loader",
-            options: {
-              resources: ["./app/_variables.scss"],
-            },
-          },
-        ],
-      },
-    ],
+    ]
   },
   optimization: {
-    removeAvailableModules: true,
-    removeEmptyChunks: true,
-    mergeDuplicateChunks: true,
-    flagIncludedChunks: true,
-    occurrenceOrder: true,
-    noEmitOnErrors: true,
-    providedExports: true,
     minimize: false,
     nodeEnv: "dev",
   },
   target: "node",
-  externals: /(tmp\/bundle\.js)/i,
+  node: {
+    __dirname: false,
+    __filename: false,
+  },
+  externals: [/(tmp\/server\/main\.js)/i, nodeExternals()],
 };
-
-const webpackOptionsForBrowser = { ...originalWebpackConfig, ...browserSpecificSetting };
-
-module.exports = webpackOptionsForBrowser;

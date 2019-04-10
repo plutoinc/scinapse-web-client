@@ -12,10 +12,7 @@ import { CurrentUser } from "../../model/currentUser";
 import { authorSchema, Author } from "../../model/author/author";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import restoreScroll from "../../helpers/scrollRestoration";
-
-export interface AuthorShowMatchParams {
-  authorId: string;
-}
+import { AuthorShowMatchParams } from "./types";
 
 export interface HandleAuthorClaim {
   authorId: number;

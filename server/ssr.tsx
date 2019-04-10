@@ -1,3 +1,4 @@
+import * as path from "path";
 import * as React from "react";
 import * as express from "express";
 import { Provider } from "react-redux";
@@ -6,6 +7,7 @@ import { Helmet } from "react-helmet";
 import { matchPath, StaticRouter } from "react-router-dom";
 import { createMuiTheme, createGenerateClassName, MuiThemeProvider } from "@material-ui/core/styles";
 import * as ReactDOMServer from "react-dom/server";
+import { ChunkExtractor } from "@loadable/server";
 import StoreManager from "../app/store";
 import { ConnectedRootRoutes as RootRoutes, routesMap } from "../app/routes";
 import { ACTION_TYPES } from "../app/actions/actionTypes";
@@ -14,7 +16,10 @@ import { generateFullHTML } from "../app/helpers/htmlWrapper";
 const JssProvider = require("react-jss/lib/JssProvider").default;
 const { SheetsRegistry } = require("react-jss/lib/jss");
 
-const ssr = async (req: express.Request, scriptPath: string, version: string) => {
+const statsFile = path.resolve(__dirname, "../client/loadable-stats.json");
+const extractor = new ChunkExtractor({ statsFile });
+
+const ssr = async (req: express.Request, version: string) => {
   // override user request
   axios.defaults.headers.common = {
     ...axios.defaults.headers.common,
@@ -70,8 +75,7 @@ const ssr = async (req: express.Request, scriptPath: string, version: string) =>
   });
 
   const generateClassName = createGenerateClassName();
-
-  const renderedHTML = ReactDOMServer.renderToString(
+  const jsx = extractor.collectChunks(
     <CssInjector context={context}>
       <Provider store={store}>
         <StaticRouter location={req.url} context={routeContext}>
@@ -85,6 +89,16 @@ const ssr = async (req: express.Request, scriptPath: string, version: string) =>
     </CssInjector>
   );
 
+  const renderedHTML = ReactDOMServer.renderToString(jsx);
+  const scriptTags = extractor.getScriptTags();
+  const linkTags = extractor.getLinkTags();
+  const styleTags = extractor.getStyleTags();
+
+  // TODO: remove below console
+  // TODO: add prefetch
+  console.log("scriptTags === ", scriptTags);
+  console.log("linkTags === ", linkTags);
+  console.log("styleTags === ", styleTags);
   const materialUICss = sheetsRegistry.toString();
   const cssArr = Array.from(css);
   const helmet = Helmet.renderStatic();
@@ -93,7 +107,7 @@ const ssr = async (req: express.Request, scriptPath: string, version: string) =>
 
   const html: string = await generateFullHTML({
     reactDom: renderedHTML,
-    scriptPath,
+    scriptTags,
     helmet,
     initialState: stringifiedInitialReduxState,
     css: cssArr.join("") + materialUICss,

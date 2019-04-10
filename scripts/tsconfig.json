@@ -9,6 +9,7 @@
     "target": "es5",
     "jsx": "react",
     "lib": ["es6", "es2016", "dom", "esnext.asynciterable"],
+    "typeRoots": ["../node_modules/@types", "../typings"],
     "removeComments": true,
     "experimentalDecorators": true
   },

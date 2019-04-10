@@ -1,23 +1,19 @@
 import * as React from "react";
+import loadable from "@loadable/component";
 import { Route, Switch, match, withRouter, RouteComponentProps } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { connect, Dispatch } from "react-redux";
 import axios, { CancelToken } from "axios";
-import Home from "./components/home";
 import { Header, FeedbackButton } from "./components/layouts";
-import ArticleSearch from "./components/articleSearch";
-import AuthComponent from "./components/auth";
-import PaperShow, { PaperShowMatchParams } from "./containers/paperShow";
-import AuthorShowContainer, { AuthorShowMatchParams } from "./containers/authorShow";
-import JournalShow, { JournalShowMatchParams } from "./components/journalShow";
-import CollectionShow, { CollectionShowMatchParams } from "./components/collectionShow";
+import { PaperShowMatchParams } from "./containers/paperShow/types";
+import { AuthorShowMatchParams } from "./containers/authorShow/types";
+import { JournalShowMatchParams } from "./components/journalShow/types";
+import { CollectionShowMatchParams } from "./components/collectionShow/types";
 import { fetchPaperShowData } from "./containers/paperShow/sideEffect";
 import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
-import TermsOfService from "./components/termsOfService/termsOfService";
 import LocationListener from "./components/locationListener";
 import DeviceDetector from "./components/deviceDetector";
-import UserCollections from "./components/collections";
 import { AppState } from "./reducers";
 import { LayoutState } from "./components/layouts/records";
 import { withStyles } from "./helpers/withStylesHelper";
@@ -28,7 +24,6 @@ import { fetchCollectionShowData } from "./components/collectionShow/sideEffect"
 import { fetchJournalShowPageData } from "./components/journalShow/sideEffect";
 import { CurrentUser } from "./model/currentUser";
 import { Configuration } from "./reducers/configuration";
-import AdminComponent from "./containers/admin";
 import {
   HOME_PATH,
   SEARCH_RESULT_PATH,
@@ -42,7 +37,6 @@ import {
   ADMIN_PATH,
   TERMS_OF_SERVICE_PATH,
 } from "./constants/routes";
-import AuthorSearch from "./containers/authorSearch";
 import { getAuthorSearchData } from "./containers/authorSearch/sideEffect";
 import { checkAuthStatus } from "./components/auth/actions";
 import { getCollections as sideEffectGetCollections } from "./components/collections/sideEffect";
@@ -69,11 +63,15 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: HOME_PATH,
     exact: true,
-    component: Home,
+    component: loadable(() => import(/* webpackPrefetch: true */ "./components/home"), {
+      fallback: <div>loading ...</div>,
+    }),
   },
   {
     path: SEARCH_RESULT_PATH,
-    component: ArticleSearch,
+    component: loadable(() => import(/* webpackPrefetch: true */ "./components/articleSearch"), {
+      fallback: <div>loading ...</div>,
+    }),
     loadData: async (params: LoadDataParams<null>) => {
       await Promise.all([getSearchData(params)]);
     },
@@ -81,7 +79,9 @@ export const routesMap: ServerRoutesMap[] = [
   },
   {
     path: AUTHOR_SEARCH_RESULT_PATH,
-    component: AuthorSearch,
+    component: loadable(() => import(/* webpackPrefetch: true */ "./containers/authorSearch"), {
+      fallback: <div>loading ...</div>,
+    }),
     loadData: async (params: LoadDataParams<null>) => {
       await Promise.all([getAuthorSearchData(params)]);
     },
@@ -89,35 +89,45 @@ export const routesMap: ServerRoutesMap[] = [
   },
   {
     path: PAPER_SHOW_PATH,
-    component: PaperShow,
+    component: loadable(() => import(/* webpackPrefetch: true */ "./containers/paperShow"), {
+      fallback: <div>loading ...</div>,
+    }),
     loadData: async (params: LoadDataParams<PaperShowMatchParams>) => {
       await Promise.all([fetchPaperShowData(params)]);
     },
   },
   {
     path: AUTHOR_SHOW_PATH,
-    component: AuthorShowContainer,
+    component: loadable(() => import(/* webpackPrefetch: true */ "./containers/authorShow"), {
+      fallback: <div>loading ...</div>,
+    }),
     loadData: async (params: LoadDataParams<AuthorShowMatchParams>) => {
       await Promise.all([fetchAuthorShowPageData(params)]);
     },
   },
   {
     path: COLLECTION_SHOW_PATH,
-    component: CollectionShow,
+    component: loadable(() => import(/* webpackPrefetch: true */ "./components/collectionShow"), {
+      fallback: <div>loading ...</div>,
+    }),
     loadData: async (params: LoadDataParams<CollectionShowMatchParams>) => {
       await Promise.all([fetchCollectionShowData(params)]);
     },
   },
   {
     path: JOURNAL_SHOW_PATH,
-    component: JournalShow,
+    component: loadable(() => import(/* webpackPrefetch: true */ "./components/journalShow"), {
+      fallback: <div>loading ...</div>,
+    }),
     loadData: async (params: LoadDataParams<JournalShowMatchParams>) => {
       await Promise.all([fetchJournalShowPageData(params)]);
     },
   },
   {
     path: COLLECTION_LIST_PATH,
-    component: UserCollections,
+    component: loadable(() => import(/* webpackPrefetch: true */ "./components/collections"), {
+      fallback: <div>loading ...</div>,
+    }),
     loadData: async (params: LoadDataParams<{ userId: string }>) => {
       await Promise.all([sideEffectGetCollections(params)]);
     },
@@ -125,15 +135,21 @@ export const routesMap: ServerRoutesMap[] = [
   },
   {
     path: AUTH_PATH,
-    component: AuthComponent,
+    component: loadable(() => import(/* webpackPrefetch: true */ "./components/auth"), {
+      fallback: <div>loading ...</div>,
+    }),
   },
   {
     path: ADMIN_PATH,
-    component: AdminComponent,
+    component: loadable(() => import(/* webpackPrefetch: true */ "./containers/admin"), {
+      fallback: <div>loading ...</div>,
+    }),
   },
   {
     path: TERMS_OF_SERVICE_PATH,
-    component: TermsOfService,
+    component: loadable(() => import(/* webpackPrefetch: true */ "./components/termsOfService/termsOfService"), {
+      fallback: <div>loading ...</div>,
+    }),
     exact: true,
   },
   {

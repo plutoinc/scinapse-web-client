@@ -8,9 +8,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "target": "es2015",
-    "module": "es2015",
+    "module": "esnext",
     "moduleResolution": "node",
-    "jsx": "react",
+    "jsx": "preserve",
     "lib": ["es6", "es2016", "dom", "esnext.asynciterable"],
     "removeComments": true,
     "experimentalDecorators": true,
@@ -18,9 +18,5 @@
     "typeRoots": ["./node_modules/@types", "./typings"]
   },
   "include": ["app/**/*", "e2eTest/**/*", "localServer/**/*", "server/**/*"],
-  "exclude": ["node_modules/**/*"],
-  "awesomeTypescriptLoaderOptions": {
-    "useCache": true,
-    "useBabel": true
-  }
+  "exclude": ["node_modules/**/*"]
 }
