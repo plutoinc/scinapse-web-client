@@ -2,7 +2,7 @@ import * as React from "react";
 import * as classNames from "classnames";
 import * as store from "store";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import NimblePicker from "emoji-mart/dist-es/components/picker/nimble-picker";
+import { NimblePicker } from "emoji-mart";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import FilterTitleInnerContent from "./titleInnerContent";
 import FilterSaveButton from "../../../components/filterContainer/filterSaveButton";
