@@ -90,7 +90,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                 placeholder="Password"
                 iconName="PASSWORD_ICON"
               />
-              <div>
+              <div className={s.nameItemWrapper}>
                 <div className={s.nameItemSection}>
                   <Field
                     name="firstName"

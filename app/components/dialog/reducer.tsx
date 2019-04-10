@@ -37,6 +37,8 @@ export interface DialogState
       collection: Collection | undefined;
 
       authorListTargetPaper: Paper | undefined;
+
+      userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
     }> {}
 
 export const DIALOG_INITIAL_STATE: DialogState = {
@@ -58,6 +60,7 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   collection: undefined,
   // author list dialog
   authorListTargetPaper: undefined,
+  userActionType: undefined,
 };
 
 export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actions): DialogState {
@@ -71,6 +74,7 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
         citationPaperId: action.payload.citationDialogTargetPaperId,
         collection: action.payload.collection,
         authorListTargetPaper: action.payload.authorListTargetPaper,
+        userActionType: action.payload.userActionType,
       };
     }
 

@@ -5,18 +5,20 @@ import { Collection } from "../../model/collection";
 import { Paper } from "../../model/paper";
 
 class GlobalDialogManager {
-  public openSignInDialog() {
+  public openSignInDialog(userActionType?: Scinapse.ActionTicket.ActionTagType) {
     StoreManager.store.dispatch(
       ActionCreators.openGlobalDialog({
         type: GLOBAL_DIALOG_TYPE.SIGN_IN,
+        userActionType,
       })
     );
   }
 
-  public openSignUpDialog() {
+  public openSignUpDialog(userActionType?: Scinapse.ActionTicket.ActionTagType) {
     StoreManager.store.dispatch(
       ActionCreators.openGlobalDialog({
         type: GLOBAL_DIALOG_TYPE.SIGN_UP,
+        userActionType,
       })
     );
   }

@@ -249,6 +249,7 @@ export const ActionCreators = {
     citationDialogTargetPaperId?: number;
     authorListTargetPaper?: Paper;
     collection?: Collection;
+    userActionType?: Scinapse.ActionTicket.ActionTagType;
   }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
   },

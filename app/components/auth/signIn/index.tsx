@@ -28,6 +28,7 @@ interface EmailFormValues {
 interface SignInProps {
   handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void;
   dispatch: Dispatch<any>;
+  userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
 }
 
 const oAuthBtnBaseStyle: React.CSSProperties = { position: "relative", fontSize: "13px", marginTop: "10px" };
@@ -111,7 +112,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
 
   return (
     <div className={s.authContainer}>
-      <AuthGuideContext />
+      <AuthGuideContext userActionType={props.userActionType} />
       <div className={s.authFormWrapper}>
         <AuthTabs onClickTab={props.handleChangeDialogType} activeTab="sign in" />
         <div className={s.formWrapper}>

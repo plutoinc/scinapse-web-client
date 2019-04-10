@@ -125,6 +125,7 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
             setSignUpStep(SIGN_UP_STEP.WITH_EMAIL);
           }}
           onClickTab={props.handleChangeDialogType}
+          userActionType={props.userActionType}
         />
       );
   }

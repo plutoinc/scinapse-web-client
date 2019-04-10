@@ -6,6 +6,7 @@ import { OAUTH_VENDOR } from "../../../../api/types/auth";
 export interface SignUpContainerProps extends RouteComponentProps<SignUpSearchParams> {
   dispatch: Dispatch<any>;
   handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void;
+  userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
 }
 
 export interface SignUpSearchParams {

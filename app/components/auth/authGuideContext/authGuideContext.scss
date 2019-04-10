@@ -8,3 +8,28 @@
     height: 28px;
   }
 }
+
+.mainText {
+  width: 344px;
+  height: 156px;
+  margin-top: 36px;
+  font-family: Georgia;
+  font-size: 46px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  color: $black0;
+}
+
+.subText {
+  width: 344px;
+  height: 22px;
+  margin-top: 8px;
+  font-family: Georgia;
+  font-size: 20px;
+  color: $black0;
+}
+
+.guideImage {
+  position: absolute;
+  bottom: 0;
+}

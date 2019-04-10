@@ -1,16 +1,17 @@
 .signUpContainer {
   width: 400px;
-  padding: 0 36px;
+  padding: 22px 32px 32px 24px;
+}
+
+.nameItemWrapper {
+  display: flex;
+  justify-content: space-between;
 }
 
 .nameItemSection {
   display: inline-block;
   vertical-align: top;
-  width: 159px;
-
-  & + & {
-    margin-left: 10px;
-  }
+  width: 170px;
 }
 
 .additionalInformation {
