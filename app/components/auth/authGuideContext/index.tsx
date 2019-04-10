@@ -25,8 +25,16 @@ const GuideContentsByActionType: React.FunctionComponent<AuthGuideContextProps> 
   const { userActionType } = props;
 
   switch (userActionType) {
-    case "citedList":
-      return <div>Enjoy Robust Citation</div>;
+    case "downloadPdf":
+      return <div />;
+    case "citePaper":
+      return <div />;
+    case "viewMorePDF":
+      return <div />;
+    case "query":
+      return <div />;
+    case "paperShow":
+      return <div />;
     default:
       return (
         <GuideContent mainText={"Scinapse Love Researchers"} subText={""} image={"https://i.imgur.com/HYqea1H.png"} />
