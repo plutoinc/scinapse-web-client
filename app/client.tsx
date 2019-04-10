@@ -47,7 +47,6 @@ class PlutoRenderer {
     this.initializeGA();
     this.initSentry();
     this.renderAtClient();
-    this.checkRender();
   }
 
   private initSentry() {
@@ -105,7 +104,10 @@ class PlutoRenderer {
             </Provider>
           </ErrorTracker>
         </CssInjector>,
-        document.getElementById("react-app")
+        document.getElementById("react-app"),
+        () => {
+          this.checkRender();
+        }
       );
     });
   }
