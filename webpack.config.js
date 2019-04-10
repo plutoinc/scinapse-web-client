@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 const CircularDependencyPlugin = require("circular-dependency-plugin");
@@ -112,6 +113,7 @@ module.exports = {
       filename: "[name].css",
       chunkFilename: "[id].css",
     }),
+    new webpack.IgnorePlugin(/^\.\/pdf.worker.js$/),
     new BundleAnalyzerPlugin(),
   ],
   externals: {

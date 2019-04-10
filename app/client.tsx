@@ -13,8 +13,8 @@ import { ConnectedRootRoutes as RootRoutes } from "./routes";
 import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
 import { AppState } from "./reducers";
-const { pdfjs } = require("react-pdf");
 import "./helpers/rafPolyfill";
+const { pdfjs } = require("react-pdf");
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 declare var Sentry: any;
 

@@ -2,6 +2,7 @@
   "name": "pluto-web-client",
   "version": "1.0.0",
   "description": "Pluto web client",
+  "sideEffects": false,
   "main": "index.js",
   "scripts": {
     "start": "npm-run-all -p start:build dev start:server",
@@ -78,7 +79,7 @@
     "cookie": "0.3.1",
     "cookie-parser": "1.4.4",
     "css-loader": "0.28.9",
-    "emoji-mart": "2.10.0",
+    "emoji-mart": "2.11.0",
     "express": "4.16.2",
     "extract-text-webpack-plugin": "4.0.0-beta.0",
     "html-loader": "0.5.5",
