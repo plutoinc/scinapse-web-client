@@ -108,13 +108,20 @@
   position: relative;
   height: 530px;
   background-color: $gray1;
-  background-image: url(https://assets.pluto.network/scinapse-background.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 0;
+}
+
+:global(.no-webp) .searchFormContainer {
+  background-image: url("https://assets.pluto.network/scinapse-background.jpg");
+}
+
+:global(.webp) .searchFormContainer{
+  background-image: url("https://assets.pluto.network/scinapse-background.webp");
 }
 
 .sourceVendorContainer {
