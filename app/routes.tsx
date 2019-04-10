@@ -4,13 +4,11 @@ import { Route, Switch, match, withRouter, RouteComponentProps } from "react-rou
 import { Helmet } from "react-helmet";
 import { connect, Dispatch } from "react-redux";
 import axios, { CancelToken } from "axios";
-import { Header, FeedbackButton } from "./components/layouts";
 import { PaperShowMatchParams } from "./containers/paperShow/types";
 import { AuthorShowMatchParams } from "./containers/authorShow/types";
 import { JournalShowMatchParams } from "./components/journalShow/types";
 import { CollectionShowMatchParams } from "./components/collectionShow/types";
 import { fetchPaperShowData } from "./containers/paperShow/sideEffect";
-import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
 import LocationListener from "./components/locationListener";
 import DeviceDetector from "./components/deviceDetector";
@@ -171,6 +169,10 @@ function mapStateToProps(state: AppState) {
     currentUser: state.currentUser,
   };
 }
+
+const DialogComponent = loadable(() => import("./components/dialog"));
+const FeedbackButton = loadable(() => import("./containers/feedbackButton"));
+const Header = loadable(() => import("./components/layouts/header"));
 
 @withStyles<typeof RootRoutes>(styles)
 class RootRoutes extends React.PureComponent<RootRoutesProps> {
