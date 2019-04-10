@@ -74,6 +74,7 @@ declare namespace Scinapse {
       | "addNote"
       | "removeNote"
       | "viewNote"
+      | "sendRequestPaper"
       | "searchHistoryQuery"
       | "searchSuggestionQuery"
       | "";
@@ -104,7 +105,8 @@ declare namespace Scinapse {
       | "pdfViewer"
       | "researchHistory"
       | "sideNavigator"
-      | "nextPaper";
+      | "nextPaper"
+      | "noPaperNotiPage";
 
     type PageType =
       | "paperShow"

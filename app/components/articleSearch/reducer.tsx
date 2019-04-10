@@ -87,6 +87,8 @@ export function reducer(
           isFilterLoading: false,
           pageErrorCode: null,
           isEnd: payload.data.page.last,
+          doi: payload.data.doi,
+          doiPatternMatched: payload.data.doiPatternMatched,
           page: payload.data.page.page,
           totalElements: payload.data.page.totalElements,
           totalPages: payload.data.page.totalPages,
