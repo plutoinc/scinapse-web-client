@@ -1,10 +1,10 @@
 import * as React from "react";
-import * as Sentry from "@sentry/browser";
 import EnvChecker from "../envChecker";
 import { withStyles } from "../withStylesHelper";
 import { Footer } from "../../components/layouts";
 import { trackEvent } from "../handleGA";
 const styles = require("./errorHandler.scss");
+declare var Sentry: any;
 
 export function logException(error: Error, errorInfo?: any) {
   if (EnvChecker.isLocal()) {
@@ -12,7 +12,7 @@ export function logException(error: Error, errorInfo?: any) {
   }
 
   if (EnvChecker.isProdBrowser()) {
-    Sentry.withScope(scope => {
+    Sentry.withScope((scope: any) => {
       Object.keys(errorInfo).forEach(key => {
         scope.setExtra(key, errorInfo[key]);
       });

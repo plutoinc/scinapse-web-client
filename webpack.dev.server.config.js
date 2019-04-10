@@ -1,15 +1,15 @@
 const path = require("path");
-const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const originalWebpackConfig = require("./webpack.config");
 
-const browserSpecificSetting = {
+module.exports = {
   mode: "production",
   entry: ["@babel/polyfill", "./app/index.tsx"],
   output: {
-    libraryTarget: "commonjs",
-    path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js",
+    libraryTarget: "commonjs2",
+    path: path.resolve(__dirname, "dist", "server"),
+    filename: "[name].js",
+  },
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
   module: {
     rules: [
@@ -69,22 +69,12 @@ const browserSpecificSetting = {
     ],
   },
   optimization: {
-    removeAvailableModules: true,
-    removeEmptyChunks: true,
-    mergeDuplicateChunks: true,
-    flagIncludedChunks: true,
-    occurrenceOrder: true,
-    noEmitOnErrors: true,
-    providedExports: true,
     minimize: false,
     nodeEnv: "dev",
   },
   target: "node",
-  externals: /(tmp\/bundle\.js)/i,
+  node: {
+    __dirname: false,
+    __filename: false,
+  },
 };
-
-delete originalWebpackConfig.node;
-
-const webpackOptionsForBrowser = { ...originalWebpackConfig, ...browserSpecificSetting };
-
-module.exports = webpackOptionsForBrowser;

@@ -2,7 +2,7 @@ import { CancelToken } from "axios";
 import { Dispatch } from "react-redux";
 import { parse } from "qs";
 import { LoadDataParams } from "../../routes";
-import { JournalShowMatchParams } from ".";
+import { JournalShowMatchParams } from "./types";
 import { getJournal, getPapers } from "./actions";
 import { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 import { ActionCreators } from "../../actions/actionTypes";

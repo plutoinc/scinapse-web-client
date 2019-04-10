@@ -4,14 +4,14 @@ const sprite = require("svg-sprite-loader/runtime/sprite.build");
 
 interface GenerateFullHTMLParams {
   reactDom: string;
-  scriptPath: string;
+  scriptTags: string;
   helmet: HelmetData;
   initialState: string;
   css: string;
   version?: string;
 }
 
-export function generateFullHTML({ reactDom, scriptPath, helmet, initialState, css, version }: GenerateFullHTMLParams) {
+export function generateFullHTML({ reactDom, scriptTags, helmet, initialState, css, version }: GenerateFullHTMLParams) {
   let gTagScript: string = "";
   if (EnvChecker.isOnServer() && !EnvChecker.isDev() && !EnvChecker.isLocal()) {
     gTagScript = `
@@ -40,6 +40,8 @@ gtag('config', 'AW-817738370');
         <link rel="stylesheet" href=" https://missive.github.io/emoji-mart/emoji-mart.css" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.css" 
         integrity="sha384-xNwWFq3SIvM4dq/1RUyWumk8nj/0KFg4TOnNcfzUU4X2gNn3WoRML69gO7waf3xh" crossorigin="anonymous">
+        <script defer src="https://browser.sentry-cdn.com/5.0.5/bundle.min.js" crossorigin="anonymous"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
       </head>
       <body>
         <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
@@ -54,7 +56,7 @@ gtag('config', 'AW-817738370');
         ${sprite.stringify()}
         <script>window.__INITIAL_STATE__="${encodeURIComponent(initialState)}"</script>
         <div id="react-app">${reactDom}</div>
-        <script type="application/javascript" src="${scriptPath}"></script>
+        ${scriptTags}
       </body>
     </html>
   `;

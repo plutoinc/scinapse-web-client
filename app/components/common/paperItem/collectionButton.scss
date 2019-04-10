@@ -34,11 +34,9 @@
 .addCollectionNoteBtnWrapper {
   @include small-action-button($gray6);
   height: 100%;
-  padding: 4px;
 
   .addNoteIcon {
     @extend %button-icon;
-    margin: 0;
 
     svg {
       width: 20px;

@@ -1,5 +1,5 @@
 import { LoadDataParams } from "../../routes";
-import { CollectionShowMatchParams } from ".";
+import { CollectionShowMatchParams } from "./types";
 import { getCollection, getPapers } from "./actions";
 import { ActionCreators } from "../../actions/actionTypes";
 

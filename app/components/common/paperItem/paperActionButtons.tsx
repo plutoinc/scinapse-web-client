@@ -12,7 +12,6 @@ import { Paper } from "../../../model/paper";
 import EnvChecker from "../../../helpers/envChecker";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { getPDFLink } from "../../../helpers/getPDFLink";
 import CollectionButton from "./collectionButton";
 import formatNumber from "../../../helpers/formatNumber";
 const styles = require("./paperActionButtons.scss");
@@ -56,7 +55,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
     return (
       <div className={styles.infoList}>
         {this.getCitedButton()}
-        {this.getPDFSourcesButton()}
+        {this.getSourcesButton()}
         {this.getCitationQuoteButton()}
         <CollectionButton
           hasCollection={hasCollection}
@@ -71,28 +70,23 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
     );
   }
 
-  private getPDFSourcesButton = () => {
+  private getSourcesButton = () => {
     const { paper, pageType, actionArea } = this.props;
-    const pdfSourceRecord = getPDFLink(paper.urls);
 
-    const buttonContent = pdfSourceRecord ? (
-      <>
-        <Icon className={styles.pdfIconWrapper} icon="DOWNLOAD" />
-        <span>Download PDF</span>
-      </>
-    ) : (
+    const buttonContent = (
       <>
         <Icon className={styles.sourceButtonIcon} icon="EXTERNAL_SOURCE" />
         <span>Source</span>
       </>
     );
 
-    if (paper.urls.length === 0) {
+    if (!paper.doi) {
       return null;
     }
+
     return (
       <a
-        href={paper.urls[0].url}
+        href={`https://doi.org/${paper.doi}`}
         target="_blank"
         rel="noopener"
         className={styles.sourceButton}
@@ -101,7 +95,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             pageType,
             actionType: "fire",
             actionArea: actionArea || pageType,
-            actionTag: pdfSourceRecord ? "downloadPdf" : "source",
+            actionTag: "source",
             actionLabel: String(paper.id),
           });
         }}
