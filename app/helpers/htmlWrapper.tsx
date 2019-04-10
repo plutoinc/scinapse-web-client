@@ -5,13 +5,22 @@ const sprite = require("svg-sprite-loader/runtime/sprite.build");
 interface GenerateFullHTMLParams {
   reactDom: string;
   scriptTags: string;
+  linkTags: string;
   helmet: HelmetData;
   initialState: string;
   css: string;
   version?: string;
 }
 
-export function generateFullHTML({ reactDom, scriptTags, helmet, initialState, css, version }: GenerateFullHTMLParams) {
+export function generateFullHTML({
+  reactDom,
+  linkTags,
+  scriptTags,
+  helmet,
+  initialState,
+  css,
+  version,
+}: GenerateFullHTMLParams) {
   let gTagScript: string = "";
   if (EnvChecker.isOnServer() && !EnvChecker.isDev() && !EnvChecker.isLocal()) {
     gTagScript = `
@@ -35,6 +44,7 @@ gtag('config', 'AW-817738370');
       ${helmet.script.toString()}
       ${helmet.meta.toString()}
       ${helmet.link.toString()}
+      ${linkTags}
       ${gTagScript}
         <style id="jss-server-side" type="text/css">${css}</style>
         <link rel="stylesheet" href=" https://missive.github.io/emoji-mart/emoji-mart.css" crossorigin="anonymous">

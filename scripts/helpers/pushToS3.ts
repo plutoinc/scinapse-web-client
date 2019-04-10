@@ -14,7 +14,7 @@ http.globalAgent.maxSockets = https.globalAgent.maxSockets = 20;
 export async function uploadProdFiles() {
   return await new Promise((resolve, reject) => {
     const prefix = DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX;
-    const cacheControl = "public, max-age=604800";
+    const cacheControl = "public, max-age=31536000";
     const params = {
       localDir: path.resolve(__dirname, "../../dist"),
       s3Params: {
