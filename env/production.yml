@@ -1,1 +1,1 @@
-HANDLER: bundle.ssr
+HANDLER: server/main.ssr

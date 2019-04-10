@@ -4,10 +4,11 @@
     "sourceMap": true,
     "noImplicitAny": true,
     "allowUnusedLabels": false,
+    "allowJs": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "target": "es2015",
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "jsx": "react",
     "lib": ["es6", "es2016", "dom", "esnext.asynciterable"],
@@ -16,6 +17,6 @@
     "strictNullChecks": true,
     "typeRoots": ["./node_modules/@types", "./typings"]
   },
-  "include": ["server/devHandler"],
+  "include": ["app/**/*", "e2eTest/**/*", "localServer/**/*", "server/**/*"],
   "exclude": ["node_modules/**/*"]
 }

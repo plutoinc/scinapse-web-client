@@ -28,6 +28,7 @@ import PaperShowKeyword from "../paperShow/components/keyword";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import restoreScroll from "../../helpers/scrollRestoration";
 import ErrorPage from "../error/errorPage";
+import { JournalShowMatchParams } from "./types";
 const styles = require("./journalShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -39,10 +40,6 @@ function mapStateToProps(state: AppState) {
     journal: denormalize(state.journalShow.journalId, journalSchema, state.entities),
     papers: denormalize(state.journalShow.paperIds, [paperSchema], state.entities),
   };
-}
-
-export interface JournalShowMatchParams {
-  journalId: string;
 }
 
 export interface JournalShowProps

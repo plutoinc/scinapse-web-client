@@ -2,28 +2,37 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 const CircularDependencyPlugin = require("circular-dependency-plugin");
+const LoadablePlugin = require("@loadable/webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 require("extract-text-webpack-plugin");
 
 module.exports = {
   mode: "development",
   entry: ["@babel/polyfill", "./app/clientIndex.tsx"],
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist", "client"),
+    publicPath: "http://localhost:8080/client/",
+    filename: "[name].js",
+    chunkFilename: "[name].chunk.js",
   },
   devtool: "inline-source-map",
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+            return `npm.${packageName.replace("@", "")}`;
+          },
+        },
+      },
+    },
+  },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
-  },
-  optimization: {
-    removeAvailableModules: true,
-    removeEmptyChunks: true,
-    mergeDuplicateChunks: true,
-    flagIncludedChunks: false, // production true
-    occurrenceOrder: false, // production true
-    noEmitOnErrors: false, // production true
-    providedExports: true,
-    minimize: false,
   },
   module: {
     rules: [
@@ -85,11 +94,6 @@ module.exports = {
   node: {
     fs: "empty",
   },
-  externals: {
-    "react/lib/ExecutionEnvironment": true,
-    "react/lib/ReactContext": true,
-    "react/addons": true,
-  },
   plugins: [
     new CheckerPlugin(),
     new HtmlWebpackPlugin({
@@ -98,19 +102,27 @@ module.exports = {
       NODE_ENV: "development",
     }),
     new CircularDependencyPlugin({
-      // exclude detection of files based on a RegExp
       exclude: /a\.js|node_modules/,
-      // add errors to webpack instead of warnings
       failOnError: true,
-      // allow import cycles that include an asyncronous import,
-      // e.g. via import(/* webpackMode: "weak" */ './file.js')
       allowAsyncCycles: false,
-      // set the current working directory for displaying module paths
       cwd: process.cwd(),
     }),
+    new LoadablePlugin(),
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css",
+    }),
+    new BundleAnalyzerPlugin(),
   ],
+  externals: {
+    // "pdfjs-dist": "pdfjsDistWebPdfViewer",
+    // "pdfjs-dist/lib/web/pdf_link_service": "pdfjsDistWebPdfViewer.PDFJS",
+  },
   devServer: {
     contentBase: path.join(__dirname, "dist"),
+    writeToDisk: filePath => {
+      return /loadable-stats\.json/.test(filePath);
+    },
     compress: true,
     host: "0.0.0.0",
     allowedHosts: ["localhost", "lvh.me"],

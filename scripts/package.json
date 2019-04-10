@@ -1,8 +1,10 @@
 {
+  "name": "pluto-web-client",
+  "devDependencies": {
+  },
   "dependencies": {
-    "@types/aws-sdk": "^2.7.0",
-    "aws-sdk": "^2.292.0",
-    "axios": "^0.16.2",
-    "babel-polyfill": "^6.23.0"
+    "s3": "^4.4.0",
+    "aws-serverless-express": "git+https://github.com/TylorShin/aws-serverless-express.git",
+    "@babel/polyfill": "^7.0.0"
   }
 }

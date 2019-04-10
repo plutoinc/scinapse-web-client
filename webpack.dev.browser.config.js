@@ -1,26 +1,32 @@
 const path = require("path");
-const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const originalWepbackConfig = require("./webpack.config");
+const LoadablePlugin = require("@loadable/webpack-plugin");
 
-const BROWSER_BUNDLE_FILE_NAME = "bundleBrowser.js";
-
-const browserSpecificSetting = {
+module.exports = {
   mode: "production",
+  entry: ["@babel/polyfill", "./app/clientIndex.tsx"],
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: BROWSER_BUNDLE_FILE_NAME,
+    path: path.resolve(__dirname, "dist", "client"),
+    filename: "[name].[contenthash].js",
+    chunkFilename: "[name].[contenthash].js",
+  },
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
   optimization: {
-    removeAvailableModules: true,
-    removeEmptyChunks: true,
-    mergeDuplicateChunks: true,
-    flagIncludedChunks: true,
-    occurrenceOrder: true,
-    noEmitOnErrors: true,
-    providedExports: true,
     minimize: false,
     nodeEnv: "dev",
+    splitChunks: {
+      chunks: "all",
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+            return `${packageName.replace("@", "")}`;
+          },
+        },
+      },
+    },
   },
   module: {
     rules: [
@@ -79,15 +85,5 @@ const browserSpecificSetting = {
       },
     ],
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "app/index.ejs",
-      inject: false,
-      NODE_ENV: "dev",
-    }),
-  ],
+  plugins: [new LoadablePlugin()],
 };
-
-const webpackOptionsForBrowser = { ...originalWepbackConfig, ...browserSpecificSetting };
-
-module.exports = webpackOptionsForBrowser;

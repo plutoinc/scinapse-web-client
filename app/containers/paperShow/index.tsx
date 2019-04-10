@@ -1,7 +1,7 @@
 import * as React from "react";
 import axios from "axios";
 import { stringify } from "qs";
-import { NoSsr } from "@material-ui/core";
+import NoSsr from "@material-ui/core/NoSsr";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
 import * as classNames from "classnames";
@@ -42,6 +42,7 @@ import NextPaperTab from "../nextPaperTab";
 import ResearchHistory from "../../components/researchHistory";
 import { FULL_PAPER_TEST } from "../../constants/abTest";
 import getABType from "../../helpers/getABType";
+import { PaperShowMatchParams, PaperShowPageQueryParams } from "./types";
 
 const styles = require("./paperShow.scss");
 
@@ -61,15 +62,6 @@ function mapStateToProps(state: AppState) {
     referencePapers: getReferencePapers(state),
     citedPapers: getCitedPapers(state),
   };
-}
-
-export interface PaperShowPageQueryParams {
-  "ref-page"?: number;
-  "cited-page"?: number;
-}
-
-export interface PaperShowMatchParams {
-  paperId: string;
 }
 
 export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams> {

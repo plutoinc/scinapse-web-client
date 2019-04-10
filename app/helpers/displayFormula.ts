@@ -1,4 +1,4 @@
-import * as KaTeX from "katex";
+declare var KaTeX: any;
 
 export function formulaeToHTMLStr(rawString: string | null): string {
   if (!rawString) {

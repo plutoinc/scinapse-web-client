@@ -33,6 +33,7 @@ import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboa
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import ErrorPage from "../error/errorPage";
 import { removePaperFromCollection } from "../dialog/actions";
+import { CollectionShowMatchParams } from "./types";
 import CollectionSideNaviBar from "../collectionSideNaviBar";
 import { getCollections } from "../collections/actions";
 const styles = require("./collectionShow.scss");
@@ -50,10 +51,6 @@ function mapStateToProps(state: AppState) {
     userCollection: denormalize(state.collectionShow.mainCollectionId, userCollectionSchema, state.entities),
     papersInCollection: denormalize(state.collectionShow.paperIds, [paperInCollectionSchema], state.entities),
   };
-}
-
-export interface CollectionShowMatchParams {
-  collectionId: string;
 }
 
 export interface CollectionShowProps

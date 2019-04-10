@@ -58,7 +58,7 @@ pipeline {
                 script {
                     try {
                         if (env.BRANCH_NAME == 'master') {
-                            sh 'npm run build:prod'
+                            sh 'npm run deploy:prod'
                         } else {
                             sh "BRANCH_NAME=${env.BRANCH_NAME} npm run deploy:dev"
                         }
@@ -73,15 +73,25 @@ pipeline {
         stage('Notify') {
             steps {
                 script {
-                    def targetUrl;
+                    def targetUrl
+                    def deployedCommits = ""
                     if (env.BRANCH_NAME == 'master') {
-                        targetUrl = "https://scinapse.io"
-
+                        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'GITHUB_HTTPS_CREDENTIALS', usernameVariable: 'GIT_AUTHOR_NAME', passwordVariable: 'GIT_PASSWORD']]) {
+                            sh 'git fetch --tags'
+                            deployedCommits = sh (
+                                script: 'git log --oneline --pretty=format:"%cd(%cr)] <https://github.com/pluto-net/scinapse-web-client/commit/%H|%s> - (By %an)" production..HEAD',
+                                returnStdout: true
+                            ).trim()
+                            sh 'git config --global user.email "dev@pluto.netwrok"'
+                            sh 'git config --global user.name "Jenkins"'
+                            sh 'git config --global push.default simple'
+                            sh 'git tag production -f'
+                            sh('git push https://${GIT_AUTHOR_NAME}:${GIT_PASSWORD}@github.com/pluto-net/scinapse-web-client.git --tags -f')
+                        } 
                         env.WORKSPACE = pwd()
                         def version = readFile "${env.WORKSPACE}/version"
-                        slackSend color: 'good', channel: "#ci-build", message: "Build DONE! ${version} version will be deployed to production soon!!"
-
-                        build(job: "scinapse-web-client-prod-deploy/master", parameters: [string(name: 'version', value: version)], wait: false)
+                        slackSend color: 'good', channel: "#ci-build", message: "Build DONE! Finish to production deploy version: ${version}"
+                        slackSend color: 'good', channel: "#front-end-prod-deploy", message: deployedCommits
                     } else {
                         targetUrl = "https://dev.scinapse.io?branch=${env.BRANCH_NAME}"
                         slackSend color: 'good', channel: "#ci-build", message: "Build DONE! ${env.BRANCH_NAME} please check ${targetUrl}"
