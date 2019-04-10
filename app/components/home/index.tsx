@@ -36,8 +36,8 @@ class Home extends React.PureComponent<HomeProps> {
             <div className={styles.formWrapper}>
               <div className={styles.searchTitle}>
                 <span className={styles.searchTitleText}> Do Research, Never Re-search</span>
-                <img src="https://assets.pluto.network/scinapse/circle%403x.png" className={styles.circleImage} />
-                <img src="https://assets.pluto.network/scinapse/underline%403x.png" className={styles.underlineImage} />
+                <img src="https://assets.pluto.network/scinapse/circle%402x.png" className={styles.circleImage} />
+                <img src="https://assets.pluto.network/scinapse/underline%402x.png" className={styles.underlineImage} />
               </div>
               <div className={styles.searchSubTitle}>
                 Scinapse is a free, nonprofit, Academic search engine <br /> for papers, serviced by{" "}
@@ -70,22 +70,22 @@ class Home extends React.PureComponent<HomeProps> {
             <div className={styles.sourceVendorWrapper}>
               <div className={styles.sourceVendorItem}>
                 <a href="https://aka.ms/msracad" target="_blank" rel="noopener">
-                  <img src="https://assets.pluto.network/scinapse/microsoft-research.png" />
+                  <img src="https://assets.pluto.network/scinapse/ms-research.jpg" />
                 </a>
               </div>
               <div className={styles.sourceVendorItem}>
                 <a href="https://www.semanticscholar.org/" target="_blank" rel="noopener">
-                  <img src="https://assets.pluto.network/scinapse/semantic-scholar%402x.png" />
+                  <img src="https://assets.pluto.network/scinapse/semantic-scholar.jpg" />
                 </a>
               </div>
               <div className={styles.sourceVendorItem}>
                 <a href="https://www.springernature.com/gp/" target="_blank" rel="noopener">
-                  <img src="https://assets.pluto.network/scinapse/springernature%402x.png" />
+                  <img src="https://assets.pluto.network/scinapse/springer-nature.jpg" />
                 </a>
               </div>
               <div className={styles.sourceVendorItem}>
                 <a href="https://www.ncbi.nlm.nih.gov/pubmed/" target="_blank" rel="noopener">
-                  <img src="https://assets.pluto.network/scinapse/pubmed%402x.png" />
+                  <img src="https://assets.pluto.network/scinapse/pub-med.jpg" />
                 </a>
               </div>
             </div>
