@@ -26,7 +26,7 @@ function downloadSrcFromS3(branch?: string) {
       reject();
     });
     downloader.on("end", function() {
-      console.log("done uploading");
+      console.log("done downloading");
       resolve();
     });
   });

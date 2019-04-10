@@ -39,6 +39,7 @@ async function build() {
   await uploadProdFiles();
   cleanArtifacts();
   fs.writeFileSync(path.resolve(__dirname, "../../dist/server/version"), version);
+  fs.writeFileSync("./", version);
 
   console.log("DONE");
 })();
