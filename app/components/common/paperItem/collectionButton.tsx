@@ -94,9 +94,13 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
             }}
           >
             {paperNote ? (
-              <Icon className={styles.addNoteIcon} icon="NOTED" />
+              <>
+                <Icon className={styles.addNoteIcon} icon="NOTED" />View Note
+              </>
             ) : (
-              <Icon className={styles.addNoteIcon} icon="ADD_NOTE" />
+              <>
+                <Icon className={styles.addNoteIcon} icon="ADD_NOTE" /> Add Note
+              </>
             )}
           </button>
           <Popover
