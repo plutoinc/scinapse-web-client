@@ -35,6 +35,7 @@ import ErrorPage from "../error/errorPage";
 import { removePaperFromCollection } from "../dialog/actions";
 import { CollectionShowMatchParams } from "./types";
 import CollectionSideNaviBar from "../collectionSideNaviBar";
+import { getCollections } from "../collections/actions";
 const styles = require("./collectionShow.scss");
 
 const FACEBOOK_SHARE_URL = "http://www.facebook.com/sharer/sharer.php?u=";
@@ -70,7 +71,13 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   private cancelToken = axios.CancelToken.source();
 
   public async componentDidMount() {
-    const { dispatch, match, location, configuration } = this.props;
+    const { dispatch, match, location, configuration, currentUser, userCollection } = this.props;
+
+    const itsNotMine = currentUser.isLoggedIn && userCollection && userCollection.createdBy.id !== currentUser.id;
+
+    if ((!currentUser.isLoggedIn || itsNotMine) && userCollection) {
+      dispatch(getCollections(userCollection.createdBy.id, this.cancelToken.token, false));
+    }
 
     const notRenderedAtServerOrJSAlreadyInitialized =
       !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
@@ -156,7 +163,10 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
               </div>
 
               <div className={styles.paperListContainer}>
-                <CollectionSideNaviBar currentCollectionId={collectionShow.mainCollectionId} />
+                <CollectionSideNaviBar
+                  currentCollectionId={collectionShow.mainCollectionId}
+                  collectionCreateBy={userCollection.createdBy}
+                />
                 <div className={styles.leftBox}>
                   <div className={styles.paperListBox}>
                     <div className={styles.header}>
