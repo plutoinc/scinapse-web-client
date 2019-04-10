@@ -14,9 +14,8 @@ import ScinapseFormikInput from "../../../components/common/scinapseInput/scinap
 import ReduxAutoSizeTextarea from "../../../components/common/autoSizeTextarea/reduxAutoSizeTextarea";
 import Icon from "../../../icons";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
+import { LAST_SUCCEEDED_EMAIL_KEY } from "../../../constants/requestDialogConstant";
 const s = require("./fullTextDialog.scss");
-
-const LAST_SUCCEEDED_EMAIL_KEY = "l_s_e_k";
 
 interface RequestFullTextProps {
   isOpen: boolean;

@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 const LoadablePlugin = require("@loadable/webpack-plugin");
 
 module.exports = {
@@ -85,5 +86,5 @@ module.exports = {
       },
     ],
   },
-  plugins: [new LoadablePlugin()],
+  plugins: [new webpack.IgnorePlugin(/^\.\/pdf.worker.js$/), new LoadablePlugin()],
 };

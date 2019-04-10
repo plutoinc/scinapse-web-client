@@ -2,7 +2,7 @@ import * as React from "react";
 import * as classNames from "classnames";
 import * as store from "store";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import { Picker } from "emoji-mart";
+import { NimblePicker } from "emoji-mart";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import FilterTitleInnerContent from "./titleInnerContent";
 import FilterSaveButton from "../../../components/filterContainer/filterSaveButton";
@@ -18,6 +18,7 @@ import ActionTicketManager from "../../../helpers/actionTicketManager";
 import Icon from "../../../icons";
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { PREVIOUS_FILTER } from "../../../components/articleSearch/constants";
+const data = require("emoji-mart/data/messenger.json");
 const styles = require("./filterSaveBox.scss");
 
 interface TitleBoxProps {
@@ -188,8 +189,9 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
             setIsOpenEmojiPicker(false);
           }}
         >
-          <Picker
-            set="emojione"
+          <NimblePicker
+            data={data}
+            set="messenger"
             onSelect={(emoji: BaseEmoji) => {
               if (!!articleSearchState.selectedFilter) {
                 onClickSaveChangesBtn(

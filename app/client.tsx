@@ -13,8 +13,8 @@ import { ConnectedRootRoutes as RootRoutes } from "./routes";
 import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
 import { AppState } from "./reducers";
-const { pdfjs } = require("react-pdf");
 import "./helpers/rafPolyfill";
+const { pdfjs } = require("react-pdf");
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 declare var Sentry: any;
 
@@ -47,7 +47,6 @@ class PlutoRenderer {
     this.initializeGA();
     this.initSentry();
     this.renderAtClient();
-    this.checkRender();
   }
 
   private initSentry() {
@@ -105,7 +104,10 @@ class PlutoRenderer {
             </Provider>
           </ErrorTracker>
         </CssInjector>,
-        document.getElementById("react-app")
+        document.getElementById("react-app"),
+        () => {
+          this.checkRender();
+        }
       );
     });
   }
