@@ -3,11 +3,4 @@ interface ABTest {
   weight: number;
 }
 
-export const FULL_PAPER_TEST = "full_paper";
-
-export const LIVE_TESTS: ABTest[] = [
-  {
-    name: FULL_PAPER_TEST,
-    weight: 0.5,
-  },
-];
+export const LIVE_TESTS: ABTest[] = [];
