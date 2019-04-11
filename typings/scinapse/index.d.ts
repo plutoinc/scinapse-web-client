@@ -77,6 +77,8 @@ declare namespace Scinapse {
       | "sendRequestPaper"
       | "searchHistoryQuery"
       | "searchSuggestionQuery"
+      | "blockUnsignedUser"
+      | "openSignUp"
       | "";
 
     type ActionArea =
@@ -106,7 +108,8 @@ declare namespace Scinapse {
       | "researchHistory"
       | "sideNavigator"
       | "nextPaper"
-      | "noPaperNotiPage";
+      | "noPaperNotiPage"
+      | "";
 
     type PageType =
       | "paperShow"

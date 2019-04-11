@@ -1,5 +1,7 @@
 import * as React from "react";
 import axios, { CancelTokenSource } from "axios";
+import * as store from "store";
+import * as Cookies from "js-cookie";
 import * as classNames from "classnames";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { withRouter, RouteComponentProps } from "react-router-dom";
@@ -22,10 +24,22 @@ import { AppState } from "../../../reducers";
 import { LayoutState, UserDevice } from "../../layouts/records";
 import { getCurrentPageType } from "../../locationListener";
 import { handleInputKeydown } from "./helpers/handleInputKeydown";
+import { SESSION_ID_KEY } from "../../../constants/actionTicket";
+import { CurrentUser } from "../../../model/currentUser";
+import GlobalDialogManager from "../../../helpers/globalDialogManager";
+import { benefitSignUpTest } from "../../../constants/abTest";
 const s = require("./searchQueryInput.scss");
+
+const BENEFIT_EXPERIMENT_KEY = "q_per_s";
+
+interface BenefitExp {
+  sessionId: string;
+  count: number;
+}
 
 interface SearchQueryInputProps extends RouteComponentProps<any> {
   dispatch: Dispatch<any>;
+  currentUser: CurrentUser;
   layout: LayoutState;
   actionArea: "home" | "topBar";
   maxCount: number;
@@ -121,6 +135,34 @@ const SearchQueryInput: React.FunctionComponent<
           message: "You should search more than 2 characters.",
         },
       });
+    }
+
+    if (!props.currentUser.isLoggedIn && Cookies.get(benefitSignUpTest.name) === "queryCountSession") {
+      const currentSessionId = store.get(SESSION_ID_KEY);
+      const exp: BenefitExp | undefined = store.get(BENEFIT_EXPERIMENT_KEY);
+
+      if (!exp || exp.sessionId !== currentSessionId) {
+        store.set(BENEFIT_EXPERIMENT_KEY, {
+          sessionId: currentSessionId,
+          count: 1,
+        } as BenefitExp);
+      } else {
+        const nextCount = exp.count + 1;
+        store.set(BENEFIT_EXPERIMENT_KEY, {
+          sessionId: currentSessionId,
+          count: nextCount,
+        } as BenefitExp);
+        if (nextCount > 5) {
+          store.set(BENEFIT_EXPERIMENT_KEY, {
+            sessionId: currentSessionId,
+            count: 4,
+          } as BenefitExp);
+          return GlobalDialogManager.openSignUpDialog({
+            userActionType: "query",
+            actionArea: props.actionArea,
+          });
+        }
+      }
     }
 
     ActionTicketManager.trackTicket({
@@ -274,6 +316,7 @@ const SearchQueryInput: React.FunctionComponent<
 function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
+    currentUser: state.currentUser,
   };
 }
 

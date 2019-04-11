@@ -26,19 +26,6 @@ describe("sign in actions", () => {
     });
   });
 
-  describe("openSignUp Action", () => {
-    it("should return GLOBAL_DIALOG_OPEN action with GLOBAL_DIALOG_TYPE.SIGN_UP type", () => {
-      store.dispatch(Actions.openSignUp());
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.GLOBAL_DIALOG_OPEN,
-        payload: {
-          type: GLOBAL_DIALOG_TYPE.SIGN_UP,
-        },
-      });
-    });
-  });
-
   describe("openVerificationNeeded Action", () => {
     it("should return GLOBAL_DIALOG_OPEN action with GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED type", () => {
       store.dispatch(Actions.openVerificationNeeded());

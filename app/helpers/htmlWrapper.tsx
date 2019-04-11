@@ -49,8 +49,8 @@ gtag('config', 'AW-817738370');
         <style id="jss-server-side" type="text/css">${css}</style>
         <link rel="preload" href="https://missive.github.io/emoji-mart/emoji-mart.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://missive.github.io/emoji-mart/emoji-mart.css"></noscript>
-        <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
-        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous"></noscript>
+        <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin="anonymous">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" crossorigin="anonymous"></noscript>
         <script src="https://browser.sentry-cdn.com/5.0.6/bundle.min.js" crossorigin="anonymous"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
         <script>

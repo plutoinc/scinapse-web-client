@@ -39,7 +39,7 @@ class ActionTicketManager {
       console.log(params);
     }
     if (!EnvChecker.isOnServer() && EnvChecker.isProdBrowser()) {
-      this.checkSessionAlive();
+      this.renewSessionKey();
       const ticket = new ActionTicket(params);
       this.addToQueue([ticket]);
 
@@ -94,14 +94,15 @@ class ActionTicketManager {
     }
   }
 
-  private checkSessionAlive() {
+  private renewSessionKey() {
     (store as any).removeExpiredKeys();
     const sessionKey: string | undefined = store.get(SESSION_ID_KEY);
     const currentDate = new Date();
     const currentTime = currentDate.getTime();
 
     if (!sessionKey) {
-      (store as any).set(SESSION_ID_KEY, uuid(), currentTime + LIVE_SESSION_LENGTH);
+      const newKey = uuid();
+      (store as any).set(SESSION_ID_KEY, newKey, currentTime + LIVE_SESSION_LENGTH);
     } else {
       (store as any).set(SESSION_ID_KEY, sessionKey, currentTime + LIVE_SESSION_LENGTH);
     }

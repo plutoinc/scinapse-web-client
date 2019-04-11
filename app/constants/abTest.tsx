@@ -17,9 +17,9 @@ export const benefitTestUserGroup = [
   { groupName: "control", weight: 0.1667 },
 ];
 
-export const LIVE_TESTS: Test[] = [
-  {
-    name: "benefit",
-    userGroup: benefitTestUserGroup,
-  },
-];
+export const benefitSignUpTest = {
+  name: "benefitSignupConversion",
+  userGroup: benefitTestUserGroup,
+};
+
+export const LIVE_TESTS: Test[] = [benefitSignUpTest];
