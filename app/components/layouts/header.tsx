@@ -257,7 +257,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private handleOpenSignUp = () => {
-    GlobalDialogManager.openSignUpDialog({ actionArea: "topBar" });
+    GlobalDialogManager.openSignUpDialog();
   };
 
   private handleToggleUserDropdown = () => {

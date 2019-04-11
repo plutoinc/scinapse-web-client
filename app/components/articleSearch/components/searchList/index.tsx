@@ -34,6 +34,7 @@ class SearchList extends React.PureComponent<SearchListProps> {
               key={paper.id}
               paper={paper}
               pageType="searchResult"
+              actionArea="searchResult"
               searchQueryText={searchQueryText}
               currentUser={currentUser}
               wrapperClassName={styles.searchItemWrapper}

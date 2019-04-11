@@ -8,22 +8,17 @@ import { Paper } from "../../../model/paper";
 import Icon from "../../../icons";
 import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { CurrentUser } from "../../../model/currentUser";
 import { benefitSignUpTest, BENEFIT_EXPERIMENT_KEY, BenefitExp } from "../../../constants/abTest";
 import { SESSION_ID_KEY } from "../../../constants/actionTicket";
-import GlobalDialogManager from "../../../helpers/globalDialogManager";
-import { AppState } from "../../../reducers";
-import { connect, Dispatch } from "react-redux";
+import { checkAuth, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
 const styles = require("./relatedPaperItem.scss");
 
 const MAX_AUTHOR_COUNT_TO_SHOW = 2;
 
 interface PaperShowRelatedPaperItemProps extends RouteComponentProps<any> {
   paper: Paper;
-  currentUser: CurrentUser;
   actionArea: Scinapse.ActionTicket.ActionArea;
   disableVisitedColour?: boolean;
-  dispatch: Dispatch<any>;
 }
 
 class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPaperItemProps> {
@@ -120,11 +115,11 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
   }
 
   private trackClickTitle = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const { actionArea, paper, history, currentUser } = this.props;
+    const { actionArea, paper, history } = this.props;
 
     e.preventDefault();
 
-    if (!currentUser.isLoggedIn && Cookies.get(benefitSignUpTest.name) === "refPaperCountSession") {
+    if (Cookies.get(benefitSignUpTest.name) === "refPaperCountSession") {
       const currentSessionId = store.get(SESSION_ID_KEY);
       const exp: BenefitExp | undefined = store.get(BENEFIT_EXPERIMENT_KEY);
       if (!exp || exp.id !== currentSessionId) {
@@ -143,10 +138,8 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
             id: currentSessionId,
             count: 2,
           } as BenefitExp);
-          return GlobalDialogManager.openSignUpDialog({
-            userActionType: "paperShow",
-            actionArea,
-          });
+          const isVerified = checkAuth({ authLevel: AUTH_LEVEL.VERIFIED, actionArea, userActionType: "paperShow" });
+          if (!isVerified) return;
         }
       }
     }
@@ -169,12 +162,4 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
   };
 }
 
-function mapStateToProps(state: AppState) {
-  return {
-    currentUser: state.currentUser,
-  };
-}
-
-export default connect(mapStateToProps)(
-  withRouter(withStyles<typeof PaperShowRelatedPaperItem>(styles)(PaperShowRelatedPaperItem))
-);
+export default withRouter(withStyles<typeof PaperShowRelatedPaperItem>(styles)(PaperShowRelatedPaperItem));

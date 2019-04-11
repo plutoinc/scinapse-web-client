@@ -3,13 +3,6 @@ import { ActionCreators } from "../../actions/actionTypes";
 import { GLOBAL_DIALOG_TYPE } from "../../components/dialog/reducer";
 import { Collection } from "../../model/collection";
 import { Paper } from "../../model/paper";
-import ActionTicketManager from "../actionTicketManager";
-import { getCurrentPageType } from "../../components/locationListener";
-
-interface OpenSignUpDialogParams {
-  userActionType?: Scinapse.ActionTicket.ActionTagType;
-  actionArea?: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType;
-}
 
 class GlobalDialogManager {
   public openSignInDialog(userActionType?: Scinapse.ActionTicket.ActionTagType) {
@@ -21,27 +14,7 @@ class GlobalDialogManager {
     );
   }
 
-  public openSignUpDialog({ userActionType, actionArea }: OpenSignUpDialogParams) {
-    if (userActionType) {
-      ActionTicketManager.trackTicket({
-        pageType: getCurrentPageType(),
-        actionType: "fire",
-        actionArea: actionArea || "",
-        actionTag: "blockUnsignedUser",
-        actionLabel: "",
-      });
-    }
-
-    console.log("FIRED, ", actionArea);
-
-    ActionTicketManager.trackTicket({
-      pageType: getCurrentPageType(),
-      actionType: "fire",
-      actionArea: actionArea || "",
-      actionTag: "openSignUp",
-      actionLabel: "",
-    });
-
+  public openSignUpDialog(userActionType?: Scinapse.ActionTicket.ActionTagType) {
     StoreManager.store.dispatch(
       ActionCreators.openGlobalDialog({
         type: GLOBAL_DIALOG_TYPE.SIGN_UP,

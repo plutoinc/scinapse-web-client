@@ -25,14 +25,12 @@ import { LayoutState, UserDevice } from "../../layouts/records";
 import { getCurrentPageType } from "../../locationListener";
 import { handleInputKeydown } from "./helpers/handleInputKeydown";
 import { SESSION_ID_KEY } from "../../../constants/actionTicket";
-import { CurrentUser } from "../../../model/currentUser";
-import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { benefitSignUpTest, BENEFIT_EXPERIMENT_KEY, BenefitExp } from "../../../constants/abTest";
+import { checkAuth, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
 const s = require("./searchQueryInput.scss");
 
 interface SearchQueryInputProps extends RouteComponentProps<any> {
   dispatch: Dispatch<any>;
-  currentUser: CurrentUser;
   layout: LayoutState;
   actionArea: "home" | "topBar";
   maxCount: number;
@@ -130,7 +128,7 @@ const SearchQueryInput: React.FunctionComponent<
       });
     }
 
-    if (!props.currentUser.isLoggedIn && Cookies.get(benefitSignUpTest.name) === "queryCountSession") {
+    if (Cookies.get(benefitSignUpTest.name) === "queryCountSession") {
       const currentSessionId = store.get(SESSION_ID_KEY);
       const exp: BenefitExp | undefined = store.get(BENEFIT_EXPERIMENT_KEY);
 
@@ -150,10 +148,14 @@ const SearchQueryInput: React.FunctionComponent<
             id: currentSessionId,
             count: 4,
           } as BenefitExp);
-          return GlobalDialogManager.openSignUpDialog({
+
+          const isVerified = checkAuth({
+            authLevel: AUTH_LEVEL.VERIFIED,
             userActionType: "query",
             actionArea: props.actionArea,
           });
+
+          if (!isVerified) return;
         }
       }
     }
@@ -309,7 +311,6 @@ const SearchQueryInput: React.FunctionComponent<
 function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
-    currentUser: state.currentUser,
   };
 }
 

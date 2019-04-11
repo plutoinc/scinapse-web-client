@@ -78,6 +78,7 @@ declare namespace Scinapse {
       | "searchHistoryQuery"
       | "searchSuggestionQuery"
       | "blockUnsignedUser"
+      | "blockUnverifiedUser"
       | "openSignUp"
       | "";
 
@@ -87,6 +88,7 @@ declare namespace Scinapse {
       | "citedList"
       | "paperList"
       | "authorList"
+      | "searchResult"
       | "paperDescription"
       | "otherPaperList"
       | "relatedPaperList"

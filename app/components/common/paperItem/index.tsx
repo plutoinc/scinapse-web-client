@@ -14,8 +14,8 @@ const styles = require("./paperItem.scss");
 export interface PaperItemProps {
   paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
-  shouldBlockUnsignedUser?: boolean;
-  actionArea?: Scinapse.ActionTicket.ActionArea;
+  shouldBlockUnverifiedUser?: boolean;
+  actionArea: Scinapse.ActionTicket.ActionArea;
   hasCollection?: boolean;
   paperNote?: string;
   searchQueryText?: string;
@@ -78,7 +78,7 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
       actionArea,
       hasCollection,
       onRemovePaperCollection,
-      shouldBlockUnsignedUser,
+      shouldBlockUnverifiedUser,
     } = this.props;
     const { title, titleHighlighted, authors, year, doi, urls, journal, conferenceInstance, relation } = paper;
 
@@ -134,7 +134,7 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
             paperId={paper.id}
             searchQueryText={searchQueryText}
             source={source}
-            shouldBlockUnsignedUser={!!shouldBlockUnsignedUser}
+            shouldBlockUnverifiedUser={!!shouldBlockUnverifiedUser}
           />
           <VenueAndAuthors
             pageType={pageType}

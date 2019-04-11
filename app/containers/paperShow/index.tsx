@@ -226,7 +226,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               <div className={styles.paperContentBlockDivider} />
               <div className={styles.actionBarWrapper}>
                 <NoSsr>
-                  <ActionBar paper={paper} />
+                  <ActionBar paper={paper} currentUser={currentUser} />
                 </NoSsr>
               </div>
               <div className={styles.paperContentBlockDivider} />

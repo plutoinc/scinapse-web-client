@@ -10,7 +10,7 @@ import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
 import actionTicketManager from "../../../helpers/actionTicketManager";
 import { SESSION_ID_KEY } from "../../../constants/actionTicket";
 import { BenefitExp, BENEFIT_EXPERIMENT_KEY, benefitSignUpTest } from "../../../constants/abTest";
-import GlobalDialogManager from "../../../helpers/globalDialogManager";
+import { checkAuth, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
 const styles = require("./title.scss");
 
 export interface TitleProps extends RouteComponentProps<any> {
@@ -18,7 +18,7 @@ export interface TitleProps extends RouteComponentProps<any> {
   paperId: number;
   source: string;
   pageType: Scinapse.ActionTicket.PageType;
-  shouldBlockUnsignedUser: boolean;
+  shouldBlockUnverifiedUser: boolean;
   actionArea?: Scinapse.ActionTicket.ActionArea;
   searchQueryText?: string;
 }
@@ -64,7 +64,7 @@ class Title extends React.PureComponent<TitleProps, {}> {
   }
 
   private handleClickTitle = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const { pageType, actionArea, paperId, shouldBlockUnsignedUser, history } = this.props;
+    const { pageType, actionArea, paperId, shouldBlockUnverifiedUser: shouldBlockUnsignedUser, history } = this.props;
 
     e.preventDefault();
 
@@ -87,10 +87,9 @@ class Title extends React.PureComponent<TitleProps, {}> {
             id: currentSessionId,
             count: 2,
           } as BenefitExp);
-          return GlobalDialogManager.openSignUpDialog({
-            userActionType: "paperShow",
-            actionArea,
-          });
+
+          const isVerified = checkAuth({ authLevel: AUTH_LEVEL.VERIFIED, userActionType: "paperShow", actionArea });
+          if (!isVerified) return;
         }
       }
     }
