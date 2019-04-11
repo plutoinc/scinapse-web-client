@@ -16,6 +16,7 @@ export interface PaperItemProps {
   pageType: Scinapse.ActionTicket.PageType;
   shouldBlockUnverifiedUser?: boolean;
   actionArea: Scinapse.ActionTicket.ActionArea;
+  currentPage?: number;
   hasCollection?: boolean;
   paperNote?: string;
   searchQueryText?: string;
@@ -79,6 +80,7 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
       hasCollection,
       onRemovePaperCollection,
       shouldBlockUnverifiedUser,
+      currentPage,
     } = this.props;
     const { title, titleHighlighted, authors, year, doi, urls, journal, conferenceInstance, relation } = paper;
 
@@ -135,6 +137,7 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
             searchQueryText={searchQueryText}
             source={source}
             shouldBlockUnverifiedUser={!!shouldBlockUnverifiedUser}
+            currentPage={currentPage}
           />
           <VenueAndAuthors
             pageType={pageType}

@@ -8,7 +8,7 @@ import { trackEvent } from "../../../helpers/handleGA";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
 import actionTicketManager from "../../../helpers/actionTicketManager";
-import { SESSION_ID_KEY } from "../../../constants/actionTicket";
+import { SESSION_ID_KEY, DEVICE_ID_KEY } from "../../../constants/actionTicket";
 import { BenefitExp, BENEFIT_EXPERIMENT_KEY, benefitSignUpTest } from "../../../constants/abTest";
 import { checkAuth, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
 const styles = require("./title.scss");
@@ -21,6 +21,7 @@ export interface TitleProps extends RouteComponentProps<any> {
   shouldBlockUnverifiedUser: boolean;
   actionArea?: Scinapse.ActionTicket.ActionArea;
   searchQueryText?: string;
+  currentPage?: number;
 }
 
 class Title extends React.PureComponent<TitleProps, {}> {
@@ -64,13 +65,13 @@ class Title extends React.PureComponent<TitleProps, {}> {
   }
 
   private handleClickTitle = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const { pageType, actionArea, paperId, shouldBlockUnverifiedUser: shouldBlockUnsignedUser, history } = this.props;
+    const { pageType, actionArea, paperId, shouldBlockUnverifiedUser, history, currentPage } = this.props;
 
     e.preventDefault();
 
     const currentSessionId = store.get(SESSION_ID_KEY);
-    const exp: BenefitExp | undefined = store.get(BENEFIT_EXPERIMENT_KEY);
-    if (shouldBlockUnsignedUser && Cookies.get(benefitSignUpTest.name) === "refPaperCountSession") {
+    if (shouldBlockUnverifiedUser && Cookies.get(benefitSignUpTest.name) === "refPaperCountSession") {
+      const exp: BenefitExp | undefined = store.get(BENEFIT_EXPERIMENT_KEY);
       if (!exp || exp.id !== currentSessionId) {
         store.set(BENEFIT_EXPERIMENT_KEY, {
           id: currentSessionId,
@@ -85,6 +86,32 @@ class Title extends React.PureComponent<TitleProps, {}> {
         if (nextCount > 3) {
           store.set(BENEFIT_EXPERIMENT_KEY, {
             id: currentSessionId,
+            count: 2,
+          } as BenefitExp);
+
+          const isVerified = checkAuth({ authLevel: AUTH_LEVEL.VERIFIED, userActionType: "paperShow", actionArea });
+          if (!isVerified) return;
+        }
+      }
+    }
+
+    const currentDeviceId = store.get(DEVICE_ID_KEY);
+    if (currentPage === 1 && Cookies.get(benefitSignUpTest.name) === "getFromFirstResultPage") {
+      const exp: BenefitExp | undefined = store.get(BENEFIT_EXPERIMENT_KEY);
+      if (!exp || exp.id !== currentDeviceId) {
+        store.set(BENEFIT_EXPERIMENT_KEY, {
+          id: currentDeviceId,
+          count: 1,
+        } as BenefitExp);
+      } else {
+        const nextCount = exp.count + 1;
+        store.set(BENEFIT_EXPERIMENT_KEY, {
+          id: currentDeviceId,
+          count: nextCount,
+        } as BenefitExp);
+        if (nextCount > 3) {
+          store.set(BENEFIT_EXPERIMENT_KEY, {
+            id: currentDeviceId,
             count: 2,
           } as BenefitExp);
 
