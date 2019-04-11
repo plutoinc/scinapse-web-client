@@ -19,7 +19,6 @@ import AuthorList from "../../components/paperShow/components/authorList";
 import RelatedPaperList from "../relatedPapers";
 import OtherPaperListFromAuthor from "../otherPapersFromAuthor";
 import ActionBar from "../paperShowActionBar";
-import NewActionBar from "../paperShowActionBar/newActionbar";
 import FOSList from "../../components/paperShow/components/fosList";
 import ReferencePapers from "../../components/paperShow/components/relatedPapers";
 import PaperShowRefCitedTab from "../../components/paperShow/refCitedTab";
@@ -40,8 +39,6 @@ import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPos
 import EnvChecker from "../../helpers/envChecker";
 import NextPaperTab from "../nextPaperTab";
 import ResearchHistory from "../../components/researchHistory";
-import { FULL_PAPER_TEST } from "../../constants/abTest";
-import getABType from "../../helpers/getABType";
 import { PaperShowMatchParams, PaperShowPageQueryParams } from "./types";
 
 const styles = require("./paperShow.scss");
@@ -88,8 +85,6 @@ interface PaperShowStates
 
       isLoadPDF: boolean;
       failedToLoadPDF: boolean;
-
-      fullTextAB: string;
     }> {}
 
 @withStyles<typeof PaperShow>(styles)
@@ -114,7 +109,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isTouchFooter: false,
       isLoadPDF: false,
       failedToLoadPDF: false,
-      fullTextAB: "",
     };
   }
 
@@ -126,8 +120,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     window.addEventListener("scroll", this.handleScroll, { passive: true });
     this.handleScrollEvent();
-
-    this.setState(prevState => ({ ...prevState, fullTextAB: getABType(FULL_PAPER_TEST) }));
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       await fetchPaperShowData(
@@ -204,16 +196,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public render() {
     const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers } = this.props;
-    const {
-      isOnCited,
-      isOnRef,
-      isAboveRef,
-      isRightBoxFixed,
-      isRightBoxSmall,
-      isTouchFooter,
-      isLoadPDF,
-      fullTextAB,
-    } = this.state;
+    const { isOnCited, isOnRef, isAboveRef, isRightBoxFixed, isRightBoxSmall, isTouchFooter, isLoadPDF } = this.state;
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -242,7 +225,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               <div className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.title) }} />
               <div className={styles.paperContentBlockDivider} />
               <div className={styles.actionBarWrapper}>
-                <NoSsr>{fullTextAB === "A" ? <ActionBar paper={paper} /> : <NewActionBar paper={paper} />}</NoSsr>
+                <NoSsr>
+                  <ActionBar paper={paper} />
+                </NoSsr>
               </div>
               <div className={styles.paperContentBlockDivider} />
               <div className={styles.paperInfo}>

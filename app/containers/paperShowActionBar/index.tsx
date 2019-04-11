@@ -1,41 +1,73 @@
 import * as React from "react";
 import { withStyles } from "../../helpers/withStylesHelper";
 import PdfSourceButton from "../../components/paperShow/components/pdfSourceButton";
-import { Paper } from "../../model/paper";
+import FullTextDialog from "./components/fullTextDialog";
 import PaperShowCollectionControlButton from "../paperShowCollectionControlButton";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 import CiteBox from "./components/citeBox";
-const styles = require("./actionBar.scss");
+import { Paper } from "../../model/paper";
+import Icon from "../../icons";
+import { getPDFLink } from "../../helpers/getPDFLink";
+const s = require("./actionBar.scss");
 
 interface PaperShowActionBarProps {
   paper: Paper | null;
 }
 
-@withStyles<typeof PaperShowActionBar>(styles)
-class PaperShowActionBar extends React.PureComponent<PaperShowActionBarProps> {
-  public render() {
-    const { paper } = this.props;
+const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = props => {
+  const [isOpen, setIsOpen] = React.useState(false);
 
-    if (paper) {
-      return (
-        <div className={styles.actionBar}>
-          <ul className={styles.actions}>
-            <div className={styles.leftSide}>
-              <li className={styles.actionItem}>
-                <PdfSourceButton paper={paper} fullTextAB="A" />
-              </li>
-              <li className={styles.actionItem}>
-                <CiteBox paper={paper} />
-              </li>
+  if (!props.paper) return null;
+
+  const pdfSource = getPDFLink(props.paper.urls);
+  const hasSource = props.paper.urls.length > 0;
+
+  return (
+    <div className={s.actionBar}>
+      <div className={s.actions}>
+        <div className={s.leftSide}>
+          {hasSource && (
+            <div className={s.actionItem}>
+              <PdfSourceButton paper={props.paper} fullTextAB="B" reverseColor />
             </div>
-            <div className={styles.rightSide}>
-              <PaperShowCollectionControlButton />
+          )}
+          {!pdfSource && (
+            <div className={s.actionItem}>
+              <button
+                onClick={() => {
+                  ActionTicketManager.trackTicket({
+                    pageType: "paperShow",
+                    actionType: "fire",
+                    actionArea: "paperDescription",
+                    actionTag: "clickRequestFullTextBtn",
+                    actionLabel: String(props.paper!.id),
+                  });
+                  setIsOpen(true);
+                }}
+                className={s.fullTextBtn}
+              >
+                <Icon icon="SEND" className={s.sendIcon} />
+                Request Full-text
+              </button>
             </div>
-          </ul>
+          )}
+          <div className={s.actionItem}>
+            <CiteBox paper={props.paper} />
+          </div>
+          <FullTextDialog
+            paperId={props.paper.id}
+            isOpen={isOpen}
+            onClose={() => {
+              setIsOpen(false);
+            }}
+          />
         </div>
-      );
-    }
-    return null;
-  }
-}
+        <div className={s.rightSide}>
+          <PaperShowCollectionControlButton isTestVersion />
+        </div>
+      </div>
+    </div>
+  );
+};
 
-export default PaperShowActionBar;
+export default withStyles<typeof PaperShowActionBar>(s)(PaperShowActionBar);
