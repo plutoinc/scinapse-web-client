@@ -22,4 +22,11 @@ export const benefitSignUpTest = {
   userGroup: benefitTestUserGroup,
 };
 
+export const BENEFIT_EXPERIMENT_KEY = "b_exp_key";
+
+export interface BenefitExp {
+  id: string;
+  count: number;
+}
+
 export const LIVE_TESTS: Test[] = [benefitSignUpTest];

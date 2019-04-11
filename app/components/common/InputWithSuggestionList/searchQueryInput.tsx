@@ -27,15 +27,8 @@ import { handleInputKeydown } from "./helpers/handleInputKeydown";
 import { SESSION_ID_KEY } from "../../../constants/actionTicket";
 import { CurrentUser } from "../../../model/currentUser";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
-import { benefitSignUpTest } from "../../../constants/abTest";
+import { benefitSignUpTest, BENEFIT_EXPERIMENT_KEY, BenefitExp } from "../../../constants/abTest";
 const s = require("./searchQueryInput.scss");
-
-const BENEFIT_EXPERIMENT_KEY = "q_per_s";
-
-interface BenefitExp {
-  sessionId: string;
-  count: number;
-}
 
 interface SearchQueryInputProps extends RouteComponentProps<any> {
   dispatch: Dispatch<any>;
@@ -141,20 +134,20 @@ const SearchQueryInput: React.FunctionComponent<
       const currentSessionId = store.get(SESSION_ID_KEY);
       const exp: BenefitExp | undefined = store.get(BENEFIT_EXPERIMENT_KEY);
 
-      if (!exp || exp.sessionId !== currentSessionId) {
+      if (!exp || exp.id !== currentSessionId) {
         store.set(BENEFIT_EXPERIMENT_KEY, {
-          sessionId: currentSessionId,
+          id: currentSessionId,
           count: 1,
         } as BenefitExp);
       } else {
         const nextCount = exp.count + 1;
         store.set(BENEFIT_EXPERIMENT_KEY, {
-          sessionId: currentSessionId,
+          id: currentSessionId,
           count: nextCount,
         } as BenefitExp);
         if (nextCount > 5) {
           store.set(BENEFIT_EXPERIMENT_KEY, {
-            sessionId: currentSessionId,
+            id: currentSessionId,
             count: 4,
           } as BenefitExp);
           return GlobalDialogManager.openSignUpDialog({

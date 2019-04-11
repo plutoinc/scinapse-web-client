@@ -86,6 +86,7 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
             currentUser={currentUser}
             key={paper.id}
             paper={paper}
+            shouldBlockUnsignedUser={!currentUser.isLoggedIn}
           />
         );
       });

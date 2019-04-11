@@ -14,6 +14,7 @@ const styles = require("./paperItem.scss");
 export interface PaperItemProps {
   paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
+  shouldBlockUnsignedUser?: boolean;
   actionArea?: Scinapse.ActionTicket.ActionArea;
   hasCollection?: boolean;
   paperNote?: string;
@@ -30,7 +31,7 @@ export interface PaperItemProps {
   onRemovePaperCollection?: (paperId: number) => Promise<void>;
 }
 
-class RawPaperItem extends React.PureComponent<PaperItemProps> {
+class BasePaperItem extends React.PureComponent<PaperItemProps> {
   private paperItemWrapper: HTMLDivElement | null;
 
   public componentDidMount() {
@@ -77,6 +78,7 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
       actionArea,
       hasCollection,
       onRemovePaperCollection,
+      shouldBlockUnsignedUser,
     } = this.props;
     const { title, titleHighlighted, authors, year, doi, urls, journal, conferenceInstance, relation } = paper;
 
@@ -132,6 +134,7 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
             paperId={paper.id}
             searchQueryText={searchQueryText}
             source={source}
+            shouldBlockUnsignedUser={!!shouldBlockUnsignedUser}
           />
           <VenueAndAuthors
             pageType={pageType}
@@ -150,4 +153,4 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
   }
 }
 
-export default withStyles<typeof RawPaperItem>(styles)(RawPaperItem);
+export default withStyles<typeof BasePaperItem>(styles)(BasePaperItem);

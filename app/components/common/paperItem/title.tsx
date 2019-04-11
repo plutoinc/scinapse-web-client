@@ -1,20 +1,24 @@
 import * as React from "react";
+import * as store from "store";
+import * as Cookies from "js-cookie";
 import { escapeRegExp } from "lodash";
-import { Link } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import HighLightedContent from "../highLightedContent";
 import { trackEvent } from "../../../helpers/handleGA";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import Icon from "../../../icons";
-import EnvChecker from "../../../helpers/envChecker";
 import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
 import actionTicketManager from "../../../helpers/actionTicketManager";
+import { SESSION_ID_KEY } from "../../../constants/actionTicket";
+import { BenefitExp, BENEFIT_EXPERIMENT_KEY, benefitSignUpTest } from "../../../constants/abTest";
+import GlobalDialogManager from "../../../helpers/globalDialogManager";
 const styles = require("./title.scss");
 
-export interface TitleProps {
+export interface TitleProps extends RouteComponentProps<any> {
   title: string;
   paperId: number;
   source: string;
   pageType: Scinapse.ActionTicket.PageType;
+  shouldBlockUnsignedUser: boolean;
   actionArea?: Scinapse.ActionTicket.ActionArea;
   searchQueryText?: string;
 }
@@ -37,27 +41,8 @@ class Title extends React.PureComponent<TitleProps, {}> {
     if (noSearchQueryText) {
       return (
         <div>
-          <Link
-            to={{
-              pathname: `/papers/${paperId}`,
-            }}
-            onClick={() => {
-              this.trackEvent(false);
-            }}
-            className={styles.title}
-          >
+          <a href={`/papers/${paperId}`} onClick={this.handleClickTitle} className={styles.title}>
             <span dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(title) }} />
-          </Link>
-          <a
-            onClick={() => {
-              this.trackEvent(true);
-            }}
-            className={styles.newTabIconWrapper}
-            href={`/papers/${paperId}`}
-            target="_blank"
-            rel="noopener"
-          >
-            <Icon className={styles.newTabIcon} icon="NEW_TAB" />
           </a>
         </div>
       );
@@ -68,47 +53,64 @@ class Title extends React.PureComponent<TitleProps, {}> {
           content={trimmedTitle}
           highLightContent={searchQuery}
           className={styles.title}
-          onClickFunc={() => {
-            this.trackEvent();
-          }}
+          onClickFunc={this.handleClickTitle}
           href={source}
           to={{
             pathname: `/papers/${paperId}`,
           }}
         />
-        <a
-          onClick={() => {
-            this.trackEvent(true);
-          }}
-          className={styles.newTabIconWrapper}
-          href={`/papers/${paperId}`}
-          target="_blank"
-          rel="noopener"
-        >
-          <Icon className={styles.newTabIcon} icon="NEW_TAB" />
-        </a>
       </div>
     );
   }
 
-  private trackEvent = (newTab?: boolean) => {
-    const { pageType, actionArea, paperId } = this.props;
+  private handleClickTitle = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const { pageType, actionArea, paperId, shouldBlockUnsignedUser, history } = this.props;
 
-    if (!EnvChecker.isOnServer()) {
-      actionTicketManager.trackTicket({
-        pageType,
-        actionType: "fire",
-        actionArea: actionArea || pageType,
-        actionTag: "paperShow",
-        actionLabel: String(paperId),
-      });
-      trackEvent({
-        category: "Flow to Paper Show",
-        action: newTab ? "Click Title New Tab" : "Click Title",
-        label: JSON.stringify({ referer: pageType, refererLocation: location.pathname }),
-      });
+    e.preventDefault();
+
+    const currentSessionId = store.get(SESSION_ID_KEY);
+    const exp: BenefitExp | undefined = store.get(BENEFIT_EXPERIMENT_KEY);
+    if (shouldBlockUnsignedUser && Cookies.get(benefitSignUpTest.name) === "refPaperCountSession") {
+      if (!exp || exp.id !== currentSessionId) {
+        store.set(BENEFIT_EXPERIMENT_KEY, {
+          id: currentSessionId,
+          count: 1,
+        } as BenefitExp);
+      } else {
+        const nextCount = exp.count + 1;
+        store.set(BENEFIT_EXPERIMENT_KEY, {
+          id: currentSessionId,
+          count: nextCount,
+        } as BenefitExp);
+        if (nextCount > 3) {
+          store.set(BENEFIT_EXPERIMENT_KEY, {
+            id: currentSessionId,
+            count: 2,
+          } as BenefitExp);
+          return GlobalDialogManager.openSignUpDialog({
+            userActionType: "paperShow",
+            actionArea,
+          });
+        }
+      }
     }
+
+    actionTicketManager.trackTicket({
+      pageType,
+      actionType: "fire",
+      actionArea: actionArea || pageType,
+      actionTag: "paperShow",
+      actionLabel: String(paperId),
+    });
+
+    trackEvent({
+      category: "Flow to Paper Show",
+      action: "Click Title",
+      label: JSON.stringify({ referer: pageType, refererLocation: location.pathname }),
+    });
+
+    history.push(`/papers/${paperId}`);
   };
 }
 
-export default withStyles<typeof Title>(styles)(Title);
+export default withRouter(withStyles<typeof Title>(styles)(Title));
