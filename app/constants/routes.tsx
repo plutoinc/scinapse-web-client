@@ -8,4 +8,5 @@ export const PAPER_SHOW_PATH = "/papers/:paperId";
 export const JOURNAL_SHOW_PATH = "/journals/:journalId";
 export const COLLECTION_SHOW_PATH = "/collections/:collectionId";
 export const TERMS_OF_SERVICE_PATH = "/terms-of-service";
+export const PRIVACY_POLICY_PATH = "/privacy-policy";
 export const ADMIN_PATH = "/admin";

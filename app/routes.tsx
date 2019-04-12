@@ -34,6 +34,7 @@ import {
   AUTH_PATH,
   ADMIN_PATH,
   TERMS_OF_SERVICE_PATH,
+  PRIVACY_POLICY_PATH,
 } from "./constants/routes";
 import { getAuthorSearchData } from "./containers/authorSearch/sideEffect";
 import { checkAuthStatus } from "./components/auth/actions";
@@ -151,8 +152,13 @@ export const routesMap: ServerRoutesMap[] = [
     exact: true,
   },
   {
-    component: ErrorPage,
+    path: PRIVACY_POLICY_PATH,
+    component: loadable(() => import(/* webpackPrefetch: true */ "./components/privacyPolicy/privacyPolicy"), {
+      fallback: <div>loading ...</div>,
+    }),
+    exact: true,
   },
+  { component: ErrorPage },
 ];
 
 interface RootRoutesProps extends RouteComponentProps<any> {
