@@ -8,6 +8,7 @@ import { Collection } from "../model/collection";
 import { Paper } from "../model/paper";
 import { CVInfoType, Award, Education, Experience } from "../model/profile";
 import { PaperInCollection } from "../model/paperInCollection";
+import { SIGN_UP_STEP } from "../components/auth/signUp/types";
 
 export enum ACTION_TYPES {
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = "GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING",
@@ -236,7 +237,15 @@ interface GetMultiComments extends CommonPaginationResponsePart {
 }
 
 export const ActionCreators = {
-  changeGlobalDialog(payload: { type: GLOBAL_DIALOG_TYPE }) {
+  changeGlobalDialog(payload: {
+    type: GLOBAL_DIALOG_TYPE;
+    signUpStep?: SIGN_UP_STEP | null;
+    oauthResult?: {
+      email?: string | null;
+      firstName: string;
+      lastName: string;
+    } | null;
+  }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_CHANGE_DIALOG_TYPE,
       payload,

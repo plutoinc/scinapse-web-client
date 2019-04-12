@@ -18,6 +18,8 @@ interface SignUpFormProps {
   onSubmit: (values: SignUpFormValues) => Promise<void>;
   email: string;
   password: string;
+  firstName: string;
+  lastName: string;
   dispatch: Dispatch<any>;
 }
 
@@ -76,7 +78,13 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
       <AuthTabs onClickTab={props.onClickTab} activeTab={"sign up"} />
       <div className={s.signUpContainer}>
         <Formik
-          initialValues={{ email: props.email, password: props.password, firstName: "", lastName: "", affiliation: "" }}
+          initialValues={{
+            email: props.email,
+            password: props.password,
+            firstName: props.firstName,
+            lastName: props.lastName,
+            affiliation: "",
+          }}
           onSubmit={handleSubmit}
           validate={validateForm}
           render={() => (

@@ -8,8 +8,10 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import AuthInputBox from "../../common/inputBox/authInputBox";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/reducer";
 import AuthButton from "../authButton";
+import GoogleAuthButton from "../authButton/googleAuthButton";
 import ORSeparator from "../separator";
 import AuthTabs from "../authTabs";
+import AuthAPI from "../../../api/auth";
 import { SignInResult, OAUTH_VENDOR } from "../../../api/types/auth";
 import { getCollections } from "../../collections/actions";
 import { closeDialog } from "../../dialog/actions";
@@ -17,8 +19,12 @@ import { signInWithEmail, signInWithSocial, getAuthorizeCode } from "./actions";
 import validateEmail from "../../../helpers/validateEmail";
 import FailedToSignIn from "./components/failedToSignIn";
 import AuthGuideContext from "../authGuideContext";
+import { ACTION_TYPES, ActionCreators } from "../../../actions/actionTypes";
+import { SIGN_UP_STEP } from "../signUp/types";
 const s = require("./signIn.scss");
 const store = require("store");
+
+declare var FB: any;
 
 interface EmailFormValues {
   email: string;
@@ -58,8 +64,37 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
   const [isLoading, setIsLoading] = React.useState(false);
   const [networkError, setNetworkError] = React.useState("");
   const isDialog = !!props.handleChangeDialogType;
-
   const [notRegisteredWithSocial, setNotRegisteredWithSocial] = React.useState(false);
+
+  function handleClickFBLogin() {
+    FB.login(async (res: any) => {
+      if (res.authResponse) {
+        const accessToken = res.authResponse.accessToken;
+        const status = await AuthAPI.checkOAuthStatus("FACEBOOK", accessToken);
+
+        if (status.isConnected) {
+          const user = await AuthAPI.loginWithOAuth("FACEBOOK", accessToken);
+          props.dispatch({
+            type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+            payload: {
+              user: user.member,
+              loggedIn: user.loggedIn,
+              oauthLoggedIn: user.oauthLoggedIn,
+            },
+          });
+          props.dispatch(closeDialog());
+        } else {
+          props.dispatch(
+            ActionCreators.changeGlobalDialog({
+              type: GLOBAL_DIALOG_TYPE.SIGN_UP,
+              signUpStep: SIGN_UP_STEP.WITH_SOCIAL,
+              oauthResult: status,
+            })
+          );
+        }
+      }
+    });
+  }
 
   React.useEffect(() => {
     const queryParams = parse(props.location.search, { ignoreQueryPrefix: true });
@@ -164,23 +199,42 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
           <ORSeparator />
           <AuthButton
             isLoading={isLoading}
-            text="SIGN IN WITH FACEBOOK"
+            text="CONTINUE WITH FACEBOOK"
             style={{ ...oAuthBtnBaseStyle, backgroundColor: "#3859ab", marginTop: "18px" }}
             iconName="FACEBOOK_LOGO"
             iconClassName={s.fbIconWrapper}
-            onClick={handleClickOAuthBtn("FACEBOOK")}
+            onClick={handleClickFBLogin}
           />
-          <AuthButton
+          <GoogleAuthButton
             isLoading={isLoading}
-            text="SIGN IN WITH GOOGLE"
+            text="CONTINUE WITH GOOGLE"
             style={{ ...oAuthBtnBaseStyle, backgroundColor: "#dc5240" }}
             iconName="GOOGLE_LOGO"
             iconClassName={s.googleIconWrapper}
-            onClick={handleClickOAuthBtn("GOOGLE")}
+            onSignInWithSocial={(user: SignInResult) => {
+              props.dispatch({
+                type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+                payload: {
+                  user: user.member,
+                  loggedIn: user.loggedIn,
+                  oauthLoggedIn: user.oauthLoggedIn,
+                },
+              });
+              props.dispatch(closeDialog());
+            }}
+            onSignUpWithSocial={values => {
+              props.dispatch(
+                ActionCreators.changeGlobalDialog({
+                  type: GLOBAL_DIALOG_TYPE.SIGN_UP,
+                  signUpStep: SIGN_UP_STEP.WITH_SOCIAL,
+                  oauthResult: values,
+                })
+              );
+            }}
           />
           <AuthButton
             isLoading={isLoading}
-            text="SIGN IN WITH ORCID"
+            text="CONTINUE WITH ORCID"
             style={{ ...oAuthBtnBaseStyle, backgroundColor: "#a5d027" }}
             iconName="ORCID_LOGO"
             iconClassName={s.orcidIconWrapper}

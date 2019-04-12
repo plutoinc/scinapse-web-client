@@ -20,8 +20,9 @@ export const checkDuplicatedEmail = async (email: string) => {
   return null;
 };
 
-export function signUpWithSocial(params: SignUpWithSocialParams, vendor: OAUTH_VENDOR) {
+export function signUpWithSocial(params: SignUpWithSocialParams) {
   return async (dispatch: Dispatch<any>) => {
+    const vendor = params.token ? params.token.vendor : "ORCID";
     trackEvent({ category: "sign_up", action: "try_to_sign_up", label: `with_${vendor}` });
     try {
       const signUpResult: Member = await AuthAPI.signUpWithSocial(params);

@@ -19,7 +19,11 @@ export interface SignUpWithSocialParams {
   firstName: string;
   lastName: string;
   affiliation: string;
-  oauth: OAuthInfo;
+  oauth?: OAuthInfo;
+  token?: {
+    vendor: OAUTH_VENDOR;
+    token: string;
+  };
 }
 
 export interface SignInWithEmailParams {
@@ -82,4 +86,13 @@ export interface SignInResult {
 
 export interface CheckDuplicatedEmailResult {
   duplicated: boolean;
+}
+
+export interface OAuthCheckResult {
+  email?: string | null;
+  firstName: string;
+  lastName: string;
+  oauthId: string;
+  vendor: OAUTH_VENDOR;
+  isConnected: boolean;
 }

@@ -1,11 +1,13 @@
 import * as React from "react";
 import * as ReactGA from "react-ga";
+import { connect, Dispatch } from "react-redux";
 import { Formik, Form, Field, FormikErrors } from "formik";
 import AuthAPI from "../../../../../api/auth";
 import { withStyles } from "../../../../../helpers/withStylesHelper";
 import AuthInputBox from "../../../../common/inputBox/authInputBox";
-import { OAUTH_VENDOR, GetAuthorizeUriResult } from "../../../../../api/types/auth";
+import { OAUTH_VENDOR, GetAuthorizeUriResult, SignInResult } from "../../../../../api/types/auth";
 import AuthButton from "../../../authButton";
+import GoogleAuthButton from "../../../authButton/googleAuthButton";
 import ORSeparator from "../../../separator";
 import AuthTabs from "../../../authTabs";
 import validateEmail from "../../../../../helpers/validateEmail";
@@ -15,14 +17,23 @@ import alertToast from "../../../../../helpers/makePlutoToastAction";
 import PlutoAxios from "../../../../../api/pluto";
 import { debouncedCheckDuplicate } from "../../helpers/checkDuplicateEmail";
 import AuthGuideContext from "../../../authGuideContext";
+import { ACTION_TYPES } from "../../../../../actions/actionTypes";
+import { closeDialog } from "../../../../dialog/actions";
 const store = require("store");
 const s = require("./firstForm.scss");
+
+declare var FB: any;
 
 interface FirstFormProps {
   onSubmit: (values: FormValues) => void;
   onClickTab: (type: GLOBAL_DIALOG_TYPE) => void;
   userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
+  onSignUpWithSocial: (
+    values: { email?: string | null; firstName: string; lastName: string; token: string; vendor: OAUTH_VENDOR }
+  ) => void;
+  dispatch: Dispatch<any>;
 }
+
 interface FormValues {
   email: string;
   password: string;
@@ -57,7 +68,38 @@ export function handleClickOAuthBtn(vendor: OAUTH_VENDOR) {
 export const oAuthBtnBaseStyle: React.CSSProperties = { position: "relative", fontSize: "13px", marginTop: "10px" };
 
 const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
+  const { dispatch } = props;
   const [isLoading, setIsLoading] = React.useState(false);
+
+  function handleClickFBLogin() {
+    FB.login(async (res: any) => {
+      if (res.authResponse) {
+        const accessToken = res.authResponse.accessToken;
+        const status = await AuthAPI.checkOAuthStatus("FACEBOOK", accessToken);
+
+        if (status.isConnected) {
+          const user = await AuthAPI.loginWithOAuth("FACEBOOK", accessToken);
+          dispatch({
+            type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+            payload: {
+              user: user.member,
+              loggedIn: user.loggedIn,
+              oauthLoggedIn: user.oauthLoggedIn,
+            },
+          });
+          dispatch(closeDialog());
+        } else {
+          props.onSignUpWithSocial({
+            email: status.email,
+            firstName: status.firstName,
+            lastName: status.lastName,
+            token: accessToken,
+            vendor: "FACEBOOK",
+          });
+        }
+      }
+    });
+  }
 
   const validateForm = async (values: FormValues) => {
     const errors: FormikErrors<FormValues> = {};
@@ -124,23 +166,34 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
           <ORSeparator />
           <AuthButton
             isLoading={isLoading}
-            text="SIGN UP WITH FACEBOOK"
+            text="CONTINUE WITH FACEBOOK"
             style={{ ...oAuthBtnBaseStyle, backgroundColor: "#3859ab", marginTop: "18px" }}
             iconName="FACEBOOK_LOGO"
             iconClassName={s.fbIconWrapper}
-            onClick={handleClickOAuthBtn("FACEBOOK")}
+            onClick={handleClickFBLogin}
           />
-          <AuthButton
+          <GoogleAuthButton
             isLoading={isLoading}
-            text="SIGN UP WITH GOOGLE"
+            text="CONTINUE WITH GOOGLE"
             style={{ ...oAuthBtnBaseStyle, backgroundColor: "#dc5240" }}
             iconName="GOOGLE_LOGO"
             iconClassName={s.googleIconWrapper}
-            onClick={handleClickOAuthBtn("GOOGLE")}
+            onSignInWithSocial={(user: SignInResult) => {
+              dispatch({
+                type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+                payload: {
+                  user: user.member,
+                  loggedIn: user.loggedIn,
+                  oauthLoggedIn: user.oauthLoggedIn,
+                },
+              });
+              dispatch(closeDialog());
+            }}
+            onSignUpWithSocial={props.onSignUpWithSocial}
           />
           <AuthButton
             isLoading={isLoading}
-            text="SIGN UP WITH ORCID"
+            text="CONTINUE WITH ORCID"
             style={{ ...oAuthBtnBaseStyle, backgroundColor: "#a5d027" }}
             iconName="ORCID_LOGO"
             iconClassName={s.orcidIconWrapper}
@@ -152,4 +205,4 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
   );
 };
 
-export default withStyles<typeof FirstForm>(s)(FirstForm);
+export default connect()(withStyles<typeof FirstForm>(s)(FirstForm));

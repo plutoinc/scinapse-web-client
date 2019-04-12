@@ -60,6 +60,19 @@ gtag('config', 'AW-817738370');
         </script>
       </head>
       <body>
+      <script>
+        window.fbAsyncInit = function() {
+          FB.init({
+            appId            : '696390604096146',
+            autoLogAppEvents : true,
+            xfbml            : true,
+            version          : 'v2.11'
+          });
+        };
+      </script>
+      <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
+      <script src="https://apis.google.com/js/platform.js" async defer></script>
+
         <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
         <script>
           WebFont.load({

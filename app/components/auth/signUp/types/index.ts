@@ -1,10 +1,11 @@
 import { RouteComponentProps } from "react-router-dom";
 import { Dispatch } from "react-redux";
-import { GLOBAL_DIALOG_TYPE } from "../../../dialog/reducer";
+import { GLOBAL_DIALOG_TYPE, DialogState } from "../../../dialog/reducer";
 import { OAUTH_VENDOR } from "../../../../api/types/auth";
 
 export interface SignUpContainerProps extends RouteComponentProps<SignUpSearchParams> {
   dispatch: Dispatch<any>;
+  dialogState: DialogState;
   handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void;
   userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
 }

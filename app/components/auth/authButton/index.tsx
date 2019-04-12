@@ -1,7 +1,7 @@
 import * as React from "react";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
-import CircularProgress from "@material-ui/core/CircularProgress";
 const s = require("./authButton.scss");
 
 interface AuthButtonProps
