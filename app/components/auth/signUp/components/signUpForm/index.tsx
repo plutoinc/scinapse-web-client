@@ -6,6 +6,7 @@ import { GLOBAL_DIALOG_TYPE } from "../../../../dialog/reducer";
 import AuthTabs from "../../../authTabs";
 import AuthInputBox from "../../../../common/inputBox/authInputBox";
 import AuthButton from "../../../authButton";
+import AffiliationBox from "../../../../authorCV/affiliationBox";
 import validateEmail from "../../../../../helpers/validateEmail";
 import { debouncedCheckDuplicate } from "../../helpers/checkDuplicateEmail";
 const s = require("./style.scss");
@@ -112,10 +113,24 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
               </div>
               <Field
                 name="affiliation"
-                type="text"
-                component={AuthInputBox}
                 placeholder="Affiliation / Company"
-                iconName="AFFILIATION_ICON"
+                type="text"
+                component={AffiliationBox}
+                inputBoxStyle={{ width: "100%" }}
+                listWrapperStyle={{ top: "56px" }}
+                inputStyle={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignContent: "flex-start",
+                  alignItems: "center",
+                  height: "47px",
+                  borderRadius: "3px",
+                  padding: "0 10px",
+                  backgroundColor: "white",
+                  border: "solid 1px $gray3",
+                  overflow: "hidden",
+                  marginTop: "10px",
+                }}
               />
               <AuthButton
                 type="submit"
