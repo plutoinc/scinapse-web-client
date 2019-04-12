@@ -10,19 +10,19 @@ const styles = require("./venueAndAuthors.scss");
 export interface VenueAndAuthorsProps extends Readonly<AuthorsProps> {
   journal: Journal | null;
   conferenceInstance: ConferenceInstance | null;
-  year: number | null;
+  publishedDate: string | null;
 }
 
 class VenueAndAuthors extends React.PureComponent<VenueAndAuthorsProps, {}> {
   public render() {
-    const { authors, journal, conferenceInstance, year, paper, pageType, actionArea } = this.props;
+    const { authors, journal, conferenceInstance, publishedDate, paper, pageType, actionArea } = this.props;
 
     return (
       <div className={styles.publishInfoList}>
         <PaperItemVenue
           journal={journal}
           conferenceInstance={conferenceInstance}
-          year={year}
+          publishedDate={publishedDate}
           pageType={pageType}
           actionArea={actionArea}
         />

@@ -78,7 +78,7 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
       hasCollection,
       onRemovePaperCollection,
     } = this.props;
-    const { title, titleHighlighted, authors, year, doi, urls, journal, conferenceInstance, relation } = paper;
+    const { title, titleHighlighted, authors, publishedDate, doi, urls, journal, conferenceInstance, relation } = paper;
 
     const abstract = !omitAbstract ? (
       <Abstract
@@ -139,7 +139,7 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
             paper={paper}
             journal={journal}
             conferenceInstance={conferenceInstance}
-            year={year}
+            publishedDate={publishedDate}
             authors={authors}
           />
           {abstract}

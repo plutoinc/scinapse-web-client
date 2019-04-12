@@ -4,6 +4,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import { trackEvent } from "../../../helpers/handleGA";
 import { Paper } from "../../../model/paper";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
+import { format } from "date-fns";
 const styles = require("./venueItem.scss");
 
 interface PaperShowVenueItemProps {
@@ -20,7 +21,7 @@ const PaperShowVenueItem: React.SFC<PaperShowVenueItemProps> = props => {
 
   return (
     <div className={styles.published}>
-      <div className={styles.paperContentBlockHeader}>Published</div>
+      <div className={styles.paperContentBlockHeader}>Published to</div>
       <ul className={styles.venueList}>
         {journal ? (
           <li className={styles.venueItem}>
@@ -42,17 +43,10 @@ const PaperShowVenueItem: React.SFC<PaperShowVenueItemProps> = props => {
                 });
               }}
             >
-              <div className={styles.venueTitle}>{`${journal.title || paper.venue}`}</div>
+              <div className={styles.venueTitle}>{`${journal.title || paper.venue} ${journal.impactFactor &&
+                `[IF: ${journal.impactFactor.toFixed(2)}]`}`}</div>
               <div className={styles.venueYear}>
-                Year: <span className={styles.yearNumber}>{paper.year}</span>
-              </div>
-              <div className={styles.venueIF}>
-                {journal.impactFactor && (
-                  <span>
-                    {`Impact Factor: `}
-                    <span className={styles.ifNumber}>{journal.impactFactor.toFixed(2)}</span>
-                  </span>
-                )}
+                Published date: <span className={styles.yearNumber}>{format(paper.publishedDate, "MMM D, YYYY")}</span>
               </div>
             </Link>
           </li>
