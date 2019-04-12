@@ -34,6 +34,7 @@ import {
 import { trackEvent } from "../../helpers/handleGA";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { ActionCreators } from "../../actions/actionTypes";
+import { checkAuth, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
 const styles = require("./paperShowCollectionControlButton.scss");
 
 const LAST_USER_COLLECTION_ID = "l_u_c_id";
@@ -51,7 +52,6 @@ interface TitleAreaProps {
   currentUser: CurrentUser;
   collection: Collection | null;
   isLoading: boolean;
-  handleUnsignedUser: () => void;
   onClick: () => void;
 }
 
@@ -75,7 +75,7 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
     return (
       <button
         onClick={() => {
-          props.handleUnsignedUser();
+          checkAuth({ authLevel: AUTH_LEVEL.VERIFIED });
           ActionTicketManager.trackTicket({
             pageType: "paperShow",
             actionType: "fire",
@@ -257,7 +257,6 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
               myCollectionsState.isLoadingCollections ||
               myCollectionsState.isLoadingCollectionsInDropdown
             }
-            handleUnsignedUser={this.handleUnsignedUser}
             onClick={this.handleToggleCollectionDropdown}
           />
           <Popper
@@ -297,10 +296,6 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       myCollections.find(c => c.id === lastId || c.isDefault) || myCollections[myCollections.length - 1];
 
     this.handleSelectCollection(defaultCollection);
-  };
-
-  private handleUnsignedUser = () => {
-    GlobalDialogManager.openSignInDialog();
   };
 
   private getNoteButtonContent = () => {
@@ -383,7 +378,11 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
 
   private handleClickNewCollectionButton = () => {
     const { targetPaperId } = this.props;
-    GlobalDialogManager.openNewCollectionDialog(targetPaperId);
+
+    if (checkAuth({ authLevel: AUTH_LEVEL.VERIFIED })) {
+      GlobalDialogManager.openNewCollectionDialog(targetPaperId);
+    }
+
     this.handleCloseCollectionDropdown();
     trackEvent({
       category: "Additional Action",
@@ -481,9 +480,10 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private handleClickSaveButton = () => {
-    const { dispatch, selectedCollection, targetPaperId, currentUser } = this.props;
+    const { dispatch, selectedCollection, targetPaperId } = this.props;
+    const isVerified = checkAuth({ authLevel: AUTH_LEVEL.VERIFIED });
 
-    if (!currentUser.isLoggedIn) {
+    if (!isVerified) {
       trackEvent({
         category: "New Paper Show",
         action: "Click save in collection button (Unsigned user)",
@@ -497,7 +497,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         actionTag: "signInViaCollection",
         actionLabel: null,
       });
-      return this.handleUnsignedUser();
+      return;
     }
 
     if (selectedCollection && targetPaperId && !selectedCollection.containsSelected) {

@@ -140,7 +140,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
       this.scrollToRefCitedSection();
     }
-    this.checkVerifiedUser();
   }
 
   public async componentWillReceiveProps(nextProps: PaperShowProps) {
@@ -151,6 +150,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const moveToDifferentPage = match.params.paperId !== nextProps.match.params.paperId;
     const changeRefPage = prevQueryParams["ref-page"] !== nextQueryParams["ref-page"];
     const changeCitedPage = prevQueryParams["cited-page"] !== nextQueryParams["cited-page"];
+
+    if (currentUser.isLoggingIn && !nextProps.currentUser.isLoggingIn) {
+      this.checkVerifiedUser();
+    }
 
     if (moveToDifferentPage) {
       await fetchPaperShowData(
