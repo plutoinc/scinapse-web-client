@@ -25,7 +25,7 @@ const AuthButton: React.FunctionComponent<AuthButtonProps> = props => {
 
   React.useEffect(
     () => {
-      if (buttonEl.current) {
+      if (buttonEl.current && gapi) {
         gapi.load("auth2", () => {
           auth2 = gapi.auth2.init({
             client_id: "304104926631-429jkjmqj2lgme52067ecm5fk30iqpjr.apps.googleusercontent.com",
@@ -63,7 +63,7 @@ const AuthButton: React.FunctionComponent<AuthButtonProps> = props => {
         }
       }
     },
-    [buttonEl.current]
+    [buttonEl.current, gapi]
   );
 
   const iconNode = iconName ? <Icon icon={iconName} className={iconClassName} /> : null;
