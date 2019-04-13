@@ -91,6 +91,7 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
         actionArea={actionArea}
         abstract={paper.abstractHighlighted || paper.abstract}
         searchQueryText={searchQueryText}
+        currentPage={currentPage}
       />
     ) : null;
     const buttons =
