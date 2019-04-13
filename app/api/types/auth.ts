@@ -96,3 +96,11 @@ export interface OAuthCheckResult {
   vendor: OAUTH_VENDOR;
   isConnected: boolean;
 }
+
+export interface OAuthCheckParams {
+  email?: string | null;
+  firstName: string;
+  lastName: string;
+  token: string;
+  vendor: OAUTH_VENDOR;
+}

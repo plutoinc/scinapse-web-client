@@ -1,6 +1,6 @@
 import * as React from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { SignInResult, OAUTH_VENDOR } from "../../../api/types/auth";
+import { SignInResult, OAuthCheckParams } from "../../../api/types/auth";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import AuthAPI from "../../../api/auth";
 import Icon from "../../../icons";
@@ -15,9 +15,7 @@ interface AuthButtonProps
   iconName?: string;
   iconClassName?: string;
   onSignInWithSocial?: (user: SignInResult) => void;
-  onSignUpWithSocial: (
-    values: { email?: string | null; firstName: string; lastName: string; token: string; vendor: OAUTH_VENDOR }
-  ) => void;
+  onSignUpWithSocial: (values: OAuthCheckParams) => void;
 }
 
 const AuthButton: React.FunctionComponent<AuthButtonProps> = props => {

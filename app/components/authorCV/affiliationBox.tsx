@@ -52,10 +52,11 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
 
   public render() {
     const { field, form, className, inputStyle, placeholder, inputBoxStyle, listWrapperStyle } = this.props;
-    const { touched, errors } = form;
+    const { errors } = form;
     const { availableAffiliations } = this.state;
     const rawFieldValue = field.value as Affiliation | SuggestAffiliation | string;
     const error = errors[field.name];
+    const touched = form.touched[field.name];
 
     const displayValue: string = this.getDisplayValue(rawFieldValue || "");
 

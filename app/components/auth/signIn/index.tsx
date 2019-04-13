@@ -88,7 +88,13 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
             ActionCreators.changeGlobalDialog({
               type: GLOBAL_DIALOG_TYPE.SIGN_UP,
               signUpStep: SIGN_UP_STEP.WITH_SOCIAL,
-              oauthResult: status,
+              oauthResult: {
+                email: status.email,
+                firstName: status.firstName,
+                lastName: status.lastName,
+                token: accessToken,
+                vendor: "FACEBOOK",
+              },
             })
           );
         }

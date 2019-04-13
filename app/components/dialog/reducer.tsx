@@ -3,6 +3,7 @@ import { AvailableCitationType } from "../../containers/paperShow/records";
 import { Collection } from "../../model/collection";
 import { Paper } from "../../model/paper";
 import { SIGN_UP_STEP } from "../auth/signUp/types";
+import { OAuthCheckParams } from "../../api/types/auth";
 
 export enum GLOBAL_DIALOG_TYPE {
   SIGN_IN,
@@ -26,11 +27,7 @@ export interface DialogState
       type: GLOBAL_DIALOG_TYPE | null;
 
       signUpStep: SIGN_UP_STEP | null;
-      oauthResult: {
-        email?: string | null;
-        firstName: string;
-        lastName: string;
-      } | null;
+      oauthResult: OAuthCheckParams | null;
 
       citationPaperId: number | undefined;
       citationText: string;

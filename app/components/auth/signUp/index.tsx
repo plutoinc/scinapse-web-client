@@ -10,6 +10,7 @@ import SignUpForm, { SignUpFormValues } from "./components/signUpForm";
 import FinalSignUpContent from "./components/finalSignUpContent";
 import { OAuthInfo, OAUTH_VENDOR, SignUpWithSocialParams } from "../../../api/types/auth";
 import { AppState } from "../../../reducers";
+import { closeDialog } from "../../dialog/actions";
 const styles = require("./signUp.scss");
 
 const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
@@ -20,7 +21,10 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
   const [firstName, setFirstName] = React.useState(dialogState.oauthResult ? dialogState.oauthResult.firstName : "");
   const [lastName, setLastName] = React.useState(dialogState.oauthResult ? dialogState.oauthResult.lastName : "");
   const [OAuth, setOAuth] = React.useState<OAuthInfo>({ oauthId: "", uuid: "", vendor: null });
-  const [token, setToken] = React.useState({ token: "", vendor: "" });
+  const [token, setToken] = React.useState({
+    token: dialogState.oauthResult ? dialogState.oauthResult.token : "",
+    vendor: dialogState.oauthResult ? dialogState.oauthResult.vendor : "",
+  });
 
   React.useEffect(() => {
     const queryParams = parse(location.search, { ignoreQueryPrefix: true });
@@ -116,7 +120,7 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
       return (
         <FinalSignUpContent
           onSubmit={() => {
-            history.push("/");
+            props.dispatch(closeDialog());
           }}
           contentType="email"
         />
@@ -126,7 +130,11 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
       return (
         <FinalSignUpContent
           onSubmit={() => {
-            history.push("/");
+            if (!!token.token) {
+              props.dispatch(closeDialog());
+            } else {
+              history.push("/");
+            }
           }}
           contentType="social"
         />
