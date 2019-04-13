@@ -1,13 +1,13 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import * as format from "date-fns/format";
+import Tooltip from "@material-ui/core/Tooltip";
 import { Journal } from "../../../model/journal";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { ConferenceInstance } from "../../../model/conferenceInstance";
-import { format } from "date-fns";
-import Tooltip from "@material-ui/core/Tooltip";
 const styles = require("./venueAndAuthors.scss");
 
 interface PaperItemVenueProps {

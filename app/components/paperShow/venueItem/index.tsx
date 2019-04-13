@@ -1,10 +1,10 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import * as format from "date-fns/format";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { trackEvent } from "../../../helpers/handleGA";
 import { Paper } from "../../../model/paper";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { format } from "date-fns";
 const styles = require("./venueItem.scss");
 
 interface PaperShowVenueItemProps {
