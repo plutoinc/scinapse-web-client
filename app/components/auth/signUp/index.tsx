@@ -1,5 +1,4 @@
 import * as React from "react";
-import { parse } from "qs";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import * as Actions from "./actions";
@@ -8,40 +7,23 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import FirstForm from "./components/firstForm";
 import SignUpForm, { SignUpFormValues } from "./components/signUpForm";
 import FinalSignUpContent from "./components/finalSignUpContent";
-import { OAuthInfo, OAUTH_VENDOR, SignUpWithSocialParams } from "../../../api/types/auth";
+import { OAUTH_VENDOR, SignUpWithSocialParams } from "../../../api/types/auth";
 import { AppState } from "../../../reducers";
 import { closeDialog } from "../../dialog/actions";
+import EnvChecker from "../../../helpers/envChecker";
 const styles = require("./signUp.scss");
 
 const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
-  const { location, history, dialogState } = props;
+  const { dialogState } = props;
   const [signUpStep, setSignUpStep] = React.useState(dialogState.signUpStep || SIGN_UP_STEP.FIRST);
   const [email, setEmail] = React.useState(dialogState.oauthResult ? dialogState.oauthResult.email || "" : "");
   const [password, setPassword] = React.useState("");
   const [firstName, setFirstName] = React.useState(dialogState.oauthResult ? dialogState.oauthResult.firstName : "");
   const [lastName, setLastName] = React.useState(dialogState.oauthResult ? dialogState.oauthResult.lastName : "");
-  const [OAuth, setOAuth] = React.useState<OAuthInfo>({ oauthId: "", uuid: "", vendor: null });
   const [token, setToken] = React.useState({
     token: dialogState.oauthResult ? dialogState.oauthResult.token : "",
     vendor: dialogState.oauthResult ? dialogState.oauthResult.vendor : "",
   });
-
-  React.useEffect(() => {
-    const queryParams = parse(location.search, { ignoreQueryPrefix: true });
-    const { code, vendor } = queryParams;
-    const alreadySignUpCB = () => {
-      history.push("/users/sign_in");
-    };
-    if (code && vendor === "ORCID") {
-      setSignUpStep(SIGN_UP_STEP.WITH_SOCIAL);
-      Actions.getAuthorizeCode(code, vendor, alreadySignUpCB).then(OAuthRes => {
-        if (OAuthRes) {
-          setOAuth({ oauthId: OAuthRes.oauthId, uuid: OAuthRes.uuid, vendor: OAuthRes.vendor });
-          setEmail(OAuthRes.email || "");
-        }
-      });
-    }
-  }, []);
 
   async function handleSubmitSignUpWithEmail(values: SignUpFormValues) {
     await props.dispatch(Actions.signUpWithEmail(values));
@@ -50,25 +32,16 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
   async function handleSubmitSignUpWithSocial(values: SignUpFormValues) {
     const { firstName, lastName, affiliation } = values;
 
-    const params: SignUpWithSocialParams =
-      OAuth.vendor === "ORCID"
-        ? {
-            email: values.email,
-            firstName,
-            lastName,
-            affiliation,
-            oauth: OAuth,
-          }
-        : {
-            email: values.email,
-            firstName,
-            lastName,
-            affiliation,
-            token: {
-              vendor: token.vendor as OAUTH_VENDOR,
-              token: token.token,
-            },
-          };
+    const params: SignUpWithSocialParams = {
+      email: values.email,
+      firstName,
+      lastName,
+      affiliation,
+      token: {
+        vendor: token.vendor as OAUTH_VENDOR,
+        token: token.token,
+      },
+    };
 
     try {
       await props.dispatch(Actions.signUpWithSocial(params));
@@ -130,11 +103,10 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
       return (
         <FinalSignUpContent
           onSubmit={() => {
-            if (!!token.token) {
-              props.dispatch(closeDialog());
-            } else {
-              history.push("/");
+            if (!EnvChecker.isOnServer() && token.vendor === "ORCID") {
+              window.close();
             }
+            props.dispatch(closeDialog());
           }}
           contentType="social"
         />

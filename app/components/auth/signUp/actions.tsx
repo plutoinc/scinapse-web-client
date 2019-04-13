@@ -1,11 +1,6 @@
 import { Dispatch } from "redux";
 import AuthAPI from "../../../api/auth";
-import {
-  PostExchangeResult,
-  OAUTH_VENDOR,
-  SignUpWithEmailParams,
-  SignUpWithSocialParams,
-} from "../../../api/types/auth";
+import { SignUpWithEmailParams, SignUpWithSocialParams } from "../../../api/types/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
@@ -22,7 +17,7 @@ export const checkDuplicatedEmail = async (email: string) => {
 
 export function signUpWithSocial(params: SignUpWithSocialParams) {
   return async (dispatch: Dispatch<any>) => {
-    const vendor = params.token ? params.token.vendor : "ORCID";
+    const vendor = params.token.vendor;
     trackEvent({ category: "sign_up", action: "try_to_sign_up", label: `with_${vendor}` });
     try {
       const signUpResult: Member = await AuthAPI.signUpWithSocial(params);
@@ -75,36 +70,23 @@ export function signUpWithEmail(params: SignUpWithEmailParams) {
   };
 }
 
-export async function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, alreadySignUpCB: () => void) {
-  try {
-    const origin = EnvChecker.getOrigin();
-    const redirectUri = `${origin}/users/sign_up?vendor=${vendor}`;
+export function handleClickORCIDBtn() {
+  if (!EnvChecker.isOnServer()) {
+    const popup = window.open(
+      "https://orcid.org/oauth/authorize?client_id=APP-BLJ5M8060XBHF7IR&response_type=token&scope=openid&redirect_uri=https://scinapse.io/",
+      "orcidpopup",
+      "width=800, height=600, toolbar=0, location=0, status=1, scrollbars=1, resizable=1"
+    );
 
-    const postExchangeData: PostExchangeResult = await AuthAPI.postExchange({
-      code,
-      vendor,
-      redirectUri,
-    });
+    const windowCheckInterval = setInterval(() => {
+      windowCheck();
+    }, 300);
 
-    if (postExchangeData.connected) {
-      alertToast({
-        type: "error",
-        message: "You already did sign up with this account.",
-      });
-      alreadySignUpCB();
-      return;
+    function windowCheck() {
+      if (!popup || popup.closed) {
+        clearInterval(windowCheckInterval);
+        window.location.reload();
+      }
     }
-
-    return {
-      email: postExchangeData.userData.email,
-      oauthId: postExchangeData.oauthId,
-      uuid: postExchangeData.uuid,
-      vendor,
-    };
-  } catch (err) {
-    alertToast({
-      type: "error",
-      message: `Failed to sign up with social account.`,
-    });
   }
 }

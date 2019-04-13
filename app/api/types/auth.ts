@@ -8,19 +8,12 @@ export interface SignUpWithEmailParams {
   affiliation: string;
 }
 
-export interface OAuthInfo {
-  oauthId: string;
-  uuid: string;
-  vendor: OAUTH_VENDOR | null;
-}
-
 export interface SignUpWithSocialParams {
   email: string;
   firstName: string;
   lastName: string;
   affiliation: string;
-  oauth?: OAuthInfo;
-  token?: {
+  token: {
     vendor: OAUTH_VENDOR;
     token: string;
   };
@@ -47,23 +40,6 @@ export interface GetAuthorizeUriParams {
 export interface GetAuthorizeUriResult {
   vendor: OAUTH_VENDOR;
   uri: string;
-}
-
-export interface PostExchangeParams {
-  vendor: OAUTH_VENDOR;
-  code: string;
-  redirectUri?: string;
-}
-
-export interface PostExchangeResult {
-  vendor: OAUTH_VENDOR;
-  oauthId: string;
-  userData: {
-    email?: string;
-    name?: string;
-  };
-  uuid: string;
-  connected: boolean;
 }
 
 export interface VerifyEmailResult {

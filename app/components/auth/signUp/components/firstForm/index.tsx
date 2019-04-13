@@ -1,25 +1,21 @@
 import * as React from "react";
-import * as ReactGA from "react-ga";
 import { connect, Dispatch } from "react-redux";
 import { Formik, Form, Field, FormikErrors } from "formik";
 import AuthAPI from "../../../../../api/auth";
 import { withStyles } from "../../../../../helpers/withStylesHelper";
 import AuthInputBox from "../../../../common/inputBox/authInputBox";
-import { OAUTH_VENDOR, GetAuthorizeUriResult, SignInResult } from "../../../../../api/types/auth";
+import { OAUTH_VENDOR, SignInResult } from "../../../../../api/types/auth";
 import AuthButton from "../../../authButton";
 import GoogleAuthButton from "../../../authButton/googleAuthButton";
 import ORSeparator from "../../../separator";
 import AuthTabs from "../../../authTabs";
 import validateEmail from "../../../../../helpers/validateEmail";
 import { GLOBAL_DIALOG_TYPE } from "../../../../dialog/reducer";
-import EnvChecker from "../../../../../helpers/envChecker";
-import alertToast from "../../../../../helpers/makePlutoToastAction";
-import PlutoAxios from "../../../../../api/pluto";
 import { debouncedCheckDuplicate } from "../../helpers/checkDuplicateEmail";
 import AuthGuideContext from "../../../authGuideContext";
 import { ACTION_TYPES } from "../../../../../actions/actionTypes";
 import { closeDialog } from "../../../../dialog/actions";
-const store = require("store");
+import { handleClickORCIDBtn } from "../../actions";
 const s = require("./firstForm.scss");
 
 declare var FB: any;
@@ -37,32 +33,6 @@ interface FirstFormProps {
 interface FormValues {
   email: string;
   password: string;
-}
-
-export function handleClickOAuthBtn(vendor: OAUTH_VENDOR) {
-  return async () => {
-    store.set("oauthRedirectPath", location.pathname + location.search);
-
-    const origin = EnvChecker.getOrigin();
-    const redirectURI = `${origin}/users/sign_up?vendor=${vendor}`;
-    try {
-      const authroizedData: GetAuthorizeUriResult = await AuthAPI.getAuthorizeURI({
-        vendor,
-        redirectURI,
-      });
-
-      if (!EnvChecker.isOnServer()) {
-        ReactGA.set({ referrer: origin });
-        window.location.replace(authroizedData.uri);
-      }
-    } catch (err) {
-      const error = PlutoAxios.getGlobalError(err);
-      alertToast({
-        type: "error",
-        message: error.message,
-      });
-    }
-  };
 }
 
 export const oAuthBtnBaseStyle: React.CSSProperties = { position: "relative", fontSize: "13px", marginTop: "10px" };
@@ -197,7 +167,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
             style={{ ...oAuthBtnBaseStyle, backgroundColor: "#a5d027" }}
             iconName="ORCID_LOGO"
             iconClassName={s.orcidIconWrapper}
-            onClick={handleClickOAuthBtn("ORCID")}
+            onClick={handleClickORCIDBtn}
           />
         </div>
       </div>

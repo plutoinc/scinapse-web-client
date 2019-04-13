@@ -1,5 +1,4 @@
 import * as React from "react";
-import { parse } from "qs";
 import { connect, Dispatch } from "react-redux";
 import { Formik, Form, Field, FormikErrors } from "formik";
 import { withRouter, RouteComponentProps } from "react-router-dom";
@@ -12,17 +11,16 @@ import GoogleAuthButton from "../authButton/googleAuthButton";
 import ORSeparator from "../separator";
 import AuthTabs from "../authTabs";
 import AuthAPI from "../../../api/auth";
-import { SignInResult, OAUTH_VENDOR } from "../../../api/types/auth";
+import { SignInResult } from "../../../api/types/auth";
 import { getCollections } from "../../collections/actions";
 import { closeDialog } from "../../dialog/actions";
-import { signInWithEmail, signInWithSocial, getAuthorizeCode } from "./actions";
+import { signInWithEmail } from "./actions";
 import validateEmail from "../../../helpers/validateEmail";
-import FailedToSignIn from "./components/failedToSignIn";
 import AuthGuideContext from "../authGuideContext";
 import { ACTION_TYPES, ActionCreators } from "../../../actions/actionTypes";
 import { SIGN_UP_STEP } from "../signUp/types";
+import { handleClickORCIDBtn } from "../signUp/actions";
 const s = require("./signIn.scss");
-const store = require("store");
 
 declare var FB: any;
 
@@ -38,13 +36,6 @@ interface SignInProps {
 }
 
 const oAuthBtnBaseStyle: React.CSSProperties = { position: "relative", fontSize: "13px", marginTop: "10px" };
-
-function handleClickOAuthBtn(vendor: OAUTH_VENDOR) {
-  return () => {
-    store.set("oauthRedirectPath", `${location.pathname}${location.search}`);
-    signInWithSocial(vendor);
-  };
-}
 
 const validateForm = (values: EmailFormValues) => {
   const errors: FormikErrors<EmailFormValues> = {};
@@ -64,7 +55,6 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
   const [isLoading, setIsLoading] = React.useState(false);
   const [networkError, setNetworkError] = React.useState("");
   const isDialog = !!props.handleChangeDialogType;
-  const [notRegisteredWithSocial, setNotRegisteredWithSocial] = React.useState(false);
 
   function handleClickFBLogin() {
     FB.login(async (res: any) => {
@@ -102,19 +92,6 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
     });
   }
 
-  React.useEffect(() => {
-    const queryParams = parse(props.location.search, { ignoreQueryPrefix: true });
-    const { code, vendor } = queryParams;
-
-    if (code && vendor) {
-      props.dispatch(getAuthorizeCode(code, vendor)).catch(err => {
-        if (err.response && err.response.status && err.response.status === 401) {
-          setNotRegisteredWithSocial(true);
-        }
-      });
-    }
-  }, []);
-
   async function handleSubmit(formValues: EmailFormValues) {
     const { email, password } = formValues;
 
@@ -136,19 +113,6 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
       setIsLoading(false);
       setNetworkError(err.message);
     }
-  }
-
-  if (notRegisteredWithSocial) {
-    return (
-      <>
-        <FailedToSignIn
-          onClickTab={props.handleChangeDialogType}
-          onClickGoBack={() => {
-            setNotRegisteredWithSocial(false);
-          }}
-        />
-      </>
-    );
   }
 
   return (
@@ -244,7 +208,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
             style={{ ...oAuthBtnBaseStyle, backgroundColor: "#a5d027" }}
             iconName="ORCID_LOGO"
             iconClassName={s.orcidIconWrapper}
-            onClick={handleClickOAuthBtn("ORCID")}
+            onClick={handleClickORCIDBtn}
           />
         </div>
       </div>

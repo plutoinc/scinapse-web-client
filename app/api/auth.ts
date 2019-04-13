@@ -8,9 +8,7 @@ import {
   SignInWithSocialParams,
   SignInData,
   GetAuthorizeUriParams,
-  PostExchangeParams,
   GetAuthorizeUriResult,
-  PostExchangeResult,
   VerifyEmailResult,
   CheckDuplicatedEmailResult,
   OAUTH_VENDOR,
@@ -82,16 +80,6 @@ class AuthAPI extends PlutoAxios {
     });
 
     return res.data;
-  }
-
-  public async postExchange({ code, redirectUri, vendor }: PostExchangeParams): Promise<PostExchangeResult> {
-    const postExchangeResponse = await this.post("/auth/oauth/exchange", {
-      code,
-      redirectUri,
-      vendor,
-    });
-
-    return camelCaseKeys(postExchangeResponse.data);
   }
 
   public async verifyToken(token: string): Promise<VerifyEmailResult> {
