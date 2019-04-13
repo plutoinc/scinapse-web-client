@@ -1,0 +1,39 @@
+.termsOfServiceContainer {
+  max-width: $small_container_width;
+  margin: $navbar_height auto 40px auto;
+  text-align: left;
+  padding-top: 56px;
+}
+
+.title {
+  color: $black0;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 32px;
+}
+
+.subtitle {
+  color: $black0;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  margin-top: 24px;
+}
+
+.contents {
+  color: $gray6;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 20px;
+
+  b {
+    font-size: 18px;
+  }
+}
+
+.bulletPoint {
+  color: $gray6;
+  font-size: 14px;
+  line-height: 24px;
+  margin: -14px 0px 16px 0px;
+}

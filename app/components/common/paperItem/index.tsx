@@ -82,7 +82,7 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
       shouldBlockUnverifiedUser,
       currentPage,
     } = this.props;
-    const { title, titleHighlighted, authors, year, doi, urls, journal, conferenceInstance, relation } = paper;
+    const { title, titleHighlighted, authors, publishedDate, doi, urls, journal, conferenceInstance, relation } = paper;
 
     const abstract = !omitAbstract ? (
       <Abstract
@@ -146,7 +146,7 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
             paper={paper}
             journal={journal}
             conferenceInstance={conferenceInstance}
-            year={year}
+            publishedDate={publishedDate}
             authors={authors}
           />
           {abstract}

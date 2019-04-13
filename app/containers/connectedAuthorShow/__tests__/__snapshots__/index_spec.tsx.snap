@@ -960,6 +960,12 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
       >
         Terms of service
       </a>
+      <a
+        className="privacyPolicyLink"
+        href="https://scinapse.io/privacy-policy"
+      >
+        Privacy Policy
+      </a>
     </div>
   </footer>
 </div>
@@ -1341,6 +1347,12 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
         href="https://scinapse.io/terms-of-service"
       >
         Terms of service
+      </a>
+      <a
+        className="privacyPolicyLink"
+        href="https://scinapse.io/privacy-policy"
+      >
+        Privacy Policy
       </a>
     </div>
   </footer>

@@ -127,6 +127,7 @@ declare namespace Scinapse {
       | "resetPassword"
       | "emailVerification"
       | "terms"
+      | "privacyPolicy"
       | "unknown";
   }
 }

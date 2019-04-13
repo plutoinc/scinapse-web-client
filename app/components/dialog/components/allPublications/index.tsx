@@ -219,7 +219,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
                 actionArea="allPublications"
                 journal={paper.journal}
                 conferenceInstance={paper.conferenceInstance}
-                year={paper.year}
+                publishedDate={paper.publishedDate}
                 readOnly={true}
                 style={{ display: "flex", color: "#bbc2d0", fontSize: "14px" }}
               />
@@ -265,7 +265,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
               actionArea="allPublications"
               journal={paper.journal}
               conferenceInstance={paper.conferenceInstance}
-              year={paper.year}
+              publishedDate={paper.publishedDate}
               readOnly={true}
               style={{ display: "flex", color: "#77828c", fontSize: "14px" }}
             />
