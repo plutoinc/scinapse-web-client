@@ -1,6 +1,8 @@
 .signUpContainer {
-  width: 400px;
-  padding: 22px 32px 32px 24px;
+  max-width: 400px;
+  width: 100%;
+  padding: 22px 32px 32px 32px;
+  margin: 0 auto;
 }
 
 .nameItemWrapper {
@@ -11,7 +13,12 @@
 .nameItemSection {
   display: inline-block;
   vertical-align: top;
-  width: 170px;
+  max-width: 150px;
+  width: 100%;
+
+  & + & {
+    margin-left: 10px;
+  }
 }
 
 .additionalInformation {
@@ -31,4 +38,19 @@
   margin-top: -4px;
   margin-bottom: 20px;
   text-align: center;
+}
+
+@media (max-width: $mobile-width) {
+  .nameItemWrapper {
+    display: block;
+  }
+
+  .nameItemSection {
+    max-width: none;
+    width: 100%;
+
+    & + & {
+      margin-left: 0;
+    }
+  }
 }

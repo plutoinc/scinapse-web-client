@@ -4,7 +4,8 @@
   margin-top: 10.2px;
 
   .dashedSeparator {
-    width: 156.5px;
+    max-width: 156.5px;
+    width: 100%;
     height: 1.2px;
     border-top: dashed 0.8px $gray3;
     margin-left: 3.9px;

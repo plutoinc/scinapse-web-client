@@ -11,8 +11,17 @@
 
 .contentWrapper {
   margin: 180px auto;
-  width: 403px;
+  width: 100%;
+  max-width: 794px;
   border-radius: 1.7px;
   background-color: #fff;
   border: solid 1px #d8dde7;
+  position: relative;
+  overflow-y: hidden;
+}
+
+@media (max-width: $tablet-width) {
+  .contentWrapper {
+    max-width: 384px;
+  }
 }

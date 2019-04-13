@@ -43,3 +43,9 @@
   @extend .generalGuideImage;
   left: 20px;
 }
+
+@media (max-width: $tablet-width) {
+  .container {
+    display: none;
+  }
+}

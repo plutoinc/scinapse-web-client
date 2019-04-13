@@ -6,3 +6,10 @@
   overflow-y: hidden !important;
   max-width: 100%;
 }
+
+@media (max-width: $tablet-width) {
+  .dialogPaper {
+    max-width: 384px !important;
+    width: 100% !important;
+  }
+}
