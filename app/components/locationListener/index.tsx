@@ -14,6 +14,7 @@ import {
   COLLECTION_LIST_PATH,
   AUTH_PATH,
   AUTHOR_SEARCH_RESULT_PATH,
+  PRIVACY_POLICY_PATH,
 } from "../../constants/routes";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import { stringify } from "qs";
@@ -38,6 +39,8 @@ export function getCurrentPageType(): Scinapse.ActionTicket.PageType {
       return "authorSearchResult";
     } else if (pathname === TERMS_OF_SERVICE_PATH) {
       return "terms";
+    } else if (pathname === PRIVACY_POLICY_PATH) {
+      return "privacyPolicy";
     } else if (pathname.startsWith(`/${PAPER_SHOW_PATH.split("/")[1]}`)) {
       return "paperShow";
     } else if (pathname.startsWith(`/${COLLECTION_SHOW_PATH.split("/")[1]}`)) {

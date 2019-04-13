@@ -40,7 +40,7 @@ class Home extends React.PureComponent<HomeProps> {
                 <img src="https://assets.pluto.network/scinapse/underline%402x.png" className={styles.underlineImage} />
               </div>
               <div className={styles.searchSubTitle}>
-                Scinapse is a free, nonprofit, Academic search engine <br /> for papers, serviced by{" "}
+                Scinapse is a free, Academic search engine <br /> for papers, serviced by{" "}
                 <a href="https://pluto.network" target="_blank" className={styles.plutoLink} rel="noopener">
                   Pluto Network
                 </a>

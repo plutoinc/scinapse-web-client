@@ -100,6 +100,9 @@ export default class Footer extends React.PureComponent<FooterProps, {}> {
           <a href="https://scinapse.io/terms-of-service" className={styles.termsOfServiceLink}>
             Terms of service
           </a>
+          <a href="https://scinapse.io/privacy-policy" className={styles.privacyPolicyLink}>
+            Privacy Policy
+          </a>
         </div>
       </footer>
     );

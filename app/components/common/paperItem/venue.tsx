@@ -1,5 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import * as format from "date-fns/format";
+import Tooltip from "@material-ui/core/Tooltip";
 import { Journal } from "../../../model/journal";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
@@ -11,7 +13,7 @@ const styles = require("./venueAndAuthors.scss");
 interface PaperItemVenueProps {
   journal: Journal | null;
   conferenceInstance: ConferenceInstance | null;
-  year: number | null;
+  publishedDate: string | null;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea?: Scinapse.ActionTicket.ActionArea;
   readOnly?: boolean;
@@ -21,52 +23,78 @@ interface PaperItemVenueProps {
 const PaperItemVenue = ({
   journal,
   conferenceInstance,
-  year,
+  publishedDate,
   style,
   readOnly,
   pageType,
   actionArea,
 }: PaperItemVenueProps) => {
+  if (!journal && !publishedDate) {
+    return null;
+  }
+
   let title = null;
   let impactFactor = null;
 
   if (journal && journal.title) {
     title = readOnly ? (
-      <span className={styles.venueNameReadonly}>{journal.title}</span>
+      <span className={styles.venueNameReadonly}>in {journal.title}</span>
     ) : (
-      <Link
-        to={`/journals/${journal.id}`}
-        onClick={() => {
-          trackEvent({ category: "Search", action: "Click Journal", label: "" });
-          ActionTicketManager.trackTicket({
-            pageType,
-            actionType: "fire",
-            actionArea: actionArea || pageType,
-            actionTag: "journalShow",
-            actionLabel: String(journal.id),
-          });
-        }}
-        className={styles.venueName}
-      >
-        {journal.title}
-      </Link>
+      <>
+        in{" "}
+        <Link
+          to={`/journals/${journal.id}`}
+          onClick={() => {
+            trackEvent({ category: "Search", action: "Click Journal", label: "" });
+            ActionTicketManager.trackTicket({
+              pageType,
+              actionType: "fire",
+              actionArea: actionArea || pageType,
+              actionTag: "journalShow",
+              actionLabel: String(journal.id),
+            });
+          }}
+          className={styles.venueName}
+        >
+          {journal.title}
+        </Link>
+      </>
     );
     impactFactor = journal.impactFactor;
   } else if (conferenceInstance && conferenceInstance.conferenceSeries && conferenceInstance.conferenceSeries.name) {
-    title = <span className={styles.venueNameReadonly}>{conferenceInstance.conferenceSeries.name}</span>;
+    title = <span className={styles.venueNameReadonly}> in {conferenceInstance.conferenceSeries.name}</span>;
   }
 
-  const yearStr = title && year ? `${year} in ` : year || "";
+  const yearStr = publishedDate ? (
+    <span>
+      on <span className={styles.venueNameReadonly}>{format(publishedDate, "MMM D, YYYY")}</span>
+    </span>
+  ) : null;
 
   return (
     <div style={style} className={styles.venue}>
       <Icon icon="JOURNAL" />
 
       <div className={styles.journalText}>
-        {year ? <span className={styles.bold}>{yearStr}</span> : null}
+        Published {publishedDate ? <span className={styles.bold}>{yearStr}</span> : null}
         {title}
         {impactFactor ? (
-          <span className={styles.ifLabel}>{`IF: ${impactFactor ? impactFactor.toFixed(2) : 0}`}</span>
+          <span className={styles.ifLabel}>
+            <span>
+              <Tooltip
+                disableFocusListener={true}
+                disableTouchListener={true}
+                title="Impact Factor"
+                placement="top"
+                classes={{ tooltip: styles.arrowBottomTooltip }}
+              >
+                <span>
+                  <Icon className={styles.ifIconWrapper} icon="IMPACT_FACTOR" />
+                </span>
+              </Tooltip>
+              {impactFactor ? impactFactor.toFixed(2) : 0}
+            </span>
+          </span>
         ) : null}
       </div>
     </div>
