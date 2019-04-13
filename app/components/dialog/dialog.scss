@@ -13,3 +13,9 @@
     width: 100% !important;
   }
 }
+
+@media (max-width: $mobile-width) {
+  .dialogPaper {
+    margin: 0 !important;
+  }
+}
