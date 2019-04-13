@@ -1,7 +1,9 @@
 import * as store from "store";
+import * as Cookies from "js-cookie";
 import * as format from "date-fns/format";
 import EnvChecker from "../envChecker";
 import { DEVICE_ID_KEY, SESSION_ID_KEY, USER_ID_KEY } from "../../constants/actionTicket";
+import { benefitSignUpTest } from "../../constants/abTest";
 
 export interface ActionTicketParams {
   pageType: Scinapse.ActionTicket.PageType;
@@ -49,6 +51,8 @@ export default class ActionTicket {
       this.actionArea = params.actionArea;
       this.pageType = params.pageType;
       this.actionLabel = params.actionLabel;
+      this.expName = benefitSignUpTest.name;
+      this.expUser = Cookies.get(benefitSignUpTest.name) || "";
     }
   }
 
