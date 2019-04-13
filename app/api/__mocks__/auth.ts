@@ -7,9 +7,7 @@ import {
   SignInResult,
   SignInWithSocialParams,
   GetAuthorizeUriParams,
-  PostExchangeParams,
   GetAuthorizeUriResult,
-  PostExchangeResult,
   VerifyEmailResult,
   CheckDuplicatedEmailResult,
 } from "../types/auth";
@@ -118,27 +116,6 @@ class AuthAPI extends PlutoAxios {
       return {
         vendor,
         uri: "",
-      };
-    }
-  }
-
-  public async postExchange({ code, redirectUri, vendor }: PostExchangeParams): Promise<PostExchangeResult> {
-    if (!code || !vendor || !redirectUri) {
-      throw new Error("FAKE ERROR");
-    } else {
-      let connected = false;
-      if (code === "isConnected") {
-        connected = true;
-      }
-      return {
-        vendor,
-        oauthId: "",
-        userData: {
-          email: "",
-          name: "",
-        },
-        uuid: "",
-        connected,
       };
     }
   }

@@ -225,7 +225,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
   private toggleModifyProfileDialog = () => {
     const { dispatch } = this.props;
 
-    if (checkAuth(AUTH_LEVEL.VERIFIED)) {
+    if (checkAuth({ authLevel: AUTH_LEVEL.VERIFIED })) {
       dispatch(toggleConnectProfileDialog());
     }
   };

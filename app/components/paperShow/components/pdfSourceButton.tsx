@@ -8,13 +8,12 @@ import SourceURLPopover from "../../common/sourceURLPopover";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { getPDFLink } from "../../../helpers/getPDFLink";
 import ScinapseButtonFactory, { ScinapseButtonType } from "../../common/scinapseButton/scinapseButtonFactory";
+import { shouldBlockToSignUp } from "../../../helpers/shouldBlockToSignUp";
 const styles = require("./pdfSourceButton.scss");
 
 interface PdfSourceButtonProps {
   paper: Paper;
   wrapperStyle?: React.CSSProperties;
-  reverseColor?: boolean;
-  fullTextAB: "A" | "B";
 }
 
 interface PdfSourceButtonState {
@@ -33,7 +32,7 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
   }
 
   public render() {
-    const { paper, reverseColor, fullTextAB } = this.props;
+    const { paper } = this.props;
     const { isSourcePopoverOpen } = this.state;
 
     if (!paper) {
@@ -55,7 +54,7 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
                 arrowIconClassName={styles.arrowIcon}
                 className={classNames({
                   [styles.downloadButton]: true,
-                  [styles.reverseDownloadBtn]: reverseColor,
+                  [styles.reverseDownloadBtn]: true,
                 })}
                 textWrapperClassName={styles.sourceButtonTextWrapper}
                 linkProps={{
@@ -63,8 +62,14 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
                   target: "_blank",
                   rel: "noopener",
                   className: styles.linkClassName,
-                  onClick: () => {
+                  onClick: e => {
+                    e.preventDefault();
+                    const shouldBlock = shouldBlockToSignUp("paperDescription", "source");
+                    if (shouldBlock) {
+                      return;
+                    }
                     this.handleClickPDFOrSource(!!pdfSourceRecord);
+                    window.open(pdfSourceRecord ? pdfSourceRecord.url : paper.urls[0].url, "_blank");
                   },
                 }}
                 dropdownBtnProps={{
@@ -72,7 +77,7 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
                   style: {
                     height: "100%",
                     width: "36px",
-                    borderLeft: fullTextAB === "A" ? "1px solid rgba(222, 225, 232, 0.35)" : "1px solid #6096ff",
+                    borderLeft: "1px solid #6096ff",
                   },
                   className: styles.dropdownBtn,
                 }}

@@ -16,7 +16,12 @@ describe("PaperItem Component", () => {
         .create(
           <Provider store={mockStore}>
             <MemoryRouter>
-              <PaperItem pageType="paperShow" paper={RAW.PAPER} currentUser={CURRENT_USER_INITIAL_STATE} />
+              <PaperItem
+                pageType="paperShow"
+                actionArea="paperList"
+                paper={RAW.PAPER}
+                currentUser={CURRENT_USER_INITIAL_STATE}
+              />
             </MemoryRouter>
           </Provider>
         )
@@ -32,7 +37,12 @@ describe("PaperItem Component", () => {
         .create(
           <Provider store={mockStore}>
             <MemoryRouter>
-              <PaperItem pageType="paperShow" paper={mockPaper} currentUser={CURRENT_USER_INITIAL_STATE} />
+              <PaperItem
+                pageType="paperShow"
+                actionArea="paperList"
+                paper={mockPaper}
+                currentUser={CURRENT_USER_INITIAL_STATE}
+              />
             </MemoryRouter>
           </Provider>
         )

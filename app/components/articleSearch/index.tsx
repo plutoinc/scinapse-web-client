@@ -233,6 +233,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
             papers={searchItemsToShow}
             isLoading={isContentLoading}
             searchQueryText={articleSearchState.suggestionKeyword || queryParams.query}
+            currentPage={articleSearchState.page}
           />
           {this.getPaginationComponent()}
         </div>

@@ -1,5 +1,7 @@
 import * as React from "react";
 import axios from "axios";
+import * as store from "store";
+import * as Cookies from "js-cookie";
 import { stringify } from "qs";
 import NoSsr from "@material-ui/core/NoSsr";
 import { withRouter, RouteComponentProps } from "react-router-dom";
@@ -40,6 +42,9 @@ import EnvChecker from "../../helpers/envChecker";
 import NextPaperTab from "../nextPaperTab";
 import ResearchHistory from "../../components/researchHistory";
 import { PaperShowMatchParams, PaperShowPageQueryParams } from "./types";
+import { BenefitExp, BENEFIT_EXPERIMENT_KEY, benefitSignUpTest } from "../../constants/abTest";
+import { DEVICE_ID_KEY } from "../../constants/actionTicket";
+import { checkAuth, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
 
 const styles = require("./paperShow.scss");
 
@@ -146,6 +151,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const changeRefPage = prevQueryParams["ref-page"] !== nextQueryParams["ref-page"];
     const changeCitedPage = prevQueryParams["cited-page"] !== nextQueryParams["cited-page"];
 
+    if (currentUser.isLoggingIn && !nextProps.currentUser.isLoggingIn) {
+      this.checkVerifiedUser();
+    }
+
     if (moveToDifferentPage) {
       await fetchPaperShowData(
         {
@@ -157,7 +166,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         },
         currentUser
       );
-
+      this.checkVerifiedUser();
       return this.scrollToRefCitedSection();
     }
 
@@ -226,7 +235,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               <div className={styles.paperContentBlockDivider} />
               <div className={styles.actionBarWrapper}>
                 <NoSsr>
-                  <ActionBar paper={paper} />
+                  <ActionBar paper={paper} currentUser={currentUser} />
                 </NoSsr>
               </div>
               <div className={styles.paperContentBlockDivider} />
@@ -340,6 +349,33 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       </>
     );
   }
+
+  private checkVerifiedUser = () => {
+    const currentDeviceId = store.get(DEVICE_ID_KEY);
+    if (Cookies.get(benefitSignUpTest.name) === "paperviewCountDevice") {
+      const exp: BenefitExp | undefined = store.get(BENEFIT_EXPERIMENT_KEY);
+      if (!exp || exp.id !== currentDeviceId) {
+        store.set(BENEFIT_EXPERIMENT_KEY, {
+          id: currentDeviceId,
+          count: 1,
+        } as BenefitExp);
+      } else {
+        const nextCount = exp.count + 1;
+        store.set(BENEFIT_EXPERIMENT_KEY, {
+          id: currentDeviceId,
+          count: nextCount,
+        } as BenefitExp);
+        if (nextCount > 5) {
+          store.set(BENEFIT_EXPERIMENT_KEY, {
+            id: currentDeviceId,
+            count: 4,
+          } as BenefitExp);
+
+          checkAuth({ authLevel: AUTH_LEVEL.VERIFIED, userActionType: "paperShow", actionArea: "paperShow" });
+        }
+      }
+    }
+  };
 
   private handleSucceedToLoadPDF = () => {
     this.setState(prevState => ({ ...prevState, isLoadPDF: true }));

@@ -9,6 +9,7 @@ import { trackAndOpenLink } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import Icon from "../../../icons";
 import { isPDFLink } from "../../../helpers/getPDFLink";
+import { shouldBlockToSignUp } from "../../../helpers/shouldBlockToSignUp";
 const styles = require("./sourceURLPopover.scss");
 
 interface SourceURLPopover {
@@ -40,6 +41,11 @@ const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
         <a
           className={styles.sourceItem}
           onClick={e => {
+            const shouldBlock = shouldBlockToSignUp("paperDescription", "source");
+            if (shouldBlock) {
+              e.preventDefault();
+              return;
+            }
             trackAndOpenLink("search-item-source-button");
             ActionTicketManager.trackTicket({
               pageType: props.pageType,

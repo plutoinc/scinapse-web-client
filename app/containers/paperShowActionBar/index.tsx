@@ -8,10 +8,13 @@ import CiteBox from "./components/citeBox";
 import { Paper } from "../../model/paper";
 import Icon from "../../icons";
 import { getPDFLink } from "../../helpers/getPDFLink";
+import { CurrentUser } from "../../model/currentUser";
+import { checkAuth, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
 const s = require("./actionBar.scss");
 
 interface PaperShowActionBarProps {
   paper: Paper | null;
+  currentUser: CurrentUser;
 }
 
 const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = props => {
@@ -28,13 +31,17 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
         <div className={s.leftSide}>
           {hasSource && (
             <div className={s.actionItem}>
-              <PdfSourceButton paper={props.paper} fullTextAB="B" reverseColor />
+              <PdfSourceButton paper={props.paper} />
             </div>
           )}
           {!pdfSource && (
             <div className={s.actionItem}>
               <button
                 onClick={() => {
+                  if (checkAuth({ authLevel: AUTH_LEVEL.VERIFIED })) {
+                    setIsOpen(true);
+                  }
+
                   ActionTicketManager.trackTicket({
                     pageType: "paperShow",
                     actionType: "fire",
@@ -42,7 +49,6 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
                     actionTag: "clickRequestFullTextBtn",
                     actionLabel: String(props.paper!.id),
                   });
-                  setIsOpen(true);
                 }}
                 className={s.fullTextBtn}
               >
@@ -63,7 +69,7 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
           />
         </div>
         <div className={s.rightSide}>
-          <PaperShowCollectionControlButton isTestVersion />
+          <PaperShowCollectionControlButton />
         </div>
       </div>
     </div>

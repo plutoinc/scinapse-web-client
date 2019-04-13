@@ -4,6 +4,7 @@ import ArticleSpinner from "../common/spinner/articleSpinner";
 import { withStyles } from "../../helpers/withStylesHelper";
 import ScinapseButton from "../common/scinapseButton";
 import ActionTicketManager from "../../helpers/actionTicketManager";
+import { shouldBlockToSignUp } from "../../helpers/shouldBlockToSignUp";
 const { Document, Page } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
@@ -117,6 +118,9 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                 isLoading={!succeedToLoad && !hadErrorToLoad}
                 disabled={!succeedToLoad}
                 onClick={() => {
+                  if (!extend && shouldBlockToSignUp("pdfViewer", "viewMorePDF")) {
+                    return;
+                  }
                   trackClickButton(actionTag, props.paperId);
                   setExtend(!extend);
                   if (extend && wrapperNode.current) {
@@ -136,7 +140,11 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                 target="_blank"
                 href={pdfURL}
                 content="Download PDF"
-                onClick={() => {
+                onClick={e => {
+                  if (shouldBlockToSignUp("pdfViewer", "downloadPDF")) {
+                    e.preventDefault();
+                    return;
+                  }
                   trackClickButton("downloadPdf", props.paperId);
                 }}
                 isExternalLink

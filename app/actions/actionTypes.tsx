@@ -8,6 +8,8 @@ import { Collection } from "../model/collection";
 import { Paper } from "../model/paper";
 import { CVInfoType, Award, Education, Experience } from "../model/profile";
 import { PaperInCollection } from "../model/paperInCollection";
+import { SIGN_UP_STEP } from "../components/auth/signUp/types";
+import { OAuthCheckParams } from "../api/types/auth";
 
 export enum ACTION_TYPES {
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = "GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING",
@@ -236,7 +238,7 @@ interface GetMultiComments extends CommonPaginationResponsePart {
 }
 
 export const ActionCreators = {
-  changeGlobalDialog(payload: { type: GLOBAL_DIALOG_TYPE }) {
+  changeGlobalDialog(payload: { type: GLOBAL_DIALOG_TYPE; signUpStep?: SIGN_UP_STEP; oauthResult?: OAuthCheckParams }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_CHANGE_DIALOG_TYPE,
       payload,
@@ -249,6 +251,7 @@ export const ActionCreators = {
     citationDialogTargetPaperId?: number;
     authorListTargetPaper?: Paper;
     collection?: Collection;
+    userActionType?: Scinapse.ActionTicket.ActionTagType;
   }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
   },

@@ -34,6 +34,7 @@ import {
 import { trackEvent } from "../../helpers/handleGA";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { ActionCreators } from "../../actions/actionTypes";
+import { checkAuth, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
 const styles = require("./paperShowCollectionControlButton.scss");
 
 const LAST_USER_COLLECTION_ID = "l_u_c_id";
@@ -45,16 +46,13 @@ interface PaperShowCollectionControlButtonProps {
   myCollections: Collection[] | null;
   selectedCollection: Collection | null;
   dispatch: Dispatch<any>;
-  isTestVersion?: boolean;
 }
 
 interface TitleAreaProps {
   currentUser: CurrentUser;
   collection: Collection | null;
   isLoading: boolean;
-  handleUnsignedUser: () => void;
   onClick: () => void;
-  isTestVersion?: boolean;
 }
 
 const TitleArea: React.SFC<TitleAreaProps> = props => {
@@ -74,45 +72,23 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
   }
 
   if (!props.currentUser.isLoggedIn) {
-    if (props.isTestVersion) {
-      return (
-        <button
-          onClick={() => {
-            props.handleUnsignedUser();
-            ActionTicketManager.trackTicket({
-              pageType: "paperShow",
-              actionType: "fire",
-              actionArea: "paperDescription",
-              actionTag: "collectionBtn",
-              actionLabel: null,
-            });
-          }}
-          className={styles.unsignedTitleBtn}
-        >
-          <Icon icon="COLLECITON_LIST" className={styles.collectionIcon} />
-          Add to Collection
-        </button>
-      );
-    }
     return (
-      <div className={styles.signInTextWrapper}>
-        <span
-          onClick={() => {
-            props.handleUnsignedUser();
-            ActionTicketManager.trackTicket({
-              pageType: "paperShow",
-              actionType: "fire",
-              actionArea: "paperDescription",
-              actionTag: "signIn",
-              actionLabel: null,
-            });
-          }}
-          className={styles.signInText}
-        >
-          Sign in
-        </span>
-        <span> and Save the paper in Collection</span>
-      </div>
+      <button
+        onClick={() => {
+          checkAuth({ authLevel: AUTH_LEVEL.VERIFIED });
+          ActionTicketManager.trackTicket({
+            pageType: "paperShow",
+            actionType: "fire",
+            actionArea: "paperDescription",
+            actionTag: "collectionBtn",
+            actionLabel: null,
+          });
+        }}
+        className={styles.unsignedTitleBtn}
+      >
+        <Icon icon="COLLECITON_LIST" className={styles.collectionIcon} />
+        Add to Collection
+      </button>
     );
   } else if (!props.collection) {
     return (
@@ -162,14 +138,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   }
 
   public render() {
-    const {
-      targetPaperId,
-      selectedCollection,
-      currentUser,
-      myCollectionsState,
-      myCollections,
-      isTestVersion,
-    } = this.props;
+    const { targetPaperId, selectedCollection, currentUser, myCollectionsState, myCollections } = this.props;
     const isLoadingCollection = currentUser.isLoggingIn || myCollectionsState.isLoadingCollections;
     const isSelected = selectedCollection && selectedCollection.containsSelected;
     let saveButtonBorderRadius: string;
@@ -179,7 +148,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       saveButtonBorderRadius = "4px";
     }
 
-    const hideSaveBtn = isTestVersion && !currentUser.isLoggedIn;
+    const hideSaveBtn = !currentUser.isLoggedIn;
 
     return (
       <div ref={el => (this.popoverAnchorEl = el)} className={styles.buttonWrapper}>
@@ -258,7 +227,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   }
 
   private getCollectionItemInDropdown = () => {
-    const { selectedCollection, currentUser, myCollectionsState, myCollections, isTestVersion } = this.props;
+    const { selectedCollection, currentUser, myCollectionsState, myCollections } = this.props;
 
     const collections =
       myCollections &&
@@ -281,7 +250,6 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       <ClickAwayListener onClickAway={this.handleCloseCollectionDropdown}>
         <div className={styles.actionItemWrapper}>
           <TitleArea
-            isTestVersion={isTestVersion}
             currentUser={currentUser}
             collection={selectedCollection}
             isLoading={
@@ -289,7 +257,6 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
               myCollectionsState.isLoadingCollections ||
               myCollectionsState.isLoadingCollectionsInDropdown
             }
-            handleUnsignedUser={this.handleUnsignedUser}
             onClick={this.handleToggleCollectionDropdown}
           />
           <Popper
@@ -329,10 +296,6 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       myCollections.find(c => c.id === lastId || c.isDefault) || myCollections[myCollections.length - 1];
 
     this.handleSelectCollection(defaultCollection);
-  };
-
-  private handleUnsignedUser = () => {
-    GlobalDialogManager.openSignInDialog();
   };
 
   private getNoteButtonContent = () => {
@@ -415,7 +378,11 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
 
   private handleClickNewCollectionButton = () => {
     const { targetPaperId } = this.props;
-    GlobalDialogManager.openNewCollectionDialog(targetPaperId);
+
+    if (checkAuth({ authLevel: AUTH_LEVEL.VERIFIED })) {
+      GlobalDialogManager.openNewCollectionDialog(targetPaperId);
+    }
+
     this.handleCloseCollectionDropdown();
     trackEvent({
       category: "Additional Action",
@@ -513,9 +480,10 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private handleClickSaveButton = () => {
-    const { dispatch, selectedCollection, targetPaperId, currentUser } = this.props;
+    const { dispatch, selectedCollection, targetPaperId } = this.props;
+    const isVerified = checkAuth({ authLevel: AUTH_LEVEL.VERIFIED });
 
-    if (!currentUser.isLoggedIn) {
+    if (!isVerified) {
       trackEvent({
         category: "New Paper Show",
         action: "Click save in collection button (Unsigned user)",
@@ -529,7 +497,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         actionTag: "signInViaCollection",
         actionLabel: null,
       });
-      return this.handleUnsignedUser();
+      return;
     }
 
     if (selectedCollection && targetPaperId && !selectedCollection.containsSelected) {

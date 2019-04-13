@@ -1,3 +1,12 @@
+.authContainer {
+  display: flex;
+  width: 100%;
+}
+
+.authFormWrapper {
+  width: 384px;
+}
+
 .forgotPasswordBox {
   text-decoration: underline;
   cursor: pointer;
@@ -9,7 +18,7 @@
 }
 
 .formWrapper {
-  padding: 0 36px;
+  padding: 22px 32px 32px 24px;
 }
 
 .fbIconWrapper {
@@ -39,4 +48,18 @@
   color: $red0;
   margin-top: 6px;
   margin-left: 4px;
+}
+
+@media (max-width: $mobile-width) {
+  .fbIconWrapper {
+    display: none;
+  }
+
+  .googleIconWrapper {
+    display: none;
+  }
+
+  .orcidIconWrapper {
+    display: none;
+  }
 }

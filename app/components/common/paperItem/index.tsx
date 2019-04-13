@@ -14,7 +14,9 @@ const styles = require("./paperItem.scss");
 export interface PaperItemProps {
   paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
-  actionArea?: Scinapse.ActionTicket.ActionArea;
+  shouldBlockUnverifiedUser?: boolean;
+  actionArea: Scinapse.ActionTicket.ActionArea;
+  currentPage?: number;
   hasCollection?: boolean;
   paperNote?: string;
   searchQueryText?: string;
@@ -30,7 +32,7 @@ export interface PaperItemProps {
   onRemovePaperCollection?: (paperId: number) => Promise<void>;
 }
 
-class RawPaperItem extends React.PureComponent<PaperItemProps> {
+class BasePaperItem extends React.PureComponent<PaperItemProps> {
   private paperItemWrapper: HTMLDivElement | null;
 
   public componentDidMount() {
@@ -77,6 +79,8 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
       actionArea,
       hasCollection,
       onRemovePaperCollection,
+      shouldBlockUnverifiedUser,
+      currentPage,
     } = this.props;
     const { title, titleHighlighted, authors, publishedDate, doi, urls, journal, conferenceInstance, relation } = paper;
 
@@ -87,6 +91,7 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
         actionArea={actionArea}
         abstract={paper.abstractHighlighted || paper.abstract}
         searchQueryText={searchQueryText}
+        currentPage={currentPage}
       />
     ) : null;
     const buttons =
@@ -132,6 +137,8 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
             paperId={paper.id}
             searchQueryText={searchQueryText}
             source={source}
+            shouldBlockUnverifiedUser={!!shouldBlockUnverifiedUser}
+            currentPage={currentPage}
           />
           <VenueAndAuthors
             pageType={pageType}
@@ -150,4 +157,4 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
   }
 }
 
-export default withStyles<typeof RawPaperItem>(styles)(RawPaperItem);
+export default withStyles<typeof BasePaperItem>(styles)(BasePaperItem);

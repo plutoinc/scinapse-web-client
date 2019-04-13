@@ -8,11 +8,11 @@ import {
   SignInWithSocialParams,
   SignInData,
   GetAuthorizeUriParams,
-  PostExchangeParams,
   GetAuthorizeUriResult,
-  PostExchangeResult,
   VerifyEmailResult,
   CheckDuplicatedEmailResult,
+  OAUTH_VENDOR,
+  OAuthCheckResult,
 } from "./types/auth";
 import { camelCaseKeys } from "../helpers/camelCaseKeys";
 
@@ -82,16 +82,6 @@ class AuthAPI extends PlutoAxios {
     return res.data;
   }
 
-  public async postExchange({ code, redirectUri, vendor }: PostExchangeParams): Promise<PostExchangeResult> {
-    const postExchangeResponse = await this.post("/auth/oauth/exchange", {
-      code,
-      redirectUri,
-      vendor,
-    });
-
-    return camelCaseKeys(postExchangeResponse.data);
-  }
-
   public async verifyToken(token: string): Promise<VerifyEmailResult> {
     const verifyTokenResponse = await this.post("/email-verification", {
       token,
@@ -121,6 +111,18 @@ class AuthAPI extends PlutoAxios {
     });
 
     return response.data;
+  }
+
+  public async checkOAuthStatus(vendor: OAUTH_VENDOR, token: string): Promise<OAuthCheckResult> {
+    const res = await this.post("/auth/oauth/check", { vendor, token });
+
+    return camelCaseKeys(res.data.data.content);
+  }
+
+  public async loginWithOAuth(vendor: OAUTH_VENDOR, token: string): Promise<SignInResult> {
+    const res = await this.post("/auth/oauth/login", { vendor, token });
+
+    return camelCaseKeys(res.data);
   }
 }
 

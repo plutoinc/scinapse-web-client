@@ -215,7 +215,7 @@ class InputWithSuggestionList extends React.PureComponent<
         this.setState(prevState => ({
           ...prevState,
           highlightedListItemIndex: prevFocusIndex,
-          inputValue: (suggestionList[nextFocusIndex] && suggestionList[nextFocusIndex].text) || highlightValue,
+          inputValue: (suggestionList[prevFocusIndex] && suggestionList[prevFocusIndex].text) || highlightValue,
         }));
         break;
       }

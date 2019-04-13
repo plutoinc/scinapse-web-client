@@ -11,7 +11,7 @@ interface HighLightContentProps {
   isExtendContent?: boolean;
   highLightContent: string | null;
   className?: string;
-  onClickFunc?: () => void;
+  onClickFunc?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
   href?: string;
   to?: string | object;
   exactHighlight?: boolean;

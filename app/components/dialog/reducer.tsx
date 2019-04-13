@@ -2,6 +2,8 @@ import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
 import { AvailableCitationType } from "../../containers/paperShow/records";
 import { Collection } from "../../model/collection";
 import { Paper } from "../../model/paper";
+import { SIGN_UP_STEP } from "../auth/signUp/types";
+import { OAuthCheckParams } from "../../api/types/auth";
 
 export enum GLOBAL_DIALOG_TYPE {
   SIGN_IN,
@@ -24,6 +26,9 @@ export interface DialogState
       isOpen: boolean;
       type: GLOBAL_DIALOG_TYPE | null;
 
+      signUpStep: SIGN_UP_STEP | null;
+      oauthResult: OAuthCheckParams | null;
+
       citationPaperId: number | undefined;
       citationText: string;
       isLoadingCitationText: boolean;
@@ -37,6 +42,8 @@ export interface DialogState
       collection: Collection | undefined;
 
       authorListTargetPaper: Paper | undefined;
+
+      userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
     }> {}
 
 export const DIALOG_INITIAL_STATE: DialogState = {
@@ -44,6 +51,9 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   hasError: false,
   isOpen: false,
   type: null,
+  // sign up dialog
+  signUpStep: null,
+  oauthResult: null,
   // citation dialog
   citationPaperId: 0,
   citationText: "",
@@ -58,6 +68,7 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   collection: undefined,
   // author list dialog
   authorListTargetPaper: undefined,
+  userActionType: undefined,
 };
 
 export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actions): DialogState {
@@ -71,6 +82,7 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
         citationPaperId: action.payload.citationDialogTargetPaperId,
         collection: action.payload.collection,
         authorListTargetPaper: action.payload.authorListTargetPaper,
+        userActionType: action.payload.userActionType,
       };
     }
 
@@ -79,7 +91,12 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
     }
 
     case ACTION_TYPES.GLOBAL_CHANGE_DIALOG_TYPE: {
-      return { ...state, type: action.payload.type };
+      return {
+        ...state,
+        type: action.payload.type,
+        signUpStep: action.payload.signUpStep || null,
+        oauthResult: action.payload.oauthResult || null,
+      };
     }
 
     case ACTION_TYPES.GLOBAL_DIALOG_START_TO_GET_COLLECTIONS: {

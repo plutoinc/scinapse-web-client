@@ -12,6 +12,7 @@ import { CurrentUser } from "../../../model/currentUser";
 import { collectionSchema, Collection } from "../../../model/collection";
 import { MyCollectionsState } from "../../../containers/paperShowCollectionControlButton/reducer";
 import CollectionPaperNote from "../../collectionPaperNote";
+import { checkAuth, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
 const styles = require("./collectionButton.scss");
 
 function mapStateToProps(state: AppState) {
@@ -130,11 +131,10 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
     <button
       className={styles.addCollectionBtnWrapper}
       onClick={() => {
-        if (currentUser.isLoggedIn) {
+        if (checkAuth({ authLevel: AUTH_LEVEL.VERIFIED })) {
           handleAddToCollection(myCollections, paperId);
-        } else {
-          GlobalDialogManager.openSignInDialog();
         }
+
         trackEvent({
           category: "Additional Action",
           action: "Click [Add To Collection] Button",

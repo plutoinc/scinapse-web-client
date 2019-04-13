@@ -14,6 +14,7 @@ import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import CollectionButton from "./collectionButton";
 import formatNumber from "../../../helpers/formatNumber";
+import { shouldBlockToSignUp } from "../../../helpers/shouldBlockToSignUp";
 const styles = require("./paperActionButtons.scss");
 
 interface HandleClickClaim {
@@ -26,7 +27,7 @@ export interface PaperActionButtonsProps {
   currentUser: CurrentUser;
   hasCollection: boolean;
   pageType: Scinapse.ActionTicket.PageType;
-  actionArea?: Scinapse.ActionTicket.ActionArea;
+  actionArea: Scinapse.ActionTicket.ActionArea;
   hasRemoveButton?: boolean;
   handleRemovePaper?: (paper: Paper) => void;
   isRepresentative?: boolean;
@@ -90,7 +91,11 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         target="_blank"
         rel="noopener"
         className={styles.sourceButton}
-        onClick={() => {
+        onClick={e => {
+          if (shouldBlockToSignUp(actionArea, "sourceInPaperItem")) {
+            e.preventDefault();
+            return;
+          }
           ActionTicketManager.trackTicket({
             pageType,
             actionType: "fire",

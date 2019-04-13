@@ -12,7 +12,7 @@ import BubblePopover from "../common/bubblePopover";
 import { AppState } from "../../reducers";
 import Icon from "../../icons";
 import { signOut } from "../auth/actions";
-import { openSignIn, openSignUp } from "../dialog/actions";
+import { openSignIn } from "../dialog/actions";
 import { trackAction, trackDialogView } from "../../helpers/handleGA";
 import { HeaderProps } from "./types/header";
 import { withStyles } from "../../helpers/withStylesHelper";
@@ -23,6 +23,7 @@ import { getCurrentPageType } from "../locationListener";
 import SearchQueryInput from "../common/InputWithSuggestionList/searchQueryInput";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
+import GlobalDialogManager from "../../helpers/globalDialogManager";
 import { HOME_PATH } from "../../constants/routes";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { CurrentUser } from "../../model/currentUser";
@@ -256,9 +257,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private handleOpenSignUp = () => {
-    const { dispatch } = this.props;
-
-    dispatch(openSignUp());
+    GlobalDialogManager.openSignUpDialog();
   };
 
   private handleToggleUserDropdown = () => {

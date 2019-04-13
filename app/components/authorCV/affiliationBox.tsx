@@ -14,6 +14,9 @@ const styles = require("./affiliationBox.scss");
 interface AffiliationSelectBoxProps extends FieldProps {
   className: string;
   inputStyle: React.CSSProperties;
+  inputBoxStyle?: React.CSSProperties;
+  listWrapperStyle?: React.CSSProperties;
+  placeholder?: string;
 }
 
 interface AffiliationSelectBoxState {
@@ -48,21 +51,32 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
   }
 
   public render() {
-    const { field, form, className, inputStyle } = this.props;
-    const { touched, errors } = form;
+    const { field, form, className, inputStyle, placeholder, inputBoxStyle, listWrapperStyle } = this.props;
+    const { errors } = form;
     const { availableAffiliations } = this.state;
     const rawFieldValue = field.value as Affiliation | SuggestAffiliation | string;
     const error = errors[field.name];
+    const touched = form.touched[field.name];
 
     const displayValue: string = this.getDisplayValue(rawFieldValue || "");
 
+    const listStyle = {
+      ...{
+        zIndex: 3,
+        top: "40px",
+        borderRadius: "5px",
+        boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 8px 1px",
+      },
+      ...listWrapperStyle,
+    };
+
     return (
-      <div className={styles.affiliationSelectBox}>
+      <div className={styles.affiliationSelectBox} style={inputBoxStyle}>
         <div className={styles.inputWrapper}>
           <InputWithSuggestionList
             defaultValue={displayValue}
             onChange={this.handleInputChange}
-            placeholder=""
+            placeholder={placeholder}
             onSubmitQuery={this.handleClickSelectBox}
             suggestionList={availableAffiliations.slice(0, 5).map(affiliation => ({ text: affiliation.keyword }))}
             className={classNames({
@@ -79,12 +93,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
               fontSize: "13px",
               whiteSpace: "nowrap",
             }}
-            listWrapperStyle={{
-              zIndex: 3,
-              top: "40px",
-              borderRadius: "5px",
-              boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 8px 1px",
-            }}
+            listWrapperStyle={listStyle}
             DefaultItemComponent={DefaultItem}
             deleteIconNode={
               <Icon icon="X_BUTTON" className={styles.deleteIcon} onClick={this.handleClickDeleteButton} />

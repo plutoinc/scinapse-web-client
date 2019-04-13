@@ -1,0 +1,51 @@
+.container {
+  width: 408px;
+  padding: 24px 32px;
+}
+
+.logoIcon {
+  svg {
+    width: 88px;
+    height: 28px;
+  }
+}
+
+.mainText {
+  width: 344px;
+  height: 156px;
+  margin-top: 36px;
+  font-family: Georgia;
+  font-size: 46px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  color: $black0;
+  white-space: pre-line;
+}
+
+.subText {
+  width: 344px;
+  height: 22px;
+  margin-top: 8px;
+  font-family: Georgia;
+  font-size: 20px;
+  color: $black0;
+}
+
+.generalGuideImage {
+  position: absolute;
+  bottom: -25px;
+  width: 376px;
+  height: 242px;
+  left: -26px;
+}
+
+.guideImage {
+  @extend .generalGuideImage;
+  left: 20px;
+}
+
+@media (max-width: $tablet-width) {
+  .container {
+    display: none;
+  }
+}

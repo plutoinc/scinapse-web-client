@@ -24,12 +24,6 @@ export function openSignIn() {
   });
 }
 
-export function openSignUp() {
-  return ActionCreators.openGlobalDialog({
-    type: GLOBAL_DIALOG_TYPE.SIGN_UP,
-  });
-}
-
 export function openVerificationNeeded() {
   return ActionCreators.openGlobalDialog({
     type: GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED,

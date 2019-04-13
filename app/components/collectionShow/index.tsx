@@ -511,6 +511,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
           <CollectionPaperItem
             currentUser={currentUser}
             pageType="collectionShow"
+            actionArea="paperList"
             paperNote={paper.note ? paper.note : ""}
             paper={paper.paper}
             collection={userCollection}

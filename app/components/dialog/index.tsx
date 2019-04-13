@@ -61,6 +61,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         classes={{
           paper: styles.dialogPaper,
         }}
+        maxWidth={"lg"}
       >
         {this.getDialogContent(dialogState.type) || ""}
       </Dialog>
@@ -205,10 +206,10 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
 
     switch (type) {
       case GLOBAL_DIALOG_TYPE.SIGN_IN:
-        return <SignIn handleChangeDialogType={this.changeDialogType} />;
+        return <SignIn handleChangeDialogType={this.changeDialogType} userActionType={dialogState.userActionType} />;
 
       case GLOBAL_DIALOG_TYPE.SIGN_UP:
-        return <SignUp handleChangeDialogType={this.changeDialogType} />;
+        return <SignUp handleChangeDialogType={this.changeDialogType} userActionType={dialogState.userActionType} />;
 
       case GLOBAL_DIALOG_TYPE.ADD_PUBLICATIONS_TO_AUTHOR_DIALOG: {
         return <AllPublicationsDialog />;
@@ -239,11 +240,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         return null;
       }
       case GLOBAL_DIALOG_TYPE.COLLECTION:
-        if (
-          currentUser.isLoggedIn &&
-          (currentUser.oauthLoggedIn || currentUser.emailVerified) &&
-          dialogState.collectionDialogTargetPaperId
-        ) {
+        if (dialogState.collectionDialogTargetPaperId) {
           return (
             <CollectionDialog
               currentUser={currentUser}
@@ -256,12 +253,6 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
               collectionDialogPaperId={dialogState.collectionDialogTargetPaperId}
             />
           );
-        } else if (currentUser.isLoggedIn && !currentUser.emailVerified && !currentUser.oauthLoggedIn) {
-          this.changeDialogType(GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED);
-          break;
-        } else if (!currentUser.isLoggedIn) {
-          this.changeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
-          break;
         }
         return null;
 

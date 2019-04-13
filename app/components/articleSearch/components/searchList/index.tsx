@@ -11,11 +11,12 @@ interface SearchListProps {
   papers: Paper[];
   searchQueryText: string;
   isLoading: boolean;
+  currentPage: number;
 }
 
 class SearchList extends React.PureComponent<SearchListProps> {
   public render() {
-    const { currentUser, papers, searchQueryText, isLoading } = this.props;
+    const { currentUser, papers, searchQueryText, isLoading, currentPage } = this.props;
 
     if (isLoading) {
       return (
@@ -34,9 +35,11 @@ class SearchList extends React.PureComponent<SearchListProps> {
               key={paper.id}
               paper={paper}
               pageType="searchResult"
+              actionArea="searchResult"
               searchQueryText={searchQueryText}
               currentUser={currentUser}
               wrapperClassName={styles.searchItemWrapper}
+              currentPage={currentPage}
             />
           );
         } else {

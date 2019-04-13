@@ -8,18 +8,15 @@ export interface SignUpWithEmailParams {
   affiliation: string;
 }
 
-export interface OAuthInfo {
-  oauthId: string;
-  uuid: string;
-  vendor: OAUTH_VENDOR | null;
-}
-
 export interface SignUpWithSocialParams {
   email: string;
   firstName: string;
   lastName: string;
   affiliation: string;
-  oauth: OAuthInfo;
+  token: {
+    vendor: OAUTH_VENDOR;
+    token: string;
+  };
 }
 
 export interface SignInWithEmailParams {
@@ -45,23 +42,6 @@ export interface GetAuthorizeUriResult {
   uri: string;
 }
 
-export interface PostExchangeParams {
-  vendor: OAUTH_VENDOR;
-  code: string;
-  redirectUri?: string;
-}
-
-export interface PostExchangeResult {
-  vendor: OAUTH_VENDOR;
-  oauthId: string;
-  userData: {
-    email?: string;
-    name?: string;
-  };
-  uuid: string;
-  connected: boolean;
-}
-
 export interface VerifyEmailResult {
   success: boolean;
 }
@@ -82,4 +62,21 @@ export interface SignInResult {
 
 export interface CheckDuplicatedEmailResult {
   duplicated: boolean;
+}
+
+export interface OAuthCheckResult {
+  email?: string | null;
+  firstName: string;
+  lastName: string;
+  oauthId: string;
+  vendor: OAUTH_VENDOR;
+  isConnected: boolean;
+}
+
+export interface OAuthCheckParams {
+  email?: string | null;
+  firstName: string;
+  lastName: string;
+  token: string;
+  vendor: OAUTH_VENDOR;
 }

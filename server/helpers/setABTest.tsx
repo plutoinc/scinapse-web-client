@@ -7,8 +7,16 @@ export default function setABTest(req: express.Request, res: express.Response) {
 
     LIVE_TESTS.forEach(test => {
       if (!keys.includes(test.name)) {
-        const result = Math.random() < test.weight ? "A" : "B";
-        res.cookie(test.name, result, {
+        let userGroup = "";
+        const randomValue = Math.random();
+        test.userGroup.reduce((accm, cv) => {
+          if (randomValue >= accm && randomValue < accm + cv.weight) {
+            userGroup = cv.groupName;
+          }
+          return accm + cv.weight;
+        }, 0);
+
+        res.cookie(test.name, userGroup, {
           maxAge: 31536000000,
         });
       } else {

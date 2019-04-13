@@ -1,5 +1,8 @@
 import * as React from "react";
+import { connect, Dispatch } from "react-redux";
+import { parse, stringify } from "qs";
 import * as ReactGA from "react-ga";
+import AuthAPI from "../../api/auth";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import EnvChecker from "../../helpers/envChecker";
 import ActionTicketManager from "../../helpers/actionTicketManager";
@@ -17,9 +20,14 @@ import {
   PRIVACY_POLICY_PATH,
 } from "../../constants/routes";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
-import { stringify } from "qs";
+import { ACTION_TYPES, ActionCreators } from "../../actions/actionTypes";
+import GlobalDialogManager from "../../helpers/globalDialogManager";
+import { GLOBAL_DIALOG_TYPE } from "../dialog/reducer";
+import { SIGN_UP_STEP } from "../auth/signUp/types";
 
-interface LocationListenerProps extends RouteComponentProps<{}> {}
+interface LocationListenerProps extends RouteComponentProps<{}> {
+  dispatch: Dispatch<any>;
+}
 export interface HistoryInformation {
   key: string;
   scrollPosition: number;
@@ -71,7 +79,49 @@ export function getCurrentPageType(): Scinapse.ActionTicket.PageType {
 }
 
 class LocationListener extends React.PureComponent<LocationListenerProps> {
-  public componentDidMount() {
+  public async componentDidMount() {
+    const { location, dispatch } = this.props;
+
+    if (!EnvChecker.isOnServer() && location.hash) {
+      const hashParams = parse(location.hash.slice(1));
+      if (
+        hashParams &&
+        hashParams.access_token &&
+        hashParams.id_token &&
+        hashParams.token_type &&
+        hashParams.expires_in
+      ) {
+        const status = await AuthAPI.checkOAuthStatus("ORCID", hashParams.id_token);
+        if (status.isConnected) {
+          const user = await AuthAPI.loginWithOAuth("ORCID", hashParams.id_token);
+          dispatch({
+            type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+            payload: {
+              user: user.member,
+              loggedIn: user.loggedIn,
+              oauthLoggedIn: user.oauthLoggedIn,
+            },
+          });
+          window.close();
+        } else {
+          dispatch(
+            ActionCreators.changeGlobalDialog({
+              type: GLOBAL_DIALOG_TYPE.SIGN_UP,
+              signUpStep: SIGN_UP_STEP.WITH_SOCIAL,
+              oauthResult: {
+                email: status.email,
+                firstName: status.firstName,
+                lastName: status.lastName,
+                token: hashParams.id_token,
+                vendor: "ORCID",
+              },
+            })
+          );
+          GlobalDialogManager.openSignUpDialog();
+        }
+      }
+    }
+
     if (EnvChecker.isProdBrowser()) {
       this.trackPageView();
     }
@@ -139,4 +189,4 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
   }
 }
 
-export default withRouter(LocationListener);
+export default connect()(withRouter(LocationListener));

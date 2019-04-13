@@ -1,5 +1,4 @@
 import * as React from "react";
-import { parse } from "qs";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import * as Actions from "./actions";
@@ -8,33 +7,23 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import FirstForm from "./components/firstForm";
 import SignUpForm, { SignUpFormValues } from "./components/signUpForm";
 import FinalSignUpContent from "./components/finalSignUpContent";
-import { OAuthInfo } from "../../../api/types/auth";
+import { OAUTH_VENDOR, SignUpWithSocialParams } from "../../../api/types/auth";
+import { AppState } from "../../../reducers";
+import { closeDialog } from "../../dialog/actions";
+import EnvChecker from "../../../helpers/envChecker";
 const styles = require("./signUp.scss");
 
 const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
-  const { location, history } = props;
-
-  const [signUpStep, setSignUpStep] = React.useState(SIGN_UP_STEP.FIRST);
-  const [email, setEmail] = React.useState("");
+  const { dialogState } = props;
+  const [signUpStep, setSignUpStep] = React.useState(dialogState.signUpStep || SIGN_UP_STEP.FIRST);
+  const [email, setEmail] = React.useState(dialogState.oauthResult ? dialogState.oauthResult.email || "" : "");
   const [password, setPassword] = React.useState("");
-  const [OAuth, setOAuth] = React.useState<OAuthInfo>({ oauthId: "", uuid: "", vendor: null });
-
-  React.useEffect(() => {
-    const queryParams = parse(location.search, { ignoreQueryPrefix: true });
-    const { code, vendor } = queryParams;
-    const alreadySignUpCB = () => {
-      history.push("/users/sign_in");
-    };
-    if (code && vendor) {
-      setSignUpStep(SIGN_UP_STEP.WITH_SOCIAL);
-      Actions.getAuthorizeCode(code, vendor, alreadySignUpCB).then(OAuthRes => {
-        if (OAuthRes) {
-          setOAuth({ oauthId: OAuthRes.oauthId, uuid: OAuthRes.uuid, vendor: OAuthRes.vendor });
-          setEmail(OAuthRes.email || "");
-        }
-      });
-    }
-  }, []);
+  const [firstName, setFirstName] = React.useState(dialogState.oauthResult ? dialogState.oauthResult.firstName : "");
+  const [lastName, setLastName] = React.useState(dialogState.oauthResult ? dialogState.oauthResult.lastName : "");
+  const [token, setToken] = React.useState({
+    token: dialogState.oauthResult ? dialogState.oauthResult.token : "",
+    vendor: dialogState.oauthResult ? dialogState.oauthResult.vendor : "",
+  });
 
   async function handleSubmitSignUpWithEmail(values: SignUpFormValues) {
     await props.dispatch(Actions.signUpWithEmail(values));
@@ -43,23 +32,23 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
   async function handleSubmitSignUpWithSocial(values: SignUpFormValues) {
     const { firstName, lastName, affiliation } = values;
 
-    if (OAuth.oauthId && OAuth.vendor) {
-      try {
-        await props.dispatch(
-          Actions.signUpWithSocial(
-            {
-              email: values.email,
-              firstName,
-              lastName,
-              affiliation,
-              oauth: OAuth,
-            },
-            OAuth.vendor
-          )
-        );
-      } catch (_err) {
-        setSignUpStep(SIGN_UP_STEP.FIRST);
-      }
+    const params: SignUpWithSocialParams = {
+      email: values.email,
+      firstName,
+      lastName,
+      affiliation,
+      token: {
+        vendor: token.vendor as OAUTH_VENDOR,
+        token: token.token,
+      },
+    };
+
+    try {
+      await props.dispatch(Actions.signUpWithSocial(params));
+    } catch (err) {
+      console.error(err);
+      setSignUpStep(SIGN_UP_STEP.FIRST);
+      throw err;
     }
   }
 
@@ -76,6 +65,8 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
           }}
           email={email}
           password={password}
+          firstName=""
+          lastName=""
           onClickTab={props.handleChangeDialogType}
         />
       );
@@ -92,6 +83,8 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
           }}
           email={email}
           password={password}
+          firstName={firstName}
+          lastName={lastName}
           onClickTab={props.handleChangeDialogType}
         />
       );
@@ -100,7 +93,7 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
       return (
         <FinalSignUpContent
           onSubmit={() => {
-            history.push("/");
+            props.dispatch(closeDialog());
           }}
           contentType="email"
         />
@@ -110,7 +103,10 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
       return (
         <FinalSignUpContent
           onSubmit={() => {
-            history.push("/");
+            if (!EnvChecker.isOnServer() && token.vendor === "ORCID") {
+              window.close();
+            }
+            props.dispatch(closeDialog());
           }}
           contentType="social"
         />
@@ -124,10 +120,33 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
             setPassword(values.password);
             setSignUpStep(SIGN_UP_STEP.WITH_EMAIL);
           }}
+          onSignUpWithSocial={(values: {
+            email?: string | null;
+            firstName: string;
+            lastName: string;
+            vendor: OAUTH_VENDOR;
+            token: string;
+          }) => {
+            setEmail(values.email || "");
+            setFirstName(values.firstName || "");
+            setLastName(values.lastName || "");
+            setToken({
+              token: values.token,
+              vendor: values.vendor,
+            });
+            setSignUpStep(SIGN_UP_STEP.WITH_SOCIAL);
+          }}
           onClickTab={props.handleChangeDialogType}
+          userActionType={props.userActionType}
         />
       );
   }
 };
 
-export default withRouter(connect()(withStyles<typeof SignUp>(styles)(SignUp)));
+function mapStateToProps(state: AppState) {
+  return {
+    dialogState: state.dialog,
+  };
+}
+
+export default withRouter(connect(mapStateToProps)(withStyles<typeof SignUp>(styles)(SignUp)));
