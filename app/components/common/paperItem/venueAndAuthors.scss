@@ -57,6 +57,28 @@
   }
 }
 
+.arrowBottomTooltip {
+  background-color: #606269 !important;
+  color: white !important;
+  font-size: 10px !important;
+  margin-bottom: 6px !important;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 55%;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-top-color: #606269;
+    border-bottom: 0;
+    margin-left: -13px;
+    margin-top: 20px;
+    z-index: 2;
+  }
+}
+
 // Mobile
 @media (max-width: $mobile-width) {
   .publishInfoList {
