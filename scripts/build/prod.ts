@@ -20,10 +20,10 @@ function cleanArtifacts() {
   });
 }
 
-async function build() {
-  return await new Promise((resolve, reject) => {
+function build() {
+  return new Promise((resolve, reject) => {
     webpack([clientConfig, serverConfig], async (err, stats) => {
-      if (err) {
+      if (err || stats.hasErrors()) {
         console.error(err);
         reject(err);
       } else {
