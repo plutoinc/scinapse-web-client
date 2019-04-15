@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios from "axios";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import * as Cookies from "js-cookie";
@@ -29,6 +30,7 @@ import { ACTION_TYPES } from "../../actions/actionTypes";
 import { CurrentUser } from "../../model/currentUser";
 import { FilterObject } from "../../helpers/papersQueryFormatter";
 import { userCollectionSchema } from "../../model/collection";
+import { getCollections } from "../collections/actions";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -68,6 +70,7 @@ const UserInformation: React.FunctionComponent<{ user: CurrentUser }> = props =>
 
 @withStyles<typeof Header>(styles)
 class Header extends React.PureComponent<HeaderProps, HeaderStates> {
+  private cancelToken = axios.CancelToken.source();
   private userDropdownAnchorRef: HTMLElement | null;
 
   constructor(props: HeaderProps) {
@@ -93,6 +96,18 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   public componentWillUnmount() {
     if (!EnvChecker.isOnServer()) {
       window.removeEventListener("scroll", this.handleScrollEvent);
+    }
+  }
+
+  public componentDidUpdate(prevProps: HeaderProps) {
+    if (
+      prevProps.currentUserState.isLoggedIn !== this.props.currentUserState.isLoggedIn &&
+      this.props.currentUserState.isLoggedIn
+    ) {
+      const currentUser = this.props.currentUserState;
+      this.cancelToken.cancel();
+      this.cancelToken = axios.CancelToken.source();
+      this.props.dispatch(getCollections(currentUser.id, this.cancelToken.token, true));
     }
   }
 
