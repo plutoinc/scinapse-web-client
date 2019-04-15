@@ -3,23 +3,18 @@ import loadable from "@loadable/component";
 import { Route, Switch, match, withRouter, RouteComponentProps } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { connect, Dispatch } from "react-redux";
-import axios, { CancelToken } from "axios";
+import { CancelToken } from "axios";
 import { PaperShowMatchParams } from "./containers/paperShow/types";
 import { AuthorShowMatchParams } from "./containers/authorShow/types";
 import { JournalShowMatchParams } from "./components/journalShow/types";
 import { CollectionShowMatchParams } from "./components/collectionShow/types";
-import { fetchPaperShowData } from "./containers/paperShow/sideEffect";
 import ErrorPage from "./components/error/errorPage";
 import LocationListener from "./components/locationListener";
 import DeviceDetector from "./components/deviceDetector";
 import { AppState } from "./reducers";
 import { LayoutState } from "./components/layouts/records";
 import { withStyles } from "./helpers/withStylesHelper";
-import { getSearchData } from "./components/articleSearch/sideEffect";
-import { fetchAuthorShowPageData } from "./containers/authorShow/sideEffect";
 import ArticleSpinner from "./components/common/spinner/articleSpinner";
-import { fetchCollectionShowData } from "./components/collectionShow/sideEffect";
-import { fetchJournalShowPageData } from "./components/journalShow/sideEffect";
 import { CurrentUser } from "./model/currentUser";
 import { Configuration } from "./reducers/configuration";
 import {
@@ -36,10 +31,6 @@ import {
   TERMS_OF_SERVICE_PATH,
   PRIVACY_POLICY_PATH,
 } from "./constants/routes";
-import { getAuthorSearchData } from "./containers/authorSearch/sideEffect";
-import { checkAuthStatus } from "./components/auth/actions";
-import { getCollections as sideEffectGetCollections } from "./components/collections/sideEffect";
-import { getCollections } from "./components/collections/actions";
 const styles = require("./root.scss");
 
 export interface LoadDataParams<P> {
@@ -72,6 +63,7 @@ export const routesMap: ServerRoutesMap[] = [
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<null>) => {
+      const { getSearchData } = await import("./components/articleSearch/sideEffect");
       await Promise.all([getSearchData(params)]);
     },
     exact: true,
@@ -82,6 +74,7 @@ export const routesMap: ServerRoutesMap[] = [
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<null>) => {
+      const { getAuthorSearchData } = await import("./containers/authorSearch/sideEffect");
       await Promise.all([getAuthorSearchData(params)]);
     },
     exact: true,
@@ -92,6 +85,7 @@ export const routesMap: ServerRoutesMap[] = [
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<PaperShowMatchParams>) => {
+      const { fetchPaperShowData } = await import("./containers/paperShow/sideEffect");
       await Promise.all([fetchPaperShowData(params)]);
     },
   },
@@ -101,6 +95,7 @@ export const routesMap: ServerRoutesMap[] = [
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<AuthorShowMatchParams>) => {
+      const { fetchAuthorShowPageData } = await import("./containers/authorShow/sideEffect");
       await Promise.all([fetchAuthorShowPageData(params)]);
     },
   },
@@ -110,6 +105,7 @@ export const routesMap: ServerRoutesMap[] = [
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<CollectionShowMatchParams>) => {
+      const { fetchCollectionShowData } = await import("./components/collectionShow/sideEffect");
       await Promise.all([fetchCollectionShowData(params)]);
     },
   },
@@ -119,6 +115,7 @@ export const routesMap: ServerRoutesMap[] = [
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<JournalShowMatchParams>) => {
+      const { fetchJournalShowPageData } = await import("./components/journalShow/sideEffect");
       await Promise.all([fetchJournalShowPageData(params)]);
     },
   },
@@ -128,7 +125,8 @@ export const routesMap: ServerRoutesMap[] = [
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<{ userId: string }>) => {
-      await Promise.all([sideEffectGetCollections(params)]);
+      const { getCollections } = await import("./components/collections/sideEffect");
+      await Promise.all([getCollections(params)]);
     },
     exact: true,
   },
@@ -182,20 +180,6 @@ const Header = loadable(() => import("./components/layouts/header"));
 
 @withStyles<typeof RootRoutes>(styles)
 class RootRoutes extends React.PureComponent<RootRoutesProps> {
-  private cancelToken = axios.CancelToken.source();
-  public componentDidMount = async () => {
-    const { dispatch } = this.props;
-    const user = await dispatch(checkAuthStatus());
-
-    if (user && user.member) {
-      dispatch(getCollections(user.member.id, this.cancelToken.token, true));
-    }
-  };
-
-  public componentWillUnmount() {
-    this.cancelToken.cancel();
-  }
-
   public render() {
     const { location } = this.props;
 

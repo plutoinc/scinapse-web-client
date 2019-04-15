@@ -14,6 +14,7 @@ import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
 import { AppState } from "./reducers";
 import "./helpers/rafPolyfill";
+import { checkAuthStatus } from "./components/auth/actions";
 const { pdfjs } = require("react-pdf");
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 declare var Sentry: any;
@@ -75,6 +76,10 @@ class PlutoRenderer {
     });
   }
 
+  private checkAuthStatus() {
+    this.store.dispatch(checkAuthStatus());
+  }
+
   private renderAtClient() {
     const theme = createMuiTheme({
       typography: {
@@ -107,6 +112,7 @@ class PlutoRenderer {
         document.getElementById("react-app"),
         () => {
           this.checkRender();
+          this.checkAuthStatus();
         }
       );
     });
