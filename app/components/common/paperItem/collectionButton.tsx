@@ -9,7 +9,7 @@ import ActionTicketManager from "../../../helpers/actionTicketManager";
 import Icon from "../../../icons";
 import { AppState } from "../../../reducers";
 import { CurrentUser } from "../../../model/currentUser";
-import { collectionSchema, Collection } from "../../../model/collection";
+import { Collection, userCollectionSchema } from "../../../model/collection";
 import { MyCollectionsState } from "../../../containers/paperShowCollectionControlButton/reducer";
 import CollectionPaperNote from "../../collectionPaperNote";
 import { checkAuth, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
@@ -19,7 +19,7 @@ function mapStateToProps(state: AppState) {
   return {
     currentUser: state.currentUser,
     myCollections: state.myCollections,
-    collection: denormalize(state.collectionShow.mainCollectionId, collectionSchema, state.entities),
+    collection: denormalize(state.collectionShow.mainCollectionId, userCollectionSchema, state.entities),
   };
 }
 
