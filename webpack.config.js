@@ -20,16 +20,7 @@ module.exports = {
   devtool: "inline-source-map",
   optimization: {
     splitChunks: {
-      chunks: "all",
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name(module) {
-            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-            return `npm.${packageName.replace("@", "")}`;
-          },
-        },
-      },
+      chunks: "all"
     },
   },
   resolve: {
@@ -116,10 +107,6 @@ module.exports = {
     new webpack.IgnorePlugin(/^\.\/pdf.worker.js$/),
     new BundleAnalyzerPlugin(),
   ],
-  externals: {
-    // "pdfjs-dist": "pdfjsDistWebPdfViewer",
-    // "pdfjs-dist/lib/web/pdf_link_service": "pdfjsDistWebPdfViewer.PDFJS",
-  },
   devServer: {
     contentBase: path.join(__dirname, "dist"),
     writeToDisk: filePath => {
