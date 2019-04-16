@@ -40,14 +40,6 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
         expName: exp.expName,
       });
     }
-
-    ActionTicketManager.trackTicket({
-      pageType: "signUp",
-      actionType: "fire",
-      actionArea: "signUp",
-      actionTag: "signUp",
-      actionLabel: "email",
-    });
   }
 
   async function handleSubmitSignUpWithSocial(values: SignUpFormValues) {
@@ -76,14 +68,6 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
           expName: exp.expName,
         });
       }
-
-      ActionTicketManager.trackTicket({
-        pageType: "signUp",
-        actionType: "fire",
-        actionArea: "signUp",
-        actionTag: "signUp",
-        actionLabel: params.token.vendor,
-      });
     } catch (err) {
       console.error(err);
       setSignUpStep(SIGN_UP_STEP.FIRST);

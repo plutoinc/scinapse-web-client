@@ -6,18 +6,10 @@ import alertToast from "../../../helpers/makePlutoToastAction";
 import { SignInWithEmailParams, SignInResult, OAUTH_VENDOR } from "../../../api/types/auth";
 import { trackDialogView } from "../../../helpers/handleGA";
 import PlutoAxios from "../../../api/pluto";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
 
 export function signInWithSocial(vendor: OAUTH_VENDOR, accessToken: string) {
   return async (dispatch: Dispatch<any>) => {
     const user = await AuthAPI.loginWithOAuth(vendor, accessToken);
-    ActionTicketManager.trackTicket({
-      pageType: "signIn",
-      actionType: "fire",
-      actionArea: "signIn",
-      actionTag: "signIn",
-      actionLabel: vendor,
-    });
     dispatch({
       type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
       payload: {
@@ -54,15 +46,6 @@ export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean
           oauthLoggedIn: signInResult.oauthLoggedIn,
         },
       });
-
-      ActionTicketManager.trackTicket({
-        pageType: "signIn",
-        actionType: "fire",
-        actionArea: "signIn",
-        actionTag: "signIn",
-        actionLabel: "email",
-      });
-
       return signInResult;
     } catch (err) {
       alertToast({
