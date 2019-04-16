@@ -34,7 +34,7 @@ import {
 import { trackEvent } from "../../helpers/handleGA";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { ActionCreators } from "../../actions/actionTypes";
-import { checkAuth, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
+import { blockUnverifiedUser, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
 const styles = require("./paperShowCollectionControlButton.scss");
 
 const LAST_USER_COLLECTION_ID = "l_u_c_id";
@@ -75,7 +75,7 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
     return (
       <button
         onClick={() => {
-          checkAuth({ authLevel: AUTH_LEVEL.VERIFIED });
+          blockUnverifiedUser({ authLevel: AUTH_LEVEL.VERIFIED, actionArea: "paperDescription", actionLabel: null });
           ActionTicketManager.trackTicket({
             pageType: "paperShow",
             actionType: "fire",
@@ -379,7 +379,13 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   private handleClickNewCollectionButton = () => {
     const { targetPaperId } = this.props;
 
-    if (checkAuth({ authLevel: AUTH_LEVEL.VERIFIED })) {
+    if (
+      !blockUnverifiedUser({
+        authLevel: AUTH_LEVEL.VERIFIED,
+        actionArea: "paperDescription",
+        actionLabel: "openNewCollectionDialog",
+      })
+    ) {
       GlobalDialogManager.openNewCollectionDialog(targetPaperId);
     }
 
@@ -481,7 +487,11 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
 
   private handleClickSaveButton = () => {
     const { dispatch, selectedCollection, targetPaperId } = this.props;
-    const isVerified = checkAuth({ authLevel: AUTH_LEVEL.VERIFIED });
+    const isVerified = !blockUnverifiedUser({
+      authLevel: AUTH_LEVEL.VERIFIED,
+      actionArea: "paperDescription",
+      actionLabel: "signInViaCollection",
+    });
 
     if (!isVerified) {
       trackEvent({

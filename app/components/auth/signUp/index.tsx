@@ -11,6 +11,7 @@ import { OAUTH_VENDOR, SignUpWithSocialParams } from "../../../api/types/auth";
 import { AppState } from "../../../reducers";
 import { closeDialog } from "../../dialog/actions";
 import EnvChecker from "../../../helpers/envChecker";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./signUp.scss");
 
 const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
@@ -24,9 +25,21 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
     token: dialogState.oauthResult ? dialogState.oauthResult.token : "",
     vendor: dialogState.oauthResult ? dialogState.oauthResult.vendor : "",
   });
+  const authContext = dialogState.authContext;
 
   async function handleSubmitSignUpWithEmail(values: SignUpFormValues) {
     await props.dispatch(Actions.signUpWithEmail(values));
+
+    if (authContext) {
+      ActionTicketManager.trackTicket({
+        pageType: authContext.pageType,
+        actionType: "fire",
+        actionArea: authContext.actionArea,
+        actionTag: "signUp",
+        actionLabel: authContext.actionLabel,
+        expName: authContext.expName,
+      });
+    }
   }
 
   async function handleSubmitSignUpWithSocial(values: SignUpFormValues) {
@@ -45,6 +58,25 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
 
     try {
       await props.dispatch(Actions.signUpWithSocial(params));
+      if (authContext) {
+        ActionTicketManager.trackTicket({
+          pageType: authContext.pageType,
+          actionType: "fire",
+          actionArea: authContext.actionArea,
+          actionTag: "signUp",
+          actionLabel: authContext.actionLabel,
+          expName: authContext.expName,
+        });
+      } else if (params.token.vendor === "ORCID") {
+        ActionTicketManager.trackTicket({
+          pageType: "home",
+          actionType: "fire",
+          actionArea: "unknown",
+          actionTag: "signUp",
+          actionLabel: "ORCID",
+          expName: "",
+        });
+      }
     } catch (err) {
       console.error(err);
       setSignUpStep(SIGN_UP_STEP.FIRST);

@@ -1,6 +1,4 @@
 import * as React from "react";
-import * as store from "store";
-import * as Cookies from "js-cookie";
 import { escapeRegExp } from "lodash";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import HighLightedContent from "../highLightedContent";
@@ -8,9 +6,7 @@ import { trackEvent } from "../../../helpers/handleGA";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
 import actionTicketManager from "../../../helpers/actionTicketManager";
-import { SESSION_ID_KEY, DEVICE_ID_KEY } from "../../../constants/actionTicket";
-import { BenefitExp, BENEFIT_EXPERIMENT_KEY, benefitSignUpTest } from "../../../constants/abTest";
-import { checkAuth, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
+import { checkBenefitExp } from "../../../helpers/checkBenefitExpCount";
 const styles = require("./title.scss");
 
 export interface TitleProps extends RouteComponentProps<any> {
@@ -69,56 +65,30 @@ class Title extends React.PureComponent<TitleProps, {}> {
 
     e.preventDefault();
 
-    const currentSessionId = store.get(SESSION_ID_KEY);
-    if (shouldBlockUnverifiedUser && Cookies.get(benefitSignUpTest.name) === "refPaperCountSession") {
-      const exp: BenefitExp | undefined = store.get(BENEFIT_EXPERIMENT_KEY);
-      if (!exp || exp.id !== currentSessionId) {
-        store.set(BENEFIT_EXPERIMENT_KEY, {
-          id: currentSessionId,
-          count: 1,
-        } as BenefitExp);
-      } else {
-        const nextCount = exp.count + 1;
-        store.set(BENEFIT_EXPERIMENT_KEY, {
-          id: currentSessionId,
-          count: nextCount,
-        } as BenefitExp);
-        if (nextCount > 3) {
-          store.set(BENEFIT_EXPERIMENT_KEY, {
-            id: currentSessionId,
-            count: 2,
-          } as BenefitExp);
+    if (shouldBlockUnverifiedUser) {
+      const isBlocked = checkBenefitExp({
+        type: "refPaperCountSession",
+        matching: "session",
+        maxCount: 3,
+        actionArea: actionArea!,
+        userActionType: "paperShow",
+        expName: "refPaperCountSession",
+      });
 
-          const isVerified = checkAuth({ authLevel: AUTH_LEVEL.VERIFIED, userActionType: "paperShow", actionArea });
-          if (!isVerified) return;
-        }
-      }
+      if (isBlocked) return;
     }
 
-    const currentDeviceId = store.get(DEVICE_ID_KEY);
-    if (currentPage === 1 && Cookies.get(benefitSignUpTest.name) === "getFromFirstResultPage") {
-      const exp: BenefitExp | undefined = store.get(BENEFIT_EXPERIMENT_KEY);
-      if (!exp || exp.id !== currentDeviceId) {
-        store.set(BENEFIT_EXPERIMENT_KEY, {
-          id: currentDeviceId,
-          count: 1,
-        } as BenefitExp);
-      } else {
-        const nextCount = exp.count + 1;
-        store.set(BENEFIT_EXPERIMENT_KEY, {
-          id: currentDeviceId,
-          count: nextCount,
-        } as BenefitExp);
-        if (nextCount > 3) {
-          store.set(BENEFIT_EXPERIMENT_KEY, {
-            id: currentDeviceId,
-            count: 2,
-          } as BenefitExp);
+    if (currentPage === 1) {
+      const isBlocked = checkBenefitExp({
+        type: "getFromFirstResultPage",
+        matching: "device",
+        maxCount: 3,
+        actionArea: "searchResult",
+        userActionType: "paperShow",
+        expName: "getFromFirstResultPage",
+      });
 
-          const isVerified = checkAuth({ authLevel: AUTH_LEVEL.VERIFIED, userActionType: "paperShow", actionArea });
-          if (!isVerified) return;
-        }
-      }
+      if (isBlocked) return;
     }
 
     actionTicketManager.trackTicket({

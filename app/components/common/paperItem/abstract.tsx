@@ -1,15 +1,11 @@
 import * as React from "react";
-import * as store from "store";
-import * as Cookies from "js-cookie";
 import { escapeRegExp } from "lodash";
 import HighLightedContent from "../highLightedContent";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./abstract.scss");
 import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { benefitSignUpTest, BENEFIT_EXPERIMENT_KEY, BenefitExp } from "../../../constants/abTest";
-import { DEVICE_ID_KEY } from "../../../constants/actionTicket";
-import { checkAuth, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
+import { checkBenefitExp } from "../../../helpers/checkBenefitExpCount";
 
 const MAX_LENGTH_OF_ABSTRACT = 500;
 
@@ -74,30 +70,17 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
     const { pageType, actionArea, paperId, currentPage } = this.props;
     const { isExtendContent } = this.state;
 
-    const currentDeviceId = store.get(DEVICE_ID_KEY);
-    if (!isExtendContent && currentPage === 1 && Cookies.get(benefitSignUpTest.name) === "getFromFirstResultPage") {
-      const exp: BenefitExp | undefined = store.get(BENEFIT_EXPERIMENT_KEY);
-      if (!exp || exp.id !== currentDeviceId) {
-        store.set(BENEFIT_EXPERIMENT_KEY, {
-          id: currentDeviceId,
-          count: 1,
-        } as BenefitExp);
-      } else {
-        const nextCount = exp.count + 1;
-        store.set(BENEFIT_EXPERIMENT_KEY, {
-          id: currentDeviceId,
-          count: nextCount,
-        } as BenefitExp);
-        if (nextCount > 3) {
-          store.set(BENEFIT_EXPERIMENT_KEY, {
-            id: currentDeviceId,
-            count: 2,
-          } as BenefitExp);
+    if (!isExtendContent && currentPage === 1) {
+      const isBlocked = checkBenefitExp({
+        type: "getFromFirstResultPage",
+        matching: "device",
+        maxCount: 3,
+        actionArea: "abstract",
+        userActionType: "paperShow",
+        expName: "getFromFirstResultPage",
+      });
 
-          const isVerified = checkAuth({ authLevel: AUTH_LEVEL.VERIFIED, userActionType: "paperShow", actionArea });
-          if (!isVerified) return;
-        }
-      }
+      if (isBlocked) return;
     }
 
     this.setState({ isExtendContent: !isExtendContent });

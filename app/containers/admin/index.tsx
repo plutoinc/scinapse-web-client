@@ -12,7 +12,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import { Dispatch, connect } from "react-redux";
 import { AppState } from "../../reducers";
-import { checkAuth } from "../../helpers/checkAuthDialog";
+import { blockUnverifiedUser, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
 const styles = require("./admin.scss");
 
 const BLOG_SCRIBER_API_HOST = "https://7hnqfzk1r6.execute-api.us-east-1.amazonaws.com/prod/blogLinks";
@@ -274,7 +274,7 @@ class AdminComponent extends React.PureComponent<AdminComponentProps, AdminCompo
 
   private handleClickReload = async () => {
     try {
-      if (!checkAuth) {
+      if (blockUnverifiedUser({ authLevel: AUTH_LEVEL.VERIFIED, actionArea: "unknown", actionLabel: "admin" })) {
         throw new Error();
       }
 

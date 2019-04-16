@@ -3,9 +3,23 @@ import AuthAPI from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { closeDialog } from "../../dialog/actions";
 import alertToast from "../../../helpers/makePlutoToastAction";
-import { SignInWithEmailParams, SignInResult } from "../../../api/types/auth";
+import { SignInWithEmailParams, SignInResult, OAUTH_VENDOR } from "../../../api/types/auth";
 import { trackDialogView } from "../../../helpers/handleGA";
 import PlutoAxios from "../../../api/pluto";
+
+export function signInWithSocial(vendor: OAUTH_VENDOR, accessToken: string) {
+  return async (dispatch: Dispatch<any>) => {
+    const user = await AuthAPI.loginWithOAuth(vendor, accessToken);
+    dispatch({
+      type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+      payload: {
+        user: user.member,
+        loggedIn: user.loggedIn,
+        oauthLoggedIn: user.oauthLoggedIn,
+      },
+    });
+  };
+}
 
 export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean) {
   return async (dispatch: Dispatch<any>) => {
@@ -32,7 +46,6 @@ export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean
           oauthLoggedIn: signInResult.oauthLoggedIn,
         },
       });
-
       return signInResult;
     } catch (err) {
       alertToast({

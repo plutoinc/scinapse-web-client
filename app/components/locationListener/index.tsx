@@ -20,10 +20,11 @@ import {
   PRIVACY_POLICY_PATH,
 } from "../../constants/routes";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
-import { ACTION_TYPES, ActionCreators } from "../../actions/actionTypes";
+import { ActionCreators } from "../../actions/actionTypes";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import { GLOBAL_DIALOG_TYPE } from "../dialog/reducer";
 import { SIGN_UP_STEP } from "../auth/signUp/types";
+import { signInWithSocial } from "../auth/signIn/actions";
 
 interface LocationListenerProps extends RouteComponentProps<{}> {
   dispatch: Dispatch<any>;
@@ -93,14 +94,14 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
       ) {
         const status = await AuthAPI.checkOAuthStatus("ORCID", hashParams.id_token);
         if (status.isConnected) {
-          const user = await AuthAPI.loginWithOAuth("ORCID", hashParams.id_token);
-          dispatch({
-            type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
-            payload: {
-              user: user.member,
-              loggedIn: user.loggedIn,
-              oauthLoggedIn: user.oauthLoggedIn,
-            },
+          await dispatch(signInWithSocial("ORCID", hashParams.id_token));
+          ActionTicketManager.trackTicket({
+            pageType: "home",
+            actionType: "fire",
+            actionArea: "unknown",
+            actionTag: "signIn",
+            actionLabel: "ORCID",
+            expName: "",
           });
           window.close();
         } else {
