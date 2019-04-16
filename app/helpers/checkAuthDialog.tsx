@@ -29,9 +29,7 @@ export function blockUnverifiedUser(params: BlockByBenefitExpParams): boolean {
       userActionType,
       benefitExpContext: {
         pageType: getCurrentPageType(),
-        actionType: "fire",
         actionArea: actionArea,
-        actionTag: "blockUnsignedUser",
         actionLabel: actionLabel,
         expName,
       },

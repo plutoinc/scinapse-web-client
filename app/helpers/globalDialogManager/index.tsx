@@ -5,22 +5,23 @@ import { Collection } from "../../model/collection";
 import { Paper } from "../../model/paper";
 import { benefitExpTicketContext } from "../../constants/abTest";
 
-interface OpenSignUpDialogParams {
+interface openAuthDialogParams {
   benefitExpContext: benefitExpTicketContext;
   userActionType?: Scinapse.ActionTicket.ActionTagType;
 }
 
 class GlobalDialogManager {
-  public openSignInDialog(userActionType?: Scinapse.ActionTicket.ActionTagType) {
+  public openSignInDialog(params?: openAuthDialogParams) {
     StoreManager.store.dispatch(
       ActionCreators.openGlobalDialog({
         type: GLOBAL_DIALOG_TYPE.SIGN_IN,
-        userActionType,
+        userActionType: params && params.userActionType,
+        expContext: params && params.benefitExpContext,
       })
     );
   }
 
-  public openSignUpDialog(params?: OpenSignUpDialogParams) {
+  public openSignUpDialog(params?: openAuthDialogParams) {
     StoreManager.store.dispatch(
       ActionCreators.openGlobalDialog({
         type: GLOBAL_DIALOG_TYPE.SIGN_UP,

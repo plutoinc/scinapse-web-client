@@ -13,7 +13,6 @@ import BubblePopover from "../common/bubblePopover";
 import { AppState } from "../../reducers";
 import Icon from "../../icons";
 import { signOut } from "../auth/actions";
-import { openSignIn } from "../dialog/actions";
 import { trackAction, trackDialogView } from "../../helpers/handleGA";
 import { HeaderProps } from "./types/header";
 import { withStyles } from "../../helpers/withStylesHelper";
@@ -266,13 +265,23 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private handleOpenSignIn = () => {
-    const { dispatch } = this.props;
-
-    dispatch(openSignIn());
+    GlobalDialogManager.openSignInDialog({
+      benefitExpContext: {
+        pageType: getCurrentPageType(),
+        actionArea: "topBar",
+        actionLabel: null,
+      },
+    });
   };
 
   private handleOpenSignUp = () => {
-    GlobalDialogManager.openSignUpDialog();
+    GlobalDialogManager.openSignUpDialog({
+      benefitExpContext: {
+        pageType: getCurrentPageType(),
+        actionArea: "topBar",
+        actionLabel: null,
+      },
+    });
   };
 
   private handleToggleUserDropdown = () => {

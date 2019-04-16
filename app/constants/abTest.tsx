@@ -29,8 +29,6 @@ export interface BenefitExp {
 export interface benefitExpTicketContext {
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType | null;
-  actionType: "fire" | "view";
-  actionTag: Scinapse.ActionTicket.ActionTagType;
   actionLabel: string | null;
   expName?: string;
 }
