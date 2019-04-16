@@ -11,6 +11,7 @@ import { OAUTH_VENDOR, SignUpWithSocialParams } from "../../../api/types/auth";
 import { AppState } from "../../../reducers";
 import { closeDialog } from "../../dialog/actions";
 import EnvChecker from "../../../helpers/envChecker";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./signUp.scss");
 
 const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
@@ -24,9 +25,29 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
     token: dialogState.oauthResult ? dialogState.oauthResult.token : "",
     vendor: dialogState.oauthResult ? dialogState.oauthResult.vendor : "",
   });
+  const exp = dialogState.expContext;
 
   async function handleSubmitSignUpWithEmail(values: SignUpFormValues) {
     await props.dispatch(Actions.signUpWithEmail(values));
+
+    if (exp) {
+      ActionTicketManager.trackTicket({
+        pageType: exp.pageType,
+        actionType: "fire",
+        actionArea: exp.actionArea,
+        actionTag: "signUp",
+        actionLabel: exp.actionLabel,
+        expName: exp.expName,
+      });
+    }
+
+    ActionTicketManager.trackTicket({
+      pageType: "signUp",
+      actionType: "fire",
+      actionArea: "signUp",
+      actionTag: "signUp",
+      actionLabel: "email",
+    });
   }
 
   async function handleSubmitSignUpWithSocial(values: SignUpFormValues) {
@@ -45,6 +66,24 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
 
     try {
       await props.dispatch(Actions.signUpWithSocial(params));
+      if (exp) {
+        ActionTicketManager.trackTicket({
+          pageType: exp.pageType,
+          actionType: "fire",
+          actionArea: exp.actionArea,
+          actionTag: "signUp",
+          actionLabel: exp.actionLabel,
+          expName: exp.expName,
+        });
+      }
+
+      ActionTicketManager.trackTicket({
+        pageType: "signUp",
+        actionType: "fire",
+        actionArea: "signUp",
+        actionTag: "signUp",
+        actionLabel: params.token.vendor,
+      });
     } catch (err) {
       console.error(err);
       setSignUpStep(SIGN_UP_STEP.FIRST);

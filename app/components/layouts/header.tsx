@@ -403,7 +403,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
                 pageType: getCurrentPageType(),
                 actionType: "fire",
                 actionArea: "topBar",
-                actionTag: "signIn",
+                actionTag: "signInPopup",
                 actionLabel: null,
               });
             }}
@@ -419,7 +419,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
                 pageType: getCurrentPageType(),
                 actionType: "fire",
                 actionArea: "topBar",
-                actionTag: "signUp",
+                actionTag: "signUpPopup",
                 actionLabel: null,
               });
             }}

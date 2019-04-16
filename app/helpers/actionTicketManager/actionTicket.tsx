@@ -49,6 +49,7 @@ export default class ActionTicket {
       this.actionArea = params.actionArea;
       this.pageType = params.pageType;
       this.actionLabel = params.actionLabel;
+      this.expName = params.expName || "";
     }
   }
 

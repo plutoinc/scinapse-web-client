@@ -11,28 +11,40 @@ export enum AUTH_LEVEL {
   ADMIN,
 }
 
-interface CheckAuthParams {
+interface BlockByBenefitExpParams {
   authLevel: AUTH_LEVEL;
+  actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType;
+  actionLabel: string | null;
   userActionType?: Scinapse.ActionTicket.ActionTagType;
-  actionArea?: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType;
-  actionLabel?: string;
+  expName?: string;
 }
 
-export function checkAuth(params: CheckAuthParams): boolean {
-  const { authLevel, userActionType, actionArea, actionLabel } = params;
+export function blockUnverifiedUser(params: BlockByBenefitExpParams): boolean {
+  const { authLevel, userActionType, actionArea, actionLabel, expName } = params;
   const state: AppState = StoreManager.store.getState();
   const { currentUser } = state;
 
   if (authLevel > AUTH_LEVEL.UNSIGNED && !currentUser.isLoggedIn) {
-    GlobalDialogManager.openSignUpDialog(userActionType);
+    GlobalDialogManager.openSignUpDialog({
+      userActionType,
+      benefitExpContext: {
+        pageType: getCurrentPageType(),
+        actionType: "fire",
+        actionArea: actionArea,
+        actionTag: "blockUnsignedUser",
+        actionLabel: actionLabel,
+        expName,
+      },
+    });
     ActionTicketManager.trackTicket({
       pageType: getCurrentPageType(),
       actionType: "fire",
-      actionArea: actionArea || "",
+      actionArea: actionArea,
       actionTag: "blockUnsignedUser",
-      actionLabel: actionLabel || "",
+      actionLabel: actionLabel,
+      expName,
     });
-    return false;
+    return true;
   }
 
   if (authLevel >= AUTH_LEVEL.VERIFIED && (!currentUser.oauthLoggedIn && !currentUser.emailVerified)) {
@@ -40,11 +52,11 @@ export function checkAuth(params: CheckAuthParams): boolean {
     ActionTicketManager.trackTicket({
       pageType: getCurrentPageType(),
       actionType: "fire",
-      actionArea: actionArea || "",
+      actionArea: actionArea,
       actionTag: "blockUnverifiedUser",
-      actionLabel: actionLabel || "",
+      actionLabel: actionLabel,
     });
-    return false;
+    return true;
   }
-  return true;
+  return false;
 }

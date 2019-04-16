@@ -1,9 +1,15 @@
 import * as React from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { SignInResult, OAuthCheckParams } from "../../../api/types/auth";
+import { connect, Dispatch } from "react-redux";
+import { OAuthCheckParams } from "../../../api/types/auth";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import AuthAPI from "../../../api/auth";
 import Icon from "../../../icons";
+import { signInWithSocial } from "../signIn/actions";
+import { closeDialog } from "../../dialog/actions";
+import { AppState } from "../../../reducers";
+import { DialogState } from "../../dialog/reducer";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
 const s = require("./authButton.scss");
 
 declare var gapi: any;
@@ -12,14 +18,15 @@ interface AuthButtonProps
   extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
   isLoading: boolean;
   text: string;
+  dispatch: Dispatch<any>;
+  dialogState: DialogState;
   iconName?: string;
   iconClassName?: string;
-  onSignInWithSocial?: (user: SignInResult) => void;
   onSignUpWithSocial: (values: OAuthCheckParams) => void;
 }
 
 const AuthButton: React.FunctionComponent<AuthButtonProps> = props => {
-  const { isLoading, text, iconName, iconClassName, onSignInWithSocial, onSignUpWithSocial, ...btnProps } = props;
+  const { dispatch, isLoading, text, iconName, iconClassName, onSignUpWithSocial, dialogState, ...btnProps } = props;
   const buttonEl = React.useRef<HTMLButtonElement | null>(null);
   let auth2: any;
 
@@ -43,8 +50,19 @@ const AuthButton: React.FunctionComponent<AuthButtonProps> = props => {
               const status = await AuthAPI.checkOAuthStatus("GOOGLE", idToken);
 
               if (status.isConnected) {
-                const user = await AuthAPI.loginWithOAuth("GOOGLE", idToken);
-                onSignInWithSocial && onSignInWithSocial(user);
+                await dispatch(signInWithSocial("GOOGLE", idToken));
+                const exp = dialogState.expContext;
+                if (exp) {
+                  ActionTicketManager.trackTicket({
+                    pageType: exp.pageType,
+                    actionType: "fire",
+                    actionArea: exp.actionArea,
+                    actionTag: "signIn",
+                    actionLabel: exp.actionLabel,
+                    expName: exp.expName,
+                  });
+                }
+                dispatch(closeDialog());
               } else {
                 onSignUpWithSocial &&
                   onSignUpWithSocial({
@@ -81,4 +99,10 @@ const AuthButton: React.FunctionComponent<AuthButtonProps> = props => {
   );
 };
 
-export default withStyles<typeof AuthButton>(s)(AuthButton);
+function mapStateToProps(state: AppState) {
+  return {
+    dialogState: state.dialog,
+  };
+}
+
+export default connect(mapStateToProps)(withStyles<typeof AuthButton>(s)(AuthButton));

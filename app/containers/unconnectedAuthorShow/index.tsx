@@ -24,7 +24,7 @@ import Footer from "../../components/layouts/footer";
 import AuthorShowHeader from "../../components/authorShowHeader";
 import { SuggestAffiliation } from "../../api/suggest";
 import { Affiliation } from "../../model/affiliation";
-import { AUTH_LEVEL, checkAuth } from "../../helpers/checkAuthDialog";
+import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
 import { AppState } from "../../reducers";
 import { fetchAuthorPapers } from "../../actions/author";
 import EnvChecker from "../../helpers/envChecker";
@@ -225,7 +225,13 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
   private toggleModifyProfileDialog = () => {
     const { dispatch } = this.props;
 
-    if (checkAuth({ authLevel: AUTH_LEVEL.VERIFIED })) {
+    if (
+      !blockUnverifiedUser({
+        authLevel: AUTH_LEVEL.VERIFIED,
+        actionArea: "authorShow",
+        actionLabel: "toggleConnectProfileDialog",
+      })
+    ) {
       dispatch(toggleConnectProfileDialog());
     }
   };

@@ -5,7 +5,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import AuthInputBox from "../../common/inputBox/authInputBox";
-import { GLOBAL_DIALOG_TYPE } from "../../dialog/reducer";
+import { GLOBAL_DIALOG_TYPE, DialogState } from "../../dialog/reducer";
 import AuthButton from "../authButton";
 import GoogleAuthButton from "../authButton/googleAuthButton";
 import ORSeparator from "../separator";
@@ -14,12 +14,14 @@ import AuthAPI from "../../../api/auth";
 import { SignInResult } from "../../../api/types/auth";
 import { getCollections } from "../../collections/actions";
 import { closeDialog } from "../../dialog/actions";
-import { signInWithEmail } from "./actions";
+import { signInWithEmail, signInWithSocial } from "./actions";
 import validateEmail from "../../../helpers/validateEmail";
 import AuthGuideContext from "../authGuideContext";
-import { ACTION_TYPES, ActionCreators } from "../../../actions/actionTypes";
+import { ActionCreators } from "../../../actions/actionTypes";
 import { SIGN_UP_STEP } from "../signUp/types";
 import { handleClickORCIDBtn } from "../signUp/actions";
+import { AppState } from "../../../reducers";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
 const s = require("./signIn.scss");
 
 declare var FB: any;
@@ -31,6 +33,7 @@ interface EmailFormValues {
 
 interface SignInProps {
   handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void;
+  dialogState: DialogState;
   dispatch: Dispatch<any>;
   userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
 }
@@ -63,15 +66,18 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
         const status = await AuthAPI.checkOAuthStatus("FACEBOOK", accessToken);
 
         if (status.isConnected) {
-          const user = await AuthAPI.loginWithOAuth("FACEBOOK", accessToken);
-          props.dispatch({
-            type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
-            payload: {
-              user: user.member,
-              loggedIn: user.loggedIn,
-              oauthLoggedIn: user.oauthLoggedIn,
-            },
-          });
+          await props.dispatch(signInWithSocial("FACEBOOK", accessToken));
+          const exp = props.dialogState.expContext;
+          if (exp) {
+            ActionTicketManager.trackTicket({
+              pageType: exp.pageType,
+              actionType: "fire",
+              actionArea: exp.actionArea,
+              actionTag: "signIn",
+              actionLabel: exp.actionLabel,
+              expName: exp.expName,
+            });
+          }
           props.dispatch(closeDialog());
         } else {
           props.dispatch(
@@ -181,17 +187,6 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
             style={{ ...oAuthBtnBaseStyle, backgroundColor: "#dc5240" }}
             iconName="GOOGLE_LOGO"
             iconClassName={s.googleIconWrapper}
-            onSignInWithSocial={(user: SignInResult) => {
-              props.dispatch({
-                type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
-                payload: {
-                  user: user.member,
-                  loggedIn: user.loggedIn,
-                  oauthLoggedIn: user.oauthLoggedIn,
-                },
-              });
-              props.dispatch(closeDialog());
-            }}
             onSignUpWithSocial={values => {
               props.dispatch(
                 ActionCreators.changeGlobalDialog({
@@ -216,4 +211,10 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
   );
 };
 
-export default withRouter(connect()(withStyles<typeof SignIn>(s)(SignIn)));
+function mapStateToProps(state: AppState) {
+  return {
+    dialogState: state.dialog,
+  };
+}
+
+export default withRouter(connect(mapStateToProps)(withStyles<typeof SignIn>(s)(SignIn)));

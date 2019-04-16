@@ -9,7 +9,7 @@ import { Paper } from "../../model/paper";
 import Icon from "../../icons";
 import { getPDFLink } from "../../helpers/getPDFLink";
 import { CurrentUser } from "../../model/currentUser";
-import { checkAuth, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
+import { blockUnverifiedUser, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
 const s = require("./actionBar.scss");
 
 interface PaperShowActionBarProps {
@@ -38,7 +38,13 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
             <div className={s.actionItem}>
               <button
                 onClick={() => {
-                  if (checkAuth({ authLevel: AUTH_LEVEL.VERIFIED })) {
+                  if (
+                    !blockUnverifiedUser({
+                      authLevel: AUTH_LEVEL.VERIFIED,
+                      actionArea: "paperDescription",
+                      actionLabel: "clickRequestFullPaper",
+                    })
+                  ) {
                     setIsOpen(true);
                   }
 

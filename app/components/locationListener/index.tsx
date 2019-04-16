@@ -20,13 +20,16 @@ import {
   PRIVACY_POLICY_PATH,
 } from "../../constants/routes";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
-import { ACTION_TYPES, ActionCreators } from "../../actions/actionTypes";
+import { ActionCreators } from "../../actions/actionTypes";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
-import { GLOBAL_DIALOG_TYPE } from "../dialog/reducer";
+import { GLOBAL_DIALOG_TYPE, DialogState } from "../dialog/reducer";
 import { SIGN_UP_STEP } from "../auth/signUp/types";
+import { signInWithSocial } from "../auth/signIn/actions";
+import { AppState } from "../../reducers";
 
 interface LocationListenerProps extends RouteComponentProps<{}> {
   dispatch: Dispatch<any>;
+  dialogState: DialogState;
 }
 export interface HistoryInformation {
   key: string;
@@ -80,7 +83,7 @@ export function getCurrentPageType(): Scinapse.ActionTicket.PageType {
 
 class LocationListener extends React.PureComponent<LocationListenerProps> {
   public async componentDidMount() {
-    const { location, dispatch } = this.props;
+    const { location, dispatch, dialogState } = this.props;
 
     if (!EnvChecker.isOnServer() && location.hash) {
       const hashParams = parse(location.hash.slice(1));
@@ -93,15 +96,18 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
       ) {
         const status = await AuthAPI.checkOAuthStatus("ORCID", hashParams.id_token);
         if (status.isConnected) {
-          const user = await AuthAPI.loginWithOAuth("ORCID", hashParams.id_token);
-          dispatch({
-            type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
-            payload: {
-              user: user.member,
-              loggedIn: user.loggedIn,
-              oauthLoggedIn: user.oauthLoggedIn,
-            },
-          });
+          await dispatch(signInWithSocial("ORCID", hashParams.id_token));
+          const exp = dialogState.expContext;
+          if (exp) {
+            ActionTicketManager.trackTicket({
+              pageType: exp.pageType,
+              actionType: "fire",
+              actionArea: exp.actionArea,
+              actionTag: "signIn",
+              actionLabel: exp.actionLabel,
+              expName: exp.expName,
+            });
+          }
           window.close();
         } else {
           dispatch(
@@ -189,4 +195,10 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
   }
 }
 
-export default connect()(withRouter(LocationListener));
+function mapStateToProps(state: AppState) {
+  return {
+    dialogState: state.dialog,
+  };
+}
+
+export default connect(mapStateToProps)(withRouter(LocationListener));

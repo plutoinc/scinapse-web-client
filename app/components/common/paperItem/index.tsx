@@ -6,8 +6,6 @@ import Title from "./title";
 import VenueAndAuthors from "./venueAndAuthors";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Paper } from "../../../model/paper";
-import EnvChecker from "../../../helpers/envChecker";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
 import SavedCollections from "./savedCollections";
 const styles = require("./paperItem.scss");
 
@@ -33,34 +31,6 @@ export interface PaperItemProps {
 }
 
 class BasePaperItem extends React.PureComponent<PaperItemProps> {
-  private paperItemWrapper: HTMLDivElement | null;
-
-  public componentDidMount() {
-    const { pageType, paper, actionArea } = this.props;
-    if (!EnvChecker.isOnServer() && this.paperItemWrapper) {
-      const options = {
-        threshold: 1.0,
-      };
-
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            ActionTicketManager.trackTicket({
-              pageType,
-              actionType: "view",
-              actionArea: actionArea || pageType,
-              actionTag: "paperShow",
-              actionLabel: String(paper.id),
-            });
-            observer.unobserve(this.paperItemWrapper!);
-          }
-        });
-      }, options);
-
-      observer.observe(this.paperItemWrapper);
-    }
-  }
-
   public render() {
     const {
       searchQueryText,
@@ -121,11 +91,7 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
     }
 
     return (
-      <div
-        ref={el => (this.paperItemWrapper = el)}
-        style={wrapperStyle}
-        className={`${wrapperClassName ? wrapperClassName : styles.paperItemWrapper}`}
-      >
+      <div style={wrapperStyle} className={`${wrapperClassName ? wrapperClassName : styles.paperItemWrapper}`}>
         <div className={styles.contentSection}>
           {!!relation && relation.savedInCollections.length >= 1 ? (
             <SavedCollections collections={relation.savedInCollections} />

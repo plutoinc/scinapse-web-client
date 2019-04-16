@@ -8,7 +8,7 @@ interface Test {
   userGroup: UserGroup[];
 }
 
-type BenefitExpType =
+export type BenefitExpType =
   | "queryCountSession"
   | "refPaperCountSession"
   | "getFromFirstResultPage"
@@ -22,7 +22,17 @@ export type BenefitExpValue = { [key in BenefitExpType]: BenefitExp };
 export interface BenefitExp {
   sessionId: string;
   deviceId: string;
+  shouldAvoidBlock: boolean;
   count: number;
+}
+
+export interface benefitExpTicketContext {
+  pageType: Scinapse.ActionTicket.PageType;
+  actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType | null;
+  actionType: "fire" | "view";
+  actionTag: Scinapse.ActionTicket.ActionTagType;
+  actionLabel: string | null;
+  expName?: string;
 }
 
 export const LIVE_TESTS: Test[] = [];

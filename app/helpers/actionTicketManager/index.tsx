@@ -15,6 +15,7 @@ import {
   DESTINATION_URL,
   TIME_INTERVAL_TO_SEND_TICKETS,
 } from "../../constants/actionTicket";
+import { trackEvent } from "../handleGA";
 
 class ActionTicketManager {
   public queue: ActionTicket[] = [];
@@ -38,12 +39,18 @@ class ActionTicketManager {
     if (!EnvChecker.isOnServer() && EnvChecker.isDev()) {
       console.log(params);
     }
-    if (!EnvChecker.isOnServer() && EnvChecker.isProdBrowser()) {
+    if (!EnvChecker.isOnServer()) {
       this.renewSessionKey();
       const ticket = new ActionTicket(params);
       this.addToQueue([ticket]);
 
-      if (this.queue.length > MAXIMUM_TICKET_COUNT_IN_QUEUE) {
+      trackEvent({
+        category: params.actionArea || "",
+        action: params.actionTag,
+        label: params.actionLabel || "",
+      });
+
+      if (this.queue.length > MAXIMUM_TICKET_COUNT_IN_QUEUE && EnvChecker.isProdBrowser()) {
         this.sendTickets();
       }
     }

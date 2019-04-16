@@ -4,6 +4,7 @@ import { Collection } from "../../model/collection";
 import { Paper } from "../../model/paper";
 import { SIGN_UP_STEP } from "../auth/signUp/types";
 import { OAuthCheckParams } from "../../api/types/auth";
+import { benefitExpTicketContext } from "../../constants/abTest";
 
 export enum GLOBAL_DIALOG_TYPE {
   SIGN_IN,
@@ -28,6 +29,8 @@ export interface DialogState
 
       signUpStep: SIGN_UP_STEP | null;
       oauthResult: OAuthCheckParams | null;
+      userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
+      expContext: benefitExpTicketContext | undefined;
 
       citationPaperId: number | undefined;
       citationText: string;
@@ -42,9 +45,7 @@ export interface DialogState
       collection: Collection | undefined;
 
       authorListTargetPaper: Paper | undefined;
-
-      userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
-    }> {}
+    }> {} // TODO: remove below attribute after finishing the experiment
 
 export const DIALOG_INITIAL_STATE: DialogState = {
   isLoading: false,
@@ -54,6 +55,8 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   // sign up dialog
   signUpStep: null,
   oauthResult: null,
+  userActionType: undefined,
+  expContext: undefined,
   // citation dialog
   citationPaperId: 0,
   citationText: "",
@@ -68,7 +71,6 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   collection: undefined,
   // author list dialog
   authorListTargetPaper: undefined,
-  userActionType: undefined,
 };
 
 export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actions): DialogState {
@@ -83,6 +85,7 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
         collection: action.payload.collection,
         authorListTargetPaper: action.payload.authorListTargetPaper,
         userActionType: action.payload.userActionType,
+        expContext: action.payload.expContext,
       };
     }
 
