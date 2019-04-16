@@ -1,0 +1,18 @@
+.container {
+  width: 100%;
+  max-width: 792px;
+  height: 100%;
+  min-height: 44px;
+  border-radius: 4px;
+  background-color: $gray0;
+}
+
+.contentWrapper {
+  padding: 12px 32px;
+
+  .contentText {
+    font-size: 14px;
+    line-height: 1.43;
+    color: #1b2a36;
+  }
+}

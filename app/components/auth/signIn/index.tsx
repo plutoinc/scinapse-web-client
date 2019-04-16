@@ -22,6 +22,7 @@ import { SIGN_UP_STEP } from "../signUp/types";
 import { handleClickORCIDBtn } from "../signUp/actions";
 import { AppState } from "../../../reducers";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
+import AuthContextText from "../authContextText";
 const s = require("./signIn.scss");
 
 declare var FB: any;
@@ -133,92 +134,95 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
   }
 
   return (
-    <div className={s.authContainer}>
-      <AuthGuideContext userActionType={props.userActionType} />
-      <div className={s.authFormWrapper}>
-        <AuthTabs onClickTab={props.handleChangeDialogType} activeTab="sign in" />
-        <div className={s.formWrapper}>
-          <Formik
-            initialValues={{ email: "", password: "" }}
-            onSubmit={handleSubmit}
-            validate={validateForm}
-            validateOnChange={false}
-            render={() => {
-              return (
-                <Form>
-                  <Field
-                    name="email"
-                    type="email"
-                    component={AuthInputBox}
-                    placeholder="E-mail"
-                    iconName="EMAIL_ICON"
-                  />
-                  <Field
-                    name="password"
-                    type="password"
-                    component={AuthInputBox}
-                    placeholder="Password"
-                    iconName="PASSWORD_ICON"
-                  />
-                  {networkError && <div className={s.errorContent}>{networkError}</div>}
-                  <div
-                    onClick={() => {
-                      if (props.handleChangeDialogType) {
-                        props.handleChangeDialogType(GLOBAL_DIALOG_TYPE.RESET_PASSWORD);
-                      } else {
-                        GlobalDialogManager.openResetPasswordDialog();
-                      }
-                    }}
-                    className={s.forgotPasswordBox}
-                  >
-                    Forgot Password?
-                  </div>
-                  <AuthButton
-                    type="submit"
-                    isLoading={isLoading}
-                    text="SIGN IN"
-                    style={{ backgroundColor: "#6096ff", marginTop: "10px", fontSize: "14px" }}
-                  />
-                </Form>
-              );
-            }}
-          />
-          <ORSeparator />
-          <AuthButton
-            isLoading={isLoading}
-            text="CONTINUE WITH FACEBOOK"
-            style={{ ...oAuthBtnBaseStyle, backgroundColor: "#3859ab", marginTop: "18px" }}
-            iconName="FACEBOOK_LOGO"
-            iconClassName={s.fbIconWrapper}
-            onClick={handleClickFBLogin}
-          />
-          <GoogleAuthButton
-            isLoading={isLoading}
-            text="CONTINUE WITH GOOGLE"
-            style={{ ...oAuthBtnBaseStyle, backgroundColor: "#dc5240" }}
-            iconName="GOOGLE_LOGO"
-            iconClassName={s.googleIconWrapper}
-            onSignUpWithSocial={values => {
-              props.dispatch(
-                ActionCreators.changeGlobalDialog({
-                  type: GLOBAL_DIALOG_TYPE.SIGN_UP,
-                  signUpStep: SIGN_UP_STEP.WITH_SOCIAL,
-                  oauthResult: values,
-                })
-              );
-            }}
-          />
-          <AuthButton
-            isLoading={isLoading}
-            text="CONTINUE WITH ORCID"
-            style={{ ...oAuthBtnBaseStyle, backgroundColor: "#a5d027" }}
-            iconName="ORCID_LOGO"
-            iconClassName={s.orcidIconWrapper}
-            onClick={handleClickORCIDBtn}
-          />
+    <>
+      <AuthContextText userActionType={props.userActionType} />
+      <div className={s.authContainer}>
+        <AuthGuideContext userActionType={props.userActionType} />
+        <div className={s.authFormWrapper}>
+          <AuthTabs onClickTab={props.handleChangeDialogType} activeTab="sign in" />
+          <div className={s.formWrapper}>
+            <Formik
+              initialValues={{ email: "", password: "" }}
+              onSubmit={handleSubmit}
+              validate={validateForm}
+              validateOnChange={false}
+              render={() => {
+                return (
+                  <Form>
+                    <Field
+                      name="email"
+                      type="email"
+                      component={AuthInputBox}
+                      placeholder="E-mail"
+                      iconName="EMAIL_ICON"
+                    />
+                    <Field
+                      name="password"
+                      type="password"
+                      component={AuthInputBox}
+                      placeholder="Password"
+                      iconName="PASSWORD_ICON"
+                    />
+                    {networkError && <div className={s.errorContent}>{networkError}</div>}
+                    <div
+                      onClick={() => {
+                        if (props.handleChangeDialogType) {
+                          props.handleChangeDialogType(GLOBAL_DIALOG_TYPE.RESET_PASSWORD);
+                        } else {
+                          GlobalDialogManager.openResetPasswordDialog();
+                        }
+                      }}
+                      className={s.forgotPasswordBox}
+                    >
+                      Forgot Password?
+                    </div>
+                    <AuthButton
+                      type="submit"
+                      isLoading={isLoading}
+                      text="SIGN IN"
+                      style={{ backgroundColor: "#6096ff", marginTop: "10px", fontSize: "14px" }}
+                    />
+                  </Form>
+                );
+              }}
+            />
+            <ORSeparator />
+            <AuthButton
+              isLoading={isLoading}
+              text="CONTINUE WITH FACEBOOK"
+              style={{ ...oAuthBtnBaseStyle, backgroundColor: "#3859ab", marginTop: "18px" }}
+              iconName="FACEBOOK_LOGO"
+              iconClassName={s.fbIconWrapper}
+              onClick={handleClickFBLogin}
+            />
+            <GoogleAuthButton
+              isLoading={isLoading}
+              text="CONTINUE WITH GOOGLE"
+              style={{ ...oAuthBtnBaseStyle, backgroundColor: "#dc5240" }}
+              iconName="GOOGLE_LOGO"
+              iconClassName={s.googleIconWrapper}
+              onSignUpWithSocial={values => {
+                props.dispatch(
+                  ActionCreators.changeGlobalDialog({
+                    type: GLOBAL_DIALOG_TYPE.SIGN_UP,
+                    signUpStep: SIGN_UP_STEP.WITH_SOCIAL,
+                    oauthResult: values,
+                  })
+                );
+              }}
+            />
+            <AuthButton
+              isLoading={isLoading}
+              text="CONTINUE WITH ORCID"
+              style={{ ...oAuthBtnBaseStyle, backgroundColor: "#a5d027" }}
+              iconName="ORCID_LOGO"
+              iconClassName={s.orcidIconWrapper}
+              onClick={handleClickORCIDBtn}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
