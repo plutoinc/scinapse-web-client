@@ -67,15 +67,15 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
 
         if (status.isConnected) {
           await props.dispatch(signInWithSocial("FACEBOOK", accessToken));
-          const exp = props.dialogState.expContext;
-          if (exp) {
+          const authContext = props.dialogState.authContext;
+          if (authContext) {
             ActionTicketManager.trackTicket({
-              pageType: exp.pageType,
+              pageType: authContext.pageType,
               actionType: "fire",
-              actionArea: exp.actionArea,
+              actionArea: authContext.actionArea,
               actionTag: "signIn",
-              actionLabel: exp.actionLabel,
-              expName: exp.expName,
+              actionLabel: authContext.actionLabel,
+              expName: authContext.expName,
             });
           }
           props.dispatch(closeDialog());
@@ -105,6 +105,17 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
       setIsLoading(true);
       setNetworkError("");
       const res: SignInResult = await props.dispatch(signInWithEmail({ email, password }, isDialog));
+      const authContext = props.dialogState.authContext;
+      if (authContext) {
+        ActionTicketManager.trackTicket({
+          pageType: authContext.pageType,
+          actionType: "fire",
+          actionArea: authContext.actionArea,
+          actionTag: "signIn",
+          actionLabel: authContext.actionLabel,
+          expName: authContext.expName,
+        });
+      }
       if (res.member) {
         await props.dispatch(getCollections(res.member.id));
       }

@@ -97,15 +97,15 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
         const status = await AuthAPI.checkOAuthStatus("ORCID", hashParams.id_token);
         if (status.isConnected) {
           await dispatch(signInWithSocial("ORCID", hashParams.id_token));
-          const exp = dialogState.expContext;
-          if (exp) {
+          const authContext = dialogState.authContext;
+          if (authContext) {
             ActionTicketManager.trackTicket({
-              pageType: exp.pageType,
+              pageType: authContext.pageType,
               actionType: "fire",
-              actionArea: exp.actionArea,
+              actionArea: authContext.actionArea,
               actionTag: "signIn",
-              actionLabel: exp.actionLabel,
-              expName: exp.expName,
+              actionLabel: authContext.actionLabel,
+              expName: authContext.expName,
             });
           }
           window.close();

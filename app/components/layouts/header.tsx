@@ -266,7 +266,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
   private handleOpenSignIn = () => {
     GlobalDialogManager.openSignInDialog({
-      benefitExpContext: {
+      authContext: {
         pageType: getCurrentPageType(),
         actionArea: "topBar",
         actionLabel: null,
@@ -276,7 +276,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
   private handleOpenSignUp = () => {
     GlobalDialogManager.openSignUpDialog({
-      benefitExpContext: {
+      authContext: {
         pageType: getCurrentPageType(),
         actionArea: "topBar",
         actionLabel: null,

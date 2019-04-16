@@ -30,7 +30,7 @@ export interface DialogState
       signUpStep: SIGN_UP_STEP | null;
       oauthResult: OAuthCheckParams | null;
       userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
-      expContext: benefitExpTicketContext | undefined;
+      authContext: benefitExpTicketContext | undefined;
 
       citationPaperId: number | undefined;
       citationText: string;
@@ -56,7 +56,7 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   signUpStep: null,
   oauthResult: null,
   userActionType: undefined,
-  expContext: undefined,
+  authContext: undefined,
   // citation dialog
   citationPaperId: 0,
   citationText: "",
@@ -85,7 +85,7 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
         collection: action.payload.collection,
         authorListTargetPaper: action.payload.authorListTargetPaper,
         userActionType: action.payload.userActionType,
-        expContext: action.payload.expContext,
+        authContext: action.payload.authContext,
       };
     }
 

@@ -25,19 +25,19 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
     token: dialogState.oauthResult ? dialogState.oauthResult.token : "",
     vendor: dialogState.oauthResult ? dialogState.oauthResult.vendor : "",
   });
-  const exp = dialogState.expContext;
+  const authContext = dialogState.authContext;
 
   async function handleSubmitSignUpWithEmail(values: SignUpFormValues) {
     await props.dispatch(Actions.signUpWithEmail(values));
 
-    if (exp) {
+    if (authContext) {
       ActionTicketManager.trackTicket({
-        pageType: exp.pageType,
+        pageType: authContext.pageType,
         actionType: "fire",
-        actionArea: exp.actionArea,
+        actionArea: authContext.actionArea,
         actionTag: "signUp",
-        actionLabel: exp.actionLabel,
-        expName: exp.expName,
+        actionLabel: authContext.actionLabel,
+        expName: authContext.expName,
       });
     }
   }
@@ -58,14 +58,14 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
 
     try {
       await props.dispatch(Actions.signUpWithSocial(params));
-      if (exp) {
+      if (authContext) {
         ActionTicketManager.trackTicket({
-          pageType: exp.pageType,
+          pageType: authContext.pageType,
           actionType: "fire",
-          actionArea: exp.actionArea,
+          actionArea: authContext.actionArea,
           actionTag: "signUp",
-          actionLabel: exp.actionLabel,
-          expName: exp.expName,
+          actionLabel: authContext.actionLabel,
+          expName: authContext.expName,
         });
       }
     } catch (err) {

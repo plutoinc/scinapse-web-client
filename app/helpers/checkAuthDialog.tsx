@@ -27,7 +27,7 @@ export function blockUnverifiedUser(params: BlockByBenefitExpParams): boolean {
   if (authLevel > AUTH_LEVEL.UNSIGNED && !currentUser.isLoggedIn) {
     GlobalDialogManager.openSignUpDialog({
       userActionType,
-      benefitExpContext: {
+      authContext: {
         pageType: getCurrentPageType(),
         actionArea: actionArea,
         actionLabel: actionLabel,

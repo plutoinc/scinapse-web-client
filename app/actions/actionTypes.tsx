@@ -253,7 +253,7 @@ export const ActionCreators = {
     authorListTargetPaper?: Paper;
     collection?: Collection;
     userActionType?: Scinapse.ActionTicket.ActionTagType;
-    expContext?: benefitExpTicketContext;
+    authContext?: benefitExpTicketContext;
   }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
   },
