@@ -12,8 +12,10 @@ const ContextText: React.FunctionComponent<{
   const { subText } = props;
 
   return (
-    <div className={styles.contentWrapper}>
-      <span className={styles.contentText}>{subText}</span>
+    <div className={styles.container}>
+      <div className={styles.contentWrapper}>
+        <span className={styles.contentText}>{subText}</span>
+      </div>
     </div>
   );
 });
@@ -39,11 +41,7 @@ const ContextTextByActionType: React.FunctionComponent<AuthContextTextProps> = R
 
 const AuthContextText: React.FunctionComponent<AuthContextTextProps> = props => {
   const { userActionType } = props;
-  return (
-    <div className={styles.container}>
-      <ContextTextByActionType userActionType={userActionType} />
-    </div>
-  );
+  return <ContextTextByActionType userActionType={userActionType} />;
 };
 
 export default withStyles<typeof AuthContextText>(styles)(AuthContextText);
