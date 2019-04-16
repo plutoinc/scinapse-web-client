@@ -171,7 +171,7 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
     }
 
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT: {
-      return MY_COLLECTIONS_INITIAL_STATE;
+      return { ...MY_COLLECTIONS_INITIAL_STATE, otherUserCollectionIds: state.otherUserCollectionIds };
     }
 
     default:
