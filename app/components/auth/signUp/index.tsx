@@ -67,6 +67,15 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
           actionLabel: authContext.actionLabel,
           expName: authContext.expName,
         });
+      } else if (params.token.vendor === "ORCID") {
+        ActionTicketManager.trackTicket({
+          pageType: "home",
+          actionType: "fire",
+          actionArea: "unknown",
+          actionTag: "signUp",
+          actionLabel: "ORCID",
+          expName: "",
+        });
       }
     } catch (err) {
       console.error(err);

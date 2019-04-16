@@ -32,16 +32,19 @@ export function checkBenefitExp({
     ((matching === "session" && exp[type].sessionId === currentSessionId) ||
       (matching === "device" && exp[type].deviceId === currentDeviceId))
   ) {
-    if (exp[type].count >= maxCount && !exp[type].shouldAvoidBlock) {
-      const newExp = {
-        ...exp,
-        [type]: {
-          sessionId: currentSessionId,
-          deviceId: currentDeviceId,
-          count: exp[type].count + 1,
-          shouldAvoidBlock: true,
-        },
-      };
+    const nextCount = exp[type].count + 1;
+    const shouldBlock = nextCount >= maxCount && !exp[type].shouldAvoidBlock;
+    const newExp = {
+      ...exp,
+      [type]: {
+        sessionId: currentSessionId,
+        deviceId: currentDeviceId,
+        count: nextCount,
+        shouldAvoidBlock: shouldBlock,
+      },
+    };
+
+    if (shouldBlock) {
       store.set(BENEFIT_EXPERIMENT_KEY, newExp);
       return blockUnverifiedUser({
         authLevel: AUTH_LEVEL.VERIFIED,
@@ -51,15 +54,6 @@ export function checkBenefitExp({
         expName,
       });
     } else {
-      const newExp = {
-        ...exp,
-        [type]: {
-          sessionId: currentSessionId,
-          deviceId: currentDeviceId,
-          count: exp[type].count + 1,
-          shouldAvoidBlock: false,
-        },
-      };
       store.set(BENEFIT_EXPERIMENT_KEY, newExp);
       return false;
     }
