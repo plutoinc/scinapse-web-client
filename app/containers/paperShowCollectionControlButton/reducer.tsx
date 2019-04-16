@@ -5,6 +5,7 @@ export interface MyCollectionsState
       isFetchingPaper: boolean;
       isFetchingMemo: boolean;
       collectionIds: number[];
+      otherUserCollectionIds: number[];
       isLoadingCollections: boolean;
       isLoadingCollectionsInDropdown: boolean;
       isPositingNewCollection: boolean;
@@ -14,6 +15,9 @@ export interface MyCollectionsState
       isNoteDropdownOpen: boolean;
       isPostingNote: boolean;
       isNoteEditMode: boolean;
+      targetMemberId: number;
+      maxCollectionCount: number;
+      pageErrorCode: number | null;
     }> {}
 
 export const MY_COLLECTIONS_INITIAL_STATE: MyCollectionsState = {
@@ -24,23 +28,30 @@ export const MY_COLLECTIONS_INITIAL_STATE: MyCollectionsState = {
   isPositingNewCollection: false,
   hasFailedToPositingNewCollection: false,
   collectionIds: [],
+  otherUserCollectionIds: [],
   selectedCollectionId: 0,
   isCollectionDropdownOpen: false,
   isNoteDropdownOpen: false,
   isPostingNote: false,
   isNoteEditMode: false,
+  targetMemberId: 0,
+  maxCollectionCount: 0,
+  pageErrorCode: null,
 };
 
 export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE, action: Actions): MyCollectionsState {
   switch (action.type) {
     case ACTION_TYPES.COLLECTIONS_START_TO_GET_COLLECTIONS: {
-      return { ...state, isLoadingCollections: true };
+      return { ...state, isLoadingCollections: true, pageErrorCode: null };
     }
 
     case ACTION_TYPES.COLLECTIONS_SUCCEEDED_GET_COLLECTIONS: {
       return {
         ...state,
+        otherUserCollectionIds: action.payload.result,
+        maxCollectionCount: action.payload.numberOfElements,
         isLoadingCollections: false,
+        pageErrorCode: null,
       };
     }
 
@@ -91,6 +102,10 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
       };
     }
 
+    case ACTION_TYPES.COLLECTIONS_FAILED_TO_GET_PAGE_DATA: {
+      return { ...state, pageErrorCode: action.payload.statusCode };
+    }
+
     case ACTION_TYPES.GLOBAL_DIALOG_START_TO_POST_COLLECTION: {
       return { ...state, isPositingNewCollection: true, hasFailedToPositingNewCollection: false };
     }
@@ -133,6 +148,10 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
 
     case ACTION_TYPES.COLLECTIONS_SUCCEEDED_GET_MEMBER_COLLECTIONS: {
       return { ...state, collectionIds: action.payload.result, isLoadingCollections: false };
+    }
+
+    case ACTION_TYPES.COLLECTIONS_SUCCEEDED_GET_MEMBER: {
+      return { ...state, targetMemberId: action.payload.memberId };
     }
 
     case ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_GET_COLLECTIONS: {

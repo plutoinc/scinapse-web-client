@@ -719,7 +719,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToGetCollectionsInCollectionsPage(payload: GetUserCollectionsResponse) {
+  succeededToGetCollectionsInCollectionsPage(payload: GetCollectionsResponse) {
     return createAction({
       type: ACTION_TYPES.COLLECTIONS_SUCCEEDED_GET_COLLECTIONS,
       payload,

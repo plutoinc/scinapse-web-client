@@ -1,7 +1,7 @@
 import { CancelToken } from "axios";
 import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
-import { Collection, userCollectionSchema } from "../model/collection";
+import { Collection, userCollectionSchema, collectionSchema } from "../model/collection";
 import { Paper } from "../model/paper";
 import { PaperInCollection, paperInCollectionSchema } from "../model/paperInCollection";
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../components/common/sortBox";
@@ -144,7 +144,7 @@ class CollectionAPI extends PlutoAxios {
     title,
     description,
   }: PostCollectionParams): Promise<{
-    entities: { userCollections: { [collectionId: number]: Collection } };
+    entities: { collections: { [collectionId: number]: Collection } };
     result: number;
   }> {
     const res = await this.post("/collections", {
@@ -152,7 +152,7 @@ class CollectionAPI extends PlutoAxios {
       description,
     });
     const camelizedRes = camelCaseKeys(res.data.data);
-    const normalizedData = normalize(camelizedRes, userCollectionSchema);
+    const normalizedData = normalize(camelizedRes, collectionSchema);
     return normalizedData;
   }
 

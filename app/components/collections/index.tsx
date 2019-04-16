@@ -9,8 +9,7 @@ import * as parse from "date-fns/parse";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { getCollections } from "./sideEffect";
-import { Collection, userCollectionSchema } from "../../model/collection";
-import { UserCollectionsState } from "./reducer";
+import { Collection, userCollectionSchema, collectionSchema } from "../../model/collection";
 import { Member, memberSchema } from "../../model/member";
 import Footer from "../layouts/footer";
 import Icon from "../../icons";
@@ -21,23 +20,27 @@ import { CurrentUser } from "../../model/currentUser";
 import restoreScroll from "../../helpers/scrollRestoration";
 import alertToast from "../../helpers/makePlutoToastAction";
 import ErrorPage from "../error/errorPage";
+import { MyCollectionsState } from "../../containers/paperShowCollectionControlButton/reducer";
 const styles = require("./collections.scss");
 
 export interface UserCollectionsProps extends RouteComponentProps<{ userId: string }> {
   dispatch: Dispatch<any>;
-  userCollections: UserCollectionsState;
+  userCollections: MyCollectionsState;
   collections: Collection[] | undefined;
   member: Member | undefined;
   currentUser: CurrentUser;
 }
 
 function mapStateToProps(state: AppState) {
+  const itsMine = state.currentUser.id === state.myCollections.targetMemberId;
   return {
-    userCollections: state.userCollections,
-    collections: denormalize(state.userCollections.collectionIds, [userCollectionSchema], state.entities).filter(
-      (c: Collection) => !!c
-    ),
-    member: denormalize(state.userCollections.targetMemberId, memberSchema, state.entities),
+    userCollections: state.myCollections,
+    collections: denormalize(
+      itsMine ? state.myCollections.collectionIds : state.myCollections.otherUserCollectionIds,
+      itsMine ? [userCollectionSchema] : [collectionSchema],
+      state.entities
+    ).filter((c: Collection) => !!c),
+    member: denormalize(state.myCollections.targetMemberId, memberSchema, state.entities),
     currentUser: state.currentUser,
   };
 }
@@ -47,8 +50,15 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
   private cancelToken = axios.CancelToken.source();
 
   public async componentDidMount() {
-    const { location } = this.props;
-    await this.fetchCollections();
+    const { location, match, member } = this.props;
+
+    const currentCollectionUserId = parseInt(match.params.userId, 10);
+
+    if (!!member && member.id === currentCollectionUserId) {
+      await this.fetchCollections(member.id);
+    } else {
+      await this.fetchCollections();
+    }
     restoreScroll(location.key);
   }
 
@@ -81,7 +91,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
                 <div className={styles.leftBox}>
                   <div className={styles.titleBox}>
                     <span>{`${member.firstName} ${member.lastName || ""}'s collections`}</span>
-                    <span className={styles.collectionCount}>{userCollections.collectionIds.length}</span>
+                    <span className={styles.collectionCount}>{collections.length}</span>
                   </div>
                 </div>
                 <div className={styles.rightBox}>{this.getNewCollectionBtn()}</div>

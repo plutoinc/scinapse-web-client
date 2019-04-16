@@ -105,9 +105,16 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
       this.props.currentUserState.isLoggedIn
     ) {
       const currentUser = this.props.currentUserState;
+      const collection = this.props.myCollectionsState;
+      const itsMe = currentUser.id === collection.targetMemberId && collection.targetMemberId !== 0;
       this.cancelToken.cancel();
       this.cancelToken = axios.CancelToken.source();
       this.props.dispatch(getCollections(currentUser.id, this.cancelToken.token, true));
+      console.log(itsMe);
+
+      if (!itsMe) {
+        this.props.dispatch(getCollections(collection.targetMemberId, this.cancelToken.token, itsMe));
+      }
     }
   }
 

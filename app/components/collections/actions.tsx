@@ -1,7 +1,8 @@
 import axios, { CancelToken } from "axios";
 import { Dispatch } from "react-redux";
-import MemberAPI from "../../api/member";
+import MemberAPI, { GetCollectionsResponse } from "../../api/member";
 import { ActionCreators, ACTION_TYPES } from "../../actions/actionTypes";
+import { GetUserCollectionsResponse } from "../../api/member";
 
 export function getMember(memberId: number, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
@@ -37,13 +38,14 @@ export function getCollections(memberId: number, cancelToken?: CancelToken, itsM
     dispatch(ActionCreators.startToGetCollectionsInCollectionsPage());
 
     try {
-      const res = await MemberAPI.getCollections(memberId, cancelToken);
+      const res = await MemberAPI.getCollections(memberId, itsMe, cancelToken);
 
-      dispatch(ActionCreators.addEntity(res));
       if (itsMe) {
-        dispatch(ActionCreators.succeedToGetCollectionsInMember(res));
+        dispatch(ActionCreators.addEntity(res as GetUserCollectionsResponse));
+        dispatch(ActionCreators.succeedToGetCollectionsInMember(res as GetUserCollectionsResponse));
       } else {
-        dispatch(ActionCreators.succeededToGetCollectionsInCollectionsPage(res));
+        dispatch(ActionCreators.addEntity(res as GetCollectionsResponse));
+        dispatch(ActionCreators.succeededToGetCollectionsInCollectionsPage(res as GetCollectionsResponse));
       }
     } catch (err) {
       if (!axios.isCancel(err)) {
