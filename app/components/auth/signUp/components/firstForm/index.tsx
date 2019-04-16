@@ -13,6 +13,7 @@ import validateEmail from "../../../../../helpers/validateEmail";
 import { GLOBAL_DIALOG_TYPE, DialogState } from "../../../../dialog/reducer";
 import { debouncedCheckDuplicate } from "../../helpers/checkDuplicateEmail";
 import AuthGuideContext from "../../../authGuideContext";
+import AuthContextText from "../../../authContextText";
 import { closeDialog } from "../../../../dialog/actions";
 import { handleClickORCIDBtn } from "../../actions";
 import { signInWithSocial } from "../../../signIn/actions";
@@ -103,70 +104,73 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
   };
 
   return (
-    <div className={s.authContainer}>
-      <AuthGuideContext userActionType={props.userActionType} />
-      <div className={s.authFormWrapper}>
-        <AuthTabs onClickTab={props.onClickTab} activeTab={"sign up"} />
-        <div className={s.formWrapper}>
-          <Formik
-            initialValues={{ email: "", password: "" }}
-            onSubmit={props.onSubmit}
-            validate={validateForm}
-            render={() => {
-              return (
-                <Form>
-                  <Field
-                    name="email"
-                    type="email"
-                    component={AuthInputBox}
-                    placeholder="E-mail"
-                    iconName="EMAIL_ICON"
-                  />
-                  <Field
-                    name="password"
-                    type="password"
-                    component={AuthInputBox}
-                    placeholder="Password"
-                    iconName="PASSWORD_ICON"
-                  />
-                  <AuthButton
-                    type="submit"
-                    isLoading={isLoading}
-                    text="SIGN UP"
-                    style={{ backgroundColor: "#6096ff", marginTop: "10px", fontSize: "14px" }}
-                  />
-                </Form>
-              );
-            }}
-          />
-          <ORSeparator />
-          <AuthButton
-            isLoading={isLoading}
-            text="CONTINUE WITH FACEBOOK"
-            style={{ ...oAuthBtnBaseStyle, backgroundColor: "#3859ab", marginTop: "18px" }}
-            iconName="FACEBOOK_LOGO"
-            iconClassName={s.fbIconWrapper}
-            onClick={handleClickFBLogin}
-          />
-          <GoogleAuthButton
-            isLoading={isLoading}
-            text="CONTINUE WITH GOOGLE"
-            style={{ ...oAuthBtnBaseStyle, backgroundColor: "#dc5240" }}
-            iconName="GOOGLE_LOGO"
-            iconClassName={s.googleIconWrapper}
-            onSignUpWithSocial={props.onSignUpWithSocial}
-          />
-          <AuthButton
-            isLoading={isLoading}
-            text="CONTINUE WITH ORCID"
-            style={{ ...oAuthBtnBaseStyle, backgroundColor: "#a5d027" }}
-            iconName="ORCID_LOGO"
-            iconClassName={s.orcidIconWrapper}
-            onClick={handleClickORCIDBtn}
-          />
+    <>
+      <AuthContextText userActionType={props.userActionType} />
+      <div className={s.authContainer}>
+        <AuthGuideContext userActionType={props.userActionType} />
+        <div className={s.authFormWrapper}>
+          <AuthTabs onClickTab={props.onClickTab} activeTab={"sign up"} />
+          <div className={s.formWrapper}>
+            <Formik
+              initialValues={{ email: "", password: "" }}
+              onSubmit={props.onSubmit}
+              validate={validateForm}
+              render={() => {
+                return (
+                  <Form>
+                    <Field
+                      name="email"
+                      type="email"
+                      component={AuthInputBox}
+                      placeholder="E-mail"
+                      iconName="EMAIL_ICON"
+                    />
+                    <Field
+                      name="password"
+                      type="password"
+                      component={AuthInputBox}
+                      placeholder="Password"
+                      iconName="PASSWORD_ICON"
+                    />
+                    <AuthButton
+                      type="submit"
+                      isLoading={isLoading}
+                      text="SIGN UP"
+                      style={{ backgroundColor: "#6096ff", marginTop: "10px", fontSize: "14px" }}
+                    />
+                  </Form>
+                );
+              }}
+            />
+            <ORSeparator />
+            <AuthButton
+              isLoading={isLoading}
+              text="CONTINUE WITH FACEBOOK"
+              style={{ ...oAuthBtnBaseStyle, backgroundColor: "#3859ab", marginTop: "18px" }}
+              iconName="FACEBOOK_LOGO"
+              iconClassName={s.fbIconWrapper}
+              onClick={handleClickFBLogin}
+            />
+            <GoogleAuthButton
+              isLoading={isLoading}
+              text="CONTINUE WITH GOOGLE"
+              style={{ ...oAuthBtnBaseStyle, backgroundColor: "#dc5240" }}
+              iconName="GOOGLE_LOGO"
+              iconClassName={s.googleIconWrapper}
+              onSignUpWithSocial={props.onSignUpWithSocial}
+            />
+            <AuthButton
+              isLoading={isLoading}
+              text="CONTINUE WITH ORCID"
+              style={{ ...oAuthBtnBaseStyle, backgroundColor: "#a5d027" }}
+              iconName="ORCID_LOGO"
+              iconClassName={s.orcidIconWrapper}
+              onClick={handleClickORCIDBtn}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
