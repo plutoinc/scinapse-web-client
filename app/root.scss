@@ -3,6 +3,8 @@
   @import "~normalize.css/normalize";
 }
 
+$fallback: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
 * {
   box-sizing: border-box;
 }
@@ -10,10 +12,16 @@
 input,
 textarea,
 body {
-  font-family: "Roboto", "sans-serif";
+  font-family: $fallback;
   box-sizing: border-box;
   margin: 0;
   overflow-anchor: none;
+}
+
+:global(.wf-active) {
+  body {
+    font-family: "Roboto", "sans-serif";
+  }
 }
 
 a {
