@@ -18,6 +18,15 @@ import { checkAuthStatus } from "./components/auth/actions";
 const { pdfjs } = require("react-pdf");
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 declare var Sentry: any;
+declare var FB: any;
+
+function loadScript(src: string) {
+  const script = document.createElement("script");
+  script.src = src;
+  script.async = true;
+  script.defer = true;
+  document.body.appendChild(script);
+}
 
 class Main extends React.Component {
   public componentDidMount() {
@@ -25,6 +34,17 @@ class Main extends React.Component {
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
+
+    loadScript("https://connect.facebook.net/en_US/sdk.js");
+    loadScript("https://apis.google.com/js/platform.js");
+    (window as any).fbAsyncInit = function() {
+      FB.init({
+        appId: "149975229038179",
+        autoLogAppEvents: true,
+        xfbml: true,
+        version: "v2.11",
+      });
+    };
   }
 
   public render() {
