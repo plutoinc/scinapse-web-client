@@ -46,13 +46,24 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
     }
 
     case ACTION_TYPES.COLLECTIONS_SUCCEEDED_GET_COLLECTIONS: {
-      return {
-        ...state,
-        otherUserCollectionIds: action.payload.result,
-        maxCollectionCount: action.payload.numberOfElements,
-        isLoadingCollections: false,
-        pageErrorCode: null,
-      };
+      if (state.targetMemberId !== 0 && state.targetMemberId !== action.payload.content[0].createdBy.id) {
+        return {
+          ...state,
+          otherUserCollectionIds: action.payload.result,
+          maxCollectionCount: action.payload.numberOfElements,
+          isLoadingCollections: false,
+          pageErrorCode: null,
+        };
+      } else {
+        return {
+          ...state,
+          otherUserCollectionIds: action.payload.result,
+          targetMemberId: action.payload.content[0].createdBy.id,
+          maxCollectionCount: action.payload.numberOfElements,
+          isLoadingCollections: false,
+          pageErrorCode: null,
+        };
+      }
     }
 
     case ACTION_TYPES.COLLECTIONS_FAILED_TO_GET_COLLECTIONS: {
@@ -171,7 +182,11 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
     }
 
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT: {
-      return { ...MY_COLLECTIONS_INITIAL_STATE, otherUserCollectionIds: state.otherUserCollectionIds };
+      return {
+        ...MY_COLLECTIONS_INITIAL_STATE,
+        otherUserCollectionIds: state.otherUserCollectionIds,
+        targetMemberId: state.targetMemberId,
+      };
     }
 
     default:

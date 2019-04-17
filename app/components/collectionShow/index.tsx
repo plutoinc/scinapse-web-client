@@ -77,6 +77,8 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
 
     if ((!currentUser.isLoggedIn || itsNotMine) && userCollection) {
       dispatch(getCollections(userCollection.createdBy.id, this.cancelToken.token, false));
+    } else {
+      dispatch(getCollections(currentUser.id, this.cancelToken.token, true));
     }
 
     const notRenderedAtServerOrJSAlreadyInitialized =
