@@ -43,8 +43,8 @@ function mapStateToProps(state: AppState) {
     layoutState: state.layout,
     articleSearchState: state.articleSearch,
     authorSearchState: state.authorSearch,
-    myCollectionsState: state.myCollections,
-    userCollections: denormalize(state.myCollections.collectionIds, [userCollectionSchema], state.entities),
+    collectionsState: state.collections,
+    userCollections: denormalize(state.collections.collectionIds, [userCollectionSchema], state.entities),
   };
 }
 
@@ -104,7 +104,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
       this.props.currentUserState.isLoggedIn
     ) {
       const currentUser = this.props.currentUserState;
-      const collection = this.props.myCollectionsState;
+      const collection = this.props.collectionsState;
       const itsMe = currentUser.id === collection.targetMemberId;
       this.cancelToken.cancel();
       this.cancelToken = axios.CancelToken.source();
@@ -304,7 +304,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private userDropdownMenuItems = () => {
-    const { currentUserState, myCollectionsState } = this.props;
+    const { currentUserState, collectionsState } = this.props;
 
     return (
       <div className={styles.menuItems}>
@@ -327,8 +327,8 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             className={styles.buttonOnLink}
             onClick={this.handleRequestCloseUserDropdown}
             to={
-              !!myCollectionsState && myCollectionsState.collectionIds.length > 0
-                ? `/collections/${myCollectionsState.collectionIds[0]}`
+              !!collectionsState && collectionsState.collectionIds.length > 0
+                ? `/collections/${collectionsState.collectionIds[0]}`
                 : `/users/${currentUserState.id}/collections`
             }
           >
@@ -343,7 +343,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private getUserDropdown = () => {
-    const { currentUserState, myCollectionsState } = this.props;
+    const { currentUserState, collectionsState } = this.props;
 
     const firstCharacterOfUsername = currentUserState.firstName.slice(0, 1).toUpperCase();
 
@@ -358,12 +358,12 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
               actionType: "fire",
               actionArea: "topBar",
               actionTag: "collectionShow",
-              actionLabel: String(myCollectionsState.collectionIds[0]),
+              actionLabel: String(collectionsState.collectionIds[0]),
             });
           }}
           to={
-            !!myCollectionsState && myCollectionsState.collectionIds.length > 0
-              ? `/collections/${myCollectionsState.collectionIds[0]}`
+            !!collectionsState && collectionsState.collectionIds.length > 0
+              ? `/collections/${collectionsState.collectionIds[0]}`
               : `/users/${currentUserState.id}/collections`
           }
         >

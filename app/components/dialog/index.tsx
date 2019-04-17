@@ -36,7 +36,7 @@ function mapStateToProps(state: AppState) {
   return {
     dialogState: state.dialog,
     currentUser: state.currentUser,
-    myCollections: denormalize(state.dialog.myCollectionIds, [collectionSchema], state.entities),
+    collectionsState: denormalize(state.dialog.myCollectionIds, [collectionSchema], state.entities),
   };
 }
 
@@ -202,7 +202,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   };
 
   private getDialogContent = (type: GLOBAL_DIALOG_TYPE | null) => {
-    const { currentUser, myCollections, dialogState } = this.props;
+    const { currentUser, collectionsState, dialogState } = this.props;
 
     switch (type) {
       case GLOBAL_DIALOG_TYPE.SIGN_IN:
@@ -244,7 +244,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
           return (
             <CollectionDialog
               currentUser={currentUser}
-              myCollections={myCollections}
+              collectionsState={collectionsState}
               handleCloseDialogRequest={this.closeDialog}
               getMyCollections={this.getMyCollections}
               handleSubmitNewCollection={this.handleSubmitNewCollection}

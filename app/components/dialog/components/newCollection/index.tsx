@@ -9,11 +9,11 @@ import alertToast from "../../../../helpers/makePlutoToastAction";
 import PlutoAxios from "../../../../api/pluto";
 const styles = require("./newCollection.scss");
 import { AppState } from "../../../../reducers";
-import { MyCollectionsState } from "../../../../containers/paperShowCollectionControlButton/reducer";
+import { CollectionsState } from "../../../../reducers/collections";
 
 interface NewCollectionDialogProps {
   currentUser: CurrentUser;
-  myCollections: MyCollectionsState;
+  collectionsState: CollectionsState;
   targetPaperId?: number;
   handleCloseDialogRequest: () => void;
   handleAddingPaperToCollections: (params: AddPaperToCollectionParams) => Promise<void>;
@@ -33,7 +33,7 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
     super(props);
 
     this.state = {
-      title: !props.myCollections || props.myCollections.collectionIds.length === 0 ? "Read Later" : "",
+      title: !props.collectionsState || props.collectionsState.collectionIds.length === 0 ? "Read Later" : "",
       description: "",
       isLoading: false,
     };
@@ -95,13 +95,13 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
   };
 
   private makeCollection = async () => {
-    const { handleMakeCollection, handleCloseDialogRequest, myCollections, targetPaperId } = this.props;
+    const { handleMakeCollection, handleCloseDialogRequest, collectionsState, targetPaperId } = this.props;
     const { title, description } = this.state;
 
     this.setState(prevState => ({ ...prevState, isLoading: true }));
 
     try {
-      if (targetPaperId && myCollections.collectionIds.length === 0) {
+      if (targetPaperId && collectionsState.collectionIds.length === 0) {
         await handleMakeCollection({ title, description }, targetPaperId);
       } else {
         await handleMakeCollection({ title, description });
@@ -140,7 +140,7 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
 
 function mapStateToProps(state: AppState) {
   return {
-    myCollections: state.myCollections,
+    collectionsState: state.collections,
     currentUser: state.currentUser,
   };
 }

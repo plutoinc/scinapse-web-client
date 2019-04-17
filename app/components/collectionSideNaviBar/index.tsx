@@ -7,17 +7,17 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { Collection, collectionSchema, userCollectionSchema } from "../../model/collection";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { AppState } from "../../reducers";
-import { MyCollectionsState } from "../../containers/paperShowCollectionControlButton/reducer";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import { CurrentUser } from "../../model/currentUser";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import Icon from "../../icons";
 import { Member } from "../../model/member";
+import { CollectionsState } from "../../reducers/collections";
 const styles = require("./collectionSideNaviBar.scss");
 
 interface CollectionSideNaviBarProps {
-  collections: MyCollectionsState;
-  myCollections: Collection[] | undefined;
+  collections: CollectionsState;
+  collectionsState: Collection[] | undefined;
   userCollections: Collection[] | undefined;
   currentCollectionId: number;
   currentUser: CurrentUser;
@@ -94,7 +94,14 @@ const CollectionSideNaviBarTitle: React.FunctionComponent<{
 });
 
 const CollectionSideNaviBar: React.FunctionComponent<CollectionSideNaviBarProps> = props => {
-  const { myCollections, userCollections, collections, currentCollectionId, currentUser, collectionCreateBy } = props;
+  const {
+    collectionsState,
+    userCollections,
+    collections,
+    currentCollectionId,
+    currentUser,
+    collectionCreateBy,
+  } = props;
   const itsMine = currentUser.isLoggedIn && currentUser.id === collectionCreateBy.id;
 
   return (
@@ -108,7 +115,7 @@ const CollectionSideNaviBar: React.FunctionComponent<CollectionSideNaviBarProps>
       </div>
       <div className={styles.naviBarContent}>
         <CollectionsList
-          userCollections={itsMine ? myCollections : userCollections}
+          userCollections={itsMine ? collectionsState : userCollections}
           isLoadingCollections={collections.isLoadingCollections}
           currentCollectionId={currentCollectionId}
         />
@@ -129,12 +136,12 @@ const CollectionSideNaviBar: React.FunctionComponent<CollectionSideNaviBarProps>
 
 function mapStateToProps(state: AppState) {
   return {
-    collections: state.myCollections,
+    collections: state.collections,
     currentUser: state.currentUser,
-    userCollections: denormalize(state.myCollections.otherUserCollectionIds, [collectionSchema], state.entities).filter(
+    userCollections: denormalize(state.collections.otherUserCollectionIds, [collectionSchema], state.entities).filter(
       (c: Collection) => !!c
     ),
-    myCollections: denormalize(state.myCollections.collectionIds, [userCollectionSchema], state.entities).filter(
+    collectionsState: denormalize(state.collections.collectionIds, [userCollectionSchema], state.entities).filter(
       (c: Collection) => !!c
     ),
   };

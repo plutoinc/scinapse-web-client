@@ -6,23 +6,23 @@ import { AppState } from "../../../reducers";
 import { collectionSchema, Collection } from "../../../model/collection";
 import { CurrentUser } from "../../../model/currentUser";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
-import { MyCollectionsState } from "../../../containers/paperShowCollectionControlButton/reducer";
 import CollectionNoteItem from "./collectionNoteItem";
 import { staleUpdatedCollectionNote, updatePaperNote } from "../../../actions/collection";
+import { CollectionsState } from "../../../reducers/collections";
 const styles = require("./collectionNoteList.scss");
 
 export interface CollectionNoteListProps
   extends Readonly<{
       paperId: number;
       currentUser: CurrentUser;
-      myCollections: MyCollectionsState;
+      collectionsState: CollectionsState;
       collections: Collection[] | null;
       dispatch: Dispatch<any>;
     }> {}
 
 const CollectionNoteList: React.SFC<CollectionNoteListProps> = props => {
   const { dispatch } = props;
-  if (props.currentUser.isLoggingIn || props.myCollections.isLoadingCollections) {
+  if (props.currentUser.isLoggingIn || props.collectionsState.isLoadingCollections) {
     return <ButtonSpinner className={styles.spinner} color="#6096ff" thickness={4} />;
   }
 
@@ -86,8 +86,8 @@ const CollectionNoteList: React.SFC<CollectionNoteListProps> = props => {
 const mapStateToProps = (state: AppState) => {
   return {
     currentUser: state.currentUser,
-    myCollections: state.myCollections,
-    collections: denormalize(state.myCollections.collectionIds, [collectionSchema], state.entities).filter(
+    collectionsState: state.collections,
+    collections: denormalize(state.collections.collectionIds, [collectionSchema], state.entities).filter(
       (collection: Collection) => collection
     ),
   };

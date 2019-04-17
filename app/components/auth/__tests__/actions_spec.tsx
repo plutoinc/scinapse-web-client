@@ -33,6 +33,7 @@ describe("auth actions", () => {
 
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT,
+        payload: { userId: actions[0].payload.userId },
       });
     });
   });

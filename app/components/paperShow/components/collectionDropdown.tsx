@@ -12,7 +12,7 @@ const styles = require("./collectionDropdown.scss");
 
 export interface CollectionDropdownProps
   extends Readonly<{
-      myCollections: Collection[];
+      collectionsState: Collection[];
       isLoadingMyCollections: boolean;
       isPositingNewCollection: boolean;
       handleAddingPaperToCollection: (collection: Collection) => Promise<void>;
@@ -162,7 +162,7 @@ class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, Co
   };
 
   private getCollectionList = () => {
-    const { isLoadingMyCollections, myCollections } = this.props;
+    const { isLoadingMyCollections, collectionsState } = this.props;
 
     if (isLoadingMyCollections) {
       return (
@@ -172,7 +172,7 @@ class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, Co
       );
     }
 
-    return myCollections.map(collection => {
+    return collectionsState.map(collection => {
       return (
         <li
           className={styles.collectionItem}
@@ -182,10 +182,7 @@ class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, Co
           key={`collection-dropdown-${collection.id}`}
         >
           <Checkbox
-            classes={{
-              root: styles.checkBox,
-              checked: styles.checkedCheckboxIcon,
-            }}
+            classes={{ root: styles.checkBox, checked: styles.checkedCheckboxIcon }}
             checked={collection.containsSelected}
             value={collection.title}
             color="primary"

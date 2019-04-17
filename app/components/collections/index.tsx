@@ -20,27 +20,27 @@ import { CurrentUser } from "../../model/currentUser";
 import restoreScroll from "../../helpers/scrollRestoration";
 import alertToast from "../../helpers/makePlutoToastAction";
 import ErrorPage from "../error/errorPage";
-import { MyCollectionsState } from "../../containers/paperShowCollectionControlButton/reducer";
+import { CollectionsState } from "../../reducers/collections";
 const styles = require("./collections.scss");
 
 export interface UserCollectionsProps extends RouteComponentProps<{ userId: string }> {
   dispatch: Dispatch<any>;
-  userCollections: MyCollectionsState;
+  userCollections: CollectionsState;
   collections: Collection[] | undefined;
   member: Member | undefined;
   currentUser: CurrentUser;
 }
 
 function mapStateToProps(state: AppState) {
-  const itsMine = state.currentUser.id === state.myCollections.targetMemberId;
+  const itsMine = state.currentUser.id === state.collections.targetMemberId;
   return {
-    userCollections: state.myCollections,
+    userCollections: state.collections,
     collections: denormalize(
-      itsMine ? state.myCollections.collectionIds : state.myCollections.otherUserCollectionIds,
+      itsMine ? state.collections.collectionIds : state.collections.otherUserCollectionIds,
       itsMine ? [userCollectionSchema] : [collectionSchema],
       state.entities
     ).filter((c: Collection) => !!c),
-    member: denormalize(state.myCollections.targetMemberId, memberSchema, state.entities),
+    member: denormalize(state.collections.targetMemberId, memberSchema, state.entities),
     currentUser: state.currentUser,
   };
 }

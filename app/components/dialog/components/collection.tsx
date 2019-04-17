@@ -17,7 +17,7 @@ const styles = require("./collection.scss");
 
 interface CollectionDialogProps {
   currentUser: CurrentUser;
-  myCollections: Collection[];
+  collectionsState: Collection[];
   collectionDialogPaperId: number;
   getMyCollections: (cancelToken: CancelToken) => void;
   handleCloseDialogRequest: () => void;
@@ -121,15 +121,15 @@ class CollectionDialog extends React.PureComponent<CollectionDialogProps, Collec
 
   private getCollectionItems = () => {
     const {
-      myCollections,
+      collectionsState,
       collectionDialogPaperId,
       handleAddingPaperToCollections,
       handleRemovingPaperFromCollection,
     } = this.props;
 
     return (
-      myCollections &&
-      myCollections.map(collection => {
+      collectionsState &&
+      collectionsState.map(collection => {
         return (
           <CollectionItem
             key={`collection_item_${collection.id}`}

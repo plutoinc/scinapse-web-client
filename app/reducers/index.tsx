@@ -17,21 +17,12 @@ import {
   AUTHOR_SHOW_INITIAL_STATE,
 } from "../containers/unconnectedAuthorShow/reducer";
 import { reducer as EntityReducer, INITIAL_ENTITY_STATE, EntityState } from "./entity";
-import {
-  reducer as MyCollectionsReducer,
-  MyCollectionsState,
-  MY_COLLECTIONS_INITIAL_STATE,
-} from "../containers/paperShowCollectionControlButton/reducer";
+import { reducer as CollectionsReducer, CollectionsState, COLLECTIONS_INITIAL_STATE } from "../reducers/collections";
 import {
   reducer as CollectionShowReducer,
   CollectionShowState,
   INITIAL_COLLECTION_SHOW_STATE,
 } from "../components/collectionShow/reducer";
-import {
-  reducer as UserCollectionsReducer,
-  UserCollectionsState,
-  USER_COLLECTIONS_INITIAL_STATE,
-} from "../components/collections/reducer";
 import {
   reducer as JournalShowReducer,
   JournalShowState,
@@ -57,8 +48,7 @@ export interface AppState {
   connectedAuthorShow: ConnectedAuthorShowState;
   journalShow: JournalShowState;
   collectionShow: CollectionShowState;
-  myCollections: MyCollectionsState;
-  userCollections: UserCollectionsState;
+  collections: CollectionsState;
   entities: EntityState;
 }
 
@@ -75,8 +65,7 @@ export const initialState: AppState = {
   connectedAuthorShow: CONNECTED_AUTHOR_SHOW_INITIAL_STATE,
   journalShow: JOURNAL_SHOW_INITIAL_STATE,
   collectionShow: INITIAL_COLLECTION_SHOW_STATE,
-  myCollections: MY_COLLECTIONS_INITIAL_STATE,
-  userCollections: USER_COLLECTIONS_INITIAL_STATE,
+  collections: COLLECTIONS_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
 };
 
@@ -93,7 +82,6 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   journalShow: JournalShowReducer,
   currentUser: currentUserReducer.reducer,
   collectionShow: CollectionShowReducer,
-  myCollections: MyCollectionsReducer,
-  userCollections: UserCollectionsReducer,
+  collections: CollectionsReducer,
   entities: EntityReducer,
 });

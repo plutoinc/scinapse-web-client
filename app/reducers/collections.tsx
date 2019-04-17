@@ -1,6 +1,6 @@
-import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
+import { ACTION_TYPES, Actions } from "../actions/actionTypes";
 
-export interface MyCollectionsState
+export interface CollectionsState
   extends Readonly<{
       isFetchingPaper: boolean;
       isFetchingMemo: boolean;
@@ -20,7 +20,7 @@ export interface MyCollectionsState
       pageErrorCode: number | null;
     }> {}
 
-export const MY_COLLECTIONS_INITIAL_STATE: MyCollectionsState = {
+export const COLLECTIONS_INITIAL_STATE: CollectionsState = {
   isFetchingPaper: false,
   isFetchingMemo: false,
   isLoadingCollections: false,
@@ -39,7 +39,7 @@ export const MY_COLLECTIONS_INITIAL_STATE: MyCollectionsState = {
   pageErrorCode: null,
 };
 
-export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE, action: Actions): MyCollectionsState {
+export function reducer(state: CollectionsState = COLLECTIONS_INITIAL_STATE, action: Actions): CollectionsState {
   switch (action.type) {
     case ACTION_TYPES.COLLECTIONS_START_TO_GET_COLLECTIONS: {
       return { ...state, isLoadingCollections: true, pageErrorCode: null };
@@ -197,13 +197,13 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT: {
       if (state.targetMemberId !== action.payload.userId) {
         return {
-          ...MY_COLLECTIONS_INITIAL_STATE,
+          ...COLLECTIONS_INITIAL_STATE,
           otherUserCollectionIds: state.otherUserCollectionIds,
           targetMemberId: state.targetMemberId,
         };
       } else {
         return {
-          ...MY_COLLECTIONS_INITIAL_STATE,
+          ...COLLECTIONS_INITIAL_STATE,
           otherUserCollectionIds: state.collectionIds,
           targetMemberId: state.targetMemberId,
         };

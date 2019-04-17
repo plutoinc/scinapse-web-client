@@ -10,15 +10,15 @@ import Icon from "../../../icons";
 import { AppState } from "../../../reducers";
 import { CurrentUser } from "../../../model/currentUser";
 import { Collection, userCollectionSchema } from "../../../model/collection";
-import { MyCollectionsState } from "../../../containers/paperShowCollectionControlButton/reducer";
 import CollectionPaperNote from "../../collectionPaperNote";
 import { blockUnverifiedUser, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
+import { CollectionsState } from "../../../reducers/collections";
 const styles = require("./collectionButton.scss");
 
 function mapStateToProps(state: AppState) {
   return {
     currentUser: state.currentUser,
-    myCollections: state.myCollections,
+    collectionsState: state.collections,
     collection: denormalize(state.collectionShow.mainCollectionId, userCollectionSchema, state.entities),
   };
 }
@@ -32,11 +32,11 @@ interface CollectionButtonProps {
   collection: Collection | undefined;
   actionArea?: Scinapse.ActionTicket.ActionArea;
   onRemove?: (paperId: number) => Promise<void>;
-  myCollections: MyCollectionsState;
+  collectionsState: CollectionsState;
 }
 
-function handleAddToCollection(myCollections: MyCollectionsState, paperId: number) {
-  if (!myCollections.collectionIds || myCollections.collectionIds.length === 0) {
+function handleAddToCollection(collectionsState: CollectionsState, paperId: number) {
+  if (!collectionsState.collectionIds || collectionsState.collectionIds.length === 0) {
     GlobalDialogManager.openNewCollectionDialog(paperId);
   } else {
     GlobalDialogManager.openCollectionDialog(paperId);
@@ -50,7 +50,7 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
   actionArea,
   hasCollection,
   onRemove,
-  myCollections,
+  collectionsState,
   currentUser,
   collection,
 }) => {
@@ -138,7 +138,7 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
             actionLabel: "addToCollection",
           })
         ) {
-          handleAddToCollection(myCollections, paperId);
+          handleAddToCollection(collectionsState, paperId);
         }
 
         trackEvent({

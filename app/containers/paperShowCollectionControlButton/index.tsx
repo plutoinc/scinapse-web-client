@@ -12,7 +12,6 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
 import ScinapseButton from "../../components/common/scinapseButton";
 import { AppState } from "../../reducers";
-import { MyCollectionsState } from "./reducer";
 import { collectionSchema, Collection } from "../../model/collection";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import PaperNoteForm from "../../components/paperShow/noteForm";
@@ -35,6 +34,7 @@ import { trackEvent } from "../../helpers/handleGA";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { ActionCreators } from "../../actions/actionTypes";
 import { blockUnverifiedUser, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
+import { CollectionsState } from "../../reducers/collections";
 const styles = require("./paperShowCollectionControlButton.scss");
 
 const LAST_USER_COLLECTION_ID = "l_u_c_id";
@@ -42,7 +42,7 @@ const LAST_USER_COLLECTION_ID = "l_u_c_id";
 interface PaperShowCollectionControlButtonProps {
   targetPaperId: number;
   currentUser: CurrentUser;
-  myCollectionsState: MyCollectionsState;
+  collectionsState: CollectionsState;
   myCollections: Collection[] | null;
   selectedCollection: Collection | null;
   dispatch: Dispatch<any>;
@@ -138,8 +138,8 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   }
 
   public render() {
-    const { targetPaperId, selectedCollection, currentUser, myCollectionsState, myCollections } = this.props;
-    const isLoadingCollection = currentUser.isLoggingIn || myCollectionsState.isLoadingCollections;
+    const { targetPaperId, selectedCollection, currentUser, collectionsState, myCollections } = this.props;
+    const isLoadingCollection = currentUser.isLoggingIn || collectionsState.isLoadingCollections;
     const isSelected = selectedCollection && selectedCollection.containsSelected;
     let saveButtonBorderRadius: string;
     if (currentUser.isLoggedIn && (myCollections && myCollections.length > 0)) {
@@ -171,7 +171,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
                 overflow: "hidden",
                 whiteSpace: "nowrap",
               }}
-              disabled={isLoadingCollection || myCollectionsState.isFetchingPaper}
+              disabled={isLoadingCollection || collectionsState.isFetchingPaper}
               onClick={
                 (myCollections && myCollections.length > 0) || !currentUser.isLoggedIn
                   ? this.handleClickSaveButton
@@ -205,7 +205,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
               )}
               <Popper
                 anchorEl={this.popoverAnchorEl}
-                open={myCollectionsState.isNoteDropdownOpen}
+                open={collectionsState.isNoteDropdownOpen}
                 placement="bottom-end"
                 disablePortal={true}
                 modifiers={{
@@ -227,7 +227,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   }
 
   private getCollectionItemInDropdown = () => {
-    const { selectedCollection, currentUser, myCollectionsState, myCollections } = this.props;
+    const { selectedCollection, currentUser, collectionsState, myCollections } = this.props;
 
     const collections =
       myCollections &&
@@ -254,13 +254,13 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
             collection={selectedCollection}
             isLoading={
               currentUser.isLoggingIn ||
-              myCollectionsState.isLoadingCollections ||
-              myCollectionsState.isLoadingCollectionsInDropdown
+              collectionsState.isLoadingCollections ||
+              collectionsState.isLoadingCollectionsInDropdown
             }
             onClick={this.handleToggleCollectionDropdown}
           />
           <Popper
-            open={myCollectionsState.isCollectionDropdownOpen}
+            open={collectionsState.isCollectionDropdownOpen}
             anchorEl={this.popoverAnchorEl!}
             placement="bottom-start"
             disablePortal={true}
@@ -299,14 +299,14 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private getNoteButtonContent = () => {
-    const { myCollectionsState, currentUser, selectedCollection } = this.props;
+    const { collectionsState, currentUser, selectedCollection } = this.props;
 
     const isLoading =
       currentUser.isLoggingIn ||
-      myCollectionsState.isLoadingCollections ||
-      myCollectionsState.isLoadingCollectionsInDropdown ||
-      myCollectionsState.isFetchingPaper ||
-      myCollectionsState.isPostingNote;
+      collectionsState.isLoadingCollections ||
+      collectionsState.isLoadingCollectionsInDropdown ||
+      collectionsState.isFetchingPaper ||
+      collectionsState.isPostingNote;
 
     if (isLoading) {
       return <CircularProgress color="inherit" disableShrink={true} size={14} thickness={4} />;
@@ -334,16 +334,16 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private getNoteDropdownContent = () => {
-    const { myCollectionsState, selectedCollection } = this.props;
-    if (myCollectionsState.isNoteEditMode || (selectedCollection && !selectedCollection.note)) {
+    const { collectionsState, selectedCollection } = this.props;
+    if (collectionsState.isNoteEditMode || (selectedCollection && !selectedCollection.note)) {
       return (
         <div className={styles.editNoteBox}>
           <PaperNoteForm
-            isEdit={myCollectionsState.isNoteEditMode}
+            isEdit={collectionsState.isNoteEditMode}
             initialValue={selectedCollection && selectedCollection.note}
             onClickCancel={this.closeNoteDropdown}
             onSubmit={this.handleSubmitNote}
-            isLoading={myCollectionsState.isPostingNote}
+            isLoading={collectionsState.isPostingNote}
             autoFocus={true}
             textAreaClassName={styles.textarea}
             textareaStyle={{
@@ -434,9 +434,9 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private toggleNoteDropdown = () => {
-    const { dispatch, myCollectionsState, selectedCollection } = this.props;
+    const { dispatch, collectionsState, selectedCollection } = this.props;
 
-    if (myCollectionsState.isNoteDropdownOpen) {
+    if (collectionsState.isNoteDropdownOpen) {
       return this.closeNoteDropdown();
     }
 
@@ -453,9 +453,9 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private handleClickNoteBoxBackdrop = () => {
-    const { myCollectionsState } = this.props;
+    const { collectionsState } = this.props;
 
-    if (!myCollectionsState.isNoteEditMode) {
+    if (!collectionsState.isNoteEditMode) {
       this.closeNoteDropdown();
     }
   };
@@ -467,9 +467,9 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private handleToggleCollectionDropdown = () => {
-    const { dispatch, myCollectionsState, targetPaperId } = this.props;
+    const { dispatch, collectionsState, targetPaperId } = this.props;
 
-    if (myCollectionsState.isCollectionDropdownOpen) {
+    if (collectionsState.isCollectionDropdownOpen) {
       dispatch(closeCollectionDropdown());
     } else {
       dispatch(getMyCollections(targetPaperId, this.cancelToken.token, true));
@@ -478,9 +478,9 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private handleCloseCollectionDropdown = () => {
-    const { dispatch, myCollectionsState } = this.props;
+    const { dispatch, collectionsState } = this.props;
 
-    if (myCollectionsState.isCollectionDropdownOpen) {
+    if (collectionsState.isCollectionDropdownOpen) {
       dispatch(closeCollectionDropdown());
     }
   };
@@ -558,12 +558,12 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private getSaveButtonContent = () => {
-    const { currentUser, myCollectionsState, selectedCollection } = this.props;
+    const { currentUser, collectionsState, selectedCollection } = this.props;
     const isLoading =
       currentUser.isLoggingIn ||
-      myCollectionsState.isLoadingCollections ||
-      myCollectionsState.isLoadingCollectionsInDropdown ||
-      myCollectionsState.isFetchingPaper;
+      collectionsState.isLoadingCollections ||
+      collectionsState.isLoadingCollectionsInDropdown ||
+      collectionsState.isFetchingPaper;
 
     if (isLoading) {
       return <CircularProgress color="inherit" disableShrink={true} size={14} thickness={4} />;
@@ -607,11 +607,11 @@ const mapStateToProps = (appState: AppState) => {
   return {
     targetPaperId: appState.paperShow.paperId,
     currentUser: appState.currentUser,
-    myCollectionsState: appState.myCollections,
-    myCollections: denormalize(appState.myCollections.collectionIds, [collectionSchema], appState.entities).filter(
+    collectionsState: appState.collections,
+    myCollections: denormalize(appState.collections.collectionIds, [collectionSchema], appState.entities).filter(
       (collection: Collection) => collection
     ),
-    selectedCollection: denormalize(appState.myCollections.selectedCollectionId, collectionSchema, appState.entities),
+    selectedCollection: denormalize(appState.collections.selectedCollectionId, collectionSchema, appState.entities),
   };
 };
 

@@ -7,7 +7,7 @@ import { Collection } from "../../../model/collection";
 export interface DialogContainerProps
   extends Readonly<{
       dialogState: DialogState;
-      myCollections: Collection[];
+      collectionsState: Collection[];
       currentUser: CurrentUser;
       dispatch: Dispatch<any>;
     }>,
