@@ -22,18 +22,18 @@ declare var FB: any;
 
 interface LoadScriptOptions {
   src: string;
-  async?: boolean;
-  defer?: boolean;
   crossOrigin?: string;
+  onLoad?: () => void;
 }
 
 function loadScript(options: LoadScriptOptions) {
   const script = document.createElement("script");
   script.src = options.src;
-  script.async = !!options.async;
-  script.defer = !!options.defer;
   if (options.crossOrigin) {
     script.crossOrigin = options.crossOrigin;
+  }
+  if (options.onLoad) {
+    script.onload = options.onLoad;
   }
   document.body.appendChild(script);
 }
@@ -43,29 +43,6 @@ class Main extends React.Component {
     const jssStyles = document.getElementById("jss-server-side");
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
-    }
-    loadScript({ src: "https://connect.facebook.net/en_US/sdk.js", async: true, defer: true });
-    loadScript({ src: "https://apis.google.com/js/platform.js", async: true, defer: true });
-    loadScript({
-      src: "https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js",
-      crossOrigin: "anonymous",
-      defer: true,
-    });
-    loadScript({ src: "https://browser.sentry-cdn.com/5.0.6/bundle.min.js", crossOrigin: "anonymous" });
-    (window as any).fbAsyncInit = function() {
-      FB.init({
-        appId: "149975229038179",
-        autoLogAppEvents: true,
-        xfbml: true,
-        version: "v2.11",
-      });
-    };
-
-    if (EnvChecker.isProdBrowser()) {
-      loadScript({ src: "https://www.googletagmanager.com/gtag/js?id=AW-817738370", async: true });
-      (window as any).dataLayer = (window as any).dataLayer || [];
-      (window as any).dataLayer.push("js", new Date());
-      (window as any).dataLayer.push("config", "AW-817738370");
     }
   }
 
@@ -97,8 +74,30 @@ class PlutoRenderer {
 
     raf.polyfill();
 
-    this.initializeGA();
+    loadScript({ src: "https://connect.facebook.net/en_US/sdk.js" });
+    loadScript({ src: "https://apis.google.com/js/platform.js" });
+    loadScript({
+      src: "https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js",
+      crossOrigin: "anonymous",
+    });
+    (window as any).fbAsyncInit = function() {
+      FB.init({
+        appId: "149975229038179",
+        autoLogAppEvents: true,
+        xfbml: true,
+        version: "v2.11",
+      });
+    };
+
+    if (EnvChecker.isProdBrowser()) {
+      loadScript({ src: "https://www.googletagmanager.com/gtag/js?id=AW-817738370" });
+      (window as any).dataLayer = (window as any).dataLayer || [];
+      (window as any).dataLayer.push("js", new Date());
+      (window as any).dataLayer.push("config", "AW-817738370");
+    }
+
     this.initSentry();
+    this.initializeGA();
     this.renderAtClient();
   }
 
