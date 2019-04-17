@@ -21,20 +21,6 @@ export function generateFullHTML({
   css,
   version,
 }: GenerateFullHTMLParams) {
-  let gTagScript: string = "";
-  if (EnvChecker.isOnServer() && !EnvChecker.isDev() && !EnvChecker.isLocal()) {
-    gTagScript = `
-    <!-- Global site tag (gtag.js) - Google Ads: 817738370 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-817738370"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-
-gtag('config', 'AW-817738370');
-</script>`;
-  }
-
   return `
     <!doctype html>
     <html lang="en">
@@ -45,14 +31,11 @@ gtag('config', 'AW-817738370');
       ${helmet.meta.toString()}
       ${helmet.link.toString()}
       ${linkTags}
-      ${gTagScript}
         <style id="jss-server-side" type="text/css">${css}</style>
         <link rel="preload" href="https://missive.github.io/emoji-mart/emoji-mart.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://missive.github.io/emoji-mart/emoji-mart.css"></noscript>
         <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin="anonymous">
         <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" crossorigin="anonymous"></noscript>
-        <script src="https://browser.sentry-cdn.com/5.0.6/bundle.min.js" crossorigin="anonymous"></script>
-        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
         <script>
         /*! modernizr 3.6.0 (Custom Build) | MIT *
           * https://modernizr.com/download/?-webp-setclasses !*/

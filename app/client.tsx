@@ -20,11 +20,21 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 declare var Sentry: any;
 declare var FB: any;
 
-function loadScript(src: string) {
+interface LoadScriptOptions {
+  src: string;
+  async?: boolean;
+  defer?: boolean;
+  crossOrigin?: string;
+}
+
+function loadScript(options: LoadScriptOptions) {
   const script = document.createElement("script");
-  script.src = src;
-  script.async = true;
-  script.defer = true;
+  script.src = options.src;
+  script.async = !!options.async;
+  script.defer = !!options.defer;
+  if (options.crossOrigin) {
+    script.crossOrigin = options.crossOrigin;
+  }
   document.body.appendChild(script);
 }
 
@@ -34,9 +44,14 @@ class Main extends React.Component {
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
-
-    loadScript("https://connect.facebook.net/en_US/sdk.js");
-    loadScript("https://apis.google.com/js/platform.js");
+    loadScript({ src: "https://connect.facebook.net/en_US/sdk.js", async: true, defer: true });
+    loadScript({ src: "https://apis.google.com/js/platform.js", async: true, defer: true });
+    loadScript({
+      src: "https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js",
+      crossOrigin: "anonymous",
+      defer: true,
+    });
+    loadScript({ src: "https://browser.sentry-cdn.com/5.0.6/bundle.min.js", crossOrigin: "anonymous" });
     (window as any).fbAsyncInit = function() {
       FB.init({
         appId: "149975229038179",
@@ -45,6 +60,13 @@ class Main extends React.Component {
         version: "v2.11",
       });
     };
+
+    if (EnvChecker.isProdBrowser()) {
+      loadScript({ src: "https://www.googletagmanager.com/gtag/js?id=AW-817738370", async: true });
+      (window as any).dataLayer = (window as any).dataLayer || [];
+      (window as any).dataLayer.push("js", new Date());
+      (window as any).dataLayer.push("config", "AW-817738370");
+    }
   }
 
   public render() {
