@@ -10,7 +10,7 @@
     "start:build": "webpack --config webpack.local.dev.config --watch",
     "clean": "rm -rf dist && rm -rf dist-sls && rm -rf temp && rm -f dist.zip && mkdir dist",
     "build-sls": "tsc -p scripts",
-    "pack": "cd dist && zip -r ../dist.zip . ** && cd .. && ls dist",
+    "pack": "cd dist && zip -rq ../dist.zip . ** && cd .. && ls dist",
     "build:dev": "npm run clean && npm run build-sls && node --max_old_space_size=3000 dist-sls/build/dev && cp scripts/package.json dist/package.json && cd dist && npm i && cd ..",
     "deploy:dev": "npm run build:dev && npm run pack && serverless deploy -s dev",
     "build:prod": "npm run clean && npm run build-sls && NODE_ENV=production node --max_old_space_size=3000 dist-sls/build/prod",
@@ -55,7 +55,7 @@
     "@types/notie": "0.0.27",
     "@types/prop-types": "15.5.9",
     "@types/qs": "6.5.1",
-    "@types/raf": "^3.4.0",
+    "@types/raf": "3.4.0",
     "@types/react": "16.8.13",
     "@types/react-dom": "16.0.4",
     "@types/react-helmet": "5.0.4",
@@ -69,7 +69,7 @@
     "@types/svg-sprite-loader": "3.9.0",
     "@types/ua-parser-js": "0.7.32",
     "@types/uuid": "3.4.4",
-    "@types/webfontloader": "^1.6.29",
+    "@types/webfontloader": "1.6.29",
     "acorn": "6.1.1",
     "autoprefixer": "8.3.0",
     "awesome-typescript-loader": "5.2.1",
@@ -95,7 +95,7 @@
     "lodash-webpack-plugin": "0.11.5",
     "markdown-loader": "2.0.2",
     "mini-css-extract-plugin": "0.5.0",
-    "node-sass": "^4.11.0",
+    "node-sass": "4.11.0",
     "nodemon": "1.17.5",
     "npm-run-all": "4.1.2",
     "postcss-flexbugs-fixes": "4.1.0",
@@ -155,7 +155,7 @@
     "notie": "4.3.1",
     "prop-types": "15.6.0",
     "qs": "6.5.1",
-    "raf": "^3.4.1",
+    "raf": "3.4.1",
     "react": "16.8.2",
     "react-dom": "16.8.2",
     "react-ga": "2.4.1",
@@ -174,7 +174,7 @@
     "store": "2.0.12",
     "ua-parser-js": "0.7.17",
     "uuid": "3.3.2",
-    "webfontloader": "^1.6.28"
+    "webfontloader": "1.6.28"
   },
   "peerDependencies": {
     "ajv": "6.0.0"

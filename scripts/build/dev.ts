@@ -27,10 +27,17 @@ function build() {
   });
 }
 
-(async () => {
+async function buildAndUpload() {
   await build();
   await uploadDevFiles();
   cleanArtifacts();
+}
 
-  console.log("DONE");
-})();
+buildAndUpload()
+  .then(() => {
+    console.log("DONE");
+  })
+  .catch(err => {
+    console.error(err);
+    throw new err();
+  });

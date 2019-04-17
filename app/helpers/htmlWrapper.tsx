@@ -1,5 +1,4 @@
 import { HelmetData } from "react-helmet";
-import EnvChecker from "./envChecker";
 const sprite = require("svg-sprite-loader/runtime/sprite.build");
 
 interface GenerateFullHTMLParams {
