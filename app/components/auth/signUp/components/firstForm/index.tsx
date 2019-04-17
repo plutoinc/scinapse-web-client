@@ -19,6 +19,7 @@ import { handleClickORCIDBtn } from "../../actions";
 import { signInWithSocial } from "../../../signIn/actions";
 import { AppState } from "../../../../../reducers";
 import ActionTicketManager from "../../../../../helpers/actionTicketManager";
+import useFBIsLoading from "../../../../../hooks/FBisLoadingHook";
 const s = require("./firstForm.scss");
 
 declare var FB: any;
@@ -44,6 +45,7 @@ export const oAuthBtnBaseStyle: React.CSSProperties = { position: "relative", fo
 const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
   const { dispatch, dialogState } = props;
   const [isLoading, setIsLoading] = React.useState(false);
+  const FBIsLoading = useFBIsLoading();
 
   function handleClickFBLogin() {
     FB.login(async (res: any) => {
@@ -150,6 +152,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
               iconName="FACEBOOK_LOGO"
               iconClassName={s.fbIconWrapper}
               onClick={handleClickFBLogin}
+              disabled={FBIsLoading}
             />
             <GoogleAuthButton
               isLoading={isLoading}
