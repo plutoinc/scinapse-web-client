@@ -3,13 +3,16 @@ import AuthAPI from "../../api/auth";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { SignInResult } from "../../api/types/auth";
 
-export function signOut() {
+export function signOut(userId: number) {
   return async (dispatch: Dispatch<any>) => {
     try {
       if (confirm("Do you really want to sign out?")) {
         await AuthAPI.signOut();
         dispatch({
           type: ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT,
+          payload: {
+            userId,
+          },
         });
       }
     } catch (err) {

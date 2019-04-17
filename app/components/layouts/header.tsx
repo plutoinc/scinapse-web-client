@@ -254,10 +254,10 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private handleClickSignOut = async () => {
-    const { dispatch } = this.props;
+    const { dispatch, currentUserState } = this.props;
 
     try {
-      await dispatch(signOut());
+      await dispatch(signOut(currentUserState.id));
       this.handleRequestCloseUserDropdown();
     } catch (_err) {
       dispatch({

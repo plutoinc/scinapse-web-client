@@ -28,7 +28,7 @@ describe("auth actions", () => {
   describe("signOut action", () => {
     it("should return AUTH_SUCCEEDED_TO_SIGN_OUT action", async () => {
       window.confirm = jest.fn(() => true);
-      await store.dispatch(Actions.signOut());
+      await store.dispatch(Actions.signOut(1));
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({

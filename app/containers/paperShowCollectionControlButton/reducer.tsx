@@ -195,11 +195,19 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
     }
 
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT: {
-      return {
-        ...MY_COLLECTIONS_INITIAL_STATE,
-        otherUserCollectionIds: state.otherUserCollectionIds,
-        targetMemberId: state.targetMemberId,
-      };
+      if (state.targetMemberId !== action.payload.userId) {
+        return {
+          ...MY_COLLECTIONS_INITIAL_STATE,
+          otherUserCollectionIds: state.otherUserCollectionIds,
+          targetMemberId: state.targetMemberId,
+        };
+      } else {
+        return {
+          ...MY_COLLECTIONS_INITIAL_STATE,
+          otherUserCollectionIds: state.collectionIds,
+          targetMemberId: state.targetMemberId,
+        };
+      }
     }
 
     default:

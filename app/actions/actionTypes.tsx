@@ -293,8 +293,8 @@ export const ActionCreators = {
     });
   },
 
-  signOut() {
-    return createAction({ type: ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT });
+  signOut(payload: { userId: number }) {
+    return createAction({ type: ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT, payload });
   },
 
   failToConnectAuthor() {
