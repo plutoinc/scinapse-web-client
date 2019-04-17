@@ -1,6 +1,7 @@
+import "intersection-observer";
 import { BrowserRouter } from "react-router-dom";
 import { loadableReady } from "@loadable/component";
-import "intersection-observer";
+import * as raf from "raf";
 import * as React from "react";
 import * as ReactGA from "react-ga";
 import * as ReactDom from "react-dom";
@@ -13,11 +14,29 @@ import { ConnectedRootRoutes as RootRoutes } from "./routes";
 import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
 import { AppState } from "./reducers";
-import "./helpers/rafPolyfill";
 import { checkAuthStatus } from "./components/auth/actions";
 const { pdfjs } = require("react-pdf");
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 declare var Sentry: any;
+declare var FB: any;
+
+interface LoadScriptOptions {
+  src: string;
+  crossOrigin?: string;
+  onLoad?: () => void;
+}
+
+function loadScript(options: LoadScriptOptions) {
+  const script = document.createElement("script");
+  script.src = options.src;
+  if (options.crossOrigin) {
+    script.crossOrigin = options.crossOrigin;
+  }
+  if (options.onLoad) {
+    script.onload = options.onLoad;
+  }
+  document.body.appendChild(script);
+}
 
 class Main extends React.Component {
   public componentDidMount() {
@@ -45,8 +64,40 @@ class PlutoRenderer {
   }
 
   public async renderPlutoApp() {
-    this.initializeGA();
+    const WebFont = await import("webfontloader");
+    WebFont.load({
+      custom: {
+        families: ["Roboto"],
+        urls: ["https://assets.pluto.network/font/roboto-self.css"],
+      },
+    });
+
+    raf.polyfill();
+
+    loadScript({ src: "https://connect.facebook.net/en_US/sdk.js" });
+    loadScript({ src: "https://apis.google.com/js/platform.js" });
+    loadScript({
+      src: "https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js",
+      crossOrigin: "anonymous",
+    });
+    (window as any).fbAsyncInit = function() {
+      FB.init({
+        appId: "149975229038179",
+        autoLogAppEvents: true,
+        xfbml: true,
+        version: "v2.11",
+      });
+    };
+
+    if (EnvChecker.isProdBrowser()) {
+      loadScript({ src: "https://www.googletagmanager.com/gtag/js?id=AW-817738370" });
+      (window as any).dataLayer = (window as any).dataLayer || [];
+      (window as any).dataLayer.push("js", new Date());
+      (window as any).dataLayer.push("config", "AW-817738370");
+    }
+
     this.initSentry();
+    this.initializeGA();
     this.renderAtClient();
   }
 

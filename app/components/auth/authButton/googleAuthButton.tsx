@@ -27,12 +27,22 @@ interface AuthButtonProps
 
 const AuthButton: React.FunctionComponent<AuthButtonProps> = props => {
   const { dispatch, isLoading, text, iconName, iconClassName, onSignUpWithSocial, dialogState, ...btnProps } = props;
+  const [gapiIsLoading, setGapiIsLoading] = React.useState(typeof gapi === "undefined");
   const buttonEl = React.useRef<HTMLButtonElement | null>(null);
   let auth2: any;
 
   React.useEffect(
     () => {
-      if (buttonEl.current && gapi) {
+      if (typeof gapi !== "undefined") {
+        setGapiIsLoading(false);
+      }
+    },
+    [typeof gapi]
+  );
+
+  React.useEffect(
+    () => {
+      if (buttonEl.current && typeof gapi !== "undefined") {
         gapi.load("auth2", () => {
           auth2 = gapi.auth2.init({
             client_id: "304104926631-429jkjmqj2lgme52067ecm5fk30iqpjr.apps.googleusercontent.com",
@@ -81,17 +91,18 @@ const AuthButton: React.FunctionComponent<AuthButtonProps> = props => {
         }
       }
     },
-    [buttonEl.current, gapi]
+    [buttonEl.current, typeof gapi]
   );
 
   const iconNode = iconName ? <Icon icon={iconName} className={iconClassName} /> : null;
   const spinnerStyle: React.CSSProperties = iconName ? { right: "20px" } : { left: "20px" };
-  const spinner = isLoading ? (
-    <CircularProgress size={16} thickness={4} color="inherit" style={spinnerStyle} className={s.buttonSpinner} />
-  ) : null;
+  const spinner =
+    isLoading || gapiIsLoading ? (
+      <CircularProgress size={16} thickness={4} color="inherit" style={spinnerStyle} className={s.buttonSpinner} />
+    ) : null;
 
   return (
-    <button {...btnProps} ref={buttonEl} className={s.authBtn}>
+    <button {...btnProps} ref={buttonEl} className={s.authBtn} disabled={btnProps.disabled || gapiIsLoading}>
       {iconNode}
       {spinner}
       {text}

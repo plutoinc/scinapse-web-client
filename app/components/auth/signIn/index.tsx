@@ -23,6 +23,7 @@ import { handleClickORCIDBtn } from "../signUp/actions";
 import { AppState } from "../../../reducers";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import AuthContextText from "../authContextText";
+import useFBIsLoading from "../../../hooks/FBisLoadingHook";
 const s = require("./signIn.scss");
 
 declare var FB: any;
@@ -59,6 +60,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
   const [isLoading, setIsLoading] = React.useState(false);
   const [networkError, setNetworkError] = React.useState("");
   const isDialog = !!props.handleChangeDialogType;
+  const FBIsLoading = useFBIsLoading();
 
   function handleClickFBLogin() {
     FB.login(async (res: any) => {
@@ -194,6 +196,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
               iconName="FACEBOOK_LOGO"
               iconClassName={s.fbIconWrapper}
               onClick={handleClickFBLogin}
+              disabled={FBIsLoading}
             />
             <GoogleAuthButton
               isLoading={isLoading}
