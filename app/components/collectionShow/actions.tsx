@@ -16,6 +16,7 @@ export function getCollection(collectionId: number, cancelToken: CancelToken) {
       dispatch(
         ActionCreators.succeededToGetCollectionInCollectionShow({
           collectionId: res.result,
+          userCollections: res.entities.userCollections,
         })
       );
     } catch (err) {

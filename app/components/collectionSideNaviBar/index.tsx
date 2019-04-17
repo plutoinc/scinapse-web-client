@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { denormalize } from "normalizr";
 import { Link } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { Collection, userCollectionSchema, collectionSchema } from "../../model/collection";
+import { Collection, collectionSchema, userCollectionSchema } from "../../model/collection";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { AppState } from "../../reducers";
 import { MyCollectionsState } from "../../containers/paperShowCollectionControlButton/reducer";

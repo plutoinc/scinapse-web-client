@@ -36,6 +36,7 @@ import { removePaperFromCollection } from "../dialog/actions";
 import { CollectionShowMatchParams } from "./types";
 import CollectionSideNaviBar from "../collectionSideNaviBar";
 import { getCollections } from "../collections/actions";
+import { MyCollectionsState } from "../../containers/paperShowCollectionControlButton/reducer";
 const styles = require("./collectionShow.scss");
 
 const FACEBOOK_SHARE_URL = "http://www.facebook.com/sharer/sharer.php?u=";
@@ -46,6 +47,7 @@ function mapStateToProps(state: AppState) {
     layout: state.layout,
     currentUser: state.currentUser,
     collectionShow: state.collectionShow,
+    myCollections: state.myCollections,
     configuration: state.configuration,
     userCollections: denormalize(state.myCollections.collectionIds, [userCollectionSchema], state.entities),
     userCollection: denormalize(state.collectionShow.mainCollectionId, userCollectionSchema, state.entities),
@@ -60,6 +62,7 @@ export interface CollectionShowProps
       currentUser: CurrentUser;
       configuration: Configuration;
       collectionShow: CollectionShowState;
+      myCollections: MyCollectionsState;
       userCollections: Collection[];
       userCollection: Collection | undefined;
       papersInCollection: PaperInCollection[] | undefined;
@@ -71,14 +74,10 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   private cancelToken = axios.CancelToken.source();
 
   public async componentDidMount() {
-    const { dispatch, match, location, configuration, currentUser, userCollection } = this.props;
+    const { dispatch, match, location, configuration, userCollection } = this.props;
 
-    const itsNotMine = currentUser.isLoggedIn && userCollection && userCollection.createdBy.id !== currentUser.id;
-
-    if ((!currentUser.isLoggedIn || itsNotMine) && userCollection) {
+    if (!!userCollection) {
       dispatch(getCollections(userCollection.createdBy.id, this.cancelToken.token, false));
-    } else {
-      dispatch(getCollections(currentUser.id, this.cancelToken.token, true));
     }
 
     const notRenderedAtServerOrJSAlreadyInitialized =

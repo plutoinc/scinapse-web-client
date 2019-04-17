@@ -577,7 +577,10 @@ export const ActionCreators = {
     });
   },
 
-  succeededToGetCollectionInCollectionShow(payload: { collectionId: number }) {
+  succeededToGetCollectionInCollectionShow(payload: {
+    collectionId: number;
+    userCollections: { [collectionId: number]: Collection };
+  }) {
     return createAction({
       type: ACTION_TYPES.COLLECTION_SHOW_SUCCEEDED_GET_COLLECTION,
       payload,

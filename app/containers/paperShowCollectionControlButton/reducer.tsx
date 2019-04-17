@@ -45,11 +45,24 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
       return { ...state, isLoadingCollections: true, pageErrorCode: null };
     }
 
+    case ACTION_TYPES.COLLECTION_SHOW_SUCCEEDED_GET_COLLECTION: {
+      if (!!action.payload.userCollections) {
+        const mainCollectionId = action.payload.collectionId;
+        const userCollection = action.payload.userCollections;
+        return {
+          ...state,
+          targetMemberId: userCollection[mainCollectionId].createdBy.id,
+        };
+      } else {
+        return { ...state };
+      }
+    }
+
     case ACTION_TYPES.COLLECTIONS_SUCCEEDED_GET_COLLECTIONS: {
       if (state.targetMemberId !== 0 && state.targetMemberId !== action.payload.content[0].createdBy.id) {
         return {
           ...state,
-          otherUserCollectionIds: action.payload.result,
+          collectionIds: action.payload.result,
           maxCollectionCount: action.payload.numberOfElements,
           isLoadingCollections: false,
           pageErrorCode: null,
