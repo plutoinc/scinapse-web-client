@@ -10,6 +10,7 @@ import { CVInfoType, Award, Education, Experience } from "../model/profile";
 import { PaperInCollection } from "../model/paperInCollection";
 import { SIGN_UP_STEP } from "../components/auth/signUp/types";
 import { OAuthCheckParams } from "../api/types/auth";
+import { benefitExpTicketContext } from "../constants/abTest";
 
 export enum ACTION_TYPES {
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = "GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING",
@@ -252,6 +253,7 @@ export const ActionCreators = {
     authorListTargetPaper?: Paper;
     collection?: Collection;
     userActionType?: Scinapse.ActionTicket.ActionTagType;
+    authContext?: benefitExpTicketContext;
   }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
   },

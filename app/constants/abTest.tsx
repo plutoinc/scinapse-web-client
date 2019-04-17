@@ -8,25 +8,29 @@ interface Test {
   userGroup: UserGroup[];
 }
 
-export const benefitTestUserGroup = [
-  { groupName: "queryCountSession", weight: 0.1224 },
-  { groupName: "refPaperCountSession", weight: 0.3673 },
-  { groupName: "getFromFirstResultPage", weight: 0.1837 },
-  { groupName: "paperviewCountDevice", weight: 0.0735 },
-  { groupName: "downloadCount", weight: 0.0864 },
-  { groupName: "control", weight: 0.1667 },
-];
+export type BenefitExpType =
+  | "queryCountSession"
+  | "refPaperCountSession"
+  | "getFromFirstResultPage"
+  | "paperviewCountDevice"
+  | "downloadCount";
 
-export const benefitSignUpTest = {
-  name: "benefitSignupConversion",
-  userGroup: benefitTestUserGroup,
-};
+export const BENEFIT_EXPERIMENT_KEY = "b_exp";
 
-export const BENEFIT_EXPERIMENT_KEY = "b_exp_key";
+export type BenefitExpValue = { [key in BenefitExpType]: BenefitExp };
 
 export interface BenefitExp {
-  id: string;
+  sessionId: string;
+  deviceId: string;
+  shouldAvoidBlock: boolean;
   count: number;
 }
 
-export const LIVE_TESTS: Test[] = [benefitSignUpTest];
+export interface benefitExpTicketContext {
+  pageType: Scinapse.ActionTicket.PageType;
+  actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType | null;
+  actionLabel: string | null;
+  expName?: string;
+}
+
+export const LIVE_TESTS: Test[] = [];

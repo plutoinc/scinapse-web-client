@@ -3,22 +3,30 @@ import { ActionCreators } from "../../actions/actionTypes";
 import { GLOBAL_DIALOG_TYPE } from "../../components/dialog/reducer";
 import { Collection } from "../../model/collection";
 import { Paper } from "../../model/paper";
+import { benefitExpTicketContext as AuthContext } from "../../constants/abTest";
+
+interface openAuthDialogParams {
+  authContext: AuthContext;
+  userActionType?: Scinapse.ActionTicket.ActionTagType;
+}
 
 class GlobalDialogManager {
-  public openSignInDialog(userActionType?: Scinapse.ActionTicket.ActionTagType) {
+  public openSignInDialog(params?: openAuthDialogParams) {
     StoreManager.store.dispatch(
       ActionCreators.openGlobalDialog({
         type: GLOBAL_DIALOG_TYPE.SIGN_IN,
-        userActionType,
+        userActionType: params && params.userActionType,
+        authContext: params && params.authContext,
       })
     );
   }
 
-  public openSignUpDialog(userActionType?: Scinapse.ActionTicket.ActionTagType) {
+  public openSignUpDialog(params?: openAuthDialogParams) {
     StoreManager.store.dispatch(
       ActionCreators.openGlobalDialog({
         type: GLOBAL_DIALOG_TYPE.SIGN_UP,
-        userActionType,
+        userActionType: params && params.userActionType,
+        authContext: params && params.authContext,
       })
     );
   }

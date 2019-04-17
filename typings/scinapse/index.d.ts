@@ -44,6 +44,8 @@ declare namespace Scinapse {
       | "addToCollection"
       | "removeFromCollection"
       | "citePaper"
+      | "signUpPopup"
+      | "signInPopup"
       | "signUp"
       | "signIn"
       | "fos"
@@ -111,6 +113,7 @@ declare namespace Scinapse {
       | "sideNavigator"
       | "nextPaper"
       | "noPaperNotiPage"
+      | "abstract"
       | "";
 
     type PageType =

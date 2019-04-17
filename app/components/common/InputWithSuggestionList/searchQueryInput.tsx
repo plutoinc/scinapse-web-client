@@ -1,7 +1,5 @@
 import * as React from "react";
 import axios, { CancelTokenSource } from "axios";
-import * as store from "store";
-import * as Cookies from "js-cookie";
 import * as classNames from "classnames";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { withRouter, RouteComponentProps } from "react-router-dom";
@@ -24,9 +22,7 @@ import { AppState } from "../../../reducers";
 import { LayoutState, UserDevice } from "../../layouts/records";
 import { getCurrentPageType } from "../../locationListener";
 import { handleInputKeydown } from "./helpers/handleInputKeydown";
-import { SESSION_ID_KEY } from "../../../constants/actionTicket";
-import { benefitSignUpTest, BENEFIT_EXPERIMENT_KEY, BenefitExp } from "../../../constants/abTest";
-import { checkAuth, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
+import { checkBenefitExp } from "../../../helpers/checkBenefitExpCount";
 const s = require("./searchQueryInput.scss");
 
 interface SearchQueryInputProps extends RouteComponentProps<any> {
@@ -128,37 +124,16 @@ const SearchQueryInput: React.FunctionComponent<
       });
     }
 
-    if (Cookies.get(benefitSignUpTest.name) === "queryCountSession") {
-      const currentSessionId = store.get(SESSION_ID_KEY);
-      const exp: BenefitExp | undefined = store.get(BENEFIT_EXPERIMENT_KEY);
+    const isBlocked = checkBenefitExp({
+      type: "queryCountSession",
+      matching: "session",
+      maxCount: 5,
+      actionArea: props.actionArea,
+      userActionType: "query",
+      expName: "queryCountSession",
+    });
 
-      if (!exp || exp.id !== currentSessionId) {
-        store.set(BENEFIT_EXPERIMENT_KEY, {
-          id: currentSessionId,
-          count: 1,
-        } as BenefitExp);
-      } else {
-        const nextCount = exp.count + 1;
-        store.set(BENEFIT_EXPERIMENT_KEY, {
-          id: currentSessionId,
-          count: nextCount,
-        } as BenefitExp);
-        if (nextCount > 5) {
-          store.set(BENEFIT_EXPERIMENT_KEY, {
-            id: currentSessionId,
-            count: 4,
-          } as BenefitExp);
-
-          const isVerified = checkAuth({
-            authLevel: AUTH_LEVEL.VERIFIED,
-            userActionType: "query",
-            actionArea: props.actionArea,
-          });
-
-          if (!isVerified) return;
-        }
-      }
-    }
+    if (isBlocked) return;
 
     ActionTicketManager.trackTicket({
       pageType: getCurrentPageType(),

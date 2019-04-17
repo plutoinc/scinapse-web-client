@@ -5,7 +5,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import AuthInputBox from "../../common/inputBox/authInputBox";
-import { GLOBAL_DIALOG_TYPE } from "../../dialog/reducer";
+import { GLOBAL_DIALOG_TYPE, DialogState } from "../../dialog/reducer";
 import AuthButton from "../authButton";
 import GoogleAuthButton from "../authButton/googleAuthButton";
 import ORSeparator from "../separator";
@@ -14,12 +14,15 @@ import AuthAPI from "../../../api/auth";
 import { SignInResult } from "../../../api/types/auth";
 import { getCollections } from "../../collections/actions";
 import { closeDialog } from "../../dialog/actions";
-import { signInWithEmail } from "./actions";
+import { signInWithEmail, signInWithSocial } from "./actions";
 import validateEmail from "../../../helpers/validateEmail";
 import AuthGuideContext from "../authGuideContext";
-import { ACTION_TYPES, ActionCreators } from "../../../actions/actionTypes";
+import { ActionCreators } from "../../../actions/actionTypes";
 import { SIGN_UP_STEP } from "../signUp/types";
 import { handleClickORCIDBtn } from "../signUp/actions";
+import { AppState } from "../../../reducers";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
+import AuthContextText from "../authContextText";
 const s = require("./signIn.scss");
 
 declare var FB: any;
@@ -31,6 +34,7 @@ interface EmailFormValues {
 
 interface SignInProps {
   handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void;
+  dialogState: DialogState;
   dispatch: Dispatch<any>;
   userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
 }
@@ -63,15 +67,18 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
         const status = await AuthAPI.checkOAuthStatus("FACEBOOK", accessToken);
 
         if (status.isConnected) {
-          const user = await AuthAPI.loginWithOAuth("FACEBOOK", accessToken);
-          props.dispatch({
-            type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
-            payload: {
-              user: user.member,
-              loggedIn: user.loggedIn,
-              oauthLoggedIn: user.oauthLoggedIn,
-            },
-          });
+          await props.dispatch(signInWithSocial("FACEBOOK", accessToken));
+          const authContext = props.dialogState.authContext;
+          if (authContext) {
+            ActionTicketManager.trackTicket({
+              pageType: authContext.pageType,
+              actionType: "fire",
+              actionArea: authContext.actionArea,
+              actionTag: "signIn",
+              actionLabel: authContext.actionLabel,
+              expName: authContext.expName,
+            });
+          }
           props.dispatch(closeDialog());
         } else {
           props.dispatch(
@@ -99,6 +106,17 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
       setIsLoading(true);
       setNetworkError("");
       const res: SignInResult = await props.dispatch(signInWithEmail({ email, password }, isDialog));
+      const authContext = props.dialogState.authContext;
+      if (authContext) {
+        ActionTicketManager.trackTicket({
+          pageType: authContext.pageType,
+          actionType: "fire",
+          actionArea: authContext.actionArea,
+          actionTag: "signIn",
+          actionLabel: authContext.actionLabel,
+          expName: authContext.expName,
+        });
+      }
       if (res.member) {
         await props.dispatch(getCollections(res.member.id));
       }
@@ -116,104 +134,102 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
   }
 
   return (
-    <div className={s.authContainer}>
-      <AuthGuideContext userActionType={props.userActionType} />
-      <div className={s.authFormWrapper}>
-        <AuthTabs onClickTab={props.handleChangeDialogType} activeTab="sign in" />
-        <div className={s.formWrapper}>
-          <Formik
-            initialValues={{ email: "", password: "" }}
-            onSubmit={handleSubmit}
-            validate={validateForm}
-            validateOnChange={false}
-            render={() => {
-              return (
-                <Form>
-                  <Field
-                    name="email"
-                    type="email"
-                    component={AuthInputBox}
-                    placeholder="E-mail"
-                    iconName="EMAIL_ICON"
-                  />
-                  <Field
-                    name="password"
-                    type="password"
-                    component={AuthInputBox}
-                    placeholder="Password"
-                    iconName="PASSWORD_ICON"
-                  />
-                  {networkError && <div className={s.errorContent}>{networkError}</div>}
-                  <div
-                    onClick={() => {
-                      if (props.handleChangeDialogType) {
-                        props.handleChangeDialogType(GLOBAL_DIALOG_TYPE.RESET_PASSWORD);
-                      } else {
-                        GlobalDialogManager.openResetPasswordDialog();
-                      }
-                    }}
-                    className={s.forgotPasswordBox}
-                  >
-                    Forgot Password?
-                  </div>
-                  <AuthButton
-                    type="submit"
-                    isLoading={isLoading}
-                    text="SIGN IN"
-                    style={{ backgroundColor: "#6096ff", marginTop: "10px", fontSize: "14px" }}
-                  />
-                </Form>
-              );
-            }}
-          />
-          <ORSeparator />
-          <AuthButton
-            isLoading={isLoading}
-            text="CONTINUE WITH FACEBOOK"
-            style={{ ...oAuthBtnBaseStyle, backgroundColor: "#3859ab", marginTop: "18px" }}
-            iconName="FACEBOOK_LOGO"
-            iconClassName={s.fbIconWrapper}
-            onClick={handleClickFBLogin}
-          />
-          <GoogleAuthButton
-            isLoading={isLoading}
-            text="CONTINUE WITH GOOGLE"
-            style={{ ...oAuthBtnBaseStyle, backgroundColor: "#dc5240" }}
-            iconName="GOOGLE_LOGO"
-            iconClassName={s.googleIconWrapper}
-            onSignInWithSocial={(user: SignInResult) => {
-              props.dispatch({
-                type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
-                payload: {
-                  user: user.member,
-                  loggedIn: user.loggedIn,
-                  oauthLoggedIn: user.oauthLoggedIn,
-                },
-              });
-              props.dispatch(closeDialog());
-            }}
-            onSignUpWithSocial={values => {
-              props.dispatch(
-                ActionCreators.changeGlobalDialog({
-                  type: GLOBAL_DIALOG_TYPE.SIGN_UP,
-                  signUpStep: SIGN_UP_STEP.WITH_SOCIAL,
-                  oauthResult: values,
-                })
-              );
-            }}
-          />
-          <AuthButton
-            isLoading={isLoading}
-            text="CONTINUE WITH ORCID"
-            style={{ ...oAuthBtnBaseStyle, backgroundColor: "#a5d027" }}
-            iconName="ORCID_LOGO"
-            iconClassName={s.orcidIconWrapper}
-            onClick={handleClickORCIDBtn}
-          />
+    <>
+      <AuthContextText userActionType={props.userActionType} />
+      <div className={s.authContainer}>
+        <AuthGuideContext userActionType={props.userActionType} />
+        <div className={s.authFormWrapper}>
+          <AuthTabs onClickTab={props.handleChangeDialogType} activeTab="sign in" />
+          <div className={s.formWrapper}>
+            <Formik
+              initialValues={{ email: "", password: "" }}
+              onSubmit={handleSubmit}
+              validate={validateForm}
+              validateOnChange={false}
+              render={() => {
+                return (
+                  <Form>
+                    <Field
+                      name="email"
+                      type="email"
+                      component={AuthInputBox}
+                      placeholder="E-mail"
+                      iconName="EMAIL_ICON"
+                    />
+                    <Field
+                      name="password"
+                      type="password"
+                      component={AuthInputBox}
+                      placeholder="Password"
+                      iconName="PASSWORD_ICON"
+                    />
+                    {networkError && <div className={s.errorContent}>{networkError}</div>}
+                    <div
+                      onClick={() => {
+                        if (props.handleChangeDialogType) {
+                          props.handleChangeDialogType(GLOBAL_DIALOG_TYPE.RESET_PASSWORD);
+                        } else {
+                          GlobalDialogManager.openResetPasswordDialog();
+                        }
+                      }}
+                      className={s.forgotPasswordBox}
+                    >
+                      Forgot Password?
+                    </div>
+                    <AuthButton
+                      type="submit"
+                      isLoading={isLoading}
+                      text="SIGN IN"
+                      style={{ backgroundColor: "#6096ff", marginTop: "10px", fontSize: "14px" }}
+                    />
+                  </Form>
+                );
+              }}
+            />
+            <ORSeparator />
+            <AuthButton
+              isLoading={isLoading}
+              text="CONTINUE WITH FACEBOOK"
+              style={{ ...oAuthBtnBaseStyle, backgroundColor: "#3859ab", marginTop: "18px" }}
+              iconName="FACEBOOK_LOGO"
+              iconClassName={s.fbIconWrapper}
+              onClick={handleClickFBLogin}
+            />
+            <GoogleAuthButton
+              isLoading={isLoading}
+              text="CONTINUE WITH GOOGLE"
+              style={{ ...oAuthBtnBaseStyle, backgroundColor: "#dc5240" }}
+              iconName="GOOGLE_LOGO"
+              iconClassName={s.googleIconWrapper}
+              onSignUpWithSocial={values => {
+                props.dispatch(
+                  ActionCreators.changeGlobalDialog({
+                    type: GLOBAL_DIALOG_TYPE.SIGN_UP,
+                    signUpStep: SIGN_UP_STEP.WITH_SOCIAL,
+                    oauthResult: values,
+                  })
+                );
+              }}
+            />
+            <AuthButton
+              isLoading={isLoading}
+              text="CONTINUE WITH ORCID"
+              style={{ ...oAuthBtnBaseStyle, backgroundColor: "#a5d027" }}
+              iconName="ORCID_LOGO"
+              iconClassName={s.orcidIconWrapper}
+              onClick={handleClickORCIDBtn}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default withRouter(connect()(withStyles<typeof SignIn>(s)(SignIn)));
+function mapStateToProps(state: AppState) {
+  return {
+    dialogState: state.dialog,
+  };
+}
+
+export default withRouter(connect(mapStateToProps)(withStyles<typeof SignIn>(s)(SignIn)));

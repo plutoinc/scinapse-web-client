@@ -1,6 +1,4 @@
 import * as React from "react";
-import * as store from "store";
-import * as Cookies from "js-cookie";
 import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 import * as classNames from "classnames";
 import { withStyles } from "../../../helpers/withStylesHelper";
@@ -8,9 +6,7 @@ import { Paper } from "../../../model/paper";
 import Icon from "../../../icons";
 import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { benefitSignUpTest, BENEFIT_EXPERIMENT_KEY, BenefitExp } from "../../../constants/abTest";
-import { SESSION_ID_KEY } from "../../../constants/actionTicket";
-import { checkAuth, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
+import { checkBenefitExp } from "../../../helpers/checkBenefitExpCount";
 const styles = require("./relatedPaperItem.scss");
 
 const MAX_AUTHOR_COUNT_TO_SHOW = 2;
@@ -119,30 +115,16 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
 
     e.preventDefault();
 
-    if (Cookies.get(benefitSignUpTest.name) === "refPaperCountSession") {
-      const currentSessionId = store.get(SESSION_ID_KEY);
-      const exp: BenefitExp | undefined = store.get(BENEFIT_EXPERIMENT_KEY);
-      if (!exp || exp.id !== currentSessionId) {
-        store.set(BENEFIT_EXPERIMENT_KEY, {
-          id: currentSessionId,
-          count: 1,
-        } as BenefitExp);
-      } else {
-        const nextCount = exp.count + 1;
-        store.set(BENEFIT_EXPERIMENT_KEY, {
-          id: currentSessionId,
-          count: nextCount,
-        } as BenefitExp);
-        if (nextCount > 3) {
-          store.set(BENEFIT_EXPERIMENT_KEY, {
-            id: currentSessionId,
-            count: 2,
-          } as BenefitExp);
-          const isVerified = checkAuth({ authLevel: AUTH_LEVEL.VERIFIED, actionArea, userActionType: "paperShow" });
-          if (!isVerified) return;
-        }
-      }
-    }
+    const isBlocked = checkBenefitExp({
+      type: "refPaperCountSession",
+      matching: "session",
+      maxCount: 3,
+      actionArea: actionArea,
+      userActionType: "paperShow",
+      expName: "refPaperCountSession",
+    });
+
+    if (isBlocked) return;
 
     trackEvent({
       category: "New Paper Show",
