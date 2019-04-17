@@ -1,6 +1,7 @@
+import "intersection-observer";
 import { BrowserRouter } from "react-router-dom";
 import { loadableReady } from "@loadable/component";
-import "intersection-observer";
+import * as raf from "raf";
 import * as React from "react";
 import * as ReactGA from "react-ga";
 import * as ReactDom from "react-dom";
@@ -13,7 +14,6 @@ import { ConnectedRootRoutes as RootRoutes } from "./routes";
 import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
 import { AppState } from "./reducers";
-import "./helpers/rafPolyfill";
 import { checkAuthStatus } from "./components/auth/actions";
 const { pdfjs } = require("react-pdf");
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -45,6 +45,16 @@ class PlutoRenderer {
   }
 
   public async renderPlutoApp() {
+    const WebFont = await import("webfontloader");
+    WebFont.load({
+      custom: {
+        families: ["Roboto"],
+        urls: ["https://assets.pluto.network/font/roboto-self.css"],
+      },
+    });
+
+    raf.polyfill();
+
     this.initializeGA();
     this.initSentry();
     this.renderAtClient();
