@@ -13,7 +13,7 @@ interface CheckBenefitExpCount {
   actionLabel?: string;
 }
 
-export function checkBenefitExp({
+export async function checkBenefitExp({
   type,
   maxCount,
   matching,
@@ -21,7 +21,7 @@ export function checkBenefitExp({
   actionArea,
   actionLabel,
   expName,
-}: CheckBenefitExpCount): boolean {
+}: CheckBenefitExpCount): Promise<boolean> {
   const exp: BenefitExpValue | undefined = store.get(BENEFIT_EXPERIMENT_KEY);
   const currentSessionId = store.get(SESSION_ID_KEY);
   const currentDeviceId = store.get(DEVICE_ID_KEY);
@@ -46,7 +46,7 @@ export function checkBenefitExp({
 
     if (shouldBlock) {
       store.set(BENEFIT_EXPERIMENT_KEY, newExp);
-      return blockUnverifiedUser({
+      return await blockUnverifiedUser({
         authLevel: AUTH_LEVEL.VERIFIED,
         userActionType,
         actionArea,

@@ -117,8 +117,8 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                 content={extend ? "View Less" : "View More"}
                 isLoading={!succeedToLoad && !hadErrorToLoad}
                 disabled={!succeedToLoad}
-                onClick={() => {
-                  if (!extend && shouldBlockToSignUp("pdfViewer", "viewMorePDF")) {
+                onClick={async () => {
+                  if (!extend && (await shouldBlockToSignUp("pdfViewer", "viewMorePDF"))) {
                     return;
                   }
                   trackClickButton(actionTag, props.paperId);
@@ -140,8 +140,8 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                 target="_blank"
                 href={pdfURL}
                 content="Download PDF"
-                onClick={e => {
-                  if (shouldBlockToSignUp("pdfViewer", "downloadPDF")) {
+                onClick={async e => {
+                  if (await shouldBlockToSignUp("pdfViewer", "downloadPDF")) {
                     e.preventDefault();
                     return;
                   }

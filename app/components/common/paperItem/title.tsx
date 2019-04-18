@@ -60,13 +60,13 @@ class Title extends React.PureComponent<TitleProps, {}> {
     );
   }
 
-  private handleClickTitle = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  private handleClickTitle = async (e: React.MouseEvent<HTMLAnchorElement>) => {
     const { pageType, actionArea, paperId, shouldBlockUnverifiedUser, history, currentPage } = this.props;
 
     e.preventDefault();
 
     if (shouldBlockUnverifiedUser) {
-      const isBlocked = checkBenefitExp({
+      const isBlocked = await checkBenefitExp({
         type: "refPaperCountSession",
         matching: "session",
         maxCount: 3,
@@ -79,7 +79,7 @@ class Title extends React.PureComponent<TitleProps, {}> {
     }
 
     if (currentPage === 1) {
-      const isBlocked = checkBenefitExp({
+      const isBlocked = await checkBenefitExp({
         type: "getFromFirstResultPage",
         matching: "device",
         maxCount: 3,

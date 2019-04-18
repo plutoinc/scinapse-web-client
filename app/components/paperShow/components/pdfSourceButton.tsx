@@ -62,9 +62,9 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
                   target: "_blank",
                   rel: "noopener",
                   className: styles.linkClassName,
-                  onClick: e => {
+                  onClick: async e => {
                     e.preventDefault();
-                    const shouldBlock = shouldBlockToSignUp("paperDescription", "source");
+                    const shouldBlock = await shouldBlockToSignUp("paperDescription", "source");
                     if (shouldBlock) {
                       return;
                     }

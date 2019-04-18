@@ -3,6 +3,7 @@ import { AppState } from "../reducers";
 import GlobalDialogManager from "./globalDialogManager";
 import ActionTicketManager from "./actionTicketManager";
 import { getCurrentPageType } from "../components/locationListener";
+import { checkAuthStatus } from "../components/auth/actions";
 
 export enum AUTH_LEVEL {
   UNSIGNED,
@@ -19,7 +20,7 @@ interface BlockByBenefitExpParams {
   expName?: string;
 }
 
-export function blockUnverifiedUser(params: BlockByBenefitExpParams): boolean {
+export async function blockUnverifiedUser(params: BlockByBenefitExpParams): Promise<boolean> {
   const { authLevel, userActionType, actionArea, actionLabel, expName } = params;
   const state: AppState = StoreManager.store.getState();
   const { currentUser } = state;
@@ -46,6 +47,11 @@ export function blockUnverifiedUser(params: BlockByBenefitExpParams): boolean {
   }
 
   if (authLevel >= AUTH_LEVEL.VERIFIED && (!currentUser.oauthLoggedIn && !currentUser.emailVerified)) {
+    const auth = await StoreManager.store.dispatch(checkAuthStatus());
+    if (auth && (auth.oauthLoggedIn || (auth.member && auth.member.emailVerified))) {
+      return false;
+    }
+
     GlobalDialogManager.openVerificationDialog();
     ActionTicketManager.trackTicket({
       pageType: getCurrentPageType(),

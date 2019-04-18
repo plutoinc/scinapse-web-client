@@ -110,12 +110,12 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
     );
   }
 
-  private trackClickTitle = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  private trackClickTitle = async (e: React.MouseEvent<HTMLAnchorElement>) => {
     const { actionArea, paper, history } = this.props;
 
     e.preventDefault();
 
-    const isBlocked = checkBenefitExp({
+    const isBlocked = await checkBenefitExp({
       type: "refPaperCountSession",
       matching: "session",
       maxCount: 3,
