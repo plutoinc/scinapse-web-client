@@ -12,12 +12,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import ArticleSpinner from "../../components/common/spinner/articleSpinner";
 import { clearPaperShowState } from "../../actions/paperShow";
-import PaperShowVenueItem from "../../components/paperShow/venueItem";
-import PaperShowDOI from "../../components/paperShow/DOI";
 import { PaperShowState } from "./records";
-import AuthorList from "../../components/paperShow/components/authorList";
-import RelatedPaperList from "../relatedPapers";
-import OtherPaperListFromAuthor from "../otherPapersFromAuthor";
 import ActionBar from "../paperShowActionBar";
 import FOSList from "../../components/paperShow/components/fosList";
 import ReferencePapers from "../../components/paperShow/components/relatedPapers";
@@ -27,7 +22,6 @@ import { Configuration } from "../../reducers/configuration";
 import { Paper } from "../../model/paper";
 import { fetchPaperShowData, fetchRefPaperData, fetchCitedPaperData, fetchMyCollection } from "./sideEffect";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
-import CollectionNoteList from "../../components/paperShow/components/collectionNoteList";
 import { LayoutState, UserDevice } from "../../components/layouts/records";
 import { trackEvent } from "../../helpers/handleGA";
 import { getMemoizedPaper, getReferencePapers, getCitedPapers } from "./select";
@@ -35,11 +29,11 @@ import { formulaeToHTMLStr } from "../../helpers/displayFormula";
 import { getPDFLink } from "../../helpers/getPDFLink";
 import restoreScroll from "../../helpers/scrollRestoration";
 import ErrorPage from "../../components/error/errorPage";
-import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
 import EnvChecker from "../../helpers/envChecker";
 import NextPaperTab from "../nextPaperTab";
-import ResearchHistory from "../../components/researchHistory";
 import { PaperShowMatchParams, PaperShowPageQueryParams } from "./types";
+import VenueAndAuthors from "../../components/common/paperItem/venueAndAuthors";
+import ViewFullTextBtn from "../../components/paperShow/components/viewFullTextBtn";
 
 const styles = require("./paperShow.scss");
 
@@ -222,17 +216,21 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <article className={styles.paperShow}>
             <div className={styles.paperShowContent}>
               <div className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.title) }} />
+              <VenueAndAuthors
+                pageType={"paperShow"}
+                actionArea={"paperDescription"}
+                paper={paper}
+                journal={paper.journal}
+                conferenceInstance={paper.conferenceInstance}
+                publishedDate={paper.publishedDate}
+                authors={paper.authors}
+              />
+              <ViewFullTextBtn handleClickFullText={this.scrollToFullTextNode} />
               <div className={styles.paperContentBlockDivider} />
               <div className={styles.actionBarWrapper}>
                 <NoSsr>
                   <ActionBar paper={paper} currentUser={currentUser} />
                 </NoSsr>
-              </div>
-              <div className={styles.paperContentBlockDivider} />
-              <div className={styles.paperInfo}>
-                <AuthorList paper={paper} authors={paper.authors} />
-                <PaperShowVenueItem paper={paper} />
-                <PaperShowDOI paper={paper} DOI={paper.doi} />
               </div>
               <div className={styles.paperContentBlockDivider} />
               <div className={styles.paperContent}>
@@ -314,23 +312,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               </div>
             </div>
           </article>
-          <div className={styles.rightBox}>
-            <div
-              ref={el => (this.rightBoxWrapper = el)}
-              className={classNames({
-                [styles.sideNavigation]: true,
-                [styles.stick]: isRightBoxFixed && !isRightBoxSmall,
-                [styles.smallThanVH]: isRightBoxSmall,
-                [styles.touchFooter]: isTouchFooter,
-              })}
-            >
-              <ResearchHistory paper={paper} />
-              <CollectionNoteList paperId={paper.id} />
-              <OtherPaperListFromAuthor />
-              <RelatedPaperList />
-              <PlutoBlogPosting paperId={paper.id} />
-            </div>
-          </div>
         </div>
         <div ref={el => (this.footerWrapper = el)}>
           <Footer />

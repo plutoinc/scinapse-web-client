@@ -67,7 +67,7 @@ button {
 
 article.paperShow {
   width: $paper-show-width;
-  margin-right: 24px;
+  margin: 0 auto;
   font-size: 16px;
   color: $black1;
   height: fit-content;
@@ -90,11 +90,13 @@ article.paperShow {
   }
 
   .paperTitle {
-    margin-top: 32px;
+    width: 792px;
+    font-family: Georgia;
+    font-size: 30px;
+    line-height: 1.4;
     color: $black1;
-    font-size: 28px;
-    font-weight: 700;
-    line-height: 1.3;
+    margin-top: 32px;
+    margin-bottom: 9px;
   }
 
   .paperInfo {

@@ -1,0 +1,23 @@
+.btnStyle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 12px;
+  width: 154px;
+  height: 40px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.43;
+  background-color: $main_blue1;
+  color: white;
+}
+
+.pdfIcon {
+  display: flex;
+  margin-right: 8px;
+    svg {
+    width: 20px;
+    height: 20px;
+      }
+}
