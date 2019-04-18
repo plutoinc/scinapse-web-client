@@ -40,8 +40,8 @@ const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
       return (
         <a
           className={styles.sourceItem}
-          onClick={e => {
-            const shouldBlock = shouldBlockToSignUp("paperDescription", "source");
+          onClick={async e => {
+            const shouldBlock = await shouldBlockToSignUp("paperDescription", "source");
             if (shouldBlock) {
               e.preventDefault();
               return;

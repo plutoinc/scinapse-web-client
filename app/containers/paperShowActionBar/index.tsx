@@ -37,14 +37,16 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
           {!pdfSource && (
             <div className={s.actionItem}>
               <button
-                onClick={() => {
-                  if (
-                    !blockUnverifiedUser({
-                      authLevel: AUTH_LEVEL.VERIFIED,
-                      actionArea: "paperDescription",
-                      actionLabel: "clickRequestFullPaper",
-                    })
-                  ) {
+                onClick={async () => {
+                  const isBlocked = await blockUnverifiedUser({
+                    authLevel: AUTH_LEVEL.VERIFIED,
+                    actionArea: "paperDescription",
+                    actionLabel: "clickRequestFullPaper",
+                  });
+
+                  console.log(isBlocked);
+
+                  if (!isBlocked) {
                     setIsOpen(true);
                   }
 

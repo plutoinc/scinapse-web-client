@@ -17,8 +17,8 @@ const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
   return (
     <div
       className={s.citeButton}
-      onClick={() => {
-        const shouldBlock = shouldBlockToSignUp("paperDescription", "citePaper");
+      onClick={async () => {
+        const shouldBlock = await shouldBlockToSignUp("paperDescription", "citePaper");
         if (shouldBlock) {
           return;
         }

@@ -130,14 +130,14 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
   return (
     <button
       className={styles.addCollectionBtnWrapper}
-      onClick={() => {
-        if (
-          !blockUnverifiedUser({
-            authLevel: AUTH_LEVEL.VERIFIED,
-            actionArea: actionArea || pageType,
-            actionLabel: "addToCollection",
-          })
-        ) {
+      onClick={async () => {
+        const isBlocked = await blockUnverifiedUser({
+          authLevel: AUTH_LEVEL.VERIFIED,
+          actionArea: actionArea || pageType,
+          actionLabel: "addToCollection",
+        });
+
+        if (!isBlocked) {
           handleAddToCollection(myCollections, paperId);
         }
 

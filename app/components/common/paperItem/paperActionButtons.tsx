@@ -91,8 +91,8 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         target="_blank"
         rel="noopener"
         className={styles.sourceButton}
-        onClick={e => {
-          if (shouldBlockToSignUp(actionArea, "sourceInPaperItem")) {
+        onClick={async e => {
+          if (await shouldBlockToSignUp(actionArea, "sourceInPaperItem")) {
             e.preventDefault();
             return;
           }

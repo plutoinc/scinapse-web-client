@@ -66,12 +66,12 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
     );
   }
 
-  public handelExtendContent = () => {
+  public handelExtendContent = async () => {
     const { pageType, actionArea, paperId, currentPage } = this.props;
     const { isExtendContent } = this.state;
 
     if (!isExtendContent && currentPage === 1) {
-      const isBlocked = checkBenefitExp({
+      const isBlocked = await checkBenefitExp({
         type: "getFromFirstResultPage",
         matching: "device",
         maxCount: 3,
