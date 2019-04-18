@@ -80,6 +80,10 @@ export function reducer(
       return state;
     }
 
+    case ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT: {
+      return state;
+    }
+
     default:
       return state;
   }

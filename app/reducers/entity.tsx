@@ -72,13 +72,36 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
         return state;
       }
 
+      const newCollections: { [collectionId: number]: Collection } = {};
+      if (entities.collections) {
+        const receivedCollections = entities.collections;
+
+        for (const k of Object.keys(receivedCollections)) {
+          const key = parseInt(k, 10);
+          const newCollection = receivedCollections[key];
+
+          if (state.collections[key]) {
+            newCollections[key] = {
+              ...newCollection,
+              note: newCollection.note ? newCollection.note : state.collections[key].note,
+              noteUpdated: newCollection.noteUpdated ? newCollection.noteUpdated : state.collections[key].noteUpdated,
+              containsSelected: newCollection.containsSelected
+                ? newCollection.containsSelected
+                : state.collections[key].containsSelected,
+            };
+          } else {
+            newCollections[key] = newCollection;
+          }
+        }
+      }
+
       return {
         ...state,
         authors: { ...state.authors, ...entities.authors },
         papers: { ...state.papers, ...entities.papers },
         papersInCollection: { ...state.papersInCollection, ...entities.papersInCollection },
         comments: { ...state.comments, ...entities.comments },
-        collections: { ...state.collections, ...entities.collections },
+        collections: { ...state.collections, ...newCollections },
         members: { ...state.members, ...entities.members },
         journals: { ...state.journals, ...entities.journals },
         profiles: { ...state.profiles, ...entities.profiles },
