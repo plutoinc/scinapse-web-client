@@ -28,8 +28,8 @@ import { HOME_PATH } from "../../constants/routes";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { CurrentUser } from "../../model/currentUser";
 import { FilterObject } from "../../helpers/papersQueryFormatter";
-import { userCollectionSchema } from "../../model/collection";
 import { getCollections } from "../collections/actions";
+import { collectionSchema } from "../../model/collection";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -44,7 +44,7 @@ function mapStateToProps(state: AppState) {
     articleSearchState: state.articleSearch,
     authorSearchState: state.authorSearch,
     myCollectionsState: state.myCollections,
-    userCollections: denormalize(state.myCollections.collectionIds, [userCollectionSchema], state.entities),
+    userCollections: denormalize(state.myCollections.collectionIds, [collectionSchema], state.entities),
   };
 }
 
