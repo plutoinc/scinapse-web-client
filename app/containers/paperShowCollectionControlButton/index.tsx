@@ -487,8 +487,6 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
 
   private handleClickSaveButton = async () => {
     const { dispatch, selectedCollection, targetPaperId } = this.props;
-    console.log(selectedCollection);
-    console.log(targetPaperId);
     const isBlocked = await blockUnverifiedUser({
       authLevel: AUTH_LEVEL.VERIFIED,
       actionArea: "paperDescription",
