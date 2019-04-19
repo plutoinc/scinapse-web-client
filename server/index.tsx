@@ -45,6 +45,10 @@ app.get("/opensearch.xml", (_req, res) => {
   res.send(body);
 });
 
+app.get("/sw.js", (_req, res) => {
+  res.sendFile(path.resolve(__dirname, "sw.js"));
+});
+
 app.get("*", async (req, res) => {
   let version = "";
   if (process.env.NODE_ENV === "production") {

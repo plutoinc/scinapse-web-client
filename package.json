@@ -125,7 +125,8 @@
     "webpack-cli": "3.2.3",
     "webpack-dev-server": "3.1.14",
     "webpack-jarvis": "0.2.2",
-    "webpack-node-externals": "1.7.2"
+    "webpack-node-externals": "1.7.2",
+    "workbox-webpack-plugin": "^4.3.0"
   },
   "dependencies": {
     "@loadable/component": "5.7.0",
