@@ -274,7 +274,7 @@ class AdminComponent extends React.PureComponent<AdminComponentProps, AdminCompo
 
   private handleClickReload = async () => {
     try {
-      if (blockUnverifiedUser({ authLevel: AUTH_LEVEL.VERIFIED, actionArea: "unknown", actionLabel: "admin" })) {
+      if (await blockUnverifiedUser({ authLevel: AUTH_LEVEL.VERIFIED, actionArea: "unknown", actionLabel: "admin" })) {
         throw new Error();
       }
 

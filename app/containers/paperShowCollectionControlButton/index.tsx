@@ -376,16 +376,16 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     return <div />;
   };
 
-  private handleClickNewCollectionButton = () => {
+  private handleClickNewCollectionButton = async () => {
     const { targetPaperId } = this.props;
 
-    if (
-      !blockUnverifiedUser({
-        authLevel: AUTH_LEVEL.VERIFIED,
-        actionArea: "paperDescription",
-        actionLabel: "openNewCollectionDialog",
-      })
-    ) {
+    const isBlocked = await blockUnverifiedUser({
+      authLevel: AUTH_LEVEL.VERIFIED,
+      actionArea: "paperDescription",
+      actionLabel: "openNewCollectionDialog",
+    });
+
+    if (!isBlocked) {
       GlobalDialogManager.openNewCollectionDialog(targetPaperId);
     }
 
@@ -485,15 +485,15 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     }
   };
 
-  private handleClickSaveButton = () => {
+  private handleClickSaveButton = async () => {
     const { dispatch, selectedCollection, targetPaperId } = this.props;
-    const isVerified = !blockUnverifiedUser({
+    const isBlocked = await blockUnverifiedUser({
       authLevel: AUTH_LEVEL.VERIFIED,
       actionArea: "paperDescription",
       actionLabel: "signInViaCollection",
     });
 
-    if (!isVerified) {
+    if (isBlocked) {
       trackEvent({
         category: "New Paper Show",
         action: "Click save in collection button (Unsigned user)",

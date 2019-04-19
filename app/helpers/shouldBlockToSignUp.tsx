@@ -1,7 +1,7 @@
 import { checkBenefitExp } from "./checkBenefitExpCount";
-
-export function shouldBlockToSignUp(actionArea: Scinapse.ActionTicket.ActionArea, actionLabel: string) {
-  return checkBenefitExp({
+4;
+export async function shouldBlockToSignUp(actionArea: Scinapse.ActionTicket.ActionArea, actionLabel: string) {
+  return await checkBenefitExp({
     type: "downloadCount",
     matching: "session",
     maxCount: 3,

@@ -111,7 +111,7 @@ const SearchQueryInput: React.FunctionComponent<
     [props.location]
   );
 
-  function handleSubmit({ query, filter, from }: SubmitParams) {
+  async function handleSubmit({ query, filter, from }: SubmitParams) {
     const searchKeyword = query || inputValue;
 
     if (searchKeyword.length < 2) {
@@ -124,7 +124,7 @@ const SearchQueryInput: React.FunctionComponent<
       });
     }
 
-    const isBlocked = checkBenefitExp({
+    const isBlocked = await checkBenefitExp({
       type: "queryCountSession",
       matching: "session",
       maxCount: 5,

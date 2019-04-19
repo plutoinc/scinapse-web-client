@@ -222,16 +222,16 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
     );
   };
 
-  private toggleModifyProfileDialog = () => {
+  private toggleModifyProfileDialog = async () => {
     const { dispatch } = this.props;
 
-    if (
-      !blockUnverifiedUser({
-        authLevel: AUTH_LEVEL.VERIFIED,
-        actionArea: "authorShow",
-        actionLabel: "toggleConnectProfileDialog",
-      })
-    ) {
+    const isBlocked = await blockUnverifiedUser({
+      authLevel: AUTH_LEVEL.VERIFIED,
+      actionArea: "authorShow",
+      actionLabel: "toggleConnectProfileDialog",
+    });
+
+    if (!isBlocked) {
       dispatch(toggleConnectProfileDialog());
     }
   };
