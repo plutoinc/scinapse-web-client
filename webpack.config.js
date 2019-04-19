@@ -7,6 +7,7 @@ const LoadablePlugin = require("@loadable/webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const WorkboxPlugin = require('workbox-webpack-plugin');
+
 require("extract-text-webpack-plugin");
 
 module.exports = {
@@ -106,10 +107,9 @@ module.exports = {
       chunkFilename: "[id].css",
     }),
     new webpack.IgnorePlugin(/^\.\/pdf.worker.js$/),
-    new WorkboxPlugin.GenerateSW({
+    new WorkboxPlugin.InjectManifest({
+      swSrc: './app/sw.js',
       swDest: "../server/sw.js",
-      clientsClaim: true,
-      skipWaiting: true,
     }),
     new BundleAnalyzerPlugin(),
   ],

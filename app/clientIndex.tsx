@@ -10,6 +10,7 @@ if (!EnvChecker.isOnServer()) {
           .register("/sw.js")
           .then(registration => {
             console.log("SW registered: ", registration);
+            console.log(registration.pushManager);
           })
           .catch(registrationError => {
             console.log("SW registration failed: ", registrationError);
