@@ -5,6 +5,7 @@ import { Comment } from "../model/comment";
 import { Collection } from "../model/collection";
 import { Member } from "../model/member";
 import { Journal } from "../model/journal";
+import { merge } from "lodash";
 import { PaperInCollection } from "../model/paperInCollection";
 import { Profile } from "../model/profile";
 
@@ -72,27 +73,10 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
         return state;
       }
 
-      const newCollections: { [collectionId: number]: Collection } = {};
+      let newCollections: { [collectionId: number]: Collection } = {};
       if (entities.collections) {
         const receivedCollections = entities.collections;
-
-        for (const k of Object.keys(receivedCollections)) {
-          const key = parseInt(k, 10);
-          const newCollection = receivedCollections[key];
-
-          if (state.collections[key]) {
-            newCollections[key] = {
-              ...newCollection,
-              note: newCollection.note ? newCollection.note : state.collections[key].note,
-              noteUpdated: newCollection.noteUpdated ? newCollection.noteUpdated : state.collections[key].noteUpdated,
-              containsSelected: newCollection.containsSelected
-                ? newCollection.containsSelected
-                : state.collections[key].containsSelected,
-            };
-          } else {
-            newCollections[key] = newCollection;
-          }
-        }
+        newCollections = merge(receivedCollections, state.collections);
       }
 
       return {
