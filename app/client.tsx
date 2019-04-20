@@ -103,9 +103,16 @@ class PlutoRenderer {
 
   private initSentry() {
     if (EnvChecker.isProdBrowser()) {
-      Sentry.init({
-        dsn: "https://90218bd0404f4e8e97fbb17279974c23@sentry.io/1306012",
-      });
+      const script = document.createElement("script");
+      script.src = "https://browser.sentry-cdn.com/5.0.6/bundle.min.js";
+      script.async = true;
+      script.crossOrigin = "anonymous";
+      script.onload = () => {
+        Sentry.init({
+          dsn: "https://90218bd0404f4e8e97fbb17279974c23@sentry.io/1306012",
+        });
+      };
+      document.body.appendChild(script);
     }
   }
 
