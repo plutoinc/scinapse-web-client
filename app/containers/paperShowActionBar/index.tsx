@@ -1,6 +1,5 @@
 import * as React from "react";
 import { withStyles } from "../../helpers/withStylesHelper";
-import PdfSourceButton from "../../components/paperShow/components/pdfSourceButton";
 import FullTextDialog from "./components/fullTextDialog";
 import PaperShowCollectionControlButton from "../paperShowCollectionControlButton";
 import ActionTicketManager from "../../helpers/actionTicketManager";
@@ -10,10 +9,12 @@ import Icon from "../../icons";
 import { getPDFLink } from "../../helpers/getPDFLink";
 import { CurrentUser } from "../../model/currentUser";
 import { blockUnverifiedUser, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
+import SourceButton from "../../components/paperShow/components/sourceButton";
 const s = require("./actionBar.scss");
 
 interface PaperShowActionBarProps {
   paper: Paper | null;
+  showFullText: boolean;
   currentUser: CurrentUser;
 }
 
@@ -31,7 +32,7 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
         <div className={s.leftSide}>
           {hasSource && (
             <div className={s.actionItem}>
-              <PdfSourceButton paper={props.paper} />
+              <SourceButton paper={props.paper} showFullText={props.showFullText} />
             </div>
           )}
           {!pdfSource && (
@@ -43,8 +44,6 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
                     actionArea: "paperDescription",
                     actionLabel: "clickRequestFullPaper",
                   });
-
-                  console.log(isBlocked);
 
                   if (!isBlocked) {
                     setIsOpen(true);

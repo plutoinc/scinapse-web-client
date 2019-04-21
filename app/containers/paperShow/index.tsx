@@ -229,7 +229,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               <div className={styles.paperContentBlockDivider} />
               <div className={styles.actionBarWrapper}>
                 <NoSsr>
-                  <ActionBar paper={paper} currentUser={currentUser} />
+                  <ActionBar paper={paper} currentUser={currentUser} showFullText={isLoadPDF} />
                 </NoSsr>
               </div>
               <div className={styles.paperContentBlockDivider} />

@@ -44,11 +44,13 @@ class ActionTicketManager {
       const ticket = new ActionTicket(params);
       this.addToQueue([ticket]);
 
-      trackEvent({
-        category: params.actionArea || "",
-        action: params.actionTag,
-        label: params.actionLabel || "",
-      });
+      if (params.actionType === "fire") {
+        trackEvent({
+          category: params.actionArea || "",
+          action: params.actionTag,
+          label: params.actionLabel || "",
+        });
+      }
 
       if (this.queue.length > MAXIMUM_TICKET_COUNT_IN_QUEUE && EnvChecker.isProdBrowser()) {
         this.sendTickets();

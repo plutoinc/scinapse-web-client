@@ -38,9 +38,12 @@
 }
 
 .reverseDownloadBtn {
+  @extend .downloadButton;
+
   .dropdownBtn,
   .linkClassName {
     background-color: $main_blue1;
+    border: none;
 
     &:hover {
       background-color: $main_blue0;
@@ -59,10 +62,11 @@
 
 .dropdownBtn,
 .linkClassName {
-  background-color: $gray8;
-
+  background-color: white;
+  border: solid 1px $gray3;
+  border-right: none;
   &:hover {
-    background-color: $gray2;
+    background-color: $gray0;
   }
 
   &:active {
