@@ -76,7 +76,6 @@
     width: 109px;
     height: 44px;
     border-radius: 4px;
-    background-color: $gray1;
     justify-content: center;
     align-items: center;
     font-size: 14px;
@@ -85,12 +84,15 @@
     display: flex;
 
     &:hover {
-      background-color: $gray2;
+      background-color: $gray7;
+      color: $black1;
+      transition: $button-hover-transition;
     }
 
     .collectionIcon {
       width: 20px;
       height: 20px;
+      color: $gray5;
       margin-right: 4px;
     }
   }

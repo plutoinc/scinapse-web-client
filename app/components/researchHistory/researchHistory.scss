@@ -1,87 +1,77 @@
 .openBoxWrapper {
   position: relative;
-  height: 51px;
   z-index: 25;
 }
 
 .boxWrapper {
   border-radius: 4px;
   box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.1);
-  width: 588px;
+  width: 400px;
   position: absolute;
-  top: 0;
+  top: 61px;
   right: 0;
   background-color: white;
 }
 
 .headerWrapper {
   position: relative;
-  height: 51px;
+  background-color: white;
+  margin-left: 8px;
+  width: 117px;
+  height: 44px;
   border-radius: 4px;
-  background-color: $gray0;
-  padding: 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: $gray6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
 
   &.openHeaderWrapper {
-    background-color: white;
+    background-color: $gray7;
+  }
+
+  &:hover {
+    background-color: $gray7;
+    color: $black1;
+    transition: $button-hover-transition;
   }
 }
 
 .historyIcon {
   display: inline-block;
   vertical-align: top;
-  width: 20px;
-  height: 20px;
-  margin-right: 8px;
-  color: $black1;
+  width: 24px;
+  height: 24px;
+  margin-right: 2px;
+  color: $gray5;
 }
 
 .sectionTitle {
   display: inline-block;
   vertical-align: top;
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 1.25;
-  color: $black1;
-}
-
-.rightSection {
-  position: absolute;
-  top: 16px;
-  right: 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: $gray6;
 }
 
 .countBtn {
   display: inline-block;
   vertical-align: top;
+  margin-left: 4px;
   border-radius: 9.5px;
-  background-color: $main_blue0;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1;
+  background-color: $green0;
+  font-size: 11px;
+  font-weight: bold;
   text-align: center;
   color: white;
   padding: 4px 8px;
-  margin-right: 8px;
   cursor: pointer;
-}
-
-.arrowIcon {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  color: $gray5;
-  cursor: pointer;
-
-  svg {
-    width: 20px;
-    height: 20px;
-  }
 }
 
 .paperListWrapper {
-  padding: 0 16px;
-  max-height: 535px;
-  padding-bottom: 16px;
+  padding: 16px;
+  max-height: 324px;
   overflow-y: auto;
 }
