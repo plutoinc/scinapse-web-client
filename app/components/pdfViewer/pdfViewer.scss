@@ -12,3 +12,18 @@
   height: 500px;
   margin-bottom: 16px;
 }
+
+.arrowIcon {
+  display: inline-flex;
+  justify-content: center;
+  vertical-align: middle;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+
+  svg {
+    transform: rotate(180deg);
+    width: 16px;
+    height: 16px;
+  }
+}

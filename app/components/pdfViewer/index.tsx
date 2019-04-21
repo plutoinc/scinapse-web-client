@@ -5,6 +5,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import ScinapseButton from "../common/scinapseButton";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { shouldBlockToSignUp } from "../../helpers/shouldBlockToSignUp";
+import Icon from "../../icons";
 const { Document, Page } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
@@ -33,8 +34,23 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    width: "154px",
+    width: "150px",
     height: "40px",
+  };
+  const readAllBtnStyle: React.CSSProperties = {
+    ...baseBtnStyle,
+    borderRadius: "27.5px",
+    border: "1px solid #bbc2d0",
+    fontSize: "16px",
+    fontWeight: 500,
+    letterSpacing: "1px",
+    color: "#34495e",
+  };
+  const downloadPdfBtnStyle: React.CSSProperties = {
+    ...baseBtnStyle,
+    color: "#3e7fff",
+    border: "1px solid #3e7fff",
+    marginLeft: "16px",
   };
 
   React.useEffect(
@@ -110,46 +126,45 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
         <div style={{ display: "flex", justifyContent: "center", marginTop: "16px", marginBottom: "65px" }}>
           {succeedToLoad && (
             <>
-              <ScinapseButton
-                gaCategory="PDF viewer"
-                gaAction={actionTag}
-                style={{ ...baseBtnStyle, backgroundColor: "#3e7fff" }}
-                content={extend ? "View Less" : "View More"}
-                isLoading={!succeedToLoad && !hadErrorToLoad}
-                disabled={!succeedToLoad}
-                onClick={async () => {
-                  if (!extend && (await shouldBlockToSignUp("pdfViewer", "viewMorePDF"))) {
-                    return;
+              {extend ? (
+                <ScinapseButton
+                  gaCategory="PDF viewer"
+                  gaAction="download PDF"
+                  style={downloadPdfBtnStyle}
+                  target="_blank"
+                  href={pdfURL}
+                  content="Download PDF"
+                  onClick={async e => {
+                    if (await shouldBlockToSignUp("pdfViewer", "downloadPDF")) {
+                      e.preventDefault();
+                      return;
+                    }
+                    trackClickButton("downloadPdf", props.paperId);
+                  }}
+                  isExternalLink
+                  downloadAttr
+                />
+              ) : (
+                <ScinapseButton
+                  gaCategory="PDF viewer"
+                  gaAction={actionTag}
+                  style={readAllBtnStyle}
+                  content={
+                    <span>
+                      READ ALL <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
+                    </span>
                   }
-                  trackClickButton(actionTag, props.paperId);
-                  setExtend(!extend);
-                  if (extend && wrapperNode.current) {
-                    wrapperNode.current.scrollIntoView();
-                  }
-                }}
-              />
-              <ScinapseButton
-                gaCategory="PDF viewer"
-                gaAction="download PDF"
-                style={{
-                  ...baseBtnStyle,
-                  color: "#3e7fff",
-                  border: "1px solid #3e7fff",
-                  marginLeft: "16px",
-                }}
-                target="_blank"
-                href={pdfURL}
-                content="Download PDF"
-                onClick={async e => {
-                  if (await shouldBlockToSignUp("pdfViewer", "downloadPDF")) {
-                    e.preventDefault();
-                    return;
-                  }
-                  trackClickButton("downloadPdf", props.paperId);
-                }}
-                isExternalLink
-                downloadAttr
-              />
+                  isLoading={!succeedToLoad && !hadErrorToLoad}
+                  disabled={!succeedToLoad}
+                  onClick={async () => {
+                    if (await shouldBlockToSignUp("pdfViewer", "viewMorePDF")) {
+                      return;
+                    }
+                    trackClickButton(actionTag, props.paperId);
+                    setExtend(!extend);
+                  }}
+                />
+              )}
             </>
           )}
         </div>
