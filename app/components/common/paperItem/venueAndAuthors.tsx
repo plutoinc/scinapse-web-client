@@ -16,11 +16,12 @@ export interface VenueAndAuthorsProps extends Readonly<AuthorsProps> {
 class VenueAndAuthors extends React.PureComponent<VenueAndAuthorsProps, {}> {
   public render() {
     const { authors, journal, conferenceInstance, publishedDate, paper, pageType, actionArea } = this.props;
-
     return (
       <div className={styles.publishInfoList}>
         <PaperItemVenue
           journal={journal}
+          paperId={paper.id}
+          doi={paper.doi}
           conferenceInstance={conferenceInstance}
           publishedDate={publishedDate}
           pageType={pageType}

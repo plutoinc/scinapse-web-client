@@ -8,12 +8,15 @@ import Icon from "../../../icons";
 import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { ConferenceInstance } from "../../../model/conferenceInstance";
+import DoiInPaperShow from "../../paperShow/components/doiInPaperShow";
 const styles = require("./venueAndAuthors.scss");
 
 interface PaperItemVenueProps {
   journal: Journal | null;
+  paperId: number;
   conferenceInstance: ConferenceInstance | null;
   publishedDate: string | null;
+  doi: string;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea?: Scinapse.ActionTicket.ActionArea;
   readOnly?: boolean;
@@ -22,8 +25,10 @@ interface PaperItemVenueProps {
 
 const PaperItemVenue = ({
   journal,
+  paperId,
   conferenceInstance,
   publishedDate,
+  doi,
   style,
   readOnly,
   pageType,
@@ -71,6 +76,8 @@ const PaperItemVenue = ({
     </span>
   ) : null;
 
+  const isPaperShow = pageType === "paperShow";
+
   return (
     <div style={style} className={styles.venue}>
       <Icon icon="JOURNAL" />
@@ -96,6 +103,7 @@ const PaperItemVenue = ({
             </span>
           </span>
         ) : null}
+        {isPaperShow ? <DoiInPaperShow doi={doi} paperId={paperId} /> : null}
       </div>
     </div>
   );
