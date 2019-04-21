@@ -45,8 +45,6 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
     return null;
   }
 
-  console.log(showFullText);
-
   if (paper.urls.length > 0) {
     const btnStyle: React.CSSProperties = {
       height: "100%",
@@ -66,8 +64,8 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
               text={"View in Source"}
               arrowIconClassName={styles.arrowIcon}
               className={classNames({
-                [styles.downloadButton]: showFullText,
-                [styles.reverseDownloadBtn]: showFullText,
+                [styles.downloadButton]: true,
+                [styles.reverseDownloadBtn]: !showFullText,
               })}
               textWrapperClassName={styles.sourceButtonTextWrapper}
               linkProps={{
@@ -89,7 +87,7 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
                 onClick: () => {
                   setIsSourcePopoverOpen(!isSourcePopoverOpen);
                 },
-                style: showFullText ? btnStyle : reverseBtnStyle,
+                style: !showFullText ? reverseBtnStyle : btnStyle,
                 className: styles.dropdownBtn,
               }}
               leftIconNode={<Icon icon="EXTERNAL_SOURCE" className={styles.sourceIcon} />}

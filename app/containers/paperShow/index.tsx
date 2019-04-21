@@ -4,7 +4,6 @@ import { stringify } from "qs";
 import NoSsr from "@material-ui/core/NoSsr";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
-import * as classNames from "classnames";
 import Helmet from "react-helmet";
 import PDFViewer from "../../components/pdfViewer";
 import { AppState } from "../../reducers";
@@ -33,7 +32,6 @@ import EnvChecker from "../../helpers/envChecker";
 import NextPaperTab from "../nextPaperTab";
 import { PaperShowMatchParams, PaperShowPageQueryParams } from "./types";
 import VenueAndAuthors from "../../components/common/paperItem/venueAndAuthors";
-import ViewFullTextBtn from "../../components/paperShow/components/viewFullTextBtn";
 
 const styles = require("./paperShow.scss");
 
@@ -225,11 +223,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 publishedDate={paper.publishedDate}
                 authors={paper.authors}
               />
-              <ViewFullTextBtn handleClickFullText={this.scrollToFullTextNode} />
               <div className={styles.paperContentBlockDivider} />
               <div className={styles.actionBarWrapper}>
                 <NoSsr>
-                  <ActionBar paper={paper} currentUser={currentUser} showFullText={isLoadPDF} />
+                  <ActionBar
+                    paper={paper}
+                    currentUser={currentUser}
+                    showFullText={isLoadPDF}
+                    handleClickFullText={this.scrollToFullTextNode}
+                  />
                 </NoSsr>
               </div>
               <div className={styles.paperContentBlockDivider} />

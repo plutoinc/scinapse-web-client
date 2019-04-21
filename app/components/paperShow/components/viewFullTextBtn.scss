@@ -11,13 +11,17 @@
   line-height: 1.43;
   background-color: $main_blue1;
   color: white;
+
+  &:hover {
+    background-color: $main_blue_light0;
+  }
 }
 
 .pdfIcon {
   display: flex;
   margin-right: 8px;
-    svg {
+  svg {
     width: 20px;
     height: 20px;
-      }
+  }
 }

@@ -10,12 +10,14 @@ import { getPDFLink } from "../../helpers/getPDFLink";
 import { CurrentUser } from "../../model/currentUser";
 import { blockUnverifiedUser, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
 import SourceButton from "../../components/paperShow/components/sourceButton";
+import ViewFullTextBtn from "../../components/paperShow/components/viewFullTextBtn";
 const s = require("./actionBar.scss");
 
 interface PaperShowActionBarProps {
   paper: Paper | null;
   showFullText: boolean;
   currentUser: CurrentUser;
+  handleClickFullText: () => void;
 }
 
 const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = props => {
@@ -30,12 +32,7 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
     <div className={s.actionBar}>
       <div className={s.actions}>
         <div className={s.leftSide}>
-          {hasSource && (
-            <div className={s.actionItem}>
-              <SourceButton paper={props.paper} showFullText={props.showFullText} />
-            </div>
-          )}
-          {!pdfSource && (
+          {!pdfSource ? (
             <div className={s.actionItem}>
               <button
                 onClick={async () => {
@@ -62,6 +59,15 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
                 <Icon icon="SEND" className={s.sendIcon} />
                 Request Full-text
               </button>
+            </div>
+          ) : (
+            <div className={s.actionItem}>
+              <ViewFullTextBtn handleClickFullText={props.handleClickFullText} />
+            </div>
+          )}
+          {hasSource && (
+            <div className={s.actionItem}>
+              <SourceButton paper={props.paper} showFullText={!!pdfSource} />
             </div>
           )}
           <div className={s.actionItem}>

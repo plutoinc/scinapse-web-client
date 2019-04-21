@@ -110,4 +110,4 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
   return null;
 };
 
-export default withStyles<typeof SourceButton>(styles)(SourceButton);
+export default withStyles<typeof PdfDownloadButton>(styles)(PdfDownloadButton);
