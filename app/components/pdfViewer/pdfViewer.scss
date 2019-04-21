@@ -2,15 +2,34 @@
   .react-pdf__Page + .react-pdf__Page {
     margin-top: 8px;
   }
+
+  .react-pdf__Page__canvas {
+    margin: 0 auto;
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1);
+  }
+}
+
+.contentWrapper {
+  background-color: $gray8;
+  padding: 32px 0;
+  margin-bottom: 36px;
+}
+
+.loadingContainerWrapper {
+  @extend .contentWrapper;
+  padding: 32px 0 84px 0;
 }
 
 .loadingContainer {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 10px 0 rgba(12, 0, 51, 0.2);
-  height: 500px;
-  margin-bottom: 16px;
+  width: 996px;
+  height: 484px;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1);
+  margin-bottom: 84px;
+  background-color: white;
+  margin: 0 auto;
 }
 
 .arrowIcon {

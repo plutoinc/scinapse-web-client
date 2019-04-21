@@ -37,6 +37,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     width: "150px",
     height: "40px",
   };
+
   const readAllBtnStyle: React.CSSProperties = {
     ...baseBtnStyle,
     borderRadius: "27.5px",
@@ -46,6 +47,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     letterSpacing: "1px",
     color: "#34495e",
   };
+
   const downloadPdfBtnStyle: React.CSSProperties = {
     ...baseBtnStyle,
     color: "#3e7fff",
@@ -82,12 +84,12 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
 
     if (extend) {
       return Array.from(new Array(pageCountToShow), (_el, i) => (
-        <Page pdf={PDFObject} width={792} key={i} pageNumber={i + 1} />
+        <Page pdf={PDFObject} width={996} margin={"0 auto"} key={i} pageNumber={i + 1} />
       ));
     } else {
       return (
         <>
-          <Page pdf={PDFObject} width={792} pageNumber={1} />
+          <Page pdf={PDFObject} width={996} margin={"0 auto"} pageNumber={1} />
         </>
       );
     }
@@ -95,15 +97,17 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
 
   if (isFetching) {
     return (
-      <div className={styles.loadingContainer}>
-        <ArticleSpinner />
+      <div className={styles.loadingContainerWrapper}>
+        <div className={styles.loadingContainer}>
+          <ArticleSpinner />
+        </div>
       </div>
     );
   }
 
   if (shouldShow && PDFBinary) {
     return (
-      <div ref={wrapperNode}>
+      <div ref={wrapperNode} className={styles.contentWrapper}>
         <Document
           file={PDFBinary}
           error={null}
@@ -123,7 +127,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
           {getContent()}
         </Document>
 
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "16px", marginBottom: "65px" }}>
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "16px" }}>
           {succeedToLoad && (
             <>
               {extend ? (
