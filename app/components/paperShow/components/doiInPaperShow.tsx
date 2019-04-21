@@ -14,6 +14,10 @@ interface DoiInPaperShowProps {
 const DoiInPaperShow: React.FunctionComponent<DoiInPaperShowProps> = props => {
   const { doi, paperId } = props;
 
+  if (!doi) {
+    return null;
+  }
+
   const clickDOIButton = () => {
     copySelectedTextToClipboard(`https://doi.org/${doi}`);
     trackEvent({

@@ -12,20 +12,21 @@
 
 .doiWrapper {
   display: inline-block;
+  margin-left: 2px;
 }
 
 .tinyButton {
   float: right;
+  margin-left: 4px;
   outline: none;
   border: none;
   cursor: pointer;
-  background-color: $gray8;
   border-radius: 8px;
   padding: 2px 6px 2px 4px;
   color: $main_blue1;
 
   &:hover {
-    background-color: $gray2;
+    background-color: $gray8;
   }
 
   &:active {
@@ -40,9 +41,8 @@
   }
 
   span {
-    line-height: 16px;
     color: $main_blue0;
-    font-size: 12px;
+    font-size: 11px;
     vertical-align: middle;
   }
 }
