@@ -74,7 +74,7 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
       const isBlocked = await checkBenefitExp({
         type: "getFromFirstResultPage",
         matching: "device",
-        maxCount: 3,
+        maxCount: 8,
         actionArea: "abstract",
         userActionType: "paperShow",
         expName: "getFromFirstResultPage",

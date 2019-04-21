@@ -82,7 +82,7 @@ class Title extends React.PureComponent<TitleProps, {}> {
       const isBlocked = await checkBenefitExp({
         type: "getFromFirstResultPage",
         matching: "device",
-        maxCount: 3,
+        maxCount: 8,
         actionArea: "searchResult",
         userActionType: "paperShow",
         expName: "getFromFirstResultPage",
