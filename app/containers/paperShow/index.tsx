@@ -262,35 +262,39 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               shouldShow={!EnvChecker.isOnServer() && layout.userDevice === UserDevice.DESKTOP}
             />
           </div>
-          <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)}>
-            <PaperShowRefCitedTab
-              referenceCount={paper.referenceCount}
-              citedCount={paper.citedCount}
-              handleClickRef={this.scrollToReferencePapersNode}
-              handleClickCited={this.scrollToCitedPapersNode}
-              handleClickFullText={this.scrollToFullTextNode}
-              isFixed={isOnRef && !isOnCited}
-              isOnRef={isAboveRef || isOnRef}
-              isOnCited={isOnCited}
-              showFullText={isLoadPDF}
-            />
-          </div>
-
-          <article className={styles.paperShow}>
-            <div className={styles.otherPapers}>
-              <div className={styles.references}>
-                <ReferencePapers
-                  type="reference"
-                  isMobile={layout.userDevice !== UserDevice.DESKTOP}
-                  papers={referencePapers}
-                  currentUser={currentUser}
-                  paperShow={paperShow}
-                  getLinkDestination={this.getReferencePaperPaginationLink}
-                  location={location}
+          <>
+            <div className={styles.citedBy}>
+              <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)}>
+                <PaperShowRefCitedTab
+                  referenceCount={paper.referenceCount}
+                  citedCount={paper.citedCount}
+                  handleClickRef={this.scrollToReferencePapersNode}
+                  handleClickCited={this.scrollToCitedPapersNode}
+                  handleClickFullText={this.scrollToFullTextNode}
+                  isFixed={isOnRef && !isOnCited}
+                  isOnRef={isAboveRef || isOnRef}
+                  isOnCited={isOnCited}
+                  showFullText={isLoadPDF}
                 />
               </div>
+
+              <article className={styles.paperShow}>
+                <div className={styles.otherPapers}>
+                  <div className={styles.references}>
+                    <ReferencePapers
+                      type="reference"
+                      isMobile={layout.userDevice !== UserDevice.DESKTOP}
+                      papers={referencePapers}
+                      currentUser={currentUser}
+                      paperShow={paperShow}
+                      getLinkDestination={this.getReferencePaperPaginationLink}
+                      location={location}
+                    />
+                  </div>
+                </div>
+              </article>
             </div>
-          </article>
+          </>
           <>
             <div className={styles.citedBy}>
               <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)}>

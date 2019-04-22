@@ -126,12 +126,12 @@ article.paperShow {
       }
     }
   }
-
-  .citedBy {
-    margin-top: 80px;
-  }
 }
 
+.citedBy {
+  margin-top: 40px;
+  margin-bottom: 24px;
+}
 .paperContentBlockHeaderTabsHeight {
   height: 69px;
 }
@@ -177,7 +177,7 @@ article.paperShow {
   padding-top: $navbar_height;
   margin-top: -$navbar_height;
   box-sizing: content-box;
-  margin-bottom: 24px;
+  margin-bottom: 8px;
 }
 
 // RegularDisplay (1024~1200)

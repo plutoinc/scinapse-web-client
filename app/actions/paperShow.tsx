@@ -272,6 +272,7 @@ export function getBestPdfOfPaper(params: { paperId: number }) {
 
       const res: PaperPdf = await PaperAPI.getBestPdfOfPaper(params);
       dispatch(ActionCreators.succeededToGetBestPdfInPaperShow({ paperId: params.paperId, bestPdf: res }));
+      return res;
     } catch (err) {
       dispatch(ActionCreators.failedToGetBestPdfInPaperShow());
       throw err;

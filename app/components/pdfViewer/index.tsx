@@ -6,7 +6,6 @@ import ScinapseButton from "../common/scinapseButton";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { shouldBlockToSignUp } from "../../helpers/shouldBlockToSignUp";
 import Icon from "../../icons";
-import PaperAPI from "../../api/paper";
 import { PaperPdf } from "../../model/paper";
 import { getBestPdfOfPaper } from "../../actions/paperShow";
 import { Dispatch } from "react-redux";

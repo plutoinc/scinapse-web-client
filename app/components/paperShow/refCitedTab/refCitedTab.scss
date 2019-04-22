@@ -2,8 +2,9 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding: 12px 222px;
+  padding: 12px 222px 0px 222px;
   line-height: 1.5;
+  border: solid 1px $gray1;
 
   &.stick {
     position: fixed;
