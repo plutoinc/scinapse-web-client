@@ -264,24 +264,24 @@ export function postNewCollection(params: PostCollectionParams) {
   };
 }
 
-export function getBestPdfOfPaper(params: { paperId: number }) {
-  return async (dispatch: Dispatch<any>) => {
-    try {
-      dispatch(ActionCreators.startToPostCollectionInCollectionDropdown());
+// export function getBestPdfOfPaper(params: { paperId: number }) {
+//   return async (dispatch: Dispatch<any>) => {
+//     try {
+//       dispatch(ActionCreators.startToPostCollectionInCollectionDropdown());
 
-      const res = await CollectionAPI.postCollection(params);
-      dispatch(ActionCreators.addEntity(res));
-      dispatch(
-        ActionCreators.succeededToPostCollectionInCollectionDropdown({
-          collectionId: res.result,
-        })
-      );
-    } catch (err) {
-      dispatch(ActionCreators.failedToPostCollectionInCollectionDropdown());
-      throw err;
-    }
-  };
-}
+//       const res = await CollectionAPI.postCollection(params);
+//       dispatch(ActionCreators.addEntity(res));
+//       dispatch(
+//         ActionCreators.succeededToPostCollectionInCollectionDropdown({
+//           collectionId: res.result,
+//         })
+//       );
+//     } catch (err) {
+//       dispatch(ActionCreators.failedToPostCollectionInCollectionDropdown());
+//       throw err;
+//     }
+//   };
+// }
 
 export function openCollectionDropdown() {
   return ActionCreators.openCollectionDropdownInPaperShowCollectionDropdown();

@@ -5,7 +5,7 @@ import { AvailableCitationType } from "../containers/paperShow/records";
 import { GetCollectionsResponse, GetUserCollectionsResponse } from "../api/member";
 import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
 import { Collection } from "../model/collection";
-import { Paper, PaperPdf } from "../model/paper";
+import { Paper } from "../model/paper";
 import { CVInfoType, Award, Education, Experience } from "../model/profile";
 import { PaperInCollection } from "../model/paperInCollection";
 import { SIGN_UP_STEP } from "../components/auth/signUp/types";
