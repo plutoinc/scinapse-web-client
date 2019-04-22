@@ -39,9 +39,7 @@ const PaperShowRefCitedTab: React.SFC<PaperShowRefCitedTabProps> = props => {
     <div
       className={classNames({
         [styles.paperContentBlockHeaderTabs]: !props.isFixed,
-        [styles.paperContentBlockHeaderTabsWithPdf]: !props.isFixed && props.showFullText,
-        [`${styles.paperContentBlockHeaderTabsWithPdf} ${styles.stick}`]: props.isFixed && props.showFullText,
-        [`${styles.paperContentBlockHeaderTabs} ${styles.stick}`]: props.isFixed && (props.isOnRef || props.isOnCited),
+        [`${styles.paperContentBlockHeaderTabs} ${styles.stick}`]: props.isFixed,
       })}
     >
       <ul className={styles.headerTabList}>

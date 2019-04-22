@@ -46,3 +46,10 @@
     height: 16px;
   }
 }
+
+// RegularDisplay (1024~1200)
+@media (max-width: $regular_width) {
+  .contentWrapper {
+    display: none;
+  }
+}

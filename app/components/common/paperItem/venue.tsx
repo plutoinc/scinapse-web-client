@@ -77,6 +77,7 @@ const PaperItemVenue = ({
   ) : null;
 
   const isPaperShow = pageType === "paperShow";
+  const isPaperDescription = actionArea === "paperDescription";
 
   return (
     <div style={style} className={styles.venue}>
@@ -103,7 +104,7 @@ const PaperItemVenue = ({
             </span>
           </span>
         ) : null}
-        {isPaperShow ? <DoiInPaperShow doi={doi} paperId={paperId} /> : null}
+        {isPaperShow && isPaperDescription ? <DoiInPaperShow doi={doi} paperId={paperId} /> : null}
       </div>
     </div>
   );

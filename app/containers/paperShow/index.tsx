@@ -261,48 +261,54 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               shouldShow={!EnvChecker.isOnServer() && layout.userDevice === UserDevice.DESKTOP}
             />
           </div>
+          <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)}>
+            <PaperShowRefCitedTab
+              referenceCount={paper.referenceCount}
+              citedCount={paper.citedCount}
+              handleClickRef={this.scrollToReferencePapersNode}
+              handleClickCited={this.scrollToCitedPapersNode}
+              handleClickFullText={this.scrollToFullTextNode}
+              isFixed={isOnRef && !isOnCited}
+              isOnRef={isAboveRef || isOnRef}
+              isOnCited={isOnCited}
+              showFullText={isLoadPDF}
+            />
+          </div>
+
           <article className={styles.paperShow}>
-            <div className={styles.paperShowContent}>
+            <div className={styles.otherPapers}>
+              <div className={styles.references}>
+                <ReferencePapers
+                  type="reference"
+                  isMobile={layout.userDevice !== UserDevice.DESKTOP}
+                  papers={referencePapers}
+                  currentUser={currentUser}
+                  paperShow={paperShow}
+                  getLinkDestination={this.getReferencePaperPaginationLink}
+                  location={location}
+                />
+              </div>
+            </div>
+          </article>
+          <>
+            <div className={styles.citedBy}>
+              <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)}>
+                <PaperShowRefCitedTab
+                  referenceCount={paper.referenceCount}
+                  citedCount={paper.citedCount}
+                  handleClickRef={this.scrollToReferencePapersNode}
+                  handleClickCited={this.scrollToCitedPapersNode}
+                  handleClickFullText={this.scrollToFullTextNode}
+                  isFixed={!isOnRef && isOnCited}
+                  isOnRef={false}
+                  isOnCited={true}
+                  showFullText={isLoadPDF}
+                />
+              </div>
+            </div>
+
+            <article className={styles.paperShow}>
               <div className={styles.otherPapers}>
-                <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)}>
-                  <PaperShowRefCitedTab
-                    referenceCount={paper.referenceCount}
-                    citedCount={paper.citedCount}
-                    handleClickRef={this.scrollToReferencePapersNode}
-                    handleClickCited={this.scrollToCitedPapersNode}
-                    handleClickFullText={this.scrollToFullTextNode}
-                    isFixed={isOnRef && !isOnCited}
-                    isOnRef={isAboveRef || isOnRef}
-                    isOnCited={isOnCited}
-                    showFullText={isLoadPDF}
-                  />
-                </div>
-                <div className={styles.references}>
-                  <ReferencePapers
-                    type="reference"
-                    isMobile={layout.userDevice !== UserDevice.DESKTOP}
-                    papers={referencePapers}
-                    currentUser={currentUser}
-                    paperShow={paperShow}
-                    getLinkDestination={this.getReferencePaperPaginationLink}
-                    location={location}
-                  />
-                </div>
-                <div className={styles.citedBy}>
-                  <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)}>
-                    <PaperShowRefCitedTab
-                      referenceCount={paper.referenceCount}
-                      citedCount={paper.citedCount}
-                      handleClickRef={this.scrollToReferencePapersNode}
-                      handleClickCited={this.scrollToCitedPapersNode}
-                      handleClickFullText={this.scrollToFullTextNode}
-                      isFixed={!isOnRef && isOnCited}
-                      isOnRef={false}
-                      isOnCited={true}
-                      showFullText={isLoadPDF}
-                    />
-                  </div>
-                </div>
                 <ReferencePapers
                   type="cited"
                   isMobile={layout.userDevice !== UserDevice.DESKTOP}
@@ -313,8 +319,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   location={location}
                 />
               </div>
-            </div>
-          </article>
+            </article>
+          </>
         </div>
         <div ref={el => (this.footerWrapper = el)}>
           <Footer />
@@ -416,7 +422,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       const citedOffsetTop = this.citedTabWrapper.offsetTop;
       const currentScrollTop = scrollTop + NAVBAR_HEIGHT;
 
-      if (fullTextOffsetTop > currentScrollTop) {
+      if (citedOffsetTop === 0 && refOffsetTop === 0 && fullTextOffsetTop === 0) {
+        this.setState(prevState => ({
+          ...prevState,
+          isOnFullText: false,
+          isOnRef: false,
+          isOnCited: false,
+          isAboveRef: false,
+        }));
+      } else if (fullTextOffsetTop > currentScrollTop) {
         this.setState(prevState => ({
           ...prevState,
           isOnFullText: false,

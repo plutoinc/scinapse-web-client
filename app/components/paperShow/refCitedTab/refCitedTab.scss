@@ -2,14 +2,15 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
+  padding: 12px 222px;
   line-height: 1.5;
 
   &.stick {
     position: fixed;
     top: $header-height;
-    width: $paper-show-width;
+    width: 100%;
     background-color: white;
-    padding: $ref-cited-bar-padding;
+    padding: 12px 222px;
     border-bottom: 1px solid $gray8;
     margin: 0;
     z-index: 2;
@@ -61,27 +62,13 @@
   }
 }
 
-.paperContentBlockHeaderTabsWithPdf {
-  @extend .paperContentBlockHeaderTabs;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: 12px 222px;
-  line-height: 1.5;
+// RegularDisplay (1024~1200)
+@media (max-width: $regular_width) {
+  .paperContentBlockHeaderTabs {
+    padding: 12px;
 
-  &.stick {
-    position: fixed;
-    top: $header-height;
-    width: 100%;
-    background-color: white;
-    padding: 12px 222px;
-    border-bottom: 1px solid $gray8;
-    margin: 0;
-    z-index: 2;
-
-    .headerTabList .headerTabItem.active {
-      padding: 0;
-      border: none;
+    &.stick {
+      padding: 12px;
     }
   }
 }
