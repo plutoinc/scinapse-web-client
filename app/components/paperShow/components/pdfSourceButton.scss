@@ -35,6 +35,40 @@
       height: 100%;
     }
   }
+
+  .spinnerWrapper {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+
+    .loadingSpinner {
+      color: white;
+    }
+  }
+}
+
+.pdfDownloadBtn {
+  @extend .downloadButton;
+  background-color: $main_blue1;
+  color: white;
+  width: 148px;
+  height: 36px;
+  font-size: 14px;
+  font-weight: bold;
+
+  &:hover {
+    background-color: $main_blue0;
+  }
+}
+
+.pdfLoadingBtn {
+  @extend .pdfDownloadBtn;
+  background-color: $gray4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .reverseDownloadBtn {

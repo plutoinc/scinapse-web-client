@@ -16,6 +16,7 @@ const s = require("./actionBar.scss");
 interface PaperShowActionBarProps {
   paper: Paper | null;
   showFullText: boolean;
+  isLoadPDF: boolean;
   currentUser: CurrentUser;
   handleClickFullText: () => void;
 }
@@ -62,7 +63,7 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
             </div>
           ) : (
             <div className={s.actionItem}>
-              <ViewFullTextBtn handleClickFullText={props.handleClickFullText} />
+              <ViewFullTextBtn handleClickFullText={props.handleClickFullText} isLoadPDF={props.isLoadPDF} />
             </div>
           )}
           {hasSource && (

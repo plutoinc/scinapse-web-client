@@ -1,12 +1,14 @@
 import * as React from "react";
 import * as classNames from "classnames";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import { trackEvent } from "../../../helpers/handleGA";
+import { Paper } from "../../../model/paper";
+import CiteBox from "../../../containers/paperShowActionBar/components/citeBox";
+import PdfDownloadButton from "../components/pdfDownloadButton";
 const styles = require("./refCitedTab.scss");
 
 interface PaperShowRefCitedTabProps {
-  referenceCount: number;
-  citedCount: number;
+  paper: Paper;
+  isLoadPDF: boolean;
   isFixed: boolean;
   isOnRef: boolean;
   isOnCited: boolean;
@@ -19,6 +21,8 @@ interface PaperShowRefCitedTabProps {
 }
 
 const PaperShowRefCitedTab: React.SFC<PaperShowRefCitedTabProps> = props => {
+  const referenceCount = props.paper.referenceCount;
+  const citedCount = props.paper.citedCount;
   let fullTextNode;
 
   if (props.showFullText) {
@@ -51,7 +55,7 @@ const PaperShowRefCitedTab: React.SFC<PaperShowRefCitedTabProps> = props => {
           })}
           onClick={props.handleClickRef}
         >
-          {`References (${props.referenceCount})`}
+          {`References (${referenceCount})`}
         </li>
         <li
           className={classNames({
@@ -60,23 +64,16 @@ const PaperShowRefCitedTab: React.SFC<PaperShowRefCitedTabProps> = props => {
           })}
           onClick={props.handleClickCited}
         >
-          {`Cited By (${props.citedCount})`}
+          {`Cited By (${citedCount})`}
         </li>
       </ul>
-      <div className={styles.scrollTop}>
-        <button
-          className={styles.scrollButton}
-          onClick={() => {
-            window.scrollTo(0, 0);
-            trackEvent({
-              category: "New Paper Show",
-              action: "Click Top Tab in Paper Show refBar",
-              label: "Click Top Tab",
-            });
-          }}
-        >
-          ↑ Top
-        </button>
+
+      <div className={styles.rightBtnBox}>
+        <CiteBox
+          paper={props.paper}
+          btnStyle={{ maxWidth: "74px", width: "100%", height: "36px", marginRight: "8px" }}
+        />
+        <PdfDownloadButton paper={props.paper} isLoadPDF={props.isLoadPDF} />
       </div>
     </div>
   );

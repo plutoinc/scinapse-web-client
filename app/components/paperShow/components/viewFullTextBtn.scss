@@ -17,6 +17,23 @@
   }
 }
 
+.loadingBtnStyle {
+  @extend .btnStyle;
+  background-color: $gray4;
+}
+
+.spinnerWrapper {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+
+  .loadingSpinner {
+    color: white;
+  }
+}
+
 .pdfIcon {
   display: flex;
   margin-right: 8px;

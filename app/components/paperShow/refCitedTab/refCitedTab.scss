@@ -4,10 +4,13 @@
   width: 100%;
   padding: 12px 222px 0px 222px;
   line-height: 1.5;
-  border: solid 1px $gray1;
+  border-top: solid 1px $gray1;
+  border-bottom: solid 1px $gray1;
 
   &.stick {
     position: fixed;
+    display: flex;
+    align-items: center;
     top: $header-height;
     width: 100%;
     background-color: white;
@@ -19,6 +22,10 @@
     .headerTabList .headerTabItem.active {
       padding: 0;
       border: none;
+    }
+
+    .rightBtnBox {
+      margin-top: 0;
     }
   }
 
@@ -63,13 +70,24 @@
   }
 }
 
+.rightBtnBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -12px;
+}
+
 // RegularDisplay (1024~1200)
 @media (max-width: $regular_width) {
   .paperContentBlockHeaderTabs {
-    padding: 12px;
+    padding: 12px 12px 0 12px;
 
     &.stick {
       padding: 12px;
     }
+  }
+
+  .rightBtnBox {
+    display: none;
   }
 }

@@ -117,6 +117,8 @@ article.paperShow {
   }
 
   .otherPapers {
+    margin-top: 24px;
+
     .paperItem + .paperItem {
       margin-top: 12px;
     }
@@ -130,7 +132,6 @@ article.paperShow {
 
 .citedBy {
   margin-top: 40px;
-  margin-bottom: 24px;
 }
 .paperContentBlockHeaderTabsHeight {
   height: 69px;
@@ -177,7 +178,7 @@ article.paperShow {
   padding-top: $navbar_height;
   margin-top: -$navbar_height;
   box-sizing: content-box;
-  margin-bottom: 8px;
+  margin-bottom: 7px;
 }
 
 // RegularDisplay (1024~1200)
