@@ -467,7 +467,14 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       const refOffsetTop = this.refTabWrapper.offsetTop;
       const citedOffsetTop = this.citedTabWrapper.offsetTop;
 
-      if (!this.state.isAboveRef && scrollTop + NAVBAR_HEIGHT < refOffsetTop) {
+      if (citedOffsetTop === 0 && refOffsetTop === 0) {
+        this.setState(prevState => ({
+          ...prevState,
+          isOnRef: false,
+          isOnCited: false,
+          isAboveRef: false,
+        }));
+      } else if (!this.state.isAboveRef && scrollTop + NAVBAR_HEIGHT < refOffsetTop) {
         this.setState(prevState => ({ ...prevState, isAboveRef: true, isOnCited: false, isOnRef: false }));
       } else if (
         !this.state.isOnRef &&
