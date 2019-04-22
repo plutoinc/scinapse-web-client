@@ -32,6 +32,9 @@ import EnvChecker from "../../helpers/envChecker";
 import NextPaperTab from "../nextPaperTab";
 import { PaperShowMatchParams, PaperShowPageQueryParams } from "./types";
 import VenueAndAuthors from "../../components/common/paperItem/venueAndAuthors";
+import { ArticleSearchState } from "../../components/articleSearch/records";
+import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
+import Icon from "../../icons";
 
 const styles = require("./paperShow.scss");
 
@@ -50,6 +53,7 @@ function mapStateToProps(state: AppState) {
     paper: getMemoizedPaper(state),
     referencePapers: getReferencePapers(state),
     citedPapers: getCitedPapers(state),
+    articleSearch: state.articleSearch,
   };
 }
 
@@ -58,6 +62,7 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
   currentUser: CurrentUser;
   paperShow: PaperShowState;
   configuration: Configuration;
+  articleSearch: ArticleSearchState;
   dispatch: Dispatch<any>;
   paper: Paper | null;
   referencePapers: Paper[];
@@ -205,14 +210,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       return null;
     }
 
-    // const pdfSourceRecord = getPDFLink(paper.urls);
-
     return (
       <>
         <div className={styles.container}>
           {this.getPageHelmet()}
           <article className={styles.paperShow}>
             <div className={styles.paperShowContent}>
+              {this.getGoBackResultBtn()}
               <div className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.title) }} />
               <VenueAndAuthors
                 pageType={"paperShow"}
@@ -335,6 +339,31 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       </>
     );
   }
+
+  private getGoBackResultBtn = () => {
+    const { articleSearch, history } = this.props;
+
+    if (articleSearch.searchInput && articleSearch.searchInput.length > 0) {
+      return (
+        <div
+          className={styles.goBackBtn}
+          onClick={() => {
+            history.push({
+              pathname: "/search",
+              search: PapersQueryFormatter.stringifyPapersQuery({
+                query: articleSearch.searchInput,
+                page: 1,
+                sort: "RELEVANCE",
+                filter: PapersQueryFormatter.objectifyPapersFilter(),
+              }),
+            });
+          }}
+        >
+          ← BACK TO RESULTS
+        </div>
+      );
+    }
+  };
 
   private handleSucceedToLoadPDF = () => {
     this.setState(prevState => ({ ...prevState, isLoadPDF: true }));

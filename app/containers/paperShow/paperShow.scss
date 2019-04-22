@@ -95,7 +95,7 @@ article.paperShow {
     font-size: 30px;
     line-height: 1.4;
     color: $black1;
-    margin-top: 32px;
+    margin-top: 22px;
     margin-bottom: 9px;
   }
 
@@ -179,6 +179,20 @@ article.paperShow {
   margin-top: -$navbar_height;
   box-sizing: content-box;
   margin-bottom: 7px;
+}
+
+.goBackBtn {
+  font-size: 14px;
+  width: 200px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-top: 32px;
+  color: $gray5;
+  cursor: pointer;
+
+  &:hover {
+    color: $gray6;
+  }
 }
 
 // RegularDisplay (1024~1200)
