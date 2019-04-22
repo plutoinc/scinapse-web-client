@@ -11,6 +11,7 @@ import alertToast from "../helpers/makePlutoToastAction";
 import { trackEvent } from "../helpers/handleGA";
 import PlutoAxios from "../api/pluto";
 import { CommonError } from "../model/error";
+import { PaperPdf } from "../model/paper";
 
 export function clearPaperShowState() {
   return ActionCreators.clearPaperShowState();
@@ -264,24 +265,19 @@ export function postNewCollection(params: PostCollectionParams) {
   };
 }
 
-// export function getBestPdfOfPaper(params: { paperId: number }) {
-//   return async (dispatch: Dispatch<any>) => {
-//     try {
-//       dispatch(ActionCreators.startToPostCollectionInCollectionDropdown());
+export function getBestPdfOfPaper(params: { paperId: number }) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch(ActionCreators.startToGetBestPdfInPaperShow());
 
-//       const res = await CollectionAPI.postCollection(params);
-//       dispatch(ActionCreators.addEntity(res));
-//       dispatch(
-//         ActionCreators.succeededToPostCollectionInCollectionDropdown({
-//           collectionId: res.result,
-//         })
-//       );
-//     } catch (err) {
-//       dispatch(ActionCreators.failedToPostCollectionInCollectionDropdown());
-//       throw err;
-//     }
-//   };
-// }
+      const res: PaperPdf = await PaperAPI.getBestPdfOfPaper(params);
+      dispatch(ActionCreators.succeededToGetBestPdfInPaperShow({ paperId: params.paperId, bestPdf: res }));
+    } catch (err) {
+      dispatch(ActionCreators.failedToGetBestPdfInPaperShow());
+      throw err;
+    }
+  };
+}
 
 export function openCollectionDropdown() {
   return ActionCreators.openCollectionDropdownInPaperShowCollectionDropdown();

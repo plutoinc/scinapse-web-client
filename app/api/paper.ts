@@ -218,8 +218,9 @@ class PaperAPI extends PlutoAxios {
 
   public async getBestPdfOfPaper(params: { paperId: number }) {
     const res = await this.post(`/papers/${params.paperId}/pdf`);
-    console.log(res);
-    return res.data.data;
+    const rawResult = res.data.data.content;
+
+    return camelCaseKeys(rawResult);
   }
 }
 

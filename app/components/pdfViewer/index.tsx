@@ -6,12 +6,15 @@ import ScinapseButton from "../common/scinapseButton";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { shouldBlockToSignUp } from "../../helpers/shouldBlockToSignUp";
 import Icon from "../../icons";
-import paperAPI from "../../api/paper";
+import PaperAPI from "../../api/paper";
 import { PaperPdf } from "../../model/paper";
+import { getBestPdfOfPaper } from "../../actions/paperShow";
+import { Dispatch } from "react-redux";
 const { Document, Page } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
 interface PDFViewerProps {
+  dispatch: Dispatch<any>;
   paperId: number;
   shouldShow: boolean;
   filename: string;
@@ -62,8 +65,9 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
       if (shouldShow) {
         setIsFetching(true);
         if (!bestPdf) {
-          paperAPI.getBestPdfOfPaper({ paperId: props.paperId });
+          props.dispatch(getBestPdfOfPaper({ paperId: props.paperId }));
         } else if (bestPdf && bestPdf.hasBest) {
+          console.log("test1");
           Axios.get(
             `https://lvr8qqubzk.execute-api.us-east-1.amazonaws.com/prod/get-pdf?pdf_url=${
               bestPdf.url
@@ -81,6 +85,10 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
               setIsFetching(false);
               onFailed();
             });
+        } else if (bestPdf && !bestPdf.hasBest) {
+          console.log("test2");
+          setPDFBinary(null);
+          setIsFetching(false);
         }
       }
     },

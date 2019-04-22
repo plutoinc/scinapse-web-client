@@ -5,7 +5,7 @@ import { AvailableCitationType } from "../containers/paperShow/records";
 import { GetCollectionsResponse, GetUserCollectionsResponse } from "../api/member";
 import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
 import { Collection } from "../model/collection";
-import { Paper } from "../model/paper";
+import { Paper, PaperPdf } from "../model/paper";
 import { CVInfoType, Award, Education, Experience } from "../model/profile";
 import { PaperInCollection } from "../model/paperInCollection";
 import { SIGN_UP_STEP } from "../components/auth/signUp/types";
@@ -1067,17 +1067,17 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_REMOVE_PROFILE_CV_DATA });
   },
 
-  // //   PAPER_SHOW_START_TO_GET_BEST_PDF = "PAPER_SHOW_START_TO_GET_BEST_PDF",
-  // // PAPER_SHOW_SUCCEEDED_TO_GET_BEST_PDF = "PAPER_SHOW_SUCCEEDED_TO_GET_BEST_PDF",
-  // // PAPER_SHOW_FAILED_TO_GET_BEST_PDF = "PAPER_SHOW_FAILED_TO_GET_BEST_PDF",
+  startToGetBestPdfInPaperShow() {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_BEST_PDF });
+  },
 
-  // startToGetBestPdfInPaperShow() {
-  //   return createAction({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_BEST_PDF });
-  // },
+  succeededToGetBestPdfInPaperShow(payload: { paperId: number; bestPdf: PaperPdf }) {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_BEST_PDF, payload });
+  },
 
-  // succeededToGetBestPdfInPaperShow(payload: PaperPdf) {
-  //   return createAction({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_BEST_PDF, payload });
-  // },
+  failedToGetBestPdfInPaperShow() {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_BEST_PDF });
+  },
 
   addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_ADD_ENTITY, payload });

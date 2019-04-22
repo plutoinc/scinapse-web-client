@@ -186,7 +186,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public render() {
-    const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers } = this.props;
+    const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers, dispatch } = this.props;
     const { isOnCited, isOnRef, isAboveRef, isLoadPDF } = this.state;
 
     if (paperShow.isLoadingPaper) {
@@ -253,6 +253,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <div>
             {this.getFullTextNavBar()}
             <PDFViewer
+              dispatch={dispatch}
               paperId={paper.id}
               onLoadSuccess={this.handleSucceedToLoadPDF}
               onFailed={this.handleFailedToLoadPDF}
