@@ -187,7 +187,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public render() {
     const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers } = this.props;
-    const { isOnCited, isOnRef, isAboveRef, isRightBoxFixed, isRightBoxSmall, isTouchFooter, isLoadPDF } = this.state;
+    const { isOnCited, isOnRef, isAboveRef, isLoadPDF } = this.state;
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -205,7 +205,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       return null;
     }
 
-    const pdfSourceRecord = getPDFLink(paper.urls);
+    // const pdfSourceRecord = getPDFLink(paper.urls);
 
     return (
       <>
@@ -257,7 +257,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               onLoadSuccess={this.handleSucceedToLoadPDF}
               onFailed={this.handleFailedToLoadPDF}
               filename={paper.title}
-              pdfURL={pdfSourceRecord && pdfSourceRecord.url}
+              bestPdf={paper.bestPdf}
               shouldShow={!EnvChecker.isOnServer() && layout.userDevice === UserDevice.DESKTOP}
             />
           </div>

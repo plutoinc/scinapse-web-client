@@ -7,6 +7,12 @@ import { Journal } from "./journal";
 import { ConferenceInstance } from "./conferenceInstance";
 import { SavedInCollections } from "./savedInCollecctions";
 
+export interface PaperPdf {
+  url: string;
+  lastCheckedAt: Date;
+  hasBest: boolean;
+}
+
 export interface Paper {
   id: number;
   cognitivePaperId: number;
@@ -32,6 +38,7 @@ export interface Paper {
   urls: PaperSource[];
   isAuthorIncluded?: boolean;
   relation: { savedInCollections: SavedInCollections[] };
+  bestPdf: PaperPdf;
 }
 
 export const paperSchema = new schema.Entity("papers");

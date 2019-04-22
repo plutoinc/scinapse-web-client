@@ -6,6 +6,8 @@ import ScinapseButton from "../common/scinapseButton";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { shouldBlockToSignUp } from "../../helpers/shouldBlockToSignUp";
 import Icon from "../../icons";
+import paperAPI from "../../api/paper";
+import { PaperPdf } from "../../model/paper";
 const { Document, Page } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
@@ -13,13 +15,13 @@ interface PDFViewerProps {
   paperId: number;
   shouldShow: boolean;
   filename: string;
-  pdfURL?: string;
+  bestPdf?: PaperPdf;
   onLoadSuccess: () => void;
   onFailed: () => void;
 }
 
 const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
-  const { pdfURL, shouldShow, onFailed, onLoadSuccess, filename } = props;
+  const { bestPdf, shouldShow, onFailed, onLoadSuccess, filename } = props;
   const [isFetching, setIsFetching] = React.useState(false);
   const [PDFBinary, setPDFBinary] = React.useState(null);
   const [PDFObject, setPDFObject] = React.useState(null);
@@ -59,24 +61,30 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     () => {
       if (shouldShow) {
         setIsFetching(true);
-        Axios.get(
-          `https://lvr8qqubzk.execute-api.us-east-1.amazonaws.com/prod/get-pdf?pdf_url=${pdfURL}&title=${filename}`,
-          {
-            responseType: "blob",
-          }
-        )
-          .then(res => {
-            setPDFBinary(res.data);
-            setIsFetching(false);
-          })
-          .catch(_err => {
-            setLoadError(true);
-            setIsFetching(false);
-            onFailed();
-          });
+        if (!bestPdf) {
+          paperAPI.getBestPdfOfPaper({ paperId: props.paperId });
+        } else if (bestPdf && bestPdf.hasBest) {
+          Axios.get(
+            `https://lvr8qqubzk.execute-api.us-east-1.amazonaws.com/prod/get-pdf?pdf_url=${
+              bestPdf.url
+            }&title=${filename}`,
+            {
+              responseType: "blob",
+            }
+          )
+            .then(res => {
+              setPDFBinary(res.data);
+              setIsFetching(false);
+            })
+            .catch(_err => {
+              setLoadError(true);
+              setIsFetching(false);
+              onFailed();
+            });
+        }
       }
     },
-    [pdfURL]
+    [bestPdf]
   );
 
   const getContent = () => {
@@ -105,7 +113,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     );
   }
 
-  if (shouldShow && PDFBinary) {
+  if (shouldShow && PDFBinary && bestPdf && bestPdf.hasBest) {
     return (
       <div ref={wrapperNode} className={styles.contentWrapper}>
         <Document
@@ -136,7 +144,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                   gaAction="download PDF"
                   style={downloadPdfBtnStyle}
                   target="_blank"
-                  href={pdfURL}
+                  href={bestPdf.url}
                   content="Download PDF"
                   onClick={async e => {
                     if (await shouldBlockToSignUp("pdfViewer", "downloadPDF")) {

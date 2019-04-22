@@ -215,6 +215,12 @@ class PaperAPI extends PlutoAxios {
     });
     return res;
   }
+
+  public async getBestPdfOfPaper(params: { paperId: number }) {
+    const res = await this.post(`/papers/${params.paperId}/pdf`);
+    console.log(res);
+    return res.data.data;
+  }
 }
 
 const paperAPI = new PaperAPI();
