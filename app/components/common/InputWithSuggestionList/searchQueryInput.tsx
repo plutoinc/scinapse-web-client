@@ -127,7 +127,7 @@ const SearchQueryInput: React.FunctionComponent<
     const isBlocked = await checkBenefitExp({
       type: "queryCountSession",
       matching: "session",
-      maxCount: 20,
+      maxCount: 5,
       actionArea: props.actionArea,
       userActionType: "query",
       expName: "queryCountSession",

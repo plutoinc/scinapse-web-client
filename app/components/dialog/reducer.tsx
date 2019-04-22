@@ -45,6 +45,8 @@ export interface DialogState
       collection: Collection | undefined;
 
       authorListTargetPaper: Paper | undefined;
+
+      isBlocked: boolean | undefined;
     }> {} // TODO: remove below attribute after finishing the experiment
 
 export const DIALOG_INITIAL_STATE: DialogState = {
@@ -71,6 +73,7 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   collection: undefined,
   // author list dialog
   authorListTargetPaper: undefined,
+  isBlocked: undefined,
 };
 
 export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actions): DialogState {
@@ -86,6 +89,7 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
         authorListTargetPaper: action.payload.authorListTargetPaper,
         userActionType: action.payload.userActionType,
         authContext: action.payload.authContext,
+        isBlocked: action.payload.isBlocked,
       };
     }
 

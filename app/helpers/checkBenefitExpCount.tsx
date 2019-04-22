@@ -52,6 +52,7 @@ export async function checkBenefitExp({
         actionArea,
         actionLabel: actionLabel || String(exp[type].count),
         expName,
+        isBlocked: true,
       });
     } else {
       store.set(BENEFIT_EXPERIMENT_KEY, newExp);
