@@ -7,6 +7,7 @@ import ActionTicketManager from "../../helpers/actionTicketManager";
 import { shouldBlockToSignUp } from "../../helpers/shouldBlockToSignUp";
 import Icon from "../../icons";
 import { PaperPdf } from "../../model/paper";
+import { CircularProgress } from "@material-ui/core";
 const { Document, Page } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
@@ -64,7 +65,6 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
         if (!bestPdf) {
           handleGetBestPdf();
         } else if (bestPdf && bestPdf.hasBest) {
-          console.log("test1");
           Axios.get(
             `https://lvr8qqubzk.execute-api.us-east-1.amazonaws.com/prod/get-pdf?pdf_url=${
               bestPdf.url
@@ -83,7 +83,6 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
               onFailed();
             });
         } else if (bestPdf && !bestPdf.hasBest) {
-          console.log("test2");
           setPDFBinary(null);
           setIsFetching(false);
         }
@@ -112,7 +111,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     return (
       <div className={styles.loadingContainerWrapper}>
         <div className={styles.loadingContainer}>
-          <ArticleSpinner />
+          <CircularProgress size={100} thickness={2} color="inherit" />
         </div>
       </div>
     );
@@ -126,7 +125,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
           error={null}
           loading={
             <div className={styles.loadingContainer}>
-              <ArticleSpinner />
+              <CircularProgress size={100} thickness={2} color="inherit" />
             </div>
           }
           onLoadSuccess={(pdf: any) => {
