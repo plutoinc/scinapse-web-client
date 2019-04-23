@@ -10,7 +10,9 @@ import {
   TICKET_QUEUE_KEY,
   DEAD_LETTER_QUEUE_KEY,
   DEVICE_ID_KEY,
+  DEVICE_ID_INITIALIZED_KEY,
   SESSION_ID_KEY,
+  SESSION_ID_INITIALIZED_KEY,
   LIVE_SESSION_LENGTH,
   DESTINATION_URL,
   TIME_INTERVAL_TO_SEND_TICKETS,
@@ -100,6 +102,7 @@ class ActionTicketManager {
     const deviceKey = store.get(DEVICE_ID_KEY);
     if (!deviceKey) {
       store.set(DEVICE_ID_KEY, uuid());
+      store.set(DEVICE_ID_INITIALIZED_KEY, true);
     }
   }
 
@@ -112,6 +115,7 @@ class ActionTicketManager {
     if (!sessionKey) {
       const newKey = uuid();
       (store as any).set(SESSION_ID_KEY, newKey, currentTime + LIVE_SESSION_LENGTH);
+      (store as any).set(SESSION_ID_INITIALIZED_KEY, true);
     } else {
       (store as any).set(SESSION_ID_KEY, sessionKey, currentTime + LIVE_SESSION_LENGTH);
     }

@@ -1,7 +1,15 @@
 import * as store from "store";
+import * as Cookies from "js-cookie";
 import * as format from "date-fns/format";
 import EnvChecker from "../envChecker";
-import { DEVICE_ID_KEY, SESSION_ID_KEY, USER_ID_KEY } from "../../constants/actionTicket";
+import {
+  DEVICE_ID_INITIALIZED_KEY,
+  DEVICE_ID_KEY,
+  SESSION_ID_INITIALIZED_KEY,
+  SESSION_ID_KEY,
+  USER_ID_KEY,
+} from "../../constants/actionTicket";
+import { LIVE_TESTS } from "../../constants/abTest";
 
 export interface ActionTicketParams {
   pageType: Scinapse.ActionTicket.PageType;
@@ -24,6 +32,13 @@ export interface FinalActionTicket extends ActionTicketParams {
   referral: string;
   expName: string;
   expUser: string;
+  context: {
+    exp: {
+      [key: string]: string;
+    };
+    deviceInitialized?: boolean;
+    sessionInitialized?: boolean;
+  } | null;
 }
 
 export default class ActionTicket {
@@ -40,6 +55,13 @@ export default class ActionTicket {
   private _errorCount = 0;
   private expName: string;
   private expUser: string;
+  private context: {
+    exp: {
+      [key: string]: string;
+    };
+    deviceInitialized?: boolean;
+    sessionInitialized?: boolean;
+  } | null;
 
   public constructor(params: ActionTicketParams) {
     if (!EnvChecker.isOnServer()) {
@@ -50,6 +72,7 @@ export default class ActionTicket {
       this.pageType = params.pageType;
       this.actionLabel = params.actionLabel;
       this.expName = params.expName || "";
+      this.setUserContext();
     }
   }
 
@@ -67,6 +90,7 @@ export default class ActionTicket {
       actionLabel: this.actionLabel,
       expName: this.expName,
       expUser: this.expUser,
+      context: this.context,
       referral: EnvChecker.isProdBrowser() ? document.referrer : "",
       clientVersion:
         EnvChecker.isProdBrowser() && (window as any)._script_version_
@@ -81,5 +105,40 @@ export default class ActionTicket {
 
   get errorCount() {
     return this._errorCount;
+  }
+
+  private setUserContext() {
+    const context: {
+      exp: {
+        [key: string]: string;
+      };
+      deviceInitialized?: boolean;
+      sessionInitialized?: boolean;
+    } = {
+      exp: {},
+    };
+
+    let contextInitialized = false;
+
+    LIVE_TESTS.forEach(test => {
+      contextInitialized = true;
+      context.exp[test.name] = Cookies.get(test.name) || "";
+    });
+
+    if (store.get(DEVICE_ID_INITIALIZED_KEY)) {
+      contextInitialized = true;
+      context.deviceInitialized = true;
+      store.remove(DEVICE_ID_INITIALIZED_KEY);
+    }
+
+    if (store.get(SESSION_ID_INITIALIZED_KEY)) {
+      contextInitialized = true;
+      context.sessionInitialized = true;
+      store.remove(SESSION_ID_INITIALIZED_KEY);
+    }
+
+    if (contextInitialized) {
+      this.context = context;
+    }
   }
 }
