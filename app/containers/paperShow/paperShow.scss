@@ -175,7 +175,7 @@ article.paperShow {
 .refCitedTabWrapper {
   height: $ref-cited-bar-height;
   padding: $ref-cited-bar-padding;
-  padding-top: $navbar_height;
+  padding-top: 122px;
   margin-top: -$navbar_height;
   box-sizing: content-box;
   margin-bottom: 7px;
@@ -193,6 +193,30 @@ article.paperShow {
   &:hover {
     color: $gray6;
   }
+}
+
+.sectionTitle {
+  font-size: 21px;
+  font-weight: bold;
+  color: $black1;
+}
+
+.sectionCount {
+  font-family: Roboto;
+  font-size: 21px;
+  color: $main_blue0;
+  margin-left: 12px;
+}
+
+.sectionDivider {
+  width: 100%;
+  height: 62px;
+  background-color: $gray8;
+}
+
+.footerWrapper {
+  background-color: $gray8;
+  height: 140px;
 }
 
 // RegularDisplay (1024~1200)

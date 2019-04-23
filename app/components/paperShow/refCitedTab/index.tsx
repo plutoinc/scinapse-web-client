@@ -75,24 +75,27 @@ const PaperShowRefCitedTab: React.SFC<PaperShowRefCitedTabProps> = props => {
       </ul>
 
       <div className={styles.rightBtnBox}>
-        <CiteBox
-          paper={props.paper}
-          btnStyle={{ maxWidth: "74px", width: "100%", height: "36px", marginRight: "8px" }}
-        />
+        <div className={styles.actionItem}>
+          <CiteBox paper={props.paper} btnStyle={{ maxWidth: "74px", width: "100%", height: "36px" }} />
+        </div>
         {props.hasBestPdf && (props.isFetchingPdf || !props.failedToLoadPDF) ? (
-          <PdfDownloadButton
-            paper={props.paper}
-            isLoadingOaCheck={props.isLoadingOaCheck}
-            isFetchingPDF={props.isFetchingPdf}
-          />
+          <div className={styles.actionItem}>
+            <PdfDownloadButton
+              paper={props.paper}
+              isLoadingOaCheck={props.isLoadingOaCheck}
+              isFetchingPDF={props.isFetchingPdf}
+            />
+          </div>
         ) : (
-          <FullTextBtn
-            isLoadingOaCheck={props.isLoadingOaCheck}
-            isFetchingPDF={props.isFetchingPdf}
-            paperId={props.paper!.id}
-            handleSetIsOpen={setIsOpen}
-            btnStyle={{ flex: "1 0 auto", height: "36px", padding: "0 12px 0 8px" }}
-          />
+          <div className={styles.actionItem}>
+            <FullTextBtn
+              isLoadingOaCheck={props.isLoadingOaCheck}
+              isFetchingPDF={props.isFetchingPdf}
+              paperId={props.paper!.id}
+              handleSetIsOpen={setIsOpen}
+              btnStyle={{ flex: "1 0 auto", height: "36px", padding: "0 12px 0 8px" }}
+            />
+          </div>
         )}
         <FullTextDialog
           paperId={props.paper.id}
