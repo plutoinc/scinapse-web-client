@@ -52,58 +52,60 @@ const PaperShowRefCitedTab: React.SFC<PaperShowRefCitedTabProps> = props => {
         [`${styles.paperContentBlockHeaderTabs} ${styles.stick}`]: props.isFixed,
       })}
     >
-      <ul className={styles.headerTabList}>
-        {fullTextNode}
-        <li
-          className={classNames({
-            [styles.headerTabItem]: true,
-            [styles.active]: props.isOnRef,
-          })}
-          onClick={props.handleClickRef}
-        >
-          {`References (${referenceCount})`}
-        </li>
-        <li
-          className={classNames({
-            [styles.headerTabItem]: true,
-            [styles.active]: props.isOnCited,
-          })}
-          onClick={props.handleClickCited}
-        >
-          {`Cited By (${citedCount})`}
-        </li>
-      </ul>
+      <div className={styles.paperContentBlockHeaderTabContentWrapper}>
+        <ul className={styles.headerTabList}>
+          {fullTextNode}
+          <li
+            className={classNames({
+              [styles.headerTabItem]: true,
+              [styles.active]: props.isOnRef,
+            })}
+            onClick={props.handleClickRef}
+          >
+            {`References (${referenceCount})`}
+          </li>
+          <li
+            className={classNames({
+              [styles.headerTabItem]: true,
+              [styles.active]: props.isOnCited,
+            })}
+            onClick={props.handleClickCited}
+          >
+            {`Cited By (${citedCount})`}
+          </li>
+        </ul>
 
-      <div className={styles.rightBtnBox}>
-        <div className={styles.actionItem}>
-          <CiteBox paper={props.paper} btnStyle={{ maxWidth: "74px", width: "100%", height: "36px" }} />
+        <div className={styles.rightBtnBox}>
+          <div className={styles.actionItem}>
+            <CiteBox paper={props.paper} btnStyle={{ maxWidth: "74px", width: "100%", height: "36px" }} />
+          </div>
+          {props.hasBestPdf && (props.isFetchingPdf || !props.failedToLoadPDF) ? (
+            <div className={styles.actionItem}>
+              <PdfDownloadButton
+                paper={props.paper}
+                isLoadingOaCheck={props.isLoadingOaCheck}
+                isFetchingPDF={props.isFetchingPdf}
+              />
+            </div>
+          ) : (
+            <div className={styles.actionItem}>
+              <FullTextBtn
+                isLoadingOaCheck={props.isLoadingOaCheck}
+                isFetchingPDF={props.isFetchingPdf}
+                paperId={props.paper!.id}
+                handleSetIsOpen={setIsOpen}
+                btnStyle={{ flex: "1 0 auto", height: "36px", padding: "0 12px 0 8px" }}
+              />
+            </div>
+          )}
+          <FullTextDialog
+            paperId={props.paper.id}
+            isOpen={isOpen}
+            onClose={() => {
+              setIsOpen(false);
+            }}
+          />
         </div>
-        {props.hasBestPdf && (props.isFetchingPdf || !props.failedToLoadPDF) ? (
-          <div className={styles.actionItem}>
-            <PdfDownloadButton
-              paper={props.paper}
-              isLoadingOaCheck={props.isLoadingOaCheck}
-              isFetchingPDF={props.isFetchingPdf}
-            />
-          </div>
-        ) : (
-          <div className={styles.actionItem}>
-            <FullTextBtn
-              isLoadingOaCheck={props.isLoadingOaCheck}
-              isFetchingPDF={props.isFetchingPdf}
-              paperId={props.paper!.id}
-              handleSetIsOpen={setIsOpen}
-              btnStyle={{ flex: "1 0 auto", height: "36px", padding: "0 12px 0 8px" }}
-            />
-          </div>
-        )}
-        <FullTextDialog
-          paperId={props.paper.id}
-          isOpen={isOpen}
-          onClose={() => {
-            setIsOpen(false);
-          }}
-        />
       </div>
     </div>
   );

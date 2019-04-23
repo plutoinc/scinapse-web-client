@@ -80,8 +80,8 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
 
   const downloadPdfBtnStyle: React.CSSProperties = {
     ...baseBtnStyle,
-    color: "#3e7fff",
-    border: "1px solid #3e7fff",
+    color: "white",
+    backgroundColor: "#3e7fff",
     marginLeft: "16px",
   };
 
@@ -92,11 +92,11 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   React.useEffect(
     () => {
       if (shouldShow) {
-        dispatch(ActionCreators.startToLoadingFetchPDF());
-        setIsFetching(true);
         if (!bestPdf) {
           handleGetBestPdf();
         } else if (bestPdf && bestPdf.hasBest) {
+          setIsFetching(true);
+          dispatch(ActionCreators.startToLoadingFetchPDF());
           Axios.get(
             `https://lvr8qqubzk.execute-api.us-east-1.amazonaws.com/prod/get-pdf?pdf_url=${
               bestPdf.url
@@ -152,7 +152,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     );
   }
 
-  if (shouldShow && PDFBinary && bestPdf && bestPdf.hasBest) {
+  if (shouldShow && PDFBinary) {
     return (
       <div ref={wrapperNode} className={styles.contentWrapper}>
         <Document
@@ -184,7 +184,11 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                   style={downloadPdfBtnStyle}
                   target="_blank"
                   href={bestPdf.url}
-                  content="Download PDF"
+                  content={
+                    <span className={styles.downloadBtnWrapper}>
+                      <Icon icon="DOWNLOAD" className={styles.downloadIcon} /> Download PDF
+                    </span>
+                  }
                   onClick={async e => {
                     if (await shouldBlockToSignUp("pdfViewer", "downloadPDF")) {
                       e.preventDefault();

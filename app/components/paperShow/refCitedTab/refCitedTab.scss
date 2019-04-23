@@ -9,24 +9,27 @@
 
   &.stick {
     position: fixed;
-    display: flex;
-    align-items: center;
     top: $header-height;
     width: 100%;
     background-color: white;
-    padding: 4px 222px;
+    padding: 4px 222px 0 222px;
     border-bottom: 1px solid $gray8;
     margin: 0;
     z-index: 2;
 
-    .headerTabList .headerTabItem.active {
-      padding: 0;
-      border: none;
-    }
-
     .rightBtnBox {
       margin-top: 0;
     }
+  }
+
+  .paperContentBlockHeaderTabContentWrapper {
+    width: 100%;
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 16px;
   }
 
   .headerTabList {

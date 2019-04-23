@@ -111,6 +111,8 @@ article.paperShow {
   .paperContent {
     line-height: 1.5;
     color: $black1;
+    margin-bottom: $navbar_height;
+
     .fos {
       margin-top: 16px;
     }
@@ -175,7 +177,6 @@ article.paperShow {
 .refCitedTabWrapper {
   height: $ref-cited-bar-height;
   padding: $ref-cited-bar-padding;
-  padding-top: 122px;
   margin-top: -$navbar_height;
   box-sizing: content-box;
   margin-bottom: 7px;
