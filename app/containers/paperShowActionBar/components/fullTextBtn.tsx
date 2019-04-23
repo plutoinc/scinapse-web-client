@@ -13,7 +13,6 @@ const RequestFullTextBtn: React.FunctionComponent<{
   btnStyle?: React.CSSProperties;
 }> = React.memo(props => {
   const { isLoadingOaCheck, paperId, handleSetIsOpen, btnStyle } = props;
-
   if (isLoadingOaCheck) {
     return (
       <button className={s.loadingBtnStyle} disabled={isLoadingOaCheck}>

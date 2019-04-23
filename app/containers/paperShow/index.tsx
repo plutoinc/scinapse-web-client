@@ -194,7 +194,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public render() {
     const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers } = this.props;
-    const { isOnCited, isOnRef, isAboveRef, isLoadPDF, isLoadingOaPDFCheck } = this.state;
+    const { isOnCited, isOnRef, isAboveRef, isLoadPDF, isLoadingOaPDFCheck, failedToLoadPDF } = this.state;
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -236,6 +236,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     paper={paper}
                     hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
                     isLoadingOaCheck={isLoadingOaPDFCheck}
+                    isLoadPDF={isLoadPDF}
+                    failedToLoadPDF={failedToLoadPDF}
                     currentUser={currentUser}
                     showFullText={isLoadPDF}
                     handleClickFullText={this.scrollToFullTextNode}
@@ -281,6 +283,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
                   isLoadingOaCheck={isLoadingOaPDFCheck}
                   isLoadPDF={isLoadPDF}
+                  failedToLoadPDF={failedToLoadPDF}
                   isFixed={isOnRef && !isOnCited}
                   isOnRef={isAboveRef || isOnRef}
                   isOnCited={isOnCited}
@@ -316,6 +319,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
                   isLoadingOaCheck={isLoadingOaPDFCheck}
                   isLoadPDF={isLoadPDF}
+                  failedToLoadPDF={failedToLoadPDF}
                   isFixed={!isOnRef && isOnCited}
                   isOnRef={false}
                   isOnCited={true}
@@ -395,6 +399,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             isLoadingOaCheck={isLoadingOaPDFCheck}
             hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
             isLoadPDF={isLoadPDF}
+            failedToLoadPDF={failedToLoadPDF}
             isFixed={isOnFullText && !isOnRef && !isOnCited}
             isOnRef={false}
             isOnCited={false}

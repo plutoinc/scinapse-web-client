@@ -12,6 +12,7 @@ interface PaperShowRefCitedTabProps {
   paper: Paper;
   isLoadingOaCheck: boolean;
   isLoadPDF: boolean;
+  failedToLoadPDF: boolean;
   isFixed: boolean;
   isOnRef: boolean;
   isOnCited: boolean;
@@ -78,8 +79,12 @@ const PaperShowRefCitedTab: React.SFC<PaperShowRefCitedTabProps> = props => {
           paper={props.paper}
           btnStyle={{ maxWidth: "74px", width: "100%", height: "36px", marginRight: "8px" }}
         />
-        {props.hasBestPdf ? (
-          <PdfDownloadButton paper={props.paper} isLoadingOaCheck={props.isLoadingOaCheck} />
+        {props.hasBestPdf && (props.isLoadPDF || !props.failedToLoadPDF) ? (
+          <PdfDownloadButton
+            paper={props.paper}
+            isLoadingOaCheck={props.isLoadingOaCheck}
+            isLoadPDF={props.isLoadPDF}
+          />
         ) : (
           <FullTextBtn
             isLoadingOaCheck={props.isLoadingOaCheck}
