@@ -61,6 +61,24 @@
   }
 }
 
+.loadingBtnStyle {
+  @extend .fullTextBtn;
+  background-color: $gray4;
+  color: white;
+}
+
+.spinnerWrapper {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+
+  .loadingSpinner {
+    color: white;
+  }
+}
+
 // // RegularDisplay (1024~1200)
 @media (max-width: $regular_width) {
   .actionBar {

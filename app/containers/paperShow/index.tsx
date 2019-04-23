@@ -34,7 +34,6 @@ import { PaperShowMatchParams, PaperShowPageQueryParams } from "./types";
 import VenueAndAuthors from "../../components/common/paperItem/venueAndAuthors";
 import { ArticleSearchState } from "../../components/articleSearch/records";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
-import Icon from "../../icons";
 
 const styles = require("./paperShow.scss");
 
@@ -82,6 +81,8 @@ interface PaperShowStates
 
       isLoadPDF: boolean;
       failedToLoadPDF: boolean;
+
+      isLoadingOaPDFCheck: boolean;
     }> {}
 
 @withStyles<typeof PaperShow>(styles)
@@ -106,6 +107,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isTouchFooter: false,
       isLoadPDF: false,
       failedToLoadPDF: false,
+      isLoadingOaPDFCheck: false,
     };
   }
 
@@ -192,7 +194,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public render() {
     const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers } = this.props;
-    const { isOnCited, isOnRef, isAboveRef, isLoadPDF } = this.state;
+    const { isOnCited, isOnRef, isAboveRef, isLoadPDF, isLoadingOaPDFCheck } = this.state;
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -232,7 +234,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <NoSsr>
                   <ActionBar
                     paper={paper}
-                    isLoadPDF={isLoadPDF}
+                    hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
+                    isLoadingOaCheck={isLoadingOaPDFCheck}
                     currentUser={currentUser}
                     showFullText={isLoadPDF}
                     handleClickFullText={this.scrollToFullTextNode}
@@ -275,6 +278,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   handleClickRef={this.scrollToReferencePapersNode}
                   handleClickCited={this.scrollToCitedPapersNode}
                   handleClickFullText={this.scrollToFullTextNode}
+                  hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
+                  isLoadingOaCheck={isLoadingOaPDFCheck}
                   isLoadPDF={isLoadPDF}
                   isFixed={isOnRef && !isOnCited}
                   isOnRef={isAboveRef || isOnRef}
@@ -308,6 +313,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   handleClickRef={this.scrollToReferencePapersNode}
                   handleClickCited={this.scrollToCitedPapersNode}
                   handleClickFullText={this.scrollToFullTextNode}
+                  hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
+                  isLoadingOaCheck={isLoadingOaPDFCheck}
                   isLoadPDF={isLoadPDF}
                   isFixed={!isOnRef && isOnCited}
                   isOnRef={false}
@@ -375,7 +382,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private getFullTextNavBar = () => {
     const { paper } = this.props;
-    const { isOnFullText, isLoadPDF, isOnCited, isOnRef, failedToLoadPDF } = this.state;
+    const { isOnFullText, isLoadPDF, isOnCited, isOnRef, failedToLoadPDF, isLoadingOaPDFCheck } = this.state;
 
     if (paper && !!getPDFLink(paper.urls) && !failedToLoadPDF) {
       return (
@@ -385,6 +392,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             handleClickFullText={this.scrollToFullTextNode}
             handleClickRef={this.scrollToReferencePapersNode}
             handleClickCited={this.scrollToCitedPapersNode}
+            isLoadingOaCheck={isLoadingOaPDFCheck}
+            hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
             isLoadPDF={isLoadPDF}
             isFixed={isOnFullText && !isOnRef && !isOnCited}
             isOnRef={false}
@@ -402,13 +411,28 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { paper, dispatch } = this.props;
     if (paper) {
       try {
-        this.setState(prevState => ({ ...prevState, isLoadPDF: true }));
-        dispatch(getBestPdfOfPaper({ paperId: paper.id }));
+        this.setState(prevState => ({ ...prevState, isLoadingOaPDFCheck: true }));
+        const res = dispatch(getBestPdfOfPaper({ paperId: paper.id }));
+        res.then(result => {
+          if (result.hasBest) {
+            this.setState(prevState => ({ ...prevState, isLoadPDF: true, isLoadingOaPDFCheck: false }));
+          } else {
+            this.setState(prevState => ({ ...prevState, isLoadPDF: false, isLoadingOaPDFCheck: false }));
+          }
+        });
       } catch (err) {
-        this.setState(prevState => ({ ...prevState, isLoadPDF: false }));
+        this.setState(prevState => ({
+          ...prevState,
+          isLoadPDF: false,
+          failedToLoadPDF: true,
+          isLoadingOaPDFCheck: false,
+        }));
         console.error(err);
       }
-      this.setState(prevState => ({ ...prevState, isLoadPDF: false }));
+      this.setState(prevState => ({
+        ...prevState,
+        isLoadingOaPDFCheck: false,
+      }));
     } else {
       return;
     }
