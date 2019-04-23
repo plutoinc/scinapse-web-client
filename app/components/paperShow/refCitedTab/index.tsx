@@ -11,7 +11,7 @@ const styles = require("./refCitedTab.scss");
 interface PaperShowRefCitedTabProps {
   paper: Paper;
   isLoadingOaCheck: boolean;
-  isLoadPDF: boolean;
+  isFetchingPdf: boolean;
   failedToLoadPDF: boolean;
   isFixed: boolean;
   isOnRef: boolean;
@@ -79,15 +79,16 @@ const PaperShowRefCitedTab: React.SFC<PaperShowRefCitedTabProps> = props => {
           paper={props.paper}
           btnStyle={{ maxWidth: "74px", width: "100%", height: "36px", marginRight: "8px" }}
         />
-        {props.hasBestPdf && (props.isLoadPDF || !props.failedToLoadPDF) ? (
+        {props.hasBestPdf && (props.isFetchingPdf || !props.failedToLoadPDF) ? (
           <PdfDownloadButton
             paper={props.paper}
             isLoadingOaCheck={props.isLoadingOaCheck}
-            isLoadPDF={props.isLoadPDF}
+            isFetchingPDF={props.isFetchingPdf}
           />
         ) : (
           <FullTextBtn
             isLoadingOaCheck={props.isLoadingOaCheck}
+            isFetchingPDF={props.isFetchingPdf}
             paperId={props.paper!.id}
             handleSetIsOpen={setIsOpen}
             btnStyle={{ flex: "1 0 auto", height: "36px", padding: "0 12px 0 8px" }}

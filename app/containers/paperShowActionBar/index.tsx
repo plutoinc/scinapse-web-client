@@ -13,7 +13,7 @@ const s = require("./actionBar.scss");
 interface PaperShowActionBarProps {
   paper: Paper | null;
   hasBestPdf: boolean;
-  isLoadPDF: boolean;
+  isFetcingPDF: boolean;
   failedToLoadPDF: boolean;
   showFullText: boolean;
   isLoadingOaCheck: boolean;
@@ -32,10 +32,11 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
     <div className={s.actionBar}>
       <div className={s.actions}>
         <div className={s.leftSide}>
-          {!props.hasBestPdf && (!props.isLoadPDF || props.failedToLoadPDF) ? (
+          {!props.hasBestPdf || props.failedToLoadPDF ? (
             <div className={s.actionItem}>
               <FullTextBtn
                 isLoadingOaCheck={props.isLoadingOaCheck}
+                isFetchingPDF={props.isFetcingPDF}
                 paperId={props.paper!.id}
                 handleSetIsOpen={setIsOpen}
               />
@@ -44,7 +45,7 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
             <div className={s.actionItem}>
               <ViewFullTextBtn
                 handleClickFullText={props.handleClickFullText}
-                isLoadPDF={props.isLoadPDF}
+                isFetchingPDF={props.isFetcingPDF}
                 isLoadingOaCheck={props.isLoadingOaCheck}
               />
             </div>

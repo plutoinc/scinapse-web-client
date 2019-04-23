@@ -8,12 +8,13 @@ const s = require("../actionBar.scss");
 
 const RequestFullTextBtn: React.FunctionComponent<{
   isLoadingOaCheck: boolean;
+  isFetchingPDF: boolean;
   paperId: number;
   handleSetIsOpen: (value: React.SetStateAction<boolean>) => void;
   btnStyle?: React.CSSProperties;
 }> = React.memo(props => {
-  const { isLoadingOaCheck, paperId, handleSetIsOpen, btnStyle } = props;
-  if (isLoadingOaCheck) {
+  const { isLoadingOaCheck, isFetchingPDF, paperId, handleSetIsOpen, btnStyle } = props;
+  if (isLoadingOaCheck || isFetchingPDF) {
     return (
       <button className={s.loadingBtnStyle} disabled={isLoadingOaCheck}>
         <div className={s.spinnerWrapper}>

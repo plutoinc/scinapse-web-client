@@ -193,7 +193,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public render() {
-    const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers } = this.props;
+    const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers, dispatch } = this.props;
     const { isOnCited, isOnRef, isAboveRef, isLoadPDF, isLoadingOaPDFCheck, failedToLoadPDF } = this.state;
 
     if (paperShow.isLoadingPaper) {
@@ -236,7 +236,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     paper={paper}
                     hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
                     isLoadingOaCheck={isLoadingOaPDFCheck}
-                    isLoadPDF={isLoadPDF}
+                    isFetcingPDF={paperShow.isFetchingPdf}
                     failedToLoadPDF={failedToLoadPDF}
                     currentUser={currentUser}
                     showFullText={isLoadPDF}
@@ -263,6 +263,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <div>
             {this.getFullTextNavBar()}
             <PDFViewer
+              dispatch={dispatch}
               paperId={paper.id}
               onLoadSuccess={this.handleSucceedToLoadPDF}
               onFailed={this.handleFailedToLoadPDF}
@@ -282,7 +283,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   handleClickFullText={this.scrollToFullTextNode}
                   hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
                   isLoadingOaCheck={isLoadingOaPDFCheck}
-                  isLoadPDF={isLoadPDF}
+                  isFetchingPdf={paperShow.isFetchingPdf}
                   failedToLoadPDF={failedToLoadPDF}
                   isFixed={isOnRef && !isOnCited}
                   isOnRef={isAboveRef || isOnRef}
@@ -318,7 +319,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   handleClickFullText={this.scrollToFullTextNode}
                   hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
                   isLoadingOaCheck={isLoadingOaPDFCheck}
-                  isLoadPDF={isLoadPDF}
+                  isFetchingPdf={paperShow.isFetchingPdf}
                   failedToLoadPDF={failedToLoadPDF}
                   isFixed={!isOnRef && isOnCited}
                   isOnRef={false}
@@ -385,8 +386,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private getFullTextNavBar = () => {
-    const { paper } = this.props;
-    const { isOnFullText, isLoadPDF, isOnCited, isOnRef, failedToLoadPDF, isLoadingOaPDFCheck } = this.state;
+    const { paper, paperShow } = this.props;
+    const { isOnFullText, isOnCited, isOnRef, failedToLoadPDF, isLoadingOaPDFCheck } = this.state;
 
     if (paper && !!getPDFLink(paper.urls) && !failedToLoadPDF) {
       return (
@@ -398,7 +399,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             handleClickCited={this.scrollToCitedPapersNode}
             isLoadingOaCheck={isLoadingOaPDFCheck}
             hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
-            isLoadPDF={isLoadPDF}
+            isFetchingPdf={paperShow.isFetchingPdf}
             failedToLoadPDF={failedToLoadPDF}
             isFixed={isOnFullText && !isOnRef && !isOnCited}
             isOnRef={false}

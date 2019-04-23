@@ -7,10 +7,13 @@ import { shouldBlockToSignUp } from "../../helpers/shouldBlockToSignUp";
 import Icon from "../../icons";
 import { PaperPdf } from "../../model/paper";
 import { CircularProgress } from "@material-ui/core";
+import { Dispatch } from "react-redux";
+import { ActionCreators } from "../../actions/actionTypes";
 const { Document, Page } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
 interface PDFViewerProps {
+  dispatch: Dispatch<any>;
   paperId: number;
   shouldShow: boolean;
   filename: string;
@@ -45,7 +48,7 @@ function useIntervalProgress(callback: () => void, delay: number | null) {
 }
 
 const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
-  const { bestPdf, shouldShow, onFailed, onLoadSuccess, filename, handleGetBestPdf } = props;
+  const { bestPdf, shouldShow, onFailed, onLoadSuccess, filename, handleGetBestPdf, dispatch } = props;
   const [percentage, setPercentage] = React.useState(0);
   const [isFetching, setIsFetching] = React.useState(false);
   const [PDFBinary, setPDFBinary] = React.useState(null);
@@ -89,6 +92,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   React.useEffect(
     () => {
       if (shouldShow) {
+        dispatch(ActionCreators.startToLoadingFetchPDF());
         setIsFetching(true);
         if (!bestPdf) {
           handleGetBestPdf();
@@ -103,15 +107,18 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
           )
             .then(res => {
               setPDFBinary(res.data);
+              dispatch(ActionCreators.endToLoadingFetchPDF());
               setIsFetching(false);
             })
             .catch(_err => {
               setLoadError(true);
+              dispatch(ActionCreators.endToLoadingFetchPDF());
               setIsFetching(false);
               onFailed();
             });
         } else if (bestPdf && !bestPdf.hasBest) {
           setPDFBinary(null);
+          dispatch(ActionCreators.endToLoadingFetchPDF());
           setIsFetching(false);
         }
       }

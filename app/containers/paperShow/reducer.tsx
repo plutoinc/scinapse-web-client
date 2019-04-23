@@ -4,32 +4,15 @@ import { PAPER_SHOW_INITIAL_STATE, PaperShowState } from "./records";
 export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action: Actions): PaperShowState {
   switch (action.type) {
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_PAPER: {
-      return {
-        ...state,
-        ...{
-          hasErrorOnFetchingPaper: null,
-          isLoadingPaper: false,
-          paperId: action.payload.paperId,
-        },
-      };
+      return { ...state, ...{ hasErrorOnFetchingPaper: null, isLoadingPaper: false, paperId: action.payload.paperId } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_PAPER: {
-      return {
-        ...state,
-        ...{ hasErrorOnFetchingPaper: null, isLoadingPaper: true },
-      };
+      return { ...state, ...{ hasErrorOnFetchingPaper: null, isLoadingPaper: true } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER: {
-      return {
-        ...state,
-        ...{
-          hasErrorOnFetchingPaper: action.payload.statusCode,
-          isLoadingPaper: false,
-          paperId: 0,
-        },
-      };
+      return { ...state, ...{ hasErrorOnFetchingPaper: action.payload.statusCode, isLoadingPaper: false, paperId: 0 } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_COMMENTS: {
@@ -45,31 +28,15 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
       };
     }
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_COMMENTS: {
-      return {
-        ...state,
-        ...{
-          hasErrorOnFetchingComments: false,
-          isLoadingComments: true,
-        },
-      };
+      return { ...state, ...{ hasErrorOnFetchingComments: false, isLoadingComments: true } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_COMMENTS: {
-      return {
-        ...state,
-        ...{
-          hasErrorOnFetchingComments: true,
-          isLoadingComments: false,
-          commentIds: [],
-        },
-      };
+      return { ...state, ...{ hasErrorOnFetchingComments: true, isLoadingComments: false, commentIds: [] } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_START_TO_POST_COMMENT: {
-      return {
-        ...state,
-        ...{ isPostingComment: true, isFailedToPostingComment: false },
-      };
+      return { ...state, ...{ isPostingComment: true, isFailedToPostingComment: false } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT: {
@@ -84,23 +51,11 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
     }
 
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_COMMENT: {
-      return {
-        ...state,
-        ...{
-          isPostingComment: false,
-          isFailedToPostingComment: true,
-        },
-      };
+      return { ...state, ...{ isPostingComment: false, isFailedToPostingComment: true } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS: {
-      return {
-        ...state,
-        ...{
-          isLoadingReferencePapers: true,
-          isFailedToGetReferencePapers: false,
-        },
-      };
+      return { ...state, ...{ isLoadingReferencePapers: true, isFailedToGetReferencePapers: false } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_REFERENCE_PAPERS: {
@@ -117,20 +72,11 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
     }
 
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS: {
-      return {
-        ...state,
-        ...{
-          isLoadingReferencePapers: false,
-          isFailedToGetReferencePapers: true,
-        },
-      };
+      return { ...state, ...{ isLoadingReferencePapers: false, isFailedToGetReferencePapers: true } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_CITED_PAPERS: {
-      return {
-        ...state,
-        ...{ isLoadingCitedPapers: true, isFailedToGetCitedPapers: false },
-      };
+      return { ...state, ...{ isLoadingCitedPapers: true, isFailedToGetCitedPapers: false } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_CITED_PAPERS: {
@@ -147,10 +93,7 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
     }
 
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_CITED_PAPERS: {
-      return {
-        ...state,
-        ...{ isLoadingCitedPapers: false, isFailedToGetCitedPapers: true },
-      };
+      return { ...state, ...{ isLoadingCitedPapers: false, isFailedToGetCitedPapers: true } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_START_TO_DELETE_COMMENT: {
@@ -182,6 +125,14 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
 
     case ACTION_TYPES.PAPER_SHOW_ANIMATE_BETTER_SEARCH_TITLE: {
       return { ...state, betterSearchIsAnimated: true };
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_START_TO_LOADING_FETCH_PDF: {
+      return { ...state, isFetchingPdf: true };
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_END_TO_LOADING_FETCH_PDF: {
+      return { ...state, isFetchingPdf: false };
     }
 
     case ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE: {
