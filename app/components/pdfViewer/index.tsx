@@ -1,13 +1,13 @@
 import * as React from "react";
 import Axios from "axios";
+import { Dispatch } from "react-redux";
+import { CircularProgress } from "@material-ui/core";
 import { withStyles } from "../../helpers/withStylesHelper";
 import ScinapseButton from "../common/scinapseButton";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { shouldBlockToSignUp } from "../../helpers/shouldBlockToSignUp";
 import Icon from "../../icons";
 import { PaperPdf } from "../../model/paper";
-import { CircularProgress } from "@material-ui/core";
-import { Dispatch } from "react-redux";
 import { ActionCreators } from "../../actions/actionTypes";
 const { Document, Page } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
@@ -152,7 +152,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     );
   }
 
-  if (shouldShow && PDFBinary) {
+  if (shouldShow && PDFBinary && bestPdf && bestPdf.hasBest) {
     return (
       <div ref={wrapperNode} className={styles.contentWrapper}>
         <Document

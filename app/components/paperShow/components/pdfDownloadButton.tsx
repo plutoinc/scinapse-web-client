@@ -1,12 +1,12 @@
 import * as React from "react";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { Paper } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { shouldBlockToSignUp } from "../../../helpers/shouldBlockToSignUp";
-import Icon from "../../../icons";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { trackEvent } from "../../../helpers/handleGA";
 import { getPDFLink } from "../../../helpers/getPDFLink";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import Icon from "../../../icons";
 const styles = require("./pdfSourceButton.scss");
 
 interface PdfDownloadButtonProps {

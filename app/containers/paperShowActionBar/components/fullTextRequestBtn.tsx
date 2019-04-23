@@ -1,9 +1,9 @@
 import * as React from "react";
-import Icon from "../../../icons";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { blockUnverifiedUser, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import Icon from "../../../icons";
 const s = require("../actionBar.scss");
 
 const RequestFullTextBtn: React.FunctionComponent<{

@@ -4,7 +4,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import { Paper } from "../../../model/paper";
 import CiteBox from "../../../containers/paperShowActionBar/components/citeBox";
 import PdfDownloadButton from "../components/pdfDownloadButton";
-import FullTextBtn from "../../../containers/paperShowActionBar/components/fullTextBtn";
+import FullTextBtn from "../../../containers/paperShowActionBar/components/fullTextRequestBtn";
 import FullTextDialog from "../../../containers/paperShowActionBar/components/fullTextDialog";
 const styles = require("./refCitedTab.scss");
 

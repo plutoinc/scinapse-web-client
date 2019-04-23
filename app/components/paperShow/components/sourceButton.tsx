@@ -1,12 +1,12 @@
 import * as React from "react";
+import * as classNames from "classnames";
 import { Paper } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import ScinapseButtonFactory, { ScinapseButtonType } from "../../common/scinapseButton/scinapseButtonFactory";
 import SourceURLPopover from "../../common/sourceURLPopover";
-import * as classNames from "classnames";
 import { shouldBlockToSignUp } from "../../../helpers/shouldBlockToSignUp";
-import Icon from "../../../icons";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
+import Icon from "../../../icons";
 const styles = require("./pdfSourceButton.scss");
 
 interface SourceButtonProps {
