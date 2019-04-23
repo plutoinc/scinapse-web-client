@@ -1,14 +1,8 @@
 .paperItemWrapper {
+  padding-bottom: 12px;
   border-bottom: $gray2 1px solid;
-  max-width: $search_container_width;
-  background-color: white;
-  margin: 0 auto;
   margin-bottom: 12px;
-  max-width: 792px;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
-  padding: 16px;
-  border-radius: 5px;
-  border: solid 1px #e7eaef;
+  max-width: $search_container_width;
   background-color: white;
 }
 

@@ -20,8 +20,33 @@ interface PDFViewerProps {
   onFailed: () => void;
 }
 
+function useIntervalProgress(callback: () => void, delay: number | null) {
+  const savedCallback = React.useRef(() => {});
+
+  React.useEffect(
+    () => {
+      savedCallback.current = callback;
+    },
+    [callback]
+  );
+
+  React.useEffect(
+    () => {
+      function tick() {
+        savedCallback.current();
+      }
+      if (delay !== null) {
+        const timer = setInterval(tick, delay);
+        return () => clearInterval(timer);
+      }
+    },
+    [delay]
+  );
+}
+
 const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   const { bestPdf, shouldShow, onFailed, onLoadSuccess, filename, handleGetBestPdf } = props;
+  const [percentage, setPercentage] = React.useState(0);
   const [isFetching, setIsFetching] = React.useState(false);
   const [PDFBinary, setPDFBinary] = React.useState(null);
   const [PDFObject, setPDFObject] = React.useState(null);
@@ -56,6 +81,10 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     border: "1px solid #3e7fff",
     marginLeft: "16px",
   };
+
+  useIntervalProgress(() => {
+    setPercentage(percentage + 10);
+  }, percentage < 90 ? 500 : null);
 
   React.useEffect(
     () => {
@@ -110,7 +139,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     return (
       <div className={styles.loadingContainerWrapper}>
         <div className={styles.loadingContainer}>
-          <CircularProgress size={100} thickness={2} color="inherit" />
+          <CircularProgress size={100} thickness={2} color="inherit" variant="static" value={percentage} />
         </div>
       </div>
     );
