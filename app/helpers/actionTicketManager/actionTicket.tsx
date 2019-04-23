@@ -17,6 +17,7 @@ export interface ActionTicketParams {
   actionType: "fire" | "view";
   actionTag: Scinapse.ActionTicket.ActionTagType;
   actionLabel: string | null;
+  actionValue?: string | null;
   expName?: string;
   expUser?: string;
 }
@@ -52,6 +53,7 @@ export default class ActionTicket {
   private actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType | null;
   private pageType: Scinapse.ActionTicket.PageType;
   private actionLabel: string | null;
+  private actionValue?: string | null;
   private _errorCount = 0;
   private expName: string;
   private expUser: string;
@@ -71,6 +73,7 @@ export default class ActionTicket {
       this.actionArea = params.actionArea;
       this.pageType = params.pageType;
       this.actionLabel = params.actionLabel;
+      this.actionValue = params.actionValue;
       this.expName = params.expName || "";
       this.setUserContext();
     }
@@ -88,6 +91,7 @@ export default class ActionTicket {
       actionTag: this.actionTag,
       actionArea: this.actionArea,
       actionLabel: this.actionLabel,
+      actionValue: this.actionValue,
       expName: this.expName,
       expUser: this.expUser,
       context: this.context,
