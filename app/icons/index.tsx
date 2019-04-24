@@ -87,6 +87,7 @@ const ICONS: { [key: string]: any } = {
   SEND: require("./send.svg").default,
   NEW_TAB: require("./new-tab.svg").default,
   PDF_PAPER: require("./pdf-paper.svg").default,
+  BACK: require("./back.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)

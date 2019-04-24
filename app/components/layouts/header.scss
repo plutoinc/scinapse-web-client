@@ -28,7 +28,7 @@
 }
 
 .scrolledNavbar {
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .headerLogo {
@@ -57,7 +57,8 @@
   position: relative;
   display: flex;
   width: 100%;
-  margin-right: 294px;
+  margin-left: 51px;
+  margin-right: 377px;
   height: 44px;
   align-items: center;
 }
@@ -73,7 +74,8 @@
   color: $black1;
 
   .externalCollectionButton {
-    margin-left: 8px;
+    margin-left: 4px;
+    margin-right: 8px;
     width: 109px;
     height: 44px;
     border-radius: 4px;

@@ -57,7 +57,7 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
           currentPageIndex={currentPage - 1}
           getLinkDestination={getLinkDestination}
           wrapperStyle={{
-            margin: "24px 0",
+            margin: "32px 0 56px 0",
           }}
         />
       );

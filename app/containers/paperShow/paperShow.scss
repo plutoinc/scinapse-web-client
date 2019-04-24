@@ -95,8 +95,8 @@ article.paperShow {
     font-size: 30px;
     line-height: 1.4;
     color: $black1;
-    margin-top: 22px;
-    margin-bottom: 9px;
+    margin-top: 24px;
+    margin-bottom: 16px;
   }
 
   .paperInfo {
@@ -111,7 +111,7 @@ article.paperShow {
   .paperContent {
     line-height: 1.5;
     color: $black1;
-    margin-bottom: $navbar_height;
+    margin-bottom: 80px;
 
     .fos {
       margin-top: 16px;
@@ -187,9 +187,19 @@ article.paperShow {
   width: 200px;
   font-weight: 500;
   letter-spacing: 0.5px;
-  margin-top: 32px;
+  margin-top: 24px;
   color: $gray5;
   cursor: pointer;
+
+  .backIcon {
+    width: 18px;
+    svg {
+      width: 18px;
+      height: 16px;
+      padding-top: 6px;
+      margin-right: 4px;
+    }
+  }
 
   &:hover {
     color: $gray6;
@@ -211,7 +221,7 @@ article.paperShow {
 
 .sectionDivider {
   width: 100%;
-  height: 62px;
+  height: 80px;
   background-color: $gray8;
 }
 

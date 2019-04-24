@@ -174,7 +174,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
           {getContent()}
         </Document>
 
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "16px" }}>
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
           {succeedToLoad && (
             <>
               {extend ? (

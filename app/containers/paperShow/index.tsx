@@ -34,6 +34,7 @@ import { PaperShowMatchParams, PaperShowPageQueryParams } from "./types";
 import VenueAndAuthors from "../../components/common/paperItem/venueAndAuthors";
 import { ArticleSearchState } from "../../components/articleSearch/records";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
+import Icon from "../../icons";
 
 const styles = require("./paperShow.scss");
 
@@ -347,7 +348,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             });
           }}
         >
-          ← BACK TO RESULTS
+          <Icon icon="BACK" className={styles.backIcon} /> BACK TO RESULTS
         </div>
       );
     }

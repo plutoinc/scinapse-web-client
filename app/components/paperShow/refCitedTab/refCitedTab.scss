@@ -2,7 +2,6 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding: 12px 222px 0px 222px;
   line-height: 1.5;
   border-top: solid 1px $gray1;
   border-bottom: solid 1px $gray1;
@@ -12,10 +11,10 @@
     top: $header-height;
     width: 100%;
     background-color: white;
-    padding: 4px 222px 0 222px;
     border-bottom: 1px solid $gray8;
     margin: 0;
-    z-index: 2;
+    z-index: 1000;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 
     .rightBtnBox {
       margin-top: 0;
@@ -35,19 +34,20 @@
   .headerTabList {
     font-size: 0;
     .headerTabItem + .headerTabItem {
-      margin-left: 16px;
+      margin-left: 8px;
     }
     .headerTabItem {
       display: inline-block;
       font-size: 16px;
       font-weight: 500;
+      line-height: 44px;
       color: $gray4;
+      padding: 0 8px;
       cursor: pointer;
 
       &.active {
         color: $black1;
         font-weight: 700;
-        padding-bottom: 8px;
         border-bottom: 2px solid $black1;
       }
     }
@@ -77,30 +77,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: -12px;
-  padding: 4px;
-}
+  padding: 6px 0;
 
-.actionItem {
-  display: inline-block;
-  vertical-align: top;
-
-  & + & {
+  .actionItem {
+    display: inline-block;
+    vertical-align: top;
     margin-left: 8px;
-  }
-}
 
-// RegularDisplay (1024~1200)
-@media (max-width: $regular_width) {
-  .paperContentBlockHeaderTabs {
-    padding: 12px 12px 0 12px;
-
-    &.stick {
-      padding: 12px;
+    & + & {
+      margin-left: 8px;
     }
   }
 
-  .rightBtnBox {
-    display: none;
+  // RegularDisplay (1024~1200)
+  @media (max-width: $regular_width) {
+    .paperContentBlockHeaderTabs {
+      padding: 12px 12px 0 12px;
+
+      &.stick {
+        padding: 12px;
+      }
+    }
+
+    .rightBtnBox {
+      display: none;
+    }
   }
 }
