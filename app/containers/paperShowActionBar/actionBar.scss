@@ -46,7 +46,6 @@
 
   &:disabled {
     cursor: not-allowed;
-    opacity: 0.2;
   }
 
   .sendIcon {
@@ -68,6 +67,10 @@
   @extend .fullTextBtn;
   background-color: $gray4;
   color: white;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
 .spinnerWrapper {

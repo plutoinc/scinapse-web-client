@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import * as format from "date-fns/format";
+import * as classNames from "classnames";
 import Tooltip from "@material-ui/core/Tooltip";
 import { Journal } from "../../../model/journal";
 import { withStyles } from "../../../helpers/withStylesHelper";
@@ -80,7 +81,13 @@ const PaperItemVenue = ({
   const isPaperDescription = actionArea === "paperDescription";
 
   return (
-    <div style={style} className={styles.venue}>
+    <div
+      style={style}
+      className={classNames({
+        [styles.venue]: true,
+        [`${styles.venue} ${styles.margin}`]: isPaperShow && isPaperDescription,
+      })}
+    >
       <Icon icon="JOURNAL" />
 
       <div className={styles.journalText}>

@@ -16,6 +16,7 @@ export interface VenueAndAuthorsProps extends Readonly<AuthorsProps> {
 class VenueAndAuthors extends React.PureComponent<VenueAndAuthorsProps, {}> {
   public render() {
     const { authors, journal, conferenceInstance, publishedDate, paper, pageType, actionArea } = this.props;
+
     return (
       <div className={styles.publishInfoList}>
         <PaperItemVenue
@@ -27,6 +28,7 @@ class VenueAndAuthors extends React.PureComponent<VenueAndAuthorsProps, {}> {
           pageType={pageType}
           actionArea={actionArea}
         />
+
         {authors ? (
           <div className={styles.author}>
             <Icon icon="AUTHOR" />
