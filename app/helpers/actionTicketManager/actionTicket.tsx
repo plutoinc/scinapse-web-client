@@ -42,6 +42,14 @@ export interface FinalActionTicket extends ActionTicketParams {
   } | null;
 }
 
+export interface ContextObject {
+  exp: {
+    [key: string]: string;
+  };
+  deviceInitialized?: boolean;
+  sessionInitialized?: boolean;
+}
+
 export default class ActionTicket {
   private deviceId = store.get(DEVICE_ID_KEY);
   private sessionId = store.get(SESSION_ID_KEY);
@@ -57,13 +65,7 @@ export default class ActionTicket {
   private _errorCount = 0;
   private expName: string;
   private expUser: string;
-  private context: {
-    exp: {
-      [key: string]: string;
-    };
-    deviceInitialized?: boolean;
-    sessionInitialized?: boolean;
-  } | null;
+  private context: ContextObject | null;
 
   public constructor(params: ActionTicketParams) {
     if (!EnvChecker.isOnServer()) {
@@ -112,13 +114,7 @@ export default class ActionTicket {
   }
 
   private setUserContext() {
-    const context: {
-      exp: {
-        [key: string]: string;
-      };
-      deviceInitialized?: boolean;
-      sessionInitialized?: boolean;
-    } = {
+    const context: ContextObject = {
       exp: {},
     };
 
