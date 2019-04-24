@@ -42,6 +42,7 @@ export interface PaperShowState
       citedPaperCurrentPage: number;
 
       isFetchingPdf: boolean;
+      isOACheckingPDF: boolean;
 
       betterSearchIsAnimated: boolean;
     }> {}
@@ -79,6 +80,7 @@ export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
   citedPaperCurrentPage: 0,
 
   isFetchingPdf: false,
+  isOACheckingPDF: false,
 
   betterSearchIsAnimated: false,
 };

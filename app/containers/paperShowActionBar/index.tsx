@@ -36,7 +36,6 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
             <div className={s.actionItem}>
               <FullTextBtn
                 isLoadingOaCheck={props.isLoadingOaCheck}
-                isFetchingPDF={props.isFetcingPDF}
                 paperId={props.paper!.id}
                 handleSetIsOpen={setIsOpen}
               />
@@ -45,7 +44,6 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
             <div className={s.actionItem}>
               <ViewFullTextBtn
                 handleClickFullText={props.handleClickFullText}
-                isFetchingPDF={props.isFetcingPDF}
                 isLoadingOaCheck={props.isLoadingOaCheck}
               />
             </div>

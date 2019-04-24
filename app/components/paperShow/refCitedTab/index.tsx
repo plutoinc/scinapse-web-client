@@ -81,17 +81,12 @@ const PaperShowRefCitedTab: React.SFC<PaperShowRefCitedTabProps> = props => {
           </div>
           {props.hasBestPdf && (props.isFetchingPdf || !props.failedToLoadPDF) ? (
             <div className={styles.actionItem}>
-              <PdfDownloadButton
-                paper={props.paper}
-                isLoadingOaCheck={props.isLoadingOaCheck}
-                isFetchingPDF={props.isFetchingPdf}
-              />
+              <PdfDownloadButton paper={props.paper} isLoadingOaCheck={props.isLoadingOaCheck} />
             </div>
           ) : (
             <div className={styles.actionItem}>
               <FullTextBtn
                 isLoadingOaCheck={props.isLoadingOaCheck}
-                isFetchingPDF={props.isFetchingPdf}
                 paperId={props.paper!.id}
                 handleSetIsOpen={setIsOpen}
                 btnStyle={{ flex: "1 0 auto", height: "36px", padding: "0 12px 0 8px" }}

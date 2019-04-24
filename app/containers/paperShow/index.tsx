@@ -235,7 +235,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   <ActionBar
                     paper={paper}
                     hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
-                    isLoadingOaCheck={isLoadingOaPDFCheck}
+                    isLoadingOaCheck={paperShow.isOACheckingPDF}
                     isFetcingPDF={paperShow.isFetchingPdf}
                     failedToLoadPDF={failedToLoadPDF}
                     currentUser={currentUser}
@@ -363,7 +363,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private getFullTextNavBar = () => {
     const { paper, paperShow } = this.props;
-    const { isOnFullText, isOnCited, isOnRef, isLoadPDF, failedToLoadPDF, isLoadingOaPDFCheck } = this.state;
+    const { isOnFullText, isOnCited, isOnRef, isLoadPDF, failedToLoadPDF } = this.state;
 
     if (paper && !!getPDFLink(paper.urls) && !failedToLoadPDF) {
       return (
@@ -373,7 +373,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             handleClickFullText={this.scrollToFullTextNode}
             handleClickRef={this.scrollToReferencePapersNode}
             handleClickCited={this.scrollToCitedPapersNode}
-            isLoadingOaCheck={isLoadingOaPDFCheck}
+            isLoadingOaCheck={paperShow.isOACheckingPDF}
             hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
             isFetchingPdf={paperShow.isFetchingPdf}
             failedToLoadPDF={failedToLoadPDF}
@@ -394,7 +394,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             handleClickCited={this.scrollToCitedPapersNode}
             handleClickFullText={this.scrollToFullTextNode}
             hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
-            isLoadingOaCheck={isLoadingOaPDFCheck}
+            isLoadingOaCheck={paperShow.isOACheckingPDF}
             isFetchingPdf={paperShow.isFetchingPdf}
             failedToLoadPDF={failedToLoadPDF}
             isFixed={isOnRef || isOnCited}

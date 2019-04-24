@@ -139,6 +139,15 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
       return { ...PAPER_SHOW_INITIAL_STATE, betterSearchIsAnimated: state.betterSearchIsAnimated };
     }
 
+    case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_BEST_PDF:
+    case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_BEST_PDF: {
+      return { ...state, isOACheckingPDF: false };
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_START_TO_GET_BEST_PDF: {
+      return { ...state, isOACheckingPDF: true };
+    }
+
     default:
       return state;
   }

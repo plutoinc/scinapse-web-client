@@ -12,12 +12,11 @@ const styles = require("./pdfSourceButton.scss");
 interface PdfDownloadButtonProps {
   paper: Paper;
   isLoadingOaCheck: boolean;
-  isFetchingPDF: boolean;
   wrapperStyle?: React.CSSProperties;
 }
 
 const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props => {
-  const { paper, isLoadingOaCheck, isFetchingPDF } = props;
+  const { paper, isLoadingOaCheck } = props;
 
   function handleClickSource() {
     trackEvent({
@@ -45,7 +44,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
     return null;
   }
 
-  if (isLoadingOaCheck || isFetchingPDF) {
+  if (isLoadingOaCheck) {
     return (
       <button className={styles.pdfLoadingBtn} disabled={isLoadingOaCheck}>
         <div className={styles.spinnerWrapper}>
