@@ -284,6 +284,7 @@
   .searchFormContainer {
     width: 100%;
     margin-right: 32px;
+    margin-left: 0;
 
     .inputBox {
       width: 100%;
@@ -295,6 +296,18 @@
     justify-content: flex-end;
 
     .signInButton {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: $mobile-width) {
+  .rightBox {
+    .externalCollectionButton {
+      display: none;
+    }
+
+    .historyBtnWrapper {
       display: none;
     }
   }

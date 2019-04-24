@@ -346,7 +346,9 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
     return (
       <div className={styles.rightBox}>
-        <ResearchHistory paper={paper} />
+        <div className={styles.historyBtnWrapper}>
+          <ResearchHistory paper={paper} />
+        </div>
         <Link
           className={styles.externalCollectionButton}
           onClick={() => {
