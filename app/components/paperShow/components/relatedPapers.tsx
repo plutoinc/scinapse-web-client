@@ -80,7 +80,7 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
         }
 
         return (
-          <div className={styles.paperShowPaperItemWrapper}>
+          <div className={styles.paperShowPaperItemWrapper} key={paper.id}>
             <PaperItem
               pageType="paperShow"
               actionArea={type === "reference" ? "refList" : "citedList"}
@@ -88,12 +88,7 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
               key={paper.id}
               paper={paper}
               shouldBlockUnverifiedUser
-              wrapperStyle={{
-                borderBottom: "none",
-                marginBottom: 0,
-                paddingBottom: 0,
-                maxWidth: "100%",
-              }}
+              wrapperStyle={{ borderBottom: "none", marginBottom: 0, paddingBottom: 0, maxWidth: "100%" }}
             />
           </div>
         );
