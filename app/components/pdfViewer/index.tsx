@@ -92,11 +92,11 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   React.useEffect(
     () => {
       if (shouldShow) {
+        dispatch(ActionCreators.startToLoadingFetchPDF());
         if (!bestPdf) {
           handleGetBestPdf();
         } else if (bestPdf && bestPdf.hasBest) {
           setIsFetching(true);
-          dispatch(ActionCreators.startToLoadingFetchPDF());
           Axios.get(
             `https://lvr8qqubzk.execute-api.us-east-1.amazonaws.com/prod/get-pdf?pdf_url=${
               bestPdf.url
