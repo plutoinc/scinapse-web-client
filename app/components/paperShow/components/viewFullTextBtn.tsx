@@ -1,7 +1,7 @@
 import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import SearchingPDFBtn from "./searchingPDFBtn";
 const styles = require("./viewFullTextBtn.scss");
 
 interface ViewFullTextBtnProps {
@@ -13,14 +13,7 @@ const ViewFullTextBtn: React.FunctionComponent<ViewFullTextBtnProps> = props => 
   const { isLoadingOaCheck, handleClickFullText } = props;
 
   if (isLoadingOaCheck) {
-    return (
-      <button className={styles.loadingBtnStyle} disabled={isLoadingOaCheck}>
-        <div className={styles.spinnerWrapper}>
-          <CircularProgress color="inherit" disableShrink={true} size={14} thickness={4} />
-        </div>
-        Searching PDF
-      </button>
-    );
+    return <SearchingPDFBtn hasLoadingOaCheck={isLoadingOaCheck} />;
   }
 
   return (

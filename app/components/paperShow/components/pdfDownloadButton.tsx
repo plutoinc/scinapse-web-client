@@ -1,5 +1,4 @@
 import * as React from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { Paper } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { shouldBlockToSignUp } from "../../../helpers/shouldBlockToSignUp";
@@ -7,6 +6,7 @@ import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { trackEvent } from "../../../helpers/handleGA";
 import { getPDFLink } from "../../../helpers/getPDFLink";
 import Icon from "../../../icons";
+import SearchingPDFBtn from "./searchingPDFBtn";
 const styles = require("./pdfSourceButton.scss");
 
 interface PdfDownloadButtonProps {
@@ -45,14 +45,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
   }
 
   if (isLoadingOaCheck) {
-    return (
-      <button className={styles.pdfLoadingBtn} disabled={isLoadingOaCheck}>
-        <div className={styles.spinnerWrapper}>
-          <CircularProgress color="inherit" disableShrink={true} size={14} thickness={4} />
-        </div>
-        Searching PDF
-      </button>
-    );
+    return <SearchingPDFBtn hasLoadingOaCheck={isLoadingOaCheck} />;
   }
 
   const pdfSourceRecord = getPDFLink(paper.urls);

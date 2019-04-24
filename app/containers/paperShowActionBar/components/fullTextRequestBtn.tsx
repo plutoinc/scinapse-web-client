@@ -1,9 +1,9 @@
 import * as React from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { blockUnverifiedUser, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
+import SearchingPDFBtn from "../../../components/paperShow/components/searchingPDFBtn";
 const s = require("../actionBar.scss");
 
 const RequestFullTextBtn: React.FunctionComponent<{
@@ -13,15 +13,9 @@ const RequestFullTextBtn: React.FunctionComponent<{
   btnStyle?: React.CSSProperties;
 }> = React.memo(props => {
   const { isLoadingOaCheck, paperId, handleSetIsOpen, btnStyle } = props;
+
   if (isLoadingOaCheck) {
-    return (
-      <button className={s.loadingBtnStyle} disabled={isLoadingOaCheck}>
-        <div className={s.spinnerWrapper}>
-          <CircularProgress color="inherit" disableShrink={true} size={14} thickness={4} />
-        </div>
-        Searching PDF
-      </button>
-    );
+    return <SearchingPDFBtn hasLoadingOaCheck={isLoadingOaCheck} />;
   }
 
   return (

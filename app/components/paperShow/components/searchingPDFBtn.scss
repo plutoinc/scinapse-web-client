@@ -1,4 +1,4 @@
-.btnStyle {
+.loadingBtnStyle {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8,20 +8,26 @@
   border-radius: 4px;
   font-size: 14px;
   font-weight: bold;
-  line-height: 1.43;
-  background-color: $main_blue1;
   color: white;
+  background-color: $gray4;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 
   &:hover {
-    background-color: $main_blue_light0;
+    background-color: $gray3;
   }
 }
 
-.pdfIcon {
+.spinnerWrapper {
   display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
   margin-right: 8px;
-  svg {
-    width: 20px;
-    height: 20px;
+
+  .loadingSpinner {
+    color: white;
   }
 }

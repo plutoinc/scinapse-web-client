@@ -35,18 +35,6 @@
       height: 100%;
     }
   }
-
-  .spinnerWrapper {
-    display: flex;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-    margin-right: 8px;
-
-    .loadingSpinner {
-      color: white;
-    }
-  }
 }
 
 .pdfDownloadBtn {
@@ -61,14 +49,6 @@
   &:hover {
     background-color: $main_blue0;
   }
-}
-
-.pdfLoadingBtn {
-  @extend .pdfDownloadBtn;
-  background-color: $gray4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .reverseDownloadBtn {
@@ -99,6 +79,7 @@
   background-color: white;
   border: solid 1px $gray3;
   border-right: none;
+
   &:hover {
     background-color: $gray0;
   }
