@@ -38,6 +38,94 @@
   }
 }
 
+.tinyButton {
+  background-color: $gray8;
+  border-radius: 8px;
+  padding: 2px 6px;
+  color: $main_blue1;
+  cursor: pointer;
+  margin-right: 10px;
+  vertical-align: top;
+
+  &:hover {
+    background-color: $gray2;
+  }
+
+  &:active {
+    filter: brightness(95%);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-right: 2px;
+  }
+
+  span {
+    line-height: 16px;
+    color: $main_blue0;
+    font-size: 12px;
+    vertical-align: middle;
+  }
+}
+
+.dialogPaper {
+  width: 400px;
+  height: 200px;
+  border-radius: 4px;
+  box-shadow: 0 7px 32px 0 rgba(12, 0, 51, 0.15);
+  background-color: white;
+  padding: 16px;
+
+  .dialogMainTitle {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: $black1;
+  }
+
+  .dialogTitle {
+    width: 250px;
+    margin: 0 auto;
+    font-size: 18px;
+    font-weight: 500;
+    color: $gray6;
+    margin-top: 10px;
+  }
+
+  .dialogContent {
+    width: 250px;
+    margin: 0 auto;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: $gray5;
+  }
+
+  .highlightText {
+    color: $main_blue0;
+    font-weight: 400;
+    margin-left: 8px;
+  }
+
+  .highlightBtnText {
+    border: 1px solid $main_blue0;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .contentBlockDivider {
+    width: 100%;
+    height: 1px;
+    background-color: $gray8;
+    margin-top: $paper-show-interblock-divider-margin;
+    margin-bottom: $paper-show-interblock-divider-margin;
+  }
+}
+
 .privacyPolicyLink {
   color: $gray6;
 
