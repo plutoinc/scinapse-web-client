@@ -1,5 +1,8 @@
 import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import { ABTestType } from "../../../constants/abTest";
+import { getUserGroupName } from "../../../helpers/abTestHelper";
+import { controlSignUpContext, positiveSignUpContext } from "./constants";
 const styles = require("./authContextText.scss");
 
 interface AuthContextTextProps {
@@ -22,29 +25,17 @@ const ContextText: React.FunctionComponent<{
 });
 
 const ContextTextByActionType: React.FunctionComponent<AuthContextTextProps> = React.memo(props => {
-  const { userActionType, query } = props;
+  const { userActionType } = props;
 
-  switch (userActionType) {
-    case "downloadPdf":
-      return <ContextText subText={"⚠️ Oops, only scinapse members can download PDF more."} />;
-    case "citePaper":
-      return <ContextText subText={"⚠️ Oops, only scinapse members can copy citation."} />;
-    case "viewMorePDF":
-      return <ContextText subText={"⚠️ Oops, only scinapse members can view full text."} />;
-    case "query":
-      return <ContextText subText={`🔍 To ${query} more, you need to be a Scinapse member.`} />;
-    case "paperShow":
-      return <ContextText subText={"⚠️ Oops, only scinapse members can view paper information more."} />;
-    case "paperFromSearch":
-      return <ContextText subText={"🔍 To view more papers, you need to be a Scinapse member."} />;
-    case "queryLover":
-      return (
-        <ContextText subText={"💌 Hey Scinapse lover! Please help us to fully support your research by signing up."} />
-      );
-    case "authorFromSearch":
-      return <ContextText subText={"👨‍⚕️ To view the author profile, you need to be a Scinapse member."} />;
-    case "nextPageFromSearch":
-      return <ContextText subText={"🔍 To go to the next page, you need to be a Scinapse member."} />;
+  const testName: ABTestType = "signUpContextText";
+
+  const userGroup: string = getUserGroupName(testName) || "";
+
+  switch (userGroup) {
+    case "control":
+      return !!userActionType ? <ContextText subText={controlSignUpContext[userActionType]} /> : null;
+    case "positive":
+      return !!userActionType ? <ContextText subText={positiveSignUpContext[userActionType]} /> : null;
     default:
       return null;
   }

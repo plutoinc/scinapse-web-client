@@ -4,16 +4,14 @@ interface UserGroup {
 }
 
 interface Test {
-  name: string;
+  name: ABTestType;
   userGroup: UserGroup[];
 }
 
-export type BenefitExpType =
-  | "queryCountSession"
-  | "refPaperCountSession"
+export type BenefitExpType = "queryCountSession" | "refPaperCountSession" | "paperviewCountDevice" | "downloadCount";
+
+export type ABTestType =
   | "paperFromSearch"
-  | "paperviewCountDevice"
-  | "downloadCount"
   | "queryLover"
   | "authorFromSearch"
   | "nextPageFromSearch"
@@ -38,7 +36,12 @@ export interface BenefitExpTicketContext {
   expName?: string;
 }
 
-export const LIVE_TESTS: Test[] = [];
+const signUpContextTest: Test = {
+  name: "signUpContextText",
+  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "positive", weight: 1 }],
+};
+
+export const LIVE_TESTS: Test[] = [signUpContextTest];
 
 function getRandomPool(): { [key: string]: string[] } {
   const randomPool: { [key: string]: string[] } = {};
