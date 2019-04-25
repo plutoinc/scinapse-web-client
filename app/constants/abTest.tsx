@@ -26,7 +26,7 @@ export interface BenefitExp {
   count: number;
 }
 
-export interface benefitExpTicketContext {
+export interface BenefitExpTicketContext {
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType | null;
   actionLabel: string | null;

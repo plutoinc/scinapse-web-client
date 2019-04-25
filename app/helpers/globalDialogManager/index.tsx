@@ -3,7 +3,7 @@ import { ActionCreators } from "../../actions/actionTypes";
 import { GLOBAL_DIALOG_TYPE } from "../../components/dialog/reducer";
 import { Collection } from "../../model/collection";
 import { Paper } from "../../model/paper";
-import { benefitExpTicketContext as AuthContext } from "../../constants/abTest";
+import { BenefitExpTicketContext as AuthContext } from "../../constants/abTest";
 
 interface openAuthDialogParams {
   authContext: AuthContext;
