@@ -28,7 +28,7 @@
 }
 
 .scrolledNavbar {
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .headerLogo {
@@ -56,7 +56,9 @@
 .searchFormContainer {
   position: relative;
   display: flex;
-  width: 656px;
+  width: 100%;
+  margin-left: 51px;
+  margin-right: 377px;
   height: 44px;
   align-items: center;
 }
@@ -72,11 +74,11 @@
   color: $black1;
 
   .externalCollectionButton {
-    margin-left: 8px;
+    margin-left: 4px;
+    margin-right: 8px;
     width: 109px;
     height: 44px;
     border-radius: 4px;
-    background-color: $gray1;
     justify-content: center;
     align-items: center;
     font-size: 14px;
@@ -85,12 +87,15 @@
     display: flex;
 
     &:hover {
-      background-color: $gray2;
+      background-color: $gray7;
+      color: $black1;
+      transition: $button-hover-transition;
     }
 
     .collectionIcon {
       width: 20px;
       height: 20px;
+      color: $gray5;
       margin-right: 4px;
     }
   }
@@ -279,6 +284,7 @@
   .searchFormContainer {
     width: 100%;
     margin-right: 32px;
+    margin-left: 0;
 
     .inputBox {
       width: 100%;
@@ -290,6 +296,18 @@
     justify-content: flex-end;
 
     .signInButton {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: $mobile-width) {
+  .rightBox {
+    .externalCollectionButton {
+      display: none;
+    }
+
+    .historyBtnWrapper {
       display: none;
     }
   }

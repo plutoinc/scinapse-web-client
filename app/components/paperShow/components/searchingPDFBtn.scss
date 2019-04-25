@@ -1,0 +1,33 @@
+.loadingBtnStyle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 16px 10px 12px;
+  width: 100%;
+  height: 40px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  background-color: $gray4;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &:hover {
+    background-color: $gray3;
+  }
+}
+
+.spinnerWrapper {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+
+  .loadingSpinner {
+    color: white;
+  }
+}
