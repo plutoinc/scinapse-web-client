@@ -42,12 +42,20 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper 
   );
 
   const todayPapers = papers.filter(p => p.savedAt && isToday(p.savedAt));
-  const countBtn = <div className={s.countBtn}>{todayPapers.length}</div>;
-  const paperList = isOpen ? (
+  const countBtn = todayPapers.length === 0 ? null : <div className={s.countBtn}>{todayPapers.length}</div>;
+  const innerContent = (
     <div className={s.paperListWrapper}>
-      {papers.map(p => <RelatedPaperItem key={p.id} paper={p} actionArea="researchHistory" disableVisitedColour />)}
+      {papers.length > 0 ? (
+        papers.map(p => <RelatedPaperItem key={p.id} paper={p} actionArea="researchHistory" disableVisitedColour />)
+      ) : (
+        <span className={s.noHistoryContext}>
+          📄 Enjoy astonished journey with <span className={s.highlighted}>SCINAPSE</span>
+        </span>
+      )}
     </div>
-  ) : null;
+  );
+
+  const paperList = isOpen ? innerContent : null;
 
   const content = (
     <>
