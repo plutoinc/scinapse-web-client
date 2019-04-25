@@ -35,6 +35,16 @@ const ContextTextByActionType: React.FunctionComponent<AuthContextTextProps> = R
       return <ContextText subText={`🔍 To ${query} more, you need to be a Scinapse member.`} />;
     case "paperShow":
       return <ContextText subText={"⚠️ Oops, only scinapse members can view paper information more."} />;
+    case "paperFromSearch":
+      return <ContextText subText={"🔍 To view more papers, you need to be a Scinapse member."} />;
+    case "queryLover":
+      return (
+        <ContextText subText={"💌 Hey Scinapse lover! Please help us to fully support your research by signing up."} />
+      );
+    case "authorFromSearch":
+      return <ContextText subText={"👨‍⚕️ To view the author profile, you need to be a Scinapse member."} />;
+    case "nextPageFromSearch":
+      return <ContextText subText={"🔍 To go to the next page, you need to be a Scinapse member."} />;
     default:
       return null;
   }

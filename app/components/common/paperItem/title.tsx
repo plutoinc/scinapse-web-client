@@ -78,18 +78,16 @@ class Title extends React.PureComponent<TitleProps, {}> {
       if (isBlocked) return;
     }
 
-    if (currentPage === 1) {
-      const isBlocked = await checkBenefitExp({
-        type: "getFromFirstResultPage",
-        matching: "device",
-        maxCount: 3,
-        actionArea: "searchResult",
-        userActionType: "paperShow",
-        expName: "getFromFirstResultPage",
-      });
+    const isBlocked = await checkBenefitExp({
+      type: "paperFromSearch",
+      matching: "device",
+      maxCount: 5,
+      actionArea: "searchResult",
+      userActionType: "paperFromSearch",
+      expName: "paperFromSearch",
+    });
 
-      if (isBlocked) return;
-    }
+    if (isBlocked) return;
 
     actionTicketManager.trackTicket({
       pageType,

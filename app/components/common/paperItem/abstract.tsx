@@ -67,17 +67,17 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
   }
 
   public handelExtendContent = async () => {
-    const { pageType, actionArea, paperId, currentPage } = this.props;
+    const { pageType, actionArea, paperId } = this.props;
     const { isExtendContent } = this.state;
 
-    if (!isExtendContent && currentPage === 1) {
+    if (!isExtendContent) {
       const isBlocked = await checkBenefitExp({
-        type: "getFromFirstResultPage",
+        type: "paperFromSearch",
         matching: "device",
-        maxCount: 3,
+        maxCount: 5,
         actionArea: "abstract",
-        userActionType: "paperShow",
-        expName: "getFromFirstResultPage",
+        userActionType: "paperFromSearch",
+        expName: "paperFromSearch",
       });
 
       if (isBlocked) return;

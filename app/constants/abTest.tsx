@@ -11,7 +11,7 @@ interface Test {
 export type BenefitExpType =
   | "queryCountSession"
   | "refPaperCountSession"
-  | "getFromFirstResultPage"
+  | "paperFromSearch"
   | "paperviewCountDevice"
   | "downloadCount";
 
