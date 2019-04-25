@@ -48,9 +48,7 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper 
       {papers.length > 0 ? (
         papers.map(p => <RelatedPaperItem key={p.id} paper={p} actionArea="researchHistory" disableVisitedColour />)
       ) : (
-        <span className={s.noHistoryContext}>
-          📄 Enjoy astonished journey with <span className={s.highlighted}>SCINAPSE</span>
-        </span>
+        <span className={s.noHistoryContext}>Browse Scinapse! Your research history will be here.</span>
       )}
     </div>
   );
