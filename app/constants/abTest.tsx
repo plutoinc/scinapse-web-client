@@ -13,7 +13,12 @@ export type BenefitExpType =
   | "refPaperCountSession"
   | "paperFromSearch"
   | "paperviewCountDevice"
-  | "downloadCount";
+  | "downloadCount"
+  | "queryLover"
+  | "authorFromSearch"
+  | "nextPageFromSearch"
+  | "signUpContextText"
+  | "completeBlockSignUp";
 
 export const BENEFIT_EXPERIMENT_KEY = "b_exp";
 
