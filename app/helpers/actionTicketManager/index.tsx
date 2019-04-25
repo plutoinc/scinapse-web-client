@@ -13,6 +13,7 @@ import {
   DEVICE_ID_INITIALIZED_KEY,
   SESSION_ID_KEY,
   SESSION_ID_INITIALIZED_KEY,
+  SESSION_COUNT_KEY,
   LIVE_SESSION_LENGTH,
   DESTINATION_URL,
   TIME_INTERVAL_TO_SEND_TICKETS,
@@ -41,7 +42,7 @@ class ActionTicketManager {
     if (!EnvChecker.isOnServer() && EnvChecker.isDev()) {
       console.log(params);
     }
-    if (!EnvChecker.isOnServer()) {
+    if (!EnvChecker.isOnServer() && EnvChecker.isProdBrowser()) {
       this.renewSessionKey();
       const ticket = new ActionTicket(params);
       this.addToQueue([ticket]);
@@ -109,6 +110,7 @@ class ActionTicketManager {
   private renewSessionKey() {
     (store as any).removeExpiredKeys();
     const sessionKey: string | undefined = store.get(SESSION_ID_KEY);
+    let sessionCount: number = store.get(SESSION_COUNT_KEY) || 0;
     const currentDate = new Date();
     const currentTime = currentDate.getTime();
 
@@ -116,6 +118,7 @@ class ActionTicketManager {
       const newKey = uuid();
       (store as any).set(SESSION_ID_KEY, newKey, currentTime + LIVE_SESSION_LENGTH);
       (store as any).set(SESSION_ID_INITIALIZED_KEY, true);
+      (store as any).set(SESSION_COUNT_KEY, ++sessionCount);
     } else {
       (store as any).set(SESSION_ID_KEY, sessionKey, currentTime + LIVE_SESSION_LENGTH);
     }

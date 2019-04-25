@@ -90,8 +90,8 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
     <Dialog open={props.isOpen} onClose={props.onClose} classes={{ paper: s.dialogPaper }}>
       <div className={s.title}>Request Full-text</div>
       <div className={s.subtitle}>
-        This is not automated. We’re trying to contact authors when many requests are accepted. The notification will be
-        sent when full-text is updated.
+        This is not automated. We’re trying to contact authors when many requests are accepted.<br />
+        The notification will be sent when full-text is updated.
       </div>
 
       <Formik
@@ -127,7 +127,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
             />
             <div className={s.btnWrapper}>
               <button className={s.cancelBtn} type="button" onClick={props.onClose}>
-                cancel
+                Cancel
               </button>
               <button disabled={isLoading} className={s.submitBtn} type="submit">
                 <Icon icon="SEND" className={s.sendIcon} />

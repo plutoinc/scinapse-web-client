@@ -17,7 +17,7 @@ interface HistoryPaper extends Paper {
 }
 
 interface ResearchHistoryProps {
-  paper: Paper;
+  paper: Paper | undefined;
 }
 const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper }) => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -25,58 +25,50 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper 
 
   React.useEffect(
     () => {
-      const now = Date.now();
-      const newPaper: HistoryPaper = { ...paper, savedAt: now };
-      const oldPapers: HistoryPaper[] = store.get(RESEARCH_HISTORY_KEY) || [];
-      const i = oldPapers.findIndex(p => String(p.id) === String(paper.id));
-      const newPapers =
-        i > -1
-          ? [newPaper, ...oldPapers.slice(0, i), ...oldPapers.slice(i + 1)]
-          : [newPaper, ...oldPapers].slice(0, MAXIMUM_COUNT);
-      store.set(RESEARCH_HISTORY_KEY, newPapers);
-      setPapers(newPapers);
+      if (!!paper) {
+        const now = Date.now();
+        const newPaper: HistoryPaper | null = { ...paper, savedAt: now };
+        const oldPapers: HistoryPaper[] = store.get(RESEARCH_HISTORY_KEY) || [];
+        const i = oldPapers.findIndex(p => String(p.id) === String(paper.id));
+        const newPapers =
+          i > -1
+            ? [newPaper, ...oldPapers.slice(0, i), ...oldPapers.slice(i + 1)]
+            : [newPaper, ...oldPapers].slice(0, MAXIMUM_COUNT);
+        store.set(RESEARCH_HISTORY_KEY, newPapers);
+        setPapers(newPapers);
+      }
     },
     [paper]
   );
 
   const todayPapers = papers.filter(p => p.savedAt && isToday(p.savedAt));
-  const countBtn = isOpen ? null : <div className={s.countBtn}>{`${todayPapers.length} Today`}</div>;
-  const paperList = isOpen ? (
+  const countBtn = todayPapers.length === 0 ? null : <div className={s.countBtn}>{todayPapers.length}</div>;
+  const innerContent = (
     <div className={s.paperListWrapper}>
-      {papers.map(p => <RelatedPaperItem key={p.id} paper={p} actionArea="researchHistory" disableVisitedColour />)}
+      {papers.length > 0 ? (
+        papers.map(p => <RelatedPaperItem key={p.id} paper={p} actionArea="researchHistory" disableVisitedColour />)
+      ) : (
+        <span className={s.noHistoryContext}>Browse Scinapse! Your research history will be here.</span>
+      )}
     </div>
-  ) : null;
+  );
+
+  const paperList = isOpen ? innerContent : null;
 
   const content = (
-    <div
-      className={classNames({
-        [s.boxWrapper]: isOpen,
-      })}
-    >
+    <>
       <div
-        className={classNames({
-          [s.headerWrapper]: true,
-          [s.openHeaderWrapper]: isOpen,
-        })}
+        className={s.headerWrapper}
         onClick={() => {
           setIsOpen(!isOpen);
         }}
       >
         <Icon className={s.historyIcon} icon="HISTORY" />
-        <div className={s.sectionTitle}>Your Research History</div>
-        <div className={s.rightSection}>
-          {countBtn}
-          <Icon
-            style={{
-              transform: isOpen ? "none" : "rotate(180deg)",
-            }}
-            icon="ARROW_POINT_TO_UP"
-            className={s.arrowIcon}
-          />
-        </div>
+        <div className={s.sectionTitle}>History</div>
+        {countBtn}
       </div>
-      {paperList}
-    </div>
+      <div className={classNames({ [s.boxWrapper]: isOpen })}>{paperList}</div>
+    </>
   );
 
   if (isOpen) {

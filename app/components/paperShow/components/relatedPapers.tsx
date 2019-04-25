@@ -57,7 +57,7 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
           currentPageIndex={currentPage - 1}
           getLinkDestination={getLinkDestination}
           wrapperStyle={{
-            margin: "24px 0",
+            margin: "32px 0 56px 0",
           }}
         />
       );
@@ -80,14 +80,17 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
         }
 
         return (
-          <PaperItem
-            pageType="paperShow"
-            actionArea={type === "reference" ? "refList" : "citedList"}
-            currentUser={currentUser}
-            key={paper.id}
-            paper={paper}
-            shouldBlockUnverifiedUser
-          />
+          <div className={styles.paperShowPaperItemWrapper} key={paper.id}>
+            <PaperItem
+              pageType="paperShow"
+              actionArea={type === "reference" ? "refList" : "citedList"}
+              currentUser={currentUser}
+              key={paper.id}
+              paper={paper}
+              shouldBlockUnverifiedUser
+              wrapperStyle={{ borderBottom: "none", marginBottom: 0, paddingBottom: 0, maxWidth: "100%" }}
+            />
+          </div>
         );
       });
 

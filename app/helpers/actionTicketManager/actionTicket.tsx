@@ -5,6 +5,7 @@ import EnvChecker from "../envChecker";
 import {
   DEVICE_ID_INITIALIZED_KEY,
   DEVICE_ID_KEY,
+  SESSION_COUNT_KEY,
   SESSION_ID_INITIALIZED_KEY,
   SESSION_ID_KEY,
   USER_ID_KEY,
@@ -33,13 +34,7 @@ export interface FinalActionTicket extends ActionTicketParams {
   referral: string;
   expName: string;
   expUser: string;
-  context: {
-    exp: {
-      [key: string]: string;
-    };
-    deviceInitialized?: boolean;
-    sessionInitialized?: boolean;
-  } | null;
+  context?: ContextObject;
 }
 
 export interface ContextObject {
@@ -48,6 +43,7 @@ export interface ContextObject {
   };
   deviceInitialized?: boolean;
   sessionInitialized?: boolean;
+  sessionCount?: number;
 }
 
 export default class ActionTicket {
@@ -65,7 +61,7 @@ export default class ActionTicket {
   private _errorCount = 0;
   private expName: string;
   private expUser: string;
-  private context: ContextObject | null;
+  private context?: ContextObject;
 
   public constructor(params: ActionTicketParams) {
     if (!EnvChecker.isOnServer()) {
@@ -114,31 +110,32 @@ export default class ActionTicket {
   }
 
   private setUserContext() {
+    const deviceInitialized = store.get(DEVICE_ID_INITIALIZED_KEY);
+    const sessionInitialized = store.get(SESSION_ID_INITIALIZED_KEY);
+
+    if (LIVE_TESTS.length === 0 && !deviceInitialized && !sessionInitialized) {
+      return;
+    }
+
     const context: ContextObject = {
       exp: {},
     };
 
-    let contextInitialized = false;
-
     LIVE_TESTS.forEach(test => {
-      contextInitialized = true;
       context.exp[test.name] = Cookies.get(test.name) || "";
     });
 
-    if (store.get(DEVICE_ID_INITIALIZED_KEY)) {
-      contextInitialized = true;
+    if (deviceInitialized) {
       context.deviceInitialized = true;
       store.remove(DEVICE_ID_INITIALIZED_KEY);
     }
 
-    if (store.get(SESSION_ID_INITIALIZED_KEY)) {
-      contextInitialized = true;
+    if (sessionInitialized) {
       context.sessionInitialized = true;
+      context.sessionCount = store.get(SESSION_COUNT_KEY);
       store.remove(SESSION_ID_INITIALIZED_KEY);
     }
 
-    if (contextInitialized) {
-      this.context = context;
-    }
+    this.context = context;
   }
 }

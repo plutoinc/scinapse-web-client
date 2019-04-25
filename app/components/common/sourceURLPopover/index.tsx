@@ -61,7 +61,6 @@ const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
           href={source.url}
           key={source.id}
         >
-          {isPDFLink(source) && <span>{`[PDF] `}</span>}
           <span
             className={classNames({
               [styles.host]: true,
