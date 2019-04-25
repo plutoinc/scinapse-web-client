@@ -33,6 +33,7 @@ interface FirstFormProps {
   ) => void;
   dialogState: DialogState;
   dispatch: Dispatch<any>;
+  query?: string;
 }
 
 interface FormValues {
@@ -107,7 +108,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
 
   return (
     <>
-      <AuthContextText userActionType={props.userActionType} />
+      <AuthContextText userActionType={props.userActionType} query={props.query} />
       <div className={s.authContainer}>
         <AuthGuideContext userActionType={props.userActionType} />
         <div className={s.authFormWrapper}>

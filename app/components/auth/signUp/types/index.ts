@@ -8,6 +8,7 @@ export interface SignUpContainerProps extends RouteComponentProps<SignUpSearchPa
   dialogState: DialogState;
   handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void;
   userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
+  query?: string;
 }
 
 export interface SignUpSearchParams {

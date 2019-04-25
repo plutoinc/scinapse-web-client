@@ -37,6 +37,7 @@ function mapStateToProps(state: AppState) {
     dialogState: state.dialog,
     currentUser: state.currentUser,
     myCollections: denormalize(state.dialog.myCollectionIds, [collectionSchema], state.entities),
+    articleSearch: state.articleSearch,
   };
 }
 
@@ -204,14 +205,26 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   };
 
   private getDialogContent = (type: GLOBAL_DIALOG_TYPE | null) => {
-    const { currentUser, myCollections, dialogState } = this.props;
+    const { currentUser, myCollections, dialogState, articleSearch } = this.props;
 
     switch (type) {
       case GLOBAL_DIALOG_TYPE.SIGN_IN:
-        return <SignIn handleChangeDialogType={this.changeDialogType} userActionType={dialogState.userActionType} />;
+        return (
+          <SignIn
+            handleChangeDialogType={this.changeDialogType}
+            userActionType={dialogState.userActionType}
+            query={articleSearch.searchInput}
+          />
+        );
 
       case GLOBAL_DIALOG_TYPE.SIGN_UP:
-        return <SignUp handleChangeDialogType={this.changeDialogType} userActionType={dialogState.userActionType} />;
+        return (
+          <SignUp
+            handleChangeDialogType={this.changeDialogType}
+            userActionType={dialogState.userActionType}
+            query={articleSearch.searchInput}
+          />
+        );
 
       case GLOBAL_DIALOG_TYPE.ADD_PUBLICATIONS_TO_AUTHOR_DIALOG: {
         return <AllPublicationsDialog />;

@@ -38,6 +38,7 @@ interface SignInProps {
   dialogState: DialogState;
   dispatch: Dispatch<any>;
   userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
+  query?: string;
 }
 
 const oAuthBtnBaseStyle: React.CSSProperties = { position: "relative", fontSize: "13px", marginTop: "10px" };
@@ -137,7 +138,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
 
   return (
     <>
-      <AuthContextText userActionType={props.userActionType} />
+      <AuthContextText userActionType={props.userActionType} query={props.query} />
       <div className={s.authContainer}>
         <AuthGuideContext userActionType={props.userActionType} />
         <div className={s.authFormWrapper}>

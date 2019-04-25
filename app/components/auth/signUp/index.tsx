@@ -170,6 +170,7 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
           }}
           onClickTab={props.handleChangeDialogType}
           userActionType={props.userActionType}
+          query={props.query}
         />
       );
   }

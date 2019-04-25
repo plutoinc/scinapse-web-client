@@ -8,6 +8,16 @@ interface Test {
   userGroup: UserGroup[];
 }
 
+export const searchContextTextTestUserGroup = [
+  { groupName: "A", weight: 0.2 },
+  { groupName: "B", weight: 0.2 },
+  { groupName: "C", weight: 0.2 },
+  { groupName: "D", weight: 0.2 },
+  { groupName: "E", weight: 0.2 },
+];
+
+export const searchContextTextTest = { name: "searchContextTextTest", userGroup: searchContextTextTestUserGroup };
+
 export type BenefitExpType =
   | "queryCountSession"
   | "refPaperCountSession"
@@ -33,4 +43,4 @@ export interface benefitExpTicketContext {
   expName?: string;
 }
 
-export const LIVE_TESTS: Test[] = [];
+export const LIVE_TESTS: Test[] = [searchContextTextTest];
