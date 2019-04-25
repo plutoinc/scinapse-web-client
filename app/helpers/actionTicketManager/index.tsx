@@ -41,7 +41,7 @@ class ActionTicketManager {
     if (!EnvChecker.isOnServer() && EnvChecker.isDev()) {
       console.log(params);
     }
-    if (!EnvChecker.isOnServer()) {
+    if (!EnvChecker.isOnServer() && EnvChecker.isProdBrowser()) {
       this.renewSessionKey();
       const ticket = new ActionTicket(params);
       this.addToQueue([ticket]);
