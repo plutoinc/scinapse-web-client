@@ -61,7 +61,7 @@ class Title extends React.PureComponent<TitleProps, {}> {
   }
 
   private handleClickTitle = async (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const { pageType, actionArea, paperId, shouldBlockUnverifiedUser, history, currentPage } = this.props;
+    const { pageType, actionArea, paperId, shouldBlockUnverifiedUser, history } = this.props;
 
     e.preventDefault();
 
