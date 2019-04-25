@@ -1,17 +1,10 @@
 import * as React from "react";
-import * as Cookies from "js-cookie";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./authContextText.scss");
-
-const SEARCH_CONTEXT_TEXT_TEST_ID = "searchContextTextTest";
 
 interface AuthContextTextProps {
   userActionType?: Scinapse.ActionTicket.ActionTagType;
   query?: string;
-}
-
-interface ContextTextByActionTypeProps extends AuthContextTextProps {
-  searchContextTextTestUserType?: string;
 }
 
 const ContextText: React.FunctionComponent<{
@@ -28,25 +21,8 @@ const ContextText: React.FunctionComponent<{
   );
 });
 
-const ContextTextByActionType: React.FunctionComponent<ContextTextByActionTypeProps> = React.memo(props => {
-  const { userActionType, query, searchContextTextTestUserType } = props;
-
-  const getQueryContextForMultiTest = () => {
-    switch (searchContextTextTestUserType) {
-      case "A":
-        return "⚠️ Oops, only scinapse members can search more.";
-      case "B":
-        return "Sign up to Scinapse and search more 🔍";
-      case "C":
-        return "By being a member, Scinapse will support your research 😎";
-      case "D":
-        return "Become a member! Scinapse will fully support your research 🔍";
-      case "E":
-        return `🔍 To ${query} more, you need to be a Scinapse member.`;
-      default:
-        return "⚠️ Oops, only scinapse members can search more.";
-    }
-  };
+const ContextTextByActionType: React.FunctionComponent<AuthContextTextProps> = React.memo(props => {
+  const { userActionType, query } = props;
 
   switch (userActionType) {
     case "downloadPdf":
@@ -56,7 +32,7 @@ const ContextTextByActionType: React.FunctionComponent<ContextTextByActionTypePr
     case "viewMorePDF":
       return <ContextText subText={"⚠️ Oops, only scinapse members can view full text."} />;
     case "query":
-      return <ContextText subText={getQueryContextForMultiTest()} />;
+      return <ContextText subText={`🔍 To ${query} more, you need to be a Scinapse member.`} />;
     case "paperShow":
       return <ContextText subText={"⚠️ Oops, only scinapse members can view paper information more."} />;
     default:
@@ -66,14 +42,8 @@ const ContextTextByActionType: React.FunctionComponent<ContextTextByActionTypePr
 
 const AuthContextText: React.FunctionComponent<AuthContextTextProps> = props => {
   const { userActionType } = props;
-  const searchContextTextTestUserType = Cookies.get(SEARCH_CONTEXT_TEXT_TEST_ID) || "";
 
-  return (
-    <ContextTextByActionType
-      userActionType={userActionType}
-      searchContextTextTestUserType={searchContextTextTestUserType}
-    />
-  );
+  return <ContextTextByActionType userActionType={userActionType} />;
 };
 
 export default withStyles<typeof AuthContextText>(styles)(AuthContextText);
