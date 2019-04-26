@@ -85,9 +85,6 @@ module.exports = {
       },
     ],
   },
-  node: {
-    fs: "empty",
-  },
   plugins: [
     new CheckerPlugin(),
     new HtmlWebpackPlugin({
