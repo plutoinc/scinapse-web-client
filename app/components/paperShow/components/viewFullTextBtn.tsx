@@ -22,7 +22,7 @@ const ViewFullTextBtn: React.FunctionComponent<ViewFullTextBtnProps> = props => 
   return (
     <button
       className={styles.btnStyle}
-      onClick={async () => {
+      onClick={() => {
         ActionTicketManager.trackTicket({
           pageType: "paperShow",
           actionType: "fire",
