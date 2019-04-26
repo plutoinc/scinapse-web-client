@@ -8,6 +8,7 @@ import { CurrentUser } from "../../model/currentUser";
 import SourceButton from "../../components/paperShow/components/sourceButton";
 import ViewFullTextBtn from "../../components/paperShow/components/viewFullTextBtn";
 import FullTextBtn from "./components/fullTextRequestBtn";
+
 const s = require("./actionBar.scss");
 
 interface PaperShowActionBarProps {
@@ -43,6 +44,7 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
           ) : (
             <div className={s.actionItem}>
               <ViewFullTextBtn
+                paperId={props.paper.id}
                 handleClickFullText={props.handleClickFullText}
                 isLoadingOaCheck={props.isLoadingOaCheck}
               />
