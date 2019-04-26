@@ -1,13 +1,19 @@
 import EnvChecker from "./helpers/envChecker";
 import PlutoRenderer from "./client";
+import { parse } from "qs";
 
 if (!EnvChecker.isOnServer()) {
   function loadServiceWorker() {
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
-        console.log("LOAD");
+        const qp = parse(location.search, { ignoreQueryPrefix: true });
+        let destination = "/sw.js";
+        if (qp.branch) {
+          console.log(qp.branch);
+          destination = destination + `?branch=${qp.branch}`;
+        }
         navigator.serviceWorker
-          .register("/sw.js")
+          .register(destination)
           .then(registration => {
             console.log("SW registered: ", registration);
             console.log(registration.pushManager);
