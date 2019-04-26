@@ -4,7 +4,6 @@ import { Paper } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import ScinapseButtonFactory, { ScinapseButtonType } from "../../common/scinapseButton/scinapseButtonFactory";
 import SourceURLPopover from "../../common/sourceURLPopover";
-import { shouldBlockToSignUp } from "../../../helpers/shouldBlockToSignUp";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import Icon from "../../../icons";
 const styles = require("./pdfSourceButton.scss");
@@ -73,12 +72,8 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
                 target: "_blank",
                 rel: "noopener",
                 className: styles.linkClassName,
-                onClick: async e => {
+                onClick: e => {
                   e.preventDefault();
-                  const shouldBlock = await shouldBlockToSignUp("paperDescription", "source");
-                  if (shouldBlock) {
-                    return;
-                  }
                   handleClickSource();
                   window.open(paper.urls[0].url, "_blank");
                 },

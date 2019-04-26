@@ -59,7 +59,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
         rel="noopener"
         onClick={async e => {
           e.preventDefault();
-          const shouldBlock = await shouldBlockToSignUp("paperDescription", "source");
+          const shouldBlock = await shouldBlockToSignUp("paperDescription", "downloadPDF");
           if (shouldBlock) {
             return;
           }

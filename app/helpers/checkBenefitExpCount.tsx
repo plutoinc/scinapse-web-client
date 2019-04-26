@@ -1,15 +1,15 @@
 import * as store from "store";
-import { BenefitExpType, BenefitExpValue, BENEFIT_EXPERIMENT_KEY } from "../constants/abTest";
+import { BenefitExpValue, BENEFIT_EXPERIMENT_KEY, ABTestType, BenefitExpType } from "../constants/abTest";
 import { SESSION_ID_KEY, DEVICE_ID_KEY } from "../constants/actionTicket";
 import { blockUnverifiedUser, AUTH_LEVEL } from "./checkAuthDialog";
 
 interface CheckBenefitExpCount {
-  type: BenefitExpType;
+  type: ABTestType | BenefitExpType;
   maxCount: number;
   matching: "session" | "device";
   userActionType: Scinapse.ActionTicket.ActionTagType;
   actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType;
-  expName: BenefitExpType;
+  expName: ABTestType | BenefitExpType;
   actionLabel?: string;
 }
 
@@ -33,7 +33,7 @@ export async function checkBenefitExp({
       (matching === "device" && exp[type].deviceId === currentDeviceId))
   ) {
     const nextCount = exp[type].count + 1;
-    const shouldBlock = nextCount >= maxCount && !exp[type].shouldAvoidBlock;
+    const shouldBlock = nextCount > maxCount && !exp[type].shouldAvoidBlock;
     const newExp = {
       ...exp,
       [type]: {

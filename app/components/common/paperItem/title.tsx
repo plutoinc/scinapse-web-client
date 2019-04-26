@@ -6,7 +6,9 @@ import { trackEvent } from "../../../helpers/handleGA";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
 import actionTicketManager from "../../../helpers/actionTicketManager";
-import { checkBenefitExp } from "../../../helpers/checkBenefitExpCount";
+import { getUserGroupName, getBlockedValueForPaperFromSearchTest } from "../../../helpers/abTestHelper";
+import { ABTestType } from "../../../constants/abTest";
+import { getCurrentPageType } from "../../locationListener";
 const styles = require("./title.scss");
 
 export interface TitleProps extends RouteComponentProps<any> {
@@ -61,33 +63,19 @@ class Title extends React.PureComponent<TitleProps, {}> {
   }
 
   private handleClickTitle = async (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const { pageType, actionArea, paperId, shouldBlockUnverifiedUser, history } = this.props;
+    const { pageType, actionArea, paperId, history } = this.props;
 
     e.preventDefault();
 
-    if (shouldBlockUnverifiedUser) {
-      const isBlocked = await checkBenefitExp({
-        type: "refPaperCountSession",
-        matching: "session",
-        maxCount: 3,
-        actionArea: actionArea!,
-        userActionType: "paperShow",
-        expName: "refPaperCountSession",
-      });
+    const testName: ABTestType = "paperFromSearch";
+    const userGroupName: string = getUserGroupName(testName) || "";
+    const currentArea = getCurrentPageType();
+
+    if (currentArea === "searchResult") {
+      const isBlocked = await getBlockedValueForPaperFromSearchTest(userGroupName, "searchResult");
 
       if (isBlocked) return;
     }
-
-    const isBlocked = await checkBenefitExp({
-      type: "paperFromSearch",
-      matching: "device",
-      maxCount: 5,
-      actionArea: "searchResult",
-      userActionType: "paperFromSearch",
-      expName: "paperFromSearch",
-    });
-
-    if (isBlocked) return;
 
     actionTicketManager.trackTicket({
       pageType,

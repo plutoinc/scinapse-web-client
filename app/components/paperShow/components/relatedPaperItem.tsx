@@ -6,7 +6,6 @@ import { Paper } from "../../../model/paper";
 import Icon from "../../../icons";
 import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { checkBenefitExp } from "../../../helpers/checkBenefitExpCount";
 const styles = require("./relatedPaperItem.scss");
 
 const MAX_AUTHOR_COUNT_TO_SHOW = 2;
@@ -114,17 +113,6 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
     const { actionArea, paper, history } = this.props;
 
     e.preventDefault();
-
-    const isBlocked = await checkBenefitExp({
-      type: "refPaperCountSession",
-      matching: "session",
-      maxCount: 3,
-      actionArea: actionArea,
-      userActionType: "paperShow",
-      expName: "refPaperCountSession",
-    });
-
-    if (isBlocked) return;
 
     trackEvent({
       category: "New Paper Show",

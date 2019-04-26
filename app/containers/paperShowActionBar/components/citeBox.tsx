@@ -4,7 +4,6 @@ import { Paper } from "../../../model/paper";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { shouldBlockToSignUp } from "../../../helpers/shouldBlockToSignUp";
 import Icon from "../../../icons";
 const s = require("./citeBox.scss");
 
@@ -19,11 +18,7 @@ const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
     <div
       style={!!props.btnStyle ? props.btnStyle : {}}
       className={s.citeButton}
-      onClick={async () => {
-        const shouldBlock = await shouldBlockToSignUp("paperDescription", "citePaper");
-        if (shouldBlock) {
-          return;
-        }
+      onClick={() => {
         GlobalDialogManager.openCitationDialog(props.paper.id);
         trackEvent({
           category: "New Paper Show",

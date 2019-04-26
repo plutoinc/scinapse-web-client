@@ -5,7 +5,9 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./abstract.scss");
 import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { checkBenefitExp } from "../../../helpers/checkBenefitExpCount";
+import { ABTestType } from "../../../constants/abTest";
+import { getUserGroupName, getBlockedValueForPaperFromSearchTest } from "../../../helpers/abTestHelper";
+import { getCurrentPageType } from "../../locationListener/index";
 
 const MAX_LENGTH_OF_ABSTRACT = 500;
 
@@ -70,15 +72,12 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
     const { pageType, actionArea, paperId } = this.props;
     const { isExtendContent } = this.state;
 
-    if (!isExtendContent) {
-      const isBlocked = await checkBenefitExp({
-        type: "paperFromSearch",
-        matching: "device",
-        maxCount: 5,
-        actionArea: "abstract",
-        userActionType: "paperFromSearch",
-        expName: "paperFromSearch",
-      });
+    const testName: ABTestType = "paperFromSearch";
+    const userGroupName: string = getUserGroupName(testName) || "";
+    const currentArea = getCurrentPageType();
+
+    if (!isExtendContent && currentArea === "searchResult") {
+      const isBlocked = await getBlockedValueForPaperFromSearchTest(userGroupName, "abstract");
 
       if (isBlocked) return;
     }
