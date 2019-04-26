@@ -11,6 +11,7 @@ if (!EnvChecker.isOnServer()) {
           .then(registration => {
             console.log("SW registered: ", registration);
             console.log(registration.pushManager);
+            registration.pushManager.subscribe({ userVisibleOnly: true });
           })
           .catch(registrationError => {
             console.log("SW registration failed: ", registrationError);
