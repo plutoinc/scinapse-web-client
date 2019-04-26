@@ -10,12 +10,14 @@ const s = require("./citeBox.scss");
 
 interface CiteBoxProps {
   paper: Paper;
+  btnStyle?: React.CSSProperties;
 }
 
 const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
   if (!props.paper.doi) return null;
   return (
     <div
+      style={!!props.btnStyle ? props.btnStyle : {}}
       className={s.citeButton}
       onClick={async () => {
         const shouldBlock = await shouldBlockToSignUp("paperDescription", "citePaper");

@@ -82,6 +82,7 @@ declare namespace Scinapse {
       | "blockUnsignedUser"
       | "blockUnverifiedUser"
       | "openSignUp"
+      | "addToBookmark"
       | "";
 
     type ActionArea =
@@ -114,6 +115,7 @@ declare namespace Scinapse {
       | "nextPaper"
       | "noPaperNotiPage"
       | "abstract"
+      | "footer"
       | "";
 
     type PageType =

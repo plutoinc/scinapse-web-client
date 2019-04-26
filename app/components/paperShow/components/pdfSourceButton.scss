@@ -37,10 +37,27 @@
   }
 }
 
+.pdfDownloadBtn {
+  @extend .downloadButton;
+  background-color: $main_blue1;
+  color: white;
+  width: 140px;
+  height: 36px;
+  font-size: 14px;
+  font-weight: bold;
+
+  &:hover {
+    background-color: $main_blue0;
+  }
+}
+
 .reverseDownloadBtn {
+  @extend .downloadButton;
+
   .dropdownBtn,
   .linkClassName {
     background-color: $main_blue1;
+    border: none;
 
     &:hover {
       background-color: $main_blue0;
@@ -59,10 +76,12 @@
 
 .dropdownBtn,
 .linkClassName {
-  background-color: $gray8;
+  background-color: white;
+  border: solid 1px $gray3;
+  border-right: none;
 
   &:hover {
-    background-color: $gray2;
+    background-color: $gray0;
   }
 
   &:active {

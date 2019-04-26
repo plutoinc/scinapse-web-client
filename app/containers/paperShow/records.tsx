@@ -41,6 +41,9 @@ export interface PaperShowState
       citedPaperTotalPage: number;
       citedPaperCurrentPage: number;
 
+      isFetchingPdf: boolean;
+      isOACheckingPDF: boolean;
+
       betterSearchIsAnimated: boolean;
     }> {}
 
@@ -75,6 +78,9 @@ export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
   isFailedToGetCitedPapers: false,
   citedPaperTotalPage: 0,
   citedPaperCurrentPage: 0,
+
+  isFetchingPdf: false,
+  isOACheckingPDF: false,
 
   betterSearchIsAnimated: false,
 };

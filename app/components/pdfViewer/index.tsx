@@ -1,24 +1,55 @@
 import * as React from "react";
 import Axios from "axios";
-import ArticleSpinner from "../common/spinner/articleSpinner";
+import { Dispatch } from "react-redux";
+import { CircularProgress } from "@material-ui/core";
 import { withStyles } from "../../helpers/withStylesHelper";
 import ScinapseButton from "../common/scinapseButton";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { shouldBlockToSignUp } from "../../helpers/shouldBlockToSignUp";
+import Icon from "../../icons";
+import { PaperPdf } from "../../model/paper";
+import { ActionCreators } from "../../actions/actionTypes";
 const { Document, Page } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
 interface PDFViewerProps {
+  dispatch: Dispatch<any>;
   paperId: number;
   shouldShow: boolean;
   filename: string;
-  pdfURL?: string;
+  bestPdf?: PaperPdf;
+  handleGetBestPdf: () => void;
   onLoadSuccess: () => void;
   onFailed: () => void;
 }
 
+function useIntervalProgress(callback: () => void, delay: number | null) {
+  const savedCallback = React.useRef(() => {});
+
+  React.useEffect(
+    () => {
+      savedCallback.current = callback;
+    },
+    [callback]
+  );
+
+  React.useEffect(
+    () => {
+      function tick() {
+        savedCallback.current();
+      }
+      if (delay !== null) {
+        const timer = setInterval(tick, delay);
+        return () => clearInterval(timer);
+      }
+    },
+    [delay]
+  );
+}
+
 const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
-  const { pdfURL, shouldShow, onFailed, onLoadSuccess, filename } = props;
+  const { bestPdf, shouldShow, onFailed, onLoadSuccess, filename, handleGetBestPdf, dispatch } = props;
+  const [percentage, setPercentage] = React.useState(0);
   const [isFetching, setIsFetching] = React.useState(false);
   const [PDFBinary, setPDFBinary] = React.useState(null);
   const [PDFObject, setPDFObject] = React.useState(null);
@@ -33,32 +64,66 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    width: "154px",
+    width: "150px",
     height: "40px",
   };
+
+  const readAllBtnStyle: React.CSSProperties = {
+    ...baseBtnStyle,
+    borderRadius: "27.5px",
+    border: "1px solid #bbc2d0",
+    fontSize: "16px",
+    fontWeight: 500,
+    letterSpacing: "1px",
+    color: "#34495e",
+  };
+
+  const downloadPdfBtnStyle: React.CSSProperties = {
+    ...baseBtnStyle,
+    color: "white",
+    backgroundColor: "#3e7fff",
+    marginLeft: "16px",
+  };
+
+  useIntervalProgress(() => {
+    setPercentage(percentage + 10);
+  }, percentage < 90 ? 500 : null);
 
   React.useEffect(
     () => {
       if (shouldShow) {
-        setIsFetching(true);
-        Axios.get(
-          `https://lvr8qqubzk.execute-api.us-east-1.amazonaws.com/prod/get-pdf?pdf_url=${pdfURL}&title=${filename}`,
-          {
-            responseType: "blob",
-          }
-        )
-          .then(res => {
-            setPDFBinary(res.data);
-            setIsFetching(false);
-          })
-          .catch(_err => {
-            setLoadError(true);
-            setIsFetching(false);
-            onFailed();
-          });
+        dispatch(ActionCreators.startToLoadingFetchPDF());
+        if (!bestPdf) {
+          handleGetBestPdf();
+        } else if (bestPdf && bestPdf.hasBest) {
+          setIsFetching(true);
+          Axios.get(
+            `https://lvr8qqubzk.execute-api.us-east-1.amazonaws.com/prod/get-pdf?pdf_url=${
+              bestPdf.url
+            }&title=${filename}`,
+            {
+              responseType: "blob",
+            }
+          )
+            .then(res => {
+              setPDFBinary(res.data);
+              dispatch(ActionCreators.endToLoadingFetchPDF());
+              setIsFetching(false);
+            })
+            .catch(_err => {
+              setLoadError(true);
+              dispatch(ActionCreators.endToLoadingFetchPDF());
+              setIsFetching(false);
+              onFailed();
+            });
+        } else if (bestPdf && !bestPdf.hasBest) {
+          setPDFBinary(null);
+          dispatch(ActionCreators.endToLoadingFetchPDF());
+          setIsFetching(false);
+        }
       }
     },
-    [pdfURL]
+    [bestPdf]
   );
 
   const getContent = () => {
@@ -66,12 +131,12 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
 
     if (extend) {
       return Array.from(new Array(pageCountToShow), (_el, i) => (
-        <Page pdf={PDFObject} width={792} key={i} pageNumber={i + 1} />
+        <Page pdf={PDFObject} width={996} margin={"0 auto"} key={i} pageNumber={i + 1} />
       ));
     } else {
       return (
         <>
-          <Page pdf={PDFObject} width={792} pageNumber={1} />
+          <Page pdf={PDFObject} width={996} margin={"0 auto"} pageNumber={1} />
         </>
       );
     }
@@ -79,21 +144,23 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
 
   if (isFetching) {
     return (
-      <div className={styles.loadingContainer}>
-        <ArticleSpinner />
+      <div className={styles.loadingContainerWrapper}>
+        <div className={styles.loadingContainer}>
+          <CircularProgress size={100} thickness={2} color="inherit" variant="static" value={percentage} />
+        </div>
       </div>
     );
   }
 
-  if (shouldShow && PDFBinary) {
+  if (shouldShow && PDFBinary && bestPdf && bestPdf.hasBest) {
     return (
-      <div ref={wrapperNode}>
+      <div ref={wrapperNode} className={styles.contentWrapper}>
         <Document
           file={PDFBinary}
           error={null}
           loading={
             <div className={styles.loadingContainer}>
-              <ArticleSpinner />
+              <CircularProgress size={100} thickness={2} color="inherit" />
             </div>
           }
           onLoadSuccess={(pdf: any) => {
@@ -107,49 +174,52 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
           {getContent()}
         </Document>
 
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "16px", marginBottom: "65px" }}>
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
           {succeedToLoad && (
             <>
-              <ScinapseButton
-                gaCategory="PDF viewer"
-                gaAction={actionTag}
-                style={{ ...baseBtnStyle, backgroundColor: "#3e7fff" }}
-                content={extend ? "View Less" : "View More"}
-                isLoading={!succeedToLoad && !hadErrorToLoad}
-                disabled={!succeedToLoad}
-                onClick={async () => {
-                  if (!extend && (await shouldBlockToSignUp("pdfViewer", "viewMorePDF"))) {
-                    return;
+              {extend ? (
+                <ScinapseButton
+                  gaCategory="PDF viewer"
+                  gaAction="download PDF"
+                  style={downloadPdfBtnStyle}
+                  target="_blank"
+                  href={bestPdf.url}
+                  content={
+                    <span className={styles.downloadBtnWrapper}>
+                      <Icon icon="DOWNLOAD" className={styles.downloadIcon} /> Download PDF
+                    </span>
                   }
-                  trackClickButton(actionTag, props.paperId);
-                  setExtend(!extend);
-                  if (extend && wrapperNode.current) {
-                    wrapperNode.current.scrollIntoView();
+                  onClick={async e => {
+                    if (await shouldBlockToSignUp("pdfViewer", "downloadPDF")) {
+                      e.preventDefault();
+                      return;
+                    }
+                    trackClickButton("downloadPdf", props.paperId);
+                  }}
+                  isExternalLink
+                  downloadAttr
+                />
+              ) : (
+                <ScinapseButton
+                  gaCategory="PDF viewer"
+                  gaAction={actionTag}
+                  style={readAllBtnStyle}
+                  content={
+                    <span>
+                      READ ALL <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
+                    </span>
                   }
-                }}
-              />
-              <ScinapseButton
-                gaCategory="PDF viewer"
-                gaAction="download PDF"
-                style={{
-                  ...baseBtnStyle,
-                  color: "#3e7fff",
-                  border: "1px solid #3e7fff",
-                  marginLeft: "16px",
-                }}
-                target="_blank"
-                href={pdfURL}
-                content="Download PDF"
-                onClick={async e => {
-                  if (await shouldBlockToSignUp("pdfViewer", "downloadPDF")) {
-                    e.preventDefault();
-                    return;
-                  }
-                  trackClickButton("downloadPdf", props.paperId);
-                }}
-                isExternalLink
-                downloadAttr
-              />
+                  isLoading={!succeedToLoad && !hadErrorToLoad}
+                  disabled={!succeedToLoad}
+                  onClick={async () => {
+                    if (await shouldBlockToSignUp("pdfViewer", "viewMorePDF")) {
+                      return;
+                    }
+                    trackClickButton(actionTag, props.paperId);
+                    setExtend(!extend);
+                  }}
+                />
+              )}
             </>
           )}
         </div>

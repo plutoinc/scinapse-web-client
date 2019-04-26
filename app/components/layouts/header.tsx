@@ -30,6 +30,8 @@ import { CurrentUser } from "../../model/currentUser";
 import { FilterObject } from "../../helpers/papersQueryFormatter";
 import { userCollectionSchema } from "../../model/collection";
 import { getCollections } from "../collections/actions";
+import { getMemoizedPaper } from "../../containers/paperShow/select";
+import ResearchHistory from "../researchHistory";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -44,6 +46,7 @@ function mapStateToProps(state: AppState) {
     articleSearchState: state.articleSearch,
     authorSearchState: state.authorSearch,
     myCollectionsState: state.myCollections,
+    paper: getMemoizedPaper(state),
     userCollections: denormalize(state.myCollections.collectionIds, [userCollectionSchema], state.entities),
   };
 }
@@ -337,12 +340,15 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private getUserDropdown = () => {
-    const { currentUserState, myCollectionsState } = this.props;
+    const { currentUserState, myCollectionsState, paper } = this.props;
 
     const firstCharacterOfUsername = currentUserState.firstName.slice(0, 1).toUpperCase();
 
     return (
       <div className={styles.rightBox}>
+        <div className={styles.historyBtnWrapper}>
+          <ResearchHistory paper={paper} />
+        </div>
         <Link
           className={styles.externalCollectionButton}
           onClick={() => {

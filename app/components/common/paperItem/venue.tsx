@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import * as format from "date-fns/format";
+import * as classNames from "classnames";
 import Tooltip from "@material-ui/core/Tooltip";
 import { Journal } from "../../../model/journal";
 import { withStyles } from "../../../helpers/withStylesHelper";
@@ -8,12 +9,15 @@ import Icon from "../../../icons";
 import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { ConferenceInstance } from "../../../model/conferenceInstance";
+import DoiInPaperShow from "../../paperShow/components/doiInPaperShow";
 const styles = require("./venueAndAuthors.scss");
 
 interface PaperItemVenueProps {
   journal: Journal | null;
+  paperId: number;
   conferenceInstance: ConferenceInstance | null;
   publishedDate: string | null;
+  doi: string;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea?: Scinapse.ActionTicket.ActionArea;
   readOnly?: boolean;
@@ -22,8 +26,10 @@ interface PaperItemVenueProps {
 
 const PaperItemVenue = ({
   journal,
+  paperId,
   conferenceInstance,
   publishedDate,
+  doi,
   style,
   readOnly,
   pageType,
@@ -71,8 +77,17 @@ const PaperItemVenue = ({
     </span>
   ) : null;
 
+  const isPaperShow = pageType === "paperShow";
+  const isPaperDescription = actionArea === "paperDescription";
+
   return (
-    <div style={style} className={styles.venue}>
+    <div
+      style={style}
+      className={classNames({
+        [styles.venue]: true,
+        [`${styles.venue} ${styles.margin}`]: isPaperShow && isPaperDescription,
+      })}
+    >
       <Icon icon="JOURNAL" />
 
       <div className={styles.journalText}>
@@ -96,6 +111,7 @@ const PaperItemVenue = ({
             </span>
           </span>
         ) : null}
+        {isPaperShow && isPaperDescription ? <DoiInPaperShow doi={doi} paperId={paperId} /> : null}
       </div>
     </div>
   );

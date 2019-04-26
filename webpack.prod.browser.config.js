@@ -16,6 +16,7 @@ module.exports = {
   optimization: {
     splitChunks: {
       chunks: "all",
+      maxSize: 250000,
     },
     minimizer: [
       new TerserPlugin({
