@@ -39,6 +39,7 @@ declare namespace Scinapse {
       | "query"
       | "downloadPdf"
       | "source"
+      | "viewFullText"
       | "viewMorePDF"
       | "viewLessPDF"
       | "addToCollection"
