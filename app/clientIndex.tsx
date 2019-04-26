@@ -14,10 +14,24 @@ if (!EnvChecker.isOnServer()) {
         }
         navigator.serviceWorker
           .register(destination)
-          .then(registration => {
-            console.log("SW registered: ", registration);
-            console.log(registration.pushManager);
-            registration.pushManager.subscribe({ userVisibleOnly: true });
+          .then(reg => {
+            if (reg.installing) {
+              console.log("Service worker installing");
+            } else if (reg.waiting) {
+              console.log("Service worker installed");
+            } else if (reg.active) {
+              console.log("Service worker active");
+              // reg.pushManager
+              //   .subscribe({ userVisibleOnly: true })
+              //   .then(() => {
+              //     console.log("go PUSH");
+              //   })
+              //   .catch(err => {
+              //     console.log("Failed to get permission to notification");
+              //     console.error(err);
+              //     console.log(err.message);
+              //   });
+            }
           })
           .catch(registrationError => {
             console.log("SW registration failed: ", registrationError);

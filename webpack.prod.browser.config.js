@@ -3,6 +3,7 @@ const webpack = require("webpack");
 const LoadablePlugin = require("@loadable/webpack-plugin");
 const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const WorkboxPlugin = require("workbox-webpack-plugin");
 // const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = {
@@ -90,6 +91,10 @@ module.exports = {
     // new BundleAnalyzerPlugin(),
     new LodashModuleReplacementPlugin(),
     new LoadablePlugin(),
+    new WorkboxPlugin.InjectManifest({
+      swSrc: "./app/sw.js",
+      swDest: "../server/sw.js",
+    }),
     new webpack.IgnorePlugin(/^\.\/pdf.worker.js$/),
   ],
 };
