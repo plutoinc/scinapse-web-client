@@ -366,7 +366,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { paper, paperShow } = this.props;
     const { isOnFullText, isOnCited, isOnRef, isLoadPDF, failedToLoadPDF } = this.state;
 
-    if (paper && !!getPDFLink(paper.urls) && !failedToLoadPDF) {
+    const hasBest = paper && !!paper.bestPdf && paper.bestPdf.hasBest;
+
+    if (paper && hasBest && !failedToLoadPDF) {
       return (
         <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
           <PaperShowRefCitedTab
@@ -375,7 +377,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             handleClickRef={this.scrollToReferencePapersNode}
             handleClickCited={this.scrollToCitedPapersNode}
             isLoadingOaCheck={paperShow.isOACheckingPDF}
-            hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
+            hasBestPdf={hasBest}
             isFetchingPdf={paperShow.isFetchingPdf}
             failedToLoadPDF={failedToLoadPDF}
             isFixed={isOnFullText || isOnRef || isOnCited}
