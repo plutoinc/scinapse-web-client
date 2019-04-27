@@ -64,9 +64,10 @@ const queryLoverTest: Test = {
 const completeBlockSignUpTest: Test = {
   name: "completeBlockSignUp",
   userGroup: [
-    { groupName: "control", weight: 1 },
-    { groupName: "week", weight: 2 },
-    { groupName: "dismiss", weight: 2 },
+    { groupName: "control", weight: 4 },
+    { groupName: "blackLayer", weight: 2 },
+    { groupName: "closeIconTop", weight: 1 },
+    { groupName: "closeIconBottom", weight: 1 },
   ],
 };
 

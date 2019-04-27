@@ -33,7 +33,7 @@ export async function checkBenefitExp({
       (matching === "device" && exp[type].deviceId === currentDeviceId))
   ) {
     const nextCount = exp[type].count + 1;
-    const shouldBlock = nextCount > maxCount && !exp[type].shouldAvoidBlock;
+    const shouldBlock = nextCount >= maxCount;
     const newExp = {
       ...exp,
       [type]: {
