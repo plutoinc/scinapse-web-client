@@ -13,7 +13,7 @@ package:
 functions:
   render:
     handler: ${file(./env/${opt:stage}.yml):HANDLER}
-    memorySize: 2048
+    memorySize: 3008
     timeout: 60
     package:
       artifact: dist.zip
