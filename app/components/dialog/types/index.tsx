@@ -3,7 +3,6 @@ import { Dispatch } from "react-redux";
 import { DialogState } from "../reducer";
 import { CurrentUser } from "../../../model/currentUser";
 import { Collection } from "../../../model/collection";
-import { ArticleSearchState } from "../../articleSearch/records";
 
 export interface DialogContainerProps
   extends Readonly<{
@@ -11,6 +10,5 @@ export interface DialogContainerProps
       myCollections: Collection[];
       currentUser: CurrentUser;
       dispatch: Dispatch<any>;
-      articleSearch: ArticleSearchState;
     }>,
     RouteComponentProps<null> {}

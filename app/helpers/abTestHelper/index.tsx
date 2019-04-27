@@ -62,8 +62,6 @@ export async function getBlockedValueForQueryLoverTest(
 
   const queryLoverCount = currentSearchCount * currentSessionCount;
 
-  console.log(queryLoverCount);
-
   switch (userGroupName) {
     case "control":
       blockedCount = null;
