@@ -13,7 +13,6 @@ const styles = require("./authContextText.scss");
 interface AuthContextTextProps {
   dispatch: Dispatch<any>;
   userActionType?: Scinapse.ActionTicket.ActionTagType;
-  query?: string;
 }
 
 export const ContextText: React.FunctionComponent<{

@@ -140,7 +140,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
 
   return (
     <>
-      <AuthContextText dispatch={props.dispatch} userActionType={props.userActionType} query={props.query} />
+      <AuthContextText dispatch={props.dispatch} userActionType={props.userActionType} />
       <div className={s.authContainer}>
         <AuthGuideContext userActionType={props.userActionType} />
         <div className={s.authFormWrapper}>
