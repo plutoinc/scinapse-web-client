@@ -1,20 +1,25 @@
 import * as React from "react";
 import { withStyles } from "../../helpers/withStylesHelper";
-import PdfSourceButton from "../../components/paperShow/components/pdfSourceButton";
 import FullTextDialog from "./components/fullTextDialog";
 import PaperShowCollectionControlButton from "../paperShowCollectionControlButton";
-import ActionTicketManager from "../../helpers/actionTicketManager";
 import CiteBox from "./components/citeBox";
 import { Paper } from "../../model/paper";
-import Icon from "../../icons";
-import { getPDFLink } from "../../helpers/getPDFLink";
 import { CurrentUser } from "../../model/currentUser";
-import { blockUnverifiedUser, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
+import SourceButton from "../../components/paperShow/components/sourceButton";
+import ViewFullTextBtn from "../../components/paperShow/components/viewFullTextBtn";
+import FullTextBtn from "./components/fullTextRequestBtn";
+
 const s = require("./actionBar.scss");
 
 interface PaperShowActionBarProps {
   paper: Paper | null;
+  hasBestPdf: boolean;
+  isFetcingPDF: boolean;
+  failedToLoadPDF: boolean;
+  showFullText: boolean;
+  isLoadingOaCheck: boolean;
   currentUser: CurrentUser;
+  handleClickFullText: () => void;
 }
 
 const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = props => {
@@ -22,47 +27,32 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
 
   if (!props.paper) return null;
 
-  const pdfSource = getPDFLink(props.paper.urls);
   const hasSource = props.paper.urls.length > 0;
 
   return (
     <div className={s.actionBar}>
       <div className={s.actions}>
         <div className={s.leftSide}>
-          {hasSource && (
+          {!props.hasBestPdf || props.failedToLoadPDF ? (
             <div className={s.actionItem}>
-              <PdfSourceButton paper={props.paper} />
+              <FullTextBtn
+                isLoadingOaCheck={props.isLoadingOaCheck}
+                paperId={props.paper!.id}
+                handleSetIsOpen={setIsOpen}
+              />
+            </div>
+          ) : (
+            <div className={s.actionItem}>
+              <ViewFullTextBtn
+                paperId={props.paper.id}
+                handleClickFullText={props.handleClickFullText}
+                isLoadingOaCheck={props.isLoadingOaCheck}
+              />
             </div>
           )}
-          {!pdfSource && (
+          {hasSource && (
             <div className={s.actionItem}>
-              <button
-                onClick={async () => {
-                  const isBlocked = await blockUnverifiedUser({
-                    authLevel: AUTH_LEVEL.VERIFIED,
-                    actionArea: "paperDescription",
-                    actionLabel: "clickRequestFullPaper",
-                  });
-
-                  console.log(isBlocked);
-
-                  if (!isBlocked) {
-                    setIsOpen(true);
-                  }
-
-                  ActionTicketManager.trackTicket({
-                    pageType: "paperShow",
-                    actionType: "fire",
-                    actionArea: "paperDescription",
-                    actionTag: "clickRequestFullTextBtn",
-                    actionLabel: String(props.paper!.id),
-                  });
-                }}
-                className={s.fullTextBtn}
-              >
-                <Icon icon="SEND" className={s.sendIcon} />
-                Request Full-text
-              </button>
+              <SourceButton paper={props.paper} showFullText={props.hasBestPdf} />
             </div>
           )}
           <div className={s.actionItem}>

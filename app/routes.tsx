@@ -181,14 +181,18 @@ const Header = loadable(() => import("./components/layouts/header"));
 @withStyles<typeof RootRoutes>(styles)
 class RootRoutes extends React.PureComponent<RootRoutesProps> {
   public render() {
-    const { location } = this.props;
+    const { location, configuration } = this.props;
+
+    const style = {
+      display: !configuration.renderedAtClient ? "none" : "block",
+    };
 
     return (
       <div>
         {this.getDefaultHelmet()}
         <Header />
         {this.getLoadingComponent()}
-        <div>
+        <div style={style}>
           <Switch location={location}>
             {routesMap.map(route => <Route {...route} key={route.path || "errorPage"} />)}
           </Switch>

@@ -55,10 +55,10 @@ button {
 }
 
 .container {
-  width: 1200px;
   margin: 0 auto;
   margin-top: $header-height;
   display: flex;
+  flex-direction: column;
 }
 
 .paperShow-Content {
@@ -67,7 +67,7 @@ button {
 
 article.paperShow {
   width: $paper-show-width;
-  margin-right: 24px;
+  margin: 0 auto;
   font-size: 16px;
   color: $black1;
   height: fit-content;
@@ -90,11 +90,13 @@ article.paperShow {
   }
 
   .paperTitle {
-    margin-top: 32px;
+    max-width: 792px;
+    font-family: Georgia;
+    font-size: 30px;
+    line-height: 1.4;
     color: $black1;
-    font-size: 28px;
-    font-weight: 700;
-    line-height: 1.3;
+    margin-top: 24px;
+    margin-bottom: 16px;
   }
 
   .paperInfo {
@@ -109,12 +111,16 @@ article.paperShow {
   .paperContent {
     line-height: 1.5;
     color: $black1;
+    margin-bottom: 80px;
+
     .fos {
       margin-top: 16px;
     }
   }
 
   .otherPapers {
+    margin-top: 24px;
+
     .paperItem + .paperItem {
       margin-top: 12px;
     }
@@ -124,12 +130,11 @@ article.paperShow {
       }
     }
   }
-
-  .citedBy {
-    margin-top: 80px;
-  }
 }
 
+.citedBy {
+  margin-top: 40px;
+}
 .paperContentBlockHeaderTabsHeight {
   height: 69px;
 }
@@ -172,10 +177,57 @@ article.paperShow {
 .refCitedTabWrapper {
   height: $ref-cited-bar-height;
   padding: $ref-cited-bar-padding;
-  padding-top: $navbar_height;
   margin-top: -$navbar_height;
   box-sizing: content-box;
-  margin-bottom: 24px;
+  margin-bottom: 7px;
+}
+
+.goBackBtn {
+  font-size: 14px;
+  width: 200px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-top: 24px;
+  color: $gray5;
+  cursor: pointer;
+
+  .backIcon {
+    width: 18px;
+    svg {
+      width: 18px;
+      height: 16px;
+      padding-top: 6px;
+      margin-right: 4px;
+    }
+  }
+
+  &:hover {
+    color: $gray6;
+  }
+}
+
+.sectionTitle {
+  font-size: 21px;
+  font-weight: bold;
+  color: $black1;
+}
+
+.sectionCount {
+  font-family: Roboto;
+  font-size: 21px;
+  color: $main_blue0;
+  margin-left: 12px;
+}
+
+.sectionDivider {
+  width: 100%;
+  height: 80px;
+  background-color: $gray8;
+}
+
+.footerWrapper {
+  background-color: $gray8;
+  height: 140px;
 }
 
 // RegularDisplay (1024~1200)
@@ -185,8 +237,6 @@ article.paperShow {
     margin-right: $container-margin;
 
     article.paperShow {
-      width: $regular-display-paper-show-width;
-
       .paperInfo {
         display: block;
 
@@ -213,8 +263,6 @@ article.paperShow {
 // SmallDisplay (768~1024)
 @media (max-width: $tablet_width) {
   .container {
-    width: $mobile-paper-show-width;
-
     article.paperShow {
       width: calc(100vw - 24px * 2);
     }

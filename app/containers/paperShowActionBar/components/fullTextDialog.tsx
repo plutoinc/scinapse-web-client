@@ -87,15 +87,12 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
   );
 
   return (
-    <Dialog
-      open={props.isOpen}
-      onClose={props.onClose}
-      classes={{
-        paper: s.dialogPaper,
-      }}
-    >
+    <Dialog open={props.isOpen} onClose={props.onClose} classes={{ paper: s.dialogPaper }}>
       <div className={s.title}>Request Full-text</div>
-      <div className={s.subtitle}>We will send you a checked paper by sending a request to the authors instead.</div>
+      <div className={s.subtitle}>
+        This is not automated. We’re trying to contact authors when many requests are accepted.<br />
+        The notification will be sent when full-text is updated.
+      </div>
 
       <Formik
         initialValues={{ email, message: "" }}
@@ -130,7 +127,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
             />
             <div className={s.btnWrapper}>
               <button className={s.cancelBtn} type="button" onClick={props.onClose}>
-                cancel
+                Cancel
               </button>
               <button disabled={isLoading} className={s.submitBtn} type="submit">
                 <Icon icon="SEND" className={s.sendIcon} />

@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const LoadablePlugin = require("@loadable/webpack-plugin");
+const WorkboxPlugin = require("workbox-webpack-plugin");
 
 module.exports = {
   mode: "production",
@@ -77,5 +78,12 @@ module.exports = {
       },
     ],
   },
-  plugins: [new webpack.IgnorePlugin(/^\.\/pdf.worker.js$/), new LoadablePlugin()],
+  plugins: [
+    new webpack.IgnorePlugin(/^\.\/pdf.worker.js$/),
+    new WorkboxPlugin.InjectManifest({
+      swSrc: "./app/sw.js",
+      swDest: "../server/sw.js",
+    }),
+    new LoadablePlugin(),
+  ],
 };

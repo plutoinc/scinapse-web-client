@@ -39,6 +39,7 @@ declare namespace Scinapse {
       | "query"
       | "downloadPdf"
       | "source"
+      | "viewFullText"
       | "viewMorePDF"
       | "viewLessPDF"
       | "addToCollection"
@@ -82,6 +83,7 @@ declare namespace Scinapse {
       | "blockUnsignedUser"
       | "blockUnverifiedUser"
       | "openSignUp"
+      | "addToBookmark"
       | "";
 
     type ActionArea =
@@ -114,6 +116,7 @@ declare namespace Scinapse {
       | "nextPaper"
       | "noPaperNotiPage"
       | "abstract"
+      | "footer"
       | "";
 
     type PageType =
