@@ -62,6 +62,8 @@ export async function getBlockedValueForQueryLoverTest(
 
   const queryLoverCount = currentSearchCount * currentSessionCount;
 
+  console.log(queryLoverCount);
+
   switch (userGroupName) {
     case "control":
       blockedCount = null;
@@ -80,7 +82,7 @@ export async function getBlockedValueForQueryLoverTest(
       break;
   }
 
-  if (blockedCount && queryLoverCount <= blockedCount) {
+  if (blockedCount && (queryLoverCount < blockedCount || queryLoverCount >= blockedCount)) {
     return checkBenefitExp({
       type: "queryLover",
       matching: "session",
