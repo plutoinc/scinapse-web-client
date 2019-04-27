@@ -23,7 +23,7 @@ import { LayoutState, UserDevice } from "../../layouts/records";
 import { getCurrentPageType } from "../../locationListener";
 import { handleInputKeydown } from "./helpers/handleInputKeydown";
 import { getBlockedValueForQueryLoverTest, getUserGroupName } from "../../../helpers/abTestHelper";
-import { ABTestType } from "../../../constants/abTest";
+import { QUERY_LOVER_TEST_NAME } from "../../../constants/abTestGlobalValue";
 const s = require("./searchQueryInput.scss");
 
 interface SearchQueryInputProps extends RouteComponentProps<any> {
@@ -125,8 +125,7 @@ const SearchQueryInput: React.FunctionComponent<
       });
     }
 
-    const testName: ABTestType = "queryLover";
-    const userGroupName: string = getUserGroupName(testName) || "";
+    const userGroupName: string = getUserGroupName(QUERY_LOVER_TEST_NAME) || "";
 
     const isBlocked = await getBlockedValueForQueryLoverTest(
       userGroupName,

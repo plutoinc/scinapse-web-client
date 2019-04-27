@@ -7,8 +7,8 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
 import actionTicketManager from "../../../helpers/actionTicketManager";
 import { getUserGroupName, getBlockedValueForPaperFromSearchTest } from "../../../helpers/abTestHelper";
-import { ABTestType } from "../../../constants/abTest";
 import { getCurrentPageType } from "../../locationListener";
+import { PAPER_FROM_SEARCH_TEST_NAME } from "../../../constants/abTestGlobalValue";
 const styles = require("./title.scss");
 
 export interface TitleProps extends RouteComponentProps<any> {
@@ -67,8 +67,7 @@ class Title extends React.PureComponent<TitleProps, {}> {
 
     e.preventDefault();
 
-    const testName: ABTestType = "paperFromSearch";
-    const userGroupName: string = getUserGroupName(testName) || "";
+    const userGroupName: string = getUserGroupName(PAPER_FROM_SEARCH_TEST_NAME) || "";
     const currentArea = getCurrentPageType();
 
     if (currentArea === "searchResult") {

@@ -3,10 +3,26 @@ import * as Cookies from "js-cookie";
 import { ABTestType, BenefitExpValue, BENEFIT_EXPERIMENT_KEY } from "../../constants/abTest";
 import { checkBenefitExp } from "../checkBenefitExpCount";
 import { SESSION_COUNT_KEY } from "../../constants/actionTicket";
+import { controlSignUpContext, positiveSignUpContext } from "../../components/auth/authContextText/constants";
+import { ContextText } from "../../components/auth/authContextText";
 
 export function getUserGroupName(testName: ABTestType) {
   const getRandomUserName = Cookies.get(testName);
   return getRandomUserName;
+}
+
+export function getContextValueSignUpContextTest(
+  userGroupName: string,
+  userActionType: Scinapse.ActionTicket.ActionTagType
+) {
+  switch (userGroupName) {
+    case "control":
+      return <ContextText subText={controlSignUpContext[userActionType]} />;
+    case "positive":
+      return <ContextText subText={positiveSignUpContext[userActionType]} />;
+    default:
+      return null;
+  }
 }
 
 export async function getBlockedValueForPaperFromSearchTest(

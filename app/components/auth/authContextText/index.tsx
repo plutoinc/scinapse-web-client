@@ -1,8 +1,7 @@
 import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import { ABTestType } from "../../../constants/abTest";
-import { getUserGroupName } from "../../../helpers/abTestHelper";
-import { controlSignUpContext, positiveSignUpContext } from "./constants";
+import { getUserGroupName, getContextValueSignUpContextTest } from "../../../helpers/abTestHelper";
+import { SIGN_UP_CONTEXT_TEST_NAME } from "../../../constants/abTestGlobalValue";
 const styles = require("./authContextText.scss");
 
 interface AuthContextTextProps {
@@ -10,7 +9,7 @@ interface AuthContextTextProps {
   query?: string;
 }
 
-const ContextText: React.FunctionComponent<{
+export const ContextText: React.FunctionComponent<{
   subText: string;
 }> = React.memo(props => {
   const { subText } = props;
@@ -27,18 +26,9 @@ const ContextText: React.FunctionComponent<{
 const ContextTextByActionType: React.FunctionComponent<AuthContextTextProps> = React.memo(props => {
   const { userActionType } = props;
 
-  const testName: ABTestType = "signUpContextText";
+  const userGroup: string = getUserGroupName(SIGN_UP_CONTEXT_TEST_NAME) || "";
 
-  const userGroup: string = getUserGroupName(testName) || "";
-
-  switch (userGroup) {
-    case "control":
-      return !!userActionType ? <ContextText subText={controlSignUpContext[userActionType]} /> : null;
-    case "positive":
-      return !!userActionType ? <ContextText subText={positiveSignUpContext[userActionType]} /> : null;
-    default:
-      return null;
-  }
+  return userActionType ? getContextValueSignUpContextTest(userGroup, userActionType) : null;
 });
 
 const AuthContextText: React.FunctionComponent<AuthContextTextProps> = props => {

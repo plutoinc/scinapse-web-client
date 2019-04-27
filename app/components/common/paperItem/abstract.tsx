@@ -2,12 +2,12 @@ import * as React from "react";
 import { escapeRegExp } from "lodash";
 import HighLightedContent from "../highLightedContent";
 import { withStyles } from "../../../helpers/withStylesHelper";
-const styles = require("./abstract.scss");
 import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { ABTestType } from "../../../constants/abTest";
 import { getUserGroupName, getBlockedValueForPaperFromSearchTest } from "../../../helpers/abTestHelper";
 import { getCurrentPageType } from "../../locationListener/index";
+import { PAPER_FROM_SEARCH_TEST_NAME } from "../../../constants/abTestGlobalValue";
+const styles = require("./abstract.scss");
 
 const MAX_LENGTH_OF_ABSTRACT = 500;
 
@@ -72,8 +72,7 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
     const { pageType, actionArea, paperId } = this.props;
     const { isExtendContent } = this.state;
 
-    const testName: ABTestType = "paperFromSearch";
-    const userGroupName: string = getUserGroupName(testName) || "";
+    const userGroupName: string = getUserGroupName(PAPER_FROM_SEARCH_TEST_NAME) || "";
     const currentArea = getCurrentPageType();
 
     if (!isExtendContent && currentArea === "searchResult") {
