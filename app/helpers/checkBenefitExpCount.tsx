@@ -33,7 +33,6 @@ export async function checkBenefitExp({
   matching,
   userActionType,
   actionArea,
-  actionLabel,
   expName,
 }: CheckBenefitExpCount): Promise<boolean> {
   const exp: BenefitExpValue | undefined = store.get(BENEFIT_EXPERIMENT_KEY);
@@ -64,7 +63,7 @@ export async function checkBenefitExp({
         authLevel: AUTH_LEVEL.VERIFIED,
         userActionType,
         actionArea,
-        actionLabel: actionLabel || String(exp[type].count),
+        actionLabel: expName,
         expName,
         isBlocked: getBlockedValueForCompleteBlockSignUpTest(),
       });

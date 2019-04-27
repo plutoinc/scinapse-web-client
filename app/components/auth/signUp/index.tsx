@@ -36,7 +36,7 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
         actionType: "fire",
         actionArea: authContext.actionArea,
         actionTag: "signUp",
-        actionLabel: authContext.actionLabel,
+        actionLabel: authContext.expName ? authContext.expName : authContext.actionLabel,
         expName: authContext.expName,
       });
     }
@@ -64,7 +64,7 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
           actionType: "fire",
           actionArea: authContext.actionArea,
           actionTag: "signUp",
-          actionLabel: authContext.actionLabel,
+          actionLabel: authContext.expName ? authContext.expName : authContext.actionLabel,
           expName: authContext.expName,
         });
       } else if (params.token.vendor === "ORCID") {

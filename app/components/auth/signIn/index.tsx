@@ -118,7 +118,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
           actionType: "fire",
           actionArea: authContext.actionArea,
           actionTag: "signIn",
-          actionLabel: authContext.actionLabel,
+          actionLabel: authContext.expName ? authContext.expName : authContext.actionLabel,
           expName: authContext.expName,
         });
       }
