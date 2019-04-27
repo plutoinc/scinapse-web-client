@@ -2,6 +2,7 @@ import * as store from "store";
 import { BenefitExpValue, BENEFIT_EXPERIMENT_KEY, ABTestType, BenefitExpType } from "../constants/abTest";
 import { SESSION_ID_KEY, DEVICE_ID_KEY } from "../constants/actionTicket";
 import { blockUnverifiedUser, AUTH_LEVEL } from "./checkAuthDialog";
+import { COMPLETE_BLOCK_SIGN_UP_TEST_USER_GROUP } from "../constants/abTestGlobalValue";
 
 interface CheckBenefitExpCount {
   type: ABTestType | BenefitExpType;
@@ -11,6 +12,19 @@ interface CheckBenefitExpCount {
   actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType;
   expName: ABTestType | BenefitExpType;
   actionLabel?: string;
+}
+
+function getBlockedValueForCompleteBlockSignUpTest() {
+  switch (COMPLETE_BLOCK_SIGN_UP_TEST_USER_GROUP) {
+    case "control":
+    case "closeIconTop":
+    case "closeIconBottom":
+      return true;
+    case "blackLayer":
+      return false;
+    default:
+      return true;
+  }
 }
 
 export async function checkBenefitExp({
@@ -52,7 +66,7 @@ export async function checkBenefitExp({
         actionArea,
         actionLabel: actionLabel || String(exp[type].count),
         expName,
-        isBlocked: true,
+        isBlocked: getBlockedValueForCompleteBlockSignUpTest(),
       });
     } else {
       store.set(BENEFIT_EXPERIMENT_KEY, newExp);

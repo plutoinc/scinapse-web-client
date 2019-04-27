@@ -40,6 +40,12 @@
   margin-left: 4px;
 }
 
+.dialogCloseBtnWrapper {
+  position: absolute;
+  bottom: 4px;
+  right: 12px;
+}
+
 @media (max-width: $mobile-width) {
   .fbIconWrapper {
     display: none;

@@ -24,6 +24,8 @@ import { AppState } from "../../../reducers";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import AuthContextText from "../authContextText";
 import useFBIsLoading from "../../../hooks/FBisLoadingHook";
+import { COMPLETE_BLOCK_SIGN_UP_TEST_USER_GROUP } from "../../../constants/abTestGlobalValue";
+import DialogCloseButton from "../authButton/dialogCloseButton";
 const s = require("./signIn.scss");
 
 declare var FB: any;
@@ -138,7 +140,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
 
   return (
     <>
-      <AuthContextText userActionType={props.userActionType} query={props.query} />
+      <AuthContextText dispatch={props.dispatch} userActionType={props.userActionType} query={props.query} />
       <div className={s.authContainer}>
         <AuthGuideContext userActionType={props.userActionType} />
         <div className={s.authFormWrapper}>
@@ -224,6 +226,11 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
               onClick={handleClickORCIDBtn}
             />
           </div>
+          {COMPLETE_BLOCK_SIGN_UP_TEST_USER_GROUP === "closeIconBottom" ? (
+            <div className={s.dialogCloseBtnWrapper}>
+              <DialogCloseButton dispatch={props.dispatch} />
+            </div>
+          ) : null}
         </div>
       </div>
     </>

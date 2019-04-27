@@ -20,6 +20,8 @@ import { signInWithSocial } from "../../../signIn/actions";
 import { AppState } from "../../../../../reducers";
 import ActionTicketManager from "../../../../../helpers/actionTicketManager";
 import useFBIsLoading from "../../../../../hooks/FBisLoadingHook";
+import { COMPLETE_BLOCK_SIGN_UP_TEST_USER_GROUP } from "../../../../../constants/abTestGlobalValue";
+import DialogCloseButton from "../../../authButton/dialogCloseButton";
 const s = require("./firstForm.scss");
 
 declare var FB: any;
@@ -108,7 +110,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
 
   return (
     <>
-      <AuthContextText userActionType={props.userActionType} query={props.query} />
+      <AuthContextText dispatch={dispatch} userActionType={props.userActionType} query={props.query} />
       <div className={s.authContainer}>
         <AuthGuideContext userActionType={props.userActionType} />
         <div className={s.authFormWrapper}>
@@ -172,6 +174,11 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
               onClick={handleClickORCIDBtn}
             />
           </div>
+          {COMPLETE_BLOCK_SIGN_UP_TEST_USER_GROUP === "closeIconBottom" ? (
+            <div className={s.dialogCloseBtnWrapper}>
+              <DialogCloseButton dispatch={props.dispatch} />
+            </div>
+          ) : null}
         </div>
       </div>
     </>
