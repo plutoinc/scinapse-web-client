@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Dispatch } from "react-redux";
+import { Dispatch, connect } from "react-redux";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { closeDialog } from "../../dialog/actions";
 import Icon from "../../../icons";
@@ -24,4 +24,4 @@ const DialogCloseButton: React.FunctionComponent<DialogCloseButtonProps> = props
   );
 };
 
-export default withStyles<typeof DialogCloseButton>(styles)(DialogCloseButton);
+export default connect()(withStyles<typeof DialogCloseButton>(styles)(DialogCloseButton));

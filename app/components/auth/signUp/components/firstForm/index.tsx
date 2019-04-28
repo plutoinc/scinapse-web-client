@@ -109,7 +109,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
 
   return (
     <>
-      <AuthContextText dispatch={dispatch} userActionType={props.userActionType} />
+      <AuthContextText userActionType={props.userActionType} />
       <div className={s.authContainer}>
         <AuthGuideContext userActionType={props.userActionType} />
         <div className={s.authFormWrapper}>
@@ -175,7 +175,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
           </div>
           {COMPLETE_BLOCK_SIGN_UP_TEST_USER_GROUP === "closeIconBottom" ? (
             <div className={s.dialogCloseBtnWrapper}>
-              <DialogCloseButton dispatch={props.dispatch} />
+              <DialogCloseButton />
             </div>
           ) : null}
         </div>
