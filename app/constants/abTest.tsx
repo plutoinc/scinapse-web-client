@@ -42,21 +42,25 @@ export const LIVE_TESTS: Test[] = [signUpContextTest, paperFromSearchTest, query
 
 function getRandomPool(): { [key: string]: string[] } {
   const randomPool: { [key: string]: string[] } = {};
+
   LIVE_TESTS.forEach(test => {
+    const testGroupWeightedPool: string[] = [];
     test.userGroup.forEach(group => {
-      const groupRandomPool: string[] = [];
       for (let i = 0; i < group.weight; i++) {
-        groupRandomPool.push(group.groupName);
+        testGroupWeightedPool.push(group.groupName);
       }
-      randomPool[test.name] = groupRandomPool;
     });
+
+    randomPool[test.name] = testGroupWeightedPool;
   });
+
   return randomPool;
 }
 
 const RANDOM_POOL = getRandomPool();
 
 export function getRandomUserGroup(testName: string): string {
-  const groupRandomPool = RANDOM_POOL[testName];
-  return groupRandomPool[Math.floor(Math.random() * groupRandomPool.length)];
+  console.log(RANDOM_POOL);
+  const testGroupWeightedPool = RANDOM_POOL[testName];
+  return testGroupWeightedPool[Math.floor(Math.random() * testGroupWeightedPool.length)];
 }
