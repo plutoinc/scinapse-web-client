@@ -6,6 +6,7 @@ import ScinapseButtonFactory, { ScinapseButtonType } from "../../common/scinapse
 import SourceURLPopover from "../../common/sourceURLPopover";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import Icon from "../../../icons";
+
 const styles = require("./pdfSourceButton.scss");
 
 interface SourceButtonProps {
@@ -44,63 +45,68 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
     return null;
   }
 
-  if (paper.urls.length > 0) {
-    const btnStyle: React.CSSProperties = {
-      height: "100%",
-      width: "36px",
-      borderLeft: "solid 1px #f1f3f6",
-      borderRight: "solid 1px #d8dde7",
-    };
-    const reverseBtnStyle: React.CSSProperties = { height: "100%", width: "36px", borderLeft: "solid 1px #6096ff" };
-    const Button = ScinapseButtonFactory(ScinapseButtonType.buttonWithArrow);
-    return (
-      <SourceURLPopover
-        buttonEl={
-          <div ref={sourceButton}>
-            <Button
-              isUpArrow={!isSourcePopoverOpen}
-              hasArrow={paper.urls.length > 1}
-              text={"View in Source"}
-              arrowIconClassName={styles.arrowIcon}
-              className={classNames({
-                [styles.downloadButton]: true,
-                [styles.reverseDownloadBtn]: !showFullText,
-              })}
-              textWrapperClassName={styles.sourceButtonTextWrapper}
-              linkProps={{
-                href: paper.urls[0].url,
-                target: "_blank",
-                rel: "noopener",
-                className: styles.linkClassName,
-                onClick: e => {
-                  e.preventDefault();
-                  handleClickSource();
-                  window.open(paper.urls[0].url, "_blank");
-                },
-              }}
-              dropdownBtnProps={{
-                onClick: () => {
-                  setIsSourcePopoverOpen(!isSourcePopoverOpen);
-                },
-                style: !showFullText ? reverseBtnStyle : btnStyle,
-                className: styles.dropdownBtn,
-              }}
-              leftIconNode={<Icon icon="EXTERNAL_SOURCE" className={styles.sourceIcon} />}
-            />
-          </div>
-        }
-        isOpen={isSourcePopoverOpen}
-        handleCloseFunc={handleCloseSourceDropdown}
-        anchorEl={sourceButton.current!}
-        paperSources={paper.urls}
-        pageType="paperShow"
-        paperId={paper.id}
-        actionArea="paperDescription"
-      />
-    );
+  if (!paper.doi && paper.urls.length === 0) {
+    // no source
+    return null;
   }
 
-  return null;
+  const sourceUrl = paper.doi ? `https://doi.org/${paper.doi}` : paper.urls[0].url;
+
+  const btnStyle: React.CSSProperties = {
+    height: "100%",
+    width: "36px",
+    borderLeft: "solid 1px #f1f3f6",
+    borderRight: "solid 1px #d8dde7",
+  };
+
+  const reverseBtnStyle: React.CSSProperties = { height: "100%", width: "36px", borderLeft: "solid 1px #6096ff" };
+  const Button = ScinapseButtonFactory(ScinapseButtonType.buttonWithArrow);
+
+  return (
+    <SourceURLPopover
+      buttonEl={
+        <div ref={sourceButton}>
+          <Button
+            isUpArrow={!isSourcePopoverOpen}
+            hasArrow={paper.urls.length > 0}
+            text={"View in Source"}
+            arrowIconClassName={styles.arrowIcon}
+            className={classNames({
+              [styles.downloadButton]: true,
+              [styles.reverseDownloadBtn]: !showFullText,
+            })}
+            textWrapperClassName={styles.sourceButtonTextWrapper}
+            linkProps={{
+              href: sourceUrl,
+              target: "_blank",
+              rel: "noopener",
+              className: styles.linkClassName,
+              onClick: e => {
+                e.preventDefault();
+                handleClickSource();
+                window.open(sourceUrl, "_blank");
+              },
+            }}
+            dropdownBtnProps={{
+              onClick: () => {
+                setIsSourcePopoverOpen(!isSourcePopoverOpen);
+              },
+              style: !showFullText ? reverseBtnStyle : btnStyle,
+              className: styles.dropdownBtn,
+            }}
+            leftIconNode={<Icon icon="EXTERNAL_SOURCE" className={styles.sourceIcon} />}
+          />
+        </div>
+      }
+      isOpen={isSourcePopoverOpen}
+      handleCloseFunc={handleCloseSourceDropdown}
+      anchorEl={sourceButton.current!}
+      paperSources={paper.urls}
+      pageType="paperShow"
+      paperId={paper.id}
+      actionArea="paperDescription"
+    />
+  );
 };
 
 export default withStyles<typeof SourceButton>(styles)(SourceButton);
