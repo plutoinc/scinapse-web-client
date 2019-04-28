@@ -75,7 +75,11 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
     return (
       <button
         onClick={() => {
-          blockUnverifiedUser({ authLevel: AUTH_LEVEL.VERIFIED, actionArea: "paperDescription", actionLabel: null });
+          blockUnverifiedUser({
+            authLevel: AUTH_LEVEL.VERIFIED,
+            actionArea: "paperDescription",
+            actionLabel: "addToCollection",
+          });
           ActionTicketManager.trackTicket({
             pageType: "paperShow",
             actionType: "fire",
