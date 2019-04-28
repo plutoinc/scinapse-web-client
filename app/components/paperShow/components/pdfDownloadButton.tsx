@@ -1,12 +1,13 @@
 import * as React from "react";
 import { Paper } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import { shouldBlockToSignUp } from "../../../helpers/shouldBlockToSignUp";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { trackEvent } from "../../../helpers/handleGA";
 import { getPDFLink } from "../../../helpers/getPDFLink";
 import Icon from "../../../icons";
 import SearchingPDFBtn from "./searchingPDFBtn";
+import { AUTH_LEVEL, blockUnverifiedUser } from "../../../helpers/checkAuthDialog";
+
 const styles = require("./pdfSourceButton.scss");
 
 interface PdfDownloadButtonProps {
@@ -59,10 +60,17 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
         rel="noopener"
         onClick={async e => {
           e.preventDefault();
-          const shouldBlock = await shouldBlockToSignUp("paperDescription", "downloadPDF");
-          if (shouldBlock) {
+
+          const isBlocked = await blockUnverifiedUser({
+            authLevel: AUTH_LEVEL.VERIFIED,
+            actionArea: "paperDescription",
+            actionLabel: "downloadPdf",
+          });
+
+          if (isBlocked) {
             return;
           }
+
           handleClickSource();
           window.open(pdfSourceRecord.url, "_blank");
         }}
