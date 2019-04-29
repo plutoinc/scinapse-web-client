@@ -4,6 +4,7 @@ import { getUserGroupName } from "../../../helpers/abTestHelper";
 import { COMPLETE_BLOCK_SIGN_UP_TEST_NAME, SIGN_UP_CONTEXT_TEST_NAME } from "../../../constants/abTestGlobalValue";
 import { controlSignUpContext, positiveSignUpContext } from "./constants";
 import DialogCloseButton from "../authButton/dialogCloseButton";
+
 const styles = require("./authContextText.scss");
 
 interface AuthContextTextProps {
@@ -33,15 +34,22 @@ const AuthContextText: React.FunctionComponent<AuthContextTextProps> = props => 
     return null;
   }
 
-  if (userGroup === "control") {
-    return <ContextText subText={controlSignUpContext[userActionType]} />;
+  let subText;
+  switch (userGroup) {
+    case "control":
+      subText = controlSignUpContext[userActionType];
+      break;
+    case "positive":
+      subText = positiveSignUpContext[userActionType];
+      break;
+    default:
   }
 
-  if (userGroup === "positive") {
-    return <ContextText subText={positiveSignUpContext[userActionType]} />;
+  if (!subText) {
+    return null;
   }
 
-  return null;
+  return <ContextText subText={subText} />;
 };
 
 export default withStyles<typeof AuthContextText>(styles)(AuthContextText);
