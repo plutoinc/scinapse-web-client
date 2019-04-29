@@ -174,12 +174,12 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
               onClick={handleClickORCIDBtn}
             />
           </div>
-          {getUserGroupName(COMPLETE_BLOCK_SIGN_UP_TEST_NAME) === "closeIconBottom" ? (
-            <div className={s.dialogCloseBtnWrapper}>
-              <DialogCloseButton />
-            </div>
-          ) : null}
         </div>
+        {getUserGroupName(COMPLETE_BLOCK_SIGN_UP_TEST_NAME) === "closeIconBottom" ? (
+          <div className={s.dialogCloseBtnWrapper}>
+            <DialogCloseButton />
+          </div>
+        ) : null}
       </div>
     </>
   );

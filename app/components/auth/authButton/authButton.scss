@@ -25,7 +25,10 @@
 }
 
 .dialogCloseButton {
-  margin-left: 12px;
+  position: absolute;
+  top: -24px;
+  right: 0;
+  cursor: pointer;
 }
 
 .dialogCloseIcon {

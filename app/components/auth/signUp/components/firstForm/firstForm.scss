@@ -42,8 +42,9 @@
 
 .dialogCloseBtnWrapper {
   position: absolute;
-  bottom: 4px;
+  bottom: -32px;
   right: 12px;
+  cursor: pointer;
 }
 
 @media (max-width: $mobile-width) {
