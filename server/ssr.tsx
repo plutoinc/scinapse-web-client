@@ -91,7 +91,7 @@ const ssr = async (req: express.Request, version: string) => {
 
   const renderedHTML = ReactDOMServer.renderToString(jsx);
   const scriptTags = extractor.getScriptTags();
-  // const linkTags = extractor.getLinkTags();
+  const linkTags = extractor.getLinkTags();
   // const styleTags = extractor.getStyleTags();
   const materialUICss = sheetsRegistry.toString();
   const cssArr = Array.from(css);
@@ -101,6 +101,7 @@ const ssr = async (req: express.Request, version: string) => {
 
   const html: string = await generateFullHTML({
     reactDom: renderedHTML,
+    linkTags,
     scriptTags,
     helmet,
     initialState: stringifiedInitialReduxState,

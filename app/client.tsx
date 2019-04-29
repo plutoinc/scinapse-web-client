@@ -15,8 +15,6 @@ import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
 import { AppState } from "./reducers";
 import { checkAuthStatus } from "./components/auth/actions";
-const { pdfjs } = require("react-pdf");
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 declare var Sentry: any;
 declare var FB: any;
 
@@ -44,6 +42,14 @@ class Main extends React.Component {
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
+
+    const head = document.getElementsByTagName("head")[0];
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.type = "text/css";
+    link.crossOrigin = "anonymous";
+    link.href = "https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css";
+    head.appendChild(link);
   }
 
   public render() {

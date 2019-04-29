@@ -9,9 +9,10 @@ import Icon from "../../icons";
 import { PaperPdf } from "../../model/paper";
 import { ActionCreators } from "../../actions/actionTypes";
 import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
-
-const { Document, Page } = require("react-pdf");
+const { Document, Page, pdfjs } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 interface PDFViewerProps {
   dispatch: Dispatch<any>;

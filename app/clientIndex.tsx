@@ -39,9 +39,9 @@ if (!EnvChecker.isOnServer()) {
       });
     }
   }
-
-  loadServiceWorker();
-
+  if (EnvChecker.isProdBrowser()) {
+    loadServiceWorker();
+  }
   // Prevent IE/Edge's Clicking SVG problem
   // https://stackoverflow.com/questions/38648307/add-blur-method-to-svg-elements-in-ie-edge
   if (typeof (SVGElement.prototype as any).blur === "undefined") {
