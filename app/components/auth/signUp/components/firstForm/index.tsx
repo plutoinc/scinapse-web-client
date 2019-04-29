@@ -20,8 +20,9 @@ import { signInWithSocial } from "../../../signIn/actions";
 import { AppState } from "../../../../../reducers";
 import ActionTicketManager from "../../../../../helpers/actionTicketManager";
 import useFBIsLoading from "../../../../../hooks/FBisLoadingHook";
-import { COMPLETE_BLOCK_SIGN_UP_TEST_USER_GROUP } from "../../../../../constants/abTestGlobalValue";
 import DialogCloseButton from "../../../authButton/dialogCloseButton";
+import { getUserGroupName } from "../../../../../helpers/abTestHelper";
+import { COMPLETE_BLOCK_SIGN_UP_TEST_NAME } from "../../../../../constants/abTestGlobalValue";
 const s = require("./firstForm.scss");
 
 declare var FB: any;
@@ -173,7 +174,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
               onClick={handleClickORCIDBtn}
             />
           </div>
-          {COMPLETE_BLOCK_SIGN_UP_TEST_USER_GROUP === "closeIconBottom" ? (
+          {getUserGroupName(COMPLETE_BLOCK_SIGN_UP_TEST_NAME) === "closeIconBottom" ? (
             <div className={s.dialogCloseBtnWrapper}>
               <DialogCloseButton />
             </div>

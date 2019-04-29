@@ -4,9 +4,10 @@ import HighLightedContent from "../highLightedContent";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { getUserGroupName, getBlockedValueForPaperFromSearchTest } from "../../../helpers/abTestHelper";
+import { getUserGroupName } from "../../../helpers/abTestHelper";
 import { getCurrentPageType } from "../../locationListener/index";
 import { PAPER_FROM_SEARCH_TEST_NAME } from "../../../constants/abTestGlobalValue";
+import { getBlockedValueForPaperFromSearchTest } from "../../../helpers/abTestHelper/paperFromSearchTestHelper";
 const styles = require("./abstract.scss");
 
 const MAX_LENGTH_OF_ABSTRACT = 500;

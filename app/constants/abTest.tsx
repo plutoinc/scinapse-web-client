@@ -1,4 +1,4 @@
-import { signUpContextTest, paperFromSearchTest, queryLoverTest, completeBlockSignUpTest } from "./abTestObject";
+import { completeBlockSignUpTest, paperFromSearchTest, queryLoverTest, signUpContextTest } from "./abTestObject";
 
 export interface UserGroup {
   groupName: string;

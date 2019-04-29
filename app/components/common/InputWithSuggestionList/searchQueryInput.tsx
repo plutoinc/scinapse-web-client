@@ -22,8 +22,9 @@ import { AppState } from "../../../reducers";
 import { LayoutState, UserDevice } from "../../layouts/records";
 import { getCurrentPageType } from "../../locationListener";
 import { handleInputKeydown } from "./helpers/handleInputKeydown";
-import { getBlockedValueForQueryLoverTest, getUserGroupName } from "../../../helpers/abTestHelper";
+import { getUserGroupName } from "../../../helpers/abTestHelper";
 import { QUERY_LOVER_TEST_NAME } from "../../../constants/abTestGlobalValue";
+import { getBlockedValueForQueryLoverTest } from "../../../helpers/abTestHelper/queryLoverTestHelper";
 const s = require("./searchQueryInput.scss");
 
 interface SearchQueryInputProps extends RouteComponentProps<any> {

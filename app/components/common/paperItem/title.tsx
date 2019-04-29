@@ -6,9 +6,10 @@ import { trackEvent } from "../../../helpers/handleGA";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
 import actionTicketManager from "../../../helpers/actionTicketManager";
-import { getUserGroupName, getBlockedValueForPaperFromSearchTest } from "../../../helpers/abTestHelper";
+import { getUserGroupName } from "../../../helpers/abTestHelper";
 import { getCurrentPageType } from "../../locationListener";
 import { PAPER_FROM_SEARCH_TEST_NAME } from "../../../constants/abTestGlobalValue";
+import { getBlockedValueForPaperFromSearchTest } from "../../../helpers/abTestHelper/paperFromSearchTestHelper";
 const styles = require("./title.scss");
 
 export interface TitleProps extends RouteComponentProps<any> {
