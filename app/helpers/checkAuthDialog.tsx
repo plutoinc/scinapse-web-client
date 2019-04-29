@@ -32,7 +32,7 @@ export async function blockUnverifiedUser(params: BlockByBenefitExpParams): Prom
       authContext: {
         pageType: getCurrentPageType(),
         actionArea: actionArea,
-        actionLabel: actionLabel,
+        actionLabel: expName ? expName : actionLabel,
         expName,
       },
       isBlocked,
@@ -42,7 +42,7 @@ export async function blockUnverifiedUser(params: BlockByBenefitExpParams): Prom
       actionType: "fire",
       actionArea: actionArea,
       actionTag: "blockUnsignedUser",
-      actionLabel: actionLabel,
+      actionLabel: expName ? expName : actionLabel,
       expName,
     });
     return true;

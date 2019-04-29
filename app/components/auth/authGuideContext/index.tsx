@@ -77,6 +77,7 @@ const GuideContentsByActionType: React.FunctionComponent<AuthGuideContextProps> 
           webpUrl={"https://assets.pluto.network/signup_modal/signup_query.webp"}
         />
       );
+    case "paperFromSearch":
     case "paperShow":
       return (
         <GuideContent
@@ -84,6 +85,33 @@ const GuideContentsByActionType: React.FunctionComponent<AuthGuideContextProps> 
           subText={""}
           imageUrl={"https://assets.pluto.network/signup_modal/signup_unlimited.jpg"}
           webpUrl={"https://assets.pluto.network/signup_modal/signup_unlimited.webp"}
+        />
+      );
+    case "queryLover":
+      return (
+        <GuideContent
+          mainText={"Researchers\nLove\nScinapse"}
+          subText={""}
+          imageUrl={"https://assets.pluto.network/signup_modal/signup_query.jpg"}
+          webpUrl={"https://assets.pluto.network/signup_modal/signup_query.webp"}
+        />
+      );
+    case "authorFromSearch":
+      return (
+        <GuideContent
+          mainText={"All\nAbout\nAuthors"}
+          subText={"from Scinapse Database"}
+          imageUrl={"https://assets.pluto.network/signup_modal/signup_query.jpg"}
+          webpUrl={"https://assets.pluto.network/signup_modal/signup_query.webp"}
+        />
+      );
+    case "nextPageFromSearch":
+      return (
+        <GuideContent
+          mainText={"Enjoy\nUnique\nSearch Result"}
+          subText={"from Scinapse Database"}
+          imageUrl={"https://assets.pluto.network/signup_modal/signup_query.jpg"}
+          webpUrl={"https://assets.pluto.network/signup_modal/signup_query.webp"}
         />
       );
     default:

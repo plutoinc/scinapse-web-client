@@ -25,7 +25,8 @@ const RequestFullTextBtn: React.FunctionComponent<{
         const isBlocked = await blockUnverifiedUser({
           authLevel: AUTH_LEVEL.VERIFIED,
           actionArea: "paperDescription",
-          actionLabel: "clickRequestFullPaper",
+          actionLabel: "clickRequestFullTextBtn",
+          userActionType: "clickRequestFullTextBtn",
         });
 
         if (!isBlocked) {
