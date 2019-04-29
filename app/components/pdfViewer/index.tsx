@@ -197,7 +197,8 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                     const isBlocked = await blockUnverifiedUser({
                       authLevel: AUTH_LEVEL.VERIFIED,
                       actionArea: "pdfViewer",
-                      actionLabel: "downloadPDF",
+                      actionLabel: "downloadPdf",
+                      userActionType: "downloadPdf",
                     });
 
                     if (isBlocked) {
@@ -226,6 +227,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                       authLevel: AUTH_LEVEL.VERIFIED,
                       actionArea: "pdfViewer",
                       actionLabel: actionTag,
+                      userActionType: actionTag,
                     });
 
                     if (isBlocked) {

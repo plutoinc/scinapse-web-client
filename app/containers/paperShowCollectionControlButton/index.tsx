@@ -79,6 +79,7 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
             authLevel: AUTH_LEVEL.VERIFIED,
             actionArea: "paperDescription",
             actionLabel: "addToCollection",
+            userActionType: "addToCollection",
           });
           ActionTicketManager.trackTicket({
             pageType: "paperShow",
@@ -495,6 +496,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       authLevel: AUTH_LEVEL.VERIFIED,
       actionArea: "paperDescription",
       actionLabel: "signInViaCollection",
+      userActionType: "signInViaCollection",
     });
 
     if (isBlocked) {

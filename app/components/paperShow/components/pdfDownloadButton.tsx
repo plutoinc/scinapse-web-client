@@ -65,6 +65,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
             authLevel: AUTH_LEVEL.VERIFIED,
             actionArea: "paperDescription",
             actionLabel: "downloadPdf",
+            userActionType: "downloadPdf",
           });
 
           if (isBlocked) {
