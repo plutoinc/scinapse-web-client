@@ -1,5 +1,5 @@
 {
-  "plugins": ["lodash", "@loadable/babel-plugin"],
+  "plugins": ["lodash", "@loadable/babel-plugin", "@babel/plugin-syntax-dynamic-import"],
   "presets": [
     "@babel/preset-react",
     [

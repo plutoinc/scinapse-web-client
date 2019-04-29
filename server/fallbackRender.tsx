@@ -6,6 +6,7 @@ export default function fallbackJSOnlyRender(scriptTags: string, version: string
   const helmet = Helmet.renderStatic();
   const fullHTML: string = generateFullHTML({
     reactDom: "",
+    linkTags: "",
     scriptTags,
     helmet,
     initialState: JSON.stringify(initialState),

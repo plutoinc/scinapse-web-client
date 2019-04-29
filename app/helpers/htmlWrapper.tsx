@@ -3,6 +3,7 @@ import { HelmetData } from "react-helmet";
 
 interface GenerateFullHTMLParams {
   reactDom: string;
+  linkTags: string;
   scriptTags: string;
   helmet: HelmetData;
   initialState: string;
@@ -21,10 +22,6 @@ export function generateFullHTML({ reactDom, scriptTags, helmet, initialState, c
       ${helmet.meta.toString()}
       ${helmet.link.toString()}
         <style id="jss-server-side" type="text/css">${css}</style>
-        <link rel="preload" href="https://missive.github.io/emoji-mart/emoji-mart.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="https://missive.github.io/emoji-mart/emoji-mart.css"></noscript>
-        <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin="anonymous">
-        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" crossorigin="anonymous"></noscript>
         <script>
         /*! modernizr 3.6.0 (Custom Build) | MIT *
           * https://modernizr.com/download/?-webp-setclasses !*/
@@ -32,9 +29,6 @@ export function generateFullHTML({ reactDom, scriptTags, helmet, initialState, c
         </script>
       </head>
       <body>
-        <script>
-          !function(n){"use strict";n.loadCSS||(n.loadCSS=function(){});var o=loadCSS.relpreload={};if(o.support=function(){var e;try{e=n.document.createElement("link").relList.supports("preload")}catch(t){e=!1}return function(){return e}}(),o.bindMediaToggle=function(t){var e=t.media||"all";function a(){t.addEventListener?t.removeEventListener("load",a):t.attachEvent&&t.detachEvent("onload",a),t.setAttribute("onload",null),t.media=e}t.addEventListener?t.addEventListener("load",a):t.attachEvent&&t.attachEvent("onload",a),setTimeout(function(){t.rel="stylesheet",t.media="only x"}),setTimeout(a,3e3)},o.poly=function(){if(!o.support())for(var t=n.document.getElementsByTagName("link"),e=0;e<t.length;e++){var a=t[e];"preload"!==a.rel||"style"!==a.getAttribute("as")||a.getAttribute("data-loadcss")||(a.setAttribute("data-loadcss",!0),o.bindMediaToggle(a))}},!o.support()){o.poly();var t=n.setInterval(o.poly,500);n.addEventListener?n.addEventListener("load",function(){o.poly(),n.clearInterval(t)}):n.attachEvent&&n.attachEvent("onload",function(){o.poly(),n.clearInterval(t)})}"undefined"!=typeof exports?exports.loadCSS=loadCSS:n.loadCSS=loadCSS}("undefined"!=typeof global?global:this);
-        </script>
         <script>window.__INITIAL_STATE__="${encodeURIComponent(initialState)}"</script>
         <div id="react-app">${reactDom}</div>
         ${scriptTags}
