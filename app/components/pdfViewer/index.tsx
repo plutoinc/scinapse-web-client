@@ -5,10 +5,10 @@ import { CircularProgress } from "@material-ui/core";
 import { withStyles } from "../../helpers/withStylesHelper";
 import ScinapseButton from "../common/scinapseButton";
 import ActionTicketManager from "../../helpers/actionTicketManager";
-import { shouldBlockToSignUp } from "../../helpers/shouldBlockToSignUp";
 import Icon from "../../icons";
 import { PaperPdf } from "../../model/paper";
 import { ActionCreators } from "../../actions/actionTypes";
+import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
 const { Document, Page, pdfjs } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
@@ -40,6 +40,7 @@ function useIntervalProgress(callback: () => void, delay: number | null) {
       function tick() {
         savedCallback.current();
       }
+
       if (delay !== null) {
         const timer = setInterval(tick, delay);
         return () => clearInterval(timer);
@@ -192,10 +193,19 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                     </span>
                   }
                   onClick={async e => {
-                    if (await shouldBlockToSignUp("pdfViewer", "downloadPDF")) {
-                      e.preventDefault();
+                    e.preventDefault();
+
+                    const isBlocked = await blockUnverifiedUser({
+                      authLevel: AUTH_LEVEL.VERIFIED,
+                      actionArea: "pdfViewer",
+                      actionLabel: "downloadPdf",
+                      userActionType: "downloadPdf",
+                    });
+
+                    if (isBlocked) {
                       return;
                     }
+
                     trackClickButton("downloadPdf", props.paperId);
                   }}
                   isExternalLink
@@ -214,9 +224,17 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                   isLoading={!succeedToLoad && !hadErrorToLoad}
                   disabled={!succeedToLoad}
                   onClick={async () => {
-                    if (await shouldBlockToSignUp("pdfViewer", "viewMorePDF")) {
+                    const isBlocked = await blockUnverifiedUser({
+                      authLevel: AUTH_LEVEL.VERIFIED,
+                      actionArea: "pdfViewer",
+                      actionLabel: actionTag,
+                      userActionType: actionTag,
+                    });
+
+                    if (isBlocked) {
                       return;
                     }
+
                     trackClickButton(actionTag, props.paperId);
                     setExtend(!extend);
                   }}

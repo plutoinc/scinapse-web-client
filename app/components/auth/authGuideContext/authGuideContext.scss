@@ -1,6 +1,8 @@
 .container {
   width: 408px;
   padding: 24px 32px;
+  overflow: hidden;
+  position: relative;
 }
 
 .logoIcon {
