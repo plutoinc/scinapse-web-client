@@ -2,7 +2,7 @@ import * as React from "react";
 import axios from "axios";
 import { stringify } from "qs";
 import NoSsr from "@material-ui/core/NoSsr";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
 import Helmet from "react-helmet";
 import PDFViewer from "../../components/pdfViewer";
@@ -19,11 +19,11 @@ import PaperShowRefCitedTab from "../../components/paperShow/refCitedTab";
 import { Footer } from "../../components/layouts";
 import { Configuration } from "../../reducers/configuration";
 import { Paper } from "../../model/paper";
-import { fetchPaperShowData, fetchRefPaperData, fetchCitedPaperData, fetchMyCollection } from "./sideEffect";
+import { fetchCitedPaperData, fetchMyCollection, fetchPaperShowData, fetchRefPaperData } from "./sideEffect";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import { LayoutState, UserDevice } from "../../components/layouts/records";
 import { trackEvent } from "../../helpers/handleGA";
-import { getMemoizedPaper, getReferencePapers, getCitedPapers } from "./select";
+import { getCitedPapers, getMemoizedPaper, getReferencePapers } from "./select";
 import { formulaeToHTMLStr } from "../../helpers/displayFormula";
 import { getPDFLink } from "../../helpers/getPDFLink";
 import restoreScroll from "../../helpers/scrollRestoration";
@@ -366,7 +366,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { paper, paperShow } = this.props;
     const { isOnFullText, isOnCited, isOnRef, isLoadPDF, failedToLoadPDF } = this.state;
 
-    const hasBest = paper && !!paper.bestPdf && paper.bestPdf.hasBest;
+    const hasBest = (paper && !!paper.bestPdf && paper.bestPdf.hasBest) || false;
 
     if (paper && hasBest && !failedToLoadPDF) {
       return (
@@ -396,7 +396,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             handleClickRef={this.scrollToReferencePapersNode}
             handleClickCited={this.scrollToCitedPapersNode}
             handleClickFullText={this.scrollToFullTextNode}
-            hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
+            hasBestPdf={hasBest}
             isLoadingOaCheck={paperShow.isOACheckingPDF}
             isFetchingPdf={paperShow.isFetchingPdf}
             failedToLoadPDF={failedToLoadPDF}

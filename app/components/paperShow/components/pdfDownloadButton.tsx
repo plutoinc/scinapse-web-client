@@ -3,7 +3,6 @@ import { Paper } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { trackEvent } from "../../../helpers/handleGA";
-import { getPDFLink } from "../../../helpers/getPDFLink";
 import Icon from "../../../icons";
 import SearchingPDFBtn from "./searchingPDFBtn";
 import { AUTH_LEVEL, blockUnverifiedUser } from "../../../helpers/checkAuthDialog";
@@ -39,23 +38,17 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
     return null;
   }
 
-  const pdfSource = getPDFLink(paper.urls);
-
-  if (!pdfSource) {
-    return null;
-  }
-
   if (isLoadingOaCheck) {
     return <SearchingPDFBtn hasLoadingOaCheck={isLoadingOaCheck} />;
   }
 
-  const pdfSourceRecord = getPDFLink(paper.urls);
+  const pdfUrl = paper.bestPdf && paper.bestPdf.url;
 
-  if (paper.urls.length > 0 && pdfSourceRecord) {
+  if (pdfUrl) {
     return (
       <a
         className={styles.pdfDownloadBtn}
-        href={pdfSourceRecord.url}
+        href={pdfUrl}
         target="_blank"
         rel="noopener"
         onClick={async e => {
@@ -73,7 +66,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
           }
 
           handleClickSource();
-          window.open(pdfSourceRecord.url, "_blank");
+          window.open(pdfUrl, "_blank");
         }}
       >
         <Icon icon="DOWNLOAD" className={styles.sourceIcon} />
