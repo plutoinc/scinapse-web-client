@@ -5,17 +5,17 @@ import * as expirePlugin from "store/plugins/expire";
 import EnvChecker from "../envChecker";
 import ActionTicket, { ActionTicketParams, FinalActionTicket } from "./actionTicket";
 import {
-  MAXIMUM_TICKET_COUNT_IN_QUEUE,
-  MAXIMUM_RETRY_COUNT,
-  TICKET_QUEUE_KEY,
   DEAD_LETTER_QUEUE_KEY,
-  DEVICE_ID_KEY,
-  DEVICE_ID_INITIALIZED_KEY,
-  SESSION_ID_KEY,
-  SESSION_ID_INITIALIZED_KEY,
-  SESSION_COUNT_KEY,
-  LIVE_SESSION_LENGTH,
   DESTINATION_URL,
+  DEVICE_ID_INITIALIZED_KEY,
+  DEVICE_ID_KEY,
+  LIVE_SESSION_LENGTH,
+  MAXIMUM_RETRY_COUNT,
+  MAXIMUM_TICKET_COUNT_IN_QUEUE,
+  SESSION_COUNT_KEY,
+  SESSION_ID_INITIALIZED_KEY,
+  SESSION_ID_KEY,
+  TICKET_QUEUE_KEY,
   TIME_INTERVAL_TO_SEND_TICKETS,
 } from "../../constants/actionTicket";
 import { trackEvent } from "../handleGA";
@@ -42,9 +42,8 @@ class ActionTicketManager {
     if (!EnvChecker.isOnServer() && (EnvChecker.isDev() || EnvChecker.isLocal())) {
       console.log(params);
     }
-    //for test
-    // if (!EnvChecker.isOnServer() && EnvChecker.isProdBrowser()) {
-    if (!EnvChecker.isOnServer()) {
+
+    if (!EnvChecker.isOnServer() && EnvChecker.isProdBrowser()) {
       this.renewSessionKey();
       const ticket = new ActionTicket(params);
       this.addToQueue([ticket]);
