@@ -42,6 +42,7 @@ declare namespace Scinapse {
       | "viewFullText"
       | "viewMorePDF"
       | "viewLessPDF"
+      | "viewPDF"
       | "addToCollection"
       | "removeFromCollection"
       | "citePaper"
