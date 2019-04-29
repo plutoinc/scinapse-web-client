@@ -1,8 +1,9 @@
 import * as store from "store";
-import { BenefitExpValue, BENEFIT_EXPERIMENT_KEY, ABTestType, BenefitExpType } from "../constants/abTest";
-import { SESSION_ID_KEY, DEVICE_ID_KEY } from "../constants/actionTicket";
-import { blockUnverifiedUser, AUTH_LEVEL } from "./checkAuthDialog";
-import { COMPLETE_BLOCK_SIGN_UP_TEST_USER_GROUP } from "../constants/abTestGlobalValue";
+import { ABTestType, BENEFIT_EXPERIMENT_KEY, BenefitExpType, BenefitExpValue } from "../constants/abTest";
+import { DEVICE_ID_KEY, SESSION_ID_KEY } from "../constants/actionTicket";
+import { AUTH_LEVEL, blockUnverifiedUser } from "./checkAuthDialog";
+import { COMPLETE_BLOCK_SIGN_UP_TEST_NAME } from "../constants/abTestGlobalValue";
+import { getUserGroupName } from "./abTestHelper";
 
 interface CheckBenefitExpCount {
   type: ABTestType | BenefitExpType;
@@ -15,7 +16,8 @@ interface CheckBenefitExpCount {
 }
 
 function getBlockedValueForCompleteBlockSignUpTest() {
-  switch (COMPLETE_BLOCK_SIGN_UP_TEST_USER_GROUP) {
+  const userGroupName = getUserGroupName(COMPLETE_BLOCK_SIGN_UP_TEST_NAME);
+  switch (userGroupName) {
     case "control":
     case "closeIconTop":
     case "closeIconBottom":

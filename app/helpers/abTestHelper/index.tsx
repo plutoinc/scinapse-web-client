@@ -1,12 +1,11 @@
 import * as store from "store";
 import * as Cookies from "js-cookie";
-import { ABTestType, BenefitExpValue, BENEFIT_EXPERIMENT_KEY } from "../../constants/abTest";
+import { ABTestType, BENEFIT_EXPERIMENT_KEY, BenefitExpValue } from "../../constants/abTest";
 import { checkBenefitExp } from "../checkBenefitExpCount";
 import { SESSION_COUNT_KEY } from "../../constants/actionTicket";
 
 export function getUserGroupName(testName: ABTestType) {
-  const getRandomUserName = Cookies.get(testName);
-  return getRandomUserName;
+  return Cookies.get(testName);
 }
 
 export async function getBlockedValueForPaperFromSearchTest(
