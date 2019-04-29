@@ -4,22 +4,13 @@ import { HelmetData } from "react-helmet";
 interface GenerateFullHTMLParams {
   reactDom: string;
   scriptTags: string;
-  linkTags: string;
   helmet: HelmetData;
   initialState: string;
   css: string;
   version?: string;
 }
 
-export function generateFullHTML({
-  reactDom,
-  linkTags,
-  scriptTags,
-  helmet,
-  initialState,
-  css,
-  version,
-}: GenerateFullHTMLParams) {
+export function generateFullHTML({ reactDom, scriptTags, helmet, initialState, css, version }: GenerateFullHTMLParams) {
   return `
     <!doctype html>
     <html lang="en">
@@ -29,7 +20,6 @@ export function generateFullHTML({
       ${helmet.script.toString()}
       ${helmet.meta.toString()}
       ${helmet.link.toString()}
-      ${linkTags}
         <style id="jss-server-side" type="text/css">${css}</style>
         <link rel="preload" href="https://missive.github.io/emoji-mart/emoji-mart.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://missive.github.io/emoji-mart/emoji-mart.css"></noscript>
