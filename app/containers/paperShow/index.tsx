@@ -35,6 +35,7 @@ import VenueAndAuthors from "../../components/common/paperItem/venueAndAuthors";
 import { ArticleSearchState } from "../../components/articleSearch/records";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 import Icon from "../../icons";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 
 const styles = require("./paperShow.scss");
 
@@ -355,7 +356,17 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private handleSucceedToLoadPDF = () => {
+    const { paper } = this.props;
+
     this.setState(prevState => ({ ...prevState, isLoadPDF: true }));
+
+    ActionTicketManager.trackTicket({
+      pageType: "paperShow",
+      actionType: "view",
+      actionArea: "pdfViewer",
+      actionTag: "viewPDF",
+      actionLabel: paper && String(paper.id),
+    });
   };
 
   private handleFailedToLoadPDF = () => {
