@@ -60,7 +60,6 @@ function getRandomPool(): { [key: string]: string[] } {
 const RANDOM_POOL = getRandomPool();
 
 export function getRandomUserGroup(testName: string): string {
-  console.log(RANDOM_POOL);
   const testGroupWeightedPool = RANDOM_POOL[testName];
   return testGroupWeightedPool[Math.floor(Math.random() * testGroupWeightedPool.length)];
 }
