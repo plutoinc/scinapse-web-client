@@ -1,15 +1,17 @@
 import * as React from "react";
 import { range } from "lodash";
 import * as classNames from "classnames";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 import { LocationDescriptor } from "../../../../node_modules/@types/history";
 import { trackEvent } from "../../../helpers/handleGA";
+import { blockUnverifiedUser, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
 const styles = require("./desktopPagination.scss");
 
 interface CommonPaginationProps
-  extends Readonly<{
+  extends RouteComponentProps,
+    Readonly<{
       type: string;
       currentPageIndex: number;
       totalPage: number;
@@ -85,6 +87,24 @@ function getNextIcon(props: DesktopPaginationProps) {
     return (
       <div className={styles.nextButtons}>
         <Link
+          onClick={async e => {
+            e.preventDefault();
+
+            const isBlocked =
+              props.currentPageIndex >= 0 &&
+              (await blockUnverifiedUser({
+                authLevel: AUTH_LEVEL.VERIFIED,
+                actionArea: "searchResult",
+                actionLabel: "nextPageFromSearch",
+                userActionType: "nextPageFromSearch",
+              }));
+
+            if (isBlocked) {
+              return;
+            }
+
+            props.history.push(`${(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex + 2)}`);
+          }}
           to={(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex + 2)}
           className={styles.pageIconButton}
         >
@@ -96,7 +116,22 @@ function getNextIcon(props: DesktopPaginationProps) {
     return (
       <div className={styles.nextButtons}>
         <span
-          onClick={() => (props as EventPaginationProps).onItemClick(props.currentPageIndex + 2)}
+          onClick={async e => {
+            e.preventDefault();
+
+            const isBlocked = await blockUnverifiedUser({
+              authLevel: AUTH_LEVEL.VERIFIED,
+              actionArea: "searchResult",
+              actionLabel: "nextPageFromSearch",
+              userActionType: "nextPageFromSearch",
+            });
+
+            if (isBlocked && props.currentPageIndex === 2) {
+              return;
+            } else {
+              (props as EventPaginationProps).onItemClick(props.currentPageIndex + 2);
+            }
+          }}
           className={styles.pageIconButton}
         >
           <Icon icon="NEXT_PAGE" />
@@ -135,9 +170,22 @@ function getPrevIcon(props: DesktopPaginationProps) {
 const getEventPageItem = (props: EventPaginationProps, pageNumber: number, currentPage: number) => {
   return (
     <span
-      onClick={() => {
-        props.onItemClick(pageNumber);
-        trackEvent({ category: "Search", action: "Pagination", label: `${pageNumber}` });
+      onClick={async e => {
+        e.preventDefault();
+
+        const isBlocked = await blockUnverifiedUser({
+          authLevel: AUTH_LEVEL.VERIFIED,
+          actionArea: "searchResult",
+          actionLabel: "nextPageFromSearch",
+          userActionType: "nextPageFromSearch",
+        });
+
+        if (isBlocked && currentPage === 1 && pageNumber > currentPage) {
+          return;
+        } else {
+          props.onItemClick(pageNumber);
+          trackEvent({ category: "Search", action: "Pagination", label: `${pageNumber}` });
+        }
       }}
       key={`${props.type}_${pageNumber}`}
       style={props.itemStyle}
@@ -154,8 +202,25 @@ const getEventPageItem = (props: EventPaginationProps, pageNumber: number, curre
 const getLinkPageItem = (props: LinkPaginationProps, pageNumber: number, currentPage: number) => {
   return (
     <Link
-      onClick={() => {
-        trackEvent({ category: "Search", action: "Pagination", label: `${pageNumber}` });
+      onClick={async e => {
+        e.preventDefault();
+
+        const isBlocked =
+          currentPage === 1 &&
+          pageNumber > currentPage &&
+          (await blockUnverifiedUser({
+            authLevel: AUTH_LEVEL.VERIFIED,
+            actionArea: "searchResult",
+            actionLabel: "nextPageFromSearch",
+            userActionType: "nextPageFromSearch",
+          }));
+
+        if (isBlocked) {
+          return;
+        } else {
+          trackEvent({ category: "Search", action: "Pagination", label: `${pageNumber}` });
+          props.history.push(`${props.getLinkDestination(pageNumber)}`);
+        }
       }}
       to={props.getLinkDestination(pageNumber)}
       style={props.itemStyle}
@@ -192,4 +257,4 @@ const DesktopPagination = (props: DesktopPaginationProps) => {
   );
 };
 
-export default withStyles<typeof DesktopPagination>(styles)(DesktopPagination);
+export default withRouter(withStyles<typeof DesktopPagination>(styles)(DesktopPagination));
