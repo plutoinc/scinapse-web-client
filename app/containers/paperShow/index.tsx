@@ -275,8 +275,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             />
           </div>
           <>
+            <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)} />
             <div className={styles.citedBy}>
-              <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)} />
               <article className={styles.paperShow}>
                 <div>
                   <span className={styles.sectionTitle}>References</span>
@@ -300,8 +300,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           </>
           <div className={styles.sectionDivider} />
           <>
+            <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)} />
             <div className={styles.citedBy}>
-              <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)} />
               <article className={styles.paperShow}>
                 <div>
                   <span className={styles.sectionTitle}>Cited By</span>
@@ -557,6 +557,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     } else if (this.refTabWrapper && this.citedTabWrapper) {
       const refOffsetTop = this.refTabWrapper.offsetTop;
       const citedOffsetTop = this.citedTabWrapper.offsetTop;
+      const currentScrollTop = scrollTop + NAVBAR_HEIGHT;
 
       if (citedOffsetTop === 0 && refOffsetTop === 0) {
         this.setState(prevState => ({
@@ -565,16 +566,22 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           isOnCited: false,
           isAboveRef: false,
         }));
-      } else if (!this.state.isAboveRef && scrollTop + NAVBAR_HEIGHT < refOffsetTop) {
+      } else if (!this.state.isAboveRef && currentScrollTop < refOffsetTop) {
         this.setState(prevState => ({ ...prevState, isAboveRef: true, isOnCited: false, isOnRef: false }));
-      } else if (
-        !this.state.isOnRef &&
-        scrollTop + NAVBAR_HEIGHT >= refOffsetTop &&
-        scrollTop + NAVBAR_HEIGHT < citedOffsetTop
-      ) {
-        this.setState(prevState => ({ ...prevState, isAboveRef: false, isOnCited: false, isOnRef: true }));
-      } else if (!this.state.isOnCited && scrollTop + NAVBAR_HEIGHT >= citedOffsetTop) {
-        this.setState(prevState => ({ ...prevState, isAboveRef: false, isOnCited: true, isOnRef: false }));
+      } else if (!this.state.isOnRef && currentScrollTop >= refOffsetTop && currentScrollTop < citedOffsetTop) {
+        this.setState(prevState => ({
+          ...prevState,
+          isAboveRef: false,
+          isOnCited: false,
+          isOnRef: true,
+        }));
+      } else if (!this.state.isOnCited && currentScrollTop >= citedOffsetTop) {
+        this.setState(prevState => ({
+          ...prevState,
+          isAboveRef: false,
+          isOnCited: true,
+          isOnRef: false,
+        }));
       }
     }
 
