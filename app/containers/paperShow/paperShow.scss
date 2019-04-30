@@ -175,7 +175,8 @@ article.paperShow {
 }
 
 .refCitedTabWrapper {
-  height: $ref-cited-bar-height;
+  height: 100%;
+  min-height: $ref-cited-bar-height;
   padding: $ref-cited-bar-padding;
   margin-top: -$navbar_height;
   box-sizing: content-box;

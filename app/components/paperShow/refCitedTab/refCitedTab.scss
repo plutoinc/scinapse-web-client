@@ -104,3 +104,16 @@
     }
   }
 }
+
+@media (max-width: $mobile_width) {
+  .paperContentBlockHeaderTabContentWrapper {
+    align-items: flex-start !important;
+    flex-direction: column;
+    padding: 0 4px !important;
+  }
+
+  .rightBtnBox {
+    width: 100%;
+    justify-content: flex-end !important;
+  }
+}
