@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="88" height="84" viewBox="0 0 88 84">
+    <g fill="none" fill-rule="evenodd">
+        <rect width="65" height="71" x="3" y="3" stroke="#DCE0E7" stroke-width="6" rx="8"/>
+        <rect width="43" height="6" x="14" y="16" fill="#DCE0E7" rx="2"/>
+        <g transform="translate(22 59)">
+            <rect width="66" height="25" fill="#3E7FFF" rx="4"/>
+            <text fill="#F9F9FA" font-family="Roboto-Bold, Roboto" font-size="16" font-weight="bold">
+                <tspan x="8" y="18">Match!</tspan>
+            </text>
+        </g>
+        <rect width="43" height="6" x="14" y="30" fill="#DCE0E7" rx="2"/>
+        <rect width="33" height="6" x="14" y="44" fill="#DCE0E7" rx="2"/>
+    </g>
+</svg>

@@ -114,6 +114,15 @@ const GuideContentsByActionType: React.FunctionComponent<AuthGuideContextProps> 
           webpUrl={"https://assets.pluto.network/signup_modal/signup_query.webp"}
         />
       );
+    case "doiSearch":
+      return (
+        <GuideContent
+          mainText={"Search\nPaper\nby DOI"}
+          subText={""}
+          imageUrl={"https://assets.pluto.network/signup_modal/signup_query.jpg"}
+          webpUrl={"https://assets.pluto.network/signup_modal/signup_query.webp"}
+        />
+      );
     default:
       return (
         <GuideContent

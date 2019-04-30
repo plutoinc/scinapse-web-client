@@ -89,6 +89,7 @@ declare namespace Scinapse {
       | "queryLover"
       | "authorFromSearch"
       | "nextPageFromSearch"
+      | "doiSearch"
       | "";
 
     type ActionArea =

@@ -1,0 +1,112 @@
+.articleSearchContainer {
+  margin: $navbar_height auto 0 auto;
+  max-width: $container_width;
+  position: relative;
+
+  .innerContainer {
+    max-width: $search_container_width;
+  }
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-top: 250px;
+  align-items: center;
+  min-height: 738.5px;
+
+  .loadingSpinner {
+    div {
+      background-color: $gray3;
+    }
+  }
+
+  .loadingContent {
+    margin-top: 27.5px;
+    font-size: 15px;
+    line-height: 2.4;
+    color: $black0;
+  }
+}
+
+.doiBlockedContainer {
+  display: flex;
+  padding-top: 45px;
+  min-height: 738.5px;
+
+  .doiBlockedContentWrapper {
+    margin-left: 32px;
+  }
+
+  .doiBlockedTitle {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1;
+    color: $main_blue1;
+  }
+
+  .doiBlockedContent {
+    font-size: 16px;
+    line-height: 1.5;
+    color: $gray6;
+    margin-top: 20px;
+
+    .keyword {
+      word-break: break-all;
+    }
+  }
+}
+
+.contextWrapper {
+  margin-top: 10px;
+  padding-left: 30px;
+}
+
+.signInLink {
+  color: $main_blue1;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+    color: $main_blue_light0;
+  }
+}
+
+.signInBtn {
+  width: 242px;
+  height: 43px;
+  border-radius: 4px;
+  background-color: $main_blue1;
+  font-size: 16px;
+  font-weight: 500;
+  color: $gray0;
+  cursor: pointer;
+  margin-top: 16px;
+
+  &:hover {
+    background-color: $main_blue_light0;
+    transition: $button-hover-transition;
+  }
+
+  .arrowRightIcon {
+    height: 20px;
+    margin-left: 4px;
+
+    svg {
+      height: 12px;
+    }
+  }
+}
+
+.iconWrapper {
+  width: 88px;
+  height: 84px;
+}
+
+@media (max-width: $mobile-width) {
+  .articleSearchContainer {
+    margin-top: $search-mobile-navbar-height;
+  }
+}

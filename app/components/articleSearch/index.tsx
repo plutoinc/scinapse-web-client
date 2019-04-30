@@ -29,6 +29,7 @@ import { getUrlDecodedQueryParamsObject } from "../../helpers/makeNewFilterLink"
 import { Paper } from "../../model/paper";
 import EnvChecker from "../../helpers/envChecker";
 import ActionTicketManager from "../../helpers/actionTicketManager";
+import DoiSearchBlocked from "./components/doiSearchBlocked";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -195,6 +196,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
     const hasNoSearchResultButHasAuthorResult =
       hasNoSearchResult && articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements > 0;
 
+    const blockedDoiMatchedSearch = !currentUserState.isLoggedIn && articleSearchState.doiPatternMatched;
     if (hasNoSearchResultButHasAuthorResult) {
       return (
         <div className={styles.innerContainer}>
@@ -216,6 +218,12 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
             articleSearchState={articleSearchState}
             hasEmptyFilter={this.isFilterEmpty(queryParams.filter)}
           />
+        </div>
+      );
+    } else if (blockedDoiMatchedSearch) {
+      return (
+        <div className={styles.innerContainer}>
+          <DoiSearchBlocked isLoading={isContentLoading} searchDoi={articleSearchState.doi} />
         </div>
       );
     } else if (queryParams) {
