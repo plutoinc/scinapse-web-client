@@ -1,14 +1,15 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 import MuiTooltip from "@material-ui/core/Tooltip";
 import { MatchEntityAuthor } from "../../api/search";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
 import { trackEvent } from "../../helpers/handleGA";
 import ActionTicketManager from "../../helpers/actionTicketManager";
+import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
 const styles = require("./authorSearchItem.scss");
 
-interface AuthorSearchItemProps {
+interface AuthorSearchItemProps extends RouteComponentProps<any> {
   authorEntity: MatchEntityAuthor;
 }
 
@@ -32,7 +33,20 @@ const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
 
   return (
     <Link
-      onClick={() => {
+      onClick={async e => {
+        e.preventDefault();
+
+        const isBlocked = await blockUnverifiedUser({
+          authLevel: AUTH_LEVEL.VERIFIED,
+          actionArea: "authorEntity",
+          actionLabel: "authorFromSearch",
+          userActionType: "authorFromSearch",
+        });
+
+        if (isBlocked) {
+          return;
+        }
+
         trackEvent({
           category: "Flow to Author Show",
           action: "Click Author Entity",
@@ -45,6 +59,8 @@ const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
           actionTag: "authorEntityItem",
           actionLabel: String(author.id),
         });
+
+        props.history.push(`/authors/${author.id}`);
       }}
       to={`authors/${author.id}`}
       className={styles.itemWrapper}
@@ -68,4 +84,4 @@ const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
   );
 };
 
-export default withStyles<typeof AuthorSearchItem>(styles)(AuthorSearchItem);
+export default withRouter(withStyles<typeof AuthorSearchItem>(styles)(AuthorSearchItem));
