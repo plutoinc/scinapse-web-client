@@ -234,9 +234,6 @@ article.paperShow {
 // RegularDisplay (1024~1200)
 @media (max-width: $regular_width) {
   .container {
-    margin-left: $container-margin;
-    margin-right: $container-margin;
-
     article.paperShow {
       .paperInfo {
         display: block;
@@ -261,6 +258,7 @@ article.paperShow {
     }
   }
 }
+
 // SmallDisplay (768~1024)
 @media (max-width: $tablet_width) {
   .container {
@@ -277,6 +275,7 @@ article.paperShow {
     width: 100%;
   }
 }
+
 // Mobile (0~768)
 @media (max-width: $mobile-width) {
   .container {
