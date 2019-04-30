@@ -7,3 +7,7 @@ export const COMPLETE_BLOCK_SIGN_UP_TEST_NAME: ABTestType = "completeBlockSignUp
 export const AUTHOR_FROM_SEARCH_TEST_NAME: ABTestType = "authorFromSearch";
 export const NEXT_PAGE_FROM_SEARCH_TEST_NAME: ABTestType = "nextPageFromSearch";
 export const DOI_SEARCH_TEST_NAME: ABTestType = "doiSearch";
+export const SIGN_BANNER_AT_SEARCH_BANNER_TEST: ABTestType = "signBannerAtSearch-banner";
+export const SIGN_BANNER_AT_SEARCH_SIGN_BUTTON_TEXT_TEST: ABTestType = "signBannerAtSearch-signButtonText";
+export const SIGN_BANNER_AT_SEARCH_BODY_TEXT_TEST: ABTestType = "signBannerAtSearch-bodyText";
+export const SIGN_BANNER_AT_SEARCH_TITLE_TEXT_TEST: ABTestType = "signBannerAtSearch-titleText";

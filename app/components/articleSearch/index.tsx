@@ -32,6 +32,7 @@ import ActionTicketManager from "../../helpers/actionTicketManager";
 import DoiSearchBlocked from "./components/doiSearchBlocked";
 import { DOI_SEARCH_TEST_NAME } from "../../constants/abTestGlobalValue";
 import { getUserGroupName } from "../../helpers/abTestHelper";
+import SignBanner from "./components/signBanner";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -139,12 +140,15 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
           {this.getSuggestionKeywordBox()}
           {this.isFilterEmpty(queryParams.filter) ? this.getAuthorEntitiesSection() : null}
           {this.getInnerContainerContent()}
-          <FilterContainer
-            handleChangeRangeInput={this.setRangeInput}
-            articleSearchState={articleSearchState}
-            currentUserState={currentUserState}
-            handleToggleExpandingFilter={this.handleToggleExpandingFilter}
-          />
+          <div className={styles.rightBoxWrapper}>
+            <SignBanner isLoading={articleSearchState.isContentLoading} />
+            <FilterContainer
+              handleChangeRangeInput={this.setRangeInput}
+              articleSearchState={articleSearchState}
+              currentUserState={currentUserState}
+              handleToggleExpandingFilter={this.handleToggleExpandingFilter}
+            />
+          </div>
         </div>
         <Footer containerStyle={this.getContainerStyle()} />
       </div>

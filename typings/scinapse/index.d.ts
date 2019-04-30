@@ -90,6 +90,10 @@ declare namespace Scinapse {
       | "authorFromSearch"
       | "nextPageFromSearch"
       | "doiSearch"
+      | "signBannerAtSearch-banner"
+      | "signBannerAtSearch-signButtonText"
+      | "signBannerAtSearch-bodyText"
+      | "signBannerAtSearch-titleText"
       | "";
 
     type ActionArea =

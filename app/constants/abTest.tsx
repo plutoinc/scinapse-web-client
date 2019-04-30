@@ -6,6 +6,10 @@ import {
   nextPageFromSearchTest,
   doiSearchTest,
   authorFromSearchTest,
+  bannerTest,
+  signButtonTextTest,
+  bodyTextTest,
+  titleTextTest,
 } from "./abTestObject";
 
 export interface UserGroup {
@@ -27,7 +31,11 @@ export type ABTestType =
   | "nextPageFromSearch"
   | "signUpContextText"
   | "completeBlockSignUp"
-  | "doiSearch";
+  | "doiSearch"
+  | "signBannerAtSearch-banner"
+  | "signBannerAtSearch-signButtonText"
+  | "signBannerAtSearch-bodyText"
+  | "signBannerAtSearch-titleText";
 
 export const BENEFIT_EXPERIMENT_KEY = "b_exp";
 
@@ -55,6 +63,10 @@ export const LIVE_TESTS: Test[] = [
   authorFromSearchTest,
   nextPageFromSearchTest,
   doiSearchTest,
+  bannerTest,
+  signButtonTextTest,
+  bodyTextTest,
+  titleTextTest,
 ];
 
 function getRandomPool(): { [key: string]: string[] } {
