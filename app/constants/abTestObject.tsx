@@ -34,3 +34,18 @@ export const completeBlockSignUpTest: Test = {
     { groupName: "closeIconBottom", weight: 1 },
   ],
 };
+
+export const authorFromSearchTest: Test = {
+  name: "authorFromSearch",
+  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "block", weight: 1 }],
+};
+
+export const nextPageFromSearchTest: Test = {
+  name: "nextPageFromSearch",
+  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "block", weight: 1 }],
+};
+
+export const doiSearchTest: Test = {
+  name: "doiSearch",
+  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "block", weight: 1 }],
+};

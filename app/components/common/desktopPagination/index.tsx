@@ -7,7 +7,10 @@ import Icon from "../../../icons";
 import { LocationDescriptor } from "../../../../node_modules/@types/history";
 import { trackEvent } from "../../../helpers/handleGA";
 import { blockUnverifiedUser, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
+import { NEXT_PAGE_FROM_SEARCH_TEST_NAME } from "../../../constants/abTestGlobalValue";
+import { getUserGroupName } from "../../../helpers/abTestHelper";
 const styles = require("./desktopPagination.scss");
+const USER_GROUP_NAME: string = getUserGroupName(NEXT_PAGE_FROM_SEARCH_TEST_NAME) || "";
 
 interface CommonPaginationProps
   extends RouteComponentProps,
@@ -91,6 +94,7 @@ function getNextIcon(props: DesktopPaginationProps) {
             e.preventDefault();
 
             const isBlocked =
+              USER_GROUP_NAME === "block" &&
               props.currentPageIndex >= 0 &&
               (await blockUnverifiedUser({
                 authLevel: AUTH_LEVEL.VERIFIED,
@@ -119,12 +123,14 @@ function getNextIcon(props: DesktopPaginationProps) {
           onClick={async e => {
             e.preventDefault();
 
-            const isBlocked = await blockUnverifiedUser({
-              authLevel: AUTH_LEVEL.VERIFIED,
-              actionArea: "searchResult",
-              actionLabel: "nextPageFromSearch",
-              userActionType: "nextPageFromSearch",
-            });
+            const isBlocked =
+              USER_GROUP_NAME === "block" &&
+              (await blockUnverifiedUser({
+                authLevel: AUTH_LEVEL.VERIFIED,
+                actionArea: "searchResult",
+                actionLabel: "nextPageFromSearch",
+                userActionType: "nextPageFromSearch",
+              }));
 
             if (isBlocked && props.currentPageIndex === 2) {
               return;
@@ -173,12 +179,14 @@ const getEventPageItem = (props: EventPaginationProps, pageNumber: number, curre
       onClick={async e => {
         e.preventDefault();
 
-        const isBlocked = await blockUnverifiedUser({
-          authLevel: AUTH_LEVEL.VERIFIED,
-          actionArea: "searchResult",
-          actionLabel: "nextPageFromSearch",
-          userActionType: "nextPageFromSearch",
-        });
+        const isBlocked =
+          USER_GROUP_NAME === "block" &&
+          (await blockUnverifiedUser({
+            authLevel: AUTH_LEVEL.VERIFIED,
+            actionArea: "searchResult",
+            actionLabel: "nextPageFromSearch",
+            userActionType: "nextPageFromSearch",
+          }));
 
         if (isBlocked && currentPage === 1 && pageNumber > currentPage) {
           return;
@@ -206,6 +214,7 @@ const getLinkPageItem = (props: LinkPaginationProps, pageNumber: number, current
         e.preventDefault();
 
         const isBlocked =
+          USER_GROUP_NAME === "block" &&
           currentPage === 1 &&
           pageNumber > currentPage &&
           (await blockUnverifiedUser({
