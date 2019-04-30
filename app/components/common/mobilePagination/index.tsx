@@ -1,12 +1,14 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 import Icon from "../../../icons";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { LocationDescriptor } from "../../../../node_modules/@types/history";
+import { blockUnverifiedUser, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
 const styles = require("./pagination.scss");
 
 interface PaginationProps
-  extends Readonly<{
+  extends RouteComponentProps,
+    Readonly<{
       totalPageCount: number;
       currentPageIndex: number;
       wrapperStyle?: React.CSSProperties;
@@ -40,8 +42,21 @@ function getEventLinkButton(props: EventPaginationProps) {
   if (props.currentPageIndex === 0) {
     return (
       <span
-        onClick={() => {
-          props.onItemClick(2);
+        onClick={async e => {
+          e.preventDefault();
+
+          const isBlocked = await blockUnverifiedUser({
+            authLevel: AUTH_LEVEL.VERIFIED,
+            actionArea: "searchResult",
+            actionLabel: "nextPageFromSearch",
+            userActionType: "nextPageFromSearch",
+          });
+
+          if (isBlocked) {
+            return;
+          } else {
+            props.onItemClick(2);
+          }
         }}
         className={styles.pageButton}
       >
@@ -99,7 +114,26 @@ function getLinkButton(props: LinkPaginationProps) {
 
   if (props.currentPageIndex === 0) {
     return (
-      <Link to={props.getLinkDestination(2)} className={styles.pageButton}>
+      <Link
+        onClick={async e => {
+          e.preventDefault();
+
+          const isBlocked = await blockUnverifiedUser({
+            authLevel: AUTH_LEVEL.VERIFIED,
+            actionArea: "searchResult",
+            actionLabel: "nextPageFromSearch",
+            userActionType: "nextPageFromSearch",
+          });
+
+          if (isBlocked) {
+            return;
+          }
+
+          props.history.push(`${props.getLinkDestination(2)}`);
+        }}
+        to={props.getLinkDestination(2)}
+        className={styles.pageButton}
+      >
         Next page
       </Link>
     );
@@ -152,4 +186,4 @@ const MobilePagination = (props: MobilePaginationProps) => {
   }
 };
 
-export default withStyles<typeof MobilePagination>(styles)(MobilePagination);
+export default withRouter(withStyles<typeof MobilePagination>(styles)(MobilePagination));
