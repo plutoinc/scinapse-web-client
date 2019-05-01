@@ -118,6 +118,25 @@ class Home extends React.PureComponent<HomeProps> {
       "@type": "Organization",
       url: "https://scinapse.io",
       logo: "https://s3.amazonaws.com/pluto-asset/scinapse/scinapse-logo.png",
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          email: "team@pluto.network",
+          url: "https://pluto.network",
+          contactType: "customer service",
+        },
+      ],
+      potentialAction: {
+        "@type": "SearchAction",
+        target: "https://scinapse.io/search?query={search_term_string}&utm_source=google_search_result",
+        "query-input": "required name=search_term_string",
+      },
+      sameAs: [
+        "https://www.facebook.com/PlutoNetwork",
+        "https://twitter.com/pluto_network",
+        "https://medium.com/pluto-network",
+        "https://pluto.network",
+      ],
     };
 
     return (
