@@ -44,6 +44,7 @@ export const ssr = async (event: any, context: any) => {
     "application/xml",
     "text/javascript",
     "application/javascript",
+    "application/json",
   ];
   const server = awsServerlessExpress.createServer(app, null, binaryMimeTypes);
   return awsServerlessExpress.proxy(server, event, context, "PROMISE").promise;

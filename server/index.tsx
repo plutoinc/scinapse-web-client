@@ -8,6 +8,7 @@ import getSitemap from "./routes/sitemap";
 import getRobotTxt from "./routes/robots";
 import getOpenSearchXML from "./routes/openSearchXML";
 import setABTest from "./helpers/setABTest";
+import manifestJSON from "./routes/manifest";
 const compression = require("compression");
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 const SITEMAP_REGEX = /^\/sitemap(\/sitemap_[0-9]+\.xml)?\/?$/;
@@ -30,6 +31,11 @@ app.get(SITEMAP_REGEX, async (req, res) => {
   res.setHeader("Access-Contrl-Allow-Origin", "*");
   const sitemap = await getSitemap(req.path);
   res.send(sitemap.body);
+});
+
+app.get("/manifest.json", (_req, res) => {
+  const json = manifestJSON;
+  res.send(json);
 });
 
 app.get("/robots.txt", (req, res) => {
