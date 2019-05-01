@@ -317,7 +317,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
             <a
               className={styles.shareBtn}
               target="_blank"
-              rel="noopener"
+              rel="noopener nofollow"
               onClick={() => {
                 this.getPageToSharing("FACEBOOK", userCollection.id);
               }}
@@ -327,7 +327,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
             <a
               className={styles.shareBtn}
               target="_blank"
-              rel="noopener"
+              rel="noopener nofollow"
               onClick={() => {
                 this.getPageToSharing("TWITTER", userCollection.id);
               }}

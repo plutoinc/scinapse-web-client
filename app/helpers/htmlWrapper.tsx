@@ -16,6 +16,7 @@ export function generateFullHTML({ reactDom, scriptTags, helmet, initialState, c
     <!doctype html>
     <html lang="en">
       <head>
+      <meta name="theme-color" content="#3e7fff"/>
       ${helmet.title.toString()}
       <script type="text/javascript">window._script_version_ = { version: '${version}' };</script>
       ${helmet.script.toString()}

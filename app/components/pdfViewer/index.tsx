@@ -187,6 +187,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                   style={downloadPdfBtnStyle}
                   target="_blank"
                   href={bestPdf.url}
+                  rel="nofollow"
                   content={
                     <span className={styles.downloadBtnWrapper}>
                       <Icon icon="DOWNLOAD" className={styles.downloadIcon} /> Download PDF

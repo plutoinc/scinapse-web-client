@@ -63,7 +63,7 @@ function getFirstPageIcon(props: DesktopPaginationProps) {
 
   if (isLinkPagination(props)) {
     return (
-      <Link to={(props as LinkPaginationProps).getLinkDestination(1)} className={styles.pageIconButton}>
+      <Link rel="nofollow" to={(props as LinkPaginationProps).getLinkDestination(1)} className={styles.pageIconButton}>
         <Icon icon="LAST_PAGE" />
       </Link>
     );
@@ -85,6 +85,7 @@ function getNextIcon(props: DesktopPaginationProps) {
     return (
       <div className={styles.nextButtons}>
         <Link
+          rel="nofollow"
           to={(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex + 2)}
           className={styles.pageIconButton}
         >
@@ -114,6 +115,7 @@ function getPrevIcon(props: DesktopPaginationProps) {
   if (isLinkPagination(props)) {
     return (
       <Link
+        rel="nofollow"
         to={(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex)}
         className={styles.pageIconButton}
       >
@@ -157,6 +159,7 @@ const getLinkPageItem = (props: LinkPaginationProps, pageNumber: number, current
       onClick={() => {
         trackEvent({ category: "Search", action: "Pagination", label: `${pageNumber}` });
       }}
+      rel="nofollow"
       to={props.getLinkDestination(pageNumber)}
       style={props.itemStyle}
       key={`${props.type}_${pageNumber}`}

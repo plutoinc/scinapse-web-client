@@ -221,7 +221,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
           }}
           href={journal.webPage}
           target="_blank"
-          rel="noopener"
+          rel="noopener nofollow"
           className={styles.externalIconWrapper}
         >
           <Icon icon="EXTERNAL_SOURCE" />

@@ -143,10 +143,15 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
         {!author.isEmailHidden &&
           author.email && (
             <span className={styles.contactSection}>
-              <a href={`mailto:${author.email}`} target="_blank" rel="noopener" className={styles.contactIconWrapper}>
+              <a
+                href={`mailto:${author.email}`}
+                target="_blank"
+                rel="noopener nofollow"
+                className={styles.contactIconWrapper}
+              >
                 <Icon icon="EMAIL_ICON" className={styles.emailIcon} />
               </a>
-              <a href={`mailto:${author.email}`} target="_blank" rel="noopener">
+              <a href={`mailto:${author.email}`} target="_blank" rel="noopener nofollow">
                 {author.email}
               </a>
             </span>
@@ -154,10 +159,15 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
 
         {author.webPage && (
           <span className={styles.contactSection}>
-            <a href={author.webPage || "#"} target="_blank" rel="noopener" className={styles.contactIconWrapper}>
+            <a
+              href={author.webPage || "#"}
+              target="_blank"
+              rel="noopener nofollow"
+              className={styles.contactIconWrapper}
+            >
               <Icon icon="EXTERNAL_SOURCE" className={styles.externalSource} />
             </a>
-            <a href={author.webPage || "#"} target="_blank" rel="noopener">
+            <a href={author.webPage || "#"} target="_blank" rel="noopener nofollow">
               {author.webPage || ""}
             </a>
           </span>
