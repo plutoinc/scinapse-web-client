@@ -75,7 +75,7 @@ const SignBannerSignButtonText: React.FunctionComponent<SignBannerContextProps> 
       signButtonText = "Register Now";
       break;
     case "signup":
-      signButtonText = "Sign In";
+      signButtonText = "Sign Up";
       break;
     case "yesofcourse":
       signButtonText = "Yes, of course";
