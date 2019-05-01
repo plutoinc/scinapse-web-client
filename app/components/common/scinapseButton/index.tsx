@@ -8,6 +8,7 @@ const styles = require("./scinapseButton.scss");
 
 interface ScinapseButtonProps {
   content: string | React.ReactNode;
+  rel?: string;
   gaCategory?: string;
   gaAction?: string;
   gaLabel?: string;
@@ -38,6 +39,7 @@ class ScinapseButton extends React.PureComponent<ScinapseButtonProps> {
       disabled,
       target,
       downloadAttr,
+      rel,
     } = this.props;
 
     if (isReactRouterLink && to) {
@@ -55,6 +57,7 @@ class ScinapseButton extends React.PureComponent<ScinapseButtonProps> {
           onClick={this.handleClickEvent}
           className={styles.button}
           href={href}
+          rel={rel}
         >
           {content}
         </a>

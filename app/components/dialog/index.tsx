@@ -30,6 +30,8 @@ import CitationBox from "../paperShow/components/citationBox";
 import { AvailableCitationType } from "../../containers/paperShow/records";
 import AuthorListDialog from "../authorListDialog";
 import alertToast from "../../helpers/makePlutoToastAction";
+import FinalSignUpContent from "../auth/signUp/components/finalSignUpContent";
+import EnvChecker from "../../helpers/envChecker";
 const styles = require("./dialog.scss");
 
 function mapStateToProps(state: AppState) {
@@ -204,7 +206,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   };
 
   private getDialogContent = (type: GLOBAL_DIALOG_TYPE | null) => {
-    const { currentUser, myCollections, dialogState } = this.props;
+    const { currentUser, myCollections, dialogState, dispatch } = this.props;
 
     switch (type) {
       case GLOBAL_DIALOG_TYPE.SIGN_IN:
@@ -215,6 +217,24 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
 
       case GLOBAL_DIALOG_TYPE.ADD_PUBLICATIONS_TO_AUTHOR_DIALOG: {
         return <AllPublicationsDialog />;
+      }
+
+      case GLOBAL_DIALOG_TYPE.FINAL_SIGN_UP_WITH_EMAIL: {
+        return <FinalSignUpContent onSubmit={this.closeDialog} contentType="email" />;
+      }
+
+      case GLOBAL_DIALOG_TYPE.FINAL_SIGN_UP_WITH_SOCIAL: {
+        return (
+          <FinalSignUpContent
+            onSubmit={() => {
+              if (!EnvChecker.isOnServer() && dialogState.oauthResult && dialogState.oauthResult.vendor === "ORCID") {
+                window.close();
+              }
+              dispatch(Actions.closeDialog());
+            }}
+            contentType="social"
+          />
+        );
       }
 
       case GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED:

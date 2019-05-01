@@ -9,6 +9,8 @@ import Icon from "../../icons";
 import { PaperPdf } from "../../model/paper";
 import { ActionCreators } from "../../actions/actionTypes";
 import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
+import getAPIHost from "../../api/getHost";
+
 const { Document, Page, pdfjs } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
@@ -51,7 +53,7 @@ function useIntervalProgress(callback: () => void, delay: number | null) {
 }
 
 const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
-  const { bestPdf, shouldShow, onFailed, onLoadSuccess, filename, handleGetBestPdf, dispatch } = props;
+  const { bestPdf, shouldShow, onFailed, onLoadSuccess, handleGetBestPdf, dispatch } = props;
   const [percentage, setPercentage] = React.useState(0);
   const [isFetching, setIsFetching] = React.useState(false);
   const [PDFBinary, setPDFBinary] = React.useState(null);
@@ -100,14 +102,9 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
           handleGetBestPdf();
         } else if (bestPdf && bestPdf.hasBest) {
           setIsFetching(true);
-          Axios.get(
-            `https://lvr8qqubzk.execute-api.us-east-1.amazonaws.com/prod/get-pdf?pdf_url=${
-              bestPdf.url
-            }&title=${filename}`,
-            {
-              responseType: "blob",
-            }
-          )
+          Axios.get(`${getAPIHost()}/proxy/pdf?url=${encodeURIComponent(bestPdf.url)}`, {
+            responseType: "blob",
+          })
             .then(res => {
               setPDFBinary(res.data);
               dispatch(ActionCreators.endToLoadingFetchPDF());
@@ -187,6 +184,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                   style={downloadPdfBtnStyle}
                   target="_blank"
                   href={bestPdf.url}
+                  rel="nofollow"
                   content={
                     <span className={styles.downloadBtnWrapper}>
                       <Icon icon="DOWNLOAD" className={styles.downloadIcon} /> Download PDF

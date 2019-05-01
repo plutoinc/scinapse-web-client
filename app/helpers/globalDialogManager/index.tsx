@@ -33,6 +33,24 @@ class GlobalDialogManager {
     );
   }
 
+  public openFinalSignUpWithEmailDialog() {
+    StoreManager.store.dispatch(
+      ActionCreators.openGlobalDialog({
+        type: GLOBAL_DIALOG_TYPE.FINAL_SIGN_UP_WITH_EMAIL,
+        isBlocked: true,
+      })
+    );
+  }
+
+  public openFinalSignUpWithSocialDialog() {
+    StoreManager.store.dispatch(
+      ActionCreators.openGlobalDialog({
+        type: GLOBAL_DIALOG_TYPE.FINAL_SIGN_UP_WITH_SOCIAL,
+        isBlocked: true,
+      })
+    );
+  }
+
   public openVerificationDialog() {
     StoreManager.store.dispatch(
       ActionCreators.openGlobalDialog({

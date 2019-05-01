@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { denormalize } from "normalizr";
 import { Link } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { Collection, userCollectionSchema } from "../../model/collection";
+import { Collection, collectionSchema } from "../../model/collection";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { AppState } from "../../reducers";
 import { MyCollectionsState } from "../../containers/paperShowCollectionControlButton/reducer";
@@ -131,10 +131,10 @@ function mapStateToProps(state: AppState) {
   return {
     collections: state.myCollections,
     currentUser: state.currentUser,
-    userCollections: denormalize(state.userCollections.collectionIds, [userCollectionSchema], state.entities).filter(
+    userCollections: denormalize(state.userCollections.collectionIds, [collectionSchema], state.entities).filter(
       (c: Collection) => !!c
     ),
-    myCollections: denormalize(state.myCollections.collectionIds, [userCollectionSchema], state.entities).filter(
+    myCollections: denormalize(state.myCollections.collectionIds, [collectionSchema], state.entities).filter(
       (c: Collection) => !!c
     ),
   };

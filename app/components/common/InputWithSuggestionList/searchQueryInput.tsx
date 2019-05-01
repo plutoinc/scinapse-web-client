@@ -158,14 +158,19 @@ const SearchQueryInput: React.FunctionComponent<
     setTouched(false);
     setIsOpen(false);
 
-    props.history.push(
-      `/search?${PapersQueryFormatter.stringifyPapersQuery({
-        query: searchKeyword,
-        sort: "RELEVANCE",
-        filter: filter || {},
-        page: 1,
-      })}`
-    );
+    const currentPage = getCurrentPageType();
+    const searchQuery = PapersQueryFormatter.stringifyPapersQuery({
+      query: searchKeyword,
+      sort: "RELEVANCE",
+      filter: filter || {},
+      page: 1,
+    });
+
+    if (currentPage === "authorSearchResult") {
+      props.history.push(`/search/authors?${searchQuery}`);
+    } else {
+      props.history.push(`/search?${searchQuery}`);
+    }
   }
 
   const keywordItems = keywordsToShow.slice(0, props.maxCount).map((k, i) => {

@@ -28,8 +28,8 @@ import { HOME_PATH } from "../../constants/routes";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { CurrentUser } from "../../model/currentUser";
 import { FilterObject } from "../../helpers/papersQueryFormatter";
-import { userCollectionSchema } from "../../model/collection";
 import { getCollections } from "../collections/actions";
+import { collectionSchema } from "../../model/collection";
 import { getMemoizedPaper } from "../../containers/paperShow/select";
 import ResearchHistory from "../researchHistory";
 const styles = require("./header.scss");
@@ -46,8 +46,8 @@ function mapStateToProps(state: AppState) {
     articleSearchState: state.articleSearch,
     authorSearchState: state.authorSearch,
     myCollectionsState: state.myCollections,
+    userCollections: denormalize(state.myCollections.collectionIds, [collectionSchema], state.entities),
     paper: getMemoizedPaper(state),
-    userCollections: denormalize(state.myCollections.collectionIds, [userCollectionSchema], state.entities),
   };
 }
 

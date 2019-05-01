@@ -720,9 +720,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private getPageHelmet = () => {
     const { paper } = this.props;
+
     if (paper) {
       const pdfSourceRecord = getPDFLink(paper.urls);
-
       const metaTitleContent = pdfSourceRecord ? "[PDF] " + paper.title : paper.title;
       const fosListContent =
         paper.fosList && typeof paper.fosList !== "undefined"
@@ -737,6 +737,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       return (
         <Helmet>
           <title>{metaTitleContent} | Scinapse | Academic search engine for paper}</title>
+          <link rel="canonical" href={`https://scinapse.io/papers/${paper.id}`} />
           <meta itemProp="name" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
           <meta name="description" content={this.buildPageDescription()} />
           <meta name="keyword" content={fosListContent} />

@@ -5,6 +5,7 @@ import { Comment } from "../model/comment";
 import { Collection } from "../model/collection";
 import { Member } from "../model/member";
 import { Journal } from "../model/journal";
+import { merge } from "lodash";
 import { PaperInCollection } from "../model/paperInCollection";
 import { Profile } from "../model/profile";
 
@@ -39,9 +40,6 @@ export type AppEntities = {
   collections: {
     [collectionId: number]: Collection;
   };
-  userCollections: {
-    [collectionId: number]: Collection;
-  };
   members: {
     [memberId: number]: Member;
   };
@@ -61,7 +59,6 @@ export const INITIAL_ENTITY_STATE = {
   papersInCollection: {},
   comments: {},
   collections: {},
-  userCollections: {},
   members: {},
   journals: {},
   profiles: {},
@@ -76,14 +73,19 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
         return state;
       }
 
+      let newCollections: { [collectionId: number]: Collection } = {};
+      if (entities.collections) {
+        const receivedCollections = entities.collections;
+        newCollections = merge(receivedCollections, state.collections);
+      }
+
       return {
         ...state,
         authors: { ...state.authors, ...entities.authors },
         papers: { ...state.papers, ...entities.papers },
         papersInCollection: { ...state.papersInCollection, ...entities.papersInCollection },
         comments: { ...state.comments, ...entities.comments },
-        collections: { ...state.collections, ...entities.collections },
-        userCollections: { ...state.userCollections, ...entities.userCollections },
+        collections: { ...state.collections, ...newCollections },
         members: { ...state.members, ...entities.members },
         journals: { ...state.journals, ...entities.journals },
         profiles: { ...state.profiles, ...entities.profiles },
@@ -124,9 +126,9 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
 
     case ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_DELETE_COLLECTION: {
       const targetCollectionId = action.payload.collectionId;
-      const { [targetCollectionId]: deletedItem, ...newCollections } = state.userCollections;
+      const { [targetCollectionId]: deletedItem, ...newCollections } = state.collections;
 
-      return { ...state, userCollections: newCollections };
+      return { ...state, collections: newCollections };
     }
 
     case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_SUCCEEDED_TO_UPDATE_PAPER_NOTE: {
