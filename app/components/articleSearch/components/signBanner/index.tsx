@@ -84,14 +84,16 @@ const SignBannerSignButtonText: React.FunctionComponent<SignBannerContextProps> 
   }
 
   return (
-    <button
-      onClick={() => {
-        GlobalDialogManager.openSignUpDialog();
-      }}
-      className={styles.bannerSignButton}
-    >
-      {signButtonText}
-    </button>
+    <div className={styles.bannerSignButtonWrapper}>
+      <button
+        onClick={() => {
+          GlobalDialogManager.openSignUpDialog();
+        }}
+        className={styles.bannerSignButton}
+      >
+        {signButtonText}
+      </button>
+    </div>
   );
 });
 const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
@@ -123,15 +125,17 @@ const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
     <div className={styles.bannerContainer}>
       <SignBannerTitleText userGroupName={TitleTextUserGroupName} />
       <SignBannerBodyText userGroupName={BodyTextUserGroupName} />
-      <picture>
-        <source srcSet={"https://assets.pluto.network/signup_modal/researchers.webp"} type="image/webp" />
-        <source srcSet={"https://assets.pluto.network/signup_modal/researchers.jpg"} type="image/jpeg" />
-        <img
-          className={styles.bannerImage}
-          src={"https://assets.pluto.network/signup_modal/researchers.jpg"}
-          alt={"bannerImage"}
-        />
-      </picture>
+      <div className={styles.bannerImageWrapper}>
+        <picture>
+          <source srcSet={"https://assets.pluto.network/signup_modal/researchers.webp"} type="image/webp" />
+          <source srcSet={"https://assets.pluto.network/signup_modal/researchers.jpg"} type="image/jpeg" />
+          <img
+            className={styles.bannerImage}
+            src={"https://assets.pluto.network/signup_modal/researchers.jpg"}
+            alt={"bannerImage"}
+          />
+        </picture>
+      </div>
       <SignBannerSignButtonText userGroupName={SignButtonTextUserName} />
     </div>
   );
