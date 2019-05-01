@@ -102,7 +102,7 @@ export function postNewCollection(params: PostCollectionParams, targetPaperId?: 
 
       if (targetPaperId) {
         await dispatch(
-          addPaperToCollection({ collection: res.entities.userCollections[res.result], paperId: targetPaperId })
+          addPaperToCollection({ collection: res.entities.collections[res.result], paperId: targetPaperId })
         );
         dispatch({
           type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,

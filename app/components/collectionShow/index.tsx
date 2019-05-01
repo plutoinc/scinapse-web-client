@@ -16,7 +16,7 @@ import DesktopPagination from "../common/desktopPagination";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import { CollectionShowState } from "./reducer";
-import { Collection, userCollectionSchema } from "../../model/collection";
+import { Collection, collectionSchema } from "../../model/collection";
 import { fetchCollectionShowData } from "./sideEffect";
 import { Configuration } from "../../reducers/configuration";
 import { PaperInCollection, paperInCollectionSchema } from "../../model/paperInCollection";
@@ -47,8 +47,8 @@ function mapStateToProps(state: AppState) {
     currentUser: state.currentUser,
     collectionShow: state.collectionShow,
     configuration: state.configuration,
-    userCollections: denormalize(state.myCollections.collectionIds, [userCollectionSchema], state.entities),
-    userCollection: denormalize(state.collectionShow.mainCollectionId, userCollectionSchema, state.entities),
+    userCollections: denormalize(state.myCollections.collectionIds, [collectionSchema], state.entities),
+    userCollection: denormalize(state.collectionShow.mainCollectionId, collectionSchema, state.entities),
     papersInCollection: denormalize(state.collectionShow.paperIds, [paperInCollectionSchema], state.entities),
   };
 }
