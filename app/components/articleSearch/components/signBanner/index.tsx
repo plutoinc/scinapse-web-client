@@ -9,6 +9,7 @@ import {
 import { getUserGroupName } from "../../../../helpers/abTestHelper";
 import GlobalDialogManager from "../../../../helpers/globalDialogManager";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import ActionTicketManager from "../../../../helpers/actionTicketManager";
 const styles = require("./signBanner.scss");
 
 interface SignBannerProps {
@@ -87,7 +88,14 @@ const SignBannerSignButtonText: React.FunctionComponent<SignBannerContextProps> 
     <div className={styles.bannerSignButtonWrapper}>
       <button
         onClick={() => {
-          GlobalDialogManager.openSignUpDialog();
+          GlobalDialogManager.openSignUpDialog({
+            authContext: {
+              pageType: "searchResult",
+              actionArea: "searchResult",
+              actionLabel: "signBannerAtSearch-banner",
+            },
+            userActionType: "signBannerAtSearch-banner",
+          });
         }}
         className={styles.bannerSignButton}
       >
@@ -120,6 +128,15 @@ const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
   const TitleTextUserGroupName: string = getUserGroupName(SIGN_BANNER_AT_SEARCH_TITLE_TEXT_TEST) || "";
   const BodyTextUserGroupName: string = getUserGroupName(SIGN_BANNER_AT_SEARCH_BODY_TEXT_TEST) || "";
   const SignButtonTextUserName: string = getUserGroupName(SIGN_BANNER_AT_SEARCH_SIGN_BUTTON_TEXT_TEST) || "";
+
+  ActionTicketManager.trackTicket({
+    pageType: "searchResult",
+    actionType: "view",
+    actionArea: "searchResult",
+    actionTag: "pageView",
+    actionLabel: "signBannerAtSearch-banner",
+    expName: "signBannerAtSearch-banner",
+  });
 
   return (
     <div className={styles.bannerContainer}>
