@@ -3,7 +3,7 @@ import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 import Icon from "../../../icons";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { LocationDescriptor } from "../../../../node_modules/@types/history";
-import { blockUnverifiedUser, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
+import { hasBlockedInPagination } from "../desktopPagination";
 const styles = require("./pagination.scss");
 
 interface PaginationProps
@@ -45,12 +45,7 @@ function getEventLinkButton(props: EventPaginationProps) {
         onClick={async e => {
           e.preventDefault();
 
-          const isBlocked = await blockUnverifiedUser({
-            authLevel: AUTH_LEVEL.VERIFIED,
-            actionArea: "searchResult",
-            actionLabel: "nextPageFromSearch",
-            userActionType: "nextPageFromSearch",
-          });
+          const isBlocked = hasBlockedInPagination();
 
           if (isBlocked) {
             return;
@@ -118,12 +113,7 @@ function getLinkButton(props: LinkPaginationProps) {
         onClick={async e => {
           e.preventDefault();
 
-          const isBlocked = await blockUnverifiedUser({
-            authLevel: AUTH_LEVEL.VERIFIED,
-            actionArea: "searchResult",
-            actionLabel: "nextPageFromSearch",
-            userActionType: "nextPageFromSearch",
-          });
+          const isBlocked = hasBlockedInPagination();
 
           if (isBlocked) {
             return;

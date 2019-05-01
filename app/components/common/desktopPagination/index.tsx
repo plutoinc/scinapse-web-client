@@ -61,6 +61,15 @@ export function makePageNumberArray(props: DesktopPaginationProps): number[] {
   return range(startPage, endPage);
 }
 
+export async function hasBlockedInPagination() {
+  return blockUnverifiedUser({
+    authLevel: AUTH_LEVEL.VERIFIED,
+    actionArea: "searchResult",
+    actionLabel: "nextPageFromSearch",
+    userActionType: "nextPageFromSearch",
+  });
+}
+
 function getFirstPageIcon(props: DesktopPaginationProps) {
   if (props.currentPageIndex === 0) {
     return null;
@@ -93,15 +102,7 @@ function getNextIcon(props: DesktopPaginationProps) {
           onClick={async e => {
             e.preventDefault();
 
-            const isBlocked =
-              USER_GROUP_NAME === "block" &&
-              props.currentPageIndex >= 0 &&
-              (await blockUnverifiedUser({
-                authLevel: AUTH_LEVEL.VERIFIED,
-                actionArea: "searchResult",
-                actionLabel: "nextPageFromSearch",
-                userActionType: "nextPageFromSearch",
-              }));
+            const isBlocked = USER_GROUP_NAME === "block" && props.currentPageIndex >= 0 && hasBlockedInPagination();
 
             if (isBlocked) {
               return;
@@ -123,16 +124,9 @@ function getNextIcon(props: DesktopPaginationProps) {
           onClick={async e => {
             e.preventDefault();
 
-            const isBlocked =
-              USER_GROUP_NAME === "block" &&
-              (await blockUnverifiedUser({
-                authLevel: AUTH_LEVEL.VERIFIED,
-                actionArea: "searchResult",
-                actionLabel: "nextPageFromSearch",
-                userActionType: "nextPageFromSearch",
-              }));
+            const isBlocked = USER_GROUP_NAME === "block" && props.currentPageIndex === 2 && hasBlockedInPagination();
 
-            if (isBlocked && props.currentPageIndex === 2) {
+            if (isBlocked) {
               return;
             } else {
               (props as EventPaginationProps).onItemClick(props.currentPageIndex + 2);
@@ -180,15 +174,9 @@ const getEventPageItem = (props: EventPaginationProps, pageNumber: number, curre
         e.preventDefault();
 
         const isBlocked =
-          USER_GROUP_NAME === "block" &&
-          (await blockUnverifiedUser({
-            authLevel: AUTH_LEVEL.VERIFIED,
-            actionArea: "searchResult",
-            actionLabel: "nextPageFromSearch",
-            userActionType: "nextPageFromSearch",
-          }));
+          USER_GROUP_NAME === "block" && currentPage === 1 && pageNumber > currentPage && hasBlockedInPagination();
 
-        if (isBlocked && currentPage === 1 && pageNumber > currentPage) {
+        if (isBlocked) {
           return;
         } else {
           props.onItemClick(pageNumber);
@@ -214,15 +202,7 @@ const getLinkPageItem = (props: LinkPaginationProps, pageNumber: number, current
         e.preventDefault();
 
         const isBlocked =
-          USER_GROUP_NAME === "block" &&
-          currentPage === 1 &&
-          pageNumber > currentPage &&
-          (await blockUnverifiedUser({
-            authLevel: AUTH_LEVEL.VERIFIED,
-            actionArea: "searchResult",
-            actionLabel: "nextPageFromSearch",
-            userActionType: "nextPageFromSearch",
-          }));
+          USER_GROUP_NAME === "block" && currentPage === 1 && pageNumber > currentPage && hasBlockedInPagination();
 
         if (isBlocked) {
           return;
