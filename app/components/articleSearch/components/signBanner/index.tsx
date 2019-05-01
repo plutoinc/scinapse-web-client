@@ -1,4 +1,5 @@
 import * as React from "react";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import {
   SIGN_BANNER_AT_SEARCH_TITLE_TEXT_TEST,
@@ -8,7 +9,6 @@ import {
 } from "../../../../constants/abTestGlobalValue";
 import { getUserGroupName } from "../../../../helpers/abTestHelper";
 import GlobalDialogManager from "../../../../helpers/globalDialogManager";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import ActionTicketManager from "../../../../helpers/actionTicketManager";
 const styles = require("./signBanner.scss");
 
