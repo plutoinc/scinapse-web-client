@@ -102,7 +102,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
           handleGetBestPdf();
         } else if (bestPdf && bestPdf.hasBest) {
           setIsFetching(true);
-          Axios.get(`${getAPIHost()}/proxy/pdf?url=${bestPdf.url}`, {
+          Axios.get(`${getAPIHost()}/proxy/pdf?url=${encodeURIComponent(bestPdf.url)}`, {
             responseType: "blob",
           })
             .then(res => {
