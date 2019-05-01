@@ -3,6 +3,7 @@ import { withStyles } from "../../../../helpers/withStylesHelper";
 import ArticleSpinner from "../../../common/spinner/articleSpinner";
 import Icon from "../../../../icons";
 import GlobalDialogManager from "../../../../helpers/globalDialogManager";
+import ActionTicketManager from "../../../../helpers/actionTicketManager";
 const styles = require("./doiSearchBlocked.scss");
 
 interface DoiSearchBlockedProps {
@@ -31,6 +32,15 @@ const DoiSearchBlocked: React.FunctionComponent<DoiSearchBlockedProps> = props =
       </div>
     );
   }
+
+  ActionTicketManager.trackTicket({
+    pageType: "searchResult",
+    actionType: "view",
+    actionArea: "searchResult",
+    actionTag: "pageView",
+    actionLabel: "doiSearch",
+    expName: "doiSearch",
+  });
 
   return (
     <div className={styles.articleSearchContainer}>
