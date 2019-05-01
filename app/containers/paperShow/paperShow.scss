@@ -89,6 +89,11 @@ article.paperShow {
     margin-bottom: $paper-show-interblock-divider-margin;
   }
 
+  .abstractContent {
+    word-break: keep-all;
+    word-wrap: break-word;
+  }
+
   .paperTitle {
     max-width: 792px;
     font-family: Georgia;
