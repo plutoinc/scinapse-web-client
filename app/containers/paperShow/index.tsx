@@ -221,7 +221,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <article className={styles.paperShow}>
             <div className={styles.paperShowContent}>
               {this.getGoBackResultBtn()}
-              <div className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.title) }} />
+              <h1 className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.title) }} />
               <VenueAndAuthors
                 pageType={"paperShow"}
                 actionArea={"paperDescription"}
@@ -678,41 +678,55 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         : "";
     const shortJournals = paper.journal ? `${paper.journal!.title!.slice(0, 50)} | ` : "";
     return `${shortAbstract}${shortAuthors}${shortJournals}`;
-    // }
   };
 
   private makeStructuredData = (paper: Paper) => {
     const authorsForStructuredData = paper.authors.map(author => {
-      return {
-        "@type": "Person",
-        name: author!.name,
-        affiliation: {
-          name: author!.organization,
-        },
-      };
+      if (author) {
+        const affiliationName = author.organization || (author.affiliation && author.affiliation.name);
+
+        return {
+          "@type": "Person",
+          name: author.name,
+          affiliation: {
+            name: affiliationName || "",
+          },
+        };
+      }
+      return null;
     });
 
-    const publisherForStructuredData = {
-      "@type": "Organization",
-      name: "Scinapse",
-      logo: {
-        "@type": "ImageObject",
-        url: "https://assets.pluto.network/scinapse/scinapse-logo.png",
-      },
-    };
+    function getPublisher() {
+      if (paper.journal) {
+        return {
+          "@type": ["PublicationVolume", "Periodical"],
+          name: paper.journal.title,
+          publisher: paper.journal.title,
+          contentRating: {
+            "@type": "Rating",
+            name: "impact factor",
+            ratingValue: paper.journal.impactFactor || 0,
+          },
+        };
+      }
+
+      return null;
+    }
 
     const structuredData: any = {
       "@context": "http://schema.org",
-      "@type": "Article",
+      "@type": "ScholarlyArticle",
       headline: paper.title,
+      identifier: paper.doi,
+      description: paper.abstract,
+      name: paper.title,
       image: ["https://assets.pluto.network/scinapse/scinapse-logo.png"],
       datePublished: paper.publishedDate,
       dateModified: paper.publishedDate,
       author: authorsForStructuredData,
-      keywords: paper.fosList.map(fos => fos!.fos),
-      description: paper.abstract,
-      mainEntityOfPage: "https://scinapse.io",
-      publisher: publisherForStructuredData,
+      about: paper.fosList.map(fos => fos!.fos),
+      mainEntityOfPage: `https://scinapse.io/papers/${paper.id}`,
+      publisher: getPublisher(),
     };
 
     return structuredData;
