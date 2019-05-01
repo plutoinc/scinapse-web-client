@@ -240,6 +240,41 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
         <meta name="google-site-verification" content="YHiVYg7vff8VWXZge2D1aOZsT8rCUxnkjwbQqFT2QEI" />
         <meta name="msvalidate.01" content="55ADC81A3C8F5F3DAA9B90F27CA16E2B" />
         <link rel="manifest" href="/manifest.json" />
+        <link
+          rel="apple-touch-startup-image"
+          href="https://assets.pluto.network/scinapse/app_icon/launch-640x1136.png"
+          media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="https://assets.pluto.network/scinapse/app_icon/launch-750x1294.png"
+          media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="https://assets.pluto.network/scinapse/app_icon/launch-1242x2148.png"
+          media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="https://assets.pluto.network/scinapse/app_icon/launch-1125x2436.png"
+          media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="https://assets.pluto.network/scinapse/app_icon/launch-1536x2048.png"
+          media="(min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="https://assets.pluto.network/scinapse/app_icon/launch-1668x2224.png"
+          media="(min-device-width: 834px) and (max-device-width: 834px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="https://assets.pluto.network/scinapse/app_icon/launch-2048x2732.png"
+          media="(min-device-width: 1024px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)"
+        />
       </Helmet>
     );
   };
