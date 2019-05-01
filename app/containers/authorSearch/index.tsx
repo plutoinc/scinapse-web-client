@@ -109,7 +109,9 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
     }
 
     if (hasNoAuthorSearchResult && queryParams) {
-      return (
+      return isLoading ? (
+        this.renderLoadingSpinner()
+      ) : (
         <>
           <TabNavigationBar searchKeyword={authorSearch.searchInput} />
           <NoResultInSearch
