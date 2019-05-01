@@ -120,7 +120,11 @@ class Home extends React.PureComponent<HomeProps> {
       logo: "https://s3.amazonaws.com/pluto-asset/scinapse/scinapse-logo.png",
     };
 
-    return <Helmet script={[{ type: "application/ld+json", innerHTML: JSON.stringify(structuredDataJSON) }]} />;
+    return (
+      <Helmet script={[{ type: "application/ld+json", innerHTML: JSON.stringify(structuredDataJSON) }]}>
+        <link rel="canonical" href="https://scinapse.io" />
+      </Helmet>
+    );
   };
 
   private getContainerStyle = (): React.CSSProperties => {
