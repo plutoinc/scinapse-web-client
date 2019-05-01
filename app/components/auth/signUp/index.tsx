@@ -6,12 +6,10 @@ import { SignUpContainerProps, SIGN_UP_STEP } from "./types";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import FirstForm from "./components/firstForm";
 import SignUpForm, { SignUpFormValues } from "./components/signUpForm";
-import FinalSignUpContent from "./components/finalSignUpContent";
 import { OAUTH_VENDOR, SignUpWithSocialParams } from "../../../api/types/auth";
 import { AppState } from "../../../reducers";
-import { closeDialog } from "../../dialog/actions";
-import EnvChecker from "../../../helpers/envChecker";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
+import GlobalDialogManager from "../../../helpers/globalDialogManager";
 const styles = require("./signUp.scss");
 
 const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
@@ -122,27 +120,12 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
       );
 
     case SIGN_UP_STEP.FINAL_WITH_EMAIL:
-      return (
-        <FinalSignUpContent
-          onSubmit={() => {
-            props.dispatch(closeDialog());
-          }}
-          contentType="email"
-        />
-      );
+      GlobalDialogManager.openFinalSignUpWithEmailDialog();
+      return null;
 
     case SIGN_UP_STEP.FINAL_WITH_SOCIAL:
-      return (
-        <FinalSignUpContent
-          onSubmit={() => {
-            if (!EnvChecker.isOnServer() && token.vendor === "ORCID") {
-              window.close();
-            }
-            props.dispatch(closeDialog());
-          }}
-          contentType="social"
-        />
-      );
+      GlobalDialogManager.openFinalSignUpWithSocialDialog();
+      return null;
 
     default:
       return (

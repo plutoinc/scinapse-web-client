@@ -21,8 +21,8 @@ function withSocialCompleteContent() {
 function withEmailCompleteContent() {
   return (
     <>
-      <div className={s.finalSignUpContent}>{`Please complete your email verification
-  to become an user.`}</div>
+      <div className={s.finalSignUpContent}>{`Please check your email
+and verify your email address`}</div>
       <Icon className={s.finalSignUpIconWrapper} icon="VERIFICATION_EMAIL_ICON" />
     </>
   );
