@@ -22,7 +22,7 @@ const manifestJSON = {
       sizes: "192x192",
     },
   ],
-  start_url: "index.html?app_launcher=true&utm_source=pwa_app",
+  start_url: "/?app_launcher=true&utm_source=pwa_app",
 };
 
 export default manifestJSON;
