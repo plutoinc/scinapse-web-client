@@ -229,6 +229,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
       return (
         <Helmet>
           <title>{`${member.firstName} ${member.lastName || ""}'s paper collections | Scinapse`}</title>
+          <link rel="canonical" href={`https://scinapse.io/collections/users/${member.id}/collections`} />
           <meta
             itemProp="name"
             content={`${member.firstName} ${member.lastName || ""}'s paper collections | Scinapse`}

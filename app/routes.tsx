@@ -200,6 +200,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
     return (
       <Helmet>
         <meta charSet="utf-8" />
+        <meta name="theme-color" content="#3e7fff" />
         <link rel="shortcut icon" href="https://assets.pluto.network/scinapse/favicon.ico" />
         <link
           rel="search"
@@ -209,7 +210,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
         />
         <title>Scinapse | Academic search engine for paper</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-        <meta itemProp="name" content="sci-napse | Academic search engine for paper" />
+        <meta itemProp="name" content="Scinapse | Academic search engine for paper" />
         <meta
           name="description"
           // tslint:disable-next-line:max-line-length
@@ -238,6 +239,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
         <meta property="og:site_name" content="Scinapse" />
         <meta name="google-site-verification" content="YHiVYg7vff8VWXZge2D1aOZsT8rCUxnkjwbQqFT2QEI" />
         <meta name="msvalidate.01" content="55ADC81A3C8F5F3DAA9B90F27CA16E2B" />
+        <link rel="manifest" href="/manifest.json" />
       </Helmet>
     );
   };

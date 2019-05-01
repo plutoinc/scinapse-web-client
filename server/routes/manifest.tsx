@@ -1,6 +1,6 @@
 const manifestJSON = {
-  short_name: "scinapse",
-  name: "scinapse",
+  short_name: "Scinapse",
+  name: "Scinapse",
   background_color: "#6096ff",
   theme_color: "#3e7fff",
   display: "standalone",
