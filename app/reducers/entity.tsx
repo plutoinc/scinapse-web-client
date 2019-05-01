@@ -226,6 +226,21 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       };
     }
 
+    case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_BEST_PDF: {
+      const { paperId, bestPdf } = action.payload;
+
+      return {
+        ...state,
+        papers: {
+          ...state.papers,
+          [paperId]: {
+            ...state.papers[paperId],
+            bestPdf,
+          },
+        },
+      };
+    }
+
     case ACTION_TYPES.GLOBAL_FLUSH_ENTITIES:
       return INITIAL_ENTITY_STATE;
 

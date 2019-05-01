@@ -9,6 +9,9 @@
 
 .contentWrapper {
   padding: 12px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   .contentText {
     font-size: 14px;

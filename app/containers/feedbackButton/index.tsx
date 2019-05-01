@@ -40,7 +40,7 @@ const UserSurveyMenu: React.SFC<{
     <a
       onClick={handleClick}
       target="_blank"
-      rel="noopener"
+      rel="noopener nofollow"
       className={styles.menuItemContent}
       // tslint:disable-next-line:max-line-length
       href="https://docs.google.com/forms/d/e/1FAIpQLSfTxxzUbMWfEaJNO_2EHzjnlb9Nx3xQj3LQyswnpKitPtozfA/viewform?usp=sf_link"
@@ -150,7 +150,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
       <a
         onClick={this.trackClickMenu}
         target="_blank"
-        rel="noopener"
+        rel="noopener nofollow"
         className={styles.menuItemContent}
         href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
       >

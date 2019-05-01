@@ -135,6 +135,7 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
           authLevel: AUTH_LEVEL.VERIFIED,
           actionArea: actionArea || pageType,
           actionLabel: "addToCollection",
+          userActionType: "addToCollection",
         });
 
         if (!isBlocked) {

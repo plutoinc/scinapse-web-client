@@ -15,8 +15,6 @@ import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
 import { AppState } from "./reducers";
 import { checkAuthStatus } from "./components/auth/actions";
-const { pdfjs } = require("react-pdf");
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 declare var Sentry: any;
 declare var FB: any;
 
@@ -44,6 +42,14 @@ class Main extends React.Component {
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
+
+    const head = document.getElementsByTagName("head")[0];
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.type = "text/css";
+    link.crossOrigin = "anonymous";
+    link.href = "https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css";
+    head.appendChild(link);
   }
 
   public render() {
@@ -96,15 +102,25 @@ class PlutoRenderer {
       (window as any).dataLayer.push("config", "AW-817738370");
     }
 
-    this.initSentry();
     this.initializeGA();
+    await this.initSentry();
     this.renderAtClient();
   }
 
-  private initSentry() {
+  private async initSentry() {
     if (EnvChecker.isProdBrowser()) {
-      Sentry.init({
-        dsn: "https://90218bd0404f4e8e97fbb17279974c23@sentry.io/1306012",
+      await new Promise(resolve => {
+        const script = document.createElement("script");
+        script.src = "https://browser.sentry-cdn.com/5.0.6/bundle.min.js";
+        script.async = true;
+        script.crossOrigin = "anonymous";
+        script.onload = () => {
+          Sentry.init({
+            dsn: "https://90218bd0404f4e8e97fbb17279974c23@sentry.io/1306012",
+          });
+          resolve();
+        };
+        document.body.appendChild(script);
       });
     }
   }

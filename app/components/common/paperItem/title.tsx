@@ -6,7 +6,10 @@ import { trackEvent } from "../../../helpers/handleGA";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
 import actionTicketManager from "../../../helpers/actionTicketManager";
-import { checkBenefitExp } from "../../../helpers/checkBenefitExpCount";
+import { getUserGroupName } from "../../../helpers/abTestHelper";
+import { getCurrentPageType } from "../../locationListener";
+import { PAPER_FROM_SEARCH_TEST_NAME } from "../../../constants/abTestGlobalValue";
+import { getBlockedValueForPaperFromSearchTest } from "../../../helpers/abTestHelper/paperFromSearchTestHelper";
 const styles = require("./title.scss");
 
 export interface TitleProps extends RouteComponentProps<any> {
@@ -61,32 +64,15 @@ class Title extends React.PureComponent<TitleProps, {}> {
   }
 
   private handleClickTitle = async (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const { pageType, actionArea, paperId, shouldBlockUnverifiedUser, history, currentPage } = this.props;
+    const { pageType, actionArea, paperId, history } = this.props;
 
     e.preventDefault();
 
-    if (shouldBlockUnverifiedUser) {
-      const isBlocked = await checkBenefitExp({
-        type: "refPaperCountSession",
-        matching: "session",
-        maxCount: 3,
-        actionArea: actionArea!,
-        userActionType: "paperShow",
-        expName: "refPaperCountSession",
-      });
+    const userGroupName: string = getUserGroupName(PAPER_FROM_SEARCH_TEST_NAME) || "";
+    const currentArea = getCurrentPageType();
 
-      if (isBlocked) return;
-    }
-
-    if (currentPage === 1) {
-      const isBlocked = await checkBenefitExp({
-        type: "getFromFirstResultPage",
-        matching: "device",
-        maxCount: 3,
-        actionArea: "searchResult",
-        userActionType: "paperShow",
-        expName: "getFromFirstResultPage",
-      });
+    if (currentArea === "searchResult") {
+      const isBlocked = await getBlockedValueForPaperFromSearchTest(userGroupName, "searchResult");
 
       if (isBlocked) return;
     }

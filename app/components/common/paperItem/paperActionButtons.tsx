@@ -14,7 +14,6 @@ import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import CollectionButton from "./collectionButton";
 import formatNumber from "../../../helpers/formatNumber";
-import { shouldBlockToSignUp } from "../../../helpers/shouldBlockToSignUp";
 const styles = require("./paperActionButtons.scss");
 
 interface HandleClickClaim {
@@ -89,13 +88,9 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
       <a
         href={`https://doi.org/${paper.doi}`}
         target="_blank"
-        rel="noopener"
+        rel="noopener nofollow"
         className={styles.sourceButton}
-        onClick={async e => {
-          if (await shouldBlockToSignUp(actionArea, "sourceInPaperItem")) {
-            e.preventDefault();
-            return;
-          }
+        onClick={() => {
           ActionTicketManager.trackTicket({
             pageType,
             actionType: "fire",

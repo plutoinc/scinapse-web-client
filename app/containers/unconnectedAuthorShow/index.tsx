@@ -328,6 +328,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
     return (
       <Helmet>
         <title>{author.name}</title>
+        <link rel="canonical" href={`https://scinapse.io/authors/${author.id}`} />
         <meta itemProp="name" content={`${author.name} | Scinapse | Academic search engine for paper`} />
         <meta name="description" content={description} />
         <meta name="twitter:description" content={description} />

@@ -12,7 +12,7 @@ import { RAW } from "../../../__mocks__";
 import { AUTHOR_SHOW_PATH } from "../../../constants/routes";
 import { camelCaseKeys } from "../../../helpers/camelCaseKeys";
 
-describe("ConnectedAuthorShow Component", () => {
+describe.skip("ConnectedAuthorShow Component", () => {
   const mappedAuthor = camelCaseKeys(RAW.AUTHOR);
   let mockStore = generateMockStore(initialState);
   let mockState: any;

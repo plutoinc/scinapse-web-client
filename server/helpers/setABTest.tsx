@@ -1,5 +1,5 @@
 import * as express from "express";
-import { LIVE_TESTS } from "../../app/constants/abTest";
+import { getRandomUserGroup, LIVE_TESTS } from "../../app/constants/abTest";
 
 export default function setABTest(req: express.Request, res: express.Response) {
   if (req.cookies) {
@@ -7,16 +7,8 @@ export default function setABTest(req: express.Request, res: express.Response) {
 
     LIVE_TESTS.forEach(test => {
       if (!keys.includes(test.name)) {
-        let userGroup = "";
-        const randomValue = Math.random();
-        test.userGroup.reduce((accm, cv) => {
-          if (randomValue >= accm && randomValue < accm + cv.weight) {
-            userGroup = cv.groupName;
-          }
-          return accm + cv.weight;
-        }, 0);
-
-        res.cookie(test.name, userGroup, {
+        const randomUserGroup = getRandomUserGroup(test.name);
+        res.cookie(test.name, randomUserGroup, {
           maxAge: 31536000000,
         });
       } else {

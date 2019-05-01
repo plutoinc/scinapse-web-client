@@ -9,7 +9,6 @@ import { trackAndOpenLink } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import Icon from "../../../icons";
 import { isPDFLink } from "../../../helpers/getPDFLink";
-import { shouldBlockToSignUp } from "../../../helpers/shouldBlockToSignUp";
 const styles = require("./sourceURLPopover.scss");
 
 interface SourceURLPopover {
@@ -40,12 +39,7 @@ const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
       return (
         <a
           className={styles.sourceItem}
-          onClick={async e => {
-            const shouldBlock = await shouldBlockToSignUp("paperDescription", "source");
-            if (shouldBlock) {
-              e.preventDefault();
-              return;
-            }
+          onClick={e => {
             trackAndOpenLink("search-item-source-button");
             ActionTicketManager.trackTicket({
               pageType: props.pageType,
@@ -57,11 +51,10 @@ const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
             props.handleCloseFunc(e);
           }}
           target="_blank"
-          rel="noopener"
+          rel="noopener nofollow"
           href={source.url}
           key={source.id}
         >
-          {isPDFLink(source) && <span>{`[PDF] `}</span>}
           <span
             className={classNames({
               [styles.host]: true,

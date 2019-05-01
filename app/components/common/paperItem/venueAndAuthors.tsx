@@ -21,11 +21,14 @@ class VenueAndAuthors extends React.PureComponent<VenueAndAuthorsProps, {}> {
       <div className={styles.publishInfoList}>
         <PaperItemVenue
           journal={journal}
+          paperId={paper.id}
+          doi={paper.doi}
           conferenceInstance={conferenceInstance}
           publishedDate={publishedDate}
           pageType={pageType}
           actionArea={actionArea}
         />
+
         {authors ? (
           <div className={styles.author}>
             <Icon icon="AUTHOR" />

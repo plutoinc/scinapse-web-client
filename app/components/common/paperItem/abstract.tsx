@@ -2,10 +2,13 @@ import * as React from "react";
 import { escapeRegExp } from "lodash";
 import HighLightedContent from "../highLightedContent";
 import { withStyles } from "../../../helpers/withStylesHelper";
-const styles = require("./abstract.scss");
 import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { checkBenefitExp } from "../../../helpers/checkBenefitExpCount";
+import { getUserGroupName } from "../../../helpers/abTestHelper";
+import { getCurrentPageType } from "../../locationListener/index";
+import { PAPER_FROM_SEARCH_TEST_NAME } from "../../../constants/abTestGlobalValue";
+import { getBlockedValueForPaperFromSearchTest } from "../../../helpers/abTestHelper/paperFromSearchTestHelper";
+const styles = require("./abstract.scss");
 
 const MAX_LENGTH_OF_ABSTRACT = 500;
 
@@ -67,18 +70,14 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
   }
 
   public handelExtendContent = async () => {
-    const { pageType, actionArea, paperId, currentPage } = this.props;
+    const { pageType, actionArea, paperId } = this.props;
     const { isExtendContent } = this.state;
 
-    if (!isExtendContent && currentPage === 1) {
-      const isBlocked = await checkBenefitExp({
-        type: "getFromFirstResultPage",
-        matching: "device",
-        maxCount: 3,
-        actionArea: "abstract",
-        userActionType: "paperShow",
-        expName: "getFromFirstResultPage",
-      });
+    const userGroupName: string = getUserGroupName(PAPER_FROM_SEARCH_TEST_NAME) || "";
+    const currentArea = getCurrentPageType();
+
+    if (!isExtendContent && currentArea === "searchResult") {
+      const isBlocked = await getBlockedValueForPaperFromSearchTest(userGroupName, "abstract");
 
       if (isBlocked) return;
     }

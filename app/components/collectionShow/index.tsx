@@ -317,7 +317,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
             <a
               className={styles.shareBtn}
               target="_blank"
-              rel="noopener"
+              rel="noopener nofollow"
               onClick={() => {
                 this.getPageToSharing("FACEBOOK", userCollection.id);
               }}
@@ -327,7 +327,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
             <a
               className={styles.shareBtn}
               target="_blank"
-              rel="noopener"
+              rel="noopener nofollow"
               onClick={() => {
                 this.getPageToSharing("TWITTER", userCollection.id);
               }}
@@ -465,6 +465,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
       return (
         <Helmet>
           <title>{userCollection.title} | Scinapse</title>
+          <link rel="canonical" href={`https://scinapse.io/collections/${userCollection.id}`} />
           <meta itemProp="name" content={`${userCollection.title} | Scinapse`} />
           <meta
             name="description"

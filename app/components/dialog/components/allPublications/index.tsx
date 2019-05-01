@@ -217,6 +217,8 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
               <PaperItemVenue
                 pageType={getCurrentPageType()}
                 actionArea="allPublications"
+                paperId={paper.id}
+                doi={paper.doi}
                 journal={paper.journal}
                 conferenceInstance={paper.conferenceInstance}
                 publishedDate={paper.publishedDate}
@@ -263,6 +265,8 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
             <PaperItemVenue
               pageType={getCurrentPageType()}
               actionArea="allPublications"
+              paperId={paper.id}
+              doi={paper.doi}
               journal={paper.journal}
               conferenceInstance={paper.conferenceInstance}
               publishedDate={paper.publishedDate}

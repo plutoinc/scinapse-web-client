@@ -39,8 +39,10 @@ declare namespace Scinapse {
       | "query"
       | "downloadPdf"
       | "source"
+      | "viewFullText"
       | "viewMorePDF"
       | "viewLessPDF"
+      | "viewPDF"
       | "addToCollection"
       | "removeFromCollection"
       | "citePaper"
@@ -82,6 +84,11 @@ declare namespace Scinapse {
       | "blockUnsignedUser"
       | "blockUnverifiedUser"
       | "openSignUp"
+      | "addToBookmark"
+      | "paperFromSearch"
+      | "queryLover"
+      | "authorFromSearch"
+      | "nextPageFromSearch"
       | "";
 
     type ActionArea =
@@ -114,6 +121,7 @@ declare namespace Scinapse {
       | "nextPaper"
       | "noPaperNotiPage"
       | "abstract"
+      | "footer"
       | "";
 
     type PageType =

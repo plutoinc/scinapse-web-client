@@ -37,7 +37,15 @@ export const ssr = async (event: any, context: any) => {
   await downloadSrcFromS3(branch);
   const bundle = require("/tmp/server/main.js");
   const app = bundle.ssr;
-  const binaryMimeTypes = ["application/xml", "text/xml", "text/html", "application/xml"];
+  const binaryMimeTypes = [
+    "application/xml",
+    "text/xml",
+    "text/html",
+    "application/xml",
+    "text/javascript",
+    "application/javascript",
+    "application/json",
+  ];
   const server = awsServerlessExpress.createServer(app, null, binaryMimeTypes);
   return awsServerlessExpress.proxy(server, event, context, "PROMISE").promise;
 };

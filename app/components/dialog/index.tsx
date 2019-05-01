@@ -55,8 +55,10 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       <Dialog
         open={dialogState.isOpen}
         onClose={() => {
-          this.closeDialog();
-          trackDialogView("outsideClickClose");
+          if (!dialogState.isBlocked) {
+            this.closeDialog();
+            trackDialogView("outsideClickClose");
+          }
         }}
         classes={{
           paper: styles.dialogPaper,

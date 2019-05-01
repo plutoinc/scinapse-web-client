@@ -18,10 +18,11 @@ interface BlockByBenefitExpParams {
   actionLabel: string | null;
   userActionType?: Scinapse.ActionTicket.ActionTagType;
   expName?: string;
+  isBlocked?: boolean;
 }
 
 export async function blockUnverifiedUser(params: BlockByBenefitExpParams): Promise<boolean> {
-  const { authLevel, userActionType, actionArea, actionLabel, expName } = params;
+  const { authLevel, userActionType, actionArea, actionLabel, expName, isBlocked } = params;
   const state: AppState = StoreManager.store.getState();
   const { currentUser } = state;
 
@@ -31,16 +32,17 @@ export async function blockUnverifiedUser(params: BlockByBenefitExpParams): Prom
       authContext: {
         pageType: getCurrentPageType(),
         actionArea: actionArea,
-        actionLabel: actionLabel,
+        actionLabel: expName ? expName : actionLabel,
         expName,
       },
+      isBlocked,
     });
     ActionTicketManager.trackTicket({
       pageType: getCurrentPageType(),
       actionType: "fire",
       actionArea: actionArea,
       actionTag: "blockUnsignedUser",
-      actionLabel: actionLabel,
+      actionLabel: expName ? expName : actionLabel,
       expName,
     });
     return true;

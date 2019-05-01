@@ -5,14 +5,17 @@ import * as expirePlugin from "store/plugins/expire";
 import EnvChecker from "../envChecker";
 import ActionTicket, { ActionTicketParams, FinalActionTicket } from "./actionTicket";
 import {
-  MAXIMUM_TICKET_COUNT_IN_QUEUE,
-  MAXIMUM_RETRY_COUNT,
-  TICKET_QUEUE_KEY,
   DEAD_LETTER_QUEUE_KEY,
-  DEVICE_ID_KEY,
-  SESSION_ID_KEY,
-  LIVE_SESSION_LENGTH,
   DESTINATION_URL,
+  DEVICE_ID_INITIALIZED_KEY,
+  DEVICE_ID_KEY,
+  LIVE_SESSION_LENGTH,
+  MAXIMUM_RETRY_COUNT,
+  MAXIMUM_TICKET_COUNT_IN_QUEUE,
+  SESSION_COUNT_KEY,
+  SESSION_ID_INITIALIZED_KEY,
+  SESSION_ID_KEY,
+  TICKET_QUEUE_KEY,
   TIME_INTERVAL_TO_SEND_TICKETS,
 } from "../../constants/actionTicket";
 import { trackEvent } from "../handleGA";
@@ -36,19 +39,22 @@ class ActionTicketManager {
   }
 
   public trackTicket(params: ActionTicketParams) {
-    if (!EnvChecker.isOnServer() && EnvChecker.isDev()) {
+    if (!EnvChecker.isOnServer() && (EnvChecker.isDev() || EnvChecker.isLocal())) {
       console.log(params);
     }
-    if (!EnvChecker.isOnServer()) {
+
+    if (!EnvChecker.isOnServer() && EnvChecker.isProdBrowser()) {
       this.renewSessionKey();
       const ticket = new ActionTicket(params);
       this.addToQueue([ticket]);
 
-      trackEvent({
-        category: params.actionArea || "",
-        action: params.actionTag,
-        label: params.actionLabel || "",
-      });
+      if (params.actionType === "fire") {
+        trackEvent({
+          category: params.actionArea || "",
+          action: params.actionTag,
+          label: params.actionLabel || "",
+        });
+      }
 
       if (this.queue.length > MAXIMUM_TICKET_COUNT_IN_QUEUE && EnvChecker.isProdBrowser()) {
         this.sendTickets();
@@ -98,18 +104,22 @@ class ActionTicketManager {
     const deviceKey = store.get(DEVICE_ID_KEY);
     if (!deviceKey) {
       store.set(DEVICE_ID_KEY, uuid());
+      store.set(DEVICE_ID_INITIALIZED_KEY, true);
     }
   }
 
   private renewSessionKey() {
     (store as any).removeExpiredKeys();
     const sessionKey: string | undefined = store.get(SESSION_ID_KEY);
+    let sessionCount: number = store.get(SESSION_COUNT_KEY) || 0;
     const currentDate = new Date();
     const currentTime = currentDate.getTime();
 
     if (!sessionKey) {
       const newKey = uuid();
       (store as any).set(SESSION_ID_KEY, newKey, currentTime + LIVE_SESSION_LENGTH);
+      (store as any).set(SESSION_ID_INITIALIZED_KEY, true);
+      (store as any).set(SESSION_COUNT_KEY, ++sessionCount);
     } else {
       (store as any).set(SESSION_ID_KEY, sessionKey, currentTime + LIVE_SESSION_LENGTH);
     }

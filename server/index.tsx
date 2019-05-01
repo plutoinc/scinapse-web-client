@@ -8,6 +8,7 @@ import getSitemap from "./routes/sitemap";
 import getRobotTxt from "./routes/robots";
 import getOpenSearchXML from "./routes/openSearchXML";
 import setABTest from "./helpers/setABTest";
+import manifestJSON from "./routes/manifest";
 const compression = require("compression");
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 const SITEMAP_REGEX = /^\/sitemap(\/sitemap_[0-9]+\.xml)?\/?$/;
@@ -32,6 +33,11 @@ app.get(SITEMAP_REGEX, async (req, res) => {
   res.send(sitemap.body);
 });
 
+app.get("/manifest.json", (_req, res) => {
+  const json = manifestJSON;
+  res.send(json);
+});
+
 app.get("/robots.txt", (req, res) => {
   res.setHeader("Cache-Control", "max-age=100");
   res.setHeader("Content-Type", "text/plain");
@@ -43,6 +49,10 @@ app.get("/opensearch.xml", (_req, res) => {
   const body = getOpenSearchXML();
   res.setHeader("Content-Type", "application/xml; charset=utf-8");
   res.send(body);
+});
+
+app.get("/sw.js", (_req, res) => {
+  res.sendFile(path.resolve(__dirname, "sw.js"));
 });
 
 app.get("*", async (req, res) => {

@@ -1,16 +1,32 @@
 import * as store from "store";
-import { BenefitExpType, BenefitExpValue, BENEFIT_EXPERIMENT_KEY } from "../constants/abTest";
-import { SESSION_ID_KEY, DEVICE_ID_KEY } from "../constants/actionTicket";
-import { blockUnverifiedUser, AUTH_LEVEL } from "./checkAuthDialog";
+import { ABTestType, BENEFIT_EXPERIMENT_KEY, BenefitExpType, BenefitExpValue } from "../constants/abTest";
+import { DEVICE_ID_KEY, SESSION_ID_KEY } from "../constants/actionTicket";
+import { AUTH_LEVEL, blockUnverifiedUser } from "./checkAuthDialog";
+import { COMPLETE_BLOCK_SIGN_UP_TEST_NAME } from "../constants/abTestGlobalValue";
+import { getUserGroupName } from "./abTestHelper";
 
 interface CheckBenefitExpCount {
-  type: BenefitExpType;
+  type: ABTestType | BenefitExpType;
   maxCount: number;
   matching: "session" | "device";
   userActionType: Scinapse.ActionTicket.ActionTagType;
   actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType;
-  expName: BenefitExpType;
+  expName: ABTestType | BenefitExpType;
   actionLabel?: string;
+}
+
+function getBlockedValueForCompleteBlockSignUpTest() {
+  const userGroupName = getUserGroupName(COMPLETE_BLOCK_SIGN_UP_TEST_NAME);
+  switch (userGroupName) {
+    case "control":
+    case "closeIconTop":
+    case "closeIconBottom":
+      return true;
+    case "blackLayer":
+      return false;
+    default:
+      return true;
+  }
 }
 
 export async function checkBenefitExp({
@@ -19,7 +35,6 @@ export async function checkBenefitExp({
   matching,
   userActionType,
   actionArea,
-  actionLabel,
   expName,
 }: CheckBenefitExpCount): Promise<boolean> {
   const exp: BenefitExpValue | undefined = store.get(BENEFIT_EXPERIMENT_KEY);
@@ -33,7 +48,7 @@ export async function checkBenefitExp({
       (matching === "device" && exp[type].deviceId === currentDeviceId))
   ) {
     const nextCount = exp[type].count + 1;
-    const shouldBlock = nextCount >= maxCount && !exp[type].shouldAvoidBlock;
+    const shouldBlock = nextCount >= maxCount;
     const newExp = {
       ...exp,
       [type]: {
@@ -50,8 +65,9 @@ export async function checkBenefitExp({
         authLevel: AUTH_LEVEL.VERIFIED,
         userActionType,
         actionArea,
-        actionLabel: actionLabel || String(exp[type].count),
+        actionLabel: expName,
         expName,
+        isBlocked: getBlockedValueForCompleteBlockSignUpTest(),
       });
     } else {
       store.set(BENEFIT_EXPERIMENT_KEY, newExp);

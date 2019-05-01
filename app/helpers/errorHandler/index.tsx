@@ -1,7 +1,6 @@
 import * as React from "react";
 import EnvChecker from "../envChecker";
 import { withStyles } from "../withStylesHelper";
-import { Footer } from "../../components/layouts";
 import { trackEvent } from "../handleGA";
 const styles = require("./errorHandler.scss");
 declare var Sentry: any;
@@ -33,7 +32,7 @@ const LinkButton: React.StatelessComponent<LinkButtonProps> = props => {
   const { style, children, href } = props;
 
   return (
-    <a style={style} href={href} className={styles.linkButtonWrapper} target="_blank" rel="noopener">
+    <a style={style} href={href} className={styles.linkButtonWrapper} target="_blank" rel="noopener nofollow">
       {children}
     </a>
   );
@@ -122,7 +121,6 @@ export default class ErrorTracker extends React.PureComponent<{}, ErrorTrackerSt
               </div>
             </div>
           </div>
-          <Footer />
         </div>
       );
     }

@@ -101,8 +101,8 @@ const ssr = async (req: express.Request, version: string) => {
 
   const html: string = await generateFullHTML({
     reactDom: renderedHTML,
-    scriptTags,
     linkTags,
+    scriptTags,
     helmet,
     initialState: stringifiedInitialReduxState,
     css: cssArr.join("") + materialUICss,

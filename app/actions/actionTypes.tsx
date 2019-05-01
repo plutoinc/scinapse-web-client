@@ -5,12 +5,12 @@ import { AvailableCitationType } from "../containers/paperShow/records";
 import { GetCollectionsResponse } from "../api/member";
 import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
 import { Collection } from "../model/collection";
-import { Paper } from "../model/paper";
+import { Paper, PaperPdf } from "../model/paper";
 import { CVInfoType, Award, Education, Experience } from "../model/profile";
 import { PaperInCollection } from "../model/paperInCollection";
 import { SIGN_UP_STEP } from "../components/auth/signUp/types";
 import { OAuthCheckParams } from "../api/types/auth";
-import { benefitExpTicketContext } from "../constants/abTest";
+import { BenefitExpTicketContext } from "../constants/abTest";
 
 export enum ACTION_TYPES {
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = "GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING",
@@ -121,6 +121,13 @@ export enum ACTION_TYPES {
   PAPER_SHOW_COLLECTION_BUTTON_TOGGLE_NOTE_EDIT_MODE = "PAPER_SHOW_COLLECTION_BUTTON_TOGGLE_NOTE_EDIT_MODE",
   // tslint:disable-next-line:max-line-length
   PAPER_SHOW_COLLECTION_BUTTON_STALE_UPDATED_COLLECTION_NOTE = "PAPER_SHOW_COLLECTION_BUTTON_STALE_UPDATED_COLLECTION_NOTE",
+
+  PAPER_SHOW_START_TO_GET_BEST_PDF = "PAPER_SHOW_START_TO_GET_BEST_PDF",
+  PAPER_SHOW_SUCCEEDED_TO_GET_BEST_PDF = "PAPER_SHOW_SUCCEEDED_TO_GET_BEST_PDF",
+  PAPER_SHOW_FAILED_TO_GET_BEST_PDF = "PAPER_SHOW_FAILED_TO_GET_BEST_PDF",
+
+  PAPER_SHOW_START_TO_LOADING_FETCH_PDF = "PAPER_SHOW_START_TO_LOADING_FETCH_PDF",
+  PAPER_SHOW_END_TO_LOADING_FETCH_PDF = "PAPER_SHOW_END_TO_LOADING_FETCH_PDF",
 
   ARTICLE_SEARCH_CHANGE_SEARCH_INPUT = "ARTICLE_SEARCH_CHANGE_SEARCH_INPUT",
   ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT = "ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT",
@@ -253,7 +260,8 @@ export const ActionCreators = {
     authorListTargetPaper?: Paper;
     collection?: Collection;
     userActionType?: Scinapse.ActionTicket.ActionTagType;
-    authContext?: benefitExpTicketContext;
+    authContext?: BenefitExpTicketContext;
+    isBlocked?: boolean;
   }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
   },
@@ -1061,6 +1069,26 @@ export const ActionCreators = {
 
   failToRemoveProfileCvData() {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_REMOVE_PROFILE_CV_DATA });
+  },
+
+  startToGetBestPdfInPaperShow() {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_BEST_PDF });
+  },
+
+  succeededToGetBestPdfInPaperShow(payload: { paperId: number; bestPdf: PaperPdf }) {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_BEST_PDF, payload });
+  },
+
+  failedToGetBestPdfInPaperShow() {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_BEST_PDF });
+  },
+
+  startToLoadingFetchPDF() {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_START_TO_LOADING_FETCH_PDF });
+  },
+
+  endToLoadingFetchPDF() {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_END_TO_LOADING_FETCH_PDF });
   },
 
   addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {

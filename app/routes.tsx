@@ -14,9 +14,7 @@ import DeviceDetector from "./components/deviceDetector";
 import { AppState } from "./reducers";
 import { LayoutState } from "./components/layouts/records";
 import { withStyles } from "./helpers/withStylesHelper";
-import ArticleSpinner from "./components/common/spinner/articleSpinner";
 import { CurrentUser } from "./model/currentUser";
-import { Configuration } from "./reducers/configuration";
 import {
   HOME_PATH,
   SEARCH_RESULT_PATH,
@@ -53,13 +51,13 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: HOME_PATH,
     exact: true,
-    component: loadable(() => import(/* webpackPrefetch: true */ "./components/home"), {
+    component: loadable(() => import("./components/home"), {
       fallback: <div>loading ...</div>,
     }),
   },
   {
     path: SEARCH_RESULT_PATH,
-    component: loadable(() => import(/* webpackPrefetch: true */ "./components/articleSearch"), {
+    component: loadable(() => import("./components/articleSearch"), {
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<null>) => {
@@ -70,7 +68,7 @@ export const routesMap: ServerRoutesMap[] = [
   },
   {
     path: AUTHOR_SEARCH_RESULT_PATH,
-    component: loadable(() => import(/* webpackPrefetch: true */ "./containers/authorSearch"), {
+    component: loadable(() => import("./containers/authorSearch"), {
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<null>) => {
@@ -81,7 +79,7 @@ export const routesMap: ServerRoutesMap[] = [
   },
   {
     path: PAPER_SHOW_PATH,
-    component: loadable(() => import(/* webpackPrefetch: true */ "./containers/paperShow"), {
+    component: loadable(() => import("./containers/paperShow"), {
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<PaperShowMatchParams>) => {
@@ -91,7 +89,7 @@ export const routesMap: ServerRoutesMap[] = [
   },
   {
     path: AUTHOR_SHOW_PATH,
-    component: loadable(() => import(/* webpackPrefetch: true */ "./containers/authorShow"), {
+    component: loadable(() => import("./containers/authorShow"), {
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<AuthorShowMatchParams>) => {
@@ -101,7 +99,7 @@ export const routesMap: ServerRoutesMap[] = [
   },
   {
     path: COLLECTION_SHOW_PATH,
-    component: loadable(() => import(/* webpackPrefetch: true */ "./components/collectionShow"), {
+    component: loadable(() => import("./components/collectionShow"), {
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<CollectionShowMatchParams>) => {
@@ -111,7 +109,7 @@ export const routesMap: ServerRoutesMap[] = [
   },
   {
     path: JOURNAL_SHOW_PATH,
-    component: loadable(() => import(/* webpackPrefetch: true */ "./components/journalShow"), {
+    component: loadable(() => import("./components/journalShow"), {
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<JournalShowMatchParams>) => {
@@ -121,7 +119,7 @@ export const routesMap: ServerRoutesMap[] = [
   },
   {
     path: COLLECTION_LIST_PATH,
-    component: loadable(() => import(/* webpackPrefetch: true */ "./components/collections"), {
+    component: loadable(() => import("./components/collections"), {
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<{ userId: string }>) => {
@@ -132,26 +130,26 @@ export const routesMap: ServerRoutesMap[] = [
   },
   {
     path: AUTH_PATH,
-    component: loadable(() => import(/* webpackPrefetch: true */ "./components/auth"), {
+    component: loadable(() => import("./components/auth"), {
       fallback: <div>loading ...</div>,
     }),
   },
   {
     path: ADMIN_PATH,
-    component: loadable(() => import(/* webpackPrefetch: true */ "./containers/admin"), {
+    component: loadable(() => import("./containers/admin"), {
       fallback: <div>loading ...</div>,
     }),
   },
   {
     path: TERMS_OF_SERVICE_PATH,
-    component: loadable(() => import(/* webpackPrefetch: true */ "./components/termsOfService/termsOfService"), {
+    component: loadable(() => import("./components/termsOfService/termsOfService"), {
       fallback: <div>loading ...</div>,
     }),
     exact: true,
   },
   {
     path: PRIVACY_POLICY_PATH,
-    component: loadable(() => import(/* webpackPrefetch: true */ "./components/privacyPolicy/privacyPolicy"), {
+    component: loadable(() => import("./components/privacyPolicy/privacyPolicy"), {
       fallback: <div>loading ...</div>,
     }),
     exact: true,
@@ -161,7 +159,6 @@ export const routesMap: ServerRoutesMap[] = [
 
 interface RootRoutesProps extends RouteComponentProps<any> {
   layout: LayoutState;
-  configuration: Configuration;
   currentUser: CurrentUser;
   dispatch: Dispatch<any>;
 }
@@ -169,7 +166,6 @@ interface RootRoutesProps extends RouteComponentProps<any> {
 function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
-    configuration: state.configuration,
     currentUser: state.currentUser,
   };
 }
@@ -187,7 +183,6 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
       <div>
         {this.getDefaultHelmet()}
         <Header />
-        {this.getLoadingComponent()}
         <div>
           <Switch location={location}>
             {routesMap.map(route => <Route {...route} key={route.path || "errorPage"} />)}
@@ -201,27 +196,11 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
     );
   }
 
-  private getLoadingComponent = () => {
-    const { configuration } = this.props;
-
-    if (!configuration.renderedAtClient) {
-      return (
-        <div className={styles.jsLoaderWrapper}>
-          <div className={styles.loadingContentWrapper}>
-            <ArticleSpinner className={styles.loadingIcon} />
-            <div className={styles.loadingMessage}>Loading Scinapse...</div>
-          </div>
-        </div>
-      );
-    }
-
-    return null;
-  };
-
   private getDefaultHelmet = () => {
     return (
       <Helmet>
         <meta charSet="utf-8" />
+        <meta name="theme-color" content="#3e7fff" />
         <link rel="shortcut icon" href="https://assets.pluto.network/scinapse/favicon.ico" />
         <link
           rel="search"
@@ -231,7 +210,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
         />
         <title>Scinapse | Academic search engine for paper</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-        <meta itemProp="name" content="sci-napse | Academic search engine for paper" />
+        <meta itemProp="name" content="Scinapse | Academic search engine for paper" />
         <meta
           name="description"
           // tslint:disable-next-line:max-line-length
@@ -260,6 +239,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
         <meta property="og:site_name" content="Scinapse" />
         <meta name="google-site-verification" content="YHiVYg7vff8VWXZge2D1aOZsT8rCUxnkjwbQqFT2QEI" />
         <meta name="msvalidate.01" content="55ADC81A3C8F5F3DAA9B90F27CA16E2B" />
+        <link rel="manifest" href="/manifest.json" />
       </Helmet>
     );
   };
