@@ -170,7 +170,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
                 height: "40px",
                 borderRadius: saveButtonBorderRadius,
                 padding: "12px 0",
-                backgroundColor: isSelected ? "#34495e" : "#286ffa",
+                backgroundColor: isSelected ? "#34495e" : "#1967FF",
                 fontSize: "16px",
                 fontWeight: 500,
                 overflow: "hidden",

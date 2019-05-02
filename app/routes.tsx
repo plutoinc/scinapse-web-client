@@ -200,7 +200,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
     return (
       <Helmet>
         <meta charSet="utf-8" />
-        <meta name="theme-color" content="#286ffa" />
+        <meta name="theme-color" content="#1967FF" />
         <link rel="shortcut icon" href="https://assets.pluto.network/scinapse/favicon.ico" />
         <link
           rel="search"

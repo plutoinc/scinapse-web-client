@@ -28,7 +28,7 @@ const DisabledFilterMessage: React.FunctionComponent<{ hasEmptyFilter: boolean }
               fontSize: "15px",
               marginLeft: "4px",
               fontWeight: 500,
-              color: "#286ffa",
+              color: "#1967FF",
             }}
           />
         </span>
