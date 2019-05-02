@@ -2,16 +2,10 @@ import { CancelToken } from "axios";
 import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
 import { CommonPaginationResponsePart } from "./types/common";
-import { Collection, userCollectionSchema, collectionSchema } from "../model/collection";
+import { Collection, collectionSchema } from "../model/collection";
 import { memberSchema, Member } from "../model/member";
 import { camelCaseKeys } from "../helpers/camelCaseKeys";
 import { FilterObject } from "../helpers/papersQueryFormatter";
-
-export interface GetUserCollectionsResponse extends CommonPaginationResponsePart {
-  content: Collection[];
-  entities: { userCollections: { [collectionId: number]: Collection } };
-  result: number[];
-}
 
 export interface GetCollectionsResponse extends CommonPaginationResponsePart {
   content: Collection[];
@@ -45,10 +39,10 @@ class MemberAPI extends PlutoAxios {
     return normalizedMember;
   }
 
-  public async getCollections(memberId: number, cancelToken?: CancelToken): Promise<GetUserCollectionsResponse> {
+  public async getCollections(memberId: number, cancelToken?: CancelToken): Promise<GetCollectionsResponse> {
     const res = await this.get(`/members/${memberId}/collections`, { cancelToken });
     const camelizedRes = camelCaseKeys(res.data.data);
-    const normalizedCollections = normalize(camelizedRes.content, [userCollectionSchema]);
+    const normalizedCollections = normalize(camelizedRes.content, [collectionSchema]);
     return { ...camelizedRes, ...normalizedCollections };
   }
 

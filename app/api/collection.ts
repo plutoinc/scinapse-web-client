@@ -1,7 +1,7 @@
 import { CancelToken } from "axios";
 import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
-import { Collection, userCollectionSchema } from "../model/collection";
+import { Collection, collectionSchema } from "../model/collection";
 import { Paper } from "../model/paper";
 import { PaperInCollection, paperInCollectionSchema } from "../model/paperInCollection";
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../components/common/sortBox";
@@ -132,19 +132,19 @@ class CollectionAPI extends PlutoAxios {
     collectionId: number,
     cancelToken: CancelToken
   ): Promise<{
-    entities: { userCollections: { [collectionId: number]: Collection } };
+    entities: { collections: { [collectionId: number]: Collection } };
     result: number;
   }> {
     const res = await this.get(`/collections/${collectionId}`, { cancelToken });
     const camelizedRes = camelCaseKeys(res.data.data);
-    return normalize(camelizedRes, userCollectionSchema);
+    return normalize(camelizedRes, collectionSchema);
   }
 
   public async postCollection({
     title,
     description,
   }: PostCollectionParams): Promise<{
-    entities: { userCollections: { [collectionId: number]: Collection } };
+    entities: { collections: { [collectionId: number]: Collection } };
     result: number;
   }> {
     const res = await this.post("/collections", {
@@ -152,7 +152,7 @@ class CollectionAPI extends PlutoAxios {
       description,
     });
     const camelizedRes = camelCaseKeys(res.data.data);
-    const normalizedData = normalize(camelizedRes, userCollectionSchema);
+    const normalizedData = normalize(camelizedRes, collectionSchema);
     return normalizedData;
   }
 
@@ -165,7 +165,7 @@ class CollectionAPI extends PlutoAxios {
   public async updateCollection(
     params: UpdateCollectionParams
   ): Promise<{
-    entities: { userCollections: { [collectionId: number]: Collection } };
+    entities: { collections: { [collectionId: number]: Collection } };
     result: number;
   }> {
     const res = await this.put(`/collections/${params.collectionId}`, {
@@ -173,7 +173,7 @@ class CollectionAPI extends PlutoAxios {
       description: params.description,
     });
     const camelizedRes = camelCaseKeys(res.data.data);
-    const normalizedData = normalize(camelizedRes, userCollectionSchema);
+    const normalizedData = normalize(camelizedRes, collectionSchema);
     return normalizedData;
   }
 }

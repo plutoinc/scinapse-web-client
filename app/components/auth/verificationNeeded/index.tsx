@@ -12,8 +12,8 @@ const VerificationNeeded = ({ email, resendEmailFunc }: VerificationNeededParams
   <div className={styles.verificationNeededContainer}>
     <div className={styles.innerContainer}>
       <div className={styles.title}>VERIFICATION NEEDED</div>
-      <div className={styles.content}>{`User has not been verified yet.
-      Use this feature after email verification.`}</div>
+      <div className={styles.content}>{`You are not verified yet.
+      Please check your email to use.`}</div>
       <Icon className={styles.emailVerificationNeededIconWrapper} icon="EMAIL_VERIFICATION_NEEDED" />
       <div onClick={resendEmailFunc} className={styles.resendEmailButton}>
         RESEND MAIL

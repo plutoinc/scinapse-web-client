@@ -56,7 +56,7 @@ function noResultDoiSearchContent(
         <li>
           <span className={styles.noPapersText}>
             Scinapse may not include the paper. Try visiting{" "}
-            <a className={styles.doiLink} target="_blank" rel="noopener" href={`https://doi.org/${doi}`}>
+            <a className={styles.doiLink} target="_blank" rel="noopener nofollow" href={`https://doi.org/${doi}`}>
               the original
             </a>{" "}
             or{" "}

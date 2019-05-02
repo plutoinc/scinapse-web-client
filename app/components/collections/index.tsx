@@ -9,7 +9,7 @@ import * as parse from "date-fns/parse";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { getCollections } from "./sideEffect";
-import { Collection, userCollectionSchema } from "../../model/collection";
+import { Collection, collectionSchema } from "../../model/collection";
 import { UserCollectionsState } from "./reducer";
 import { Member, memberSchema } from "../../model/member";
 import Footer from "../layouts/footer";
@@ -34,7 +34,7 @@ export interface UserCollectionsProps extends RouteComponentProps<{ userId: stri
 function mapStateToProps(state: AppState) {
   return {
     userCollections: state.userCollections,
-    collections: denormalize(state.userCollections.collectionIds, [userCollectionSchema], state.entities).filter(
+    collections: denormalize(state.userCollections.collectionIds, [collectionSchema], state.entities).filter(
       (c: Collection) => !!c
     ),
     member: denormalize(state.userCollections.targetMemberId, memberSchema, state.entities),
@@ -229,6 +229,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
       return (
         <Helmet>
           <title>{`${member.firstName} ${member.lastName || ""}'s paper collections | Scinapse`}</title>
+          <link rel="canonical" href={`https://scinapse.io/collections/users/${member.id}/collections`} />
           <meta
             itemProp="name"
             content={`${member.firstName} ${member.lastName || ""}'s paper collections | Scinapse`}

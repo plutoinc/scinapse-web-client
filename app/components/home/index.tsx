@@ -41,7 +41,7 @@ class Home extends React.PureComponent<HomeProps> {
               </div>
               <div className={styles.searchSubTitle}>
                 Scinapse is a free, Academic search engine <br /> for papers, serviced by{" "}
-                <a href="https://pluto.network" target="_blank" className={styles.plutoLink} rel="noopener">
+                <a href="https://pluto.network" target="_blank" className={styles.plutoLink} rel="noopener nofollow">
                   Pluto Network
                 </a>
               </div>
@@ -69,7 +69,7 @@ class Home extends React.PureComponent<HomeProps> {
             <div className={styles.sourceVendorSubtitle}>Metadata of papers comes from</div>
             <div className={styles.sourceVendorWrapper}>
               <div className={styles.sourceVendorItem}>
-                <a href="https://aka.ms/msracad" target="_blank" rel="noopener">
+                <a href="https://aka.ms/msracad" target="_blank" rel="noopener nofollow">
                   <picture>
                     <source srcSet="https://assets.pluto.network/scinapse/ms-research.webp" type="image/webp" />
                     <source srcSet="https://assets.pluto.network/scinapse/ms-research.jpg" type="image/jpeg" />
@@ -78,7 +78,7 @@ class Home extends React.PureComponent<HomeProps> {
                 </a>
               </div>
               <div className={styles.sourceVendorItem}>
-                <a href="https://www.semanticscholar.org/" target="_blank" rel="noopener">
+                <a href="https://www.semanticscholar.org/" target="_blank" rel="noopener nofollow">
                   <picture>
                     <source srcSet="https://assets.pluto.network/scinapse/semantic-scholar.webp" type="image/webp" />
                     <source srcSet="https://assets.pluto.network/scinapse/semantic-scholar.jpg" type="image/jpeg" />
@@ -87,7 +87,7 @@ class Home extends React.PureComponent<HomeProps> {
                 </a>
               </div>
               <div className={styles.sourceVendorItem}>
-                <a href="https://www.springernature.com/gp/" target="_blank" rel="noopener">
+                <a href="https://www.springernature.com/gp/" target="_blank" rel="noopener nofollow">
                   <picture>
                     <source srcSet="https://assets.pluto.network/scinapse/springer-nature.webp" type="image/webp" />
                     <source srcSet="https://assets.pluto.network/scinapse/springer-nature.jpg" type="image/jpeg" />
@@ -96,7 +96,7 @@ class Home extends React.PureComponent<HomeProps> {
                 </a>
               </div>
               <div className={styles.sourceVendorItem}>
-                <a href="https://www.ncbi.nlm.nih.gov/pubmed/" target="_blank" rel="noopener">
+                <a href="https://www.ncbi.nlm.nih.gov/pubmed/" target="_blank" rel="noopener nofollow">
                   <picture>
                     <source srcSet="https://assets.pluto.network/scinapse/pub-med.webp" type="image/webp" />
                     <source srcSet="https://assets.pluto.network/scinapse/pub-med.jpg" type="image/jpeg" />
@@ -118,9 +118,32 @@ class Home extends React.PureComponent<HomeProps> {
       "@type": "Organization",
       url: "https://scinapse.io",
       logo: "https://s3.amazonaws.com/pluto-asset/scinapse/scinapse-logo.png",
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          email: "team@pluto.network",
+          url: "https://pluto.network",
+          contactType: "customer service",
+        },
+      ],
+      potentialAction: {
+        "@type": "SearchAction",
+        target: "https://scinapse.io/search?query={search_term_string}&utm_source=google_search_result",
+        "query-input": "required name=search_term_string",
+      },
+      sameAs: [
+        "https://www.facebook.com/PlutoNetwork",
+        "https://twitter.com/pluto_network",
+        "https://medium.com/pluto-network",
+        "https://pluto.network",
+      ],
     };
 
-    return <Helmet script={[{ type: "application/ld+json", innerHTML: JSON.stringify(structuredDataJSON) }]} />;
+    return (
+      <Helmet script={[{ type: "application/ld+json", innerHTML: JSON.stringify(structuredDataJSON) }]}>
+        <link rel="canonical" href="https://scinapse.io" />
+      </Helmet>
+    );
   };
 
   private getContainerStyle = (): React.CSSProperties => {

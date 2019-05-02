@@ -221,7 +221,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
           }}
           href={journal.webPage}
           target="_blank"
-          rel="noopener"
+          rel="noopener nofollow"
           className={styles.externalIconWrapper}
         >
           <Icon icon="EXTERNAL_SOURCE" />
@@ -271,6 +271,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
       return (
         <Helmet>
           <title>{journal.title} | Scinapse</title>
+          <link rel="canonical" href={`https://scinapse.io/journals/${journal.id}`} />
           <meta itemProp="name" content={`${journal.title} | Scinapse`} />
           {/* tslint:disable-next-line:max-line-length */}
           <meta
