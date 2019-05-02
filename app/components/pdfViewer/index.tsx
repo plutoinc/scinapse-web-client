@@ -86,7 +86,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   const downloadPdfBtnStyle: React.CSSProperties = {
     ...baseBtnStyle,
     color: "white",
-    backgroundColor: "#1967FF",
+    backgroundColor: "#286ffa",
     marginLeft: "16px",
   };
 

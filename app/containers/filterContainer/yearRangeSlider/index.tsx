@@ -44,7 +44,7 @@ const Column: React.FunctionComponent<ColumnProps> = React.memo(props => {
   const filterColumnStyle: React.CSSProperties = {
     ...baseColumnStyle,
     height: props.filterHeight,
-    backgroundColor: "#1967FF",
+    backgroundColor: "#286ffa",
   };
   const normalColumnStyle: React.CSSProperties = {
     ...baseColumnStyle,

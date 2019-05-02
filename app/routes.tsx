@@ -200,7 +200,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
     return (
       <Helmet>
         <meta charSet="utf-8" />
-        <meta name="theme-color" content="#1967FF" />
+        <meta name="theme-color" content="#286ffa" />
         <link rel="shortcut icon" href="https://assets.pluto.network/scinapse/favicon.ico" />
         <link
           rel="search"
@@ -212,13 +212,15 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes" />
         <meta itemProp="name" content="Scinapse | Academic search engine for paper" />
         <meta
-          name="description" // tslint:disable-next-line:max-line-length
+          name="description"
           content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
-        />
+        />{" "}
+        // tslint:disable-next-line:max-line-length
         <meta
-          name="twitter:description" // tslint:disable-next-line:max-line-length
+          name="twitter:description"
           content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
-        />
+        />{" "}
+        // tslint:disable-next-line:max-line-length
         <meta itemProp="image" content="http://assets.pluto.network/og-image.png" />
         <meta name="twitter:card" content="Pluto Network" />
         <meta name="twitter:site" content="@pluto_network" />
@@ -230,9 +232,10 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
         <meta property="og:url" content="https://scinapse.io" />
         <meta property="og:image" content="http://assets.pluto.network/og-image.png" />
         <meta
-          property="og:description" // tslint:disable-next-line:max-line-length
+          property="og:description"
           content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
-        />
+        />{" "}
+        // tslint:disable-next-line:max-line-length
         <meta property="og:site_name" content="Scinapse" />
         <meta name="google-site-verification" content="YHiVYg7vff8VWXZge2D1aOZsT8rCUxnkjwbQqFT2QEI" />
         <meta name="msvalidate.01" content="55ADC81A3C8F5F3DAA9B90F27CA16E2B" />
