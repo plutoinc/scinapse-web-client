@@ -14,7 +14,6 @@ const styles = require("./signBanner.scss");
 
 interface SignBannerProps {
   isLoading: boolean;
-  isLoggedIn: boolean;
 }
 
 interface SignBannerContextProps {
@@ -116,13 +115,13 @@ const SignBannerSignButtonText: React.FunctionComponent<SignBannerContextProps> 
   );
 });
 const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
-  const { isLoading, isLoggedIn } = props;
+  const { isLoading } = props;
 
   const signBannerUserGroupName: string = getUserGroupName(SIGN_BANNER_AT_SEARCH_BANNER_TEST) || "";
 
   const isBannerShow = signBannerUserGroupName === "banner";
 
-  if (!isBannerShow && isLoggedIn) {
+  if (!isBannerShow) {
     return null;
   }
 
