@@ -49,7 +49,7 @@ const ButtonWithArrow: React.SFC<ButtonWithArrowProps> = ({
         <span className={textWrapperClassName}>{text}</span>
       </a>
       {hasArrow && (
-        <button {...dropdownBtnProps} style={defaultBtnStyle}>
+        <button role="button" aria-label="Scinapse drop down button" {...dropdownBtnProps} style={defaultBtnStyle}>
           <span
             style={{
               display: "flex",

@@ -67,6 +67,7 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
       buttonEl={
         <div ref={sourceButton}>
           <Button
+            aria-label="ViewInSourceButton"
             isUpArrow={!isSourcePopoverOpen}
             hasArrow={paper.urls.length > 0}
             text={"View in Source"}

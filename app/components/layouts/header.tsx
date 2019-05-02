@@ -207,7 +207,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
     if (layoutState.userDevice !== UserDevice.DESKTOP && isNotHome) {
       return (
-        <Link to="/" className={styles.headerLogoMark}>
+        <Link to="/" className={styles.headerLogoMark} aria-label="Scinapse header small logo">
           <Icon icon="SCINAPSE_LOGO_SMALL" />
         </Link>
       );
