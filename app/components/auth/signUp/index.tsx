@@ -29,12 +29,18 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
     await props.dispatch(Actions.signUpWithEmail(values));
 
     if (authContext) {
+      let actionLabel: string | null = authContext.expName || authContext.actionLabel;
+
+      if (!actionLabel) {
+        actionLabel = "topBar";
+      }
+
       ActionTicketManager.trackTicket({
         pageType: authContext.pageType,
         actionType: "fire",
         actionArea: authContext.actionArea,
         actionTag: "signUp",
-        actionLabel: authContext.expName ? authContext.expName : authContext.actionLabel,
+        actionLabel,
         expName: authContext.expName,
       });
     }
