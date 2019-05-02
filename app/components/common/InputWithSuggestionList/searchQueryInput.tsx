@@ -219,7 +219,7 @@ const SearchQueryInput: React.FunctionComponent<
     >
       <div className={wrapperClassName}>
         <input
-          aria-label="Scinapse search input component"
+          aria-label="Scinapse search box, try it!"
           value={inputValue}
           onKeyDown={e => {
             handleInputKeydown({

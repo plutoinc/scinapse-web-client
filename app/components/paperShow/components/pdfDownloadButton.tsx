@@ -47,7 +47,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
   if (pdfUrl) {
     return (
       <a
-        aria-label="PdfDownloadButton"
+        aria-label="Scinapse pdf download button in paper"
         className={styles.pdfDownloadBtn}
         href={pdfUrl}
         target="_blank"
