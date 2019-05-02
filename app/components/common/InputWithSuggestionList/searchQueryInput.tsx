@@ -219,6 +219,7 @@ const SearchQueryInput: React.FunctionComponent<
     >
       <div className={wrapperClassName}>
         <input
+          aria-label="Scinapse search input component"
           value={inputValue}
           onKeyDown={e => {
             handleInputKeydown({
@@ -274,10 +275,7 @@ const SearchQueryInput: React.FunctionComponent<
               from = "suggestion";
             }
 
-            handleSubmit({
-              filter: props.initialFilter,
-              from,
-            });
+            handleSubmit({ filter: props.initialFilter, from });
           }}
           icon="SEARCH_ICON"
           className={s.searchIcon}

@@ -5,7 +5,7 @@
   display: flex;
   font-size: 13px;
   line-height: 1.6;
-  color: $gray5;
+  color: $gray6;
   padding: $footer-default-vertical-padding 16px;
 }
 
@@ -39,16 +39,17 @@
 }
 
 .tinyButton {
-  background-color: $gray8;
-  border-radius: 8px;
-  padding: 2px 6px;
+  background-color: white;
+  border: 1px solid #d8dde7;
+  border-radius: 12px;
+  padding: 2px 8px;
   color: $main_blue1;
   cursor: pointer;
   margin-right: 10px;
   vertical-align: top;
 
   &:hover {
-    background-color: $gray2;
+    background-color: $gray1;
   }
 
   &:active {
@@ -64,7 +65,6 @@
 
   span {
     line-height: 16px;
-    color: $main_blue0;
     font-size: 12px;
     vertical-align: middle;
   }
@@ -100,7 +100,7 @@
     font-size: 14px;
     text-align: center;
     margin-bottom: 20px;
-    color: $gray5;
+    color: $gray6;
   }
 
   .highlightText {
@@ -151,7 +151,7 @@
     max-width: $container_width;
     font-size: 11px;
     text-align: left;
-    color: $gray5;
+    color: $gray6;
     z-index: 9999;
     padding: 0;
 

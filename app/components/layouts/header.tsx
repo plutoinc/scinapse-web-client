@@ -213,7 +213,12 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
       );
     } else {
       return (
-        <Link to="/" onClick={() => trackAction("/", "headerLogo")} className={styles.headerLogo}>
+        <Link
+          to="/"
+          onClick={() => trackAction("/", "headerLogo")}
+          className={styles.headerLogo}
+          aria-label="Scinapse header logo"
+        >
           <Icon icon="SCINAPSE_LOGO" />
         </Link>
       );
