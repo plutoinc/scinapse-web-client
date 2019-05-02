@@ -76,12 +76,18 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
           await props.dispatch(signInWithSocial("FACEBOOK", accessToken));
           const authContext = props.dialogState.authContext;
           if (authContext) {
+            let actionLabel: string | null = authContext.expName || authContext.actionLabel;
+
+            if (!actionLabel) {
+              actionLabel = "topBar";
+            }
+
             ActionTicketManager.trackTicket({
               pageType: authContext.pageType,
               actionType: "fire",
               actionArea: authContext.actionArea,
               actionTag: "signIn",
-              actionLabel: authContext.actionLabel,
+              actionLabel,
               expName: authContext.expName,
             });
           }

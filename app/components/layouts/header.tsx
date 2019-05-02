@@ -419,7 +419,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
                 actionType: "fire",
                 actionArea: "topBar",
                 actionTag: "signInPopup",
-                actionLabel: null,
+                actionLabel: "topBar",
               });
             }}
             className={styles.signInButton}
@@ -435,7 +435,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
                 actionType: "fire",
                 actionArea: "topBar",
                 actionTag: "signUpPopup",
-                actionLabel: null,
+                actionLabel: "topBar",
               });
             }}
             className={styles.signUpButton}
