@@ -12,6 +12,15 @@ interface DoiSearchBlockedProps {
 }
 
 function openSignInDialog() {
+  ActionTicketManager.trackTicket({
+    pageType: "searchResult",
+    actionType: "fire",
+    actionArea: "searchResult",
+    actionTag: "signUpPopup",
+    actionLabel: "doiSearch",
+    expName: "doiSearch",
+  });
+
   GlobalDialogManager.openSignInDialog({
     authContext: {
       pageType: "searchResult",
