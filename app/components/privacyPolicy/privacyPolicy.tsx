@@ -187,7 +187,7 @@ class PrivacyPolicy extends React.Component {
               interests, and photo;
             </li>
             <li>
-              Information that you communicate to us, such as questions or information you send to ai2-info@allenai.org;
+              Information that you communicate to us, such as questions or information you send to team@pluto.network;
             </li>
             <li>
               Data that you provide to us as part of interacting with the Service, such as your saved papers, email
