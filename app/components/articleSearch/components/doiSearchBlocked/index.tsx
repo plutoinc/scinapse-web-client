@@ -16,7 +16,7 @@ function openSignInDialog() {
     pageType: "searchResult",
     actionType: "fire",
     actionArea: "searchResult",
-    actionTag: "signUpPopup",
+    actionTag: "signInPopup",
     actionLabel: "doiSearch",
     expName: "doiSearch",
   });
