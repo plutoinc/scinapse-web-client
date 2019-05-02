@@ -141,7 +141,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
           {this.isFilterEmpty(queryParams.filter) ? this.getAuthorEntitiesSection() : null}
           {this.getInnerContainerContent()}
           <div className={styles.rightBoxWrapper}>
-            <SignBanner isLoading={articleSearchState.isContentLoading} />
+            <SignBanner isLoading={articleSearchState.isContentLoading} isLoggedIn={currentUserState.isLoggedIn} />
             <FilterContainer
               handleChangeRangeInput={this.setRangeInput}
               articleSearchState={articleSearchState}

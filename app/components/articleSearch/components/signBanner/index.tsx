@@ -14,6 +14,7 @@ const styles = require("./signBanner.scss");
 
 interface SignBannerProps {
   isLoading: boolean;
+  isLoggedIn: boolean;
 }
 
 interface SignBannerContextProps {
@@ -88,6 +89,15 @@ const SignBannerSignButtonText: React.FunctionComponent<SignBannerContextProps> 
     <div className={styles.bannerSignButtonWrapper}>
       <button
         onClick={() => {
+          ActionTicketManager.trackTicket({
+            pageType: "searchResult",
+            actionType: "fire",
+            actionArea: "signBanner",
+            actionTag: "signUpPopup",
+            actionLabel: "signBannerAtSearch-banner",
+            expName: "signBannerAtSearch-banner",
+          });
+
           GlobalDialogManager.openSignUpDialog({
             authContext: {
               pageType: "searchResult",
@@ -106,13 +116,13 @@ const SignBannerSignButtonText: React.FunctionComponent<SignBannerContextProps> 
   );
 });
 const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
-  const { isLoading } = props;
+  const { isLoading, isLoggedIn } = props;
 
   const signBannerUserGroupName: string = getUserGroupName(SIGN_BANNER_AT_SEARCH_BANNER_TEST) || "";
 
   const isBannerShow = signBannerUserGroupName === "banner";
 
-  if (!isBannerShow) {
+  if (!isBannerShow && isLoggedIn) {
     return null;
   }
 
