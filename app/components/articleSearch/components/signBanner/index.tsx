@@ -91,8 +91,9 @@ const SignBannerSignButtonText: React.FunctionComponent<SignBannerContextProps> 
           GlobalDialogManager.openSignUpDialog({
             authContext: {
               pageType: "searchResult",
-              actionArea: "searchResult",
+              actionArea: "signBanner",
               actionLabel: "signBannerAtSearch-banner",
+              expName: "signBannerAtSearch-banner",
             },
             userActionType: "signBannerAtSearch-banner",
           });
@@ -132,8 +133,8 @@ const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
   ActionTicketManager.trackTicket({
     pageType: "searchResult",
     actionType: "view",
-    actionArea: "searchResult",
-    actionTag: "pageView",
+    actionArea: "signBanner",
+    actionTag: "bannerView",
     actionLabel: "signBannerAtSearch-banner",
     expName: "signBannerAtSearch-banner",
   });

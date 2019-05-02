@@ -94,6 +94,7 @@ declare namespace Scinapse {
       | "signBannerAtSearch-signButtonText"
       | "signBannerAtSearch-bodyText"
       | "signBannerAtSearch-titleText"
+      | "bannerView"
       | "";
 
     type ActionArea =
@@ -127,6 +128,7 @@ declare namespace Scinapse {
       | "noPaperNotiPage"
       | "abstract"
       | "footer"
+      | "signBanner"
       | "";
 
     type PageType =
