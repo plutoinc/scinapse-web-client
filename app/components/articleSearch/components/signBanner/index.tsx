@@ -94,18 +94,18 @@ const SignBannerSignButtonText: React.FunctionComponent<SignBannerContextProps> 
             actionType: "fire",
             actionArea: "signBanner",
             actionTag: "signUpPopup",
-            actionLabel: "signBannerAtSearch-banner",
-            expName: "signBannerAtSearch-banner",
+            actionLabel: "signBannerAtSearch",
+            expName: "signBannerAtSearch",
           });
 
           GlobalDialogManager.openSignUpDialog({
             authContext: {
               pageType: "searchResult",
               actionArea: "signBanner",
-              actionLabel: "signBannerAtSearch-banner",
-              expName: "signBannerAtSearch-banner",
+              actionLabel: "signBannerAtSearch",
+              expName: "signBannerAtSearch",
             },
-            userActionType: "signBannerAtSearch-banner",
+            userActionType: "signBannerAtSearch",
           });
         }}
         className={styles.bannerSignButton}
@@ -145,8 +145,8 @@ const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
     actionType: "view",
     actionArea: "signBanner",
     actionTag: "bannerView",
-    actionLabel: "signBannerAtSearch-banner",
-    expName: "signBannerAtSearch-banner",
+    actionLabel: "signBannerAtSearch",
+    expName: "signBannerAtSearch",
   });
 
   return (
