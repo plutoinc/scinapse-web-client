@@ -63,12 +63,18 @@ const AuthButton: React.FunctionComponent<AuthButtonProps> = props => {
                 await dispatch(signInWithSocial("GOOGLE", idToken));
                 const authContext = dialogState.authContext;
                 if (authContext) {
+                  let actionLabel: string | null = authContext.expName || authContext.actionLabel;
+
+                  if (!actionLabel) {
+                    actionLabel = "topBar";
+                  }
+
                   ActionTicketManager.trackTicket({
                     pageType: authContext.pageType,
                     actionType: "fire",
                     actionArea: authContext.actionArea,
                     actionTag: "signIn",
-                    actionLabel: authContext.actionLabel,
+                    actionLabel,
                     expName: authContext.expName,
                   });
                 }

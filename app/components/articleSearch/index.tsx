@@ -29,6 +29,10 @@ import { getUrlDecodedQueryParamsObject } from "../../helpers/makeNewFilterLink"
 import { Paper } from "../../model/paper";
 import EnvChecker from "../../helpers/envChecker";
 import ActionTicketManager from "../../helpers/actionTicketManager";
+import DoiSearchBlocked from "./components/doiSearchBlocked";
+import { DOI_SEARCH_TEST_NAME } from "../../constants/abTestGlobalValue";
+import { getUserGroupName } from "../../helpers/abTestHelper";
+import SignBanner from "./components/signBanner";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -136,12 +140,15 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
           {this.getSuggestionKeywordBox()}
           {this.isFilterEmpty(queryParams.filter) ? this.getAuthorEntitiesSection() : null}
           {this.getInnerContainerContent()}
-          <FilterContainer
-            handleChangeRangeInput={this.setRangeInput}
-            articleSearchState={articleSearchState}
-            currentUserState={currentUserState}
-            handleToggleExpandingFilter={this.handleToggleExpandingFilter}
-          />
+          <div className={styles.rightBoxWrapper}>
+            {!currentUserState.isLoggedIn ? <SignBanner isLoading={articleSearchState.isContentLoading} /> : null}
+            <FilterContainer
+              handleChangeRangeInput={this.setRangeInput}
+              articleSearchState={articleSearchState}
+              currentUserState={currentUserState}
+              handleToggleExpandingFilter={this.handleToggleExpandingFilter}
+            />
+          </div>
         </div>
         <Footer containerStyle={this.getContainerStyle()} />
       </div>
@@ -195,6 +202,11 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
     const hasNoSearchResultButHasAuthorResult =
       hasNoSearchResult && articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements > 0;
 
+    const userGroupName: string = getUserGroupName(DOI_SEARCH_TEST_NAME) || "";
+
+    const blockedDoiMatchedSearch =
+      !currentUserState.isLoggedIn && articleSearchState.doiPatternMatched && userGroupName === "block";
+
     if (hasNoSearchResultButHasAuthorResult) {
       return (
         <div className={styles.innerContainer}>
@@ -216,6 +228,12 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
             articleSearchState={articleSearchState}
             hasEmptyFilter={this.isFilterEmpty(queryParams.filter)}
           />
+        </div>
+      );
+    } else if (blockedDoiMatchedSearch) {
+      return (
+        <div className={styles.innerContainer}>
+          <DoiSearchBlocked isLoading={isContentLoading} searchDoi={articleSearchState.doi} />
         </div>
       );
     } else if (queryParams) {

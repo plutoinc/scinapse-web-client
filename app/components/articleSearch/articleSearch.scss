@@ -41,6 +41,16 @@
   }
 }
 
+.rightBoxWrapper {
+  display: flex;
+  flex: 1 1;
+  max-width: 354px;
+  height: 100%;
+  flex-direction: column;
+  margin-top: 78px;
+  margin-left: 22px;
+}
+
 .suggestionBox {
   margin-top: 24px;
   padding-bottom: 16px;
