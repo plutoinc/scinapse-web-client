@@ -6,6 +6,8 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
 import { Paper } from "../../model/paper";
 import RelatedPaperItem from "../paperShow/components/relatedPaperItem";
+import { getCurrentPageType } from "../locationListener";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 const store = require("store");
 const s = require("./researchHistory.scss");
 
@@ -42,7 +44,7 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper 
   );
 
   const todayPapers = papers.filter(p => p.savedAt && isToday(p.savedAt));
-  const countBtn = todayPapers.length === 0 ? null : <div className={s.countBtn}>{todayPapers.length}</div>;
+  const countBtn = <div className={s.countBtn}>{todayPapers.length}</div>;
   const innerContent = (
     <div className={s.paperListWrapper}>
       {papers.length > 0 ? (
@@ -61,6 +63,15 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper 
         className={s.headerWrapper}
         onClick={() => {
           setIsOpen(!isOpen);
+          if (!isOpen) {
+            ActionTicketManager.trackTicket({
+              pageType: getCurrentPageType(),
+              actionType: "fire",
+              actionArea: "topBar",
+              actionTag: "researchHistory",
+              actionLabel: `${todayPapers.length}`,
+            });
+          }
         }}
       >
         <Icon className={s.historyIcon} icon="HISTORY" />
