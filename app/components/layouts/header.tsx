@@ -352,7 +352,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     return (
       <div className={styles.rightBox}>
         <div className={styles.historyBtnWrapper}>
-          <ResearchHistory paper={paper} />
+          <ResearchHistory paper={paper} isLoggedIn={currentUserState.isLoggedIn} />
         </div>
         <Link
           className={styles.externalCollectionButton}

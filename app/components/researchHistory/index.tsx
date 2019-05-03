@@ -20,10 +20,21 @@ interface HistoryPaper extends Paper {
 
 interface ResearchHistoryProps {
   paper: Paper | undefined;
+  isLoggedIn: boolean;
 }
-const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper }) => {
+
+const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper, isLoggedIn }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [papers, setPapers] = React.useState<HistoryPaper[]>([]);
+
+  React.useEffect(
+    () => {
+      if (isLoggedIn) {
+        setPapers(store.get(RESEARCH_HISTORY_KEY) || []);
+      }
+    },
+    [isLoggedIn]
+  );
 
   React.useEffect(
     () => {
@@ -44,7 +55,7 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper 
   );
 
   const todayPapers = papers.filter(p => p.savedAt && isToday(p.savedAt));
-  const countBtn = <div className={s.countBtn}>{todayPapers.length}</div>;
+  const countBtn = todayPapers.length === 0 ? null : <div className={s.countBtn}>{todayPapers.length}</div>;
   const innerContent = (
     <div className={s.paperListWrapper}>
       {papers.length > 0 ? (
