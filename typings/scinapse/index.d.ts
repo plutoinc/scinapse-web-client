@@ -92,6 +92,7 @@ declare namespace Scinapse {
       | "doiSearch"
       | "signBannerAtSearch"
       | "bannerView"
+      | "researchHistory"
       | "";
 
     type ActionArea =
