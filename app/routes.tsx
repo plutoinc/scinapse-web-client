@@ -209,18 +209,18 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
           title="Scinapse.io"
         />
         <title>Scinapse | Academic search engine for paper</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes" />
         <meta itemProp="name" content="Scinapse | Academic search engine for paper" />
         <meta
           name="description"
-          // tslint:disable-next-line:max-line-length
           content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
-        />
+        />{" "}
+        // tslint:disable-next-line:max-line-length
         <meta
           name="twitter:description"
-          // tslint:disable-next-line:max-line-length
           content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
-        />
+        />{" "}
+        // tslint:disable-next-line:max-line-length
         <meta itemProp="image" content="http://assets.pluto.network/og-image.png" />
         <meta name="twitter:card" content="Pluto Network" />
         <meta name="twitter:site" content="@pluto_network" />
@@ -233,9 +233,9 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
         <meta property="og:image" content="http://assets.pluto.network/og-image.png" />
         <meta
           property="og:description"
-          // tslint:disable-next-line:max-line-length
           content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
-        />
+        />{" "}
+        // tslint:disable-next-line:max-line-length
         <meta property="og:site_name" content="Scinapse" />
         <meta name="google-site-verification" content="YHiVYg7vff8VWXZge2D1aOZsT8rCUxnkjwbQqFT2QEI" />
         <meta name="msvalidate.01" content="55ADC81A3C8F5F3DAA9B90F27CA16E2B" />

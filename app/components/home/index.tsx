@@ -36,8 +36,16 @@ class Home extends React.PureComponent<HomeProps> {
             <div className={styles.formWrapper}>
               <div className={styles.searchTitle}>
                 <span className={styles.searchTitleText}> Do Research, Never Re-search</span>
-                <img src="https://assets.pluto.network/scinapse/circle%402x.png" className={styles.circleImage} />
-                <img src="https://assets.pluto.network/scinapse/underline%402x.png" className={styles.underlineImage} />
+                <img
+                  src="https://assets.pluto.network/scinapse/circle%402x.png"
+                  className={styles.circleImage}
+                  alt="home circle image"
+                />
+                <img
+                  src="https://assets.pluto.network/scinapse/underline%402x.png"
+                  className={styles.underlineImage}
+                  alt="home underline image"
+                />
               </div>
               <div className={styles.searchSubTitle}>
                 Scinapse is a free, Academic search engine <br /> for papers, serviced by{" "}
