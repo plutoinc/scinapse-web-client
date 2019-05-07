@@ -11,3 +11,4 @@ export const SIGN_BANNER_AT_SEARCH_BANNER_TEST: ABTestType = "signBannerAtSearch
 export const SIGN_BANNER_AT_SEARCH_SIGN_BUTTON_TEXT_TEST: ABTestType = "signBannerAtSearch-signButtonText";
 export const SIGN_BANNER_AT_SEARCH_BODY_TEXT_TEST: ABTestType = "signBannerAtSearch-bodyText";
 export const SIGN_BANNER_AT_SEARCH_TITLE_TEXT_TEST: ABTestType = "signBannerAtSearch-titleText";
+export const VIEW_PDF_SIGN_UP_MAIN_TEXT_TEST_NAME: ABTestType = "viewPDFSignUp-mainText";

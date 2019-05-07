@@ -78,3 +78,8 @@ export const titleTextTest: Test = {
     { groupName: "bemember", weight: 1 },
   ],
 };
+
+export const viewPDFSignUpMainTextTest: Test = {
+  name: "viewPDFSignUp-mainText",
+  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "unlimited", weight: 2 }],
+};
