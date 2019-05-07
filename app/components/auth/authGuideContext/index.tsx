@@ -71,7 +71,7 @@ const GuideContentsByActionType: React.FunctionComponent<AuthGuideContextProps> 
     case "viewMorePDFUnlimited":
       return (
         <GuideContent
-          mainText={"Enjoy\nUnLimited\nFull Text"}
+          mainText={"Enjoy\nUnlimited\nFull Text"}
           subText={"from Scinapse Database"}
           imageUrl={"https://assets.pluto.network/signup_modal/signup_viewmorepdf.jpg"}
           webpUrl={"https://assets.pluto.network/signup_modal/signup_viewmorepdf.webp"}

@@ -67,7 +67,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   const wrapperNode = React.useRef<HTMLDivElement | null>(null);
   const morePDFActionTag =
     getUserGroupName(VIEW_PDF_SIGN_UP_MAIN_TEXT_TEST_NAME) === "unlimited" ? "viewMorePDFUnlimited" : "viewMorePDF";
-  const actionTag = extend ? "viewLessPDF" : morePDFActionTag;
+  const actionTag = extend ? "viewLessPDF" : "viewMorePDF";
 
   const baseBtnStyle: React.CSSProperties = {
     display: "flex",
@@ -231,7 +231,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                       authLevel: AUTH_LEVEL.VERIFIED,
                       actionArea: "pdfViewer",
                       actionLabel: actionTag,
-                      userActionType: actionTag,
+                      userActionType: morePDFActionTag,
                     });
 
                     if (isBlocked) {
