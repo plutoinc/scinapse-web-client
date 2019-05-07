@@ -207,13 +207,18 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
     if (layoutState.userDevice !== UserDevice.DESKTOP && isNotHome) {
       return (
-        <Link to="/" className={styles.headerLogoMark}>
+        <Link to="/" className={styles.headerLogoMark} aria-label="Scinapse small header logo">
           <Icon icon="SCINAPSE_LOGO_SMALL" />
         </Link>
       );
     } else {
       return (
-        <Link to="/" onClick={() => trackAction("/", "headerLogo")} className={styles.headerLogo}>
+        <Link
+          to="/"
+          onClick={() => trackAction("/", "headerLogo")}
+          className={styles.headerLogo}
+          aria-label="Scinapse regular header logo"
+        >
           <Icon icon="SCINAPSE_LOGO" />
         </Link>
       );
@@ -347,7 +352,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     return (
       <div className={styles.rightBox}>
         <div className={styles.historyBtnWrapper}>
-          <ResearchHistory paper={paper} />
+          <ResearchHistory paper={paper} isLoggedIn={currentUserState.isLoggedIn} />
         </div>
         <Link
           className={styles.externalCollectionButton}
@@ -419,7 +424,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
                 actionType: "fire",
                 actionArea: "topBar",
                 actionTag: "signInPopup",
-                actionLabel: null,
+                actionLabel: "topBar",
               });
             }}
             className={styles.signInButton}
@@ -435,7 +440,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
                 actionType: "fire",
                 actionArea: "topBar",
                 actionTag: "signUpPopup",
-                actionLabel: null,
+                actionLabel: "topBar",
               });
             }}
             className={styles.signUpButton}

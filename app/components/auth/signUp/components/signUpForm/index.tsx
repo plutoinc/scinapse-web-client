@@ -158,10 +158,16 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
             fontSize: "14px",
             color: "#9aa3b5",
             marginTop: "10px",
-            marginBottom: "30px",
+            marginBottom: "12px",
           }}
           text="GO BACK"
         />
+        <div className={s.signUpPrivacyPolicy}>
+          By signing up, you agree with our{" "}
+          <a href="https://scinapse.io/privacy-policy" target="_blank" rel="noopener nofollow">
+            Privacy policy
+          </a>.
+        </div>
       </div>
     </>
   );

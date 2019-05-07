@@ -1,0 +1,59 @@
+.bannerContainer {
+  max-width: 354px;
+  height: 345px;
+  border-radius: 4px;
+  box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.1);
+  background-color: white;
+  padding: 24px 16px;
+  margin-bottom: 16px;
+}
+
+.bannerTitle {
+  font-size: 24px;
+  font-weight: bold;
+  color: $main_blue1;
+}
+
+.bannerBody {
+  margin-top: 8px;
+  font-size: 16px;
+  line-height: 1.2;
+  color: $gray6;
+}
+
+.bannerSignButton {
+  width: 100%;
+  height: 43px;
+  border-radius: 4px;
+  background-color: $main_blue1;
+  font-size: 16px;
+  font-weight: 500;
+  color: $gray0;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $main_blue_light0;
+    transition: $button-hover-transition;
+  }
+}
+
+.bannerImage {
+  width: 284px;
+  height: 180px;
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.bannerImageWrapper,
+.bannerSignButtonWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

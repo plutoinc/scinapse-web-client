@@ -157,76 +157,72 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
 
     return (
       <div ref={el => (this.popoverAnchorEl = el)} className={styles.buttonWrapper}>
-        <li className={styles.actionItem}>
-          {this.getCollectionItemInDropdown()}
-          {!hideSaveBtn && (
-            <ScinapseButton
-              content={this.getSaveButtonContent()}
-              style={{
-                display: "inline-flex",
-                justifyContent: "center",
-                alignItems: "center",
-                minWidth: "83px",
-                height: "40px",
-                borderRadius: saveButtonBorderRadius,
-                padding: "12px 0",
-                backgroundColor: isSelected ? "#34495e" : "#3e7fff",
-                fontSize: "16px",
-                fontWeight: 500,
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-              }}
-              disabled={isLoadingCollection || myCollectionsState.isFetchingPaper}
-              onClick={
-                (myCollections && myCollections.length > 0) || !currentUser.isLoggedIn
-                  ? this.handleClickSaveButton
-                  : this.handleClickNewCollectionButton
-              }
-            />
-          )}
-          <ClickAwayListener onClickAway={this.handleClickNoteBoxBackdrop}>
-            <div>
-              {isSelected && (
-                <ScinapseButton
-                  content={this.getNoteButtonContent()}
-                  gaCategory="New Paper Show"
-                  gaAction="Click memo icon button"
-                  gaLabel={targetPaperId.toString()}
-                  style={{
-                    display: "inline-flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "40px",
-                    height: "40px",
-                    borderRadius: "0 4px 4px 0",
-                    padding: "8px 0",
-                    backgroundColor: "#34495e",
-                    fontSize: "16px",
-                    fontWeight: 500,
-                    marginLeft: "1px",
-                  }}
-                  onClick={this.toggleNoteDropdown}
-                />
-              )}
-              <Popper
-                anchorEl={this.popoverAnchorEl}
-                open={myCollectionsState.isNoteDropdownOpen}
-                placement="bottom-end"
-                disablePortal={true}
-                modifiers={{
-                  flip: {
-                    enabled: false,
-                  },
+        <ul>
+          <li className={styles.actionItem}>
+            {this.getCollectionItemInDropdown()}
+            {!hideSaveBtn && (
+              <ScinapseButton
+                content={this.getSaveButtonContent()}
+                style={{
+                  display: "inline-flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  minWidth: "83px",
+                  height: "40px",
+                  borderRadius: saveButtonBorderRadius,
+                  padding: "12px 0",
+                  backgroundColor: isSelected ? "#34495e" : "#3e7fff",
+                  fontSize: "16px",
+                  fontWeight: 500,
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
                 }}
-                popperOptions={{
-                  positionFixed: true,
-                }}
-              >
-                <div className={styles.noteBoxWrapper}>{this.getNoteDropdownContent()}</div>
-              </Popper>
-            </div>
-          </ClickAwayListener>
-        </li>
+                disabled={isLoadingCollection || myCollectionsState.isFetchingPaper}
+                onClick={
+                  (myCollections && myCollections.length > 0) || !currentUser.isLoggedIn
+                    ? this.handleClickSaveButton
+                    : this.handleClickNewCollectionButton
+                }
+              />
+            )}
+            <ClickAwayListener onClickAway={this.handleClickNoteBoxBackdrop}>
+              <div>
+                {isSelected && (
+                  <ScinapseButton
+                    content={this.getNoteButtonContent()}
+                    gaCategory="New Paper Show"
+                    gaAction="Click memo icon button"
+                    gaLabel={targetPaperId.toString()}
+                    style={{
+                      display: "inline-flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "0 4px 4px 0",
+                      padding: "8px 0",
+                      backgroundColor: "#34495e",
+                      fontSize: "16px",
+                      fontWeight: 500,
+                      marginLeft: "1px",
+                    }}
+                    onClick={this.toggleNoteDropdown}
+                  />
+                )}
+                <Popper
+                  anchorEl={this.popoverAnchorEl}
+                  open={myCollectionsState.isNoteDropdownOpen}
+                  placement="bottom-end"
+                  disablePortal={true}
+                  modifiers={{ flip: { enabled: false } }}
+                  popperOptions={{ positionFixed: true }}
+                >
+                  <div className={styles.noteBoxWrapper}>{this.getNoteDropdownContent()}</div>
+                </Popper>
+              </div>
+            </ClickAwayListener>
+          </li>
+        </ul>
       </div>
     );
   }

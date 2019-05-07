@@ -40,6 +40,18 @@
   text-align: center;
 }
 
+.signUpPrivacyPolicy {
+  font-size: 12px;
+  font-weight: 400;
+  color: $gray4;
+  margin-top: 12px;
+  text-align: center;
+
+  a {
+    text-decoration: underline;
+  }
+}
+
 @media (max-width: $mobile-width) {
   .nameItemWrapper {
     display: block;

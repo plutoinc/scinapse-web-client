@@ -89,6 +89,10 @@ declare namespace Scinapse {
       | "queryLover"
       | "authorFromSearch"
       | "nextPageFromSearch"
+      | "doiSearch"
+      | "signBannerAtSearch"
+      | "bannerView"
+      | "researchHistory"
       | "";
 
     type ActionArea =
@@ -122,6 +126,7 @@ declare namespace Scinapse {
       | "noPaperNotiPage"
       | "abstract"
       | "footer"
+      | "signBanner"
       | "";
 
     type PageType =

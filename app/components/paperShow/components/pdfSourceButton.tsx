@@ -48,6 +48,7 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
           buttonEl={
             <div ref={el => (this.sourceButton = el)}>
               <Button
+                aria-label="Scinapse pdfSourceButton in paper"
                 isUpArrow={!isSourcePopoverOpen}
                 hasArrow={paper.urls.length > 1}
                 text={pdfSourceRecord ? "Download PDF" : "View in Source"}

@@ -6,6 +6,8 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
 import { Paper } from "../../model/paper";
 import RelatedPaperItem from "../paperShow/components/relatedPaperItem";
+import { getCurrentPageType } from "../locationListener";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 const store = require("store");
 const s = require("./researchHistory.scss");
 
@@ -18,10 +20,21 @@ interface HistoryPaper extends Paper {
 
 interface ResearchHistoryProps {
   paper: Paper | undefined;
+  isLoggedIn: boolean;
 }
-const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper }) => {
+
+const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper, isLoggedIn }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [papers, setPapers] = React.useState<HistoryPaper[]>([]);
+
+  React.useEffect(
+    () => {
+      if (isLoggedIn) {
+        setPapers(store.get(RESEARCH_HISTORY_KEY) || []);
+      }
+    },
+    [isLoggedIn]
+  );
 
   React.useEffect(
     () => {
@@ -61,6 +74,15 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper 
         className={s.headerWrapper}
         onClick={() => {
           setIsOpen(!isOpen);
+          if (!isOpen) {
+            ActionTicketManager.trackTicket({
+              pageType: getCurrentPageType(),
+              actionType: "fire",
+              actionArea: "topBar",
+              actionTag: "researchHistory",
+              actionLabel: `${todayPapers.length}`,
+            });
+          }
         }}
       >
         <Icon className={s.historyIcon} icon="HISTORY" />

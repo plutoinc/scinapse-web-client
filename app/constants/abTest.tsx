@@ -1,4 +1,16 @@
-import { completeBlockSignUpTest, paperFromSearchTest, queryLoverTest, signUpContextTest } from "./abTestObject";
+import {
+  completeBlockSignUpTest,
+  paperFromSearchTest,
+  queryLoverTest,
+  signUpContextTest,
+  nextPageFromSearchTest,
+  doiSearchTest,
+  authorFromSearchTest,
+  bannerTest,
+  signButtonTextTest,
+  bodyTextTest,
+  titleTextTest,
+} from "./abTestObject";
 
 export interface UserGroup {
   groupName: string;
@@ -18,7 +30,12 @@ export type ABTestType =
   | "authorFromSearch"
   | "nextPageFromSearch"
   | "signUpContextText"
-  | "completeBlockSignUp";
+  | "completeBlockSignUp"
+  | "doiSearch"
+  | "signBannerAtSearch-banner"
+  | "signBannerAtSearch-signButtonText"
+  | "signBannerAtSearch-bodyText"
+  | "signBannerAtSearch-titleText";
 
 export const BENEFIT_EXPERIMENT_KEY = "b_exp";
 
@@ -38,7 +55,19 @@ export interface BenefitExpTicketContext {
   expName?: string;
 }
 
-export const LIVE_TESTS: Test[] = [signUpContextTest, paperFromSearchTest, queryLoverTest, completeBlockSignUpTest];
+export const LIVE_TESTS: Test[] = [
+  signUpContextTest,
+  paperFromSearchTest,
+  queryLoverTest,
+  completeBlockSignUpTest,
+  authorFromSearchTest,
+  nextPageFromSearchTest,
+  doiSearchTest,
+  bannerTest,
+  signButtonTextTest,
+  bodyTextTest,
+  titleTextTest,
+];
 
 function getRandomPool(): { [key: string]: string[] } {
   const randomPool: { [key: string]: string[] } = {};
