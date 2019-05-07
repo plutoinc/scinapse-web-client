@@ -10,6 +10,7 @@ import {
   signButtonTextTest,
   bodyTextTest,
   titleTextTest,
+  viewPDFSignUpMainTextTest,
 } from "./abTestObject";
 
 export interface UserGroup {
@@ -31,6 +32,7 @@ export type ABTestType =
   | "nextPageFromSearch"
   | "signUpContextText"
   | "completeBlockSignUp"
+  | "viewPDFSignUp-mainText"
   | "doiSearch"
   | "signBannerAtSearch-banner"
   | "signBannerAtSearch-signButtonText"
@@ -67,6 +69,7 @@ export const LIVE_TESTS: Test[] = [
   signButtonTextTest,
   bodyTextTest,
   titleTextTest,
+  viewPDFSignUpMainTextTest,
 ];
 
 function getRandomPool(): { [key: string]: string[] } {

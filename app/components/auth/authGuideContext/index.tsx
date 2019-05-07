@@ -68,6 +68,16 @@ const GuideContentsByActionType: React.FunctionComponent<AuthGuideContextProps> 
           webpUrl={"https://assets.pluto.network/signup_modal/signup_viewmorepdf.webp"}
         />
       );
+    case "viewMorePDFUnlimited":
+      return (
+        <GuideContent
+          mainText={"Enjoy\nUnLimited\nFull Text"}
+          subText={"from Scinapse Database"}
+          imageUrl={"https://assets.pluto.network/signup_modal/signup_viewmorepdf.jpg"}
+          webpUrl={"https://assets.pluto.network/signup_modal/signup_viewmorepdf.webp"}
+        />
+      );
+
     case "query":
       return (
         <GuideContent
