@@ -205,7 +205,10 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
     const userGroupName: string = getUserGroupName(DOI_SEARCH_TEST_NAME) || "";
 
     const blockedDoiMatchedSearch =
-      !currentUserState.isLoggedIn && articleSearchState.doiPatternMatched && userGroupName === "block";
+      !currentUserState.isLoggedIn &&
+      articleSearchState.doiPatternMatched &&
+      userGroupName === "block" &&
+      !hasNoSearchResult;
 
     if (hasNoSearchResultButHasAuthorResult) {
       return (

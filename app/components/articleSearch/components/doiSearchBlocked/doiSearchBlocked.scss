@@ -1,5 +1,4 @@
 .articleSearchContainer {
-  margin: $navbar_height auto 0 auto;
   max-width: $container_width;
   position: relative;
 
@@ -31,30 +30,31 @@
 }
 
 .doiBlockedContainer {
+  margin: $navbar_height auto 0 auto;
   display: flex;
   padding-top: 45px;
   min-height: 738.5px;
+}
 
-  .doiBlockedContentWrapper {
-    margin-left: 32px;
-  }
+.doiBlockedContentWrapper {
+  margin-left: 32px;
+}
 
-  .doiBlockedTitle {
-    font-size: 24px;
-    font-weight: bold;
-    line-height: 1;
-    color: $main_blue1;
-  }
+.doiBlockedTitle {
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1;
+  color: $main_blue1;
+}
 
-  .doiBlockedContent {
-    font-size: 16px;
-    line-height: 1.5;
-    color: $gray6;
-    margin-top: 20px;
+.doiBlockedContent {
+  font-size: 16px;
+  line-height: 1.5;
+  color: $gray6;
+  margin-top: 20px;
 
-    .keyword {
-      word-break: break-all;
-    }
+  .keyword {
+    word-break: break-all;
   }
 }
 
