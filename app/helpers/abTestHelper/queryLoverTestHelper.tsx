@@ -22,14 +22,17 @@ export async function getBlockedValueForQueryLoverTest(
     case "control":
       blockedCount = null;
       break;
+    case "2":
+      blockedCount = 2;
+      break;
+    case "3":
+      blockedCount = 3;
+      break;
     case "4":
       blockedCount = 4;
       break;
     case "6":
       blockedCount = 6;
-      break;
-    case "8":
-      blockedCount = 8;
       break;
     default:
       blockedCount = null;

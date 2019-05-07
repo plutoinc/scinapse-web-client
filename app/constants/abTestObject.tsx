@@ -19,9 +19,10 @@ export const queryLoverTest: Test = {
   name: "queryLover",
   userGroup: [
     { groupName: "control", weight: 1 },
+    { groupName: "2", weight: 5 },
+    { groupName: "3", weight: 5 },
     { groupName: "4", weight: 2 },
     { groupName: "6", weight: 2 },
-    { groupName: "8", weight: 2 },
   ],
 };
 
@@ -37,17 +38,17 @@ export const completeBlockSignUpTest: Test = {
 
 export const authorFromSearchTest: Test = {
   name: "authorFromSearch",
-  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "block", weight: 1 }],
+  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "block", weight: 3 }],
 };
 
 export const nextPageFromSearchTest: Test = {
   name: "nextPageFromSearch",
-  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "block", weight: 1 }],
+  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "block", weight: 3 }],
 };
 
 export const doiSearchTest: Test = {
   name: "doiSearch",
-  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "block", weight: 1 }],
+  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "block", weight: 3 }],
 };
 
 export const bannerTest: Test = {
