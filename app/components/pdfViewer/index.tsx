@@ -151,6 +151,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
       <div className={styles.loadingContainerWrapper}>
         <div className={styles.loadingContainer}>
           <CircularProgress size={100} thickness={2} color="inherit" variant="static" value={percentage} />
+          <span className={styles.loadingContent}>{`${percentage}%`}</span>
         </div>
       </div>
     );
