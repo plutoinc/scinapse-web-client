@@ -126,12 +126,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   }
 
-  public async componentWillReceiveProps(nextProps: PaperShowProps) {
-    const { dispatch, match, location, currentUser } = this.props;
+  public async componentDidUpdate(prevProps: PaperShowProps) {
+    const { dispatch, match, location, currentUser } = prevProps;
     const prevQueryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
-    const nextQueryParams: PaperShowPageQueryParams = getQueryParamsObject(nextProps.location.search);
+    const nextQueryParams: PaperShowPageQueryParams = getQueryParamsObject(this.props.location.search);
 
-    const moveToDifferentPage = match.params.paperId !== nextProps.match.params.paperId;
+    const moveToDifferentPage = match.params.paperId !== this.props.match.params.paperId;
     const changeRefPage = prevQueryParams["ref-page"] !== nextQueryParams["ref-page"];
     const changeCitedPage = prevQueryParams["cited-page"] !== nextQueryParams["cited-page"];
 
@@ -139,38 +139,29 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       await fetchPaperShowData(
         {
           dispatch,
-          match: nextProps.match,
-          pathname: nextProps.location.pathname,
+          match: this.props.match,
+          pathname: this.props.location.pathname,
           queryParams: nextQueryParams,
           cancelToken: this.cancelToken.token,
         },
         currentUser
       );
-      return this.scrollToRefCitedSection();
+      this.scrollToRefCitedSection();
+      return this.handleScrollEvent();
     }
 
     if (
-      currentUser.isLoggedIn !== nextProps.currentUser.isLoggedIn &&
-      nextProps.currentUser.isLoggedIn &&
-      nextProps.paper
+      currentUser.isLoggedIn !== this.props.currentUser.isLoggedIn &&
+      this.props.currentUser.isLoggedIn &&
+      this.props.paper
     ) {
-      return dispatch(fetchMyCollection(nextProps.paper.id, this.cancelToken.token));
+      return dispatch(fetchMyCollection(this.props.paper.id, this.cancelToken.token));
     }
 
-    if (nextProps.paper && changeRefPage) {
-      dispatch(fetchRefPaperData(nextProps.paper.id, nextQueryParams["ref-page"], this.cancelToken.token));
-    } else if (nextProps.paper && changeCitedPage) {
-      dispatch(fetchCitedPaperData(nextProps.paper.id, nextQueryParams["cited-page"], this.cancelToken.token));
-    }
-  }
-
-  public componentDidUpdate(prevProps: PaperShowProps) {
-    const { paper, location } = this.props;
-
-    const isPaperChanged = paper && prevProps.paper && paper.id !== prevProps.paper.id;
-
-    if ((!prevProps.paper && paper) || (isPaperChanged && !location.hash)) {
-      this.handleScrollEvent();
+    if (this.props.paper && changeRefPage) {
+      dispatch(fetchRefPaperData(this.props.paper.id, nextQueryParams["ref-page"], this.cancelToken.token));
+    } else if (this.props.paper && changeCitedPage) {
+      dispatch(fetchCitedPaperData(this.props.paper.id, nextQueryParams["cited-page"], this.cancelToken.token));
     }
   }
 
