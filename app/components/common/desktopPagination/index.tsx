@@ -76,13 +76,26 @@ function getFirstPageIcon(props: DesktopPaginationProps) {
 
   if (isLinkPagination(props)) {
     return (
-      <Link rel="nofollow" to={(props as LinkPaginationProps).getLinkDestination(1)} className={styles.pageIconButton}>
+      <Link
+        onClick={() => {
+          trackEvent({ category: "Search", action: "Pagination", label: "first_page" });
+        }}
+        rel="nofollow"
+        to={(props as LinkPaginationProps).getLinkDestination(1)}
+        className={styles.pageIconButton}
+      >
         <Icon icon="LAST_PAGE" />
       </Link>
     );
   } else {
     return (
-      <span onClick={() => (props as EventPaginationProps).onItemClick(1)} className={styles.pageIconButton}>
+      <span
+        onClick={() => {
+          trackEvent({ category: "Search", action: "Pagination", label: "first_page" });
+          (props as EventPaginationProps).onItemClick(1);
+        }}
+        className={styles.pageIconButton}
+      >
         <Icon icon="LAST_PAGE" />
       </span>
     );
@@ -122,6 +135,9 @@ function getNextIcon(props: DesktopPaginationProps) {
       <div className={styles.nextButtons}>
         <Link
           rel="nofollow"
+          onClick={() => {
+            trackEvent({ category: "Search", action: "Pagination", label: "next_page" });
+          }}
           to={(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex + 2)}
           className={styles.pageIconButton}
         >
@@ -134,6 +150,7 @@ function getNextIcon(props: DesktopPaginationProps) {
       <div className={styles.nextButtons}>
         <span
           onClick={() => {
+            trackEvent({ category: "Search", action: "Pagination", label: "next_page" });
             (props as EventPaginationProps).onItemClick(props.currentPageIndex + 2);
           }}
           className={styles.pageIconButton}
@@ -154,6 +171,9 @@ function getPrevIcon(props: DesktopPaginationProps) {
     return (
       <Link
         rel="nofollow"
+        onClick={() => {
+          trackEvent({ category: "Search", action: "Pagination", label: "prev_page" });
+        }}
         to={(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex)}
         className={styles.pageIconButton}
       >
@@ -163,7 +183,10 @@ function getPrevIcon(props: DesktopPaginationProps) {
   } else {
     return (
       <span
-        onClick={() => (props as EventPaginationProps).onItemClick(props.currentPageIndex)}
+        onClick={() => {
+          trackEvent({ category: "Search", action: "Pagination", label: "prev_page" });
+          (props as EventPaginationProps).onItemClick(props.currentPageIndex);
+        }}
         className={styles.pageIconButton}
       >
         <Icon icon="NEXT_PAGE" />
