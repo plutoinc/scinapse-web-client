@@ -414,7 +414,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
     } else {
       return (
         <DesktopPagination
-          type="search_result_papers"
+          type="paper_search_result"
           totalPage={totalPages}
           currentPageIndex={currentPageIndex}
           getLinkDestination={this.makePaginationLink}

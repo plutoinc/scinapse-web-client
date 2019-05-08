@@ -237,7 +237,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     } else {
       return (
         <DesktopPagination
-          type="search_result_papers"
+          type="collection_show"
           totalPage={totalPaperListPage}
           currentPageIndex={currentPageIndex}
           onItemClick={this.fetchPapers}
