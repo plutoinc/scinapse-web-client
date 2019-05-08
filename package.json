@@ -40,6 +40,7 @@
     "@loadable/babel-plugin": "5.7.2",
     "@loadable/webpack-plugin": "5.7.1",
     "@types/autosize": "3.0.6",
+    "@types/chrome": "0.0.83",
     "@types/classnames": "2.2.3",
     "@types/cookie": "0.3.2",
     "@types/cookie-parser": "1.4.1",

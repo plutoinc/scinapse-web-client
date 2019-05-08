@@ -271,6 +271,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               handleGetBestPdf={this.getBestPdfOfPaperInPaperShow}
               filename={paper.title}
               bestPdf={paper.bestPdf}
+              sources={paper.urls}
               shouldShow={!EnvChecker.isOnServer() && layout.userDevice === UserDevice.DESKTOP}
             />
           </div>
@@ -436,6 +437,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             this.setState(prevState => ({ ...prevState, isLoadPDF: false, isLoadingOaPDFCheck: false }));
           }
         });
+        return res;
       } catch (err) {
         this.setState(prevState => ({
           ...prevState,

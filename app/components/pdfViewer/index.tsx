@@ -12,7 +12,8 @@ import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
 import getAPIHost from "../../api/getHost";
 import { getUserGroupName } from "../../helpers/abTestHelper";
 import { VIEW_PDF_SIGN_UP_MAIN_TEXT_TEST_NAME } from "../../constants/abTestGlobalValue";
-
+import { PaperSource } from "../../model/paperSource";
+import { EXTENSION_APP_ID } from "../../constants/scinapse-extension";
 const { Document, Page, pdfjs } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
@@ -23,8 +24,9 @@ interface PDFViewerProps {
   paperId: number;
   shouldShow: boolean;
   filename: string;
+  sources: PaperSource[];
   bestPdf?: PaperPdf;
-  handleGetBestPdf: () => void;
+  handleGetBestPdf: () => Promise<PaperPdf> | undefined;
   onLoadSuccess: () => void;
   onFailed: () => void;
 }
@@ -54,11 +56,57 @@ function useIntervalProgress(callback: () => void, delay: number | null) {
   );
 }
 
+function fetchPDFFromExtension(sources: PaperSource[]): Promise<{ data: Blob }> {
+  return new Promise((resolve, reject) => {
+    if (typeof window !== "undefined" && typeof chrome !== "undefined") {
+      chrome.runtime.sendMessage(EXTENSION_APP_ID, { message: "CHECK_EXTENSION_EXIST" }, reply => {
+        if (!reply || !reply.success) {
+          return reject();
+        }
+      });
+
+      const channel = new MessageChannel();
+      window.postMessage(
+        {
+          type: "GET_PDF",
+          sources,
+        },
+        "*",
+        [channel.port2]
+      );
+
+      channel.port1.onmessage = e => {
+        if (e.data.success) {
+          console.log("SUCCESS TO GET PDF from EXTENSION");
+          resolve(e.data);
+        } else {
+          reject();
+        }
+      };
+    }
+  });
+}
+
+async function fetchPDFFromAPI(bestPdf: PaperPdf | undefined, handleGetBestPdf: () => Promise<PaperPdf> | undefined) {
+  let pdf: PaperPdf | undefined = bestPdf;
+  if (!pdf) {
+    pdf = await handleGetBestPdf();
+  }
+
+  if (pdf && pdf.hasBest) {
+    const res = await Axios.get(`${getAPIHost()}/proxy/pdf?url=${encodeURIComponent(pdf.url)}`, {
+      responseType: "blob",
+    });
+    return { data: res.data as Blob };
+  }
+  return null;
+}
+
 const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
-  const { bestPdf, shouldShow, onFailed, onLoadSuccess, handleGetBestPdf, dispatch } = props;
+  const { bestPdf, shouldShow, onFailed, onLoadSuccess, dispatch } = props;
   const [percentage, setPercentage] = React.useState(0);
   const [isFetching, setIsFetching] = React.useState(false);
-  const [PDFBinary, setPDFBinary] = React.useState(null);
+  const [PDFBinary, setPDFBinary] = React.useState<Blob | null>(null);
   const [PDFObject, setPDFObject] = React.useState(null);
   const [extend, setExtend] = React.useState(false);
   const [hadErrorToLoad, setLoadError] = React.useState(false);
@@ -94,40 +142,44 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     marginLeft: "16px",
   };
 
+  function handlePDFResult(blob: Blob) {
+    setPDFBinary(blob);
+    dispatch(ActionCreators.endToLoadingFetchPDF());
+    setIsFetching(false);
+  }
+
   useIntervalProgress(() => {
     setPercentage(percentage + 10);
   }, percentage < 90 ? 500 : null);
 
   React.useEffect(
     () => {
-      if (shouldShow) {
+      if (shouldShow && props.sources.length > 0) {
         dispatch(ActionCreators.startToLoadingFetchPDF());
-        if (!bestPdf) {
-          handleGetBestPdf();
-        } else if (bestPdf && bestPdf.hasBest) {
-          setIsFetching(true);
-          Axios.get(`${getAPIHost()}/proxy/pdf?url=${encodeURIComponent(bestPdf.url)}`, {
-            responseType: "blob",
+        setIsFetching(true);
+        fetchPDFFromExtension(props.sources)
+          .then(res => {
+            handlePDFResult(res.data);
           })
-            .then(res => {
-              setPDFBinary(res.data);
-              dispatch(ActionCreators.endToLoadingFetchPDF());
-              setIsFetching(false);
-            })
-            .catch(_err => {
-              setLoadError(true);
-              dispatch(ActionCreators.endToLoadingFetchPDF());
-              setIsFetching(false);
-              onFailed();
-            });
-        } else if (bestPdf && !bestPdf.hasBest) {
-          setPDFBinary(null);
-          dispatch(ActionCreators.endToLoadingFetchPDF());
-          setIsFetching(false);
-        }
+          .catch(() => {
+            return fetchPDFFromAPI(props.bestPdf, props.handleGetBestPdf);
+          })
+          .then(res => {
+            if (res && res.data) {
+              handlePDFResult(res.data);
+            } else {
+              throw new Error();
+            }
+          })
+          .catch(_err => {
+            setLoadError(true);
+            dispatch(ActionCreators.endToLoadingFetchPDF());
+            setIsFetching(false);
+            onFailed();
+          });
       }
     },
-    [bestPdf]
+    [props.paperId]
   );
 
   const getContent = () => {
