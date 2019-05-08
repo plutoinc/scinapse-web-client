@@ -36,12 +36,9 @@ import { ArticleSearchState } from "../../components/articleSearch/records";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 import Icon from "../../icons";
 import ActionTicketManager from "../../helpers/actionTicketManager";
-
 const styles = require("./paperShow.scss");
 
-const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10);
-const SIDE_NAVIGATION_BOTTOM_PADDING = parseInt(styles.sideNavigationBottomPadding, 10);
 
 let ticking = false;
 
@@ -77,10 +74,6 @@ interface PaperShowStates
       isOnCited: boolean;
       isOnFullText: boolean;
 
-      isRightBoxSmall: boolean;
-      isRightBoxFixed: boolean;
-      isTouchFooter: boolean;
-
       isLoadPDF: boolean;
       failedToLoadPDF: boolean;
 
@@ -93,8 +86,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private fullTextTabWrapper: HTMLDivElement | null;
   private refTabWrapper: HTMLDivElement | null;
   private citedTabWrapper: HTMLDivElement | null;
-  private rightBoxWrapper: HTMLDivElement | null;
-  private footerWrapper: HTMLDivElement | null;
 
   constructor(props: PaperShowProps) {
     super(props);
@@ -104,9 +95,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isOnRef: false,
       isOnCited: false,
       isOnFullText: false,
-      isRightBoxSmall: false,
-      isRightBoxFixed: false,
-      isTouchFooter: false,
       isLoadPDF: false,
       failedToLoadPDF: false,
       isLoadingOaPDFCheck: false,
@@ -323,7 +311,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             </div>
           </>
         </div>
-        <div className={styles.footerWrapper} ref={el => (this.footerWrapper = el)}>
+        <div className={styles.footerWrapper}>
           <Footer />
         </div>
         <NextPaperTab />
@@ -476,38 +464,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private handleScrollEvent = () => {
-    const { isRightBoxFixed, isTouchFooter } = this.state;
     const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-    const viewportHeight = window.innerHeight;
-    const windowBottom = scrollTop + viewportHeight;
-
-    // right box
-    if (this.rightBoxWrapper && this.footerWrapper) {
-      const offsetHeight = this.rightBoxWrapper.offsetHeight;
-      const rightBoxFullHeight = offsetHeight + NAVBAR_HEIGHT + PAPER_SHOW_MARGIN_TOP + SIDE_NAVIGATION_BOTTOM_PADDING;
-      const isShorterThanScreenHeight = offsetHeight < viewportHeight - NAVBAR_HEIGHT - PAPER_SHOW_MARGIN_TOP;
-      const isScrollOverRightBox = windowBottom > rightBoxFullHeight;
-      const isScrollTouchFooter = windowBottom - SIDE_NAVIGATION_BOTTOM_PADDING >= this.footerWrapper.offsetTop;
-
-      if (isShorterThanScreenHeight) {
-        this.setState(prevState => ({ ...prevState, isRightBoxSmall: true, isRightBoxFixed: true }));
-      } else if (!isShorterThanScreenHeight) {
-        this.setState(prevState => ({ ...prevState, isRightBoxSmall: false }));
-      }
-
-      if (isRightBoxFixed && !isScrollOverRightBox) {
-        this.setState(prevState => ({ ...prevState, isRightBoxFixed: false }));
-      } else if (!isRightBoxFixed && isScrollOverRightBox) {
-        this.setState(prevState => ({ ...prevState, isRightBoxFixed: true }));
-      }
-
-      if (!isTouchFooter && isScrollOverRightBox && isScrollTouchFooter && !isShorterThanScreenHeight) {
-        this.setState(prevState => ({ ...prevState, isTouchFooter: true }));
-      } else if (isTouchFooter && isScrollOverRightBox && !isScrollTouchFooter) {
-        this.setState(prevState => ({ ...prevState, isTouchFooter: false }));
-      }
-    }
-
     // ref/cited tab
     if (this.fullTextTabWrapper && this.refTabWrapper && this.citedTabWrapper) {
       const fullTextOffsetTop = this.fullTextTabWrapper.offsetTop;

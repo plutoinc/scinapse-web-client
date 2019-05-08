@@ -4,8 +4,6 @@ $side-navigation-bottom-padding: 24px;
 
 :export {
   navbarHeight: $navbar_height;
-  paperShowMarginTop: $paper-show-margin;
-  sideNavigationBottomPadding: $side-navigation-bottom-padding;
 }
 
 :global {
@@ -141,43 +139,9 @@ article.paperShow {
 .citedBy {
   margin-top: 40px;
 }
+
 .paperContentBlockHeaderTabsHeight {
   height: 69px;
-}
-
-.rightBox {
-  width: $paper-show-rightBox-width;
-}
-
-.sideNavigation {
-  margin-top: $paper-show-margin;
-  height: fit-content;
-
-  &.stick {
-    position: fixed;
-    bottom: $side-navigation-bottom-padding;
-    transition: bottom 150ms ease;
-    z-index: 27;
-  }
-
-  &.smallThanVH {
-    position: fixed;
-    bottom: unset;
-    z-index: 27;
-  }
-
-  &.touchFooter {
-    transition: bottom 150ms ease;
-    bottom: $side-navigation-bottom-padding + $footer-height;
-  }
-
-  .sideNavigationBlockHeader {
-    width: 100%;
-    font-weight: 700;
-    color: $black1;
-    padding-bottom: 4px;
-    margin-bottom: 8px;
-  }
 }
 
 .refCitedTabWrapper {
@@ -254,14 +218,6 @@ article.paperShow {
         }
       }
     }
-
-    .sideNavigation {
-      right: calc(calc((100% - #{$regular-display-container-width}) / 2 - 0px));
-
-      & > .rightSection {
-        width: $regular-display-paper-show-rightBox-width;
-      }
-    }
   }
 }
 
@@ -306,12 +262,6 @@ article.paperShow {
           }
         }
       }
-    }
-    .rightBox {
-      width: $regular-display-paper-show-rightBox-width;
-    }
-    .sideNavigation {
-      display: none;
     }
   }
 }
