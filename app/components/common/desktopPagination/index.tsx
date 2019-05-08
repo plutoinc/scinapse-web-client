@@ -6,7 +6,19 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 import { LocationDescriptor } from "../../../../node_modules/@types/history";
 import { trackEvent } from "../../../helpers/handleGA";
+import { getUserGroupName } from "../../../helpers/abTestHelper";
+import { NEXT_PAGE_FROM_SEARCH_TEST_NAME } from "../../../constants/abTestGlobalValue";
+import { blockUnverifiedUser, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
 const styles = require("./desktopPagination.scss");
+
+function hasBlockedInPagination() {
+  return blockUnverifiedUser({
+    authLevel: AUTH_LEVEL.VERIFIED,
+    actionArea: "searchResult",
+    actionLabel: "nextPageFromSearch",
+    userActionType: "nextPageFromSearch",
+  });
+}
 
 interface CommonPaginationProps
   extends RouteComponentProps,
@@ -64,13 +76,26 @@ function getFirstPageIcon(props: DesktopPaginationProps) {
 
   if (isLinkPagination(props)) {
     return (
-      <Link rel="nofollow" to={(props as LinkPaginationProps).getLinkDestination(1)} className={styles.pageIconButton}>
+      <Link
+        onClick={() => {
+          trackEvent({ category: "Search", action: "Pagination", label: "first_page" });
+        }}
+        rel="nofollow"
+        to={(props as LinkPaginationProps).getLinkDestination(1)}
+        className={styles.pageIconButton}
+      >
         <Icon icon="LAST_PAGE" />
       </Link>
     );
   } else {
     return (
-      <span onClick={() => (props as EventPaginationProps).onItemClick(1)} className={styles.pageIconButton}>
+      <span
+        onClick={() => {
+          trackEvent({ category: "Search", action: "Pagination", label: "first_page" });
+          (props as EventPaginationProps).onItemClick(1);
+        }}
+        className={styles.pageIconButton}
+      >
         <Icon icon="LAST_PAGE" />
       </span>
     );
@@ -83,10 +108,36 @@ function getNextIcon(props: DesktopPaginationProps) {
   }
 
   if (isLinkPagination(props)) {
+    if (props.type === "paper_search_result") {
+      return (
+        <div className={styles.nextButtons}>
+          <span
+            onClick={async () => {
+              const userGroup = getUserGroupName(NEXT_PAGE_FROM_SEARCH_TEST_NAME);
+              if (userGroup === "block" && props.currentPageIndex === 0) {
+                const shouldBlock = await hasBlockedInPagination();
+                if (shouldBlock) {
+                  return;
+                }
+              }
+              trackEvent({ category: "Search", action: "Pagination", label: "next_page" });
+              props.history.push(`${(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex + 2)}`);
+            }}
+            className={styles.pageIconButton}
+          >
+            <Icon icon="NEXT_PAGE" />
+          </span>
+        </div>
+      );
+    }
+
     return (
       <div className={styles.nextButtons}>
         <Link
           rel="nofollow"
+          onClick={() => {
+            trackEvent({ category: "Search", action: "Pagination", label: "next_page" });
+          }}
           to={(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex + 2)}
           className={styles.pageIconButton}
         >
@@ -99,6 +150,7 @@ function getNextIcon(props: DesktopPaginationProps) {
       <div className={styles.nextButtons}>
         <span
           onClick={() => {
+            trackEvent({ category: "Search", action: "Pagination", label: "next_page" });
             (props as EventPaginationProps).onItemClick(props.currentPageIndex + 2);
           }}
           className={styles.pageIconButton}
@@ -119,6 +171,9 @@ function getPrevIcon(props: DesktopPaginationProps) {
     return (
       <Link
         rel="nofollow"
+        onClick={() => {
+          trackEvent({ category: "Search", action: "Pagination", label: "prev_page" });
+        }}
         to={(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex)}
         className={styles.pageIconButton}
       >
@@ -128,7 +183,10 @@ function getPrevIcon(props: DesktopPaginationProps) {
   } else {
     return (
       <span
-        onClick={() => (props as EventPaginationProps).onItemClick(props.currentPageIndex)}
+        onClick={() => {
+          trackEvent({ category: "Search", action: "Pagination", label: "prev_page" });
+          (props as EventPaginationProps).onItemClick(props.currentPageIndex);
+        }}
         className={styles.pageIconButton}
       >
         <Icon icon="NEXT_PAGE" />
@@ -157,6 +215,32 @@ const getEventPageItem = (props: EventPaginationProps, pageNumber: number, curre
 };
 
 const getLinkPageItem = (props: LinkPaginationProps, pageNumber: number, currentPage: number) => {
+  if (props.type === "paper_search_result") {
+    return (
+      <span
+        onClick={async () => {
+          const userGroup = getUserGroupName(NEXT_PAGE_FROM_SEARCH_TEST_NAME);
+          if (userGroup === "block" && currentPage === 1 && pageNumber > currentPage) {
+            const shouldBlock = await hasBlockedInPagination();
+            if (shouldBlock) {
+              return;
+            }
+          }
+          trackEvent({ category: "Search", action: "Pagination", label: `${pageNumber}` });
+          props.history.push(`${props.getLinkDestination(pageNumber)}`);
+        }}
+        style={props.itemStyle}
+        key={`${props.type}_${pageNumber}`}
+        className={classNames({
+          [`${styles.pageItem}`]: true,
+          [`${styles.active}`]: currentPage === pageNumber,
+        })}
+      >
+        {pageNumber}
+      </span>
+    );
+  }
+
   return (
     <Link
       onClick={() => {

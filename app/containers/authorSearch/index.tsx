@@ -206,7 +206,7 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
     } else {
       return (
         <DesktopPagination
-          type="search_result_papers"
+          type="author_search_result"
           totalPage={totalPages}
           currentPageIndex={currentPageIndex}
           getLinkDestination={this.makePaginationLink}
