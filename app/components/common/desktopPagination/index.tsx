@@ -6,11 +6,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 import { LocationDescriptor } from "../../../../node_modules/@types/history";
 import { trackEvent } from "../../../helpers/handleGA";
-import { blockUnverifiedUser, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
-import { NEXT_PAGE_FROM_SEARCH_TEST_NAME } from "../../../constants/abTestGlobalValue";
-import { getUserGroupName } from "../../../helpers/abTestHelper";
 const styles = require("./desktopPagination.scss");
-const USER_GROUP_NAME: string = getUserGroupName(NEXT_PAGE_FROM_SEARCH_TEST_NAME) || "";
 
 interface CommonPaginationProps
   extends RouteComponentProps,
@@ -61,15 +57,6 @@ export function makePageNumberArray(props: DesktopPaginationProps): number[] {
   return range(startPage, endPage);
 }
 
-export async function hasBlockedInPagination() {
-  return blockUnverifiedUser({
-    authLevel: AUTH_LEVEL.VERIFIED,
-    actionArea: "searchResult",
-    actionLabel: "nextPageFromSearch",
-    userActionType: "nextPageFromSearch",
-  });
-}
-
 function getFirstPageIcon(props: DesktopPaginationProps) {
   if (props.currentPageIndex === 0) {
     return null;
@@ -99,17 +86,6 @@ function getNextIcon(props: DesktopPaginationProps) {
     return (
       <div className={styles.nextButtons}>
         <Link
-          onClick={async e => {
-            e.preventDefault();
-
-            const isBlocked = USER_GROUP_NAME === "block" && props.currentPageIndex >= 0 && hasBlockedInPagination();
-
-            if (isBlocked) {
-              return;
-            }
-
-            props.history.push(`${(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex + 2)}`);
-          }}
           rel="nofollow"
           to={(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex + 2)}
           className={styles.pageIconButton}
@@ -122,16 +98,8 @@ function getNextIcon(props: DesktopPaginationProps) {
     return (
       <div className={styles.nextButtons}>
         <span
-          onClick={async e => {
-            e.preventDefault();
-
-            const isBlocked = USER_GROUP_NAME === "block" && props.currentPageIndex === 2 && hasBlockedInPagination();
-
-            if (isBlocked) {
-              return;
-            } else {
-              (props as EventPaginationProps).onItemClick(props.currentPageIndex + 2);
-            }
+          onClick={() => {
+            (props as EventPaginationProps).onItemClick(props.currentPageIndex + 2);
           }}
           className={styles.pageIconButton}
         >
@@ -172,18 +140,9 @@ function getPrevIcon(props: DesktopPaginationProps) {
 const getEventPageItem = (props: EventPaginationProps, pageNumber: number, currentPage: number) => {
   return (
     <span
-      onClick={async e => {
-        e.preventDefault();
-
-        const isBlocked =
-          USER_GROUP_NAME === "block" && currentPage === 1 && pageNumber > currentPage && hasBlockedInPagination();
-
-        if (isBlocked) {
-          return;
-        } else {
-          props.onItemClick(pageNumber);
-          trackEvent({ category: "Search", action: "Pagination", label: `${pageNumber}` });
-        }
+      onClick={() => {
+        props.onItemClick(pageNumber);
+        trackEvent({ category: "Search", action: "Pagination", label: `${pageNumber}` });
       }}
       key={`${props.type}_${pageNumber}`}
       style={props.itemStyle}
@@ -200,18 +159,8 @@ const getEventPageItem = (props: EventPaginationProps, pageNumber: number, curre
 const getLinkPageItem = (props: LinkPaginationProps, pageNumber: number, currentPage: number) => {
   return (
     <Link
-      onClick={async e => {
-        e.preventDefault();
-
-        const isBlocked =
-          USER_GROUP_NAME === "block" && currentPage === 1 && pageNumber > currentPage && hasBlockedInPagination();
-
-        if (isBlocked) {
-          return;
-        } else {
-          trackEvent({ category: "Search", action: "Pagination", label: `${pageNumber}` });
-          props.history.push(`${props.getLinkDestination(pageNumber)}`);
-        }
+      onClick={() => {
+        trackEvent({ category: "Search", action: "Pagination", label: `${pageNumber}` });
       }}
       rel="nofollow"
       to={props.getLinkDestination(pageNumber)}
