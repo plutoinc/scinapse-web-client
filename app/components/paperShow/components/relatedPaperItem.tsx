@@ -4,7 +4,6 @@ import * as classNames from "classnames";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Paper } from "../../../model/paper";
 import Icon from "../../../icons";
-import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./relatedPaperItem.scss");
 
@@ -28,11 +27,6 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
             <React.Fragment key={`related_paper_${author.id}_${index}`}>
               <Link
                 onClick={() => {
-                  trackEvent({
-                    category: "Flow to Author Show",
-                    action: "Click Author",
-                    label: "",
-                  });
                   ActionTicketManager.trackTicket({
                     pageType: "paperShow",
                     actionType: "fire",
@@ -82,7 +76,6 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
               <Link
                 to={`/journals/${paper.journal.id}`}
                 onClick={() => {
-                  trackEvent({ category: "Search", action: "Click Journal", label: "" });
                   ActionTicketManager.trackTicket({
                     pageType: "paperShow",
                     actionType: "fire",
@@ -113,12 +106,6 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
     const { actionArea, paper, history } = this.props;
 
     e.preventDefault();
-
-    trackEvent({
-      category: "New Paper Show",
-      action: "Click relatedPaperItem in sideNavigation",
-      label: JSON.stringify({ referer: `paper_show_${actionArea}`, refererLocation: location.pathname }),
-    });
 
     ActionTicketManager.trackTicket({
       pageType: "paperShow",

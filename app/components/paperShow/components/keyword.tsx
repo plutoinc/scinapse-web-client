@@ -2,7 +2,6 @@ import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Fos, NewFOS } from "../../../model/fos";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
-import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./keyword.scss");
 
@@ -31,12 +30,6 @@ const PaperShowKeyword: React.FunctionComponent<PaperShowKeywordProps> = props =
         rel="noopener"
         target="_blank"
         onClick={() => {
-          trackEvent({
-            category: "New Paper Show",
-            action: "Click FOS by referers in paperContent",
-            label: `Click FOS id : ${fos.id} `,
-          });
-
           ActionTicketManager.trackTicket({
             pageType: props.pageType,
             actionType: "fire",
@@ -62,12 +55,6 @@ const PaperShowKeyword: React.FunctionComponent<PaperShowKeywordProps> = props =
         rel="noopener"
         target="_blank"
         onClick={() => {
-          trackEvent({
-            category: "New Paper Show",
-            action: "Click FOS by referers in paperContent",
-            label: `Click FOS id : ${fos.id} `,
-          });
-
           ActionTicketManager.trackTicket({
             pageType: props.pageType,
             actionType: "fire",

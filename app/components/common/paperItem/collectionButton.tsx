@@ -4,7 +4,6 @@ import { denormalize } from "normalizr";
 import Popover from "@material-ui/core/Popover";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
-import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import Icon from "../../../icons";
 import { AppState } from "../../../reducers";
@@ -48,7 +47,6 @@ function trackActionToClickCollectionButton(
   pageType: Scinapse.ActionTicket.PageType,
   actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType | null
 ) {
-  trackEvent({ category: "Additional Action", action: "Click [Add To Collection] Button" });
   ActionTicketManager.trackTicket({
     pageType,
     actionType: "fire",
@@ -80,7 +78,6 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
           className={styles.addCollectionBtnWrapper}
           onClick={() => {
             onRemove(paperId);
-            trackEvent({ category: "Additional Action", action: "Click [Remove from Collection] Button" });
             ActionTicketManager.trackTicket({
               pageType,
               actionType: "fire",

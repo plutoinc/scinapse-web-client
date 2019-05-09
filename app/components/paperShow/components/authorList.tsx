@@ -34,11 +34,6 @@ const AuthorList: React.SFC<{ authors: PaperAuthor[]; paper: Paper }> = props =>
             className={styles.authorItemAnchor}
             to={`/authors/${author.id}`}
             onClick={() => {
-              trackEvent({
-                category: "New Paper Show",
-                action: "Click Author in PaperInfo Section",
-                label: `Click Author ID : ${author.id}`,
-              });
               ActionTicketManager.trackTicket({
                 pageType: "paperShow",
                 actionType: "fire",

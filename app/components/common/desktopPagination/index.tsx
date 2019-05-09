@@ -105,7 +105,6 @@ function getFirstPageIcon(props: DesktopPaginationProps) {
 }
 
 function trackActionToClickPagination(actionLabel: string) {
-  trackEvent({ category: "Search", action: "Pagination", label: actionLabel });
   ActionTicketManager.trackTicket({
     pageType: getCurrentPageType(),
     actionType: "fire",

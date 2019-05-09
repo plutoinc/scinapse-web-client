@@ -85,12 +85,6 @@ class Title extends React.PureComponent<TitleProps, {}> {
       actionLabel: String(paperId),
     });
 
-    trackEvent({
-      category: "Flow to Paper Show",
-      action: "Click Title",
-      label: JSON.stringify({ referer: pageType, refererLocation: location.pathname }),
-    });
-
     history.push(`/papers/${paperId}`);
   };
 }

@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as classNames from "classnames";
 import { Paper } from "../../../model/paper";
-import { trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import SourceURLPopover from "../../common/sourceURLPopover";
@@ -124,12 +123,6 @@ class PdfButton extends React.PureComponent<PdfSourceButtonProps, PdfSourceButto
     const { paper } = this.props;
 
     if (isPdf) {
-      trackEvent({
-        category: "New Paper Show",
-        action: "Click PDF Download button in PaperContent Section",
-        label: `Link to Paper ID : ${paper.id} download`,
-      });
-
       ActionTicketManager.trackTicket({
         pageType: "paperShow",
         actionType: "fire",

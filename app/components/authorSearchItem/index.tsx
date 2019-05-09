@@ -4,7 +4,6 @@ import MuiTooltip from "@material-ui/core/Tooltip";
 import { MatchEntityAuthor } from "../../api/search";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
-import { trackEvent } from "../../helpers/handleGA";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
 import { AUTHOR_FROM_SEARCH_TEST_NAME } from "../../constants/abTestGlobalValue";
@@ -16,11 +15,6 @@ interface AuthorSearchItemProps extends RouteComponentProps<any> {
 }
 
 export function trackActionToClickAuthorEntity(authorId: number) {
-  trackEvent({
-    category: "Flow to Author Show",
-    action: "Click Author Entity",
-    label: `Click Author ID : ${authorId}`,
-  });
   ActionTicketManager.trackTicket({
     pageType: "searchResult",
     actionType: "fire",
