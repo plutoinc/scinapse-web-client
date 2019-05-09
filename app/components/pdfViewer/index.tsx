@@ -14,6 +14,7 @@ import { getUserGroupName } from "../../helpers/abTestHelper";
 import { VIEW_PDF_SIGN_UP_MAIN_TEXT_TEST_NAME } from "../../constants/abTestGlobalValue";
 import { PaperSource } from "../../model/paperSource";
 import { EXTENSION_APP_ID } from "../../constants/scinapse-extension";
+import EnvChecker from "../../helpers/envChecker";
 const { Document, Page, pdfjs } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
@@ -250,20 +251,23 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                     </span>
                   }
                   onClick={async e => {
-                    e.preventDefault();
+                    if (!EnvChecker.isOnServer()) {
+                      e.preventDefault();
 
-                    const isBlocked = await blockUnverifiedUser({
-                      authLevel: AUTH_LEVEL.VERIFIED,
-                      actionArea: "pdfViewer",
-                      actionLabel: "downloadPdf",
-                      userActionType: "downloadPdf",
-                    });
+                      const isBlocked = await blockUnverifiedUser({
+                        authLevel: AUTH_LEVEL.VERIFIED,
+                        actionArea: "pdfViewer",
+                        actionLabel: "downloadPdf",
+                        userActionType: "downloadPdf",
+                      });
 
-                    if (isBlocked) {
-                      return;
+                      if (isBlocked) {
+                        return;
+                      }
+
+                      trackClickButton("downloadPdf", props.paperId);
+                      window.open(bestPdf.url, "_blank");
                     }
-
-                    trackClickButton("downloadPdf", props.paperId);
                   }}
                   isExternalLink
                   downloadAttr

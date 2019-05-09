@@ -78,11 +78,11 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
       };
 
       const papers = await getSearchData(currentParams);
-      // TODO: change logging logic much easier after chainging the class component to React hooks.
+      // TODO: change logging logic much easier after changing the class component to React hooks.
       this.logSearchResult(papers);
       restoreScroll(location.key);
     } else {
-      // TODO: change logging logic much easier after chainging the class component to React hooks.
+      // TODO: change logging logic much easier after changing the class component to React hooks.
       this.logSearchResult(articleSearchState.searchItemsToShow);
     }
   }
