@@ -193,6 +193,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       return null;
     }
 
+    const shouldShowFullTextTab = isLoadPDF && !failedToLoadPDF;
+
     return (
       <>
         <div className={styles.container}>
@@ -241,7 +243,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             </div>
           </article>
           <div>
-            {hasBest && (
+            {shouldShowFullTextTab && (
               <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
                 <PaperShowRefCitedTab
                   paper={paper}
@@ -256,7 +258,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   isOnRef={isOnRef}
                   isOnCited={isOnCited}
                   isOnFullText={isOnFullText || (!isOnFullText && !isOnRef && !isOnCited)}
-                  showFullText={!failedToLoadPDF}
+                  showFullText
                 />
               </div>
             )}
@@ -285,7 +287,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               isFixed={isOnRef}
               isOnRef={isOnRef}
               isOnCited={isOnCited}
-              showFullText={!failedToLoadPDF && isLoadPDF}
+              showFullText={shouldShowFullTextTab}
             />
           </div>
           <div className={styles.citedBy}>
@@ -323,7 +325,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               isFixed={isOnCited}
               isOnRef={isOnRef}
               isOnCited={isOnCited}
-              showFullText={isLoadPDF}
+              showFullText={shouldShowFullTextTab}
             />
           </div>
           <div className={styles.citedBy}>
