@@ -31,7 +31,7 @@ export async function blockUnverifiedUser(params: BlockByBenefitExpParams): Prom
       userActionType,
       authContext: {
         pageType: getCurrentPageType(),
-        actionArea: actionArea,
+        actionArea,
         actionLabel: expName ? expName : actionLabel,
         expName,
       },
@@ -40,7 +40,7 @@ export async function blockUnverifiedUser(params: BlockByBenefitExpParams): Prom
     ActionTicketManager.trackTicket({
       pageType: getCurrentPageType(),
       actionType: "fire",
-      actionArea: actionArea,
+      actionArea,
       actionTag: "blockUnsignedUser",
       actionLabel: expName ? expName : actionLabel,
       expName,
@@ -58,9 +58,9 @@ export async function blockUnverifiedUser(params: BlockByBenefitExpParams): Prom
     ActionTicketManager.trackTicket({
       pageType: getCurrentPageType(),
       actionType: "fire",
-      actionArea: actionArea,
+      actionArea,
       actionTag: "blockUnverifiedUser",
-      actionLabel: actionLabel,
+      actionLabel,
     });
     return true;
   }
