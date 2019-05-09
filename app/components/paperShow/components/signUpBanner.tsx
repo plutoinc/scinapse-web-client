@@ -6,6 +6,7 @@ import { getUserGroupName } from "../../../helpers/abTestHelper";
 import {
   SIGN_BANNER_AT_PAPER_SHOW_BANNER_TEST,
   SIGN_BANNER_AT_PAPER_SHOW_TITLE_TEXT_TEST,
+  SIGN_BANNER_AT_PAPER_SHOW_TITLE_TEXT_KEYVERB_TEST,
 } from "../../../constants/abTestGlobalValue";
 const styles = require("./signUpBanner.scss");
 
@@ -13,19 +14,20 @@ interface SignBannerProps {
   isLoggedIn: boolean;
 }
 
-const SignBannerTitleText: React.FunctionComponent<{ userGroupName: string }> = React.memo(props => {
-  const { userGroupName } = props;
+const SignBannerTitleText: React.FunctionComponent<{ userGroupName: string; keyverb: string }> = React.memo(props => {
+  const { userGroupName, keyverb } = props;
   let titleText: string = "";
+  const keyverbText = keyverb === "enjoy" ? "Enjoy" : "Browse";
 
   switch (userGroupName) {
-    case "areyouresearcher":
-      titleText = "Are you a\nresearcher?";
+    case "onlymember":
+      titleText = `Only\nMember\nCan ${keyverbText}\nScinapse`;
       break;
-    case "bemember":
-      titleText = "Be a\nScinapse Member";
+    case "youcanmore":
+      titleText = `You\nCan ${keyverbText}\nScinapse\nMore`;
       break;
-    case "unleashyourlimit":
-      titleText = "Unleash\nYour Limit";
+    case "enjoyeverything":
+      titleText = `${keyverbText}\nEverything\nby Signing Up`;
       break;
     default:
       return null;
@@ -77,7 +79,9 @@ const SignUpBanner: React.FunctionComponent<SignBannerProps> = props => {
     return null;
   }
 
-  const TitleTextUserGroupName: string = getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TITLE_TEXT_TEST) || "";
+  const titleTextUserGroupName: string = getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TITLE_TEXT_TEST) || "";
+  const titleTextKeyverbUserGroupName: string =
+    getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TITLE_TEXT_KEYVERB_TEST) || "";
 
   ActionTicketManager.trackTicket({
     pageType: "paperShow",
@@ -90,7 +94,7 @@ const SignUpBanner: React.FunctionComponent<SignBannerProps> = props => {
 
   return (
     <div className={styles.bannerContainer}>
-      <SignBannerTitleText userGroupName={TitleTextUserGroupName} />
+      <SignBannerTitleText userGroupName={titleTextUserGroupName} keyverb={titleTextKeyverbUserGroupName} />
       <OpenSignUpModalBtn />
     </div>
   );

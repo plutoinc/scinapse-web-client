@@ -1,6 +1,7 @@
 .bannerContainer {
   position: absolute;
   left: -200px;
+  bottom: 0;
   width: 178px;
   border-radius: 4px;
   border: solid 1px $gray1;
@@ -29,5 +30,11 @@
   &:hover {
     transition: $button-hover-transition;
     color: $main_blue_light0;
+  }
+}
+
+@media (max-width: $regular_width) {
+  .bannerContainer {
+    display: none;
   }
 }

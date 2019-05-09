@@ -93,8 +93,13 @@ export const signBannerAtPaperShowTest: Test = {
 export const signBannerAtPaperShowTitleTextTest: Test = {
   name: "signBannerAtPaperShow-titleText",
   userGroup: [
-    { groupName: "areyouresearcher", weight: 1 },
-    { groupName: "bemember", weight: 1 },
-    { groupName: "unleashyourlimit", weight: 1 },
+    { groupName: "onlymember", weight: 1 },
+    { groupName: "youcanmore", weight: 1 },
+    { groupName: "enjoyeverything", weight: 1 },
   ],
+};
+
+export const signBannerAtPaperShowTitleTextKeyverbTest: Test = {
+  name: "signBannerAtPaperShow-titleText-keyverb",
+  userGroup: [{ groupName: "enjoy", weight: 1 }, { groupName: "browse", weight: 1 }],
 };

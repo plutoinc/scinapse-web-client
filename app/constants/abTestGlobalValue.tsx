@@ -14,3 +14,4 @@ export const SIGN_BANNER_AT_SEARCH_TITLE_TEXT_TEST: ABTestType = "signBannerAtSe
 export const VIEW_PDF_SIGN_UP_MAIN_TEXT_TEST_NAME: ABTestType = "viewPDFSignUp-mainText";
 export const SIGN_BANNER_AT_PAPER_SHOW_BANNER_TEST: ABTestType = "signBannerAtPaperShow-banner";
 export const SIGN_BANNER_AT_PAPER_SHOW_TITLE_TEXT_TEST: ABTestType = "signBannerAtPaperShow-titleText";
+export const SIGN_BANNER_AT_PAPER_SHOW_TITLE_TEXT_KEYVERB_TEST: ABTestType = "signBannerAtPaperShow-titleText-keyverb";
