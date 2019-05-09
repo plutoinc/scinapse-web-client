@@ -18,7 +18,7 @@ interface PdfDownloadButtonProps {
 const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props => {
   const { paper, isLoadingOaCheck } = props;
 
-  function handleClickSource() {
+  function trackActionToClickPdfDownloadBtn() {
     trackEvent({
       category: "New Paper Show",
       action: "Click PDF Download button in PaperContent Section",
@@ -62,11 +62,12 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
             userActionType: "downloadPdf",
           });
 
+          trackActionToClickPdfDownloadBtn();
+
           if (isBlocked) {
             return;
           }
 
-          handleClickSource();
           window.open(pdfUrl, "_blank");
         }}
       >

@@ -15,6 +15,21 @@ interface AuthorSearchItemProps extends RouteComponentProps<any> {
   authorEntity: MatchEntityAuthor;
 }
 
+export function trackActionToClickAuthorEntity(authorId: number) {
+  trackEvent({
+    category: "Flow to Author Show",
+    action: "Click Author Entity",
+    label: `Click Author ID : ${authorId}`,
+  });
+  ActionTicketManager.trackTicket({
+    pageType: "searchResult",
+    actionType: "fire",
+    actionArea: "authorEntity",
+    actionTag: "authorEntityItem",
+    actionLabel: String(authorId),
+  });
+}
+
 const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
   const author = props.authorEntity;
 
@@ -49,22 +64,11 @@ const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
             userActionType: "authorFromSearch",
           }));
 
+        trackActionToClickAuthorEntity(author.id);
+
         if (isBlocked) {
           return;
         }
-
-        trackEvent({
-          category: "Flow to Author Show",
-          action: "Click Author Entity",
-          label: `Click Author ID : ${author.id}`,
-        });
-        ActionTicketManager.trackTicket({
-          pageType: "searchResult",
-          actionType: "fire",
-          actionArea: "authorEntity",
-          actionTag: "authorEntityItem",
-          actionLabel: String(author.id),
-        });
 
         props.history.push(`/authors/${author.id}`);
       }}

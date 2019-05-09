@@ -386,16 +386,17 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       actionLabel: "openNewCollectionDialog",
     });
 
-    if (!isBlocked) {
-      GlobalDialogManager.openNewCollectionDialog(targetPaperId);
-    }
-
-    this.handleCloseCollectionDropdown();
     trackEvent({
       category: "Additional Action",
       action: "Click [New Collection] Button",
       label: "my collection list page",
     });
+
+    if (!isBlocked) {
+      GlobalDialogManager.openNewCollectionDialog(targetPaperId);
+    }
+
+    this.handleCloseCollectionDropdown();
   };
 
   private handleDeleteNote = () => {

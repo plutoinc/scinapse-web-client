@@ -94,6 +94,7 @@ declare namespace Scinapse {
       | "signBannerAtSearch"
       | "bannerView"
       | "researchHistory"
+      | "clickPagination"
       | "";
 
     type ActionArea =
@@ -128,6 +129,7 @@ declare namespace Scinapse {
       | "abstract"
       | "footer"
       | "signBanner"
+      | "pagination"
       | "";
 
     type PageType =
