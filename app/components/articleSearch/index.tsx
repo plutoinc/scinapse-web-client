@@ -110,17 +110,19 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
       this.cancelToken.cancel();
       this.cancelToken = axios.CancelToken.source();
 
-      const papers = await getSearchData({
+      await getSearchData({
         dispatch,
         match,
         pathname: location.pathname,
         queryParams: getQueryParamsObject(afterSearch),
         cancelToken: this.cancelToken.token,
+      }).then(value => {
+        if (!hasAuthStateChanged) {
+          console.log(value, "didUpdate");
+          this.logSearchResult(value);
+        }
       });
-      if (!hasAuthStateChanged) {
-        console.log(papers, "didUpdate");
-        this.logSearchResult(papers);
-      }
+
       restoreScroll(location.key);
     }
   }
