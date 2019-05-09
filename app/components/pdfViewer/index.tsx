@@ -286,11 +286,12 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                       userActionType: morePDFActionTag,
                     });
 
+                    trackClickButton(actionTag, props.paperId);
+
                     if (isBlocked) {
                       return;
                     }
 
-                    trackClickButton(actionTag, props.paperId);
                     setExtend(!extend);
                   }}
                 />

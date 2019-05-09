@@ -1,6 +1,6 @@
 import * as store from "store";
 import { ABTestType, BENEFIT_EXPERIMENT_KEY, BenefitExpType, BenefitExpValue } from "../constants/abTest";
-import { DEVICE_ID_KEY, SESSION_ID_KEY } from "../constants/actionTicket";
+import { DEVICE_ID_KEY, SESSION_ID_KEY, SESSION_COUNT_KEY } from "../constants/actionTicket";
 import { AUTH_LEVEL, blockUnverifiedUser } from "./checkAuthDialog";
 import { COMPLETE_BLOCK_SIGN_UP_TEST_NAME } from "../constants/abTestGlobalValue";
 import { getUserGroupName } from "./abTestHelper";
@@ -29,6 +29,13 @@ function getBlockedValueForCompleteBlockSignUpTest() {
   }
 }
 
+function getQueryLoverCount(currentSearchCount: number) {
+  const currentSessionCount = store.get(SESSION_COUNT_KEY);
+  const queryLoverCount = currentSearchCount * currentSessionCount;
+
+  return queryLoverCount;
+}
+
 export async function checkBenefitExp({
   type,
   maxCount,
@@ -47,8 +54,10 @@ export async function checkBenefitExp({
     ((matching === "session" && exp[type].sessionId === currentSessionId) ||
       (matching === "device" && exp[type].deviceId === currentDeviceId))
   ) {
-    const nextCount = exp[type].count + 1;
+    const nextCount =
+      type === "queryLover" ? getQueryLoverCount(exp["queryLover" as ABTestType].count + 1) : exp[type].count + 1;
     const shouldBlock = nextCount >= maxCount;
+
     const newExp = {
       ...exp,
       [type]: {

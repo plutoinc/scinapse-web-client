@@ -85,7 +85,7 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
             pageType: "paperShow",
             actionType: "fire",
             actionArea: "paperDescription",
-            actionTag: "collectionBtn",
+            actionTag: "addToCollection",
             actionLabel: null,
           });
         }}

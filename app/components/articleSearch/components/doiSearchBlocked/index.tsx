@@ -2,8 +2,8 @@ import * as React from "react";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import ArticleSpinner from "../../../common/spinner/articleSpinner";
 import Icon from "../../../../icons";
-import GlobalDialogManager from "../../../../helpers/globalDialogManager";
 import ActionTicketManager from "../../../../helpers/actionTicketManager";
+import { AUTH_LEVEL, blockUnverifiedUser } from "../../../../helpers/checkAuthDialog";
 const styles = require("./doiSearchBlocked.scss");
 
 interface DoiSearchBlockedProps {
@@ -11,22 +11,11 @@ interface DoiSearchBlockedProps {
   isLoading: boolean;
 }
 
-function openSignInDialog() {
-  ActionTicketManager.trackTicket({
-    pageType: "searchResult",
-    actionType: "fire",
+async function openSignInDialog() {
+  await blockUnverifiedUser({
+    authLevel: AUTH_LEVEL.VERIFIED,
     actionArea: "searchResult",
-    actionTag: "signInPopup",
     actionLabel: "doiSearch",
-    expName: "doiSearch",
-  });
-
-  GlobalDialogManager.openSignInDialog({
-    authContext: {
-      pageType: "searchResult",
-      actionArea: "searchResult",
-      actionLabel: "doiSearch",
-    },
     userActionType: "doiSearch",
   });
 }

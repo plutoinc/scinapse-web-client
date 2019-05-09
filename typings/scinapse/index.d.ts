@@ -72,7 +72,6 @@ declare namespace Scinapse {
       | "addFilter"
       | "sendRequestFullText"
       | "clickRequestFullTextBtn"
-      | "collectionBtn"
       | "journalSearch"
       | "fosSearch"
       | "collectionShow"
