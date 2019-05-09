@@ -33,6 +33,7 @@ import DoiSearchBlocked from "./components/doiSearchBlocked";
 import { DOI_SEARCH_TEST_NAME } from "../../constants/abTestGlobalValue";
 import { getUserGroupName } from "../../helpers/abTestHelper";
 import SignBanner from "./components/signBanner";
+import NoSsr from "@material-ui/core/NoSsr";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -141,7 +142,11 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
           {this.isFilterEmpty(queryParams.filter) ? this.getAuthorEntitiesSection() : null}
           {this.getInnerContainerContent()}
           <div className={styles.rightBoxWrapper}>
-            {!currentUserState.isLoggedIn ? <SignBanner isLoading={articleSearchState.isContentLoading} /> : null}
+            {!currentUserState.isLoggedIn ? (
+              <NoSsr>
+                <SignBanner isLoading={articleSearchState.isContentLoading} />
+              </NoSsr>
+            ) : null}
             <FilterContainer
               handleChangeRangeInput={this.setRangeInput}
               articleSearchState={articleSearchState}
@@ -235,9 +240,11 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
       );
     } else if (blockedDoiMatchedSearch) {
       return (
-        <div className={styles.innerContainer}>
-          <DoiSearchBlocked isLoading={isContentLoading} searchDoi={articleSearchState.doi} />
-        </div>
+        <NoSsr>
+          <div className={styles.innerContainer}>
+            <DoiSearchBlocked isLoading={isContentLoading} searchDoi={articleSearchState.doi} />
+          </div>
+        </NoSsr>
       );
     } else if (queryParams) {
       return (
