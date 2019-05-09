@@ -1,9 +1,10 @@
 $action-bar-height: 55px;
-$ref-cited-bar-height: 29px;
+$ref-cited-bar-height: 50px;
 $side-navigation-bottom-padding: 24px;
 
 :export {
   navbarHeight: $navbar_height;
+  refCitedBarHeight: $ref-cited-bar-height;
 }
 
 :global {
@@ -145,12 +146,8 @@ article.paperShow {
 }
 
 .refCitedTabWrapper {
-  height: 100%;
   min-height: $ref-cited-bar-height;
-  padding: $ref-cited-bar-padding;
-  margin-top: -$navbar_height;
   box-sizing: content-box;
-  margin-bottom: 16px;
 }
 
 .goBackBtn {
