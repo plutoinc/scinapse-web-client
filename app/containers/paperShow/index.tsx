@@ -285,7 +285,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               isFixed={isOnRef}
               isOnRef={isOnRef}
               isOnCited={isOnCited}
-              showFullText={isLoadPDF}
+              showFullText={!failedToLoadPDF && isLoadPDF}
             />
           </div>
           <div className={styles.citedBy}>
