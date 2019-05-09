@@ -3,6 +3,7 @@ import axios from "axios";
 import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
+import NoSsr from "@material-ui/core/NoSsr";
 import { AppState } from "../../reducers";
 import * as Actions from "./actions";
 import SearchList from "./components/searchList";
@@ -33,7 +34,6 @@ import DoiSearchBlocked from "./components/doiSearchBlocked";
 import { DOI_SEARCH_TEST_NAME } from "../../constants/abTestGlobalValue";
 import { getUserGroupName } from "../../helpers/abTestHelper";
 import SignBanner from "./components/signBanner";
-import NoSsr from "@material-ui/core/NoSsr";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
