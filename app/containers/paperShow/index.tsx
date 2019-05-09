@@ -36,6 +36,7 @@ import { ArticleSearchState } from "../../components/articleSearch/records";
 import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 import Icon from "../../icons";
 import ActionTicketManager from "../../helpers/actionTicketManager";
+import SignUpBanner from "../../components/paperShow/components/signUpBanner";
 
 const styles = require("./paperShow.scss");
 
@@ -248,6 +249,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               </div>
               <div className={styles.paperContentBlockDivider} />
               <div className={styles.paperContent}>
+                <NoSsr>
+                  <SignUpBanner isLoggedIn={currentUser.isLoggedIn} />
+                </NoSsr>
                 <div className={styles.abstract}>
                   <div className={styles.paperContentBlockHeader}>Abstract</div>
                 </div>

@@ -53,7 +53,7 @@ export const doiSearchTest: Test = {
 
 export const bannerTest: Test = {
   name: "signBannerAtSearch-banner",
-  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "banner", weight: 1 }],
+  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "banner", weight: 2 }],
 };
 
 export const signButtonTextTest: Test = {
@@ -83,4 +83,18 @@ export const titleTextTest: Test = {
 export const viewPDFSignUpMainTextTest: Test = {
   name: "viewPDFSignUp-mainText",
   userGroup: [{ groupName: "control", weight: 1 }, { groupName: "unlimited", weight: 2 }],
+};
+
+export const signBannerAtPaperShowTest: Test = {
+  name: "signBannerAtPaperShow-banner",
+  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "banner", weight: 2 }],
+};
+
+export const signBannerAtPaperShowTitleTextTest: Test = {
+  name: "signBannerAtPaperShow-titleText",
+  userGroup: [
+    { groupName: "areyouresearcher", weight: 1 },
+    { groupName: "bemember", weight: 1 },
+    { groupName: "unleashyourlimit", weight: 1 },
+  ],
 };
