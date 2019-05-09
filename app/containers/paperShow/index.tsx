@@ -40,10 +40,7 @@ import SignUpBanner from "../../components/paperShow/components/signUpBanner";
 
 const styles = require("./paperShow.scss");
 
-const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
-const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10);
-const SIDE_NAVIGATION_BOTTOM_PADDING = parseInt(styles.sideNavigationBottomPadding, 10);
-
+const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
 let ticking = false;
 
 function mapStateToProps(state: AppState) {
@@ -78,10 +75,6 @@ interface PaperShowStates
       isOnCited: boolean;
       isOnFullText: boolean;
 
-      isRightBoxSmall: boolean;
-      isRightBoxFixed: boolean;
-      isTouchFooter: boolean;
-
       isLoadPDF: boolean;
       failedToLoadPDF: boolean;
 
@@ -94,8 +87,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private fullTextTabWrapper: HTMLDivElement | null;
   private refTabWrapper: HTMLDivElement | null;
   private citedTabWrapper: HTMLDivElement | null;
-  private rightBoxWrapper: HTMLDivElement | null;
-  private footerWrapper: HTMLDivElement | null;
 
   constructor(props: PaperShowProps) {
     super(props);
@@ -105,9 +96,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isOnRef: false,
       isOnCited: false,
       isOnFullText: false,
-      isRightBoxSmall: false,
-      isRightBoxFixed: false,
-      isTouchFooter: false,
       isLoadPDF: false,
       failedToLoadPDF: false,
       isLoadingOaPDFCheck: false,
@@ -139,12 +127,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   }
 
-  public async componentWillReceiveProps(nextProps: PaperShowProps) {
-    const { dispatch, match, location, currentUser } = this.props;
+  public async componentDidUpdate(prevProps: PaperShowProps) {
+    const { dispatch, match, location, currentUser } = prevProps;
     const prevQueryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
-    const nextQueryParams: PaperShowPageQueryParams = getQueryParamsObject(nextProps.location.search);
+    const nextQueryParams: PaperShowPageQueryParams = getQueryParamsObject(this.props.location.search);
 
-    const moveToDifferentPage = match.params.paperId !== nextProps.match.params.paperId;
+    const moveToDifferentPage = match.params.paperId !== this.props.match.params.paperId;
     const changeRefPage = prevQueryParams["ref-page"] !== nextQueryParams["ref-page"];
     const changeCitedPage = prevQueryParams["cited-page"] !== nextQueryParams["cited-page"];
 
@@ -152,38 +140,29 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       await fetchPaperShowData(
         {
           dispatch,
-          match: nextProps.match,
-          pathname: nextProps.location.pathname,
+          match: this.props.match,
+          pathname: this.props.location.pathname,
           queryParams: nextQueryParams,
           cancelToken: this.cancelToken.token,
         },
         currentUser
       );
-      return this.scrollToRefCitedSection();
+      this.scrollToRefCitedSection();
+      return this.handleScrollEvent();
     }
 
     if (
-      currentUser.isLoggedIn !== nextProps.currentUser.isLoggedIn &&
-      nextProps.currentUser.isLoggedIn &&
-      nextProps.paper
+      currentUser.isLoggedIn !== this.props.currentUser.isLoggedIn &&
+      this.props.currentUser.isLoggedIn &&
+      this.props.paper
     ) {
-      return dispatch(fetchMyCollection(nextProps.paper.id, this.cancelToken.token));
+      return dispatch(fetchMyCollection(this.props.paper.id, this.cancelToken.token));
     }
 
-    if (nextProps.paper && changeRefPage) {
-      dispatch(fetchRefPaperData(nextProps.paper.id, nextQueryParams["ref-page"], this.cancelToken.token));
-    } else if (nextProps.paper && changeCitedPage) {
-      dispatch(fetchCitedPaperData(nextProps.paper.id, nextQueryParams["cited-page"], this.cancelToken.token));
-    }
-  }
-
-  public componentDidUpdate(prevProps: PaperShowProps) {
-    const { paper, location } = this.props;
-
-    const isPaperChanged = paper && prevProps.paper && paper.id !== prevProps.paper.id;
-
-    if ((!prevProps.paper && paper) || (isPaperChanged && !location.hash)) {
-      this.handleScrollEvent();
+    if (this.props.paper && changeRefPage) {
+      dispatch(fetchRefPaperData(this.props.paper.id, nextQueryParams["ref-page"], this.cancelToken.token));
+    } else if (this.props.paper && changeCitedPage) {
+      dispatch(fetchCitedPaperData(this.props.paper.id, nextQueryParams["cited-page"], this.cancelToken.token));
     }
   }
 
@@ -197,7 +176,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public render() {
     const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers, dispatch } = this.props;
-    const { isLoadPDF, failedToLoadPDF } = this.state;
+    const { isOnFullText, isOnCited, isOnRef, isLoadPDF, failedToLoadPDF } = this.state;
+    const hasBest = !!(paper && !!paper.bestPdf && paper.bestPdf.hasBest);
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -243,7 +223,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     failedToLoadPDF={failedToLoadPDF}
                     currentUser={currentUser}
                     showFullText={isLoadPDF}
-                    handleClickFullText={this.scrollToFullTextNode}
+                    handleClickFullText={this.scrollToSection("fullText")}
                   />
                 </NoSsr>
               </div>
@@ -266,7 +246,25 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             </div>
           </article>
           <div>
-            {this.getFullTextNavBar()}
+            {hasBest && (
+              <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
+                <PaperShowRefCitedTab
+                  paper={paper}
+                  handleClickFullText={this.scrollToSection("fullText")}
+                  handleClickRef={this.scrollToSection("ref")}
+                  handleClickCited={this.scrollToSection("cited")}
+                  isLoadingOaCheck={paperShow.isOACheckingPDF}
+                  hasBestPdf={hasBest}
+                  isFetchingPdf={paperShow.isFetchingPdf}
+                  failedToLoadPDF={failedToLoadPDF}
+                  isFixed={isOnFullText}
+                  isOnRef={isOnRef}
+                  isOnCited={isOnCited}
+                  isOnFullText={isOnFullText || (!isOnFullText && !isOnRef && !isOnCited)}
+                  showFullText={!failedToLoadPDF}
+                />
+              </div>
+            )}
             <PDFViewer
               dispatch={dispatch}
               paperId={paper.id}
@@ -279,55 +277,81 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               shouldShow={!EnvChecker.isOnServer() && layout.userDevice === UserDevice.DESKTOP}
             />
           </div>
-          <>
-            <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)} />
-            <div className={styles.citedBy}>
-              <article className={styles.paperShow}>
-                <div>
-                  <span className={styles.sectionTitle}>References</span>
-                  <span className={styles.sectionCount}>{paper.referenceCount}</span>
-                </div>
-                <div className={styles.otherPapers}>
-                  <div className={styles.references}>
-                    <ReferencePapers
-                      type="reference"
-                      isMobile={layout.userDevice !== UserDevice.DESKTOP}
-                      papers={referencePapers}
-                      currentUser={currentUser}
-                      paperShow={paperShow}
-                      getLinkDestination={this.getReferencePaperPaginationLink}
-                      location={location}
-                    />
-                  </div>
-                </div>
-              </article>
-            </div>
-          </>
-          <div className={styles.sectionDivider} />
-          <>
-            <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)} />
-            <div className={styles.citedBy}>
-              <article className={styles.paperShow}>
-                <div>
-                  <span className={styles.sectionTitle}>Cited By</span>
-                  <span className={styles.sectionCount}>{paper.citedCount}</span>
-                </div>
-                <div className={styles.otherPapers}>
+          <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)}>
+            <PaperShowRefCitedTab
+              paper={paper}
+              handleClickRef={this.scrollToSection("ref")}
+              handleClickCited={this.scrollToSection("cited")}
+              handleClickFullText={this.scrollToSection("fullText")}
+              hasBestPdf={hasBest}
+              isLoadingOaCheck={paperShow.isOACheckingPDF}
+              isFetchingPdf={paperShow.isFetchingPdf}
+              failedToLoadPDF={failedToLoadPDF}
+              isFixed={isOnRef}
+              isOnRef={isOnRef}
+              isOnCited={isOnCited}
+              showFullText={!failedToLoadPDF && isLoadPDF}
+            />
+          </div>
+          <div className={styles.citedBy}>
+            <article className={styles.paperShow}>
+              <div>
+                <span className={styles.sectionTitle}>References</span>
+                <span className={styles.sectionCount}>{paper.referenceCount}</span>
+              </div>
+              <div className={styles.otherPapers}>
+                <div className={styles.references}>
                   <ReferencePapers
-                    type="cited"
+                    type="reference"
                     isMobile={layout.userDevice !== UserDevice.DESKTOP}
-                    papers={citedPapers}
+                    papers={referencePapers}
                     currentUser={currentUser}
                     paperShow={paperShow}
-                    getLinkDestination={this.getCitedPaperPaginationLink}
+                    getLinkDestination={this.getReferencePaperPaginationLink}
                     location={location}
                   />
                 </div>
-              </article>
-            </div>
-          </>
+              </div>
+            </article>
+          </div>
+          <div className={styles.sectionDivider} />
+          <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)}>
+            <PaperShowRefCitedTab
+              paper={paper}
+              handleClickRef={this.scrollToSection("ref")}
+              handleClickCited={this.scrollToSection("cited")}
+              handleClickFullText={this.scrollToSection("fullText")}
+              hasBestPdf={hasBest}
+              isLoadingOaCheck={paperShow.isOACheckingPDF}
+              isFetchingPdf={paperShow.isFetchingPdf}
+              failedToLoadPDF={failedToLoadPDF}
+              isFixed={isOnCited}
+              isOnRef={isOnRef}
+              isOnCited={isOnCited}
+              showFullText={isLoadPDF}
+            />
+          </div>
+          <div className={styles.citedBy}>
+            <article className={styles.paperShow}>
+              <div>
+                <span className={styles.sectionTitle}>Cited By</span>
+                <span className={styles.sectionCount}>{paper.citedCount}</span>
+              </div>
+              <div className={styles.otherPapers}>
+                <ReferencePapers
+                  type="cited"
+                  isMobile={layout.userDevice !== UserDevice.DESKTOP}
+                  papers={citedPapers}
+                  currentUser={currentUser}
+                  paperShow={paperShow}
+                  getLinkDestination={this.getCitedPaperPaginationLink}
+                  location={location}
+                />
+              </div>
+            </article>
+          </div>
         </div>
-        <div className={styles.footerWrapper} ref={el => (this.footerWrapper = el)}>
+        <div className={styles.footerWrapper}>
           <Footer />
         </div>
         <NextPaperTab />
@@ -363,7 +387,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private handleSucceedToLoadPDF = () => {
     const { paper } = this.props;
 
-    this.setState(prevState => ({ ...prevState, isLoadPDF: true }));
+    this.setState(prevState => ({ ...prevState, isLoadPDF: true, failedToLoadPDF: false }));
 
     ActionTicketManager.trackTicket({
       pageType: "paperShow",
@@ -375,57 +399,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private handleFailedToLoadPDF = () => {
-    this.setState(prevState => ({ ...prevState, failedToLoadPDF: true }));
-  };
-
-  private getFullTextNavBar = () => {
-    const { paper, paperShow } = this.props;
-    const { isOnFullText, isOnCited, isOnRef, isLoadPDF, failedToLoadPDF } = this.state;
-
-    const hasBest = (paper && !!paper.bestPdf && paper.bestPdf.hasBest) || false;
-
-    if (paper && hasBest && !failedToLoadPDF) {
-      return (
-        <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
-          <PaperShowRefCitedTab
-            paper={paper}
-            handleClickFullText={this.scrollToFullTextNode}
-            handleClickRef={this.scrollToReferencePapersNode}
-            handleClickCited={this.scrollToCitedPapersNode}
-            isLoadingOaCheck={paperShow.isOACheckingPDF}
-            hasBestPdf={hasBest}
-            isFetchingPdf={paperShow.isFetchingPdf}
-            failedToLoadPDF={failedToLoadPDF}
-            isFixed={isOnFullText || isOnRef || isOnCited}
-            isOnRef={isOnRef}
-            isOnCited={isOnCited}
-            isOnFullText={isOnFullText || (!isOnFullText && !isOnRef && !isOnCited)}
-            showFullText={!failedToLoadPDF}
-          />
-        </div>
-      );
-    } else if (paper) {
-      return (
-        <div className={styles.refCitedTabWrapper}>
-          <PaperShowRefCitedTab
-            paper={paper}
-            handleClickRef={this.scrollToReferencePapersNode}
-            handleClickCited={this.scrollToCitedPapersNode}
-            handleClickFullText={this.scrollToFullTextNode}
-            hasBestPdf={hasBest}
-            isLoadingOaCheck={paperShow.isOACheckingPDF}
-            isFetchingPdf={paperShow.isFetchingPdf}
-            failedToLoadPDF={failedToLoadPDF}
-            isFixed={isOnRef || isOnCited}
-            isOnRef={!isOnCited ? true : isOnRef}
-            isOnCited={isOnCited}
-            showFullText={isLoadPDF}
-          />
-        </div>
-      );
-    } else {
-      return null;
-    }
+    this.setState(prevState => ({ ...prevState, failedToLoadPDF: true, isLoadPDF: false }));
   };
 
   private getBestPdfOfPaperInPaperShow = () => {
@@ -464,9 +438,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { paperShow, location } = this.props;
 
     if (paperShow.citedPaperCurrentPage === 1 && location.hash === "#cited") {
-      this.scrollToCitedPapersNode();
+      this.scrollToSection("cited");
     } else if (paperShow.referencePaperCurrentPage === 1 && location.hash === "#references") {
-      this.scrollToReferencePapersNode();
+      this.scrollToSection("ref");
     } else {
       restoreScroll(location.key);
     }
@@ -480,38 +454,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private handleScrollEvent = () => {
-    const { isRightBoxFixed, isTouchFooter } = this.state;
     const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-    const viewportHeight = window.innerHeight;
-    const windowBottom = scrollTop + viewportHeight;
-
-    // right box
-    if (this.rightBoxWrapper && this.footerWrapper) {
-      const offsetHeight = this.rightBoxWrapper.offsetHeight;
-      const rightBoxFullHeight = offsetHeight + NAVBAR_HEIGHT + PAPER_SHOW_MARGIN_TOP + SIDE_NAVIGATION_BOTTOM_PADDING;
-      const isShorterThanScreenHeight = offsetHeight < viewportHeight - NAVBAR_HEIGHT - PAPER_SHOW_MARGIN_TOP;
-      const isScrollOverRightBox = windowBottom > rightBoxFullHeight;
-      const isScrollTouchFooter = windowBottom - SIDE_NAVIGATION_BOTTOM_PADDING >= this.footerWrapper.offsetTop;
-
-      if (isShorterThanScreenHeight) {
-        this.setState(prevState => ({ ...prevState, isRightBoxSmall: true, isRightBoxFixed: true }));
-      } else if (!isShorterThanScreenHeight) {
-        this.setState(prevState => ({ ...prevState, isRightBoxSmall: false }));
-      }
-
-      if (isRightBoxFixed && !isScrollOverRightBox) {
-        this.setState(prevState => ({ ...prevState, isRightBoxFixed: false }));
-      } else if (!isRightBoxFixed && isScrollOverRightBox) {
-        this.setState(prevState => ({ ...prevState, isRightBoxFixed: true }));
-      }
-
-      if (!isTouchFooter && isScrollOverRightBox && isScrollTouchFooter && !isShorterThanScreenHeight) {
-        this.setState(prevState => ({ ...prevState, isTouchFooter: true }));
-      } else if (isTouchFooter && isScrollOverRightBox && !isScrollTouchFooter) {
-        this.setState(prevState => ({ ...prevState, isTouchFooter: false }));
-      }
-    }
-
     // ref/cited tab
     if (this.fullTextTabWrapper && this.refTabWrapper && this.citedTabWrapper) {
       const fullTextOffsetTop = this.fullTextTabWrapper.offsetTop;
@@ -561,20 +504,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         }));
       }
     } else if (this.refTabWrapper && this.citedTabWrapper) {
-      const refOffsetTop = this.refTabWrapper.offsetTop;
+      const refOffsetBottom = this.refTabWrapper.offsetTop;
       const citedOffsetTop = this.citedTabWrapper.offsetTop;
       const currentScrollTop = scrollTop + NAVBAR_HEIGHT;
 
-      if (citedOffsetTop === 0 && refOffsetTop === 0) {
-        this.setState(prevState => ({
-          ...prevState,
-          isOnRef: false,
-          isOnCited: false,
-          isAboveRef: false,
-        }));
-      } else if (!this.state.isAboveRef && currentScrollTop < refOffsetTop) {
+      if (!this.state.isAboveRef && currentScrollTop < refOffsetBottom) {
         this.setState(prevState => ({ ...prevState, isAboveRef: true, isOnCited: false, isOnRef: false }));
-      } else if (!this.state.isOnRef && currentScrollTop >= refOffsetTop && currentScrollTop < citedOffsetTop) {
+      } else if (!this.state.isOnRef && currentScrollTop >= refOffsetBottom && currentScrollTop < citedOffsetTop) {
         this.setState(prevState => ({
           ...prevState,
           isAboveRef: false,
@@ -630,67 +566,60 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     };
   };
 
-  private scrollToCitedPapersNode = () => {
-    if (this.citedTabWrapper) {
-      this.citedTabWrapper.scrollIntoView({
-        block: "start",
-        behavior: "smooth",
-      });
-      trackEvent({
-        category: "New Paper Show",
-        action: "Click Cited by Tab in Paper Show refBar",
-        label: "Click Cited by Tab",
-      });
-    }
-  };
+  private scrollToSection = (section: "fullText" | "ref" | "cited") => () => {
+    let target: HTMLDivElement | null = null;
+    let action: string = "";
+    let label: string = "";
 
-  private scrollToReferencePapersNode = () => {
-    if (this.refTabWrapper) {
-      this.refTabWrapper.scrollIntoView({
-        block: "start",
-        behavior: "smooth",
-      });
-      trackEvent({
-        category: "New Paper Show",
-        action: "Click References Tab in Paper Show refBar",
-        label: "Click References Tab",
-      });
-    }
-  };
+    switch (section) {
+      case "fullText": {
+        target = this.fullTextTabWrapper;
+        label = "Click Full text Tab";
+        action = "Click Full text Tab in Paper Show refBar";
+        break;
+      }
 
-  private scrollToFullTextNode = () => {
-    if (this.fullTextTabWrapper) {
-      this.fullTextTabWrapper.scrollIntoView({
-        block: "start",
-        behavior: "smooth",
-      });
+      case "ref": {
+        target = this.refTabWrapper;
+        label = "Click References Tab";
+        action = "Click References Tab in Paper Show refBar";
+        break;
+      }
+
+      case "cited": {
+        target = this.citedTabWrapper;
+        label = "Click Cited by Tab";
+        action = "Click Cited by Tab in Paper Show refBar";
+        break;
+      }
+    }
+
+    if (!EnvChecker.isOnServer() && target) {
+      window.scrollTo(0, target.offsetTop - NAVBAR_HEIGHT);
       trackEvent({
         category: "New Paper Show",
-        action: "Click Full text Tab in Paper Show refBar",
-        label: "Click Full text Tab",
+        action,
+        label,
       });
     }
   };
 
   private buildPageDescription = () => {
     const { paper } = this.props;
-
-    if (!paper) {
-      return "Scinapse";
+    if (paper) {
+      const shortAbstract = paper.abstract ? `${paper.abstract.slice(0, 110)} | ` : "";
+      const shortAuthors =
+        paper.authors && paper.authors.length > 0
+          ? `${paper.authors
+              .map(author => {
+                return author!.name;
+              })
+              .join(", ")
+              .slice(0, 50)}  | `
+          : "";
+      const shortJournals = paper.journal ? `${paper.journal!.title!.slice(0, 50)} | ` : "";
+      return `${shortAbstract}${shortAuthors}${shortJournals}`;
     }
-
-    const shortAbstract = paper.abstract ? `${paper.abstract.slice(0, 110)} | ` : "";
-    const shortAuthors =
-      paper.authors && paper.authors.length > 0
-        ? `${paper.authors
-            .map(author => {
-              return author!.name;
-            })
-            .join(", ")
-            .slice(0, 50)}  | `
-        : "";
-    const shortJournals = paper.journal ? `${paper.journal!.title!.slice(0, 50)} | ` : "";
-    return `${shortAbstract}${shortAuthors}${shortJournals}`;
   };
 
   private makeStructuredData = (paper: Paper) => {
@@ -722,7 +651,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           },
         };
       }
-
       return null;
     }
 
