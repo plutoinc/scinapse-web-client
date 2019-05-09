@@ -264,6 +264,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                     }
 
                     trackClickButton("downloadPdf", props.paperId);
+                    window.open(bestPdf.url, "_blank");
                   }}
                   isExternalLink
                   downloadAttr
