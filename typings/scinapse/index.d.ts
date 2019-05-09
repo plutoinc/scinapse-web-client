@@ -92,6 +92,7 @@ declare namespace Scinapse {
       | "nextPageFromSearch"
       | "doiSearch"
       | "signBannerAtSearch"
+      | "signBannerAtPaperShow"
       | "bannerView"
       | "researchHistory"
       | "";

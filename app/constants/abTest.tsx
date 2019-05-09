@@ -11,6 +11,9 @@ import {
   bodyTextTest,
   titleTextTest,
   viewPDFSignUpMainTextTest,
+  signBannerAtPaperShowTest,
+  signBannerAtPaperShowTitleTextTest,
+  signBannerAtPaperShowTitleTextKeyverbTest,
 } from "./abTestObject";
 
 export interface UserGroup {
@@ -37,7 +40,10 @@ export type ABTestType =
   | "signBannerAtSearch-banner"
   | "signBannerAtSearch-signButtonText"
   | "signBannerAtSearch-bodyText"
-  | "signBannerAtSearch-titleText";
+  | "signBannerAtSearch-titleText"
+  | "signBannerAtPaperShow-banner"
+  | "signBannerAtPaperShow-titleText"
+  | "signBannerAtPaperShow-titleText-keyverb";
 
 export const BENEFIT_EXPERIMENT_KEY = "b_exp";
 
@@ -70,6 +76,9 @@ export const LIVE_TESTS: Test[] = [
   bodyTextTest,
   titleTextTest,
   viewPDFSignUpMainTextTest,
+  signBannerAtPaperShowTest,
+  signBannerAtPaperShowTitleTextTest,
+  signBannerAtPaperShowTitleTextKeyverbTest,
 ];
 
 function getRandomPool(): { [key: string]: string[] } {
