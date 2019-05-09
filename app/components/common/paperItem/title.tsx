@@ -2,7 +2,6 @@ import * as React from "react";
 import { escapeRegExp } from "lodash";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import HighLightedContent from "../highLightedContent";
-import { trackEvent } from "../../../helpers/handleGA";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
 import actionTicketManager from "../../../helpers/actionTicketManager";
