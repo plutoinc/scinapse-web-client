@@ -8,6 +8,7 @@ import { Paper } from "../../model/paper";
 import RelatedPaperItem from "../paperShow/components/relatedPaperItem";
 import { getCurrentPageType } from "../locationListener";
 import ActionTicketManager from "../../helpers/actionTicketManager";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 const store = require("store");
 const s = require("./researchHistory.scss");
 
@@ -18,14 +19,15 @@ interface HistoryPaper extends Paper {
   savedAt: number; // Unix time
 }
 
-interface ResearchHistoryProps {
+interface ResearchHistoryProps extends RouteComponentProps<any> {
   paper: Paper | undefined;
   isLoggedIn: boolean;
 }
 
-const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper, isLoggedIn }) => {
+const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper, isLoggedIn, location }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [papers, setPapers] = React.useState<HistoryPaper[]>([]);
+  const currentLocation = React.useRef(location);
 
   React.useEffect(
     () => {
@@ -34,6 +36,16 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper,
       }
     },
     [isLoggedIn]
+  );
+
+  React.useEffect(
+    () => {
+      if (location !== currentLocation.current) {
+        setIsOpen(false);
+        currentLocation.current = location;
+      }
+    },
+    [location]
   );
 
   React.useEffect(
@@ -108,4 +120,4 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper,
   return <>{content}</>;
 };
 
-export default withStyles<typeof ResearchHistory>(s)(ResearchHistory);
+export default withRouter(withStyles<typeof ResearchHistory>(s)(ResearchHistory));

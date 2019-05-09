@@ -83,6 +83,8 @@ function fetchPDFFromExtension(sources: PaperSource[]): Promise<{ data: Blob }> 
           reject();
         }
       };
+    } else {
+      reject();
     }
   });
 }
