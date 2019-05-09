@@ -100,6 +100,8 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
     const hasSearchKeywordChanged = !!afterSearch && beforeSearch !== afterSearch;
     const hasAuthStateChanged = currentUserState.isLoggedIn !== prevProps.currentUserState.isLoggedIn;
 
+    console.log(hasSearchKeywordChanged, "hasSearchKeywordChanged");
+
     if (hasSearchKeywordChanged || hasAuthStateChanged) {
       if (isClient) {
         this.fetchFilters();
