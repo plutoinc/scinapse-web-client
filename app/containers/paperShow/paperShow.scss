@@ -89,8 +89,8 @@ article.paperShow {
   }
 
   .abstractContent {
-    word-break: keep-all;
-    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
   .paperTitle {
