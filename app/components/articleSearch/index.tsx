@@ -79,6 +79,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
       };
 
       const papers = await getSearchData(currentParams);
+      console.log(papers, "didMount");
       // TODO: change logging logic much easier after chainging the class component to React hooks.
       this.logSearchResult(papers);
       restoreScroll(location.key);
@@ -115,6 +116,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
         cancelToken: this.cancelToken.token,
       });
       if (!hasAuthStateChanged) {
+        console.log(papers, "didUpdate");
         this.logSearchResult(papers);
       }
       restoreScroll(location.key);
