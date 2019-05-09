@@ -79,7 +79,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
       };
 
       const papers = await getSearchData(currentParams);
-      console.log(papers, "didMount");
       // TODO: change logging logic much easier after chainging the class component to React hooks.
       this.logSearchResult(papers);
       restoreScroll(location.key);
@@ -100,8 +99,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
     const hasSearchKeywordChanged = !!afterSearch && beforeSearch !== afterSearch;
     const hasAuthStateChanged = currentUserState.isLoggedIn !== prevProps.currentUserState.isLoggedIn;
 
-    console.log(hasSearchKeywordChanged, "hasSearchKeywordChanged");
-
     if (hasSearchKeywordChanged || hasAuthStateChanged) {
       if (isClient) {
         this.fetchFilters();
@@ -110,19 +107,16 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
       this.cancelToken.cancel();
       this.cancelToken = axios.CancelToken.source();
 
-      await getSearchData({
+      const papers = await getSearchData({
         dispatch,
         match,
         pathname: location.pathname,
         queryParams: getQueryParamsObject(afterSearch),
         cancelToken: this.cancelToken.token,
-      }).then(value => {
-        if (!hasAuthStateChanged) {
-          console.log(value, "didUpdate");
-          this.logSearchResult(value);
-        }
       });
-
+      if (!hasAuthStateChanged) {
+        this.logSearchResult(papers);
+      }
       restoreScroll(location.key);
     }
   }
