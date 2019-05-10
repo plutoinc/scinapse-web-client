@@ -33,6 +33,9 @@ export interface PaperShowState
 
       isFetchingPdf: boolean;
       isOACheckingPDF: boolean;
+
+      highlightTitle: string;
+      highlightAbstract: string;
     }> {}
 
 export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
@@ -58,4 +61,7 @@ export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
 
   isFetchingPdf: false,
   isOACheckingPDF: false,
+
+  highlightTitle: "",
+  highlightAbstract: "",
 };

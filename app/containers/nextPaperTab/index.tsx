@@ -52,7 +52,6 @@ const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = ({ paperId }) =
       nextPaper = paperList[Math.floor(Math.random() * (paperList.length - 1)) + 1];
     }
   }
-
   return (
     <Link
       className={styles.nextPaperTabWrapper}

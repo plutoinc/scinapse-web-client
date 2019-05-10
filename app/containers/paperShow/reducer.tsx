@@ -3,6 +3,10 @@ import { PAPER_SHOW_INITIAL_STATE, PaperShowState } from "./records";
 
 export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action: Actions): PaperShowState {
   switch (action.type) {
+    case ACTION_TYPES.PAPER_SHOW_SET_HIGHLIGHT: {
+      return { ...state, highlightTitle: action.payload.title, highlightAbstract: action.payload.abstract };
+    }
+
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_PAPER: {
       return { ...state, ...{ hasErrorOnFetchingPaper: null, isLoadingPaper: false, paperId: action.payload.paperId } };
     }
@@ -72,6 +76,10 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
 
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_BEST_PDF: {
       return { ...state, isOACheckingPDF: true };
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE: {
+      return PAPER_SHOW_INITIAL_STATE;
     }
 
     default:
