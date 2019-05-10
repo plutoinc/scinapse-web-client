@@ -14,20 +14,10 @@ export interface PaperShowState
       isAuthorBoxExtended: boolean;
       isLoadingPaper: boolean;
       hasErrorOnFetchingPaper: number | null;
-      isLoadingComments: boolean;
-      hasErrorOnFetchingComments: boolean;
-      currentCommentPage: number;
-      commentTotalPage: number;
-      paperId: number;
-      isDeletingComment: boolean;
-      isPostingComment: boolean;
-      isFailedToPostingComment: boolean;
 
-      relatedPaperIds: number[];
-      otherPaperIdsFromAuthor: number[];
+      paperId: number;
       referencePaperIds: number[];
       citedPaperIds: number[];
-      commentIds: number[];
 
       hasFailedToLoadMyCollections: boolean;
       hasFailedToPositingNewCollection: boolean;
@@ -43,30 +33,17 @@ export interface PaperShowState
 
       isFetchingPdf: boolean;
       isOACheckingPDF: boolean;
-
-      betterSearchIsAnimated: boolean;
     }> {}
 
 export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
   isAuthorBoxExtended: false,
   isLoadingPaper: false,
   hasErrorOnFetchingPaper: null,
-  paperId: 0,
-  isLoadingComments: false,
-  hasErrorOnFetchingComments: false,
-  currentCommentPage: 0,
-  commentTotalPage: 0,
-  commentIds: [],
-  isDeletingComment: false,
-  isPostingComment: false,
-  isFailedToPostingComment: false,
-
-  relatedPaperIds: [],
-  otherPaperIdsFromAuthor: [],
 
   hasFailedToLoadMyCollections: false,
   hasFailedToPositingNewCollection: false,
 
+  paperId: 0,
   referencePaperIds: [],
   isLoadingReferencePapers: false,
   isFailedToGetReferencePapers: false,
@@ -81,6 +58,4 @@ export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
 
   isFetchingPdf: false,
   isOACheckingPDF: false,
-
-  betterSearchIsAnimated: false,
 };

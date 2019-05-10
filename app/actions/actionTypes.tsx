@@ -70,9 +70,6 @@ export enum ACTION_TYPES {
   AUTH_FAILED_TO_CHECK_LOGGED_IN = "AUTH_FAILED_TO_CHECK_LOGGED_IN",
 
   PAPER_SHOW_CLEAR_PAPER_SHOW_STATE = "PAPER_SHOW_CLEAR_PAPER_SHOW_STATE",
-  PAPER_SHOW_START_TO_DELETE_COMMENT = "PAPER_SHOW_START_TO_DELETE_COMMENT",
-  PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT = "PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT",
-  PAPER_SHOW_FAILED_TO_DELETE_COMMENT = "PAPER_SHOW_FAILED_TO_DELETE_COMMENT",
   PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS = "PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS",
   PAPER_SHOW_SUCCEEDED_TO_GET_REFERENCE_PAPERS = "PAPER_SHOW_SUCCEEDED_TO_GET_REFERENCE_PAPERS",
   PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS = "PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS",
@@ -82,18 +79,6 @@ export enum ACTION_TYPES {
   PAPER_SHOW_START_TO_GET_PAPER = "PAPER_SHOW_START_TO_GET_PAPER",
   PAPER_SHOW_SUCCEEDED_TO_GET_PAPER = "PAPER_SHOW_SUCCEEDED_TO_GET_PAPER",
   PAPER_SHOW_FAILED_TO_GET_PAPER = "PAPER_SHOW_FAILED_TO_GET_PAPER",
-  PAPER_SHOW_SUCCEEDED_TO_GET_COMMENTS = "PAPER_SHOW_SUCCEEDED_TO_GET_COMMENTS",
-  PAPER_SHOW_START_TO_GET_COMMENTS = "PAPER_SHOW_START_TO_GET_COMMENTS",
-  PAPER_SHOW_FAILED_TO_GET_COMMENTS = "PAPER_SHOW_FAILED_TO_GET_COMMENTS",
-  PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT = "PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT",
-  PAPER_SHOW_START_TO_POST_COMMENT = "PAPER_SHOW_START_TO_POST_COMMENT",
-  PAPER_SHOW_FAILED_TO_POST_COMMENT = "PAPER_SHOW_FAILED_TO_POST_COMMENT",
-  PAPER_SHOW_START_TO_GET_RELATED_PAPERS = "PAPER_SHOW_START_TO_GET_RELATED_PAPERS",
-  PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS = "PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS",
-  PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS = "PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS",
-  PAPER_SHOW_START_TO_GET_OTHER_PAPERS_FROM_AUTHOR = "PAPER_SHOW_START_TO_GET_OTHER_PAPERS_FROM_AUTHOR",
-  PAPER_SHOW_SUCCEEDED_TO_GET_OTHER_PAPERS_FROM_AUTHOR = "PAPER_SHOW_SUCCEEDED_TO_GET_OTHER_PAPERS_FROM_AUTHOR",
-  PAPER_SHOW_FAILED_TO_GET_OTHER_PAPERS_FROM_AUTHOR = "PAPER_SHOW_FAILED_TO_GET_OTHER_PAPERS_FROM_AUTHOR",
   PAPER_SHOW_START_TO_GET_COLLECTIONS = "PAPER_SHOW_START_TO_GET_COLLECTIONS",
   PAPER_SHOW_SUCCEEDED_GET_COLLECTIONS = "PAPER_SHOW_SUCCEEDED_GET_COLLECTIONS",
   PAPER_SHOW_START_TO_GET_COLLECTIONS_IN_DROPDOWN = "PAPER_SHOW_START_TO_GET_COLLECTIONS_IN_DROPDOWN",
@@ -107,7 +92,6 @@ export enum ACTION_TYPES {
   PAPER_SHOW_START_TO_REMOVE_PAPER_FROM_COLLECTION = "PAPER_SHOW_START_TO_REMOVE_PAPER_FROM_COLLECTION",
   PAPER_SHOW_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION = "PAPER_SHOW_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION",
   PAPER_SHOW_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION = "PAPER_SHOW_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION",
-  PAPER_SHOW_ANIMATE_BETTER_SEARCH_TITLE = "PAPER_SHOW_ANIMATE_BETTER_SEARCH_TITLE",
 
   PAPER_SHOW_COLLECTION_BUTTON_OPEN_COLLECTION_DROPDOWN = "PAPER_SHOW_COLLECTION_BUTTON_OPEN_COLLECTION_DROPDOWN",
   PAPER_SHOW_COLLECTION_BUTTON_CLOSE_COLLECTION_DROPDOWN = "PAPER_SHOW_COLLECTION_BUTTON_CLOSE_COLLECTION_DROPDOWN",
@@ -241,10 +225,6 @@ interface GetMultiPapers extends CommonPaginationResponsePart {
   query?: string;
 }
 
-interface GetMultiComments extends CommonPaginationResponsePart {
-  commentIds: number[];
-}
-
 export const ActionCreators = {
   changeGlobalDialog(payload: { type: GLOBAL_DIALOG_TYPE; signUpStep?: SIGN_UP_STEP; oauthResult?: OAuthCheckParams }) {
     return createAction({
@@ -364,32 +344,6 @@ export const ActionCreators = {
     });
   },
 
-  getRelatedPapers(payload: { paperIds: number[] }) {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS,
-      payload,
-    });
-  },
-
-  startToGetOtherPapersFromAuthor() {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_OTHER_PAPERS_FROM_AUTHOR,
-    });
-  },
-
-  failedToGetOtherPapersFromAuthor() {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_OTHER_PAPERS_FROM_AUTHOR,
-    });
-  },
-
-  succeededToGetOtherPapersFromAuthor(payload: { paperIds: number[] }) {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_OTHER_PAPERS_FROM_AUTHOR,
-      payload,
-    });
-  },
-
   getReferencePapers(payload: GetMultiPapers) {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_REFERENCE_PAPERS,
@@ -400,25 +354,6 @@ export const ActionCreators = {
   getCitedPapers(payload: GetMultiPapers) {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_CITED_PAPERS,
-      payload,
-    });
-  },
-
-  startToGetComments() {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_COMMENTS,
-    });
-  },
-
-  failedToGetComments() {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_COMMENTS,
-    });
-  },
-
-  getComments(payload: GetMultiComments) {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_COMMENTS,
       payload,
     });
   },
@@ -478,32 +413,6 @@ export const ActionCreators = {
     });
   },
 
-  postComment(payload: { commentId: number }) {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT,
-      payload,
-    });
-  },
-
-  startToPostComment() {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_START_TO_POST_COMMENT,
-    });
-  },
-
-  failedToPostComment(payload: { paperId: number }) {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_COMMENT,
-      payload,
-    });
-  },
-
-  startToDeleteComment() {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_START_TO_DELETE_COMMENT,
-    });
-  },
-
   handleClickCitationTab(payload: { tab: AvailableCitationType }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_DIALOG_CLICK_CITATION_TAB,
@@ -530,19 +439,6 @@ export const ActionCreators = {
     });
   },
 
-  succeededToDeleteComment(payload: { commentId: number }) {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT,
-      payload,
-    });
-  },
-
-  failedToDeleteComment() {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_DELETE_COMMENT,
-    });
-  },
-
   startToGetReferencePapers() {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS,
@@ -564,18 +460,6 @@ export const ActionCreators = {
   failedToGetCitedPapers() {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_CITED_PAPERS,
-    });
-  },
-
-  startToGetRelatedPapers() {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_RELATED_PAPERS,
-    });
-  },
-
-  failedToGetRelatedPapers() {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS,
     });
   },
 
@@ -1058,12 +942,6 @@ export const ActionCreators = {
     return createAction({
       type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA,
       payload,
-    });
-  },
-
-  animateBetterSearchTitle() {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_ANIMATE_BETTER_SEARCH_TITLE,
     });
   },
 
