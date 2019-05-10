@@ -279,6 +279,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         actionArea: "topBar",
         actionLabel: null,
       },
+      isBlocked: false,
     });
   };
 
@@ -289,6 +290,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         actionArea: "topBar",
         actionLabel: null,
       },
+      isBlocked: false,
     });
   };
 

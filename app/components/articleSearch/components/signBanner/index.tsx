@@ -105,6 +105,7 @@ const SignBannerSignButtonText: React.FunctionComponent<SignBannerContextProps> 
               expName: "signBannerAtSearch",
             },
             userActionType: "signBannerAtSearch",
+            isBlocked: false,
           });
         }}
         className={styles.bannerSignButton}
