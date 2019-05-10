@@ -137,6 +137,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const changeCitedPage = prevQueryParams["cited-page"] !== nextQueryParams["cited-page"];
 
     if (moveToDifferentPage) {
+      dispatch(clearPaperShowState());
       await fetchPaperShowData(
         {
           dispatch,
@@ -202,7 +203,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <article className={styles.paperShow}>
             <div className={styles.paperShowContent}>
               {this.getGoBackResultBtn()}
-              <h1 className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.title) }} />
+              <h1
+                className={styles.paperTitle}
+                dangerouslySetInnerHTML={{
+                  __html: formulaeToHTMLStr(paperShow.highlightTitle || paper.title),
+                }}
+              />
               <VenueAndAuthors
                 pageType={"paperShow"}
                 actionArea={"paperDescription"}
@@ -237,7 +243,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 </div>
                 <div
                   className={styles.abstractContent}
-                  dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.abstract) }}
+                  dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paperShow.highlightAbstract || paper.abstract) }}
                 />
                 <div className={styles.fos}>
                   <FOSList FOSList={paper.fosList} />
@@ -319,7 +325,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         <div className={styles.footerWrapper}>
           <Footer />
         </div>
-        <NextPaperTab />
+        <NextPaperTab paperId={paper.id} />
       </>
     );
   }

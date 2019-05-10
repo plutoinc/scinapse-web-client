@@ -67,7 +67,7 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
           />
         </div>
         <div className={s.rightSide}>
-          <PaperShowCollectionControlButton />
+          <PaperShowCollectionControlButton paperId={props.paper.id} />
         </div>
       </div>
     </div>
