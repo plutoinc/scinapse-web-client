@@ -25,24 +25,33 @@ interface PaperShowRefCitedTabProps {
   handleClickFullText?: () => void;
 }
 
-const PaperShowRefCitedTab: React.SFC<PaperShowRefCitedTabProps> = props => {
+interface TabItemProps {
+  active: boolean;
+  text: string;
+  onClick: () => void;
+}
+const TabItem: React.FunctionComponent<TabItemProps> = props => {
+  return (
+    <li
+      className={classNames({
+        [styles.headerTabItem]: true,
+        [styles.active]: props.active,
+      })}
+      onClick={props.onClick}
+    >
+      {props.text}
+    </li>
+  );
+};
+
+const PaperShowRefCitedTab: React.FunctionComponent<PaperShowRefCitedTabProps> = props => {
   const [isOpen, setIsOpen] = React.useState(false);
   const referenceCount = props.paper.referenceCount;
   const citedCount = props.paper.citedCount;
   let fullTextNode;
 
-  if (props.showFullText) {
-    fullTextNode = (
-      <li
-        className={classNames({
-          [styles.headerTabItem]: true,
-          [styles.active]: props.isOnFullText,
-        })}
-        onClick={props.handleClickFullText}
-      >
-        Full text
-      </li>
-    );
+  if (props.showFullText && props.handleClickFullText) {
+    fullTextNode = <TabItem active={!!props.isOnFullText} onClick={props.handleClickFullText} text="Full Text" />;
   }
 
   return (
@@ -55,24 +64,8 @@ const PaperShowRefCitedTab: React.SFC<PaperShowRefCitedTabProps> = props => {
       <div className={styles.paperContentBlockHeaderTabContentWrapper}>
         <ul className={styles.headerTabList}>
           {fullTextNode}
-          <li
-            className={classNames({
-              [styles.headerTabItem]: true,
-              [styles.active]: props.isOnRef,
-            })}
-            onClick={props.handleClickRef}
-          >
-            {`References (${referenceCount})`}
-          </li>
-          <li
-            className={classNames({
-              [styles.headerTabItem]: true,
-              [styles.active]: props.isOnCited,
-            })}
-            onClick={props.handleClickCited}
-          >
-            {`Cited By (${citedCount})`}
-          </li>
+          <TabItem active={props.isOnRef} onClick={props.handleClickRef} text={`References (${referenceCount})`} />
+          <TabItem active={props.isOnCited} onClick={props.handleClickCited} text={`Citations (${citedCount})`} />
         </ul>
 
         <div className={styles.rightBtnBox}>
