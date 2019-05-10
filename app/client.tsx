@@ -117,6 +117,7 @@ class PlutoRenderer {
         script.onload = () => {
           Sentry.init({
             dsn: "https://90218bd0404f4e8e97fbb17279974c23@sentry.io/1306012",
+            release: (window as any)._script_version_ ? (window as any)._script_version_.version : "undefined",
           });
           resolve();
         };
