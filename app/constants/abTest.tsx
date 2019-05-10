@@ -64,7 +64,6 @@ export const LIVE_TESTS: Test[] = [
   signUpContextTest,
   paperFromSearchTest,
   queryLoverTest,
-  completeBlockSignUpTest,
   nextPageFromSearchTest,
   bannerTest,
   signButtonTextTest,
