@@ -4,8 +4,8 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import { Paper } from "../../../model/paper";
 import CiteBox from "../../../containers/paperShowActionBar/components/citeBox";
 import PdfDownloadButton from "../components/pdfDownloadButton";
-import FullTextBtn from "../../../containers/paperShowActionBar/components/fullTextRequestBtn";
-import FullTextDialog from "../../../containers/paperShowActionBar/components/fullTextDialog";
+import RequestFullTextBtn from "../../../containers/paperShowActionBar/components/fullTextRequestBtn";
+import RequestFullTextDialog from "../../../containers/paperShowActionBar/components/fullTextDialog";
 const styles = require("./refCitedTab.scss");
 
 interface PaperShowRefCitedTabProps {
@@ -44,8 +44,44 @@ const TabItem: React.FunctionComponent<TabItemProps> = props => {
   );
 };
 
-const PaperShowRefCitedTab: React.FunctionComponent<PaperShowRefCitedTabProps> = props => {
+interface PDFButtonProps {
+  paper: Paper;
+  hasPDF: boolean;
+  isLoadingOaCheck: boolean;
+}
+
+const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
   const [isOpen, setIsOpen] = React.useState(false);
+
+  if (props.hasPDF) {
+    return (
+      <div className={styles.actionItem}>
+        <PdfDownloadButton paper={props.paper} isLoadingOaCheck={props.isLoadingOaCheck} />
+      </div>
+    );
+  }
+  return (
+    <>
+      <div className={styles.actionItem}>
+        <RequestFullTextBtn
+          isLoadingOaCheck={props.isLoadingOaCheck}
+          paperId={props.paper!.id}
+          handleSetIsOpen={setIsOpen}
+          btnStyle={{ flex: "1 0 auto", height: "36px", padding: "0 12px 0 8px" }}
+        />
+      </div>
+      <RequestFullTextDialog
+        paperId={props.paper.id}
+        isOpen={isOpen}
+        onClose={() => {
+          setIsOpen(false);
+        }}
+      />
+    </>
+  );
+};
+
+const PaperShowRefCitedTab: React.FunctionComponent<PaperShowRefCitedTabProps> = props => {
   const referenceCount = props.paper.referenceCount;
   const citedCount = props.paper.citedCount;
   let fullTextNode;
@@ -72,26 +108,10 @@ const PaperShowRefCitedTab: React.FunctionComponent<PaperShowRefCitedTabProps> =
           <div className={styles.actionItem}>
             <CiteBox paper={props.paper} btnStyle={{ maxWidth: "74px", width: "100%", height: "36px" }} />
           </div>
-          {props.hasBestPdf && (props.isFetchingPdf || !props.failedToLoadPDF) ? (
-            <div className={styles.actionItem}>
-              <PdfDownloadButton paper={props.paper} isLoadingOaCheck={props.isLoadingOaCheck} />
-            </div>
-          ) : (
-            <div className={styles.actionItem}>
-              <FullTextBtn
-                isLoadingOaCheck={props.isLoadingOaCheck}
-                paperId={props.paper!.id}
-                handleSetIsOpen={setIsOpen}
-                btnStyle={{ flex: "1 0 auto", height: "36px", padding: "0 12px 0 8px" }}
-              />
-            </div>
-          )}
-          <FullTextDialog
-            paperId={props.paper.id}
-            isOpen={isOpen}
-            onClose={() => {
-              setIsOpen(false);
-            }}
+          <PDFButton
+            paper={props.paper}
+            isLoadingOaCheck={props.isLoadingOaCheck}
+            hasPDF={props.hasBestPdf && (props.isFetchingPdf || !props.failedToLoadPDF)}
           />
         </div>
       </div>
