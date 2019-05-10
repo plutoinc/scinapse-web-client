@@ -319,7 +319,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         <div className={styles.footerWrapper}>
           <Footer />
         </div>
-        <NextPaperTab />
+        <NextPaperTab paperId={paper.id} />
       </>
     );
   }
