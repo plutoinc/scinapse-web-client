@@ -14,7 +14,7 @@ const s = require("./actionBar.scss");
 interface PaperShowActionBarProps {
   paper: Paper | null;
   hasBestPdf: boolean;
-  isFetcingPDF: boolean;
+  isFetchingPDF: boolean;
   failedToLoadPDF: boolean;
   showFullText: boolean;
   isLoadingOaCheck: boolean;

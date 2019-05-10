@@ -219,7 +219,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     paper={paper}
                     hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
                     isLoadingOaCheck={paperShow.isOACheckingPDF}
-                    isFetcingPDF={paperShow.isFetchingPdf}
+                    isFetchingPDF={paperShow.isFetchingPdf}
                     failedToLoadPDF={failedToLoadPDF}
                     currentUser={currentUser}
                     showFullText={isLoadPDF}
