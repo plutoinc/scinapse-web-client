@@ -1,5 +1,5 @@
 import {
-  completeBlockSignUpTest,
+  completeBlockSignUpBinaryTest,
   paperFromSearchTest,
   queryLoverTest,
   signUpContextTest,
@@ -31,7 +31,7 @@ export type ABTestType =
   | "queryLover"
   | "nextPageFromSearch"
   | "signUpContextText"
-  | "completeBlockSignUp"
+  | "completeBlockSignUpBinary"
   | "viewPDFSignUp-mainText"
   | "signBannerAtSearch-banner"
   | "signBannerAtSearch-signButtonText"
@@ -60,6 +60,7 @@ export interface BenefitExpTicketContext {
 }
 
 export const LIVE_TESTS: Test[] = [
+  completeBlockSignUpBinaryTest,
   signUpContextTest,
   paperFromSearchTest,
   queryLoverTest,
