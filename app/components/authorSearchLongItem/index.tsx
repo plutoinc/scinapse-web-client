@@ -4,9 +4,6 @@ import MuiTooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
 import { Author } from "../../model/author/author";
-import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
-import { getUserGroupName } from "../../helpers/abTestHelper";
-import { AUTHOR_FROM_SEARCH_TEST_NAME } from "../../constants/abTestGlobalValue";
 import { trackActionToClickAuthorEntity } from "../authorSearchItem";
 const styles = require("./authorSearchLongItem.scss");
 
@@ -16,8 +13,6 @@ interface AuthorSearchLongItemProps extends RouteComponentProps<any> {
 
 const AuthorSearchLongItem: React.SFC<AuthorSearchLongItemProps> = props => {
   const author = props.authorEntity;
-
-  const userGroupName: string = getUserGroupName(AUTHOR_FROM_SEARCH_TEST_NAME) || "";
 
   const profileImage = author.profileImageUrl ? (
     <span
@@ -39,20 +34,7 @@ const AuthorSearchLongItem: React.SFC<AuthorSearchLongItemProps> = props => {
       onClick={async e => {
         e.preventDefault();
 
-        const isBlocked =
-          userGroupName === "block" &&
-          (await blockUnverifiedUser({
-            authLevel: AUTH_LEVEL.VERIFIED,
-            actionArea: "authorEntity",
-            actionLabel: "authorFromSearch",
-            userActionType: "authorFromSearch",
-          }));
-
         trackActionToClickAuthorEntity(author.id);
-
-        if (isBlocked) {
-          return;
-        }
 
         props.history.push(`/authors/${author.id}`);
       }}
