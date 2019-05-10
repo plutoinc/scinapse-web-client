@@ -49,7 +49,7 @@ const PaperShowRefCitedTab: React.SFC<PaperShowRefCitedTabProps> = props => {
     <div
       className={classNames({
         [styles.paperContentBlockHeaderTabs]: !props.isFixed,
-        [`${styles.paperContentBlockHeaderTabs} ${styles.stick}`]: props.isFixed,
+        [`${styles.paperContentBlockHeaderTabs} ${styles.stick} mui-fixed`]: props.isFixed,
       })}
     >
       <div className={styles.paperContentBlockHeaderTabContentWrapper}>
