@@ -36,6 +36,7 @@ import { removePaperFromCollection } from "../dialog/actions";
 import { CollectionShowMatchParams } from "./types";
 import CollectionSideNaviBar from "../collectionSideNaviBar";
 import { getCollections } from "../collections/actions";
+import RelatedPaperInCollectionShow from "./relatedPaperInCollectionShow";
 const styles = require("./collectionShow.scss");
 
 const FACEBOOK_SHARE_URL = "http://www.facebook.com/sharer/sharer.php?u=";
@@ -203,9 +204,8 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                     <div>{this.getPaperList()}</div>
                     <div>{this.getPaginationComponent()}</div>
                   </div>
+                  <RelatedPaperInCollectionShow />
                 </div>
-                {/* <div className={styles.rightBox}>
-              </div> */}
               </div>
             </div>
           </div>

@@ -1,0 +1,12 @@
+.relatedPaperContainer {
+  border-radius: 8px;
+  border: solid 1px $gray3;
+  background-color: $gray0;
+  padding: 24px;
+
+  .titleContext {
+    font-size: 20px;
+    font-weight: 500;
+    color: $black1;
+  }
+}
