@@ -4,7 +4,6 @@ import {
   queryLoverTest,
   signUpContextTest,
   nextPageFromSearchTest,
-  doiSearchTest,
   bannerTest,
   signButtonTextTest,
   bodyTextTest,
@@ -34,7 +33,6 @@ export type ABTestType =
   | "signUpContextText"
   | "completeBlockSignUp"
   | "viewPDFSignUp-mainText"
-  | "doiSearch"
   | "signBannerAtSearch-banner"
   | "signBannerAtSearch-signButtonText"
   | "signBannerAtSearch-bodyText"
@@ -67,7 +65,6 @@ export const LIVE_TESTS: Test[] = [
   queryLoverTest,
   completeBlockSignUpTest,
   nextPageFromSearchTest,
-  doiSearchTest,
   bannerTest,
   signButtonTextTest,
   bodyTextTest,

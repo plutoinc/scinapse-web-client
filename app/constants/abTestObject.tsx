@@ -41,11 +41,6 @@ export const nextPageFromSearchTest: Test = {
   userGroup: [{ groupName: "control", weight: 1 }, { groupName: "block", weight: 3 }],
 };
 
-export const doiSearchTest: Test = {
-  name: "doiSearch",
-  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "block", weight: 3 }],
-};
-
 export const bannerTest: Test = {
   name: "signBannerAtSearch-banner",
   userGroup: [{ groupName: "control", weight: 1 }, { groupName: "banner", weight: 2 }],

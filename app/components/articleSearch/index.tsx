@@ -31,8 +31,6 @@ import { Paper } from "../../model/paper";
 import EnvChecker from "../../helpers/envChecker";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import DoiSearchBlocked from "./components/doiSearchBlocked";
-import { DOI_SEARCH_TEST_NAME } from "../../constants/abTestGlobalValue";
-import { getUserGroupName } from "../../helpers/abTestHelper";
 import SignBanner from "./components/signBanner";
 const styles = require("./articleSearch.scss");
 
@@ -207,13 +205,8 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
     const hasNoSearchResultButHasAuthorResult =
       hasNoSearchResult && articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements > 0;
 
-    const userGroupName: string = getUserGroupName(DOI_SEARCH_TEST_NAME) || "";
-
     const blockedDoiMatchedSearch =
-      !currentUserState.isLoggedIn &&
-      articleSearchState.doiPatternMatched &&
-      userGroupName === "block" &&
-      !hasNoSearchResult;
+      !currentUserState.isLoggedIn && articleSearchState.doiPatternMatched && !hasNoSearchResult;
 
     if (hasNoSearchResultButHasAuthorResult) {
       return (
