@@ -4,8 +4,6 @@ import {
   queryLoverTest,
   signUpContextTest,
   nextPageFromSearchTest,
-  doiSearchTest,
-  authorFromSearchTest,
   bannerTest,
   signButtonTextTest,
   bodyTextTest,
@@ -31,12 +29,10 @@ export type BenefitExpType = "queryCountSession" | "refPaperCountSession" | "pap
 export type ABTestType =
   | "paperFromSearch"
   | "queryLover"
-  | "authorFromSearch"
   | "nextPageFromSearch"
   | "signUpContextText"
   | "completeBlockSignUp"
   | "viewPDFSignUp-mainText"
-  | "doiSearch"
   | "signBannerAtSearch-banner"
   | "signBannerAtSearch-signButtonText"
   | "signBannerAtSearch-bodyText"
@@ -68,9 +64,7 @@ export const LIVE_TESTS: Test[] = [
   paperFromSearchTest,
   queryLoverTest,
   completeBlockSignUpTest,
-  authorFromSearchTest,
   nextPageFromSearchTest,
-  doiSearchTest,
   bannerTest,
   signButtonTextTest,
   bodyTextTest,

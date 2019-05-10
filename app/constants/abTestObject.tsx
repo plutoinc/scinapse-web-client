@@ -36,18 +36,8 @@ export const completeBlockSignUpTest: Test = {
   ],
 };
 
-export const authorFromSearchTest: Test = {
-  name: "authorFromSearch",
-  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "block", weight: 3 }],
-};
-
 export const nextPageFromSearchTest: Test = {
   name: "nextPageFromSearch",
-  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "block", weight: 3 }],
-};
-
-export const doiSearchTest: Test = {
-  name: "doiSearch",
   userGroup: [{ groupName: "control", weight: 1 }, { groupName: "block", weight: 3 }],
 };
 
@@ -82,7 +72,7 @@ export const titleTextTest: Test = {
 
 export const viewPDFSignUpMainTextTest: Test = {
   name: "viewPDFSignUp-mainText",
-  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "unlimited", weight: 2 }],
+  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "unlimited", weight: 3 }],
 };
 
 export const signBannerAtPaperShowTest: Test = {
