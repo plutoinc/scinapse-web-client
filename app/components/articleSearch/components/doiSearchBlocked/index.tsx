@@ -11,8 +11,8 @@ interface DoiSearchBlockedProps {
   isLoading: boolean;
 }
 
-async function openSignInDialog() {
-  await blockUnverifiedUser({
+function openSignInDialog() {
+  blockUnverifiedUser({
     authLevel: AUTH_LEVEL.VERIFIED,
     actionArea: "searchResult",
     actionLabel: "doiSearch",

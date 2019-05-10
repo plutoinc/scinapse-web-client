@@ -5,7 +5,6 @@ import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 import { LocationDescriptor } from "../../../../node_modules/@types/history";
-import { trackEvent } from "../../../helpers/handleGA";
 import { getUserGroupName } from "../../../helpers/abTestHelper";
 import { NEXT_PAGE_FROM_SEARCH_TEST_NAME } from "../../../constants/abTestGlobalValue";
 import { blockUnverifiedUser, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
@@ -50,6 +49,16 @@ function isLinkPagination(props: DesktopPaginationProps): props is LinkPaginatio
   return (props as LinkPaginationProps).getLinkDestination !== undefined;
 }
 
+function trackActionToClickPagination(actionLabel: string) {
+  ActionTicketManager.trackTicket({
+    pageType: getCurrentPageType(),
+    actionType: "fire",
+    actionArea: "pagination",
+    actionTag: "clickPagination",
+    actionLabel,
+  });
+}
+
 export function makePageNumberArray(props: DesktopPaginationProps): number[] {
   const totalPage = props.totalPage;
   const currentPage = props.currentPageIndex + 1;
@@ -80,7 +89,7 @@ function getFirstPageIcon(props: DesktopPaginationProps) {
     return (
       <Link
         onClick={() => {
-          trackEvent({ category: "Search", action: "Pagination", label: "first_page" });
+          trackActionToClickPagination("firstPage");
         }}
         rel="nofollow"
         to={(props as LinkPaginationProps).getLinkDestination(1)}
@@ -93,7 +102,7 @@ function getFirstPageIcon(props: DesktopPaginationProps) {
     return (
       <span
         onClick={() => {
-          trackEvent({ category: "Search", action: "Pagination", label: "first_page" });
+          trackActionToClickPagination("firstPage");
           (props as EventPaginationProps).onItemClick(1);
         }}
         className={styles.pageIconButton}
@@ -102,16 +111,6 @@ function getFirstPageIcon(props: DesktopPaginationProps) {
       </span>
     );
   }
-}
-
-function trackActionToClickPagination(actionLabel: string) {
-  ActionTicketManager.trackTicket({
-    pageType: getCurrentPageType(),
-    actionType: "fire",
-    actionArea: "pagination",
-    actionTag: "clickPagination",
-    actionLabel,
-  });
 }
 
 function getNextIcon(props: DesktopPaginationProps) {
