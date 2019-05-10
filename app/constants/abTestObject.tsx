@@ -26,14 +26,9 @@ export const queryLoverTest: Test = {
   ],
 };
 
-export const completeBlockSignUpTest: Test = {
-  name: "completeBlockSignUp",
-  userGroup: [
-    { groupName: "control", weight: 4 },
-    { groupName: "blackLayer", weight: 2 },
-    { groupName: "closeIconTop", weight: 1 },
-    { groupName: "closeIconBottom", weight: 1 },
-  ],
+export const completeBlockSignUpBinaryTest: Test = {
+  name: "completeBlockSignUpBinary",
+  userGroup: [{ groupName: "weakBlock", weight: 2 }, { groupName: "strongBlock", weight: 1 }],
 };
 
 export const authorFromSearchTest: Test = {

@@ -1,9 +1,8 @@
 import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { getUserGroupName } from "../../../helpers/abTestHelper";
-import { COMPLETE_BLOCK_SIGN_UP_TEST_NAME, SIGN_UP_CONTEXT_TEST_NAME } from "../../../constants/abTestGlobalValue";
+import { SIGN_UP_CONTEXT_TEST_NAME } from "../../../constants/abTestGlobalValue";
 import { controlSignUpContext, positiveSignUpContext } from "./constants";
-import DialogCloseButton from "../authButton/dialogCloseButton";
 
 const styles = require("./authContextText.scss");
 
@@ -20,7 +19,6 @@ export const ContextText: React.FunctionComponent<{
     <div className={styles.container}>
       <div className={styles.contentWrapper}>
         <span className={styles.contentText}>{subText}</span>
-        {getUserGroupName(COMPLETE_BLOCK_SIGN_UP_TEST_NAME) === "closeIconTop" ? <DialogCloseButton /> : null}
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import * as store from "store";
 import { ABTestType, BENEFIT_EXPERIMENT_KEY, BenefitExpType, BenefitExpValue } from "../constants/abTest";
 import { DEVICE_ID_KEY, SESSION_ID_KEY, SESSION_COUNT_KEY } from "../constants/actionTicket";
 import { AUTH_LEVEL, blockUnverifiedUser } from "./checkAuthDialog";
-import { COMPLETE_BLOCK_SIGN_UP_TEST_NAME } from "../constants/abTestGlobalValue";
+import { COMPLETE_BLOCK_SIGN_UP_BINARY_TEST_NAME } from "../constants/abTestGlobalValue";
 import { getUserGroupName } from "./abTestHelper";
 
 interface CheckBenefitExpCount {
@@ -16,13 +16,11 @@ interface CheckBenefitExpCount {
 }
 
 function getBlockedValueForCompleteBlockSignUpTest() {
-  const userGroupName = getUserGroupName(COMPLETE_BLOCK_SIGN_UP_TEST_NAME);
+  const userGroupName = getUserGroupName(COMPLETE_BLOCK_SIGN_UP_BINARY_TEST_NAME);
   switch (userGroupName) {
-    case "control":
-    case "closeIconTop":
-    case "closeIconBottom":
+    case "strongBlock":
       return true;
-    case "blackLayer":
+    case "weakBlock":
       return false;
     default:
       return true;
