@@ -1,7 +1,6 @@
 import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
-import { trackEvent } from "../../../helpers/handleGA";
 import copySelectedTextToClipboard from "../../../helpers/copySelectedTextToClipboard";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { Paper } from "../../../model/paper";
@@ -17,11 +16,6 @@ const PaperShowDOI: React.SFC<PaperShowDOIProps> = props => {
 
   const clickDOIButton = () => {
     copySelectedTextToClipboard(`https://doi.org/${props.DOI}`);
-    trackEvent({
-      category: "New Paper Show",
-      action: "Click Copy DOI in PaperInfo Section",
-      label: `Click Copy button for Copy DOI`,
-    });
 
     ActionTicketManager.trackTicket({
       pageType: "paperShow",

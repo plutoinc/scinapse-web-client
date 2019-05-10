@@ -4,7 +4,6 @@ import MuiTooltip from "@material-ui/core/Tooltip";
 import { MatchEntityAuthor } from "../../api/search";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
-import { trackEvent } from "../../helpers/handleGA";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
 import { AUTHOR_FROM_SEARCH_TEST_NAME } from "../../constants/abTestGlobalValue";
@@ -13,6 +12,16 @@ const styles = require("./authorSearchItem.scss");
 
 interface AuthorSearchItemProps extends RouteComponentProps<any> {
   authorEntity: MatchEntityAuthor;
+}
+
+export function trackActionToClickAuthorEntity(authorId: number) {
+  ActionTicketManager.trackTicket({
+    pageType: "searchResult",
+    actionType: "fire",
+    actionArea: "authorEntity",
+    actionTag: "authorEntityItem",
+    actionLabel: String(authorId),
+  });
 }
 
 const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
@@ -49,22 +58,11 @@ const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
             userActionType: "authorFromSearch",
           }));
 
+        trackActionToClickAuthorEntity(author.id);
+
         if (isBlocked) {
           return;
         }
-
-        trackEvent({
-          category: "Flow to Author Show",
-          action: "Click Author Entity",
-          label: `Click Author ID : ${author.id}`,
-        });
-        ActionTicketManager.trackTicket({
-          pageType: "searchResult",
-          actionType: "fire",
-          actionArea: "authorEntity",
-          actionTag: "authorEntityItem",
-          actionLabel: String(author.id),
-        });
 
         props.history.push(`/authors/${author.id}`);
       }}

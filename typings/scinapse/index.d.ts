@@ -72,7 +72,6 @@ declare namespace Scinapse {
       | "addFilter"
       | "sendRequestFullText"
       | "clickRequestFullTextBtn"
-      | "collectionBtn"
       | "journalSearch"
       | "fosSearch"
       | "collectionShow"
@@ -95,6 +94,7 @@ declare namespace Scinapse {
       | "signBannerAtPaperShow"
       | "bannerView"
       | "researchHistory"
+      | "clickPagination"
       | "";
 
     type ActionArea =
@@ -129,6 +129,7 @@ declare namespace Scinapse {
       | "abstract"
       | "footer"
       | "signBanner"
+      | "pagination"
       | "";
 
     type PageType =

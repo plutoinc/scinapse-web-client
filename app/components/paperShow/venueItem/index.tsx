@@ -2,7 +2,6 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import * as format from "date-fns/format";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import { trackEvent } from "../../../helpers/handleGA";
 import { Paper } from "../../../model/paper";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./venueItem.scss");
@@ -28,12 +27,6 @@ const PaperShowVenueItem: React.SFC<PaperShowVenueItemProps> = props => {
             <Link
               to={`/journals/${journal.id}`}
               onClick={() => {
-                trackEvent({
-                  category: "New Paper Show",
-                  action: "Click Journal in PaperInfo Section",
-                  label: `Click Journal ID : ${journal.id}`,
-                });
-
                 ActionTicketManager.trackTicket({
                   pageType: "paperShow",
                   actionType: "fire",

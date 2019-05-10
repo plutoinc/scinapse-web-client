@@ -2,7 +2,6 @@ import * as React from "react";
 import { escapeRegExp } from "lodash";
 import HighLightedContent from "../highLightedContent";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { getUserGroupName } from "../../../helpers/abTestHelper";
 import { getCurrentPageType } from "../../locationListener/index";
@@ -90,12 +89,6 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
       actionArea: actionArea || pageType,
       actionTag: isExtendContent ? "collapseAbstract" : "extendAbstract",
       actionLabel: String(paperId),
-    });
-
-    trackEvent({
-      category: "Search",
-      action: isExtendContent ? "collapse Abstract" : "Extend Abstract",
-      label: location.pathname,
     });
   };
 }

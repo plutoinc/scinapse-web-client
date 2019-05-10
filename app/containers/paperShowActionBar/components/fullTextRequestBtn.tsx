@@ -29,10 +29,6 @@ const RequestFullTextBtn: React.FunctionComponent<{
           userActionType: "clickRequestFullTextBtn",
         });
 
-        if (!isBlocked) {
-          handleSetIsOpen(true);
-        }
-
         ActionTicketManager.trackTicket({
           pageType: "paperShow",
           actionType: "fire",
@@ -40,6 +36,10 @@ const RequestFullTextBtn: React.FunctionComponent<{
           actionTag: "clickRequestFullTextBtn",
           actionLabel: String(paperId),
         });
+
+        if (!isBlocked) {
+          handleSetIsOpen(true);
+        }
       }}
       className={s.fullTextBtn}
     >

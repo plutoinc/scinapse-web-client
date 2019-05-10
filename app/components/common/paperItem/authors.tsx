@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import * as classNames from "classnames";
 import { PaperAuthor } from "../../../model/author";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import { trackEvent } from "../../../helpers/handleGA";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { Paper } from "../../../model/paper";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
@@ -114,11 +113,6 @@ class Authors extends React.PureComponent<AuthorsProps> {
           <Link
             to={`/authors/${author.id}`}
             onClick={() => {
-              trackEvent({
-                category: "New Paper Show",
-                action: "Click Author in publishInfoList",
-                label: `Click to Author ID : ${author.id}`,
-              });
               ActionTicketManager.trackTicket({
                 pageType,
                 actionType: "fire",

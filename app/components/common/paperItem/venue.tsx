@@ -6,7 +6,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { Journal } from "../../../model/journal";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
-import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { ConferenceInstance } from "../../../model/conferenceInstance";
 import DoiInPaperShow from "../../paperShow/components/doiInPaperShow";
@@ -51,7 +50,6 @@ const PaperItemVenue = ({
         <Link
           to={`/journals/${journal.id}`}
           onClick={() => {
-            trackEvent({ category: "Search", action: "Click Journal", label: "" });
             ActionTicketManager.trackTicket({
               pageType,
               actionType: "fire",

@@ -4,7 +4,6 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuItem from "@material-ui/core/MenuItem";
 import Popper from "@material-ui/core/Popper";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { CurrentUser } from "../../../model/currentUser";
@@ -118,11 +117,6 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             hash: "cited",
           }}
           onClick={() => {
-            trackEvent({
-              category: "New Paper Show",
-              action: "Click Cited Button in paperItem",
-              label: `Link to citation paper - /papers/${paper.id} `,
-            });
             ActionTicketManager.trackTicket({
               pageType,
               actionType: "fire",
@@ -149,10 +143,6 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             className={styles.citationIconWrapper}
             onClick={() => {
               GlobalDialogManager.openCitationDialog(paper.id);
-              trackEvent({
-                category: "Additional action",
-                action: "Click Citation Button",
-              });
               ActionTicketManager.trackTicket({
                 pageType,
                 actionType: "fire",
