@@ -177,7 +177,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   public render() {
     const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers, dispatch } = this.props;
     const { isOnFullText, isOnCited, isOnRef, isLoadPDF, failedToLoadPDF } = this.state;
-    const hasBest = !!(paper && !!paper.bestPdf && paper.bestPdf.hasBest);
+    const shouldShowFullTextTab = isLoadPDF && !failedToLoadPDF && layout.userDevice !== UserDevice.MOBILE;
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -194,8 +194,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if (!paper) {
       return null;
     }
-
-    const shouldShowFullTextTab = isLoadPDF && !failedToLoadPDF;
 
     return (
       <>
@@ -248,25 +246,20 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             </div>
           </article>
           <div>
-            {shouldShowFullTextTab && (
-              <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
-                <PaperShowRefCitedTab
-                  paper={paper}
-                  handleClickFullText={this.scrollToSection("fullText")}
-                  handleClickRef={this.scrollToSection("ref")}
-                  handleClickCited={this.scrollToSection("cited")}
-                  isLoadingOaCheck={paperShow.isOACheckingPDF}
-                  hasBestPdf={hasBest}
-                  isFetchingPdf={paperShow.isFetchingPdf}
-                  failedToLoadPDF={failedToLoadPDF}
-                  isFixed={isOnFullText}
-                  isOnRef={isOnRef}
-                  isOnCited={isOnCited}
-                  isOnFullText={isOnFullText || (!isOnFullText && !isOnRef && !isOnCited)}
-                  showFullText
-                />
-              </div>
-            )}
+            <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
+              <PaperShowRefCitedTab
+                paper={paper}
+                handleClickFullTextTab={this.scrollToSection("fullText")}
+                handleClickRefTab={this.scrollToSection("ref")}
+                handleClickCitedTab={this.scrollToSection("cited")}
+                isLoadingOaCheck={paperShow.isOACheckingPDF}
+                isFixed={isOnFullText || isOnRef || isOnCited}
+                isOnRef={isOnRef}
+                isOnCited={isOnCited}
+                isOnFullText={isOnFullText || (!isOnFullText && !isOnRef && !isOnCited)}
+                hasFullText={shouldShowFullTextTab}
+              />
+            </div>
             <PDFViewer
               dispatch={dispatch}
               paperId={paper.id}
@@ -279,22 +272,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               shouldShow={!EnvChecker.isOnServer() && layout.userDevice === UserDevice.DESKTOP}
             />
           </div>
-          <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)}>
-            <PaperShowRefCitedTab
-              paper={paper}
-              handleClickRef={this.scrollToSection("ref")}
-              handleClickCited={this.scrollToSection("cited")}
-              handleClickFullText={this.scrollToSection("fullText")}
-              hasBestPdf={hasBest}
-              isLoadingOaCheck={paperShow.isOACheckingPDF}
-              isFetchingPdf={paperShow.isFetchingPdf}
-              failedToLoadPDF={failedToLoadPDF}
-              isFixed={isOnRef}
-              isOnRef={isOnRef}
-              isOnCited={isOnCited}
-              showFullText={shouldShowFullTextTab}
-            />
-          </div>
+          <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)} />
           <div className={styles.citedBy}>
             <article className={styles.paperShow}>
               <div>
@@ -317,22 +295,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             </article>
           </div>
           <div className={styles.sectionDivider} />
-          <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)}>
-            <PaperShowRefCitedTab
-              paper={paper}
-              handleClickRef={this.scrollToSection("ref")}
-              handleClickCited={this.scrollToSection("cited")}
-              handleClickFullText={this.scrollToSection("fullText")}
-              hasBestPdf={hasBest}
-              isLoadingOaCheck={paperShow.isOACheckingPDF}
-              isFetchingPdf={paperShow.isFetchingPdf}
-              failedToLoadPDF={failedToLoadPDF}
-              isFixed={isOnCited}
-              isOnRef={isOnRef}
-              isOnCited={isOnCited}
-              showFullText={shouldShowFullTextTab}
-            />
-          </div>
+          <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)} />
           <div className={styles.citedBy}>
             <article className={styles.paperShow}>
               <div>
