@@ -60,12 +60,12 @@ class Main extends React.Component {
 class PlutoRenderer {
   private _store: Store<AppState>;
 
-  constructor() {
+  public constructor() {
     StoreManager.initializeStore();
     this._store = StoreManager.store;
   }
 
-  get store() {
+  public get store() {
     return this._store;
   }
 
