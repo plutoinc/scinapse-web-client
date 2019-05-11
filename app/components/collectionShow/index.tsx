@@ -68,6 +68,7 @@ export interface CollectionShowProps
 
 @withStyles<typeof CollectionShow>(styles)
 class CollectionShow extends React.PureComponent<CollectionShowProps> {
+  private shareBtnAnchorEl: HTMLElement | null;
   private cancelToken = axios.CancelToken.source();
 
   public async componentDidMount() {
@@ -302,7 +303,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   private getCollectionShareBtns = () => {
     const { userCollection } = this.props;
     return userCollection ? (
-      <ClickAwayListener onClickAway={this.handleToggleShareDropdown}>
+      <ClickAwayListener onClickAway={this.handleCloseShareDropdown}>
         <div className={styles.shareAreaWrapper}>
           <span className={styles.shareGuideMessage}>Share this Collection to SNS!</span>
           <div className={styles.shareBtnsWrapper}>
@@ -381,28 +382,17 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     const { currentUser, userCollection, collectionShow } = this.props;
 
     const collectionShareButton = (
-      <TransparentButton
-        style={{
-          width: "123px",
-          height: "40px",
-          fontWeight: 500,
-          padding: "0 16px 0 8px",
-          marginTop: "4px",
-        }}
-        iconStyle={{
-          marginRight: "8px",
-          width: "20px",
-          height: "16px",
-          color: "#666d7c",
-        }}
-        onClick={() => {
-          this.handleToggleShareDropdown();
-        }}
-        gaCategory="Collection Show"
-        gaAction="Click Share Collection"
-        content="Share"
-        icon="MASK"
-      />
+      <div ref={el => (this.shareBtnAnchorEl = el)}>
+        <TransparentButton
+          style={{ width: "123px", height: "40px", fontWeight: 500, padding: "0 16px 0 8px", marginTop: "4px" }}
+          iconStyle={{ marginRight: "8px", width: "20px", height: "16px", color: "#666d7c" }}
+          onClick={this.handleToggleShareDropdown}
+          gaCategory="Collection Show"
+          gaAction="Click Share Collection"
+          content="Share"
+          icon="MASK"
+        />
+      </div>
     );
 
     if (
@@ -456,6 +446,18 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     } else {
       dispatch(openShareDropdown());
     }
+  };
+
+  private handleCloseShareDropdown = (e: any) => {
+    const { dispatch } = this.props;
+
+    const path = e.path || (e.composedPath && e.composedPath());
+
+    if (path && path.includes(this.shareBtnAnchorEl)) {
+      return;
+    }
+
+    dispatch(closeShareDropdown());
   };
 
   private getPageHelmet = () => {
