@@ -176,9 +176,9 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         {hasCollection && (
           <MenuItem
             classes={{ root: styles.additionalMenuItem }}
-            onClick={() => {
+            onClick={e => {
               GlobalDialogManager.openCollectionDialog(paper.id);
-              this.closeAdditionalMenu();
+              this.closeAdditionalMenu(e);
             }}
           >
             Add to other collections
@@ -187,11 +187,11 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         {hasRemoveButton ? (
           <MenuItem
             classes={{ root: styles.additionalMenuItem }}
-            onClick={() => {
+            onClick={e => {
               if (handleRemovePaper) {
                 handleRemovePaper(paper);
               }
-              this.closeAdditionalMenu();
+              this.closeAdditionalMenu(e);
             }}
           >
             Delete this paper
@@ -200,9 +200,9 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         {handleToggleRepresentative && (
           <MenuItem
             classes={{ root: styles.additionalMenuItem }}
-            onClick={() => {
+            onClick={e => {
               handleToggleRepresentative(paper);
-              this.closeAdditionalMenu();
+              this.closeAdditionalMenu(e);
             }}
           >
             {isRepresentative ? "Remove from representative publications" : "Add to representative publications"}
@@ -210,11 +210,11 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         )}
         <MenuItem
           classes={{ root: styles.additionalMenuItem }}
-          onClick={() => {
+          onClick={e => {
             this.handleClickClaim({
               paperId: this.props.paper.id,
             });
-            this.closeAdditionalMenu();
+            this.closeAdditionalMenu(e);
           }}
         >
           Suggest change
@@ -247,11 +247,17 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
 
   private openAdditionalMenu = () => {
     this.setState({
-      isAdditionalMenuOpen: true,
+      isAdditionalMenuOpen: !this.state.isAdditionalMenuOpen,
     });
   };
 
-  private closeAdditionalMenu = () => {
+  private closeAdditionalMenu = (e: any) => {
+    const path = e.path || (e.composedPath && e.composedPath());
+
+    if (path && path.includes(this.additionalMenuAnchorEl)) {
+      return;
+    }
+
     this.setState({
       isAdditionalMenuOpen: false,
     });
