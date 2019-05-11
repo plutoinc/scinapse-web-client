@@ -34,7 +34,7 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
   function handleCloseSourceDropdown(e: any) {
     const path = e.path || (e.composedPath && e.composedPath());
 
-    if (path && path.includes(this.sourceButton)) {
+    if (path && path.includes(sourceButton.current!)) {
       return;
     }
 
