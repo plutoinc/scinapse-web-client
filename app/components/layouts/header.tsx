@@ -255,12 +255,12 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     );
   };
 
-  private handleClickSignOut = async () => {
+  private handleClickSignOut = async (e: any) => {
     const { dispatch } = this.props;
 
     try {
       await dispatch(signOut());
-      this.handleRequestCloseUserDropdown();
+      this.handleRequestCloseUserDropdown(e);
     } catch (_err) {
       dispatch({
         type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
@@ -301,7 +301,13 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     });
   };
 
-  private handleRequestCloseUserDropdown = () => {
+  private handleRequestCloseUserDropdown = (e: any) => {
+    const path = e.path || (e.composedPath && e.composedPath());
+
+    if (path && path.includes(this.userDropdownAnchorRef)) {
+      return;
+    }
+
     this.setState({
       isUserDropdownOpen: false,
     });
@@ -358,8 +364,8 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         </div>
         <Link
           className={styles.externalCollectionButton}
-          onClick={() => {
-            this.handleRequestCloseUserDropdown();
+          onClick={e => {
+            this.handleRequestCloseUserDropdown(e);
             ActionTicketManager.trackTicket({
               pageType: getCurrentPageType(),
               actionType: "fire",
