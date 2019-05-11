@@ -195,6 +195,7 @@ $semi_full_width: 997px;
 }
 
 .shareAreaWrapper {
+  width: 212px;
   height: 110px;
   border-radius: 4px;
   border: 1px solid $gray2;
@@ -202,8 +203,7 @@ $semi_full_width: 997px;
   display: inline-flex;
   position: absolute;
   z-index: 998;
-  margin-left: -105px;
-  margin-top: 14px;
+  margin-top: 100px;
   padding: 16px;
   justify-content: center;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
@@ -239,6 +239,7 @@ $semi_full_width: 997px;
   }
 
   .shareGuideMessage {
+    width: 100%;
     font-size: 14px;
     color: $gray6;
   }
