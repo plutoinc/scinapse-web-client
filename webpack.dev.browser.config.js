@@ -27,11 +27,18 @@ module.exports = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        loader: "awesome-typescript-loader",
-        options: {
-          useBabel: true,
-          useCache: true,
-        },
+        use: [
+          {
+            loader: "babel-loader?cacheDirectory=true",
+          },
+          {
+            loader: "ts-loader",
+            options: {
+              transpileOnly: true,
+              happyPackMode: true,
+            },
+          },
+        ],
       },
       {
         test: /\.svg$/,
@@ -40,10 +47,6 @@ module.exports = {
           classPrefix: false,
           idPrefix: true,
         },
-      },
-      {
-        test: /\.html$/,
-        use: ["raw-loader"],
       },
       {
         test: /\.css$/,

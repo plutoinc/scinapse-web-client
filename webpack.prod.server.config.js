@@ -19,11 +19,14 @@ module.exports = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        loader: "awesome-typescript-loader",
-        options: {
-          useBabel: true,
-          useCache: true,
-        },
+        use: [
+          {
+            loader: "babel-loader?cacheDirectory=true",
+          },
+          {
+            loader: "ts-loader",
+          },
+        ],
       },
       {
         test: /\.svg$/,
