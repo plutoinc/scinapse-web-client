@@ -12,7 +12,7 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
-  devtool: "inline-source-map",
+  devtool: "source-map",
   module: {
     rules: [
       {
@@ -20,7 +20,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: "awesome-typescript-loader",
       },
-    ]
+    ],
   },
   optimization: {
     minimize: false,

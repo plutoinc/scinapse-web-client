@@ -6,7 +6,7 @@ const CircularDependencyPlugin = require("circular-dependency-plugin");
 const LoadablePlugin = require("@loadable/webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-const WorkboxPlugin = require('workbox-webpack-plugin');
+const WorkboxPlugin = require("workbox-webpack-plugin");
 
 require("extract-text-webpack-plugin");
 
@@ -19,10 +19,10 @@ module.exports = {
     filename: "[name].js",
     chunkFilename: "[name].chunk.js",
   },
-  devtool: "inline-source-map",
+  devtool: "eval",
   optimization: {
     splitChunks: {
-      chunks: "all"
+      chunks: "all",
     },
   },
   resolve: {
@@ -105,7 +105,7 @@ module.exports = {
     }),
     new webpack.IgnorePlugin(/^\.\/pdf.worker.js$/),
     new WorkboxPlugin.InjectManifest({
-      swSrc: './app/sw.js',
+      swSrc: "./app/sw.js",
       swDest: "../server/sw.js",
     }),
     new BundleAnalyzerPlugin(),
@@ -121,7 +121,7 @@ module.exports = {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-      "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
-    }
+      "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization",
+    },
   },
 };

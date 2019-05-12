@@ -10,6 +10,7 @@ module.exports = {
     path: path.resolve(__dirname, "dist", "server"),
     filename: "[name].js",
   },
+  devtool: "eval",
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
   },

@@ -10,7 +10,7 @@ module.exports = {
     path: path.resolve(__dirname, "dist", "server"),
     filename: "[name].js",
   },
-  devtool: "inline-source-map",
+  devtool: false,
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
