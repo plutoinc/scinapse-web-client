@@ -1,6 +1,7 @@
 const path = require("path");
-const { CheckerPlugin } = require("awesome-typescript-loader");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const nodeExternals = require("webpack-node-externals");
+const cpuLength = require("os").cpus().length;
 
 module.exports = {
   mode: "development",
@@ -14,16 +15,31 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
+  stats: "errors-only",
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        loader: "awesome-typescript-loader",
-        options: {
-          useBabel: true,
-          useCache: true,
-        },
+        use: [
+          { loader: "cache-loader" },
+          {
+            loader: "thread-loader",
+            options: {
+              workers: cpuLength - 1,
+            },
+          },
+          {
+            loader: "babel-loader?cacheDirectory=true",
+          },
+          {
+            loader: "ts-loader",
+            options: {
+              transpileOnly: true,
+              happyPackMode: true,
+            },
+          },
+        ],
       },
       {
         test: /\.svg$/,
@@ -32,10 +48,6 @@ module.exports = {
           classPrefix: false,
           idPrefix: true,
         },
-      },
-      {
-        test: /\.html$/,
-        use: ["raw-loader"],
       },
       {
         test: /\.css$/,
@@ -76,6 +88,6 @@ module.exports = {
     __dirname: false,
     __filename: false,
   },
-  plugins: [new CheckerPlugin()],
+  plugins: [new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true })],
   externals: [nodeExternals()],
 };

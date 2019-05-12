@@ -1,14 +1,13 @@
 const path = require("path");
 const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { CheckerPlugin } = require("awesome-typescript-loader");
 const CircularDependencyPlugin = require("circular-dependency-plugin");
 const LoadablePlugin = require("@loadable/webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const WorkboxPlugin = require("workbox-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
-require("extract-text-webpack-plugin");
+const cpuLength = require("os").cpus().length;
 
 module.exports = {
   mode: "development",
@@ -28,16 +27,31 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
+  stats: "minimal",
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        loader: "awesome-typescript-loader",
-        options: {
-          useBabel: true,
-          useCache: true,
-        },
+        use: [
+          { loader: "cache-loader" },
+          {
+            loader: "thread-loader",
+            options: {
+              workers: cpuLength - 1,
+            },
+          },
+          {
+            loader: "babel-loader?cacheDirectory=true",
+          },
+          {
+            loader: "ts-loader",
+            options: {
+              transpileOnly: true,
+              happyPackMode: true,
+            },
+          },
+        ],
       },
       {
         test: /\.svg$/,
@@ -46,10 +60,6 @@ module.exports = {
           classPrefix: false,
           idPrefix: true,
         },
-      },
-      {
-        test: /\.html$/,
-        use: ["raw-loader"],
       },
       {
         test: /\.css$/,
@@ -86,12 +96,7 @@ module.exports = {
     ],
   },
   plugins: [
-    new CheckerPlugin(),
-    new HtmlWebpackPlugin({
-      template: "app/index.ejs",
-      inject: false,
-      NODE_ENV: "development",
-    }),
+    new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
     new CircularDependencyPlugin({
       exclude: /a\.js|node_modules/,
       failOnError: true,
