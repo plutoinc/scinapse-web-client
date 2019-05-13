@@ -10,6 +10,7 @@ module.exports = {
     path: path.resolve(__dirname, "dist", "server"),
     filename: "[name].js",
   },
+  devtool: "eval",
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
@@ -18,11 +19,14 @@ module.exports = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        loader: "awesome-typescript-loader",
-        options: {
-          useBabel: true,
-          useCache: true,
-        },
+        use: [
+          {
+            loader: "babel-loader?cacheDirectory=true",
+          },
+          {
+            loader: "ts-loader",
+          },
+        ],
       },
       {
         test: /\.svg$/,
