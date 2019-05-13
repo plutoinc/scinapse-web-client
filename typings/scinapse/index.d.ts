@@ -95,6 +95,7 @@ declare namespace Scinapse {
       | "signBannerAtPaperShow"
       | "bannerView"
       | "researchHistory"
+      | "viewRelatedPaper"
       | "";
 
     type ActionArea =

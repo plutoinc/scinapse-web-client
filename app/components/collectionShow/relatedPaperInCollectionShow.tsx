@@ -4,6 +4,7 @@ import CollectionAPI from "../../api/collection";
 import { Paper } from "../../model/paper";
 import PaperItem from "../common/paperItem";
 import ArticleSpinner from "../common/spinner/articleSpinner";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 const styles = require("./relatedPaperInCollectionShow.scss");
 
 interface RelatedPaperInCollectionShowProps {
@@ -19,6 +20,14 @@ const RelatedPaperInCollectionShow: React.FunctionComponent<RelatedPaperInCollec
     () => {
       setIsLoading(true);
       CollectionAPI.getRelatedPaperInCollection(collectionId).then(result => {
+        ActionTicketManager.trackTicket({
+          pageType: "collectionShow",
+          actionType: "view",
+          actionArea: "relatedPaperList",
+          actionTag: "viewRelatedPaper",
+          actionLabel: String(collectionId),
+        });
+
         setRelatedPapers(result.content);
         setIsLoading(false);
       });
