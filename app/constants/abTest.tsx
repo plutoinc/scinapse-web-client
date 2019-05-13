@@ -1,6 +1,5 @@
 import {
   completeBlockSignUpBinaryTest,
-  queryLoverTest,
   nextPageFromSearchTest,
   bannerTest,
   signButtonTextTest,
@@ -57,7 +56,6 @@ export interface BenefitExpTicketContext {
 
 export const LIVE_TESTS: Test[] = [
   completeBlockSignUpBinaryTest,
-  queryLoverTest,
   nextPageFromSearchTest,
   bannerTest,
   signButtonTextTest,
