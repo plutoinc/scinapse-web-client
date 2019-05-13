@@ -1,8 +1,7 @@
 import * as React from "react";
 import * as URL from "url";
 import * as classNames from "classnames";
-import Popper from "@material-ui/core/Popper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Popover from "@material-ui/core/Popover";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { PaperSource } from "../../../model/paperSource";
 import { trackAndOpenLink } from "../../../helpers/handleGA";
@@ -14,7 +13,7 @@ const styles = require("./sourceURLPopover.scss");
 interface SourceURLPopover {
   buttonEl: React.ReactNode;
   isOpen: boolean;
-  handleCloseFunc: (e: any) => void;
+  handleCloseFunc: () => void;
   anchorEl: HTMLElement;
   paperSources: PaperSource[];
   pageType: Scinapse.ActionTicket.PageType;
@@ -48,7 +47,7 @@ const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
               actionTag: "source",
               actionLabel: String(props.paperId),
             });
-            props.handleCloseFunc(e);
+            props.handleCloseFunc();
           }}
           target="_blank"
           rel="noopener nofollow"
@@ -72,22 +71,18 @@ const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
     <>
       {props.buttonEl}
       {props.isOpen && (
-        <Popper
-          placement="bottom-end"
-          modifiers={{
-            preventOverflow: {
-              enabled: true,
-              boundariesElement: "window",
-            },
-          }}
+        <Popover
+          classes={{ paper: styles.sourcesWrapper }}
+          onClose={props.handleCloseFunc}
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          transformOrigin={{ vertical: "top", horizontal: "right" }}
           open={props.isOpen}
           anchorEl={props.anchorEl}
+          elevation={0}
           style={{ zIndex: 10 }}
         >
-          <ClickAwayListener onClickAway={props.handleCloseFunc}>
-            <div className={styles.sourcesWrapper}>{sources}</div>
-          </ClickAwayListener>
-        </Popper>
+          {sources}
+        </Popover>
       )}
     </>
   );
