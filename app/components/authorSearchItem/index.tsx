@@ -4,21 +4,25 @@ import MuiTooltip from "@material-ui/core/Tooltip";
 import { MatchEntityAuthor } from "../../api/search";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
-import { trackEvent } from "../../helpers/handleGA";
 import ActionTicketManager from "../../helpers/actionTicketManager";
-import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
-import { AUTHOR_FROM_SEARCH_TEST_NAME } from "../../constants/abTestGlobalValue";
-import { getUserGroupName } from "../../helpers/abTestHelper";
 const styles = require("./authorSearchItem.scss");
 
 interface AuthorSearchItemProps extends RouteComponentProps<any> {
   authorEntity: MatchEntityAuthor;
 }
 
+export function trackActionToClickAuthorEntity(authorId: number) {
+  ActionTicketManager.trackTicket({
+    pageType: "searchResult",
+    actionType: "fire",
+    actionArea: "authorEntity",
+    actionTag: "authorEntityItem",
+    actionLabel: String(authorId),
+  });
+}
+
 const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
   const author = props.authorEntity;
-
-  const userGroupName: string = getUserGroupName(AUTHOR_FROM_SEARCH_TEST_NAME) || "";
 
   const profileImage = author.profileImageUrl ? (
     <span
@@ -40,31 +44,7 @@ const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
       onClick={async e => {
         e.preventDefault();
 
-        const isBlocked =
-          userGroupName === "block" &&
-          (await blockUnverifiedUser({
-            authLevel: AUTH_LEVEL.VERIFIED,
-            actionArea: "authorEntity",
-            actionLabel: "authorFromSearch",
-            userActionType: "authorFromSearch",
-          }));
-
-        if (isBlocked) {
-          return;
-        }
-
-        trackEvent({
-          category: "Flow to Author Show",
-          action: "Click Author Entity",
-          label: `Click Author ID : ${author.id}`,
-        });
-        ActionTicketManager.trackTicket({
-          pageType: "searchResult",
-          actionType: "fire",
-          actionArea: "authorEntity",
-          actionTag: "authorEntityItem",
-          actionLabel: String(author.id),
-        });
+        trackActionToClickAuthorEntity(author.id);
 
         props.history.push(`/authors/${author.id}`);
       }}

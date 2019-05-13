@@ -4,6 +4,7 @@ import GlobalDialogManager from "./globalDialogManager";
 import ActionTicketManager from "./actionTicketManager";
 import { getCurrentPageType } from "../components/locationListener";
 import { checkAuthStatus } from "../components/auth/actions";
+import { getBlockedValueForCompleteBlockSignUpTest } from "./abTestHelper/getTestValueBlockedSignModalHelper";
 
 export enum AUTH_LEVEL {
   UNSIGNED,
@@ -31,16 +32,17 @@ export async function blockUnverifiedUser(params: BlockByBenefitExpParams): Prom
       userActionType,
       authContext: {
         pageType: getCurrentPageType(),
-        actionArea: actionArea,
+        actionArea,
         actionLabel: expName ? expName : actionLabel,
         expName,
       },
-      isBlocked,
+      isBlocked: isBlocked || getBlockedValueForCompleteBlockSignUpTest(),
     });
+
     ActionTicketManager.trackTicket({
       pageType: getCurrentPageType(),
       actionType: "fire",
-      actionArea: actionArea,
+      actionArea,
       actionTag: "blockUnsignedUser",
       actionLabel: expName ? expName : actionLabel,
       expName,
@@ -58,9 +60,9 @@ export async function blockUnverifiedUser(params: BlockByBenefitExpParams): Prom
     ActionTicketManager.trackTicket({
       pageType: getCurrentPageType(),
       actionType: "fire",
-      actionArea: actionArea,
+      actionArea,
       actionTag: "blockUnverifiedUser",
-      actionLabel: actionLabel,
+      actionLabel,
     });
     return true;
   }

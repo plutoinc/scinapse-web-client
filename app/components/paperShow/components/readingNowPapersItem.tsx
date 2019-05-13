@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Paper } from "../../../model/paper";
 import Icon from "../../../icons";
-import { trackEvent } from "../../../helpers/handleGA";
 import EnvChecker from "../../../helpers/envChecker";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./readingNowPapersItem.scss");
@@ -52,7 +51,6 @@ class PaperShowReadingNowPapersItem extends React.PureComponent<PaperShowReading
               <Link
                 to={`/journals/${paper.journal.id}`}
                 onClick={() => {
-                  trackEvent({ category: "Search", action: "Click Journal", label: "" });
                   ActionTicketManager.trackTicket({
                     pageType: "paperShow",
                     actionType: "fire",
@@ -76,12 +74,6 @@ class PaperShowReadingNowPapersItem extends React.PureComponent<PaperShowReading
     const { actionArea, paper } = this.props;
 
     if (!EnvChecker.isOnServer()) {
-      trackEvent({
-        category: "New Paper Show",
-        action: "Click readingNowPaperItem in sideNavigation",
-        label: JSON.stringify({ referer: `paper_show_${actionArea}`, refererLocation: location.pathname }),
-      });
-
       ActionTicketManager.trackTicket({
         pageType: "paperShow",
         actionType: "fire",

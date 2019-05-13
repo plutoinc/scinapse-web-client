@@ -40,7 +40,7 @@ const styles = require("./paperShowCollectionControlButton.scss");
 const LAST_USER_COLLECTION_ID = "l_u_c_id";
 
 interface PaperShowCollectionControlButtonProps {
-  targetPaperId: number;
+  paperId: number;
   currentUser: CurrentUser;
   myCollectionsState: MyCollectionsState;
   myCollections: Collection[] | null;
@@ -85,7 +85,7 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
             pageType: "paperShow",
             actionType: "fire",
             actionArea: "paperDescription",
-            actionTag: "collectionBtn",
+            actionTag: "addToCollection",
             actionLabel: null,
           });
         }}
@@ -143,7 +143,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   }
 
   public render() {
-    const { targetPaperId, selectedCollection, currentUser, myCollectionsState, myCollections } = this.props;
+    const { paperId: targetPaperId, selectedCollection, currentUser, myCollectionsState, myCollections } = this.props;
     const isLoadingCollection = currentUser.isLoggingIn || myCollectionsState.isLoadingCollections;
     const isSelected = selectedCollection && selectedCollection.containsSelected;
     let saveButtonBorderRadius: string;
@@ -378,7 +378,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private handleClickNewCollectionButton = async () => {
-    const { targetPaperId } = this.props;
+    const { paperId: targetPaperId } = this.props;
 
     const isBlocked = await blockUnverifiedUser({
       authLevel: AUTH_LEVEL.VERIFIED,
@@ -386,20 +386,21 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       actionLabel: "openNewCollectionDialog",
     });
 
-    if (!isBlocked) {
-      GlobalDialogManager.openNewCollectionDialog(targetPaperId);
-    }
-
-    this.handleCloseCollectionDropdown();
     trackEvent({
       category: "Additional Action",
       action: "Click [New Collection] Button",
       label: "my collection list page",
     });
+
+    if (!isBlocked) {
+      GlobalDialogManager.openNewCollectionDialog(targetPaperId);
+    }
+
+    this.handleCloseCollectionDropdown();
   };
 
   private handleDeleteNote = () => {
-    const { dispatch, targetPaperId, selectedCollection } = this.props;
+    const { dispatch, paperId: targetPaperId, selectedCollection } = this.props;
 
     if (confirm("Are you SURE to remove this memo?") && selectedCollection) {
       dispatch(
@@ -413,7 +414,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private handleSubmitNote = async (note: string) => {
-    const { dispatch, targetPaperId, selectedCollection } = this.props;
+    const { dispatch, paperId: targetPaperId, selectedCollection } = this.props;
 
     if (selectedCollection) {
       await dispatch(
@@ -468,7 +469,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private handleToggleCollectionDropdown = () => {
-    const { dispatch, myCollectionsState, targetPaperId } = this.props;
+    const { dispatch, myCollectionsState, paperId: targetPaperId } = this.props;
 
     if (myCollectionsState.isCollectionDropdownOpen) {
       dispatch(closeCollectionDropdown());
@@ -487,7 +488,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private handleClickSaveButton = async () => {
-    const { dispatch, selectedCollection, targetPaperId } = this.props;
+    const { dispatch, selectedCollection, paperId: targetPaperId } = this.props;
     const isBlocked = await blockUnverifiedUser({
       authLevel: AUTH_LEVEL.VERIFIED,
       actionArea: "paperDescription",
@@ -607,7 +608,6 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
 
 const mapStateToProps = (appState: AppState) => {
   return {
-    targetPaperId: appState.paperShow.paperId,
     currentUser: appState.currentUser,
     myCollectionsState: appState.myCollections,
     myCollections: denormalize(appState.myCollections.collectionIds, [collectionSchema], appState.entities).filter(

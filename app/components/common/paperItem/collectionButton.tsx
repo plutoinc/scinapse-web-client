@@ -4,7 +4,6 @@ import { denormalize } from "normalizr";
 import Popover from "@material-ui/core/Popover";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
-import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import Icon from "../../../icons";
 import { AppState } from "../../../reducers";
@@ -43,6 +42,20 @@ function handleAddToCollection(myCollections: MyCollectionsState, paperId: numbe
   }
 }
 
+function trackActionToClickCollectionButton(
+  paperId: number,
+  pageType: Scinapse.ActionTicket.PageType,
+  actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType | null
+) {
+  ActionTicketManager.trackTicket({
+    pageType,
+    actionType: "fire",
+    actionArea,
+    actionTag: "addToCollection",
+    actionLabel: String(paperId),
+  });
+}
+
 const CollectionButton: React.SFC<CollectionButtonProps> = ({
   paperId,
   pageType,
@@ -65,7 +78,6 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
           className={styles.addCollectionBtnWrapper}
           onClick={() => {
             onRemove(paperId);
-            trackEvent({ category: "Additional Action", action: "Click [Remove from Collection] Button" });
             ActionTicketManager.trackTicket({
               pageType,
               actionType: "fire",
@@ -138,21 +150,11 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
           userActionType: "addToCollection",
         });
 
+        trackActionToClickCollectionButton(paperId, pageType, actionArea || pageType);
+
         if (!isBlocked) {
           handleAddToCollection(myCollections, paperId);
         }
-
-        trackEvent({
-          category: "Additional Action",
-          action: "Click [Add To Collection] Button",
-        });
-        ActionTicketManager.trackTicket({
-          pageType,
-          actionType: "fire",
-          actionArea: actionArea || pageType,
-          actionTag: "addToCollection",
-          actionLabel: String(paperId),
-        });
       }}
     >
       <Icon className={styles.plusIcon} icon="SMALL_PLUS" />

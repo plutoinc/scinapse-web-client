@@ -58,6 +58,7 @@ const OpenSignUpModalBtn: React.FunctionComponent<{}> = React.memo(() => {
               expName: "signBannerAtPaperShow",
             },
             userActionType: "signBannerAtPaperShow",
+            isBlocked: false,
           });
         }}
         className={styles.bannerSignButton}

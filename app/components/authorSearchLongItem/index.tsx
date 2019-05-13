@@ -3,12 +3,8 @@ import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 import MuiTooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
-import { trackEvent } from "../../helpers/handleGA";
-import ActionTicketManager from "../../helpers/actionTicketManager";
 import { Author } from "../../model/author/author";
-import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
-import { getUserGroupName } from "../../helpers/abTestHelper";
-import { AUTHOR_FROM_SEARCH_TEST_NAME } from "../../constants/abTestGlobalValue";
+import { trackActionToClickAuthorEntity } from "../authorSearchItem";
 const styles = require("./authorSearchLongItem.scss");
 
 interface AuthorSearchLongItemProps extends RouteComponentProps<any> {
@@ -17,8 +13,6 @@ interface AuthorSearchLongItemProps extends RouteComponentProps<any> {
 
 const AuthorSearchLongItem: React.SFC<AuthorSearchLongItemProps> = props => {
   const author = props.authorEntity;
-
-  const userGroupName: string = getUserGroupName(AUTHOR_FROM_SEARCH_TEST_NAME) || "";
 
   const profileImage = author.profileImageUrl ? (
     <span
@@ -40,31 +34,7 @@ const AuthorSearchLongItem: React.SFC<AuthorSearchLongItemProps> = props => {
       onClick={async e => {
         e.preventDefault();
 
-        const isBlocked =
-          userGroupName === "block" &&
-          (await blockUnverifiedUser({
-            authLevel: AUTH_LEVEL.VERIFIED,
-            actionArea: "authorEntity",
-            actionLabel: "authorFromSearch",
-            userActionType: "authorFromSearch",
-          }));
-
-        if (isBlocked) {
-          return;
-        }
-
-        trackEvent({
-          category: "Flow to Author Show",
-          action: "Click Author Entity",
-          label: `Click Author ID : ${author.id}`,
-        });
-        ActionTicketManager.trackTicket({
-          pageType: "searchResult",
-          actionType: "fire",
-          actionArea: "authorEntity",
-          actionTag: "authorEntityItem",
-          actionLabel: String(author.id),
-        });
+        trackActionToClickAuthorEntity(author.id);
 
         props.history.push(`/authors/${author.id}`);
       }}

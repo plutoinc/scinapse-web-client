@@ -5,6 +5,7 @@
   line-height: 1.4;
   color: $gray6;
   word-break: break-word;
+  overflow-wrap: break-word;
 
   .searchQuery {
     font-weight: 900;

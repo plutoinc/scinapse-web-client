@@ -1,7 +1,6 @@
 import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import copySelectedTextToClipboard from "../../../helpers/copySelectedTextToClipboard";
-import { trackEvent } from "../../../helpers/handleGA";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import Icon from "../../../icons";
 const styles = require("./doiInPaperShow.scss");
@@ -20,11 +19,6 @@ const DoiInPaperShow: React.FunctionComponent<DoiInPaperShowProps> = props => {
 
   const clickDOIButton = () => {
     copySelectedTextToClipboard(`https://doi.org/${doi}`);
-    trackEvent({
-      category: "New Paper Show",
-      action: "Click Copy DOI in PaperInfo Section",
-      label: `Click Copy button for Copy DOI`,
-    });
 
     ActionTicketManager.trackTicket({
       pageType: "paperShow",

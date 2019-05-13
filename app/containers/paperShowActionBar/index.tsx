@@ -14,7 +14,7 @@ const s = require("./actionBar.scss");
 interface PaperShowActionBarProps {
   paper: Paper | null;
   hasBestPdf: boolean;
-  isFetcingPDF: boolean;
+  isFetchingPDF: boolean;
   failedToLoadPDF: boolean;
   showFullText: boolean;
   isLoadingOaCheck: boolean;
@@ -67,7 +67,7 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
           />
         </div>
         <div className={s.rightSide}>
-          <PaperShowCollectionControlButton />
+          <PaperShowCollectionControlButton paperId={props.paper.id} />
         </div>
       </div>
     </div>
