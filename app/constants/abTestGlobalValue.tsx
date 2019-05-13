@@ -2,7 +2,6 @@ import { ABTestType } from "./abTest";
 
 export const PAPER_FROM_SEARCH_TEST_NAME: ABTestType = "paperFromSearch";
 export const QUERY_LOVER_TEST_NAME: ABTestType = "queryLover";
-export const SIGN_UP_CONTEXT_TEST_NAME: ABTestType = "signUpContextText";
 export const COMPLETE_BLOCK_SIGN_UP_BINARY_TEST_NAME: ABTestType = "completeBlockSignUpBinary";
 export const NEXT_PAGE_FROM_SEARCH_TEST_NAME: ABTestType = "nextPageFromSearch";
 export const SIGN_BANNER_AT_SEARCH_BANNER_TEST: ABTestType = "signBannerAtSearch-banner";

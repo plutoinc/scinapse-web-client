@@ -1,10 +1,5 @@
 import { Test } from "./abTest";
 
-export const signUpContextTest: Test = {
-  name: "signUpContextText",
-  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "positive", weight: 1 }],
-};
-
 export const paperFromSearchTest: Test = {
   name: "paperFromSearch",
   userGroup: [

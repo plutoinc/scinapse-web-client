@@ -1,8 +1,6 @@
 import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import { getUserGroupName } from "../../../helpers/abTestHelper";
-import { SIGN_UP_CONTEXT_TEST_NAME } from "../../../constants/abTestGlobalValue";
-import { controlSignUpContext, positiveSignUpContext } from "./constants";
+import { positiveSignUpContext } from "./constants";
 
 const styles = require("./authContextText.scss");
 
@@ -26,28 +24,11 @@ export const ContextText: React.FunctionComponent<{
 
 const AuthContextText: React.FunctionComponent<AuthContextTextProps> = props => {
   const { userActionType } = props;
-  const userGroup: string = getUserGroupName(SIGN_UP_CONTEXT_TEST_NAME) || "";
-
   if (!userActionType) {
     return null;
   }
 
-  let subText;
-  switch (userGroup) {
-    case "control":
-      subText = controlSignUpContext[userActionType];
-      break;
-    case "positive":
-      subText = positiveSignUpContext[userActionType];
-      break;
-    default:
-  }
-
-  if (!subText) {
-    return null;
-  }
-
-  return <ContextText subText={subText} />;
+  return <ContextText subText={positiveSignUpContext[userActionType]} />;
 };
 
 export default withStyles<typeof AuthContextText>(styles)(AuthContextText);

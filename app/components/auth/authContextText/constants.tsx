@@ -1,17 +1,3 @@
-export const controlSignUpContext: { [key: string]: string } = {
-  downloadPdf: "⚠️ Oops, only scinapse members can download PDF more.",
-  citePaper: "⚠️ Oops, only scinapse members can copy citation.",
-  viewMorePDF: "⚠️ Oops, only scinapse members can view full text.",
-  viewMorePDFUnlimited: "⚠️ Oops, only scinapse members can view full text.",
-  addToCollection: "⚠️ Oops, only scinapse members can add papers to collection.",
-  clickRequestFullTextBtn: "Oops, only scinapse members can request the full text of this paper.",
-  query: "⚠️ Oops, only scinapse members can search more.",
-  paperShow: "⚠️ Oops, only scinapse members can view paper information more.",
-  paperFromSearch: "⚠️ Oops, only scinapse members can view more papers.",
-  queryLover: "⚠️ Oops, only scinapse members can search more.",
-  nextPageFromSearch: "⚠️ Oops, only scinapse members can view more papers.",
-};
-
 export const positiveSignUpContext: { [key: string]: string } = {
   downloadPdf: "📜 To download PDF more, you need to be a Scinapse member.",
   citePaper: "🔍 To copy citation, you need to be a Scinapse member.",
