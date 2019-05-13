@@ -221,6 +221,10 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     const { collectionShow, layout } = this.props;
     const { currentPaperListPage, totalPaperListPage } = collectionShow;
 
+    if (totalPaperListPage === 1) {
+      return null;
+    }
+
     const currentPageIndex: number = currentPaperListPage - 1;
 
     if (layout.userDevice !== UserDevice.DESKTOP) {
