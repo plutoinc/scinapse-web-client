@@ -3,10 +3,6 @@ import { escapeRegExp } from "lodash";
 import HighLightedContent from "../highLightedContent";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { getUserGroupName } from "../../../helpers/abTestHelper";
-import { getCurrentPageType } from "../../locationListener/index";
-import { PAPER_FROM_SEARCH_TEST_NAME } from "../../../constants/abTestGlobalValue";
-import { getBlockedValueForPaperFromSearchTest } from "../../../helpers/abTestHelper/paperFromSearchTestHelper";
 const styles = require("./abstract.scss");
 
 const MAX_LENGTH_OF_ABSTRACT = 500;
@@ -71,15 +67,6 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
   public handelExtendContent = async () => {
     const { pageType, actionArea, paperId } = this.props;
     const { isExtendContent } = this.state;
-
-    const userGroupName: string = getUserGroupName(PAPER_FROM_SEARCH_TEST_NAME) || "";
-    const currentArea = getCurrentPageType();
-
-    if (!isExtendContent && currentArea === "searchResult") {
-      const isBlocked = await getBlockedValueForPaperFromSearchTest(userGroupName, "abstract");
-
-      if (isBlocked) return;
-    }
 
     this.setState({ isExtendContent: !isExtendContent });
 

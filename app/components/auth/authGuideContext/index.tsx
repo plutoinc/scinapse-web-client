@@ -87,7 +87,6 @@ const GuideContentsByActionType: React.FunctionComponent<AuthGuideContextProps> 
           webpUrl={"https://assets.pluto.network/signup_modal/signup_query.webp"}
         />
       );
-    case "paperFromSearch":
     case "paperShow":
       return (
         <GuideContent

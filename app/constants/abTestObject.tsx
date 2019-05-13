@@ -1,15 +1,5 @@
 import { Test } from "./abTest";
 
-export const paperFromSearchTest: Test = {
-  name: "paperFromSearch",
-  userGroup: [
-    { groupName: "control", weight: 1 },
-    { groupName: "3", weight: 2 },
-    { groupName: "5", weight: 2 },
-    { groupName: "7", weight: 2 },
-  ],
-};
-
 export const queryLoverTest: Test = {
   name: "queryLover",
   userGroup: [

@@ -85,7 +85,6 @@ declare namespace Scinapse {
       | "blockUnverifiedUser"
       | "openSignUp"
       | "addToBookmark"
-      | "paperFromSearch"
       | "queryLover"
       | "authorFromSearch"
       | "nextPageFromSearch"

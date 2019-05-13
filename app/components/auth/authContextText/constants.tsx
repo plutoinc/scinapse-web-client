@@ -7,7 +7,6 @@ export const positiveSignUpContext: { [key: string]: string } = {
   clickRequestFullTextBtn: "📜 To request the full text of this paper, you need to be a Scinapse member.",
   query: "🔍 To search more, you need to be a Scinapse member.",
   paperShow: "📈 To view paper information more, you need to be a Scinapse member.",
-  paperFromSearch: "📜 To view more papers, you need to be a Scinapse member.",
   queryLover: "💌 Hey Scinapse lover! Please help us to fully support your research by signing up.",
   nextPageFromSearch: "➡ To go to the next page, you need to be a Scinapse member.",
 };
