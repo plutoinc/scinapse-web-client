@@ -4,7 +4,6 @@ import GlobalDialogManager from "./globalDialogManager";
 import ActionTicketManager from "./actionTicketManager";
 import { getCurrentPageType } from "../components/locationListener";
 import { checkAuthStatus } from "../components/auth/actions";
-import { getBlockedValueForCompleteBlockSignUpTest } from "./abTestHelper/getTestValueBlockedSignModalHelper";
 
 export enum AUTH_LEVEL {
   UNSIGNED,
@@ -36,7 +35,7 @@ export async function blockUnverifiedUser(params: BlockByBenefitExpParams): Prom
         actionLabel: expName ? expName : actionLabel,
         expName,
       },
-      isBlocked: isBlocked || getBlockedValueForCompleteBlockSignUpTest(),
+      isBlocked: isBlocked || false,
     });
 
     ActionTicketManager.trackTicket({

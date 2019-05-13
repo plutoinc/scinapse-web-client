@@ -1,14 +1,8 @@
 import {
-  completeBlockSignUpBinaryTest,
-  paperFromSearchTest,
-  queryLoverTest,
-  signUpContextTest,
-  nextPageFromSearchTest,
   bannerTest,
   signButtonTextTest,
   bodyTextTest,
   titleTextTest,
-  viewPDFSignUpMainTextTest,
   signBannerAtPaperShowTest,
   signBannerAtPaperShowTitleTextTest,
   signBannerAtPaperShowTitleTextKeyverbTest,
@@ -27,12 +21,7 @@ export interface Test {
 export type BenefitExpType = "queryCountSession" | "refPaperCountSession" | "paperviewCountDevice" | "downloadCount";
 
 export type ABTestType =
-  | "paperFromSearch"
   | "queryLover"
-  | "nextPageFromSearch"
-  | "signUpContextText"
-  | "completeBlockSignUpBinary"
-  | "viewPDFSignUp-mainText"
   | "signBannerAtSearch-banner"
   | "signBannerAtSearch-signButtonText"
   | "signBannerAtSearch-bodyText"
@@ -60,16 +49,10 @@ export interface BenefitExpTicketContext {
 }
 
 export const LIVE_TESTS: Test[] = [
-  completeBlockSignUpBinaryTest,
-  signUpContextTest,
-  paperFromSearchTest,
-  queryLoverTest,
-  nextPageFromSearchTest,
   bannerTest,
   signButtonTextTest,
   bodyTextTest,
   titleTextTest,
-  viewPDFSignUpMainTextTest,
   signBannerAtPaperShowTest,
   signBannerAtPaperShowTitleTextTest,
   signBannerAtPaperShowTitleTextKeyverbTest,
