@@ -34,7 +34,7 @@ const AuthContextText: React.FunctionComponent<AuthContextTextProps> = props => 
     return null;
   }
 
-  return <ContextText subText={positiveSignUpContext[userActionType]} />;
+  return <ContextText subText={subText} />;
 };
 
 export default withStyles<typeof AuthContextText>(styles)(AuthContextText);
