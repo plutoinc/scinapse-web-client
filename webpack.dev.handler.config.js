@@ -12,15 +12,26 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
-  devtool: "inline-source-map",
+  devtool: "source-map",
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        loader: "awesome-typescript-loader",
+        use: [
+          {
+            loader: "babel-loader?cacheDirectory=true",
+          },
+          {
+            loader: "ts-loader",
+            options: {
+              transpileOnly: true,
+              happyPackMode: true,
+            },
+          },
+        ],
       },
-    ]
+    ],
   },
   optimization: {
     minimize: false,
