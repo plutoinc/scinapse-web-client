@@ -34,11 +34,6 @@ export const titleTextTest: Test = {
   ],
 };
 
-export const viewPDFSignUpMainTextTest: Test = {
-  name: "viewPDFSignUp-mainText",
-  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "unlimited", weight: 3 }],
-};
-
 export const signBannerAtPaperShowTest: Test = {
   name: "signBannerAtPaperShow-banner",
   userGroup: [{ groupName: "control", weight: 1 }, { groupName: "banner", weight: 2 }],

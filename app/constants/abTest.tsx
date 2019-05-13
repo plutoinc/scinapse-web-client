@@ -4,7 +4,6 @@ import {
   signButtonTextTest,
   bodyTextTest,
   titleTextTest,
-  viewPDFSignUpMainTextTest,
   signBannerAtPaperShowTest,
   signBannerAtPaperShowTitleTextTest,
   signBannerAtPaperShowTitleTextKeyverbTest,
@@ -25,7 +24,6 @@ export type BenefitExpType = "queryCountSession" | "refPaperCountSession" | "pap
 export type ABTestType =
   | "queryLover"
   | "completeBlockSignUpBinary"
-  | "viewPDFSignUp-mainText"
   | "signBannerAtSearch-banner"
   | "signBannerAtSearch-signButtonText"
   | "signBannerAtSearch-bodyText"
@@ -58,7 +56,6 @@ export const LIVE_TESTS: Test[] = [
   signButtonTextTest,
   bodyTextTest,
   titleTextTest,
-  viewPDFSignUpMainTextTest,
   signBannerAtPaperShowTest,
   signBannerAtPaperShowTitleTextTest,
   signBannerAtPaperShowTitleTextKeyverbTest,
