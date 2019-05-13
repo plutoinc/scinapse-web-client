@@ -1,10 +1,5 @@
 import { Test } from "./abTest";
 
-export const completeBlockSignUpBinaryTest: Test = {
-  name: "completeBlockSignUpBinary",
-  userGroup: [{ groupName: "weakBlock", weight: 2 }, { groupName: "strongBlock", weight: 1 }],
-};
-
 export const bannerTest: Test = {
   name: "signBannerAtSearch-banner",
   userGroup: [{ groupName: "control", weight: 1 }, { groupName: "banner", weight: 2 }],

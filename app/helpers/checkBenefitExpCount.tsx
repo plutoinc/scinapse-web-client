@@ -2,7 +2,6 @@ import * as store from "store";
 import { ABTestType, BENEFIT_EXPERIMENT_KEY, BenefitExpType, BenefitExpValue } from "../constants/abTest";
 import { DEVICE_ID_KEY, SESSION_ID_KEY, SESSION_COUNT_KEY } from "../constants/actionTicket";
 import { AUTH_LEVEL, blockUnverifiedUser } from "./checkAuthDialog";
-import { getBlockedValueForCompleteBlockSignUpTest } from "./abTestHelper/getTestValueBlockedSignModalHelper";
 
 interface CheckBenefitExpCount {
   type: ABTestType | BenefitExpType;
@@ -61,7 +60,7 @@ export async function checkBenefitExp({
         actionArea,
         actionLabel: expName,
         expName,
-        isBlocked: getBlockedValueForCompleteBlockSignUpTest(),
+        isBlocked: false,
       });
     } else {
       store.set(BENEFIT_EXPERIMENT_KEY, newExp);
