@@ -204,7 +204,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                     <div>{this.getPaperList()}</div>
                     <div>{this.getPaginationComponent()}</div>
                   </div>
-                  <RelatedPaperInCollectionShow />
+                  <RelatedPaperInCollectionShow collectionId={userCollection.id} />
                 </div>
               </div>
             </div>
