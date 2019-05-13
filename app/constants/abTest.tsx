@@ -1,6 +1,5 @@
 import {
   completeBlockSignUpBinaryTest,
-  nextPageFromSearchTest,
   bannerTest,
   signButtonTextTest,
   bodyTextTest,
@@ -25,7 +24,6 @@ export type BenefitExpType = "queryCountSession" | "refPaperCountSession" | "pap
 
 export type ABTestType =
   | "queryLover"
-  | "nextPageFromSearch"
   | "completeBlockSignUpBinary"
   | "viewPDFSignUp-mainText"
   | "signBannerAtSearch-banner"
@@ -56,7 +54,6 @@ export interface BenefitExpTicketContext {
 
 export const LIVE_TESTS: Test[] = [
   completeBlockSignUpBinaryTest,
-  nextPageFromSearchTest,
   bannerTest,
   signButtonTextTest,
   bodyTextTest,

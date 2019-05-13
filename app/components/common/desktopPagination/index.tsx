@@ -5,21 +5,9 @@ import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 import { LocationDescriptor } from "../../../../node_modules/@types/history";
-import { getUserGroupName } from "../../../helpers/abTestHelper";
-import { NEXT_PAGE_FROM_SEARCH_TEST_NAME } from "../../../constants/abTestGlobalValue";
-import { blockUnverifiedUser, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { getCurrentPageType } from "../../locationListener";
 const styles = require("./desktopPagination.scss");
-
-function hasBlockedInPagination() {
-  return blockUnverifiedUser({
-    authLevel: AUTH_LEVEL.VERIFIED,
-    actionArea: "searchResult",
-    actionLabel: "nextPageFromSearch",
-    userActionType: "nextPageFromSearch",
-  });
-}
 
 interface CommonPaginationProps
   extends RouteComponentProps,
@@ -124,14 +112,7 @@ function getNextIcon(props: DesktopPaginationProps) {
         <div className={styles.nextButtons}>
           <span
             onClick={async () => {
-              const userGroup = getUserGroupName(NEXT_PAGE_FROM_SEARCH_TEST_NAME);
               trackActionToClickPagination("nextPage");
-              if (userGroup === "block" && props.currentPageIndex === 0) {
-                const shouldBlock = await hasBlockedInPagination();
-                if (shouldBlock) {
-                  return;
-                }
-              }
               props.history.push(`${(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex + 2)}`);
             }}
             className={styles.pageIconButton}
@@ -230,14 +211,7 @@ const getLinkPageItem = (props: LinkPaginationProps, pageNumber: number, current
     return (
       <span
         onClick={async () => {
-          const userGroup = getUserGroupName(NEXT_PAGE_FROM_SEARCH_TEST_NAME);
           trackActionToClickPagination(String(pageNumber));
-          if (userGroup === "block" && currentPage === 1 && pageNumber > currentPage) {
-            const shouldBlock = await hasBlockedInPagination();
-            if (shouldBlock) {
-              return;
-            }
-          }
           props.history.push(`${props.getLinkDestination(pageNumber)}`);
         }}
         style={props.itemStyle}

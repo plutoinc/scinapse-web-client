@@ -87,7 +87,6 @@ declare namespace Scinapse {
       | "addToBookmark"
       | "queryLover"
       | "authorFromSearch"
-      | "nextPageFromSearch"
       | "doiSearch"
       | "signBannerAtSearch"
       | "signBannerAtPaperShow"

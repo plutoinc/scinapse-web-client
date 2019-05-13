@@ -5,11 +5,6 @@ export const completeBlockSignUpBinaryTest: Test = {
   userGroup: [{ groupName: "weakBlock", weight: 2 }, { groupName: "strongBlock", weight: 1 }],
 };
 
-export const nextPageFromSearchTest: Test = {
-  name: "nextPageFromSearch",
-  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "block", weight: 3 }],
-};
-
 export const bannerTest: Test = {
   name: "signBannerAtSearch-banner",
   userGroup: [{ groupName: "control", weight: 1 }, { groupName: "banner", weight: 2 }],
