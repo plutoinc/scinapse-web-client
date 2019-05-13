@@ -178,7 +178,7 @@ class CollectionAPI extends PlutoAxios {
   }
 
   public async getRelatedPaperInCollection(collectionId: number) {
-    const res = await this.get(`/collections/${collectionId}/related`);
+    const res = await this.get(`/collections/${collectionId}/related/sample`);
     const camelizedRes = camelCaseKeys(res.data.data);
     return camelizedRes;
   }
