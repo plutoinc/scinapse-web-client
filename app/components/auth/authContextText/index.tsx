@@ -28,6 +28,12 @@ const AuthContextText: React.FunctionComponent<AuthContextTextProps> = props => 
     return null;
   }
 
+  const subText = positiveSignUpContext[userActionType];
+
+  if (!subText) {
+    return null;
+  }
+
   return <ContextText subText={positiveSignUpContext[userActionType]} />;
 };
 
