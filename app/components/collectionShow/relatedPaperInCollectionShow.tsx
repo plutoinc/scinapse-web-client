@@ -20,14 +20,15 @@ const RelatedPaperInCollectionShow: React.FunctionComponent<RelatedPaperInCollec
     () => {
       setIsLoading(true);
       CollectionAPI.getRelatedPaperInCollection(collectionId).then(result => {
-        ActionTicketManager.trackTicket({
-          pageType: "collectionShow",
-          actionType: "view",
-          actionArea: "relatedPaperList",
-          actionTag: "viewRelatedPaper",
-          actionLabel: String(collectionId),
-        });
-
+        if (result.content && result.content.length !== 0) {
+          ActionTicketManager.trackTicket({
+            pageType: "collectionShow",
+            actionType: "view",
+            actionArea: "relatedPaperList",
+            actionTag: "viewRelatedPaper",
+            actionLabel: String(collectionId),
+          });
+        }
         setRelatedPapers(result.content);
         setIsLoading(false);
       });
