@@ -7,6 +7,7 @@ import { Footer } from "../layouts";
 import { LayoutState, UserDevice } from "../layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
 import SearchQueryInput from "../common/InputWithSuggestionList/searchQueryInput";
+import TrendingPaper from "./trendingPaper";
 const styles = require("./home.scss");
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
@@ -59,11 +60,7 @@ class Home extends React.PureComponent<HomeProps> {
               <div className={styles.searchTryKeyword} />
             </div>
           </div>
-          <div className={styles.trendingPaperContainer}>
-            <div className={styles.contextSubtitle}>TRENDING PAPERS</div>
-          </div>
           <div className={styles.featureContainer}>
-            <div className={styles.contentBlockDivider} />
             <div className={styles.contextSubtitle}>SCINAPSE SPECIALITY</div>
             <div className={styles.featureWrapper}>
               <div className={styles.featureItem}>
@@ -122,6 +119,7 @@ class Home extends React.PureComponent<HomeProps> {
               </div>
             </div>
           </div>
+          <TrendingPaper />
           <Footer containerStyle={containerStyle} />
         </div>
       </div>
