@@ -322,7 +322,7 @@ $semi_full_width: 997px;
 
   .paperListContainer {
     .leftBox {
-      margin: 0 48px;
+      margin: 0 24px;
     }
   }
 }
@@ -331,5 +331,17 @@ $semi_full_width: 997px;
 @media (max-width: $mobile-width) {
   .rightBox {
     display: none;
+  }
+
+  .subHeader {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sortBoxWrapper {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
   }
 }
