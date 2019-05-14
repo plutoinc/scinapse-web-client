@@ -7,13 +7,14 @@
   "scripts": {
     "start": "npm-run-all -p start:build dev start:server",
     "start:server": "nodemon ./dist/server/main.js --watch ./dist/server",
-    "start:build": "webpack --config webpack.local.dev.config --watch",
+    "start:build": "TARGET=server webpack --config webpack.local.dev.config --watch",
     "clean": "rm -rf dist && rm -rf dist-sls && rm -rf temp && rm -f dist.zip && mkdir dist",
     "build-sls": "tsc -p scripts",
     "pack": "cd dist && zip -rq ../dist.zip . ** && cd .. && ls dist",
     "build:dev": "npm run clean && npm run build-sls && node --max_old_space_size=3000 dist-sls/build/dev && cp scripts/package.json dist/package.json && cd dist && npm i && cd ..",
     "deploy:dev": "npm run build:dev && npm run pack && serverless deploy -s dev",
-    "build:prod": "npm run clean && npm run build-sls && NODE_ENV=production node --max_old_space_size=3000 dist-sls/build/prod",
+    "build:prod": "npm run clean && npm run build-sls && NODE_ENV=production node --max_old_space_size=3000 dist-sls/build/prod && cp scripts/package.json dist/package.json && cd dist && npm i && cd ..",
+    "deploy:stage": "npm run build:prod && npm run pack && serverless deploy -s stage",
     "deploy:prod": "npm run build:prod && npm run pack && serverless deploy -s production",
     "dev": "webpack-dev-server",
     "test": "jest --coverage",
@@ -33,7 +34,9 @@
   "devDependencies": {
     "@babel/cli": "7.0.0",
     "@babel/core": "7.0.0",
+    "@babel/plugin-proposal-class-properties": "7.4.4",
     "@babel/plugin-syntax-dynamic-import": "7.0.0",
+    "@babel/plugin-transform-runtime": "7.4.4",
     "@babel/polyfill": "7.0.0",
     "@babel/preset-env": "7.0.0",
     "@babel/preset-react": "7.0.0",
@@ -130,6 +133,7 @@
     "workbox-webpack-plugin": "4.3.0"
   },
   "dependencies": {
+    "@babel/runtime": "7.4.4",
     "@loadable/component": "5.7.0",
     "@loadable/server": "5.7.0",
     "@material-ui/core": "3.9.3",
@@ -144,6 +148,7 @@
     "classnames": "2.2.5",
     "compression": "1.7.4",
     "cookie": "0.3.1",
+    "core-js": "2.6.5",
     "date-fns": "1.29.0",
     "formik": "1.4.0",
     "history": "4.7.2",

@@ -5,7 +5,7 @@ const cpuLength = require("os").cpus().length;
 
 module.exports = {
   mode: "development",
-  entry: ["@babel/polyfill", "./server/localServer.tsx"],
+  entry: ["./server/localServer.tsx"],
   output: {
     libraryTarget: "commonjs2",
     path: path.resolve(__dirname, "dist", "server"),

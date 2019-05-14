@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-    tools {nodejs "Node810"}
+    tools {nodejs "Node10x"}
 
     options {
         disableConcurrentBuilds() 

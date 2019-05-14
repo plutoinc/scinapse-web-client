@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
@@ -42,5 +43,10 @@ module.exports = {
     __dirname: false,
     __filename: false,
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      "process.env.TARGET": JSON.stringify("server"),
+    }),
+  ],
   externals: [/(tmp\/server\/main\.js)/i, nodeExternals()],
 };
