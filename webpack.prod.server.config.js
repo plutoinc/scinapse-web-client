@@ -1,10 +1,11 @@
 const path = require("path");
+const webpack = require("webpack");
 const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   mode: "production",
-  entry: ["@babel/polyfill", "./server/prodHandler.tsx"],
+  entry: ["./server/prodHandler.tsx"],
   output: {
     libraryTarget: "commonjs2",
     path: path.resolve(__dirname, "dist", "server"),
@@ -87,5 +88,10 @@ module.exports = {
       }),
     ],
   },
-  plugins: [new LodashModuleReplacementPlugin()],
+  plugins: [
+    new webpack.DefinePlugin({
+      "process.env.TARGET": JSON.stringify("server"),
+    }),
+    new LodashModuleReplacementPlugin(),
+  ],
 };
