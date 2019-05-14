@@ -7,7 +7,6 @@ module.exports = {
   output: {
     libraryTarget: "commonjs2",
     path: path.resolve(__dirname, "dist", "server"),
-    publicPath: "/tmp/server",
     filename: "[name].js",
   },
   devtool: false,

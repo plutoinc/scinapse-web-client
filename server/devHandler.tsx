@@ -37,6 +37,7 @@ export const ssr = async (event: any, context: any) => {
   const branch = event.queryStringParameters && event.queryStringParameters.branch;
   await downloadSrcFromS3(branch);
   const bundle = require("/tmp/server/main.js");
+  (global as any).__webpack_public_path__ = "/tmp/server";
   const app = bundle.ssr;
   const binaryMimeTypes = [
     "application/xml",
