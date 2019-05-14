@@ -127,6 +127,7 @@ declare namespace Scinapse {
       | "footer"
       | "signBanner"
       | "pagination"
+      | "trendingPapers"
       | "";
 
     type PageType =
