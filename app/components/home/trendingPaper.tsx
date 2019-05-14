@@ -1,7 +1,8 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { TrendingPaper, TRENDING_PAPERS } from "./trendingPaperData";
-import { Link } from "react-router-dom";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 const styles = require("./home.scss");
 
 const TrendingPaperItem: React.FunctionComponent<{}> = () => {
@@ -19,7 +20,19 @@ const TrendingPaperItem: React.FunctionComponent<{}> = () => {
     });
 
     return (
-      <Link to={`/papers/${paperId}`} className={styles.trendingPaperItemWrapper}>
+      <Link
+        to={`/papers/${paperId}`}
+        className={styles.trendingPaperItemWrapper}
+        onClick={() => {
+          ActionTicketManager.trackTicket({
+            pageType: "home",
+            actionType: "fire",
+            actionArea: "trendingPapers",
+            actionTag: "paperShow",
+            actionLabel: String(paperId),
+          });
+        }}
+      >
         <div className={styles.trendingPaperTitle}>{paperTitle}</div>
         <div className={styles.trendingPaperVenueAndAuthor}>
           {`${year} ・ ${journalTitle} | `}
