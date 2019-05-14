@@ -2,7 +2,7 @@ service: pluto-web-client
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs10.x
   region: us-east-1
   role: WebClientRole
   logRetentionInDays: 30
