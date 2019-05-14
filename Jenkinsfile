@@ -60,7 +60,7 @@ pipeline {
                         if (env.BRANCH_NAME == 'master') {
                             sh 'npm run deploy:prod'
                         } else {
-                            sh "BRANCH_NAME=${env.BRANCH_NAME} npm run deploy:stage"
+                            sh "BRANCH_NAME=${env.BRANCH_NAME} npm run deploy:dev"
                         }
                     } catch (err) {
                         slackSend color: "danger", failOnError: true, message: "Build Failed at BUILD & DEPLOY: ${env.BRANCH_NAME}"
