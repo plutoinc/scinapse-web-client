@@ -40,7 +40,7 @@ const RelatedPaperInCollectionShow: React.FunctionComponent<RelatedPaperInCollec
     return null;
   }
 
-  const paperItems = relatedPapers.map((paper, index) => {
+  const relatedPaperItems = relatedPapers.map((paper, index) => {
     if (index < 3) {
       return (
         <PaperItem
@@ -62,7 +62,7 @@ const RelatedPaperInCollectionShow: React.FunctionComponent<RelatedPaperInCollec
           <ArticleSpinner className={styles.loadingSpinner} />
         </div>
       ) : (
-        paperItems
+        relatedPaperItems
       )}
     </div>
   );
