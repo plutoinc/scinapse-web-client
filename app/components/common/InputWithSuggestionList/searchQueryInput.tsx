@@ -22,9 +22,7 @@ import { AppState } from "../../../reducers";
 import { LayoutState, UserDevice } from "../../layouts/records";
 import { getCurrentPageType } from "../../locationListener";
 import { handleInputKeydown } from "./helpers/handleInputKeydown";
-import { getUserGroupName } from "../../../helpers/abTestHelper";
-import { QUERY_LOVER_TEST_NAME } from "../../../constants/abTestGlobalValue";
-import { getBlockedValueForQueryLoverTest } from "../../../helpers/abTestHelper/queryLoverTestHelper";
+import { checkBenefitExp } from "../../../helpers/checkBenefitExpCount";
 const s = require("./searchQueryInput.scss");
 
 interface SearchQueryInputProps extends RouteComponentProps<any> {
@@ -126,12 +124,14 @@ const SearchQueryInput: React.FunctionComponent<
       });
     }
 
-    const userGroupName: string = getUserGroupName(QUERY_LOVER_TEST_NAME) || "";
-
-    const isBlocked = await getBlockedValueForQueryLoverTest(
-      userGroupName,
-      props.actionArea as Scinapse.ActionTicket.ActionArea
-    );
+    const isBlocked = await checkBenefitExp({
+      type: "queryLover",
+      matching: "session",
+      maxCount: 2,
+      actionArea: props.actionArea,
+      userActionType: "queryLover",
+      expName: "queryLover",
+    });
 
     if (isBlocked) return;
 

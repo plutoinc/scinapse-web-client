@@ -60,12 +60,12 @@ class Main extends React.Component {
 class PlutoRenderer {
   private _store: Store<AppState>;
 
-  constructor() {
+  public constructor() {
     StoreManager.initializeStore();
     this._store = StoreManager.store;
   }
 
-  get store() {
+  public get store() {
     return this._store;
   }
 
@@ -127,14 +127,24 @@ class PlutoRenderer {
   }
 
   private initializeGA() {
-    if (EnvChecker.isProdBrowser() && !EnvChecker.isBot()) {
-      ReactGA.initialize("UA-109822865-1");
-
+    if (!EnvChecker.isBot()) {
+      let gaCode = "UA-109822865-3";
+      if (EnvChecker.isProdBrowser()) {
+        gaCode = "UA-109822865-1";
+      } else if (EnvChecker.isDev()) {
+        gaCode = "UA-109822865-2";
+      }
+      ReactGA.initialize(gaCode);
       ReactGA.set({
         page: window.location.pathname + window.location.search,
       });
 
       ReactGA.pageview(window.location.pathname + window.location.search);
+      if (typeof (window as any).__performance__track__list !== "undefined") {
+        (window as any).__performance__track__list.forEach((perfObj: any) => {
+          ReactGA.ga()("send", "event", perfObj);
+        });
+      }
     }
   }
 

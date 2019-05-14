@@ -2,8 +2,6 @@ import * as store from "store";
 import { ABTestType, BENEFIT_EXPERIMENT_KEY, BenefitExpType, BenefitExpValue } from "../constants/abTest";
 import { DEVICE_ID_KEY, SESSION_ID_KEY, SESSION_COUNT_KEY } from "../constants/actionTicket";
 import { AUTH_LEVEL, blockUnverifiedUser } from "./checkAuthDialog";
-import { COMPLETE_BLOCK_SIGN_UP_TEST_NAME } from "../constants/abTestGlobalValue";
-import { getUserGroupName } from "./abTestHelper";
 
 interface CheckBenefitExpCount {
   type: ABTestType | BenefitExpType;
@@ -13,20 +11,6 @@ interface CheckBenefitExpCount {
   actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType;
   expName: ABTestType | BenefitExpType;
   actionLabel?: string;
-}
-
-function getBlockedValueForCompleteBlockSignUpTest() {
-  const userGroupName = getUserGroupName(COMPLETE_BLOCK_SIGN_UP_TEST_NAME);
-  switch (userGroupName) {
-    case "control":
-    case "closeIconTop":
-    case "closeIconBottom":
-      return true;
-    case "blackLayer":
-      return false;
-    default:
-      return true;
-  }
 }
 
 function getQueryLoverCount(currentSearchCount: number) {
@@ -76,7 +60,7 @@ export async function checkBenefitExp({
         actionArea,
         actionLabel: expName,
         expName,
-        isBlocked: getBlockedValueForCompleteBlockSignUpTest(),
+        isBlocked: false,
       });
     } else {
       store.set(BENEFIT_EXPERIMENT_KEY, newExp);

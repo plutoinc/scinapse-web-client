@@ -1,9 +1,6 @@
 import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import { getUserGroupName } from "../../../helpers/abTestHelper";
-import { COMPLETE_BLOCK_SIGN_UP_TEST_NAME, SIGN_UP_CONTEXT_TEST_NAME } from "../../../constants/abTestGlobalValue";
-import { controlSignUpContext, positiveSignUpContext } from "./constants";
-import DialogCloseButton from "../authButton/dialogCloseButton";
+import { positiveSignUpContext } from "./constants";
 
 const styles = require("./authContextText.scss");
 
@@ -20,7 +17,6 @@ export const ContextText: React.FunctionComponent<{
     <div className={styles.container}>
       <div className={styles.contentWrapper}>
         <span className={styles.contentText}>{subText}</span>
-        {getUserGroupName(COMPLETE_BLOCK_SIGN_UP_TEST_NAME) === "closeIconTop" ? <DialogCloseButton /> : null}
       </div>
     </div>
   );
@@ -28,22 +24,11 @@ export const ContextText: React.FunctionComponent<{
 
 const AuthContextText: React.FunctionComponent<AuthContextTextProps> = props => {
   const { userActionType } = props;
-  const userGroup: string = getUserGroupName(SIGN_UP_CONTEXT_TEST_NAME) || "";
-
   if (!userActionType) {
     return null;
   }
 
-  let subText;
-  switch (userGroup) {
-    case "control":
-      subText = controlSignUpContext[userActionType];
-      break;
-    case "positive":
-      subText = positiveSignUpContext[userActionType];
-      break;
-    default:
-  }
+  const subText = positiveSignUpContext[userActionType];
 
   if (!subText) {
     return null;

@@ -10,8 +10,6 @@ import { PaperPdf } from "../../model/paper";
 import { ActionCreators } from "../../actions/actionTypes";
 import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
 import getAPIHost from "../../api/getHost";
-import { getUserGroupName } from "../../helpers/abTestHelper";
-import { VIEW_PDF_SIGN_UP_MAIN_TEXT_TEST_NAME } from "../../constants/abTestGlobalValue";
 import { PaperSource } from "../../model/paperSource";
 import { EXTENSION_APP_ID } from "../../constants/scinapse-extension";
 import EnvChecker from "../../helpers/envChecker";
@@ -116,8 +114,6 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   const [succeedToLoad, setSucceed] = React.useState(false);
   const [pageCountToShow, setPageCountToShow] = React.useState(0);
   const wrapperNode = React.useRef<HTMLDivElement | null>(null);
-  const morePDFActionTag =
-    getUserGroupName(VIEW_PDF_SIGN_UP_MAIN_TEXT_TEST_NAME) === "unlimited" ? "viewMorePDFUnlimited" : "viewMorePDF";
   const actionTag = extend ? "viewLessPDF" : "viewMorePDF";
 
   const baseBtnStyle: React.CSSProperties = {
@@ -289,7 +285,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                       authLevel: AUTH_LEVEL.VERIFIED,
                       actionArea: "pdfViewer",
                       actionLabel: actionTag,
-                      userActionType: morePDFActionTag,
+                      userActionType: actionTag,
                     });
 
                     trackClickButton(actionTag, props.paperId);

@@ -1,13 +1,7 @@
 import { CancelToken } from "axios";
 import { Dispatch } from "react-redux";
 import { LoadDataParams } from "../../routes";
-import {
-  getPaper,
-  getCitedPapers,
-  getReferencePapers,
-  getRelatedPapers,
-  getMyCollections,
-} from "../../actions/paperShow";
+import { getPaper, getCitedPapers, getReferencePapers, getMyCollections } from "../../actions/paperShow";
 import { CurrentUser } from "../../model/currentUser";
 import { PaperShowPageQueryParams, PaperShowMatchParams } from "./types";
 import { ActionCreators } from "../../actions/actionTypes";
@@ -27,7 +21,6 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
     const promiseArray = [];
 
     promiseArray.push(dispatch(getPaper({ paperId, cancelToken: params.cancelToken })));
-    promiseArray.push(dispatch(getRelatedPapers({ paperId, cancelToken: params.cancelToken })));
     promiseArray.push(dispatch(fetchCitedPaperData(paperId, queryParamsObject["cited-page"], params.cancelToken)));
     promiseArray.push(dispatch(fetchRefPaperData(paperId, queryParamsObject["ref-page"], params.cancelToken)));
 

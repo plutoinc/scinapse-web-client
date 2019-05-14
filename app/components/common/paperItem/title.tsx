@@ -1,19 +1,18 @@
 import * as React from "react";
 import { escapeRegExp } from "lodash";
+import { connect, Dispatch } from "react-redux";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import HighLightedContent from "../highLightedContent";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
 import actionTicketManager from "../../../helpers/actionTicketManager";
-import { getUserGroupName } from "../../../helpers/abTestHelper";
-import { getCurrentPageType } from "../../locationListener";
-import { PAPER_FROM_SEARCH_TEST_NAME } from "../../../constants/abTestGlobalValue";
-import { getBlockedValueForPaperFromSearchTest } from "../../../helpers/abTestHelper/paperFromSearchTestHelper";
+import { Paper } from "../../../model/paper";
+import { ActionCreators } from "../../../actions/actionTypes";
 const styles = require("./title.scss");
 
 export interface TitleProps extends RouteComponentProps<any> {
-  title: string;
-  paperId: number;
+  dispatch: Dispatch<any>;
+  paper: Paper;
   source: string;
   pageType: Scinapse.ActionTicket.PageType;
   shouldBlockUnverifiedUser: boolean;
@@ -24,7 +23,8 @@ export interface TitleProps extends RouteComponentProps<any> {
 
 class Title extends React.PureComponent<TitleProps, {}> {
   public render() {
-    const { title, paperId, searchQueryText, source } = this.props;
+    const { paper, searchQueryText, source } = this.props;
+    const title = paper.titleHighlighted || paper.title;
 
     if (!title) {
       return null;
@@ -40,7 +40,7 @@ class Title extends React.PureComponent<TitleProps, {}> {
     if (noSearchQueryText) {
       return (
         <div>
-          <a href={`/papers/${paperId}`} onClick={this.handleClickTitle} className={styles.title}>
+          <a href={`/papers/${paper.id}`} onClick={this.handleClickTitle} className={styles.title}>
             <span dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(title) }} />
           </a>
         </div>
@@ -55,7 +55,7 @@ class Title extends React.PureComponent<TitleProps, {}> {
           onClickFunc={this.handleClickTitle}
           href={source}
           to={{
-            pathname: `/papers/${paperId}`,
+            pathname: `/papers/${paper.id}`,
           }}
         />
       </div>
@@ -63,29 +63,28 @@ class Title extends React.PureComponent<TitleProps, {}> {
   }
 
   private handleClickTitle = async (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const { pageType, actionArea, paperId, history } = this.props;
-
+    const { dispatch, pageType, actionArea, paper, history } = this.props;
     e.preventDefault();
-
-    const userGroupName: string = getUserGroupName(PAPER_FROM_SEARCH_TEST_NAME) || "";
-    const currentArea = getCurrentPageType();
-
-    if (currentArea === "searchResult") {
-      const isBlocked = await getBlockedValueForPaperFromSearchTest(userGroupName, "searchResult");
-
-      if (isBlocked) return;
-    }
 
     actionTicketManager.trackTicket({
       pageType,
       actionType: "fire",
       actionArea: actionArea || pageType,
       actionTag: "paperShow",
-      actionLabel: String(paperId),
+      actionLabel: String(paper.id),
     });
 
-    history.push(`/papers/${paperId}`);
+    if (paper.abstractHighlighted || paper.titleHighlighted) {
+      dispatch(
+        ActionCreators.setHighlightContentInPaperShow({
+          title: paper.titleHighlighted || "",
+          abstract: paper.abstractHighlighted || "",
+        })
+      );
+    }
+
+    history.push(`/papers/${paper.id}`);
   };
 }
 
-export default withRouter(withStyles<typeof Title>(styles)(Title));
+export default connect()(withRouter(withStyles<typeof Title>(styles)(Title)));

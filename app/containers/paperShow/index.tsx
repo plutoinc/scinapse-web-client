@@ -88,7 +88,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private refTabWrapper: HTMLDivElement | null;
   private citedTabWrapper: HTMLDivElement | null;
 
-  constructor(props: PaperShowProps) {
+  public constructor(props: PaperShowProps) {
     super(props);
 
     this.state = {
@@ -137,6 +137,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const changeCitedPage = prevQueryParams["cited-page"] !== nextQueryParams["cited-page"];
 
     if (moveToDifferentPage) {
+      dispatch(clearPaperShowState());
       await fetchPaperShowData(
         {
           dispatch,
@@ -202,7 +203,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <article className={styles.paperShow}>
             <div className={styles.paperShowContent}>
               {this.getGoBackResultBtn()}
-              <h1 className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.title) }} />
+              <h1
+                className={styles.paperTitle}
+                dangerouslySetInnerHTML={{
+                  __html: formulaeToHTMLStr(paperShow.highlightTitle || paper.title),
+                }}
+              />
               <VenueAndAuthors
                 pageType={"paperShow"}
                 actionArea={"paperDescription"}
@@ -237,7 +243,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 </div>
                 <div
                   className={styles.abstractContent}
-                  dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.abstract) }}
+                  dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paperShow.highlightAbstract || paper.abstract) }}
                 />
                 <div className={styles.fos}>
                   <FOSList FOSList={paper.fosList} />
@@ -319,7 +325,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         <div className={styles.footerWrapper}>
           <Footer />
         </div>
-        <NextPaperTab />
+        <NextPaperTab paperId={paper.id} />
       </>
     );
   }
@@ -533,8 +539,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private scrollToSection = (section: "fullText" | "ref" | "cited") => () => {
     let target: HTMLDivElement | null = null;
-    let action: string = "";
-    let label: string = "";
+    let action = "";
+    let label = "";
 
     switch (section) {
       case "fullText": {
@@ -577,12 +583,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         paper.authors && paper.authors.length > 0
           ? `${paper.authors
               .map(author => {
-                return author!.name;
+                return author && author.name;
               })
               .join(", ")
               .slice(0, 50)}  | `
           : "";
-      const shortJournals = paper.journal ? `${paper.journal!.title!.slice(0, 50)} | ` : "";
+      const shortJournals = paper.journal ? `${paper.journal.title.slice(0, 50)} | ` : "";
       return `${shortAbstract}${shortAuthors}${shortJournals}`;
     }
   };
@@ -630,7 +636,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       datePublished: paper.publishedDate,
       dateModified: paper.publishedDate,
       author: authorsForStructuredData,
-      about: paper.fosList.map(fos => fos!.fos),
+      about: paper.fosList.map(fos => fos.fos),
       mainEntityOfPage: `https://scinapse.io/papers/${paper.id}`,
       publisher: getPublisher(),
     };
@@ -656,7 +662,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
       return (
         <Helmet>
-          <title>{metaTitleContent} | Scinapse | Academic search engine for paper}</title>
+          <title>{`${metaTitleContent} | Scinapse | Academic search engine for paper}`}</title>
           <link rel="canonical" href={`https://scinapse.io/papers/${paper.id}`} />
           <meta itemProp="name" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
           <meta name="description" content={this.buildPageDescription()} />

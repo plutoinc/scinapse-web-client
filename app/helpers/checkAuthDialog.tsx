@@ -35,8 +35,9 @@ export async function blockUnverifiedUser(params: BlockByBenefitExpParams): Prom
         actionLabel: expName ? expName : actionLabel,
         expName,
       },
-      isBlocked,
+      isBlocked: isBlocked || false,
     });
+
     ActionTicketManager.trackTicket({
       pageType: getCurrentPageType(),
       actionType: "fire",
