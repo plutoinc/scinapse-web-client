@@ -56,9 +56,8 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
           totalPage={totalPage}
           currentPageIndex={currentPage - 1}
           getLinkDestination={getLinkDestination}
-          wrapperStyle={{
-            margin: "32px 0 56px 0",
-          }}
+          wrapperStyle={{ margin: "32px 0 56px 0" }}
+          actionArea={type === "reference" ? "refList" : "citedList"}
         />
       );
     }

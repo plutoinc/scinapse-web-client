@@ -17,6 +17,7 @@ interface CommonPaginationProps
       totalPage: number;
       itemStyle?: React.CSSProperties;
       wrapperStyle?: React.CSSProperties;
+      actionArea?: Scinapse.ActionTicket.ActionArea;
     }> {}
 
 interface LinkPaginationProps
@@ -37,11 +38,11 @@ function isLinkPagination(props: DesktopPaginationProps): props is LinkPaginatio
   return (props as LinkPaginationProps).getLinkDestination !== undefined;
 }
 
-function trackActionToClickPagination(actionLabel: string) {
+function trackActionToClickPagination(actionLabel: string, actionArea?: Scinapse.ActionTicket.ActionArea) {
   ActionTicketManager.trackTicket({
     pageType: getCurrentPageType(),
     actionType: "fire",
-    actionArea: "pagination",
+    actionArea: actionArea || "paperList",
     actionTag: "clickPagination",
     actionLabel,
   });
@@ -112,7 +113,7 @@ function getNextIcon(props: DesktopPaginationProps) {
         <div className={styles.nextButtons}>
           <span
             onClick={async () => {
-              trackActionToClickPagination("nextPage");
+              trackActionToClickPagination("nextPage", props.actionArea);
               props.history.push(`${(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex + 2)}`);
             }}
             className={styles.pageIconButton}
@@ -128,7 +129,7 @@ function getNextIcon(props: DesktopPaginationProps) {
         <Link
           rel="nofollow"
           onClick={() => {
-            trackActionToClickPagination("nextPage");
+            trackActionToClickPagination("nextPage", props.actionArea);
           }}
           to={(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex + 2)}
           className={styles.pageIconButton}
@@ -142,7 +143,7 @@ function getNextIcon(props: DesktopPaginationProps) {
       <div className={styles.nextButtons}>
         <span
           onClick={() => {
-            trackActionToClickPagination("nextPage");
+            trackActionToClickPagination("nextPage", props.actionArea);
             (props as EventPaginationProps).onItemClick(props.currentPageIndex + 2);
           }}
           className={styles.pageIconButton}
@@ -164,7 +165,7 @@ function getPrevIcon(props: DesktopPaginationProps) {
       <Link
         rel="nofollow"
         onClick={() => {
-          trackActionToClickPagination("prevPage");
+          trackActionToClickPagination("prevPage", props.actionArea);
         }}
         to={(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex)}
         className={styles.pageIconButton}
@@ -176,7 +177,7 @@ function getPrevIcon(props: DesktopPaginationProps) {
     return (
       <span
         onClick={() => {
-          trackActionToClickPagination("prevPage");
+          trackActionToClickPagination("prevPage", props.actionArea);
           (props as EventPaginationProps).onItemClick(props.currentPageIndex);
         }}
         className={styles.pageIconButton}
@@ -192,7 +193,7 @@ const getEventPageItem = (props: EventPaginationProps, pageNumber: number, curre
     <span
       onClick={() => {
         props.onItemClick(pageNumber);
-        trackActionToClickPagination(String(pageNumber));
+        trackActionToClickPagination(String(pageNumber), props.actionArea);
       }}
       key={`${props.type}_${pageNumber}`}
       style={props.itemStyle}
@@ -211,7 +212,7 @@ const getLinkPageItem = (props: LinkPaginationProps, pageNumber: number, current
     return (
       <span
         onClick={async () => {
-          trackActionToClickPagination(String(pageNumber));
+          trackActionToClickPagination(String(pageNumber), props.actionArea);
           props.history.push(`${props.getLinkDestination(pageNumber)}`);
         }}
         style={props.itemStyle}
@@ -229,7 +230,7 @@ const getLinkPageItem = (props: LinkPaginationProps, pageNumber: number, current
   return (
     <Link
       onClick={() => {
-        trackActionToClickPagination(String(pageNumber));
+        trackActionToClickPagination(String(pageNumber), props.actionArea);
       }}
       rel="nofollow"
       to={props.getLinkDestination(pageNumber)}
