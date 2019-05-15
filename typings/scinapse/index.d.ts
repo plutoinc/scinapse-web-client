@@ -92,6 +92,7 @@ declare namespace Scinapse {
       | "bannerView"
       | "researchHistory"
       | "clickPagination"
+      | "clickLogo"
       | "";
 
     type ActionArea =

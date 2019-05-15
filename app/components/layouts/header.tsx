@@ -14,7 +14,7 @@ import BubblePopover from "../common/bubblePopover";
 import { AppState } from "../../reducers";
 import Icon from "../../icons";
 import { signOut } from "../auth/actions";
-import { trackAction, trackDialogView } from "../../helpers/handleGA";
+import { trackDialogView } from "../../helpers/handleGA";
 import { HeaderProps } from "./types/header";
 import { withStyles } from "../../helpers/withStylesHelper";
 import EnvChecker from "../../helpers/envChecker";
@@ -223,7 +223,15 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
       <NoSsr>
         <Link
           to="/"
-          onClick={() => trackAction("/", "headerLogo")}
+          onClick={() =>
+            ActionTicketManager.trackTicket({
+              pageType: getCurrentPageType(),
+              actionType: "fire",
+              actionArea: "topBar",
+              actionTag: "clickLogo",
+              actionLabel: userGroupName,
+            })
+          }
           className={classNames({
             [styles.headerSearchEngineLogo]: isSearchEngineContext,
             [styles.headerLogo]: !isSearchEngineContext,
