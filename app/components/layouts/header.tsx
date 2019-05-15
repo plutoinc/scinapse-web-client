@@ -6,6 +6,7 @@ import * as Cookies from "js-cookie";
 import { denormalize } from "normalizr";
 import MenuItem from "@material-ui/core/MenuItem";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import NoSsr from "@material-ui/core/NoSsr";
 import * as addDays from "date-fns/add_days";
 import * as isAfter from "date-fns/is_after";
 import TopToastBar from "../topToastBar";
@@ -34,7 +35,6 @@ import { getMemoizedPaper } from "../../containers/paperShow/select";
 import ResearchHistory from "../researchHistory";
 import { SCINAPSE_LOGO_TEST } from "../../constants/abTestGlobalValue";
 import { getUserGroupName } from "../../helpers/abTestHelper";
-import * as classNames from "classnames";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -118,11 +118,12 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
   public render() {
     const navClassName = this.getNavbarClassName();
+    const logoUserGroupName: string = getUserGroupName(SCINAPSE_LOGO_TEST) || "";
 
     return (
       <nav className={`${navClassName} mui-fixed`}>
         <div className={styles.headerContainer}>
-          {this.getHeaderLogo()}
+          {this.getHeaderLogo(logoUserGroupName)}
           <div className={styles.leftBox} />
           {this.getSearchFormContainer()}
           {this.getHeaderButtons()}
@@ -204,11 +205,9 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     ticking = false;
   };
 
-  private getHeaderLogo = () => {
+  private getHeaderLogo = (userGroupName: string) => {
     const { location, layoutState } = this.props;
     const isNotHome = location.pathname !== HOME_PATH;
-    const logoUserGroupName: string = getUserGroupName(SCINAPSE_LOGO_TEST) || "";
-    const isSearchEngine = logoUserGroupName === "searchEngine";
 
     if (layoutState.userDevice !== UserDevice.DESKTOP && isNotHome) {
       return (
@@ -216,32 +215,31 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           <Icon icon="SCINAPSE_LOGO_SMALL" />
         </Link>
       );
-    } else if (isSearchEngine) {
-      console.log(isSearchEngine, "else if");
-      return (
+    }
+
+    let logoIconContext = "";
+
+    switch (userGroupName) {
+      case "searchEngine":
+        logoIconContext = "LOGO_SEARCH_ENGINE";
+        break;
+      case "control":
+        logoIconContext = "SCINAPSE_LOGO";
+        break;
+    }
+
+    return (
+      <NoSsr>
         <Link
           to="/"
           onClick={() => trackAction("/", "headerLogo")}
           className={styles.headerSearchEngineLogo}
-          aria-label="Scinapse search engine context header logo"
+          aria-label="Scinapse header logo"
         >
-          <Icon icon="LOGO_SEARCH_ENGINE" />
+          <Icon icon={logoIconContext} />
         </Link>
-      );
-    } else {
-      console.log(isSearchEngine, "else");
-
-      return (
-        <Link
-          to="/"
-          onClick={() => trackAction("/", "headerLogo")}
-          className={styles.headerLogo}
-          aria-label="Scinapse regular header logo"
-        >
-          <Icon icon="SCINAPSE_LOGO" />
-        </Link>
-      );
-    }
+      </NoSsr>
+    );
   };
 
   private getSearchFormContainer = () => {
