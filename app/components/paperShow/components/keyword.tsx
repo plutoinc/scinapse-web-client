@@ -27,7 +27,7 @@ const PaperShowKeyword: React.FunctionComponent<PaperShowKeywordProps> = props =
           page: 1,
           filter: {},
         })}`}
-        rel="noopener"
+        rel="noopener noreferrer"
         target="_blank"
         onClick={() => {
           ActionTicketManager.trackTicket({
@@ -52,7 +52,7 @@ const PaperShowKeyword: React.FunctionComponent<PaperShowKeywordProps> = props =
           page: 1,
           filter: {},
         })}`}
-        rel="noopener"
+        rel="noopener noreferrer"
         target="_blank"
         onClick={() => {
           ActionTicketManager.trackTicket({

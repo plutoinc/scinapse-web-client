@@ -8,11 +8,11 @@ const styles = require("./home.scss");
 const TrendingPaperItem: React.FunctionComponent<{}> = () => {
   const trendingPapers = TRENDING_PAPERS.map(paper => {
     const { paperId, paperTitle, year, journalTitle, authors } = paper;
+
     const authorNodes = authors.map((author, index) => {
       const isLastAuthor = authors.length - 1 === index;
-
       return (
-        <span>
+        <span key={index}>
           {author}
           {!isLastAuthor ? <span>{`, `}</span> : null}
         </span>
@@ -21,6 +21,7 @@ const TrendingPaperItem: React.FunctionComponent<{}> = () => {
 
     return (
       <Link
+        key={paperId}
         to={`/papers/${paperId}`}
         className={styles.trendingPaperItemWrapper}
         onClick={() => {

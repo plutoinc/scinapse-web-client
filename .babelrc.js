@@ -16,7 +16,7 @@ if (process.env.TARGET === "server") {
       targets: {
         node: "10",
       },
-      exclude: ["babel-plugin-transform-classes"],
+      exclude: ["@babel/plugin-transform-classes", "babel-plugin-transform-classes"],
       modules: false,
     },
   ];

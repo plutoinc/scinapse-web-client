@@ -440,7 +440,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     const { dispatch, author } = this.props;
 
     let affiliationId: number | null = null;
-    let affiliationName: string = "";
+    let affiliationName = "";
     if ((profile.currentAffiliation as Affiliation).name) {
       affiliationId = (profile.currentAffiliation as Affiliation).id;
       affiliationName = (profile.currentAffiliation as Affiliation).name;

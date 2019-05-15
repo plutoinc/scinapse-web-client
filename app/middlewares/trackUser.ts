@@ -6,7 +6,7 @@ import EnvChecker from "../helpers/envChecker";
 import { USER_ID_KEY } from "../constants/actionTicket";
 declare var Sentry: any;
 
-const setUserToTracker = (_store: any) => (next: any) => (action: any) => {
+const setUserToTracker = () => (next: any) => (action: any) => {
   try {
     if (
       action.type === ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN ||

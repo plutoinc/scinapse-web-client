@@ -15,11 +15,11 @@ class StoreManager {
   private _store: ReadonlyStore;
   private _history: History;
 
-  get store() {
+  public get store() {
     return this._store;
   }
 
-  get history() {
+  public get history() {
     return this._history;
   }
 

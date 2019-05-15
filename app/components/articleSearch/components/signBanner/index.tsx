@@ -22,7 +22,7 @@ interface SignBannerContextProps {
 
 const SignBannerTitleText: React.FunctionComponent<SignBannerContextProps> = React.memo(props => {
   const { userGroupName } = props;
-  let titleText: string = "";
+  let titleText = "";
 
   switch (userGroupName) {
     case "unlimited":
@@ -43,8 +43,7 @@ const SignBannerTitleText: React.FunctionComponent<SignBannerContextProps> = Rea
 
 const SignBannerBodyText: React.FunctionComponent<SignBannerContextProps> = React.memo(props => {
   const { userGroupName } = props;
-
-  let bodyText: string = "";
+  let bodyText = "";
 
   switch (userGroupName) {
     case "a":
@@ -65,7 +64,7 @@ const SignBannerBodyText: React.FunctionComponent<SignBannerContextProps> = Reac
 
 const SignBannerSignButtonText: React.FunctionComponent<SignBannerContextProps> = React.memo(props => {
   const { userGroupName } = props;
-  let signButtonText: string = "";
+  let signButtonText = "";
 
   switch (userGroupName) {
     case "joinnow":

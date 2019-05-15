@@ -23,7 +23,7 @@ interface CollectionPaperNoteState {
 
 @withStyles<typeof CollectionPaperNote>(styles)
 class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, CollectionPaperNoteState> {
-  constructor(props: CollectionPaperNoteProps) {
+  public constructor(props: CollectionPaperNoteProps) {
     super(props);
 
     this.state = {

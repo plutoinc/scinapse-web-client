@@ -13,22 +13,6 @@ export interface JournalShowQueryParams {
   s?: PAPER_LIST_SORT_TYPES;
 }
 
-export async function fetchJournalShowPageData(params: LoadDataParams<JournalShowMatchParams>) {
-  const { dispatch, match, queryParams } = params;
-  const queryParamsObj: JournalShowQueryParams = parse(queryParams, { ignoreQueryPrefix: true });
-
-  const journalId = parseInt(match.params.journalId, 10);
-  if (isNaN(journalId)) {
-    dispatch(ActionCreators.failedToGetJournal({ statusCode: 400 }));
-    return;
-  } else {
-    const promiseArr: Array<Promise<any>> = [];
-    promiseArr.push(dispatch(getJournal(journalId, params.cancelToken)));
-    promiseArr.push(dispatch(fetchPapers(journalId, queryParamsObj, params.cancelToken)));
-    await Promise.all(promiseArr);
-  }
-}
-
 export function fetchPapers(journalId: number, queryParamsObj: JournalShowQueryParams, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     await dispatch(
@@ -41,4 +25,20 @@ export function fetchPapers(journalId: number, queryParamsObj: JournalShowQueryP
       })
     );
   };
+}
+
+export async function fetchJournalShowPageData(params: LoadDataParams<JournalShowMatchParams>) {
+  const { dispatch, match, queryParams } = params;
+  const queryParamsObj: JournalShowQueryParams = parse(queryParams, { ignoreQueryPrefix: true });
+
+  const journalId = parseInt(match.params.journalId, 10);
+  if (isNaN(journalId)) {
+    dispatch(ActionCreators.failedToGetJournal({ statusCode: 400 }));
+    return;
+  } else {
+    const promiseArr: Promise<any>[] = [];
+    promiseArr.push(dispatch(getJournal(journalId, params.cancelToken)));
+    promiseArr.push(dispatch(fetchPapers(journalId, queryParamsObj, params.cancelToken)));
+    await Promise.all(promiseArr);
+  }
 }

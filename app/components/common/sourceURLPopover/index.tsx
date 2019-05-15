@@ -51,7 +51,7 @@ const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
             props.handleCloseFunc(e);
           }}
           target="_blank"
-          rel="noopener nofollow"
+          rel="noopener nofollow noreferrer"
           href={source.url}
           key={source.id}
         >

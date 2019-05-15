@@ -78,7 +78,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private cancelToken = axios.CancelToken.source();
   private userDropdownAnchorRef: HTMLElement | null;
 
-  constructor(props: HeaderProps) {
+  public constructor(props: HeaderProps) {
     super(props);
 
     const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(props.location.search);
