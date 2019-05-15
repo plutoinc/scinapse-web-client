@@ -164,11 +164,11 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
         />
         <div className={s.signUpPrivacyPolicy}>
           {"By signing up, you agree with our "}
-          <a href="https://scinapse.io/terms-of-service" target="_blank" rel="noopener nofollow">
+          <a href="https://scinapse.io/terms-of-service" target="_blank" rel="noopener nofollow noreferrer">
             Terms
           </a>
           {" & "}
-          <a href="https://scinapse.io/privacy-policy" target="_blank" rel="noopener nofollow">
+          <a href="https://scinapse.io/privacy-policy" target="_blank" rel="noopener nofollow noreferrer">
             Privacy policy
           </a>.
         </div>

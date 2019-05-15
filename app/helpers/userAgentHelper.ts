@@ -4,7 +4,7 @@ import EnvChecker from "./envChecker";
 class UserAgentHelper {
   private parser: any;
 
-  constructor(userAgent: string) {
+  public constructor(userAgent: string) {
     this.parser = new UAParser(userAgent);
   }
 

@@ -105,7 +105,7 @@ export default class ActionTicket {
     this._errorCount += 1;
   }
 
-  get errorCount() {
+  public get errorCount() {
     return this._errorCount;
   }
 

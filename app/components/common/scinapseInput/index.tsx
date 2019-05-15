@@ -20,7 +20,7 @@ interface InputBoxStates {
 }
 
 class ScinapseCommonInput extends React.PureComponent<InputBoxProps, InputBoxStates> {
-  constructor(props: InputBoxProps) {
+  public constructor(props: InputBoxProps) {
     super(props);
 
     this.state = {

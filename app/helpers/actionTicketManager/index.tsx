@@ -24,7 +24,7 @@ class ActionTicketManager {
   public queue: ActionTicket[] = [];
   private sentLastTickets: boolean = false;
 
-  constructor() {
+  public constructor() {
     if (!EnvChecker.isOnServer()) {
       window.addEventListener("beforeunload", () => {
         this.sendTicketsBeforeCloseSession();

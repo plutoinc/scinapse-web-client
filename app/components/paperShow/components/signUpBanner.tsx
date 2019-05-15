@@ -16,7 +16,7 @@ interface SignBannerProps {
 
 const SignBannerTitleText: React.FunctionComponent<{ userGroupName: string; keyverb: string }> = React.memo(props => {
   const { userGroupName, keyverb } = props;
-  let titleText: string = "";
+  let titleText = "";
   const keyverbText = keyverb === "enjoy" ? "Enjoy" : "Browse";
 
   switch (userGroupName) {

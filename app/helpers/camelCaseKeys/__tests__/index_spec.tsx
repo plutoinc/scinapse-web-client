@@ -1,7 +1,7 @@
 import { camelCaseKeys } from "..";
 
 describe("camelCaseKeys function", () => {
-  let mockObject: Object;
+  let mockObject: Record<string, any>;
 
   beforeEach(() => {
     mockObject = {

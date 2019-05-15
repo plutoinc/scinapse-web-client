@@ -14,7 +14,7 @@ export async function fetchCollectionShowData(params: LoadDataParams<CollectionS
       })
     );
   } else {
-    const promiseArr: Array<Promise<any>> = [];
+    const promiseArr: Promise<any>[] = [];
     promiseArr.push(dispatch(getCollection(collectionId, params.cancelToken)));
     promiseArr.push(
       dispatch(

@@ -13,7 +13,7 @@ const defaultNotieOptions = {
   stay: false,
 };
 
-const ReduxNotifier: Middleware = _store => next => (action: any) => {
+const ReduxNotifier: Middleware = () => next => (action: any) => {
   if (action.type === ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION) {
     const notificationAction: NotificationAction = action;
     const notificationOptions = { ...defaultNotieOptions, ...notificationAction.payload.options };

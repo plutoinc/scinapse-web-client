@@ -12,7 +12,7 @@ export async function getCollections(params: GetCollectionsParams) {
   const { match, dispatch } = params;
 
   try {
-    const promiseArray: Array<Promise<any>> = [];
+    const promiseArray: Promise<any>[] = [];
     const userId = params.userId ? params.userId : parseInt(match.params.userId, 10);
 
     if (isNaN(userId)) {

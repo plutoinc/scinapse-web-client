@@ -50,7 +50,12 @@ class Home extends React.PureComponent<HomeProps> {
               </div>
               <div className={styles.searchSubTitle}>
                 Scinapse is a free, Academic search engine <br /> for papers, serviced by{" "}
-                <a href="https://pluto.network" target="_blank" className={styles.plutoLink} rel="noopener nofollow">
+                <a
+                  href="https://pluto.network"
+                  target="_blank"
+                  className={styles.plutoLink}
+                  rel="noopener nofollow noreferrer"
+                >
                   Pluto Network
                 </a>
               </div>
@@ -82,7 +87,7 @@ class Home extends React.PureComponent<HomeProps> {
             <div className={styles.contextSubtitle}>METADATA SOURCES</div>
             <div className={styles.sourceVendorWrapper}>
               <div className={styles.sourceVendorItem}>
-                <a href="https://aka.ms/msracad" target="_blank" rel="noopener nofollow">
+                <a href="https://aka.ms/msracad" target="_blank" rel="noopener nofollow noreferrer">
                   <picture>
                     <source srcSet="https://assets.pluto.network/scinapse/ms-research.webp" type="image/webp" />
                     <source srcSet="https://assets.pluto.network/scinapse/ms-research.jpg" type="image/jpeg" />
@@ -91,7 +96,7 @@ class Home extends React.PureComponent<HomeProps> {
                 </a>
               </div>
               <div className={styles.sourceVendorItem}>
-                <a href="https://www.semanticscholar.org/" target="_blank" rel="noopener nofollow">
+                <a href="https://www.semanticscholar.org/" target="_blank" rel="noopener nofollow noreferrer">
                   <picture>
                     <source srcSet="https://assets.pluto.network/scinapse/semantic-scholar.webp" type="image/webp" />
                     <source srcSet="https://assets.pluto.network/scinapse/semantic-scholar.jpg" type="image/jpeg" />
@@ -100,7 +105,7 @@ class Home extends React.PureComponent<HomeProps> {
                 </a>
               </div>
               <div className={styles.sourceVendorItem}>
-                <a href="https://www.springernature.com/gp/" target="_blank" rel="noopener nofollow">
+                <a href="https://www.springernature.com/gp/" target="_blank" rel="noopener nofollow noreferrer">
                   <picture>
                     <source srcSet="https://assets.pluto.network/scinapse/springer-nature.webp" type="image/webp" />
                     <source srcSet="https://assets.pluto.network/scinapse/springer-nature.jpg" type="image/jpeg" />
@@ -109,7 +114,7 @@ class Home extends React.PureComponent<HomeProps> {
                 </a>
               </div>
               <div className={styles.sourceVendorItem}>
-                <a href="https://www.ncbi.nlm.nih.gov/pubmed/" target="_blank" rel="noopener nofollow">
+                <a href="https://www.ncbi.nlm.nih.gov/pubmed/" target="_blank" rel="noopener nofollow noreferrer">
                   <picture>
                     <source srcSet="https://assets.pluto.network/scinapse/pub-med.webp" type="image/webp" />
                     <source srcSet="https://assets.pluto.network/scinapse/pub-med.jpg" type="image/jpeg" />
