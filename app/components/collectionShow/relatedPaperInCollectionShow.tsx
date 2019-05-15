@@ -85,7 +85,7 @@ const RelatedPaperInCollectionShow: React.FunctionComponent<RelatedPaperInCollec
     if (index < 3) {
       return (
         <div key={paper.id}>
-          <RelatedPaperItem paper={paper} index={index} />
+          <RelatedPaperItem paper={paper} />
         </div>
       );
     }
