@@ -229,7 +229,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
               actionType: "fire",
               actionArea: "topBar",
               actionTag: "clickLogo",
-              actionLabel: userGroupName,
+              actionLabel: null,
             })
           }
           className={classNames({
