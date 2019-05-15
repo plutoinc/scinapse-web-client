@@ -3,7 +3,7 @@ import { RawSuggestion } from "../../model/suggestion";
 import { CompletionKeyword } from "../completion";
 
 class CompletionAPI extends PlutoAxios {
-  public async getSuggestionKeyword(_query: string): Promise<RawSuggestion> {
+  public async getSuggestionKeyword(): Promise<RawSuggestion> {
     return {
       highlighted: "<b>para</b>",
       keyword: "papre",
@@ -13,7 +13,7 @@ class CompletionAPI extends PlutoAxios {
     };
   }
 
-  public async getKeywordCompletion(_query: string) {
+  public async getKeywordCompletion() {
     const completionKeywords: CompletionKeyword[] = [
       { keyword: "paprec", type: "KEYWORD" },
       { keyword: "papreg", type: "KEYWORD" },

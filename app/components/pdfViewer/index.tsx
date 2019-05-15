@@ -55,6 +55,16 @@ function useIntervalProgress(callback: () => void, delay: number | null) {
   );
 }
 
+function trackClickButton(actionTag: Scinapse.ActionTicket.ActionTagType, paperId: number) {
+  ActionTicketManager.trackTicket({
+    pageType: "paperShow",
+    actionType: "fire",
+    actionArea: "pdfViewer",
+    actionTag,
+    actionLabel: String(paperId),
+  });
+}
+
 function fetchPDFFromExtension(sources: PaperSource[]): Promise<{ data: Blob }> {
   return new Promise((resolve, reject) => {
     if (typeof window !== "undefined" && typeof chrome !== "undefined") {
@@ -306,15 +316,5 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   }
   return null;
 };
-
-function trackClickButton(actionTag: Scinapse.ActionTicket.ActionTagType, paperId: number) {
-  ActionTicketManager.trackTicket({
-    pageType: "paperShow",
-    actionType: "fire",
-    actionArea: "pdfViewer",
-    actionTag,
-    actionLabel: String(paperId),
-  });
-}
 
 export default withStyles<typeof PDFViewer>(styles)(PDFViewer);

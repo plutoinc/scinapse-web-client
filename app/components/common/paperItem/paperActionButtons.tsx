@@ -87,7 +87,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
       <a
         href={`https://doi.org/${paper.doi}`}
         target="_blank"
-        rel="noopener nofollow"
+        rel="noopener nofollow noreferrer"
         className={styles.sourceButton}
         onClick={() => {
           ActionTicketManager.trackTicket({

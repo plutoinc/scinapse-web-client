@@ -94,7 +94,7 @@ class ScinapseButton extends React.PureComponent<ScinapseButtonProps> {
     const { gaCategory, gaAction, gaLabel, onClick, content, disableGA } = this.props;
 
     if (!disableGA && gaCategory && gaAction) {
-      let label: string = "";
+      let label = "";
       if (gaLabel) {
         label = gaLabel;
       } else if (content) {

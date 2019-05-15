@@ -12,8 +12,8 @@ interface AuthRouteParam {
   needAuthType: AuthType;
 }
 
-export const AuthRoute: React.FunctionComponent<AuthRouteParam & RouteProps> = props => {
-  const { path, component, children, isLoggedIn, needAuthType } = props;
+const AuthRoute: React.FunctionComponent<AuthRouteParam & RouteProps> = props => {
+  const { path, component, isLoggedIn, needAuthType } = props;
 
   let redirectPath;
   let notificationMessage;
@@ -29,7 +29,6 @@ export const AuthRoute: React.FunctionComponent<AuthRouteParam & RouteProps> = p
     (isLoggedIn && needAuthType === AuthType.ShouldLoggedOut) ||
     (!isLoggedIn && needAuthType === AuthType.ShouldLoggedIn);
   const isComponent = !!component;
-  const isChildren = !!children;
 
   if (forbiddenAccess) {
     alertToast({
@@ -46,8 +45,6 @@ export const AuthRoute: React.FunctionComponent<AuthRouteParam & RouteProps> = p
     );
   } else if (isComponent) {
     return <Route path={path} component={component} exact={true} />;
-  } else if (isChildren) {
-    return <Route path={path} children={children} exact={true} />;
   } else {
     return null;
   }

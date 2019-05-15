@@ -20,7 +20,7 @@ interface ReadingNowPaperListProps {
 
 @withStyles<typeof ReadingNowPaperList>(styles)
 class ReadingNowPaperList extends React.PureComponent<ReadingNowPaperListProps, ReadingNowPaperListState> {
-  constructor(props: ReadingNowPaperListProps) {
+  public constructor(props: ReadingNowPaperListProps) {
     super(props);
 
     this.state = {

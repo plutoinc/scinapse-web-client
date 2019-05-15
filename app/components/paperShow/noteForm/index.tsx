@@ -88,7 +88,7 @@ const NoteEditButton: React.SFC<NoteEditButtonProps> = props => {
 
 @withStyles<typeof PaperNoteForm>(styles)
 class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFormState> {
-  constructor(props: PaperNoteFormProps) {
+  public constructor(props: PaperNoteFormProps) {
     super(props);
 
     this.state = {

@@ -27,7 +27,7 @@ interface AuthorShowHeaderState {
 
 @withStyles<typeof AuthorShowHeader>(styles)
 class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, AuthorShowHeaderState> {
-  constructor(props: AuthorShowHeaderProps) {
+  public constructor(props: AuthorShowHeaderProps) {
     super(props);
 
     this.state = {
@@ -146,12 +146,12 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
               <a
                 href={`mailto:${author.email}`}
                 target="_blank"
-                rel="noopener nofollow"
+                rel="noopener nofollow noreferrer"
                 className={styles.contactIconWrapper}
               >
                 <Icon icon="EMAIL_ICON" className={styles.emailIcon} />
               </a>
-              <a href={`mailto:${author.email}`} target="_blank" rel="noopener nofollow">
+              <a href={`mailto:${author.email}`} target="_blank" rel="noopener nofollow noreferrer">
                 {author.email}
               </a>
             </span>
@@ -162,12 +162,12 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
             <a
               href={author.webPage || "#"}
               target="_blank"
-              rel="noopener nofollow"
+              rel="noopener nofollow noreferrer"
               className={styles.contactIconWrapper}
             >
               <Icon icon="EXTERNAL_SOURCE" className={styles.externalSource} />
             </a>
-            <a href={author.webPage || "#"} target="_blank" rel="noopener nofollow">
+            <a href={author.webPage || "#"} target="_blank" rel="noopener nofollow noreferrer">
               {author.webPage || ""}
             </a>
           </span>
