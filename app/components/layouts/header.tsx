@@ -32,6 +32,9 @@ import { getCollections } from "../collections/actions";
 import { collectionSchema } from "../../model/collection";
 import { getMemoizedPaper } from "../../containers/paperShow/select";
 import ResearchHistory from "../researchHistory";
+import { SCINAPSE_LOGO_TEST } from "../../constants/abTestGlobalValue";
+import { getUserGroupName } from "../../helpers/abTestHelper";
+import * as classNames from "classnames";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -204,6 +207,8 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private getHeaderLogo = () => {
     const { location, layoutState } = this.props;
     const isNotHome = location.pathname !== HOME_PATH;
+    const logoUserGroupName: string = getUserGroupName(SCINAPSE_LOGO_TEST) || "";
+    const isSearchEngine = logoUserGroupName === "searchEngine";
 
     if (layoutState.userDevice !== UserDevice.DESKTOP && isNotHome) {
       return (
@@ -216,10 +221,13 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         <Link
           to="/"
           onClick={() => trackAction("/", "headerLogo")}
-          className={styles.headerLogo}
+          className={classNames({
+            [styles.headerSearchEngineLogo]: isSearchEngine,
+            [styles.headerLogo]: !isSearchEngine,
+          })}
           aria-label="Scinapse regular header logo"
         >
-          <Icon icon="SCINAPSE_LOGO" />
+          {isSearchEngine ? <Icon icon="LOGO_SEARCH_ENGINE" /> : <Icon icon="SCINAPSE_LOGO" />}
         </Link>
       );
     }

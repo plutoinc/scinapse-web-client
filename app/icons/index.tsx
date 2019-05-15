@@ -89,6 +89,7 @@ const ICONS: { [key: string]: any } = {
   PDF_PAPER: require("./pdf-paper.svg").default,
   BACK: require("./back.svg").default,
   MATCHED_PAPER: require("./matched-paper.svg").default,
+  LOGO_SEARCH_ENGINE: require("./logo-search-engine.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)

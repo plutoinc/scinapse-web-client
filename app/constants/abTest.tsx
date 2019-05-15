@@ -6,6 +6,7 @@ import {
   signBannerAtPaperShowTest,
   signBannerAtPaperShowTitleTextTest,
   signBannerAtPaperShowTitleTextKeyverbTest,
+  scinapseLogoTest,
 } from "./abTestObject";
 
 export interface UserGroup {
@@ -22,6 +23,7 @@ export type BenefitExpType = "queryCountSession" | "refPaperCountSession" | "pap
 
 export type ABTestType =
   | "queryLover"
+  | "scinapseLogo"
   | "signBannerAtSearch-banner"
   | "signBannerAtSearch-signButtonText"
   | "signBannerAtSearch-bodyText"
@@ -49,6 +51,7 @@ export interface BenefitExpTicketContext {
 }
 
 export const LIVE_TESTS: Test[] = [
+  scinapseLogoTest,
   bannerTest,
   signButtonTextTest,
   bodyTextTest,
