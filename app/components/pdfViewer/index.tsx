@@ -61,6 +61,7 @@ function trackClickButton(actionTag: Scinapse.ActionTicket.ActionTagType, paperI
     actionType: "fire",
     actionArea: "pdfViewer",
     actionTag,
+
     actionLabel: String(paperId),
   });
 }

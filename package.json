@@ -191,13 +191,6 @@
     "printWidth": 120,
     "trailingComma": "es5"
   },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "npm run pretty",
-      "npx eslint app/** --ext .ts,.tsx",
-      "git add"
-    ]
-  },
   "browserslist": [
     "> 1%",
     "ie > 9"
