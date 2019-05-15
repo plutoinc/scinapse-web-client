@@ -194,7 +194,7 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "npm run pretty",
-      "npx eslint app/** --ext .ts,.tsx",
+      "npx eslint --fix",
       "git add"
     ]
   },
