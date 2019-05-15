@@ -216,18 +216,26 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           <Icon icon="SCINAPSE_LOGO_SMALL" />
         </Link>
       );
+    } else if (isSearchEngine) {
+      return (
+        <Link
+          to="/"
+          onClick={() => trackAction("/", "headerLogo")}
+          className={styles.headerSearchEngineLogo}
+          aria-label="Scinapse search engine context header logo"
+        >
+          <Icon icon="LOGO_SEARCH_ENGINE" />
+        </Link>
+      );
     } else {
       return (
         <Link
           to="/"
           onClick={() => trackAction("/", "headerLogo")}
-          className={classNames({
-            [styles.headerSearchEngineLogo]: isSearchEngine,
-            [styles.headerLogo]: !isSearchEngine,
-          })}
+          className={styles.headerLogo}
           aria-label="Scinapse regular header logo"
         >
-          {isSearchEngine ? <Icon icon="LOGO_SEARCH_ENGINE" /> : <Icon icon="SCINAPSE_LOGO" />}
+          <Icon icon="SCINAPSE_LOGO" />
         </Link>
       );
     }
