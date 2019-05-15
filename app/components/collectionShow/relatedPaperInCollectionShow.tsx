@@ -11,46 +11,66 @@ interface RelatedPaperInCollectionShowProps {
   collectionId: number;
 }
 
-function observeRelatedPaper(
-  root: HTMLDivElement | null,
-  threshold: number | number[] | undefined,
-  collectionId: number
-) {
-  return new IntersectionObserver(
-    (entries, observer) => {
-      entries.forEach(entry => {
-        const { target, isIntersecting } = entry;
-        if (isIntersecting) {
-          ActionTicketManager.trackTicket({
-            pageType: "collectionShow",
-            actionType: "view",
-            actionArea: "relatedPaperList",
-            actionTag: "viewRelatedPaper",
-            actionLabel: String(collectionId),
+function useIntersection(threshold: number | number[] | undefined, paperId: number) {
+  const elRef = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(
+    () => {
+      const intersectionObserver = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              ActionTicketManager.trackTicket({
+                pageType: "collectionShow",
+                actionType: "view",
+                actionArea: "relatedPaperList",
+                actionTag: "viewRelatedPaper",
+                actionLabel: String(paperId),
+              });
+              observer.unobserve(entry.target);
+            }
           });
-          observer.unobserve(target);
-        }
-      });
+        },
+        { threshold }
+      );
+      if (elRef.current) {
+        intersectionObserver.observe(elRef.current);
+      }
+      return () => intersectionObserver.disconnect();
     },
-    { root, threshold }
+    [elRef]
   );
+  return { elRef };
 }
+
+const RelatedPaperItem: React.FunctionComponent<{ paper: Paper }> = props => {
+  const { paper } = props;
+  const { elRef } = useIntersection(0.1, paper.id);
+
+  return (
+    <div key={paper.id} ref={elRef}>
+      <PaperItem
+        key={paper.id}
+        paper={paper}
+        omitAbstract={true}
+        pageType="collectionShow"
+        actionArea="relatedPaperList"
+        wrapperClassName={styles.paperItemWrapper}
+      />
+    </div>
+  );
+};
+
 const RelatedPaperInCollectionShow: React.FunctionComponent<RelatedPaperInCollectionShowProps> = props => {
   const { collectionId } = props;
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [relatedPapers, setRelatedPapers] = React.useState<Paper[]>([]);
-  const relatedPapersAnchor = React.useRef<HTMLDivElement | null>(null);
 
   React.useEffect(
     () => {
       setIsLoading(true);
       CollectionAPI.getRelatedPaperInCollection(collectionId).then(result => {
-        const observer = observeRelatedPaper(relatedPapersAnchor.current, 0.1, collectionId);
-
         setRelatedPapers(result.content);
-        if (relatedPapersAnchor.current) {
-          observer.observe(relatedPapersAnchor.current);
-        }
         setIsLoading(false);
       });
     },
@@ -63,20 +83,11 @@ const RelatedPaperInCollectionShow: React.FunctionComponent<RelatedPaperInCollec
 
   const relatedPaperItems = relatedPapers.map((paper, index) => {
     if (index < 3) {
-      return (
-        <PaperItem
-          key={paper.id}
-          paper={paper}
-          omitAbstract={true}
-          pageType="collectionShow"
-          actionArea="relatedPaperList"
-          wrapperClassName={styles.paperItemWrapper}
-        />
-      );
+      return <RelatedPaperItem paper={paper} />;
     }
   });
   return (
-    <div className={styles.relatedPaperContainer} ref={relatedPapersAnchor}>
+    <div className={styles.relatedPaperContainer}>
       <div className={styles.titleContext}>📄 How about these papers?</div>
       {isLoading ? (
         <div className={styles.loadingContainer}>
