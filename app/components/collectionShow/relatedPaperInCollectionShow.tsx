@@ -11,16 +11,15 @@ interface RelatedPaperInCollectionShowProps {
   collectionId: number;
 }
 
-const RelatedPaperInCollectionShow: React.FunctionComponent<RelatedPaperInCollectionShowProps> = props => {
-  const { collectionId } = props;
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [relatedPapers, setRelatedPapers] = React.useState<Paper[]>([]);
-
-  React.useEffect(
-    () => {
-      setIsLoading(true);
-      CollectionAPI.getRelatedPaperInCollection(collectionId).then(result => {
-        if (result.content && result.content.length !== 0) {
+function observeRelatedPaper(
+  root: HTMLDivElement | null,
+  threshold: number | number[] | undefined,
+  collectionId: number
+) {
+  return new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
           ActionTicketManager.trackTicket({
             pageType: "collectionShow",
             actionType: "view",
@@ -29,7 +28,27 @@ const RelatedPaperInCollectionShow: React.FunctionComponent<RelatedPaperInCollec
             actionLabel: String(collectionId),
           });
         }
+      });
+    },
+    { root, threshold }
+  );
+}
+const RelatedPaperInCollectionShow: React.FunctionComponent<RelatedPaperInCollectionShowProps> = props => {
+  const { collectionId } = props;
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [relatedPapers, setRelatedPapers] = React.useState<Paper[]>([]);
+  const relatedPapersAnchor = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(
+    () => {
+      setIsLoading(true);
+      CollectionAPI.getRelatedPaperInCollection(collectionId).then(result => {
+        const observer = observeRelatedPaper(relatedPapersAnchor.current, 0.1, collectionId);
+
         setRelatedPapers(result.content);
+        if (relatedPapersAnchor.current) {
+          observer.observe(relatedPapersAnchor.current);
+        }
         setIsLoading(false);
       });
     },
@@ -55,7 +74,7 @@ const RelatedPaperInCollectionShow: React.FunctionComponent<RelatedPaperInCollec
     }
   });
   return (
-    <div className={styles.relatedPaperContainer}>
+    <div className={styles.relatedPaperContainer} ref={relatedPapersAnchor}>
       <div className={styles.titleContext}>📄 How about these papers?</div>
       {isLoading ? (
         <div className={styles.loadingContainer}>
