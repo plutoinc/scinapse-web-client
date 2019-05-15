@@ -35,6 +35,7 @@ import { getMemoizedPaper } from "../../containers/paperShow/select";
 import ResearchHistory from "../researchHistory";
 import { SCINAPSE_LOGO_TEST } from "../../constants/abTestGlobalValue";
 import { getUserGroupName } from "../../helpers/abTestHelper";
+import * as classNames from "classnames";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -208,6 +209,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private getHeaderLogo = (userGroupName: string) => {
     const { location, layoutState } = this.props;
     const isNotHome = location.pathname !== HOME_PATH;
+    const isSearchEngineContext = userGroupName === "searchEngine";
 
     if (layoutState.userDevice !== UserDevice.DESKTOP && isNotHome) {
       return (
@@ -217,26 +219,18 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
       );
     }
 
-    let logoIconContext = "";
-
-    switch (userGroupName) {
-      case "searchEngine":
-        logoIconContext = "LOGO_SEARCH_ENGINE";
-        break;
-      case "control":
-        logoIconContext = "SCINAPSE_LOGO";
-        break;
-    }
-
     return (
       <NoSsr>
         <Link
           to="/"
           onClick={() => trackAction("/", "headerLogo")}
-          className={styles.headerSearchEngineLogo}
+          className={classNames({
+            [styles.headerSearchEngineLogo]: isSearchEngineContext,
+            [styles.headerLogo]: !isSearchEngineContext,
+          })}
           aria-label="Scinapse header logo"
         >
-          <Icon icon={logoIconContext} />
+          <Icon icon={isSearchEngineContext ? "LOGO_SEARCH_ENGINE" : "SCINAPSE_LOGO"} />
         </Link>
       </NoSsr>
     );
