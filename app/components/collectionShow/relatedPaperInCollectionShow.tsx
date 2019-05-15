@@ -48,7 +48,7 @@ const RelatedPaperItem: React.FunctionComponent<{ paper: Paper }> = props => {
   const { elRef } = useIntersection(0.1, paper.id);
 
   return (
-    <div key={paper.id} ref={elRef}>
+    <div ref={elRef}>
       <PaperItem
         key={paper.id}
         paper={paper}
@@ -83,9 +83,14 @@ const RelatedPaperInCollectionShow: React.FunctionComponent<RelatedPaperInCollec
 
   const relatedPaperItems = relatedPapers.map((paper, index) => {
     if (index < 3) {
-      return <RelatedPaperItem paper={paper} />;
+      return (
+        <div key={paper.id}>
+          <RelatedPaperItem paper={paper} index={index} />
+        </div>
+      );
     }
   });
+
   return (
     <div className={styles.relatedPaperContainer}>
       <div className={styles.titleContext}>📄 How about these papers?</div>
