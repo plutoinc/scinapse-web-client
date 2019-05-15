@@ -1,8 +1,9 @@
+const webpack = require("webpack");
 const path = require("path");
 
 module.exports = {
   mode: "production",
-  entry: ["@babel/polyfill", "./app/index.tsx"],
+  entry: ["./app/index.tsx"],
   output: {
     libraryTarget: "commonjs2",
     path: path.resolve(__dirname, "dist", "server"),
@@ -81,4 +82,9 @@ module.exports = {
     __dirname: false,
     __filename: false,
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      "process.env.TARGET": JSON.stringify("server"),
+    }),
+  ],
 };

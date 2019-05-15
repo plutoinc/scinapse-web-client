@@ -9,6 +9,7 @@ const s3client = s3.createClient({
 
 function downloadSrcFromS3(branch?: string) {
   return new Promise((resolve, reject) => {
+    console.log("TRY TO START TO DOWNLOAD BUNDLE");
     const prefix = branch
       ? `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${branch}`
       : DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX;
@@ -36,6 +37,7 @@ export const ssr = async (event: any, context: any) => {
   const branch = event.queryStringParameters && event.queryStringParameters.branch;
   await downloadSrcFromS3(branch);
   const bundle = require("/tmp/server/main.js");
+  (global as any).__webpack_public_path__ = "/tmp/server";
   const app = bundle.ssr;
   const binaryMimeTypes = [
     "application/xml",
@@ -47,5 +49,6 @@ export const ssr = async (event: any, context: any) => {
     "application/json",
   ];
   const server = awsServerlessExpress.createServer(app, null, binaryMimeTypes);
+
   return awsServerlessExpress.proxy(server, event, context, "PROMISE").promise;
 };

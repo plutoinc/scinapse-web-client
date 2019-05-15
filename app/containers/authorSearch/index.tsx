@@ -213,6 +213,7 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
           wrapperStyle={{
             margin: "24px 0",
           }}
+          actionArea="authorList"
         />
       );
     }

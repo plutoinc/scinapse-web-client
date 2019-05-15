@@ -5,7 +5,7 @@ pipeline {
         string(name: 'version', defaultValue: '', description: 'target version to deploy')
     }
 
-    tools {nodejs "Node810"}
+    tools {nodejs "Node10x"}
 
     options {
         disableConcurrentBuilds()

@@ -1,11 +1,12 @@
 const path = require("path");
+const webpack = require("webpack");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const nodeExternals = require("webpack-node-externals");
 const cpuLength = require("os").cpus().length;
 
 module.exports = {
   mode: "development",
-  entry: ["@babel/polyfill", "./server/localServer.tsx"],
+  entry: ["./server/localServer.tsx"],
   output: {
     libraryTarget: "commonjs2",
     path: path.resolve(__dirname, "dist", "server"),
@@ -88,6 +89,11 @@ module.exports = {
     __dirname: false,
     __filename: false,
   },
-  plugins: [new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true })],
+  plugins: [
+    new webpack.DefinePlugin({
+      "process.env.TARGET": JSON.stringify("server"),
+    }),
+    new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
+  ],
   externals: [nodeExternals()],
 };

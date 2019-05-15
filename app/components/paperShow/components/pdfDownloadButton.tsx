@@ -44,7 +44,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
         className={styles.pdfDownloadBtn}
         href={pdfUrl}
         target="_blank"
-        rel="noopener nofollow"
+        rel="noopener nofollow noreferrer"
         onClick={async e => {
           e.preventDefault();
 

@@ -7,6 +7,7 @@ import { Footer } from "../layouts";
 import { LayoutState, UserDevice } from "../layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
 import SearchQueryInput from "../common/InputWithSuggestionList/searchQueryInput";
+import TrendingPaper from "./trendingPaper";
 const styles = require("./home.scss");
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
@@ -49,7 +50,12 @@ class Home extends React.PureComponent<HomeProps> {
               </div>
               <div className={styles.searchSubTitle}>
                 Scinapse is a free, Academic search engine <br /> for papers, serviced by{" "}
-                <a href="https://pluto.network" target="_blank" className={styles.plutoLink} rel="noopener nofollow">
+                <a
+                  href="https://pluto.network"
+                  target="_blank"
+                  className={styles.plutoLink}
+                  rel="noopener nofollow noreferrer"
+                >
                   Pluto Network
                 </a>
               </div>
@@ -59,25 +65,29 @@ class Home extends React.PureComponent<HomeProps> {
               <div className={styles.searchTryKeyword} />
             </div>
           </div>
-          <div className={styles.featureWrapper}>
-            <div className={styles.featureItem}>
-              <div className={styles.featureName}>Intuitive Feed</div>
-              <div className={styles.featureContents}>
-                Quickly skim through the search results with major indices on the authors and the article.
+          <div className={styles.featureContainer}>
+            <div className={styles.contextSubtitle}>SCINAPSE SPECIALITY</div>
+            <div className={styles.featureWrapper}>
+              <div className={styles.featureItem}>
+                <div className={styles.featureName}>Intuitive Feed</div>
+                <div className={styles.featureContents}>
+                  Quickly skim through the search results with major indices on the authors and the article.
+                </div>
               </div>
-            </div>
-            <div className={styles.featureItem}>
-              <div className={styles.featureName}>Save to Collection</div>
-              <div className={styles.featureContents}>
-                When you meet interesting papers, just save it to your Collection.
+              <div className={styles.featureItem}>
+                <div className={styles.featureName}>Save to Collection</div>
+                <div className={styles.featureContents}>
+                  When you meet interesting papers, just save it to your Collection.
+                </div>
               </div>
             </div>
           </div>
           <div className={styles.sourceVendorContainer}>
-            <div className={styles.sourceVendorSubtitle}>Metadata of papers comes from</div>
+            <div className={styles.contentBlockDivider} />
+            <div className={styles.contextSubtitle}>METADATA SOURCES</div>
             <div className={styles.sourceVendorWrapper}>
               <div className={styles.sourceVendorItem}>
-                <a href="https://aka.ms/msracad" target="_blank" rel="noopener nofollow">
+                <a href="https://aka.ms/msracad" target="_blank" rel="noopener nofollow noreferrer">
                   <picture>
                     <source srcSet="https://assets.pluto.network/scinapse/ms-research.webp" type="image/webp" />
                     <source srcSet="https://assets.pluto.network/scinapse/ms-research.jpg" type="image/jpeg" />
@@ -86,7 +96,7 @@ class Home extends React.PureComponent<HomeProps> {
                 </a>
               </div>
               <div className={styles.sourceVendorItem}>
-                <a href="https://www.semanticscholar.org/" target="_blank" rel="noopener nofollow">
+                <a href="https://www.semanticscholar.org/" target="_blank" rel="noopener nofollow noreferrer">
                   <picture>
                     <source srcSet="https://assets.pluto.network/scinapse/semantic-scholar.webp" type="image/webp" />
                     <source srcSet="https://assets.pluto.network/scinapse/semantic-scholar.jpg" type="image/jpeg" />
@@ -95,7 +105,7 @@ class Home extends React.PureComponent<HomeProps> {
                 </a>
               </div>
               <div className={styles.sourceVendorItem}>
-                <a href="https://www.springernature.com/gp/" target="_blank" rel="noopener nofollow">
+                <a href="https://www.springernature.com/gp/" target="_blank" rel="noopener nofollow noreferrer">
                   <picture>
                     <source srcSet="https://assets.pluto.network/scinapse/springer-nature.webp" type="image/webp" />
                     <source srcSet="https://assets.pluto.network/scinapse/springer-nature.jpg" type="image/jpeg" />
@@ -104,7 +114,7 @@ class Home extends React.PureComponent<HomeProps> {
                 </a>
               </div>
               <div className={styles.sourceVendorItem}>
-                <a href="https://www.ncbi.nlm.nih.gov/pubmed/" target="_blank" rel="noopener nofollow">
+                <a href="https://www.ncbi.nlm.nih.gov/pubmed/" target="_blank" rel="noopener nofollow noreferrer">
                   <picture>
                     <source srcSet="https://assets.pluto.network/scinapse/pub-med.webp" type="image/webp" />
                     <source srcSet="https://assets.pluto.network/scinapse/pub-med.jpg" type="image/jpeg" />
@@ -114,6 +124,7 @@ class Home extends React.PureComponent<HomeProps> {
               </div>
             </div>
           </div>
+          <TrendingPaper />
           <Footer containerStyle={containerStyle} />
         </div>
       </div>

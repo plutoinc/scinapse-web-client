@@ -1,10 +1,12 @@
 {
   "name": "pluto-web-client",
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "dependencies": {
-    "s3": "^4.4.0",
+    "s3": "4.4.0",
     "aws-serverless-express": "git+https://github.com/TylorShin/aws-serverless-express.git",
-    "@babel/polyfill": "^7.0.0"
+    "core-js": "2.6.5",
+    "@babel/plugin-proposal-class-properties": "7.4.4",
+    "@babel/plugin-transform-runtime": "7.4.4",
+    "@babel/runtime": "7.4.4"
   }
 }

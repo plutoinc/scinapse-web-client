@@ -63,17 +63,25 @@
     outline: none;
   }
 }
+.featureContainer {
+  max-width: 793px;
+  margin: 40px auto 60px auto;
+  background-color: white;
+}
+
+.trendingPaperContainer {
+  @extend .featureContainer;
+  margin: 0 auto 60px auto;
+}
 
 .featureWrapper {
   margin-top: 40px;
   width: 793px;
-  margin-bottom: 40px;
+  margin-bottom: 24px;
   display: flex;
   flex-direction: row;
   margin-right: auto;
   margin-left: auto;
-  padding-bottom: 44px;
-  border-bottom: solid 1px $gray1;
 }
 
 .featureItem {
@@ -124,17 +132,26 @@
   background-image: url("https://assets.pluto.network/scinapse-background.webp");
 }
 
-.sourceVendorContainer {
-  max-width: 793px;
-  margin: 0 auto 80px auto;
-  background-color: white;
+.contentBlockDivider {
+  width: 100%;
+  height: 1px;
+  background-color: $gray1;
+  margin-top: 40px;
+  margin-bottom: 40px;
 }
 
-.sourceVendorSubtitle {
+.sourceVendorContainer {
+  @extend .featureContainer;
+  margin: 0 auto 60px auto;
+}
+
+.contextSubtitle {
   font-size: 16px;
-  color: $gray6;
+  font-weight: bold;
+  color: $gray4;
+  letter-spacing: 2px;
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 24px;
 }
 
 .sourceVendorWrapper {
@@ -159,6 +176,29 @@
       height: 100%;
       object-fit: contain;
       overflow: hidden;
+    }
+  }
+}
+
+.trendingPaperItemWrapper {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 12px;
+
+  .trendingPaperTitle {
+    font-size: 16px;
+    line-height: 1.5;
+    color: $navy0;
+  }
+
+  .trendingPaperVenueAndAuthor {
+    font-size: 14px;
+    color: $gray4;
+  }
+
+  &:hover {
+    .trendingPaperTitle {
+      text-decoration: underline;
     }
   }
 }
@@ -225,7 +265,7 @@
     flex-direction: column;
   }
 
-  .sourceVendorSubtitle {
+  .contextSubtitle {
     margin-bottom: 20px;
   }
 
@@ -260,6 +300,10 @@
 
   .searchInputForm {
     width: 100%;
+    padding: 0 15px;
+  }
+
+  .trendingPaperItemWrapper {
     padding: 0 15px;
   }
 }

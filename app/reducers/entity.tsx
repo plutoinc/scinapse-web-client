@@ -24,7 +24,7 @@ export interface NormalizedPaperListResponse {
   REFERENCE: https://github.com/tc39/proposal-object-rest-spread
 */
 
-export type AppEntities = {
+export interface AppEntities {
   authors: {
     [authorId: number]: Author;
   };
@@ -49,7 +49,7 @@ export type AppEntities = {
   profiles: {
     [authorId: number]: Profile;
   };
-};
+}
 
 export interface EntityState extends Readonly<AppEntities> {}
 
@@ -76,7 +76,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       let newCollections: { [collectionId: number]: Collection } = {};
       if (entities.collections) {
         const receivedCollections = entities.collections;
-        newCollections = merge(receivedCollections, state.collections);
+        newCollections = merge(state.collections, receivedCollections);
       }
 
       return {

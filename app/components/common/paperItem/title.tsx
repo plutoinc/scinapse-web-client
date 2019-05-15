@@ -6,11 +6,7 @@ import HighLightedContent from "../highLightedContent";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
 import actionTicketManager from "../../../helpers/actionTicketManager";
-import { getUserGroupName } from "../../../helpers/abTestHelper";
-import { getCurrentPageType } from "../../locationListener";
 import { Paper } from "../../../model/paper";
-import { PAPER_FROM_SEARCH_TEST_NAME } from "../../../constants/abTestGlobalValue";
-import { getBlockedValueForPaperFromSearchTest } from "../../../helpers/abTestHelper/paperFromSearchTestHelper";
 import { ActionCreators } from "../../../actions/actionTypes";
 const styles = require("./title.scss");
 
@@ -69,15 +65,6 @@ class Title extends React.PureComponent<TitleProps, {}> {
   private handleClickTitle = async (e: React.MouseEvent<HTMLAnchorElement>) => {
     const { dispatch, pageType, actionArea, paper, history } = this.props;
     e.preventDefault();
-
-    const userGroupName: string = getUserGroupName(PAPER_FROM_SEARCH_TEST_NAME) || "";
-    const currentArea = getCurrentPageType();
-
-    if (currentArea === "searchResult") {
-      const isBlocked = await getBlockedValueForPaperFromSearchTest(userGroupName, "searchResult");
-
-      if (isBlocked) return;
-    }
 
     actionTicketManager.trackTicket({
       pageType,
