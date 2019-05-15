@@ -17,9 +17,10 @@ function observeRelatedPaper(
   collectionId: number
 ) {
   return new IntersectionObserver(
-    entries => {
+    (entries, observer) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
+        const { target, isIntersecting } = entry;
+        if (isIntersecting) {
           ActionTicketManager.trackTicket({
             pageType: "collectionShow",
             actionType: "view",
@@ -27,6 +28,7 @@ function observeRelatedPaper(
             actionTag: "viewRelatedPaper",
             actionLabel: String(collectionId),
           });
+          observer.unobserve(target);
         }
       });
     },
