@@ -217,6 +217,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         </Link>
       );
     } else if (isSearchEngine) {
+      console.log(isSearchEngine, "else if");
       return (
         <Link
           to="/"
@@ -228,6 +229,8 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         </Link>
       );
     } else {
+      console.log(isSearchEngine, "else");
+
       return (
         <Link
           to="/"
