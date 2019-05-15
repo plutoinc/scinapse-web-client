@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import * as Cookies from "js-cookie";
+import * as classNames from "classnames";
 import { denormalize } from "normalizr";
 import MenuItem from "@material-ui/core/MenuItem";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
@@ -35,7 +36,6 @@ import { getMemoizedPaper } from "../../containers/paperShow/select";
 import ResearchHistory from "../researchHistory";
 import { SCINAPSE_LOGO_TEST } from "../../constants/abTestGlobalValue";
 import { getUserGroupName } from "../../helpers/abTestHelper";
-import * as classNames from "classnames";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
