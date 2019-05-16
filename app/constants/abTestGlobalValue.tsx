@@ -1,5 +1,6 @@
 import { ABTestType } from "./abTest";
 
+export const SCINAPSE_LOGO_TEST: ABTestType = "scinapseLogo";
 export const SIGN_BANNER_AT_SEARCH_BANNER_TEST: ABTestType = "signBannerAtSearch-banner";
 export const SIGN_BANNER_AT_SEARCH_SIGN_BUTTON_TEXT_TEST: ABTestType = "signBannerAtSearch-signButtonText";
 export const SIGN_BANNER_AT_SEARCH_BODY_TEXT_TEST: ABTestType = "signBannerAtSearch-bodyText";

@@ -3,9 +3,11 @@ import axios from "axios";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import * as Cookies from "js-cookie";
+import * as classNames from "classnames";
 import { denormalize } from "normalizr";
 import MenuItem from "@material-ui/core/MenuItem";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import NoSsr from "@material-ui/core/NoSsr";
 import * as addDays from "date-fns/add_days";
 import * as isAfter from "date-fns/is_after";
 import TopToastBar from "../topToastBar";
@@ -13,7 +15,7 @@ import BubblePopover from "../common/bubblePopover";
 import { AppState } from "../../reducers";
 import Icon from "../../icons";
 import { signOut } from "../auth/actions";
-import { trackAction, trackDialogView } from "../../helpers/handleGA";
+import { trackDialogView } from "../../helpers/handleGA";
 import { HeaderProps } from "./types/header";
 import { withStyles } from "../../helpers/withStylesHelper";
 import EnvChecker from "../../helpers/envChecker";
@@ -32,6 +34,8 @@ import { getCollections } from "../collections/actions";
 import { collectionSchema } from "../../model/collection";
 import { getMemoizedPaper } from "../../containers/paperShow/select";
 import ResearchHistory from "../researchHistory";
+import { SCINAPSE_LOGO_TEST } from "../../constants/abTestGlobalValue";
+import { getUserGroupName } from "../../helpers/abTestHelper";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -115,11 +119,12 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
   public render() {
     const navClassName = this.getNavbarClassName();
+    const logoUserGroupName: string = getUserGroupName(SCINAPSE_LOGO_TEST) || "";
 
     return (
       <nav className={`${navClassName} mui-fixed`}>
         <div className={styles.headerContainer}>
-          {this.getHeaderLogo()}
+          {this.getHeaderLogo(logoUserGroupName)}
           <div className={styles.leftBox} />
           {this.getSearchFormContainer()}
           {this.getHeaderButtons()}
@@ -201,9 +206,10 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     ticking = false;
   };
 
-  private getHeaderLogo = () => {
+  private getHeaderLogo = (userGroupName: string) => {
     const { location, layoutState } = this.props;
     const isNotHome = location.pathname !== HOME_PATH;
+    const isSearchEngineContext = userGroupName === "searchEngine";
 
     if (layoutState.userDevice !== UserDevice.DESKTOP && isNotHome) {
       return (
@@ -211,18 +217,31 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           <Icon icon="SCINAPSE_LOGO_SMALL" />
         </Link>
       );
-    } else {
-      return (
+    }
+
+    return (
+      <NoSsr>
         <Link
           to="/"
-          onClick={() => trackAction("/", "headerLogo")}
-          className={styles.headerLogo}
-          aria-label="Scinapse regular header logo"
+          onClick={() =>
+            ActionTicketManager.trackTicket({
+              pageType: getCurrentPageType(),
+              actionType: "fire",
+              actionArea: "topBar",
+              actionTag: "clickLogo",
+              actionLabel: null,
+            })
+          }
+          className={classNames({
+            [styles.headerSearchEngineLogo]: isSearchEngineContext,
+            [styles.headerLogo]: !isSearchEngineContext,
+          })}
+          aria-label="Scinapse header logo"
         >
-          <Icon icon="SCINAPSE_LOGO" />
+          <Icon icon={isSearchEngineContext ? "LOGO_SEARCH_ENGINE" : "SCINAPSE_LOGO"} />
         </Link>
-      );
-    }
+      </NoSsr>
+    );
   };
 
   private getSearchFormContainer = () => {

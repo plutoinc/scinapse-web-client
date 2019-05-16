@@ -1,5 +1,10 @@
 import { Test } from "./abTest";
 
+export const scinapseLogoTest: Test = {
+  name: "scinapseLogo",
+  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "searchEngine", weight: 1 }],
+};
+
 export const bannerTest: Test = {
   name: "signBannerAtSearch-banner",
   userGroup: [{ groupName: "control", weight: 1 }, { groupName: "banner", weight: 2 }],
