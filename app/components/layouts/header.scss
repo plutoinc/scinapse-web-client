@@ -1,7 +1,7 @@
 .navbar {
   position: fixed;
   top: 0;
-  z-index: 999;
+  z-index: 100;
   width: 100%;
   background-color: white;
   border-bottom: 1px solid $gray1;
@@ -187,7 +187,6 @@
   height: 44px !important;
   font-size: 14px !important;
   position: relative;
-  z-index: 999999;
   padding: 0 !important;
 
   &:hover {
