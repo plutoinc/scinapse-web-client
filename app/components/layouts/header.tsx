@@ -126,7 +126,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         <div className={styles.headerContainer}>
           {this.getHeaderLogo(logoUserGroupName)}
           <div className={styles.leftBox} />
-          {this.getSearchFormContainer()}
+          {this.getSearchFormContainer(logoUserGroupName)}
           {this.getHeaderButtons()}
         </div>
         {this.getToastBar()}
@@ -244,9 +244,10 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     );
   };
 
-  private getSearchFormContainer = () => {
+  private getSearchFormContainer = (userGroupName: string) => {
     const { location, articleSearchState } = this.props;
     const isShowSearchFormContainer = location.pathname !== HOME_PATH;
+    const isSearchEngineContext = userGroupName === "searchEngine";
 
     let currentQuery = "";
     let currentFilter: FilterObject = {};
@@ -258,19 +259,28 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     if (!!articleSearchState.selectedFilter) {
       currentFilter = articleSearchState.selectedFilter.filter;
     }
+    console.log(isSearchEngineContext);
 
     return (
-      <div style={!isShowSearchFormContainer ? { visibility: "hidden" } : {}} className={styles.searchFormContainer}>
-        <SearchQueryInput
-          wrapperClassName={styles.searchWrapper}
-          listWrapperClassName={styles.suggestionListWrapper}
-          inputClassName={styles.searchInput}
-          initialValue={currentQuery}
-          initialFilter={currentFilter}
-          actionArea="topBar"
-          maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
-        />
-      </div>
+      <NoSsr>
+        <div
+          style={!isShowSearchFormContainer ? { visibility: "hidden" } : {}}
+          className={classNames({
+            [styles.searchFormContainerAtSearchEngineLogo]: isSearchEngineContext,
+            [styles.searchFormContainer]: !isSearchEngineContext,
+          })}
+        >
+          <SearchQueryInput
+            wrapperClassName={styles.searchWrapper}
+            listWrapperClassName={styles.suggestionListWrapper}
+            inputClassName={styles.searchInput}
+            initialValue={currentQuery}
+            initialFilter={currentFilter}
+            actionArea="topBar"
+            maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
+          />
+        </div>
+      </NoSsr>
     );
   };
 
