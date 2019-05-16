@@ -31,7 +31,9 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
   }
 
   function handleCloseSourceDropdown() {
-    setIsSourcePopoverOpen(false);
+    if (isSourcePopoverOpen) {
+      setIsSourcePopoverOpen(false);
+    }
   }
 
   if (!paper.doi && paper.urls.length === 0) {

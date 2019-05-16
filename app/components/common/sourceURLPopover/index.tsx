@@ -80,7 +80,7 @@ const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
         transition
       >
         {({ TransitionProps }) => (
-          <Fade {...TransitionProps} timeout={350}>
+          <Fade {...TransitionProps} timeout={200}>
             <div className={styles.sourcesWrapper}>{sources}</div>
           </Fade>
         )}
