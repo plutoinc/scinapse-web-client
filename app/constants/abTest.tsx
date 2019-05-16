@@ -1,12 +1,10 @@
 import {
   bannerTest,
-  signButtonTextTest,
-  bodyTextTest,
-  titleTextTest,
   signBannerAtPaperShowTest,
   signBannerAtPaperShowTitleTextTest,
   signBannerAtPaperShowTitleTextKeyverbTest,
   scinapseLogoTest,
+  bannerCuratedTest,
 } from "./abTestObject";
 
 export interface UserGroup {
@@ -25,9 +23,7 @@ export type ABTestType =
   | "queryLover"
   | "scinapseLogo"
   | "signBannerAtSearch-banner"
-  | "signBannerAtSearch-signButtonText"
-  | "signBannerAtSearch-bodyText"
-  | "signBannerAtSearch-titleText"
+  | "signBannerAtSearch-curated"
   | "signBannerAtPaperShow-banner"
   | "signBannerAtPaperShow-titleText"
   | "signBannerAtPaperShow-titleText-keyverb";
@@ -53,9 +49,7 @@ export interface BenefitExpTicketContext {
 export const LIVE_TESTS: Test[] = [
   scinapseLogoTest,
   bannerTest,
-  signButtonTextTest,
-  bodyTextTest,
-  titleTextTest,
+  bannerCuratedTest,
   signBannerAtPaperShowTest,
   signBannerAtPaperShowTitleTextTest,
   signBannerAtPaperShowTitleTextKeyverbTest,

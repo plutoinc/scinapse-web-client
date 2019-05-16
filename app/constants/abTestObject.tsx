@@ -10,27 +10,12 @@ export const bannerTest: Test = {
   userGroup: [{ groupName: "control", weight: 1 }, { groupName: "banner", weight: 2 }],
 };
 
-export const signButtonTextTest: Test = {
-  name: "signBannerAtSearch-signButtonText",
+export const bannerCuratedTest: Test = {
+  name: "signBannerAtSearch-curated",
   userGroup: [
-    { groupName: "joinnow", weight: 1 },
-    { groupName: "registernow", weight: 1 },
-    { groupName: "signup", weight: 1 },
-    { groupName: "yesofcourse", weight: 1 },
-  ],
-};
-
-export const bodyTextTest: Test = {
-  name: "signBannerAtSearch-bodyText",
-  userGroup: [{ groupName: "a", weight: 1 }, { groupName: "b", weight: 1 }, { groupName: "c", weight: 1 }],
-};
-
-export const titleTextTest: Test = {
-  name: "signBannerAtSearch-titleText",
-  userGroup: [
-    { groupName: "unlimited", weight: 1 },
-    { groupName: "areyouresearcher", weight: 1 },
-    { groupName: "bemember", weight: 1 },
+    { groupName: "areyouresearcher-yesofcourse", weight: 1 },
+    { groupName: "bemember-joinnow", weight: 1 },
+    { groupName: "areyouresearcher-signup", weight: 1 },
   ],
 };
 

@@ -8,6 +8,8 @@ import {
   SIGN_BANNER_AT_PAPER_SHOW_TITLE_TEXT_TEST,
   SIGN_BANNER_AT_PAPER_SHOW_TITLE_TEXT_KEYVERB_TEST,
 } from "../../../constants/abTestGlobalValue";
+import { ActionTicketParams } from "../../../helpers/actionTicketManager/actionTicket";
+import { useIntersectionForTrackViewItem } from "../../../hooks/useIntersectionHook";
 const styles = require("./signUpBanner.scss");
 
 interface SignBannerProps {
@@ -73,6 +75,20 @@ const SignUpBanner: React.FunctionComponent<SignBannerProps> = props => {
   const { isLoggedIn } = props;
 
   const signBannerUserGroupName: string = getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_BANNER_TEST) || "";
+  const titleTextUserGroupName: string = getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TITLE_TEXT_TEST) || "";
+  const titleTextKeyverbUserGroupName: string =
+    getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TITLE_TEXT_KEYVERB_TEST) || "";
+
+  const bannerViewTicketContext: ActionTicketParams = {
+    pageType: "paperShow",
+    actionType: "view",
+    actionArea: "signBanner",
+    actionTag: "bannerView",
+    actionLabel: "signBannerAtPaperShow",
+    expName: "signBannerAtPaperShow",
+  };
+
+  const { elRef } = useIntersectionForTrackViewItem(0.1, bannerViewTicketContext);
 
   const isBannerShow = signBannerUserGroupName === "banner";
 
@@ -80,21 +96,8 @@ const SignUpBanner: React.FunctionComponent<SignBannerProps> = props => {
     return null;
   }
 
-  const titleTextUserGroupName: string = getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TITLE_TEXT_TEST) || "";
-  const titleTextKeyverbUserGroupName: string =
-    getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TITLE_TEXT_KEYVERB_TEST) || "";
-
-  ActionTicketManager.trackTicket({
-    pageType: "paperShow",
-    actionType: "view",
-    actionArea: "signBanner",
-    actionTag: "bannerView",
-    actionLabel: "signBannerAtPaperShow",
-    expName: "signBannerAtPaperShow",
-  });
-
   return (
-    <div className={styles.bannerContainer}>
+    <div className={styles.bannerContainer} ref={elRef}>
       <SignBannerTitleText userGroupName={titleTextUserGroupName} keyverb={titleTextKeyverbUserGroupName} />
       <OpenSignUpModalBtn />
     </div>
