@@ -3,6 +3,12 @@ import * as http from "http";
 import * as https from "https";
 import * as DeployConfig from "../deploy/config";
 import * as s3 from "s3";
+import * as AWS from "aws-sdk";
+
+const awsS3 = new AWS.S3({
+  region: "us-east-1",
+});
+
 const s3client = s3.createClient({
   s3Options: {
     region: "us-east-1",
@@ -40,9 +46,25 @@ export async function uploadProdFiles() {
 }
 
 export function uploadDevFiles() {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const prefix = `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${process.env.BRANCH_NAME}`;
     const cacheControl = "public, max-age=0";
+
+    const listRes = await awsS3.listObjects({ Bucket: DeployConfig.AWS_S3_BUCKET, Prefix: prefix }).promise();
+    if (listRes.Contents && listRes.Contents.length > 0) {
+      const deleteParams: AWS.S3.Types.DeleteObjectsRequest = {
+        Bucket: DeployConfig.AWS_S3_BUCKET,
+        Delete: {
+          Objects: [],
+        },
+      };
+
+      listRes.Contents.forEach(content => {
+        deleteParams.Delete.Objects.push({ Key: content.Key });
+      });
+
+      await awsS3.deleteObjects(deleteParams).promise();
+    }
 
     const params = {
       localDir: path.resolve(__dirname, "../../dist"),
