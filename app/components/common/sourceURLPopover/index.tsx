@@ -2,7 +2,7 @@ import * as React from "react";
 import * as URL from "url";
 import * as classNames from "classnames";
 import Popper from "@material-ui/core/Popper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Fade from "@material-ui/core/Fade";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { PaperSource } from "../../../model/paperSource";
 import { trackAndOpenLink } from "../../../helpers/handleGA";
@@ -12,11 +12,10 @@ import { isPDFLink } from "../../../helpers/getPDFLink";
 const styles = require("./sourceURLPopover.scss");
 
 interface SourceURLPopover {
-  buttonEl: React.ReactNode;
   isOpen: boolean;
   handleCloseFunc: (e: any) => void;
-  anchorEl: HTMLElement;
   paperSources: PaperSource[];
+  anchorEl: HTMLElement | null;
   pageType: Scinapse.ActionTicket.PageType;
   paperId: number;
   actionArea?: Scinapse.ActionTicket.ActionArea;
@@ -31,9 +30,6 @@ const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
       return 0;
     })
     .map(source => {
-      if (!source.url) {
-        return;
-      }
       const urlObj = URL.parse(source.url);
 
       return (
@@ -70,25 +66,25 @@ const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
 
   return (
     <>
-      {props.buttonEl}
-      {props.isOpen && (
-        <Popper
-          placement="bottom-end"
-          modifiers={{
-            preventOverflow: {
-              enabled: true,
-              boundariesElement: "window",
-            },
-          }}
-          open={props.isOpen}
-          anchorEl={props.anchorEl}
-          style={{ zIndex: 10 }}
-        >
-          <ClickAwayListener onClickAway={props.handleCloseFunc}>
+      <Popper
+        anchorEl={props.anchorEl}
+        placement="bottom-end"
+        modifiers={{
+          preventOverflow: {
+            enabled: true,
+            boundariesElement: "window",
+          },
+        }}
+        open={props.isOpen}
+        style={{ zIndex: 10 }}
+        transition
+      >
+        {({ TransitionProps }) => (
+          <Fade {...TransitionProps} timeout={200}>
             <div className={styles.sourcesWrapper}>{sources}</div>
-          </ClickAwayListener>
-        </Popper>
-      )}
+          </Fade>
+        )}
+      </Popper>
     </>
   );
 };

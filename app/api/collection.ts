@@ -176,6 +176,12 @@ class CollectionAPI extends PlutoAxios {
     const normalizedData = normalize(camelizedRes, collectionSchema);
     return normalizedData;
   }
+
+  public async getRelatedPaperInCollection(collectionId: number) {
+    const res = await this.get(`/collections/${collectionId}/related/sample`);
+    const camelizedRes = camelCaseKeys(res.data.data);
+    return camelizedRes;
+  }
 }
 
 const collectionAPI = new CollectionAPI();

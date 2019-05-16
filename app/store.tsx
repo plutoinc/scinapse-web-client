@@ -40,7 +40,7 @@ class StoreManager {
       this._store = createStore<AppState>(rootReducer, initialState, compose(applyMiddleware(thunkMiddleware)));
     } else {
       if (EnvChecker.isLocal() || EnvChecker.isDev()) {
-        const loggerMiddleware = createLogger({});
+        const loggerMiddleware = createLogger({ collapsed: true });
         this._store = createStore(
           rootReducer,
           this.getBrowserInitialState(),

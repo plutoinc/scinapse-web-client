@@ -91,6 +91,7 @@ declare namespace Scinapse {
       | "signBannerAtPaperShow"
       | "bannerView"
       | "researchHistory"
+      | "viewRelatedPaper"
       | "clickPagination"
       | "clickLogo"
       | "";

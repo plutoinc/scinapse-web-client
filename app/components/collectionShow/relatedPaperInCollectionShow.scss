@@ -1,0 +1,45 @@
+.relatedPaperContainer {
+  border-radius: 8px;
+  border: solid 1px $gray3;
+  background-color: $gray0;
+  padding: 24px;
+
+  .titleContext {
+    font-size: 20px;
+    font-weight: 500;
+    color: $black1;
+    margin-bottom: 16px;
+  }
+}
+
+.paperItemWrapper {
+  background-color: white;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  padding: 12px 16px 4px 16px;
+  border-radius: 5px;
+  border: solid 1px #e7eaef;
+  background-color: white;
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-top: 50px;
+  align-items: center;
+  min-height: 120px;
+
+  .loadingSpinner {
+    div {
+      background-color: $gray3;
+    }
+  }
+
+  .loadingContent {
+    margin-top: 27.5px;
+    font-size: 15px;
+    line-height: 2.4;
+    color: $black0;
+  }
+}

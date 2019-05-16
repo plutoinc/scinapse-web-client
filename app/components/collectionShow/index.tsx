@@ -36,6 +36,7 @@ import { removePaperFromCollection } from "../dialog/actions";
 import { CollectionShowMatchParams } from "./types";
 import CollectionSideNaviBar from "../collectionSideNaviBar";
 import { getCollections } from "../collections/actions";
+import RelatedPaperInCollectionShow from "./relatedPaperInCollectionShow";
 const styles = require("./collectionShow.scss");
 
 const FACEBOOK_SHARE_URL = "http://www.facebook.com/sharer/sharer.php?u=";
@@ -203,9 +204,8 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                     <div>{this.getPaperList()}</div>
                     <div>{this.getPaginationComponent()}</div>
                   </div>
+                  <RelatedPaperInCollectionShow collectionId={userCollection.id} />
                 </div>
-                {/* <div className={styles.rightBox}>
-              </div> */}
               </div>
             </div>
           </div>
@@ -220,6 +220,10 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   private getPaginationComponent = () => {
     const { collectionShow, layout } = this.props;
     const { currentPaperListPage, totalPaperListPage } = collectionShow;
+
+    if (totalPaperListPage === 1) {
+      return null;
+    }
 
     const currentPageIndex: number = currentPaperListPage - 1;
 
@@ -299,45 +303,46 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     );
   };
 
-  private getCollectionShareBtns = () => {
+  private getShareDropdownContent = () => {
     const { userCollection } = this.props;
-    return userCollection ? (
-      <ClickAwayListener onClickAway={this.handleToggleShareDropdown}>
-        <div className={styles.shareAreaWrapper}>
-          <span className={styles.shareGuideMessage}>Share this Collection to SNS!</span>
-          <div className={styles.shareBtnsWrapper}>
-            <a
-              className={styles.shareBtn}
-              onClick={() => {
-                this.getPageToSharing("COPIED", userCollection.id);
-              }}
-            >
-              <Icon icon="LINK" className={styles.shareIcon} />
-            </a>
-            <a
-              className={styles.shareBtn}
-              target="_blank"
-              rel="noopener nofollow noreferrer"
-              onClick={() => {
-                this.getPageToSharing("FACEBOOK", userCollection.id);
-              }}
-            >
-              <Icon icon="FACEBOOK_LOGO" className={styles.facebookShareIcon} />
-            </a>
-            <a
-              className={styles.shareBtn}
-              target="_blank"
-              rel="noopener nofollow noreferrer"
-              onClick={() => {
-                this.getPageToSharing("TWITTER", userCollection.id);
-              }}
-            >
-              <Icon icon="TWITTER_LOGO" className={styles.twitterShareIcon} />
-            </a>
-          </div>
+
+    if (!userCollection) return null;
+
+    return (
+      <div className={styles.shareAreaWrapper}>
+        <span className={styles.shareGuideMessage}>Share this Collection to SNS!</span>
+        <div className={styles.shareBtnsWrapper}>
+          <a
+            className={styles.shareBtn}
+            onClick={() => {
+              this.getPageToSharing("COPIED", userCollection.id);
+            }}
+          >
+            <Icon icon="LINK" className={styles.shareIcon} />
+          </a>
+          <a
+            className={styles.shareBtn}
+            target="_blank"
+            rel="noopener nofollow noreferrer"
+            onClick={() => {
+              this.getPageToSharing("FACEBOOK", userCollection.id);
+            }}
+          >
+            <Icon icon="FACEBOOK_LOGO" className={styles.facebookShareIcon} />
+          </a>
+          <a
+            className={styles.shareBtn}
+            target="_blank"
+            rel="noopener nofollow noreferrer"
+            onClick={() => {
+              this.getPageToSharing("TWITTER", userCollection.id);
+            }}
+          >
+            <Icon icon="TWITTER_LOGO" className={styles.twitterShareIcon} />
+          </a>
         </div>
-      </ClickAwayListener>
-    ) : null;
+      </div>
+    );
   };
 
   private handleActionTicketInShared = (platform: string, id: number) => {
@@ -379,6 +384,11 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
 
   private getCollectionControlBtns = () => {
     const { currentUser, userCollection, collectionShow } = this.props;
+    const isMine =
+      userCollection &&
+      currentUser.isLoggedIn &&
+      userCollection.createdBy.id === currentUser.id &&
+      !userCollection.isDefault;
 
     const collectionShareButton = (
       <TransparentButton
@@ -405,35 +415,38 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
       />
     );
 
-    if (
-      userCollection &&
-      currentUser.isLoggedIn &&
-      userCollection.createdBy.id === currentUser.id &&
-      !userCollection.isDefault
-    ) {
+    if (isMine) {
       return (
         <div className={styles.collectionHeaderBtnWrapper}>
           <TransparentButton
             style={{ width: "123px", height: "40px", fontWeight: 500, padding: "0 16px 0 8px" }}
             iconStyle={{ marginRight: "8px", width: "20px", height: "20px", color: "#666d7c" }}
             onClick={() => {
-              GlobalDialogManager.openEditCollectionDialog(userCollection);
+              GlobalDialogManager.openEditCollectionDialog(userCollection!);
             }}
             gaCategory="Collection Show"
             gaAction="Click Edit Collection"
             content="Edit"
             icon="PEN"
           />
-          {collectionShareButton}
-          {collectionShow.isShareDropdownOpen ? this.getCollectionShareBtns() : null}
+          <ClickAwayListener onClickAway={this.handleCloseShareDropdown}>
+            <div>
+              {collectionShareButton}
+              {collectionShow.isShareDropdownOpen ? this.getShareDropdownContent() : null}
+            </div>
+          </ClickAwayListener>
         </div>
       );
     }
 
     return (
       <div className={styles.collectionHeaderBtnWrapper}>
-        <div>{collectionShareButton}</div>
-        <div>{collectionShow.isShareDropdownOpen ? this.getCollectionShareBtns() : null}</div>
+        <ClickAwayListener onClickAway={this.handleCloseShareDropdown}>
+          <div>
+            <div>{collectionShareButton}</div>
+            <div>{collectionShow.isShareDropdownOpen ? this.getShareDropdownContent() : null}</div>
+          </div>
+        </ClickAwayListener>
       </div>
     );
   };
@@ -445,6 +458,14 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
       try {
         await dispatch(removePaperFromCollection({ paperIds: [paperId], collection: userCollection }));
       } catch (err) {}
+    }
+  };
+
+  private handleCloseShareDropdown = () => {
+    const { dispatch, collectionShow } = this.props;
+
+    if (collectionShow.isShareDropdownOpen) {
+      dispatch(closeShareDropdown());
     }
   };
 
