@@ -9,7 +9,7 @@ import {
   SIGN_BANNER_AT_PAPER_SHOW_TITLE_TEXT_KEYVERB_TEST,
 } from "../../../constants/abTestGlobalValue";
 import { ActionTicketParams } from "../../../helpers/actionTicketManager/actionTicket";
-import { useIntersectionForTrackViewItem } from "../../../hooks/useIntersectionHook";
+import { useObserver } from "../../../hooks/useIntersectionHook";
 const styles = require("./signUpBanner.scss");
 
 interface SignBannerProps {
@@ -88,7 +88,7 @@ const SignUpBanner: React.FunctionComponent<SignBannerProps> = props => {
     expName: "signBannerAtPaperShow",
   };
 
-  const { elRef } = useIntersectionForTrackViewItem(0.1, bannerViewTicketContext);
+  const { elRef } = useObserver(0.1, bannerViewTicketContext);
 
   const isBannerShow = signBannerUserGroupName === "banner";
 

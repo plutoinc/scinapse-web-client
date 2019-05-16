@@ -8,7 +8,7 @@ import {
 import { getUserGroupName } from "../../../../helpers/abTestHelper";
 import GlobalDialogManager from "../../../../helpers/globalDialogManager";
 import ActionTicketManager from "../../../../helpers/actionTicketManager";
-import { useIntersectionForTrackViewItem } from "../../../../hooks/useIntersectionHook";
+import { useObserver } from "../../../../hooks/useIntersectionHook";
 import { ActionTicketParams } from "../../../../helpers/actionTicketManager/actionTicket";
 const styles = require("./signBanner.scss");
 
@@ -84,7 +84,7 @@ const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
     actionLabel: "signBannerAtSearch",
     expName: "signBannerAtSearch",
   };
-  const { elRef } = useIntersectionForTrackViewItem(0.1, bannerViewTicketContext);
+  const { elRef } = useObserver(0.1, bannerViewTicketContext);
   const isBannerShow = signBannerUserGroupName === "banner";
 
   if (!isBannerShow) {
