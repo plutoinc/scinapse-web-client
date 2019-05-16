@@ -4,48 +4,25 @@ import CollectionAPI from "../../api/collection";
 import { Paper } from "../../model/paper";
 import PaperItem from "../common/paperItem";
 import ArticleSpinner from "../common/spinner/articleSpinner";
-import ActionTicketManager from "../../helpers/actionTicketManager";
+import { useIntersectionForTrackViewItem } from "../../hooks/useIntersectionHook";
+import { ActionTicketParams } from "../../helpers/actionTicketManager/actionTicket";
 const styles = require("./relatedPaperInCollectionShow.scss");
 
 interface RelatedPaperInCollectionShowProps {
   collectionId: number;
 }
 
-function useIntersection(threshold: number | number[] | undefined, paperId: number) {
-  const elRef = React.useRef<HTMLDivElement | null>(null);
-
-  React.useEffect(
-    () => {
-      const intersectionObserver = new IntersectionObserver(
-        (entries, observer) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              ActionTicketManager.trackTicket({
-                pageType: "collectionShow",
-                actionType: "view",
-                actionArea: "relatedPaperList",
-                actionTag: "viewRelatedPaper",
-                actionLabel: String(paperId),
-              });
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold }
-      );
-      if (elRef.current) {
-        intersectionObserver.observe(elRef.current);
-      }
-      return () => intersectionObserver.disconnect();
-    },
-    [elRef]
-  );
-  return { elRef };
-}
-
 const RelatedPaperItem: React.FunctionComponent<{ paper: Paper }> = props => {
   const { paper } = props;
-  const { elRef } = useIntersection(0.1, paper.id);
+  const actionTicketContext: ActionTicketParams = {
+    pageType: "collectionShow",
+    actionType: "view",
+    actionArea: "relatedPaperList",
+    actionTag: "viewRelatedPaper",
+    actionLabel: String(paper.id),
+  };
+
+  const { elRef } = useIntersectionForTrackViewItem(0.1, actionTicketContext);
 
   return (
     <div ref={elRef}>

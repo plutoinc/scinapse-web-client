@@ -13,6 +13,7 @@ import getAPIHost from "../../api/getHost";
 import { PaperSource } from "../../model/paperSource";
 import { EXTENSION_APP_ID } from "../../constants/scinapse-extension";
 import EnvChecker from "../../helpers/envChecker";
+import { useIntervalProgress } from "../../hooks/useIntervalProgressHook";
 const { Document, Page, pdfjs } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
@@ -28,31 +29,6 @@ interface PDFViewerProps {
   handleGetBestPdf: () => Promise<PaperPdf> | undefined;
   onLoadSuccess: () => void;
   onFailed: () => void;
-}
-
-function useIntervalProgress(callback: () => void, delay: number | null) {
-  const savedCallback = React.useRef(() => {});
-
-  React.useEffect(
-    () => {
-      savedCallback.current = callback;
-    },
-    [callback]
-  );
-
-  React.useEffect(
-    () => {
-      function tick() {
-        savedCallback.current();
-      }
-
-      if (delay !== null) {
-        const timer = setInterval(tick, delay);
-        return () => clearInterval(timer);
-      }
-    },
-    [delay]
-  );
 }
 
 function trackClickButton(actionTag: Scinapse.ActionTicket.ActionTagType, paperId: number) {
