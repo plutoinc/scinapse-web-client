@@ -2,86 +2,27 @@ import * as React from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import {
-  SIGN_BANNER_AT_SEARCH_TITLE_TEXT_TEST,
-  SIGN_BANNER_AT_SEARCH_BODY_TEXT_TEST,
-  SIGN_BANNER_AT_SEARCH_SIGN_BUTTON_TEXT_TEST,
   SIGN_BANNER_AT_SEARCH_BANNER_TEST,
+  SIGN_BANNER_AT_SEARCH_CURATED_TEST,
 } from "../../../../constants/abTestGlobalValue";
 import { getUserGroupName } from "../../../../helpers/abTestHelper";
 import GlobalDialogManager from "../../../../helpers/globalDialogManager";
 import ActionTicketManager from "../../../../helpers/actionTicketManager";
+import { useObserver } from "../../../../hooks/useIntersectionHook";
+import { ActionTicketParams } from "../../../../helpers/actionTicketManager/actionTicket";
 const styles = require("./signBanner.scss");
 
 interface SignBannerProps {
   isLoading: boolean;
 }
 
-interface SignBannerContextProps {
-  userGroupName: string;
+interface SignBannerContextObj {
+  titleText: string;
+  buttonText: string;
 }
 
-const SignBannerTitleText: React.FunctionComponent<SignBannerContextProps> = React.memo(props => {
-  const { userGroupName } = props;
-  let titleText = "";
-
-  switch (userGroupName) {
-    case "unlimited":
-      titleText = "Unlimited Scinapse";
-      break;
-    case "areyouresearcher":
-      titleText = "Are you a researcher?";
-      break;
-    case "bemember":
-      titleText = "Be a Scinapse Member";
-      break;
-    default:
-      return null;
-  }
-
-  return <div className={styles.bannerTitle}>{titleText}</div>;
-});
-
-const SignBannerBodyText: React.FunctionComponent<SignBannerContextProps> = React.memo(props => {
-  const { userGroupName } = props;
-  let bodyText = "";
-
-  switch (userGroupName) {
-    case "a":
-      bodyText = "Become a Scinapse member. Members can use all features unlimitedly.";
-      break;
-    case "b":
-      bodyText = "Become a Scinapse member. You can use all features unlimitedly.";
-      break;
-    case "c":
-      bodyText = "Become a Scinapse member. We focus on features for current researchers.";
-      break;
-    default:
-      return null;
-  }
-
-  return <div className={styles.bannerBody}>{bodyText}</div>;
-});
-
-const SignBannerSignButtonText: React.FunctionComponent<SignBannerContextProps> = React.memo(props => {
-  const { userGroupName } = props;
-  let signButtonText = "";
-
-  switch (userGroupName) {
-    case "joinnow":
-      signButtonText = "Join Now";
-      break;
-    case "registernow":
-      signButtonText = "Register Now";
-      break;
-    case "signup":
-      signButtonText = "Sign Up";
-      break;
-    case "yesofcourse":
-      signButtonText = "Yes, of course";
-      break;
-    default:
-      return null;
-  }
+const SignBannerSignButtonText: React.FunctionComponent<{ buttonText: string }> = React.memo(props => {
+  const { buttonText } = props;
 
   return (
     <div className={styles.bannerSignButtonWrapper}>
@@ -109,16 +50,41 @@ const SignBannerSignButtonText: React.FunctionComponent<SignBannerContextProps> 
         }}
         className={styles.bannerSignButton}
       >
-        {signButtonText}
+        {buttonText}
       </button>
     </div>
   );
 });
+
+function getSignBannerContext(): SignBannerContextObj {
+  const signBannerCuratedUserGroupName: string = getUserGroupName(SIGN_BANNER_AT_SEARCH_CURATED_TEST) || "";
+
+  switch (signBannerCuratedUserGroupName) {
+    case "areyouresearcher-yesofcourse":
+      return { titleText: "Are you a researcher?", buttonText: "Yes, of course" };
+    case "bemember-joinnow":
+      return { titleText: "Be a Scinapse Member", buttonText: "Join Now" };
+    case "areyouresearcher-signup":
+      return { titleText: "Are you a researcher?", buttonText: "Sign Up" };
+  }
+
+  return { titleText: "", buttonText: "" };
+}
+
 const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
   const { isLoading } = props;
 
   const signBannerUserGroupName: string = getUserGroupName(SIGN_BANNER_AT_SEARCH_BANNER_TEST) || "";
-
+  const signBannerContext: SignBannerContextObj = getSignBannerContext();
+  const bannerViewTicketContext: ActionTicketParams = {
+    pageType: "searchResult",
+    actionType: "view",
+    actionArea: "signBanner",
+    actionTag: "bannerView",
+    actionLabel: "signBannerAtSearch",
+    expName: "signBannerAtSearch",
+  };
+  const { elRef } = useObserver(0.1, bannerViewTicketContext);
   const isBannerShow = signBannerUserGroupName === "banner";
 
   if (!isBannerShow) {
@@ -135,23 +101,10 @@ const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
     );
   }
 
-  const TitleTextUserGroupName: string = getUserGroupName(SIGN_BANNER_AT_SEARCH_TITLE_TEXT_TEST) || "";
-  const BodyTextUserGroupName: string = getUserGroupName(SIGN_BANNER_AT_SEARCH_BODY_TEXT_TEST) || "";
-  const SignButtonTextUserName: string = getUserGroupName(SIGN_BANNER_AT_SEARCH_SIGN_BUTTON_TEXT_TEST) || "";
-
-  ActionTicketManager.trackTicket({
-    pageType: "searchResult",
-    actionType: "view",
-    actionArea: "signBanner",
-    actionTag: "bannerView",
-    actionLabel: "signBannerAtSearch",
-    expName: "signBannerAtSearch",
-  });
-
   return (
-    <div className={styles.bannerContainer}>
-      <SignBannerTitleText userGroupName={TitleTextUserGroupName} />
-      <SignBannerBodyText userGroupName={BodyTextUserGroupName} />
+    <div className={styles.bannerContainer} ref={elRef}>
+      <div className={styles.bannerTitle}>{signBannerContext.titleText}</div>
+      <div className={styles.bannerBody}>Become a Scinapse member. Members can use all features unlimitedly.</div>
       <div className={styles.bannerImageWrapper}>
         <picture>
           <source srcSet={"https://assets.pluto.network/signup_modal/researchers.webp"} type="image/webp" />
@@ -163,7 +116,7 @@ const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
           />
         </picture>
       </div>
-      <SignBannerSignButtonText userGroupName={SignButtonTextUserName} />
+      <SignBannerSignButtonText buttonText={signBannerContext.buttonText} />
     </div>
   );
 };

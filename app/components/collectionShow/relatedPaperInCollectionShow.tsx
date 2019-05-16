@@ -4,7 +4,7 @@ import CollectionAPI from "../../api/collection";
 import { Paper } from "../../model/paper";
 import PaperItem from "../common/paperItem";
 import ArticleSpinner from "../common/spinner/articleSpinner";
-import { useIntersectionForTrackViewItem } from "../../hooks/useIntersectionHook";
+import { useObserver } from "../../hooks/useIntersectionHook";
 import { ActionTicketParams } from "../../helpers/actionTicketManager/actionTicket";
 const styles = require("./relatedPaperInCollectionShow.scss");
 
@@ -22,7 +22,7 @@ const RelatedPaperItem: React.FunctionComponent<{ paper: Paper }> = props => {
     actionLabel: String(paper.id),
   };
 
-  const { elRef } = useIntersectionForTrackViewItem(0.1, actionTicketContext);
+  const { elRef } = useObserver(0.1, actionTicketContext);
 
   return (
     <div ref={elRef}>
