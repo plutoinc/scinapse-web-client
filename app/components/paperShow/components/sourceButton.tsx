@@ -55,7 +55,7 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
 
   return (
     <ClickAwayListener onClickAway={handleCloseSourceDropdown}>
-      <>
+      <div>
         <div ref={anchorEl}>
           <Button
             aria-label="Scinapse viewInSource button in paper"
@@ -98,7 +98,7 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
           anchorEl={anchorEl.current}
           actionArea="paperDescription"
         />
-      </>
+      </div>
     </ClickAwayListener>
   );
 };

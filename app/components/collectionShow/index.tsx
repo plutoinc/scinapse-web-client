@@ -430,10 +430,10 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
             icon="PEN"
           />
           <ClickAwayListener onClickAway={this.handleCloseShareDropdown}>
-            <>
+            <div>
               {collectionShareButton}
               {collectionShow.isShareDropdownOpen ? this.getShareDropdownContent() : null}
-            </>
+            </div>
           </ClickAwayListener>
         </div>
       );
@@ -442,10 +442,10 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     return (
       <div className={styles.collectionHeaderBtnWrapper}>
         <ClickAwayListener onClickAway={this.handleCloseShareDropdown}>
-          <>
+          <div>
             <div>{collectionShareButton}</div>
             <div>{collectionShow.isShareDropdownOpen ? this.getShareDropdownContent() : null}</div>
-          </>
+          </div>
         </ClickAwayListener>
       </div>
     );

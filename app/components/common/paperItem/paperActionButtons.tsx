@@ -164,6 +164,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
 
   private additionalMenuItems = () => {
     const {
+      currentUser,
       paper,
       handleRemovePaper,
       hasRemoveButton,
@@ -173,17 +174,18 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
     } = this.props;
     return (
       <div className={styles.menuItems}>
-        {hasCollection && (
-          <MenuItem
-            classes={{ root: styles.additionalMenuItem }}
-            onClick={() => {
-              GlobalDialogManager.openCollectionDialog(paper.id);
-              this.closeAdditionalMenu();
-            }}
-          >
-            Add to other collections
-          </MenuItem>
-        )}
+        {hasCollection &&
+          currentUser.isLoggedIn && (
+            <MenuItem
+              classes={{ root: styles.additionalMenuItem }}
+              onClick={() => {
+                GlobalDialogManager.openCollectionDialog(paper.id);
+                this.closeAdditionalMenu();
+              }}
+            >
+              Add to other collections
+            </MenuItem>
+          )}
         {hasRemoveButton ? (
           <MenuItem
             classes={{ root: styles.additionalMenuItem }}
@@ -237,6 +239,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             anchorEl={this.additionalMenuAnchorEl!}
             placement="bottom-end"
             open={this.state.isAdditionalMenuOpen}
+            disablePortal
           >
             <div className={styles.contentWrapper}>{this.additionalMenuItems()}</div>
           </Popper>
