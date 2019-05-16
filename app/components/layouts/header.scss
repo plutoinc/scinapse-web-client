@@ -36,8 +36,8 @@
   margin-right: 24px;
 
   svg {
-    width: 112.5px;
-    height: 30.5px;
+    width: 112px;
+    height: 32px;
     object-fit: contain;
   }
 }
@@ -72,6 +72,11 @@
   margin-right: 377px;
   height: 44px;
   align-items: center;
+}
+
+.searchFormContainerAtSearchEngineLogo {
+  @extend .searchFormContainer;
+  margin-left: 9px;
 }
 
 .rightBox {
