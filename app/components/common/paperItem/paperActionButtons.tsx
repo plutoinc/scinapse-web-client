@@ -164,6 +164,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
 
   private additionalMenuItems = () => {
     const {
+      currentUser,
       paper,
       handleRemovePaper,
       hasRemoveButton,
@@ -173,17 +174,18 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
     } = this.props;
     return (
       <div className={styles.menuItems}>
-        {hasCollection && (
-          <MenuItem
-            classes={{ root: styles.additionalMenuItem }}
-            onClick={() => {
-              GlobalDialogManager.openCollectionDialog(paper.id);
-              this.closeAdditionalMenu();
-            }}
-          >
-            Add to other collections
-          </MenuItem>
-        )}
+        {hasCollection &&
+          currentUser.isLoggedIn && (
+            <MenuItem
+              classes={{ root: styles.additionalMenuItem }}
+              onClick={() => {
+                GlobalDialogManager.openCollectionDialog(paper.id);
+                this.closeAdditionalMenu();
+              }}
+            >
+              Add to other collections
+            </MenuItem>
+          )}
         {hasRemoveButton ? (
           <MenuItem
             classes={{ root: styles.additionalMenuItem }}
@@ -225,36 +227,39 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
 
   private getMoreButton = () => {
     return (
-      <div className={styles.claimButton}>
-        <div ref={el => (this.additionalMenuAnchorEl = el)}>
-          <IconButton onClick={this.openAdditionalMenu} classes={{ root: styles.additionalMenuIcon }}>
-            <Icon className={styles.ellipsisIcon} icon="ELLIPSIS" />
-          </IconButton>
-        </div>
-        <Popper
-          className={styles.speechBubble}
-          anchorEl={this.additionalMenuAnchorEl!}
-          placement="bottom-end"
-          open={this.state.isAdditionalMenuOpen}
-        >
-          <ClickAwayListener onClickAway={this.closeAdditionalMenu}>
+      <ClickAwayListener onClickAway={this.closeAdditionalMenu}>
+        <div className={styles.claimButton}>
+          <div ref={el => (this.additionalMenuAnchorEl = el)}>
+            <IconButton onClick={this.toggleAdditionalMenu} classes={{ root: styles.additionalMenuIcon }}>
+              <Icon className={styles.ellipsisIcon} icon="ELLIPSIS" />
+            </IconButton>
+          </div>
+          <Popper
+            className={styles.speechBubble}
+            anchorEl={this.additionalMenuAnchorEl!}
+            placement="bottom-end"
+            open={this.state.isAdditionalMenuOpen}
+            disablePortal
+          >
             <div className={styles.contentWrapper}>{this.additionalMenuItems()}</div>
-          </ClickAwayListener>
-        </Popper>
-      </div>
+          </Popper>
+        </div>
+      </ClickAwayListener>
     );
   };
 
-  private openAdditionalMenu = () => {
+  private toggleAdditionalMenu = () => {
     this.setState({
-      isAdditionalMenuOpen: true,
+      isAdditionalMenuOpen: !this.state.isAdditionalMenuOpen,
     });
   };
 
   private closeAdditionalMenu = () => {
-    this.setState({
-      isAdditionalMenuOpen: false,
-    });
+    if (this.state.isAdditionalMenuOpen) {
+      this.setState({
+        isAdditionalMenuOpen: false,
+      });
+    }
   };
 
   private handleClickClaim = ({ paperId }: HandleClickClaim) => {

@@ -7,7 +7,7 @@ import { Paper } from "../../model/paper";
 import { CurrentUser } from "../../model/currentUser";
 import SourceButton from "../../components/paperShow/components/sourceButton";
 import ViewFullTextBtn from "../../components/paperShow/components/viewFullTextBtn";
-import FullTextBtn from "./components/fullTextRequestBtn";
+import RequestFullTextBtn from "./components/fullTextRequestBtn";
 
 const s = require("./actionBar.scss");
 
@@ -35,7 +35,7 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
         <div className={s.leftSide}>
           {!props.hasBestPdf || props.failedToLoadPDF ? (
             <div className={s.actionItem}>
-              <FullTextBtn
+              <RequestFullTextBtn
                 isLoadingOaCheck={props.isLoadingOaCheck}
                 paperId={props.paper!.id}
                 handleSetIsOpen={setIsOpen}
