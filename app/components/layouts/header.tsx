@@ -259,7 +259,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     if (!!articleSearchState.selectedFilter) {
       currentFilter = articleSearchState.selectedFilter.filter;
     }
-    console.log(isSearchEngineContext);
 
     return (
       <NoSsr>
