@@ -60,7 +60,12 @@ class Home extends React.PureComponent<HomeProps> {
                 </a>
               </div>
               <div tabIndex={0} className={styles.searchInputForm}>
-                <SearchQueryInput maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT} actionArea="home" autoFocus />
+                <SearchQueryInput
+                  maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
+                  actionArea="home"
+                  autoFocus
+                  inputClassName={styles.searchInput}
+                />
               </div>
               <div className={styles.searchTryKeyword} />
             </div>
