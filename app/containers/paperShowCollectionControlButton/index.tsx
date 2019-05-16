@@ -457,7 +457,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   private handleClickNoteBoxBackdrop = () => {
     const { myCollectionsState } = this.props;
 
-    if (!myCollectionsState.isNoteEditMode) {
+    if (!myCollectionsState.isNoteEditMode && myCollectionsState.isNoteDropdownOpen) {
       this.closeNoteDropdown();
     }
   };

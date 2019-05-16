@@ -55,48 +55,50 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
 
   return (
     <ClickAwayListener onClickAway={handleCloseSourceDropdown}>
-      <div ref={anchorEl}>
-        <Button
-          aria-label="Scinapse viewInSource button in paper"
-          isUpArrow={!isSourcePopoverOpen}
-          hasArrow={paper.urls.length > 0}
-          text="View in Source"
-          arrowIconClassName={styles.arrowIcon}
-          className={classNames({
-            [styles.downloadButton]: true,
-            [styles.reverseDownloadBtn]: !showFullText,
-          })}
-          textWrapperClassName={styles.sourceButtonTextWrapper}
-          linkProps={{
-            href: sourceUrl,
-            target: "_blank",
-            rel: "noopener",
-            className: styles.linkClassName,
-            onClick: e => {
-              e.preventDefault();
-              handleClickSource();
-              window.open(sourceUrl, "_blank");
-            },
-          }}
-          dropdownBtnProps={{
-            onClick: () => {
-              setIsSourcePopoverOpen(!isSourcePopoverOpen);
-            },
-            style: !showFullText ? reverseBtnStyle : btnStyle,
-            className: styles.dropdownBtn,
-          }}
-          leftIconNode={<Icon icon="EXTERNAL_SOURCE" className={styles.sourceIcon} />}
+      <>
+        <div ref={anchorEl}>
+          <Button
+            aria-label="Scinapse viewInSource button in paper"
+            isUpArrow={!isSourcePopoverOpen}
+            hasArrow={paper.urls.length > 0}
+            text="View in Source"
+            arrowIconClassName={styles.arrowIcon}
+            className={classNames({
+              [styles.downloadButton]: true,
+              [styles.reverseDownloadBtn]: !showFullText,
+            })}
+            textWrapperClassName={styles.sourceButtonTextWrapper}
+            linkProps={{
+              href: sourceUrl,
+              target: "_blank",
+              rel: "noopener",
+              className: styles.linkClassName,
+              onClick: e => {
+                e.preventDefault();
+                handleClickSource();
+                window.open(sourceUrl, "_blank");
+              },
+            }}
+            dropdownBtnProps={{
+              onClick: () => {
+                setIsSourcePopoverOpen(!isSourcePopoverOpen);
+              },
+              style: !showFullText ? reverseBtnStyle : btnStyle,
+              className: styles.dropdownBtn,
+            }}
+            leftIconNode={<Icon icon="EXTERNAL_SOURCE" className={styles.sourceIcon} />}
+          />
+        </div>
+        <SourceURLPopover
+          isOpen={isSourcePopoverOpen}
+          handleCloseFunc={handleCloseSourceDropdown}
+          paperSources={paper.urls}
+          pageType="paperShow"
+          paperId={paper.id}
+          anchorEl={anchorEl.current}
+          actionArea="paperDescription"
         />
-      </div>
-      <SourceURLPopover
-        isOpen={isSourcePopoverOpen}
-        handleCloseFunc={handleCloseSourceDropdown}
-        paperSources={paper.urls}
-        pageType="paperShow"
-        paperId={paper.id}
-        anchorEl={anchorEl.current}
-        actionArea="paperDescription"
-      />
+      </>
     </ClickAwayListener>
   );
 };
