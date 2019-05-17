@@ -199,6 +199,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       failedToLoadPDF,
       isLoadingRelatedPaperList,
       relatedPaperList,
+      isDownloadPdf,
     } = this.state;
     const shouldShowFullTextTab = isLoadPDF && !failedToLoadPDF && layout.userDevice !== UserDevice.MOBILE;
 
@@ -297,6 +298,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               paperId={paper.id}
               onLoadSuccess={this.handleSucceedToLoadPDF}
               onFailed={this.handleFailedToLoadPDF}
+              isDownloadPdf={isDownloadPdf}
               handleDownloadPdf={this.handleDownloadPdf}
               handleGetBestPdf={this.getBestPdfOfPaperInPaperShow}
               filename={paper.title}
@@ -357,8 +359,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     );
   }
 
-  private handleDownloadPdf = () => {
-    this.setState(prevState => ({ ...prevState, isDownloadPdf: true }));
+  private handleDownloadPdf = (isDownload: boolean) => {
+    this.setState(prevState => ({ ...prevState, isDownloadPdf: isDownload }));
   };
 
   private fetchRelatedPaperData = (paperId: number) => {

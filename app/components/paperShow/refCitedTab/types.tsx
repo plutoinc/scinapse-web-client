@@ -11,7 +11,7 @@ export interface PaperShowRefCitedTabProps {
   handleClickRefTab: () => void;
   handleClickCitedTab: () => void;
   handleClickFullTextTab?: () => void;
-  handleDownloadPdf?: () => void;
+  handleDownloadPdf?: (isDownload: boolean) => void;
 }
 
 export interface TabItemProps {
@@ -24,5 +24,5 @@ export interface PDFButtonProps {
   paper: Paper;
   hasPDF: boolean;
   isLoadingOaCheck: boolean;
-  handleDownloadPdf: () => void;
+  handleDownloadPdf: (isDownload: boolean) => void;
 }

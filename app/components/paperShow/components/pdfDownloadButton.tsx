@@ -11,7 +11,7 @@ const styles = require("./pdfSourceButton.scss");
 interface PdfDownloadButtonProps {
   paper: Paper;
   isLoadingOaCheck: boolean;
-  handleDownloadPdf: () => void;
+  handleDownloadPdf: (isDownload: boolean) => void;
   wrapperStyle?: React.CSSProperties;
 }
 
@@ -63,7 +63,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
           }
 
           window.open(pdfUrl, "_blank");
-          handleDownloadPdf();
+          handleDownloadPdf(true);
         }}
       >
         <Icon icon="DOWNLOAD" className={styles.sourceIcon} />

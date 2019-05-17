@@ -26,7 +26,8 @@ interface PDFViewerProps {
   filename: string;
   sources: PaperSource[];
   bestPdf?: PaperPdf;
-  handleDownloadPdf: () => void;
+  isDownloadPdf: boolean;
+  handleDownloadPdf: (isDownload: boolean) => void;
   handleGetBestPdf: () => Promise<PaperPdf> | undefined;
   onLoadSuccess: () => void;
   onFailed: () => void;
@@ -92,7 +93,7 @@ async function fetchPDFFromAPI(bestPdf: PaperPdf | undefined, handleGetBestPdf: 
 }
 
 const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
-  const { bestPdf, shouldShow, onFailed, onLoadSuccess, dispatch } = props;
+  const { bestPdf, shouldShow, onFailed, onLoadSuccess, dispatch, isDownloadPdf } = props;
   const [percentage, setPercentage] = React.useState(0);
   const [isFetching, setIsFetching] = React.useState(false);
   const [PDFBinary, setPDFBinary] = React.useState<Blob | null>(null);
@@ -196,6 +197,23 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     );
   }
 
+  if (isDownloadPdf) {
+    return (
+      <div ref={wrapperNode} className={styles.contentWrapper}>
+        <div className={styles.afterDownloadContainer}>
+          <div className={styles.titleContext}>Thanks for downloading</div>
+          <div className={styles.subContext}>
+            “Where Is Current Research on Blockchain Technology?-A Systematic Review.”
+          </div>
+          <button className={styles.reloadBtn}>
+            <Icon icon="RELOAD" className={styles.reloadIcon} />
+            Reload Full-Text
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (shouldShow && PDFBinary && bestPdf && bestPdf.hasBest) {
     return (
       <div ref={wrapperNode} className={styles.contentWrapper}>
@@ -251,7 +269,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
 
                       trackClickButton("downloadPdf", props.paperId);
                       window.open(bestPdf.url, "_blank");
-                      props.handleDownloadPdf();
+                      props.handleDownloadPdf(true);
                     }
                   }}
                   isExternalLink

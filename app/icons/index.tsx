@@ -90,6 +90,7 @@ const ICONS: { [key: string]: any } = {
   BACK: require("./back.svg").default,
   MATCHED_PAPER: require("./matched-paper.svg").default,
   LOGO_SEARCH_ENGINE: require("./logo-search-engine.svg").default,
+  RELOAD: require("./reload.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)
