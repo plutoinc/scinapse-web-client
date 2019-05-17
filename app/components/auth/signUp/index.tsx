@@ -25,6 +25,19 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
   });
   const authContext = dialogState.authContext;
 
+  function trackClickSignUpAtFormStep(vendor?: OAUTH_VENDOR) {
+    if (authContext) {
+      ActionTicketManager.trackTicket({
+        pageType: authContext.pageType,
+        actionType: "fire",
+        actionArea: authContext.actionArea,
+        actionTag: "clickSignUpAtStep2",
+        actionLabel: vendor || "email",
+        expName: authContext.expName,
+      });
+    }
+  }
+
   async function handleSubmitSignUpWithEmail(values: SignUpFormValues) {
     await props.dispatch(Actions.signUpWithEmail(values));
 
@@ -99,6 +112,9 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
       return (
         <SignUpForm
           onSubmit={handleSubmitSignUpWithEmail}
+          onClickNext={() => {
+            trackClickSignUpAtFormStep();
+          }}
           onSucceed={() => {
             setSignUpStep(SIGN_UP_STEP.FINAL_WITH_EMAIL);
           }}
@@ -116,6 +132,9 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
     case SIGN_UP_STEP.WITH_SOCIAL:
       return (
         <SignUpForm
+          onClickNext={() => {
+            trackClickSignUpAtFormStep(token.vendor as OAUTH_VENDOR);
+          }}
           onSubmit={handleSubmitSignUpWithSocial}
           onSucceed={() => {
             setSignUpStep(SIGN_UP_STEP.FINAL_WITH_SOCIAL);
@@ -146,6 +165,16 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
             setEmail(values.email);
             setPassword(values.password);
             setSignUpStep(SIGN_UP_STEP.WITH_EMAIL);
+            if (authContext) {
+              ActionTicketManager.trackTicket({
+                pageType: authContext.pageType,
+                actionType: "fire",
+                actionArea: authContext.actionArea,
+                actionTag: "clickSignUpAtFirstForm",
+                actionLabel: "email",
+                expName: authContext.expName,
+              });
+            }
           }}
           onSignUpWithSocial={(values: {
             email?: string | null;
@@ -162,6 +191,16 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
               vendor: values.vendor,
             });
             setSignUpStep(SIGN_UP_STEP.WITH_SOCIAL);
+            if (authContext) {
+              ActionTicketManager.trackTicket({
+                pageType: authContext.pageType,
+                actionType: "fire",
+                actionArea: authContext.actionArea,
+                actionTag: "clickSignUpAtFirstForm",
+                actionLabel: values.vendor,
+                expName: authContext.expName,
+              });
+            }
           }}
           onClickTab={props.handleChangeDialogType}
           userActionType={props.userActionType}

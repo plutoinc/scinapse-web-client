@@ -94,6 +94,8 @@ declare namespace Scinapse {
       | "viewRelatedPaper"
       | "clickPagination"
       | "clickLogo"
+      | "clickSignUpAtFirstForm"
+      | "clickSignUpAtStep2"
       | "";
 
     type ActionArea = string;

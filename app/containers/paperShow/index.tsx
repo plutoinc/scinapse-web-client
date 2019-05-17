@@ -342,7 +342,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       ActionTicketManager.trackTicket({
         pageType: "paperShow",
         actionType: "view",
-        actionArea: errorStatus || null,
+        actionArea: errorStatus ? String(errorStatus) : null,
         actionTag: "pageView",
         actionLabel: String(paperId),
       });
