@@ -28,7 +28,11 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
   if (props.hasPDF) {
     return (
       <div className={styles.actionItem}>
-        <PdfDownloadButton paper={props.paper} isLoadingOaCheck={props.isLoadingOaCheck} />
+        <PdfDownloadButton
+          paper={props.paper}
+          isLoadingOaCheck={props.isLoadingOaCheck}
+          handleDownloadPdf={props.handleDownloadPdf}
+        />
       </div>
     );
   }
@@ -84,7 +88,12 @@ const PaperShowRefCitedTab: React.FunctionComponent<PaperShowRefCitedTabProps> =
           <div className={styles.actionItem}>
             <CiteBox paper={props.paper} btnStyle={{ maxWidth: "74px", width: "100%", height: "36px" }} />
           </div>
-          <PDFButton paper={props.paper} isLoadingOaCheck={props.isLoadingOaCheck} hasPDF={props.hasFullText} />
+          <PDFButton
+            paper={props.paper}
+            isLoadingOaCheck={props.isLoadingOaCheck}
+            hasPDF={props.hasFullText}
+            handleDownloadPdf={props.handleDownloadPdf!}
+          />
         </div>
       </div>
     </div>

@@ -85,6 +85,8 @@ interface PaperShowStates
 
       isLoadingRelatedPaperList: boolean;
       relatedPaperList: Paper[];
+
+      isDownloadPdf: boolean;
     }> {}
 
 @withStyles<typeof PaperShow>(styles)
@@ -107,6 +109,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isLoadingOaPDFCheck: false,
       isLoadingRelatedPaperList: true,
       relatedPaperList: [],
+      isDownloadPdf: false,
     };
   }
 
@@ -275,6 +278,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 handleClickFullTextTab={this.scrollToSection("fullText")}
                 handleClickRefTab={this.scrollToSection("ref")}
                 handleClickCitedTab={this.scrollToSection("cited")}
+                handleDownloadPdf={this.handleDownloadPdf}
                 isLoadingOaCheck={paperShow.isOACheckingPDF}
                 isFixed={isOnFullText || isOnRef || isOnCited}
                 isOnRef={isOnRef}
@@ -293,6 +297,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               paperId={paper.id}
               onLoadSuccess={this.handleSucceedToLoadPDF}
               onFailed={this.handleFailedToLoadPDF}
+              handleDownloadPdf={this.handleDownloadPdf}
               handleGetBestPdf={this.getBestPdfOfPaperInPaperShow}
               filename={paper.title}
               bestPdf={paper.bestPdf}
@@ -351,6 +356,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       </>
     );
   }
+
+  private handleDownloadPdf = () => {
+    this.setState(prevState => ({ ...prevState, isDownloadPdf: true }));
+  };
 
   private fetchRelatedPaperData = (paperId: number) => {
     PaperAPI.getRelatedPapers({ paperId, cancelToken: this.cancelToken.token })

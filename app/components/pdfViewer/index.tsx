@@ -26,6 +26,7 @@ interface PDFViewerProps {
   filename: string;
   sources: PaperSource[];
   bestPdf?: PaperPdf;
+  handleDownloadPdf: () => void;
   handleGetBestPdf: () => Promise<PaperPdf> | undefined;
   onLoadSuccess: () => void;
   onFailed: () => void;
@@ -250,6 +251,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
 
                       trackClickButton("downloadPdf", props.paperId);
                       window.open(bestPdf.url, "_blank");
+                      props.handleDownloadPdf();
                     }
                   }}
                   isExternalLink
