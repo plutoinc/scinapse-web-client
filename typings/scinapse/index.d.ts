@@ -96,41 +96,7 @@ declare namespace Scinapse {
       | "clickLogo"
       | "";
 
-    type ActionArea =
-      | "topBar"
-      | "refList"
-      | "citedList"
-      | "paperList"
-      | "authorList"
-      | "searchResult"
-      | "paperDescription"
-      | "otherPaperList"
-      | "relatedPaperList"
-      | "fosSuggestion"
-      | "ourStory"
-      | "coAuthor"
-      | "topFos"
-      | "authorDialog"
-      | "allPublications"
-      | "authorEntity"
-      | "sortBox"
-      | "sortBar"
-      | "shareBox"
-      | "innerSearchBox"
-      | "readingNowPaperList"
-      | "filter"
-      | "betterThanGoogle"
-      | "pdfViewer"
-      | "researchHistory"
-      | "sideNavigator"
-      | "nextPaper"
-      | "noPaperNotiPage"
-      | "abstract"
-      | "footer"
-      | "signBanner"
-      | "pagination"
-      | "trendingPapers"
-      | "";
+    type ActionArea = string;
 
     type PageType =
       | "paperShow"

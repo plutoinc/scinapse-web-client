@@ -45,21 +45,14 @@ export function getPaper(params: GetPaperParams) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToGetPaper());
-
       const paperResponse = await PaperAPI.getPaper(params);
-
       dispatch(ActionCreators.addEntity(paperResponse));
       dispatch(ActionCreators.getPaper({ paperId: paperResponse.result }));
     } catch (err) {
       if (!axios.isCancel(err)) {
         const error = PlutoAxios.getGlobalError(err);
-        if (error) {
-          alertToast({
-            type: "error",
-            message: error.message,
-          });
-        }
         dispatch(ActionCreators.failedToGetPaper({ statusCode: (error as CommonError).status }));
+        throw new Error(err);
       }
     }
   };
