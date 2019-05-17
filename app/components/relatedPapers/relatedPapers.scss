@@ -1,0 +1,107 @@
+.relatedPaperContainer {
+  padding: 32px 0 40px 0;
+  background-color: $gray8;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.relatedPaperWrapper {
+  overflow: hidden;
+  position: relative;
+
+  &:after {
+    position: absolute;
+    content: "";
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to bottom, rgba(250, 250, 251, 0), rgba(247, 247, 248, 0.49) 19%, $gray8);
+  }
+}
+
+.titleContext {
+  font-size: 18px;
+  font-weight: 500;
+  color: $black1;
+  margin-bottom: 16px;
+}
+
+.paperItemWrapper {
+  width: 588px;
+  background-color: white;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  padding: 12px 16px 4px 16px;
+  border-radius: 5px;
+  border: solid 1px $gray2;
+  background-color: white;
+}
+
+.contentBlockedContainer {
+  position: absolute;
+  bottom: 48px;
+  padding: 40px 0;
+  width: 692px;
+  height: 188px;
+  border-radius: 4px;
+  box-shadow: 0 3px 11px 0 rgba(0, 0, 0, 0.1);
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.contentBlockedContext {
+  font-family: Georgia;
+  font-size: 20px;
+  line-height: 1.2;
+  color: #1b2a36;
+  white-space: pre-line;
+  text-align: center;
+}
+
+.signInBtn {
+  width: 125px;
+  border-radius: 4px;
+  background-color: $main_blue1;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.43;
+  color: white;
+  padding: 8px 12px;
+  cursor: pointer;
+  margin-top: 24px;
+
+  &:hover {
+    background-color: $main_blue_light0;
+    transition: $button-hover-transition;
+  }
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-top: 50px;
+  align-items: center;
+  min-height: 120px;
+
+  .loadingSpinner {
+    div {
+      background-color: $gray3;
+    }
+  }
+
+  .loadingContent {
+    margin-top: 27.5px;
+    font-size: 15px;
+    line-height: 2.4;
+    color: $black0;
+  }
+}

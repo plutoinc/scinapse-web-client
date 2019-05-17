@@ -39,6 +39,7 @@ import ActionTicketManager from "../../helpers/actionTicketManager";
 import SignUpBanner from "../../components/paperShow/components/signUpBanner";
 import PaperAPI from "../../api/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
+import RelatedPapers from "../../components/relatedPapers";
 
 const styles = require("./paperShow.scss");
 
@@ -82,6 +83,7 @@ interface PaperShowStates
 
       isLoadingOaPDFCheck: boolean;
 
+      isLoadingRelatedPaperList: boolean;
       relatedPaperList: Paper[];
     }> {}
 
@@ -103,6 +105,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isLoadPDF: false,
       failedToLoadPDF: false,
       isLoadingOaPDFCheck: false,
+      isLoadingRelatedPaperList: true,
       relatedPaperList: [],
     };
   }
@@ -185,7 +188,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public render() {
     const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers, dispatch } = this.props;
-    const { isOnFullText, isOnCited, isOnRef, isLoadPDF, failedToLoadPDF, relatedPaperList } = this.state;
+    const {
+      isOnFullText,
+      isOnCited,
+      isOnRef,
+      isLoadPDF,
+      failedToLoadPDF,
+      isLoadingRelatedPaperList,
+      relatedPaperList,
+    } = this.state;
     const shouldShowFullTextTab = isLoadPDF && !failedToLoadPDF && layout.userDevice !== UserDevice.MOBILE;
 
     if (paperShow.isLoadingPaper) {
@@ -213,9 +224,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               {this.getGoBackResultBtn()}
               <h1
                 className={styles.paperTitle}
-                dangerouslySetInnerHTML={{
-                  __html: formulaeToHTMLStr(paperShow.highlightTitle || paper.title),
-                }}
+                dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paperShow.highlightTitle || paper.title) }}
               />
               <VenueAndAuthors
                 pageType={"paperShow"}
@@ -274,6 +283,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 hasFullText={shouldShowFullTextTab}
               />
             </div>
+            <RelatedPapers
+              paperList={relatedPaperList}
+              isLoggedIn={currentUser.isLoggedIn}
+              isLoading={isLoadingRelatedPaperList}
+            />
             <PDFViewer
               dispatch={dispatch}
               paperId={paper.id}
@@ -341,13 +355,22 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private fetchRelatedPaperData = (paperId: number) => {
     PaperAPI.getRelatedPapers({ paperId, cancelToken: this.cancelToken.token })
       .then(papers => {
-        this.setState(prevState => ({ ...prevState, relatedPaperList: papers }));
+        this.setState(prevState => ({
+          ...prevState,
+          relatedPaperList: papers,
+          isLoadingRelatedPaperList: false,
+        }));
       })
       .catch(err => {
         if (!axios.isCancel(err)) {
           alertToast({ type: "error", message: `Failed to get related papers. ${err.message}` });
         }
       });
+
+    this.setState(prevState => ({
+      ...prevState,
+      isLoadingRelatedPaperList: false,
+    }));
 
     return () => {
       this.cancelToken.cancel();
