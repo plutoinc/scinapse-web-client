@@ -33,7 +33,7 @@ const ssr = async (req: express.Request, version: string) => {
   const store = StoreManager.store;
 
   // Load data from API server
-  const promises: Array<Promise<any>> = [];
+  const promises: Promise<any>[] = [];
   routesMap.some(route => {
     const match = matchPath(req.path, route);
     if (match && !!route.loadData) {

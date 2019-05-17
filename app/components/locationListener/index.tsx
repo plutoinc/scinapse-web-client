@@ -40,6 +40,7 @@ const MAXIMUM_COUNT_TO_SAVE_HISTORY = 100;
 export function getCurrentPageType(): Scinapse.ActionTicket.PageType {
   if (!EnvChecker.isOnServer()) {
     const { pathname } = window.location;
+
     if (pathname === HOME_PATH) {
       return "home";
     } else if (pathname === SEARCH_RESULT_PATH) {
@@ -177,7 +178,11 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
 
       const currentPageType = getCurrentPageType();
 
-      if (currentPageType !== "searchResult" && currentPageType !== "authorSearchResult") {
+      if (
+        currentPageType !== "searchResult" &&
+        currentPageType !== "authorSearchResult" &&
+        currentPageType !== "paperShow"
+      ) {
         ActionTicketManager.trackTicket({
           pageType: getCurrentPageType(),
           actionType: "view",

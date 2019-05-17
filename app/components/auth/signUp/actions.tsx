@@ -5,7 +5,6 @@ import { ACTION_TYPES } from "../../../actions/actionTypes";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
 import { Member } from "../../../model/member";
-import { trackEvent } from "../../../helpers/handleGA";
 
 export const checkDuplicatedEmail = async (email: string) => {
   const checkDuplicatedEmailResult = await AuthAPI.checkDuplicatedEmail(email);
@@ -17,11 +16,8 @@ export const checkDuplicatedEmail = async (email: string) => {
 
 export function signUpWithSocial(params: SignUpWithSocialParams) {
   return async (dispatch: Dispatch<any>) => {
-    const vendor = params.token.vendor;
-    trackEvent({ category: "sign_up", action: "try_to_sign_up", label: `with_${vendor}` });
     try {
       const signUpResult: Member = await AuthAPI.signUpWithSocial(params);
-      trackEvent({ category: "sign_up", action: "succeed_to_sign_up", label: `with_${vendor}` });
       dispatch({
         type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
         payload: {
@@ -35,7 +31,6 @@ export function signUpWithSocial(params: SignUpWithSocialParams) {
         type: "error",
         message: `Failed to sign up!`,
       });
-      trackEvent({ category: "sign_up", action: "failed_to_sign_up", label: `with_${vendor}` });
       throw err;
     }
   };
@@ -43,7 +38,6 @@ export function signUpWithSocial(params: SignUpWithSocialParams) {
 
 export function signUpWithEmail(params: SignUpWithEmailParams) {
   return async (dispatch: Dispatch<any>) => {
-    trackEvent({ category: "sign_up", action: "try_to_sign_up", label: "with_email" });
     try {
       const signUpResult: Member = await AuthAPI.signUpWithEmail(params);
       dispatch({
@@ -58,9 +52,7 @@ export function signUpWithEmail(params: SignUpWithEmailParams) {
         type: "success",
         message: "Succeeded to Sign Up!!",
       });
-      trackEvent({ category: "sign_up", action: "succeed_to_sign_up", label: "with_email" });
     } catch (err) {
-      trackEvent({ category: "sign_up", action: "failed_to_sign_up", label: "with_email" });
       alertToast({
         type: "error",
         message: `Failed to sign up with email.`,
