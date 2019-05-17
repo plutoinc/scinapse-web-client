@@ -15,6 +15,7 @@ import { EXTENSION_APP_ID } from "../../constants/scinapse-extension";
 import EnvChecker from "../../helpers/envChecker";
 import { useIntervalProgress } from "../../hooks/useIntervalProgressHook";
 import RelatedPapers from "../relatedPapers";
+import SearchQueryInput from "../common/InputWithSuggestionList/searchQueryInput";
 const { Document, Page, pdfjs } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
@@ -223,6 +224,12 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
             <Icon icon="RELOAD" className={styles.reloadIcon} />
             Reload Full-Text
           </button>
+        </div>
+        <div className={styles.afterDownloadSearchContainer}>
+          <div className={styles.titleContext}>🔍 You can get more papers by searching!</div>
+          <div tabIndex={0} className={styles.searchInputForm}>
+            <SearchQueryInput maxCount={5} actionArea="paperShow" inputClassName={styles.searchInput} />
+          </div>
         </div>
         <RelatedPapers paperList={relatedPaperList} isLoggedIn={isLoggedIn} isLoading={isRelatedPaperLoading} />
       </div>
