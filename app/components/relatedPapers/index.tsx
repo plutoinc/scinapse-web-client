@@ -77,7 +77,7 @@ const RelatedPapersInPaperShow: React.FC<RelatedPapersProps> = props => {
         </div>
       ) : (
         <>
-          <div className={!isLoggedIn && styles.relatedPaperWrapper}>{relatedPaperItems}</div>
+          <div className={!isLoggedIn ? styles.relatedPaperWrapper : undefined}>{relatedPaperItems}</div>
           <ContentBlocker isLoggedIn={isLoggedIn} />
         </>
       )}

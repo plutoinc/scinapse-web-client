@@ -273,6 +273,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             </div>
           </article>
           <div>
+            {!paper.bestPdf.hasBest ? (
+              <RelatedPapers
+                paperList={relatedPaperList}
+                isLoggedIn={currentUser.isLoggedIn}
+                isLoading={isLoadingRelatedPaperList}
+              />
+            ) : null}
             <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
               <PaperShowRefCitedTab
                 paper={paper}
@@ -288,12 +295,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 hasFullText={shouldShowFullTextTab}
               />
             </div>
-            <RelatedPapers
-              paperList={relatedPaperList}
-              isLoggedIn={currentUser.isLoggedIn}
-              isLoading={isLoadingRelatedPaperList}
-            />
             <PDFViewer
+              relatedPaperList={relatedPaperList}
+              isLoggedIn={currentUser.isLoggedIn}
+              isRelatedPaperLoading={isLoadingRelatedPaperList}
               dispatch={dispatch}
               paperId={paper.id}
               onLoadSuccess={this.handleSucceedToLoadPDF}

@@ -6,7 +6,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import ScinapseButton from "../common/scinapseButton";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import Icon from "../../icons";
-import { PaperPdf } from "../../model/paper";
+import { PaperPdf, Paper } from "../../model/paper";
 import { ActionCreators } from "../../actions/actionTypes";
 import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
 import getAPIHost from "../../api/getHost";
@@ -14,12 +14,16 @@ import { PaperSource } from "../../model/paperSource";
 import { EXTENSION_APP_ID } from "../../constants/scinapse-extension";
 import EnvChecker from "../../helpers/envChecker";
 import { useIntervalProgress } from "../../hooks/useIntervalProgressHook";
+import RelatedPapers from "../relatedPapers";
 const { Document, Page, pdfjs } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 interface PDFViewerProps {
+  relatedPaperList: Paper[];
+  isLoggedIn: boolean;
+  isRelatedPaperLoading: boolean;
   dispatch: Dispatch<any>;
   paperId: number;
   shouldShow: boolean;
@@ -93,7 +97,17 @@ async function fetchPDFFromAPI(bestPdf: PaperPdf | undefined, handleGetBestPdf: 
 }
 
 const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
-  const { bestPdf, shouldShow, onFailed, onLoadSuccess, dispatch, isDownloadPdf } = props;
+  const {
+    bestPdf,
+    shouldShow,
+    onFailed,
+    onLoadSuccess,
+    dispatch,
+    isDownloadPdf,
+    relatedPaperList,
+    isLoggedIn,
+    isRelatedPaperLoading,
+  } = props;
   const [percentage, setPercentage] = React.useState(0);
   const [isFetching, setIsFetching] = React.useState(false);
   const [PDFBinary, setPDFBinary] = React.useState<Blob | null>(null);
@@ -205,11 +219,12 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
           <div className={styles.subContext}>
             “Where Is Current Research on Blockchain Technology?-A Systematic Review.”
           </div>
-          <button className={styles.reloadBtn}>
+          <button className={styles.reloadBtn} onClick={() => props.handleDownloadPdf(false)}>
             <Icon icon="RELOAD" className={styles.reloadIcon} />
             Reload Full-Text
           </button>
         </div>
+        <RelatedPapers paperList={relatedPaperList} isLoggedIn={isLoggedIn} isLoading={isRelatedPaperLoading} />
       </div>
     );
   }
@@ -236,45 +251,61 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
           {getContent()}
         </Document>
 
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "40px",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           {succeedToLoad && (
             <>
               {extend ? (
-                <ScinapseButton
-                  gaCategory="PDF viewer"
-                  gaAction="download PDF"
-                  style={downloadPdfBtnStyle}
-                  target="_blank"
-                  href={bestPdf.url}
-                  rel="nofollow"
-                  content={
-                    <span className={styles.downloadBtnWrapper}>
-                      <Icon icon="DOWNLOAD" className={styles.downloadIcon} /> Download PDF
-                    </span>
-                  }
-                  onClick={async e => {
-                    if (!EnvChecker.isOnServer()) {
-                      e.preventDefault();
-
-                      const isBlocked = await blockUnverifiedUser({
-                        authLevel: AUTH_LEVEL.VERIFIED,
-                        actionArea: "pdfViewer",
-                        actionLabel: "downloadPdf",
-                        userActionType: "downloadPdf",
-                      });
-
-                      if (isBlocked) {
-                        return;
-                      }
-
-                      trackClickButton("downloadPdf", props.paperId);
-                      window.open(bestPdf.url, "_blank");
-                      props.handleDownloadPdf(true);
+                <>
+                  <ScinapseButton
+                    gaCategory="PDF viewer"
+                    gaAction="download PDF"
+                    style={downloadPdfBtnStyle}
+                    target="_blank"
+                    href={bestPdf.url}
+                    rel="nofollow"
+                    content={
+                      <span className={styles.downloadBtnWrapper}>
+                        <Icon icon="DOWNLOAD" className={styles.downloadIcon} /> Download PDF
+                      </span>
                     }
-                  }}
-                  isExternalLink
-                  downloadAttr
-                />
+                    onClick={async e => {
+                      if (!EnvChecker.isOnServer()) {
+                        e.preventDefault();
+
+                        const isBlocked = await blockUnverifiedUser({
+                          authLevel: AUTH_LEVEL.VERIFIED,
+                          actionArea: "pdfViewer",
+                          actionLabel: "downloadPdf",
+                          userActionType: "downloadPdf",
+                        });
+
+                        if (isBlocked) {
+                          return;
+                        }
+
+                        trackClickButton("downloadPdf", props.paperId);
+                        window.open(bestPdf.url, "_blank");
+                        props.handleDownloadPdf(true);
+                        setExtend(!extend);
+                      }
+                    }}
+                    isExternalLink
+                    downloadAttr
+                  />
+                  <RelatedPapers
+                    paperList={relatedPaperList}
+                    isLoggedIn={isLoggedIn}
+                    isLoading={isRelatedPaperLoading}
+                  />
+                </>
               ) : (
                 <ScinapseButton
                   gaCategory="PDF viewer"

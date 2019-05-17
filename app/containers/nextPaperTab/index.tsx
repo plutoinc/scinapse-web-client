@@ -14,7 +14,7 @@ interface NextPaperTabProps {
 }
 
 const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = ({ paperList }) => {
-  if (paperList.length === 0) return null;
+  if (!paperList || paperList.length === 0) return null;
 
   let nextPaper = paperList[0];
   const prevVisitPapers: Paper[] = store.get(RESEARCH_HISTORY_KEY);
@@ -24,6 +24,9 @@ const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = ({ paperList })
       nextPaper = paperList[Math.floor(Math.random() * (paperList.length - 1)) + 1];
     }
   }
+
+  if (!nextPaper) return null;
+
   return (
     <Link
       className={styles.nextPaperTabWrapper}
