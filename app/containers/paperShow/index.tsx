@@ -37,6 +37,8 @@ import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 import Icon from "../../icons";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import SignUpBanner from "../../components/paperShow/components/signUpBanner";
+import PaperAPI from "../../api/paper";
+import alertToast from "../../helpers/makePlutoToastAction";
 
 const styles = require("./paperShow.scss");
 
@@ -79,6 +81,8 @@ interface PaperShowStates
       failedToLoadPDF: boolean;
 
       isLoadingOaPDFCheck: boolean;
+
+      relatedPaperList: Paper[];
     }> {}
 
 @withStyles<typeof PaperShow>(styles)
@@ -99,6 +103,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isLoadPDF: false,
       failedToLoadPDF: false,
       isLoadingOaPDFCheck: false,
+      relatedPaperList: [],
     };
   }
 
@@ -110,6 +115,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     window.addEventListener("scroll", this.handleScroll, { passive: true });
     this.handleScrollEvent();
+
+    this.fetchRelatedPaperData(parseInt(match.params.paperId, 10));
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       await fetchPaperShowData(
@@ -138,6 +145,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (moveToDifferentPage) {
       dispatch(clearPaperShowState());
+      this.fetchRelatedPaperData(parseInt(this.props.match.params.paperId, 10));
       await fetchPaperShowData(
         {
           dispatch,
@@ -177,7 +185,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public render() {
     const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers, dispatch } = this.props;
-    const { isOnFullText, isOnCited, isOnRef, isLoadPDF, failedToLoadPDF } = this.state;
+    const { isOnFullText, isOnCited, isOnRef, isLoadPDF, failedToLoadPDF, relatedPaperList } = this.state;
     const shouldShowFullTextTab = isLoadPDF && !failedToLoadPDF && layout.userDevice !== UserDevice.MOBILE;
 
     if (paperShow.isLoadingPaper) {
@@ -325,10 +333,26 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         <div className={styles.footerWrapper}>
           <Footer />
         </div>
-        <NextPaperTab paperId={paper.id} />
+        <NextPaperTab paperList={relatedPaperList} />
       </>
     );
   }
+
+  private fetchRelatedPaperData = (paperId: number) => {
+    PaperAPI.getRelatedPapers({ paperId, cancelToken: this.cancelToken.token })
+      .then(papers => {
+        this.setState(prevState => ({ ...prevState, relatedPaperList: papers }));
+      })
+      .catch(err => {
+        if (!axios.isCancel(err)) {
+          alertToast({ type: "error", message: `Failed to get related papers. ${err.message}` });
+        }
+      });
+
+    return () => {
+      this.cancelToken.cancel();
+    };
+  };
 
   private getGoBackResultBtn = () => {
     const { articleSearch, history } = this.props;

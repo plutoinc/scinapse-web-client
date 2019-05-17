@@ -1,47 +1,19 @@
 import * as React from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
-import PaperAPI from "../../api/paper";
 import { Paper } from "../../model/paper";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
 import ActionTicketManager from "../../helpers/actionTicketManager";
-import alertToast from "../../helpers/makePlutoToastAction";
 const store = require("store");
 const styles = require("./nextPaperTab.scss");
 
 const RESEARCH_HISTORY_KEY = "r_h_list";
 
 interface NextPaperTabProps {
-  paperId: number;
+  paperList: Paper[];
 }
 
-const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = ({ paperId }) => {
-  const [paperList, setPaperList] = React.useState<Paper[]>([]);
-
-  React.useEffect(
-    () => {
-      const cancelToken = axios.CancelToken.source();
-      PaperAPI.getRelatedPapers({ paperId, cancelToken: cancelToken.token })
-        .then(papers => {
-          setPaperList(papers);
-        })
-        .catch(err => {
-          if (!axios.isCancel(err)) {
-            alertToast({
-              type: "error",
-              message: `Failed to get related papers. ${err.message}`,
-            });
-          }
-        });
-
-      return () => {
-        cancelToken.cancel();
-      };
-    },
-    [paperId]
-  );
-
+const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = ({ paperList }) => {
   if (paperList.length === 0) return null;
 
   let nextPaper = paperList[0];
