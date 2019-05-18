@@ -10,6 +10,7 @@ interface RelatedPapersProps {
   paperList: Paper[];
   isLoggedIn: boolean;
   isLoading: boolean;
+  shouldShowRelatedPapers: boolean;
 }
 
 function openSignInDialog() {
@@ -52,9 +53,9 @@ const RelatedPaperItem: React.FunctionComponent<{ paper: Paper }> = ({ paper }) 
 };
 
 const RelatedPapersInPaperShow: React.FC<RelatedPapersProps> = props => {
-  const { paperList, isLoggedIn, isLoading } = props;
+  const { paperList, isLoggedIn, isLoading, shouldShowRelatedPapers } = props;
 
-  if (paperList.length === 0) {
+  if (paperList.length === 0 || !shouldShowRelatedPapers) {
     return null;
   }
 

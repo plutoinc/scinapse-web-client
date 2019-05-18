@@ -40,6 +40,8 @@ import SignUpBanner from "../../components/paperShow/components/signUpBanner";
 import PaperAPI from "../../api/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
 import RelatedPapers from "../../components/relatedPapers";
+import { getUserGroupName } from "../../helpers/abTestHelper";
+import { RELATED_PAPERS_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalValue";
 
 const styles = require("./paperShow.scss");
 
@@ -202,6 +204,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isDownloadPdf,
     } = this.state;
     const shouldShowFullTextTab = isLoadPDF && !failedToLoadPDF && layout.userDevice !== UserDevice.MOBILE;
+    const relatedPapersAtPaperShowUserName = getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) || "";
+    const shouldShowRelatedPapers = relatedPapersAtPaperShowUserName !== "control" ? true : false;
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -278,6 +282,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 paperList={relatedPaperList}
                 isLoggedIn={currentUser.isLoggedIn}
                 isLoading={isLoadingRelatedPaperList}
+                shouldShowRelatedPapers={shouldShowRelatedPapers}
               />
             ) : null}
             <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
@@ -299,6 +304,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               relatedPaperList={relatedPaperList}
               isLoggedIn={currentUser.isLoggedIn}
               isRelatedPaperLoading={isLoadingRelatedPaperList}
+              relatedPaperTestUserName={relatedPapersAtPaperShowUserName}
+              shouldShowRelatedPapers={shouldShowRelatedPapers}
               dispatch={dispatch}
               paperId={paper.id}
               onLoadSuccess={this.handleSucceedToLoadPDF}

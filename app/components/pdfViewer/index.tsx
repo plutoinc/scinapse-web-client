@@ -15,7 +15,7 @@ import { EXTENSION_APP_ID } from "../../constants/scinapse-extension";
 import EnvChecker from "../../helpers/envChecker";
 import { useIntervalProgress } from "../../hooks/useIntervalProgressHook";
 import RelatedPapers from "../relatedPapers";
-import SearchQueryInput from "../common/InputWithSuggestionList/searchQueryInput";
+import AfterDownloadContents from "./component/afterDownloadContents";
 const { Document, Page, pdfjs } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
@@ -25,6 +25,8 @@ interface PDFViewerProps {
   relatedPaperList: Paper[];
   isLoggedIn: boolean;
   isRelatedPaperLoading: boolean;
+  relatedPaperTestUserName: string;
+  shouldShowRelatedPapers: boolean;
   dispatch: Dispatch<any>;
   paperId: number;
   shouldShow: boolean;
@@ -108,6 +110,9 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     relatedPaperList,
     isLoggedIn,
     isRelatedPaperLoading,
+    relatedPaperTestUserName,
+    shouldShowRelatedPapers,
+    handleDownloadPdf,
   } = props;
   const [percentage, setPercentage] = React.useState(0);
   const [isFetching, setIsFetching] = React.useState(false);
@@ -215,23 +220,13 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   if (isDownloadPdf) {
     return (
       <div ref={wrapperNode} className={styles.contentWrapper}>
-        <div className={styles.afterDownloadContainer}>
-          <div className={styles.titleContext}>Thanks for downloading</div>
-          <div className={styles.subContext}>
-            “Where Is Current Research on Blockchain Technology?-A Systematic Review.”
-          </div>
-          <button className={styles.reloadBtn} onClick={() => props.handleDownloadPdf(false)}>
-            <Icon icon="RELOAD" className={styles.reloadIcon} />
-            Reload Full-Text
-          </button>
-        </div>
-        <div className={styles.afterDownloadSearchContainer}>
-          <div className={styles.titleContext}>🔍 You can get more papers by searching!</div>
-          <div tabIndex={0} className={styles.searchInputForm}>
-            <SearchQueryInput maxCount={5} actionArea="paperShow" inputClassName={styles.searchInput} />
-          </div>
-        </div>
-        <RelatedPapers paperList={relatedPaperList} isLoggedIn={isLoggedIn} isLoading={isRelatedPaperLoading} />
+        <AfterDownloadContents
+          relatedPaperTestUserName={relatedPaperTestUserName}
+          handleDownloadPdf={handleDownloadPdf}
+          relatedPaperList={relatedPaperList}
+          isLoggedIn={isLoggedIn}
+          isRelatedPaperLoading={isRelatedPaperLoading}
+        />
       </div>
     );
   }
@@ -300,7 +295,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
 
                         trackClickButton("downloadPdf", props.paperId);
                         window.open(bestPdf.url, "_blank");
-                        props.handleDownloadPdf(true);
+                        handleDownloadPdf(true);
                         setExtend(!extend);
                       }
                     }}
@@ -311,6 +306,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                     paperList={relatedPaperList}
                     isLoggedIn={isLoggedIn}
                     isLoading={isRelatedPaperLoading}
+                    shouldShowRelatedPapers={shouldShowRelatedPapers}
                   />
                 </>
               ) : (

@@ -5,6 +5,7 @@ import {
   signBannerAtPaperShowTitleTextKeyverbTest,
   scinapseLogoTest,
   bannerCuratedTest,
+  relatedPapersAtPaperShowTest,
 } from "./abTestObject";
 
 export interface UserGroup {
@@ -26,7 +27,8 @@ export type ABTestType =
   | "signBannerAtSearch-curated"
   | "signBannerAtPaperShow-banner"
   | "signBannerAtPaperShow-titleText"
-  | "signBannerAtPaperShow-titleText-keyverb";
+  | "signBannerAtPaperShow-titleText-keyverb"
+  | "relatedPapersAtPaperShow";
 
 export const BENEFIT_EXPERIMENT_KEY = "b_exp";
 
@@ -53,6 +55,7 @@ export const LIVE_TESTS: Test[] = [
   signBannerAtPaperShowTest,
   signBannerAtPaperShowTitleTextTest,
   signBannerAtPaperShowTitleTextKeyverbTest,
+  relatedPapersAtPaperShowTest,
 ];
 
 function getRandomPool(): { [key: string]: string[] } {
