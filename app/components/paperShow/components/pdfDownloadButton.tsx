@@ -11,13 +11,13 @@ const styles = require("./pdfSourceButton.scss");
 interface PdfDownloadButtonProps {
   paper: Paper;
   isLoadingOaCheck: boolean;
-  handleDownloadPdf: (isDownload: boolean) => void;
-  handleScrollSetAfterDownload: () => void;
+  handleSetIsDownloadedPDF: (isDownload: boolean) => void;
+  handleSetScrollAfterDownload: () => void;
   wrapperStyle?: React.CSSProperties;
 }
 
 const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props => {
-  const { paper, isLoadingOaCheck, handleDownloadPdf, handleScrollSetAfterDownload } = props;
+  const { paper, isLoadingOaCheck, handleSetIsDownloadedPDF, handleSetScrollAfterDownload } = props;
 
   function trackActionToClickPdfDownloadBtn() {
     ActionTicketManager.trackTicket({
@@ -64,8 +64,8 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
           }
 
           window.open(pdfUrl, "_blank");
-          handleDownloadPdf(true);
-          handleScrollSetAfterDownload();
+          handleSetIsDownloadedPDF(true);
+          handleSetScrollAfterDownload();
         }}
       >
         <Icon icon="DOWNLOAD" className={styles.sourceIcon} />

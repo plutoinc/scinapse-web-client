@@ -31,8 +31,8 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
         <PdfDownloadButton
           paper={props.paper}
           isLoadingOaCheck={props.isLoadingOaCheck}
-          handleDownloadPdf={props.handleSetIsDownloadedPDF}
-          handleScrollSetAfterDownload={props.handleScrollSetAfterDownload}
+          handleSetIsDownloadedPDF={props.handleSetIsDownloadedPDF}
+          handleSetScrollAfterDownload={props.handleSetScrollAfterDownload}
         />
       </div>
     );
@@ -94,7 +94,7 @@ const PaperShowRefCitedTab: React.FunctionComponent<PaperShowRefCitedTabProps> =
             isLoadingOaCheck={props.isLoadingOaCheck}
             hasPDF={props.hasFullText}
             handleSetIsDownloadedPDF={props.handleSetIsDownloadedPDF!}
-            handleScrollSetAfterDownload={props.handleClickFullTextTab!}
+            handleSetScrollAfterDownload={props.handleClickFullTextTab!}
           />
         </div>
       </div>
