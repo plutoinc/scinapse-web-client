@@ -45,7 +45,7 @@ const RelatedPaperItem: React.FunctionComponent<{ paper: Paper }> = ({ paper }) 
       key={paper.id}
       paper={paper}
       omitAbstract={true}
-      pageType="collectionShow"
+      pageType="paperShow"
       actionArea="relatedPaperList"
       wrapperClassName={styles.paperItemWrapper}
     />
