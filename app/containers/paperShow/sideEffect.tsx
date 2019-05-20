@@ -5,6 +5,7 @@ import { getPaper, getCitedPapers, getReferencePapers, getMyCollections } from "
 import { CurrentUser } from "../../model/currentUser";
 import { PaperShowPageQueryParams, PaperShowMatchParams } from "./types";
 import { ActionCreators } from "../../actions/actionTypes";
+import PlutoAxios from "../../api/pluto";
 
 export function fetchMyCollection(paperId: number, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
@@ -51,7 +52,6 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
 
   try {
     const promiseArray = [];
-
     promiseArray.push(dispatch(getPaper({ paperId, cancelToken: params.cancelToken })));
     promiseArray.push(dispatch(fetchCitedPaperData(paperId, queryParamsObject["cited-page"], params.cancelToken)));
     promiseArray.push(dispatch(fetchRefPaperData(paperId, queryParamsObject["ref-page"], params.cancelToken)));
@@ -62,6 +62,7 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
 
     await Promise.all(promiseArray);
   } catch (err) {
-    console.error(`Error for fetching paper show page data`, err);
+    const error = PlutoAxios.getGlobalError(err);
+    return error;
   }
 }

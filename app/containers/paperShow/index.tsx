@@ -42,6 +42,7 @@ import alertToast from "../../helpers/makePlutoToastAction";
 import RelatedPapers from "../../components/relatedPapers";
 import { getUserGroupName } from "../../helpers/abTestHelper";
 import { RELATED_PAPERS_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalValue";
+import { CommonError } from "../../model/error";
 
 const styles = require("./paperShow.scss");
 
@@ -116,7 +117,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public async componentDidMount() {
-    const { configuration, currentUser, dispatch, match, location } = this.props;
+    const { configuration, currentUser, dispatch, match, location, paperShow } = this.props;
     const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
     const notRenderedAtServerOrJSAlreadyInitialized =
       !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
@@ -127,7 +128,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     this.fetchRelatedPaperData(parseInt(match.params.paperId, 10));
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
-      await fetchPaperShowData(
+      const err = await fetchPaperShowData(
         {
           dispatch,
           match,
@@ -138,7 +139,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         currentUser
       );
 
+      const statusCode = err ? (err as CommonError).status : null;
+      this.logPageView(match.params.paperId, statusCode);
       this.scrollToRefCitedSection();
+    } else {
+      this.logPageView(match.params.paperId, paperShow.errorStatusCode);
     }
   }
 
@@ -154,7 +159,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if (moveToDifferentPage) {
       dispatch(clearPaperShowState());
       this.fetchRelatedPaperData(parseInt(this.props.match.params.paperId, 10));
-      await fetchPaperShowData(
+      const err = await fetchPaperShowData(
         {
           dispatch,
           match: this.props.match,
@@ -164,6 +169,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         },
         currentUser
       );
+      const statusCode = err ? (err as CommonError).status : null;
+      this.logPageView(match.params.paperId, statusCode);
       this.scrollToRefCitedSection();
       return this.handleScrollEvent();
     }
@@ -215,8 +222,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       );
     }
 
-    if (paperShow.hasErrorOnFetchingPaper) {
-      return <ErrorPage errorNum={paperShow.hasErrorOnFetchingPaper} />;
+    if (paperShow.errorStatusCode) {
+      return <ErrorPage errorNum={paperShow.errorStatusCode} />;
     }
 
     if (!paper) {
@@ -398,6 +405,18 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     return () => {
       this.cancelToken.cancel();
     };
+  };
+
+  private logPageView = (paperId: string | number, errorStatus?: number | null) => {
+    if (!EnvChecker.isOnServer()) {
+      ActionTicketManager.trackTicket({
+        pageType: "paperShow",
+        actionType: "view",
+        actionArea: errorStatus ? String(errorStatus) : null,
+        actionTag: "pageView",
+        actionLabel: String(paperId),
+      });
+    }
   };
 
   private getGoBackResultBtn = () => {

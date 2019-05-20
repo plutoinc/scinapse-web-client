@@ -38,26 +38,6 @@ describe("Paper Show page actions", () => {
         expect(resultActions[1].type).toEqual(ACTION_TYPES.GLOBAL_ADD_ENTITY);
       });
     });
-
-    describe("when failed to get paper data", () => {
-      beforeEach(async () => {
-        const mockParams = {
-          paperId: 0,
-          cancelToken: axios.CancelToken.source().token,
-        };
-
-        await store.dispatch(getPaper(mockParams));
-        resultActions = await store.getActions();
-      });
-
-      it("should dispatch PAPER_SHOW_START_TO_GET_PAPER action", () => {
-        expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_PAPER);
-      });
-
-      it("should dispatch PAPER_SHOW_FAILED_TO_GET_PAPER action", () => {
-        expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER);
-      });
-    });
   });
 
   describe("getReferencePapers action creator", () => {

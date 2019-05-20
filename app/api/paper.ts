@@ -151,13 +151,12 @@ class PaperAPI extends PlutoAxios {
     entities: { papers: { [paperId: number]: Paper } };
     result: number;
   }> {
-    const getPaperResponse = await this.get(`/papers/${params.paperId}`, {
+    const paperRes = await this.get(`/papers/${params.paperId}`, {
       cancelToken: params.cancelToken,
     });
-    const camelizedRes = camelCaseKeys(getPaperResponse.data);
+    const camelizedRes = camelCaseKeys(paperRes.data);
     const paper: Paper = camelizedRes;
-    const authorSlicedPaper = { ...paper, authors: paper.authors.slice(0, 10) };
-    return normalize(authorSlicedPaper, paperSchema);
+    return normalize(paper, paperSchema);
   }
 
   public async getRelatedPapers(params: GetRelatedPapersParams): Promise<Paper[]> {

@@ -12,6 +12,7 @@ import { debouncedCheckDuplicate } from "../../helpers/checkDuplicateEmail";
 const s = require("./style.scss");
 
 interface SignUpFormProps {
+  onClickNext: () => void;
   onClickTab: (type: GLOBAL_DIALOG_TYPE) => void;
   onSucceed: () => void;
   onClickBack: () => void;
@@ -142,6 +143,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
               />
               <AuthButton
                 type="submit"
+                onClick={props.onClickNext}
                 isLoading={isLoading}
                 text="SIGN UP"
                 style={{ backgroundColor: "#6096ff", marginTop: "10px", fontSize: "14px" }}

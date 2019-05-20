@@ -13,7 +13,7 @@ export interface PaperShowState
   extends Readonly<{
       isAuthorBoxExtended: boolean;
       isLoadingPaper: boolean;
-      hasErrorOnFetchingPaper: number | null;
+      errorStatusCode: number | null;
 
       paperId: number;
       referencePaperIds: number[];
@@ -41,7 +41,7 @@ export interface PaperShowState
 export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
   isAuthorBoxExtended: false,
   isLoadingPaper: false,
-  hasErrorOnFetchingPaper: null,
+  errorStatusCode: null,
 
   hasFailedToLoadMyCollections: false,
   hasFailedToPositingNewCollection: false,

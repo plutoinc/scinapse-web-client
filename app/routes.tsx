@@ -84,7 +84,7 @@ export const routesMap: ServerRoutesMap[] = [
     }),
     loadData: async (params: LoadDataParams<PaperShowMatchParams>) => {
       const { fetchPaperShowData } = await import("./containers/paperShow/sideEffect");
-      await Promise.all([fetchPaperShowData(params)]);
+      await fetchPaperShowData(params);
     },
   },
   {
@@ -213,12 +213,12 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
         <meta itemProp="name" content="Scinapse | Academic search engine for paper" />
         <meta
           name="description"
-          content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
+          content="scinapse is the fastest search engine for scientific papers. scinapse covers over 170m+ papers and 48k+ journals. Just try scinapse, you can quickly find the scientific paper exactly you want."
         />{" "}
         // tslint:disable-next-line:max-line-length
         <meta
           name="twitter:description"
-          content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
+          content="scinapse is the fastest search engine for scientific papers. scinapse covers over 170m+ papers and 48k+ journals. Just try scinapse, you can quickly find the scientific paper exactly you want."
         />{" "}
         // tslint:disable-next-line:max-line-length
         <meta itemProp="image" content="http://assets.pluto.network/og-image.png" />
@@ -233,7 +233,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
         <meta property="og:image" content="http://assets.pluto.network/og-image.png" />
         <meta
           property="og:description"
-          content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
+          content="scinapse is the fastest search engine for scientific papers. scinapse covers over 170m+ papers and 48k+ journals. Just try scinapse, you can quickly find the scientific paper exactly you want."
         />{" "}
         // tslint:disable-next-line:max-line-length
         <meta property="og:site_name" content="Scinapse" />
