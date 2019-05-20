@@ -13,7 +13,7 @@ export interface PDFViewerProps {
   filename: string;
   sources: PaperSource[];
   bestPdf?: PaperPdf;
-  isDownloadPdf: boolean;
+  isDownloadedPDF: boolean;
   handleSetScrollAfterDownload: () => void;
   handleSetIsDownloadedPDF: (isDownload: boolean) => void;
   handleGetBestPdf: () => Promise<PaperPdf> | undefined;

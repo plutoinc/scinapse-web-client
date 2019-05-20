@@ -89,7 +89,7 @@ interface PaperShowStates
       isLoadingRelatedPaperList: boolean;
       relatedPaperList: Paper[];
 
-      isDownloadPdf: boolean;
+      isDownloadedPDF: boolean;
     }> {}
 
 @withStyles<typeof PaperShow>(styles)
@@ -112,7 +112,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isLoadingOaPDFCheck: false,
       isLoadingRelatedPaperList: true,
       relatedPaperList: [],
-      isDownloadPdf: false,
+      isDownloadedPDF: false,
     };
   }
 
@@ -208,7 +208,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       failedToLoadPDF,
       isLoadingRelatedPaperList,
       relatedPaperList,
-      isDownloadPdf,
+      isDownloadedPDF,
     } = this.state;
     const shouldShowFullTextTab = isLoadPDF && !failedToLoadPDF && layout.userDevice !== UserDevice.MOBILE;
     const relatedPapersTestUserGroupName = getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) || "";
@@ -314,7 +314,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               paperId={paper.id}
               onLoadSuccess={this.handleSucceedToLoadPDF}
               onFailed={this.handleFailedToLoadPDF}
-              isDownloadPdf={isDownloadPdf}
+              isDownloadedPDF={isDownloadedPDF}
               handleSetScrollAfterDownload={this.scrollToSection("fullText")}
               handleSetIsDownloadedPDF={this.setIsDownloadedPDF}
               handleGetBestPdf={this.getBestPdfOfPaperInPaperShow}
@@ -376,8 +376,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     );
   }
 
-  private setIsDownloadedPDF = (isDownload: boolean) => {
-    this.setState(prevState => ({ ...prevState, isDownloadPdf: isDownload }));
+  private setIsDownloadedPDF = (isDownloaded: boolean) => {
+    this.setState(prevState => ({ ...prevState, isDownloadedPDF: isDownloaded }));
   };
 
   private fetchRelatedPaperData = (paperId: number) => {

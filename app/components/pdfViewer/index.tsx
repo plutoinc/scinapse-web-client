@@ -87,7 +87,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     onFailed,
     onLoadSuccess,
     dispatch,
-    isDownloadPdf,
+    isDownloadedPDF,
     relatedPaperList,
     isLoggedIn,
     isRelatedPaperLoading,
@@ -198,7 +198,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     );
   }
 
-  if (isDownloadPdf) {
+  if (isDownloadedPDF) {
     return (
       <div ref={wrapperNode} className={styles.contentWrapper}>
         <AfterDownloadContents
