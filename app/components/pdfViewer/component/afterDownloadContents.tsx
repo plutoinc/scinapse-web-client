@@ -14,6 +14,19 @@ interface AfterDownloadContentsProps {
   isRelatedPaperLoading: boolean;
 }
 
+const SearchQueryBoxAtPaperShow: React.FC<{ shouldShowSearchBox: boolean }> = ({ shouldShowSearchBox }) => {
+  if (!shouldShowSearchBox) return null;
+
+  return (
+    <div className={styles.afterDownloadSearchContainer}>
+      <div className={styles.titleContext}>🔍 You can get more papers by searching!</div>
+      <div tabIndex={0} className={styles.searchInputForm}>
+        <SearchQueryInput maxCount={5} actionArea="paperShow" inputClassName={styles.searchInput} />
+      </div>
+    </div>
+  );
+};
+
 const AfterDownloadContents: React.FC<AfterDownloadContentsProps> = props => {
   const { relatedPaperTestUserName, handleDownloadPdf, relatedPaperList, isLoggedIn, isRelatedPaperLoading } = props;
 
@@ -46,14 +59,7 @@ const AfterDownloadContents: React.FC<AfterDownloadContentsProps> = props => {
           Reload Full-Text
         </button>
       </div>
-      {shouldShow.shouldShowSearchBox ? (
-        <div className={styles.afterDownloadSearchContainer}>
-          <div className={styles.titleContext}>🔍 You can get more papers by searching!</div>
-          <div tabIndex={0} className={styles.searchInputForm}>
-            <SearchQueryInput maxCount={5} actionArea="paperShow" inputClassName={styles.searchInput} />
-          </div>
-        </div>
-      ) : null}
+      <SearchQueryBoxAtPaperShow shouldShowSearchBox={shouldShow.shouldShowSearchBox} />
       <RelatedPapers
         paperList={relatedPaperList}
         isLoggedIn={isLoggedIn}
