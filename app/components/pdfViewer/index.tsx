@@ -1,12 +1,11 @@
 import * as React from "react";
 import Axios from "axios";
-import { Dispatch } from "react-redux";
 import { CircularProgress } from "@material-ui/core";
 import { withStyles } from "../../helpers/withStylesHelper";
 import ScinapseButton from "../common/scinapseButton";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import Icon from "../../icons";
-import { PaperPdf, Paper } from "../../model/paper";
+import { PaperPdf } from "../../model/paper";
 import { ActionCreators } from "../../actions/actionTypes";
 import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
 import getAPIHost from "../../api/getHost";
@@ -16,30 +15,11 @@ import EnvChecker from "../../helpers/envChecker";
 import { useIntervalProgress } from "../../hooks/useIntervalProgressHook";
 import RelatedPapers from "../relatedPapers";
 import AfterDownloadContents from "./component/afterDownloadContents";
+import { PDFViewerProps } from "./types";
 const { Document, Page, pdfjs } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-
-interface PDFViewerProps {
-  relatedPaperList: Paper[];
-  isLoggedIn: boolean;
-  isRelatedPaperLoading: boolean;
-  relatedPaperTestUserName: string;
-  shouldShowRelatedPapers: boolean;
-  dispatch: Dispatch<any>;
-  paperId: number;
-  shouldShow: boolean;
-  filename: string;
-  sources: PaperSource[];
-  bestPdf?: PaperPdf;
-  isDownloadPdf: boolean;
-  handleScrollSetAfterDownload: () => void;
-  handleDownloadPdf: (isDownload: boolean) => void;
-  handleGetBestPdf: () => Promise<PaperPdf> | undefined;
-  onLoadSuccess: () => void;
-  onFailed: () => void;
-}
 
 function trackClickButton(actionTag: Scinapse.ActionTicket.ActionTagType, paperId: number) {
   ActionTicketManager.trackTicket({
