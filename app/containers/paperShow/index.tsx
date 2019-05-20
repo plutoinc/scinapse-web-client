@@ -284,14 +284,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             </div>
           </article>
           <div>
-            {!paper.bestPdf.hasBest ? (
-              <RelatedPapers
-                paperList={relatedPaperList}
-                isLoggedIn={currentUser.isLoggedIn}
-                isLoading={isLoadingRelatedPaperList}
-                shouldShowRelatedPapers={shouldShowRelatedPapers}
-              />
-            ) : null}
+            <RelatedPapers
+              paperList={relatedPaperList}
+              isLoggedIn={currentUser.isLoggedIn}
+              isLoading={isLoadingRelatedPaperList}
+              shouldShowRelatedPapers={!paper.bestPdf.hasBest && shouldShowRelatedPapers}
+            />
             <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
               <PaperShowRefCitedTab
                 paper={paper}
