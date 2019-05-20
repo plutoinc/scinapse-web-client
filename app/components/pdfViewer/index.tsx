@@ -34,6 +34,7 @@ interface PDFViewerProps {
   sources: PaperSource[];
   bestPdf?: PaperPdf;
   isDownloadPdf: boolean;
+  handleScrollSetAfterDownload: () => void;
   handleDownloadPdf: (isDownload: boolean) => void;
   handleGetBestPdf: () => Promise<PaperPdf> | undefined;
   onLoadSuccess: () => void;
@@ -113,6 +114,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     relatedPaperTestUserName,
     shouldShowRelatedPapers,
     handleDownloadPdf,
+    handleScrollSetAfterDownload,
   } = props;
   const [percentage, setPercentage] = React.useState(0);
   const [isFetching, setIsFetching] = React.useState(false);
@@ -296,6 +298,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                         trackClickButton("downloadPdf", props.paperId);
                         window.open(bestPdf.url, "_blank");
                         handleDownloadPdf(true);
+                        handleScrollSetAfterDownload();
                         setExtend(!extend);
                       }
                     }}

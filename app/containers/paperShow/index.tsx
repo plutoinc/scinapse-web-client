@@ -318,6 +318,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               onLoadSuccess={this.handleSucceedToLoadPDF}
               onFailed={this.handleFailedToLoadPDF}
               isDownloadPdf={isDownloadPdf}
+              handleScrollSetAfterDownload={this.scrollToSection("fullText")}
               handleDownloadPdf={this.handleDownloadPdf}
               handleGetBestPdf={this.getBestPdfOfPaperInPaperShow}
               filename={paper.title}

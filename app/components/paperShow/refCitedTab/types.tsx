@@ -25,4 +25,5 @@ export interface PDFButtonProps {
   hasPDF: boolean;
   isLoadingOaCheck: boolean;
   handleDownloadPdf: (isDownload: boolean) => void;
+  handleScrollSetAfterDownload: () => void;
 }
