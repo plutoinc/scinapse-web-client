@@ -31,7 +31,7 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
         <PdfDownloadButton
           paper={props.paper}
           isLoadingOaCheck={props.isLoadingOaCheck}
-          handleSetIsDownloadedPDF={props.handleSetIsDownloadedPDF}
+          onDownloadedPDF={props.handleSetIsDownloadedPDF}
           handleSetScrollAfterDownload={props.handleSetScrollAfterDownload}
         />
       </div>

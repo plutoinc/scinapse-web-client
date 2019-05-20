@@ -9,7 +9,7 @@ import { RELATED_PAPERS_AT_PAPER_SHOW_TEST } from "../../../constants/abTestGlob
 const styles = require("./afterDownloadContents.scss");
 
 interface AfterDownloadContentsProps {
-  handleSetIsDownloadedPDF: (isDownload: boolean) => void;
+  onDownloadedPDF: (isDownload: boolean) => void;
   relatedPaperList: Paper[];
   isLoggedIn: boolean;
   isRelatedPaperLoading: boolean;
@@ -29,7 +29,7 @@ const SearchQueryBoxAtPaperShow: React.FC<{ shouldShowSearchBox: boolean }> = ({
 };
 
 const AfterDownloadContents: React.FC<AfterDownloadContentsProps> = props => {
-  const { handleSetIsDownloadedPDF, relatedPaperList, isLoggedIn, isRelatedPaperLoading } = props;
+  const { onDownloadedPDF, relatedPaperList, isLoggedIn, isRelatedPaperLoading } = props;
   const relatedPapersTestUserGroupName = getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) || "";
 
   const [isShowingRelatedPapers, setIsShowingRelatedPapers] = React.useState(false);
@@ -62,7 +62,7 @@ const AfterDownloadContents: React.FC<AfterDownloadContentsProps> = props => {
         <div className={styles.subContext}>
           “Where Is Current Research on Blockchain Technology?-A Systematic Review.”
         </div>
-        <button className={styles.reloadBtn} onClick={() => handleSetIsDownloadedPDF(false)}>
+        <button className={styles.reloadBtn} onClick={() => onDownloadedPDF(false)}>
           <Icon icon="RELOAD" className={styles.reloadIcon} />
           Reload Full-Text
         </button>

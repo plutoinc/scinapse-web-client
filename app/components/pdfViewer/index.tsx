@@ -202,7 +202,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     return (
       <div ref={wrapperNode} className={styles.contentWrapper}>
         <AfterDownloadContents
-          handleSetIsDownloadedPDF={handleSetIsDownloadedPDF}
+          onDownloadedPDF={handleSetIsDownloadedPDF}
           relatedPaperList={relatedPaperList}
           isLoggedIn={isLoggedIn}
           isRelatedPaperLoading={isRelatedPaperLoading}
