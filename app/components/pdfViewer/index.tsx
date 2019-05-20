@@ -91,10 +91,9 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     relatedPaperList,
     isLoggedIn,
     isRelatedPaperLoading,
-    relatedPaperTestUserName,
     shouldShowRelatedPapers,
-    handleDownloadPdf,
-    handleScrollSetAfterDownload,
+    handleSetIsDownloadedPDF,
+    handleSetScrollAfterDownload,
   } = props;
   const [percentage, setPercentage] = React.useState(0);
   const [isFetching, setIsFetching] = React.useState(false);
@@ -203,8 +202,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     return (
       <div ref={wrapperNode} className={styles.contentWrapper}>
         <AfterDownloadContents
-          relatedPaperTestUserName={relatedPaperTestUserName}
-          handleDownloadPdf={handleDownloadPdf}
+          handleSetIsDownloadedPDF={handleSetIsDownloadedPDF}
           relatedPaperList={relatedPaperList}
           isLoggedIn={isLoggedIn}
           isRelatedPaperLoading={isRelatedPaperLoading}
@@ -277,8 +275,8 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
 
                         trackClickButton("downloadPdf", props.paperId);
                         window.open(bestPdf.url, "_blank");
-                        handleDownloadPdf(true);
-                        handleScrollSetAfterDownload();
+                        handleSetIsDownloadedPDF(true);
+                        handleSetScrollAfterDownload();
                         setExtend(!extend);
                       }
                     }}

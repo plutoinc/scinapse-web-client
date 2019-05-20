@@ -4,11 +4,12 @@ import SearchQueryInput from "../../common/InputWithSuggestionList/searchQueryIn
 import Icon from "../../../icons";
 import RelatedPapers from "../../relatedPapers";
 import { Paper } from "../../../model/paper";
+import { getUserGroupName } from "../../../helpers/abTestHelper";
+import { RELATED_PAPERS_AT_PAPER_SHOW_TEST } from "../../../constants/abTestGlobalValue";
 const styles = require("./afterDownloadContents.scss");
 
 interface AfterDownloadContentsProps {
-  relatedPaperTestUserName: string;
-  handleDownloadPdf: (isDownload: boolean) => void;
+  handleSetIsDownloadedPDF: (isDownload: boolean) => void;
   relatedPaperList: Paper[];
   isLoggedIn: boolean;
   isRelatedPaperLoading: boolean;
@@ -28,24 +29,31 @@ const SearchQueryBoxAtPaperShow: React.FC<{ shouldShowSearchBox: boolean }> = ({
 };
 
 const AfterDownloadContents: React.FC<AfterDownloadContentsProps> = props => {
-  const { relatedPaperTestUserName, handleDownloadPdf, relatedPaperList, isLoggedIn, isRelatedPaperLoading } = props;
+  const { handleSetIsDownloadedPDF, relatedPaperList, isLoggedIn, isRelatedPaperLoading } = props;
+  const relatedPapersTestUserGroupName = getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) || "";
 
-  let shouldShow = {
-    shouldShowRelatedPapers: false,
-    shouldShowSearchBox: false,
-  };
+  const [isShowingRelatedPapers, setIsShowingRelatedPapers] = React.useState(false);
+  const [isShowingSearchBox, setIsShowingSearchBox] = React.useState(false);
 
-  switch (relatedPaperTestUserName) {
-    case "related":
-      shouldShow = { shouldShowRelatedPapers: true, shouldShowSearchBox: false };
-      break;
-    case "relatedAndSearch":
-      shouldShow = { shouldShowRelatedPapers: true, shouldShowSearchBox: true };
-      break;
-    case "search":
-      shouldShow = { shouldShowRelatedPapers: false, shouldShowSearchBox: true };
-      break;
-  }
+  React.useEffect(
+    () => {
+      switch (relatedPapersTestUserGroupName) {
+        case "related":
+          setIsShowingRelatedPapers(true);
+          setIsShowingSearchBox(false);
+          break;
+        case "relatedAndSearch":
+          setIsShowingRelatedPapers(true);
+          setIsShowingSearchBox(true);
+          break;
+        case "search":
+          setIsShowingRelatedPapers(false);
+          setIsShowingSearchBox(true);
+          break;
+      }
+    },
+    [relatedPapersTestUserGroupName]
+  );
 
   return (
     <>
@@ -54,17 +62,17 @@ const AfterDownloadContents: React.FC<AfterDownloadContentsProps> = props => {
         <div className={styles.subContext}>
           “Where Is Current Research on Blockchain Technology?-A Systematic Review.”
         </div>
-        <button className={styles.reloadBtn} onClick={() => handleDownloadPdf(false)}>
+        <button className={styles.reloadBtn} onClick={() => handleSetIsDownloadedPDF(false)}>
           <Icon icon="RELOAD" className={styles.reloadIcon} />
           Reload Full-Text
         </button>
       </div>
-      <SearchQueryBoxAtPaperShow shouldShowSearchBox={shouldShow.shouldShowSearchBox} />
+      <SearchQueryBoxAtPaperShow shouldShowSearchBox={isShowingSearchBox} />
       <RelatedPapers
         paperList={relatedPaperList}
         isLoggedIn={isLoggedIn}
         isLoading={isRelatedPaperLoading}
-        shouldShowRelatedPapers={shouldShow.shouldShowRelatedPapers}
+        shouldShowRelatedPapers={isShowingRelatedPapers}
       />
     </>
   );

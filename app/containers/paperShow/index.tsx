@@ -211,8 +211,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isDownloadPdf,
     } = this.state;
     const shouldShowFullTextTab = isLoadPDF && !failedToLoadPDF && layout.userDevice !== UserDevice.MOBILE;
-    const relatedPapersAtPaperShowUserName = getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) || "";
-    const shouldShowRelatedPapers = relatedPapersAtPaperShowUserName !== "control" ? true : false;
+    const relatedPapersTestUserGroupName = getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) || "";
+    const isShowRelatedPapers = relatedPapersTestUserGroupName !== "control";
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -288,7 +288,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               paperList={relatedPaperList}
               isLoggedIn={currentUser.isLoggedIn}
               isLoading={isLoadingRelatedPaperList}
-              shouldShowRelatedPapers={!paper.bestPdf.hasBest && shouldShowRelatedPapers}
+              shouldShowRelatedPapers={!paper.bestPdf.hasBest && isShowRelatedPapers}
             />
             <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
               <PaperShowRefCitedTab
@@ -296,7 +296,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 handleClickFullTextTab={this.scrollToSection("fullText")}
                 handleClickRefTab={this.scrollToSection("ref")}
                 handleClickCitedTab={this.scrollToSection("cited")}
-                handleDownloadPdf={this.handleDownloadPdf}
+                handleSetIsDownloadedPDF={this.setIsDownloadedPDF}
                 isLoadingOaCheck={paperShow.isOACheckingPDF}
                 isFixed={isOnFullText || isOnRef || isOnCited}
                 isOnRef={isOnRef}
@@ -309,15 +309,14 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               relatedPaperList={relatedPaperList}
               isLoggedIn={currentUser.isLoggedIn}
               isRelatedPaperLoading={isLoadingRelatedPaperList}
-              relatedPaperTestUserName={relatedPapersAtPaperShowUserName}
-              shouldShowRelatedPapers={shouldShowRelatedPapers}
+              shouldShowRelatedPapers={isShowRelatedPapers}
               dispatch={dispatch}
               paperId={paper.id}
               onLoadSuccess={this.handleSucceedToLoadPDF}
               onFailed={this.handleFailedToLoadPDF}
               isDownloadPdf={isDownloadPdf}
-              handleScrollSetAfterDownload={this.scrollToSection("fullText")}
-              handleDownloadPdf={this.handleDownloadPdf}
+              handleSetScrollAfterDownload={this.scrollToSection("fullText")}
+              handleSetIsDownloadedPDF={this.setIsDownloadedPDF}
               handleGetBestPdf={this.getBestPdfOfPaperInPaperShow}
               filename={paper.title}
               bestPdf={paper.bestPdf}
@@ -377,7 +376,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     );
   }
 
-  private handleDownloadPdf = (isDownload: boolean) => {
+  private setIsDownloadedPDF = (isDownload: boolean) => {
     this.setState(prevState => ({ ...prevState, isDownloadPdf: isDownload }));
   };
 

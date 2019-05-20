@@ -6,7 +6,6 @@ export interface PDFViewerProps {
   relatedPaperList: Paper[];
   isLoggedIn: boolean;
   isRelatedPaperLoading: boolean;
-  relatedPaperTestUserName: string;
   shouldShowRelatedPapers: boolean;
   dispatch: Dispatch<any>;
   paperId: number;
@@ -15,8 +14,8 @@ export interface PDFViewerProps {
   sources: PaperSource[];
   bestPdf?: PaperPdf;
   isDownloadPdf: boolean;
-  handleScrollSetAfterDownload: () => void;
-  handleDownloadPdf: (isDownload: boolean) => void;
+  handleSetScrollAfterDownload: () => void;
+  handleSetIsDownloadedPDF: (isDownload: boolean) => void;
   handleGetBestPdf: () => Promise<PaperPdf> | undefined;
   onLoadSuccess: () => void;
   onFailed: () => void;
