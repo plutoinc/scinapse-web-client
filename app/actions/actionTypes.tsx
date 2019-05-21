@@ -205,6 +205,10 @@ export enum ACTION_TYPES {
   JOURNAL_SHOW_START_TO_GET_PAPERS = "JOURNAL_SHOW_START_TO_GET_PAPERS",
   JOURNAL_SHOW_SUCCEEDED_TO_GET_PAPERS = "JOURNAL_SHOW_SUCCEEDED_TO_GET_PAPERS",
   JOURNAL_SHOW_FAILED_TO_GET_PAPERS = "JOURNAL_SHOW_FAILED_TO_GET_PAPERS",
+
+  RELATED_PAPERS_START_TO_GET_PAPERS = "RELATED_PAPERS_START_TO_GET_PAPERS",
+  RELATED_PAPERS_SUCCEEDED_TO_GET_PAPERS = "RELATED_PAPERS_SUCCEEDED_TO_GET_PAPERS",
+  RELATED_PAPERS_FAILED_TO_GET_PAPERS = "RELATED_PAPERS_FAILED_TO_GET_PAPERS",
 }
 
 export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
@@ -249,6 +253,21 @@ export const ActionCreators = {
 
   closeGlobalDialog() {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_CLOSE });
+  },
+
+  startToGetRelatedPapers() {
+    return createAction({ type: ACTION_TYPES.RELATED_PAPERS_START_TO_GET_PAPERS });
+  },
+
+  failedToGetRelatedPapers() {
+    return createAction({ type: ACTION_TYPES.RELATED_PAPERS_FAILED_TO_GET_PAPERS });
+  },
+
+  getRelatedPapers(payload: { paperIds: number[] }) {
+    return createAction({
+      type: ACTION_TYPES.RELATED_PAPERS_SUCCEEDED_TO_GET_PAPERS,
+      payload,
+    });
   },
 
   startToLoadAuthorShowPageData() {

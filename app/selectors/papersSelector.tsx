@@ -1,11 +1,18 @@
 import { denormalize } from "normalizr";
+import { createSelector } from "reselect";
 import { AppState } from "../reducers";
-import { Paper, paperSchema } from "../model/paper";
-
-export function getDenormalizedPapers(paperIds: number[], paperEntities: { [paperId: number]: Paper }) {
-  return denormalize(paperIds, [paperSchema], paperEntities);
-}
+import { paperSchema } from "../model/paper";
 
 export function getPaperEntities(state: AppState) {
-  return { papers: state.entities.papers };
+  return state.entities.papers;
 }
+
+// function getRelatedPaperIds(state: AppState) {
+//   return state.relatedPapersState.paperIds;
+// }
+
+export const makeGetMemoizedPapers = (getPaperIds: () => number[]) => {
+  return createSelector([getPaperIds, getPaperEntities], (paperIds, paperEntities) => {
+    return denormalize(paperIds, [paperSchema], { papers: paperEntities });
+  });
+};

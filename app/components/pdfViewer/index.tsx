@@ -283,12 +283,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                     isExternalLink
                     downloadAttr
                   />
-                  <RelatedPapers
-                    paperList={relatedPaperList}
-                    isLoggedIn={isLoggedIn}
-                    isLoading={isRelatedPaperLoading}
-                    shouldShowRelatedPapers={shouldShowRelatedPapers}
-                  />
+                  <RelatedPapers shouldShowRelatedPapers={shouldShowRelatedPapers} />
                 </>
               ) : (
                 <ScinapseButton

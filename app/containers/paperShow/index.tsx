@@ -16,13 +16,12 @@ import FOSList from "../../components/paperShow/components/fosList";
 import ReferencePapers from "../../components/paperShow/components/relatedPapers";
 import PaperShowRefCitedTab from "../../components/paperShow/refCitedTab";
 import { Footer } from "../../components/layouts";
-import { Configuration } from "../../reducers/configuration";
 import { Paper } from "../../model/paper";
 import { fetchCitedPaperData, fetchMyCollection, fetchPaperShowData, fetchRefPaperData } from "./sideEffect";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import { LayoutState, UserDevice } from "../../components/layouts/records";
 import { trackEvent } from "../../helpers/handleGA";
-import { getCitedPapers, getMemoizedPaper, getReferencePapers } from "./select";
+import { getMemoizedPaper } from "./select";
 import { formulaeToHTMLStr } from "../../helpers/displayFormula";
 import restoreScroll from "../../helpers/scrollRestoration";
 import ErrorPage from "../../components/error/errorPage";
@@ -32,8 +31,6 @@ import { PaperShowMatchParams, PaperShowPageQueryParams } from "./types";
 import VenueAndAuthors from "../../components/common/paperItem/venueAndAuthors";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import SignUpBanner from "../../components/paperShow/components/signUpBanner";
-import PaperAPI from "../../api/paper";
-import alertToast from "../../helpers/makePlutoToastAction";
 import RelatedPapers from "../../components/relatedPapers";
 import { getUserGroupName } from "../../helpers/abTestHelper";
 import { RELATED_PAPERS_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalValue";
@@ -41,17 +38,23 @@ import { CommonError } from "../../model/error";
 import PaperShowHelmet from "../../components/paperShow/helmet";
 import GoBackResultBtn from "../../components/paperShow/backButton";
 import { getMemoizedCurrentUser } from "../../selectors/getCurrentUser";
+import { getRelatedPapers } from "../../actions/relatedPapers";
+import { makeGetMemoizedPapers } from "../../selectors/papersSelector";
+import { getMemoizedPaperShow } from "../../selectors/getPaperShow";
+import { getMemoizedLayout } from "../../selectors/getLayout";
 const styles = require("./paperShow.scss");
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
 let ticking = false;
 
 function mapStateToProps(state: AppState) {
+  const getReferencePapers = makeGetMemoizedPapers(() => state.paperShow.referencePaperIds);
+  const getCitedPapers = makeGetMemoizedPapers(() => state.paperShow.citedPaperIds);
+
   return {
-    layout: state.layout,
+    layout: getMemoizedLayout(state),
     currentUser: getMemoizedCurrentUser(state),
-    paperShow: state.paperShow,
-    configuration: state.configuration,
+    paperShow: getMemoizedPaperShow(state),
     paper: getMemoizedPaper(state),
     referencePapers: getReferencePapers(state),
     citedPapers: getCitedPapers(state),
@@ -62,7 +65,6 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
   layout: LayoutState;
   currentUser: CurrentUser;
   paperShow: PaperShowState;
-  configuration: Configuration;
   dispatch: Dispatch<any>;
   paper: Paper | null;
   referencePapers: Paper[];
@@ -112,17 +114,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public async componentDidMount() {
-    const { configuration, currentUser, dispatch, match, location, paperShow } = this.props;
+    const { currentUser, dispatch, match, location, paperShow } = this.props;
     const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
-    const notRenderedAtServerOrJSAlreadyInitialized =
-      !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
 
     window.addEventListener("scroll", this.handleScroll, { passive: true });
     this.handleScrollEvent();
 
-    this.fetchRelatedPaperData(parseInt(match.params.paperId, 10));
+    dispatch(getRelatedPapers(parseInt(this.props.match.params.paperId, 10), this.cancelToken));
 
-    if (notRenderedAtServerOrJSAlreadyInitialized) {
+    if (!paperShow.paperId) {
       const err = await fetchPaperShowData(
         {
           dispatch,
@@ -153,7 +153,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (moveToDifferentPage) {
       dispatch(clearPaperShowState());
-      this.fetchRelatedPaperData(parseInt(this.props.match.params.paperId, 10));
+      dispatch(getRelatedPapers(parseInt(this.props.match.params.paperId, 10), this.cancelToken));
       const err = await fetchPaperShowData(
         {
           dispatch,
@@ -206,8 +206,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isDownloadedPDF,
     } = this.state;
     const shouldShowFullTextTab = isLoadPDF && !failedToLoadPDF && layout.userDevice !== UserDevice.MOBILE;
-    const relatedPapersTestUserGroupName = getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) || "";
-    const isShowRelatedPapers = relatedPapersTestUserGroupName !== "control";
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -280,10 +278,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           </article>
           <div>
             <RelatedPapers
-              paperList={relatedPaperList}
-              isLoggedIn={currentUser.isLoggedIn}
-              isLoading={isLoadingRelatedPaperList}
-              shouldShowRelatedPapers={!paper.bestPdf.hasBest && isShowRelatedPapers}
+              shouldShowRelatedPapers={getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) !== "control"}
             />
             <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
               <PaperShowRefCitedTab
@@ -304,7 +299,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               relatedPaperList={relatedPaperList}
               isLoggedIn={currentUser.isLoggedIn}
               isRelatedPaperLoading={isLoadingRelatedPaperList}
-              shouldShowRelatedPapers={isShowRelatedPapers}
+              shouldShowRelatedPapers={
+                !paper.bestPdf.hasBest && getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) !== "control"
+              }
               dispatch={dispatch}
               paperId={paper.id}
               onLoadSuccess={this.handleSucceedToLoadPDF}
@@ -373,31 +370,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private setIsDownloadedPDF = (isDownloaded: boolean) => {
     this.setState(prevState => ({ ...prevState, isDownloadedPDF: isDownloaded }));
-  };
-
-  private fetchRelatedPaperData = (paperId: number) => {
-    PaperAPI.getRelatedPapers({ paperId, cancelToken: this.cancelToken.token })
-      .then(papers => {
-        this.setState(prevState => ({
-          ...prevState,
-          relatedPaperList: papers,
-          isLoadingRelatedPaperList: false,
-        }));
-      })
-      .catch(err => {
-        if (!axios.isCancel(err)) {
-          alertToast({ type: "error", message: `Failed to get related papers. ${err.message}` });
-        }
-      });
-
-    this.setState(prevState => ({
-      ...prevState,
-      isLoadingRelatedPaperList: false,
-    }));
-
-    return () => {
-      this.cancelToken.cancel();
-    };
   };
 
   private logPageView = (paperId: string | number, errorStatus?: number | null) => {

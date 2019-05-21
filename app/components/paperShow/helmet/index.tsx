@@ -68,7 +68,7 @@ const getStructuredData = (paper: Paper) => {
   return structuredData;
 };
 
-const PaperShowHelmet: React.FC<{ paper: Paper }> = ({ paper }) => {
+const PaperShowHelmet: React.FC<{ paper: Paper }> = React.memo(({ paper }) => {
   const pdfSourceRecord = getPDFLink(paper.urls);
   const metaTitleContent = !!pdfSourceRecord ? "[PDF] " + paper.title : paper.title;
   const fosListContent =
@@ -98,6 +98,6 @@ const PaperShowHelmet: React.FC<{ paper: Paper }> = ({ paper }) => {
       <script type="application/ld+json">{JSON.stringify(getStructuredData(paper))}</script>
     </Helmet>
   );
-};
+});
 
 export default PaperShowHelmet;

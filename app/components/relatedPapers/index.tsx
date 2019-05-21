@@ -1,15 +1,21 @@
 import * as React from "react";
+import { connect, Dispatch } from "react-redux";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { Paper } from "../../model/paper";
 import PaperItem from "../common/paperItem";
 import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
 import ArticleSpinner from "../common/spinner/articleSpinner";
+import { AppState } from "../../reducers";
+import { getMemoizedCurrentUser } from "../../selectors/getCurrentUser";
+import { CurrentUser } from "../../model/currentUser";
+import { makeGetMemoizedPapers } from "../../selectors/papersSelector";
 const styles = require("./relatedPapers.scss");
 
 interface RelatedPapersProps {
-  paperList: Paper[];
-  isLoggedIn: boolean;
-  isLoading: boolean;
+  dispatch: Dispatch<any>;
+  currentUser: CurrentUser;
+  isLoadingPapers: boolean;
+  relatedPapers: Paper[];
   shouldShowRelatedPapers: boolean;
 }
 
@@ -53,13 +59,13 @@ const RelatedPaperItem: React.FunctionComponent<{ paper: Paper }> = ({ paper }) 
 };
 
 const RelatedPapersInPaperShow: React.FC<RelatedPapersProps> = props => {
-  const { paperList, isLoggedIn, isLoading, shouldShowRelatedPapers } = props;
+  const { relatedPapers, currentUser, isLoadingPapers, shouldShowRelatedPapers } = props;
 
-  if (paperList.length === 0 || !shouldShowRelatedPapers) {
+  if (relatedPapers.length === 0 || !shouldShowRelatedPapers) {
     return null;
   }
 
-  const relatedPaperItems = paperList.map((paper, index) => {
+  const relatedPaperItems = relatedPapers.map((paper, index) => {
     if (index < 3) {
       return (
         <div key={paper.id}>
@@ -72,18 +78,33 @@ const RelatedPapersInPaperShow: React.FC<RelatedPapersProps> = props => {
   return (
     <div className={styles.relatedPaperContainer}>
       <div className={styles.titleContext}>📖 Papers frequently viewed together</div>
-      {isLoading ? (
+      {isLoadingPapers ? (
         <div className={styles.loadingContainer}>
           <ArticleSpinner className={styles.loadingSpinner} />
         </div>
       ) : (
         <>
-          <div className={!isLoggedIn ? styles.relatedPaperWrapper : undefined}>{relatedPaperItems}</div>
-          <ContentBlocker isLoggedIn={isLoggedIn} />
+          <div className={!currentUser.isLoggedIn ? styles.relatedPaperWrapper : undefined}>{relatedPaperItems}</div>
+          <ContentBlocker isLoggedIn={currentUser.isLoggedIn} />
         </>
       )}
     </div>
   );
 };
 
-export default withStyles<typeof styles>(styles)(RelatedPapersInPaperShow);
+function makeMapStateToProps() {
+  return (state: AppState) => {
+    const getMemoizedRelatedPapers = makeGetMemoizedPapers(() => {
+      return state.relatedPapersState.paperIds;
+    });
+    return {
+      currentUser: getMemoizedCurrentUser(state),
+      isLoadingPapers: state.relatedPapersState.isLoading,
+      relatedPapers: getMemoizedRelatedPapers(state),
+    };
+  };
+}
+
+export default connect(makeMapStateToProps)(
+  withStyles<typeof RelatedPapersInPaperShow>(styles)(RelatedPapersInPaperShow)
+);

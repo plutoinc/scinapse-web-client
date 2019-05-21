@@ -29,7 +29,7 @@ const SearchQueryBoxAtPaperShow: React.FC<{ shouldShowSearchBox: boolean }> = ({
 };
 
 const AfterDownloadContents: React.FC<AfterDownloadContentsProps> = props => {
-  const { onDownloadedPDF, relatedPaperList, isLoggedIn, isRelatedPaperLoading } = props;
+  const { onDownloadedPDF } = props;
   const relatedPapersTestUserGroupName = getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) || "";
 
   const [isShowingRelatedPapers, setIsShowingRelatedPapers] = React.useState(false);
@@ -68,12 +68,7 @@ const AfterDownloadContents: React.FC<AfterDownloadContentsProps> = props => {
         </button>
       </div>
       <SearchQueryBoxAtPaperShow shouldShowSearchBox={isShowingSearchBox} />
-      <RelatedPapers
-        paperList={relatedPaperList}
-        isLoggedIn={isLoggedIn}
-        isLoading={isRelatedPaperLoading}
-        shouldShowRelatedPapers={isShowingRelatedPapers}
-      />
+      <RelatedPapers shouldShowRelatedPapers={isShowingRelatedPapers} />
     </>
   );
 };
