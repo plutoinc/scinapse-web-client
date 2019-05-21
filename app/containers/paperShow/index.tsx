@@ -30,9 +30,6 @@ import EnvChecker from "../../helpers/envChecker";
 import NextPaperTab from "../nextPaperTab";
 import { PaperShowMatchParams, PaperShowPageQueryParams } from "./types";
 import VenueAndAuthors from "../../components/common/paperItem/venueAndAuthors";
-import { ArticleSearchState } from "../../components/articleSearch/records";
-import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
-import Icon from "../../icons";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import SignUpBanner from "../../components/paperShow/components/signUpBanner";
 import PaperAPI from "../../api/paper";
@@ -42,6 +39,7 @@ import { getUserGroupName } from "../../helpers/abTestHelper";
 import { RELATED_PAPERS_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalValue";
 import { CommonError } from "../../model/error";
 import PaperShowHelmet from "../../components/paperShow/helmet";
+import GoBackResultBtn from "../../components/paperShow/backButton";
 const styles = require("./paperShow.scss");
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -56,7 +54,6 @@ function mapStateToProps(state: AppState) {
     paper: getMemoizedPaper(state),
     referencePapers: getReferencePapers(state),
     citedPapers: getCitedPapers(state),
-    articleSearch: state.articleSearch,
   };
 }
 
@@ -65,7 +62,6 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
   currentUser: CurrentUser;
   paperShow: PaperShowState;
   configuration: Configuration;
-  articleSearch: ArticleSearchState;
   dispatch: Dispatch<any>;
   paper: Paper | null;
   referencePapers: Paper[];
@@ -234,7 +230,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <PaperShowHelmet paper={paper} />
           <article className={styles.paperShow}>
             <div className={styles.paperShowContent}>
-              {this.getGoBackResultBtn()}
+              <GoBackResultBtn />
               <h1
                 className={styles.paperTitle}
                 dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paperShow.highlightTitle || paper.title) }}
@@ -412,31 +408,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         actionTag: "pageView",
         actionLabel: String(paperId),
       });
-    }
-  };
-
-  private getGoBackResultBtn = () => {
-    const { articleSearch, history } = this.props;
-
-    if (articleSearch.searchInput && articleSearch.searchInput.length > 0) {
-      return (
-        <div
-          className={styles.goBackBtn}
-          onClick={() => {
-            history.push({
-              pathname: "/search",
-              search: PapersQueryFormatter.stringifyPapersQuery({
-                query: articleSearch.searchInput,
-                page: 1,
-                sort: "RELEVANCE",
-                filter: PapersQueryFormatter.objectifyPapersFilter(),
-              }),
-            });
-          }}
-        >
-          <Icon icon="BACK" className={styles.backIcon} /> BACK TO RESULTS
-        </div>
-      );
     }
   };
 
