@@ -58,7 +58,7 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
   );
 };
 
-const PaperShowRefCitedTab: React.FunctionComponent<PaperShowRefCitedTabProps> = props => {
+const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(props => {
   let fullTextNode;
   if (props.canShowFullPDF && props.onClickFullTextTab) {
     fullTextNode = <TabItem active={!!props.isOnFullText} onClick={props.onClickFullTextTab} text="Full Text" />;
@@ -100,6 +100,6 @@ const PaperShowRefCitedTab: React.FunctionComponent<PaperShowRefCitedTabProps> =
       </div>
     </div>
   );
-};
+});
 
 export default withStyles<typeof PaperShowRefCitedTab>(styles)(PaperShowRefCitedTab);

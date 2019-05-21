@@ -84,6 +84,14 @@ interface PaperShowStates
       isOnFullText: boolean;
     }> {}
 
+const Title: React.FC<{ title: string }> = React.memo(({ title }) => {
+  return <h1 className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(title) }} />;
+});
+
+const Abstract: React.FC<{ abstract: string }> = React.memo(({ abstract }) => {
+  return <div className={styles.abstractContent} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(abstract) }} />;
+});
+
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private cancelToken = axios.CancelToken.source();
@@ -219,10 +227,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <article className={styles.paperShow}>
             <div className={styles.paperShowContent}>
               <GoBackResultBtn />
-              <h1
-                className={styles.paperTitle}
-                dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paperShow.highlightTitle || paper.title) }}
-              />
+              <Title title={paper.title} />
               <VenueAndAuthors
                 pageType={"paperShow"}
                 actionArea={"paperDescription"}
@@ -252,10 +257,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <div className={styles.abstract}>
                   <div className={styles.paperContentBlockHeader}>Abstract</div>
                 </div>
-                <div
-                  className={styles.abstractContent}
-                  dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paperShow.highlightAbstract || paper.abstract) }}
-                />
+                <Abstract abstract={paperShow.highlightAbstract || paper.abstract} />
                 <div className={styles.fos}>
                   <FOSList FOSList={paper.fosList} />
                 </div>

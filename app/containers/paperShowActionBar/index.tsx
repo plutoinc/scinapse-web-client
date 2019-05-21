@@ -19,7 +19,7 @@ interface PaperShowActionBarProps {
   handleClickFullText: () => void;
 }
 
-const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = props => {
+const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const hasSource = props.paper.urls.length > 0;
@@ -67,6 +67,6 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
       </div>
     </div>
   );
-};
+});
 
 export default withStyles<typeof PaperShowActionBar>(s)(PaperShowActionBar);
