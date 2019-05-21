@@ -40,6 +40,7 @@ import { RELATED_PAPERS_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalV
 import { CommonError } from "../../model/error";
 import PaperShowHelmet from "../../components/paperShow/helmet";
 import GoBackResultBtn from "../../components/paperShow/backButton";
+import { getMemoizedCurrentUser } from "../../selectors/getCurrentUser";
 const styles = require("./paperShow.scss");
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -48,7 +49,7 @@ let ticking = false;
 function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
-    currentUser: state.currentUser,
+    currentUser: getMemoizedCurrentUser(state),
     paperShow: state.paperShow,
     configuration: state.configuration,
     paper: getMemoizedPaper(state),
