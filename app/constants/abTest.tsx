@@ -3,7 +3,7 @@ import {
   signBannerAtPaperShowTest,
   signBannerAtPaperShowTitleTextTest,
   signBannerAtPaperShowTitleTextKeyverbTest,
-  scinapseLogoTest,
+  searchEngineMoodTest,
   bannerCuratedTest,
 } from "./abTestObject";
 
@@ -21,7 +21,7 @@ export type BenefitExpType = "queryCountSession" | "refPaperCountSession" | "pap
 
 export type ABTestType =
   | "queryLover"
-  | "scinapseLogo"
+  | "searchEngineMood"
   | "signBannerAtSearch-banner"
   | "signBannerAtSearch-curated"
   | "signBannerAtPaperShow-banner"
@@ -47,7 +47,7 @@ export interface BenefitExpTicketContext {
 }
 
 export const LIVE_TESTS: Test[] = [
-  scinapseLogoTest,
+  searchEngineMoodTest,
   bannerTest,
   bannerCuratedTest,
   signBannerAtPaperShowTest,
