@@ -58,7 +58,7 @@ const RelatedPaperItem: React.FunctionComponent<{ paper: Paper }> = ({ paper }) 
   );
 };
 
-const RelatedPapersInPaperShow: React.FC<RelatedPapersProps> = props => {
+const RelatedPapersInPaperShow: React.FC<RelatedPapersProps> = React.memo(props => {
   const { relatedPapers, currentUser, isLoadingPapers, shouldShowRelatedPapers } = props;
 
   if (relatedPapers.length === 0 || !shouldShowRelatedPapers) {
@@ -90,7 +90,7 @@ const RelatedPapersInPaperShow: React.FC<RelatedPapersProps> = props => {
       )}
     </div>
   );
-};
+});
 
 function makeMapStateToProps() {
   return (state: AppState) => {

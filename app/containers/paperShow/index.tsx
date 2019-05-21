@@ -9,7 +9,7 @@ import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import ArticleSpinner from "../../components/common/spinner/articleSpinner";
-import { clearPaperShowState, getBestPdfOfPaper } from "../../actions/paperShow";
+import { clearPaperShowState } from "../../actions/paperShow";
 import { PaperShowState } from "./records";
 import ActionBar from "../paperShowActionBar";
 import FOSList from "../../components/paperShow/components/fosList";
@@ -42,6 +42,9 @@ import { getRelatedPapers } from "../../actions/relatedPapers";
 import { makeGetMemoizedPapers } from "../../selectors/papersSelector";
 import { getMemoizedPaperShow } from "../../selectors/getPaperShow";
 import { getMemoizedLayout } from "../../selectors/getLayout";
+import { getMemoizedPDFViewerState } from "../../selectors/getPDFViewer";
+import { PDFViewerState } from "../../reducers/pdfViewer";
+import { ActionCreators } from "../../actions/actionTypes";
 const styles = require("./paperShow.scss");
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -56,6 +59,7 @@ function mapStateToProps(state: AppState) {
     currentUser: getMemoizedCurrentUser(state),
     paperShow: getMemoizedPaperShow(state),
     paper: getMemoizedPaper(state),
+    PDFViewerState: getMemoizedPDFViewerState(state),
     referencePapers: getReferencePapers(state),
     citedPapers: getCitedPapers(state),
   };
@@ -65,6 +69,7 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
   layout: LayoutState;
   currentUser: CurrentUser;
   paperShow: PaperShowState;
+  PDFViewerState: PDFViewerState;
   dispatch: Dispatch<any>;
   paper: Paper | null;
   referencePapers: Paper[];
@@ -77,16 +82,6 @@ interface PaperShowStates
       isOnRef: boolean;
       isOnCited: boolean;
       isOnFullText: boolean;
-
-      isLoadPDF: boolean;
-      failedToLoadPDF: boolean;
-
-      isLoadingOaPDFCheck: boolean;
-
-      isLoadingRelatedPaperList: boolean;
-      relatedPaperList: Paper[];
-
-      isDownloadedPDF: boolean;
     }> {}
 
 @withStyles<typeof PaperShow>(styles)
@@ -104,12 +99,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isOnRef: false,
       isOnCited: false,
       isOnFullText: false,
-      isLoadPDF: false,
-      failedToLoadPDF: false,
-      isLoadingOaPDFCheck: false,
-      isLoadingRelatedPaperList: true,
-      relatedPaperList: [],
-      isDownloadedPDF: false,
     };
   }
 
@@ -194,18 +183,18 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public render() {
-    const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers, dispatch } = this.props;
     const {
-      isOnFullText,
-      isOnCited,
-      isOnRef,
-      isLoadPDF,
-      failedToLoadPDF,
-      isLoadingRelatedPaperList,
-      relatedPaperList,
-      isDownloadedPDF,
-    } = this.state;
-    const shouldShowFullTextTab = isLoadPDF && !failedToLoadPDF && layout.userDevice !== UserDevice.MOBILE;
+      layout,
+      paperShow,
+      location,
+      currentUser,
+      paper,
+      referencePapers,
+      citedPapers,
+      PDFViewerState,
+    } = this.props;
+    const { isOnFullText, isOnCited, isOnRef } = this.state;
+    // const shouldShowFullTextTab = isLoadPDF && !failedToLoadPDF && layout.userDevice !== UserDevice.MOBILE;
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -248,12 +237,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <NoSsr>
                   <ActionBar
                     paper={paper}
-                    hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
-                    isLoadingOaCheck={paperShow.isOACheckingPDF}
-                    isFetchingPDF={paperShow.isFetchingPdf}
-                    failedToLoadPDF={failedToLoadPDF}
+                    isLoadingPDF={PDFViewerState.isLoading}
                     currentUser={currentUser}
-                    showFullText={isLoadPDF}
+                    hasPDFFullText={!!PDFViewerState.parsedPDFObject}
                     handleClickFullText={this.scrollToSection("fullText")}
                   />
                 </NoSsr>
@@ -278,43 +264,39 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           </article>
           <div>
             <RelatedPapers
-              shouldShowRelatedPapers={getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) !== "control"}
+              shouldShowRelatedPapers={
+                !PDFViewerState.isLoading &&
+                PDFViewerState.hasFailed &&
+                getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) !== "control"
+              }
             />
             <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
               <PaperShowRefCitedTab
                 paper={paper}
-                handleClickFullTextTab={this.scrollToSection("fullText")}
+                afterDownloadPDF={this.scrollToSection("fullText")}
+                onClickFullTextTab={this.scrollToSection("fullText")}
+                onClickDownloadPDF={this.handleClickDownloadPDF}
                 handleClickRefTab={this.scrollToSection("ref")}
                 handleClickCitedTab={this.scrollToSection("cited")}
-                handleSetIsDownloadedPDF={this.setIsDownloadedPDF}
-                isLoadingOaCheck={paperShow.isOACheckingPDF}
                 isFixed={isOnFullText || isOnRef || isOnCited}
                 isOnRef={isOnRef}
                 isOnCited={isOnCited}
                 isOnFullText={isOnFullText || (!isOnFullText && !isOnRef && !isOnCited)}
-                hasFullText={shouldShowFullTextTab}
+                isLoading={PDFViewerState.isLoading}
+                canShowFullPDF={!!PDFViewerState.parsedPDFObject}
               />
             </div>
-            <PDFViewer
-              relatedPaperList={relatedPaperList}
-              isLoggedIn={currentUser.isLoggedIn}
-              isRelatedPaperLoading={isLoadingRelatedPaperList}
-              shouldShowRelatedPapers={
-                !paper.bestPdf.hasBest && getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) !== "control"
-              }
-              dispatch={dispatch}
-              paperId={paper.id}
-              onLoadSuccess={this.handleSucceedToLoadPDF}
-              onFailed={this.handleFailedToLoadPDF}
-              isDownloadedPDF={isDownloadedPDF}
-              handleSetScrollAfterDownload={this.scrollToSection("fullText")}
-              handleSetIsDownloadedPDF={this.setIsDownloadedPDF}
-              handleGetBestPdf={this.getBestPdfOfPaperInPaperShow}
-              filename={paper.title}
-              bestPdf={paper.bestPdf}
-              sources={paper.urls}
-              shouldShow={!EnvChecker.isOnServer() && layout.userDevice === UserDevice.DESKTOP}
-            />
+            <NoSsr>
+              {layout.userDevice === UserDevice.DESKTOP && (
+                <PDFViewer
+                  paper={paper}
+                  shouldShowRelatedPapers={
+                    !paper.bestPdf.hasBest && getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) !== "control"
+                  }
+                  afterDownloadPDF={this.scrollToSection("fullText")}
+                />
+              )}
+            </NoSsr>
           </div>
           <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)} />
           <div className={styles.citedBy}>
@@ -363,14 +345,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         <div className={styles.footerWrapper}>
           <Footer />
         </div>
-        <NextPaperTab paperList={relatedPaperList} />
+        <NextPaperTab />
       </>
     );
   }
-
-  private setIsDownloadedPDF = (isDownloaded: boolean) => {
-    this.setState(prevState => ({ ...prevState, isDownloadedPDF: isDownloaded }));
-  };
 
   private logPageView = (paperId: string | number, errorStatus?: number | null) => {
     if (!EnvChecker.isOnServer()) {
@@ -381,56 +359,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         actionTag: "pageView",
         actionLabel: String(paperId),
       });
-    }
-  };
-
-  private handleSucceedToLoadPDF = () => {
-    const { paper } = this.props;
-
-    this.setState(prevState => ({ ...prevState, isLoadPDF: true, failedToLoadPDF: false }));
-
-    ActionTicketManager.trackTicket({
-      pageType: "paperShow",
-      actionType: "view",
-      actionArea: "pdfViewer",
-      actionTag: "viewPDF",
-      actionLabel: paper && String(paper.id),
-    });
-  };
-
-  private handleFailedToLoadPDF = () => {
-    this.setState(prevState => ({ ...prevState, failedToLoadPDF: true, isLoadPDF: false }));
-  };
-
-  private getBestPdfOfPaperInPaperShow = () => {
-    const { paper, dispatch } = this.props;
-    if (paper) {
-      try {
-        this.setState(prevState => ({ ...prevState, isLoadingOaPDFCheck: true }));
-        const res = dispatch(getBestPdfOfPaper({ paperId: paper.id }));
-        res.then(result => {
-          if (result.hasBest) {
-            this.setState(prevState => ({ ...prevState, isLoadPDF: true, isLoadingOaPDFCheck: false }));
-          } else {
-            this.setState(prevState => ({ ...prevState, isLoadPDF: false, isLoadingOaPDFCheck: false }));
-          }
-        });
-        return res;
-      } catch (err) {
-        this.setState(prevState => ({
-          ...prevState,
-          isLoadPDF: false,
-          failedToLoadPDF: true,
-          isLoadingOaPDFCheck: false,
-        }));
-        console.error(err);
-      }
-      this.setState(prevState => ({
-        ...prevState,
-        isLoadingOaPDFCheck: false,
-      }));
-    } else {
-      return;
     }
   };
 
@@ -451,6 +379,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       requestAnimationFrame(this.handleScrollEvent);
     }
     ticking = true;
+  };
+
+  private handleClickDownloadPDF = () => {
+    const { dispatch } = this.props;
+    dispatch(ActionCreators.clickPDFDownloadBtn());
   };
 
   private handleScrollEvent = () => {

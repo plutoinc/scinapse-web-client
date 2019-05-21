@@ -1,19 +1,23 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { Paper } from "../../model/paper";
-import { withStyles } from "../../helpers/withStylesHelper";
+import { connect, Dispatch } from "react-redux";
 import Icon from "../../icons";
+import { Paper } from "../../model/paper";
+import { AppState } from "../../reducers";
+import { withStyles } from "../../helpers/withStylesHelper";
 import ActionTicketManager from "../../helpers/actionTicketManager";
+import { makeGetMemoizedPapers } from "../../selectors/papersSelector";
 const store = require("store");
 const styles = require("./nextPaperTab.scss");
 
 const RESEARCH_HISTORY_KEY = "r_h_list";
 
 interface NextPaperTabProps {
+  dispatch: Dispatch<any>;
   paperList: Paper[];
 }
 
-const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = ({ paperList }) => {
+const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = React.memo(({ paperList }) => {
   if (!paperList || paperList.length === 0) return null;
 
   let nextPaper = paperList[0];
@@ -48,6 +52,13 @@ const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = ({ paperList })
       </div>
     </Link>
   );
-};
+});
 
-export default withStyles<typeof NextPaperTab>(styles)(NextPaperTab);
+function mapStateToProps(state: AppState) {
+  const getRelatedPapers = makeGetMemoizedPapers(() => state.relatedPapersState.paperIds);
+  return {
+    paperList: getRelatedPapers(state),
+  };
+}
+
+export default connect(mapStateToProps)(withStyles<typeof NextPaperTab>(styles)(NextPaperTab));

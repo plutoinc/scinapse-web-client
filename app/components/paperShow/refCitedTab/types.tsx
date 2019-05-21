@@ -1,17 +1,15 @@
 import { Paper } from "../../../model/paper";
 
-export interface PaperShowRefCitedTabProps {
-  paper: Paper;
-  isLoadingOaCheck: boolean;
+export interface PaperShowRefCitedTabProps extends PDFButtonProps {
   isFixed: boolean;
   isOnRef: boolean;
   isOnCited: boolean;
   isOnFullText: boolean;
-  hasFullText: boolean;
+  isLoading: boolean;
+
   handleClickRefTab: () => void;
   handleClickCitedTab: () => void;
-  handleClickFullTextTab?: () => void;
-  handleSetIsDownloadedPDF?: (isDownload: boolean) => void;
+  onClickFullTextTab?: () => void;
 }
 
 export interface TabItemProps {
@@ -22,8 +20,8 @@ export interface TabItemProps {
 
 export interface PDFButtonProps {
   paper: Paper;
-  hasPDF: boolean;
-  isLoadingOaCheck: boolean;
-  handleSetIsDownloadedPDF: (isDownload: boolean) => void;
-  handleSetScrollAfterDownload: () => void;
+  isLoading: boolean;
+  canShowFullPDF: boolean;
+  afterDownloadPDF: () => void;
+  onClickDownloadPDF: () => void;
 }

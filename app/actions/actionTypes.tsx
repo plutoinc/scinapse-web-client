@@ -5,7 +5,7 @@ import { AvailableCitationType } from "../containers/paperShow/records";
 import { GetCollectionsResponse } from "../api/member";
 import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
 import { Collection } from "../model/collection";
-import { Paper, PaperPdf } from "../model/paper";
+import { Paper } from "../model/paper";
 import { CVInfoType, Award, Education, Experience } from "../model/profile";
 import { PaperInCollection } from "../model/paperInCollection";
 import { SIGN_UP_STEP } from "../components/auth/signUp/types";
@@ -107,13 +107,6 @@ export enum ACTION_TYPES {
   // tslint:disable-next-line:max-line-length
   PAPER_SHOW_COLLECTION_BUTTON_STALE_UPDATED_COLLECTION_NOTE = "PAPER_SHOW_COLLECTION_BUTTON_STALE_UPDATED_COLLECTION_NOTE",
 
-  PAPER_SHOW_START_TO_GET_BEST_PDF = "PAPER_SHOW_START_TO_GET_BEST_PDF",
-  PAPER_SHOW_SUCCEEDED_TO_GET_BEST_PDF = "PAPER_SHOW_SUCCEEDED_TO_GET_BEST_PDF",
-  PAPER_SHOW_FAILED_TO_GET_BEST_PDF = "PAPER_SHOW_FAILED_TO_GET_BEST_PDF",
-
-  PAPER_SHOW_START_TO_LOADING_FETCH_PDF = "PAPER_SHOW_START_TO_LOADING_FETCH_PDF",
-  PAPER_SHOW_END_TO_LOADING_FETCH_PDF = "PAPER_SHOW_END_TO_LOADING_FETCH_PDF",
-
   ARTICLE_SEARCH_CHANGE_SEARCH_INPUT = "ARTICLE_SEARCH_CHANGE_SEARCH_INPUT",
   ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT = "ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT",
   ARTICLE_SEARCH_START_TO_GET_PAPERS = "ARTICLE_SEARCH_START_TO_GET_PAPERS",
@@ -209,6 +202,14 @@ export enum ACTION_TYPES {
   RELATED_PAPERS_START_TO_GET_PAPERS = "RELATED_PAPERS_START_TO_GET_PAPERS",
   RELATED_PAPERS_SUCCEEDED_TO_GET_PAPERS = "RELATED_PAPERS_SUCCEEDED_TO_GET_PAPERS",
   RELATED_PAPERS_FAILED_TO_GET_PAPERS = "RELATED_PAPERS_FAILED_TO_GET_PAPERS",
+
+  PDF_VIEWER_SET_PDF_BLOB = "PDF_VIEWER_SET_PDF_BLOB",
+  PDF_VIEWER_START_TO_FETCH_PDF = "PDF_VIEWER_START_TO_FETCH_PDF",
+  PDF_VIEWER_FAIL_TO_FETCH_PDF = "PDF_VIEWER_FAIL_TO_FETCH_PDF",
+  PDF_VIEWER_SUCCEED_TO_FETCH_PDF = "PDF_VIEWER_SUCCEED_TO_FETCH_PDF",
+  PDF_VIEWER_CLICK_DOWNLOAD_BTN = "PDF_VIEWER_CLICK_DOWNLOAD_BTN",
+  PDF_VIEWER_CLICK_RELOAD_BTN = "PDF_VIEWER_CLICK_RELOAD_BTN",
+  PDF_VIEWER_CLICK_VIEW_MORE_BTN = "PDF_VIEWER_CLICK_VIEW_MORE_BTN",
 }
 
 export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
@@ -268,6 +269,37 @@ export const ActionCreators = {
       type: ACTION_TYPES.RELATED_PAPERS_SUCCEEDED_TO_GET_PAPERS,
       payload,
     });
+  },
+
+  setPDFBlob(payload: { blob: Blob }) {
+    return createAction({
+      type: ACTION_TYPES.PDF_VIEWER_SET_PDF_BLOB,
+      payload,
+    });
+  },
+
+  startToFetchPDF() {
+    return createAction({ type: ACTION_TYPES.PDF_VIEWER_START_TO_FETCH_PDF });
+  },
+
+  failToFetchPDF() {
+    return createAction({ type: ACTION_TYPES.PDF_VIEWER_FAIL_TO_FETCH_PDF });
+  },
+
+  succeedToFetchPDF(payload: { pdf: any }) {
+    return createAction({ type: ACTION_TYPES.PDF_VIEWER_SUCCEED_TO_FETCH_PDF, payload });
+  },
+
+  clickPDFDownloadBtn() {
+    return createAction({ type: ACTION_TYPES.PDF_VIEWER_CLICK_DOWNLOAD_BTN });
+  },
+
+  clickPDFReloadBtn() {
+    return createAction({ type: ACTION_TYPES.PDF_VIEWER_CLICK_RELOAD_BTN });
+  },
+
+  clickPDFViewMoreBtn() {
+    return createAction({ type: ACTION_TYPES.PDF_VIEWER_CLICK_VIEW_MORE_BTN });
   },
 
   startToLoadAuthorShowPageData() {
@@ -971,26 +1003,6 @@ export const ActionCreators = {
 
   failToRemoveProfileCvData() {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_REMOVE_PROFILE_CV_DATA });
-  },
-
-  startToGetBestPdfInPaperShow() {
-    return createAction({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_BEST_PDF });
-  },
-
-  succeededToGetBestPdfInPaperShow(payload: { paperId: number; bestPdf: PaperPdf }) {
-    return createAction({ type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_BEST_PDF, payload });
-  },
-
-  failedToGetBestPdfInPaperShow() {
-    return createAction({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_BEST_PDF });
-  },
-
-  startToLoadingFetchPDF() {
-    return createAction({ type: ACTION_TYPES.PAPER_SHOW_START_TO_LOADING_FETCH_PDF });
-  },
-
-  endToLoadingFetchPDF() {
-    return createAction({ type: ACTION_TYPES.PAPER_SHOW_END_TO_LOADING_FETCH_PDF });
   },
 
   addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {

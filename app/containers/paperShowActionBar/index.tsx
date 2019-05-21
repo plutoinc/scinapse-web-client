@@ -12,12 +12,9 @@ import RequestFullTextBtn from "./components/fullTextRequestBtn";
 const s = require("./actionBar.scss");
 
 interface PaperShowActionBarProps {
-  paper: Paper | null;
-  hasBestPdf: boolean;
-  isFetchingPDF: boolean;
-  failedToLoadPDF: boolean;
-  showFullText: boolean;
-  isLoadingOaCheck: boolean;
+  paper: Paper;
+  hasPDFFullText: boolean;
+  isLoadingPDF: boolean;
   currentUser: CurrentUser;
   handleClickFullText: () => void;
 }
@@ -25,18 +22,16 @@ interface PaperShowActionBarProps {
 const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = props => {
   const [isOpen, setIsOpen] = React.useState(false);
 
-  if (!props.paper) return null;
-
   const hasSource = props.paper.urls.length > 0;
 
   return (
     <div className={s.actionBar}>
       <div className={s.actions}>
         <div className={s.leftSide}>
-          {!props.hasBestPdf || props.failedToLoadPDF ? (
+          {!props.hasPDFFullText ? (
             <div className={s.actionItem}>
               <RequestFullTextBtn
-                isLoadingOaCheck={props.isLoadingOaCheck}
+                isLoading={props.isLoadingPDF}
                 paperId={props.paper!.id}
                 handleSetIsOpen={setIsOpen}
               />
@@ -46,13 +41,13 @@ const PaperShowActionBar: React.FunctionComponent<PaperShowActionBarProps> = pro
               <ViewFullTextBtn
                 paperId={props.paper.id}
                 handleClickFullText={props.handleClickFullText}
-                isLoadingOaCheck={props.isLoadingOaCheck}
+                isLoading={props.isLoadingPDF}
               />
             </div>
           )}
           {hasSource && (
             <div className={s.actionItem}>
-              <SourceButton paper={props.paper} showFullText={props.hasBestPdf} />
+              <SourceButton paper={props.paper} showFullText={!!props.paper.bestPdf} />
             </div>
           )}
           <div className={s.actionItem}>
