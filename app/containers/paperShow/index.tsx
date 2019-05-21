@@ -4,7 +4,6 @@ import { stringify } from "qs";
 import NoSsr from "@material-ui/core/NoSsr";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
-import Helmet from "react-helmet";
 import PDFViewer from "../../components/pdfViewer";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
@@ -25,7 +24,6 @@ import { LayoutState, UserDevice } from "../../components/layouts/records";
 import { trackEvent } from "../../helpers/handleGA";
 import { getCitedPapers, getMemoizedPaper, getReferencePapers } from "./select";
 import { formulaeToHTMLStr } from "../../helpers/displayFormula";
-import { getPDFLink } from "../../helpers/getPDFLink";
 import restoreScroll from "../../helpers/scrollRestoration";
 import ErrorPage from "../../components/error/errorPage";
 import EnvChecker from "../../helpers/envChecker";
@@ -43,7 +41,7 @@ import RelatedPapers from "../../components/relatedPapers";
 import { getUserGroupName } from "../../helpers/abTestHelper";
 import { RELATED_PAPERS_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalValue";
 import { CommonError } from "../../model/error";
-
+import PaperShowHelmet from "../../components/paperShow/helmet";
 const styles = require("./paperShow.scss");
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -233,7 +231,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     return (
       <>
         <div className={styles.container}>
-          {this.getPageHelmet()}
+          <PaperShowHelmet paper={paper} />
           <article className={styles.paperShow}>
             <div className={styles.paperShowContent}>
               {this.getGoBackResultBtn()}
@@ -659,111 +657,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         action,
         label,
       });
-    }
-  };
-
-  private buildPageDescription = () => {
-    const { paper } = this.props;
-    if (paper) {
-      const shortAbstract = paper.abstract ? `${paper.abstract.slice(0, 110)} | ` : "";
-      const shortAuthors =
-        paper.authors && paper.authors.length > 0
-          ? `${paper.authors
-              .map(author => {
-                return author && author.name;
-              })
-              .join(", ")
-              .slice(0, 50)}  | `
-          : "";
-      const shortJournals = paper.journal ? `${paper.journal.title.slice(0, 50)} | ` : "";
-      return `${shortAbstract}${shortAuthors}${shortJournals}`;
-    }
-  };
-
-  private makeStructuredData = (paper: Paper) => {
-    const authorsForStructuredData = paper.authors.map(author => {
-      if (author) {
-        const affiliationName = author.organization || (author.affiliation && author.affiliation.name);
-
-        return {
-          "@type": "Person",
-          name: author.name,
-          affiliation: {
-            name: affiliationName || "",
-          },
-        };
-      }
-      return null;
-    });
-
-    function getPublisher() {
-      if (paper.journal) {
-        return {
-          "@type": ["PublicationVolume", "Periodical"],
-          name: paper.journal.title,
-          publisher: paper.journal.title,
-          contentRating: {
-            "@type": "Rating",
-            name: "impact factor",
-            ratingValue: paper.journal.impactFactor || 0,
-          },
-        };
-      }
-      return null;
-    }
-
-    const structuredData: any = {
-      "@context": "http://schema.org",
-      "@type": "ScholarlyArticle",
-      headline: paper.title,
-      identifier: paper.doi,
-      description: paper.abstract,
-      name: paper.title,
-      image: ["https://assets.pluto.network/scinapse/scinapse-logo.png"],
-      datePublished: paper.publishedDate,
-      dateModified: paper.publishedDate,
-      author: authorsForStructuredData,
-      about: paper.fosList.map(fos => fos.fos),
-      mainEntityOfPage: `https://scinapse.io/papers/${paper.id}`,
-      publisher: getPublisher(),
-    };
-
-    return structuredData;
-  };
-
-  private getPageHelmet = () => {
-    const { paper } = this.props;
-
-    if (paper) {
-      const pdfSourceRecord = getPDFLink(paper.urls);
-      const metaTitleContent = pdfSourceRecord ? "[PDF] " + paper.title : paper.title;
-      const fosListContent =
-        paper.fosList && typeof paper.fosList !== "undefined"
-          ? paper.fosList
-              .map(fos => {
-                return fos.fos;
-              })
-              .toString()
-              .replace(/,/gi, ", ")
-          : "";
-
-      return (
-        <Helmet>
-          <title>{`${metaTitleContent} | Scinapse | Academic search engine for paper}`}</title>
-          <link rel="canonical" href={`https://scinapse.io/papers/${paper.id}`} />
-          <meta itemProp="name" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
-          <meta name="description" content={this.buildPageDescription()} />
-          <meta name="keyword" content={fosListContent} />
-          <meta name="twitter:description" content={this.buildPageDescription()} />
-          <meta name="twitter:card" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
-          <meta name="twitter:title" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
-          <meta property="og:title" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
-          <meta property="og:type" content="article" />
-          <meta property="og:url" content={`https://scinapse.io/papers/${paper.id}`} />
-          <meta property="og:description" content={this.buildPageDescription()} />
-          <script type="application/ld+json">{JSON.stringify(this.makeStructuredData(paper))}</script>
-        </Helmet>
-      );
     }
   };
 }
