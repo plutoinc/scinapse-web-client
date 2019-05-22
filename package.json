@@ -18,6 +18,7 @@
     "deploy:prod": "npm run build:prod && npm run pack && serverless deploy -s production",
     "dev": "webpack-dev-server",
     "test": "jest --coverage",
+    "test:ci": "jest --coverage --maxWorkers=2",
     "pretty": "prettier --write \"app/**/*.{ts,tsx,scss}\"",
     "precommit": "lint-staged"
   },
