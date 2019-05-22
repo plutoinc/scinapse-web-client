@@ -22,3 +22,10 @@ jobs:
       - run: npm ci
       - run: npm run test:ci
       - run: npm run deploy:prod
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - deployToDev
+      - deployToProd
