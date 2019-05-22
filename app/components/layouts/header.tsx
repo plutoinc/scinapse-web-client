@@ -3,7 +3,6 @@ import axios from "axios";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import * as Cookies from "js-cookie";
-import * as classNames from "classnames";
 import { denormalize } from "normalizr";
 import MenuItem from "@material-ui/core/MenuItem";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
@@ -34,8 +33,6 @@ import { getCollections } from "../collections/actions";
 import { collectionSchema } from "../../model/collection";
 import { getMemoizedPaper } from "../../containers/paperShow/select";
 import ResearchHistory from "../researchHistory";
-import { SCINAPSE_LOGO_TEST } from "../../constants/abTestGlobalValue";
-import { getUserGroupName } from "../../helpers/abTestHelper";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -119,14 +116,13 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
   public render() {
     const navClassName = this.getNavbarClassName();
-    const logoUserGroupName: string = getUserGroupName(SCINAPSE_LOGO_TEST) || "";
 
     return (
       <nav className={`${navClassName} mui-fixed`}>
         <div className={styles.headerContainer}>
-          {this.getHeaderLogo(logoUserGroupName)}
+          {this.getHeaderLogo()}
           <div className={styles.leftBox} />
-          {this.getSearchFormContainer(logoUserGroupName)}
+          {this.getSearchFormContainer()}
           {this.getHeaderButtons()}
         </div>
         {this.getToastBar()}
@@ -206,10 +202,9 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     ticking = false;
   };
 
-  private getHeaderLogo = (userGroupName: string) => {
+  private getHeaderLogo = () => {
     const { location, layoutState } = this.props;
     const isNotHome = location.pathname !== HOME_PATH;
-    const isSearchEngineContext = userGroupName === "searchEngine";
 
     if (layoutState.userDevice !== UserDevice.DESKTOP && isNotHome) {
       return (
@@ -232,22 +227,18 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
               actionLabel: null,
             })
           }
-          className={classNames({
-            [styles.headerSearchEngineLogo]: isSearchEngineContext,
-            [styles.headerLogo]: !isSearchEngineContext,
-          })}
+          className={styles.headerLogo}
           aria-label="Scinapse header logo"
         >
-          <Icon icon={isSearchEngineContext ? "LOGO_SEARCH_ENGINE" : "SCINAPSE_LOGO"} />
+          <Icon icon={"SCINAPSE_LOGO"} />
         </Link>
       </NoSsr>
     );
   };
 
-  private getSearchFormContainer = (userGroupName: string) => {
+  private getSearchFormContainer = () => {
     const { location, articleSearchState } = this.props;
     const isShowSearchFormContainer = location.pathname !== HOME_PATH;
-    const isSearchEngineContext = userGroupName === "searchEngine";
 
     let currentQuery = "";
     let currentFilter: FilterObject = {};
@@ -262,13 +253,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
     return (
       <NoSsr>
-        <div
-          style={!isShowSearchFormContainer ? { visibility: "hidden" } : {}}
-          className={classNames({
-            [styles.searchFormContainerAtSearchEngineLogo]: isSearchEngineContext,
-            [styles.searchFormContainer]: !isSearchEngineContext,
-          })}
-        >
+        <div style={!isShowSearchFormContainer ? { visibility: "hidden" } : {}} className={styles.searchFormContainer}>
           <SearchQueryInput
             wrapperClassName={styles.searchWrapper}
             listWrapperClassName={styles.suggestionListWrapper}

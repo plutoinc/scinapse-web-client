@@ -1,7 +1,7 @@
 import { Test } from "./abTest";
 
-export const scinapseLogoTest: Test = {
-  name: "scinapseLogo",
+export const searchEngineMoodTest: Test = {
+  name: "searchEngineMood",
   userGroup: [{ groupName: "control", weight: 1 }, { groupName: "searchEngine", weight: 1 }],
 };
 

@@ -42,17 +42,6 @@
   }
 }
 
-.headerSearchEngineLogo {
-  display: inline-block;
-  margin-right: 24px;
-
-  svg {
-    width: 157px;
-    height: 36px;
-    object-fit: contain;
-  }
-}
-
 .headerLogoMark {
   display: inline-block;
 
@@ -72,11 +61,6 @@
   margin-right: 377px;
   height: 44px;
   align-items: center;
-}
-
-.searchFormContainerAtSearchEngineLogo {
-  @extend .searchFormContainer;
-  margin-left: 9px;
 }
 
 .rightBox {
@@ -260,11 +244,6 @@
   overflow: hidden;
   align-items: center;
   padding: 0 44px 0 16px;
-
-  &::placeholder {
-    font-weight: bold;
-    color: $gray5;
-  }
 }
 
 .userInfoMenuItem {
