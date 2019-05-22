@@ -293,7 +293,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <PDFViewer
                   paper={paper}
                   shouldShowRelatedPapers={
-                    !paper.bestPdf.hasBest && getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) !== "control"
+                    (!paper.bestPdf || !paper.bestPdf.hasBest) &&
+                    getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) !== "control"
                   }
                   afterDownloadPDF={this.scrollToSection("fullText")}
                 />
