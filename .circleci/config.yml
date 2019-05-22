@@ -7,4 +7,38 @@ jobs:
     steps:
       - checkout
       - run: npm ci
+  test:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
       - run: npm run test:ci
+  deploy_dev:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - run: npm run deploy:dev
+  deploy_prod:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - run: npm run deploy:prod
+
+workflows:
+  version: 2
+  deploy_to_dev:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - deploy_dev:
+          filters:
+            branches:
+              ignore: master
+      - deploy_prod:
+          filters:
+            branches:
+              only: master
