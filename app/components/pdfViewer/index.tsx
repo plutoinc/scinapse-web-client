@@ -1,6 +1,6 @@
 import * as React from "react";
 import Axios from "axios";
-import { connect } from "react-redux";
+import { connect, Dispatch } from "react-redux";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "../../helpers/withStylesHelper";
 import PaperAPI from "../../api/paper";
@@ -96,10 +96,13 @@ function fetchPDFFromExtension(sources: PaperSource[]): Promise<{ data: Blob }> 
   });
 }
 
-async function fetchPDFFromAPI(paper: Paper) {
+async function fetchPDFFromAPI(paper: Paper, dispatch: Dispatch<any>) {
   let pdf: PaperPdf | undefined = paper.bestPdf;
   if (!pdf) {
     pdf = await PaperAPI.getBestPdfOfPaper({ paperId: paper.id });
+    if (pdf) {
+      dispatch(ActionCreators.getBestPDFOfPaper({ paperId: paper.id, bestPDF: pdf }));
+    }
   }
 
   if (pdf && pdf.hasBest) {
@@ -120,9 +123,9 @@ const PDFContent: React.FC<{ pdfBlob: Blob | null; isExpanded: boolean; pageCoun
       pageContent = Array.from(new Array(props.pageCountToShow), (_el, i) => (
         <Page pdf={props.pdfBlob} width={996} margin={"0 auto"} key={i} pageNumber={i + 1} />
       ));
+    } else {
+      pageContent = <Page pdf={props.pdfBlob} width={996} margin={"0 auto"} pageNumber={1} />;
     }
-
-    pageContent = <Page pdf={props.pdfBlob} width={996} margin={"0 auto"} pageNumber={1} />;
 
     return <>{pageContent}</>;
   }
@@ -151,7 +154,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
             dispatch(ActionCreators.setPDFBlob({ blob: res.data }));
           })
           .catch(() => {
-            return fetchPDFFromAPI(paper);
+            return fetchPDFFromAPI(paper, dispatch);
           })
           .then(res => {
             if (res && res.data) {

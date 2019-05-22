@@ -40,7 +40,7 @@ export function reducer(state = PDF_VIEWER_INITIAL_STATE, action: Actions): PDFV
     case ACTION_TYPES.PDF_VIEWER_SUCCEED_TO_FETCH_PDF: {
       return {
         ...state,
-        pageCount: action.payload.pdf.pageCount,
+        pageCount: action.payload.pdf.numPages,
         parsedPDFObject: action.payload.pdf,
         isLoading: false,
         hasFailed: false,
@@ -56,7 +56,7 @@ export function reducer(state = PDF_VIEWER_INITIAL_STATE, action: Actions): PDFV
     }
 
     case ACTION_TYPES.PDF_VIEWER_CLICK_VIEW_MORE_BTN: {
-      return { ...state, isExpanded: true };
+      return { ...state, isExpanded: true, pageCountToShow: state.pageCount };
     }
 
     case ACTION_TYPES.PDF_VIEWER_FAIL_TO_FETCH_PDF: {

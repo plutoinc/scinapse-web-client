@@ -5,7 +5,7 @@ import { AvailableCitationType } from "../containers/paperShow/records";
 import { GetCollectionsResponse } from "../api/member";
 import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
 import { Collection } from "../model/collection";
-import { Paper } from "../model/paper";
+import { Paper, PaperPdf } from "../model/paper";
 import { CVInfoType, Award, Education, Experience } from "../model/profile";
 import { PaperInCollection } from "../model/paperInCollection";
 import { SIGN_UP_STEP } from "../components/auth/signUp/types";
@@ -210,6 +210,7 @@ export enum ACTION_TYPES {
   PDF_VIEWER_CLICK_DOWNLOAD_BTN = "PDF_VIEWER_CLICK_DOWNLOAD_BTN",
   PDF_VIEWER_CLICK_RELOAD_BTN = "PDF_VIEWER_CLICK_RELOAD_BTN",
   PDF_VIEWER_CLICK_VIEW_MORE_BTN = "PDF_VIEWER_CLICK_VIEW_MORE_BTN",
+  PDF_VIEWER_GET_BEST_PDF_OF_PAPER = "PDF_VIEWER_GET_BEST_PDF_OF_PAPER",
 }
 
 export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
@@ -300,6 +301,10 @@ export const ActionCreators = {
 
   clickPDFViewMoreBtn() {
     return createAction({ type: ACTION_TYPES.PDF_VIEWER_CLICK_VIEW_MORE_BTN });
+  },
+
+  getBestPDFOfPaper(payload: { paperId: number; bestPDF: PaperPdf }) {
+    return createAction({ type: ACTION_TYPES.PDF_VIEWER_GET_BEST_PDF_OF_PAPER, payload });
   },
 
   startToLoadAuthorShowPageData() {
