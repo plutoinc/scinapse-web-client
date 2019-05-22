@@ -2,6 +2,17 @@ version: 2
 jobs:
   build:
     branches:
+      only: master
+    working_directory: ~/scinapse
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm run test:ci
+      - run: npm run deploy:dev
+  build_prod:
+    branches:
       ignore: master
     working_directory: ~/scinapse
     docker:
@@ -11,14 +22,3 @@ jobs:
       - run: npm ci
       - run: npm run test:ci
       - run: npm run deploy:dev
-  deployToProd:
-    branches:
-      only: master
-    working_directory: ~/scinapse
-    docker:
-      - image: circleci/node:lts
-    steps:
-      - checkout
-      - run: npm ci
-      - run: npm run test:ci
-      - run: npm run deploy:prod
