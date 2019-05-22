@@ -176,9 +176,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
 
     if (this.props.paper && changeRefPage) {
-      dispatch(fetchRefPaperData(this.props.paper.id, nextQueryParams["ref-page"], this.cancelToken.token));
+      await dispatch(fetchRefPaperData(this.props.paper.id, nextQueryParams["ref-page"], this.cancelToken.token));
+      if (this.refTabWrapper) {
+        this.refTabWrapper.scrollIntoView();
+      }
     } else if (this.props.paper && changeCitedPage) {
-      dispatch(fetchCitedPaperData(this.props.paper.id, nextQueryParams["cited-page"], this.cancelToken.token));
+      await dispatch(fetchCitedPaperData(this.props.paper.id, nextQueryParams["cited-page"], this.cancelToken.token));
+      if (this.citedTabWrapper) {
+        this.citedTabWrapper.scrollIntoView();
+      }
     }
   }
 
