@@ -1,51 +1,24 @@
 version: 2
 jobs:
-  build:
+  deployToDev:
+    branches:
+      ignore: master
     working_directory: ~/scinapse
     docker:
       - image: circleci/node:lts
     steps:
       - checkout
       - run: npm ci
-  test:
-    working_directory: ~/scinapse
-    docker:
-      - image: circleci/node:lts
-    steps:
-      - checkout
       - run: npm run test:ci
-  deploy_dev:
-    working_directory: ~/scinapse
-    docker:
-      - image: circleci/node:lts
-    steps:
-      - checkout
       - run: npm run deploy:dev
-  deploy_prod:
+  deployToProd:
+    branches:
+      only: master
     working_directory: ~/scinapse
     docker:
       - image: circleci/node:lts
     steps:
       - checkout
+      - run: npm ci
+      - run: npm run test:ci
       - run: npm run deploy:prod
-
-workflows:
-  version: 2
-  deploy_to_dev:
-    jobs:
-      - build
-      - test:
-          requires:
-            - build
-      - deploy_dev:
-          requires:
-            - test
-          filters:
-            branches:
-              ignore: master
-      - deploy_prod:
-          requires:
-            - test
-          filters:
-            branches:
-              only: master
