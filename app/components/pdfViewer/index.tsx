@@ -1,5 +1,5 @@
 import * as React from "react";
-import Axios from "axios";
+import Axios, { CancelTokenSource } from "axios";
 import { connect, Dispatch } from "react-redux";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "../../helpers/withStylesHelper";
@@ -10,7 +10,6 @@ import Icon from "../../icons";
 import { PaperPdf, Paper } from "../../model/paper";
 import { ActionCreators } from "../../actions/actionTypes";
 import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
-import getAPIHost from "../../api/getHost";
 import { PaperSource } from "../../model/paperSource";
 import { EXTENSION_APP_ID } from "../../constants/scinapse-extension";
 import EnvChecker from "../../helpers/envChecker";
@@ -96,20 +95,20 @@ function fetchPDFFromExtension(sources: PaperSource[]): Promise<{ data: Blob }> 
   });
 }
 
-async function fetchPDFFromAPI(paper: Paper, dispatch: Dispatch<any>) {
+async function fetchPDFFromAPI(paper: Paper, cancelTokenSource: CancelTokenSource, dispatch: Dispatch<any>) {
   let pdf: PaperPdf | undefined = paper.bestPdf;
+  const cancelToken = cancelTokenSource.token;
+
   if (!pdf) {
-    pdf = await PaperAPI.getBestPdfOfPaper({ paperId: paper.id });
+    pdf = await PaperAPI.getBestPdfOfPaper({ paperId: paper.id, cancelToken });
     if (pdf) {
       dispatch(ActionCreators.getBestPDFOfPaper({ paperId: paper.id, bestPDF: pdf }));
     }
   }
 
   if (pdf && pdf.hasBest) {
-    const res = await Axios.get(`${getAPIHost()}/proxy/pdf?url=${encodeURIComponent(pdf.url)}`, {
-      responseType: "blob",
-    });
-    return { data: res.data as Blob };
+    const blob = await PaperAPI.getPDFBlob(pdf.url, cancelToken);
+    return blob;
   }
   return null;
 }
@@ -148,13 +147,18 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   React.useEffect(
     () => {
       if (paper.urls.length > 0) {
+        const cancelToken = Axios.CancelToken.source();
         dispatch(ActionCreators.startToFetchPDF());
         fetchPDFFromExtension(paper.urls)
           .then(res => {
             dispatch(ActionCreators.setPDFBlob({ blob: res.data }));
           })
-          .catch(() => {
-            return fetchPDFFromAPI(paper, dispatch);
+          .catch(err => {
+            if (!Axios.isCancel(err)) {
+              return fetchPDFFromAPI(paper, cancelToken, dispatch);
+            } else {
+              throw err;
+            }
           })
           .then(res => {
             if (res && res.data) {
@@ -163,9 +167,15 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
               throw new Error();
             }
           })
-          .catch(_err => {
-            dispatch(ActionCreators.failToFetchPDF());
+          .catch(err => {
+            if (!Axios.isCancel(err)) {
+              dispatch(ActionCreators.failToFetchPDF());
+            }
           });
+
+        return () => {
+          cancelToken.cancel();
+        };
       }
     },
     [paper.id]
