@@ -8,7 +8,6 @@ import { GetRefOrCitedPapersParams } from "../api/types/paper";
 import alertToast from "../helpers/makePlutoToastAction";
 import PlutoAxios from "../api/pluto";
 import { CommonError } from "../model/error";
-import { PaperPdf } from "../model/paper";
 
 export function clearPaperShowState() {
   return ActionCreators.clearPaperShowState();
@@ -136,21 +135,6 @@ export function postNewCollection(params: PostCollectionParams) {
       );
     } catch (err) {
       dispatch(ActionCreators.failedToPostCollectionInCollectionDropdown());
-      throw err;
-    }
-  };
-}
-
-export function getBestPdfOfPaper(params: { paperId: number }) {
-  return async (dispatch: Dispatch<any>) => {
-    try {
-      dispatch(ActionCreators.startToGetBestPdfInPaperShow());
-
-      const res: PaperPdf = await PaperAPI.getBestPdfOfPaper(params);
-      dispatch(ActionCreators.succeededToGetBestPdfInPaperShow({ paperId: params.paperId, bestPdf: res }));
-      return res;
-    } catch (err) {
-      dispatch(ActionCreators.failedToGetBestPdfInPaperShow());
       throw err;
     }
   };

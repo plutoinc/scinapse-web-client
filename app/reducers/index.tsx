@@ -43,6 +43,8 @@ import {
   CONNECTED_AUTHOR_SHOW_INITIAL_STATE,
 } from "../containers/connectedAuthorShow/reducer";
 import { AuthorSearchState, AUTHOR_SEARCH_INITIAL_STATE } from "../containers/authorSearch/records";
+import { RelatedPapersState, RELATED_PAPERS_INITIAL_STATE, reducer as RelatedPapersReducer } from "./realtedPapers";
+import { PDFViewerState, reducer as PDFViewerReducer, PDF_VIEWER_INITIAL_STATE } from "./pdfViewer";
 
 export interface AppState {
   configuration: ConfigurationReducer.Configuration;
@@ -59,6 +61,8 @@ export interface AppState {
   collectionShow: CollectionShowState;
   myCollections: MyCollectionsState;
   userCollections: UserCollectionsState;
+  relatedPapersState: RelatedPapersState;
+  PDFViewerState: PDFViewerState;
   entities: EntityState;
 }
 
@@ -77,6 +81,8 @@ export const initialState: AppState = {
   collectionShow: INITIAL_COLLECTION_SHOW_STATE,
   myCollections: MY_COLLECTIONS_INITIAL_STATE,
   userCollections: USER_COLLECTIONS_INITIAL_STATE,
+  relatedPapersState: RELATED_PAPERS_INITIAL_STATE,
+  PDFViewerState: PDF_VIEWER_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
 };
 
@@ -95,5 +101,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   collectionShow: CollectionShowReducer,
   myCollections: MyCollectionsReducer,
   userCollections: UserCollectionsReducer,
+  relatedPapersState: RelatedPapersReducer,
+  PDFViewerState: PDFViewerReducer,
   entities: EntityReducer,
 });

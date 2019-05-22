@@ -37,3 +37,13 @@ export const signBannerAtPaperShowTitleTextKeyverbTest: Test = {
   name: "signBannerAtPaperShow-titleText-keyverb",
   userGroup: [{ groupName: "enjoy", weight: 1 }, { groupName: "browse", weight: 1 }],
 };
+
+export const relatedPapersAtPaperShowTest: Test = {
+  name: "relatedPapersAtPaperShow",
+  userGroup: [
+    { groupName: "control", weight: 1 },
+    { groupName: "related", weight: 1 },
+    { groupName: "relatedAndSearch", weight: 1 },
+    { groupName: "search", weight: 1 },
+  ],
+};

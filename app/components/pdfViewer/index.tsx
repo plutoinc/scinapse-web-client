@@ -1,35 +1,30 @@
 import * as React from "react";
-import Axios from "axios";
-import { Dispatch } from "react-redux";
-import { CircularProgress } from "@material-ui/core";
+import Axios, { CancelTokenSource } from "axios";
+import { connect, Dispatch } from "react-redux";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "../../helpers/withStylesHelper";
+import PaperAPI from "../../api/paper";
 import ScinapseButton from "../common/scinapseButton";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import Icon from "../../icons";
-import { PaperPdf } from "../../model/paper";
+import { PaperPdf, Paper } from "../../model/paper";
 import { ActionCreators } from "../../actions/actionTypes";
 import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
-import getAPIHost from "../../api/getHost";
 import { PaperSource } from "../../model/paperSource";
 import { EXTENSION_APP_ID } from "../../constants/scinapse-extension";
 import EnvChecker from "../../helpers/envChecker";
-import { useIntervalProgress } from "../../hooks/useIntervalProgressHook";
+import RelatedPapers from "../relatedPapers";
+import AfterDownloadContents from "./component/afterDownloadContents";
+import { PDFViewerProps } from "./types";
+import { AppState } from "../../reducers";
+import { makeGetMemoizedPapers } from "../../selectors/papersSelector";
+import { getMemoizedCurrentUser } from "../../selectors/getCurrentUser";
+import { getMemoizedPDFViewerState } from "../../selectors/getPDFViewer";
+import ProgressSpinner from "./component/progressSpinner";
 const { Document, Page, pdfjs } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-
-interface PDFViewerProps {
-  dispatch: Dispatch<any>;
-  paperId: number;
-  shouldShow: boolean;
-  filename: string;
-  sources: PaperSource[];
-  bestPdf?: PaperPdf;
-  handleGetBestPdf: () => Promise<PaperPdf> | undefined;
-  onLoadSuccess: () => void;
-  onFailed: () => void;
-}
 
 function trackClickButton(actionTag: Scinapse.ActionTicket.ActionTagType, paperId: number) {
   ActionTicketManager.trackTicket({
@@ -41,6 +36,31 @@ function trackClickButton(actionTag: Scinapse.ActionTicket.ActionTagType, paperI
     actionLabel: String(paperId),
   });
 }
+
+const baseBtnStyle: React.CSSProperties = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "150px",
+  height: "40px",
+};
+
+const readAllBtnStyle: React.CSSProperties = {
+  ...baseBtnStyle,
+  borderRadius: "27.5px",
+  border: "1px solid #bbc2d0",
+  fontSize: "16px",
+  fontWeight: 500,
+  letterSpacing: "1px",
+  color: "#34495e",
+};
+
+const downloadPdfBtnStyle: React.CSSProperties = {
+  ...baseBtnStyle,
+  color: "white",
+  backgroundColor: "#3e7fff",
+  marginLeft: "16px",
+};
 
 function fetchPDFFromExtension(sources: PaperSource[]): Promise<{ data: Blob }> {
   return new Promise((resolve, reject) => {
@@ -75,186 +95,195 @@ function fetchPDFFromExtension(sources: PaperSource[]): Promise<{ data: Blob }> 
   });
 }
 
-async function fetchPDFFromAPI(bestPdf: PaperPdf | undefined, handleGetBestPdf: () => Promise<PaperPdf> | undefined) {
-  let pdf: PaperPdf | undefined = bestPdf;
+async function fetchPDFFromAPI(paper: Paper, cancelTokenSource: CancelTokenSource, dispatch: Dispatch<any>) {
+  let pdf: PaperPdf | undefined = paper.bestPdf;
+  const cancelToken = cancelTokenSource.token;
+
   if (!pdf) {
-    pdf = await handleGetBestPdf();
+    pdf = await PaperAPI.getBestPdfOfPaper({ paperId: paper.id, cancelToken });
+    if (pdf) {
+      dispatch(ActionCreators.getBestPDFOfPaper({ paperId: paper.id, bestPDF: pdf }));
+    }
   }
 
   if (pdf && pdf.hasBest) {
-    const res = await Axios.get(`${getAPIHost()}/proxy/pdf?url=${encodeURIComponent(pdf.url)}`, {
-      responseType: "blob",
-    });
-    return { data: res.data as Blob };
+    const blob = await PaperAPI.getPDFBlob(pdf.url, cancelToken);
+    return blob;
   }
   return null;
 }
 
-const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
-  const { bestPdf, shouldShow, onFailed, onLoadSuccess, dispatch } = props;
-  const [percentage, setPercentage] = React.useState(0);
-  const [isFetching, setIsFetching] = React.useState(false);
-  const [PDFBinary, setPDFBinary] = React.useState<Blob | null>(null);
-  const [PDFObject, setPDFObject] = React.useState(null);
-  const [extend, setExtend] = React.useState(false);
-  const [hadErrorToLoad, setLoadError] = React.useState(false);
-  const [succeedToLoad, setSucceed] = React.useState(false);
-  const [pageCountToShow, setPageCountToShow] = React.useState(0);
-  const wrapperNode = React.useRef<HTMLDivElement | null>(null);
-  const actionTag = extend ? "viewLessPDF" : "viewMorePDF";
+const PDFContent: React.FC<{ pdfBlob: Blob | null; isExpanded: boolean; pageCountToShow: number }> = React.memo(
+  props => {
+    if (!props.pdfBlob) return null;
 
-  const baseBtnStyle: React.CSSProperties = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "150px",
-    height: "40px",
-  };
+    let pageContent;
+    if (props.isExpanded) {
+      pageContent = Array.from(new Array(props.pageCountToShow), (_el, i) => (
+        <Page pdf={props.pdfBlob} width={996} margin={"0 auto"} key={i} pageNumber={i + 1} />
+      ));
+    } else {
+      pageContent = <Page pdf={props.pdfBlob} width={996} margin={"0 auto"} pageNumber={1} />;
+    }
 
-  const readAllBtnStyle: React.CSSProperties = {
-    ...baseBtnStyle,
-    borderRadius: "27.5px",
-    border: "1px solid #bbc2d0",
-    fontSize: "16px",
-    fontWeight: 500,
-    letterSpacing: "1px",
-    color: "#34495e",
-  };
-
-  const downloadPdfBtnStyle: React.CSSProperties = {
-    ...baseBtnStyle,
-    color: "white",
-    backgroundColor: "#3e7fff",
-    marginLeft: "16px",
-  };
-
-  function handlePDFResult(blob: Blob) {
-    setPDFBinary(blob);
-    dispatch(ActionCreators.endToLoadingFetchPDF());
-    setIsFetching(false);
+    return <>{pageContent}</>;
   }
+);
 
-  useIntervalProgress(() => {
-    setPercentage(percentage + 10);
-  }, percentage < 90 ? 500 : null);
+const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
+  const {
+    dispatch,
+    paper,
+    PDFViewerState,
+    relatedPaperList,
+    isLoadingRelatedPaperList,
+    shouldShowRelatedPapers,
+    afterDownloadPDF,
+    currentUser,
+  } = props;
+  const wrapperNode = React.useRef<HTMLDivElement | null>(null);
+  const actionTag = PDFViewerState.isExpanded ? "viewLessPDF" : "viewMorePDF";
 
   React.useEffect(
     () => {
-      if (shouldShow && props.sources.length > 0) {
-        dispatch(ActionCreators.startToLoadingFetchPDF());
-        setIsFetching(true);
-        fetchPDFFromExtension(props.sources)
+      if (paper.urls.length > 0) {
+        const cancelToken = Axios.CancelToken.source();
+        dispatch(ActionCreators.startToFetchPDF());
+        fetchPDFFromExtension(paper.urls)
           .then(res => {
-            handlePDFResult(res.data);
+            dispatch(ActionCreators.setPDFBlob({ blob: res.data }));
           })
-          .catch(() => {
-            return fetchPDFFromAPI(props.bestPdf, props.handleGetBestPdf);
+          .catch(err => {
+            if (!Axios.isCancel(err)) {
+              return fetchPDFFromAPI(paper, cancelToken, dispatch);
+            } else {
+              throw err;
+            }
           })
           .then(res => {
             if (res && res.data) {
-              handlePDFResult(res.data);
+              dispatch(ActionCreators.setPDFBlob({ blob: res.data }));
             } else {
               throw new Error();
             }
           })
-          .catch(_err => {
-            setLoadError(true);
-            dispatch(ActionCreators.endToLoadingFetchPDF());
-            setIsFetching(false);
-            onFailed();
+          .catch(err => {
+            if (!Axios.isCancel(err)) {
+              dispatch(ActionCreators.failToFetchPDF());
+            }
           });
+
+        return () => {
+          cancelToken.cancel();
+        };
       }
     },
-    [props.paperId]
+    [paper.id]
   );
 
-  const getContent = () => {
-    if (!PDFObject) return null;
+  if (PDFViewerState.isLoading) {
+    return <ProgressSpinner />;
+  }
 
-    if (extend) {
-      return Array.from(new Array(pageCountToShow), (_el, i) => (
-        <Page pdf={PDFObject} width={996} margin={"0 auto"} key={i} pageNumber={i + 1} />
-      ));
-    } else {
-      return (
-        <>
-          <Page pdf={PDFObject} width={996} margin={"0 auto"} pageNumber={1} />
-        </>
-      );
-    }
-  };
-
-  if (isFetching) {
+  if (PDFViewerState.hasClickedDownloadBtn) {
     return (
-      <div className={styles.loadingContainerWrapper}>
-        <div className={styles.loadingContainer}>
-          <CircularProgress size={100} thickness={2} color="inherit" variant="static" value={percentage} />
-          <span className={styles.loadingContent}>{`${percentage}%`}</span>
-        </div>
+      <div ref={wrapperNode} className={styles.contentWrapper}>
+        <AfterDownloadContents
+          onClickReloadBtn={() => {
+            dispatch(ActionCreators.clickPDFReloadBtn());
+          }}
+          relatedPaperList={relatedPaperList}
+          isLoggedIn={currentUser.isLoggedIn}
+          isRelatedPaperLoading={isLoadingRelatedPaperList}
+        />
       </div>
     );
   }
 
-  if (shouldShow && PDFBinary && bestPdf && bestPdf.hasBest) {
+  if (!!PDFViewerState.pdfBlob) {
     return (
       <div ref={wrapperNode} className={styles.contentWrapper}>
         <Document
-          file={PDFBinary}
+          file={PDFViewerState.pdfBlob}
           error={null}
           loading={
-            <div className={styles.loadingContainer}>
-              <CircularProgress size={100} thickness={2} color="inherit" />
+            <div className={styles.loadingContainerWrapper}>
+              <div className={styles.loadingContainer}>
+                <CircularProgress size={100} thickness={2} color="inherit" />
+              </div>
             </div>
           }
           onLoadSuccess={(pdf: any) => {
-            setPageCountToShow(pdf.numPages);
-            setPDFObject(pdf);
-            setSucceed(true);
-            onLoadSuccess();
+            dispatch(ActionCreators.succeedToFetchPDF({ pdf }));
+            ActionTicketManager.trackTicket({
+              pageType: "paperShow",
+              actionType: "view",
+              actionArea: "pdfViewer",
+              actionTag: "viewPDF",
+              actionLabel: String(paper.id),
+            });
           }}
-          onLoadError={console.error}
+          onLoadError={() => {
+            dispatch(ActionCreators.failToFetchPDF());
+          }}
         >
-          {getContent()}
+          <PDFContent
+            pdfBlob={PDFViewerState.parsedPDFObject}
+            isExpanded={PDFViewerState.isExpanded}
+            pageCountToShow={PDFViewerState.pageCountToShow}
+          />
         </Document>
 
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
-          {succeedToLoad && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "40px",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          {!PDFViewerState.hasFailed && (
             <>
-              {extend ? (
-                <ScinapseButton
-                  gaCategory="PDF viewer"
-                  gaAction="download PDF"
-                  style={downloadPdfBtnStyle}
-                  target="_blank"
-                  href={bestPdf.url}
-                  rel="nofollow"
-                  content={
-                    <span className={styles.downloadBtnWrapper}>
-                      <Icon icon="DOWNLOAD" className={styles.downloadIcon} /> Download PDF
-                    </span>
-                  }
-                  onClick={async e => {
-                    if (!EnvChecker.isOnServer()) {
-                      e.preventDefault();
-
-                      const isBlocked = await blockUnverifiedUser({
-                        authLevel: AUTH_LEVEL.VERIFIED,
-                        actionArea: "pdfViewer",
-                        actionLabel: "downloadPdf",
-                        userActionType: "downloadPdf",
-                      });
-
-                      if (isBlocked) {
-                        return;
-                      }
-
-                      trackClickButton("downloadPdf", props.paperId);
-                      window.open(bestPdf.url, "_blank");
+              {PDFViewerState.isExpanded ? (
+                <>
+                  <ScinapseButton
+                    gaCategory="PDF viewer"
+                    gaAction="download PDF"
+                    style={downloadPdfBtnStyle}
+                    target="_blank"
+                    href={paper.bestPdf.url}
+                    rel="nofollow"
+                    content={
+                      <span className={styles.downloadBtnWrapper}>
+                        <Icon icon="DOWNLOAD" className={styles.downloadIcon} /> Download PDF
+                      </span>
                     }
-                  }}
-                  isExternalLink
-                  downloadAttr
-                />
+                    onClick={async e => {
+                      if (!EnvChecker.isOnServer()) {
+                        e.preventDefault();
+
+                        const isBlocked = await blockUnverifiedUser({
+                          authLevel: AUTH_LEVEL.VERIFIED,
+                          actionArea: "pdfViewer",
+                          actionLabel: "downloadPdf",
+                          userActionType: "downloadPdf",
+                        });
+
+                        if (isBlocked) {
+                          return;
+                        }
+                        dispatch(ActionCreators.clickPDFDownloadBtn());
+                        trackClickButton("downloadPdf", paper.id);
+                        window.open(paper.bestPdf.url, "_blank");
+                        afterDownloadPDF();
+                      }
+                    }}
+                    isExternalLink
+                    downloadAttr
+                  />
+                  <RelatedPapers shouldShowRelatedPapers={shouldShowRelatedPapers} />
+                </>
               ) : (
                 <ScinapseButton
                   gaCategory="PDF viewer"
@@ -265,8 +294,8 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                       READ ALL <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
                     </span>
                   }
-                  isLoading={!succeedToLoad && !hadErrorToLoad}
-                  disabled={!succeedToLoad}
+                  isLoading={PDFViewerState.isLoading}
+                  disabled={PDFViewerState.hasFailed}
                   onClick={async () => {
                     const isBlocked = await blockUnverifiedUser({
                       authLevel: AUTH_LEVEL.VERIFIED,
@@ -275,13 +304,13 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                       userActionType: actionTag,
                     });
 
-                    trackClickButton(actionTag, props.paperId);
+                    trackClickButton(actionTag, props.paper.id);
 
                     if (isBlocked) {
                       return;
                     }
 
-                    setExtend(!extend);
+                    dispatch(ActionCreators.clickPDFViewMoreBtn());
                   }}
                 />
               )}
@@ -294,4 +323,15 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   return null;
 };
 
-export default withStyles<typeof PDFViewer>(styles)(PDFViewer);
+function mapStateToProps(state: AppState) {
+  const getRelatedPapers = makeGetMemoizedPapers(() => state.relatedPapersState.paperIds);
+
+  return {
+    currentUser: getMemoizedCurrentUser(state),
+    PDFViewerState: getMemoizedPDFViewerState(state),
+    relatedPaperList: getRelatedPapers(state),
+    isLoadingRelatedPaperList: state.relatedPapersState.isLoading,
+  };
+}
+
+export default connect(mapStateToProps)(withStyles<typeof PDFViewer>(styles)(PDFViewer));

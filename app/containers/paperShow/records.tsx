@@ -31,9 +31,6 @@ export interface PaperShowState
       citedPaperTotalPage: number;
       citedPaperCurrentPage: number;
 
-      isFetchingPdf: boolean;
-      isOACheckingPDF: boolean;
-
       highlightTitle: string;
       highlightAbstract: string;
     }> {}
@@ -58,9 +55,6 @@ export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
   isFailedToGetCitedPapers: false,
   citedPaperTotalPage: 0,
   citedPaperCurrentPage: 0,
-
-  isFetchingPdf: false,
-  isOACheckingPDF: false,
 
   highlightTitle: "",
   highlightAbstract: "",

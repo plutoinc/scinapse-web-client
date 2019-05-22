@@ -1,48 +1,24 @@
 import * as React from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
-import PaperAPI from "../../api/paper";
-import { Paper } from "../../model/paper";
-import { withStyles } from "../../helpers/withStylesHelper";
+import { connect, Dispatch } from "react-redux";
 import Icon from "../../icons";
+import { Paper } from "../../model/paper";
+import { AppState } from "../../reducers";
+import { withStyles } from "../../helpers/withStylesHelper";
 import ActionTicketManager from "../../helpers/actionTicketManager";
-import alertToast from "../../helpers/makePlutoToastAction";
+import { makeGetMemoizedPapers } from "../../selectors/papersSelector";
 const store = require("store");
 const styles = require("./nextPaperTab.scss");
 
 const RESEARCH_HISTORY_KEY = "r_h_list";
 
 interface NextPaperTabProps {
-  paperId: number;
+  dispatch: Dispatch<any>;
+  paperList: Paper[];
 }
 
-const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = ({ paperId }) => {
-  const [paperList, setPaperList] = React.useState<Paper[]>([]);
-
-  React.useEffect(
-    () => {
-      const cancelToken = axios.CancelToken.source();
-      PaperAPI.getRelatedPapers({ paperId, cancelToken: cancelToken.token })
-        .then(papers => {
-          setPaperList(papers);
-        })
-        .catch(err => {
-          if (!axios.isCancel(err)) {
-            alertToast({
-              type: "error",
-              message: `Failed to get related papers. ${err.message}`,
-            });
-          }
-        });
-
-      return () => {
-        cancelToken.cancel();
-      };
-    },
-    [paperId]
-  );
-
-  if (paperList.length === 0) return null;
+const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = React.memo(({ paperList }) => {
+  if (!paperList || paperList.length === 0) return null;
 
   let nextPaper = paperList[0];
   const prevVisitPapers: Paper[] = store.get(RESEARCH_HISTORY_KEY);
@@ -52,6 +28,9 @@ const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = ({ paperId }) =
       nextPaper = paperList[Math.floor(Math.random() * (paperList.length - 1)) + 1];
     }
   }
+
+  if (!nextPaper) return null;
+
   return (
     <Link
       className={styles.nextPaperTabWrapper}
@@ -73,6 +52,13 @@ const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = ({ paperId }) =
       </div>
     </Link>
   );
-};
+});
 
-export default withStyles<typeof NextPaperTab>(styles)(NextPaperTab);
+function mapStateToProps(state: AppState) {
+  const getRelatedPapers = makeGetMemoizedPapers(() => state.relatedPapersState.paperIds);
+  return {
+    paperList: getRelatedPapers(state),
+  };
+}
+
+export default connect(mapStateToProps)(withStyles<typeof NextPaperTab>(styles)(NextPaperTab));

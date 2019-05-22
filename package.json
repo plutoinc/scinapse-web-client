@@ -167,7 +167,7 @@
     "react": "16.8.2",
     "react-dom": "16.8.2",
     "react-ga": "2.4.1",
-    "react-helmet": "5.2.0",
+    "react-helmet": "^5.2.1",
     "react-intersection-observing-infinity-scroll": "1.0.0",
     "react-jss": "8.5.1",
     "react-pdf": "4.0.2",

@@ -4,7 +4,6 @@ import { Paper } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { CurrentUser } from "../../../model/currentUser";
 import DesktopPagination from "../../common/desktopPagination";
-import ArticleSpinner from "../../common/spinner/articleSpinner";
 import { RELATED_PAPERS } from "../constants";
 import { PaperShowState } from "../../../containers/paperShow/records";
 import PaperItem from "../../common/paperItem";
@@ -64,20 +63,12 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
   };
 
   private mapPaperNode = () => {
-    const { type, paperShow, papers, currentUser } = this.props;
-
-    const targetLoadingStatus = type === "cited" ? paperShow.isLoadingCitedPapers : paperShow.isLoadingReferencePapers;
+    const { type, papers, currentUser } = this.props;
 
     if (!papers || papers.length === 0) {
       return null;
-    } else if (targetLoadingStatus) {
-      return <ArticleSpinner style={{ margin: "200px auto" }} />;
     } else {
       const referenceItems = papers.map(paper => {
-        if (!paper) {
-          return null;
-        }
-
         return (
           <div className={styles.paperShowPaperItemWrapper} key={paper.id}>
             <PaperItem

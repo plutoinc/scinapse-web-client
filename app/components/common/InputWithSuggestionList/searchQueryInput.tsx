@@ -28,7 +28,7 @@ const s = require("./searchQueryInput.scss");
 interface SearchQueryInputProps extends RouteComponentProps<any> {
   dispatch: Dispatch<any>;
   layout: LayoutState;
-  actionArea: "home" | "topBar";
+  actionArea: "home" | "topBar" | "paperShow";
   maxCount: number;
   initialValue?: string;
   initialFilter?: FilterObject;

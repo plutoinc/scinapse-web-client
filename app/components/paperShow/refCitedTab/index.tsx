@@ -25,10 +25,15 @@ const TabItem: React.FunctionComponent<TabItemProps> = props => {
 const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
   const [isOpen, setIsOpen] = React.useState(false);
 
-  if (props.hasPDF) {
+  if (props.canShowFullPDF) {
     return (
       <div className={styles.actionItem}>
-        <PdfDownloadButton paper={props.paper} isLoadingOaCheck={props.isLoadingOaCheck} />
+        <PdfDownloadButton
+          paper={props.paper}
+          isLoading={props.isLoading}
+          onDownloadedPDF={props.onClickDownloadPDF!}
+          handleSetScrollAfterDownload={props.afterDownloadPDF}
+        />
       </div>
     );
   }
@@ -36,7 +41,7 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
     <>
       <div className={styles.actionItem}>
         <RequestFullTextBtn
-          isLoadingOaCheck={props.isLoadingOaCheck}
+          isLoading={props.isLoading}
           paperId={props.paper!.id}
           handleSetIsOpen={setIsOpen}
           btnStyle={{ flex: "1 0 auto", height: "36px", padding: "0 12px 0 8px" }}
@@ -53,10 +58,10 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
   );
 };
 
-const PaperShowRefCitedTab: React.FunctionComponent<PaperShowRefCitedTabProps> = props => {
+const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(props => {
   let fullTextNode;
-  if (props.hasFullText && props.handleClickFullTextTab) {
-    fullTextNode = <TabItem active={!!props.isOnFullText} onClick={props.handleClickFullTextTab} text="Full Text" />;
+  if (props.canShowFullPDF && props.onClickFullTextTab) {
+    fullTextNode = <TabItem active={!!props.isOnFullText} onClick={props.onClickFullTextTab} text="Full Text" />;
   }
 
   return (
@@ -84,11 +89,17 @@ const PaperShowRefCitedTab: React.FunctionComponent<PaperShowRefCitedTabProps> =
           <div className={styles.actionItem}>
             <CiteBox paper={props.paper} btnStyle={{ maxWidth: "74px", width: "100%", height: "36px" }} />
           </div>
-          <PDFButton paper={props.paper} isLoadingOaCheck={props.isLoadingOaCheck} hasPDF={props.hasFullText} />
+          <PDFButton
+            paper={props.paper}
+            isLoading={props.isLoading}
+            canShowFullPDF={props.canShowFullPDF}
+            onClickDownloadPDF={props.onClickDownloadPDF!}
+            afterDownloadPDF={props.onClickFullTextTab!}
+          />
         </div>
       </div>
     </div>
   );
-};
+});
 
 export default withStyles<typeof PaperShowRefCitedTab>(styles)(PaperShowRefCitedTab);

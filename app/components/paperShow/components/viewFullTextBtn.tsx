@@ -9,14 +9,14 @@ const styles = require("./viewFullTextBtn.scss");
 interface ViewFullTextBtnProps {
   paperId: number;
   handleClickFullText: () => void;
-  isLoadingOaCheck: boolean;
+  isLoading: boolean;
 }
 
 const ViewFullTextBtn: React.FunctionComponent<ViewFullTextBtnProps> = props => {
-  const { isLoadingOaCheck, handleClickFullText } = props;
+  const { isLoading, handleClickFullText } = props;
 
-  if (isLoadingOaCheck) {
-    return <SearchingPDFBtn hasLoadingOaCheck={isLoadingOaCheck} />;
+  if (isLoading) {
+    return <SearchingPDFBtn isLoading={isLoading} />;
   }
 
   return (

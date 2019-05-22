@@ -7,15 +7,15 @@ import SearchingPDFBtn from "../../../components/paperShow/components/searchingP
 const s = require("../actionBar.scss");
 
 const RequestFullTextBtn: React.FunctionComponent<{
-  isLoadingOaCheck: boolean;
+  isLoading: boolean;
   paperId: number;
   handleSetIsOpen: (value: React.SetStateAction<boolean>) => void;
   btnStyle?: React.CSSProperties;
 }> = React.memo(props => {
-  const { isLoadingOaCheck, paperId, handleSetIsOpen, btnStyle } = props;
+  const { isLoading, paperId, handleSetIsOpen, btnStyle } = props;
 
-  if (isLoadingOaCheck) {
-    return <SearchingPDFBtn hasLoadingOaCheck={isLoadingOaCheck} />;
+  if (isLoading) {
+    return <SearchingPDFBtn isLoading={isLoading} />;
   }
 
   return (

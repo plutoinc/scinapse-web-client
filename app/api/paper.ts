@@ -159,13 +159,18 @@ class PaperAPI extends PlutoAxios {
     return normalize(paper, paperSchema);
   }
 
-  public async getRelatedPapers(params: GetRelatedPapersParams): Promise<Paper[]> {
+  public async getRelatedPapers(
+    params: GetRelatedPapersParams
+  ): Promise<{
+    entities: { papers: { [paperId: number]: Paper } };
+    result: number[];
+  }> {
     const getPapersResponse = await this.get(`/papers/${params.paperId}/related`, {
       cancelToken: params.cancelToken,
     });
     const camelizedRes = camelCaseKeys(getPapersResponse.data);
     const papers: Paper[] = camelizedRes.data;
-    return papers;
+    return normalize(papers, [paperSchema]);
   }
 
   public async getOtherPapersFromAuthor(
@@ -206,11 +211,25 @@ class PaperAPI extends PlutoAxios {
     return res;
   }
 
-  public async getBestPdfOfPaper(params: { paperId: number }) {
-    const res = await this.post(`/papers/${params.paperId}/pdf`);
+  public async getBestPdfOfPaper(params: { paperId: number; cancelToken: CancelToken }) {
+    const res = await this.post(`/papers/${params.paperId}/pdf`, null, {
+      cancelToken: params.cancelToken,
+    });
     const rawResult = res.data.data.content;
 
     return camelCaseKeys(rawResult);
+  }
+
+  public async getPDFBlob(targetURL: string, cancelToken: CancelToken) {
+    const res = await this.get(`/proxy/pdf`, {
+      params: {
+        url: targetURL,
+      },
+      responseType: "blob",
+      cancelToken,
+    });
+
+    return { data: res.data as Blob };
   }
 }
 

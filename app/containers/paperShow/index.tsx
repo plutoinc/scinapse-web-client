@@ -4,56 +4,64 @@ import { stringify } from "qs";
 import NoSsr from "@material-ui/core/NoSsr";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
-import Helmet from "react-helmet";
 import PDFViewer from "../../components/pdfViewer";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import ArticleSpinner from "../../components/common/spinner/articleSpinner";
-import { clearPaperShowState, getBestPdfOfPaper } from "../../actions/paperShow";
+import { clearPaperShowState } from "../../actions/paperShow";
 import { PaperShowState } from "./records";
 import ActionBar from "../paperShowActionBar";
 import FOSList from "../../components/paperShow/components/fosList";
 import ReferencePapers from "../../components/paperShow/components/relatedPapers";
 import PaperShowRefCitedTab from "../../components/paperShow/refCitedTab";
 import { Footer } from "../../components/layouts";
-import { Configuration } from "../../reducers/configuration";
 import { Paper } from "../../model/paper";
 import { fetchCitedPaperData, fetchMyCollection, fetchPaperShowData, fetchRefPaperData } from "./sideEffect";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import { LayoutState, UserDevice } from "../../components/layouts/records";
 import { trackEvent } from "../../helpers/handleGA";
-import { getCitedPapers, getMemoizedPaper, getReferencePapers } from "./select";
+import { getMemoizedPaper } from "./select";
 import { formulaeToHTMLStr } from "../../helpers/displayFormula";
-import { getPDFLink } from "../../helpers/getPDFLink";
 import restoreScroll from "../../helpers/scrollRestoration";
 import ErrorPage from "../../components/error/errorPage";
 import EnvChecker from "../../helpers/envChecker";
 import NextPaperTab from "../nextPaperTab";
 import { PaperShowMatchParams, PaperShowPageQueryParams } from "./types";
 import VenueAndAuthors from "../../components/common/paperItem/venueAndAuthors";
-import { ArticleSearchState } from "../../components/articleSearch/records";
-import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
-import Icon from "../../icons";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import SignUpBanner from "../../components/paperShow/components/signUpBanner";
+import RelatedPapers from "../../components/relatedPapers";
+import { getUserGroupName } from "../../helpers/abTestHelper";
+import { RELATED_PAPERS_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalValue";
 import { CommonError } from "../../model/error";
-
+import PaperShowHelmet from "../../components/paperShow/helmet";
+import GoBackResultBtn from "../../components/paperShow/backButton";
+import { getMemoizedCurrentUser } from "../../selectors/getCurrentUser";
+import { getRelatedPapers } from "../../actions/relatedPapers";
+import { makeGetMemoizedPapers } from "../../selectors/papersSelector";
+import { getMemoizedPaperShow } from "../../selectors/getPaperShow";
+import { getMemoizedLayout } from "../../selectors/getLayout";
+import { getMemoizedPDFViewerState } from "../../selectors/getPDFViewer";
+import { PDFViewerState } from "../../reducers/pdfViewer";
+import { ActionCreators } from "../../actions/actionTypes";
 const styles = require("./paperShow.scss");
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
 let ticking = false;
 
 function mapStateToProps(state: AppState) {
+  const getReferencePapers = makeGetMemoizedPapers(() => state.paperShow.referencePaperIds);
+  const getCitedPapers = makeGetMemoizedPapers(() => state.paperShow.citedPaperIds);
+
   return {
-    layout: state.layout,
-    currentUser: state.currentUser,
-    paperShow: state.paperShow,
-    configuration: state.configuration,
+    layout: getMemoizedLayout(state),
+    currentUser: getMemoizedCurrentUser(state),
+    paperShow: getMemoizedPaperShow(state),
     paper: getMemoizedPaper(state),
+    PDFViewerState: getMemoizedPDFViewerState(state),
     referencePapers: getReferencePapers(state),
     citedPapers: getCitedPapers(state),
-    articleSearch: state.articleSearch,
   };
 }
 
@@ -61,8 +69,7 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
   layout: LayoutState;
   currentUser: CurrentUser;
   paperShow: PaperShowState;
-  configuration: Configuration;
-  articleSearch: ArticleSearchState;
+  PDFViewerState: PDFViewerState;
   dispatch: Dispatch<any>;
   paper: Paper | null;
   referencePapers: Paper[];
@@ -75,12 +82,15 @@ interface PaperShowStates
       isOnRef: boolean;
       isOnCited: boolean;
       isOnFullText: boolean;
-
-      isLoadPDF: boolean;
-      failedToLoadPDF: boolean;
-
-      isLoadingOaPDFCheck: boolean;
     }> {}
+
+const Title: React.FC<{ title: string }> = React.memo(({ title }) => {
+  return <h1 className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(title) }} />;
+});
+
+const Abstract: React.FC<{ abstract: string }> = React.memo(({ abstract }) => {
+  return <div className={styles.abstractContent} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(abstract) }} />;
+});
 
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
@@ -97,22 +107,19 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isOnRef: false,
       isOnCited: false,
       isOnFullText: false,
-      isLoadPDF: false,
-      failedToLoadPDF: false,
-      isLoadingOaPDFCheck: false,
     };
   }
 
   public async componentDidMount() {
-    const { configuration, currentUser, dispatch, match, location, paperShow } = this.props;
+    const { currentUser, dispatch, match, location, paperShow } = this.props;
     const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
-    const notRenderedAtServerOrJSAlreadyInitialized =
-      !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
 
     window.addEventListener("scroll", this.handleScroll, { passive: true });
     this.handleScrollEvent();
 
-    if (notRenderedAtServerOrJSAlreadyInitialized) {
+    dispatch(getRelatedPapers(parseInt(this.props.match.params.paperId, 10), this.cancelToken));
+
+    if (!paperShow.paperId) {
       const err = await fetchPaperShowData(
         {
           dispatch,
@@ -143,6 +150,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (moveToDifferentPage) {
       dispatch(clearPaperShowState());
+      dispatch(getRelatedPapers(parseInt(this.props.match.params.paperId, 10), this.cancelToken));
       const err = await fetchPaperShowData(
         {
           dispatch,
@@ -168,9 +176,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
 
     if (this.props.paper && changeRefPage) {
-      dispatch(fetchRefPaperData(this.props.paper.id, nextQueryParams["ref-page"], this.cancelToken.token));
+      await dispatch(fetchRefPaperData(this.props.paper.id, nextQueryParams["ref-page"], this.cancelToken.token));
+      if (this.refTabWrapper) {
+        this.refTabWrapper.scrollIntoView();
+      }
     } else if (this.props.paper && changeCitedPage) {
-      dispatch(fetchCitedPaperData(this.props.paper.id, nextQueryParams["cited-page"], this.cancelToken.token));
+      await dispatch(fetchCitedPaperData(this.props.paper.id, nextQueryParams["cited-page"], this.cancelToken.token));
+      if (this.citedTabWrapper) {
+        this.citedTabWrapper.scrollIntoView();
+      }
     }
   }
 
@@ -183,9 +197,18 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public render() {
-    const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers, dispatch } = this.props;
-    const { isOnFullText, isOnCited, isOnRef, isLoadPDF, failedToLoadPDF } = this.state;
-    const shouldShowFullTextTab = isLoadPDF && !failedToLoadPDF && layout.userDevice !== UserDevice.MOBILE;
+    const {
+      layout,
+      paperShow,
+      location,
+      currentUser,
+      paper,
+      referencePapers,
+      citedPapers,
+      PDFViewerState,
+    } = this.props;
+    const { isOnFullText, isOnCited, isOnRef } = this.state;
+    // const shouldShowFullTextTab = isLoadPDF && !failedToLoadPDF && layout.userDevice !== UserDevice.MOBILE;
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -206,16 +229,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     return (
       <>
         <div className={styles.container}>
-          {this.getPageHelmet()}
+          <PaperShowHelmet paper={paper} />
           <article className={styles.paperShow}>
             <div className={styles.paperShowContent}>
-              {this.getGoBackResultBtn()}
-              <h1
-                className={styles.paperTitle}
-                dangerouslySetInnerHTML={{
-                  __html: formulaeToHTMLStr(paperShow.highlightTitle || paper.title),
-                }}
-              />
+              <GoBackResultBtn />
+              <Title title={paper.title} />
               <VenueAndAuthors
                 pageType={"paperShow"}
                 actionArea={"paperDescription"}
@@ -230,12 +248,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <NoSsr>
                   <ActionBar
                     paper={paper}
-                    hasBestPdf={!!paper.bestPdf ? paper.bestPdf.hasBest : false}
-                    isLoadingOaCheck={paperShow.isOACheckingPDF}
-                    isFetchingPDF={paperShow.isFetchingPdf}
-                    failedToLoadPDF={failedToLoadPDF}
+                    isLoadingPDF={PDFViewerState.isLoading}
                     currentUser={currentUser}
-                    showFullText={isLoadPDF}
+                    hasPDFFullText={!!PDFViewerState.parsedPDFObject}
                     handleClickFullText={this.scrollToSection("fullText")}
                   />
                 </NoSsr>
@@ -248,10 +263,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <div className={styles.abstract}>
                   <div className={styles.paperContentBlockHeader}>Abstract</div>
                 </div>
-                <div
-                  className={styles.abstractContent}
-                  dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paperShow.highlightAbstract || paper.abstract) }}
-                />
+                <Abstract abstract={paperShow.highlightAbstract || paper.abstract} />
                 <div className={styles.fos}>
                   <FOSList FOSList={paper.fosList} />
                 </div>
@@ -259,33 +271,60 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             </div>
           </article>
           <div>
-            <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
-              <PaperShowRefCitedTab
-                paper={paper}
-                handleClickFullTextTab={this.scrollToSection("fullText")}
-                handleClickRefTab={this.scrollToSection("ref")}
-                handleClickCitedTab={this.scrollToSection("cited")}
-                isLoadingOaCheck={paperShow.isOACheckingPDF}
-                isFixed={isOnFullText || isOnRef || isOnCited}
-                isOnRef={isOnRef}
-                isOnCited={isOnCited}
-                isOnFullText={isOnFullText || (!isOnFullText && !isOnRef && !isOnCited)}
-                hasFullText={shouldShowFullTextTab}
-              />
-            </div>
-            <PDFViewer
-              dispatch={dispatch}
-              paperId={paper.id}
-              onLoadSuccess={this.handleSucceedToLoadPDF}
-              onFailed={this.handleFailedToLoadPDF}
-              handleGetBestPdf={this.getBestPdfOfPaperInPaperShow}
-              filename={paper.title}
-              bestPdf={paper.bestPdf}
-              sources={paper.urls}
-              shouldShow={!EnvChecker.isOnServer() && layout.userDevice === UserDevice.DESKTOP}
+            <RelatedPapers
+              shouldShowRelatedPapers={
+                !PDFViewerState.isLoading &&
+                PDFViewerState.hasFailed &&
+                getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) !== "control"
+              }
+            />
+            {!!PDFViewerState.parsedPDFObject && (
+              <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
+                <PaperShowRefCitedTab
+                  paper={paper}
+                  afterDownloadPDF={this.scrollToSection("fullText")}
+                  onClickFullTextTab={this.scrollToSection("fullText")}
+                  onClickDownloadPDF={this.handleClickDownloadPDF}
+                  handleClickRefTab={this.scrollToSection("ref")}
+                  handleClickCitedTab={this.scrollToSection("cited")}
+                  isFixed={isOnFullText}
+                  isOnRef={isOnRef}
+                  isOnCited={isOnCited}
+                  isOnFullText={isOnFullText}
+                  isLoading={PDFViewerState.isLoading}
+                  canShowFullPDF
+                />
+              </div>
+            )}
+            <NoSsr>
+              {layout.userDevice === UserDevice.DESKTOP && (
+                <PDFViewer
+                  paper={paper}
+                  shouldShowRelatedPapers={
+                    (!paper.bestPdf || !paper.bestPdf.hasBest) &&
+                    getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) !== "control"
+                  }
+                  afterDownloadPDF={this.scrollToSection("fullText")}
+                />
+              )}
+            </NoSsr>
+          </div>
+          <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)}>
+            <PaperShowRefCitedTab
+              paper={paper}
+              afterDownloadPDF={this.scrollToSection("fullText")}
+              onClickFullTextTab={this.scrollToSection("fullText")}
+              onClickDownloadPDF={this.handleClickDownloadPDF}
+              handleClickRefTab={this.scrollToSection("ref")}
+              handleClickCitedTab={this.scrollToSection("cited")}
+              isFixed={isOnRef}
+              isOnRef={isOnRef}
+              isOnCited={isOnCited}
+              isOnFullText={isOnFullText || (!isOnFullText && !isOnRef && !isOnCited)}
+              isLoading={PDFViewerState.isLoading}
+              canShowFullPDF={!!PDFViewerState.parsedPDFObject}
             />
           </div>
-          <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)} />
           <div className={styles.citedBy}>
             <article className={styles.paperShow}>
               <div>
@@ -308,7 +347,22 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             </article>
           </div>
           <div className={styles.sectionDivider} />
-          <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)} />
+          <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)}>
+            <PaperShowRefCitedTab
+              paper={paper}
+              afterDownloadPDF={this.scrollToSection("fullText")}
+              onClickFullTextTab={this.scrollToSection("fullText")}
+              onClickDownloadPDF={this.handleClickDownloadPDF}
+              handleClickRefTab={this.scrollToSection("ref")}
+              handleClickCitedTab={this.scrollToSection("cited")}
+              isFixed={isOnCited}
+              isOnRef={isOnRef}
+              isOnCited={isOnCited}
+              isOnFullText={isOnFullText || (!isOnFullText && !isOnRef && !isOnCited)}
+              isLoading={PDFViewerState.isLoading}
+              canShowFullPDF={!!PDFViewerState.parsedPDFObject}
+            />
+          </div>
           <div className={styles.citedBy}>
             <article className={styles.paperShow}>
               <div>
@@ -332,7 +386,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         <div className={styles.footerWrapper}>
           <Footer />
         </div>
-        <NextPaperTab paperId={paper.id} />
+        <NextPaperTab />
       </>
     );
   }
@@ -346,81 +400,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         actionTag: "pageView",
         actionLabel: String(paperId),
       });
-    }
-  };
-
-  private getGoBackResultBtn = () => {
-    const { articleSearch, history } = this.props;
-
-    if (articleSearch.searchInput && articleSearch.searchInput.length > 0) {
-      return (
-        <div
-          className={styles.goBackBtn}
-          onClick={() => {
-            history.push({
-              pathname: "/search",
-              search: PapersQueryFormatter.stringifyPapersQuery({
-                query: articleSearch.searchInput,
-                page: 1,
-                sort: "RELEVANCE",
-                filter: PapersQueryFormatter.objectifyPapersFilter(),
-              }),
-            });
-          }}
-        >
-          <Icon icon="BACK" className={styles.backIcon} /> BACK TO RESULTS
-        </div>
-      );
-    }
-  };
-
-  private handleSucceedToLoadPDF = () => {
-    const { paper } = this.props;
-
-    this.setState(prevState => ({ ...prevState, isLoadPDF: true, failedToLoadPDF: false }));
-
-    ActionTicketManager.trackTicket({
-      pageType: "paperShow",
-      actionType: "view",
-      actionArea: "pdfViewer",
-      actionTag: "viewPDF",
-      actionLabel: paper && String(paper.id),
-    });
-  };
-
-  private handleFailedToLoadPDF = () => {
-    this.setState(prevState => ({ ...prevState, failedToLoadPDF: true, isLoadPDF: false }));
-  };
-
-  private getBestPdfOfPaperInPaperShow = () => {
-    const { paper, dispatch } = this.props;
-    if (paper) {
-      try {
-        this.setState(prevState => ({ ...prevState, isLoadingOaPDFCheck: true }));
-        const res = dispatch(getBestPdfOfPaper({ paperId: paper.id }));
-        res.then(result => {
-          if (result.hasBest) {
-            this.setState(prevState => ({ ...prevState, isLoadPDF: true, isLoadingOaPDFCheck: false }));
-          } else {
-            this.setState(prevState => ({ ...prevState, isLoadPDF: false, isLoadingOaPDFCheck: false }));
-          }
-        });
-        return res;
-      } catch (err) {
-        this.setState(prevState => ({
-          ...prevState,
-          isLoadPDF: false,
-          failedToLoadPDF: true,
-          isLoadingOaPDFCheck: false,
-        }));
-        console.error(err);
-      }
-      this.setState(prevState => ({
-        ...prevState,
-        isLoadingOaPDFCheck: false,
-      }));
-    } else {
-      return;
     }
   };
 
@@ -441,6 +420,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       requestAnimationFrame(this.handleScrollEvent);
     }
     ticking = true;
+  };
+
+  private handleClickDownloadPDF = () => {
+    const { dispatch } = this.props;
+    dispatch(ActionCreators.clickPDFDownloadBtn());
   };
 
   private handleScrollEvent = () => {
@@ -591,111 +575,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         action,
         label,
       });
-    }
-  };
-
-  private buildPageDescription = () => {
-    const { paper } = this.props;
-    if (paper) {
-      const shortAbstract = paper.abstract ? `${paper.abstract.slice(0, 110)} | ` : "";
-      const shortAuthors =
-        paper.authors && paper.authors.length > 0
-          ? `${paper.authors
-              .map(author => {
-                return author && author.name;
-              })
-              .join(", ")
-              .slice(0, 50)}  | `
-          : "";
-      const shortJournals = paper.journal ? `${paper.journal.title.slice(0, 50)} | ` : "";
-      return `${shortAbstract}${shortAuthors}${shortJournals}`;
-    }
-  };
-
-  private makeStructuredData = (paper: Paper) => {
-    const authorsForStructuredData = paper.authors.map(author => {
-      if (author) {
-        const affiliationName = author.organization || (author.affiliation && author.affiliation.name);
-
-        return {
-          "@type": "Person",
-          name: author.name,
-          affiliation: {
-            name: affiliationName || "",
-          },
-        };
-      }
-      return null;
-    });
-
-    function getPublisher() {
-      if (paper.journal) {
-        return {
-          "@type": ["PublicationVolume", "Periodical"],
-          name: paper.journal.title,
-          publisher: paper.journal.title,
-          contentRating: {
-            "@type": "Rating",
-            name: "impact factor",
-            ratingValue: paper.journal.impactFactor || 0,
-          },
-        };
-      }
-      return null;
-    }
-
-    const structuredData: any = {
-      "@context": "http://schema.org",
-      "@type": "ScholarlyArticle",
-      headline: paper.title,
-      identifier: paper.doi,
-      description: paper.abstract,
-      name: paper.title,
-      image: ["https://assets.pluto.network/scinapse/scinapse-logo.png"],
-      datePublished: paper.publishedDate,
-      dateModified: paper.publishedDate,
-      author: authorsForStructuredData,
-      about: paper.fosList.map(fos => fos.fos),
-      mainEntityOfPage: `https://scinapse.io/papers/${paper.id}`,
-      publisher: getPublisher(),
-    };
-
-    return structuredData;
-  };
-
-  private getPageHelmet = () => {
-    const { paper } = this.props;
-
-    if (paper) {
-      const pdfSourceRecord = getPDFLink(paper.urls);
-      const metaTitleContent = pdfSourceRecord ? "[PDF] " + paper.title : paper.title;
-      const fosListContent =
-        paper.fosList && typeof paper.fosList !== "undefined"
-          ? paper.fosList
-              .map(fos => {
-                return fos.fos;
-              })
-              .toString()
-              .replace(/,/gi, ", ")
-          : "";
-
-      return (
-        <Helmet>
-          <title>{`${metaTitleContent} | Scinapse | Academic search engine for paper}`}</title>
-          <link rel="canonical" href={`https://scinapse.io/papers/${paper.id}`} />
-          <meta itemProp="name" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
-          <meta name="description" content={this.buildPageDescription()} />
-          <meta name="keyword" content={fosListContent} />
-          <meta name="twitter:description" content={this.buildPageDescription()} />
-          <meta name="twitter:card" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
-          <meta name="twitter:title" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
-          <meta property="og:title" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
-          <meta property="og:type" content="article" />
-          <meta property="og:url" content={`https://scinapse.io/papers/${paper.id}`} />
-          <meta property="og:description" content={this.buildPageDescription()} />
-          <script type="application/ld+json">{JSON.stringify(this.makeStructuredData(paper))}</script>
-        </Helmet>
-      );
     }
   };
 }

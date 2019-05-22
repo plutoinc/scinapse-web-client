@@ -1,0 +1,23 @@
+.goBackBtn {
+  font-size: 14px;
+  width: 200px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-top: 24px;
+  color: $gray5;
+  cursor: pointer;
+
+  .backIcon {
+    width: 18px;
+    svg {
+      width: 18px;
+      height: 16px;
+      padding-top: 6px;
+      margin-right: 4px;
+    }
+  }
+
+  &:hover {
+    color: $gray6;
+  }
+}
