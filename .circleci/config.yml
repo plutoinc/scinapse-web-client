@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs:
+  slack: circleci/slack@2.5.0
 jobs:
   deploy_to_dev:
     working_directory: ~/scinapse
@@ -9,6 +11,8 @@ jobs:
       - run: npm ci
       - run: npm run test:ci
       - run: npm run deploy:dev
+      - slack/notify:
+          message: "Build DONE! $CIRCLE_BRANCH please check https://dev.scinapse.io?branch=$CIRCLE_BRANCH"
   deploy_to_prod:
     working_directory: ~/scinapse
     docker:
