@@ -194,8 +194,10 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
           file={PDFViewerState.pdfBlob}
           error={null}
           loading={
-            <div className={styles.loadingContainer}>
-              <CircularProgress size={100} thickness={2} color="inherit" />
+            <div className={styles.loadingContainerWrapper}>
+              <div className={styles.loadingContainer}>
+                <CircularProgress size={100} thickness={2} color="inherit" />
+              </div>
             </div>
           }
           onLoadSuccess={(pdf: any) => {
