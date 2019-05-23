@@ -1,10 +1,9 @@
 const path = require("path");
 const webpack = require("webpack");
 const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
-  mode: "production",
+  mode: "development",
   entry: ["./server/prodHandler.tsx"],
   output: {
     libraryTarget: "commonjs2",
@@ -79,14 +78,6 @@ module.exports = {
   node: {
     __dirname: false,
     __filename: false,
-  },
-  optimization: {
-    minimizer: [
-      new TerserPlugin({
-        parallel: true,
-        cache: true,
-      }),
-    ],
   },
   plugins: [
     new webpack.DefinePlugin({
