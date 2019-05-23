@@ -18,7 +18,7 @@ jobs:
             git config --global user.name "CircleCI"
             git config --global push.default simple
             git tag test -f
-            git push origin $CIRCLE_BRANCH --tags -f
+            git push https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@github.com/pluto-net/scinapse-web-client.git --tags -f
       - slack/notify:
           message: "Build DONE! $CIRCLE_BRANCH please check https://dev.scinapse.io?branch=$CIRCLE_BRANCH"
   deploy_to_prod:
