@@ -21,6 +21,10 @@ import { makeGetMemoizedPapers } from "../../selectors/papersSelector";
 import { getMemoizedCurrentUser } from "../../selectors/getCurrentUser";
 import { getMemoizedPDFViewerState } from "../../selectors/getPDFViewer";
 import ProgressSpinner from "./component/progressSpinner";
+import { ClickAwayListener } from "@material-ui/core";
+import BlockedPopper from "../preNoted/blockedPopper";
+import { getUserGroupName } from "../../helpers/abTestHelper";
+import { SIGN_FLOW_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalValue";
 const { Document, Page, pdfjs } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
@@ -142,6 +146,9 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     currentUser,
   } = props;
   const wrapperNode = React.useRef<HTMLDivElement | null>(null);
+  const [isBlockedPopperOpen, setIsBlockedPopperOpen] = React.useState(false);
+  const viewMorePDFBtnEl = React.useRef<HTMLDivElement | null>(null);
+
   const actionTag = PDFViewerState.isExpanded ? "viewLessPDF" : "viewMorePDF";
 
   React.useEffect(
@@ -285,34 +292,47 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                   <RelatedPapers shouldShowRelatedPapers={shouldShowRelatedPapers} />
                 </>
               ) : (
-                <ScinapseButton
-                  gaCategory="PDF viewer"
-                  gaAction={actionTag}
-                  style={readAllBtnStyle}
-                  content={
-                    <span>
-                      READ ALL <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
-                    </span>
-                  }
-                  isLoading={PDFViewerState.isLoading}
-                  disabled={PDFViewerState.hasFailed}
-                  onClick={async () => {
-                    const isBlocked = await blockUnverifiedUser({
-                      authLevel: AUTH_LEVEL.VERIFIED,
-                      actionArea: "pdfViewer",
-                      actionLabel: actionTag,
-                      userActionType: actionTag,
-                    });
+                <ClickAwayListener onClickAway={() => setIsBlockedPopperOpen(false)}>
+                  <div ref={viewMorePDFBtnEl}>
+                    <ScinapseButton
+                      gaCategory="PDF viewer"
+                      gaAction={actionTag}
+                      style={readAllBtnStyle}
+                      content={
+                        <span>
+                          READ ALL <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
+                        </span>
+                      }
+                      isLoading={PDFViewerState.isLoading}
+                      disabled={PDFViewerState.hasFailed}
+                      onClick={async () => {
+                        if (getUserGroupName(SIGN_FLOW_AT_PAPER_SHOW_TEST) === "bubble") {
+                          return setIsBlockedPopperOpen(!isBlockedPopperOpen);
+                        }
+                        const isBlocked = await blockUnverifiedUser({
+                          authLevel: AUTH_LEVEL.VERIFIED,
+                          actionArea: "pdfViewer",
+                          actionLabel: actionTag,
+                          userActionType: actionTag,
+                        });
 
-                    trackClickButton(actionTag, props.paper.id);
+                        trackClickButton(actionTag, props.paper.id);
 
-                    if (isBlocked) {
-                      return;
-                    }
+                        if (isBlocked) {
+                          return;
+                        }
 
-                    dispatch(ActionCreators.clickPDFViewMoreBtn());
-                  }}
-                />
+                        dispatch(ActionCreators.clickPDFViewMoreBtn());
+                      }}
+                    />
+                    <BlockedPopper
+                      handleOnClickAwayFunc={() => setIsBlockedPopperOpen(false)}
+                      anchorEl={viewMorePDFBtnEl.current}
+                      isOpen={isBlockedPopperOpen}
+                      buttonClickAction={"viewMorePDF"}
+                    />
+                  </div>
+                </ClickAwayListener>
               )}
             </>
           )}

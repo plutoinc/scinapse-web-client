@@ -6,6 +6,8 @@ import PdfDownloadButton from "../components/pdfDownloadButton";
 import RequestFullTextBtn from "../../../containers/paperShowActionBar/components/fullTextRequestBtn";
 import RequestFullTextDialog from "../../../containers/paperShowActionBar/components/fullTextDialog";
 import { PDFButtonProps, TabItemProps, PaperShowRefCitedTabProps } from "./types";
+import BlockedPopper from "../../preNoted/blockedPopper";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 const styles = require("./refCitedTab.scss");
 
 const TabItem: React.FunctionComponent<TabItemProps> = props => {
@@ -24,27 +26,47 @@ const TabItem: React.FunctionComponent<TabItemProps> = props => {
 
 const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [isBlockedPopperOpen, setIsBlockedPopperOpen] = React.useState(false);
+  const actionBtnEl = React.useRef<HTMLDivElement | null>(null);
 
   if (props.canShowFullPDF) {
     return (
-      <div className={styles.actionItem}>
-        <PdfDownloadButton
-          paper={props.paper}
-          isLoading={props.isLoading}
-          onDownloadedPDF={props.onClickDownloadPDF!}
-          handleSetScrollAfterDownload={props.afterDownloadPDF}
-        />
-      </div>
+      <ClickAwayListener onClickAway={() => setIsBlockedPopperOpen(false)}>
+        <div className={styles.actionItem} ref={actionBtnEl}>
+          <PdfDownloadButton
+            paper={props.paper}
+            isLoading={props.isLoading}
+            isOpenBlockedPopper={isBlockedPopperOpen}
+            onDownloadedPDF={props.onClickDownloadPDF!}
+            handleSetIsOpenBlockedPopper={setIsBlockedPopperOpen}
+            handleSetScrollAfterDownload={props.afterDownloadPDF}
+          />
+          <BlockedPopper
+            handleOnClickAwayFunc={() => setIsBlockedPopperOpen(false)}
+            anchorEl={actionBtnEl.current}
+            isOpen={isBlockedPopperOpen}
+            buttonClickAction={"downloadPdf"}
+          />
+        </div>
+      </ClickAwayListener>
     );
   }
   return (
-    <>
-      <div className={styles.actionItem}>
+    <ClickAwayListener onClickAway={() => setIsBlockedPopperOpen(false)}>
+      <div className={styles.actionItem} ref={actionBtnEl}>
         <RequestFullTextBtn
           isLoading={props.isLoading}
           paperId={props.paper!.id}
+          isOpenBlockedPopper={isBlockedPopperOpen}
           handleSetIsOpen={setIsOpen}
+          handleSetIsOpenBlockedPopper={setIsBlockedPopperOpen}
           btnStyle={{ flex: "1 0 auto", height: "36px", padding: "0 12px 0 8px" }}
+        />
+        <BlockedPopper
+          handleOnClickAwayFunc={() => setIsBlockedPopperOpen(false)}
+          anchorEl={actionBtnEl.current}
+          isOpen={isBlockedPopperOpen}
+          buttonClickAction={"clickRequestFullTextBtn"}
         />
       </div>
       <RequestFullTextDialog
@@ -54,7 +76,7 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
           setIsOpen(false);
         }}
       />
-    </>
+    </ClickAwayListener>
   );
 };
 

@@ -35,6 +35,9 @@ import { trackEvent } from "../../helpers/handleGA";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { ActionCreators } from "../../actions/actionTypes";
 import { blockUnverifiedUser, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
+import { getUserGroupName } from "../../helpers/abTestHelper";
+import { SIGN_FLOW_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalValue";
+import BlockedPopper from "../../components/preNoted/blockedPopper";
 const styles = require("./paperShowCollectionControlButton.scss");
 
 const LAST_USER_COLLECTION_ID = "l_u_c_id";
@@ -55,7 +58,9 @@ interface TitleAreaProps {
   onClick: () => void;
 }
 
-const TitleArea: React.SFC<TitleAreaProps> = props => {
+const TitleArea: React.FC<TitleAreaProps> = props => {
+  const [isBlockedPopperOpen, setIsBlockedPopperOpen] = React.useState(false);
+  const addToCollectionBtnEl = React.useRef<HTMLDivElement | null>(null);
   if (props.isLoading) {
     return (
       <span
@@ -73,27 +78,41 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
 
   if (!props.currentUser.isLoggedIn) {
     return (
-      <button
-        onClick={() => {
-          blockUnverifiedUser({
-            authLevel: AUTH_LEVEL.VERIFIED,
-            actionArea: "paperDescription",
-            actionLabel: "addToCollection",
-            userActionType: "addToCollection",
-          });
-          ActionTicketManager.trackTicket({
-            pageType: "paperShow",
-            actionType: "fire",
-            actionArea: "paperDescription",
-            actionTag: "addToCollection",
-            actionLabel: null,
-          });
-        }}
-        className={styles.unsignedTitleBtn}
-      >
-        <Icon icon="COLLECITON_LIST" className={styles.collectionIcon} />
-        Add to Collection
-      </button>
+      <ClickAwayListener onClickAway={() => setIsBlockedPopperOpen(false)}>
+        <div ref={addToCollectionBtnEl}>
+          <button
+            onClick={() => {
+              if (getUserGroupName(SIGN_FLOW_AT_PAPER_SHOW_TEST) === "bubble") {
+                return setIsBlockedPopperOpen(!isBlockedPopperOpen);
+              }
+
+              blockUnverifiedUser({
+                authLevel: AUTH_LEVEL.VERIFIED,
+                actionArea: "paperDescription",
+                actionLabel: "addToCollection",
+                userActionType: "addToCollection",
+              });
+              ActionTicketManager.trackTicket({
+                pageType: "paperShow",
+                actionType: "fire",
+                actionArea: "paperDescription",
+                actionTag: "addToCollection",
+                actionLabel: null,
+              });
+            }}
+            className={styles.unsignedTitleBtn}
+          >
+            <Icon icon="COLLECITON_LIST" className={styles.collectionIcon} />
+            Add to Collection
+          </button>
+          <BlockedPopper
+            handleOnClickAwayFunc={() => setIsBlockedPopperOpen(false)}
+            anchorEl={addToCollectionBtnEl.current!}
+            isOpen={isBlockedPopperOpen}
+            buttonClickAction={"addToCollection"}
+          />
+        </div>
+      </ClickAwayListener>
     );
   } else if (!props.collection) {
     return (

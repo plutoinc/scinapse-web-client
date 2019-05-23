@@ -8,6 +8,8 @@ import { CurrentUser } from "../../model/currentUser";
 import SourceButton from "../../components/paperShow/components/sourceButton";
 import ViewFullTextBtn from "../../components/paperShow/components/viewFullTextBtn";
 import RequestFullTextBtn from "./components/fullTextRequestBtn";
+import BlockedPopper from "../../components/preNoted/blockedPopper";
+import { ClickAwayListener } from "@material-ui/core";
 
 const s = require("./actionBar.scss");
 
@@ -21,6 +23,8 @@ interface PaperShowActionBarProps {
 
 const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [isBlockedPopperOpen, setIsBlockedPopperOpen] = React.useState(false);
+  const requestFullTextBtnEl = React.useRef<HTMLDivElement | null>(null);
 
   const hasSource = props.paper.urls.length > 0;
 
@@ -29,13 +33,23 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props =
       <div className={s.actions}>
         <div className={s.leftSide}>
           {!props.hasPDFFullText ? (
-            <div className={s.actionItem}>
-              <RequestFullTextBtn
-                isLoading={props.isLoadingPDF}
-                paperId={props.paper!.id}
-                handleSetIsOpen={setIsOpen}
-              />
-            </div>
+            <ClickAwayListener onClickAway={() => setIsBlockedPopperOpen(false)}>
+              <div className={s.actionItem} ref={requestFullTextBtnEl}>
+                <RequestFullTextBtn
+                  isLoading={props.isLoadingPDF}
+                  paperId={props.paper!.id}
+                  isOpenBlockedPopper={isBlockedPopperOpen}
+                  handleSetIsOpen={setIsOpen}
+                  handleSetIsOpenBlockedPopper={setIsBlockedPopperOpen}
+                />
+                <BlockedPopper
+                  handleOnClickAwayFunc={() => setIsBlockedPopperOpen(false)}
+                  anchorEl={requestFullTextBtnEl.current}
+                  isOpen={isBlockedPopperOpen}
+                  buttonClickAction={"clickRequestFullTextBtn"}
+                />
+              </div>
+            </ClickAwayListener>
           ) : (
             <div className={s.actionItem}>
               <ViewFullTextBtn
