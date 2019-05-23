@@ -28,3 +28,12 @@ export const relatedPapersAtPaperShowTest: Test = {
     { groupName: "search", weight: 1 },
   ],
 };
+
+export const signBannerAtPaperShowTest: Test = {
+  name: "signBannerAtPaperShow",
+  userGroup: [
+    { groupName: "control", weight: 1 },
+    { groupName: "bottomBanner", weight: 2 },
+    { groupName: "suddenAlert", weight: 2 },
+  ],
+};

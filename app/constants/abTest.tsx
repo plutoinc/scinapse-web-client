@@ -1,4 +1,10 @@
-import { bannerTest, searchEngineMoodTest, bannerCuratedTest, relatedPapersAtPaperShowTest } from "./abTestObject";
+import {
+  bannerTest,
+  searchEngineMoodTest,
+  bannerCuratedTest,
+  relatedPapersAtPaperShowTest,
+  signBannerAtPaperShowTest,
+} from "./abTestObject";
 
 export interface UserGroup {
   groupName: string;
@@ -15,6 +21,7 @@ export type BenefitExpType = "queryCountSession" | "refPaperCountSession" | "pap
 export type ABTestType =
   | "queryLover"
   | "searchEngineMood"
+  | "signBannerAtPaperShow"
   | "signBannerAtSearch-banner"
   | "signBannerAtSearch-curated"
   | "relatedPapersAtPaperShow";
@@ -37,7 +44,13 @@ export interface BenefitExpTicketContext {
   expName?: string;
 }
 
-export const LIVE_TESTS: Test[] = [searchEngineMoodTest, bannerTest, bannerCuratedTest, relatedPapersAtPaperShowTest];
+export const LIVE_TESTS: Test[] = [
+  searchEngineMoodTest,
+  bannerTest,
+  bannerCuratedTest,
+  relatedPapersAtPaperShowTest,
+  signBannerAtPaperShowTest,
+];
 
 function getRandomPool(): { [key: string]: string[] } {
   const randomPool: { [key: string]: string[] } = {};
