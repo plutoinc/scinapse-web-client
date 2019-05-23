@@ -33,6 +33,9 @@ import { getCollections } from "../collections/actions";
 import { collectionSchema } from "../../model/collection";
 import { getMemoizedPaper } from "../../containers/paperShow/select";
 import ResearchHistory from "../researchHistory";
+import SuddenAlert from "../preNoted/suddenAlert";
+import { getUserGroupName } from "../../helpers/abTestHelper";
+import { SIGN_BANNER_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalValue";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -365,7 +368,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     const firstCharacterOfUsername = currentUserState.firstName.slice(0, 1).toUpperCase();
 
     return (
-      <div className={styles.rightBox} ref={el => (this.test = el)}>
+      <div className={styles.rightBox}>
         <div className={styles.historyBtnWrapper}>
           <ResearchHistory paper={paper} isLoggedIn={currentUserState.isLoggedIn} />
         </div>
@@ -416,7 +419,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
               anchorEl={this.state.userDropdownAnchorElement}
               placement="bottom-end"
               popperOptions={{ positionFixed: true }}
-              disablePortal
+              disablePortal={true}
             >
               {this.userDropdownMenuItems()}
             </BubblePopover>
@@ -465,6 +468,13 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           >
             Get Started
           </div>
+          <SuddenAlert
+            open={getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TEST) === "suddenAlert"}
+            anchorEl={this.state.userDropdownAnchorElement}
+            placement="bottom-end"
+            popperOptions={{ positionFixed: true }}
+            disablePortal={true}
+          />
         </div>
       );
     } else {
