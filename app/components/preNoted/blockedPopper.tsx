@@ -30,7 +30,7 @@ const BlockedPopperContent: React.FC<{
           e.preventDefault();
           blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,
-            actionArea: "paperDescription",
+            actionArea: "paperShow",
             actionLabel: buttonClickAction,
             userActionType: buttonClickAction,
           });
