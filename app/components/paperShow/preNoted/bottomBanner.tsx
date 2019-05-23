@@ -20,8 +20,8 @@ function handleOpenSignUp() {
   });
 }
 
-const BottomBanner: React.FC<BottomBannerProps> = ({ isLoggedIn }) => {
-  if (isLoggedIn) {
+const BottomBanner: React.FC<BottomBannerProps> = ({ isLoggedIn, shouldShowBottomBanner }) => {
+  if (isLoggedIn || !shouldShowBottomBanner) {
     return null;
   }
   return (

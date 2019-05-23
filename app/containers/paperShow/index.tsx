@@ -32,7 +32,7 @@ import VenueAndAuthors from "../../components/common/paperItem/venueAndAuthors";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import RelatedPapers from "../../components/relatedPapers";
 import { getUserGroupName } from "../../helpers/abTestHelper";
-import { RELATED_PAPERS_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalValue";
+import { RELATED_PAPERS_AT_PAPER_SHOW_TEST, SIGN_BANNER_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalValue";
 import { CommonError } from "../../model/error";
 import PaperShowHelmet from "../../components/paperShow/helmet";
 import GoBackResultBtn from "../../components/paperShow/backButton";
@@ -383,7 +383,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         <div className={styles.footerWrapper}>
           <Footer />
         </div>
-        <BottomBanner isLoggedIn={currentUser.isLoggedIn} shouldShowBottomBanner={true} />
+        <BottomBanner
+          isLoggedIn={currentUser.isLoggedIn}
+          shouldShowBottomBanner={getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TEST) === "bottomBanner"}
+        />
         <NextPaperTab />
       </>
     );
