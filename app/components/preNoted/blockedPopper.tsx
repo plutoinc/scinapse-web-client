@@ -51,7 +51,7 @@ const BlockedPopper: React.FC<BlockedPopperProps> = props => {
       open={isOpen}
       anchorEl={anchorEl}
       placement="bottom"
-      style={{ zIndex: 2 }}
+      style={{ zIndex: 11 }}
       disablePortal={true}
       modifiers={{ flip: { enabled: false } }}
       popperOptions={{ positionFixed: true }}
