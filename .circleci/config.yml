@@ -12,14 +12,15 @@ jobs:
       - run: npm run test:ci
       - run: npm run deploy:dev
       - run:
-          name: Update PATH and Define Environment Variable at Runtime
+          name: set git tag
           command: |
-            echo 'export DIFF=$(git log --oneline --pretty=format:"%cd(%cr)] <https://github.com/pluto-net/scinapse-web-client/commit/%H|%s> - (By %an)" production..HEAD)' >> $BASH_ENV
-            source $BASH_ENV
+            git config --global user.email "dev@pluto.network"
+            git config --global user.name "CircleCI"
+            git config --global push.default simple
+            git tag test -f
+            git push origin $CIRCLE_BRANCH --tags -f
       - slack/notify:
           message: "Build DONE! $CIRCLE_BRANCH please check https://dev.scinapse.io?branch=$CIRCLE_BRANCH"
-      - slack/notify:
-          message: "$DIFF"
   deploy_to_prod:
     working_directory: ~/scinapse
     docker:
@@ -29,8 +30,20 @@ jobs:
       - run: npm ci
       - run: npm run test:ci
       - run: npm run deploy:prod
+      - run:
+          name: Update PATH and Define Environment Variable at Runtime
+          command: |
+            echo 'export DEPLOYED_VERSION=$(cat ./version)' >> $BASH_ENV
+            source $BASH_ENV   
+      - run:
+          name: Update PATH and Define Environment Variable at Runtime
+          command: |
+            echo 'export DIFF=$(git log --oneline --pretty=format:"%cd(%cr)] <https://github.com/pluto-net/scinapse-web-client/commit/%H|%s> - (By %an)" production..HEAD)' >> $BASH_ENV
+            source $BASH_ENV      
       - slack/notify:
-          message: "Build DONE! $CIRCLE_BRANCH please check https://dev.scinapse.io?branch=$CIRCLE_BRANCH"
+          message: "Build DONE! Finish to production deploy version: $DEPLOYED_VERSION"
+      - slack/notify:
+          message: "$DIFF"
 workflows:
   version: 2
   deploy:
