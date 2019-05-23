@@ -1,12 +1,4 @@
-import {
-  bannerTest,
-  signBannerAtPaperShowTest,
-  signBannerAtPaperShowTitleTextTest,
-  signBannerAtPaperShowTitleTextKeyverbTest,
-  searchEngineMoodTest,
-  bannerCuratedTest,
-  relatedPapersAtPaperShowTest,
-} from "./abTestObject";
+import { bannerTest, searchEngineMoodTest, bannerCuratedTest, relatedPapersAtPaperShowTest } from "./abTestObject";
 
 export interface UserGroup {
   groupName: string;
@@ -25,9 +17,6 @@ export type ABTestType =
   | "searchEngineMood"
   | "signBannerAtSearch-banner"
   | "signBannerAtSearch-curated"
-  | "signBannerAtPaperShow-banner"
-  | "signBannerAtPaperShow-titleText"
-  | "signBannerAtPaperShow-titleText-keyverb"
   | "relatedPapersAtPaperShow";
 
 export const BENEFIT_EXPERIMENT_KEY = "b_exp";
@@ -48,15 +37,7 @@ export interface BenefitExpTicketContext {
   expName?: string;
 }
 
-export const LIVE_TESTS: Test[] = [
-  searchEngineMoodTest,
-  bannerTest,
-  bannerCuratedTest,
-  signBannerAtPaperShowTest,
-  signBannerAtPaperShowTitleTextTest,
-  signBannerAtPaperShowTitleTextKeyverbTest,
-  relatedPapersAtPaperShowTest,
-];
+export const LIVE_TESTS: Test[] = [searchEngineMoodTest, bannerTest, bannerCuratedTest, relatedPapersAtPaperShowTest];
 
 function getRandomPool(): { [key: string]: string[] } {
   const randomPool: { [key: string]: string[] } = {};
