@@ -22,7 +22,7 @@ function cleanArtifacts() {
 
 function build() {
   return new Promise((resolve, reject) => {
-    webpack([clientConfig, serverConfig], async (err, stats) => {
+    webpack([clientConfig, serverConfig], (err, stats) => {
       if (err || stats.hasErrors()) {
         console.error(err);
         reject(err);
