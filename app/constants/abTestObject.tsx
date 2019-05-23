@@ -37,3 +37,8 @@ export const signBannerAtPaperShowTest: Test = {
     { groupName: "suddenAlert", weight: 2 },
   ],
 };
+
+export const signFlowAtPaperShowTest: Test = {
+  name: "signFlowAtPaperShow",
+  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "bubble", weight: 1 }],
+};
