@@ -1,17 +1,16 @@
 const path = require("path");
 const webpack = require("webpack");
 const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
-  mode: "production",
+  mode: "development",
   entry: ["./server/prodHandler.tsx"],
   output: {
     libraryTarget: "commonjs2",
     path: path.resolve(__dirname, "dist", "server"),
     filename: "[name].js",
   },
-  devtool: "eval",
+  devtool: false,
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
@@ -80,18 +79,11 @@ module.exports = {
     __dirname: false,
     __filename: false,
   },
-  optimization: {
-    minimizer: [
-      new TerserPlugin({
-        parallel: true,
-        cache: true,
-      }),
-    ],
-  },
   plugins: [
     new webpack.DefinePlugin({
       "process.env.TARGET": JSON.stringify("server"),
     }),
     new LodashModuleReplacementPlugin(),
+    new webpack.DefinePlugin({ "process.env.NODE_ENV": JSON.stringify("production") }),
   ],
 };
