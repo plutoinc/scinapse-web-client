@@ -54,6 +54,7 @@ const BlockedPopper: React.FC<BlockedPopperProps> = props => {
       style={{ zIndex: 2 }}
       disablePortal={true}
       modifiers={{ flip: { enabled: false } }}
+      popperOptions={{ positionFixed: true }}
     >
       <BlockedPopperContent buttonClickAction={buttonClickAction} onClickAwayButton={handleOnClickAwayFunc} />
     </Popper>

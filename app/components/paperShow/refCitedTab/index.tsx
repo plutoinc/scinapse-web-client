@@ -68,14 +68,14 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
           isOpen={isBlockedPopperOpen}
           buttonClickAction={"clickRequestFullTextBtn"}
         />
+        <RequestFullTextDialog
+          paperId={props.paper.id}
+          isOpen={isOpen}
+          onClose={() => {
+            setIsOpen(false);
+          }}
+        />
       </div>
-      <RequestFullTextDialog
-        paperId={props.paper.id}
-        isOpen={isOpen}
-        onClose={() => {
-          setIsOpen(false);
-        }}
-      />
     </ClickAwayListener>
   );
 };
