@@ -1,7 +1,7 @@
 import * as React from "react";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { getCurrentPageType } from "../../locationListener";
-import GlobalDialogManager from "../../../helpers/globalDialogManager";
+import { withStyles } from "../../helpers/withStylesHelper";
+import { getCurrentPageType } from "../locationListener";
+import GlobalDialogManager from "../../helpers/globalDialogManager";
 const styles = require("./bottomBanner.scss");
 
 interface BottomBannerProps {

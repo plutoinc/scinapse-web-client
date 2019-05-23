@@ -44,7 +44,7 @@ import { getMemoizedLayout } from "../../selectors/getLayout";
 import { getMemoizedPDFViewerState } from "../../selectors/getPDFViewer";
 import { PDFViewerState } from "../../reducers/pdfViewer";
 import { ActionCreators } from "../../actions/actionTypes";
-import BottomBanner from "../../components/paperShow/preNoted/bottomBanner";
+import BottomBanner from "../../components/preNoted/bottomBanner";
 const styles = require("./paperShow.scss");
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;

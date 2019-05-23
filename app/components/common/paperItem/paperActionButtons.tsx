@@ -239,7 +239,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             anchorEl={this.additionalMenuAnchorEl!}
             placement="bottom-end"
             open={this.state.isAdditionalMenuOpen}
-            disablePortal
+            disablePortal={true}
           >
             <div className={styles.contentWrapper}>{this.additionalMenuItems()}</div>
           </Popper>
