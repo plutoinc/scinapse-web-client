@@ -40,7 +40,7 @@ if (!EnvChecker.isOnServer()) {
     }
   }
 
-  if (EnvChecker.isProdBrowser() || EnvChecker.isDev()) {
+  if (EnvChecker.isProdBrowser()) {
     loadServiceWorker();
   }
 
