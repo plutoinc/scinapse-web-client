@@ -19,25 +19,6 @@ export const bannerCuratedTest: Test = {
   ],
 };
 
-export const signBannerAtPaperShowTest: Test = {
-  name: "signBannerAtPaperShow-banner",
-  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "banner", weight: 2 }],
-};
-
-export const signBannerAtPaperShowTitleTextTest: Test = {
-  name: "signBannerAtPaperShow-titleText",
-  userGroup: [
-    { groupName: "onlymember", weight: 1 },
-    { groupName: "youcanmore", weight: 1 },
-    { groupName: "enjoyeverything", weight: 1 },
-  ],
-};
-
-export const signBannerAtPaperShowTitleTextKeyverbTest: Test = {
-  name: "signBannerAtPaperShow-titleText-keyverb",
-  userGroup: [{ groupName: "enjoy", weight: 1 }, { groupName: "browse", weight: 1 }],
-};
-
 export const relatedPapersAtPaperShowTest: Test = {
   name: "relatedPapersAtPaperShow",
   userGroup: [

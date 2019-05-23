@@ -30,7 +30,6 @@ import NextPaperTab from "../nextPaperTab";
 import { PaperShowMatchParams, PaperShowPageQueryParams } from "./types";
 import VenueAndAuthors from "../../components/common/paperItem/venueAndAuthors";
 import ActionTicketManager from "../../helpers/actionTicketManager";
-import SignUpBanner from "../../components/paperShow/components/signUpBanner";
 import RelatedPapers from "../../components/relatedPapers";
 import { getUserGroupName } from "../../helpers/abTestHelper";
 import { RELATED_PAPERS_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalValue";
@@ -257,9 +256,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               </div>
               <div className={styles.paperContentBlockDivider} />
               <div className={styles.paperContent}>
-                <NoSsr>
-                  <SignUpBanner isLoggedIn={currentUser.isLoggedIn} />
-                </NoSsr>
                 <div className={styles.abstract}>
                   <div className={styles.paperContentBlockHeader}>Abstract</div>
                 </div>
