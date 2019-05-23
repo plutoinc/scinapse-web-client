@@ -6,6 +6,7 @@ import Icon from "../../../icons";
 import SearchingPDFBtn from "../../../components/paperShow/components/searchingPDFBtn";
 import { getUserGroupName } from "../../../helpers/abTestHelper/index";
 import { SIGN_FLOW_AT_PAPER_SHOW_TEST } from "../../../constants/abTestGlobalValue";
+import { setBubbleContextTypeHelper } from "../../../helpers/getBubbleContextType";
 const s = require("../actionBar.scss");
 
 const RequestFullTextBtn: React.FunctionComponent<{
@@ -27,7 +28,11 @@ const RequestFullTextBtn: React.FunctionComponent<{
       style={!!btnStyle ? btnStyle : {}}
       onClick={async () => {
         if (handleSetIsOpenBlockedPopper && getUserGroupName(SIGN_FLOW_AT_PAPER_SHOW_TEST) === "bubble") {
-          return handleSetIsOpenBlockedPopper(!isOpenBlockedPopper);
+          handleSetIsOpenBlockedPopper(!isOpenBlockedPopper);
+          if (!isOpenBlockedPopper) {
+            return setBubbleContextTypeHelper();
+          }
+          return;
         }
 
         const isBlocked = await blockUnverifiedUser({

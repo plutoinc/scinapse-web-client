@@ -25,6 +25,7 @@ import { ClickAwayListener } from "@material-ui/core";
 import BlockedPopper from "../preNoted/blockedPopper";
 import { getUserGroupName } from "../../helpers/abTestHelper";
 import { SIGN_FLOW_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalValue";
+import { setBubbleContextTypeHelper } from "../../helpers/getBubbleContextType";
 const { Document, Page, pdfjs } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
@@ -307,7 +308,11 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                       disabled={PDFViewerState.hasFailed}
                       onClick={async () => {
                         if (getUserGroupName(SIGN_FLOW_AT_PAPER_SHOW_TEST) === "bubble") {
-                          return setIsBlockedPopperOpen(!isBlockedPopperOpen);
+                          setIsBlockedPopperOpen(!isBlockedPopperOpen);
+                          if (!isBlockedPopperOpen) {
+                            return setBubbleContextTypeHelper();
+                          }
+                          return;
                         }
                         const isBlocked = await blockUnverifiedUser({
                           authLevel: AUTH_LEVEL.VERIFIED,

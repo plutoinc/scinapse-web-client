@@ -31,7 +31,7 @@ export function getBlockedBubbleContext(userGroupName: string, buttonAction: str
       };
 
     case "3":
-      const capitalizedVerb = contextVerbAndNoun.verb.charAt(0).toUpperCase + contextVerbAndNoun.verb.slice(1);
+      const capitalizedVerb = contextVerbAndNoun.verb.charAt(0).toUpperCase() + contextVerbAndNoun.verb.slice(1);
       return {
         title: `${capitalizedVerb} ${contextVerbAndNoun.noun} with a Scinapse account`,
         mainText: `Enjoy unlimited Scinapse with a Scinapse account.`,

@@ -38,6 +38,7 @@ import { blockUnverifiedUser, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
 import { getUserGroupName } from "../../helpers/abTestHelper";
 import { SIGN_FLOW_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalValue";
 import BlockedPopper from "../../components/preNoted/blockedPopper";
+import { setBubbleContextTypeHelper } from "../../helpers/getBubbleContextType";
 const styles = require("./paperShowCollectionControlButton.scss");
 
 const LAST_USER_COLLECTION_ID = "l_u_c_id";
@@ -83,7 +84,11 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
           <button
             onClick={() => {
               if (getUserGroupName(SIGN_FLOW_AT_PAPER_SHOW_TEST) === "bubble") {
-                return setIsBlockedPopperOpen(!isBlockedPopperOpen);
+                setIsBlockedPopperOpen(!isBlockedPopperOpen);
+                if (!isBlockedPopperOpen) {
+                  return setBubbleContextTypeHelper();
+                }
+                return;
               }
 
               blockUnverifiedUser({

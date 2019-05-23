@@ -3,6 +3,8 @@ import Popper from "@material-ui/core/Popper";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { getBlockedBubbleContext } from "./constants";
 import { blockUnverifiedUser, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
+import { BUBBLE_CONTEXT_TYPE } from "../../helpers/getBubbleContextType";
+const store = require("store");
 const styles = require("./blockedPopper.scss");
 
 interface BlockedPopperProps {
@@ -13,12 +15,11 @@ interface BlockedPopperProps {
 }
 
 const BlockedPopperContent: React.FC<{
-  userGroupName: string;
   buttonClickAction: Scinapse.ActionTicket.ActionTagType;
   onClickAwayButton: () => void;
 }> = props => {
-  const { userGroupName, buttonClickAction, onClickAwayButton } = props;
-  const bubbleContext = getBlockedBubbleContext(userGroupName, buttonClickAction);
+  const { buttonClickAction, onClickAwayButton } = props;
+  const bubbleContext = getBlockedBubbleContext(String(store.get(BUBBLE_CONTEXT_TYPE)), buttonClickAction);
 
   return (
     <div className={styles.bubbleContent}>
@@ -54,11 +55,7 @@ const BlockedPopper: React.FC<BlockedPopperProps> = props => {
       disablePortal={true}
       modifiers={{ flip: { enabled: false } }}
     >
-      <BlockedPopperContent
-        userGroupName={"1"}
-        buttonClickAction={buttonClickAction}
-        onClickAwayButton={handleOnClickAwayFunc}
-      />
+      <BlockedPopperContent buttonClickAction={buttonClickAction} onClickAwayButton={handleOnClickAwayFunc} />
     </Popper>
   );
 };
