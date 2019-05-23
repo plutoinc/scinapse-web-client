@@ -44,6 +44,7 @@ import { getMemoizedLayout } from "../../selectors/getLayout";
 import { getMemoizedPDFViewerState } from "../../selectors/getPDFViewer";
 import { PDFViewerState } from "../../reducers/pdfViewer";
 import { ActionCreators } from "../../actions/actionTypes";
+import BottomBanner from "../../components/paperShow/preNoted/bottomBanner";
 const styles = require("./paperShow.scss");
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -382,6 +383,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         <div className={styles.footerWrapper}>
           <Footer />
         </div>
+        <BottomBanner isLoggedIn={currentUser.isLoggedIn} shouldShowBottomBanner={true} />
         <NextPaperTab />
       </>
     );

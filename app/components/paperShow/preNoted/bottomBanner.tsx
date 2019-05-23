@@ -6,6 +6,7 @@ const styles = require("./bottomBanner.scss");
 
 interface BottomBannerProps {
   isLoggedIn: boolean;
+  shouldShowBottomBanner: boolean;
 }
 
 function handleOpenSignUp() {
