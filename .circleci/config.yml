@@ -38,7 +38,7 @@ jobs:
             git config --global user.email "dev@pluto.network"
             git config --global user.name "CircleCI"
             git config --global push.default simple
-            git tag test -f
+            git tag production -f
             git push https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@github.com/pluto-net/scinapse-web-client.git --tags -f
       - slack/notify:
           message: "Build DONE! Finish to production deploy version: $DEPLOYED_VERSION"
