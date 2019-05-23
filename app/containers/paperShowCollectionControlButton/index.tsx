@@ -85,6 +85,7 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
             onClick={() => {
               if (getUserGroupName(SIGN_FLOW_AT_PAPER_SHOW_TEST) === "bubble") {
                 setIsBlockedPopperOpen(!isBlockedPopperOpen);
+
                 if (!isBlockedPopperOpen) {
                   return setBubbleContextTypeHelper();
                 }

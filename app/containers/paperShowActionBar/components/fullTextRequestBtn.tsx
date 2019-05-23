@@ -29,6 +29,7 @@ const RequestFullTextBtn: React.FunctionComponent<{
       onClick={async () => {
         if (handleSetIsOpenBlockedPopper && getUserGroupName(SIGN_FLOW_AT_PAPER_SHOW_TEST) === "bubble") {
           handleSetIsOpenBlockedPopper(!isOpenBlockedPopper);
+
           if (!isOpenBlockedPopper) {
             return setBubbleContextTypeHelper();
           }

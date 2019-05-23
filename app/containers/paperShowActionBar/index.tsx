@@ -1,4 +1,5 @@
 import * as React from "react";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { withStyles } from "../../helpers/withStylesHelper";
 import FullTextDialog from "./components/fullTextDialog";
 import PaperShowCollectionControlButton from "../paperShowCollectionControlButton";
@@ -9,7 +10,6 @@ import SourceButton from "../../components/paperShow/components/sourceButton";
 import ViewFullTextBtn from "../../components/paperShow/components/viewFullTextBtn";
 import RequestFullTextBtn from "./components/fullTextRequestBtn";
 import BlockedPopper from "../../components/preNoted/blockedPopper";
-import { ClickAwayListener } from "@material-ui/core";
 
 const s = require("./actionBar.scss");
 

@@ -61,8 +61,10 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
         rel="noopener nofollow noreferrer"
         onClick={async e => {
           e.preventDefault();
+
           if (handleSetIsOpenBlockedPopper && getUserGroupName(SIGN_FLOW_AT_PAPER_SHOW_TEST) === "bubble") {
             handleSetIsOpenBlockedPopper(!isOpenBlockedPopper);
+
             if (!isOpenBlockedPopper) {
               return setBubbleContextTypeHelper();
             }

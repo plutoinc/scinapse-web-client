@@ -2,6 +2,7 @@ import * as React from "react";
 import Axios, { CancelTokenSource } from "axios";
 import { connect, Dispatch } from "react-redux";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { withStyles } from "../../helpers/withStylesHelper";
 import PaperAPI from "../../api/paper";
 import ScinapseButton from "../common/scinapseButton";
@@ -21,7 +22,6 @@ import { makeGetMemoizedPapers } from "../../selectors/papersSelector";
 import { getMemoizedCurrentUser } from "../../selectors/getCurrentUser";
 import { getMemoizedPDFViewerState } from "../../selectors/getPDFViewer";
 import ProgressSpinner from "./component/progressSpinner";
-import { ClickAwayListener } from "@material-ui/core";
 import BlockedPopper from "../preNoted/blockedPopper";
 import { getUserGroupName } from "../../helpers/abTestHelper";
 import { SIGN_FLOW_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalValue";
@@ -309,11 +309,14 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                       onClick={async () => {
                         if (getUserGroupName(SIGN_FLOW_AT_PAPER_SHOW_TEST) === "bubble") {
                           setIsBlockedPopperOpen(!isBlockedPopperOpen);
+
                           if (!isBlockedPopperOpen) {
                             return setBubbleContextTypeHelper();
                           }
+
                           return;
                         }
+
                         const isBlocked = await blockUnverifiedUser({
                           authLevel: AUTH_LEVEL.VERIFIED,
                           actionArea: "pdfViewer",

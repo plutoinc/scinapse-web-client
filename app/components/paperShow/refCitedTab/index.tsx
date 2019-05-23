@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as classNames from "classnames";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import CiteBox from "../../../containers/paperShowActionBar/components/citeBox";
 import PdfDownloadButton from "../components/pdfDownloadButton";
@@ -7,7 +8,6 @@ import RequestFullTextBtn from "../../../containers/paperShowActionBar/component
 import RequestFullTextDialog from "../../../containers/paperShowActionBar/components/fullTextDialog";
 import { PDFButtonProps, TabItemProps, PaperShowRefCitedTabProps } from "./types";
 import BlockedPopper from "../../preNoted/blockedPopper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 const styles = require("./refCitedTab.scss");
 
 const TabItem: React.FunctionComponent<TabItemProps> = props => {
