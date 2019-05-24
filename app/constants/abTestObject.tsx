@@ -35,6 +35,7 @@ export const signBannerAtPaperShowTest: Test = {
     { groupName: "control", weight: 1 },
     { groupName: "bottomBanner", weight: 2 },
     { groupName: "suddenAlert", weight: 2 },
+    { groupName: "searchBanner", weight: 2 },
   ],
 };
 

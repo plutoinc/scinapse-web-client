@@ -45,6 +45,25 @@ interface SubmitParams {
   filter?: FilterObject;
 }
 
+function validateSearchInput(query: string) {
+  if (query.length < 2) {
+    return false;
+  }
+  return true;
+}
+
+async function shouldBlockUnsignedUser(actionArea: string) {
+  const isBlocked = await checkBenefitExp({
+    type: "queryLover",
+    matching: "session",
+    maxCount: 2,
+    actionArea,
+    userActionType: "queryLover",
+    expName: "queryLover",
+  });
+  return isBlocked;
+}
+
 const SearchQueryInput: React.FunctionComponent<
   SearchQueryInputProps & React.InputHTMLAttributes<HTMLInputElement>
 > = props => {
@@ -113,27 +132,23 @@ const SearchQueryInput: React.FunctionComponent<
 
   async function handleSubmit({ query, filter, from }: SubmitParams) {
     const searchKeyword = query || inputValue;
-
-    if (searchKeyword.length < 2) {
-      return props.dispatch({
+    if (!validateSearchInput(searchKeyword)) {
+      props.dispatch({
         type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
         payload: {
           type: "error",
           message: "You should search more than 2 characters.",
         },
       });
+      return;
     }
 
-    const isBlocked = await checkBenefitExp({
-      type: "queryLover",
-      matching: "session",
-      maxCount: 2,
-      actionArea: props.actionArea,
-      userActionType: "queryLover",
-      expName: "queryLover",
-    });
-
-    if (isBlocked) return;
+    if (props.actionArea !== "searchFullBanner") {
+      const shouldBlock = await shouldBlockUnsignedUser(props.actionArea);
+      if (shouldBlock) {
+        return;
+      }
+    }
 
     ActionTicketManager.trackTicket({
       pageType: getCurrentPageType(),

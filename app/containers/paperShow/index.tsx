@@ -460,7 +460,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (this.refTabWrapper) {
       const scrollPositionOverRefTab = scrollTop + window.innerHeight - this.refTabWrapper.offsetTop;
-      if (!this.state.isSearchFullBannerOpen && !this.state.hadQuitSearchFullBanner && scrollPositionOverRefTab > 400) {
+      if (
+        !this.state.isSearchFullBannerOpen &&
+        !this.state.hadQuitSearchFullBanner &&
+        this.props.configuration.initialPageType === "paperShow" &&
+        getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TEST) === "searchBanner" &&
+        scrollPositionOverRefTab > 400
+      ) {
         this.setState(prevState => ({ ...prevState, isSearchFullBannerOpen: true }));
       } else if (this.state.isSearchFullBannerOpen && scrollPositionOverRefTab <= 400) {
         this.setState(prevState => ({ ...prevState, isSearchFullBannerOpen: false }));
