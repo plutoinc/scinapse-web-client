@@ -60,7 +60,7 @@ interface TitleAreaProps {
 }
 
 const TitleArea: React.FC<TitleAreaProps> = props => {
-  const [isBlockedPopperOpen, setIsBlockedPopperOpen] = React.useState(false);
+  const [isOpenBlockedPopper, setIsOpenBlockedPopper] = React.useState(false);
   const addToCollectionBtnEl = React.useRef<HTMLDivElement | null>(null);
   if (props.isLoading) {
     return (
@@ -79,14 +79,14 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
 
   if (!props.currentUser.isLoggedIn) {
     return (
-      <ClickAwayListener onClickAway={() => setIsBlockedPopperOpen(false)}>
+      <ClickAwayListener onClickAway={() => setIsOpenBlockedPopper(false)}>
         <div ref={addToCollectionBtnEl}>
           <button
             onClick={() => {
               if (getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
-                setIsBlockedPopperOpen(!isBlockedPopperOpen);
+                setIsOpenBlockedPopper(!isOpenBlockedPopper);
 
-                if (!isBlockedPopperOpen) {
+                if (!isOpenBlockedPopper) {
                   return setBubbleContextTypeHelper();
                 }
                 return;
@@ -112,9 +112,9 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
             Add to Collection
           </button>
           <BlockedPopper
-            handleOnClickAwayFunc={() => setIsBlockedPopperOpen(false)}
+            handleOnClickAwayFunc={() => setIsOpenBlockedPopper(false)}
             anchorEl={addToCollectionBtnEl.current!}
-            isOpen={isBlockedPopperOpen}
+            isOpen={isOpenBlockedPopper}
             buttonClickAction={"addToCollection"}
           />
         </div>

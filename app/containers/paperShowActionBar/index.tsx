@@ -23,7 +23,7 @@ interface PaperShowActionBarProps {
 
 const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [isBlockedPopperOpen, setIsBlockedPopperOpen] = React.useState(false);
+  const [isOpenBlockedPopper, setIsOpenBlockedPopper] = React.useState(false);
   const requestFullTextBtnEl = React.useRef<HTMLDivElement | null>(null);
 
   const hasSource = props.paper.urls.length > 0;
@@ -33,19 +33,19 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props =
       <div className={s.actions}>
         <div className={s.leftSide}>
           {!props.hasPDFFullText ? (
-            <ClickAwayListener onClickAway={() => setIsBlockedPopperOpen(false)}>
+            <ClickAwayListener onClickAway={() => setIsOpenBlockedPopper(false)}>
               <div className={s.actionItem} ref={requestFullTextBtnEl}>
                 <RequestFullTextBtn
                   isLoading={props.isLoadingPDF}
                   paperId={props.paper!.id}
-                  isOpenBlockedPopper={isBlockedPopperOpen}
+                  isOpenBlockedPopper={isOpenBlockedPopper}
                   handleSetIsOpen={setIsOpen}
-                  handleSetIsOpenBlockedPopper={setIsBlockedPopperOpen}
+                  handleSetIsOpenBlockedPopper={setIsOpenBlockedPopper}
                 />
                 <BlockedPopper
-                  handleOnClickAwayFunc={() => setIsBlockedPopperOpen(false)}
+                  handleOnClickAwayFunc={() => setIsOpenBlockedPopper(false)}
                   anchorEl={requestFullTextBtnEl.current}
-                  isOpen={isBlockedPopperOpen}
+                  isOpen={isOpenBlockedPopper}
                   buttonClickAction={"clickRequestFullTextBtn"}
                 />
               </div>

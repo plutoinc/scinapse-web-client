@@ -26,25 +26,25 @@ const TabItem: React.FunctionComponent<TabItemProps> = props => {
 
 const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [isBlockedPopperOpen, setIsBlockedPopperOpen] = React.useState(false);
+  const [isOpenBlockedPopper, setIsOpenBlockedPopper] = React.useState(false);
   const actionBtnEl = React.useRef<HTMLDivElement | null>(null);
 
   if (props.canShowFullPDF) {
     return (
-      <ClickAwayListener onClickAway={() => setIsBlockedPopperOpen(false)}>
+      <ClickAwayListener onClickAway={() => setIsOpenBlockedPopper(false)}>
         <div className={styles.actionItem} ref={actionBtnEl}>
           <PdfDownloadButton
             paper={props.paper}
             isLoading={props.isLoading}
-            isOpenBlockedPopper={isBlockedPopperOpen}
+            isOpenBlockedPopper={isOpenBlockedPopper}
             onDownloadedPDF={props.onClickDownloadPDF!}
-            handleSetIsOpenBlockedPopper={setIsBlockedPopperOpen}
+            handleSetIsOpenBlockedPopper={setIsOpenBlockedPopper}
             handleSetScrollAfterDownload={props.afterDownloadPDF}
           />
           <BlockedPopper
-            handleOnClickAwayFunc={() => setIsBlockedPopperOpen(false)}
+            handleOnClickAwayFunc={() => setIsOpenBlockedPopper(false)}
             anchorEl={actionBtnEl.current}
-            isOpen={isBlockedPopperOpen}
+            isOpen={isOpenBlockedPopper}
             buttonClickAction={"downloadPdf"}
           />
         </div>
@@ -52,20 +52,20 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
     );
   }
   return (
-    <ClickAwayListener onClickAway={() => setIsBlockedPopperOpen(false)}>
+    <ClickAwayListener onClickAway={() => setIsOpenBlockedPopper(false)}>
       <div className={styles.actionItem} ref={actionBtnEl}>
         <RequestFullTextBtn
           isLoading={props.isLoading}
           paperId={props.paper!.id}
-          isOpenBlockedPopper={isBlockedPopperOpen}
+          isOpenBlockedPopper={isOpenBlockedPopper}
           handleSetIsOpen={setIsOpen}
-          handleSetIsOpenBlockedPopper={setIsBlockedPopperOpen}
+          handleSetIsOpenBlockedPopper={setIsOpenBlockedPopper}
           btnStyle={{ flex: "1 0 auto", height: "36px", padding: "0 12px 0 8px" }}
         />
         <BlockedPopper
-          handleOnClickAwayFunc={() => setIsBlockedPopperOpen(false)}
+          handleOnClickAwayFunc={() => setIsOpenBlockedPopper(false)}
           anchorEl={actionBtnEl.current}
-          isOpen={isBlockedPopperOpen}
+          isOpen={isOpenBlockedPopper}
           buttonClickAction={"clickRequestFullTextBtn"}
         />
         <RequestFullTextDialog
