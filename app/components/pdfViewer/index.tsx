@@ -2,6 +2,7 @@ import * as React from "react";
 import Axios, { CancelTokenSource } from "axios";
 import { connect, Dispatch } from "react-redux";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { withStyles } from "../../helpers/withStylesHelper";
 import PaperAPI from "../../api/paper";
 import ScinapseButton from "../common/scinapseButton";
@@ -21,6 +22,11 @@ import { makeGetMemoizedPapers } from "../../selectors/papersSelector";
 import { getMemoizedCurrentUser } from "../../selectors/getCurrentUser";
 import { getMemoizedPDFViewerState } from "../../selectors/getPDFViewer";
 import ProgressSpinner from "./component/progressSpinner";
+import BlockedPopper from "../preNoted/blockedPopper";
+import { getUserGroupName } from "../../helpers/abTestHelper";
+import { SIGN_BUBBLE_TEST } from "../../constants/abTestGlobalValue";
+import { setBubbleContextTypeHelper } from "../../helpers/getBubbleContextType";
+import LockedLabel from "../preNoted/lockedLabel";
 const { Document, Page, pdfjs } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
@@ -47,6 +53,7 @@ const baseBtnStyle: React.CSSProperties = {
 
 const readAllBtnStyle: React.CSSProperties = {
   ...baseBtnStyle,
+  position: "relative",
   borderRadius: "27.5px",
   border: "1px solid #bbc2d0",
   fontSize: "16px",
@@ -113,6 +120,47 @@ async function fetchPDFFromAPI(paper: Paper, cancelTokenSource: CancelTokenSourc
   return null;
 }
 
+function closeBlockedPopper(isOpenBlockedPopper: boolean, dispatch: Dispatch<any>) {
+  if (isOpenBlockedPopper) {
+    dispatch(
+      ActionCreators.togglePDFBlockedPopper({
+        isOpenBlockedPopper: false,
+      })
+    );
+  }
+}
+
+async function onClickViewMorePdfBtn(paperId: number, isOpenBlockedPopper: boolean, dispatch: Dispatch<any>) {
+  trackClickButton("viewMorePDF", paperId);
+
+  if (getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
+    dispatch(
+      ActionCreators.togglePDFBlockedPopper({
+        isOpenBlockedPopper: !isOpenBlockedPopper,
+      })
+    );
+
+    if (isOpenBlockedPopper) {
+      return setBubbleContextTypeHelper();
+    }
+
+    return;
+  }
+
+  const isBlocked = await blockUnverifiedUser({
+    authLevel: AUTH_LEVEL.VERIFIED,
+    actionArea: "pdfViewer",
+    actionLabel: "viewMorePDF",
+    userActionType: "viewMorePDF",
+  });
+
+  if (isBlocked) {
+    return;
+  }
+
+  dispatch(ActionCreators.clickPDFViewMoreBtn());
+}
+
 const PDFContent: React.FC<{ pdfBlob: Blob | null; isExpanded: boolean; pageCountToShow: number }> = React.memo(
   props => {
     if (!props.pdfBlob) return null;
@@ -142,6 +190,8 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     currentUser,
   } = props;
   const wrapperNode = React.useRef<HTMLDivElement | null>(null);
+  const viewMorePDFBtnEl = React.useRef<HTMLDivElement | null>(null);
+
   const actionTag = PDFViewerState.isExpanded ? "viewLessPDF" : "viewMorePDF";
 
   React.useEffect(
@@ -286,34 +336,35 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                     <RelatedPapers shouldShowRelatedPapers={shouldShowRelatedPapers} />
                   </>
                 ) : (
-                  <ScinapseButton
-                    gaCategory="PDF viewer"
-                    gaAction={actionTag}
-                    style={readAllBtnStyle}
-                    content={
-                      <span>
-                        READ ALL <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
-                      </span>
-                    }
-                    isLoading={PDFViewerState.isLoading}
-                    disabled={PDFViewerState.hasFailed}
-                    onClick={async () => {
-                      const isBlocked = await blockUnverifiedUser({
-                        authLevel: AUTH_LEVEL.VERIFIED,
-                        actionArea: "pdfViewer",
-                        actionLabel: actionTag,
-                        userActionType: actionTag,
-                      });
-
-                      trackClickButton(actionTag, props.paper.id);
-
-                      if (isBlocked) {
-                        return;
-                      }
-
-                      dispatch(ActionCreators.clickPDFViewMoreBtn());
-                    }}
-                  />
+                  <ClickAwayListener
+                    onClickAway={() => closeBlockedPopper(PDFViewerState.isOpenBlockedPopper, dispatch)}
+                  >
+                    <div ref={viewMorePDFBtnEl}>
+                      <ScinapseButton
+                        gaCategory="PDF viewer"
+                        gaAction={actionTag}
+                        style={readAllBtnStyle}
+                        content={
+                          <span>
+                            READ ALL <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
+                            <LockedLabel />
+                          </span>
+                        }
+                        isLoading={PDFViewerState.isLoading}
+                        disabled={PDFViewerState.hasFailed}
+                        onClick={async () =>
+                          onClickViewMorePdfBtn(props.paper.id, PDFViewerState.isOpenBlockedPopper, dispatch)
+                        }
+                      />
+                      <BlockedPopper
+                        handleOnClickAwayFunc={() => closeBlockedPopper(PDFViewerState.isOpenBlockedPopper, dispatch)}
+                        anchorEl={viewMorePDFBtnEl.current}
+                        isOpen={PDFViewerState.isOpenBlockedPopper}
+                        buttonClickAction={"viewMorePDF"}
+                        actionArea={"pdfViewer"}
+                      />
+                    </div>
+                  </ClickAwayListener>
                 )}
               </>
             )}

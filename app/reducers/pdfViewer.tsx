@@ -3,6 +3,7 @@ import { Actions, ACTION_TYPES } from "../actions/actionTypes";
 export interface PDFViewerState {
   isExpanded: boolean;
   isLoading: boolean;
+  isOpenBlockedPopper: boolean;
   hasFailed: boolean;
   pdfBlob: Blob | null;
   hasClickedDownloadBtn: boolean;
@@ -14,6 +15,7 @@ export interface PDFViewerState {
 export const PDF_VIEWER_INITIAL_STATE: PDFViewerState = {
   isExpanded: false,
   isLoading: false,
+  isOpenBlockedPopper: false,
   hasFailed: false,
   pdfBlob: null,
   hasClickedDownloadBtn: false,
@@ -61,6 +63,10 @@ export function reducer(state = PDF_VIEWER_INITIAL_STATE, action: Actions): PDFV
 
     case ACTION_TYPES.PDF_VIEWER_FAIL_TO_FETCH_PDF: {
       return { ...state, isLoading: false, hasFailed: true };
+    }
+
+    case ACTION_TYPES.PDF_VIEWER_TOGGLE_BLOCKED_POPPER: {
+      return { ...state, isOpenBlockedPopper: action.payload.isOpenBlockedPopper };
     }
   }
 

@@ -207,7 +207,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
           open={isOpen}
           anchorEl={popoverAnchorEl.current}
           placement="bottom-end"
-          disablePortal={true}
+          disablePortal
           modifiers={{ flip: { enabled: false } }}
           style={{ width: "100%", position: "absolute", backgroundColor: "white", zIndex: 99 }}
         >

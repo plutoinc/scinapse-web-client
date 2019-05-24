@@ -1,0 +1,24 @@
+.lockedLabelContainer {
+  width: 61px;
+  height: 16px;
+  border-radius: 2px;
+  background-color: $dark-blue0;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.lockedIcon {
+  svg {
+    width: 14px;
+    height: 14px;
+    color: white;
+    vertical-align: middle;
+  }
+}

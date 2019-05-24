@@ -91,6 +91,8 @@ const ICONS: { [key: string]: any } = {
   MATCHED_PAPER: require("./matched-paper.svg").default,
   LOGO_SEARCH_ENGINE: require("./logo-search-engine.svg").default,
   RELOAD: require("./reload.svg").default,
+  LOCK: require("./lock.svg").default,
+  UNLOCK: require("./unlock.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)

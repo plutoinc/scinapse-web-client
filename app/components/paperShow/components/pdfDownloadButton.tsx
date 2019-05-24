@@ -5,19 +5,32 @@ import ActionTicketManager from "../../../helpers/actionTicketManager";
 import Icon from "../../../icons";
 import SearchingPDFBtn from "./searchingPDFBtn";
 import { AUTH_LEVEL, blockUnverifiedUser } from "../../../helpers/checkAuthDialog";
+import { getUserGroupName } from "../../../helpers/abTestHelper";
+import { SIGN_BUBBLE_TEST } from "../../../constants/abTestGlobalValue";
+import { setBubbleContextTypeHelper } from "../../../helpers/getBubbleContextType";
+import LockedLabel from "../../preNoted/lockedLabel";
 
 const styles = require("./pdfSourceButton.scss");
 
 interface PdfDownloadButtonProps {
   paper: Paper;
   isLoading: boolean;
+  isOpenBlockedPopper?: boolean;
   onDownloadedPDF: (isDownload: boolean) => void;
   handleSetScrollAfterDownload: () => void;
+  handleSetIsOpenBlockedPopper?: (value: React.SetStateAction<boolean>) => void;
   wrapperStyle?: React.CSSProperties;
 }
 
 const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props => {
-  const { paper, isLoading, onDownloadedPDF, handleSetScrollAfterDownload } = props;
+  const {
+    paper,
+    isLoading,
+    onDownloadedPDF,
+    isOpenBlockedPopper,
+    handleSetScrollAfterDownload,
+    handleSetIsOpenBlockedPopper,
+  } = props;
 
   function trackActionToClickPdfDownloadBtn() {
     ActionTicketManager.trackTicket({
@@ -49,6 +62,16 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
         rel="noopener nofollow noreferrer"
         onClick={async e => {
           e.preventDefault();
+          trackActionToClickPdfDownloadBtn();
+
+          if (handleSetIsOpenBlockedPopper && getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
+            handleSetIsOpenBlockedPopper(!isOpenBlockedPopper);
+
+            if (!isOpenBlockedPopper) {
+              return setBubbleContextTypeHelper();
+            }
+            return;
+          }
 
           const isBlocked = await blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,
@@ -56,8 +79,6 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
             actionLabel: "downloadPdf",
             userActionType: "downloadPdf",
           });
-
-          trackActionToClickPdfDownloadBtn();
 
           if (isBlocked) {
             return;
@@ -70,6 +91,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
       >
         <Icon icon="DOWNLOAD" className={styles.sourceIcon} />
         Download PDF
+        <LockedLabel />
       </a>
     );
   }

@@ -33,6 +33,9 @@ import { getCollections } from "../collections/actions";
 import { collectionSchema } from "../../model/collection";
 import { getMemoizedPaper } from "../../containers/paperShow/select";
 import ResearchHistory from "../researchHistory";
+import SuddenAlert from "../preNoted/suddenAlert";
+import { getUserGroupName } from "../../helpers/abTestHelper";
+import { SIGN_BANNER_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalValue";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -315,9 +318,11 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private handleRequestCloseUserDropdown = () => {
-    this.setState({
-      isUserDropdownOpen: false,
-    });
+    if (this.state.isUserDropdownOpen) {
+      this.setState({
+        isUserDropdownOpen: false,
+      });
+    }
   };
 
   private userDropdownMenuItems = () => {
@@ -389,36 +394,39 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         >
           <Icon className={styles.collectionIcon} icon="COLLECTION" />Collection
         </Link>
-        {!currentUserState.profileImageUrl ? (
-          <div
-            className={styles.userDropdownChar}
-            ref={el => (this.userDropdownAnchorRef = el)}
-            onClick={this.handleToggleUserDropdown}
-          >
-            {firstCharacterOfUsername}
+        <ClickAwayListener onClickAway={this.handleRequestCloseUserDropdown}>
+          <div>
+            {!currentUserState.profileImageUrl ? (
+              <div
+                className={styles.userDropdownChar}
+                ref={el => (this.userDropdownAnchorRef = el)}
+                onClick={this.handleToggleUserDropdown}
+              >
+                {firstCharacterOfUsername}
+              </div>
+            ) : (
+              <div
+                className={styles.userDropdownImg}
+                ref={el => (this.userDropdownAnchorRef = el)}
+                onClick={this.handleToggleUserDropdown}
+              >
+                <div
+                  style={{ backgroundImage: `url(${currentUserState.profileImageUrl})` }}
+                  className={styles.profileImage}
+                />
+              </div>
+            )}
+            <BubblePopover
+              open={this.state.isUserDropdownOpen}
+              anchorEl={this.state.userDropdownAnchorElement}
+              placement="bottom-end"
+              popperOptions={{ positionFixed: true }}
+              disablePortal
+            >
+              {this.userDropdownMenuItems()}
+            </BubblePopover>
           </div>
-        ) : (
-          <div
-            className={styles.userDropdownImg}
-            ref={el => (this.userDropdownAnchorRef = el)}
-            onClick={this.handleToggleUserDropdown}
-          >
-            <div
-              style={{ backgroundImage: `url(${currentUserState.profileImageUrl})` }}
-              className={styles.profileImage}
-            />
-          </div>
-        )}
-        <BubblePopover
-          open={this.state.isUserDropdownOpen}
-          anchorEl={this.state.userDropdownAnchorElement!}
-          placement="bottom-end"
-          popperOptions={{ positionFixed: true }}
-        >
-          <ClickAwayListener onClickAway={this.handleRequestCloseUserDropdown}>
-            {this.userDropdownMenuItems()}
-          </ClickAwayListener>
-        </BubblePopover>
+        </ClickAwayListener>
       </div>
     );
   };
@@ -462,6 +470,13 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           >
             Get Started
           </div>
+          <SuddenAlert
+            open={getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TEST) === "suddenAlert"}
+            anchorEl={this.state.userDropdownAnchorElement}
+            placement="bottom-end"
+            popperOptions={{ positionFixed: true }}
+            disablePortal
+          />
         </div>
       );
     } else {
