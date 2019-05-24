@@ -118,6 +118,47 @@ async function fetchPDFFromAPI(paper: Paper, cancelTokenSource: CancelTokenSourc
   return null;
 }
 
+function closeBlockedPopper(isOpenBlockedPopper: boolean, dispatch: Dispatch<any>) {
+  if (isOpenBlockedPopper) {
+    dispatch(
+      ActionCreators.togglePDFBlockedPopper({
+        isOpenBlockedPopper: false,
+      })
+    );
+  }
+}
+
+async function onClickViewMorePdfBtn(paperId: number, isOpenBlockedPopper: boolean, dispatch: Dispatch<any>) {
+  if (getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
+    dispatch(
+      ActionCreators.togglePDFBlockedPopper({
+        isOpenBlockedPopper: isOpenBlockedPopper,
+      })
+    );
+
+    if (isOpenBlockedPopper) {
+      return setBubbleContextTypeHelper();
+    }
+
+    return;
+  }
+
+  const isBlocked = await blockUnverifiedUser({
+    authLevel: AUTH_LEVEL.VERIFIED,
+    actionArea: "pdfViewer",
+    actionLabel: "viewMorePDF",
+    userActionType: "viewMorePDF",
+  });
+
+  trackClickButton("viewMorePDF", paperId);
+
+  if (isBlocked) {
+    return;
+  }
+
+  dispatch(ActionCreators.clickPDFViewMoreBtn());
+}
+
 const PDFContent: React.FC<{ pdfBlob: Blob | null; isExpanded: boolean; pageCountToShow: number }> = React.memo(
   props => {
     if (!props.pdfBlob) return null;
@@ -294,13 +335,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                   </>
                 ) : (
                   <ClickAwayListener
-                    onClickAway={() =>
-                      dispatch(
-                        ActionCreators.togglePDFBlockedPopper({
-                          isOpenBlockedPopper: false,
-                        })
-                      )
-                    }
+                    onClickAway={() => closeBlockedPopper(PDFViewerState.isOpenBlockedPopper, dispatch)}
                   >
                     <div ref={viewMorePDFBtnEl}>
                       <ScinapseButton
@@ -314,45 +349,12 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                         }
                         isLoading={PDFViewerState.isLoading}
                         disabled={PDFViewerState.hasFailed}
-                        onClick={async () => {
-                          if (getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
-                            dispatch(
-                              ActionCreators.togglePDFBlockedPopper({
-                                isOpenBlockedPopper: !PDFViewerState.isOpenBlockedPopper,
-                              })
-                            );
-
-                            if (!PDFViewerState.isOpenBlockedPopper) {
-                              return setBubbleContextTypeHelper();
-                            }
-
-                            return;
-                          }
-
-                          const isBlocked = await blockUnverifiedUser({
-                            authLevel: AUTH_LEVEL.VERIFIED,
-                            actionArea: "pdfViewer",
-                            actionLabel: actionTag,
-                            userActionType: actionTag,
-                          });
-
-                          trackClickButton(actionTag, props.paper.id);
-
-                          if (isBlocked) {
-                            return;
-                          }
-
-                          dispatch(ActionCreators.clickPDFViewMoreBtn());
-                        }}
+                        onClick={() =>
+                          onClickViewMorePdfBtn(props.paper.id, PDFViewerState.isOpenBlockedPopper, dispatch)
+                        }
                       />
                       <BlockedPopper
-                        handleOnClickAwayFunc={() =>
-                          dispatch(
-                            ActionCreators.togglePDFBlockedPopper({
-                              isOpenBlockedPopper: false,
-                            })
-                          )
-                        }
+                        handleOnClickAwayFunc={() => closeBlockedPopper(PDFViewerState.isOpenBlockedPopper, dispatch)}
                         anchorEl={viewMorePDFBtnEl.current}
                         isOpen={PDFViewerState.isOpenBlockedPopper}
                         buttonClickAction={"viewMorePDF"}

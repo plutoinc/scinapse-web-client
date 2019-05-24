@@ -1,3 +1,8 @@
+enum BLOCKED_BUBBLE_CONTEXT_TYPE {
+  JOIN_SCINAPSE,
+  WHEN_YOU_JOIN_SCINAPSE,
+  ENJOY_UNLIMITED_SCINAPSE,
+}
 interface BlockedBubbleKeywords {
   verb: string;
   noun: string;
@@ -15,22 +20,22 @@ const blockedBubbleVerbAndNoun: { [key: string]: BlockedBubbleKeywords } = {
   addToCollection: { verb: "save to", noun: "Collection" },
 };
 
-export function getBlockedBubbleContext(userGroupName: string, buttonAction: string): BlockedBubbleContextStructure {
+export function getBlockedBubbleContext(userGroupName: number, buttonAction: string): BlockedBubbleContextStructure {
   const contextVerbAndNoun = blockedBubbleVerbAndNoun[buttonAction];
   switch (userGroupName) {
-    case "1":
+    case BLOCKED_BUBBLE_CONTEXT_TYPE.JOIN_SCINAPSE:
       return {
         title: `Do you want to ${contextVerbAndNoun.verb} ${contextVerbAndNoun.noun}?`,
         mainText: `Join Scinapse to ${contextVerbAndNoun.verb} ${contextVerbAndNoun.noun}. It's free!`,
       };
 
-    case "2":
+    case BLOCKED_BUBBLE_CONTEXT_TYPE.WHEN_YOU_JOIN_SCINAPSE:
       return {
         title: `Join Scinapse to ${contextVerbAndNoun.verb} ${contextVerbAndNoun.noun}`,
         mainText: `When you join Scinapse, you can ${contextVerbAndNoun.verb} any ${contextVerbAndNoun.noun}.`,
       };
 
-    case "3":
+    case BLOCKED_BUBBLE_CONTEXT_TYPE.ENJOY_UNLIMITED_SCINAPSE:
       const capitalizedVerb = contextVerbAndNoun.verb.charAt(0).toUpperCase() + contextVerbAndNoun.verb.slice(1);
       return {
         title: `${capitalizedVerb} ${contextVerbAndNoun.noun} with a Scinapse account`,

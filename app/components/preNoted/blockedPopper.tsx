@@ -27,9 +27,9 @@ const BlockedPopperContent: React.FC<{
       <div className={styles.mainContext}>{bubbleContext.mainText}</div>
       <button
         className={styles.joinBtn}
-        onClick={e => {
+        onClick={async e => {
           e.preventDefault();
-          blockUnverifiedUser({
+          await blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,
             actionArea: "paperShow",
             actionLabel: buttonClickAction,

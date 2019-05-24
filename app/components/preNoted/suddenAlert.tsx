@@ -1,21 +1,29 @@
 import * as React from "react";
 import Popper, { PopperProps } from "@material-ui/core/Popper";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { useIntervalProgress } from "../../hooks/useIntervalProgressHook";
 const styles = require("./suddenAlert.scss");
 
 interface SuddenAlertProps extends PopperProps {}
 
 const SuddenAlert: React.FC<SuddenAlertProps> = props => {
-  const [renderTime, setRenderTime] = React.useState(0);
+  const [suddenAlertTrigger, setSuddenAlertTrigger] = React.useState(false);
   const [shouldShowSuddenAlert, setShouldShowSuddenAlert] = React.useState(false);
 
-  useIntervalProgress(() => {
-    setRenderTime(renderTime + 1);
-    if (renderTime === 4) {
-      setShouldShowSuddenAlert(true);
-    }
-  }, renderTime < 5 ? 1000 : null);
+  React.useEffect(
+    () => {
+      const showSuddenAlertTimeout = setTimeout(() => {
+        if (!suddenAlertTrigger) {
+          setSuddenAlertTrigger(true);
+          setShouldShowSuddenAlert(true);
+        }
+      }, 5000);
+
+      return () => {
+        clearTimeout(showSuddenAlertTimeout);
+      };
+    },
+    [suddenAlertTrigger]
+  );
 
   const popperProps: SuddenAlertProps = {
     ...props,

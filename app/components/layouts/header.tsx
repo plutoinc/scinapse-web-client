@@ -318,9 +318,11 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private handleRequestCloseUserDropdown = () => {
-    this.setState({
-      isUserDropdownOpen: false,
-    });
+    if (this.state.isUserDropdownOpen) {
+      this.setState({
+        isUserDropdownOpen: false,
+      });
+    }
   };
 
   private userDropdownMenuItems = () => {

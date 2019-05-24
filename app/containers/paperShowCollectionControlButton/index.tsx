@@ -62,6 +62,13 @@ interface TitleAreaProps {
 const TitleArea: React.FC<TitleAreaProps> = props => {
   const [isOpenBlockedPopper, setIsOpenBlockedPopper] = React.useState(false);
   const addToCollectionBtnEl = React.useRef<HTMLDivElement | null>(null);
+
+  const closeBlockedPopper = () => {
+    if (isOpenBlockedPopper) {
+      setIsOpenBlockedPopper(false);
+    }
+  };
+
   if (props.isLoading) {
     return (
       <span
@@ -79,10 +86,10 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
 
   if (!props.currentUser.isLoggedIn) {
     return (
-      <ClickAwayListener onClickAway={() => setIsOpenBlockedPopper(false)}>
+      <ClickAwayListener onClickAway={closeBlockedPopper}>
         <div ref={addToCollectionBtnEl}>
           <button
-            onClick={() => {
+            onClick={async () => {
               if (getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
                 setIsOpenBlockedPopper(!isOpenBlockedPopper);
 
@@ -92,12 +99,13 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
                 return;
               }
 
-              blockUnverifiedUser({
+              await blockUnverifiedUser({
                 authLevel: AUTH_LEVEL.VERIFIED,
                 actionArea: "paperDescription",
                 actionLabel: "addToCollection",
                 userActionType: "addToCollection",
               });
+
               ActionTicketManager.trackTicket({
                 pageType: "paperShow",
                 actionType: "fire",
@@ -112,7 +120,7 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
             Add to Collection
           </button>
           <BlockedPopper
-            handleOnClickAwayFunc={() => setIsOpenBlockedPopper(false)}
+            handleOnClickAwayFunc={closeBlockedPopper}
             anchorEl={addToCollectionBtnEl.current!}
             isOpen={isOpenBlockedPopper}
             buttonClickAction={"addToCollection"}
