@@ -243,79 +243,80 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
             alignItems: "center",
           }}
         >
-          {!PDFViewerState.hasFailed && (
-            <>
-              {PDFViewerState.isExpanded ? (
-                <>
+          {!PDFViewerState.hasFailed &&
+            paper.bestPdf && (
+              <>
+                {PDFViewerState.isExpanded ? (
+                  <>
+                    <ScinapseButton
+                      gaCategory="PDF viewer"
+                      gaAction="download PDF"
+                      style={downloadPdfBtnStyle}
+                      target="_blank"
+                      href={paper.bestPdf.url}
+                      rel="nofollow"
+                      content={
+                        <span className={styles.downloadBtnWrapper}>
+                          <Icon icon="DOWNLOAD" className={styles.downloadIcon} /> Download PDF
+                        </span>
+                      }
+                      onClick={async e => {
+                        if (!EnvChecker.isOnServer()) {
+                          e.preventDefault();
+
+                          const isBlocked = await blockUnverifiedUser({
+                            authLevel: AUTH_LEVEL.VERIFIED,
+                            actionArea: "pdfViewer",
+                            actionLabel: "downloadPdf",
+                            userActionType: "downloadPdf",
+                          });
+
+                          if (isBlocked) {
+                            return;
+                          }
+                          dispatch(ActionCreators.clickPDFDownloadBtn());
+                          trackClickButton("downloadPdf", paper.id);
+                          window.open(paper.bestPdf.url, "_blank");
+                          afterDownloadPDF();
+                        }
+                      }}
+                      isExternalLink
+                      downloadAttr
+                    />
+                    <RelatedPapers shouldShowRelatedPapers={shouldShowRelatedPapers} />
+                  </>
+                ) : (
                   <ScinapseButton
                     gaCategory="PDF viewer"
-                    gaAction="download PDF"
-                    style={downloadPdfBtnStyle}
-                    target="_blank"
-                    href={paper.bestPdf.url}
-                    rel="nofollow"
+                    gaAction={actionTag}
+                    style={readAllBtnStyle}
                     content={
-                      <span className={styles.downloadBtnWrapper}>
-                        <Icon icon="DOWNLOAD" className={styles.downloadIcon} /> Download PDF
+                      <span>
+                        READ ALL <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
                       </span>
                     }
-                    onClick={async e => {
-                      if (!EnvChecker.isOnServer()) {
-                        e.preventDefault();
+                    isLoading={PDFViewerState.isLoading}
+                    disabled={PDFViewerState.hasFailed}
+                    onClick={async () => {
+                      const isBlocked = await blockUnverifiedUser({
+                        authLevel: AUTH_LEVEL.VERIFIED,
+                        actionArea: "pdfViewer",
+                        actionLabel: actionTag,
+                        userActionType: actionTag,
+                      });
 
-                        const isBlocked = await blockUnverifiedUser({
-                          authLevel: AUTH_LEVEL.VERIFIED,
-                          actionArea: "pdfViewer",
-                          actionLabel: "downloadPdf",
-                          userActionType: "downloadPdf",
-                        });
+                      trackClickButton(actionTag, props.paper.id);
 
-                        if (isBlocked) {
-                          return;
-                        }
-                        dispatch(ActionCreators.clickPDFDownloadBtn());
-                        trackClickButton("downloadPdf", paper.id);
-                        window.open(paper.bestPdf.url, "_blank");
-                        afterDownloadPDF();
+                      if (isBlocked) {
+                        return;
                       }
+
+                      dispatch(ActionCreators.clickPDFViewMoreBtn());
                     }}
-                    isExternalLink
-                    downloadAttr
                   />
-                  <RelatedPapers shouldShowRelatedPapers={shouldShowRelatedPapers} />
-                </>
-              ) : (
-                <ScinapseButton
-                  gaCategory="PDF viewer"
-                  gaAction={actionTag}
-                  style={readAllBtnStyle}
-                  content={
-                    <span>
-                      READ ALL <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
-                    </span>
-                  }
-                  isLoading={PDFViewerState.isLoading}
-                  disabled={PDFViewerState.hasFailed}
-                  onClick={async () => {
-                    const isBlocked = await blockUnverifiedUser({
-                      authLevel: AUTH_LEVEL.VERIFIED,
-                      actionArea: "pdfViewer",
-                      actionLabel: actionTag,
-                      userActionType: actionTag,
-                    });
-
-                    trackClickButton(actionTag, props.paper.id);
-
-                    if (isBlocked) {
-                      return;
-                    }
-
-                    dispatch(ActionCreators.clickPDFViewMoreBtn());
-                  }}
-                />
-              )}
-            </>
-          )}
+                )}
+              </>
+            )}
         </div>
       </div>
     );
