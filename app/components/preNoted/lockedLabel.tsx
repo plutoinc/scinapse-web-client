@@ -12,7 +12,7 @@ const styles = require("./lockedLabel.scss");
 const LockedLabel: React.FC<{ currentUser: CurrentUser }> = ({ currentUser }) => {
   const isShowLockedLabel = getUserGroupName(LOCKED_BUTTONS_TEST) === "locked";
 
-  if (!isShowLockedLabel || currentUser.isLoggedIn) {
+  if (!isShowLockedLabel || currentUser.isLoggingIn || currentUser.isLoggedIn) {
     return null;
   }
 
