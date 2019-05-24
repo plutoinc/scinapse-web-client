@@ -8,24 +8,21 @@ const styles = require("./suddenAlert.scss");
 interface SuddenAlertProps extends PopperProps {}
 
 const SuddenAlert: React.FC<SuddenAlertProps> = props => {
-  const [showSuddenAlertTrigger, setShowSuddenAlertTrigger] = React.useState(false);
   const [shouldShowSuddenAlert, setShouldShowSuddenAlert] = React.useState(false);
 
   React.useEffect(
     () => {
       const showSuddenAlertTimeout = setTimeout(() => {
-        if (!showSuddenAlertTrigger) {
-          setShowSuddenAlertTrigger(true);
+        if (props.open) {
           setShouldShowSuddenAlert(true);
 
-          props.open &&
-            ActionTicketManager.trackTicket({
-              pageType: getCurrentPageType(),
-              actionType: "view",
-              actionArea: "topBar",
-              actionTag: "alertView",
-              actionLabel: "suddenAlert",
-            });
+          ActionTicketManager.trackTicket({
+            pageType: getCurrentPageType(),
+            actionType: "view",
+            actionArea: "topBar",
+            actionTag: "alertView",
+            actionLabel: "suddenAlert",
+          });
         }
       }, 5000);
 
@@ -33,7 +30,7 @@ const SuddenAlert: React.FC<SuddenAlertProps> = props => {
         clearTimeout(showSuddenAlertTimeout);
       };
     },
-    [showSuddenAlertTrigger]
+    [props.open]
   );
 
   const popperProps: SuddenAlertProps = {
