@@ -52,15 +52,20 @@ const BlockedPopperContent: React.FC<{
 const BlockedPopper: React.FC<BlockedPopperProps> = props => {
   const { isOpen, anchorEl, buttonClickAction, handleOnClickAwayFunc, actionArea } = props;
 
-  if (isOpen) {
-    ActionTicketManager.trackTicket({
-      pageType: "paperShow",
-      actionType: "view",
-      actionArea: actionArea || "paperDescription",
-      actionTag: "signBubbleView",
-      actionLabel: buttonClickAction,
-    });
-  }
+  React.useEffect(
+    () => {
+      if (isOpen) {
+        ActionTicketManager.trackTicket({
+          pageType: "paperShow",
+          actionType: "view",
+          actionArea: actionArea || "paperDescription",
+          actionTag: "signBubbleView",
+          actionLabel: buttonClickAction,
+        });
+      }
+    },
+    [isOpen]
+  );
 
   return (
     <Popper

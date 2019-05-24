@@ -22,10 +22,10 @@ export interface PDFButtonProps {
   paper: Paper;
   isLoading: boolean;
   canShowFullPDF: boolean;
-  actionBtnEl: HTMLDivElement | null;
-  isOpenBlockedPopper: boolean;
-  handleSetIsOpenBlockedPopper: (value: React.SetStateAction<boolean>) => void;
-  handleCloseBlockedPopper: () => void;
+  actionBtnEl?: HTMLDivElement | null;
+  isOpenBlockedPopper?: boolean;
+  handleSetIsOpenBlockedPopper?: (value: React.SetStateAction<boolean>) => void;
+  handleCloseBlockedPopper?: () => void;
   afterDownloadPDF: () => void;
   onClickDownloadPDF: () => void;
 }

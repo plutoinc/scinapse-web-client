@@ -25,7 +25,7 @@ function handleOpenSignUp() {
     actionType: "fire",
     actionArea: "signBanner",
     actionLabel: "bottomBanner",
-    actionTag: "signInPopup",
+    actionTag: "signUpPopup",
   });
 }
 
@@ -43,7 +43,7 @@ function handleOpenSignIn() {
     actionType: "fire",
     actionArea: "signBanner",
     actionLabel: "bottomBanner",
-    actionTag: "signUpPopup",
+    actionTag: "signInPopup",
   });
 }
 
