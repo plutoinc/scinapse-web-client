@@ -28,7 +28,7 @@ const s = require("./searchQueryInput.scss");
 interface SearchQueryInputProps extends RouteComponentProps<any> {
   dispatch: Dispatch<any>;
   layout: LayoutState;
-  actionArea: "home" | "topBar" | "paperShow";
+  actionArea: "home" | "topBar" | "paperShow" | "searchFullBanner";
   maxCount: number;
   initialValue?: string;
   initialFilter?: FilterObject;
@@ -246,7 +246,9 @@ const SearchQueryInput: React.FunctionComponent<
               },
             });
           }}
-          onFocus={() => {
+          onFocus={e => {
+            props.onFocus && props.onFocus(e);
+
             if (touched) {
               setIsOpen(true);
             } else {
