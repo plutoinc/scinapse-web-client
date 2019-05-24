@@ -1,11 +1,11 @@
 import * as React from "react";
+import { connect } from "react-redux";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
 import { getUserGroupName } from "../../helpers/abTestHelper";
 import { LOCKED_BUTTONS_TEST } from "../../constants/abTestGlobalValue";
 import { AppState } from "../../reducers";
 import { getMemoizedCurrentUser } from "../../selectors/getCurrentUser";
-import { connect } from "react-redux";
 import { CurrentUser } from "../../model/currentUser";
 const styles = require("./lockedLabel.scss");
 
