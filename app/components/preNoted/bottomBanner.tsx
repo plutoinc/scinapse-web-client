@@ -11,39 +11,38 @@ interface BottomBannerProps {
   shouldShowBottomBanner: boolean;
 }
 
-function handleOpenSignUp() {
-  GlobalDialogManager.openSignUpDialog({
-    authContext: {
-      pageType: "paperShow",
-      actionArea: "signBanner",
-      actionLabel: "bottomBanner",
-    },
-    isBlocked: false,
-  });
-  ActionTicketManager.trackTicket({
-    pageType: "paperShow",
-    actionType: "fire",
-    actionArea: "signBanner",
-    actionLabel: "bottomBanner",
-    actionTag: "signUpPopup",
-  });
-}
+function handleOpenSignModal(modalType: "signUpPopup" | "signInPopup") {
+  switch (modalType) {
+    case "signInPopup":
+      GlobalDialogManager.openSignInDialog({
+        authContext: {
+          pageType: "paperShow",
+          actionArea: "signBanner",
+          actionLabel: "bottomBanner",
+        },
+        isBlocked: false,
+      });
 
-function handleOpenSignIn() {
-  GlobalDialogManager.openSignInDialog({
-    authContext: {
-      pageType: "paperShow",
-      actionArea: "signBanner",
-      actionLabel: "bottomBanner",
-    },
-    isBlocked: false,
-  });
+      break;
+    case "signUpPopup":
+      GlobalDialogManager.openSignUpDialog({
+        authContext: {
+          pageType: "paperShow",
+          actionArea: "signBanner",
+          actionLabel: "bottomBanner",
+        },
+        isBlocked: false,
+      });
+
+      break;
+  }
+
   ActionTicketManager.trackTicket({
     pageType: "paperShow",
     actionType: "fire",
     actionArea: "signBanner",
     actionLabel: "bottomBanner",
-    actionTag: "signInPopup",
+    actionTag: modalType,
   });
 }
 
@@ -71,10 +70,10 @@ const BottomBanner: React.FC<BottomBannerProps> = ({ isLoggedIn, shouldShowBotto
           </div>
         </div>
         <div className={styles.buttonWrapper}>
-          <button className={styles.subContext} onClick={handleOpenSignIn}>
+          <button className={styles.subContext} onClick={() => handleOpenSignModal("signInPopup")}>
             Already have an account?
           </button>
-          <button className={styles.signUpBtn} onClick={handleOpenSignUp}>
+          <button className={styles.signUpBtn} onClick={() => handleOpenSignModal("signUpPopup")}>
             Sign Up
           </button>
         </div>
