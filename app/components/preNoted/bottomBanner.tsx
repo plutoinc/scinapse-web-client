@@ -1,6 +1,5 @@
 import * as React from "react";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { getCurrentPageType } from "../locationListener";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 const styles = require("./bottomBanner.scss");
 
@@ -12,7 +11,18 @@ interface BottomBannerProps {
 function handleOpenSignUp() {
   GlobalDialogManager.openSignUpDialog({
     authContext: {
-      pageType: getCurrentPageType(),
+      pageType: "paperShow",
+      actionArea: "bottomBanner",
+      actionLabel: null,
+    },
+    isBlocked: false,
+  });
+}
+
+function handleOpenSignIn() {
+  GlobalDialogManager.openSignInDialog({
+    authContext: {
+      pageType: "paperShow",
       actionArea: "bottomBanner",
       actionLabel: null,
     },
@@ -34,7 +44,9 @@ const BottomBanner: React.FC<BottomBannerProps> = ({ isLoggedIn, shouldShowBotto
           </div>
         </div>
         <div className={styles.buttonWrapper}>
-          <div className={styles.subContext}>Already have an account?</div>
+          <button className={styles.subContext} onClick={handleOpenSignIn}>
+            Already have an account?
+          </button>
           <button className={styles.signUpBtn} onClick={handleOpenSignUp}>
             Sign Up
           </button>

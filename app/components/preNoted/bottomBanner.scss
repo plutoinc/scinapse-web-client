@@ -37,6 +37,11 @@
   font-size: 16px;
   color: $gray5;
   margin-right: 16px;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .signUpBtn {
