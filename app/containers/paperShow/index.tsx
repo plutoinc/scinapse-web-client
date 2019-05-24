@@ -45,6 +45,8 @@ import { getMemoizedLayout } from "../../selectors/getLayout";
 import { getMemoizedPDFViewerState } from "../../selectors/getPDFViewer";
 import { PDFViewerState } from "../../reducers/pdfViewer";
 import { ActionCreators } from "../../actions/actionTypes";
+import { Configuration } from "../../reducers/configuration";
+import { getMemoizedConfiguration } from "../../selectors/getConfiguration";
 const styles = require("./paperShow.scss");
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -56,6 +58,7 @@ function mapStateToProps(state: AppState) {
 
   return {
     layout: getMemoizedLayout(state),
+    configuration: getMemoizedConfiguration(state),
     currentUser: getMemoizedCurrentUser(state),
     paperShow: getMemoizedPaperShow(state),
     paper: getMemoizedPaper(state),
@@ -67,6 +70,7 @@ function mapStateToProps(state: AppState) {
 
 export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams> {
   layout: LayoutState;
+  configuration: Configuration;
   currentUser: CurrentUser;
   paperShow: PaperShowState;
   PDFViewerState: PDFViewerState;
@@ -111,15 +115,17 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public async componentDidMount() {
-    const { currentUser, dispatch, match, location, paperShow } = this.props;
+    const { currentUser, dispatch, match, location, paperShow, configuration } = this.props;
     const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
+    const notRenderedAtServerOrJSAlreadyInitialized =
+      !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
 
     window.addEventListener("scroll", this.handleScroll, { passive: true });
     this.handleScrollEvent();
 
     dispatch(getRelatedPapers(parseInt(this.props.match.params.paperId, 10), this.cancelToken));
 
-    if (!paperShow.paperId) {
+    if (notRenderedAtServerOrJSAlreadyInitialized) {
       const err = await fetchPaperShowData(
         {
           dispatch,
@@ -130,7 +136,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         },
         currentUser
       );
-
       const statusCode = err ? (err as CommonError).status : null;
       this.logPageView(match.params.paperId, statusCode);
       this.scrollToRefCitedSection();
