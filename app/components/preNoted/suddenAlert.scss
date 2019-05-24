@@ -62,14 +62,13 @@
 }
 
 .okBtn {
-  font-size: 20px;
-  padding: 8px;
+  font-size: 16px;
+  padding: 4px;
   border-radius: 4px;
   color: white;
   cursor: pointer;
 
   &:hover {
-    background-color: $gray9;
-    transition: $button-hover-transition;
+    font-weight: 500;
   }
 }
