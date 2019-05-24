@@ -132,7 +132,7 @@ async function onClickViewMorePdfBtn(paperId: number, isOpenBlockedPopper: boole
   if (getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
     dispatch(
       ActionCreators.togglePDFBlockedPopper({
-        isOpenBlockedPopper: isOpenBlockedPopper,
+        isOpenBlockedPopper: !isOpenBlockedPopper,
       })
     );
 
@@ -349,7 +349,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                         }
                         isLoading={PDFViewerState.isLoading}
                         disabled={PDFViewerState.hasFailed}
-                        onClick={() =>
+                        onClick={async () =>
                           onClickViewMorePdfBtn(props.paper.id, PDFViewerState.isOpenBlockedPopper, dispatch)
                         }
                       />
