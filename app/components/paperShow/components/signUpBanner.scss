@@ -9,6 +9,16 @@
   padding: 24px;
 }
 
+.bannerIconWrapper {
+  width: 36px;
+  height: 36px;
+  margin-bottom: 8px;
+
+  svg {
+    color: $black1;
+  }
+}
+
 .bannerTitle {
   font-size: 20px;
   font-weight: bold;
@@ -17,19 +27,34 @@
 }
 
 .bannerSignButton {
-  width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 92px;
   height: 39px;
   margin-top: 12px;
   border-radius: 4px;
-  border: solid 1px $gray2;
-  background-color: white;
-  font-size: 16px;
-  font-weight: 500;
-  color: $main_blue1;
+  background-color: $main_blue1;
+  font-size: 14px;
+  line-height: 1.43;
+  font-weight: bold;
+  color: white;
 
   &:hover {
     transition: $button-hover-transition;
-    color: $main_blue_light0;
+    background-color: $main_blue_light0;
+  }
+}
+
+.bannerSignBtnIcon {
+  display: flex;
+  margin-right: 4px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    color: white;
+    vertical-align: middle;
   }
 }
 

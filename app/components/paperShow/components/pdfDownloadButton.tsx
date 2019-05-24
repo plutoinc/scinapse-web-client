@@ -8,6 +8,7 @@ import { AUTH_LEVEL, blockUnverifiedUser } from "../../../helpers/checkAuthDialo
 import { getUserGroupName } from "../../../helpers/abTestHelper";
 import { SIGN_BUBBLE_TEST } from "../../../constants/abTestGlobalValue";
 import { setBubbleContextTypeHelper } from "../../../helpers/getBubbleContextType";
+import LockedLabel from "../../preNoted/lockedLabel";
 
 const styles = require("./pdfSourceButton.scss");
 
@@ -90,6 +91,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
       >
         <Icon icon="DOWNLOAD" className={styles.sourceIcon} />
         Download PDF
+        <LockedLabel />
       </a>
     );
   }

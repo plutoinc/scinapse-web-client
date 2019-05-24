@@ -5,6 +5,7 @@ import {
   relatedPapersAtPaperShowTest,
   signBannerAtPaperShowTest,
   signBubbleTest,
+  lockedButtonsTest,
 } from "./abTestObject";
 
 export interface UserGroup {
@@ -26,7 +27,8 @@ export type ABTestType =
   | "signBannerAtSearch-banner"
   | "signBannerAtSearch-curated"
   | "relatedPapersAtPaperShow"
-  | "signBubble";
+  | "signBubble"
+  | "lockedButtons";
 
 export const BENEFIT_EXPERIMENT_KEY = "b_exp";
 
@@ -53,6 +55,7 @@ export const LIVE_TESTS: Test[] = [
   relatedPapersAtPaperShowTest,
   signBannerAtPaperShowTest,
   signBubbleTest,
+  lockedButtonsTest,
 ];
 
 function getRandomPool(): { [key: string]: string[] } {

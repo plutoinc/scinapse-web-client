@@ -18,13 +18,14 @@ const SuddenAlert: React.FC<SuddenAlertProps> = props => {
           setSuddenAlertTrigger(true);
           setShouldShowSuddenAlert(true);
 
-          ActionTicketManager.trackTicket({
-            pageType: getCurrentPageType(),
-            actionType: "view",
-            actionArea: "topBar",
-            actionTag: "alertView",
-            actionLabel: "suddenAlert",
-          });
+          props.open &&
+            ActionTicketManager.trackTicket({
+              pageType: getCurrentPageType(),
+              actionType: "view",
+              actionArea: "topBar",
+              actionTag: "alertView",
+              actionLabel: "suddenAlert",
+            });
         }
       }, 5000);
 

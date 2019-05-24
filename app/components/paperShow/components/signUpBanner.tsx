@@ -4,10 +4,11 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { ActionTicketParams } from "../../../helpers/actionTicketManager/actionTicket";
 import { useObserver } from "../../../hooks/useIntersectionHook";
+import Icon from "../../../icons";
 const styles = require("./signUpBanner.scss");
 
 interface SignBannerProps {
-  isLoggedIn: boolean;
+  shouldShowSignBanner: boolean;
 }
 
 const OpenSignUpModalBtn: React.FunctionComponent<{}> = React.memo(() => {
@@ -37,6 +38,7 @@ const OpenSignUpModalBtn: React.FunctionComponent<{}> = React.memo(() => {
         }}
         className={styles.bannerSignButton}
       >
+        <Icon icon="UNLOCK" className={styles.bannerSignBtnIcon} />
         Sign Up
       </button>
     </div>
@@ -44,7 +46,7 @@ const OpenSignUpModalBtn: React.FunctionComponent<{}> = React.memo(() => {
 });
 
 const SignUpBanner: React.FunctionComponent<SignBannerProps> = props => {
-  const { isLoggedIn } = props;
+  const { shouldShowSignBanner } = props;
 
   const bannerViewTicketContext: ActionTicketParams = {
     pageType: "paperShow",
@@ -57,12 +59,15 @@ const SignUpBanner: React.FunctionComponent<SignBannerProps> = props => {
 
   const { elRef } = useObserver(0.1, bannerViewTicketContext);
 
-  if (isLoggedIn) {
+  if (!shouldShowSignBanner) {
     return null;
   }
 
   return (
     <div className={styles.bannerContainer} ref={elRef}>
+      <div className={styles.bannerIconWrapper}>
+        <Icon icon="UNLOCK" />
+      </div>
       <div className={styles.bannerTitle}>{`Sign Up\nand Unlock`}</div>
       <OpenSignUpModalBtn />
     </div>

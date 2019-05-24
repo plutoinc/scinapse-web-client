@@ -7,6 +7,7 @@ import SearchingPDFBtn from "../../../components/paperShow/components/searchingP
 import { getUserGroupName } from "../../../helpers/abTestHelper/index";
 import { SIGN_BUBBLE_TEST } from "../../../constants/abTestGlobalValue";
 import { setBubbleContextTypeHelper } from "../../../helpers/getBubbleContextType";
+import LockedLabel from "../../../components/preNoted/lockedLabel";
 const s = require("../actionBar.scss");
 
 const RequestFullTextBtn: React.FunctionComponent<{
@@ -59,6 +60,7 @@ const RequestFullTextBtn: React.FunctionComponent<{
     >
       <Icon icon="SEND" className={s.sendIcon} />
       Request Full-text
+      <LockedLabel />
     </button>
   );
 });

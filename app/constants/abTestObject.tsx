@@ -42,3 +42,8 @@ export const signBubbleTest: Test = {
   name: "signBubble",
   userGroup: [{ groupName: "control", weight: 1 }, { groupName: "bubble", weight: 1 }],
 };
+
+export const lockedButtonsTest: Test = {
+  name: "lockedButtons",
+  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "locked", weight: 1 }],
+};

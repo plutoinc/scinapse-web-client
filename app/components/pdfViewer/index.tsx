@@ -26,6 +26,7 @@ import BlockedPopper from "../preNoted/blockedPopper";
 import { getUserGroupName } from "../../helpers/abTestHelper";
 import { SIGN_BUBBLE_TEST } from "../../constants/abTestGlobalValue";
 import { setBubbleContextTypeHelper } from "../../helpers/getBubbleContextType";
+import LockedLabel from "../preNoted/lockedLabel";
 const { Document, Page, pdfjs } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
@@ -52,6 +53,7 @@ const baseBtnStyle: React.CSSProperties = {
 
 const readAllBtnStyle: React.CSSProperties = {
   ...baseBtnStyle,
+  position: "relative",
   borderRadius: "27.5px",
   border: "1px solid #bbc2d0",
   fontSize: "16px",
@@ -345,6 +347,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                         content={
                           <span>
                             READ ALL <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
+                            <LockedLabel />
                           </span>
                         }
                         isLoading={PDFViewerState.isLoading}

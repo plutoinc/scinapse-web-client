@@ -39,6 +39,7 @@ import { getUserGroupName } from "../../helpers/abTestHelper";
 import { SIGN_BUBBLE_TEST } from "../../constants/abTestGlobalValue";
 import BlockedPopper from "../../components/preNoted/blockedPopper";
 import { setBubbleContextTypeHelper } from "../../helpers/getBubbleContextType";
+import LockedLabel from "../../components/preNoted/lockedLabel";
 const styles = require("./paperShowCollectionControlButton.scss");
 
 const LAST_USER_COLLECTION_ID = "l_u_c_id";
@@ -118,6 +119,7 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
           >
             <Icon icon="COLLECITON_LIST" className={styles.collectionIcon} />
             Add to Collection
+            <LockedLabel />
           </button>
           <BlockedPopper
             handleOnClickAwayFunc={closeBlockedPopper}
