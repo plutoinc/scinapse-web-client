@@ -27,6 +27,7 @@ import { getUserGroupName } from "../../helpers/abTestHelper";
 import { SIGN_BUBBLE_TEST } from "../../constants/abTestGlobalValue";
 import { setBubbleContextTypeHelper } from "../../helpers/getBubbleContextType";
 import LockedLabel from "../preNoted/lockedLabel";
+import BlurBlocker from "./component/blurBlocker";
 const { Document, Page, pdfjs } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
@@ -161,22 +162,36 @@ async function onClickViewMorePdfBtn(paperId: number, isOpenBlockedPopper: boole
   dispatch(ActionCreators.clickPDFViewMoreBtn());
 }
 
-const PDFContent: React.FC<{ pdfBlob: Blob | null; isExpanded: boolean; pageCountToShow: number }> = React.memo(
-  props => {
-    if (!props.pdfBlob) return null;
+const PDFContent: React.FC<{
+  pdfBlob: Blob | null;
+  isExpanded: boolean;
+  pageCountToShow: number;
+  shouldShowBlurBlocker: boolean;
+}> = React.memo(props => {
+  if (!props.pdfBlob) return null;
 
-    let pageContent;
-    if (props.isExpanded) {
-      pageContent = Array.from(new Array(props.pageCountToShow), (_el, i) => (
+  let pageContent;
+  if (props.isExpanded) {
+    pageContent = Array.from(new Array(props.pageCountToShow), (_el, i) => (
+      <div className={styles.pageLayer}>
         <Page pdf={props.pdfBlob} width={996} margin={"0 auto"} key={i} pageNumber={i + 1} />
-      ));
-    } else {
-      pageContent = <Page pdf={props.pdfBlob} width={996} margin={"0 auto"} pageNumber={1} />;
-    }
-
-    return <>{pageContent}</>;
+      </div>
+    ));
+  } else {
+    pageContent = (
+      <div
+        style={{
+          height: props.shouldShowBlurBlocker ? "500px" : "auto",
+        }}
+        className={styles.pageLayer}
+      >
+        <Page pdf={props.pdfBlob} width={996} margin={"0 auto"} pageNumber={1} />
+      </div>
+    );
   }
-);
+
+  return <>{pageContent}</>;
+});
 
 const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   const {
@@ -251,6 +266,38 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   }
 
   if (!!PDFViewerState.pdfBlob) {
+    const ReadAllPDFButton = (
+      <ClickAwayListener onClickAway={() => closeBlockedPopper(PDFViewerState.isOpenBlockedPopper, dispatch)}>
+        <div ref={viewMorePDFBtnEl}>
+          <ScinapseButton
+            gaCategory="PDF viewer"
+            gaAction={actionTag}
+            style={readAllBtnStyle}
+            content={
+              <span>
+                READ ALL <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
+                <LockedLabel />
+              </span>
+            }
+            isLoading={PDFViewerState.isLoading}
+            disabled={PDFViewerState.hasFailed}
+            onClick={async () => onClickViewMorePdfBtn(props.paper.id, PDFViewerState.isOpenBlockedPopper, dispatch)}
+          />
+          <BlockedPopper
+            handleOnClickAwayFunc={() => closeBlockedPopper(PDFViewerState.isOpenBlockedPopper, dispatch)}
+            anchorEl={viewMorePDFBtnEl.current}
+            isOpen={PDFViewerState.isOpenBlockedPopper}
+            buttonClickAction={"viewMorePDF"}
+            actionArea={"pdfViewer"}
+          />
+        </div>
+      </ClickAwayListener>
+    );
+
+    const shouldShowBlurBlocker =
+      !currentUser.isLoggedIn && !currentUser.isLoggingIn && getUserGroupName("fullTextBlurred") !== "control";
+    const componentToShowReadAllArea = shouldShowBlurBlocker ? <BlurBlocker /> : ReadAllPDFButton;
+
     return (
       <div ref={wrapperNode} className={styles.contentWrapper}>
         <Document
@@ -278,6 +325,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
           }}
         >
           <PDFContent
+            shouldShowBlurBlocker={shouldShowBlurBlocker}
             pdfBlob={PDFViewerState.parsedPDFObject}
             isExpanded={PDFViewerState.isExpanded}
             pageCountToShow={PDFViewerState.pageCountToShow}
@@ -286,6 +334,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
 
         <div
           style={{
+            position: "relative",
             display: "flex",
             justifyContent: "center",
             marginTop: "40px",
@@ -336,35 +385,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                     <RelatedPapers shouldShowRelatedPapers={shouldShowRelatedPapers} />
                   </>
                 ) : (
-                  <ClickAwayListener
-                    onClickAway={() => closeBlockedPopper(PDFViewerState.isOpenBlockedPopper, dispatch)}
-                  >
-                    <div ref={viewMorePDFBtnEl}>
-                      <ScinapseButton
-                        gaCategory="PDF viewer"
-                        gaAction={actionTag}
-                        style={readAllBtnStyle}
-                        content={
-                          <span>
-                            READ ALL <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
-                            <LockedLabel />
-                          </span>
-                        }
-                        isLoading={PDFViewerState.isLoading}
-                        disabled={PDFViewerState.hasFailed}
-                        onClick={async () =>
-                          onClickViewMorePdfBtn(props.paper.id, PDFViewerState.isOpenBlockedPopper, dispatch)
-                        }
-                      />
-                      <BlockedPopper
-                        handleOnClickAwayFunc={() => closeBlockedPopper(PDFViewerState.isOpenBlockedPopper, dispatch)}
-                        anchorEl={viewMorePDFBtnEl.current}
-                        isOpen={PDFViewerState.isOpenBlockedPopper}
-                        buttonClickAction={"viewMorePDF"}
-                        actionArea={"pdfViewer"}
-                      />
-                    </div>
-                  </ClickAwayListener>
+                  componentToShowReadAllArea
                 )}
               </>
             )}

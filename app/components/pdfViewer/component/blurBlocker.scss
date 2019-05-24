@@ -1,0 +1,49 @@
+.wrapper {
+  position: absolute;
+  bottom: 40px;
+  width: 996px;
+  height: 220px;
+  background-image: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 30%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  z-index: 81;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 64px;
+  cursor: pointer;
+}
+
+.btnLikeText {
+  width: 296px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  background-color: $dark-blue0;
+  font-size: 14px;
+  font-style: italic;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.subText {
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  color: $dark-blue0;
+  margin-bottom: 4px;
+}
+
+.arrowIcon {
+  display: inline-block;
+  vertical-align: top;
+  width: 24px;
+  height: 9px;
+  color: $gray5;
+}

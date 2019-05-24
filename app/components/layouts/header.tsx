@@ -421,7 +421,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
               anchorEl={this.state.userDropdownAnchorElement}
               placement="bottom-end"
               popperOptions={{ positionFixed: true }}
-              disablePortal
             >
               {this.userDropdownMenuItems()}
             </BubblePopover>

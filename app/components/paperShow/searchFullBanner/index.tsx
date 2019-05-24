@@ -13,7 +13,7 @@ const SearchFullScrollBanner: React.FC<SearchFullScrollBannerProps> = ({ isOpen,
   const [isFullWindow, setIsFullWindow] = React.useState(false);
   let containerMaxHeight = "0px";
   if (isOpen && !isFullWindow) {
-    containerMaxHeight = "318px";
+    containerMaxHeight = "33vh";
   } else if (isOpen && isFullWindow) {
     containerMaxHeight = "100%";
   }
