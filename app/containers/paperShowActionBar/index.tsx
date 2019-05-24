@@ -61,7 +61,7 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props =
           )}
           {hasSource && (
             <div className={s.actionItem}>
-              <SourceButton paper={props.paper} showFullText={!!props.paper.bestPdf} />
+              <SourceButton paper={props.paper} showFullText={props.paper.bestPdf.hasBest} />
             </div>
           )}
           <div className={s.actionItem}>
