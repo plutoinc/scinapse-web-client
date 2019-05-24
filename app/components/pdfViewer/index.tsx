@@ -250,117 +250,118 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
             alignItems: "center",
           }}
         >
-          {!PDFViewerState.hasFailed && (
-            <>
-              {PDFViewerState.isExpanded ? (
-                <>
-                  <ScinapseButton
-                    gaCategory="PDF viewer"
-                    gaAction="download PDF"
-                    style={downloadPdfBtnStyle}
-                    target="_blank"
-                    href={paper.bestPdf.url}
-                    rel="nofollow"
-                    content={
-                      <span className={styles.downloadBtnWrapper}>
-                        <Icon icon="DOWNLOAD" className={styles.downloadIcon} /> Download PDF
-                      </span>
-                    }
-                    onClick={async e => {
-                      if (!EnvChecker.isOnServer()) {
-                        e.preventDefault();
-
-                        const isBlocked = await blockUnverifiedUser({
-                          authLevel: AUTH_LEVEL.VERIFIED,
-                          actionArea: "pdfViewer",
-                          actionLabel: "downloadPdf",
-                          userActionType: "downloadPdf",
-                        });
-
-                        if (isBlocked) {
-                          return;
-                        }
-                        dispatch(ActionCreators.clickPDFDownloadBtn());
-                        trackClickButton("downloadPdf", paper.id);
-                        window.open(paper.bestPdf.url, "_blank");
-                        afterDownloadPDF();
-                      }
-                    }}
-                    isExternalLink
-                    downloadAttr
-                  />
-                  <RelatedPapers shouldShowRelatedPapers={shouldShowRelatedPapers} />
-                </>
-              ) : (
-                <ClickAwayListener
-                  onClickAway={() =>
-                    dispatch(
-                      ActionCreators.togglePDFBlockedPopper({
-                        isOpenBlockedPopper: false,
-                      })
-                    )
-                  }
-                >
-                  <div ref={viewMorePDFBtnEl}>
+          {!PDFViewerState.hasFailed &&
+            paper.bestPdf && (
+              <>
+                {PDFViewerState.isExpanded ? (
+                  <>
                     <ScinapseButton
                       gaCategory="PDF viewer"
-                      gaAction={actionTag}
-                      style={readAllBtnStyle}
+                      gaAction="download PDF"
+                      style={downloadPdfBtnStyle}
+                      target="_blank"
+                      href={paper.bestPdf.url}
+                      rel="nofollow"
                       content={
-                        <span>
-                          READ ALL <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
+                        <span className={styles.downloadBtnWrapper}>
+                          <Icon icon="DOWNLOAD" className={styles.downloadIcon} /> Download PDF
                         </span>
                       }
-                      isLoading={PDFViewerState.isLoading}
-                      disabled={PDFViewerState.hasFailed}
-                      onClick={async () => {
-                        if (getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
-                          dispatch(
-                            ActionCreators.togglePDFBlockedPopper({
-                              isOpenBlockedPopper: !PDFViewerState.isOpenBlockedPopper,
-                            })
-                          );
+                      onClick={async e => {
+                        if (!EnvChecker.isOnServer()) {
+                          e.preventDefault();
 
-                          if (!PDFViewerState.isOpenBlockedPopper) {
-                            return setBubbleContextTypeHelper();
+                          const isBlocked = await blockUnverifiedUser({
+                            authLevel: AUTH_LEVEL.VERIFIED,
+                            actionArea: "pdfViewer",
+                            actionLabel: "downloadPdf",
+                            userActionType: "downloadPdf",
+                          });
+
+                          if (isBlocked) {
+                            return;
+                          }
+                          dispatch(ActionCreators.clickPDFDownloadBtn());
+                          trackClickButton("downloadPdf", paper.id);
+                          window.open(paper.bestPdf.url, "_blank");
+                          afterDownloadPDF();
+                        }
+                      }}
+                      isExternalLink
+                      downloadAttr
+                    />
+                    <RelatedPapers shouldShowRelatedPapers={shouldShowRelatedPapers} />
+                  </>
+                ) : (
+                  <ClickAwayListener
+                    onClickAway={() =>
+                      dispatch(
+                        ActionCreators.togglePDFBlockedPopper({
+                          isOpenBlockedPopper: false,
+                        })
+                      )
+                    }
+                  >
+                    <div ref={viewMorePDFBtnEl}>
+                      <ScinapseButton
+                        gaCategory="PDF viewer"
+                        gaAction={actionTag}
+                        style={readAllBtnStyle}
+                        content={
+                          <span>
+                            READ ALL <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
+                          </span>
+                        }
+                        isLoading={PDFViewerState.isLoading}
+                        disabled={PDFViewerState.hasFailed}
+                        onClick={async () => {
+                          if (getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
+                            dispatch(
+                              ActionCreators.togglePDFBlockedPopper({
+                                isOpenBlockedPopper: !PDFViewerState.isOpenBlockedPopper,
+                              })
+                            );
+
+                            if (!PDFViewerState.isOpenBlockedPopper) {
+                              return setBubbleContextTypeHelper();
+                            }
+
+                            return;
                           }
 
-                          return;
+                          const isBlocked = await blockUnverifiedUser({
+                            authLevel: AUTH_LEVEL.VERIFIED,
+                            actionArea: "pdfViewer",
+                            actionLabel: actionTag,
+                            userActionType: actionTag,
+                          });
+
+                          trackClickButton(actionTag, props.paper.id);
+
+                          if (isBlocked) {
+                            return;
+                          }
+
+                          dispatch(ActionCreators.clickPDFViewMoreBtn());
+                        }}
+                      />
+                      <BlockedPopper
+                        handleOnClickAwayFunc={() =>
+                          dispatch(
+                            ActionCreators.togglePDFBlockedPopper({
+                              isOpenBlockedPopper: false,
+                            })
+                          )
                         }
-
-                        const isBlocked = await blockUnverifiedUser({
-                          authLevel: AUTH_LEVEL.VERIFIED,
-                          actionArea: "pdfViewer",
-                          actionLabel: actionTag,
-                          userActionType: actionTag,
-                        });
-
-                        trackClickButton(actionTag, props.paper.id);
-
-                        if (isBlocked) {
-                          return;
-                        }
-
-                        dispatch(ActionCreators.clickPDFViewMoreBtn());
-                      }}
-                    />
-                    <BlockedPopper
-                      handleOnClickAwayFunc={() =>
-                        dispatch(
-                          ActionCreators.togglePDFBlockedPopper({
-                            isOpenBlockedPopper: false,
-                          })
-                        )
-                      }
-                      anchorEl={viewMorePDFBtnEl.current}
-                      isOpen={PDFViewerState.isOpenBlockedPopper}
-                      buttonClickAction={"viewMorePDF"}
-                    />
-                  </div>
-                </ClickAwayListener>
-              )}
-            </>
-          )}
+                        anchorEl={viewMorePDFBtnEl.current}
+                        isOpen={PDFViewerState.isOpenBlockedPopper}
+                        buttonClickAction={"viewMorePDF"}
+                      />
+                    </div>
+                  </ClickAwayListener>
+                )}
+              </>
+            )}
         </div>
       </div>
     );
