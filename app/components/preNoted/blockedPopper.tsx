@@ -4,6 +4,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { getBlockedBubbleContext } from "./constants";
 import { blockUnverifiedUser, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
 import { BUBBLE_CONTEXT_TYPE } from "../../helpers/getBubbleContextType";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 const store = require("store");
 const styles = require("./blockedPopper.scss");
 
@@ -19,7 +20,8 @@ const BlockedPopperContent: React.FC<{
   onClickAwayButton: () => void;
 }> = props => {
   const { buttonClickAction, onClickAwayButton } = props;
-  const bubbleContext = getBlockedBubbleContext(String(store.get(BUBBLE_CONTEXT_TYPE)), buttonClickAction);
+  const bubbleContextType = String(store.get(BUBBLE_CONTEXT_TYPE));
+  const bubbleContext = getBlockedBubbleContext(bubbleContextType, buttonClickAction);
 
   return (
     <div className={styles.bubbleContent}>
@@ -34,6 +36,7 @@ const BlockedPopperContent: React.FC<{
             actionArea: "paperShow",
             actionLabel: buttonClickAction,
             userActionType: buttonClickAction,
+            actionValue: bubbleContextType,
           });
           onClickAwayButton();
         }}
@@ -46,6 +49,17 @@ const BlockedPopperContent: React.FC<{
 
 const BlockedPopper: React.FC<BlockedPopperProps> = props => {
   const { isOpen, anchorEl, buttonClickAction, handleOnClickAwayFunc } = props;
+
+  if (isOpen) {
+    ActionTicketManager.trackTicket({
+      pageType: "paperShow",
+      actionType: "view",
+      actionArea: "signBannerAtPaperShow",
+      actionTag: "signBubble",
+      actionLabel: buttonClickAction,
+    });
+  }
+
   return (
     <Popper
       open={isOpen}

@@ -1,6 +1,8 @@
 import * as React from "react";
 import { withStyles } from "../../helpers/withStylesHelper";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
+import { ActionTicketParams } from "../../helpers/actionTicketManager/actionTicket";
+import { useObserver } from "../../hooks/useIntersectionHook";
 const styles = require("./bottomBanner.scss");
 
 interface BottomBannerProps {
@@ -31,11 +33,21 @@ function handleOpenSignIn() {
 }
 
 const BottomBanner: React.FC<BottomBannerProps> = ({ isLoggedIn, shouldShowBottomBanner }) => {
+  const bannerViewTicketContext: ActionTicketParams = {
+    pageType: "paperShow",
+    actionType: "view",
+    actionArea: "signBannerAtPaperShow",
+    actionTag: "bannerView",
+    actionLabel: "di-black-blue",
+  };
+  const { elRef } = useObserver(0.1, bannerViewTicketContext);
+
   if (isLoggedIn || !shouldShowBottomBanner) {
     return null;
   }
+
   return (
-    <div className={styles.bannerContainer}>
+    <div className={styles.bannerContainer} ref={elRef}>
       <div className={styles.bannerWrapper}>
         <div className={styles.contextWrapper}>
           <div className={styles.titleContext}>PREVIEW OF SCINAPSE</div>

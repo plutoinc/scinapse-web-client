@@ -97,6 +97,7 @@ declare namespace Scinapse {
       | "clickLogo"
       | "clickSignUpAtFirstForm"
       | "clickSignUpAtStep2"
+      | "signBubble"
       | "";
 
     type ActionArea = string;
