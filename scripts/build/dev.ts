@@ -6,7 +6,7 @@ import { uploadDevFiles } from "../helpers/pushToS3";
 const clientConfig = require("../../webpack.dev.browser.config");
 const serverConfig = require("../../webpack.dev.server.config");
 const handlerConfig = require("../../webpack.dev.handler.config");
-clientConfig.output.publicPath = `${CDN_BASE_HOST}/${AWS_S3_DEV_FOLDER_PREFIX}/${process.env.BRANCH_NAME}/client/`;
+clientConfig.output.publicPath = `${CDN_BASE_HOST}/${AWS_S3_DEV_FOLDER_PREFIX}/${process.env.CIRCLE_BRANCH}/client/`;
 
 function cleanArtifacts() {
   rimraf.sync(path.resolve(__dirname, "../../dist/client"));

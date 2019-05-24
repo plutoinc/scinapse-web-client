@@ -5,7 +5,6 @@
 
   .react-pdf__Page__canvas {
     margin: 0 auto;
-    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -71,6 +70,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.pageLayer {
+  width: 996px;
+  margin: auto;
+  height: auto;
+  overflow-y: hidden;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1);
 }
 
 // RegularDisplay (1024~1200)

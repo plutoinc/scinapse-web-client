@@ -1,0 +1,45 @@
+.bubbleContent {
+  width: 384px;
+  border-radius: 4px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.25);
+  background-color: white;
+}
+
+.titleContext {
+  font-size: 20px;
+  font-weight: 500;
+  color: #1b2a36;
+  margin-bottom: 12px;
+}
+
+.mainContext {
+  font-size: 16px;
+  color: $gray6;
+}
+
+.joinBtn {
+  width: 92px;
+  height: 39px;
+  margin-top: 24px;
+  align-self: flex-end;
+  border-radius: 4px;
+  background-color: $main_blue1;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $main_blue_light0;
+    transition: $button-hover-transition;
+  }
+}
+
+@media (max-width: $mobile-width) {
+  .bubbleContent {
+    width: 100%;
+  }
+}

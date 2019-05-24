@@ -15,6 +15,7 @@ import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
 import { AppState } from "./reducers";
 import { checkAuthStatus } from "./components/auth/actions";
+import { getCurrentPageType } from "./components/locationListener";
 declare var Sentry: any;
 declare var FB: any;
 
@@ -151,6 +152,9 @@ class PlutoRenderer {
   private checkRender() {
     this.store.dispatch({
       type: ACTION_TYPES.GLOBAL_SUCCEEDED_TO_RENDER_AT_THE_CLIENT_SIDE,
+      payload: {
+        initialPageType: getCurrentPageType(),
+      },
     });
   }
 

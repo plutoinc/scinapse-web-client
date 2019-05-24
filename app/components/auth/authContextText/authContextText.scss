@@ -16,6 +16,12 @@
   .contentText {
     font-size: 14px;
     line-height: 1.43;
-    color: #1b2a36;
+    color: $dark-blue0;
+  }
+}
+
+@media (max-width: $mobile-width) {
+  .container {
+    display: none;
   }
 }

@@ -85,13 +85,13 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
   }
 
   public render() {
-    const { layout, location, currentUser } = this.props;
+    const { layout, location } = this.props;
     const { isPopoverOpen } = this.state;
 
     if (layout.userDevice !== UserDevice.DESKTOP) {
       return null;
     }
-    if ("papers" === location.pathname.split("/")[1] && currentUser.isLoggedIn) {
+    if ("papers" === location.pathname.split("/")[1]) {
       return null;
     }
 
@@ -119,7 +119,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
                 boundariesElement: "window",
               },
             }}
-            disablePortal={true}
+            disablePortal
           >
             <div className={styles.popperPaper}>
               <div className={styles.greetingBoxWrapper}>

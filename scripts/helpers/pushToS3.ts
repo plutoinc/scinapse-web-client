@@ -47,11 +47,12 @@ export async function uploadProdFiles() {
 
 export function uploadDevFiles() {
   return new Promise(async (resolve, reject) => {
-    const prefix = `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${process.env.BRANCH_NAME}`;
+    const prefix = `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${process.env.CIRCLE_BRANCH}`;
     const cacheControl = "public, max-age=0";
 
     const listRes = await awsS3.listObjects({ Bucket: DeployConfig.AWS_S3_BUCKET, Prefix: prefix }).promise();
     if (listRes.Contents && listRes.Contents.length > 0) {
+      console.log(`START TO DELETE OLD FILES FROM ${prefix}`);
       const deleteParams: AWS.S3.Types.DeleteObjectsRequest = {
         Bucket: DeployConfig.AWS_S3_BUCKET,
         Delete: {
@@ -64,6 +65,7 @@ export function uploadDevFiles() {
       });
 
       await awsS3.deleteObjects(deleteParams).promise();
+      console.log("FINISH TO DELETE OLD FILES");
     }
 
     const params = {

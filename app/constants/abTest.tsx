@@ -1,11 +1,12 @@
 import {
   bannerTest,
-  signBannerAtPaperShowTest,
-  signBannerAtPaperShowTitleTextTest,
-  signBannerAtPaperShowTitleTextKeyverbTest,
   searchEngineMoodTest,
   bannerCuratedTest,
   relatedPapersAtPaperShowTest,
+  signBannerAtPaperShowTest,
+  signBubbleTest,
+  lockedButtonsTest,
+  fullTextBlurredTest,
 } from "./abTestObject";
 
 export interface UserGroup {
@@ -23,12 +24,13 @@ export type BenefitExpType = "queryCountSession" | "refPaperCountSession" | "pap
 export type ABTestType =
   | "queryLover"
   | "searchEngineMood"
+  | "signBannerAtPaperShow"
   | "signBannerAtSearch-banner"
   | "signBannerAtSearch-curated"
-  | "signBannerAtPaperShow-banner"
-  | "signBannerAtPaperShow-titleText"
-  | "signBannerAtPaperShow-titleText-keyverb"
-  | "relatedPapersAtPaperShow";
+  | "relatedPapersAtPaperShow"
+  | "signBubble"
+  | "lockedButtons"
+  | "fullTextBlurred";
 
 export const BENEFIT_EXPERIMENT_KEY = "b_exp";
 
@@ -52,10 +54,11 @@ export const LIVE_TESTS: Test[] = [
   searchEngineMoodTest,
   bannerTest,
   bannerCuratedTest,
-  signBannerAtPaperShowTest,
-  signBannerAtPaperShowTitleTextTest,
-  signBannerAtPaperShowTitleTextKeyverbTest,
   relatedPapersAtPaperShowTest,
+  signBannerAtPaperShowTest,
+  signBubbleTest,
+  lockedButtonsTest,
+  fullTextBlurredTest,
 ];
 
 function getRandomPool(): { [key: string]: string[] } {

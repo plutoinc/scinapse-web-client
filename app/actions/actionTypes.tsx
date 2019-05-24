@@ -211,6 +211,7 @@ export enum ACTION_TYPES {
   PDF_VIEWER_CLICK_RELOAD_BTN = "PDF_VIEWER_CLICK_RELOAD_BTN",
   PDF_VIEWER_CLICK_VIEW_MORE_BTN = "PDF_VIEWER_CLICK_VIEW_MORE_BTN",
   PDF_VIEWER_GET_BEST_PDF_OF_PAPER = "PDF_VIEWER_GET_BEST_PDF_OF_PAPER",
+  PDF_VIEWER_TOGGLE_BLOCKED_POPPER = "PDF_VIEWER_TOGGLE_BLOCKED_POPPER",
 }
 
 export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
@@ -301,6 +302,10 @@ export const ActionCreators = {
 
   clickPDFViewMoreBtn() {
     return createAction({ type: ACTION_TYPES.PDF_VIEWER_CLICK_VIEW_MORE_BTN });
+  },
+
+  togglePDFBlockedPopper(payload: { isOpenBlockedPopper: boolean }) {
+    return createAction({ type: ACTION_TYPES.PDF_VIEWER_TOGGLE_BLOCKED_POPPER, payload });
   },
 
   getBestPDFOfPaper(payload: { paperId: number; bestPDF: PaperPdf }) {
