@@ -93,6 +93,7 @@ const ICONS: { [key: string]: any } = {
   RELOAD: require("./reload.svg").default,
   LOCK: require("./lock.svg").default,
   UNLOCK: require("./unlock.svg").default,
+  DOUBLE_ARROW_DOWN: require("./double-arrow-down.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)

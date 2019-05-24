@@ -19,3 +19,9 @@
     color: $dark-blue0;
   }
 }
+
+@media (max-width: $mobile-width) {
+  .container {
+    display: none;
+  }
+}

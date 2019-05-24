@@ -51,6 +51,7 @@ import { ActionCreators } from "../../actions/actionTypes";
 import BottomBanner from "../../components/preNoted/bottomBanner";
 import { Configuration } from "../../reducers/configuration";
 import { getMemoizedConfiguration } from "../../selectors/getConfiguration";
+import SearchFullScrollBanner from "../../components/paperShow/searchFullBanner";
 import SignUpBanner from "../../components/paperShow/components/signUpBanner";
 const styles = require("./paperShow.scss");
 
@@ -91,6 +92,8 @@ interface PaperShowStates
       isOnRef: boolean;
       isOnCited: boolean;
       isOnFullText: boolean;
+      isSearchFullBannerOpen: boolean;
+      hadQuitSearchFullBanner: boolean;
     }> {}
 
 const Title: React.FC<{ title: string }> = React.memo(({ title }) => {
@@ -116,6 +119,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isOnRef: false,
       isOnCited: false,
       isOnFullText: false,
+      isSearchFullBannerOpen: false,
+      hadQuitSearchFullBanner: false,
     };
   }
 
@@ -174,6 +179,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       const statusCode = err ? (err as CommonError).status : null;
       this.logPageView(match.params.paperId, statusCode);
       this.scrollToRefCitedSection();
+      this.setState({ hadQuitSearchFullBanner: false });
       return this.handleScrollEvent();
     }
 
@@ -217,8 +223,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       citedPapers,
       PDFViewerState,
     } = this.props;
-    const { isOnFullText, isOnCited, isOnRef } = this.state;
-    // const shouldShowFullTextTab = isLoadPDF && !failedToLoadPDF && layout.userDevice !== UserDevice.MOBILE;
+    const { isOnFullText, isOnCited, isOnRef, isSearchFullBannerOpen } = this.state;
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -401,6 +406,16 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           shouldShowBottomBanner={getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TEST) === "bottomBanner"}
         />
         <NextPaperTab />
+        <SearchFullScrollBanner
+          onClickCloseBtn={() => {
+            this.setState(prevState => ({
+              ...prevState,
+              isSearchFullBannerOpen: false,
+              hadQuitSearchFullBanner: true,
+            }));
+          }}
+          isOpen={isSearchFullBannerOpen}
+        />
       </>
     );
   }
@@ -443,6 +458,23 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private handleScrollEvent = () => {
     const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+
+    if (this.refTabWrapper) {
+      const scrollPositionOverRefTab = scrollTop + window.innerHeight - this.refTabWrapper.offsetTop;
+      if (
+        this.props.layout.userDevice === UserDevice.DESKTOP &&
+        !this.state.isSearchFullBannerOpen &&
+        !this.state.hadQuitSearchFullBanner &&
+        this.props.configuration.initialPageType === "paperShow" &&
+        getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TEST) === "searchBanner" &&
+        scrollPositionOverRefTab > 400
+      ) {
+        this.setState(prevState => ({ ...prevState, isSearchFullBannerOpen: true }));
+      } else if (this.state.isSearchFullBannerOpen && scrollPositionOverRefTab <= 400) {
+        this.setState(prevState => ({ ...prevState, isSearchFullBannerOpen: false }));
+      }
+    }
+
     // ref/cited tab
     if (this.fullTextTabWrapper && this.refTabWrapper && this.citedTabWrapper) {
       const fullTextOffsetTop = this.fullTextTabWrapper.offsetTop;

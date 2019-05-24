@@ -394,39 +394,38 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         >
           <Icon className={styles.collectionIcon} icon="COLLECTION" />Collection
         </Link>
-        <ClickAwayListener onClickAway={this.handleRequestCloseUserDropdown}>
-          <div>
-            {!currentUserState.profileImageUrl ? (
-              <div
-                className={styles.userDropdownChar}
-                ref={el => (this.userDropdownAnchorRef = el)}
-                onClick={this.handleToggleUserDropdown}
-              >
-                {firstCharacterOfUsername}
-              </div>
-            ) : (
-              <div
-                className={styles.userDropdownImg}
-                ref={el => (this.userDropdownAnchorRef = el)}
-                onClick={this.handleToggleUserDropdown}
-              >
-                <div
-                  style={{ backgroundImage: `url(${currentUserState.profileImageUrl})` }}
-                  className={styles.profileImage}
-                />
-              </div>
-            )}
-            <BubblePopover
-              open={this.state.isUserDropdownOpen}
-              anchorEl={this.state.userDropdownAnchorElement}
-              placement="bottom-end"
-              popperOptions={{ positionFixed: true }}
-              disablePortal
+        <div>
+          {!currentUserState.profileImageUrl ? (
+            <div
+              className={styles.userDropdownChar}
+              ref={el => (this.userDropdownAnchorRef = el)}
+              onClick={this.handleToggleUserDropdown}
             >
+              {firstCharacterOfUsername}
+            </div>
+          ) : (
+            <div
+              className={styles.userDropdownImg}
+              ref={el => (this.userDropdownAnchorRef = el)}
+              onClick={this.handleToggleUserDropdown}
+            >
+              <div
+                style={{ backgroundImage: `url(${currentUserState.profileImageUrl})` }}
+                className={styles.profileImage}
+              />
+            </div>
+          )}
+          <BubblePopover
+            open={this.state.isUserDropdownOpen}
+            anchorEl={this.state.userDropdownAnchorElement}
+            placement="bottom-end"
+            popperOptions={{ positionFixed: true }}
+          >
+            <ClickAwayListener onClickAway={this.handleRequestCloseUserDropdown}>
               {this.userDropdownMenuItems()}
-            </BubblePopover>
-          </div>
-        </ClickAwayListener>
+            </ClickAwayListener>
+          </BubblePopover>
+        </div>
       </div>
     );
   };

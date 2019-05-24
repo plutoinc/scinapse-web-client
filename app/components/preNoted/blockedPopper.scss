@@ -37,3 +37,9 @@
     transition: $button-hover-transition;
   }
 }
+
+@media (max-width: $mobile-width) {
+  .bubbleContent {
+    width: 100%;
+  }
+}

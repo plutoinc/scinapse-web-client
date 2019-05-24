@@ -35,6 +35,7 @@ export const signBannerAtPaperShowTest: Test = {
     { groupName: "control", weight: 1 },
     { groupName: "bottomBanner", weight: 2 },
     { groupName: "suddenAlert", weight: 2 },
+    { groupName: "searchBanner", weight: 2 },
   ],
 };
 
@@ -46,4 +47,9 @@ export const signBubbleTest: Test = {
 export const lockedButtonsTest: Test = {
   name: "lockedButtons",
   userGroup: [{ groupName: "control", weight: 1 }, { groupName: "locked", weight: 1 }],
+};
+
+export const fullTextBlurredTest: Test = {
+  name: "fullTextBlurred",
+  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "contexthighlight", weight: 2 }],
 };
