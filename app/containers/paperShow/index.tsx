@@ -179,6 +179,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       const statusCode = err ? (err as CommonError).status : null;
       this.logPageView(match.params.paperId, statusCode);
       this.scrollToRefCitedSection();
+      this.setState({ hadQuitSearchFullBanner: false });
       return this.handleScrollEvent();
     }
 
@@ -461,6 +462,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if (this.refTabWrapper) {
       const scrollPositionOverRefTab = scrollTop + window.innerHeight - this.refTabWrapper.offsetTop;
       if (
+        this.props.layout.userDevice === UserDevice.DESKTOP &&
         !this.state.isSearchFullBannerOpen &&
         !this.state.hadQuitSearchFullBanner &&
         this.props.configuration.initialPageType === "paperShow" &&

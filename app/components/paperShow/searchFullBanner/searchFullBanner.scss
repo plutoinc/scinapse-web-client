@@ -19,13 +19,14 @@
   align-items: center;
   top: 16px;
   right: 16px;
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
   cursor: pointer;
+  color: $gray4;
 
   svg {
-    width: 24px;
-    height: 24px;
+    width: 16px;
+    height: 16px;
   }
 }
 

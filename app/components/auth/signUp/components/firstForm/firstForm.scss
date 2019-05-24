@@ -48,6 +48,10 @@
 }
 
 @media (max-width: $mobile-width) {
+  .authFormWrapper {
+    width: 100%;
+  }
+
   .fbIconWrapper {
     display: none;
   }
