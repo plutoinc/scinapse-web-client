@@ -6,7 +6,7 @@ import Icon from "../../../icons";
 import SearchingPDFBtn from "./searchingPDFBtn";
 import { AUTH_LEVEL, blockUnverifiedUser } from "../../../helpers/checkAuthDialog";
 import { getUserGroupName } from "../../../helpers/abTestHelper";
-import { SIGN_FLOW_AT_PAPER_SHOW_TEST } from "../../../constants/abTestGlobalValue";
+import { SIGN_BUBBLE_TEST } from "../../../constants/abTestGlobalValue";
 import { setBubbleContextTypeHelper } from "../../../helpers/getBubbleContextType";
 
 const styles = require("./pdfSourceButton.scss");
@@ -62,7 +62,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
         onClick={async e => {
           e.preventDefault();
 
-          if (handleSetIsOpenBlockedPopper && getUserGroupName(SIGN_FLOW_AT_PAPER_SHOW_TEST) === "bubble") {
+          if (handleSetIsOpenBlockedPopper && getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
             handleSetIsOpenBlockedPopper(!isOpenBlockedPopper);
 
             if (!isOpenBlockedPopper) {

@@ -24,7 +24,7 @@ import { getMemoizedPDFViewerState } from "../../selectors/getPDFViewer";
 import ProgressSpinner from "./component/progressSpinner";
 import BlockedPopper from "../preNoted/blockedPopper";
 import { getUserGroupName } from "../../helpers/abTestHelper";
-import { SIGN_FLOW_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalValue";
+import { SIGN_BUBBLE_TEST } from "../../constants/abTestGlobalValue";
 import { setBubbleContextTypeHelper } from "../../helpers/getBubbleContextType";
 const { Document, Page, pdfjs } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
@@ -314,7 +314,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                       isLoading={PDFViewerState.isLoading}
                       disabled={PDFViewerState.hasFailed}
                       onClick={async () => {
-                        if (getUserGroupName(SIGN_FLOW_AT_PAPER_SHOW_TEST) === "bubble") {
+                        if (getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
                           dispatch(
                             ActionCreators.togglePDFBlockedPopper({
                               isOpenBlockedPopper: !PDFViewerState.isOpenBlockedPopper,

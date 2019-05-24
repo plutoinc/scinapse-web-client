@@ -36,7 +36,7 @@ import ActionTicketManager from "../../helpers/actionTicketManager";
 import { ActionCreators } from "../../actions/actionTypes";
 import { blockUnverifiedUser, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
 import { getUserGroupName } from "../../helpers/abTestHelper";
-import { SIGN_FLOW_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalValue";
+import { SIGN_BUBBLE_TEST } from "../../constants/abTestGlobalValue";
 import BlockedPopper from "../../components/preNoted/blockedPopper";
 import { setBubbleContextTypeHelper } from "../../helpers/getBubbleContextType";
 const styles = require("./paperShowCollectionControlButton.scss");
@@ -83,7 +83,7 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
         <div ref={addToCollectionBtnEl}>
           <button
             onClick={() => {
-              if (getUserGroupName(SIGN_FLOW_AT_PAPER_SHOW_TEST) === "bubble") {
+              if (getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
                 setIsBlockedPopperOpen(!isBlockedPopperOpen);
 
                 if (!isBlockedPopperOpen) {
