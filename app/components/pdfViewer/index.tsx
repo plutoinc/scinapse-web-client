@@ -147,7 +147,6 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     currentUser,
   } = props;
   const wrapperNode = React.useRef<HTMLDivElement | null>(null);
-  const [isBlockedPopperOpen, setIsBlockedPopperOpen] = React.useState(false);
   const viewMorePDFBtnEl = React.useRef<HTMLDivElement | null>(null);
 
   const actionTag = PDFViewerState.isExpanded ? "viewLessPDF" : "viewMorePDF";
@@ -293,7 +292,15 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                   <RelatedPapers shouldShowRelatedPapers={shouldShowRelatedPapers} />
                 </>
               ) : (
-                <ClickAwayListener onClickAway={() => setIsBlockedPopperOpen(false)}>
+                <ClickAwayListener
+                  onClickAway={() =>
+                    dispatch(
+                      ActionCreators.togglePDFBlockedPopper({
+                        isOpenBlockedPopper: false,
+                      })
+                    )
+                  }
+                >
                   <div ref={viewMorePDFBtnEl}>
                     <ScinapseButton
                       gaCategory="PDF viewer"
@@ -308,9 +315,13 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                       disabled={PDFViewerState.hasFailed}
                       onClick={async () => {
                         if (getUserGroupName(SIGN_FLOW_AT_PAPER_SHOW_TEST) === "bubble") {
-                          setIsBlockedPopperOpen(!isBlockedPopperOpen);
+                          dispatch(
+                            ActionCreators.togglePDFBlockedPopper({
+                              isOpenBlockedPopper: !PDFViewerState.isOpenBlockedPopper,
+                            })
+                          );
 
-                          if (!isBlockedPopperOpen) {
+                          if (!PDFViewerState.isOpenBlockedPopper) {
                             return setBubbleContextTypeHelper();
                           }
 
@@ -334,9 +345,15 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                       }}
                     />
                     <BlockedPopper
-                      handleOnClickAwayFunc={() => setIsBlockedPopperOpen(false)}
+                      handleOnClickAwayFunc={() =>
+                        dispatch(
+                          ActionCreators.togglePDFBlockedPopper({
+                            isOpenBlockedPopper: false,
+                          })
+                        )
+                      }
                       anchorEl={viewMorePDFBtnEl.current}
-                      isOpen={isBlockedPopperOpen}
+                      isOpen={PDFViewerState.isOpenBlockedPopper}
                       buttonClickAction={"viewMorePDF"}
                     />
                   </div>
