@@ -119,7 +119,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
                 boundariesElement: "window",
               },
             }}
-            disablePortal={true}
+            disablePortal
           >
             <div className={styles.popperPaper}>
               <div className={styles.greetingBoxWrapper}>

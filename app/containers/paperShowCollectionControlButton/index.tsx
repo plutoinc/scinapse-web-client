@@ -238,7 +238,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
                   anchorEl={this.popoverAnchorEl}
                   open={myCollectionsState.isNoteDropdownOpen}
                   placement="bottom-end"
-                  disablePortal={true}
+                  disablePortal
                   modifiers={{ flip: { enabled: false } }}
                   popperOptions={{ positionFixed: true }}
                 >
@@ -289,7 +289,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
             open={myCollectionsState.isCollectionDropdownOpen}
             anchorEl={this.popoverAnchorEl!}
             placement="bottom-start"
-            disablePortal={true}
+            disablePortal
             modifiers={{
               flip: {
                 enabled: false,
