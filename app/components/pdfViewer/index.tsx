@@ -129,6 +129,8 @@ function closeBlockedPopper(isOpenBlockedPopper: boolean, dispatch: Dispatch<any
 }
 
 async function onClickViewMorePdfBtn(paperId: number, isOpenBlockedPopper: boolean, dispatch: Dispatch<any>) {
+  trackClickButton("viewMorePDF", paperId);
+
   if (getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
     dispatch(
       ActionCreators.togglePDFBlockedPopper({
@@ -149,8 +151,6 @@ async function onClickViewMorePdfBtn(paperId: number, isOpenBlockedPopper: boole
     actionLabel: "viewMorePDF",
     userActionType: "viewMorePDF",
   });
-
-  trackClickButton("viewMorePDF", paperId);
 
   if (isBlocked) {
     return;
@@ -358,6 +358,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                         anchorEl={viewMorePDFBtnEl.current}
                         isOpen={PDFViewerState.isOpenBlockedPopper}
                         buttonClickAction={"viewMorePDF"}
+                        actionArea={"pdfViewer"}
                       />
                     </div>
                   </ClickAwayListener>

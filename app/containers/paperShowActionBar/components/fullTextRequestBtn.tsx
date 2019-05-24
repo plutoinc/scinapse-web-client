@@ -27,6 +27,14 @@ const RequestFullTextBtn: React.FunctionComponent<{
     <button
       style={!!btnStyle ? btnStyle : {}}
       onClick={async () => {
+        ActionTicketManager.trackTicket({
+          pageType: "paperShow",
+          actionType: "fire",
+          actionArea: "paperDescription",
+          actionTag: "clickRequestFullTextBtn",
+          actionLabel: String(paperId),
+        });
+
         if (handleSetIsOpenBlockedPopper && getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
           handleSetIsOpenBlockedPopper(!isOpenBlockedPopper);
 
@@ -41,14 +49,6 @@ const RequestFullTextBtn: React.FunctionComponent<{
           actionArea: "paperDescription",
           actionLabel: "clickRequestFullTextBtn",
           userActionType: "clickRequestFullTextBtn",
-        });
-
-        ActionTicketManager.trackTicket({
-          pageType: "paperShow",
-          actionType: "fire",
-          actionArea: "paperDescription",
-          actionTag: "clickRequestFullTextBtn",
-          actionLabel: String(paperId),
         });
 
         if (!isBlocked) {

@@ -1,6 +1,10 @@
 import * as React from "react";
 import Popper, { PopperProps } from "@material-ui/core/Popper";
 import { withStyles } from "../../helpers/withStylesHelper";
+import { useObserver } from "../../hooks/useIntersectionHook";
+import { getCurrentPageType } from "../locationListener";
+import { ActionTicketParams } from "../../helpers/actionTicketManager/actionTicket";
+import ActionTicketManager from "../../helpers/actionTicketManager/index";
 const styles = require("./suddenAlert.scss");
 
 interface SuddenAlertProps extends PopperProps {}
@@ -8,6 +12,14 @@ interface SuddenAlertProps extends PopperProps {}
 const SuddenAlert: React.FC<SuddenAlertProps> = props => {
   const [suddenAlertTrigger, setSuddenAlertTrigger] = React.useState(false);
   const [shouldShowSuddenAlert, setShouldShowSuddenAlert] = React.useState(false);
+  const suddenAlertViewTicketContext: ActionTicketParams = {
+    pageType: getCurrentPageType(),
+    actionType: "view",
+    actionArea: "topBar",
+    actionTag: "alertView",
+    actionLabel: "suddenAlert",
+  };
+  const { elRef } = useObserver(0.1, suddenAlertViewTicketContext);
 
   React.useEffect(
     () => {
@@ -33,7 +45,7 @@ const SuddenAlert: React.FC<SuddenAlertProps> = props => {
 
   return (
     <Popper {...popperProps} style={{ zIndex: 9999 }}>
-      <div className={`${styles.speechBubble} ${props.className}`}>
+      <div className={`${styles.speechBubble} ${props.className}`} ref={elRef}>
         <div className={styles.contentWrapper}>
           <div className={styles.title}>You are not signed on Scinapse.</div>
           <div className={styles.subText}>When you join Scinapse, you can…</div>
@@ -49,6 +61,13 @@ const SuddenAlert: React.FC<SuddenAlertProps> = props => {
               className={styles.okBtn}
               onClick={() => {
                 setShouldShowSuddenAlert(false);
+                ActionTicketManager.trackTicket({
+                  pageType: getCurrentPageType(),
+                  actionType: "fire",
+                  actionArea: "topBar",
+                  actionTag: "clickOk",
+                  actionLabel: "suddenAlert",
+                });
               }}
             >
               OK

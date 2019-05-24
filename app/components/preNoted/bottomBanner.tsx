@@ -3,6 +3,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import { ActionTicketParams } from "../../helpers/actionTicketManager/actionTicket";
 import { useObserver } from "../../hooks/useIntersectionHook";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 const styles = require("./bottomBanner.scss");
 
 interface BottomBannerProps {
@@ -14,10 +15,17 @@ function handleOpenSignUp() {
   GlobalDialogManager.openSignUpDialog({
     authContext: {
       pageType: "paperShow",
-      actionArea: "bottomBanner",
-      actionLabel: null,
+      actionArea: "signBanner",
+      actionLabel: "bottomBanner",
     },
     isBlocked: false,
+  });
+  ActionTicketManager.trackTicket({
+    pageType: "paperShow",
+    actionType: "fire",
+    actionArea: "signBanner",
+    actionLabel: "bottomBanner",
+    actionTag: "signInPopup",
   });
 }
 
@@ -25,10 +33,17 @@ function handleOpenSignIn() {
   GlobalDialogManager.openSignInDialog({
     authContext: {
       pageType: "paperShow",
-      actionArea: "bottomBanner",
-      actionLabel: null,
+      actionArea: "signBanner",
+      actionLabel: "bottomBanner",
     },
     isBlocked: false,
+  });
+  ActionTicketManager.trackTicket({
+    pageType: "paperShow",
+    actionType: "fire",
+    actionArea: "signBanner",
+    actionLabel: "bottomBanner",
+    actionTag: "signUpPopup",
   });
 }
 
@@ -36,9 +51,9 @@ const BottomBanner: React.FC<BottomBannerProps> = ({ isLoggedIn, shouldShowBotto
   const bannerViewTicketContext: ActionTicketParams = {
     pageType: "paperShow",
     actionType: "view",
-    actionArea: "signBannerAtPaperShow",
+    actionArea: "signBanner",
     actionTag: "bannerView",
-    actionLabel: "di-black-blue",
+    actionLabel: "bottomBanner",
   };
   const { elRef } = useObserver(0.1, bannerViewTicketContext);
 

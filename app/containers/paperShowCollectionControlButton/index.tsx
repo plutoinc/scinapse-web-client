@@ -90,6 +90,14 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
         <div ref={addToCollectionBtnEl}>
           <button
             onClick={async () => {
+              ActionTicketManager.trackTicket({
+                pageType: "paperShow",
+                actionType: "fire",
+                actionArea: "paperDescription",
+                actionTag: "addToCollection",
+                actionLabel: null,
+              });
+
               if (getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
                 setIsOpenBlockedPopper(!isOpenBlockedPopper);
 
@@ -104,14 +112,6 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
                 actionArea: "paperDescription",
                 actionLabel: "addToCollection",
                 userActionType: "addToCollection",
-              });
-
-              ActionTicketManager.trackTicket({
-                pageType: "paperShow",
-                actionType: "fire",
-                actionArea: "paperDescription",
-                actionTag: "addToCollection",
-                actionLabel: null,
               });
             }}
             className={styles.unsignedTitleBtn}

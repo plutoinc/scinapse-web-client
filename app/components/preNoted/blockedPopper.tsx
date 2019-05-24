@@ -13,11 +13,13 @@ interface BlockedPopperProps {
   handleOnClickAwayFunc: () => void;
   anchorEl: HTMLDivElement | null;
   buttonClickAction: Scinapse.ActionTicket.ActionTagType;
+  actionArea?: string;
 }
 
 const BlockedPopperContent: React.FC<{
   buttonClickAction: Scinapse.ActionTicket.ActionTagType;
   onClickAwayButton: () => void;
+  actionArea: string;
 }> = props => {
   const { buttonClickAction, onClickAwayButton } = props;
   const bubbleContextType = String(store.get(BUBBLE_CONTEXT_TYPE));
@@ -48,14 +50,14 @@ const BlockedPopperContent: React.FC<{
 };
 
 const BlockedPopper: React.FC<BlockedPopperProps> = props => {
-  const { isOpen, anchorEl, buttonClickAction, handleOnClickAwayFunc } = props;
+  const { isOpen, anchorEl, buttonClickAction, handleOnClickAwayFunc, actionArea } = props;
 
   if (isOpen) {
     ActionTicketManager.trackTicket({
       pageType: "paperShow",
       actionType: "view",
-      actionArea: "signBannerAtPaperShow",
-      actionTag: "signBubble",
+      actionArea: actionArea || "paperDescription",
+      actionTag: "signBubbleView",
       actionLabel: buttonClickAction,
     });
   }
@@ -70,7 +72,11 @@ const BlockedPopper: React.FC<BlockedPopperProps> = props => {
       modifiers={{ flip: { enabled: false } }}
       popperOptions={{ positionFixed: true }}
     >
-      <BlockedPopperContent buttonClickAction={buttonClickAction} onClickAwayButton={handleOnClickAwayFunc} />
+      <BlockedPopperContent
+        buttonClickAction={buttonClickAction}
+        onClickAwayButton={handleOnClickAwayFunc}
+        actionArea={actionArea || "paperDescription"}
+      />
     </Popper>
   );
 };

@@ -61,6 +61,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
         rel="noopener nofollow noreferrer"
         onClick={async e => {
           e.preventDefault();
+          trackActionToClickPdfDownloadBtn();
 
           if (handleSetIsOpenBlockedPopper && getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
             handleSetIsOpenBlockedPopper(!isOpenBlockedPopper);
@@ -77,8 +78,6 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
             actionLabel: "downloadPdf",
             userActionType: "downloadPdf",
           });
-
-          trackActionToClickPdfDownloadBtn();
 
           if (isBlocked) {
             return;
