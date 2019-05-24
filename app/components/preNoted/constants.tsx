@@ -1,7 +1,7 @@
 enum BLOCKED_BUBBLE_CONTEXT_TYPE {
-  JOIN_SCINAPSE,
-  WHEN_YOU_JOIN_SCINAPSE,
-  ENJOY_UNLIMITED_SCINAPSE,
+  JOIN_SCINAPSE = "1",
+  WHEN_YOU_JOIN_SCINAPSE = "2",
+  ENJOY_UNLIMITED_SCINAPSE = "3",
 }
 interface BlockedBubbleKeywords {
   verb: string;
@@ -20,7 +20,7 @@ const blockedBubbleVerbAndNoun: { [key: string]: BlockedBubbleKeywords } = {
   addToCollection: { verb: "save to", noun: "Collection" },
 };
 
-export function getBlockedBubbleContext(userGroupName: number, buttonAction: string): BlockedBubbleContextStructure {
+export function getBlockedBubbleContext(userGroupName: string, buttonAction: string): BlockedBubbleContextStructure {
   const contextVerbAndNoun = blockedBubbleVerbAndNoun[buttonAction];
   switch (userGroupName) {
     case BLOCKED_BUBBLE_CONTEXT_TYPE.JOIN_SCINAPSE:
