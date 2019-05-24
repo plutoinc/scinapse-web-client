@@ -19,8 +19,8 @@ interface RelatedPapersProps {
   shouldShowRelatedPapers: boolean;
 }
 
-function openSignInDialog() {
-  blockUnverifiedUser({
+async function openSignInDialog() {
+  await blockUnverifiedUser({
     authLevel: AUTH_LEVEL.VERIFIED,
     actionArea: "paperShow",
     actionLabel: "relatedPaperAtPaperShow",

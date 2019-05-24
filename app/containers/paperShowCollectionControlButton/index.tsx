@@ -35,6 +35,11 @@ import { trackEvent } from "../../helpers/handleGA";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { ActionCreators } from "../../actions/actionTypes";
 import { blockUnverifiedUser, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
+import { getUserGroupName } from "../../helpers/abTestHelper";
+import { SIGN_BUBBLE_TEST } from "../../constants/abTestGlobalValue";
+import BlockedPopper from "../../components/preNoted/blockedPopper";
+import { setBubbleContextTypeHelper } from "../../helpers/getBubbleContextType";
+import LockedLabel from "../../components/preNoted/lockedLabel";
 const styles = require("./paperShowCollectionControlButton.scss");
 
 const LAST_USER_COLLECTION_ID = "l_u_c_id";
@@ -55,7 +60,16 @@ interface TitleAreaProps {
   onClick: () => void;
 }
 
-const TitleArea: React.SFC<TitleAreaProps> = props => {
+const TitleArea: React.FC<TitleAreaProps> = props => {
+  const [isOpenBlockedPopper, setIsOpenBlockedPopper] = React.useState(false);
+  const addToCollectionBtnEl = React.useRef<HTMLDivElement | null>(null);
+
+  const closeBlockedPopper = () => {
+    if (isOpenBlockedPopper) {
+      setIsOpenBlockedPopper(false);
+    }
+  };
+
   if (props.isLoading) {
     return (
       <span
@@ -73,27 +87,48 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
 
   if (!props.currentUser.isLoggedIn) {
     return (
-      <button
-        onClick={() => {
-          blockUnverifiedUser({
-            authLevel: AUTH_LEVEL.VERIFIED,
-            actionArea: "paperDescription",
-            actionLabel: "addToCollection",
-            userActionType: "addToCollection",
-          });
-          ActionTicketManager.trackTicket({
-            pageType: "paperShow",
-            actionType: "fire",
-            actionArea: "paperDescription",
-            actionTag: "addToCollection",
-            actionLabel: null,
-          });
-        }}
-        className={styles.unsignedTitleBtn}
-      >
-        <Icon icon="COLLECITON_LIST" className={styles.collectionIcon} />
-        Add to Collection
-      </button>
+      <ClickAwayListener onClickAway={closeBlockedPopper}>
+        <div ref={addToCollectionBtnEl}>
+          <button
+            onClick={async () => {
+              ActionTicketManager.trackTicket({
+                pageType: "paperShow",
+                actionType: "fire",
+                actionArea: "paperDescription",
+                actionTag: "addToCollection",
+                actionLabel: null,
+              });
+
+              if (getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
+                setIsOpenBlockedPopper(!isOpenBlockedPopper);
+
+                if (!isOpenBlockedPopper) {
+                  return setBubbleContextTypeHelper();
+                }
+                return;
+              }
+
+              await blockUnverifiedUser({
+                authLevel: AUTH_LEVEL.VERIFIED,
+                actionArea: "paperDescription",
+                actionLabel: "addToCollection",
+                userActionType: "addToCollection",
+              });
+            }}
+            className={styles.unsignedTitleBtn}
+          >
+            <Icon icon="COLLECITON_LIST" className={styles.collectionIcon} />
+            Add to Collection
+            <LockedLabel />
+          </button>
+          <BlockedPopper
+            handleOnClickAwayFunc={closeBlockedPopper}
+            anchorEl={addToCollectionBtnEl.current!}
+            isOpen={isOpenBlockedPopper}
+            buttonClickAction={"addToCollection"}
+          />
+        </div>
+      </ClickAwayListener>
     );
   } else if (!props.collection) {
     return (
@@ -213,7 +248,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
                   anchorEl={this.popoverAnchorEl}
                   open={myCollectionsState.isNoteDropdownOpen}
                   placement="bottom-end"
-                  disablePortal={true}
+                  disablePortal
                   modifiers={{ flip: { enabled: false } }}
                   popperOptions={{ positionFixed: true }}
                 >
@@ -264,7 +299,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
             open={myCollectionsState.isCollectionDropdownOpen}
             anchorEl={this.popoverAnchorEl!}
             placement="bottom-start"
-            disablePortal={true}
+            disablePortal
             modifiers={{
               flip: {
                 enabled: false,
