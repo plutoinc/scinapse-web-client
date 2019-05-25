@@ -9,11 +9,11 @@ export default function setABTest(req: express.Request, res: express.Response) {
       if (!keys.includes(test.name)) {
         const randomUserGroup = getRandomUserGroup(test.name);
         res.cookie(test.name, randomUserGroup, {
-          maxAge: 31536000000,
+          maxAge: 2592000000,
         });
       } else {
         res.cookie(test.name, req.cookies[test.name], {
-          maxAge: 31536000000,
+          maxAge: 2592000000,
         });
       }
     });
