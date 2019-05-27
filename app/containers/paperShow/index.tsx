@@ -293,24 +293,23 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) !== "control"
               }
             />
-            {!!PDFViewerState.parsedPDFObject && (
-              <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
-                <PaperShowRefCitedTab
-                  paper={paper}
-                  afterDownloadPDF={this.scrollToSection("fullText")}
-                  onClickFullTextTab={this.scrollToSection("fullText")}
-                  onClickDownloadPDF={this.handleClickDownloadPDF}
-                  handleClickRefTab={this.scrollToSection("ref")}
-                  handleClickCitedTab={this.scrollToSection("cited")}
-                  isFixed={isOnFullText}
-                  isOnRef={isOnRef}
-                  isOnCited={isOnCited}
-                  isOnFullText={isOnFullText}
-                  isLoading={PDFViewerState.isLoading}
-                  canShowFullPDF
-                />
-              </div>
-            )}
+            <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
+              <PaperShowRefCitedTab
+                paper={paper}
+                currentUser={currentUser}
+                afterDownloadPDF={this.scrollToSection("fullText")}
+                onClickFullTextTab={this.scrollToSection("fullText")}
+                onClickDownloadPDF={this.handleClickDownloadPDF}
+                handleClickRefTab={this.scrollToSection("ref")}
+                handleClickCitedTab={this.scrollToSection("cited")}
+                isFixed={isOnFullText || isOnRef || isOnCited}
+                isOnRef={isOnRef}
+                isOnCited={isOnCited}
+                isOnFullText={isOnFullText}
+                isLoading={PDFViewerState.isLoading}
+                canShowFullPDF={!!PDFViewerState.parsedPDFObject}
+              />
+            </div>
             <NoSsr>
               {layout.userDevice === UserDevice.DESKTOP && (
                 <PDFViewer
@@ -324,22 +323,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               )}
             </NoSsr>
           </div>
-          <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)}>
-            <PaperShowRefCitedTab
-              paper={paper}
-              afterDownloadPDF={this.scrollToSection("fullText")}
-              onClickFullTextTab={this.scrollToSection("fullText")}
-              onClickDownloadPDF={this.handleClickDownloadPDF}
-              handleClickRefTab={this.scrollToSection("ref")}
-              handleClickCitedTab={this.scrollToSection("cited")}
-              isFixed={isOnRef}
-              isOnRef={isOnRef}
-              isOnCited={isOnCited}
-              isOnFullText={isOnFullText || (!isOnFullText && !isOnRef && !isOnCited)}
-              isLoading={PDFViewerState.isLoading}
-              canShowFullPDF={!!PDFViewerState.parsedPDFObject}
-            />
-          </div>
+          <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)} />
           <div className={styles.citedBy}>
             <article className={styles.paperShow}>
               <div>
@@ -362,22 +346,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             </article>
           </div>
           <div className={styles.sectionDivider} />
-          <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)}>
-            <PaperShowRefCitedTab
-              paper={paper}
-              afterDownloadPDF={this.scrollToSection("fullText")}
-              onClickFullTextTab={this.scrollToSection("fullText")}
-              onClickDownloadPDF={this.handleClickDownloadPDF}
-              handleClickRefTab={this.scrollToSection("ref")}
-              handleClickCitedTab={this.scrollToSection("cited")}
-              isFixed={isOnCited}
-              isOnRef={isOnRef}
-              isOnCited={isOnCited}
-              isOnFullText={isOnFullText || (!isOnFullText && !isOnRef && !isOnCited)}
-              isLoading={PDFViewerState.isLoading}
-              canShowFullPDF={!!PDFViewerState.parsedPDFObject}
-            />
-          </div>
+          <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)} />
           <div className={styles.citedBy}>
             <article className={styles.paperShow}>
               <div>

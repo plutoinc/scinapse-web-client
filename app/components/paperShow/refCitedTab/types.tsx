@@ -1,12 +1,18 @@
 import { Paper } from "../../../model/paper";
+import { CurrentUser } from "../../../model/currentUser";
 
-export interface PaperShowRefCitedTabProps extends PDFButtonProps {
+export interface PaperShowRefCitedTabProps {
+  paper: Paper;
   isFixed: boolean;
   isOnRef: boolean;
   isOnCited: boolean;
   isOnFullText: boolean;
   isLoading: boolean;
+  currentUser: CurrentUser;
+  canShowFullPDF: boolean;
 
+  afterDownloadPDF: () => void;
+  onClickDownloadPDF: () => void;
   handleClickRefTab: () => void;
   handleClickCitedTab: () => void;
   onClickFullTextTab?: () => void;
@@ -22,10 +28,11 @@ export interface PDFButtonProps {
   paper: Paper;
   isLoading: boolean;
   canShowFullPDF: boolean;
-  actionBtnEl?: HTMLDivElement | null;
-  isOpenBlockedPopper?: boolean;
-  handleSetIsOpenBlockedPopper?: (value: React.SetStateAction<boolean>) => void;
-  handleCloseBlockedPopper?: () => void;
+  actionBtnEl: HTMLDivElement | null;
+  isOpenBlockedPopper: boolean;
+  currentUser: CurrentUser;
   afterDownloadPDF: () => void;
   onClickDownloadPDF: () => void;
+  handleSetIsOpenBlockedPopper: (value: React.SetStateAction<boolean>) => void;
+  handleCloseBlockedPopper: () => void;
 }

@@ -30,7 +30,7 @@ jobs:
       - run:
           name: Update PATH and Define Environment Variable at Runtime
           command: |
-            echo 'export DIFF=$(git log --oneline --pretty=format:"%cd(%cr)] <https://github.com/pluto-net/scinapse-web-client/commit/%H|%s> - (By %an)" production..HEAD)' >> $BASH_ENV
+            echo 'export COMMIT_MESSAGES=$(git log --oneline --pretty=format:"%cd(%cr)] <https://github.com/pluto-net/scinapse-web-client/commit/%H|%s> - (By %an)" production..HEAD)' >> $BASH_ENV
             source $BASH_ENV
       - run:
           name: set git tag
@@ -44,7 +44,7 @@ jobs:
           message: "Build DONE! Finish to production deploy version: $DEPLOYED_VERSION"
       - slack/notify:
           webhook: $DEPLOY_PROD_SLACK_WEBHOOK
-          message: "$DIFF"
+          message: $COMMIT_MESSAGES
 workflows:
   version: 2
   deploy:

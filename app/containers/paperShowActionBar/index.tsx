@@ -10,7 +10,6 @@ import SourceButton from "../../components/paperShow/components/sourceButton";
 import ViewFullTextBtn from "../../components/paperShow/components/viewFullTextBtn";
 import RequestFullTextBtn from "./components/fullTextRequestBtn";
 import BlockedPopper from "../../components/preNoted/blockedPopper";
-
 const s = require("./actionBar.scss");
 
 interface PaperShowActionBarProps {
@@ -23,9 +22,8 @@ interface PaperShowActionBarProps {
 
 const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [isOpenBlockedPopper, setIsOpenBlockedPopper] = React.useState(false);
   const requestFullTextBtnEl = React.useRef<HTMLDivElement | null>(null);
-
+  const [isOpenBlockedPopper, setIsOpenBlockedPopper] = React.useState(false);
   const hasSource = props.paper.urls.length > 0;
 
   return (
@@ -38,6 +36,7 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props =
                 <RequestFullTextBtn
                   isLoading={props.isLoadingPDF}
                   paperId={props.paper!.id}
+                  currentUser={props.currentUser}
                   isOpenBlockedPopper={isOpenBlockedPopper}
                   handleSetIsOpen={setIsOpen}
                   handleSetIsOpenBlockedPopper={setIsOpenBlockedPopper}

@@ -35,6 +35,7 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
     afterDownloadPDF,
     handleSetIsOpenBlockedPopper,
     handleCloseBlockedPopper,
+    currentUser,
   } = props;
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -65,6 +66,7 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
   return (
     <>
       <RequestFullTextBtn
+        currentUser={currentUser}
         isLoading={isLoading}
         paperId={paper!.id}
         isOpenBlockedPopper={isOpenBlockedPopper}
@@ -127,6 +129,7 @@ const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(pro
           <ClickAwayListener onClickAway={closeBlockedPopper}>
             <div className={styles.actionItem} ref={actionBtnEl}>
               <PDFButton
+                currentUser={props.currentUser}
                 paper={props.paper}
                 isLoading={props.isLoading}
                 canShowFullPDF={props.canShowFullPDF}
