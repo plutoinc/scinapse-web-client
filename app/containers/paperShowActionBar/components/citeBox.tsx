@@ -8,6 +8,7 @@ const s = require("./citeBox.scss");
 
 interface CiteBoxProps {
   paper: Paper;
+  actionArea: string;
   btnStyle?: React.CSSProperties;
 }
 
@@ -22,7 +23,7 @@ const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
         ActionTicketManager.trackTicket({
           pageType: "paperShow",
           actionType: "fire",
-          actionArea: "paperDescription",
+          actionArea: props.actionArea,
           actionTag: "citePaper",
           actionLabel: String(props.paper.id),
         });

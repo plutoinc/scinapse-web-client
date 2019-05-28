@@ -18,6 +18,7 @@ const RequestFullTextBtn: React.FunctionComponent<{
   isOpenBlockedPopper?: boolean;
   handleSetIsOpen: (value: React.SetStateAction<boolean>) => void;
   handleSetIsOpenBlockedPopper: (value: React.SetStateAction<boolean>) => void;
+  actionArea: Scinapse.ActionTicket.ActionArea;
   btnStyle?: React.CSSProperties;
 }> = React.memo(props => {
   const { isLoading, paperId, isOpenBlockedPopper, handleSetIsOpen, btnStyle, handleSetIsOpenBlockedPopper } = props;
@@ -42,7 +43,7 @@ const RequestFullTextBtn: React.FunctionComponent<{
         ActionTicketManager.trackTicket({
           pageType: "paperShow",
           actionType: "fire",
-          actionArea: "paperDescription",
+          actionArea: props.actionArea,
           actionTag: "clickRequestFullTextBtn",
           actionLabel: String(paperId),
         });
@@ -58,7 +59,7 @@ const RequestFullTextBtn: React.FunctionComponent<{
 
         const isBlocked = await blockUnverifiedUser({
           authLevel: AUTH_LEVEL.VERIFIED,
-          actionArea: "paperDescription",
+          actionArea: props.actionArea,
           actionLabel: "clickRequestFullTextBtn",
           userActionType: "clickRequestFullTextBtn",
         });
