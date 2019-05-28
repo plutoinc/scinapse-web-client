@@ -53,6 +53,7 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
       <>
         <PdfDownloadButton
           paper={paper}
+          currentUser={currentUser}
           isLoading={isLoading}
           isOpenBlockedPopper={isOpenBlockedPopper}
           onDownloadedPDF={onClickDownloadPDF!}

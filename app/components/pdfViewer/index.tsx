@@ -28,6 +28,7 @@ import { SIGN_BUBBLE_TEST } from "../../constants/abTestGlobalValue";
 import { setBubbleContextTypeHelper } from "../../helpers/getBubbleContextType";
 import LockedLabel from "../preNoted/lockedLabel";
 import BlurBlocker from "./component/blurBlocker";
+import { CurrentUser } from "../../model/currentUser";
 const { Document, Page, pdfjs } = require("react-pdf");
 const styles = require("./pdfViewer.scss");
 
@@ -130,11 +131,17 @@ function closeBlockedPopper(isOpenBlockedPopper: boolean, dispatch: Dispatch<any
     );
   }
 }
-
-async function onClickViewMorePdfBtn(paperId: number, isOpenBlockedPopper: boolean, dispatch: Dispatch<any>) {
+interface OnClickViewMorePdfBtnParams {
+  paperId: number;
+  isOpenBlockedPopper: boolean;
+  dispatch: Dispatch<any>;
+  currentUser: CurrentUser;
+}
+async function onClickViewMorePdfBtn(params: OnClickViewMorePdfBtnParams) {
+  const { paperId, isOpenBlockedPopper, dispatch, currentUser } = params;
   trackClickButton("viewMorePDF", paperId);
 
-  if (getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
+  if (!currentUser.isLoggedIn && getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
     dispatch(
       ActionCreators.togglePDFBlockedPopper({
         isOpenBlockedPopper: !isOpenBlockedPopper,
@@ -173,7 +180,7 @@ const PDFContent: React.FC<{
   let pageContent;
   if (props.isExpanded) {
     pageContent = Array.from(new Array(props.pageCountToShow), (_el, i) => (
-      <div className={styles.pageLayer}>
+      <div key={i} className={styles.pageLayer}>
         <Page pdf={props.pdfBlob} width={996} margin={"0 auto"} key={i} pageNumber={i + 1} />
       </div>
     ));
@@ -206,7 +213,6 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   } = props;
   const wrapperNode = React.useRef<HTMLDivElement | null>(null);
   const viewMorePDFBtnEl = React.useRef<HTMLDivElement | null>(null);
-
   const actionTag = PDFViewerState.isExpanded ? "viewLessPDF" : "viewMorePDF";
 
   React.useEffect(
@@ -281,7 +287,14 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
             }
             isLoading={PDFViewerState.isLoading}
             disabled={PDFViewerState.hasFailed}
-            onClick={async () => onClickViewMorePdfBtn(props.paper.id, PDFViewerState.isOpenBlockedPopper, dispatch)}
+            onClick={async () =>
+              onClickViewMorePdfBtn({
+                paperId: props.paper.id,
+                isOpenBlockedPopper: PDFViewerState.isOpenBlockedPopper,
+                currentUser,
+                dispatch,
+              })
+            }
           />
           <BlockedPopper
             handleOnClickAwayFunc={() => closeBlockedPopper(PDFViewerState.isOpenBlockedPopper, dispatch)}

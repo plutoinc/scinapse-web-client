@@ -9,12 +9,14 @@ import { getUserGroupName } from "../../../helpers/abTestHelper";
 import { SIGN_BUBBLE_TEST } from "../../../constants/abTestGlobalValue";
 import { setBubbleContextTypeHelper } from "../../../helpers/getBubbleContextType";
 import LockedLabel from "../../preNoted/lockedLabel";
+import { CurrentUser } from "../../../model/currentUser";
 
 const styles = require("./pdfSourceButton.scss");
 
 interface PdfDownloadButtonProps {
   paper: Paper;
   isLoading: boolean;
+  currentUser: CurrentUser;
   isOpenBlockedPopper?: boolean;
   onDownloadedPDF: (isDownload: boolean) => void;
   handleSetScrollAfterDownload: () => void;
@@ -31,6 +33,15 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
     handleSetScrollAfterDownload,
     handleSetIsOpenBlockedPopper,
   } = props;
+
+  React.useEffect(
+    () => {
+      if (props.currentUser.isLoggedIn && handleSetIsOpenBlockedPopper) {
+        handleSetIsOpenBlockedPopper(false);
+      }
+    },
+    [props.currentUser]
+  );
 
   function trackActionToClickPdfDownloadBtn() {
     ActionTicketManager.trackTicket({
@@ -64,7 +75,11 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
           e.preventDefault();
           trackActionToClickPdfDownloadBtn();
 
-          if (handleSetIsOpenBlockedPopper && getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
+          if (
+            !props.currentUser.isLoggedIn &&
+            handleSetIsOpenBlockedPopper &&
+            getUserGroupName(SIGN_BUBBLE_TEST) === "bubble"
+          ) {
             handleSetIsOpenBlockedPopper(!isOpenBlockedPopper);
 
             if (!isOpenBlockedPopper) {
