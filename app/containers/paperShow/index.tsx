@@ -20,14 +20,13 @@ import { Paper } from "../../model/paper";
 import { fetchCitedPaperData, fetchMyCollection, fetchPaperShowData, fetchRefPaperData } from "./sideEffect";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import { LayoutState, UserDevice } from "../../components/layouts/records";
-import { trackEvent } from "../../helpers/handleGA";
 import { getMemoizedPaper } from "./select";
 import { formulaeToHTMLStr } from "../../helpers/displayFormula";
 import restoreScroll from "../../helpers/scrollRestoration";
 import ErrorPage from "../../components/error/errorPage";
 import EnvChecker from "../../helpers/envChecker";
 import NextPaperTab from "../nextPaperTab";
-import { PaperShowMatchParams, PaperShowPageQueryParams } from "./types";
+import { PaperShowMatchParams, PaperShowPageQueryParams, RefCitedTabItem } from "./types";
 import VenueAndAuthors from "../../components/common/paperItem/venueAndAuthors";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import RelatedPapers from "../../components/relatedPapers";
@@ -298,10 +297,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 paper={paper}
                 currentUser={currentUser}
                 afterDownloadPDF={this.scrollToSection("fullText")}
-                onClickFullTextTab={this.scrollToSection("fullText")}
                 onClickDownloadPDF={this.handleClickDownloadPDF}
-                handleClickRefTab={this.scrollToSection("ref")}
-                handleClickCitedTab={this.scrollToSection("cited")}
+                onClickTabItem={this.handleClickRefCitedTabItem}
                 isFixed={isOnFullText || isOnRef || isOnCited}
                 isOnRef={isOnRef}
                 isOnCited={isOnCited}
@@ -555,41 +552,49 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     };
   };
 
-  private scrollToSection = (section: "fullText" | "ref" | "cited") => () => {
+  private handleClickRefCitedTabItem = (section: RefCitedTabItem) => () => {
+    const { paper } = this.props;
+    let actionTag: Scinapse.ActionTicket.ActionTagType;
+    if (section === "fullText") {
+      actionTag = "downloadPdf";
+    } else if (section === "ref") {
+      actionTag = "refList";
+    } else {
+      actionTag = "citedList";
+    }
+
+    this.scrollToSection(section)();
+    ActionTicketManager.trackTicket({
+      pageType: "paperShow",
+      actionType: "fire",
+      actionArea: "contentNavbar",
+      actionTag,
+      actionLabel: String(paper!.id),
+    });
+  };
+
+  private scrollToSection = (section: RefCitedTabItem) => () => {
     let target: HTMLDivElement | null = null;
-    let action = "";
-    let label = "";
 
     switch (section) {
       case "fullText": {
         target = this.fullTextTabWrapper;
-        label = "Click Full text Tab";
-        action = "Click Full text Tab in Paper Show refBar";
         break;
       }
 
       case "ref": {
         target = this.refTabWrapper;
-        label = "Click References Tab";
-        action = "Click References Tab in Paper Show refBar";
         break;
       }
 
       case "cited": {
         target = this.citedTabWrapper;
-        label = "Click Cited by Tab";
-        action = "Click Cited by Tab in Paper Show refBar";
         break;
       }
     }
 
     if (!EnvChecker.isOnServer() && target) {
       window.scrollTo(0, target.offsetTop - NAVBAR_HEIGHT);
-      trackEvent({
-        category: "New Paper Show",
-        action,
-        label,
-      });
     }
   };
 }

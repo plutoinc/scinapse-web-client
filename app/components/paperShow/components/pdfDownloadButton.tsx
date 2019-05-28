@@ -17,10 +17,11 @@ interface PdfDownloadButtonProps {
   paper: Paper;
   isLoading: boolean;
   currentUser: CurrentUser;
-  isOpenBlockedPopper?: boolean;
+  actionArea: Scinapse.ActionTicket.ActionArea;
   onDownloadedPDF: (isDownload: boolean) => void;
   handleSetScrollAfterDownload: () => void;
   handleSetIsOpenBlockedPopper?: (value: React.SetStateAction<boolean>) => void;
+  isOpenBlockedPopper?: boolean;
   wrapperStyle?: React.CSSProperties;
 }
 
@@ -32,6 +33,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
     isOpenBlockedPopper,
     handleSetScrollAfterDownload,
     handleSetIsOpenBlockedPopper,
+    actionArea,
   } = props;
 
   React.useEffect(
@@ -47,7 +49,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
     ActionTicketManager.trackTicket({
       pageType: "paperShow",
       actionType: "fire",
-      actionArea: "paperDescription",
+      actionArea: actionArea,
       actionTag: "downloadPdf",
       actionLabel: String(paper.id),
     });
@@ -90,7 +92,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
 
           const isBlocked = await blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,
-            actionArea: "paperDescription",
+            actionArea: actionArea,
             actionLabel: "downloadPdf",
             userActionType: "downloadPdf",
           });

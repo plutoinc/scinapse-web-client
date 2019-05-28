@@ -52,6 +52,7 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
     return (
       <>
         <PdfDownloadButton
+          actionArea="contentNavBar"
           paper={paper}
           currentUser={currentUser}
           isLoading={isLoading}
@@ -67,6 +68,7 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
   return (
     <>
       <RequestFullTextBtn
+        actionArea="contentNavBar"
         currentUser={currentUser}
         isLoading={isLoading}
         paperId={paper!.id}
@@ -98,8 +100,10 @@ const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(pro
     }
   };
 
-  if (props.canShowFullPDF && props.onClickFullTextTab) {
-    fullTextNode = <TabItem active={!!props.isOnFullText} onClick={props.onClickFullTextTab} text="Full Text" />;
+  if (props.canShowFullPDF) {
+    fullTextNode = (
+      <TabItem active={!!props.isOnFullText} onClick={props.onClickTabItem("fullText")} text="Full Text" />
+    );
   }
 
   return (
@@ -114,18 +118,22 @@ const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(pro
           {fullTextNode}
           <TabItem
             active={props.isOnRef}
-            onClick={props.handleClickRefTab}
+            onClick={props.onClickTabItem("ref")}
             text={`References (${props.paper.referenceCount})`}
           />
           <TabItem
             active={props.isOnCited}
-            onClick={props.handleClickCitedTab}
+            onClick={props.onClickTabItem("cited")}
             text={`Citations (${props.paper.citedCount})`}
           />
         </ul>
         <div className={styles.rightBtnBox}>
           <div className={styles.actionItem}>
-            <CiteBox paper={props.paper} btnStyle={{ maxWidth: "74px", width: "100%", height: "36px" }} />
+            <CiteBox
+              actionArea="contentNavBar"
+              paper={props.paper}
+              btnStyle={{ maxWidth: "74px", width: "100%", height: "36px" }}
+            />
           </div>
           <ClickAwayListener onClickAway={closeBlockedPopper}>
             <div className={styles.actionItem} ref={actionBtnEl}>
@@ -139,7 +147,7 @@ const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(pro
                 handleSetIsOpenBlockedPopper={setIsOpenBlockedPopper}
                 handleCloseBlockedPopper={closeBlockedPopper}
                 onClickDownloadPDF={props.onClickDownloadPDF!}
-                afterDownloadPDF={props.onClickFullTextTab!}
+                afterDownloadPDF={props.afterDownloadPDF!}
               />
             </div>
           </ClickAwayListener>

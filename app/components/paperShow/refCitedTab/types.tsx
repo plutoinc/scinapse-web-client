@@ -1,5 +1,6 @@
 import { Paper } from "../../../model/paper";
 import { CurrentUser } from "../../../model/currentUser";
+import { RefCitedTabItem } from "../../../containers/paperShow/types";
 
 export interface PaperShowRefCitedTabProps {
   paper: Paper;
@@ -13,9 +14,7 @@ export interface PaperShowRefCitedTabProps {
 
   afterDownloadPDF: () => void;
   onClickDownloadPDF: () => void;
-  handleClickRefTab: () => void;
-  handleClickCitedTab: () => void;
-  onClickFullTextTab?: () => void;
+  onClickTabItem: (section: RefCitedTabItem) => () => void;
 }
 
 export interface TabItemProps {

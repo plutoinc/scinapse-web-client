@@ -34,6 +34,7 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props =
             <ClickAwayListener onClickAway={() => setIsOpenBlockedPopper(false)}>
               <div className={s.actionItem} ref={requestFullTextBtnEl}>
                 <RequestFullTextBtn
+                  actionArea="paperDescription"
                   isLoading={props.isLoadingPDF}
                   paperId={props.paper!.id}
                   currentUser={props.currentUser}
@@ -65,7 +66,7 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props =
               </div>
             )}
           <div className={s.actionItem}>
-            <CiteBox paper={props.paper} />
+            <CiteBox actionArea="paperDescription" paper={props.paper} />
           </div>
           <FullTextDialog
             paperId={props.paper.id}
