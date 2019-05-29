@@ -100,7 +100,6 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
             pageType={pageType}
             actionArea={actionArea}
             paper={paper}
-            searchQueryText={searchQueryText}
             source={source}
             shouldBlockUnverifiedUser={!!shouldBlockUnverifiedUser}
             currentPage={currentPage}

@@ -1,13 +1,12 @@
 import * as React from "react";
-import { escapeRegExp } from "lodash";
 import { connect, Dispatch } from "react-redux";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-import HighLightedContent from "../highLightedContent";
+import { withRouter, RouteComponentProps, Link } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
 import actionTicketManager from "../../../helpers/actionTicketManager";
 import { Paper } from "../../../model/paper";
 import { ActionCreators } from "../../../actions/actionTypes";
+import Icon from "../../../icons";
 const styles = require("./title.scss");
 
 export interface TitleProps extends RouteComponentProps<any> {
@@ -17,14 +16,20 @@ export interface TitleProps extends RouteComponentProps<any> {
   pageType: Scinapse.ActionTicket.PageType;
   shouldBlockUnverifiedUser: boolean;
   actionArea?: Scinapse.ActionTicket.ActionArea;
-  searchQueryText?: string;
   currentPage?: number;
 }
 
-class Title extends React.PureComponent<TitleProps, {}> {
+class Title extends React.Component<TitleProps> {
+  public shouldComponentUpdate(nextProps: TitleProps) {
+    if (this.props.paper.id !== nextProps.paper.id) {
+      return true;
+    }
+    return false;
+  }
+
   public render() {
-    const { paper, searchQueryText, source } = this.props;
-    const title = paper.titleHighlighted || paper.title;
+    const { paper } = this.props;
+    const title = paper.title;
 
     if (!title) {
       return null;
@@ -35,37 +40,36 @@ class Title extends React.PureComponent<TitleProps, {}> {
       .replace(/\s{2,}/g, " ")
       .replace(/#[A-Z0-9]+#/g, "");
 
-    const noSearchQueryText = !searchQueryText;
-    const searchQuery = escapeRegExp(searchQueryText);
-    if (noSearchQueryText) {
-      return (
-        <div>
-          <a href={`/papers/${paper.id}`} onClick={this.handleClickTitle} className={styles.title}>
-            <span dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(title) }} />
-          </a>
-        </div>
-      );
-    }
     return (
       <div>
-        <HighLightedContent
-          content={trimmedTitle}
-          highLightContent={searchQuery}
-          className={styles.title}
-          onClickFunc={this.handleClickTitle}
-          href={source}
-          to={{
-            pathname: `/papers/${paper.id}`,
+        <Link
+          to={`/papers/${paper.id}`}
+          onClick={() => {
+            this.handleClickTitle(false);
           }}
+          dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(trimmedTitle) }}
+          className={styles.title}
         />
+        <a
+          href={`/papers/${paper.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.externalIconWrapper}
+        >
+          <Icon
+            onClick={() => {
+              this.handleClickTitle(true);
+            }}
+            icon="NEW_TAB"
+            className={styles.externalIcon}
+          />
+        </a>
       </div>
     );
   }
 
-  private handleClickTitle = async (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const { dispatch, pageType, actionArea, paper, history } = this.props;
-    e.preventDefault();
-
+  private handleClickTitle = (fromNewTab?: boolean) => {
+    const { dispatch, pageType, actionArea, paper } = this.props;
     actionTicketManager.trackTicket({
       pageType,
       actionType: "fire",
@@ -73,6 +77,16 @@ class Title extends React.PureComponent<TitleProps, {}> {
       actionTag: "paperShow",
       actionLabel: String(paper.id),
     });
+
+    if (fromNewTab) {
+      actionTicketManager.trackTicket({
+        pageType,
+        actionType: "fire",
+        actionArea: "titleNewTab",
+        actionTag: "paperShow",
+        actionLabel: String(paper.id),
+      });
+    }
 
     if (paper.abstractHighlighted || paper.titleHighlighted) {
       dispatch(
@@ -82,8 +96,6 @@ class Title extends React.PureComponent<TitleProps, {}> {
         })
       );
     }
-
-    history.push(`/papers/${paper.id}`);
   };
 }
 
