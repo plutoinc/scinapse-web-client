@@ -6,6 +6,7 @@ import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
 import actionTicketManager from "../../../helpers/actionTicketManager";
 import { Paper } from "../../../model/paper";
 import { ActionCreators } from "../../../actions/actionTypes";
+import Icon from "../../../icons";
 const styles = require("./title.scss");
 
 export interface TitleProps extends RouteComponentProps<any> {
@@ -40,13 +41,34 @@ class Title extends React.Component<TitleProps> {
       .replace(/#[A-Z0-9]+#/g, "");
 
     return (
-      <Link to={`/papers/${paper.id}`} onClick={this.handleClickTitle} className={styles.title}>
-        <span dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(trimmedTitle) }} />
-      </Link>
+      <div>
+        <Link
+          to={`/papers/${paper.id}`}
+          onClick={() => {
+            this.handleClickTitle(false);
+          }}
+          dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(trimmedTitle) }}
+          className={styles.title}
+        />
+        <a
+          href={`/papers/${paper.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.externalIconWrapper}
+        >
+          <Icon
+            onClick={() => {
+              this.handleClickTitle(true);
+            }}
+            icon="NEW_TAB"
+            className={styles.externalIcon}
+          />
+        </a>
+      </div>
     );
   }
 
-  private handleClickTitle = async () => {
+  private handleClickTitle = (fromNewTab?: boolean) => {
     const { dispatch, pageType, actionArea, paper } = this.props;
     actionTicketManager.trackTicket({
       pageType,
@@ -55,6 +77,16 @@ class Title extends React.Component<TitleProps> {
       actionTag: "paperShow",
       actionLabel: String(paper.id),
     });
+
+    if (fromNewTab) {
+      actionTicketManager.trackTicket({
+        pageType,
+        actionType: "fire",
+        actionArea: "titleNewTab",
+        actionTag: "paperShow",
+        actionLabel: String(paper.id),
+      });
+    }
 
     if (paper.abstractHighlighted || paper.titleHighlighted) {
       dispatch(
