@@ -6,31 +6,31 @@ import HighLightedContent from "../highLightedContent";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
 import actionTicketManager from "../../../helpers/actionTicketManager";
-import { Paper } from "../../../model/paper";
 import { ActionCreators } from "../../../actions/actionTypes";
 const styles = require("./title.scss");
 
 export interface TitleProps extends RouteComponentProps<any> {
   dispatch: Dispatch<any>;
-  paper: Paper;
+  paperId: number;
+  paperTitle: string;
+  highlightTitle?: string;
+  highlightAbstract?: string;
   source: string;
   pageType: Scinapse.ActionTicket.PageType;
-  shouldBlockUnverifiedUser: boolean;
   actionArea?: Scinapse.ActionTicket.ActionArea;
   searchQueryText?: string;
-  currentPage?: number;
 }
 
-class Title extends React.PureComponent<TitleProps, {}> {
+class Title extends React.PureComponent<TitleProps> {
   public render() {
-    const { paper, searchQueryText, source } = this.props;
-    const title = paper.titleHighlighted || paper.title;
+    const { paperTitle, highlightTitle, searchQueryText, source, paperId } = this.props;
+    const finalTitle = highlightTitle || paperTitle;
 
-    if (!title) {
+    if (!finalTitle) {
       return null;
     }
-    // for removing first or last space or trash value of content
-    const trimmedTitle = title
+
+    const trimmedTitle = finalTitle
       .replace(/^ /gi, "")
       .replace(/\s{2,}/g, " ")
       .replace(/#[A-Z0-9]+#/g, "");
@@ -40,8 +40,8 @@ class Title extends React.PureComponent<TitleProps, {}> {
     if (noSearchQueryText) {
       return (
         <div>
-          <a href={`/papers/${paper.id}`} onClick={this.handleClickTitle} className={styles.title}>
-            <span dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(title) }} />
+          <a href={`/papers/${paperId}`} onClick={this.handleClickTitle} className={styles.title}>
+            <span dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(finalTitle) }} />
           </a>
         </div>
       );
@@ -55,7 +55,7 @@ class Title extends React.PureComponent<TitleProps, {}> {
           onClickFunc={this.handleClickTitle}
           href={source}
           to={{
-            pathname: `/papers/${paper.id}`,
+            pathname: `/papers/${paperId}`,
           }}
         />
       </div>
@@ -63,7 +63,7 @@ class Title extends React.PureComponent<TitleProps, {}> {
   }
 
   private handleClickTitle = async (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const { dispatch, pageType, actionArea, paper, history } = this.props;
+    const { dispatch, pageType, actionArea, highlightTitle, highlightAbstract, paperId, history } = this.props;
     e.preventDefault();
 
     actionTicketManager.trackTicket({
@@ -71,19 +71,19 @@ class Title extends React.PureComponent<TitleProps, {}> {
       actionType: "fire",
       actionArea: actionArea || pageType,
       actionTag: "paperShow",
-      actionLabel: String(paper.id),
+      actionLabel: String(paperId),
     });
 
-    if (paper.abstractHighlighted || paper.titleHighlighted) {
+    if (highlightTitle || highlightAbstract) {
       dispatch(
         ActionCreators.setHighlightContentInPaperShow({
-          title: paper.titleHighlighted || "",
-          abstract: paper.abstractHighlighted || "",
+          title: highlightTitle || "",
+          abstract: highlightAbstract || "",
         })
       );
     }
 
-    history.push(`/papers/${paper.id}`);
+    history.push(`/papers/${paperId}`);
   };
 }
 

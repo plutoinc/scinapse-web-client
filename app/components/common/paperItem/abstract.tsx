@@ -13,7 +13,6 @@ export interface AbstractProps {
   searchQueryText?: string;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea?: Scinapse.ActionTicket.ActionArea;
-  currentPage?: number;
 }
 
 export interface AbstractStates extends Readonly<{}> {
