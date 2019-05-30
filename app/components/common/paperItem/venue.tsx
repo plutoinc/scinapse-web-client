@@ -95,11 +95,11 @@ const PaperItemVenue = ({
           <span className={styles.ifLabel}>
             <span>
               <Tooltip
-                disableFocusListener={true}
-                disableTouchListener={true}
                 title="Impact Factor"
                 placement="top"
                 classes={{ tooltip: styles.arrowBottomTooltip }}
+                disableFocusListener
+                disableTouchListener
               >
                 <span>
                   <Icon className={styles.ifIconWrapper} icon="IMPACT_FACTOR" />

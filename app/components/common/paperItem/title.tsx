@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as classNames from "classnames";
 import { connect, Dispatch } from "react-redux";
 import { withRouter, RouteComponentProps, Link } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
@@ -16,18 +17,31 @@ export interface TitleProps extends RouteComponentProps<any> {
   highlightAbstract?: string;
   source: string;
   pageType: Scinapse.ActionTicket.PageType;
+  disableNewTabIcon?: boolean;
+  titleClassName?: string;
   actionArea?: Scinapse.ActionTicket.ActionArea;
-  searchQueryText?: string;
 }
 
 class Title extends React.PureComponent<TitleProps> {
   public render() {
-    const { paperTitle, highlightTitle, paperId } = this.props;
+    const { paperTitle, highlightTitle, paperId, titleClassName, disableNewTabIcon } = this.props;
     const finalTitle = highlightTitle || paperTitle;
 
     if (!finalTitle) {
       return null;
     }
+
+    const newTabIcon = !disableNewTabIcon ? (
+      <a href={`/papers/${paperId}`} target="_blank" rel="noopener noreferrer" className={styles.externalIconWrapper}>
+        <Icon
+          onClick={() => {
+            this.handleClickTitle(true);
+          }}
+          icon="NEW_TAB"
+          className={styles.externalIcon}
+        />
+      </a>
+    ) : null;
 
     const trimmedTitle = finalTitle
       .replace(/^ /gi, "")
@@ -42,17 +56,12 @@ class Title extends React.PureComponent<TitleProps> {
             this.handleClickTitle(false);
           }}
           dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(trimmedTitle) }}
-          className={styles.title}
+          className={classNames({
+            [styles.title]: !titleClassName,
+            [titleClassName!]: !!titleClassName,
+          })}
         />
-        <a href={`/papers/${paperId}`} target="_blank" rel="noopener noreferrer" className={styles.externalIconWrapper}>
-          <Icon
-            onClick={() => {
-              this.handleClickTitle(true);
-            }}
-            icon="NEW_TAB"
-            className={styles.externalIcon}
-          />
-        </a>
+        {newTabIcon}
       </div>
     );
   }

@@ -12,6 +12,7 @@ export interface AbstractProps {
   abstract: string;
   searchQueryText?: string;
   pageType: Scinapse.ActionTicket.PageType;
+  maxLength?: number;
   actionArea?: Scinapse.ActionTicket.ActionArea;
 }
 
@@ -29,7 +30,8 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
   }
 
   public render() {
-    const { abstract, searchQueryText } = this.props;
+    const { abstract, searchQueryText, maxLength } = this.props;
+    const abstractMaxLength = maxLength || MAX_LENGTH_OF_ABSTRACT;
 
     if (!abstract) {
       return null;
@@ -42,8 +44,8 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
       .replace(/\n|\r/g, " ");
 
     let finalAbstract;
-    if (cleanAbstract.length > MAX_LENGTH_OF_ABSTRACT) {
-      finalAbstract = cleanAbstract.slice(0, MAX_LENGTH_OF_ABSTRACT) + "...";
+    if (cleanAbstract.length > abstractMaxLength) {
+      finalAbstract = cleanAbstract.slice(0, abstractMaxLength) + "...";
     } else {
       finalAbstract = cleanAbstract;
     }
@@ -58,7 +60,7 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
         content={finalAbstract}
         highLightContent={searchQuery}
         className={styles.abstract}
-        maxCharLimit={MAX_LENGTH_OF_ABSTRACT}
+        maxCharLimit={abstractMaxLength}
       />
     );
   }

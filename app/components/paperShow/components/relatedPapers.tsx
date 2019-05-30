@@ -7,6 +7,7 @@ import DesktopPagination from "../../common/desktopPagination";
 import { RELATED_PAPERS } from "../constants";
 import { PaperShowState } from "../../../containers/paperShow/records";
 import PaperItem from "../../common/paperItem";
+import PaperItemWithToggleList from "../../paperItemWithToggleList";
 import MobilePagination from "../../common/mobilePagination";
 const styles = require("./relatedPapers.scss");
 
@@ -70,17 +71,24 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
     } else {
       const referenceItems = papers.map(paper => {
         return (
-          <div className={styles.paperShowPaperItemWrapper} key={paper.id}>
-            <PaperItem
-              pageType="paperShow"
-              actionArea={type === "reference" ? "refList" : "citedList"}
-              currentUser={currentUser}
-              key={paper.id}
-              paper={paper}
-              wrapperStyle={{ borderBottom: "none", marginBottom: 0, paddingBottom: 0, maxWidth: "100%" }}
-            />
-          </div>
+          <PaperItemWithToggleList
+            pageType="paperShow"
+            actionArea={type === "reference" ? "refList" : "citedList"}
+            paper={paper}
+            key={paper.id}
+          />
         );
+        // return (
+        //   <div className={styles.paperShowPaperItemWrapper} key={paper.id}>
+        //     <PaperItem
+        //       pageType="paperShow"
+        //       actionArea={type === "reference" ? "refList" : "citedList"}
+        //       currentUser={currentUser}
+        //       paper={paper}
+        //       wrapperStyle={{ borderBottom: "none", marginBottom: 0, paddingBottom: 0, maxWidth: "100%" }}
+        //     />
+        //   </div>
+        // );
       });
 
       return <div className={styles.searchItems}>{referenceItems}</div>;
