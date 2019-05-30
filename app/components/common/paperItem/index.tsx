@@ -99,7 +99,6 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
             highlightAbstract={paper.abstractHighlighted}
             pageType={pageType}
             actionArea={actionArea}
-            searchQueryText={searchQueryText}
             source={source}
           />
           <VenueAndAuthors
