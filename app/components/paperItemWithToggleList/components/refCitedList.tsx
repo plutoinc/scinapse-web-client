@@ -9,6 +9,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 import PlutoAxios from "../../../api/pluto";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
+import actionTicketManager from "../../../helpers/actionTicketManager";
 const s = require("./refCitedList.scss");
 
 interface RefCitedListState {
@@ -69,10 +70,14 @@ export const reducer: React.Reducer<RefCitedListState, RefCitedListAction> = (st
   }
 };
 
-const PaperList: React.FC<{ paperList: Paper[] } & TrackingProps> = props => {
+const PaperList: React.FC<{ paperList: Paper[]; type: "ref" | "cited" } & TrackingProps> = props => {
   const content = props.paperList.slice(0, 5).map(paper => (
     <div className={s.paperItemWrapper} key={paper.id}>
-      <BasePaperItem paper={paper} pageType={props.pageType} actionArea={props.actionArea} />
+      <BasePaperItem
+        paper={paper}
+        pageType={props.pageType}
+        actionArea={props.type === "ref" ? "childRefList" : "childCitedList"}
+      />
     </div>
   ));
   return <div className={s.paperListWrapper}>{content}</div>;
@@ -102,6 +107,13 @@ const RefCitedList: React.FC<RefCitedListProps & TrackingProps> = props => {
 
     if (!state.isOpen && !state.hasFetched) {
       dispatch({ type: "FETCH_INIT" });
+      actionTicketManager.trackTicket({
+        pageType,
+        actionType: "fire",
+        actionArea: actionArea!,
+        actionTag: type === "ref" ? "childRefList" : "childCitedList",
+        actionLabel: String(paperId),
+      });
       if (state.paperList)
         try {
           const commonParams = {
