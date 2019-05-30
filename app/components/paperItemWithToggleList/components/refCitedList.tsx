@@ -158,7 +158,7 @@ const RefCitedList: React.FC<RefCitedListProps & TrackingProps> = props => {
       </div>
     );
   } else if (state.isOpen && state.paperList && state.paperList.length > 0) {
-    content = <PaperList paperList={state.paperList} actionArea={actionArea} pageType={pageType} />;
+    content = <PaperList type={type} paperList={state.paperList} actionArea={actionArea} pageType={pageType} />;
   } else if (state.isOpen && state.paperList && state.paperList.length === 0) {
     <div>{`No ${type === "ref" ? "References" : "Citations"}`}</div>;
   }

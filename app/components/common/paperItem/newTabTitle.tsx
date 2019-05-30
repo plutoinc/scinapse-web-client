@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as classNames from "classnames";
 import { connect, Dispatch } from "react-redux";
-import { withRouter, RouteComponentProps, Link } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
 import actionTicketManager from "../../../helpers/actionTicketManager";
@@ -41,7 +41,7 @@ class NewTabTitle extends React.PureComponent<TitleProps> {
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => {
-            this.handleClickTitle(false);
+            this.handleClickTitle();
           }}
           dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(trimmedTitle) }}
           className={classNames({

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import * as format from "date-fns/format";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
-import Title from "../../common/paperItem/NewTabTitle";
+import Title from "../../common/paperItem/newTabTitle";
 import Abstract from "../../common/paperItem/abstract";
 import AuthorSection from "../components/authors";
 import { withStyles } from "../../../helpers/withStylesHelper";
