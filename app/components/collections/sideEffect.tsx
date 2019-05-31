@@ -1,8 +1,8 @@
-import { getCollections as getUserCollections, getMember } from "./actions";
-import { LoadDataParams } from "../../routes";
-import { ActionCreators } from "../../actions/actionTypes";
-import PlutoAxios from "../../api/pluto";
-import { CommonError } from "../../model/error";
+import { getCollections as getUserCollections, getMember } from './actions';
+import { LoadDataParams } from '../../routes';
+import { ActionCreators } from '../../actions/actionTypes';
+import PlutoAxios from '../../api/pluto';
+import { CommonError } from '../../model/error';
 
 export interface GetCollectionsParams extends LoadDataParams<{ userId: string }> {
   userId?: number;

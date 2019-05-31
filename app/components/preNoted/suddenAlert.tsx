@@ -1,9 +1,9 @@
-import * as React from "react";
-import Popper, { PopperProps } from "@material-ui/core/Popper";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { getCurrentPageType } from "../locationListener";
-import ActionTicketManager from "../../helpers/actionTicketManager/index";
-const styles = require("./suddenAlert.scss");
+import * as React from 'react';
+import Popper, { PopperProps } from '@material-ui/core/Popper';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { getCurrentPageType } from '../locationListener';
+import ActionTicketManager from '../../helpers/actionTicketManager/index';
+const styles = require('./suddenAlert.scss');
 
 interface SuddenAlertProps extends PopperProps {}
 
@@ -18,10 +18,10 @@ const SuddenAlert: React.FC<SuddenAlertProps> = props => {
 
           ActionTicketManager.trackTicket({
             pageType: getCurrentPageType(),
-            actionType: "view",
-            actionArea: "topBar",
-            actionTag: "alertView",
-            actionLabel: "suddenAlert",
+            actionType: 'view',
+            actionArea: 'topBar',
+            actionTag: 'alertView',
+            actionLabel: 'suddenAlert',
           });
         }
       }, 5000);
@@ -59,10 +59,10 @@ const SuddenAlert: React.FC<SuddenAlertProps> = props => {
                 setShouldShowSuddenAlert(false);
                 ActionTicketManager.trackTicket({
                   pageType: getCurrentPageType(),
-                  actionType: "fire",
-                  actionArea: "topBar",
-                  actionTag: "clickOk",
-                  actionLabel: "suddenAlert",
+                  actionType: 'fire',
+                  actionArea: 'topBar',
+                  actionTag: 'clickOk',
+                  actionLabel: 'suddenAlert',
                 });
               }}
             >

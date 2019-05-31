@@ -1,13 +1,13 @@
-import * as React from "react";
-import { connect, Dispatch } from "react-redux";
-import { withRouter, RouteComponentProps, Link } from "react-router-dom";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
-import actionTicketManager from "../../../helpers/actionTicketManager";
-import { Paper } from "../../../model/paper";
-import { ActionCreators } from "../../../actions/actionTypes";
-import Icon from "../../../icons";
-const styles = require("./title.scss");
+import * as React from 'react';
+import { connect, Dispatch } from 'react-redux';
+import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { formulaeToHTMLStr } from '../../../helpers/displayFormula';
+import actionTicketManager from '../../../helpers/actionTicketManager';
+import { Paper } from '../../../model/paper';
+import { ActionCreators } from '../../../actions/actionTypes';
+import Icon from '../../../icons';
+const styles = require('./title.scss');
 
 export interface TitleProps extends RouteComponentProps<any> {
   dispatch: Dispatch<any>;
@@ -36,9 +36,9 @@ class Title extends React.Component<TitleProps> {
     }
     // for removing first or last space or trash value of content
     const trimmedTitle = title
-      .replace(/^ /gi, "")
-      .replace(/\s{2,}/g, " ")
-      .replace(/#[A-Z0-9]+#/g, "");
+      .replace(/^ /gi, '')
+      .replace(/\s{2,}/g, ' ')
+      .replace(/#[A-Z0-9]+#/g, '');
 
     return (
       <div>
@@ -72,18 +72,18 @@ class Title extends React.Component<TitleProps> {
     const { dispatch, pageType, actionArea, paper } = this.props;
     actionTicketManager.trackTicket({
       pageType,
-      actionType: "fire",
+      actionType: 'fire',
       actionArea: actionArea || pageType,
-      actionTag: "paperShow",
+      actionTag: 'paperShow',
       actionLabel: String(paper.id),
     });
 
     if (fromNewTab) {
       actionTicketManager.trackTicket({
         pageType,
-        actionType: "fire",
-        actionArea: "titleNewTab",
-        actionTag: "paperShow",
+        actionType: 'fire',
+        actionArea: 'titleNewTab',
+        actionTag: 'paperShow',
         actionLabel: String(paper.id),
       });
     }
@@ -91,8 +91,8 @@ class Title extends React.Component<TitleProps> {
     if (paper.abstractHighlighted || paper.titleHighlighted) {
       dispatch(
         ActionCreators.setHighlightContentInPaperShow({
-          title: paper.titleHighlighted || "",
-          abstract: paper.abstractHighlighted || "",
+          title: paper.titleHighlighted || '',
+          abstract: paper.abstractHighlighted || '',
         })
       );
     }

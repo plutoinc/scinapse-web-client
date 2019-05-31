@@ -1,11 +1,11 @@
-import * as React from "react";
-import { connect, Dispatch } from "react-redux";
-import { parse, stringify } from "qs";
-import * as ReactGA from "react-ga";
-import AuthAPI from "../../api/auth";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-import EnvChecker from "../../helpers/envChecker";
-import ActionTicketManager from "../../helpers/actionTicketManager";
+import * as React from 'react';
+import { connect, Dispatch } from 'react-redux';
+import { parse, stringify } from 'qs';
+import * as ReactGA from 'react-ga';
+import AuthAPI from '../../api/auth';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import EnvChecker from '../../helpers/envChecker';
+import ActionTicketManager from '../../helpers/actionTicketManager';
 import {
   SEARCH_RESULT_PATH,
   HOME_PATH,
@@ -18,13 +18,13 @@ import {
   AUTH_PATH,
   AUTHOR_SEARCH_RESULT_PATH,
   PRIVACY_POLICY_PATH,
-} from "../../constants/routes";
-import getQueryParamsObject from "../../helpers/getQueryParamsObject";
-import { ActionCreators } from "../../actions/actionTypes";
-import GlobalDialogManager from "../../helpers/globalDialogManager";
-import { GLOBAL_DIALOG_TYPE } from "../dialog/reducer";
-import { SIGN_UP_STEP } from "../auth/signUp/types";
-import { signInWithSocial } from "../auth/signIn/actions";
+} from '../../constants/routes';
+import getQueryParamsObject from '../../helpers/getQueryParamsObject';
+import { ActionCreators } from '../../actions/actionTypes';
+import GlobalDialogManager from '../../helpers/globalDialogManager';
+import { GLOBAL_DIALOG_TYPE } from '../dialog/reducer';
+import { SIGN_UP_STEP } from '../auth/signUp/types';
+import { signInWithSocial } from '../auth/signIn/actions';
 
 interface LocationListenerProps extends RouteComponentProps<{}> {
   dispatch: Dispatch<any>;
@@ -34,7 +34,7 @@ export interface HistoryInformation {
   scrollPosition: number;
 }
 
-export const HISTORY_SESSION_KEY = "historyStack";
+export const HISTORY_SESSION_KEY = 'historyStack';
 const MAXIMUM_COUNT_TO_SAVE_HISTORY = 100;
 
 export function getCurrentPageType(): Scinapse.ActionTicket.PageType {
@@ -42,42 +42,42 @@ export function getCurrentPageType(): Scinapse.ActionTicket.PageType {
     const { pathname } = window.location;
 
     if (pathname === HOME_PATH) {
-      return "home";
+      return 'home';
     } else if (pathname === SEARCH_RESULT_PATH) {
-      return "searchResult";
+      return 'searchResult';
     } else if (pathname === AUTHOR_SEARCH_RESULT_PATH) {
-      return "authorSearchResult";
+      return 'authorSearchResult';
     } else if (pathname === TERMS_OF_SERVICE_PATH) {
-      return "terms";
+      return 'terms';
     } else if (pathname === PRIVACY_POLICY_PATH) {
-      return "privacyPolicy";
-    } else if (pathname.startsWith(`/${PAPER_SHOW_PATH.split("/")[1]}`)) {
-      return "paperShow";
-    } else if (pathname.startsWith(`/${COLLECTION_SHOW_PATH.split("/")[1]}`)) {
-      return "collectionShow";
-    } else if (pathname.startsWith(`/${JOURNAL_SHOW_PATH.split("/")[1]}`)) {
-      return "journalShow";
-    } else if (pathname.startsWith(`/${AUTHOR_SHOW_PATH.split("/")[1]}`)) {
-      return "authorShow";
+      return 'privacyPolicy';
+    } else if (pathname.startsWith(`/${PAPER_SHOW_PATH.split('/')[1]}`)) {
+      return 'paperShow';
+    } else if (pathname.startsWith(`/${COLLECTION_SHOW_PATH.split('/')[1]}`)) {
+      return 'collectionShow';
+    } else if (pathname.startsWith(`/${JOURNAL_SHOW_PATH.split('/')[1]}`)) {
+      return 'journalShow';
+    } else if (pathname.startsWith(`/${AUTHOR_SHOW_PATH.split('/')[1]}`)) {
+      return 'authorShow';
     } else if (
-      pathname.startsWith(`/${COLLECTION_LIST_PATH.split("/")[1]}`) &&
-      pathname.endsWith(COLLECTION_LIST_PATH.split("/")[3])
+      pathname.startsWith(`/${COLLECTION_LIST_PATH.split('/')[1]}`) &&
+      pathname.endsWith(COLLECTION_LIST_PATH.split('/')[3])
     ) {
-      return "collectionList";
-    } else if (pathname.startsWith(AUTH_PATH) && pathname.endsWith("sign_in")) {
-      return "signIn";
-    } else if (pathname.startsWith(AUTH_PATH) && pathname.endsWith("sign_up")) {
-      return "signUp";
-    } else if (pathname.startsWith(AUTH_PATH) && pathname.endsWith("reset-password")) {
-      return "resetPassword";
-    } else if (pathname.startsWith(AUTH_PATH) && pathname.endsWith("email_verification")) {
-      return "emailVerification";
+      return 'collectionList';
+    } else if (pathname.startsWith(AUTH_PATH) && pathname.endsWith('sign_in')) {
+      return 'signIn';
+    } else if (pathname.startsWith(AUTH_PATH) && pathname.endsWith('sign_up')) {
+      return 'signUp';
+    } else if (pathname.startsWith(AUTH_PATH) && pathname.endsWith('reset-password')) {
+      return 'resetPassword';
+    } else if (pathname.startsWith(AUTH_PATH) && pathname.endsWith('email_verification')) {
+      return 'emailVerification';
     }
 
-    return "unknown";
+    return 'unknown';
   }
 
-  return "unknown";
+  return 'unknown';
 }
 
 class LocationListener extends React.PureComponent<LocationListenerProps> {
@@ -93,16 +93,16 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
         hashParams.token_type &&
         hashParams.expires_in
       ) {
-        const status = await AuthAPI.checkOAuthStatus("ORCID", hashParams.id_token);
+        const status = await AuthAPI.checkOAuthStatus('ORCID', hashParams.id_token);
         if (status.isConnected) {
-          await dispatch(signInWithSocial("ORCID", hashParams.id_token));
+          await dispatch(signInWithSocial('ORCID', hashParams.id_token));
           ActionTicketManager.trackTicket({
-            pageType: "home",
-            actionType: "fire",
-            actionArea: "unknown",
-            actionTag: "signIn",
-            actionLabel: "ORCID",
-            expName: "",
+            pageType: 'home',
+            actionType: 'fire',
+            actionArea: 'unknown',
+            actionTag: 'signIn',
+            actionLabel: 'ORCID',
+            expName: '',
           });
           window.close();
         } else {
@@ -115,7 +115,7 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
                 firstName: status.firstName,
                 lastName: status.lastName,
                 token: hashParams.id_token,
-                vendor: "ORCID",
+                vendor: 'ORCID',
               },
             })
           );
@@ -140,9 +140,9 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
     const { location } = this.props;
 
     if (!EnvChecker.isOnServer() && location !== nextProps.location) {
-      let historyStack: HistoryInformation[] = JSON.parse(window.sessionStorage.getItem(HISTORY_SESSION_KEY) || "[]");
+      let historyStack: HistoryInformation[] = JSON.parse(window.sessionStorage.getItem(HISTORY_SESSION_KEY) || '[]');
       const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-      const historyInformation = { key: location.key || "initial", scrollPosition: scrollTop };
+      const historyInformation = { key: location.key || 'initial', scrollPosition: scrollTop };
 
       const index = historyStack.findIndex(history => history.key === location.key);
       if (index === -1) {
@@ -160,8 +160,8 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
       const qs = getQueryParamsObject(location.search);
       const nextQS = getQueryParamsObject(nextProps.location.search);
 
-      if (qs["branch"] && !nextQS["branch"]) {
-        const nextQPString = stringify({ ...nextQS, branch: qs["branch"] }, { addQueryPrefix: true });
+      if (qs['branch'] && !nextQS['branch']) {
+        const nextQPString = stringify({ ...nextQS, branch: qs['branch'] }, { addQueryPrefix: true });
         nextProps.history.replace(nextProps.location.pathname + nextQPString);
       }
     }
@@ -173,21 +173,21 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
 
   private trackPageView() {
     if (!EnvChecker.isOnServer()) {
-      const urlArray = window.location.pathname.split("/");
+      const urlArray = window.location.pathname.split('/');
       const id = parseInt(urlArray[urlArray.length - 1], 10);
 
       const currentPageType = getCurrentPageType();
 
       if (
-        currentPageType !== "searchResult" &&
-        currentPageType !== "authorSearchResult" &&
-        currentPageType !== "paperShow"
+        currentPageType !== 'searchResult' &&
+        currentPageType !== 'authorSearchResult' &&
+        currentPageType !== 'paperShow'
       ) {
         ActionTicketManager.trackTicket({
           pageType: getCurrentPageType(),
-          actionType: "view",
+          actionType: 'view',
           actionArea: null,
-          actionTag: "pageView",
+          actionTag: 'pageView',
           actionLabel: !isNaN(id) ? String(id) : null,
         });
       }

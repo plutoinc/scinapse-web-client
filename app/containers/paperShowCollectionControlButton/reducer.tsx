@@ -1,4 +1,4 @@
-import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
+import { ACTION_TYPES, Actions } from '../../actions/actionTypes';
 
 export interface MyCollectionsState
   extends Readonly<{

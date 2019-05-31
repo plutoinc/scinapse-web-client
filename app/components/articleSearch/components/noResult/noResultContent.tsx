@@ -1,7 +1,7 @@
-import * as React from "react";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import FilterResetButton from "../../../filterContainer/filterResetButton";
-const styles = require("./noResult.scss");
+import * as React from 'react';
+import { withStyles } from '../../../../helpers/withStylesHelper';
+import FilterResetButton from '../../../filterContainer/filterResetButton';
+const styles = require('./noResult.scss');
 
 interface NoResultContentProps {
   hasEmptyFilter: boolean;
@@ -23,12 +23,12 @@ const DisabledFilterMessage: React.FunctionComponent<{ hasEmptyFilter: boolean }
           <FilterResetButton
             text="Reset All"
             btnStyle={{
-              position: "relative",
+              position: 'relative',
               top: 0,
-              fontSize: "15px",
-              marginLeft: "4px",
+              fontSize: '15px',
+              marginLeft: '4px',
               fontWeight: 500,
-              color: "#3e7fff",
+              color: '#3e7fff',
             }}
           />
         </span>
@@ -55,7 +55,7 @@ function noResultDoiSearchContent(
         </li>
         <li>
           <span className={styles.noPapersText}>
-            Scinapse may not include the paper. Try visiting{" "}
+            Scinapse may not include the paper. Try visiting{' '}
             <a
               className={styles.doiLink}
               rel="noopener nofollow noreferrer"
@@ -63,11 +63,11 @@ function noResultDoiSearchContent(
               href={`https://doi.org/${doi}`}
             >
               the original
-            </a>{" "}
-            or{" "}
+            </a>{' '}
+            or{' '}
             <b className={styles.paperRequestLink} onClick={handleSetIsOpen}>
               Request
-            </b>{" "}
+            </b>{' '}
             inclusion.
           </span>
         </li>
@@ -99,7 +99,7 @@ function noResultGeneralSearchContent(searchText: string | null, hasEmptyFilter:
         </li>
         <li>
           <span className={styles.noPapersText}>
-            Sometimes we may not include the paper you're looking for. We will comply when you{" "}
+            Sometimes we may not include the paper you're looking for. We will comply when you{' '}
             <b className={styles.paperRequestLink} onClick={handleSetIsOpen}>
               request.
             </b>

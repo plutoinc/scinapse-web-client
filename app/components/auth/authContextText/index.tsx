@@ -1,7 +1,7 @@
-import * as React from "react";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { positiveSignUpContext } from "./constants";
-const styles = require("./authContextText.scss");
+import * as React from 'react';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { positiveSignUpContext } from './constants';
+const styles = require('./authContextText.scss');
 
 interface AuthContextTextProps {
   userActionType?: Scinapse.ActionTicket.ActionTagType;

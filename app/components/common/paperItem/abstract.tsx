@@ -1,9 +1,9 @@
-import * as React from "react";
-import { escapeRegExp } from "lodash";
-import HighLightedContent from "../highLightedContent";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-const styles = require("./abstract.scss");
+import * as React from 'react';
+import { escapeRegExp } from 'lodash';
+import HighLightedContent from '../highLightedContent';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+const styles = require('./abstract.scss');
 
 const MAX_LENGTH_OF_ABSTRACT = 500;
 
@@ -37,14 +37,14 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
     }
 
     const cleanAbstract = abstract
-      .replace(/^ /gi, "")
-      .replace(/\s{2,}/g, " ")
-      .replace(/#[A-Z0-9]+#/g, "")
-      .replace(/\n|\r/g, " ");
+      .replace(/^ /gi, '')
+      .replace(/\s{2,}/g, ' ')
+      .replace(/#[A-Z0-9]+#/g, '')
+      .replace(/\n|\r/g, ' ');
 
     let finalAbstract;
     if (cleanAbstract.length > MAX_LENGTH_OF_ABSTRACT) {
-      finalAbstract = cleanAbstract.slice(0, MAX_LENGTH_OF_ABSTRACT) + "...";
+      finalAbstract = cleanAbstract.slice(0, MAX_LENGTH_OF_ABSTRACT) + '...';
     } else {
       finalAbstract = cleanAbstract;
     }
@@ -72,9 +72,9 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
 
     ActionTicketManager.trackTicket({
       pageType,
-      actionType: "fire",
+      actionType: 'fire',
       actionArea: actionArea || pageType,
-      actionTag: isExtendContent ? "collapseAbstract" : "extendAbstract",
+      actionTag: isExtendContent ? 'collapseAbstract' : 'extendAbstract',
       actionLabel: String(paperId),
     });
   };

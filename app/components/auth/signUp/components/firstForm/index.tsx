@@ -1,26 +1,26 @@
-import * as React from "react";
-import { connect, Dispatch } from "react-redux";
-import { Formik, Form, Field, FormikErrors } from "formik";
-import AuthAPI from "../../../../../api/auth";
-import { withStyles } from "../../../../../helpers/withStylesHelper";
-import AuthInputBox from "../../../../common/inputBox/authInputBox";
-import { OAUTH_VENDOR } from "../../../../../api/types/auth";
-import AuthButton from "../../../authButton";
-import GoogleAuthButton from "../../../authButton/googleAuthButton";
-import ORSeparator from "../../../separator";
-import AuthTabs from "../../../authTabs";
-import validateEmail from "../../../../../helpers/validateEmail";
-import { GLOBAL_DIALOG_TYPE, DialogState } from "../../../../dialog/reducer";
-import { debouncedCheckDuplicate } from "../../helpers/checkDuplicateEmail";
-import AuthGuideContext from "../../../authGuideContext";
-import AuthContextText from "../../../authContextText";
-import { closeDialog } from "../../../../dialog/actions";
-import { handleClickORCIDBtn } from "../../actions";
-import { signInWithSocial } from "../../../signIn/actions";
-import { AppState } from "../../../../../reducers";
-import ActionTicketManager from "../../../../../helpers/actionTicketManager";
-import useFBIsLoading from "../../../../../hooks/FBisLoadingHook";
-const s = require("./firstForm.scss");
+import * as React from 'react';
+import { connect, Dispatch } from 'react-redux';
+import { Formik, Form, Field, FormikErrors } from 'formik';
+import AuthAPI from '../../../../../api/auth';
+import { withStyles } from '../../../../../helpers/withStylesHelper';
+import AuthInputBox from '../../../../common/inputBox/authInputBox';
+import { OAUTH_VENDOR } from '../../../../../api/types/auth';
+import AuthButton from '../../../authButton';
+import GoogleAuthButton from '../../../authButton/googleAuthButton';
+import ORSeparator from '../../../separator';
+import AuthTabs from '../../../authTabs';
+import validateEmail from '../../../../../helpers/validateEmail';
+import { GLOBAL_DIALOG_TYPE, DialogState } from '../../../../dialog/reducer';
+import { debouncedCheckDuplicate } from '../../helpers/checkDuplicateEmail';
+import AuthGuideContext from '../../../authGuideContext';
+import AuthContextText from '../../../authContextText';
+import { closeDialog } from '../../../../dialog/actions';
+import { handleClickORCIDBtn } from '../../actions';
+import { signInWithSocial } from '../../../signIn/actions';
+import { AppState } from '../../../../../reducers';
+import ActionTicketManager from '../../../../../helpers/actionTicketManager';
+import useFBIsLoading from '../../../../../hooks/FBisLoadingHook';
+const s = require('./firstForm.scss');
 
 declare var FB: any;
 
@@ -40,7 +40,7 @@ interface FormValues {
   password: string;
 }
 
-export const oAuthBtnBaseStyle: React.CSSProperties = { position: "relative", fontSize: "13px", marginTop: "10px" };
+export const oAuthBtnBaseStyle: React.CSSProperties = { position: 'relative', fontSize: '13px', marginTop: '10px' };
 
 const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
   const { dispatch, dialogState } = props;
@@ -51,17 +51,17 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
     FB.login(async (res: any) => {
       if (res.authResponse) {
         const accessToken = res.authResponse.accessToken;
-        const status = await AuthAPI.checkOAuthStatus("FACEBOOK", accessToken);
+        const status = await AuthAPI.checkOAuthStatus('FACEBOOK', accessToken);
 
         if (status.isConnected) {
-          await dispatch(signInWithSocial("FACEBOOK", accessToken));
+          await dispatch(signInWithSocial('FACEBOOK', accessToken));
           const authContext = dialogState.authContext;
           if (authContext) {
             ActionTicketManager.trackTicket({
               pageType: authContext.pageType,
-              actionType: "fire",
+              actionType: 'fire',
               actionArea: authContext.actionArea,
-              actionTag: "signIn",
+              actionTag: 'signIn',
               actionLabel: authContext.actionLabel,
               expName: authContext.expName,
             });
@@ -73,7 +73,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
             firstName: status.firstName,
             lastName: status.lastName,
             token: accessToken,
-            vendor: "FACEBOOK",
+            vendor: 'FACEBOOK',
           });
         }
       }
@@ -85,7 +85,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
     const { email, password } = values;
 
     if (!validateEmail(values.email)) {
-      errors.email = "Please enter a valid email address";
+      errors.email = 'Please enter a valid email address';
     }
 
     setIsLoading(true);
@@ -97,7 +97,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
     }
 
     if (password.length < 8) {
-      errors.password = "Must have at least 8 characters!";
+      errors.password = 'Must have at least 8 characters!';
     }
 
     if (Object.keys(errors).length) {
@@ -111,10 +111,10 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
       <div className={s.authContainer}>
         <AuthGuideContext userActionType={props.userActionType} />
         <div className={s.authFormWrapper}>
-          <AuthTabs onClickTab={props.onClickTab} activeTab={"sign up"} />
+          <AuthTabs onClickTab={props.onClickTab} activeTab={'sign up'} />
           <div className={s.formWrapper}>
             <Formik
-              initialValues={{ email: "", password: "" }}
+              initialValues={{ email: '', password: '' }}
               onSubmit={props.onSubmit}
               validate={validateForm}
               render={() => {
@@ -138,7 +138,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
                       type="submit"
                       isLoading={isLoading}
                       text="SIGN UP"
-                      style={{ backgroundColor: "#6096ff", marginTop: "10px", fontSize: "14px" }}
+                      style={{ backgroundColor: '#6096ff', marginTop: '10px', fontSize: '14px' }}
                     />
                   </Form>
                 );
@@ -148,7 +148,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
             <AuthButton
               isLoading={isLoading}
               text="CONTINUE WITH FACEBOOK"
-              style={{ ...oAuthBtnBaseStyle, backgroundColor: "#3859ab", marginTop: "18px" }}
+              style={{ ...oAuthBtnBaseStyle, backgroundColor: '#3859ab', marginTop: '18px' }}
               iconName="FACEBOOK_LOGO"
               iconClassName={s.fbIconWrapper}
               onClick={handleClickFBLogin}
@@ -157,7 +157,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
             <GoogleAuthButton
               isLoading={isLoading}
               text="CONTINUE WITH GOOGLE"
-              style={{ ...oAuthBtnBaseStyle, backgroundColor: "#dc5240" }}
+              style={{ ...oAuthBtnBaseStyle, backgroundColor: '#dc5240' }}
               iconName="GOOGLE_LOGO"
               iconClassName={s.googleIconWrapper}
               onSignUpWithSocial={props.onSignUpWithSocial}
@@ -165,7 +165,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
             <AuthButton
               isLoading={isLoading}
               text="CONTINUE WITH ORCID"
-              style={{ ...oAuthBtnBaseStyle, backgroundColor: "#a5d027" }}
+              style={{ ...oAuthBtnBaseStyle, backgroundColor: '#a5d027' }}
               iconName="ORCID_LOGO"
               iconClassName={s.orcidIconWrapper}
               onClick={handleClickORCIDBtn}

@@ -1,35 +1,35 @@
-import * as React from "react";
-import { withStyles } from "../../helpers/withStylesHelper";
-import GlobalDialogManager from "../../helpers/globalDialogManager";
-import { ActionTicketParams } from "../../helpers/actionTicketManager/actionTicket";
-import { useObserver } from "../../hooks/useIntersectionHook";
-import ActionTicketManager from "../../helpers/actionTicketManager";
-const styles = require("./bottomBanner.scss");
+import * as React from 'react';
+import { withStyles } from '../../helpers/withStylesHelper';
+import GlobalDialogManager from '../../helpers/globalDialogManager';
+import { ActionTicketParams } from '../../helpers/actionTicketManager/actionTicket';
+import { useObserver } from '../../hooks/useIntersectionHook';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+const styles = require('./bottomBanner.scss');
 
 interface BottomBannerProps {
   isLoggedIn: boolean;
   shouldShowBottomBanner: boolean;
 }
 
-function handleOpenSignModal(modalType: "signUpPopup" | "signInPopup") {
+function handleOpenSignModal(modalType: 'signUpPopup' | 'signInPopup') {
   switch (modalType) {
-    case "signInPopup":
+    case 'signInPopup':
       GlobalDialogManager.openSignInDialog({
         authContext: {
-          pageType: "paperShow",
-          actionArea: "signBanner",
-          actionLabel: "bottomBanner",
+          pageType: 'paperShow',
+          actionArea: 'signBanner',
+          actionLabel: 'bottomBanner',
         },
         isBlocked: false,
       });
 
       break;
-    case "signUpPopup":
+    case 'signUpPopup':
       GlobalDialogManager.openSignUpDialog({
         authContext: {
-          pageType: "paperShow",
-          actionArea: "signBanner",
-          actionLabel: "bottomBanner",
+          pageType: 'paperShow',
+          actionArea: 'signBanner',
+          actionLabel: 'bottomBanner',
         },
         isBlocked: false,
       });
@@ -38,21 +38,21 @@ function handleOpenSignModal(modalType: "signUpPopup" | "signInPopup") {
   }
 
   ActionTicketManager.trackTicket({
-    pageType: "paperShow",
-    actionType: "fire",
-    actionArea: "signBanner",
-    actionLabel: "bottomBanner",
+    pageType: 'paperShow',
+    actionType: 'fire',
+    actionArea: 'signBanner',
+    actionLabel: 'bottomBanner',
     actionTag: modalType,
   });
 }
 
 const BottomBanner: React.FC<BottomBannerProps> = ({ isLoggedIn, shouldShowBottomBanner }) => {
   const bannerViewTicketContext: ActionTicketParams = {
-    pageType: "paperShow",
-    actionType: "view",
-    actionArea: "signBanner",
-    actionTag: "bannerView",
-    actionLabel: "bottomBanner",
+    pageType: 'paperShow',
+    actionType: 'view',
+    actionArea: 'signBanner',
+    actionTag: 'bannerView',
+    actionLabel: 'bottomBanner',
   };
   const { elRef } = useObserver(0.1, bannerViewTicketContext);
 
@@ -70,10 +70,10 @@ const BottomBanner: React.FC<BottomBannerProps> = ({ isLoggedIn, shouldShowBotto
           </div>
         </div>
         <div className={styles.buttonWrapper}>
-          <button className={styles.subContext} onClick={() => handleOpenSignModal("signInPopup")}>
+          <button className={styles.subContext} onClick={() => handleOpenSignModal('signInPopup')}>
             Already have an account?
           </button>
-          <button className={styles.signUpBtn} onClick={() => handleOpenSignModal("signUpPopup")}>
+          <button className={styles.signUpBtn} onClick={() => handleOpenSignModal('signUpPopup')}>
             Sign Up
           </button>
         </div>

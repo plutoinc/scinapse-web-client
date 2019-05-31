@@ -1,5 +1,5 @@
-import { ACTION_TYPES } from "../actions/actionTypes";
-import { CURRENT_USER_INITIAL_STATE, CurrentUser } from "../model/currentUser";
+import { ACTION_TYPES } from '../actions/actionTypes';
+import { CURRENT_USER_INITIAL_STATE, CurrentUser } from '../model/currentUser';
 
 export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action: ReduxAction<any>): CurrentUser {
   switch (action.type) {

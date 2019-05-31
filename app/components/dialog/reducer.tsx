@@ -1,10 +1,10 @@
-import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
-import { AvailableCitationType } from "../../containers/paperShow/records";
-import { Collection } from "../../model/collection";
-import { Paper } from "../../model/paper";
-import { SIGN_UP_STEP } from "../auth/signUp/types";
-import { OAuthCheckParams } from "../../api/types/auth";
-import { BenefitExpTicketContext } from "../../constants/abTest";
+import { ACTION_TYPES, Actions } from '../../actions/actionTypes';
+import { AvailableCitationType } from '../../containers/paperShow/records';
+import { Collection } from '../../model/collection';
+import { Paper } from '../../model/paper';
+import { SIGN_UP_STEP } from '../auth/signUp/types';
+import { OAuthCheckParams } from '../../api/types/auth';
+import { BenefitExpTicketContext } from '../../constants/abTest';
 
 export enum GLOBAL_DIALOG_TYPE {
   SIGN_IN,
@@ -63,7 +63,7 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   authContext: undefined,
   // citation dialog
   citationPaperId: 0,
-  citationText: "",
+  citationText: '',
   isLoadingCitationText: false,
   activeCitationTab: AvailableCitationType.BIBTEX,
   // collection dialog

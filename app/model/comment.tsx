@@ -1,5 +1,5 @@
-import { schema } from "normalizr";
-import { Member } from "./member";
+import { schema } from 'normalizr';
+import { Member } from './member';
 
 export interface Comment {
   id: number;
@@ -9,4 +9,4 @@ export interface Comment {
   comment: string;
 }
 
-export const commentSchema = new schema.Entity("comments");
+export const commentSchema = new schema.Entity('comments');

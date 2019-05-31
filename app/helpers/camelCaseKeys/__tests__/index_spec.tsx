@@ -1,6 +1,6 @@
-import { camelCaseKeys } from "..";
+import { camelCaseKeys } from '..';
 
-describe("camelCaseKeys function", () => {
+describe('camelCaseKeys function', () => {
   let mockObject: Record<string, any>;
 
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe("camelCaseKeys function", () => {
       _collection_show_: 1,
       abcdef: 1,
       collection__list: 1,
-      "  efef  ": 1,
+      '  efef  ': 1,
       bc_d: {
         bcd_efg: 1,
         abccc_cccc: {
@@ -26,65 +26,65 @@ describe("camelCaseKeys function", () => {
     };
   });
 
-  describe("when key is paper_show", () => {
+  describe('when key is paper_show', () => {
     it("should return 'paperShow' as the key", () => {
-      expect(camelCaseKeys(mockObject).hasOwnProperty("paperShow")).toBeTruthy();
+      expect(camelCaseKeys(mockObject).hasOwnProperty('paperShow')).toBeTruthy();
     });
   });
 
-  describe("when key is _abc", () => {
+  describe('when key is _abc', () => {
     it("should return 'abc' as the key", () => {
-      expect(camelCaseKeys(mockObject).hasOwnProperty("abc")).toBeTruthy();
+      expect(camelCaseKeys(mockObject).hasOwnProperty('abc')).toBeTruthy();
     });
   });
 
-  describe("when key is author_show_", () => {
+  describe('when key is author_show_', () => {
     it("should return 'authorShow' as the key", () => {
-      expect(camelCaseKeys(mockObject).hasOwnProperty("authorShow")).toBeTruthy();
+      expect(camelCaseKeys(mockObject).hasOwnProperty('authorShow')).toBeTruthy();
     });
   });
 
-  describe("when key is _collection_show_", () => {
+  describe('when key is _collection_show_', () => {
     it("should return 'collectionShow' as the key", () => {
-      expect(camelCaseKeys(mockObject).hasOwnProperty("collectionShow")).toBeTruthy();
+      expect(camelCaseKeys(mockObject).hasOwnProperty('collectionShow')).toBeTruthy();
     });
   });
 
-  describe("when key is abcdef", () => {
+  describe('when key is abcdef', () => {
     it("should return 'abcdef' as the key", () => {
-      expect(camelCaseKeys(mockObject).hasOwnProperty("abcdef")).toBeTruthy();
+      expect(camelCaseKeys(mockObject).hasOwnProperty('abcdef')).toBeTruthy();
     });
   });
 
-  describe("when key is collection__list", () => {
+  describe('when key is collection__list', () => {
     it("should return 'collectionList' as the key", () => {
-      expect(camelCaseKeys(mockObject).hasOwnProperty("collectionList")).toBeTruthy();
+      expect(camelCaseKeys(mockObject).hasOwnProperty('collectionList')).toBeTruthy();
     });
   });
 
-  describe("when key is   efef  ", () => {
+  describe('when key is   efef  ', () => {
     it("should return 'efef' as the key", () => {
-      expect(camelCaseKeys(mockObject).hasOwnProperty("efef")).toBeTruthy();
+      expect(camelCaseKeys(mockObject).hasOwnProperty('efef')).toBeTruthy();
     });
   });
 
   describe("when key is bc_d and type of value is 'object'", () => {
     it("should return 'bcD' as the key", () => {
-      expect(camelCaseKeys(mockObject).hasOwnProperty("bcD")).toBeTruthy();
+      expect(camelCaseKeys(mockObject).hasOwnProperty('bcD')).toBeTruthy();
     });
 
-    it("should return camelCased value object", () => {
-      expect(camelCaseKeys(mockObject)["bcD"]).toEqual({ bcdEfg: 1, abcccCccc: { dfefefSdfsx: 1 } });
+    it('should return camelCased value object', () => {
+      expect(camelCaseKeys(mockObject)['bcD']).toEqual({ bcdEfg: 1, abcccCccc: { dfefefSdfsx: 1 } });
     });
   });
 
   describe("when key is cd_ef and type of value is 'array'", () => {
     it("should return 'cdEf' as the key", () => {
-      expect(camelCaseKeys(mockObject).hasOwnProperty("cdEf")).toBeTruthy();
+      expect(camelCaseKeys(mockObject).hasOwnProperty('cdEf')).toBeTruthy();
     });
 
-    it("should return camelCased value object", () => {
-      expect(camelCaseKeys(mockObject)["cdEf"]).toEqual([
+    it('should return camelCased value object', () => {
+      expect(camelCaseKeys(mockObject)['cdEf']).toEqual([
         { deFgh: 1 },
         { aadvvsSdfsdf: 1 },
         [{ abcDef: 1 }, { dsfsdSdf: 1 }, [{ dsdCxvxc: 1 }, { vcbvCv: 1 }]],

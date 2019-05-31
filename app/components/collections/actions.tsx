@@ -1,7 +1,7 @@
-import axios, { CancelToken } from "axios";
-import { Dispatch } from "react-redux";
-import MemberAPI from "../../api/member";
-import { ActionCreators, ACTION_TYPES } from "../../actions/actionTypes";
+import axios, { CancelToken } from 'axios';
+import { Dispatch } from 'react-redux';
+import MemberAPI from '../../api/member';
+import { ActionCreators, ACTION_TYPES } from '../../actions/actionTypes';
 
 export function getMember(memberId: number, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
@@ -22,8 +22,8 @@ export function getMember(memberId: number, cancelToken: CancelToken) {
         dispatch({
           type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
           payload: {
-            type: "error",
-            message: "Sorry. Temporarily unavailable to get members.",
+            type: 'error',
+            message: 'Sorry. Temporarily unavailable to get members.',
           },
         });
         throw err;
@@ -51,8 +51,8 @@ export function getCollections(memberId: number, cancelToken?: CancelToken, itsM
         dispatch({
           type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
           payload: {
-            type: "error",
-            message: "Sorry. Temporarily unavailable to get collections.",
+            type: 'error',
+            message: 'Sorry. Temporarily unavailable to get collections.',
           },
         });
         throw err;

@@ -1,11 +1,11 @@
-import { CancelToken } from "axios";
-import { normalize } from "normalizr";
-import PlutoAxios from "./pluto";
-import { CommonPaginationResponsePart } from "./types/common";
-import { Collection, collectionSchema } from "../model/collection";
-import { memberSchema, Member } from "../model/member";
-import { camelCaseKeys } from "../helpers/camelCaseKeys";
-import { FilterObject } from "../helpers/papersQueryFormatter";
+import { CancelToken } from 'axios';
+import { normalize } from 'normalizr';
+import PlutoAxios from './pluto';
+import { CommonPaginationResponsePart } from './types/common';
+import { Collection, collectionSchema } from '../model/collection';
+import { memberSchema, Member } from '../model/member';
+import { camelCaseKeys } from '../helpers/camelCaseKeys';
+import { FilterObject } from '../helpers/papersQueryFormatter';
 
 export interface GetCollectionsResponse extends CommonPaginationResponsePart {
   content: Collection[];

@@ -1,10 +1,10 @@
-import { normalize } from "normalizr";
-import PlutoAxios from "../pluto";
-import { Journal, journalSchema } from "../../model/journal";
-import { RAW } from "../../__mocks__";
-import { Paper, paperSchema } from "../../model/paper";
-import { GetPapersParams } from "../journal";
-import { PageObjectV2 } from "../types/common";
+import { normalize } from 'normalizr';
+import PlutoAxios from '../pluto';
+import { Journal, journalSchema } from '../../model/journal';
+import { RAW } from '../../__mocks__';
+import { Paper, paperSchema } from '../../model/paper';
+import { GetPapersParams } from '../journal';
+import { PageObjectV2 } from '../types/common';
 
 interface PapersResult extends PageObjectV2 {
   entities: { papers: { [paperId: number]: Paper } };
@@ -19,7 +19,7 @@ class JournalAPI extends PlutoAxios {
     result: number;
   }> {
     if (!journalId) {
-      throw new Error("FAKE ERROR");
+      throw new Error('FAKE ERROR');
     }
     const normalizedData = normalize(RAW.JOURNAL, journalSchema);
 
@@ -30,7 +30,7 @@ class JournalAPI extends PlutoAxios {
     const getPapersResponse = RAW.JOURNAL_PAPERS_RESPONSE;
 
     if (!params.journalId) {
-      throw new Error("FAKE ERROR");
+      throw new Error('FAKE ERROR');
     }
 
     const papers: Paper[] | undefined = getPapersResponse.data.content;

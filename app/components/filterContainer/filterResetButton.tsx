@@ -1,10 +1,10 @@
-import * as React from "react";
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-import { FILTER_BOX_TYPE } from "../../constants/paperSearch";
-import { withStyles } from "../../helpers/withStylesHelper";
-import makeNewFilterLink from "../../helpers/makeNewFilterLink";
-import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
-const styles = require("./filterResetButton.scss");
+import * as React from 'react';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { FILTER_BOX_TYPE } from '../../constants/paperSearch';
+import { withStyles } from '../../helpers/withStylesHelper';
+import makeNewFilterLink from '../../helpers/makeNewFilterLink';
+import PapersQueryFormatter from '../../helpers/papersQueryFormatter';
+const styles = require('./filterResetButton.scss');
 
 interface FilterResetButtonProps extends RouteComponentProps<any> {
   filterType?: FILTER_BOX_TYPE;
@@ -22,7 +22,7 @@ function getFilterObject(props: FilterResetButtonProps) {
 
   if (!!filterType) {
     const returnValue =
-      filterType === "PUBLISHED_YEAR" ? { yearFrom: undefined, yearTo: undefined } : { [filterType.toLowerCase()]: [] };
+      filterType === 'PUBLISHED_YEAR' ? { yearFrom: undefined, yearTo: undefined } : { [filterType.toLowerCase()]: [] };
 
     return returnValue;
   } else {
@@ -45,7 +45,7 @@ const FilterResetButton: React.FunctionComponent<FilterResetButtonProps> = props
       className={styles.resetButtonWrapper}
       style={props.btnStyle}
     >
-      {!!props.text ? props.text : "Reset"}
+      {!!props.text ? props.text : 'Reset'}
     </Link>
   );
 };

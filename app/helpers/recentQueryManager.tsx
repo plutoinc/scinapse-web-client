@@ -1,7 +1,7 @@
-import { getWordsArraySplitBySpaceWithoutStopWords } from "../components/common/highLightedContent";
-const store = require("store");
+import { getWordsArraySplitBySpaceWithoutStopWords } from '../components/common/highLightedContent';
+const store = require('store');
 
-const RECENT_QUERY_LIST_KEY = "r_q_l";
+const RECENT_QUERY_LIST_KEY = 'r_q_l';
 
 export function getRecentQueries(searchText?: string): string[] {
   const recentQueries: string[] = store.get(RECENT_QUERY_LIST_KEY) || [];
@@ -10,7 +10,7 @@ export function getRecentQueries(searchText?: string): string[] {
     const textToMatch = getWordsArraySplitBySpaceWithoutStopWords(searchText);
     const matchedQueries = recentQueries.filter(query => {
       return query
-        .split(" ")
+        .split(' ')
         .map(q => q.trim())
         .some(q => textToMatch.some(text => q.toLowerCase().startsWith(text.toLowerCase())));
     });

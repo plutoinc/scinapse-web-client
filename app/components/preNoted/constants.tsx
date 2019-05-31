@@ -1,7 +1,7 @@
 enum BLOCKED_BUBBLE_CONTEXT_TYPE {
-  JOIN_SCINAPSE = "1",
-  WHEN_YOU_JOIN_SCINAPSE = "2",
-  ENJOY_UNLIMITED_SCINAPSE = "3",
+  JOIN_SCINAPSE = '1',
+  WHEN_YOU_JOIN_SCINAPSE = '2',
+  ENJOY_UNLIMITED_SCINAPSE = '3',
 }
 interface BlockedBubbleKeywords {
   verb: string;
@@ -14,10 +14,10 @@ interface BlockedBubbleContextStructure {
 }
 
 const blockedBubbleVerbAndNoun: { [key: string]: BlockedBubbleKeywords } = {
-  downloadPdf: { verb: "download", noun: "PDF" },
-  clickRequestFullTextBtn: { verb: "request", noun: "paper" },
-  viewMorePDF: { verb: "view", noun: "PDF" },
-  addToCollection: { verb: "save to", noun: "Collection" },
+  downloadPdf: { verb: 'download', noun: 'PDF' },
+  clickRequestFullTextBtn: { verb: 'request', noun: 'paper' },
+  viewMorePDF: { verb: 'view', noun: 'PDF' },
+  addToCollection: { verb: 'save to', noun: 'Collection' },
 };
 
 export function getBlockedBubbleContext(userGroupName: string, buttonAction: string): BlockedBubbleContextStructure {
@@ -42,5 +42,5 @@ export function getBlockedBubbleContext(userGroupName: string, buttonAction: str
         mainText: `Enjoy unlimited Scinapse with a Scinapse account.`,
       };
   }
-  return { title: "", mainText: "" };
+  return { title: '', mainText: '' };
 }

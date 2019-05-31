@@ -1,7 +1,7 @@
-import * as React from "react";
-import Popper, { PopperProps } from "@material-ui/core/Popper";
-import { withStyles } from "../../../helpers/withStylesHelper";
-const styles = require("./bubblePopover.scss");
+import * as React from 'react';
+import Popper, { PopperProps } from '@material-ui/core/Popper';
+import { withStyles } from '../../../helpers/withStylesHelper';
+const styles = require('./bubblePopover.scss');
 
 // tslint:disable-next-line:no-empty-interface
 interface BubblePopoverProps extends PopperProps {}

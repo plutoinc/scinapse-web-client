@@ -1,7 +1,7 @@
-import * as React from "react";
-import Icon from "../../../../../icons";
-import { withStyles } from "../../../../../helpers/withStylesHelper";
-const s = require("./finalSignUpContent.scss");
+import * as React from 'react';
+import Icon from '../../../../../icons';
+import { withStyles } from '../../../../../helpers/withStylesHelper';
+const s = require('./finalSignUpContent.scss');
 
 interface FinalSignUpContentProps {
   onSubmit: () => void;
@@ -31,7 +31,7 @@ and verify your email address`}</div>
 const FinalSignUpContent: React.FunctionComponent<FinalSignUpContentProps> = props => {
   const { onSubmit, contentType } = props;
 
-  const finalContent = contentType === "email" ? withEmailCompleteContent() : withSocialCompleteContent();
+  const finalContent = contentType === 'email' ? withEmailCompleteContent() : withSocialCompleteContent();
 
   return (
     <div className={s.signUpContainer}>

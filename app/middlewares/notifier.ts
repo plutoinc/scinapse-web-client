@@ -1,6 +1,6 @@
-import { Middleware } from "redux";
-import { ACTION_TYPES } from "../actions/actionTypes";
-const notie = require("notie");
+import { Middleware } from 'redux';
+import { ACTION_TYPES } from '../actions/actionTypes';
+const notie = require('notie');
 
 export interface NotificationAction {
   type: symbol;
@@ -9,7 +9,7 @@ export interface NotificationAction {
 
 const defaultNotieOptions = {
   time: 4,
-  position: "bottom",
+  position: 'bottom',
   stay: false,
 };
 

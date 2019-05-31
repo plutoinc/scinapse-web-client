@@ -1,17 +1,17 @@
-jest.unmock("../reducer");
+jest.unmock('../reducer');
 
-import { reducer, DialogState, DIALOG_INITIAL_STATE, GLOBAL_DIALOG_TYPE } from "../reducer";
-import { ACTION_TYPES } from "../../../actions/actionTypes";
+import { reducer, DialogState, DIALOG_INITIAL_STATE, GLOBAL_DIALOG_TYPE } from '../reducer';
+import { ACTION_TYPES } from '../../../actions/actionTypes';
 
 function reduceState(action: any, state: DialogState = DIALOG_INITIAL_STATE) {
   return reducer(state, action);
 }
 
-describe("dialog reducer", () => {
+describe('dialog reducer', () => {
   let mockAction: any;
   let state: DialogState;
 
-  describe("when receive GLOBAL_DIALOG_OPEN", () => {
+  describe('when receive GLOBAL_DIALOG_OPEN', () => {
     const mockType: GLOBAL_DIALOG_TYPE = GLOBAL_DIALOG_TYPE.SIGN_IN;
     beforeEach(() => {
       mockAction = {
@@ -24,17 +24,17 @@ describe("dialog reducer", () => {
       state = reduceState(mockAction);
     });
 
-    it("should set isOpen to true", () => {
+    it('should set isOpen to true', () => {
       expect(state.isOpen).toBeTruthy();
     });
 
-    it("should set type following payload", () => {
+    it('should set type following payload', () => {
       expect(state.type).toEqual(mockType);
     });
   });
 
-  describe("when receive GLOBAL_DIALOG_CLOSE", () => {
-    it("should set isOpen to false", () => {
+  describe('when receive GLOBAL_DIALOG_CLOSE', () => {
+    it('should set isOpen to false', () => {
       const mockState = { ...DIALOG_INITIAL_STATE, isOpen: true };
 
       mockAction = {
@@ -47,8 +47,8 @@ describe("dialog reducer", () => {
     });
   });
 
-  describe("when receive GLOBAL_CHANGE_DIALOG_TYPE", () => {
-    it("should set type following payload", () => {
+  describe('when receive GLOBAL_CHANGE_DIALOG_TYPE', () => {
+    it('should set type following payload', () => {
       const mockType: GLOBAL_DIALOG_TYPE = GLOBAL_DIALOG_TYPE.SIGN_IN;
 
       mockAction = {

@@ -1,4 +1,4 @@
-import { Member } from "../../model/member";
+import { Member } from '../../model/member';
 
 export interface SignUpWithEmailParams {
   email: string;
@@ -30,7 +30,7 @@ export interface SignInWithSocialParams {
   vendor: OAUTH_VENDOR;
 }
 
-export type OAUTH_VENDOR = "ORCID" | "FACEBOOK" | "GOOGLE";
+export type OAUTH_VENDOR = 'ORCID' | 'FACEBOOK' | 'GOOGLE';
 
 export interface GetAuthorizeUriParams {
   vendor: OAUTH_VENDOR;

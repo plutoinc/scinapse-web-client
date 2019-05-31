@@ -1,6 +1,6 @@
-export const BUBBLE_CONTEXT_TYPE = "b_c_t";
+export const BUBBLE_CONTEXT_TYPE = 'b_c_t';
 
-const store = require("store");
+const store = require('store');
 
 export function setBubbleContextTypeHelper() {
   let bubbleContextType: number = store.get(BUBBLE_CONTEXT_TYPE) || 1;

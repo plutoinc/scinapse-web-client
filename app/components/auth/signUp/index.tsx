@@ -1,27 +1,27 @@
-import * as React from "react";
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import * as Actions from "./actions";
-import { SignUpContainerProps, SIGN_UP_STEP } from "./types";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import FirstForm from "./components/firstForm";
-import SignUpForm, { SignUpFormValues } from "./components/signUpForm";
-import { OAUTH_VENDOR, SignUpWithSocialParams } from "../../../api/types/auth";
-import { AppState } from "../../../reducers";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-import GlobalDialogManager from "../../../helpers/globalDialogManager";
-const styles = require("./signUp.scss");
+import * as React from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as Actions from './actions';
+import { SignUpContainerProps, SIGN_UP_STEP } from './types';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import FirstForm from './components/firstForm';
+import SignUpForm, { SignUpFormValues } from './components/signUpForm';
+import { OAUTH_VENDOR, SignUpWithSocialParams } from '../../../api/types/auth';
+import { AppState } from '../../../reducers';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import GlobalDialogManager from '../../../helpers/globalDialogManager';
+const styles = require('./signUp.scss');
 
 const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
   const { dialogState } = props;
   const [signUpStep, setSignUpStep] = React.useState(dialogState.signUpStep || SIGN_UP_STEP.FIRST);
-  const [email, setEmail] = React.useState(dialogState.oauthResult ? dialogState.oauthResult.email || "" : "");
-  const [password, setPassword] = React.useState("");
-  const [firstName, setFirstName] = React.useState(dialogState.oauthResult ? dialogState.oauthResult.firstName : "");
-  const [lastName, setLastName] = React.useState(dialogState.oauthResult ? dialogState.oauthResult.lastName : "");
+  const [email, setEmail] = React.useState(dialogState.oauthResult ? dialogState.oauthResult.email || '' : '');
+  const [password, setPassword] = React.useState('');
+  const [firstName, setFirstName] = React.useState(dialogState.oauthResult ? dialogState.oauthResult.firstName : '');
+  const [lastName, setLastName] = React.useState(dialogState.oauthResult ? dialogState.oauthResult.lastName : '');
   const [token, setToken] = React.useState({
-    token: dialogState.oauthResult ? dialogState.oauthResult.token : "",
-    vendor: dialogState.oauthResult ? dialogState.oauthResult.vendor : "",
+    token: dialogState.oauthResult ? dialogState.oauthResult.token : '',
+    vendor: dialogState.oauthResult ? dialogState.oauthResult.vendor : '',
   });
   const authContext = dialogState.authContext;
 
@@ -29,10 +29,10 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
     if (authContext) {
       ActionTicketManager.trackTicket({
         pageType: authContext.pageType,
-        actionType: "fire",
+        actionType: 'fire',
         actionArea: authContext.actionArea,
-        actionTag: "clickSignUpAtStep2",
-        actionLabel: vendor || "email",
+        actionTag: 'clickSignUpAtStep2',
+        actionLabel: vendor || 'email',
         expName: authContext.expName,
       });
     }
@@ -45,14 +45,14 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
       let actionLabel: string | null = authContext.expName || authContext.actionLabel;
 
       if (!actionLabel) {
-        actionLabel = "topBar";
+        actionLabel = 'topBar';
       }
 
       ActionTicketManager.trackTicket({
         pageType: authContext.pageType,
-        actionType: "fire",
+        actionType: 'fire',
         actionArea: authContext.actionArea,
-        actionTag: "signUp",
+        actionTag: 'signUp',
         actionLabel,
         expName: authContext.expName,
       });
@@ -79,25 +79,25 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
         let actionLabel: string | null = authContext.expName || authContext.actionLabel;
 
         if (!actionLabel) {
-          actionLabel = "topBar";
+          actionLabel = 'topBar';
         }
 
         ActionTicketManager.trackTicket({
           pageType: authContext.pageType,
-          actionType: "fire",
+          actionType: 'fire',
           actionArea: authContext.actionArea,
-          actionTag: "signUp",
+          actionTag: 'signUp',
           actionLabel,
           expName: authContext.expName,
         });
-      } else if (params.token.vendor === "ORCID") {
+      } else if (params.token.vendor === 'ORCID') {
         ActionTicketManager.trackTicket({
-          pageType: "home",
-          actionType: "fire",
-          actionArea: "unknown",
-          actionTag: "signUp",
-          actionLabel: "ORCID",
-          expName: "",
+          pageType: 'home',
+          actionType: 'fire',
+          actionArea: 'unknown',
+          actionTag: 'signUp',
+          actionLabel: 'ORCID',
+          expName: '',
         });
       }
     } catch (err) {
@@ -168,10 +168,10 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
             if (authContext) {
               ActionTicketManager.trackTicket({
                 pageType: authContext.pageType,
-                actionType: "fire",
+                actionType: 'fire',
                 actionArea: authContext.actionArea,
-                actionTag: "clickSignUpAtFirstForm",
-                actionLabel: "email",
+                actionTag: 'clickSignUpAtFirstForm',
+                actionLabel: 'email',
                 expName: authContext.expName,
               });
             }
@@ -183,9 +183,9 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
             vendor: OAUTH_VENDOR;
             token: string;
           }) => {
-            setEmail(values.email || "");
-            setFirstName(values.firstName || "");
-            setLastName(values.lastName || "");
+            setEmail(values.email || '');
+            setFirstName(values.firstName || '');
+            setLastName(values.lastName || '');
             setToken({
               token: values.token,
               vendor: values.vendor,
@@ -194,9 +194,9 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
             if (authContext) {
               ActionTicketManager.trackTicket({
                 pageType: authContext.pageType,
-                actionType: "fire",
+                actionType: 'fire',
                 actionArea: authContext.actionArea,
-                actionTag: "clickSignUpAtFirstForm",
+                actionTag: 'clickSignUpAtFirstForm',
                 actionLabel: values.vendor,
                 expName: authContext.expName,
               });

@@ -1,6 +1,6 @@
-import * as React from "react";
-import { RouteProps, Redirect, Route } from "react-router-dom";
-import alertToast from "./makePlutoToastAction";
+import * as React from 'react';
+import { RouteProps, Redirect, Route } from 'react-router-dom';
+import alertToast from './makePlutoToastAction';
 
 export enum AuthType {
   ShouldLoggedIn,
@@ -18,11 +18,11 @@ const AuthRoute: React.FunctionComponent<AuthRouteParam & RouteProps> = props =>
   let redirectPath;
   let notificationMessage;
   if (needAuthType === AuthType.ShouldLoggedIn) {
-    redirectPath = "/users/sign_in";
-    notificationMessage = "You need to login first!";
+    redirectPath = '/users/sign_in';
+    notificationMessage = 'You need to login first!';
   } else if (needAuthType === AuthType.ShouldLoggedOut) {
-    redirectPath = "/";
-    notificationMessage = "You already logged in!";
+    redirectPath = '/';
+    notificationMessage = 'You already logged in!';
   }
 
   const forbiddenAccess =
@@ -32,8 +32,8 @@ const AuthRoute: React.FunctionComponent<AuthRouteParam & RouteProps> = props =>
 
   if (forbiddenAccess) {
     alertToast({
-      type: "error",
-      message: notificationMessage || "",
+      type: 'error',
+      message: notificationMessage || '',
     });
 
     return (

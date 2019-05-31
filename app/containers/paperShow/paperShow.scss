@@ -8,7 +8,7 @@ $side-navigation-bottom-padding: 24px;
 }
 
 :global {
-  @import "~react-pdf/dist/Page/AnnotationLayer";
+  @import '~react-pdf/dist/Page/AnnotationLayer';
 }
 
 ul {

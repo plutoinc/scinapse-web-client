@@ -1,8 +1,8 @@
-import * as React from "react";
-import SearchQueryInput from "../../common/InputWithSuggestionList/searchQueryInput";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import Icon from "../../../icons";
-const s = require("./searchFullBanner.scss");
+import * as React from 'react';
+import SearchQueryInput from '../../common/InputWithSuggestionList/searchQueryInput';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import Icon from '../../../icons';
+const s = require('./searchFullBanner.scss');
 
 interface SearchFullScrollBannerProps {
   isOpen: boolean;
@@ -11,11 +11,11 @@ interface SearchFullScrollBannerProps {
 
 const SearchFullScrollBanner: React.FC<SearchFullScrollBannerProps> = ({ isOpen, onClickCloseBtn }) => {
   const [isFullWindow, setIsFullWindow] = React.useState(false);
-  let containerMaxHeight = "0px";
+  let containerMaxHeight = '0px';
   if (isOpen && !isFullWindow) {
-    containerMaxHeight = "33vh";
+    containerMaxHeight = '33vh';
   } else if (isOpen && isFullWindow) {
-    containerMaxHeight = "100%";
+    containerMaxHeight = '100%';
   }
 
   return (

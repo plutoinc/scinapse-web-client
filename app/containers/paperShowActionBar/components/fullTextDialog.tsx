@@ -1,21 +1,21 @@
-import * as React from "react";
-import * as Cookies from "js-cookie";
-import { connect, Dispatch } from "react-redux";
-import * as classNames from "classnames";
-import Dialog from "@material-ui/core/Dialog";
-import { Formik, Form, Field, FormikErrors } from "formik";
-import PaperAPI from "../../../api/paper";
-import { AppState } from "../../../reducers";
-import { CurrentUser } from "../../../model/currentUser";
-import validateEmail from "../../../helpers/validateEmail";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-import ScinapseFormikInput from "../../../components/common/scinapseInput/scinapseFormikInput";
-import ReduxAutoSizeTextarea from "../../../components/common/autoSizeTextarea/reduxAutoSizeTextarea";
-import Icon from "../../../icons";
-import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { LAST_SUCCEEDED_EMAIL_KEY } from "../../../constants/requestDialogConstant";
-const s = require("./fullTextDialog.scss");
+import * as React from 'react';
+import * as Cookies from 'js-cookie';
+import { connect, Dispatch } from 'react-redux';
+import * as classNames from 'classnames';
+import Dialog from '@material-ui/core/Dialog';
+import { Formik, Form, Field, FormikErrors } from 'formik';
+import PaperAPI from '../../../api/paper';
+import { AppState } from '../../../reducers';
+import { CurrentUser } from '../../../model/currentUser';
+import validateEmail from '../../../helpers/validateEmail';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import ScinapseFormikInput from '../../../components/common/scinapseInput/scinapseFormikInput';
+import ReduxAutoSizeTextarea from '../../../components/common/autoSizeTextarea/reduxAutoSizeTextarea';
+import Icon from '../../../icons';
+import { ACTION_TYPES } from '../../../actions/actionTypes';
+import { LAST_SUCCEEDED_EMAIL_KEY } from '../../../constants/requestDialogConstant';
+const s = require('./fullTextDialog.scss');
 
 interface RequestFullTextProps {
   isOpen: boolean;
@@ -33,13 +33,13 @@ interface FormState {
 function validateForm(values: FormState) {
   const errors: FormikErrors<FormState> = {};
   if (!validateEmail(values.email)) {
-    errors.email = "Please enter valid e-mail address.";
+    errors.email = 'Please enter valid e-mail address.';
   }
   return errors;
 }
 
 const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => {
-  const [email, setEmail] = React.useState("");
+  const [email, setEmail] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
 
   async function handleSubmitForm(values: FormState) {
@@ -53,10 +53,10 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
       });
 
       ActionTicketManager.trackTicket({
-        pageType: "paperShow",
-        actionType: "fire",
-        actionArea: "paperDescription",
-        actionTag: "sendRequestFullText",
+        pageType: 'paperShow',
+        actionType: 'fire',
+        actionArea: 'paperDescription',
+        actionTag: 'sendRequestFullText',
         actionLabel: String(props.paperId),
       });
 
@@ -64,8 +64,8 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
       props.dispatch({
         type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
         payload: {
-          type: "success",
-          message: "Sent request successfully.",
+          type: 'success',
+          message: 'Sent request successfully.',
         },
       });
       props.onClose();
@@ -80,7 +80,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
       if (props.currentUser.isLoggedIn) {
         setEmail(props.currentUser.email);
       } else {
-        setEmail(Cookies.get(LAST_SUCCEEDED_EMAIL_KEY) || "");
+        setEmail(Cookies.get(LAST_SUCCEEDED_EMAIL_KEY) || '');
       }
     },
     [props.currentUser.isLoggedIn]
@@ -95,7 +95,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
       </div>
 
       <Formik
-        initialValues={{ email, message: "" }}
+        initialValues={{ email, message: '' }}
         validate={validateForm}
         onSubmit={handleSubmitForm}
         enableReinitialize
@@ -121,7 +121,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
               name="message"
               component={ReduxAutoSizeTextarea}
               textareaClassName={s.textAreaWrapper}
-              textareaStyle={{ padding: "8px" }}
+              textareaStyle={{ padding: '8px' }}
               rows={3}
               placeholder="ex) I'm interested in this paper - Could you provide the full-text for it?"
             />

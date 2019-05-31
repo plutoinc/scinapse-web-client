@@ -1,15 +1,15 @@
-import { ACTION_TYPES } from "../../actions/actionTypes";
-import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from "./records";
-import { SearchResult } from "../../api/search";
-import { ChangeRangeInputParams, FILTER_TYPE_HAS_RANGE, FILTER_RANGE_TYPE } from "../../constants/paperSearch";
-import { AddPaperToCollectionParams, RemovePapersFromCollectionParams } from "../../api/collection";
-import { AggregationFos, AggregationJournal, AggregationData } from "../../model/aggregation";
-import { Paper } from "../../model/paper";
-import { Filter, RawFilter } from "../../api/member";
-import { isEqual } from "lodash";
-import { objectifyRawFilterList } from "../../helpers/FilterObjectGenerator";
-import { LOCAL_STORAGE_FILTERS } from "./constants";
-const store = require("store");
+import { ACTION_TYPES } from '../../actions/actionTypes';
+import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from './records';
+import { SearchResult } from '../../api/search';
+import { ChangeRangeInputParams, FILTER_TYPE_HAS_RANGE, FILTER_RANGE_TYPE } from '../../constants/paperSearch';
+import { AddPaperToCollectionParams, RemovePapersFromCollectionParams } from '../../api/collection';
+import { AggregationFos, AggregationJournal, AggregationData } from '../../model/aggregation';
+import { Paper } from '../../model/paper';
+import { Filter, RawFilter } from '../../api/member';
+import { isEqual } from 'lodash';
+import { objectifyRawFilterList } from '../../helpers/FilterObjectGenerator';
+import { LOCAL_STORAGE_FILTERS } from './constants';
+const store = require('store');
 
 export function reducer(
   state: ArticleSearchState = ARTICLE_SEARCH_INITIAL_STATE,
@@ -39,8 +39,8 @@ export function reducer(
         yearFilterToValue: filters.yearTo || 0,
         fosFilter: filters.fos || [],
         journalFilter: filters.journal || [],
-        suggestionKeyword: "",
-        highlightedSuggestionKeyword: "",
+        suggestionKeyword: '',
+        highlightedSuggestionKeyword: '',
       };
     }
 
@@ -93,8 +93,8 @@ export function reducer(
           totalElements: payload.data.page.totalElements,
           totalPages: payload.data.page.totalPages,
           searchItemsToShow: payload.data.content,
-          suggestionKeyword: payload.data.suggestion ? payload.data.suggestion.suggestQuery : "",
-          highlightedSuggestionKeyword: payload.data.suggestion ? payload.data.suggestion.highlighted : "",
+          suggestionKeyword: payload.data.suggestion ? payload.data.suggestion.suggestQuery : '',
+          highlightedSuggestionKeyword: payload.data.suggestion ? payload.data.suggestion.highlighted : '',
           searchFromSuggestion: payload.data.resultModified,
           aggregationData,
           journalFilterObject,

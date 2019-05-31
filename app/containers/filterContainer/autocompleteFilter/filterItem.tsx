@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
-import * as classNames from "classnames";
-import Checkbox from "@material-ui/core/Checkbox";
-import { withStyles } from "../../../helpers/withStylesHelper";
-const s = require("./autocompleteFilter.scss");
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import * as classNames from 'classnames';
+import Checkbox from '@material-ui/core/Checkbox';
+import { withStyles } from '../../../helpers/withStylesHelper';
+const s = require('./autocompleteFilter.scss');
 
 interface FilterItemProps {
   content: string;

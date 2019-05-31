@@ -1,11 +1,11 @@
-import { AxiosResponse, CancelToken } from "axios";
-import { normalize } from "normalizr";
-import PlutoAxios from "./pluto";
-import { Paper, paperSchema } from "../model/paper";
-import { Journal, journalSchema } from "../model/journal";
-import { PageObjectV2 } from "./types/common";
-import { PAPER_LIST_SORT_TYPES } from "../components/common/sortBox";
-import { camelCaseKeys } from "../helpers/camelCaseKeys";
+import { AxiosResponse, CancelToken } from 'axios';
+import { normalize } from 'normalizr';
+import PlutoAxios from './pluto';
+import { Paper, paperSchema } from '../model/paper';
+import { Journal, journalSchema } from '../model/journal';
+import { PageObjectV2 } from './types/common';
+import { PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
+import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
 interface PapersResult extends PageObjectV2 {
   entities: { papers: { [paperId: number]: Paper } };

@@ -1,11 +1,11 @@
-import * as React from "react";
-import * as classNames from "classnames";
-import { RouteComponentProps, withRouter } from "react-router";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { goToYearFilteredSearchResultPage } from "../yearRangeSlider/helper";
-import { MIN_YEAR } from "../yearRangeSlider/constants";
+import * as React from 'react';
+import * as classNames from 'classnames';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { goToYearFilteredSearchResultPage } from '../yearRangeSlider/helper';
+import { MIN_YEAR } from '../yearRangeSlider/constants';
 
-const styles = require("./filterButton.scss");
+const styles = require('./filterButton.scss');
 
 interface FilterButtonProps extends RouteComponentProps<null> {
   text: string;

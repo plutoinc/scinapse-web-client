@@ -1,8 +1,8 @@
-import * as React from "react";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import copySelectedTextToClipboard from "../../../helpers/copySelectedTextToClipboard";
-import { trackEvent } from "../../../helpers/handleGA";
-const styles = require("./doiButton.scss");
+import * as React from 'react';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import copySelectedTextToClipboard from '../../../helpers/copySelectedTextToClipboard';
+import { trackEvent } from '../../../helpers/handleGA';
+const styles = require('./doiButton.scss');
 
 interface DOIButtonProps {
   DOI?: string;
@@ -11,7 +11,7 @@ interface DOIButtonProps {
 
 function copyDOI(DOI: string) {
   copySelectedTextToClipboard(`https://doi.org/${DOI}`);
-  trackEvent({ category: "Additional Action", action: "Copy DOI" });
+  trackEvent({ category: 'Additional Action', action: 'Copy DOI' });
 }
 
 const DOIButton = ({ DOI, style }: DOIButtonProps) => {

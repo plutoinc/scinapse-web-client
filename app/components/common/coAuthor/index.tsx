@@ -1,13 +1,13 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
-import MuiTooltip from "@material-ui/core/Tooltip";
-import { Author } from "../../../model/author/author";
-import { trackEvent } from "../../../helpers/handleGA";
-import HIndexBox from "../hIndexBox";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import Icon from "../../../icons";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-const styles = require("./coAuthor.scss");
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import MuiTooltip from '@material-ui/core/Tooltip';
+import { Author } from '../../../model/author/author';
+import { trackEvent } from '../../../helpers/handleGA';
+import HIndexBox from '../hIndexBox';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import Icon from '../../../icons';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+const styles = require('./coAuthor.scss');
 
 interface CoAuthorProps {
   author: Author;
@@ -21,22 +21,22 @@ const CoAuthor = (props: CoAuthorProps) => {
       to={`/authors/${author.id}`}
       onClick={() => {
         trackEvent({
-          category: "Flow to Author Show",
-          action: "Click Co-Author",
-          label: "Author Show",
+          category: 'Flow to Author Show',
+          action: 'Click Co-Author',
+          label: 'Author Show',
         });
         ActionTicketManager.trackTicket({
-          pageType: "authorShow",
-          actionType: "fire",
-          actionArea: "coAuthor",
-          actionTag: "authorShow",
+          pageType: 'authorShow',
+          actionType: 'fire',
+          actionArea: 'coAuthor',
+          actionTag: 'authorShow',
           actionLabel: String(author.id),
         });
       }}
     >
       <div className={styles.coAuthorItemHeader}>
         <div className={styles.coAuthorName}>
-          {author.name}{" "}
+          {author.name}{' '}
           {author.isLayered ? (
             <MuiTooltip classes={{ tooltip: styles.verificationTooltip }} title="Verification Author" placement="right">
               <div className={styles.contactIconWrapper}>
@@ -50,7 +50,7 @@ const CoAuthor = (props: CoAuthorProps) => {
         </div>
       </div>
       <span className={styles.coAuthorAffiliation}>
-        {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : ""}
+        {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : ''}
       </span>
     </Link>
   );

@@ -1,5 +1,5 @@
-import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
-import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../../components/common/sortBox";
+import { ACTION_TYPES, Actions } from '../../actions/actionTypes';
+import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
 
 export interface AuthorShowState
   extends Readonly<{
@@ -25,7 +25,7 @@ export const AUTHOR_SHOW_INITIAL_STATE: AuthorShowState = {
   papersTotalPage: 0,
   papersCurrentPage: 1,
   papersTotalCount: 0,
-  papersSort: "NEWEST_FIRST",
+  papersSort: 'NEWEST_FIRST',
   isOpenConnectProfileDialog: false,
   isLoadingPage: false,
   isLoadingPapers: false,

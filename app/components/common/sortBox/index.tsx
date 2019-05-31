@@ -1,13 +1,13 @@
-import * as React from "react";
-import Popover from "@material-ui/core/Popover/Popover";
-import MenuItem from "@material-ui/core/MenuItem";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import Icon from "../../../icons";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-const styles = require("./sortBox.scss");
+import * as React from 'react';
+import Popover from '@material-ui/core/Popover/Popover';
+import MenuItem from '@material-ui/core/MenuItem';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import Icon from '../../../icons';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+const styles = require('./sortBox.scss');
 
-export type PAPER_LIST_SORT_TYPES = "MOST_CITATIONS" | "NEWEST_FIRST" | "OLDEST_FIRST" | "RELEVANCE";
-export type AUTHOR_PAPER_LIST_SORT_TYPES = PAPER_LIST_SORT_TYPES | "RECENTLY_ADDED";
+export type PAPER_LIST_SORT_TYPES = 'MOST_CITATIONS' | 'NEWEST_FIRST' | 'OLDEST_FIRST' | 'RELEVANCE';
+export type AUTHOR_PAPER_LIST_SORT_TYPES = PAPER_LIST_SORT_TYPES | 'RECENTLY_ADDED';
 
 interface SortBoxProps {
   sortOption: AUTHOR_PAPER_LIST_SORT_TYPES;
@@ -50,16 +50,16 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
         <Popover
           open={isOpen}
           anchorEl={this.anchorElement}
-          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
           onClose={this.handleRequestClose}
         >
           {exposeRecentlyUpdated && (
             <MenuItem classes={{ root: styles.menuItem }}>
               <div
                 onClick={() => {
-                  handleClickSortOption("RECENTLY_ADDED");
-                  this.fireActionTicketInPaperSort("RECENTLY_ADDED");
+                  handleClickSortOption('RECENTLY_ADDED');
+                  this.fireActionTicketInPaperSort('RECENTLY_ADDED');
                   this.handleRequestClose();
                 }}
               >
@@ -70,8 +70,8 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
           <MenuItem classes={{ root: styles.menuItem }}>
             <div
               onClick={() => {
-                handleClickSortOption("MOST_CITATIONS");
-                this.fireActionTicketInPaperSort("MOST_CITATIONS");
+                handleClickSortOption('MOST_CITATIONS');
+                this.fireActionTicketInPaperSort('MOST_CITATIONS');
                 this.handleRequestClose();
               }}
             >
@@ -81,8 +81,8 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
           <MenuItem classes={{ root: styles.menuItem }}>
             <div
               onClick={() => {
-                handleClickSortOption("NEWEST_FIRST");
-                this.fireActionTicketInPaperSort("NEWEST_FIRST");
+                handleClickSortOption('NEWEST_FIRST');
+                this.fireActionTicketInPaperSort('NEWEST_FIRST');
                 this.handleRequestClose();
               }}
             >
@@ -92,8 +92,8 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
           <MenuItem classes={{ root: styles.menuItem }}>
             <div
               onClick={() => {
-                handleClickSortOption("OLDEST_FIRST");
-                this.fireActionTicketInPaperSort("OLDEST_FIRST");
+                handleClickSortOption('OLDEST_FIRST');
+                this.fireActionTicketInPaperSort('OLDEST_FIRST');
                 this.handleRequestClose();
               }}
             >
@@ -114,8 +114,8 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
         <MenuItem classes={{ root: styles.menuItem }}>
           <div
             onClick={() => {
-              handleClickSortOption("RELEVANCE");
-              this.fireActionTicketInPaperSort("RELEVANCE");
+              handleClickSortOption('RELEVANCE');
+              this.fireActionTicketInPaperSort('RELEVANCE');
               this.handleRequestClose();
             }}
           >
@@ -130,24 +130,24 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
   private getSortOptionToShow = (sortOption: AUTHOR_PAPER_LIST_SORT_TYPES) => {
     // tslint:disable-next-line:switch-default
     switch (sortOption) {
-      case "MOST_CITATIONS": {
-        return "Most Citations";
+      case 'MOST_CITATIONS': {
+        return 'Most Citations';
       }
 
-      case "OLDEST_FIRST": {
-        return "Oldest";
+      case 'OLDEST_FIRST': {
+        return 'Oldest';
       }
 
-      case "NEWEST_FIRST": {
-        return "Newest";
+      case 'NEWEST_FIRST': {
+        return 'Newest';
       }
 
-      case "RELEVANCE": {
-        return "Most Relevance";
+      case 'RELEVANCE': {
+        return 'Most Relevance';
       }
 
-      case "RECENTLY_ADDED": {
-        return "Recently Added";
+      case 'RECENTLY_ADDED': {
+        return 'Recently Added';
       }
     }
   };
@@ -157,9 +157,9 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
 
     ActionTicketManager.trackTicket({
       pageType: currentPage,
-      actionType: "fire",
-      actionArea: "sortBox",
-      actionTag: "paperSorting",
+      actionType: 'fire',
+      actionArea: 'sortBox',
+      actionTag: 'paperSorting',
       actionLabel: sortOption,
     });
   };

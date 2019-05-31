@@ -1,10 +1,10 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
-import * as format from "date-fns/format";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { Paper } from "../../../model/paper";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-const styles = require("./venueItem.scss");
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import * as format from 'date-fns/format';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { Paper } from '../../../model/paper';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+const styles = require('./venueItem.scss');
 
 interface PaperShowVenueItemProps {
   paper: Paper;
@@ -28,10 +28,10 @@ const PaperShowVenueItem: React.SFC<PaperShowVenueItemProps> = props => {
               to={`/journals/${journal.id}`}
               onClick={() => {
                 ActionTicketManager.trackTicket({
-                  pageType: "paperShow",
-                  actionType: "fire",
-                  actionArea: "paperDescription",
-                  actionTag: "journalShow",
+                  pageType: 'paperShow',
+                  actionType: 'fire',
+                  actionArea: 'paperDescription',
+                  actionTag: 'journalShow',
                   actionLabel: String(journal.id),
                 });
               }}
@@ -39,7 +39,7 @@ const PaperShowVenueItem: React.SFC<PaperShowVenueItemProps> = props => {
               <div className={styles.venueTitle}>{`${journal.title || paper.venue} ${journal.impactFactor &&
                 `[IF: ${journal.impactFactor.toFixed(2)}]`}`}</div>
               <div className={styles.venueYear}>
-                Published date: <span className={styles.yearNumber}>{format(paper.publishedDate, "MMM D, YYYY")}</span>
+                Published date: <span className={styles.yearNumber}>{format(paper.publishedDate, 'MMM D, YYYY')}</span>
               </div>
             </Link>
           </li>

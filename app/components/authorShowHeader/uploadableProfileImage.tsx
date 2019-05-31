@@ -1,15 +1,15 @@
-import * as React from "react";
-import { Dispatch, connect } from "react-redux";
-import { denormalize } from "normalizr";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { Author, authorSchema } from "../../model/author/author";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { updateProfileImage } from "../../actions/author";
-import { AppState } from "../../reducers";
-import { CurrentUser } from "../../model/currentUser";
-import alertToast from "../../helpers/makePlutoToastAction";
-import Icon from "../../icons";
-const styles = require("./uploadableProfileImage.scss");
+import * as React from 'react';
+import { Dispatch, connect } from 'react-redux';
+import { denormalize } from 'normalizr';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { Author, authorSchema } from '../../model/author/author';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { updateProfileImage } from '../../actions/author';
+import { AppState } from '../../reducers';
+import { CurrentUser } from '../../model/currentUser';
+import alertToast from '../../helpers/makePlutoToastAction';
+import Icon from '../../icons';
+const styles = require('./uploadableProfileImage.scss');
 
 const LIMIT_FILE_SIZE = 3 * 1024 * 1024;
 
@@ -89,12 +89,12 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
       file = e.currentTarget.files[0];
       if (file.size >= LIMIT_FILE_SIZE) {
         return alertToast({
-          type: "error",
-          message: "The size of the profile image is limited up to 3MB.",
+          type: 'error',
+          message: 'The size of the profile image is limited up to 3MB.',
         });
       }
 
-      formData.append("profile-image", file);
+      formData.append('profile-image', file);
     }
 
     dispatch(updateProfileImage(author.id, formData));

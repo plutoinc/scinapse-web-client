@@ -1,7 +1,7 @@
-import { AxiosResponse } from "axios";
-import PlutoAxios from "./pluto";
-import { RawPaginationResponseV2 } from "./types/common";
-import { camelCaseKeys } from "../helpers/camelCaseKeys";
+import { AxiosResponse } from 'axios';
+import PlutoAxios from './pluto';
+import { RawPaginationResponseV2 } from './types/common';
+import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
 export interface SuggestAffiliation {
   type: string;

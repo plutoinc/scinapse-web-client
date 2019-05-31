@@ -1,4 +1,4 @@
-import { ACTION_TYPES } from "../../actions/actionTypes";
+import { ACTION_TYPES } from '../../actions/actionTypes';
 
 export function setDeviceToDesktop() {
   return {

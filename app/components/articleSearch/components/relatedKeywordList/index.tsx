@@ -1,8 +1,8 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import PapersQueryFormatter from "../../../../helpers/papersQueryFormatter";
-const styles = require("./relatedKeywordList.scss");
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import { withStyles } from '../../../../helpers/withStylesHelper';
+import PapersQueryFormatter from '../../../../helpers/papersQueryFormatter';
+const styles = require('./relatedKeywordList.scss');
 
 interface RelatedKeywordListProps {
   keywordList: string[];
@@ -19,10 +19,10 @@ const RelatedKeywordList: React.SFC<RelatedKeywordListProps> = ({ keywordList, s
     <div key={keyword} className={styles.relatedKeywords}>
       <Link
         to={{
-          pathname: "/search",
+          pathname: '/search',
           search: PapersQueryFormatter.stringifyPapersQuery({
             query: `${query} ${keyword}`,
-            sort: "RELEVANCE",
+            sort: 'RELEVANCE',
             filter: {},
             page: 1,
           }),

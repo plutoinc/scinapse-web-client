@@ -1,7 +1,7 @@
-import axios, { AxiosRequestConfig, AxiosError } from "axios";
-import getAPIHost from "./getHost";
-import EnvChecker from "../helpers/envChecker";
-import { CommonError } from "../model/error";
+import axios, { AxiosRequestConfig, AxiosError } from 'axios';
+import getAPIHost from './getHost';
+import EnvChecker from '../helpers/envChecker';
+import { CommonError } from '../model/error';
 
 export const TIMEOUT_FOR_SAFE_RENDERING = 55000;
 

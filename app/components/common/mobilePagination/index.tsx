@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Link, withRouter, RouteComponentProps } from "react-router-dom";
-import Icon from "../../../icons";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { LocationDescriptor } from "../../../../node_modules/@types/history";
-const styles = require("./pagination.scss");
+import * as React from 'react';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
+import Icon from '../../../icons';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { LocationDescriptor } from '../../../../node_modules/@types/history';
+const styles = require('./pagination.scss');
 
 interface PaginationProps
   extends RouteComponentProps,

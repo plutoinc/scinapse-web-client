@@ -1,58 +1,58 @@
-import * as React from "react";
-import axios from "axios";
-import { stringify } from "qs";
-import NoSsr from "@material-ui/core/NoSsr";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import { connect, Dispatch } from "react-redux";
-import PDFViewer from "../../components/pdfViewer";
-import { AppState } from "../../reducers";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { CurrentUser } from "../../model/currentUser";
-import ArticleSpinner from "../../components/common/spinner/articleSpinner";
-import { clearPaperShowState } from "../../actions/paperShow";
-import { PaperShowState } from "./records";
-import ActionBar from "../paperShowActionBar";
-import FOSList from "../../components/paperShow/components/fosList";
-import ReferencePapers from "../../components/paperShow/components/relatedPapers";
-import PaperShowRefCitedTab from "../../components/paperShow/refCitedTab";
-import { Footer } from "../../components/layouts";
-import { Paper } from "../../model/paper";
-import { fetchCitedPaperData, fetchMyCollection, fetchPaperShowData, fetchRefPaperData } from "./sideEffect";
-import getQueryParamsObject from "../../helpers/getQueryParamsObject";
-import { LayoutState, UserDevice } from "../../components/layouts/records";
-import { getMemoizedPaper } from "./select";
-import { formulaeToHTMLStr } from "../../helpers/displayFormula";
-import restoreScroll from "../../helpers/scrollRestoration";
-import ErrorPage from "../../components/error/errorPage";
-import EnvChecker from "../../helpers/envChecker";
-import NextPaperTab from "../nextPaperTab";
-import { PaperShowMatchParams, PaperShowPageQueryParams, RefCitedTabItem } from "./types";
-import VenueAndAuthors from "../../components/common/paperItem/venueAndAuthors";
-import ActionTicketManager from "../../helpers/actionTicketManager";
-import RelatedPapers from "../../components/relatedPapers";
-import { getUserGroupName } from "../../helpers/abTestHelper";
+import * as React from 'react';
+import axios from 'axios';
+import { stringify } from 'qs';
+import NoSsr from '@material-ui/core/NoSsr';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { connect, Dispatch } from 'react-redux';
+import PDFViewer from '../../components/pdfViewer';
+import { AppState } from '../../reducers';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { CurrentUser } from '../../model/currentUser';
+import ArticleSpinner from '../../components/common/spinner/articleSpinner';
+import { clearPaperShowState } from '../../actions/paperShow';
+import { PaperShowState } from './records';
+import ActionBar from '../paperShowActionBar';
+import FOSList from '../../components/paperShow/components/fosList';
+import ReferencePapers from '../../components/paperShow/components/relatedPapers';
+import PaperShowRefCitedTab from '../../components/paperShow/refCitedTab';
+import { Footer } from '../../components/layouts';
+import { Paper } from '../../model/paper';
+import { fetchCitedPaperData, fetchMyCollection, fetchPaperShowData, fetchRefPaperData } from './sideEffect';
+import getQueryParamsObject from '../../helpers/getQueryParamsObject';
+import { LayoutState, UserDevice } from '../../components/layouts/records';
+import { getMemoizedPaper } from './select';
+import { formulaeToHTMLStr } from '../../helpers/displayFormula';
+import restoreScroll from '../../helpers/scrollRestoration';
+import ErrorPage from '../../components/error/errorPage';
+import EnvChecker from '../../helpers/envChecker';
+import NextPaperTab from '../nextPaperTab';
+import { PaperShowMatchParams, PaperShowPageQueryParams, RefCitedTabItem } from './types';
+import VenueAndAuthors from '../../components/common/paperItem/venueAndAuthors';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+import RelatedPapers from '../../components/relatedPapers';
+import { getUserGroupName } from '../../helpers/abTestHelper';
 import {
   RELATED_PAPERS_AT_PAPER_SHOW_TEST,
   SIGN_BANNER_AT_PAPER_SHOW_TEST,
   LOCKED_BUTTONS_TEST,
-} from "../../constants/abTestGlobalValue";
-import { CommonError } from "../../model/error";
-import PaperShowHelmet from "../../components/paperShow/helmet";
-import GoBackResultBtn from "../../components/paperShow/backButton";
-import { getMemoizedCurrentUser } from "../../selectors/getCurrentUser";
-import { getRelatedPapers } from "../../actions/relatedPapers";
-import { makeGetMemoizedPapers } from "../../selectors/papersSelector";
-import { getMemoizedPaperShow } from "../../selectors/getPaperShow";
-import { getMemoizedLayout } from "../../selectors/getLayout";
-import { getMemoizedPDFViewerState } from "../../selectors/getPDFViewer";
-import { PDFViewerState } from "../../reducers/pdfViewer";
-import { ActionCreators } from "../../actions/actionTypes";
-import BottomBanner from "../../components/preNoted/bottomBanner";
-import { Configuration } from "../../reducers/configuration";
-import { getMemoizedConfiguration } from "../../selectors/getConfiguration";
-import SearchFullScrollBanner from "../../components/paperShow/searchFullBanner";
-import SignUpBanner from "../../components/paperShow/components/signUpBanner";
-const styles = require("./paperShow.scss");
+} from '../../constants/abTestGlobalValue';
+import { CommonError } from '../../model/error';
+import PaperShowHelmet from '../../components/paperShow/helmet';
+import GoBackResultBtn from '../../components/paperShow/backButton';
+import { getMemoizedCurrentUser } from '../../selectors/getCurrentUser';
+import { getRelatedPapers } from '../../actions/relatedPapers';
+import { makeGetMemoizedPapers } from '../../selectors/papersSelector';
+import { getMemoizedPaperShow } from '../../selectors/getPaperShow';
+import { getMemoizedLayout } from '../../selectors/getLayout';
+import { getMemoizedPDFViewerState } from '../../selectors/getPDFViewer';
+import { PDFViewerState } from '../../reducers/pdfViewer';
+import { ActionCreators } from '../../actions/actionTypes';
+import BottomBanner from '../../components/preNoted/bottomBanner';
+import { Configuration } from '../../reducers/configuration';
+import { getMemoizedConfiguration } from '../../selectors/getConfiguration';
+import SearchFullScrollBanner from '../../components/paperShow/searchFullBanner';
+import SignUpBanner from '../../components/paperShow/components/signUpBanner';
+const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
 let ticking = false;
@@ -129,7 +129,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const notRenderedAtServerOrJSAlreadyInitialized =
       !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
 
-    window.addEventListener("scroll", this.handleScroll, { passive: true });
+    window.addEventListener('scroll', this.handleScroll, { passive: true });
     this.handleScrollEvent();
 
     dispatch(getRelatedPapers(parseInt(this.props.match.params.paperId, 10), this.cancelToken));
@@ -159,8 +159,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const nextQueryParams: PaperShowPageQueryParams = getQueryParamsObject(this.props.location.search);
 
     const moveToDifferentPage = match.params.paperId !== this.props.match.params.paperId;
-    const changeRefPage = prevQueryParams["ref-page"] !== nextQueryParams["ref-page"];
-    const changeCitedPage = prevQueryParams["cited-page"] !== nextQueryParams["cited-page"];
+    const changeRefPage = prevQueryParams['ref-page'] !== nextQueryParams['ref-page'];
+    const changeCitedPage = prevQueryParams['cited-page'] !== nextQueryParams['cited-page'];
 
     if (moveToDifferentPage) {
       dispatch(clearPaperShowState());
@@ -191,12 +191,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
 
     if (this.props.paper && changeRefPage) {
-      await dispatch(fetchRefPaperData(this.props.paper.id, nextQueryParams["ref-page"], this.cancelToken.token));
+      await dispatch(fetchRefPaperData(this.props.paper.id, nextQueryParams['ref-page'], this.cancelToken.token));
       if (this.refTabWrapper) {
         this.refTabWrapper.scrollIntoView();
       }
     } else if (this.props.paper && changeCitedPage) {
-      await dispatch(fetchCitedPaperData(this.props.paper.id, nextQueryParams["cited-page"], this.cancelToken.token));
+      await dispatch(fetchCitedPaperData(this.props.paper.id, nextQueryParams['cited-page'], this.cancelToken.token));
       if (this.citedTabWrapper) {
         this.citedTabWrapper.scrollIntoView();
       }
@@ -208,7 +208,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     this.cancelToken.cancel();
     dispatch(clearPaperShowState());
-    window.removeEventListener("scroll", this.handleScroll);
+    window.removeEventListener('scroll', this.handleScroll);
   }
 
   public render() {
@@ -227,7 +227,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if (paperShow.isLoadingPaper) {
       return (
         <div className={styles.paperShowWrapper}>
-          <ArticleSpinner style={{ margin: "200px auto" }} />
+          <ArticleSpinner style={{ margin: '200px auto' }} />
         </div>
       );
     }
@@ -249,8 +249,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               <GoBackResultBtn />
               <Title title={paper.title} />
               <VenueAndAuthors
-                pageType={"paperShow"}
-                actionArea={"paperDescription"}
+                pageType={'paperShow'}
+                actionArea={'paperDescription'}
                 paper={paper}
                 journal={paper.journal}
                 conferenceInstance={paper.conferenceInstance}
@@ -265,7 +265,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     isLoadingPDF={PDFViewerState.isLoading}
                     currentUser={currentUser}
                     hasPDFFullText={!!PDFViewerState.parsedPDFObject}
-                    handleClickFullText={this.scrollToSection("fullText")}
+                    handleClickFullText={this.scrollToSection('fullText')}
                   />
                 </NoSsr>
               </div>
@@ -279,7 +279,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   <FOSList FOSList={paper.fosList} />
                 </div>
                 <SignUpBanner
-                  shouldShowSignBanner={!currentUser.isLoggedIn && getUserGroupName(LOCKED_BUTTONS_TEST) === "locked"}
+                  shouldShowSignBanner={!currentUser.isLoggedIn && getUserGroupName(LOCKED_BUTTONS_TEST) === 'locked'}
                 />
               </div>
             </div>
@@ -289,14 +289,14 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               shouldShowRelatedPapers={
                 !PDFViewerState.isLoading &&
                 PDFViewerState.hasFailed &&
-                getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) !== "control"
+                getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) !== 'control'
               }
             />
             <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
               <PaperShowRefCitedTab
                 paper={paper}
                 currentUser={currentUser}
-                afterDownloadPDF={this.scrollToSection("fullText")}
+                afterDownloadPDF={this.scrollToSection('fullText')}
                 onClickDownloadPDF={this.handleClickDownloadPDF}
                 onClickTabItem={this.handleClickRefCitedTabItem}
                 isFixed={isOnFullText || isOnRef || isOnCited}
@@ -313,9 +313,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   paper={paper}
                   shouldShowRelatedPapers={
                     (!paper.bestPdf || !paper.bestPdf.hasBest) &&
-                    getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) !== "control"
+                    getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) !== 'control'
                   }
-                  afterDownloadPDF={this.scrollToSection("fullText")}
+                  afterDownloadPDF={this.scrollToSection('fullText')}
                 />
               )}
             </NoSsr>
@@ -369,7 +369,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         </div>
         <BottomBanner
           isLoggedIn={currentUser.isLoggedIn}
-          shouldShowBottomBanner={getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TEST) === "bottomBanner"}
+          shouldShowBottomBanner={getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TEST) === 'bottomBanner'}
         />
         <NextPaperTab />
         <SearchFullScrollBanner
@@ -389,10 +389,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private logPageView = (paperId: string | number, errorStatus?: number | null) => {
     if (!EnvChecker.isOnServer()) {
       ActionTicketManager.trackTicket({
-        pageType: "paperShow",
-        actionType: "view",
+        pageType: 'paperShow',
+        actionType: 'view',
         actionArea: errorStatus ? String(errorStatus) : null,
-        actionTag: "pageView",
+        actionTag: 'pageView',
         actionLabel: String(paperId),
       });
     }
@@ -401,10 +401,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private scrollToRefCitedSection = () => {
     const { paperShow, location } = this.props;
 
-    if (paperShow.citedPaperCurrentPage === 1 && location.hash === "#cited") {
-      this.scrollToSection("cited");
-    } else if (paperShow.referencePaperCurrentPage === 1 && location.hash === "#references") {
-      this.scrollToSection("ref");
+    if (paperShow.citedPaperCurrentPage === 1 && location.hash === '#cited') {
+      this.scrollToSection('cited');
+    } else if (paperShow.referencePaperCurrentPage === 1 && location.hash === '#references') {
+      this.scrollToSection('ref');
     } else {
       restoreScroll(location.key);
     }
@@ -431,8 +431,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         this.props.layout.userDevice === UserDevice.DESKTOP &&
         !this.state.isSearchFullBannerOpen &&
         !this.state.hadQuitSearchFullBanner &&
-        this.props.configuration.initialPageType === "paperShow" &&
-        getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TEST) === "searchBanner" &&
+        this.props.configuration.initialPageType === 'paperShow' &&
+        getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TEST) === 'searchBanner' &&
         scrollPositionOverRefTab > 400
       ) {
         this.setState(prevState => ({ ...prevState, isSearchFullBannerOpen: true }));
@@ -522,7 +522,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     const updatedQueryParamsObject: PaperShowPageQueryParams = {
       ...queryParamsObject,
-      ...{ "cited-page": page },
+      ...{ 'cited-page': page },
     };
     const stringifiedQueryParams = stringify(updatedQueryParamsObject, {
       addQueryPrefix: true,
@@ -540,7 +540,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     const updatedQueryParamsObject: PaperShowPageQueryParams = {
       ...queryParamsObject,
-      ...{ "ref-page": page },
+      ...{ 'ref-page': page },
     };
     const stringifiedQueryParams = stringify(updatedQueryParamsObject, {
       addQueryPrefix: true,
@@ -555,19 +555,19 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private handleClickRefCitedTabItem = (section: RefCitedTabItem) => () => {
     const { paper } = this.props;
     let actionTag: Scinapse.ActionTicket.ActionTagType;
-    if (section === "fullText") {
-      actionTag = "downloadPdf";
-    } else if (section === "ref") {
-      actionTag = "refList";
+    if (section === 'fullText') {
+      actionTag = 'downloadPdf';
+    } else if (section === 'ref') {
+      actionTag = 'refList';
     } else {
-      actionTag = "citedList";
+      actionTag = 'citedList';
     }
 
     this.scrollToSection(section)();
     ActionTicketManager.trackTicket({
-      pageType: "paperShow",
-      actionType: "fire",
-      actionArea: "contentNavbar",
+      pageType: 'paperShow',
+      actionType: 'fire',
+      actionArea: 'contentNavbar',
       actionTag,
       actionLabel: String(paper!.id),
     });
@@ -577,17 +577,17 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     let target: HTMLDivElement | null = null;
 
     switch (section) {
-      case "fullText": {
+      case 'fullText': {
         target = this.fullTextTabWrapper;
         break;
       }
 
-      case "ref": {
+      case 'ref': {
         target = this.refTabWrapper;
         break;
       }
 
-      case "cited": {
+      case 'cited': {
         target = this.citedTabWrapper;
         break;
       }

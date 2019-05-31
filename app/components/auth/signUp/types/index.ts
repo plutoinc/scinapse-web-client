@@ -1,7 +1,7 @@
-import { RouteComponentProps } from "react-router-dom";
-import { Dispatch } from "react-redux";
-import { GLOBAL_DIALOG_TYPE, DialogState } from "../../../dialog/reducer";
-import { OAUTH_VENDOR } from "../../../../api/types/auth";
+import { RouteComponentProps } from 'react-router-dom';
+import { Dispatch } from 'react-redux';
+import { GLOBAL_DIALOG_TYPE, DialogState } from '../../../dialog/reducer';
+import { OAUTH_VENDOR } from '../../../../api/types/auth';
 
 export interface SignUpContainerProps extends RouteComponentProps<SignUpSearchParams> {
   dispatch: Dispatch<any>;

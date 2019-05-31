@@ -1,12 +1,12 @@
-import * as React from "react";
-import { withStyles } from "../../helpers/withStylesHelper";
-import CollectionAPI from "../../api/collection";
-import { Paper } from "../../model/paper";
-import PaperItem from "../common/paperItem";
-import ArticleSpinner from "../common/spinner/articleSpinner";
-import { useObserver } from "../../hooks/useIntersectionHook";
-import { ActionTicketParams } from "../../helpers/actionTicketManager/actionTicket";
-const styles = require("./relatedPaperInCollectionShow.scss");
+import * as React from 'react';
+import { withStyles } from '../../helpers/withStylesHelper';
+import CollectionAPI from '../../api/collection';
+import { Paper } from '../../model/paper';
+import PaperItem from '../common/paperItem';
+import ArticleSpinner from '../common/spinner/articleSpinner';
+import { useObserver } from '../../hooks/useIntersectionHook';
+import { ActionTicketParams } from '../../helpers/actionTicketManager/actionTicket';
+const styles = require('./relatedPaperInCollectionShow.scss');
 
 interface RelatedPaperInCollectionShowProps {
   collectionId: number;
@@ -15,10 +15,10 @@ interface RelatedPaperInCollectionShowProps {
 const RelatedPaperItem: React.FunctionComponent<{ paper: Paper }> = props => {
   const { paper } = props;
   const actionTicketContext: ActionTicketParams = {
-    pageType: "collectionShow",
-    actionType: "view",
-    actionArea: "relatedPaperList",
-    actionTag: "viewRelatedPaper",
+    pageType: 'collectionShow',
+    actionType: 'view',
+    actionArea: 'relatedPaperList',
+    actionTag: 'viewRelatedPaper',
     actionLabel: String(paper.id),
   };
 

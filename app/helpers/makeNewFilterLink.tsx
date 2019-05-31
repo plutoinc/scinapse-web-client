@@ -1,7 +1,7 @@
-import { Location } from "history";
-import PapersQueryFormatter, { FilterObject, SearchPageQueryParamsObject } from "./papersQueryFormatter";
-import getQueryParamsObject from "./getQueryParamsObject";
-import SafeURIStringHandler from "./safeURIStringHandler";
+import { Location } from 'history';
+import PapersQueryFormatter, { FilterObject, SearchPageQueryParamsObject } from './papersQueryFormatter';
+import getQueryParamsObject from './getQueryParamsObject';
+import SafeURIStringHandler from './safeURIStringHandler';
 
 export function getUrlDecodedQueryParamsObject(location: Location): SearchPageQueryParamsObject {
   const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);

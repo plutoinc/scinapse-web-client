@@ -1,5 +1,5 @@
-import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
-import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../common/sortBox";
+import { ACTION_TYPES, Actions } from '../../actions/actionTypes';
+import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../common/sortBox';
 
 export interface CollectionShowState
   extends Readonly<{
@@ -25,8 +25,8 @@ export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
   totalPaperListPage: 0,
   currentPaperListPage: 1,
   papersTotalCount: 0,
-  sortType: "RECENTLY_ADDED",
-  searchKeyword: "",
+  sortType: 'RECENTLY_ADDED',
+  searchKeyword: '',
   paperIds: [],
 };
 
@@ -84,7 +84,7 @@ export function reducer(
             totalPaperListPage: pageRes.totalPages,
             currentPaperListPage: pageRes.page,
             papersTotalCount: pageRes.totalElements,
-            searchKeyword: action.payload.query ? action.payload.query : "",
+            searchKeyword: action.payload.query ? action.payload.query : '',
           }
         : { ...state, isLoadingPaperToCollection: false, paperIds };
     }
@@ -107,7 +107,7 @@ export function reducer(
     case ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_FROM_COLLECTION: {
       if (action.payload.collection.id === state.mainCollectionId) {
         const removePaperIds = action.payload.paperIds;
-        if (typeof state.paperIds === "object") {
+        if (typeof state.paperIds === 'object') {
           const paperIndex = state.paperIds.indexOf(removePaperIds[0]);
           const paperIdsLength = state.paperIds.length;
 

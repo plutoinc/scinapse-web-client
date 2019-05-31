@@ -1,9 +1,9 @@
-import * as React from "react";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { Fos, NewFOS } from "../../../model/fos";
-import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-const styles = require("./keyword.scss");
+import * as React from 'react';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { Fos, NewFOS } from '../../../model/fos';
+import papersQueryFormatter from '../../../helpers/papersQueryFormatter';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+const styles = require('./keyword.scss');
 
 interface PaperShowKeywordProps {
   fos: Fos | NewFOS;
@@ -22,8 +22,8 @@ const PaperShowKeyword: React.FunctionComponent<PaperShowKeywordProps> = props =
     return (
       <a
         href={`/search?${papersQueryFormatter.stringifyPapersQuery({
-          query: fos.fos || "",
-          sort: "RELEVANCE",
+          query: fos.fos || '',
+          sort: 'RELEVANCE',
           page: 1,
           filter: {},
         })}`}
@@ -32,9 +32,9 @@ const PaperShowKeyword: React.FunctionComponent<PaperShowKeywordProps> = props =
         onClick={() => {
           ActionTicketManager.trackTicket({
             pageType: props.pageType,
-            actionType: "fire",
+            actionType: 'fire',
             actionArea: props.actionArea || props.pageType,
-            actionTag: "fos",
+            actionTag: 'fos',
             actionLabel: String(fos.id),
           });
         }}
@@ -47,8 +47,8 @@ const PaperShowKeyword: React.FunctionComponent<PaperShowKeywordProps> = props =
     return (
       <a
         href={`/search?${papersQueryFormatter.stringifyPapersQuery({
-          query: fos.name || "",
-          sort: "RELEVANCE",
+          query: fos.name || '',
+          sort: 'RELEVANCE',
           page: 1,
           filter: {},
         })}`}
@@ -57,9 +57,9 @@ const PaperShowKeyword: React.FunctionComponent<PaperShowKeywordProps> = props =
         onClick={() => {
           ActionTicketManager.trackTicket({
             pageType: props.pageType,
-            actionType: "fire",
+            actionType: 'fire',
             actionArea: props.actionArea || props.pageType,
-            actionTag: "fos",
+            actionTag: 'fos',
             actionLabel: String(fos.id),
           });
         }}

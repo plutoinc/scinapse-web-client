@@ -1,6 +1,6 @@
-import Axios, { AxiosResponse, CancelToken } from "axios";
-import PlutoAxios from "./pluto";
-import { camelCaseKeys } from "../helpers/camelCaseKeys";
+import Axios, { AxiosResponse, CancelToken } from 'axios';
+import PlutoAxios from './pluto';
+import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
 export interface CompletionKeyword
   extends Readonly<{
@@ -10,7 +10,7 @@ export interface CompletionKeyword
 
 export interface FOSSuggestion {
   keyword: string;
-  type: "FOS";
+  type: 'FOS';
   fosId: number;
 }
 
@@ -24,7 +24,7 @@ export interface JournalSuggestion {
 const CancelToken = Axios.CancelToken;
 class CompletionAPI extends PlutoAxios {
   public async fetchSuggestionKeyword(query: string, cancelToken: CancelToken) {
-    const getCompleteKeywordResponse: AxiosResponse = await this.get("/complete", {
+    const getCompleteKeywordResponse: AxiosResponse = await this.get('/complete', {
       params: {
         q: query,
       },
@@ -36,7 +36,7 @@ class CompletionAPI extends PlutoAxios {
   }
 
   public async fetchFOSSuggestion(query: string, cancelToken: CancelToken) {
-    const res: AxiosResponse = await this.get("/complete/fos", {
+    const res: AxiosResponse = await this.get('/complete/fos', {
       params: {
         q: query,
       },
@@ -48,7 +48,7 @@ class CompletionAPI extends PlutoAxios {
   }
 
   public async fetchJournalSuggestion(query: string, cancelToken: CancelToken) {
-    const res: AxiosResponse = await this.get("/complete/journal", {
+    const res: AxiosResponse = await this.get('/complete/journal', {
       params: {
         q: query,
       },

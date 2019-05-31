@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
-import { SavedInCollections } from "../../../model/savedInCollecctions";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import Icon from "../../../icons";
-const styles = require("./savedCollections.scss");
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import { SavedInCollections } from '../../../model/savedInCollecctions';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import Icon from '../../../icons';
+const styles = require('./savedCollections.scss');
 
 const MAX_LENGTH_OF_COLLECTION_NAME = 45;
 
@@ -27,13 +27,13 @@ class SavedCollections extends React.PureComponent<SavedCollectionsProps> {
       if (rawTitle.length <= MAX_LENGTH_OF_COLLECTION_NAME) {
         finalTitle = rawTitle;
       } else {
-        finalTitle = rawTitle.slice(0, MAX_LENGTH_OF_COLLECTION_NAME) + "...";
+        finalTitle = rawTitle.slice(0, MAX_LENGTH_OF_COLLECTION_NAME) + '...';
       }
 
       return (
         <Link key={collection.id} className={styles.collectionTitle} to={`/collections/${collection.id}`}>
           {finalTitle}
-          {!isLast ? ", " : null}
+          {!isLast ? ', ' : null}
         </Link>
       );
     });

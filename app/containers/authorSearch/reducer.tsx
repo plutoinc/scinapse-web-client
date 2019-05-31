@@ -1,6 +1,6 @@
-import { AuthorSearchState, AUTHOR_SEARCH_INITIAL_STATE } from "./records";
-import { ACTION_TYPES } from "../../actions/actionTypes";
-import { AuthorSearchResult } from "../../api/search";
+import { AuthorSearchState, AUTHOR_SEARCH_INITIAL_STATE } from './records';
+import { ACTION_TYPES } from '../../actions/actionTypes';
+import { AuthorSearchResult } from '../../api/search';
 
 export function reducer(
   state: AuthorSearchState = AUTHOR_SEARCH_INITIAL_STATE,

@@ -1,10 +1,10 @@
-import * as React from "react";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { Paper } from "../../../model/paper";
-import GlobalDialogManager from "../../../helpers/globalDialogManager";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-import Icon from "../../../icons";
-const s = require("./citeBox.scss");
+import * as React from 'react';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { Paper } from '../../../model/paper';
+import GlobalDialogManager from '../../../helpers/globalDialogManager';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import Icon from '../../../icons';
+const s = require('./citeBox.scss');
 
 interface CiteBoxProps {
   paper: Paper;
@@ -21,16 +21,16 @@ const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
       onClick={() => {
         GlobalDialogManager.openCitationDialog(props.paper.id);
         ActionTicketManager.trackTicket({
-          pageType: "paperShow",
-          actionType: "fire",
+          pageType: 'paperShow',
+          actionType: 'fire',
           actionArea: props.actionArea,
-          actionTag: "citePaper",
+          actionTag: 'citePaper',
           actionLabel: String(props.paper.id),
         });
       }}
     >
       <div>
-        <Icon icon={"CITATION_QUOTE"} className={s.citeIcon} />
+        <Icon icon={'CITATION_QUOTE'} className={s.citeIcon} />
         <span>Cite</span>
       </div>
     </div>

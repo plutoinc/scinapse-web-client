@@ -1,4 +1,4 @@
-import { RawPageObjectV2, PageObjectV2 } from "../../api/types/common";
+import { RawPageObjectV2, PageObjectV2 } from '../../api/types/common';
 
 export default function mapPageObject(rawPage: RawPageObjectV2): PageObjectV2 {
   return {

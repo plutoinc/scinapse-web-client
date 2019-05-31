@@ -2,11 +2,11 @@ declare var KaTeX: any;
 
 export function formulaeToHTMLStr(rawString: string | null): string {
   if (!rawString) {
-    return "";
+    return '';
   }
 
   const result = [];
-  const latexRegex = RegExp(/\$((.|\n)+?)\$/, "g");
+  const latexRegex = RegExp(/\$((.|\n)+?)\$/, 'g');
 
   let lastIdx = 0;
   let match;
@@ -35,5 +35,5 @@ export function formulaeToHTMLStr(rawString: string | null): string {
     result.push(rawString.substring(lastIdx, rawString.length));
   }
 
-  return result.join("");
+  return result.join('');
 }

@@ -1,10 +1,10 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import * as H from "history";
-import { trackEvent } from "../../../helpers/handleGA";
-import { withStyles } from "../../../helpers/withStylesHelper";
-const styles = require("./scinapseButton.scss");
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import * as H from 'history';
+import { trackEvent } from '../../../helpers/handleGA';
+import { withStyles } from '../../../helpers/withStylesHelper';
+const styles = require('./scinapseButton.scss');
 
 interface ScinapseButtonProps {
   content: string | React.ReactNode;
@@ -14,7 +14,7 @@ interface ScinapseButtonProps {
   gaLabel?: string;
   isReactRouterLink?: boolean;
   isExternalLink?: boolean;
-  type?: "reset" | "button" | "submit";
+  type?: 'reset' | 'button' | 'submit';
   href?: string;
   to?: H.LocationDescriptor;
   style?: React.CSSProperties;
@@ -66,7 +66,7 @@ class ScinapseButton extends React.PureComponent<ScinapseButtonProps> {
 
     return (
       <button
-        type={type ? type : "button"}
+        type={type ? type : 'button'}
         style={style}
         onClick={this.handleClickEvent}
         disabled={disabled}
@@ -94,7 +94,7 @@ class ScinapseButton extends React.PureComponent<ScinapseButtonProps> {
     const { gaCategory, gaAction, gaLabel, onClick, content, disableGA } = this.props;
 
     if (!disableGA && gaCategory && gaAction) {
-      let label = "";
+      let label = '';
       if (gaLabel) {
         label = gaLabel;
       } else if (content) {

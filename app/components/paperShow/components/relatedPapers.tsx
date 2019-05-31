@@ -1,14 +1,14 @@
-import * as React from "react";
-import { Location, LocationDescriptor } from "history";
-import { Paper } from "../../../model/paper";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { CurrentUser } from "../../../model/currentUser";
-import DesktopPagination from "../../common/desktopPagination";
-import { RELATED_PAPERS } from "../constants";
-import { PaperShowState } from "../../../containers/paperShow/records";
-import PaperItem from "../../common/paperItem";
-import MobilePagination from "../../common/mobilePagination";
-const styles = require("./relatedPapers.scss");
+import * as React from 'react';
+import { Location, LocationDescriptor } from 'history';
+import { Paper } from '../../../model/paper';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { CurrentUser } from '../../../model/currentUser';
+import DesktopPagination from '../../common/desktopPagination';
+import { RELATED_PAPERS } from '../constants';
+import { PaperShowState } from '../../../containers/paperShow/records';
+import PaperItem from '../../common/paperItem';
+import MobilePagination from '../../common/mobilePagination';
+const styles = require('./relatedPapers.scss');
 
 interface ReferencePapersProps
   extends Readonly<{
@@ -34,8 +34,8 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
 
   private getPagination = () => {
     const { type, paperShow, getLinkDestination, isMobile } = this.props;
-    const totalPage = type === "cited" ? paperShow.citedPaperTotalPage : paperShow.referencePaperTotalPage;
-    const currentPage = type === "cited" ? paperShow.citedPaperCurrentPage : paperShow.referencePaperCurrentPage;
+    const totalPage = type === 'cited' ? paperShow.citedPaperTotalPage : paperShow.referencePaperTotalPage;
+    const currentPage = type === 'cited' ? paperShow.citedPaperCurrentPage : paperShow.referencePaperCurrentPage;
 
     if (isMobile) {
       return (
@@ -44,7 +44,7 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
           currentPageIndex={currentPage - 1}
           getLinkDestination={getLinkDestination}
           wrapperStyle={{
-            margin: "12px 0",
+            margin: '12px 0',
           }}
         />
       );
@@ -55,8 +55,8 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
           totalPage={totalPage}
           currentPageIndex={currentPage - 1}
           getLinkDestination={getLinkDestination}
-          wrapperStyle={{ margin: "32px 0 56px 0" }}
-          actionArea={type === "reference" ? "refList" : "citedList"}
+          wrapperStyle={{ margin: '32px 0 56px 0' }}
+          actionArea={type === 'reference' ? 'refList' : 'citedList'}
         />
       );
     }
@@ -73,12 +73,12 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
           <div className={styles.paperShowPaperItemWrapper} key={paper.id}>
             <PaperItem
               pageType="paperShow"
-              actionArea={type === "reference" ? "refList" : "citedList"}
+              actionArea={type === 'reference' ? 'refList' : 'citedList'}
               currentUser={currentUser}
               key={paper.id}
               paper={paper}
               shouldBlockUnverifiedUser
-              wrapperStyle={{ borderBottom: "none", marginBottom: 0, paddingBottom: 0, maxWidth: "100%" }}
+              wrapperStyle={{ borderBottom: 'none', marginBottom: 0, paddingBottom: 0, maxWidth: '100%' }}
             />
           </div>
         );

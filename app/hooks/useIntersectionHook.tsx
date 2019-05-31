@@ -1,6 +1,6 @@
-import * as React from "react";
-import ActionTicketManager from "../helpers/actionTicketManager";
-import { ActionTicketParams } from "../helpers/actionTicketManager/actionTicket";
+import * as React from 'react';
+import ActionTicketManager from '../helpers/actionTicketManager';
+import { ActionTicketParams } from '../helpers/actionTicketManager/actionTicket';
 
 export function useObserver(threshold: number | number[] | undefined, ticketParams: ActionTicketParams) {
   const elRef = React.useRef<HTMLDivElement | null>(null);

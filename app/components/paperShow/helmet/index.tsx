@@ -1,22 +1,22 @@
-import * as React from "react";
-import Helmet from "react-helmet";
-import { Paper } from "../../../model/paper";
-import { PaperAuthor } from "../../../model/author";
-import { Journal } from "../../../model/journal";
-import { getPDFLink } from "../../../helpers/getPDFLink";
+import * as React from 'react';
+import Helmet from 'react-helmet';
+import { Paper } from '../../../model/paper';
+import { PaperAuthor } from '../../../model/author';
+import { Journal } from '../../../model/journal';
+import { getPDFLink } from '../../../helpers/getPDFLink';
 
 const buildPageDescription = (paper: Paper) => {
-  const shortAbstract = paper.abstract ? `${paper.abstract.slice(0, 110)} | ` : "";
+  const shortAbstract = paper.abstract ? `${paper.abstract.slice(0, 110)} | ` : '';
   const shortAuthors =
     paper.authors && paper.authors.length > 0
       ? `${paper.authors
           .map(author => {
             return author && author.name;
           })
-          .join(", ")
+          .join(', ')
           .slice(0, 50)}  | `
-      : "";
-  const shortJournals = paper.journal ? `${paper.journal.title.slice(0, 50)} | ` : "";
+      : '';
+  const shortJournals = paper.journal ? `${paper.journal.title.slice(0, 50)} | ` : '';
   return `${shortAbstract}${shortAuthors}${shortJournals}`;
 };
 
@@ -24,10 +24,10 @@ function formatAuthorsToStructuredData(authors: PaperAuthor[]) {
   authors.map(author => {
     const affiliationName = author.organization || (author.affiliation && author.affiliation.name);
     return {
-      "@type": "Person",
+      '@type': 'Person',
       name: author.name,
       affiliation: {
-        name: affiliationName || "",
+        name: affiliationName || '',
       },
     };
   });
@@ -35,12 +35,12 @@ function formatAuthorsToStructuredData(authors: PaperAuthor[]) {
 
 function formatPublisherToStructuredData(journal: Journal) {
   return {
-    "@type": ["PublicationVolume", "Periodical"],
+    '@type': ['PublicationVolume', 'Periodical'],
     name: journal.title,
     publisher: journal.title,
     contentRating: {
-      "@type": "Rating",
-      name: "impact factor",
+      '@type': 'Rating',
+      name: 'impact factor',
       ratingValue: journal.impactFactor || 0,
     },
   };
@@ -50,13 +50,13 @@ const getStructuredData = (paper: Paper) => {
   const author = paper.authors && paper.authors.length > 0 ? formatAuthorsToStructuredData(paper.authors) : null;
   const publisher = paper.journal ? formatPublisherToStructuredData(paper.journal) : null;
   const structuredData: any = {
-    "@context": "http://schema.org",
-    "@type": "ScholarlyArticle",
+    '@context': 'http://schema.org',
+    '@type': 'ScholarlyArticle',
     headline: paper.title,
     identifier: paper.doi,
     description: paper.abstract,
     name: paper.title,
-    image: ["https://assets.pluto.network/scinapse/scinapse-logo.png"],
+    image: ['https://assets.pluto.network/scinapse/scinapse-logo.png'],
     datePublished: paper.publishedDate,
     dateModified: paper.publishedDate,
     about: paper.fosList.map(fos => fos.fos),
@@ -70,16 +70,16 @@ const getStructuredData = (paper: Paper) => {
 
 const PaperShowHelmet: React.FC<{ paper: Paper }> = React.memo(({ paper }) => {
   const pdfSourceRecord = getPDFLink(paper.urls);
-  const metaTitleContent = !!pdfSourceRecord ? "[PDF] " + paper.title : paper.title;
+  const metaTitleContent = !!pdfSourceRecord ? '[PDF] ' + paper.title : paper.title;
   const fosListContent =
-    paper.fosList && typeof paper.fosList !== "undefined"
+    paper.fosList && typeof paper.fosList !== 'undefined'
       ? paper.fosList
           .map(fos => {
             return fos.fos;
           })
           .toString()
-          .replace(/,/gi, ", ")
-      : "";
+          .replace(/,/gi, ', ')
+      : '';
 
   return (
     <Helmet>

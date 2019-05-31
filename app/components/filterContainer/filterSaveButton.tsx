@@ -1,6 +1,6 @@
-import * as React from "react";
-import { withStyles } from "../../helpers/withStylesHelper";
-const styles = require("./filterSaveButton.scss");
+import * as React from 'react';
+import { withStyles } from '../../helpers/withStylesHelper';
+const styles = require('./filterSaveButton.scss');
 
 interface FilterSaveButtonProps {
   text: string;

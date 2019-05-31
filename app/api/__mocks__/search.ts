@@ -1,12 +1,12 @@
-import PlutoAxios from "../pluto";
-import { RAW } from "../../__mocks__";
-import { SearchResult, PaperSearchParams } from "../search";
-import { camelCaseKeys } from "../../helpers/camelCaseKeys";
+import PlutoAxios from '../pluto';
+import { RAW } from '../../__mocks__';
+import { SearchResult, PaperSearchParams } from '../search';
+import { camelCaseKeys } from '../../helpers/camelCaseKeys';
 
 class SearchAPI extends PlutoAxios {
   public async search(params: PaperSearchParams) {
     if (!params.query) {
-      throw new Error("FAKE ERROR");
+      throw new Error('FAKE ERROR');
     }
 
     const searchResult = {

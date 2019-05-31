@@ -1,12 +1,12 @@
-import * as React from "react";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import { CurrentUser } from "../../../../model/currentUser";
-import { Collection } from "../../../../model/collection";
-import { UpdateCollectionParams } from "../../../../api/collection";
-import alertToast from "../../../../helpers/makePlutoToastAction";
-import PlutoAxios from "../../../../api/pluto";
-import Icon from "../../../../icons";
-const styles = require("./editCollection.scss");
+import * as React from 'react';
+import { withStyles } from '../../../../helpers/withStylesHelper';
+import { CurrentUser } from '../../../../model/currentUser';
+import { Collection } from '../../../../model/collection';
+import { UpdateCollectionParams } from '../../../../api/collection';
+import alertToast from '../../../../helpers/makePlutoToastAction';
+import PlutoAxios from '../../../../api/pluto';
+import Icon from '../../../../icons';
+const styles = require('./editCollection.scss');
 
 interface CollectionEditDialogProps {
   currentUser: CurrentUser;
@@ -28,7 +28,7 @@ class CollectionEditDialog extends React.PureComponent<CollectionEditDialogProps
 
     this.state = {
       title: props.collection.title,
-      description: props.collection.description || "",
+      description: props.collection.description || '',
     };
   }
 
@@ -96,7 +96,7 @@ class CollectionEditDialog extends React.PureComponent<CollectionEditDialogProps
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
       alertToast({
-        type: "error",
+        type: 'error',
         message: error.message,
       });
     }
@@ -105,7 +105,7 @@ class CollectionEditDialog extends React.PureComponent<CollectionEditDialogProps
   private handleClickDeleteBtn = async () => {
     const { handleDeleteCollection, collection, handleCloseDialogRequest } = this.props;
 
-    const c = confirm("Do you really want to DELETE your collection?");
+    const c = confirm('Do you really want to DELETE your collection?');
 
     if (c) {
       await handleDeleteCollection(collection.id);

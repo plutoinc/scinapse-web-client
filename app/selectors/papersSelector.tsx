@@ -1,7 +1,7 @@
-import { denormalize } from "normalizr";
-import { createSelector } from "reselect";
-import { AppState } from "../reducers";
-import { paperSchema } from "../model/paper";
+import { denormalize } from 'normalizr';
+import { createSelector } from 'reselect';
+import { AppState } from '../reducers';
+import { paperSchema } from '../model/paper';
 
 export function getPaperEntities(state: AppState) {
   return state.entities.papers;

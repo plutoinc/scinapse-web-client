@@ -7,7 +7,7 @@ import {
   signBubbleTest,
   lockedButtonsTest,
   fullTextBlurredTest,
-} from "./abTestObject";
+} from './abTestObject';
 
 export interface UserGroup {
   groupName: string;
@@ -19,20 +19,20 @@ export interface Test {
   userGroup: UserGroup[];
 }
 
-export type BenefitExpType = "queryCountSession" | "refPaperCountSession" | "paperviewCountDevice" | "downloadCount";
+export type BenefitExpType = 'queryCountSession' | 'refPaperCountSession' | 'paperviewCountDevice' | 'downloadCount';
 
 export type ABTestType =
-  | "queryLover"
-  | "searchEngineMood"
-  | "signBannerAtPaperShow"
-  | "signBannerAtSearch-banner"
-  | "signBannerAtSearch-curated"
-  | "relatedPapersAtPaperShow"
-  | "signBubble"
-  | "lockedButtons"
-  | "fullTextBlurred";
+  | 'queryLover'
+  | 'searchEngineMood'
+  | 'signBannerAtPaperShow'
+  | 'signBannerAtSearch-banner'
+  | 'signBannerAtSearch-curated'
+  | 'relatedPapersAtPaperShow'
+  | 'signBubble'
+  | 'lockedButtons'
+  | 'fullTextBlurred';
 
-export const BENEFIT_EXPERIMENT_KEY = "b_exp";
+export const BENEFIT_EXPERIMENT_KEY = 'b_exp';
 
 export type BenefitExpValue = { [key in ABTestType | BenefitExpType]: BenefitExp };
 

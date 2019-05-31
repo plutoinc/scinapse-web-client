@@ -1,6 +1,6 @@
-import * as React from "react";
-import { withStyles } from "../../../helpers/withStylesHelper";
-const styles = require("./articleSpinner.scss");
+import * as React from 'react';
+import { withStyles } from '../../../helpers/withStylesHelper';
+const styles = require('./articleSpinner.scss');
 
 interface ArticleSpinnerProps {
   className?: string;

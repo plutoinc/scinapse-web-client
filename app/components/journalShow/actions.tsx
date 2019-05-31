@@ -1,10 +1,10 @@
-import axios, { CancelToken } from "axios";
-import { Dispatch } from "react-redux";
-import JournalAPI, { GetPapersParams } from "../../api/journal";
-import { ActionCreators } from "../../actions/actionTypes";
-import alertToast from "../../helpers/makePlutoToastAction";
-import PlutoAxios from "../../api/pluto";
-import { CommonError } from "../../model/error";
+import axios, { CancelToken } from 'axios';
+import { Dispatch } from 'react-redux';
+import JournalAPI, { GetPapersParams } from '../../api/journal';
+import { ActionCreators } from '../../actions/actionTypes';
+import alertToast from '../../helpers/makePlutoToastAction';
+import PlutoAxios from '../../api/pluto';
+import { CommonError } from '../../model/error';
 
 export function getJournal(journalId: number, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
@@ -21,7 +21,7 @@ export function getJournal(journalId: number, cancelToken: CancelToken) {
       if (!axios.isCancel(err)) {
         const error = PlutoAxios.getGlobalError(err);
         alertToast({
-          type: "error",
+          type: 'error',
           message: error.message,
         });
         dispatch(ActionCreators.failedToGetJournal({ statusCode: (error as CommonError).status }));
@@ -43,14 +43,14 @@ export function getPapers(params: GetPapersParams) {
           currentPage: res.page,
           paperCount: res.numberOfElements,
           filteredPaperCount: res.totalElements,
-          searchKeyword: params.query || "",
+          searchKeyword: params.query || '',
         })
       );
     } catch (err) {
       if (!axios.isCancel(err)) {
         const error = PlutoAxios.getGlobalError(err);
         alertToast({
-          type: "error",
+          type: 'error',
           message: error.message,
         });
         dispatch(ActionCreators.failedToGetJournalPapers());

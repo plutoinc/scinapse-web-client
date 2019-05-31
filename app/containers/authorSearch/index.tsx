@@ -1,32 +1,32 @@
-import * as React from "react";
-import axios from "axios";
-import { connect, Dispatch } from "react-redux";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-import { AppState } from "../../reducers";
-import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { getAuthorSearchData } from "./sideEffect";
-import getQueryParamsObject from "../../helpers/getQueryParamsObject";
-import restoreScroll from "../../helpers/scrollRestoration";
-import ArticleSpinner from "../../components/common/spinner/articleSpinner";
-import ErrorPage from "../../components/error/errorPage";
-import { AuthorSearchState } from "./records";
-import { CurrentUser } from "../../model/currentUser";
-import { LayoutState, UserDevice } from "../../components/layouts/records";
-import { Configuration } from "../../reducers/configuration";
-import { Helmet } from "react-helmet";
-import { Footer } from "../../components/layouts";
-import AuthorSearchLongItem from "../../components/authorSearchLongItem";
-import MobilePagination from "../../components/common/mobilePagination";
-import DesktopPagination from "../../components/common/desktopPagination";
-import { ArticleSearchState } from "../../components/articleSearch/records";
-import NoResultInSearch from "../../components/articleSearch/components/noResultInSearch";
-import TabNavigationBar from "../../components/common/tabNavigationBar";
-import { getUrlDecodedQueryParamsObject } from "../../helpers/makeNewFilterLink";
-import EnvChecker from "../../helpers/envChecker";
-import ActionTicketManager from "../../helpers/actionTicketManager";
-import { Author } from "../../model/author/author";
-const styles = require("./authorSearch.scss");
+import * as React from 'react';
+import axios from 'axios';
+import { connect, Dispatch } from 'react-redux';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { AppState } from '../../reducers';
+import PapersQueryFormatter from '../../helpers/papersQueryFormatter';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { getAuthorSearchData } from './sideEffect';
+import getQueryParamsObject from '../../helpers/getQueryParamsObject';
+import restoreScroll from '../../helpers/scrollRestoration';
+import ArticleSpinner from '../../components/common/spinner/articleSpinner';
+import ErrorPage from '../../components/error/errorPage';
+import { AuthorSearchState } from './records';
+import { CurrentUser } from '../../model/currentUser';
+import { LayoutState, UserDevice } from '../../components/layouts/records';
+import { Configuration } from '../../reducers/configuration';
+import { Helmet } from 'react-helmet';
+import { Footer } from '../../components/layouts';
+import AuthorSearchLongItem from '../../components/authorSearchLongItem';
+import MobilePagination from '../../components/common/mobilePagination';
+import DesktopPagination from '../../components/common/desktopPagination';
+import { ArticleSearchState } from '../../components/articleSearch/records';
+import NoResultInSearch from '../../components/articleSearch/components/noResultInSearch';
+import TabNavigationBar from '../../components/common/tabNavigationBar';
+import { getUrlDecodedQueryParamsObject } from '../../helpers/makeNewFilterLink';
+import EnvChecker from '../../helpers/envChecker';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+import { Author } from '../../model/author/author';
+const styles = require('./authorSearch.scss');
 
 function mapStateToProps(state: AppState) {
   return {
@@ -146,18 +146,18 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
       // TODO: replace almost same logic with ArticleSearch container's same method
       if (!searchResult || searchResult.length === 0) {
         ActionTicketManager.trackTicket({
-          pageType: "authorSearchResult",
-          actionType: "view",
-          actionArea: "authorList",
-          actionTag: "pageView",
+          pageType: 'authorSearchResult',
+          actionType: 'view',
+          actionArea: 'authorList',
+          actionTag: 'pageView',
           actionLabel: String(0),
         });
       } else {
         ActionTicketManager.trackTicket({
-          pageType: "authorSearchResult",
-          actionType: "view",
-          actionArea: "authorList",
-          actionTag: "pageView",
+          pageType: 'authorSearchResult',
+          actionType: 'view',
+          actionArea: 'authorList',
+          actionTag: 'pageView',
           actionLabel: String(searchResult.length),
         });
       }
@@ -199,7 +199,7 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
           currentPageIndex={currentPageIndex}
           getLinkDestination={this.makePaginationLink}
           wrapperStyle={{
-            margin: "12px 0",
+            margin: '12px 0',
           }}
         />
       );
@@ -211,7 +211,7 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
           currentPageIndex={currentPageIndex}
           getLinkDestination={this.makePaginationLink}
           wrapperStyle={{
-            margin: "24px 0",
+            margin: '24px 0',
           }}
           actionArea="authorList"
         />
@@ -250,9 +250,9 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
     const { layout } = this.props;
 
     if (layout.userDevice !== UserDevice.DESKTOP) {
-      return { position: "absolute", width: "100", bottom: "unset" };
+      return { position: 'absolute', width: '100', bottom: 'unset' };
     } else {
-      return { position: "absolute", left: "0", right: "0", bottom: "0" };
+      return { position: 'absolute', left: '0', right: '0', bottom: '0' };
     }
   };
 }

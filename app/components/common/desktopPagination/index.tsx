@@ -1,13 +1,13 @@
-import * as React from "react";
-import { range } from "lodash";
-import * as classNames from "classnames";
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import Icon from "../../../icons";
-import { LocationDescriptor } from "../../../../node_modules/@types/history";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { getCurrentPageType } from "../../locationListener";
-const styles = require("./desktopPagination.scss");
+import * as React from 'react';
+import { range } from 'lodash';
+import * as classNames from 'classnames';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import Icon from '../../../icons';
+import { LocationDescriptor } from '../../../../node_modules/@types/history';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import { getCurrentPageType } from '../../locationListener';
+const styles = require('./desktopPagination.scss');
 
 interface CommonPaginationProps
   extends RouteComponentProps,
@@ -41,9 +41,9 @@ function isLinkPagination(props: DesktopPaginationProps): props is LinkPaginatio
 function trackActionToClickPagination(actionLabel: string, actionArea?: Scinapse.ActionTicket.ActionArea) {
   ActionTicketManager.trackTicket({
     pageType: getCurrentPageType(),
-    actionType: "fire",
-    actionArea: actionArea || "paperList",
-    actionTag: "clickPagination",
+    actionType: 'fire',
+    actionArea: actionArea || 'paperList',
+    actionTag: 'clickPagination',
     actionLabel,
   });
 }
@@ -78,7 +78,7 @@ function getFirstPageIcon(props: DesktopPaginationProps) {
     return (
       <Link
         onClick={() => {
-          trackActionToClickPagination("firstPage");
+          trackActionToClickPagination('firstPage');
         }}
         rel="nofollow"
         to={(props as LinkPaginationProps).getLinkDestination(1)}
@@ -91,7 +91,7 @@ function getFirstPageIcon(props: DesktopPaginationProps) {
     return (
       <span
         onClick={() => {
-          trackActionToClickPagination("firstPage");
+          trackActionToClickPagination('firstPage');
           (props as EventPaginationProps).onItemClick(1);
         }}
         className={styles.pageIconButton}
@@ -108,12 +108,12 @@ function getNextIcon(props: DesktopPaginationProps) {
   }
 
   if (isLinkPagination(props)) {
-    if (props.type === "paper_search_result") {
+    if (props.type === 'paper_search_result') {
       return (
         <div className={styles.nextButtons}>
           <span
             onClick={async () => {
-              trackActionToClickPagination("nextPage", props.actionArea);
+              trackActionToClickPagination('nextPage', props.actionArea);
               props.history.push(`${(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex + 2)}`);
             }}
             className={styles.pageIconButton}
@@ -129,7 +129,7 @@ function getNextIcon(props: DesktopPaginationProps) {
         <Link
           rel="nofollow"
           onClick={() => {
-            trackActionToClickPagination("nextPage", props.actionArea);
+            trackActionToClickPagination('nextPage', props.actionArea);
           }}
           to={(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex + 2)}
           className={styles.pageIconButton}
@@ -143,7 +143,7 @@ function getNextIcon(props: DesktopPaginationProps) {
       <div className={styles.nextButtons}>
         <span
           onClick={() => {
-            trackActionToClickPagination("nextPage", props.actionArea);
+            trackActionToClickPagination('nextPage', props.actionArea);
             (props as EventPaginationProps).onItemClick(props.currentPageIndex + 2);
           }}
           className={styles.pageIconButton}
@@ -165,7 +165,7 @@ function getPrevIcon(props: DesktopPaginationProps) {
       <Link
         rel="nofollow"
         onClick={() => {
-          trackActionToClickPagination("prevPage", props.actionArea);
+          trackActionToClickPagination('prevPage', props.actionArea);
         }}
         to={(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex)}
         className={styles.pageIconButton}
@@ -177,7 +177,7 @@ function getPrevIcon(props: DesktopPaginationProps) {
     return (
       <span
         onClick={() => {
-          trackActionToClickPagination("prevPage", props.actionArea);
+          trackActionToClickPagination('prevPage', props.actionArea);
           (props as EventPaginationProps).onItemClick(props.currentPageIndex);
         }}
         className={styles.pageIconButton}
@@ -208,7 +208,7 @@ const getEventPageItem = (props: EventPaginationProps, pageNumber: number, curre
 };
 
 const getLinkPageItem = (props: LinkPaginationProps, pageNumber: number, currentPage: number) => {
-  if (props.type === "paper_search_result") {
+  if (props.type === 'paper_search_result') {
     return (
       <span
         onClick={async () => {

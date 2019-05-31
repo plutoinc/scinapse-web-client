@@ -1,11 +1,11 @@
-import * as React from "react";
-import * as classNames from "classnames";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { GLOBAL_DIALOG_TYPE } from "../../dialog/reducer";
-import { Link } from "react-router-dom";
-const s = require("./authTabs.scss");
+import * as React from 'react';
+import * as classNames from 'classnames';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { GLOBAL_DIALOG_TYPE } from '../../dialog/reducer';
+import { Link } from 'react-router-dom';
+const s = require('./authTabs.scss');
 
-type AuthTabTypes = "sign in" | "sign up";
+type AuthTabTypes = 'sign in' | 'sign up';
 
 interface AuthTabsProps {
   onClickTab: (tab: GLOBAL_DIALOG_TYPE) => void;
@@ -19,7 +19,7 @@ function pageAuthTabs(props: AuthTabsProps) {
       <Link
         className={classNames({
           [s.authTabItem]: true,
-          [s.active]: activeTab === "sign in",
+          [s.active]: activeTab === 'sign in',
         })}
         to="/users/sign_in"
       >
@@ -28,7 +28,7 @@ function pageAuthTabs(props: AuthTabsProps) {
       <Link
         className={classNames({
           [s.authTabItem]: true,
-          [s.active]: activeTab === "sign up",
+          [s.active]: activeTab === 'sign up',
         })}
         to="/users/sign_up"
       >
@@ -45,7 +45,7 @@ function dialogAuthTabs(props: AuthTabsProps) {
       <div
         className={classNames({
           [s.authTabItem]: true,
-          [s.active]: activeTab === "sign in",
+          [s.active]: activeTab === 'sign in',
         })}
         onClick={() => {
           onClickTab(GLOBAL_DIALOG_TYPE.SIGN_IN);
@@ -56,7 +56,7 @@ function dialogAuthTabs(props: AuthTabsProps) {
       <div
         className={classNames({
           [s.authTabItem]: true,
-          [s.active]: activeTab === "sign up",
+          [s.active]: activeTab === 'sign up',
         })}
         onClick={() => {
           onClickTab(GLOBAL_DIALOG_TYPE.SIGN_UP);

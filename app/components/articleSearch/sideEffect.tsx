@@ -1,8 +1,8 @@
-import PaperSearchQueryFormatter from "../../helpers/papersQueryFormatter";
-import { LoadDataParams } from "../../routes";
-import { searchPapers } from "./actions";
-import { SearchPapersParams } from "../../api/types/paper";
-import { ACTION_TYPES } from "../../actions/actionTypes";
+import PaperSearchQueryFormatter from '../../helpers/papersQueryFormatter';
+import { LoadDataParams } from '../../routes';
+import { searchPapers } from './actions';
+import { SearchPapersParams } from '../../api/types/paper';
+import { ACTION_TYPES } from '../../actions/actionTypes';
 
 export async function getSearchData(params: LoadDataParams<null>) {
   const { queryParams, dispatch } = params;

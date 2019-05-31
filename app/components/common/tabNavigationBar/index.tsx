@@ -1,9 +1,9 @@
-import * as React from "react";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { Link, withRouter, RouteComponentProps } from "react-router-dom";
-import * as classNames from "classnames";
-import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
-const styles = require("./tabNavigationBar.scss");
+import * as React from 'react';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
+import * as classNames from 'classnames';
+import PapersQueryFormatter from '../../../helpers/papersQueryFormatter';
+const styles = require('./tabNavigationBar.scss');
 
 interface TabLinkParams {
   pathname: string;
@@ -22,24 +22,24 @@ interface TabNavigationBarProps extends RouteComponentProps<null> {
 function getTabNavigationItems(searchKeyword: string): TabItem[] {
   const tabNavigationItems = [
     {
-      tabName: "All",
+      tabName: 'All',
       tabLink: {
-        pathname: "/search",
+        pathname: '/search',
         search: PapersQueryFormatter.stringifyPapersQuery({
           query: searchKeyword,
-          sort: "RELEVANCE",
+          sort: 'RELEVANCE',
           filter: {},
           page: 1,
         }),
       },
     },
     {
-      tabName: "Authors",
+      tabName: 'Authors',
       tabLink: {
-        pathname: "/search/authors",
+        pathname: '/search/authors',
         search: PapersQueryFormatter.stringifyPapersQuery({
           query: searchKeyword,
-          sort: "RELEVANCE",
+          sort: 'RELEVANCE',
           filter: {},
           page: 1,
         }),

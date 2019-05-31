@@ -1,14 +1,14 @@
-import * as React from "react";
-import * as classNames from "classnames";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import CiteBox from "../../../containers/paperShowActionBar/components/citeBox";
-import PdfDownloadButton from "../components/pdfDownloadButton";
-import RequestFullTextBtn from "../../../containers/paperShowActionBar/components/fullTextRequestBtn";
-import RequestFullTextDialog from "../../../containers/paperShowActionBar/components/fullTextDialog";
-import { PDFButtonProps, TabItemProps, PaperShowRefCitedTabProps } from "./types";
-import BlockedPopper from "../../preNoted/blockedPopper";
-const styles = require("./refCitedTab.scss");
+import * as React from 'react';
+import * as classNames from 'classnames';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import CiteBox from '../../../containers/paperShowActionBar/components/citeBox';
+import PdfDownloadButton from '../components/pdfDownloadButton';
+import RequestFullTextBtn from '../../../containers/paperShowActionBar/components/fullTextRequestBtn';
+import RequestFullTextDialog from '../../../containers/paperShowActionBar/components/fullTextDialog';
+import { PDFButtonProps, TabItemProps, PaperShowRefCitedTabProps } from './types';
+import BlockedPopper from '../../preNoted/blockedPopper';
+const styles = require('./refCitedTab.scss');
 
 const TabItem: React.FunctionComponent<TabItemProps> = props => {
   return (
@@ -44,7 +44,7 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
       handleOnClickAwayFunc={handleCloseBlockedPopper}
       anchorEl={actionBtnEl}
       isOpen={isOpenBlockedPopper}
-      buttonClickAction={canShowFullPDF ? "downloadPdf" : "clickRequestFullTextBtn"}
+      buttonClickAction={canShowFullPDF ? 'downloadPdf' : 'clickRequestFullTextBtn'}
     />
   );
 
@@ -75,7 +75,7 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
         isOpenBlockedPopper={isOpenBlockedPopper}
         handleSetIsOpen={setIsOpen}
         handleSetIsOpenBlockedPopper={handleSetIsOpenBlockedPopper}
-        btnStyle={{ flex: "1 0 auto", height: "36px", padding: "0 12px 0 8px" }}
+        btnStyle={{ flex: '1 0 auto', height: '36px', padding: '0 12px 0 8px' }}
       />
       {blockedPopper}
       <RequestFullTextDialog
@@ -102,7 +102,7 @@ const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(pro
 
   if (props.canShowFullPDF) {
     fullTextNode = (
-      <TabItem active={!!props.isOnFullText} onClick={props.onClickTabItem("fullText")} text="Full Text" />
+      <TabItem active={!!props.isOnFullText} onClick={props.onClickTabItem('fullText')} text="Full Text" />
     );
   }
 
@@ -118,12 +118,12 @@ const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(pro
           {fullTextNode}
           <TabItem
             active={props.isOnRef}
-            onClick={props.onClickTabItem("ref")}
+            onClick={props.onClickTabItem('ref')}
             text={`References (${props.paper.referenceCount})`}
           />
           <TabItem
             active={props.isOnCited}
-            onClick={props.onClickTabItem("cited")}
+            onClick={props.onClickTabItem('cited')}
             text={`Citations (${props.paper.citedCount})`}
           />
         </ul>
@@ -132,7 +132,7 @@ const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(pro
             <CiteBox
               actionArea="contentNavBar"
               paper={props.paper}
-              btnStyle={{ maxWidth: "74px", width: "100%", height: "36px" }}
+              btnStyle={{ maxWidth: '74px', width: '100%', height: '36px' }}
             />
           </div>
           <ClickAwayListener onClickAway={closeBlockedPopper}>

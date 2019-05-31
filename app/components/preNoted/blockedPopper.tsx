@@ -1,12 +1,12 @@
-import * as React from "react";
-import Popper from "@material-ui/core/Popper";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { getBlockedBubbleContext } from "./constants";
-import { blockUnverifiedUser, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
-import { BUBBLE_CONTEXT_TYPE } from "../../helpers/getBubbleContextType";
-import ActionTicketManager from "../../helpers/actionTicketManager";
-const store = require("store");
-const styles = require("./blockedPopper.scss");
+import * as React from 'react';
+import Popper from '@material-ui/core/Popper';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { getBlockedBubbleContext } from './constants';
+import { blockUnverifiedUser, AUTH_LEVEL } from '../../helpers/checkAuthDialog';
+import { BUBBLE_CONTEXT_TYPE } from '../../helpers/getBubbleContextType';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+const store = require('store');
+const styles = require('./blockedPopper.scss');
 
 interface BlockedPopperProps {
   isOpen: boolean;
@@ -35,7 +35,7 @@ const BlockedPopperContent: React.FC<{
           e.preventDefault();
           await blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,
-            actionArea: "paperShow",
+            actionArea: 'paperShow',
             actionLabel: buttonClickAction,
             userActionType: buttonClickAction,
             actionValue: bubbleContextType,
@@ -56,10 +56,10 @@ const BlockedPopper: React.FC<BlockedPopperProps> = props => {
     () => {
       if (isOpen) {
         ActionTicketManager.trackTicket({
-          pageType: "paperShow",
-          actionType: "view",
-          actionArea: actionArea || "paperDescription",
-          actionTag: "signBubbleView",
+          pageType: 'paperShow',
+          actionType: 'view',
+          actionArea: actionArea || 'paperDescription',
+          actionTag: 'signBubbleView',
           actionLabel: buttonClickAction,
         });
       }
@@ -80,7 +80,7 @@ const BlockedPopper: React.FC<BlockedPopperProps> = props => {
       <BlockedPopperContent
         buttonClickAction={buttonClickAction}
         onClickAwayButton={handleOnClickAwayFunc}
-        actionArea={actionArea || "paperDescription"}
+        actionArea={actionArea || 'paperDescription'}
       />
     </Popper>
   );

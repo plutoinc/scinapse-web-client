@@ -1,15 +1,15 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import { Switch, RouteComponentProps, Route } from "react-router-dom";
-import { CurrentUser } from "../../model/currentUser";
-import AuthRedirect, { AuthType } from "../../helpers/authRoute";
-import SignIn from "./signIn";
-import SignUp from "./signUp";
-import ResetPassword from "./resetPassword";
-import EmailVerification from "./emailVerification";
-import { AppState } from "../../reducers";
-import { withStyles } from "../../helpers/withStylesHelper";
-const styles = require("./auth.scss");
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Switch, RouteComponentProps, Route } from 'react-router-dom';
+import { CurrentUser } from '../../model/currentUser';
+import AuthRedirect, { AuthType } from '../../helpers/authRoute';
+import SignIn from './signIn';
+import SignUp from './signUp';
+import ResetPassword from './resetPassword';
+import EmailVerification from './emailVerification';
+import { AppState } from '../../reducers';
+import { withStyles } from '../../helpers/withStylesHelper';
+const styles = require('./auth.scss');
 
 interface AuthComponentProps extends RouteComponentProps<any> {
   currentUser: CurrentUser;

@@ -1,8 +1,8 @@
-import { RouteComponentProps } from "react-router-dom";
-import { Dispatch } from "react-redux";
-import { DialogState } from "../reducer";
-import { CurrentUser } from "../../../model/currentUser";
-import { Collection } from "../../../model/collection";
+import { RouteComponentProps } from 'react-router-dom';
+import { Dispatch } from 'react-redux';
+import { DialogState } from '../reducer';
+import { CurrentUser } from '../../../model/currentUser';
+import { Collection } from '../../../model/collection';
 
 export interface DialogContainerProps
   extends Readonly<{

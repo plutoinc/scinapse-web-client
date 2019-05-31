@@ -1,4 +1,4 @@
-import { Actions, ACTION_TYPES } from "../actions/actionTypes";
+import { Actions, ACTION_TYPES } from '../actions/actionTypes';
 
 export interface RelatedPapersState {
   paperIds: number[];

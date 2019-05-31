@@ -1,13 +1,13 @@
-import { Author } from "../model/author/author";
-import { Actions, ACTION_TYPES } from "../actions/actionTypes";
-import { Paper } from "../model/paper";
-import { Comment } from "../model/comment";
-import { Collection } from "../model/collection";
-import { Member } from "../model/member";
-import { Journal } from "../model/journal";
-import { merge } from "lodash";
-import { PaperInCollection } from "../model/paperInCollection";
-import { Profile } from "../model/profile";
+import { Author } from '../model/author/author';
+import { Actions, ACTION_TYPES } from '../actions/actionTypes';
+import { Paper } from '../model/paper';
+import { Comment } from '../model/comment';
+import { Collection } from '../model/collection';
+import { Member } from '../model/member';
+import { Journal } from '../model/journal';
+import { merge } from 'lodash';
+import { PaperInCollection } from '../model/paperInCollection';
+import { Profile } from '../model/profile';
 
 export interface NormalizedPaperListResponse {
   entities: { papers: { [paperId: number]: Paper } };

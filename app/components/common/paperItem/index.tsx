@@ -1,13 +1,13 @@
-import * as React from "react";
-import { CurrentUser } from "../../../model/currentUser";
-import Abstract from "./abstract";
-import PaperActionButtons from "./paperActionButtons";
-import Title from "./title";
-import VenueAndAuthors from "./venueAndAuthors";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { Paper } from "../../../model/paper";
-import SavedCollections from "./savedCollections";
-const styles = require("./paperItem.scss");
+import * as React from 'react';
+import { CurrentUser } from '../../../model/currentUser';
+import Abstract from './abstract';
+import PaperActionButtons from './paperActionButtons';
+import Title from './title';
+import VenueAndAuthors from './venueAndAuthors';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { Paper } from '../../../model/paper';
+import SavedCollections from './savedCollections';
+const styles = require('./paperItem.scss');
 
 export interface PaperItemProps {
   paper: Paper;
@@ -87,7 +87,7 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
     } else if (urls && urls.length > 0) {
       source = urls[0].url;
     } else {
-      source = "";
+      source = '';
     }
 
     return (

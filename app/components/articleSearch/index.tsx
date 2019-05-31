@@ -1,38 +1,38 @@
-import * as React from "react";
-import axios from "axios";
-import { Helmet } from "react-helmet";
-import { connect } from "react-redux";
-import { Link, withRouter } from "react-router-dom";
-import NoSsr from "@material-ui/core/NoSsr";
-import { AppState } from "../../reducers";
-import * as Actions from "./actions";
-import SearchList from "./components/searchList";
-import FilterContainer from "../../containers/filterContainer";
-import NoResult from "./components/noResult";
-import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
-import formatNumber from "../../helpers/formatNumber";
-import { ArticleSearchContainerProps } from "./types";
-import { Footer } from "../layouts";
-import DesktopPagination from "../common/desktopPagination";
-import MobilePagination from "../common/mobilePagination";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { getSearchData } from "./sideEffect";
-import getQueryParamsObject from "../../helpers/getQueryParamsObject";
-import { UserDevice } from "../layouts/records";
-import AuthorSearchItem from "../authorSearchItem";
-import restoreScroll from "../../helpers/scrollRestoration";
-import { ChangeRangeInputParams } from "../../constants/paperSearch";
-import ErrorPage from "../error/errorPage";
-import NoResultInSearch from "./components/noResultInSearch";
-import TabNavigationBar from "../common/tabNavigationBar";
-import SortBar from "./components/SortBar";
-import { getUrlDecodedQueryParamsObject } from "../../helpers/makeNewFilterLink";
-import { Paper } from "../../model/paper";
-import EnvChecker from "../../helpers/envChecker";
-import ActionTicketManager from "../../helpers/actionTicketManager";
-import DoiSearchBlocked from "./components/doiSearchBlocked";
-import SignBanner from "./components/signBanner";
-const styles = require("./articleSearch.scss");
+import * as React from 'react';
+import axios from 'axios';
+import { Helmet } from 'react-helmet';
+import { connect } from 'react-redux';
+import { Link, withRouter } from 'react-router-dom';
+import NoSsr from '@material-ui/core/NoSsr';
+import { AppState } from '../../reducers';
+import * as Actions from './actions';
+import SearchList from './components/searchList';
+import FilterContainer from '../../containers/filterContainer';
+import NoResult from './components/noResult';
+import PapersQueryFormatter from '../../helpers/papersQueryFormatter';
+import formatNumber from '../../helpers/formatNumber';
+import { ArticleSearchContainerProps } from './types';
+import { Footer } from '../layouts';
+import DesktopPagination from '../common/desktopPagination';
+import MobilePagination from '../common/mobilePagination';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { getSearchData } from './sideEffect';
+import getQueryParamsObject from '../../helpers/getQueryParamsObject';
+import { UserDevice } from '../layouts/records';
+import AuthorSearchItem from '../authorSearchItem';
+import restoreScroll from '../../helpers/scrollRestoration';
+import { ChangeRangeInputParams } from '../../constants/paperSearch';
+import ErrorPage from '../error/errorPage';
+import NoResultInSearch from './components/noResultInSearch';
+import TabNavigationBar from '../common/tabNavigationBar';
+import SortBar from './components/SortBar';
+import { getUrlDecodedQueryParamsObject } from '../../helpers/makeNewFilterLink';
+import { Paper } from '../../model/paper';
+import EnvChecker from '../../helpers/envChecker';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+import DoiSearchBlocked from './components/doiSearchBlocked';
+import SignBanner from './components/signBanner';
+const styles = require('./articleSearch.scss');
 
 function mapStateToProps(state: AppState) {
   return {
@@ -162,18 +162,18 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
     if (!EnvChecker.isOnServer()) {
       if (!searchResult || searchResult.length === 0) {
         ActionTicketManager.trackTicket({
-          pageType: "searchResult",
-          actionType: "view",
-          actionArea: "paperList",
-          actionTag: "pageView",
+          pageType: 'searchResult',
+          actionType: 'view',
+          actionArea: 'paperList',
+          actionTag: 'pageView',
           actionLabel: String(0),
         });
       } else {
         ActionTicketManager.trackTicket({
-          pageType: "searchResult",
-          actionType: "view",
-          actionArea: "paperList",
-          actionTag: "pageView",
+          pageType: 'searchResult',
+          actionType: 'view',
+          actionArea: 'paperList',
+          actionTag: 'pageView',
           actionLabel: String(searchResult.length),
         });
       }
@@ -267,9 +267,9 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
   private isFilterEmpty = (filter: any) => {
     const keys = Object.keys(filter);
     for (const key of keys) {
-      if (typeof filter[key] === "number" && !isNaN(filter[key])) {
+      if (typeof filter[key] === 'number' && !isNaN(filter[key])) {
         return false;
-      } else if (typeof filter[key] === "object" && filter[key].length !== 0) {
+      } else if (typeof filter[key] === 'object' && filter[key].length !== 0) {
         return false;
       }
     }
@@ -291,10 +291,10 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
             {`Showing results for `}
             <Link
               to={{
-                pathname: "/search",
+                pathname: '/search',
                 search: PapersQueryFormatter.stringifyPapersQuery({
                   query: articleSearchState.suggestionKeyword,
-                  sort: "RELEVANCE",
+                  sort: 'RELEVANCE',
                   filter: {},
                   page: 1,
                 }),
@@ -313,10 +313,10 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
           <span>{`Did you mean `}</span>
           <Link
             to={{
-              pathname: "/search",
+              pathname: '/search',
               search: PapersQueryFormatter.stringifyPapersQuery({
                 query: articleSearchState.suggestionKeyword,
-                sort: "RELEVANCE",
+                sort: 'RELEVANCE',
                 filter: {},
                 page: 1,
               }),
@@ -343,10 +343,10 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
       const moreAuthorPage = (
         <Link
           to={{
-            pathname: "/search/authors",
+            pathname: '/search/authors',
             search: PapersQueryFormatter.stringifyPapersQuery({
               query: articleSearchState.searchInput,
-              sort: "RELEVANCE",
+              sort: 'RELEVANCE',
               filter: {},
               page: 1,
             }),
@@ -388,9 +388,9 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
     const { layout } = this.props;
 
     if (layout.userDevice !== UserDevice.DESKTOP) {
-      return { position: "absolute", width: "100", bottom: "unset" };
+      return { position: 'absolute', width: '100', bottom: 'unset' };
     } else {
-      return { position: "absolute", left: "0", right: "0", bottom: "0" };
+      return { position: 'absolute', left: '0', right: '0', bottom: '0' };
     }
   };
 
@@ -407,7 +407,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
           currentPageIndex={currentPageIndex}
           getLinkDestination={this.makePaginationLink}
           wrapperStyle={{
-            margin: "12px 0",
+            margin: '12px 0',
           }}
         />
       );
@@ -419,7 +419,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, Art
           currentPageIndex={currentPageIndex}
           getLinkDestination={this.makePaginationLink}
           wrapperStyle={{
-            margin: "24px 0",
+            margin: '24px 0',
           }}
         />
       );

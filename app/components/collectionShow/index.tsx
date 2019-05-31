@@ -1,46 +1,46 @@
-import * as React from "react";
-import axios from "axios";
-import { connect, Dispatch } from "react-redux";
-import { withRouter, RouteComponentProps, Link } from "react-router-dom";
-import * as distanceInWordsToNow from "date-fns/distance_in_words_to_now";
-import * as parse from "date-fns/parse";
-import { denormalize } from "normalizr";
-import { Helmet } from "react-helmet";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { AppState } from "../../reducers";
-import CollectionPaperItem from "./collectionPaperItem";
-import TransparentButton from "../../components/common/transparentButton";
-import ArticleSpinner from "../common/spinner/articleSpinner";
-import MobilePagination from "../common/mobilePagination";
-import DesktopPagination from "../common/desktopPagination";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { CurrentUser } from "../../model/currentUser";
-import { CollectionShowState } from "./reducer";
-import { Collection, collectionSchema } from "../../model/collection";
-import { fetchCollectionShowData } from "./sideEffect";
-import { Configuration } from "../../reducers/configuration";
-import { PaperInCollection, paperInCollectionSchema } from "../../model/paperInCollection";
-import Footer from "../layouts/footer";
-import Icon from "../../icons";
-import GlobalDialogManager from "../../helpers/globalDialogManager";
-import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from "../common/sortBox";
-import { getPapers, openShareDropdown, closeShareDropdown } from "./actions";
-import { LayoutState, UserDevice } from "../layouts/records";
-import ScinapseInput from "../common/scinapseInput";
-import formatNumber from "../../helpers/formatNumber";
-import restoreScroll from "../../helpers/scrollRestoration";
-import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
-import ActionTicketManager from "../../helpers/actionTicketManager";
-import ErrorPage from "../error/errorPage";
-import { removePaperFromCollection } from "../dialog/actions";
-import { CollectionShowMatchParams } from "./types";
-import CollectionSideNaviBar from "../collectionSideNaviBar";
-import { getCollections } from "../collections/actions";
-import RelatedPaperInCollectionShow from "./relatedPaperInCollectionShow";
-const styles = require("./collectionShow.scss");
+import * as React from 'react';
+import axios from 'axios';
+import { connect, Dispatch } from 'react-redux';
+import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
+import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
+import * as parse from 'date-fns/parse';
+import { denormalize } from 'normalizr';
+import { Helmet } from 'react-helmet';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { AppState } from '../../reducers';
+import CollectionPaperItem from './collectionPaperItem';
+import TransparentButton from '../../components/common/transparentButton';
+import ArticleSpinner from '../common/spinner/articleSpinner';
+import MobilePagination from '../common/mobilePagination';
+import DesktopPagination from '../common/desktopPagination';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { CurrentUser } from '../../model/currentUser';
+import { CollectionShowState } from './reducer';
+import { Collection, collectionSchema } from '../../model/collection';
+import { fetchCollectionShowData } from './sideEffect';
+import { Configuration } from '../../reducers/configuration';
+import { PaperInCollection, paperInCollectionSchema } from '../../model/paperInCollection';
+import Footer from '../layouts/footer';
+import Icon from '../../icons';
+import GlobalDialogManager from '../../helpers/globalDialogManager';
+import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../common/sortBox';
+import { getPapers, openShareDropdown, closeShareDropdown } from './actions';
+import { LayoutState, UserDevice } from '../layouts/records';
+import ScinapseInput from '../common/scinapseInput';
+import formatNumber from '../../helpers/formatNumber';
+import restoreScroll from '../../helpers/scrollRestoration';
+import copySelectedTextToClipboard from '../../helpers/copySelectedTextToClipboard';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+import ErrorPage from '../error/errorPage';
+import { removePaperFromCollection } from '../dialog/actions';
+import { CollectionShowMatchParams } from './types';
+import CollectionSideNaviBar from '../collectionSideNaviBar';
+import { getCollections } from '../collections/actions';
+import RelatedPaperInCollectionShow from './relatedPaperInCollectionShow';
+const styles = require('./collectionShow.scss');
 
-const FACEBOOK_SHARE_URL = "http://www.facebook.com/sharer/sharer.php?u=";
-const TWITTER_SHARE_URL = "https://twitter.com/intent/tweet?url=";
+const FACEBOOK_SHARE_URL = 'http://www.facebook.com/sharer/sharer.php?u=';
+const TWITTER_SHARE_URL = 'https://twitter.com/intent/tweet?url=';
 
 function mapStateToProps(state: AppState) {
   return {
@@ -152,7 +152,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                         to={`/users/${userCollection.createdBy.id}/collections`}
                       >
                         <strong>{`${userCollection.createdBy.firstName} ${userCollection.createdBy.lastName ||
-                          ""}`}</strong>
+                          ''}`}</strong>
                       </Link>
                       <span>{` · Last updated `}</span>
                       <strong>{`${distanceInWordsToNow(parsedUpdatedAt)} `}</strong>
@@ -176,7 +176,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                           onSubmit={this.handleSubmitSearch}
                           placeholder="Search papers in this collection"
                           icon="SEARCH_ICON"
-                          inputStyle={{ maxWidth: "486px", height: "40px" }}
+                          inputStyle={{ maxWidth: '486px', height: '40px' }}
                         />
                       </div>
                       <div className={styles.subHeader}>
@@ -209,7 +209,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
               </div>
             </div>
           </div>
-          <Footer containerStyle={{ backgroundColor: "white" }} />
+          <Footer containerStyle={{ backgroundColor: 'white' }} />
         </div>
       );
     } else {
@@ -234,7 +234,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
           currentPageIndex={currentPageIndex}
           onItemClick={this.fetchPapers}
           wrapperStyle={{
-            margin: "12px 0",
+            margin: '12px 0',
           }}
         />
       );
@@ -246,7 +246,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
           currentPageIndex={currentPageIndex}
           onItemClick={this.fetchPapers}
           wrapperStyle={{
-            margin: "24px 0",
+            margin: '24px 0',
           }}
         />
       );
@@ -267,10 +267,10 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     );
 
     ActionTicketManager.trackTicket({
-      pageType: "collectionShow",
-      actionType: "fire",
-      actionArea: "paperList",
-      actionTag: "queryInCollection",
+      pageType: 'collectionShow',
+      actionType: 'fire',
+      actionArea: 'paperList',
+      actionTag: 'queryInCollection',
       actionLabel: query,
     });
   };
@@ -315,7 +315,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
           <a
             className={styles.shareBtn}
             onClick={() => {
-              this.getPageToSharing("COPIED", userCollection.id);
+              this.getPageToSharing('COPIED', userCollection.id);
             }}
           >
             <Icon icon="LINK" className={styles.shareIcon} />
@@ -325,7 +325,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
             target="_blank"
             rel="noopener nofollow noreferrer"
             onClick={() => {
-              this.getPageToSharing("FACEBOOK", userCollection.id);
+              this.getPageToSharing('FACEBOOK', userCollection.id);
             }}
           >
             <Icon icon="FACEBOOK_LOGO" className={styles.facebookShareIcon} />
@@ -335,7 +335,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
             target="_blank"
             rel="noopener nofollow noreferrer"
             onClick={() => {
-              this.getPageToSharing("TWITTER", userCollection.id);
+              this.getPageToSharing('TWITTER', userCollection.id);
             }}
           >
             <Icon icon="TWITTER_LOGO" className={styles.twitterShareIcon} />
@@ -347,33 +347,33 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
 
   private handleActionTicketInShared = (platform: string, id: number) => {
     ActionTicketManager.trackTicket({
-      pageType: "collectionShow",
-      actionType: "fire",
-      actionArea: "shareBox",
-      actionTag: "collectionSharing",
+      pageType: 'collectionShow',
+      actionType: 'fire',
+      actionArea: 'shareBox',
+      actionTag: 'collectionSharing',
       actionLabel: `${platform}, ${id}`,
     });
   };
 
   private getPageToSharing = (platform: string, id: number) => {
     switch (platform) {
-      case "COPIED":
+      case 'COPIED':
         copySelectedTextToClipboard(`https://scinapse.io/collections/${id}?share=copylink`);
         this.handleActionTicketInShared(platform, id);
         break;
-      case "FACEBOOK":
+      case 'FACEBOOK':
         window.open(
           `${FACEBOOK_SHARE_URL}https://scinapse.io/collections/${id}?share=facebook`,
-          "_blank",
-          "width=600, height=400"
+          '_blank',
+          'width=600, height=400'
         );
         this.handleActionTicketInShared(platform, id);
         break;
-      case "TWITTER":
+      case 'TWITTER':
         window.open(
           `${TWITTER_SHARE_URL}https://scinapse.io/collections/${id}?share=twitter`,
-          "_blank",
-          "width=600, height=400"
+          '_blank',
+          'width=600, height=400'
         );
         this.handleActionTicketInShared(platform, id);
         break;
@@ -393,17 +393,17 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     const collectionShareButton = (
       <TransparentButton
         style={{
-          width: "123px",
-          height: "40px",
+          width: '123px',
+          height: '40px',
           fontWeight: 500,
-          padding: "0 16px 0 8px",
-          marginTop: "4px",
+          padding: '0 16px 0 8px',
+          marginTop: '4px',
         }}
         iconStyle={{
-          marginRight: "8px",
-          width: "20px",
-          height: "16px",
-          color: "#666d7c",
+          marginRight: '8px',
+          width: '20px',
+          height: '16px',
+          color: '#666d7c',
         }}
         onClick={() => {
           this.handleToggleShareDropdown();
@@ -419,8 +419,8 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
       return (
         <div className={styles.collectionHeaderBtnWrapper}>
           <TransparentButton
-            style={{ width: "123px", height: "40px", fontWeight: 500, padding: "0 16px 0 8px" }}
-            iconStyle={{ marginRight: "8px", width: "20px", height: "20px", color: "#666d7c" }}
+            style={{ width: '123px', height: '40px', fontWeight: 500, padding: '0 16px 0 8px' }}
+            iconStyle={{ marginRight: '8px', width: '20px', height: '20px', color: '#666d7c' }}
             onClick={() => {
               GlobalDialogManager.openEditCollectionDialog(userCollection!);
             }}
@@ -490,13 +490,13 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
           <meta itemProp="name" content={`${userCollection.title} | Scinapse`} />
           <meta
             name="description"
-            content={`${userCollection.createdBy.firstName} ${userCollection.createdBy.lastName || ""}'s ${
+            content={`${userCollection.createdBy.firstName} ${userCollection.createdBy.lastName || ''}'s ${
               userCollection.title
             } collection`}
           />
           <meta
             name="twitter:description"
-            content={`${userCollection.createdBy.firstName} ${userCollection.createdBy.lastName || ""}'s ${
+            content={`${userCollection.createdBy.firstName} ${userCollection.createdBy.lastName || ''}'s ${
               userCollection.title
             } collection`}
           />
@@ -507,7 +507,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
           <meta property="og:url" content={`https://scinapse.io/collections/${userCollection.id}`} />
           <meta
             property="og:description"
-            content={`${userCollection.createdBy.firstName} ${userCollection.createdBy.lastName || ""}'s ${
+            content={`${userCollection.createdBy.firstName} ${userCollection.createdBy.lastName || ''}'s ${
               userCollection.title
             } collection`}
           />
@@ -534,7 +534,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
             currentUser={currentUser}
             pageType="collectionShow"
             actionArea="paperList"
-            paperNote={paper.note ? paper.note : ""}
+            paperNote={paper.note ? paper.note : ''}
             paper={paper.paper}
             collection={userCollection}
             onRemovePaperCollection={this.removePaperFromCollection}

@@ -1,4 +1,4 @@
-import { AggregationJournal, AggregationFos } from "../model/aggregation";
+import { AggregationJournal, AggregationFos } from '../model/aggregation';
 
 interface FilterSet {
   journal: AggregationJournal[];
@@ -9,7 +9,7 @@ interface FilterSet {
 
 function makeJournalTitle(journal: AggregationJournal[]) {
   if (journal === null || journal.length === 0) {
-    return "AllJournal";
+    return 'AllJournal';
   } else if (journal.length > 1) {
     return `${journal[0].title}${journal.length}`;
   } else {
@@ -19,7 +19,7 @@ function makeJournalTitle(journal: AggregationJournal[]) {
 
 function makeFosTitle(fos: AggregationFos[]) {
   if (fos === null || fos.length === 0) {
-    return "AllFos";
+    return 'AllFos';
   } else if (fos.length > 1) {
     return `${fos[0].name}${fos.length}`;
   } else {
@@ -40,7 +40,7 @@ function makeYearTitle(yearFrom: number, yearTo: number) {
   } else if (currentYear - yearFrom === 0) {
     return `current`;
   } else {
-    return `${yearFrom}${yearTo === 0 || yearTo === currentYear ? "current" : yearTo}`;
+    return `${yearFrom}${yearTo === 0 || yearTo === currentYear ? 'current' : yearTo}`;
   }
 }
 

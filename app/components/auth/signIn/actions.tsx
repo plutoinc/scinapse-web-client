@@ -1,11 +1,11 @@
-import { Dispatch } from "redux";
-import AuthAPI from "../../../api/auth";
-import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { closeDialog } from "../../dialog/actions";
-import alertToast from "../../../helpers/makePlutoToastAction";
-import { SignInWithEmailParams, SignInResult, OAUTH_VENDOR } from "../../../api/types/auth";
-import { trackDialogView } from "../../../helpers/handleGA";
-import PlutoAxios from "../../../api/pluto";
+import { Dispatch } from 'redux';
+import AuthAPI from '../../../api/auth';
+import { ACTION_TYPES } from '../../../actions/actionTypes';
+import { closeDialog } from '../../dialog/actions';
+import alertToast from '../../../helpers/makePlutoToastAction';
+import { SignInWithEmailParams, SignInResult, OAUTH_VENDOR } from '../../../api/types/auth';
+import { trackDialogView } from '../../../helpers/handleGA';
+import PlutoAxios from '../../../api/pluto';
 
 export function signInWithSocial(vendor: OAUTH_VENDOR, accessToken: string) {
   return async (dispatch: Dispatch<any>) => {
@@ -30,12 +30,12 @@ export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean
 
       if (isDialog) {
         dispatch(closeDialog());
-        trackDialogView("signInWithEmailClose");
+        trackDialogView('signInWithEmailClose');
       }
 
       alertToast({
-        type: "success",
-        message: "Welcome to Scinapse",
+        type: 'success',
+        message: 'Welcome to Scinapse',
       });
 
       dispatch({
@@ -49,7 +49,7 @@ export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean
       return signInResult;
     } catch (err) {
       alertToast({
-        type: "error",
+        type: 'error',
         message: `Failed to sign in.`,
       });
       const error = PlutoAxios.getGlobalError(err);

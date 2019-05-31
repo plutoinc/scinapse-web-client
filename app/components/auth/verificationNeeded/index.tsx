@@ -1,7 +1,7 @@
-import * as React from "react";
-import Icon from "../../../icons";
-import { withStyles } from "../../../helpers/withStylesHelper";
-const styles = require("./verificationNeeded.scss");
+import * as React from 'react';
+import Icon from '../../../icons';
+import { withStyles } from '../../../helpers/withStylesHelper';
+const styles = require('./verificationNeeded.scss');
 
 interface VerificationNeededParams {
   email: string;

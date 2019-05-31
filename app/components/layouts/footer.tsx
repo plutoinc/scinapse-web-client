@@ -1,10 +1,10 @@
-import * as React from "react";
-import { trackAndOpenLink } from "../../helpers/handleGA";
-import { withStyles } from "../../helpers/withStylesHelper";
-import Dialog from "@material-ui/core/Dialog";
-import ActionTicketManager from "../../helpers/actionTicketManager";
-import { getCurrentPageType } from "../locationListener";
-const styles = require("./footer.scss");
+import * as React from 'react';
+import { trackAndOpenLink } from '../../helpers/handleGA';
+import { withStyles } from '../../helpers/withStylesHelper';
+import Dialog from '@material-ui/core/Dialog';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+import { getCurrentPageType } from '../locationListener';
+const styles = require('./footer.scss');
 
 interface FooterProps {
   containerStyle?: React.CSSProperties;
@@ -21,15 +21,15 @@ const AddBookmarkDialog: React.FunctionComponent<{ isOpen: boolean; onClose: () 
         <div className={styles.dialogContent}>Enter following keys from your keyboad</div>
 
         <div className={styles.dialogTitle}>
-          Windows{" "}
+          Windows{' '}
           <span className={styles.highlightText}>
             <span className={styles.highlightBtnText}>Ctrl</span> + <span className={styles.highlightBtnText}>D</span>
           </span>
         </div>
         <div className={styles.dialogTitle}>
-          MAC{" "}
-          <span className={styles.highlightText} style={{ marginLeft: "42px" }}>
-            <span className={styles.highlightBtnText}>Command</span> +{" "}
+          MAC{' '}
+          <span className={styles.highlightText} style={{ marginLeft: '42px' }}>
+            <span className={styles.highlightBtnText}>Command</span> +{' '}
             <span className={styles.highlightBtnText}>D</span>
           </span>
         </div>
@@ -55,9 +55,9 @@ const Footer: React.FunctionComponent<FooterProps> = props => {
             setIsOpen(true);
             ActionTicketManager.trackTicket({
               pageType: getCurrentPageType(),
-              actionType: "fire",
-              actionArea: "footer",
-              actionTag: "addToBookmark",
+              actionType: 'fire',
+              actionArea: 'footer',
+              actionTag: 'addToBookmark',
               actionLabel: null,
             });
           }}
@@ -69,7 +69,7 @@ const Footer: React.FunctionComponent<FooterProps> = props => {
           target="_blank"
           rel="noopener nofollow noreferrer"
           onClick={() => {
-            trackAndOpenLink("footerAboutUs");
+            trackAndOpenLink('footerAboutUs');
           }}
           className={styles.link}
         >
@@ -80,7 +80,7 @@ const Footer: React.FunctionComponent<FooterProps> = props => {
           target="_blank"
           rel="noopener nofollow noreferrer"
           onClick={() => {
-            trackAndOpenLink("footerAboutUs");
+            trackAndOpenLink('footerAboutUs');
           }}
           className={styles.link}
         >
@@ -91,7 +91,7 @@ const Footer: React.FunctionComponent<FooterProps> = props => {
           target="_blank"
           rel="noopener nofollow noreferrer"
           onClick={() => {
-            trackAndOpenLink("footerAboutUs");
+            trackAndOpenLink('footerAboutUs');
           }}
           className={styles.link}
         >
@@ -102,7 +102,7 @@ const Footer: React.FunctionComponent<FooterProps> = props => {
           target="_blank"
           rel="noopener nofollow noreferrer"
           onClick={() => {
-            trackAndOpenLink("footerAboutUs");
+            trackAndOpenLink('footerAboutUs');
           }}
           className={styles.link}
         >
@@ -113,7 +113,7 @@ const Footer: React.FunctionComponent<FooterProps> = props => {
           target="_blank"
           rel="noopener nofollow noreferrer"
           onClick={() => {
-            trackAndOpenLink("footerContactUs");
+            trackAndOpenLink('footerContactUs');
           }}
           className={styles.link}
         >
@@ -124,7 +124,7 @@ const Footer: React.FunctionComponent<FooterProps> = props => {
           target="_blank"
           rel="noopener nofollow noreferrer"
           onClick={() => {
-            trackAndOpenLink("footerFAQ");
+            trackAndOpenLink('footerFAQ');
           }}
           className={styles.link}
         >
@@ -135,7 +135,7 @@ const Footer: React.FunctionComponent<FooterProps> = props => {
           target="_blank"
           rel="noopener nofollow noreferrer"
           onClick={() => {
-            trackAndOpenLink("Updates");
+            trackAndOpenLink('Updates');
           }}
           className={styles.link}
         >

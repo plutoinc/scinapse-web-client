@@ -1,15 +1,15 @@
-import * as React from "react";
-import * as Cookies from "js-cookie";
-import { connect } from "react-redux";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import { CurrentUser } from "../../../../model/currentUser";
-import { PostCollectionParams, AddPaperToCollectionParams } from "../../../../api/collection";
-import alertToast from "../../../../helpers/makePlutoToastAction";
-import PlutoAxios from "../../../../api/pluto";
-const styles = require("./newCollection.scss");
-import { AppState } from "../../../../reducers";
-import { MyCollectionsState } from "../../../../containers/paperShowCollectionControlButton/reducer";
+import * as React from 'react';
+import * as Cookies from 'js-cookie';
+import { connect } from 'react-redux';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { withStyles } from '../../../../helpers/withStylesHelper';
+import { CurrentUser } from '../../../../model/currentUser';
+import { PostCollectionParams, AddPaperToCollectionParams } from '../../../../api/collection';
+import alertToast from '../../../../helpers/makePlutoToastAction';
+import PlutoAxios from '../../../../api/pluto';
+const styles = require('./newCollection.scss');
+import { AppState } from '../../../../reducers';
+import { MyCollectionsState } from '../../../../containers/paperShowCollectionControlButton/reducer';
 
 interface NewCollectionDialogProps {
   currentUser: CurrentUser;
@@ -25,7 +25,7 @@ interface NewCollectionDialogStates {
   description: string;
   isLoading: boolean;
 }
-const SELECTED_COLLECTION_ID = "selectedCollectionId";
+const SELECTED_COLLECTION_ID = 'selectedCollectionId';
 
 @withStyles<typeof NewCollectionDialog>(styles)
 class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, NewCollectionDialogStates> {
@@ -33,8 +33,8 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
     super(props);
 
     this.state = {
-      title: !props.myCollections || props.myCollections.collectionIds.length === 0 ? "Read Later" : "",
-      description: "",
+      title: !props.myCollections || props.myCollections.collectionIds.length === 0 ? 'Read Later' : '',
+      description: '',
       isLoading: false,
     };
   }
@@ -89,7 +89,7 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
     );
   }
   private handleKeyPressName = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       await this.makeCollection();
     }
   };
@@ -107,14 +107,14 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
         await handleMakeCollection({ title, description });
       }
 
-      Cookies.set(SELECTED_COLLECTION_ID, "0");
+      Cookies.set(SELECTED_COLLECTION_ID, '0');
 
       handleCloseDialogRequest();
       this.setState(prevState => ({ ...prevState, isLoading: false }));
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
       alertToast({
-        type: "error",
+        type: 'error',
         message: error.message,
       });
       this.setState(prevState => ({ ...prevState, isLoading: false }));

@@ -1,17 +1,17 @@
-import * as React from "react";
-import { Paper } from "../../../model/paper";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-import Icon from "../../../icons";
-import SearchingPDFBtn from "./searchingPDFBtn";
-import { AUTH_LEVEL, blockUnverifiedUser } from "../../../helpers/checkAuthDialog";
-import { getUserGroupName } from "../../../helpers/abTestHelper";
-import { SIGN_BUBBLE_TEST } from "../../../constants/abTestGlobalValue";
-import { setBubbleContextTypeHelper } from "../../../helpers/getBubbleContextType";
-import LockedLabel from "../../preNoted/lockedLabel";
-import { CurrentUser } from "../../../model/currentUser";
+import * as React from 'react';
+import { Paper } from '../../../model/paper';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import Icon from '../../../icons';
+import SearchingPDFBtn from './searchingPDFBtn';
+import { AUTH_LEVEL, blockUnverifiedUser } from '../../../helpers/checkAuthDialog';
+import { getUserGroupName } from '../../../helpers/abTestHelper';
+import { SIGN_BUBBLE_TEST } from '../../../constants/abTestGlobalValue';
+import { setBubbleContextTypeHelper } from '../../../helpers/getBubbleContextType';
+import LockedLabel from '../../preNoted/lockedLabel';
+import { CurrentUser } from '../../../model/currentUser';
 
-const styles = require("./pdfSourceButton.scss");
+const styles = require('./pdfSourceButton.scss');
 
 interface PdfDownloadButtonProps {
   paper: Paper;
@@ -47,10 +47,10 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
 
   function trackActionToClickPdfDownloadBtn() {
     ActionTicketManager.trackTicket({
-      pageType: "paperShow",
-      actionType: "fire",
+      pageType: 'paperShow',
+      actionType: 'fire',
       actionArea: actionArea,
-      actionTag: "downloadPdf",
+      actionTag: 'downloadPdf',
       actionLabel: String(paper.id),
     });
   }
@@ -80,7 +80,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
           if (
             !props.currentUser.isLoggedIn &&
             handleSetIsOpenBlockedPopper &&
-            getUserGroupName(SIGN_BUBBLE_TEST) === "bubble"
+            getUserGroupName(SIGN_BUBBLE_TEST) === 'bubble'
           ) {
             handleSetIsOpenBlockedPopper(!isOpenBlockedPopper);
 
@@ -93,15 +93,15 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
           const isBlocked = await blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,
             actionArea: actionArea,
-            actionLabel: "downloadPdf",
-            userActionType: "downloadPdf",
+            actionLabel: 'downloadPdf',
+            userActionType: 'downloadPdf',
           });
 
           if (isBlocked) {
             return;
           }
 
-          window.open(pdfUrl, "_blank");
+          window.open(pdfUrl, '_blank');
           onDownloadedPDF(true);
           handleSetScrollAfterDownload();
         }}

@@ -1,9 +1,9 @@
-import StoreManager from "../store";
-import { AppState } from "../reducers";
-import GlobalDialogManager from "./globalDialogManager";
-import ActionTicketManager from "./actionTicketManager";
-import { getCurrentPageType } from "../components/locationListener";
-import { checkAuthStatus } from "../components/auth/actions";
+import StoreManager from '../store';
+import { AppState } from '../reducers';
+import GlobalDialogManager from './globalDialogManager';
+import ActionTicketManager from './actionTicketManager';
+import { getCurrentPageType } from '../components/locationListener';
+import { checkAuthStatus } from '../components/auth/actions';
 
 export enum AUTH_LEVEL {
   UNSIGNED,
@@ -41,9 +41,9 @@ export async function blockUnverifiedUser(params: BlockByBenefitExpParams): Prom
 
     ActionTicketManager.trackTicket({
       pageType: getCurrentPageType(),
-      actionType: "fire",
+      actionType: 'fire',
       actionArea,
-      actionTag: "blockUnsignedUser",
+      actionTag: 'blockUnsignedUser',
       actionLabel: expName ? expName : actionLabel,
       actionValue: actionValue ? actionValue : null,
       expName,
@@ -60,9 +60,9 @@ export async function blockUnverifiedUser(params: BlockByBenefitExpParams): Prom
     GlobalDialogManager.openVerificationDialog();
     ActionTicketManager.trackTicket({
       pageType: getCurrentPageType(),
-      actionType: "fire",
+      actionType: 'fire',
       actionArea,
-      actionTag: "blockUnverifiedUser",
+      actionTag: 'blockUnverifiedUser',
       actionLabel,
       actionValue: actionValue ? actionValue : null,
     });

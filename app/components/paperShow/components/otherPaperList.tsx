@@ -1,8 +1,8 @@
-import * as React from "react";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import PaperShowRelatedPaperItem from "./relatedPaperItem";
-import { Paper } from "../../../model/paper";
-const styles = require("./otherPaperList.scss");
+import * as React from 'react';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import PaperShowRelatedPaperItem from './relatedPaperItem';
+import { Paper } from '../../../model/paper';
+const styles = require('./otherPaperList.scss');
 
 const MAX_OTHER_PAPER_ITEM_COUNT = 5;
 

@@ -1,14 +1,14 @@
-import * as React from "react";
-import * as classNames from "classnames";
-import * as distanceInWordsToNow from "date-fns/distance_in_words_to_now";
-import * as parse from "date-fns/parse";
-import Icon from "../../../icons";
-import Spinner from "../../common/spinner/buttonSpinner";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { Collection } from "../../../model/collection";
-import { AddPaperToCollectionParams, RemovePapersFromCollectionParams } from "../../../api/collection";
-import { trackEvent } from "../../../helpers/handleGA";
-const styles = require("./collectionItem.scss");
+import * as React from 'react';
+import * as classNames from 'classnames';
+import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
+import * as parse from 'date-fns/parse';
+import Icon from '../../../icons';
+import Spinner from '../../common/spinner/buttonSpinner';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { Collection } from '../../../model/collection';
+import { AddPaperToCollectionParams, RemovePapersFromCollectionParams } from '../../../api/collection';
+import { trackEvent } from '../../../helpers/handleGA';
+const styles = require('./collectionItem.scss');
 
 interface CollectionItemProps {
   collectionDialogPaperId: number;
@@ -87,13 +87,13 @@ class CollectionItem extends React.PureComponent<CollectionItemProps, Collection
           collection,
           paperIds: [collectionDialogPaperId],
         });
-        trackEvent({ category: "Additional Action", action: "Remove Paper in Collection", label: `${collection.id}` });
+        trackEvent({ category: 'Additional Action', action: 'Remove Paper in Collection', label: `${collection.id}` });
       } else {
         await handleAddingPaperToCollections({
           collection,
           paperId: collectionDialogPaperId,
         });
-        trackEvent({ category: "Additional Action", action: "Add Paper to Collection", label: `${collection.id}` });
+        trackEvent({ category: 'Additional Action', action: 'Add Paper to Collection', label: `${collection.id}` });
       }
 
       this.setState({ isLoading: false, hasFailed: false });

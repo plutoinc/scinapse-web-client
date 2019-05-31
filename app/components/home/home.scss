@@ -140,11 +140,11 @@
 }
 
 :global(.no-webp) .searchFormContainer {
-  background-image: url("https://assets.pluto.network/scinapse-background.jpg");
+  background-image: url('https://assets.pluto.network/scinapse-background.jpg');
 }
 
 :global(.webp) .searchFormContainer {
-  background-image: url("https://assets.pluto.network/scinapse-background.webp");
+  background-image: url('https://assets.pluto.network/scinapse-background.webp');
 }
 
 .contentBlockDivider {

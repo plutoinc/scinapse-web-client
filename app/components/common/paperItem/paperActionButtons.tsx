@@ -1,19 +1,19 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
-import IconButton from "@material-ui/core/IconButton";
-import MenuItem from "@material-ui/core/MenuItem";
-import Popper from "@material-ui/core/Popper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Icon from "../../../icons";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { CurrentUser } from "../../../model/currentUser";
-import { Paper } from "../../../model/paper";
-import EnvChecker from "../../../helpers/envChecker";
-import GlobalDialogManager from "../../../helpers/globalDialogManager";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-import CollectionButton from "./collectionButton";
-import formatNumber from "../../../helpers/formatNumber";
-const styles = require("./paperActionButtons.scss");
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import IconButton from '@material-ui/core/IconButton';
+import MenuItem from '@material-ui/core/MenuItem';
+import Popper from '@material-ui/core/Popper';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Icon from '../../../icons';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { CurrentUser } from '../../../model/currentUser';
+import { Paper } from '../../../model/paper';
+import EnvChecker from '../../../helpers/envChecker';
+import GlobalDialogManager from '../../../helpers/globalDialogManager';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import CollectionButton from './collectionButton';
+import formatNumber from '../../../helpers/formatNumber';
+const styles = require('./paperActionButtons.scss');
 
 interface HandleClickClaim {
   paperId: number;
@@ -92,9 +92,9 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         onClick={() => {
           ActionTicketManager.trackTicket({
             pageType,
-            actionType: "fire",
+            actionType: 'fire',
             actionArea: actionArea || pageType,
-            actionTag: "source",
+            actionTag: 'source',
             actionLabel: String(paper.id),
           });
         }}
@@ -114,14 +114,14 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         <Link
           to={{
             pathname: `/papers/${paper.id}`,
-            hash: "cited",
+            hash: 'cited',
           }}
           onClick={() => {
             ActionTicketManager.trackTicket({
               pageType,
-              actionType: "fire",
+              actionType: 'fire',
               actionArea: actionArea || pageType,
-              actionTag: "citedList",
+              actionTag: 'citedList',
               actionLabel: String(paper.id),
             });
           }}
@@ -145,9 +145,9 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
               GlobalDialogManager.openCitationDialog(paper.id);
               ActionTicketManager.trackTicket({
                 pageType,
-                actionType: "fire",
+                actionType: 'fire',
                 actionArea: actionArea || pageType,
-                actionTag: "citePaper",
+                actionTag: 'citePaper',
                 actionLabel: String(paper.id),
               });
             }}
@@ -207,7 +207,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
               this.closeAdditionalMenu();
             }}
           >
-            {isRepresentative ? "Remove from representative publications" : "Add to representative publications"}
+            {isRepresentative ? 'Remove from representative publications' : 'Add to representative publications'}
           </MenuItem>
         )}
         <MenuItem
@@ -269,7 +269,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
       window.open(
         // tslint:disable-next-line:max-line-length
         `https://docs.google.com/forms/d/e/1FAIpQLScS76iC1pNdq94mMlxSGjcp_BuBM4WqlTpfPDt19LgVJ-t7Ng/viewform?usp=pp_url&entry.130188959=${targetId}&entry.1298741478`,
-        "_blank"
+        '_blank'
       );
     }
   };

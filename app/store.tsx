@@ -1,13 +1,13 @@
-import { createStore, applyMiddleware, compose } from "redux";
-import { History, createBrowserHistory, createMemoryHistory } from "history";
-import thunkMiddleware from "redux-thunk";
-import { Store } from "react-redux";
-import { createLogger } from "redux-logger";
-import ReduxNotifier from "./middlewares/notifier";
-import setUserToTracker from "./middlewares/trackUser";
-import EnvChecker from "./helpers/envChecker";
-import { rootReducer, initialState, AppState } from "./reducers";
-import { logException } from "./helpers/errorHandler";
+import { createStore, applyMiddleware, compose } from 'redux';
+import { History, createBrowserHistory, createMemoryHistory } from 'history';
+import thunkMiddleware from 'redux-thunk';
+import { Store } from 'react-redux';
+import { createLogger } from 'redux-logger';
+import ReduxNotifier from './middlewares/notifier';
+import setUserToTracker from './middlewares/trackUser';
+import EnvChecker from './helpers/envChecker';
+import { rootReducer, initialState, AppState } from './reducers';
+import { logException } from './helpers/errorHandler';
 
 export interface ReadonlyStore extends Readonly<Store<AppState>> {}
 
@@ -26,7 +26,7 @@ class StoreManager {
   public setHistoryObject(initialRequest?: string) {
     if (EnvChecker.isOnServer()) {
       this._history = createMemoryHistory({
-        initialEntries: [initialRequest || "/"],
+        initialEntries: [initialRequest || '/'],
       });
     } else {
       this._history = createBrowserHistory();
@@ -66,7 +66,7 @@ class StoreManager {
       return JSON.parse(initialStateString);
     } catch (err) {
       logException(err, {
-        extra: "Error occurred at getBrowserInitialState",
+        extra: 'Error occurred at getBrowserInitialState',
       });
       return initialState;
     }

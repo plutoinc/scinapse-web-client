@@ -1,10 +1,10 @@
-import * as React from "react";
-import { Paper } from "../../../../model/paper";
-import { CurrentUser } from "../../../../model/currentUser";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import PaperItem from "../../../common/paperItem";
-import ArticleSpinner from "../../../common/spinner/articleSpinner";
-const styles = require("./searchList.scss");
+import * as React from 'react';
+import { Paper } from '../../../../model/paper';
+import { CurrentUser } from '../../../../model/currentUser';
+import { withStyles } from '../../../../helpers/withStylesHelper';
+import PaperItem from '../../../common/paperItem';
+import ArticleSpinner from '../../../common/spinner/articleSpinner';
+const styles = require('./searchList.scss');
 
 interface SearchListProps {
   currentUser: CurrentUser;

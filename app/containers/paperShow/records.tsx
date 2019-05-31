@@ -56,6 +56,6 @@ export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
   citedPaperTotalPage: 0,
   citedPaperCurrentPage: 0,
 
-  highlightTitle: "",
-  highlightAbstract: "",
+  highlightTitle: '',
+  highlightAbstract: '',
 };

@@ -1,5 +1,5 @@
-import { schema } from "normalizr";
-import { Member } from "./member";
+import { schema } from 'normalizr';
+import { Member } from './member';
 
 export interface Collection {
   id: number;
@@ -16,4 +16,4 @@ export interface Collection {
   noteUpdated?: boolean;
 }
 
-export const collectionSchema = new schema.Entity("collections");
+export const collectionSchema = new schema.Entity('collections');

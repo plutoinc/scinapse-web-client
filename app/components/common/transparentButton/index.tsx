@@ -1,8 +1,8 @@
-import * as React from "react";
-import { trackEvent } from "../../../helpers/handleGA";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import Icon from "../../../icons";
-const styles = require("./transparentButton.scss");
+import * as React from 'react';
+import { trackEvent } from '../../../helpers/handleGA';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import Icon from '../../../icons';
+const styles = require('./transparentButton.scss');
 
 interface TransparentButtonProps {
   content: string;

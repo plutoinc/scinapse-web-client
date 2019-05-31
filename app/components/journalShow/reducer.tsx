@@ -1,4 +1,4 @@
-import { Actions, ACTION_TYPES } from "../../actions/actionTypes";
+import { Actions, ACTION_TYPES } from '../../actions/actionTypes';
 
 export interface JournalShowState
   extends Readonly<{
@@ -26,7 +26,7 @@ export const JOURNAL_SHOW_INITIAL_STATE: JournalShowState = {
   paperIds: [],
   totalPaperCount: 0,
   filteredPaperCount: 0,
-  searchKeyword: "",
+  searchKeyword: '',
 };
 
 export function reducer(state: JournalShowState = JOURNAL_SHOW_INITIAL_STATE, action: Actions): JournalShowState {

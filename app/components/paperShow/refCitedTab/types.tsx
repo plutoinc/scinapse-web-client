@@ -1,6 +1,6 @@
-import { Paper } from "../../../model/paper";
-import { CurrentUser } from "../../../model/currentUser";
-import { RefCitedTabItem } from "../../../containers/paperShow/types";
+import { Paper } from '../../../model/paper';
+import { CurrentUser } from '../../../model/currentUser';
+import { RefCitedTabItem } from '../../../containers/paperShow/types';
 
 export interface PaperShowRefCitedTabProps {
   paper: Paper;

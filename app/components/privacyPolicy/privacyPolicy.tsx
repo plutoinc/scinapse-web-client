@@ -1,7 +1,7 @@
-import * as React from "react";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { Footer } from "../layouts";
-const styles = require("./privacyPolicy.scss");
+import * as React from 'react';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { Footer } from '../layouts';
+const styles = require('./privacyPolicy.scss');
 
 @withStyles<typeof PrivacyPolicy>(styles)
 class PrivacyPolicy extends React.Component {
@@ -432,7 +432,7 @@ class PrivacyPolicy extends React.Component {
             under this Privacy Policy, please email us at team@pluto.network.
           </p>
           <p className={styles.contents}>
-            Our (snail) mailing address is{" "}
+            Our (snail) mailing address is{' '}
             <b>14 Teheran-ro 4-gil, 3rd Floor Mirim Tower, Yeoksam-dong, Gangnam-gu, Seoul, South Korea 06232.</b>
           </p>
           <p className={styles.subtitle}>Thank you</p>

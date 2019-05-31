@@ -1,16 +1,16 @@
-import * as React from "react";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { withStyles } from "../../helpers/withStylesHelper";
-import FullTextDialog from "./components/fullTextDialog";
-import PaperShowCollectionControlButton from "../paperShowCollectionControlButton";
-import CiteBox from "./components/citeBox";
-import { Paper } from "../../model/paper";
-import { CurrentUser } from "../../model/currentUser";
-import SourceButton from "../../components/paperShow/components/sourceButton";
-import ViewFullTextBtn from "../../components/paperShow/components/viewFullTextBtn";
-import RequestFullTextBtn from "./components/fullTextRequestBtn";
-import BlockedPopper from "../../components/preNoted/blockedPopper";
-const s = require("./actionBar.scss");
+import * as React from 'react';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { withStyles } from '../../helpers/withStylesHelper';
+import FullTextDialog from './components/fullTextDialog';
+import PaperShowCollectionControlButton from '../paperShowCollectionControlButton';
+import CiteBox from './components/citeBox';
+import { Paper } from '../../model/paper';
+import { CurrentUser } from '../../model/currentUser';
+import SourceButton from '../../components/paperShow/components/sourceButton';
+import ViewFullTextBtn from '../../components/paperShow/components/viewFullTextBtn';
+import RequestFullTextBtn from './components/fullTextRequestBtn';
+import BlockedPopper from '../../components/preNoted/blockedPopper';
+const s = require('./actionBar.scss');
 
 interface PaperShowActionBarProps {
   paper: Paper;
@@ -46,7 +46,7 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props =
                   handleOnClickAwayFunc={() => setIsOpenBlockedPopper(false)}
                   anchorEl={requestFullTextBtnEl.current}
                   isOpen={isOpenBlockedPopper}
-                  buttonClickAction={"clickRequestFullTextBtn"}
+                  buttonClickAction={'clickRequestFullTextBtn'}
                 />
               </div>
             </ClickAwayListener>

@@ -1,5 +1,5 @@
-import * as ReactGA from "react-ga";
-import EnvChecker from "./envChecker";
+import * as ReactGA from 'react-ga';
+import EnvChecker from './envChecker';
 
 export function trackAndOpenLink(from: string) {
   if (EnvChecker.isProdBrowser()) {
@@ -22,7 +22,7 @@ export function trackEvent(params: ReactGA.EventArgs) {
 export function trackAction(path: string, from: string) {
   if (EnvChecker.isProdBrowser()) {
     ReactGA.event({
-      category: "link-click",
+      category: 'link-click',
       action: `click-from-${from}`,
       label: path,
     });

@@ -1,13 +1,13 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
-import * as classNames from "classnames";
-import { PaperAuthor } from "../../../model/author";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import GlobalDialogManager from "../../../helpers/globalDialogManager";
-import { Paper } from "../../../model/paper";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { Affiliation } from "../../../model/affiliation";
-const styles = require("./authors.scss");
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import * as classNames from 'classnames';
+import { PaperAuthor } from '../../../model/author';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import GlobalDialogManager from '../../../helpers/globalDialogManager';
+import { Paper } from '../../../model/paper';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import { Affiliation } from '../../../model/affiliation';
+const styles = require('./authors.scss');
 
 const MINIMUM_SHOWING_AUTHOR_NUMBER = 3;
 
@@ -75,13 +75,13 @@ class Authors extends React.PureComponent<AuthorsProps> {
   private getAuthorOrganization = (affiliation: Affiliation) => {
     if (!!affiliation) {
       const trimmedOrganization = affiliation.name
-        .split(",")
+        .split(',')
         .slice(0, 2)
         .join();
 
       return `(${trimmedOrganization})`;
     }
-    return "";
+    return '';
   };
 
   private mapAuthorNodeToEndIndex = (authors: PaperAuthor[], endIndex: number, isSliced: boolean) => {
@@ -115,9 +115,9 @@ class Authors extends React.PureComponent<AuthorsProps> {
             onClick={() => {
               ActionTicketManager.trackTicket({
                 pageType,
-                actionType: "fire",
+                actionType: 'fire',
                 actionArea: actionArea || pageType,
-                actionTag: "authorShow",
+                actionTag: 'authorShow',
                 actionLabel: String(author.id),
               });
             }}

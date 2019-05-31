@@ -1,48 +1,48 @@
-import * as React from "react";
-import axios from "axios";
-import * as store from "store";
-import { denormalize } from "normalizr";
-import { connect, Dispatch } from "react-redux";
-import * as classNames from "classnames";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Popper from "@material-ui/core/Popper";
-import Tooltip from "@material-ui/core/Tooltip";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { withStyles } from "../../helpers/withStylesHelper";
-import Icon from "../../icons";
-import ScinapseButton from "../../components/common/scinapseButton";
-import { AppState } from "../../reducers";
-import { MyCollectionsState } from "./reducer";
-import { collectionSchema, Collection } from "../../model/collection";
-import GlobalDialogManager from "../../helpers/globalDialogManager";
-import PaperNoteForm from "../../components/paperShow/noteForm";
+import * as React from 'react';
+import axios from 'axios';
+import * as store from 'store';
+import { denormalize } from 'normalizr';
+import { connect, Dispatch } from 'react-redux';
+import * as classNames from 'classnames';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Popper from '@material-ui/core/Popper';
+import Tooltip from '@material-ui/core/Tooltip';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { withStyles } from '../../helpers/withStylesHelper';
+import Icon from '../../icons';
+import ScinapseButton from '../../components/common/scinapseButton';
+import { AppState } from '../../reducers';
+import { MyCollectionsState } from './reducer';
+import { collectionSchema, Collection } from '../../model/collection';
+import GlobalDialogManager from '../../helpers/globalDialogManager';
+import PaperNoteForm from '../../components/paperShow/noteForm';
 import {
   selectCollectionToCurrentCollection,
   savePaperToCollection,
   removePaperFromCollection,
   updatePaperNote,
   toggleNoteEditMode,
-} from "../../actions/collection";
-import { CurrentUser } from "../../model/currentUser";
+} from '../../actions/collection';
+import { CurrentUser } from '../../model/currentUser';
 import {
   closeCollectionDropdown,
   openCollectionDropdown,
   openNoteDropdown,
   closeNoteDropdown,
   getMyCollections,
-} from "../../actions/paperShow";
-import { trackEvent } from "../../helpers/handleGA";
-import ActionTicketManager from "../../helpers/actionTicketManager";
-import { ActionCreators } from "../../actions/actionTypes";
-import { blockUnverifiedUser, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
-import { getUserGroupName } from "../../helpers/abTestHelper";
-import { SIGN_BUBBLE_TEST } from "../../constants/abTestGlobalValue";
-import BlockedPopper from "../../components/preNoted/blockedPopper";
-import { setBubbleContextTypeHelper } from "../../helpers/getBubbleContextType";
-import LockedLabel from "../../components/preNoted/lockedLabel";
-const styles = require("./paperShowCollectionControlButton.scss");
+} from '../../actions/paperShow';
+import { trackEvent } from '../../helpers/handleGA';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+import { ActionCreators } from '../../actions/actionTypes';
+import { blockUnverifiedUser, AUTH_LEVEL } from '../../helpers/checkAuthDialog';
+import { getUserGroupName } from '../../helpers/abTestHelper';
+import { SIGN_BUBBLE_TEST } from '../../constants/abTestGlobalValue';
+import BlockedPopper from '../../components/preNoted/blockedPopper';
+import { setBubbleContextTypeHelper } from '../../helpers/getBubbleContextType';
+import LockedLabel from '../../components/preNoted/lockedLabel';
+const styles = require('./paperShowCollectionControlButton.scss');
 
-const LAST_USER_COLLECTION_ID = "l_u_c_id";
+const LAST_USER_COLLECTION_ID = 'l_u_c_id';
 
 interface PaperShowCollectionControlButtonProps {
   paperId: number;
@@ -77,7 +77,7 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
           [styles.currentCollectionTitle]: true,
           [styles.saved]: props.collection && props.collection.containsSelected,
         })}
-        style={{ textAlign: "center" }}
+        style={{ textAlign: 'center' }}
       >
         <CircularProgress disableShrink={true} size={14} thickness={4} />
         <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
@@ -92,14 +92,14 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
           <button
             onClick={async () => {
               ActionTicketManager.trackTicket({
-                pageType: "paperShow",
-                actionType: "fire",
-                actionArea: "paperDescription",
-                actionTag: "addToCollection",
+                pageType: 'paperShow',
+                actionType: 'fire',
+                actionArea: 'paperDescription',
+                actionTag: 'addToCollection',
                 actionLabel: null,
               });
 
-              if (getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
+              if (getUserGroupName(SIGN_BUBBLE_TEST) === 'bubble') {
                 setIsOpenBlockedPopper(!isOpenBlockedPopper);
 
                 if (!isOpenBlockedPopper) {
@@ -110,9 +110,9 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
 
               await blockUnverifiedUser({
                 authLevel: AUTH_LEVEL.VERIFIED,
-                actionArea: "paperDescription",
-                actionLabel: "addToCollection",
-                userActionType: "addToCollection",
+                actionArea: 'paperDescription',
+                actionLabel: 'addToCollection',
+                userActionType: 'addToCollection',
               });
             }}
             className={styles.unsignedTitleBtn}
@@ -125,7 +125,7 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
             handleOnClickAwayFunc={closeBlockedPopper}
             anchorEl={addToCollectionBtnEl.current!}
             isOpen={isOpenBlockedPopper}
-            buttonClickAction={"addToCollection"}
+            buttonClickAction={'addToCollection'}
           />
         </div>
       </ClickAwayListener>
@@ -183,9 +183,9 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     const isSelected = selectedCollection && selectedCollection.containsSelected;
     let saveButtonBorderRadius: string;
     if (currentUser.isLoggedIn && (myCollections && myCollections.length > 0)) {
-      saveButtonBorderRadius = isSelected ? "0" : "0 4px 4px 0";
+      saveButtonBorderRadius = isSelected ? '0' : '0 4px 4px 0';
     } else {
-      saveButtonBorderRadius = "4px";
+      saveButtonBorderRadius = '4px';
     }
 
     const hideSaveBtn = !currentUser.isLoggedIn;
@@ -199,18 +199,18 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
               <ScinapseButton
                 content={this.getSaveButtonContent()}
                 style={{
-                  display: "inline-flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  minWidth: "83px",
-                  height: "40px",
+                  display: 'inline-flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  minWidth: '83px',
+                  height: '40px',
                   borderRadius: saveButtonBorderRadius,
-                  padding: "12px 0",
-                  backgroundColor: isSelected ? "#34495e" : "#3e7fff",
-                  fontSize: "16px",
+                  padding: '12px 0',
+                  backgroundColor: isSelected ? '#34495e' : '#3e7fff',
+                  fontSize: '16px',
                   fontWeight: 500,
-                  overflow: "hidden",
-                  whiteSpace: "nowrap",
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
                 }}
                 disabled={isLoadingCollection || myCollectionsState.isFetchingPaper}
                 onClick={
@@ -229,17 +229,17 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
                     gaAction="Click memo icon button"
                     gaLabel={targetPaperId.toString()}
                     style={{
-                      display: "inline-flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "0 4px 4px 0",
-                      padding: "8px 0",
-                      backgroundColor: "#34495e",
-                      fontSize: "16px",
+                      display: 'inline-flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '0 4px 4px 0',
+                      padding: '8px 0',
+                      backgroundColor: '#34495e',
+                      fontSize: '16px',
                       fontWeight: 500,
-                      marginLeft: "1px",
+                      marginLeft: '1px',
                     }}
                     onClick={this.toggleNoteDropdown}
                   />
@@ -385,10 +385,10 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
             textareaStyle={{
               border: 0,
               padding: 0,
-              borderRadius: "8px",
-              fontSize: "14px",
-              width: "100%",
-              maxHeight: "200px",
+              borderRadius: '8px',
+              fontSize: '14px',
+              width: '100%',
+              maxHeight: '200px',
             }}
             row={2}
           />
@@ -417,14 +417,14 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
 
     const isBlocked = await blockUnverifiedUser({
       authLevel: AUTH_LEVEL.VERIFIED,
-      actionArea: "paperDescription",
-      actionLabel: "openNewCollectionDialog",
+      actionArea: 'paperDescription',
+      actionLabel: 'openNewCollectionDialog',
     });
 
     trackEvent({
-      category: "Additional Action",
-      action: "Click [New Collection] Button",
-      label: "my collection list page",
+      category: 'Additional Action',
+      action: 'Click [New Collection] Button',
+      label: 'my collection list page',
     });
 
     if (!isBlocked) {
@@ -437,7 +437,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   private handleDeleteNote = () => {
     const { dispatch, paperId: targetPaperId, selectedCollection } = this.props;
 
-    if (confirm("Are you SURE to remove this memo?") && selectedCollection) {
+    if (confirm('Are you SURE to remove this memo?') && selectedCollection) {
       dispatch(
         updatePaperNote({
           paperId: targetPaperId,
@@ -526,23 +526,23 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     const { dispatch, selectedCollection, paperId: targetPaperId } = this.props;
     const isBlocked = await blockUnverifiedUser({
       authLevel: AUTH_LEVEL.VERIFIED,
-      actionArea: "paperDescription",
-      actionLabel: "signInViaCollection",
-      userActionType: "signInViaCollection",
+      actionArea: 'paperDescription',
+      actionLabel: 'signInViaCollection',
+      userActionType: 'signInViaCollection',
     });
 
     if (isBlocked) {
       trackEvent({
-        category: "New Paper Show",
-        action: "Click save in collection button (Unsigned user)",
+        category: 'New Paper Show',
+        action: 'Click save in collection button (Unsigned user)',
         label: targetPaperId.toString(),
       });
 
       ActionTicketManager.trackTicket({
-        pageType: "paperShow",
-        actionType: "fire",
-        actionArea: "paperDescription",
-        actionTag: "signInViaCollection",
+        pageType: 'paperShow',
+        actionType: 'fire',
+        actionArea: 'paperDescription',
+        actionTag: 'signInViaCollection',
         actionLabel: null,
       });
       return;
@@ -550,16 +550,16 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
 
     if (selectedCollection && targetPaperId && !selectedCollection.containsSelected) {
       trackEvent({
-        category: "New Paper Show",
-        action: "Click save in collection button",
+        category: 'New Paper Show',
+        action: 'Click save in collection button',
         label: targetPaperId.toString(),
       });
 
       ActionTicketManager.trackTicket({
-        pageType: "paperShow",
-        actionType: "fire",
-        actionArea: "paperDescription",
-        actionTag: "addToCollection",
+        pageType: 'paperShow',
+        actionType: 'fire',
+        actionArea: 'paperDescription',
+        actionTag: 'addToCollection',
         actionLabel: String(targetPaperId),
       });
 
@@ -573,15 +573,15 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       store.set(LAST_USER_COLLECTION_ID, selectedCollection.id);
     } else if (selectedCollection && targetPaperId && selectedCollection.containsSelected) {
       trackEvent({
-        category: "New Paper Show",
-        action: "Click saved in collection button",
+        category: 'New Paper Show',
+        action: 'Click saved in collection button',
         label: targetPaperId.toString(),
       });
       ActionTicketManager.trackTicket({
-        pageType: "paperShow",
-        actionType: "fire",
-        actionArea: "paperDescription",
-        actionTag: "removeFromCollection",
+        pageType: 'paperShow',
+        actionType: 'fire',
+        actionArea: 'paperDescription',
+        actionTag: 'removeFromCollection',
         actionLabel: String(targetPaperId),
       });
       this.closeNoteDropdown();

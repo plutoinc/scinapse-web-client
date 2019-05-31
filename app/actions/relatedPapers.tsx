@@ -1,7 +1,7 @@
-import axios, { CancelTokenSource } from "axios";
-import PaperAPI from "../api/paper";
-import { Dispatch } from "react-redux";
-import { ActionCreators } from "./actionTypes";
+import axios, { CancelTokenSource } from 'axios';
+import PaperAPI from '../api/paper';
+import { Dispatch } from 'react-redux';
+import { ActionCreators } from './actionTypes';
 
 export function getRelatedPapers(paperId: number, cancelToken: CancelTokenSource) {
   return async (dispatch: Dispatch<any>) => {

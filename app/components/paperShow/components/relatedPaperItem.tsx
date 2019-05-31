@@ -1,11 +1,11 @@
-import * as React from "react";
-import { Link, withRouter, RouteComponentProps } from "react-router-dom";
-import * as classNames from "classnames";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { Paper } from "../../../model/paper";
-import Icon from "../../../icons";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-const styles = require("./relatedPaperItem.scss");
+import * as React from 'react';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
+import * as classNames from 'classnames';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { Paper } from '../../../model/paper';
+import Icon from '../../../icons';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+const styles = require('./relatedPaperItem.scss');
 
 const MAX_AUTHOR_COUNT_TO_SHOW = 2;
 
@@ -28,10 +28,10 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
               <Link
                 onClick={() => {
                   ActionTicketManager.trackTicket({
-                    pageType: "paperShow",
-                    actionType: "fire",
+                    pageType: 'paperShow',
+                    actionType: 'fire',
                     actionArea,
-                    actionTag: "authorShow",
+                    actionTag: 'authorShow',
                     actionLabel: String(paper.id),
                   });
                 }}
@@ -40,11 +40,11 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
               >
                 {author.name}
               </Link>
-              <span>{author.organization ? `(${author.organization})` : ""}</span>
+              <span>{author.organization ? `(${author.organization})` : ''}</span>
               <span>
                 {paper.authors.length > MAX_AUTHOR_COUNT_TO_SHOW - 1 && index !== MAX_AUTHOR_COUNT_TO_SHOW - 1
-                  ? ", "
-                  : ""}
+                  ? ', '
+                  : ''}
               </span>
             </React.Fragment>
           );
@@ -52,10 +52,10 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
       });
 
     const venue = paper.journal
-      ? `${paper.journal.title} ${paper.journal.impactFactor ? `[IF: ${paper.journal.impactFactor.toFixed(2)}]` : ""}`
+      ? `${paper.journal.title} ${paper.journal.impactFactor ? `[IF: ${paper.journal.impactFactor.toFixed(2)}]` : ''}`
       : paper.conferenceInstance && paper.conferenceInstance.conferenceSeries
         ? `${paper.conferenceInstance.conferenceSeries.name}`
-        : "";
+        : '';
 
     return (
       <div className={styles.paperItemWrapper}>
@@ -77,10 +77,10 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
                 to={`/journals/${paper.journal.id}`}
                 onClick={() => {
                   ActionTicketManager.trackTicket({
-                    pageType: "paperShow",
-                    actionType: "fire",
+                    pageType: 'paperShow',
+                    actionType: 'fire',
                     actionArea,
-                    actionTag: "journalShow",
+                    actionTag: 'journalShow',
                     actionLabel: String(paper.id),
                   });
                 }}
@@ -108,10 +108,10 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
     e.preventDefault();
 
     ActionTicketManager.trackTicket({
-      pageType: "paperShow",
-      actionType: "fire",
+      pageType: 'paperShow',
+      actionType: 'fire',
       actionArea,
-      actionTag: "paperShow",
+      actionTag: 'paperShow',
       actionLabel: String(paper.id),
     });
 

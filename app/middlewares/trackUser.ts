@@ -1,9 +1,9 @@
-import * as ReactGA from "react-ga";
-import * as store from "store";
-import { ACTION_TYPES } from "../actions/actionTypes";
-import { CurrentUser } from "../model/currentUser";
-import EnvChecker from "../helpers/envChecker";
-import { USER_ID_KEY } from "../constants/actionTicket";
+import * as ReactGA from 'react-ga';
+import * as store from 'store';
+import { ACTION_TYPES } from '../actions/actionTypes';
+import { CurrentUser } from '../model/currentUser';
+import EnvChecker from '../helpers/envChecker';
+import { USER_ID_KEY } from '../constants/actionTicket';
 declare var Sentry: any;
 
 const setUserToTracker = () => (next: any) => (action: any) => {
@@ -20,7 +20,7 @@ const setUserToTracker = () => (next: any) => (action: any) => {
             scope.setUser({
               id: user.id.toString(),
               email: user.email,
-              username: `${user.firstName} ${user.lastName || ""}`,
+              username: `${user.firstName} ${user.lastName || ''}`,
             });
           });
           store.set(USER_ID_KEY, user.id);

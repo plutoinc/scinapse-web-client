@@ -1,14 +1,14 @@
-import { Dispatch } from "react-redux";
-import { ActionCreators } from "./actionTypes";
-import PlutoAxios from "../api/pluto";
-import alertToast from "../helpers/makePlutoToastAction";
+import { Dispatch } from 'react-redux';
+import { ActionCreators } from './actionTypes';
+import PlutoAxios from '../api/pluto';
+import alertToast from '../helpers/makePlutoToastAction';
 import CollectionAPI, {
   AddPaperToCollectionParams,
   RemovePapersFromCollectionParams,
   UpdatePaperNoteToCollectionParams,
-} from "../api/collection";
-import { Collection } from "../model/collection";
-import { fetchMyCollection } from "../containers/paperShow/sideEffect";
+} from '../api/collection';
+import { Collection } from '../model/collection';
+import { fetchMyCollection } from '../containers/paperShow/sideEffect';
 
 export function savePaperToCollection(params: AddPaperToCollectionParams) {
   return async (dispatch: Dispatch<any>) => {
@@ -31,7 +31,7 @@ export function savePaperToCollection(params: AddPaperToCollectionParams) {
       const error = PlutoAxios.getGlobalError(err);
       if (error) {
         alertToast({
-          type: "error",
+          type: 'error',
           message: error.message,
         });
       }
@@ -58,7 +58,7 @@ export function removePaperFromCollection(params: RemovePapersFromCollectionPara
       const error = PlutoAxios.getGlobalError(err);
       dispatch(ActionCreators.failedToRemovePaperFromCollectionInPaperShow());
       alertToast({
-        type: "error",
+        type: 'error',
         message: error.message,
       });
     }
@@ -88,8 +88,8 @@ export function updatePaperNote(params: UpdatePaperNoteToCollectionParams) {
       console.error(error);
       dispatch(ActionCreators.failedToUpdatePaperNote());
       alertToast({
-        type: "error",
-        message: "Had an error when update the paper note to collection",
+        type: 'error',
+        message: 'Had an error when update the paper note to collection',
       });
       throw error;
     }

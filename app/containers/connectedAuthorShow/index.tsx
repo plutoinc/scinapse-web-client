@@ -1,48 +1,48 @@
-import * as React from "react";
-import axios from "axios";
-import { Switch, Route, RouteComponentProps, withRouter, Link } from "react-router-dom";
-import * as classNames from "classnames";
-import { Helmet } from "react-helmet";
-import { Dispatch, connect } from "react-redux";
-import { denormalize } from "normalizr";
-import { withStyles } from "../../helpers/withStylesHelper";
-import Keyword from "../../components/paperShow/components/keyword";
-import { Configuration } from "../../reducers/configuration";
-import { CurrentUser } from "../../model/currentUser";
-import { Author, authorSchema } from "../../model/author/author";
-import { Paper, paperSchema } from "../../model/paper";
-import ArticleSpinner from "../../components/common/spinner/articleSpinner";
-import ScinapseInput from "../../components/common/scinapseInput";
-import { LayoutState } from "../../components/layouts/records";
-import Footer from "../../components/layouts/footer";
-import { ConnectedAuthorShowState } from "./reducer";
-import PaperItem from "../../components/common/paperItem";
-import DesktopPagination from "../../components/common/desktopPagination";
-import CoAuthor from "../../components/common/coAuthor";
-import RepresentativePublicationsDialog from "../../components/dialog/components/representativePublications";
-import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from "../../components/common/sortBox";
-import TransparentButton from "../../components/common/transparentButton";
-import ModifyProfile, { ModifyProfileFormState } from "../../components/dialog/components/modifyProfile";
-import { Affiliation } from "../../model/affiliation";
-import { SuggestAffiliation } from "../../api/suggest";
+import * as React from 'react';
+import axios from 'axios';
+import { Switch, Route, RouteComponentProps, withRouter, Link } from 'react-router-dom';
+import * as classNames from 'classnames';
+import { Helmet } from 'react-helmet';
+import { Dispatch, connect } from 'react-redux';
+import { denormalize } from 'normalizr';
+import { withStyles } from '../../helpers/withStylesHelper';
+import Keyword from '../../components/paperShow/components/keyword';
+import { Configuration } from '../../reducers/configuration';
+import { CurrentUser } from '../../model/currentUser';
+import { Author, authorSchema } from '../../model/author/author';
+import { Paper, paperSchema } from '../../model/paper';
+import ArticleSpinner from '../../components/common/spinner/articleSpinner';
+import ScinapseInput from '../../components/common/scinapseInput';
+import { LayoutState } from '../../components/layouts/records';
+import Footer from '../../components/layouts/footer';
+import { ConnectedAuthorShowState } from './reducer';
+import PaperItem from '../../components/common/paperItem';
+import DesktopPagination from '../../components/common/desktopPagination';
+import CoAuthor from '../../components/common/coAuthor';
+import RepresentativePublicationsDialog from '../../components/dialog/components/representativePublications';
+import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
+import TransparentButton from '../../components/common/transparentButton';
+import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
+import { Affiliation } from '../../model/affiliation';
+import { SuggestAffiliation } from '../../api/suggest';
 import {
   updateAuthor,
   removePaperFromPaperList,
   openAddPublicationsToAuthorDialog,
   fetchAuthorPapers,
   updateRepresentativePapers,
-} from "../../actions/author";
-import PlutoAxios from "../../api/pluto";
-import { ActionCreators } from "../../actions/actionTypes";
-import alertToast from "../../helpers/makePlutoToastAction";
-import AuthorShowHeader from "../../components/authorShowHeader";
-import formatNumber from "../../helpers/formatNumber";
-import { AppState } from "../../reducers";
-import { trackEvent } from "../../helpers/handleGA";
-import AuthorCvSection from "../authorCvSection";
-import { getAuthor } from "../unconnectedAuthorShow/actions";
-import ErrorPage from "../../components/error/errorPage";
-const styles = require("./connectedAuthor.scss");
+} from '../../actions/author';
+import PlutoAxios from '../../api/pluto';
+import { ActionCreators } from '../../actions/actionTypes';
+import alertToast from '../../helpers/makePlutoToastAction';
+import AuthorShowHeader from '../../components/authorShowHeader';
+import formatNumber from '../../helpers/formatNumber';
+import { AppState } from '../../reducers';
+import { trackEvent } from '../../helpers/handleGA';
+import AuthorCvSection from '../authorCvSection';
+import { getAuthor } from '../unconnectedAuthorShow/actions';
+import ErrorPage from '../../components/error/errorPage';
+const styles = require('./connectedAuthor.scss');
 
 export interface ConnectedAuthorShowMatchParams {
   authorId: string;
@@ -81,7 +81,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     const { currentUser, author, authorShow } = this.props;
 
     if (currentUser.isLoggedIn && currentUser.isAuthorConnected && currentUser.authorId === author.id) {
-      this.fetchPapers(authorShow.papersCurrentPage, "RECENTLY_ADDED");
+      this.fetchPapers(authorShow.papersCurrentPage, 'RECENTLY_ADDED');
     }
   }
 
@@ -90,9 +90,9 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
 
     const hasAuthStatusChanged = nextProps.currentUser.isLoggedIn !== currentUser.isLoggedIn;
     const wasDefaultSortOption =
-      authorShow.papersSort === "NEWEST_FIRST" &&
+      authorShow.papersSort === 'NEWEST_FIRST' &&
       authorShow.papersCurrentPage === 1 &&
-      authorShow.paperSearchQuery === "";
+      authorShow.paperSearchQuery === '';
 
     if (
       hasAuthStatusChanged &&
@@ -101,9 +101,9 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
       nextProps.currentUser.authorId === author.id &&
       wasDefaultSortOption
     ) {
-      this.fetchPapers(authorShow.papersCurrentPage, "RECENTLY_ADDED");
-    } else if (hasAuthStatusChanged && authorShow.papersSort === "RECENTLY_ADDED") {
-      this.fetchPapers(authorShow.papersCurrentPage, "NEWEST_FIRST");
+      this.fetchPapers(authorShow.papersCurrentPage, 'RECENTLY_ADDED');
+    } else if (hasAuthStatusChanged && authorShow.papersSort === 'RECENTLY_ADDED') {
+      this.fetchPapers(authorShow.papersCurrentPage, 'NEWEST_FIRST');
     }
   }
 
@@ -114,13 +114,13 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
   public render() {
     const { author, authorShow, currentUser, match, location, layout } = this.props;
     const { isOpenModifyProfileDialog, isOpenSelectedPaperDialog } = this.state;
-    const pathArr = location.pathname.split("/");
-    const isCVPage = pathArr[pathArr.length - 1] === "cv";
+    const pathArr = location.pathname.split('/');
+    const isCVPage = pathArr[pathArr.length - 1] === 'cv';
 
     if (authorShow.isLoadingPage) {
       return (
         <div className={styles.paperShowWrapper}>
-          <ArticleSpinner style={{ margin: "200px auto" }} />
+          <ArticleSpinner style={{ margin: '200px auto' }} />
         </div>
       );
     }
@@ -183,18 +183,18 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                           onSubmit={this.handleSubmitPublicationSearch}
                           icon="SEARCH_ICON"
                           wrapperStyle={{
-                            borderRadius: "4px",
-                            borderColor: "#f1f3f6",
-                            backgroundColor: "#f9f9fa",
-                            width: "320px",
-                            height: "36px",
+                            borderRadius: '4px',
+                            borderColor: '#f1f3f6',
+                            backgroundColor: '#f9f9fa',
+                            width: '320px',
+                            height: '36px',
                           }}
                         />
                         <div className={styles.paperCountMetadata}>
                           {/* tslint:disable-next-line:max-line-length */}
                           {authorShow.papersCurrentPage} page of {formatNumber(authorShow.papersTotalPage)} pages ({formatNumber(
                             authorShow.papersTotalCount
-                          )}{" "}
+                          )}{' '}
                           results)
                         </div>
                       </div>
@@ -225,7 +225,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                       currentPageIndex={authorShow.papersCurrentPage - 1}
                       onItemClick={this.fetchPapers}
                       wrapperStyle={{
-                        margin: "45px 0 40px 0",
+                        margin: '45px 0 40px 0',
                       }}
                     />
                   </div>
@@ -256,10 +256,10 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
           handleSubmitForm={this.handleSubmitProfile}
           initialValues={{
             authorName: author.name,
-            currentAffiliation: author.lastKnownAffiliation || "",
-            bio: author.bio || "",
-            website: author.webPage || "",
-            email: author.email || "",
+            currentAffiliation: author.lastKnownAffiliation || '',
+            bio: author.bio || '',
+            website: author.webPage || '',
+            email: author.email || '',
             isEmailHidden: author.isEmailHidden || false,
           }}
         />
@@ -286,8 +286,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
         content="Add Representative Publication"
         icon="SMALL_PLUS"
         style={{
-          marginTop: "16px",
-          height: "40px",
+          marginTop: '16px',
+          height: '40px',
         }}
       />
     ) : null;
@@ -337,9 +337,9 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
           content="Manage List"
           icon="PEN"
           iconStyle={{
-            marginRight: "8px",
-            width: "18px",
-            height: "18px",
+            marginRight: '8px',
+            width: '18px',
+            height: '18px',
           }}
         />
       );
@@ -354,14 +354,14 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
       return (
         <TransparentButton
           style={{
-            height: "36px",
-            fontWeight: "bold",
-            padding: "0 16px 0 8px",
+            height: '36px',
+            fontWeight: 'bold',
+            padding: '0 16px 0 8px',
           }}
           iconStyle={{
-            marginRight: "8px",
-            width: "20px",
-            height: "20px",
+            marginRight: '8px',
+            width: '20px',
+            height: '20px',
           }}
           onClick={this.handleToggleModifyProfileDialog}
           gaCategory="New Author Show"
@@ -399,8 +399,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     const { dispatch } = this.props;
 
     trackEvent({
-      category: "New Author Show",
-      action: "Click Add Publication Button",
+      category: 'New Author Show',
+      action: 'Click Add Publication Button',
       label: "Try to add Publications in can't find your paper",
     });
 
@@ -440,7 +440,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     const { dispatch, author } = this.props;
 
     let affiliationId: number | null = null;
-    let affiliationName = "";
+    let affiliationName = '';
     if ((profile.currentAffiliation as Affiliation).name) {
       affiliationId = (profile.currentAffiliation as Affiliation).id;
       affiliationName = (profile.currentAffiliation as Affiliation).name;
@@ -467,8 +467,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
       const error = PlutoAxios.getGlobalError(err);
       console.error(error);
       alertToast({
-        type: "error",
-        message: "Had an error to update user profile.",
+        type: 'error',
+        message: 'Had an error to update user profile.',
       });
       dispatch(ActionCreators.failedToUpdateProfileData());
     }
@@ -487,8 +487,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
         const error = PlutoAxios.getGlobalError(err);
         console.error(error);
         alertToast({
-          type: "error",
-          message: "Had an error to get user profile.",
+          type: 'error',
+          message: 'Had an error to get user profile.',
         });
         dispatch(ActionCreators.failedToGetAuthorList());
       }
@@ -523,7 +523,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     const { dispatch, authorShow, author } = this.props;
 
     trackEvent({
-      category: "New Author Show",
+      category: 'New Author Show',
       action: "search author's all publication",
       label: query,
     });
@@ -571,7 +571,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     const isRepresentative = author.representativePapers.some(repPaper => repPaper.id === paper.id);
 
     if (author.representativePapers.length === 5 && !isRepresentative) {
-      return window.alert("You have exceeded the number of choices available.");
+      return window.alert('You have exceeded the number of choices available.');
     }
 
     let newRepresentativePapers: Paper[] = [];
@@ -592,7 +592,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     const { authorShow, papers, currentUser, author } = this.props;
 
     if (authorShow.isLoadingPapers) {
-      return <ArticleSpinner style={{ margin: "170px auto" }} />;
+      return <ArticleSpinner style={{ margin: '170px auto' }} />;
     }
 
     if (papers && papers.length > 0) {
@@ -624,8 +624,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
         content="Add Publications"
         icon="SMALL_PLUS"
         style={{
-          height: "40px",
-          marginTop: "16px",
+          height: '40px',
+          marginTop: '16px',
         }}
       />
     ) : null;
@@ -668,38 +668,38 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
   private makeStructuredData = () => {
     const { author, coAuthors } = this.props;
 
-    const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "";
+    const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : '';
     const colleagues = coAuthors.map(coAuthor => {
       if (!coAuthor) {
         return null;
       }
-      const coAuthorAffiliation = coAuthor.lastKnownAffiliation ? coAuthor.lastKnownAffiliation.name : "";
+      const coAuthorAffiliation = coAuthor.lastKnownAffiliation ? coAuthor.lastKnownAffiliation.name : '';
       return {
-        "@context": "http://schema.org",
-        "@type": "Person",
+        '@context': 'http://schema.org',
+        '@type': 'Person',
         name: coAuthor.name,
         affiliation: {
           name: coAuthorAffiliation,
         },
-        description: `${coAuthorAffiliation ? `${coAuthorAffiliation},` : ""} citation: ${
+        description: `${coAuthorAffiliation ? `${coAuthorAffiliation},` : ''} citation: ${
           coAuthor.citationCount
         }, h-index: ${coAuthor.hindex}`,
-        mainEntityOfPage: "https://scinapse.io",
+        mainEntityOfPage: 'https://scinapse.io',
       };
     });
 
     const structuredData: any = {
-      "@context": "http://schema.org",
-      "@type": "Person",
+      '@context': 'http://schema.org',
+      '@type': 'Person',
       name: author.name,
       affiliation: {
         name: affiliationName,
       },
       colleague: colleagues,
-      description: `${affiliationName ? `${affiliationName},` : ""} citation: ${author.citationCount}, h-index: ${
+      description: `${affiliationName ? `${affiliationName},` : ''} citation: ${author.citationCount}, h-index: ${
         author.hindex
       }`,
-      mainEntityOfPage: "https://scinapse.io",
+      mainEntityOfPage: 'https://scinapse.io',
     };
 
     return structuredData;
@@ -708,8 +708,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
   private getPageHelmet = () => {
     const { author } = this.props;
 
-    const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "";
-    const description = `${affiliationName ? `${affiliationName},` : ""} citation: ${author.citationCount}, h-index: ${
+    const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : '';
+    const description = `${affiliationName ? `${affiliationName},` : ''} citation: ${author.citationCount}, h-index: ${
       author.hindex
     }`;
 

@@ -1,13 +1,13 @@
-import * as React from "react";
-import { Dispatch, connect } from "react-redux";
-import { withStyles } from "../../helpers/withStylesHelper";
-import Icon from "../../icons";
-import { Education } from "../../model/profile";
-import EducationForm, { EducationFormState } from "./educationForm";
-import PlutoAxios from "../../api/pluto";
-import alertToast from "../../helpers/makePlutoToastAction";
-import { updateAuthorCvInfo } from "../../actions/author";
-const styles = require("./authorCVItem.scss");
+import * as React from 'react';
+import { Dispatch, connect } from 'react-redux';
+import { withStyles } from '../../helpers/withStylesHelper';
+import Icon from '../../icons';
+import { Education } from '../../model/profile';
+import EducationForm, { EducationFormState } from './educationForm';
+import PlutoAxios from '../../api/pluto';
+import alertToast from '../../helpers/makePlutoToastAction';
+import { updateAuthorCvInfo } from '../../actions/author';
+const styles = require('./authorCVItem.scss');
 
 interface EducationItemState {
   isEditMode: boolean;
@@ -37,13 +37,13 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
     const { id, degree, department, startDate, endDate, isCurrent, institutionName, institutionId } = education;
     return isEditMode ? (
       <EducationForm
-        wrapperStyle={{ display: "inline-flex", position: "relative" }}
+        wrapperStyle={{ display: 'inline-flex', position: 'relative' }}
         inputStyle={{
-          color: "#666d7c",
-          fontSize: "13px",
-          lineHeight: "1.54",
-          fontFamily: "Roboto",
-          padding: "8px",
+          color: '#666d7c',
+          fontSize: '13px',
+          lineHeight: '1.54',
+          fontFamily: 'Roboto',
+          padding: '8px',
         }}
         handleClose={this.handelToggleEducationEditForm}
         isOpen={true}
@@ -64,7 +64,7 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
       <div className={styles.itemWrapper}>
         <div className={styles.dateSectionWrapper}>
           <span className={styles.dateContent}>
-            {startDate} - {endDate ? endDate : "Present"}
+            {startDate} - {endDate ? endDate : 'Present'}
           </span>
         </div>
         <div className={styles.contentWrapper}>
@@ -112,7 +112,7 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
 
     try {
       await dispatch(
-        updateAuthorCvInfo("educations", authorId, {
+        updateAuthorCvInfo('educations', authorId, {
           ...params,
           endDate: params.isCurrent ? null : params.endDate,
         })
@@ -122,8 +122,8 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
       const error = PlutoAxios.getGlobalError(err);
       console.error(error);
       alertToast({
-        type: "error",
-        message: "Had an error to add education data.",
+        type: 'error',
+        message: 'Had an error to add education data.',
       });
     }
   };

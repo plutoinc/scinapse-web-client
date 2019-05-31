@@ -1,6 +1,6 @@
-import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
-import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../../components/common/sortBox";
-import { CVInfoType } from "../../model/profile";
+import { ACTION_TYPES, Actions } from '../../actions/actionTypes';
+import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
+import { CVInfoType } from '../../model/profile';
 
 export interface ConnectedAuthorShowState
   extends Readonly<{
@@ -30,8 +30,8 @@ export const CONNECTED_AUTHOR_SHOW_INITIAL_STATE: ConnectedAuthorShowState = {
   papersTotalPage: 0,
   papersCurrentPage: 1,
   papersTotalCount: 0,
-  papersSort: "NEWEST_FIRST",
-  paperSearchQuery: "",
+  papersSort: 'NEWEST_FIRST',
+  paperSearchQuery: '',
   isLoadingPage: false,
   isLoadingPapers: false,
   isLoadingToUpdateProfile: false,
@@ -102,7 +102,7 @@ export function reducer(
     case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_GET_PAPERS: {
       return {
         ...state,
-        paperSearchQuery: action.payload.query || "",
+        paperSearchQuery: action.payload.query || '',
         paperIds: action.payload.paperIds,
         papersSort: action.payload.sort as AUTHOR_PAPER_LIST_SORT_TYPES,
         isLoadingPapers: false,

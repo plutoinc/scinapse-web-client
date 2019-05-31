@@ -1,8 +1,8 @@
-import PaperSearchQueryFormatter from "../../helpers/papersQueryFormatter";
-import { LoadDataParams } from "../../routes";
-import { ACTION_TYPES } from "../../actions/actionTypes";
-import { fetchSearchAuthors } from "../../components/articleSearch/actions";
-import { GetAuthorsParam } from "../../api/types/author";
+import PaperSearchQueryFormatter from '../../helpers/papersQueryFormatter';
+import { LoadDataParams } from '../../routes';
+import { ACTION_TYPES } from '../../actions/actionTypes';
+import { fetchSearchAuthors } from '../../components/articleSearch/actions';
+import { GetAuthorsParam } from '../../api/types/author';
 
 export async function getAuthorSearchData(params: LoadDataParams<null>) {
   const { queryParams, dispatch } = params;

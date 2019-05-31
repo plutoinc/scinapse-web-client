@@ -1,11 +1,11 @@
-import * as React from "react";
-import Authors, { AuthorsProps } from "./authors";
-import PaperItemVenue from "./venue";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import Icon from "../../../icons";
-import { Journal } from "../../../model/journal";
-import { ConferenceInstance } from "../../../model/conferenceInstance";
-const styles = require("./venueAndAuthors.scss");
+import * as React from 'react';
+import Authors, { AuthorsProps } from './authors';
+import PaperItemVenue from './venue';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import Icon from '../../../icons';
+import { Journal } from '../../../model/journal';
+import { ConferenceInstance } from '../../../model/conferenceInstance';
+const styles = require('./venueAndAuthors.scss');
 
 export interface VenueAndAuthorsProps extends Readonly<AuthorsProps> {
   journal: Journal | null;

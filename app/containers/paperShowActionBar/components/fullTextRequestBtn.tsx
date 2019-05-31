@@ -1,15 +1,15 @@
-import * as React from "react";
-import { blockUnverifiedUser, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import Icon from "../../../icons";
-import SearchingPDFBtn from "../../../components/paperShow/components/searchingPDFBtn";
-import { getUserGroupName } from "../../../helpers/abTestHelper/index";
-import { SIGN_BUBBLE_TEST } from "../../../constants/abTestGlobalValue";
-import { setBubbleContextTypeHelper } from "../../../helpers/getBubbleContextType";
-import LockedLabel from "../../../components/preNoted/lockedLabel";
-import { CurrentUser } from "../../../model/currentUser";
-const s = require("../actionBar.scss");
+import * as React from 'react';
+import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import Icon from '../../../icons';
+import SearchingPDFBtn from '../../../components/paperShow/components/searchingPDFBtn';
+import { getUserGroupName } from '../../../helpers/abTestHelper/index';
+import { SIGN_BUBBLE_TEST } from '../../../constants/abTestGlobalValue';
+import { setBubbleContextTypeHelper } from '../../../helpers/getBubbleContextType';
+import LockedLabel from '../../../components/preNoted/lockedLabel';
+import { CurrentUser } from '../../../model/currentUser';
+const s = require('../actionBar.scss');
 
 const RequestFullTextBtn: React.FunctionComponent<{
   isLoading: boolean;
@@ -41,14 +41,14 @@ const RequestFullTextBtn: React.FunctionComponent<{
       style={!!btnStyle ? btnStyle : {}}
       onClick={async () => {
         ActionTicketManager.trackTicket({
-          pageType: "paperShow",
-          actionType: "fire",
+          pageType: 'paperShow',
+          actionType: 'fire',
           actionArea: props.actionArea,
-          actionTag: "clickRequestFullTextBtn",
+          actionTag: 'clickRequestFullTextBtn',
           actionLabel: String(paperId),
         });
 
-        if (!props.currentUser.isLoggedIn && getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
+        if (!props.currentUser.isLoggedIn && getUserGroupName(SIGN_BUBBLE_TEST) === 'bubble') {
           handleSetIsOpenBlockedPopper(!isOpenBlockedPopper);
 
           if (!isOpenBlockedPopper) {
@@ -60,8 +60,8 @@ const RequestFullTextBtn: React.FunctionComponent<{
         const isBlocked = await blockUnverifiedUser({
           authLevel: AUTH_LEVEL.VERIFIED,
           actionArea: props.actionArea,
-          actionLabel: "clickRequestFullTextBtn",
-          userActionType: "clickRequestFullTextBtn",
+          actionLabel: 'clickRequestFullTextBtn',
+          userActionType: 'clickRequestFullTextBtn',
         });
 
         if (!isBlocked) {

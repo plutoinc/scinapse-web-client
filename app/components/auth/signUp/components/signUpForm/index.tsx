@@ -1,15 +1,15 @@
-import * as React from "react";
-import { Formik, Field, FormikErrors, Form } from "formik";
-import { connect, Dispatch } from "react-redux";
-import { withStyles } from "../../../../../helpers/withStylesHelper";
-import { GLOBAL_DIALOG_TYPE } from "../../../../dialog/reducer";
-import AuthTabs from "../../../authTabs";
-import AuthInputBox from "../../../../common/inputBox/authInputBox";
-import AuthButton from "../../../authButton";
-import AffiliationBox from "../../../../authorCV/affiliationBox";
-import validateEmail from "../../../../../helpers/validateEmail";
-import { debouncedCheckDuplicate } from "../../helpers/checkDuplicateEmail";
-const s = require("./style.scss");
+import * as React from 'react';
+import { Formik, Field, FormikErrors, Form } from 'formik';
+import { connect, Dispatch } from 'react-redux';
+import { withStyles } from '../../../../../helpers/withStylesHelper';
+import { GLOBAL_DIALOG_TYPE } from '../../../../dialog/reducer';
+import AuthTabs from '../../../authTabs';
+import AuthInputBox from '../../../../common/inputBox/authInputBox';
+import AuthButton from '../../../authButton';
+import AffiliationBox from '../../../../authorCV/affiliationBox';
+import validateEmail from '../../../../../helpers/validateEmail';
+import { debouncedCheckDuplicate } from '../../helpers/checkDuplicateEmail';
+const s = require('./style.scss');
 
 interface SignUpFormProps {
   onClickNext: () => void;
@@ -35,20 +35,20 @@ export interface SignUpFormValues {
 const validateForm = async (values: SignUpFormValues) => {
   const errors: FormikErrors<SignUpFormValues> = {};
   if (!validateEmail(values.email)) {
-    errors.email = "Please enter a valid email address";
+    errors.email = 'Please enter a valid email address';
   }
 
   if (!values.password || (values.password && values.password.length < 8)) {
-    errors.password = "Must have at least 8 characters!";
+    errors.password = 'Must have at least 8 characters!';
   }
   if (!values.firstName) {
-    errors.firstName = "Please enter your first name";
+    errors.firstName = 'Please enter your first name';
   }
   if (!values.lastName) {
-    errors.lastName = "Please enter your last name";
+    errors.lastName = 'Please enter your last name';
   }
   if (!values.affiliation) {
-    errors.affiliation = "Please enter your affiliation";
+    errors.affiliation = 'Please enter your affiliation';
   }
 
   const emailErr = await debouncedCheckDuplicate(values.email);
@@ -76,7 +76,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
 
   return (
     <>
-      <AuthTabs onClickTab={props.onClickTab} activeTab={"sign up"} />
+      <AuthTabs onClickTab={props.onClickTab} activeTab={'sign up'} />
       <div className={s.signUpContainer}>
         <Formik
           initialValues={{
@@ -84,7 +84,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
             password: props.password,
             firstName: props.firstName,
             lastName: props.lastName,
-            affiliation: "",
+            affiliation: '',
           }}
           onSubmit={handleSubmit}
           validate={validateForm}
@@ -125,20 +125,20 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                 placeholder="Affiliation / Company"
                 type="text"
                 component={AffiliationBox}
-                inputBoxStyle={{ width: "100%" }}
-                listWrapperStyle={{ top: "56px" }}
+                inputBoxStyle={{ width: '100%' }}
+                listWrapperStyle={{ top: '56px' }}
                 inputStyle={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignContent: "flex-start",
-                  alignItems: "center",
-                  height: "47px",
-                  borderRadius: "3px",
-                  padding: "0 10px",
-                  backgroundColor: "white",
-                  border: "solid 1px $gray3",
-                  overflow: "hidden",
-                  marginTop: "10px",
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignContent: 'flex-start',
+                  alignItems: 'center',
+                  height: '47px',
+                  borderRadius: '3px',
+                  padding: '0 10px',
+                  backgroundColor: 'white',
+                  border: 'solid 1px $gray3',
+                  overflow: 'hidden',
+                  marginTop: '10px',
                 }}
               />
               <AuthButton
@@ -146,7 +146,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                 onClick={props.onClickNext}
                 isLoading={isLoading}
                 text="SIGN UP"
-                style={{ backgroundColor: "#6096ff", marginTop: "10px", fontSize: "14px" }}
+                style={{ backgroundColor: '#6096ff', marginTop: '10px', fontSize: '14px' }}
               />
             </Form>
           )}
@@ -156,20 +156,20 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
           type="button"
           onClick={props.onClickBack}
           style={{
-            backgroundColor: "#e7eaef",
-            fontSize: "14px",
-            color: "#9aa3b5",
-            marginTop: "10px",
-            marginBottom: "12px",
+            backgroundColor: '#e7eaef',
+            fontSize: '14px',
+            color: '#9aa3b5',
+            marginTop: '10px',
+            marginBottom: '12px',
           }}
           text="GO BACK"
         />
         <div className={s.signUpPrivacyPolicy}>
-          {"By signing up, you agree with our "}
+          {'By signing up, you agree with our '}
           <a href="https://scinapse.io/terms-of-service" target="_blank" rel="noopener nofollow noreferrer">
             Terms
           </a>
-          {" & "}
+          {' & '}
           <a href="https://scinapse.io/privacy-policy" target="_blank" rel="noopener nofollow noreferrer">
             Privacy policy
           </a>.

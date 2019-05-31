@@ -1,19 +1,19 @@
-jest.unmock("../reducer");
-jest.unmock("../records");
+jest.unmock('../reducer');
+jest.unmock('../records');
 
-import { reducer } from "../reducer";
-import { ACTION_TYPES } from "../../../../actions/actionTypes";
-import { EmailVerificationState, EMAIL_VERIFICATION_INITIAL_STATE } from "../records";
+import { reducer } from '../reducer';
+import { ACTION_TYPES } from '../../../../actions/actionTypes';
+import { EmailVerificationState, EMAIL_VERIFICATION_INITIAL_STATE } from '../records';
 
 function reduceState(action: any, state: EmailVerificationState = EMAIL_VERIFICATION_INITIAL_STATE) {
   return reducer(state, action);
 }
 
-describe("emailVerification reducer", () => {
+describe('emailVerification reducer', () => {
   let mockAction: any;
   let state: EmailVerificationState;
 
-  describe("when receive EMAIL_VERIFICATION_START_TO_VERIFY_TOKEN", () => {
+  describe('when receive EMAIL_VERIFICATION_START_TO_VERIFY_TOKEN', () => {
     beforeEach(() => {
       const mockState = EMAIL_VERIFICATION_INITIAL_STATE;
 
@@ -24,16 +24,16 @@ describe("emailVerification reducer", () => {
       state = reduceState(mockAction, mockState);
     });
 
-    it("should set isLoading to true", () => {
+    it('should set isLoading to true', () => {
       expect(state.isLoading).toBeTruthy();
     });
 
-    it("should set hasError to false", () => {
+    it('should set hasError to false', () => {
       expect(state.hasError).toBeFalsy();
     });
   });
 
-  describe("when receive EMAIL_VERIFICATION_FAILED_TO_VERIFY_TOKEN", () => {
+  describe('when receive EMAIL_VERIFICATION_FAILED_TO_VERIFY_TOKEN', () => {
     beforeEach(() => {
       const mockState = EMAIL_VERIFICATION_INITIAL_STATE;
 
@@ -44,16 +44,16 @@ describe("emailVerification reducer", () => {
       state = reduceState(mockAction, mockState);
     });
 
-    it("should set isLoading to false", () => {
+    it('should set isLoading to false', () => {
       expect(state.isLoading).toBeFalsy();
     });
 
-    it("should set hasError to true", () => {
+    it('should set hasError to true', () => {
       expect(state.hasError).toBeTruthy();
     });
   });
 
-  describe("when receive EMAIL_VERIFICATION_SUCCEEDED_TO_VERIFY_TOKEN", () => {
+  describe('when receive EMAIL_VERIFICATION_SUCCEEDED_TO_VERIFY_TOKEN', () => {
     beforeEach(() => {
       const mockState = EMAIL_VERIFICATION_INITIAL_STATE;
 
@@ -64,16 +64,16 @@ describe("emailVerification reducer", () => {
       state = reduceState(mockAction, mockState);
     });
 
-    it("should set isLoading to false", () => {
+    it('should set isLoading to false', () => {
       expect(state.isLoading).toBeFalsy();
     });
 
-    it("should set hasError to false", () => {
+    it('should set hasError to false', () => {
       expect(state.hasError).toBeFalsy();
     });
   });
 
-  describe("when receive EMAIL_VERIFICATION_START_TO_RESEND_VERIFICATION_EMAIL", () => {
+  describe('when receive EMAIL_VERIFICATION_START_TO_RESEND_VERIFICATION_EMAIL', () => {
     beforeEach(() => {
       const mockState = EMAIL_VERIFICATION_INITIAL_STATE;
 
@@ -84,16 +84,16 @@ describe("emailVerification reducer", () => {
       state = reduceState(mockAction, mockState);
     });
 
-    it("should set isLoading to true", () => {
+    it('should set isLoading to true', () => {
       expect(state.isLoading).toBeTruthy();
     });
 
-    it("should set hasError to false", () => {
+    it('should set hasError to false', () => {
       expect(state.hasError).toBeFalsy();
     });
   });
 
-  describe("when receive EMAIL_VERIFICATION_FAILED_TO_RESEND_VERIFICATION_EMAIL", () => {
+  describe('when receive EMAIL_VERIFICATION_FAILED_TO_RESEND_VERIFICATION_EMAIL', () => {
     beforeEach(() => {
       const mockState = EMAIL_VERIFICATION_INITIAL_STATE;
 
@@ -104,16 +104,16 @@ describe("emailVerification reducer", () => {
       state = reduceState(mockAction, mockState);
     });
 
-    it("should set isLoading to false", () => {
+    it('should set isLoading to false', () => {
       expect(state.isLoading).toBeFalsy();
     });
 
-    it("should set hasError to true", () => {
+    it('should set hasError to true', () => {
       expect(state.hasError).toBeTruthy();
     });
   });
 
-  describe("when receive EMAIL_VERIFICATION_SUCCEEDED_TO_RESEND_VERIFICATION_EMAIL", () => {
+  describe('when receive EMAIL_VERIFICATION_SUCCEEDED_TO_RESEND_VERIFICATION_EMAIL', () => {
     beforeEach(() => {
       const mockState = EMAIL_VERIFICATION_INITIAL_STATE;
 
@@ -124,11 +124,11 @@ describe("emailVerification reducer", () => {
       state = reduceState(mockAction, mockState);
     });
 
-    it("should set isLoading to false", () => {
+    it('should set isLoading to false', () => {
       expect(state.isLoading).toBeFalsy();
     });
 
-    it("should set hasError to false", () => {
+    it('should set hasError to false', () => {
       expect(state.hasError).toBeFalsy();
     });
   });

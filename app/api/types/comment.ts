@@ -1,5 +1,5 @@
-import { Comment } from "../../model/comment";
-import { CommonPaginationResponsePart } from "./common";
+import { Comment } from '../../model/comment';
+import { CommonPaginationResponsePart } from './common';
 
 export interface GetCommentsParams {
   page: number;

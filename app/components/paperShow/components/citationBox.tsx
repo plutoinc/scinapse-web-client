@@ -1,12 +1,12 @@
-import * as React from "react";
-import * as classNames from "classnames";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import ButtonSpinner from "../../common/spinner/buttonSpinner";
-import copySelectedTextToClipboard from "../../../helpers/copySelectedTextToClipboard";
-import { AvailableCitationType } from "../../../containers/paperShow/records";
-import { trackEvent } from "../../../helpers/handleGA";
-import Icon from "../../../icons";
-const styles = require("./citationBox.scss");
+import * as React from 'react';
+import * as classNames from 'classnames';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import ButtonSpinner from '../../common/spinner/buttonSpinner';
+import copySelectedTextToClipboard from '../../../helpers/copySelectedTextToClipboard';
+import { AvailableCitationType } from '../../../containers/paperShow/records';
+import { trackEvent } from '../../../helpers/handleGA';
+import Icon from '../../../icons';
+const styles = require('./citationBox.scss');
 
 export interface CitationBoxProps {
   paperId: number;
@@ -40,7 +40,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
           <div
             onClick={() => {
               this.handleClickCopyButton(citationText);
-              trackEvent({ category: "Additional Action", action: "Copy Citation Button" });
+              trackEvent({ category: 'Additional Action', action: 'Copy Citation Button' });
             }}
             className={styles.copyButton}
           >
@@ -59,7 +59,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
         <span
           onClick={() => {
             handleClickCitationTab(AvailableCitationType.IEEE);
-            trackEvent({ category: "Additional Action", action: "Click Citation Tab", label: "IEEE" });
+            trackEvent({ category: 'Additional Action', action: 'Click Citation Tab', label: 'IEEE' });
           }}
           className={classNames({
             [`${styles.tabItem}`]: true,
@@ -71,7 +71,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
         <span
           onClick={() => {
             handleClickCitationTab(AvailableCitationType.HARVARD);
-            trackEvent({ category: "Additional Action", action: "Click Citation Tab", label: "HARVARD" });
+            trackEvent({ category: 'Additional Action', action: 'Click Citation Tab', label: 'HARVARD' });
           }}
           className={classNames({
             [`${styles.tabItem}`]: true,
@@ -83,7 +83,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
         <span
           onClick={() => {
             handleClickCitationTab(AvailableCitationType.VANCOUVER);
-            trackEvent({ category: "Additional Action", action: "Click Citation Tab", label: "VANCOUVER" });
+            trackEvent({ category: 'Additional Action', action: 'Click Citation Tab', label: 'VANCOUVER' });
           }}
           className={classNames({
             [`${styles.tabItem}`]: true,
@@ -95,7 +95,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
         <span
           onClick={() => {
             handleClickCitationTab(AvailableCitationType.CHICAGO);
-            trackEvent({ category: "Additional Action", action: "Click Citation Tab", label: "CHICAGO" });
+            trackEvent({ category: 'Additional Action', action: 'Click Citation Tab', label: 'CHICAGO' });
           }}
           className={classNames({
             [`${styles.tabItem}`]: true,
@@ -117,7 +117,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
           <span
             onClick={() => {
               handleClickCitationTab(AvailableCitationType.BIBTEX);
-              trackEvent({ category: "Additional Action", action: "Click Citation Tab", label: "BIBTEX" });
+              trackEvent({ category: 'Additional Action', action: 'Click Citation Tab', label: 'BIBTEX' });
             }}
             className={classNames({
               [`${styles.tabItem}`]: true,
@@ -129,7 +129,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
           <span
             onClick={() => {
               handleClickCitationTab(AvailableCitationType.RIS);
-              trackEvent({ category: "Additional Action", action: "Click Citation Tab", label: "RIS" });
+              trackEvent({ category: 'Additional Action', action: 'Click Citation Tab', label: 'RIS' });
             }}
             className={classNames({
               [`${styles.tabItem}`]: true,
@@ -141,7 +141,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
           <span
             onClick={() => {
               handleClickCitationTab(AvailableCitationType.MLA);
-              trackEvent({ category: "Additional Action", action: "Click Citation Tab", label: "MLA" });
+              trackEvent({ category: 'Additional Action', action: 'Click Citation Tab', label: 'MLA' });
             }}
             className={classNames({
               [`${styles.tabItem}`]: true,
@@ -153,7 +153,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
           <span
             onClick={() => {
               handleClickCitationTab(AvailableCitationType.APA);
-              trackEvent({ category: "Additional Action", action: "Click Citation Tab", label: "APA" });
+              trackEvent({ category: 'Additional Action', action: 'Click Citation Tab', label: 'APA' });
             }}
             className={classNames({
               [`${styles.tabItem}`]: true,
@@ -176,9 +176,9 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
         <div
           className={styles.textBoxWrapper}
           style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <ButtonSpinner />
@@ -188,7 +188,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
       return (
         <div
           style={{
-            borderTopLeftRadius: activeTab === AvailableCitationType.BIBTEX ? "0" : "3px",
+            borderTopLeftRadius: activeTab === AvailableCitationType.BIBTEX ? '0' : '3px',
           }}
           className={styles.textBoxWrapper}
         >

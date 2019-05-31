@@ -24,24 +24,24 @@ export interface UseDebouncedAsyncFetchParams<P, R> extends UseAsyncFetchParams<
 
 export function dataFetchReducer<T>(state: ReducerState<T>, action: ReducerAction<T>) {
   switch (action.type) {
-    case "FETCH_INIT":
+    case 'FETCH_INIT':
       return {
         ...state,
         isLoading: true,
-        errorMsg: "",
+        errorMsg: '',
       };
-    case "FETCH_SUCCESS":
+    case 'FETCH_SUCCESS':
       return {
         ...state,
         isLoading: false,
-        errorMsg: "",
+        errorMsg: '',
         data: action.payload && action.payload.data ? action.payload.data : state.data,
       };
-    case "FETCH_FAILURE":
+    case 'FETCH_FAILURE':
       return {
         ...state,
         isLoading: false,
-        errorMsg: action.payload && action.payload.errorMsg ? action.payload.errorMsg : "Something went wrong",
+        errorMsg: action.payload && action.payload.errorMsg ? action.payload.errorMsg : 'Something went wrong',
       };
     default:
       throw new Error();

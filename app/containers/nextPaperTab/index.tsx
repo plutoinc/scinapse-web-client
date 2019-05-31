@@ -1,16 +1,16 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
-import { connect, Dispatch } from "react-redux";
-import Icon from "../../icons";
-import { Paper } from "../../model/paper";
-import { AppState } from "../../reducers";
-import { withStyles } from "../../helpers/withStylesHelper";
-import ActionTicketManager from "../../helpers/actionTicketManager";
-import { makeGetMemoizedPapers } from "../../selectors/papersSelector";
-const store = require("store");
-const styles = require("./nextPaperTab.scss");
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import { connect, Dispatch } from 'react-redux';
+import Icon from '../../icons';
+import { Paper } from '../../model/paper';
+import { AppState } from '../../reducers';
+import { withStyles } from '../../helpers/withStylesHelper';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+import { makeGetMemoizedPapers } from '../../selectors/papersSelector';
+const store = require('store');
+const styles = require('./nextPaperTab.scss');
 
-const RESEARCH_HISTORY_KEY = "r_h_list";
+const RESEARCH_HISTORY_KEY = 'r_h_list';
 
 interface NextPaperTabProps {
   dispatch: Dispatch<any>;
@@ -36,10 +36,10 @@ const NextPaperTab: React.FunctionComponent<NextPaperTabProps> = React.memo(({ p
       className={styles.nextPaperTabWrapper}
       onClick={() => {
         ActionTicketManager.trackTicket({
-          pageType: "paperShow",
-          actionType: "fire",
-          actionArea: "nextPaper",
-          actionTag: "paperShow",
+          pageType: 'paperShow',
+          actionType: 'fire',
+          actionArea: 'nextPaper',
+          actionTag: 'paperShow',
           actionLabel: nextPaper.id.toString(),
         });
       }}

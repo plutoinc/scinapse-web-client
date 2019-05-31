@@ -8,7 +8,7 @@ export function camelCaseKeys(rawObject: any): any {
 
   if (Array.isArray(rawObject)) {
     return rawObject.map(elem => {
-      if (typeof elem === "object") {
+      if (typeof elem === 'object') {
         return camelCaseKeys(elem);
       }
       return elem;
@@ -20,14 +20,14 @@ export function camelCaseKeys(rawObject: any): any {
   for (let key of keys) {
     let newKey: string;
 
-    if (typeof calculatedObject[key] === "object") {
+    if (typeof calculatedObject[key] === 'object') {
       const cameledValue = camelCaseKeys(calculatedObject[key]);
       calculatedObject[key] = cameledValue;
     }
 
     const trimmedKey = key.trim();
     if (trimmedKey.length === 0) {
-      throw new Error("Wrong key value");
+      throw new Error('Wrong key value');
     }
 
     newKey = trimmedKey.replace(/[_.\- ]+(\w|$)/g, (_m, p1) => {

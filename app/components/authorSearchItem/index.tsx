@@ -1,11 +1,11 @@
-import * as React from "react";
-import { Link, withRouter, RouteComponentProps } from "react-router-dom";
-import MuiTooltip from "@material-ui/core/Tooltip";
-import { MatchEntityAuthor } from "../../api/search";
-import { withStyles } from "../../helpers/withStylesHelper";
-import Icon from "../../icons";
-import ActionTicketManager from "../../helpers/actionTicketManager";
-const styles = require("./authorSearchItem.scss");
+import * as React from 'react';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
+import MuiTooltip from '@material-ui/core/Tooltip';
+import { MatchEntityAuthor } from '../../api/search';
+import { withStyles } from '../../helpers/withStylesHelper';
+import Icon from '../../icons';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+const styles = require('./authorSearchItem.scss');
 
 interface AuthorSearchItemProps extends RouteComponentProps<any> {
   authorEntity: MatchEntityAuthor;
@@ -13,10 +13,10 @@ interface AuthorSearchItemProps extends RouteComponentProps<any> {
 
 export function trackActionToClickAuthorEntity(authorId: number) {
   ActionTicketManager.trackTicket({
-    pageType: "searchResult",
-    actionType: "fire",
-    actionArea: "authorEntity",
-    actionTag: "authorEntityItem",
+    pageType: 'searchResult',
+    actionType: 'fire',
+    actionArea: 'authorEntity',
+    actionTag: 'authorEntityItem',
     actionLabel: String(authorId),
   });
 }
@@ -54,7 +54,7 @@ const AuthorSearchItem: React.SFC<AuthorSearchItemProps> = props => {
       {profileImage}
       <span className={styles.nameAffiliationBox}>
         <div className={styles.name}>
-          {author.name}{" "}
+          {author.name}{' '}
           {author.isLayered ? (
             <MuiTooltip classes={{ tooltip: styles.verificationTooltip }} title="Verification Author" placement="right">
               <div className={styles.contactIconWrapper}>

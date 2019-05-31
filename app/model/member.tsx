@@ -1,5 +1,5 @@
-import { schema } from "normalizr";
-import { MemberOAuth } from "./oauth";
+import { schema } from 'normalizr';
+import { MemberOAuth } from './oauth';
 
 export interface Member {
   id: number;
@@ -14,4 +14,4 @@ export interface Member {
   authorId: number;
 }
 
-export const memberSchema = new schema.Entity("members");
+export const memberSchema = new schema.Entity('members');

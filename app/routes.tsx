@@ -1,20 +1,20 @@
-import * as React from "react";
-import loadable from "@loadable/component";
-import { Route, Switch, match, withRouter, RouteComponentProps } from "react-router-dom";
-import { Helmet } from "react-helmet";
-import { connect, Dispatch } from "react-redux";
-import { CancelToken } from "axios";
-import { PaperShowMatchParams } from "./containers/paperShow/types";
-import { AuthorShowMatchParams } from "./containers/authorShow/types";
-import { JournalShowMatchParams } from "./components/journalShow/types";
-import { CollectionShowMatchParams } from "./components/collectionShow/types";
-import ErrorPage from "./components/error/errorPage";
-import LocationListener from "./components/locationListener";
-import DeviceDetector from "./components/deviceDetector";
-import { AppState } from "./reducers";
-import { LayoutState } from "./components/layouts/records";
-import { withStyles } from "./helpers/withStylesHelper";
-import { CurrentUser } from "./model/currentUser";
+import * as React from 'react';
+import loadable from '@loadable/component';
+import { Route, Switch, match, withRouter, RouteComponentProps } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import { connect, Dispatch } from 'react-redux';
+import { CancelToken } from 'axios';
+import { PaperShowMatchParams } from './containers/paperShow/types';
+import { AuthorShowMatchParams } from './containers/authorShow/types';
+import { JournalShowMatchParams } from './components/journalShow/types';
+import { CollectionShowMatchParams } from './components/collectionShow/types';
+import ErrorPage from './components/error/errorPage';
+import LocationListener from './components/locationListener';
+import DeviceDetector from './components/deviceDetector';
+import { AppState } from './reducers';
+import { LayoutState } from './components/layouts/records';
+import { withStyles } from './helpers/withStylesHelper';
+import { CurrentUser } from './model/currentUser';
 import {
   HOME_PATH,
   SEARCH_RESULT_PATH,
@@ -28,8 +28,8 @@ import {
   ADMIN_PATH,
   TERMS_OF_SERVICE_PATH,
   PRIVACY_POLICY_PATH,
-} from "./constants/routes";
-const styles = require("./root.scss");
+} from './constants/routes';
+const styles = require('./root.scss');
 
 export interface LoadDataParams<P> {
   dispatch: Dispatch<any>;
@@ -51,105 +51,105 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: HOME_PATH,
     exact: true,
-    component: loadable(() => import("./components/home"), {
+    component: loadable(() => import('./components/home'), {
       fallback: <div>loading ...</div>,
     }),
   },
   {
     path: SEARCH_RESULT_PATH,
-    component: loadable(() => import("./components/articleSearch"), {
+    component: loadable(() => import('./components/articleSearch'), {
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<null>) => {
-      const { getSearchData } = await import("./components/articleSearch/sideEffect");
+      const { getSearchData } = await import('./components/articleSearch/sideEffect');
       await Promise.all([getSearchData(params)]);
     },
     exact: true,
   },
   {
     path: AUTHOR_SEARCH_RESULT_PATH,
-    component: loadable(() => import("./containers/authorSearch"), {
+    component: loadable(() => import('./containers/authorSearch'), {
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<null>) => {
-      const { getAuthorSearchData } = await import("./containers/authorSearch/sideEffect");
+      const { getAuthorSearchData } = await import('./containers/authorSearch/sideEffect');
       await Promise.all([getAuthorSearchData(params)]);
     },
     exact: true,
   },
   {
     path: PAPER_SHOW_PATH,
-    component: loadable(() => import("./containers/paperShow"), {
+    component: loadable(() => import('./containers/paperShow'), {
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<PaperShowMatchParams>) => {
-      const { fetchPaperShowData } = await import("./containers/paperShow/sideEffect");
+      const { fetchPaperShowData } = await import('./containers/paperShow/sideEffect');
       await fetchPaperShowData(params);
     },
   },
   {
     path: AUTHOR_SHOW_PATH,
-    component: loadable(() => import("./containers/authorShow"), {
+    component: loadable(() => import('./containers/authorShow'), {
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<AuthorShowMatchParams>) => {
-      const { fetchAuthorShowPageData } = await import("./containers/authorShow/sideEffect");
+      const { fetchAuthorShowPageData } = await import('./containers/authorShow/sideEffect');
       await Promise.all([fetchAuthorShowPageData(params)]);
     },
   },
   {
     path: COLLECTION_SHOW_PATH,
-    component: loadable(() => import("./components/collectionShow"), {
+    component: loadable(() => import('./components/collectionShow'), {
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<CollectionShowMatchParams>) => {
-      const { fetchCollectionShowData } = await import("./components/collectionShow/sideEffect");
+      const { fetchCollectionShowData } = await import('./components/collectionShow/sideEffect');
       await Promise.all([fetchCollectionShowData(params)]);
     },
   },
   {
     path: JOURNAL_SHOW_PATH,
-    component: loadable(() => import("./components/journalShow"), {
+    component: loadable(() => import('./components/journalShow'), {
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<JournalShowMatchParams>) => {
-      const { fetchJournalShowPageData } = await import("./components/journalShow/sideEffect");
+      const { fetchJournalShowPageData } = await import('./components/journalShow/sideEffect');
       await Promise.all([fetchJournalShowPageData(params)]);
     },
   },
   {
     path: COLLECTION_LIST_PATH,
-    component: loadable(() => import("./components/collections"), {
+    component: loadable(() => import('./components/collections'), {
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<{ userId: string }>) => {
-      const { getCollections } = await import("./components/collections/sideEffect");
+      const { getCollections } = await import('./components/collections/sideEffect');
       await Promise.all([getCollections(params)]);
     },
     exact: true,
   },
   {
     path: AUTH_PATH,
-    component: loadable(() => import("./components/auth"), {
+    component: loadable(() => import('./components/auth'), {
       fallback: <div>loading ...</div>,
     }),
   },
   {
     path: ADMIN_PATH,
-    component: loadable(() => import("./containers/admin"), {
+    component: loadable(() => import('./containers/admin'), {
       fallback: <div>loading ...</div>,
     }),
   },
   {
     path: TERMS_OF_SERVICE_PATH,
-    component: loadable(() => import("./components/termsOfService/termsOfService"), {
+    component: loadable(() => import('./components/termsOfService/termsOfService'), {
       fallback: <div>loading ...</div>,
     }),
     exact: true,
   },
   {
     path: PRIVACY_POLICY_PATH,
-    component: loadable(() => import("./components/privacyPolicy/privacyPolicy"), {
+    component: loadable(() => import('./components/privacyPolicy/privacyPolicy'), {
       fallback: <div>loading ...</div>,
     }),
     exact: true,
@@ -170,9 +170,9 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-const DialogComponent = loadable(() => import("./components/dialog"));
-const FeedbackButton = loadable(() => import("./containers/feedbackButton"));
-const Header = loadable(() => import("./components/layouts/header"));
+const DialogComponent = loadable(() => import('./components/dialog'));
+const FeedbackButton = loadable(() => import('./containers/feedbackButton'));
+const Header = loadable(() => import('./components/layouts/header'));
 
 @withStyles<typeof RootRoutes>(styles)
 class RootRoutes extends React.PureComponent<RootRoutesProps> {
@@ -185,7 +185,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
         <Header />
         <div>
           <Switch location={location}>
-            {routesMap.map(route => <Route {...route} key={route.path || "errorPage"} />)}
+            {routesMap.map(route => <Route {...route} key={route.path || 'errorPage'} />)}
           </Switch>
         </div>
         <DeviceDetector />
@@ -214,12 +214,12 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
         <meta
           name="description"
           content="scinapse is the fastest search engine for scientific papers. scinapse covers over 170m+ papers and 48k+ journals. Just try scinapse, you can quickly find the scientific paper exactly you want."
-        />{" "}
+        />{' '}
         // tslint:disable-next-line:max-line-length
         <meta
           name="twitter:description"
           content="scinapse is the fastest search engine for scientific papers. scinapse covers over 170m+ papers and 48k+ journals. Just try scinapse, you can quickly find the scientific paper exactly you want."
-        />{" "}
+        />{' '}
         // tslint:disable-next-line:max-line-length
         <meta itemProp="image" content="http://assets.pluto.network/og-image.png" />
         <meta name="twitter:card" content="Pluto Network" />
@@ -234,7 +234,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
         <meta
           property="og:description"
           content="scinapse is the fastest search engine for scientific papers. scinapse covers over 170m+ papers and 48k+ journals. Just try scinapse, you can quickly find the scientific paper exactly you want."
-        />{" "}
+        />{' '}
         // tslint:disable-next-line:max-line-length
         <meta property="og:site_name" content="Scinapse" />
         <meta name="google-site-verification" content="YHiVYg7vff8VWXZge2D1aOZsT8rCUxnkjwbQqFT2QEI" />

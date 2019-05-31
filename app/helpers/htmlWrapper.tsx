@@ -1,4 +1,4 @@
-import { HelmetData } from "react-helmet";
+import { HelmetData } from 'react-helmet';
 // const sprite = require("svg-sprite-loader/runtime/sprite.build");
 
 interface GenerateFullHTMLParams {

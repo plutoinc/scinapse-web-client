@@ -1,19 +1,19 @@
-import * as React from "react";
-import * as classNames from "classnames";
-import { connect } from "react-redux";
-import { denormalize } from "normalizr";
-import { Link } from "react-router-dom";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { Collection, collectionSchema } from "../../model/collection";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { AppState } from "../../reducers";
-import { MyCollectionsState } from "../../containers/paperShowCollectionControlButton/reducer";
-import GlobalDialogManager from "../../helpers/globalDialogManager";
-import { CurrentUser } from "../../model/currentUser";
-import ActionTicketManager from "../../helpers/actionTicketManager";
-import Icon from "../../icons";
-import { Member } from "../../model/member";
-const styles = require("./collectionSideNaviBar.scss");
+import * as React from 'react';
+import * as classNames from 'classnames';
+import { connect } from 'react-redux';
+import { denormalize } from 'normalizr';
+import { Link } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { Collection, collectionSchema } from '../../model/collection';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { AppState } from '../../reducers';
+import { MyCollectionsState } from '../../containers/paperShowCollectionControlButton/reducer';
+import GlobalDialogManager from '../../helpers/globalDialogManager';
+import { CurrentUser } from '../../model/currentUser';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+import Icon from '../../icons';
+import { Member } from '../../model/member';
+const styles = require('./collectionSideNaviBar.scss');
 
 interface CollectionSideNaviBarProps {
   collections: MyCollectionsState;
@@ -50,10 +50,10 @@ const CollectionsList: React.FunctionComponent<CollectionListProps> = React.memo
           to={`/collections/${collection.id}`}
           onClick={() => {
             ActionTicketManager.trackTicket({
-              pageType: "collectionShow",
-              actionType: "fire",
-              actionArea: "sideNavigator",
-              actionTag: "collectionShow",
+              pageType: 'collectionShow',
+              actionType: 'fire',
+              actionArea: 'sideNavigator',
+              actionTag: 'collectionShow',
               actionLabel: String(collection.id),
             });
           }}

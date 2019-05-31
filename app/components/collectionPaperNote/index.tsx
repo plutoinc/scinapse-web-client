@@ -1,11 +1,11 @@
-import * as React from "react";
-import { connect, Dispatch } from "react-redux";
-import { updatePaperNote } from "../../actions/collection";
-import PaperNoteForm from "../paperShow/noteForm";
-import { withStyles } from "../../helpers/withStylesHelper";
-import NoteContent from "./noteContent";
-import ActionTicketManager from "../../helpers/actionTicketManager";
-const styles = require("./collectionPaperNote.scss");
+import * as React from 'react';
+import { connect, Dispatch } from 'react-redux';
+import { updatePaperNote } from '../../actions/collection';
+import PaperNoteForm from '../paperShow/noteForm';
+import { withStyles } from '../../helpers/withStylesHelper';
+import NoteContent from './noteContent';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+const styles = require('./collectionPaperNote.scss');
 
 interface CollectionPaperNoteProps {
   dispatch: Dispatch<any>;
@@ -52,11 +52,11 @@ class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, 
             textareaStyle={{
               border: 0,
               padding: 0,
-              borderRadius: "8px",
-              fontSize: "14px",
-              width: "100%",
-              height: "21px",
-              maxHeight: "500px",
+              borderRadius: '8px',
+              fontSize: '14px',
+              width: '100%',
+              height: '21px',
+              maxHeight: '500px',
             }}
             textAreaClassName={styles.memoTextarea}
           />
@@ -84,7 +84,7 @@ class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, 
   private handleDeleteNote = () => {
     const { dispatch, paperId, collectionId } = this.props;
 
-    if (confirm("Are you SURE to remove this memo?")) {
+    if (confirm('Are you SURE to remove this memo?')) {
       dispatch(
         updatePaperNote({
           paperId,
@@ -93,10 +93,10 @@ class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, 
         })
       );
       ActionTicketManager.trackTicket({
-        pageType: "collectionShow",
-        actionType: "fire",
-        actionArea: "paperList",
-        actionTag: "removeNote",
+        pageType: 'collectionShow',
+        actionType: 'fire',
+        actionArea: 'paperList',
+        actionTag: 'removeNote',
         actionLabel: String(paperId),
       });
     }
@@ -115,10 +115,10 @@ class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, 
         })
       );
       ActionTicketManager.trackTicket({
-        pageType: "collectionShow",
-        actionType: "fire",
-        actionArea: "paperList",
-        actionTag: "addNote",
+        pageType: 'collectionShow',
+        actionType: 'fire',
+        actionArea: 'paperList',
+        actionTag: 'addNote',
         actionLabel: String(paperId),
       });
 

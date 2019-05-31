@@ -1,8 +1,8 @@
-import * as React from "react";
-import PaperShowKeyword from "./keyword";
-import { Fos } from "../../../model/fos";
-import { withStyles } from "../../../helpers/withStylesHelper";
-const styles = require("./fosList.scss");
+import * as React from 'react';
+import PaperShowKeyword from './keyword';
+import { Fos } from '../../../model/fos';
+import { withStyles } from '../../../helpers/withStylesHelper';
+const styles = require('./fosList.scss');
 
 interface PaperShowFOSListProps {
   FOSList?: Fos[];

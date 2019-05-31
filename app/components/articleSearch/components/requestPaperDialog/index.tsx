@@ -1,23 +1,23 @@
-import * as React from "react";
-import * as Cookies from "js-cookie";
-import * as classNames from "classnames";
-import { connect, Dispatch } from "react-redux";
-import { Formik, FormikErrors, Form, Field } from "formik";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import FeedbackManager from "@pluto_network/scinapse-feedback";
-import Dialog from "@material-ui/core/Dialog";
-import { CurrentUser } from "../../../../model/currentUser";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import { AppState } from "../../../../reducers";
-import validateEmail from "../../../../helpers/validateEmail";
-import ScinapseFormikInput from "../../../common/scinapseInput/scinapseFormikInput";
-import ReduxAutoSizeTextarea from "../../../common/autoSizeTextarea/reduxAutoSizeTextarea";
-import { ACTION_TYPES } from "../../../../actions/actionTypes";
-import ActionTicketManager from "../../../../helpers/actionTicketManager";
-import Icon from "../../../../icons";
-import { LAST_SUCCEEDED_EMAIL_KEY } from "../../../../constants/requestDialogConstant";
+import * as React from 'react';
+import * as Cookies from 'js-cookie';
+import * as classNames from 'classnames';
+import { connect, Dispatch } from 'react-redux';
+import { Formik, FormikErrors, Form, Field } from 'formik';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import FeedbackManager from '@pluto_network/scinapse-feedback';
+import Dialog from '@material-ui/core/Dialog';
+import { CurrentUser } from '../../../../model/currentUser';
+import { withStyles } from '../../../../helpers/withStylesHelper';
+import { AppState } from '../../../../reducers';
+import validateEmail from '../../../../helpers/validateEmail';
+import ScinapseFormikInput from '../../../common/scinapseInput/scinapseFormikInput';
+import ReduxAutoSizeTextarea from '../../../common/autoSizeTextarea/reduxAutoSizeTextarea';
+import { ACTION_TYPES } from '../../../../actions/actionTypes';
+import ActionTicketManager from '../../../../helpers/actionTicketManager';
+import Icon from '../../../../icons';
+import { LAST_SUCCEEDED_EMAIL_KEY } from '../../../../constants/requestDialogConstant';
 declare var ga: any;
-const styles = require("./requestPaperDialog.scss");
+const styles = require('./requestPaperDialog.scss');
 
 interface RequestPaperDialogProps extends RouteComponentProps<any> {
   isOpen: boolean;
@@ -35,14 +35,14 @@ interface FormState {
 function validateForm(values: FormState) {
   const errors: FormikErrors<FormState> = {};
   if (!validateEmail(values.email)) {
-    errors.email = "Please enter valid e-mail address.";
+    errors.email = 'Please enter valid e-mail address.';
   }
   return errors;
 }
 
 const RequestPaperDialog: React.FunctionComponent<RequestPaperDialogProps> = props => {
   const { currentUser, location, isOpen, onClose, dispatch, query } = props;
-  const [email, setEmail] = React.useState("");
+  const [email, setEmail] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
 
   async function handleSubmitForm(values: FormState) {
@@ -50,10 +50,10 @@ const RequestPaperDialog: React.FunctionComponent<RequestPaperDialogProps> = pro
 
     const feedbackManger = new FeedbackManager();
 
-    let gaId = "";
-    if (typeof ga !== "undefined") {
+    let gaId = '';
+    if (typeof ga !== 'undefined') {
       ga((tracker: any) => {
-        gaId = tracker.get("clientId");
+        gaId = tracker.get('clientId');
       });
     }
 
@@ -64,23 +64,23 @@ const RequestPaperDialog: React.FunctionComponent<RequestPaperDialogProps> = pro
         content: values.content,
         email: values.email,
         referer: href,
-        userId: currentUser.isLoggedIn ? currentUser.id.toString() : "",
+        userId: currentUser.isLoggedIn ? currentUser.id.toString() : '',
         gaId,
       });
 
       ActionTicketManager.trackTicket({
-        pageType: "searchResult",
-        actionType: "fire",
-        actionArea: "noPaperNotiPage",
-        actionTag: "sendRequestPaper",
+        pageType: 'searchResult',
+        actionType: 'fire',
+        actionArea: 'noPaperNotiPage',
+        actionTag: 'sendRequestPaper',
         actionLabel: query,
       });
 
       dispatch({
         type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
         payload: {
-          type: "success",
-          message: "Sent request successfully.",
+          type: 'success',
+          message: 'Sent request successfully.',
         },
       });
 
@@ -97,7 +97,7 @@ const RequestPaperDialog: React.FunctionComponent<RequestPaperDialogProps> = pro
       if (currentUser.isLoggedIn) {
         setEmail(currentUser.email);
       } else {
-        setEmail(Cookies.get(LAST_SUCCEEDED_EMAIL_KEY) || "");
+        setEmail(Cookies.get(LAST_SUCCEEDED_EMAIL_KEY) || '');
       }
     },
     [currentUser.isLoggedIn]
@@ -111,7 +111,7 @@ const RequestPaperDialog: React.FunctionComponent<RequestPaperDialogProps> = pro
       </div>
 
       <Formik
-        initialValues={{ email, content: "" }}
+        initialValues={{ email, content: '' }}
         validate={validateForm}
         onSubmit={handleSubmitForm}
         enableReinitialize
@@ -137,7 +137,7 @@ const RequestPaperDialog: React.FunctionComponent<RequestPaperDialogProps> = pro
               name="content"
               component={ReduxAutoSizeTextarea}
               textareaClassName={styles.textAreaWrapper}
-              textareaStyle={{ padding: "8px" }}
+              textareaStyle={{ padding: '8px' }}
               rows={3}
               placeholder="Add the URL(web address), DOI, or the citation sentence of the paper to be included."
             />

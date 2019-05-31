@@ -1,10 +1,10 @@
-import { Dispatch } from "react-redux";
-import { ACTION_TYPES } from "../../../actions/actionTypes";
-import AuthAPI from "../../../api/auth";
-import { VerifyEmailResult } from "../../../api/types/auth";
-import alertToast from "../../../helpers/makePlutoToastAction";
-import { closeDialog } from "../../dialog/actions";
-import { trackDialogView } from "../../../helpers/handleGA";
+import { Dispatch } from 'react-redux';
+import { ACTION_TYPES } from '../../../actions/actionTypes';
+import AuthAPI from '../../../api/auth';
+import { VerifyEmailResult } from '../../../api/types/auth';
+import alertToast from '../../../helpers/makePlutoToastAction';
+import { closeDialog } from '../../dialog/actions';
+import { trackDialogView } from '../../../helpers/handleGA';
 
 export function verifyToken(token: string) {
   return async (dispatch: Dispatch<Function>) => {
@@ -16,12 +16,12 @@ export function verifyToken(token: string) {
       const verifyEmailResult: VerifyEmailResult = await AuthAPI.verifyToken(token);
 
       if (!verifyEmailResult.success) {
-        throw new Error("Server result is failed");
+        throw new Error('Server result is failed');
       }
 
       alertToast({
-        type: "success",
-        message: "Succeeded to email verification!!",
+        type: 'success',
+        message: 'Succeeded to email verification!!',
       });
 
       dispatch({
@@ -29,7 +29,7 @@ export function verifyToken(token: string) {
       });
     } catch (err) {
       alertToast({
-        type: "error",
+        type: 'error',
         message: `Failed to verification. ${err}`,
       });
       dispatch({
@@ -49,12 +49,12 @@ export function resendVerificationEmail(email: string, isDialog: boolean) {
       const resendVerificationEmailResult: VerifyEmailResult = await AuthAPI.resendVerificationEmail(email);
 
       if (!resendVerificationEmailResult.success) {
-        throw new Error("Server result is failed");
+        throw new Error('Server result is failed');
       }
 
       alertToast({
-        type: "success",
-        message: "Succeeded to resend verification email!!",
+        type: 'success',
+        message: 'Succeeded to resend verification email!!',
       });
 
       dispatch({
@@ -63,11 +63,11 @@ export function resendVerificationEmail(email: string, isDialog: boolean) {
 
       if (isDialog) {
         dispatch(closeDialog());
-        trackDialogView("resendVerificationEmailClose");
+        trackDialogView('resendVerificationEmailClose');
       }
     } catch (err) {
       alertToast({
-        type: "error",
+        type: 'error',
         message: `Failed to resend email verification. ${err}`,
       });
       dispatch({

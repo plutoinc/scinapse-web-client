@@ -1,5 +1,5 @@
-import { schema } from "normalizr";
-import { NewFOS } from "./fos";
+import { schema } from 'normalizr';
+import { NewFOS } from './fos';
 
 export interface Journal {
   citationCount: number;
@@ -12,4 +12,4 @@ export interface Journal {
   webPage: string | null;
 }
 
-export const journalSchema = new schema.Entity("journals");
+export const journalSchema = new schema.Entity('journals');

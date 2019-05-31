@@ -1,7 +1,7 @@
-import { LoadDataParams } from "../../routes";
-import { CollectionShowMatchParams } from "./types";
-import { getCollection, getPapers } from "./actions";
-import { ActionCreators } from "../../actions/actionTypes";
+import { LoadDataParams } from '../../routes';
+import { CollectionShowMatchParams } from './types';
+import { getCollection, getPapers } from './actions';
+import { ActionCreators } from '../../actions/actionTypes';
 
 export async function fetchCollectionShowData(params: LoadDataParams<CollectionShowMatchParams>) {
   const { dispatch, match } = params;
@@ -21,7 +21,7 @@ export async function fetchCollectionShowData(params: LoadDataParams<CollectionS
         getPapers({
           collectionId,
           cancelToken: params.cancelToken,
-          sort: "RECENTLY_ADDED",
+          sort: 'RECENTLY_ADDED',
           page: 1,
         })
       )

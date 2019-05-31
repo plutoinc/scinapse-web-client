@@ -1,5 +1,5 @@
-import { schema } from "normalizr";
-import { ConferenceSeries } from "./conferenceSeries";
+import { schema } from 'normalizr';
+import { ConferenceSeries } from './conferenceSeries';
 
 export interface ConferenceInstance {
   id: number;
@@ -17,4 +17,4 @@ export interface ConferenceInstance {
   citationCount: number;
 }
 
-export const conferenceInstanceSchema = new schema.Entity("conferenceInstances");
+export const conferenceInstanceSchema = new schema.Entity('conferenceInstances');

@@ -1,17 +1,17 @@
-import * as React from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import InfiniteScroll from "react-intersection-observing-infinity-scroll";
-import { withStyles } from "../../helpers/withStylesHelper";
-import PaperAPI from "../../api/paper";
-import PlutoAxios from "../../api/pluto";
-import alertToast from "../../helpers/makePlutoToastAction";
-import AuthorListItem from "../common/authorListItem";
-import { Paper } from "../../model/paper";
-import Icon from "../../icons";
-import { PaperAuthor } from "../../model/author";
-import ArticleSpinner from "../common/spinner/articleSpinner";
-const styles = require("./authorListDialog.scss");
+import * as React from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import InfiniteScroll from 'react-intersection-observing-infinity-scroll';
+import { withStyles } from '../../helpers/withStylesHelper';
+import PaperAPI from '../../api/paper';
+import PlutoAxios from '../../api/pluto';
+import alertToast from '../../helpers/makePlutoToastAction';
+import AuthorListItem from '../common/authorListItem';
+import { Paper } from '../../model/paper';
+import Icon from '../../icons';
+import { PaperAuthor } from '../../model/author';
+import ArticleSpinner from '../common/spinner/articleSpinner';
+const styles = require('./authorListDialog.scss');
 
 interface AuthorListDialogProps {
   paper: Paper;
@@ -87,7 +87,7 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
     return (
       <ArticleSpinner
         style={{
-          margin: "20px",
+          margin: '20px',
         }}
       />
     );
@@ -160,7 +160,7 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
           this.setState(prevState => ({ ...prevState, isLoading: false }));
           if (error) {
             alertToast({
-              type: "error",
+              type: 'error',
               message: error.message,
             });
           }

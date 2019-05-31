@@ -1,11 +1,11 @@
-import * as React from "react";
-import { ArticleSearchState } from "../../records";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import Icon from "../../../../icons";
-import RequestPaperDialog from "../requestPaperDialog";
-import ArticleSpinner from "../../../common/spinner/articleSpinner";
-import NoResultContent from "./noResultContent";
-const styles = require("./noResult.scss");
+import * as React from 'react';
+import { ArticleSearchState } from '../../records';
+import { withStyles } from '../../../../helpers/withStylesHelper';
+import Icon from '../../../../icons';
+import RequestPaperDialog from '../requestPaperDialog';
+import ArticleSpinner from '../../../common/spinner/articleSpinner';
+import NoResultContent from './noResultContent';
+const styles = require('./noResult.scss');
 
 interface NoResultProps {
   searchText: string;

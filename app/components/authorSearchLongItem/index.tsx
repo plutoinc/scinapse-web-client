@@ -1,11 +1,11 @@
-import * as React from "react";
-import { Link, withRouter, RouteComponentProps } from "react-router-dom";
-import MuiTooltip from "@material-ui/core/Tooltip";
-import { withStyles } from "../../helpers/withStylesHelper";
-import Icon from "../../icons";
-import { Author } from "../../model/author/author";
-import { trackActionToClickAuthorEntity } from "../authorSearchItem";
-const styles = require("./authorSearchLongItem.scss");
+import * as React from 'react';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
+import MuiTooltip from '@material-ui/core/Tooltip';
+import { withStyles } from '../../helpers/withStylesHelper';
+import Icon from '../../icons';
+import { Author } from '../../model/author/author';
+import { trackActionToClickAuthorEntity } from '../authorSearchItem';
+const styles = require('./authorSearchLongItem.scss');
 
 interface AuthorSearchLongItemProps extends RouteComponentProps<any> {
   authorEntity: Author;
@@ -44,7 +44,7 @@ const AuthorSearchLongItem: React.SFC<AuthorSearchLongItemProps> = props => {
       {profileImage}
       <span className={styles.nameAffiliationBox}>
         <div className={styles.name}>
-          {author.name}{" "}
+          {author.name}{' '}
           {author.isLayered ? (
             <MuiTooltip classes={{ tooltip: styles.verificationTooltip }} title="Verification Author" placement="right">
               <div className={styles.contactIconWrapper}>
@@ -59,15 +59,15 @@ const AuthorSearchLongItem: React.SFC<AuthorSearchLongItemProps> = props => {
       <div className={styles.metaBox}>
         <span className={styles.metaItem}>
           <div className={styles.metaTitle}>PUBLICATIONS</div>
-          <div className={styles.metaContent}>{author.paperCount || "-"}</div>
+          <div className={styles.metaContent}>{author.paperCount || '-'}</div>
         </span>
         <span className={styles.metaItem}>
           <div className={styles.metaTitle}>CITATIONS</div>
-          <div className={styles.metaContent}>{author.citationCount || "-"}</div>
+          <div className={styles.metaContent}>{author.citationCount || '-'}</div>
         </span>
         <span className={styles.metaItem}>
           <div className={styles.metaTitle}>H-INDEX</div>
-          <div className={styles.metaContent}>{author.hindex || "-"}</div>
+          <div className={styles.metaContent}>{author.hindex || '-'}</div>
         </span>
       </div>
     </Link>
