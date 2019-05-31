@@ -7,15 +7,11 @@ export function getPaperEntities(state: AppState) {
   return state.entities.papers;
 }
 
-export const getMemoizedReferencePaperIds = (state: AppState) => {
-  return state.paperShow.referencePaperIds;
-};
+// function getRelatedPaperIds(state: AppState) {
+//   return state.relatedPapersState.paperIds;
+// }
 
-export const getMemoizedCitedPaperIds = (state: AppState) => {
-  return state.paperShow.citedPaperIds;
-};
-
-export const makeGetMemoizedPapers = (getPaperIds: (state: AppState) => number[]) => {
+export const makeGetMemoizedPapers = (getPaperIds: () => number[]) => {
   return createSelector([getPaperIds, getPaperEntities], (paperIds, paperEntities) => {
     return denormalize(paperIds, [paperSchema], { papers: paperEntities });
   });

@@ -53,8 +53,3 @@ export const fullTextBlurredTest: Test = {
   name: "fullTextBlurred",
   userGroup: [{ groupName: "control", weight: 1 }, { groupName: "contexthighlight", weight: 2 }],
 };
-
-export const refCitedChildPaperList: Test = {
-  name: "refCitedPaperItem",
-  userGroup: [{ groupName: "control", weight: 1 }, { groupName: "refCitedPaperItem", weight: 1 }],
-};

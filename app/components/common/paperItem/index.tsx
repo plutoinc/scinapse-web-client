@@ -12,6 +12,7 @@ const styles = require("./paperItem.scss");
 export interface PaperItemProps {
   paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
+  shouldBlockUnverifiedUser?: boolean;
   actionArea: Scinapse.ActionTicket.ActionArea;
   currentPage?: number;
   hasCollection?: boolean;
@@ -48,6 +49,8 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
       actionArea,
       hasCollection,
       onRemovePaperCollection,
+      shouldBlockUnverifiedUser,
+      currentPage,
     } = this.props;
     const { authors, publishedDate, doi, urls, journal, conferenceInstance, relation } = paper;
 
@@ -58,6 +61,7 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
         actionArea={actionArea}
         abstract={paper.abstractHighlighted || paper.abstract}
         searchQueryText={searchQueryText}
+        currentPage={currentPage}
       />
     ) : null;
     const buttons =
@@ -93,13 +97,12 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
             <SavedCollections collections={relation.savedInCollections} />
           ) : null}
           <Title
-            paperId={paper.id}
-            paperTitle={paper.title}
-            highlightTitle={paper.titleHighlighted}
-            highlightAbstract={paper.abstractHighlighted}
             pageType={pageType}
             actionArea={actionArea}
+            paper={paper}
             source={source}
+            shouldBlockUnverifiedUser={!!shouldBlockUnverifiedUser}
+            currentPage={currentPage}
           />
           <VenueAndAuthors
             pageType={pageType}

@@ -7,7 +7,6 @@ import {
   signBubbleTest,
   lockedButtonsTest,
   fullTextBlurredTest,
-  refCitedChildPaperList,
 } from "./abTestObject";
 
 export interface UserGroup {
@@ -31,8 +30,7 @@ export type ABTestType =
   | "relatedPapersAtPaperShow"
   | "signBubble"
   | "lockedButtons"
-  | "fullTextBlurred"
-  | "refCitedPaperItem";
+  | "fullTextBlurred";
 
 export const BENEFIT_EXPERIMENT_KEY = "b_exp";
 
@@ -61,7 +59,6 @@ export const LIVE_TESTS: Test[] = [
   signBubbleTest,
   lockedButtonsTest,
   fullTextBlurredTest,
-  refCitedChildPaperList,
 ];
 
 function getRandomPool(): { [key: string]: string[] } {
