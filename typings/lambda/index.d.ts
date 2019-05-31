@@ -1,7 +1,5 @@
-import * as Base from './lambdaBase';
-
-declare namespace Lambda {
-  export interface Event {
+declare namespace LambdaProxy {
+  interface Event {
     resource?: string;
     path: string;
     httpMethod: string;
@@ -36,30 +34,31 @@ declare namespace Lambda {
     body?: string;
   }
 
-  export interface EventHeaders {
+  interface EventHeaders {
     [key: string]: string;
   }
 
-  export interface EventQueryStringParameters {
+  interface EventQueryStringParameters {
     [key: string]: string;
   }
 
-  export interface EventPathParameters {
+  interface EventPathParameters {
     [key: string]: string;
   }
 
-  export interface EventStageVariables {
+  interface EventStageVariables {
     [key: string]: string;
   }
 
   // Response
-  export interface Response {
+  interface Response {
     statusCode: number;
     headers: { [key: string]: string };
     body: string;
+    isBase64Encoded?: boolean;
   }
 
-  export interface Context {
+  interface Context {
     // Properties
     functionName: string;
     functionVersion: string;
@@ -76,18 +75,18 @@ declare namespace Lambda {
     getRemainingTimeInMillis(): number;
   }
 
-  export interface CognitoIdentity {
+  interface CognitoIdentity {
     cognito_identity_id: string;
     cognito_identity_pool_id: string;
   }
 
-  export interface ClientContext {
+  interface ClientContext {
     client: ClientContextClient;
     Custom?: any;
     env: ClientContextEnv;
   }
 
-  export interface ClientContextClient {
+  interface ClientContextClient {
     installation_id: string;
     app_title: string;
     app_version_name: string;
@@ -95,7 +94,7 @@ declare namespace Lambda {
     app_package_name: string;
   }
 
-  export interface ClientContextEnv {
+  interface ClientContextEnv {
     platform_version: string;
     platform: string;
     make: string;
