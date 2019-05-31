@@ -20,6 +20,10 @@
   line-height: 1.25;
   color: $navy0;
   margin-bottom: 4px;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .journalIcon {
@@ -90,5 +94,28 @@
     margin-left: -13px;
     margin-top: 20px;
     z-index: 2;
+  }
+}
+
+.abstract {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: $gray9;
+  word-break: break-word;
+  overflow-wrap: break-word;
+
+  .searchQuery {
+    font-weight: 900;
+    color: $black1;
+  }
+}
+
+// Mobile
+@media (max-width: $mobile-width) {
+  .abstract {
+    margin-top: 10px;
+    font-size: 13px;
   }
 }

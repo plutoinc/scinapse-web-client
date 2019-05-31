@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as classNames from "classnames";
 import { escapeRegExp } from "lodash";
 import HighLightedContent from "../highLightedContent";
 import { withStyles } from "../../../helpers/withStylesHelper";
@@ -12,6 +13,7 @@ export interface AbstractProps {
   abstract: string;
   searchQueryText?: string;
   pageType: Scinapse.ActionTicket.PageType;
+  className?: string;
   maxLength?: number;
   actionArea?: Scinapse.ActionTicket.ActionArea;
 }
@@ -30,7 +32,7 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
   }
 
   public render() {
-    const { abstract, searchQueryText, maxLength } = this.props;
+    const { abstract, searchQueryText, maxLength, className } = this.props;
     const abstractMaxLength = maxLength || MAX_LENGTH_OF_ABSTRACT;
 
     if (!abstract) {
@@ -59,7 +61,10 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
         originContent={abstract}
         content={finalAbstract}
         highLightContent={searchQuery}
-        className={styles.abstract}
+        className={classNames({
+          [styles.abstract]: !className,
+          [className!]: !!className,
+        })}
         maxCharLimit={abstractMaxLength}
       />
     );

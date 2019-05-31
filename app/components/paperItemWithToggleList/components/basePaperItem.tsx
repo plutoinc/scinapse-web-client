@@ -114,6 +114,7 @@ const BasePaperItem: React.FC<PaperItemWithToggleListProps & TrackingProps> = Re
         abstract={paper.abstractHighlighted || paper.abstract}
         searchQueryText={searchQueryText}
         maxLength={200}
+        className={s.abstract}
       />
     </>
   );
