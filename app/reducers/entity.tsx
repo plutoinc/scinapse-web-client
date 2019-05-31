@@ -1,3 +1,4 @@
+import { merge } from "lodash";
 import { Author } from "../model/author/author";
 import { Actions, ACTION_TYPES } from "../actions/actionTypes";
 import { Paper } from "../model/paper";
@@ -5,7 +6,6 @@ import { Comment } from "../model/comment";
 import { Collection } from "../model/collection";
 import { Member } from "../model/member";
 import { Journal } from "../model/journal";
-import { merge } from "lodash";
 import { PaperInCollection } from "../model/paperInCollection";
 import { Profile } from "../model/profile";
 
@@ -66,30 +66,15 @@ export const INITIAL_ENTITY_STATE = {
 
 export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actions) {
   switch (action.type) {
-    case ACTION_TYPES.GLOBAL_ADD_ENTITY:
+    case ACTION_TYPES.GLOBAL_ADD_ENTITY: {
       const { entities } = action.payload;
 
       if (!entities) {
         return state;
       }
 
-      let newCollections: { [collectionId: number]: Collection } = {};
-      if (entities.collections) {
-        const receivedCollections = entities.collections;
-        newCollections = merge(state.collections, receivedCollections);
-      }
-
-      return {
-        ...state,
-        authors: { ...state.authors, ...entities.authors },
-        papers: { ...state.papers, ...entities.papers },
-        papersInCollection: { ...state.papersInCollection, ...entities.papersInCollection },
-        comments: { ...state.comments, ...entities.comments },
-        collections: { ...state.collections, ...newCollections },
-        members: { ...state.members, ...entities.members },
-        journals: { ...state.journals, ...entities.journals },
-        profiles: { ...state.profiles, ...entities.profiles },
-      };
+      return merge(state, entities);
+    }
 
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_POST_PAPER_TO_COLLECTION:
     case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION:
