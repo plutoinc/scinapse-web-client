@@ -10,12 +10,10 @@ import getOpenSearchXML from './routes/openSearchXML';
 import setABTest from './helpers/setABTest';
 import manifestJSON from './routes/manifest';
 const compression = require('compression');
-const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
 const SITEMAP_REGEX = /^\/sitemap(\/sitemap_[0-9]+\.xml)?\/?$/;
 
 const app = express();
 app.disable('x-powered-by');
-app.use(awsServerlessExpressMiddleware.eventContext({ fromALB: true }));
 app.use(cookieParser());
 app.use(compression({ filter: shouldCompress }));
 app.use(morgan('combined'));
@@ -43,6 +41,7 @@ app.get('/robots.txt', (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
   const body = getRobotTxt(req.headers.host === 'scinapse.io');
   res.send(body);
+  return;
 });
 
 app.get('/opensearch.xml', (_req, res) => {
@@ -55,7 +54,7 @@ app.get('/sw.js', (_req, res) => {
   res.sendFile(path.resolve(__dirname, 'sw.js'));
 });
 
-app.get('*', async (req, res) => {
+app.use(async (req, res) => {
   let version = '';
   if (process.env.NODE_ENV === 'production') {
     version = fs.readFileSync(path.resolve(__dirname, './version')).toString('utf8');

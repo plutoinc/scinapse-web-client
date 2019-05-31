@@ -1,3 +1,3 @@
-import app from '../server/express';
+import app from '../server';
 
 export const ssr = app;

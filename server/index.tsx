@@ -4,6 +4,8 @@ import getSitemap from './routes/sitemap';
 import manifestJSON from './routes/manifest';
 import getRobotTxt from './routes/robots';
 import getOpenSearchXML from './routes/openSearchXML';
+import ssr from './ssr';
+
 const SITEMAP_REGEX = /^\/sitemap(\/sitemap_[0-9]+\.xml)?\/?$/;
 
 const handler = async (event: LambdaProxy.Event): Promise<LambdaProxy.Response> => {
@@ -76,12 +78,24 @@ const handler = async (event: LambdaProxy.Event): Promise<LambdaProxy.Response> 
     };
   }
 
+  const files = fs.readdirSync(path.resolve(__dirname));
+  console.log('files === ', files);
+
+  // let version = '';
+  // if (process.env.NODE_ENV === 'production') {
+  //   version = fs.readFileSync(path.resolve(__dirname, './version')).toString('utf8');
+  // }
+
+  // setABTest(req, res);
+
+  const html = await ssr(event, 'test');
+
   return {
     statusCode: 200,
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'text/html; charset=utf-8',
     },
-    body: JSON.stringify({ error: 'SUCCESS' }),
+    body: html,
   };
 };
 

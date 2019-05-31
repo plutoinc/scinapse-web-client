@@ -5,10 +5,15 @@ jobs:
   deploy_to_dev:
     working_directory: ~/scinapse
     docker:
-      - image: circleci/node:lts
+      - image: circleci/node:8.10
     steps:
       - checkout
-      - run: npm ci
+      - run:
+          name: updating npm...
+          command: npmv=$(echo $(npm -v) | head -c 1); if [ "$npmv" -lt "6" ]; then sudo npm i -g npm; else echo "Node.js Docker Team finally decided to include npm v6+ in latest image; you can remove this script now"; fi
+      - run:
+          name: installing dev dependencies...
+          command: npm ci
       - run: npm run test:ci
       - run: npm run deploy:dev
       - slack/notify:
@@ -16,10 +21,15 @@ jobs:
   deploy_to_prod:
     working_directory: ~/scinapse
     docker:
-      - image: circleci/node:lts
+      - image: circleci/node:8.10
     steps:
       - checkout
-      - run: npm ci
+      - run:
+          name: updating npm...
+          command: npmv=$(echo $(npm -v) | head -c 1); if [ "$npmv" -lt "6" ]; then sudo npm i -g npm; else echo "Node.js Docker Team finally decided to include npm v6+ in latest image; you can remove this script now"; fi
+      - run:
+          name: installing dev dependencies...
+          command: npm ci
       - run: npm run test:ci
       - run: npm run deploy:prod
       - run:

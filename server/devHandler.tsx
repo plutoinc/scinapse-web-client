@@ -1,6 +1,5 @@
 import * as AWS from 'aws-sdk';
 import * as https from 'https';
-import handler from '.';
 import * as s3 from 's3';
 import * as DeployConfig from '../scripts/deploy/config';
 
@@ -50,11 +49,9 @@ export const ssr = async (event: LambdaProxy.Event, _context: LambdaProxy.Contex
   await downloadSrcFromS3(branch);
   const bundle = require('/tmp/server/main.js');
   (global as any).__webpack_public_path__ = '/tmp/server';
-  const app = bundle.ssr;
 
-  console.log(app);
   try {
-    const res = await handler(event);
+    const res = await bundle.ssr(event);
     return res;
   } catch (err) {
     return {
