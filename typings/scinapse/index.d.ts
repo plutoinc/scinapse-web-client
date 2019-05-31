@@ -101,6 +101,8 @@ declare namespace Scinapse {
       | "signBubbleView"
       | "alertView"
       | "clickOk"
+      | "childRefList"
+      | "childCitedList"
       | "";
 
     type ActionArea = string;
