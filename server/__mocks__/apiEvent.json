@@ -1,0 +1,137 @@
+{
+  "resource": "/{proxy+}",
+  "path": "/papers/2341790358",
+  "httpMethod": "GET",
+  "headers": {
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Accept-Language": "en-US,ko;q=0.7,en;q=0.3",
+      "cache-control": "no-cache",
+      "CloudFront-Forwarded-Proto": "https",
+      "CloudFront-Is-Desktop-Viewer": "true",
+      "CloudFront-Is-Mobile-Viewer": "false",
+      "CloudFront-Is-SmartTV-Viewer": "false",
+      "CloudFront-Is-Tablet-Viewer": "false",
+      "CloudFront-Viewer-Country": "KR",
+      "Cookie": "G_ENABLED_IDPS=google; _ga=GA1.2.724218118.1551115311; _gat=1; _gid=GA1.2.2137940611.1559302414; pvForFeedback=2",
+      "Host": "stage.scinapse.io",
+      "pragma": "no-cache",
+      "upgrade-insecure-requests": "1",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0",
+      "Via": "2.0 73bdb4af4ee8e2a9828cbcb7ac1efaa4.cloudfront.net (CloudFront)",
+      "X-Amz-Cf-Id": "d6Cy9sOQCbKoR3jW7DU4pZL5FJ49WH7Az87wz3yYYgZZcpEy3AxmOQ==",
+      "X-Amzn-Trace-Id": "Root=1-5cf1136a-882b041cd185ae43451663ac",
+      "X-Forwarded-For": "118.36.224.222, 52.46.53.111",
+      "X-Forwarded-Port": "443",
+      "X-Forwarded-Proto": "https"
+  },
+  "multiValueHeaders": {
+      "Accept": [
+          "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      ],
+      "Accept-Encoding": [
+          "gzip, deflate, br"
+      ],
+      "Accept-Language": [
+          "en-US,ko;q=0.7,en;q=0.3"
+      ],
+      "cache-control": [
+          "no-cache"
+      ],
+      "CloudFront-Forwarded-Proto": [
+          "https"
+      ],
+      "CloudFront-Is-Desktop-Viewer": [
+          "true"
+      ],
+      "CloudFront-Is-Mobile-Viewer": [
+          "false"
+      ],
+      "CloudFront-Is-SmartTV-Viewer": [
+          "false"
+      ],
+      "CloudFront-Is-Tablet-Viewer": [
+          "false"
+      ],
+      "CloudFront-Viewer-Country": [
+          "KR"
+      ],
+      "Cookie": [
+          "G_ENABLED_IDPS=google; _ga=GA1.2.724218118.1551115311; _gat=1; _gid=GA1.2.2137940611.1559302414; pvForFeedback=2"
+      ],
+      "Host": [
+          "stage.scinapse.io"
+      ],
+      "pragma": [
+          "no-cache"
+      ],
+      "upgrade-insecure-requests": [
+          "1"
+      ],
+      "User-Agent": [
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0"
+      ],
+      "Via": [
+          "2.0 73bdb4af4ee8e2a9828cbcb7ac1efaa4.cloudfront.net (CloudFront)"
+      ],
+      "X-Amz-Cf-Id": [
+          "d6Cy9sOQCbKoR3jW7DU4pZL5FJ49WH7Az87wz3yYYgZZcpEy3AxmOQ=="
+      ],
+      "X-Amzn-Trace-Id": [
+          "Root=1-5cf1136a-882b041cd185ae43451663ac"
+      ],
+      "X-Forwarded-For": [
+          "118.36.224.222, 52.46.53.111"
+      ],
+      "X-Forwarded-Port": [
+          "443"
+      ],
+      "X-Forwarded-Proto": [
+          "https"
+      ]
+  },
+  "queryStringParameters": {
+      "branch": "dev/remove-express"
+  },
+  "multiValueQueryStringParameters": {
+      "branch": [
+          "dev/remove-express"
+      ]
+  },
+  "pathParameters": {
+      "proxy": "papers/2341790358"
+  },
+  "stageVariables": null,
+  "requestContext": {
+      "resourceId": "ci9hc7",
+      "resourcePath": "/{proxy+}",
+      "httpMethod": "GET",
+      "extendedRequestId": "ai_4tFSFoAMFnzw=",
+      "requestTime": "31/May/2019:11:43:38 +0000",
+      "path": "/papers/2341790358",
+      "accountId": "966390130392",
+      "protocol": "HTTP/1.1",
+      "stage": "dev",
+      "domainPrefix": "stage",
+      "requestTimeEpoch": 1559303018913,
+      "requestId": "54e63a2e-8399-11e9-8290-53d87f8ae1e2",
+      "identity": {
+          "cognitoIdentityPoolId": null,
+          "accountId": null,
+          "cognitoIdentityId": null,
+          "caller": null,
+          "sourceIp": "118.36.224.222",
+          "principalOrgId": null,
+          "accessKey": null,
+          "cognitoAuthenticationType": null,
+          "cognitoAuthenticationProvider": null,
+          "userArn": null,
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0",
+          "user": null
+      },
+      "domainName": "stage.scinapse.io",
+      "apiId": "rbh8ebb2wc"
+  },
+  "body": null,
+  "isBase64Encoded": false
+}
