@@ -55,6 +55,7 @@ declare namespace LambdaProxy {
     statusCode: number;
     headers: { [key: string]: string };
     body: string;
+    multiValueHeaders?: { [name: string]: string[] };
     isBase64Encoded?: boolean;
   }
 

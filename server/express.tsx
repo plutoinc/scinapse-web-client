@@ -7,7 +7,7 @@ import ssr from './ssr';
 import getSitemap from './routes/sitemap';
 import getRobotTxt from './routes/robots';
 import getOpenSearchXML from './routes/openSearchXML';
-import setABTest from './helpers/setABTest';
+import setABTestCookie from './helpers/setABTest';
 import manifestJSON from './routes/manifest';
 const compression = require('compression');
 const SITEMAP_REGEX = /^\/sitemap(\/sitemap_[0-9]+\.xml)?\/?$/;
@@ -60,7 +60,7 @@ app.use(async (req, res) => {
     version = fs.readFileSync(path.resolve(__dirname, './version')).toString('utf8');
   }
 
-  setABTest(req, res);
+  setABTestCookie(req, res);
 
   try {
     const html = await ssr(req, version);
