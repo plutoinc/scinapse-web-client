@@ -1,36 +1,41 @@
 import * as React from "react";
-import * as classNames from "classnames";
 import { connect, Dispatch } from "react-redux";
 import { withRouter, RouteComponentProps, Link } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
 import actionTicketManager from "../../../helpers/actionTicketManager";
+import { Paper } from "../../../model/paper";
 import { ActionCreators } from "../../../actions/actionTypes";
 import Icon from "../../../icons";
 const styles = require("./title.scss");
 
 export interface TitleProps extends RouteComponentProps<any> {
   dispatch: Dispatch<any>;
-  paperId: number;
-  paperTitle: string;
-  highlightTitle?: string;
-  highlightAbstract?: string;
+  paper: Paper;
   source: string;
   pageType: Scinapse.ActionTicket.PageType;
-  titleClassName?: string;
+  shouldBlockUnverifiedUser: boolean;
   actionArea?: Scinapse.ActionTicket.ActionArea;
+  currentPage?: number;
 }
 
-class Title extends React.PureComponent<TitleProps> {
-  public render() {
-    const { paperTitle, highlightTitle, paperId, titleClassName } = this.props;
-    const finalTitle = highlightTitle || paperTitle;
+class Title extends React.Component<TitleProps> {
+  public shouldComponentUpdate(nextProps: TitleProps) {
+    if (this.props.paper.id !== nextProps.paper.id) {
+      return true;
+    }
+    return false;
+  }
 
-    if (!finalTitle) {
+  public render() {
+    const { paper } = this.props;
+    const title = paper.title;
+
+    if (!title) {
       return null;
     }
-
-    const trimmedTitle = finalTitle
+    // for removing first or last space or trash value of content
+    const trimmedTitle = title
       .replace(/^ /gi, "")
       .replace(/\s{2,}/g, " ")
       .replace(/#[A-Z0-9]+#/g, "");
@@ -38,17 +43,19 @@ class Title extends React.PureComponent<TitleProps> {
     return (
       <div>
         <Link
-          to={`/papers/${paperId}`}
+          to={`/papers/${paper.id}`}
           onClick={() => {
             this.handleClickTitle(false);
           }}
           dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(trimmedTitle) }}
-          className={classNames({
-            [styles.title]: !titleClassName,
-            [titleClassName!]: !!titleClassName,
-          })}
+          className={styles.title}
         />
-        <a href={`/papers/${paperId}`} target="_blank" rel="noopener noreferrer" className={styles.externalIconWrapper}>
+        <a
+          href={`/papers/${paper.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.externalIconWrapper}
+        >
           <Icon
             onClick={() => {
               this.handleClickTitle(true);
@@ -62,13 +69,13 @@ class Title extends React.PureComponent<TitleProps> {
   }
 
   private handleClickTitle = (fromNewTab?: boolean) => {
-    const { dispatch, pageType, actionArea, paperId, highlightTitle, highlightAbstract } = this.props;
+    const { dispatch, pageType, actionArea, paper } = this.props;
     actionTicketManager.trackTicket({
       pageType,
       actionType: "fire",
       actionArea: actionArea || pageType,
       actionTag: "paperShow",
-      actionLabel: String(paperId),
+      actionLabel: String(paper.id),
     });
 
     if (fromNewTab) {
@@ -77,15 +84,15 @@ class Title extends React.PureComponent<TitleProps> {
         actionType: "fire",
         actionArea: "titleNewTab",
         actionTag: "paperShow",
-        actionLabel: String(paperId),
+        actionLabel: String(paper.id),
       });
     }
 
-    if (highlightTitle || highlightAbstract) {
+    if (paper.abstractHighlighted || paper.titleHighlighted) {
       dispatch(
         ActionCreators.setHighlightContentInPaperShow({
-          title: highlightTitle || "",
-          abstract: highlightAbstract || "",
+          title: paper.titleHighlighted || "",
+          abstract: paper.abstractHighlighted || "",
         })
       );
     }
