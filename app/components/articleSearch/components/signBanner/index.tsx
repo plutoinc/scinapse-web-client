@@ -73,8 +73,12 @@ function getSignBannerContext(): SignBannerContextObj {
 
 const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
   const { isLoading } = props;
+  const [signBannerUserGroupName, setSignBannerUserGroupName] = React.useState('');
 
-  const signBannerUserGroupName: string = getUserGroupName(SIGN_BANNER_AT_SEARCH_BANNER_TEST) || '';
+  React.useEffect(() => {
+    setSignBannerUserGroupName(getUserGroupName(SIGN_BANNER_AT_SEARCH_BANNER_TEST) || '');
+  }, []);
+
   const signBannerContext: SignBannerContextObj = getSignBannerContext();
   const bannerViewTicketContext: ActionTicketParams = {
     pageType: 'searchResult',

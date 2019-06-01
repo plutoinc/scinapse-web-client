@@ -363,10 +363,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         <div className={styles.footerWrapper}>
           <Footer />
         </div>
-        <BottomBanner
-          isLoggedIn={currentUser.isLoggedIn}
-          shouldShowBottomBanner={getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TEST) === 'bottomBanner'}
-        />
+        <BottomBanner currentUser={currentUser} />
         <NextPaperTab />
         <SearchFullScrollBanner
           onClickCloseBtn={() => {
