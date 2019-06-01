@@ -4,8 +4,6 @@ import {
   bannerCuratedTest,
   relatedPapersAtPaperShowTest,
   signBannerAtPaperShowTest,
-  signBubbleTest,
-  lockedButtonsTest,
   fullTextBlurredTest,
   refCitedChildPaperList,
 } from './abTestObject';
@@ -29,8 +27,6 @@ export type ABTestType =
   | 'signBannerAtSearch-banner'
   | 'signBannerAtSearch-curated'
   | 'relatedPapersAtPaperShow'
-  | 'signBubble'
-  | 'lockedButtons'
   | 'fullTextBlurred'
   | 'refCitedPaperItem';
 
@@ -58,8 +54,6 @@ export const LIVE_TESTS: Test[] = [
   bannerCuratedTest,
   relatedPapersAtPaperShowTest,
   signBannerAtPaperShowTest,
-  signBubbleTest,
-  lockedButtonsTest,
   fullTextBlurredTest,
   refCitedChildPaperList,
 ];

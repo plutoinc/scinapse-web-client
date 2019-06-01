@@ -5,5 +5,3 @@ export const SIGN_BANNER_AT_SEARCH_BANNER_TEST: ABTestType = 'signBannerAtSearch
 export const SIGN_BANNER_AT_SEARCH_CURATED_TEST: ABTestType = 'signBannerAtSearch-curated';
 export const RELATED_PAPERS_AT_PAPER_SHOW_TEST: ABTestType = 'relatedPapersAtPaperShow';
 export const SIGN_BANNER_AT_PAPER_SHOW_TEST: ABTestType = 'signBannerAtPaperShow';
-export const SIGN_BUBBLE_TEST: ABTestType = 'signBubble';
-export const LOCKED_BUTTONS_TEST: ABTestType = 'lockedButtons';
