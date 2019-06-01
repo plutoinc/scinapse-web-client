@@ -31,17 +31,17 @@ import VenueAndAuthors from '../../components/common/paperItem/venueAndAuthors';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import RelatedPapers from '../../components/relatedPapers';
 import { getUserGroupName } from '../../helpers/abTestHelper';
-import {
-  RELATED_PAPERS_AT_PAPER_SHOW_TEST,
-  SIGN_BANNER_AT_PAPER_SHOW_TEST,
-  LOCKED_BUTTONS_TEST,
-} from '../../constants/abTestGlobalValue';
+import { RELATED_PAPERS_AT_PAPER_SHOW_TEST, SIGN_BANNER_AT_PAPER_SHOW_TEST } from '../../constants/abTestGlobalValue';
 import { CommonError } from '../../model/error';
 import PaperShowHelmet from '../../components/paperShow/helmet';
 import GoBackResultBtn from '../../components/paperShow/backButton';
 import { getMemoizedCurrentUser } from '../../selectors/getCurrentUser';
 import { getRelatedPapers } from '../../actions/relatedPapers';
-import { makeGetMemoizedPapers } from '../../selectors/papersSelector';
+import {
+  makeGetMemoizedPapers,
+  getMemoizedReferencePaperIds,
+  getMemoizedCitedPaperIds,
+} from '../../selectors/papersSelector';
 import { getMemoizedPaperShow } from '../../selectors/getPaperShow';
 import { getMemoizedLayout } from '../../selectors/getLayout';
 import { getMemoizedPDFViewerState } from '../../selectors/getPDFViewer';
@@ -51,16 +51,15 @@ import BottomBanner from '../../components/preNoted/bottomBanner';
 import { Configuration } from '../../reducers/configuration';
 import { getMemoizedConfiguration } from '../../selectors/getConfiguration';
 import SearchFullScrollBanner from '../../components/paperShow/searchFullBanner';
-import SignUpBanner from '../../components/paperShow/components/signUpBanner';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
 let ticking = false;
 
-function mapStateToProps(state: AppState) {
-  const getReferencePapers = makeGetMemoizedPapers(() => state.paperShow.referencePaperIds);
-  const getCitedPapers = makeGetMemoizedPapers(() => state.paperShow.citedPaperIds);
+const getReferencePapers = makeGetMemoizedPapers(getMemoizedReferencePaperIds);
+const getCitedPapers = makeGetMemoizedPapers(getMemoizedCitedPaperIds);
 
+function mapStateToProps(state: AppState) {
   return {
     layout: getMemoizedLayout(state),
     configuration: getMemoizedConfiguration(state),
@@ -278,9 +277,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <div className={styles.fos}>
                   <FOSList FOSList={paper.fosList} />
                 </div>
-                <SignUpBanner
-                  shouldShowSignBanner={!currentUser.isLoggedIn && getUserGroupName(LOCKED_BUTTONS_TEST) === 'locked'}
-                />
               </div>
             </div>
           </article>
@@ -367,10 +363,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         <div className={styles.footerWrapper}>
           <Footer />
         </div>
-        <BottomBanner
-          isLoggedIn={currentUser.isLoggedIn}
-          shouldShowBottomBanner={getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TEST) === 'bottomBanner'}
-        />
+        <BottomBanner currentUser={currentUser} />
         <NextPaperTab />
         <SearchFullScrollBanner
           onClickCloseBtn={() => {

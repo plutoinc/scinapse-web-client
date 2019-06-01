@@ -28,10 +28,7 @@ export interface PDFButtonProps {
   isLoading: boolean;
   canShowFullPDF: boolean;
   actionBtnEl: HTMLDivElement | null;
-  isOpenBlockedPopper: boolean;
   currentUser: CurrentUser;
   afterDownloadPDF: () => void;
   onClickDownloadPDF: () => void;
-  handleSetIsOpenBlockedPopper: (value: React.SetStateAction<boolean>) => void;
-  handleCloseBlockedPopper: () => void;
 }

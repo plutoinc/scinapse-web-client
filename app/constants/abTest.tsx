@@ -4,9 +4,8 @@ import {
   bannerCuratedTest,
   relatedPapersAtPaperShowTest,
   signBannerAtPaperShowTest,
-  signBubbleTest,
-  lockedButtonsTest,
   fullTextBlurredTest,
+  refCitedChildPaperList,
 } from './abTestObject';
 
 export interface UserGroup {
@@ -28,9 +27,8 @@ export type ABTestType =
   | 'signBannerAtSearch-banner'
   | 'signBannerAtSearch-curated'
   | 'relatedPapersAtPaperShow'
-  | 'signBubble'
-  | 'lockedButtons'
-  | 'fullTextBlurred';
+  | 'fullTextBlurred'
+  | 'refCitedPaperItem';
 
 export const BENEFIT_EXPERIMENT_KEY = 'b_exp';
 
@@ -56,9 +54,8 @@ export const LIVE_TESTS: Test[] = [
   bannerCuratedTest,
   relatedPapersAtPaperShowTest,
   signBannerAtPaperShowTest,
-  signBubbleTest,
-  lockedButtonsTest,
   fullTextBlurredTest,
+  refCitedChildPaperList,
 ];
 
 function getRandomPool(): { [key: string]: string[] } {
