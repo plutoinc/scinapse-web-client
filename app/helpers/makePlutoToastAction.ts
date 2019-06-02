@@ -1,4 +1,4 @@
-import StoreManager from '../store';
+import StoreManager from '../store/store';
 import { ACTION_TYPES } from '../actions/actionTypes';
 
 export default function alertToast(notificationActionPayload: Scinapse.Alert.NotificationActionPayload): void {

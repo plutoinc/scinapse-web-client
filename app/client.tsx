@@ -11,7 +11,7 @@ import CssInjector from './helpers/cssInjector';
 import EnvChecker from './helpers/envChecker';
 import ErrorTracker from './helpers/errorHandler';
 import { ConnectedRootRoutes as RootRoutes } from './routes';
-import StoreManager from './store';
+import StoreManager from './store/store';
 import { ACTION_TYPES } from './actions/actionTypes';
 import { AppState } from './reducers';
 import { checkAuthStatus } from './components/auth/actions';

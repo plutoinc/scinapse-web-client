@@ -9,7 +9,7 @@ import { matchPath, StaticRouter } from 'react-router-dom';
 import { createMuiTheme, createGenerateClassName, MuiThemeProvider } from '@material-ui/core/styles';
 import * as ReactDOMServer from 'react-dom/server';
 import { ChunkExtractor } from '@loadable/server';
-import StoreManager from '../app/store';
+import StoreManager from '../app/store/serverStore';
 import { ConnectedRootRoutes as RootRoutes, routesMap } from '../app/routes';
 import { ACTION_TYPES } from '../app/actions/actionTypes';
 import CssInjector from '../app/helpers/cssInjector';
@@ -57,8 +57,7 @@ const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
   };
 
   // Initialize and make Redux store per each request
-  StoreManager.initializeStore(fullURL);
-  const store = StoreManager.store;
+  const store = StoreManager.getStore();
 
   // Load data from API server
   const promises: Promise<any>[] = [];

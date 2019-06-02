@@ -1,4 +1,4 @@
-import StoreManager from '../store';
+import StoreManager from '../store/store';
 import { AppState } from '../reducers';
 import GlobalDialogManager from './globalDialogManager';
 import ActionTicketManager from './actionTicketManager';

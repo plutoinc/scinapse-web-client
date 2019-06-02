@@ -1,4 +1,4 @@
-import StoreManager from '../../store';
+import StoreManager from '../../store/store';
 import { ActionCreators } from '../../actions/actionTypes';
 import { GLOBAL_DIALOG_TYPE } from '../../components/dialog/reducer';
 import { Collection } from '../../model/collection';
