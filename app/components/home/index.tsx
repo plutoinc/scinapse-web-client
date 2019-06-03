@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 import Helmet from 'react-helmet';
+import NoSsr from '@material-ui/core/NoSsr';
 import { AppState } from '../../reducers';
 import { Footer } from '../layouts';
 import { LayoutState, UserDevice } from '../layouts/records';
@@ -64,12 +65,14 @@ class Home extends React.PureComponent<HomeProps> {
                 </a>
               </div>
               <div tabIndex={0} className={styles.searchInputForm}>
-                <SearchQueryInput
-                  maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
-                  actionArea="home"
-                  autoFocus
-                  inputClassName={isSearchEngineContext ? styles.searchEngineMoodInput : styles.searchInput}
-                />
+                <NoSsr>
+                  <SearchQueryInput
+                    maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
+                    actionArea="home"
+                    autoFocus
+                    inputClassName={isSearchEngineContext ? styles.searchEngineMoodInput : styles.searchInput}
+                  />
+                </NoSsr>
               </div>
               <div className={styles.searchTryKeyword} />
             </div>

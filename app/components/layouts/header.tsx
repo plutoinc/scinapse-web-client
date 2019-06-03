@@ -9,6 +9,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import NoSsr from '@material-ui/core/NoSsr';
 import * as addDays from 'date-fns/add_days';
 import * as isAfter from 'date-fns/is_after';
+import * as classNames from 'classnames';
 import TopToastBar from '../topToastBar';
 import BubblePopover from '../common/bubblePopover';
 import { AppState } from '../../reducers';
@@ -36,7 +37,6 @@ import ResearchHistory from '../researchHistory';
 import SuddenAlert from '../preNoted/suddenAlert';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { SIGN_BANNER_AT_PAPER_SHOW_TEST, SEARCH_ENGINE_MOOD_TEST } from '../../constants/abTestGlobalValue';
-import * as classNames from 'classnames';
 const styles = require('./header.scss');
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
