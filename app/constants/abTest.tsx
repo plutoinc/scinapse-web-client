@@ -6,6 +6,7 @@ import {
   signBannerAtPaperShowTest,
   fullTextBlurredTest,
   refCitedChildPaperList,
+  queryLoverBoundaryTest,
 } from './abTestObject';
 
 export interface UserGroup {
@@ -57,6 +58,7 @@ export const LIVE_TESTS: Test[] = [
   signBannerAtPaperShowTest,
   fullTextBlurredTest,
   refCitedChildPaperList,
+  queryLoverBoundaryTest,
 ];
 
 function getRandomPool(): { [key: string]: string[] } {
