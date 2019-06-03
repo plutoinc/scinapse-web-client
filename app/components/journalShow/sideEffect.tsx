@@ -1,5 +1,5 @@
 import { CancelToken } from 'axios';
-import { Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 import { parse } from 'qs';
 import { LoadDataParams } from '../../routes';
 import { JournalShowMatchParams } from './types';
@@ -37,8 +37,8 @@ export async function fetchJournalShowPageData(params: LoadDataParams<JournalSho
     return;
   } else {
     const promiseArr: Promise<any>[] = [];
-    promiseArr.push(dispatch(getJournal(journalId, params.cancelToken)));
-    promiseArr.push(dispatch(fetchPapers(journalId, queryParamsObj, params.cancelToken)));
+    promiseArr.push(getJournal(journalId, params.cancelToken)(dispatch));
+    promiseArr.push(fetchPapers(journalId, queryParamsObj, params.cancelToken)(dispatch));
     await Promise.all(promiseArr);
   }
 }

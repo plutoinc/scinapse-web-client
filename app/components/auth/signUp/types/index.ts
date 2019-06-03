@@ -1,5 +1,5 @@
 import { RouteComponentProps } from 'react-router-dom';
-import { Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 import { GLOBAL_DIALOG_TYPE, DialogState } from '../../../dialog/reducer';
 import { OAUTH_VENDOR } from '../../../../api/types/auth';
 

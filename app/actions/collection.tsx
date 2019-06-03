@@ -1,4 +1,4 @@
-import { Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 import { ActionCreators } from './actionTypes';
 import PlutoAxios from '../api/pluto';
 import alertToast from '../helpers/makePlutoToastAction';

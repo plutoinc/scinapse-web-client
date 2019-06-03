@@ -19,7 +19,7 @@ export async function getSearchData(params: LoadDataParams<null>) {
   }
 
   try {
-    const searchResults = await dispatch(searchPapers({ ...searchQueryObject, cancelToken: params.cancelToken }));
+    const searchResults = await searchPapers({ ...searchQueryObject, cancelToken: params.cancelToken })(dispatch);
     return searchResults;
   } catch (err) {
     console.error(`Error for fetching search result page data`, err);

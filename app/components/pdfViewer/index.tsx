@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Axios, { CancelTokenSource } from 'axios';
-import { connect, Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '../../helpers/withStylesHelper';
 import PaperAPI from '../../api/paper';

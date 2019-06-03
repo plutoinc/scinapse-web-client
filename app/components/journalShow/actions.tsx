@@ -1,5 +1,5 @@
 import axios, { CancelToken } from 'axios';
-import { Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 import JournalAPI, { GetPapersParams } from '../../api/journal';
 import { ActionCreators } from '../../actions/actionTypes';
 import alertToast from '../../helpers/makePlutoToastAction';

@@ -1,5 +1,5 @@
 import { CancelToken } from 'axios';
-import { Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 import { LoadDataParams } from '../../routes';
 import { getPaper, getCitedPapers, getReferencePapers, getMyCollections } from '../../actions/paperShow';
 import { CurrentUser } from '../../model/currentUser';

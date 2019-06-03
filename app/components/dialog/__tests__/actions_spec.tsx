@@ -9,7 +9,7 @@ describe('sign in actions', () => {
   let store: any;
 
   beforeEach(() => {
-    store = generateMockStore({});
+    store = generateMockStore();
     store.clearActions();
   });
 

@@ -83,6 +83,7 @@ const VenueSection: React.FC<VenueSectionProps & TrackingProps> = props => {
 
 const BasePaperItem: React.FC<PaperItemWithToggleListProps & TrackingProps> = React.memo(props => {
   const { paper, pageType, actionArea, searchQueryText } = props;
+  console.log('render!!');
 
   let source: string;
   if (!!paper.doi) {

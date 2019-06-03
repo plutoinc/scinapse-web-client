@@ -1,5 +1,5 @@
 import { CancelToken } from 'axios';
-import { Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 import { ActionCreators, ACTION_TYPES } from '../../actions/actionTypes';
 import { GLOBAL_DIALOG_TYPE } from './reducer';
 import PaperAPI, { GetCitationTextParams } from '../../api/paper';
