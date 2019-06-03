@@ -61,21 +61,23 @@ const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
 
   // Load data from API server
   const promises: Promise<any>[] = [];
-  routesMap.some(route => {
-    const match = matchPath(req.path, route);
-    if (match && !!route.loadData) {
-      promises.push(
-        route.loadData({
-          dispatch: store.dispatch,
-          match,
-          queryParams: getQueryParamsObject(req),
-          pathname: req.path,
-          cancelToken: axios.CancelToken.source().token,
-        })
-      );
-    }
-    return !!match;
-  });
+  try {
+    routesMap.some(route => {
+      const match = matchPath(req.path, route);
+      if (!!match && !!route.loadData) {
+        promises.push(
+          route.loadData({
+            dispatch: store.dispatch,
+            match,
+            queryParams: getQueryParamsObject(req),
+            pathname: req.path,
+            cancelToken: axios.CancelToken.source().token,
+          })
+        );
+      }
+      return !!match;
+    });
+  } catch (_err) {}
 
   await Promise.all(promises)
     .then(() => {
