@@ -53,7 +53,7 @@ function validateSearchInput(query: string) {
 }
 
 async function shouldBlockUnsignedUser(actionArea: string) {
-  const isBlocked = await checkBenefitExp({
+  return await checkBenefitExp({
     type: 'queryLover',
     matching: 'session',
     maxCount: 2,
@@ -61,7 +61,6 @@ async function shouldBlockUnsignedUser(actionArea: string) {
     userActionType: 'queryLover',
     expName: 'queryLover',
   });
-  return isBlocked;
 }
 
 const SearchQueryInput: React.FunctionComponent<
