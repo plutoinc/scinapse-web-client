@@ -5,11 +5,6 @@ export const searchEngineMoodTest: Test = {
   userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'searchEngine', weight: 1 }],
 };
 
-export const bannerTest: Test = {
-  name: 'signBannerAtSearch-banner',
-  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'banner', weight: 2 }],
-};
-
 export const bannerCuratedTest: Test = {
   name: 'signBannerAtSearch-curated',
   userGroup: [

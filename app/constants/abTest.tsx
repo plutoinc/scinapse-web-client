@@ -1,5 +1,4 @@
 import {
-  bannerTest,
   searchEngineMoodTest,
   bannerCuratedTest,
   relatedPapersAtPaperShowTest,
@@ -24,7 +23,6 @@ export type ABTestType =
   | 'queryLover'
   | 'searchEngineMood'
   | 'signBannerAtPaperShow'
-  | 'signBannerAtSearch-banner'
   | 'signBannerAtSearch-curated'
   | 'relatedPapersAtPaperShow'
   | 'fullTextBlurred'
@@ -50,7 +48,6 @@ export interface BenefitExpTicketContext {
 
 export const LIVE_TESTS: Test[] = [
   searchEngineMoodTest,
-  bannerTest,
   bannerCuratedTest,
   relatedPapersAtPaperShowTest,
   signBannerAtPaperShowTest,
