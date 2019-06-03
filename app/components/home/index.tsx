@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 import Helmet from 'react-helmet';
-import NoSsr from '@material-ui/core/NoSsr';
 import { AppState } from '../../reducers';
 import { Footer } from '../layouts';
 import { LayoutState, UserDevice } from '../layouts/records';
@@ -20,6 +19,10 @@ export interface HomeProps extends RouteComponentProps<null> {
   dispatch: Dispatch<any>;
 }
 
+interface HomeState {
+  isSearchEngineMood: boolean;
+}
+
 function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
@@ -27,12 +30,23 @@ function mapStateToProps(state: AppState) {
 }
 
 @withStyles<typeof Home>(styles)
-class Home extends React.PureComponent<HomeProps> {
+class Home extends React.PureComponent<HomeProps, HomeState> {
+  public constructor(props: HomeProps) {
+    super(props);
+
+    this.state = {
+      isSearchEngineMood: false,
+    };
+  }
+
+  public componentDidMount() {
+    this.setState({
+      isSearchEngineMood: getUserGroupName(SEARCH_ENGINE_MOOD_TEST) === 'searchEngine',
+    });
+  }
+
   public render() {
     const containerStyle = this.getContainerStyle();
-    const logoUserGroupName: string = getUserGroupName(SEARCH_ENGINE_MOOD_TEST) || '';
-    const isSearchEngineMood = logoUserGroupName === 'searchEngine';
-
     return (
       <div className={styles.articleSearchFormContainer}>
         {this.getHelmetNode()}
@@ -65,14 +79,12 @@ class Home extends React.PureComponent<HomeProps> {
                 </a>
               </div>
               <div tabIndex={0} className={styles.searchInputForm}>
-                <NoSsr>
-                  <SearchQueryInput
-                    maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
-                    actionArea="home"
-                    autoFocus
-                    inputClassName={isSearchEngineMood ? styles.searchEngineMoodInput : styles.searchInput}
-                  />
-                </NoSsr>
+                <SearchQueryInput
+                  maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
+                  actionArea="home"
+                  autoFocus
+                  inputClassName={this.state.isSearchEngineMood ? styles.searchEngineMoodInput : styles.searchInput}
+                />
               </div>
               <div className={styles.searchTryKeyword} />
             </div>
