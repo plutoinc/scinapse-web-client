@@ -1,11 +1,11 @@
-import * as React from "react";
-import * as classNames from "classnames";
-import { Link } from "react-router-dom";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { Collection } from "../../../model/collection";
-import PaperNoteForm from "../noteForm";
-import Icon from "../../../icons";
-const styles = require("./collectionNoteList.scss");
+import * as React from 'react';
+import * as classNames from 'classnames';
+import { Link } from 'react-router-dom';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { Collection } from '../../../model/collection';
+import PaperNoteForm from '../noteForm';
+import Icon from '../../../icons';
+const styles = require('./collectionNoteList.scss');
 
 interface CollectionNoteItemProps {
   collection: Collection;
@@ -34,13 +34,13 @@ class CollectionNoteItem extends React.PureComponent<CollectionNoteItemProps, Co
 
   public componentDidMount() {
     if (this.noteItemNode) {
-      this.noteItemNode.addEventListener("animationend", this.handleAnimationEnd, { passive: true });
+      this.noteItemNode.addEventListener('animationend', this.handleAnimationEnd, { passive: true });
     }
   }
 
   public componentWillUnmount() {
     if (this.noteItemNode) {
-      this.noteItemNode.removeEventListener("animationend", this.handleAnimationEnd);
+      this.noteItemNode.removeEventListener('animationend', this.handleAnimationEnd);
     }
   }
 
@@ -62,7 +62,7 @@ class CollectionNoteItem extends React.PureComponent<CollectionNoteItemProps, Co
             </span>
           </div>
           <div className={styles.memoCollectionName}>
-            - Saved to{" "}
+            - Saved to{' '}
             <Link className={styles.name} to={`/collections/${collection.id}`}>
               {collection.title}
             </Link>
@@ -80,10 +80,10 @@ class CollectionNoteItem extends React.PureComponent<CollectionNoteItemProps, Co
           textareaStyle={{
             border: 0,
             padding: 0,
-            borderRadius: "8px",
-            fontSize: "14px",
-            width: "100%",
-            maxHeight: "200px",
+            borderRadius: '8px',
+            fontSize: '14px',
+            width: '100%',
+            maxHeight: '200px',
           }}
           onClickCancel={this.toggleNoteEditMode}
           initialValue={collection.note}

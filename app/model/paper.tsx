@@ -1,11 +1,11 @@
-import { schema } from "normalizr";
-import { Comment } from "./comment";
-import { PaperAuthor } from "./author";
-import { PaperSource } from "./paperSource";
-import { Fos } from "./fos";
-import { Journal } from "./journal";
-import { ConferenceInstance } from "./conferenceInstance";
-import { SavedInCollections } from "./savedInCollecctions";
+import { schema } from 'normalizr';
+import { Comment } from './comment';
+import { PaperAuthor } from './author';
+import { PaperSource } from './paperSource';
+import { Fos } from './fos';
+import { Journal } from './journal';
+import { ConferenceInstance } from './conferenceInstance';
+import { SavedInCollections } from './savedInCollecctions';
 
 export interface PaperPdf {
   url: string;
@@ -41,4 +41,4 @@ export interface Paper {
   abstractHighlighted?: string;
 }
 
-export const paperSchema = new schema.Entity("papers");
+export const paperSchema = new schema.Entity('papers');

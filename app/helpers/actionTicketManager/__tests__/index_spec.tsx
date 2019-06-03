@@ -1,18 +1,18 @@
-import * as store from "store";
-import ActionTicketManager from "..";
-import ActionTicket, { ActionTicketParams, FinalActionTicket } from "../actionTicket";
-import { TICKET_QUEUE_KEY, DEVICE_ID_KEY, SESSION_ID_KEY } from "../../../constants/actionTicket";
+import * as store from 'store';
+import ActionTicketManager from '..';
+import ActionTicket, { ActionTicketParams, FinalActionTicket } from '../actionTicket';
+import { TICKET_QUEUE_KEY, DEVICE_ID_KEY, SESSION_ID_KEY } from '../../../constants/actionTicket';
 
-describe("ActionTicketManager helper", () => {
+describe('ActionTicketManager helper', () => {
   const mockTicketParams: ActionTicketParams = {
-    pageType: "paperShow",
-    actionType: "fire",
-    actionTag: "query",
-    actionArea: "topBar",
-    actionLabel: "Hello World",
+    pageType: 'paperShow',
+    actionType: 'fire',
+    actionTag: 'query',
+    actionArea: 'topBar',
+    actionLabel: 'Hello World',
   };
 
-  describe("trackTicket Method", () => {
+  describe('trackTicket Method', () => {
     let ticket: FinalActionTicket;
     let deviceKey: string;
     let sessionKey: string;
@@ -31,19 +31,19 @@ describe("ActionTicketManager helper", () => {
       sessionKey = store.get(SESSION_ID_KEY);
     });
 
-    it("should add ticket to ticket queue", () => {
+    it('should add ticket to ticket queue', () => {
       expect(ticket).toMatchObject(mockTicketParams);
     });
 
-    it("should return proper device id", () => {
+    it('should return proper device id', () => {
       expect(ticket.deviceId).toEqual(deviceKey);
     });
 
-    it("should return proper session id", () => {
+    it('should return proper session id', () => {
       expect(ticket.sessionId).toEqual(sessionKey);
     });
 
-    it("should return proper createdAt attribute format(ISO-8601 with time zone)", () => {
+    it('should return proper createdAt attribute format(ISO-8601 with time zone)', () => {
       expect(ticket.createdAt).toMatch(
         // From https://stackoverflow.com/questions/3143070/javascript-regex-iso-datetime
         // tslint:disable-next-line:max-line-length
@@ -51,11 +51,11 @@ describe("ActionTicketManager helper", () => {
       );
     });
 
-    it("should return the given params", () => {
+    it('should return the given params', () => {
       expect(ticket).toMatchObject(mockTicketParams);
     });
 
-    describe("when queued ticket count is more than MAXIMUM_TICKET_COUNT_IN_QUEUE", () => {
+    describe('when queued ticket count is more than MAXIMUM_TICKET_COUNT_IN_QUEUE', () => {
       let originalSendTickets: () => Promise<void>;
       beforeEach(() => {
         store.clearAll();
@@ -74,21 +74,21 @@ describe("ActionTicketManager helper", () => {
         ActionTicketManager.flushQueue();
       });
 
-      it("should call sendTickets method", () => {
+      it('should call sendTickets method', () => {
         ActionTicketManager.trackTicket(mockTicketParams);
         expect((ActionTicketManager.sendTickets as any).mock.calls.length).toBe(1);
       });
     });
   });
 
-  describe("sendTickets method", () => {
+  describe('sendTickets method', () => {
     beforeEach(() => {
       store.clearAll();
       ActionTicketManager.trackTicket(mockTicketParams);
       ActionTicketManager.trackTicket(mockTicketParams);
     });
 
-    it("should empty the action ticket queue", () => {
+    it('should empty the action ticket queue', () => {
       ActionTicketManager.sendTickets();
       expect(ActionTicketManager.queue.length).toEqual(0);
     });

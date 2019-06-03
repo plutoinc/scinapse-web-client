@@ -1,9 +1,9 @@
-import * as React from "react";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import * as classNames from "classnames";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { getHighlightedContent } from "../highLightedContent";
-const styles = require("./inputWithSuggestionList.scss");
+import * as React from 'react';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import * as classNames from 'classnames';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { getHighlightedContent } from '../highLightedContent';
+const styles = require('./inputWithSuggestionList.scss');
 
 export interface DefaultItemComponentProps {
   userInput: string;
@@ -48,14 +48,14 @@ class InputWithSuggestionList extends React.PureComponent<
       highlightedListItemIndex: -1,
       isOpen: false,
       isLoading: false,
-      inputValue: props.defaultValue || "",
-      highlightValue: "",
+      inputValue: props.defaultValue || '',
+      highlightValue: '',
     };
   }
 
   public componentWillReceiveProps(nextProps: Readonly<InputWithSuggestionListProps>) {
     if (this.props.defaultValue !== nextProps.defaultValue) {
-      this.setState(prevState => ({ ...prevState, inputValue: nextProps.defaultValue || "" }));
+      this.setState(prevState => ({ ...prevState, inputValue: nextProps.defaultValue || '' }));
     }
   }
 
@@ -98,14 +98,14 @@ class InputWithSuggestionList extends React.PureComponent<
             {inputValue ? (
               <span
                 onClick={() => {
-                  onSubmitQuery("");
+                  onSubmitQuery('');
                   this.handleCloseList();
                 }}
               >
                 {deleteIconNode}
               </span>
             ) : (
-              ""
+              ''
             )}
           </div>
           {isOpen && (

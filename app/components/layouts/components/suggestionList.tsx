@@ -1,9 +1,9 @@
-import * as React from "react";
-import { escapeRegExp } from "lodash";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import * as classNames from "classnames";
+import * as React from 'react';
+import { escapeRegExp } from 'lodash';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import * as classNames from 'classnames';
 
-const styles = require("./suggestionList.scss");
+const styles = require('./suggestionList.scss');
 
 export interface SuggestionListProps {
   userInput: string | undefined;
@@ -19,15 +19,15 @@ interface SuggestionListState {
 
 function getWordsFromUserInput(userInput: string) {
   const words = userInput
-    .split(" ")
+    .split(' ')
     .map(word => {
       if (!!word && word.length > 0) {
         return escapeRegExp(word.trim());
       }
     })
-    .join("|");
+    .join('|');
 
-  return new RegExp(`(${words})`, "i");
+  return new RegExp(`(${words})`, 'i');
 }
 
 const handleKeyDown = (
@@ -70,8 +70,8 @@ const handleKeyDown = (
 
 function getHighlightedList(suggestionList: string[], regExP: RegExp) {
   return suggestionList.map(suggestion => {
-    const suggestionWords = suggestion.split(" ").map(word => word.trim());
-    return suggestionWords.map(word => word && word.replace(regExP, matchWord => `<b>${matchWord}</b>`)).join(" ");
+    const suggestionWords = suggestion.split(' ').map(word => word.trim());
+    return suggestionWords.map(word => word && word.replace(regExP, matchWord => `<b>${matchWord}</b>`)).join(' ');
   });
 }
 
@@ -156,7 +156,7 @@ class SuggestionList extends React.PureComponent<SuggestionListProps, Suggestion
     });
 
     return (
-      <div style={{ display: isOpen ? "block" : "none" }} className={styles.keywordCompletionWrapper}>
+      <div style={{ display: isOpen ? 'block' : 'none' }} className={styles.keywordCompletionWrapper}>
         {highlightedContent}
         {children && (
           <SuggestionItem
@@ -165,7 +165,7 @@ class SuggestionList extends React.PureComponent<SuggestionListProps, Suggestion
               this.setState(prevState => ({ ...prevState, onFocus: null }));
             }}
             isFocused={highlightedList.length === 0 || onFocus === null}
-            keyword={userInput || ""}
+            keyword={userInput || ''}
           >
             {children}
           </SuggestionItem>

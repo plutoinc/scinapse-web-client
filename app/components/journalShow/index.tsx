@@ -1,35 +1,35 @@
-import * as React from "react";
-import axios from "axios";
-import { parse, stringify } from "qs";
-import { connect, Dispatch } from "react-redux";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-import { denormalize } from "normalizr";
-import { Helmet } from "react-helmet";
-import { AppState } from "../../reducers";
-import PaperItem from "../common/paperItem";
-import MobilePagination from "../common/mobilePagination";
-import DesktopPagination from "../common/desktopPagination";
-import ArticleSpinner from "../common/spinner/articleSpinner";
-import ScinapseInput from "../common/scinapseInput";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { CurrentUser } from "../../model/currentUser";
-import { Configuration } from "../../reducers/configuration";
-import { fetchJournalShowPageData, JournalShowQueryParams } from "./sideEffect";
-import { paperSchema, Paper } from "../../model/paper";
-import { journalSchema, Journal } from "../../model/journal";
-import { JournalShowState } from "./reducer";
-import Footer from "../layouts/footer";
-import Icon from "../../icons";
-import { LayoutState, UserDevice } from "../layouts/records";
-import formatNumber from "../../helpers/formatNumber";
-import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
-import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
-import PaperShowKeyword from "../paperShow/components/keyword";
-import ActionTicketManager from "../../helpers/actionTicketManager";
-import restoreScroll from "../../helpers/scrollRestoration";
-import ErrorPage from "../error/errorPage";
-import { JournalShowMatchParams } from "./types";
-const styles = require("./journalShow.scss");
+import * as React from 'react';
+import axios from 'axios';
+import { parse, stringify } from 'qs';
+import { connect, Dispatch } from 'react-redux';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { denormalize } from 'normalizr';
+import { Helmet } from 'react-helmet';
+import { AppState } from '../../reducers';
+import PaperItem from '../common/paperItem';
+import MobilePagination from '../common/mobilePagination';
+import DesktopPagination from '../common/desktopPagination';
+import ArticleSpinner from '../common/spinner/articleSpinner';
+import ScinapseInput from '../common/scinapseInput';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { CurrentUser } from '../../model/currentUser';
+import { Configuration } from '../../reducers/configuration';
+import { fetchJournalShowPageData, JournalShowQueryParams } from './sideEffect';
+import { paperSchema, Paper } from '../../model/paper';
+import { journalSchema, Journal } from '../../model/journal';
+import { JournalShowState } from './reducer';
+import Footer from '../layouts/footer';
+import Icon from '../../icons';
+import { LayoutState, UserDevice } from '../layouts/records';
+import formatNumber from '../../helpers/formatNumber';
+import SortBox, { PAPER_LIST_SORT_TYPES } from '../common/sortBox';
+import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
+import PaperShowKeyword from '../paperShow/components/keyword';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+import restoreScroll from '../../helpers/scrollRestoration';
+import ErrorPage from '../error/errorPage';
+import { JournalShowMatchParams } from './types';
+const styles = require('./journalShow.scss');
 
 function mapStateToProps(state: AppState) {
   return {
@@ -182,7 +182,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
               </div>
             </div>
           </div>
-          <Footer containerStyle={{ backgroundColor: "white" }} />
+          <Footer containerStyle={{ backgroundColor: 'white' }} />
         </div>
       );
     } else {
@@ -212,10 +212,10 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
         <a
           onClick={() => {
             ActionTicketManager.trackTicket({
-              pageType: "journalShow",
-              actionType: "fire",
-              actionArea: "journalShow",
-              actionTag: "journalHomepage",
+              pageType: 'journalShow',
+              actionType: 'fire',
+              actionArea: 'journalShow',
+              actionTag: 'journalHomepage',
               actionLabel: String(journal.id),
             });
           }}
@@ -234,7 +234,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
   private getSortBox = () => {
     const queryParams = this.getQueryParamsObject();
     const shouldExposeRelevanceOption = !!queryParams.q;
-    const sortOption = queryParams.s || "NEWEST_FIRST";
+    const sortOption = queryParams.s || 'NEWEST_FIRST';
 
     return (
       <SortBox
@@ -305,10 +305,10 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
     const nextQueryParams = { ...currentQueryParams, q: query, p: 1 };
 
     ActionTicketManager.trackTicket({
-      pageType: "journalShow",
-      actionType: "fire",
-      actionArea: "paperList",
-      actionTag: "queryInJournal",
+      pageType: 'journalShow',
+      actionType: 'fire',
+      actionArea: 'paperList',
+      actionTag: 'queryInJournal',
       actionLabel: query,
     });
 
@@ -322,7 +322,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
     const { journalShow, papers, currentUser } = this.props;
 
     const queryParams = this.getQueryParamsObject();
-    const query = SafeURIStringHandler.decode(queryParams.q || "");
+    const query = SafeURIStringHandler.decode(queryParams.q || '');
 
     if (journalShow.isLoadingPapers) {
       return (
@@ -380,7 +380,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
           currentPageIndex={journalShow.paperCurrentPage - 1}
           onItemClick={this.handleClickPage}
           wrapperStyle={{
-            margin: "12px 0",
+            margin: '12px 0',
           }}
         />
       );
@@ -392,7 +392,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
           currentPageIndex={journalShow.paperCurrentPage - 1}
           onItemClick={this.handleClickPage}
           wrapperStyle={{
-            margin: "24px 0",
+            margin: '24px 0',
           }}
         />
       );

@@ -1,17 +1,17 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { withRouter } from "react-router-dom";
-import { parse } from "qs";
-import * as Actions from "./actions";
-import { AppState } from "../../../reducers";
-import Icon from "../../../icons";
-import { closeDialog } from "../../dialog/actions";
-import { EmailVerificationContainerProps, EmailVerificationParams } from "./types";
-import { trackDialogView } from "../../../helpers/handleGA";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import alertToast from "../../../helpers/makePlutoToastAction";
-const styles = require("./emailVerification.scss");
+import * as React from 'react';
+import { connect } from 'react-redux';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { withRouter } from 'react-router-dom';
+import { parse } from 'qs';
+import * as Actions from './actions';
+import { AppState } from '../../../reducers';
+import Icon from '../../../icons';
+import { closeDialog } from '../../dialog/actions';
+import { EmailVerificationContainerProps, EmailVerificationParams } from './types';
+import { trackDialogView } from '../../../helpers/handleGA';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import alertToast from '../../../helpers/makePlutoToastAction';
+const styles = require('./emailVerification.scss');
 
 export function mapStateToProps(state: AppState) {
   return {
@@ -32,10 +32,10 @@ class EmailVerification extends React.PureComponent<EmailVerificationContainerPr
       this.verifyToken(searchToken);
     } else {
       alertToast({
-        type: "error",
+        type: 'error',
         message: "Email verifying token or email doesn't exist.",
       });
-      history.push("/");
+      history.push('/');
     }
   }
 
@@ -51,7 +51,7 @@ class EmailVerification extends React.PureComponent<EmailVerificationContainerPr
         <div className={styles.emailVerificationContainer}>
           <div
             className={styles.innerContainer}
-            style={{ color: "#6096ff", height: "470px", display: "flex", justifyContent: "center" }}
+            style={{ color: '#6096ff', height: '470px', display: 'flex', justifyContent: 'center' }}
           >
             <CircularProgress size={50} thickness={4} color="inherit" />
           </div>
@@ -114,7 +114,7 @@ class EmailVerification extends React.PureComponent<EmailVerificationContainerPr
     const searchEmail = searchParams.email;
     if (searchEmail) {
       await dispatch(Actions.resendVerificationEmail(searchEmail, !!handleChangeDialogType));
-      history.push("/");
+      history.push('/');
     }
   };
 
@@ -124,9 +124,9 @@ class EmailVerification extends React.PureComponent<EmailVerificationContainerPr
 
     if (isDialog) {
       dispatch(closeDialog());
-      trackDialogView("emailConfirmClose");
+      trackDialogView('emailConfirmClose');
     } else {
-      history.push("/");
+      history.push('/');
     }
   };
 }

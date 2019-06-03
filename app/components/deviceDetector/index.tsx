@@ -1,11 +1,11 @@
-import * as React from "react";
-import { throttle, Cancelable } from "lodash";
-import { connect, DispatchProp } from "react-redux";
-import EnvChecker from "../../helpers/envChecker";
-import UserAgentHelper from "../../helpers/userAgentHelper";
-import { AppState } from "../../reducers";
-import { LayoutState, UserDevice } from "../layouts/records";
-import { setDeviceToMobile, setDeviceToDesktop, setDeviceToTablet } from "../layouts/actions";
+import * as React from 'react';
+import { throttle, Cancelable } from 'lodash';
+import { connect, DispatchProp } from 'react-redux';
+import EnvChecker from '../../helpers/envChecker';
+import UserAgentHelper from '../../helpers/userAgentHelper';
+import { AppState } from '../../reducers';
+import { LayoutState, UserDevice } from '../layouts/records';
+import { setDeviceToMobile, setDeviceToDesktop, setDeviceToTablet } from '../layouts/actions';
 
 const MOBILE_WIDTH = 768;
 const TABLET_WIDTH = 1024;
@@ -34,17 +34,17 @@ class DeviceDetector extends React.PureComponent<DeviceDetectorProps, {}> {
       const { dispatch } = this.props;
       const device = UserAgentHelper.getDevice();
 
-      if (device && device.type === "mobile") {
+      if (device && device.type === 'mobile') {
         dispatch!(setDeviceToMobile());
       }
 
-      window.addEventListener("resize", this.throttledHandlingWindowSizeChange);
+      window.addEventListener('resize', this.throttledHandlingWindowSizeChange);
     }
   }
 
   public componentWillUnmount() {
     if (!EnvChecker.isOnServer()) {
-      window.removeEventListener("resize", this.throttledHandlingWindowSizeChange);
+      window.removeEventListener('resize', this.throttledHandlingWindowSizeChange);
     }
   }
 

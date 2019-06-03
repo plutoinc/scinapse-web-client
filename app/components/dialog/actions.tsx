@@ -1,17 +1,17 @@
-import { CancelToken } from "axios";
-import { Dispatch } from "react-redux";
-import { ActionCreators, ACTION_TYPES } from "../../actions/actionTypes";
-import { GLOBAL_DIALOG_TYPE } from "./reducer";
-import PaperAPI, { GetCitationTextParams } from "../../api/paper";
-import MemberAPI from "../../api/member";
+import { CancelToken } from 'axios';
+import { Dispatch } from 'react-redux';
+import { ActionCreators, ACTION_TYPES } from '../../actions/actionTypes';
+import { GLOBAL_DIALOG_TYPE } from './reducer';
+import PaperAPI, { GetCitationTextParams } from '../../api/paper';
+import MemberAPI from '../../api/member';
 import CollectionAPI, {
   PostCollectionParams,
   AddPaperToCollectionParams,
   RemovePapersFromCollectionParams,
   UpdateCollectionParams,
-} from "../../api/collection";
-import { AvailableCitationType } from "../../containers/paperShow/records";
-import PlutoAxios from "../../api/pluto";
+} from '../../api/collection';
+import { AvailableCitationType } from '../../containers/paperShow/records';
+import PlutoAxios from '../../api/pluto';
 
 export interface OpenGlobalDialogParams {
   type: GLOBAL_DIALOG_TYPE;
@@ -107,7 +107,7 @@ export function postNewCollection(params: PostCollectionParams, targetPaperId?: 
         dispatch({
           type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
           payload: {
-            type: "success",
+            type: 'success',
             message: "Saved to 'Read Later' Collection!",
           },
         });

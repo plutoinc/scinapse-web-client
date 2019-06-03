@@ -1,13 +1,13 @@
-import * as React from "react";
-import * as classNames from "classnames";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { Paper } from "../../../model/paper";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import ScinapseButtonFactory, { ScinapseButtonType } from "../../common/scinapseButton/scinapseButtonFactory";
-import SourceURLPopover from "../../common/sourceURLPopover";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-import Icon from "../../../icons";
-const styles = require("./pdfSourceButton.scss");
+import * as React from 'react';
+import * as classNames from 'classnames';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { Paper } from '../../../model/paper';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import ScinapseButtonFactory, { ScinapseButtonType } from '../../common/scinapseButton/scinapseButtonFactory';
+import SourceURLPopover from '../../common/sourceURLPopover';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import Icon from '../../../icons';
+const styles = require('./pdfSourceButton.scss');
 
 interface SourceButtonProps {
   paper: Paper;
@@ -22,10 +22,10 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
 
   function handleClickSource() {
     ActionTicketManager.trackTicket({
-      pageType: "paperShow",
-      actionType: "fire",
-      actionArea: "paperDescription",
-      actionTag: "source",
+      pageType: 'paperShow',
+      actionType: 'fire',
+      actionArea: 'paperDescription',
+      actionTag: 'source',
       actionLabel: String(paper.id),
     });
   }
@@ -44,13 +44,13 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
   const sourceUrl = paper.doi ? `https://doi.org/${paper.doi}` : paper.urls[0].url;
 
   const btnStyle: React.CSSProperties = {
-    height: "100%",
-    width: "36px",
-    borderLeft: "solid 1px #f1f3f6",
-    borderRight: "solid 1px #d8dde7",
+    height: '100%',
+    width: '36px',
+    borderLeft: 'solid 1px #f1f3f6',
+    borderRight: 'solid 1px #d8dde7',
   };
 
-  const reverseBtnStyle: React.CSSProperties = { height: "100%", width: "36px", borderLeft: "solid 1px #6096ff" };
+  const reverseBtnStyle: React.CSSProperties = { height: '100%', width: '36px', borderLeft: 'solid 1px #6096ff' };
   const Button = ScinapseButtonFactory(ScinapseButtonType.buttonWithArrow);
 
   return (
@@ -70,13 +70,13 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
             textWrapperClassName={styles.sourceButtonTextWrapper}
             linkProps={{
               href: sourceUrl,
-              target: "_blank",
-              rel: "noopener",
+              target: '_blank',
+              rel: 'noopener',
               className: styles.linkClassName,
               onClick: e => {
                 e.preventDefault();
                 handleClickSource();
-                window.open(sourceUrl, "_blank");
+                window.open(sourceUrl, '_blank');
               },
             }}
             dropdownBtnProps={{

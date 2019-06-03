@@ -1,9 +1,9 @@
-import * as React from "react";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { Filter } from "../../../api/member";
-import Icon from "../../../icons";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-const styles = require("./savedFilterItem.scss");
+import * as React from 'react';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { Filter } from '../../../api/member';
+import Icon from '../../../icons';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+const styles = require('./savedFilterItem.scss');
 
 interface SavedFilterItemProps {
   searchInput: string;
@@ -21,10 +21,10 @@ const SavedFilterItem: React.FunctionComponent<SavedFilterItemProps> = props => 
       onClick={() => {
         onClickFilterItem(searchInput, sort, savedFilter);
         ActionTicketManager.trackTicket({
-          pageType: "searchResult",
-          actionType: "fire",
-          actionArea: "filter",
-          actionTag: "applySavedFilter",
+          pageType: 'searchResult',
+          actionType: 'fire',
+          actionArea: 'filter',
+          actionTag: 'applySavedFilter',
           actionLabel: JSON.stringify(savedFilter.filter),
         });
       }}

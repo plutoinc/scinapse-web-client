@@ -1,4 +1,4 @@
-import { ACTION_TYPES } from "../actions/actionTypes";
+import { ACTION_TYPES } from '../actions/actionTypes';
 
 export interface Configuration
   extends Readonly<{
@@ -10,7 +10,7 @@ export interface Configuration
 export const CONFIGURATION_INITIAL_STATE: Configuration = {
   succeedAPIFetchAtServer: false,
   renderedAtClient: false,
-  initialPageType: "unknown",
+  initialPageType: 'unknown',
 };
 
 export function reducer(state: Configuration = CONFIGURATION_INITIAL_STATE, action: ReduxAction<any>): Configuration {

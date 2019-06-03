@@ -1,45 +1,45 @@
-import * as React from "react";
-import axios from "axios";
-import { Link, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import * as Cookies from "js-cookie";
-import { denormalize } from "normalizr";
-import MenuItem from "@material-ui/core/MenuItem";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import NoSsr from "@material-ui/core/NoSsr";
-import * as addDays from "date-fns/add_days";
-import * as isAfter from "date-fns/is_after";
-import TopToastBar from "../topToastBar";
-import BubblePopover from "../common/bubblePopover";
-import { AppState } from "../../reducers";
-import Icon from "../../icons";
-import { signOut } from "../auth/actions";
-import { trackDialogView } from "../../helpers/handleGA";
-import { HeaderProps } from "./types/header";
-import { withStyles } from "../../helpers/withStylesHelper";
-import EnvChecker from "../../helpers/envChecker";
-import { UserDevice } from "./records";
-import ActionTicketManager from "../../helpers/actionTicketManager";
-import { getCurrentPageType } from "../locationListener";
-import SearchQueryInput from "../common/InputWithSuggestionList/searchQueryInput";
-import getQueryParamsObject from "../../helpers/getQueryParamsObject";
-import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
-import GlobalDialogManager from "../../helpers/globalDialogManager";
-import { HOME_PATH } from "../../constants/routes";
-import { ACTION_TYPES } from "../../actions/actionTypes";
-import { CurrentUser } from "../../model/currentUser";
-import { FilterObject } from "../../helpers/papersQueryFormatter";
-import { getCollections } from "../collections/actions";
-import { collectionSchema } from "../../model/collection";
-import { getMemoizedPaper } from "../../containers/paperShow/select";
-import ResearchHistory from "../researchHistory";
-import SuddenAlert from "../preNoted/suddenAlert";
-import { getUserGroupName } from "../../helpers/abTestHelper";
-import { SIGN_BANNER_AT_PAPER_SHOW_TEST } from "../../constants/abTestGlobalValue";
-const styles = require("./header.scss");
+import * as React from 'react';
+import axios from 'axios';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as Cookies from 'js-cookie';
+import { denormalize } from 'normalizr';
+import MenuItem from '@material-ui/core/MenuItem';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import NoSsr from '@material-ui/core/NoSsr';
+import * as addDays from 'date-fns/add_days';
+import * as isAfter from 'date-fns/is_after';
+import TopToastBar from '../topToastBar';
+import BubblePopover from '../common/bubblePopover';
+import { AppState } from '../../reducers';
+import Icon from '../../icons';
+import { signOut } from '../auth/actions';
+import { trackDialogView } from '../../helpers/handleGA';
+import { HeaderProps } from './types/header';
+import { withStyles } from '../../helpers/withStylesHelper';
+import EnvChecker from '../../helpers/envChecker';
+import { UserDevice } from './records';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+import { getCurrentPageType } from '../locationListener';
+import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
+import getQueryParamsObject from '../../helpers/getQueryParamsObject';
+import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
+import GlobalDialogManager from '../../helpers/globalDialogManager';
+import { HOME_PATH } from '../../constants/routes';
+import { ACTION_TYPES } from '../../actions/actionTypes';
+import { CurrentUser } from '../../model/currentUser';
+import { FilterObject } from '../../helpers/papersQueryFormatter';
+import { getCollections } from '../collections/actions';
+import { collectionSchema } from '../../model/collection';
+import { getMemoizedPaper } from '../../containers/paperShow/select';
+import ResearchHistory from '../researchHistory';
+import SuddenAlert from '../preNoted/suddenAlert';
+import { getUserGroupName } from '../../helpers/abTestHelper';
+import { SIGN_BANNER_AT_PAPER_SHOW_TEST } from '../../constants/abTestGlobalValue';
+const styles = require('./header.scss');
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
-const LAST_UPDATE_DATE = "2019-01-30T08:13:33.079Z";
+const LAST_UPDATE_DATE = '2019-01-30T08:13:33.079Z';
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 10;
 let ticking = false;
 
@@ -68,7 +68,7 @@ const UserInformation: React.FunctionComponent<{ user: CurrentUser }> = props =>
 
   return (
     <div className={styles.userInfoWrapper}>
-      <div className={styles.username}>{`${user.firstName} ${user.lastName || ""}`}</div>
+      <div className={styles.username}>{`${user.firstName} ${user.lastName || ''}`}</div>
       <div className={styles.email}>{user.email}</div>
     </div>
   );
@@ -88,20 +88,20 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
       isUserDropdownOpen: false,
       userDropdownAnchorElement: this.userDropdownAnchorRef,
       openTopToast: false,
-      searchKeyword: SafeURIStringHandler.decode(rawQueryParamsObj.query || ""),
+      searchKeyword: SafeURIStringHandler.decode(rawQueryParamsObj.query || ''),
     };
   }
 
   public componentDidMount() {
     if (!EnvChecker.isOnServer()) {
-      window.addEventListener("scroll", this.handleScrollEvent, { passive: true });
+      window.addEventListener('scroll', this.handleScrollEvent, { passive: true });
       this.checkTopToast();
     }
   }
 
   public componentWillUnmount() {
     if (!EnvChecker.isOnServer()) {
-      window.removeEventListener("scroll", this.handleScrollEvent);
+      window.removeEventListener('scroll', this.handleScrollEvent);
     }
   }
 
@@ -138,7 +138,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     const comparisonDate = addDays(old, 5);
     const now = new Date();
     const updateIsStaled = isAfter(now, comparisonDate);
-    const alreadyOpenedTopToast = !!Cookies.get("alreadyOpenedTopToast");
+    const alreadyOpenedTopToast = !!Cookies.get('alreadyOpenedTopToast');
     const shouldOpenToast = !updateIsStaled && !alreadyOpenedTopToast;
 
     if (shouldOpenToast) {
@@ -159,7 +159,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private handleCloseTopToast = () => {
-    Cookies.set("alreadyOpenedTopToast", "1", { expires: 3 });
+    Cookies.set('alreadyOpenedTopToast', '1', { expires: 3 });
     this.setState(prevState => ({ ...prevState, openTopToast: false }));
   };
 
@@ -224,16 +224,16 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           onClick={() =>
             ActionTicketManager.trackTicket({
               pageType: getCurrentPageType(),
-              actionType: "fire",
-              actionArea: "topBar",
-              actionTag: "clickLogo",
+              actionType: 'fire',
+              actionArea: 'topBar',
+              actionTag: 'clickLogo',
               actionLabel: null,
             })
           }
           className={styles.headerLogo}
           aria-label="Scinapse header logo"
         >
-          <Icon icon={"SCINAPSE_LOGO"} />
+          <Icon icon={'SCINAPSE_LOGO'} />
         </Link>
       </NoSsr>
     );
@@ -243,11 +243,11 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     const { location, articleSearchState } = this.props;
     const isShowSearchFormContainer = location.pathname !== HOME_PATH;
 
-    let currentQuery = "";
+    let currentQuery = '';
     let currentFilter: FilterObject = {};
-    if (location.pathname === "/search") {
+    if (location.pathname === '/search') {
       const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
-      currentQuery = SafeURIStringHandler.decode(rawQueryParamsObj.query || "");
+      currentQuery = SafeURIStringHandler.decode(rawQueryParamsObj.query || '');
     }
 
     if (!!articleSearchState.selectedFilter) {
@@ -256,7 +256,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
     return (
       <NoSsr>
-        <div style={!isShowSearchFormContainer ? { visibility: "hidden" } : {}} className={styles.searchFormContainer}>
+        <div style={!isShowSearchFormContainer ? { visibility: 'hidden' } : {}} className={styles.searchFormContainer}>
           <SearchQueryInput
             wrapperClassName={styles.searchWrapper}
             listWrapperClassName={styles.suggestionListWrapper}
@@ -281,7 +281,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
       dispatch({
         type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
         payload: {
-          type: "error",
+          type: 'error',
           message: `Failed to sign out.`,
         },
       });
@@ -292,7 +292,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     GlobalDialogManager.openSignInDialog({
       authContext: {
         pageType: getCurrentPageType(),
-        actionArea: "topBar",
+        actionArea: 'topBar',
         actionLabel: null,
       },
       isBlocked: false,
@@ -303,7 +303,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     GlobalDialogManager.openSignUpDialog({
       authContext: {
         pageType: getCurrentPageType(),
-        actionArea: "topBar",
+        actionArea: 'topBar',
         actionLabel: null,
       },
       isBlocked: false,
@@ -380,9 +380,9 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             this.handleRequestCloseUserDropdown();
             ActionTicketManager.trackTicket({
               pageType: getCurrentPageType(),
-              actionType: "fire",
-              actionArea: "topBar",
-              actionTag: "collectionShow",
+              actionType: 'fire',
+              actionArea: 'topBar',
+              actionTag: 'collectionShow',
               actionLabel: String(myCollectionsState.collectionIds[0]),
             });
           }}
@@ -440,13 +440,13 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           <div
             onClick={() => {
               this.handleOpenSignIn();
-              trackDialogView("headerSignInOpen");
+              trackDialogView('headerSignInOpen');
               ActionTicketManager.trackTicket({
                 pageType: getCurrentPageType(),
-                actionType: "fire",
-                actionArea: "topBar",
-                actionTag: "signInPopup",
-                actionLabel: "topBar",
+                actionType: 'fire',
+                actionArea: 'topBar',
+                actionTag: 'signInPopup',
+                actionLabel: 'topBar',
               });
             }}
             className={styles.signInButton}
@@ -456,13 +456,13 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           <div
             onClick={() => {
               this.handleOpenSignUp();
-              trackDialogView("headerSignUpOpen");
+              trackDialogView('headerSignUpOpen');
               ActionTicketManager.trackTicket({
                 pageType: getCurrentPageType(),
-                actionType: "fire",
-                actionArea: "topBar",
-                actionTag: "signUpPopup",
-                actionLabel: "topBar",
+                actionType: 'fire',
+                actionArea: 'topBar',
+                actionTag: 'signUpPopup',
+                actionLabel: 'topBar',
               });
             }}
             className={styles.signUpButton}
@@ -470,7 +470,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             Get Started
           </div>
           <SuddenAlert
-            open={getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TEST) === "suddenAlert"}
+            open={getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TEST) === 'suddenAlert'}
             anchorEl={this.state.userDropdownAnchorElement}
             placement="bottom-end"
             popperOptions={{ positionFixed: true }}

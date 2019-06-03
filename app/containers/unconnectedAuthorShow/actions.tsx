@@ -1,11 +1,11 @@
-import axios, { CancelToken } from "axios";
-import { Dispatch } from "react-redux";
-import AuthorAPI, { ConnectAuthorParams } from "../../api/author";
-import ProfileAPI from "../../api/profile";
-import alertToast from "../../helpers/makePlutoToastAction";
-import { ActionCreators } from "../../actions/actionTypes";
-import { GetAuthorPapersParams } from "../../api/author/types";
-import PlutoAxios from "../../api/pluto";
+import axios, { CancelToken } from 'axios';
+import { Dispatch } from 'react-redux';
+import AuthorAPI, { ConnectAuthorParams } from '../../api/author';
+import ProfileAPI from '../../api/profile';
+import alertToast from '../../helpers/makePlutoToastAction';
+import { ActionCreators } from '../../actions/actionTypes';
+import { GetAuthorPapersParams } from '../../api/author/types';
+import PlutoAxios from '../../api/pluto';
 
 export function getProfile(authorId: number, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
@@ -17,8 +17,8 @@ export function getProfile(authorId: number, cancelToken: CancelToken) {
     } catch (err) {
       if (!axios.isCancel(err)) {
         alertToast({
-          type: "error",
-          message: "Failed to get profile information",
+          type: 'error',
+          message: 'Failed to get profile information',
         });
       }
     }
@@ -35,8 +35,8 @@ export function getCoAuthors(authorId: number, cancelToken: CancelToken) {
     } catch (err) {
       if (!axios.isCancel(err)) {
         alertToast({
-          type: "error",
-          message: "Failed to get co-authors information",
+          type: 'error',
+          message: 'Failed to get co-authors information',
         });
       }
     }
@@ -59,7 +59,7 @@ export function getAuthor(authorId: number, cancelToken: CancelToken) {
         const error = PlutoAxios.getGlobalError(err);
         dispatch(ActionCreators.failedToGetAuthor());
         alertToast({
-          type: "error",
+          type: 'error',
           message: error.message,
         });
         throw err;
@@ -91,7 +91,7 @@ export function getAuthorPapers(params: GetAuthorPapersParams) {
     } catch (err) {
       dispatch(ActionCreators.failedToGetAuthorPapers());
       alertToast({
-        type: "error",
+        type: 'error',
         message: "Failed to get author's papers information",
       });
     }
@@ -116,8 +116,8 @@ export function connectAuthor(params: ConnectAuthorParams) {
       console.error(error);
       dispatch(ActionCreators.failToConnectAuthor());
       alertToast({
-        type: "error",
-        message: "Had an error to connect author",
+        type: 'error',
+        message: 'Had an error to connect author',
       });
     }
   };

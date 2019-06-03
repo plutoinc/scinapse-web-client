@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Dispatch, connect } from "react-redux";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { closeDialog } from "../../dialog/actions";
-import Icon from "../../../icons";
-const styles = require("./authButton.scss");
+import * as React from 'react';
+import { Dispatch, connect } from 'react-redux';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { closeDialog } from '../../dialog/actions';
+import Icon from '../../../icons';
+const styles = require('./authButton.scss');
 
 interface DialogCloseButtonProps {
   dispatch: Dispatch<any>;

@@ -1,15 +1,15 @@
-import * as React from "react";
-import { connect, Dispatch } from "react-redux";
-import { denormalize } from "normalizr";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { AppState } from "../../../reducers";
-import { collectionSchema, Collection } from "../../../model/collection";
-import { CurrentUser } from "../../../model/currentUser";
-import ButtonSpinner from "../../common/spinner/buttonSpinner";
-import { MyCollectionsState } from "../../../containers/paperShowCollectionControlButton/reducer";
-import CollectionNoteItem from "./collectionNoteItem";
-import { staleUpdatedCollectionNote, updatePaperNote } from "../../../actions/collection";
-const styles = require("./collectionNoteList.scss");
+import * as React from 'react';
+import { connect, Dispatch } from 'react-redux';
+import { denormalize } from 'normalizr';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { AppState } from '../../../reducers';
+import { collectionSchema, Collection } from '../../../model/collection';
+import { CurrentUser } from '../../../model/currentUser';
+import ButtonSpinner from '../../common/spinner/buttonSpinner';
+import { MyCollectionsState } from '../../../containers/paperShowCollectionControlButton/reducer';
+import CollectionNoteItem from './collectionNoteItem';
+import { staleUpdatedCollectionNote, updatePaperNote } from '../../../actions/collection';
+const styles = require('./collectionNoteList.scss');
 
 export interface CollectionNoteListProps
   extends Readonly<{
@@ -33,7 +33,7 @@ const CollectionNoteList: React.SFC<CollectionNoteListProps> = props => {
   const handleDeleteNote = (collection: Collection) => {
     const { dispatch, paperId } = props;
 
-    if (confirm("Are you SURE to remove this memo?")) {
+    if (confirm('Are you SURE to remove this memo?')) {
       dispatch(
         updatePaperNote({
           paperId,

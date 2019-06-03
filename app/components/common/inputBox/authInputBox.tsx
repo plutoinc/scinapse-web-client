@@ -1,8 +1,8 @@
-import * as React from "react";
-import { FieldProps } from "formik";
-import Icon from "../../../icons";
-import { withStyles } from "../../../helpers/withStylesHelper";
-const styles = require("./authInputBox.scss");
+import * as React from 'react';
+import { FieldProps } from 'formik';
+import Icon from '../../../icons';
+import { withStyles } from '../../../helpers/withStylesHelper';
+const styles = require('./authInputBox.scss');
 
 interface AuthInputBoxProps extends React.HTMLProps<HTMLInputElement> {
   iconName: string;

@@ -1,13 +1,13 @@
-import * as React from "react";
-import { Dispatch, connect } from "react-redux";
-import { Experience } from "../../model/profile";
-import { withStyles } from "../../helpers/withStylesHelper";
-import Icon from "../../icons";
-import ExperienceForm, { ExperienceFormState } from "./experienceForm";
-import PlutoAxios from "../../api/pluto";
-import alertToast from "../../helpers/makePlutoToastAction";
-import { updateAuthorCvInfo } from "../../actions/author";
-const styles = require("./authorCVItem.scss");
+import * as React from 'react';
+import { Dispatch, connect } from 'react-redux';
+import { Experience } from '../../model/profile';
+import { withStyles } from '../../helpers/withStylesHelper';
+import Icon from '../../icons';
+import ExperienceForm, { ExperienceFormState } from './experienceForm';
+import PlutoAxios from '../../api/pluto';
+import alertToast from '../../helpers/makePlutoToastAction';
+import { updateAuthorCvInfo } from '../../actions/author';
+const styles = require('./authorCVItem.scss');
 
 interface ExperienceItemState {
   isEditMode: boolean;
@@ -47,13 +47,13 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
     } = experience;
     return isEditMode ? (
       <ExperienceForm
-        wrapperStyle={{ display: "inline-flex", position: "relative" }}
+        wrapperStyle={{ display: 'inline-flex', position: 'relative' }}
         inputStyle={{
-          color: "#666d7c",
-          fontSize: "13px",
-          lineHeight: "1.54",
-          fontFamily: "Roboto",
-          padding: "8px",
+          color: '#666d7c',
+          fontSize: '13px',
+          lineHeight: '1.54',
+          fontFamily: 'Roboto',
+          padding: '8px',
         }}
         handleClose={this.handelToggleExperienceEditForm}
         isOpen={true}
@@ -75,7 +75,7 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
       <div className={styles.itemWrapper}>
         <div className={styles.dateSectionWrapper}>
           <span className={styles.dateContent}>
-            {startDate} - {endDate ? endDate : "Present"}
+            {startDate} - {endDate ? endDate : 'Present'}
           </span>
         </div>
         <div className={styles.contentWrapper}>
@@ -123,7 +123,7 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
 
     try {
       await dispatch(
-        updateAuthorCvInfo("experiences", authorId, {
+        updateAuthorCvInfo('experiences', authorId, {
           ...params,
           endDate: params.isCurrent ? null : params.endDate,
         })
@@ -133,8 +133,8 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
       const error = PlutoAxios.getGlobalError(err);
       console.error(error);
       alertToast({
-        type: "error",
-        message: "Had an error to add experience data.",
+        type: 'error',
+        message: 'Had an error to add experience data.',
       });
     }
   };

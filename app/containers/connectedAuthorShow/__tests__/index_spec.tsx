@@ -1,23 +1,23 @@
-jest.mock("../../../api/author");
-jest.mock("react-truncate");
+jest.mock('../../../api/author');
+jest.mock('react-truncate');
 
-import * as React from "react";
-import * as renderer from "react-test-renderer";
-import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { generateMockStore } from "../../../__tests__/mockStore";
-import { initialState } from "../../../reducers";
-import ConnectedAuthorShow from "../../../containers/connectedAuthorShow";
-import { RAW } from "../../../__mocks__";
-import { AUTHOR_SHOW_PATH } from "../../../constants/routes";
-import { camelCaseKeys } from "../../../helpers/camelCaseKeys";
+import * as React from 'react';
+import * as renderer from 'react-test-renderer';
+import { Provider } from 'react-redux';
+import { MemoryRouter, Route } from 'react-router-dom';
+import { generateMockStore } from '../../../__tests__/mockStore';
+import { initialState } from '../../../reducers';
+import ConnectedAuthorShow from '../../../containers/connectedAuthorShow';
+import { RAW } from '../../../__mocks__';
+import { AUTHOR_SHOW_PATH } from '../../../constants/routes';
+import { camelCaseKeys } from '../../../helpers/camelCaseKeys';
 
-describe.skip("ConnectedAuthorShow Component", () => {
+describe.skip('ConnectedAuthorShow Component', () => {
   const mappedAuthor = camelCaseKeys(RAW.AUTHOR);
   let mockStore = generateMockStore(initialState);
   let mockState: any;
 
-  describe("when there is no all publications", () => {
+  describe('when there is no all publications', () => {
     beforeEach(() => {
       mockStore.clearActions();
 
@@ -34,18 +34,18 @@ describe.skip("ConnectedAuthorShow Component", () => {
         },
         entities: {
           ...initialState.entities,
-          authors: { "2258681040": mappedAuthor },
+          authors: { '2258681040': mappedAuthor },
         },
       };
 
       mockStore = generateMockStore(mockState);
     });
 
-    it("should render no publications at the content section", () => {
+    it('should render no publications at the content section', () => {
       const tree = renderer
         .create(
           <Provider store={mockStore}>
-            <MemoryRouter initialIndex={0} initialEntries={["/authors/2258681040"]}>
+            <MemoryRouter initialIndex={0} initialEntries={['/authors/2258681040']}>
               <Route path={AUTHOR_SHOW_PATH}>
                 <ConnectedAuthorShow />
               </Route>
@@ -57,7 +57,7 @@ describe.skip("ConnectedAuthorShow Component", () => {
     });
   });
 
-  describe("when all publications exist", () => {
+  describe('when all publications exist', () => {
     beforeEach(() => {
       mockStore.clearActions();
 
@@ -74,7 +74,7 @@ describe.skip("ConnectedAuthorShow Component", () => {
         },
         entities: {
           ...initialState.entities,
-          authors: { "2258681040": mappedAuthor },
+          authors: { '2258681040': mappedAuthor },
           papers: { [`${RAW.PAPER.id}`]: RAW.PAPER },
         },
       };
@@ -82,11 +82,11 @@ describe.skip("ConnectedAuthorShow Component", () => {
       mockStore = generateMockStore(mockState);
     });
 
-    it.skip("should render content correctly", () => {
+    it.skip('should render content correctly', () => {
       const tree = renderer
         .create(
           <Provider store={mockStore}>
-            <MemoryRouter initialIndex={0} initialEntries={["/authors/2258681040"]}>
+            <MemoryRouter initialIndex={0} initialEntries={['/authors/2258681040']}>
               <Route path={AUTHOR_SHOW_PATH}>
                 <ConnectedAuthorShow />
               </Route>
@@ -98,7 +98,7 @@ describe.skip("ConnectedAuthorShow Component", () => {
     });
   });
 
-  describe("when try to load all publications", () => {
+  describe('when try to load all publications', () => {
     beforeEach(() => {
       mockStore.clearActions();
 
@@ -115,18 +115,18 @@ describe.skip("ConnectedAuthorShow Component", () => {
         },
         entities: {
           ...initialState.entities,
-          authors: { "2258681040": mappedAuthor },
+          authors: { '2258681040': mappedAuthor },
         },
       };
 
       mockStore = generateMockStore(mockState);
     });
 
-    it("should render loading spinner correctly", () => {
+    it('should render loading spinner correctly', () => {
       const tree = renderer
         .create(
           <Provider store={mockStore}>
-            <MemoryRouter initialIndex={0} initialEntries={["/authors/2258681040"]}>
+            <MemoryRouter initialIndex={0} initialEntries={['/authors/2258681040']}>
               <Route path={AUTHOR_SHOW_PATH}>
                 <ConnectedAuthorShow />
               </Route>

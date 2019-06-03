@@ -1,35 +1,35 @@
-import * as React from "react";
-import axios from "axios";
-import { denormalize } from "normalizr";
-import { Helmet } from "react-helmet";
-import { Dispatch, connect } from "react-redux";
-import DesktopPagination from "../../components/common/desktopPagination";
-import MobilePagination from "../../components/common/mobilePagination";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { AuthorShowState } from "./reducer";
-import { Configuration } from "../../reducers/configuration";
-import { CurrentUser } from "../../model/currentUser";
-import { Author, authorSchema } from "../../model/author/author";
-import { Paper, paperSchema } from "../../model/paper";
-import SortBox, { PAPER_LIST_SORT_TYPES } from "../../components/common/sortBox";
-import PaperItem from "../../components/common/paperItem";
-import { getAuthorPapers, toggleConnectProfileDialog, connectAuthor } from "./actions";
-import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author";
-import ArticleSpinner from "../../components/common/spinner/articleSpinner";
-import CoAuthor from "../../components/common/coAuthor";
-import ModifyProfile, { ModifyProfileFormState } from "../../components/dialog/components/modifyProfile";
-import TransparentButton from "../../components/common/transparentButton";
-import { LayoutState, UserDevice } from "../../components/layouts/records";
-import Footer from "../../components/layouts/footer";
-import AuthorShowHeader from "../../components/authorShowHeader";
-import { SuggestAffiliation } from "../../api/suggest";
-import { Affiliation } from "../../model/affiliation";
-import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
-import { AppState } from "../../reducers";
-import { fetchAuthorPapers } from "../../actions/author";
-import EnvChecker from "../../helpers/envChecker";
-import ErrorPage from "../../components/error/errorPage";
-const styles = require("./authorShow.scss");
+import * as React from 'react';
+import axios from 'axios';
+import { denormalize } from 'normalizr';
+import { Helmet } from 'react-helmet';
+import { Dispatch, connect } from 'react-redux';
+import DesktopPagination from '../../components/common/desktopPagination';
+import MobilePagination from '../../components/common/mobilePagination';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { AuthorShowState } from './reducer';
+import { Configuration } from '../../reducers/configuration';
+import { CurrentUser } from '../../model/currentUser';
+import { Author, authorSchema } from '../../model/author/author';
+import { Paper, paperSchema } from '../../model/paper';
+import SortBox, { PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
+import PaperItem from '../../components/common/paperItem';
+import { getAuthorPapers, toggleConnectProfileDialog, connectAuthor } from './actions';
+import { DEFAULT_AUTHOR_PAPERS_SIZE } from '../../api/author';
+import ArticleSpinner from '../../components/common/spinner/articleSpinner';
+import CoAuthor from '../../components/common/coAuthor';
+import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
+import TransparentButton from '../../components/common/transparentButton';
+import { LayoutState, UserDevice } from '../../components/layouts/records';
+import Footer from '../../components/layouts/footer';
+import AuthorShowHeader from '../../components/authorShowHeader';
+import { SuggestAffiliation } from '../../api/suggest';
+import { Affiliation } from '../../model/affiliation';
+import { AUTH_LEVEL, blockUnverifiedUser } from '../../helpers/checkAuthDialog';
+import { AppState } from '../../reducers';
+import { fetchAuthorPapers } from '../../actions/author';
+import EnvChecker from '../../helpers/envChecker';
+import ErrorPage from '../../components/error/errorPage';
+const styles = require('./authorShow.scss');
 
 export interface AuthorShowMatchParams {
   authorId: string;
@@ -73,7 +73,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
     if (authorShow.isLoadingPage) {
       return (
         <div className={styles.paperShowWrapper}>
-          <ArticleSpinner style={{ margin: "200px auto" }} />
+          <ArticleSpinner style={{ margin: '200px auto' }} />
         </div>
       );
     }
@@ -94,14 +94,14 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
       itsMeButton = (
         <TransparentButton
           style={{
-            height: "36px",
-            fontWeight: "bold",
-            padding: "0 16px 0 8px",
+            height: '36px',
+            fontWeight: 'bold',
+            padding: '0 16px 0 8px',
           }}
           iconStyle={{
-            marginRight: "8px",
-            width: "20px",
-            height: "20px",
+            marginRight: '8px',
+            width: '20px',
+            height: '20px',
           }}
           gaCategory="New Author Show"
           gaAction="Click It's me Button, Unconnected author"
@@ -182,10 +182,10 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
             handleSubmitForm={this.handleConnectAuthor}
             initialValues={{
               authorName: author.name,
-              currentAffiliation: author.lastKnownAffiliation || "",
-              bio: author.bio || "",
-              website: author.webPage || "",
-              email: currentUser.isLoggedIn ? currentUser.email : "",
+              currentAffiliation: author.lastKnownAffiliation || '',
+              bio: author.bio || '',
+              website: author.webPage || '',
+              email: currentUser.isLoggedIn ? currentUser.email : '',
               isEmailHidden: author.isEmailHidden || false,
             }}
           />
@@ -199,7 +199,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
     const { dispatch, author } = this.props;
 
     let affiliationId: number | null = null;
-    let affiliationName = "";
+    let affiliationName = '';
     if ((profile.currentAffiliation as Affiliation).name) {
       affiliationId = (profile.currentAffiliation as Affiliation).id;
       affiliationName = (profile.currentAffiliation as Affiliation).name;
@@ -227,8 +227,8 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
 
     const isBlocked = await blockUnverifiedUser({
       authLevel: AUTH_LEVEL.VERIFIED,
-      actionArea: "authorShow",
-      actionLabel: "toggleConnectProfileDialog",
+      actionArea: 'authorShow',
+      actionLabel: 'toggleConnectProfileDialog',
     });
 
     if (!isBlocked) {
@@ -246,7 +246,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
           currentPageIndex={authorShow.papersCurrentPage - 1}
           onItemClick={this.handleClickPagination}
           wrapperStyle={{
-            margin: "24px 0 40px 0",
+            margin: '24px 0 40px 0',
           }}
         />
       );
@@ -258,7 +258,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
           currentPageIndex={authorShow.papersCurrentPage - 1}
           onItemClick={this.handleClickPagination}
           wrapperStyle={{
-            margin: "24px 0 40px 0",
+            margin: '24px 0 40px 0',
           }}
         />
       );
@@ -281,38 +281,38 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
   private makeStructuredData = () => {
     const { author, coAuthors } = this.props;
 
-    const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "";
+    const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : '';
     const colleagues = coAuthors.map(coAuthor => {
       if (!coAuthor) {
         return null;
       }
-      const coAuthorAffiliation = coAuthor.lastKnownAffiliation ? coAuthor.lastKnownAffiliation.name : "";
+      const coAuthorAffiliation = coAuthor.lastKnownAffiliation ? coAuthor.lastKnownAffiliation.name : '';
       return {
-        "@context": "http://schema.org",
-        "@type": "Person",
+        '@context': 'http://schema.org',
+        '@type': 'Person',
         name: coAuthor.name,
         affiliation: {
           name: coAuthorAffiliation,
         },
-        description: `${coAuthorAffiliation ? `${coAuthorAffiliation},` : ""} citation: ${
+        description: `${coAuthorAffiliation ? `${coAuthorAffiliation},` : ''} citation: ${
           coAuthor.citationCount
         }, h-index: ${coAuthor.hindex}`,
-        mainEntityOfPage: "https://scinapse.io",
+        mainEntityOfPage: 'https://scinapse.io',
       };
     });
 
     const structuredData: any = {
-      "@context": "http://schema.org",
-      "@type": "Person",
+      '@context': 'http://schema.org',
+      '@type': 'Person',
       name: author.name,
       affiliation: {
         name: affiliationName,
       },
       colleague: colleagues,
-      description: `${affiliationName ? `${affiliationName},` : ""} citation: ${author.citationCount}, h-index: ${
+      description: `${affiliationName ? `${affiliationName},` : ''} citation: ${author.citationCount}, h-index: ${
         author.hindex
       }`,
-      mainEntityOfPage: "https://scinapse.io",
+      mainEntityOfPage: 'https://scinapse.io',
     };
 
     return structuredData;
@@ -320,8 +320,8 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
 
   private getPageHelmet = () => {
     const { author } = this.props;
-    const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "";
-    const description = `${affiliationName ? `${affiliationName},` : ""} citation: ${author.citationCount}, h-index: ${
+    const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : '';
+    const description = `${affiliationName ? `${affiliationName},` : ''} citation: ${author.citationCount}, h-index: ${
       author.hindex
     }`;
 
@@ -395,7 +395,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
       window.open(
         // tslint:disable-next-line:max-line-length
         `https://docs.google.com/forms/d/e/1FAIpQLSd6FqawNtamoqw6NE0Q7BYS1Pn4O0FIbK1VI_47zbRWxDzgXw/viewform?entry.1961255815=${targetId}`,
-        "_blank"
+        '_blank'
       );
     }
   };

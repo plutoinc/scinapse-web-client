@@ -1,10 +1,10 @@
-import * as React from "react";
-import * as classNames from "classnames";
-import { Prompt } from "react-router-dom";
-import AutoSizeTextarea from "../../common/autoSizeTextarea";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import ArticleSpinner from "../../common/spinner/articleSpinner";
-const styles = require("./noteForm.scss");
+import * as React from 'react';
+import * as classNames from 'classnames';
+import { Prompt } from 'react-router-dom';
+import AutoSizeTextarea from '../../common/autoSizeTextarea';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import ArticleSpinner from '../../common/spinner/articleSpinner';
+const styles = require('./noteForm.scss');
 
 export interface PaperNoteFormProps {
   isLoading: boolean;
@@ -60,7 +60,7 @@ const Buttons: React.SFC<ButtonsProps> = ({
             <ArticleSpinner className={styles.loadingButton} />
           </span>
         ) : (
-          <span className={styles.doneButton}>{isEdit ? "Done" : "Add"}</span>
+          <span className={styles.doneButton}>{isEdit ? 'Done' : 'Add'}</span>
         )}
       </NoteEditButton>
 
@@ -92,7 +92,7 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
     super(props);
 
     this.state = {
-      note: props.initialValue || "",
+      note: props.initialValue || '',
       isBlocking: false,
       isFocus: false,
     };
@@ -105,7 +105,7 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
     return (
       <form
         style={{
-          border: isFocus ? "solid 3px #e7eaef" : "solid 1px #e7eaef",
+          border: isFocus ? 'solid 3px #e7eaef' : 'solid 1px #e7eaef',
         }}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
@@ -114,8 +114,8 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
       >
         <AutoSizeTextarea
           wrapperStyle={{
-            borderRadius: "8px",
-            margin: isFocus ? "10px 10px 22px 10px" : "12px 12px 24px 12px",
+            borderRadius: '8px',
+            margin: isFocus ? '10px 10px 22px 10px' : '12px 12px 24px 12px',
           }}
           tabIndex={0}
           textareaStyle={textareaStyle}
@@ -159,7 +159,7 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
         isFocus: false,
       });
     } else {
-      this.setState(prevState => ({ ...prevState, note: "", isBlocking: false, isFocus: false }));
+      this.setState(prevState => ({ ...prevState, note: '', isBlocking: false, isFocus: false }));
     }
   };
 
@@ -183,11 +183,11 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
     e && e.preventDefault();
 
     // validate form
-    if (!note && !confirm("Do you want to discard this memo?")) {
+    if (!note && !confirm('Do you want to discard this memo?')) {
       return;
     }
     if (note && note.length > 500) {
-      return alert("The maximum length of memo is 500 characters.");
+      return alert('The maximum length of memo is 500 characters.');
     }
 
     onSubmit(note);

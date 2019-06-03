@@ -1,13 +1,13 @@
-import PlutoAxios from "../pluto";
-import { Comment } from "../../model/comment";
+import PlutoAxios from '../pluto';
+import { Comment } from '../../model/comment';
 import {
   GetCommentsParams,
   GetCommentsResult,
   PostCommentParams,
   DeleteCommentParams,
   DeleteCommentResult,
-} from "../types/comment";
-import { RAW } from "../../__mocks__";
+} from '../types/comment';
+import { RAW } from '../../__mocks__';
 
 const mockGetCommentsResult: GetCommentsResult = {
   entities: { comments: { 123: RAW.COMMENT } },
@@ -25,7 +25,7 @@ const mockGetCommentsResult: GetCommentsResult = {
 class CommentAPI extends PlutoAxios {
   public async getComments({ paperId }: GetCommentsParams): Promise<GetCommentsResult> {
     if (!paperId) {
-      throw new Error("FAKE ERROR");
+      throw new Error('FAKE ERROR');
     } else {
       return mockGetCommentsResult;
     }
@@ -33,7 +33,7 @@ class CommentAPI extends PlutoAxios {
 
   public async postComment({ paperId, comment }: PostCommentParams): Promise<Comment> {
     if (!paperId) {
-      throw new Error("FAKE ERROR");
+      throw new Error('FAKE ERROR');
     } else {
       const mockComment = { ...RAW.COMMENT, ...{ comment } };
 
@@ -43,7 +43,7 @@ class CommentAPI extends PlutoAxios {
 
   public async deleteComment({ paperId }: DeleteCommentParams): Promise<DeleteCommentResult> {
     if (!paperId) {
-      throw new Error("FAKE ERROR");
+      throw new Error('FAKE ERROR');
     } else {
       return {
         success: true,

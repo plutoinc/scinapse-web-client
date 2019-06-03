@@ -1,18 +1,18 @@
-import * as React from "react";
-import Dialog from "@material-ui/core/Dialog";
-import { Formik, Form, Field, FormikErrors, ErrorMessage } from "formik";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import { Author } from "../../../../model/author/author";
-import ScinapseButton from "../../../common/scinapseButton";
-import Icon from "../../../../icons";
-import ScinapseFormikInput from "../../../common/scinapseInput/scinapseFormikInput";
-import ReduxAutoSizeTextarea from "../../../common/autoSizeTextarea/reduxAutoSizeTextarea";
-import AffiliationSelectBox from "./affiliationSelectBox/index";
-import { Affiliation } from "../../../../model/affiliation";
-import { SuggestAffiliation } from "../../../../api/suggest";
-import validateEmail from "../../../../helpers/validateEmail";
-import scinapseFormikCheckbox from "../../../common/scinapseInput/scinapseFormikCheckbox";
-const styles = require("./modifyProfile.scss");
+import * as React from 'react';
+import Dialog from '@material-ui/core/Dialog';
+import { Formik, Form, Field, FormikErrors, ErrorMessage } from 'formik';
+import { withStyles } from '../../../../helpers/withStylesHelper';
+import { Author } from '../../../../model/author/author';
+import ScinapseButton from '../../../common/scinapseButton';
+import Icon from '../../../../icons';
+import ScinapseFormikInput from '../../../common/scinapseInput/scinapseFormikInput';
+import ReduxAutoSizeTextarea from '../../../common/autoSizeTextarea/reduxAutoSizeTextarea';
+import AffiliationSelectBox from './affiliationSelectBox/index';
+import { Affiliation } from '../../../../model/affiliation';
+import { SuggestAffiliation } from '../../../../api/suggest';
+import validateEmail from '../../../../helpers/validateEmail';
+import scinapseFormikCheckbox from '../../../common/scinapseInput/scinapseFormikCheckbox';
+const styles = require('./modifyProfile.scss');
 
 export interface ModifyProfileFormState {
   authorName: string;
@@ -36,7 +36,7 @@ const validateForm = (values: ModifyProfileFormState) => {
   const errors: FormikErrors<ModifyProfileFormState> = {};
 
   if (!validateEmail(values.email) && !values.isEmailHidden) {
-    errors.email = "Please enter valid e-mail address.";
+    errors.email = 'Please enter valid e-mail address.';
   }
 
   if (
@@ -44,14 +44,14 @@ const validateForm = (values: ModifyProfileFormState) => {
     !(values.currentAffiliation as SuggestAffiliation).keyword &&
     !values.currentAffiliation
   ) {
-    errors.currentAffiliation = "Not available affiliation";
+    errors.currentAffiliation = 'Not available affiliation';
   }
 
   if (!values.authorName && values.authorName.length < 2) {
-    errors.authorName = "Minimum length is 1";
+    errors.authorName = 'Minimum length is 1';
   }
 
-  if (values.website.length > 0 && !values.website.includes("http://") && !values.website.includes("https://")) {
+  if (values.website.length > 0 && !values.website.includes('http://') && !values.website.includes('https://')) {
     errors.website = "Website URL should start with 'http://' or 'https://'";
   }
 
@@ -81,7 +81,7 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
       >
         <div className={styles.dialogHeader}>
           <div className={styles.mainTitle}>
-            {author.isLayered ? "Edit author information" : "Check and fill your information"}
+            {author.isLayered ? 'Edit author information' : 'Check and fill your information'}
           </div>
           <div className={styles.closeButton} onClick={handleClose}>
             <Icon className={styles.closeIcon} icon="X_BUTTON" />
@@ -110,7 +110,7 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                       />
                       <ErrorMessage name="authorName" className={styles.errorMessage} component="div" />
                     </div>
-                    <div className={styles.inlineInput} style={{ width: "100%" }}>
+                    <div className={styles.inlineInput} style={{ width: '100%' }}>
                       <label htmlFor="currentAffiliation">Current Affiliation</label>
                       <Field
                         name="currentAffiliation"
@@ -129,7 +129,7 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                       component={ReduxAutoSizeTextarea}
                       disabled={isLoading}
                       textareaClassName={styles.textAreaWrapper}
-                      textareaStyle={{ padding: "8px" }}
+                      textareaStyle={{ padding: '8px' }}
                       placeholder="Please tell us about yourself."
                     />
                   </div>
@@ -176,12 +176,12 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                     <ScinapseButton
                       type="submit"
                       style={{
-                        backgroundColor: isLoading ? "#ecf1fa" : "#6096ff",
-                        cursor: isLoading ? "not-allowed" : "pointer",
-                        width: "127px",
-                        height: "40px",
+                        backgroundColor: isLoading ? '#ecf1fa' : '#6096ff',
+                        cursor: isLoading ? 'not-allowed' : 'pointer',
+                        width: '127px',
+                        height: '40px',
                         fontWeight: 500,
-                        fontSize: "16px",
+                        fontSize: '16px',
                       }}
                       disabled={isLoading}
                       gaCategory="New Author Show"

@@ -1,5 +1,5 @@
-import { LayoutState, LAYOUT_INITIAL_STATE, UserDevice } from "./records";
-import { ACTION_TYPES } from "../../actions/actionTypes";
+import { LayoutState, LAYOUT_INITIAL_STATE, UserDevice } from './records';
+import { ACTION_TYPES } from '../../actions/actionTypes';
 
 export function reducer(state: LayoutState = LAYOUT_INITIAL_STATE, action: ReduxAction<any>): LayoutState {
   switch (action.type) {

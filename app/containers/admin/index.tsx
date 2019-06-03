@@ -1,21 +1,21 @@
-import * as React from "react";
-import axios from "axios";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { CurrentUser } from "../../model/currentUser";
-import { Dispatch, connect } from "react-redux";
-import { AppState } from "../../reducers";
-import { blockUnverifiedUser, AUTH_LEVEL } from "../../helpers/checkAuthDialog";
-const styles = require("./admin.scss");
+import * as React from 'react';
+import axios from 'axios';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { CurrentUser } from '../../model/currentUser';
+import { Dispatch, connect } from 'react-redux';
+import { AppState } from '../../reducers';
+import { blockUnverifiedUser, AUTH_LEVEL } from '../../helpers/checkAuthDialog';
+const styles = require('./admin.scss');
 
-const BLOG_SCRIBER_API_HOST = "https://7hnqfzk1r6.execute-api.us-east-1.amazonaws.com/prod/blogLinks";
+const BLOG_SCRIBER_API_HOST = 'https://7hnqfzk1r6.execute-api.us-east-1.amazonaws.com/prod/blogLinks';
 
 export interface BlogLink {
   id: string;
@@ -49,9 +49,9 @@ class AdminComponent extends React.PureComponent<AdminComponentProps, AdminCompo
 
     this.state = {
       isLoading: false,
-      blogLink: "",
+      blogLink: '',
       blogLinks: [],
-      adminKey: "",
+      adminKey: '',
     };
   }
 
@@ -72,7 +72,7 @@ class AdminComponent extends React.PureComponent<AdminComponentProps, AdminCompo
     }
 
     return (
-      <div style={{ marginTop: "61px" }}>
+      <div style={{ marginTop: '61px' }}>
         <div className={styles.header}>
           <div className={styles.headerContent}>
             <h1>Yoonji's Space</h1>
@@ -88,12 +88,12 @@ class AdminComponent extends React.PureComponent<AdminComponentProps, AdminCompo
               className={styles.blogLinkInput}
               label="ADD BLOG LINK"
               value={blogLink}
-              onChange={this.handleChange("blogLink")}
+              onChange={this.handleChange('blogLink')}
               margin="none"
               variant="outlined"
             />
             <button className={styles.blogLinkAddButton} onClick={this.handleClickAddLink}>
-              {this.getLoadingScene("Add Link")}
+              {this.getLoadingScene('Add Link')}
             </button>
           </div>
           <div className={styles.adminKeyInputSection}>
@@ -102,21 +102,21 @@ class AdminComponent extends React.PureComponent<AdminComponentProps, AdminCompo
               label="ADMIN KEY"
               value={adminKey}
               type="password"
-              onChange={this.handleChange("adminKey")}
+              onChange={this.handleChange('adminKey')}
               margin="none"
               variant="outlined"
             />
             <button className={styles.pageReloadButton} onClick={this.handleClickReload}>
-              {this.getLoadingScene("Reload")}
+              {this.getLoadingScene('Reload')}
             </button>
           </div>
           <Paper
             style={{
-              overflowX: "auto",
-              marginTop: "24px",
+              overflowX: 'auto',
+              marginTop: '24px',
             }}
           >
-            <Table style={{ textAlign: "center" }}>
+            <Table style={{ textAlign: 'center' }}>
               <TableHead>
                 <TableRow>
                   <TableCell padding="dense">No.</TableCell>
@@ -138,10 +138,10 @@ class AdminComponent extends React.PureComponent<AdminComponentProps, AdminCompo
                         padding="dense"
                         className={styles.linkTableCell}
                         style={{
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
-                          maxWidth: "600px",
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          maxWidth: '600px',
                         }}
                       >
                         <a href={blogInfo.link} rel="noopener nofollow noreferrer" target="_blank">
@@ -150,18 +150,18 @@ class AdminComponent extends React.PureComponent<AdminComponentProps, AdminCompo
                       </TableCell>
                       <TableCell
                         style={{
-                          color: "rgb(40, 84, 255)",
+                          color: 'rgb(40, 84, 255)',
                           fontWeight: 500,
                         }}
                         padding="dense"
                       >
-                        {blogInfo.active ? "🔵 Running" : ""}
+                        {blogInfo.active ? '🔵 Running' : ''}
                       </TableCell>
                       <TableCell padding="dense">
-                        {blogInfo.startTime ? blogInfo.startTime[blogInfo.startTime.length - 1] : "N/A"}
+                        {blogInfo.startTime ? blogInfo.startTime[blogInfo.startTime.length - 1] : 'N/A'}
                       </TableCell>
                       <TableCell padding="dense">
-                        {blogInfo.endTime && !blogInfo.active ? blogInfo.endTime[blogInfo.endTime.length - 1] : "N/A"}
+                        {blogInfo.endTime && !blogInfo.active ? blogInfo.endTime[blogInfo.endTime.length - 1] : 'N/A'}
                       </TableCell>
                       <TableCell padding="dense">
                         {blogInfo.active ? (
@@ -171,7 +171,7 @@ class AdminComponent extends React.PureComponent<AdminComponentProps, AdminCompo
                               this.handleClickStatusButton(blogInfo.id);
                             }}
                           >
-                            {this.getLoadingScene("🛑 STOP")}
+                            {this.getLoadingScene('🛑 STOP')}
                           </button>
                         ) : (
                           <button
@@ -180,7 +180,7 @@ class AdminComponent extends React.PureComponent<AdminComponentProps, AdminCompo
                               this.handleClickStatusButton(blogInfo.id);
                             }}
                           >
-                            {this.getLoadingScene("🔵 START")}
+                            {this.getLoadingScene('🔵 START')}
                           </button>
                         )}
                       </TableCell>
@@ -268,13 +268,13 @@ class AdminComponent extends React.PureComponent<AdminComponentProps, AdminCompo
 
       this.setState({ blogLinks: blogLinks, isLoading: false });
     } catch (err) {
-      this.setState(prevState => ({ ...prevState, isLoading: false, blogLink: "" }));
+      this.setState(prevState => ({ ...prevState, isLoading: false, blogLink: '' }));
     }
   };
 
   private handleClickReload = async () => {
     try {
-      if (await blockUnverifiedUser({ authLevel: AUTH_LEVEL.VERIFIED, actionArea: "unknown", actionLabel: "admin" })) {
+      if (await blockUnverifiedUser({ authLevel: AUTH_LEVEL.VERIFIED, actionArea: 'unknown', actionLabel: 'admin' })) {
         throw new Error();
       }
 
@@ -291,9 +291,9 @@ class AdminComponent extends React.PureComponent<AdminComponentProps, AdminCompo
   private checkAuth = () => {
     const { currentUser } = this.props;
 
-    const emailArr = currentUser.email.split("@");
+    const emailArr = currentUser.email.split('@');
     const emailHost = emailArr[emailArr.length - 1];
-    return currentUser.isLoggedIn && currentUser.emailVerified && emailHost === "pluto.network";
+    return currentUser.isLoggedIn && currentUser.emailVerified && emailHost === 'pluto.network';
   };
 }
 

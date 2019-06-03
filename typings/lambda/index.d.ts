@@ -1,90 +1,105 @@
-import * as Base from "./lambdaBase";
-
-declare global {
-  namespace Lambda {
-    // Event
-    export interface Event extends Base.Event {
-      resource?: string;
-      path: string;
-      httpMethod?: string;
-      headers: EventHeaders;
-      queryStringParameters: EventQueryStringParameters;
-      pathParameters?: EventPathParameters;
-      stageVariables?: EventStageVariables;
-      requestContext?: {
+declare namespace LambdaProxy {
+  interface Event {
+    resource?: string;
+    path: string;
+    httpMethod: string;
+    headers: EventHeaders;
+    queryStringParameters?: EventQueryStringParameters;
+    pathParameters?: EventPathParameters;
+    stageVariables?: EventStageVariables;
+    requestContext?: {
+      accountId: string;
+      resourceId: string;
+      stage: string;
+      requestId: string;
+      identity: {
+        cognitoIdentityPoolId: string;
         accountId: string;
-        resourceId: string;
-        stage: string;
-        requestId: string;
-        identity: {
-          cognitoIdentityPoolId: any;
-          accountId: any;
-          cognitoIdentityId: any;
-          caller: any;
-          apiKey: any;
-          sourceIp: string;
-          accessKey: any;
-          cognitoAuthenticationType: any;
-          cognitoAuthenticationProvider: any;
-          userArn: any;
-          userAgent: string;
-          user: any;
-        };
-        resourcePath: string;
-        httpMethod: string;
-        apiId: string;
+        cognitoIdentityId: string;
+        caller: string;
+        apiKey: string;
+        sourceIp: string;
+        accessKey: string;
+        cognitoAuthenticationType: string;
+        cognitoAuthenticationProvider: string;
+        userArn: string;
+        userAgent: string;
+        user: string;
       };
-      body?: string;
-    }
+      resourcePath: string;
+      httpMethod: string;
+      apiId: string;
+    };
+    isBase64Encoded?: boolean;
+    body?: string;
+  }
 
-    export interface EventHeaders {
-      Accept?: string;
-      "Accept-Encoding"?: string;
-      "Accept-Language"?: string;
-      "CloudFront-Forwarded-Proto"?: string;
-      "CloudFront-Is-Desktop-Viewer"?: string;
-      "CloudFront-Is-Mobile-Viewer"?: string;
-      "CloudFront-Is-SmartTV-Viewer"?: string;
-      "CloudFront-Is-Tablet-Viewer"?: string;
-      "CloudFront-Viewer-Country"?: string;
-      Host?: string;
-      host?: string;
-      cookie?: string;
-      "Upgrade-Insecure-Requests"?: string;
-      "User-Agent"?: string;
-      "user-agent"?: string;
-      Via?: string;
-      "X-Amz-Cf-Id"?: string;
-      "X-Forwarded-For"?: string;
-      "x-forwarded-for"?: string;
-      "X-Forwarded-Port"?: string;
-      "X-Forwarded-Proto"?: string;
-      "original-uri"?: string;
-      "original-host"?: string;
-    }
+  interface EventHeaders {
+    [key: string]: string;
+  }
 
-    export interface EventQueryStringParameters {
-      [key: string]: string;
-    }
+  interface EventQueryStringParameters {
+    [key: string]: string;
+  }
 
-    export interface EventPathParameters {
-      [key: string]: string;
-    }
+  interface EventPathParameters {
+    [key: string]: string;
+  }
 
-    export interface EventStageVariables {
-      [key: string]: string;
-    }
+  interface EventStageVariables {
+    [key: string]: string;
+  }
 
-    // Response
-    export interface Response extends Base.Response {
-      statusCode: number;
-      headers: {
-        "Content-Type"?: string;
-        Location?: string;
-      };
-      body?: string;
-    }
+  // Response
+  interface Response {
+    statusCode: number;
+    headers: { [key: string]: string };
+    body: string;
+    multiValueHeaders?: { [name: string]: string[] };
+    isBase64Encoded?: boolean;
+  }
 
-    export interface Context extends Base.Context<Response> {}
+  interface Context {
+    // Properties
+    functionName: string;
+    functionVersion: string;
+    invokedFunctionArn: string;
+    memoryLimitInMB: number;
+    awsRequestId: string;
+    logGroupName: string;
+    logStreamName: string;
+    identity?: CognitoIdentity;
+    clientContext?: ClientContext;
+    callbackWaitsForEmptyEventLoop?: boolean;
+
+    // Functions
+    getRemainingTimeInMillis(): number;
+  }
+
+  interface CognitoIdentity {
+    cognito_identity_id: string;
+    cognito_identity_pool_id: string;
+  }
+
+  interface ClientContext {
+    client: ClientContextClient;
+    Custom?: any;
+    env: ClientContextEnv;
+  }
+
+  interface ClientContextClient {
+    installation_id: string;
+    app_title: string;
+    app_version_name: string;
+    app_version_code: string;
+    app_package_name: string;
+  }
+
+  interface ClientContextEnv {
+    platform_version: string;
+    platform: string;
+    make: string;
+    model: string;
+    locale: string;
   }
 }

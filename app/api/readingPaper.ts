@@ -1,7 +1,7 @@
-import { CancelToken } from "axios";
-import { Paper } from "../model/paper";
-import PlutoAxios from "./pluto";
-import { camelCaseKeys } from "../helpers/camelCaseKeys";
+import { CancelToken } from 'axios';
+import { Paper } from '../model/paper';
+import PlutoAxios from './pluto';
+import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
 export interface GetPaperParams {
   paperId: number;

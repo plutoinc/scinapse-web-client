@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { TrendingPaper, TRENDING_PAPERS } from "./trendingPaperData";
-import ActionTicketManager from "../../helpers/actionTicketManager";
-const styles = require("./home.scss");
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { TrendingPaper, TRENDING_PAPERS } from './trendingPaperData';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+const styles = require('./home.scss');
 
 const TrendingPaperItem: React.FunctionComponent<{}> = () => {
   const trendingPapers = TRENDING_PAPERS.map(paper => {
@@ -26,10 +26,10 @@ const TrendingPaperItem: React.FunctionComponent<{}> = () => {
         className={styles.trendingPaperItemWrapper}
         onClick={() => {
           ActionTicketManager.trackTicket({
-            pageType: "home",
-            actionType: "fire",
-            actionArea: "trendingPapers",
-            actionTag: "paperShow",
+            pageType: 'home',
+            actionType: 'fire',
+            actionArea: 'trendingPapers',
+            actionTag: 'paperShow',
             actionLabel: String(paperId),
           });
         }}

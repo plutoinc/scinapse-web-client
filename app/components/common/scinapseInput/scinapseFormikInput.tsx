@@ -1,7 +1,7 @@
-import * as React from "react";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { FieldProps } from "formik";
-const styles = require("./scinapseInput.scss");
+import * as React from 'react';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { FieldProps } from 'formik';
+const styles = require('./scinapseInput.scss');
 
 export interface FormikInputBoxProps extends React.HTMLProps<HTMLInputElement> {
   icon?: string;

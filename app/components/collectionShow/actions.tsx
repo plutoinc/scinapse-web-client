@@ -1,10 +1,10 @@
-import axios, { CancelToken } from "axios";
-import { Dispatch } from "react-redux";
-import CollectionAPI, { GetCollectionsPapersParams } from "../../api/collection";
-import { ActionCreators } from "../../actions/actionTypes";
-import alertToast from "../../helpers/__mocks__/makePlutoToastAction";
-import PlutoAxios from "../../api/pluto";
-import { CommonError } from "../../model/error";
+import axios, { CancelToken } from 'axios';
+import { Dispatch } from 'react-redux';
+import CollectionAPI, { GetCollectionsPapersParams } from '../../api/collection';
+import { ActionCreators } from '../../actions/actionTypes';
+import alertToast from '../../helpers/__mocks__/makePlutoToastAction';
+import PlutoAxios from '../../api/pluto';
+import { CommonError } from '../../model/error';
 
 export function getCollection(collectionId: number, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
@@ -22,7 +22,7 @@ export function getCollection(collectionId: number, cancelToken: CancelToken) {
       if (!axios.isCancel(err)) {
         const error = PlutoAxios.getGlobalError(err);
         alertToast({
-          type: "error",
+          type: 'error',
           message: `Failed to get collection information: ${error.message}`,
         });
         dispatch(
@@ -53,7 +53,7 @@ export function getPapers(params: GetCollectionsPapersParams) {
     } catch (err) {
       if (!axios.isCancel(err)) {
         alertToast({
-          type: "error",
+          type: 'error',
           message: `Failed to get collection's papers: ${err}`,
         });
         dispatch(ActionCreators.failedToGetPapersInCollectionShow());

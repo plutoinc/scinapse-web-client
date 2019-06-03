@@ -1,1 +1,1 @@
-export type RELATED_PAPERS = "reference" | "cited";
+export type RELATED_PAPERS = 'reference' | 'cited';

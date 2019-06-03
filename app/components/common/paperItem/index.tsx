@@ -1,18 +1,17 @@
-import * as React from "react";
-import { CurrentUser } from "../../../model/currentUser";
-import Abstract from "./abstract";
-import PaperActionButtons from "./paperActionButtons";
-import Title from "./title";
-import VenueAndAuthors from "./venueAndAuthors";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { Paper } from "../../../model/paper";
-import SavedCollections from "./savedCollections";
-const styles = require("./paperItem.scss");
+import * as React from 'react';
+import { CurrentUser } from '../../../model/currentUser';
+import Abstract from './abstract';
+import PaperActionButtons from './paperActionButtons';
+import Title from './title';
+import VenueAndAuthors from './venueAndAuthors';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { Paper } from '../../../model/paper';
+import SavedCollections from './savedCollections';
+const styles = require('./paperItem.scss');
 
 export interface PaperItemProps {
   paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
-  shouldBlockUnverifiedUser?: boolean;
   actionArea: Scinapse.ActionTicket.ActionArea;
   currentPage?: number;
   hasCollection?: boolean;
@@ -49,8 +48,6 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
       actionArea,
       hasCollection,
       onRemovePaperCollection,
-      shouldBlockUnverifiedUser,
-      currentPage,
     } = this.props;
     const { authors, publishedDate, doi, urls, journal, conferenceInstance, relation } = paper;
 
@@ -61,7 +58,6 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
         actionArea={actionArea}
         abstract={paper.abstractHighlighted || paper.abstract}
         searchQueryText={searchQueryText}
-        currentPage={currentPage}
       />
     ) : null;
     const buttons =
@@ -87,7 +83,7 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
     } else if (urls && urls.length > 0) {
       source = urls[0].url;
     } else {
-      source = "";
+      source = '';
     }
 
     return (
@@ -97,12 +93,13 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
             <SavedCollections collections={relation.savedInCollections} />
           ) : null}
           <Title
+            paperId={paper.id}
+            paperTitle={paper.title}
+            highlightTitle={paper.titleHighlighted}
+            highlightAbstract={paper.abstractHighlighted}
             pageType={pageType}
             actionArea={actionArea}
-            paper={paper}
             source={source}
-            shouldBlockUnverifiedUser={!!shouldBlockUnverifiedUser}
-            currentPage={currentPage}
           />
           <VenueAndAuthors
             pageType={pageType}

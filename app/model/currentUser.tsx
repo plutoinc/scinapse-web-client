@@ -1,4 +1,4 @@
-import { Member } from "./member";
+import { Member } from './member';
 
 export interface CurrentUser
   extends Member,
@@ -12,12 +12,12 @@ export const CURRENT_USER_INITIAL_STATE: CurrentUser = {
   isLoggedIn: false,
   isLoggingIn: true,
   oauthLoggedIn: false,
-  email: "",
-  firstName: "",
-  lastName: "",
+  email: '',
+  firstName: '',
+  lastName: '',
   id: 0,
-  profileImageUrl: "",
-  affiliation: "",
+  profileImageUrl: '',
+  affiliation: '',
   emailVerified: false,
   oauth: null,
   isAuthorConnected: false,

@@ -1,12 +1,12 @@
-import * as React from "react";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import SearchQueryInput from "../../common/InputWithSuggestionList/searchQueryInput";
-import Icon from "../../../icons";
-import RelatedPapers from "../../relatedPapers";
-import { Paper } from "../../../model/paper";
-import { getUserGroupName } from "../../../helpers/abTestHelper";
-import { RELATED_PAPERS_AT_PAPER_SHOW_TEST } from "../../../constants/abTestGlobalValue";
-const styles = require("./afterDownloadContents.scss");
+import * as React from 'react';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import SearchQueryInput from '../../common/InputWithSuggestionList/searchQueryInput';
+import Icon from '../../../icons';
+import RelatedPapers from '../../relatedPapers';
+import { Paper } from '../../../model/paper';
+import { getUserGroupName } from '../../../helpers/abTestHelper';
+import { RELATED_PAPERS_AT_PAPER_SHOW_TEST } from '../../../constants/abTestGlobalValue';
+const styles = require('./afterDownloadContents.scss');
 
 interface AfterDownloadContentsProps {
   onClickReloadBtn: () => void;
@@ -30,30 +30,26 @@ const SearchQueryBoxAtPaperShow: React.FC<{ shouldShowSearchBox: boolean }> = ({
 
 const AfterDownloadContents: React.FC<AfterDownloadContentsProps> = props => {
   const { onClickReloadBtn } = props;
-  const relatedPapersTestUserGroupName = getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) || "";
-
   const [isShowingRelatedPapers, setIsShowingRelatedPapers] = React.useState(false);
   const [isShowingSearchBox, setIsShowingSearchBox] = React.useState(false);
 
-  React.useEffect(
-    () => {
-      switch (relatedPapersTestUserGroupName) {
-        case "related":
-          setIsShowingRelatedPapers(true);
-          setIsShowingSearchBox(false);
-          break;
-        case "relatedAndSearch":
-          setIsShowingRelatedPapers(true);
-          setIsShowingSearchBox(true);
-          break;
-        case "search":
-          setIsShowingRelatedPapers(false);
-          setIsShowingSearchBox(true);
-          break;
-      }
-    },
-    [relatedPapersTestUserGroupName]
-  );
+  React.useEffect(() => {
+    const userGroup = getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) || '';
+    switch (userGroup) {
+      case 'related':
+        setIsShowingRelatedPapers(true);
+        setIsShowingSearchBox(false);
+        break;
+      case 'relatedAndSearch':
+        setIsShowingRelatedPapers(true);
+        setIsShowingSearchBox(true);
+        break;
+      case 'search':
+        setIsShowingRelatedPapers(false);
+        setIsShowingSearchBox(true);
+        break;
+    }
+  }, []);
 
   return (
     <>

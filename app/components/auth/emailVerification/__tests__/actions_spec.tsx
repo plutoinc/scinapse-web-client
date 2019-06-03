@@ -1,14 +1,14 @@
-jest.mock("../../../../api/auth");
-jest.mock("normalize.css", () => {});
-jest.mock("../../../../helpers/makePlutoToastAction");
-jest.unmock("../actions");
+jest.mock('../../../../api/auth');
+jest.mock('normalize.css', () => {});
+jest.mock('../../../../helpers/makePlutoToastAction');
+jest.unmock('../actions');
 
-import * as Actions from "../actions";
-import { generateMockStore } from "../../../../__tests__/mockStore";
-import { ACTION_TYPES } from "../../../../actions/actionTypes";
-import { closeDialog } from "../../../dialog/actions";
+import * as Actions from '../actions';
+import { generateMockStore } from '../../../../__tests__/mockStore';
+import { ACTION_TYPES } from '../../../../actions/actionTypes';
+import { closeDialog } from '../../../dialog/actions';
 
-describe("emailVerification actions", () => {
+describe('emailVerification actions', () => {
   let store: any;
 
   beforeEach(() => {
@@ -16,10 +16,10 @@ describe("emailVerification actions", () => {
     store.clearActions();
   });
 
-  describe("verifyToken action", () => {
-    const mockToken = "test";
+  describe('verifyToken action', () => {
+    const mockToken = 'test';
 
-    it("should return EMAIL_VERIFICATION_START_TO_VERIFY_TOKEN action", () => {
+    it('should return EMAIL_VERIFICATION_START_TO_VERIFY_TOKEN action', () => {
       store.dispatch(Actions.verifyToken(mockToken));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
@@ -27,7 +27,7 @@ describe("emailVerification actions", () => {
       });
     });
 
-    it("should return EMAIL_VERIFICATION_SUCCEEDED_TO_VERIFY_TOKEN action", async () => {
+    it('should return EMAIL_VERIFICATION_SUCCEEDED_TO_VERIFY_TOKEN action', async () => {
       await store.dispatch(Actions.verifyToken(mockToken));
       const actions = store.getActions();
       expect(actions[1]).toEqual({
@@ -36,11 +36,11 @@ describe("emailVerification actions", () => {
     });
   });
 
-  describe("resendVerificationEmail action", () => {
-    const mockEmail = "hj@naver.com";
+  describe('resendVerificationEmail action', () => {
+    const mockEmail = 'hj@naver.com';
     const mockIsDialog = false;
 
-    it("should return EMAIL_VERIFICATION_START_TO_RESEND_VERIFICATION_EMAIL action", () => {
+    it('should return EMAIL_VERIFICATION_START_TO_RESEND_VERIFICATION_EMAIL action', () => {
       store.dispatch(Actions.resendVerificationEmail(mockEmail, mockIsDialog));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
@@ -48,7 +48,7 @@ describe("emailVerification actions", () => {
       });
     });
 
-    it("should return EMAIL_VERIFICATION_SUCCEEDED_TO_RESEND_VERIFICATION_EMAIL action", async () => {
+    it('should return EMAIL_VERIFICATION_SUCCEEDED_TO_RESEND_VERIFICATION_EMAIL action', async () => {
       await store.dispatch(Actions.resendVerificationEmail(mockEmail, mockIsDialog));
       const actions = store.getActions();
       expect(actions[1]).toEqual({
@@ -56,7 +56,7 @@ describe("emailVerification actions", () => {
       });
     });
 
-    it("should return closeDialog action if isDialog is true", async () => {
+    it('should return closeDialog action if isDialog is true', async () => {
       const mockTrueIsDialog = true;
       await store.dispatch(Actions.resendVerificationEmail(mockEmail, mockTrueIsDialog));
       const actions = store.getActions();

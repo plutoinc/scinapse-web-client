@@ -1,12 +1,12 @@
-import * as store from "store";
-import { ABTestType, BENEFIT_EXPERIMENT_KEY, BenefitExpType, BenefitExpValue } from "../constants/abTest";
-import { DEVICE_ID_KEY, SESSION_ID_KEY, SESSION_COUNT_KEY } from "../constants/actionTicket";
-import { AUTH_LEVEL, blockUnverifiedUser } from "./checkAuthDialog";
+import * as store from 'store';
+import { ABTestType, BENEFIT_EXPERIMENT_KEY, BenefitExpType, BenefitExpValue } from '../constants/abTest';
+import { DEVICE_ID_KEY, SESSION_ID_KEY, SESSION_COUNT_KEY } from '../constants/actionTicket';
+import { AUTH_LEVEL, blockUnverifiedUser } from './checkAuthDialog';
 
 interface CheckBenefitExpCount {
   type: ABTestType | BenefitExpType;
   maxCount: number;
-  matching: "session" | "device";
+  matching: 'session' | 'device';
   userActionType: Scinapse.ActionTicket.ActionTagType;
   actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType;
   expName: ABTestType | BenefitExpType;
@@ -35,11 +35,11 @@ export async function checkBenefitExp({
   if (
     exp &&
     exp[type] &&
-    ((matching === "session" && exp[type].sessionId === currentSessionId) ||
-      (matching === "device" && exp[type].deviceId === currentDeviceId))
+    ((matching === 'session' && exp[type].sessionId === currentSessionId) ||
+      (matching === 'device' && exp[type].deviceId === currentDeviceId))
   ) {
     const nextCount =
-      type === "queryLover" ? getQueryLoverCount(exp["queryLover" as ABTestType].count + 1) : exp[type].count + 1;
+      type === 'queryLover' ? getQueryLoverCount(exp['queryLover' as ABTestType].count + 1) : exp[type].count + 1;
     const shouldBlock = nextCount >= maxCount;
 
     const newExp = {

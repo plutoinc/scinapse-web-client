@@ -1,13 +1,13 @@
-import * as React from "react";
-import { Formik, Form, Field, FormikErrors, ErrorMessage } from "formik";
-import * as classNames from "classnames";
-import { CvBaseInfo } from "../../api/profile";
-import { withStyles } from "../../helpers/withStylesHelper";
-import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
-import ScinapseButton from "../common/scinapseButton";
-import scinapseFormikCheckbox from "../common/scinapseInput/scinapseFormikCheckbox";
-import AffiliationBox from "./affiliationBox";
-const styles = require("./authorCVForm.scss");
+import * as React from 'react';
+import { Formik, Form, Field, FormikErrors, ErrorMessage } from 'formik';
+import * as classNames from 'classnames';
+import { CvBaseInfo } from '../../api/profile';
+import { withStyles } from '../../helpers/withStylesHelper';
+import ScinapseFormikInput from '../common/scinapseInput/scinapseFormikInput';
+import ScinapseButton from '../common/scinapseButton';
+import scinapseFormikCheckbox from '../common/scinapseInput/scinapseFormikCheckbox';
+import AffiliationBox from './affiliationBox';
+const styles = require('./authorCVForm.scss');
 
 export interface EducationFormState extends CvBaseInfo {
   degree: string;
@@ -31,34 +31,34 @@ const validateForm = (values: EducationFormState) => {
   const currentYear = new Date().getFullYear();
 
   if (!values.department && values.department.length < 2) {
-    errors.department = "Minimum length is 1";
+    errors.department = 'Minimum length is 1';
   }
 
   if (!values.degree && values.degree.length < 2) {
-    errors.degree = "Minimum length is 1";
+    errors.degree = 'Minimum length is 1';
   }
 
   if (!values.institutionName && values.institutionName.length < 2) {
-    errors.institutionName = "Not available institution";
+    errors.institutionName = 'Not available institution';
   }
 
   if (!values.startDate) {
-    errors.startDate = "Please write valid year (ex. 2010)";
+    errors.startDate = 'Please write valid year (ex. 2010)';
   }
 
   if (!values.isCurrent && !values.endDate) {
-    errors.startDate = "Please write valid year (ex. 2010)";
-    errors.endDate = " ";
+    errors.startDate = 'Please write valid year (ex. 2010)';
+    errors.endDate = ' ';
   }
 
   if (!values.isCurrent && values.endDate && parseInt(values.startDate, 10) - parseInt(values.endDate, 10) > 0) {
-    errors.endDate = "Please write a future date";
-    errors.startDate = " ";
+    errors.endDate = 'Please write a future date';
+    errors.startDate = ' ';
   }
 
   if (values.startDate && currentYear - parseInt(values.startDate, 10) < 0) {
-    errors.startDate = "Please write before current date";
-    errors.endDate = " ";
+    errors.startDate = 'Please write before current date';
+    errors.endDate = ' ';
   }
 
   return errors;
@@ -145,7 +145,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                             name="startDate"
                             type="text"
                             placeholder="Year"
-                            style={{ color: "#666d7c" }}
+                            style={{ color: '#666d7c' }}
                             maxLength="4"
                             className={classNames({
                               [styles.dateYearField]: true,
@@ -166,7 +166,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                               name="endDate"
                               type="text"
                               placeholder="Year"
-                              style={{ color: "#666d7c" }}
+                              style={{ color: '#666d7c' }}
                               maxLength="4"
                               className={classNames({
                                 [styles.dateYearField]: true,
@@ -203,25 +203,25 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                       gaLabel="Cancel education form"
                       content="Cancel"
                       style={{
-                        height: "42px",
+                        height: '42px',
                         fontWeight: 500,
-                        fontSize: "14px",
+                        fontSize: '14px',
                         opacity: 0.25,
-                        color: "#1e2a35",
-                        border: "none",
-                        display: "inline-block",
-                        marginRight: "8px",
+                        color: '#1e2a35',
+                        border: 'none',
+                        display: 'inline-block',
+                        marginRight: '8px',
                       }}
                     />
                     <ScinapseButton
                       type="submit"
                       style={{
-                        backgroundColor: "#48d2a0",
-                        cursor: "pointer",
-                        width: "57px",
-                        height: "42px",
+                        backgroundColor: '#48d2a0',
+                        cursor: 'pointer',
+                        width: '57px',
+                        height: '42px',
                         fontWeight: 500,
-                        fontSize: "14px",
+                        fontSize: '14px',
                       }}
                       disabled={isLoading}
                       isLoading={isLoading}

@@ -1,8 +1,8 @@
-import * as React from "react";
-import { useIntervalProgress } from "../../../hooks/useIntervalProgressHook";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import CircularProgress from "@material-ui/core/CircularProgress";
-const styles = require("../pdfViewer.scss");
+import * as React from 'react';
+import { useIntervalProgress } from '../../../hooks/useIntervalProgressHook';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import CircularProgress from '@material-ui/core/CircularProgress';
+const styles = require('../pdfViewer.scss');
 
 const ProgressSpinner: React.FC<any> = () => {
   const [percent, setPercent] = React.useState(0);

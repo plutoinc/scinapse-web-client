@@ -1,7 +1,7 @@
-import * as React from "react";
-import Icon from "../../../icons";
-import { withStyles } from "../../../helpers/withStylesHelper";
-const styles = require("./scinapseInput.scss");
+import * as React from 'react';
+import Icon from '../../../icons';
+import { withStyles } from '../../../helpers/withStylesHelper';
+const styles = require('./scinapseInput.scss');
 
 interface InputBoxProps {
   placeholder: string;
@@ -24,7 +24,7 @@ class ScinapseCommonInput extends React.PureComponent<InputBoxProps, InputBoxSta
     super(props);
 
     this.state = {
-      inputValue: props.value || "",
+      inputValue: props.value || '',
     };
   }
 

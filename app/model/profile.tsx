@@ -1,4 +1,4 @@
-import { schema } from "normalizr";
+import { schema } from 'normalizr';
 
 export interface Profile extends CVInfoType {
   authorId: number[];
@@ -38,9 +38,9 @@ export interface Experience extends CvBaseInfo {
 }
 
 export const profileSchema = new schema.Entity(
-  "profiles",
+  'profiles',
   {},
   {
-    idAttribute: "authorId",
+    idAttribute: 'authorId',
   }
 );

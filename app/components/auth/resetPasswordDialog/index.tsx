@@ -1,15 +1,15 @@
-import * as React from "react";
-import { Field, Formik, Form } from "formik";
-import { Dispatch, connect } from "react-redux";
-import AuthButton from "../authButton";
-import AuthInputBox from "../../common/inputBox/authInputBox";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import validateEmail from "../../../helpers/validateEmail";
-import { changeDialogType } from "../../dialog/actions";
-import { GLOBAL_DIALOG_TYPE } from "../../dialog/reducer";
-import AuthAPI from "../../../api/auth";
-import Icon from "../../../icons";
-const styles = require("./resetPassword.scss");
+import * as React from 'react';
+import { Field, Formik, Form } from 'formik';
+import { Dispatch, connect } from 'react-redux';
+import AuthButton from '../authButton';
+import AuthInputBox from '../../common/inputBox/authInputBox';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import validateEmail from '../../../helpers/validateEmail';
+import { changeDialogType } from '../../dialog/actions';
+import { GLOBAL_DIALOG_TYPE } from '../../dialog/reducer';
+import AuthAPI from '../../../api/auth';
+import Icon from '../../../icons';
+const styles = require('./resetPassword.scss');
 
 interface ResetPasswordProps
   extends Readonly<{
@@ -34,7 +34,7 @@ function getFinishedContent() {
 
 const validateEmailField = (email: string) => {
   if (!validateEmail(email)) {
-    return "E-mail is invalid";
+    return 'E-mail is invalid';
   }
 };
 
@@ -73,7 +73,7 @@ const ResetPasswordContainer: React.FunctionComponent<ResetPasswordProps> = prop
         getFinishedContent()
       ) : (
         <Formik
-          initialValues={""}
+          initialValues={''}
           onSubmit={handleSubmit}
           render={() => {
             return (
@@ -85,13 +85,13 @@ const ResetPasswordContainer: React.FunctionComponent<ResetPasswordProps> = prop
                   component={AuthInputBox}
                   placeholder="E-mail"
                   iconName="EMAIL_ICON"
-                  wrapperStyles={{ width: "100%" }}
+                  wrapperStyles={{ width: '100%' }}
                 />
                 <AuthButton
                   type="submit"
                   isLoading={isLoading}
                   text="RESET PASSWORD"
-                  style={{ backgroundColor: "#6096ff", marginTop: "42px", fontSize: "14px" }}
+                  style={{ backgroundColor: '#6096ff', marginTop: '42px', fontSize: '14px' }}
                 />
                 <AuthButton
                   isLoading={isLoading}
@@ -99,7 +99,7 @@ const ResetPasswordContainer: React.FunctionComponent<ResetPasswordProps> = prop
                   onClick={() => {
                     handleClickGoBackButton();
                   }}
-                  style={{ backgroundColor: "#e7eaef", marginTop: "10px", marginBottom: "42px", fontSize: "14px" }}
+                  style={{ backgroundColor: '#e7eaef', marginTop: '10px', marginBottom: '42px', fontSize: '14px' }}
                 />
               </Form>
             );

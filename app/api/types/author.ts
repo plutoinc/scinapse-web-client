@@ -1,5 +1,5 @@
-import { CancelToken } from "axios";
-import { Author } from "../../model/author/author";
+import { CancelToken } from 'axios';
+import { Author } from '../../model/author/author';
 
 export interface GetAuthorsParam {
   sort: string;

@@ -1,14 +1,14 @@
-import * as React from "react";
-import Checkbox from "@material-ui/core/Checkbox";
-import Icon from "../../../icons";
-import ButtonSpinner from "../../common/spinner/buttonSpinner";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { Collection } from "../../../model/collection";
-import { PostCollectionParams } from "../../../api/collection";
-import alertToast from "../../../helpers/makePlutoToastAction";
-import { trackEvent } from "../../../helpers/handleGA";
-import PlutoAxios from "../../../api/pluto";
-const styles = require("./collectionDropdown.scss");
+import * as React from 'react';
+import Checkbox from '@material-ui/core/Checkbox';
+import Icon from '../../../icons';
+import ButtonSpinner from '../../common/spinner/buttonSpinner';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { Collection } from '../../../model/collection';
+import { PostCollectionParams } from '../../../api/collection';
+import alertToast from '../../../helpers/makePlutoToastAction';
+import { trackEvent } from '../../../helpers/handleGA';
+import PlutoAxios from '../../../api/pluto';
+const styles = require('./collectionDropdown.scss');
 
 export interface CollectionDropdownProps
   extends Readonly<{
@@ -34,8 +34,8 @@ class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, Co
 
     this.state = {
       isExpanded: false,
-      title: "",
-      description: "",
+      title: '',
+      description: '',
     };
   }
 
@@ -117,13 +117,13 @@ class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, Co
 
     if (title.length === 0) {
       return alertToast({
-        type: "error",
-        message: "Collection name should be more than 1 characters.",
+        type: 'error',
+        message: 'Collection name should be more than 1 characters.',
       });
     } else if (title.length > 100) {
       return alertToast({
-        type: "error",
-        message: "Collection name should be less than 100 characters.",
+        type: 'error',
+        message: 'Collection name should be less than 100 characters.',
       });
     }
 
@@ -131,8 +131,8 @@ class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, Co
       await handleSubmitNewCollection({ title, description });
 
       this.setState({
-        title: "",
-        description: "",
+        title: '',
+        description: '',
       });
 
       if (this.collectionListBox) {
@@ -143,7 +143,7 @@ class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, Co
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
       alertToast({
-        type: "error",
+        type: 'error',
         message: `Failed to make a new collection. ${error.message}`,
       });
     }
@@ -202,10 +202,10 @@ class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, Co
 
     if (collection.containsSelected) {
       handleRemovingPaperFromCollection(collection);
-      trackEvent({ category: "Additional Action", action: "Remove Paper in Collection", label: `${collection.id}` });
+      trackEvent({ category: 'Additional Action', action: 'Remove Paper in Collection', label: `${collection.id}` });
     } else {
       handleAddingPaperToCollection(collection);
-      trackEvent({ category: "Additional Action", action: "Add Paper to Collection", label: `${collection.id}` });
+      trackEvent({ category: 'Additional Action', action: 'Add Paper to Collection', label: `${collection.id}` });
     }
   };
 }

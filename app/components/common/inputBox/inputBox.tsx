@@ -1,7 +1,7 @@
-import * as React from "react";
-import Icon from "../../../icons";
-import { withStyles } from "../../../helpers/withStylesHelper";
-const styles = require("./inputBox.scss");
+import * as React from 'react';
+import Icon from '../../../icons';
+import { withStyles } from '../../../helpers/withStylesHelper';
+const styles = require('./inputBox.scss');
 
 interface InputBoxProps {
   autoFocus?: boolean;
@@ -17,7 +17,7 @@ interface InputBoxProps {
   className?: string;
 }
 
-export type INPUT_BOX_TYPE = "normal" | "headerSearch" | "search";
+export type INPUT_BOX_TYPE = 'normal' | 'headerSearch' | 'search';
 
 const InputBox = (props: InputBoxProps) => {
   const {
@@ -45,8 +45,8 @@ const InputBox = (props: InputBoxProps) => {
   }
 
   switch (type) {
-    case "headerSearch":
-    case "search":
+    case 'headerSearch':
+    case 'search':
       return (
         <div className={inputBoxClassName}>
           <input

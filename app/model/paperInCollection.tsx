@@ -1,5 +1,5 @@
-import { schema } from "normalizr";
-import { Paper } from "./paper";
+import { schema } from 'normalizr';
+import { Paper } from './paper';
 
 export interface PaperInCollection {
   note: string | null;
@@ -8,6 +8,6 @@ export interface PaperInCollection {
   paper: Paper;
 }
 
-export const paperInCollectionSchema = new schema.Entity("papersInCollection", undefined, {
+export const paperInCollectionSchema = new schema.Entity('papersInCollection', undefined, {
   idAttribute: value => value.paperId,
 });

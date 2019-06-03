@@ -1,7 +1,7 @@
-import { schema } from "normalizr";
-import { Paper } from "../paper";
-import { Affiliation } from "../affiliation";
-import { NewFOS } from "../fos";
+import { schema } from 'normalizr';
+import { Paper } from '../paper';
+import { Affiliation } from '../affiliation';
+import { NewFOS } from '../fos';
 
 export interface RawAuthor {
   id: number;
@@ -39,5 +39,5 @@ export interface Author {
   fosList: NewFOS[];
 }
 
-export const authorSchema = new schema.Entity("authors");
+export const authorSchema = new schema.Entity('authors');
 export const authorListSchema = [authorSchema];

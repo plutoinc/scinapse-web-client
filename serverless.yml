@@ -2,10 +2,14 @@ service: pluto-web-client
 
 provider:
   name: aws
-  runtime: nodejs10.x
+  runtime: nodejs8.10
   region: us-east-1
   role: WebClientRole
   logRetentionInDays: 30
+  apiGateway:
+    minimumCompressionSize: 0
+    binaryMediaTypes:
+      - '*/*'
 
 package:
   individually: true
@@ -17,7 +21,13 @@ functions:
     timeout: 60
     package:
       artifact: dist.zip
-
+    events:
+      - http:
+          method: any
+          path: /
+      - http:
+          method: any
+          path: /{proxy+}
 resources:
   Resources:
     WebClientRole:

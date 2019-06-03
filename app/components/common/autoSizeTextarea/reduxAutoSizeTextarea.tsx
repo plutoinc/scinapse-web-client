@@ -1,8 +1,8 @@
-import * as React from "react";
-import * as autosize from "autosize";
-import { FieldProps } from "formik";
-import { withStyles } from "../../../helpers/withStylesHelper";
-const styles = require("./autoSizeTextarea.scss");
+import * as React from 'react';
+import * as autosize from 'autosize';
+import { FieldProps } from 'formik';
+import { withStyles } from '../../../helpers/withStylesHelper';
+const styles = require('./autoSizeTextarea.scss');
 
 interface ReduxAutoSizeTextareaProps extends React.HTMLProps<HTMLTextAreaElement> {
   wrapperClassName?: string;

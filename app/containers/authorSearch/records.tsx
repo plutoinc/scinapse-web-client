@@ -1,4 +1,4 @@
-import { Author } from "../../model/author/author";
+import { Author } from '../../model/author/author';
 
 export interface AuthorSearchState
   extends Readonly<{
@@ -16,10 +16,10 @@ export interface AuthorSearchState
     }> {}
 
 export const AUTHOR_SEARCH_INITIAL_STATE: AuthorSearchState = {
-  sort: "RELEVANCE",
+  sort: 'RELEVANCE',
   isLoading: false,
   pageErrorCode: null,
-  searchInput: "",
+  searchInput: '',
   page: 1,
   numberOfElements: 0,
   totalElements: 0,

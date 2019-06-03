@@ -1,8 +1,8 @@
-import * as React from "react";
-import * as classNames from "classnames";
-import Icon from "../../../icons";
-import { withStyles } from "../../../helpers/withStylesHelper";
-const styles = require("./scinapseInput.scss");
+import * as React from 'react';
+import * as classNames from 'classnames';
+import Icon from '../../../icons';
+import { withStyles } from '../../../helpers/withStylesHelper';
+const styles = require('./scinapseInput.scss');
 
 interface InputBoxProps extends React.HTMLProps<HTMLInputElement> {
   placeholder: string;

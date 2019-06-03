@@ -1,13 +1,13 @@
-import { CancelToken } from "axios";
-import { normalize } from "normalizr";
-import PlutoAxios from "./pluto";
-import { Collection, collectionSchema } from "../model/collection";
-import { Paper } from "../model/paper";
-import { PaperInCollection, paperInCollectionSchema } from "../model/paperInCollection";
-import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../components/common/sortBox";
-import { DEFAULT_AUTHOR_PAPERS_SIZE } from "./author";
-import { NormalizedDataWithPaginationV2, RawPaginationResponseV2 } from "./types/common";
-import { camelCaseKeys } from "../helpers/camelCaseKeys";
+import { CancelToken } from 'axios';
+import { normalize } from 'normalizr';
+import PlutoAxios from './pluto';
+import { Collection, collectionSchema } from '../model/collection';
+import { Paper } from '../model/paper';
+import { PaperInCollection, paperInCollectionSchema } from '../model/paperInCollection';
+import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
+import { DEFAULT_AUTHOR_PAPERS_SIZE } from './author';
+import { NormalizedDataWithPaginationV2, RawPaginationResponseV2 } from './types/common';
+import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
 export interface UpdatePaperNoteToCollectionParams {
   paperId: number;
@@ -79,12 +79,12 @@ class CollectionAPI extends PlutoAxios {
     // Validation
     resData.data.content.forEach(datum => {
       if (
-        !datum.hasOwnProperty("note") ||
-        !datum.hasOwnProperty("collection_id") ||
-        !datum.hasOwnProperty("paper_id") ||
-        !datum.hasOwnProperty("paper")
+        !datum.hasOwnProperty('note') ||
+        !datum.hasOwnProperty('collection_id') ||
+        !datum.hasOwnProperty('paper_id') ||
+        !datum.hasOwnProperty('paper')
       ) {
-        console.log("ERROR");
+        console.log('ERROR');
         throw new Error("Collection API's getPapers method is broken.");
       }
     });
@@ -108,7 +108,7 @@ class CollectionAPI extends PlutoAxios {
   }
 
   public async removePapersFromCollection(params: RemovePapersFromCollectionParams): Promise<{ success: true }> {
-    const paperString = params.paperIds.join(",");
+    const paperString = params.paperIds.join(',');
     const res = await this.delete(`/collections/${params.collection.id}/papers`, {
       params: {
         paper_ids: paperString,
@@ -147,7 +147,7 @@ class CollectionAPI extends PlutoAxios {
     entities: { collections: { [collectionId: number]: Collection } };
     result: number;
   }> {
-    const res = await this.post("/collections", {
+    const res = await this.post('/collections', {
       title,
       description,
     });

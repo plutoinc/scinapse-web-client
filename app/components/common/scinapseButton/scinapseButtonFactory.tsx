@@ -1,5 +1,5 @@
-import * as React from "react";
-import Icon from "../../../icons";
+import * as React from 'react';
+import Icon from '../../../icons';
 
 export enum ScinapseButtonType {
   buttonWithArrow,
@@ -29,16 +29,16 @@ const ButtonWithArrow: React.SFC<ButtonWithArrowProps> = ({
   ...wrapperProps
 }) => {
   const linkStyle = {
-    display: "flex",
-    height: "100%",
-    alignItems: "center",
-    borderRadius: hasArrow ? "4px 0 0 4px" : "4px",
+    display: 'flex',
+    height: '100%',
+    alignItems: 'center',
+    borderRadius: hasArrow ? '4px 0 0 4px' : '4px',
     ...linkProps.style,
   };
 
   const additionalBtnStyle = dropdownBtnProps && dropdownBtnProps.style ? dropdownBtnProps.style : {};
   const defaultBtnStyle: React.CSSProperties = {
-    borderRadius: "0 4px 4px 0",
+    borderRadius: '0 4px 4px 0',
     ...additionalBtnStyle,
   };
 
@@ -57,14 +57,14 @@ const ButtonWithArrow: React.SFC<ButtonWithArrowProps> = ({
         >
           <span
             style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
             <Icon
               style={{
-                transform: isUpArrow ? "rotate(180deg)" : "",
+                transform: isUpArrow ? 'rotate(180deg)' : '',
               }}
               icon="ARROW_POINT_TO_UP"
               className={arrowIconClassName}
@@ -83,7 +83,7 @@ const ScinapseButtonFactory = (type: ScinapseButtonType) => {
     }
 
     default:
-      throw new Error("Invalid type for Scinapse Button Factory");
+      throw new Error('Invalid type for Scinapse Button Factory');
   }
 };
 

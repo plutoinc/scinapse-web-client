@@ -1,7 +1,7 @@
-import * as React from "react";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { Footer } from "../layouts";
-const styles = require("./termsOfService.scss");
+import * as React from 'react';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { Footer } from '../layouts';
+const styles = require('./termsOfService.scss');
 
 @withStyles<typeof TermsOfService>(styles)
 class TermsOfService extends React.Component {

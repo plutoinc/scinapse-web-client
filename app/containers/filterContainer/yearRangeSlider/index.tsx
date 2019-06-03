@@ -1,17 +1,17 @@
-import * as React from "react";
-import { History } from "history";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-import * as classNames from "classnames";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { MIN_YEAR } from "./constants";
-import Slider from "./slider";
-import { SearchPageQueryParams } from "../../../components/articleSearch/types";
-import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
-import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
-import { goToYearFilteredSearchResultPage } from "./helper";
-import FilterButton from "../filterButton";
-import FilterResetButton from "../../../components/filterContainer/filterResetButton";
-const styles = require("./yearRangeSlider.scss");
+import * as React from 'react';
+import { History } from 'history';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import * as classNames from 'classnames';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { MIN_YEAR } from './constants';
+import Slider from './slider';
+import { SearchPageQueryParams } from '../../../components/articleSearch/types';
+import getQueryParamsObject from '../../../helpers/getQueryParamsObject';
+import PapersQueryFormatter from '../../../helpers/papersQueryFormatter';
+import { goToYearFilteredSearchResultPage } from './helper';
+import FilterButton from '../filterButton';
+import FilterResetButton from '../../../components/filterContainer/filterResetButton';
+const styles = require('./yearRangeSlider.scss');
 
 interface YearSet {
   year: number;
@@ -39,12 +39,12 @@ interface ColumnProps {
 const Column: React.FunctionComponent<ColumnProps> = React.memo(props => {
   const baseColumnStyle: React.CSSProperties = {
     width: props.width,
-    borderRight: "solid 1px #f9f9fa",
+    borderRight: 'solid 1px #f9f9fa',
   };
   const filterColumnStyle: React.CSSProperties = {
     ...baseColumnStyle,
     height: props.filterHeight,
-    backgroundColor: "#3e7fff",
+    backgroundColor: '#3e7fff',
   };
   const normalColumnStyle: React.CSSProperties = {
     ...baseColumnStyle,
@@ -104,7 +104,7 @@ function getYearsData(qp: SearchPageQueryParams, yearSetListToShow: YearSet[]) {
 
 const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => {
   const currentYear = new Date().getFullYear();
-  const yearSetListToShow: YearSet[] = new Array(currentYear - MIN_YEAR + 1).fill("").map((_, i) => {
+  const yearSetListToShow: YearSet[] = new Array(currentYear - MIN_YEAR + 1).fill('').map((_, i) => {
     const yearSet = props.yearInfo.find(ys => ys.year === MIN_YEAR + i);
     return {
       year: MIN_YEAR + i,
@@ -140,7 +140,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
         const filteredYearSet = props.filteredYearInfo.find(ys => ys.year === yearSet.year);
         const filterHeight = filteredYearSet
           ? `${Math.max(Math.round((filteredYearSet.docCount / maxDocCount) * 100), 4.5)}%`
-          : "0px";
+          : '0px';
 
         return (
           <Column

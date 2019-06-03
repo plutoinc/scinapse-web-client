@@ -4,10 +4,9 @@ import {
   bannerCuratedTest,
   relatedPapersAtPaperShowTest,
   signBannerAtPaperShowTest,
-  signBubbleTest,
-  lockedButtonsTest,
   fullTextBlurredTest,
-} from "./abTestObject";
+  refCitedChildPaperList,
+} from './abTestObject';
 
 export interface UserGroup {
   groupName: string;
@@ -19,20 +18,19 @@ export interface Test {
   userGroup: UserGroup[];
 }
 
-export type BenefitExpType = "queryCountSession" | "refPaperCountSession" | "paperviewCountDevice" | "downloadCount";
+export type BenefitExpType = 'queryCountSession' | 'refPaperCountSession' | 'paperviewCountDevice' | 'downloadCount';
 
 export type ABTestType =
-  | "queryLover"
-  | "searchEngineMood"
-  | "signBannerAtPaperShow"
-  | "signBannerAtSearch-banner"
-  | "signBannerAtSearch-curated"
-  | "relatedPapersAtPaperShow"
-  | "signBubble"
-  | "lockedButtons"
-  | "fullTextBlurred";
+  | 'queryLover'
+  | 'searchEngineMood'
+  | 'signBannerAtPaperShow'
+  | 'signBannerAtSearch-banner'
+  | 'signBannerAtSearch-curated'
+  | 'relatedPapersAtPaperShow'
+  | 'fullTextBlurred'
+  | 'refCitedPaperItem';
 
-export const BENEFIT_EXPERIMENT_KEY = "b_exp";
+export const BENEFIT_EXPERIMENT_KEY = 'b_exp';
 
 export type BenefitExpValue = { [key in ABTestType | BenefitExpType]: BenefitExp };
 
@@ -56,9 +54,8 @@ export const LIVE_TESTS: Test[] = [
   bannerCuratedTest,
   relatedPapersAtPaperShowTest,
   signBannerAtPaperShowTest,
-  signBubbleTest,
-  lockedButtonsTest,
   fullTextBlurredTest,
+  refCitedChildPaperList,
 ];
 
 function getRandomPool(): { [key: string]: string[] } {

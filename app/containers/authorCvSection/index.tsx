@@ -1,24 +1,24 @@
-import * as React from "react";
-import { denormalize } from "normalizr";
-import { Dispatch, connect } from "react-redux";
-import { ConnectedAuthorShowState } from "../connectedAuthorShow/reducer";
-import { LayoutState } from "../../components/layouts/records";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { AppState } from "../../reducers";
-import { CurrentUser } from "../../model/currentUser";
-import { authorSchema, Author } from "../../model/author/author";
-import { profileSchema, Profile, CVInfoType } from "../../model/profile";
-import Icon from "../../icons";
-import AwardForm, { AwardFormState } from "../../components/authorCV/awardForm";
-import { postNewAuthorCVInfo, removeAuthorCvInfo } from "../../actions/author";
-import EducationForm, { EducationFormState } from "../../components/authorCV/educationForm";
-import ExperienceForm, { ExperienceFormState } from "../../components/authorCV/experienceForm";
-import ExperienceItem from "../../components/authorCV/experienceItem";
-import EducationItem from "../../components/authorCV/educationItem";
-import AwardItem from "../../components/authorCV/awardItem";
-import { ActionCreators } from "../../actions/actionTypes";
-import alertToast from "../../helpers/makePlutoToastAction";
-const styles = require("./authorCvSection.scss");
+import * as React from 'react';
+import { denormalize } from 'normalizr';
+import { Dispatch, connect } from 'react-redux';
+import { ConnectedAuthorShowState } from '../connectedAuthorShow/reducer';
+import { LayoutState } from '../../components/layouts/records';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { AppState } from '../../reducers';
+import { CurrentUser } from '../../model/currentUser';
+import { authorSchema, Author } from '../../model/author/author';
+import { profileSchema, Profile, CVInfoType } from '../../model/profile';
+import Icon from '../../icons';
+import AwardForm, { AwardFormState } from '../../components/authorCV/awardForm';
+import { postNewAuthorCVInfo, removeAuthorCvInfo } from '../../actions/author';
+import EducationForm, { EducationFormState } from '../../components/authorCV/educationForm';
+import ExperienceForm, { ExperienceFormState } from '../../components/authorCV/experienceForm';
+import ExperienceItem from '../../components/authorCV/experienceItem';
+import EducationItem from '../../components/authorCV/educationItem';
+import AwardItem from '../../components/authorCV/awardItem';
+import { ActionCreators } from '../../actions/actionTypes';
+import alertToast from '../../helpers/makePlutoToastAction';
+const styles = require('./authorCvSection.scss');
 
 interface AuthorCvSectionState {
   isOpenAwardForm: boolean;
@@ -81,31 +81,31 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
     return isOpenEducationForm ? (
       <EducationForm
-        wrapperStyle={{ display: "inline-flex", position: "relative" }}
+        wrapperStyle={{ display: 'inline-flex', position: 'relative' }}
         inputStyle={{
-          color: "#666d7c",
-          fontSize: "13px",
-          lineHeight: "1.54",
-          fontFamily: "Roboto",
-          padding: "8px",
+          color: '#666d7c',
+          fontSize: '13px',
+          lineHeight: '1.54',
+          fontFamily: 'Roboto',
+          padding: '8px',
         }}
-        handleClose={this.handleToggleAuthorCVForm("educations")}
+        handleClose={this.handleToggleAuthorCVForm('educations')}
         isOpen={true}
         isLoading={isLoadingEducationForm}
-        handleSubmitForm={this.handleAddCVInfo("educations")}
+        handleSubmitForm={this.handleAddCVInfo('educations')}
         initialValues={{
-          degree: "",
-          department: "",
+          degree: '',
+          department: '',
           isCurrent: false,
-          institutionName: "",
+          institutionName: '',
           institutionId: null,
-          startDate: "",
-          endDate: "",
+          startDate: '',
+          endDate: '',
         }}
       />
     ) : (
       <div className={styles.buttonWrapper}>
-        <span className={styles.openFormButton} onClick={this.handleToggleAuthorCVForm("educations")}>
+        <span className={styles.openFormButton} onClick={this.handleToggleAuthorCVForm('educations')}>
           <Icon className={styles.plusIcon} icon="SMALL_PLUS" /> Add more
         </span>
       </div>
@@ -123,7 +123,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
             authorId={author.id}
             key={education.id}
             education={education}
-            handleRemoveItem={this.handleDeleteCVInfo("educations")}
+            handleRemoveItem={this.handleDeleteCVInfo('educations')}
           />
         );
       });
@@ -152,32 +152,32 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
     return isOpenExperienceForm ? (
       <ExperienceForm
-        wrapperStyle={{ display: "inline-flex", position: "relative" }}
+        wrapperStyle={{ display: 'inline-flex', position: 'relative' }}
         inputStyle={{
-          color: "#666d7c",
-          fontSize: "13px",
-          lineHeight: "1.54",
-          fontFamily: "Roboto",
-          padding: "8px",
+          color: '#666d7c',
+          fontSize: '13px',
+          lineHeight: '1.54',
+          fontFamily: 'Roboto',
+          padding: '8px',
         }}
-        handleClose={this.handleToggleAuthorCVForm("experiences")}
+        handleClose={this.handleToggleAuthorCVForm('experiences')}
         isOpen={true}
         isLoading={isLoadingExperienceForm}
-        handleSubmitForm={this.handleAddCVInfo("experiences")}
+        handleSubmitForm={this.handleAddCVInfo('experiences')}
         initialValues={{
-          department: "",
-          description: "",
-          position: "",
+          department: '',
+          description: '',
+          position: '',
           institutionId: null,
-          institutionName: "",
+          institutionName: '',
           isCurrent: false,
-          startDate: "",
-          endDate: "",
+          startDate: '',
+          endDate: '',
         }}
       />
     ) : (
       <div className={styles.buttonWrapper}>
-        <span className={styles.openFormButton} onClick={this.handleToggleAuthorCVForm("experiences")}>
+        <span className={styles.openFormButton} onClick={this.handleToggleAuthorCVForm('experiences')}>
           <Icon className={styles.plusIcon} icon="SMALL_PLUS" /> Add more
         </span>
       </div>
@@ -194,7 +194,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
             authorId={author.id}
             key={experience.id}
             experience={experience}
-            handleRemoveItem={this.handleDeleteCVInfo("experiences")}
+            handleRemoveItem={this.handleDeleteCVInfo('experiences')}
           />
         );
       });
@@ -223,19 +223,19 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
     return isOpenAwardForm ? (
       <AwardForm
-        handleClose={this.handleToggleAuthorCVForm("awards")}
+        handleClose={this.handleToggleAuthorCVForm('awards')}
         isOpen={true}
         isLoading={isLoadingAwardForm}
-        handleSubmitForm={this.handleAddCVInfo("awards")}
+        handleSubmitForm={this.handleAddCVInfo('awards')}
         initialValues={{
-          title: "",
-          receivedDate: "",
-          relatedLink: "",
+          title: '',
+          receivedDate: '',
+          relatedLink: '',
         }}
       />
     ) : (
       <div className={styles.buttonWrapper}>
-        <span className={styles.openFormButton} onClick={this.handleToggleAuthorCVForm("awards")}>
+        <span className={styles.openFormButton} onClick={this.handleToggleAuthorCVForm('awards')}>
           <Icon className={styles.plusIcon} icon="SMALL_PLUS" /> Add more
         </span>
       </div>
@@ -253,7 +253,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
             authorId={author.id}
             key={award.id}
             award={award}
-            handleRemoveItem={this.handleDeleteCVInfo("awards")}
+            handleRemoveItem={this.handleDeleteCVInfo('awards')}
           />
         );
       });
@@ -292,7 +292,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
       dispatch(ActionCreators.failToAddProfileCvData());
       this.handleLoadingFlagAuthorCVForm(cvInfoType);
       alertToast({
-        type: "error",
+        type: 'error',
         message: `Had an error to add ${cvInfoType} data.`,
       });
     }
@@ -302,16 +302,16 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
     const { isOpenAwardForm, isOpenEducationForm, isOpenExperienceForm } = this.state;
 
     switch (formType) {
-      case "awards":
+      case 'awards':
         this.setState(prevState => ({ ...prevState, isOpenAwardForm: !isOpenAwardForm }));
         break;
-      case "educations":
+      case 'educations':
         this.setState(prevState => ({
           ...prevState,
           isOpenEducationForm: !isOpenEducationForm,
         }));
         break;
-      case "experiences":
+      case 'experiences':
         this.setState(prevState => ({
           ...prevState,
           isOpenExperienceForm: !isOpenExperienceForm,
@@ -326,13 +326,13 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
     const { isLoadingAwardForm, isLoadingEducationForm, isLoadingExperienceForm } = this.state;
 
     switch (formType) {
-      case "awards":
+      case 'awards':
         this.setState(prevState => ({ ...prevState, isLoadingAwardForm: !isLoadingAwardForm }));
         break;
-      case "educations":
+      case 'educations':
         this.setState(prevState => ({ ...prevState, isLoadingEducationForm: !isLoadingEducationForm }));
         break;
-      case "experiences":
+      case 'experiences':
         this.setState(prevState => ({ ...prevState, isLoadingExperienceForm: !isLoadingExperienceForm }));
         break;
       default:

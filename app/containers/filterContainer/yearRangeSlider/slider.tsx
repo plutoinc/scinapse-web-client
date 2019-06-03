@@ -1,8 +1,8 @@
-import * as React from "react";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-import { goToYearFilteredSearchResultPage } from "./helper";
-import { MIN_YEAR } from "./constants";
-const styles = require("./yearRangeSlider.scss");
+import * as React from 'react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { goToYearFilteredSearchResultPage } from './helper';
+import { MIN_YEAR } from './constants';
+const styles = require('./yearRangeSlider.scss');
 
 let ticking = false;
 
@@ -10,15 +10,15 @@ interface SliderBubbleProps {
   value: number;
   left: number;
   isNarrow: boolean;
-  type: "min" | "max";
+  type: 'min' | 'max';
   onMouseDown: (e: React.MouseEvent<HTMLDivElement>, value: number) => void;
 }
 
 const SliderBubble: React.FunctionComponent<SliderBubbleProps> = React.memo(props => {
   let labelLeft: number = props.left - 12;
-  if (props.isNarrow && props.type === "min") {
+  if (props.isNarrow && props.type === 'min') {
     labelLeft = props.left - 24;
-  } else if (props.isNarrow && props.type === "max") {
+  } else if (props.isNarrow && props.type === 'max') {
     labelLeft = props.left - 2;
   }
 
@@ -54,7 +54,7 @@ interface SliderProps extends RouteComponentProps<null> {
 
 interface SliderState {
   bubbleNode: HTMLDivElement | null;
-  currentBubble: "min" | "max" | null;
+  currentBubble: 'min' | 'max' | null;
 }
 
 class Slider extends React.PureComponent<SliderProps, SliderState> {
@@ -77,7 +77,7 @@ class Slider extends React.PureComponent<SliderProps, SliderState> {
           key={i}
           left={(cv - MIN_YEAR) * step}
           value={cv}
-          type={cv === minValue ? "min" : "max"}
+          type={cv === minValue ? 'min' : 'max'}
           onMouseDown={this.handleMouseDown}
           isNarrow={maxValue - minValue < 6 && maxValue !== minValue}
         />
@@ -102,17 +102,17 @@ class Slider extends React.PureComponent<SliderProps, SliderState> {
       this.setState(prevState => ({
         ...prevState,
         bubbleNode: target,
-        currentBubble: cv === this.props.minValue ? "min" : "max",
+        currentBubble: cv === this.props.minValue ? 'min' : 'max',
       }));
       ticking = false;
-      document.addEventListener("mousemove", this.handleDragEvent);
-      document.addEventListener("mouseup", this.handleMouseUp, { passive: true });
+      document.addEventListener('mousemove', this.handleDragEvent);
+      document.addEventListener('mouseup', this.handleMouseUp, { passive: true });
     }
   };
 
   private handleMouseUp = () => {
-    document.removeEventListener("mousemove", this.handleDragEvent);
-    document.removeEventListener("mouseup", this.handleMouseUp);
+    document.removeEventListener('mousemove', this.handleDragEvent);
+    document.removeEventListener('mouseup', this.handleMouseUp);
     this.setState(prevState => ({ ...prevState, bubbleNode: null }));
     this.handleDragEnd();
   };
@@ -136,18 +136,18 @@ class Slider extends React.PureComponent<SliderProps, SliderState> {
         }
 
         let nextValues: number[] = [];
-        if (this.state.currentBubble === "min") {
+        if (this.state.currentBubble === 'min') {
           nextValues = [Math.min(maxValue, nextValue), maxValue];
 
           if (nextValue > maxValue) {
-            this.setState(prevState => ({ ...prevState, currentBubble: "max" }));
+            this.setState(prevState => ({ ...prevState, currentBubble: 'max' }));
             nextValues = [maxValue, nextValue];
           }
         } else {
           nextValues = [minValue, Math.max(minValue, nextValue)];
 
           if (nextValue < minValue) {
-            this.setState(prevState => ({ ...prevState, currentBubble: "min" }));
+            this.setState(prevState => ({ ...prevState, currentBubble: 'min' }));
             nextValues = [nextValue, minValue];
           }
         }

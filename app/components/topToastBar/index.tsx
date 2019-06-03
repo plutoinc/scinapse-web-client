@@ -1,8 +1,8 @@
-import * as React from "react";
-import { withStyles } from "../../helpers/withStylesHelper";
-import Icon from "../../icons";
-import { trackEvent } from "../../helpers/handleGA";
-const styles = require("./topToastBar.scss");
+import * as React from 'react';
+import { withStyles } from '../../helpers/withStylesHelper';
+import Icon from '../../icons';
+import { trackEvent } from '../../helpers/handleGA';
+const styles = require('./topToastBar.scss');
 
 interface TopToastBarProps {
   onClose: () => void;
@@ -36,8 +36,8 @@ class TopToastBar extends React.PureComponent<TopToastBarProps> {
     const { onClose } = this.props;
 
     trackEvent({
-      category: "Top Toast Action",
-      action: "Click Close Button",
+      category: 'Top Toast Action',
+      action: 'Click Close Button',
     });
     onClose();
   };
@@ -46,8 +46,8 @@ class TopToastBar extends React.PureComponent<TopToastBarProps> {
     const { onClose } = this.props;
 
     trackEvent({
-      category: "Top Toast Action",
-      action: "Click CTA Button",
+      category: 'Top Toast Action',
+      action: 'Click CTA Button',
     });
     onClose();
   };

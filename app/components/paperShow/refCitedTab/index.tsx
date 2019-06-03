@@ -1,14 +1,12 @@
-import * as React from "react";
-import * as classNames from "classnames";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import CiteBox from "../../../containers/paperShowActionBar/components/citeBox";
-import PdfDownloadButton from "../components/pdfDownloadButton";
-import RequestFullTextBtn from "../../../containers/paperShowActionBar/components/fullTextRequestBtn";
-import RequestFullTextDialog from "../../../containers/paperShowActionBar/components/fullTextDialog";
-import { PDFButtonProps, TabItemProps, PaperShowRefCitedTabProps } from "./types";
-import BlockedPopper from "../../preNoted/blockedPopper";
-const styles = require("./refCitedTab.scss");
+import * as React from 'react';
+import * as classNames from 'classnames';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import CiteBox from '../../../containers/paperShowActionBar/components/citeBox';
+import PdfDownloadButton from '../components/pdfDownloadButton';
+import RequestFullTextBtn from '../../../containers/paperShowActionBar/components/fullTextRequestBtn';
+import RequestFullTextDialog from '../../../containers/paperShowActionBar/components/fullTextDialog';
+import { PDFButtonProps, TabItemProps, PaperShowRefCitedTabProps } from './types';
+const styles = require('./refCitedTab.scss');
 
 const TabItem: React.FunctionComponent<TabItemProps> = props => {
   return (
@@ -25,28 +23,8 @@ const TabItem: React.FunctionComponent<TabItemProps> = props => {
 };
 
 const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
-  const {
-    paper,
-    isLoading,
-    canShowFullPDF,
-    isOpenBlockedPopper,
-    actionBtnEl,
-    onClickDownloadPDF,
-    afterDownloadPDF,
-    handleSetIsOpenBlockedPopper,
-    handleCloseBlockedPopper,
-    currentUser,
-  } = props;
+  const { paper, isLoading, canShowFullPDF, onClickDownloadPDF, afterDownloadPDF, currentUser } = props;
   const [isOpen, setIsOpen] = React.useState(false);
-
-  const blockedPopper = (
-    <BlockedPopper
-      handleOnClickAwayFunc={handleCloseBlockedPopper}
-      anchorEl={actionBtnEl}
-      isOpen={isOpenBlockedPopper}
-      buttonClickAction={canShowFullPDF ? "downloadPdf" : "clickRequestFullTextBtn"}
-    />
-  );
 
   if (canShowFullPDF) {
     return (
@@ -56,12 +34,9 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
           paper={paper}
           currentUser={currentUser}
           isLoading={isLoading}
-          isOpenBlockedPopper={isOpenBlockedPopper}
           onDownloadedPDF={onClickDownloadPDF!}
-          handleSetIsOpenBlockedPopper={handleSetIsOpenBlockedPopper}
           handleSetScrollAfterDownload={afterDownloadPDF}
         />
-        {blockedPopper}
       </>
     );
   }
@@ -72,12 +47,9 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
         currentUser={currentUser}
         isLoading={isLoading}
         paperId={paper!.id}
-        isOpenBlockedPopper={isOpenBlockedPopper}
         handleSetIsOpen={setIsOpen}
-        handleSetIsOpenBlockedPopper={handleSetIsOpenBlockedPopper}
-        btnStyle={{ flex: "1 0 auto", height: "36px", padding: "0 12px 0 8px" }}
+        btnStyle={{ flex: '1 0 auto', height: '36px', padding: '0 12px 0 8px' }}
       />
-      {blockedPopper}
       <RequestFullTextDialog
         paperId={paper.id}
         isOpen={isOpen}
@@ -92,17 +64,10 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
 const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(props => {
   let fullTextNode;
   const actionBtnEl = React.useRef<HTMLDivElement | null>(null);
-  const [isOpenBlockedPopper, setIsOpenBlockedPopper] = React.useState(false);
-
-  const closeBlockedPopper = () => {
-    if (isOpenBlockedPopper) {
-      setIsOpenBlockedPopper(false);
-    }
-  };
 
   if (props.canShowFullPDF) {
     fullTextNode = (
-      <TabItem active={!!props.isOnFullText} onClick={props.onClickTabItem("fullText")} text="Full Text" />
+      <TabItem active={!!props.isOnFullText} onClick={props.onClickTabItem('fullText')} text="Full Text" />
     );
   }
 
@@ -118,12 +83,12 @@ const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(pro
           {fullTextNode}
           <TabItem
             active={props.isOnRef}
-            onClick={props.onClickTabItem("ref")}
+            onClick={props.onClickTabItem('ref')}
             text={`References (${props.paper.referenceCount})`}
           />
           <TabItem
             active={props.isOnCited}
-            onClick={props.onClickTabItem("cited")}
+            onClick={props.onClickTabItem('cited')}
             text={`Citations (${props.paper.citedCount})`}
           />
         </ul>
@@ -132,25 +97,20 @@ const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(pro
             <CiteBox
               actionArea="contentNavBar"
               paper={props.paper}
-              btnStyle={{ maxWidth: "74px", width: "100%", height: "36px" }}
+              btnStyle={{ maxWidth: '74px', width: '100%', height: '36px' }}
             />
           </div>
-          <ClickAwayListener onClickAway={closeBlockedPopper}>
-            <div className={styles.actionItem} ref={actionBtnEl}>
-              <PDFButton
-                currentUser={props.currentUser}
-                paper={props.paper}
-                isLoading={props.isLoading}
-                canShowFullPDF={props.canShowFullPDF}
-                isOpenBlockedPopper={isOpenBlockedPopper}
-                actionBtnEl={actionBtnEl.current}
-                handleSetIsOpenBlockedPopper={setIsOpenBlockedPopper}
-                handleCloseBlockedPopper={closeBlockedPopper}
-                onClickDownloadPDF={props.onClickDownloadPDF!}
-                afterDownloadPDF={props.afterDownloadPDF!}
-              />
-            </div>
-          </ClickAwayListener>
+          <div className={styles.actionItem} ref={actionBtnEl}>
+            <PDFButton
+              currentUser={props.currentUser}
+              paper={props.paper}
+              isLoading={props.isLoading}
+              canShowFullPDF={props.canShowFullPDF}
+              actionBtnEl={actionBtnEl.current}
+              onClickDownloadPDF={props.onClickDownloadPDF!}
+              afterDownloadPDF={props.afterDownloadPDF!}
+            />
+          </div>
         </div>
       </div>
     </div>

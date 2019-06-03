@@ -1,13 +1,13 @@
-import { Dispatch } from "react-redux";
-import axios, { CancelToken } from "axios";
-import { ActionCreators } from "./actionTypes";
-import MemberAPI from "../api/member";
-import CollectionAPI, { PostCollectionParams } from "../api/collection";
-import PaperAPI, { GetPaperParams } from "../api/paper";
-import { GetRefOrCitedPapersParams } from "../api/types/paper";
-import alertToast from "../helpers/makePlutoToastAction";
-import PlutoAxios from "../api/pluto";
-import { CommonError } from "../model/error";
+import { Dispatch } from 'react-redux';
+import axios, { CancelToken } from 'axios';
+import { ActionCreators } from './actionTypes';
+import MemberAPI from '../api/member';
+import CollectionAPI, { PostCollectionParams } from '../api/collection';
+import PaperAPI, { GetPaperParams } from '../api/paper';
+import { GetRefOrCitedPapersParams } from '../api/types/paper';
+import alertToast from '../helpers/makePlutoToastAction';
+import PlutoAxios from '../api/pluto';
+import { CommonError } from '../model/error';
 
 export function clearPaperShowState() {
   return ActionCreators.clearPaperShowState();
@@ -31,7 +31,7 @@ export function getMyCollections(paperId: number, cancelToken: CancelToken, isOp
         const error = PlutoAxios.getGlobalError(err);
         if (error) {
           alertToast({
-            type: "error",
+            type: 'error',
             message: error.message,
           });
         }
@@ -69,7 +69,7 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
           paperIds: getPapersResult.result,
           size: getPapersResult.size,
           number: getPapersResult.number,
-          sort: "",
+          sort: '',
           first: getPapersResult.first,
           last: getPapersResult.last,
           numberOfElements: getPapersResult.numberOfElements,
@@ -80,7 +80,7 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
     } catch (err) {
       if (!axios.isCancel(err)) {
         alertToast({
-          type: "error",
+          type: 'error',
           message: `Failed to get papers. ${err}`,
         });
         dispatch(ActionCreators.failedToGetReferencePapers());
@@ -101,7 +101,7 @@ export function getCitedPapers(params: GetRefOrCitedPapersParams) {
           paperIds: getPapersResult.result,
           size: getPapersResult.size,
           number: getPapersResult.number,
-          sort: "",
+          sort: '',
           first: getPapersResult.first,
           last: getPapersResult.last,
           numberOfElements: getPapersResult.numberOfElements,
@@ -112,7 +112,7 @@ export function getCitedPapers(params: GetRefOrCitedPapersParams) {
     } catch (err) {
       if (!axios.isCancel(err)) {
         alertToast({
-          type: "error",
+          type: 'error',
           message: `Failed to get papers. ${err}`,
         });
         dispatch(ActionCreators.startToGetCitedPapers());

@@ -1,8 +1,8 @@
-import * as React from "react";
-import PaperItem, { PaperItemProps } from "../common/paperItem";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { Collection } from "../../model/collection";
-const styles = require("./collectionPaperItem.scss");
+import * as React from 'react';
+import PaperItem, { PaperItemProps } from '../common/paperItem';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { Collection } from '../../model/collection';
+const styles = require('./collectionPaperItem.scss');
 
 // tslint:disable-next-line:no-empty-interface
 interface CollectionPaperItemProps extends PaperItemProps {
@@ -36,10 +36,10 @@ class CollectionPaperItem extends React.PureComponent<CollectionPaperItemProps, 
     const paperItemProps = {
       ...this.props,
       wrapperStyle: {
-        borderBottom: "none",
-        marginBottom: "0",
-        paddingBottom: "0",
-        maxWidth: "100%",
+        borderBottom: 'none',
+        marginBottom: '0',
+        paddingBottom: '0',
+        maxWidth: '100%',
       },
     };
 

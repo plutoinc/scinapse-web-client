@@ -243,7 +243,7 @@
   }
 
   .emoji-mart {
-    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
     font-size: 16px;
     display: inline-block;
     color: #222427;
@@ -375,7 +375,7 @@
 
   .emoji-mart-category .emoji-mart-emoji:hover:before {
     z-index: 0;
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -426,8 +426,8 @@
   }
 
   .emoji-mart-emoji-native {
-    font-family: "Segoe UI Emoji", "Segoe UI Symbol", "Segoe UI", "Apple Color Emoji", "Twemoji Mozilla",
-      "Noto Color Emoji", "EmojiOne Color", "Android Emoji";
+    font-family: 'Segoe UI Emoji', 'Segoe UI Symbol', 'Segoe UI', 'Apple Color Emoji', 'Twemoji Mozilla',
+      'Noto Color Emoji', 'EmojiOne Color', 'Android Emoji';
   }
 
   .emoji-mart-no-results {
@@ -577,7 +577,7 @@
   }
 
   .emoji-mart-skin-swatch.selected:after {
-    content: "";
+    content: '';
     position: absolute;
     top: 50%;
     left: 50%;
@@ -611,7 +611,7 @@
   }
 
   .emoji-mart-skin-swatch.custom.selected:after {
-    content: "";
+    content: '';
     width: 0;
     height: 0;
   }

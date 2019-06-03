@@ -1,9 +1,9 @@
-import * as React from "react";
-import MuiTooltip from "@material-ui/core/Tooltip";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { PaperAuthor } from "../../../model/author";
-import Icon from "../../../icons";
-const styles = require("./author.scss");
+import * as React from 'react';
+import MuiTooltip from '@material-ui/core/Tooltip';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { PaperAuthor } from '../../../model/author';
+import Icon from '../../../icons';
+const styles = require('./author.scss');
 
 interface PostAuthorProps {
   author: PaperAuthor;
@@ -23,7 +23,7 @@ const PostAuthor = ({ author }: PostAuthorProps) => {
       <div className={styles.authorBasic}>
         <div className={styles.authorName}>
           <span className={styles.name}>
-            {author.name}{" "}
+            {author.name}{' '}
             {author.isLayered ? (
               <MuiTooltip
                 classes={{ tooltip: styles.verificationTooltip }}

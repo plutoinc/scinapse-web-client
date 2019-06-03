@@ -1,44 +1,38 @@
-import * as React from "react";
-import Axios, { CancelTokenSource } from "axios";
-import { connect, Dispatch } from "react-redux";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { withStyles } from "../../helpers/withStylesHelper";
-import PaperAPI from "../../api/paper";
-import ScinapseButton from "../common/scinapseButton";
-import ActionTicketManager from "../../helpers/actionTicketManager";
-import Icon from "../../icons";
-import { PaperPdf, Paper } from "../../model/paper";
-import { ActionCreators } from "../../actions/actionTypes";
-import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
-import { PaperSource } from "../../model/paperSource";
-import { EXTENSION_APP_ID } from "../../constants/scinapse-extension";
-import EnvChecker from "../../helpers/envChecker";
-import RelatedPapers from "../relatedPapers";
-import AfterDownloadContents from "./component/afterDownloadContents";
-import { PDFViewerProps } from "./types";
-import { AppState } from "../../reducers";
-import { makeGetMemoizedPapers } from "../../selectors/papersSelector";
-import { getMemoizedCurrentUser } from "../../selectors/getCurrentUser";
-import { getMemoizedPDFViewerState } from "../../selectors/getPDFViewer";
-import ProgressSpinner from "./component/progressSpinner";
-import BlockedPopper from "../preNoted/blockedPopper";
-import { getUserGroupName } from "../../helpers/abTestHelper";
-import { SIGN_BUBBLE_TEST } from "../../constants/abTestGlobalValue";
-import { setBubbleContextTypeHelper } from "../../helpers/getBubbleContextType";
-import LockedLabel from "../preNoted/lockedLabel";
-import BlurBlocker from "./component/blurBlocker";
-import { CurrentUser } from "../../model/currentUser";
-const { Document, Page, pdfjs } = require("react-pdf");
-const styles = require("./pdfViewer.scss");
+import * as React from 'react';
+import Axios, { CancelTokenSource } from 'axios';
+import { connect, Dispatch } from 'react-redux';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { withStyles } from '../../helpers/withStylesHelper';
+import PaperAPI from '../../api/paper';
+import ScinapseButton from '../common/scinapseButton';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+import Icon from '../../icons';
+import { PaperPdf, Paper } from '../../model/paper';
+import { ActionCreators } from '../../actions/actionTypes';
+import { AUTH_LEVEL, blockUnverifiedUser } from '../../helpers/checkAuthDialog';
+import { PaperSource } from '../../model/paperSource';
+import { EXTENSION_APP_ID } from '../../constants/scinapse-extension';
+import EnvChecker from '../../helpers/envChecker';
+import RelatedPapers from '../relatedPapers';
+import AfterDownloadContents from './component/afterDownloadContents';
+import { PDFViewerProps } from './types';
+import { AppState } from '../../reducers';
+import { makeGetMemoizedPapers } from '../../selectors/papersSelector';
+import { getMemoizedCurrentUser } from '../../selectors/getCurrentUser';
+import { getMemoizedPDFViewerState } from '../../selectors/getPDFViewer';
+import ProgressSpinner from './component/progressSpinner';
+import { getUserGroupName } from '../../helpers/abTestHelper';
+import BlurBlocker from './component/blurBlocker';
+const { Document, Page, pdfjs } = require('react-pdf');
+const styles = require('./pdfViewer.scss');
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function trackClickButton(actionTag: Scinapse.ActionTicket.ActionTagType, paperId: number) {
   ActionTicketManager.trackTicket({
-    pageType: "paperShow",
-    actionType: "fire",
-    actionArea: "pdfViewer",
+    pageType: 'paperShow',
+    actionType: 'fire',
+    actionArea: 'pdfViewer',
     actionTag,
 
     actionLabel: String(paperId),
@@ -46,35 +40,35 @@ function trackClickButton(actionTag: Scinapse.ActionTicket.ActionTagType, paperI
 }
 
 const baseBtnStyle: React.CSSProperties = {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  width: "150px",
-  height: "40px",
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '150px',
+  height: '40px',
 };
 
 const readAllBtnStyle: React.CSSProperties = {
   ...baseBtnStyle,
-  position: "relative",
-  borderRadius: "27.5px",
-  border: "1px solid #bbc2d0",
-  fontSize: "16px",
+  position: 'relative',
+  borderRadius: '27.5px',
+  border: '1px solid #bbc2d0',
+  fontSize: '16px',
   fontWeight: 500,
-  letterSpacing: "1px",
-  color: "#34495e",
+  letterSpacing: '1px',
+  color: '#34495e',
 };
 
 const downloadPdfBtnStyle: React.CSSProperties = {
   ...baseBtnStyle,
-  color: "white",
-  backgroundColor: "#3e7fff",
-  marginLeft: "16px",
+  color: 'white',
+  backgroundColor: '#3e7fff',
+  marginLeft: '16px',
 };
 
 function fetchPDFFromExtension(sources: PaperSource[]): Promise<{ data: Blob }> {
   return new Promise((resolve, reject) => {
-    if (typeof window !== "undefined" && typeof chrome !== "undefined") {
-      chrome.runtime.sendMessage(EXTENSION_APP_ID, { message: "CHECK_EXTENSION_EXIST" }, reply => {
+    if (typeof window !== 'undefined' && typeof chrome !== 'undefined') {
+      chrome.runtime.sendMessage(EXTENSION_APP_ID, { message: 'CHECK_EXTENSION_EXIST' }, reply => {
         if (!reply || !reply.success) {
           return reject();
         }
@@ -83,16 +77,16 @@ function fetchPDFFromExtension(sources: PaperSource[]): Promise<{ data: Blob }> 
       const channel = new MessageChannel();
       window.postMessage(
         {
-          type: "GET_PDF",
+          type: 'GET_PDF',
           sources,
         },
-        "*",
+        '*',
         [channel.port2]
       );
 
       channel.port1.onmessage = e => {
         if (e.data.success) {
-          console.log("SUCCESS TO GET PDF from EXTENSION");
+          console.log('SUCCESS TO GET PDF from EXTENSION');
           resolve(e.data);
         } else {
           reject();
@@ -122,44 +116,19 @@ async function fetchPDFFromAPI(paper: Paper, cancelTokenSource: CancelTokenSourc
   return null;
 }
 
-function closeBlockedPopper(isOpenBlockedPopper: boolean, dispatch: Dispatch<any>) {
-  if (isOpenBlockedPopper) {
-    dispatch(
-      ActionCreators.togglePDFBlockedPopper({
-        isOpenBlockedPopper: false,
-      })
-    );
-  }
-}
 interface OnClickViewMorePdfBtnParams {
   paperId: number;
-  isOpenBlockedPopper: boolean;
   dispatch: Dispatch<any>;
-  currentUser: CurrentUser;
 }
 async function onClickViewMorePdfBtn(params: OnClickViewMorePdfBtnParams) {
-  const { paperId, isOpenBlockedPopper, dispatch, currentUser } = params;
-  trackClickButton("viewMorePDF", paperId);
-
-  if (!currentUser.isLoggedIn && getUserGroupName(SIGN_BUBBLE_TEST) === "bubble") {
-    dispatch(
-      ActionCreators.togglePDFBlockedPopper({
-        isOpenBlockedPopper: !isOpenBlockedPopper,
-      })
-    );
-
-    if (isOpenBlockedPopper) {
-      return setBubbleContextTypeHelper();
-    }
-
-    return;
-  }
+  const { paperId, dispatch } = params;
+  trackClickButton('viewMorePDF', paperId);
 
   const isBlocked = await blockUnverifiedUser({
     authLevel: AUTH_LEVEL.VERIFIED,
-    actionArea: "pdfViewer",
-    actionLabel: "viewMorePDF",
-    userActionType: "viewMorePDF",
+    actionArea: 'pdfViewer',
+    actionLabel: 'viewMorePDF',
+    userActionType: 'viewMorePDF',
   });
 
   if (isBlocked) {
@@ -181,18 +150,18 @@ const PDFContent: React.FC<{
   if (props.isExpanded) {
     pageContent = Array.from(new Array(props.pageCountToShow), (_el, i) => (
       <div key={i} className={styles.pageLayer}>
-        <Page pdf={props.pdfBlob} width={996} margin={"0 auto"} key={i} pageNumber={i + 1} />
+        <Page pdf={props.pdfBlob} width={996} margin={'0 auto'} key={i} pageNumber={i + 1} />
       </div>
     ));
   } else {
     pageContent = (
       <div
         style={{
-          height: props.shouldShowBlurBlocker ? "500px" : "auto",
+          height: props.shouldShowBlurBlocker ? '500px' : 'auto',
         }}
         className={styles.pageLayer}
       >
-        <Page pdf={props.pdfBlob} width={996} margin={"0 auto"} pageNumber={1} />
+        <Page pdf={props.pdfBlob} width={996} margin={'0 auto'} pageNumber={1} />
       </div>
     );
   }
@@ -213,7 +182,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   } = props;
   const wrapperNode = React.useRef<HTMLDivElement | null>(null);
   const viewMorePDFBtnEl = React.useRef<HTMLDivElement | null>(null);
-  const actionTag = PDFViewerState.isExpanded ? "viewLessPDF" : "viewMorePDF";
+  const actionTag = PDFViewerState.isExpanded ? 'viewLessPDF' : 'viewMorePDF';
 
   React.useEffect(
     () => {
@@ -273,42 +242,30 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
 
   if (!!PDFViewerState.pdfBlob) {
     const ReadAllPDFButton = (
-      <ClickAwayListener onClickAway={() => closeBlockedPopper(PDFViewerState.isOpenBlockedPopper, dispatch)}>
-        <div ref={viewMorePDFBtnEl}>
-          <ScinapseButton
-            gaCategory="PDF viewer"
-            gaAction={actionTag}
-            style={readAllBtnStyle}
-            content={
-              <span>
-                READ ALL <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
-                <LockedLabel />
-              </span>
-            }
-            isLoading={PDFViewerState.isLoading}
-            disabled={PDFViewerState.hasFailed}
-            onClick={async () =>
-              onClickViewMorePdfBtn({
-                paperId: props.paper.id,
-                isOpenBlockedPopper: PDFViewerState.isOpenBlockedPopper,
-                currentUser,
-                dispatch,
-              })
-            }
-          />
-          <BlockedPopper
-            handleOnClickAwayFunc={() => closeBlockedPopper(PDFViewerState.isOpenBlockedPopper, dispatch)}
-            anchorEl={viewMorePDFBtnEl.current}
-            isOpen={PDFViewerState.isOpenBlockedPopper}
-            buttonClickAction={"viewMorePDF"}
-            actionArea={"pdfViewer"}
-          />
-        </div>
-      </ClickAwayListener>
+      <div ref={viewMorePDFBtnEl}>
+        <ScinapseButton
+          gaCategory="PDF viewer"
+          gaAction={actionTag}
+          style={readAllBtnStyle}
+          content={
+            <span>
+              READ ALL <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
+            </span>
+          }
+          isLoading={PDFViewerState.isLoading}
+          disabled={PDFViewerState.hasFailed}
+          onClick={() => {
+            onClickViewMorePdfBtn({
+              paperId: props.paper.id,
+              dispatch,
+            });
+          }}
+        />
+      </div>
     );
 
     const shouldShowBlurBlocker =
-      !currentUser.isLoggedIn && !currentUser.isLoggingIn && getUserGroupName("fullTextBlurred") !== "control";
+      !currentUser.isLoggedIn && !currentUser.isLoggingIn && getUserGroupName('fullTextBlurred') !== 'control';
     const componentToShowReadAllArea = shouldShowBlurBlocker ? <BlurBlocker /> : ReadAllPDFButton;
 
     return (
@@ -326,10 +283,10 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
           onLoadSuccess={(pdf: any) => {
             dispatch(ActionCreators.succeedToFetchPDF({ pdf }));
             ActionTicketManager.trackTicket({
-              pageType: "paperShow",
-              actionType: "view",
-              actionArea: "pdfViewer",
-              actionTag: "viewPDF",
+              pageType: 'paperShow',
+              actionType: 'view',
+              actionArea: 'pdfViewer',
+              actionTag: 'viewPDF',
               actionLabel: String(paper.id),
             });
           }}
@@ -347,12 +304,12 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
 
         <div
           style={{
-            position: "relative",
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "40px",
-            flexDirection: "column",
-            alignItems: "center",
+            position: 'relative',
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '40px',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
           {!PDFViewerState.hasFailed &&
@@ -378,17 +335,17 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
 
                           const isBlocked = await blockUnverifiedUser({
                             authLevel: AUTH_LEVEL.VERIFIED,
-                            actionArea: "pdfViewer",
-                            actionLabel: "downloadPdf",
-                            userActionType: "downloadPdf",
+                            actionArea: 'pdfViewer',
+                            actionLabel: 'downloadPdf',
+                            userActionType: 'downloadPdf',
                           });
 
                           if (isBlocked) {
                             return;
                           }
                           dispatch(ActionCreators.clickPDFDownloadBtn());
-                          trackClickButton("downloadPdf", paper.id);
-                          window.open(paper.bestPdf.url, "_blank");
+                          trackClickButton('downloadPdf', paper.id);
+                          window.open(paper.bestPdf.url, '_blank');
                           afterDownloadPDF();
                         }
                       }}

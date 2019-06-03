@@ -1,7 +1,7 @@
-import { Paper } from "../../model/paper";
-import { AggregationData, AggregationJournal, AggregationFos } from "../../model/aggregation";
-import { MatchAuthor } from "../../api/search";
-import { Filter } from "../../api/member";
+import { Paper } from '../../model/paper';
+import { AggregationData, AggregationJournal, AggregationFos } from '../../model/aggregation';
+import { MatchAuthor } from '../../api/search';
+import { Filter } from '../../api/member';
 
 export interface ArticleSearchState
   extends Readonly<{
@@ -37,14 +37,14 @@ export interface ArticleSearchState
     }> {}
 
 export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
-  lastSucceededParams: "{}",
-  sort: "RELEVANCE",
+  lastSucceededParams: '{}',
+  sort: 'RELEVANCE',
   isContentLoading: false,
   isFilterLoading: false,
   isFilterSaveBoxLoading: false,
   pageErrorCode: null,
   aggregationData: null,
-  searchInput: "",
+  searchInput: '',
   searchItemsToShow: [],
   targetPaper: null,
   page: 1,
@@ -61,8 +61,8 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   journalFilter: [],
   fosFilterObject: [],
   journalFilterObject: [],
-  suggestionKeyword: "",
-  highlightedSuggestionKeyword: "",
+  suggestionKeyword: '',
+  highlightedSuggestionKeyword: '',
   searchFromSuggestion: false,
   myFilters: [],
   selectedFilter: null,

@@ -1,7 +1,7 @@
-import * as React from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { withStyles } from "../../../helpers/withStylesHelper";
-const styles = require("./searchingPDFBtn.scss");
+import * as React from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { withStyles } from '../../../helpers/withStylesHelper';
+const styles = require('./searchingPDFBtn.scss');
 
 interface SearchingPDFBtnProps {
   isLoading: boolean;

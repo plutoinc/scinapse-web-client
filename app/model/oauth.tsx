@@ -1,4 +1,4 @@
-import { OAUTH_VENDOR } from "../api/types/auth";
+import { OAUTH_VENDOR } from '../api/types/auth';
 
 export interface MemberOAuth {
   connected: boolean;

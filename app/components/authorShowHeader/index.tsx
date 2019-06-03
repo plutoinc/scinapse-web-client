@@ -1,15 +1,15 @@
-import * as React from "react";
-import Truncate from "react-truncate";
-import MuiTooltip from "@material-ui/core/Tooltip";
-import * as classNames from "classnames";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { Author } from "../../model/author/author";
-import Icon from "../../icons";
-import formatNumber from "../../helpers/formatNumber";
-import UploadableProfileImage from "./uploadableProfileImage";
-import { CurrentUser } from "../../model/currentUser";
-import { UserDevice } from "../layouts/records";
-const styles = require("./authorShowHeader.scss");
+import * as React from 'react';
+import Truncate from 'react-truncate';
+import MuiTooltip from '@material-ui/core/Tooltip';
+import * as classNames from 'classnames';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { Author } from '../../model/author/author';
+import Icon from '../../icons';
+import formatNumber from '../../helpers/formatNumber';
+import UploadableProfileImage from './uploadableProfileImage';
+import { CurrentUser } from '../../model/currentUser';
+import { UserDevice } from '../layouts/records';
+const styles = require('./authorShowHeader.scss');
 
 interface AuthorShowHeaderProps {
   author: Author;
@@ -47,7 +47,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
               {author.isLayered && <UploadableProfileImage />}
               <span className={styles.nameHeaderBox}>
                 <div className={styles.usernameWrapper}>
-                  <span className={styles.username}>{author.name}</span>{" "}
+                  <span className={styles.username}>{author.name}</span>{' '}
                   {author.isLayered ? (
                     <MuiTooltip
                       classes={{ tooltip: styles.verificationTooltip }}
@@ -61,7 +61,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
                   ) : null}
                 </div>
                 <div className={styles.affiliation}>
-                  {author.lastKnownAffiliation ? author.lastKnownAffiliation.name || "" : ""}
+                  {author.lastKnownAffiliation ? author.lastKnownAffiliation.name || '' : ''}
                 </div>
                 {userDevice === UserDevice.DESKTOP && this.getMetricInformation()}
                 <div className={styles.rightBox}>{rightBoxContent}</div>
@@ -131,7 +131,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
             }
             onTruncate={this.handleTruncate}
           >
-            {author.bio || ""}
+            {author.bio || ''}
           </Truncate>
           {!isTruncated &&
             expanded && (
@@ -160,15 +160,15 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
         {author.webPage && (
           <span className={styles.contactSection}>
             <a
-              href={author.webPage || "#"}
+              href={author.webPage || '#'}
               target="_blank"
               rel="noopener nofollow noreferrer"
               className={styles.contactIconWrapper}
             >
               <Icon icon="EXTERNAL_SOURCE" className={styles.externalSource} />
             </a>
-            <a href={author.webPage || "#"} target="_blank" rel="noopener nofollow noreferrer">
-              {author.webPage || ""}
+            <a href={author.webPage || '#'} target="_blank" rel="noopener nofollow noreferrer">
+              {author.webPage || ''}
             </a>
           </span>
         )}

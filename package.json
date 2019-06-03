@@ -85,7 +85,7 @@
     "babel-plugin-lodash": "3.3.4",
     "cache-loader": "3.0.0",
     "circular-dependency-plugin": "5.0.2",
-    "cookie": "0.3.1",
+    "cookie": "^0.3.1",
     "cookie-parser": "1.4.4",
     "css-loader": "0.28.9",
     "emoji-mart": "2.11.0",
@@ -117,7 +117,7 @@
     "s3": "4.4.0",
     "sass-loader": "7.0.1",
     "sass-resources-loader": "2.0.0",
-    "serverless": "1.37.1",
+    "serverless": "^1.44.1",
     "svg-sprite-loader": "4.1.3",
     "terser-webpack-plugin": "1.2.2",
     "thread-loader": "2.1.2",
@@ -145,11 +145,9 @@
     "acorn-dynamic-import": "4.0.0",
     "ajv": "6.5.4",
     "autosize": "4.0.0",
-    "aws-serverless-express": "git+https://github.com/TylorShin/aws-serverless-express.git",
     "axios": "0.16.2",
     "classnames": "2.2.5",
     "compression": "1.7.4",
-    "cookie": "0.3.1",
     "core-js": "2.6.5",
     "date-fns": "1.29.0",
     "formik": "1.4.0",
@@ -190,7 +188,8 @@
   },
   "prettier": {
     "printWidth": 120,
-    "trailingComma": "es5"
+    "trailingComma": "es5",
+    "singleQuote": true
   },
   "browserslist": [
     "> 1%",

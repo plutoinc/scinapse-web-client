@@ -5,21 +5,48 @@ jobs:
   deploy_to_dev:
     working_directory: ~/scinapse
     docker:
-      - image: circleci/node:lts
+      - image: circleci/node:8.10
     steps:
       - checkout
-      - run: npm ci
+      - run:
+          name: updating npm...
+          command: npmv=$(echo $(npm -v) | head -c 1); if [ "$npmv" -lt "6" ]; then sudo npm i -g npm; else echo "Node.js Docker Team finally decided to include npm v6+ in latest image; you can remove this script now"; fi
+      - run:
+          name: installing dev dependencies...
+          command: npm ci
       - run: npm run test:ci
       - run: npm run deploy:dev
       - slack/notify:
           message: "Build DONE! $CIRCLE_BRANCH please check https://dev.scinapse.io?branch=$CIRCLE_BRANCH"
+  deploy_to_stage:
+    working_directory: ~/scinapse
+    docker:
+      - image: circleci/node:8.10
+    steps:
+      - checkout
+      - run:
+          name: updating npm...
+          command: npmv=$(echo $(npm -v) | head -c 1); if [ "$npmv" -lt "6" ]; then sudo npm i -g npm; else echo "Node.js Docker Team finally decided to include npm v6+ in latest image; you can remove this script now"; fi
+      - run:
+          name: installing dev dependencies...
+          command: npm ci
+      - run: npm run test:ci
+      - run: npm run deploy:stage
+      - slack/notify:
+          message: "Build DONE! $CIRCLE_BRANCH please check https://stage.scinapse.io"
+
   deploy_to_prod:
     working_directory: ~/scinapse
     docker:
-      - image: circleci/node:lts
+      - image: circleci/node:8.10
     steps:
       - checkout
-      - run: npm ci
+      - run:
+          name: updating npm...
+          command: npmv=$(echo $(npm -v) | head -c 1); if [ "$npmv" -lt "6" ]; then sudo npm i -g npm; else echo "Node.js Docker Team finally decided to include npm v6+ in latest image; you can remove this script now"; fi
+      - run:
+          name: installing dev dependencies...
+          command: npm ci
       - run: npm run test:ci
       - run: npm run deploy:prod
       - run:
@@ -52,8 +79,17 @@ workflows:
       - deploy_to_dev:
           filters:
             branches:
-              ignore: master
+              ignore:
+                - release
+                - master
+                - stage
+      - deploy_to_stage:
+          filters:
+            branches:
+              only:
+                - stage
       - deploy_to_prod:
           filters:
             branches:
-              only: master
+              only:
+                - release

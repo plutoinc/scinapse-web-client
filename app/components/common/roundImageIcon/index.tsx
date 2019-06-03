@@ -1,6 +1,6 @@
-import * as React from "react";
-import { withStyles } from "../../../helpers/withStylesHelper";
-const styles = require("./roundImage.scss");
+import * as React from 'react';
+import { withStyles } from '../../../helpers/withStylesHelper';
+const styles = require('./roundImage.scss');
 
 export interface RoundImageProps
   extends React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {

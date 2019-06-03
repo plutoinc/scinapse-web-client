@@ -1,18 +1,18 @@
-import * as React from "react";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import * as isToday from "date-fns/is_today";
-import * as classNames from "classnames";
-import { withStyles } from "../../helpers/withStylesHelper";
-import Icon from "../../icons";
-import { Paper } from "../../model/paper";
-import RelatedPaperItem from "../paperShow/components/relatedPaperItem";
-import { getCurrentPageType } from "../locationListener";
-import ActionTicketManager from "../../helpers/actionTicketManager";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-const store = require("store");
-const s = require("./researchHistory.scss");
+import * as React from 'react';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import * as isToday from 'date-fns/is_today';
+import * as classNames from 'classnames';
+import { withStyles } from '../../helpers/withStylesHelper';
+import Icon from '../../icons';
+import { Paper } from '../../model/paper';
+import RelatedPaperItem from '../paperShow/components/relatedPaperItem';
+import { getCurrentPageType } from '../locationListener';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+const store = require('store');
+const s = require('./researchHistory.scss');
 
-const RESEARCH_HISTORY_KEY = "r_h_list";
+const RESEARCH_HISTORY_KEY = 'r_h_list';
 const MAXIMUM_COUNT = 50;
 
 interface HistoryPaper extends Paper {
@@ -89,9 +89,9 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper,
           if (!isOpen) {
             ActionTicketManager.trackTicket({
               pageType: getCurrentPageType(),
-              actionType: "fire",
-              actionArea: "topBar",
-              actionTag: "researchHistory",
+              actionType: 'fire',
+              actionArea: 'topBar',
+              actionTag: 'researchHistory',
               actionLabel: `${todayPapers.length}`,
             });
           }

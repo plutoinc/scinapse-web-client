@@ -1,12 +1,12 @@
-import * as React from "react";
-import axios from "axios";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { BlogLink } from "../../../containers/admin";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { trackEvent } from "../../../helpers/handleGA";
-const styles = require("./plutoBlogPosting.scss");
+import * as React from 'react';
+import axios from 'axios';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { BlogLink } from '../../../containers/admin';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import { trackEvent } from '../../../helpers/handleGA';
+const styles = require('./plutoBlogPosting.scss');
 
-const BLOG_SCRIBER_API_HOST = "https://7hnqfzk1r6.execute-api.us-east-1.amazonaws.com/prod/blogLinks";
+const BLOG_SCRIBER_API_HOST = 'https://7hnqfzk1r6.execute-api.us-east-1.amazonaws.com/prod/blogLinks';
 
 interface BlogInfo extends BlogLink {}
 
@@ -26,7 +26,7 @@ class PlutoBlogPosting extends React.PureComponent<PlutoBlogPostingProps, PlutoB
 
     this.state = {
       isLoading: false,
-      blogLink: "",
+      blogLink: '',
       blogLinks: [],
     };
   }
@@ -62,7 +62,7 @@ class PlutoBlogPosting extends React.PureComponent<PlutoBlogPostingProps, PlutoB
           target="_blank"
           rel="noopener nofollow noreferrer"
           onClick={() => {
-            this.handleGaEvent(BlogList.ogTitle || "");
+            this.handleGaEvent(BlogList.ogTitle || '');
             this.handleClickLink(BlogList.link);
           }}
         >
@@ -74,7 +74,7 @@ class PlutoBlogPosting extends React.PureComponent<PlutoBlogPostingProps, PlutoB
           target="_blank"
           rel="noopener nofollow noreferrer"
           onClick={() => {
-            this.handleGaEvent(BlogList.ogTitle || "");
+            this.handleGaEvent(BlogList.ogTitle || '');
             this.handleClickLink(BlogList.link);
           }}
         >
@@ -87,18 +87,18 @@ class PlutoBlogPosting extends React.PureComponent<PlutoBlogPostingProps, PlutoB
 
   private handleClickLink = (link: string) => {
     ActionTicketManager.trackTicket({
-      pageType: "paperShow",
-      actionType: "fire",
-      actionArea: "ourStory",
-      actionTag: "blogPost",
+      pageType: 'paperShow',
+      actionType: 'fire',
+      actionArea: 'ourStory',
+      actionTag: 'blogPost',
       actionLabel: link,
     });
   };
 
   private handleGaEvent = (blogTitle: string) => {
     trackEvent({
-      category: "New Paper Show",
-      action: "Click blog posting in sideNavigation",
+      category: 'New Paper Show',
+      action: 'Click blog posting in sideNavigation',
       label: blogTitle,
     });
   };

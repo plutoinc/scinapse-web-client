@@ -1,15 +1,15 @@
-import * as React from "react";
-import { debounce } from "lodash";
-import { FieldProps } from "formik";
-import * as classNames from "classnames";
-import SuggestAPI, { SuggestAffiliation } from "../../api/suggest";
-import { withStyles } from "../../helpers/withStylesHelper";
-import PlutoAxios from "../../api/pluto";
-import alertToast from "../../helpers/makePlutoToastAction";
-import Icon from "../../icons";
-import { Affiliation } from "../../model/affiliation";
-import InputWithSuggestionList, { DefaultItemComponentProps } from "../common/InputWithSuggestionList";
-const styles = require("./affiliationBox.scss");
+import * as React from 'react';
+import { debounce } from 'lodash';
+import { FieldProps } from 'formik';
+import * as classNames from 'classnames';
+import SuggestAPI, { SuggestAffiliation } from '../../api/suggest';
+import { withStyles } from '../../helpers/withStylesHelper';
+import PlutoAxios from '../../api/pluto';
+import alertToast from '../../helpers/makePlutoToastAction';
+import Icon from '../../icons';
+import { Affiliation } from '../../model/affiliation';
+import InputWithSuggestionList, { DefaultItemComponentProps } from '../common/InputWithSuggestionList';
+const styles = require('./affiliationBox.scss');
 
 interface AffiliationSelectBoxProps extends FieldProps {
   className: string;
@@ -58,14 +58,14 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
     const error = errors[field.name];
     const touched = form.touched[field.name];
 
-    const displayValue: string = this.getDisplayValue(rawFieldValue || "");
+    const displayValue: string = this.getDisplayValue(rawFieldValue || '');
 
     const listStyle = {
       ...{
         zIndex: 3,
-        top: "40px",
-        borderRadius: "5px",
-        boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 8px 1px",
+        top: '40px',
+        borderRadius: '5px',
+        boxShadow: 'rgba(0, 0, 0, 0.15) 0px 3px 8px 1px',
       },
       ...listWrapperStyle,
     };
@@ -85,13 +85,13 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
             })}
             style={inputStyle}
             listItemStyle={{
-              height: "30px",
-              display: "block",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              padding: "8px",
-              fontSize: "13px",
-              whiteSpace: "nowrap",
+              height: '30px',
+              display: 'block',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              padding: '8px',
+              fontSize: '13px',
+              whiteSpace: 'nowrap',
             }}
             listWrapperStyle={listStyle}
             DefaultItemComponent={DefaultItem}
@@ -106,34 +106,34 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
   }
 
   private checkedRawFieldValueType = (rawFieldValue: Affiliation | SuggestAffiliation | string) => {
-    if (typeof rawFieldValue === "string") {
-      return "string";
+    if (typeof rawFieldValue === 'string') {
+      return 'string';
     }
 
-    if (typeof (rawFieldValue as Affiliation).name !== "undefined") {
-      return "Affiliation";
+    if (typeof (rawFieldValue as Affiliation).name !== 'undefined') {
+      return 'Affiliation';
     }
 
-    return "SuggestAffiliation";
+    return 'SuggestAffiliation';
   };
 
   private getDisplayValue = (rawFieldValue: Affiliation | SuggestAffiliation | string): string => {
     switch (this.checkedRawFieldValueType(rawFieldValue)) {
-      case "string":
+      case 'string':
         return rawFieldValue as string;
-      case "Affiliation":
-        return (rawFieldValue as Affiliation).name || "";
-      case "SuggestAffiliation":
+      case 'Affiliation':
+        return (rawFieldValue as Affiliation).name || '';
+      case 'SuggestAffiliation':
         return (rawFieldValue as SuggestAffiliation).keyword;
 
       default:
-        return "";
+        return '';
     }
   };
 
   private handleClickDeleteButton = () => {
     const { field, form } = this.props;
-    form.setFieldValue(field.name, "");
+    form.setFieldValue(field.name, '');
   };
 
   private handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -142,7 +142,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
     const customAffiliation: Affiliation = { id: null, name: newInput };
 
     form.setFieldTouched(field.name);
-    form.setFieldValue("institutionId", customAffiliation.id);
+    form.setFieldValue('institutionId', customAffiliation.id);
     form.setFieldValue(field.name, customAffiliation.name);
 
     if (newInput.length > 1) {
@@ -157,10 +157,10 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
 
     if (!targetAffiliation && affiliationName) {
       const customAffiliation: Affiliation = { id: null, name: affiliationName };
-      form.setFieldValue("institutionId", customAffiliation.id);
+      form.setFieldValue('institutionId', customAffiliation.id);
       form.setFieldValue(field.name, customAffiliation.name);
     } else if (targetAffiliation) {
-      form.setFieldValue("institutionId", targetAffiliation.affiliationId);
+      form.setFieldValue('institutionId', targetAffiliation.affiliationId);
       form.setFieldValue(field.name, targetAffiliation.keyword);
     }
   };
@@ -180,8 +180,8 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
       console.error(error);
       this.setState(prevState => ({ ...prevState, isLoading: false }));
       alertToast({
-        type: "error",
-        message: "Had error to get auto-completion affiliation keyword",
+        type: 'error',
+        message: 'Had error to get auto-completion affiliation keyword',
       });
     }
   };

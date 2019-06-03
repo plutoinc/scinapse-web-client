@@ -1,9 +1,9 @@
-import { CancelToken } from "axios";
-import { normalize } from "normalizr";
-import PlutoAxios from "./pluto";
-import { Profile, profileSchema, Award, Education, Experience } from "../model/profile";
-import { RawPaginationResponseV2 } from "./types/common";
-import { camelCaseKeys } from "../helpers/camelCaseKeys";
+import { CancelToken } from 'axios';
+import { normalize } from 'normalizr';
+import PlutoAxios from './pluto';
+import { Profile, profileSchema, Award, Education, Experience } from '../model/profile';
+import { RawPaginationResponseV2 } from './types/common';
+import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
 export interface CvBaseInfo {
   id?: string | undefined;

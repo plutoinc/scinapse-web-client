@@ -1,10 +1,10 @@
-import * as React from "react";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import Icon from "../../../icons";
-import copySelectedTextToClipboard from "../../../helpers/copySelectedTextToClipboard";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { Paper } from "../../../model/paper";
-const styles = require("./DOI.scss");
+import * as React from 'react';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import Icon from '../../../icons';
+import copySelectedTextToClipboard from '../../../helpers/copySelectedTextToClipboard';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import { Paper } from '../../../model/paper';
+const styles = require('./DOI.scss');
 
 interface PaperShowDOIProps {
   paper: Paper;
@@ -18,10 +18,10 @@ const PaperShowDOI: React.SFC<PaperShowDOIProps> = props => {
     copySelectedTextToClipboard(`https://doi.org/${props.DOI}`);
 
     ActionTicketManager.trackTicket({
-      pageType: "paperShow",
-      actionType: "fire",
-      actionArea: "paperDescription",
-      actionTag: "copyDoi",
+      pageType: 'paperShow',
+      actionType: 'fire',
+      actionArea: 'paperDescription',
+      actionTag: 'copyDoi',
       actionLabel: String(paper.id),
     });
   };
@@ -39,7 +39,7 @@ const PaperShowDOI: React.SFC<PaperShowDOIProps> = props => {
           <div> - </div>
         )}
       </div>
-      <ul className={styles.doiContent}>{DOI || ""}</ul>
+      <ul className={styles.doiContent}>{DOI || ''}</ul>
     </div>
   );
 };

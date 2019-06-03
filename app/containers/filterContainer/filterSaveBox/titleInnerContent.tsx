@@ -1,10 +1,10 @@
-import * as React from "react";
-import * as classNames from "classnames";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { ArticleSearchState } from "../../../components/articleSearch/records";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import Icon from "../../../icons";
-const styles = require("./filterSaveBox.scss");
+import * as React from 'react';
+import * as classNames from 'classnames';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { ArticleSearchState } from '../../../components/articleSearch/records';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import Icon from '../../../icons';
+const styles = require('./filterSaveBox.scss');
 
 interface FilterTitleInnerContnetProps {
   articleSearchState: ArticleSearchState;

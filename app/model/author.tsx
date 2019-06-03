@@ -1,4 +1,4 @@
-import { Affiliation } from "./affiliation";
+import { Affiliation } from './affiliation';
 
 export interface BasePaperAuthor {
   id: number;

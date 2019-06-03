@@ -1,50 +1,50 @@
-import * as Redux from "redux";
-import * as ConfigurationReducer from "./configuration";
-import * as currentUserReducer from "./currentUser";
-import { CURRENT_USER_INITIAL_STATE, CurrentUser } from "../model/currentUser";
-import * as dialogReducer from "../components/dialog/reducer";
-import * as layoutReducer from "../components/layouts/reducer";
-import { LAYOUT_INITIAL_STATE, LayoutState } from "../components/layouts/records";
-import * as articleSearchReducer from "../components/articleSearch/reducer";
-import * as authorSearchReducer from "../containers/authorSearch/reducer";
-import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from "../components/articleSearch/records";
-import * as emailVerificationReducer from "../components/auth/emailVerification/reducer";
-import { PaperShowState, PAPER_SHOW_INITIAL_STATE } from "../containers/paperShow/records";
-import { reducer as paperShowReducer } from "../containers/paperShow/reducer";
+import * as Redux from 'redux';
+import * as ConfigurationReducer from './configuration';
+import * as currentUserReducer from './currentUser';
+import { CURRENT_USER_INITIAL_STATE, CurrentUser } from '../model/currentUser';
+import * as dialogReducer from '../components/dialog/reducer';
+import * as layoutReducer from '../components/layouts/reducer';
+import { LAYOUT_INITIAL_STATE, LayoutState } from '../components/layouts/records';
+import * as articleSearchReducer from '../components/articleSearch/reducer';
+import * as authorSearchReducer from '../containers/authorSearch/reducer';
+import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from '../components/articleSearch/records';
+import * as emailVerificationReducer from '../components/auth/emailVerification/reducer';
+import { PaperShowState, PAPER_SHOW_INITIAL_STATE } from '../containers/paperShow/records';
+import { reducer as paperShowReducer } from '../containers/paperShow/reducer';
 import {
   reducer as AuthorShowReducer,
   AuthorShowState,
   AUTHOR_SHOW_INITIAL_STATE,
-} from "../containers/unconnectedAuthorShow/reducer";
-import { reducer as EntityReducer, INITIAL_ENTITY_STATE, EntityState } from "./entity";
+} from '../containers/unconnectedAuthorShow/reducer';
+import { reducer as EntityReducer, INITIAL_ENTITY_STATE, EntityState } from './entity';
 import {
   reducer as MyCollectionsReducer,
   MyCollectionsState,
   MY_COLLECTIONS_INITIAL_STATE,
-} from "../containers/paperShowCollectionControlButton/reducer";
+} from '../containers/paperShowCollectionControlButton/reducer';
 import {
   reducer as CollectionShowReducer,
   CollectionShowState,
   INITIAL_COLLECTION_SHOW_STATE,
-} from "../components/collectionShow/reducer";
+} from '../components/collectionShow/reducer';
 import {
   reducer as UserCollectionsReducer,
   UserCollectionsState,
   USER_COLLECTIONS_INITIAL_STATE,
-} from "../components/collections/reducer";
+} from '../components/collections/reducer';
 import {
   reducer as JournalShowReducer,
   JournalShowState,
   JOURNAL_SHOW_INITIAL_STATE,
-} from "../components/journalShow/reducer";
+} from '../components/journalShow/reducer';
 import {
   reducer as ConnectedAuthorShowReducer,
   ConnectedAuthorShowState,
   CONNECTED_AUTHOR_SHOW_INITIAL_STATE,
-} from "../containers/connectedAuthorShow/reducer";
-import { AuthorSearchState, AUTHOR_SEARCH_INITIAL_STATE } from "../containers/authorSearch/records";
-import { RelatedPapersState, RELATED_PAPERS_INITIAL_STATE, reducer as RelatedPapersReducer } from "./realtedPapers";
-import { PDFViewerState, reducer as PDFViewerReducer, PDF_VIEWER_INITIAL_STATE } from "./pdfViewer";
+} from '../containers/connectedAuthorShow/reducer';
+import { AuthorSearchState, AUTHOR_SEARCH_INITIAL_STATE } from '../containers/authorSearch/records';
+import { RelatedPapersState, RELATED_PAPERS_INITIAL_STATE, reducer as RelatedPapersReducer } from './realtedPapers';
+import { PDFViewerState, reducer as PDFViewerReducer, PDF_VIEWER_INITIAL_STATE } from './pdfViewer';
 
 export interface AppState {
   configuration: ConfigurationReducer.Configuration;

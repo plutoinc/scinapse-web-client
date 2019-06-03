@@ -1,27 +1,27 @@
-import * as React from "react";
-import axios from "axios";
-import { denormalize } from "normalizr";
-import * as classNames from "classnames";
-import Checkbox from "@material-ui/core/Checkbox";
-import AuthorAPI from "../../../../api/author";
-import ScinapseInput from "../../../common/scinapseInput";
-import Authors from "../../../common/paperItem/authors";
-import PaperItemVenue from "../../../common/paperItem/venue";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import ScinapseButton from "../../../common/scinapseButton";
-import Icon from "../../../../icons";
-import { Author, authorSchema } from "../../../../model/author/author";
-import alertToast from "../../../../helpers/makePlutoToastAction";
-import PlutoAxios from "../../../../api/pluto";
-import { CurrentUser } from "../../../../model/currentUser";
-import { Paper } from "../../../../model/paper";
-import { connect, Dispatch } from "react-redux";
-import { AppState } from "../../../../reducers";
-import { closeDialog } from "../../actions";
-import { addPapersAndFetchPapers } from "../../../../actions/author";
-import { trackEvent } from "../../../../helpers/handleGA";
-import { getCurrentPageType } from "../../../locationListener";
-const styles = require("./allPublications.scss");
+import * as React from 'react';
+import axios from 'axios';
+import { denormalize } from 'normalizr';
+import * as classNames from 'classnames';
+import Checkbox from '@material-ui/core/Checkbox';
+import AuthorAPI from '../../../../api/author';
+import ScinapseInput from '../../../common/scinapseInput';
+import Authors from '../../../common/paperItem/authors';
+import PaperItemVenue from '../../../common/paperItem/venue';
+import { withStyles } from '../../../../helpers/withStylesHelper';
+import ScinapseButton from '../../../common/scinapseButton';
+import Icon from '../../../../icons';
+import { Author, authorSchema } from '../../../../model/author/author';
+import alertToast from '../../../../helpers/makePlutoToastAction';
+import PlutoAxios from '../../../../api/pluto';
+import { CurrentUser } from '../../../../model/currentUser';
+import { Paper } from '../../../../model/paper';
+import { connect, Dispatch } from 'react-redux';
+import { AppState } from '../../../../reducers';
+import { closeDialog } from '../../actions';
+import { addPapersAndFetchPapers } from '../../../../actions/author';
+import { trackEvent } from '../../../../helpers/handleGA';
+import { getCurrentPageType } from '../../../locationListener';
+const styles = require('./allPublications.scss');
 
 interface AllPublicationsDialogProps {
   author: Author | null;
@@ -50,7 +50,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
       isLoading: false,
       currentPage: 1,
       isEnd: false,
-      searchInput: "",
+      searchInput: '',
     };
   }
 
@@ -98,10 +98,10 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
           <div className={styles.buttonsWrapper}>
             <ScinapseButton
               style={{
-                backgroundColor: isLoading ? "#ecf1fa" : "#6096ff",
-                cursor: isLoading ? "not-allowed" : "pointer",
-                width: "160px",
-                height: "40px",
+                backgroundColor: isLoading ? '#ecf1fa' : '#6096ff',
+                cursor: isLoading ? 'not-allowed' : 'pointer',
+                width: '160px',
+                height: '40px',
               }}
               disabled={isLoading}
               isLoading={isLoading}
@@ -146,7 +146,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
           this.setState(prevState => ({ ...prevState, isLoading: false }));
           const error = PlutoAxios.getGlobalError(err);
           alertToast({
-            type: "error",
+            type: 'error',
             message: error.message,
           });
         }
@@ -197,7 +197,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
           <div className={styles.paperWrapper}>
             <div className={styles.alreadyAddedPaper}> Already added publication</div>
             <div className={styles.titleWrapper}>
-              <span className={styles.paperItemTitle} style={{ color: "#bbc2d0" }}>
+              <span className={styles.paperItemTitle} style={{ color: '#bbc2d0' }}>
                 {paper.title}
               </span>
             </div>
@@ -207,7 +207,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
                 pageType={getCurrentPageType()}
                 actionArea="allPublications"
                 paper={paper}
-                style={{ color: "#bbc2d0" }}
+                style={{ color: '#bbc2d0' }}
                 readOnly={true}
                 authors={paper.authors}
                 disableTruncate={true}
@@ -223,7 +223,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
                 conferenceInstance={paper.conferenceInstance}
                 publishedDate={paper.publishedDate}
                 readOnly={true}
-                style={{ display: "flex", color: "#bbc2d0", fontSize: "14px" }}
+                style={{ display: 'flex', color: '#bbc2d0', fontSize: '14px' }}
               />
             </div>
           </div>
@@ -254,7 +254,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
             <Authors
               pageType={getCurrentPageType()}
               actionArea="allPublications"
-              style={{ textDecoration: "none" }}
+              style={{ textDecoration: 'none' }}
               paper={paper}
               readOnly={true}
               authors={paper.authors}
@@ -271,7 +271,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
               conferenceInstance={paper.conferenceInstance}
               publishedDate={paper.publishedDate}
               readOnly={true}
-              style={{ display: "flex", color: "#77828c", fontSize: "14px" }}
+              style={{ display: 'flex', color: '#77828c', fontSize: '14px' }}
             />
           </div>
         </div>
@@ -322,8 +322,8 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
     const { searchInput, currentPage, papers } = this.state;
 
     trackEvent({
-      category: "New Author Show",
-      action: "search papers to add publications",
+      category: 'New Author Show',
+      action: 'search papers to add publications',
       label: JSON.stringify({
         query: searchInput,
         page,
@@ -358,8 +358,8 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
           const error = PlutoAxios.getGlobalError(err);
           console.error(error);
           alertToast({
-            type: "error",
-            message: "Had an error to search the papers",
+            type: 'error',
+            message: 'Had an error to search the papers',
           });
         }
       }

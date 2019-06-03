@@ -1,19 +1,19 @@
-import axios, { CancelToken } from "axios";
-import { normalize } from "normalizr";
-import { Dispatch } from "react-redux";
-import { ActionCreators } from "./actionTypes";
-import alertToast from "../helpers/makePlutoToastAction";
-import PlutoAxios from "../api/pluto";
-import AuthorAPI, { ConnectAuthorParams, DEFAULT_AUTHOR_PAPERS_SIZE } from "../api/author";
-import ProfileAPI, { AwardParams, EducationParams, ExperienceParams } from "../api/profile";
-import { GetAuthorPapersParams } from "../api/author/types";
-import { Paper, paperSchema } from "../model/paper";
-import { CVInfoType } from "../model/profile";
-import { CurrentUser } from "../model/currentUser";
-import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
-import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../components/common/sortBox";
-import { getAuthor, getCoAuthors, getAuthorPapers } from "../containers/unconnectedAuthorShow/actions";
-import { CommonError } from "../model/error";
+import axios, { CancelToken } from 'axios';
+import { normalize } from 'normalizr';
+import { Dispatch } from 'react-redux';
+import { ActionCreators } from './actionTypes';
+import alertToast from '../helpers/makePlutoToastAction';
+import PlutoAxios from '../api/pluto';
+import AuthorAPI, { ConnectAuthorParams, DEFAULT_AUTHOR_PAPERS_SIZE } from '../api/author';
+import ProfileAPI, { AwardParams, EducationParams, ExperienceParams } from '../api/profile';
+import { GetAuthorPapersParams } from '../api/author/types';
+import { Paper, paperSchema } from '../model/paper';
+import { CVInfoType } from '../model/profile';
+import { CurrentUser } from '../model/currentUser';
+import { GLOBAL_DIALOG_TYPE } from '../components/dialog/reducer';
+import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
+import { getAuthor, getCoAuthors, getAuthorPapers } from '../containers/unconnectedAuthorShow/actions';
+import { CommonError } from '../model/error';
 
 interface AddRemovePapersAndFetchPapersParams {
   authorId: number;
@@ -62,7 +62,7 @@ export function fetchAuthorShowRelevantData(params: FetchAuthorShowRelevantDataP
             authorId,
             size: DEFAULT_AUTHOR_PAPERS_SIZE,
             page: params.page ? params.page : 1,
-            sort: isMine ? "RECENTLY_ADDED" : "NEWEST_FIRST",
+            sort: isMine ? 'RECENTLY_ADDED' : 'NEWEST_FIRST',
             cancelToken: params.cancelToken,
           })
         )
@@ -100,11 +100,11 @@ export function postNewAuthorCVInfo(
     dispatch(ActionCreators.startToAddProfileCvData({ CVType: type }));
 
     let result: any;
-    if (type === "awards") {
+    if (type === 'awards') {
       result = await ProfileAPI.postNewAwardInAuthor(authorId, params as AwardParams);
-    } else if (type === "educations") {
+    } else if (type === 'educations') {
       result = await ProfileAPI.postNewEducationInAuthor(authorId, params as EducationParams);
-    } else if (type === "experiences") {
+    } else if (type === 'experiences') {
       result = await ProfileAPI.postNewExperienceInAuthor(authorId, params as ExperienceParams);
     }
 
@@ -117,11 +117,11 @@ export function removeAuthorCvInfo(type: keyof CVInfoType, authorId: number, id:
     dispatch(ActionCreators.startToRemoveProfileCvData({ CVType: type }));
     let result: any;
     try {
-      if (type === "awards") {
+      if (type === 'awards') {
         result = await ProfileAPI.deleteAwardInAuthor(id);
-      } else if (type === "educations") {
+      } else if (type === 'educations') {
         result = await ProfileAPI.deleteEducationInAuthor(id);
-      } else if (type === "experiences") {
+      } else if (type === 'experiences') {
         result = await ProfileAPI.deleteExperienceInAuthor(id);
       }
 
@@ -129,7 +129,7 @@ export function removeAuthorCvInfo(type: keyof CVInfoType, authorId: number, id:
     } catch (err) {
       dispatch(ActionCreators.failToRemoveProfileCvData());
       alertToast({
-        type: "error",
+        type: 'error',
         message: `Had an error to delete ${type} data.`,
       });
     }
@@ -144,11 +144,11 @@ export function updateAuthorCvInfo(
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToUpdateProfileCvData({ CVType: type }));
     let result: any;
-    if (type === "awards") {
+    if (type === 'awards') {
       result = await ProfileAPI.updateAwardInAuthor(params as AwardParams);
-    } else if (type === "educations") {
+    } else if (type === 'educations') {
       result = await ProfileAPI.updateEducationInAuthor(params as EducationParams);
-    } else if (type === "experiences") {
+    } else if (type === 'experiences') {
       result = await ProfileAPI.updateExperienceInAuthor(params as ExperienceParams);
     }
 
@@ -167,7 +167,7 @@ export function updateProfileImage(authorId: number, formData: FormData) {
       dispatch(ActionCreators.addEntity(profileImg));
       dispatch(ActionCreators.succeededToUpdateProfileImageData({ authorId, profileImageUrl }));
     } catch (err) {
-      alertToast({ type: "error", message: "Had an error to upload profile image" });
+      alertToast({ type: 'error', message: 'Had an error to upload profile image' });
       dispatch(ActionCreators.failedToUpdateProfileImageData());
     }
   };
@@ -221,8 +221,8 @@ export function removePaperFromPaperList(params: AddRemovePapersAndFetchPapersPa
       const error = PlutoAxios.getGlobalError(err);
       console.error(error);
       alertToast({
-        type: "error",
-        message: "Had an error to remove publication",
+        type: 'error',
+        message: 'Had an error to remove publication',
       });
     }
   };

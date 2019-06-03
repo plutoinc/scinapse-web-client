@@ -1,6 +1,6 @@
-import { Paper } from "../../../model/paper";
-import { CurrentUser } from "../../../model/currentUser";
-import { RefCitedTabItem } from "../../../containers/paperShow/types";
+import { Paper } from '../../../model/paper';
+import { CurrentUser } from '../../../model/currentUser';
+import { RefCitedTabItem } from '../../../containers/paperShow/types';
 
 export interface PaperShowRefCitedTabProps {
   paper: Paper;
@@ -28,10 +28,7 @@ export interface PDFButtonProps {
   isLoading: boolean;
   canShowFullPDF: boolean;
   actionBtnEl: HTMLDivElement | null;
-  isOpenBlockedPopper: boolean;
   currentUser: CurrentUser;
   afterDownloadPDF: () => void;
   onClickDownloadPDF: () => void;
-  handleSetIsOpenBlockedPopper: (value: React.SetStateAction<boolean>) => void;
-  handleCloseBlockedPopper: () => void;
 }

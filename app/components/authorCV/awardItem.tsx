@@ -1,13 +1,13 @@
-import * as React from "react";
-import { Dispatch, connect } from "react-redux";
-import Icon from "../../icons";
-import PlutoAxios from "../../api/pluto";
-import { updateAuthorCvInfo } from "../../actions/author";
-import { Award } from "../../model/profile";
-import AwardForm, { AwardFormState } from "./awardForm";
-import alertToast from "../../helpers/makePlutoToastAction";
-import { withStyles } from "../../helpers/withStylesHelper";
-const styles = require("./authorCVItem.scss");
+import * as React from 'react';
+import { Dispatch, connect } from 'react-redux';
+import Icon from '../../icons';
+import PlutoAxios from '../../api/pluto';
+import { updateAuthorCvInfo } from '../../actions/author';
+import { Award } from '../../model/profile';
+import AwardForm, { AwardFormState } from './awardForm';
+import alertToast from '../../helpers/makePlutoToastAction';
+import { withStyles } from '../../helpers/withStylesHelper';
+const styles = require('./authorCVItem.scss');
 
 interface AwardItemState {
   isEditMode: boolean;
@@ -56,7 +56,7 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
         <div className={styles.contentWrapper}>
           {this.getEditItemButtons(id)}
           <span className={styles.awardTitleContent}>{title}</span>
-          <a rel="nofollow" className={styles.relatedLinkContent} href={relatedLink ? relatedLink : ""}>
+          <a rel="nofollow" className={styles.relatedLinkContent} href={relatedLink ? relatedLink : ''}>
             {relatedLink}
           </a>
         </div>
@@ -98,14 +98,14 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
     const { dispatch, authorId } = this.props;
 
     try {
-      await dispatch(updateAuthorCvInfo("awards", authorId, params));
+      await dispatch(updateAuthorCvInfo('awards', authorId, params));
       this.handelToggleAwardEditForm();
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
       console.error(error);
       alertToast({
-        type: "error",
-        message: "Had an error to add award data.",
+        type: 'error',
+        message: 'Had an error to add award data.',
       });
     }
   };

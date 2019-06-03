@@ -1,15 +1,15 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
-import * as format from "date-fns/format";
-import * as classNames from "classnames";
-import Tooltip from "@material-ui/core/Tooltip";
-import { Journal } from "../../../model/journal";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import Icon from "../../../icons";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { ConferenceInstance } from "../../../model/conferenceInstance";
-import DoiInPaperShow from "../../paperShow/components/doiInPaperShow";
-const styles = require("./venueAndAuthors.scss");
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import * as format from 'date-fns/format';
+import * as classNames from 'classnames';
+import Tooltip from '@material-ui/core/Tooltip';
+import { Journal } from '../../../model/journal';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import Icon from '../../../icons';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import { ConferenceInstance } from '../../../model/conferenceInstance';
+import DoiInPaperShow from '../../paperShow/components/doiInPaperShow';
+const styles = require('./venueAndAuthors.scss');
 
 interface PaperItemVenueProps {
   journal: Journal | null;
@@ -46,15 +46,15 @@ const PaperItemVenue = ({
       <span className={styles.venueNameReadonly}>in {journal.title}</span>
     ) : (
       <>
-        in{" "}
+        in{' '}
         <Link
           to={`/journals/${journal.id}`}
           onClick={() => {
             ActionTicketManager.trackTicket({
               pageType,
-              actionType: "fire",
+              actionType: 'fire',
               actionArea: actionArea || pageType,
-              actionTag: "journalShow",
+              actionTag: 'journalShow',
               actionLabel: String(journal.id),
             });
           }}
@@ -71,12 +71,12 @@ const PaperItemVenue = ({
 
   const yearStr = publishedDate ? (
     <span>
-      on <span className={styles.venueNameReadonly}>{format(publishedDate, "MMM D, YYYY")}</span>
+      on <span className={styles.venueNameReadonly}>{format(publishedDate, 'MMM D, YYYY')}</span>
     </span>
   ) : null;
 
-  const isPaperShow = pageType === "paperShow";
-  const isPaperDescription = actionArea === "paperDescription";
+  const isPaperShow = pageType === 'paperShow';
+  const isPaperDescription = actionArea === 'paperDescription';
 
   return (
     <div
@@ -95,11 +95,11 @@ const PaperItemVenue = ({
           <span className={styles.ifLabel}>
             <span>
               <Tooltip
-                disableFocusListener={true}
-                disableTouchListener={true}
                 title="Impact Factor"
                 placement="top"
                 classes={{ tooltip: styles.arrowBottomTooltip }}
+                disableFocusListener
+                disableTouchListener
               >
                 <span>
                   <Icon className={styles.ifIconWrapper} icon="IMPACT_FACTOR" />

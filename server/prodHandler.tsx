@@ -1,15 +1,16 @@
-import app from "./index";
-const awsServerlessExpress = require("aws-serverless-express");
+import handler from '.';
 
-const binaryMimeTypes = [
-  "application/xml",
-  "text/xml",
-  "text/html",
-  "application/xml",
-  "text/javascript",
-  "application/javascript",
-  "application/json",
-];
-const server = awsServerlessExpress.createServer(app, null, binaryMimeTypes);
-
-export const ssr = (event: any, context: any) => awsServerlessExpress.proxy(server, event, context);
+export const ssr = async (event: LambdaProxy.Event, _context: LambdaProxy.Context) => {
+  try {
+    const resBody = handler(event);
+    return resBody;
+  } catch (err) {
+    return {
+      statusCode: 500,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ error: err.message }),
+    };
+  }
+};

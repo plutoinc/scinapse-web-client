@@ -1,27 +1,27 @@
-import * as React from "react";
-import axios from "axios";
-import { connect, Dispatch } from "react-redux";
-import { denormalize } from "normalizr";
-import { RouteComponentProps, Link } from "react-router-dom";
-import { Helmet } from "react-helmet";
-import * as distanceInWordsToNow from "date-fns/distance_in_words_to_now";
-import * as parse from "date-fns/parse";
-import { AppState } from "../../reducers";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { getCollections } from "./sideEffect";
-import { Collection, collectionSchema } from "../../model/collection";
-import { UserCollectionsState } from "./reducer";
-import { Member, memberSchema } from "../../model/member";
-import Footer from "../layouts/footer";
-import Icon from "../../icons";
-import { trackEvent } from "../../helpers/handleGA";
-import GlobalDialogManager from "../../helpers/globalDialogManager";
-import { deleteCollection } from "../dialog/actions";
-import { CurrentUser } from "../../model/currentUser";
-import restoreScroll from "../../helpers/scrollRestoration";
-import alertToast from "../../helpers/makePlutoToastAction";
-import ErrorPage from "../error/errorPage";
-const styles = require("./collections.scss");
+import * as React from 'react';
+import axios from 'axios';
+import { connect, Dispatch } from 'react-redux';
+import { denormalize } from 'normalizr';
+import { RouteComponentProps, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
+import * as parse from 'date-fns/parse';
+import { AppState } from '../../reducers';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { getCollections } from './sideEffect';
+import { Collection, collectionSchema } from '../../model/collection';
+import { UserCollectionsState } from './reducer';
+import { Member, memberSchema } from '../../model/member';
+import Footer from '../layouts/footer';
+import Icon from '../../icons';
+import { trackEvent } from '../../helpers/handleGA';
+import GlobalDialogManager from '../../helpers/globalDialogManager';
+import { deleteCollection } from '../dialog/actions';
+import { CurrentUser } from '../../model/currentUser';
+import restoreScroll from '../../helpers/scrollRestoration';
+import alertToast from '../../helpers/makePlutoToastAction';
+import ErrorPage from '../error/errorPage';
+const styles = require('./collections.scss');
 
 export interface UserCollectionsProps extends RouteComponentProps<{ userId: string }> {
   dispatch: Dispatch<any>;
@@ -80,7 +80,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
               <div className={styles.header}>
                 <div className={styles.leftBox}>
                   <div className={styles.titleBox}>
-                    <span>{`${member.firstName} ${member.lastName || ""}'s collections`}</span>
+                    <span>{`${member.firstName} ${member.lastName || ''}'s collections`}</span>
                     <span className={styles.collectionCount}>{userCollections.collectionIds.length}</span>
                   </div>
                 </div>
@@ -89,7 +89,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
               {this.getCollections(collections)}
             </div>
           </div>
-          <Footer containerStyle={{ backgroundColor: "#f9f9fa" }} />
+          <Footer containerStyle={{ backgroundColor: '#f9f9fa' }} />
         </div>
       );
     } else {
@@ -180,7 +180,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
         await dispatch(deleteCollection(collection.id));
       } catch (err) {
         alertToast({
-          type: "error",
+          type: 'error',
           message: err.message,
         });
       }
@@ -190,18 +190,18 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
   private handleClickEditCollection = (collection: Collection) => {
     GlobalDialogManager.openEditCollectionDialog(collection);
     trackEvent({
-      category: "Additional Action",
-      action: "Click [Edit Collection] Button",
-      label: "my collection list page",
+      category: 'Additional Action',
+      action: 'Click [Edit Collection] Button',
+      label: 'my collection list page',
     });
   };
 
   private handleClickNewCollectionButton = () => {
     GlobalDialogManager.openNewCollectionDialog();
     trackEvent({
-      category: "Additional Action",
-      action: "Click [New Collection] Button",
-      label: "my collection list page",
+      category: 'Additional Action',
+      action: 'Click [New Collection] Button',
+      label: 'my collection list page',
     });
   };
 
@@ -224,30 +224,30 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
       const headCollections = collections
         .map(c => c.title)
         .slice(0, 3)
-        .join(" | ");
+        .join(' | ');
 
       return (
         <Helmet>
-          <title>{`${member.firstName} ${member.lastName || ""}'s paper collections | Scinapse`}</title>
+          <title>{`${member.firstName} ${member.lastName || ''}'s paper collections | Scinapse`}</title>
           <link rel="canonical" href={`https://scinapse.io/collections/users/${member.id}/collections`} />
           <meta
             itemProp="name"
-            content={`${member.firstName} ${member.lastName || ""}'s paper collections | Scinapse`}
+            content={`${member.firstName} ${member.lastName || ''}'s paper collections | Scinapse`}
           />
           <meta name="description" content={headCollections} />
           <meta name="twitter:description" content={headCollections} />
           <meta property="og:description" content={headCollections} />
           <meta
             name="twitter:card"
-            content={`${member.firstName} ${member.lastName || ""}'s paper collections | Scinapse`}
+            content={`${member.firstName} ${member.lastName || ''}'s paper collections | Scinapse`}
           />
           <meta
             name="twitter:title"
-            content={`${member.firstName} ${member.lastName || ""}'s paper collections | Scinapse`}
+            content={`${member.firstName} ${member.lastName || ''}'s paper collections | Scinapse`}
           />
           <meta
             property="og:title"
-            content={`${member.firstName} ${member.lastName || ""}'s paper collections | Scinapse`}
+            content={`${member.firstName} ${member.lastName || ''}'s paper collections | Scinapse`}
           />
           <meta property="og:type" content="article" />
           <meta property="og:url" content={`https://scinapse.io/collections/users/${member.id}/collections`} />

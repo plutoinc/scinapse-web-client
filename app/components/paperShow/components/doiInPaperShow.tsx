@@ -1,9 +1,9 @@
-import * as React from "react";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import copySelectedTextToClipboard from "../../../helpers/copySelectedTextToClipboard";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-import Icon from "../../../icons";
-const styles = require("./doiInPaperShow.scss");
+import * as React from 'react';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import copySelectedTextToClipboard from '../../../helpers/copySelectedTextToClipboard';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import Icon from '../../../icons';
+const styles = require('./doiInPaperShow.scss');
 
 interface DoiInPaperShowProps {
   doi: string;
@@ -21,10 +21,10 @@ const DoiInPaperShow: React.FunctionComponent<DoiInPaperShowProps> = props => {
     copySelectedTextToClipboard(`https://doi.org/${doi}`);
 
     ActionTicketManager.trackTicket({
-      pageType: "paperShow",
-      actionType: "fire",
-      actionArea: "paperDescription",
-      actionTag: "copyDoi",
+      pageType: 'paperShow',
+      actionType: 'fire',
+      actionArea: 'paperDescription',
+      actionTag: 'copyDoi',
       actionLabel: String(paperId),
     });
   };

@@ -1,8 +1,8 @@
-import * as React from "react";
-import { FieldProps } from "formik";
-import Checkbox from "@material-ui/core/Checkbox";
-import { withStyles } from "../../../helpers/withStylesHelper";
-const styles = require("./scinapseCheckbox.scss");
+import * as React from 'react';
+import { FieldProps } from 'formik';
+import Checkbox from '@material-ui/core/Checkbox';
+import { withStyles } from '../../../helpers/withStylesHelper';
+const styles = require('./scinapseCheckbox.scss');
 
 export interface FormikCheckboxProps extends React.HTMLProps<HTMLInputElement> {
   wrapperStyle?: React.CSSProperties;

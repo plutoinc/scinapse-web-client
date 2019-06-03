@@ -1,5 +1,5 @@
-import { Filter, RawFilter } from "../api/member";
-import PapersQueryFormatter from "./papersQueryFormatter";
+import { Filter, RawFilter } from '../api/member';
+import PapersQueryFormatter from './papersQueryFormatter';
 
 export function objectifyRawFilterList(filter: RawFilter[] = []) {
   return filter.map(f => {

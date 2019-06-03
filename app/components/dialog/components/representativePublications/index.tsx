@@ -1,21 +1,21 @@
-import * as React from "react";
-import { debounce } from "lodash";
-import * as classNames from "classnames";
-import Dialog from "@material-ui/core/Dialog";
-import Checkbox from "@material-ui/core/Checkbox";
-import ScinapseInput from "../../../common/scinapseInput";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import ArticleSpinner from "../../../common/spinner/articleSpinner";
-import ScinapseButton from "../../../common/scinapseButton";
-import Icon from "../../../../icons";
-import alertToast from "../../../../helpers/makePlutoToastAction";
-import PlutoAxios from "../../../../api/pluto";
-import { Author } from "../../../../model/author/author";
-import AuthorAPI, { SimplePaper } from "../../../../api/author";
-import { CurrentUser } from "../../../../model/currentUser";
-import { Paper } from "../../../../model/paper";
-import { trackEvent } from "../../../../helpers/handleGA";
-const styles = require("./representativePublication.scss");
+import * as React from 'react';
+import { debounce } from 'lodash';
+import * as classNames from 'classnames';
+import Dialog from '@material-ui/core/Dialog';
+import Checkbox from '@material-ui/core/Checkbox';
+import ScinapseInput from '../../../common/scinapseInput';
+import { withStyles } from '../../../../helpers/withStylesHelper';
+import ArticleSpinner from '../../../common/spinner/articleSpinner';
+import ScinapseButton from '../../../common/scinapseButton';
+import Icon from '../../../../icons';
+import alertToast from '../../../../helpers/makePlutoToastAction';
+import PlutoAxios from '../../../../api/pluto';
+import { Author } from '../../../../model/author/author';
+import AuthorAPI, { SimplePaper } from '../../../../api/author';
+import { CurrentUser } from '../../../../model/currentUser';
+import { Paper } from '../../../../model/paper';
+import { trackEvent } from '../../../../helpers/handleGA';
+const styles = require('./representativePublication.scss');
 
 const MAXIMUM_SELECT_COUNT = 5;
 
@@ -44,7 +44,7 @@ class RepresentativePublicationsDialog extends React.PureComponent<
     this.state = {
       papers: [],
       representativePapers: [],
-      searchInput: "",
+      searchInput: '',
       isLoading: false,
     };
   }
@@ -66,8 +66,8 @@ class RepresentativePublicationsDialog extends React.PureComponent<
         console.error(err);
         this.setState(prevState => ({ ...prevState, isLoading: false }));
         alertToast({
-          type: "error",
-          message: "Had an error to get the publications information from server",
+          type: 'error',
+          message: 'Had an error to get the publications information from server',
         });
       }
     }
@@ -79,7 +79,7 @@ class RepresentativePublicationsDialog extends React.PureComponent<
 
     const content = isLoading ? (
       <div className={styles.contentSection}>
-        <ArticleSpinner style={{ margin: "100px auto" }} />
+        <ArticleSpinner style={{ margin: '100px auto' }} />
       </div>
     ) : (
       <div className={styles.contentSection}>
@@ -123,10 +123,10 @@ class RepresentativePublicationsDialog extends React.PureComponent<
           <div className={styles.buttonsWrapper}>
             <ScinapseButton
               style={{
-                backgroundColor: isLoading ? "#ecf1fa" : "#6096ff",
-                cursor: isLoading ? "not-allowed" : "pointer",
-                minWidth: "200px",
-                height: "40px",
+                backgroundColor: isLoading ? '#ecf1fa' : '#6096ff',
+                cursor: isLoading ? 'not-allowed' : 'pointer',
+                minWidth: '200px',
+                height: '40px',
               }}
               disabled={isLoading}
               isLoading={isLoading}
@@ -143,8 +143,8 @@ class RepresentativePublicationsDialog extends React.PureComponent<
 
   private trackFilter = (query: string) => {
     trackEvent({
-      category: "New Author Show",
-      action: "filter papers to select representative publications",
+      category: 'New Author Show',
+      action: 'filter papers to select representative publications',
       label: query,
     });
   };
@@ -193,7 +193,7 @@ class RepresentativePublicationsDialog extends React.PureComponent<
       this.setState(prevState => ({ ...prevState, isLoading: false }));
       const error = PlutoAxios.getGlobalError(err);
       alertToast({
-        type: "error",
+        type: 'error',
         message: error.message,
       });
     }
@@ -236,7 +236,7 @@ class RepresentativePublicationsDialog extends React.PureComponent<
     const { papers, representativePapers } = this.state;
 
     if (this.getRemainedPaperCount() === 0 && !paper.isRepresentative) {
-      window.alert("You have exceeded the number of choices available.");
+      window.alert('You have exceeded the number of choices available.');
       return null;
     }
 

@@ -1,14 +1,14 @@
-import { CancelToken } from "axios";
-import PlutoAxios from "./pluto";
-import { PaginationResponseV2, PageObjectV2 } from "./types/common";
-import { Paper } from "../model/paper";
-import { AggregationData } from "../model/aggregation";
-import { Suggestion } from "../model/suggestion";
-import { BasePaperAuthor } from "../model/author";
-import { Affiliation } from "../model/affiliation";
-import { camelCaseKeys } from "../helpers/camelCaseKeys";
-import { Author } from "../model/author/author";
-import { NewFOS } from "../model/fos";
+import { CancelToken } from 'axios';
+import PlutoAxios from './pluto';
+import { PaginationResponseV2, PageObjectV2 } from './types/common';
+import { Paper } from '../model/paper';
+import { AggregationData } from '../model/aggregation';
+import { Suggestion } from '../model/suggestion';
+import { BasePaperAuthor } from '../model/author';
+import { Affiliation } from '../model/affiliation';
+import { camelCaseKeys } from '../helpers/camelCaseKeys';
+import { Author } from '../model/author/author';
+import { NewFOS } from '../model/fos';
 
 export interface BaseSearchParams {
   query: string;
@@ -57,7 +57,7 @@ export interface AuthorSearchResult extends PaginationResponseV2<Author[]> {
 
 class SearchAPI extends PlutoAxios {
   public async search({ query, sort, filter, page = 0, cancelToken }: PaperSearchParams) {
-    const res = await this.get("/search", {
+    const res = await this.get('/search', {
       params: {
         q: query,
         sort,
@@ -82,7 +82,7 @@ class SearchAPI extends PlutoAxios {
   }
 
   public async searchAuthor({ query, sort, page = 0, cancelToken }: BaseSearchParams) {
-    const res = await this.get("/search/authors", {
+    const res = await this.get('/search/authors', {
       params: {
         q: query,
         sort,

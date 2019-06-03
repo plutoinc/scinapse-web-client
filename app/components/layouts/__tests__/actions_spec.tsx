@@ -1,11 +1,11 @@
-jest.unmock("../actions");
-jest.mock("../../../api/member");
+jest.unmock('../actions');
+jest.mock('../../../api/member');
 
-import * as Actions from "../actions";
-import { generateMockStore } from "../../../__tests__/mockStore";
-import { ACTION_TYPES } from "../../../actions/actionTypes";
+import * as Actions from '../actions';
+import { generateMockStore } from '../../../__tests__/mockStore';
+import { ACTION_TYPES } from '../../../actions/actionTypes';
 
-describe("layout actions", () => {
+describe('layout actions', () => {
   let store: any;
   let actions: any[];
 
@@ -14,8 +14,8 @@ describe("layout actions", () => {
     store.clearActions();
   });
 
-  describe("set device to desktop action", () => {
-    it("should return SET_DEVICE_TO_DESKTOP action", () => {
+  describe('set device to desktop action', () => {
+    it('should return SET_DEVICE_TO_DESKTOP action', () => {
       store.dispatch(Actions.setDeviceToDesktop());
       actions = store.getActions();
       expect(actions[0]).toEqual({
@@ -24,8 +24,8 @@ describe("layout actions", () => {
     });
   });
 
-  describe("set device to mobile action", () => {
-    it("should return SET_DEVICE_TO_MOBILE action", () => {
+  describe('set device to mobile action', () => {
+    it('should return SET_DEVICE_TO_MOBILE action', () => {
       store.dispatch(Actions.setDeviceToMobile());
       actions = store.getActions();
       expect(actions[0]).toEqual({

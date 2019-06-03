@@ -1,16 +1,16 @@
-import { Dispatch } from "redux";
-import axios from "axios";
-import { ACTION_TYPES } from "../../actions/actionTypes";
-import { SearchPapersParams } from "../../api/types/paper";
-import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
-import SearchAPI from "../../api/search";
-import { ChangeRangeInputParams } from "../../constants/paperSearch";
-import PlutoAxios from "../../api/pluto";
-import { CommonError } from "../../model/error";
-import { GetAuthorsParam } from "../../api/types/author";
-import memberAPI, { Filter, RawFilter } from "../../api/member";
-import { PREVIOUS_FILTER } from "./constants";
-const store = require("store");
+import { Dispatch } from 'redux';
+import axios from 'axios';
+import { ACTION_TYPES } from '../../actions/actionTypes';
+import { SearchPapersParams } from '../../api/types/paper';
+import PapersQueryFormatter from '../../helpers/papersQueryFormatter';
+import SearchAPI from '../../api/search';
+import { ChangeRangeInputParams } from '../../constants/paperSearch';
+import PlutoAxios from '../../api/pluto';
+import { CommonError } from '../../model/error';
+import { GetAuthorsParam } from '../../api/types/author';
+import memberAPI, { Filter, RawFilter } from '../../api/member';
+import { PREVIOUS_FILTER } from './constants';
+const store = require('store');
 
 export function toggleExpandingFilter() {
   return {

@@ -1,61 +1,54 @@
-import * as React from "react";
-import { connect, Dispatch } from "react-redux";
-import { withRouter, RouteComponentProps, Link } from "react-router-dom";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
-import actionTicketManager from "../../../helpers/actionTicketManager";
-import { Paper } from "../../../model/paper";
-import { ActionCreators } from "../../../actions/actionTypes";
-import Icon from "../../../icons";
-const styles = require("./title.scss");
+import * as React from 'react';
+import * as classNames from 'classnames';
+import { connect, Dispatch } from 'react-redux';
+import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { formulaeToHTMLStr } from '../../../helpers/displayFormula';
+import actionTicketManager from '../../../helpers/actionTicketManager';
+import { ActionCreators } from '../../../actions/actionTypes';
+import Icon from '../../../icons';
+const styles = require('./title.scss');
 
 export interface TitleProps extends RouteComponentProps<any> {
   dispatch: Dispatch<any>;
-  paper: Paper;
+  paperId: number;
+  paperTitle: string;
+  highlightTitle?: string;
+  highlightAbstract?: string;
   source: string;
   pageType: Scinapse.ActionTicket.PageType;
-  shouldBlockUnverifiedUser: boolean;
+  titleClassName?: string;
   actionArea?: Scinapse.ActionTicket.ActionArea;
-  currentPage?: number;
 }
 
-class Title extends React.Component<TitleProps> {
-  public shouldComponentUpdate(nextProps: TitleProps) {
-    if (this.props.paper.id !== nextProps.paper.id) {
-      return true;
-    }
-    return false;
-  }
-
+class Title extends React.PureComponent<TitleProps> {
   public render() {
-    const { paper } = this.props;
-    const title = paper.title;
+    const { paperTitle, highlightTitle, paperId, titleClassName } = this.props;
+    const finalTitle = highlightTitle || paperTitle;
 
-    if (!title) {
+    if (!finalTitle) {
       return null;
     }
-    // for removing first or last space or trash value of content
-    const trimmedTitle = title
-      .replace(/^ /gi, "")
-      .replace(/\s{2,}/g, " ")
-      .replace(/#[A-Z0-9]+#/g, "");
+
+    const trimmedTitle = finalTitle
+      .replace(/^ /gi, '')
+      .replace(/\s{2,}/g, ' ')
+      .replace(/#[A-Z0-9]+#/g, '');
 
     return (
       <div>
         <Link
-          to={`/papers/${paper.id}`}
+          to={`/papers/${paperId}`}
           onClick={() => {
             this.handleClickTitle(false);
           }}
           dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(trimmedTitle) }}
-          className={styles.title}
+          className={classNames({
+            [styles.title]: !titleClassName,
+            [titleClassName!]: !!titleClassName,
+          })}
         />
-        <a
-          href={`/papers/${paper.id}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.externalIconWrapper}
-        >
+        <a href={`/papers/${paperId}`} target="_blank" rel="noopener noreferrer" className={styles.externalIconWrapper}>
           <Icon
             onClick={() => {
               this.handleClickTitle(true);
@@ -69,30 +62,30 @@ class Title extends React.Component<TitleProps> {
   }
 
   private handleClickTitle = (fromNewTab?: boolean) => {
-    const { dispatch, pageType, actionArea, paper } = this.props;
+    const { dispatch, pageType, actionArea, paperId, highlightTitle, highlightAbstract } = this.props;
     actionTicketManager.trackTicket({
       pageType,
-      actionType: "fire",
+      actionType: 'fire',
       actionArea: actionArea || pageType,
-      actionTag: "paperShow",
-      actionLabel: String(paper.id),
+      actionTag: 'paperShow',
+      actionLabel: String(paperId),
     });
 
     if (fromNewTab) {
       actionTicketManager.trackTicket({
         pageType,
-        actionType: "fire",
-        actionArea: "titleNewTab",
-        actionTag: "paperShow",
-        actionLabel: String(paper.id),
+        actionType: 'fire',
+        actionArea: 'titleNewTab',
+        actionTag: 'paperShow',
+        actionLabel: String(paperId),
       });
     }
 
-    if (paper.abstractHighlighted || paper.titleHighlighted) {
+    if (highlightTitle || highlightAbstract) {
       dispatch(
         ActionCreators.setHighlightContentInPaperShow({
-          title: paper.titleHighlighted || "",
-          abstract: paper.abstractHighlighted || "",
+          title: highlightTitle || '',
+          abstract: highlightAbstract || '',
         })
       );
     }

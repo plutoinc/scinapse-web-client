@@ -1,26 +1,26 @@
-import * as React from "react";
-import { connect, Dispatch } from "react-redux";
-import { withRouter, RouteComponentProps } from "react-router";
-import { isEqual } from "lodash";
-import Popper from "@material-ui/core/Popper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { ArticleSearchState } from "../../../components/articleSearch/records";
-import { Filter, RawFilter } from "../../../api/member";
-import { selectFilter, putCurrentUserFilters } from "../../../components/articleSearch/actions";
-import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
-import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
-import SavedFilterItem from "../savedFilterItem";
-import newFilterSetTitleGenerator from "../../../helpers/newFilterSetTitleGenerator";
-import FilterTitleBox from "./titleBox";
-import { CurrentUser } from "../../../model/currentUser";
-import Icon from "../../../icons";
-import { openSignIn } from "../../../components/dialog/actions";
-import { stringifyFullFilterList, objectifyRawFilterList } from "../../../helpers/FilterObjectGenerator";
-import { AppState } from "../../../reducers";
-import { LOCAL_STORAGE_FILTERS } from "../../../components/articleSearch/constants";
-const store = require("store");
-const styles = require("./filterSaveBox.scss");
+import * as React from 'react';
+import { connect, Dispatch } from 'react-redux';
+import { withRouter, RouteComponentProps } from 'react-router';
+import { isEqual } from 'lodash';
+import Popper from '@material-ui/core/Popper';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { ArticleSearchState } from '../../../components/articleSearch/records';
+import { Filter, RawFilter } from '../../../api/member';
+import { selectFilter, putCurrentUserFilters } from '../../../components/articleSearch/actions';
+import PapersQueryFormatter from '../../../helpers/papersQueryFormatter';
+import getQueryParamsObject from '../../../helpers/getQueryParamsObject';
+import SavedFilterItem from '../savedFilterItem';
+import newFilterSetTitleGenerator from '../../../helpers/newFilterSetTitleGenerator';
+import FilterTitleBox from './titleBox';
+import { CurrentUser } from '../../../model/currentUser';
+import Icon from '../../../icons';
+import { openSignIn } from '../../../components/dialog/actions';
+import { stringifyFullFilterList, objectifyRawFilterList } from '../../../helpers/FilterObjectGenerator';
+import { AppState } from '../../../reducers';
+import { LOCAL_STORAGE_FILTERS } from '../../../components/articleSearch/constants';
+const store = require('store');
+const styles = require('./filterSaveBox.scss');
 
 interface FilterSaveBoxProps {
   articleSearchState: ArticleSearchState;
@@ -114,7 +114,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
 
   function handleClickSaveChangesBtn(newFilter: Filter | string, oldFilter: Filter) {
     const newFilterObj =
-      typeof newFilter === "string"
+      typeof newFilter === 'string'
         ? { ...oldFilter, filter: PapersQueryFormatter.objectifyPapersFilter(newFilter) }
         : newFilter;
     saveNewFilter(newFilterObj);
@@ -125,10 +125,10 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
       return dispatch(openSignIn());
     }
 
-    const baseEmojis = ["🐺", "🐶", "🦊", "🐱", "🦌", "🦒", "🐹", "🐰"];
+    const baseEmojis = ['🐺', '🐶', '🦊', '🐱', '🦌', '🦒', '🐹', '🐰'];
     const randomEmoji = baseEmojis[Math.floor(Math.random() * baseEmojis.length)];
     const newFilter =
-      typeof filter === "string"
+      typeof filter === 'string'
         ? {
             name: newFilterSetTitleGenerator({
               fos: articleSearchState.fosFilterObject,
@@ -150,7 +150,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
   ) {
     dispatch(selectFilter(!!filter ? filter : null));
     history.push({
-      pathname: "/search",
+      pathname: '/search',
       search: PapersQueryFormatter.stringifyPapersQuery({
         query,
         page: 1,
@@ -209,7 +209,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
           placement="bottom-end"
           disablePortal
           modifiers={{ flip: { enabled: false } }}
-          style={{ width: "100%", position: "absolute", backgroundColor: "white", zIndex: 99 }}
+          style={{ width: '100%', position: 'absolute', backgroundColor: 'white', zIndex: 99 }}
         >
           <ul className={styles.popperWrapper}>
             <li onClick={() => handleClickFilterItem(searchInput, sort, null)} className={styles.filterItemWrapper}>

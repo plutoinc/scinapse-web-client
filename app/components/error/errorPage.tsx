@@ -1,8 +1,8 @@
-import * as React from "react";
-import { withRouter, RouteComponentProps, Link } from "react-router-dom";
-import { withStyles } from "../../helpers/withStylesHelper";
-import Status from "../common/status";
-const styles = require("./errorPage.scss");
+import * as React from 'react';
+import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
+import { withStyles } from '../../helpers/withStylesHelper';
+import Status from '../common/status';
+const styles = require('./errorPage.scss');
 
 interface ErrorPageProps extends RouteComponentProps<null> {
   errorNum?: number;
@@ -18,16 +18,16 @@ class ErrorPage extends React.PureComponent<ErrorPageProps> {
     switch (firstNumber) {
       case 4:
         if (errorNum === 404) {
-          errorContent = "page not found";
+          errorContent = 'page not found';
         } else {
           errorContent = `${errorNum} request error`;
         }
         break;
       case 5:
-        errorContent = "server error";
+        errorContent = 'server error';
         break;
       default:
-        errorContent = "page not found";
+        errorContent = 'page not found';
     }
 
     return (

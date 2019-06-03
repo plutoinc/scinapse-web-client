@@ -1,10 +1,10 @@
-import * as React from "react";
-import { CancelToken } from "axios";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import PaperShowReadingNowPapersItem from "./readingNowPapersItem";
-import { Paper } from "../../../model/paper";
-import ReadingPaperAPI from "../../../api/readingPaper";
-const styles = require("./readingNowPapers.scss");
+import * as React from 'react';
+import { CancelToken } from 'axios';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import PaperShowReadingNowPapersItem from './readingNowPapersItem';
+import { Paper } from '../../../model/paper';
+import ReadingPaperAPI from '../../../api/readingPaper';
+const styles = require('./readingNowPapers.scss');
 
 const MAXIMUM_COUNT_TO_RENDER = 3;
 

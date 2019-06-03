@@ -1,5 +1,5 @@
-import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
-import { PAPER_SHOW_INITIAL_STATE, PaperShowState } from "./records";
+import { ACTION_TYPES, Actions } from '../../actions/actionTypes';
+import { PAPER_SHOW_INITIAL_STATE, PaperShowState } from './records';
 
 export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action: Actions): PaperShowState {
   switch (action.type) {

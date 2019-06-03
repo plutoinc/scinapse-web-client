@@ -1,15 +1,15 @@
-import * as React from "react";
-import * as classNames from "classnames";
-import { Link } from "react-router-dom";
-import PaperSearchQueryFormatter, { FilterObject } from "../../../../helpers/papersQueryFormatter";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import ActionTicketManager from "../../../../helpers/actionTicketManager";
-const styles = require("./sortBar.scss");
+import * as React from 'react';
+import * as classNames from 'classnames';
+import { Link } from 'react-router-dom';
+import PaperSearchQueryFormatter, { FilterObject } from '../../../../helpers/papersQueryFormatter';
+import { withStyles } from '../../../../helpers/withStylesHelper';
+import ActionTicketManager from '../../../../helpers/actionTicketManager';
+const styles = require('./sortBar.scss');
 
 const ARTICLE_SEARCH_SORT_OPTIONS: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS[] = [
-  "RELEVANCE",
-  "MOST_CITATIONS",
-  "NEWEST_FIRST",
+  'RELEVANCE',
+  'MOST_CITATIONS',
+  'NEWEST_FIRST',
 ];
 
 interface SortBarProps {
@@ -20,10 +20,10 @@ interface SortBarProps {
 
 function trackSorting(sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS) {
   ActionTicketManager.trackTicket({
-    pageType: "searchResult",
-    actionType: "fire",
-    actionArea: "sortBar",
-    actionTag: "paperSorting",
+    pageType: 'searchResult',
+    actionType: 'fire',
+    actionArea: 'sortBar',
+    actionTag: 'paperSorting',
     actionLabel: sortOption,
   });
 }
@@ -38,7 +38,7 @@ function getSortBarItems(props: SortBarProps) {
       <Link
         key={index}
         to={{
-          pathname: "/search",
+          pathname: '/search',
           search: PaperSearchQueryFormatter.stringifyPapersQuery({
             query,
             page: 1,
@@ -65,16 +65,16 @@ function getSortBarItems(props: SortBarProps) {
 function getSortOptionToShow(sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS) {
   // tslint:disable-next-line:switch-default
   switch (sortOption) {
-    case "RELEVANCE": {
-      return "Relevance";
+    case 'RELEVANCE': {
+      return 'Relevance';
     }
 
-    case "NEWEST_FIRST": {
-      return "Newest";
+    case 'NEWEST_FIRST': {
+      return 'Newest';
     }
 
-    case "MOST_CITATIONS": {
-      return "Most Citations";
+    case 'MOST_CITATIONS': {
+      return 'Most Citations';
     }
   }
 }

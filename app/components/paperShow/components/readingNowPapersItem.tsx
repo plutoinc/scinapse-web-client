@@ -1,11 +1,11 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { Paper } from "../../../model/paper";
-import Icon from "../../../icons";
-import EnvChecker from "../../../helpers/envChecker";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-const styles = require("./readingNowPapersItem.scss");
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { Paper } from '../../../model/paper';
+import Icon from '../../../icons';
+import EnvChecker from '../../../helpers/envChecker';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+const styles = require('./readingNowPapersItem.scss');
 
 const MAX_LENGTH_OF_AUTHOR = 90;
 
@@ -20,15 +20,15 @@ class PaperShowReadingNowPapersItem extends React.PureComponent<PaperShowReading
 
     const journal = paper.journal
       ? `${paper.journal.title || paper.venue} ${
-          paper.journal.impactFactor ? `[IF: ${paper.journal.impactFactor.toFixed(2)}]` : ""
+          paper.journal.impactFactor ? `[IF: ${paper.journal.impactFactor.toFixed(2)}]` : ''
         }`
-      : "";
+      : '';
 
     let finalTitle;
     const paperTitle = paper.title;
 
     if (paperTitle.length > MAX_LENGTH_OF_AUTHOR) {
-      finalTitle = paperTitle.slice(0, MAX_LENGTH_OF_AUTHOR) + "...";
+      finalTitle = paperTitle.slice(0, MAX_LENGTH_OF_AUTHOR) + '...';
     } else {
       finalTitle = paperTitle;
     }
@@ -52,10 +52,10 @@ class PaperShowReadingNowPapersItem extends React.PureComponent<PaperShowReading
                 to={`/journals/${paper.journal.id}`}
                 onClick={() => {
                   ActionTicketManager.trackTicket({
-                    pageType: "paperShow",
-                    actionType: "fire",
+                    pageType: 'paperShow',
+                    actionType: 'fire',
                     actionArea,
-                    actionTag: "journalShow",
+                    actionTag: 'journalShow',
                     actionLabel: String(paper.id),
                   });
                 }}
@@ -75,10 +75,10 @@ class PaperShowReadingNowPapersItem extends React.PureComponent<PaperShowReading
 
     if (!EnvChecker.isOnServer()) {
       ActionTicketManager.trackTicket({
-        pageType: "paperShow",
-        actionType: "fire",
+        pageType: 'paperShow',
+        actionType: 'fire',
         actionArea,
-        actionTag: "paperShow",
+        actionTag: 'paperShow',
         actionLabel: String(paper.id),
       });
     }

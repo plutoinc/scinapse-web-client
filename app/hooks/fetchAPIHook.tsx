@@ -1,11 +1,11 @@
-import * as React from "react";
-import { UseAsyncFetchParams, dataFetchReducer, ReducerState, ReducerAction } from "./types";
+import * as React from 'react';
+import { UseAsyncFetchParams, dataFetchReducer, ReducerState, ReducerAction } from './types';
 
 export function useAsyncFetch<P, T>({ initialParams, fetchFunc, validateFunc }: UseAsyncFetchParams<P, T>) {
   const [params, setParams] = React.useState(initialParams);
   const [state, dispatch] = React.useReducer(dataFetchReducer as React.Reducer<ReducerState<T>, ReducerAction<T>>, {
     isLoading: false,
-    errorMsg: "",
+    errorMsg: '',
     data: null,
   });
 
@@ -18,21 +18,21 @@ export function useAsyncFetch<P, T>({ initialParams, fetchFunc, validateFunc }: 
           validateFunc(params);
         } catch (err) {
           if (!cancel) {
-            return dispatch({ type: "FETCH_FAILURE" });
+            return dispatch({ type: 'FETCH_FAILURE' });
           }
         }
       }
 
       async function lazyFetch() {
-        dispatch({ type: "FETCH_INIT" });
+        dispatch({ type: 'FETCH_INIT' });
         try {
           const res = await fetchFunc(params);
           if (!cancel) {
-            dispatch({ type: "FETCH_SUCCESS", payload: { data: res } });
+            dispatch({ type: 'FETCH_SUCCESS', payload: { data: res } });
           }
         } catch (err) {
           if (!cancel) {
-            dispatch({ type: "FETCH_FAILURE" });
+            dispatch({ type: 'FETCH_FAILURE' });
           }
         }
       }

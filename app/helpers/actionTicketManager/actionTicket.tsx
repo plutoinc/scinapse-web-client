@@ -1,7 +1,7 @@
-import * as store from "store";
-import * as Cookies from "js-cookie";
-import * as format from "date-fns/format";
-import EnvChecker from "../envChecker";
+import * as store from 'store';
+import * as Cookies from 'js-cookie';
+import * as format from 'date-fns/format';
+import EnvChecker from '../envChecker';
 import {
   DEVICE_ID_INITIALIZED_KEY,
   DEVICE_ID_KEY,
@@ -9,13 +9,13 @@ import {
   SESSION_ID_INITIALIZED_KEY,
   SESSION_ID_KEY,
   USER_ID_KEY,
-} from "../../constants/actionTicket";
-import { LIVE_TESTS } from "../../constants/abTest";
+} from '../../constants/actionTicket';
+import { LIVE_TESTS } from '../../constants/abTest';
 
 export interface ActionTicketParams {
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType | null;
-  actionType: "fire" | "view";
+  actionType: 'fire' | 'view';
   actionTag: Scinapse.ActionTicket.ActionTagType;
   actionLabel: string | null;
   actionValue?: string | null;
@@ -52,7 +52,7 @@ export default class ActionTicket {
   private userId = store.get(USER_ID_KEY) || null;
   private createdAt = format(new Date());
   private pageUrl: string;
-  private actionType: "fire" | "view";
+  private actionType: 'fire' | 'view';
   private actionTag: Scinapse.ActionTicket.ActionTagType;
   private actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType | null;
   private pageType: Scinapse.ActionTicket.PageType;
@@ -72,7 +72,7 @@ export default class ActionTicket {
       this.pageType = params.pageType;
       this.actionLabel = params.actionLabel;
       this.actionValue = params.actionValue;
-      this.expName = params.expName || "";
+      this.expName = params.expName || '';
       this.setUserContext();
     }
   }
@@ -93,7 +93,7 @@ export default class ActionTicket {
       expName: this.expName,
       expUser: this.expUser,
       context: this.context,
-      referral: EnvChecker.isProdBrowser() ? document.referrer : "",
+      referral: EnvChecker.isProdBrowser() ? document.referrer : '',
       clientVersion:
         EnvChecker.isProdBrowser() && (window as any)._script_version_
           ? (window as any)._script_version_.version
@@ -122,7 +122,7 @@ export default class ActionTicket {
     };
 
     LIVE_TESTS.forEach(test => {
-      context.exp[test.name] = Cookies.get(test.name) || "";
+      context.exp[test.name] = Cookies.get(test.name) || '';
     });
 
     if (deviceInitialized) {

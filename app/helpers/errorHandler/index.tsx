@@ -1,13 +1,13 @@
-import * as React from "react";
-import EnvChecker from "../envChecker";
-import { withStyles } from "../withStylesHelper";
-import { trackEvent } from "../handleGA";
-const styles = require("./errorHandler.scss");
+import * as React from 'react';
+import EnvChecker from '../envChecker';
+import { withStyles } from '../withStylesHelper';
+import { trackEvent } from '../handleGA';
+const styles = require('./errorHandler.scss');
 declare var Sentry: any;
 
 export function logException(error: Error, errorInfo?: any) {
   if (EnvChecker.isLocal()) {
-    console.error("Error!", error, errorInfo);
+    console.error('Error!', error, errorInfo);
   }
 
   if (EnvChecker.isProdBrowser()) {
@@ -57,8 +57,8 @@ export default class ErrorTracker extends React.PureComponent<{}, ErrorTrackerSt
   public componentDidCatch(error: Error, errorInfo: any) {
     this.setState({ error });
     trackEvent({
-      category: "Error Page",
-      action: "render error page",
+      category: 'Error Page',
+      action: 'render error page',
     });
     logException(error, errorInfo);
   }
@@ -89,28 +89,28 @@ export default class ErrorTracker extends React.PureComponent<{}, ErrorTrackerSt
                   {` is the team working on Scinapse.\nWe have mission to break the barrier of scholarly communication.\n\nGive your attention and please follow us.`}
                 </div>
 
-                <LinkButton style={{ width: "100%", marginBottom: "16px" }} href="https://pluto.network">
+                <LinkButton style={{ width: '100%', marginBottom: '16px' }} href="https://pluto.network">
                   <img
-                    style={{ width: "70px", height: "29px" }}
+                    style={{ width: '70px', height: '29px' }}
                     src="https://assets.pluto.network/scinapse/error_page/pluto-logo.png"
                   />
                 </LinkButton>
 
-                <LinkButton style={{ width: "108px", marginRight: "16px" }} href="https://medium.com/pluto-network">
+                <LinkButton style={{ width: '108px', marginRight: '16px' }} href="https://medium.com/pluto-network">
                   <img
-                    style={{ width: "67px", height: "20px" }}
+                    style={{ width: '67px', height: '20px' }}
                     src="https://assets.pluto.network/scinapse/error_page/medium-logo.png"
                   />
                 </LinkButton>
-                <LinkButton style={{ width: "108px", marginRight: "16px" }} href="https://twitter.com/pluto_network">
+                <LinkButton style={{ width: '108px', marginRight: '16px' }} href="https://twitter.com/pluto_network">
                   <img
-                    style={{ width: "26px", height: "22px" }}
+                    style={{ width: '26px', height: '22px' }}
                     src="https://assets.pluto.network/scinapse/error_page/twitter-logo.png"
                   />
                 </LinkButton>
-                <LinkButton style={{ width: "108px" }} href="https://www.facebook.com/PlutoNetwork/">
+                <LinkButton style={{ width: '108px' }} href="https://www.facebook.com/PlutoNetwork/">
                   <img
-                    style={{ width: "22px", height: "22px" }}
+                    style={{ width: '22px', height: '22px' }}
                     src="https://assets.pluto.network/scinapse/error_page/facebook-logo.png"
                   />
                 </LinkButton>
@@ -136,8 +136,8 @@ export default class ErrorTracker extends React.PureComponent<{}, ErrorTrackerSt
   private handleClickSendReport = () => {
     Sentry.showReportDialog();
     trackEvent({
-      category: "Error Page",
-      action: "click report dialog",
+      category: 'Error Page',
+      action: 'click report dialog',
     });
   };
 }

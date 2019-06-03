@@ -1,12 +1,12 @@
-import { Dispatch } from "redux";
-import AuthAPI from "../../api/auth";
-import { ACTION_TYPES } from "../../actions/actionTypes";
-import { SignInResult } from "../../api/types/auth";
+import { Dispatch } from 'redux';
+import AuthAPI from '../../api/auth';
+import { ACTION_TYPES } from '../../actions/actionTypes';
+import { SignInResult } from '../../api/types/auth';
 
 export function signOut() {
   return async (dispatch: Dispatch<any>) => {
     try {
-      if (confirm("Do you really want to sign out?")) {
+      if (confirm('Do you really want to sign out?')) {
         await AuthAPI.signOut();
         dispatch({
           type: ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT,

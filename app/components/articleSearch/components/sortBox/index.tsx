@@ -1,12 +1,12 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
-import Popover from "@material-ui/core/Popover/Popover";
-import MenuItem from "@material-ui/core/MenuItem";
-import PaperSearchQueryFormatter from "../../../../helpers/papersQueryFormatter";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import Icon from "../../../../icons";
-import ActionTicketManager from "../../../../helpers/actionTicketManager";
-const styles = require("./sortBox.scss");
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import Popover from '@material-ui/core/Popover/Popover';
+import MenuItem from '@material-ui/core/MenuItem';
+import PaperSearchQueryFormatter from '../../../../helpers/papersQueryFormatter';
+import { withStyles } from '../../../../helpers/withStylesHelper';
+import Icon from '../../../../icons';
+import ActionTicketManager from '../../../../helpers/actionTicketManager';
+const styles = require('./sortBox.scss');
 
 interface SortBoxProps {
   query: string;
@@ -42,23 +42,23 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
         <Popover
           open={isOpen}
           anchorEl={this.anchorElement!}
-          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
           onClose={this.handleRequestClose}
         >
           <MenuItem classes={{ root: styles.menuItem }}>
             <Link
               to={{
-                pathname: "/search",
+                pathname: '/search',
                 search: PaperSearchQueryFormatter.stringifyPapersQuery({
                   query,
                   page: 1,
-                  sort: "RELEVANCE",
+                  sort: 'RELEVANCE',
                   filter: {},
                 }),
               }}
               onClick={() => {
-                this.trackSorting("RELEVANCE");
+                this.trackSorting('RELEVANCE');
               }}
             >
               Relevance
@@ -67,16 +67,16 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
           <MenuItem classes={{ root: styles.menuItem }}>
             <Link
               to={{
-                pathname: "/search",
+                pathname: '/search',
                 search: PaperSearchQueryFormatter.stringifyPapersQuery({
                   query,
                   page: 1,
-                  sort: "MOST_CITATIONS",
+                  sort: 'MOST_CITATIONS',
                   filter: {},
                 }),
               }}
               onClick={() => {
-                this.trackSorting("MOST_CITATIONS");
+                this.trackSorting('MOST_CITATIONS');
               }}
             >
               Most Citations
@@ -85,16 +85,16 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
           <MenuItem classes={{ root: styles.menuItem }}>
             <Link
               to={{
-                pathname: "/search",
+                pathname: '/search',
                 search: PaperSearchQueryFormatter.stringifyPapersQuery({
                   query,
                   page: 1,
-                  sort: "OLDEST_FIRST",
+                  sort: 'OLDEST_FIRST',
                   filter: {},
                 }),
               }}
               onClick={() => {
-                this.trackSorting("OLDEST_FIRST");
+                this.trackSorting('OLDEST_FIRST');
               }}
             >
               Oldest
@@ -103,16 +103,16 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
           <MenuItem classes={{ root: styles.menuItem }}>
             <Link
               to={{
-                pathname: "/search",
+                pathname: '/search',
                 search: PaperSearchQueryFormatter.stringifyPapersQuery({
                   query,
                   page: 1,
-                  sort: "NEWEST_FIRST",
+                  sort: 'NEWEST_FIRST',
                   filter: {},
                 }),
               }}
               onClick={() => {
-                this.trackSorting("NEWEST_FIRST");
+                this.trackSorting('NEWEST_FIRST');
               }}
             >
               Newest
@@ -125,10 +125,10 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
 
   private trackSorting = (sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS) => {
     ActionTicketManager.trackTicket({
-      pageType: "searchResult",
-      actionType: "fire",
-      actionArea: "sortBox",
-      actionTag: "paperSorting",
+      pageType: 'searchResult',
+      actionType: 'fire',
+      actionArea: 'sortBox',
+      actionTag: 'paperSorting',
       actionLabel: sortOption,
     });
   };
@@ -136,20 +136,20 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
   private getSortOptionToShow = (sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS) => {
     // tslint:disable-next-line:switch-default
     switch (sortOption) {
-      case "RELEVANCE": {
-        return "Relevance";
+      case 'RELEVANCE': {
+        return 'Relevance';
       }
 
-      case "MOST_CITATIONS": {
-        return "Most Citations";
+      case 'MOST_CITATIONS': {
+        return 'Most Citations';
       }
 
-      case "OLDEST_FIRST": {
-        return "Oldest";
+      case 'OLDEST_FIRST': {
+        return 'Oldest';
       }
 
-      case "NEWEST_FIRST": {
-        return "Newest";
+      case 'NEWEST_FIRST': {
+        return 'Newest';
       }
     }
   };

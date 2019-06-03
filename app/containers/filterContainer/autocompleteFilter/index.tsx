@@ -1,24 +1,24 @@
-import * as React from "react";
-import axios, { CancelTokenSource } from "axios";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import * as classNames from "classnames";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
-import { useDebouncedAsyncFetch } from "../../../hooks/debouncedFetchAPIHook";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-import CompletionAPI, { FOSSuggestion, JournalSuggestion } from "../../../api/completion";
-import Icon from "../../../icons";
-import getQueryParamsObject from "../../../helpers/getQueryParamsObject";
-import makeNewFilterLink from "../../../helpers/makeNewFilterLink";
-import { toggleElementFromArray } from "../../../helpers/toggleElementFromArray";
-import { handleInputKeydown } from "../../../components/common/InputWithSuggestionList/helpers/handleInputKeydown";
-import FilterItem from "./filterItem";
-import reducer, { ReducerState, ReducerAction } from "./reducer";
-const s = require("./autocompleteFilter.scss");
+import * as React from 'react';
+import axios, { CancelTokenSource } from 'axios';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import * as classNames from 'classnames';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import PapersQueryFormatter from '../../../helpers/papersQueryFormatter';
+import { useDebouncedAsyncFetch } from '../../../hooks/debouncedFetchAPIHook';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import CompletionAPI, { FOSSuggestion, JournalSuggestion } from '../../../api/completion';
+import Icon from '../../../icons';
+import getQueryParamsObject from '../../../helpers/getQueryParamsObject';
+import makeNewFilterLink from '../../../helpers/makeNewFilterLink';
+import { toggleElementFromArray } from '../../../helpers/toggleElementFromArray';
+import { handleInputKeydown } from '../../../components/common/InputWithSuggestionList/helpers/handleInputKeydown';
+import FilterItem from './filterItem';
+import reducer, { ReducerState, ReducerAction } from './reducer';
+const s = require('./autocompleteFilter.scss');
 
 interface AutocompleteFilterProps extends RouteComponentProps<any> {
-  type: "FOS" | "JOURNAL";
+  type: 'FOS' | 'JOURNAL';
 }
 
 const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = props => {
@@ -31,24 +31,24 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
     reducer as React.Reducer<ReducerState, ReducerAction<FOSSuggestion[] | JournalSuggestion[]>>,
     {
       isOpen: false,
-      genuineInputValue: "",
-      inputValue: "",
+      genuineInputValue: '',
+      inputValue: '',
       highlightIdx: -1,
     }
   );
   const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
   const { data, setParams: setKeyword } = useDebouncedAsyncFetch<string, FOSSuggestion[] | JournalSuggestion[]>({
-    initialParams: "",
+    initialParams: '',
     fetchFunc: async (q: string) => {
       ActionTicketManager.trackTicket({
-        pageType: "searchResult",
-        actionType: "fire",
-        actionArea: "filter",
-        actionTag: props.type === "JOURNAL" ? "journalSearch" : "fosSearch",
+        pageType: 'searchResult',
+        actionType: 'fire',
+        actionArea: 'filter',
+        actionTag: props.type === 'JOURNAL' ? 'journalSearch' : 'fosSearch',
         actionLabel: q,
       });
 
-      if (props.type === "JOURNAL") {
+      if (props.type === 'JOURNAL') {
         const res = await CompletionAPI.fetchJournalSuggestion(q, cancelTokenSource.current.token);
         return res;
       } else {
@@ -57,7 +57,7 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
       }
     },
     validateFunc: (query: string) => {
-      if (!query || query.length < 2) throw new Error("keyword is too short");
+      if (!query || query.length < 2) throw new Error('keyword is too short');
     },
     wait: 200,
   });
@@ -77,7 +77,7 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
   const currentJournal = currentFilter && currentFilter.journal ? (currentFilter.journal as number[]) : [];
 
   let listNode;
-  if (props.type === "FOS") {
+  if (props.type === 'FOS') {
     listNode =
       data &&
       (data as FOSSuggestion[]).map((fos, i) => {
@@ -117,7 +117,7 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
 
   function handleSelectItem(index: number) {
     if (index > -1 && data) {
-      if (data[index].type === "FOS") {
+      if (data[index].type === 'FOS') {
         const fos = data[index] as FOSSuggestion;
         props.history.push(
           makeNewFilterLink(
@@ -147,7 +147,7 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
     <ClickAwayListener
       onClickAway={() => {
         if (state.isOpen) {
-          dispatch({ type: "CLOSE_BOX" });
+          dispatch({ type: 'CLOSE_BOX' });
         }
       }}
     >
@@ -169,7 +169,7 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
                   currentIdx: state.highlightIdx,
                   onMove: i => {
                     dispatch({
-                      type: "ARROW_KEYDOWN",
+                      type: 'ARROW_KEYDOWN',
                       payload: {
                         targetIndex: i,
                         inputValue: data[i] ? data[i].keyword : state.genuineInputValue,
@@ -183,18 +183,18 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
               }
             }}
             onFocus={() => {
-              dispatch({ type: "OPEN_BOX" });
+              dispatch({ type: 'OPEN_BOX' });
             }}
             onChange={e => {
               const { value } = e.currentTarget;
               dispatch({
-                type: "CHANGE_INPUT",
+                type: 'CHANGE_INPUT',
                 payload: {
                   inputValue: value,
                 },
               });
             }}
-            placeholder={props.type === "FOS" ? "Search Field of study..." : "Search Journal..."}
+            placeholder={props.type === 'FOS' ? 'Search Field of study...' : 'Search Journal...'}
             className={classNames({
               [s.input]: true,
               [s.listOpened]: shouldShowList,

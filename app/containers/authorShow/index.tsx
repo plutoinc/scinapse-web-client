@@ -1,18 +1,18 @@
-import * as React from "react";
-import axios from "axios";
-import { denormalize } from "normalizr";
-import { connect, Dispatch } from "react-redux";
-import { RouteComponentProps } from "react-router-dom";
-import { AppState } from "../../reducers";
-import AuthorShow from "../unconnectedAuthorShow";
-import ConnectedAuthorShow from "../connectedAuthorShow";
-import { Configuration } from "../../reducers/configuration";
-import { fetchAuthorShowPageData } from "./sideEffect";
-import { CurrentUser } from "../../model/currentUser";
-import { authorSchema, Author } from "../../model/author/author";
-import getQueryParamsObject from "../../helpers/getQueryParamsObject";
-import restoreScroll from "../../helpers/scrollRestoration";
-import { AuthorShowMatchParams } from "./types";
+import * as React from 'react';
+import axios from 'axios';
+import { denormalize } from 'normalizr';
+import { connect, Dispatch } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
+import { AppState } from '../../reducers';
+import AuthorShow from '../unconnectedAuthorShow';
+import ConnectedAuthorShow from '../connectedAuthorShow';
+import { Configuration } from '../../reducers/configuration';
+import { fetchAuthorShowPageData } from './sideEffect';
+import { CurrentUser } from '../../model/currentUser';
+import { authorSchema, Author } from '../../model/author/author';
+import getQueryParamsObject from '../../helpers/getQueryParamsObject';
+import restoreScroll from '../../helpers/scrollRestoration';
+import { AuthorShowMatchParams } from './types';
 
 export interface HandleAuthorClaim {
   authorId: number;
@@ -79,7 +79,7 @@ class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
   public render() {
     const { author, location } = this.props;
     const queryParams = getQueryParamsObject(location.search);
-    const isTestMode = queryParams.beta === "true";
+    const isTestMode = queryParams.beta === 'true';
 
     if (!author || !author.isLayered) {
       return <AuthorShow isTestMode={isTestMode} />;

@@ -1,38 +1,38 @@
-import * as React from "react";
-import Axios from "axios";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import { denormalize } from "normalizr";
-import Dialog from "@material-ui/core/Dialog";
-import { AppState } from "../../reducers";
-import * as Actions from "./actions";
-import SignIn from "../auth/signIn";
-import SignUp from "../auth/signUp";
-import ResetPassword from "../auth/resetPasswordDialog";
-import VerificationNeeded from "../auth/verificationNeeded";
-import CollectionDialog from "./components/collection";
-import NewCollectionDialog from "./components/newCollection";
-import EditCollectionDialog from "./components/editCollection";
-import AllPublicationsDialog from "./components/allPublications";
-import { resendVerificationEmail } from "../auth/emailVerification/actions";
-import { DialogContainerProps } from "./types";
-import { trackDialogView } from "../../helpers/handleGA";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { GLOBAL_DIALOG_TYPE } from "./reducer";
-import { collectionSchema } from "../../model/collection";
+import * as React from 'react';
+import Axios from 'axios';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { denormalize } from 'normalizr';
+import Dialog from '@material-ui/core/Dialog';
+import { AppState } from '../../reducers';
+import * as Actions from './actions';
+import SignIn from '../auth/signIn';
+import SignUp from '../auth/signUp';
+import ResetPassword from '../auth/resetPasswordDialog';
+import VerificationNeeded from '../auth/verificationNeeded';
+import CollectionDialog from './components/collection';
+import NewCollectionDialog from './components/newCollection';
+import EditCollectionDialog from './components/editCollection';
+import AllPublicationsDialog from './components/allPublications';
+import { resendVerificationEmail } from '../auth/emailVerification/actions';
+import { DialogContainerProps } from './types';
+import { trackDialogView } from '../../helpers/handleGA';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { GLOBAL_DIALOG_TYPE } from './reducer';
+import { collectionSchema } from '../../model/collection';
 import {
   PostCollectionParams,
   AddPaperToCollectionParams,
   RemovePapersFromCollectionParams,
   UpdateCollectionParams,
-} from "../../api/collection";
-import CitationBox from "../paperShow/components/citationBox";
-import { AvailableCitationType } from "../../containers/paperShow/records";
-import AuthorListDialog from "../authorListDialog";
-import alertToast from "../../helpers/makePlutoToastAction";
-import FinalSignUpContent from "../auth/signUp/components/finalSignUpContent";
-import EnvChecker from "../../helpers/envChecker";
-const styles = require("./dialog.scss");
+} from '../../api/collection';
+import CitationBox from '../paperShow/components/citationBox';
+import { AvailableCitationType } from '../../containers/paperShow/records';
+import AuthorListDialog from '../authorListDialog';
+import alertToast from '../../helpers/makePlutoToastAction';
+import FinalSignUpContent from '../auth/signUp/components/finalSignUpContent';
+import EnvChecker from '../../helpers/envChecker';
+const styles = require('./dialog.scss');
 
 function mapStateToProps(state: AppState) {
   return {
@@ -59,15 +59,15 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         onClose={() => {
           if (!dialogState.isBlocked) {
             this.closeDialog();
-            trackDialogView("outsideClickClose");
+            trackDialogView('outsideClickClose');
           }
         }}
         classes={{
           paper: styles.dialogPaper,
         }}
-        maxWidth={"lg"}
+        maxWidth={'lg'}
       >
-        {this.getDialogContent(dialogState.type) || ""}
+        {this.getDialogContent(dialogState.type) || ''}
       </Dialog>
     );
   }
@@ -109,7 +109,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       await dispatch(Actions.addPaperToCollection(params));
     } catch (err) {
       alertToast({
-        type: "error",
+        type: 'error',
         message: err.message,
       });
     } finally {
@@ -124,7 +124,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       await dispatch(Actions.removePaperFromCollection(params));
     } catch (err) {
       alertToast({
-        type: "error",
+        type: 'error',
         message: err.message,
       });
     } finally {
@@ -136,9 +136,9 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     const { title } = params;
 
     if (title.length === 0) {
-      throw new Error("Collection name should be more than 1 characters.");
+      throw new Error('Collection name should be more than 1 characters.');
     } else if (title.length > 100) {
-      throw new Error("Collection name should be less than 100 characters.");
+      throw new Error('Collection name should be less than 100 characters.');
     }
   };
 
@@ -158,7 +158,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       history.push(`/users/${currentUser.id}/collections`);
     } catch (err) {
       alertToast({
-        type: "error",
+        type: 'error',
         message: err.message,
       });
     }
@@ -172,7 +172,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       await dispatch(Actions.updateCollection(params));
     } catch (err) {
       alertToast({
-        type: "error",
+        type: 'error',
         message: `Failed to update collection. ${err.message}`,
       });
     }
@@ -227,7 +227,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         return (
           <FinalSignUpContent
             onSubmit={() => {
-              if (!EnvChecker.isOnServer() && dialogState.oauthResult && dialogState.oauthResult.vendor === "ORCID") {
+              if (!EnvChecker.isOnServer() && dialogState.oauthResult && dialogState.oauthResult.vendor === 'ORCID') {
                 window.close();
               }
               dispatch(Actions.closeDialog());

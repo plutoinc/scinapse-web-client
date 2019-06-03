@@ -1,23 +1,23 @@
-import * as React from "react";
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-import * as classNames from "classnames";
-import Checkbox from "@material-ui/core/Checkbox";
-import Tooltip from "@material-ui/core/Tooltip";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { ChangeRangeInputParams } from "../../constants/paperSearch";
-import { trackSelectFilter } from "../../components/filterContainer/trackSelectFilter";
-import { ArticleSearchState } from "../../components/articleSearch/records";
-import formatNumber from "../../helpers/formatNumber";
-import { toggleElementFromArray } from "../../helpers/toggleElementFromArray";
-import FilterResetButton from "../../components/filterContainer/filterResetButton";
-import YearRangeSlider from "./yearRangeSlider";
-import Icon from "../../icons";
-import EnvChecker from "../../helpers/envChecker";
-import FilterSaveBox from "./filterSaveBox";
-import makeNewFilterLink from "../../helpers/makeNewFilterLink";
-import { CurrentUser } from "../../model/currentUser";
-import AutocompleteFilter from "./autocompleteFilter";
-const styles = require("./filterContainer.scss");
+import * as React from 'react';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import * as classNames from 'classnames';
+import Checkbox from '@material-ui/core/Checkbox';
+import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { ChangeRangeInputParams } from '../../constants/paperSearch';
+import { trackSelectFilter } from '../../components/filterContainer/trackSelectFilter';
+import { ArticleSearchState } from '../../components/articleSearch/records';
+import formatNumber from '../../helpers/formatNumber';
+import { toggleElementFromArray } from '../../helpers/toggleElementFromArray';
+import FilterResetButton from '../../components/filterContainer/filterResetButton';
+import YearRangeSlider from './yearRangeSlider';
+import Icon from '../../icons';
+import EnvChecker from '../../helpers/envChecker';
+import FilterSaveBox from './filterSaveBox';
+import makeNewFilterLink from '../../helpers/makeNewFilterLink';
+import { CurrentUser } from '../../model/currentUser';
+import AutocompleteFilter from './autocompleteFilter';
+const styles = require('./filterContainer.scss');
 
 export interface FilterContainerProps extends RouteComponentProps<any> {
   handleChangeRangeInput: (params: ChangeRangeInputParams) => void;
@@ -54,7 +54,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
     return (
       <Link
         onClick={() => {
-          trackSelectFilter("FOS", fos!.name);
+          trackSelectFilter('FOS', fos!.name);
         }}
         key={`fos_${fos!.id}`}
         to={makeNewFilterLink(
@@ -66,7 +66,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
         className={classNames({
           [styles.filterItem]: true,
           [styles.isSelected]: alreadyHasFOSInFilter,
-          [styles.zeroCountFilterItem]: fosCount === "0" && !alreadyHasFOSInFilter,
+          [styles.zeroCountFilterItem]: fosCount === '0' && !alreadyHasFOSInFilter,
         })}
       >
         <Checkbox
@@ -115,7 +115,7 @@ function getJournalFilter(props: FilterContainerProps) {
     return (
       <Link
         onClick={() => {
-          trackSelectFilter("JOURNAL", journal!.title);
+          trackSelectFilter('JOURNAL', journal!.title);
         }}
         key={`journal_${journal!.id}`}
         to={makeNewFilterLink(
@@ -127,7 +127,7 @@ function getJournalFilter(props: FilterContainerProps) {
         className={classNames({
           [styles.filterItem]: true,
           [styles.isSelected]: alreadyHasJournalInFilter,
-          [styles.zeroCountFilterItem]: journalCount === "0",
+          [styles.zeroCountFilterItem]: journalCount === '0',
         })}
       >
         <Checkbox
@@ -156,7 +156,7 @@ function getJournalFilter(props: FilterContainerProps) {
                 {journal!.impactFactor.toFixed(2)}
               </span>
             ) : (
-              ""
+              ''
             )}
           </span>
         </span>
@@ -173,7 +173,7 @@ function getJournalFilter(props: FilterContainerProps) {
         }}
         className={styles.moreItem}
       >
-        {articleSearchState.isJournalFilterExpanding ? "Show less" : "Show more"}
+        {articleSearchState.isJournalFilterExpanding ? 'Show less' : 'Show more'}
       </div>
     );
 

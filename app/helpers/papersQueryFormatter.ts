@@ -1,7 +1,7 @@
-import { stringify } from "qs";
-import { SearchPageQueryParams } from "../components/articleSearch/types";
-import { SearchPapersParams } from "../api/types/paper";
-import SafeURIStringHandler from "./safeURIStringHandler";
+import { stringify } from 'qs';
+import { SearchPageQueryParams } from '../components/articleSearch/types';
+import { SearchPapersParams } from '../api/types/paper';
+import SafeURIStringHandler from './safeURIStringHandler';
 
 export interface FilterObject {
   yearFrom?: number | string;
@@ -19,16 +19,16 @@ export interface SearchPageQueryParamsObject {
 
 class PaperSearchQueryFormatter {
   public makeSearchQueryFromParamsObject(queryParams: SearchPageQueryParams): SearchPapersParams {
-    const query = SafeURIStringHandler.decode(queryParams.query ? queryParams.query : "");
-    const searchPage = parseInt(queryParams.page ? queryParams.page : "0", 10) - 1 || 0;
+    const query = SafeURIStringHandler.decode(queryParams.query ? queryParams.query : '');
+    const searchPage = parseInt(queryParams.page ? queryParams.page : '0', 10) - 1 || 0;
     const filter = queryParams.filter;
     const sort = queryParams.sort;
 
     return {
       query,
       page: searchPage,
-      filter: filter || "",
-      sort: sort || "",
+      filter: filter || '',
+      sort: sort || '',
     };
   }
 
@@ -50,11 +50,11 @@ class PaperSearchQueryFormatter {
     const queryMap: { [key: string]: string } = {};
 
     if (rawFilterString) {
-      const splitQueryArray = rawFilterString.split(",");
+      const splitQueryArray = rawFilterString.split(',');
 
       splitQueryArray.forEach(splitQuery => {
-        const key = splitQuery.split("=")[0];
-        const value = splitQuery.split("=")[1];
+        const key = splitQuery.split('=')[0];
+        const value = splitQuery.split('=')[1];
         queryMap[key] = value;
       });
     }
@@ -65,12 +65,12 @@ class PaperSearchQueryFormatter {
     let fos: number[] = [];
     let journal: number[] = [];
     if (!!queryMap.year) {
-      yearFrom = parseInt(queryMap.year.split(":")[0], 10);
-      yearTo = parseInt(queryMap.year.split(":")[1], 10);
+      yearFrom = parseInt(queryMap.year.split(':')[0], 10);
+      yearTo = parseInt(queryMap.year.split(':')[1], 10);
     }
 
     if (!!queryMap.fos) {
-      queryMap.fos.split("|").forEach(f => {
+      queryMap.fos.split('|').forEach(f => {
         if (!!f) {
           fos.push(parseInt(f, 10));
         }
@@ -80,7 +80,7 @@ class PaperSearchQueryFormatter {
     }
 
     if (!!queryMap.journal) {
-      queryMap.journal.split("|").forEach(j => {
+      queryMap.journal.split('|').forEach(j => {
         if (!!j) {
           journal.push(parseInt(j, 10));
         }
@@ -98,8 +98,8 @@ class PaperSearchQueryFormatter {
   }
 
   public getStringifiedPaperFilterParams({ yearFrom, yearTo, fos, journal }: FilterObject) {
-    const resultQuery = `year=${yearFrom || ""}:${yearTo || ""},fos=${fos ? fos.join("|") : ""},journal=${
-      journal ? journal.join("|") : ""
+    const resultQuery = `year=${yearFrom || ''}:${yearTo || ''},fos=${fos ? fos.join('|') : ''},journal=${
+      journal ? journal.join('|') : ''
     }`;
 
     return resultQuery;

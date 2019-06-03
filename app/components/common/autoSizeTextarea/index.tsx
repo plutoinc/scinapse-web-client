@@ -1,7 +1,7 @@
-import * as React from "react";
-import * as autosize from "autosize";
-import { withStyles } from "../../../helpers/withStylesHelper";
-const styles = require("./autoSizeTextarea.scss");
+import * as React from 'react';
+import * as autosize from 'autosize';
+import { withStyles } from '../../../helpers/withStylesHelper';
+const styles = require('./autoSizeTextarea.scss');
 
 interface AutoSizeTextareaProps
   extends React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {

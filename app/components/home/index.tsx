@@ -1,14 +1,14 @@
-import * as React from "react";
-import { connect, Dispatch } from "react-redux";
-import { withRouter, RouteComponentProps } from "react-router";
-import Helmet from "react-helmet";
-import { AppState } from "../../reducers";
-import { Footer } from "../layouts";
-import { LayoutState, UserDevice } from "../layouts/records";
-import { withStyles } from "../../helpers/withStylesHelper";
-import SearchQueryInput from "../common/InputWithSuggestionList/searchQueryInput";
-import TrendingPaper from "./trendingPaper";
-const styles = require("./home.scss");
+import * as React from 'react';
+import { connect, Dispatch } from 'react-redux';
+import { withRouter, RouteComponentProps } from 'react-router';
+import Helmet from 'react-helmet';
+import { AppState } from '../../reducers';
+import { Footer } from '../layouts';
+import { LayoutState, UserDevice } from '../layouts/records';
+import { withStyles } from '../../helpers/withStylesHelper';
+import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
+import TrendingPaper from './trendingPaper';
+const styles = require('./home.scss');
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
 
@@ -31,7 +31,7 @@ class Home extends React.PureComponent<HomeProps> {
     return (
       <div className={styles.articleSearchFormContainer}>
         {this.getHelmetNode()}
-        <h1 style={{ display: "none" }}>Scinapse | Academic search engine for paper</h1>
+        <h1 style={{ display: 'none' }}>Scinapse | Academic search engine for paper</h1>
         <div className={styles.searchFormInnerContainer}>
           <div className={styles.searchFormContainer}>
             <div className={styles.formWrapper}>
@@ -49,7 +49,7 @@ class Home extends React.PureComponent<HomeProps> {
                 />
               </div>
               <div className={styles.searchSubTitle}>
-                Scinapse is a free, Academic search engine <br /> for papers, serviced by{" "}
+                Scinapse is a free, Academic search engine <br /> for papers, serviced by{' '}
                 <a
                   href="https://pluto.network"
                   target="_blank"
@@ -138,33 +138,33 @@ class Home extends React.PureComponent<HomeProps> {
 
   private getHelmetNode = () => {
     const structuredDataJSON = {
-      "@context": "http://schema.org",
-      "@type": "Organization",
-      url: "https://scinapse.io",
-      logo: "https://s3.amazonaws.com/pluto-asset/scinapse/scinapse-logo.png",
+      '@context': 'http://schema.org',
+      '@type': 'Organization',
+      url: 'https://scinapse.io',
+      logo: 'https://s3.amazonaws.com/pluto-asset/scinapse/scinapse-logo.png',
       contactPoint: [
         {
-          "@type": "ContactPoint",
-          email: "team@pluto.network",
-          url: "https://pluto.network",
-          contactType: "customer service",
+          '@type': 'ContactPoint',
+          email: 'team@pluto.network',
+          url: 'https://pluto.network',
+          contactType: 'customer service',
         },
       ],
       potentialAction: {
-        "@type": "SearchAction",
-        target: "https://scinapse.io/search?query={search_term_string}&utm_source=google_search_result",
-        "query-input": "required name=search_term_string",
+        '@type': 'SearchAction',
+        target: 'https://scinapse.io/search?query={search_term_string}&utm_source=google_search_result',
+        'query-input': 'required name=search_term_string',
       },
       sameAs: [
-        "https://www.facebook.com/PlutoNetwork",
-        "https://twitter.com/pluto_network",
-        "https://medium.com/pluto-network",
-        "https://pluto.network",
+        'https://www.facebook.com/PlutoNetwork',
+        'https://twitter.com/pluto_network',
+        'https://medium.com/pluto-network',
+        'https://pluto.network',
       ],
     };
 
     return (
-      <Helmet script={[{ type: "application/ld+json", innerHTML: JSON.stringify(structuredDataJSON) }]}>
+      <Helmet script={[{ type: 'application/ld+json', innerHTML: JSON.stringify(structuredDataJSON) }]}>
         <link rel="canonical" href="https://scinapse.io" />
       </Helmet>
     );
@@ -174,7 +174,7 @@ class Home extends React.PureComponent<HomeProps> {
     const { layout } = this.props;
 
     if (layout.userDevice !== UserDevice.DESKTOP) {
-      return { position: "absolute", margin: "0 0 9px 0", width: "100%" };
+      return { position: 'absolute', margin: '0 0 9px 0', width: '100%' };
     } else {
       return {};
     }

@@ -1,5 +1,5 @@
-import { CancelToken } from "axios";
-import { Paper } from "../../model/paper";
+import { CancelToken } from 'axios';
+import { Paper } from '../../model/paper';
 
 export interface SearchPapersParams {
   sort: string;

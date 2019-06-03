@@ -1,15 +1,15 @@
-jest.mock("../../../api/paper");
-jest.mock("../../../api/comment");
-jest.mock("../../../helpers/makePlutoToastAction");
-jest.unmock("../../../actions/paperShow");
+jest.mock('../../../api/paper');
+jest.mock('../../../api/comment');
+jest.mock('../../../helpers/makePlutoToastAction');
+jest.unmock('../../../actions/paperShow');
 
-import axios from "axios";
-import { getPaper, getReferencePapers } from "../../../actions/paperShow";
-import { generateMockStore } from "../../../__tests__/mockStore";
-import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { GetRefOrCitedPapersParams } from "../../../api/types/paper";
+import axios from 'axios';
+import { getPaper, getReferencePapers } from '../../../actions/paperShow';
+import { generateMockStore } from '../../../__tests__/mockStore';
+import { ACTION_TYPES } from '../../../actions/actionTypes';
+import { GetRefOrCitedPapersParams } from '../../../api/types/paper';
 
-describe("Paper Show page actions", () => {
+describe('Paper Show page actions', () => {
   let store: any;
   let resultActions: any[];
 
@@ -18,8 +18,8 @@ describe("Paper Show page actions", () => {
     store.clearActions();
   });
 
-  describe("getPaper action creator", () => {
-    describe("when succeed to get paper data", () => {
+  describe('getPaper action creator', () => {
+    describe('when succeed to get paper data', () => {
       beforeEach(async () => {
         const mockParams = {
           paperId: 123,
@@ -30,23 +30,23 @@ describe("Paper Show page actions", () => {
         resultActions = await store.getActions();
       });
 
-      it("should dispatch PAPER_SHOW_START_TO_GET_PAPER action", () => {
+      it('should dispatch PAPER_SHOW_START_TO_GET_PAPER action', () => {
         expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_PAPER);
       });
 
-      it("should dispatch GLOBAL_ADD_ENTITY action", () => {
+      it('should dispatch GLOBAL_ADD_ENTITY action', () => {
         expect(resultActions[1].type).toEqual(ACTION_TYPES.GLOBAL_ADD_ENTITY);
       });
     });
   });
 
-  describe("getReferencePapers action creator", () => {
+  describe('getReferencePapers action creator', () => {
     describe("when succeed to get paper's reference paper data", () => {
       beforeEach(async () => {
         const mockParams: GetRefOrCitedPapersParams = {
           paperId: 123,
           page: 0,
-          filter: "year=:,if=:",
+          filter: 'year=:,if=:',
           cancelToken: axios.CancelToken.source().token,
         };
 
@@ -54,11 +54,11 @@ describe("Paper Show page actions", () => {
         resultActions = await store.getActions();
       });
 
-      it("should dispatch PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS action", () => {
+      it('should dispatch PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS action', () => {
         expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS);
       });
 
-      it("should dispatch GLOBAL_ADD_ENTITY action", () => {
+      it('should dispatch GLOBAL_ADD_ENTITY action', () => {
         expect(resultActions[1].type).toEqual(ACTION_TYPES.GLOBAL_ADD_ENTITY);
       });
     });
@@ -68,7 +68,7 @@ describe("Paper Show page actions", () => {
         const mockParams: GetRefOrCitedPapersParams = {
           paperId: 0,
           page: 0,
-          filter: "year=:,if=:",
+          filter: 'year=:,if=:',
           cancelToken: axios.CancelToken.source().token,
         };
 
@@ -76,11 +76,11 @@ describe("Paper Show page actions", () => {
         resultActions = await store.getActions();
       });
 
-      it("should dispatch PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS action", () => {
+      it('should dispatch PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS action', () => {
         expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS);
       });
 
-      it("should dispatch PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS action", () => {
+      it('should dispatch PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS action', () => {
         expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS);
       });
     });

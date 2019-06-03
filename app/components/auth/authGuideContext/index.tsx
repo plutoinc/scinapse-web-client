@@ -1,8 +1,8 @@
-import * as React from "react";
-import * as classNames from "classnames";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import Icon from "../../../icons";
-const styles = require("./authGuideContext.scss");
+import * as React from 'react';
+import * as classNames from 'classnames';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import Icon from '../../../icons';
+const styles = require('./authGuideContext.scss');
 
 interface AuthGuideContextProps {
   userActionType?: Scinapse.ActionTicket.ActionTagType;
@@ -41,77 +41,77 @@ const GuideContentsByActionType: React.FunctionComponent<AuthGuideContextProps> 
   const { userActionType } = props;
 
   switch (userActionType) {
-    case "downloadPdf":
+    case 'downloadPdf':
       return (
         <GuideContent
-          mainText={"Free\nPDF\nDownload"}
-          subText={"from Scinapse Database"}
-          imageUrl={"https://assets.pluto.network/signup_modal/signup_downloadpdf.jpg"}
-          webpUrl={"https://assets.pluto.network/signup_modal/signup_downloadpdf.webp"}
+          mainText={'Free\nPDF\nDownload'}
+          subText={'from Scinapse Database'}
+          imageUrl={'https://assets.pluto.network/signup_modal/signup_downloadpdf.jpg'}
+          webpUrl={'https://assets.pluto.network/signup_modal/signup_downloadpdf.webp'}
         />
       );
-    case "citePaper":
+    case 'citePaper':
       return (
         <GuideContent
-          mainText={"Enjoy\nRobust\nCitation"}
-          subText={""}
-          imageUrl={"https://assets.pluto.network/signup_modal/signup_cite.jpg"}
-          webpUrl={"https://assets.pluto.network/signup_modal/signup_cite.webp"}
+          mainText={'Enjoy\nRobust\nCitation'}
+          subText={''}
+          imageUrl={'https://assets.pluto.network/signup_modal/signup_cite.jpg'}
+          webpUrl={'https://assets.pluto.network/signup_modal/signup_cite.webp'}
         />
       );
-    case "viewMorePDF":
+    case 'viewMorePDF':
       return (
         <GuideContent
-          mainText={"Enjoy\nUnlimited\nFull Text"}
-          subText={"from Scinapse Database"}
-          imageUrl={"https://assets.pluto.network/signup_modal/signup_viewmorepdf.jpg"}
-          webpUrl={"https://assets.pluto.network/signup_modal/signup_viewmorepdf.webp"}
+          mainText={'Enjoy\nUnlimited\nFull Text'}
+          subText={'from Scinapse Database'}
+          imageUrl={'https://assets.pluto.network/signup_modal/signup_viewmorepdf.jpg'}
+          webpUrl={'https://assets.pluto.network/signup_modal/signup_viewmorepdf.webp'}
         />
       );
 
-    case "query":
+    case 'query':
       return (
         <GuideContent
-          mainText={"Smart\nResearchers\nLove Scinapse"}
-          subText={""}
-          imageUrl={"https://assets.pluto.network/signup_modal/signup_query.jpg"}
-          webpUrl={"https://assets.pluto.network/signup_modal/signup_query.webp"}
+          mainText={'Smart\nResearchers\nLove Scinapse'}
+          subText={''}
+          imageUrl={'https://assets.pluto.network/signup_modal/signup_query.jpg'}
+          webpUrl={'https://assets.pluto.network/signup_modal/signup_query.webp'}
         />
       );
-    case "paperShow":
+    case 'paperShow':
       return (
         <GuideContent
-          mainText={"200 Millions\nUnlimited\nPapers"}
-          subText={""}
-          imageUrl={"https://assets.pluto.network/signup_modal/signup_unlimited.jpg"}
-          webpUrl={"https://assets.pluto.network/signup_modal/signup_unlimited.webp"}
+          mainText={'200 Millions\nUnlimited\nPapers'}
+          subText={''}
+          imageUrl={'https://assets.pluto.network/signup_modal/signup_unlimited.jpg'}
+          webpUrl={'https://assets.pluto.network/signup_modal/signup_unlimited.webp'}
         />
       );
-    case "queryLover":
+    case 'queryLover':
       return (
         <GuideContent
-          mainText={"Researchers\nLove\nScinapse"}
-          subText={""}
-          imageUrl={"https://assets.pluto.network/signup_modal/signup_query.jpg"}
-          webpUrl={"https://assets.pluto.network/signup_modal/signup_query.webp"}
+          mainText={'Researchers\nLove\nScinapse'}
+          subText={''}
+          imageUrl={'https://assets.pluto.network/signup_modal/signup_query.jpg'}
+          webpUrl={'https://assets.pluto.network/signup_modal/signup_query.webp'}
         />
       );
-    case "doiSearch":
+    case 'doiSearch':
       return (
         <GuideContent
-          mainText={"Search\nPaper\nby DOI"}
-          subText={""}
-          imageUrl={"https://assets.pluto.network/signup_modal/signup_query.jpg"}
-          webpUrl={"https://assets.pluto.network/signup_modal/signup_query.webp"}
+          mainText={'Search\nPaper\nby DOI'}
+          subText={''}
+          imageUrl={'https://assets.pluto.network/signup_modal/signup_query.jpg'}
+          webpUrl={'https://assets.pluto.network/signup_modal/signup_query.webp'}
         />
       );
     default:
       return (
         <GuideContent
-          mainText={"Scinapse\nLove\nResearchers"}
-          subText={""}
-          imageUrl={"https://assets.pluto.network/signup_modal/researchers.jpg"}
-          webpUrl={"https://assets.pluto.network/signup_modal/researchers.webp"}
+          mainText={'Scinapse\nLove\nResearchers'}
+          subText={''}
+          imageUrl={'https://assets.pluto.network/signup_modal/researchers.jpg'}
+          webpUrl={'https://assets.pluto.network/signup_modal/researchers.webp'}
           isGeneral={true}
         />
       );

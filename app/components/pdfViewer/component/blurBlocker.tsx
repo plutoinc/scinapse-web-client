@@ -1,9 +1,9 @@
-import * as React from "react";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import Icon from "../../../icons";
-import { blockUnverifiedUser, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
-import actionTicketManager from "../../../helpers/actionTicketManager";
-const s = require("./blurBlocker.scss");
+import * as React from 'react';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import Icon from '../../../icons';
+import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
+import actionTicketManager from '../../../helpers/actionTicketManager';
+const s = require('./blurBlocker.scss');
 
 interface BlurBlockerProps {}
 
@@ -12,17 +12,17 @@ const BlurBlocker: React.FC<BlurBlockerProps> = () => {
     <div
       onClick={() => {
         actionTicketManager.trackTicket({
-          pageType: "paperShow",
-          actionArea: "pdfViewer",
-          actionTag: "viewMorePDF",
-          actionLabel: "viewMorePDF",
-          actionType: "fire",
+          pageType: 'paperShow',
+          actionArea: 'pdfViewer',
+          actionTag: 'viewMorePDF',
+          actionLabel: 'viewMorePDF',
+          actionType: 'fire',
         });
 
         blockUnverifiedUser({
           authLevel: AUTH_LEVEL.VERIFIED,
-          actionArea: "pdfViewer",
-          actionLabel: "viewMorePDF",
+          actionArea: 'pdfViewer',
+          actionLabel: 'viewMorePDF',
         });
       }}
       className={s.wrapper}

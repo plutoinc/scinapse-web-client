@@ -1,9 +1,9 @@
-import axios from "axios";
-import * as uuid from "uuid/v4";
-import * as store from "store";
-import * as expirePlugin from "store/plugins/expire";
-import EnvChecker from "../envChecker";
-import ActionTicket, { ActionTicketParams, FinalActionTicket } from "./actionTicket";
+import axios from 'axios';
+import * as uuid from 'uuid/v4';
+import * as store from 'store';
+import * as expirePlugin from 'store/plugins/expire';
+import EnvChecker from '../envChecker';
+import ActionTicket, { ActionTicketParams, FinalActionTicket } from './actionTicket';
 import {
   DEAD_LETTER_QUEUE_KEY,
   DESTINATION_URL,
@@ -17,8 +17,8 @@ import {
   SESSION_ID_KEY,
   TICKET_QUEUE_KEY,
   TIME_INTERVAL_TO_SEND_TICKETS,
-} from "../../constants/actionTicket";
-import { trackEvent } from "../handleGA";
+} from '../../constants/actionTicket';
+import { trackEvent } from '../handleGA';
 
 class ActionTicketManager {
   public queue: ActionTicket[] = [];
@@ -26,10 +26,10 @@ class ActionTicketManager {
 
   public constructor() {
     if (!EnvChecker.isOnServer()) {
-      window.addEventListener("beforeunload", () => {
+      window.addEventListener('beforeunload', () => {
         this.sendTicketsBeforeCloseSession();
       });
-      window.addEventListener("unload", () => {
+      window.addEventListener('unload', () => {
         this.sendTicketsBeforeCloseSession();
       });
 
@@ -48,11 +48,11 @@ class ActionTicketManager {
       const ticket = new ActionTicket(params);
       this.addToQueue([ticket]);
 
-      if (params.actionType === "fire") {
+      if (params.actionType === 'fire') {
         trackEvent({
-          category: params.actionArea || "",
+          category: params.actionArea || '',
           action: params.actionTag,
-          label: params.actionLabel || "",
+          label: params.actionLabel || '',
         });
       }
 
@@ -131,7 +131,7 @@ class ActionTicketManager {
       encodeURIComponent(JSON.stringify(tickets.map(ticket => ticket.getTicketWithoutMeta()))),
       {
         headers: {
-          "Content-Type": "text/plain;charset=UTF-8",
+          'Content-Type': 'text/plain;charset=UTF-8',
         },
       }
     );
@@ -146,7 +146,7 @@ class ActionTicketManager {
         await this.postTickets(deadTickets);
         store.set(DEAD_LETTER_QUEUE_KEY, []);
       } catch (err) {
-        console.error("FAILED TO SEND DEAD TICKETS", err);
+        console.error('FAILED TO SEND DEAD TICKETS', err);
       }
     }
   }
@@ -164,8 +164,8 @@ class ActionTicketManager {
     } else {
       // This is needed for IE
       const xhr = new XMLHttpRequest();
-      xhr.open("POST", DESTINATION_URL, false);
-      xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+      xhr.open('POST', DESTINATION_URL, false);
+      xhr.setRequestHeader('Content-Type', 'text/plain;charset=UTF-8');
       xhr.send(encodedTickets);
       if (xhr.status === 200) {
         this.sentLastTickets = true;

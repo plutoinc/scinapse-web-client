@@ -1,4 +1,4 @@
-import { CommonError } from "../../model/error";
+import { CommonError } from '../../model/error';
 /* ***
 ******* PAGINATION RESPONSE FIELD INFORMATION *********
 - content : array - Data of query

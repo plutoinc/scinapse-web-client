@@ -1,18 +1,18 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import { denormalize } from "normalizr";
-import Popover from "@material-ui/core/Popover";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import GlobalDialogManager from "../../../helpers/globalDialogManager";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-import Icon from "../../../icons";
-import { AppState } from "../../../reducers";
-import { CurrentUser } from "../../../model/currentUser";
-import { Collection, collectionSchema } from "../../../model/collection";
-import { MyCollectionsState } from "../../../containers/paperShowCollectionControlButton/reducer";
-import CollectionPaperNote from "../../collectionPaperNote";
-import { blockUnverifiedUser, AUTH_LEVEL } from "../../../helpers/checkAuthDialog";
-const styles = require("./collectionButton.scss");
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { denormalize } from 'normalizr';
+import Popover from '@material-ui/core/Popover';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import GlobalDialogManager from '../../../helpers/globalDialogManager';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import Icon from '../../../icons';
+import { AppState } from '../../../reducers';
+import { CurrentUser } from '../../../model/currentUser';
+import { Collection, collectionSchema } from '../../../model/collection';
+import { MyCollectionsState } from '../../../containers/paperShowCollectionControlButton/reducer';
+import CollectionPaperNote from '../../collectionPaperNote';
+import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
+const styles = require('./collectionButton.scss');
 
 function mapStateToProps(state: AppState) {
   return {
@@ -49,9 +49,9 @@ function trackActionToClickCollectionButton(
 ) {
   ActionTicketManager.trackTicket({
     pageType,
-    actionType: "fire",
+    actionType: 'fire',
     actionArea,
-    actionTag: "addToCollection",
+    actionTag: 'addToCollection',
     actionLabel: String(paperId),
   });
 }
@@ -80,9 +80,9 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
             onRemove(paperId);
             ActionTicketManager.trackTicket({
               pageType,
-              actionType: "fire",
+              actionType: 'fire',
               actionArea: actionArea || pageType,
-              actionTag: "removeFromCollection",
+              actionTag: 'removeFromCollection',
               actionLabel: String(paperId),
             });
           }}
@@ -98,9 +98,9 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
               if (!!paperNote) {
                 ActionTicketManager.trackTicket({
                   pageType,
-                  actionType: "fire",
+                  actionType: 'fire',
                   actionArea: actionArea || pageType,
-                  actionTag: "viewNote",
+                  actionTag: 'viewNote',
                   actionLabel: String(paperId),
                 });
               }
@@ -120,8 +120,8 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
             open={isOpenNotePopover}
             classes={{ paper: styles.collectionNoteForm }}
             anchorEl={newMemoAnchor.current!}
-            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-            transformOrigin={{ horizontal: "right", vertical: "top" }}
+            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             onClose={() => {
               setIsOpenNotePopover(false);
             }}
@@ -146,8 +146,8 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
         const isBlocked = await blockUnverifiedUser({
           authLevel: AUTH_LEVEL.VERIFIED,
           actionArea: actionArea || pageType,
-          actionLabel: "addToCollection",
-          userActionType: "addToCollection",
+          actionLabel: 'addToCollection',
+          userActionType: 'addToCollection',
         });
 
         trackActionToClickCollectionButton(paperId, pageType, actionArea || pageType);

@@ -1,15 +1,15 @@
-import * as React from "react";
-import * as URL from "url";
-import * as classNames from "classnames";
-import Popper from "@material-ui/core/Popper";
-import Fade from "@material-ui/core/Fade";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { PaperSource } from "../../../model/paperSource";
-import { trackAndOpenLink } from "../../../helpers/handleGA";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-import Icon from "../../../icons";
-import { isPDFLink } from "../../../helpers/getPDFLink";
-const styles = require("./sourceURLPopover.scss");
+import * as React from 'react';
+import * as URL from 'url';
+import * as classNames from 'classnames';
+import Popper from '@material-ui/core/Popper';
+import Fade from '@material-ui/core/Fade';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { PaperSource } from '../../../model/paperSource';
+import { trackAndOpenLink } from '../../../helpers/handleGA';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import Icon from '../../../icons';
+import { isPDFLink } from '../../../helpers/getPDFLink';
+const styles = require('./sourceURLPopover.scss');
 
 interface SourceURLPopover {
   isOpen: boolean;
@@ -36,12 +36,12 @@ const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
         <a
           className={styles.sourceItem}
           onClick={e => {
-            trackAndOpenLink("search-item-source-button");
+            trackAndOpenLink('search-item-source-button');
             ActionTicketManager.trackTicket({
               pageType: props.pageType,
-              actionType: "fire",
+              actionType: 'fire',
               actionArea: props.actionArea || props.pageType,
-              actionTag: "source",
+              actionTag: 'source',
               actionLabel: String(props.paperId),
             });
             props.handleCloseFunc(e);
@@ -72,7 +72,7 @@ const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
         modifiers={{
           preventOverflow: {
             enabled: true,
-            boundariesElement: "window",
+            boundariesElement: 'window',
           },
         }}
         open={props.isOpen}

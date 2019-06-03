@@ -1,15 +1,15 @@
-import * as React from "react";
-import { connect, Dispatch } from "react-redux";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { Paper } from "../../model/paper";
-import PaperItem from "../common/paperItem";
-import { AUTH_LEVEL, blockUnverifiedUser } from "../../helpers/checkAuthDialog";
-import ArticleSpinner from "../common/spinner/articleSpinner";
-import { AppState } from "../../reducers";
-import { getMemoizedCurrentUser } from "../../selectors/getCurrentUser";
-import { CurrentUser } from "../../model/currentUser";
-import { makeGetMemoizedPapers } from "../../selectors/papersSelector";
-const styles = require("./relatedPapers.scss");
+import * as React from 'react';
+import { connect, Dispatch } from 'react-redux';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { Paper } from '../../model/paper';
+import PaperItem from '../common/paperItem';
+import { AUTH_LEVEL, blockUnverifiedUser } from '../../helpers/checkAuthDialog';
+import ArticleSpinner from '../common/spinner/articleSpinner';
+import { AppState } from '../../reducers';
+import { getMemoizedCurrentUser } from '../../selectors/getCurrentUser';
+import { CurrentUser } from '../../model/currentUser';
+import { makeGetMemoizedPapers } from '../../selectors/papersSelector';
+const styles = require('./relatedPapers.scss');
 
 interface RelatedPapersProps {
   dispatch: Dispatch<any>;
@@ -22,9 +22,9 @@ interface RelatedPapersProps {
 async function openSignInDialog() {
   await blockUnverifiedUser({
     authLevel: AUTH_LEVEL.VERIFIED,
-    actionArea: "paperShow",
-    actionLabel: "relatedPaperAtPaperShow",
-    userActionType: "relatedPaperAtPaperShow",
+    actionArea: 'paperShow',
+    actionLabel: 'relatedPaperAtPaperShow',
+    userActionType: 'relatedPaperAtPaperShow',
   });
 }
 

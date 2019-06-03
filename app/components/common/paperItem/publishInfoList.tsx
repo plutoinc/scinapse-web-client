@@ -1,12 +1,12 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
-import Authors, { AuthorsProps } from "./authors";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { trackEvent } from "../../../helpers/handleGA";
-import Icon from "../../../icons";
-import { Journal } from "../../../model/journal";
-import { Paper } from "../../../model/paper";
-const styles = require("./publishInfoList.scss");
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import Authors, { AuthorsProps } from './authors';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { trackEvent } from '../../../helpers/handleGA';
+import Icon from '../../../icons';
+import { Journal } from '../../../model/journal';
+import { Paper } from '../../../model/paper';
+const styles = require('./publishInfoList.scss');
 
 export interface PublishInfoListProps extends Readonly<AuthorsProps> {
   pageType: Scinapse.ActionTicket.PageType;
@@ -40,7 +40,7 @@ class PublishInfoList extends React.PureComponent<PublishInfoListProps> {
               <Link
                 to={`/journals/${journal.id}`}
                 onClick={() => {
-                  trackEvent({ category: "Search", action: "Click Journal", label: "" });
+                  trackEvent({ category: 'Search', action: 'Click Journal', label: '' });
                 }}
                 className={styles.journalName}
               >

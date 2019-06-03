@@ -1,11 +1,11 @@
-import { CancelToken } from "axios";
-import { normalize } from "normalizr";
-import PlutoAxios from "../pluto";
-import { RawAuthor, Author, authorSchema, authorListSchema } from "../../model/author/author";
-import { GetAuthorPapersParams, AuthorPapersResponse, GetAuthorPaperResult } from "./types";
-import { paperSchema, Paper } from "../../model/paper";
-import { RawPaginationResponseV2 } from "../types/common";
-import { camelCaseKeys } from "../../helpers/camelCaseKeys";
+import { CancelToken } from 'axios';
+import { normalize } from 'normalizr';
+import PlutoAxios from '../pluto';
+import { RawAuthor, Author, authorSchema, authorListSchema } from '../../model/author/author';
+import { GetAuthorPapersParams, AuthorPapersResponse, GetAuthorPaperResult } from './types';
+import { paperSchema, Paper } from '../../model/paper';
+import { RawPaginationResponseV2 } from '../types/common';
+import { camelCaseKeys } from '../../helpers/camelCaseKeys';
 
 export const DEFAULT_AUTHOR_PAPERS_SIZE = 10;
 
@@ -71,7 +71,7 @@ class AuthorAPI extends PlutoAxios {
   }
 
   public async queryAuthorPapers(params: QueryAuthorPapersParams): Promise<RawPaginationResponseV2<Paper[]>> {
-    const res = await this.get("/search/to-add", {
+    const res = await this.get('/search/to-add', {
       params: {
         q: params.query,
         check_author_included: params.authorId,
@@ -174,7 +174,7 @@ class AuthorAPI extends PlutoAxios {
   public async updateAuthorProfileImage(authorId: number, profileImageData: FormData) {
     const res = await this.put(`/authors/${authorId}/profile-image`, profileImageData, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        'Content-Type': 'multipart/form-data',
       },
     });
 

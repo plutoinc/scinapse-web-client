@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 export function useIntervalProgress(callback: () => void, delay: number | null) {
   const savedCallback = React.useRef(() => {});

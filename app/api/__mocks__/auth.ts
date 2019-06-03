@@ -1,5 +1,5 @@
-import PlutoAxios from "../pluto";
-import { Member } from "../../model/member";
+import PlutoAxios from '../pluto';
+import { Member } from '../../model/member';
 import {
   SignUpWithEmailParams,
   SignUpWithSocialParams,
@@ -10,13 +10,13 @@ import {
   GetAuthorizeUriResult,
   VerifyEmailResult,
   CheckDuplicatedEmailResult,
-} from "../types/auth";
-import { RAW } from "../../__mocks__";
+} from '../types/auth';
+import { RAW } from '../../__mocks__';
 
 class AuthAPI extends PlutoAxios {
   public async signUpWithEmail(userInfo: SignUpWithEmailParams): Promise<Member> {
-    if (userInfo.email === "") {
-      throw new Error("FAKE ERROR");
+    if (userInfo.email === '') {
+      throw new Error('FAKE ERROR');
     } else {
       const mockMember: Member = {
         ...RAW.MEMBER,
@@ -30,8 +30,8 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async signUpWithSocial(userInfo: SignUpWithSocialParams): Promise<Member> {
-    if (userInfo.email === "") {
-      throw new Error("FAKE ERROR");
+    if (userInfo.email === '') {
+      throw new Error('FAKE ERROR');
     } else {
       const mockMember: Member = {
         ...RAW.MEMBER,
@@ -46,7 +46,7 @@ class AuthAPI extends PlutoAxios {
 
   public async signInWithEmail(userInfo: SignInWithEmailParams): Promise<SignInResult> {
     if (!userInfo.email || !userInfo.password) {
-      throw new Error("FAKE ERROR");
+      throw new Error('FAKE ERROR');
     } else {
       const mockMember: Member = {
         ...RAW.MEMBER,
@@ -56,7 +56,7 @@ class AuthAPI extends PlutoAxios {
       const mockSignInResult: SignInResult = {
         loggedIn: true,
         oauthLoggedIn: false,
-        token: "",
+        token: '',
         member: mockMember,
       };
       return mockSignInResult;
@@ -65,14 +65,14 @@ class AuthAPI extends PlutoAxios {
 
   public async signInWithSocial(exchangeData: SignInWithSocialParams): Promise<SignInResult> {
     if (!exchangeData) {
-      throw new Error("FAKE ERROR");
+      throw new Error('FAKE ERROR');
     } else {
       const mockMember: Member = RAW.MEMBER;
 
       const mockSignInResult: SignInResult = {
         loggedIn: true,
         oauthLoggedIn: true,
-        token: "",
+        token: '',
         member: mockMember,
       };
       return mockSignInResult;
@@ -88,8 +88,8 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async checkDuplicatedEmail(email: string): Promise<CheckDuplicatedEmailResult> {
-    if (email === "") {
-      throw new Error("FAKE ERROR");
+    if (email === '') {
+      throw new Error('FAKE ERROR');
     } else {
       return {
         duplicated: false,
@@ -103,7 +103,7 @@ class AuthAPI extends PlutoAxios {
     const mockCheckLoggedInResult: SignInResult = {
       loggedIn: true,
       oauthLoggedIn: false,
-      token: "",
+      token: '',
       member: mockMember,
     };
     return mockCheckLoggedInResult;
@@ -111,18 +111,18 @@ class AuthAPI extends PlutoAxios {
 
   public async getAuthorizeURI({ vendor, redirectURI }: GetAuthorizeUriParams): Promise<GetAuthorizeUriResult> {
     if (!vendor || !redirectURI) {
-      throw new Error("FAKE ERROR");
+      throw new Error('FAKE ERROR');
     } else {
       return {
         vendor,
-        uri: "",
+        uri: '',
       };
     }
   }
 
   public async verifyToken(token: string): Promise<VerifyEmailResult> {
     if (!token) {
-      throw new Error("FAKE ERROR");
+      throw new Error('FAKE ERROR');
     } else {
       return {
         success: true,
@@ -132,7 +132,7 @@ class AuthAPI extends PlutoAxios {
 
   public async resendVerificationEmail(email: string): Promise<VerifyEmailResult> {
     if (!email) {
-      throw new Error("FAKE ERROR");
+      throw new Error('FAKE ERROR');
     } else {
       return {
         success: true,

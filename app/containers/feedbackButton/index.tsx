@@ -1,20 +1,20 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import Popper from "@material-ui/core/Popper";
-import MenuItem from "@material-ui/core/MenuItem";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import FeedbackManager from "@pluto_network/scinapse-feedback";
-import * as Cookies from "js-cookie";
-import Icon from "../../icons";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { trackEvent } from "../../helpers/handleGA";
-import { CurrentUser } from "../../model/currentUser";
-import { LayoutState, UserDevice } from "../../components/layouts/records";
-import { AppState } from "../../reducers";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-import * as classNames from "classnames";
+import * as React from 'react';
+import { connect } from 'react-redux';
+import Popper from '@material-ui/core/Popper';
+import MenuItem from '@material-ui/core/MenuItem';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import FeedbackManager from '@pluto_network/scinapse-feedback';
+import * as Cookies from 'js-cookie';
+import Icon from '../../icons';
+import { withStyles } from '../../helpers/withStylesHelper';
+import { trackEvent } from '../../helpers/handleGA';
+import { CurrentUser } from '../../model/currentUser';
+import { LayoutState, UserDevice } from '../../components/layouts/records';
+import { AppState } from '../../reducers';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import * as classNames from 'classnames';
 declare var ga: any;
-const styles = require("./feedbackButton.scss");
+const styles = require('./feedbackButton.scss');
 
 interface FeedbackButtonProps extends RouteComponentProps<any> {
   currentUser: CurrentUser;
@@ -30,8 +30,8 @@ interface FeedbackButtonStates {
   hasSentFeedback: boolean;
 }
 
-const FEEDBACK_PV_COOKIE_KEY = "pvForFeedback";
-const FEEDBACK_ALREADY_SENT = "pvAlreadySent";
+const FEEDBACK_PV_COOKIE_KEY = 'pvForFeedback';
+const FEEDBACK_ALREADY_SENT = 'pvAlreadySent';
 
 const UserSurveyMenu: React.SFC<{
   handleClick: (e: React.MouseEvent<HTMLAnchorElement>) => void;
@@ -60,8 +60,8 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     this.state = {
       isPopoverOpen: false,
       isLoadingFeedback: false,
-      emailInput: (props.currentUser && props.currentUser.email) || "",
-      feedbackContent: "",
+      emailInput: (props.currentUser && props.currentUser.email) || '',
+      feedbackContent: '',
       isAutoOpen: false,
       hasSentFeedback: false,
     };
@@ -70,17 +70,17 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
   public componentWillReceiveProps(nextProps: FeedbackButtonProps) {
     if (this.props.location !== nextProps.location) {
       const rawPVCount = Cookies.get(FEEDBACK_PV_COOKIE_KEY);
-      const PVCount = parseInt(rawPVCount || "0", 10);
+      const PVCount = parseInt(rawPVCount || '0', 10);
 
       if (PVCount > 100) {
-        Cookies.set(FEEDBACK_PV_COOKIE_KEY, "0");
+        Cookies.set(FEEDBACK_PV_COOKIE_KEY, '0');
       } else {
         Cookies.set(FEEDBACK_PV_COOKIE_KEY, (PVCount + 1).toString());
       }
     }
 
     if (this.props.currentUser.isLoggedIn !== nextProps.currentUser.isLoggedIn) {
-      this.setState(prevState => ({ ...prevState, emailInput: nextProps.currentUser.email || "" }));
+      this.setState(prevState => ({ ...prevState, emailInput: nextProps.currentUser.email || '' }));
     }
   }
 
@@ -91,7 +91,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     if (layout.userDevice !== UserDevice.DESKTOP) {
       return null;
     }
-    if ("papers" === location.pathname.split("/")[1]) {
+    if ('papers' === location.pathname.split('/')[1]) {
       return null;
     }
 
@@ -116,7 +116,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
             modifiers={{
               preventOverflow: {
                 enabled: true,
-                boundariesElement: "window",
+                boundariesElement: 'window',
               },
             }}
             disablePortal
@@ -163,18 +163,18 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     const { isAutoOpen } = this.state;
 
     if (isAutoOpen) {
-      return "Help us improve.\nAnything you want in Scinapse?";
+      return 'Help us improve.\nAnything you want in Scinapse?';
     }
-    return "Any problem?\nTake a look at FAQ, or drop us a message.";
+    return 'Any problem?\nTake a look at FAQ, or drop us a message.';
   };
 
   private getDirectTitle = () => {
     const { isAutoOpen } = this.state;
 
     if (isAutoOpen) {
-      return "Suggest anything";
+      return 'Suggest anything';
     }
-    return "Direct Feedback";
+    return 'Direct Feedback';
   };
 
   private getDirectFeedbackOrSurveyMenu = () => {
@@ -200,7 +200,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
                 [styles.loadingButton]: isLoadingFeedback,
               })}
             >
-              <button disabled={isLoadingFeedback}>{!isLoadingFeedback ? "SEND" : "Sending..."}</button>
+              <button disabled={isLoadingFeedback}>{!isLoadingFeedback ? 'SEND' : 'Sending...'}</button>
             </div>
           </form>
         </div>
@@ -224,7 +224,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     const menu = e.currentTarget.innerText;
 
     trackEvent({
-      category: "Feedback Action",
+      category: 'Feedback Action',
       action: `Click Feedback Menu ${menu}`,
       label: `pv: ${rawPVCount}, autoOpen: ${isAutoOpen}`,
     });
@@ -250,21 +250,21 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     e.preventDefault();
 
     if (!feedbackContent || feedbackContent.length <= 5) {
-      alert("You should leave more than 5 character of the feedback content");
+      alert('You should leave more than 5 character of the feedback content');
       return;
     }
 
     const feedbackManger = new FeedbackManager();
 
-    let gaId = "";
-    if (typeof ga !== "undefined") {
+    let gaId = '';
+    if (typeof ga !== 'undefined') {
       ga((tracker: any) => {
-        gaId = tracker.get("clientId");
+        gaId = tracker.get('clientId');
       });
     }
 
-    let href = "";
-    if (typeof window !== "undefined") {
+    let href = '';
+    if (typeof window !== 'undefined') {
       href = window.location.href;
     }
 
@@ -275,25 +275,25 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
         content: feedbackContent,
         email: emailInput,
         referer: href,
-        userId: currentUser.isLoggedIn ? currentUser.id.toString() : "",
+        userId: currentUser.isLoggedIn ? currentUser.id.toString() : '',
         gaId,
       });
 
       trackEvent({
-        category: "Feedback Action",
-        action: "Send feedback",
+        category: 'Feedback Action',
+        action: 'Send feedback',
         label: `pv: ${rawPVCount}, autoOpen: ${isAutoOpen}`,
       });
 
       this.setState(prevState => ({
         ...prevState,
         isLoadingFeedback: false,
-        emailInput: "",
-        feedbackContent: "",
+        emailInput: '',
+        feedbackContent: '',
         hasSentFeedback: true,
       }));
 
-      Cookies.set(FEEDBACK_ALREADY_SENT, "true", { expires: 10 });
+      Cookies.set(FEEDBACK_ALREADY_SENT, 'true', { expires: 10 });
     } catch (err) {
       console.error(err);
       alert(err);
@@ -307,10 +307,10 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     const rawPVCount = Cookies.get(FEEDBACK_PV_COOKIE_KEY) || 0;
 
     if (isDirectOpen) {
-      trackEvent({ category: "Feedback Action", action: "Toggle Feedback", label: `pv: ${rawPVCount}` });
+      trackEvent({ category: 'Feedback Action', action: 'Toggle Feedback', label: `pv: ${rawPVCount}` });
       this.setState(prevState => ({ ...prevState, isPopoverOpen: !prevState.isPopoverOpen }));
     } else if (isAutoOpen) {
-      trackEvent({ category: "Feedback Action", action: "Open Automatically", label: `pv: ${rawPVCount}` });
+      trackEvent({ category: 'Feedback Action', action: 'Open Automatically', label: `pv: ${rawPVCount}` });
       this.setState(prevState => ({ ...prevState, isPopoverOpen: !prevState.isPopoverOpen }));
     } else {
       this.setState(prevState => ({ ...prevState, isPopoverOpen: !prevState.isPopoverOpen }));

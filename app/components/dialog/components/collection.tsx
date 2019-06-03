@@ -1,19 +1,19 @@
-import * as React from "react";
-import Popover from "@material-ui/core/Popover/Popover";
-import * as classNames from "classnames";
-import Axios, { CancelToken } from "axios";
+import * as React from 'react';
+import Popover from '@material-ui/core/Popover/Popover';
+import * as classNames from 'classnames';
+import Axios, { CancelToken } from 'axios';
 import {
   PostCollectionParams,
   AddPaperToCollectionParams,
   RemovePapersFromCollectionParams,
-} from "../../../api/collection";
-import Icon from "../../../icons";
-import CollectionItem from "./collectionItem";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import alertToast from "../../../helpers/makePlutoToastAction";
-import { CurrentUser } from "../../../model/currentUser";
-import { Collection } from "../../../model/collection";
-const styles = require("./collection.scss");
+} from '../../../api/collection';
+import Icon from '../../../icons';
+import CollectionItem from './collectionItem';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import alertToast from '../../../helpers/makePlutoToastAction';
+import { CurrentUser } from '../../../model/currentUser';
+import { Collection } from '../../../model/collection';
+const styles = require('./collection.scss');
 
 interface CollectionDialogProps {
   currentUser: CurrentUser;
@@ -43,8 +43,8 @@ class CollectionDialog extends React.PureComponent<CollectionDialogProps, Collec
 
     this.state = {
       isNewCollectionMenuOpen: false,
-      collectionName: "",
-      description: "",
+      collectionName: '',
+      description: '',
     };
   }
 
@@ -85,8 +85,8 @@ class CollectionDialog extends React.PureComponent<CollectionDialogProps, Collec
           <Popover
             open={isNewCollectionMenuOpen}
             anchorEl={this.newCollectionAnchor!}
-            anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
-            transformOrigin={{ horizontal: "left", vertical: "top" }}
+            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+            transformOrigin={{ horizontal: 'left', vertical: 'top' }}
             onClose={this.handleRequestCloseNewCollectionMenu}
           >
             <form onSubmit={this.submitNewCollection} className={styles.newCollectionForm}>
@@ -162,18 +162,18 @@ class CollectionDialog extends React.PureComponent<CollectionDialogProps, Collec
 
     if (collectionName.length === 0) {
       return alertToast({
-        type: "error",
-        message: "collection name should be more than 1 character.",
+        type: 'error',
+        message: 'collection name should be more than 1 character.',
       });
     } else if (collectionName.length > 60) {
       return alertToast({
-        type: "error",
-        message: "collection name should be less than 60 character.",
+        type: 'error',
+        message: 'collection name should be less than 60 character.',
       });
     } else if (description && description.length > 500) {
       return alertToast({
-        type: "error",
-        message: "description should be less than 500 character.",
+        type: 'error',
+        message: 'description should be less than 500 character.',
       });
     }
 
@@ -184,8 +184,8 @@ class CollectionDialog extends React.PureComponent<CollectionDialogProps, Collec
       });
 
       this.setState({
-        collectionName: "",
-        description: "",
+        collectionName: '',
+        description: '',
       });
 
       if (this.contentBox) {
@@ -194,7 +194,7 @@ class CollectionDialog extends React.PureComponent<CollectionDialogProps, Collec
       this.handleRequestCloseNewCollectionMenu();
     } catch (err) {
       alertToast({
-        type: "error",
+        type: 'error',
         message: `Failed to make a new collection. ${err}`,
       });
     }

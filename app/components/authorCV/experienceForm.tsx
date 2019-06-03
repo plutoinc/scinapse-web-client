@@ -1,14 +1,14 @@
-import * as React from "react";
-import { Formik, Form, Field, FormikErrors, ErrorMessage } from "formik";
-import * as classNames from "classnames";
-import { CvBaseInfo } from "../../api/profile";
-import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
-import ScinapseButton from "../common/scinapseButton";
-import ReduxAutoSizeTextarea from "../common/autoSizeTextarea/reduxAutoSizeTextarea";
-import scinapseFormikCheckbox from "../common/scinapseInput/scinapseFormikCheckbox";
-import { withStyles } from "../../helpers/withStylesHelper";
-import AffiliationBox from "./affiliationBox";
-const styles = require("./authorCVForm.scss");
+import * as React from 'react';
+import { Formik, Form, Field, FormikErrors, ErrorMessage } from 'formik';
+import * as classNames from 'classnames';
+import { CvBaseInfo } from '../../api/profile';
+import ScinapseFormikInput from '../common/scinapseInput/scinapseFormikInput';
+import ScinapseButton from '../common/scinapseButton';
+import ReduxAutoSizeTextarea from '../common/autoSizeTextarea/reduxAutoSizeTextarea';
+import scinapseFormikCheckbox from '../common/scinapseInput/scinapseFormikCheckbox';
+import { withStyles } from '../../helpers/withStylesHelper';
+import AffiliationBox from './affiliationBox';
+const styles = require('./authorCVForm.scss');
 
 export interface ExperienceFormState extends CvBaseInfo {
   department: string | null;
@@ -33,30 +33,30 @@ const validateForm = (values: ExperienceFormState) => {
   const currentYear = new Date().getFullYear();
 
   if (!values.position && values.position.length < 2) {
-    errors.position = "Minimum length is 1";
+    errors.position = 'Minimum length is 1';
   }
 
   if (!values.institutionName && values.institutionName.length < 2) {
-    errors.institutionName = "Not available institution";
+    errors.institutionName = 'Not available institution';
   }
 
   if (!values.startDate) {
-    errors.startDate = "Please write valid year (ex. 2010)";
+    errors.startDate = 'Please write valid year (ex. 2010)';
   }
 
   if (!values.isCurrent && !values.endDate) {
-    errors.startDate = "Please write valid year (ex. 2010)";
-    errors.endDate = " ";
+    errors.startDate = 'Please write valid year (ex. 2010)';
+    errors.endDate = ' ';
   }
 
   if (!values.isCurrent && values.endDate && parseInt(values.startDate, 10) - parseInt(values.endDate, 10) > 0) {
-    errors.endDate = "Please write a future date";
-    errors.startDate = " ";
+    errors.endDate = 'Please write a future date';
+    errors.startDate = ' ';
   }
 
   if (values.startDate && currentYear - parseInt(values.startDate, 10) < 0) {
-    errors.startDate = "Please write before current date";
-    errors.endDate = " ";
+    errors.startDate = 'Please write before current date';
+    errors.endDate = ' ';
   }
 
   return errors;
@@ -147,7 +147,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                             name="startDate"
                             type="text"
                             placeholder="Year"
-                            style={{ color: "#666d7c" }}
+                            style={{ color: '#666d7c' }}
                             maxLength="4"
                             className={classNames({
                               [styles.dateYearField]: true,
@@ -168,7 +168,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                               name="endDate"
                               type="text"
                               placeholder="Year"
-                              style={{ color: "#666d7c" }}
+                              style={{ color: '#666d7c' }}
                               maxLength="4"
                               className={classNames({
                                 [styles.dateYearField]: true,
@@ -219,25 +219,25 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                       gaLabel="Cancel experience form"
                       content="Cancel"
                       style={{
-                        height: "42px",
+                        height: '42px',
                         fontWeight: 500,
-                        fontSize: "14px",
+                        fontSize: '14px',
                         opacity: 0.25,
-                        color: "#1e2a35",
-                        border: "none",
-                        display: "inline-block",
-                        marginRight: "8px",
+                        color: '#1e2a35',
+                        border: 'none',
+                        display: 'inline-block',
+                        marginRight: '8px',
                       }}
                     />
                     <ScinapseButton
                       type="submit"
                       style={{
-                        backgroundColor: "#48d2a0",
-                        cursor: "pointer",
-                        width: "57px",
-                        height: "42px",
+                        backgroundColor: '#48d2a0',
+                        cursor: 'pointer',
+                        width: '57px',
+                        height: '42px',
                         fontWeight: 500,
-                        fontSize: "14px",
+                        fontSize: '14px',
                       }}
                       disabled={isLoading}
                       isLoading={isLoading}

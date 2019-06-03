@@ -1,10 +1,10 @@
-import * as React from "react";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import ArticleSpinner from "../../../common/spinner/articleSpinner";
-import Icon from "../../../../icons";
-import ActionTicketManager from "../../../../helpers/actionTicketManager";
-import { AUTH_LEVEL, blockUnverifiedUser } from "../../../../helpers/checkAuthDialog";
-const styles = require("./doiSearchBlocked.scss");
+import * as React from 'react';
+import { withStyles } from '../../../../helpers/withStylesHelper';
+import ArticleSpinner from '../../../common/spinner/articleSpinner';
+import Icon from '../../../../icons';
+import ActionTicketManager from '../../../../helpers/actionTicketManager';
+import { AUTH_LEVEL, blockUnverifiedUser } from '../../../../helpers/checkAuthDialog';
+const styles = require('./doiSearchBlocked.scss');
 
 interface DoiSearchBlockedProps {
   searchDoi: string;
@@ -14,9 +14,9 @@ interface DoiSearchBlockedProps {
 async function openSignInDialog() {
   await blockUnverifiedUser({
     authLevel: AUTH_LEVEL.VERIFIED,
-    actionArea: "searchResult",
-    actionLabel: "doiSearch",
-    userActionType: "doiSearch",
+    actionArea: 'searchResult',
+    actionLabel: 'doiSearch',
+    userActionType: 'doiSearch',
   });
 }
 
@@ -32,12 +32,12 @@ const DoiSearchBlocked: React.FunctionComponent<DoiSearchBlockedProps> = props =
   }
 
   ActionTicketManager.trackTicket({
-    pageType: "searchResult",
-    actionType: "view",
-    actionArea: "searchResult",
-    actionTag: "pageView",
-    actionLabel: "doiSearch",
-    expName: "doiSearch",
+    pageType: 'searchResult',
+    actionType: 'view',
+    actionArea: 'searchResult',
+    actionTag: 'pageView',
+    actionLabel: 'doiSearch',
+    expName: 'doiSearch',
   });
 
   return (
@@ -51,15 +51,15 @@ const DoiSearchBlocked: React.FunctionComponent<DoiSearchBlockedProps> = props =
             <div className={styles.doiBlockedTitle}>DOI Match!</div>
             <div className={styles.doiBlockedContent}>
               <span>
-                <b className={styles.keyword}>We found a paper</b> that seem to match DOI{" "}
+                <b className={styles.keyword}>We found a paper</b> that seem to match DOI{' '}
                 <b className={styles.keyword}>"{searchDoi}"</b>
               </span>
               <br />
               <span>
-                Please{" "}
+                Please{' '}
                 <b className={styles.signInLink} onClick={openSignInDialog}>
                   sign in
-                </b>{" "}
+                </b>{' '}
                 to view the result.
               </span>
               <br />

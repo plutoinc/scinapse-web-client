@@ -1,9 +1,9 @@
-import axios from "axios";
-import { LoadDataParams } from "../../routes";
-import { CurrentUser } from "../../model/currentUser";
-import { AuthorShowMatchParams } from "../unconnectedAuthorShow";
-import { fetchAuthorShowRelevantData } from "../../actions/author";
-import { ActionCreators } from "../../actions/actionTypes";
+import axios from 'axios';
+import { LoadDataParams } from '../../routes';
+import { CurrentUser } from '../../model/currentUser';
+import { AuthorShowMatchParams } from '../unconnectedAuthorShow';
+import { fetchAuthorShowRelevantData } from '../../actions/author';
+import { ActionCreators } from '../../actions/actionTypes';
 
 export async function fetchAuthorShowPageData(
   params: LoadDataParams<AuthorShowMatchParams>,

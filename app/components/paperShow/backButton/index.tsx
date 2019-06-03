@@ -1,12 +1,12 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-import { AppState } from "../../../reducers";
-import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
-import { ArticleSearchState } from "../../articleSearch/records";
-import Icon from "../../../icons";
-import { withStyles } from "../../../helpers/withStylesHelper";
-const styles = require("./backButton.scss");
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { AppState } from '../../../reducers';
+import PapersQueryFormatter from '../../../helpers/papersQueryFormatter';
+import { ArticleSearchState } from '../../articleSearch/records';
+import Icon from '../../../icons';
+import { withStyles } from '../../../helpers/withStylesHelper';
+const styles = require('./backButton.scss');
 
 export interface GoBackResultBtnProps extends RouteComponentProps<any> {
   articleSearch: ArticleSearchState;
@@ -21,11 +21,11 @@ const GoBackResultBtn: React.SFC<GoBackResultBtnProps> = props => {
         className={styles.goBackBtn}
         onClick={() => {
           history.push({
-            pathname: "/search",
+            pathname: '/search',
             search: PapersQueryFormatter.stringifyPapersQuery({
               query: articleSearch.searchInput,
               page: 1,
-              sort: "RELEVANCE",
+              sort: 'RELEVANCE',
               filter: PapersQueryFormatter.objectifyPapersFilter(),
             }),
           });

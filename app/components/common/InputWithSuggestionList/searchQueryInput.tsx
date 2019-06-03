@@ -1,34 +1,34 @@
-import * as React from "react";
-import axios, { CancelTokenSource } from "axios";
-import * as classNames from "classnames";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-import { connect, Dispatch } from "react-redux";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import CompletionAPI, { CompletionKeyword } from "../../../api/completion";
-import { useDebouncedAsyncFetch } from "../../../hooks/debouncedFetchAPIHook";
-import { getHighlightedContent } from "../highLightedContent";
-import Icon from "../../../icons";
-import { trackEvent } from "../../../helpers/handleGA";
+import * as React from 'react';
+import axios, { CancelTokenSource } from 'axios';
+import * as classNames from 'classnames';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { connect, Dispatch } from 'react-redux';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import CompletionAPI, { CompletionKeyword } from '../../../api/completion';
+import { useDebouncedAsyncFetch } from '../../../hooks/debouncedFetchAPIHook';
+import { getHighlightedContent } from '../highLightedContent';
+import Icon from '../../../icons';
+import { trackEvent } from '../../../helpers/handleGA';
 import {
   saveQueryToRecentHistory,
   deleteQueryFromRecentList,
   getRecentQueries,
-} from "../../../helpers/recentQueryManager";
-import PapersQueryFormatter, { FilterObject } from "../../../helpers/papersQueryFormatter";
-import ActionTicketManager from "../../../helpers/actionTicketManager";
-import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { AppState } from "../../../reducers";
-import { LayoutState, UserDevice } from "../../layouts/records";
-import { getCurrentPageType } from "../../locationListener";
-import { handleInputKeydown } from "./helpers/handleInputKeydown";
-import { checkBenefitExp } from "../../../helpers/checkBenefitExpCount";
-const s = require("./searchQueryInput.scss");
+} from '../../../helpers/recentQueryManager';
+import PapersQueryFormatter, { FilterObject } from '../../../helpers/papersQueryFormatter';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import { ACTION_TYPES } from '../../../actions/actionTypes';
+import { AppState } from '../../../reducers';
+import { LayoutState, UserDevice } from '../../layouts/records';
+import { getCurrentPageType } from '../../locationListener';
+import { handleInputKeydown } from './helpers/handleInputKeydown';
+import { checkBenefitExp } from '../../../helpers/checkBenefitExpCount';
+const s = require('./searchQueryInput.scss');
 
 interface SearchQueryInputProps extends RouteComponentProps<any> {
   dispatch: Dispatch<any>;
   layout: LayoutState;
-  actionArea: "home" | "topBar" | "paperShow" | "searchFullBanner";
+  actionArea: 'home' | 'topBar' | 'paperShow' | 'searchFullBanner';
   maxCount: number;
   initialValue?: string;
   initialFilter?: FilterObject;
@@ -37,7 +37,7 @@ interface SearchQueryInputProps extends RouteComponentProps<any> {
   inputClassName?: string;
 }
 
-type SearchSourceType = "history" | "suggestion" | "raw";
+type SearchSourceType = 'history' | 'suggestion' | 'raw';
 
 interface SubmitParams {
   from: SearchSourceType;
@@ -54,12 +54,12 @@ function validateSearchInput(query: string) {
 
 async function shouldBlockUnsignedUser(actionArea: string) {
   const isBlocked = await checkBenefitExp({
-    type: "queryLover",
-    matching: "session",
+    type: 'queryLover',
+    matching: 'session',
     maxCount: 2,
     actionArea,
-    userActionType: "queryLover",
-    expName: "queryLover",
+    userActionType: 'queryLover',
+    expName: 'queryLover',
   });
   return isBlocked;
 }
@@ -69,19 +69,19 @@ const SearchQueryInput: React.FunctionComponent<
 > = props => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [touched, setTouched] = React.useState(false);
-  const [inputValue, setInputValue] = React.useState(props.initialValue || "");
-  const [genuineInputValue, setGenuineInputValue] = React.useState(props.initialValue || "");
+  const [inputValue, setInputValue] = React.useState(props.initialValue || '');
+  const [genuineInputValue, setGenuineInputValue] = React.useState(props.initialValue || '');
   const [highlightIdx, setHighlightIdx] = React.useState(-1);
   const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
 
   const { data: keywords, setParams } = useDebouncedAsyncFetch<string, CompletionKeyword[]>({
-    initialParams: props.initialValue || "",
+    initialParams: props.initialValue || '',
     fetchFunc: async (q: string) => {
       const res = await CompletionAPI.fetchSuggestionKeyword(q, cancelTokenSource.current.token);
       return res;
     },
     validateFunc: (query: string) => {
-      if (!query || query.length < 2) throw new Error("keyword is too short");
+      if (!query || query.length < 2) throw new Error('keyword is too short');
     },
     wait: 200,
   });
@@ -136,14 +136,14 @@ const SearchQueryInput: React.FunctionComponent<
       props.dispatch({
         type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
         payload: {
-          type: "error",
-          message: "You should search more than 2 characters.",
+          type: 'error',
+          message: 'You should search more than 2 characters.',
         },
       });
       return;
     }
 
-    if (props.actionArea !== "searchFullBanner") {
+    if (props.actionArea !== 'searchFullBanner') {
       const shouldBlock = await shouldBlockUnsignedUser(props.actionArea);
       if (shouldBlock) {
         return;
@@ -152,23 +152,23 @@ const SearchQueryInput: React.FunctionComponent<
 
     ActionTicketManager.trackTicket({
       pageType: getCurrentPageType(),
-      actionType: "fire",
+      actionType: 'fire',
       actionArea: props.actionArea,
-      actionTag: "query",
+      actionTag: 'query',
       actionLabel: searchKeyword,
     });
 
-    if (from === "history" || from === "suggestion") {
+    if (from === 'history' || from === 'suggestion') {
       ActionTicketManager.trackTicket({
         pageType: getCurrentPageType(),
-        actionType: "fire",
+        actionType: 'fire',
         actionArea: props.actionArea,
-        actionTag: from === "history" ? "searchHistoryQuery" : "searchSuggestionQuery",
+        actionTag: from === 'history' ? 'searchHistoryQuery' : 'searchSuggestionQuery',
         actionLabel: searchKeyword,
       });
     }
 
-    trackEvent({ category: "Search", action: "Query", label: searchKeyword });
+    trackEvent({ category: 'Search', action: 'Query', label: searchKeyword });
     saveQueryToRecentHistory(searchKeyword);
     setTouched(false);
     setIsOpen(false);
@@ -176,12 +176,12 @@ const SearchQueryInput: React.FunctionComponent<
     const currentPage = getCurrentPageType();
     const searchQuery = PapersQueryFormatter.stringifyPapersQuery({
       query: searchKeyword,
-      sort: "RELEVANCE",
+      sort: 'RELEVANCE',
       filter: filter || {},
       page: 1,
     });
 
-    if (currentPage === "authorSearchResult") {
+    if (currentPage === 'authorSearchResult') {
       props.history.push(`/search/authors?${searchQuery}`);
     } else {
       props.history.push(`/search?${searchQuery}`);
@@ -197,7 +197,7 @@ const SearchQueryInput: React.FunctionComponent<
           [s.highlight]: highlightIdx === i,
         })}
         onClick={() => {
-          handleSubmit({ query: k.text, filter: props.initialFilter, from: k.removable ? "history" : "suggestion" });
+          handleSubmit({ query: k.text, filter: props.initialFilter, from: k.removable ? 'history' : 'suggestion' });
         }}
       >
         <span dangerouslySetInnerHTML={{ __html: getHighlightedContent(k.text, genuineInputValue) }} />
@@ -223,8 +223,8 @@ const SearchQueryInput: React.FunctionComponent<
   const inputClassName = props.inputClassName ? props.inputClassName : s.input;
   const placeholder =
     props.layout.userDevice !== UserDevice.DESKTOP
-      ? "Search papers by keyword"
-      : "Search papers by title, author, doi or keyword";
+      ? 'Search papers by keyword'
+      : 'Search papers by title, author, doi or keyword';
 
   return (
     <ClickAwayListener
@@ -246,11 +246,11 @@ const SearchQueryInput: React.FunctionComponent<
                 setInputValue(keywordsToShow[i] ? keywordsToShow[i].text : genuineInputValue);
               },
               onSelect: i => {
-                let from: SearchSourceType = "raw";
+                let from: SearchSourceType = 'raw';
                 if (keywordsToShow[i] && keywordsToShow[i].removable) {
-                  from = "history";
+                  from = 'history';
                 } else if (keywordsToShow[i] && !keywordsToShow[i].removable) {
-                  from = "suggestion";
+                  from = 'suggestion';
                 }
 
                 handleSubmit({
@@ -284,12 +284,12 @@ const SearchQueryInput: React.FunctionComponent<
         />
         <Icon
           onClick={() => {
-            let from: SearchSourceType = "raw";
+            let from: SearchSourceType = 'raw';
             const matchKeyword = keywordsToShow.find(k => k.text === inputValue);
             if (matchKeyword && matchKeyword.removable) {
-              from = "history";
+              from = 'history';
             } else if (matchKeyword && !matchKeyword.removable) {
-              from = "suggestion";
+              from = 'suggestion';
             }
 
             handleSubmit({ filter: props.initialFilter, from });

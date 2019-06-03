@@ -1,12 +1,12 @@
-import { normalize } from "normalizr";
-import { AxiosResponse, CancelToken } from "axios";
-import PlutoAxios from "./pluto";
-import { Paper, paperSchema } from "../model/paper";
-import { GetRefOrCitedPapersParams } from "./types/paper";
-import { CommonPaginationResponsePart, PaginationResponseV2 } from "./types/common";
-import { AvailableCitationType } from "../containers/paperShow/records";
-import { PaperAuthor } from "../model/author";
-import { camelCaseKeys } from "../helpers/camelCaseKeys";
+import { normalize } from 'normalizr';
+import { AxiosResponse, CancelToken } from 'axios';
+import PlutoAxios from './pluto';
+import { Paper, paperSchema } from '../model/paper';
+import { GetRefOrCitedPapersParams } from './types/paper';
+import { CommonPaginationResponsePart, PaginationResponseV2 } from './types/common';
+import { AvailableCitationType } from '../containers/paperShow/records';
+import { PaperAuthor } from '../model/author';
+import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
 interface GetRefOrCitedPapersBasicParams {
   size: number;
@@ -225,7 +225,7 @@ class PaperAPI extends PlutoAxios {
       params: {
         url: targetURL,
       },
-      responseType: "blob",
+      responseType: 'blob',
       cancelToken,
     });
 
