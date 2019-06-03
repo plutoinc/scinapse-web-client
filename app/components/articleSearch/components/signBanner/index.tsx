@@ -53,10 +53,8 @@ const SignBannerSignButtonText: React.FunctionComponent<{ buttonText: string }> 
   );
 });
 
-function getSignBannerContext(): SignBannerContextObj {
-  const signBannerCuratedUserGroupName: string = getUserGroupName(SIGN_BANNER_AT_SEARCH_CURATED_TEST) || '';
-
-  switch (signBannerCuratedUserGroupName) {
+function getSignBannerContext(userGroupName: string): SignBannerContextObj {
+  switch (userGroupName) {
     case 'areyouresearcher-yesofcourse':
       return { titleText: 'Are you a researcher?', buttonText: 'Yes, of course' };
     case 'bemember-joinnow':
@@ -70,8 +68,14 @@ function getSignBannerContext(): SignBannerContextObj {
 
 const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
   const { isLoading } = props;
+  const signBannerCuratedUserGroupName = React.useRef('');
 
-  const signBannerContext: SignBannerContextObj = getSignBannerContext();
+  React.useEffect(() => {
+    signBannerCuratedUserGroupName.current = getUserGroupName(SIGN_BANNER_AT_SEARCH_CURATED_TEST) || '';
+  }, []);
+
+  const signBannerContext: SignBannerContextObj = getSignBannerContext(signBannerCuratedUserGroupName.current);
+
   const bannerViewTicketContext: ActionTicketParams = {
     pageType: 'searchResult',
     actionType: 'view',
