@@ -47,8 +47,8 @@ const SuddenAlert: React.FC<SuddenAlertProps> = props => {
           <div className={styles.subText}>When you join Scinapse, you can…</div>
           <div className={styles.mainText}>
             <ul>
-              <li>search unlimitedly PDF</li>
-              <li>download & request Full-text</li>
+              <li>search unlimitedly</li>
+              <li>download & request Full-text PDF</li>
               <li>save to Collection</li>
             </ul>
           </div>

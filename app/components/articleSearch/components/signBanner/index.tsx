@@ -1,10 +1,7 @@
 import * as React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '../../../../helpers/withStylesHelper';
-import {
-  SIGN_BANNER_AT_SEARCH_BANNER_TEST,
-  SIGN_BANNER_AT_SEARCH_CURATED_TEST,
-} from '../../../../constants/abTestGlobalValue';
+import { SIGN_BANNER_AT_SEARCH_CURATED_TEST } from '../../../../constants/abTestGlobalValue';
 import { getUserGroupName } from '../../../../helpers/abTestHelper';
 import GlobalDialogManager from '../../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
@@ -73,11 +70,6 @@ function getSignBannerContext(): SignBannerContextObj {
 
 const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
   const { isLoading } = props;
-  const [signBannerUserGroupName, setSignBannerUserGroupName] = React.useState('');
-
-  React.useEffect(() => {
-    setSignBannerUserGroupName(getUserGroupName(SIGN_BANNER_AT_SEARCH_BANNER_TEST) || '');
-  }, []);
 
   const signBannerContext: SignBannerContextObj = getSignBannerContext();
   const bannerViewTicketContext: ActionTicketParams = {
@@ -89,11 +81,6 @@ const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
     expName: 'signBannerAtSearch',
   };
   const { elRef } = useObserver(0.1, bannerViewTicketContext);
-  const isBannerShow = signBannerUserGroupName === 'banner';
-
-  if (!isBannerShow) {
-    return null;
-  }
 
   if (isLoading) {
     return (
