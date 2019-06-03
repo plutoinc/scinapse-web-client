@@ -1,7 +1,7 @@
 import { denormalize } from 'normalizr';
-import { createSelector } from 'reselect';
 import { AppState } from '../reducers';
 import { paperSchema } from '../model/paper';
+import { createDeepEqualSelector } from './deepEqualSelector';
 
 export function getPaperEntities(state: AppState) {
   return state.entities.papers;
@@ -16,7 +16,7 @@ export const getMemoizedCitedPaperIds = (state: AppState) => {
 };
 
 export const makeGetMemoizedPapers = (getPaperIds: (state: AppState) => number[]) => {
-  return createSelector([getPaperIds, getPaperEntities], (paperIds, paperEntities) => {
+  return createDeepEqualSelector([getPaperIds, getPaperEntities], (paperIds, paperEntities) => {
     return denormalize(paperIds, [paperSchema], { papers: paperEntities });
   });
 };

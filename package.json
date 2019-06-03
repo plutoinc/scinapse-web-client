@@ -150,6 +150,7 @@
     "compression": "1.7.4",
     "core-js": "2.6.5",
     "date-fns": "1.29.0",
+    "fast-deep-equal": "^2.0.1",
     "formik": "1.4.0",
     "history": "4.7.2",
     "identity-obj-proxy": "3.0.0",
