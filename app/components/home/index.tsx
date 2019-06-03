@@ -31,7 +31,7 @@ class Home extends React.PureComponent<HomeProps> {
   public render() {
     const containerStyle = this.getContainerStyle();
     const logoUserGroupName: string = getUserGroupName(SEARCH_ENGINE_MOOD_TEST) || '';
-    const isSearchEngineContext = logoUserGroupName === 'searchEngine';
+    const isSearchEngineMood = logoUserGroupName === 'searchEngine';
 
     return (
       <div className={styles.articleSearchFormContainer}>
@@ -70,7 +70,7 @@ class Home extends React.PureComponent<HomeProps> {
                     maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
                     actionArea="home"
                     autoFocus
-                    inputClassName={isSearchEngineContext ? styles.searchEngineMoodInput : styles.searchInput}
+                    inputClassName={isSearchEngineMood ? styles.searchEngineMoodInput : styles.searchInput}
                   />
                 </NoSsr>
               </div>

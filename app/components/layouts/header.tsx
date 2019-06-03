@@ -121,14 +121,14 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   public render() {
     const navClassName = this.getNavbarClassName();
     const logoUserGroupName: string = getUserGroupName(SEARCH_ENGINE_MOOD_TEST) || '';
-    const isSearchEngineContext = logoUserGroupName === 'searchEngine';
+    const isSearchEngineMood = logoUserGroupName === 'searchEngine';
 
     return (
       <nav className={`${navClassName} mui-fixed`}>
         <div className={styles.headerContainer}>
-          {this.getHeaderLogo(isSearchEngineContext)}
+          {this.getHeaderLogo(isSearchEngineMood)}
           <div className={styles.leftBox} />
-          {this.getSearchFormContainer(isSearchEngineContext)}
+          {this.getSearchFormContainer(isSearchEngineMood)}
           {this.getHeaderButtons()}
         </div>
         {this.getToastBar()}
@@ -208,7 +208,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     ticking = false;
   };
 
-  private getHeaderLogo = (isSearchEngineContext: boolean) => {
+  private getHeaderLogo = (isSearchEngineMood: boolean) => {
     const { location, layoutState } = this.props;
     const isNotHome = location.pathname !== HOME_PATH;
 
@@ -234,18 +234,18 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             })
           }
           className={classNames({
-            [styles.headerSearchEngineLogo]: isSearchEngineContext,
-            [styles.headerLogo]: !isSearchEngineContext,
+            [styles.headerSearchEngineLogo]: isSearchEngineMood,
+            [styles.headerLogo]: !isSearchEngineMood,
           })}
           aria-label="Scinapse header logo"
         >
-          <Icon icon={isSearchEngineContext ? 'LOGO_SEARCH_ENGINE' : 'SCINAPSE_LOGO'} />{' '}
+          <Icon icon={isSearchEngineMood ? 'LOGO_SEARCH_ENGINE' : 'SCINAPSE_LOGO'} />{' '}
         </Link>
       </NoSsr>
     );
   };
 
-  private getSearchFormContainer = (isSearchEngineContext: boolean) => {
+  private getSearchFormContainer = (isSearchEngineMood: boolean) => {
     const { location, articleSearchState } = this.props;
     const isShowSearchFormContainer = location.pathname !== HOME_PATH;
 
@@ -265,14 +265,14 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         <div
           style={!isShowSearchFormContainer ? { visibility: 'hidden' } : {}}
           className={classNames({
-            [styles.searchFormContainerAtSearchEngineLogo]: isSearchEngineContext,
-            [styles.searchFormContainer]: !isSearchEngineContext,
+            [styles.searchFormContainerAtSearchEngineLogo]: isSearchEngineMood,
+            [styles.searchFormContainer]: !isSearchEngineMood,
           })}
         >
           <SearchQueryInput
             wrapperClassName={styles.searchWrapper}
             listWrapperClassName={styles.suggestionListWrapper}
-            inputClassName={isSearchEngineContext ? styles.searchEngineMoodInput : styles.searchInput}
+            inputClassName={isSearchEngineMood ? styles.searchEngineMoodInput : styles.searchInput}
             initialValue={currentQuery}
             initialFilter={currentFilter}
             actionArea="topBar"
