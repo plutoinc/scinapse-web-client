@@ -8,6 +8,8 @@ import { LayoutState, UserDevice } from '../layouts/records';
 import { withStyles } from '../../helpers/withStylesHelper';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
 import TrendingPaper from './trendingPaper';
+import { getUserGroupName } from '../../helpers/abTestHelper';
+import { SEARCH_ENGINE_MOOD_TEST } from '../../constants/abTestGlobalValue';
 const styles = require('./home.scss');
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
@@ -27,6 +29,8 @@ function mapStateToProps(state: AppState) {
 class Home extends React.PureComponent<HomeProps> {
   public render() {
     const containerStyle = this.getContainerStyle();
+    const logoUserGroupName: string = getUserGroupName(SEARCH_ENGINE_MOOD_TEST) || '';
+    const isSearchEngineContext = logoUserGroupName === 'searchEngine';
 
     return (
       <div className={styles.articleSearchFormContainer}>
@@ -64,7 +68,7 @@ class Home extends React.PureComponent<HomeProps> {
                   maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
                   actionArea="home"
                   autoFocus
-                  inputClassName={styles.searchInput}
+                  inputClassName={isSearchEngineContext ? styles.searchEngineMoodInput : styles.searchInput}
                 />
               </div>
               <div className={styles.searchTryKeyword} />
