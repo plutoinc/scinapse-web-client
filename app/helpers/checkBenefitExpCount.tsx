@@ -17,6 +17,7 @@ interface CheckBenefitExpCount {
 
 function getQueryLoverCount(currentSearchCount: number) {
   const boundaryTestName = getUserGroupName(QUERY_LOVER_BOUNDARY_TEST) || '';
+
   if (boundaryTestName === 'queryPerDevice') {
     const currentSessionCount = store.get(SESSION_COUNT_KEY);
     const queryLoverCount = currentSearchCount * currentSessionCount;
