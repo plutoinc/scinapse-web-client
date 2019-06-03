@@ -48,3 +48,8 @@ export const refCitedChildPaperList: Test = {
   name: 'refCitedPaperItem',
   userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'refCitedPaperItem', weight: 1 }],
 };
+
+export const queryLoverBoundaryTest: Test = {
+  name: 'queryLover-boundaryTest',
+  userGroup: [{ groupName: 'queryPerDevice', weight: 1 }, { groupName: 'queryPerSession', weight: 1 }],
+};

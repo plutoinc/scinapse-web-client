@@ -28,7 +28,8 @@ export type ABTestType =
   | 'signBannerAtSearch-curated'
   | 'relatedPapersAtPaperShow'
   | 'fullTextBlurred'
-  | 'refCitedPaperItem';
+  | 'refCitedPaperItem'
+  | 'queryLover-boundaryTest';
 
 export const BENEFIT_EXPERIMENT_KEY = 'b_exp';
 
