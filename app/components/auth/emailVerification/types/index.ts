@@ -1,4 +1,4 @@
-import { Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { EmailVerificationState } from '../records';
 import { GLOBAL_DIALOG_TYPE } from '../../../dialog/reducer';

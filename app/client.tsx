@@ -5,7 +5,8 @@ import * as raf from 'raf';
 import * as React from 'react';
 import * as ReactGA from 'react-ga';
 import * as ReactDom from 'react-dom';
-import { Provider, Store } from 'react-redux';
+import { Store, AnyAction } from 'redux';
+import { Provider } from 'react-redux';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssInjector from './helpers/cssInjector';
 import EnvChecker from './helpers/envChecker';
@@ -16,6 +17,7 @@ import { ACTION_TYPES } from './actions/actionTypes';
 import { AppState } from './reducers';
 import { checkAuthStatus } from './components/auth/actions';
 import { getCurrentPageType } from './components/locationListener';
+import { ThunkDispatch } from 'redux-thunk';
 declare var Sentry: any;
 declare var FB: any;
 
@@ -59,10 +61,11 @@ class Main extends React.Component {
 }
 
 class PlutoRenderer {
-  private _store: Store<AppState>;
+  private _store: Store<AppState, AnyAction> & {
+    dispatch: ThunkDispatch<AppState, undefined, AnyAction>;
+  };
 
   public constructor() {
-    StoreManager.initializeStore();
     this._store = StoreManager.store;
   }
 

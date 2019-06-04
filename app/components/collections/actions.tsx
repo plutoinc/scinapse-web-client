@@ -1,5 +1,5 @@
 import axios, { CancelToken } from 'axios';
-import { Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 import MemberAPI from '../../api/member';
 import { ActionCreators, ACTION_TYPES } from '../../actions/actionTypes';
 

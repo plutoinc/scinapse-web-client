@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { connect, Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { denormalize } from 'normalizr';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { AppState } from '../../../reducers';

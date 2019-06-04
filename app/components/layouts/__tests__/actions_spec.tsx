@@ -10,7 +10,7 @@ describe('layout actions', () => {
   let actions: any[];
 
   beforeEach(() => {
-    store = generateMockStore({});
+    store = generateMockStore();
     store.clearActions();
   });
 

@@ -1,3 +1,4 @@
+import { Dispatch } from 'redux';
 import { getCollections as getUserCollections, getMember } from './actions';
 import { LoadDataParams } from '../../routes';
 import { ActionCreators } from '../../actions/actionTypes';
@@ -12,7 +13,7 @@ export async function getCollections(params: GetCollectionsParams) {
   const { match, dispatch } = params;
 
   try {
-    const promiseArray: Promise<any>[] = [];
+    const promiseArray: ((dispatch: Dispatch<any>) => Promise<any>)[] = [];
     const userId = params.userId ? params.userId : parseInt(match.params.userId, 10);
 
     if (isNaN(userId)) {

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { connect, Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { Paper } from '../../model/paper';
 import PaperItem from '../common/paperItem';

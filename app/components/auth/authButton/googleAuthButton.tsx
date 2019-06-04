@@ -1,6 +1,7 @@
 import * as React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { connect, Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { OAuthCheckParams } from '../../../api/types/auth';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import AuthAPI from '../../../api/auth';

@@ -1,4 +1,4 @@
-import { Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 import axios, { CancelToken } from 'axios';
 import { ActionCreators } from './actionTypes';
 import MemberAPI from '../api/member';

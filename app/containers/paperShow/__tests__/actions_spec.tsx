@@ -14,7 +14,7 @@ describe('Paper Show page actions', () => {
   let resultActions: any[];
 
   beforeEach(() => {
-    store = generateMockStore({});
+    store = generateMockStore();
     store.clearActions();
   });
 
