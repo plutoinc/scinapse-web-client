@@ -2,6 +2,8 @@ import * as store from 'store';
 import { ABTestType, BENEFIT_EXPERIMENT_KEY, BenefitExpType, BenefitExpValue } from '../constants/abTest';
 import { DEVICE_ID_KEY, SESSION_ID_KEY, SESSION_COUNT_KEY } from '../constants/actionTicket';
 import { AUTH_LEVEL, blockUnverifiedUser } from './checkAuthDialog';
+import { getUserGroupName } from './abTestHelper';
+import { QUERY_LOVER_BOUNDARY_TEST } from '../constants/abTestGlobalValue';
 
 interface CheckBenefitExpCount {
   type: ABTestType | BenefitExpType;
@@ -14,10 +16,15 @@ interface CheckBenefitExpCount {
 }
 
 function getQueryLoverCount(currentSearchCount: number) {
-  const currentSessionCount = store.get(SESSION_COUNT_KEY);
-  const queryLoverCount = currentSearchCount * currentSessionCount;
+  const boundaryTestName = getUserGroupName(QUERY_LOVER_BOUNDARY_TEST) || '';
 
-  return queryLoverCount;
+  if (boundaryTestName === 'queryPerDevice') {
+    const currentSessionCount = store.get(SESSION_COUNT_KEY);
+    const queryLoverCount = currentSearchCount * currentSessionCount;
+    return queryLoverCount;
+  }
+
+  return currentSearchCount;
 }
 
 export async function checkBenefitExp({

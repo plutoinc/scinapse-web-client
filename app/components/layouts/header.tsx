@@ -6,9 +6,9 @@ import * as Cookies from 'js-cookie';
 import { denormalize } from 'normalizr';
 import MenuItem from '@material-ui/core/MenuItem';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import NoSsr from '@material-ui/core/NoSsr';
 import * as addDays from 'date-fns/add_days';
 import * as isAfter from 'date-fns/is_after';
+import * as classNames from 'classnames';
 import TopToastBar from '../topToastBar';
 import BubblePopover from '../common/bubblePopover';
 import { AppState } from '../../reducers';
@@ -35,7 +35,7 @@ import { getMemoizedPaper } from '../../containers/paperShow/select';
 import ResearchHistory from '../researchHistory';
 import SuddenAlert from '../preNoted/suddenAlert';
 import { getUserGroupName } from '../../helpers/abTestHelper';
-import { SIGN_BANNER_AT_PAPER_SHOW_TEST } from '../../constants/abTestGlobalValue';
+import { SIGN_BANNER_AT_PAPER_SHOW_TEST, SEARCH_ENGINE_MOOD_TEST } from '../../constants/abTestGlobalValue';
 const styles = require('./header.scss');
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -61,6 +61,7 @@ interface HeaderStates {
   userDropdownAnchorElement: HTMLElement | null;
   openTopToast: boolean;
   searchKeyword: string;
+  isSearchEngineMood: boolean;
 }
 
 const UserInformation: React.FunctionComponent<{ user: CurrentUser }> = props => {
@@ -89,6 +90,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
       userDropdownAnchorElement: this.userDropdownAnchorRef,
       openTopToast: false,
       searchKeyword: SafeURIStringHandler.decode(rawQueryParamsObj.query || ''),
+      isSearchEngineMood: false,
     };
   }
 
@@ -97,6 +99,10 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
       window.addEventListener('scroll', this.handleScrollEvent, { passive: true });
       this.checkTopToast();
     }
+
+    this.setState({
+      isSearchEngineMood: getUserGroupName(SEARCH_ENGINE_MOOD_TEST) === 'searchEngine',
+    });
   }
 
   public componentWillUnmount() {
@@ -123,9 +129,9 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     return (
       <nav className={`${navClassName} mui-fixed`}>
         <div className={styles.headerContainer}>
-          {this.getHeaderLogo()}
+          {this.getHeaderLogo(this.state.isSearchEngineMood)}
           <div className={styles.leftBox} />
-          {this.getSearchFormContainer()}
+          {this.getSearchFormContainer(this.state.isSearchEngineMood)}
           {this.getHeaderButtons()}
         </div>
         {this.getToastBar()}
@@ -205,7 +211,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     ticking = false;
   };
 
-  private getHeaderLogo = () => {
+  private getHeaderLogo = (isSearchEngineMood: boolean) => {
     const { location, layoutState } = this.props;
     const isNotHome = location.pathname !== HOME_PATH;
 
@@ -218,28 +224,29 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     }
 
     return (
-      <NoSsr>
-        <Link
-          to="/"
-          onClick={() =>
-            ActionTicketManager.trackTicket({
-              pageType: getCurrentPageType(),
-              actionType: 'fire',
-              actionArea: 'topBar',
-              actionTag: 'clickLogo',
-              actionLabel: null,
-            })
-          }
-          className={styles.headerLogo}
-          aria-label="Scinapse header logo"
-        >
-          <Icon icon={'SCINAPSE_LOGO'} />
-        </Link>
-      </NoSsr>
+      <Link
+        to="/"
+        onClick={() =>
+          ActionTicketManager.trackTicket({
+            pageType: getCurrentPageType(),
+            actionType: 'fire',
+            actionArea: 'topBar',
+            actionTag: 'clickLogo',
+            actionLabel: null,
+          })
+        }
+        className={classNames({
+          [styles.headerSearchEngineLogo]: isSearchEngineMood,
+          [styles.headerLogo]: !isSearchEngineMood,
+        })}
+        aria-label="Scinapse header logo"
+      >
+        <Icon icon={isSearchEngineMood ? 'LOGO_SEARCH_ENGINE' : 'SCINAPSE_LOGO'} />{' '}
+      </Link>
     );
   };
 
-  private getSearchFormContainer = () => {
+  private getSearchFormContainer = (isSearchEngineMood: boolean) => {
     const { location, articleSearchState } = this.props;
     const isShowSearchFormContainer = location.pathname !== HOME_PATH;
 
@@ -255,19 +262,23 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     }
 
     return (
-      <NoSsr>
-        <div style={!isShowSearchFormContainer ? { visibility: 'hidden' } : {}} className={styles.searchFormContainer}>
-          <SearchQueryInput
-            wrapperClassName={styles.searchWrapper}
-            listWrapperClassName={styles.suggestionListWrapper}
-            inputClassName={styles.searchInput}
-            initialValue={currentQuery}
-            initialFilter={currentFilter}
-            actionArea="topBar"
-            maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
-          />
-        </div>
-      </NoSsr>
+      <div
+        style={!isShowSearchFormContainer ? { visibility: 'hidden' } : {}}
+        className={classNames({
+          [styles.searchFormContainerAtSearchEngineLogo]: isSearchEngineMood,
+          [styles.searchFormContainer]: !isSearchEngineMood,
+        })}
+      >
+        <SearchQueryInput
+          wrapperClassName={styles.searchWrapper}
+          listWrapperClassName={styles.suggestionListWrapper}
+          inputClassName={isSearchEngineMood ? styles.searchEngineMoodInput : styles.searchInput}
+          initialValue={currentQuery}
+          initialFilter={currentFilter}
+          actionArea="topBar"
+          maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
+        />
+      </div>
     );
   };
 

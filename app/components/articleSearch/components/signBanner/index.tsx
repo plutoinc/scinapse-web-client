@@ -1,10 +1,7 @@
 import * as React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '../../../../helpers/withStylesHelper';
-import {
-  SIGN_BANNER_AT_SEARCH_BANNER_TEST,
-  SIGN_BANNER_AT_SEARCH_CURATED_TEST,
-} from '../../../../constants/abTestGlobalValue';
+import { SIGN_BANNER_AT_SEARCH_CURATED_TEST } from '../../../../constants/abTestGlobalValue';
 import { getUserGroupName } from '../../../../helpers/abTestHelper';
 import GlobalDialogManager from '../../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
@@ -56,10 +53,8 @@ const SignBannerSignButtonText: React.FunctionComponent<{ buttonText: string }> 
   );
 });
 
-function getSignBannerContext(): SignBannerContextObj {
-  const signBannerCuratedUserGroupName: string = getUserGroupName(SIGN_BANNER_AT_SEARCH_CURATED_TEST) || '';
-
-  switch (signBannerCuratedUserGroupName) {
+function getSignBannerContext(userGroupName: string): SignBannerContextObj {
+  switch (userGroupName) {
     case 'areyouresearcher-yesofcourse':
       return { titleText: 'Are you a researcher?', buttonText: 'Yes, of course' };
     case 'bemember-joinnow':
@@ -73,13 +68,14 @@ function getSignBannerContext(): SignBannerContextObj {
 
 const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
   const { isLoading } = props;
-  const [signBannerUserGroupName, setSignBannerUserGroupName] = React.useState('');
+  const signBannerCuratedUserGroupName = React.useRef('');
 
   React.useEffect(() => {
-    setSignBannerUserGroupName(getUserGroupName(SIGN_BANNER_AT_SEARCH_BANNER_TEST) || '');
+    signBannerCuratedUserGroupName.current = getUserGroupName(SIGN_BANNER_AT_SEARCH_CURATED_TEST) || '';
   }, []);
 
-  const signBannerContext: SignBannerContextObj = getSignBannerContext();
+  const signBannerContext: SignBannerContextObj = getSignBannerContext(signBannerCuratedUserGroupName.current);
+
   const bannerViewTicketContext: ActionTicketParams = {
     pageType: 'searchResult',
     actionType: 'view',
@@ -89,11 +85,6 @@ const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
     expName: 'signBannerAtSearch',
   };
   const { elRef } = useObserver(0.1, bannerViewTicketContext);
-  const isBannerShow = signBannerUserGroupName === 'banner';
-
-  if (!isBannerShow) {
-    return null;
-  }
 
   if (isLoading) {
     return (

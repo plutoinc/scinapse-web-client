@@ -9,6 +9,8 @@ import { LayoutState, UserDevice } from '../layouts/records';
 import { withStyles } from '../../helpers/withStylesHelper';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
 import TrendingPaper from './trendingPaper';
+import { getUserGroupName } from '../../helpers/abTestHelper';
+import { SEARCH_ENGINE_MOOD_TEST } from '../../constants/abTestGlobalValue';
 const styles = require('./home.scss');
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
@@ -18,6 +20,10 @@ export interface HomeProps extends RouteComponentProps<null> {
   dispatch: Dispatch<any>;
 }
 
+interface HomeState {
+  isSearchEngineMood: boolean;
+}
+
 function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
@@ -25,10 +31,23 @@ function mapStateToProps(state: AppState) {
 }
 
 @withStyles<typeof Home>(styles)
-class Home extends React.PureComponent<HomeProps> {
+class Home extends React.PureComponent<HomeProps, HomeState> {
+  public constructor(props: HomeProps) {
+    super(props);
+
+    this.state = {
+      isSearchEngineMood: false,
+    };
+  }
+
+  public componentDidMount() {
+    this.setState({
+      isSearchEngineMood: getUserGroupName(SEARCH_ENGINE_MOOD_TEST) === 'searchEngine',
+    });
+  }
+
   public render() {
     const containerStyle = this.getContainerStyle();
-
     return (
       <div className={styles.articleSearchFormContainer}>
         {this.getHelmetNode()}
@@ -65,7 +84,7 @@ class Home extends React.PureComponent<HomeProps> {
                   maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
                   actionArea="home"
                   autoFocus
-                  inputClassName={styles.searchInput}
+                  inputClassName={this.state.isSearchEngineMood ? styles.searchEngineMoodInput : styles.searchInput}
                 />
               </div>
               <div className={styles.searchTryKeyword} />
