@@ -33,9 +33,8 @@ import { getCollections } from '../collections/actions';
 import { collectionSchema } from '../../model/collection';
 import { getMemoizedPaper } from '../../containers/paperShow/select';
 import ResearchHistory from '../researchHistory';
-import SuddenAlert from '../preNoted/suddenAlert';
 import { getUserGroupName } from '../../helpers/abTestHelper';
-import { SIGN_BANNER_AT_PAPER_SHOW_TEST, SEARCH_ENGINE_MOOD_TEST } from '../../constants/abTestGlobalValue';
+import { SEARCH_ENGINE_MOOD_TEST } from '../../constants/abTestGlobalValue';
 const styles = require('./header.scss');
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -480,13 +479,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           >
             Get Started
           </div>
-          <SuddenAlert
-            open={false}
-            anchorEl={this.state.userDropdownAnchorElement}
-            placement="bottom-end"
-            popperOptions={{ positionFixed: true }}
-            disablePortal
-          />
         </div>
       );
     } else {
