@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Dispatch, connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { denormalize } from 'normalizr';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Author, authorSchema } from '../../model/author/author';

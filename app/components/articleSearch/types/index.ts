@@ -1,4 +1,4 @@
-import { Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { ArticleSearchState } from '../records';
 import { Paper } from '../../../model/paper';

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import axios from 'axios';
 import Table from '@material-ui/core/Table';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
@@ -10,7 +12,6 @@ import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { CurrentUser } from '../../model/currentUser';
-import { Dispatch, connect } from 'react-redux';
 import { AppState } from '../../reducers';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../helpers/checkAuthDialog';
 const styles = require('./admin.scss');

@@ -34,7 +34,7 @@ describe('articleSearch actions', () => {
   });
 
   beforeEach(() => {
-    store = generateMockStore({});
+    store = generateMockStore();
     store.clearActions();
     mockFn.mockClear();
   });

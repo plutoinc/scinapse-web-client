@@ -1,7 +1,8 @@
 import * as React from 'react';
 import axios from 'axios';
 import { parse, stringify } from 'qs';
-import { connect, Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { denormalize } from 'normalizr';
 import { Helmet } from 'react-helmet';

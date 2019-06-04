@@ -1,5 +1,5 @@
-import { denormalize } from 'normalizr';
 import { createSelector } from 'reselect';
+import { denormalize } from 'normalizr';
 import { AppState } from '../reducers';
 import { paperSchema } from '../model/paper';
 

@@ -16,7 +16,6 @@ import CssInjector from '../app/helpers/cssInjector';
 import { generateFullHTML } from '../app/helpers/htmlWrapper';
 const JssProvider = require('react-jss/lib/JssProvider').default;
 const { SheetsRegistry } = require('react-jss/lib/jss');
-
 const statsFile = path.resolve(__dirname, '../client/loadable-stats.json');
 const extractor = new ChunkExtractor({ statsFile });
 

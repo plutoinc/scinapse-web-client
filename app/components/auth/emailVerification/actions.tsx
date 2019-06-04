@@ -1,4 +1,4 @@
-import { Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 import { ACTION_TYPES } from '../../../actions/actionTypes';
 import AuthAPI from '../../../api/auth';
 import { VerifyEmailResult } from '../../../api/types/auth';
@@ -7,7 +7,7 @@ import { closeDialog } from '../../dialog/actions';
 import { trackDialogView } from '../../../helpers/handleGA';
 
 export function verifyToken(token: string) {
-  return async (dispatch: Dispatch<Function>) => {
+  return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.EMAIL_VERIFICATION_START_TO_VERIFY_TOKEN,
     });
@@ -40,7 +40,7 @@ export function verifyToken(token: string) {
 }
 
 export function resendVerificationEmail(email: string, isDialog: boolean) {
-  return async (dispatch: Dispatch<Function>) => {
+  return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.EMAIL_VERIFICATION_START_TO_RESEND_VERIFICATION_EMAIL,
     });

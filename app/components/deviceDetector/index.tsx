@@ -16,7 +16,7 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-interface DeviceDetectorProps extends DispatchProp<{ layout: LayoutState }> {
+interface DeviceDetectorProps extends DispatchProp {
   layout: LayoutState;
 }
 

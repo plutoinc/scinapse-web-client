@@ -1,20 +1,18 @@
-import { RAW } from '../../../__mocks__';
-
 jest.mock('../../../api/journal');
 jest.mock('../../../helpers/makePlutoToastAction');
 
+import { RAW } from '../../../__mocks__';
 import axios from 'axios';
 import * as Actions from '../actions';
-import { MockStore } from 'redux-mock-store';
-import { generateMockStore } from '../../../__tests__/mockStore';
+import { generateMockStore, EnhancedMockStore } from '../../../__tests__/mockStore';
 import { ACTION_TYPES } from '../../../actions/actionTypes';
 
 describe('Journal Show actions spec', () => {
-  let store: MockStore<{}>;
+  let store: EnhancedMockStore;
   let actions: any;
 
   beforeEach(() => {
-    store = generateMockStore({});
+    store = generateMockStore();
     store.clearActions();
   });
 

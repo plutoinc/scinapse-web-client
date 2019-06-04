@@ -1,6 +1,5 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-import { Store } from 'react-redux';
+import { createStore, applyMiddleware, compose, Store, AnyAction } from 'redux';
+import thunkMiddleware, { ThunkDispatch } from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 import ReduxNotifier from '../middlewares/notifier';
 import setUserToTracker from '../middlewares/trackUser';
@@ -8,25 +7,27 @@ import EnvChecker from '../helpers/envChecker';
 import { rootReducer, initialState, AppState } from '../reducers';
 import { logException } from '../helpers/errorHandler';
 
-export interface ReadonlyStore extends Readonly<Store<AppState>> {}
-
 class StoreManager {
-  private _store: ReadonlyStore;
+  private _store: Store<AppState, AnyAction> & { dispatch: ThunkDispatch<AppState, undefined, AnyAction> };
 
   public get store() {
+    if (this._store) {
+      return this._store;
+    }
+    this._store = this.initializeStore();
     return this._store;
   }
 
   public initializeStore() {
     if (EnvChecker.isLocal() || EnvChecker.isDev()) {
       const loggerMiddleware = createLogger({ collapsed: true });
-      this._store = createStore(
+      return createStore(
         rootReducer,
         this.getBrowserInitialState(),
         compose(applyMiddleware(thunkMiddleware, ReduxNotifier, loggerMiddleware))
       );
     } else {
-      this._store = createStore(
+      return createStore(
         rootReducer,
         this.getBrowserInitialState(),
         compose(applyMiddleware(thunkMiddleware, ReduxNotifier, setUserToTracker))

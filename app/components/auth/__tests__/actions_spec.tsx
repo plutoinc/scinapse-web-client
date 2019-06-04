@@ -21,7 +21,7 @@ describe('auth actions', () => {
   });
 
   beforeEach(() => {
-    store = generateMockStore({});
+    store = generateMockStore();
     store.clearActions();
   });
 

@@ -1,4 +1,4 @@
-import { Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 import { LayoutState } from '../records';
 import { CurrentUser } from '../../../model/currentUser';
 import { ArticleSearchState } from '../../articleSearch/records';
