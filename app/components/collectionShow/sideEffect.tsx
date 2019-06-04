@@ -2,6 +2,7 @@ import { LoadDataParams } from '../../routes';
 import { CollectionShowMatchParams } from './types';
 import { getCollection, getPapers } from './actions';
 import { ActionCreators } from '../../actions/actionTypes';
+import { Dispatch } from 'redux';
 
 export async function fetchCollectionShowData(params: LoadDataParams<CollectionShowMatchParams>) {
   const { dispatch, match } = params;
@@ -14,7 +15,7 @@ export async function fetchCollectionShowData(params: LoadDataParams<CollectionS
       })
     );
   } else {
-    const promiseArr: Promise<any>[] = [];
+    const promiseArr: ((dispatch: Dispatch<any>) => Promise<any>)[] = [];
     promiseArr.push(dispatch(getCollection(collectionId, params.cancelToken)));
     promiseArr.push(
       dispatch(

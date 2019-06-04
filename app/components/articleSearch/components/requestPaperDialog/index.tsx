@@ -1,7 +1,8 @@
 import * as React from 'react';
 import * as Cookies from 'js-cookie';
 import * as classNames from 'classnames';
-import { connect, Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { Formik, FormikErrors, Form, Field } from 'formik';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import FeedbackManager from '@pluto_network/scinapse-feedback';

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as Cookies from 'js-cookie';
-import { connect, Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import * as classNames from 'classnames';
 import Dialog from '@material-ui/core/Dialog';
 import { Formik, Form, Field, FormikErrors } from 'formik';

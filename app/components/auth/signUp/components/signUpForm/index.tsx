@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Formik, Field, FormikErrors, Form } from 'formik';
-import { connect, Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
 import { GLOBAL_DIALOG_TYPE } from '../../../../dialog/reducer';
 import AuthTabs from '../../../authTabs';

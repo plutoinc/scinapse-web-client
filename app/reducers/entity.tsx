@@ -24,33 +24,32 @@ export interface NormalizedPaperListResponse {
   REFERENCE: https://github.com/tc39/proposal-object-rest-spread
 */
 
-export interface AppEntities
-  extends Readonly<{
-      authors: {
-        [authorId: number]: Author;
-      };
-      papers: {
-        [paperId: number]: Paper;
-      };
-      papersInCollection: {
-        [paperId: number]: PaperInCollection;
-      };
-      comments: {
-        [commentId: number]: Comment;
-      };
-      collections: {
-        [collectionId: number]: Collection;
-      };
-      members: {
-        [memberId: number]: Member;
-      };
-      journals: {
-        [journalId: number]: Journal;
-      };
-      profiles: {
-        [authorId: number]: Profile;
-      };
-    }> {}
+export interface AppEntities {
+  authors: {
+    [authorId: number]: Author;
+  };
+  papers: {
+    [paperId: number]: Paper;
+  };
+  papersInCollection: {
+    [paperId: number]: PaperInCollection;
+  };
+  comments: {
+    [commentId: number]: Comment;
+  };
+  collections: {
+    [collectionId: number]: Collection;
+  };
+  members: {
+    [memberId: number]: Member;
+  };
+  journals: {
+    [journalId: number]: Journal;
+  };
+  profiles: {
+    [authorId: number]: Profile;
+  };
+}
 
 export interface EntityState extends Readonly<AppEntities> {}
 
@@ -74,7 +73,15 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
         return state;
       }
 
-      return merge({}, state, entities);
+      const newState = { ...state };
+      for (const key of Object.keys(entities)) {
+        const newKey = key as keyof AppEntities;
+        if (newKey) {
+          newState[newKey] = merge({}, state[newKey], entities[newKey]);
+        }
+      }
+
+      return newState;
     }
 
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_POST_PAPER_TO_COLLECTION:

@@ -18,6 +18,10 @@ const SITEMAP_REGEX = /^\/sitemap(\/sitemap_[0-9]+\.xml)?\/?$/;
 const handler = async (event: LambdaProxy.Event): Promise<LambdaProxy.Response> => {
   console.log(JSON.stringify(event, null, 2));
   const pathname = event.path;
+  const headers: { [key: string]: string } = {};
+  for (const key of Object.keys(event.headers)) {
+    headers[key.toLowerCase()] = event.headers[key];
+  }
 
   if (SITEMAP_REGEX.test(pathname)) {
     const res = await getSitemap(pathname);
@@ -47,7 +51,7 @@ const handler = async (event: LambdaProxy.Event): Promise<LambdaProxy.Response> 
   }
 
   if (pathname === '/robots.txt') {
-    const body = getRobotTxt(event.headers.host === 'scinapse.io');
+    const body = getRobotTxt(headers.host === 'scinapse.io');
 
     return {
       statusCode: 200,
@@ -90,7 +94,7 @@ const handler = async (event: LambdaProxy.Event): Promise<LambdaProxy.Response> 
     version = fs.readFileSync(path.resolve(__dirname, './version')).toString('utf8');
   }
 
-  const cookies = cookie.parse(event.headers.cookie || '');
+  const cookies = cookie.parse(headers.cookie || '');
   const newCookies: { [key: string]: string | CustomCookieObject } = {
     ...cookies,
   };

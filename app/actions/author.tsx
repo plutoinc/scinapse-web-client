@@ -1,6 +1,6 @@
 import axios, { CancelToken } from 'axios';
 import { normalize } from 'normalizr';
-import { Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 import { ActionCreators } from './actionTypes';
 import alertToast from '../helpers/makePlutoToastAction';
 import PlutoAxios from '../api/pluto';

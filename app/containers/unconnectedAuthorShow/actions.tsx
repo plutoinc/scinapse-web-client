@@ -1,5 +1,5 @@
 import axios, { CancelToken } from 'axios';
-import { Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 import AuthorAPI, { ConnectAuthorParams } from '../../api/author';
 import ProfileAPI from '../../api/profile';
 import alertToast from '../../helpers/makePlutoToastAction';

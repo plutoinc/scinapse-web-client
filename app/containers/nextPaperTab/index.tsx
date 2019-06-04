@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { connect, Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import Icon from '../../icons';
 import { Paper } from '../../model/paper';
 import { AppState } from '../../reducers';

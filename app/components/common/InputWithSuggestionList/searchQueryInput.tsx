@@ -3,7 +3,8 @@ import axios, { CancelTokenSource } from 'axios';
 import * as classNames from 'classnames';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { connect, Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import CompletionAPI, { CompletionKeyword } from '../../../api/completion';
 import { useDebouncedAsyncFetch } from '../../../hooks/debouncedFetchAPIHook';
@@ -53,7 +54,7 @@ function validateSearchInput(query: string) {
 }
 
 async function shouldBlockUnsignedUser(actionArea: string) {
-  const isBlocked = await checkBenefitExp({
+  return await checkBenefitExp({
     type: 'queryLover',
     matching: 'session',
     maxCount: 2,
@@ -61,7 +62,6 @@ async function shouldBlockUnsignedUser(actionArea: string) {
     userActionType: 'queryLover',
     expName: 'queryLover',
   });
-  return isBlocked;
 }
 
 const SearchQueryInput: React.FunctionComponent<

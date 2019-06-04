@@ -1,4 +1,4 @@
-import { Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 import { Paper } from '../../model/paper';
 import { PDFViewerState } from '../../reducers/pdfViewer';
 import { CurrentUser } from '../../model/currentUser';

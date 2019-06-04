@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { connect, Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { Formik, Form, Field, FormikErrors } from 'formik';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
@@ -114,7 +115,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
     try {
       setIsLoading(true);
       setNetworkError('');
-      const res: SignInResult = await props.dispatch(signInWithEmail({ email, password }, isDialog));
+      const res: SignInResult = await signInWithEmail({ email, password }, isDialog)(props.dispatch);
       const authContext = props.dialogState.authContext;
       if (authContext) {
         let actionLabel: string | null = authContext.expName || authContext.actionLabel;

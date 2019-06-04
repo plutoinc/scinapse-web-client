@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Dispatch, connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import Icon from '../../icons';
 import PlutoAxios from '../../api/pluto';
 import { updateAuthorCvInfo } from '../../actions/author';

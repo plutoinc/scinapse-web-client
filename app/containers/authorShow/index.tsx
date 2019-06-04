@@ -1,7 +1,8 @@
 import * as React from 'react';
 import axios from 'axios';
 import { denormalize } from 'normalizr';
-import { connect, Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { AppState } from '../../reducers';
 import AuthorShow from '../unconnectedAuthorShow';

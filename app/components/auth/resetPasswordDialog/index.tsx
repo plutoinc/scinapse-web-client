@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Field, Formik, Form } from 'formik';
-import { Dispatch, connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import AuthButton from '../authButton';
 import AuthInputBox from '../../common/inputBox/authInputBox';
 import { withStyles } from '../../../helpers/withStylesHelper';

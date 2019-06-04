@@ -1,6 +1,7 @@
 import * as React from 'react';
 import axios from 'axios';
-import { connect, Dispatch } from 'react-redux';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
 import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import * as parse from 'date-fns/parse';

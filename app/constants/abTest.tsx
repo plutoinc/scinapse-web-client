@@ -1,11 +1,11 @@
 import {
-  bannerTest,
   searchEngineMoodTest,
   bannerCuratedTest,
   relatedPapersAtPaperShowTest,
   signBannerAtPaperShowTest,
   fullTextBlurredTest,
   refCitedChildPaperList,
+  queryLoverBoundaryTest,
 } from './abTestObject';
 
 export interface UserGroup {
@@ -24,11 +24,11 @@ export type ABTestType =
   | 'queryLover'
   | 'searchEngineMood'
   | 'signBannerAtPaperShow'
-  | 'signBannerAtSearch-banner'
   | 'signBannerAtSearch-curated'
   | 'relatedPapersAtPaperShow'
   | 'fullTextBlurred'
-  | 'refCitedPaperItem';
+  | 'refCitedPaperItem'
+  | 'queryLover-boundaryTest';
 
 export const BENEFIT_EXPERIMENT_KEY = 'b_exp';
 
@@ -50,12 +50,12 @@ export interface BenefitExpTicketContext {
 
 export const LIVE_TESTS: Test[] = [
   searchEngineMoodTest,
-  bannerTest,
   bannerCuratedTest,
   relatedPapersAtPaperShowTest,
   signBannerAtPaperShowTest,
   fullTextBlurredTest,
   refCitedChildPaperList,
+  queryLoverBoundaryTest,
 ];
 
 function getRandomPool(): { [key: string]: string[] } {

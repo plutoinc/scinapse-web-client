@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Dispatch, connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { closeDialog } from '../../dialog/actions';
 import Icon from '../../../icons';
