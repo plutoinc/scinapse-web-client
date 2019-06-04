@@ -373,7 +373,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               hadQuitSearchFullBanner: true,
             }));
           }}
-          isOpen={isSearchFullBannerOpen}
+          isOpen={false}
         />
       </>
     );

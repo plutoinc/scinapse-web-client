@@ -481,7 +481,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             Get Started
           </div>
           <SuddenAlert
-            open={getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TEST) === 'suddenAlert'}
+            open={false}
             anchorEl={this.state.userDropdownAnchorElement}
             placement="bottom-end"
             popperOptions={{ positionFixed: true }}
