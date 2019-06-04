@@ -26,6 +26,11 @@
   }
 }
 
+.bigTitle {
+  @extend .title;
+  font-size: 20px;
+}
+
 .journalIcon {
   width: 14px;
   height: 14px;

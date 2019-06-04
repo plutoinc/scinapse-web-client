@@ -82,7 +82,7 @@ const VenueSection: React.FC<VenueSectionProps & TrackingProps> = props => {
 };
 
 const BasePaperItem: React.FC<PaperItemWithToggleListProps & TrackingProps> = React.memo(props => {
-  const { paper, pageType, actionArea, searchQueryText } = props;
+  const { paper, pageType, actionArea, searchQueryText, userGroup } = props;
 
   let source: string;
   if (!!paper.doi) {
@@ -103,7 +103,7 @@ const BasePaperItem: React.FC<PaperItemWithToggleListProps & TrackingProps> = Re
         pageType={pageType}
         actionArea={actionArea}
         source={source}
-        titleClassName={s.title}
+        titleClassName={userGroup === 'refCitedPaperItem' ? s.title : s.bigTitle}
       />
       <VenueSection pageType={pageType} actionArea={actionArea} paper={paper} />
       <AuthorSection paper={paper} pageType={pageType} actionArea={actionArea} />
