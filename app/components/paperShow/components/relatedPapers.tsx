@@ -60,7 +60,6 @@ const PaperList: React.FC<PaperListProps> = props => {
           actionArea={type === 'reference' ? 'refList' : 'citedList'}
           paper={paper}
           key={paper.id}
-          userGroup={refCitedPaperItemUserGroup}
         />
       );
     } else if (refCitedPaperItemUserGroup === 'control') {
