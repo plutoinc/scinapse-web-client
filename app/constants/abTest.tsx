@@ -5,6 +5,7 @@ import {
   signBannerAtPaperShowTest,
   fullTextBlurredTest,
   refCitedChildPaperList,
+  queryLoverBoundaryTest,
 } from './abTestObject';
 
 export interface UserGroup {
@@ -26,7 +27,8 @@ export type ABTestType =
   | 'signBannerAtSearch-curated'
   | 'relatedPapersAtPaperShow'
   | 'fullTextBlurred'
-  | 'refCitedPaperItem';
+  | 'refCitedPaperItem'
+  | 'queryLover-boundaryTest';
 
 export const BENEFIT_EXPERIMENT_KEY = 'b_exp';
 
@@ -53,6 +55,7 @@ export const LIVE_TESTS: Test[] = [
   signBannerAtPaperShowTest,
   fullTextBlurredTest,
   refCitedChildPaperList,
+  queryLoverBoundaryTest,
 ];
 
 function getRandomPool(): { [key: string]: string[] } {
