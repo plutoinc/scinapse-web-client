@@ -22,9 +22,9 @@ function getQueryLoverCount(currentSearchCount: number) {
     const currentSessionCount = store.get(SESSION_COUNT_KEY);
     const queryLoverCount = currentSearchCount * currentSessionCount;
     return queryLoverCount;
-  } else {
-    return currentSearchCount;
   }
+
+  return currentSearchCount;
 }
 
 export async function checkBenefitExp({
