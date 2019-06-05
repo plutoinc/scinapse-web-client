@@ -101,6 +101,7 @@ declare namespace Scinapse {
       | 'clickOk'
       | 'childRefList'
       | 'childCitedList'
+      | 'submitSurvey'
       | '';
 
     type ActionArea = string;

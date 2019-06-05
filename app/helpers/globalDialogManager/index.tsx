@@ -33,6 +33,16 @@ class GlobalDialogManager {
     );
   }
 
+  public openSurveyFormDialog(nextStep?: string) {
+    StoreManager.store.dispatch(
+      ActionCreators.openGlobalDialog({
+        type: GLOBAL_DIALOG_TYPE.SURVEY_FORM,
+        isBlocked: true,
+        nextSignUpStep: nextStep ? nextStep : 'email',
+      })
+    );
+  }
+
   public openFinalSignUpWithEmailDialog() {
     StoreManager.store.dispatch(
       ActionCreators.openGlobalDialog({

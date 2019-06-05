@@ -11,6 +11,7 @@ import { PaperInCollection } from '../model/paperInCollection';
 import { SIGN_UP_STEP } from '../components/auth/signUp/types';
 import { OAuthCheckParams } from '../api/types/auth';
 import { BenefitExpTicketContext } from '../constants/abTest';
+import { QuestionResult } from '../components/auth/signUp/components/surveyForm/constants';
 
 export enum ACTION_TYPES {
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = 'GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING',
@@ -211,6 +212,10 @@ export enum ACTION_TYPES {
   PDF_VIEWER_CLICK_RELOAD_BTN = 'PDF_VIEWER_CLICK_RELOAD_BTN',
   PDF_VIEWER_CLICK_VIEW_MORE_BTN = 'PDF_VIEWER_CLICK_VIEW_MORE_BTN',
   PDF_VIEWER_GET_BEST_PDF_OF_PAPER = 'PDF_VIEWER_GET_BEST_PDF_OF_PAPER',
+
+  SURVEY_FORM_CLICK_ANSWER = 'SURVEY_FORM_CLICK_ANSWER',
+  SURVEY_FORM_CLICK_SUBMIT_BTN = 'SURVEY_FORM_CLICK_SUBMIT_BTN',
+  SURVEY_FORM_CLICK_SKIP_BTN = 'SURVEY_FORM_CLICK_SKIP_BTN',
 }
 
 export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
@@ -249,6 +254,7 @@ export const ActionCreators = {
     userActionType?: Scinapse.ActionTicket.ActionTagType;
     authContext?: BenefitExpTicketContext;
     isBlocked?: boolean;
+    nextSignUpStep?: string;
   }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
   },
@@ -1008,6 +1014,14 @@ export const ActionCreators = {
 
   failToRemoveProfileCvData() {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_REMOVE_PROFILE_CV_DATA });
+  },
+
+  clickToAnswerInSurveyForm(payload: QuestionResult) {
+    return createAction({ type: ACTION_TYPES.SURVEY_FORM_CLICK_ANSWER, payload });
+  },
+
+  submitToSurvey() {
+    return createAction({ type: ACTION_TYPES.SURVEY_FORM_CLICK_SUBMIT_BTN });
   },
 
   addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {
