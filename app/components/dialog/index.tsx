@@ -213,14 +213,14 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       case GLOBAL_DIALOG_TYPE.SIGN_IN:
         return <SignIn handleChangeDialogType={this.changeDialogType} userActionType={dialogState.userActionType} />;
 
-      // case GLOBAL_DIALOG_TYPE.SIGN_UP:
-      //   return <SignUp handleChangeDialogType={this.changeDialogType} userActionType={dialogState.userActionType} />;
+      case GLOBAL_DIALOG_TYPE.SIGN_UP:
+        return <SignUp handleChangeDialogType={this.changeDialogType} userActionType={dialogState.userActionType} />;
 
       case GLOBAL_DIALOG_TYPE.ADD_PUBLICATIONS_TO_AUTHOR_DIALOG: {
         return <AllPublicationsDialog />;
       }
 
-      case GLOBAL_DIALOG_TYPE.SIGN_UP: {
+      case GLOBAL_DIALOG_TYPE.SURVEY_FORM: {
         return <SurveyForm />;
       }
 
