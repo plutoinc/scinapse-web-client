@@ -20,31 +20,47 @@ interface SurveyFormProps {
   dispatch: Dispatch<any>;
 }
 
+function randomizedAnswers(defaultQuestion: SurveyType) {
+  const defaultAnswers = defaultQuestion.answers;
+  const randomizedAnswersSurveyContext = {
+    ...defaultQuestion,
+    answer: defaultAnswers.sort(() => {
+      return 0.5 - Math.random();
+    }),
+  };
+  return randomizedAnswersSurveyContext;
+}
+
+function openFinalSignUpDialog(nextSignUpStep: string) {
+  if (nextSignUpStep === 'email') {
+    GlobalDialogManager.openFinalSignUpWithEmailDialog();
+  } else {
+    GlobalDialogManager.openFinalSignUpWithSocialDialog();
+  }
+}
+
 const SurveyForm: React.FC<SurveyFormProps> = ({ SurveyFormState, dispatch, DialogState }) => {
-  const [surveyQuestions, setSurveyQuestions] = React.useState<SurveyType[]>();
+  const [surveyQuestions, setSurveyQuestions] = React.useState<SurveyType[]>([]);
+  const [isActive, setIsActive] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     const questions = SCINAPSE_SURVEY_QUESTIONS.map(question => {
-      if (question.random) {
-        const defaultAnswers = question.answers;
-        const randomizedOrderAnswerSurvey = {
-          ...question,
-          answer: defaultAnswers.sort(() => {
-            return 0.5 - Math.random();
-          }),
-        };
-        return randomizedOrderAnswerSurvey;
-      }
-      return question;
+      return question.random ? randomizedAnswers(question) : question;
     });
+
     setSurveyQuestions(questions);
   }, []);
 
-  const questionsList =
-    surveyQuestions &&
-    surveyQuestions.map((question, index) => {
-      return <Question key={index} qKey={index} context={question} dispatch={dispatch} />;
-    });
+  React.useEffect(
+    () => {
+      setIsActive(surveyQuestions.length > 0 && surveyQuestions.length === SurveyFormState.surveyResult.length);
+    },
+    [SurveyFormState.surveyResult]
+  );
+
+  const questionsList = surveyQuestions.map((question, index) => {
+    return <Question key={index} qKey={index} context={question} dispatch={dispatch} />;
+  });
 
   return (
     <div className={styles.surveyFormContainer}>
@@ -52,9 +68,8 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ SurveyFormState, dispatch, Dial
         <div>{questionsList}</div>
         <button
           className={classNames({
-            [styles.activeSubmitBtn]: surveyQuestions && surveyQuestions.length === SurveyFormState.surveyResult.length,
-            [styles.inActiveSubmitBtn]:
-              surveyQuestions && surveyQuestions.length !== SurveyFormState.surveyResult.length,
+            [styles.activeSubmitBtn]: isActive,
+            [styles.inActiveSubmitBtn]: !isActive,
           })}
           onClick={() => {
             ActionTicketManager.trackTicket({
@@ -65,20 +80,16 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ SurveyFormState, dispatch, Dial
               actionLabel: JSON.stringify(SurveyFormState.surveyResult),
             });
             dispatch(ActionCreators.submitToSurvey());
-            DialogState.nextSignUpStep && DialogState.nextSignUpStep === 'email'
-              ? GlobalDialogManager.openFinalSignUpWithEmailDialog()
-              : GlobalDialogManager.openFinalSignUpWithSocialDialog();
+            openFinalSignUpDialog(DialogState.nextSignUpStep!);
           }}
-          disabled={surveyQuestions && surveyQuestions.length !== SurveyFormState.surveyResult.length}
+          disabled={!isActive}
         >
           Submit
         </button>
         <button
           className={styles.skipBtn}
           onClick={() => {
-            DialogState.nextSignUpStep && DialogState.nextSignUpStep === 'email'
-              ? GlobalDialogManager.openFinalSignUpWithEmailDialog()
-              : GlobalDialogManager.openFinalSignUpWithSocialDialog();
+            openFinalSignUpDialog(DialogState.nextSignUpStep!);
           }}
         >
           Skip
