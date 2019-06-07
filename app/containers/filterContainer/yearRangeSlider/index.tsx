@@ -7,7 +7,7 @@ import { MIN_YEAR } from './constants';
 import Slider from './slider';
 import { SearchPageQueryParams } from '../../../components/articleSearch/types';
 import getQueryParamsObject from '../../../helpers/getQueryParamsObject';
-import PapersQueryFormatter from '../../../helpers/papersQueryFormatter';
+import PapersQueryFormatter from '../../../helpers/searchQueryManager';
 import { goToYearFilteredSearchResultPage } from './helper';
 import FilterButton from '../filterButton';
 import FilterResetButton from '../../../components/filterContainer/filterResetButton';
@@ -91,7 +91,7 @@ const Column: React.FunctionComponent<ColumnProps> = React.memo(props => {
 });
 
 function getYearsData(qp: SearchPageQueryParams, yearSetListToShow: YearSet[]) {
-  const filter = PapersQueryFormatter.objectifyPapersFilter(qp.filter);
+  const filter = PapersQueryFormatter.objectifyPaperFilter(qp.filter);
   const minYear =
     filter.yearFrom && !isNaN(filter.yearFrom as number) ? (filter.yearFrom as number) : yearSetListToShow[0].year;
   const maxYear =

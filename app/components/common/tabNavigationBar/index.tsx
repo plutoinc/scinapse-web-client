@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import * as classNames from 'classnames';
-import PapersQueryFormatter from '../../../helpers/papersQueryFormatter';
+import PapersQueryFormatter from '../../../helpers/searchQueryManager';
 const styles = require('./tabNavigationBar.scss');
 
 interface TabLinkParams {

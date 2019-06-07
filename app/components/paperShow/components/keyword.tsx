@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Fos, NewFOS } from '../../../model/fos';
-import papersQueryFormatter from '../../../helpers/papersQueryFormatter';
+import papersQueryFormatter from '../../../helpers/searchQueryManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 const styles = require('./keyword.scss');
 

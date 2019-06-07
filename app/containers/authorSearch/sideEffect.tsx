@@ -1,4 +1,4 @@
-import PaperSearchQueryFormatter from '../../helpers/papersQueryFormatter';
+import PaperSearchQueryFormatter from '../../helpers/searchQueryManager';
 import { LoadDataParams } from '../../routes';
 import { ACTION_TYPES } from '../../actions/actionTypes';
 import { fetchSearchAuthors } from '../../components/articleSearch/actions';

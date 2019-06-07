@@ -70,7 +70,6 @@ describe('articleSearch actions', () => {
   describe('fetchSearchItems action', () => {
     const mockQuery = 'test';
     const mockPage = 3;
-    const mockFilter = 'mockFilter';
     const mockSort = 'RELEVANCE';
     let mockParams: SearchPapersParams;
 
@@ -78,7 +77,7 @@ describe('articleSearch actions', () => {
       mockParams = {
         query: mockQuery,
         page: mockPage,
-        filter: mockFilter,
+        filter: '',
         cancelToken: axios.CancelToken.source().token,
         sort: mockSort,
       };
@@ -90,8 +89,8 @@ describe('articleSearch actions', () => {
           filters: {
             fos: [],
             journal: [],
-            yearFrom: undefined,
-            yearTo: undefined,
+            yearFrom: '',
+            yearTo: '',
           },
           query: 'test',
           sort: 'RELEVANCE',

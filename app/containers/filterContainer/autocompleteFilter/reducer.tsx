@@ -1,4 +1,4 @@
-import { FilterObject } from '../../../helpers/papersQueryFormatter';
+import { FilterObject } from '../../../helpers/searchQueryManager';
 
 export interface ReducerState {
   isOpen: boolean;

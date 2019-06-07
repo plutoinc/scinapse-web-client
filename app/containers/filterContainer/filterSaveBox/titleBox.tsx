@@ -16,7 +16,7 @@ import alertToast from '../../../helpers/makePlutoToastAction';
 import getQueryParamsObject from '../../../helpers/getQueryParamsObject';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-import PapersQueryFormatter from '../../../helpers/papersQueryFormatter';
+import PapersQueryFormatter from '../../../helpers/searchQueryManager';
 import { PREVIOUS_FILTER } from '../../../components/articleSearch/constants';
 const data = require('emoji-mart/data/messenger.json');
 const styles = require('./filterSaveBox.scss');
@@ -66,7 +66,7 @@ const FilterTitleBox: React.FunctionComponent<TitleBoxProps & RouteComponentProp
                   actionType: 'fire',
                   actionArea: 'filter',
                   actionTag: 'addFilter',
-                  actionLabel: JSON.stringify(PapersQueryFormatter.objectifyPapersFilter(currentFilterStr)),
+                  actionLabel: JSON.stringify(PapersQueryFormatter.objectifyPaperFilter(currentFilterStr)),
                 });
               } else {
                 onClickSaveChangesBtn(currentFilterStr, selectedFilter);

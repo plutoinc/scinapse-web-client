@@ -2,7 +2,7 @@ import { Dispatch } from 'redux';
 import axios from 'axios';
 import { ACTION_TYPES } from '../../actions/actionTypes';
 import { SearchPapersParams } from '../../api/types/paper';
-import PapersQueryFormatter from '../../helpers/papersQueryFormatter';
+import PapersQueryFormatter from '../../helpers/searchQueryManager';
 import SearchAPI from '../../api/search';
 import { ChangeRangeInputParams } from '../../constants/paperSearch';
 import PlutoAxios from '../../api/pluto';
@@ -36,7 +36,8 @@ export function changeSearchInput(searchInput: string) {
 
 export function searchPapers(params: SearchPapersParams) {
   return async (dispatch: Dispatch<any>) => {
-    const filters = PapersQueryFormatter.objectifyPapersFilter(params.filter);
+    const filters = PapersQueryFormatter.objectifyPaperFilter(params.filter);
+    console.log(params);
 
     dispatch({
       type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS,

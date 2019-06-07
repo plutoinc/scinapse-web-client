@@ -5,7 +5,7 @@ import { CommonPaginationResponsePart } from './types/common';
 import { Collection, collectionSchema } from '../model/collection';
 import { memberSchema, Member } from '../model/member';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
-import { FilterObject } from '../helpers/papersQueryFormatter';
+import { FilterObject } from '../helpers/searchQueryManager';
 
 export interface GetCollectionsResponse extends CommonPaginationResponsePart {
   content: Collection[];

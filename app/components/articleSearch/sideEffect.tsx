@@ -1,4 +1,4 @@
-import PaperSearchQueryFormatter from '../../helpers/papersQueryFormatter';
+import PaperSearchQueryFormatter from '../../helpers/searchQueryManager';
 import { LoadDataParams } from '../../routes';
 import { searchPapers } from './actions';
 import { SearchPapersParams } from '../../api/types/paper';

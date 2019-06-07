@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { trackAndOpenLink } from '../../../helpers/handleGA';
-import papersQueryFormatter from '../../../helpers/papersQueryFormatter';
+import papersQueryFormatter from '../../../helpers/searchQueryManager';
 import { Fos } from '../../../model/fos';
 import { withStyles } from '../../../helpers/withStylesHelper';
 const styles = require('./keywords.scss');
