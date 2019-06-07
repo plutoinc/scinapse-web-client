@@ -1,24 +1,36 @@
 import * as React from 'react';
+import { Location } from 'history';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import { parse } from 'qs';
+import NoSsr from '@material-ui/core/NoSsr';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
 import { Dispatch, bindActionCreators } from 'redux';
 import { withStyles } from '../../helpers/withStylesHelper';
-import SearchQueryManager from '../../helpers/searchQueryManager';
+import DesktopPagination from '../common/desktopPagination';
+import MobilePagination from '../common/mobilePagination';
+import SearchQueryManager, { FilterObject } from '../../helpers/searchQueryManager';
 import { AppState } from '../../reducers';
+import NoResult from './components/noResult';
+import NoResultInSearch from './components/noResultInSearch';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import TabNavigationBar from '../common/tabNavigationBar';
 import Suggestions from './components/suggestions';
 import ErrorPage from '../error/errorPage';
 import { fetchCurrentUserFilters, searchPapers } from './actions';
+import SearchList from './components/searchList';
+import DoiSearchBlocked from './components/doiSearchBlocked';
 import { Paper } from '../../model/paper';
 import AuthorSearchItem from '../authorSearchItem';
 import { Actions } from '../../actions/actionTypes';
 import restoreScroll from '../../helpers/scrollRestoration';
 import { SearchPageQueryParams } from './types';
 import { MatchAuthor } from '../../api/search';
+import formatNumber from '../../helpers/formatNumber';
+import SortBar from './components/SortBar';
+import { UserDevice } from '../layouts/records';
+import makeNewFilterLink, { getUrlDecodedQueryParamsObject } from '../../helpers/makeNewFilterLink';
 const styles = require('./articleSearch.scss');
 
 function logSearchResult(searchResult?: Paper[] | null) {
@@ -98,6 +110,133 @@ const AuthorSearchResult: React.FC<AuthorSearchResult> = React.memo(({ matchAuth
   );
 });
 
+interface PaginationProps {
+  location: Location;
+  totalPages: number;
+  page: number;
+  currentUserDevice: UserDevice;
+}
+
+const Pagination: React.FC<PaginationProps> = props => {
+  const { page, totalPages, currentUserDevice, location } = props;
+
+  const currentPageIndex: number = page - 1;
+
+  const makePaginationLink = (page: number) => {
+    const queryParamsObject = getUrlDecodedQueryParamsObject(location);
+    const queryParams = SearchQueryManager.stringifyPapersQuery({
+      ...queryParamsObject,
+      page,
+    });
+
+    return `/search?${queryParams}`;
+  };
+
+  if (currentUserDevice !== UserDevice.DESKTOP) {
+    return (
+      <MobilePagination
+        totalPageCount={totalPages}
+        currentPageIndex={currentPageIndex}
+        getLinkDestination={makePaginationLink}
+        wrapperStyle={{
+          margin: '12px 0',
+        }}
+      />
+    );
+  } else {
+    return (
+      <DesktopPagination
+        type="paper_search_result"
+        totalPage={totalPages}
+        currentPageIndex={currentPageIndex}
+        getLinkDestination={makePaginationLink}
+        wrapperStyle={{
+          margin: '24px 0',
+        }}
+      />
+    );
+  }
+};
+
+const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filter: FilterObject }> = props => {
+  const { articleSearchState, currentUserState, queryParams, filter, location, layout } = props;
+
+  const hasNoSearchResult =
+    (!articleSearchState.searchItemsToShow || articleSearchState.searchItemsToShow.length === 0) && queryParams;
+  const hasNoSearchResultAndNoAuthorResult =
+    hasNoSearchResult &&
+    (!articleSearchState.matchAuthors ||
+      (articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements === 0));
+  const hasNoSearchResultButHasAuthorResult =
+    hasNoSearchResult && articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements > 0;
+  const blockedDoiMatchedSearch =
+    !currentUserState.isLoggedIn && articleSearchState.doiPatternMatched && !hasNoSearchResult;
+
+  if (hasNoSearchResultButHasAuthorResult) {
+    return (
+      <div className={styles.innerContainer}>
+        <NoResultInSearch
+          searchText={queryParams.query}
+          otherCategoryCount={articleSearchState.totalElements}
+          type="paper"
+        />
+      </div>
+    );
+  }
+  if (hasNoSearchResultAndNoAuthorResult) {
+    return (
+      <div className={styles.innerContainer}>
+        <NoResult
+          isLoading={articleSearchState.isContentLoading}
+          searchText={
+            articleSearchState.suggestionKeyword.length > 0
+              ? articleSearchState.suggestionKeyword
+              : queryParams.query || ''
+          }
+          articleSearchState={articleSearchState}
+          hasEmptyFilter={SearchQueryManager.isFilterEmpty(filter)}
+        />
+      </div>
+    );
+  }
+  if (blockedDoiMatchedSearch) {
+    return (
+      <NoSsr>
+        <div className={styles.innerContainer}>
+          <DoiSearchBlocked isLoading={articleSearchState.isContentLoading} searchDoi={articleSearchState.doi} />
+        </div>
+      </NoSsr>
+    );
+  }
+  if (queryParams) {
+    return (
+      <div className={styles.innerContainer}>
+        <div className={styles.searchSummary}>
+          <div>
+            <span className={styles.categoryHeader}>Publication</span>
+            <span className={styles.categoryCount}>{formatNumber(articleSearchState.totalElements)}</span>
+          </div>
+          <SortBar query={queryParams.query || ''} sortOption={queryParams.sort || 'RELEVANCE'} filter={filter} />
+        </div>
+        <SearchList
+          currentUser={currentUserState}
+          papers={articleSearchState.searchItemsToShow}
+          isLoading={articleSearchState.isContentLoading}
+          searchQueryText={articleSearchState.suggestionKeyword || queryParams.query || ''}
+          currentPage={articleSearchState.page}
+        />
+        <Pagination
+          page={articleSearchState.page}
+          totalPages={articleSearchState.totalPages}
+          currentUserDevice={layout.userDevice}
+          location={location}
+        />
+      </div>
+    );
+  }
+  return null;
+};
+
 const SearchContainer: React.FC<Props> = props => {
   const { articleSearchState, currentUserState, location, fetchUserFilters, searchPapers } = props;
   const [queryParams, setQueryParams] = React.useState<SearchPageQueryParams>(
@@ -159,6 +298,7 @@ const SearchContainer: React.FC<Props> = props => {
           queryParams={queryParams}
           shouldShow={articleSearchState.page === 1 && SearchQueryManager.isFilterEmpty(filter)}
         />
+        <SearchResult {...props} queryParams={queryParams} filter={filter} />
       </div>
     </div>
   );
