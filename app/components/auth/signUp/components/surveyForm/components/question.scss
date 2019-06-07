@@ -26,6 +26,10 @@
   .answerRadioBtn {
     width: 16px;
     height: 16px;
+
+    &:checked + .answerDesc {
+      color: $main-blue1;
+    }
   }
 
   .answerDesc {
