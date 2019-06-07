@@ -1,6 +1,6 @@
+import { findIndex } from 'lodash';
 import { QuestionResult } from '../components/auth/signUp/components/surveyForm/constants';
 import { Actions, ACTION_TYPES } from '../actions/actionTypes';
-import { findIndex } from 'lodash';
 
 export interface SurveyFormState {
   surveyResult: QuestionResult[];

@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { Dispatch } from 'redux';
 import { SurveyType, QuestionResult } from '../constants';
 import { withStyles } from '../../../../../../helpers/withStylesHelper';
-import { Dispatch } from 'redux';
 import { ActionCreators } from '../../../../../../actions/actionTypes';
 const styles = require('./question.scss');
 

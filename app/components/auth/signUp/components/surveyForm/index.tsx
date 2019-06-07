@@ -1,16 +1,16 @@
 import * as React from 'react';
+import * as classNames from 'classnames';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
 import { SCINAPSE_SURVEY_QUESTIONS, SurveyType } from './constants';
-import Question from './components/question';
 import { AppState } from '../../../../../reducers';
-import { connect } from 'react-redux';
 import { SurveyFormState } from '../../../../../reducers/surveyForm';
-import { Dispatch } from 'redux';
-import ActionTicketManager from '../../../../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../../../../locationListener';
-import * as classNames from 'classnames';
 import { ActionCreators } from '../../../../../actions/actionTypes';
 import { DialogState } from '../../../../dialog/reducer';
+import Question from './components/question';
+import ActionTicketManager from '../../../../../helpers/actionTicketManager';
 import GlobalDialogManager from '../../../../../helpers/globalDialogManager';
 const styles = require('./surveyForm.scss');
 
