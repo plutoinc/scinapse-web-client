@@ -89,6 +89,13 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ SurveyFormState, dispatch, Dial
         <button
           className={styles.skipBtn}
           onClick={() => {
+            ActionTicketManager.trackTicket({
+              pageType: getCurrentPageType(),
+              actionType: 'fire',
+              actionArea: 'surveyForm',
+              actionTag: 'skipSurvey',
+              actionLabel: JSON.stringify({ survey_name: '_skip_' }),
+            });
             openFinalSignUpDialog(DialogState.nextSignUpStep!);
           }}
         >
