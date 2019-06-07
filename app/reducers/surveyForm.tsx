@@ -18,24 +18,22 @@ export function reducer(state = SURVEY_FORM_INITIAL_STATE, action: Actions): Sur
       const hasAnswerIndex = findIndex(state.surveyResult, ['surveyName', newAnswer.surveyName]);
 
       if (hasAnswerIndex >= 0) {
+        const targetSurvey = state.surveyResult[hasAnswerIndex];
         if (surveyType === 'checkbox') {
-          const test = findIndex(state.surveyResult[hasAnswerIndex].checked, newAnswer.checked[0]);
+          const hasCheckedIndex = findIndex(targetSurvey.checked, newAnswer.checked[0]);
           return {
             ...state,
             surveyResult: [
               ...state.surveyResult.slice(0, hasAnswerIndex),
               {
-                ...state.surveyResult[hasAnswerIndex],
+                ...targetSurvey,
                 checked:
-                  test >= 0
+                  hasCheckedIndex >= 0
                     ? [
-                        ...state.surveyResult[hasAnswerIndex].checked.slice(0, test),
-                        ...state.surveyResult[hasAnswerIndex].checked.slice(
-                          test + 1,
-                          state.surveyResult[hasAnswerIndex].checked.length
-                        ),
+                        ...targetSurvey.checked.slice(0, hasCheckedIndex),
+                        ...targetSurvey.checked.slice(hasCheckedIndex + 1, targetSurvey.checked.length),
                       ]
-                    : unionBy(state.surveyResult[hasAnswerIndex].checked, newAnswer.checked, 'name'),
+                    : unionBy(targetSurvey.checked, newAnswer.checked, 'name'),
               },
               ...state.surveyResult.slice(hasAnswerIndex + 1, state.surveyResult.length),
             ],
