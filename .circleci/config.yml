@@ -92,4 +92,5 @@ workflows:
           filters:
             branches:
               only:
+                - hotfix
                 - release
