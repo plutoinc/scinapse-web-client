@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Location } from 'history';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import { parse } from 'qs';
@@ -8,8 +7,6 @@ import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
 import { Dispatch, bindActionCreators } from 'redux';
 import { withStyles } from '../../helpers/withStylesHelper';
-import DesktopPagination from '../common/desktopPagination';
-import MobilePagination from '../common/mobilePagination';
 import SearchQueryManager, { FilterObject } from '../../helpers/searchQueryManager';
 import { AppState } from '../../reducers';
 import NoResult from './components/noResult';
@@ -30,9 +27,9 @@ import { SearchPageQueryParams } from './types';
 import { MatchAuthor } from '../../api/search';
 import formatNumber from '../../helpers/formatNumber';
 import SortBar from './components/SortBar';
+import Pagination from './components/pagination';
 import { UserDevice } from '../layouts/records';
 import SignBanner from './components/signBanner';
-import { getUrlDecodedQueryParamsObject } from '../../helpers/makeNewFilterLink';
 import FilterContainer from '../../containers/filterContainer';
 const styles = require('./articleSearch.scss');
 
@@ -112,54 +109,6 @@ const AuthorSearchResult: React.FC<AuthorSearchResult> = React.memo(({ matchAuth
     </div>
   );
 });
-
-interface PaginationProps {
-  location: Location;
-  totalPages: number;
-  page: number;
-  currentUserDevice: UserDevice;
-}
-
-const Pagination: React.FC<PaginationProps> = props => {
-  const { page, totalPages, currentUserDevice, location } = props;
-
-  const currentPageIndex: number = page - 1;
-
-  const makePaginationLink = (page: number) => {
-    const queryParamsObject = getUrlDecodedQueryParamsObject(location);
-    const queryParams = SearchQueryManager.stringifyPapersQuery({
-      ...queryParamsObject,
-      page,
-    });
-
-    return `/search?${queryParams}`;
-  };
-
-  if (currentUserDevice !== UserDevice.DESKTOP) {
-    return (
-      <MobilePagination
-        totalPageCount={totalPages}
-        currentPageIndex={currentPageIndex}
-        getLinkDestination={makePaginationLink}
-        wrapperStyle={{
-          margin: '12px 0',
-        }}
-      />
-    );
-  } else {
-    return (
-      <DesktopPagination
-        type="paper_search_result"
-        totalPage={totalPages}
-        currentPageIndex={currentPageIndex}
-        getLinkDestination={makePaginationLink}
-        wrapperStyle={{
-          margin: '24px 0',
-        }}
-      />
-    );
-  }
-};
 
 const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filter: FilterObject }> = props => {
   const { articleSearchState, currentUserState, queryParams, filter, location, layout } = props;

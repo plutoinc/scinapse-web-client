@@ -1,9 +1,3 @@
-import { Paper } from '../../../model/paper';
-
-export interface ArticleSearchContainerProps {
-  search: Paper[];
-}
-
 export interface SearchPageQueryParams {
   query?: string;
   filter?: string;
