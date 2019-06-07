@@ -36,7 +36,11 @@ export const fullTextBlurredTest: Test = {
 
 export const refCitedChildPaperList: Test = {
   name: 'refCitedPaperItem',
-  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'refCitedPaperItem', weight: 1 }],
+  userGroup: [
+    { groupName: 'control', weight: 1 },
+    { groupName: 'refCitedPaperItem', weight: 1 },
+    { groupName: 'refCitedPaperItem-bigTitle', weight: 1 },
+  ],
 };
 
 export const queryLoverBoundaryTest: Test = {

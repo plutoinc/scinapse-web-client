@@ -7,6 +7,7 @@ export interface TrackingProps {
 
 export interface PaperItemWithToggleListProps {
   paper: Paper;
+  userGroup: string;
   searchQueryText?: string;
 }
 
