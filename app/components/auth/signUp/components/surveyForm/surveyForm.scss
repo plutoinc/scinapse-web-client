@@ -1,7 +1,9 @@
 .surveyFormContainer {
-  width: 414px;
+  max-width: 414px;
+  width: 100%;
   margin: 0 auto;
   padding: 36px;
+  overflow-y: scroll;
 }
 
 .btnWrapper {

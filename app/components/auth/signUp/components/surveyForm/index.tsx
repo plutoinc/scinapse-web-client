@@ -39,6 +39,14 @@ function openFinalSignUpDialog(nextSignUpStep: string) {
   }
 }
 
+function getAllSurveyName() {
+  const surveyNames = SCINAPSE_SURVEY_QUESTIONS.map(survey => {
+    return survey.question;
+  });
+
+  return surveyNames;
+}
+
 const SurveyForm: React.FC<SurveyFormProps> = ({ SurveyFormState, dispatch, DialogState }) => {
   const [surveyQuestions, setSurveyQuestions] = React.useState<SurveyType[]>([]);
   const [isActive, setIsActive] = React.useState<boolean>(false);
@@ -75,7 +83,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ SurveyFormState, dispatch, Dial
             ActionTicketManager.trackTicket({
               pageType: getCurrentPageType(),
               actionType: 'fire',
-              actionArea: 'surveyForm',
+              actionArea: 'signUp',
               actionTag: 'submitSurvey',
               actionLabel: JSON.stringify(SurveyFormState.surveyResult),
             });
@@ -92,9 +100,9 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ SurveyFormState, dispatch, Dial
             ActionTicketManager.trackTicket({
               pageType: getCurrentPageType(),
               actionType: 'fire',
-              actionArea: 'surveyForm',
+              actionArea: 'signUp',
               actionTag: 'skipSurvey',
-              actionLabel: JSON.stringify({ survey_name: '_skip_' }),
+              actionLabel: JSON.stringify({ surveyName: getAllSurveyName() }),
             });
             openFinalSignUpDialog(DialogState.nextSignUpStep!);
           }}

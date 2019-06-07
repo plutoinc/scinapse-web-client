@@ -1016,7 +1016,7 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_REMOVE_PROFILE_CV_DATA });
   },
 
-  clickToAnswerInSurveyForm(payload: QuestionResult) {
+  clickToAnswerInSurveyForm(payload: { survey: QuestionResult; type: string }) {
     return createAction({ type: ACTION_TYPES.SURVEY_FORM_CLICK_ANSWER, payload });
   },
 
