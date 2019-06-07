@@ -18,19 +18,22 @@ import ActionTicketManager from '../../helpers/actionTicketManager';
 import TabNavigationBar from '../common/tabNavigationBar';
 import Suggestions from './components/suggestions';
 import ErrorPage from '../error/errorPage';
-import { fetchCurrentUserFilters, searchPapers } from './actions';
+import { fetchCurrentUserFilters, searchPapers, toggleExpandingFilter, changeRangeInput } from './actions';
 import SearchList from './components/searchList';
 import DoiSearchBlocked from './components/doiSearchBlocked';
 import { Paper } from '../../model/paper';
 import AuthorSearchItem from '../authorSearchItem';
 import { Actions } from '../../actions/actionTypes';
 import restoreScroll from '../../helpers/scrollRestoration';
+import { Footer } from '../layouts';
 import { SearchPageQueryParams } from './types';
 import { MatchAuthor } from '../../api/search';
 import formatNumber from '../../helpers/formatNumber';
 import SortBar from './components/SortBar';
 import { UserDevice } from '../layouts/records';
-import makeNewFilterLink, { getUrlDecodedQueryParamsObject } from '../../helpers/makeNewFilterLink';
+import SignBanner from './components/signBanner';
+import { getUrlDecodedQueryParamsObject } from '../../helpers/makeNewFilterLink';
+import FilterContainer from '../../containers/filterContainer';
 const styles = require('./articleSearch.scss');
 
 function logSearchResult(searchResult?: Paper[] | null) {
@@ -238,12 +241,27 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
 };
 
 const SearchContainer: React.FC<Props> = props => {
-  const { articleSearchState, currentUserState, location, fetchUserFilters, searchPapers } = props;
+  const {
+    articleSearchState,
+    currentUserState,
+    location,
+    fetchUserFilters,
+    searchPapers,
+    toggleExpandingFilter,
+    changeRangeInput,
+    layout,
+  } = props;
   const [queryParams, setQueryParams] = React.useState<SearchPageQueryParams>(
     parse(location.search, { ignoreQueryPrefix: true })
   );
   const [filter, setFilter] = React.useState(SearchQueryManager.objectifyPaperFilter(queryParams.filter));
   const cancelToken = React.useRef(axios.CancelToken.source());
+  let footerStyle: React.CSSProperties;
+  if (layout.userDevice !== UserDevice.DESKTOP) {
+    footerStyle = { position: 'absolute', width: '100', bottom: 'unset' };
+  } else {
+    footerStyle = { position: 'absolute', left: '0', right: '0', bottom: '0' };
+  }
 
   React.useEffect(
     () => {
@@ -299,7 +317,17 @@ const SearchContainer: React.FC<Props> = props => {
           shouldShow={articleSearchState.page === 1 && SearchQueryManager.isFilterEmpty(filter)}
         />
         <SearchResult {...props} queryParams={queryParams} filter={filter} />
+        <div className={styles.rightBoxWrapper}>
+          {!currentUserState.isLoggedIn && <SignBanner isLoading={articleSearchState.isContentLoading} />}
+          <FilterContainer
+            handleChangeRangeInput={changeRangeInput}
+            articleSearchState={articleSearchState}
+            currentUserState={currentUserState}
+            handleToggleExpandingFilter={toggleExpandingFilter}
+          />
+        </div>
       </div>
+      <Footer containerStyle={footerStyle} />
     </div>
   );
 };
@@ -318,6 +346,8 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>) =>
     {
       fetchUserFilters: fetchCurrentUserFilters,
       searchPapers,
+      toggleExpandingFilter,
+      changeRangeInput,
     },
     dispatch
   );

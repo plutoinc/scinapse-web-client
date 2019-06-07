@@ -37,7 +37,6 @@ export function changeSearchInput(searchInput: string) {
 export function searchPapers(params: SearchPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     const filters = PapersQueryFormatter.objectifyPaperFilter(params.filter);
-    console.log(params);
 
     dispatch({
       type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS,
