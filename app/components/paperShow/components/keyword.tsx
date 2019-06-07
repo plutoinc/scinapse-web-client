@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Fos, NewFOS } from '../../../model/fos';
-import papersQueryFormatter from '../../../helpers/searchQueryManager';
+import SearchQueryManager from '../../../helpers/searchQueryManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 const styles = require('./keyword.scss');
 
@@ -21,7 +21,7 @@ const PaperShowKeyword: React.FunctionComponent<PaperShowKeywordProps> = props =
   if (isOldFos(fos)) {
     return (
       <a
-        href={`/search?${papersQueryFormatter.stringifyPapersQuery({
+        href={`/search?${SearchQueryManager.stringifyPapersQuery({
           query: fos.fos || '',
           sort: 'RELEVANCE',
           page: 1,
@@ -46,7 +46,7 @@ const PaperShowKeyword: React.FunctionComponent<PaperShowKeywordProps> = props =
   } else {
     return (
       <a
-        href={`/search?${papersQueryFormatter.stringifyPapersQuery({
+        href={`/search?${SearchQueryManager.stringifyPapersQuery({
           query: fos.name || '',
           sort: 'RELEVANCE',
           page: 1,

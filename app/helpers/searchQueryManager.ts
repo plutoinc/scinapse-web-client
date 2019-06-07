@@ -2,6 +2,7 @@ import { stringify } from 'qs';
 import { SearchPageQueryParams } from '../components/articleSearch/types';
 import { SearchPapersParams } from '../api/types/paper';
 import SafeURIStringHandler from './safeURIStringHandler';
+import { isEmpty } from 'lodash';
 
 export interface FilterObject {
   yearFrom: number;
@@ -99,11 +100,20 @@ class SearchQueryManager {
     return resultQuery;
   }
 
+  public isFilterEmpty(filter: Partial<FilterObject>) {
+    return (
+      !filter.yearFrom &&
+      !filter.yearTo &&
+      (!filter.fos || isEmpty(filter.fos)) &&
+      (!filter.journal || isEmpty(filter.journal))
+    );
+  }
+
   private parseNumberArray(raw: string) {
     return raw.split('|').map(str => parseInt(str, 10));
   }
 }
 
-const papersQueryFormatter = new SearchQueryManager();
+const searchQueryManager = new SearchQueryManager();
 
-export default papersQueryFormatter;
+export default searchQueryManager;

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
 import { Dispatch, bindActionCreators } from 'redux';
 import { withStyles } from '../../helpers/withStylesHelper';
-import PaperSearchQueryFormatter from '../../helpers/searchQueryManager';
+import SearchQueryManager from '../../helpers/searchQueryManager';
 import { AppState } from '../../reducers';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import TabNavigationBar from '../common/tabNavigationBar';
@@ -61,7 +61,6 @@ interface AuthorSearchResult {
   queryParams: SearchPageQueryParams;
 }
 const AuthorSearchResult: React.FC<AuthorSearchResult> = React.memo(({ matchAuthors, shouldShow, queryParams }) => {
-  console.log(queryParams.filter);
   if (!shouldShow || !matchAuthors || matchAuthors.content.length === 0) return null;
   const authorCount = matchAuthors.totalElements;
   const authors = matchAuthors.content;
@@ -70,7 +69,7 @@ const AuthorSearchResult: React.FC<AuthorSearchResult> = React.memo(({ matchAuth
     <Link
       to={{
         pathname: '/search/authors',
-        search: PaperSearchQueryFormatter.stringifyPapersQuery({
+        search: SearchQueryManager.stringifyPapersQuery({
           query: queryParams.query || '',
           sort: 'RELEVANCE',
           filter: {},
@@ -104,7 +103,7 @@ const SearchContainer: React.FC<Props> = props => {
   const [queryParams, setQueryParams] = React.useState<SearchPageQueryParams>(
     parse(location.search, { ignoreQueryPrefix: true })
   );
-  const [filter, setFilter] = React.useState(PaperSearchQueryFormatter.objectifyPaperFilter(queryParams.filter));
+  const [filter, setFilter] = React.useState(SearchQueryManager.objectifyPaperFilter(queryParams.filter));
   const cancelToken = React.useRef(axios.CancelToken.source());
 
   React.useEffect(
@@ -113,8 +112,9 @@ const SearchContainer: React.FC<Props> = props => {
 
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
       setQueryParams(currentQueryParams);
+      setFilter(SearchQueryManager.objectifyPaperFilter(currentQueryParams.filter));
 
-      const params = PaperSearchQueryFormatter.makeSearchQueryFromParamsObject(currentQueryParams);
+      const params = SearchQueryManager.makeSearchQueryFromParamsObject(currentQueryParams);
       params.cancelToken = cancelToken.current.token;
       searchPapers(params).then(papers => {
         // TODO: change below logging logic because server could make error
@@ -157,7 +157,7 @@ const SearchContainer: React.FC<Props> = props => {
         <AuthorSearchResult
           matchAuthors={articleSearchState.matchAuthors}
           queryParams={queryParams}
-          shouldShow={articleSearchState.page === 1}
+          shouldShow={articleSearchState.page === 1 && SearchQueryManager.isFilterEmpty(filter)}
         />
       </div>
     </div>

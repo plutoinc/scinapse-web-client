@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { trackAndOpenLink } from '../../../helpers/handleGA';
-import papersQueryFormatter from '../../../helpers/searchQueryManager';
+import SearchQueryManager from '../../../helpers/searchQueryManager';
 import { Fos } from '../../../model/fos';
 import { withStyles } from '../../../helpers/withStylesHelper';
 const styles = require('./keywords.scss');
@@ -24,7 +24,7 @@ const Keywords = (props: KeywordsProps) => {
         <Link
           to={{
             pathname: '/search',
-            search: papersQueryFormatter.stringifyPapersQuery({
+            search: SearchQueryManager.stringifyPapersQuery({
               query: keyword.fos || '',
               sort: 'RELEVANCE',
               page: 1,
