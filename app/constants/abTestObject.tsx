@@ -26,12 +26,7 @@ export const relatedPapersAtPaperShowTest: Test = {
 
 export const signBannerAtPaperShowTest: Test = {
   name: 'signBannerAtPaperShow',
-  userGroup: [
-    { groupName: 'control', weight: 1 },
-    { groupName: 'bottomBanner', weight: 2 },
-    { groupName: 'suddenAlert', weight: 2 },
-    { groupName: 'searchBanner', weight: 2 },
-  ],
+  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'bottomBanner', weight: 1 }],
 };
 
 export const fullTextBlurredTest: Test = {
@@ -41,7 +36,11 @@ export const fullTextBlurredTest: Test = {
 
 export const refCitedChildPaperList: Test = {
   name: 'refCitedPaperItem',
-  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'refCitedPaperItem', weight: 1 }],
+  userGroup: [
+    { groupName: 'control', weight: 1 },
+    { groupName: 'refCitedPaperItem', weight: 1 },
+    { groupName: 'refCitedPaperItem-bigTitle', weight: 1 },
+  ],
 };
 
 export const queryLoverBoundaryTest: Test = {
