@@ -239,9 +239,12 @@ const SearchContainer: React.FC<Props> = props => {
   React.useEffect(
     () => {
       if (currentUserState.isLoggedIn) {
-        // TODO: add cancel logic
-        fetchUserFilters();
+        fetchUserFilters(cancelToken.current.token);
       }
+      return () => {
+        cancelToken.current.cancel();
+        cancelToken.current = axios.CancelToken.source();
+      };
     },
     [currentUserState.isLoggedIn, fetchUserFilters]
   );

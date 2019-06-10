@@ -59,8 +59,10 @@ class MemberAPI extends PlutoAxios {
     return { ...camelizedRes, ...normalizedCollections };
   }
 
-  public async getMyFilters(): Promise<RawFilter[]> {
-    const res = await this.get(`/members/me/saved-filters`);
+  public async getMyFilters(cancelToken: CancelToken): Promise<RawFilter[]> {
+    const res = await this.get(`/members/me/saved-filters`, {
+      cancelToken,
+    });
     const camelizedRes = camelCaseKeys(res.data.data.content);
 
     return camelizedRes;

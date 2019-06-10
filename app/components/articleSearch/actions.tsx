@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import axios from 'axios';
+import axios, { CancelToken } from 'axios';
 import { ACTION_TYPES } from '../../actions/actionTypes';
 import { SearchPapersParams } from '../../api/types/paper';
 import PapersQueryFormatter from '../../helpers/searchQueryManager';
@@ -105,12 +105,12 @@ export function fetchSearchAuthors(params: GetAuthorsParam) {
   };
 }
 
-export function fetchCurrentUserFilters() {
+export function fetchCurrentUserFilters(cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CURRENT_USER_FILTERS });
 
     try {
-      const res = await memberAPI.getMyFilters();
+      const res = await memberAPI.getMyFilters(cancelToken);
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CURRENT_USER_FILTERS,
         payload: {
@@ -120,13 +120,15 @@ export function fetchCurrentUserFilters() {
 
       return res;
     } catch (err) {
-      const error = PlutoAxios.getGlobalError(err);
-      dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CURRENT_USER_FILTERS,
-        payload: {
-          statusCode: (error as CommonError).status,
-        },
-      });
+      if (!axios.isCancel(err)) {
+        const error = PlutoAxios.getGlobalError(err);
+        dispatch({
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CURRENT_USER_FILTERS,
+          payload: {
+            statusCode: (error as CommonError).status,
+          },
+        });
+      }
     }
   };
 }
