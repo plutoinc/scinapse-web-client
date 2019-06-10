@@ -3,6 +3,7 @@ import axios, { CancelToken } from 'axios';
 import { ACTION_TYPES } from '../../actions/actionTypes';
 import { SearchPapersParams } from '../../api/types/paper';
 import PapersQueryFormatter from '../../helpers/searchQueryManager';
+import ActionTicketManager from '../../helpers/actionTicketManager';
 import SearchAPI from '../../api/search';
 import { ChangeRangeInputParams } from '../../constants/paperSearch';
 import PlutoAxios from '../../api/pluto';
@@ -54,7 +55,18 @@ export function searchPapers(params: SearchPapersParams) {
         payload: res,
       });
 
-      return res.data.content;
+      const searchResult = res.data.content;
+      const actionLabel = !searchResult || searchResult.length === 0 ? '0' : String(searchResult.length);
+
+      ActionTicketManager.trackTicket({
+        pageType: 'searchResult',
+        actionType: 'view',
+        actionArea: 'paperList',
+        actionTag: 'pageView',
+        actionLabel,
+      });
+
+      return searchResult;
     } catch (err) {
       if (!axios.isCancel(err)) {
         const error = PlutoAxios.getGlobalError(err);
@@ -65,6 +77,15 @@ export function searchPapers(params: SearchPapersParams) {
             statusCode: (error as CommonError).status,
           },
         });
+
+        ActionTicketManager.trackTicket({
+          pageType: 'searchResult',
+          actionType: 'view',
+          actionArea: 'paperList',
+          actionTag: 'pageView',
+          actionLabel: 'error',
+        });
+
         throw err;
       }
     }

@@ -11,7 +11,6 @@ import SearchQueryManager, { FilterObject } from '../../helpers/searchQueryManag
 import { AppState } from '../../reducers';
 import NoResult from './components/noResult';
 import NoResultInSearch from './components/noResultInSearch';
-import ActionTicketManager from '../../helpers/actionTicketManager';
 import TabNavigationBar from '../common/tabNavigationBar';
 import Suggestions from './components/suggestions';
 import ErrorPage from '../error/errorPage';
@@ -31,27 +30,8 @@ import Pagination from './components/pagination';
 import { UserDevice } from '../layouts/records';
 import SignBanner from './components/signBanner';
 import FilterContainer from '../../containers/filterContainer';
+import ArticleSpinner from '../common/spinner/articleSpinner';
 const styles = require('./articleSearch.scss');
-
-function logSearchResult(searchResult?: Paper[] | null) {
-  if (!searchResult || searchResult.length === 0) {
-    ActionTicketManager.trackTicket({
-      pageType: 'searchResult',
-      actionType: 'view',
-      actionArea: 'paperList',
-      actionTag: 'pageView',
-      actionLabel: String(0),
-    });
-  } else {
-    ActionTicketManager.trackTicket({
-      pageType: 'searchResult',
-      actionType: 'view',
-      actionArea: 'paperList',
-      actionTag: 'pageView',
-      actionLabel: String(searchResult.length),
-    });
-  }
-}
 
 type Props = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> &
@@ -68,47 +48,50 @@ const SearchHelmet: React.FC<{ query: string }> = ({ query }) => {
 };
 
 interface AuthorSearchResult {
+  isLoading: boolean;
   matchAuthors: MatchAuthor | null;
   shouldShow: boolean;
   queryParams: SearchPageQueryParams;
 }
-const AuthorSearchResult: React.FC<AuthorSearchResult> = React.memo(({ matchAuthors, shouldShow, queryParams }) => {
-  if (!shouldShow || !matchAuthors || matchAuthors.content.length === 0) return null;
-  const authorCount = matchAuthors.totalElements;
-  const authors = matchAuthors.content;
+const AuthorSearchResult: React.FC<AuthorSearchResult> = React.memo(
+  ({ matchAuthors, shouldShow, queryParams, isLoading }) => {
+    if (isLoading || !shouldShow || !matchAuthors || matchAuthors.content.length === 0) return null;
+    const authorCount = matchAuthors.totalElements;
+    const authors = matchAuthors.content;
 
-  const moreAuthorPage = (
-    <Link
-      to={{
-        pathname: '/search/authors',
-        search: SearchQueryManager.stringifyPapersQuery({
-          query: queryParams.query || '',
-          sort: 'RELEVANCE',
-          filter: {},
-          page: 1,
-        }),
-      }}
-      className={styles.moreAuthorLink}
-    >
-      Show All Author Results >
-    </Link>
-  );
+    const moreAuthorPage = (
+      <Link
+        to={{
+          pathname: '/search/authors',
+          search: SearchQueryManager.stringifyPapersQuery({
+            query: queryParams.query || '',
+            sort: 'RELEVANCE',
+            filter: {},
+            page: 1,
+          }),
+        }}
+        className={styles.moreAuthorLink}
+      >
+        Show All Author Results >
+      </Link>
+    );
 
-  const authorItems = authors.slice(0, 2).map(author => {
-    return <AuthorSearchItem authorEntity={author} key={author.id} />;
-  });
+    const authorItems = authors.slice(0, 2).map(author => {
+      return <AuthorSearchItem authorEntity={author} key={author.id} />;
+    });
 
-  return (
-    <div className={styles.authorItemSectionWrapper}>
-      <div className={styles.authorItemsHeader}>
-        <span className={styles.categoryHeader}>Author</span>
-        <span className={styles.categoryCount}>{authorCount}</span>
-        {authorCount <= 2 ? null : moreAuthorPage}
+    return (
+      <div className={styles.authorItemSectionWrapper}>
+        <div className={styles.authorItemsHeader}>
+          <span className={styles.categoryHeader}>Author</span>
+          <span className={styles.categoryCount}>{authorCount}</span>
+          {authorCount <= 2 ? null : moreAuthorPage}
+        </div>
+        <div className={styles.authorItemsWrapper}>{authorItems}</div>
       </div>
-      <div className={styles.authorItemsWrapper}>{authorItems}</div>
-    </div>
-  );
-});
+    );
+  }
+);
 
 const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filter: FilterObject }> = props => {
   const { articleSearchState, currentUserState, queryParams, filter, location, layout } = props;
@@ -123,6 +106,14 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
     hasNoSearchResult && articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements > 0;
   const blockedDoiMatchedSearch =
     !currentUserState.isLoggedIn && articleSearchState.doiPatternMatched && !hasNoSearchResult;
+
+  if (articleSearchState.isContentLoading) {
+    return (
+      <div className={styles.loadingContainer}>
+        <ArticleSpinner className={styles.loadingSpinner} />
+      </div>
+    );
+  }
 
   if (hasNoSearchResultButHasAuthorResult) {
     return (
@@ -139,7 +130,6 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
     return (
       <div className={styles.innerContainer}>
         <NoResult
-          isLoading={articleSearchState.isContentLoading}
           searchText={
             articleSearchState.suggestionKeyword.length > 0
               ? articleSearchState.suggestionKeyword
@@ -222,9 +212,7 @@ const SearchContainer: React.FC<Props> = props => {
 
       const params = SearchQueryManager.makeSearchQueryFromParamsObject(currentQueryParams);
       params.cancelToken = cancelToken.current.token;
-      searchPapers(params).then(papers => {
-        // TODO: change below logging logic because server could make error
-        logSearchResult(papers);
+      searchPapers(params).then(() => {
         restoreScroll(location.key);
       });
 
@@ -264,6 +252,7 @@ const SearchContainer: React.FC<Props> = props => {
           queryParams={queryParams}
         />
         <AuthorSearchResult
+          isLoading={articleSearchState.isContentLoading}
           matchAuthors={articleSearchState.matchAuthors}
           queryParams={queryParams}
           shouldShow={articleSearchState.page === 1 && SearchQueryManager.isFilterEmpty(filter)}

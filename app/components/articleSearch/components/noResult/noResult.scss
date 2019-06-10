@@ -8,28 +8,6 @@
   }
 }
 
-.loadingContainer {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding-top: 250px;
-  align-items: center;
-  min-height: 738.5px;
-
-  .loadingSpinner {
-    div {
-      background-color: $gray3;
-    }
-  }
-
-  .loadingContent {
-    margin-top: 27.5px;
-    font-size: 15px;
-    line-height: 2.4;
-    color: $black0;
-  }
-}
-
 .noPapersContainer {
   display: flex;
   padding-top: 45px;
