@@ -89,8 +89,8 @@ describe('articleSearch actions', () => {
           filters: {
             fos: [],
             journal: [],
-            yearFrom: '',
-            yearTo: '',
+            yearFrom: 0,
+            yearTo: 0,
           },
           query: 'test',
           sort: 'RELEVANCE',
