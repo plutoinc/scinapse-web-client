@@ -1,7 +1,7 @@
 import { History } from 'history';
 import { SearchPageQueryParams } from '../../../components/articleSearch/types';
 import getQueryParamsObject from '../../../helpers/getQueryParamsObject';
-import PapersQueryFormatter, { SearchPageQueryParamsObject } from '../../../helpers/papersQueryFormatter';
+import PapersQueryFormatter, { SearchPageQueryParamsObject } from '../../../helpers/searchQueryManager';
 import { trackSelectFilter } from '../../../components/filterContainer/trackSelectFilter';
 
 export interface GoToYearFilteredSearchResultPageParams {
@@ -20,7 +20,7 @@ export function goToYearFilteredSearchResultPage({
   fromBtn,
 }: GoToYearFilteredSearchResultPageParams) {
   const qp: SearchPageQueryParams = getQueryParamsObject(qs);
-  const filter = PapersQueryFormatter.objectifyPapersFilter(qp.filter);
+  const filter = PapersQueryFormatter.objectifyPaperFilter(qp.filter);
   const newFilter = { ...filter, yearFrom: min, yearTo: max };
   const newQP: SearchPageQueryParamsObject = {
     query: qp.query || '',

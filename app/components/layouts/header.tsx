@@ -28,7 +28,7 @@ import GlobalDialogManager from '../../helpers/globalDialogManager';
 import { HOME_PATH } from '../../constants/routes';
 import { ACTION_TYPES } from '../../actions/actionTypes';
 import { CurrentUser } from '../../model/currentUser';
-import { FilterObject } from '../../helpers/papersQueryFormatter';
+import { FilterObject, DEFAULT_FILTER } from '../../helpers/searchQueryManager';
 import { getCollections } from '../collections/actions';
 import { collectionSchema } from '../../model/collection';
 import { getMemoizedPaper } from '../../containers/paperShow/select';
@@ -248,16 +248,14 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private getSearchFormContainer = (isSearchEngineMood: boolean) => {
     const { location, articleSearchState } = this.props;
     const isShowSearchFormContainer = location.pathname !== HOME_PATH;
+    const currentFilter: FilterObject = articleSearchState.selectedFilter
+      ? articleSearchState.selectedFilter.filter
+      : DEFAULT_FILTER;
 
     let currentQuery = '';
-    let currentFilter: FilterObject = {};
     if (location.pathname === '/search') {
       const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
       currentQuery = SafeURIStringHandler.decode(rawQueryParamsObj.query || '');
-    }
-
-    if (!!articleSearchState.selectedFilter) {
-      currentFilter = articleSearchState.selectedFilter.filter;
     }
 
     return (

@@ -9,7 +9,7 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import { ArticleSearchState } from '../../../components/articleSearch/records';
 import { Filter, RawFilter } from '../../../api/member';
 import { selectFilter, putCurrentUserFilters } from '../../../components/articleSearch/actions';
-import PapersQueryFormatter from '../../../helpers/papersQueryFormatter';
+import PapersQueryFormatter from '../../../helpers/searchQueryManager';
 import getQueryParamsObject from '../../../helpers/getQueryParamsObject';
 import SavedFilterItem from '../savedFilterItem';
 import newFilterSetTitleGenerator from '../../../helpers/newFilterSetTitleGenerator';
@@ -35,7 +35,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
   const [isOpen, setIsOpen] = React.useState(false);
   const [isChange, setIsChange] = React.useState(false);
   const rawQueryParamsObj = getQueryParamsObject(location.search);
-  const filterFromQueryParams = PapersQueryFormatter.objectifyPapersFilter(rawQueryParamsObj.filter);
+  const filterFromQueryParams = PapersQueryFormatter.objectifyPaperFilter(rawQueryParamsObj.filter);
   const popoverAnchorEl = React.useRef<HTMLDivElement | null>(null);
 
   let finalFilters: Filter[];
@@ -47,7 +47,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
 
   React.useEffect(
     () => {
-      const savedFilter = !!selectedFilter ? selectedFilter.filter : PapersQueryFormatter.objectifyPapersFilter();
+      const savedFilter = !!selectedFilter ? selectedFilter.filter : PapersQueryFormatter.objectifyPaperFilter();
 
       if (isEqual(savedFilter, filterFromQueryParams)) {
         setIsChange(false);
@@ -116,7 +116,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
   function handleClickSaveChangesBtn(newFilter: Filter | string, oldFilter: Filter) {
     const newFilterObj =
       typeof newFilter === 'string'
-        ? { ...oldFilter, filter: PapersQueryFormatter.objectifyPapersFilter(newFilter) }
+        ? { ...oldFilter, filter: PapersQueryFormatter.objectifyPaperFilter(newFilter) }
         : newFilter;
     saveNewFilter(newFilterObj);
   }
@@ -138,7 +138,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
               yearTo: articleSearchState.yearFilterToValue,
             }),
             emoji: randomEmoji,
-            filter: PapersQueryFormatter.objectifyPapersFilter(filter),
+            filter: PapersQueryFormatter.objectifyPaperFilter(filter),
           }
         : filter;
     saveNewFilter(newFilter);
@@ -156,7 +156,7 @@ const FilterSaveBox: React.FunctionComponent<FilterSaveBoxProps & RouteComponent
         query,
         page: 1,
         sort: currentSort,
-        filter: !!filter ? filter.filter : PapersQueryFormatter.objectifyPapersFilter(),
+        filter: !!filter ? filter.filter : PapersQueryFormatter.objectifyPaperFilter(),
       }),
     });
     setIsOpen(false);

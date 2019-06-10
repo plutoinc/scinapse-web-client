@@ -4,7 +4,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import * as classNames from 'classnames';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { withStyles } from '../../../helpers/withStylesHelper';
-import PapersQueryFormatter from '../../../helpers/papersQueryFormatter';
+import PapersQueryFormatter from '../../../helpers/searchQueryManager';
 import { useDebouncedAsyncFetch } from '../../../hooks/debouncedFetchAPIHook';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import CompletionAPI, { FOSSuggestion, JournalSuggestion } from '../../../api/completion';
@@ -23,7 +23,7 @@ interface AutocompleteFilterProps extends RouteComponentProps<any> {
 
 const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = props => {
   const currentFilter = React.useMemo(
-    () => PapersQueryFormatter.objectifyPapersFilter(getQueryParamsObject(props.location.search).filter),
+    () => PapersQueryFormatter.objectifyPaperFilter(getQueryParamsObject(props.location.search).filter),
     [props.location.search]
   );
 

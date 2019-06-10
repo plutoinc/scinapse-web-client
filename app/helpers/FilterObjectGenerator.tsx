@@ -1,9 +1,9 @@
 import { Filter, RawFilter } from '../api/member';
-import PapersQueryFormatter from './papersQueryFormatter';
+import PapersQueryFormatter from './searchQueryManager';
 
 export function objectifyRawFilterList(filter: RawFilter[] = []) {
   return filter.map(f => {
-    return { ...f, filter: PapersQueryFormatter.objectifyPapersFilter(f.filter) };
+    return { ...f, filter: PapersQueryFormatter.objectifyPaperFilter(f.filter) };
   });
 }
 
