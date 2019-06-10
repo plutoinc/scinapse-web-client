@@ -4,7 +4,7 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { AppState } from '../../reducers';
-import PapersQueryFormatter from '../../helpers/papersQueryFormatter';
+import PapersQueryFormatter from '../../helpers/searchQueryManager';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { getAuthorSearchData } from './sideEffect';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';

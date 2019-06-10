@@ -61,10 +61,6 @@ export const routesMap: ServerRoutesMap[] = [
     component: loadable(() => import('./components/articleSearch'), {
       fallback: <div>loading ...</div>,
     }),
-    loadData: async (params: LoadDataParams<null>) => {
-      const { getSearchData } = await import('./components/articleSearch/sideEffect');
-      await Promise.all([getSearchData(params)]);
-    },
     exact: true,
   },
   {

@@ -16,7 +16,7 @@ import {
   deleteQueryFromRecentList,
   getRecentQueries,
 } from '../../../helpers/recentQueryManager';
-import PapersQueryFormatter, { FilterObject } from '../../../helpers/papersQueryFormatter';
+import PapersQueryFormatter, { FilterObject } from '../../../helpers/searchQueryManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { ACTION_TYPES } from '../../../actions/actionTypes';
 import { AppState } from '../../../reducers';

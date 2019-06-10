@@ -3,7 +3,7 @@ import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { FILTER_BOX_TYPE } from '../../constants/paperSearch';
 import { withStyles } from '../../helpers/withStylesHelper';
 import makeNewFilterLink from '../../helpers/makeNewFilterLink';
-import PapersQueryFormatter from '../../helpers/papersQueryFormatter';
+import PapersQueryFormatter from '../../helpers/searchQueryManager';
 const styles = require('./filterResetButton.scss');
 
 interface FilterResetButtonProps extends RouteComponentProps<any> {
@@ -17,7 +17,7 @@ function getFilterObject(props: FilterResetButtonProps) {
   const { filterType, currentSavedFilterSet } = props;
 
   if (!!currentSavedFilterSet && currentSavedFilterSet.length > 0) {
-    return PapersQueryFormatter.objectifyPapersFilter(currentSavedFilterSet);
+    return PapersQueryFormatter.objectifyPaperFilter(currentSavedFilterSet);
   }
 
   if (!!filterType) {
