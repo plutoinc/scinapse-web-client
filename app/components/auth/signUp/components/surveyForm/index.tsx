@@ -12,6 +12,7 @@ import { DialogState } from '../../../../dialog/reducer';
 import Question from './components/question';
 import ActionTicketManager from '../../../../../helpers/actionTicketManager';
 import GlobalDialogManager from '../../../../../helpers/globalDialogManager';
+import { SurveyTicketFormatter } from './helpers/SurveyTicketManager';
 const styles = require('./surveyForm.scss');
 
 interface SurveyFormProps {
@@ -41,7 +42,7 @@ function openFinalSignUpDialog(nextSignUpStep: string) {
 
 function getAllSurveyName() {
   const surveyNames = SCINAPSE_SURVEY_QUESTIONS.map(survey => {
-    return survey.question;
+    return { surveyName: survey.surveyName, question: survey.question };
   });
 
   return surveyNames;
@@ -85,7 +86,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ SurveyFormState, dispatch, Dial
               actionType: 'fire',
               actionArea: 'signUp',
               actionTag: 'submitSurvey',
-              actionLabel: JSON.stringify(SurveyFormState.surveyResult),
+              actionLabel: SurveyTicketFormatter(SurveyFormState.surveyResult),
             });
             dispatch(ActionCreators.submitToSurvey());
             openFinalSignUpDialog(DialogState.nextSignUpStep!);
@@ -102,7 +103,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ SurveyFormState, dispatch, Dial
               actionType: 'fire',
               actionArea: 'signUp',
               actionTag: 'skipSurvey',
-              actionLabel: JSON.stringify({ surveyName: getAllSurveyName() }),
+              actionLabel: SurveyTicketFormatter(getAllSurveyName()),
             });
             openFinalSignUpDialog(DialogState.nextSignUpStep!);
           }}

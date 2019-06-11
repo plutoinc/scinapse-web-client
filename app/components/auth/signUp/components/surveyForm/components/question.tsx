@@ -36,7 +36,8 @@ const Answer: React.FC<AnswerProps> = React.memo(props => {
 const Question: React.FC<QuestionProps> = React.memo(({ context, qKey, dispatch }) => {
   const answers = context.answers.map((answer, index) => {
     const surveyPayload: QuestionResult = {
-      surveyName: context.question,
+      surveyName: context.surveyName,
+      question: context.question,
       random: context.random,
       checked: [
         {

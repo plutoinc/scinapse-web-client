@@ -15,7 +15,7 @@ export function reducer(state = SURVEY_FORM_INITIAL_STATE, action: Actions): Sur
     case ACTION_TYPES.SURVEY_FORM_CLICK_ANSWER: {
       const newAnswer = action.payload.survey;
       const surveyType = action.payload.type;
-      const hasAnswerIndex = findIndex(state.surveyResult, ['surveyName', newAnswer.surveyName]);
+      const hasAnswerIndex = findIndex(state.surveyResult, ['question', newAnswer.question]);
 
       if (hasAnswerIndex >= 0) {
         const targetSurvey = state.surveyResult[hasAnswerIndex];
