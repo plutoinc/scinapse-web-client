@@ -12,7 +12,7 @@ export interface CheckedAnswer {
   order: number;
 }
 
-export interface AnswerToQuestion {
+export interface RawQuestion {
   surveyName: string;
   question: string;
   random: boolean;

@@ -1,11 +1,11 @@
-import { AnswerToQuestion } from '../constants';
+import { RawQuestion } from '../constants';
 
 interface SurveyTicketParams {
   surveyName: string;
-  questions: Partial<AnswerToQuestion>[];
+  questions: Partial<RawQuestion>[];
 }
 
-export function SurveyTicketFormatter(rawSurveyContext: Partial<AnswerToQuestion>[]) {
+export function SurveyTicketFormatter(rawSurveyContext: Partial<RawQuestion>[]) {
   let finalTicketContext: SurveyTicketParams;
 
   rawSurveyContext.forEach(survey => {

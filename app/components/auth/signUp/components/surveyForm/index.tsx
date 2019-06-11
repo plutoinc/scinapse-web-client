@@ -3,7 +3,7 @@ import * as classNames from 'classnames';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
-import { SCINAPSE_SURVEY_QUESTIONS, Survey, AnswerToQuestion } from './constants';
+import { SCINAPSE_SURVEY_QUESTIONS, Survey, RawQuestion } from './constants';
 import { AppState } from '../../../../../reducers';
 import { getCurrentPageType } from '../../../../locationListener';
 import { ActionCreators } from '../../../../../actions/actionTypes';
@@ -42,7 +42,7 @@ function getSkippedSurveyInfo() {
   return skippedSurveyInfo;
 }
 
-function trackToSurveyAction(actionType: string, surveyResult?: AnswerToQuestion[]) {
+function trackToSurveyAction(actionType: string, surveyResult?: RawQuestion[]) {
   ActionTicketManager.trackTicket({
     pageType: getCurrentPageType(),
     actionType: 'fire',

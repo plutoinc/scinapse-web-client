@@ -15,17 +15,17 @@ interface AnswerProps {
   value: string;
   name: string;
   type: string;
-  handleOnClickAnswerToSurvey: () => void;
+  handleClickAnswerToQuestion: () => void;
 }
 
-function onClickAnswerToSurvey(survey: AnswerToQuestion, type: string, dispatch: Dispatch<any>) {
+function onClickAnswerToQuestion(survey: AnswerToQuestion, type: string, dispatch: Dispatch<any>) {
   dispatch(ActionCreators.clickToAnswerInSurveyForm({ survey, type }));
 }
 
 const Answer: React.FC<AnswerProps> = React.memo(props => {
   return (
     <div className={styles.answerWrapper}>
-      <label onClick={props.handleOnClickAnswerToSurvey}>
+      <label onClick={props.handleClickAnswerToQuestion}>
         <input type={props.type} name={props.name} value={props.value} className={styles.answerRadioBtn} />
         <span className={styles.answerDesc}>{props.value}</span>
       </label>
@@ -54,8 +54,8 @@ const Question: React.FC<QuestionProps> = React.memo(props => {
         name={`q_${qKey}`}
         key={`q_${qKey}-a_${index}`}
         type={question.type}
-        handleOnClickAnswerToSurvey={() => {
-          onClickAnswerToSurvey(surveyPayload, question.type, dispatch);
+        handleClickAnswerToQuestion={() => {
+          onClickAnswerToQuestion(surveyPayload, question.type, dispatch);
         }}
       />
     );
