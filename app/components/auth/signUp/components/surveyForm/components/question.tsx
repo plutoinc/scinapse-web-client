@@ -23,11 +23,12 @@ function onChangeAnswerToQuestion(survey: RawQuestion, type: string, dispatch: D
 }
 
 const Answer: React.FC<AnswerProps> = props => {
+  const { value, name, type, handleChangeAnswerToQuestion } = props;
   return (
     <div className={styles.answerWrapper}>
-      <label onChange={props.handleChangeAnswerToQuestion}>
-        <input type={props.type} name={props.name} value={props.value} className={styles.answerRadioBtn} />
-        <span className={styles.answerDesc}>{props.value}</span>
+      <label onChange={handleChangeAnswerToQuestion}>
+        <input type={type} name={name} value={value} className={styles.answerRadioBtn} />
+        <span className={styles.answerDesc}>{value}</span>
       </label>
     </div>
   );
@@ -35,6 +36,7 @@ const Answer: React.FC<AnswerProps> = props => {
 
 const Question: React.FC<QuestionProps> = props => {
   const { question, qKey, dispatch } = props;
+
   const answers = question.answers.map((answer, index) => {
     const surveyPayload: RawQuestion = {
       surveyName: question.surveyName,
