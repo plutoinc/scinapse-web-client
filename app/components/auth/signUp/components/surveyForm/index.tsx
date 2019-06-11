@@ -1,19 +1,17 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
-import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
 import { SCINAPSE_SURVEY_QUESTIONS, Survey, RawQuestion } from './constants';
 import { AppState } from '../../../../../reducers';
 import { getCurrentPageType } from '../../../../locationListener';
-import { ActionCreators } from '../../../../../actions/actionTypes';
 import Question from './components/question';
 import ActionTicketManager from '../../../../../helpers/actionTicketManager';
 import GlobalDialogManager from '../../../../../helpers/globalDialogManager';
 import { SurveyTicketFormatter as SurveyTicketContextFormatter } from './helpers/SurveyTicketManager';
 const styles = require('./surveyForm.scss');
 
-type Props = ReturnType<typeof mapStateToProps> & { dispatch: Dispatch<any> };
+type Props = ReturnType<typeof mapStateToProps>;
 
 function generateRandomizedAnswers(rawQuestion: Survey) {
   const rawAnswers = rawQuestion.answers;
@@ -56,7 +54,8 @@ function trackToSurveyAction(actionType: string, surveyResult?: RawQuestion[]) {
 }
 
 const SurveyForm: React.FC<Props> = props => {
-  const { SurveyFormState, dispatch, DialogState } = props;
+  const { DialogState } = props;
+  const [surveyResult, setSurveyResult] = React.useState<RawQuestion[]>([]);
   const [surveyQuestions, setSurveyQuestions] = React.useState<Survey[]>([]);
   const [isActive, setIsActive] = React.useState<boolean>(false);
 
@@ -70,13 +69,21 @@ const SurveyForm: React.FC<Props> = props => {
 
   React.useEffect(
     () => {
-      setIsActive(surveyQuestions.length > 0 && surveyQuestions.length === SurveyFormState.surveyResult.length);
+      setIsActive(surveyQuestions.length > 0 && surveyQuestions.length === surveyResult.length);
     },
-    [SurveyFormState.surveyResult]
+    [surveyResult]
   );
 
   const questionsList = surveyQuestions.map((surveyQuestion, index) => {
-    return <Question key={index} qKey={index} question={surveyQuestion} dispatch={dispatch} />;
+    return (
+      <Question
+        key={index}
+        qKey={index}
+        question={surveyQuestion}
+        surveyResult={surveyResult}
+        onChangeSetSurveyResult={setSurveyResult}
+      />
+    );
   });
 
   return (
@@ -89,8 +96,8 @@ const SurveyForm: React.FC<Props> = props => {
             [styles.inActiveSubmitBtn]: !isActive,
           })}
           onClick={() => {
-            trackToSurveyAction('submit', SurveyFormState.surveyResult);
-            dispatch(ActionCreators.submitToSurvey());
+            console.log(surveyResult);
+            trackToSurveyAction('submit', surveyResult);
             openFinalSignUpDialog(DialogState.nextSignUpStep!);
           }}
           disabled={!isActive}
@@ -101,7 +108,6 @@ const SurveyForm: React.FC<Props> = props => {
           className={styles.skipBtn}
           onClick={() => {
             trackToSurveyAction('skip');
-            dispatch(ActionCreators.skipToSurvey());
             openFinalSignUpDialog(DialogState.nextSignUpStep!);
           }}
         >
@@ -114,7 +120,6 @@ const SurveyForm: React.FC<Props> = props => {
 
 function mapStateToProps(state: AppState) {
   return {
-    SurveyFormState: state.surveyFormState,
     DialogState: state.dialog,
   };
 }

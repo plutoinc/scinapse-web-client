@@ -212,10 +212,6 @@ export enum ACTION_TYPES {
   PDF_VIEWER_CLICK_RELOAD_BTN = 'PDF_VIEWER_CLICK_RELOAD_BTN',
   PDF_VIEWER_CLICK_VIEW_MORE_BTN = 'PDF_VIEWER_CLICK_VIEW_MORE_BTN',
   PDF_VIEWER_GET_BEST_PDF_OF_PAPER = 'PDF_VIEWER_GET_BEST_PDF_OF_PAPER',
-
-  SURVEY_FORM_CLICK_ANSWER = 'SURVEY_FORM_CLICK_ANSWER',
-  SURVEY_FORM_CLICK_SUBMIT_BTN = 'SURVEY_FORM_CLICK_SUBMIT_BTN',
-  SURVEY_FORM_CLICK_SKIP_BTN = 'SURVEY_FORM_CLICK_SKIP_BTN',
 }
 
 export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
@@ -1014,18 +1010,6 @@ export const ActionCreators = {
 
   failToRemoveProfileCvData() {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_REMOVE_PROFILE_CV_DATA });
-  },
-
-  clickToAnswerInSurveyForm(payload: { survey: RawQuestion; type: string }) {
-    return createAction({ type: ACTION_TYPES.SURVEY_FORM_CLICK_ANSWER, payload });
-  },
-
-  submitToSurvey() {
-    return createAction({ type: ACTION_TYPES.SURVEY_FORM_CLICK_SUBMIT_BTN });
-  },
-
-  skipToSurvey() {
-    return createAction({ type: ACTION_TYPES.SURVEY_FORM_CLICK_SKIP_BTN });
   },
 
   addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {
