@@ -6,7 +6,7 @@ import { ActionCreators } from '../../../../../../actions/actionTypes';
 const styles = require('./question.scss');
 
 interface QuestionProps {
-  context: SurveyType;
+  question: SurveyType;
   qKey: number;
   dispatch: Dispatch<any>;
 }
@@ -33,12 +33,13 @@ const Answer: React.FC<AnswerProps> = React.memo(props => {
   );
 });
 
-const Question: React.FC<QuestionProps> = React.memo(({ context, qKey, dispatch }) => {
-  const answers = context.answers.map((answer, index) => {
+const Question: React.FC<QuestionProps> = React.memo(props => {
+  const { question, qKey, dispatch } = props;
+  const answers = question.answers.map((answer, index) => {
     const surveyPayload: QuestionResult = {
-      surveyName: context.surveyName,
-      question: context.question,
-      random: context.random,
+      surveyName: question.surveyName,
+      question: question.question,
+      random: question.random,
       checked: [
         {
           name: answer,
@@ -46,21 +47,23 @@ const Question: React.FC<QuestionProps> = React.memo(({ context, qKey, dispatch 
         },
       ],
     };
+
     return (
       <Answer
         value={answer}
         name={`q_${qKey}`}
         key={`q_${qKey}-a_${index}`}
-        type={context.type}
+        type={question.type}
         handleOnClickAnswerToSurvey={() => {
-          onClickAnswerToSurvey(surveyPayload, context.type, dispatch);
+          onClickAnswerToSurvey(surveyPayload, question.type, dispatch);
         }}
       />
     );
   });
+
   return (
     <div className={styles.questionContainer}>
-      <div className={styles.title}>{context.question}</div>
+      <div className={styles.title}>{question.question}</div>
       <div className={styles.answersWrapper}>{answers}</div>
     </div>
   );

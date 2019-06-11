@@ -75,7 +75,7 @@ const SurveyForm: React.FC<Props> = props => {
   );
 
   const questionsList = surveyQuestions.map((question, index) => {
-    return <Question key={index} qKey={index} context={question} dispatch={dispatch} />;
+    return <Question key={index} qKey={index} survey={question} dispatch={dispatch} />;
   });
 
   return (
