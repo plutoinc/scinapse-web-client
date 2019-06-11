@@ -19,10 +19,15 @@ jobs:
       - run:
           name: Update commit messages and Define Environment Variable at Runtime
           command: |
-            COMMIT_MESSAGES=$(git log --oneline --pretty=format:"%cd(%cr)] <https://github.com/pluto-net/scinapse-web-client/commit/%H|%s> - (By %an)" test..HEAD)
-            echo 'export COMMIT_MESSAGES="$COMMIT_MESSAGES"' >> $BASH_ENV
+            echo 'export COMMIT_MESSAGES=$(git log --oneline --pretty=format:"%cd(%cr)] <https://github.com/pluto-net/scinapse-web-client/commit/%H|%s> - (By %an)" test..HEAD)' >> $BASH_ENV
             source $BASH_ENV
             echo $COMMIT_MESSAGES
+      - slack/notify:
+          webhook: $DEPLOY_PROD_SLACK_WEBHOOK
+          title: $COMMIT_MESSAGES
+          message: $COMMIT_MESSAGES
+      - slack/notify:
+          message: "Build DONE! $CIRCLE_BRANCH please check https://dev.scinapse.io?branch=$CIRCLE_BRANCH"
       - run:
           name: set git tag
           command: |
@@ -30,12 +35,6 @@ jobs:
             git config --global user.name "CircleCI"
             git tag test -f
             git push https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@github.com/pluto-net/scinapse-web-client.git --tags -f
-      - slack/notify:
-          webhook: $DEPLOY_PROD_SLACK_WEBHOOK
-          title: $COMMIT_MESSAGES
-          message: $COMMIT_MESSAGES
-      - slack/notify:
-          message: "Build DONE! $CIRCLE_BRANCH please check https://dev.scinapse.io?branch=$CIRCLE_BRANCH"
   deploy_to_stage:
     working_directory: ~/scinapse
     docker:
