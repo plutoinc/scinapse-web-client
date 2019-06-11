@@ -55,6 +55,10 @@ export function reducer(state = SURVEY_FORM_INITIAL_STATE, action: Actions): Sur
     case ACTION_TYPES.SURVEY_FORM_CLICK_SUBMIT_BTN: {
       return { ...state, surveyResult: [] };
     }
+
+    case ACTION_TYPES.SURVEY_FORM_CLICK_SKIP_BTN: {
+      return { ...state, surveyResult: [] };
+    }
   }
 
   return state;

@@ -74,8 +74,8 @@ const SurveyForm: React.FC<Props> = props => {
     [SurveyFormState.surveyResult]
   );
 
-  const questionsList = surveyQuestions.map((question, index) => {
-    return <Question key={index} qKey={index} survey={question} dispatch={dispatch} />;
+  const questionsList = surveyQuestions.map((surveyQuestion, index) => {
+    return <Question key={index} qKey={index} question={surveyQuestion} dispatch={dispatch} />;
   });
 
   return (
@@ -100,6 +100,7 @@ const SurveyForm: React.FC<Props> = props => {
           className={styles.skipBtn}
           onClick={() => {
             getSurveyActionTracker('skip');
+            dispatch(ActionCreators.skipToSurvey());
             openFinalSignUpDialog(DialogState.nextSignUpStep!);
           }}
         >

@@ -1024,6 +1024,10 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.SURVEY_FORM_CLICK_SUBMIT_BTN });
   },
 
+  skipToSurvey() {
+    return createAction({ type: ACTION_TYPES.SURVEY_FORM_CLICK_SKIP_BTN });
+  },
+
   addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_ADD_ENTITY, payload });
   },
