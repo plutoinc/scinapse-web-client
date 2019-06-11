@@ -1,12 +1,12 @@
-import { QuestionResult } from '../constants';
+import { AnswerToQuestion } from '../constants';
 import { omit, findIndex } from 'lodash';
 
 interface SurveyTicketParams {
   surveyName: string;
-  questions: Partial<QuestionResult>[];
+  questions: Partial<AnswerToQuestion>[];
 }
 
-export function SurveyTicketFormatter(rawSurveyContext: Partial<QuestionResult>[]) {
+export function SurveyTicketFormatter(rawSurveyContext: Partial<AnswerToQuestion>[]) {
   let finalTicketContext: SurveyTicketParams[] = [];
 
   rawSurveyContext.forEach(survey => {

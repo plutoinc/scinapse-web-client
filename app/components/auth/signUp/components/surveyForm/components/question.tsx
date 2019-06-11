@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Dispatch } from 'redux';
-import { SurveyType, QuestionResult } from '../constants';
+import { Survey, AnswerToQuestion } from '../constants';
 import { withStyles } from '../../../../../../helpers/withStylesHelper';
 import { ActionCreators } from '../../../../../../actions/actionTypes';
 const styles = require('./question.scss');
 
 interface QuestionProps {
-  question: SurveyType;
+  question: Survey;
   qKey: number;
   dispatch: Dispatch<any>;
 }
@@ -18,7 +18,7 @@ interface AnswerProps {
   handleOnClickAnswerToSurvey: () => void;
 }
 
-function onClickAnswerToSurvey(survey: QuestionResult, type: string, dispatch: Dispatch<any>) {
+function onClickAnswerToSurvey(survey: AnswerToQuestion, type: string, dispatch: Dispatch<any>) {
   dispatch(ActionCreators.clickToAnswerInSurveyForm({ survey, type }));
 }
 
@@ -36,7 +36,7 @@ const Answer: React.FC<AnswerProps> = React.memo(props => {
 const Question: React.FC<QuestionProps> = React.memo(props => {
   const { question, qKey, dispatch } = props;
   const answers = question.answers.map((answer, index) => {
-    const surveyPayload: QuestionResult = {
+    const surveyPayload: AnswerToQuestion = {
       surveyName: question.surveyName,
       question: question.question,
       random: question.random,

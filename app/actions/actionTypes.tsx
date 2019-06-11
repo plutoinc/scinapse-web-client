@@ -11,7 +11,7 @@ import { PaperInCollection } from '../model/paperInCollection';
 import { SIGN_UP_STEP } from '../components/auth/signUp/types';
 import { OAuthCheckParams } from '../api/types/auth';
 import { BenefitExpTicketContext } from '../constants/abTest';
-import { QuestionResult } from '../components/auth/signUp/components/surveyForm/constants';
+import { AnswerToQuestion } from '../components/auth/signUp/components/surveyForm/constants';
 
 export enum ACTION_TYPES {
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = 'GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING',
@@ -1016,7 +1016,7 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_REMOVE_PROFILE_CV_DATA });
   },
 
-  clickToAnswerInSurveyForm(payload: { survey: QuestionResult; type: string }) {
+  clickToAnswerInSurveyForm(payload: { survey: AnswerToQuestion; type: string }) {
     return createAction({ type: ACTION_TYPES.SURVEY_FORM_CLICK_ANSWER, payload });
   },
 

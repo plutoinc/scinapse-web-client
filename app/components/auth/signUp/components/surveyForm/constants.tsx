@@ -1,4 +1,4 @@
-export interface SurveyType {
+export interface Survey {
   surveyName: string;
   question: string;
   answers: string[];
@@ -7,19 +7,19 @@ export interface SurveyType {
   description?: string;
 }
 
-export interface CheckedAnswerType {
+export interface CheckedAnswer {
   name: string;
   order: number;
 }
 
-export interface QuestionResult {
+export interface AnswerToQuestion {
   surveyName: string;
   question: string;
   random: boolean;
-  checked: CheckedAnswerType[];
+  checked: CheckedAnswer[];
 }
 
-export const SCINAPSE_SURVEY_QUESTIONS: SurveyType[] = [
+export const SCINAPSE_SURVEY_QUESTIONS: Survey[] = [
   {
     surveyName: 'thinkAsScinapse',
     question: 'What do you think as Scinapse?',

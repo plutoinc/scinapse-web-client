@@ -4,7 +4,7 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { shuffle } from 'lodash';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
-import { SCINAPSE_SURVEY_QUESTIONS, SurveyType, QuestionResult } from './constants';
+import { SCINAPSE_SURVEY_QUESTIONS, Survey, AnswerToQuestion } from './constants';
 import { AppState } from '../../../../../reducers';
 import { getCurrentPageType } from '../../../../locationListener';
 import { ActionCreators } from '../../../../../actions/actionTypes';
@@ -16,7 +16,7 @@ const styles = require('./surveyForm.scss');
 
 type Props = ReturnType<typeof mapStateToProps> & { dispatch: Dispatch<any> };
 
-function randomizedAnswers(defaultQuestion: SurveyType) {
+function randomizedAnswers(defaultQuestion: Survey) {
   const defaultAnswers = defaultQuestion.answers;
   const randomizedAnswersSurveyContext = {
     ...defaultQuestion,
@@ -41,7 +41,7 @@ function getAllSurveyName() {
   return surveyNames;
 }
 
-function getSurveyActionTracker(actionType: string, surveyResult?: QuestionResult[]) {
+function getSurveyActionTracker(actionType: string, surveyResult?: AnswerToQuestion[]) {
   ActionTicketManager.trackTicket({
     pageType: getCurrentPageType(),
     actionType: 'fire',
@@ -56,7 +56,7 @@ function getSurveyActionTracker(actionType: string, surveyResult?: QuestionResul
 
 const SurveyForm: React.FC<Props> = props => {
   const { SurveyFormState, dispatch, DialogState } = props;
-  const [surveyQuestions, setSurveyQuestions] = React.useState<SurveyType[]>([]);
+  const [surveyQuestions, setSurveyQuestions] = React.useState<Survey[]>([]);
   const [isActive, setIsActive] = React.useState<boolean>(false);
 
   React.useEffect(() => {

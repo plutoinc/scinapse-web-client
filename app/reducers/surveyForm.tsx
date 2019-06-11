@@ -1,9 +1,9 @@
 import { findIndex, unionBy } from 'lodash';
-import { QuestionResult } from '../components/auth/signUp/components/surveyForm/constants';
+import { AnswerToQuestion } from '../components/auth/signUp/components/surveyForm/constants';
 import { Actions, ACTION_TYPES } from '../actions/actionTypes';
 
 export interface SurveyFormState {
-  surveyResult: QuestionResult[];
+  surveyResult: AnswerToQuestion[];
 }
 
 export const SURVEY_FORM_INITIAL_STATE: SurveyFormState = {
