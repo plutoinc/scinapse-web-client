@@ -55,7 +55,7 @@ jobs:
             echo 'export DEPLOYED_VERSION=$(cat ./version)' >> $BASH_ENV
             source $BASH_ENV   
       - run:
-          name: Update PATH and Define Environment Variable at Runtime
+          name: Update commit messages and Define Environment Variable at Runtime
           command: |
             echo 'export COMMIT_MESSAGES=$(git log --oneline --pretty=format:"%cd(%cr)] <https://github.com/pluto-net/scinapse-web-client/commit/%H|%s> - (By %an)" production..HEAD)' >> $BASH_ENV
             source $BASH_ENV
