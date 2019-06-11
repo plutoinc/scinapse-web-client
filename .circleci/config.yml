@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  slack: circleci/slack@2.5.0
+  slack: circleci/slack@3.2.0
 jobs:
   deploy_to_dev:
     working_directory: ~/scinapse
@@ -55,23 +55,20 @@ jobs:
             echo 'export DEPLOYED_VERSION=$(cat ./version)' >> $BASH_ENV
             source $BASH_ENV   
       - run:
-          name: Update PATH and Define Environment Variable at Runtime
+          name: Update commit messages and Define Environment Variable at Runtime
           command: |
             echo 'export COMMIT_MESSAGES=$(git log --oneline --pretty=format:"%cd(%cr)] <https://github.com/pluto-net/scinapse-web-client/commit/%H|%s> - (By %an)" production..HEAD)' >> $BASH_ENV
             source $BASH_ENV
+      - slack/notify:
+          webhook: $DEPLOY_PROD_SLACK_WEBHOOK
+          message: $COMMIT_MESSAGES
       - run:
           name: set git tag
           command: |
             git config --global user.email "dev@pluto.network"
             git config --global user.name "CircleCI"
-            git config --global push.default simple
             git tag production -f
             git push https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@github.com/pluto-net/scinapse-web-client.git --tags -f
-      - slack/notify:
-          message: "Build DONE! Finish to production deploy version: $DEPLOYED_VERSION"
-      - slack/notify:
-          webhook: $DEPLOY_PROD_SLACK_WEBHOOK
-          message: $COMMIT_MESSAGES
 workflows:
   version: 2
   deploy:
