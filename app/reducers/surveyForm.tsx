@@ -15,36 +15,36 @@ export function reducer(state = SURVEY_FORM_INITIAL_STATE, action: Actions): Sur
     case ACTION_TYPES.SURVEY_FORM_CLICK_ANSWER: {
       const newAnswer = action.payload.survey;
       const surveyType = action.payload.type;
-      const hasAnswerIndex = findIndex(state.surveyResult, ['question', newAnswer.question]);
+      const targetSurveyIndex = findIndex(state.surveyResult, ['question', newAnswer.question]);
 
-      if (hasAnswerIndex >= 0) {
-        const targetSurvey = state.surveyResult[hasAnswerIndex];
+      if (targetSurveyIndex >= 0) {
+        const targetSurvey = state.surveyResult[targetSurveyIndex];
         if (surveyType === 'checkbox') {
-          const hasCheckedIndex = findIndex(targetSurvey.checked, newAnswer.checked[0]);
+          const targetAnswerIndex = findIndex(targetSurvey.checked, newAnswer.checked[0]);
           return {
             ...state,
             surveyResult: [
-              ...state.surveyResult.slice(0, hasAnswerIndex),
+              ...state.surveyResult.slice(0, targetSurveyIndex),
               {
                 ...targetSurvey,
                 checked:
-                  hasCheckedIndex >= 0
+                  targetAnswerIndex >= 0
                     ? [
-                        ...targetSurvey.checked.slice(0, hasCheckedIndex),
-                        ...targetSurvey.checked.slice(hasCheckedIndex + 1, targetSurvey.checked.length),
+                        ...targetSurvey.checked.slice(0, targetAnswerIndex),
+                        ...targetSurvey.checked.slice(targetAnswerIndex + 1, targetSurvey.checked.length),
                       ]
                     : unionBy(targetSurvey.checked, newAnswer.checked, 'name'),
               },
-              ...state.surveyResult.slice(hasAnswerIndex + 1, state.surveyResult.length),
+              ...state.surveyResult.slice(targetSurveyIndex + 1, state.surveyResult.length),
             ],
           };
         } else {
           return {
             ...state,
             surveyResult: [
-              ...state.surveyResult.slice(0, hasAnswerIndex),
+              ...state.surveyResult.slice(0, targetSurveyIndex),
               newAnswer,
-              ...state.surveyResult.slice(hasAnswerIndex + 1, state.surveyResult.length),
+              ...state.surveyResult.slice(targetSurveyIndex + 1, state.surveyResult.length),
             ],
           };
         }
