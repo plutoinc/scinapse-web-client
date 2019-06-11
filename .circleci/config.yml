@@ -20,7 +20,7 @@ jobs:
           name: Update commit messages and Define Environment Variable at Runtime
           command: |
             COMMIT_MESSAGES=$(git log --oneline --pretty=format:"%cd(%cr)] <https://github.com/pluto-net/scinapse-web-client/commit/%H|%s> - (By %an)" test..HEAD)
-            echo 'export COMMIT_MESSAGES=$COMMIT_MESSAGES' >> $BASH_ENV
+            echo "export COMMIT_MESSAGES=$COMMIT_MESSAGES" >> $BASH_ENV
             source $BASH_ENV
             echo $COMMIT_MESSAGES
       - run:
