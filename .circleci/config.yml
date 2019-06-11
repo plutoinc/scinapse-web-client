@@ -59,7 +59,10 @@ jobs:
           command: |
             echo 'export COMMIT_MESSAGES=$(git log --oneline --pretty=format:"%cd(%cr)] <https://github.com/pluto-net/scinapse-web-client/commit/%H|%s> - (By %an)" production..HEAD)' >> $BASH_ENV
             source $BASH_ENV
-            echo $COMMIT_MESSAGES
+      - slack/notify:
+          webhook: $DEPLOY_PROD_SLACK_WEBHOOK
+          title: $COMMIT_MESSAGES
+          message: $COMMIT_MESSAGES
       - run:
           name: set git tag
           command: |
@@ -67,10 +70,6 @@ jobs:
             git config --global user.name "CircleCI"
             git tag production -f
             git push https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@github.com/pluto-net/scinapse-web-client.git --tags -f
-      - slack/notify:
-          webhook: $DEPLOY_PROD_SLACK_WEBHOOK
-          title: $COMMIT_MESSAGES
-          message: $COMMIT_MESSAGES
 workflows:
   version: 2
   deploy:
