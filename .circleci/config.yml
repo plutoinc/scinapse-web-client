@@ -61,7 +61,6 @@ jobs:
             source $BASH_ENV
       - slack/notify:
           webhook: $DEPLOY_PROD_SLACK_WEBHOOK
-          title: $COMMIT_MESSAGES
           message: $COMMIT_MESSAGES
       - run:
           name: set git tag
