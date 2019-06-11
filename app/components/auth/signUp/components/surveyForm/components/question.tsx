@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Dispatch } from 'redux';
-import { Survey, AnswerToQuestion } from '../constants';
+import { Survey, RawQuestion } from '../constants';
 import { withStyles } from '../../../../../../helpers/withStylesHelper';
 import { ActionCreators } from '../../../../../../actions/actionTypes';
 const styles = require('./question.scss');
@@ -15,17 +15,17 @@ interface AnswerProps {
   value: string;
   name: string;
   type: string;
-  handleClickAnswerToQuestion: () => void;
+  handleChangeAnswerToQuestion: () => void;
 }
 
-function onClickAnswerToQuestion(survey: AnswerToQuestion, type: string, dispatch: Dispatch<any>) {
+function onChangeAnswerToQuestion(survey: RawQuestion, type: string, dispatch: Dispatch<any>) {
   dispatch(ActionCreators.clickToAnswerInSurveyForm({ survey, type }));
 }
 
 const Answer: React.FC<AnswerProps> = React.memo(props => {
   return (
     <div className={styles.answerWrapper}>
-      <label onClick={props.handleClickAnswerToQuestion}>
+      <label onChange={props.handleChangeAnswerToQuestion}>
         <input type={props.type} name={props.name} value={props.value} className={styles.answerRadioBtn} />
         <span className={styles.answerDesc}>{props.value}</span>
       </label>
@@ -36,7 +36,7 @@ const Answer: React.FC<AnswerProps> = React.memo(props => {
 const Question: React.FC<QuestionProps> = React.memo(props => {
   const { question, qKey, dispatch } = props;
   const answers = question.answers.map((answer, index) => {
-    const surveyPayload: AnswerToQuestion = {
+    const surveyPayload: RawQuestion = {
       surveyName: question.surveyName,
       question: question.question,
       random: question.random,
@@ -54,8 +54,8 @@ const Question: React.FC<QuestionProps> = React.memo(props => {
         name={`q_${qKey}`}
         key={`q_${qKey}-a_${index}`}
         type={question.type}
-        handleClickAnswerToQuestion={() => {
-          onClickAnswerToQuestion(surveyPayload, question.type, dispatch);
+        handleChangeAnswerToQuestion={() => {
+          onChangeAnswerToQuestion(surveyPayload, question.type, dispatch);
         }}
       />
     );
