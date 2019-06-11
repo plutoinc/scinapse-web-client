@@ -5,7 +5,7 @@ import { CommonPaginationResponsePart } from './types/common';
 import { Collection, collectionSchema } from '../model/collection';
 import { memberSchema, Member } from '../model/member';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
-import { FilterObject } from '../helpers/papersQueryFormatter';
+import { FilterObject } from '../helpers/searchQueryManager';
 
 export interface GetCollectionsResponse extends CommonPaginationResponsePart {
   content: Collection[];
@@ -59,8 +59,10 @@ class MemberAPI extends PlutoAxios {
     return { ...camelizedRes, ...normalizedCollections };
   }
 
-  public async getMyFilters(): Promise<RawFilter[]> {
-    const res = await this.get(`/members/me/saved-filters`);
+  public async getMyFilters(cancelToken: CancelToken): Promise<RawFilter[]> {
+    const res = await this.get(`/members/me/saved-filters`, {
+      cancelToken,
+    });
     const camelizedRes = camelCaseKeys(res.data.data.content);
 
     return camelizedRes;

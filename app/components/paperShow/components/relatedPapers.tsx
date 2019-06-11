@@ -10,6 +10,7 @@ import PaperItem from '../../common/paperItem';
 import PaperItemWithToggleList from '../../paperItemWithToggleList';
 import MobilePagination from '../../common/mobilePagination';
 import { getUserGroupName } from '../../../helpers/abTestHelper';
+import { REF_CITED_PAPER_ITEM_TEST } from '../../../constants/abTestGlobalValue';
 const styles = require('./relatedPapers.scss');
 
 interface ReferencePapersProps
@@ -49,7 +50,10 @@ const PaperList: React.FC<PaperListProps> = props => {
       );
     }
 
-    if (refCitedPaperItemUserGroup === 'refCitedPaperItem') {
+    if (
+      refCitedPaperItemUserGroup === 'refCitedPaperItem' ||
+      refCitedPaperItemUserGroup === 'refCitedPaperItem-bigTitle'
+    ) {
       return (
         <PaperItemWithToggleList
           pageType="paperShow"
@@ -92,7 +96,7 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
 
   public componentDidMount() {
     this.setState({
-      refCitedPaperItemUserGroup: getUserGroupName('refCitedPaperItem')!,
+      refCitedPaperItemUserGroup: getUserGroupName(REF_CITED_PAPER_ITEM_TEST)!,
     });
   }
 

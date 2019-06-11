@@ -9,6 +9,8 @@ import AuthorSection from '../components/authors';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { PaperItemWithToggleListProps, VenueSectionProps, TrackingProps } from '../types';
 import Icon from '../../../icons';
+import { getUserGroupName } from '../../../helpers/abTestHelper';
+import { REF_CITED_PAPER_ITEM_TEST } from '../../../constants/abTestGlobalValue';
 const s = require('../paperItemWithToggleList.scss');
 
 const IFLabel: React.FC<{ IF: number | null }> = props => {
@@ -83,6 +85,13 @@ const VenueSection: React.FC<VenueSectionProps & TrackingProps> = props => {
 
 const BasePaperItem: React.FC<PaperItemWithToggleListProps & TrackingProps> = React.memo(props => {
   const { paper, pageType, actionArea, searchQueryText } = props;
+  const [isShowBigTitle, setIsShowBigTitle] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    if (getUserGroupName(REF_CITED_PAPER_ITEM_TEST) === 'refCitedPaperItem-bigTitle') {
+      setIsShowBigTitle(true);
+    }
+  }, []);
 
   let source: string;
   if (!!paper.doi) {
@@ -103,7 +112,7 @@ const BasePaperItem: React.FC<PaperItemWithToggleListProps & TrackingProps> = Re
         pageType={pageType}
         actionArea={actionArea}
         source={source}
-        titleClassName={s.title}
+        titleClassName={isShowBigTitle ? s.bigTitle : s.title}
       />
       <VenueSection pageType={pageType} actionArea={actionArea} paper={paper} />
       <AuthorSection paper={paper} pageType={pageType} actionArea={actionArea} />

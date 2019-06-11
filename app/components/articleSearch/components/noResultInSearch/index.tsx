@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withStyles } from '../../../../helpers/withStylesHelper';
 import Icon from '../../../../icons';
 import { Link } from 'react-router-dom';
-import PapersQueryFormatter, { FilterObject } from '../../../../helpers/papersQueryFormatter';
+import PapersQueryFormatter, { FilterObject } from '../../../../helpers/searchQueryManager';
 import * as classNames from 'classnames';
 const styles = require('./noResultInSearch.scss');
 

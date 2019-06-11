@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import PaperSearchQueryFormatter, { FilterObject } from '../../../../helpers/papersQueryFormatter';
+import PaperSearchQueryFormatter, { FilterObject } from '../../../../helpers/searchQueryManager';
 import { withStyles } from '../../../../helpers/withStylesHelper';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
 const styles = require('./sortBar.scss');

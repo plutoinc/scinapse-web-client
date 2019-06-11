@@ -28,14 +28,13 @@ import GlobalDialogManager from '../../helpers/globalDialogManager';
 import { HOME_PATH } from '../../constants/routes';
 import { ACTION_TYPES } from '../../actions/actionTypes';
 import { CurrentUser } from '../../model/currentUser';
-import { FilterObject } from '../../helpers/papersQueryFormatter';
+import { FilterObject, DEFAULT_FILTER } from '../../helpers/searchQueryManager';
 import { getCollections } from '../collections/actions';
 import { collectionSchema } from '../../model/collection';
 import { getMemoizedPaper } from '../../containers/paperShow/select';
 import ResearchHistory from '../researchHistory';
-import SuddenAlert from '../preNoted/suddenAlert';
 import { getUserGroupName } from '../../helpers/abTestHelper';
-import { SIGN_BANNER_AT_PAPER_SHOW_TEST, SEARCH_ENGINE_MOOD_TEST } from '../../constants/abTestGlobalValue';
+import { SEARCH_ENGINE_MOOD_TEST } from '../../constants/abTestGlobalValue';
 const styles = require('./header.scss');
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -249,16 +248,14 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private getSearchFormContainer = (isSearchEngineMood: boolean) => {
     const { location, articleSearchState } = this.props;
     const isShowSearchFormContainer = location.pathname !== HOME_PATH;
+    const currentFilter: FilterObject = articleSearchState.selectedFilter
+      ? articleSearchState.selectedFilter.filter
+      : DEFAULT_FILTER;
 
     let currentQuery = '';
-    let currentFilter: FilterObject = {};
     if (location.pathname === '/search') {
       const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
       currentQuery = SafeURIStringHandler.decode(rawQueryParamsObj.query || '');
-    }
-
-    if (!!articleSearchState.selectedFilter) {
-      currentFilter = articleSearchState.selectedFilter.filter;
     }
 
     return (
@@ -480,13 +477,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           >
             Get Started
           </div>
-          <SuddenAlert
-            open={getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TEST) === 'suddenAlert'}
-            anchorEl={this.state.userDropdownAnchorElement}
-            placement="bottom-end"
-            popperOptions={{ positionFixed: true }}
-            disablePortal
-          />
         </div>
       );
     } else {

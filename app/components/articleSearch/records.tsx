@@ -39,8 +39,8 @@ export interface ArticleSearchState
 export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   lastSucceededParams: '{}',
   sort: 'RELEVANCE',
-  isContentLoading: false,
-  isFilterLoading: false,
+  isContentLoading: true,
+  isFilterLoading: true,
   isFilterSaveBoxLoading: false,
   pageErrorCode: null,
   aggregationData: null,
