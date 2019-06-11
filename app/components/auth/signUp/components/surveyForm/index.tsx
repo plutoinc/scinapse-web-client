@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as classNames from 'classnames';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { shuffle } from 'lodash';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
 import { SCINAPSE_SURVEY_QUESTIONS, SurveyType } from './constants';
 import { AppState } from '../../../../../reducers';
@@ -25,9 +26,7 @@ function randomizedAnswers(defaultQuestion: SurveyType) {
   const defaultAnswers = defaultQuestion.answers;
   const randomizedAnswersSurveyContext = {
     ...defaultQuestion,
-    answer: defaultAnswers.sort(() => {
-      return 0.5 - Math.random();
-    }),
+    answer: shuffle(defaultAnswers),
   };
   return randomizedAnswersSurveyContext;
 }
