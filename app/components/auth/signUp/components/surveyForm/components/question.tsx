@@ -22,7 +22,7 @@ function onChangeAnswerToQuestion(survey: RawQuestion, type: string, dispatch: D
   dispatch(ActionCreators.clickToAnswerInSurveyForm({ survey, type }));
 }
 
-const Answer: React.FC<AnswerProps> = React.memo(props => {
+const Answer: React.FC<AnswerProps> = props => {
   return (
     <div className={styles.answerWrapper}>
       <label onChange={props.handleChangeAnswerToQuestion}>
@@ -31,9 +31,9 @@ const Answer: React.FC<AnswerProps> = React.memo(props => {
       </label>
     </div>
   );
-});
+};
 
-const Question: React.FC<QuestionProps> = React.memo(props => {
+const Question: React.FC<QuestionProps> = props => {
   const { question, qKey, dispatch } = props;
   const answers = question.answers.map((answer, index) => {
     const surveyPayload: RawQuestion = {
@@ -67,6 +67,6 @@ const Question: React.FC<QuestionProps> = React.memo(props => {
       <div className={styles.answersWrapper}>{answers}</div>
     </div>
   );
-});
+};
 
 export default withStyles<typeof styles>(styles)(Question);
