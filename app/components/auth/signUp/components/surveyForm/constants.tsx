@@ -1,3 +1,8 @@
+interface CheckedAnswer {
+  name: string;
+  order: number;
+}
+
 export interface Survey {
   surveyName: string;
   question: string;
@@ -5,11 +10,6 @@ export interface Survey {
   random: boolean;
   type: string;
   description?: string;
-}
-
-export interface CheckedAnswer {
-  name: string;
-  order: number;
 }
 
 export interface RawQuestion {
