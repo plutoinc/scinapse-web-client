@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  slack: circleci/slack@2.5.0
+  slack: circleci/slack@3.2.0
 jobs:
   deploy_to_dev:
     working_directory: ~/scinapse
@@ -69,7 +69,8 @@ jobs:
             git push https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@github.com/pluto-net/scinapse-web-client.git --tags -f
       - slack/notify:
           webhook: $DEPLOY_PROD_SLACK_WEBHOOK
-          message: "$COMMIT_MESSAGES"
+          title: $COMMIT_MESSAGES
+          message: $COMMIT_MESSAGES
 workflows:
   version: 2
   deploy:
