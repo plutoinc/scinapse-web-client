@@ -27,6 +27,6 @@ export const SCINAPSE_SURVEY_QUESTIONS: Survey[] = [
     random: true,
     type: 'radio',
   },
-  { surveyName: 'A', question: 'alpha', answers: ['a', 'b', 'c'], random: true, type: 'checkbox' },
-  { surveyName: 'A', question: 'beta', answers: ['d', 'e', 'f'], random: false, type: 'radio' },
+  { surveyName: 'thinkAsScinapse', question: 'alpha', answers: ['a', 'b', 'c'], random: true, type: 'checkbox' },
+  { surveyName: 'thinkAsScinapse', question: 'beta', answers: ['d', 'e', 'f'], random: false, type: 'radio' },
 ];
