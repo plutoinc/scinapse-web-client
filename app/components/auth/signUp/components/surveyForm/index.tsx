@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as classNames from 'classnames';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { shuffle } from 'lodash';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
 import { SCINAPSE_SURVEY_QUESTIONS, Survey, AnswerToQuestion } from './constants';
 import { AppState } from '../../../../../reducers';
@@ -11,16 +10,18 @@ import { ActionCreators } from '../../../../../actions/actionTypes';
 import Question from './components/question';
 import ActionTicketManager from '../../../../../helpers/actionTicketManager';
 import GlobalDialogManager from '../../../../../helpers/globalDialogManager';
-import { SurveyTicketFormatter } from './helpers/SurveyTicketManager';
+import { SurveyTicketFormatter as SurveyTicketContextFormatter } from './helpers/SurveyTicketManager';
 const styles = require('./surveyForm.scss');
 
 type Props = ReturnType<typeof mapStateToProps> & { dispatch: Dispatch<any> };
 
-function randomizedAnswers(defaultQuestion: Survey) {
-  const defaultAnswers = defaultQuestion.answers;
+function generateRandomizedAnswers(rawQuestion: Survey) {
+  const rawAnswers = rawQuestion.answers;
   const randomizedAnswersSurveyContext = {
-    ...defaultQuestion,
-    answer: shuffle(defaultAnswers),
+    ...rawQuestion,
+    answer: rawAnswers.sort(() => {
+      return 0.5 - Math.random();
+    }),
   };
   return randomizedAnswersSurveyContext;
 }
@@ -33,15 +34,15 @@ function openFinalSignUpDialog(nextSignUpStep: string) {
   }
 }
 
-function getAllSurveyName() {
-  const surveyNames = SCINAPSE_SURVEY_QUESTIONS.map(survey => {
+function getSkippedSurveyInfo() {
+  const skippedSurveyInfo = SCINAPSE_SURVEY_QUESTIONS.map(survey => {
     return { surveyName: survey.surveyName, question: survey.question };
   });
 
-  return surveyNames;
+  return skippedSurveyInfo;
 }
 
-function getSurveyActionTracker(actionType: string, surveyResult?: AnswerToQuestion[]) {
+function trackToSurveyAction(actionType: string, surveyResult?: AnswerToQuestion[]) {
   ActionTicketManager.trackTicket({
     pageType: getCurrentPageType(),
     actionType: 'fire',
@@ -49,8 +50,8 @@ function getSurveyActionTracker(actionType: string, surveyResult?: AnswerToQuest
     actionTag: actionType === 'submit' ? 'submitSurvey' : 'skipSurvey',
     actionLabel:
       actionType === 'submit' && surveyResult
-        ? SurveyTicketFormatter(surveyResult)
-        : SurveyTicketFormatter(getAllSurveyName()),
+        ? SurveyTicketContextFormatter(surveyResult)
+        : SurveyTicketContextFormatter(getSkippedSurveyInfo()),
   });
 }
 
@@ -61,7 +62,7 @@ const SurveyForm: React.FC<Props> = props => {
 
   React.useEffect(() => {
     const questions = SCINAPSE_SURVEY_QUESTIONS.map(question => {
-      return question.random ? randomizedAnswers(question) : question;
+      return question.random ? generateRandomizedAnswers(question) : question;
     });
 
     setSurveyQuestions(questions);
@@ -88,7 +89,7 @@ const SurveyForm: React.FC<Props> = props => {
             [styles.inActiveSubmitBtn]: !isActive,
           })}
           onClick={() => {
-            getSurveyActionTracker('submit', SurveyFormState.surveyResult);
+            trackToSurveyAction('submit', SurveyFormState.surveyResult);
             dispatch(ActionCreators.submitToSurvey());
             openFinalSignUpDialog(DialogState.nextSignUpStep!);
           }}
@@ -99,7 +100,7 @@ const SurveyForm: React.FC<Props> = props => {
         <button
           className={styles.skipBtn}
           onClick={() => {
-            getSurveyActionTracker('skip');
+            trackToSurveyAction('skip');
             dispatch(ActionCreators.skipToSurvey());
             openFinalSignUpDialog(DialogState.nextSignUpStep!);
           }}
