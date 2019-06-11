@@ -21,12 +21,12 @@ export interface QuestionResult {
 
 export const SCINAPSE_SURVEY_QUESTIONS: SurveyType[] = [
   {
-    surveyName: 'test',
+    surveyName: 'thinkAsScinapse',
     question: 'What do you think as Scinapse?',
     answers: ['Publisher', 'PDF Provider', 'Search Engine'],
     random: true,
     type: 'radio',
   },
-  { surveyName: 'A', question: 'testes?', answers: ['t', 'tt', 'aaa'], random: false, type: 'checkbox' },
-  { surveyName: 'A', question: 'B', answers: ['t', 'aa', 'bb'], random: false, type: 'checkbox' },
+  { surveyName: 'A', question: 'alpha', answers: ['a', 'b', 'c'], random: true, type: 'checkbox' },
+  { surveyName: 'A', question: 'beta', answers: ['d', 'e', 'f'], random: false, type: 'radio' },
 ];
