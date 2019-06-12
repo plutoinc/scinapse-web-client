@@ -3,13 +3,17 @@ interface CheckedAnswer {
   order: number;
 }
 
-export interface Survey {
-  surveyName: string;
+export interface Q {
   question: string;
   answers: string[];
   random: boolean;
   type: string;
   description?: string;
+}
+
+export interface Survey {
+  surveyName: string;
+  questions: Q[];
 }
 
 export interface RawQuestion {
@@ -21,14 +25,15 @@ export interface RawQuestion {
   }[];
 }
 
-export const SCINAPSE_SURVEY_QUESTIONS: Survey[] = [
-  {
-    surveyName: 'thinkAsScinapse',
-    question: 'What do you think as Scinapse?',
-    answers: ['Publisher', 'PDF Provider', 'Search Engine'],
-    random: true,
-    type: 'radio',
-  },
-  { surveyName: 'thinkAsScinapse', question: 'alpha', answers: ['a', 'b', 'c'], random: true, type: 'checkbox' },
-  { surveyName: 'thinkAsScinapse', question: 'beta', answers: ['d', 'e', 'f'], random: false, type: 'radio' },
-];
+export const SCINAPSE_SURVEY_QUESTIONS: Survey = {
+  surveyName: 'thinkAsScinapse',
+  questions: [
+    {
+      question: 'What do you think as Scinapse?',
+      answers: ['Publisher', 'PDF Provider', 'Search Engine'],
+      random: true,
+      type: 'radio',
+    },
+    { question: 'alpha', answers: ['a', 'b', 'c'], random: true, type: 'checkbox' },
+  ],
+};

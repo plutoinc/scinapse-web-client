@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Dispatch } from 'redux';
 import { findIndex, unionBy } from 'lodash';
-import { Survey, RawQuestion } from '../constants';
+import { Survey, Q, RawQuestion } from '../constants';
 import { withStyles } from '../../../../../../helpers/withStylesHelper';
 const styles = require('./question.scss');
 
 interface QuestionProps {
-  question: Survey;
+  surveyName: string;
+  question: Q;
   qKey: number;
   dispatch: Dispatch<any>;
   surveyResult: RawQuestion;
@@ -83,11 +84,11 @@ const Answer: React.FC<AnswerProps> = props => {
 };
 
 const Question: React.FC<QuestionProps> = props => {
-  const { question, qKey, surveyResult, handleChangeAnswer } = props;
+  const { question, surveyName, qKey, surveyResult, handleChangeAnswer } = props;
 
   const answers = question.answers.map((answer, index) => {
     const surveyPayload: RawQuestion = {
-      surveyName: question.surveyName,
+      surveyName: surveyName,
       questions: [
         {
           question: question.question,

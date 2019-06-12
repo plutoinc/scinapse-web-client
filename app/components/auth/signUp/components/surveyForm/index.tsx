@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as classNames from 'classnames';
 import { connect } from 'react-redux';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
-import { SCINAPSE_SURVEY_QUESTIONS, Survey, RawQuestion } from './constants';
+import { SCINAPSE_SURVEY_QUESTIONS, Survey, RawQuestion, Q } from './constants';
 import { AppState } from '../../../../../reducers';
 import { getCurrentPageType } from '../../../../locationListener';
 import Question from './components/question';
@@ -12,7 +12,7 @@ const styles = require('./surveyForm.scss');
 
 type Props = ReturnType<typeof mapStateToProps>;
 
-function getReandomizedAnwsers(rawQuestion: Survey) {
+function getReandomizedAnwsers(rawQuestion: Q) {
   const rawAnswers = rawQuestion.answers;
   const randomizedAnswers = {
     ...rawQuestion,
@@ -32,11 +32,11 @@ function openFinalSignUpDialog(nextSignUpStep: string) {
 }
 
 function getAllSkippedSurveys() {
-  const skippedSurveyQuestions = SCINAPSE_SURVEY_QUESTIONS.map(survey => {
-    return { question: survey.question };
+  const skippedSurveyQuestions = SCINAPSE_SURVEY_QUESTIONS.questions.map(question => {
+    return { question: question.question };
   });
 
-  return { surveyName: SCINAPSE_SURVEY_QUESTIONS[0].surveyName, questions: skippedSurveyQuestions };
+  return { surveyName: SCINAPSE_SURVEY_QUESTIONS.surveyName, questions: skippedSurveyQuestions };
 }
 
 function trackToSurveyAction(actionType: string, surveyResult?: RawQuestion) {
@@ -53,35 +53,42 @@ function trackToSurveyAction(actionType: string, surveyResult?: RawQuestion) {
 const SurveyForm: React.FC<Props> = props => {
   const { DialogState } = props;
   const [surveyResult, setSurveyResult] = React.useState<RawQuestion>();
-  const [surveyQuestions, setSurveyQuestions] = React.useState<Survey[]>([]);
+  const [surveyQuestions, setSurveyQuestions] = React.useState<Survey>();
   const [isActive, setIsActive] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    const questions = SCINAPSE_SURVEY_QUESTIONS.map(question => {
+    const questions = SCINAPSE_SURVEY_QUESTIONS.questions.map(question => {
       return question.random ? getReandomizedAnwsers(question) : question;
     });
 
-    setSurveyQuestions(questions);
+    setSurveyQuestions({ surveyName: SCINAPSE_SURVEY_QUESTIONS.surveyName, questions: questions });
   }, []);
 
   React.useEffect(
     () => {
-      setIsActive(surveyQuestions.length > 0 && surveyQuestions.length === surveyResult!.questions.length);
+      setIsActive(
+        !!surveyQuestions &&
+          surveyQuestions.questions.length > 0 &&
+          surveyQuestions.questions.length === surveyResult!.questions.length
+      );
     },
     [surveyResult]
   );
 
-  const questionsList = surveyQuestions.map((surveyQuestion, index) => {
-    return (
-      <Question
-        key={index}
-        qKey={index}
-        question={surveyQuestion}
-        surveyResult={surveyResult}
-        handleChangeAnswer={setSurveyResult}
-      />
-    );
-  });
+  const questionsList =
+    !!surveyQuestions &&
+    surveyQuestions.questions.map((surveyQuestion, index) => {
+      return (
+        <Question
+          key={index}
+          qKey={index}
+          surveyName={SCINAPSE_SURVEY_QUESTIONS.surveyName}
+          question={surveyQuestion}
+          surveyResult={surveyResult}
+          handleChangeAnswer={setSurveyResult}
+        />
+      );
+    });
 
   return (
     <div className={styles.surveyFormContainer}>
