@@ -37,6 +37,5 @@ export const SCINAPSE_SURVEY_QUESTIONS: RawSurvey = {
       random: true,
       type: 'radio',
     },
-    { question: 'alpha', answers: ['a', 'b', 'c'], random: true, type: 'checkbox' },
   ],
 };
