@@ -1,34 +1,31 @@
 import * as React from 'react';
-import { Dispatch } from 'redux';
 import { findIndex, unionBy } from 'lodash';
-import { Survey, Q, RawQuestion } from '../constants';
+import { RawQuestionType, Survey, SCINAPSE_SURVEY_NAME } from '../constants';
 import { withStyles } from '../../../../../../helpers/withStylesHelper';
 const styles = require('./question.scss');
 
 interface QuestionProps {
-  surveyName: string;
-  question: Q;
+  question: RawQuestionType;
   qKey: number;
-  dispatch: Dispatch<any>;
-  surveyResult: RawQuestion;
-  handleChangeAnswer: (value: React.SetStateAction<RawQuestion>) => void;
+  surveyResult: Survey;
+  handleSetSurveyResult: (value: React.SetStateAction<Survey>) => void;
 }
 
 interface AnswerProps {
   value: string;
   name: string;
   type: string;
-  handleChangeAnswer: () => void;
+  handleCheckChange: () => void;
 }
 
 function changeSurveyAnswer(
-  survey: RawQuestion,
+  survey: Survey,
   type: string,
-  surveyResult: RawQuestion,
-  changeSurveyAnswer: (value: React.SetStateAction<RawQuestion>) => void
+  surveyResult: Survey,
+  handleSetSurveyResult: (value: React.SetStateAction<Survey>) => void
 ) {
   if (!surveyResult) {
-    return changeSurveyAnswer(survey);
+    return handleSetSurveyResult(survey);
   }
 
   const targetSurveyIndex = findIndex(surveyResult.questions, ['question', survey.questions[0].question]);
@@ -54,7 +51,7 @@ function changeSurveyAnswer(
         ...surveyResult.questions.slice(targetSurveyIndex + 1, surveyResult.questions.length),
       ];
 
-      return changeSurveyAnswer({ surveyName: survey.surveyName, questions: newSurveyResult });
+      return handleSetSurveyResult({ surveyName: survey.surveyName, questions: newSurveyResult });
     } else {
       const newSurveyResult = [
         ...surveyResult.questions.slice(0, targetSurveyIndex),
@@ -62,20 +59,21 @@ function changeSurveyAnswer(
         ...surveyResult.questions.slice(targetSurveyIndex + 1, surveyResult.questions.length),
       ];
 
-      return changeSurveyAnswer({ surveyName: survey.surveyName, questions: newSurveyResult });
+      return handleSetSurveyResult({ surveyName: survey.surveyName, questions: newSurveyResult });
     }
   }
-  return changeSurveyAnswer({
+
+  return handleSetSurveyResult({
     surveyName: survey.surveyName,
     questions: [survey.questions[0], ...surveyResult.questions],
   });
 }
 
 const Answer: React.FC<AnswerProps> = props => {
-  const { value, name, type, handleChangeAnswer } = props;
+  const { value, name, type, handleCheckChange } = props;
   return (
     <div className={styles.answerWrapper}>
-      <label onChange={handleChangeAnswer}>
+      <label onChange={handleCheckChange}>
         <input type={type} name={name} value={value} className={styles.answerRadioBtn} />
         <span className={styles.answerDesc}>{value}</span>
       </label>
@@ -84,11 +82,11 @@ const Answer: React.FC<AnswerProps> = props => {
 };
 
 const Question: React.FC<QuestionProps> = props => {
-  const { question, surveyName, qKey, surveyResult, handleChangeAnswer } = props;
+  const { question, qKey, surveyResult, handleSetSurveyResult } = props;
 
   const answers = question.answers.map((answer, index) => {
-    const surveyPayload: RawQuestion = {
-      surveyName: surveyName,
+    const surveyPayload: Survey = {
+      surveyName: SCINAPSE_SURVEY_NAME,
       questions: [
         {
           question: question.question,
@@ -109,8 +107,8 @@ const Question: React.FC<QuestionProps> = props => {
         name={`q_${qKey}`}
         key={`q_${qKey}-a_${index}`}
         type={question.type}
-        handleChangeAnswer={() => {
-          changeSurveyAnswer(surveyPayload, question.type, surveyResult, handleChangeAnswer);
+        handleCheckChange={() => {
+          changeSurveyAnswer(surveyPayload, question.type, surveyResult, handleSetSurveyResult);
         }}
       />
     );

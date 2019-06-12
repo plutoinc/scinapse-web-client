@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as classNames from 'classnames';
 import { connect } from 'react-redux';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
-import { SCINAPSE_SURVEY_QUESTIONS, Survey, RawQuestion, Q } from './constants';
+import { SCINAPSE_SURVEY_QUESTIONS, RawSurvey, Survey, RawQuestionType, SCINAPSE_SURVEY_NAME } from './constants';
 import { AppState } from '../../../../../reducers';
 import { getCurrentPageType } from '../../../../locationListener';
 import Question from './components/question';
@@ -12,7 +12,7 @@ const styles = require('./surveyForm.scss');
 
 type Props = ReturnType<typeof mapStateToProps>;
 
-function getReandomizedAnwsers(rawQuestion: Q) {
+function getRandomizedAnswers(rawQuestion: RawQuestionType) {
   const rawAnswers = rawQuestion.answers;
   const randomizedAnswers = {
     ...rawQuestion,
@@ -36,10 +36,10 @@ function getAllSkippedSurveys() {
     return { question: question.question };
   });
 
-  return { surveyName: SCINAPSE_SURVEY_QUESTIONS.surveyName, questions: skippedSurveyQuestions };
+  return { surveyName: SCINAPSE_SURVEY_NAME, questions: skippedSurveyQuestions };
 }
 
-function trackToSurveyAction(actionType: string, surveyResult?: RawQuestion) {
+function trackToSurveyAction(actionType: string, surveyResult?: Survey) {
   ActionTicketManager.trackTicket({
     pageType: getCurrentPageType(),
     actionType: 'fire',
@@ -52,40 +52,40 @@ function trackToSurveyAction(actionType: string, surveyResult?: RawQuestion) {
 
 const SurveyForm: React.FC<Props> = props => {
   const { DialogState } = props;
-  const [surveyResult, setSurveyResult] = React.useState<RawQuestion>();
-  const [surveyQuestions, setSurveyQuestions] = React.useState<Survey>();
+  const [surveyResult, setSurveyResult] = React.useState<Survey>();
+  const [surveyQuestions, setSurveyQuestions] = React.useState<RawSurvey>();
   const [isActive, setIsActive] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     const questions = SCINAPSE_SURVEY_QUESTIONS.questions.map(question => {
-      return question.random ? getReandomizedAnwsers(question) : question;
+      return question.random ? getRandomizedAnswers(question) : question;
     });
 
-    setSurveyQuestions({ surveyName: SCINAPSE_SURVEY_QUESTIONS.surveyName, questions: questions });
+    setSurveyQuestions({ surveyName: SCINAPSE_SURVEY_NAME, questions: questions });
   }, []);
 
   React.useEffect(
     () => {
       setIsActive(
         !!surveyQuestions &&
+          !!surveyResult &&
           surveyQuestions.questions.length > 0 &&
-          surveyQuestions.questions.length === surveyResult!.questions.length
+          surveyQuestions.questions.length === surveyResult.questions.length
       );
     },
     [surveyResult]
   );
 
   const questionsList =
-    !!surveyQuestions &&
+    surveyQuestions &&
     surveyQuestions.questions.map((surveyQuestion, index) => {
       return (
         <Question
           key={index}
           qKey={index}
-          surveyName={SCINAPSE_SURVEY_QUESTIONS.surveyName}
           question={surveyQuestion}
           surveyResult={surveyResult}
-          handleChangeAnswer={setSurveyResult}
+          handleSetSurveyResult={setSurveyResult}
         />
       );
     });

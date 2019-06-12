@@ -26,9 +26,10 @@ export interface Survey {
   surveyName: string;
   questions: QuestionType[];
 }
+export const SCINAPSE_SURVEY_NAME = 'thinkAsScinapse';
 
 export const SCINAPSE_SURVEY_QUESTIONS: RawSurvey = {
-  surveyName: 'thinkAsScinapse',
+  surveyName: SCINAPSE_SURVEY_NAME,
   questions: [
     {
       question: 'What do you think as Scinapse?',
