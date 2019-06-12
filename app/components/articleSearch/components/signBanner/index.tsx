@@ -1,8 +1,6 @@
 import * as React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '../../../../helpers/withStylesHelper';
-import { SIGN_BANNER_AT_SEARCH_CURATED_TEST } from '../../../../constants/abTestGlobalValue';
-import { getUserGroupName } from '../../../../helpers/abTestHelper';
 import GlobalDialogManager from '../../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import { useObserver } from '../../../../hooks/useIntersectionHook';
@@ -13,14 +11,7 @@ interface SignBannerProps {
   isLoading: boolean;
 }
 
-interface SignBannerContextObj {
-  titleText: string;
-  buttonText: string;
-}
-
-const SignBannerSignButtonText: React.FunctionComponent<{ buttonText: string }> = React.memo(props => {
-  const { buttonText } = props;
-
+const SignBannerSignButtonText: React.FC<{}> = React.memo(() => {
   return (
     <div className={styles.bannerSignButtonWrapper}>
       <button
@@ -47,34 +38,14 @@ const SignBannerSignButtonText: React.FunctionComponent<{ buttonText: string }> 
         }}
         className={styles.bannerSignButton}
       >
-        {buttonText}
+        Join Now
       </button>
     </div>
   );
 });
 
-function getSignBannerContext(userGroupName: string): SignBannerContextObj {
-  switch (userGroupName) {
-    case 'areyouresearcher-yesofcourse':
-      return { titleText: 'Are you a researcher?', buttonText: 'Yes, of course' };
-    case 'bemember-joinnow':
-      return { titleText: 'Be a Scinapse Member', buttonText: 'Join Now' };
-    case 'areyouresearcher-signup':
-      return { titleText: 'Are you a researcher?', buttonText: 'Sign Up' };
-  }
-
-  return { titleText: '', buttonText: '' };
-}
-
-const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
+const SignBanner: React.FC<SignBannerProps> = props => {
   const { isLoading } = props;
-  const signBannerCuratedUserGroupName = React.useRef('');
-
-  React.useEffect(() => {
-    signBannerCuratedUserGroupName.current = getUserGroupName(SIGN_BANNER_AT_SEARCH_CURATED_TEST) || '';
-  }, []);
-
-  const signBannerContext: SignBannerContextObj = getSignBannerContext(signBannerCuratedUserGroupName.current);
 
   const bannerViewTicketContext: ActionTicketParams = {
     pageType: 'searchResult',
@@ -98,7 +69,7 @@ const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
 
   return (
     <div className={styles.bannerContainer} ref={elRef}>
-      <div className={styles.bannerTitle}>{signBannerContext.titleText}</div>
+      <div className={styles.bannerTitle}>Be a Scinapse Member</div>
       <div className={styles.bannerBody}>Become a Scinapse member. Members can use all features unlimitedly.</div>
       <div className={styles.bannerImageWrapper}>
         <picture>
@@ -111,7 +82,7 @@ const SignBanner: React.FunctionComponent<SignBannerProps> = props => {
           />
         </picture>
       </div>
-      <SignBannerSignButtonText buttonText={signBannerContext.buttonText} />
+      <SignBannerSignButtonText />
     </div>
   );
 };
