@@ -3,7 +3,6 @@ import {
   bannerCuratedTest,
   relatedPapersAtPaperShowTest,
   signBannerAtPaperShowTest,
-  fullTextBlurredTest,
   queryLoverBoundaryTest,
 } from './abTestObject';
 
@@ -25,7 +24,6 @@ export type ABTestType =
   | 'signBannerAtPaperShow'
   | 'signBannerAtSearch-curated'
   | 'relatedPapersAtPaperShow'
-  | 'fullTextBlurred'
   | 'queryLover-boundaryTest';
 
 export const BENEFIT_EXPERIMENT_KEY = 'b_exp';
@@ -51,7 +49,6 @@ export const LIVE_TESTS: Test[] = [
   bannerCuratedTest,
   relatedPapersAtPaperShowTest,
   signBannerAtPaperShowTest,
-  fullTextBlurredTest,
   queryLoverBoundaryTest,
 ];
 
