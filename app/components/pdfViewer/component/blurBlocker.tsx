@@ -10,7 +10,7 @@ interface BlurBlockerProps {}
 const BlurBlocker: React.FC<BlurBlockerProps> = () => {
   return (
     <div
-      onClick={() => {
+      onClick={async () => {
         actionTicketManager.trackTicket({
           pageType: 'paperShow',
           actionArea: 'pdfViewer',
@@ -19,7 +19,7 @@ const BlurBlocker: React.FC<BlurBlockerProps> = () => {
           actionType: 'fire',
         });
 
-        blockUnverifiedUser({
+        await blockUnverifiedUser({
           authLevel: AUTH_LEVEL.VERIFIED,
           actionArea: 'pdfViewer',
           actionLabel: 'viewMorePDF',
