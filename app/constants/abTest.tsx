@@ -1,7 +1,6 @@
 import {
   searchEngineMoodTest,
   bannerCuratedTest,
-  relatedPapersAtPaperShowTest,
   signBannerAtPaperShowTest,
   queryLoverBoundaryTest,
 } from './abTestObject';
@@ -23,7 +22,6 @@ export type ABTestType =
   | 'searchEngineMood'
   | 'signBannerAtPaperShow'
   | 'signBannerAtSearch-curated'
-  | 'relatedPapersAtPaperShow'
   | 'queryLover-boundaryTest';
 
 export const BENEFIT_EXPERIMENT_KEY = 'b_exp';
@@ -47,7 +45,6 @@ export interface BenefitExpTicketContext {
 export const LIVE_TESTS: Test[] = [
   searchEngineMoodTest,
   bannerCuratedTest,
-  relatedPapersAtPaperShowTest,
   signBannerAtPaperShowTest,
   queryLoverBoundaryTest,
 ];
