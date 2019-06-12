@@ -31,8 +31,6 @@ import { PaperShowMatchParams, PaperShowPageQueryParams, RefCitedTabItem } from 
 import VenueAndAuthors from '../../components/common/paperItem/venueAndAuthors';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import RelatedPapers from '../../components/relatedPapers';
-import { getUserGroupName } from '../../helpers/abTestHelper';
-import { RELATED_PAPERS_AT_PAPER_SHOW_TEST } from '../../constants/abTestGlobalValue';
 import { CommonError } from '../../model/error';
 import PaperShowHelmet from '../../components/paperShow/helmet';
 import GoBackResultBtn from '../../components/paperShow/backButton';
@@ -276,13 +274,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             </div>
           </article>
           <div>
-            <RelatedPapers
-              shouldShowRelatedPapers={
-                !PDFViewerState.isLoading &&
-                PDFViewerState.hasFailed &&
-                getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) !== 'control'
-              }
-            />
+            <RelatedPapers shouldShowRelatedPapers={!PDFViewerState.isLoading && PDFViewerState.hasFailed} />
             <div className={styles.refCitedTabWrapper} ref={el => (this.fullTextTabWrapper = el)}>
               <PaperShowRefCitedTab
                 paper={paper}
@@ -302,10 +294,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               {layout.userDevice === UserDevice.DESKTOP && (
                 <PDFViewer
                   paper={paper}
-                  shouldShowRelatedPapers={
-                    (!paper.bestPdf || !paper.bestPdf.hasBest) &&
-                    getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) !== 'control'
-                  }
+                  shouldShowRelatedPapers={!paper.bestPdf || !paper.bestPdf.hasBest}
                   afterDownloadPDF={this.scrollToSection('fullText')}
                 />
               )}

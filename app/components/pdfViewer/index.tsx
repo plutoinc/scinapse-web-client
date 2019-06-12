@@ -22,7 +22,6 @@ import { makeGetMemoizedPapers } from '../../selectors/papersSelector';
 import { getMemoizedCurrentUser } from '../../selectors/getCurrentUser';
 import { getMemoizedPDFViewerState } from '../../selectors/getPDFViewer';
 import ProgressSpinner from './component/progressSpinner';
-import { getUserGroupName } from '../../helpers/abTestHelper';
 import BlurBlocker from './component/blurBlocker';
 const { Document, Page, pdfjs } = require('react-pdf');
 const styles = require('./pdfViewer.scss');
@@ -265,8 +264,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
       </div>
     );
 
-    const shouldShowBlurBlocker =
-      !currentUser.isLoggedIn && !currentUser.isLoggingIn && getUserGroupName('fullTextBlurred') !== 'control';
+    const shouldShowBlurBlocker = !currentUser.isLoggedIn && !currentUser.isLoggingIn;
     const componentToShowReadAllArea = shouldShowBlurBlocker ? <BlurBlocker /> : ReadAllPDFButton;
 
     return (

@@ -17,7 +17,7 @@ interface RelatedPapersProps {
   currentUser: CurrentUser;
   isLoadingPapers: boolean;
   relatedPapers: Paper[];
-  shouldShowRelatedPapers: boolean;
+  shouldShowRelatedPapers?: boolean;
 }
 
 async function openSignInDialog() {
