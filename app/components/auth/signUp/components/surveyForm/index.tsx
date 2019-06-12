@@ -52,7 +52,7 @@ function trackToSurveyAction(actionType: string, surveyResult?: Survey) {
 const SurveyForm: React.FC<Props> = props => {
   const { DialogState } = props;
   const [surveyResult, setSurveyResult] = React.useState<Survey>();
-  const [surveyQuestions, setSurveyQuestions] = React.useState<Survey>();
+  const [survey, setSurvey] = React.useState<Survey>();
   const [isActive, setIsActive] = React.useState<boolean>(false);
 
   React.useEffect(() => {
@@ -60,24 +60,23 @@ const SurveyForm: React.FC<Props> = props => {
       return question.random ? getRandomizedAnswers(question) : question;
     });
 
-    setSurveyQuestions({ surveyName: SCINAPSE_SURVEY_NAME, questions: questions });
+    setSurvey({ surveyName: SCINAPSE_SURVEY_NAME, questions: questions });
   }, []);
 
   React.useEffect(
     () => {
-      setIsActive(
-        !!surveyQuestions &&
-          !!surveyResult &&
-          surveyQuestions.questions.length > 0 &&
-          surveyQuestions.questions.length === surveyResult.questions.length
-      );
+      if (survey && surveyResult) {
+        const surveyQuestionLength = survey.questions.length;
+        const surveyResultQuestionLength = surveyResult.questions.length;
+        setIsActive(surveyQuestionLength === surveyResultQuestionLength);
+      }
     },
     [surveyResult]
   );
 
   const questionsList =
-    surveyQuestions &&
-    surveyQuestions.questions.map((surveyQuestion, index) => {
+    survey &&
+    survey.questions.map((surveyQuestion, index) => {
       return (
         <Question
           key={index}
