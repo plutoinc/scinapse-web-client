@@ -4,7 +4,6 @@ import {
   relatedPapersAtPaperShowTest,
   signBannerAtPaperShowTest,
   fullTextBlurredTest,
-  refCitedChildPaperList,
   queryLoverBoundaryTest,
 } from './abTestObject';
 
@@ -27,7 +26,6 @@ export type ABTestType =
   | 'signBannerAtSearch-curated'
   | 'relatedPapersAtPaperShow'
   | 'fullTextBlurred'
-  | 'refCitedPaperItem'
   | 'queryLover-boundaryTest';
 
 export const BENEFIT_EXPERIMENT_KEY = 'b_exp';
@@ -54,7 +52,6 @@ export const LIVE_TESTS: Test[] = [
   relatedPapersAtPaperShowTest,
   signBannerAtPaperShowTest,
   fullTextBlurredTest,
-  refCitedChildPaperList,
   queryLoverBoundaryTest,
 ];
 
