@@ -9,8 +9,8 @@ interface QuestionProps {
   question: Survey;
   qKey: number;
   dispatch: Dispatch<any>;
-  surveyResult: RawQuestion[];
-  handleChangeAnswer: (value: React.SetStateAction<RawQuestion[]>) => void;
+  surveyResult: RawQuestion;
+  handleChangeAnswer: (value: React.SetStateAction<RawQuestion>) => void;
 }
 
 interface AnswerProps {
@@ -23,18 +23,23 @@ interface AnswerProps {
 function changeSurveyAnswer(
   survey: RawQuestion,
   type: string,
-  surveyResult: RawQuestion[],
-  changeSurveyAnswer: (value: React.SetStateAction<RawQuestion[]>) => void
+  surveyResult: RawQuestion,
+  changeSurveyAnswer: (value: React.SetStateAction<RawQuestion>) => void
 ) {
-  const targetSurveyIndex = findIndex(surveyResult, ['question', survey.question]);
+  if (!surveyResult) {
+    return changeSurveyAnswer(survey);
+  }
+
+  const targetSurveyIndex = findIndex(surveyResult.questions, ['question', survey.questions[0].question]);
+  const payloadQuestion = survey.questions[0];
 
   if (targetSurveyIndex >= 0) {
-    const targetSurvey = surveyResult[targetSurveyIndex];
+    const targetSurvey = surveyResult.questions[targetSurveyIndex];
 
     if (type === 'checkbox') {
-      const targetAnswerIndex = findIndex(targetSurvey.checked, survey.checked[0]);
+      const targetAnswerIndex = findIndex(targetSurvey.checked, payloadQuestion.checked[0]);
       const newSurveyResult = [
-        ...surveyResult.slice(0, targetSurveyIndex),
+        ...surveyResult.questions.slice(0, targetSurveyIndex),
         {
           ...targetSurvey,
           checked:
@@ -43,22 +48,26 @@ function changeSurveyAnswer(
                   ...targetSurvey.checked.slice(0, targetAnswerIndex),
                   ...targetSurvey.checked.slice(targetAnswerIndex + 1, targetSurvey.checked.length),
                 ]
-              : unionBy(targetSurvey.checked, survey.checked, 'name'),
+              : unionBy(targetSurvey.checked, payloadQuestion.checked, 'name'),
         },
-        ...surveyResult.slice(targetSurveyIndex + 1, surveyResult.length),
+        ...surveyResult.questions.slice(targetSurveyIndex + 1, surveyResult.questions.length),
       ];
 
-      return changeSurveyAnswer(newSurveyResult);
+      return changeSurveyAnswer({ surveyName: survey.surveyName, questions: newSurveyResult });
     } else {
       const newSurveyResult = [
-        ...surveyResult.slice(0, targetSurveyIndex),
-        survey,
-        ...surveyResult.slice(targetSurveyIndex + 1, surveyResult.length),
+        ...surveyResult.questions.slice(0, targetSurveyIndex),
+        survey.questions[0],
+        ...surveyResult.questions.slice(targetSurveyIndex + 1, surveyResult.questions.length),
       ];
-      return changeSurveyAnswer(newSurveyResult);
+
+      return changeSurveyAnswer({ surveyName: survey.surveyName, questions: newSurveyResult });
     }
   }
-  return changeSurveyAnswer([survey, ...surveyResult]);
+  return changeSurveyAnswer({
+    surveyName: survey.surveyName,
+    questions: [survey.questions[0], ...surveyResult.questions],
+  });
 }
 
 const Answer: React.FC<AnswerProps> = props => {
@@ -79,12 +88,16 @@ const Question: React.FC<QuestionProps> = props => {
   const answers = question.answers.map((answer, index) => {
     const surveyPayload: RawQuestion = {
       surveyName: question.surveyName,
-      question: question.question,
-      random: question.random,
-      checked: [
+      questions: [
         {
-          name: answer,
-          order: index,
+          question: question.question,
+          random: question.random,
+          checked: [
+            {
+              name: answer,
+              order: index,
+            },
+          ],
         },
       ],
     };

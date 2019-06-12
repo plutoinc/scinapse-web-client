@@ -8,7 +8,6 @@ import { getCurrentPageType } from '../../../../locationListener';
 import Question from './components/question';
 import ActionTicketManager from '../../../../../helpers/actionTicketManager';
 import GlobalDialogManager from '../../../../../helpers/globalDialogManager';
-import { SurveyTicketFormatter as SurveyTicketContextFormatter } from './helpers/SurveyTicketManager';
 const styles = require('./surveyForm.scss');
 
 type Props = ReturnType<typeof mapStateToProps>;
@@ -33,29 +32,27 @@ function openFinalSignUpDialog(nextSignUpStep: string) {
 }
 
 function getAllSkippedSurveys() {
-  const skippedSurveyInfo = SCINAPSE_SURVEY_QUESTIONS.map(survey => {
-    return { surveyName: survey.surveyName, question: survey.question };
+  const skippedSurveyQuestions = SCINAPSE_SURVEY_QUESTIONS.map(survey => {
+    return { question: survey.question };
   });
 
-  return skippedSurveyInfo;
+  return { surveyName: SCINAPSE_SURVEY_QUESTIONS[0].surveyName, questions: skippedSurveyQuestions };
 }
 
-function trackToSurveyAction(actionType: string, surveyResult?: RawQuestion[]) {
+function trackToSurveyAction(actionType: string, surveyResult?: RawQuestion) {
   ActionTicketManager.trackTicket({
     pageType: getCurrentPageType(),
     actionType: 'fire',
     actionArea: 'signUp',
     actionTag: actionType === 'submit' ? 'submitSurvey' : 'skipSurvey',
     actionLabel:
-      actionType === 'submit' && surveyResult
-        ? SurveyTicketContextFormatter(surveyResult)
-        : SurveyTicketContextFormatter(getAllSkippedSurveys()),
+      actionType === 'submit' && surveyResult ? JSON.stringify(surveyResult) : JSON.stringify(getAllSkippedSurveys()),
   });
 }
 
 const SurveyForm: React.FC<Props> = props => {
   const { DialogState } = props;
-  const [surveyResult, setSurveyResult] = React.useState<RawQuestion[]>([]);
+  const [surveyResult, setSurveyResult] = React.useState<RawQuestion>();
   const [surveyQuestions, setSurveyQuestions] = React.useState<Survey[]>([]);
   const [isActive, setIsActive] = React.useState<boolean>(false);
 
@@ -69,7 +66,7 @@ const SurveyForm: React.FC<Props> = props => {
 
   React.useEffect(
     () => {
-      setIsActive(surveyQuestions.length > 0 && surveyQuestions.length === surveyResult.length);
+      setIsActive(surveyQuestions.length > 0 && surveyQuestions.length === surveyResult!.questions.length);
     },
     [surveyResult]
   );
@@ -81,7 +78,7 @@ const SurveyForm: React.FC<Props> = props => {
         qKey={index}
         question={surveyQuestion}
         surveyResult={surveyResult}
-        onChangeSetSurveyResult={setSurveyResult}
+        handleChangeAnswer={setSurveyResult}
       />
     );
   });
@@ -96,7 +93,6 @@ const SurveyForm: React.FC<Props> = props => {
             [styles.inActiveSubmitBtn]: !isActive,
           })}
           onClick={() => {
-            console.log(surveyResult);
             trackToSurveyAction('submit', surveyResult);
             openFinalSignUpDialog(DialogState.nextSignUpStep!);
           }}

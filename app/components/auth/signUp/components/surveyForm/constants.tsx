@@ -14,9 +14,11 @@ export interface Survey {
 
 export interface RawQuestion {
   surveyName: string;
-  question: string;
-  random: boolean;
-  checked: CheckedAnswer[];
+  questions: {
+    question: string;
+    random: boolean;
+    checked: CheckedAnswer[];
+  }[];
 }
 
 export const SCINAPSE_SURVEY_QUESTIONS: Survey[] = [
