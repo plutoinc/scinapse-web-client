@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { findIndex, unionBy } from 'lodash';
-import { RawQuestionType, Survey, SCINAPSE_SURVEY_NAME } from '../constants';
+import { QuestionType, Survey, SCINAPSE_SURVEY_NAME } from '../constants';
 import { withStyles } from '../../../../../../helpers/withStylesHelper';
 const styles = require('./question.scss');
 
 interface QuestionProps {
-  question: RawQuestionType;
+  question: QuestionType;
   surveyResult: Survey;
   handleSetSurveyResult: (value: React.SetStateAction<Survey>) => void;
 }
@@ -34,7 +34,7 @@ function changeSurveyAnswer(
     const targetSurvey = surveyResult.questions[targetSurveyIndex];
 
     if (type === 'checkbox') {
-      const targetAnswerIndex = findIndex(targetSurvey.checked, questionPayload.checked[0]);
+      const targetAnswerIndex = findIndex(targetSurvey.checked, questionPayload.checked![0]);
       const newSurveyResult = [
         ...surveyResult.questions.slice(0, targetSurveyIndex),
         {
@@ -42,8 +42,8 @@ function changeSurveyAnswer(
           checked:
             targetAnswerIndex >= 0
               ? [
-                  ...targetSurvey.checked.slice(0, targetAnswerIndex),
-                  ...targetSurvey.checked.slice(targetAnswerIndex + 1, targetSurvey.checked.length),
+                  ...targetSurvey.checked!.slice(0, targetAnswerIndex),
+                  ...targetSurvey.checked!.slice(targetAnswerIndex + 1, targetSurvey.checked!.length),
                 ]
               : unionBy(targetSurvey.checked, questionPayload.checked, 'name'),
         },
@@ -83,7 +83,7 @@ const Answer: React.FC<AnswerProps> = props => {
 const Question: React.FC<QuestionProps> = props => {
   const { question, surveyResult, handleSetSurveyResult } = props;
 
-  const answers = question.answers.map((answer, index) => {
+  const answers = question.answers!.map((answer, index) => {
     const surveyPayload: Survey = {
       surveyName: SCINAPSE_SURVEY_NAME,
       questions: [
@@ -105,9 +105,9 @@ const Question: React.FC<QuestionProps> = props => {
         value={answer}
         name={question.question}
         key={index}
-        type={question.type}
+        type={question.type!}
         handleCheckChange={() => {
-          changeSurveyAnswer(surveyPayload, question.type, surveyResult, handleSetSurveyResult);
+          changeSurveyAnswer(surveyPayload, question.type!, surveyResult, handleSetSurveyResult);
         }}
       />
     );

@@ -3,7 +3,7 @@ import * as classNames from 'classnames';
 import { connect } from 'react-redux';
 import { shuffle } from 'lodash';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
-import { SCINAPSE_SURVEY_QUESTIONS, RawSurvey, Survey, RawQuestionType, SCINAPSE_SURVEY_NAME } from './constants';
+import { SCINAPSE_SURVEY_QUESTIONS, Survey, QuestionType, SCINAPSE_SURVEY_NAME } from './constants';
 import { AppState } from '../../../../../reducers';
 import { getCurrentPageType } from '../../../../locationListener';
 import Question from './components/question';
@@ -13,7 +13,7 @@ const styles = require('./surveyForm.scss');
 
 type Props = ReturnType<typeof mapStateToProps>;
 
-function getRandomizedAnswers(rawQuestion: RawQuestionType) {
+function getRandomizedAnswers(rawQuestion: QuestionType) {
   const rawAnswers = rawQuestion.answers;
   const randomizedAnswers = {
     ...rawQuestion,
@@ -52,7 +52,7 @@ function trackToSurveyAction(actionType: string, surveyResult?: Survey) {
 const SurveyForm: React.FC<Props> = props => {
   const { DialogState } = props;
   const [surveyResult, setSurveyResult] = React.useState<Survey>();
-  const [surveyQuestions, setSurveyQuestions] = React.useState<RawSurvey>();
+  const [surveyQuestions, setSurveyQuestions] = React.useState<Survey>();
   const [isActive, setIsActive] = React.useState<boolean>(false);
 
   React.useEffect(() => {

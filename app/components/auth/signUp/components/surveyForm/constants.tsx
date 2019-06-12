@@ -3,23 +3,12 @@ interface CheckedAnswer {
   order: number;
 }
 
-export interface RawQuestionType {
-  question: string;
-  answers: string[];
-  random: boolean;
-  type: string;
-  description?: string;
-}
-
-interface QuestionType {
+export interface QuestionType {
   question: string;
   random: boolean;
-  checked: CheckedAnswer[];
-}
-
-export interface RawSurvey {
-  surveyName: string;
-  questions: RawQuestionType[];
+  answers?: string[];
+  type?: string;
+  checked?: CheckedAnswer[];
 }
 
 export interface Survey {
@@ -28,7 +17,7 @@ export interface Survey {
 }
 export const SCINAPSE_SURVEY_NAME = 'thinkAsScinapse';
 
-export const SCINAPSE_SURVEY_QUESTIONS: RawSurvey = {
+export const SCINAPSE_SURVEY_QUESTIONS: Survey = {
   surveyName: SCINAPSE_SURVEY_NAME,
   questions: [
     {
@@ -36,6 +25,12 @@ export const SCINAPSE_SURVEY_QUESTIONS: RawSurvey = {
       answers: ['Publisher', 'PDF Provider', 'Search Engine'],
       random: true,
       type: 'radio',
+    },
+    {
+      question: 'a?',
+      answers: ['a', 'bb', 'ccc'],
+      random: true,
+      type: 'checkbox',
     },
   ],
 };
