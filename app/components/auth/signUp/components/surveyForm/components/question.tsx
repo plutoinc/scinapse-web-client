@@ -19,23 +19,23 @@ interface AnswerProps {
 }
 
 function changeSurveyAnswer(
-  survey: Survey,
+  surveyPayload: Survey,
   type: string,
   surveyResult: Survey,
   handleSetSurveyResult: (value: React.SetStateAction<Survey>) => void
 ) {
   if (!surveyResult) {
-    return handleSetSurveyResult(survey);
+    return handleSetSurveyResult(surveyPayload);
   }
 
-  const targetSurveyIndex = findIndex(surveyResult.questions, ['question', survey.questions[0].question]);
-  const payloadQuestion = survey.questions[0];
+  const questionPayload = surveyPayload.questions[0];
+  const targetSurveyIndex = findIndex(surveyResult.questions, ['question', questionPayload.question]);
 
   if (targetSurveyIndex >= 0) {
     const targetSurvey = surveyResult.questions[targetSurveyIndex];
 
     if (type === 'checkbox') {
-      const targetAnswerIndex = findIndex(targetSurvey.checked, payloadQuestion.checked[0]);
+      const targetAnswerIndex = findIndex(targetSurvey.checked, questionPayload.checked[0]);
       const newSurveyResult = [
         ...surveyResult.questions.slice(0, targetSurveyIndex),
         {
@@ -46,26 +46,26 @@ function changeSurveyAnswer(
                   ...targetSurvey.checked.slice(0, targetAnswerIndex),
                   ...targetSurvey.checked.slice(targetAnswerIndex + 1, targetSurvey.checked.length),
                 ]
-              : unionBy(targetSurvey.checked, payloadQuestion.checked, 'name'),
+              : unionBy(targetSurvey.checked, questionPayload.checked, 'name'),
         },
         ...surveyResult.questions.slice(targetSurveyIndex + 1, surveyResult.questions.length),
       ];
 
-      return handleSetSurveyResult({ surveyName: survey.surveyName, questions: newSurveyResult });
+      return handleSetSurveyResult({ surveyName: SCINAPSE_SURVEY_NAME, questions: newSurveyResult });
     } else {
       const newSurveyResult = [
         ...surveyResult.questions.slice(0, targetSurveyIndex),
-        survey.questions[0],
+        questionPayload,
         ...surveyResult.questions.slice(targetSurveyIndex + 1, surveyResult.questions.length),
       ];
 
-      return handleSetSurveyResult({ surveyName: survey.surveyName, questions: newSurveyResult });
+      return handleSetSurveyResult({ surveyName: SCINAPSE_SURVEY_NAME, questions: newSurveyResult });
     }
   }
 
   return handleSetSurveyResult({
-    surveyName: survey.surveyName,
-    questions: [survey.questions[0], ...surveyResult.questions],
+    surveyName: SCINAPSE_SURVEY_NAME,
+    questions: [questionPayload, ...surveyResult.questions],
   });
 }
 
