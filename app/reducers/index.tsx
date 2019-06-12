@@ -45,7 +45,6 @@ import {
 import { AuthorSearchState, AUTHOR_SEARCH_INITIAL_STATE } from '../containers/authorSearch/records';
 import { RelatedPapersState, RELATED_PAPERS_INITIAL_STATE, reducer as RelatedPapersReducer } from './realtedPapers';
 import { PDFViewerState, reducer as PDFViewerReducer, PDF_VIEWER_INITIAL_STATE } from './pdfViewer';
-import { SurveyFormState, SURVEY_FORM_INITIAL_STATE, reducer as SurveyFormReducer } from './surveyForm';
 
 export interface AppState {
   configuration: ConfigurationReducer.Configuration;
@@ -64,7 +63,6 @@ export interface AppState {
   userCollections: UserCollectionsState;
   relatedPapersState: RelatedPapersState;
   PDFViewerState: PDFViewerState;
-  surveyFormState: SurveyFormState;
   entities: EntityState;
 }
 
@@ -85,7 +83,6 @@ export const initialState: AppState = {
   userCollections: USER_COLLECTIONS_INITIAL_STATE,
   relatedPapersState: RELATED_PAPERS_INITIAL_STATE,
   PDFViewerState: PDF_VIEWER_INITIAL_STATE,
-  surveyFormState: SURVEY_FORM_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
 };
 
@@ -106,6 +103,5 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   userCollections: UserCollectionsReducer,
   relatedPapersState: RelatedPapersReducer,
   PDFViewerState: PDFViewerReducer,
-  surveyFormState: SurveyFormReducer,
   entities: EntityReducer,
 });

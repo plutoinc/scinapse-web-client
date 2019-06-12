@@ -13,15 +13,15 @@ const styles = require('./surveyForm.scss');
 
 type Props = ReturnType<typeof mapStateToProps>;
 
-function generateRandomizedAnswers(rawQuestion: Survey) {
+function getReandomizedAnwsers(rawQuestion: Survey) {
   const rawAnswers = rawQuestion.answers;
-  const randomizedAnswersSurveyContext = {
+  const randomizedAnswers = {
     ...rawQuestion,
     answer: rawAnswers.sort(() => {
       return 0.5 - Math.random();
     }),
   };
-  return randomizedAnswersSurveyContext;
+  return randomizedAnswers;
 }
 
 function openFinalSignUpDialog(nextSignUpStep: string) {
@@ -32,7 +32,7 @@ function openFinalSignUpDialog(nextSignUpStep: string) {
   }
 }
 
-function getSkippedSurveyInfo() {
+function getAllSkippedSurveys() {
   const skippedSurveyInfo = SCINAPSE_SURVEY_QUESTIONS.map(survey => {
     return { surveyName: survey.surveyName, question: survey.question };
   });
@@ -49,7 +49,7 @@ function trackToSurveyAction(actionType: string, surveyResult?: RawQuestion[]) {
     actionLabel:
       actionType === 'submit' && surveyResult
         ? SurveyTicketContextFormatter(surveyResult)
-        : SurveyTicketContextFormatter(getSkippedSurveyInfo()),
+        : SurveyTicketContextFormatter(getAllSkippedSurveys()),
   });
 }
 
@@ -61,7 +61,7 @@ const SurveyForm: React.FC<Props> = props => {
 
   React.useEffect(() => {
     const questions = SCINAPSE_SURVEY_QUESTIONS.map(question => {
-      return question.random ? generateRandomizedAnswers(question) : question;
+      return question.random ? getReandomizedAnwsers(question) : question;
     });
 
     setSurveyQuestions(questions);
