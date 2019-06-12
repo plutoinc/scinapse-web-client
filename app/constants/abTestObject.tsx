@@ -9,8 +9,3 @@ export const signBannerAtPaperShowTest: Test = {
   name: 'signBannerAtPaperShow',
   userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'bottomBanner', weight: 1 }],
 };
-
-export const queryLoverBoundaryTest: Test = {
-  name: 'queryLover-boundaryTest',
-  userGroup: [{ groupName: 'queryPerDevice', weight: 1 }, { groupName: 'queryPerSession', weight: 1 }],
-};
