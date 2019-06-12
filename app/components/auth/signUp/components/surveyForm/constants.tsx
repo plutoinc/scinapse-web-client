@@ -3,7 +3,7 @@ interface CheckedAnswer {
   order: number;
 }
 
-export interface Q {
+export interface RawQuestionType {
   question: string;
   answers: string[];
   random: boolean;
@@ -11,21 +11,23 @@ export interface Q {
   description?: string;
 }
 
+interface QuestionType {
+  question: string;
+  random: boolean;
+  checked: CheckedAnswer[];
+}
+
+export interface RawSurvey {
+  surveyName: string;
+  questions: RawQuestionType[];
+}
+
 export interface Survey {
   surveyName: string;
-  questions: Q[];
+  questions: QuestionType[];
 }
 
-export interface RawQuestion {
-  surveyName: string;
-  questions: {
-    question: string;
-    random: boolean;
-    checked: CheckedAnswer[];
-  }[];
-}
-
-export const SCINAPSE_SURVEY_QUESTIONS: Survey = {
+export const SCINAPSE_SURVEY_QUESTIONS: RawSurvey = {
   surveyName: 'thinkAsScinapse',
   questions: [
     {
