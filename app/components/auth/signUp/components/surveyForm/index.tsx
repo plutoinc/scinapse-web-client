@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
 import { connect } from 'react-redux';
+import { shuffle } from 'lodash';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
 import { SCINAPSE_SURVEY_QUESTIONS, RawSurvey, Survey, RawQuestionType, SCINAPSE_SURVEY_NAME } from './constants';
 import { AppState } from '../../../../../reducers';
@@ -16,9 +17,7 @@ function getRandomizedAnswers(rawQuestion: RawQuestionType) {
   const rawAnswers = rawQuestion.answers;
   const randomizedAnswers = {
     ...rawQuestion,
-    answer: rawAnswers.sort(() => {
-      return 0.5 - Math.random();
-    }),
+    answer: shuffle(rawAnswers),
   };
   return randomizedAnswers;
 }
@@ -82,7 +81,6 @@ const SurveyForm: React.FC<Props> = props => {
       return (
         <Question
           key={index}
-          qKey={index}
           question={surveyQuestion}
           surveyResult={surveyResult}
           handleSetSurveyResult={setSurveyResult}

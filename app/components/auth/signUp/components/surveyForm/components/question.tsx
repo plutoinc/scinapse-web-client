@@ -6,7 +6,6 @@ const styles = require('./question.scss');
 
 interface QuestionProps {
   question: RawQuestionType;
-  qKey: number;
   surveyResult: Survey;
   handleSetSurveyResult: (value: React.SetStateAction<Survey>) => void;
 }
@@ -82,7 +81,7 @@ const Answer: React.FC<AnswerProps> = props => {
 };
 
 const Question: React.FC<QuestionProps> = props => {
-  const { question, qKey, surveyResult, handleSetSurveyResult } = props;
+  const { question, surveyResult, handleSetSurveyResult } = props;
 
   const answers = question.answers.map((answer, index) => {
     const surveyPayload: Survey = {
@@ -104,8 +103,8 @@ const Question: React.FC<QuestionProps> = props => {
     return (
       <Answer
         value={answer}
-        name={`q_${qKey}`}
-        key={`q_${qKey}-a_${index}`}
+        name={question.question}
+        key={index}
         type={question.type}
         handleCheckChange={() => {
           changeSurveyAnswer(surveyPayload, question.type, surveyResult, handleSetSurveyResult);
