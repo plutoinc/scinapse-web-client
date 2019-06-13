@@ -34,13 +34,6 @@ function handleChangeObjectiveAnswers(
   }
 }
 
-function handleChangeSubjectiveAnswer(
-  newAnswer: string,
-  handleSetAnswers: (value: React.SetStateAction<CheckedAnswer[]>) => void
-) {
-  handleSetAnswers([{ name: newAnswer, order: 0 }]);
-}
-
 const ObjectiveAnswer: React.FC<AnswerProps> = props => {
   const { value, name, type, handleChangeSelected } = props;
   return (
@@ -65,8 +58,10 @@ const SubjectiveAnswer: React.FC<AnswerProps> = props => {
           value={subjectiveAnswer}
           className={styles.answerRadioBtn}
           onChange={(e: React.FormEvent<HTMLInputElement>) => {
-            handleChangeSubjectiveAnswer(e.currentTarget.value, handleSetAnswers!);
-            setSubjectiveAnswer(e.currentTarget.value);
+            if (handleSetAnswers) {
+              handleSetAnswers([{ name: e.currentTarget.value, order: 0 }]);
+              setSubjectiveAnswer(e.currentTarget.value);
+            }
           }}
         />
       </label>
