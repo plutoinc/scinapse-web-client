@@ -23,9 +23,18 @@
 }
 
 .answerWrapper {
+  .label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
   .answerRadioBtn {
+    display: inline-block;
+    visibility: top;
     width: 16px;
     height: 16px;
+    cursor: pointer;
 
     &:checked + .answerDesc {
       color: $main-blue1;

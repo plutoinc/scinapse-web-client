@@ -1,26 +1,16 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
 import { connect } from 'react-redux';
-import { shuffle } from 'lodash';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
-import { SCINAPSE_SURVEY_QUESTIONS, Survey, QuestionType, SCINAPSE_SURVEY_NAME } from './constants';
+import { HOW_TO_FEEL_SURVEY, makeSurvey, AnswerParams, Survey } from '../../../../../helpers/surveyHelper';
 import { AppState } from '../../../../../reducers';
+import Question from "./components/question";
 import { getCurrentPageType } from '../../../../locationListener';
-import Question from './components/question';
 import ActionTicketManager from '../../../../../helpers/actionTicketManager';
 import GlobalDialogManager from '../../../../../helpers/globalDialogManager';
 const styles = require('./surveyForm.scss');
 
 type Props = ReturnType<typeof mapStateToProps>;
-
-function getRandomizedAnswers(rawQuestion: QuestionType) {
-  const rawAnswers = rawQuestion.answers;
-  const randomizedAnswers = {
-    ...rawQuestion,
-    answer: shuffle(rawAnswers),
-  };
-  return randomizedAnswers;
-}
 
 function openFinalSignUpDialog(nextSignUpStep: string) {
   if (nextSignUpStep === 'email') {
@@ -30,74 +20,48 @@ function openFinalSignUpDialog(nextSignUpStep: string) {
   }
 }
 
-function getAllSkippedSurveys() {
-  const skippedSurveyQuestions = SCINAPSE_SURVEY_QUESTIONS.questions.map(question => {
-    return { question: question.question };
-  });
-
-  return { surveyName: SCINAPSE_SURVEY_NAME, questions: skippedSurveyQuestions };
-}
-
-function trackToSurveyAction(actionType: string, surveyResult?: Survey) {
+function trackToSurveyAction(actionType: string, surveyResult: Survey) {
   ActionTicketManager.trackTicket({
     pageType: getCurrentPageType(),
     actionType: 'fire',
     actionArea: 'signUp',
     actionTag: actionType === 'submit' ? 'submitSurvey' : 'skipSurvey',
-    actionLabel:
-      actionType === 'submit' && surveyResult ? JSON.stringify(surveyResult) : JSON.stringify(getAllSkippedSurveys()),
+    actionLabel: JSON.stringify(surveyResult)
   });
 }
 
 const SurveyForm: React.FC<Props> = props => {
   const { DialogState } = props;
-  const [surveyResult, setSurveyResult] = React.useState<Survey>();
-  const [survey, setSurvey] = React.useState<Survey>();
-  const [isActive, setIsActive] = React.useState<boolean>(false);
+  const [survey, setSurvey] = React.useState(makeSurvey(HOW_TO_FEEL_SURVEY));
+  const isActive = survey.questions.every(q => q.isFinished);
 
-  React.useEffect(() => {
-    const questions = SCINAPSE_SURVEY_QUESTIONS.questions.map(question => {
-      return question.random ? getRandomizedAnswers(question) : question;
-    });
+  function handleChange(answer: AnswerParams) {
+    const targetQuestion = survey.questions[answer.questionIndex];
+    if (targetQuestion.type === 'radio' || targetQuestion.type === 'input') {
+      setSurvey({
+        ...survey,
+        questions: [
+          ...survey.questions.slice(0, answer.questionIndex),
+          { ...targetQuestion, answer: answer.answer as string, isFinished: true },
+          ...survey.questions.slice(answer.questionIndex + 1)
+        ]
+      })
+    }
+  }
 
-    setSurvey({ surveyName: SCINAPSE_SURVEY_NAME, questions: questions });
-  }, []);
-
-  React.useEffect(
-    () => {
-      if (surveyResult) {
-        surveyResult.questions.some(question => question.checked!.length === 0)
-          ? setIsActive(false)
-          : setIsActive(true);
-      }
-    },
-    [surveyResult]
-  );
-
-  const questionsList =
-    survey &&
-    survey.questions.map((surveyQuestion, index) => {
-      return (
-        <Question
-          key={index}
-          question={surveyQuestion}
-          surveyResult={surveyResult}
-          handleSetSurveyResult={setSurveyResult}
-        />
-      );
-    });
+  const questionList = survey.questions.map((q, i) => <Question questionIndex={i} onChange={handleChange} question={q} key={i} />);
 
   return (
     <div className={styles.surveyFormContainer}>
       <div className={styles.btnWrapper}>
-        <div>{questionsList}</div>
+        <div>{questionList}</div>
         <button
           className={classNames({
             [styles.activeSubmitBtn]: isActive,
             [styles.inActiveSubmitBtn]: !isActive,
           })}
           onClick={() => {
-            trackToSurveyAction('submit', surveyResult);
+            trackToSurveyAction('submit', survey);
             openFinalSignUpDialog(DialogState.nextSignUpStep!);
           }}
           disabled={!isActive}
@@ -107,7 +71,7 @@ const SurveyForm: React.FC<Props> = props => {
         <button
           className={styles.skipBtn}
           onClick={() => {
-            trackToSurveyAction('skip');
+            trackToSurveyAction('skip', survey);
             openFinalSignUpDialog(DialogState.nextSignUpStep!);
           }}
         >
@@ -124,4 +88,4 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default connect(mapStateToProps)(withStyles<typeof styles>(styles)(SurveyForm));
+export default connect(mapStateToProps)(withStyles<typeof SurveyForm>(styles)(SurveyForm));
