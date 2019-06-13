@@ -77,7 +77,6 @@ workflows:
           filters:
             branches:
               ignore:
-                - release
                 - master
                 - stage
       - deploy_to_stage:
@@ -90,4 +89,4 @@ workflows:
             branches:
               only:
                 - hotfix
-                - release
+                - master 
