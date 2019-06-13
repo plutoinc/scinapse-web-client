@@ -116,7 +116,7 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
             trackClickSignUpAtFormStep();
           }}
           onSucceed={() => {
-            setSignUpStep(SIGN_UP_STEP.SURVEY);
+            setSignUpStep(SIGN_UP_STEP.FINAL_WITH_EMAIL);
           }}
           onClickBack={() => {
             setSignUpStep(SIGN_UP_STEP.FIRST);
@@ -137,7 +137,7 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
           }}
           onSubmit={handleSubmitSignUpWithSocial}
           onSucceed={() => {
-            setSignUpStep(SIGN_UP_STEP.SURVEY);
+            setSignUpStep(SIGN_UP_STEP.FINAL_WITH_SOCIAL);
           }}
           onClickBack={() => {
             setSignUpStep(SIGN_UP_STEP.FIRST);
@@ -149,10 +149,6 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
           onClickTab={props.handleChangeDialogType}
         />
       );
-
-    case SIGN_UP_STEP.SURVEY:
-      GlobalDialogManager.openSurveyFormDialog(token.vendor !== '' ? token.vendor : undefined);
-      return null;
 
     case SIGN_UP_STEP.FINAL_WITH_EMAIL:
       GlobalDialogManager.openFinalSignUpWithEmailDialog();
