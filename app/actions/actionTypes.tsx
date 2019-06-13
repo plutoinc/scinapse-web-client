@@ -249,6 +249,7 @@ export const ActionCreators = {
     userActionType?: Scinapse.ActionTicket.ActionTagType;
     authContext?: BenefitExpTicketContext;
     isBlocked?: boolean;
+    nextSignUpStep?: string;
   }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
   },
