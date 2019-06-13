@@ -45,4 +45,4 @@ const AfterDownloadContents: React.FC<AfterDownloadContentsProps> = props => {
   );
 };
 
-export default withStyles<typeof styles>(styles)(AfterDownloadContents);
+export default withStyles<typeof AfterDownloadContents>(styles)(AfterDownloadContents);

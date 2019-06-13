@@ -74,4 +74,4 @@ const DoiSearchBlocked: React.FunctionComponent<DoiSearchBlockedProps> = props =
   );
 };
 
-export default withStyles<typeof styles>(styles)(DoiSearchBlocked);
+export default withStyles<typeof DoiSearchBlocked>(styles)(DoiSearchBlocked);

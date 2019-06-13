@@ -87,4 +87,4 @@ const SignBanner: React.FC<SignBannerProps> = props => {
   );
 };
 
-export default withStyles<typeof styles>(styles)(SignBanner);
+export default withStyles<typeof SignBanner>(styles)(SignBanner);

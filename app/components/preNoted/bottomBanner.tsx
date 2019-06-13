@@ -100,4 +100,4 @@ const BottomBanner: React.FC<BottomBannerProps> = ({ currentUser }) => {
   );
 };
 
-export default withStyles<typeof styles>(styles)(BottomBanner);
+export default withStyles<typeof BottomBanner>(styles)(BottomBanner);
