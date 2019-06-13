@@ -65,10 +65,10 @@ const SurveyForm: React.FC<Props> = props => {
 
   React.useEffect(
     () => {
-      if (survey && surveyResult) {
-        const surveyQuestionLength = survey.questions.length;
-        const surveyResultQuestionLength = surveyResult.questions.length;
-        setIsActive(surveyQuestionLength === surveyResultQuestionLength);
+      if (surveyResult) {
+        surveyResult.questions.some(question => question.checked!.length === 0)
+          ? setIsActive(false)
+          : setIsActive(true);
       }
     },
     [surveyResult]
