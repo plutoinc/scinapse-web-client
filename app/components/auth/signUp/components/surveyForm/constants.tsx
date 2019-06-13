@@ -1,4 +1,4 @@
-interface CheckedAnswer {
+export interface CheckedAnswer {
   name: string;
   order: number;
 }
@@ -25,12 +25,6 @@ export const SCINAPSE_SURVEY_QUESTIONS: Survey = {
       answers: ['Publisher', 'PDF Provider', 'Search Engine'],
       random: true,
       type: 'radio',
-    },
-    {
-      question: 'a?',
-      answers: ['a', 'bb', 'ccc'],
-      random: true,
-      type: 'checkbox',
     },
   ],
 };

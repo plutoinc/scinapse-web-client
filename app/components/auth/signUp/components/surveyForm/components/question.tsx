@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { findIndex, unionBy } from 'lodash';
-import { QuestionType, Survey, SCINAPSE_SURVEY_NAME } from '../constants';
+import { findIndex } from 'lodash';
+import { QuestionType, Survey, SCINAPSE_SURVEY_NAME, CheckedAnswer } from '../constants';
 import { withStyles } from '../../../../../../helpers/withStylesHelper';
 const styles = require('./question.scss');
 
@@ -11,68 +11,41 @@ interface QuestionProps {
 }
 
 interface AnswerProps {
-  value: string;
   name: string;
-  type: string;
-  handleCheckChange: () => void;
+  value?: string;
+  type?: string;
+  handleChangeSelected?: () => void;
+  handleSetAnswers?: (value: React.SetStateAction<CheckedAnswer[]>) => void;
 }
 
-function changeSurveyAnswer(
-  surveyPayload: Survey,
+function handleChangeObjectiveAnswers(
   type: string,
-  surveyResult: Survey,
-  handleSetSurveyResult: (value: React.SetStateAction<Survey>) => void
+  checkedAnswer: CheckedAnswer,
+  answers: CheckedAnswer[],
+  handleSetAnswers: (value: React.SetStateAction<CheckedAnswer[]>) => void
 ) {
-  if (!surveyResult) {
-    return handleSetSurveyResult(surveyPayload);
+  const targetIndex = findIndex(answers, checkedAnswer);
+  if (type === 'checkbox') {
+    targetIndex >= 0
+      ? handleSetAnswers([...answers.slice(0, targetIndex), ...answers.slice(targetIndex + 1, answers.length)])
+      : handleSetAnswers([...answers, checkedAnswer]);
+  } else {
+    handleSetAnswers([checkedAnswer]);
   }
-
-  const questionPayload = surveyPayload.questions[0];
-  const targetSurveyIndex = findIndex(surveyResult.questions, ['question', questionPayload.question]);
-
-  if (targetSurveyIndex >= 0) {
-    const targetSurvey = surveyResult.questions[targetSurveyIndex];
-
-    if (type === 'checkbox') {
-      const targetAnswerIndex = findIndex(targetSurvey.checked, questionPayload.checked![0]);
-      const newSurveyResult = [
-        ...surveyResult.questions.slice(0, targetSurveyIndex),
-        {
-          ...targetSurvey,
-          checked:
-            targetAnswerIndex >= 0
-              ? [
-                  ...targetSurvey.checked!.slice(0, targetAnswerIndex),
-                  ...targetSurvey.checked!.slice(targetAnswerIndex + 1, targetSurvey.checked!.length),
-                ]
-              : unionBy(targetSurvey.checked, questionPayload.checked, 'name'),
-        },
-        ...surveyResult.questions.slice(targetSurveyIndex + 1, surveyResult.questions.length),
-      ];
-
-      return handleSetSurveyResult({ surveyName: SCINAPSE_SURVEY_NAME, questions: newSurveyResult });
-    } else {
-      const newSurveyResult = [
-        ...surveyResult.questions.slice(0, targetSurveyIndex),
-        questionPayload,
-        ...surveyResult.questions.slice(targetSurveyIndex + 1, surveyResult.questions.length),
-      ];
-
-      return handleSetSurveyResult({ surveyName: SCINAPSE_SURVEY_NAME, questions: newSurveyResult });
-    }
-  }
-
-  return handleSetSurveyResult({
-    surveyName: SCINAPSE_SURVEY_NAME,
-    questions: [questionPayload, ...surveyResult.questions],
-  });
 }
 
-const Answer: React.FC<AnswerProps> = props => {
-  const { value, name, type, handleCheckChange } = props;
+function handleChangeSubjectiveAnswer(
+  newAnswer: string,
+  handleSetAnswers: (value: React.SetStateAction<CheckedAnswer[]>) => void
+) {
+  handleSetAnswers([{ name: newAnswer, order: 0 }]);
+}
+
+const ObjectiveAnswer: React.FC<AnswerProps> = props => {
+  const { value, name, type, handleChangeSelected } = props;
   return (
     <div className={styles.answerWrapper}>
-      <label onChange={handleCheckChange}>
+      <label onChange={handleChangeSelected}>
         <input type={type} name={name} value={value} className={styles.answerRadioBtn} />
         <span className={styles.answerDesc}>{value}</span>
       </label>
@@ -80,43 +53,85 @@ const Answer: React.FC<AnswerProps> = props => {
   );
 };
 
+const SubjectiveAnswer: React.FC<AnswerProps> = props => {
+  const [subjectiveAnswer, setSubjectiveAnswer] = React.useState<string>('');
+  const { name, handleSetAnswers } = props;
+  return (
+    <div className={styles.answerWrapper}>
+      <label>
+        <input
+          type="text"
+          name={name}
+          value={subjectiveAnswer}
+          className={styles.answerRadioBtn}
+          onChange={(e: React.FormEvent<HTMLInputElement>) => {
+            handleChangeSubjectiveAnswer(e.currentTarget.value, handleSetAnswers!);
+            setSubjectiveAnswer(e.currentTarget.value);
+          }}
+        />
+      </label>
+    </div>
+  );
+};
+
 const Question: React.FC<QuestionProps> = props => {
   const { question, surveyResult, handleSetSurveyResult } = props;
+  const [answers, setAnswers] = React.useState<CheckedAnswer[]>([]);
 
-  const answers = question.answers!.map((answer, index) => {
-    const surveyPayload: Survey = {
-      surveyName: SCINAPSE_SURVEY_NAME,
-      questions: [
-        {
-          question: question.question,
-          random: question.random,
-          checked: [
-            {
-              name: answer,
-              order: index,
-            },
-          ],
-        },
-      ],
+  React.useEffect(
+    () => {
+      const newQuestionAnswer = { question: question.question, random: question.random, checked: answers };
+
+      if (!surveyResult) {
+        return handleSetSurveyResult({
+          surveyName: SCINAPSE_SURVEY_NAME,
+          questions: [newQuestionAnswer],
+        });
+      }
+
+      const targetIndex = findIndex(surveyResult.questions, ['question', question.question]);
+      return targetIndex >= 0
+        ? handleSetSurveyResult({
+            ...surveyResult,
+            questions: [
+              ...surveyResult.questions.slice(0, targetIndex),
+              newQuestionAnswer,
+              ...surveyResult.questions.slice(targetIndex + 1, surveyResult.questions.length),
+            ],
+          })
+        : handleSetSurveyResult({
+            ...surveyResult,
+            questions: [...surveyResult.questions, newQuestionAnswer],
+          });
+    },
+    [answers]
+  );
+
+  const answersList = question.answers!.map((answer, index) => {
+    const answerPayload: CheckedAnswer = {
+      name: answer,
+      order: index,
     };
 
-    return (
-      <Answer
+    return question.type && question.type !== 'text' ? (
+      <ObjectiveAnswer
         value={answer}
         name={question.question}
         key={index}
-        type={question.type!}
-        handleCheckChange={() => {
-          changeSurveyAnswer(surveyPayload, question.type!, surveyResult, handleSetSurveyResult);
+        type={question.type}
+        handleChangeSelected={() => {
+          handleChangeObjectiveAnswers(question.type!, answerPayload, answers, setAnswers);
         }}
       />
+    ) : (
+      <SubjectiveAnswer name={question.question} key={index} handleSetAnswers={setAnswers} />
     );
   });
 
   return (
     <div className={styles.questionContainer}>
       <div className={styles.title}>{question.question}</div>
-      <div className={styles.answersWrapper}>{answers}</div>
+      <div className={styles.answersWrapper}>{answersList}</div>
     </div>
   );
 };
