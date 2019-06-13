@@ -4,8 +4,6 @@ import SearchQueryInput from '../../common/InputWithSuggestionList/searchQueryIn
 import Icon from '../../../icons';
 import RelatedPapers from '../../relatedPapers';
 import { Paper } from '../../../model/paper';
-import { getUserGroupName } from '../../../helpers/abTestHelper';
-import { RELATED_PAPERS_AT_PAPER_SHOW_TEST } from '../../../constants/abTestGlobalValue';
 const styles = require('./afterDownloadContents.scss');
 
 interface AfterDownloadContentsProps {
@@ -15,9 +13,7 @@ interface AfterDownloadContentsProps {
   isRelatedPaperLoading: boolean;
 }
 
-const SearchQueryBoxAtPaperShow: React.FC<{ shouldShowSearchBox: boolean }> = ({ shouldShowSearchBox }) => {
-  if (!shouldShowSearchBox) return null;
-
+const SearchQueryBoxAtPaperShow: React.FC<{}> = () => {
   return (
     <div className={styles.afterDownloadSearchContainer}>
       <div className={styles.titleContext}>🔍 You can get more papers by searching!</div>
@@ -30,26 +26,6 @@ const SearchQueryBoxAtPaperShow: React.FC<{ shouldShowSearchBox: boolean }> = ({
 
 const AfterDownloadContents: React.FC<AfterDownloadContentsProps> = props => {
   const { onClickReloadBtn } = props;
-  const [isShowingRelatedPapers, setIsShowingRelatedPapers] = React.useState(false);
-  const [isShowingSearchBox, setIsShowingSearchBox] = React.useState(false);
-
-  React.useEffect(() => {
-    const userGroup = getUserGroupName(RELATED_PAPERS_AT_PAPER_SHOW_TEST) || '';
-    switch (userGroup) {
-      case 'related':
-        setIsShowingRelatedPapers(true);
-        setIsShowingSearchBox(false);
-        break;
-      case 'relatedAndSearch':
-        setIsShowingRelatedPapers(true);
-        setIsShowingSearchBox(true);
-        break;
-      case 'search':
-        setIsShowingRelatedPapers(false);
-        setIsShowingSearchBox(true);
-        break;
-    }
-  }, []);
 
   return (
     <>
@@ -63,8 +39,8 @@ const AfterDownloadContents: React.FC<AfterDownloadContentsProps> = props => {
           Reload Full-Text
         </button>
       </div>
-      <SearchQueryBoxAtPaperShow shouldShowSearchBox={isShowingSearchBox} />
-      <RelatedPapers shouldShowRelatedPapers={isShowingRelatedPapers} />
+      <SearchQueryBoxAtPaperShow />
+      <RelatedPapers />
     </>
   );
 };

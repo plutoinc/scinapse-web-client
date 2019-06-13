@@ -1,12 +1,4 @@
-import {
-  searchEngineMoodTest,
-  bannerCuratedTest,
-  relatedPapersAtPaperShowTest,
-  signBannerAtPaperShowTest,
-  fullTextBlurredTest,
-  refCitedChildPaperList,
-  queryLoverBoundaryTest,
-} from './abTestObject';
+import { searchEngineMoodTest, signBannerAtPaperShowTest } from './abTestObject';
 
 export interface UserGroup {
   groupName: string;
@@ -20,15 +12,7 @@ export interface Test {
 
 export type BenefitExpType = 'queryCountSession' | 'refPaperCountSession' | 'paperviewCountDevice' | 'downloadCount';
 
-export type ABTestType =
-  | 'queryLover'
-  | 'searchEngineMood'
-  | 'signBannerAtPaperShow'
-  | 'signBannerAtSearch-curated'
-  | 'relatedPapersAtPaperShow'
-  | 'fullTextBlurred'
-  | 'refCitedPaperItem'
-  | 'queryLover-boundaryTest';
+export type ABTestType = 'queryLover' | 'searchEngineMood' | 'signBannerAtPaperShow';
 
 export const BENEFIT_EXPERIMENT_KEY = 'b_exp';
 
@@ -48,15 +32,7 @@ export interface BenefitExpTicketContext {
   expName?: string;
 }
 
-export const LIVE_TESTS: Test[] = [
-  searchEngineMoodTest,
-  bannerCuratedTest,
-  relatedPapersAtPaperShowTest,
-  signBannerAtPaperShowTest,
-  fullTextBlurredTest,
-  refCitedChildPaperList,
-  queryLoverBoundaryTest,
-];
+export const LIVE_TESTS: Test[] = [searchEngineMoodTest, signBannerAtPaperShowTest];
 
 function getRandomPool(): { [key: string]: string[] } {
   const randomPool: { [key: string]: string[] } = {};

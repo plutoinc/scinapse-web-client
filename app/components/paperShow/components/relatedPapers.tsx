@@ -7,10 +7,7 @@ import DesktopPagination from '../../common/desktopPagination';
 import { RELATED_PAPERS } from '../constants';
 import { PaperShowState } from '../../../containers/paperShow/records';
 import PaperItem from '../../common/paperItem';
-import PaperItemWithToggleList from '../../paperItemWithToggleList';
 import MobilePagination from '../../common/mobilePagination';
-import { getUserGroupName } from '../../../helpers/abTestHelper';
-import { REF_CITED_PAPER_ITEM_TEST } from '../../../constants/abTestGlobalValue';
 const styles = require('./relatedPapers.scss');
 
 interface ReferencePapersProps
@@ -28,88 +25,36 @@ interface PaperListProps {
   papers: Paper[];
   type: RELATED_PAPERS;
   currentUser: CurrentUser;
-  refCitedPaperItemUserGroup: string;
 }
 const PaperList: React.FC<PaperListProps> = props => {
-  const { type, papers, currentUser, refCitedPaperItemUserGroup } = props;
+  const { type, papers, currentUser } = props;
 
   if (!papers || papers.length === 0) return null;
 
   const referenceItems = papers.map(paper => {
-    if (!refCitedPaperItemUserGroup) {
-      return (
-        <div className={styles.paperShowPaperItemWrapper} key={paper.id}>
-          <PaperItem
-            pageType="paperShow"
-            actionArea={type === 'reference' ? 'refList' : 'citedList'}
-            currentUser={currentUser}
-            paper={paper}
-            wrapperStyle={{ borderBottom: 'none', marginBottom: 0, paddingBottom: 0, maxWidth: '100%' }}
-          />
-        </div>
-      );
-    }
-
-    if (
-      refCitedPaperItemUserGroup === 'refCitedPaperItem' ||
-      refCitedPaperItemUserGroup === 'refCitedPaperItem-bigTitle'
-    ) {
-      return (
-        <PaperItemWithToggleList
+    return (
+      <div className={styles.paperShowPaperItemWrapper} key={paper.id}>
+        <PaperItem
           pageType="paperShow"
           actionArea={type === 'reference' ? 'refList' : 'citedList'}
+          currentUser={currentUser}
           paper={paper}
-          key={paper.id}
+          wrapperStyle={{ borderBottom: 'none', marginBottom: 0, paddingBottom: 0, maxWidth: '100%' }}
         />
-      );
-    } else if (refCitedPaperItemUserGroup === 'control') {
-      return (
-        <div className={styles.paperShowPaperItemWrapper} key={paper.id}>
-          <PaperItem
-            pageType="paperShow"
-            actionArea={type === 'reference' ? 'refList' : 'citedList'}
-            currentUser={currentUser}
-            paper={paper}
-            wrapperStyle={{ borderBottom: 'none', marginBottom: 0, paddingBottom: 0, maxWidth: '100%' }}
-          />
-        </div>
-      );
-    }
+      </div>
+    );
   });
 
   return <div className={styles.searchItems}>{referenceItems}</div>;
 };
 
-interface ReferencePapersState {
-  refCitedPaperItemUserGroup: string;
-}
-
 @withStyles<typeof ReferencePapers>(styles)
-export default class ReferencePapers extends React.PureComponent<ReferencePapersProps, ReferencePapersState> {
-  public constructor(props: ReferencePapersProps) {
-    super(props);
-
-    this.state = {
-      refCitedPaperItemUserGroup: '',
-    };
-  }
-
-  public componentDidMount() {
-    this.setState({
-      refCitedPaperItemUserGroup: getUserGroupName(REF_CITED_PAPER_ITEM_TEST)!,
-    });
-  }
-
+export default class ReferencePapers extends React.PureComponent<ReferencePapersProps> {
   public render() {
     return (
       <>
         <div>
-          <PaperList
-            type={this.props.type}
-            papers={this.props.papers}
-            currentUser={this.props.currentUser}
-            refCitedPaperItemUserGroup={this.state.refCitedPaperItemUserGroup}
-          />
+          <PaperList type={this.props.type} papers={this.props.papers} currentUser={this.props.currentUser} />
         </div>
         <div>{this.getPagination()}</div>
       </>
