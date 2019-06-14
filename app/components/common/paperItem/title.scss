@@ -1,5 +1,4 @@
 .title {
-  display: inline-block;
   vertical-align: top;
   font-size: 20px;
   line-height: 1.4;
@@ -8,6 +7,7 @@
 
   b {
     font-weight: 900;
+    vertical-align: top;
   }
 
   &:hover {
