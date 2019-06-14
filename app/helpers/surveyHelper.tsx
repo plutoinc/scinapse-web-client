@@ -36,7 +36,7 @@ interface InputSurveyQuestion extends SurveyQuestion {
 }
 
 export const HOW_TO_FEEL_SURVEY: Survey = {
-  name: 'howToFeelScinapse',
+  name: 'howFeelingScinapse',
   questions: [
     {
       type: 'radio',
