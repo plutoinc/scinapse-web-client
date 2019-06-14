@@ -56,4 +56,4 @@ const TrendingPaper: React.FunctionComponent<{}> = () => {
   );
 };
 
-export default withStyles<typeof styles>(styles)(TrendingPaper);
+export default withStyles<typeof TrendingPaper>(styles)(TrendingPaper);

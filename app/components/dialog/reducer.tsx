@@ -13,6 +13,7 @@ export enum GLOBAL_DIALOG_TYPE {
   VERIFICATION_NEEDED,
   FINAL_SIGN_UP_WITH_EMAIL,
   FINAL_SIGN_UP_WITH_SOCIAL,
+  SURVEY_FORM,
   RESET_PASSWORD,
   COLLECTION,
   NEW_COLLECTION,
@@ -49,6 +50,8 @@ export interface DialogState
       authorListTargetPaper: Paper | undefined;
 
       isBlocked: boolean | undefined;
+
+      nextSignUpStep: string | undefined;
     }> {} // TODO: remove below attribute after finishing the experiment
 
 export const DIALOG_INITIAL_STATE: DialogState = {
@@ -76,6 +79,7 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   // author list dialog
   authorListTargetPaper: undefined,
   isBlocked: undefined,
+  nextSignUpStep: undefined,
 };
 
 export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actions): DialogState {
@@ -92,6 +96,7 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
         userActionType: action.payload.userActionType,
         authContext: action.payload.authContext,
         isBlocked: action.payload.isBlocked,
+        nextSignUpStep: action.payload.nextSignUpStep,
       };
     }
 

@@ -82,4 +82,4 @@ const RelatedPaperInCollectionShow: React.FunctionComponent<RelatedPaperInCollec
   );
 };
 
-export default withStyles<typeof styles>(styles)(RelatedPaperInCollectionShow);
+export default withStyles<typeof RelatedPaperInCollectionShow>(styles)(RelatedPaperInCollectionShow);

@@ -145,7 +145,7 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
     return (
       <NoSsr>
         <div className={styles.innerContainer}>
-          <DoiSearchBlocked isLoading={articleSearchState.isContentLoading} searchDoi={articleSearchState.doi} />
+          <DoiSearchBlocked isLoading={articleSearchState.isContentLoading} searchDoi={articleSearchState.doi || ''} />
         </div>
       </NoSsr>
     );

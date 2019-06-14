@@ -41,4 +41,4 @@ const DoiInPaperShow: React.FunctionComponent<DoiInPaperShowProps> = props => {
   );
 };
 
-export default withStyles<typeof styles>(styles)(DoiInPaperShow);
+export default withStyles<typeof DoiInPaperShow>(styles)(DoiInPaperShow);

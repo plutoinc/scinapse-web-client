@@ -78,6 +78,9 @@ module.exports = {
     nodeEnv: 'dev',
   },
   target: 'node',
+  externals: {
+    'aws-sdk': 'aws-sdk'
+  },
   node: {
     __dirname: false,
     __filename: false,
