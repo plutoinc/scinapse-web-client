@@ -92,7 +92,7 @@ const AuthButton: React.FunctionComponent<AuthButtonProps> = props => {
               }
             },
             (error: Error) => {
-              alert(JSON.stringify(error, undefined, 2));
+              console.error(`GOOGLE_AUTH_ERROR : ${JSON.stringify(error)}`);
             }
           );
         }
