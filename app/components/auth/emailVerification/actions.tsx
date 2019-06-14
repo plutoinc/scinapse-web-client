@@ -21,7 +21,7 @@ export function verifyToken(token: string) {
 
       alertToast({
         type: 'success',
-        message: 'Succeeded to email verification!!',
+        message: 'Succeeded to email verification',
       });
 
       dispatch({
