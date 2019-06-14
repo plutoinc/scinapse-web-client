@@ -24,10 +24,21 @@ interface BlockByBenefitExpParams {
 
 export async function blockUnverifiedUser(params: BlockByBenefitExpParams): Promise<boolean> {
   const { authLevel, userActionType, actionArea, actionLabel, expName, isBlocked, actionValue } = params;
-  const state: AppState = StoreManager.store.getState();
-  const { currentUser } = state;
+  const appState: AppState = StoreManager.store.getState();
 
-  if (authLevel > AUTH_LEVEL.UNSIGNED && !currentUser.isLoggedIn) {
+  if (appState.currentUser.isLoggedIn && (appState.currentUser.oauthLoggedIn || appState.currentUser.emailVerified)) {
+    return false;
+  }
+
+  const auth = await StoreManager.store.dispatch(checkAuthStatus());
+  const isLoggedIn = auth && auth.loggedIn;
+  const isVerified = auth && (auth.oauthLoggedIn || (auth.member && auth.member.emailVerified));
+
+  if (isLoggedIn && isVerified) {
+    return false;
+  }
+
+  if (authLevel > AUTH_LEVEL.UNSIGNED && !isLoggedIn) {
     GlobalDialogManager.openSignUpDialog({
       userActionType,
       authContext: {
@@ -51,12 +62,7 @@ export async function blockUnverifiedUser(params: BlockByBenefitExpParams): Prom
     return true;
   }
 
-  if (authLevel >= AUTH_LEVEL.VERIFIED && (!currentUser.oauthLoggedIn && !currentUser.emailVerified)) {
-    const auth = await StoreManager.store.dispatch(checkAuthStatus());
-    if (auth && (auth.oauthLoggedIn || (auth.member && auth.member.emailVerified))) {
-      return false;
-    }
-
+  if (authLevel >= AUTH_LEVEL.VERIFIED && !isVerified) {
     GlobalDialogManager.openVerificationDialog();
     ActionTicketManager.trackTicket({
       pageType: getCurrentPageType(),
@@ -68,5 +74,6 @@ export async function blockUnverifiedUser(params: BlockByBenefitExpParams): Prom
     });
     return true;
   }
+
   return false;
 }

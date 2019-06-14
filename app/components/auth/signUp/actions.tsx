@@ -50,7 +50,7 @@ export function signUpWithEmail(params: SignUpWithEmailParams) {
       });
       alertToast({
         type: 'success',
-        message: 'Succeeded to Sign Up!!',
+        message: 'Succeeded to Sign Up',
       });
     } catch (err) {
       alertToast({
