@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
 import { HOW_TO_FEEL_SURVEY, makeSurvey, AnswerParams, Survey } from '../../../../../helpers/surveyHelper';
 import { AppState } from '../../../../../reducers';
-import Question from "./components/question";
+import Question from './components/question';
 import { getCurrentPageType } from '../../../../locationListener';
 import ActionTicketManager from '../../../../../helpers/actionTicketManager';
 import GlobalDialogManager from '../../../../../helpers/globalDialogManager';
@@ -26,7 +26,7 @@ function trackToSurveyAction(actionType: string, surveyResult: Survey) {
     actionType: 'fire',
     actionArea: 'signUp',
     actionTag: actionType === 'submit' ? 'submitSurvey' : 'skipSurvey',
-    actionLabel: JSON.stringify(surveyResult)
+    actionLabel: JSON.stringify(surveyResult),
   });
 }
 
@@ -43,13 +43,15 @@ const SurveyForm: React.FC<Props> = props => {
         questions: [
           ...survey.questions.slice(0, answer.questionIndex),
           { ...targetQuestion, answer: answer.answer as string, isFinished: true },
-          ...survey.questions.slice(answer.questionIndex + 1)
-        ]
-      })
+          ...survey.questions.slice(answer.questionIndex + 1),
+        ],
+      });
     }
   }
 
-  const questionList = survey.questions.map((q, i) => <Question questionIndex={i} onChange={handleChange} question={q} key={i} />);
+  const questionList = survey.questions.map((q, i) => (
+    <Question questionIndex={i} onSelect={handleChange} question={q} key={i} />
+  ));
 
   return (
     <div className={styles.surveyFormContainer}>

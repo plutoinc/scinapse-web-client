@@ -1,6 +1,6 @@
 import { shuffle } from 'lodash';
 
-export type AvailableSurveyQuestion = (RadioSurveyQuestion | CheckboxSurveyQuestion | InputSurveyQuestion)
+export type AvailableSurveyQuestion = RadioSurveyQuestion | CheckboxSurveyQuestion | InputSurveyQuestion;
 export interface Survey {
   name: string;
   questions: AvailableSurveyQuestion[];
@@ -8,7 +8,7 @@ export interface Survey {
 }
 
 interface SurveyQuestion {
-  type: 'radio' | 'checkbox' | 'input'
+  type: 'radio' | 'checkbox' | 'input';
   content: string;
   isFinished: boolean;
   optional?: boolean;
@@ -36,15 +36,15 @@ interface InputSurveyQuestion extends SurveyQuestion {
 }
 
 export const HOW_TO_FEEL_SURVEY: Survey = {
-  name: 'howToFeelScinapse',
+  name: 'howFeelingScinapse',
   questions: [
     {
       type: 'radio',
-      content: 'What do you think as Scinapse?',
+      content: 'What do you think scinapse is?',
       options: ['Publisher', 'PDF Provider', 'Search Engine'],
       shuffle: true,
       isFinished: false,
-      answer: ""
+      answer: '',
     },
   ],
   shuffle: false,
@@ -55,9 +55,9 @@ export function makeSurvey(survey: Survey) {
     if (!q.shuffle || q.type === 'input') {
       return q;
     }
-    const newOptions = shuffle((q as (RadioSurveyQuestion|CheckboxSurveyQuestion)).options);
-    return {...q, options: newOptions};
+    const newOptions = shuffle((q as RadioSurveyQuestion | CheckboxSurveyQuestion).options);
+    return { ...q, options: newOptions };
   });
-  const shuffledQuestions = survey.shuffle ? shuffle(optionShuffledQuestions) : optionShuffledQuestions;  
-  return {...survey, questions: shuffledQuestions};
+  const shuffledQuestions = survey.shuffle ? shuffle(optionShuffledQuestions) : optionShuffledQuestions;
+  return { ...survey, questions: shuffledQuestions };
 }
