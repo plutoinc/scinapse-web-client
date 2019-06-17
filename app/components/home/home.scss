@@ -9,34 +9,7 @@
 }
 
 .searchTitle {
-  position: relative;
-}
-
-.searchTitleText {
-  font-size: 36px;
-  font-weight: bold;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 1.5;
-  letter-spacing: normal;
   text-align: center;
-  color: $black0;
-  position: absolute;
-  width: 590px;
-}
-
-.circleImage {
-  width: 71px;
-  position: relative;
-  left: 36px;
-  top: -4px;
-}
-
-.underlineImage {
-  width: 100px;
-  position: relative;
-  left: 200px;
-  top: -4px;
 }
 
 .searchSubTitle {
@@ -50,14 +23,10 @@
   white-space: pre;
 }
 
-.plutoLink {
-  text-decoration: underline;
-}
-
 .searchInputForm {
   width: 590px;
   position: relative;
-  border-radius: 4px;
+  border-radius: 6px;
 
   &:focus {
     outline: none;
@@ -69,7 +38,7 @@
   width: 100%;
   height: 48px;
   border: 0;
-  border-radius: 4px;
+  border-radius: 6px;
   line-height: 1.5;
   color: $black0;
   background-color: white;
@@ -87,53 +56,9 @@
   }
 }
 
-.featureContainer {
-  max-width: 793px;
-  margin: 40px auto 60px auto;
-  background-color: white;
-}
-
-.featureWrapper {
-  margin-top: 40px;
-  width: 793px;
-  margin-bottom: 24px;
-  display: flex;
-  flex-direction: row;
-  margin-right: auto;
-  margin-left: auto;
-}
-
-.featureItem {
-  width: 386px;
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  margin-right: 22px;
-
-  &:last-child {
-    margin-right: 0px;
-  }
-}
-
-.featureName {
-  font-size: 20px;
-  color: $black0;
-  font-weight: bold;
-  margin-bottom: 8px;
-  align-content: flex-start;
-  line-height: 40px;
-}
-
-.featureContents {
-  font-size: 16px;
-  color: $gray6;
-  align-content: flex-start;
-  line-height: 1.5;
-}
-
 .searchFormContainer {
   position: relative;
-  height: 530px;
+  height: 880px;
   background-color: $gray1;
   background-repeat: no-repeat;
   background-size: cover;
@@ -143,60 +68,28 @@
   z-index: 0;
 }
 
+.scinapseHomeLogo {
+  svg {
+    width: 157px;
+    height: 114px;
+  }
+}
+
 :global(.no-webp) .searchFormContainer {
-  background-image: url('https://assets.pluto.network/scinapse-background.jpg');
+  background-image: url('https://assets.pluto.network/scinapse-new-background.png');
 }
 
 :global(.webp) .searchFormContainer {
-  background-image: url('https://assets.pluto.network/scinapse-background.webp');
+  background-image: url('https://assets.pluto.network/scinapse-new-background.webp');
 }
 
 .contentBlockDivider {
+  max-width: 1200px;
   width: 100%;
+  margin: 0 auto;
   height: 1px;
-  background-color: $gray1;
-  margin-top: 40px;
-  margin-bottom: 40px;
-}
-
-.sourceVendorContainer {
-  @extend .featureContainer;
-  margin: 0 auto 60px auto;
-}
-
-.contextSubtitle {
-  font-size: 16px;
-  font-weight: bold;
-  color: $gray4;
-  letter-spacing: 2px;
-  text-align: center;
-  margin-bottom: 24px;
-}
-
-.sourceVendorWrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.sourceVendorItem {
-  height: 54px;
-  padding: 8px;
-  margin-right: 22px;
-
-  a {
-    display: inline-block;
-    vertical-align: top;
-    height: 100%;
-    width: 100%;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      overflow: hidden;
-    }
-  }
+  background-color: $gray3;
+  margin-bottom: 44px;
 }
 
 @media (max-width: $mobile-width) {
@@ -213,61 +106,6 @@
     margin-left: auto;
     margin-top: 40px;
     white-space: pre-wrap;
-  }
-
-  .searchTitleText {
-    font-size: 24px;
-    width: 100%;
-  }
-
-  .circleImage {
-    width: 48px;
-    left: 22px;
-    top: -4px;
-  }
-
-  .underlineImage {
-    width: 70px;
-    left: 130px;
-    top: 0px;
-  }
-
-  .featureWrapper {
-    margin-top: 0px;
-    padding: 20px 15px;
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .featureItem {
-    width: 100%;
-    margin: 20px auto;
-  }
-
-  .featureName {
-    font-size: 20px;
-    margin-bottom: 8px;
-  }
-
-  .featureContents {
-    font-size: 14px;
-  }
-
-  .sourceVendorContainer {
-    margin-bottom: 40px;
-  }
-
-  .sourceVendorWrapper {
-    flex-direction: column;
-  }
-
-  .contextSubtitle {
-    margin-bottom: 20px;
-  }
-
-  .sourceVendorItem {
-    margin: 10px auto;
-    width: 180px;
   }
 
   .searchFormInnerContainer {

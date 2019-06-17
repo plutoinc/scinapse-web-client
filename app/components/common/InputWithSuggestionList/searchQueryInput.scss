@@ -112,3 +112,36 @@
     height: 100%;
   }
 }
+
+.searchButton {
+  position: absolute;
+  display: flex;
+  width: 96px;
+  justify-content: center;
+  align-items: center;
+  height: 36px;
+  border-radius: 4px;
+  background-color: $main_blue0;
+  color: white;
+  top: 6px;
+  right: 16px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $main_blue_light0;
+    transition: $button-hover-transition;
+  }
+}
+
+.searchIconInButton {
+  display: flex;
+  margin-right: 8px;
+  color: $main_blue_light1;
+  cursor: pointer;
+  transform: scaleX(-1);
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}

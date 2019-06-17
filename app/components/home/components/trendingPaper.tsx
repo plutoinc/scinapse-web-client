@@ -49,7 +49,6 @@ const TrendingPaperItem: React.FunctionComponent<{}> = () => {
 const TrendingPaper: React.FunctionComponent<{}> = () => {
   return (
     <div className={styles.trendingPaperContainer}>
-      <div className={styles.contentBlockDivider} />
       <div className={styles.trendingPaperTitle}>TRENDING PAPERS</div>
       <div className={styles.trendingPaperSubTitle}>Papers being read by other researchers</div>
       <div className={styles.trendingPaperBlockDivider} />

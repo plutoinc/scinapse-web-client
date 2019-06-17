@@ -94,6 +94,7 @@ const ICONS: { [key: string]: any } = {
   LOCK: require('./lock.svg').default,
   UNLOCK: require('./unlock.svg').default,
   DOUBLE_ARROW_DOWN: require('./double-arrow-down.svg').default,
+  SCINAPSE_HOME_LOGO: require('./scinapse-home-logo.svg').default,
 };
 
 @withStyles<typeof Icon>(styles)

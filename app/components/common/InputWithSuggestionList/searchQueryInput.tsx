@@ -188,6 +188,18 @@ const SearchQueryInput: React.FunctionComponent<
     }
   }
 
+  function clickSearchBtn() {
+    let from: SearchSourceType = 'raw';
+    const matchKeyword = keywordsToShow.find(k => k.text === inputValue);
+    if (matchKeyword && matchKeyword.removable) {
+      from = 'history';
+    } else if (matchKeyword && !matchKeyword.removable) {
+      from = 'suggestion';
+    }
+
+    handleSubmit({ filter: props.initialFilter, from });
+  }
+
   const keywordItems = keywordsToShow.slice(0, props.maxCount).map((k, i) => {
     return (
       <li
@@ -282,21 +294,14 @@ const SearchQueryInput: React.FunctionComponent<
           autoFocus={props.autoFocus}
           className={inputClassName}
         />
-        <Icon
-          onClick={() => {
-            let from: SearchSourceType = 'raw';
-            const matchKeyword = keywordsToShow.find(k => k.text === inputValue);
-            if (matchKeyword && matchKeyword.removable) {
-              from = 'history';
-            } else if (matchKeyword && !matchKeyword.removable) {
-              from = 'suggestion';
-            }
-
-            handleSubmit({ filter: props.initialFilter, from });
-          }}
-          icon="SEARCH_ICON"
-          className={s.searchIcon}
-        />
+        {props.actionArea === 'home' ? (
+          <button onClick={clickSearchBtn} className={s.searchButton}>
+            <Icon icon="SEARCH_ICON" className={s.searchIconInButton} />
+            Search
+          </button>
+        ) : (
+          <Icon onClick={clickSearchBtn} icon="SEARCH_ICON" className={s.searchIcon} />
+        )}
         {keywordList}
       </div>
     </ClickAwayListener>
