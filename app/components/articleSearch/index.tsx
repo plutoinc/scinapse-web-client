@@ -195,12 +195,6 @@ const SearchContainer: React.FC<Props> = props => {
   );
   const [filter, setFilter] = React.useState(SearchQueryManager.objectifyPaperFilter(queryParams.filter));
   const cancelToken = React.useRef(axios.CancelToken.source());
-  let footerStyle: React.CSSProperties;
-  if (layout.userDevice !== UserDevice.DESKTOP) {
-    footerStyle = { position: 'absolute', width: '100', bottom: 'unset' };
-  } else {
-    footerStyle = { position: 'absolute', left: '0', right: '0', bottom: '0' };
-  }
 
   React.useEffect(
     () => {
@@ -268,7 +262,7 @@ const SearchContainer: React.FC<Props> = props => {
           />
         </div>
       </div>
-      <Footer containerStyle={footerStyle} />
+      <Footer />
     </div>
   );
 };
