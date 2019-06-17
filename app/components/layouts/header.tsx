@@ -475,7 +475,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             }}
             className={styles.signUpButton}
           >
-            Get Started
+            Sign up
           </div>
         </div>
       );
