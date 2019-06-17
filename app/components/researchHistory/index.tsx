@@ -12,10 +12,10 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 const store = require('store');
 const s = require('./researchHistory.scss');
 
-const RESEARCH_HISTORY_KEY = 'r_h_list';
-const MAXIMUM_COUNT = 50;
+export const RESEARCH_HISTORY_KEY = 'r_h_list';
+const MAXIMUM_COUNT = 100;
 
-interface HistoryPaper extends Paper {
+export interface HistoryPaper extends Paper {
   savedAt: number; // Unix time
 }
 

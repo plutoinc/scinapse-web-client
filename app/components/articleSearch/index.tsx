@@ -166,7 +166,6 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
           papers={articleSearchState.searchItemsToShow}
           isLoading={articleSearchState.isContentLoading}
           searchQueryText={articleSearchState.suggestionKeyword || queryParams.query || ''}
-          currentPage={articleSearchState.page}
         />
         <Pagination
           page={articleSearchState.page}

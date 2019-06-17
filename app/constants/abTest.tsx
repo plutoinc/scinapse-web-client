@@ -1,4 +1,4 @@
-import { searchEngineMoodTest, signBannerAtPaperShowTest } from './abTestObject';
+import { searchEngineMoodTest, signBannerAtPaperShowTest, searchItemImprovement } from './abTestObject';
 
 export interface UserGroup {
   groupName: string;
@@ -32,7 +32,7 @@ export interface SignUpConversionExpTicketContext {
   expName?: string;
 }
 
-export const LIVE_TESTS: Test[] = [searchEngineMoodTest, signBannerAtPaperShowTest];
+export const LIVE_TESTS: Test[] = [searchEngineMoodTest, signBannerAtPaperShowTest, searchItemImprovement];
 
 function getRandomPool(): { [key: string]: string[] } {
   const randomPool: { [key: string]: string[] } = {};
