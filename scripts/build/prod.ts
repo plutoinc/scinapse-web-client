@@ -5,7 +5,7 @@ import { CDN_BASE_HOST, AWS_S3_PRODUCTION_FOLDER_PREFIX } from '../deploy/config
 import { uploadProdFiles } from '../helpers/pushToS3';
 const clientConfig = require('../../webpack.prod.browser.config');
 const serverConfig = require('../../webpack.prod.server.config');
-const version = new Date().toISOString().replace(/:/g, '-');
+const version = new Date().toISOString();
 clientConfig.output.publicPath = `${CDN_BASE_HOST}/${AWS_S3_PRODUCTION_FOLDER_PREFIX}/client/`;
 
 console.log('version is ', version);

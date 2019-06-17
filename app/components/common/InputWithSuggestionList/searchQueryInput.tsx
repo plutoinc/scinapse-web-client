@@ -29,7 +29,7 @@ const s = require('./searchQueryInput.scss');
 interface SearchQueryInputProps extends RouteComponentProps<any> {
   dispatch: Dispatch<any>;
   layout: LayoutState;
-  actionArea: 'home' | 'topBar' | 'paperShow' | 'searchFullBanner';
+  actionArea: 'home' | 'topBar' | 'paperShow';
   maxCount: number;
   initialValue?: string;
   initialFilter?: FilterObject;
@@ -143,11 +143,9 @@ const SearchQueryInput: React.FunctionComponent<
       return;
     }
 
-    if (props.actionArea !== 'searchFullBanner') {
-      const shouldBlock = await shouldBlockUnsignedUser(props.actionArea);
-      if (shouldBlock) {
-        return;
-      }
+    const shouldBlock = await shouldBlockUnsignedUser(props.actionArea);
+    if (shouldBlock) {
+      return;
     }
 
     ActionTicketManager.trackTicket({

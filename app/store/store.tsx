@@ -24,7 +24,7 @@ class StoreManager {
       return createStore(
         rootReducer,
         this.getBrowserInitialState(),
-        compose(applyMiddleware(thunkMiddleware, ReduxNotifier, loggerMiddleware))
+        compose(applyMiddleware(thunkMiddleware, ReduxNotifier, loggerMiddleware, setUserToTracker))
       );
     } else {
       return createStore(

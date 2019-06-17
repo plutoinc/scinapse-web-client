@@ -221,7 +221,7 @@ const SearchContainer: React.FC<Props> = props => {
         cancelToken.current = axios.CancelToken.source();
       };
     },
-    [location, searchPapers, currentUserState]
+    [location.key, location.search, currentUserState.isLoggedIn, currentUserState.isLoggingIn, searchPapers]
   );
 
   React.useEffect(

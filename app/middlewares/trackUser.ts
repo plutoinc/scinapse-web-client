@@ -23,9 +23,9 @@ const setUserToTracker = () => (next: any) => (action: any) => {
               username: `${user.firstName} ${user.lastName || ''}`,
             });
           });
-          store.set(USER_ID_KEY, user.id);
         }
 
+        store.set(USER_ID_KEY, user.id);
         ReactGA.set({ userId: action.payload.user.id });
       }
     } else if (action.type === ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT) {
@@ -33,9 +33,9 @@ const setUserToTracker = () => (next: any) => (action: any) => {
         Sentry.configureScope((scope: any) => {
           scope.setUser({});
         });
-        store.remove(USER_ID_KEY);
       }
 
+      store.remove(USER_ID_KEY);
       ReactGA.set({ userId: null });
     }
 

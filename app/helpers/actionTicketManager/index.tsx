@@ -40,7 +40,8 @@ class ActionTicketManager {
 
   public trackTicket(params: ActionTicketParams) {
     if (!EnvChecker.isOnServer() && (EnvChecker.isDev() || EnvChecker.isLocal())) {
-      console.log(params);
+      const ticket = new ActionTicket(params);
+      console.log(ticket);
     }
 
     if (!EnvChecker.isOnServer() && EnvChecker.isProdBrowser()) {
