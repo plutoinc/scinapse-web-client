@@ -93,11 +93,6 @@
   background-color: white;
 }
 
-.trendingPaperContainer {
-  @extend .featureContainer;
-  margin: 0 auto 60px auto;
-}
-
 .featureWrapper {
   margin-top: 40px;
   width: 793px;
@@ -204,29 +199,6 @@
   }
 }
 
-.trendingPaperItemWrapper {
-  display: inline-block;
-  width: 100%;
-  margin-bottom: 12px;
-
-  .trendingPaperTitle {
-    font-size: 16px;
-    line-height: 1.5;
-    color: $navy0;
-  }
-
-  .trendingPaperVenueAndAuthor {
-    font-size: 14px;
-    color: $gray4;
-  }
-
-  &:hover {
-    .trendingPaperTitle {
-      text-decoration: underline;
-    }
-  }
-}
-
 @media (max-width: $mobile-width) {
   .searchTitle {
     width: 320px;
@@ -324,10 +296,6 @@
 
   .searchInputForm {
     width: 100%;
-    padding: 0 15px;
-  }
-
-  .trendingPaperItemWrapper {
     padding: 0 15px;
   }
 }

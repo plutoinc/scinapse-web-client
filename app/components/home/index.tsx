@@ -8,7 +8,7 @@ import { Footer } from '../layouts';
 import { LayoutState, UserDevice } from '../layouts/records';
 import { withStyles } from '../../helpers/withStylesHelper';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
-import TrendingPaper from './trendingPaper';
+import TrendingPaper from './components/trendingPaper';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { SEARCH_ENGINE_MOOD_TEST } from '../../constants/abTestGlobalValue';
 const styles = require('./home.scss');
@@ -55,30 +55,8 @@ class Home extends React.PureComponent<HomeProps, HomeState> {
         <div className={styles.searchFormInnerContainer}>
           <div className={styles.searchFormContainer}>
             <div className={styles.formWrapper}>
-              <div className={styles.searchTitle}>
-                <span className={styles.searchTitleText}> Do Research, Never Re-search</span>
-                <img
-                  src="https://assets.pluto.network/scinapse/circle%402x.png"
-                  className={styles.circleImage}
-                  alt="home circle image"
-                />
-                <img
-                  src="https://assets.pluto.network/scinapse/underline%402x.png"
-                  className={styles.underlineImage}
-                  alt="home underline image"
-                />
-              </div>
-              <div className={styles.searchSubTitle}>
-                Scinapse is a free, Academic search engine <br /> for papers, serviced by{' '}
-                <a
-                  href="https://pluto.network"
-                  target="_blank"
-                  className={styles.plutoLink}
-                  rel="noopener nofollow noreferrer"
-                >
-                  Pluto Network
-                </a>
-              </div>
+              <div className={styles.searchTitle}>new logo</div>
+              <div className={styles.searchSubTitle}>Academic Search Engine</div>
               <div tabIndex={0} className={styles.searchInputForm}>
                 <SearchQueryInput
                   maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
@@ -88,6 +66,7 @@ class Home extends React.PureComponent<HomeProps, HomeState> {
                 />
               </div>
               <div className={styles.searchTryKeyword} />
+              <div className={styles.searchSubTitle}>We’re better than Google Scholar. We mean it.</div>
             </div>
           </div>
           <div className={styles.featureContainer}>
