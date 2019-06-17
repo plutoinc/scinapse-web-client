@@ -6,26 +6,26 @@ export interface UserGroup {
 }
 
 export interface Test {
-  name: ABTestType;
+  name: ABTest;
   userGroup: UserGroup[];
 }
 
-export type BenefitExpType = 'queryCountSession' | 'refPaperCountSession' | 'paperviewCountDevice' | 'downloadCount';
+export type SignUpConversion = 'queryLover' | 'downloadCount';
 
-export type ABTestType = 'queryLover' | 'searchEngineMood' | 'signBannerAtPaperShow';
+export type ABTest = 'searchEngineMood' | 'signBannerAtPaperShow' | 'searchItemImprovement';
 
-export const BENEFIT_EXPERIMENT_KEY = 'b_exp';
+export const SIGN_UP_CONVERSION_KEY = 'b_exp';
 
-export type BenefitExpValue = { [key in ABTestType | BenefitExpType]: BenefitExp };
+export type SignUpConversionObject = { [key in SignUpConversion]: SignUpConversionExp };
 
-export interface BenefitExp {
+export interface SignUpConversionExp {
   sessionId: string;
   deviceId: string;
   shouldAvoidBlock: boolean;
   count: number;
 }
 
-export interface BenefitExpTicketContext {
+export interface SignUpConversionExpTicketContext {
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType | null;
   actionLabel: string | null;

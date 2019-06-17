@@ -4,7 +4,7 @@ import { Collection } from '../../model/collection';
 import { Paper } from '../../model/paper';
 import { SIGN_UP_STEP } from '../auth/signUp/types';
 import { OAuthCheckParams } from '../../api/types/auth';
-import { BenefitExpTicketContext } from '../../constants/abTest';
+import { SignUpConversionExpTicketContext } from '../../constants/abTest';
 
 export enum GLOBAL_DIALOG_TYPE {
   SIGN_IN,
@@ -33,7 +33,7 @@ export interface DialogState
       signUpStep: SIGN_UP_STEP | null;
       oauthResult: OAuthCheckParams | null;
       userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
-      authContext: BenefitExpTicketContext | undefined;
+      authContext: SignUpConversionExpTicketContext | undefined;
 
       citationPaperId: number | undefined;
       citationText: string;

@@ -23,7 +23,7 @@ import { AppState } from '../../../reducers';
 import { LayoutState, UserDevice } from '../../layouts/records';
 import { getCurrentPageType } from '../../locationListener';
 import { handleInputKeydown } from './helpers/handleInputKeydown';
-import { checkBenefitExp } from '../../../helpers/checkBenefitExpCount';
+import { checkBlockSignUpConversion } from '../../../helpers/checkSignUpCount';
 const s = require('./searchQueryInput.scss');
 
 interface SearchQueryInputProps extends RouteComponentProps<any> {
@@ -54,7 +54,7 @@ function validateSearchInput(query: string) {
 }
 
 async function shouldBlockUnsignedUser(actionArea: string) {
-  return await checkBenefitExp({
+  return await checkBlockSignUpConversion({
     type: 'queryLover',
     matching: 'session',
     maxCount: 2,
