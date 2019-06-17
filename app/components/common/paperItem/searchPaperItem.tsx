@@ -1,5 +1,4 @@
 import * as React from 'react';
-import axios from 'axios';
 import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import * as format from 'date-fns/format';
 import { CurrentUser } from '../../../model/currentUser';
@@ -49,7 +48,9 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
   if (shouldShowVisitHistory && savedAt) {
     const lastVisitDate = format(savedAt, 'MMM DD, YYYY');
     const lastVisitFrom = distanceInWordsToNow(savedAt);
-    historyContent = <div>{`You visited at ${lastVisitDate} (${lastVisitFrom} ago)`}</div>;
+    historyContent = (
+      <div className={styles.visitedHistory}>{`You visited at ${lastVisitDate} (${lastVisitFrom} ago)`}</div>
+    );
   }
 
   return (

@@ -50,6 +50,15 @@
   }
 }
 
+// Experiment In Progress
+.visitedHistory {
+  padding-bottom: 8px;
+  border-bottom: 1px solid $gray1;
+  margin-bottom: 8px;
+  color: $gray9;
+  font-size: 14px;
+}
+
 // Mobile
 @media (max-width: $mobile-width) {
   .searchItemWrapper {
