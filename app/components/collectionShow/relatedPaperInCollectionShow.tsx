@@ -1,3 +1,4 @@
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import { withStyles } from '../../helpers/withStylesHelper';
 import CollectionAPI from '../../api/collection';
@@ -82,4 +83,4 @@ const RelatedPaperInCollectionShow: React.FunctionComponent<RelatedPaperInCollec
   );
 };
 
-export default withStyles<typeof RelatedPaperInCollectionShow>(styles)(RelatedPaperInCollectionShow);
+export default hot(withStyles<typeof RelatedPaperInCollectionShow>(styles)(RelatedPaperInCollectionShow));

@@ -1,3 +1,4 @@
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import axios from 'axios';
 import { stringify } from 'qs';
@@ -550,4 +551,4 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 }
 
-export default connect(mapStateToProps)(withRouter(PaperShow));
+export default hot(connect(mapStateToProps)(withRouter(PaperShow)));

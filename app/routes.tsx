@@ -1,3 +1,4 @@
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import loadable from '@loadable/component';
 import { Route, Switch, match, withRouter, RouteComponentProps } from 'react-router-dom';
@@ -277,4 +278,4 @@ class RootRoutes extends React.PureComponent<RootRoutesProps> {
   };
 }
 
-export const ConnectedRootRoutes = withRouter(connect(mapStateToProps)(RootRoutes));
+export const ConnectedRootRoutes = hot(withRouter(connect(mapStateToProps)(RootRoutes)));
