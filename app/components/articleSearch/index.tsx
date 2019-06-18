@@ -27,7 +27,6 @@ import { MatchAuthor } from '../../api/search';
 import formatNumber from '../../helpers/formatNumber';
 import SortBar from './components/SortBar';
 import Pagination from './components/pagination';
-import { UserDevice } from '../layouts/records';
 import SignBanner from './components/signBanner';
 import FilterContainer from '../../containers/filterContainer';
 import ArticleSpinner from '../common/spinner/articleSpinner';
@@ -188,7 +187,6 @@ const SearchContainer: React.FC<Props> = props => {
     searchPapers,
     toggleExpandingFilter,
     changeRangeInput,
-    layout,
   } = props;
   const [queryParams, setQueryParams] = React.useState<SearchPageQueryParams>(
     parse(location.search, { ignoreQueryPrefix: true })

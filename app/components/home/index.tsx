@@ -1,4 +1,5 @@
 import * as React from 'react';
+import CountUp from 'react-countup';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
@@ -12,6 +13,8 @@ import TrendingPaper from './components/trendingPaper';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { SEARCH_ENGINE_MOOD_TEST } from '../../constants/abTestGlobalValue';
 import Icon from '../../icons';
+import JournalsInfo from './components/journalsInfo';
+import AffiliationsInfo from './components/affiliationsInfo';
 const styles = require('./home.scss');
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
@@ -79,10 +82,10 @@ const Home: React.FC<Props> = props => {
       <div className={styles.searchFormInnerContainer}>
         <div className={styles.searchFormContainer}>
           <div className={styles.formWrapper}>
-            <div className={styles.searchTitle}>
+            <div className={styles.title}>
               <Icon icon="SCINAPSE_HOME_LOGO" className={styles.scinapseHomeLogo} />
             </div>
-            <div className={styles.searchSubTitle}>Academic Search Engine</div>
+            <div className={styles.subTitle}>Academic Search Engine</div>
             <div tabIndex={0} className={styles.searchInputForm}>
               <SearchQueryInput
                 maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
@@ -92,11 +95,26 @@ const Home: React.FC<Props> = props => {
               />
             </div>
             <div className={styles.searchTryKeyword} />
-            <div className={styles.searchSubTitle}>We’re better than Google Scholar. We mean it.</div>
+            <div className={styles.catchphrase}>We’re better than Google Scholar. We mean it.</div>
+            <div className={styles.updateNotiBar}>
+              <label className={styles.newLabel}>NEW</label>
+              <span className={styles.notiContext}>
+                We have updated our search feature. See <a className={styles.notiLink}>What’s New?</a>
+              </span>
+            </div>
+            <div className={styles.cumulativeCountContainer}>
+              <span>50,000+ researcher users.</span>
+              <br />
+              <span>
+                Over <CountUp start={0} end={132238} separator="," duration={4} /> papers searched this month.
+              </span>
+            </div>
+            <Icon icon="ARROW_POINT_TO_DOWN" className={styles.downIcon} />
           </div>
         </div>
+        <JournalsInfo />
+        <AffiliationsInfo />
         <div className={styles.contentBlockDivider} />
-
         <TrendingPaper />
         <Footer containerStyle={containerStyle} />
       </div>

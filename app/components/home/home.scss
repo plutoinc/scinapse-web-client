@@ -8,19 +8,80 @@
   margin: 0 auto;
 }
 
-.searchTitle {
+.title {
   text-align: center;
 }
 
-.searchSubTitle {
-  max-width: 590px;
-  margin-top: 8px;
-  margin-bottom: 40px;
-  font-size: 16px;
-  line-height: 1.5;
+.subTitle {
+  font-size: 18px;
+  letter-spacing: -0.3px;
+  color: #667f98;
+  margin: 12px 0 48px 0;
   text-align: center;
-  color: $gray6;
-  white-space: pre;
+}
+
+.catchphrase {
+  font-size: 16px;
+  text-align: center;
+  margin: 24px 0 56px 0;
+  color: #6f8398;
+}
+
+.updateNotiBar {
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  width: 460px;
+  height: 38px;
+  padding: 8px 10px;
+  border-radius: 19px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+  border: solid 1px #dde2ee;
+  background-color: white;
+}
+
+.notiContext {
+  font-size: 14px;
+  color: #424b5f;
+
+  .notiLink {
+    color: $main-blue0;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.newLabel {
+  padding: 4px 12px;
+  border-radius: 13px;
+  margin-right: 16px;
+  background-color: $green0;
+  font-size: 11px;
+  font-weight: 500;
+  text-align: center;
+  color: white;
+}
+
+.cumulativeCountContainer {
+  margin-top: 240px;
+  font-size: 17px;
+  font-weight: 500;
+  text-align: center;
+  color: #6f8398;
+}
+
+.downIcon {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+
+  svg {
+    width: 21px;
+    height: 12px;
+  }
 }
 
 .searchInputForm {
@@ -58,13 +119,13 @@
 
 .searchFormContainer {
   position: relative;
-  height: 880px;
-  background-color: $gray1;
+  height: 880px - $navbar_height;
+  background-color: #f8f9ff;
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;
   justify-content: center;
-  align-items: center;
+  padding-top: 96px;
   z-index: 0;
 }
 
@@ -93,19 +154,10 @@
 }
 
 @media (max-width: $mobile-width) {
-  .searchTitle {
+  .title {
     width: 320px;
     margin-right: auto;
     margin-left: auto;
-  }
-
-  .searchSubTitle {
-    font-size: 14px;
-    line-height: 1.6;
-    margin-right: auto;
-    margin-left: auto;
-    margin-top: 40px;
-    white-space: pre-wrap;
   }
 
   .searchFormInnerContainer {

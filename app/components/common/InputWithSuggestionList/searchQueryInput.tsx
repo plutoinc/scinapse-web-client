@@ -297,7 +297,7 @@ const SearchQueryInput: React.FunctionComponent<
         {props.actionArea === 'home' ? (
           <button onClick={clickSearchBtn} className={s.searchButton}>
             <Icon icon="SEARCH_ICON" className={s.searchIconInButton} />
-            Search
+            <span className={s.searchButtonText}>Search</span>
           </button>
         ) : (
           <Icon onClick={clickSearchBtn} icon="SEARCH_ICON" className={s.searchIcon} />

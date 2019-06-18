@@ -1,0 +1,19 @@
+.journalsInfo {
+  height: 400px;
+  background-color: #5b83ee;
+  padding: 60px 0 70px 0;
+  text-align: center;
+
+  .title {
+    font-size: 20px;
+    font-weight: 500;
+    color: white;
+  }
+
+  .contentBlockDivider {
+    @extend %small-content-block-divider;
+    margin-top: 34px;
+    opacity: 0.75;
+    background-color: #85a5f9;
+  }
+}

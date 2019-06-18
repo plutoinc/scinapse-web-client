@@ -29,12 +29,8 @@
 }
 
 .trendingPaperBlockDivider {
-  width: 48px;
-  height: 2px;
-  margin: 0 auto;
+  @extend %small-content-block-divider;
   background-color: $main-blue0;
-  margin-top: 24px;
-  margin-bottom: 36px;
 }
 
 .trendingPaperItemWrapper {

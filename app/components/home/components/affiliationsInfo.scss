@@ -1,0 +1,66 @@
+.affiliationsInfo {
+  height: 400px;
+  background-color: white;
+  text-align: center;
+  padding-top: 75px;
+
+  .title {
+    white-space: pre-line;
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    color: $black1;
+
+    .bold {
+      font-weight: bold;
+    }
+  }
+}
+
+.contentBlockDivider {
+  @extend %small-content-block-divider;
+  background-color: $main-blue0;
+}
+
+:global(.no-webp) .affiliationsInfo {
+  background-image: url('https://assets.pluto.network/scinapse-affiliation-background.png');
+}
+
+:global(.webp) .affiliationsInfo {
+  background-image: url('https://assets.pluto.network/scinapse-affiliation-background.webp');
+}
+
+.affiliationImageContainer {
+  display: flex;
+  overflow: hidden;
+  height: 100px;
+}
+.affiliationImageWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 186px;
+  height: 96px;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px 0 rgba(0, 1, 64, 0.18);
+  background-color: white;
+  margin-left: 16px;
+
+  .affiliationImage {
+    height: 40px;
+  }
+}
+
+.marqueeAffiliation {
+  display: inline-flex;
+  animation: marquee 60s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}

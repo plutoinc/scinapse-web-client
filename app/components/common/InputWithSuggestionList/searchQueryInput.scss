@@ -2,8 +2,10 @@
   background-color: white;
   position: relative;
   width: 100%;
-  border-radius: 4px;
-  box-shadow: 0 2px 20px -2px rgba(0, 0, 0, 0.15), 0 2px 4px 0px rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  border: solid 0.8px #ccd5e9;
+  box-shadow: 0 2px 40px 2px rgba(39, 65, 85, 0.1), 0 2px 8px 0 rgba(69, 119, 228, 0.06),
+    0 2px 3px 0 rgba(0, 0, 0, 0.09), 0 2px 3px 0 rgba(0, 0, 0, 0.05);
 }
 
 .input {
@@ -122,9 +124,8 @@
   height: 36px;
   border-radius: 4px;
   background-color: $main_blue0;
-  color: white;
   top: 6px;
-  right: 16px;
+  right: 8px;
   cursor: pointer;
 
   &:hover {
@@ -133,10 +134,17 @@
   }
 }
 
+.searchButtonText {
+  color: white;
+  font-weight: 500;
+  line-height: 1.14;
+  font-size: 14px;
+}
+
 .searchIconInButton {
   display: flex;
   margin-right: 8px;
-  color: $main_blue_light1;
+  color: #a8c6ff;
   cursor: pointer;
   transform: scaleX(-1);
 
