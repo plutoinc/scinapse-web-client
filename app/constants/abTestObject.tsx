@@ -17,5 +17,9 @@ export const signBannerAtPaperShowTest: Test = {
 
 export const searchItemImprovement: Test = {
   name: SEARCH_ITEM_IMPROVEMENT_TEST,
-  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'visitHistory', weight: 1 }],
+  userGroup: [
+    { groupName: 'control', weight: 1 },
+    { groupName: 'visitHistory', weight: 1 },
+    { groupName: 'notIncludedWords', weight: 1 },
+  ],
 };

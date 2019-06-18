@@ -19,7 +19,7 @@ const SearchList: React.FC<SearchListProps> = props => {
   const { currentUser, papers, searchQueryText, isLoading } = props;
   const historyPapers: HistoryPaper[] = store.get(RESEARCH_HISTORY_KEY) || [];
 
-  if (!papers) return null;
+  if (!papers || !searchQueryText) return null;
 
   if (isLoading) {
     return (
