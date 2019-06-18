@@ -64,6 +64,12 @@ interface RequestFullTextParams {
   message?: string;
 }
 
+export interface PaperSource {
+  paperId: number;
+  doi: string | null;
+  destination: string | null;
+}
+
 class PaperAPI extends PlutoAxios {
   public async getAuthorsOfPaper({
     paperId,
@@ -230,6 +236,16 @@ class PaperAPI extends PlutoAxios {
     });
 
     return { data: res.data as Blob };
+  }
+
+  public async getSources(paperIds: number[]) {
+    const res = await this.get('/papers/sources', {
+      params: {
+        paper_ids: paperIds.join(','),
+      },
+    });
+
+    return camelCaseKeys(res.data.data.content) as PaperSource[];
   }
 }
 
