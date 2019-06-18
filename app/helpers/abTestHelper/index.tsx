@@ -1,6 +1,6 @@
 import * as Cookies from 'js-cookie';
-import { ABTestType } from '../../constants/abTest';
+import { ABTest } from '../../constants/abTest';
 
-export function getUserGroupName(testName: ABTestType) {
+export function getUserGroupName(testName: ABTest) {
   return Cookies.get(testName);
 }

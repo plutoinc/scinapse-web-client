@@ -1,9 +1,11 @@
 import * as React from 'react';
+import * as store from 'store';
 import { Paper } from '../../../../model/paper';
 import { CurrentUser } from '../../../../model/currentUser';
 import { withStyles } from '../../../../helpers/withStylesHelper';
-import PaperItem from '../../../common/paperItem';
+import PaperItem from '../../../common/paperItem/searchPaperItem';
 import ArticleSpinner from '../../../common/spinner/articleSpinner';
+import { RESEARCH_HISTORY_KEY, HistoryPaper } from '../../../researchHistory';
 const styles = require('./searchList.scss');
 
 interface SearchListProps {
@@ -11,44 +13,44 @@ interface SearchListProps {
   papers: Paper[];
   searchQueryText: string;
   isLoading: boolean;
-  currentPage: number;
 }
 
-class SearchList extends React.PureComponent<SearchListProps> {
-  public render() {
-    const { currentUser, papers, searchQueryText, isLoading, currentPage } = this.props;
+const SearchList: React.FC<SearchListProps> = props => {
+  const { currentUser, papers, searchQueryText, isLoading } = props;
+  const historyPapers: HistoryPaper[] = store.get(RESEARCH_HISTORY_KEY) || [];
 
-    if (isLoading) {
-      return (
-        <div className={styles.loadingContainer}>
-          <ArticleSpinner className={styles.loadingSpinner} />
-        </div>
-      );
+  if (!papers || !searchQueryText) return null;
+
+  if (isLoading) {
+    return (
+      <div className={styles.loadingContainer}>
+        <ArticleSpinner className={styles.loadingSpinner} />
+      </div>
+    );
+  }
+
+  const searchItems = papers.map(paper => {
+    const matchedPaper = historyPapers.find(p => p.id === paper.id);
+    let savedAt = null;
+    if (matchedPaper) {
+      savedAt = matchedPaper.savedAt;
     }
 
-    const searchItems =
-      papers &&
-      papers.map(paper => {
-        if (paper) {
-          return (
-            <PaperItem
-              key={paper.id}
-              paper={paper}
-              pageType="searchResult"
-              actionArea="searchResult"
-              searchQueryText={searchQueryText}
-              currentUser={currentUser}
-              wrapperClassName={styles.searchItemWrapper}
-              currentPage={currentPage}
-            />
-          );
-        } else {
-          return null;
-        }
-      });
+    return (
+      <PaperItem
+        key={paper.id}
+        paper={paper}
+        pageType="searchResult"
+        actionArea="searchResult"
+        searchQueryText={searchQueryText}
+        currentUser={currentUser}
+        wrapperClassName={styles.searchItemWrapper}
+        savedAt={savedAt}
+      />
+    );
+  });
 
-    return <div className={styles.searchItems}>{searchItems}</div>;
-  }
-}
+  return <div className={styles.searchItems}>{searchItems}</div>;
+};
 
 export default withStyles<typeof SearchList>(styles)(SearchList);
