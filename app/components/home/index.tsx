@@ -1,3 +1,4 @@
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -201,4 +202,4 @@ class Home extends React.PureComponent<HomeProps, HomeState> {
   };
 }
 
-export default withRouter(connect(mapStateToProps)(Home));
+export default hot(withRouter(connect(mapStateToProps)(Home)));

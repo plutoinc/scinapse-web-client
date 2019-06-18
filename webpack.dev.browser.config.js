@@ -1,25 +1,25 @@
-const path = require("path");
-const webpack = require("webpack");
-const LoadablePlugin = require("@loadable/webpack-plugin");
-const WorkboxPlugin = require("workbox-webpack-plugin");
+const path = require('path');
+const webpack = require('webpack');
+const LoadablePlugin = require('@loadable/webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
-  mode: "production",
-  entry: ["@babel/polyfill", "./app/clientIndex.tsx"],
+  mode: 'production',
+  entry: ['@babel/polyfill', './app/clientIndex.tsx'],
   output: {
-    path: path.resolve(__dirname, "dist", "client"),
-    filename: "[name].[contenthash].js",
-    chunkFilename: "[name].[contenthash].js",
+    path: path.resolve(__dirname, 'dist', 'client'),
+    filename: '[name].[contenthash].js',
+    chunkFilename: '[name].[contenthash].js',
   },
-  devtool: "source-map",
+  devtool: 'source-map',
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".jsx"],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   optimization: {
     minimize: false,
-    nodeEnv: "dev",
+    nodeEnv: 'production',
     splitChunks: {
-      chunks: "all",
+      chunks: 'all',
     },
   },
   module: {
@@ -29,10 +29,10 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           {
-            loader: "babel-loader?cacheDirectory=true",
+            loader: 'babel-loader?cacheDirectory=true',
           },
           {
-            loader: "ts-loader",
+            loader: 'ts-loader',
             options: {
               transpileOnly: true,
               happyPackMode: true,
@@ -42,7 +42,7 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        loader: "svg-sprite-loader",
+        loader: 'svg-sprite-loader',
         options: {
           classPrefix: false,
           idPrefix: true,
@@ -50,32 +50,32 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ["isomorphic-style-loader", "css-loader"],
+        use: ['isomorphic-style-loader', 'css-loader'],
       },
       {
         test: /\.scss$/,
         use: [
-          { loader: "isomorphic-style-loader" },
+          { loader: 'isomorphic-style-loader' },
           {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               modules: true,
-              localIdentName: "[name]_[local]_[hash:base64:5]",
+              localIdentName: '[name]_[local]_[hash:base64:5]',
             },
           },
           {
-            loader: "postcss-loader",
+            loader: 'postcss-loader',
             options: {
               plugins: () => {
-                return [require("precss"), require("autoprefixer"), require("postcss-flexbugs-fixes")];
+                return [require('precss'), require('autoprefixer'), require('postcss-flexbugs-fixes')];
               },
             },
           },
-          { loader: "sass-loader" },
+          { loader: 'sass-loader' },
           {
-            loader: "sass-resources-loader",
+            loader: 'sass-resources-loader',
             options: {
-              resources: ["./app/_variables.scss"],
+              resources: ['./app/_variables.scss'],
             },
           },
         ],
@@ -85,8 +85,8 @@ module.exports = {
   plugins: [
     new webpack.IgnorePlugin(/^\.\/pdf.worker.js$/),
     new WorkboxPlugin.InjectManifest({
-      swSrc: "./app/sw.js",
-      swDest: "../server/sw.js",
+      swSrc: './app/sw.js',
+      swDest: '../server/sw.js',
     }),
     new LoadablePlugin(),
   ],

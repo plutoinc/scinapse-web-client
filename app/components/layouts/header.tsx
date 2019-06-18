@@ -1,3 +1,4 @@
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
@@ -485,4 +486,4 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 }
 
-export default withRouter(connect(mapStateToProps)(Header));
+export default hot(withRouter(connect(mapStateToProps)(Header)));

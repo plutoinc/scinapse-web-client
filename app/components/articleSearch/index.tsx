@@ -1,3 +1,4 @@
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
@@ -293,9 +294,11 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>) =>
     dispatch
   );
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(withStyles<typeof SearchContainer>(styles)(SearchContainer))
+export default hot(
+  withRouter(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(withStyles<typeof SearchContainer>(styles)(SearchContainer))
+  )
 );

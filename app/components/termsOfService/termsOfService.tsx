@@ -1,3 +1,4 @@
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { Footer } from '../layouts';
@@ -330,4 +331,4 @@ class TermsOfService extends React.Component {
   }
 }
 
-export default TermsOfService;
+export default hot(TermsOfService);

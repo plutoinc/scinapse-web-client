@@ -1,3 +1,4 @@
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import axios from 'axios';
 import { denormalize } from 'normalizr';
@@ -92,4 +93,4 @@ class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
   }
 }
 
-export default connect(mapStateToProps)(AuthorShowContainer);
+export default hot(connect(mapStateToProps)(AuthorShowContainer));
