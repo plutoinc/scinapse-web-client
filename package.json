@@ -76,6 +76,7 @@
     "@types/ua-parser-js": "0.7.32",
     "@types/uuid": "3.4.4",
     "@types/webfontloader": "1.6.29",
+    "@types/webpack-env": "^1.13.9",
     "@typescript-eslint/eslint-plugin": "1.8.0",
     "@typescript-eslint/parser": "1.8.0",
     "acorn": "6.1.1",

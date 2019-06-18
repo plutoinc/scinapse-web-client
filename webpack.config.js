@@ -26,8 +26,8 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
     alias: {
-      'react-dom': '@hot-loader/react-dom'
-    }
+      'react-dom': '@hot-loader/react-dom',
+    },
   },
   stats: 'minimal',
   module: {
@@ -36,13 +36,13 @@ module.exports = {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         use: [
-          // { loader: 'cache-loader' },
-          // {
-          //   loader: 'thread-loader',
-          //   options: {
-          //     workers: cpuLength - 1,
-          //   },
-          // },
+          { loader: 'cache-loader' },
+          {
+            loader: 'thread-loader',
+            options: {
+              workers: cpuLength - 1,
+            },
+          },
           {
             loader: 'babel-loader?cacheDirectory=true',
           },
