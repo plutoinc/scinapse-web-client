@@ -77,12 +77,12 @@
 }
 
 .missingWordsWrapper {
-  color: $gray5;
+  color: $black0;
   margin-top: 8px;
-  font-size: 14px;
-  line-height: 1.4;
+  font-size: 12px;
 }
 
 .missingWord {
   text-decoration: line-through;
+  font-weight: 500;
 }

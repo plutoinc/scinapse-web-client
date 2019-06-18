@@ -49,8 +49,8 @@ const NotIncludedWords: React.FC<{ title: string; abstract: string; searchKeywor
 
   return (
     <div className={styles.missingWordsWrapper}>
+      {`Not included: `}
       {wordComponents}
-      {` not included`}
     </div>
   );
 });
