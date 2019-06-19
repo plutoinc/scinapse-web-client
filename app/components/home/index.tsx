@@ -5,7 +5,7 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import Helmet from 'react-helmet';
 import { AppState } from '../../reducers';
 import { Footer } from '../layouts';
-import { LayoutState, UserDevice, LAYOUT_INITIAL_STATE } from '../layouts/records';
+import { LayoutState, UserDevice } from '../layouts/records';
 import { withStyles } from '../../helpers/withStylesHelper';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
 import TrendingPaper from './components/trendingPaper';
