@@ -1,5 +1,4 @@
 import * as React from 'react';
-import CountUp from 'react-countup';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
@@ -15,6 +14,7 @@ import { SEARCH_ENGINE_MOOD_TEST } from '../../constants/abTestGlobalValue';
 import Icon from '../../icons';
 import JournalsInfo from './components/journalsInfo';
 import AffiliationsInfo from './components/affiliationsInfo';
+import ReactCountUp from 'react-countup';
 const styles = require('./home.scss');
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
@@ -75,6 +75,7 @@ const Home: React.FC<Props> = props => {
   }, []);
 
   const containerStyle = getContainerStyle(props.layout);
+
   return (
     <div className={styles.articleSearchFormContainer}>
       {getHelmetNode()}
@@ -106,7 +107,7 @@ const Home: React.FC<Props> = props => {
               <span>50,000+ researcher users.</span>
               <br />
               <span>
-                Over <CountUp start={0} end={132238} separator="," duration={4} /> papers searched this month.
+                Over <ReactCountUp start={0} end={132238} separator="," duration={4} /> papers searched this month.
               </span>
             </div>
             <Icon icon="ARROW_POINT_TO_DOWN" className={styles.downIcon} />
