@@ -10,14 +10,14 @@ import { Footer } from '../layouts';
 import { LayoutState, UserDevice } from '../layouts/records';
 import { withStyles } from '../../helpers/withStylesHelper';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
-import TrendingPaper from './components/trendingPaper';
+import TrendingPaper from '../home/components/trendingPaper';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { SEARCH_ENGINE_MOOD_TEST } from '../../constants/abTestGlobalValue';
 import Icon from '../../icons';
-import JournalsInfo from '../improvedHome/components/journalsInfo';
-import AffiliationsInfo from '../improvedHome/components/affiliationsInfo';
+import JournalsInfo from './components/journalsInfo';
+import AffiliationsInfo from './components/affiliationsInfo';
 import commonAPI from '../../api/common';
-const styles = require('./home.scss');
+const styles = require('./improvedHome.scss');
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
 
