@@ -65,3 +65,24 @@
     width: 100%;
   }
 }
+
+// Experiment In Progress
+// TODO: move or remove below after experiments
+.visitedHistory {
+  padding-bottom: 8px;
+  border-bottom: 1px solid $gray1;
+  margin-bottom: 8px;
+  color: $gray9;
+  font-size: 14px;
+}
+
+.missingWordsWrapper {
+  color: $black0;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.missingWord {
+  text-decoration: line-through;
+  font-weight: 500;
+}

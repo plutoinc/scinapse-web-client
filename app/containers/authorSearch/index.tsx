@@ -1,3 +1,4 @@
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import axios from 'axios';
 import { Dispatch } from 'redux';
@@ -247,4 +248,4 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
     );
   };
 }
-export default connect(mapStateToProps)(withRouter(AuthorSearch));
+export default hot(connect(mapStateToProps)(withRouter(AuthorSearch)));

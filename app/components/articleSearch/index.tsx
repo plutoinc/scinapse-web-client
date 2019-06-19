@@ -1,3 +1,4 @@
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
@@ -164,7 +165,6 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
           papers={articleSearchState.searchItemsToShow}
           isLoading={articleSearchState.isContentLoading}
           searchQueryText={articleSearchState.suggestionKeyword || queryParams.query || ''}
-          currentPage={articleSearchState.page}
         />
         <Pagination
           page={articleSearchState.page}
@@ -213,7 +213,7 @@ const SearchContainer: React.FC<Props> = props => {
         cancelToken.current = axios.CancelToken.source();
       };
     },
-    [location, searchPapers, currentUserState]
+    [location.key, location.search, currentUserState.isLoggedIn, currentUserState.isLoggingIn, searchPapers]
   );
 
   React.useEffect(
@@ -285,9 +285,11 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>) =>
     dispatch
   );
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(withStyles<typeof SearchContainer>(styles)(SearchContainer))
+export default hot(
+  withRouter(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(withStyles<typeof SearchContainer>(styles)(SearchContainer))
+  )
 );

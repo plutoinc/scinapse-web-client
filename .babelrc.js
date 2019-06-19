@@ -14,7 +14,7 @@ if (process.env.TARGET === "server") {
     {
       useBuiltIns: "usage",
       targets: {
-        node: "10",
+        node: "8",
       },
       exclude: ["@babel/plugin-transform-classes", "babel-plugin-transform-classes"],
       modules: false,
@@ -22,14 +22,20 @@ if (process.env.TARGET === "server") {
   ];
 }
 
+const basePlugins = [
+  "lodash",
+  "@loadable/babel-plugin",
+  "@babel/plugin-syntax-dynamic-import",
+  "@babel/plugin-proposal-class-properties",
+  "@babel/plugin-transform-runtime",
+]
+
+if (process.env.TARGET === 'localBrowser') {
+  basePlugins.push('"react-hot-loader/babel"')
+}
+
 module.exports = {
-  plugins: [
-    "lodash",
-    "@loadable/babel-plugin",
-    "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-transform-runtime",
-  ],
+  plugins: basePlugins,
   presets: ["@babel/preset-react", babelPresetEnv],
   exclude: "/node_modules/",
 };

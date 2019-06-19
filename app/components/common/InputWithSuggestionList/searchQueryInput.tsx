@@ -23,13 +23,13 @@ import { AppState } from '../../../reducers';
 import { LayoutState, UserDevice } from '../../layouts/records';
 import { getCurrentPageType } from '../../locationListener';
 import { handleInputKeydown } from './helpers/handleInputKeydown';
-import { checkBenefitExp } from '../../../helpers/checkBenefitExpCount';
+import { checkBlockSignUpConversion } from '../../../helpers/checkSignUpCount';
 const s = require('./searchQueryInput.scss');
 
 interface SearchQueryInputProps extends RouteComponentProps<any> {
   dispatch: Dispatch<any>;
   layout: LayoutState;
-  actionArea: 'home' | 'topBar' | 'paperShow' | 'searchFullBanner';
+  actionArea: 'home' | 'topBar' | 'paperShow';
   maxCount: number;
   initialValue?: string;
   initialFilter?: FilterObject;
@@ -54,7 +54,7 @@ function validateSearchInput(query: string) {
 }
 
 async function shouldBlockUnsignedUser(actionArea: string) {
-  return await checkBenefitExp({
+  return await checkBlockSignUpConversion({
     type: 'queryLover',
     matching: 'session',
     maxCount: 2,
@@ -143,11 +143,9 @@ const SearchQueryInput: React.FunctionComponent<
       return;
     }
 
-    if (props.actionArea !== 'searchFullBanner') {
-      const shouldBlock = await shouldBlockUnsignedUser(props.actionArea);
-      if (shouldBlock) {
-        return;
-      }
+    const shouldBlock = await shouldBlockUnsignedUser(props.actionArea);
+    if (shouldBlock) {
+      return;
     }
 
     ActionTicketManager.trackTicket({

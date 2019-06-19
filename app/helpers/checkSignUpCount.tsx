@@ -1,19 +1,19 @@
 import * as store from 'store';
-import { ABTestType, BENEFIT_EXPERIMENT_KEY, BenefitExpType, BenefitExpValue } from '../constants/abTest';
+import { SIGN_UP_CONVERSION_KEY, SignUpConversion, SignUpConversionObject } from '../constants/abTest';
 import { DEVICE_ID_KEY, SESSION_ID_KEY } from '../constants/actionTicket';
 import { AUTH_LEVEL, blockUnverifiedUser } from './checkAuthDialog';
 
 interface CheckBenefitExpCount {
-  type: ABTestType | BenefitExpType;
+  type: SignUpConversion;
   maxCount: number;
   matching: 'session' | 'device';
   userActionType: Scinapse.ActionTicket.ActionTagType;
   actionArea: Scinapse.ActionTicket.ActionArea | Scinapse.ActionTicket.PageType;
-  expName: ABTestType | BenefitExpType;
+  expName: SignUpConversion;
   actionLabel?: string;
 }
 
-export async function checkBenefitExp({
+export async function checkBlockSignUpConversion({
   type,
   maxCount,
   matching,
@@ -21,7 +21,7 @@ export async function checkBenefitExp({
   actionArea,
   expName,
 }: CheckBenefitExpCount): Promise<boolean> {
-  const exp: BenefitExpValue | undefined = store.get(BENEFIT_EXPERIMENT_KEY);
+  const exp: SignUpConversionObject | undefined = store.get(SIGN_UP_CONVERSION_KEY);
   const currentSessionId = store.get(SESSION_ID_KEY);
   const currentDeviceId = store.get(DEVICE_ID_KEY);
 
@@ -45,7 +45,7 @@ export async function checkBenefitExp({
     };
 
     if (shouldBlock) {
-      store.set(BENEFIT_EXPERIMENT_KEY, newExp);
+      store.set(SIGN_UP_CONVERSION_KEY, newExp);
       return await blockUnverifiedUser({
         authLevel: AUTH_LEVEL.VERIFIED,
         userActionType,
@@ -55,7 +55,7 @@ export async function checkBenefitExp({
         isBlocked: false,
       });
     } else {
-      store.set(BENEFIT_EXPERIMENT_KEY, newExp);
+      store.set(SIGN_UP_CONVERSION_KEY, newExp);
       return false;
     }
   } else {
@@ -68,7 +68,7 @@ export async function checkBenefitExp({
         shouldAvoidBlock: false,
       },
     };
-    store.set(BENEFIT_EXPERIMENT_KEY, newExp);
+    store.set(SIGN_UP_CONVERSION_KEY, newExp);
     return false;
   }
 }

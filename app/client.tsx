@@ -181,25 +181,25 @@ class PlutoRenderer {
       },
     };
 
+    const App = (
+      <CssInjector context={context}>
+        <ErrorTracker>
+          <Provider store={this.store}>
+            <BrowserRouter>
+              <MuiThemeProvider theme={theme}>
+                <Main />
+              </MuiThemeProvider>
+            </BrowserRouter>
+          </Provider>
+        </ErrorTracker>
+      </CssInjector>
+    );
+
     loadableReady(() => {
-      ReactDom.hydrate(
-        <CssInjector context={context}>
-          <ErrorTracker>
-            <Provider store={this.store}>
-              <BrowserRouter>
-                <MuiThemeProvider theme={theme}>
-                  <Main />
-                </MuiThemeProvider>
-              </BrowserRouter>
-            </Provider>
-          </ErrorTracker>
-        </CssInjector>,
-        document.getElementById('react-app'),
-        () => {
-          this.checkRender();
-          this.checkAuthStatus();
-        }
-      );
+      ReactDom.hydrate(App, document.getElementById('react-app'), () => {
+        this.checkRender();
+        this.checkAuthStatus();
+      });
     });
   }
 }

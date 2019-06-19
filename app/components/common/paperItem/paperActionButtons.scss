@@ -19,6 +19,16 @@
     @include small-action-button($gray6);
     position: relative;
 
+    .faviconIcon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 12px;
+      height: 12px;
+      margin-right: 6px;
+      margin-left: 4px;
+    }
+
     .sourceButtonIcon,
     .pdfIconWrapper {
       display: flex;
