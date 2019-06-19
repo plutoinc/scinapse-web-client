@@ -60,7 +60,11 @@ const DomainSourceBtn: React.FC<DomainSourceBtnProps> = ({ source, pageType, act
         });
       }}
     >
-      <img className={styles.faviconIcon} src={`https://www.google.com/s2/favicons?domain=${source.destination}`} />
+      <img
+        className={styles.faviconIcon}
+        src={`https://www.google.com/s2/favicons?domain=${source.destination}`}
+        alt={`${url.host} favicon`}
+      />
       <span>{url.host}</span>
     </a>
   );
