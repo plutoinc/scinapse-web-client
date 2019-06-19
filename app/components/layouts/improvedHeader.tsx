@@ -36,7 +36,7 @@ import { getMemoizedPaper } from '../../containers/paperShow/select';
 import ResearchHistory from '../researchHistory';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { SEARCH_ENGINE_MOOD_TEST } from '../../constants/abTestGlobalValue';
-const styles = require('./header.scss');
+const styles = require('./improvedHeader.scss');
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
 const LAST_UPDATE_DATE = '2019-01-30T08:13:33.079Z';
@@ -75,8 +75,8 @@ const UserInformation: React.FunctionComponent<{ user: CurrentUser }> = props =>
   );
 };
 
-@withStyles<typeof Header>(styles)
-class Header extends React.PureComponent<HeaderProps, HeaderStates> {
+@withStyles<typeof ImprovedHeader>(styles)
+class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
   private cancelToken = axios.CancelToken.source();
   private userDropdownAnchorRef: HTMLElement | null;
 
@@ -241,7 +241,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         })}
         aria-label="Scinapse header logo"
       >
-        <Icon icon={isSearchEngineMood ? 'LOGO_SEARCH_ENGINE' : 'SCINAPSE_LOGO'} />{' '}
+        <Icon icon={isSearchEngineMood ? 'LOGO_SEARCH_ENGINE' : 'SCINAPSE_IMPROVEMENT_LOGO'} />{' '}
       </Link>
     );
   };
@@ -476,7 +476,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             }}
             className={styles.signUpButton}
           >
-            Get Started
+            Sign up
           </div>
         </div>
       );
@@ -486,4 +486,4 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 }
 
-export default hot(withRouter(connect(mapStateToProps)(Header)));
+export default hot(withRouter(connect(mapStateToProps)(ImprovedHeader)));

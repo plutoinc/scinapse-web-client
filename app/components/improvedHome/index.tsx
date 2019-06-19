@@ -6,7 +6,6 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import Helmet from 'react-helmet';
 import ReactCountUp from 'react-countup';
 import { AppState } from '../../reducers';
-import { Footer } from '../layouts';
 import { LayoutState, UserDevice } from '../layouts/records';
 import { withStyles } from '../../helpers/withStylesHelper';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
@@ -17,6 +16,7 @@ import Icon from '../../icons';
 import JournalsInfo from './components/journalsInfo';
 import AffiliationsInfo from './components/affiliationsInfo';
 import commonAPI from '../../api/common';
+import ImprovedFooter from '../layouts/improvedFooter';
 const styles = require('./improvedHome.scss');
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
@@ -61,7 +61,7 @@ function getHelmetNode() {
   );
 }
 
-const Home: React.FC<Props> = props => {
+const ImprovedHome: React.FC<Props> = props => {
   const [isSearchEngineMood, setIsSearchEngineMood] = React.useState(false);
   const [searchCount, setSearchCount] = React.useState(0);
 
@@ -121,7 +121,7 @@ const Home: React.FC<Props> = props => {
         <div className={styles.trendingPaperWrapper}>
           <TrendingPaper />
         </div>
-        <Footer />
+        <ImprovedFooter />
       </div>
     </div>
   );
@@ -133,4 +133,4 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default hot(withRouter(connect(mapStateToProps)(withStyles<typeof Home>(styles)(Home))));
+export default hot(withRouter(connect(mapStateToProps)(withStyles<typeof ImprovedHome>(styles)(ImprovedHome))));

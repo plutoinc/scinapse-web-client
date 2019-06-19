@@ -12,13 +12,12 @@
   }
 
   .headerContainer {
-    max-width: $container_width;
     height: $navbar_height;
     position: relative;
     margin: 0 auto;
     display: flex;
     align-items: center;
-    padding: 0 16px;
+    padding: 0 24px;
   }
 
   &.searchHomeNavbar {
@@ -82,7 +81,7 @@
 .rightBox {
   position: absolute;
   top: 0;
-  right: 16px;
+  right: 24px;
   bottom: 0;
   display: flex;
   align-items: center;
@@ -117,6 +116,9 @@
   }
 
   .signInButton {
+    color: $main_blue1;
+    font-size: 16px;
+    font-weight: 500;
     margin-right: 15.5px;
     cursor: pointer;
 
@@ -127,17 +129,19 @@
 
   .signUpButton {
     display: flex;
+    width: 93px;
+    height: 40px;
     align-items: center;
     justify-content: center;
-    width: 108px;
-    height: 44px;
-    border-radius: 5px;
-    background-color: #fff;
-    border: solid 1px $gray3;
+    background-color: $main_blue0;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
     cursor: pointer;
 
     &:hover {
-      border: solid 1px $gray5;
+      background-color: $main_blue_light0;
       transition: 0.3s ease-in-out;
     }
   }
@@ -316,9 +320,6 @@
   }
 
   .rightBox {
-    position: relative;
-    justify-content: flex-end;
-
     .signInButton {
       display: none;
     }

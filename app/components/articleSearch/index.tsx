@@ -22,7 +22,6 @@ import { Paper } from '../../model/paper';
 import AuthorSearchItem from '../authorSearchItem';
 import { Actions } from '../../actions/actionTypes';
 import restoreScroll from '../../helpers/scrollRestoration';
-import { Footer } from '../layouts';
 import { SearchPageQueryParams } from './types';
 import { MatchAuthor } from '../../api/search';
 import formatNumber from '../../helpers/formatNumber';
@@ -30,6 +29,7 @@ import SortBar from './components/SortBar';
 import Pagination from './components/pagination';
 import SignBanner from './components/signBanner';
 import FilterContainer from '../../containers/filterContainer';
+import ScinapseFooter from '../layouts/scinapseFooter';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 const styles = require('./articleSearch.scss');
 
@@ -260,7 +260,7 @@ const SearchContainer: React.FC<Props> = props => {
           />
         </div>
       </div>
-      <Footer containerStyle={{ backgroundColor: 'white' }} />
+      <ScinapseFooter backgroundColor="#f9f9fa" />
     </div>
   );
 };

@@ -1,4 +1,9 @@
-import { searchEngineMoodTest, signBannerAtPaperShowTest, searchItemImprovement } from './abTestObject';
+import {
+  searchEngineMoodTest,
+  signBannerAtPaperShowTest,
+  searchItemImprovement,
+  homeImprovement,
+} from './abTestObject';
 
 export interface UserGroup {
   groupName: string;
@@ -12,7 +17,7 @@ export interface Test {
 
 export type SignUpConversion = 'queryLover' | 'downloadCount';
 
-export type ABTest = 'searchEngineMood' | 'signBannerAtPaperShow' | 'searchItemImprovement';
+export type ABTest = 'searchEngineMood' | 'signBannerAtPaperShow' | 'searchItemImprovement' | 'homeImprovement';
 
 export const SIGN_UP_CONVERSION_KEY = 'b_exp';
 
@@ -32,7 +37,12 @@ export interface SignUpConversionExpTicketContext {
   expName?: string;
 }
 
-export const LIVE_TESTS: Test[] = [searchEngineMoodTest, signBannerAtPaperShowTest, searchItemImprovement];
+export const LIVE_TESTS: Test[] = [
+  searchEngineMoodTest,
+  signBannerAtPaperShowTest,
+  searchItemImprovement,
+  homeImprovement,
+];
 
 function getRandomPool(): { [key: string]: string[] } {
   const randomPool: { [key: string]: string[] } = {};

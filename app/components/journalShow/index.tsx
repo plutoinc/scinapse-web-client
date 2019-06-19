@@ -20,7 +20,6 @@ import { fetchJournalShowPageData, JournalShowQueryParams } from './sideEffect';
 import { paperSchema, Paper } from '../../model/paper';
 import { journalSchema, Journal } from '../../model/journal';
 import { JournalShowState } from './reducer';
-import Footer from '../layouts/footer';
 import Icon from '../../icons';
 import { LayoutState, UserDevice } from '../layouts/records';
 import formatNumber from '../../helpers/formatNumber';
@@ -31,6 +30,7 @@ import ActionTicketManager from '../../helpers/actionTicketManager';
 import restoreScroll from '../../helpers/scrollRestoration';
 import ErrorPage from '../error/errorPage';
 import { JournalShowMatchParams } from './types';
+import ScinapseFooter from '../layouts/scinapseFooter';
 const styles = require('./journalShow.scss');
 
 function mapStateToProps(state: AppState) {
@@ -184,7 +184,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
               </div>
             </div>
           </div>
-          <Footer containerStyle={{ backgroundColor: '#f9f9fa' }} />
+          <ScinapseFooter backgroundColor="white" />
         </div>
       );
     } else {

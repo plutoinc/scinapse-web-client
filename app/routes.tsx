@@ -31,6 +31,8 @@ import {
   TERMS_OF_SERVICE_PATH,
   PRIVACY_POLICY_PATH,
 } from './constants/routes';
+import { getUserGroupName } from './helpers/abTestHelper';
+import { HOME_IMPROVEMENT_TEST } from './constants/abTestGlobalValue';
 const styles = require('./root.scss');
 
 export interface LoadDataParams<P> {
@@ -53,9 +55,14 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: HOME_PATH,
     exact: true,
-    component: loadable(() => import('./components/improvedHome'), {
-      fallback: <div>loading ...</div>,
-    }),
+    component:
+      getUserGroupName(HOME_IMPROVEMENT_TEST) === 'improvement'
+        ? loadable(() => import('./components/improvedHome'), {
+            fallback: <div>loading ...</div>,
+          })
+        : loadable(() => import('./components/home'), {
+            fallback: <div>loading ...</div>,
+          }),
   },
   {
     path: SEARCH_RESULT_PATH,
@@ -170,7 +177,10 @@ function mapStateToProps(state: AppState) {
 
 const DialogComponent = loadable(() => import('./components/dialog'));
 const FeedbackButton = loadable(() => import('./containers/feedbackButton'));
-const Header = loadable(() => import('./components/layouts/header'));
+const Header =
+  getUserGroupName(HOME_IMPROVEMENT_TEST) === 'improvement'
+    ? loadable(() => import('./components/layouts/improvedHeader'))
+    : loadable(() => import('./components/layouts/header'));
 
 @withStyles<typeof RootRoutes>(styles)
 class RootRoutes extends React.PureComponent<RootRoutesProps> {

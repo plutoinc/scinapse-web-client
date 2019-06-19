@@ -17,7 +17,6 @@ import ActionBar from '../paperShowActionBar';
 import FOSList from '../../components/paperShow/components/fosList';
 import ReferencePapers from '../../components/paperShow/components/relatedPapers';
 import PaperShowRefCitedTab from '../../components/paperShow/refCitedTab';
-import { Footer } from '../../components/layouts';
 import { Paper } from '../../model/paper';
 import { fetchCitedPaperData, fetchMyCollection, fetchPaperShowData, fetchRefPaperData } from './sideEffect';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
@@ -50,6 +49,7 @@ import { ActionCreators } from '../../actions/actionTypes';
 import BottomBanner from '../../components/preNoted/bottomBanner';
 import { Configuration } from '../../reducers/configuration';
 import { getMemoizedConfiguration } from '../../selectors/getConfiguration';
+import ScinapseFooter from '../../components/layouts/scinapseFooter';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -346,7 +346,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           </div>
         </div>
         <div className={styles.footerWrapper}>
-          <Footer />
+          <ScinapseFooter backgroundColor="white" />{' '}
         </div>
         <BottomBanner currentUser={currentUser} />
         <NextPaperTab />

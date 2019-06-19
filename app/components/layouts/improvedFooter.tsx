@@ -2,13 +2,13 @@ import * as React from 'react';
 import { trackAndOpenLink } from '../../helpers/handleGA';
 import { withStyles } from '../../helpers/withStylesHelper';
 import Icon from '../../icons';
-const styles = require('./footer.scss');
+const styles = require('./improvedFooter.scss');
 
 interface FooterProps {
   containerStyle?: React.CSSProperties;
 }
 
-const Footer: React.FunctionComponent<FooterProps> = props => {
+const ImprovedFooter: React.FunctionComponent<FooterProps> = props => {
   const { containerStyle } = props;
   const currentYear = new Date().getFullYear();
 
@@ -103,4 +103,4 @@ const Footer: React.FunctionComponent<FooterProps> = props => {
   );
 };
 
-export default withStyles<typeof Footer>(styles)(Footer);
+export default withStyles<typeof ImprovedFooter>(styles)(ImprovedFooter);
