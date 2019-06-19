@@ -15,7 +15,7 @@ const Footer: React.FunctionComponent<FooterProps> = props => {
   return (
     <div className={styles.footerWrapper} style={containerStyle}>
       <footer style={containerStyle} className={styles.footerContainer}>
-        <div className={styles.wrapper}>
+        <div className={styles.scinapseInfoWrapper}>
           <div className={styles.scinapseInfo}>
             <div className={styles.scinapseLogo}>
               <Icon icon="SCINAPSE_LOGO" className={styles.logoIcon} />

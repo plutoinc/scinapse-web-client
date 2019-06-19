@@ -4,6 +4,7 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 import Helmet from 'react-helmet';
+import ReactCountUp from 'react-countup';
 import { AppState } from '../../reducers';
 import { Footer } from '../layouts';
 import { LayoutState, UserDevice } from '../layouts/records';
@@ -15,7 +16,7 @@ import { SEARCH_ENGINE_MOOD_TEST } from '../../constants/abTestGlobalValue';
 import Icon from '../../icons';
 import JournalsInfo from './components/journalsInfo';
 import AffiliationsInfo from './components/affiliationsInfo';
-import ReactCountUp from 'react-countup';
+import commonAPI from '../../api/common';
 const styles = require('./home.scss');
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
@@ -62,10 +63,20 @@ function getHelmetNode() {
 
 const Home: React.FC<Props> = props => {
   const [isSearchEngineMood, setIsSearchEngineMood] = React.useState(false);
+  const [searchCount, setSearchCount] = React.useState(0);
 
   React.useEffect(() => {
     setIsSearchEngineMood(getUserGroupName(SEARCH_ENGINE_MOOD_TEST) === 'searchEngine');
   }, []);
+
+  React.useEffect(
+    () => {
+      commonAPI.getSearchCount().then(res => {
+        setSearchCount(res.data.content);
+      });
+    },
+    [searchCount]
+  );
 
   return (
     <div className={styles.articleSearchFormContainer}>
@@ -98,7 +109,7 @@ const Home: React.FC<Props> = props => {
               <span>50,000+ researcher users.</span>
               <br />
               <span>
-                Over <ReactCountUp start={0} end={132238} separator="," duration={4} /> papers searched this month.
+                Over <ReactCountUp start={0} end={searchCount} separator="," duration={4} /> papers searched this month.
               </span>
             </div>
             <Icon icon="ARROW_POINT_TO_DOWN" className={styles.downIcon} />

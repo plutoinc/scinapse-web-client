@@ -241,7 +241,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         })}
         aria-label="Scinapse header logo"
       >
-        <Icon icon={isSearchEngineMood ? 'LOGO_SEARCH_ENGINE' : 'SCINAPSE_LOGO'} />{' '}
+        <Icon icon={isSearchEngineMood ? 'LOGO_SEARCH_ENGINE' : 'SCINAPSE_IMPROVEMENT_LOGO'} />{' '}
       </Link>
     );
   };
