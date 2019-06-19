@@ -1,11 +1,11 @@
 .wrapper {
-  background-color: white;
-  position: relative;
   width: 100%;
-  border-radius: 6px;
-  border: solid 0.8px #ccd5e9;
+  position: relative;
+  background-color: white;
   box-shadow: 0 2px 40px 2px rgba(39, 65, 85, 0.1), 0 2px 8px 0 rgba(69, 119, 228, 0.06),
     0 2px 3px 0 rgba(0, 0, 0, 0.09), 0 2px 3px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  border: solid 0.8px #ccd5e9;
 }
 
 .input {
@@ -101,11 +101,11 @@
 }
 
 .searchIcon {
+  width: 17px;
+  height: 100%;
   position: absolute;
   top: 0;
   right: 16px;
-  width: 17px;
-  height: 100%;
   color: $main_blue0;
   cursor: pointer;
 
@@ -116,16 +116,16 @@
 }
 
 .searchButton {
-  position: absolute;
-  display: flex;
   width: 96px;
+  height: 36px;
+  display: flex;
   justify-content: center;
   align-items: center;
-  height: 36px;
-  border-radius: 4px;
-  background-color: $main_blue0;
+  position: absolute;
   top: 6px;
   right: 8px;
+  border-radius: 4px;
+  background-color: $main_blue0;
   cursor: pointer;
 
   &:hover {
