@@ -133,7 +133,7 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
               {this.getPaginationComponent()}
             </div>
           </div>
-          <Footer containerStyle={this.getContainerStyle()} />
+          <Footer containerStyle={{ backgroundColor: 'white', marginTop: '32px' }} />
         </div>
       );
     } else {
@@ -245,16 +245,6 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
         <title>{`${query} | Scinapse | Academic search engine for author`}</title>
       </Helmet>
     );
-  };
-
-  private getContainerStyle = (): React.CSSProperties => {
-    const { layout } = this.props;
-
-    if (layout.userDevice !== UserDevice.DESKTOP) {
-      return { position: 'absolute', width: '100', bottom: 'unset' };
-    } else {
-      return { position: 'absolute', left: '0', right: '0', bottom: '0' };
-    }
   };
 }
 export default connect(mapStateToProps)(withRouter(AuthorSearch));

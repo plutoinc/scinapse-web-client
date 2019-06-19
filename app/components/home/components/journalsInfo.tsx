@@ -16,8 +16,11 @@ const JOURNALS = [
   'more-journals',
 ];
 
-const JournalsInfo: React.FC<{}> = () => {
-  const journalList = JOURNALS.map((journal, index) => {
+const MOBILE_JOURNALS = ['nature', 'science', 'lancet', 'acm', 'ieee', 'cell', 'more-journal-mobile'];
+
+const JournalsInfo: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
+  console.log(isMobile);
+  const journalList = (isMobile ? MOBILE_JOURNALS : JOURNALS).map((journal, index) => {
     return (
       <div className={styles.journalImageWrapper} key={index}>
         <picture>

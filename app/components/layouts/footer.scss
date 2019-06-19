@@ -3,14 +3,20 @@
 }
 .footerContainer {
   max-width: $container_width;
-  height: 242px;
+  min-height: 242px;
   position: relative;
   margin: 0 auto;
   display: flex;
+  flex-direction: column;
   font-size: 13px;
   line-height: 1.6;
   color: $gray5;
   padding: 42px 16px 28px 16px;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
 }
 
 .scinapseInfo {
@@ -38,8 +44,6 @@
 
 .rightBox {
   display: flex;
-  position: absolute;
-  right: 0;
 }
 
 .menu {
@@ -72,46 +76,20 @@
   }
 }
 
-@media (max-width: $tablet-width) {
-  .footerContainer {
-    width: 100%;
-    display: block;
+@media (max-width: $mobile-width) {
+  .logoContext {
+    display: none;
+  }
+
+  .wrapper {
+    flex-direction: column;
   }
 
   .rightBox {
-    position: static;
+    margin-top: 32px;
   }
-}
 
-@media (max-width: $mobile-width) {
-  .footerContainer {
-    max-width: $container_width;
-    font-size: 11px;
-    text-align: left;
-    color: $gray5;
-    z-index: 99;
-    padding: 0;
-
-    .title {
-      margin-left: 20px;
-      display: block;
-    }
-
-    .rightBox {
-      position: absolute;
-      left: 20px;
-      top: 22px;
-      padding-bottom: 20px;
-
-      .link {
-        margin-left: 0px;
-        margin-right: 10px;
-        cursor: pointer;
-      }
-
-      .termsOfServiceLink {
-        color: $gray6;
-      }
-    }
+  .title {
+    margin-top: 44px;
   }
 }

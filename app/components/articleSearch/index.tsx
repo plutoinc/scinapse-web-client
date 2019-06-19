@@ -260,7 +260,7 @@ const SearchContainer: React.FC<Props> = props => {
           />
         </div>
       </div>
-      <Footer />
+      <Footer containerStyle={{ backgroundColor: 'white' }} />
     </div>
   );
 };

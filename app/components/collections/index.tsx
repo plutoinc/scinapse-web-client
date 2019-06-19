@@ -90,7 +90,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
               {this.getCollections(collections)}
             </div>
           </div>
-          <Footer containerStyle={{ backgroundColor: '#f9f9fa' }} />
+          <Footer containerStyle={{ backgroundColor: 'white' }} />
         </div>
       );
     } else {

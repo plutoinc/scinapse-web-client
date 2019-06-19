@@ -5,7 +5,7 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import Helmet from 'react-helmet';
 import { AppState } from '../../reducers';
 import { Footer } from '../layouts';
-import { LayoutState, UserDevice } from '../layouts/records';
+import { LayoutState, UserDevice, LAYOUT_INITIAL_STATE } from '../layouts/records';
 import { withStyles } from '../../helpers/withStylesHelper';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
 import TrendingPaper from './components/trendingPaper';
@@ -59,22 +59,12 @@ function getHelmetNode() {
   );
 }
 
-function getContainerStyle(layout: LayoutState): React.CSSProperties {
-  if (layout.userDevice !== UserDevice.DESKTOP) {
-    return { position: 'absolute', margin: '0 0 9px 0', width: '100%' };
-  } else {
-    return {};
-  }
-}
-
 const Home: React.FC<Props> = props => {
   const [isSearchEngineMood, setIsSearchEngineMood] = React.useState(false);
 
   React.useEffect(() => {
     setIsSearchEngineMood(getUserGroupName(SEARCH_ENGINE_MOOD_TEST) === 'searchEngine');
   }, []);
-
-  const containerStyle = getContainerStyle(props.layout);
 
   return (
     <div className={styles.articleSearchFormContainer}>
@@ -113,11 +103,13 @@ const Home: React.FC<Props> = props => {
             <Icon icon="ARROW_POINT_TO_DOWN" className={styles.downIcon} />
           </div>
         </div>
-        <JournalsInfo />
+        <JournalsInfo isMobile={props.layout.userDevice === UserDevice.MOBILE} />
         <AffiliationsInfo />
         <div className={styles.contentBlockDivider} />
-        <TrendingPaper />
-        <Footer containerStyle={containerStyle} />
+        <div className={styles.trendingPaperWrapper}>
+          <TrendingPaper />
+        </div>
+        <Footer />
       </div>
     </div>
   );

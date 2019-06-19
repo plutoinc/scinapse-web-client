@@ -31,7 +31,7 @@
   display: flex;
   align-items: center;
   margin: 0 auto;
-  width: 460px;
+  max-width: 460px;
   height: 38px;
   padding: 8px 10px;
   border-radius: 19px;
@@ -153,6 +153,11 @@
   margin-bottom: 44px;
 }
 
+.trendingPaperWrapper {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
 @media (max-width: $mobile-width) {
   .title {
     width: 320px;
@@ -168,8 +173,7 @@
 
   .searchFormContainer {
     position: relative;
-    height: 302px;
-    background-color: $gray1;
+    background-color: #f8f9ff;
     display: flex;
     justify-content: center;
     align-items: center;

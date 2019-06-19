@@ -145,12 +145,9 @@
 
 // Mobile
 @media (max-width: $mobile-width) {
-  .rootWrapper {
-    padding-bottom: 80px;
-  }
-
+  .rootWrapper,
   .articleSearchContainer {
-    margin-bottom: 32px;
+    padding-bottom: 0;
   }
 
   .authorItemSectionWrapper {
