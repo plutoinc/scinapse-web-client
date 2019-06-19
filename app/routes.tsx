@@ -17,6 +17,7 @@ import { AppState } from './reducers';
 import { LayoutState } from './components/layouts/records';
 import { withStyles } from './helpers/withStylesHelper';
 import { CurrentUser } from './model/currentUser';
+import Icon from './icons';
 import {
   HOME_PATH,
   SEARCH_RESULT_PATH,
@@ -31,6 +32,7 @@ import {
   TERMS_OF_SERVICE_PATH,
   PRIVACY_POLICY_PATH,
 } from './constants/routes';
+import { Configuration } from './reducers/configuration';
 const styles = require('./root.scss');
 
 export interface LoadDataParams<P> {
@@ -158,6 +160,7 @@ export const routesMap: ServerRoutesMap[] = [
 interface RootRoutesProps extends RouteComponentProps<any> {
   layout: LayoutState;
   currentUser: CurrentUser;
+  configuration: Configuration;
   dispatch: Dispatch<any>;
 }
 
@@ -165,6 +168,7 @@ function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
     currentUser: state.currentUser,
+    configuration: state.configuration,
   };
 }
 
@@ -172,13 +176,25 @@ const DialogComponent = loadable(() => import('./components/dialog'));
 const FeedbackButton = loadable(() => import('./containers/feedbackButton'));
 const Header = loadable(() => import('./components/layouts/header'));
 
+const LoadingComponent: React.FC<{ shouldShow: boolean }> = ({ shouldShow }) => {
+  if (!shouldShow) return null;
+
+  return (
+    <div className={styles.jsLoaderWrapper}>
+      <Icon icon="SCINAPSE_LOGO_SMALL" />
+      <div className={styles.loadingMessage}>scinapse is loading now...</div>
+    </div>
+  );
+};
+
 @withStyles<typeof RootRoutes>(styles)
 class RootRoutes extends React.PureComponent<RootRoutesProps> {
   public render() {
-    const { location } = this.props;
+    const { location, configuration, currentUser } = this.props;
 
     return (
       <div>
+        <LoadingComponent shouldShow={!configuration.renderedAtClient && currentUser.isLoggingIn} />
         {this.getDefaultHelmet()}
         <Header />
         <div>
