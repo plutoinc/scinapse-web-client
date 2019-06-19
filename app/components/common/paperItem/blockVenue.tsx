@@ -28,7 +28,7 @@ const BlockVenue: React.FC<BlockVenueProps> = ({
 
   let publishedAtNode = null;
   if (publishedDate) {
-    publishedAtNode = <span>{format(publishedDate, 'MMM D, YYYY')}</span>;
+    publishedAtNode = <span className={styles.publishedDate}>{format(publishedDate, 'MMM D, YYYY')}</span>;
   }
 
   let content = null;
@@ -53,24 +53,25 @@ const BlockVenue: React.FC<BlockVenueProps> = ({
     );
 
     content = (
-      <span>
+      <Link
+        to={`/journals/${journal.id}`}
+        onClick={() => {
+          ActionTicketManager.trackTicket({
+            pageType,
+            actionType: 'fire',
+            actionArea: actionArea || pageType,
+            actionTag: 'journalShow',
+            actionLabel: String(journal.id),
+          });
+        }}
+        className={styles.journalContent}
+      >
         {publishedAtNode}
-        <Link
-          to={`/journals/${journal.id}`}
-          onClick={() => {
-            ActionTicketManager.trackTicket({
-              pageType,
-              actionType: 'fire',
-              actionArea: actionArea || pageType,
-              actionTag: 'journalShow',
-              actionLabel: String(journal.id),
-            });
-          }}
-        >
-          {journal.title}
-          {impactFactor}
-        </Link>
-      </span>
+        {publishedAtNode && journal.title && <span>{`・`}</span>}
+
+        {journal.title}
+        {impactFactor}
+      </Link>
     );
   }
 

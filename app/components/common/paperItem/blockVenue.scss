@@ -14,6 +14,11 @@
   }
 }
 
+.publishedDate {
+  color: $gray6;
+  font-weight: 500;
+}
+
 .ifIconWrapper {
   svg {
     width: 10px;
@@ -21,6 +26,20 @@
     color: $main_blue0;
     margin-right: 4px;
   }
+}
+
+.journalContent {
+  font-size: 13px;
+  line-height: 1.54;
+  color: $gray9;
+}
+
+.ifLabel {
+  display: inline-block;
+  font-size: 12px;
+  text-align: center;
+  color: $main_blue0;
+  padding: 0 8px;
 }
 
 .arrowBottomTooltip {
