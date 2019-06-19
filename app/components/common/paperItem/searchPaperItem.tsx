@@ -5,7 +5,7 @@ import { CurrentUser } from '../../../model/currentUser';
 import Abstract from './abstract';
 import PaperActionButtons from './paperActionButtons';
 import Title from './title';
-import VenueAndAuthors from './venueAndAuthors';
+import BlockVenue from './blockVenue';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import SavedCollections from './savedCollections';
@@ -103,14 +103,12 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
           actionArea={actionArea}
           source={source}
         />
-        <VenueAndAuthors
+        <BlockVenue
+          journal={paper.journal}
+          conferenceInstance={paper.conferenceInstance}
+          publishedDate={paper.publishedDate}
           pageType={pageType}
           actionArea={actionArea}
-          paper={paper}
-          journal={journal}
-          conferenceInstance={conferenceInstance}
-          publishedDate={publishedDate}
-          authors={authors}
         />
         <Abstract
           paperId={paper.id}
