@@ -3,6 +3,7 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 const styles = require('./affiliationsInfo.scss');
 
 const AFFILIATIONS = [
+  'peking',
   'noaa',
   'hkpc',
   'intel',

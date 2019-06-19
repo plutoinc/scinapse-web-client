@@ -13,7 +13,35 @@
   .contentBlockDivider {
     @extend %small-content-block-divider;
     margin-top: 34px;
+    margin-bottom: 64px;
     opacity: 0.75;
     background-color: #85a5f9;
+  }
+}
+
+.journalListContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  max-width: $tablet_width;
+  margin: 0 auto;
+}
+
+.journalImageWrapper {
+  animation: fadein 3s;
+  flex: 1 0 15%;
+  position: relative;
+  margin-bottom: 16px;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+    bottom: -50px;
+  }
+  to {
+    opacity: 1;
+    bottom: 0;
   }
 }
