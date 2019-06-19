@@ -21,5 +21,6 @@ export const searchItemImprovement: Test = {
     { groupName: 'control', weight: 1 },
     { groupName: 'visitHistory', weight: 1 },
     { groupName: 'notIncludedWords', weight: 1 },
+    { groupName: 'sourceDomain', weight: 1 },
   ],
 };

@@ -30,9 +30,11 @@ function downloadSrcFromS3(branch?: string) {
         Bucket: DeployConfig.AWS_S3_BUCKET,
         Prefix: prefix,
       },
+      deleteRemoved: true,
     };
 
     const downloader = s3client.downloadDir(params);
+
     downloader.on('error', function(err: Error) {
       console.error('unable to sync:', err.stack);
       reject();

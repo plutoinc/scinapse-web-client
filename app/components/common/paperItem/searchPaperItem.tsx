@@ -12,6 +12,7 @@ import SavedCollections from './savedCollections';
 import { getUserGroupName } from '../../../helpers/abTestHelper';
 import { SEARCH_ITEM_IMPROVEMENT_TEST } from '../../../constants/abTestGlobalValue';
 import { STOP_WORDS } from '../highLightedContent';
+import { PaperSource } from '../../../api/paper';
 const styles = require('./paperItem.scss');
 
 export interface PaperItemProps {
@@ -22,6 +23,7 @@ export interface PaperItemProps {
   searchQueryText: string;
   wrapperClassName: string;
   currentUser: CurrentUser;
+  sourceDomain?: PaperSource;
 }
 
 export function getMissingWords(sentence: string, source: string): string[] {
@@ -56,7 +58,7 @@ const NotIncludedWords: React.FC<{ title: string; abstract: string; searchKeywor
 });
 
 const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
-  const { searchQueryText, paper, wrapperClassName, currentUser, pageType, actionArea, savedAt } = props;
+  const { searchQueryText, paper, wrapperClassName, currentUser, pageType, actionArea, savedAt, sourceDomain } = props;
   const { authors, publishedDate, doi, urls, journal, conferenceInstance, relation } = paper;
 
   const [shouldShowVisitHistory, setShouldShowVisitHistory] = React.useState(false);
@@ -130,6 +132,7 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
           pageType={pageType}
           actionArea={actionArea}
           hasCollection={false}
+          sourceDomain={sourceDomain}
         />
       </div>
     </div>
