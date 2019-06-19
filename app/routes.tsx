@@ -53,7 +53,7 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: HOME_PATH,
     exact: true,
-    component: loadable(() => import('./components/home'), {
+    component: loadable(() => import('./components/improvedHome'), {
       fallback: <div>loading ...</div>,
     }),
   },
