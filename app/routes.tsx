@@ -32,8 +32,6 @@ import {
   TERMS_OF_SERVICE_PATH,
   PRIVACY_POLICY_PATH,
 } from './constants/routes';
-import { getUserGroupName } from './helpers/abTestHelper';
-import { HOME_IMPROVEMENT_TEST } from './constants/abTestGlobalValue';
 import { Configuration } from './reducers/configuration';
 const styles = require('./root.scss');
 
