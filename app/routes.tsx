@@ -57,14 +57,9 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: HOME_PATH,
     exact: true,
-    component:
-      getUserGroupName(HOME_IMPROVEMENT_TEST) === 'improvement'
-        ? loadable(() => import('./components/improvedHome'), {
-            fallback: <div>loading ...</div>,
-          })
-        : loadable(() => import('./components/home'), {
-            fallback: <div>loading ...</div>,
-          }),
+    component: loadable(() => import('./components/home'), {
+      fallback: <div>loading ...</div>,
+    }),
   },
   {
     path: SEARCH_RESULT_PATH,
@@ -181,10 +176,7 @@ function mapStateToProps(state: AppState) {
 
 const DialogComponent = loadable(() => import('./components/dialog'));
 const FeedbackButton = loadable(() => import('./containers/feedbackButton'));
-const Header =
-  getUserGroupName(HOME_IMPROVEMENT_TEST) === 'improvement'
-    ? loadable(() => import('./components/layouts/improvedHeader'))
-    : loadable(() => import('./components/layouts/header'));
+const Header = loadable(() => import('./components/layouts/header'));
 
 const LoadingComponent: React.FC<{ shouldShow: boolean }> = ({ shouldShow }) => {
   if (!shouldShow) return null;

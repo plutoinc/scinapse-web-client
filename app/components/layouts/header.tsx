@@ -139,7 +139,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           <nav className={`${navClassName} mui-fixed`}>
             <div className={styles.headerContainer}>
               {this.getHeaderLogo()}
-              <div className={styles.leftBox} />
               {this.getSearchFormContainer(this.state.isSearchEngineMood)}
               {this.getHeaderButtons()}
             </div>
