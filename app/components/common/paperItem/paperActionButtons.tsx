@@ -14,6 +14,7 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import CollectionButton from './collectionButton';
 import formatNumber from '../../../helpers/formatNumber';
 import { PaperSource } from '../../../api/paper';
+import homeAPI from '../../../api/home';
 const styles = require('./paperActionButtons.scss');
 
 interface HandleClickClaim {
@@ -58,6 +59,7 @@ const DomainSourceBtn: React.FC<DomainSourceBtnProps> = ({ source, pageType, act
           actionTag: 'source',
           actionLabel: String(source.paperId),
         });
+        homeAPI.addBasedOnRecommendationPaper(source.paperId);
       }}
     >
       <img
@@ -138,6 +140,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             actionTag: 'source',
             actionLabel: String(paper.id),
           });
+          homeAPI.addBasedOnRecommendationPaper(paper.id);
         }}
       >
         {buttonContent}
@@ -165,6 +168,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
               actionTag: 'citedList',
               actionLabel: String(paper.id),
             });
+            homeAPI.addBasedOnRecommendationPaper(paper.id);
           }}
           className={styles.citedButton}
         >
@@ -191,6 +195,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
                 actionTag: 'citePaper',
                 actionLabel: String(paper.id),
               });
+              homeAPI.addBasedOnRecommendationPaper(paper.id);
             }}
           >
             <Icon className={styles.citationIcon} icon="CITATION_QUOTE" />

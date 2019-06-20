@@ -26,6 +26,14 @@ class HomeAPI extends PlutoAxios {
     const camelizedRes = camelCaseKeys(res.data);
     return camelizedRes.data.content[0];
   }
+
+  public async addBasedOnRecommendationPaper(paperId: number) {
+    const res = await this.put(`/recommendations/base`, {
+      paperId,
+    });
+    const camelizedRes = camelCaseKeys(res.data);
+    return camelizedRes.data.content;
+  }
 }
 
 const homeAPI = new HomeAPI();
