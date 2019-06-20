@@ -21,7 +21,7 @@
   }
 
   &.searchHomeNavbar {
-    background-color: white;
+    background-color: $gray12;
     border-bottom: 1px solid $gray1;
   }
 }
@@ -66,8 +66,8 @@
 .searchFormContainer {
   position: relative;
   display: flex;
-  width: 100%;
-  margin-left: 51px;
+  width: 792px;
+  margin-left: 96px;
   margin-right: 377px;
   height: 44px;
   align-items: center;

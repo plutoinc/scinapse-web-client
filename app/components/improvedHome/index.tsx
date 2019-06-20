@@ -106,10 +106,21 @@ const ImprovedHome: React.FC<Props> = props => {
               </span>
             </div>
             <div className={styles.cumulativeCountContainer}>
-              <span>50,000+ researcher users.</span>
+              <span>
+                <b>50,000+</b> researcher users.
+              </span>
               <br />
               <span>
-                Over <ReactCountUp start={0} end={searchCount} separator="," duration={4} /> papers searched this month.
+                Over{' '}
+                <b>
+                  <ReactCountUp
+                    start={searchCount > 10000 ? searchCount - 10000 : searchCount}
+                    end={searchCount}
+                    separator=","
+                    duration={3}
+                  />
+                </b>{' '}
+                papers searched this month.
               </span>
             </div>
             <Icon icon="ARROW_POINT_TO_DOWN" className={styles.downIcon} />

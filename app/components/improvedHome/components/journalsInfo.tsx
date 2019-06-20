@@ -37,7 +37,9 @@ const JournalsInfo: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
 
   return (
     <div className={styles.journalsInfo}>
-      <div className={styles.title}>Covering 48,000+ journals and counting</div>
+      <div className={styles.title}>
+        Covering <span className={styles.bold}>48,000+</span> journals and counting
+      </div>
       <div className={styles.contentBlockDivider} />
       <div className={styles.journalListContainer}>{journalList}</div>
     </div>

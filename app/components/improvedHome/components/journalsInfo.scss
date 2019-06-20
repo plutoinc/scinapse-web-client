@@ -5,8 +5,12 @@
 
   .title {
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 400;
     color: white;
+
+    .bold {
+      font-weight: 600;
+    }
   }
 
   .contentBlockDivider {
@@ -32,12 +36,16 @@
   flex: 1 0 15%;
   position: relative;
   margin-bottom: 16px;
+
+  img {
+    width: 80%;
+  }
 }
 
 @keyframes fadein {
   from {
     opacity: 0;
-    bottom: -50px;
+    bottom: -20px;
   }
   to {
     opacity: 1;
