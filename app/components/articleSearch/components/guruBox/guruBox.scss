@@ -61,6 +61,7 @@ $max-author-name-width: 254px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: flex-end;
   }
 
   .hIndexTitle {
@@ -117,7 +118,7 @@ $max-author-name-width: 254px;
 
 .topPaperTitle {
   font-size: 14px;
-  color: $black0;
+  color: $black1;
   margin-bottom: 4px;
 }
 

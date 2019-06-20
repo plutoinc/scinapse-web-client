@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import Icon from '../../../../icons';
 import { withStyles } from '../../../../helpers/withStylesHelper';
 import { MatchEntityAuthor } from '../../../../api/search';
+import { getUserGroupName } from '../../../../helpers/abTestHelper';
+import { GURU_AT_SEARCH_TEST } from '../../../../constants/abTestGlobalValue';
 const styles = require('./guruBox.scss');
 
 const MAX_AUTHOR_COUNT = 4;
@@ -43,8 +45,15 @@ const GuruItemBox: React.FC<{ author: MatchEntityAuthor; shouldShowTopPaper: boo
   return (
     <Link to={`/authors/${author.id}`} className={styles.authorItem}>
       <div className={styles.upperBox}>
-        <div className={styles.authorName}>{author.name}</div>
-        <div className={styles.fosList}>{author.fosList.slice(0, 3).join('・')}</div>
+        <div>
+          <div className={styles.authorName}>{author.name}</div>
+          <div className={styles.fosList}>
+            {author.fosList
+              .slice(0, 3)
+              .map(fos => fos.name)
+              .join('・')}
+          </div>
+        </div>
         {hIndexBox}
       </div>
       {topPaperBox}
@@ -53,16 +62,23 @@ const GuruItemBox: React.FC<{ author: MatchEntityAuthor; shouldShowTopPaper: boo
 };
 
 const GuruBox: React.FC<GuruBoxProps> = React.memo(({ authors }) => {
-  if (!authors || authors.length === 0) return null;
+  const [shouldShow, setShouldShow] = React.useState(false);
+
+  React.useEffect(() => {
+    if (getUserGroupName(GURU_AT_SEARCH_TEST) === 'guru') {
+      setShouldShow(true);
+    }
+  }, []);
+
+  if (!shouldShow || !authors || authors.length === 0) return null;
 
   const hIndexArr = authors.slice(0, MAX_AUTHOR_COUNT).map(author => author.hindex || 0);
   const maxHIndex = Math.max(...hIndexArr);
   const minHIndex = Math.min(...hIndexArr);
-
   const diffUnit = (MAX_H_INDEX_WIDTH - MIN_H_INDEX_WIDTH) / (maxHIndex - minHIndex);
 
   const authorList = authors.slice(0, MAX_AUTHOR_COUNT).map((author, index) => {
-    const hIndexLineWidth = minHIndex - (author.hindex || 0) * diffUnit + MIN_H_INDEX_WIDTH;
+    const hIndexLineWidth = ((author.hindex || 0) - minHIndex) * diffUnit + MIN_H_INDEX_WIDTH;
     return (
       <GuruItemBox author={author} key={author.id} shouldShowTopPaper={index === 0} hIndexLineWidth={hIndexLineWidth} />
     );
