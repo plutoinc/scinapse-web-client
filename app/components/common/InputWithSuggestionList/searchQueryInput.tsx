@@ -24,6 +24,8 @@ import { LayoutState, UserDevice } from '../../layouts/records';
 import { getCurrentPageType } from '../../locationListener';
 import { handleInputKeydown } from './helpers/handleInputKeydown';
 import { checkBlockSignUpConversion } from '../../../helpers/checkSignUpCount';
+import { getUserGroupName } from '../../../helpers/abTestHelper';
+import { HOME_IMPROVEMENT_TEST } from '../../../constants/abTestGlobalValue';
 const s = require('./searchQueryInput.scss');
 
 interface SearchQueryInputProps extends RouteComponentProps<any> {
@@ -292,16 +294,14 @@ const SearchQueryInput: React.FunctionComponent<
           autoFocus={props.autoFocus}
           className={inputClassName}
         />
-        {/* {props.actionArea === 'home' ? (
+        {props.actionArea === 'home' && getUserGroupName(HOME_IMPROVEMENT_TEST) === 'improvement' ? (
           <button onClick={clickSearchBtn} className={s.searchButton}>
             <Icon icon="SEARCH_ICON" className={s.searchIconInButton} />
             <span className={s.searchButtonText}>Search</span>
           </button>
         ) : (
           <Icon onClick={clickSearchBtn} icon="SEARCH_ICON" className={s.searchIcon} />
-        )} */}
-        <Icon onClick={clickSearchBtn} icon="SEARCH_ICON" className={s.searchIcon} />
-
+        )}
         {keywordList}
       </div>
     </ClickAwayListener>

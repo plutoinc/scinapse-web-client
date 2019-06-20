@@ -1,6 +1,6 @@
 .journalsInfo {
   background-color: #5b83ee;
-  padding: 60px 0 70px 0;
+  padding: 64px 0 56px 0;
   text-align: center;
 
   .title {
@@ -36,10 +36,10 @@
   flex: 1 0 15%;
   position: relative;
   margin-bottom: 16px;
+}
 
-  img {
-    width: 80%;
-  }
+.journalImage {
+  height: 60px;
 }
 
 @keyframes fadein {
