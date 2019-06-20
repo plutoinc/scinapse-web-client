@@ -129,7 +129,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     return (
       <nav className={`${navClassName} mui-fixed`}>
         <div className={styles.headerContainer}>
-          {this.getHeaderLogo(this.state.isSearchEngineMood)}
+          {this.getHeaderLogo()}
           <div className={styles.leftBox} />
           {this.getSearchFormContainer(this.state.isSearchEngineMood)}
           {this.getHeaderButtons()}
@@ -211,7 +211,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     ticking = false;
   };
 
-  private getHeaderLogo = (isSearchEngineMood: boolean) => {
+  private getHeaderLogo = () => {
     const { location, layoutState } = this.props;
     const isNotHome = location.pathname !== HOME_PATH;
 
@@ -235,13 +235,10 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             actionLabel: null,
           })
         }
-        className={classNames({
-          [styles.headerSearchEngineLogo]: isSearchEngineMood,
-          [styles.headerLogo]: !isSearchEngineMood,
-        })}
+        className={styles.headerLogo}
         aria-label="Scinapse header logo"
       >
-        <Icon icon={isSearchEngineMood ? 'LOGO_SEARCH_ENGINE' : 'SCINAPSE_LOGO'} />{' '}
+        <Icon icon="SCINAPSE_IMPROVEMENT_LOGO" />{' '}
       </Link>
     );
   };
