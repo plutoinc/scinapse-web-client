@@ -129,9 +129,10 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
     return (
       <nav className={`${navClassName} mui-fixed`}>
         <div className={styles.headerContainer}>
-          {this.getHeaderLogo(this.state.isSearchEngineMood)}
-          <div className={styles.leftBox} />
-          {this.getSearchFormContainer(this.state.isSearchEngineMood)}
+          <div className={styles.leftBox}>
+            {this.getHeaderLogo(this.state.isSearchEngineMood)}
+            {this.getSearchFormContainer(this.state.isSearchEngineMood)}
+          </div>
           {this.getHeaderButtons()}
         </div>
         {this.getToastBar()}

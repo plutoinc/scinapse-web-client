@@ -31,6 +31,12 @@
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
+.leftBox {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
 .headerLogo {
   display: inline-block;
   margin-right: 24px;
@@ -67,8 +73,9 @@
 .searchFormContainer {
   position: relative;
   display: flex;
+  max-width: 768px;
   width: 100%;
-  margin-left: 96px;
+  margin-left: 64px;
   margin-right: 16px;
   height: 44px;
   align-items: center;
