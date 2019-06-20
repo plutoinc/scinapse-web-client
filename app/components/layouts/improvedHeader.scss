@@ -68,7 +68,7 @@
   display: flex;
   width: 792px;
   margin-left: 96px;
-  margin-right: 377px;
+  margin-right: 16px;
   height: 44px;
   align-items: center;
 }
@@ -79,10 +79,6 @@
 }
 
 .rightBox {
-  position: absolute;
-  top: 0;
-  right: 24px;
-  bottom: 0;
   display: flex;
   align-items: center;
   font-size: 14px;
@@ -116,6 +112,11 @@
   }
 
   .signInButton {
+    display: flex;
+    width: 93px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
     color: $main_blue1;
     font-size: 16px;
     font-weight: 500;
