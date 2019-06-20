@@ -67,9 +67,6 @@ const ImprovedHome: React.FC<Props> = props => {
 
   React.useEffect(() => {
     setIsSearchEngineMood(getUserGroupName(SEARCH_ENGINE_MOOD_TEST) === 'searchEngine');
-  }, []);
-
-  React.useEffect(() => {
     homeAPI.getPapersFoundCount().then(res => {
       setPapersFoundCount(res.data.content);
     });
