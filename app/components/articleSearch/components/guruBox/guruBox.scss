@@ -1,0 +1,129 @@
+$max-author-name-width: 254px;
+
+.guruBoxWrapper {
+  border-radius: 4px;
+  border: solid 1px $gray3;
+  background-color: white;
+  margin-bottom: 16px;
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid $gray3;
+}
+
+.authorIcon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  color: $gray6;
+  margin-right: 12px;
+
+  svg {
+    width: 16px;
+    height: 17px;
+  }
+}
+
+.title {
+  font-size: 16px;
+  font-weight: bold;
+  color: $gray6;
+}
+
+.authorItem {
+  display: block;
+  padding: 16px;
+  border-bottom: 1px solid $gray3;
+
+  &:last-of-type {
+    border-bottom: 0;
+  }
+}
+
+.upperBox {
+  position: relative;
+  height: 32px;
+  display: flex;
+  align-items: center;
+
+  .rightBox {
+    position: absolute;
+    top: -16px;
+    bottom: -16px;
+    right: 16px;
+    text-align: right;
+    color: $main_blue0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .hIndexTitle {
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .hIndexCount {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .hIndexLine {
+    border-radius: 2px;
+    border-bottom: 4px solid;
+  }
+}
+
+.upperBox + .topPaperBox {
+  border-top: 1px solid $gray1;
+  margin-top: 12px;
+}
+
+.authorName {
+  @extend %one-line-overflow-ellipsis;
+
+  width: $max-author-name-width;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: $navy0;
+}
+
+.fosList {
+  @extend %one-line-overflow-ellipsis;
+
+  width: $max-author-name-width;
+  font-size: 13px;
+  line-height: 1.23;
+  color: $gray5;
+}
+
+.topPaperBox {
+  padding-top: 12px;
+}
+
+.topPaperBoxTitle {
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 0.54px;
+  color: $gray4;
+  margin-bottom: 4px;
+}
+
+.topPaperTitle {
+  font-size: 14px;
+  color: $black1;
+  margin-bottom: 4px;
+}
+
+.citationCount {
+  font-size: 12px;
+  font-weight: 500;
+  color: $gray5;
+}
