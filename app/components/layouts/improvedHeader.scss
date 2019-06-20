@@ -13,10 +13,11 @@
 
   .headerContainer {
     height: $navbar_height;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     position: relative;
     margin: 0 auto;
-    display: flex;
-    align-items: center;
     padding: 0 24px;
   }
 
@@ -66,7 +67,7 @@
 .searchFormContainer {
   position: relative;
   display: flex;
-  width: 792px;
+  width: 100%;
   margin-left: 96px;
   margin-right: 16px;
   height: 44px;
