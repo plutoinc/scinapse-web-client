@@ -15,7 +15,7 @@ import { SEARCH_ENGINE_MOOD_TEST } from '../../constants/abTestGlobalValue';
 import Icon from '../../icons';
 import JournalsInfo from './components/journalsInfo';
 import AffiliationsInfo from './components/affiliationsInfo';
-import commonAPI from '../../api/common';
+import homeAPI from '../../api/home';
 import ImprovedFooter from '../layouts/improvedFooter';
 const styles = require('./improvedHome.scss');
 
@@ -71,7 +71,7 @@ const ImprovedHome: React.FC<Props> = props => {
 
   React.useEffect(
     () => {
-      commonAPI.getSearchCount().then(res => {
+      homeAPI.getSearchCount().then(res => {
         setSearchCount(res.data.content);
       });
     },

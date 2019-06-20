@@ -1,7 +1,7 @@
 import PlutoAxios from './pluto';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
-class CommonAPI extends PlutoAxios {
+class HomeAPI extends PlutoAxios {
   public async getSearchCount() {
     const res = await this.get(`https://api.scinapse.io/search/count`);
 
@@ -9,6 +9,6 @@ class CommonAPI extends PlutoAxios {
   }
 }
 
-const commonAPI = new CommonAPI();
+const homeAPI = new HomeAPI();
 
-export default commonAPI;
+export default homeAPI;
