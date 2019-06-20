@@ -67,7 +67,8 @@ interface RequestFullTextParams {
 export interface PaperSource {
   paperId: number;
   doi: string | null;
-  destination: string | null;
+  source: string | null;
+  host: string | null;
 }
 
 class PaperAPI extends PlutoAxios {
