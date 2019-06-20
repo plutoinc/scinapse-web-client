@@ -69,14 +69,11 @@ const ImprovedHome: React.FC<Props> = props => {
     setIsSearchEngineMood(getUserGroupName(SEARCH_ENGINE_MOOD_TEST) === 'searchEngine');
   }, []);
 
-  React.useEffect(
-    () => {
-      homeAPI.getSearchCount().then(res => {
-        setSearchCount(res.data.content);
-      });
-    },
-    [searchCount]
-  );
+  React.useEffect(() => {
+    homeAPI.getSearchCount().then(res => {
+      setSearchCount(res.data.content);
+    });
+  }, []);
 
   return (
     <div className={styles.articleSearchFormContainer}>

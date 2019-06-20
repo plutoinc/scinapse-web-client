@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import * as Cookies from 'js-cookie';
 import { denormalize } from 'normalizr';
 import MenuItem from '@material-ui/core/MenuItem';
+import NoSsr from '@material-ui/core/NoSsr';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import * as addDays from 'date-fns/add_days';
 import * as isAfter from 'date-fns/is_after';
@@ -35,7 +36,8 @@ import { collectionSchema } from '../../model/collection';
 import { getMemoizedPaper } from '../../containers/paperShow/select';
 import ResearchHistory from '../researchHistory';
 import { getUserGroupName } from '../../helpers/abTestHelper';
-import { SEARCH_ENGINE_MOOD_TEST } from '../../constants/abTestGlobalValue';
+import { SEARCH_ENGINE_MOOD_TEST, HOME_IMPROVEMENT_TEST } from '../../constants/abTestGlobalValue';
+import ImprovedHeader from './improvedHeader';
 const styles = require('./header.scss');
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -62,6 +64,7 @@ interface HeaderStates {
   openTopToast: boolean;
   searchKeyword: string;
   isSearchEngineMood: boolean;
+  isImprovedHome: boolean;
 }
 
 const UserInformation: React.FunctionComponent<{ user: CurrentUser }> = props => {
@@ -91,6 +94,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
       openTopToast: false,
       searchKeyword: SafeURIStringHandler.decode(rawQueryParamsObj.query || ''),
       isSearchEngineMood: false,
+      isImprovedHome: false,
     };
   }
 
@@ -102,6 +106,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
     this.setState({
       isSearchEngineMood: getUserGroupName(SEARCH_ENGINE_MOOD_TEST) === 'searchEngine',
+      isImprovedHome: getUserGroupName(HOME_IMPROVEMENT_TEST) === 'improvement',
     });
   }
 
@@ -127,15 +132,21 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     const navClassName = this.getNavbarClassName();
 
     return (
-      <nav className={`${navClassName} mui-fixed`}>
-        <div className={styles.headerContainer}>
-          {this.getHeaderLogo()}
-          <div className={styles.leftBox} />
-          {this.getSearchFormContainer(this.state.isSearchEngineMood)}
-          {this.getHeaderButtons()}
-        </div>
-        {this.getToastBar()}
-      </nav>
+      <NoSsr>
+        {this.state.isImprovedHome ? (
+          <ImprovedHeader />
+        ) : (
+          <nav className={`${navClassName} mui-fixed`}>
+            <div className={styles.headerContainer}>
+              {this.getHeaderLogo()}
+              <div className={styles.leftBox} />
+              {this.getSearchFormContainer(this.state.isSearchEngineMood)}
+              {this.getHeaderButtons()}
+            </div>
+            {this.getToastBar()}
+          </nav>
+        )}
+      </NoSsr>
     );
   }
 

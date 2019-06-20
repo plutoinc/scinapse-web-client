@@ -74,6 +74,7 @@ const SearchQueryInput: React.FunctionComponent<
   const [inputValue, setInputValue] = React.useState(props.initialValue || '');
   const [genuineInputValue, setGenuineInputValue] = React.useState(props.initialValue || '');
   const [highlightIdx, setHighlightIdx] = React.useState(-1);
+  const [isImprovedHome, setIsImprovedHome] = React.useState(false);
   const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
 
   const { data: keywords, setParams } = useDebouncedAsyncFetch<string, CompletionKeyword[]>({
@@ -131,6 +132,10 @@ const SearchQueryInput: React.FunctionComponent<
     },
     [props.location]
   );
+
+  React.useEffect(() => {
+    setIsImprovedHome(getUserGroupName(HOME_IMPROVEMENT_TEST) === 'improvement');
+  }, []);
 
   async function handleSubmit({ query, filter, from }: SubmitParams) {
     const searchKeyword = query || inputValue;
@@ -294,7 +299,7 @@ const SearchQueryInput: React.FunctionComponent<
           autoFocus={props.autoFocus}
           className={inputClassName}
         />
-        {props.actionArea === 'home' && getUserGroupName(HOME_IMPROVEMENT_TEST) === 'improvement' ? (
+        {props.actionArea === 'home' && isImprovedHome ? (
           <button onClick={clickSearchBtn} className={s.searchButton}>
             <Icon icon="SEARCH_ICON" className={s.searchIconInButton} />
             <span className={s.searchButtonText}>Search</span>
