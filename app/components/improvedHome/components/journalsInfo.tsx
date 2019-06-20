@@ -8,12 +8,12 @@ const JournalsInfo: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
     return (
       <div className={styles.journalImageWrapper} key={index}>
         <picture>
-          <source srcSet={`https://assets.pluto.network/journals/${journal.name}.webp`} type="image/webp" />
-          <source srcSet={`https://assets.pluto.network/journals/${journal.name}.jpg`} type="image/jpeg" />
+          <source srcSet={`https://assets.pluto.network/journals/${journal}.webp`} type="image/webp" />
+          <source srcSet={`https://assets.pluto.network/journals/${journal}.png`} type="image/png" />
           <img
-            style={journal.logoStyle}
-            src={`https://assets.pluto.network/journals/${journal.name}.jpg`}
-            alt={`${journal.name}LogoImage`}
+            className={styles.journalImage}
+            src={`https://assets.pluto.network/journals/${journal}.png`}
+            alt={`${journal}LogoImage`}
           />
         </picture>
       </div>

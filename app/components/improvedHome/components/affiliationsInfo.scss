@@ -24,10 +24,16 @@
 
 :global(.no-webp) .affiliationsInfo {
   background-image: url('https://assets.pluto.network/scinapse-affiliation-background.png');
+  background-repeat: no-repeat;
+  background-position: right;
+  background-size: 990px 400px;
 }
 
 :global(.webp) .affiliationsInfo {
   background-image: url('https://assets.pluto.network/scinapse-affiliation-background.webp');
+  background-repeat: no-repeat;
+  background-position: right;
+  background-size: 990px 400px;
 }
 
 .affiliationImageContainer {
