@@ -1,22 +1,7 @@
 import * as React from 'react';
 import { withStyles } from '../../../helpers/withStylesHelper';
+import { AFFILIATIONS } from '../constants';
 const styles = require('./affiliationsInfo.scss');
-
-const AFFILIATIONS = [
-  'peking',
-  'noaa',
-  'hkpc',
-  'intel',
-  'roche',
-  'oxford',
-  'harvard',
-  'stanford',
-  'california',
-  'google',
-  'tokyo',
-  'cambridge',
-  'ncgm',
-];
 
 const AffiliationsInfo: React.FC<{}> = () => {
   const affiliationList = AFFILIATIONS.map((affiliation, index) => {
