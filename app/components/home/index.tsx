@@ -172,6 +172,7 @@ const Home: React.FC<Props> = props => {
               </a>
             </div>
           </div>
+          <div className={styles.contentBlockDivider} />
         </div>
         <TrendingPaper />
         <Footer containerStyle={containerStyle} />
