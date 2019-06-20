@@ -1,34 +1,19 @@
 import * as React from 'react';
 import { withStyles } from '../../../helpers/withStylesHelper';
+import { JOURNALS, MOBILE_JOURNALS } from '../constants';
 const styles = require('./journalsInfo.scss');
-const JOURNALS = [
-  'nature',
-  'science',
-  'ieee',
-  'cell',
-  'acs',
-  'aps',
-  'lancet',
-  'acm',
-  'jama',
-  'bmj',
-  'pnas',
-  'more-journals',
-];
-
-const MOBILE_JOURNALS = ['nature', 'science', 'lancet', 'acm', 'ieee', 'cell', 'more-journal-mobile'];
 
 const JournalsInfo: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
   const journalList = (isMobile ? MOBILE_JOURNALS : JOURNALS).map((journal, index) => {
     return (
       <div className={styles.journalImageWrapper} key={index}>
         <picture>
-          <source srcSet={`https://assets.pluto.network/journals/${journal}.webp`} type="image/webp" />
-          <source srcSet={`https://assets.pluto.network/journals/${journal}.jpg`} type="image/jpeg" />
+          <source srcSet={`https://assets.pluto.network/journals/${journal.name}.webp`} type="image/webp" />
+          <source srcSet={`https://assets.pluto.network/journals/${journal.name}.jpg`} type="image/jpeg" />
           <img
-            className={styles.journalImage}
-            src={`https://assets.pluto.network/journals/${journal}.jpg`}
-            alt={`${journal}LogoImage`}
+            style={journal.logoStyle}
+            src={`https://assets.pluto.network/journals/${journal.name}.jpg`}
+            alt={`${journal.name}LogoImage`}
           />
         </picture>
       </div>
