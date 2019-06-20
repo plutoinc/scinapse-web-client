@@ -42,6 +42,7 @@
   overflow: hidden;
   height: 100px;
 }
+
 .affiliationImageWrapper {
   display: flex;
   justify-content: center;
@@ -58,16 +59,31 @@
   }
 }
 
-.marqueeAffiliation {
+.marquee1Affiliation {
   display: inline-flex;
-  animation: marquee 120s linear infinite;
+  animation: marquee1 40s linear infinite;
 }
 
-@keyframes marquee {
+.marquee2Affiliation {
+  display: inline-flex;
+  animation: marquee2 40s linear infinite;
+  animation-delay: 20s;
+}
+
+@keyframes marquee1 {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes marquee2 {
   from {
     transform: translateX(0%);
   }
   to {
-    transform: translateX(-100%);
+    transform: translateX(-200%);
   }
 }

@@ -33,8 +33,8 @@ const AffiliationsInfo: React.FC<{}> = () => {
       </div>
       <div className={styles.contentBlockDivider} />
       <div className={styles.affiliationImageContainer}>
-        <div className={styles.marqueeAffiliation}>{affiliationList}</div>
-        <div className={styles.marqueeAffiliation}>{affiliationList}</div>
+        <div className={styles.marquee1Affiliation}>{affiliationList}</div>
+        <div className={styles.marquee2Affiliation}>{affiliationList}</div>
       </div>
     </div>
   );

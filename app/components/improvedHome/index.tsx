@@ -63,15 +63,15 @@ function getHelmetNode() {
 
 const ImprovedHome: React.FC<Props> = props => {
   const [isSearchEngineMood, setIsSearchEngineMood] = React.useState(false);
-  const [searchCount, setSearchCount] = React.useState(0);
+  const [papersFoundCount, setPapersFoundCount] = React.useState(0);
 
   React.useEffect(() => {
     setIsSearchEngineMood(getUserGroupName(SEARCH_ENGINE_MOOD_TEST) === 'searchEngine');
   }, []);
 
   React.useEffect(() => {
-    homeAPI.getSearchCount().then(res => {
-      setSearchCount(res.data.content);
+    homeAPI.getPapersFoundCount().then(res => {
+      setPapersFoundCount(res.data.content);
     });
   }, []);
 
@@ -113,8 +113,8 @@ const ImprovedHome: React.FC<Props> = props => {
                 Over{' '}
                 <b>
                   <ReactCountUp
-                    start={searchCount > 10000 ? searchCount - 10000 : searchCount}
-                    end={searchCount}
+                    start={papersFoundCount > 10000 ? papersFoundCount - 10000 : papersFoundCount}
+                    end={papersFoundCount}
                     separator=","
                     duration={3}
                   />
