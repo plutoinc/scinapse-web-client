@@ -6,6 +6,7 @@ import Abstract from './abstract';
 import PaperActionButtons from './paperActionButtons';
 import Title from './title';
 import BlockVenue from './blockVenue';
+import BlockAuthorList from './blockAuthorList';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import SavedCollections from './savedCollections';
@@ -59,7 +60,7 @@ const NotIncludedWords: React.FC<{ title: string; abstract: string; searchKeywor
 
 const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
   const { searchQueryText, paper, wrapperClassName, currentUser, pageType, actionArea, savedAt, sourceDomain } = props;
-  const { authors, publishedDate, doi, urls, journal, conferenceInstance, relation } = paper;
+  const { doi, urls, relation } = paper;
 
   const [shouldShowVisitHistory, setShouldShowVisitHistory] = React.useState(false);
   const [shouldShowNotIncludedWords, setShouldShowNotIncludedWords] = React.useState(false);
@@ -110,6 +111,7 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
           pageType={pageType}
           actionArea={actionArea}
         />
+        <BlockAuthorList paper={paper} authors={paper.authors} pageType={pageType} actionArea={actionArea} />
         <Abstract
           paperId={paper.id}
           pageType={pageType}

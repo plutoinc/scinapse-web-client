@@ -1,16 +1,18 @@
+.wrapper {
+  margin-top: 8px;
+}
+
 .journalIcon {
   display: inline-flex;
   justify-content: center;
   align-items: center;
   width: 20px;
   height: 20px;
+  margin-right: 4px;
 
   svg {
-    margin-top: 2px;
     width: 14px;
     height: 14px;
-    margin-right: 8px;
-    margin-bottom: 0px;
   }
 }
 
@@ -29,9 +31,19 @@
 }
 
 .journalContent {
+  display: inline-block;
+  vertical-align: top;
   font-size: 13px;
-  line-height: 1.54;
+  line-height: 20px;
   color: $gray9;
+}
+
+.journalTitle {
+  text-decoration: underline;
+
+  &:hover {
+    color: $main_blue0;
+  }
 }
 
 .ifLabel {

@@ -68,8 +68,7 @@ const BlockVenue: React.FC<BlockVenueProps> = ({
       >
         {publishedAtNode}
         {publishedAtNode && journal.title && <span>{`・`}</span>}
-
-        {journal.title}
+        <span className={styles.journalTitle}>{journal.title}</span>
         {impactFactor}
       </Link>
     );
@@ -85,7 +84,7 @@ const BlockVenue: React.FC<BlockVenueProps> = ({
   }
 
   return (
-    <div>
+    <div className={styles.wrapper}>
       <Icon icon="JOURNAL" className={styles.journalIcon} />
       {content}
     </div>

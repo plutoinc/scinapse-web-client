@@ -1,0 +1,84 @@
+.authorListWrapper {
+  position: relative;
+  margin-bottom: 12px;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 25px;
+    bottom: 2px;
+    border-left: 2px solid $gray1;
+  }
+}
+
+.authorIcon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.listWrapper {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.marker {
+  display: inline-block;
+  width: 22px;
+  height: 16px;
+  font-size: 10px;
+  font-weight: 500;
+  font-style: italic;
+  color: $gray9;
+  margin-right: 4px;
+}
+
+.markerNum {
+  font-size: 13px;
+}
+
+.authorContentWrapper {
+  font-size: 13px;
+  line-height: 1.54;
+}
+
+.authorName {
+  color: $gray9;
+  text-decoration: underline;
+
+  &:hover {
+    color: $main_blue0;
+    text-decoration: underline;
+  }
+}
+
+.affiliation {
+  color: $gray9;
+}
+
+.hIndex {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 500;
+  color: $gray6;
+  margin-left: 8px;
+}
+
+.viewAll {
+  display: inline-block;
+  font-size: 12px;
+  font-style: italic;
+  color: $gray5;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-top: 4px;
+}
