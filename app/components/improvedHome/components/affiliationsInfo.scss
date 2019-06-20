@@ -61,11 +61,15 @@
 
 .marquee1Affiliation {
   display: inline-flex;
+  flex-grow: 1;
+  flex-shrink: 0;
   animation: marquee1 40s linear infinite;
 }
 
 .marquee2Affiliation {
   display: inline-flex;
+  flex-grow: 1;
+  flex-shrink: 0;
   animation: marquee2 40s linear infinite;
   animation-delay: 20s;
 }
