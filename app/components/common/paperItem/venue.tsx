@@ -87,7 +87,6 @@ const PaperItemVenue = ({
       })}
     >
       <Icon icon="JOURNAL" />
-
       <div className={styles.journalText}>
         Published {publishedDate ? <span className={styles.bold}>{yearStr}</span> : null}
         {title}

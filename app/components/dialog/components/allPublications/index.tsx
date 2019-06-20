@@ -272,7 +272,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
               conferenceInstance={paper.conferenceInstance}
               publishedDate={paper.publishedDate}
               readOnly={true}
-              style={{ display: 'flex', color: '#77828c', fontSize: '14px' }}
+              style={{ display: 'flex', color: '#7e8698', fontSize: '14px' }}
             />
           </div>
         </div>

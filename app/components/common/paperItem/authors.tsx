@@ -59,29 +59,28 @@ class Authors extends React.PureComponent<AuthorsProps> {
     return GlobalDialogManager.openAuthorListDialog(paper);
   };
 
-  private getHIndexTooltip = (hIndex: number) => {
-    if (!!hIndex) {
-      return (
-        <span className={styles.authorHIndex}>
-          <span className={styles.hIndexChar}>{hIndex}</span>
-          <div className={styles.detailHIndexBox}>
-            <div className={styles.contentWrapper}>{`Estimated H-index: ${hIndex}`}</div>
-          </div>
-        </span>
-      );
-    }
+  private getHIndexTooltip = (hIndex?: number) => {
+    if (!hIndex) return null;
+
+    return (
+      <span className={styles.authorHIndex}>
+        <span className={styles.hIndexChar}>{hIndex}</span>
+        <div className={styles.detailHIndexBox}>
+          <div className={styles.contentWrapper}>{`Estimated H-index: ${hIndex}`}</div>
+        </div>
+      </span>
+    );
   };
 
-  private getAuthorOrganization = (affiliation: Affiliation) => {
-    if (!!affiliation) {
-      const trimmedOrganization = affiliation.name
-        .split(',')
-        .slice(0, 2)
-        .join();
+  private getAuthorOrganization = (affiliation: Affiliation | null) => {
+    if (!affiliation) return '';
 
-      return `(${trimmedOrganization})`;
-    }
-    return '';
+    const trimmedOrganization = affiliation.name
+      .split(',')
+      .slice(0, 2)
+      .join();
+
+    return `(${trimmedOrganization})`;
   };
 
   private mapAuthorNodeToEndIndex = (authors: PaperAuthor[], endIndex: number, isSliced: boolean) => {
