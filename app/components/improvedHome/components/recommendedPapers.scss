@@ -1,0 +1,172 @@
+.recommendedPapersContainer {
+  padding: 36px 0 68px 0;
+  width: $tablet_width;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 21px;
+  font-weight: 600;
+  color: $black1;
+  margin-bottom: 32px;
+}
+
+.subTitle {
+  font-size: 15px;
+  font-weight: 500;
+  color: #96a3bc;
+  margin-bottom: 16px;
+}
+
+.contentSection {
+  display: flex;
+  justify-content: space-between;
+}
+
+.basedOnActivityPapers {
+}
+
+.paperItemWrapper {
+  max-width: 691px;
+  padding: 16px 14px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  border: solid 1px $gray2;
+  background-color: white;
+
+  & + & {
+    margin-top: 16px;
+  }
+}
+
+.moreItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
+  font-size: 15px;
+  font-weight: 500;
+  color: $main-blue1;
+  cursor: pointer;
+
+  .downIcon {
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 14px;
+      height: 8px;
+    }
+  }
+
+  .upIcon {
+    @extend .downIcon;
+    transform: rotate(180deg);
+  }
+}
+
+.basedOnCollectionPapers {
+  width: 302px;
+  height: 100%;
+  border-radius: 8px;
+  background-color: $gray0;
+
+  .sectionTitle {
+    position: relative;
+    height: 114px;
+    padding: 16px;
+    border-radius: 8px 8px 0 0;
+    background-image: linear-gradient(246deg, #6486f2, #447ce4);
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.28;
+    color: white;
+
+    .collectionLink {
+      position: absolute;
+      right: 12px;
+      top: 8px;
+      opacity: 0.7;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.77;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .sectionTitleContext {
+      position: absolute;
+      bottom: 16px;
+      white-space: pre-line;
+    }
+  }
+
+  .sectionContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 16px;
+    min-height: 109px;
+  }
+}
+
+.basedOnCollectionPapersItemWrapper {
+  .fromCollectionInfo {
+    font-size: 14px;
+    line-height: 1.43;
+    color: $gray5;
+    .fromCollectionLink {
+      color: $main-blue1;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  .paperTitle {
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-top: 8px;
+    color: $navy0;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .publishInfo {
+    font-size: 14px;
+    line-height: 1.43;
+    margin-top: 8px;
+    color: $gray5;
+
+    .detailInfo {
+      color: $gray6;
+    }
+  }
+
+  & + & {
+    margin-top: 26px;
+  }
+}
+
+.noPaperContext {
+  font-size: 15px;
+  padding: 40px 0;
+  text-align: center;
+  color: #96a3bc;
+}
+
+.authorInfo {
+  &:hover {
+    text-decoration: underline;
+  }
+}

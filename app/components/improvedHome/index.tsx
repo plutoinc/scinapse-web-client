@@ -17,6 +17,7 @@ import JournalsInfo from './components/journalsInfo';
 import AffiliationsInfo from './components/affiliationsInfo';
 import homeAPI from '../../api/home';
 import ImprovedFooter from '../layouts/improvedFooter';
+import RecommendedPapers from './components/recommendedPapers';
 const styles = require('./improvedHome.scss');
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
@@ -93,14 +94,6 @@ const ImprovedHome: React.FC<Props> = props => {
             </div>
             <div className={styles.searchTryKeyword} />
             <div className={styles.catchphrase}>We’re better than Google Scholar. We mean it.</div>
-            <div className={styles.updateNotiBarWrapper}>
-              <div className={styles.updateNotiBar}>
-                <label className={styles.newLabel}>NEW</label>
-                <span className={styles.notiContext}>
-                  We have updated our search feature. See <a className={styles.notiLink}>What’s New?</a>
-                </span>
-              </div>
-            </div>
             <div className={styles.cumulativeCountContainer}>
               <span>
                 <b>50,000+</b> researcher users.
@@ -122,12 +115,18 @@ const ImprovedHome: React.FC<Props> = props => {
             <Icon icon="ARROW_POINT_TO_DOWN" className={styles.downIcon} />
           </div>
         </div>
-        <JournalsInfo isMobile={props.layout.userDevice === UserDevice.MOBILE} />
-        <AffiliationsInfo />
-        <div className={styles.contentBlockDivider} />
-        <div className={styles.trendingPaperWrapper}>
-          <TrendingPaper />
-        </div>
+        {props.currentUser.isLoggedIn && props.layout.userDevice === UserDevice.DESKTOP ? (
+          <RecommendedPapers isLoggedIn={props.currentUser.isLoggedIn} isLoggingIn={props.currentUser.isLoggingIn} />
+        ) : (
+          <div>
+            <JournalsInfo isMobile={props.layout.userDevice === UserDevice.MOBILE} />
+            <AffiliationsInfo />
+            <div className={styles.contentBlockDivider} />
+            <div className={styles.trendingPaperWrapper}>
+              <TrendingPaper />
+            </div>
+          </div>
+        )}
         <ImprovedFooter />
       </div>
     </div>
@@ -137,6 +136,7 @@ const ImprovedHome: React.FC<Props> = props => {
 function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
+    currentUser: state.currentUser,
   };
 }
 
