@@ -7,12 +7,12 @@
   .title {
     white-space: pre-line;
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 400;
     text-align: center;
     color: $black1;
 
     .bold {
-      font-weight: bold;
+      font-weight: 600;
     }
   }
 }
@@ -20,20 +20,21 @@
 .contentBlockDivider {
   @extend %small-content-block-divider;
   background-color: $main-blue0;
+  margin-bottom: 64px;
 }
 
 :global(.no-webp) .affiliationsInfo {
   background-image: url('https://assets.pluto.network/scinapse-affiliation-background.png');
+  background-size: contain;
   background-repeat: no-repeat;
-  background-position: right;
-  background-size: 990px 400px;
+  background-position: 50% 0px;
 }
 
 :global(.webp) .affiliationsInfo {
   background-image: url('https://assets.pluto.network/scinapse-affiliation-background.webp');
+  background-size: contain;
   background-repeat: no-repeat;
-  background-position: right;
-  background-size: 990px 400px;
+  background-position: 50% 0px;
 }
 
 .affiliationImageContainer {
@@ -45,21 +46,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 186px;
-  height: 96px;
+  width: 168px;
+  height: 80px;
   border-radius: 6px;
   box-shadow: 0 2px 5px 0 rgba(0, 1, 64, 0.18);
   background-color: white;
   margin-left: 16px;
 
   .affiliationImage {
-    height: 40px;
+    height: 36px;
   }
 }
 
 .marqueeAffiliation {
   display: inline-flex;
-  animation: marquee 60s linear infinite;
+  animation: marquee 120s linear infinite;
 }
 
 @keyframes marquee {

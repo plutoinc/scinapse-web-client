@@ -18,7 +18,7 @@ const ImprovedFooter: React.FunctionComponent<FooterProps> = props => {
         <div className={styles.scinapseInfoWrapper}>
           <div className={styles.scinapseInfo}>
             <div className={styles.scinapseLogo}>
-              <Icon icon="SCINAPSE_LOGO" className={styles.logoIcon} />
+              <Icon icon="SCINAPSE_IMPROVEMENT_LOGO" className={styles.logoIcon} />
               <span className={styles.logoContext}>Academic Search Engine</span>
             </div>
           </div>

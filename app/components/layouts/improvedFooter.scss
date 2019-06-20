@@ -3,7 +3,7 @@
 }
 .footerContainer {
   max-width: $container_width;
-  min-height: 242px;
+  min-height: 200px;
   position: relative;
   margin: 0 auto;
   display: flex;
@@ -11,7 +11,7 @@
   font-size: 13px;
   line-height: 1.6;
   color: $gray5;
-  padding: 42px 16px 28px 16px;
+  padding: 32px 16px 16px 16px;
 }
 
 .scinapseInfoWrapper {
@@ -60,14 +60,14 @@
   font-size: 16px;
   font-weight: 500;
   color: $black1;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 .menuItem {
-  font-size: 16px;
+  font-size: 15px;
   color: $black1;
 
   & + & {
-    margin-top: 12px;
+    margin-top: 10px;
   }
 
   &:hover {

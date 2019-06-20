@@ -1,12 +1,16 @@
 .journalsInfo {
   background-color: #5b83ee;
-  padding: 60px 0 70px 0;
+  padding: 64px 0 56px 0;
   text-align: center;
 
   .title {
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 400;
     color: white;
+
+    .bold {
+      font-weight: 600;
+    }
   }
 
   .contentBlockDivider {
@@ -41,7 +45,7 @@
 @keyframes fadein {
   from {
     opacity: 0;
-    bottom: -50px;
+    bottom: -20px;
   }
   to {
     opacity: 1;
