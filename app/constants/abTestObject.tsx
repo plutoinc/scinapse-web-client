@@ -22,5 +22,6 @@ export const searchItemImprovement: Test = {
     { groupName: 'visitHistory', weight: 1 },
     { groupName: 'notIncludedWords', weight: 1 },
     { groupName: 'sourceDomain', weight: 1 },
+    { groupName: 'broadAuthorVenue', weight: 1 },
   ],
 };

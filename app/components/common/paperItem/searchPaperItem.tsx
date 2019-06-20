@@ -5,6 +5,7 @@ import { CurrentUser } from '../../../model/currentUser';
 import Abstract from './abstract';
 import PaperActionButtons from './paperActionButtons';
 import Title from './title';
+import VenueAndAuthors from './venueAndAuthors';
 import BlockVenue from './blockVenue';
 import BlockAuthorList from './blockAuthorList';
 import { withStyles } from '../../../helpers/withStylesHelper';
@@ -64,10 +65,14 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
 
   const [shouldShowVisitHistory, setShouldShowVisitHistory] = React.useState(false);
   const [shouldShowNotIncludedWords, setShouldShowNotIncludedWords] = React.useState(false);
+  const [venueAuthorType, setVenueAuthorType] = React.useState<'broadAuthorVenue' | 'control' | ''>('');
 
   React.useEffect(() => {
     setShouldShowVisitHistory(getUserGroupName(SEARCH_ITEM_IMPROVEMENT_TEST) === 'visitHistory');
     setShouldShowNotIncludedWords(getUserGroupName(SEARCH_ITEM_IMPROVEMENT_TEST) === 'notIncludedWords');
+    setVenueAuthorType(
+      getUserGroupName(SEARCH_ITEM_IMPROVEMENT_TEST) === 'broadAuthorVenue' ? 'broadAuthorVenue' : 'control'
+    );
   }, []);
 
   let historyContent = null;
@@ -76,6 +81,34 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
     const lastVisitFrom = distanceInWordsToNow(savedAt);
     historyContent = (
       <div className={styles.visitedHistory}>{`You visited at ${lastVisitDate} (${lastVisitFrom} ago)`}</div>
+    );
+  }
+
+  let venueAndAuthor = null;
+  if (venueAuthorType === 'broadAuthorVenue') {
+    venueAndAuthor = (
+      <>
+        <BlockVenue
+          journal={paper.journal}
+          conferenceInstance={paper.conferenceInstance}
+          publishedDate={paper.publishedDate}
+          pageType={pageType}
+          actionArea={actionArea}
+        />
+        <BlockAuthorList paper={paper} authors={paper.authors} pageType={pageType} actionArea={actionArea} />
+      </>
+    );
+  } else if (venueAuthorType === 'control') {
+    venueAndAuthor = (
+      <VenueAndAuthors
+        pageType={pageType}
+        actionArea={actionArea}
+        paper={paper}
+        journal={paper.journal}
+        conferenceInstance={paper.conferenceInstance}
+        publishedDate={paper.publishedDate}
+        authors={paper.authors}
+      />
     );
   }
 
@@ -104,14 +137,7 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
           actionArea={actionArea}
           source={source}
         />
-        <BlockVenue
-          journal={paper.journal}
-          conferenceInstance={paper.conferenceInstance}
-          publishedDate={paper.publishedDate}
-          pageType={pageType}
-          actionArea={actionArea}
-        />
-        <BlockAuthorList paper={paper} authors={paper.authors} pageType={pageType} actionArea={actionArea} />
+        {venueAndAuthor}
         <Abstract
           paperId={paper.id}
           pageType={pageType}
