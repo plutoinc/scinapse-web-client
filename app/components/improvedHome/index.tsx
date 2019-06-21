@@ -93,14 +93,6 @@ const ImprovedHome: React.FC<Props> = props => {
             </div>
             <div className={styles.searchTryKeyword} />
             <div className={styles.catchphrase}>We’re better than Google Scholar. We mean it.</div>
-            <div className={styles.updateNotiBarWrapper}>
-              <div className={styles.updateNotiBar}>
-                <label className={styles.newLabel}>NEW</label>
-                <span className={styles.notiContext}>
-                  We have updated our search feature. See <a className={styles.notiLink}>What’s New?</a>
-                </span>
-              </div>
-            </div>
             <div className={styles.cumulativeCountContainer}>
               <span>
                 <b>50,000+</b> researcher users.
