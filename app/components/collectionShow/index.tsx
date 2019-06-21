@@ -210,7 +210,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
               </div>
             </div>
           </div>
-          <ScinapseFooter backgroundColor="white" />
+          <ScinapseFooter style={{ backgroundColor: 'white' }} />
         </div>
       );
     } else {

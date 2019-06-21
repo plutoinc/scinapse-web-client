@@ -325,7 +325,7 @@ class TermsOfService extends React.Component {
             but also a vibrant community of like-minded and engaged peers, focused on a very noble goal.
           </p>
         </div>
-        <ScinapseFooter backgroundColor="white" />{' '}
+        <ScinapseFooter style={{ backgroundColor: 'white' }} />{' '}
       </div>
     );
   }

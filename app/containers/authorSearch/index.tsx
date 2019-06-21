@@ -134,7 +134,7 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
               {this.getPaginationComponent()}
             </div>
           </div>
-          <ScinapseFooter backgroundColor="#f9f9fa" />
+          <ScinapseFooter style={{ backgroundColor: '#f9f9fa' }} />
         </div>
       );
     } else {

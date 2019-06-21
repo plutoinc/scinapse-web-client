@@ -42,9 +42,8 @@ interface DomainSourceBtnProps {
   actionArea: Scinapse.ActionTicket.ActionArea;
 }
 const DomainSourceBtn: React.FC<DomainSourceBtnProps> = ({ source, pageType, actionArea }) => {
-  if (!source.destination || !source.doi) return null;
+  if (!source.source || !source.doi) return null;
 
-  const url = new URL(source.destination);
   return (
     <a
       href={`https://doi.org/${source.doi}`}
@@ -64,10 +63,10 @@ const DomainSourceBtn: React.FC<DomainSourceBtnProps> = ({ source, pageType, act
     >
       <img
         className={styles.faviconIcon}
-        src={`https://www.google.com/s2/favicons?domain=${source.destination}`}
-        alt={`${url.host} favicon`}
+        src={`https://www.google.com/s2/favicons?domain=${source.source}`}
+        alt={`${source.host} favicon`}
       />
-      <span>{url.host}</span>
+      <span>{source.host}</span>
     </a>
   );
 };

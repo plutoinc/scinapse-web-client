@@ -3,6 +3,7 @@ import {
   signBannerAtPaperShowTest,
   searchItemImprovement,
   homeImprovement,
+  guruAtSearch,
 } from './abTestObject';
 
 export interface UserGroup {
@@ -17,7 +18,12 @@ export interface Test {
 
 export type SignUpConversion = 'queryLover' | 'downloadCount';
 
-export type ABTest = 'searchEngineMood' | 'signBannerAtPaperShow' | 'searchItemImprovement' | 'homeImprovement';
+export type ABTest =
+  | 'searchEngineMood'
+  | 'signBannerAtPaperShow'
+  | 'searchItemImprovement'
+  | 'guruAtSearch'
+  | 'homeImprovement';
 
 export const SIGN_UP_CONVERSION_KEY = 'b_exp';
 
@@ -42,6 +48,7 @@ export const LIVE_TESTS: Test[] = [
   signBannerAtPaperShowTest,
   searchItemImprovement,
   homeImprovement,
+  guruAtSearch,
 ];
 
 function getRandomPool(): { [key: string]: string[] } {

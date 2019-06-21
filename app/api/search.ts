@@ -28,6 +28,7 @@ export interface MatchEntityAuthor extends BasePaperAuthor {
   citationCount: number;
   profileImageUrl: string | null;
   representativePapers: Paper[];
+  topPapers: Paper[] | null;
 }
 
 export interface MatchAuthor {
@@ -45,6 +46,7 @@ export interface SearchResult extends PaginationResponseV2<Paper[]> {
     matchedAuthor: MatchAuthor;
     resultModified: boolean;
     suggestion: Suggestion | null;
+    topRefAuthors: MatchEntityAuthor[] | null;
   };
 }
 
