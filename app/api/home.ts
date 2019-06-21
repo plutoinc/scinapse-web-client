@@ -3,7 +3,7 @@ import { camelCaseKeys } from '../helpers/camelCaseKeys';
 import { Paper } from '../model/paper';
 import { Collection } from '../model/collection';
 
-export interface GetBasedOnCollectionPapersParams {
+export interface BasedOnCollectionPapersParams {
   collection: Collection;
   recommendations: Paper[];
 }
@@ -21,7 +21,7 @@ class HomeAPI extends PlutoAxios {
     return camelizedRes.data.content;
   }
 
-  public async getBasedOnCollectionPapers(): Promise<GetBasedOnCollectionPapersParams> {
+  public async getBasedOnCollectionPapers(): Promise<BasedOnCollectionPapersParams> {
     const res = await this.get(`/collections/recommendations`);
     const camelizedRes = camelCaseKeys(res.data);
     return camelizedRes.data.content[0];
