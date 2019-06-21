@@ -3,6 +3,7 @@
   background-color: white;
   text-align: center;
   padding-top: 75px;
+  overflow: hidden;
 
   .title {
     white-space: pre-line;
@@ -37,12 +38,6 @@
   background-position: 50% 0px;
 }
 
-.affiliationImageContainer {
-  display: flex;
-  overflow: hidden;
-  height: 100px;
-}
-
 .affiliationImageWrapper {
   display: flex;
   justify-content: center;
@@ -59,35 +54,47 @@
   }
 }
 
+.affiliationImageContainer {
+  position: relative;
+  display: flex;
+  width: 4800px;
+  overflow: hidden;
+  height: 100px;
+}
+
 .marquee1Affiliation {
+  position: absolute;
   display: inline-flex;
+  left: 0;
   flex-grow: 1;
   flex-shrink: 0;
-  animation: marquee1 40s linear infinite;
+  animation: marquee1 40s linear;
+  animation-iteration-count: infinite;
 }
 
 .marquee2Affiliation {
+  position: absolute;
   display: inline-flex;
   flex-grow: 1;
   flex-shrink: 0;
-  animation: marquee2 40s linear infinite;
-  animation-delay: 20s;
+  animation: marquee2 40s linear;
+  animation-iteration-count: infinite;
 }
 
 @keyframes marquee1 {
   from {
-    transform: translateX(100%);
+    left: 0;
   }
   to {
-    transform: translateX(-100%);
+    left: -2392px;
   }
 }
 
 @keyframes marquee2 {
   from {
-    transform: translateX(0%);
+    left: 2392px;
   }
   to {
-    transform: translateX(-200%);
+    left: 0;
   }
 }
