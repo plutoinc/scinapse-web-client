@@ -32,6 +32,7 @@ import FilterContainer from '../../containers/filterContainer';
 import ScinapseFooter from '../layouts/scinapseFooter';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import GuruBox from './components/guruBox';
+import { getCurrentPageType } from '../locationListener';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &

@@ -3,6 +3,7 @@ import ImprovedFooter from './improvedFooter';
 import Footer from './footer';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { HOME_IMPROVEMENT_TEST } from '../../constants/abTestGlobalValue';
+import { getCurrentPageType } from '../locationListener';
 
 const ScinapseFooter: React.FC<{ backgroundColor: string }> = ({ backgroundColor }) => {
   const [showImprovedFooter, setShowImprovedFooter] = React.useState(false);
@@ -21,7 +22,16 @@ const ScinapseFooter: React.FC<{ backgroundColor: string }> = ({ backgroundColor
       break;
   }
 
-  const footerStyle: React.CSSProperties = { backgroundColor: footerBackgroundColor };
+  const searchListFooterStyle: React.CSSProperties = {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+  };
+
+  const footerStyle: React.CSSProperties =
+    getCurrentPageType() === 'searchResult'
+      ? { ...searchListFooterStyle, backgroundColor: footerBackgroundColor }
+      : { backgroundColor: footerBackgroundColor };
 
   return showImprovedFooter ? <ImprovedFooter containerStyle={footerStyle} /> : <Footer containerStyle={footerStyle} />;
 };
