@@ -6,14 +6,25 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import { Collection } from '../../../model/collection';
 import { Paper } from '../../../model/paper';
 import { BasedOnCollectionPapersParams } from '../../../api/home';
+import { ActionTicketParams } from '../../../helpers/actionTicketManager/actionTicket';
+import { useObserver } from '../../../hooks/useIntersectionHook';
 const styles = require('./recommendedPapers.scss');
 
-const PaperItem: React.FC<{ paper: Paper; collectionTitle: string; collectionId: number }> = ({
+const CollectionPaperItem: React.FC<{ paper: Paper; collectionTitle: string; collectionId: number }> = ({
   paper,
   collectionTitle,
   collectionId,
 }) => {
   const { id, publishedDate, authors, journal, title } = paper;
+  const actionTicketContext: ActionTicketParams = {
+    pageType: 'home',
+    actionType: 'view',
+    actionArea: 'baseOnCollectionPaperList',
+    actionTag: 'viewBaseOnCollectionPaper',
+    actionLabel: String(id),
+  };
+
+  const { elRef } = useObserver(0.1, actionTicketContext);
 
   const yearStr = publishedDate ? (
     <span>
@@ -29,7 +40,7 @@ const PaperItem: React.FC<{ paper: Paper; collectionTitle: string; collectionId:
   const journalTitle = journal ? ` (${journal.title})` : '';
 
   return (
-    <div key={id} className={styles.basedOnCollectionPapersItemWrapper}>
+    <div ref={elRef} className={styles.basedOnCollectionPapersItemWrapper}>
       <div className={styles.fromCollectionInfo}>
         from{' '}
         <Link to={`/collections/${collectionId}`} className={styles.fromCollectionLink}>
@@ -62,12 +73,12 @@ const CollectionPapers: React.FC<{ collection: Collection; papers: Paper[]; isLo
   const collectionPapers =
     collection &&
     papers &&
-    papers.map(paper => <PaperItem key={paper.id} paper={paper} collectionId={id} collectionTitle={title} />);
+    papers.map(paper => <CollectionPaperItem key={paper.id} paper={paper} collectionId={id} collectionTitle={title} />);
 
   return <>{collectionPapers}</>;
 };
 
-const BaseOnCollectionPapers: React.FC<{
+const BaseOnCollectionPaperList: React.FC<{
   basedOnCollectionPapers: BasedOnCollectionPapersParams;
   isLoading: boolean;
 }> = ({ basedOnCollectionPapers, isLoading }) => {
@@ -96,4 +107,4 @@ const BaseOnCollectionPapers: React.FC<{
   );
 };
 
-export default withStyles<typeof BaseOnCollectionPapers>(styles)(BaseOnCollectionPapers);
+export default withStyles<typeof BaseOnCollectionPaperList>(styles)(BaseOnCollectionPaperList);

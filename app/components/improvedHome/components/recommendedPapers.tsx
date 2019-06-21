@@ -2,8 +2,8 @@ import * as React from 'react';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import homeAPI, { BasedOnCollectionPapersParams } from '../../../api/home';
 import { Paper } from '../../../model/paper';
-import BaseOnActivityPapers from './BaseOnActivityPapers';
-import BaseOnCollectionPapers from './BaseOnCollectionPapers';
+import BaseOnActivityPaperList from './BaseOnActivityPaperList';
+import BaseOnCollectionPaperList from './BaseOnCollectionPaperList';
 const styles = require('./recommendedPapers.scss');
 
 const RecommendedPapers: React.FC<{ isLoggedIn: boolean; isLoggingIn: boolean }> = ({ isLoggedIn, isLoggingIn }) => {
@@ -55,10 +55,10 @@ const RecommendedPapers: React.FC<{ isLoggedIn: boolean; isLoggingIn: boolean }>
       </div>
       <div className={styles.contentSection}>
         <div className={styles.basedOnActivityPapers}>
-          <BaseOnActivityPapers isLoading={isLoadingActivityPapers || isLoggingIn} papers={basedOnActivityPapers} />
+          <BaseOnActivityPaperList isLoading={isLoadingActivityPapers || isLoggingIn} papers={basedOnActivityPapers} />
         </div>
         <div className={styles.basedOnCollectionPapers}>
-          <BaseOnCollectionPapers
+          <BaseOnCollectionPaperList
             basedOnCollectionPapers={basedOnCollectionPapers!}
             isLoading={isLoadingCollectionPapers || isLoggingIn}
           />

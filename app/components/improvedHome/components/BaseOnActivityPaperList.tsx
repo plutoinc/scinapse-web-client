@@ -5,9 +5,35 @@ import Icon from '../../../icons';
 import { Paper } from '../../../model/paper';
 import SkeletonPaperItem from '../../common/skeletonPaperItem/skeletonPaperItem';
 import PaperItem from '../../common/paperItem';
+import { ActionTicketParams } from '../../../helpers/actionTicketManager/actionTicket';
+import { useObserver } from '../../../hooks/useIntersectionHook';
 const styles = require('./recommendedPapers.scss');
 
-const BaseOnActivityPapers: React.FC<{ isLoading: boolean; papers: Paper[] }> = ({ isLoading, papers }) => {
+const ActivityPaperItem: React.FC<{ paper: Paper }> = ({ paper }) => {
+  const actionTicketContext: ActionTicketParams = {
+    pageType: 'home',
+    actionType: 'view',
+    actionArea: 'baseOnActivityPaperList',
+    actionTag: 'viewBaseOnActivityPaper',
+    actionLabel: String(paper.id),
+  };
+
+  const { elRef } = useObserver(0.1, actionTicketContext);
+
+  return (
+    <div ref={elRef} className={styles.paperItemContainer}>
+      <PaperItem
+        paper={paper}
+        omitAbstract={true}
+        pageType="collectionShow"
+        actionArea="relatedPaperList"
+        wrapperClassName={styles.paperItemWrapper}
+      />
+    </div>
+  );
+};
+
+const BaseOnActivityPaperList: React.FC<{ isLoading: boolean; papers: Paper[] }> = ({ isLoading, papers }) => {
   const [isPaperExpanding, setIsPaperExpanding] = React.useState(false);
 
   if (!papers) return null;
@@ -44,16 +70,7 @@ const BaseOnActivityPapers: React.FC<{ isLoading: boolean; papers: Paper[] }> = 
       </div>
     );
 
-  const activityPapers = targetPapers.map(paper => (
-    <PaperItem
-      key={paper.id}
-      paper={paper}
-      omitAbstract={true}
-      pageType="collectionShow"
-      actionArea="relatedPaperList"
-      wrapperClassName={styles.paperItemWrapper}
-    />
-  ));
+  const activityPapers = targetPapers.map(paper => <ActivityPaperItem key={paper.id} paper={paper} />);
 
   return (
     <>
@@ -63,4 +80,4 @@ const BaseOnActivityPapers: React.FC<{ isLoading: boolean; papers: Paper[] }> = 
   );
 };
 
-export default withStyles<typeof BaseOnActivityPapers>(styles)(BaseOnActivityPapers);
+export default withStyles<typeof BaseOnActivityPaperList>(styles)(BaseOnActivityPaperList);

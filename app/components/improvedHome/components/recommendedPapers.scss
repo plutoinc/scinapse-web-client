@@ -23,6 +23,12 @@
   justify-content: space-between;
 }
 
+.paperItemContainer {
+  & + & {
+    margin-top: 16px;
+  }
+}
+
 .paperItemWrapper {
   max-width: 691px;
   padding: 16px 14px;
@@ -30,10 +36,6 @@
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
   border: solid 1px $gray2;
   background-color: white;
-
-  & + & {
-    margin-top: 16px;
-  }
 }
 
 .moreItem {

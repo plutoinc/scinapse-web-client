@@ -103,6 +103,8 @@ declare namespace Scinapse {
       | 'childCitedList'
       | 'submitSurvey'
       | 'skipSurvey'
+      | 'viewBaseOnCollectionPaper'
+      | 'viewBaseOnActivityPaper'
       | '';
 
     type ActionArea = string;
