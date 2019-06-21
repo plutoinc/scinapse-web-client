@@ -62,6 +62,21 @@ function getHelmetNode() {
   );
 }
 
+const ScinapseInformation: React.FC<{ isMobile: boolean; isShow: boolean }> = ({ isMobile, isShow }) => {
+  if (!isShow) return null;
+
+  return (
+    <div>
+      <JournalsInfo isMobile={isMobile} />
+      <AffiliationsInfo />
+      <div className={styles.contentBlockDivider} />
+      <div className={styles.trendingPaperWrapper}>
+        <TrendingPaper />
+      </div>
+    </div>
+  );
+};
+
 const ImprovedHome: React.FC<Props> = props => {
   const [isSearchEngineMood, setIsSearchEngineMood] = React.useState(false);
   const [showRecommendedPapers, setShowRecommendedPapers] = React.useState(false);
@@ -79,18 +94,6 @@ const ImprovedHome: React.FC<Props> = props => {
       setShowRecommendedPapers(props.currentUser.isLoggedIn);
     },
     [props.currentUser.isLoggedIn]
-  );
-
-  const ScinapseInfomations = (!showRecommendedPapers ||
-    (showRecommendedPapers && props.layout.userDevice !== UserDevice.DESKTOP)) && (
-    <div>
-      <JournalsInfo isMobile={props.layout.userDevice === UserDevice.MOBILE} />
-      <AffiliationsInfo />
-      <div className={styles.contentBlockDivider} />
-      <div className={styles.trendingPaperWrapper}>
-        <TrendingPaper />
-      </div>
-    </div>
   );
 
   return (
@@ -136,7 +139,10 @@ const ImprovedHome: React.FC<Props> = props => {
           </div>
         </div>
         <RecommendedPapers isLoggedIn={props.currentUser.isLoggedIn} isLoggingIn={props.currentUser.isLoggingIn} />
-        {ScinapseInfomations}
+        <ScinapseInformation
+          isMobile={props.layout.userDevice === UserDevice.MOBILE}
+          isShow={!showRecommendedPapers || (showRecommendedPapers && props.layout.userDevice !== UserDevice.DESKTOP)}
+        />
         <ImprovedFooter />
       </div>
     </div>
