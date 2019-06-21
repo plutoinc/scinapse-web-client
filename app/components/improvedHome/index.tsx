@@ -95,11 +95,10 @@ const ImprovedHome: React.FC<Props> = props => {
             <div className={styles.catchphrase}>We’re better than Google Scholar. We mean it.</div>
             <div className={styles.cumulativeCountContainer}>
               <span>
-                <b>50,000+</b> researcher users.
+                <b>50,000+</b> registered researchers have found
               </span>
               <br />
               <span>
-                Over{' '}
                 <b>
                   <ReactCountUp
                     start={papersFoundCount > 10000 ? papersFoundCount - 10000 : papersFoundCount}
@@ -107,8 +106,9 @@ const ImprovedHome: React.FC<Props> = props => {
                     separator=","
                     duration={3}
                   />
-                </b>{' '}
-                papers searched this month.
+                  {`+`}
+                </b>
+                {` papers using Scinapse`}
               </span>
             </div>
             <Icon icon="ARROW_POINT_TO_DOWN" className={styles.downIcon} />

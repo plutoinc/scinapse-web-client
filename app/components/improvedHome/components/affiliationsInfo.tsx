@@ -24,7 +24,7 @@ const AffiliationsInfo: React.FC = () => {
     <div className={styles.affiliationsInfo}>
       <div className={styles.title}>
         <span>
-          Researchers from over <span className={styles.bold}>196</span> countries and
+          Users from over <span className={styles.bold}>196</span> countries and
         </span>
         <br />
         <span>
