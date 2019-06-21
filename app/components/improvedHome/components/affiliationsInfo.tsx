@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { AFFILIATIONS } from '../constants';
 const styles = require('./affiliationsInfo.scss');
 
-const AffiliationsInfo: React.FC<{}> = () => {
+const AffiliationsInfo: React.FC = () => {
   const affiliationList = AFFILIATIONS.map((affiliation, index) => {
     return (
       <div className={styles.affiliationImageWrapper} key={index}>
