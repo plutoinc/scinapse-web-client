@@ -64,6 +64,7 @@ function getHelmetNode() {
 
 const ImprovedHome: React.FC<Props> = props => {
   const [isSearchEngineMood, setIsSearchEngineMood] = React.useState(false);
+  const [showRecommendedPapers, setShowRecommendedPapers] = React.useState(false);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
 
   React.useEffect(() => {
@@ -72,6 +73,25 @@ const ImprovedHome: React.FC<Props> = props => {
       setPapersFoundCount(res.data.content);
     });
   }, []);
+
+  React.useEffect(
+    () => {
+      setShowRecommendedPapers(props.currentUser.isLoggedIn);
+    },
+    [props.currentUser.isLoggedIn]
+  );
+
+  const ScinapseInfomations = (!showRecommendedPapers ||
+    (showRecommendedPapers && props.layout.userDevice !== UserDevice.DESKTOP)) && (
+    <div>
+      <JournalsInfo isMobile={props.layout.userDevice === UserDevice.MOBILE} />
+      <AffiliationsInfo />
+      <div className={styles.contentBlockDivider} />
+      <div className={styles.trendingPaperWrapper}>
+        <TrendingPaper />
+      </div>
+    </div>
+  );
 
   return (
     <div className={styles.articleSearchFormContainer}>
@@ -116,18 +136,7 @@ const ImprovedHome: React.FC<Props> = props => {
           </div>
         </div>
         <RecommendedPapers isLoggedIn={props.currentUser.isLoggedIn} isLoggingIn={props.currentUser.isLoggingIn} />
-        {!props.currentUser.isLoggedIn ||
-          (props.layout.userDevice !== UserDevice.DESKTOP && (
-            <div>
-              <JournalsInfo isMobile={props.layout.userDevice === UserDevice.MOBILE} />
-              <AffiliationsInfo />
-              <div className={styles.contentBlockDivider} />
-              <div className={styles.trendingPaperWrapper}>
-                <TrendingPaper />
-              </div>
-            </div>
-          ))}
-
+        {ScinapseInfomations}
         <ImprovedFooter />
       </div>
     </div>
