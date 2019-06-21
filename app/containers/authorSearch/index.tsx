@@ -17,7 +17,6 @@ import { CurrentUser } from '../../model/currentUser';
 import { LayoutState, UserDevice } from '../../components/layouts/records';
 import { Configuration } from '../../reducers/configuration';
 import { Helmet } from 'react-helmet';
-import { Footer } from '../../components/layouts';
 import AuthorSearchLongItem from '../../components/authorSearchLongItem';
 import MobilePagination from '../../components/common/mobilePagination';
 import DesktopPagination from '../../components/common/desktopPagination';
@@ -28,6 +27,7 @@ import { getUrlDecodedQueryParamsObject } from '../../helpers/makeNewFilterLink'
 import EnvChecker from '../../helpers/envChecker';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { Author } from '../../model/author/author';
+import ScinapseFooter from '../../components/layouts/scinapseFooter';
 const styles = require('./authorSearch.scss');
 
 function mapStateToProps(state: AppState) {
@@ -134,7 +134,7 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
               {this.getPaginationComponent()}
             </div>
           </div>
-          <Footer containerStyle={this.getContainerStyle()} />
+          <ScinapseFooter backgroundColor="#f9f9fa" />
         </div>
       );
     } else {
@@ -246,16 +246,6 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
         <title>{`${query} | Scinapse | Academic search engine for author`}</title>
       </Helmet>
     );
-  };
-
-  private getContainerStyle = (): React.CSSProperties => {
-    const { layout } = this.props;
-
-    if (layout.userDevice !== UserDevice.DESKTOP) {
-      return { position: 'absolute', width: '100', bottom: 'unset' };
-    } else {
-      return { position: 'absolute', left: '0', right: '0', bottom: '0' };
-    }
   };
 }
 export default hot(connect(mapStateToProps)(withRouter(AuthorSearch)));
