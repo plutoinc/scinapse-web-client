@@ -24,8 +24,6 @@ import { LayoutState, UserDevice } from '../../layouts/records';
 import { getCurrentPageType } from '../../locationListener';
 import { handleInputKeydown } from './helpers/handleInputKeydown';
 import { checkBlockSignUpConversion } from '../../../helpers/checkSignUpCount';
-import { getUserGroupName } from '../../../helpers/abTestHelper';
-import { HOME_IMPROVEMENT_TEST } from '../../../constants/abTestGlobalValue';
 const s = require('./searchQueryInput.scss');
 
 interface SearchQueryInputProps extends RouteComponentProps<any> {
@@ -74,7 +72,6 @@ const SearchQueryInput: React.FunctionComponent<
   const [inputValue, setInputValue] = React.useState(props.initialValue || '');
   const [genuineInputValue, setGenuineInputValue] = React.useState(props.initialValue || '');
   const [highlightIdx, setHighlightIdx] = React.useState(-1);
-  const [isImprovedHome, setIsImprovedHome] = React.useState(false);
   const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
 
   const { data: keywords, setParams } = useDebouncedAsyncFetch<string, CompletionKeyword[]>({
@@ -133,10 +130,6 @@ const SearchQueryInput: React.FunctionComponent<
     [props.location]
   );
 
-  React.useEffect(() => {
-    setIsImprovedHome(getUserGroupName(HOME_IMPROVEMENT_TEST) === 'improvement');
-  }, []);
-
   async function handleSubmit({ query, filter, from }: SubmitParams) {
     const searchKeyword = query || inputValue;
     if (!validateSearchInput(searchKeyword)) {
@@ -191,18 +184,6 @@ const SearchQueryInput: React.FunctionComponent<
     } else {
       props.history.push(`/search?${searchQuery}`);
     }
-  }
-
-  function clickSearchBtn() {
-    let from: SearchSourceType = 'raw';
-    const matchKeyword = keywordsToShow.find(k => k.text === inputValue);
-    if (matchKeyword && matchKeyword.removable) {
-      from = 'history';
-    } else if (matchKeyword && !matchKeyword.removable) {
-      from = 'suggestion';
-    }
-
-    handleSubmit({ filter: props.initialFilter, from });
   }
 
   const keywordItems = keywordsToShow.slice(0, props.maxCount).map((k, i) => {
@@ -299,14 +280,21 @@ const SearchQueryInput: React.FunctionComponent<
           autoFocus={props.autoFocus}
           className={inputClassName}
         />
-        {props.actionArea === 'home' && isImprovedHome ? (
-          <button onClick={clickSearchBtn} className={s.searchButton}>
-            <Icon icon="SEARCH_ICON" className={s.searchIconInButton} />
-            <span className={s.searchButtonText}>Search</span>
-          </button>
-        ) : (
-          <Icon onClick={clickSearchBtn} icon="SEARCH_ICON" className={s.searchIcon} />
-        )}
+        <Icon
+          onClick={() => {
+            let from: SearchSourceType = 'raw';
+            const matchKeyword = keywordsToShow.find(k => k.text === inputValue);
+            if (matchKeyword && matchKeyword.removable) {
+              from = 'history';
+            } else if (matchKeyword && !matchKeyword.removable) {
+              from = 'suggestion';
+            }
+
+            handleSubmit({ filter: props.initialFilter, from });
+          }}
+          icon="SEARCH_ICON"
+          className={s.searchIcon}
+        />
         {keywordList}
       </div>
     </ClickAwayListener>

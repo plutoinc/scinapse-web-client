@@ -1,10 +1,4 @@
-import {
-  searchEngineMoodTest,
-  signBannerAtPaperShowTest,
-  searchItemImprovement,
-  homeImprovement,
-  guruAtSearch,
-} from './abTestObject';
+import { searchEngineMoodTest, signBannerAtPaperShowTest, searchItemImprovement, guruAtSearch } from './abTestObject';
 
 export interface UserGroup {
   groupName: string;
@@ -18,12 +12,7 @@ export interface Test {
 
 export type SignUpConversion = 'queryLover' | 'downloadCount';
 
-export type ABTest =
-  | 'searchEngineMood'
-  | 'signBannerAtPaperShow'
-  | 'searchItemImprovement'
-  | 'guruAtSearch'
-  | 'homeImprovement';
+export type ABTest = 'searchEngineMood' | 'signBannerAtPaperShow' | 'searchItemImprovement' | 'guruAtSearch';
 
 export const SIGN_UP_CONVERSION_KEY = 'b_exp';
 
@@ -47,7 +36,6 @@ export const LIVE_TESTS: Test[] = [
   searchEngineMoodTest,
   signBannerAtPaperShowTest,
   searchItemImprovement,
-  homeImprovement,
   guruAtSearch,
 ];
 

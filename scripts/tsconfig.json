@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "outDir": "../dist-sls",
-    "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "allowUnusedLabels": false,
     "noUnusedLocals": true,

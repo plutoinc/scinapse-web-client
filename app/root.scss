@@ -3,6 +3,8 @@
   @import '~normalize.css/normalize';
 }
 
+$fallback: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
 * {
   box-sizing: border-box;
 }

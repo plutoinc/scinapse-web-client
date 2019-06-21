@@ -14,6 +14,7 @@ import { getCollections } from './sideEffect';
 import { Collection, collectionSchema } from '../../model/collection';
 import { UserCollectionsState } from './reducer';
 import { Member, memberSchema } from '../../model/member';
+import Footer from '../layouts/footer';
 import Icon from '../../icons';
 import { trackEvent } from '../../helpers/handleGA';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
@@ -22,7 +23,6 @@ import { CurrentUser } from '../../model/currentUser';
 import restoreScroll from '../../helpers/scrollRestoration';
 import alertToast from '../../helpers/makePlutoToastAction';
 import ErrorPage from '../error/errorPage';
-import ScinapseFooter from '../layouts/scinapseFooter';
 const styles = require('./collections.scss');
 
 export interface UserCollectionsProps extends RouteComponentProps<{ userId: string }> {
@@ -91,7 +91,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
               {this.getCollections(collections)}
             </div>
           </div>
-          <ScinapseFooter backgroundColor="#f9f9fa" />
+          <Footer containerStyle={{ backgroundColor: '#f9f9fa' }} />
         </div>
       );
     } else {

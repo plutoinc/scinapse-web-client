@@ -2,6 +2,7 @@
   background-color: $gray0;
   position: relative;
   min-height: calc(100vh - #{$navbar_height});
+  padding-bottom: 60px;
 }
 
 .articleSearchContainer {
@@ -144,9 +145,12 @@
 
 // Mobile
 @media (max-width: $mobile-width) {
-  .rootWrapper,
+  .rootWrapper {
+    padding-bottom: 80px;
+  }
+
   .articleSearchContainer {
-    padding-bottom: 0;
+    margin-bottom: 32px;
   }
 
   .authorItemSectionWrapper {

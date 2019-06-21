@@ -44,7 +44,6 @@ const ICONS: { [key: string]: any } = {
   SMALL_PLUS: require('./small-plus.svg').default,
   MINUS: require('./minus.svg').default,
   ARROW_POINT_TO_UP: require('./arrow-point-to-up.svg').default,
-  ARROW_POINT_TO_DOWN: require('./arrow-point-to-down.svg').default,
   CITATION_QUOTE: require('./citation.svg').default,
   BOOKMARK_GRAY: require('./bookmark-gray.svg').default,
   BOOKMARK_REMOVE: require('./bookmark-remove.svg').default,
@@ -95,8 +94,6 @@ const ICONS: { [key: string]: any } = {
   LOCK: require('./lock.svg').default,
   UNLOCK: require('./unlock.svg').default,
   DOUBLE_ARROW_DOWN: require('./double-arrow-down.svg').default,
-  SCINAPSE_HOME_LOGO: require('./scinapse-home-logo.svg').default,
-  SCINAPSE_IMPROVEMENT_LOGO: require('./scinapse-improvement-logo.svg').default,
 };
 
 @withStyles<typeof Icon>(styles)

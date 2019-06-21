@@ -22,14 +22,15 @@ import { Paper } from '../../model/paper';
 import AuthorSearchItem from '../authorSearchItem';
 import { Actions } from '../../actions/actionTypes';
 import restoreScroll from '../../helpers/scrollRestoration';
+import { Footer } from '../layouts';
 import { SearchPageQueryParams } from './types';
 import { MatchAuthor } from '../../api/search';
 import formatNumber from '../../helpers/formatNumber';
 import SortBar from './components/SortBar';
 import Pagination from './components/pagination';
+import { UserDevice } from '../layouts/records';
 import SignBanner from './components/signBanner';
 import FilterContainer from '../../containers/filterContainer';
-import ScinapseFooter from '../layouts/scinapseFooter';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import GuruBox from './components/guruBox';
 const styles = require('./articleSearch.scss');
@@ -188,12 +189,19 @@ const SearchContainer: React.FC<Props> = props => {
     searchPapers,
     toggleExpandingFilter,
     changeRangeInput,
+    layout,
   } = props;
   const [queryParams, setQueryParams] = React.useState<SearchPageQueryParams>(
     parse(location.search, { ignoreQueryPrefix: true })
   );
   const [filter, setFilter] = React.useState(SearchQueryManager.objectifyPaperFilter(queryParams.filter));
   const cancelToken = React.useRef(axios.CancelToken.source());
+  let footerStyle: React.CSSProperties;
+  if (layout.userDevice !== UserDevice.DESKTOP) {
+    footerStyle = { position: 'absolute', width: '100', bottom: 'unset' };
+  } else {
+    footerStyle = { position: 'absolute', left: '0', right: '0', bottom: '0' };
+  }
 
   React.useEffect(
     () => {
@@ -262,7 +270,7 @@ const SearchContainer: React.FC<Props> = props => {
           />
         </div>
       </div>
-      <ScinapseFooter backgroundColor="#f9f9fa" />
+      <Footer containerStyle={footerStyle} />
     </div>
   );
 };

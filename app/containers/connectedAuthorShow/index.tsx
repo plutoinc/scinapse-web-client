@@ -15,6 +15,7 @@ import { Paper, paperSchema } from '../../model/paper';
 import ArticleSpinner from '../../components/common/spinner/articleSpinner';
 import ScinapseInput from '../../components/common/scinapseInput';
 import { LayoutState } from '../../components/layouts/records';
+import Footer from '../../components/layouts/footer';
 import { ConnectedAuthorShowState } from './reducer';
 import PaperItem from '../../components/common/paperItem';
 import DesktopPagination from '../../components/common/desktopPagination';
@@ -42,7 +43,6 @@ import { trackEvent } from '../../helpers/handleGA';
 import AuthorCvSection from '../authorCvSection';
 import { getAuthor } from '../unconnectedAuthorShow/actions';
 import ErrorPage from '../../components/error/errorPage';
-import ScinapseFooter from '../../components/layouts/scinapseFooter';
 const styles = require('./connectedAuthor.scss');
 
 export interface ConnectedAuthorShowMatchParams {
@@ -239,7 +239,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
             </div>
           </div>
         </div>
-        <ScinapseFooter backgroundColor="white" />{' '}
+        <Footer />
         {isOpenSelectedPaperDialog ? (
           <RepresentativePublicationsDialog
             currentUser={currentUser}

@@ -3,7 +3,6 @@ import {
   SEARCH_ENGINE_MOOD_TEST,
   SIGN_BANNER_AT_PAPER_SHOW_TEST,
   SEARCH_ITEM_IMPROVEMENT_TEST,
-  HOME_IMPROVEMENT_TEST,
   GURU_AT_SEARCH_TEST,
 } from './abTestGlobalValue';
 
@@ -26,11 +25,6 @@ export const searchItemImprovement: Test = {
     { groupName: 'sourceDomain', weight: 1 },
     { groupName: 'broadAuthorVenue', weight: 1 },
   ],
-};
-
-export const homeImprovement: Test = {
-  name: HOME_IMPROVEMENT_TEST,
-  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'improvement', weight: 1 }],
 };
 
 export const guruAtSearch: Test = {

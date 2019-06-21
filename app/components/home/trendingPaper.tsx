@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { withStyles } from '../../../helpers/withStylesHelper';
-import { TrendingPaper, TRENDING_PAPERS } from '../trendingPaperData';
-import ActionTicketManager from '../../../helpers/actionTicketManager';
-const styles = require('./trendingPaper.scss');
+import { withStyles } from '../../helpers/withStylesHelper';
+import { TrendingPaper, TRENDING_PAPERS } from './trendingPaperData';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+const styles = require('./home.scss');
 
 const TrendingPaperItem: React.FunctionComponent<{}> = () => {
   const trendingPapers = TRENDING_PAPERS.map(paper => {
@@ -34,8 +34,8 @@ const TrendingPaperItem: React.FunctionComponent<{}> = () => {
           });
         }}
       >
-        <div className={styles.trendingPaperItemTitle}>{paperTitle}</div>
-        <div className={styles.trendingPaperItemVenueAndAuthor}>
+        <div className={styles.trendingPaperTitle}>{paperTitle}</div>
+        <div className={styles.trendingPaperVenueAndAuthor}>
           {`${year} ・ ${journalTitle} | `}
           {authorNodes}
         </div>
@@ -49,9 +49,8 @@ const TrendingPaperItem: React.FunctionComponent<{}> = () => {
 const TrendingPaper: React.FunctionComponent<{}> = () => {
   return (
     <div className={styles.trendingPaperContainer}>
-      <div className={styles.trendingPaperTitle}>TRENDING PAPERS</div>
-      <div className={styles.trendingPaperSubTitle}>Papers being read by other researchers</div>
-      <div className={styles.trendingPaperBlockDivider} />
+      <div className={styles.contentBlockDivider} />
+      <div className={styles.contextSubtitle}>TRENDING PAPERS</div>
       <TrendingPaperItem />
     </div>
   );

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withStyles } from '../../helpers/withStylesHelper';
-import ScinapseFooter from '../layouts/scinapseFooter';
+import { Footer } from '../layouts';
 const styles = require('./privacyPolicy.scss');
 
 @withStyles<typeof PrivacyPolicy>(styles)
@@ -442,7 +442,7 @@ class PrivacyPolicy extends React.Component {
             humanity.
           </p>
         </div>
-        <ScinapseFooter backgroundColor="white" />
+        <Footer />
       </div>
     );
   }
