@@ -88,7 +88,7 @@ const GuruBox: React.FC<GuruBoxProps> = React.memo(({ authors }) => {
     <div className={styles.guruBoxWrapper}>
       <div className={styles.titleWrapper}>
         <Icon className={styles.authorIcon} icon="AUTHOR" />
-        <span className={styles.title}>FEATURED AUTHORS</span>
+        <span className={styles.title}>FREQUENTLY REFERRED AUTHORS</span>
       </div>
       {authorList}
     </div>
