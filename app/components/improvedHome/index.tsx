@@ -64,7 +64,6 @@ function getHelmetNode() {
 
 const ImprovedHome: React.FC<Props> = props => {
   const [isSearchEngineMood, setIsSearchEngineMood] = React.useState(false);
-  const [isShow, setIsShow] = React.useState(false);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
 
   React.useEffect(() => {
@@ -73,19 +72,6 @@ const ImprovedHome: React.FC<Props> = props => {
       setPapersFoundCount(res.data.content);
     });
   }, []);
-
-  React.useEffect(
-    () => {
-      if (props.layout.userDevice === UserDevice.DESKTOP) {
-        setIsShow(true);
-      } else {
-        setIsShow(false);
-      }
-    },
-    [props.layout.userDevice]
-  );
-
-  console.log(props.layout.userDevice);
 
   return (
     <div className={styles.articleSearchFormContainer}>
