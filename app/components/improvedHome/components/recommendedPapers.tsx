@@ -142,6 +142,8 @@ const RecommendedPapers: React.FC<{ isLoggedIn: boolean; isLoggingIn: boolean }>
     [props.isLoggedIn]
   );
 
+  if (!props.isLoggedIn) return null;
+
   return (
     <div className={styles.recommendedPapersContainer}>
       <div className={styles.titleSection}>

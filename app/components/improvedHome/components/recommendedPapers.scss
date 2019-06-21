@@ -170,3 +170,9 @@
     text-decoration: underline;
   }
 }
+
+@media (max-width: $tablet-width) {
+  .recommendedPapersContainer {
+    display: none;
+  }
+}

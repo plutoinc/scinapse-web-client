@@ -64,6 +64,7 @@ function getHelmetNode() {
 
 const ImprovedHome: React.FC<Props> = props => {
   const [isSearchEngineMood, setIsSearchEngineMood] = React.useState(false);
+  const [isShow, setIsShow] = React.useState(false);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
 
   React.useEffect(() => {
@@ -72,6 +73,19 @@ const ImprovedHome: React.FC<Props> = props => {
       setPapersFoundCount(res.data.content);
     });
   }, []);
+
+  React.useEffect(
+    () => {
+      if (props.layout.userDevice === UserDevice.DESKTOP) {
+        setIsShow(true);
+      } else {
+        setIsShow(false);
+      }
+    },
+    [props.layout.userDevice]
+  );
+
+  console.log(props.layout.userDevice);
 
   return (
     <div className={styles.articleSearchFormContainer}>
@@ -115,18 +129,19 @@ const ImprovedHome: React.FC<Props> = props => {
             <Icon icon="ARROW_POINT_TO_DOWN" className={styles.downIcon} />
           </div>
         </div>
-        {props.currentUser.isLoggedIn && props.layout.userDevice === UserDevice.DESKTOP ? (
-          <RecommendedPapers isLoggedIn={props.currentUser.isLoggedIn} isLoggingIn={props.currentUser.isLoggingIn} />
-        ) : (
-          <div>
-            <JournalsInfo isMobile={props.layout.userDevice === UserDevice.MOBILE} />
-            <AffiliationsInfo />
-            <div className={styles.contentBlockDivider} />
-            <div className={styles.trendingPaperWrapper}>
-              <TrendingPaper />
+        <RecommendedPapers isLoggedIn={props.currentUser.isLoggedIn} isLoggingIn={props.currentUser.isLoggingIn} />
+        {!props.currentUser.isLoggedIn ||
+          (props.layout.userDevice !== UserDevice.DESKTOP && (
+            <div>
+              <JournalsInfo isMobile={props.layout.userDevice === UserDevice.MOBILE} />
+              <AffiliationsInfo />
+              <div className={styles.contentBlockDivider} />
+              <div className={styles.trendingPaperWrapper}>
+                <TrendingPaper />
+              </div>
             </div>
-          </div>
-        )}
+          ))}
+
         <ImprovedFooter />
       </div>
     </div>
