@@ -32,7 +32,6 @@ import FilterContainer from '../../containers/filterContainer';
 import ScinapseFooter from '../layouts/scinapseFooter';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import GuruBox from './components/guruBox';
-import { getCurrentPageType } from '../locationListener';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -263,7 +262,14 @@ const SearchContainer: React.FC<Props> = props => {
           />
         </div>
       </div>
-      <ScinapseFooter backgroundColor="#f9f9fa" />
+      <ScinapseFooter
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          backgroundColor: '#f9f9fa',
+          width: '100%',
+        }}
+      />
     </div>
   );
 };

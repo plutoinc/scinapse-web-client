@@ -1,37 +1,30 @@
-import * as React from 'react';
+import React from 'react';
 import ImprovedFooter from './improvedFooter';
 import Footer from './footer';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { HOME_IMPROVEMENT_TEST } from '../../constants/abTestGlobalValue';
-import { getCurrentPageType } from '../locationListener';
 
-const ScinapseFooter: React.FC<{ backgroundColor: string }> = ({ backgroundColor }) => {
+const ScinapseFooter: React.FC<{ style: React.CSSProperties }> = ({ style }) => {
   const [showImprovedFooter, setShowImprovedFooter] = React.useState(false);
-  let footerBackgroundColor = '';
+  let backgroundColor = '';
 
   React.useEffect(() => {
     setShowImprovedFooter(getUserGroupName(HOME_IMPROVEMENT_TEST) === 'improvement');
   }, []);
 
-  switch (backgroundColor) {
+  switch (style.backgroundColor) {
     case 'white':
-      footerBackgroundColor = showImprovedFooter ? '#f9f9fa' : backgroundColor;
+      backgroundColor = showImprovedFooter ? '#f9f9fa' : style.backgroundColor;
       break;
     case '#f9f9fa':
-      footerBackgroundColor = showImprovedFooter ? 'white' : backgroundColor;
+      backgroundColor = showImprovedFooter ? 'white' : style.backgroundColor;
       break;
   }
 
-  const searchListFooterStyle: React.CSSProperties = {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
+  const footerStyle = {
+    ...style,
+    backgroundColor,
   };
-
-  const footerStyle: React.CSSProperties =
-    getCurrentPageType() === 'searchResult'
-      ? { ...searchListFooterStyle, backgroundColor: footerBackgroundColor }
-      : { backgroundColor: footerBackgroundColor };
 
   return showImprovedFooter ? <ImprovedFooter containerStyle={footerStyle} /> : <Footer containerStyle={footerStyle} />;
 };

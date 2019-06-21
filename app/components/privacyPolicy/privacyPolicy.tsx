@@ -442,7 +442,7 @@ class PrivacyPolicy extends React.Component {
             humanity.
           </p>
         </div>
-        <ScinapseFooter backgroundColor="white" />
+        <ScinapseFooter style={{ backgroundColor: 'white' }} />
       </div>
     );
   }

@@ -1,7 +1,8 @@
 .rootWrapper {
   background-color: $gray0;
   position: relative;
-  min-height: calc(100vh - #{$navbar_height});
+  min-height: 100vh;
+  padding-bottom: 202px;
 }
 
 .articleSearchContainer {

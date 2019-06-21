@@ -184,7 +184,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
               </div>
             </div>
           </div>
-          <ScinapseFooter backgroundColor="white" />
+          <ScinapseFooter style={{ backgroundColor: 'white' }} />
         </div>
       );
     } else {

@@ -239,7 +239,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
             </div>
           </div>
         </div>
-        <ScinapseFooter backgroundColor="white" />{' '}
+        <ScinapseFooter style={{ backgroundColor: 'white' }} />{' '}
         {isOpenSelectedPaperDialog ? (
           <RepresentativePublicationsDialog
             currentUser={currentUser}

@@ -91,7 +91,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
               {this.getCollections(collections)}
             </div>
           </div>
-          <ScinapseFooter backgroundColor="#f9f9fa" />
+          <ScinapseFooter style={{ backgroundColor: '#f9f9fa' }} />
         </div>
       );
     } else {

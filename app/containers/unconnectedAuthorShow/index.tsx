@@ -191,7 +191,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
             }}
           />
         </div>
-        <ScinapseFooter backgroundColor="white" />
+        <ScinapseFooter style={{ backgroundColor: 'white' }} />
       </div>
     );
   }

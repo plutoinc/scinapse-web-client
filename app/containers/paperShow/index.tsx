@@ -346,7 +346,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           </div>
         </div>
         <div className={styles.footerWrapper}>
-          <ScinapseFooter backgroundColor="white" />{' '}
+          <ScinapseFooter style={{ backgroundColor: 'white' }} />{' '}
         </div>
         <BottomBanner currentUser={currentUser} />
         <NextPaperTab />
