@@ -21,7 +21,6 @@ import CoAuthor from '../../components/common/coAuthor';
 import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
 import TransparentButton from '../../components/common/transparentButton';
 import { LayoutState, UserDevice } from '../../components/layouts/records';
-import Footer from '../../components/layouts/footer';
 import AuthorShowHeader from '../../components/authorShowHeader';
 import { SuggestAffiliation } from '../../api/suggest';
 import { Affiliation } from '../../model/affiliation';
@@ -30,6 +29,7 @@ import { AppState } from '../../reducers';
 import { fetchAuthorPapers } from '../../actions/author';
 import EnvChecker from '../../helpers/envChecker';
 import ErrorPage from '../../components/error/errorPage';
+import ScinapseFooter from '../../components/layouts/scinapseFooter';
 const styles = require('./authorShow.scss');
 
 export interface AuthorShowMatchParams {
@@ -191,7 +191,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
             }}
           />
         </div>
-        <Footer />
+        <ScinapseFooter backgroundColor="white" />
       </div>
     );
   }

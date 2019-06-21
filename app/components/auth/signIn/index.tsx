@@ -114,7 +114,6 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
 
     try {
       setIsLoading(true);
-      setNetworkError('');
       const res: SignInResult = await signInWithEmail({ email, password }, isDialog)(props.dispatch);
       const authContext = props.dialogState.authContext;
       if (authContext) {

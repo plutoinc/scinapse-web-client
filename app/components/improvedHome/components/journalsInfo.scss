@@ -1,0 +1,71 @@
+.journalsInfo {
+  background-color: #5b83ee;
+  padding: 64px 0 56px 0;
+  text-align: center;
+
+  .title {
+    font-size: 20px;
+    font-weight: 400;
+    color: white;
+
+    .bold {
+      font-weight: 600;
+    }
+  }
+
+  .contentBlockDivider {
+    @extend %small-content-block-divider;
+    margin-top: 34px;
+    margin-bottom: 64px;
+    opacity: 0.75;
+    background-color: #85a5f9;
+  }
+}
+
+.journalListContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  max-width: $tablet_width;
+  margin: 0 auto;
+}
+
+.journalImageWrapper {
+  animation: fadein 3s;
+  flex: 1 0 15%;
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.journalImage {
+  height: 60px;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+    bottom: -20px;
+  }
+  to {
+    opacity: 1;
+    bottom: 0;
+  }
+}
+
+@media (max-width: $mobile-width) {
+  .journalsInfo {
+    background-color: #5b83ee;
+    padding: 60px 0 50px 0;
+    text-align: center;
+
+    .title {
+      font-size: 18px;
+    }
+  }
+
+  .journalImageWrapper {
+    flex: 1 0 50%;
+    margin-bottom: 40px;
+  }
+}
