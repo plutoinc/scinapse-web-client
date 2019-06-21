@@ -23,9 +23,6 @@
   justify-content: space-between;
 }
 
-.basedOnActivityPapers {
-}
-
 .paperItemWrapper {
   max-width: 691px;
   padding: 16px 14px;
@@ -156,6 +153,12 @@
   & + & {
     margin-top: 26px;
   }
+
+  .authorInfo {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .noPaperContext {
@@ -163,12 +166,6 @@
   padding: 40px 0;
   text-align: center;
   color: #96a3bc;
-}
-
-.authorInfo {
-  &:hover {
-    text-decoration: underline;
-  }
 }
 
 @media (max-width: $tablet-width) {
