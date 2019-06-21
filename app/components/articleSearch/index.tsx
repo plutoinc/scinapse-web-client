@@ -32,6 +32,8 @@ import FilterContainer from '../../containers/filterContainer';
 import ScinapseFooter from '../layouts/scinapseFooter';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import GuruBox from './components/guruBox';
+import { getUserGroupName } from '../../helpers/abTestHelper';
+import { SEMANTIC_SEARCH_TEST } from '../../constants/abTestGlobalValue';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -199,12 +201,19 @@ const SearchContainer: React.FC<Props> = props => {
     () => {
       if (currentUserState.isLoggingIn) return;
 
+      const doSemanticSearch = getUserGroupName(SEMANTIC_SEARCH_TEST) === 'semantic';
+
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
       setQueryParams(currentQueryParams);
       setFilter(SearchQueryManager.objectifyPaperFilter(currentQueryParams.filter));
 
+      // set params
       const params = SearchQueryManager.makeSearchQueryFromParamsObject(currentQueryParams);
       params.cancelToken = cancelToken.current.token;
+      if (doSemanticSearch) {
+        params.semantic = true;
+      }
+
       searchPapers(params).then(() => {
         restoreScroll(location.key);
       });

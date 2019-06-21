@@ -4,6 +4,7 @@ import {
   searchItemImprovement,
   homeImprovement,
   guruAtSearch,
+  semanticSearch,
 } from './abTestObject';
 
 export interface UserGroup {
@@ -23,7 +24,8 @@ export type ABTest =
   | 'signBannerAtPaperShow'
   | 'searchItemImprovement'
   | 'guruAtSearch'
-  | 'homeImprovement';
+  | 'homeImprovement'
+  | 'semanticSearch';
 
 export const SIGN_UP_CONVERSION_KEY = 'b_exp';
 
@@ -49,6 +51,7 @@ export const LIVE_TESTS: Test[] = [
   searchItemImprovement,
   homeImprovement,
   guruAtSearch,
+  semanticSearch,
 ];
 
 function getRandomPool(): { [key: string]: string[] } {
