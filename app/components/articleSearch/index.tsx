@@ -31,6 +31,7 @@ import SignBanner from './components/signBanner';
 import FilterContainer from '../../containers/filterContainer';
 import ScinapseFooter from '../layouts/scinapseFooter';
 import ArticleSpinner from '../common/spinner/articleSpinner';
+import GuruBox from './components/guruBox';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -251,6 +252,7 @@ const SearchContainer: React.FC<Props> = props => {
         />
         <SearchResult {...props} queryParams={queryParams} filter={filter} />
         <div className={styles.rightBoxWrapper}>
+          <GuruBox authors={articleSearchState.topRefAuthors} />
           {!currentUserState.isLoggedIn && <SignBanner isLoading={articleSearchState.isContentLoading} />}
           <FilterContainer
             handleChangeRangeInput={changeRangeInput}
