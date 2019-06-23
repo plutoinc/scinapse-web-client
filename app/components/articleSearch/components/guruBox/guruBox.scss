@@ -43,6 +43,12 @@ $max-author-name-width: 254px;
   &:last-of-type {
     border-bottom: 0;
   }
+
+  &:hover {
+    .authorName {
+      text-decoration: underline;
+    }
+  }
 }
 
 .upperBox {
@@ -126,4 +132,11 @@ $max-author-name-width: 254px;
   font-size: 12px;
   font-weight: 500;
   color: $gray5;
+}
+
+// Mobile
+@media (max-width: 1200px) {
+  .guruBoxWrapper {
+    display: none;
+  }
 }

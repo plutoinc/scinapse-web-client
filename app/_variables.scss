@@ -17,6 +17,7 @@ $gray8: #f4f4f5;
 $gray9: #7e8698;
 $gray10: #fdfeff;
 $gray11: #dbdfe8;
+$gray12: #fafbff;
 
 $black0: #1e2a35; // primary text
 $black1: #34495e;
@@ -28,11 +29,14 @@ $red0: #f54b5e; // caution
 $green0: #48d2a0; // success
 $yellow0: #ffcf48; // warning
 
+// font-family
+$fallback: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
 // Transition Variables
 $button-hover-transition: ease-in-out 0.2s;
 
 // Size Variables
-$navbar_height: 61px;
+$navbar_height: 64px;
 $double_navbar_height: 100px;
 
 $profile-sub-navbar-height: 58px;
@@ -145,6 +149,13 @@ $s3_url: 'https://dd2gn9pwu61vr.cloudfront.net';
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+%small-content-block-divider {
+  width: 48px;
+  height: 2px;
+  margin: 0 auto;
+  margin-top: 24px;
+  margin-bottom: 36px;
 }
 // Mixin
 /* * $bgc : background-color (e.g. #60ddff, $light_royal_blue1, rgba(,,,))

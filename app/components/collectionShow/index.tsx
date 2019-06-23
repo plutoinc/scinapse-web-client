@@ -21,7 +21,6 @@ import { Collection, collectionSchema } from '../../model/collection';
 import { fetchCollectionShowData } from './sideEffect';
 import { Configuration } from '../../reducers/configuration';
 import { PaperInCollection, paperInCollectionSchema } from '../../model/paperInCollection';
-import Footer from '../layouts/footer';
 import Icon from '../../icons';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../common/sortBox';
@@ -38,6 +37,7 @@ import { CollectionShowMatchParams } from './types';
 import CollectionSideNaviBar from '../collectionSideNaviBar';
 import { getCollections } from '../collections/actions';
 import RelatedPaperInCollectionShow from './relatedPaperInCollectionShow';
+import ScinapseFooter from '../layouts/scinapseFooter';
 const styles = require('./collectionShow.scss');
 
 const FACEBOOK_SHARE_URL = 'http://www.facebook.com/sharer/sharer.php?u=';
@@ -210,7 +210,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
               </div>
             </div>
           </div>
-          <Footer containerStyle={{ backgroundColor: 'white' }} />
+          <ScinapseFooter style={{ backgroundColor: 'white' }} />
         </div>
       );
     } else {

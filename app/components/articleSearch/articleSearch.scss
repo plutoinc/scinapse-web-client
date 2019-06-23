@@ -1,8 +1,8 @@
 .rootWrapper {
   background-color: $gray0;
   position: relative;
-  min-height: calc(100vh - #{$navbar_height});
-  padding-bottom: 60px;
+  min-height: 100vh;
+  padding-bottom: 202px;
 }
 
 .articleSearchContainer {
@@ -143,14 +143,25 @@
   }
 }
 
-// Mobile
-@media (max-width: $mobile-width) {
-  .rootWrapper {
-    padding-bottom: 80px;
+// content-like width
+@media (max-width: 1200px) {
+  .rightBoxWrapper {
+    display: none;
   }
 
+  .innerContainer {
+    margin: 0 auto;
+  }
+}
+
+// Mobile
+@media (max-width: $mobile-width) {
   .articleSearchContainer {
-    margin-bottom: 32px;
+    padding-bottom: 0;
+  }
+
+  .rootWrapper {
+    padding-bottom: 332px;
   }
 
   .authorItemSectionWrapper {
