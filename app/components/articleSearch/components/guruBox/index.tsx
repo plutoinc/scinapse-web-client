@@ -52,7 +52,7 @@ const GuruItemBox: React.FC<{ author: MatchEntityAuthor; position: number; hInde
           pageType: 'searchResult',
           actionType: 'fire',
           actionArea: 'topAuthors',
-          actionTag: 'signIn',
+          actionTag: 'authorShow',
           actionLabel: JSON.stringify({ id: author.id, name: author.name, position, hindex: author.hindex }),
         });
       }}
