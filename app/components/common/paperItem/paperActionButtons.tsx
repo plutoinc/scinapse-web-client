@@ -50,7 +50,7 @@ const DomainSourceBtn: React.FC<DomainSourceBtnProps> = ({ source, pageType, act
       target="_blank"
       rel="noopener nofollow noreferrer"
       className={styles.sourceButton}
-      onClick={() => {
+      onClick={async () => {
         ActionTicketManager.trackTicket({
           pageType,
           actionType: 'fire',
@@ -58,7 +58,7 @@ const DomainSourceBtn: React.FC<DomainSourceBtnProps> = ({ source, pageType, act
           actionTag: 'source',
           actionLabel: String(source.paperId),
         });
-        homeAPI.addBasedOnRecommendationPaper(source.paperId);
+        await homeAPI.addBasedOnRecommendationPaper(source.paperId);
       }}
     >
       <img
@@ -131,7 +131,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         target="_blank"
         rel="noopener nofollow noreferrer"
         className={styles.sourceButton}
-        onClick={() => {
+        onClick={async () => {
           ActionTicketManager.trackTicket({
             pageType,
             actionType: 'fire',
@@ -139,7 +139,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             actionTag: 'source',
             actionLabel: String(paper.id),
           });
-          homeAPI.addBasedOnRecommendationPaper(paper.id);
+          await homeAPI.addBasedOnRecommendationPaper(paper.id);
         }}
       >
         {buttonContent}
@@ -159,7 +159,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             pathname: `/papers/${paper.id}`,
             hash: 'cited',
           }}
-          onClick={() => {
+          onClick={async () => {
             ActionTicketManager.trackTicket({
               pageType,
               actionType: 'fire',
@@ -167,7 +167,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
               actionTag: 'citedList',
               actionLabel: String(paper.id),
             });
-            homeAPI.addBasedOnRecommendationPaper(paper.id);
+            await homeAPI.addBasedOnRecommendationPaper(paper.id);
           }}
           className={styles.citedButton}
         >
@@ -185,7 +185,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         <span className={styles.DOIMetaButtonsWrapper}>
           <span
             className={styles.citationIconWrapper}
-            onClick={() => {
+            onClick={async () => {
               GlobalDialogManager.openCitationDialog(paper.id);
               ActionTicketManager.trackTicket({
                 pageType,
@@ -194,7 +194,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
                 actionTag: 'citePaper',
                 actionLabel: String(paper.id),
               });
-              homeAPI.addBasedOnRecommendationPaper(paper.id);
+              await homeAPI.addBasedOnRecommendationPaper(paper.id);
             }}
           >
             <Icon className={styles.citationIcon} icon="CITATION_QUOTE" />

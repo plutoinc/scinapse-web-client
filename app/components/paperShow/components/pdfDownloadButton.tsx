@@ -68,7 +68,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
 
           window.open(pdfUrl, '_blank');
           onDownloadedPDF(true);
-          homeAPI.addBasedOnRecommendationPaper(paper.id);
+          await homeAPI.addBasedOnRecommendationPaper(paper.id);
           handleSetScrollAfterDownload();
         }}
       >

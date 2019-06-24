@@ -43,7 +43,7 @@ const RequestFullTextBtn: React.FunctionComponent<{
 
         if (!isBlocked) {
           handleSetIsOpen(true);
-          homeAPI.addBasedOnRecommendationPaper(paperId);
+          await homeAPI.addBasedOnRecommendationPaper(paperId);
         }
       }}
       className={s.fullTextBtn}

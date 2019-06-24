@@ -346,7 +346,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                           dispatch(ActionCreators.clickPDFDownloadBtn());
                           trackClickButton('downloadPdf', paper.id);
                           window.open(paper.bestPdf.url, '_blank');
-                          homeAPI.addBasedOnRecommendationPaper(paper.id);
+                          await homeAPI.addBasedOnRecommendationPaper(paper.id);
                           afterDownloadPDF();
                         }
                       }}
