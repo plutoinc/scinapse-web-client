@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Icon from '../../../../icons';
 import { withStyles } from '../../../../helpers/withStylesHelper';
 import { MatchEntityAuthor } from '../../../../api/search';
+import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import { getUserGroupName } from '../../../../helpers/abTestHelper';
 import { GURU_AT_SEARCH_TEST } from '../../../../constants/abTestGlobalValue';
 const styles = require('./guruBox.scss');
@@ -15,11 +16,13 @@ interface GuruBoxProps {
   authors: MatchEntityAuthor[] | null;
 }
 
-const GuruItemBox: React.FC<{ author: MatchEntityAuthor; shouldShowTopPaper: boolean; hIndexLineWidth: number }> = ({
+const GuruItemBox: React.FC<{ author: MatchEntityAuthor; position: number; hIndexLineWidth: number }> = ({
   author,
-  shouldShowTopPaper,
+  position,
   hIndexLineWidth,
 }) => {
+  const shouldShowTopPaper = position === 0;
+
   let hIndexBox = null;
   if (author.hindex) {
     hIndexBox = (
@@ -43,7 +46,19 @@ const GuruItemBox: React.FC<{ author: MatchEntityAuthor; shouldShowTopPaper: boo
   }
 
   return (
-    <Link to={`/authors/${author.id}`} className={styles.authorItem}>
+    <Link
+      onClick={() => {
+        ActionTicketManager.trackTicket({
+          pageType: 'searchResult',
+          actionType: 'fire',
+          actionArea: 'topAuthors',
+          actionTag: 'authorShow',
+          actionLabel: JSON.stringify({ id: author.id, name: author.name, position, hindex: author.hindex }),
+        });
+      }}
+      to={`/authors/${author.id}`}
+      className={styles.authorItem}
+    >
       <div className={styles.upperBox}>
         <div>
           <div className={styles.authorName}>{author.name}</div>
@@ -79,9 +94,7 @@ const GuruBox: React.FC<GuruBoxProps> = React.memo(({ authors }) => {
 
   const authorList = authors.slice(0, MAX_AUTHOR_COUNT).map((author, index) => {
     const hIndexLineWidth = ((author.hindex || 0) - minHIndex) * diffUnit + MIN_H_INDEX_WIDTH;
-    return (
-      <GuruItemBox author={author} key={author.id} shouldShowTopPaper={index === 0} hIndexLineWidth={hIndexLineWidth} />
-    );
+    return <GuruItemBox position={index} author={author} key={author.id} hIndexLineWidth={hIndexLineWidth} />;
   });
 
   return (
