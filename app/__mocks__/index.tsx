@@ -7,6 +7,7 @@ import { PaperSource } from '../model/paperSource';
 import { PaperAuthor } from '../model/author';
 import { CurrentUser } from '../model/currentUser';
 import { RawAuthor } from '../model/author/author';
+import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
 export const RAW = {
   AUTHOR_IN_PAPER: require('./paperAuthor.json') as PaperAuthor,
@@ -21,4 +22,5 @@ export const RAW = {
   COMMENTS_RESPONSE: require('./commentsResponse.json'),
   AGGREGATION_RESPONSE: require('./aggregation.json'),
   JOURNAL_PAPERS_RESPONSE: require('./journalPapersResponse.json'),
+  PAPER_FROM_CONFERENCE: camelCaseKeys(require('./paperFromConference.json')) as Paper,
 };

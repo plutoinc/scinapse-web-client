@@ -76,7 +76,7 @@ const BlockVenue: React.FC<BlockVenueProps> = ({
 
   if (conferenceInstance && conferenceInstance.conferenceSeries && conferenceInstance.conferenceSeries.name) {
     content = (
-      <span>
+      <span className={styles.journalContent}>
         {publishedAtNode}
         <span className={styles.venueNameReadonly}> in {conferenceInstance.conferenceSeries.name}</span>
       </span>
