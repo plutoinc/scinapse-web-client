@@ -5,6 +5,7 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import SearchingPDFBtn from '../../../components/paperShow/components/searchingPDFBtn';
 import { CurrentUser } from '../../../model/currentUser';
+import homeAPI from '../../../api/home';
 const s = require('../actionBar.scss');
 
 const RequestFullTextBtn: React.FunctionComponent<{
@@ -42,6 +43,7 @@ const RequestFullTextBtn: React.FunctionComponent<{
 
         if (!isBlocked) {
           handleSetIsOpen(true);
+          homeAPI.addBasedOnRecommendationPaper(paperId);
         }
       }}
       className={s.fullTextBtn}
