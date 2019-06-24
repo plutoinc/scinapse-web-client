@@ -6,6 +6,7 @@ import {
   HOME_IMPROVEMENT_TEST,
   GURU_AT_SEARCH_TEST,
   SEMANTIC_SEARCH_TEST,
+  KNOWLEDGE_BASED_RECOMMEND_TEST,
 } from './abTestGlobalValue';
 
 export const searchEngineMoodTest: Test = {
@@ -42,4 +43,9 @@ export const guruAtSearch: Test = {
 export const semanticSearch: Test = {
   name: SEMANTIC_SEARCH_TEST,
   userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'semantic', weight: 1 }],
+};
+
+export const knowledgeBasedRecommend: Test = {
+  name: KNOWLEDGE_BASED_RECOMMEND_TEST,
+  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: '__knowledgeBasedRecommend__', weight: 1 }],
 };

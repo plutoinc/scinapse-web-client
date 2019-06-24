@@ -11,7 +11,7 @@ import { withStyles } from '../../helpers/withStylesHelper';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
 import TrendingPaper from '../home/components/trendingPaper';
 import { getUserGroupName } from '../../helpers/abTestHelper';
-import { SEARCH_ENGINE_MOOD_TEST } from '../../constants/abTestGlobalValue';
+import { SEARCH_ENGINE_MOOD_TEST, KNOWLEDGE_BASED_RECOMMEND_TEST } from '../../constants/abTestGlobalValue';
 import Icon from '../../icons';
 import JournalsInfo from './components/journalsInfo';
 import AffiliationsInfo from './components/affiliationsInfo';
@@ -82,11 +82,13 @@ const ImprovedHome: React.FC<Props> = props => {
   const { dispatch, currentUser, recommendedPapers } = props;
   const { basedOnActivityPapers, basedOnCollectionPapers } = recommendedPapers;
   const [isSearchEngineMood, setIsSearchEngineMood] = React.useState(false);
+  const [isKnowledgeBasedRecommended, setIsKnowledgeBasedRecommended] = React.useState(false);
   const [showRecommendedPapers, setShowRecommendedPapers] = React.useState(false);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
 
   React.useEffect(() => {
     setIsSearchEngineMood(getUserGroupName(SEARCH_ENGINE_MOOD_TEST) === 'searchEngine');
+    setIsKnowledgeBasedRecommended(getUserGroupName(KNOWLEDGE_BASED_RECOMMEND_TEST) === '__knowledgeBasedRecommend__');
     homeAPI.getPapersFoundCount().then(res => {
       setPapersFoundCount(res.data.content);
     });
@@ -132,7 +134,13 @@ const ImprovedHome: React.FC<Props> = props => {
 
   React.useEffect(
     () => {
-      setShowRecommendedPapers(currentUser.isLoggedIn && basedOnActivityPapers && basedOnActivityPapers.length > 0);
+      const isShow =
+        isKnowledgeBasedRecommended &&
+        currentUser.isLoggedIn &&
+        basedOnActivityPapers &&
+        basedOnActivityPapers.length > 0;
+
+      setShowRecommendedPapers(isShow);
     },
     [basedOnActivityPapers, basedOnCollectionPapers]
   );
