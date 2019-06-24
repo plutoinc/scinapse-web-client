@@ -36,7 +36,7 @@ export const homeImprovement: Test = {
 
 export const guruAtSearch: Test = {
   name: GURU_AT_SEARCH_TEST,
-  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'guru', weight: 1 }],
+  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'guru', weight: 4 }],
 };
 
 export const semanticSearch: Test = {
