@@ -18,7 +18,7 @@ import AffiliationsInfo from './components/affiliationsInfo';
 import homeAPI from '../../api/home';
 import ImprovedFooter from '../layouts/improvedFooter';
 import RecommendedPapers from './components/recommendedPapers';
-import { ActionCreators } from '../../actions/actionTypes';
+import { fetchBasedOnActivityPapers, fetchBasedOnCollectionPapers } from '../../actions/recommendedPapers';
 const styles = require('./improvedHome.scss');
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
@@ -96,38 +96,13 @@ const ImprovedHome: React.FC<Props> = props => {
 
   React.useEffect(
     () => {
-      if (currentUser.isLoggedIn) {
-        dispatch(ActionCreators.startToGetBasedOnActivityPapers());
-        dispatch(ActionCreators.startToGetBasedOnCollectionPapers());
-
-        homeAPI
-          .getBasedOnActivityPapers()
-          .then(res => {
-            if (res && res.length > 0) {
-              dispatch(ActionCreators.succeededToGetBasedOnActivityPapers({ basedOnActivityPapers: res }));
-            } else {
-              dispatch(ActionCreators.failedToGetBasedOnActivityPapers());
-            }
-          })
-          .catch(err => {
-            console.error(err);
-            dispatch(ActionCreators.failedToGetBasedOnActivityPapers());
-          });
-
-        homeAPI
-          .getBasedOnCollectionPapers()
-          .then(res => {
-            if (res) {
-              dispatch(ActionCreators.succeededToGetBasedOnCollectionPapers({ basedOnCollectionPapers: res }));
-            } else {
-              dispatch(ActionCreators.failedToGetBasedOnCollectionPapers());
-            }
-          })
-          .catch(err => {
-            console.error(err);
-            dispatch(ActionCreators.failedToGetBasedOnCollectionPapers());
-          });
-      }
+      const fetchRecommendedPapers = async () => {
+        if (currentUser.isLoggedIn) {
+          await dispatch(fetchBasedOnActivityPapers());
+          await dispatch(fetchBasedOnCollectionPapers());
+        }
+      };
+      fetchRecommendedPapers();
     },
     [currentUser.isLoggedIn, props.location]
   );
