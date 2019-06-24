@@ -86,6 +86,13 @@ const ImprovedHome: React.FC<Props> = props => {
   const [showRecommendedPapers, setShowRecommendedPapers] = React.useState(false);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
 
+  const fetchRecommendedPapers = async (isLoggedIn: boolean) => {
+    if (isLoggedIn) {
+      await dispatch(fetchBasedOnActivityPapers());
+      await dispatch(fetchBasedOnCollectionPapers());
+    }
+  };
+
   React.useEffect(() => {
     setIsSearchEngineMood(getUserGroupName(SEARCH_ENGINE_MOOD_TEST) === 'searchEngine');
     setIsKnowledgeBasedRecommended(getUserGroupName(KNOWLEDGE_BASED_RECOMMEND_TEST) === '__knowledgeBasedRecommend__');
@@ -96,13 +103,7 @@ const ImprovedHome: React.FC<Props> = props => {
 
   React.useEffect(
     () => {
-      const fetchRecommendedPapers = async () => {
-        if (currentUser.isLoggedIn) {
-          await dispatch(fetchBasedOnActivityPapers());
-          await dispatch(fetchBasedOnCollectionPapers());
-        }
-      };
-      fetchRecommendedPapers();
+      fetchRecommendedPapers(currentUser.isLoggedIn);
     },
     [currentUser.isLoggedIn, props.location]
   );
