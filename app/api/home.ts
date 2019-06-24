@@ -5,7 +5,7 @@ import { Collection } from '../model/collection';
 
 export interface BasedOnCollectionPapersParams {
   collection: Collection;
-  recommendations: Paper[];
+  recommendationPapers: Paper[];
 }
 
 class HomeAPI extends PlutoAxios {
