@@ -1,51 +1,26 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { withStyles } from '../../../helpers/withStylesHelper';
-import homeAPI, { BasedOnCollectionPapersParams } from '../../../api/home';
-import { Paper } from '../../../model/paper';
 import BaseOnActivityPaperList from './BaseOnActivityPaperList';
 import BaseOnCollectionPaperList from './BaseOnCollectionPaperList';
+import { AppState } from '../../../reducers';
 const styles = require('./recommendedPapers.scss');
 
-const RecommendedPapers: React.FC<{ isLoggedIn: boolean; isLoggingIn: boolean }> = ({ isLoggedIn, isLoggingIn }) => {
-  const [isLoadingActivityPapers, setIsLoadingActivityPapers] = React.useState(false);
-  const [isLoadingCollectionPapers, setIsLoadingCollectionPapers] = React.useState(false);
+type Props = ReturnType<typeof mapStateToProps> & {
+  isShow: boolean;
+  isLoggingIn: boolean;
+};
 
-  const [basedOnCollectionPapers, setBasedOnCollectionPapers] = React.useState<BasedOnCollectionPapersParams>();
-  const [basedOnActivityPapers, setBasedOnActivityPapers] = React.useState<Paper[]>([]);
+const RecommendedPapers: React.FC<Props> = props => {
+  const { recommendedPapers, isShow, isLoggingIn } = props;
+  const {
+    isLoadingActivityPapers,
+    isLoadingCollectionPapers,
+    basedOnActivityPapers,
+    basedOnCollectionPapers,
+  } = recommendedPapers;
 
-  React.useEffect(
-    () => {
-      if (isLoggedIn) {
-        setIsLoadingActivityPapers(true);
-        setIsLoadingCollectionPapers(true);
-
-        homeAPI
-          .getBasedOnActivityPapers()
-          .then(res => {
-            setBasedOnActivityPapers(res);
-            setIsLoadingActivityPapers(false);
-          })
-          .catch(err => {
-            console.error(err);
-            setIsLoadingActivityPapers(false);
-          });
-
-        homeAPI
-          .getBasedOnCollectionPapers()
-          .then(res => {
-            setBasedOnCollectionPapers(res);
-            setIsLoadingCollectionPapers(false);
-          })
-          .catch(err => {
-            console.error(err);
-            setIsLoadingCollectionPapers(false);
-          });
-      }
-    },
-    [isLoggedIn]
-  );
-
-  if (!isLoggedIn) return null;
+  if (!isShow) return null;
 
   return (
     <div className={styles.recommendedPapersContainer}>
@@ -68,4 +43,10 @@ const RecommendedPapers: React.FC<{ isLoggedIn: boolean; isLoggingIn: boolean }>
   );
 };
 
-export default withStyles<typeof RecommendedPapers>(styles)(RecommendedPapers);
+function mapStateToProps(state: AppState) {
+  return {
+    recommendedPapers: state.recommendedPapersState,
+  };
+}
+
+export default connect(mapStateToProps)(withStyles<typeof RecommendedPapers>(styles)(RecommendedPapers));

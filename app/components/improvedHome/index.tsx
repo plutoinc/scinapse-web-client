@@ -18,6 +18,7 @@ import AffiliationsInfo from './components/affiliationsInfo';
 import homeAPI from '../../api/home';
 import ImprovedFooter from '../layouts/improvedFooter';
 import RecommendedPapers from './components/recommendedPapers';
+import { ActionCreators } from '../../actions/actionTypes';
 const styles = require('./improvedHome.scss');
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
@@ -78,6 +79,8 @@ const ScinapseInformation: React.FC<{ isMobile: boolean; isShow: boolean }> = ({
 };
 
 const ImprovedHome: React.FC<Props> = props => {
+  const { dispatch, currentUser, recommendedPapers } = props;
+  const { basedOnActivityPapers, basedOnCollectionPapers } = recommendedPapers;
   const [isSearchEngineMood, setIsSearchEngineMood] = React.useState(false);
   const [showRecommendedPapers, setShowRecommendedPapers] = React.useState(false);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
@@ -91,9 +94,47 @@ const ImprovedHome: React.FC<Props> = props => {
 
   React.useEffect(
     () => {
-      setShowRecommendedPapers(props.currentUser.isLoggedIn);
+      if (currentUser.isLoggedIn) {
+        dispatch(ActionCreators.startToGetBasedOnActivityPapers());
+        dispatch(ActionCreators.startToGetBasedOnCollectionPapers());
+
+        homeAPI
+          .getBasedOnActivityPapers()
+          .then(res => {
+            if (res && res.length > 0) {
+              dispatch(ActionCreators.succeededToGetBasedOnActivityPapers({ basedOnActivityPapers: res }));
+            } else {
+              dispatch(ActionCreators.failedToGetBasedOnActivityPapers());
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            dispatch(ActionCreators.failedToGetBasedOnActivityPapers());
+          });
+
+        homeAPI
+          .getBasedOnCollectionPapers()
+          .then(res => {
+            if (res) {
+              dispatch(ActionCreators.succeededToGetBasedOnCollectionPapers({ basedOnCollectionPapers: res }));
+            } else {
+              dispatch(ActionCreators.failedToGetBasedOnCollectionPapers());
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            dispatch(ActionCreators.failedToGetBasedOnCollectionPapers());
+          });
+      }
     },
-    [props.currentUser.isLoggedIn]
+    [currentUser.isLoggedIn, props.location]
+  );
+
+  React.useEffect(
+    () => {
+      setShowRecommendedPapers(currentUser.isLoggedIn && basedOnActivityPapers && basedOnActivityPapers.length > 0);
+    },
+    [basedOnActivityPapers, basedOnCollectionPapers]
   );
 
   return (
@@ -138,7 +179,7 @@ const ImprovedHome: React.FC<Props> = props => {
             <Icon icon="ARROW_POINT_TO_DOWN" className={styles.downIcon} />
           </div>
         </div>
-        <RecommendedPapers isLoggedIn={props.currentUser.isLoggedIn} isLoggingIn={props.currentUser.isLoggingIn} />
+        <RecommendedPapers isShow={showRecommendedPapers} isLoggingIn={currentUser.isLoggingIn} />
         <ScinapseInformation
           isMobile={props.layout.userDevice === UserDevice.MOBILE}
           isShow={!showRecommendedPapers || (showRecommendedPapers && props.layout.userDevice !== UserDevice.DESKTOP)}
@@ -153,6 +194,7 @@ function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
     currentUser: state.currentUser,
+    recommendedPapers: state.recommendedPapersState,
   };
 }
 

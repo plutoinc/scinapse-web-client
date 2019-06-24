@@ -11,6 +11,7 @@ import { PaperInCollection } from '../model/paperInCollection';
 import { SIGN_UP_STEP } from '../components/auth/signUp/types';
 import { OAuthCheckParams } from '../api/types/auth';
 import { SignUpConversionExpTicketContext } from '../constants/abTest';
+import { BasedOnCollectionPapersParams } from '../api/home';
 
 export enum ACTION_TYPES {
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = 'GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING',
@@ -211,6 +212,13 @@ export enum ACTION_TYPES {
   PDF_VIEWER_CLICK_RELOAD_BTN = 'PDF_VIEWER_CLICK_RELOAD_BTN',
   PDF_VIEWER_CLICK_VIEW_MORE_BTN = 'PDF_VIEWER_CLICK_VIEW_MORE_BTN',
   PDF_VIEWER_GET_BEST_PDF_OF_PAPER = 'PDF_VIEWER_GET_BEST_PDF_OF_PAPER',
+
+  HOME_START_TO_GET_BASED_ON_ACTIVITY_PAPERS = 'HOME_START_TO_GET_BASED_ON_ACTIVITY_PAPERS',
+  HOME_SUCCEEDED_TO_GET_BASED_ON_ACTIVITY_PAPERS = 'HOME_SUCCEEDED_TO_GET_BASED_ON_ACTIVITY_PAPERS',
+  HOME_FAILED_TO_GET_BASED_ON_ACTIVITY_PAPERS = 'HOME_FAILED_TO_GET_BASED_ON_ACTIVITY_PAPERS',
+  HOME_START_TO_GET_BASED_ON_COLLECTION_PAPERS = 'HOME_START_TO_GET_BASED_ON_COLLECTION_PAPERS',
+  HOME_SUCCEEDED_TO_GET_BASED_ON_COLLECTION_PAPERS = 'HOME_SUCCEEDED_TO_GET_BASED_ON_COLLECTION_PAPERS',
+  HOME_FAILED_TO_GET_BASED_ON_COLLECTION_PAPERS = 'HOME_FAILED_TO_GET_BASED_ON_COLLECTION_PAPERS',
 }
 
 export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
@@ -306,6 +314,30 @@ export const ActionCreators = {
 
   getBestPDFOfPaper(payload: { paperId: number; bestPDF: PaperPdf }) {
     return createAction({ type: ACTION_TYPES.PDF_VIEWER_GET_BEST_PDF_OF_PAPER, payload });
+  },
+
+  startToGetBasedOnActivityPapers() {
+    return createAction({ type: ACTION_TYPES.HOME_START_TO_GET_BASED_ON_ACTIVITY_PAPERS });
+  },
+
+  succeededToGetBasedOnActivityPapers(payload: { basedOnActivityPapers: Paper[] }) {
+    return createAction({ type: ACTION_TYPES.HOME_SUCCEEDED_TO_GET_BASED_ON_ACTIVITY_PAPERS, payload });
+  },
+
+  failedToGetBasedOnActivityPapers() {
+    return createAction({ type: ACTION_TYPES.HOME_FAILED_TO_GET_BASED_ON_ACTIVITY_PAPERS });
+  },
+
+  startToGetBasedOnCollectionPapers() {
+    return createAction({ type: ACTION_TYPES.HOME_START_TO_GET_BASED_ON_COLLECTION_PAPERS });
+  },
+
+  succeededToGetBasedOnCollectionPapers(payload: { basedOnCollectionPapers: BasedOnCollectionPapersParams }) {
+    return createAction({ type: ACTION_TYPES.HOME_SUCCEEDED_TO_GET_BASED_ON_COLLECTION_PAPERS, payload });
+  },
+
+  failedToGetBasedOnCollectionPapers() {
+    return createAction({ type: ACTION_TYPES.HOME_FAILED_TO_GET_BASED_ON_COLLECTION_PAPERS });
   },
 
   startToLoadAuthorShowPageData() {
