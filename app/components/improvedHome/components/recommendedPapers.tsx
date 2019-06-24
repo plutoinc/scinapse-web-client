@@ -23,23 +23,29 @@ const RecommendedPapers: React.FC<Props> = props => {
   if (!isShow) return null;
 
   return (
-    <div className={styles.recommendedPapersContainer}>
-      <div className={styles.titleSection}>
-        <div className={styles.title}>Recommended papers based on your activity</div>
-        <div className={styles.subTitle}>BASED ON YOUR SEARCH ACTIVITY</div>
-      </div>
-      <div className={styles.contentSection}>
-        <div className={styles.basedOnActivityPapers}>
-          <BaseOnActivityPaperList isLoading={isLoadingActivityPapers || isLoggingIn} papers={basedOnActivityPapers} />
+    <>
+      <div className={styles.contentBlockDivider} />
+      <div className={styles.recommendedPapersContainer}>
+        <div className={styles.titleSection}>
+          <div className={styles.title}>Recommended papers based on your activity</div>
+          <div className={styles.subTitle}>BASED ON YOUR SEARCH ACTIVITY</div>
         </div>
-        <div className={styles.basedOnCollectionPapers}>
-          <BaseOnCollectionPaperList
-            basedOnCollectionPapers={basedOnCollectionPapers!}
-            isLoading={isLoadingCollectionPapers || isLoggingIn}
-          />
+        <div className={styles.contentSection}>
+          <div className={styles.basedOnActivityPapers}>
+            <BaseOnActivityPaperList
+              isLoading={isLoadingActivityPapers || isLoggingIn}
+              papers={basedOnActivityPapers}
+            />
+          </div>
+          <div className={styles.basedOnCollectionPapers}>
+            <BaseOnCollectionPaperList
+              basedOnCollectionPapers={basedOnCollectionPapers!}
+              isLoading={isLoadingCollectionPapers || isLoggingIn}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

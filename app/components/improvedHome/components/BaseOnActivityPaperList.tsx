@@ -7,6 +7,7 @@ import SkeletonPaperItem from '../../common/skeletonPaperItem/skeletonPaperItem'
 import PaperItem from '../../common/paperItem';
 import { ActionTicketParams } from '../../../helpers/actionTicketManager/actionTicket';
 import { useObserver } from '../../../hooks/useIntersectionHook';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
 const styles = require('./recommendedPapers.scss');
 
 const ActivityPaperItem: React.FC<{ paper: Paper }> = ({ paper }) => {
@@ -55,6 +56,13 @@ const BaseOnActivityPaperList: React.FC<{ isLoading: boolean; papers: Paper[] }>
     papers.length <= 5 ? null : (
       <div
         onClick={() => {
+          ActionTicketManager.trackTicket({
+            pageType: 'home',
+            actionType: 'fire',
+            actionArea: 'baseOnActivityPaperList',
+            actionTag: isPaperExpanding ? 'clickSeeLess' : 'clickSeeMore',
+            actionLabel: null,
+          });
           setIsPaperExpanding(!isPaperExpanding);
         }}
         className={styles.moreItem}

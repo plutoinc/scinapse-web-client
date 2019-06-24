@@ -80,7 +80,7 @@ const ScinapseInformation: React.FC<{ isMobile: boolean; isShow: boolean }> = ({
 
 const ImprovedHome: React.FC<Props> = props => {
   const { dispatch, currentUser, recommendedPapers } = props;
-  const { basedOnActivityPapers, basedOnCollectionPapers } = recommendedPapers;
+  const { basedOnActivityPapers } = recommendedPapers;
   const [isSearchEngineMood, setIsSearchEngineMood] = React.useState(false);
   const [isKnowledgeBasedRecommended, setIsKnowledgeBasedRecommended] = React.useState(false);
   const [showRecommendedPapers, setShowRecommendedPapers] = React.useState(false);
@@ -114,11 +114,12 @@ const ImprovedHome: React.FC<Props> = props => {
         isKnowledgeBasedRecommended &&
         currentUser.isLoggedIn &&
         basedOnActivityPapers &&
-        basedOnActivityPapers.length > 0;
+        basedOnActivityPapers.length > 0 &&
+        props.layout.userDevice === UserDevice.DESKTOP;
 
       setShowRecommendedPapers(isShow);
     },
-    [basedOnActivityPapers, basedOnCollectionPapers]
+    [props.layout.userDevice]
   );
 
   return (
@@ -126,7 +127,7 @@ const ImprovedHome: React.FC<Props> = props => {
       {getHelmetNode()}
       <h1 style={{ display: 'none' }}>Scinapse | Academic search engine for paper</h1>
       <div className={styles.searchFormInnerContainer}>
-        <div className={styles.searchFormContainer}>
+        <div className={`${styles.searchFormContainer} ${showRecommendedPapers && styles.knowledge}`}>
           <div className={styles.formWrapper}>
             <div className={styles.title}>
               <Icon icon="SCINAPSE_HOME_LOGO" className={styles.scinapseHomeLogo} />
@@ -142,32 +143,33 @@ const ImprovedHome: React.FC<Props> = props => {
             </div>
             <div className={styles.searchTryKeyword} />
             <div className={styles.catchphrase}>We’re better than Google Scholar. We mean it.</div>
-            <div className={styles.cumulativeCountContainer}>
-              <span>
-                <b>50,000+</b> registered researchers have found
-              </span>
-              <br />
-              <span>
-                <b>
-                  <ReactCountUp
-                    start={papersFoundCount > 10000 ? papersFoundCount - 10000 : papersFoundCount}
-                    end={papersFoundCount}
-                    separator=","
-                    duration={3}
-                  />
-                  {`+`}
-                </b>
-                {` papers using Scinapse`}
-              </span>
-            </div>
-            <Icon icon="ARROW_POINT_TO_DOWN" className={styles.downIcon} />
+            {!showRecommendedPapers ? (
+              <>
+                <div className={styles.cumulativeCountContainer}>
+                  <span>
+                    <b>50,000+</b> registered researchers have found
+                  </span>
+                  <br />
+                  <span>
+                    <b>
+                      <ReactCountUp
+                        start={papersFoundCount > 10000 ? papersFoundCount - 10000 : papersFoundCount}
+                        end={papersFoundCount}
+                        separator=","
+                        duration={3}
+                      />
+                      {`+`}
+                    </b>
+                    {` papers using Scinapse`}
+                  </span>
+                </div>
+                <Icon icon="ARROW_POINT_TO_DOWN" className={styles.downIcon} />
+              </>
+            ) : null}
           </div>
         </div>
         <RecommendedPapers isShow={showRecommendedPapers} isLoggingIn={currentUser.isLoggingIn} />
-        <ScinapseInformation
-          isMobile={props.layout.userDevice === UserDevice.MOBILE}
-          isShow={!showRecommendedPapers || (showRecommendedPapers && props.layout.userDevice !== UserDevice.DESKTOP)}
-        />
+        <ScinapseInformation isMobile={props.layout.userDevice === UserDevice.MOBILE} isShow={!showRecommendedPapers} />
         <ImprovedFooter />
       </div>
     </div>

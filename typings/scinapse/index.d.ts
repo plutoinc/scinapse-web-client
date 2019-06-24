@@ -105,6 +105,8 @@ declare namespace Scinapse {
       | 'skipSurvey'
       | 'viewBaseOnCollectionPaper'
       | 'viewBaseOnActivityPaper'
+      | 'clickSeeMore'
+      | 'clickSeeLess'
       | '';
 
     type ActionArea = string;
