@@ -83,7 +83,6 @@ const ImprovedHome: React.FC<Props> = props => {
   const { basedOnActivityPapers } = recommendedPapers;
   const [isSearchEngineMood, setIsSearchEngineMood] = React.useState(false);
   const [isKnowledgeBasedRecommended, setIsKnowledgeBasedRecommended] = React.useState(false);
-  const [showRecommendedPapers, setShowRecommendedPapers] = React.useState(false);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
 
   const fetchRecommendedPapers = async (isLoggedIn: boolean) => {
@@ -96,6 +95,7 @@ const ImprovedHome: React.FC<Props> = props => {
   React.useEffect(() => {
     setIsSearchEngineMood(getUserGroupName(SEARCH_ENGINE_MOOD_TEST) === 'searchEngine');
     setIsKnowledgeBasedRecommended(getUserGroupName(KNOWLEDGE_BASED_RECOMMEND_TEST) === '__knowledgeBasedRecommend__');
+
     homeAPI.getPapersFoundCount().then(res => {
       setPapersFoundCount(res.data.content);
     });
@@ -108,26 +108,19 @@ const ImprovedHome: React.FC<Props> = props => {
     [currentUser.isLoggedIn, props.location]
   );
 
-  React.useEffect(
-    () => {
-      const isShow =
-        isKnowledgeBasedRecommended &&
-        currentUser.isLoggedIn &&
-        basedOnActivityPapers &&
-        basedOnActivityPapers.length > 0 &&
-        props.layout.userDevice === UserDevice.DESKTOP;
-
-      setShowRecommendedPapers(isShow);
-    },
-    [props.layout.userDevice]
-  );
+  const isShow =
+    isKnowledgeBasedRecommended &&
+    currentUser.isLoggedIn &&
+    basedOnActivityPapers &&
+    basedOnActivityPapers.length > 0 &&
+    props.layout.userDevice === UserDevice.DESKTOP;
 
   return (
     <div className={styles.articleSearchFormContainer}>
       {getHelmetNode()}
       <h1 style={{ display: 'none' }}>Scinapse | Academic search engine for paper</h1>
       <div className={styles.searchFormInnerContainer}>
-        <div className={`${styles.searchFormContainer} ${showRecommendedPapers && styles.knowledge}`}>
+        <div className={`${styles.searchFormContainer} ${isShow && styles.knowledge}`}>
           <div className={styles.formWrapper}>
             <div className={styles.title}>
               <Icon icon="SCINAPSE_HOME_LOGO" className={styles.scinapseHomeLogo} />
@@ -143,7 +136,7 @@ const ImprovedHome: React.FC<Props> = props => {
             </div>
             <div className={styles.searchTryKeyword} />
             <div className={styles.catchphrase}>We’re better than Google Scholar. We mean it.</div>
-            {!showRecommendedPapers ? (
+            {!isShow ? (
               <>
                 <div className={styles.cumulativeCountContainer}>
                   <span>
@@ -168,8 +161,8 @@ const ImprovedHome: React.FC<Props> = props => {
             ) : null}
           </div>
         </div>
-        <RecommendedPapers isShow={showRecommendedPapers} isLoggingIn={currentUser.isLoggingIn} />
-        <ScinapseInformation isMobile={props.layout.userDevice === UserDevice.MOBILE} isShow={!showRecommendedPapers} />
+        <RecommendedPapers isShow={isShow} isLoggingIn={currentUser.isLoggingIn} />
+        <ScinapseInformation isMobile={props.layout.userDevice === UserDevice.MOBILE} isShow={!isShow} />
         <ImprovedFooter />
       </div>
     </div>
