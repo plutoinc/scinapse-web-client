@@ -70,7 +70,6 @@ async function shouldBlockUnsignedUser(actionArea: string) {
 const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState(props.initialValue || '');
-  const [genuineInputValue, setGenuineInputValue] = React.useState(props.initialValue || '');
   const [highlightIdx, setHighlightIdx] = React.useState(-1);
   const [isImprovedHome, setIsImprovedHome] = React.useState(false);
   const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
@@ -92,17 +91,22 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     setBlockOpen(false);
   }, []);
 
-  const [recentQueries, setRecentQueries] = React.useState(
-    getRecentQueries(genuineInputValue).map(q => ({ text: q, removable: true }))
+  const [genuineInputValue, setGenuineInputValue] = React.useState(props.initialValue || '');
+  React.useEffect(
+    () => {
+      setRecentQueries(getRecentQueries(genuineInputValue));
+    },
+    [genuineInputValue]
   );
 
-  let keywordsToShow = recentQueries;
+  const [recentQueries, setRecentQueries] = React.useState(getRecentQueries(genuineInputValue));
+  let keywordsToShow = recentQueries.slice(0, props.maxCount);
   if (suggestionWords && suggestionWords.length > 0) {
     const suggestionList = suggestionWords
       .filter(k => recentQueries.every(query => query.text !== k.keyword))
       .map(k => ({ text: k.keyword, removable: false }));
 
-    keywordsToShow = [...recentQueries, ...suggestionList];
+    keywordsToShow = [...recentQueries, ...suggestionList].slice(0, props.maxCount);
   }
 
   React.useEffect(
@@ -216,7 +220,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
             onClick={e => {
               e.stopPropagation();
               deleteQueryFromRecentList(k.text);
-              setRecentQueries(getRecentQueries(genuineInputValue).map(q => ({ text: q, removable: true })));
+              setRecentQueries(getRecentQueries(genuineInputValue));
             }}
             className={s.removeBtn}
             icon="X_BUTTON"

@@ -10,7 +10,7 @@ export interface DefaultItemComponentProps {
   onClick: () => void;
 }
 
-interface SuggestionItem {
+export interface SuggestionItem {
   text: string;
   removable?: boolean;
 }
