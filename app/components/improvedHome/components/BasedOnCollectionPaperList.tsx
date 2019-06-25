@@ -10,12 +10,27 @@ import { ActionTicketParams } from '../../../helpers/actionTicketManager/actionT
 import { useObserver } from '../../../hooks/useIntersectionHook';
 const styles = require('./recommendedPapers.scss');
 
-const CollectionPaperItem: React.FC<{ paper: Paper; collectionTitle: string; collectionId: number }> = ({
-  paper,
-  collectionTitle,
-  collectionId,
-}) => {
+interface BasedOnCollectionPaperItemProps {
+  paper: Paper;
+  collectionTitle: string;
+  collectionId: number;
+}
+
+interface BasedOnCollectionPapersProps {
+  collection: Collection;
+  papers: Paper[];
+  isLoading: boolean;
+}
+
+interface BasedOnCollectionPaperListProps {
+  basedOnCollectionPapers: BasedOnCollectionPapersParams;
+  isLoading: boolean;
+}
+
+const CollectionPaperItem: React.FC<BasedOnCollectionPaperItemProps> = props => {
+  const { paper, collectionTitle, collectionId } = props;
   const { id, publishedDate, authors, journal, title } = paper;
+
   const actionTicketContext: ActionTicketParams = {
     pageType: 'home',
     actionType: 'view',
@@ -61,14 +76,11 @@ const CollectionPaperItem: React.FC<{ paper: Paper; collectionTitle: string; col
   );
 };
 
-const CollectionPapers: React.FC<{ collection: Collection; papers: Paper[]; isLoading: boolean }> = ({
-  collection,
-  papers,
-  isLoading,
-}) => {
-  if (isLoading) return <CircularProgress size={36} thickness={4} style={{ color: '#e7eaef' }} />;
-
+const BasedOnCollectionPapers: React.FC<BasedOnCollectionPapersProps> = props => {
+  const { collection, papers, isLoading } = props;
   const { id, title } = collection;
+
+  if (isLoading) return <CircularProgress size={36} thickness={4} style={{ color: '#e7eaef' }} />;
 
   const collectionPapers =
     collection &&
@@ -78,10 +90,8 @@ const CollectionPapers: React.FC<{ collection: Collection; papers: Paper[]; isLo
   return <>{collectionPapers}</>;
 };
 
-const BaseOnCollectionPaperList: React.FC<{
-  basedOnCollectionPapers: BasedOnCollectionPapersParams;
-  isLoading: boolean;
-}> = ({ basedOnCollectionPapers, isLoading }) => {
+const BaseOnCollectionPaperList: React.FC<BasedOnCollectionPaperListProps> = props => {
+  const { basedOnCollectionPapers, isLoading } = props;
   const { collection, recommendations } = !!basedOnCollectionPapers && basedOnCollectionPapers;
   return (
     <>
@@ -95,7 +105,7 @@ const BaseOnCollectionPaperList: React.FC<{
       </div>
       <div className={styles.sectionContent}>
         {recommendations && recommendations.length > 0 ? (
-          <CollectionPapers collection={collection} papers={recommendations} isLoading={isLoading} />
+          <BasedOnCollectionPapers collection={collection} papers={recommendations} isLoading={isLoading} />
         ) : (
           <div className={styles.noPaperContext}>you haven't added any papers to collection</div>
         )}

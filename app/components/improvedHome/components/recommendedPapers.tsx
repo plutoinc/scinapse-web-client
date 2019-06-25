@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '../../../helpers/withStylesHelper';
-import BaseOnActivityPaperList from './BaseOnActivityPaperList';
-import BaseOnCollectionPaperList from './BaseOnCollectionPaperList';
+import BaseOnActivityPaperList from './BasedOnActivityPaperList';
+import BaseOnCollectionPaperList from './BasedOnCollectionPaperList';
 import { AppState } from '../../../reducers';
 const styles = require('./recommendedPapers.scss');
 

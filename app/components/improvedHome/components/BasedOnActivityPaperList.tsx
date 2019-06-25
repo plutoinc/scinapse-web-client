@@ -10,6 +10,11 @@ import { useObserver } from '../../../hooks/useIntersectionHook';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 const styles = require('./recommendedPapers.scss');
 
+interface BasedOnActivityPaperListProps {
+  isLoading: boolean;
+  papers: Paper[];
+}
+
 const ActivityPaperItem: React.FC<{ paper: Paper }> = ({ paper }) => {
   const actionTicketContext: ActionTicketParams = {
     pageType: 'home',
@@ -34,7 +39,8 @@ const ActivityPaperItem: React.FC<{ paper: Paper }> = ({ paper }) => {
   );
 };
 
-const BaseOnActivityPaperList: React.FC<{ isLoading: boolean; papers: Paper[] }> = ({ isLoading, papers }) => {
+const BaseOnActivityPaperList: React.FC<BasedOnActivityPaperListProps> = props => {
+  const { isLoading, papers } = props;
   const [isPaperExpanding, setIsPaperExpanding] = React.useState(false);
 
   if (!papers) return null;
