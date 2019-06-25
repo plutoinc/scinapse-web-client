@@ -115,6 +115,8 @@
 
   .sectionContent {
     display: flex;
+    border: 1px solid $gray1;
+    border-radius: 0 0 8px 8px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -165,9 +167,19 @@
   }
 
   .authorInfo {
+    color: $gray6;
+
     &:hover {
       text-decoration: underline;
     }
+  }
+
+  .journalInfo {
+    @extend .authorInfo;
+  }
+
+  .affiliationInfo {
+    color: $gray5;
   }
 }
 

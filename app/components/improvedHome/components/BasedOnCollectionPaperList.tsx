@@ -32,23 +32,41 @@ const CollectionPaperItem: React.FC<BasedOnCollectionPaperItemProps> = props => 
   const { id, publishedDate, authors, journal, title } = paper;
 
   let yearStr = null;
-  let authorName = null;
-  let journalTitle = '';
+  let authorInfo = null;
+  let journalTitle = null;
+  let affiliationInfo = null;
 
   if (publishedDate) {
     yearStr = (
       <span>
-        Published on <span className={styles.detailInfo}>{`${format(publishedDate, 'MMM D, YYYY')} · `}</span>
+        Published on <span className={styles.detailInfo}>{`${format(publishedDate, 'MMM D, YYYY')}`}</span>
       </span>
     );
   }
 
   if (authors && authors.length > 0) {
-    authorName = <Link to={`/authors/${authors[0].id}`} className={styles.authorInfo}>{`${authors[0].name}`}</Link>;
+    if (authors[0].affiliation) {
+      affiliationInfo = <span className={styles.affiliationInfo}>{`(${authors[0].affiliation.name})`}</span>;
+    }
+
+    authorInfo = (
+      <span>
+        {` · `}
+        <Link to={`/authors/${authors[0].id}`} className={styles.authorInfo}>
+          {authors[0].name}
+        </Link>{' '}
+        {affiliationInfo}
+      </span>
+    );
   }
 
   if (journal) {
-    journalTitle = ` (${journal.title})`;
+    journalTitle = (
+      <span>
+        {' '}
+        in <Link to={`/journals/${journal.id}`} className={styles.journalInfo}>{` ${journal.title}`}</Link>{' '}
+      </span>
+    );
   }
 
   const actionTicketContext: ActionTicketParams = {
@@ -74,10 +92,8 @@ const CollectionPaperItem: React.FC<BasedOnCollectionPaperItemProps> = props => 
       </Link>
       <div className={styles.publishInfo}>
         {yearStr}
-        <span className={styles.detailInfo}>
-          {authorName}
-          {journalTitle}
-        </span>
+        {journalTitle}
+        <span className={styles.detailInfo}>{authorInfo}</span>
       </div>
     </div>
   );
