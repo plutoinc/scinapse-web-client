@@ -1,5 +1,6 @@
 import * as AWS from 'aws-sdk';
 import * as https from 'https';
+import fs from 'fs';
 import rimraf from 'rimraf';
 import * as DeployConfig from '../scripts/deploy/config';
 
@@ -36,9 +37,19 @@ async function downloadSrcFromS3(branch?: string) {
   console.log('DOWNLOAD FILES');
   if (res.Contents && res.Contents.length > 0) {
     const promiseArr = res.Contents.map(content => {
-      console.log(content.Key);
-      const params: AWS.S3.Types.GetObjectRequest = { Bucket: DeployConfig.AWS_S3_BUCKET, Key: content.Key! };
-      return s3.getObject(params).promise();
+      const params: AWS.S3.Types.GetObjectRequest = {
+        Bucket: DeployConfig.AWS_S3_BUCKET,
+        Key: content.Key!,
+      };
+
+      return s3
+        .getObject(params)
+        .promise()
+        .then(objectRes => {
+          const pwdArr = content.Key!.split('/');
+          const filePath = pwdArr[pwdArr.length - 2] + '/' + pwdArr[pwdArr.length - 1];
+          fs.writeFileSync(`/tmp/${filePath}`, objectRes.Body);
+        });
     });
 
     await Promise.all(promiseArr);
