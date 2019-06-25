@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
@@ -9,6 +9,7 @@ import { ActionTicketParams } from '../../../helpers/actionTicketManager/actionT
 import { useObserver } from '../../../hooks/useIntersectionHook';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 const styles = require('./recommendedPapers.scss');
+const BASED_ON_ACTIVITY_PAPER_COUNT = 5;
 
 interface BasedOnActivityPaperListProps {
   isLoading: boolean;
@@ -56,10 +57,10 @@ const BaseOnActivityPaperList: React.FC<BasedOnActivityPaperListProps> = props =
       </>
     );
 
-  const targetPapers = isPaperExpanding ? papers : papers.slice(0, 5);
+  const targetPapers = isPaperExpanding ? papers : papers.slice(0, BASED_ON_ACTIVITY_PAPER_COUNT);
 
   const moreButton =
-    papers.length <= 5 ? null : (
+    papers.length <= BASED_ON_ACTIVITY_PAPER_COUNT ? null : (
       <div
         onClick={() => {
           ActionTicketManager.trackTicket({

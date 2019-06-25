@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import { withStyles } from '../../../helpers/withStylesHelper';
 const styles = require('./skeletonPaperItem.scss');
 
-const SkeletonPaperItem: React.FC<{}> = () => {
+const SkeletonPaperItem: React.FC = () => {
   return (
     <div className={styles.skeletonContainer}>
       <div className={styles.skeletonTitle} />
