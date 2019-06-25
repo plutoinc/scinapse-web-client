@@ -41,8 +41,5 @@ export function deleteQueryFromRecentList(query: string) {
   if (i > -1) {
     const newQueries = [...oldQueries.slice(0, i), ...oldQueries.slice(i + 1)];
     store.set(RECENT_QUERY_LIST_KEY, newQueries);
-    return newQueries;
-  } else {
-    return oldQueries;
   }
 }
