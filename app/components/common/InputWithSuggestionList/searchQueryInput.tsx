@@ -28,17 +28,18 @@ import { getUserGroupName } from '../../../helpers/abTestHelper';
 import { HOME_IMPROVEMENT_TEST } from '../../../constants/abTestGlobalValue';
 const s = require('./searchQueryInput.scss');
 
-interface SearchQueryInputProps extends RouteComponentProps<any> {
-  dispatch: Dispatch<any>;
-  layout: LayoutState;
-  actionArea: 'home' | 'topBar' | 'paperShow';
-  maxCount: number;
-  initialValue?: string;
-  initialFilter?: FilterObject;
-  wrapperClassName?: string;
-  listWrapperClassName?: string;
-  inputClassName?: string;
-}
+type SearchQueryInputProps = React.InputHTMLAttributes<HTMLInputElement> &
+  RouteComponentProps<any> & {
+    dispatch: Dispatch<any>;
+    layout: LayoutState;
+    actionArea: 'home' | 'topBar' | 'paperShow';
+    maxCount: number;
+    initialValue?: string;
+    initialFilter?: FilterObject;
+    wrapperClassName?: string;
+    listWrapperClassName?: string;
+    inputClassName?: string;
+  };
 
 type SearchSourceType = 'history' | 'suggestion' | 'raw';
 
@@ -66,18 +67,13 @@ async function shouldBlockUnsignedUser(actionArea: string) {
   });
 }
 
-const SearchQueryInput: React.FunctionComponent<
-  SearchQueryInputProps & React.InputHTMLAttributes<HTMLInputElement>
-> = props => {
+const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [touched, setTouched] = React.useState(false);
   const [inputValue, setInputValue] = React.useState(props.initialValue || '');
-  const [genuineInputValue, setGenuineInputValue] = React.useState(props.initialValue || '');
   const [highlightIdx, setHighlightIdx] = React.useState(-1);
   const [isImprovedHome, setIsImprovedHome] = React.useState(false);
   const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
-
-  const { data: keywords, setParams } = useDebouncedAsyncFetch<string, CompletionKeyword[]>({
+  const { data: suggestionWords, setParams } = useDebouncedAsyncFetch<string, CompletionKeyword[]>({
     initialParams: props.initialValue || '',
     fetchFunc: async (q: string) => {
       const res = await CompletionAPI.fetchSuggestionKeyword(q, cancelTokenSource.current.token);
@@ -89,27 +85,29 @@ const SearchQueryInput: React.FunctionComponent<
     wait: 200,
   });
 
-  const recentQueries = getRecentQueries(genuineInputValue).map(q => ({ text: q, removable: true }));
-  const [keywordsToShow, setKeywordsToShow] = React.useState(recentQueries);
+  // prevent suggestion box is opened by auto focusing
+  const [blockOpen, setBlockOpen] = React.useState(true);
+  React.useEffect(() => {
+    setBlockOpen(false);
+  }, []);
 
+  const [genuineInputValue, setGenuineInputValue] = React.useState(props.initialValue || '');
   React.useEffect(
     () => {
-      const suggestionList = keywords
-        ? keywords
-            .filter(k => !getRecentQueries(genuineInputValue).includes(k.keyword))
-            .map(k => ({ text: k.keyword, removable: false }))
-        : [];
-      setKeywordsToShow([...recentQueries, ...suggestionList]);
-    },
-    [keywords]
-  );
-
-  React.useEffect(
-    () => {
-      setKeywordsToShow(getRecentQueries(genuineInputValue).map(q => ({ text: q, removable: true })));
+      setRecentQueries(getRecentQueries(genuineInputValue));
     },
     [genuineInputValue]
   );
+
+  const [recentQueries, setRecentQueries] = React.useState(getRecentQueries(genuineInputValue));
+  let keywordsToShow = recentQueries.slice(0, props.maxCount);
+  if (suggestionWords && suggestionWords.length > 0) {
+    const suggestionList = suggestionWords
+      .filter(k => recentQueries.every(query => query.text !== k.keyword))
+      .map(k => ({ text: k.keyword, removable: false }));
+
+    keywordsToShow = [...recentQueries, ...suggestionList].slice(0, props.maxCount);
+  }
 
   React.useEffect(
     () => {
@@ -124,7 +122,6 @@ const SearchQueryInput: React.FunctionComponent<
   React.useEffect(
     () => {
       return () => {
-        setTouched(false);
         setIsOpen(false);
         cancelTokenSource.current.cancel();
         cancelTokenSource.current = axios.CancelToken.source();
@@ -175,7 +172,7 @@ const SearchQueryInput: React.FunctionComponent<
 
     trackEvent({ category: 'Search', action: 'Query', label: searchKeyword });
     saveQueryToRecentHistory(searchKeyword);
-    setTouched(false);
+    setRecentQueries([{ text: searchKeyword, removable: true }, ...recentQueries]);
     setIsOpen(false);
 
     const currentPage = getCurrentPageType();
@@ -208,7 +205,7 @@ const SearchQueryInput: React.FunctionComponent<
   const keywordItems = keywordsToShow.slice(0, props.maxCount).map((k, i) => {
     return (
       <li
-        key={i}
+        key={k.text + i}
         className={classNames({
           [s.listItem]: true,
           [s.highlight]: highlightIdx === i,
@@ -223,8 +220,7 @@ const SearchQueryInput: React.FunctionComponent<
             onClick={e => {
               e.stopPropagation();
               deleteQueryFromRecentList(k.text);
-              const index = keywordsToShow.findIndex(keyword => keyword.text === k.text);
-              setKeywordsToShow([...keywordsToShow.slice(0, index), ...keywordsToShow.slice(index + 1)]);
+              setRecentQueries(getRecentQueries(genuineInputValue));
             }}
             className={s.removeBtn}
             icon="X_BUTTON"
@@ -251,7 +247,7 @@ const SearchQueryInput: React.FunctionComponent<
     >
       <div className={wrapperClassName}>
         <input
-          aria-label="Scinapse search box, try it!"
+          aria-label="Scinapse search box"
           value={inputValue}
           onKeyDown={e => {
             handleInputKeydown({
@@ -278,14 +274,11 @@ const SearchQueryInput: React.FunctionComponent<
               },
             });
           }}
-          onFocus={e => {
-            props.onFocus && props.onFocus(e);
-
-            if (touched) {
-              setIsOpen(true);
-            } else {
-              setTouched(true);
-            }
+          onFocus={() => {
+            if (!blockOpen && !isOpen) setIsOpen(true);
+          }}
+          onClick={() => {
+            if (!isOpen) setIsOpen(true);
           }}
           onChange={e => {
             const { value } = e.currentTarget;

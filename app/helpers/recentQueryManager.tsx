@@ -1,23 +1,20 @@
 import { getWordsArraySplitBySpaceWithoutStopWords } from '../components/common/highLightedContent';
+import { SuggestionItem } from '../components/common/InputWithSuggestionList';
 const store = require('store');
 
 const RECENT_QUERY_LIST_KEY = 'r_q_l';
 
-export function getRecentQueries(searchText?: string): string[] {
+export function getRecentQueries(searchText: string): SuggestionItem[] {
   const recentQueries: string[] = store.get(RECENT_QUERY_LIST_KEY) || [];
+  const textToMatch = getWordsArraySplitBySpaceWithoutStopWords(searchText);
+  const matchedQueries = recentQueries.filter(query => {
+    return query
+      .split(' ')
+      .map(q => q.trim())
+      .some(q => textToMatch.some(text => q.toLowerCase().startsWith(text.toLowerCase())));
+  });
 
-  if (searchText) {
-    const textToMatch = getWordsArraySplitBySpaceWithoutStopWords(searchText);
-    const matchedQueries = recentQueries.filter(query => {
-      return query
-        .split(' ')
-        .map(q => q.trim())
-        .some(q => textToMatch.some(text => q.toLowerCase().startsWith(text.toLowerCase())));
-    });
-    return matchedQueries;
-  }
-
-  return recentQueries;
+  return matchedQueries.map(q => ({ text: q, removable: true }));
 }
 
 export function saveQueryToRecentHistory(searchText: string) {
@@ -41,8 +38,5 @@ export function deleteQueryFromRecentList(query: string) {
   if (i > -1) {
     const newQueries = [...oldQueries.slice(0, i), ...oldQueries.slice(i + 1)];
     store.set(RECENT_QUERY_LIST_KEY, newQueries);
-    return newQueries;
-  } else {
-    return oldQueries;
   }
 }
