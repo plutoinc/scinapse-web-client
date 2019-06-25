@@ -20,6 +20,14 @@ async function downloadSrcFromS3(branch?: string) {
   console.log('REMOVE OLD TMP DIRECTORY');
   rimraf.sync('/tmp/*');
 
+  if (!fs.existsSync('/tmp/client')) {
+    fs.mkdirSync('/tmp/client');
+  }
+
+  if (!fs.existsSync('/tmp/server')) {
+    fs.mkdirSync('/tmp/server');
+  }
+
   const prefix = branch
     ? `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${branch}`
     : DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX;
@@ -47,7 +55,10 @@ async function downloadSrcFromS3(branch?: string) {
         .promise()
         .then(objectRes => {
           const pwdArr = content.Key!.split('/');
-          const filePath = pwdArr[pwdArr.length - 2] + '/' + pwdArr[pwdArr.length - 1];
+          let filePath = pwdArr[pwdArr.length - 2] + '/' + pwdArr[pwdArr.length - 1];
+          if (pwdArr[pwdArr.length - 2] !== 'client' && pwdArr[pwdArr.length - 2] !== 'server') {
+            filePath = pwdArr[pwdArr.length - 1];
+          }
           fs.writeFileSync(`/tmp/${filePath}`, objectRes.Body);
         });
     });
