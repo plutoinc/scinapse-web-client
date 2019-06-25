@@ -82,6 +82,7 @@ const BaseOnCollectionPaperList: React.FC<{
   basedOnCollectionPapers: BasedOnCollectionPapersParams;
   isLoading: boolean;
 }> = ({ basedOnCollectionPapers, isLoading }) => {
+  console.log(basedOnCollectionPapers);
   return (
     <>
       <div className={styles.sectionTitle}>
@@ -94,11 +95,11 @@ const BaseOnCollectionPaperList: React.FC<{
       </div>
       <div className={styles.sectionContent}>
         {basedOnCollectionPapers &&
-        basedOnCollectionPapers.recommendationPapers &&
-        basedOnCollectionPapers.recommendationPapers.length > 0 ? (
+        basedOnCollectionPapers.recommendations &&
+        basedOnCollectionPapers.recommendations.length > 0 ? (
           <CollectionPapers
             collection={basedOnCollectionPapers.collection}
-            papers={basedOnCollectionPapers.recommendationPapers}
+            papers={basedOnCollectionPapers.recommendations}
             isLoading={isLoading}
           />
         ) : (
