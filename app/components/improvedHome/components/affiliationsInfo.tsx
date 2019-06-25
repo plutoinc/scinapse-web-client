@@ -28,7 +28,7 @@ const AffiliationsInfo: React.FC = () => {
         </span>
         <br />
         <span>
-          <span className={styles.bold}>1130</span> affiliations use Scinapse
+          <span className={styles.bold}>1,130</span> affiliations use Scinapse
         </span>
       </div>
       <div className={styles.contentBlockDivider} />
