@@ -65,6 +65,7 @@
 .menuItem {
   font-size: 15px;
   color: $black1;
+  cursor: pointer;
 
   & + & {
     margin-top: 10px;
@@ -73,6 +74,29 @@
   &:hover {
     color: $gray6;
     transition: 0.2s ease-in-out;
+  }
+}
+
+.dialogPaper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sourceVendorWrapper {
+  display: flex;
+  width: 600px;
+  height: 600px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  .sourceVendorItem {
+    img {
+      width: 202px;
+      height: 40px;
+      object-fit: contain;
+    }
   }
 }
 
