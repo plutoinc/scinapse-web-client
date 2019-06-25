@@ -93,7 +93,9 @@ const BaseOnCollectionPaperList: React.FC<{
         <span className={styles.sectionTitleContext}>{`Recommendation\nbased on your collection`}</span>
       </div>
       <div className={styles.sectionContent}>
-        {basedOnCollectionPapers && basedOnCollectionPapers.recommendationPapers.length > 0 ? (
+        {basedOnCollectionPapers &&
+        basedOnCollectionPapers.recommendationPapers &&
+        basedOnCollectionPapers.recommendationPapers.length > 0 ? (
           <CollectionPapers
             collection={basedOnCollectionPapers.collection}
             papers={basedOnCollectionPapers.recommendationPapers}
