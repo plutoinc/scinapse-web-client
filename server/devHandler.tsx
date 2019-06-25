@@ -15,7 +15,10 @@ AWS.config.update({
   },
 });
 
+let isDownloading = false;
+
 async function downloadSrcFromS3(branch?: string) {
+  isDownloading = true;
   console.log('-------------------------------------------------------');
   console.log('REMOVE OLD TMP DIRECTORY');
   rimraf.sync('/tmp/*');
@@ -65,11 +68,23 @@ async function downloadSrcFromS3(branch?: string) {
 
     await Promise.all(promiseArr);
   }
+  isDownloading = false;
 }
 
 export const ssr = async (event: LambdaProxy.Event) => {
   const branch = event.queryStringParameters && event.queryStringParameters.branch;
-  await downloadSrcFromS3(branch);
+
+  if (event.path.includes('sw.js') || event.path.includes('favicon')) {
+    return {
+      statusCode: 200,
+      body: '',
+    };
+  }
+
+  if (!isDownloading && !fs.existsSync('/tmp/server/main.js')) {
+    await downloadSrcFromS3(branch);
+  }
+
   const bundle = require('/tmp/server/main.js');
   (global as any).__webpack_public_path__ = '/tmp/server';
 
@@ -77,6 +92,7 @@ export const ssr = async (event: LambdaProxy.Event) => {
     const res = await bundle.ssr(event);
     return res;
   } catch (err) {
+    console.error(err);
     return {
       statusCode: 500,
       headers: {
