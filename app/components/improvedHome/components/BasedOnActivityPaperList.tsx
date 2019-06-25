@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { range } from 'lodash';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import { Paper } from '../../../model/paper';
@@ -46,16 +47,11 @@ const BaseOnActivityPaperList: React.FC<BasedOnActivityPaperListProps> = props =
 
   if (!papers) return null;
 
-  if (isLoading)
-    return (
-      <>
-        <SkeletonPaperItem />
-        <SkeletonPaperItem />
-        <SkeletonPaperItem />
-        <SkeletonPaperItem />
-        <SkeletonPaperItem />
-      </>
-    );
+  const skeletonPaperItems = range(BASED_ON_ACTIVITY_PAPER_COUNT).map(value => {
+    return <SkeletonPaperItem key={value} />;
+  });
+
+  if (isLoading) return <>{skeletonPaperItems}</>;
 
   const targetPapers = isPaperExpanding ? papers : papers.slice(0, BASED_ON_ACTIVITY_PAPER_COUNT);
 
