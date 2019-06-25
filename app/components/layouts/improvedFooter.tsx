@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Dialog from '@material-ui/core/Dialog';
 import { trackAndOpenLink } from '../../helpers/handleGA';
 import { withStyles } from '../../helpers/withStylesHelper';
 import Icon from '../../icons';
@@ -8,9 +9,11 @@ interface FooterProps {
   containerStyle?: React.CSSProperties;
 }
 
-const ImprovedFooter: React.FunctionComponent<FooterProps> = props => {
+const ImprovedFooter: React.FC<FooterProps> = props => {
   const { containerStyle } = props;
   const currentYear = new Date().getFullYear();
+
+  const [isSourceOpen, setIsSourceOpen] = React.useState(false);
 
   return (
     <div className={styles.footerWrapper} style={containerStyle}>
@@ -47,6 +50,66 @@ const ImprovedFooter: React.FunctionComponent<FooterProps> = props => {
               >
                 FAQ
               </a>
+              <div
+                onClick={() => {
+                  setIsSourceOpen(true);
+                }}
+                className={styles.menuItem}
+              >
+                Data Sources
+              </div>
+              <Dialog
+                open={isSourceOpen}
+                onClose={() => {
+                  setIsSourceOpen(false);
+                }}
+                classes={{
+                  paper: styles.dialogPaper,
+                }}
+                maxWidth="lg"
+              >
+                <div className={styles.sourceVendorWrapper}>
+                  <div className={styles.sourceVendorItem}>
+                    <a href="https://aka.ms/msracad" target="_blank" rel="noopener nofollow noreferrer">
+                      <picture>
+                        <source srcSet="https://assets.pluto.network/scinapse/ms-research.webp" type="image/webp" />
+                        <source srcSet="https://assets.pluto.network/scinapse/ms-research.jpg" type="image/jpeg" />
+                        <img src="https://assets.pluto.network/scinapse/ms-research.jpg" alt="circle" />
+                      </picture>
+                    </a>
+                  </div>
+                  <div className={styles.sourceVendorItem}>
+                    <a href="https://www.semanticscholar.org/" target="_blank" rel="noopener nofollow noreferrer">
+                      <picture>
+                        <source
+                          srcSet="https://assets.pluto.network/scinapse/semantic-scholar.webp"
+                          type="image/webp"
+                        />
+                        <source srcSet="https://assets.pluto.network/scinapse/semantic-scholar.jpg" type="image/jpeg" />
+                        <img src="https://assets.pluto.network/scinapse/semantic-scholar.jpg" alt="circle" />
+                      </picture>
+                    </a>
+                  </div>
+                  <div className={styles.sourceVendorItem}>
+                    <a href="https://www.springernature.com/gp/" target="_blank" rel="noopener nofollow noreferrer">
+                      <picture>
+                        <source srcSet="https://assets.pluto.network/scinapse/springer-nature.webp" type="image/webp" />
+                        <source srcSet="https://assets.pluto.network/scinapse/springer-nature.jpg" type="image/jpeg" />
+                        <img src="https://assets.pluto.network/scinapse/springer-nature.jpg" alt="circle" />
+                      </picture>
+                    </a>
+                  </div>
+                  <div className={styles.sourceVendorItem}>
+                    <a href="https://www.ncbi.nlm.nih.gov/pubmed/" target="_blank" rel="noopener nofollow noreferrer">
+                      <picture>
+                        <source srcSet="https://assets.pluto.network/scinapse/pub-med.webp" type="image/webp" />
+                        <source srcSet="https://assets.pluto.network/scinapse/pub-med.jpg" type="image/jpeg" />
+                        <img src="https://assets.pluto.network/scinapse/pub-med.jpg" alt="circle" />
+                      </picture>
+                    </a>
+                  </div>
+                </div>
+              </Dialog>
             </div>
             <div className={styles.menu}>
               <div className={styles.menuTitle}>Updates</div>
