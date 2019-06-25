@@ -82,26 +82,20 @@ const BaseOnCollectionPaperList: React.FC<{
   basedOnCollectionPapers: BasedOnCollectionPapersParams;
   isLoading: boolean;
 }> = ({ basedOnCollectionPapers, isLoading }) => {
-  console.log(basedOnCollectionPapers);
+  const { collection, recommendations } = !!basedOnCollectionPapers && basedOnCollectionPapers;
   return (
     <>
       <div className={styles.sectionTitle}>
-        {basedOnCollectionPapers && (
-          <Link to={`/collections/${basedOnCollectionPapers.collection.id}`} className={styles.collectionLink}>
+        {collection && (
+          <Link to={`/collections/${collection.id}`} className={styles.collectionLink}>
             Go to Collection
           </Link>
         )}
         <span className={styles.sectionTitleContext}>{`Recommendation\nbased on your collection`}</span>
       </div>
       <div className={styles.sectionContent}>
-        {basedOnCollectionPapers &&
-        basedOnCollectionPapers.recommendations &&
-        basedOnCollectionPapers.recommendations.length > 0 ? (
-          <CollectionPapers
-            collection={basedOnCollectionPapers.collection}
-            papers={basedOnCollectionPapers.recommendations}
-            isLoading={isLoading}
-          />
+        {recommendations && recommendations.length > 0 ? (
+          <CollectionPapers collection={collection} papers={recommendations} isLoading={isLoading} />
         ) : (
           <div className={styles.noPaperContext}>you haven't added any papers to collection</div>
         )}

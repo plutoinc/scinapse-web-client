@@ -160,6 +160,7 @@ const ImprovedHome: React.FC<Props> = props => {
               </>
             ) : null}
           </div>
+          {isShow && <div className={styles.recommendedPapersBlockDivider} />}
         </div>
         <RecommendedPapers isShow={isShow} isLoggingIn={currentUser.isLoggingIn} />
         <ScinapseInformation isMobile={props.layout.userDevice === UserDevice.MOBILE} isShow={!isShow} />
