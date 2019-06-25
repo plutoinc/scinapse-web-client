@@ -138,7 +138,7 @@ const ImprovedHome: React.FC<Props> = props => {
   React.useEffect(
     () => {
       if (currentUser.isLoggedIn) {
-        Promise.all([fetchBasedOnActivityPapers(), fetchBasedOnCollectionPapers()]);
+        Promise.all([dispatch(fetchBasedOnActivityPapers()), dispatch(fetchBasedOnCollectionPapers())]);
       }
 
       return () => {
@@ -146,7 +146,7 @@ const ImprovedHome: React.FC<Props> = props => {
         cancelToken.current = axios.CancelToken.source();
       };
     },
-    [currentUser.isLoggedIn, dispatch]
+    [currentUser.isLoggedIn]
   );
 
   const shouldShow =
