@@ -26,7 +26,7 @@ async function downloadSrcFromS3(branch?: string) {
   console.log('-------------------------------------------------------');
   console.log('LIST FILES');
   const res = await s3
-    .listObjects({
+    .listObjectsV2({
       Bucket: DeployConfig.AWS_S3_BUCKET,
       Prefix: prefix,
     })
