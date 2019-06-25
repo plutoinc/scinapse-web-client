@@ -128,8 +128,6 @@ const ImprovedHome: React.FC<Props> = props => {
     });
 
     return () => {
-      setIsSearchEngineMood(false);
-      setIsKnowledgeBasedRecommended(false);
       cancelToken.current.cancel();
       cancelToken.current = axios.CancelToken.source();
     };
