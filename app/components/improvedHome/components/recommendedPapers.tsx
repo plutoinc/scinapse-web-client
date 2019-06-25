@@ -7,12 +7,12 @@ import { AppState } from '../../../reducers';
 const styles = require('./recommendedPapers.scss');
 
 type Props = ReturnType<typeof mapStateToProps> & {
-  isShow: boolean;
+  shouldShow: boolean;
   isLoggingIn: boolean;
 };
 
 const RecommendedPapers: React.FC<Props> = props => {
-  const { recommendedPapers, isShow, isLoggingIn } = props;
+  const { recommendedPapers, shouldShow, isLoggingIn } = props;
   const {
     isLoadingActivityPapers,
     isLoadingCollectionPapers,
@@ -20,7 +20,7 @@ const RecommendedPapers: React.FC<Props> = props => {
     basedOnCollectionPapers,
   } = recommendedPapers;
 
-  if (!isShow) return null;
+  if (!shouldShow) return null;
 
   return (
     <>

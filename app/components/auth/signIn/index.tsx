@@ -64,13 +64,6 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
   const isDialog = !!props.handleChangeDialogType;
   const FBIsLoading = useFBIsLoading();
 
-  React.useEffect(() => {
-    return () => {
-      setNetworkError('');
-      setIsLoading(false);
-    };
-  }, []);
-
   function handleClickFBLogin() {
     FB.login(async (res: any) => {
       if (res.authResponse) {

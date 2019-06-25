@@ -255,7 +255,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
   private getSearchFormContainer = (isSearchEngineMood: boolean) => {
     const { location, articleSearchState } = this.props;
-    const isShowSearchFormContainer = location.pathname !== HOME_PATH;
+    const shouldShowSearchFormContainer = location.pathname !== HOME_PATH;
     const currentFilter: FilterObject = articleSearchState.selectedFilter
       ? articleSearchState.selectedFilter.filter
       : DEFAULT_FILTER;
@@ -268,7 +268,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
     return (
       <div
-        style={!isShowSearchFormContainer ? { visibility: 'hidden' } : {}}
+        style={!shouldShowSearchFormContainer ? { visibility: 'hidden' } : {}}
         className={classNames({
           [styles.searchFormContainerAtSearchEngineLogo]: isSearchEngineMood,
           [styles.searchFormContainer]: !isSearchEngineMood,

@@ -1,6 +1,8 @@
 import { hot } from 'react-hot-loader/root';
-import * as React from 'react';
+import React from 'react';
 import { Dispatch } from 'redux';
+import axios from 'axios';
+import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 import Helmet from 'react-helmet';
@@ -63,8 +65,8 @@ function getHelmetNode() {
   );
 }
 
-const ScinapseInformation: React.FC<{ isMobile: boolean; isShow: boolean }> = ({ isMobile, isShow }) => {
-  if (!isShow) return null;
+const ScinapseInformation: React.FC<{ isMobile: boolean; shouldShow: boolean }> = ({ isMobile, shouldShow }) => {
+  if (!shouldShow) return null;
 
   return (
     <div>
@@ -78,37 +80,76 @@ const ScinapseInformation: React.FC<{ isMobile: boolean; isShow: boolean }> = ({
   );
 };
 
+const ScinapseFigureContent: React.FC<{ shouldShow: boolean; papersFoundCount: number }> = ({
+  shouldShow,
+  papersFoundCount,
+}) => {
+  if (!shouldShow) return null;
+
+  return (
+    <>
+      <div className={styles.cumulativeCountContainer}>
+        <span>
+          <b>50,000+</b> registered researchers have found
+        </span>
+        <br />
+        <span>
+          <b>
+            <ReactCountUp
+              start={papersFoundCount > 10000 ? papersFoundCount - 10000 : papersFoundCount}
+              end={papersFoundCount}
+              separator=","
+              duration={3}
+            />
+            {`+`}
+          </b>
+          {` papers using Scinapse`}
+        </span>
+      </div>
+      <Icon icon="ARROW_POINT_TO_DOWN" className={styles.downIcon} />
+    </>
+  );
+};
+
 const ImprovedHome: React.FC<Props> = props => {
   const { dispatch, currentUser, recommendedPapers } = props;
   const { basedOnActivityPapers } = recommendedPapers;
   const [isSearchEngineMood, setIsSearchEngineMood] = React.useState(false);
   const [isKnowledgeBasedRecommended, setIsKnowledgeBasedRecommended] = React.useState(false);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
-
-  const fetchRecommendedPapers = async (isLoggedIn: boolean) => {
-    if (isLoggedIn) {
-      await dispatch(fetchBasedOnActivityPapers());
-      await dispatch(fetchBasedOnCollectionPapers());
-    }
-  };
+  const cancelToken = React.useRef(axios.CancelToken.source());
 
   React.useEffect(() => {
     setIsSearchEngineMood(getUserGroupName(SEARCH_ENGINE_MOOD_TEST) === 'searchEngine');
-    setIsKnowledgeBasedRecommended(getUserGroupName(KNOWLEDGE_BASED_RECOMMEND_TEST) === '__knowledgeBasedRecommend__');
+    setIsKnowledgeBasedRecommended(getUserGroupName(KNOWLEDGE_BASED_RECOMMEND_TEST) === 'knowledgeBasedRecommend');
 
     homeAPI.getPapersFoundCount().then(res => {
       setPapersFoundCount(res.data.content);
     });
+
+    return () => {
+      setIsSearchEngineMood(false);
+      setIsKnowledgeBasedRecommended(false);
+      cancelToken.current.cancel();
+      cancelToken.current = axios.CancelToken.source();
+    };
   }, []);
 
   React.useEffect(
     () => {
-      fetchRecommendedPapers(currentUser.isLoggedIn);
+      if (currentUser.isLoggedIn) {
+        Promise.all([fetchBasedOnActivityPapers(), fetchBasedOnCollectionPapers()]);
+      }
+
+      return () => {
+        cancelToken.current.cancel();
+        cancelToken.current = axios.CancelToken.source();
+      };
     },
-    [currentUser.isLoggedIn, props.location]
+    [currentUser.isLoggedIn, dispatch]
   );
 
-  const isShow =
+  const shouldShow =
     isKnowledgeBasedRecommended &&
     currentUser.isLoggedIn &&
     basedOnActivityPapers &&
@@ -120,7 +161,12 @@ const ImprovedHome: React.FC<Props> = props => {
       {getHelmetNode()}
       <h1 style={{ display: 'none' }}>Scinapse | Academic search engine for paper</h1>
       <div className={styles.searchFormInnerContainer}>
-        <div className={`${styles.searchFormContainer} ${isShow && styles.knowledge}`}>
+        <div
+          className={classNames({
+            [styles.searchFormContainer]: true,
+            [styles.knowledge]: shouldShow,
+          })}
+        >
           <div className={styles.formWrapper}>
             <div className={styles.title}>
               <Icon icon="SCINAPSE_HOME_LOGO" className={styles.scinapseHomeLogo} />
@@ -136,34 +182,12 @@ const ImprovedHome: React.FC<Props> = props => {
             </div>
             <div className={styles.searchTryKeyword} />
             <div className={styles.catchphrase}>We’re better than Google Scholar. We mean it.</div>
-            {!isShow ? (
-              <>
-                <div className={styles.cumulativeCountContainer}>
-                  <span>
-                    <b>50,000+</b> registered researchers have found
-                  </span>
-                  <br />
-                  <span>
-                    <b>
-                      <ReactCountUp
-                        start={papersFoundCount > 10000 ? papersFoundCount - 10000 : papersFoundCount}
-                        end={papersFoundCount}
-                        separator=","
-                        duration={3}
-                      />
-                      {`+`}
-                    </b>
-                    {` papers using Scinapse`}
-                  </span>
-                </div>
-                <Icon icon="ARROW_POINT_TO_DOWN" className={styles.downIcon} />
-              </>
-            ) : null}
+            <ScinapseFigureContent shouldShow={!shouldShow} papersFoundCount={papersFoundCount} />
           </div>
-          {isShow && <div className={styles.recommendedPapersBlockDivider} />}
+          {shouldShow && <div className={styles.recommendedPapersBlockDivider} />}
         </div>
-        <RecommendedPapers isShow={isShow} isLoggingIn={currentUser.isLoggingIn} />
-        <ScinapseInformation isMobile={props.layout.userDevice === UserDevice.MOBILE} isShow={!isShow} />
+        <RecommendedPapers shouldShow={shouldShow} isLoggingIn={currentUser.isLoggingIn} />
+        <ScinapseInformation isMobile={props.layout.userDevice === UserDevice.MOBILE} shouldShow={!shouldShow} />
         <ImprovedFooter />
       </div>
     </div>

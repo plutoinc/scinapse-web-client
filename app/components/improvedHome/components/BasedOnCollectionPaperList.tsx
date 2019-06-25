@@ -31,6 +31,26 @@ const CollectionPaperItem: React.FC<BasedOnCollectionPaperItemProps> = props => 
   const { paper, collectionTitle, collectionId } = props;
   const { id, publishedDate, authors, journal, title } = paper;
 
+  let yearStr = null;
+  let authorName = null;
+  let journalTitle = '';
+
+  if (publishedDate) {
+    yearStr = (
+      <span>
+        Published on <span className={styles.detailInfo}>{`${format(publishedDate, 'MMM D, YYYY')} · `}</span>
+      </span>
+    );
+  }
+
+  if (authors && authors.length > 0) {
+    authorName = <Link to={`/authors/${authors[0].id}`} className={styles.authorInfo}>{`${authors[0].name}`}</Link>;
+  }
+
+  if (journal) {
+    journalTitle = ` (${journal.title})`;
+  }
+
   const actionTicketContext: ActionTicketParams = {
     pageType: 'home',
     actionType: 'view',
@@ -40,19 +60,6 @@ const CollectionPaperItem: React.FC<BasedOnCollectionPaperItemProps> = props => 
   };
 
   const { elRef } = useObserver(0.1, actionTicketContext);
-
-  const yearStr = publishedDate ? (
-    <span>
-      Published on <span className={styles.detailInfo}>{`${format(publishedDate, 'MMM D, YYYY')} · `}</span>
-    </span>
-  ) : null;
-
-  const authorName = authors &&
-    authors.length > 0 && (
-      <Link to={`/authors/${authors[0].id}`} className={styles.authorInfo}>{`${authors[0].name}`}</Link>
-    );
-
-  const journalTitle = journal ? ` (${journal.title})` : '';
 
   return (
     <div ref={elRef} className={styles.basedOnCollectionPapersItemWrapper}>
@@ -93,23 +100,29 @@ const BasedOnCollectionPapers: React.FC<BasedOnCollectionPapersProps> = props =>
 const BaseOnCollectionPaperList: React.FC<BasedOnCollectionPaperListProps> = props => {
   const { basedOnCollectionPapers, isLoading } = props;
   const { collection, recommendations } = !!basedOnCollectionPapers && basedOnCollectionPapers;
+
+  let goToCollectionBtn = null;
+  let papersContent = <div className={styles.noPaperContext}>you haven't added any papers to collection</div>;
+
+  if (collection) {
+    goToCollectionBtn = (
+      <Link to={`/collections/${collection.id}`} className={styles.collectionLink}>
+        Go to Collection
+      </Link>
+    );
+  }
+
+  if (recommendations && recommendations.length > 0) {
+    papersContent = <BasedOnCollectionPapers collection={collection} papers={recommendations} isLoading={isLoading} />;
+  }
+
   return (
     <>
       <div className={styles.sectionTitle}>
-        {collection && (
-          <Link to={`/collections/${collection.id}`} className={styles.collectionLink}>
-            Go to Collection
-          </Link>
-        )}
+        {goToCollectionBtn}
         <span className={styles.sectionTitleContext}>{`Recommendation\nbased on your collection`}</span>
       </div>
-      <div className={styles.sectionContent}>
-        {recommendations && recommendations.length > 0 ? (
-          <BasedOnCollectionPapers collection={collection} papers={recommendations} isLoading={isLoading} />
-        ) : (
-          <div className={styles.noPaperContext}>you haven't added any papers to collection</div>
-        )}
-      </div>
+      <div className={styles.sectionContent}>{papersContent}</div>
     </>
   );
 };
