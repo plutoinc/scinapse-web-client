@@ -155,7 +155,7 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
 
         if (!isBlocked) {
           handleAddToCollection(myCollections, paperId);
-          await homeAPI.addBasedOnRecommendationPaper(paperId);
+          homeAPI.addBasedOnRecommendationPaper(paperId);
         }
       }}
     >

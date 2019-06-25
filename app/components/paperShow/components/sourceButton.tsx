@@ -81,9 +81,9 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
               },
             }}
             dropdownBtnProps={{
-              onClick: async () => {
+              onClick: () => {
                 setIsSourcePopoverOpen(!isSourcePopoverOpen);
-                await homeAPI.addBasedOnRecommendationPaper(paper.id);
+                homeAPI.addBasedOnRecommendationPaper(paper.id);
               },
               style: !showFullText ? reverseBtnStyle : btnStyle,
               className: styles.dropdownBtn,
