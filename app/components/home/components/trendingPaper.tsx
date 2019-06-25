@@ -5,7 +5,7 @@ import { TrendingPaper, TRENDING_PAPERS } from '../trendingPaperData';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 const styles = require('./trendingPaper.scss');
 
-const TrendingPaperItem: React.FunctionComponent<{}> = () => {
+const TrendingPaperItem: React.FC = () => {
   const trendingPapers = TRENDING_PAPERS.map(paper => {
     const { paperId, paperTitle, year, journalTitle, authors } = paper;
 
@@ -46,7 +46,7 @@ const TrendingPaperItem: React.FunctionComponent<{}> = () => {
   return <>{trendingPapers}</>;
 };
 
-const TrendingPaper: React.FunctionComponent<{}> = () => {
+const TrendingPaper: React.FC = () => {
   return (
     <div className={styles.trendingPaperContainer}>
       <div className={styles.trendingPaperTitle}>TRENDING PAPERS</div>

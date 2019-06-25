@@ -13,7 +13,7 @@ interface AfterDownloadContentsProps {
   isRelatedPaperLoading: boolean;
 }
 
-const SearchQueryBoxAtPaperShow: React.FC<{}> = () => {
+const SearchQueryBoxAtPaperShow: React.FC = () => {
   return (
     <div className={styles.afterDownloadSearchContainer}>
       <div className={styles.titleContext}>🔍 You can get more papers by searching!</div>

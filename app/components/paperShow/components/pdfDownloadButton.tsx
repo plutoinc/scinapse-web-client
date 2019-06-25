@@ -6,6 +6,7 @@ import Icon from '../../../icons';
 import SearchingPDFBtn from './searchingPDFBtn';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../../helpers/checkAuthDialog';
 import { CurrentUser } from '../../../model/currentUser';
+import homeAPI from '../../../api/home';
 
 const styles = require('./pdfSourceButton.scss');
 
@@ -67,6 +68,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
 
           window.open(pdfUrl, '_blank');
           onDownloadedPDF(true);
+          homeAPI.addBasedOnRecommendationPaper(paper.id);
           handleSetScrollAfterDownload();
         }}
       >

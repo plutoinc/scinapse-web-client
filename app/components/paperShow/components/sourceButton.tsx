@@ -7,6 +7,7 @@ import ScinapseButtonFactory, { ScinapseButtonType } from '../../common/scinapse
 import SourceURLPopover from '../../common/sourceURLPopover';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
+import homeAPI from '../../../api/home';
 const styles = require('./pdfSourceButton.scss');
 
 interface SourceButtonProps {
@@ -82,6 +83,7 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
             dropdownBtnProps={{
               onClick: () => {
                 setIsSourcePopoverOpen(!isSourcePopoverOpen);
+                homeAPI.addBasedOnRecommendationPaper(paper.id);
               },
               style: !showFullText ? reverseBtnStyle : btnStyle,
               className: styles.dropdownBtn,

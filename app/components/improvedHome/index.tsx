@@ -1,6 +1,8 @@
 import { hot } from 'react-hot-loader/root';
-import * as React from 'react';
+import React from 'react';
 import { Dispatch } from 'redux';
+import axios from 'axios';
+import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 import Helmet from 'react-helmet';
@@ -11,12 +13,14 @@ import { withStyles } from '../../helpers/withStylesHelper';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
 import TrendingPaper from '../home/components/trendingPaper';
 import { getUserGroupName } from '../../helpers/abTestHelper';
-import { SEARCH_ENGINE_MOOD_TEST } from '../../constants/abTestGlobalValue';
+import { SEARCH_ENGINE_MOOD_TEST, KNOWLEDGE_BASED_RECOMMEND_TEST } from '../../constants/abTestGlobalValue';
 import Icon from '../../icons';
 import JournalsInfo from './components/journalsInfo';
 import AffiliationsInfo from './components/affiliationsInfo';
 import homeAPI from '../../api/home';
 import ImprovedFooter from '../layouts/improvedFooter';
+import RecommendedPapers from './components/recommendedPapers';
+import { fetchBasedOnActivityPapers, fetchBasedOnCollectionPapers } from '../../actions/recommendedPapers';
 const styles = require('./improvedHome.scss');
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
@@ -61,23 +65,106 @@ function getHelmetNode() {
   );
 }
 
+const ScinapseInformation: React.FC<{ isMobile: boolean; shouldShow: boolean }> = ({ isMobile, shouldShow }) => {
+  if (!shouldShow) return null;
+
+  return (
+    <div>
+      <JournalsInfo isMobile={isMobile} />
+      <AffiliationsInfo />
+      <div className={styles.contentBlockDivider} />
+      <div className={styles.trendingPaperWrapper}>
+        <TrendingPaper />
+      </div>
+    </div>
+  );
+};
+
+const ScinapseFigureContent: React.FC<{ shouldShow: boolean; papersFoundCount: number }> = ({
+  shouldShow,
+  papersFoundCount,
+}) => {
+  if (!shouldShow) return null;
+
+  return (
+    <>
+      <div className={styles.cumulativeCountContainer}>
+        <span>
+          <b>50,000+</b> registered researchers have found
+        </span>
+        <br />
+        <span>
+          <b>
+            <ReactCountUp
+              start={papersFoundCount > 10000 ? papersFoundCount - 10000 : papersFoundCount}
+              end={papersFoundCount}
+              separator=","
+              duration={3}
+            />
+            {`+`}
+          </b>
+          {` papers using Scinapse`}
+        </span>
+      </div>
+      <Icon icon="ARROW_POINT_TO_DOWN" className={styles.downIcon} />
+    </>
+  );
+};
+
 const ImprovedHome: React.FC<Props> = props => {
+  const { dispatch, currentUser, recommendedPapers } = props;
+  const { basedOnActivityPapers } = recommendedPapers;
   const [isSearchEngineMood, setIsSearchEngineMood] = React.useState(false);
+  const [isKnowledgeBasedRecommended, setIsKnowledgeBasedRecommended] = React.useState(false);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
+  const cancelToken = React.useRef(axios.CancelToken.source());
 
   React.useEffect(() => {
     setIsSearchEngineMood(getUserGroupName(SEARCH_ENGINE_MOOD_TEST) === 'searchEngine');
+    setIsKnowledgeBasedRecommended(getUserGroupName(KNOWLEDGE_BASED_RECOMMEND_TEST) === 'knowledgeBasedRecommend');
+
     homeAPI.getPapersFoundCount().then(res => {
       setPapersFoundCount(res.data.content);
     });
+
+    return () => {
+      cancelToken.current.cancel();
+      cancelToken.current = axios.CancelToken.source();
+    };
   }, []);
+
+  React.useEffect(
+    () => {
+      if (currentUser.isLoggedIn) {
+        Promise.all([dispatch(fetchBasedOnActivityPapers()), dispatch(fetchBasedOnCollectionPapers())]);
+      }
+
+      return () => {
+        cancelToken.current.cancel();
+        cancelToken.current = axios.CancelToken.source();
+      };
+    },
+    [currentUser.isLoggedIn]
+  );
+
+  const shouldShow =
+    isKnowledgeBasedRecommended &&
+    currentUser.isLoggedIn &&
+    basedOnActivityPapers &&
+    basedOnActivityPapers.length > 0 &&
+    props.layout.userDevice === UserDevice.DESKTOP;
 
   return (
     <div className={styles.articleSearchFormContainer}>
       {getHelmetNode()}
       <h1 style={{ display: 'none' }}>Scinapse | Academic search engine for paper</h1>
       <div className={styles.searchFormInnerContainer}>
-        <div className={styles.searchFormContainer}>
+        <div
+          className={classNames({
+            [styles.searchFormContainer]: true,
+            [styles.knowledge]: shouldShow,
+          })}
+        >
           <div className={styles.formWrapper}>
             <div className={styles.title}>
               <Icon icon="SCINAPSE_HOME_LOGO" className={styles.scinapseHomeLogo} />
@@ -93,33 +180,12 @@ const ImprovedHome: React.FC<Props> = props => {
             </div>
             <div className={styles.searchTryKeyword} />
             <div className={styles.catchphrase}>We’re better than Google Scholar. We mean it.</div>
-            <div className={styles.cumulativeCountContainer}>
-              <span>
-                <b>50,000+</b> registered researchers have found
-              </span>
-              <br />
-              <span>
-                <b>
-                  <ReactCountUp
-                    start={papersFoundCount > 10000 ? papersFoundCount - 10000 : papersFoundCount}
-                    end={papersFoundCount}
-                    separator=","
-                    duration={3}
-                  />
-                  {`+`}
-                </b>
-                {` papers using Scinapse`}
-              </span>
-            </div>
-            <Icon icon="ARROW_POINT_TO_DOWN" className={styles.downIcon} />
+            <ScinapseFigureContent shouldShow={!shouldShow} papersFoundCount={papersFoundCount} />
           </div>
+          {shouldShow && <div className={styles.recommendedPapersBlockDivider} />}
         </div>
-        <JournalsInfo isMobile={props.layout.userDevice === UserDevice.MOBILE} />
-        <AffiliationsInfo />
-        <div className={styles.contentBlockDivider} />
-        <div className={styles.trendingPaperWrapper}>
-          <TrendingPaper />
-        </div>
+        <RecommendedPapers shouldShow={shouldShow} isLoggingIn={currentUser.isLoggingIn} />
+        <ScinapseInformation isMobile={props.layout.userDevice === UserDevice.MOBILE} shouldShow={!shouldShow} />
         <ImprovedFooter />
       </div>
     </div>
@@ -129,6 +195,8 @@ const ImprovedHome: React.FC<Props> = props => {
 function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
+    currentUser: state.currentUser,
+    recommendedPapers: state.recommendedPapersState,
   };
 }
 

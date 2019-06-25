@@ -11,7 +11,7 @@ interface SignBannerProps {
   isLoading: boolean;
 }
 
-const SignBannerSignButtonText: React.FC<{}> = React.memo(() => {
+const SignBannerSignButtonText: React.FC = React.memo(() => {
   return (
     <div className={styles.bannerSignButtonWrapper}>
       <button
