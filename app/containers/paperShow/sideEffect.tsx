@@ -5,7 +5,6 @@ import { getPaper, getCitedPapers, getReferencePapers, getMyCollections } from '
 import { CurrentUser } from '../../model/currentUser';
 import { PaperShowPageQueryParams, PaperShowMatchParams } from './types';
 import { ActionCreators } from '../../actions/actionTypes';
-import PlutoAxios from '../../api/pluto';
 
 export function fetchMyCollection(paperId: number, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
@@ -50,19 +49,14 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
     return dispatch(ActionCreators.failedToGetPaper({ statusCode: 400 }));
   }
 
-  try {
-    const promiseArray = [];
-    promiseArray.push(dispatch(getPaper({ paperId, cancelToken: params.cancelToken })));
-    promiseArray.push(dispatch(fetchCitedPaperData(paperId, queryParamsObject['cited-page'], params.cancelToken)));
-    promiseArray.push(dispatch(fetchRefPaperData(paperId, queryParamsObject['ref-page'], params.cancelToken)));
+  const promiseArray = [];
+  promiseArray.push(dispatch(getPaper({ paperId, cancelToken: params.cancelToken })));
+  promiseArray.push(dispatch(fetchCitedPaperData(paperId, queryParamsObject['cited-page'], params.cancelToken)));
+  promiseArray.push(dispatch(fetchRefPaperData(paperId, queryParamsObject['ref-page'], params.cancelToken)));
 
-    if (currentUser && currentUser.isLoggedIn) {
-      promiseArray.push(dispatch(fetchMyCollection(paperId, params.cancelToken)));
-    }
-
-    await Promise.all(promiseArray);
-  } catch (err) {
-    const error = PlutoAxios.getGlobalError(err);
-    return error;
+  if (currentUser && currentUser.isLoggedIn) {
+    promiseArray.push(dispatch(fetchMyCollection(paperId, params.cancelToken)));
   }
+
+  await Promise.all(promiseArray);
 }

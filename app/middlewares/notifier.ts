@@ -1,5 +1,6 @@
 import { Middleware } from 'redux';
 import { ACTION_TYPES } from '../actions/actionTypes';
+import EnvChecker from '../helpers/envChecker';
 const notie = require('notie');
 
 export interface NotificationAction {
@@ -14,7 +15,7 @@ const defaultNotieOptions = {
 };
 
 const ReduxNotifier: Middleware = () => next => (action: any) => {
-  if (action.type === ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION) {
+  if (!EnvChecker.isOnServer() && action.type === ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION) {
     const notificationAction: NotificationAction = action;
     const notificationOptions = { ...defaultNotieOptions, ...notificationAction.payload.options };
 
@@ -27,9 +28,9 @@ const ReduxNotifier: Middleware = () => next => (action: any) => {
     });
   } else if (action.type === ACTION_TYPES.GLOBAL_CLEAR_NOTIFICATION) {
     notie.hideAlerts();
-  } else {
-    return next(action);
   }
+
+  return next(action);
 };
 
 export default ReduxNotifier;

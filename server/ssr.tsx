@@ -14,6 +14,7 @@ import { ConnectedRootRoutes as RootRoutes, routesMap } from '../app/routes';
 import { ACTION_TYPES } from '../app/actions/actionTypes';
 import CssInjector from '../app/helpers/cssInjector';
 import { generateFullHTML } from '../app/helpers/htmlWrapper';
+import PlutoAxios from '../app/api/pluto';
 const JssProvider = require('react-jss/lib/JssProvider').default;
 const { SheetsRegistry } = require('react-jss/lib/jss');
 const statsFile = path.resolve(__dirname, '../client/loadable-stats.json');
@@ -85,7 +86,9 @@ const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
       });
     })
     .catch(err => {
-      console.error(`Fetching data error at server - ${err}`);
+      console.trace(err);
+      const error = PlutoAxios.getGlobalError(err);
+      console.error(`Fetching data error at server - ${error.message}`);
     });
 
   const css = new Set();

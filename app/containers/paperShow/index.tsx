@@ -50,6 +50,7 @@ import BottomBanner from '../../components/preNoted/bottomBanner';
 import { Configuration } from '../../reducers/configuration';
 import { getMemoizedConfiguration } from '../../selectors/getConfiguration';
 import ScinapseFooter from '../../components/layouts/scinapseFooter';
+import PlutoAxios from '../../api/pluto';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -118,8 +119,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public async componentDidMount() {
-    const { currentUser, dispatch, match, location, paperShow, configuration } = this.props;
-    const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
+    const { dispatch, match, paperShow, configuration } = this.props;
     const notRenderedAtServerOrJSAlreadyInitialized =
       !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
 
@@ -129,18 +129,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     dispatch(getRelatedPapers(parseInt(this.props.match.params.paperId, 10), this.cancelToken));
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
-      const err = await fetchPaperShowData(
-        {
-          dispatch,
-          match,
-          pathname: location.pathname,
-          queryParams,
-          cancelToken: this.cancelToken.token,
-        },
-        currentUser
-      );
-      const statusCode = err ? (err as CommonError).status : null;
-      this.logPageView(match.params.paperId, statusCode);
+      this.fetchPaperShowData();
       this.scrollToRefCitedSection();
     } else {
       this.logPageView(match.params.paperId, paperShow.errorStatusCode);
@@ -159,18 +148,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if (moveToDifferentPage) {
       dispatch(clearPaperShowState());
       dispatch(getRelatedPapers(parseInt(this.props.match.params.paperId, 10), this.cancelToken));
-      const err = await fetchPaperShowData(
-        {
-          dispatch,
-          match: this.props.match,
-          pathname: this.props.location.pathname,
-          queryParams: nextQueryParams,
-          cancelToken: this.cancelToken.token,
-        },
-        currentUser
-      );
-      const statusCode = err ? (err as CommonError).status : null;
-      this.logPageView(match.params.paperId, statusCode);
+      this.fetchPaperShowData();
       this.scrollToRefCitedSection();
       return this.handleScrollEvent();
     }
@@ -353,6 +331,29 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       </>
     );
   }
+
+  private fetchPaperShowData = async () => {
+    const { currentUser, dispatch, match, location } = this.props;
+    const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
+
+    let statusCode = 200;
+    try {
+      await fetchPaperShowData(
+        {
+          dispatch,
+          match,
+          pathname: location.pathname,
+          queryParams,
+          cancelToken: this.cancelToken.token,
+        },
+        currentUser
+      );
+    } catch (err) {
+      const error = PlutoAxios.getGlobalError(err) as CommonError;
+      statusCode = error ? error.status : 500;
+    }
+    this.logPageView(match.params.paperId, statusCode);
+  };
 
   private logPageView = (paperId: string | number, errorStatus?: number | null) => {
     if (!EnvChecker.isOnServer()) {
