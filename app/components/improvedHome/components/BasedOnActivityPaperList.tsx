@@ -70,7 +70,7 @@ const BaseOnActivityPaperList: React.FC<BasedOnActivityPaperListProps> = props =
         }}
         className={styles.moreItem}
       >
-        {isPaperExpanding ? 'See less' : 'See More'}
+        {isPaperExpanding ? 'See Less' : 'See More'}
         <Icon
           icon="ARROW_POINT_TO_DOWN"
           className={classNames({

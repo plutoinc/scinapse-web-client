@@ -16,8 +16,7 @@ input::placeholder {
   margin: 0;
   left: 0;
   right: 0;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
+  border-radius: 4px;
 
   &:focus {
     outline: none;
@@ -39,8 +38,7 @@ input::placeholder {
 
   &:last-of-type {
     border-bottom: none;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-radius: 4px;
   }
 
   &:focus,

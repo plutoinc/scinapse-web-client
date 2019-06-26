@@ -255,10 +255,10 @@
   margin: 0;
   left: 0;
   right: 0;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 8px 1px;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 1px;
   z-index: 4;
+  margin-top: 2px;
 }
 
 .searchInput {

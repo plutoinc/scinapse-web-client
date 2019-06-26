@@ -27,7 +27,7 @@ const RecommendedPapers: React.FC<Props> = props => {
       <div className={styles.contentBlockDivider} />
       <div className={styles.recommendedPapersContainer}>
         <div className={styles.titleSection}>
-          <div className={styles.title}>Recommended papers based on your activity</div>
+          <div className={styles.title}>Recommended papers for you</div>
           <div className={styles.subTitle}>BASED ON YOUR SEARCH ACTIVITY</div>
         </div>
         <div className={styles.contentSection}>
