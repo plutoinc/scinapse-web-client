@@ -126,6 +126,8 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
   public render() {
     const navClassName = this.getNavbarClassName();
 
+    console.log('rendering improved navbar');
+
     return (
       <nav className={`${navClassName} mui-fixed`}>
         <div className={styles.headerContainer}>
@@ -251,15 +253,10 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
       ? articleSearchState.selectedFilter.filter
       : DEFAULT_FILTER;
 
-    let currentQuery = '';
-    if (location.pathname === '/search') {
-      const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
-      currentQuery = SafeURIStringHandler.decode(rawQueryParamsObj.query || '');
-    }
+    if (!shouldShowSearchFormContainer) return null;
 
     return (
       <div
-        style={!shouldShowSearchFormContainer ? { visibility: 'hidden' } : {}}
         className={classNames({
           [styles.searchFormContainerAtSearchEngineLogo]: isSearchEngineMood,
           [styles.searchFormContainer]: !isSearchEngineMood,
@@ -269,7 +266,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
           wrapperClassName={styles.searchWrapper}
           listWrapperClassName={styles.suggestionListWrapper}
           inputClassName={isSearchEngineMood ? styles.searchEngineMoodInput : styles.searchInput}
-          initialValue={currentQuery}
+          // initialValue={searchKeyword}
           initialFilter={currentFilter}
           actionArea="topBar"
           maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}

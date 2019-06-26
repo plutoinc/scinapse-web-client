@@ -2,7 +2,7 @@ import * as React from 'react';
 import axios, { CancelTokenSource } from 'axios';
 import * as classNames from 'classnames';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '../../../helpers/withStylesHelper';
@@ -12,9 +12,9 @@ import { getHighlightedContent } from '../highLightedContent';
 import Icon from '../../../icons';
 import { trackEvent } from '../../../helpers/handleGA';
 import {
-  saveQueryToRecentHistory,
   deleteQueryFromRecentList,
   getRecentQueries,
+  saveQueryToRecentHistory,
 } from '../../../helpers/recentQueryManager';
 import PapersQueryFormatter, { FilterObject } from '../../../helpers/searchQueryManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
@@ -26,6 +26,7 @@ import { handleInputKeydown } from './helpers/handleInputKeydown';
 import { checkBlockSignUpConversion } from '../../../helpers/checkSignUpCount';
 import { getUserGroupName } from '../../../helpers/abTestHelper';
 import { HOME_IMPROVEMENT_TEST } from '../../../constants/abTestGlobalValue';
+
 const s = require('./searchQueryInput.scss');
 
 type SearchQueryInputProps = React.InputHTMLAttributes<HTMLInputElement> &
@@ -89,6 +90,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
   const [blockOpen, setBlockOpen] = React.useState(true);
   React.useEffect(() => {
     setBlockOpen(false);
+    setIsImprovedHome(getUserGroupName(HOME_IMPROVEMENT_TEST) === 'improvement');
   }, []);
 
   const [genuineInputValue, setGenuineInputValue] = React.useState(props.initialValue || '');
@@ -111,28 +113,12 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
 
   React.useEffect(
     () => {
-      if (props.initialValue) {
-        setInputValue(props.initialValue);
-        setGenuineInputValue(props.initialValue);
-      }
-    },
-    [props.initialValue]
-  );
-
-  React.useEffect(
-    () => {
-      return () => {
-        setIsOpen(false);
-        cancelTokenSource.current.cancel();
-        cancelTokenSource.current = axios.CancelToken.source();
-      };
+      setIsOpen(false);
+      cancelTokenSource.current.cancel();
+      cancelTokenSource.current = axios.CancelToken.source();
     },
     [props.location]
   );
-
-  React.useEffect(() => {
-    setIsImprovedHome(getUserGroupName(HOME_IMPROVEMENT_TEST) === 'improvement');
-  }, []);
 
   async function handleSubmit({ query, filter, from }: SubmitParams) {
     const searchKeyword = query || inputValue;
@@ -172,6 +158,8 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
 
     trackEvent({ category: 'Search', action: 'Query', label: searchKeyword });
     saveQueryToRecentHistory(searchKeyword);
+    console.log('inside handle submit, searchKeyword === ', searchKeyword);
+    setGenuineInputValue(searchKeyword);
     setRecentQueries([{ text: searchKeyword, removable: true }, ...recentQueries]);
     setIsOpen(false);
 
@@ -199,7 +187,9 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
       from = 'suggestion';
     }
 
-    handleSubmit({ filter: props.initialFilter, from });
+    console.log('genuineInputValue at click timing -------', genuineInputValue);
+
+    handleSubmit({ query: genuineInputValue, filter: props.initialFilter, from });
   }
 
   const keywordItems = keywordsToShow.slice(0, props.maxCount).map((k, i) => {
@@ -239,6 +229,9 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
       ? 'Search papers by keyword'
       : 'Search papers by title, author, doi or keyword';
 
+  console.log('rendering inputvalue', inputValue);
+  console.log('rendering genuineInputValue', genuineInputValue);
+
   return (
     <ClickAwayListener
       onClickAway={() => {
@@ -266,6 +259,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
                   from = 'suggestion';
                 }
 
+                console.log('on select genuineInputValue === ', genuineInputValue);
                 handleSubmit({
                   query: keywordsToShow[i] ? keywordsToShow[i].text : genuineInputValue,
                   filter: props.initialFilter,
@@ -285,7 +279,6 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
             setHighlightIdx(-1);
             setInputValue(value);
             setGenuineInputValue(value);
-            setIsOpen(true);
             setParams(value);
           }}
           placeholder={placeholder}
