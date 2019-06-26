@@ -51,7 +51,7 @@ export function getPaper(params: GetPaperParams) {
       if (!axios.isCancel(err)) {
         const error = PlutoAxios.getGlobalError(err);
         dispatch(ActionCreators.failedToGetPaper({ statusCode: (error as CommonError).status }));
-        throw new Error(err);
+        throw err;
       }
     }
   };
