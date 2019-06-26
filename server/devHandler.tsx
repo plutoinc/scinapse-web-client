@@ -1,7 +1,10 @@
 import * as AWS from 'aws-sdk';
 import * as https from 'https';
-import * as s3 from 's3';
+import fs from 'fs';
+import rimraf from 'rimraf';
 import * as DeployConfig from '../scripts/deploy/config';
+
+const s3 = new AWS.S3();
 
 AWS.config.update({
   region: 'us-east-1',
@@ -12,43 +15,76 @@ AWS.config.update({
   },
 });
 
-const s3client = s3.createClient({
-  s3Options: {
-    region: 'us-east-1',
-  },
-});
+let isDownloading = false;
 
-function downloadSrcFromS3(branch?: string) {
-  return new Promise((resolve, reject) => {
-    console.log('TRY TO START TO DOWNLOAD BUNDLE');
-    const prefix = branch
-      ? `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${branch}`
-      : DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX;
-    const params = {
-      localDir: '/tmp',
-      s3Params: {
+async function downloadSrcFromS3(branch?: string) {
+  isDownloading = true;
+  console.log('-------------------------------------------------------');
+  console.log('REMOVE OLD TMP DIRECTORY');
+  rimraf.sync('/tmp/*');
+
+  if (!fs.existsSync('/tmp/client')) {
+    fs.mkdirSync('/tmp/client');
+  }
+
+  if (!fs.existsSync('/tmp/server')) {
+    fs.mkdirSync('/tmp/server');
+  }
+
+  const prefix = branch
+    ? `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${branch}`
+    : DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX;
+
+  console.log('-------------------------------------------------------');
+  console.log('LIST FILES');
+  const res = await s3
+    .listObjectsV2({
+      Bucket: DeployConfig.AWS_S3_BUCKET,
+      Prefix: prefix,
+    })
+    .promise();
+
+  console.log('-------------------------------------------------------');
+  console.log('DOWNLOAD FILES');
+  if (res.Contents && res.Contents.length > 0) {
+    const promiseArr = res.Contents.map(content => {
+      const params: AWS.S3.Types.GetObjectRequest = {
         Bucket: DeployConfig.AWS_S3_BUCKET,
-        Prefix: prefix,
-      },
-      deleteRemoved: true,
-    };
+        Key: content.Key!,
+      };
 
-    const downloader = s3client.downloadDir(params);
+      return s3
+        .getObject(params)
+        .promise()
+        .then(objectRes => {
+          const pwdArr = content.Key!.split('/');
+          let filePath = pwdArr[pwdArr.length - 2] + '/' + pwdArr[pwdArr.length - 1];
+          if (pwdArr[pwdArr.length - 2] !== 'client' && pwdArr[pwdArr.length - 2] !== 'server') {
+            filePath = pwdArr[pwdArr.length - 1];
+          }
+          fs.writeFileSync(`/tmp/${filePath}`, objectRes.Body);
+        });
+    });
 
-    downloader.on('error', function(err: Error) {
-      console.error('unable to sync:', err.stack);
-      reject();
-    });
-    downloader.on('end', function() {
-      console.log('done downloading');
-      resolve();
-    });
-  });
+    await Promise.all(promiseArr);
+  }
+  isDownloading = false;
 }
 
-export const ssr = async (event: LambdaProxy.Event, _context: LambdaProxy.Context) => {
+export const ssr = async (event: LambdaProxy.Event) => {
   const branch = event.queryStringParameters && event.queryStringParameters.branch;
-  await downloadSrcFromS3(branch);
+
+  if (event.path.includes('sw.js') || event.path.includes('favicon')) {
+    return {
+      statusCode: 200,
+      body: '',
+    };
+  }
+
+  if (!isDownloading && !fs.existsSync('/tmp/server/main.js')) {
+    await downloadSrcFromS3(branch);
+  }
+
   const bundle = require('/tmp/server/main.js');
   (global as any).__webpack_public_path__ = '/tmp/server';
 
@@ -56,6 +92,7 @@ export const ssr = async (event: LambdaProxy.Event, _context: LambdaProxy.Contex
     const res = await bundle.ssr(event);
     return res;
   } catch (err) {
+    console.error(err);
     return {
       statusCode: 500,
       headers: {
