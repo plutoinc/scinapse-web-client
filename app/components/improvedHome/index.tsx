@@ -113,13 +113,13 @@ const ScinapseFigureContent: React.FC<{ shouldShow: boolean; papersFoundCount: n
 
 const ImprovedHome: React.FC<Props> = props => {
   const { currentUser } = props;
-  const [basedOnActivityPapers, setBasedOnActivityPapers] = React.useState<Paper[]>([]);
-  const [isLoadingBasedOnActivityPapers, setIsLoadingBasedOnActivityPapers] = React.useState(false);
-  const [basedOnCollectionPapers, setBasedOnCollectionPapers] = React.useState<BasedOnCollectionPapersParams>();
-  const [isLoadingBasedOnCollectionPapers, setIsLoadingBasedOnCollectionPapers] = React.useState(false);
   const [isSearchEngineMood, setIsSearchEngineMood] = React.useState(false);
   const [isKnowledgeBasedRecommended, setIsKnowledgeBasedRecommended] = React.useState(false);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
+  const [basedOnActivityPapers, setBasedOnActivityPapers] = React.useState<Paper[]>([]);
+  const [basedOnCollectionPapers, setBasedOnCollectionPapers] = React.useState<BasedOnCollectionPapersParams>();
+  const [isLoadingBasedOnActivityPapers, setIsLoadingBasedOnActivityPapers] = React.useState(false);
+  const [isLoadingBasedOnCollectionPapers, setIsLoadingBasedOnCollectionPapers] = React.useState(false);
   const cancelToken = React.useRef(axios.CancelToken.source());
 
   React.useEffect(() => {
@@ -154,6 +154,8 @@ const ImprovedHome: React.FC<Props> = props => {
       }
 
       return () => {
+        setIsLoadingBasedOnActivityPapers(false);
+        setIsLoadingBasedOnCollectionPapers(false);
         cancelToken.current.cancel();
         cancelToken.current = axios.CancelToken.source();
       };
