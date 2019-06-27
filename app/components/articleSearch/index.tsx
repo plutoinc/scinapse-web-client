@@ -1,4 +1,3 @@
-import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
@@ -34,6 +33,8 @@ import ArticleSpinner from '../common/spinner/articleSpinner';
 import GuruBox from './components/guruBox';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { SEMANTIC_SEARCH_TEST } from '../../constants/abTestGlobalValue';
+import { changeSearchQuery } from '../../actions/searchQuery';
+import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -190,6 +191,7 @@ const SearchContainer: React.FC<Props> = props => {
     searchPapers,
     toggleExpandingFilter,
     changeRangeInput,
+    changeSearchQuery,
   } = props;
   const [queryParams, setQueryParams] = React.useState<SearchPageQueryParams>(
     parse(location.search, { ignoreQueryPrefix: true })
@@ -204,9 +206,9 @@ const SearchContainer: React.FC<Props> = props => {
       const doSemanticSearch = getUserGroupName(SEMANTIC_SEARCH_TEST) === 'semantic';
 
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
+      changeSearchQuery(SafeURIStringHandler.decode(currentQueryParams.query || ''));
       setQueryParams(currentQueryParams);
       setFilter(SearchQueryManager.objectifyPaperFilter(currentQueryParams.filter));
-
       // set params
       const params = SearchQueryManager.makeSearchQueryFromParamsObject(currentQueryParams);
       params.cancelToken = cancelToken.current.token;
@@ -299,15 +301,14 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>) =>
       searchPapers,
       toggleExpandingFilter,
       changeRangeInput,
+      changeSearchQuery,
     },
     dispatch
   );
 
-export default hot(
-  withRouter(
-    connect(
-      mapStateToProps,
-      mapDispatchToProps
-    )(withStyles<typeof SearchContainer>(styles)(SearchContainer))
-  )
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(withStyles<typeof SearchContainer>(styles)(SearchContainer))
 );

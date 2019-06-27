@@ -100,15 +100,7 @@ const ICONS: { [key: string]: any } = {
 };
 
 @withStyles<typeof Icon>(styles)
-class Icon extends React.Component<IconProps> {
-  public shouldComponentUpdate(nextProps: IconProps) {
-    if (this.props.icon === nextProps.icon && this.props.className === nextProps.className) {
-      return false;
-    }
-
-    return true;
-  }
-
+class Icon extends React.PureComponent<IconProps> {
   public render() {
     let className = styles.icon;
     if (this.props.className) {
