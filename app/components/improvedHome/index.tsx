@@ -142,7 +142,7 @@ const ImprovedHome: React.FC<Props> = props => {
         setIsLoadingBasedOnActivityPapers(true);
         setIsLoadingBasedOnCollectionPapers(true);
 
-        const fetchBasedOnActivityPapers = homeAPI
+        homeAPI
           .getBasedOnActivityPapers()
           .then(res => {
             setBasedOnActivityPapers(res);
@@ -153,7 +153,7 @@ const ImprovedHome: React.FC<Props> = props => {
             setIsLoadingBasedOnActivityPapers(false);
           });
 
-        const fetchBasedOnCollectionPapers = homeAPI
+        homeAPI
           .getBasedOnCollectionPapers()
           .then(res => {
             setBasedOnCollectionPapers(res);
@@ -163,8 +163,6 @@ const ImprovedHome: React.FC<Props> = props => {
             console.error(err);
             setIsLoadingBasedOnCollectionPapers(false);
           });
-
-        Promise.all([fetchBasedOnActivityPapers, fetchBasedOnCollectionPapers]);
       }
 
       return () => {
