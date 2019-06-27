@@ -21,8 +21,8 @@ const ActivityPaperItem: React.FC<{ paper: Paper }> = ({ paper }) => {
   const actionTicketContext: ActionTicketParams = {
     pageType: 'home',
     actionType: 'view',
-    actionArea: 'baseOnActivityPaperList',
-    actionTag: 'viewBaseOnActivityPaper',
+    actionArea: 'basedOnActivityPaperList',
+    actionTag: 'viewBasedOnActivityPaper',
     actionLabel: String(paper.id),
   };
 
@@ -33,8 +33,8 @@ const ActivityPaperItem: React.FC<{ paper: Paper }> = ({ paper }) => {
       <PaperItem
         paper={paper}
         omitAbstract={true}
-        pageType="collectionShow"
-        actionArea="relatedPaperList"
+        pageType="home"
+        actionArea="basedOnActivityPaperList"
         wrapperClassName={styles.paperItemWrapper}
       />
     </div>
@@ -62,7 +62,7 @@ const BaseOnActivityPaperList: React.FC<BasedOnActivityPaperListProps> = props =
           ActionTicketManager.trackTicket({
             pageType: 'home',
             actionType: 'fire',
-            actionArea: 'baseOnActivityPaperList',
+            actionArea: 'basedOnActivityPaperList',
             actionTag: isPaperExpanding ? 'clickSeeLess' : 'clickSeeMore',
             actionLabel: null,
           });
