@@ -1,4 +1,3 @@
-import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
@@ -18,13 +17,10 @@ import { signOut } from '../auth/actions';
 import { trackDialogView } from '../../helpers/handleGA';
 import { HeaderProps } from './types/header';
 import { withStyles } from '../../helpers/withStylesHelper';
-import EnvChecker from '../../helpers/envChecker';
 import { UserDevice } from './records';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../locationListener';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
-import getQueryParamsObject from '../../helpers/getQueryParamsObject';
-import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
 import { HOME_PATH } from '../../constants/routes';
 import { ACTION_TYPES } from '../../actions/actionTypes';
@@ -60,7 +56,6 @@ interface HeaderStates {
   isUserDropdownOpen: boolean;
   userDropdownAnchorElement: HTMLElement | null;
   openTopToast: boolean;
-  searchKeyword: string;
   isSearchEngineMood: boolean;
 }
 
@@ -83,22 +78,18 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
   public constructor(props: HeaderProps) {
     super(props);
 
-    const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(props.location.search);
     this.state = {
       isTop: true,
       isUserDropdownOpen: false,
       userDropdownAnchorElement: this.userDropdownAnchorRef,
       openTopToast: false,
-      searchKeyword: SafeURIStringHandler.decode(rawQueryParamsObj.query || ''),
       isSearchEngineMood: false,
     };
   }
 
   public componentDidMount() {
-    if (!EnvChecker.isOnServer()) {
-      window.addEventListener('scroll', this.handleScrollEvent, { passive: true });
-      this.checkTopToast();
-    }
+    window.addEventListener('scroll', this.handleScrollEvent, { passive: true });
+    this.checkTopToast();
 
     this.setState({
       isSearchEngineMood: getUserGroupName(SEARCH_ENGINE_MOOD_TEST) === 'searchEngine',
@@ -106,9 +97,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
   }
 
   public componentWillUnmount() {
-    if (!EnvChecker.isOnServer()) {
-      window.removeEventListener('scroll', this.handleScrollEvent);
-    }
+    window.removeEventListener('scroll', this.handleScrollEvent);
   }
 
   public componentDidUpdate(prevProps: HeaderProps) {
@@ -246,20 +235,16 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
 
   private getSearchFormContainer = (isSearchEngineMood: boolean) => {
     const { location, articleSearchState } = this.props;
+
     const shouldShowSearchFormContainer = location.pathname !== HOME_PATH;
     const currentFilter: FilterObject = articleSearchState.selectedFilter
       ? articleSearchState.selectedFilter.filter
       : DEFAULT_FILTER;
 
-    let currentQuery = '';
-    if (location.pathname === '/search') {
-      const rawQueryParamsObj: Scinapse.ArticleSearch.RawQueryParams = getQueryParamsObject(location.search);
-      currentQuery = SafeURIStringHandler.decode(rawQueryParamsObj.query || '');
-    }
+    if (!shouldShowSearchFormContainer) return null;
 
     return (
       <div
-        style={!shouldShowSearchFormContainer ? { visibility: 'hidden' } : {}}
         className={classNames({
           [styles.searchFormContainerAtSearchEngineLogo]: isSearchEngineMood,
           [styles.searchFormContainer]: !isSearchEngineMood,
@@ -269,7 +254,6 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
           wrapperClassName={styles.searchWrapper}
           listWrapperClassName={styles.suggestionListWrapper}
           inputClassName={isSearchEngineMood ? styles.searchEngineMoodInput : styles.searchInput}
-          initialValue={currentQuery}
           initialFilter={currentFilter}
           actionArea="topBar"
           maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
@@ -484,4 +468,4 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 }
 
-export default hot(withRouter(connect(mapStateToProps)(ImprovedHeader)));
+export default withRouter(connect(mapStateToProps)(ImprovedHeader));
