@@ -17,10 +17,10 @@ import { SEARCH_ENGINE_MOOD_TEST, KNOWLEDGE_BASED_RECOMMEND_TEST } from '../../c
 import Icon from '../../icons';
 import JournalsInfo from './components/journalsInfo';
 import AffiliationsInfo from './components/affiliationsInfo';
-import homeAPI from '../../api/home';
+import homeAPI, { BasedOnCollectionPapersParams } from '../../api/home';
 import ImprovedFooter from '../layouts/improvedFooter';
 import RecommendedPapers from './components/recommendedPapers';
-import { fetchBasedOnActivityPapers, fetchBasedOnCollectionPapers } from '../../actions/recommendedPapers';
+import { Paper } from '../../model/paper';
 const styles = require('./improvedHome.scss');
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
@@ -112,8 +112,11 @@ const ScinapseFigureContent: React.FC<{ shouldShow: boolean; papersFoundCount: n
 };
 
 const ImprovedHome: React.FC<Props> = props => {
-  const { dispatch, currentUser, recommendedPapers } = props;
-  const { basedOnActivityPapers } = recommendedPapers;
+  const { currentUser } = props;
+  const [basedOnActivityPapers, setBasedOnActivityPapers] = React.useState<Paper[]>([]);
+  const [isLoadingBasedOnActivityPapers, setIsLoadingBasedOnActivityPapers] = React.useState(false);
+  const [basedOnCollectionPapers, setBasedOnCollectionPapers] = React.useState<BasedOnCollectionPapersParams>();
+  const [isLoadingBasedOnCollectionPapers, setIsLoadingBasedOnCollectionPapers] = React.useState(false);
   const [isSearchEngineMood, setIsSearchEngineMood] = React.useState(false);
   const [isKnowledgeBasedRecommended, setIsKnowledgeBasedRecommended] = React.useState(false);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
@@ -136,7 +139,18 @@ const ImprovedHome: React.FC<Props> = props => {
   React.useEffect(
     () => {
       if (currentUser.isLoggedIn) {
-        Promise.all([dispatch(fetchBasedOnActivityPapers()), dispatch(fetchBasedOnCollectionPapers())]);
+        setIsLoadingBasedOnActivityPapers(true);
+        setIsLoadingBasedOnCollectionPapers(true);
+
+        homeAPI.getBasedOnActivityPapers().then(res => {
+          setBasedOnActivityPapers(res);
+          setIsLoadingBasedOnActivityPapers(false);
+        });
+
+        homeAPI.getBasedOnCollectionPapers().then(res => {
+          setBasedOnCollectionPapers(res);
+          setIsLoadingBasedOnCollectionPapers(false);
+        });
       }
 
       return () => {
@@ -184,7 +198,14 @@ const ImprovedHome: React.FC<Props> = props => {
           </div>
           {shouldShow && <div className={styles.recommendedPapersBlockDivider} />}
         </div>
-        <RecommendedPapers shouldShow={shouldShow} isLoggingIn={currentUser.isLoggingIn} />
+        <RecommendedPapers
+          shouldShow={shouldShow}
+          isLoggingIn={currentUser.isLoggingIn}
+          isLoadingActivityPapers={isLoadingBasedOnActivityPapers}
+          isLoadingCollectionPapers={isLoadingBasedOnCollectionPapers}
+          basedOnActivityPapers={basedOnActivityPapers}
+          basedOnCollectionPapers={basedOnCollectionPapers}
+        />
         <ScinapseInformation isMobile={props.layout.userDevice === UserDevice.MOBILE} shouldShow={!shouldShow} />
         <ImprovedFooter />
       </div>
@@ -196,7 +217,6 @@ function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
     currentUser: state.currentUser,
-    recommendedPapers: state.recommendedPapersState,
   };
 }
 

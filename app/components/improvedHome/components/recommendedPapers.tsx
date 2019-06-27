@@ -1,24 +1,29 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import BaseOnActivityPaperList from './BasedOnActivityPaperList';
 import BaseOnCollectionPaperList from './BasedOnCollectionPaperList';
-import { AppState } from '../../../reducers';
+import { Paper } from '../../../model/paper';
+import { BasedOnCollectionPapersParams } from '../../../api/home';
 const styles = require('./recommendedPapers.scss');
 
-type Props = ReturnType<typeof mapStateToProps> & {
+interface RecommendedPapersProps {
   shouldShow: boolean;
   isLoggingIn: boolean;
-};
+  isLoadingActivityPapers: boolean;
+  isLoadingCollectionPapers: boolean;
+  basedOnActivityPapers: Paper[];
+  basedOnCollectionPapers: BasedOnCollectionPapersParams | undefined;
+}
 
-const RecommendedPapers: React.FC<Props> = props => {
-  const { recommendedPapers, shouldShow, isLoggingIn } = props;
+const RecommendedPapers: React.FC<RecommendedPapersProps> = props => {
   const {
     isLoadingActivityPapers,
     isLoadingCollectionPapers,
     basedOnActivityPapers,
     basedOnCollectionPapers,
-  } = recommendedPapers;
+    shouldShow,
+    isLoggingIn,
+  } = props;
 
   if (!shouldShow) return null;
 
@@ -49,10 +54,4 @@ const RecommendedPapers: React.FC<Props> = props => {
   );
 };
 
-function mapStateToProps(state: AppState) {
-  return {
-    recommendedPapers: state.recommendedPapersState,
-  };
-}
-
-export default connect(mapStateToProps)(withStyles<typeof RecommendedPapers>(styles)(RecommendedPapers));
+export default withStyles<typeof RecommendedPapers>(styles)(RecommendedPapers);
