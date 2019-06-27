@@ -1,4 +1,3 @@
-import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import loadable from '@loadable/component';
 import { Route, Switch, match, withRouter, RouteComponentProps } from 'react-router-dom';
@@ -274,16 +273,12 @@ const Navbar: React.FC = () => {
   const [showImprovedHeader, setShowImprovedHeader] = React.useState(false);
 
   React.useEffect(() => {
-    console.log('inside of effect, ===================== ', getUserGroupName(HOME_IMPROVEMENT_TEST) === 'improvement');
     setShowImprovedHeader(getUserGroupName(HOME_IMPROVEMENT_TEST) === 'improvement');
-  }, []);
+  });
 
-  console.log('useImprovedHeader , ===== ' + showImprovedHeader);
   if (showImprovedHeader) {
-    console.log('asasdafassdasdf , ===== ' + showImprovedHeader);
     return <ImprovedHeader />;
   }
-  console.log('rtyrutyrutyruty , ===== ' + showImprovedHeader);
   return <Header />;
 };
 
@@ -308,6 +303,6 @@ const RootRoutes: React.FC<RootRoutesProps> = props => {
   );
 };
 
-export const ConnectedRootRoutes = hot(
-  withRouter(connect(mapStateToProps)(withStyles<typeof RootRoutes>(styles)(RootRoutes)))
+export const ConnectedRootRoutes = withRouter(
+  connect(mapStateToProps)(withStyles<typeof RootRoutes>(styles)(RootRoutes))
 );

@@ -14,6 +14,7 @@ import TrendingPaper from './components/trendingPaper';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { SEARCH_ENGINE_MOOD_TEST, HOME_IMPROVEMENT_TEST } from '../../constants/abTestGlobalValue';
 import ImprovedHome from '../improvedHome';
+import { changeSearchQuery } from '../../actions/searchQuery';
 const styles = require('./home.scss');
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
@@ -73,6 +74,7 @@ const Home: React.FC<Props> = props => {
   React.useEffect(() => {
     setIsSearchEngineMood(getUserGroupName(SEARCH_ENGINE_MOOD_TEST) === 'searchEngine');
     setIsImprovedHome(getUserGroupName(HOME_IMPROVEMENT_TEST) === 'improvement');
+    props.dispatch(changeSearchQuery(''));
   }, []);
 
   const containerStyle = getContainerStyle(props.layout);

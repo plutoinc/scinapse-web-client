@@ -20,22 +20,21 @@ import PapersQueryFormatter, { FilterObject } from '../../../helpers/searchQuery
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { ACTION_TYPES } from '../../../actions/actionTypes';
 import { AppState } from '../../../reducers';
-import { LayoutState, UserDevice } from '../../layouts/records';
+import { UserDevice } from '../../layouts/records';
 import { getCurrentPageType } from '../../locationListener';
 import { handleInputKeydown } from './helpers/handleInputKeydown';
 import { checkBlockSignUpConversion } from '../../../helpers/checkSignUpCount';
 import { getUserGroupName } from '../../../helpers/abTestHelper';
 import { HOME_IMPROVEMENT_TEST } from '../../../constants/abTestGlobalValue';
-
+import { changeSearchQuery } from '../../../actions/searchQuery';
 const s = require('./searchQueryInput.scss');
 
 type SearchQueryInputProps = React.InputHTMLAttributes<HTMLInputElement> &
+  ReturnType<typeof mapStateToProps> &
   RouteComponentProps<any> & {
     dispatch: Dispatch<any>;
-    layout: LayoutState;
     actionArea: 'home' | 'topBar' | 'paperShow';
     maxCount: number;
-    initialValue?: string;
     initialFilter?: FilterObject;
     wrapperClassName?: string;
     listWrapperClassName?: string;
@@ -46,7 +45,7 @@ type SearchSourceType = 'history' | 'suggestion' | 'raw';
 
 interface SubmitParams {
   from: SearchSourceType;
-  query?: string;
+  query: string;
   filter?: FilterObject;
 }
 
@@ -70,12 +69,12 @@ async function shouldBlockUnsignedUser(actionArea: string) {
 
 const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [inputValue, setInputValue] = React.useState(props.initialValue || '');
   const [highlightIdx, setHighlightIdx] = React.useState(-1);
+  const [inputValue, setInputValue] = React.useState('');
   const [isImprovedHome, setIsImprovedHome] = React.useState(false);
   const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
   const { data: suggestionWords, setParams } = useDebouncedAsyncFetch<string, CompletionKeyword[]>({
-    initialParams: props.initialValue || '',
+    initialParams: '',
     fetchFunc: async (q: string) => {
       const res = await CompletionAPI.fetchSuggestionKeyword(q, cancelTokenSource.current.token);
       return res;
@@ -93,12 +92,20 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     setIsImprovedHome(getUserGroupName(HOME_IMPROVEMENT_TEST) === 'improvement');
   }, []);
 
-  const [genuineInputValue, setGenuineInputValue] = React.useState(props.initialValue || '');
+  const [genuineInputValue, setGenuineInputValue] = React.useState('');
   React.useEffect(
     () => {
       setRecentQueries(getRecentQueries(genuineInputValue));
     },
     [genuineInputValue]
+  );
+
+  React.useEffect(
+    () => {
+      setInputValue(props.searchQuery);
+      setGenuineInputValue(props.searchQuery);
+    },
+    [props.searchQuery]
   );
 
   const [recentQueries, setRecentQueries] = React.useState(getRecentQueries(genuineInputValue));
@@ -113,15 +120,18 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
 
   React.useEffect(
     () => {
-      setIsOpen(false);
-      cancelTokenSource.current.cancel();
-      cancelTokenSource.current = axios.CancelToken.source();
+      return () => {
+        setIsOpen(false);
+        cancelTokenSource.current.cancel();
+        cancelTokenSource.current = axios.CancelToken.source();
+      };
     },
     [props.location]
   );
 
   async function handleSubmit({ query, filter, from }: SubmitParams) {
-    const searchKeyword = query || inputValue;
+    const searchKeyword = (query || inputValue).trim();
+
     if (!validateSearchInput(searchKeyword)) {
       props.dispatch({
         type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
@@ -145,7 +155,6 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
       actionTag: 'query',
       actionLabel: searchKeyword,
     });
-
     if (from === 'history' || from === 'suggestion') {
       ActionTicketManager.trackTicket({
         pageType: getCurrentPageType(),
@@ -155,12 +164,10 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
         actionLabel: searchKeyword,
       });
     }
-
     trackEvent({ category: 'Search', action: 'Query', label: searchKeyword });
+
     saveQueryToRecentHistory(searchKeyword);
-    console.log('inside handle submit, searchKeyword === ', searchKeyword);
-    setGenuineInputValue(searchKeyword);
-    setRecentQueries([{ text: searchKeyword, removable: true }, ...recentQueries]);
+    props.dispatch(changeSearchQuery(searchKeyword));
     setIsOpen(false);
 
     const currentPage = getCurrentPageType();
@@ -186,8 +193,6 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     } else if (matchKeyword && !matchKeyword.removable) {
       from = 'suggestion';
     }
-
-    console.log('genuineInputValue at click timing -------', genuineInputValue);
 
     handleSubmit({ query: genuineInputValue, filter: props.initialFilter, from });
   }
@@ -225,12 +230,9 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
   const wrapperClassName = props.wrapperClassName ? props.wrapperClassName : s.wrapper;
   const inputClassName = props.inputClassName ? props.inputClassName : s.input;
   const placeholder =
-    props.layout.userDevice !== UserDevice.DESKTOP
+    props.userDevice !== UserDevice.DESKTOP
       ? 'Search papers by keyword'
       : 'Search papers by title, author, doi or keyword';
-
-  console.log('rendering inputvalue', inputValue);
-  console.log('rendering genuineInputValue', genuineInputValue);
 
   return (
     <ClickAwayListener
@@ -259,7 +261,6 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
                   from = 'suggestion';
                 }
 
-                console.log('on select genuineInputValue === ', genuineInputValue);
                 handleSubmit({
                   query: keywordsToShow[i] ? keywordsToShow[i].text : genuineInputValue,
                   filter: props.initialFilter,
@@ -301,7 +302,8 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
 
 function mapStateToProps(state: AppState) {
   return {
-    layout: state.layout,
+    userDevice: state.layout.userDevice,
+    searchQuery: state.searchQueryState.query,
   };
 }
 
