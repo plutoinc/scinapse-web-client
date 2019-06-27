@@ -10,7 +10,7 @@ const cpuLength = require('os').cpus().length;
 
 module.exports = {
   mode: 'development',
-  entry: ['@babel/polyfill', 'react-hot-loader/patch', './app/clientIndex.tsx'],
+  entry: ['@babel/polyfill', './app/clientIndex.tsx'],
   output: {
     path: path.resolve(__dirname, 'dist', 'client'),
     publicPath: 'http://localhost:8080/client/',
@@ -24,10 +24,7 @@ module.exports = {
     },
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx'],
-    alias: {
-      'react-dom': '@hot-loader/react-dom',
-    },
+    extensions: ['.ts', '.tsx', '.js', '.jsx']
   },
   stats: 'minimal',
   module: {
@@ -111,7 +108,6 @@ module.exports = {
       chunkFilename: '[id].css',
     }),
     new webpack.IgnorePlugin(/^\.\/pdf.worker.js$/),
-    new webpack.HotModuleReplacementPlugin(),
     new WorkboxPlugin.InjectManifest({
       swSrc: './app/sw.js',
       swDest: '../server/sw.js',
@@ -127,7 +123,6 @@ module.exports = {
       return /(loadable-stats\.json|sw.js)/.test(filePath);
     },
     compress: true,
-    hot: true,
     host: '0.0.0.0',
     allowedHosts: ['localhost', 'lvh.me'],
     headers: {

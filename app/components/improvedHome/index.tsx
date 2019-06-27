@@ -1,4 +1,3 @@
-import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import { Dispatch } from 'redux';
 import axios from 'axios';
@@ -200,4 +199,4 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default hot(withRouter(connect(mapStateToProps)(withStyles<typeof ImprovedHome>(styles)(ImprovedHome))));
+export default withRouter(connect(mapStateToProps)(withStyles<typeof ImprovedHome>(styles)(ImprovedHome)));

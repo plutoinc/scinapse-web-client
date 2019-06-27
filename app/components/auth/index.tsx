@@ -1,4 +1,3 @@
-import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Switch, RouteComponentProps, Route } from 'react-router-dom';
@@ -56,4 +55,4 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default hot(connect(mapStateToProps)(withStyles<typeof AuthComponent>(styles)(AuthComponent)));
+export default connect(mapStateToProps)(withStyles<typeof AuthComponent>(styles)(AuthComponent));

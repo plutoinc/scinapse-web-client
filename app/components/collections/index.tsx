@@ -1,4 +1,3 @@
-import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import axios from 'axios';
 import { Dispatch } from 'redux';
@@ -259,4 +258,4 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
   };
 }
 
-export default hot(connect(mapStateToProps)(UserCollections));
+export default connect(mapStateToProps)(UserCollections);

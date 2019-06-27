@@ -1,4 +1,3 @@
-import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import axios from 'axios';
 import Table from '@material-ui/core/Table';
@@ -305,4 +304,4 @@ const mapStateToProps = (state: AppState) => {
   };
 };
 
-export default hot(connect(mapStateToProps)(AdminComponent));
+export default connect(mapStateToProps)(AdminComponent);

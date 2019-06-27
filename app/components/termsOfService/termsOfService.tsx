@@ -1,4 +1,3 @@
-import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import { withStyles } from '../../helpers/withStylesHelper';
 import ScinapseFooter from '../layouts/scinapseFooter';
@@ -331,4 +330,4 @@ class TermsOfService extends React.Component {
   }
 }
 
-export default hot(TermsOfService);
+export default TermsOfService;

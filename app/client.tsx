@@ -1,6 +1,5 @@
 import 'intersection-observer';
 import { BrowserRouter } from 'react-router-dom';
-import { loadableReady } from '@loadable/component';
 import * as raf from 'raf';
 import * as React from 'react';
 import * as ReactGA from 'react-ga';
@@ -195,11 +194,9 @@ class PlutoRenderer {
       </CssInjector>
     );
 
-    loadableReady(() => {
-      ReactDom.hydrate(App, document.getElementById('react-app'), () => {
-        this.checkRender();
-        this.checkAuthStatus();
-      });
+    ReactDom.hydrate(App, document.getElementById('react-app'), () => {
+      this.checkRender();
+      this.checkAuthStatus();
     });
   }
 }

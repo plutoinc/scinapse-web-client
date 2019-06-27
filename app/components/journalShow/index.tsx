@@ -1,4 +1,3 @@
-import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import axios from 'axios';
 import { parse, stringify } from 'qs';
@@ -402,4 +401,4 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
   };
 }
 
-export default hot(connect(mapStateToProps)(withRouter(JournalShowContainer)));
+export default connect(mapStateToProps)(withRouter(JournalShowContainer));
