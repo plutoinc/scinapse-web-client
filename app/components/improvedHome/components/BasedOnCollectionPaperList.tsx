@@ -8,6 +8,7 @@ import { Paper } from '../../../model/paper';
 import { BasedOnCollectionPapersParams } from '../../../api/home';
 import { ActionTicketParams } from '../../../helpers/actionTicketManager/actionTicket';
 import { useObserver } from '../../../hooks/useIntersectionHook';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
 const styles = require('./recommendedPapers.scss');
 
 interface BasedOnCollectionPaperItemProps {
@@ -25,6 +26,16 @@ interface BasedOnCollectionPapersProps {
 interface BasedOnCollectionPaperListProps {
   basedOnCollectionPapers: BasedOnCollectionPapersParams;
   isLoading: boolean;
+}
+
+function trackToBasedOnCollectionPaper(actionTag: Scinapse.ActionTicket.ActionTagType, actionLabel: string | null) {
+  ActionTicketManager.trackTicket({
+    pageType: 'home',
+    actionType: 'fire',
+    actionArea: 'basedOnCollectionPaperList',
+    actionTag,
+    actionLabel,
+  });
 }
 
 const CollectionPaperItem: React.FC<BasedOnCollectionPaperItemProps> = props => {
@@ -52,7 +63,13 @@ const CollectionPaperItem: React.FC<BasedOnCollectionPaperItemProps> = props => 
     authorInfo = (
       <span>
         {` · `}
-        <Link to={`/authors/${authors[0].id}`} className={styles.authorInfo}>
+        <Link
+          to={`/authors/${authors[0].id}`}
+          className={styles.authorInfo}
+          onClick={() => {
+            trackToBasedOnCollectionPaper('authorShow', String(authors[0].id));
+          }}
+        >
           {authors[0].name}
         </Link>{' '}
         {affiliationInfo}
@@ -64,7 +81,14 @@ const CollectionPaperItem: React.FC<BasedOnCollectionPaperItemProps> = props => 
     journalTitle = (
       <span>
         {' '}
-        in <Link to={`/journals/${journal.id}`} className={styles.journalInfo}>{` ${journal.title}`}</Link>{' '}
+        in{' '}
+        <Link
+          to={`/journals/${journal.id}`}
+          className={styles.journalInfo}
+          onClick={() => {
+            trackToBasedOnCollectionPaper('journalShow', String(journal.id));
+          }}
+        >{` ${journal.title}`}</Link>{' '}
       </span>
     );
   }
@@ -72,8 +96,8 @@ const CollectionPaperItem: React.FC<BasedOnCollectionPaperItemProps> = props => 
   const actionTicketContext: ActionTicketParams = {
     pageType: 'home',
     actionType: 'view',
-    actionArea: 'baseOnCollectionPaperList',
-    actionTag: 'viewBaseOnCollectionPaper',
+    actionArea: 'basedOnCollectionPaperList',
+    actionTag: 'viewBasedOnCollectionPaper',
     actionLabel: String(id),
   };
 
@@ -83,11 +107,23 @@ const CollectionPaperItem: React.FC<BasedOnCollectionPaperItemProps> = props => 
     <div ref={elRef} className={styles.basedOnCollectionPapersItemWrapper}>
       <div className={styles.fromCollectionInfo}>
         from{' '}
-        <Link to={`/collections/${collectionId}`} className={styles.fromCollectionLink}>
+        <Link
+          to={`/collections/${collectionId}`}
+          className={styles.fromCollectionLink}
+          onClick={() => {
+            trackToBasedOnCollectionPaper('collectionShow', String(collectionId));
+          }}
+        >
           {collectionTitle}
         </Link>
       </div>
-      <Link to={`/papers/${id}`} className={styles.paperTitle}>
+      <Link
+        to={`/papers/${id}`}
+        className={styles.paperTitle}
+        onClick={() => {
+          trackToBasedOnCollectionPaper('paperShow', String(id));
+        }}
+      >
         {title}
       </Link>
       <div className={styles.publishInfo}>
@@ -122,7 +158,13 @@ const BaseOnCollectionPaperList: React.FC<BasedOnCollectionPaperListProps> = pro
 
   if (collection) {
     goToCollectionBtn = (
-      <Link to={`/collections/${collection.id}`} className={styles.collectionLink}>
+      <Link
+        to={`/collections/${collection.id}`}
+        className={styles.collectionLink}
+        onClick={() => {
+          trackToBasedOnCollectionPaper('clickGoToCollectionBtn', null);
+        }}
+      >
         Go to Collection
       </Link>
     );

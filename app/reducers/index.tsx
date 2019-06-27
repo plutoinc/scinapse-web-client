@@ -45,11 +45,6 @@ import {
 import { AuthorSearchState, AUTHOR_SEARCH_INITIAL_STATE } from '../containers/authorSearch/records';
 import { RelatedPapersState, RELATED_PAPERS_INITIAL_STATE, reducer as RelatedPapersReducer } from './realtedPapers';
 import { PDFViewerState, reducer as PDFViewerReducer, PDF_VIEWER_INITIAL_STATE } from './pdfViewer';
-import {
-  RECOMMENDED_PAPERS_INITIAL_STATE,
-  RecommendedPapersState,
-  reducer as RecommendedPapersReducer,
-} from './recommendedPapers';
 import { SEARCH_QUERY_INITIAL_STATE, SearchQueryState, reducer as SearchQueryReducer } from './searchQuery';
 
 export interface AppState {
@@ -69,7 +64,6 @@ export interface AppState {
   userCollections: UserCollectionsState;
   relatedPapersState: RelatedPapersState;
   PDFViewerState: PDFViewerState;
-  recommendedPapersState: RecommendedPapersState;
   searchQueryState: SearchQueryState;
   entities: EntityState;
 }
@@ -91,7 +85,6 @@ export const initialState: AppState = {
   userCollections: USER_COLLECTIONS_INITIAL_STATE,
   relatedPapersState: RELATED_PAPERS_INITIAL_STATE,
   PDFViewerState: PDF_VIEWER_INITIAL_STATE,
-  recommendedPapersState: RECOMMENDED_PAPERS_INITIAL_STATE,
   searchQueryState: SEARCH_QUERY_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
 };
@@ -113,7 +106,6 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   userCollections: UserCollectionsReducer,
   relatedPapersState: RelatedPapersReducer,
   PDFViewerState: PDFViewerReducer,
-  recommendedPapersState: RecommendedPapersReducer,
   searchQueryState: SearchQueryReducer,
   entities: EntityReducer,
 });
