@@ -29,8 +29,6 @@ import { getCollections } from '../collections/actions';
 import { collectionSchema } from '../../model/collection';
 import { getMemoizedPaper } from '../../containers/paperShow/select';
 import ResearchHistory from '../researchHistory';
-import { getUserGroupName } from '../../helpers/abTestHelper';
-import { SEARCH_ENGINE_MOOD_TEST } from '../../constants/abTestGlobalValue';
 const styles = require('./improvedHeader.scss');
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;

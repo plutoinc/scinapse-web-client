@@ -13,7 +13,7 @@ import { withStyles } from '../../helpers/withStylesHelper';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
 import TrendingPaper from '../home/components/trendingPaper';
 import { getUserGroupName } from '../../helpers/abTestHelper';
-import { SEARCH_ENGINE_MOOD_TEST, KNOWLEDGE_BASED_RECOMMEND_TEST } from '../../constants/abTestGlobalValue';
+import { KNOWLEDGE_BASED_RECOMMEND_TEST } from '../../constants/abTestGlobalValue';
 import Icon from '../../icons';
 import JournalsInfo from './components/journalsInfo';
 import AffiliationsInfo from './components/affiliationsInfo';
