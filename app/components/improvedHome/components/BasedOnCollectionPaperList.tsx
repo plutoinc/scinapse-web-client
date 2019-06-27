@@ -136,7 +136,7 @@ const BaseOnCollectionPaperList: React.FC<BasedOnCollectionPaperListProps> = pro
     <>
       <div className={styles.sectionTitle}>
         {goToCollectionBtn}
-        <span className={styles.sectionTitleContext}>{`Recommendation\nbased on your collection`}</span>
+        <span className={styles.sectionTitleContext}>{`Recommendations\nbased on your collection`}</span>
       </div>
       <div className={styles.sectionContent}>{papersContent}</div>
     </>
