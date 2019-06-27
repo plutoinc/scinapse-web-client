@@ -113,7 +113,6 @@ const ScinapseFigureContent: React.FC<{ shouldShow: boolean; papersFoundCount: n
 
 const ImprovedHome: React.FC<Props> = props => {
   const { currentUser } = props;
-  const [isSearchEngineMood, setIsSearchEngineMood] = React.useState(false);
   const [isKnowledgeBasedRecommended, setIsKnowledgeBasedRecommended] = React.useState(false);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
   const [basedOnActivityPapers, setBasedOnActivityPapers] = React.useState<Paper[]>([]);
@@ -123,7 +122,6 @@ const ImprovedHome: React.FC<Props> = props => {
   const cancelToken = React.useRef(axios.CancelToken.source());
 
   React.useEffect(() => {
-    setIsSearchEngineMood(getUserGroupName(SEARCH_ENGINE_MOOD_TEST) === 'searchEngine');
     setIsKnowledgeBasedRecommended(getUserGroupName(KNOWLEDGE_BASED_RECOMMEND_TEST) === 'knowledgeBasedRecommend');
 
     homeAPI.getPapersFoundCount().then(res => {
@@ -203,7 +201,7 @@ const ImprovedHome: React.FC<Props> = props => {
                 maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
                 actionArea="home"
                 autoFocus
-                inputClassName={isSearchEngineMood ? styles.searchEngineMoodInput : styles.searchInput}
+                inputClassName={styles.searchInput}
               />
             </div>
             <div className={styles.searchTryKeyword} />

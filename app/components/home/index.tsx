@@ -12,7 +12,7 @@ import { withStyles } from '../../helpers/withStylesHelper';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
 import TrendingPaper from './components/trendingPaper';
 import { getUserGroupName } from '../../helpers/abTestHelper';
-import { SEARCH_ENGINE_MOOD_TEST, HOME_IMPROVEMENT_TEST } from '../../constants/abTestGlobalValue';
+import { HOME_IMPROVEMENT_TEST } from '../../constants/abTestGlobalValue';
 import ImprovedHome from '../improvedHome';
 import { changeSearchQuery } from '../../actions/searchQuery';
 const styles = require('./home.scss');
@@ -68,11 +68,9 @@ function getContainerStyle(layout: LayoutState): React.CSSProperties {
 }
 
 const Home: React.FC<Props> = props => {
-  const [isSearchEngineMood, setIsSearchEngineMood] = React.useState(false);
   const [isImprovedHome, setIsImprovedHome] = React.useState(false);
 
   React.useEffect(() => {
-    setIsSearchEngineMood(getUserGroupName(SEARCH_ENGINE_MOOD_TEST) === 'searchEngine');
     setIsImprovedHome(getUserGroupName(HOME_IMPROVEMENT_TEST) === 'improvement');
     props.dispatch(changeSearchQuery(''));
   }, []);
@@ -119,7 +117,7 @@ const Home: React.FC<Props> = props => {
                     maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
                     actionArea="home"
                     autoFocus
-                    inputClassName={isSearchEngineMood ? styles.searchEngineMoodInput : styles.searchInput}
+                    inputClassName={styles.searchInput}
                   />
                 </div>
                 <div className={styles.searchTryKeyword} />

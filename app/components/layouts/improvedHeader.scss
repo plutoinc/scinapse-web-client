@@ -81,11 +81,6 @@
   align-items: center;
 }
 
-.searchFormContainerAtSearchEngineLogo {
-  @extend .searchFormContainer;
-  margin-left: 9px;
-}
-
 .rightBox {
   display: flex;
   align-items: center;
@@ -273,15 +268,6 @@
   overflow: hidden;
   align-items: center;
   padding: 0 44px 0 16px;
-}
-
-.searchEngineMoodInput {
-  @extend .searchInput;
-
-  &::placeholder {
-    font-weight: bold;
-    color: $gray5;
-  }
 }
 
 .userInfoMenuItem {

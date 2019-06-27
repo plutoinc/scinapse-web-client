@@ -8,7 +8,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import * as addDays from 'date-fns/add_days';
 import * as isAfter from 'date-fns/is_after';
-import * as classNames from 'classnames';
 import TopToastBar from '../topToastBar';
 import BubblePopover from '../common/bubblePopover';
 import { AppState } from '../../reducers';
@@ -56,7 +55,6 @@ interface HeaderStates {
   isUserDropdownOpen: boolean;
   userDropdownAnchorElement: HTMLElement | null;
   openTopToast: boolean;
-  isSearchEngineMood: boolean;
 }
 
 const UserInformation: React.FunctionComponent<{ user: CurrentUser }> = props => {
@@ -83,17 +81,12 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
       isUserDropdownOpen: false,
       userDropdownAnchorElement: this.userDropdownAnchorRef,
       openTopToast: false,
-      isSearchEngineMood: false,
     };
   }
 
   public componentDidMount() {
     window.addEventListener('scroll', this.handleScrollEvent, { passive: true });
     this.checkTopToast();
-
-    this.setState({
-      isSearchEngineMood: getUserGroupName(SEARCH_ENGINE_MOOD_TEST) === 'searchEngine',
-    });
   }
 
   public componentWillUnmount() {
@@ -120,7 +113,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
         <div className={styles.headerContainer}>
           <div className={styles.leftBox}>
             {this.getHeaderLogo()}
-            {this.getSearchFormContainer(this.state.isSearchEngineMood)}
+            {this.getSearchFormContainer()}
           </div>
           {this.getHeaderButtons()}
         </div>
@@ -233,7 +226,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
     );
   };
 
-  private getSearchFormContainer = (isSearchEngineMood: boolean) => {
+  private getSearchFormContainer = () => {
     const { location, articleSearchState } = this.props;
 
     const shouldShowSearchFormContainer = location.pathname !== HOME_PATH;
@@ -244,16 +237,11 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
     if (!shouldShowSearchFormContainer) return null;
 
     return (
-      <div
-        className={classNames({
-          [styles.searchFormContainerAtSearchEngineLogo]: isSearchEngineMood,
-          [styles.searchFormContainer]: !isSearchEngineMood,
-        })}
-      >
+      <div className={styles.searchFormContainer}>
         <SearchQueryInput
           wrapperClassName={styles.searchWrapper}
           listWrapperClassName={styles.suggestionListWrapper}
-          inputClassName={isSearchEngineMood ? styles.searchEngineMoodInput : styles.searchInput}
+          inputClassName={styles.searchInput}
           initialFilter={currentFilter}
           actionArea="topBar"
           maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}

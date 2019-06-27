@@ -1,6 +1,5 @@
 import { Test } from './abTest';
 import {
-  SEARCH_ENGINE_MOOD_TEST,
   SIGN_BANNER_AT_PAPER_SHOW_TEST,
   SEARCH_ITEM_IMPROVEMENT_TEST,
   HOME_IMPROVEMENT_TEST,
@@ -8,11 +7,6 @@ import {
   SEMANTIC_SEARCH_TEST,
   KNOWLEDGE_BASED_RECOMMEND_TEST,
 } from './abTestGlobalValue';
-
-export const searchEngineMoodTest: Test = {
-  name: SEARCH_ENGINE_MOOD_TEST,
-  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'searchEngine', weight: 1 }],
-};
 
 export const signBannerAtPaperShowTest: Test = {
   name: SIGN_BANNER_AT_PAPER_SHOW_TEST,
