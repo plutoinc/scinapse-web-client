@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { AppState } from '../../../reducers';
-import PapersQueryFormatter from '../../../helpers/searchQueryManager';
 import { ArticleSearchState } from '../../articleSearch/records';
 import Icon from '../../../icons';
 import { withStyles } from '../../../helpers/withStylesHelper';
@@ -20,18 +19,10 @@ const GoBackResultBtn: React.SFC<GoBackResultBtnProps> = props => {
       <div
         className={styles.goBackBtn}
         onClick={() => {
-          history.push({
-            pathname: '/search',
-            search: PapersQueryFormatter.stringifyPapersQuery({
-              query: articleSearch.searchInput,
-              page: 1,
-              sort: 'RELEVANCE',
-              filter: PapersQueryFormatter.objectifyPaperFilter(),
-            }),
-          });
+          history.goBack();
         }}
       >
-        <Icon icon="BACK" className={styles.backIcon} /> BACK TO RESULTS
+        <Icon icon="BACK" className={styles.backIcon} /> BACK TO PREVIOUS
       </div>
     );
   }
