@@ -263,7 +263,7 @@ const SearchContainer: React.FC<Props> = props => {
         />
         <SearchResult {...props} queryParams={queryParams} filter={filter} />
         <div className={styles.rightBoxWrapper}>
-          <GuruBox authors={articleSearchState.topRefAuthors} />
+          <GuruBox isLoading={articleSearchState.isContentLoading} authors={articleSearchState.topRefAuthors} />
           {!currentUserState.isLoggedIn && <SignBanner isLoading={articleSearchState.isContentLoading} />}
           <FilterContainer
             handleChangeRangeInput={changeRangeInput}
