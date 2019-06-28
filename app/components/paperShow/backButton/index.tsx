@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { AppState } from '../../../reducers';
-import PapersQueryFormatter from '../../../helpers/searchQueryManager';
 import { ArticleSearchState } from '../../articleSearch/records';
 import Icon from '../../../icons';
 import { withStyles } from '../../../helpers/withStylesHelper';
