@@ -77,6 +77,7 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
               onClick: e => {
                 e.preventDefault();
                 handleClickSource();
+                homeAPI.addBasedOnRecommendationPaper(paper.id);
                 window.open(sourceUrl, '_blank');
               },
             }}

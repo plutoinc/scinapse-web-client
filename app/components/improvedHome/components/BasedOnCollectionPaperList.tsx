@@ -24,7 +24,7 @@ interface BasedOnCollectionPapersProps {
 }
 
 interface BasedOnCollectionPaperListProps {
-  basedOnCollectionPapers: BasedOnCollectionPapersParams;
+  basedOnCollectionPapers: BasedOnCollectionPapersParams | undefined;
   isLoading: boolean;
 }
 
@@ -149,12 +149,32 @@ const BasedOnCollectionPapers: React.FC<BasedOnCollectionPapersProps> = props =>
   return <>{collectionPapers}</>;
 };
 
+const BasedOnCollectionPaperListContainer: React.FC<{
+  goToCollectionBtn: JSX.Element | null;
+  papersContent: JSX.Element;
+}> = props => {
+  const { goToCollectionBtn, papersContent } = props;
+
+  return (
+    <>
+      <div className={styles.sectionTitle}>
+        {goToCollectionBtn}
+        <span className={styles.sectionTitleContext}>{`Recommendations\nbased on your collection`}</span>
+      </div>
+      <div className={styles.sectionContent}>{papersContent}</div>
+    </>
+  );
+};
+
 const BaseOnCollectionPaperList: React.FC<BasedOnCollectionPaperListProps> = props => {
   const { basedOnCollectionPapers, isLoading } = props;
-  const { collection, recommendations } = !!basedOnCollectionPapers && basedOnCollectionPapers;
-
   let goToCollectionBtn = null;
   let papersContent = <div className={styles.noPaperContext}>you haven't added any papers to collection</div>;
+
+  if (!basedOnCollectionPapers)
+    return <BasedOnCollectionPaperListContainer goToCollectionBtn={goToCollectionBtn} papersContent={papersContent} />;
+
+  const { collection, recommendations } = basedOnCollectionPapers;
 
   if (collection) {
     goToCollectionBtn = (
@@ -174,15 +194,7 @@ const BaseOnCollectionPaperList: React.FC<BasedOnCollectionPaperListProps> = pro
     papersContent = <BasedOnCollectionPapers collection={collection} papers={recommendations} isLoading={isLoading} />;
   }
 
-  return (
-    <>
-      <div className={styles.sectionTitle}>
-        {goToCollectionBtn}
-        <span className={styles.sectionTitleContext}>{`Recommendations\nbased on your collection`}</span>
-      </div>
-      <div className={styles.sectionContent}>{papersContent}</div>
-    </>
-  );
+  return <BasedOnCollectionPaperListContainer goToCollectionBtn={goToCollectionBtn} papersContent={papersContent} />;
 };
 
 export default withStyles<typeof BaseOnCollectionPaperList>(styles)(BaseOnCollectionPaperList);
