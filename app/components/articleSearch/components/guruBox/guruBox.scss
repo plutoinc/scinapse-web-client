@@ -1,5 +1,37 @@
 $max-author-name-width: 254px;
 
+%base-author-item {
+  position: relative;
+  height: 86px;
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid $gray3;
+
+  &:last-of-type {
+    border-bottom: 0;
+  }
+}
+
+%sub-information {
+  @extend %one-line-overflow-ellipsis;
+
+  width: $max-author-name-width;
+  font-size: 14px;
+  line-height: 1.23;
+  color: $gray5;
+}
+
+%base-hindex-box {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  width: 62px;
+  height: 62px;
+  border-radius: 20px;
+  background-color: $gray8;
+}
+
 .guruBoxWrapper {
   border-radius: 4px;
   border: solid 1px $gray3;
@@ -24,8 +56,8 @@ $max-author-name-width: 254px;
   margin-right: 12px;
 
   svg {
-    width: 16px;
-    height: 17px;
+    width: 100%;
+    height: 100%;
   }
 }
 
@@ -35,39 +67,63 @@ $max-author-name-width: 254px;
   color: $gray6;
 }
 
-.authorItem {
-  display: block;
-  padding: 16px;
-  border-bottom: 1px solid $gray3;
+.authorList {
+  overflow: hidden;
+  transition: max-height 300ms ease;
+}
 
-  &:last-of-type {
-    border-bottom: 0;
+.loadingAuthorItem {
+  @extend %base-author-item;
+
+  .authorName {
+    width: 96px;
+    height: 16px;
+    border-radius: 2px;
+    background-color: $gray3;
+    margin-bottom: 10px;
   }
+
+  .affiliation {
+    width: 122px;
+    height: 14px;
+    border-radius: 2px;
+    background-color: #e7eaef;
+  }
+
+  .fosList {
+    width: 219px;
+    height: 14px;
+    border-radius: 2px;
+    background-color: #e7eaef;
+  }
+
+  .rightBox {
+    @extend %base-hindex-box;
+  }
+}
+
+.authorItem {
+  @extend %base-author-item;
 
   &:hover {
     .authorName {
       text-decoration: underline;
     }
-  }
-}
 
-.upperBox {
-  position: relative;
-  height: 32px;
-  display: flex;
-  align-items: center;
+    .rightBox {
+      color: $main_blue1;
+      background-color: $gray2;
+    }
+  }
 
   .rightBox {
-    position: absolute;
-    top: -16px;
-    bottom: -16px;
-    right: 16px;
-    text-align: right;
+    @extend %base-hindex-box;
+
     color: $main_blue0;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-end;
+    align-items: center;
   }
 
   .hIndexTitle {
@@ -76,7 +132,7 @@ $max-author-name-width: 254px;
   }
 
   .hIndexCount {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
   }
 
@@ -86,52 +142,53 @@ $max-author-name-width: 254px;
   }
 }
 
-.upperBox + .topPaperBox {
-  border-top: 1px solid $gray1;
-  margin-top: 12px;
-}
-
 .authorName {
   @extend %one-line-overflow-ellipsis;
 
   width: $max-author-name-width;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 700;
   line-height: 1.5;
   color: $navy0;
 }
 
 .fosList {
-  @extend %one-line-overflow-ellipsis;
-
-  width: $max-author-name-width;
-  font-size: 13px;
-  line-height: 1.23;
-  color: $gray5;
+  @extend %sub-information;
 }
 
-.topPaperBox {
-  padding-top: 12px;
+.affiliation {
+  @extend %sub-information;
+  margin-bottom: 2px;
 }
 
-.topPaperBoxTitle {
-  font-size: 13px;
-  font-weight: bold;
-  letter-spacing: 0.54px;
-  color: $gray4;
-  margin-bottom: 4px;
-}
-
-.topPaperTitle {
+.moreBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 0;
   font-size: 14px;
-  color: $black1;
-  margin-bottom: 4px;
-}
+  color: $gray6;
+  border-top: 1px solid $gray3;
+  cursor: pointer;
 
-.citationCount {
-  font-size: 12px;
-  font-weight: 500;
-  color: $gray5;
+  &:hover {
+    text-decoration: underline;
+  }
+
+  .arrowDown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+
+    svg {
+      width: 9px;
+      height: 5px;
+      margin-top: 2px;
+    }
+  }
 }
 
 // Mobile
