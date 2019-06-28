@@ -20,18 +20,10 @@ const GoBackResultBtn: React.SFC<GoBackResultBtnProps> = props => {
       <div
         className={styles.goBackBtn}
         onClick={() => {
-          history.push({
-            pathname: '/search',
-            search: PapersQueryFormatter.stringifyPapersQuery({
-              query: articleSearch.searchInput,
-              page: 1,
-              sort: 'RELEVANCE',
-              filter: PapersQueryFormatter.objectifyPaperFilter(),
-            }),
-          });
+          history.goBack();
         }}
       >
-        <Icon icon="BACK" className={styles.backIcon} /> BACK TO RESULTS
+        <Icon icon="BACK" className={styles.backIcon} /> BACK TO PREVIOUS
       </div>
     );
   }
