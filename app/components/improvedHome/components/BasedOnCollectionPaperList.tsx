@@ -150,18 +150,18 @@ const BasedOnCollectionPapers: React.FC<BasedOnCollectionPapersProps> = props =>
 };
 
 const BasedOnCollectionPaperListContainer: React.FC<{
-  goToCollectionBtn: JSX.Element | null;
-  papersContent: JSX.Element;
+  headerCollectionBtn: JSX.Element | null;
+  paperList: JSX.Element;
 }> = props => {
-  const { goToCollectionBtn, papersContent } = props;
+  const { headerCollectionBtn, paperList } = props;
 
   return (
     <>
       <div className={styles.sectionTitle}>
-        {goToCollectionBtn}
+        {headerCollectionBtn}
         <span className={styles.sectionTitleContext}>{`Recommendations\nbased on your collection`}</span>
       </div>
-      <div className={styles.sectionContent}>{papersContent}</div>
+      <div className={styles.sectionContent}>{paperList}</div>
     </>
   );
 };
@@ -172,7 +172,7 @@ const BaseOnCollectionPaperList: React.FC<BasedOnCollectionPaperListProps> = pro
   let papersContent = <div className={styles.noPaperContext}>you haven't added any papers to collection</div>;
 
   if (!basedOnCollectionPapers)
-    return <BasedOnCollectionPaperListContainer goToCollectionBtn={goToCollectionBtn} papersContent={papersContent} />;
+    return <BasedOnCollectionPaperListContainer headerCollectionBtn={goToCollectionBtn} paperList={papersContent} />;
 
   const { collection, recommendations } = basedOnCollectionPapers;
 
@@ -194,7 +194,7 @@ const BaseOnCollectionPaperList: React.FC<BasedOnCollectionPaperListProps> = pro
     papersContent = <BasedOnCollectionPapers collection={collection} papers={recommendations} isLoading={isLoading} />;
   }
 
-  return <BasedOnCollectionPaperListContainer goToCollectionBtn={goToCollectionBtn} papersContent={papersContent} />;
+  return <BasedOnCollectionPaperListContainer headerCollectionBtn={goToCollectionBtn} paperList={papersContent} />;
 };
 
 export default withStyles<typeof BaseOnCollectionPaperList>(styles)(BaseOnCollectionPaperList);
