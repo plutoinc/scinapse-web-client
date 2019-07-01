@@ -29,7 +29,7 @@ import ActionTicketManager from '../../helpers/actionTicketManager';
 import restoreScroll from '../../helpers/scrollRestoration';
 import ErrorPage from '../error/errorPage';
 import { JournalShowMatchParams } from './types';
-import ScinapseFooter from '../layouts/scinapseFooter';
+import ImprovedFooter from '../layouts/improvedFooter';
 const styles = require('./journalShow.scss');
 
 function mapStateToProps(state: AppState) {
@@ -183,7 +183,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
               </div>
             </div>
           </div>
-          <ScinapseFooter style={{ backgroundColor: 'white' }} />
+          <ImprovedFooter containerStyle={{ backgroundColor: '#f9f9fa' }} />
         </div>
       );
     } else {

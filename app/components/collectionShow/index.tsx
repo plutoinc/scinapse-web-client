@@ -37,7 +37,7 @@ import { CollectionShowMatchParams } from './types';
 import CollectionSideNaviBar from '../collectionSideNaviBar';
 import { getCollections } from '../collections/actions';
 import RelatedPaperInCollectionShow from './relatedPaperInCollectionShow';
-import ScinapseFooter from '../layouts/scinapseFooter';
+import ImprovedFooter from '../layouts/improvedFooter';
 const styles = require('./collectionShow.scss');
 
 const FACEBOOK_SHARE_URL = 'http://www.facebook.com/sharer/sharer.php?u=';
@@ -210,7 +210,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
               </div>
             </div>
           </div>
-          <ScinapseFooter style={{ backgroundColor: 'white' }} />
+          <ImprovedFooter containerStyle={{ backgroundColor: '#f9f9fa' }} />
         </div>
       );
     } else {

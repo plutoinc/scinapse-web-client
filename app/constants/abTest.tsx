@@ -1,7 +1,6 @@
 import {
   signBannerAtPaperShowTest,
   searchItemImprovement,
-  homeImprovement,
   guruAtSearch,
   semanticSearch,
   knowledgeBasedRecommend,
@@ -23,7 +22,6 @@ export type ABTest =
   | 'signBannerAtPaperShow'
   | 'searchItemImprovement'
   | 'guruAtSearch'
-  | 'homeImprovement'
   | 'semanticSearch'
   | 'knowledgeBasedRecommend';
 
@@ -48,7 +46,6 @@ export interface SignUpConversionExpTicketContext {
 export const LIVE_TESTS: Test[] = [
   signBannerAtPaperShowTest,
   searchItemImprovement,
-  homeImprovement,
   guruAtSearch,
   semanticSearch,
   knowledgeBasedRecommend,

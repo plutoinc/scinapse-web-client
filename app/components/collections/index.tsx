@@ -21,7 +21,7 @@ import { CurrentUser } from '../../model/currentUser';
 import restoreScroll from '../../helpers/scrollRestoration';
 import alertToast from '../../helpers/makePlutoToastAction';
 import ErrorPage from '../error/errorPage';
-import ScinapseFooter from '../layouts/scinapseFooter';
+import ImprovedFooter from '../layouts/improvedFooter';
 const styles = require('./collections.scss');
 
 export interface UserCollectionsProps extends RouteComponentProps<{ userId: string }> {
@@ -90,7 +90,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
               {this.getCollections(collections)}
             </div>
           </div>
-          <ScinapseFooter style={{ backgroundColor: '#f9f9fa' }} />
+          <ImprovedFooter containerStyle={{ backgroundColor: 'white' }} />
         </div>
       );
     } else {
