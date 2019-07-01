@@ -3,7 +3,6 @@ import {
   searchItemImprovement,
   homeImprovement,
   guruAtSearch,
-  semanticSearch,
   knowledgeBasedRecommend,
 } from './abTestObject';
 
@@ -24,7 +23,6 @@ export type ABTest =
   | 'searchItemImprovement'
   | 'guruAtSearch'
   | 'homeImprovement'
-  | 'semanticSearch'
   | 'knowledgeBasedRecommend';
 
 export const SIGN_UP_CONVERSION_KEY = 'b_exp';
@@ -50,7 +48,6 @@ export const LIVE_TESTS: Test[] = [
   searchItemImprovement,
   homeImprovement,
   guruAtSearch,
-  semanticSearch,
   knowledgeBasedRecommend,
 ];
 
