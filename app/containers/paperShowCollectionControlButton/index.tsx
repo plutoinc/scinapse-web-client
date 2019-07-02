@@ -495,7 +495,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private handleClickSaveButton = async () => {
-    const { dispatch, selectedCollection, paperId: targetPaperId } = this.props;
+    const { dispatch, selectedCollection, paperId: targetPaperId, currentUser } = this.props;
     const isBlocked = await blockUnverifiedUser({
       authLevel: AUTH_LEVEL.VERIFIED,
       actionArea: 'paperDescription',
@@ -542,7 +542,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           cancelToken: this.cancelToken.token,
         })
       );
-      homeAPI.addBasedOnRecommendationPaper(targetPaperId);
+      currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(targetPaperId);
 
       store.set(LAST_USER_COLLECTION_ID, selectedCollection.id);
     } else if (selectedCollection && targetPaperId && selectedCollection.containsSelected) {

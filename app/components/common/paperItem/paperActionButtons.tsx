@@ -71,7 +71,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   }
 
   private getSourceButton = () => {
-    const { paper, pageType, actionArea } = this.props;
+    const { paper, pageType, actionArea, currentUser } = this.props;
 
     const buttonContent = (
       <>
@@ -98,7 +98,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             actionTag: 'source',
             actionLabel: String(paper.id),
           });
-          homeAPI.addBasedOnRecommendationPaper(paper.id);
+          currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paper.id);
         }}
       >
         {buttonContent}
@@ -107,7 +107,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   };
 
   private getCitedButton = () => {
-    const { paper, pageType, actionArea } = this.props;
+    const { paper, pageType, actionArea, currentUser } = this.props;
 
     if (!paper.citedCount) {
       return null;
@@ -126,7 +126,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
               actionTag: 'citedList',
               actionLabel: String(paper.id),
             });
-            homeAPI.addBasedOnRecommendationPaper(paper.id);
+            currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paper.id);
           }}
           className={styles.citedButton}
         >
@@ -137,7 +137,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   };
 
   private getCitationQuoteButton = () => {
-    const { paper, pageType, actionArea } = this.props;
+    const { paper, pageType, actionArea, currentUser } = this.props;
 
     if (paper.doi) {
       return (
@@ -153,7 +153,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
                 actionTag: 'citePaper',
                 actionLabel: String(paper.id),
               });
-              homeAPI.addBasedOnRecommendationPaper(paper.id);
+              currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paper.id);
             }}
           >
             <Icon className={styles.citationIcon} icon="CITATION_QUOTE" />
