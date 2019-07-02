@@ -89,7 +89,7 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
             dropdownBtnProps={{
               onClick: () => {
                 setIsSourcePopoverOpen(!isSourcePopoverOpen);
-                dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
+                !isSourcePopoverOpen && dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
               },
               style: !showFullText ? reverseBtnStyle : btnStyle,
               className: styles.dropdownBtn,
