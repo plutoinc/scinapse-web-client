@@ -1,14 +1,9 @@
 import * as React from 'react';
-import * as store from 'store';
 import { Paper } from '../../../../model/paper';
 import { CurrentUser } from '../../../../model/currentUser';
 import { withStyles } from '../../../../helpers/withStylesHelper';
 import PaperItem from '../../../common/paperItem/searchPaperItem';
 import ArticleSpinner from '../../../common/spinner/articleSpinner';
-import { RESEARCH_HISTORY_KEY, HistoryPaper } from '../../../researchHistory';
-import { getUserGroupName } from '../../../../helpers/abTestHelper';
-import { SEARCH_ITEM_IMPROVEMENT_TEST } from '../../../../constants/abTestGlobalValue';
-import PaperAPI, { PaperSource } from '../../../../api/paper';
 const styles = require('./searchList.scss');
 
 interface SearchListProps {
@@ -20,19 +15,6 @@ interface SearchListProps {
 
 const SearchList: React.FC<SearchListProps> = props => {
   const { currentUser, papers, searchQueryText, isLoading } = props;
-  const historyPapers: HistoryPaper[] = store.get(RESEARCH_HISTORY_KEY) || [];
-  const [sourceDomains, setSourceDomains] = React.useState<PaperSource[]>([]);
-
-  React.useEffect(
-    () => {
-      if (getUserGroupName(SEARCH_ITEM_IMPROVEMENT_TEST) === 'sourceDomain') {
-        PaperAPI.getSources(papers.map(p => p.id)).then(domains => {
-          setSourceDomains(domains);
-        });
-      }
-    },
-    [papers]
-  );
 
   if (!papers || !searchQueryText) return null;
 
@@ -45,12 +27,6 @@ const SearchList: React.FC<SearchListProps> = props => {
   }
 
   const searchItems = papers.map(paper => {
-    const matchedPaper = historyPapers.find(p => p.id === paper.id);
-    let savedAt = null;
-    if (matchedPaper) {
-      savedAt = matchedPaper.savedAt;
-    }
-
     return (
       <PaperItem
         key={paper.id}
@@ -60,8 +36,6 @@ const SearchList: React.FC<SearchListProps> = props => {
         searchQueryText={searchQueryText}
         currentUser={currentUser}
         wrapperClassName={styles.searchItemWrapper}
-        savedAt={savedAt}
-        sourceDomain={sourceDomains.find(source => source.paperId === paper.id)}
       />
     );
   });

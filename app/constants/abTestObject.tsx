@@ -3,13 +3,7 @@ import { SEARCH_ITEM_IMPROVEMENT_TEST, GURU_AT_SEARCH_TEST, KNOWLEDGE_BASED_RECO
 
 export const searchItemImprovement: Test = {
   name: SEARCH_ITEM_IMPROVEMENT_TEST,
-  userGroup: [
-    { groupName: 'control', weight: 1 },
-    { groupName: 'visitHistory', weight: 1 },
-    { groupName: 'notIncludedWords', weight: 1 },
-    { groupName: 'sourceDomain', weight: 1 },
-    { groupName: 'broadAuthorVenue', weight: 1 },
-  ],
+  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'broadAuthorVenue', weight: 1 }],
 };
 
 export const guruAtSearch: Test = {
