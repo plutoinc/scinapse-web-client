@@ -1,5 +1,4 @@
 import {
-  signBannerAtPaperShowTest,
   searchItemImprovement,
   homeImprovement,
   guruAtSearch,
@@ -20,7 +19,6 @@ export interface Test {
 export type SignUpConversion = 'queryLover' | 'downloadCount';
 
 export type ABTest =
-  | 'signBannerAtPaperShow'
   | 'searchItemImprovement'
   | 'guruAtSearch'
   | 'homeImprovement'
@@ -46,7 +44,6 @@ export interface SignUpConversionExpTicketContext {
 }
 
 export const LIVE_TESTS: Test[] = [
-  signBannerAtPaperShowTest,
   searchItemImprovement,
   homeImprovement,
   guruAtSearch,

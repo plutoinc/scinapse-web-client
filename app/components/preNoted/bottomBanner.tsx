@@ -5,8 +5,6 @@ import GlobalDialogManager from '../../helpers/globalDialogManager';
 import { ActionTicketParams } from '../../helpers/actionTicketManager/actionTicket';
 import { useObserver } from '../../hooks/useIntersectionHook';
 import ActionTicketManager from '../../helpers/actionTicketManager';
-import { getUserGroupName } from '../../helpers/abTestHelper';
-import { SIGN_BANNER_AT_PAPER_SHOW_TEST } from '../../constants/abTestGlobalValue';
 import { CurrentUser } from '../../model/currentUser';
 const styles = require('./bottomBanner.scss');
 
@@ -54,11 +52,7 @@ const BottomBanner: React.FC<BottomBannerProps> = ({ currentUser }) => {
 
   React.useEffect(
     () => {
-      setShouldShow(
-        getUserGroupName(SIGN_BANNER_AT_PAPER_SHOW_TEST) === 'bottomBanner' &&
-          !currentUser.isLoggedIn &&
-          !currentUser.isLoggingIn
-      );
+      setShouldShow(!currentUser.isLoggedIn && !currentUser.isLoggingIn);
     },
     [currentUser]
   );
