@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import format from 'date-fns/format';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
-import { trackToBasedOnCollectionPaper } from './BasedOnCollectionPaperList';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { ActionTicketParams } from '../../../helpers/actionTicketManager/actionTicket';
 import { useObserver } from '../../../hooks/useIntersectionHook';
 const styles = require('./recommendedPapers.scss');
@@ -12,6 +12,19 @@ interface BasedOnCollectionPaperItemProps {
   paper: Paper;
   collectionTitle: string;
   collectionId: number;
+}
+
+export function trackToBasedOnCollectionPaper(
+  actionTag: Scinapse.ActionTicket.ActionTagType,
+  actionLabel: string | null
+) {
+  ActionTicketManager.trackTicket({
+    pageType: 'home',
+    actionType: 'fire',
+    actionArea: 'basedOnCollectionPaperList',
+    actionTag,
+    actionLabel,
+  });
 }
 
 const CollectionPaperItem: React.FC<BasedOnCollectionPaperItemProps> = props => {

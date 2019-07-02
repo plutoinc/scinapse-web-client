@@ -16,7 +16,7 @@ const RequestFullTextBtn: React.FunctionComponent<{
   actionArea: Scinapse.ActionTicket.ActionArea;
   btnStyle?: React.CSSProperties;
 }> = React.memo(props => {
-  const { isLoading, paperId, handleSetIsOpen, btnStyle } = props;
+  const { isLoading, paperId, handleSetIsOpen, btnStyle, currentUser } = props;
 
   if (isLoading) {
     return <SearchingPDFBtn isLoading={isLoading} />;
