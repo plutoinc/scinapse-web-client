@@ -33,7 +33,6 @@ import alertToast from '../../helpers/makePlutoToastAction';
 import FinalSignUpContent from '../auth/signUp/components/finalSignUpContent';
 import EnvChecker from '../../helpers/envChecker';
 import SurveyForm from '../auth/signUp/components/surveyForm';
-import KnowledgeBaseNoti from '../knowledgeBaseNoti';
 const styles = require('./dialog.scss');
 
 function mapStateToProps(state: AppState) {
@@ -314,10 +313,6 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
           );
         }
         return null;
-
-      case GLOBAL_DIALOG_TYPE.KNOWLEDGE_BASE_NOTI: {
-        return <KnowledgeBaseNoti handleCloseDialogRequest={this.closeDialog} />;
-      }
 
       default:
         return null;

@@ -33,6 +33,9 @@
 }
 
 .letMeSeeBtn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   width: 115px;
   height: 41px;
   border-radius: 4px;

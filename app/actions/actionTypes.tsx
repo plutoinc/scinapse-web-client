@@ -213,6 +213,9 @@ export enum ACTION_TYPES {
   PDF_VIEWER_CLICK_RELOAD_BTN = 'PDF_VIEWER_CLICK_RELOAD_BTN',
   PDF_VIEWER_CLICK_VIEW_MORE_BTN = 'PDF_VIEWER_CLICK_VIEW_MORE_BTN',
   PDF_VIEWER_GET_BEST_PDF_OF_PAPER = 'PDF_VIEWER_GET_BEST_PDF_OF_PAPER',
+
+  KNOWLEDGE_BASE_NOTI_OPEN = 'KNOWLEDGE_BASE_NOTI_OPEN',
+  KNOWLEDGE_BASE_NOTI_CLOSE = 'KNOWLEDGE_BASE_NOTI_CLOSE',
 }
 
 export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
@@ -1015,6 +1018,14 @@ export const ActionCreators = {
 
   changeSearchQuery(payload: { query: string }) {
     return createAction({ type: ACTION_TYPES.SEARCH_QUERY_CHANGE_QUERY, payload });
+  },
+
+  openKnowledgeBaseNoti() {
+    return createAction({ type: ACTION_TYPES.KNOWLEDGE_BASE_NOTI_OPEN });
+  },
+
+  closeKnowledgeBaseNoti() {
+    return createAction({ type: ACTION_TYPES.KNOWLEDGE_BASE_NOTI_CLOSE });
   },
 
   addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {

@@ -33,6 +33,7 @@ import GuruBox from './components/guruBox';
 import { changeSearchQuery } from '../../actions/searchQuery';
 import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
 import ImprovedFooter from '../layouts/improvedFooter';
+import KnowledgeBaseNoti from '../knowledgeBaseNoti';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -174,6 +175,7 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
           currentUserDevice={layout.userDevice}
           location={location}
         />
+        <KnowledgeBaseNoti />
       </div>
     );
   }

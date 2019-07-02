@@ -121,14 +121,6 @@ class GlobalDialogManager {
       })
     );
   }
-
-  public openKnowledgeBaseNotiDialog() {
-    StoreManager.store.dispatch(
-      ActionCreators.openGlobalDialog({
-        type: GLOBAL_DIALOG_TYPE.KNOWLEDGE_BASE_NOTI,
-      })
-    );
-  }
 }
 
 const globalDialogManager = new GlobalDialogManager();

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import { CurrentUser } from '../../../model/currentUser';
@@ -12,11 +14,12 @@ interface CiteBoxProps {
   paper: Paper;
   actionArea: string;
   currentUser: CurrentUser;
+  dispatch: Dispatch<any>;
   btnStyle?: React.CSSProperties;
 }
 
 const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
-  const { paper, btnStyle, actionArea, currentUser } = props;
+  const { paper, btnStyle, actionArea, dispatch, currentUser } = props;
 
   if (!paper.doi) return null;
 
@@ -26,7 +29,7 @@ const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
       className={s.citeButton}
       onClick={() => {
         GlobalDialogManager.openCitationDialog(paper.id);
-        addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id);
+        dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
         ActionTicketManager.trackTicket({
           pageType: 'paperShow',
           actionType: 'fire',
@@ -44,4 +47,4 @@ const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
   );
 };
 
-export default withStyles<typeof CiteBox>(s)(CiteBox);
+export default connect()(withStyles<typeof CiteBox>(s)(CiteBox));

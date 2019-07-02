@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { withStyles } from '../../../helpers/withStylesHelper';
@@ -14,6 +16,7 @@ const RequestFullTextBtn: React.FunctionComponent<{
   currentUser: CurrentUser;
   handleSetIsOpen: (value: React.SetStateAction<boolean>) => void;
   actionArea: Scinapse.ActionTicket.ActionArea;
+  dispatch: Dispatch<any>;
   btnStyle?: React.CSSProperties;
 }> = React.memo(props => {
   const { isLoading, paperId, handleSetIsOpen, btnStyle, currentUser } = props;
@@ -42,8 +45,8 @@ const RequestFullTextBtn: React.FunctionComponent<{
         });
 
         if (!isBlocked) {
+          props.dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paperId));
           handleSetIsOpen(true);
-          addBasedOnRecommendationActivity(currentUser.isLoggedIn, paperId);
         }
       }}
       className={s.fullTextBtn}
@@ -54,4 +57,4 @@ const RequestFullTextBtn: React.FunctionComponent<{
   );
 });
 
-export default withStyles<typeof RequestFullTextBtn>(s)(RequestFullTextBtn);
+export default connect()(withStyles<typeof RequestFullTextBtn>(s)(RequestFullTextBtn));

@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Popper from '@material-ui/core/Popper';
@@ -27,6 +29,7 @@ export interface PaperActionButtonsProps {
   hasCollection: boolean;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
+  dispatch: Dispatch<any>;
   hasRemoveButton?: boolean;
   handleRemovePaper?: (paper: Paper) => void;
   isRepresentative?: boolean;
@@ -71,7 +74,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   }
 
   private getSourceButton = () => {
-    const { paper, pageType, actionArea, currentUser } = this.props;
+    const { paper, pageType, actionArea, currentUser, dispatch } = this.props;
 
     const buttonContent = (
       <>
@@ -98,7 +101,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             actionTag: 'source',
             actionLabel: String(paper.id),
           });
-          addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id);
+          dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
         }}
       >
         {buttonContent}
@@ -107,7 +110,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   };
 
   private getCitedButton = () => {
-    const { paper, pageType, actionArea, currentUser } = this.props;
+    const { paper, pageType, actionArea, currentUser, dispatch } = this.props;
 
     if (!paper.citedCount) {
       return null;
@@ -126,7 +129,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
               actionTag: 'citedList',
               actionLabel: String(paper.id),
             });
-            addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id);
+            dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
           }}
           className={styles.citedButton}
         >
@@ -137,7 +140,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   };
 
   private getCitationQuoteButton = () => {
-    const { paper, pageType, actionArea, currentUser } = this.props;
+    const { paper, pageType, actionArea, currentUser, dispatch } = this.props;
 
     if (paper.doi) {
       return (
@@ -145,6 +148,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
           <span
             className={styles.citationIconWrapper}
             onClick={() => {
+              dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
               GlobalDialogManager.openCitationDialog(paper.id);
               ActionTicketManager.trackTicket({
                 pageType,
@@ -153,7 +157,6 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
                 actionTag: 'citePaper',
                 actionLabel: String(paper.id),
               });
-              addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id);
             }}
           >
             <Icon className={styles.citationIcon} icon="CITATION_QUOTE" />
@@ -279,4 +282,4 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   };
 }
 
-export default withStyles<typeof PaperActionButtons>(styles)(PaperActionButtons);
+export default connect()(withStyles<typeof PaperActionButtons>(styles)(PaperActionButtons));

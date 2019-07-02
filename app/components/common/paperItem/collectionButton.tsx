@@ -13,6 +13,7 @@ import { MyCollectionsState } from '../../../containers/paperShowCollectionContr
 import CollectionPaperNote from '../../collectionPaperNote';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
 import { addBasedOnRecommendationActivity } from '../../../helpers/addBasedOnRecommendationActivity';
+import { Dispatch } from 'redux';
 const styles = require('./collectionButton.scss');
 
 function mapStateToProps(state: AppState) {
@@ -30,6 +31,7 @@ interface CollectionButtonProps {
   hasCollection: boolean;
   currentUser: CurrentUser;
   collection: Collection | undefined;
+  dispatch: Dispatch<any>;
   actionArea?: Scinapse.ActionTicket.ActionArea;
   onRemove?: (paperId: number) => Promise<void>;
   myCollections: MyCollectionsState;
@@ -67,6 +69,7 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
   myCollections,
   currentUser,
   collection,
+  dispatch,
 }) => {
   const itsMine = collection && collection.createdBy.id === currentUser.id ? true : false;
   const newMemoAnchor = React.useRef<HTMLDivElement | null>(null);
@@ -144,6 +147,7 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
     <button
       className={styles.addCollectionBtnWrapper}
       onClick={async () => {
+        dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paperId));
         const isBlocked = await blockUnverifiedUser({
           authLevel: AUTH_LEVEL.VERIFIED,
           actionArea: actionArea || pageType,
@@ -155,7 +159,6 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
 
         if (!isBlocked) {
           handleAddToCollection(myCollections, paperId);
-          addBasedOnRecommendationActivity(currentUser.isLoggedIn, paperId);
         }
       }}
     >
