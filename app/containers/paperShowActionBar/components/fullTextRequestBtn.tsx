@@ -7,7 +7,7 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import SearchingPDFBtn from '../../../components/paperShow/components/searchingPDFBtn';
 import { CurrentUser } from '../../../model/currentUser';
-import { addBasedOnRecommendationActivity } from '../../../helpers/addBasedOnRecommendationActivity';
+import { addBasedOnRecommendationActivity } from '../../../helpers/basedOnRecommendationActivityManager';
 const s = require('../actionBar.scss');
 
 const RequestFullTextBtn: React.FunctionComponent<{

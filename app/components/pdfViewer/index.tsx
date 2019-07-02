@@ -23,7 +23,7 @@ import { getMemoizedCurrentUser } from '../../selectors/getCurrentUser';
 import { getMemoizedPDFViewerState } from '../../selectors/getPDFViewer';
 import ProgressSpinner from './component/progressSpinner';
 import BlurBlocker from './component/blurBlocker';
-import { addBasedOnRecommendationActivity } from '../../helpers/addBasedOnRecommendationActivity';
+import { addBasedOnRecommendationActivity } from '../../helpers/basedOnRecommendationActivityManager';
 const { Document, Page, pdfjs } = require('react-pdf');
 const styles = require('./pdfViewer.scss');
 

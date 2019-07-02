@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { denormalize } from 'normalizr';
 import Popover from '@material-ui/core/Popover';
 import { withStyles } from '../../../helpers/withStylesHelper';
@@ -12,8 +13,7 @@ import { Collection, collectionSchema } from '../../../model/collection';
 import { MyCollectionsState } from '../../../containers/paperShowCollectionControlButton/reducer';
 import CollectionPaperNote from '../../collectionPaperNote';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
-import { addBasedOnRecommendationActivity } from '../../../helpers/addBasedOnRecommendationActivity';
-import { Dispatch } from 'redux';
+import { addBasedOnRecommendationActivity } from '../../../helpers/basedOnRecommendationActivityManager';
 const styles = require('./collectionButton.scss');
 
 function mapStateToProps(state: AppState) {

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { Paper } from '../../../model/paper';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
@@ -6,8 +8,7 @@ import Icon from '../../../icons';
 import SearchingPDFBtn from './searchingPDFBtn';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../../helpers/checkAuthDialog';
 import { CurrentUser } from '../../../model/currentUser';
-import { addBasedOnRecommendationActivity } from '../../../helpers/addBasedOnRecommendationActivity';
-
+import { addBasedOnRecommendationActivity } from '../../../helpers/basedOnRecommendationActivityManager';
 const styles = require('./pdfSourceButton.scss');
 
 interface PdfDownloadButtonProps {
@@ -15,13 +16,14 @@ interface PdfDownloadButtonProps {
   isLoading: boolean;
   currentUser: CurrentUser;
   actionArea: Scinapse.ActionTicket.ActionArea;
+  dispatch: Dispatch<any>;
   onDownloadedPDF: (isDownload: boolean) => void;
   handleSetScrollAfterDownload: () => void;
   wrapperStyle?: React.CSSProperties;
 }
 
 const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props => {
-  const { paper, isLoading, onDownloadedPDF, handleSetScrollAfterDownload, actionArea, currentUser } = props;
+  const { paper, isLoading, onDownloadedPDF, handleSetScrollAfterDownload, actionArea, currentUser, dispatch } = props;
 
   function trackActionToClickPdfDownloadBtn() {
     ActionTicketManager.trackTicket({
@@ -68,7 +70,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
 
           window.open(pdfUrl, '_blank');
           onDownloadedPDF(true);
-          addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id);
+          dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
           handleSetScrollAfterDownload();
         }}
       >
@@ -81,4 +83,4 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
   return null;
 };
 
-export default withStyles<typeof PdfDownloadButton>(styles)(PdfDownloadButton);
+export default connect()(withStyles<typeof PdfDownloadButton>(styles)(PdfDownloadButton));

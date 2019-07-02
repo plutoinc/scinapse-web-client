@@ -15,7 +15,7 @@ import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import CollectionButton from './collectionButton';
 import formatNumber from '../../../helpers/formatNumber';
-import { addBasedOnRecommendationActivity } from '../../../helpers/addBasedOnRecommendationActivity';
+import { addBasedOnRecommendationActivity } from '../../../helpers/basedOnRecommendationActivityManager';
 const styles = require('./paperActionButtons.scss');
 
 interface HandleClickClaim {

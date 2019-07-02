@@ -6,7 +6,7 @@ import { AppState } from '../../reducers';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { ActionCreators } from '../../actions/actionTypes';
-import { BASED_ACTIVITY_COUNT_COOKIE_KEY } from '../../helpers/addBasedOnRecommendationActivity';
+import { BASED_ACTIVITY_COUNT_COOKIE_KEY } from '../../helpers/basedOnRecommendationActivityManager';
 const styles = require('./knowledgeBaseNoti.scss');
 
 type Props = ReturnType<typeof mapStateToProps> & { dispatch: Dispatch<any> };

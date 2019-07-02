@@ -7,7 +7,7 @@ import { CurrentUser } from '../../../model/currentUser';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-import { addBasedOnRecommendationActivity } from '../../../helpers/addBasedOnRecommendationActivity';
+import { addBasedOnRecommendationActivity } from '../../../helpers/basedOnRecommendationActivityManager';
 const s = require('./citeBox.scss');
 
 interface CiteBoxProps {
