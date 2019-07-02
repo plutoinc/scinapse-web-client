@@ -2,11 +2,13 @@ import homeAPI from '../api/home';
 import * as Cookies from 'js-cookie';
 import { Dispatch } from 'redux';
 import { ActionCreators } from '../actions/actionTypes';
+import { getUserGroupName } from './abTestHelper';
+import { KNOWLEDGE_BASED_RECOMMEND_TEST } from '../constants/abTestGlobalValue';
 export const BASED_ACTIVITY_COUNT_COOKIE_KEY = 'basedActivityCount';
 
 export function addBasedOnRecommendationActivity(isLoggedIn: boolean, paperId: number) {
   return (dispatch: Dispatch<any>) => {
-    if (!isLoggedIn) return;
+    if (!isLoggedIn || getUserGroupName(KNOWLEDGE_BASED_RECOMMEND_TEST) === 'control') return;
 
     homeAPI.addBasedOnRecommendationPaper(paperId);
 
