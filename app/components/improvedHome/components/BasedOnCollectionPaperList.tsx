@@ -5,8 +5,7 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import { Collection } from '../../../model/collection';
 import { Paper } from '../../../model/paper';
 import { BasedOnCollectionPapersParams } from '../../../api/home';
-import ActionTicketManager from '../../../helpers/actionTicketManager';
-import CollectionPaperItem from './BasedOnCollectionPaperItem';
+import CollectionPaperItem, { trackToBasedOnCollectionPaper } from './BasedOnCollectionPaperItem';
 const styles = require('./recommendedPapers.scss');
 
 interface BasedOnCollectionPapersProps {
@@ -18,19 +17,6 @@ interface BasedOnCollectionPapersProps {
 interface BasedOnCollectionPaperListProps {
   basedOnCollectionPapers: BasedOnCollectionPapersParams | undefined;
   isLoading: boolean;
-}
-
-export function trackToBasedOnCollectionPaper(
-  actionTag: Scinapse.ActionTicket.ActionTagType,
-  actionLabel: string | null
-) {
-  ActionTicketManager.trackTicket({
-    pageType: 'home',
-    actionType: 'fire',
-    actionArea: 'basedOnCollectionPaperList',
-    actionTag,
-    actionLabel,
-  });
 }
 
 const BasedOnCollectionPapers: React.FC<BasedOnCollectionPapersProps> = props => {

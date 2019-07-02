@@ -21,7 +21,7 @@ interface PdfDownloadButtonProps {
 }
 
 const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props => {
-  const { paper, isLoading, onDownloadedPDF, handleSetScrollAfterDownload, actionArea } = props;
+  const { paper, isLoading, onDownloadedPDF, handleSetScrollAfterDownload, actionArea, currentUser } = props;
 
   function trackActionToClickPdfDownloadBtn() {
     ActionTicketManager.trackTicket({
@@ -68,7 +68,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
 
           window.open(pdfUrl, '_blank');
           onDownloadedPDF(true);
-          homeAPI.addBasedOnRecommendationPaper(paper.id);
+          currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paper.id);
           handleSetScrollAfterDownload();
         }}
       >

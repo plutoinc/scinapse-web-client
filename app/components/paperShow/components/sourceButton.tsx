@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as classNames from 'classnames';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { Paper } from '../../../model/paper';
+import { CurrentUser } from '../../../model/currentUser';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import ScinapseButtonFactory, { ScinapseButtonType } from '../../common/scinapseButton/scinapseButtonFactory';
 import SourceURLPopover from '../../common/sourceURLPopover';
@@ -13,11 +14,12 @@ const styles = require('./pdfSourceButton.scss');
 interface SourceButtonProps {
   paper: Paper;
   showFullText: boolean;
+  currentUser: CurrentUser;
   wrapperStyle?: React.CSSProperties;
 }
 
 const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
-  const { paper, showFullText } = props;
+  const { paper, showFullText, currentUser } = props;
   const [isSourcePopoverOpen, setIsSourcePopoverOpen] = React.useState(false);
   const anchorEl = React.useRef<HTMLDivElement | null>(null);
 
@@ -77,14 +79,14 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
               onClick: e => {
                 e.preventDefault();
                 handleClickSource();
-                homeAPI.addBasedOnRecommendationPaper(paper.id);
+                currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paper.id);
                 window.open(sourceUrl, '_blank');
               },
             }}
             dropdownBtnProps={{
               onClick: () => {
                 setIsSourcePopoverOpen(!isSourcePopoverOpen);
-                homeAPI.addBasedOnRecommendationPaper(paper.id);
+                currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paper.id);
               },
               style: !showFullText ? reverseBtnStyle : btnStyle,
               className: styles.dropdownBtn,
