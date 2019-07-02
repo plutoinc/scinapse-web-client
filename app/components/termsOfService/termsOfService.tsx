@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withStyles } from '../../helpers/withStylesHelper';
-import ScinapseFooter from '../layouts/scinapseFooter';
+import ImprovedFooter from '../layouts/improvedFooter';
 const styles = require('./termsOfService.scss');
 
 @withStyles<typeof TermsOfService>(styles)
@@ -324,7 +324,7 @@ class TermsOfService extends React.Component {
             but also a vibrant community of like-minded and engaged peers, focused on a very noble goal.
           </p>
         </div>
-        <ScinapseFooter style={{ backgroundColor: 'white' }} />{' '}
+        <ImprovedFooter containerStyle={{ backgroundColor: '#f9f9fa' }} />{' '}
       </div>
     );
   }

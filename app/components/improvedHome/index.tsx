@@ -10,7 +10,7 @@ import { AppState } from '../../reducers';
 import { LayoutState, UserDevice } from '../layouts/records';
 import { withStyles } from '../../helpers/withStylesHelper';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
-import TrendingPaper from '../home/components/trendingPaper';
+import TrendingPaper from './components/trendingPaper';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { KNOWLEDGE_BASED_RECOMMEND_TEST } from '../../constants/abTestGlobalValue';
 import Icon from '../../icons';

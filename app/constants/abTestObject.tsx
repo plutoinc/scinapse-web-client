@@ -1,7 +1,6 @@
 import { Test } from './abTest';
 import {
   SEARCH_ITEM_IMPROVEMENT_TEST,
-  HOME_IMPROVEMENT_TEST,
   GURU_AT_SEARCH_TEST,
   SEMANTIC_SEARCH_TEST,
   KNOWLEDGE_BASED_RECOMMEND_TEST,
@@ -16,11 +15,6 @@ export const searchItemImprovement: Test = {
     { groupName: 'sourceDomain', weight: 1 },
     { groupName: 'broadAuthorVenue', weight: 1 },
   ],
-};
-
-export const homeImprovement: Test = {
-  name: HOME_IMPROVEMENT_TEST,
-  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'improvement', weight: 1 }],
 };
 
 export const guruAtSearch: Test = {

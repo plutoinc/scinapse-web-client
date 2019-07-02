@@ -28,13 +28,13 @@ import SortBar from './components/SortBar';
 import Pagination from './components/pagination';
 import SignBanner from './components/signBanner';
 import FilterContainer from '../../containers/filterContainer';
-import ScinapseFooter from '../layouts/scinapseFooter';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import GuruBox from './components/guruBox';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { SEMANTIC_SEARCH_TEST } from '../../constants/abTestGlobalValue';
 import { changeSearchQuery } from '../../actions/searchQuery';
 import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
+import ImprovedFooter from '../layouts/improvedFooter';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -273,11 +273,11 @@ const SearchContainer: React.FC<Props> = props => {
           />
         </div>
       </div>
-      <ScinapseFooter
-        style={{
+      <ImprovedFooter
+        containerStyle={{
           position: 'absolute',
           bottom: 0,
-          backgroundColor: '#f9f9fa',
+          backgroundColor: 'white',
           width: '100%',
         }}
       />

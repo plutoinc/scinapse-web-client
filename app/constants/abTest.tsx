@@ -1,6 +1,5 @@
 import {
   searchItemImprovement,
-  homeImprovement,
   guruAtSearch,
   semanticSearch,
   knowledgeBasedRecommend,
@@ -21,7 +20,6 @@ export type SignUpConversion = 'queryLover' | 'downloadCount';
 export type ABTest =
   | 'searchItemImprovement'
   | 'guruAtSearch'
-  | 'homeImprovement'
   | 'semanticSearch'
   | 'knowledgeBasedRecommend';
 
@@ -45,7 +43,6 @@ export interface SignUpConversionExpTicketContext {
 
 export const LIVE_TESTS: Test[] = [
   searchItemImprovement,
-  homeImprovement,
   guruAtSearch,
   semanticSearch,
   knowledgeBasedRecommend,
