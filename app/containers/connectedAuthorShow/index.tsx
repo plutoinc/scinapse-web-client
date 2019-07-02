@@ -42,7 +42,7 @@ import { trackEvent } from '../../helpers/handleGA';
 import AuthorCvSection from '../authorCvSection';
 import { getAuthor } from '../unconnectedAuthorShow/actions';
 import ErrorPage from '../../components/error/errorPage';
-import ScinapseFooter from '../../components/layouts/scinapseFooter';
+import ImprovedFooter from '../../components/layouts/improvedFooter';
 const styles = require('./connectedAuthor.scss');
 
 export interface ConnectedAuthorShowMatchParams {
@@ -239,7 +239,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
             </div>
           </div>
         </div>
-        <ScinapseFooter style={{ backgroundColor: 'white' }} />{' '}
+        <ImprovedFooter containerStyle={{ backgroundColor: '#f9f9fa' }} />{' '}
         {isOpenSelectedPaperDialog ? (
           <RepresentativePublicationsDialog
             currentUser={currentUser}

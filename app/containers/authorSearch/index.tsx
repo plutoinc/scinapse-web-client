@@ -26,7 +26,7 @@ import { getUrlDecodedQueryParamsObject } from '../../helpers/makeNewFilterLink'
 import EnvChecker from '../../helpers/envChecker';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { Author } from '../../model/author/author';
-import ScinapseFooter from '../../components/layouts/scinapseFooter';
+import ImprovedFooter from '../../components/layouts/improvedFooter';
 const styles = require('./authorSearch.scss');
 
 function mapStateToProps(state: AppState) {
@@ -133,7 +133,7 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
               {this.getPaginationComponent()}
             </div>
           </div>
-          <ScinapseFooter style={{ backgroundColor: '#f9f9fa' }} />
+          <ImprovedFooter containerStyle={{ backgroundColor: 'white' }} />
         </div>
       );
     } else {

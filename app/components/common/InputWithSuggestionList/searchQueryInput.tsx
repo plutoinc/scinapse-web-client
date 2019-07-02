@@ -24,8 +24,6 @@ import { UserDevice } from '../../layouts/records';
 import { getCurrentPageType } from '../../locationListener';
 import { handleInputKeydown } from './helpers/handleInputKeydown';
 import { checkBlockSignUpConversion } from '../../../helpers/checkSignUpCount';
-import { getUserGroupName } from '../../../helpers/abTestHelper';
-import { HOME_IMPROVEMENT_TEST } from '../../../constants/abTestGlobalValue';
 import { changeSearchQuery } from '../../../actions/searchQuery';
 const s = require('./searchQueryInput.scss');
 
@@ -71,7 +69,6 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
   const [isOpen, setIsOpen] = React.useState(false);
   const [highlightIdx, setHighlightIdx] = React.useState(-1);
   const [inputValue, setInputValue] = React.useState('');
-  const [isImprovedHome, setIsImprovedHome] = React.useState(false);
   const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
   const { data: suggestionWords, setParams } = useDebouncedAsyncFetch<string, CompletionKeyword[]>({
     initialParams: '',
@@ -89,7 +86,6 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
   const [blockOpen, setBlockOpen] = React.useState(true);
   React.useEffect(() => {
     setBlockOpen(false);
-    setIsImprovedHome(getUserGroupName(HOME_IMPROVEMENT_TEST) === 'improvement');
   }, []);
 
   const [genuineInputValue, setGenuineInputValue] = React.useState('');
@@ -286,13 +282,11 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
           autoFocus={props.autoFocus}
           className={inputClassName}
         />
-        {props.actionArea === 'home' && isImprovedHome ? (
+        {props.actionArea === 'home' && (
           <button onClick={clickSearchBtn} className={s.searchButton}>
             <Icon icon="SEARCH_ICON" className={s.searchIconInButton} />
             <span className={s.searchButtonText}>Search</span>
           </button>
-        ) : (
-          <Icon onClick={clickSearchBtn} icon="SEARCH_ICON" className={s.searchIcon} />
         )}
         {keywordList}
       </div>

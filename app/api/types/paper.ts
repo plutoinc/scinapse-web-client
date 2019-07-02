@@ -8,7 +8,6 @@ export interface SearchPapersParams {
   filter: string;
   size?: number;
   cancelToken?: CancelToken;
-  semantic?: boolean;
 }
 
 export interface GetRefOrCitedPapersParams {

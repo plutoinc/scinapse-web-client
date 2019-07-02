@@ -48,8 +48,8 @@ import { ActionCreators } from '../../actions/actionTypes';
 import BottomBanner from '../../components/preNoted/bottomBanner';
 import { Configuration } from '../../reducers/configuration';
 import { getMemoizedConfiguration } from '../../selectors/getConfiguration';
-import ScinapseFooter from '../../components/layouts/scinapseFooter';
 import PlutoAxios from '../../api/pluto';
+import ImprovedFooter from '../../components/layouts/improvedFooter';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -323,7 +323,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           </div>
         </div>
         <div className={styles.footerWrapper}>
-          <ScinapseFooter style={{ backgroundColor: 'white' }} />{' '}
+          <ImprovedFooter containerStyle={{ backgroundColor: '#f9f9fa' }} />{' '}
         </div>
         <BottomBanner currentUser={currentUser} />
         <NextPaperTab />

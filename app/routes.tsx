@@ -32,8 +32,6 @@ import {
   PRIVACY_POLICY_PATH,
 } from './constants/routes';
 import { Configuration } from './reducers/configuration';
-import { getUserGroupName } from './helpers/abTestHelper';
-import { HOME_IMPROVEMENT_TEST } from './constants/abTestGlobalValue';
 const styles = require('./root.scss');
 
 export interface LoadDataParams<P> {
@@ -56,7 +54,7 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: HOME_PATH,
     exact: true,
-    component: loadable(() => import('./components/home'), {
+    component: loadable(() => import('./components/improvedHome'), {
       fallback: <div>loading ...</div>,
     }),
   },
@@ -175,7 +173,6 @@ function mapStateToProps(state: AppState) {
 
 const DialogComponent = loadable(() => import('./components/dialog'));
 const FeedbackButton = loadable(() => import('./containers/feedbackButton'));
-const Header = loadable(() => import('./components/layouts/header'));
 const ImprovedHeader = loadable(() => import('./components/layouts/improvedHeader'));
 
 const LoadingComponent: React.FC<{ shouldShow: boolean }> = ({ shouldShow }) => {
@@ -269,19 +266,6 @@ const DefaultHelmet = () => {
   );
 };
 
-const Navbar: React.FC = () => {
-  const [showImprovedHeader, setShowImprovedHeader] = React.useState(false);
-
-  React.useEffect(() => {
-    setShowImprovedHeader(getUserGroupName(HOME_IMPROVEMENT_TEST) === 'improvement');
-  });
-
-  if (showImprovedHeader) {
-    return <ImprovedHeader />;
-  }
-  return <Header />;
-};
-
 const RootRoutes: React.FC<RootRoutesProps> = props => {
   const { location, configuration, currentUser } = props;
 
@@ -289,7 +273,7 @@ const RootRoutes: React.FC<RootRoutesProps> = props => {
     <div>
       <LoadingComponent shouldShow={!configuration.renderedAtClient && currentUser.isLoggingIn} />
       <DefaultHelmet />
-      <Navbar />
+      <ImprovedHeader />
       <div>
         <Switch location={location}>
           {routesMap.map(route => <Route {...route} key={route.path || 'errorPage'} />)}

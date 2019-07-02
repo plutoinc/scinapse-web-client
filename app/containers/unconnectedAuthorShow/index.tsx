@@ -29,7 +29,7 @@ import { AppState } from '../../reducers';
 import { fetchAuthorPapers } from '../../actions/author';
 import EnvChecker from '../../helpers/envChecker';
 import ErrorPage from '../../components/error/errorPage';
-import ScinapseFooter from '../../components/layouts/scinapseFooter';
+import ImprovedFooter from '../../components/layouts/improvedFooter';
 const styles = require('./authorShow.scss');
 
 export interface AuthorShowMatchParams {
@@ -191,7 +191,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
             }}
           />
         </div>
-        <ScinapseFooter style={{ backgroundColor: 'white' }} />
+        <ImprovedFooter containerStyle={{ backgroundColor: '#f9f9fa' }} />
       </div>
     );
   }
