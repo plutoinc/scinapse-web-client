@@ -13,7 +13,7 @@ import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import CollectionButton from './collectionButton';
 import formatNumber from '../../../helpers/formatNumber';
-import homeAPI from '../../../api/home';
+import { addBasedOnRecommendationActivity } from '../../../helpers/addBasedOnRecommendationActivity';
 const styles = require('./paperActionButtons.scss');
 
 interface HandleClickClaim {
@@ -98,7 +98,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             actionTag: 'source',
             actionLabel: String(paper.id),
           });
-          currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paper.id);
+          addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id);
         }}
       >
         {buttonContent}
@@ -126,7 +126,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
               actionTag: 'citedList',
               actionLabel: String(paper.id),
             });
-            currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paper.id);
+            addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id);
           }}
           className={styles.citedButton}
         >
@@ -153,7 +153,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
                 actionTag: 'citePaper',
                 actionLabel: String(paper.id),
               });
-              currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paper.id);
+              addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id);
             }}
           >
             <Icon className={styles.citationIcon} icon="CITATION_QUOTE" />

@@ -23,7 +23,7 @@ import { getMemoizedCurrentUser } from '../../selectors/getCurrentUser';
 import { getMemoizedPDFViewerState } from '../../selectors/getPDFViewer';
 import ProgressSpinner from './component/progressSpinner';
 import BlurBlocker from './component/blurBlocker';
-import homeAPI from '../../api/home';
+import { addBasedOnRecommendationActivity } from '../../helpers/addBasedOnRecommendationActivity';
 const { Document, Page, pdfjs } = require('react-pdf');
 const styles = require('./pdfViewer.scss');
 
@@ -346,7 +346,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                           dispatch(ActionCreators.clickPDFDownloadBtn());
                           trackClickButton('downloadPdf', paper.id);
                           window.open(paper.bestPdf.url, '_blank');
-                          currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paper.id);
+                          addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id);
                           afterDownloadPDF();
                         }
                       }}

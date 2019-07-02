@@ -1,0 +1,63 @@
+.notiContainer {
+  width: 518px;
+  height: 220px;
+  border-radius: 8px;
+  box-shadow: 0 10px 23px 0 rgba(0, 0, 0, 0.11);
+  background-color: white;
+  font-family: $fallback !important;
+  padding: 32px 24px 24px 40px;
+}
+
+.notiTitle {
+  font-size: 16px;
+  line-height: 1.5;
+  color: $dark-blue0;
+}
+
+.notiBody {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.notiContent {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.44;
+  color: $dark-blue0;
+  white-space: pre-line;
+}
+
+.notiBtnWrapper {
+  margin-top: 32px;
+}
+
+.letMeSeeBtn {
+  width: 115px;
+  height: 41px;
+  border-radius: 4px;
+  background-color: $main-blue1;
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+
+  &:hover {
+    transition: $button-hover-transition;
+    background-color: $main_blue_light0;
+  }
+}
+
+.noThxBtn {
+  width: 115px;
+  height: 41px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #98a5b3;
+  margin-left: 8px;
+
+  &:hover {
+    transition: $button-hover-transition;
+    text-decoration: underline;
+  }
+}

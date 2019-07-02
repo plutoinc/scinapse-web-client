@@ -12,7 +12,7 @@ import { Collection, collectionSchema } from '../../../model/collection';
 import { MyCollectionsState } from '../../../containers/paperShowCollectionControlButton/reducer';
 import CollectionPaperNote from '../../collectionPaperNote';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
-import homeAPI from '../../../api/home';
+import { addBasedOnRecommendationActivity } from '../../../helpers/addBasedOnRecommendationActivity';
 const styles = require('./collectionButton.scss');
 
 function mapStateToProps(state: AppState) {
@@ -155,7 +155,7 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
 
         if (!isBlocked) {
           handleAddToCollection(myCollections, paperId);
-          currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paperId);
+          addBasedOnRecommendationActivity(currentUser.isLoggedIn, paperId);
         }
       }}
     >

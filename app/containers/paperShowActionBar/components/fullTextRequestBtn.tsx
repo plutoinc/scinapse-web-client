@@ -5,7 +5,7 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import SearchingPDFBtn from '../../../components/paperShow/components/searchingPDFBtn';
 import { CurrentUser } from '../../../model/currentUser';
-import homeAPI from '../../../api/home';
+import { addBasedOnRecommendationActivity } from '../../../helpers/addBasedOnRecommendationActivity';
 const s = require('../actionBar.scss');
 
 const RequestFullTextBtn: React.FunctionComponent<{
@@ -43,7 +43,7 @@ const RequestFullTextBtn: React.FunctionComponent<{
 
         if (!isBlocked) {
           handleSetIsOpen(true);
-          currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paperId);
+          addBasedOnRecommendationActivity(currentUser.isLoggedIn, paperId);
         }
       }}
       className={s.fullTextBtn}

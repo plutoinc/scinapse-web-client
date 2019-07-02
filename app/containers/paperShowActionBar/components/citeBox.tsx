@@ -5,7 +5,7 @@ import { CurrentUser } from '../../../model/currentUser';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-import homeAPI from '../../../api/home';
+import { addBasedOnRecommendationActivity } from '../../../helpers/addBasedOnRecommendationActivity';
 const s = require('./citeBox.scss');
 
 interface CiteBoxProps {
@@ -26,7 +26,7 @@ const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
       className={s.citeButton}
       onClick={() => {
         GlobalDialogManager.openCitationDialog(paper.id);
-        currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paper.id);
+        addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id);
         ActionTicketManager.trackTicket({
           pageType: 'paperShow',
           actionType: 'fire',

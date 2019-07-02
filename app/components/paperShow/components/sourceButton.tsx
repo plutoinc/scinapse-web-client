@@ -8,7 +8,7 @@ import ScinapseButtonFactory, { ScinapseButtonType } from '../../common/scinapse
 import SourceURLPopover from '../../common/sourceURLPopover';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-import homeAPI from '../../../api/home';
+import { addBasedOnRecommendationActivity } from '../../../helpers/addBasedOnRecommendationActivity';
 const styles = require('./pdfSourceButton.scss');
 
 interface SourceButtonProps {
@@ -79,14 +79,14 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
               onClick: e => {
                 e.preventDefault();
                 handleClickSource();
-                currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paper.id);
+                addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id);
                 window.open(sourceUrl, '_blank');
               },
             }}
             dropdownBtnProps={{
               onClick: () => {
                 setIsSourcePopoverOpen(!isSourcePopoverOpen);
-                currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paper.id);
+                addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id);
               },
               style: !showFullText ? reverseBtnStyle : btnStyle,
               className: styles.dropdownBtn,
