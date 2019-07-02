@@ -4,6 +4,7 @@ import { Paper } from '../../../model/paper';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
+import homeAPI from '../../../api/home';
 const s = require('./citeBox.scss');
 
 interface CiteBoxProps {
@@ -13,19 +14,23 @@ interface CiteBoxProps {
 }
 
 const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
-  if (!props.paper.doi) return null;
+  const { paper, btnStyle, actionArea } = props;
+
+  if (!paper.doi) return null;
+
   return (
     <div
-      style={!!props.btnStyle ? props.btnStyle : {}}
+      style={!!btnStyle ? btnStyle : {}}
       className={s.citeButton}
       onClick={() => {
-        GlobalDialogManager.openCitationDialog(props.paper.id);
+        GlobalDialogManager.openCitationDialog(paper.id);
+        homeAPI.addBasedOnRecommendationPaper(paper.id);
         ActionTicketManager.trackTicket({
           pageType: 'paperShow',
           actionType: 'fire',
-          actionArea: props.actionArea,
+          actionArea,
           actionTag: 'citePaper',
-          actionLabel: String(props.paper.id),
+          actionLabel: String(paper.id),
         });
       }}
     >

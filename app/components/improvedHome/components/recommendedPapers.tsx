@@ -44,7 +44,7 @@ const RecommendedPapers: React.FC<RecommendedPapersProps> = props => {
           </div>
           <div className={styles.basedOnCollectionPapers}>
             <BaseOnCollectionPaperList
-              basedOnCollectionPapers={basedOnCollectionPapers!}
+              basedOnCollectionPapers={basedOnCollectionPapers}
               isLoading={isLoadingCollectionPapers || isLoggingIn}
             />
           </div>
