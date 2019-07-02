@@ -61,6 +61,7 @@ const SearchList: React.FC<SearchListProps> = props => {
         currentUser={currentUser}
         wrapperClassName={styles.searchItemWrapper}
         savedAt={savedAt}
+        sourceDomain={sourceDomains.find(source => source.paperId === paper.id)}
       />
     );
   });
