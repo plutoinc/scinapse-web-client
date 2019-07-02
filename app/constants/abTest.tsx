@@ -1,9 +1,4 @@
-import {
-  searchItemImprovement,
-  guruAtSearch,
-  semanticSearch,
-  knowledgeBasedRecommend,
-} from './abTestObject';
+import { searchItemImprovement, guruAtSearch, knowledgeBasedRecommend } from './abTestObject';
 
 export interface UserGroup {
   groupName: string;
@@ -17,11 +12,7 @@ export interface Test {
 
 export type SignUpConversion = 'queryLover' | 'downloadCount';
 
-export type ABTest =
-  | 'searchItemImprovement'
-  | 'guruAtSearch'
-  | 'semanticSearch'
-  | 'knowledgeBasedRecommend';
+export type ABTest = 'searchItemImprovement' | 'guruAtSearch' | 'knowledgeBasedRecommend';
 
 export const SIGN_UP_CONVERSION_KEY = 'b_exp';
 
@@ -41,12 +32,7 @@ export interface SignUpConversionExpTicketContext {
   expName?: string;
 }
 
-export const LIVE_TESTS: Test[] = [
-  searchItemImprovement,
-  guruAtSearch,
-  semanticSearch,
-  knowledgeBasedRecommend,
-];
+export const LIVE_TESTS: Test[] = [searchItemImprovement, guruAtSearch, knowledgeBasedRecommend];
 
 function getRandomPool(): { [key: string]: string[] } {
   const randomPool: { [key: string]: string[] } = {};
