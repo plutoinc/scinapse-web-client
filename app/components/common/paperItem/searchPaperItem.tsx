@@ -1,4 +1,6 @@
 import * as React from 'react';
+import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
+import * as format from 'date-fns/format';
 import { CurrentUser } from '../../../model/currentUser';
 import Abstract from './abstract';
 import PaperActionButtons from './paperActionButtons';
@@ -16,6 +18,7 @@ const styles = require('./paperItem.scss');
 
 export interface PaperItemProps {
   paper: Paper;
+  savedAt: number | null; // unix time
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
   searchQueryText: string;
@@ -29,8 +32,33 @@ export function getMissingWords(sentence: string, source: string): string[] {
   );
 }
 
+const NotIncludedWords: React.FC<{ title: string; abstract: string; searchKeyword: string }> = React.memo(props => {
+  const { title, abstract, searchKeyword } = props;
+  const missingWordsFromTitle = getMissingWords(searchKeyword, title);
+  const missingWordsFromAbstract = getMissingWords(searchKeyword, abstract);
+  const missingWords = new Set(missingWordsFromTitle.filter(word => missingWordsFromAbstract.includes(word)));
+
+  if (missingWords.size === 0) return null;
+
+  const wordComponents = Array.from(missingWords).map((word, i) => {
+    return (
+      <React.Fragment key={i}>
+        <span className={styles.missingWord}>{word}</span>
+        {i !== missingWords.size - 1 && ` `}
+      </React.Fragment>
+    );
+  });
+
+  return (
+    <div className={styles.missingWordsWrapper}>
+      {`Not included: `}
+      {wordComponents}
+    </div>
+  );
+});
+
 const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
-  const { searchQueryText, paper, wrapperClassName, currentUser, pageType, actionArea } = props;
+  const { searchQueryText, paper, wrapperClassName, currentUser, pageType, actionArea, savedAt } = props;
   const { doi, urls, relation } = paper;
 
   const [venueAuthorType, setVenueAuthorType] = React.useState<'broadAuthorVenue' | 'control' | ''>('');
@@ -40,6 +68,15 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
       getUserGroupName(SEARCH_ITEM_IMPROVEMENT_TEST) === 'broadAuthorVenue' ? 'broadAuthorVenue' : 'control'
     );
   }, []);
+
+  let historyContent = null;
+  if (savedAt) {
+    const lastVisitDate = format(savedAt, 'MMM DD, YYYY');
+    const lastVisitFrom = distanceInWordsToNow(savedAt);
+    historyContent = (
+      <div className={styles.visitedHistory}>{`You visited at ${lastVisitDate} (${lastVisitFrom} ago)`}</div>
+    );
+  }
 
   let venueAndAuthor = null;
   if (venueAuthorType === 'broadAuthorVenue') {
@@ -84,6 +121,7 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
         {!!relation && relation.savedInCollections.length >= 1 ? (
           <SavedCollections collections={relation.savedInCollections} />
         ) : null}
+        {historyContent}
         <Title
           paperId={paper.id}
           paperTitle={paper.title}
@@ -100,6 +138,11 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
           actionArea={actionArea}
           abstract={paper.abstractHighlighted || paper.abstract}
           searchQueryText={searchQueryText}
+        />
+        <NotIncludedWords
+          title={paper.title}
+          abstract={paper.abstract || paper.abstractHighlighted || ''}
+          searchKeyword={searchQueryText}
         />
         <PaperActionButtons
           currentUser={currentUser}
