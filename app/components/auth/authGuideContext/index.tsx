@@ -46,17 +46,8 @@ const GuideContentsByActionType: React.FunctionComponent<AuthGuideContextProps> 
         <GuideContent
           mainText={'Free\nPDF\nDownload'}
           subText={'from Scinapse Database'}
-          imageUrl={'https://assets.pluto.network/signup_modal/signup_downloadpdf.jpg'}
+          imageUrl={'https://assets.pluto.network/signup_modal/signup_downloadpdf.png'}
           webpUrl={'https://assets.pluto.network/signup_modal/signup_downloadpdf.webp'}
-        />
-      );
-    case 'citePaper':
-      return (
-        <GuideContent
-          mainText={'Enjoy\nRobust\nCitation'}
-          subText={''}
-          imageUrl={'https://assets.pluto.network/signup_modal/signup_cite.jpg'}
-          webpUrl={'https://assets.pluto.network/signup_modal/signup_cite.webp'}
         />
       );
     case 'viewMorePDF':
@@ -64,17 +55,16 @@ const GuideContentsByActionType: React.FunctionComponent<AuthGuideContextProps> 
         <GuideContent
           mainText={'Enjoy\nUnlimited\nFull Text'}
           subText={'from Scinapse Database'}
-          imageUrl={'https://assets.pluto.network/signup_modal/signup_viewmorepdf.jpg'}
+          imageUrl={'https://assets.pluto.network/signup_modal/signup_viewmorepdf.png'}
           webpUrl={'https://assets.pluto.network/signup_modal/signup_viewmorepdf.webp'}
         />
       );
-
     case 'query':
       return (
         <GuideContent
           mainText={'Smart\nResearchers\nLove Scinapse'}
           subText={''}
-          imageUrl={'https://assets.pluto.network/signup_modal/signup_query.jpg'}
+          imageUrl={'https://assets.pluto.network/signup_modal/signup_query.png'}
           webpUrl={'https://assets.pluto.network/signup_modal/signup_query.webp'}
         />
       );
@@ -83,7 +73,7 @@ const GuideContentsByActionType: React.FunctionComponent<AuthGuideContextProps> 
         <GuideContent
           mainText={'200 Millions\nUnlimited\nPapers'}
           subText={''}
-          imageUrl={'https://assets.pluto.network/signup_modal/signup_unlimited.jpg'}
+          imageUrl={'https://assets.pluto.network/signup_modal/signup_unlimited.png'}
           webpUrl={'https://assets.pluto.network/signup_modal/signup_unlimited.webp'}
         />
       );
@@ -92,7 +82,7 @@ const GuideContentsByActionType: React.FunctionComponent<AuthGuideContextProps> 
         <GuideContent
           mainText={'Researchers\nLove\nScinapse'}
           subText={''}
-          imageUrl={'https://assets.pluto.network/signup_modal/signup_query.jpg'}
+          imageUrl={'https://assets.pluto.network/signup_modal/signup_query.png'}
           webpUrl={'https://assets.pluto.network/signup_modal/signup_query.webp'}
         />
       );
@@ -101,7 +91,7 @@ const GuideContentsByActionType: React.FunctionComponent<AuthGuideContextProps> 
         <GuideContent
           mainText={'Search\nPaper\nby DOI'}
           subText={''}
-          imageUrl={'https://assets.pluto.network/signup_modal/signup_query.jpg'}
+          imageUrl={'https://assets.pluto.network/signup_modal/signup_query.png'}
           webpUrl={'https://assets.pluto.network/signup_modal/signup_query.webp'}
         />
       );
