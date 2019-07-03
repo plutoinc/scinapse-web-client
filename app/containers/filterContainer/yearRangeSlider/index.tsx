@@ -21,7 +21,7 @@ interface YearSet {
 interface YearRangeSliderProps extends RouteComponentProps<null> {
   yearInfo: YearSet[];
   filteredYearInfo: YearSet[];
-  detectedYear?: number;
+  detectedYear: number | null;
 }
 
 interface ColumnProps {
@@ -91,7 +91,7 @@ const Column: React.FunctionComponent<ColumnProps> = React.memo(props => {
   );
 });
 
-function getYearsData(qp: SearchPageQueryParams, yearSetListToShow: YearSet[], detectedYear?: number) {
+function getYearsData(qp: SearchPageQueryParams, yearSetListToShow: YearSet[], detectedYear: number | null) {
   if (detectedYear) return [detectedYear, detectedYear];
 
   const filter = PapersQueryFormatter.objectifyPaperFilter(qp.filter);
