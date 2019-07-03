@@ -3,4 +3,3 @@ import { ABTest } from './abTest';
 export const SEARCH_ITEM_IMPROVEMENT_TEST: ABTest = 'searchItemImprovement';
 export const GURU_AT_SEARCH_TEST: ABTest = 'guruAtSearch';
 export const KNOWLEDGE_BASED_RECOMMEND_TEST: ABTest = 'knowledgeBasedRecommend';
-export const AUTO_YEAR_FILTER_TEST: ABTest = 'autoYearFilter';
