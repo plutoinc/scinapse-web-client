@@ -20,13 +20,7 @@ const KnowledgeBaseNoti: React.FC<Props> = props => {
   const { isOpen } = knowledgeBaseNotiState;
 
   return (
-    <Dialog
-      open={isOpen}
-      onClose={() => {
-        dispatch(ActionCreators.closeKnowledgeBaseNoti());
-      }}
-      classes={{ paper: styles.notiContainer }}
-    >
+    <Dialog open={isOpen} classes={{ paper: styles.notiContainer }}>
       <div className={styles.notiTitle}>😊 Your research interest was analyzed</div>
       <div className={styles.notiBody}>
         <span className={styles.notiContent}>A list of recommended paper is prepared for you</span>
