@@ -147,7 +147,7 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
     <button
       className={styles.addCollectionBtnWrapper}
       onClick={async () => {
-        dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paperId));
+        await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paperId));
         const isBlocked = await blockUnverifiedUser({
           authLevel: AUTH_LEVEL.VERIFIED,
           actionArea: actionArea || pageType,

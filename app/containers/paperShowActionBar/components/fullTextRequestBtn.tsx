@@ -45,7 +45,7 @@ const RequestFullTextBtn: React.FunctionComponent<{
         });
 
         if (!isBlocked) {
-          props.dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paperId));
+          await props.dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paperId));
           handleSetIsOpen(true);
         }
       }}

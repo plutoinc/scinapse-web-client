@@ -93,7 +93,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         target="_blank"
         rel="noopener nofollow noreferrer"
         className={styles.sourceButton}
-        onClick={() => {
+        onClick={async () => {
           ActionTicketManager.trackTicket({
             pageType,
             actionType: 'fire',
@@ -101,7 +101,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             actionTag: 'source',
             actionLabel: String(paper.id),
           });
-          dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
+          await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
         }}
       >
         {buttonContent}
@@ -121,7 +121,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             pathname: `/papers/${paper.id}`,
             hash: 'cited',
           }}
-          onClick={() => {
+          onClick={async () => {
             ActionTicketManager.trackTicket({
               pageType,
               actionType: 'fire',
@@ -129,7 +129,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
               actionTag: 'citedList',
               actionLabel: String(paper.id),
             });
-            dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
+            await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
           }}
           className={styles.citedButton}
         >
@@ -147,8 +147,8 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         <span className={styles.DOIMetaButtonsWrapper}>
           <span
             className={styles.citationIconWrapper}
-            onClick={() => {
-              dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
+            onClick={async () => {
+              await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
               GlobalDialogManager.openCitationDialog(paper.id);
               ActionTicketManager.trackTicket({
                 pageType,

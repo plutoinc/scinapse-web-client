@@ -79,17 +79,18 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
               target: '_blank',
               rel: 'noopener',
               className: styles.linkClassName,
-              onClick: e => {
+              onClick: async e => {
                 e.preventDefault();
                 handleClickSource();
-                dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
+                await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
                 window.open(sourceUrl, '_blank');
               },
             }}
             dropdownBtnProps={{
-              onClick: () => {
+              onClick: async () => {
                 setIsSourcePopoverOpen(!isSourcePopoverOpen);
-                !isSourcePopoverOpen && dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
+                !isSourcePopoverOpen &&
+                  (await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id)));
               },
               style: !showFullText ? reverseBtnStyle : btnStyle,
               className: styles.dropdownBtn,
