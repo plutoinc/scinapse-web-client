@@ -35,6 +35,7 @@ import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
 import ImprovedFooter from '../layouts/improvedFooter';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { AUTO_YEAR_FILTER_TEST } from '../../constants/abTestGlobalValue';
+import AutoYearFilter from './components/autoYearFilter';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -196,8 +197,16 @@ const SearchContainer: React.FC<Props> = props => {
   const [queryParams, setQueryParams] = React.useState<SearchPageQueryParams>(
     parse(location.search, { ignoreQueryPrefix: true })
   );
+  const [useAutoYearFilter, setUseAutoYearFilter] = React.useState(true);
   const [filter, setFilter] = React.useState(SearchQueryManager.objectifyPaperFilter(queryParams.filter));
   const cancelToken = React.useRef(axios.CancelToken.source());
+
+  React.useEffect(
+    () => {
+      setUseAutoYearFilter(true);
+    },
+    [queryParams.query]
+  );
 
   React.useEffect(
     () => {
@@ -213,7 +222,7 @@ const SearchContainer: React.FC<Props> = props => {
       const params = SearchQueryManager.makeSearchQueryFromParamsObject(currentQueryParams);
       params.cancelToken = cancelToken.current.token;
 
-      if (doAuthYearFilterSearch) {
+      if (doAuthYearFilterSearch && useAutoYearFilter) {
         params.yd = true;
       }
 
@@ -226,7 +235,14 @@ const SearchContainer: React.FC<Props> = props => {
         cancelToken.current = axios.CancelToken.source();
       };
     },
-    [location.key, location.search, currentUserState.isLoggedIn, currentUserState.isLoggingIn, searchPapers]
+    [
+      location.key,
+      location.search,
+      currentUserState.isLoggedIn,
+      currentUserState.isLoggingIn,
+      searchPapers,
+      useAutoYearFilter,
+    ]
   );
 
   React.useEffect(
@@ -251,6 +267,10 @@ const SearchContainer: React.FC<Props> = props => {
       <SearchHelmet query={queryParams.query || ''} />
       <TabNavigationBar searchKeyword={articleSearchState.searchInput} />
       <div className={styles.articleSearchContainer}>
+        <AutoYearFilter
+          detectedYear={articleSearchState.detectedYear}
+          handleSetUseAutoYearFilter={setUseAutoYearFilter}
+        />
         <Suggestions
           searchFromSuggestion={articleSearchState.searchFromSuggestion}
           suggestionKeyword={articleSearchState.suggestionKeyword}

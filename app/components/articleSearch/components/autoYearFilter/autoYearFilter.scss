@@ -1,0 +1,25 @@
+.autoYearFilterBox {
+  margin-top: 24px;
+  padding-bottom: 16px;
+  font-size: 16px;
+  text-align: left;
+  color: $gray6;
+  width: 100%;
+  border-bottom: 1px solid $gray3;
+}
+
+.detectedYear {
+  font-style: italic;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.removeFilterBtn {
+  color: red;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
