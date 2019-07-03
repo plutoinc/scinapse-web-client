@@ -33,6 +33,8 @@ import GuruBox from './components/guruBox';
 import { changeSearchQuery } from '../../actions/searchQuery';
 import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
 import ImprovedFooter from '../layouts/improvedFooter';
+import { getUserGroupName } from '../../helpers/abTestHelper';
+import { AUTO_YEAR_FILTER_TEST } from '../../constants/abTestGlobalValue';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -201,6 +203,8 @@ const SearchContainer: React.FC<Props> = props => {
     () => {
       if (currentUserState.isLoggingIn) return;
 
+      const doAuthYearFilterSearch = getUserGroupName(AUTO_YEAR_FILTER_TEST) === 'auto';
+
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
       changeSearchQuery(SafeURIStringHandler.decode(currentQueryParams.query || ''));
       setQueryParams(currentQueryParams);
@@ -208,6 +212,10 @@ const SearchContainer: React.FC<Props> = props => {
       // set params
       const params = SearchQueryManager.makeSearchQueryFromParamsObject(currentQueryParams);
       params.cancelToken = cancelToken.current.token;
+
+      if (doAuthYearFilterSearch) {
+        params.yd = true;
+      }
 
       searchPapers(params).then(() => {
         restoreScroll(location.key);
