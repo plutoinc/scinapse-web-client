@@ -2,6 +2,7 @@
   margin-top: 24px;
   padding-bottom: 16px;
   font-size: 16px;
+  line-height: 1.4;
   text-align: left;
   color: $gray6;
   width: 100%;
@@ -9,17 +10,15 @@
 }
 
 .detectedYear {
-  font-style: italic;
-  text-decoration: underline;
-  font-weight: 500;
+  font-weight: bold;
 }
 
 .removeFilterBtn {
-  color: red;
-  font-weight: 500;
+  text-decoration: underline;
   cursor: pointer;
+  color: $gray6;
 
   &:hover {
-    text-decoration: underline;
+    color: $black0;
   }
 }

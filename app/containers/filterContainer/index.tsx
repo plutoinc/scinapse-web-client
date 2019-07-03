@@ -30,9 +30,20 @@ function getPublicationFilterBox(props: FilterContainerProps) {
   const { articleSearchState } = props;
   const yearRangeList = articleSearchState.aggregationData ? articleSearchState.aggregationData.yearAll || [] : [];
   const filteredYearRangeList = articleSearchState.aggregationData
-    ? articleSearchState.aggregationData.yearFiltered || []
+    ? articleSearchState.aggregationData.yearFiltered ||
+      (articleSearchState.detectedYear && [
+        { year: articleSearchState.detectedYear, docCount: articleSearchState.totalElements },
+      ]) ||
+      []
     : [];
-  return <YearRangeSlider yearInfo={yearRangeList} filteredYearInfo={filteredYearRangeList} />;
+
+  return (
+    <YearRangeSlider
+      yearInfo={yearRangeList}
+      filteredYearInfo={filteredYearRangeList}
+      detectedYear={articleSearchState.detectedYear}
+    />
+  );
 }
 
 function getFOSFilterBox(props: FilterContainerProps) {

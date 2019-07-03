@@ -12,14 +12,13 @@ const AutoYearFilter: React.FC<AutoYearFilterProps> = ({ detectedYear, handleSet
   return (
     <div className={styles.autoYearFilterBox}>
       <div>
-        Showing results filtered to <span className={styles.detectedYear}>{detectedYear}</span>
+        Year filter applied : <span className={styles.detectedYear}>{detectedYear}</span>
       </div>
       <div>
-        If you do not want filtered results,{' '}
+        If you want to remove year filter,{' '}
         <button className={styles.removeFilterBtn} onClick={() => handleSetUseAutoYearFilter(false)}>
-          remove
-        </button>{' '}
-        year filter.
+          click here
+        </button>
       </div>
     </div>
   );
