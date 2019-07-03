@@ -12,7 +12,7 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import SavedCollections from './savedCollections';
 import { getUserGroupName } from '../../../helpers/abTestHelper';
-import { SEARCH_ITEM_IMPROVEMENT_TEST } from '../../../constants/abTestGlobalValue';
+import { BROAD_AUTHOR_VENUE_TEST } from '../../../constants/abTestGlobalValue';
 import { STOP_WORDS } from '../highLightedContent';
 import { PaperSource } from '../../../api/paper';
 const styles = require('./paperItem.scss');
@@ -67,7 +67,7 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
 
   React.useEffect(() => {
     setVenueAuthorType(
-      getUserGroupName(SEARCH_ITEM_IMPROVEMENT_TEST) === 'broadAuthorVenue' ? 'broadAuthorVenue' : 'control'
+      getUserGroupName(BROAD_AUTHOR_VENUE_TEST) === 'broadAuthorVenue' ? 'broadAuthorVenue' : 'control'
     );
   }, []);
 
