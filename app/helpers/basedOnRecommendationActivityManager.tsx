@@ -10,14 +10,21 @@ export function addBasedOnRecommendationActivity(isLoggedIn: boolean, paperId: n
   return (dispatch: Dispatch<any>) => {
     if (!isLoggedIn || getUserGroupName(KNOWLEDGE_BASED_RECOMMEND_TEST) === 'control') return;
 
+    let currentActivityCount;
     homeAPI.addBasedOnRecommendationPaper(paperId);
 
     const rawActivityCount = Cookies.get(BASED_ACTIVITY_COUNT_COOKIE_KEY);
     if (rawActivityCount === 'null') return;
 
-    const activityCount = parseInt(rawActivityCount || '0', 10) + 1;
+    const activityCount = parseInt(rawActivityCount || '0', 10);
 
-    switch (activityCount) {
+    if (activityCount === 16) {
+      currentActivityCount = 1;
+    } else {
+      currentActivityCount = activityCount + 1;
+    }
+
+    switch (currentActivityCount) {
       case 2:
       case 5:
       case 13:
@@ -25,6 +32,6 @@ export function addBasedOnRecommendationActivity(isLoggedIn: boolean, paperId: n
         break;
     }
 
-    Cookies.set(BASED_ACTIVITY_COUNT_COOKIE_KEY, String(activityCount));
+    Cookies.set(BASED_ACTIVITY_COUNT_COOKIE_KEY, String(currentActivityCount));
   };
 }
