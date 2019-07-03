@@ -24,6 +24,19 @@ export function addBasedOnRecommendationActivity(isLoggedIn: boolean, paperId: n
       currentActivityCount = activityCount + 1;
     }
 
+    Cookies.set(BASED_ACTIVITY_COUNT_COOKIE_KEY, String(currentActivityCount));
+
+    homeAPI
+      .getBasedOnActivityPapers()
+      .then(res => {
+        if (!res || res.length === 0) {
+          return;
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+
     switch (currentActivityCount) {
       case 2:
       case 5:
@@ -31,7 +44,5 @@ export function addBasedOnRecommendationActivity(isLoggedIn: boolean, paperId: n
         dispatch(ActionCreators.openKnowledgeBaseNoti());
         break;
     }
-
-    Cookies.set(BASED_ACTIVITY_COUNT_COOKIE_KEY, String(currentActivityCount));
   };
 }
