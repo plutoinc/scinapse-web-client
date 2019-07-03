@@ -1,5 +1,10 @@
 import { Test } from './abTest';
-import { SEARCH_ITEM_IMPROVEMENT_TEST, GURU_AT_SEARCH_TEST, KNOWLEDGE_BASED_RECOMMEND_TEST } from './abTestGlobalValue';
+import {
+  SEARCH_ITEM_IMPROVEMENT_TEST,
+  GURU_AT_SEARCH_TEST,
+  KNOWLEDGE_BASED_RECOMMEND_TEST,
+  AUTO_YEAR_FILTER_TEST,
+} from './abTestGlobalValue';
 
 export const searchItemImprovement: Test = {
   name: SEARCH_ITEM_IMPROVEMENT_TEST,
@@ -14,4 +19,9 @@ export const guruAtSearch: Test = {
 export const knowledgeBasedRecommend: Test = {
   name: KNOWLEDGE_BASED_RECOMMEND_TEST,
   userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'knowledgeBasedRecommend', weight: 1 }],
+};
+
+export const autoYearFilter: Test = {
+  name: AUTO_YEAR_FILTER_TEST,
+  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'auto', weight: 1 }],
 };
