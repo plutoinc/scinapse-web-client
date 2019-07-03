@@ -26,22 +26,22 @@ export function addBasedOnRecommendationActivity(isLoggedIn: boolean, paperId: n
 
     Cookies.set(BASED_ACTIVITY_COUNT_COOKIE_KEY, String(currentActivityCount));
 
-    homeAPI
-      .getBasedOnActivityPapers()
-      .then(res => {
-        if (!res || res.length === 0) {
-          return;
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
-
     switch (currentActivityCount) {
       case 2:
       case 5:
       case 13:
-        dispatch(ActionCreators.openKnowledgeBaseNoti());
+        homeAPI
+          .getBasedOnActivityPapers()
+          .then(basedOnActivityPapers => {
+            if (!basedOnActivityPapers || basedOnActivityPapers.length === 0) {
+              return;
+            } else {
+              dispatch(ActionCreators.openKnowledgeBaseNoti());
+            }
+          })
+          .catch(err => {
+            console.error(err);
+          });
         break;
     }
   };
