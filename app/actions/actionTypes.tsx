@@ -23,6 +23,7 @@ export enum ACTION_TYPES {
   GLOBAL_FLUSH_ENTITIES = 'GLOBAL_FLUSH_ENTITIES',
 
   SEARCH_QUERY_CHANGE_QUERY = 'SEARCH_QUERY_CHANGE_QUERY',
+  SEARCH_QUERY_RESET_QUERY = 'SEARCH_QUERY_RESET_QUERY',
 
   GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION = 'GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION',
   GLOBAL_SUCCEEDED_ADD_PAPER_TO_COLLECTION = 'GLOBAL_SUCCEEDED_ADD_PAPER_TO_COLLECTION',
@@ -1015,6 +1016,10 @@ export const ActionCreators = {
 
   changeSearchQuery(payload: { query: string }) {
     return createAction({ type: ACTION_TYPES.SEARCH_QUERY_CHANGE_QUERY, payload });
+  },
+
+  resetSearchQuery() {
+    return createAction({ type: ACTION_TYPES.SEARCH_QUERY_RESET_QUERY });
   },
 
   addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {
