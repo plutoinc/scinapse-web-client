@@ -142,7 +142,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                   backgroundColor: 'white',
                   border: 'solid 1px $gray3',
                   overflow: 'hidden',
-                  marginTop: '10px',
+                  marginTop: '14px',
                 }}
               />
               <AuthButton
