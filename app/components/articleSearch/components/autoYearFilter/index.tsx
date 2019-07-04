@@ -42,7 +42,7 @@ const AutoYearFilter: React.FC<AutoYearFilterProps> = ({ query, detectedYear, ha
             ActionTicketManager.trackTicket({
               pageType: 'searchResult',
               actionType: 'fire',
-              actionArea: 'filter',
+              actionArea: 'autoYearFilter',
               actionTag: 'cancelAutoYearFilter',
               actionLabel: query!,
             });
