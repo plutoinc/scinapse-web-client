@@ -224,6 +224,8 @@ const SearchContainer: React.FC<Props> = props => {
 
       if (doAuthYearFilterSearch && useAutoYearFilter) {
         params.yd = true;
+      } else {
+        params.yd = false;
       }
 
       searchPapers(params).then(() => {
@@ -268,6 +270,7 @@ const SearchContainer: React.FC<Props> = props => {
       <TabNavigationBar searchKeyword={articleSearchState.searchInput} />
       <div className={styles.articleSearchContainer}>
         <AutoYearFilter
+          query={queryParams.query}
           detectedYear={articleSearchState.detectedYear}
           handleSetUseAutoYearFilter={setUseAutoYearFilter}
         />
