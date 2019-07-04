@@ -28,7 +28,7 @@ const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
       style={!!btnStyle ? btnStyle : {}}
       className={s.citeButton}
       onClick={async () => {
-        await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
+        await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id, 'citeButton'));
         GlobalDialogManager.openCitationDialog(paper.id);
         ActionTicketManager.trackTicket({
           pageType: 'paperShow',

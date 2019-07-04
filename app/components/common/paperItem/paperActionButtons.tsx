@@ -101,7 +101,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             actionTag: 'source',
             actionLabel: String(paper.id),
           });
-          await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
+          await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id, 'sourceButton'));
         }}
       >
         {buttonContent}
@@ -129,7 +129,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
               actionTag: 'citedList',
               actionLabel: String(paper.id),
             });
-            await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
+            await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id, 'citationButton'));
           }}
           className={styles.citedButton}
         >
@@ -148,7 +148,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
           <span
             className={styles.citationIconWrapper}
             onClick={async () => {
-              await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
+              await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id, 'citeButton'));
               GlobalDialogManager.openCitationDialog(paper.id);
               ActionTicketManager.trackTicket({
                 pageType,

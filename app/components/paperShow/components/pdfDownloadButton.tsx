@@ -70,7 +70,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
 
           window.open(pdfUrl, '_blank');
           onDownloadedPDF(true);
-          await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
+          await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id, 'downloadPdfBtn'));
           handleSetScrollAfterDownload();
         }}
       >

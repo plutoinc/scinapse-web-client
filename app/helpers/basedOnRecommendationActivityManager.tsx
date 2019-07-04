@@ -6,7 +6,7 @@ import { getUserGroupName } from './abTestHelper';
 import { KNOWLEDGE_BASED_RECOMMEND_TEST } from '../constants/abTestGlobalValue';
 export const BASED_ACTIVITY_COUNT_COOKIE_KEY = 'basedActivityCount';
 
-export function addBasedOnRecommendationActivity(isLoggedIn: boolean, paperId: number) {
+export function addBasedOnRecommendationActivity(isLoggedIn: boolean, paperId: number, actionFrom: string) {
   return async (dispatch: Dispatch<any>) => {
     if (!isLoggedIn || getUserGroupName(KNOWLEDGE_BASED_RECOMMEND_TEST) === 'control') return;
 
@@ -37,7 +37,7 @@ export function addBasedOnRecommendationActivity(isLoggedIn: boolean, paperId: n
               return;
             }
 
-            dispatch(ActionCreators.openKnowledgeBaseNoti());
+            dispatch(ActionCreators.openKnowledgeBaseNoti({ actionFrom }));
           })
           .catch(err => {
             console.error(err);

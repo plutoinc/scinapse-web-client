@@ -542,7 +542,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           cancelToken: this.cancelToken.token,
         })
       );
-      await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, targetPaperId));
+      await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, targetPaperId, 'addToCollectionButton'));
       store.set(LAST_USER_COLLECTION_ID, selectedCollection.id);
     } else if (selectedCollection && targetPaperId && selectedCollection.containsSelected) {
       trackEvent({

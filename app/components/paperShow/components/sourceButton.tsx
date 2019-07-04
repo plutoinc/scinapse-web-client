@@ -82,7 +82,7 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
               onClick: async e => {
                 e.preventDefault();
                 handleClickSource();
-                await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id));
+                await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id, 'sourceButton'));
                 window.open(sourceUrl, '_blank');
               },
             }}
@@ -90,7 +90,9 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
               onClick: async () => {
                 setIsSourcePopoverOpen(!isSourcePopoverOpen);
                 !isSourcePopoverOpen &&
-                  (await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id)));
+                  (await dispatch(
+                    addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id, 'dropdownSourceBtn')
+                  ));
               },
               style: !showFullText ? reverseBtnStyle : btnStyle,
               className: styles.dropdownBtn,

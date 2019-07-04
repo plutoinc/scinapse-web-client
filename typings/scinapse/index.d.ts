@@ -110,6 +110,7 @@ declare namespace Scinapse {
       | 'clickGoToCollectionBtn'
       | 'clickLetMeSeeBtn'
       | 'clickNoThxBtn'
+      | 'viewKnowledgeBaseNoti'
       | '';
 
     type ActionArea = string;

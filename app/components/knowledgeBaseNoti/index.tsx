@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { ActionCreators } from '../../actions/actionTypes';
 import { BASED_ACTIVITY_COUNT_COOKIE_KEY } from '../../helpers/basedOnRecommendationActivityManager';
-import actionTicketManager from '../../helpers/actionTicketManager';
+import ActionTicketManager from '../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../locationListener';
 const styles = require('./knowledgeBaseNoti.scss');
 
@@ -15,7 +15,7 @@ type Props = ReturnType<typeof mapStateToProps> & { dispatch: Dispatch<any> };
 
 function clickLetMeSeeBtn() {
   Cookies.set(BASED_ACTIVITY_COUNT_COOKIE_KEY, 'null');
-  actionTicketManager.trackTicket({
+  ActionTicketManager.trackTicket({
     pageType: getCurrentPageType(),
     actionType: 'fire',
     actionArea: 'knowledgeBaseNoti',
@@ -27,6 +27,21 @@ function clickLetMeSeeBtn() {
 const KnowledgeBaseNoti: React.FC<Props> = props => {
   const { knowledgeBaseNotiState, dispatch } = props;
   const { isOpen } = knowledgeBaseNotiState;
+
+  React.useEffect(
+    () => {
+      if (isOpen) {
+        ActionTicketManager.trackTicket({
+          pageType: getCurrentPageType(),
+          actionType: 'view',
+          actionArea: 'knowledgeBaseNoti',
+          actionTag: 'viewKnowledgeBaseNoti',
+          actionLabel: 'null',
+        });
+      }
+    },
+    [isOpen]
+  );
 
   return (
     <Dialog open={isOpen} classes={{ paper: styles.notiContainer }}>
@@ -43,7 +58,7 @@ const KnowledgeBaseNoti: React.FC<Props> = props => {
           className={styles.noThxBtn}
           onClick={() => {
             dispatch(ActionCreators.closeKnowledgeBaseNoti());
-            actionTicketManager.trackTicket({
+            ActionTicketManager.trackTicket({
               pageType: getCurrentPageType(),
               actionType: 'fire',
               actionArea: 'knowledgeBaseNoti',
