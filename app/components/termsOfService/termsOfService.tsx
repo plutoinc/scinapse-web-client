@@ -324,7 +324,7 @@ class TermsOfService extends React.Component {
             but also a vibrant community of like-minded and engaged peers, focused on a very noble goal.
           </p>
         </div>
-        <ImprovedFooter containerStyle={{ backgroundColor: '#f9f9fa' }} />{' '}
+        <ImprovedFooter containerStyle={{ backgroundColor: '#F8F9FB' }} />{' '}
       </div>
     );
   }

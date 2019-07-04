@@ -210,7 +210,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
               </div>
             </div>
           </div>
-          <ImprovedFooter containerStyle={{ backgroundColor: '#f9f9fa' }} />
+          <ImprovedFooter containerStyle={{ backgroundColor: '#F8F9FB' }} />
         </div>
       );
     } else {

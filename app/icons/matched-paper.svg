@@ -4,7 +4,7 @@
         <rect width="43" height="6" x="14" y="16" fill="#DCE0E7" rx="2"/>
         <g transform="translate(22 59)">
             <rect width="66" height="25" fill="#3E7FFF" rx="4"/>
-            <text fill="#F9F9FA" font-family="Roboto-Bold, Roboto" font-size="16" font-weight="bold">
+            <text fill="#F8F9FB" font-family="Roboto-Bold, Roboto" font-size="16" font-weight="bold">
                 <tspan x="8" y="18">Match!</tspan>
             </text>
         </g>
