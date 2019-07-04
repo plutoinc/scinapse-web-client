@@ -323,7 +323,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           </div>
         </div>
         <div className={styles.footerWrapper}>
-          <ImprovedFooter containerStyle={{ backgroundColor: '#F8F9FB' }} />{' '}
+          <ImprovedFooter containerStyle={{ backgroundColor: '#f8f9fb' }} />{' '}
         </div>
         <BottomBanner currentUser={currentUser} />
         <NextPaperTab />

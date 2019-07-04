@@ -184,7 +184,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                 className="inputBox"
                 style={
                   Object {
-                    "backgroundColor": "#F8F9FB",
+                    "backgroundColor": "#f8f9fb",
                     "borderColor": "#f1f3f6",
                     "borderRadius": "4px",
                     "height": "36px",
@@ -776,7 +776,7 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
                 className="inputBox"
                 style={
                   Object {
-                    "backgroundColor": "#F8F9FB",
+                    "backgroundColor": "#f8f9fb",
                     "borderColor": "#f1f3f6",
                     "borderRadius": "4px",
                     "height": "36px",
@@ -1155,7 +1155,7 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
                 className="inputBox"
                 style={
                   Object {
-                    "backgroundColor": "#F8F9FB",
+                    "backgroundColor": "#f8f9fb",
                     "borderColor": "#f1f3f6",
                     "borderRadius": "4px",
                     "height": "36px",
