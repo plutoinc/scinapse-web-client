@@ -201,7 +201,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
         <Link
           to="/"
           onClick={() => {
-            dispatch(ActionCreators.resetSearchQuery());
+            dispatch(ActionCreators.changeSearchQuery({ query: '' }));
           }}
           className={styles.headerLogoMark}
           aria-label="Scinapse small header logo"
@@ -215,7 +215,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
       <Link
         to="/"
         onClick={() => {
-          dispatch(ActionCreators.resetSearchQuery());
+          dispatch(ActionCreators.changeSearchQuery({ query: '' }));
           ActionTicketManager.trackTicket({
             pageType: getCurrentPageType(),
             actionType: 'fire',
