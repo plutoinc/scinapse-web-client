@@ -121,6 +121,7 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
           onClickBack={() => {
             setSignUpStep(SIGN_UP_STEP.FIRST);
           }}
+          isWithSocial={false}
           email={email}
           password={password}
           firstName=""
@@ -142,6 +143,7 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
           onClickBack={() => {
             setSignUpStep(SIGN_UP_STEP.FIRST);
           }}
+          isWithSocial={true}
           email={email}
           password={password}
           firstName={firstName}
