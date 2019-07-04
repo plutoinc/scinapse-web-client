@@ -108,6 +108,8 @@ declare namespace Scinapse {
       | 'clickSeeMore'
       | 'clickSeeLess'
       | 'clickGoToCollectionBtn'
+      | 'clickLetMeSeeBtn'
+      | 'clickNoThxBtn'
       | '';
 
     type ActionArea = string;

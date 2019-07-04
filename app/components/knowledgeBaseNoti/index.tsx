@@ -7,12 +7,21 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { ActionCreators } from '../../actions/actionTypes';
 import { BASED_ACTIVITY_COUNT_COOKIE_KEY } from '../../helpers/basedOnRecommendationActivityManager';
+import actionTicketManager from '../../helpers/actionTicketManager';
+import { getCurrentPageType } from '../locationListener';
 const styles = require('./knowledgeBaseNoti.scss');
 
 type Props = ReturnType<typeof mapStateToProps> & { dispatch: Dispatch<any> };
 
 function clickLetMeSeeBtn() {
   Cookies.set(BASED_ACTIVITY_COUNT_COOKIE_KEY, 'null');
+  actionTicketManager.trackTicket({
+    pageType: getCurrentPageType(),
+    actionType: 'fire',
+    actionArea: 'knowledgeBaseNoti',
+    actionTag: 'clickLetMeSeeBtn',
+    actionLabel: 'null',
+  });
 }
 
 const KnowledgeBaseNoti: React.FC<Props> = props => {
@@ -34,6 +43,13 @@ const KnowledgeBaseNoti: React.FC<Props> = props => {
           className={styles.noThxBtn}
           onClick={() => {
             dispatch(ActionCreators.closeKnowledgeBaseNoti());
+            actionTicketManager.trackTicket({
+              pageType: getCurrentPageType(),
+              actionType: 'fire',
+              actionArea: 'knowledgeBaseNoti',
+              actionTag: 'clickNoThxBtn',
+              actionLabel: 'null',
+            });
           }}
           type="button"
         >
