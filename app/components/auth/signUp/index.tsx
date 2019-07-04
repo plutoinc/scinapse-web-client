@@ -129,6 +129,7 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
             setSignUpStep(SIGN_UP_STEP.SURVEY);
           }}
           onClickBack={() => {
+            dispatch(ActionCreators.unsetBlockedGlobalDialog());
             setSignUpStep(SIGN_UP_STEP.FIRST);
           }}
           isWithSocial={false}
@@ -151,6 +152,7 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
             setSignUpStep(SIGN_UP_STEP.SURVEY);
           }}
           onClickBack={() => {
+            dispatch(ActionCreators.unsetBlockedGlobalDialog());
             setSignUpStep(SIGN_UP_STEP.FIRST);
           }}
           isWithSocial={true}
