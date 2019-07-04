@@ -104,6 +104,10 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
       return DIALOG_INITIAL_STATE;
     }
 
+    case ACTION_TYPES.GLOBAL_DIALOG_SET_BLOCKED: {
+      return { ...state, isBlocked: true };
+    }
+
     case ACTION_TYPES.GLOBAL_CHANGE_DIALOG_TYPE: {
       return {
         ...state,

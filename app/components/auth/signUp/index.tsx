@@ -10,10 +10,11 @@ import { OAUTH_VENDOR, SignUpWithSocialParams } from '../../../api/types/auth';
 import { AppState } from '../../../reducers';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
+import { ActionCreators } from '../../../actions/actionTypes';
 const styles = require('./signUp.scss');
 
 const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
-  const { dialogState } = props;
+  const { dialogState, dispatch } = props;
   const [signUpStep, setSignUpStep] = React.useState(dialogState.signUpStep || SIGN_UP_STEP.FIRST);
   const [email, setEmail] = React.useState(dialogState.oauthResult ? dialogState.oauthResult.email || '' : '');
   const [password, setPassword] = React.useState('');
@@ -24,6 +25,15 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
     vendor: dialogState.oauthResult ? dialogState.oauthResult.vendor : '',
   });
   const authContext = dialogState.authContext;
+
+  React.useEffect(
+    () => {
+      if (signUpStep === SIGN_UP_STEP.WITH_SOCIAL || signUpStep === SIGN_UP_STEP.WITH_EMAIL) {
+        dispatch(ActionCreators.setBlockedGlobalDialog());
+      }
+    },
+    [signUpStep]
+  );
 
   function trackClickSignUpAtFormStep(vendor?: OAUTH_VENDOR) {
     if (authContext) {
