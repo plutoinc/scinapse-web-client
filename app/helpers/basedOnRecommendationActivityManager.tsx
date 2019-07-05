@@ -1,37 +1,43 @@
-import homeAPI from '../api/home';
 import * as Cookies from 'js-cookie';
 import { Dispatch } from 'redux';
+import RecommendationAPI from '../api/recommendation';
 import { ActionCreators } from '../actions/actionTypes';
 import { getUserGroupName } from './abTestHelper';
 import { KNOWLEDGE_BASED_RECOMMEND_TEST } from '../constants/abTestGlobalValue';
 export const BASED_ACTIVITY_COUNT_COOKIE_KEY = 'basedActivityCount';
 
+const MAX_COUNT = 16;
+
+function setActionCount(count: number): number {
+  let nextCount;
+  if (count === MAX_COUNT) {
+    nextCount = 1;
+  } else {
+    nextCount = count + 1;
+  }
+
+  Cookies.set(BASED_ACTIVITY_COUNT_COOKIE_KEY, String(nextCount));
+  return nextCount;
+}
+
 export function addBasedOnRecommendationActivity(isLoggedIn: boolean, paperId: number, actionArea: string) {
   return async (dispatch: Dispatch<any>) => {
     if (!isLoggedIn || getUserGroupName(KNOWLEDGE_BASED_RECOMMEND_TEST) === 'control') return;
 
-    let nextActivityCount;
-    homeAPI.addBasedOnRecommendationPaper(paperId);
+    RecommendationAPI.addPaperToRecommendationPool(paperId);
 
-    const prevActivityCount = Cookies.get(BASED_ACTIVITY_COUNT_COOKIE_KEY);
-    if (prevActivityCount === 'null') return;
+    const prevActionCount = Cookies.get(BASED_ACTIVITY_COUNT_COOKIE_KEY);
+    const actionCount = parseInt(prevActionCount || '0', 10);
 
-    const activityCount = parseInt(prevActivityCount || '0', 10);
+    if (!actionCount) return;
 
-    if (activityCount === 16) {
-      nextActivityCount = 1;
-    } else {
-      nextActivityCount = activityCount + 1;
-    }
+    const nextActionCount = setActionCount(actionCount);
 
-    Cookies.set(BASED_ACTIVITY_COUNT_COOKIE_KEY, String(nextActivityCount));
-
-    switch (nextActivityCount) {
+    switch (nextActionCount) {
       case 2:
       case 5:
-      case 13:
-        await homeAPI
-          .getBasedOnActivityPapers()
+      case 13: {
+        await RecommendationAPI.getPapersFromUserAction()
           .then(basedOnActivityPapers => {
             if (!basedOnActivityPapers || basedOnActivityPapers.length === 0) {
               return;
@@ -43,6 +49,7 @@ export function addBasedOnRecommendationActivity(isLoggedIn: boolean, paperId: n
             console.error(err);
           });
         break;
+      }
     }
   };
 }

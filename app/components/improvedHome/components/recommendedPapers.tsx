@@ -3,7 +3,7 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import BaseOnActivityPaperList from './BasedOnActivityPaperList';
 import BaseOnCollectionPaperList from './BasedOnCollectionPaperList';
 import { Paper } from '../../../model/paper';
-import { BasedOnCollectionPapersParams } from '../../../api/home';
+import { BasedOnCollectionPapersParams } from '../../../api/recommendation';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import EnvChecker from '../../../helpers/envChecker';
 const styles = require('./recommendedPapers.scss');

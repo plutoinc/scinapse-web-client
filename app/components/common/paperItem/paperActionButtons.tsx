@@ -16,7 +16,7 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import CollectionButton from './collectionButton';
 import formatNumber from '../../../helpers/formatNumber';
 import { addBasedOnRecommendationActivity } from '../../../helpers/basedOnRecommendationActivityManager';
-import homeAPI from '../../../api/home';
+import RecommendationAPI from '../../../api/recommendation';
 import { PaperSource } from '../../../api/paper';
 const styles = require('./paperActionButtons.scss');
 
@@ -46,7 +46,7 @@ const DomainSourceBtn: React.FC<DomainSourceBtnProps> = ({ source, pageType, act
           actionTag: 'source',
           actionLabel: String(source.paperId),
         });
-        homeAPI.addBasedOnRecommendationPaper(source.paperId);
+        RecommendationAPI.addPaperToRecommendationPool(source.paperId);
       }}
     >
       <img
