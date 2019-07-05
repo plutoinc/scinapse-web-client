@@ -186,7 +186,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                           wrapperStyle={{
                             borderRadius: '4px',
                             borderColor: '#f1f3f6',
-                            backgroundColor: '#f9f9fa',
+                            backgroundColor: '#f8f9fb',
                             width: '320px',
                             height: '36px',
                           }}
@@ -239,7 +239,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
             </div>
           </div>
         </div>
-        <ImprovedFooter containerStyle={{ backgroundColor: '#f9f9fa' }} />{' '}
+        <ImprovedFooter containerStyle={{ backgroundColor: '#f8f9fb' }} />{' '}
         {isOpenSelectedPaperDialog ? (
           <RepresentativePublicationsDialog
             currentUser={currentUser}

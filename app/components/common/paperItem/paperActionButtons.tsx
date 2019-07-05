@@ -14,11 +14,47 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import CollectionButton from './collectionButton';
 import formatNumber from '../../../helpers/formatNumber';
 import homeAPI from '../../../api/home';
+import { PaperSource } from '../../../api/paper';
 const styles = require('./paperActionButtons.scss');
 
 interface HandleClickClaim {
   paperId: number;
 }
+interface DomainSourceBtnProps {
+  source: PaperSource;
+  pageType: Scinapse.ActionTicket.PageType;
+  actionArea: Scinapse.ActionTicket.ActionArea;
+}
+
+const DomainSourceBtn: React.FC<DomainSourceBtnProps> = ({ source, pageType, actionArea }) => {
+  if (!source.source || !source.doi) return null;
+
+  return (
+    <a
+      href={`https://doi.org/${source.doi}`}
+      target="_blank"
+      rel="noopener nofollow noreferrer"
+      className={styles.sourceButton}
+      onClick={() => {
+        ActionTicketManager.trackTicket({
+          pageType,
+          actionType: 'fire',
+          actionArea: actionArea || pageType,
+          actionTag: 'source',
+          actionLabel: String(source.paperId),
+        });
+        homeAPI.addBasedOnRecommendationPaper(source.paperId);
+      }}
+    >
+      <img
+        className={styles.faviconIcon}
+        src={`https://www.google.com/s2/favicons?domain=${source.source}`}
+        alt={`${source.host} favicon`}
+      />
+      <span>{source.host}</span>
+    </a>
+  );
+};
 
 export interface PaperActionButtonsProps {
   paper: Paper;
@@ -32,6 +68,7 @@ export interface PaperActionButtonsProps {
   isRepresentative?: boolean;
   handleToggleRepresentative?: (paper: Paper) => void;
   onRemovePaperCollection?: (paperId: number) => Promise<void>;
+  sourceDomain?: PaperSource;
 }
 
 export interface PaperActionButtonsState
@@ -71,7 +108,11 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   }
 
   private getSourceButton = () => {
-    const { paper, pageType, actionArea, currentUser } = this.props;
+    const { paper, pageType, actionArea, currentUser, sourceDomain } = this.props;
+
+    if (sourceDomain) {
+      return <DomainSourceBtn pageType={pageType} actionArea={actionArea} source={sourceDomain} />;
+    }
 
     const buttonContent = (
       <>
