@@ -103,13 +103,15 @@ class PaperAPI extends PlutoAxios {
       cancelToken,
     });
 
-    const camelizedRes = camelCaseKeys(getCitedPapersResponse.data);
+    const camelizedRes = camelCaseKeys(getCitedPapersResponse.data.data);
     const papers = camelizedRes.content as Paper[];
     const authorSlicedPapers = papers.map(paper => {
       return { ...paper, authors: paper.authors.slice(0, 10) };
     });
 
     const normalizedPapersData = normalize(authorSlicedPapers, [paperSchema]);
+
+    console.log(normalizedPapersData);
 
     return {
       entities: normalizedPapersData.entities,
@@ -143,7 +145,7 @@ class PaperAPI extends PlutoAxios {
       },
       cancelToken,
     });
-    const camelizedRes = camelCaseKeys(getReferencePapersResponse.data);
+    const camelizedRes = camelCaseKeys(getReferencePapersResponse.data.data);
     const papers = camelizedRes.content as Paper[];
     const authorSlicedPapers = papers.map(paper => {
       return { ...paper, authors: paper.authors.slice(0, 10) };

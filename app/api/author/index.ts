@@ -111,7 +111,7 @@ class AuthorAPI extends PlutoAxios {
       cancelToken,
     });
 
-    const paperResponse: AuthorPapersResponse = res.data;
+    const paperResponse: AuthorPapersResponse = res.data.data;
     const authorSlicedResult = paperResponse.content.map(rawPaper => {
       return camelCaseKeys({ ...rawPaper, authors: rawPaper.authors.slice(0, 10) });
     });
