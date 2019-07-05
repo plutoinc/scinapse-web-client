@@ -22,7 +22,7 @@ const AutoYearFilter: React.FC<AutoYearFilterProps> = ({ query, detectedYear, ha
         });
       }
     },
-    [detectedYear]
+    [query]
   );
 
   if (!detectedYear) return null;
