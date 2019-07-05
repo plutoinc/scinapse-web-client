@@ -203,10 +203,16 @@ const SearchContainer: React.FC<Props> = props => {
 
   React.useEffect(
     () => {
+      setUseAutoYearFilter(true);
+    },
+    [location.search]
+  );
+
+  React.useEffect(
+    () => {
       if (currentUserState.isLoggingIn) return;
 
       const doAutoYearFilterSearch = getUserGroupName(AUTO_YEAR_FILTER_TEST) === 'auto';
-      setUseAutoYearFilter(doAutoYearFilterSearch);
 
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
       changeSearchQuery(SafeURIStringHandler.decode(currentQueryParams.query || ''));
