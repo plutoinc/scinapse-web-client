@@ -8,7 +8,7 @@ export interface SearchPapersParams {
   filter: string;
   size?: number;
   cancelToken?: CancelToken;
-  yd?: boolean;
+  yearDetected?: boolean;
 }
 
 export interface GetRefOrCitedPapersParams {
