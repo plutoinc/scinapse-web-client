@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withStyles } from '../../../helpers/withStylesHelper';
-import BaseOnActivityPaperList from './BasedOnActivityPaperList';
-import BaseOnCollectionPaperList from './BasedOnCollectionPaperList';
+import BaseOnActivityPaperList from './basedOnActivityPaperList';
+import BaseOnCollectionPaperList from './basedOnCollectionPaperList';
 import { Paper } from '../../../model/paper';
 import { BasedOnCollectionPapersParams } from '../../../api/recommendation';
 import { withRouter, RouteComponentProps } from 'react-router-dom';

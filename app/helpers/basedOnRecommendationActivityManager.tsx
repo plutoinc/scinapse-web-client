@@ -22,16 +22,16 @@ function setActionCount(count: number): number {
 
 export function addBasedOnRecommendationActivity(isLoggedIn: boolean, paperId: number, actionArea: string) {
   return async (dispatch: Dispatch<any>) => {
+    const prevActionCount = Cookies.get(BASED_ACTIVITY_COUNT_COOKIE_KEY);
+
     if (!isLoggedIn || getUserGroupName(KNOWLEDGE_BASED_RECOMMEND_TEST) === 'control') return;
 
     RecommendationAPI.addPaperToRecommendationPool(paperId);
 
-    const prevActionCount = Cookies.get(BASED_ACTIVITY_COUNT_COOKIE_KEY);
-    const actionCount = parseInt(prevActionCount || '0', 10);
+    if (prevActionCount === 'null') return;
 
-    if (!actionCount) return;
-
-    const nextActionCount = setActionCount(actionCount);
+    const currentActionCount = parseInt(prevActionCount || '0', 10);
+    const nextActionCount = setActionCount(currentActionCount);
 
     switch (nextActionCount) {
       case 2:
