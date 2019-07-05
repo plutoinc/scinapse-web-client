@@ -132,7 +132,7 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
             dispatch(ActionCreators.unsetBlockedGlobalDialog());
             setSignUpStep(SIGN_UP_STEP.FIRST);
           }}
-          isWithSocial={false}
+          withSocial={false}
           email={email}
           password={password}
           firstName=""
@@ -155,7 +155,7 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
             dispatch(ActionCreators.unsetBlockedGlobalDialog());
             setSignUpStep(SIGN_UP_STEP.FIRST);
           }}
-          isWithSocial={true}
+          withSocial={true}
           email={email}
           password={password}
           firstName={firstName}
