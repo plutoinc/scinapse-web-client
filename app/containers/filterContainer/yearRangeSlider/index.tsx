@@ -39,7 +39,7 @@ interface ColumnProps {
 const Column: React.FunctionComponent<ColumnProps> = React.memo(props => {
   const baseColumnStyle: React.CSSProperties = {
     width: props.width,
-    borderRight: 'solid 1px #f9f9fa',
+    borderRight: 'solid 1px #f8f9fb',
   };
   const filterColumnStyle: React.CSSProperties = {
     ...baseColumnStyle,
