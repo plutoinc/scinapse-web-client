@@ -191,7 +191,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
             }}
           />
         </div>
-        <ImprovedFooter containerStyle={{ backgroundColor: '#f9f9fa' }} />
+        <ImprovedFooter containerStyle={{ backgroundColor: '#f8f9fb' }} />
       </div>
     );
   }
