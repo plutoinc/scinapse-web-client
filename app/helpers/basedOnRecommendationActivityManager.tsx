@@ -6,27 +6,27 @@ import { getUserGroupName } from './abTestHelper';
 import { KNOWLEDGE_BASED_RECOMMEND_TEST } from '../constants/abTestGlobalValue';
 export const BASED_ACTIVITY_COUNT_COOKIE_KEY = 'basedActivityCount';
 
-export function addBasedOnRecommendationActivity(isLoggedIn: boolean, paperId: number, actionFrom: string) {
+export function addBasedOnRecommendationActivity(isLoggedIn: boolean, paperId: number, actionArea: string) {
   return async (dispatch: Dispatch<any>) => {
     if (!isLoggedIn || getUserGroupName(KNOWLEDGE_BASED_RECOMMEND_TEST) === 'control') return;
 
-    let currentActivityCount;
+    let nextActivityCount;
     homeAPI.addBasedOnRecommendationPaper(paperId);
 
-    const rawActivityCount = Cookies.get(BASED_ACTIVITY_COUNT_COOKIE_KEY);
-    if (rawActivityCount === 'null') return;
+    const prevActivityCount = Cookies.get(BASED_ACTIVITY_COUNT_COOKIE_KEY);
+    if (prevActivityCount === 'null') return;
 
-    const activityCount = parseInt(rawActivityCount || '0', 10);
+    const activityCount = parseInt(prevActivityCount || '0', 10);
 
     if (activityCount === 16) {
-      currentActivityCount = 1;
+      nextActivityCount = 1;
     } else {
-      currentActivityCount = activityCount + 1;
+      nextActivityCount = activityCount + 1;
     }
 
-    Cookies.set(BASED_ACTIVITY_COUNT_COOKIE_KEY, String(currentActivityCount));
+    Cookies.set(BASED_ACTIVITY_COUNT_COOKIE_KEY, String(nextActivityCount));
 
-    switch (currentActivityCount) {
+    switch (nextActivityCount) {
       case 2:
       case 5:
       case 13:
@@ -37,7 +37,7 @@ export function addBasedOnRecommendationActivity(isLoggedIn: boolean, paperId: n
               return;
             }
 
-            dispatch(ActionCreators.openKnowledgeBaseNoti({ actionFrom }));
+            dispatch(ActionCreators.openKnowledgeBaseNoti({ actionArea }));
           })
           .catch(err => {
             console.error(err);
