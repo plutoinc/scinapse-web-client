@@ -223,9 +223,9 @@ const SearchContainer: React.FC<Props> = props => {
       params.cancelToken = cancelToken.current.token;
 
       if (doAutoYearFilterSearch && useAutoYearFilter) {
-        params.yearDetected = true;
+        params.yearDetect = true;
       } else {
-        params.yearDetected = false;
+        params.yearDetect = false;
       }
 
       searchPapers(params).then(() => {
