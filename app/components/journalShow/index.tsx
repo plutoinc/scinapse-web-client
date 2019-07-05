@@ -183,7 +183,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
               </div>
             </div>
           </div>
-          <ImprovedFooter containerStyle={{ backgroundColor: '#f9f9fa' }} />
+          <ImprovedFooter containerStyle={{ backgroundColor: '#f8f9fb' }} />
         </div>
       );
     } else {
