@@ -1020,7 +1020,7 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.SEARCH_QUERY_CHANGE_QUERY, payload });
   },
 
-  openKnowledgeBaseNoti(payload: { actionFrom: string }) {
+  openKnowledgeBaseNoti(payload: { actionArea: string }) {
     return createAction({ type: ACTION_TYPES.KNOWLEDGE_BASE_NOTI_OPEN, payload });
   },
 

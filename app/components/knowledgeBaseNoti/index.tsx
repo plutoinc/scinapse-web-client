@@ -13,20 +13,20 @@ const styles = require('./knowledgeBaseNoti.scss');
 
 type Props = ReturnType<typeof mapStateToProps> & { dispatch: Dispatch<any> };
 
-function clickLetMeSeeBtn(actionFrom: string) {
+function clickLetMeSeeBtn(actionArea: string) {
   Cookies.set(BASED_ACTIVITY_COUNT_COOKIE_KEY, 'null');
   ActionTicketManager.trackTicket({
     pageType: getCurrentPageType(),
     actionType: 'fire',
     actionArea: 'knowledgeBaseNoti',
     actionTag: 'clickLetMeSeeBtn',
-    actionLabel: actionFrom,
+    actionLabel: actionArea,
   });
 }
 
 const KnowledgeBaseNoti: React.FC<Props> = props => {
   const { knowledgeBaseNotiState, dispatch } = props;
-  const { isOpen, actionFrom } = knowledgeBaseNotiState;
+  const { isOpen, actionArea } = knowledgeBaseNotiState;
 
   React.useEffect(
     () => {
@@ -36,7 +36,7 @@ const KnowledgeBaseNoti: React.FC<Props> = props => {
           actionType: 'view',
           actionArea: 'knowledgeBaseNoti',
           actionTag: 'viewKnowledgeBaseNoti',
-          actionLabel: actionFrom,
+          actionLabel: actionArea,
         });
       }
     },
@@ -51,7 +51,7 @@ const KnowledgeBaseNoti: React.FC<Props> = props => {
         <span className={styles.notiContent}>Do you want to check it?</span>
       </div>
       <div className={styles.notiBtnWrapper}>
-        <a className={styles.letMeSeeBtn} href="/#recommended" onClick={() => clickLetMeSeeBtn(actionFrom)}>
+        <a className={styles.letMeSeeBtn} href="/#recommended" onClick={() => clickLetMeSeeBtn(actionArea)}>
           Let me see
         </a>
         <button
@@ -63,7 +63,7 @@ const KnowledgeBaseNoti: React.FC<Props> = props => {
               actionType: 'fire',
               actionArea: 'knowledgeBaseNoti',
               actionTag: 'clickNoThxBtn',
-              actionLabel: actionFrom,
+              actionLabel: actionArea,
             });
           }}
           type="button"
