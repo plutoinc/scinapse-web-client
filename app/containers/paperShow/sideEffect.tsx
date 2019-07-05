@@ -12,26 +12,40 @@ export function fetchMyCollection(paperId: number, cancelToken: CancelToken) {
   };
 }
 
-export function fetchCitedPaperData(paperId: number, page: number = 1, cancelToken: CancelToken) {
+export function fetchCitedPaperData(
+  paperId: number,
+  page: number = 1,
+  query: string,
+  sort: string | null,
+  cancelToken: CancelToken
+) {
   return async (dispatch: Dispatch<any>) => {
     await dispatch(
       getCitedPapers({
         paperId,
         page,
-        filter: 'year=:,if=:',
+        query,
+        sort,
         cancelToken,
       })
     );
   };
 }
 
-export function fetchRefPaperData(paperId: number, page: number = 1, cancelToken: CancelToken) {
+export function fetchRefPaperData(
+  paperId: number,
+  page: number = 1,
+  query: string,
+  sort: string | null,
+  cancelToken: CancelToken
+) {
   return async (dispatch: Dispatch<any>) => {
     await dispatch(
       getReferencePapers({
         paperId,
         page,
-        filter: 'year=:,if=:',
+        query,
+        sort,
         cancelToken,
       })
     );
@@ -51,8 +65,10 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
 
   const promiseArray = [];
   promiseArray.push(dispatch(getPaper({ paperId, cancelToken: params.cancelToken })));
-  promiseArray.push(dispatch(fetchCitedPaperData(paperId, queryParamsObject['cited-page'], params.cancelToken)));
-  promiseArray.push(dispatch(fetchRefPaperData(paperId, queryParamsObject['ref-page'], params.cancelToken)));
+  promiseArray.push(
+    dispatch(fetchCitedPaperData(paperId, queryParamsObject['cited-page'], '', null, params.cancelToken))
+  );
+  promiseArray.push(dispatch(fetchRefPaperData(paperId, queryParamsObject['ref-page'], '', null, params.cancelToken)));
 
   if (currentUser && currentUser.isLoggedIn) {
     promiseArray.push(dispatch(fetchMyCollection(paperId, params.cancelToken)));

@@ -8,12 +8,13 @@ import { AvailableCitationType } from '../containers/paperShow/records';
 import { PaperAuthor } from '../model/author';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
-interface GetRefOrCitedPapersBasicParams {
-  size: number;
-  filter: string;
-  page: number;
-  cognitive?: boolean;
-}
+// interface GetRefOrCitedPapersBasicParams {
+//   size: number;
+//   query: string;
+//   sort:
+//   page: number;
+//   cognitive?: boolean;
+// }
 
 export interface GetReferenceOrCitedPapersResult extends CommonPaginationResponsePart {
   entities: { papers: { [paperId: number]: Paper } };
@@ -87,13 +88,18 @@ class PaperAPI extends PlutoAxios {
     size = 10,
     page = 1,
     paperId,
-    filter,
+    query,
+    sort,
     cancelToken,
   }: GetRefOrCitedPapersParams): Promise<GetReferenceOrCitedPapersResult> {
-    const params: GetRefOrCitedPapersBasicParams = { size, page: page - 1, filter };
-
-    const getCitedPapersResponse: AxiosResponse = await this.get(`/papers/${paperId}/cited`, {
-      params,
+    const getCitedPapersResponse: AxiosResponse = await this.get(`/search/citations`, {
+      params: {
+        pid: paperId,
+        size,
+        page: page - 1,
+        q: query,
+        sort,
+      },
       cancelToken,
     });
 
@@ -122,13 +128,19 @@ class PaperAPI extends PlutoAxios {
   public async getReferencePapers({
     size = 10,
     page = 1,
-    filter,
+    query,
+    sort,
     paperId,
     cancelToken,
   }: GetRefOrCitedPapersParams): Promise<GetReferenceOrCitedPapersResult> {
-    const params: GetRefOrCitedPapersBasicParams = { size, page: page - 1, filter };
-    const getReferencePapersResponse: AxiosResponse = await this.get(`/papers/${paperId}/references`, {
-      params,
+    const getReferencePapersResponse: AxiosResponse = await this.get(`/search/references`, {
+      params: {
+        pid: paperId,
+        size,
+        page: page - 1,
+        q: query,
+        sort,
+      },
       cancelToken,
     });
     const camelizedRes = camelCaseKeys(getReferencePapersResponse.data);

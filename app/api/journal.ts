@@ -44,13 +44,13 @@ class JournalAPI extends PlutoAxios {
     sort,
     cancelToken,
   }: GetPapersParams): Promise<PapersResult> {
-    const getPapersResponse: AxiosResponse = await this.get(`/search/in-journal`, {
+    const getPapersResponse: AxiosResponse = await this.get(`/search/journal-papers`, {
       params: {
         size,
         page: page - 1,
         q: query,
         sort,
-        journal_id: journalId,
+        jid: journalId,
       },
       cancelToken,
     });

@@ -46,7 +46,8 @@ describe('Paper Show page actions', () => {
         const mockParams: GetRefOrCitedPapersParams = {
           paperId: 123,
           page: 0,
-          filter: 'year=:,if=:',
+          query: '',
+          sort: null,
           cancelToken: axios.CancelToken.source().token,
         };
 
@@ -68,7 +69,8 @@ describe('Paper Show page actions', () => {
         const mockParams: GetRefOrCitedPapersParams = {
           paperId: 0,
           page: 0,
-          filter: 'year=:,if=:',
+          query: '',
+          sort: null,
           cancelToken: axios.CancelToken.source().token,
         };
 
