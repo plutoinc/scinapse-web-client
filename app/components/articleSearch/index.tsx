@@ -213,7 +213,6 @@ const SearchContainer: React.FC<Props> = props => {
       if (currentUserState.isLoggingIn) return;
 
       const doAutoYearFilterSearch = getUserGroupName(AUTO_YEAR_FILTER_TEST) === 'auto';
-
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
       changeSearchQuery(SafeURIStringHandler.decode(currentQueryParams.query || ''));
       setQueryParams(currentQueryParams);
@@ -223,9 +222,9 @@ const SearchContainer: React.FC<Props> = props => {
       params.cancelToken = cancelToken.current.token;
 
       if (doAutoYearFilterSearch && useAutoYearFilter) {
-        params.yearDetect = true;
+        params.detectYear = true;
       } else {
-        params.yearDetect = false;
+        params.detectYear = false;
       }
 
       searchPapers(params).then(() => {
