@@ -187,6 +187,7 @@ const SearchContainer: React.FC<Props> = props => {
   const {
     articleSearchState,
     currentUserState,
+    searchQueryState,
     location,
     fetchUserFilters,
     searchPapers,
@@ -203,18 +204,16 @@ const SearchContainer: React.FC<Props> = props => {
 
   React.useEffect(
     () => {
-      setUseAutoYearFilter(true);
-    },
-    [location.search]
-  );
-
-  React.useEffect(
-    () => {
       if (currentUserState.isLoggingIn) return;
 
       const doAutoYearFilterSearch = getUserGroupName(AUTO_YEAR_FILTER_TEST) === 'auto';
 
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
+
+      if (searchQueryState.query !== currentQueryParams.query) {
+        setUseAutoYearFilter(true);
+      }
+
       changeSearchQuery(SafeURIStringHandler.decode(currentQueryParams.query || ''));
       setQueryParams(currentQueryParams);
       setFilter(SearchQueryManager.objectifyPaperFilter(currentQueryParams.filter));
@@ -316,6 +315,7 @@ const mapStateToProps = (state: AppState) => {
     articleSearchState: state.articleSearch,
     currentUserState: state.currentUser,
     configuration: state.configuration,
+    searchQueryState: state.searchQueryState,
   };
 };
 
