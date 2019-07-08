@@ -18,6 +18,7 @@ interface SignUpFormProps {
   onSucceed: () => void;
   onClickBack: () => void;
   onSubmit: (values: SignUpFormValues) => Promise<void>;
+  withSocial: boolean;
   email: string;
   password: string;
   firstName: string;
@@ -33,13 +34,13 @@ export interface SignUpFormValues {
   affiliation: string;
 }
 
-const validateForm = async (values: SignUpFormValues) => {
+const validateForm = async (values: SignUpFormValues, withSocial: boolean) => {
   const errors: FormikErrors<SignUpFormValues> = {};
   if (!validateEmail(values.email)) {
     errors.email = 'Please enter a valid email address';
   }
 
-  if (!values.password || (values.password && values.password.length < 8)) {
+  if ((!withSocial && !values.password) || (values.password && values.password.length < 8)) {
     errors.password = 'Must have at least 8 characters!';
   }
   if (!values.firstName) {
@@ -88,19 +89,21 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
             affiliation: '',
           }}
           onSubmit={handleSubmit}
-          validate={validateForm}
+          validate={value => validateForm(value, props.withSocial)}
           render={() => (
             <Form>
               <div className={s.additionalInformation}>ADDITIONAL INFORMATION</div>
               <div className={s.subHeader}>No abbreviation preferred</div>
               <Field name="email" type="email" component={AuthInputBox} placeholder="E-mail" iconName="EMAIL_ICON" />
-              <Field
-                name="password"
-                type="password"
-                component={AuthInputBox}
-                placeholder="Password"
-                iconName="PASSWORD_ICON"
-              />
+              {!props.withSocial && (
+                <Field
+                  name="password"
+                  type="password"
+                  component={AuthInputBox}
+                  placeholder="Password"
+                  iconName="PASSWORD_ICON"
+                />
+              )}
               <div className={s.nameItemWrapper}>
                 <div className={s.nameItemSection}>
                   <Field
@@ -139,7 +142,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                   backgroundColor: 'white',
                   border: 'solid 1px $gray3',
                   overflow: 'hidden',
-                  marginTop: '10px',
+                  marginTop: '14px',
                 }}
               />
               <AuthButton

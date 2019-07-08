@@ -111,6 +111,8 @@ declare namespace Scinapse {
       | 'clickLetMeSeeBtn'
       | 'clickNoThxBtn'
       | 'viewKnowledgeBaseNoti'
+      | 'autoYearFilterQuery'
+      | 'cancelAutoYearFilter'
       | '';
 
     type ActionArea = string;

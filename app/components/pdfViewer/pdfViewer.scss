@@ -4,14 +4,13 @@
   }
 
   .react-pdf__Page__canvas {
-    margin: 0 auto;
+    margin-top: 8px;
   }
 }
 
 .contentWrapper {
   background-color: $gray8;
   padding: 32px 0;
-  margin-bottom: 40px;
 }
 
 .loadingContainerWrapper {

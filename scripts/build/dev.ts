@@ -17,8 +17,8 @@ function build() {
   return new Promise((resolve, reject) => {
     webpack([clientConfig, serverConfig, handlerConfig], async (err, stats) => {
       if (err || stats.hasErrors()) {
-        console.error(err);
-        reject(err);
+        process.stdout.write(stats.toString() + '\n');
+        reject();
       } else {
         console.log(stats);
         resolve();
@@ -37,8 +37,10 @@ buildAndUpload()
   .then(() => {
     console.log('DONE');
   })
-  .catch(err => {
-    console.log(err.message);
-    console.error(err);
-    throw new Error(err);
+  .catch(_err => {
+    console.log('================================================================================');
+    console.log('WARNING!');
+    console.log('FAILED TO BUILD SOURCES!');
+    console.log('================================================================================');
+    process.exit(1);
   });
