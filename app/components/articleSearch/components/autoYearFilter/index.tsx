@@ -10,21 +10,6 @@ interface AutoYearFilterProps {
 }
 
 const AutoYearFilter: React.FC<AutoYearFilterProps> = ({ query, detectedYear, handleSetUseAutoYearFilter }) => {
-  React.useEffect(
-    () => {
-      if (detectedYear) {
-        ActionTicketManager.trackTicket({
-          pageType: 'searchResult',
-          actionType: 'fire',
-          actionArea: 'autoYearFilter',
-          actionTag: 'autoYearFilterQuery',
-          actionLabel: query!,
-        });
-      }
-    },
-    [query]
-  );
-
   if (!detectedYear) return null;
 
   return (

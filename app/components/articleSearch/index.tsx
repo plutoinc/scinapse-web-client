@@ -36,6 +36,7 @@ import ImprovedFooter from '../layouts/improvedFooter';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { AUTO_YEAR_FILTER_TEST } from '../../constants/abTestGlobalValue';
 import AutoYearFilter from './components/autoYearFilter';
+import ActionTicketManager from '../../helpers/actionTicketManager';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -228,6 +229,15 @@ const SearchContainer: React.FC<Props> = props => {
       }
 
       searchPapers(params).then(() => {
+        params.detectYear &&
+          ActionTicketManager.trackTicket({
+            pageType: 'searchResult',
+            actionType: 'fire',
+            actionArea: 'autoYearFilter',
+            actionTag: 'autoYearFilterQuery',
+            actionLabel: queryParams.query!,
+          });
+
         restoreScroll(location.key);
       });
 
