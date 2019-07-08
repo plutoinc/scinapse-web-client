@@ -49,7 +49,7 @@ const Pagination: React.FC<PaginationProps> = props => {
         currentPageIndex={currentPageIndex}
         getLinkDestination={makePaginationLink}
         wrapperStyle={{
-          margin: '24px 0',
+          margin: '32px 0 64px 0',
         }}
       />
     );

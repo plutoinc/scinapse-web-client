@@ -22,7 +22,7 @@ import { getCurrentPageType } from '../locationListener';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
 import { HOME_PATH } from '../../constants/routes';
-import { ACTION_TYPES } from '../../actions/actionTypes';
+import { ACTION_TYPES, ActionCreators } from '../../actions/actionTypes';
 import { CurrentUser } from '../../model/currentUser';
 import { FilterObject, DEFAULT_FILTER } from '../../helpers/searchQueryManager';
 import { getCollections } from '../collections/actions';
@@ -193,12 +193,19 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private getHeaderLogo = () => {
-    const { location, layoutState } = this.props;
+    const { location, layoutState, dispatch } = this.props;
     const isNotHome = location.pathname !== HOME_PATH;
 
     if (layoutState.userDevice !== UserDevice.DESKTOP && isNotHome) {
       return (
-        <Link to="/" className={styles.headerLogoMark} aria-label="Scinapse small header logo">
+        <Link
+          to="/"
+          onClick={() => {
+            dispatch(ActionCreators.changeSearchQuery({ query: '' }));
+          }}
+          className={styles.headerLogoMark}
+          aria-label="Scinapse small header logo"
+        >
           <Icon icon="SCINAPSE_LOGO_SMALL" />
         </Link>
       );
@@ -207,15 +214,16 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
     return (
       <Link
         to="/"
-        onClick={() =>
+        onClick={() => {
+          dispatch(ActionCreators.changeSearchQuery({ query: '' }));
           ActionTicketManager.trackTicket({
             pageType: getCurrentPageType(),
             actionType: 'fire',
             actionArea: 'topBar',
             actionTag: 'clickLogo',
             actionLabel: null,
-          })
-        }
+          });
+        }}
         className={styles.headerLogo}
         aria-label="Scinapse header logo"
       >

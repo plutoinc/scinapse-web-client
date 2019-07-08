@@ -24,9 +24,9 @@ function build() {
   return new Promise((resolve, reject) => {
     webpack([clientConfig, serverConfig], (err, stats) => {
       if (err || stats.hasErrors()) {
-        console.log(err && err.message);
+        console.log('--------- stats.hasErrors()', stats.hasErrors());
         process.stdout.write(stats.toString() + '\n');
-        reject(err);
+        reject();
       } else {
         console.log(stats);
         resolve();
@@ -44,8 +44,10 @@ function build() {
     fs.writeFileSync('./version', version);
     console.log('DONE');
   } catch (err) {
-    console.error(err);
-    console.log(err.message);
+    console.log('================================================================================');
+    console.log('WARNING!');
+    console.log('FAILED TO BUILD SOURCES!');
+    console.log('================================================================================');
     process.exit(1);
   }
 })();
