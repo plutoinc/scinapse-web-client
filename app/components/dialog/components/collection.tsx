@@ -61,7 +61,7 @@ class CollectionDialog extends React.PureComponent<CollectionDialogProps, Collec
   }
 
   public render() {
-    const { handleCloseDialogRequest } = this.props;
+    const { handleCloseDialogRequest, handleCloseDialogRequest } = this.props;
     const { isNewCollectionMenuOpen, collectionName, description } = this.state;
 
     return (
@@ -111,10 +111,10 @@ class CollectionDialog extends React.PureComponent<CollectionDialogProps, Collec
           </Popover>
 
           <div className={styles.rightBox}>
-            <button onClick={this.closeDialog} className={styles.cancelButton}>
+            <button onClick={handleCloseDialogRequest} className={styles.cancelButton}>
               Cancel
             </button>
-            <button onClick={this.closeDialog} className={styles.nextButton}>
+            <button onClick={handleCloseDialogRequest} className={styles.nextButton}>
               Done
             </button>
           </div>

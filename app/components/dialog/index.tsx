@@ -53,7 +53,22 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   }
 
   public render() {
-    const { dialogState } = this.props;
+    const { dialogState, currentUser, myCollections } = this.props;
+
+    if (dialogState.type === GLOBAL_DIALOG_TYPE.COLLECTION && dialogState.collectionDialogTargetPaperId) {
+      return (
+        <CollectionDialog
+          currentUser={currentUser}
+          myCollections={myCollections}
+          handleCloseDialogRequest={this.closeCollectionDialog}
+          getMyCollections={this.getMyCollections}
+          handleSubmitNewCollection={this.handleSubmitNewCollection}
+          handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
+          handleAddingPaperToCollections={this.handleAddingPaperToCollection}
+          collectionDialogPaperId={dialogState.collectionDialogTargetPaperId}
+        />
+      );
+    }
 
     if (dialogState.type === GLOBAL_DIALOG_TYPE.CITATION && !!dialogState.citationPaperId) {
       return (
@@ -96,6 +111,20 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       </Dialog>
     );
   }
+
+  private closeCollectionDialog = () => {
+    const { dispatch, currentUser, dialogState } = this.props;
+
+    if (dialogState.collectionDialogTargetPaperId) {
+      dispatch(
+        addPaperToRecommendationPool(
+          currentUser.isLoggedIn,
+          dialogState.collectionDialogTargetPaperId,
+          'addToCollectionBtn'
+        )
+      );
+    }
+  };
 
   private closeCitationDialog = () => {
     const { dispatch, currentUser, dialogState } = this.props;
@@ -241,7 +270,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   };
 
   private getDialogContent = (type: GLOBAL_DIALOG_TYPE | null) => {
-    const { currentUser, myCollections, dialogState, dispatch } = this.props;
+    const { currentUser, dialogState, dispatch } = this.props;
 
     switch (type) {
       case GLOBAL_DIALOG_TYPE.SIGN_IN:
@@ -284,23 +313,6 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
 
       case GLOBAL_DIALOG_TYPE.RESET_PASSWORD:
         return <ResetPassword handleCloseDialogRequest={this.closeDialog} />;
-
-      case GLOBAL_DIALOG_TYPE.COLLECTION:
-        if (dialogState.collectionDialogTargetPaperId) {
-          return (
-            <CollectionDialog
-              currentUser={currentUser}
-              myCollections={myCollections}
-              handleCloseDialogRequest={this.closeDialog}
-              getMyCollections={this.getMyCollections}
-              handleSubmitNewCollection={this.handleSubmitNewCollection}
-              handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
-              handleAddingPaperToCollections={this.handleAddingPaperToCollection}
-              collectionDialogPaperId={dialogState.collectionDialogTargetPaperId}
-            />
-          );
-        }
-        return null;
 
       case GLOBAL_DIALOG_TYPE.NEW_COLLECTION:
         return (
