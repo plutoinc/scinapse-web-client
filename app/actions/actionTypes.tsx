@@ -11,6 +11,7 @@ import { PaperInCollection } from '../model/paperInCollection';
 import { SIGN_UP_STEP } from '../components/auth/signUp/types';
 import { OAuthCheckParams } from '../api/types/auth';
 import { SignUpConversionExpTicketContext } from '../constants/abTest';
+import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
 
 export enum ACTION_TYPES {
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = 'GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING',
@@ -233,6 +234,7 @@ interface GetMultiPapersInCollection {
 
 interface GetMultiPapers extends PageObjectV2 {
   paperIds: number[];
+  sort?: AUTHOR_PAPER_LIST_SORT_TYPES;
   query?: string;
 }
 

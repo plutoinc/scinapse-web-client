@@ -103,6 +103,7 @@ export function reducer(
       return {
         ...state,
         paperSearchQuery: action.payload.query || '',
+        papersSort: action.payload.sort!,
         paperIds: action.payload.paperIds,
         isLoadingPapers: false,
         papersTotalPage: action.payload.totalPages,

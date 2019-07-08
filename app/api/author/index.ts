@@ -103,7 +103,7 @@ class AuthorAPI extends PlutoAxios {
     const res = await this.get(`/search/author-papers`, {
       params: {
         aid: authorId,
-        query: query || null,
+        q: query || null,
         page: page - 1,
         size: size || DEFAULT_AUTHOR_PAPERS_SIZE,
         sort,

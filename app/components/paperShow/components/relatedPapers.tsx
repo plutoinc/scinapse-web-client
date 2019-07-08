@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Location, History } from 'history';
+import { stringify } from 'qs';
 import { Paper } from '../../../model/paper';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { CurrentUser } from '../../../model/currentUser';
@@ -10,7 +11,6 @@ import PaperItem from '../../common/paperItem';
 import MobilePagination from '../../common/mobilePagination';
 import getQueryParamsObject from '../../../helpers/getQueryParamsObject';
 import { PaperShowPageQueryParams } from '../../../containers/paperShow/types';
-import { stringify } from 'qs';
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../common/sortBox';
 import ScinapseInput from '../../common/scinapseInput';
 import ArticleSpinner from '../../common/spinner/articleSpinner';

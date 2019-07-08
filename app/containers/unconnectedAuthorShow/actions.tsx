@@ -77,6 +77,7 @@ export function getAuthorPapers(params: GetAuthorPapersParams) {
       dispatch(
         ActionCreators.getAuthorPapers({
           query: params.query,
+          sort: params.sort,
           paperIds: paperResponse.result,
           size: paperResponse.size,
           page: paperResponse.page,

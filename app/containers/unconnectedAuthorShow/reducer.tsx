@@ -9,6 +9,7 @@ export interface AuthorShowState
       papersTotalPage: number;
       papersCurrentPage: number;
       papersTotalCount: number;
+      paperSearchQuery: string;
       papersSort: AUTHOR_PAPER_LIST_SORT_TYPES;
       isOpenConnectProfileDialog: boolean;
       isLoadingPage: boolean;
@@ -25,6 +26,7 @@ export const AUTHOR_SHOW_INITIAL_STATE: AuthorShowState = {
   papersTotalPage: 0,
   papersCurrentPage: 1,
   papersTotalCount: 0,
+  paperSearchQuery: '',
   papersSort: 'NEWEST_FIRST',
   isOpenConnectProfileDialog: false,
   isLoadingPage: false,
@@ -106,6 +108,8 @@ export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, acti
       return {
         ...state,
         paperIds: action.payload.paperIds,
+        paperSearchQuery: action.payload.query || '',
+        papersSort: action.payload.sort!,
         isLoadingPapers: false,
         papersTotalPage: action.payload.totalPages,
         papersCurrentPage: action.payload.page,
