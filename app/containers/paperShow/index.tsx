@@ -1,6 +1,5 @@
 import * as React from 'react';
 import axios from 'axios';
-import { stringify } from 'qs';
 import NoSsr from '@material-ui/core/NoSsr';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Dispatch } from 'redux';
@@ -142,7 +141,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     const moveToDifferentPage = match.params.paperId !== this.props.match.params.paperId;
     const changeRefPage = prevQueryParams['ref-page'] !== nextQueryParams['ref-page'];
+    const changeRefSort = prevQueryParams['ref-sort'] !== nextQueryParams['ref-sort'];
+    const changeRefQuery = prevQueryParams['ref-query'] !== nextQueryParams['ref-query'];
+
     const changeCitedPage = prevQueryParams['cited-page'] !== nextQueryParams['cited-page'];
+    const changeCitedSort = prevQueryParams['cited-sort'] !== nextQueryParams['cited-sort'];
+    const changeCitedQuery = prevQueryParams['cited-query'] !== nextQueryParams['cited-query'];
 
     if (moveToDifferentPage) {
       dispatch(clearPaperShowState());
@@ -160,16 +164,28 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       return dispatch(fetchMyCollection(this.props.paper.id, this.cancelToken.token));
     }
 
-    if (this.props.paper && changeRefPage) {
+    if (this.props.paper && (changeRefPage || changeRefSort || changeRefQuery)) {
       await dispatch(
-        fetchRefPaperData(this.props.paper.id, nextQueryParams['ref-page'], '', null, this.cancelToken.token)
+        fetchRefPaperData(
+          this.props.paper.id,
+          nextQueryParams['ref-page'],
+          nextQueryParams['ref-query'] || '',
+          nextQueryParams['ref-sort'] || null,
+          this.cancelToken.token
+        )
       );
       if (this.refTabWrapper) {
         this.refTabWrapper.scrollIntoView();
       }
-    } else if (this.props.paper && changeCitedPage) {
+    } else if (this.props.paper && (changeCitedPage || changeCitedSort || changeCitedQuery)) {
       await dispatch(
-        fetchCitedPaperData(this.props.paper.id, nextQueryParams['cited-page'], '', null, this.cancelToken.token)
+        fetchCitedPaperData(
+          this.props.paper.id,
+          nextQueryParams['cited-page'],
+          nextQueryParams['cited-query'] || '',
+          nextQueryParams['cited-sort'] || null,
+          this.cancelToken.token
+        )
       );
       if (this.citedTabWrapper) {
         this.citedTabWrapper.scrollIntoView();
@@ -195,6 +211,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       referencePapers,
       citedPapers,
       PDFViewerState,
+      history,
     } = this.props;
     const { isOnFullText, isOnCited, isOnRef } = this.state;
 
@@ -297,8 +314,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     papers={referencePapers}
                     currentUser={currentUser}
                     paperShow={paperShow}
-                    getLinkDestination={this.getReferencePaperPaginationLink}
                     location={location}
+                    history={history}
                   />
                 </div>
               </div>
@@ -319,8 +336,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   papers={citedPapers}
                   currentUser={currentUser}
                   paperShow={paperShow}
-                  getLinkDestination={this.getCitedPaperPaginationLink}
                   location={location}
+                  history={history}
                 />
               </div>
             </article>
@@ -470,42 +487,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
 
     ticking = false;
-  };
-
-  private getCitedPaperPaginationLink = (page: number) => {
-    const { paper, location } = this.props;
-    const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
-
-    const updatedQueryParamsObject: PaperShowPageQueryParams = {
-      ...queryParamsObject,
-      ...{ 'cited-page': page },
-    };
-    const stringifiedQueryParams = stringify(updatedQueryParamsObject, {
-      addQueryPrefix: true,
-    });
-
-    return {
-      to: `/papers/${paper ? paper.id : 0}`,
-      search: stringifiedQueryParams,
-    };
-  };
-
-  private getReferencePaperPaginationLink = (page: number) => {
-    const { paper, location } = this.props;
-    const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
-
-    const updatedQueryParamsObject: PaperShowPageQueryParams = {
-      ...queryParamsObject,
-      ...{ 'ref-page': page },
-    };
-    const stringifiedQueryParams = stringify(updatedQueryParamsObject, {
-      addQueryPrefix: true,
-    });
-
-    return {
-      to: `/papers/${paper ? paper.id : 0}`,
-      search: stringifiedQueryParams,
-    };
   };
 
   private handleClickRefCitedTabItem = (section: RefCitedTabItem) => () => {

@@ -111,8 +111,6 @@ class PaperAPI extends PlutoAxios {
 
     const normalizedPapersData = normalize(authorSlicedPapers, [paperSchema]);
 
-    console.log(normalizedPapersData);
-
     return {
       entities: normalizedPapersData.entities,
       result: normalizedPapersData.result,
@@ -145,7 +143,6 @@ class PaperAPI extends PlutoAxios {
       cancelToken,
     });
     const camelizedRes = camelCaseKeys(getReferencePapersResponse.data.data);
-    console.log(camelizedRes);
     const papers = camelizedRes.content as Paper[];
     const authorSlicedPapers = papers.map(paper => {
       return { ...paper, authors: paper.authors.slice(0, 10) };

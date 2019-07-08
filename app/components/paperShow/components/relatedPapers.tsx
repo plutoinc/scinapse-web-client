@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Location, LocationDescriptor } from 'history';
+import { Location, History } from 'history';
 import { Paper } from '../../../model/paper';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { CurrentUser } from '../../../model/currentUser';
@@ -8,6 +8,11 @@ import { RELATED_PAPERS } from '../constants';
 import { PaperShowState } from '../../../containers/paperShow/records';
 import PaperItem from '../../common/paperItem';
 import MobilePagination from '../../common/mobilePagination';
+import getQueryParamsObject from '../../../helpers/getQueryParamsObject';
+import { PaperShowPageQueryParams } from '../../../containers/paperShow/types';
+import { stringify } from 'qs';
+import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../common/sortBox';
+import ScinapseInput from '../../common/scinapseInput';
 const styles = require('./relatedPapers.scss');
 
 interface ReferencePapersProps
@@ -17,8 +22,8 @@ interface ReferencePapersProps
       papers: Paper[];
       currentUser: CurrentUser;
       paperShow: PaperShowState;
+      history: History;
       location: Location;
-      getLinkDestination: (page: number) => LocationDescriptor;
     }> {}
 
 interface PaperListProps {
@@ -51,8 +56,21 @@ const PaperList: React.FC<PaperListProps> = props => {
 @withStyles<typeof ReferencePapers>(styles)
 export default class ReferencePapers extends React.PureComponent<ReferencePapersProps> {
   public render() {
+    const { type, location } = this.props;
+    const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
+
     return (
       <>
+        <div className={styles.sortBoxContainer}>
+          <ScinapseInput
+            value={type === 'reference' ? queryParamsObject['ref-query'] : queryParamsObject['cited-query']}
+            onSubmit={this.handleSubmitSearch}
+            placeholder="Search papers in this journal"
+            icon="SEARCH_ICON"
+          />
+
+          {this.getSortBox()}
+        </div>
         <div>
           <PaperList type={this.props.type} papers={this.props.papers} currentUser={this.props.currentUser} />
         </div>
@@ -61,8 +79,107 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
     );
   }
 
+  private handleSubmitSearch = (query: string) => {
+    const { paperShow, location, type, history } = this.props;
+    const { paperId } = paperShow;
+    const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
+
+    let pageQueryParams;
+
+    if (type === 'reference') {
+      pageQueryParams = { 'ref-query': query };
+    } else {
+      pageQueryParams = { 'cited-query': query };
+    }
+
+    const updatedQueryParamsObject: PaperShowPageQueryParams = {
+      ...queryParamsObject,
+      ...pageQueryParams,
+    };
+
+    const stringifiedQueryParams = stringify(updatedQueryParamsObject, {
+      addQueryPrefix: true,
+    });
+
+    history.push({
+      pathname: `/papers/${paperId}`,
+      search: stringifiedQueryParams,
+    });
+  };
+
+  private getSortOptionChangeLink = (sortOption: AUTHOR_PAPER_LIST_SORT_TYPES) => {
+    const { paperShow, location, type, history } = this.props;
+    const { paperId } = paperShow;
+    const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
+
+    let pageQueryParams;
+
+    if (type === 'reference') {
+      pageQueryParams = { 'ref-sort': sortOption };
+    } else {
+      pageQueryParams = { 'cited-sort': sortOption };
+    }
+
+    const updatedQueryParamsObject: PaperShowPageQueryParams = {
+      ...queryParamsObject,
+      ...pageQueryParams,
+    };
+
+    const stringifiedQueryParams = stringify(updatedQueryParamsObject, {
+      addQueryPrefix: true,
+    });
+
+    history.push({
+      pathname: `/papers/${paperId}`,
+      search: stringifiedQueryParams,
+    });
+  };
+
+  private getSortBox = () => {
+    const { location, type } = this.props;
+    const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
+    const sortOption = type === 'reference' ? queryParamsObject['ref-sort'] : queryParamsObject['cited-sort'];
+
+    return (
+      <SortBox
+        handleClickSortOption={this.getSortOptionChangeLink}
+        sortOption={sortOption || 'NEWEST_FIRST'}
+        currentPage="journalShow"
+        exposeRelevanceOption={false}
+      />
+    );
+  };
+
+  private getPaginationLink = (page: number) => {
+    const { paperShow, location, type } = this.props;
+    const { paperId } = paperShow;
+    const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
+
+    let pageQueryParams;
+
+    if (type === 'reference') {
+      pageQueryParams = { 'ref-page': page };
+    } else {
+      pageQueryParams = { 'cited-page': page };
+    }
+
+    const updatedQueryParamsObject: PaperShowPageQueryParams = {
+      ...queryParamsObject,
+      ...pageQueryParams,
+    };
+
+    const stringifiedQueryParams = stringify(updatedQueryParamsObject, {
+      addQueryPrefix: true,
+    });
+
+    return {
+      to: `/papers/${paperId}`,
+      search: stringifiedQueryParams,
+    };
+  };
+
   private getPagination = () => {
-    const { type, paperShow, getLinkDestination, isMobile } = this.props;
+    const { type, paperShow, isMobile } = this.props;
     const totalPage = type === 'cited' ? paperShow.citedPaperTotalPage : paperShow.referencePaperTotalPage;
     const currentPage = type === 'cited' ? paperShow.citedPaperCurrentPage : paperShow.referencePaperCurrentPage;
 
@@ -71,7 +188,7 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
         <MobilePagination
           totalPageCount={totalPage}
           currentPageIndex={currentPage - 1}
-          getLinkDestination={getLinkDestination}
+          getLinkDestination={this.getPaginationLink}
           wrapperStyle={{
             margin: '12px 0',
           }}
@@ -83,7 +200,7 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
           type={`paper_show_${type}_papers`}
           totalPage={totalPage}
           currentPageIndex={currentPage - 1}
-          getLinkDestination={getLinkDestination}
+          getLinkDestination={this.getPaginationLink}
           wrapperStyle={{ margin: '32px 0 56px 0' }}
           actionArea={type === 'reference' ? 'refList' : 'citedList'}
         />
