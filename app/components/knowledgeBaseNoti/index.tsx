@@ -6,7 +6,7 @@ import { AppState } from '../../reducers';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { ActionCreators } from '../../actions/actionTypes';
-import { BASED_ACTIVITY_COUNT_COOKIE_KEY } from '../../helpers/basedOnRecommendationActivityManager';
+import { BASED_ACTIVITY_COUNT_COOKIE_KEY } from '../../actions/recommendation';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../locationListener';
 const styles = require('./knowledgeBaseNoti.scss');

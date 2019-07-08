@@ -10,7 +10,7 @@ import ScinapseButtonFactory, { ScinapseButtonType } from '../../common/scinapse
 import SourceURLPopover from '../../common/sourceURLPopover';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-import { addPaperToRecommendationPool } from '../../../helpers/basedOnRecommendationActivityManager';
+import { addPaperToRecommendation } from '../../../actions/recommendation';
 const styles = require('./pdfSourceButton.scss');
 
 interface SourceButtonProps {
@@ -79,18 +79,18 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
               target: '_blank',
               rel: 'noopener',
               className: styles.linkClassName,
-              onClick: async e => {
+              onClick: e => {
                 e.preventDefault();
                 handleClickSource();
-                await dispatch(addPaperToRecommendationPool(currentUser.isLoggedIn, paper.id, 'sourceButton'));
+                dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'sourceButton'));
                 window.open(sourceUrl, '_blank');
               },
             }}
             dropdownBtnProps={{
-              onClick: async () => {
+              onClick: () => {
                 setIsSourcePopoverOpen(!isSourcePopoverOpen);
                 !isSourcePopoverOpen &&
-                  (await dispatch(addPaperToRecommendationPool(currentUser.isLoggedIn, paper.id, 'dropdownSourceBtn')));
+                  dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'dropdownSourceBtn'));
               },
               style: !showFullText ? reverseBtnStyle : btnStyle,
               className: styles.dropdownBtn,

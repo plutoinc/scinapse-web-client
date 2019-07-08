@@ -16,7 +16,6 @@ import EditCollectionDialog from './components/editCollection';
 import AllPublicationsDialog from './components/allPublications';
 import { resendVerificationEmail } from '../auth/emailVerification/actions';
 import { DialogContainerProps } from './types';
-import { trackDialogView } from '../../helpers/handleGA';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { GLOBAL_DIALOG_TYPE } from './reducer';
 import { collectionSchema } from '../../model/collection';
@@ -33,7 +32,7 @@ import alertToast from '../../helpers/makePlutoToastAction';
 import FinalSignUpContent from '../auth/signUp/components/finalSignUpContent';
 import EnvChecker from '../../helpers/envChecker';
 import SurveyForm from '../auth/signUp/components/surveyForm';
-import { addPaperToRecommendationPool } from '../../helpers/basedOnRecommendationActivityManager';
+import { addPaperToRecommendation } from '../../actions/recommendation';
 const styles = require('./dialog.scss');
 
 function mapStateToProps(state: AppState) {
@@ -57,16 +56,23 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
 
     if (dialogState.type === GLOBAL_DIALOG_TYPE.COLLECTION && dialogState.collectionDialogTargetPaperId) {
       return (
-        <CollectionDialog
-          currentUser={currentUser}
-          myCollections={myCollections}
-          handleCloseDialogRequest={this.closeCollectionDialog}
-          getMyCollections={this.getMyCollections}
-          handleSubmitNewCollection={this.handleSubmitNewCollection}
-          handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
-          handleAddingPaperToCollections={this.handleAddingPaperToCollection}
-          collectionDialogPaperId={dialogState.collectionDialogTargetPaperId}
-        />
+        <Dialog
+          open={dialogState.isOpen}
+          onClose={this.closeCollectionDialog}
+          classes={{ paper: styles.dialogPaper }}
+          maxWidth={'lg'}
+        >
+          <CollectionDialog
+            currentUser={currentUser}
+            myCollections={myCollections}
+            handleCloseDialogRequest={this.closeCollectionDialog}
+            getMyCollections={this.getMyCollections}
+            handleSubmitNewCollection={this.handleSubmitNewCollection}
+            handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
+            handleAddingPaperToCollections={this.handleAddingPaperToCollection}
+            collectionDialogPaperId={dialogState.collectionDialogTargetPaperId}
+          />
+        </Dialog>
       );
     }
 
@@ -75,9 +81,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         <Dialog
           open={dialogState.isOpen}
           onClose={this.closeCitationDialog}
-          classes={{
-            paper: styles.dialogPaper,
-          }}
+          classes={{ paper: styles.dialogPaper }}
           maxWidth={'lg'}
         >
           <CitationBox
@@ -99,7 +103,6 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         onClose={() => {
           if (!dialogState.isBlocked) {
             this.closeDialog();
-            trackDialogView('outsideClickClose');
           }
         }}
         classes={{
@@ -115,9 +118,10 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   private closeCollectionDialog = () => {
     const { dispatch, currentUser, dialogState } = this.props;
 
+    this.closeDialog();
     if (dialogState.collectionDialogTargetPaperId) {
       dispatch(
-        addPaperToRecommendationPool(
+        addPaperToRecommendation(
           currentUser.isLoggedIn,
           dialogState.collectionDialogTargetPaperId,
           'addToCollectionBtn'
@@ -131,9 +135,8 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
 
     this.closeDialog();
     if (dialogState.citationPaperId) {
-      dispatch(addPaperToRecommendationPool(currentUser.isLoggedIn, dialogState.citationPaperId, 'citeButton'));
+      dispatch(addPaperToRecommendation(currentUser.isLoggedIn, dialogState.citationPaperId, 'citeButton'));
     }
-    trackDialogView('outsideClickClose');
   };
 
   private closeDialog = () => {

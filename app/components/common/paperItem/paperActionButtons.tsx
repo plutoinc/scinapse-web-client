@@ -15,8 +15,7 @@ import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import CollectionButton from './collectionButton';
 import formatNumber from '../../../helpers/formatNumber';
-import { addPaperToRecommendationPool } from '../../../helpers/basedOnRecommendationActivityManager';
-import RecommendationAPI from '../../../api/recommendation';
+import { addPaperToRecommendation } from '../../../actions/recommendation';
 import { PaperSource } from '../../../api/paper';
 const styles = require('./paperActionButtons.scss');
 
@@ -27,9 +26,10 @@ interface DomainSourceBtnProps {
   source: PaperSource;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
+  onClick: () => void;
 }
 
-const DomainSourceBtn: React.FC<DomainSourceBtnProps> = ({ source, pageType, actionArea }) => {
+const DomainSourceBtn: React.FC<DomainSourceBtnProps> = ({ source, onClick }) => {
   if (!source.source || !source.doi) return null;
 
   return (
@@ -38,16 +38,7 @@ const DomainSourceBtn: React.FC<DomainSourceBtnProps> = ({ source, pageType, act
       target="_blank"
       rel="noopener nofollow noreferrer"
       className={styles.sourceButton}
-      onClick={() => {
-        ActionTicketManager.trackTicket({
-          pageType,
-          actionType: 'fire',
-          actionArea: actionArea || pageType,
-          actionTag: 'source',
-          actionLabel: String(source.paperId),
-        });
-        RecommendationAPI.addPaperToRecommendationPool(source.paperId);
-      }}
+      onClick={onClick}
     >
       <img
         className={styles.faviconIcon}
@@ -115,7 +106,23 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
     const { paper, pageType, actionArea, currentUser, sourceDomain, dispatch } = this.props;
 
     if (sourceDomain) {
-      return <DomainSourceBtn pageType={pageType} actionArea={actionArea} source={sourceDomain} />;
+      return (
+        <DomainSourceBtn
+          onClick={() => {
+            ActionTicketManager.trackTicket({
+              pageType,
+              actionType: 'fire',
+              actionArea: actionArea || pageType,
+              actionTag: 'source',
+              actionLabel: String(paper.id),
+            });
+            dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'sourceButton'));
+          }}
+          pageType={pageType}
+          actionArea={actionArea}
+          source={sourceDomain}
+        />
+      );
     }
 
     const buttonContent = (
@@ -143,7 +150,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             actionTag: 'source',
             actionLabel: String(paper.id),
           });
-          dispatch(addPaperToRecommendationPool(currentUser.isLoggedIn, paper.id, 'sourceButton'));
+          dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'sourceButton'));
         }}
       >
         {buttonContent}
@@ -171,7 +178,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
               actionTag: 'citedList',
               actionLabel: String(paper.id),
             });
-            dispatch(addPaperToRecommendationPool(currentUser.isLoggedIn, paper.id, 'citationButton'));
+            dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'citationButton'));
           }}
           className={styles.citedButton}
         >

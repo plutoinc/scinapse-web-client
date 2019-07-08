@@ -1,8 +1,8 @@
 import * as Cookies from 'js-cookie';
 import { Dispatch } from 'redux';
 import RecommendationAPI from '../api/recommendation';
-import { ActionCreators } from '../actions/actionTypes';
-import { getUserGroupName } from './abTestHelper';
+import { ActionCreators } from './actionTypes';
+import { getUserGroupName } from '../helpers/abTestHelper';
 import { KNOWLEDGE_BASED_RECOMMEND_TEST } from '../constants/abTestGlobalValue';
 export const BASED_ACTIVITY_COUNT_COOKIE_KEY = 'basedActivityCount';
 
@@ -20,7 +20,7 @@ function setActionCount(count: number): number {
   return nextCount;
 }
 
-export function addPaperToRecommendationPool(isLoggedIn: boolean, paperId: number, actionArea: string) {
+export function addPaperToRecommendation(isLoggedIn: boolean, paperId: number, actionArea: string) {
   return async (dispatch: Dispatch<any>) => {
     const prevActionCount = Cookies.get(BASED_ACTIVITY_COUNT_COOKIE_KEY);
 

@@ -15,7 +15,6 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import alertToast from '../../../helpers/makePlutoToastAction';
 import { CurrentUser } from '../../../model/currentUser';
 import { Collection } from '../../../model/collection';
-import { addPaperToRecommendationPool } from '../../../helpers/basedOnRecommendationActivityManager';
 const styles = require('./collection.scss');
 
 interface CollectionDialogProps {
@@ -61,7 +60,7 @@ class CollectionDialog extends React.PureComponent<CollectionDialogProps, Collec
   }
 
   public render() {
-    const { handleCloseDialogRequest, handleCloseDialogRequest } = this.props;
+    const { handleCloseDialogRequest } = this.props;
     const { isNewCollectionMenuOpen, collectionName, description } = this.state;
 
     return (
@@ -122,12 +121,6 @@ class CollectionDialog extends React.PureComponent<CollectionDialogProps, Collec
       </div>
     );
   }
-
-  private closeDialog = () => {
-    const { handleCloseDialogRequest, dispatch, currentUser, collectionDialogPaperId } = this.props;
-    handleCloseDialogRequest();
-    dispatch(addPaperToRecommendationPool(currentUser.isLoggedIn, collectionDialogPaperId, 'addToCollectionBtn'));
-  };
 
   private getCollectionItems = () => {
     const {

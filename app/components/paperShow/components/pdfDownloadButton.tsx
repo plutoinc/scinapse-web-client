@@ -8,7 +8,7 @@ import Icon from '../../../icons';
 import SearchingPDFBtn from './searchingPDFBtn';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../../helpers/checkAuthDialog';
 import { CurrentUser } from '../../../model/currentUser';
-import { addPaperToRecommendationPool } from '../../../helpers/basedOnRecommendationActivityManager';
+import { addPaperToRecommendation } from '../../../actions/recommendation';
 const styles = require('./pdfSourceButton.scss');
 
 interface PdfDownloadButtonProps {
@@ -70,7 +70,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
 
           window.open(pdfUrl, '_blank');
           onDownloadedPDF(true);
-          await dispatch(addPaperToRecommendationPool(currentUser.isLoggedIn, paper.id, 'downloadPdfBtn'));
+          dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'downloadPdfBtn'));
           handleSetScrollAfterDownload();
         }}
       >

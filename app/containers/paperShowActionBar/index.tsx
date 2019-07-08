@@ -10,7 +10,7 @@ import { CurrentUser } from '../../model/currentUser';
 import SourceButton from '../../components/paperShow/components/sourceButton';
 import ViewFullTextBtn from '../../components/paperShow/components/viewFullTextBtn';
 import RequestFullTextBtn from './components/fullTextRequestBtn';
-import { addPaperToRecommendationPool } from '../../helpers/basedOnRecommendationActivityManager';
+import { addPaperToRecommendation } from '../../actions/recommendation';
 const s = require('./actionBar.scss');
 
 interface PaperShowActionBarProps {
@@ -69,7 +69,7 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props =
             onClose={() => {
               setIsOpen(false);
               props.dispatch(
-                addPaperToRecommendationPool(props.currentUser.isLoggedIn, props.paper.id, 'requestFullTextBtn')
+                addPaperToRecommendation(props.currentUser.isLoggedIn, props.paper.id, 'requestFullTextBtn')
               );
             }}
           />
