@@ -187,7 +187,6 @@ const SearchContainer: React.FC<Props> = props => {
   const {
     articleSearchState,
     currentUserState,
-    searchQueryState,
     location,
     fetchUserFilters,
     searchPapers,
@@ -210,7 +209,7 @@ const SearchContainer: React.FC<Props> = props => {
 
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
 
-      if (searchQueryState.query !== currentQueryParams.query) {
+      if (articleSearchState.searchInput !== currentQueryParams.query) {
         setUseAutoYearFilter(true);
       }
 
@@ -315,7 +314,6 @@ const mapStateToProps = (state: AppState) => {
     articleSearchState: state.articleSearch,
     currentUserState: state.currentUser,
     configuration: state.configuration,
-    searchQueryState: state.searchQueryState,
   };
 };
 
