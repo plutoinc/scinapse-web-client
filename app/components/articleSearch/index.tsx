@@ -229,15 +229,6 @@ const SearchContainer: React.FC<Props> = props => {
       }
 
       searchPapers(params).then(() => {
-        params.detectYear &&
-          ActionTicketManager.trackTicket({
-            pageType: 'searchResult',
-            actionType: 'fire',
-            actionArea: 'autoYearFilter',
-            actionTag: 'autoYearFilterQuery',
-            actionLabel: queryParams.query!,
-          });
-
         restoreScroll(location.key);
       });
 
