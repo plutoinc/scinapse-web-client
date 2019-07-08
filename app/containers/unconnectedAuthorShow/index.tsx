@@ -12,7 +12,7 @@ import { Configuration } from '../../reducers/configuration';
 import { CurrentUser } from '../../model/currentUser';
 import { Author, authorSchema } from '../../model/author/author';
 import { Paper, paperSchema } from '../../model/paper';
-import SortBox, { PAPER_LIST_SORT_TYPES, AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
+import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
 import PaperItem from '../../components/common/paperItem';
 import { getAuthorPapers, toggleConnectProfileDialog, connectAuthor } from './actions';
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from '../../api/author';
@@ -156,10 +156,10 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
                         <ScinapseInput
                           value={authorShow.paperSearchQuery}
                           onSubmit={this.handleSubmitSearch}
-                          placeholder="Search papers in this journal"
+                          placeholder="Search papers"
                           icon="SEARCH_ICON"
+                          wrapperStyle={{ marginRight: '8px' }}
                         />
-
                         <SortBox
                           sortOption={authorShow.papersSort}
                           handleClickSortOption={this.handleClickSortOption}

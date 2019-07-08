@@ -78,7 +78,7 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
             <ScinapseInput
               value={type === 'reference' ? queryParamsObject['ref-query'] : queryParamsObject['cited-query']}
               onSubmit={this.handleSubmitSearch}
-              placeholder="Search papers in this journal"
+              placeholder="Search papers"
               icon="SEARCH_ICON"
             />
           </div>

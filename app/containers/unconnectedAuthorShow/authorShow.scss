@@ -36,13 +36,21 @@
 .paperListHeader {
   position: relative;
   margin-bottom: 35px;
+  height: 40px;
+  display: flex;
 
   .paperListRight {
+    display: flex;
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
   }
+}
+
+.paperListLeft {
+  display: flex;
+  align-items: center;
 }
 
 .authorClaimButton {
