@@ -1,8 +1,6 @@
 import * as React from 'react';
-import { Dispatch } from 'redux';
 import Popover from '@material-ui/core/Popover/Popover';
 import * as classNames from 'classnames';
-import { connect } from 'react-redux';
 import Axios, { CancelToken } from 'axios';
 import {
   PostCollectionParams,
@@ -21,7 +19,6 @@ interface CollectionDialogProps {
   currentUser: CurrentUser;
   myCollections: Collection[];
   collectionDialogPaperId: number;
-  dispatch: Dispatch<any>;
   getMyCollections: (cancelToken: CancelToken) => void;
   handleCloseDialogRequest: () => void;
   handleSubmitNewCollection: (params: PostCollectionParams) => void;
@@ -215,4 +212,4 @@ class CollectionDialog extends React.PureComponent<CollectionDialogProps, Collec
     });
   };
 }
-export default connect()(CollectionDialog);
+export default CollectionDialog;
