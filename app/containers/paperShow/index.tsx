@@ -50,6 +50,7 @@ import { Configuration } from '../../reducers/configuration';
 import { getMemoizedConfiguration } from '../../selectors/getConfiguration';
 import PlutoAxios from '../../api/pluto';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
+import KnowledgeBaseNoti from '../../components/knowledgeBaseNoti';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -327,6 +328,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         </div>
         <BottomBanner currentUser={currentUser} />
         <NextPaperTab />
+        <KnowledgeBaseNoti />
       </>
     );
   }

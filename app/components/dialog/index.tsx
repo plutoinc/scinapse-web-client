@@ -16,7 +16,6 @@ import EditCollectionDialog from './components/editCollection';
 import AllPublicationsDialog from './components/allPublications';
 import { resendVerificationEmail } from '../auth/emailVerification/actions';
 import { DialogContainerProps } from './types';
-import { trackDialogView } from '../../helpers/handleGA';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { GLOBAL_DIALOG_TYPE } from './reducer';
 import { collectionSchema } from '../../model/collection';
@@ -33,6 +32,7 @@ import alertToast from '../../helpers/makePlutoToastAction';
 import FinalSignUpContent from '../auth/signUp/components/finalSignUpContent';
 import EnvChecker from '../../helpers/envChecker';
 import SurveyForm from '../auth/signUp/components/surveyForm';
+import { addPaperToRecommendation } from '../../actions/recommendation';
 const styles = require('./dialog.scss');
 
 function mapStateToProps(state: AppState) {
@@ -52,7 +52,50 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   }
 
   public render() {
-    const { dialogState } = this.props;
+    const { dialogState, currentUser, myCollections } = this.props;
+
+    if (dialogState.type === GLOBAL_DIALOG_TYPE.COLLECTION && dialogState.collectionDialogTargetPaperId) {
+      return (
+        <Dialog
+          open={dialogState.isOpen}
+          onClose={this.closeCollectionDialog}
+          classes={{ paper: styles.dialogPaper }}
+          maxWidth={'lg'}
+        >
+          <CollectionDialog
+            currentUser={currentUser}
+            myCollections={myCollections}
+            handleCloseDialogRequest={this.closeCollectionDialog}
+            getMyCollections={this.getMyCollections}
+            handleSubmitNewCollection={this.handleSubmitNewCollection}
+            handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
+            handleAddingPaperToCollections={this.handleAddingPaperToCollection}
+            collectionDialogPaperId={dialogState.collectionDialogTargetPaperId}
+          />
+        </Dialog>
+      );
+    }
+
+    if (dialogState.type === GLOBAL_DIALOG_TYPE.CITATION && !!dialogState.citationPaperId) {
+      return (
+        <Dialog
+          open={dialogState.isOpen}
+          onClose={this.closeCitationDialog}
+          classes={{ paper: styles.dialogPaper }}
+          maxWidth={'lg'}
+        >
+          <CitationBox
+            paperId={dialogState.citationPaperId}
+            activeTab={dialogState.activeCitationTab}
+            isLoading={dialogState.isLoadingCitationText}
+            citationText={dialogState.citationText}
+            closeCitationDialog={this.closeCitationDialog}
+            handleClickCitationTab={this.handleClickCitationTab}
+            fetchCitationText={this.fetchCitationText}
+          />
+        </Dialog>
+      );
+    }
 
     return (
       <Dialog
@@ -60,7 +103,6 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         onClose={() => {
           if (!dialogState.isBlocked) {
             this.closeDialog();
-            trackDialogView('outsideClickClose');
           }
         }}
         classes={{
@@ -72,6 +114,30 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       </Dialog>
     );
   }
+
+  private closeCollectionDialog = () => {
+    const { dispatch, currentUser, dialogState } = this.props;
+
+    this.closeDialog();
+    if (dialogState.collectionDialogTargetPaperId) {
+      dispatch(
+        addPaperToRecommendation(
+          currentUser.isLoggedIn,
+          dialogState.collectionDialogTargetPaperId,
+          'addToCollectionBtn'
+        )
+      );
+    }
+  };
+
+  private closeCitationDialog = () => {
+    const { dispatch, currentUser, dialogState } = this.props;
+
+    this.closeDialog();
+    if (dialogState.citationPaperId) {
+      dispatch(addPaperToRecommendation(currentUser.isLoggedIn, dialogState.citationPaperId, 'citeButton'));
+    }
+  };
 
   private closeDialog = () => {
     const { dispatch } = this.props;
@@ -207,7 +273,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   };
 
   private getDialogContent = (type: GLOBAL_DIALOG_TYPE | null) => {
-    const { currentUser, myCollections, dialogState, dispatch } = this.props;
+    const { currentUser, dialogState, dispatch } = this.props;
 
     switch (type) {
       case GLOBAL_DIALOG_TYPE.SIGN_IN:
@@ -247,41 +313,9 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
           return <VerificationNeeded email={currentUser.email} resendEmailFunc={this.resendVerificationEmail} />;
         }
         return null;
+
       case GLOBAL_DIALOG_TYPE.RESET_PASSWORD:
         return <ResetPassword handleCloseDialogRequest={this.closeDialog} />;
-
-      case GLOBAL_DIALOG_TYPE.CITATION: {
-        if (dialogState.citationPaperId) {
-          return (
-            <CitationBox
-              paperId={dialogState.citationPaperId}
-              activeTab={dialogState.activeCitationTab}
-              isLoading={dialogState.isLoadingCitationText}
-              citationText={dialogState.citationText}
-              closeCitationDialog={this.closeDialog}
-              handleClickCitationTab={this.handleClickCitationTab}
-              fetchCitationText={this.fetchCitationText}
-            />
-          );
-        }
-        return null;
-      }
-      case GLOBAL_DIALOG_TYPE.COLLECTION:
-        if (dialogState.collectionDialogTargetPaperId) {
-          return (
-            <CollectionDialog
-              currentUser={currentUser}
-              myCollections={myCollections}
-              handleCloseDialogRequest={this.closeDialog}
-              getMyCollections={this.getMyCollections}
-              handleSubmitNewCollection={this.handleSubmitNewCollection}
-              handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
-              handleAddingPaperToCollections={this.handleAddingPaperToCollection}
-              collectionDialogPaperId={dialogState.collectionDialogTargetPaperId}
-            />
-          );
-        }
-        return null;
 
       case GLOBAL_DIALOG_TYPE.NEW_COLLECTION:
         return (

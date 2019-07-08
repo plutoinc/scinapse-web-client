@@ -108,6 +108,9 @@ declare namespace Scinapse {
       | 'clickSeeMore'
       | 'clickSeeLess'
       | 'clickGoToCollectionBtn'
+      | 'clickLetMeSeeBtn'
+      | 'clickNoThxBtn'
+      | 'viewKnowledgeBaseNoti'
       | 'autoYearFilterQuery'
       | 'cancelAutoYearFilter'
       | '';

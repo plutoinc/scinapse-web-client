@@ -33,6 +33,7 @@ import GuruBox from './components/guruBox';
 import { changeSearchQuery } from '../../actions/searchQuery';
 import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
 import ImprovedFooter from '../layouts/improvedFooter';
+import KnowledgeBaseNoti from '../knowledgeBaseNoti';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { AUTO_YEAR_FILTER_TEST } from '../../constants/abTestGlobalValue';
 import AutoYearFilter from './components/autoYearFilter';
@@ -177,6 +178,7 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
           currentUserDevice={layout.userDevice}
           location={location}
         />
+        <KnowledgeBaseNoti />
       </div>
     );
   }

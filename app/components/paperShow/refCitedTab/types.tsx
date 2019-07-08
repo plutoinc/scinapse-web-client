@@ -1,3 +1,4 @@
+import { Dispatch } from 'redux';
 import { Paper } from '../../../model/paper';
 import { CurrentUser } from '../../../model/currentUser';
 import { RefCitedTabItem } from '../../../containers/paperShow/types';
@@ -24,6 +25,7 @@ export interface TabItemProps {
 }
 
 export interface PDFButtonProps {
+  dispatch: Dispatch<any>;
   paper: Paper;
   isLoading: boolean;
   canShowFullPDF: boolean;
