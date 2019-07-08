@@ -13,6 +13,7 @@ import { PaperShowPageQueryParams } from '../../../containers/paperShow/types';
 import { stringify } from 'qs';
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../common/sortBox';
 import ScinapseInput from '../../common/scinapseInput';
+import ArticleSpinner from '../../common/spinner/articleSpinner';
 const styles = require('./relatedPapers.scss');
 
 interface ReferencePapersProps
@@ -56,19 +57,31 @@ const PaperList: React.FC<PaperListProps> = props => {
 @withStyles<typeof ReferencePapers>(styles)
 export default class ReferencePapers extends React.PureComponent<ReferencePapersProps> {
   public render() {
-    const { type, location } = this.props;
+    const { type, location, paperShow } = this.props;
     const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
+
+    if (
+      (type === 'reference' && paperShow.isLoadingReferencePapers) ||
+      (type === 'cited' && paperShow.isLoadingCitedPapers)
+    ) {
+      return (
+        <div className={styles.loadingContainer}>
+          <ArticleSpinner className={styles.loadingSpinner} />
+        </div>
+      );
+    }
 
     return (
       <>
-        <div className={styles.sortBoxContainer}>
-          <ScinapseInput
-            value={type === 'reference' ? queryParamsObject['ref-query'] : queryParamsObject['cited-query']}
-            onSubmit={this.handleSubmitSearch}
-            placeholder="Search papers in this journal"
-            icon="SEARCH_ICON"
-          />
-
+        <div className={styles.searchContainer}>
+          <div className={styles.searchInputWrapper}>
+            <ScinapseInput
+              value={type === 'reference' ? queryParamsObject['ref-query'] : queryParamsObject['cited-query']}
+              onSubmit={this.handleSubmitSearch}
+              placeholder="Search papers in this journal"
+              icon="SEARCH_ICON"
+            />
+          </div>
           {this.getSortBox()}
         </div>
         <div>
@@ -141,12 +154,14 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
     const sortOption = type === 'reference' ? queryParamsObject['ref-sort'] : queryParamsObject['cited-sort'];
 
     return (
-      <SortBox
-        handleClickSortOption={this.getSortOptionChangeLink}
-        sortOption={sortOption || 'NEWEST_FIRST'}
-        currentPage="journalShow"
-        exposeRelevanceOption={false}
-      />
+      <div className={styles.sortBoxContainer}>
+        <SortBox
+          handleClickSortOption={this.getSortOptionChangeLink}
+          sortOption={sortOption || 'NEWEST_FIRST'}
+          currentPage="journalShow"
+          exposeRelevanceOption={false}
+        />
+      </div>
     );
   };
 

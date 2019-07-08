@@ -11,8 +11,56 @@
   background-color: white;
 }
 
-.sortBoxContainer {
+.loadingContainer {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  margin-top: -24px;
+}
+
+.loadingSpinner {
+  text-align: center;
+  display: flex;
+  align-items: center;
+
+  div {
+    background-color: $gray3 !important;
+  }
+}
+
+.searchContainer {
   display: flex;
   justify-content: space-between;
+  margin: 0 auto;
+  max-width: 792px;
   margin-bottom: 16px;
+}
+
+.searchInputWrapper {
+  width: 100%;
+  max-width: 500px;
+}
+
+.sortBoxContainer {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: $mobile-width) {
+  .searchContainer {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .searchInputWrapper {
+    width: 100%;
+    max-width: unset;
+    margin-bottom: 8px;
+  }
+
+  .sortBoxContainer {
+    display: flex;
+    justify-content: flex-end;
+  }
 }

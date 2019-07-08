@@ -66,9 +66,27 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
   const promiseArray = [];
   promiseArray.push(dispatch(getPaper({ paperId, cancelToken: params.cancelToken })));
   promiseArray.push(
-    dispatch(fetchCitedPaperData(paperId, queryParamsObject['cited-page'], '', null, params.cancelToken))
+    dispatch(
+      fetchCitedPaperData(
+        paperId,
+        queryParamsObject['cited-page'],
+        queryParamsObject['cited-query'] || '',
+        queryParamsObject['cited-sort'] || null,
+        params.cancelToken
+      )
+    )
   );
-  promiseArray.push(dispatch(fetchRefPaperData(paperId, queryParamsObject['ref-page'], '', null, params.cancelToken)));
+  promiseArray.push(
+    dispatch(
+      fetchRefPaperData(
+        paperId,
+        queryParamsObject['ref-page'],
+        queryParamsObject['ref-query'] || '',
+        queryParamsObject['ref-sort'] || null,
+        params.cancelToken
+      )
+    )
+  );
 
   if (currentUser && currentUser.isLoggedIn) {
     promiseArray.push(dispatch(fetchMyCollection(paperId, params.cancelToken)));
