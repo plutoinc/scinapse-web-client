@@ -33,6 +33,10 @@ import GuruBox from './components/guruBox';
 import { changeSearchQuery } from '../../actions/searchQuery';
 import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
 import ImprovedFooter from '../layouts/improvedFooter';
+import { getUserGroupName } from '../../helpers/abTestHelper';
+import { AUTO_YEAR_FILTER_TEST } from '../../constants/abTestGlobalValue';
+import AutoYearFilter from './components/autoYearFilter';
+import ActionTicketManager from '../../helpers/actionTicketManager';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -194,6 +198,7 @@ const SearchContainer: React.FC<Props> = props => {
   const [queryParams, setQueryParams] = React.useState<SearchPageQueryParams>(
     parse(location.search, { ignoreQueryPrefix: true })
   );
+  const [useAutoYearFilter, setUseAutoYearFilter] = React.useState(true);
   const [filter, setFilter] = React.useState(SearchQueryManager.objectifyPaperFilter(queryParams.filter));
   const cancelToken = React.useRef(axios.CancelToken.source());
 
@@ -201,13 +206,27 @@ const SearchContainer: React.FC<Props> = props => {
     () => {
       if (currentUserState.isLoggingIn) return;
 
+      const doAutoYearFilterSearch = getUserGroupName(AUTO_YEAR_FILTER_TEST) === 'auto';
+
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
+
+      if (articleSearchState.searchInput !== currentQueryParams.query) {
+        setUseAutoYearFilter(true);
+      }
+
       changeSearchQuery(SafeURIStringHandler.decode(currentQueryParams.query || ''));
       setQueryParams(currentQueryParams);
       setFilter(SearchQueryManager.objectifyPaperFilter(currentQueryParams.filter));
+
       // set params
       const params = SearchQueryManager.makeSearchQueryFromParamsObject(currentQueryParams);
       params.cancelToken = cancelToken.current.token;
+
+      if (doAutoYearFilterSearch && useAutoYearFilter) {
+        params.detectYear = true;
+      } else {
+        params.detectYear = false;
+      }
 
       searchPapers(params).then(() => {
         restoreScroll(location.key);
@@ -218,7 +237,14 @@ const SearchContainer: React.FC<Props> = props => {
         cancelToken.current = axios.CancelToken.source();
       };
     },
-    [location.key, location.search, currentUserState.isLoggedIn, currentUserState.isLoggingIn, searchPapers]
+    [
+      location.key,
+      location.search,
+      currentUserState.isLoggedIn,
+      currentUserState.isLoggingIn,
+      searchPapers,
+      useAutoYearFilter,
+    ]
   );
 
   React.useEffect(
@@ -243,6 +269,11 @@ const SearchContainer: React.FC<Props> = props => {
       <SearchHelmet query={queryParams.query || ''} />
       <TabNavigationBar searchKeyword={articleSearchState.searchInput} />
       <div className={styles.articleSearchContainer}>
+        <AutoYearFilter
+          query={queryParams.query}
+          detectedYear={articleSearchState.detectedYear}
+          handleSetUseAutoYearFilter={setUseAutoYearFilter}
+        />
         <Suggestions
           searchFromSuggestion={articleSearchState.searchFromSuggestion}
           suggestionKeyword={articleSearchState.suggestionKeyword}
