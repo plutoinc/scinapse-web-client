@@ -1,13 +1,10 @@
 import * as React from 'react';
-import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import SearchingPDFBtn from '../../../components/paperShow/components/searchingPDFBtn';
 import { CurrentUser } from '../../../model/currentUser';
-import { addBasedOnRecommendationActivity } from '../../../helpers/basedOnRecommendationActivityManager';
 const s = require('../actionBar.scss');
 
 const RequestFullTextBtn: React.FunctionComponent<{
@@ -16,10 +13,9 @@ const RequestFullTextBtn: React.FunctionComponent<{
   currentUser: CurrentUser;
   handleSetIsOpen: (value: React.SetStateAction<boolean>) => void;
   actionArea: Scinapse.ActionTicket.ActionArea;
-  dispatch: Dispatch<any>;
   btnStyle?: React.CSSProperties;
 }> = React.memo(props => {
-  const { isLoading, paperId, handleSetIsOpen, btnStyle, currentUser } = props;
+  const { isLoading, paperId, handleSetIsOpen, btnStyle } = props;
 
   if (isLoading) {
     return <SearchingPDFBtn isLoading={isLoading} />;
@@ -45,7 +41,6 @@ const RequestFullTextBtn: React.FunctionComponent<{
         });
 
         if (!isBlocked) {
-          await props.dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paperId, 'requestFullTextBtn'));
           handleSetIsOpen(true);
         }
       }}
@@ -57,4 +52,4 @@ const RequestFullTextBtn: React.FunctionComponent<{
   );
 });
 
-export default connect()(withStyles<typeof RequestFullTextBtn>(s)(RequestFullTextBtn));
+export default withStyles<typeof RequestFullTextBtn>(s)(RequestFullTextBtn);

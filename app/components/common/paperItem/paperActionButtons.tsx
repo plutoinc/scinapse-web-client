@@ -15,7 +15,7 @@ import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import CollectionButton from './collectionButton';
 import formatNumber from '../../../helpers/formatNumber';
-import { addBasedOnRecommendationActivity } from '../../../helpers/basedOnRecommendationActivityManager';
+import { addPaperToRecommendationPool } from '../../../helpers/basedOnRecommendationActivityManager';
 import RecommendationAPI from '../../../api/recommendation';
 import { PaperSource } from '../../../api/paper';
 const styles = require('./paperActionButtons.scss');
@@ -135,7 +135,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         target="_blank"
         rel="noopener nofollow noreferrer"
         className={styles.sourceButton}
-        onClick={async () => {
+        onClick={() => {
           ActionTicketManager.trackTicket({
             pageType,
             actionType: 'fire',
@@ -143,7 +143,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             actionTag: 'source',
             actionLabel: String(paper.id),
           });
-          await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id, 'sourceButton'));
+          dispatch(addPaperToRecommendationPool(currentUser.isLoggedIn, paper.id, 'sourceButton'));
         }}
       >
         {buttonContent}
@@ -163,7 +163,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             pathname: `/papers/${paper.id}`,
             hash: 'cited',
           }}
-          onClick={async () => {
+          onClick={() => {
             ActionTicketManager.trackTicket({
               pageType,
               actionType: 'fire',
@@ -171,7 +171,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
               actionTag: 'citedList',
               actionLabel: String(paper.id),
             });
-            await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id, 'citationButton'));
+            dispatch(addPaperToRecommendationPool(currentUser.isLoggedIn, paper.id, 'citationButton'));
           }}
           className={styles.citedButton}
         >
@@ -182,15 +182,14 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   };
 
   private getCitationQuoteButton = () => {
-    const { paper, pageType, actionArea, currentUser, dispatch } = this.props;
+    const { paper, pageType, actionArea } = this.props;
 
     if (paper.doi) {
       return (
         <span className={styles.DOIMetaButtonsWrapper}>
           <span
             className={styles.citationIconWrapper}
-            onClick={async () => {
-              await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paper.id, 'citeButton'));
+            onClick={() => {
               GlobalDialogManager.openCitationDialog(paper.id);
               ActionTicketManager.trackTicket({
                 pageType,

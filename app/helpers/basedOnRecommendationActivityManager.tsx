@@ -20,7 +20,7 @@ function setActionCount(count: number): number {
   return nextCount;
 }
 
-export function addBasedOnRecommendationActivity(isLoggedIn: boolean, paperId: number, actionArea: string) {
+export function addPaperToRecommendationPool(isLoggedIn: boolean, paperId: number, actionArea: string) {
   return async (dispatch: Dispatch<any>) => {
     const prevActionCount = Cookies.get(BASED_ACTIVITY_COUNT_COOKIE_KEY);
 

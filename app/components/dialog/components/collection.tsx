@@ -1,6 +1,8 @@
 import * as React from 'react';
+import { Dispatch } from 'redux';
 import Popover from '@material-ui/core/Popover/Popover';
 import * as classNames from 'classnames';
+import { connect } from 'react-redux';
 import Axios, { CancelToken } from 'axios';
 import {
   PostCollectionParams,
@@ -13,12 +15,14 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import alertToast from '../../../helpers/makePlutoToastAction';
 import { CurrentUser } from '../../../model/currentUser';
 import { Collection } from '../../../model/collection';
+import { addPaperToRecommendationPool } from '../../../helpers/basedOnRecommendationActivityManager';
 const styles = require('./collection.scss');
 
 interface CollectionDialogProps {
   currentUser: CurrentUser;
   myCollections: Collection[];
   collectionDialogPaperId: number;
+  dispatch: Dispatch<any>;
   getMyCollections: (cancelToken: CancelToken) => void;
   handleCloseDialogRequest: () => void;
   handleSubmitNewCollection: (params: PostCollectionParams) => void;
@@ -107,10 +111,10 @@ class CollectionDialog extends React.PureComponent<CollectionDialogProps, Collec
           </Popover>
 
           <div className={styles.rightBox}>
-            <button onClick={handleCloseDialogRequest} className={styles.cancelButton}>
+            <button onClick={this.closeDialog} className={styles.cancelButton}>
               Cancel
             </button>
-            <button onClick={handleCloseDialogRequest} className={styles.nextButton}>
+            <button onClick={this.closeDialog} className={styles.nextButton}>
               Done
             </button>
           </div>
@@ -118,6 +122,12 @@ class CollectionDialog extends React.PureComponent<CollectionDialogProps, Collec
       </div>
     );
   }
+
+  private closeDialog = () => {
+    const { handleCloseDialogRequest, dispatch, currentUser, collectionDialogPaperId } = this.props;
+    handleCloseDialogRequest();
+    dispatch(addPaperToRecommendationPool(currentUser.isLoggedIn, collectionDialogPaperId, 'addToCollectionBtn'));
+  };
 
   private getCollectionItems = () => {
     const {
@@ -212,4 +222,4 @@ class CollectionDialog extends React.PureComponent<CollectionDialogProps, Collec
     });
   };
 }
-export default CollectionDialog;
+export default connect()(CollectionDialog);

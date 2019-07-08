@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import { denormalize } from 'normalizr';
 import Popover from '@material-ui/core/Popover';
 import { withStyles } from '../../../helpers/withStylesHelper';
@@ -13,7 +12,6 @@ import { Collection, collectionSchema } from '../../../model/collection';
 import { MyCollectionsState } from '../../../containers/paperShowCollectionControlButton/reducer';
 import CollectionPaperNote from '../../collectionPaperNote';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
-import { addBasedOnRecommendationActivity } from '../../../helpers/basedOnRecommendationActivityManager';
 const styles = require('./collectionButton.scss');
 
 function mapStateToProps(state: AppState) {
@@ -31,7 +29,6 @@ interface CollectionButtonProps {
   hasCollection: boolean;
   currentUser: CurrentUser;
   collection: Collection | undefined;
-  dispatch: Dispatch<any>;
   actionArea?: Scinapse.ActionTicket.ActionArea;
   onRemove?: (paperId: number) => Promise<void>;
   myCollections: MyCollectionsState;
@@ -69,7 +66,6 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
   myCollections,
   currentUser,
   collection,
-  dispatch,
 }) => {
   const itsMine = collection && collection.createdBy.id === currentUser.id ? true : false;
   const newMemoAnchor = React.useRef<HTMLDivElement | null>(null);
@@ -147,7 +143,6 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
     <button
       className={styles.addCollectionBtnWrapper}
       onClick={async () => {
-        await dispatch(addBasedOnRecommendationActivity(currentUser.isLoggedIn, paperId, 'addToCollectionBtn'));
         const isBlocked = await blockUnverifiedUser({
           authLevel: AUTH_LEVEL.VERIFIED,
           actionArea: actionArea || pageType,

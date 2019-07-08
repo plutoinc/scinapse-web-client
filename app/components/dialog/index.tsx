@@ -33,6 +33,7 @@ import alertToast from '../../helpers/makePlutoToastAction';
 import FinalSignUpContent from '../auth/signUp/components/finalSignUpContent';
 import EnvChecker from '../../helpers/envChecker';
 import SurveyForm from '../auth/signUp/components/surveyForm';
+import { addPaperToRecommendationPool } from '../../helpers/basedOnRecommendationActivityManager';
 const styles = require('./dialog.scss');
 
 function mapStateToProps(state: AppState) {
@@ -54,6 +55,29 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   public render() {
     const { dialogState } = this.props;
 
+    if (dialogState.type === GLOBAL_DIALOG_TYPE.CITATION && !!dialogState.citationPaperId) {
+      return (
+        <Dialog
+          open={dialogState.isOpen}
+          onClose={this.closeCitationDialog}
+          classes={{
+            paper: styles.dialogPaper,
+          }}
+          maxWidth={'lg'}
+        >
+          <CitationBox
+            paperId={dialogState.citationPaperId}
+            activeTab={dialogState.activeCitationTab}
+            isLoading={dialogState.isLoadingCitationText}
+            citationText={dialogState.citationText}
+            closeCitationDialog={this.closeCitationDialog}
+            handleClickCitationTab={this.handleClickCitationTab}
+            fetchCitationText={this.fetchCitationText}
+          />
+        </Dialog>
+      );
+    }
+
     return (
       <Dialog
         open={dialogState.isOpen}
@@ -72,6 +96,16 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       </Dialog>
     );
   }
+
+  private closeCitationDialog = () => {
+    const { dispatch, currentUser, dialogState } = this.props;
+
+    this.closeDialog();
+    if (dialogState.citationPaperId) {
+      dispatch(addPaperToRecommendationPool(currentUser.isLoggedIn, dialogState.citationPaperId, 'citeButton'));
+    }
+    trackDialogView('outsideClickClose');
+  };
 
   private closeDialog = () => {
     const { dispatch } = this.props;
@@ -247,25 +281,10 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
           return <VerificationNeeded email={currentUser.email} resendEmailFunc={this.resendVerificationEmail} />;
         }
         return null;
+
       case GLOBAL_DIALOG_TYPE.RESET_PASSWORD:
         return <ResetPassword handleCloseDialogRequest={this.closeDialog} />;
 
-      case GLOBAL_DIALOG_TYPE.CITATION: {
-        if (dialogState.citationPaperId) {
-          return (
-            <CitationBox
-              paperId={dialogState.citationPaperId}
-              activeTab={dialogState.activeCitationTab}
-              isLoading={dialogState.isLoadingCitationText}
-              citationText={dialogState.citationText}
-              closeCitationDialog={this.closeDialog}
-              handleClickCitationTab={this.handleClickCitationTab}
-              fetchCitationText={this.fetchCitationText}
-            />
-          );
-        }
-        return null;
-      }
       case GLOBAL_DIALOG_TYPE.COLLECTION:
         if (dialogState.collectionDialogTargetPaperId) {
           return (
