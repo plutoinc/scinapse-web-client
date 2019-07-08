@@ -1,5 +1,5 @@
 import { CancelToken } from 'axios';
-import { CommonPaginationResponsePart } from '../types/common';
+import { PageObjectV2 } from '../types/common';
 import { Paper } from '../../model/paper';
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
 
@@ -12,11 +12,12 @@ export interface GetAuthorPapersParams {
   size?: number;
 }
 
-export interface AuthorPapersResponse extends CommonPaginationResponsePart {
+export interface AuthorPapersResponse {
   content: Paper[];
+  page: PageObjectV2;
 }
 
-export interface GetAuthorPaperResult extends CommonPaginationResponsePart {
+export interface GetAuthorPaperResult extends PageObjectV2 {
   entities: { papers: { [paperId: number]: Paper } };
   result: number[];
 }

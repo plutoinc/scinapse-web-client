@@ -1,6 +1,6 @@
 import { ActionCreatorsMapObject } from 'redux';
 import { AppEntities } from '../reducers/entity';
-import { CommonPaginationResponsePart, NormalizedDataWithPaginationV2 } from '../api/types/common';
+import { NormalizedDataWithPaginationV2, PageObjectV2 } from '../api/types/common';
 import { AvailableCitationType } from '../containers/paperShow/records';
 import { GetCollectionsResponse } from '../api/member';
 import { GLOBAL_DIALOG_TYPE } from '../components/dialog/reducer';
@@ -229,7 +229,7 @@ interface GetMultiPapersInCollection {
   query?: string;
 }
 
-interface GetMultiPapers extends CommonPaginationResponsePart {
+interface GetMultiPapers extends PageObjectV2 {
   paperIds: number[];
   query?: string;
 }

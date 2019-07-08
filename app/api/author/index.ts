@@ -115,20 +115,20 @@ class AuthorAPI extends PlutoAxios {
     const authorSlicedResult = paperResponse.content.map(rawPaper => {
       return camelCaseKeys({ ...rawPaper, authors: rawPaper.authors.slice(0, 10) });
     });
+    const camelizedPageRes = camelCaseKeys(paperResponse.page);
 
     const normalizedPapersData = normalize(authorSlicedResult, [paperSchema]);
 
     return {
       entities: normalizedPapersData.entities,
       result: normalizedPapersData.result,
-      size: paperResponse.size,
-      number: paperResponse.number + 1,
-      sort: paperResponse.sort,
-      first: paperResponse.first,
-      last: paperResponse.last,
-      numberOfElements: paperResponse.numberOfElements,
-      totalPages: paperResponse.totalPages,
-      totalElements: paperResponse.totalElements,
+      size: camelizedPageRes.size,
+      page: camelizedPageRes.page + 1,
+      first: camelizedPageRes.first,
+      last: camelizedPageRes.last,
+      numberOfElements: camelizedPageRes.numberOfElements,
+      totalPages: camelizedPageRes.totalPages,
+      totalElements: camelizedPageRes.totalElements,
     };
   }
 

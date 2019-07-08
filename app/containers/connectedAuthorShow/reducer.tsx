@@ -104,10 +104,9 @@ export function reducer(
         ...state,
         paperSearchQuery: action.payload.query || '',
         paperIds: action.payload.paperIds,
-        papersSort: action.payload.sort as AUTHOR_PAPER_LIST_SORT_TYPES,
         isLoadingPapers: false,
         papersTotalPage: action.payload.totalPages,
-        papersCurrentPage: action.payload.number,
+        papersCurrentPage: action.payload.page,
         papersTotalCount: action.payload.totalElements,
       };
     }

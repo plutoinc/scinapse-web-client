@@ -3,7 +3,7 @@ import { AxiosResponse, CancelToken } from 'axios';
 import PlutoAxios from './pluto';
 import { Paper, paperSchema } from '../model/paper';
 import { GetRefOrCitedPapersParams } from './types/paper';
-import { CommonPaginationResponsePart, PaginationResponseV2 } from './types/common';
+import { PaginationResponseV2, PageObjectV2 } from './types/common';
 import { AvailableCitationType } from '../containers/paperShow/records';
 import { PaperAuthor } from '../model/author';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
@@ -16,7 +16,7 @@ import { camelCaseKeys } from '../helpers/camelCaseKeys';
 //   cognitive?: boolean;
 // }
 
-export interface GetReferenceOrCitedPapersResult extends CommonPaginationResponsePart {
+export interface GetReferenceOrCitedPapersResult extends PageObjectV2 {
   entities: { papers: { [paperId: number]: Paper } };
   result: number[];
 }
@@ -116,14 +116,13 @@ class PaperAPI extends PlutoAxios {
     return {
       entities: normalizedPapersData.entities,
       result: normalizedPapersData.result,
-      size: camelizedRes.size,
-      number: camelizedRes.number + 1,
-      sort: camelizedRes.sort,
-      first: camelizedRes.first,
-      last: camelizedRes.last,
-      numberOfElements: camelizedRes.numberOfElements,
-      totalPages: camelizedRes.totalPages,
-      totalElements: camelizedRes.totalElements,
+      size: camelizedRes.page.size,
+      page: camelizedRes.page.page + 1,
+      first: camelizedRes.page.first,
+      last: camelizedRes.page.last,
+      numberOfElements: camelizedRes.page.numberOfElements,
+      totalPages: camelizedRes.page.totalPages,
+      totalElements: camelizedRes.page.totalElements,
     };
   }
 
@@ -146,6 +145,7 @@ class PaperAPI extends PlutoAxios {
       cancelToken,
     });
     const camelizedRes = camelCaseKeys(getReferencePapersResponse.data.data);
+    console.log(camelizedRes);
     const papers = camelizedRes.content as Paper[];
     const authorSlicedPapers = papers.map(paper => {
       return { ...paper, authors: paper.authors.slice(0, 10) };
@@ -155,14 +155,13 @@ class PaperAPI extends PlutoAxios {
     return {
       entities: normalizedPapersData.entities,
       result: normalizedPapersData.result,
-      size: camelizedRes.size,
-      number: camelizedRes.number + 1,
-      sort: camelizedRes.sort,
-      first: camelizedRes.first,
-      last: camelizedRes.last,
-      numberOfElements: camelizedRes.numberOfElements,
-      totalPages: camelizedRes.totalPages,
-      totalElements: camelizedRes.totalElements,
+      size: camelizedRes.page.size,
+      page: camelizedRes.page.page + 1,
+      first: camelizedRes.page.first,
+      last: camelizedRes.page.last,
+      numberOfElements: camelizedRes.page.numberOfElements,
+      totalPages: camelizedRes.page.totalPages,
+      totalElements: camelizedRes.page.totalElements,
     };
   }
 
