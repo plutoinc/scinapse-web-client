@@ -101,7 +101,6 @@ export function reducer(
           fosFilterObject,
           matchAuthors: payload.data.matchedAuthor,
           topRefAuthors: payload.data.topRefAuthors,
-          detectedYear: payload.data.detectedYear,
         };
       }
 

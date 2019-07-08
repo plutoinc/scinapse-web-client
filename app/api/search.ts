@@ -15,7 +15,6 @@ export interface BaseSearchParams {
   sort: string;
   page?: number;
   cancelToken?: CancelToken;
-  detectYear?: boolean;
 }
 
 export interface PaperSearchParams extends BaseSearchParams {
@@ -48,7 +47,6 @@ export interface SearchResult extends PaginationResponseV2<Paper[]> {
     resultModified: boolean;
     suggestion: Suggestion | null;
     topRefAuthors: MatchEntityAuthor[] | null;
-    detectedYear: number | null;
   };
 }
 
@@ -60,14 +58,13 @@ export interface AuthorSearchResult extends PaginationResponseV2<Author[]> {
 }
 
 class SearchAPI extends PlutoAxios {
-  public async search({ query, sort, filter, page = 0, cancelToken, detectYear }: PaperSearchParams) {
+  public async search({ query, sort, filter, page = 0, cancelToken }: PaperSearchParams) {
     const res = await this.get('/search', {
       params: {
         q: query,
         sort,
         filter,
         page,
-        yd: detectYear,
       },
       cancelToken,
     });

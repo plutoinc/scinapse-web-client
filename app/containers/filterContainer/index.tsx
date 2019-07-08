@@ -17,7 +17,6 @@ import FilterSaveBox from './filterSaveBox';
 import makeNewFilterLink from '../../helpers/makeNewFilterLink';
 import { CurrentUser } from '../../model/currentUser';
 import AutocompleteFilter from './autocompleteFilter';
-import { Year } from '../../model/aggregation';
 const styles = require('./filterContainer.scss');
 
 export interface FilterContainerProps extends RouteComponentProps<any> {
@@ -29,26 +28,11 @@ export interface FilterContainerProps extends RouteComponentProps<any> {
 
 function getPublicationFilterBox(props: FilterContainerProps) {
   const { articleSearchState } = props;
-
-  let yearRangeList: Year[] = [];
-  if (articleSearchState.aggregationData) {
-    yearRangeList = articleSearchState.aggregationData.yearAll || [];
-  }
-
-  let filteredYearRangeList: Year[] = [];
-  if (articleSearchState.aggregationData && articleSearchState.aggregationData.yearFiltered) {
-    filteredYearRangeList = articleSearchState.aggregationData.yearFiltered;
-  } else if (articleSearchState.detectedYear) {
-    filteredYearRangeList = [{ year: articleSearchState.detectedYear, docCount: articleSearchState.totalElements }];
-  }
-
-  return (
-    <YearRangeSlider
-      yearInfo={yearRangeList}
-      filteredYearInfo={filteredYearRangeList}
-      detectedYear={articleSearchState.detectedYear}
-    />
-  );
+  const yearRangeList = articleSearchState.aggregationData ? articleSearchState.aggregationData.yearAll || [] : [];
+  const filteredYearRangeList = articleSearchState.aggregationData
+    ? articleSearchState.aggregationData.yearFiltered || []
+    : [];
+  return <YearRangeSlider yearInfo={yearRangeList} filteredYearInfo={filteredYearRangeList} />;
 }
 
 function getFOSFilterBox(props: FilterContainerProps) {

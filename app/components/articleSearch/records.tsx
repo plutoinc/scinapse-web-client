@@ -35,7 +35,6 @@ export interface ArticleSearchState
       myFilters: Filter[];
       selectedFilter: Filter | null;
       topRefAuthors: MatchEntityAuthor[] | null;
-      detectedYear: number | null;
     }> {}
 
 export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
@@ -69,5 +68,4 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   myFilters: [],
   selectedFilter: null,
   topRefAuthors: null,
-  detectedYear: null,
 };

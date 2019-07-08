@@ -1,11 +1,4 @@
-import {
-  broadAuthorVenue,
-  guruAtSearch,
-  knowledgeBasedRecommend,
-  sourceDomain,
-  dummy,
-  autoYearFilter,
-} from './abTestObject';
+import { broadAuthorVenue, guruAtSearch, knowledgeBasedRecommend, sourceDomain, dummy } from './abTestObject';
 
 export interface UserGroup {
   groupName: string;
@@ -19,13 +12,7 @@ export interface Test {
 
 export type SignUpConversion = 'queryLover' | 'downloadCount';
 
-export type ABTest =
-  | 'broadAuthorVenue'
-  | 'sourceDomain'
-  | 'guruAtSearch'
-  | 'knowledgeBasedRecommend'
-  | 'dummy'
-  | 'autoYearFilter';
+export type ABTest = 'broadAuthorVenue' | 'sourceDomain' | 'guruAtSearch' | 'knowledgeBasedRecommend' | 'dummy';
 
 export const SIGN_UP_CONVERSION_KEY = 'b_exp';
 
@@ -45,14 +32,7 @@ export interface SignUpConversionExpTicketContext {
   expName?: string;
 }
 
-export const LIVE_TESTS: Test[] = [
-  broadAuthorVenue,
-  guruAtSearch,
-  knowledgeBasedRecommend,
-  sourceDomain,
-  dummy,
-  autoYearFilter,
-];
+export const LIVE_TESTS: Test[] = [broadAuthorVenue, guruAtSearch, knowledgeBasedRecommend, sourceDomain, dummy];
 
 function getRandomPool(): { [key: string]: string[] } {
   const randomPool: { [key: string]: string[] } = {};
