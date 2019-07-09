@@ -11,6 +11,7 @@ import { PaperInCollection } from '../model/paperInCollection';
 import { SIGN_UP_STEP } from '../components/auth/signUp/types';
 import { OAuthCheckParams } from '../api/types/auth';
 import { SignUpConversionExpTicketContext } from '../constants/abTest';
+import { SearchResult } from '../api/search';
 
 export enum ACTION_TYPES {
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = 'GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING',
@@ -127,8 +128,6 @@ export enum ACTION_TYPES {
   ARTICLE_SEARCH_FAILED_TO_GET_AUTHORS = 'ARTICLE_SEARCH_FAILED_TO_GET_AUTHORS',
   ARTICLE_SEARCH_SUCCEEDED_TO_GET_AUTHORS = 'ARTICLE_SEARCH_SUCCEEDED_TO_GET_AUTHORS',
 
-  ARTICLE_SEARCH_GENERATED_TO_NEW_FILTER = 'ARTICLE_SEARCH_GENERATED_TO_NEW_FILTER',
-  ARTICLE_SEARCH_GENERATED_FAILED_TO_NEW_FILTER = 'ARTICLE_SEARCH_GENERATED_FAILED_TO_NEW_FILTER',
   ARTICLE_SEARCH_START_TO_GET_CURRENT_USER_FILTERS = 'ARTICLE_SEARCH_START_TO_GET_CURRENT_USER_FILTERS',
   ARTICLE_SEARCH_SUCCEEDED_TO_GET_CURRENT_USER_FILTERS = 'ARTICLE_SEARCH_SUCCEEDED_TO_GET_CURRENT_USER_FILTERS',
   ARTICLE_SEARCH_FAILED_TO_GET_CURRENT_USER_FILTERS = 'ARTICLE_SEARCH_FAILED_TO_GET_CURRENT_USER_FILTERS',
@@ -1048,5 +1047,12 @@ export const ActionCreators = {
 };
 
 export type ActionUnion<T extends ActionCreatorsMapObject> = ReturnType<T[keyof T]>;
+
+interface SucceedToGetSearchResultAction {
+  type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS;
+  payload: SearchResult;
+}
+
+export type SearchActions = SucceedToGetSearchResultAction;
 
 export type Actions = ActionUnion<typeof ActionCreators>;

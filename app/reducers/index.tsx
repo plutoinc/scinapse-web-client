@@ -51,6 +51,8 @@ import {
   reducer as KnowledgeBaseNotiReducer,
   KNOWLEDGE_BASE_NOTI_INITIAL_STATE,
 } from './knowledgeBaseNoti';
+import { AggregationData } from '../model/aggregation';
+import { reducer as SearchFilterReducer, SEARCH_FILTER_INITIAL_STATE } from './searchFilter';
 
 export interface AppState {
   configuration: ConfigurationReducer.Configuration;
@@ -71,6 +73,7 @@ export interface AppState {
   PDFViewerState: PDFViewerState;
   searchQueryState: SearchQueryState;
   knowledgeBaseNotiState: KnowledgeBaseNotiState;
+  searchFilterState: AggregationData;
   entities: EntityState;
 }
 
@@ -93,6 +96,7 @@ export const initialState: AppState = {
   PDFViewerState: PDF_VIEWER_INITIAL_STATE,
   searchQueryState: SEARCH_QUERY_INITIAL_STATE,
   knowledgeBaseNotiState: KNOWLEDGE_BASE_NOTI_INITIAL_STATE,
+  searchFilterState: SEARCH_FILTER_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
 };
 
@@ -115,5 +119,6 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   PDFViewerState: PDFViewerReducer,
   searchQueryState: SearchQueryReducer,
   knowledgeBaseNotiState: KnowledgeBaseNotiReducer,
+  searchFilterState: SearchFilterReducer,
   entities: EntityReducer,
 });
