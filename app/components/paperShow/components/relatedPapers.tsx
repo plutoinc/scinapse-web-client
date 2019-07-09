@@ -33,9 +33,18 @@ interface PaperListProps {
   papers: Paper[];
   type: RELATED_PAPERS;
   currentUser: CurrentUser;
+  isRelatedPapersLoading: boolean;
 }
 const PaperList: React.FC<PaperListProps> = props => {
-  const { type, papers, relatedPapersTotalPage, currentUser } = props;
+  const { type, papers, relatedPapersTotalPage, currentUser, isRelatedPapersLoading } = props;
+
+  if (isRelatedPapersLoading) {
+    return (
+      <div className={styles.loadingContainer}>
+        <ArticleSpinner className={styles.loadingSpinner} />
+      </div>
+    );
+  }
 
   if ((!papers || papers.length === 0) && relatedPapersTotalPage === 0)
     return (
@@ -68,23 +77,15 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
     const { type, location, paperShow } = this.props;
     const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
 
+    let isRelatedPapersLoading;
     let relatedPapersTotalPage;
 
     if (type === 'reference') {
       relatedPapersTotalPage = paperShow.referencePaperTotalPage;
+      isRelatedPapersLoading = paperShow.isLoadingReferencePapers;
     } else {
       relatedPapersTotalPage = paperShow.citedPaperTotalPage;
-    }
-
-    if (
-      (type === 'reference' && paperShow.isLoadingReferencePapers) ||
-      (type === 'cited' && paperShow.isLoadingCitedPapers)
-    ) {
-      return (
-        <div className={styles.loadingContainer}>
-          <ArticleSpinner className={styles.loadingSpinner} />
-        </div>
-      );
+      isRelatedPapersLoading = paperShow.isLoadingCitedPapers;
     }
 
     return (
@@ -107,6 +108,7 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
             papers={this.props.papers}
             relatedPapersTotalPage={relatedPapersTotalPage}
             currentUser={this.props.currentUser}
+            isRelatedPapersLoading={isRelatedPapersLoading}
           />
         </div>
         <div>{this.getPagination()}</div>
