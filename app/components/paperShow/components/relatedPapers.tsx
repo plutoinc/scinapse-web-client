@@ -14,6 +14,7 @@ import { PaperShowPageQueryParams } from '../../../containers/paperShow/types';
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../common/sortBox';
 import ScinapseInput from '../../common/scinapseInput';
 import ArticleSpinner from '../../common/spinner/articleSpinner';
+import Icon from '../../../icons';
 const styles = require('./relatedPapers.scss');
 
 interface ReferencePapersProps
@@ -28,14 +29,21 @@ interface ReferencePapersProps
     }> {}
 
 interface PaperListProps {
+  relatedPapersTotalPage: number;
   papers: Paper[];
   type: RELATED_PAPERS;
   currentUser: CurrentUser;
 }
 const PaperList: React.FC<PaperListProps> = props => {
-  const { type, papers, currentUser } = props;
+  const { type, papers, relatedPapersTotalPage, currentUser } = props;
 
-  if (!papers || papers.length === 0) return null;
+  if ((!papers || papers.length === 0) && relatedPapersTotalPage === 0)
+    return (
+      <div className={styles.noPaperWrapper}>
+        <Icon icon="UFO" className={styles.ufoIcon} />
+        <div className={styles.noPaperDescription}>No paper in this collection.</div>
+      </div>
+    );
 
   const referenceItems = papers.map(paper => {
     return (
@@ -59,6 +67,14 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
   public render() {
     const { type, location, paperShow } = this.props;
     const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
+
+    let relatedPapersTotalPage;
+
+    if (type === 'reference') {
+      relatedPapersTotalPage = paperShow.referencePaperTotalPage;
+    } else {
+      relatedPapersTotalPage = paperShow.citedPaperTotalPage;
+    }
 
     if (
       (type === 'reference' && paperShow.isLoadingReferencePapers) ||
@@ -86,7 +102,12 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
           {this.getSortBox()}
         </div>
         <div>
-          <PaperList type={this.props.type} papers={this.props.papers} currentUser={this.props.currentUser} />
+          <PaperList
+            type={this.props.type}
+            papers={this.props.papers}
+            relatedPapersTotalPage={relatedPapersTotalPage}
+            currentUser={this.props.currentUser}
+          />
         </div>
         <div>{this.getPagination()}</div>
       </>
@@ -116,9 +137,9 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
     let pageQueryParams;
 
     if (type === 'reference') {
-      pageQueryParams = { 'ref-query': query };
+      pageQueryParams = { 'ref-query': query, 'ref-page': 1 };
     } else {
-      pageQueryParams = { 'cited-query': query };
+      pageQueryParams = { 'cited-query': query, 'cited-page': 1 };
     }
 
     history.push({
