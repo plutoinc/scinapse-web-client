@@ -1,7 +1,21 @@
 import { AggregationData } from '../model/aggregation';
 import { ACTION_TYPES, SearchActions } from '../actions/actionTypes';
+import { FILTER_BUTTON_TYPE } from '../components/filterButton';
 
-export const SEARCH_FILTER_INITIAL_STATE: AggregationData = {
+export interface SearchFilterState extends AggregationData {
+  activeButton: FILTER_BUTTON_TYPE | null;
+  currentYearFrom: number;
+  currentYearTo: number;
+  selectedJournalIds: number[];
+  selectedFOSIds: number[];
+}
+
+export const SEARCH_FILTER_INITIAL_STATE: SearchFilterState = {
+  activeButton: null,
+  currentYearFrom: 0,
+  currentYearTo: 0,
+  selectedJournalIds: [],
+  selectedFOSIds: [],
   fosList: [],
   journals: [],
   yearAll: [],
@@ -18,6 +32,13 @@ export function reducer(state = SEARCH_FILTER_INITIAL_STATE, action: SearchActio
       return {
         ...state,
         ...data.aggregation,
+      };
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_SET_ACTIVE_FILTER_BOX_BUTTON: {
+      return {
+        ...state,
+        activeButton: action.payload.button,
       };
     }
 

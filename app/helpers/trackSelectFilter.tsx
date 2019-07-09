@@ -1,6 +1,6 @@
-import { FILTER_BOX_TYPE } from '../../constants/paperSearch';
-import { trackEvent } from '../../helpers/handleGA';
-import ActionTicketManager from '../../helpers/actionTicketManager';
+import { FILTER_BOX_TYPE } from '../constants/paperSearch';
+import { trackEvent } from './handleGA';
+import ActionTicketManager from './actionTicketManager';
 
 export function trackSelectFilter(actionType: FILTER_BOX_TYPE, actionValue: string | number) {
   trackEvent({ category: 'Filter', action: actionType, label: String(actionValue) });

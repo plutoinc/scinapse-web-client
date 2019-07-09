@@ -12,6 +12,8 @@ import { SIGN_UP_STEP } from '../components/auth/signUp/types';
 import { OAuthCheckParams } from '../api/types/auth';
 import { SignUpConversionExpTicketContext } from '../constants/abTest';
 import { SearchResult } from '../api/search';
+import { FILTER_BUTTON_TYPE } from '../components/filterButton';
+import { FilterObject } from '../helpers/searchQueryManager';
 
 export enum ACTION_TYPES {
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = 'GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING',
@@ -125,6 +127,8 @@ export enum ACTION_TYPES {
   ARTICLE_SEARCH_START_TO_GET_AUTHORS = 'ARTICLE_SEARCH_START_TO_GET_AUTHORS',
   ARTICLE_SEARCH_FAILED_TO_GET_AUTHORS = 'ARTICLE_SEARCH_FAILED_TO_GET_AUTHORS',
   ARTICLE_SEARCH_SUCCEEDED_TO_GET_AUTHORS = 'ARTICLE_SEARCH_SUCCEEDED_TO_GET_AUTHORS',
+  ARTICLE_SEARCH_SET_ACTIVE_FILTER_BOX_BUTTON = 'ARTICLE_SEARCH_SET_ACTIVE_FILTER_BOX_BUTTON',
+  ARTICLE_SEARCH_SYNC_FILTERS_WITH_QUERY_PARAMS = 'ARTICLE_SEARCH_SYNC_FILTERS_WITH_QUERY_PARAMS',
 
   AUTHOR_SHOW_START_TO_LOAD_DATA_FOR_PAGE = 'AUTHOR_SHOW_START_TO_LOAD_DATA_FOR_PAGE',
   AUTHOR_SHOW_FINISH_TO_LOAD_DATA_FOR_PAGE = 'AUTHOR_SHOW_FINISH_TO_LOAD_DATA_FOR_PAGE',
@@ -1043,6 +1047,19 @@ interface SucceedToGetSearchResultAction {
   payload: SearchResult;
 }
 
-export type SearchActions = SucceedToGetSearchResultAction;
+export interface SetActiveFilterBoxButtonAction {
+  type: ACTION_TYPES.ARTICLE_SEARCH_SET_ACTIVE_FILTER_BOX_BUTTON;
+  payload: { button: FILTER_BUTTON_TYPE | null };
+}
+
+export interface SyncFilterWithQueryParamsAction {
+  type: ACTION_TYPES.ARTICLE_SEARCH_SYNC_FILTERS_WITH_QUERY_PARAMS;
+  payload: { filters: FilterObject };
+}
+
+export type SearchActions =
+  | SucceedToGetSearchResultAction
+  | SetActiveFilterBoxButtonAction
+  | SyncFilterWithQueryParamsAction;
 
 export type Actions = ActionUnion<typeof ActionCreators>;

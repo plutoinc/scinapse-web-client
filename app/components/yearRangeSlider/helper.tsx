@@ -1,8 +1,8 @@
 import { History } from 'history';
-import { SearchPageQueryParams } from '../../../components/articleSearch/types';
-import getQueryParamsObject from '../../../helpers/getQueryParamsObject';
-import PapersQueryFormatter, { SearchPageQueryParamsObject } from '../../../helpers/searchQueryManager';
-import { trackSelectFilter } from '../../../components/filterContainer/trackSelectFilter';
+import { SearchPageQueryParams } from '../articleSearch/types';
+import getQueryParamsObject from '../../helpers/getQueryParamsObject';
+import PapersQueryFormatter, { SearchPageQueryParamsObject } from '../../helpers/searchQueryManager';
+import { trackSelectFilter } from '../../helpers/trackSelectFilter';
 
 export interface GoToYearFilteredSearchResultPageParams {
   qs: string;

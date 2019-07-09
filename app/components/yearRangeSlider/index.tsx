@@ -2,12 +2,12 @@ import * as React from 'react';
 import { History } from 'history';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import * as classNames from 'classnames';
-import { withStyles } from '../../../helpers/withStylesHelper';
+import { withStyles } from '../../helpers/withStylesHelper';
 import { MIN_YEAR } from './constants';
 import Slider from './slider';
-import { SearchPageQueryParams } from '../../../components/articleSearch/types';
-import getQueryParamsObject from '../../../helpers/getQueryParamsObject';
-import PapersQueryFormatter from '../../../helpers/searchQueryManager';
+import { SearchPageQueryParams } from '../articleSearch/types';
+import getQueryParamsObject from '../../helpers/getQueryParamsObject';
+import PapersQueryFormatter from '../../helpers/searchQueryManager';
 import { goToYearFilteredSearchResultPage } from './helper';
 const styles = require('./yearRangeSlider.scss');
 

@@ -51,8 +51,8 @@ import {
   reducer as KnowledgeBaseNotiReducer,
   KNOWLEDGE_BASE_NOTI_INITIAL_STATE,
 } from './knowledgeBaseNoti';
-import { AggregationData } from '../model/aggregation';
-import { reducer as SearchFilterReducer, SEARCH_FILTER_INITIAL_STATE } from './searchFilter';
+
+import { SearchFilterState, reducer as SearchFilterReducer, SEARCH_FILTER_INITIAL_STATE } from './searchFilter';
 
 export interface AppState {
   configuration: ConfigurationReducer.Configuration;
@@ -73,7 +73,7 @@ export interface AppState {
   PDFViewerState: PDFViewerState;
   searchQueryState: SearchQueryState;
   knowledgeBaseNotiState: KnowledgeBaseNotiState;
-  searchFilterState: AggregationData;
+  searchFilterState: SearchFilterState;
   entities: EntityState;
 }
 
