@@ -24,7 +24,7 @@ import GlobalDialogManager from '../../helpers/globalDialogManager';
 import { HOME_PATH } from '../../constants/routes';
 import { ACTION_TYPES, ActionCreators } from '../../actions/actionTypes';
 import { CurrentUser } from '../../model/currentUser';
-import { FilterObject, DEFAULT_FILTER } from '../../helpers/searchQueryManager';
+import { DEFAULT_FILTER } from '../../helpers/searchQueryManager';
 import { getCollections } from '../collections/actions';
 import { collectionSchema } from '../../model/collection';
 import { getMemoizedPaper } from '../../containers/paperShow/select';
@@ -233,12 +233,8 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private getSearchFormContainer = () => {
-    const { location, articleSearchState } = this.props;
-
+    const { location } = this.props;
     const shouldShowSearchFormContainer = location.pathname !== HOME_PATH;
-    const currentFilter: FilterObject = articleSearchState.selectedFilter
-      ? articleSearchState.selectedFilter.filter
-      : DEFAULT_FILTER;
 
     if (!shouldShowSearchFormContainer) return null;
 
@@ -248,7 +244,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
           wrapperClassName={styles.searchWrapper}
           listWrapperClassName={styles.suggestionListWrapper}
           inputClassName={styles.searchInput}
-          initialFilter={currentFilter}
+          initialFilter={DEFAULT_FILTER}
           actionArea="topBar"
           maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
         />

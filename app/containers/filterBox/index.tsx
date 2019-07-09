@@ -70,6 +70,7 @@ const FilterBox: React.FC<FilterBoxProps & RouteComponentProps> = props => {
       console.log(filters);
       dispatch({ type: 'SYNC_FILTERS_WITH_QUERY_PARAMS', payload: { filters } });
     },
+
     [props.location.search]
   );
 

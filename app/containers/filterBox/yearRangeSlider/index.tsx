@@ -9,8 +9,6 @@ import { SearchPageQueryParams } from '../../../components/articleSearch/types';
 import getQueryParamsObject from '../../../helpers/getQueryParamsObject';
 import PapersQueryFormatter from '../../../helpers/searchQueryManager';
 import { goToYearFilteredSearchResultPage } from './helper';
-import FilterButton from '../filterButton';
-import FilterResetButton from '../../../components/filterContainer/filterResetButton';
 const styles = require('./yearRangeSlider.scss');
 
 interface YearSet {
@@ -167,58 +165,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
   return (
     <div className={styles.yearFilter}>
       <div className={styles.content}>
-        <div className={styles.title}>
-          Published Year
-          <FilterResetButton filterType="PUBLISHED_YEAR" />
-        </div>
-
-        <div className={styles.btnsWrapper}>
-          <FilterButton
-            onClick={() => {
-              goToYearFilteredSearchResultPage({
-                qs: queryParamsStr,
-                history: props.history,
-                max: currentYear,
-                min: currentYear,
-                fromBtn: true,
-              });
-            }}
-            currentYear={currentYear}
-            queryParamsStr={queryParamsStr}
-            isActive={minValue === currentYear && maxValue === currentYear}
-            text="This Year"
-          />
-          <FilterButton
-            onClick={() => {
-              goToYearFilteredSearchResultPage({
-                qs: queryParamsStr,
-                history: props.history,
-                max: currentYear,
-                min: currentYear - 2,
-                fromBtn: true,
-              });
-            }}
-            currentYear={currentYear}
-            queryParamsStr={queryParamsStr}
-            isActive={minValue === currentYear - 2 && maxValue === currentYear}
-            text="Last 3 Years"
-          />
-          <FilterButton
-            onClick={() => {
-              goToYearFilteredSearchResultPage({
-                qs: queryParamsStr,
-                history: props.history,
-                max: currentYear,
-                min: currentYear - 4,
-                fromBtn: true,
-              });
-            }}
-            currentYear={currentYear}
-            queryParamsStr={queryParamsStr}
-            isActive={minValue === currentYear - 4 && maxValue === currentYear}
-            text="Last 5 Years"
-          />
-        </div>
+        <div className={styles.title}>Published Year</div>
 
         <div className={styles.yearFilterBox}>
           <div ref={columnBoxNode} className={styles.columnBox}>

@@ -14,7 +14,7 @@ import NoResultInSearch from './components/noResultInSearch';
 import TabNavigationBar from '../common/tabNavigationBar';
 import Suggestions from './components/suggestions';
 import ErrorPage from '../error/errorPage';
-import { fetchCurrentUserFilters, searchPapers, toggleExpandingFilter, changeRangeInput } from './actions';
+import { searchPapers } from './actions';
 import SearchList from './components/searchList';
 import DoiSearchBlocked from './components/doiSearchBlocked';
 import { Paper } from '../../model/paper';
@@ -27,7 +27,6 @@ import formatNumber from '../../helpers/formatNumber';
 import SortBar from './components/SortBar';
 import Pagination from './components/pagination';
 import SignBanner from './components/signBanner';
-import FilterContainer from '../../containers/filterContainer';
 import FilterBox from '../../containers/filterBox';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import GuruBox from './components/guruBox';
@@ -187,16 +186,7 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
 };
 
 const SearchContainer: React.FC<Props> = props => {
-  const {
-    articleSearchState,
-    currentUserState,
-    location,
-    fetchUserFilters,
-    searchPapers,
-    toggleExpandingFilter,
-    changeRangeInput,
-    changeSearchQuery,
-  } = props;
+  const { articleSearchState, currentUserState, location, searchPapers, changeSearchQuery } = props;
   const [queryParams, setQueryParams] = React.useState<SearchPageQueryParams>(
     parse(location.search, { ignoreQueryPrefix: true })
   );
@@ -249,19 +239,6 @@ const SearchContainer: React.FC<Props> = props => {
     ]
   );
 
-  React.useEffect(
-    () => {
-      if (currentUserState.isLoggedIn) {
-        fetchUserFilters(cancelToken.current.token);
-      }
-      return () => {
-        cancelToken.current.cancel();
-        cancelToken.current = axios.CancelToken.source();
-      };
-    },
-    [currentUserState.isLoggedIn, fetchUserFilters]
-  );
-
   if (articleSearchState.pageErrorCode) {
     return <ErrorPage errorNum={articleSearchState.pageErrorCode} />;
   }
@@ -292,12 +269,6 @@ const SearchContainer: React.FC<Props> = props => {
         <div className={styles.rightBoxWrapper}>
           <GuruBox isLoading={articleSearchState.isContentLoading} authors={articleSearchState.topRefAuthors} />
           {!currentUserState.isLoggedIn && <SignBanner isLoading={articleSearchState.isContentLoading} />}
-          <FilterContainer
-            handleChangeRangeInput={changeRangeInput}
-            articleSearchState={articleSearchState}
-            currentUserState={currentUserState}
-            handleToggleExpandingFilter={toggleExpandingFilter}
-          />
         </div>
       </div>
       <ImprovedFooter
@@ -324,10 +295,7 @@ const mapStateToProps = (state: AppState) => {
 const mapDispatchToProps = (dispatch: Dispatch<Actions>) =>
   bindActionCreators(
     {
-      fetchUserFilters: fetchCurrentUserFilters,
       searchPapers,
-      toggleExpandingFilter,
-      changeRangeInput,
       changeSearchQuery,
     },
     dispatch
