@@ -13,7 +13,7 @@ import { clearPaperShowState } from '../../actions/paperShow';
 import { PaperShowState } from './records';
 import ActionBar from '../paperShowActionBar';
 import FOSList from '../../components/paperShow/components/fosList';
-import ReferencePapers from '../../components/paperShow/components/relatedPapers';
+import ReferencePapers from '../../components/paperShow/referencePapers';
 import PaperShowRefCitedTab from '../../components/paperShow/refCitedTab';
 import { Paper } from '../../model/paper';
 import { fetchCitedPaperData, fetchMyCollection, fetchPaperShowData, fetchRefPaperData } from './sideEffect';
@@ -202,17 +202,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public render() {
-    const {
-      layout,
-      paperShow,
-      location,
-      currentUser,
-      paper,
-      referencePapers,
-      citedPapers,
-      PDFViewerState,
-      history,
-    } = this.props;
+    const { layout, paperShow, currentUser, paper, referencePapers, citedPapers, PDFViewerState } = this.props;
     const { isOnFullText, isOnCited, isOnRef } = this.state;
 
     if (paperShow.isLoadingPaper) {
@@ -314,8 +304,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     papers={referencePapers}
                     currentUser={currentUser}
                     paperShow={paperShow}
-                    location={location}
-                    history={history}
                   />
                 </div>
               </div>
@@ -336,8 +324,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   papers={citedPapers}
                   currentUser={currentUser}
                   paperShow={paperShow}
-                  location={location}
-                  history={history}
                 />
               </div>
             </article>

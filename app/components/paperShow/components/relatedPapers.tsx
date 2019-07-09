@@ -28,6 +28,12 @@ interface ReferencePapersProps
       location: Location;
     }> {}
 
+interface ReferencePapersState {
+  isRelatedPapersLoading: boolean;
+  relatedPapersTotalPage: number;
+  relatedPapersSearchQuery: string;
+}
+
 interface PaperListProps {
   relatedPapersTotalPage: number;
   queryInRelatedPapers: string;
@@ -36,6 +42,7 @@ interface PaperListProps {
   currentUser: CurrentUser;
   isRelatedPapersLoading: boolean;
 }
+
 const PaperList: React.FC<PaperListProps> = props => {
   const { type, papers, relatedPapersTotalPage, currentUser, isRelatedPapersLoading, queryInRelatedPapers } = props;
 
@@ -51,7 +58,9 @@ const PaperList: React.FC<PaperListProps> = props => {
     return (
       <div className={styles.noPaperWrapper}>
         <Icon icon="UFO" className={styles.ufoIcon} />
-        <div className={styles.noPaperDescription}>No related paper in this paper.</div>
+        <div className={styles.noPaperDescription}>
+          Your search <b>{queryInRelatedPapers}</b> did not match any {type} papers.
+        </div>
       </div>
     );
 
@@ -73,32 +82,46 @@ const PaperList: React.FC<PaperListProps> = props => {
 };
 
 @withStyles<typeof ReferencePapers>(styles)
-export default class ReferencePapers extends React.PureComponent<ReferencePapersProps> {
-  public render() {
-    const { type, location, paperShow } = this.props;
+export default class ReferencePapers extends React.PureComponent<ReferencePapersProps, ReferencePapersState> {
+  public constructor(props: ReferencePapersProps) {
+    super(props);
+
+    this.state = {
+      isRelatedPapersLoading: false,
+      relatedPapersTotalPage: 0,
+      relatedPapersSearchQuery: '',
+    };
+  }
+
+  public async componentDidUpdate() {
+    const { location, type, paperShow } = this.props;
     const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
 
-    let isRelatedPapersLoading;
-    let relatedPapersTotalPage;
-    let currentSearchQuery;
-
     if (type === 'reference') {
-      relatedPapersTotalPage = paperShow.referencePaperTotalPage;
-      isRelatedPapersLoading = paperShow.isLoadingReferencePapers;
-      currentSearchQuery = queryParamsObject['ref-query'];
+      this.setState(prevState => ({
+        ...prevState,
+        isRelatedPapersLoading: paperShow.isLoadingReferencePapers,
+        relatedPapersTotalPage: paperShow.referencePaperTotalPage,
+        relatedPapersSearchQuery: queryParamsObject['ref-query'] || '',
+      }));
     } else {
-      relatedPapersTotalPage = paperShow.citedPaperTotalPage;
-      isRelatedPapersLoading = paperShow.isLoadingCitedPapers;
-      currentSearchQuery = queryParamsObject['cited-query'];
+      this.setState(prevState => ({
+        ...prevState,
+        isRelatedPapersLoading: paperShow.isLoadingCitedPapers,
+        relatedPapersTotalPage: paperShow.citedPaperTotalPage,
+        relatedPapersSearchQuery: queryParamsObject['cited-query'] || '',
+      }));
     }
+  }
 
+  public render() {
     return (
       <>
         <div className={styles.searchContainer}>
           <div className={styles.searchInputWrapper}>
             <ScinapseInput
               aria-label="Scinapse search box in paper show"
-              value={currentSearchQuery}
+              value={this.state.relatedPapersSearchQuery}
               onSubmit={this.handleSubmitSearch}
               placeholder="Search papers"
               icon="SEARCH_ICON"
@@ -110,10 +133,10 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
           <PaperList
             type={this.props.type}
             papers={this.props.papers}
-            relatedPapersTotalPage={relatedPapersTotalPage}
-            queryInRelatedPapers={currentSearchQuery || ''}
+            relatedPapersTotalPage={this.state.relatedPapersTotalPage}
+            queryInRelatedPapers={this.state.relatedPapersSearchQuery || ''}
             currentUser={this.props.currentUser}
-            isRelatedPapersLoading={isRelatedPapersLoading}
+            isRelatedPapersLoading={this.state.isRelatedPapersLoading}
           />
         </div>
         <div>{this.getPagination()}</div>
