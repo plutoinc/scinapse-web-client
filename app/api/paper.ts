@@ -8,14 +8,6 @@ import { AvailableCitationType } from '../containers/paperShow/records';
 import { PaperAuthor } from '../model/author';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
-// interface GetRefOrCitedPapersBasicParams {
-//   size: number;
-//   query: string;
-//   sort:
-//   page: number;
-//   cognitive?: boolean;
-// }
-
 export interface GetReferenceOrCitedPapersResult extends PageObjectV2 {
   entities: { papers: { [paperId: number]: Paper } };
   result: number[];
