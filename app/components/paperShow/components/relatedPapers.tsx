@@ -30,13 +30,14 @@ interface ReferencePapersProps
 
 interface PaperListProps {
   relatedPapersTotalPage: number;
+  queryInRelatedPapers: string;
   papers: Paper[];
   type: RELATED_PAPERS;
   currentUser: CurrentUser;
   isRelatedPapersLoading: boolean;
 }
 const PaperList: React.FC<PaperListProps> = props => {
-  const { type, papers, relatedPapersTotalPage, currentUser, isRelatedPapersLoading } = props;
+  const { type, papers, relatedPapersTotalPage, currentUser, isRelatedPapersLoading, queryInRelatedPapers } = props;
 
   if (isRelatedPapersLoading) {
     return (
@@ -46,7 +47,7 @@ const PaperList: React.FC<PaperListProps> = props => {
     );
   }
 
-  if ((!papers || papers.length === 0) && relatedPapersTotalPage === 0)
+  if ((!papers || papers.length === 0) && relatedPapersTotalPage === 0 && queryInRelatedPapers)
     return (
       <div className={styles.noPaperWrapper}>
         <Icon icon="UFO" className={styles.ufoIcon} />
@@ -79,13 +80,16 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
 
     let isRelatedPapersLoading;
     let relatedPapersTotalPage;
+    let currentSearchQuery;
 
     if (type === 'reference') {
       relatedPapersTotalPage = paperShow.referencePaperTotalPage;
       isRelatedPapersLoading = paperShow.isLoadingReferencePapers;
+      currentSearchQuery = queryParamsObject['ref-query'];
     } else {
       relatedPapersTotalPage = paperShow.citedPaperTotalPage;
       isRelatedPapersLoading = paperShow.isLoadingCitedPapers;
+      currentSearchQuery = queryParamsObject['cited-query'];
     }
 
     return (
@@ -94,7 +98,7 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
           <div className={styles.searchInputWrapper}>
             <ScinapseInput
               aria-label="Scinapse search box in paper show"
-              value={type === 'reference' ? queryParamsObject['ref-query'] : queryParamsObject['cited-query']}
+              value={currentSearchQuery}
               onSubmit={this.handleSubmitSearch}
               placeholder="Search papers"
               icon="SEARCH_ICON"
@@ -107,6 +111,7 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
             type={this.props.type}
             papers={this.props.papers}
             relatedPapersTotalPage={relatedPapersTotalPage}
+            queryInRelatedPapers={currentSearchQuery || ''}
             currentUser={this.props.currentUser}
             isRelatedPapersLoading={isRelatedPapersLoading}
           />
