@@ -31,6 +31,7 @@ import EnvChecker from '../../helpers/envChecker';
 import ErrorPage from '../../components/error/errorPage';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
 import ScinapseInput from '../../components/common/scinapseInput';
+import Icon from '../../icons';
 const styles = require('./authorShow.scss');
 
 export interface AuthorShowMatchParams {
@@ -404,6 +405,15 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
       return (
         <div className={styles.loadingContainer}>
           <ArticleSpinner className={styles.loadingSpinner} />
+        </div>
+      );
+    }
+
+    if (!papers || (papers.length === 0 && authorShow.papersTotalPage === 0)) {
+      return (
+        <div className={styles.noPaperWrapper}>
+          <Icon icon="UFO" className={styles.ufoIcon} />
+          <div className={styles.noPaperDescription}>No paper in this author.</div>
         </div>
       );
     }
