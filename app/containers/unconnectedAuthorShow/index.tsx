@@ -151,21 +151,21 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
                         <span className={styles.paperListTitle}>Publications</span>
                         <span className={styles.paperListTitleNumber}>{` ${author.paperCount}`}</span>
                       </div>
-
-                      <div className={styles.paperListRight}>
-                        <ScinapseInput
-                          value={authorShow.paperSearchQuery}
-                          onSubmit={this.handleSubmitSearch}
-                          placeholder="Search papers"
-                          icon="SEARCH_ICON"
-                          wrapperStyle={{ marginRight: '8px' }}
-                        />
-                        <SortBox
-                          sortOption={authorShow.papersSort}
-                          handleClickSortOption={this.handleClickSortOption}
-                          currentPage="authorShow"
-                        />
-                      </div>
+                    </div>
+                    <div className={styles.paperSearchContainer}>
+                      <ScinapseInput
+                        aria-label="Scinapse search box in author show"
+                        value={authorShow.paperSearchQuery}
+                        onSubmit={this.handleSubmitSearch}
+                        placeholder="Search papers"
+                        icon="SEARCH_ICON"
+                        wrapperStyle={{ marginRight: '8px', maxWidth: '500px', width: '100%' }}
+                      />
+                      <SortBox
+                        sortOption={authorShow.papersSort}
+                        handleClickSortOption={this.handleClickSortOption}
+                        currentPage="authorShow"
+                      />
                     </div>
 
                     <div className={styles.paperListContent}>{this.getPaperList()}</div>
@@ -398,7 +398,15 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
   };
 
   private getPaperList = () => {
-    const { papers, currentUser } = this.props;
+    const { papers, currentUser, authorShow } = this.props;
+
+    if (authorShow.isLoadingPapers) {
+      return (
+        <div className={styles.loadingContainer}>
+          <ArticleSpinner className={styles.loadingSpinner} />
+        </div>
+      );
+    }
 
     return papers.map(paper => {
       if (paper) {

@@ -76,6 +76,7 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
         <div className={styles.searchContainer}>
           <div className={styles.searchInputWrapper}>
             <ScinapseInput
+              aria-label="Scinapse search box in paper show"
               value={type === 'reference' ? queryParamsObject['ref-query'] : queryParamsObject['cited-query']}
               onSubmit={this.handleSubmitSearch}
               placeholder="Search papers"
