@@ -50,7 +50,7 @@ const PaperList: React.FC<PaperListProps> = props => {
     return (
       <div className={styles.noPaperWrapper}>
         <Icon icon="UFO" className={styles.ufoIcon} />
-        <div className={styles.noPaperDescription}>No paper in this collection.</div>
+        <div className={styles.noPaperDescription}>No related paper in this paper.</div>
       </div>
     );
 
