@@ -175,7 +175,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         )
       );
       if (this.refTabWrapper) {
-        this.refTabWrapper.scrollIntoView();
+        window.scrollTo(0, this.refTabWrapper.offsetTop - NAVBAR_HEIGHT);
       }
     } else if (this.props.paper && (changeCitedPage || changeCitedSort || changeCitedQuery)) {
       await dispatch(
@@ -188,7 +188,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         )
       );
       if (this.citedTabWrapper) {
-        this.citedTabWrapper.scrollIntoView();
+        window.scrollTo(0, this.citedTabWrapper.offsetTop - NAVBAR_HEIGHT);
       }
     }
   }
