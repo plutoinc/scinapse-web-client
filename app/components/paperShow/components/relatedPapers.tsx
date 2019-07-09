@@ -93,10 +93,25 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
     );
   }
 
-  private handleSubmitSearch = (query: string) => {
-    const { paperShow, location, type, history } = this.props;
-    const { paperId } = paperShow;
+  private getStringifiedUpdatedQueryParams = (pageQueryParams: any) => {
+    const { location } = this.props;
     const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
+
+    const updatedQueryParamsObject: PaperShowPageQueryParams = {
+      ...queryParamsObject,
+      ...pageQueryParams,
+    };
+
+    const stringifiedQueryParams = stringify(updatedQueryParamsObject, {
+      addQueryPrefix: true,
+    });
+
+    return stringifiedQueryParams;
+  };
+
+  private handleSubmitSearch = (query: string) => {
+    const { paperShow, type, history } = this.props;
+    const { paperId } = paperShow;
 
     let pageQueryParams;
 
@@ -106,25 +121,15 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
       pageQueryParams = { 'cited-query': query };
     }
 
-    const updatedQueryParamsObject: PaperShowPageQueryParams = {
-      ...queryParamsObject,
-      ...pageQueryParams,
-    };
-
-    const stringifiedQueryParams = stringify(updatedQueryParamsObject, {
-      addQueryPrefix: true,
-    });
-
     history.push({
       pathname: `/papers/${paperId}`,
-      search: stringifiedQueryParams,
+      search: this.getStringifiedUpdatedQueryParams(pageQueryParams),
     });
   };
 
   private getSortOptionChangeLink = (sortOption: AUTHOR_PAPER_LIST_SORT_TYPES) => {
-    const { paperShow, location, type, history } = this.props;
+    const { paperShow, type, history } = this.props;
     const { paperId } = paperShow;
-    const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
 
     let pageQueryParams;
 
@@ -134,18 +139,9 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
       pageQueryParams = { 'cited-sort': sortOption };
     }
 
-    const updatedQueryParamsObject: PaperShowPageQueryParams = {
-      ...queryParamsObject,
-      ...pageQueryParams,
-    };
-
-    const stringifiedQueryParams = stringify(updatedQueryParamsObject, {
-      addQueryPrefix: true,
-    });
-
     history.push({
       pathname: `/papers/${paperId}`,
-      search: stringifiedQueryParams,
+      search: this.getStringifiedUpdatedQueryParams(pageQueryParams),
     });
   };
 
@@ -167,9 +163,8 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
   };
 
   private getPaginationLink = (page: number) => {
-    const { paperShow, location, type } = this.props;
+    const { paperShow, type } = this.props;
     const { paperId } = paperShow;
-    const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
 
     let pageQueryParams;
 
@@ -179,18 +174,9 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
       pageQueryParams = { 'cited-page': page };
     }
 
-    const updatedQueryParamsObject: PaperShowPageQueryParams = {
-      ...queryParamsObject,
-      ...pageQueryParams,
-    };
-
-    const stringifiedQueryParams = stringify(updatedQueryParamsObject, {
-      addQueryPrefix: true,
-    });
-
     return {
       to: `/papers/${paperId}`,
-      search: stringifiedQueryParams,
+      search: this.getStringifiedUpdatedQueryParams(pageQueryParams),
     };
   };
 
