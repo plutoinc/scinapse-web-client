@@ -28,6 +28,7 @@ import SortBar from './components/SortBar';
 import Pagination from './components/pagination';
 import SignBanner from './components/signBanner';
 import FilterContainer from '../../containers/filterContainer';
+import FilterBox from '../../containers/filterBox';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import GuruBox from './components/guruBox';
 import { changeSearchQuery } from '../../actions/searchQuery';
@@ -269,6 +270,7 @@ const SearchContainer: React.FC<Props> = props => {
     <div className={styles.rootWrapper}>
       <SearchHelmet query={queryParams.query || ''} />
       <TabNavigationBar searchKeyword={articleSearchState.searchInput} />
+      <FilterBox />
       <div className={styles.articleSearchContainer}>
         <AutoYearFilter
           query={queryParams.query}
