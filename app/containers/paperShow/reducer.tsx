@@ -71,6 +71,10 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
       }
     }
 
+    case ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT: {
+      return { ...state, ...{ lastRequestedAt: null } };
+    }
+
     case ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE: {
       return PAPER_SHOW_INITIAL_STATE;
     }
