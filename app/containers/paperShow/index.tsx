@@ -10,7 +10,7 @@ import { AppState } from '../../reducers';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { CurrentUser } from '../../model/currentUser';
 import ArticleSpinner from '../../components/common/spinner/articleSpinner';
-import { clearPaperShowState } from '../../actions/paperShow';
+import { clearPaperShowState, fetchLastFullTextRequestedDate } from '../../actions/paperShow';
 import { PaperShowState } from './records';
 import ActionBar from '../paperShowActionBar';
 import FOSList from '../../components/paperShow/components/fosList';
@@ -158,7 +158,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       this.props.currentUser.isLoggedIn &&
       this.props.paper
     ) {
-      return dispatch(fetchMyCollection(this.props.paper.id, this.cancelToken.token));
+      const promiseArray = [];
+      promiseArray.push(dispatch(fetchLastFullTextRequestedDate(this.props.paper.id)));
+      promiseArray.push(fetchMyCollection(this.props.paper.id, this.cancelToken.token));
+      return Promise.all(promiseArray);
     }
 
     if (this.props.paper && changeRefPage) {
@@ -237,6 +240,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     currentUser={currentUser}
                     hasPDFFullText={!!PDFViewerState.parsedPDFObject}
                     handleClickFullText={this.scrollToSection('fullText')}
+                    lastRequestedDate={paperShow.lastRequestedAt}
                   />
                 </NoSsr>
               </div>
@@ -267,6 +271,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 isOnFullText={isOnFullText}
                 isLoading={PDFViewerState.isLoading}
                 canShowFullPDF={!!PDFViewerState.parsedPDFObject}
+                lastRequestedDate={paperShow.lastRequestedAt}
               />
             </div>
             <NoSsr>

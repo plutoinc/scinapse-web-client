@@ -20,6 +20,7 @@ interface PaperShowActionBarProps {
   isLoadingPDF: boolean;
   currentUser: CurrentUser;
   handleClickFullText: () => void;
+  lastRequestedDate: string | null;
 }
 
 const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props => {
@@ -37,8 +38,8 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props =
                 actionArea="paperDescription"
                 isLoading={props.isLoadingPDF}
                 paperId={props.paper!.id}
-                currentUser={props.currentUser}
                 handleSetIsOpen={setIsOpen}
+                lastRequestedDate={props.lastRequestedDate}
               />
             </div>
           ) : (

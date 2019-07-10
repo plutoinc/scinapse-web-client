@@ -1,38 +1,23 @@
 import * as React from 'react';
-import * as format from 'date-fns/format';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import SearchingPDFBtn from '../../../components/paperShow/components/searchingPDFBtn';
-import { CurrentUser } from '../../../model/currentUser';
 import Tooltip from '@material-ui/core/Tooltip';
-import PaperAPI from '../../../api/paper';
 const s = require('../actionBar.scss');
 
 interface RequesrFullTextBtnProps {
   isLoading: boolean;
   paperId: number;
-  currentUser: CurrentUser;
   handleSetIsOpen: (value: React.SetStateAction<boolean>) => void;
   actionArea: Scinapse.ActionTicket.ActionArea;
   btnStyle?: React.CSSProperties;
+  lastRequestedDate: string | null;
 }
 
 const RequestFullTextBtn: React.FC<RequesrFullTextBtnProps> = React.memo(props => {
-  const { isLoading, currentUser, paperId, actionArea, handleSetIsOpen, btnStyle } = props;
-  const [requestedAt, setRequestedAt] = React.useState('');
-
-  React.useEffect(
-    () => {
-      if (paperId && currentUser.isLoggedIn) {
-        PaperAPI.getLastRequestDate(paperId).then(res => {
-          setRequestedAt(format(res.requestedAt, 'MMMM D, YY'));
-        });
-      }
-    },
-    [currentUser.isLoggedIn, paperId]
-  );
+  const { isLoading, paperId, actionArea, handleSetIsOpen, btnStyle, lastRequestedDate } = props;
 
   if (isLoading) {
     return <SearchingPDFBtn isLoading={isLoading} />;
@@ -40,9 +25,10 @@ const RequestFullTextBtn: React.FC<RequesrFullTextBtnProps> = React.memo(props =
 
   return (
     <Tooltip
+      disableHoverListener={lastRequestedDate && lastRequestedDate.length > 0 ? false : true}
       disableFocusListener={true}
       disableTouchListener={true}
-      title={`You sent the request on ${requestedAt}.`}
+      title={`You sent the request on ${lastRequestedDate}.`}
       placement="top"
       classes={{ tooltip: s.arrowBottomTooltip }}
     >
