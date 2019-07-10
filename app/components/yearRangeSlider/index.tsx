@@ -3,12 +3,8 @@ import { History } from 'history';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import * as classNames from 'classnames';
 import { withStyles } from '../../helpers/withStylesHelper';
-import { MIN_YEAR } from './constants';
 import Slider from './slider';
-import { SearchPageQueryParams } from '../articleSearch/types';
-import getQueryParamsObject from '../../helpers/getQueryParamsObject';
-import PapersQueryFormatter from '../../helpers/searchQueryManager';
-import { goToYearFilteredSearchResultPage } from './helper';
+import { MIN_YEAR } from './constants';
 const styles = require('./yearRangeSlider.scss');
 
 interface YearSet {
@@ -19,11 +15,13 @@ interface YearSet {
 interface YearRangeSliderProps extends RouteComponentProps<null> {
   yearInfo: YearSet[];
   filteredYearInfo: YearSet[];
+  yearFrom: number;
+  yearTo: number;
   detectedYear: number | null;
+  onSetYear: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 interface ColumnProps {
-  queryParamsString: string;
   history: History;
   width: string;
   height: string;
@@ -51,12 +49,12 @@ const Column: React.FunctionComponent<ColumnProps> = React.memo(props => {
   };
 
   function handleClickColumn() {
-    goToYearFilteredSearchResultPage({
-      qs: props.queryParamsString,
-      history: props.history,
-      min: props.yearSet.year,
-      max: props.yearSet.year,
-    });
+    // goToYearFilteredSearchResultPage({
+    //   qs: props.queryParamsString,
+    //   history: props.history,
+    //   min: props.yearSet.year,
+    //   max: props.yearSet.year,
+    // });
   }
 
   return (
@@ -89,55 +87,43 @@ const Column: React.FunctionComponent<ColumnProps> = React.memo(props => {
   );
 });
 
-function getYearsData(qp: SearchPageQueryParams, yearSetListToShow: YearSet[], detectedYear: number | null) {
-  if (detectedYear) return [detectedYear, detectedYear];
-
-  const filter = PapersQueryFormatter.objectifyPaperFilter(qp.filter);
-  const minYear =
-    filter.yearFrom && !isNaN(filter.yearFrom as number) ? (filter.yearFrom as number) : yearSetListToShow[0].year;
-  const maxYear =
-    filter.yearTo && !isNaN(filter.yearTo as number)
-      ? (filter.yearTo as number)
-      : yearSetListToShow[yearSetListToShow.length - 1].year;
-
-  return [minYear, maxYear];
-}
-
 const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => {
-  const currentYear = new Date().getFullYear();
-  const yearSetListToShow: YearSet[] = new Array(currentYear - MIN_YEAR + 1).fill('').map((_, i) => {
-    const yearSet = props.yearInfo.find(ys => ys.year === MIN_YEAR + i);
-    return {
-      year: MIN_YEAR + i,
-      docCount: yearSet ? yearSet.docCount : 0,
-    };
-  });
-
-  const queryParamsStr = props.location.search;
-  const qp: SearchPageQueryParams = getQueryParamsObject(queryParamsStr);
-
-  const [values, setValues] = React.useState(getYearsData(qp, yearSetListToShow, props.detectedYear));
+  const [minMaxYears, setMinMaxYears] = React.useState(getMinMaxYears());
   const [selectingColumn, setSelectingColumn] = React.useState(0);
+  const [allYearData, setAllYearData] = React.useState<YearSet[]>(
+    props.yearInfo.filter(yearData => yearData.year >= MIN_YEAR)
+  );
+
+  function getMinMaxYears() {
+    if (props.detectedYear) return [props.detectedYear, props.detectedYear];
+    if (props.yearFrom > 0) return [props.yearFrom, props.yearTo];
+    return [MIN_YEAR, props.yearInfo[props.yearInfo.length - 1].year];
+  }
 
   React.useEffect(
     () => {
-      setValues(getYearsData(qp, yearSetListToShow, props.detectedYear));
+      setMinMaxYears(getMinMaxYears());
     },
-    [props.location, props.detectedYear]
+    [props.yearFrom, props.yearTo, props.detectedYear]
   );
 
-  const minValue = Math.min(...values);
-  const maxValue = Math.max(...values);
-  const maxDocCount = React.useMemo(() => Math.max(...yearSetListToShow.map(yearSet => yearSet.docCount)), [
-    yearSetListToShow,
-  ]);
+  React.useEffect(
+    () => {
+      setAllYearData(props.yearInfo.filter(yearData => yearData.year >= MIN_YEAR));
+    },
+    [props.yearInfo]
+  );
+
+  const minValue = Math.min(...minMaxYears);
+  const maxValue = Math.max(...minMaxYears);
+  const maxDocCount = React.useMemo(() => Math.max(...allYearData.map(yearSet => yearSet.docCount)), [allYearData]);
   const columnBoxNode = React.useRef<HTMLDivElement | null>(null);
-  const boxWidth = columnBoxNode.current ? columnBoxNode.current.offsetWidth : 321;
-  const stepWidth = Math.floor(boxWidth / yearSetListToShow.length);
+  const boxWidth = columnBoxNode.current ? columnBoxNode.current.offsetWidth : 355;
+  const stepWidth = boxWidth / allYearData.length;
 
   const columnList = React.useMemo(
     () => {
-      return yearSetListToShow.map(yearSet => {
+      return allYearData.map(yearSet => {
         const filteredYearSet = props.filteredYearInfo.find(ys => ys.year === yearSet.year);
         const filterHeight = filteredYearSet
           ? `${Math.max(Math.round((filteredYearSet.docCount / maxDocCount) * 100), 4.5)}%`
@@ -146,7 +132,6 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
         return (
           <Column
             key={yearSet.year}
-            queryParamsString={queryParamsStr}
             history={props.history}
             width={`${stepWidth}px`}
             height={`${Math.round((yearSet.docCount / maxDocCount) * 100)}%`}
@@ -160,7 +145,7 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
         );
       });
     },
-    [yearSetListToShow, selectingColumn, values, props.filteredYearInfo]
+    [allYearData, selectingColumn, minMaxYears, props.filteredYearInfo]
   );
   return (
     <div className={styles.yearFilter}>
@@ -174,8 +159,8 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
           <Slider
             minValue={minValue}
             maxValue={maxValue}
-            values={values}
-            setValues={setValues}
+            values={minMaxYears}
+            setValues={setMinMaxYears}
             step={stepWidth}
             onSelectingColumn={setSelectingColumn}
           />

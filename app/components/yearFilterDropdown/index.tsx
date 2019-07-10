@@ -21,8 +21,8 @@ interface YearFilterDropdownProps {
   dispatch: Dispatch<SearchActions>;
 }
 const YearFilterDropdown: React.FC<YearFilterDropdownProps & ReturnType<typeof mapStateToProps>> = React.memo(props => {
-  const [yearFrom, setYearFrom] = React.useState(props.currentYearFrom);
-  const [yearTo, setYearTo] = React.useState(props.currentYearTo);
+  const [minMaxYears, setMinMaxYears] = React.useState([props.currentYearFrom, props.currentYearTo]);
+
   const anchorEl = React.useRef(null);
 
   let buttonText = 'Any time';
@@ -54,16 +54,19 @@ const YearFilterDropdown: React.FC<YearFilterDropdownProps & ReturnType<typeof m
             <div>Since 2000</div>
           </div>
           <YearRangeSlider
+            yearFrom={minMaxYears[0]}
+            yearTo={minMaxYears[1]}
             yearInfo={props.allYearData || []}
             filteredYearInfo={props.filteredYearData || []}
+            onSetYear={setMinMaxYears}
             // TODO: support detectedYear
             detectedYear={null}
           />
         </div>
         <div>
-          <input />
+          <input value={minMaxYears[0]} />
           <div className={s.hyphen} />
-          <input />
+          <input value={minMaxYears[1]} />
         </div>
         <div>
           <button>Clear</button>

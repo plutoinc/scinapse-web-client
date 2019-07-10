@@ -69,7 +69,6 @@ class Slider extends React.PureComponent<SliderProps, SliderState> {
 
   public render() {
     const { values, minValue, maxValue, step } = this.props;
-    const currentYear = new Date().getFullYear();
 
     const bubbles = values.map((cv, i) => {
       return (
@@ -89,7 +88,7 @@ class Slider extends React.PureComponent<SliderProps, SliderState> {
     const activeLineWidth = maxLeft - minLeft;
 
     return (
-      <div style={{ width: `${(currentYear - MIN_YEAR + 1) * step}px` }} className={styles.slider}>
+      <div style={{ width: '100%' }} className={styles.slider}>
         <div style={{ left: `${minLeft}px`, width: `${activeLineWidth}px` }} className={styles.activeLine} />
         {bubbles}
       </div>
