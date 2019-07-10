@@ -12,40 +12,23 @@ import { PaperShowState } from '../../../containers/paperShow/records';
 import { getStringifiedUpdatedQueryParams } from './searchContainer';
 const styles = require('./referencePapers.scss');
 
-interface NoResultSearchContextProps {
-  type: RELATED_PAPERS;
-  paperShow: PaperShowState;
-  queryParamsObject: PaperShowPageQueryParams;
+interface ReferencePaperListProps {
   history: History;
-  searchInput?: string;
-}
-
-interface ReferencePaperListProps extends NoResultSearchContextProps {
+  type: RELATED_PAPERS;
   papers: Paper[];
   currentUser: CurrentUser;
+  paperShow: PaperShowState;
+  queryParamsObject: PaperShowPageQueryParams;
+}
+
+interface NoResultSearchContextProps {
+  type: RELATED_PAPERS;
+  searchInput: string;
+  resetQuery: () => void;
 }
 
 const NoResultSearchContext: React.FC<NoResultSearchContextProps> = props => {
-  const { type, paperShow, searchInput, history, queryParamsObject } = props;
-  const { paperId } = paperShow;
-
-  const resetQuery = React.useCallback(
-    () => {
-      let pageQueryParams;
-
-      if (type === 'reference') {
-        pageQueryParams = { 'ref-query': '', 'ref-page': 1 };
-      } else {
-        pageQueryParams = { 'cited-query': '', 'cited-page': 1 };
-      }
-
-      history.push({
-        pathname: `/papers/${paperId}`,
-        search: getStringifiedUpdatedQueryParams(queryParamsObject, pageQueryParams),
-      });
-    },
-    [paperId]
-  );
+  const { type, searchInput, resetQuery } = props;
 
   return (
     <div className={styles.noPaperWrapper}>
@@ -82,6 +65,25 @@ const ReferencePaperList: React.FC<ReferencePaperListProps> = props => {
     [paperShow, queryParamsObject]
   );
 
+  const handleResetQuery = React.useCallback(
+    () => {
+      let pageQueryParams;
+
+      if (type === 'reference') {
+        pageQueryParams = { 'ref-query': '', 'ref-page': 1 };
+      } else {
+        pageQueryParams = { 'cited-query': '', 'cited-page': 1 };
+      }
+
+      history.push({
+        pathname: `/papers/${paperShow.paperId}`,
+        search: getStringifiedUpdatedQueryParams(queryParamsObject, pageQueryParams),
+      });
+      setSearchInput('');
+    },
+    [paperShow.paperId]
+  );
+
   if (isPapersLoading) {
     return (
       <div className={styles.loadingContainer}>
@@ -91,15 +93,7 @@ const ReferencePaperList: React.FC<ReferencePaperListProps> = props => {
   }
 
   if ((!papers || papers.length === 0) && totalPage === 0 && searchInput.length > 0)
-    return (
-      <NoResultSearchContext
-        history={history}
-        type={type}
-        paperShow={paperShow}
-        queryParamsObject={queryParamsObject}
-        searchInput={searchInput}
-      />
-    );
+    return <NoResultSearchContext type={type} searchInput={searchInput} resetQuery={handleResetQuery} />;
 
   const referenceItems = papers.map(paper => {
     return (
