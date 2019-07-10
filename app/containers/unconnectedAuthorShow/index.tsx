@@ -353,6 +353,23 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
     );
   };
 
+  private resetQuery = () => {
+    const { dispatch, author, authorShow } = this.props;
+
+    if (author) {
+      dispatch!(
+        getAuthorPapers({
+          authorId: author.id,
+          page: 1,
+          size: DEFAULT_AUTHOR_PAPERS_SIZE,
+          query: '',
+          sort: authorShow.papersSort,
+          cancelToken: this.cancelToken.token,
+        })
+      );
+    }
+  };
+
   private handleSubmitSearch = (query: string) => {
     const { dispatch, author, authorShow } = this.props;
 
@@ -419,6 +436,10 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
           <div className={styles.noPaperDescription}>
             Your search <b>{authorShow.paperSearchQuery}</b> did not match any papers.
           </div>
+          <button className={styles.reloadBtn} onClick={this.resetQuery}>
+            <Icon icon="RELOAD" className={styles.reloadIcon} />
+            Reload papers
+          </button>
         </div>
       );
     }
