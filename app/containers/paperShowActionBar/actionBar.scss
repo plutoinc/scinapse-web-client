@@ -64,6 +64,29 @@
   }
 }
 
+.arrowBottomTooltip {
+  background-color: $black1 !important;
+  color: white !important;
+  font-size: 13px !important;
+  margin-bottom: 10px !important;
+  padding: 10px 12px !important;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 55%;
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+    border-top-color: $black1;
+    border-bottom: 0;
+    margin-left: -16px;
+    margin-top: 38px;
+    z-index: 2;
+  }
+}
+
 // // RegularDisplay (1024~1200)
 @media (max-width: $regular_width) {
   .actionBar {

@@ -248,6 +248,12 @@ class PaperAPI extends PlutoAxios {
 
     return camelCaseKeys(res.data.data.content) as PaperSource[];
   }
+
+  public async getLastRequestDate(paperId: number) {
+    const res = await this.get(`/papers/${paperId}/request`);
+
+    return camelCaseKeys(res.data.data.content);
+  }
 }
 
 const paperAPI = new PaperAPI();
