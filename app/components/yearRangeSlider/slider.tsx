@@ -85,10 +85,12 @@ class Slider extends React.PureComponent<SliderProps, SliderState> {
 
     const minLeft = (minValue - MIN_YEAR) * step;
     const maxLeft = (maxValue - MIN_YEAR + 1) * step;
+    console.log(minLeft, maxLeft);
+    const currentYear = new Date().getFullYear();
     const activeLineWidth = maxLeft - minLeft;
 
     return (
-      <div style={{ width: '100%' }} className={styles.slider}>
+      <div style={{ width: `${(currentYear - MIN_YEAR + 1) * step}px` }} className={styles.slider}>
         <div style={{ left: `${minLeft}px`, width: `${activeLineWidth}px` }} className={styles.activeLine} />
         {bubbles}
       </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { withStyles } from '../../helpers/withStylesHelper';
 const s = require('./filterButton.scss');
 
@@ -14,8 +15,18 @@ export interface FilterButtonProps {
   isActive: boolean;
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
-const FilterButton: React.FC<FilterButtonProps> = ({ content, onClick }) => {
-  return <button onClick={onClick}>{content}</button>;
+const FilterButton: React.FC<FilterButtonProps> = ({ content, onClick, isActive }) => {
+  return (
+    <button
+      className={classNames({
+        [s.filterBtn]: !isActive,
+        [s.active]: isActive,
+      })}
+      onClick={onClick}
+    >
+      {content}
+    </button>
+  );
 };
 
 export default withStyles<typeof FilterButton>(s)(FilterButton);

@@ -1,14 +1,17 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Popper from '@material-ui/core/Popper';
-import YearRangeSlider from '../yearRangeSlider';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import FilterButton, { FILTER_BUTTON_TYPE } from '../filterButton';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { Year } from '../../model/aggregation';
 import { SearchActions } from '../../actions/actionTypes';
 import { AppState } from '../../reducers';
 import { setActiveFilterButton } from '../../actions/searchFilter';
+import { goToYearFilteredSearchResultPage } from '../yearRangeSlider/helper';
 
 const s = require('./yearFilterDropdown.scss');
 
@@ -20,10 +23,21 @@ interface YearFilterDropdownProps {
   filteredYearData: Year[] | null;
   dispatch: Dispatch<SearchActions>;
 }
-const YearFilterDropdown: React.FC<YearFilterDropdownProps & ReturnType<typeof mapStateToProps>> = React.memo(props => {
+const YearFilterDropdown: React.FC<
+  YearFilterDropdownProps & ReturnType<typeof mapStateToProps> & RouteComponentProps
+> = React.memo(props => {
   const [minMaxYears, setMinMaxYears] = React.useState([props.currentYearFrom, props.currentYearTo]);
+  React.useEffect(
+    () => {
+      setMinMaxYears([props.currentYearFrom, props.currentYearTo]);
+    },
+    [props.currentYearFrom, props.currentYearTo]
+  );
 
   const anchorEl = React.useRef(null);
+  const currentYear = new Date().getFullYear();
+  const minYear = minMaxYears[0];
+  const maxYear = minMaxYears[1];
 
   let buttonText = 'Any time';
   if (props.currentYearTo && props.currentYearFrom) {
@@ -31,49 +45,145 @@ const YearFilterDropdown: React.FC<YearFilterDropdownProps & ReturnType<typeof m
   }
 
   return (
-    <>
-      <span ref={anchorEl}>
+    <ClickAwayListener
+      onClickAway={() => {
+        props.dispatch(setActiveFilterButton(null));
+      }}
+    >
+      <div ref={anchorEl}>
         <FilterButton
           onClick={() => {
-            props.dispatch(setActiveFilterButton(FILTER_BUTTON_TYPE.YEAR));
+            if (props.isActive) {
+              props.dispatch(setActiveFilterButton(null));
+            } else {
+              props.dispatch(setActiveFilterButton(FILTER_BUTTON_TYPE.YEAR));
+            }
           }}
           content={buttonText}
           isActive={props.isActive}
         />
-      </span>
-      <Popper open={props.isActive} anchorEl={anchorEl.current}>
-        <div className={s.dropBoxWrapper}>
-          <div>
-            <div>This Year</div>
-            <div>Recent 3 years</div>
-            <div>Recent 5 years</div>
-            <div>Recent 10 years</div>
+        <Popper open={props.isActive} anchorEl={anchorEl.current} placement="bottom-start" disablePortal>
+          <div className={s.dropBoxWrapper}>
+            <div className={s.upperBtnsWrapper}>
+              <button
+                className={classNames({
+                  [s.quickSelectText]: true,
+                  [s.active]: minYear === currentYear && maxYear === currentYear,
+                })}
+                onClick={() => {
+                  setMinMaxYears([currentYear, currentYear]);
+                }}
+              >
+                This Year
+              </button>
+              <button
+                className={classNames({
+                  [s.quickSelectText]: true,
+                  [s.active]: minYear === currentYear - 3 + 1 && maxYear === currentYear,
+                })}
+                onClick={() => {
+                  setMinMaxYears([currentYear - 3 + 1, currentYear]);
+                }}
+              >
+                Recent 3 years
+              </button>
+              <button
+                className={classNames({
+                  [s.quickSelectText]: true,
+                  [s.active]: minYear === currentYear - 5 + 1 && maxYear === currentYear,
+                })}
+                onClick={() => {
+                  setMinMaxYears([currentYear - 5 + 1, currentYear]);
+                }}
+              >
+                Recent 5 years
+              </button>
+            </div>
+            <div className={s.belowBtnsWrapper}>
+              <button
+                className={classNames({
+                  [s.quickSelectText]: true,
+                  [s.active]: minYear === 2010 && maxYear === currentYear,
+                })}
+                onClick={() => {
+                  setMinMaxYears([2010, currentYear]);
+                }}
+              >
+                Since 2010
+              </button>
+              <button
+                className={classNames({
+                  [s.quickSelectText]: true,
+                  [s.active]: minYear === 2000 && maxYear === currentYear,
+                })}
+                onClick={() => {
+                  setMinMaxYears([2000, currentYear]);
+                }}
+              >
+                Since 2000
+              </button>
+            </div>
+            <div className={s.inputBoxWrapper}>
+              <input
+                type="text"
+                className={s.yearInput}
+                onChange={e => {
+                  const { value } = e.currentTarget;
+                  if (!value) {
+                    return setMinMaxYears([0, maxYear]);
+                  }
+                  const year = parseInt(value, 10);
+                  if (!isNaN(year)) {
+                    setMinMaxYears([year, maxYear]);
+                  }
+                }}
+                value={minYear}
+              />
+              <div className={s.hyphen} />
+              <input
+                type="text"
+                className={s.yearInput}
+                onChange={e => {
+                  const { value } = e.currentTarget;
+                  if (!value) {
+                    return setMinMaxYears([minYear, 0]);
+                  }
+                  const year = parseInt(value, 10);
+                  if (!isNaN(year)) {
+                    setMinMaxYears([minYear, year]);
+                  }
+                }}
+                value={maxYear}
+              />
+            </div>
+            <div className={s.controlBtnsWrapper}>
+              <button
+                className={s.clearBtn}
+                onClick={() => {
+                  setMinMaxYears([props.currentYearFrom, props.currentYearTo]);
+                }}
+              >
+                Clear
+              </button>
+              <button
+                className={s.applyBtn}
+                onClick={() => {
+                  props.dispatch(setActiveFilterButton(null));
+                  goToYearFilteredSearchResultPage({
+                    qs: props.location.search,
+                    history: props.history,
+                    min: minYear,
+                    max: maxYear,
+                  });
+                }}
+              >
+                Apply
+              </button>
+            </div>
           </div>
-          <div>
-            <div>Since 2010</div>
-            <div>Since 2000</div>
-          </div>
-          <YearRangeSlider
-            yearFrom={minMaxYears[0]}
-            yearTo={minMaxYears[1]}
-            yearInfo={props.allYearData || []}
-            filteredYearInfo={props.filteredYearData || []}
-            onSetYear={setMinMaxYears}
-            // TODO: support detectedYear
-            detectedYear={null}
-          />
-        </div>
-        <div>
-          <input value={minMaxYears[0]} />
-          <div className={s.hyphen} />
-          <input value={minMaxYears[1]} />
-        </div>
-        <div>
-          <button>Clear</button>
-          <button>Apply</button>
-        </div>
-      </Popper>
-    </>
+        </Popper>
+      </div>
+    </ClickAwayListener>
   );
 });
 
@@ -87,4 +197,4 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default connect(mapStateToProps)(withStyles<typeof YearFilterDropdown>(s)(YearFilterDropdown));
+export default withRouter(connect(mapStateToProps)(withStyles<typeof YearFilterDropdown>(s)(YearFilterDropdown)));

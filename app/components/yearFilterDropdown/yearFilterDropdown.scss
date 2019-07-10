@@ -3,4 +3,80 @@
   border-radius: 4px;
   box-shadow: 0 8px 24px 2px rgba(0, 0, 0, 0.2);
   background-color: white;
+  padding: 24px;
+  margin-top: 5px;
+}
+
+.belowBtnsWrapper {
+  padding-top: 12px;
+  border-top: 1px solid $gray1;
+  border-bottom: 1px solid $gray1;
+}
+
+.quickSelectText {
+  display: block;
+  font-size: 16px;
+  color: $dark-blue0;
+  cursor: pointer;
+  margin-bottom: 12px;
+
+  &.active {
+    color: $main_blue0;
+  }
+}
+
+.inputBoxWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.hyphen {
+  width: 24px;
+  height: 2px;
+  border-radius: 2px;
+  background-color: $gray4;
+  margin: 0 12px;
+}
+
+.yearInput {
+  width: 144px;
+  height: 32px;
+  border-radius: 2px;
+  border: solid 1px $gray2;
+  background-color: $gray0;
+  padding: 8px;
+  opacity: 0.7;
+  font-size: 14px;
+  color: $gray6;
+}
+
+.controlBtnsWrapper {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.clearBtn {
+  font-size: 16px;
+  color: $gray5;
+  cursor: pointer;
+}
+
+.applyBtn {
+  font-size: 16px;
+  color: $main_blue1;
+  cursor: pointer;
+}
+
+@media (max-width: $mobile-width) {
+  .dropBoxWrapper {
+    width: 100vw;
+    padding: 12px;
+  }
+
+  .yearInput {
+    width: 40%;
+  }
 }

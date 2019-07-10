@@ -50,11 +50,11 @@ const Column: React.FunctionComponent<ColumnProps> = React.memo(props => {
 
   function handleClickColumn() {
     // goToYearFilteredSearchResultPage({
-    //   qs: props.queryParamsString,
-    //   history: props.history,
-    //   min: props.yearSet.year,
-    //   max: props.yearSet.year,
-    // });
+    //     //   qs: props.queryParamsString,
+    //     //   history: props.history,
+    //     //   min: props.yearSet.year,
+    //     //   max: props.yearSet.year,
+    //     // });
   }
 
   return (
@@ -118,8 +118,10 @@ const YearRangeSlider: React.FunctionComponent<YearRangeSliderProps> = props => 
   const maxValue = Math.max(...minMaxYears);
   const maxDocCount = React.useMemo(() => Math.max(...allYearData.map(yearSet => yearSet.docCount)), [allYearData]);
   const columnBoxNode = React.useRef<HTMLDivElement | null>(null);
-  const boxWidth = columnBoxNode.current ? columnBoxNode.current.offsetWidth : 355;
+  const boxWidth = columnBoxNode.current ? columnBoxNode.current.offsetWidth : 347;
   const stepWidth = boxWidth / allYearData.length;
+
+  console.log(stepWidth);
 
   const columnList = React.useMemo(
     () => {

@@ -1,0 +1,25 @@
+%base-filter-button {
+  height: 35px;
+  border-radius: 2px;
+  padding: 8px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.filterBtn {
+  @extend %base-filter-button;
+
+  border: solid 1px $gray3;
+  color: $dark-blue0;
+}
+
+.active {
+  @extend %base-filter-button;
+
+  border: solid 1px $gray3;
+  color: white;
+  background-color: $main_blue0;
+}

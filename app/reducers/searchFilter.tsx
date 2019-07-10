@@ -42,6 +42,18 @@ export function reducer(state = SEARCH_FILTER_INITIAL_STATE, action: SearchActio
       };
     }
 
+    case ACTION_TYPES.ARTICLE_SEARCH_SYNC_FILTERS_WITH_QUERY_PARAMS: {
+      const { filters } = action.payload;
+
+      return {
+        ...state,
+        currentYearFrom: filters.yearFrom,
+        currentYearTo: filters.yearTo,
+        selectedJournalIds: filters.journal,
+        selectedFOSIds: filters.fos,
+      };
+    }
+
     default:
       return state;
   }

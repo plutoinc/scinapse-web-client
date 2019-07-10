@@ -158,6 +158,7 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
   if (queryParams) {
     return (
       <div className={styles.innerContainer}>
+        <FilterBox />
         <div className={styles.searchSummary}>
           <div>
             <span className={styles.categoryHeader}>Publication</span>
@@ -246,7 +247,6 @@ const SearchContainer: React.FC<Props> = props => {
     <div className={styles.rootWrapper}>
       <SearchHelmet query={queryParams.query || ''} />
       <TabNavigationBar searchKeyword={articleSearchState.searchInput} />
-      <FilterBox />
       <div className={styles.articleSearchContainer}>
         <AutoYearFilter
           query={queryParams.query}

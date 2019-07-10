@@ -26,18 +26,24 @@ const FilterBox: React.FC<FilterBoxProps> = props => {
   );
 
   return (
-    <div>
-      <YearFilterDropdown />
-      <FilterButton
-        onClick={() => {}}
-        content={'Any journal'}
-        isActive={searchFilterState.activeButton === FILTER_BUTTON_TYPE.JOURNAL}
-      />
-      <FilterButton
-        onClick={() => {}}
-        content={'Any field'}
-        isActive={searchFilterState.activeButton === FILTER_BUTTON_TYPE.FOS}
-      />
+    <div className={s.wrapper}>
+      <span className={s.btnWrapper}>
+        <YearFilterDropdown />
+      </span>
+      <span className={s.btnWrapper}>
+        <FilterButton
+          onClick={() => {}}
+          content={'Any journal'}
+          isActive={searchFilterState.activeButton === FILTER_BUTTON_TYPE.JOURNAL}
+        />
+      </span>
+      <span className={s.btnWrapper}>
+        <FilterButton
+          onClick={() => {}}
+          content={'Any field'}
+          isActive={searchFilterState.activeButton === FILTER_BUTTON_TYPE.FOS}
+        />
+      </span>
       <span>{` | Sort By `}</span>
       <FilterButton
         onClick={() => {}}
@@ -48,6 +54,7 @@ const FilterBox: React.FC<FilterBoxProps> = props => {
   );
 };
 
+// TODO: Remove below connect logic(it doesn't need it)
 function mapStateToProps(state: AppState) {
   return {
     searchFilterState: getMemoizedSearchFilterState(state),
