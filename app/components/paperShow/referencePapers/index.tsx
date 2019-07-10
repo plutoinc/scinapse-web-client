@@ -89,6 +89,7 @@ const ReferencePapers: React.FC<Props> = props => {
       <SearchContainer paperShow={paperShow} type={type} queryParamsObject={queryParamsObject} history={history} />
       <div>
         <ReferencePaperList
+          history={history}
           type={type}
           papers={papers}
           paperShow={paperShow}

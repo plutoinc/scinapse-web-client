@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { History } from 'history';
 import { Paper } from '../../../model/paper';
 import { CurrentUser } from '../../../model/currentUser';
 import { RELATED_PAPERS } from '../constants';
@@ -8,18 +9,60 @@ import PaperItem from '../../common/paperItem';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { PaperShowPageQueryParams } from '../../../containers/paperShow/types';
 import { PaperShowState } from '../../../containers/paperShow/records';
+import { getStringifiedUpdatedQueryParams } from './searchContainer';
 const styles = require('./referencePapers.scss');
 
-interface ReferencePaperListProps {
+interface NoResultSearchContextProps {
   type: RELATED_PAPERS;
-  papers: Paper[];
-  currentUser: CurrentUser;
   paperShow: PaperShowState;
   queryParamsObject: PaperShowPageQueryParams;
+  history: History;
+  searchInput?: string;
 }
 
+interface ReferencePaperListProps extends NoResultSearchContextProps {
+  papers: Paper[];
+  currentUser: CurrentUser;
+}
+
+const NoResultSearchContext: React.FC<NoResultSearchContextProps> = props => {
+  const { type, paperShow, searchInput, history, queryParamsObject } = props;
+  const { paperId } = paperShow;
+
+  const resetQuery = React.useCallback(
+    () => {
+      let pageQueryParams;
+
+      if (type === 'reference') {
+        pageQueryParams = { 'ref-query': '', 'ref-page': 1 };
+      } else {
+        pageQueryParams = { 'cited-query': '', 'cited-page': 1 };
+      }
+
+      history.push({
+        pathname: `/papers/${paperId}`,
+        search: getStringifiedUpdatedQueryParams(queryParamsObject, pageQueryParams),
+      });
+    },
+    [paperId]
+  );
+
+  return (
+    <div className={styles.noPaperWrapper}>
+      <Icon icon="UFO" className={styles.ufoIcon} />
+      <div className={styles.noPaperDescription}>
+        Your search <b>{searchInput}</b> did not match any {type} papers.
+      </div>
+      <button className={styles.reloadBtn} onClick={resetQuery}>
+        <Icon icon="RELOAD" className={styles.reloadIcon} />
+        Reload {type} papers
+      </button>
+    </div>
+  );
+};
+
 const ReferencePaperList: React.FC<ReferencePaperListProps> = props => {
-  const { type, papers, currentUser, paperShow, queryParamsObject } = props;
+  const { history, type, papers, currentUser, paperShow, queryParamsObject } = props;
   const [totalPage, setTotalPage] = React.useState(0);
   const [isPapersLoading, setIsPapersLoading] = React.useState(false);
   const [searchInput, setSearchInput] = React.useState('');
@@ -49,12 +92,13 @@ const ReferencePaperList: React.FC<ReferencePaperListProps> = props => {
 
   if ((!papers || papers.length === 0) && totalPage === 0 && searchInput.length > 0)
     return (
-      <div className={styles.noPaperWrapper}>
-        <Icon icon="UFO" className={styles.ufoIcon} />
-        <div className={styles.noPaperDescription}>
-          Your search <b>{searchInput}</b> did not match any {type} papers.
-        </div>
-      </div>
+      <NoResultSearchContext
+        history={history}
+        type={type}
+        paperShow={paperShow}
+        queryParamsObject={queryParamsObject}
+        searchInput={searchInput}
+      />
     );
 
   const referenceItems = papers.map(paper => {
