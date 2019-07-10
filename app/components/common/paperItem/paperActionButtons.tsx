@@ -46,6 +46,7 @@ const DomainSourceBtn: React.FC<DomainSourceBtnProps> = ({ source, onClick }) =>
         alt={`${source.host} favicon`}
       />
       <span>{source.host}</span>
+      <Icon icon="SOURCE" className={styles.extSourceIcon} />
     </a>
   );
 };

@@ -236,6 +236,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
           relatedPaperList={relatedPaperList}
           isLoggedIn={currentUser.isLoggedIn}
           isRelatedPaperLoading={isLoadingRelatedPaperList}
+          title={paper.title}
         />
       </div>
     );

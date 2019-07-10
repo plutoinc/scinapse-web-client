@@ -97,6 +97,7 @@ const ICONS: { [key: string]: any } = {
   DOUBLE_ARROW_DOWN: require('./double-arrow-down.svg').default,
   SCINAPSE_HOME_LOGO: require('./scinapse-home-logo.svg').default,
   SCINAPSE_IMPROVEMENT_LOGO: require('./scinapse-improvement-logo.svg').default,
+  SOURCE: require('./source.svg').default,
   FILLED_STAR: require('./filled-star.svg').default,
 };
 

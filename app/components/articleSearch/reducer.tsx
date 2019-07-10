@@ -46,7 +46,6 @@ export function reducer(
         highlightedSuggestionKeyword: payload.data.suggestion ? payload.data.suggestion.highlighted : '',
         searchFromSuggestion: payload.data.resultModified,
         matchAuthors: payload.data.matchedAuthor,
-        topRefAuthors: payload.data.topRefAuthors,
         detectedYear: payload.data.detectedYear,
       };
     }

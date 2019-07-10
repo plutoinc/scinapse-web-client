@@ -1,5 +1,5 @@
 import { Paper } from '../../model/paper';
-import { MatchAuthor, MatchEntityAuthor } from '../../api/search';
+import { MatchAuthor } from '../../api/search';
 
 export interface ArticleSearchState
   extends Readonly<{
@@ -20,7 +20,6 @@ export interface ArticleSearchState
       matchAuthors: MatchAuthor | null;
       targetPaper: Paper | null;
       searchFromSuggestion: boolean;
-      topRefAuthors: MatchEntityAuthor[] | null;
       detectedYear: number | null;
     }> {}
 
@@ -42,6 +41,5 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   suggestionKeyword: '',
   highlightedSuggestionKeyword: '',
   searchFromSuggestion: false,
-  topRefAuthors: null,
   detectedYear: null,
 };
