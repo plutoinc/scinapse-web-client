@@ -140,6 +140,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const nextQueryParams: PaperShowPageQueryParams = getQueryParamsObject(this.props.location.search);
 
     const moveToDifferentPage = match.params.paperId !== this.props.match.params.paperId;
+
     const changeRefPage = prevQueryParams['ref-page'] !== nextQueryParams['ref-page'];
     const changeRefSort = prevQueryParams['ref-sort'] !== nextQueryParams['ref-sort'];
     const changeRefQuery = prevQueryParams['ref-query'] !== nextQueryParams['ref-query'];
@@ -147,6 +148,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const changeCitedPage = prevQueryParams['cited-page'] !== nextQueryParams['cited-page'];
     const changeCitedSort = prevQueryParams['cited-sort'] !== nextQueryParams['cited-sort'];
     const changeCitedQuery = prevQueryParams['cited-query'] !== nextQueryParams['cited-query'];
+
+    const changeRef = changeRefPage || changeRefSort || changeRefQuery;
+    const changeCited = changeCitedPage || changeCitedSort || changeCitedQuery;
 
     if (moveToDifferentPage) {
       dispatch(clearPaperShowState());
@@ -164,26 +168,26 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       return dispatch(fetchMyCollection(this.props.paper.id, this.cancelToken.token));
     }
 
-    if (this.props.paper && (changeRefPage || changeRefSort || changeRefQuery)) {
+    if (this.props.paper && changeRef) {
       await dispatch(
         fetchRefPaperData(
           this.props.paper.id,
           nextQueryParams['ref-page'],
           nextQueryParams['ref-query'] || '',
-          nextQueryParams['ref-sort'] || null,
+          nextQueryParams['ref-sort'] || 'NEWEST_FIRST',
           this.cancelToken.token
         )
       );
       if (this.refTabWrapper) {
         window.scrollTo(0, this.refTabWrapper.offsetTop - NAVBAR_HEIGHT);
       }
-    } else if (this.props.paper && (changeCitedPage || changeCitedSort || changeCitedQuery)) {
+    } else if (this.props.paper && changeCited) {
       await dispatch(
         fetchCitedPaperData(
           this.props.paper.id,
           nextQueryParams['cited-page'],
           nextQueryParams['cited-query'] || '',
-          nextQueryParams['cited-sort'] || null,
+          nextQueryParams['cited-sort'] || 'NEWEST_FIRST',
           this.cancelToken.token
         )
       );

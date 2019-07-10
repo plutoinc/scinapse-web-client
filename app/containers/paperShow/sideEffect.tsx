@@ -71,7 +71,7 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
         paperId,
         queryParamsObject['cited-page'],
         queryParamsObject['cited-query'] || '',
-        queryParamsObject['cited-sort'] || null,
+        queryParamsObject['cited-sort'] || 'NEWEST_FIRST',
         params.cancelToken
       )
     )
@@ -82,7 +82,7 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
         paperId,
         queryParamsObject['ref-page'],
         queryParamsObject['ref-query'] || '',
-        queryParamsObject['ref-sort'] || null,
+        queryParamsObject['ref-sort'] || 'NEWEST_FIRST',
         params.cancelToken
       )
     )
