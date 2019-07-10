@@ -1,7 +1,6 @@
 import { Test } from './abTest';
 import {
   BROAD_AUTHOR_VENUE_TEST,
-  GURU_AT_SEARCH_TEST,
   KNOWLEDGE_BASED_RECOMMEND_TEST,
   SOURCE_DOMAIN_TEST,
   DUMMY_TEST,
@@ -11,11 +10,6 @@ import {
 export const broadAuthorVenue: Test = {
   name: BROAD_AUTHOR_VENUE_TEST,
   userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'broadAuthorVenue', weight: 1 }],
-};
-
-export const guruAtSearch: Test = {
-  name: GURU_AT_SEARCH_TEST,
-  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'guru', weight: 4 }],
 };
 
 export const knowledgeBasedRecommend: Test = {

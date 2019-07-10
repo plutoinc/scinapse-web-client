@@ -29,7 +29,6 @@ import Pagination from './components/pagination';
 import SignBanner from './components/signBanner';
 import FilterContainer from '../../containers/filterContainer';
 import ArticleSpinner from '../common/spinner/articleSpinner';
-import GuruBox from './components/guruBox';
 import { changeSearchQuery } from '../../actions/searchQuery';
 import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
 import ImprovedFooter from '../layouts/improvedFooter';
@@ -288,7 +287,6 @@ const SearchContainer: React.FC<Props> = props => {
         />
         <SearchResult {...props} queryParams={queryParams} filter={filter} />
         <div className={styles.rightBoxWrapper}>
-          <GuruBox isLoading={articleSearchState.isContentLoading} authors={articleSearchState.topRefAuthors} />
           {!currentUserState.isLoggedIn && <SignBanner isLoading={articleSearchState.isContentLoading} />}
           <FilterContainer
             handleChangeRangeInput={changeRangeInput}

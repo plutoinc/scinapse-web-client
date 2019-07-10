@@ -100,7 +100,6 @@ export function reducer(
           journalFilterObject,
           fosFilterObject,
           matchAuthors: payload.data.matchedAuthor,
-          topRefAuthors: payload.data.topRefAuthors,
           detectedYear: payload.data.detectedYear,
         };
       }
