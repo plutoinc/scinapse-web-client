@@ -409,11 +409,16 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
       );
     }
 
-    if (!papers || (papers.length === 0 && authorShow.papersTotalPage === 0)) {
+    if (
+      !papers ||
+      (papers.length === 0 && authorShow.papersTotalPage === 0 && authorShow.paperSearchQuery.length > 0)
+    ) {
       return (
         <div className={styles.noPaperWrapper}>
           <Icon icon="UFO" className={styles.ufoIcon} />
-          <div className={styles.noPaperDescription}>No paper in this author.</div>
+          <div className={styles.noPaperDescription}>
+            Your search <b>{authorShow.paperSearchQuery}</b> did not match any papers.
+          </div>
         </div>
       );
     }

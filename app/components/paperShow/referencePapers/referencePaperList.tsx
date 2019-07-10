@@ -47,7 +47,7 @@ const ReferencePaperList: React.FC<ReferencePaperListProps> = props => {
     );
   }
 
-  if ((!papers || papers.length === 0) && totalPage === 0 && searchInput)
+  if ((!papers || papers.length === 0) && totalPage === 0 && searchInput.length > 0)
     return (
       <div className={styles.noPaperWrapper}>
         <Icon icon="UFO" className={styles.ufoIcon} />
