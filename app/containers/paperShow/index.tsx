@@ -51,6 +51,7 @@ import { getMemoizedConfiguration } from '../../selectors/getConfiguration';
 import PlutoAxios from '../../api/pluto';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
 import KnowledgeBaseNoti from '../../components/knowledgeBaseNoti';
+import PaperShowFigureList from '../../components/paperShow/components/paperShowFigureList';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -251,6 +252,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <div className={styles.fos}>
                   <FOSList FOSList={paper.fosList} />
                 </div>
+                <PaperShowFigureList paper={paper} />
               </div>
             </div>
           </article>

@@ -1,0 +1,14 @@
+.paperFigureContainer {
+  display: flex;
+  flex-flow: wrap;
+  margin-top: 52px;
+}
+
+.paperFigureHeader {
+  width: 100%;
+  font-weight: 700;
+  color: $black1;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  position: relative;
+}
