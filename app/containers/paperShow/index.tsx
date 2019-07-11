@@ -158,10 +158,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       this.props.currentUser.isLoggedIn &&
       this.props.paper
     ) {
-      const promiseArray = [];
-      promiseArray.push(dispatch(fetchLastFullTextRequestedDate(this.props.paper.id)));
-      promiseArray.push(fetchMyCollection(this.props.paper.id, this.cancelToken.token));
-      return Promise.all(promiseArray);
+      dispatch(fetchLastFullTextRequestedDate(this.props.paper.id));
+      return dispatch(fetchMyCollection(this.props.paper.id, this.cancelToken.token));
     }
 
     if (this.props.paper && changeRefPage) {

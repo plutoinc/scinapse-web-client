@@ -1,10 +1,10 @@
 import * as React from 'react';
+import Tooltip from '@material-ui/core/Tooltip';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import SearchingPDFBtn from '../../../components/paperShow/components/searchingPDFBtn';
-import Tooltip from '@material-ui/core/Tooltip';
 const s = require('../actionBar.scss');
 
 interface RequesrFullTextBtnProps {

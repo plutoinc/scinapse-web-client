@@ -66,9 +66,9 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
       const { requestedAt } = action.payload;
       if (requestedAt) {
         return { ...state, ...{ lastRequestedAt: format(requestedAt, 'MMMM D, YY') } };
-      } else {
-        return { ...state, ...{ lastRequestedAt: requestedAt } };
       }
+
+      return { ...state, ...{ lastRequestedAt: requestedAt } };
     }
 
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT: {
