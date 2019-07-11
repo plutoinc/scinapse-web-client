@@ -43,6 +43,20 @@
         height: 100%;
       }
     }
+
+    .extSourceIcon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 20px;
+      height: 20px;
+      margin-left: 4px;
+
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
   }
 
   .explanation {

@@ -16,7 +16,8 @@ import { KNOWLEDGE_BASED_RECOMMEND_TEST } from '../../constants/abTestGlobalValu
 import Icon from '../../icons';
 import JournalsInfo from './components/journalsInfo';
 import AffiliationsInfo from './components/affiliationsInfo';
-import homeAPI, { BasedOnCollectionPapersParams } from '../../api/home';
+import HomeAPI from '../../api/home';
+import RecommendationAPI, { BasedOnCollectionPapersParams } from '../../api/recommendation';
 import ImprovedFooter from '../layouts/improvedFooter';
 import RecommendedPapers from './components/recommendedPapers';
 import { Paper } from '../../model/paper';
@@ -123,7 +124,7 @@ const ImprovedHome: React.FC<Props> = props => {
   React.useEffect(() => {
     setIsKnowledgeBasedRecommended(getUserGroupName(KNOWLEDGE_BASED_RECOMMEND_TEST) === 'knowledgeBasedRecommend');
 
-    homeAPI.getPapersFoundCount().then(res => {
+    HomeAPI.getPapersFoundCount().then(res => {
       setPapersFoundCount(res.data.content);
     });
 
@@ -139,8 +140,7 @@ const ImprovedHome: React.FC<Props> = props => {
         setIsLoadingBasedOnActivityPapers(true);
         setIsLoadingBasedOnCollectionPapers(true);
 
-        homeAPI
-          .getBasedOnActivityPapers()
+        RecommendationAPI.getPapersFromUserAction()
           .then(res => {
             setBasedOnActivityPapers(res);
             setIsLoadingBasedOnActivityPapers(false);
@@ -150,8 +150,7 @@ const ImprovedHome: React.FC<Props> = props => {
             setIsLoadingBasedOnActivityPapers(false);
           });
 
-        homeAPI
-          .getBasedOnCollectionPapers()
+        RecommendationAPI.getPapersFromCollection()
           .then(res => {
             setBasedOnCollectionPapers(res);
             setIsLoadingBasedOnCollectionPapers(false);

@@ -9,7 +9,7 @@ import { AppState } from '../../reducers';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { CurrentUser } from '../../model/currentUser';
 import ArticleSpinner from '../../components/common/spinner/articleSpinner';
-import { clearPaperShowState } from '../../actions/paperShow';
+import { clearPaperShowState, fetchLastFullTextRequestedDate } from '../../actions/paperShow';
 import { PaperShowState } from './records';
 import ActionBar from '../paperShowActionBar';
 import FOSList from '../../components/paperShow/components/fosList';
@@ -45,6 +45,7 @@ import { Configuration } from '../../reducers/configuration';
 import { getMemoizedConfiguration } from '../../selectors/getConfiguration';
 import PlutoAxios from '../../api/pluto';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
+import KnowledgeBaseNoti from '../../components/knowledgeBaseNoti';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -141,6 +142,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       this.props.currentUser.isLoggedIn &&
       this.props.paper
     ) {
+      dispatch(fetchLastFullTextRequestedDate(this.props.paper.id));
       return dispatch(fetchMyCollection(this.props.paper.id, this.cancelToken.token));
     }
   }
@@ -199,6 +201,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     currentUser={currentUser}
                     hasPDFFullText={!!PDFViewerState.parsedPDFObject}
                     handleClickFullText={this.scrollToSection('fullText')}
+                    lastRequestedDate={paperShow.lastRequestedAt}
                   />
                 </NoSsr>
               </div>
@@ -229,6 +232,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 isOnFullText={isOnFullText}
                 isLoading={PDFViewerState.isLoading}
                 canShowFullPDF={!!PDFViewerState.parsedPDFObject}
+                lastRequestedDate={paperShow.lastRequestedAt}
               />
             </div>
             <NoSsr>
@@ -282,6 +286,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         </div>
         <BottomBanner currentUser={currentUser} />
         <NextPaperTab />
+        <KnowledgeBaseNoti />
       </>
     );
   }

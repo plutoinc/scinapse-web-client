@@ -1,7 +1,13 @@
 import { CancelToken } from 'axios';
 import { Dispatch } from 'redux';
 import { LoadDataParams } from '../../routes';
-import { getPaper, getCitedPapers, getReferencePapers, getMyCollections } from '../../actions/paperShow';
+import {
+  getPaper,
+  getCitedPapers,
+  getReferencePapers,
+  getMyCollections,
+  fetchLastFullTextRequestedDate,
+} from '../../actions/paperShow';
 import { CurrentUser } from '../../model/currentUser';
 import { PaperShowMatchParams } from './types';
 import { ActionCreators } from '../../actions/actionTypes';
@@ -62,6 +68,7 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
 
   const promiseArray = [];
   promiseArray.push(dispatch(getPaper({ paperId, cancelToken: params.cancelToken })));
+  promiseArray.push(dispatch(fetchLastFullTextRequestedDate(paperId)));
 
   if (currentUser && currentUser.isLoggedIn) {
     promiseArray.push(dispatch(fetchMyCollection(paperId, params.cancelToken)));

@@ -1,5 +1,7 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { Paper } from '../../../model/paper';
 import { CurrentUser } from '../../../model/currentUser';
@@ -8,18 +10,19 @@ import ScinapseButtonFactory, { ScinapseButtonType } from '../../common/scinapse
 import SourceURLPopover from '../../common/sourceURLPopover';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-import homeAPI from '../../../api/home';
+import { addPaperToRecommendation } from '../../../actions/recommendation';
 const styles = require('./pdfSourceButton.scss');
 
 interface SourceButtonProps {
   paper: Paper;
   showFullText: boolean;
   currentUser: CurrentUser;
+  dispatch: Dispatch<any>;
   wrapperStyle?: React.CSSProperties;
 }
 
 const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
-  const { paper, showFullText, currentUser } = props;
+  const { paper, showFullText, currentUser, dispatch } = props;
   const [isSourcePopoverOpen, setIsSourcePopoverOpen] = React.useState(false);
   const anchorEl = React.useRef<HTMLDivElement | null>(null);
 
@@ -79,14 +82,15 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
               onClick: e => {
                 e.preventDefault();
                 handleClickSource();
-                currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paper.id);
+                dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'sourceButton'));
                 window.open(sourceUrl, '_blank');
               },
             }}
             dropdownBtnProps={{
               onClick: () => {
                 setIsSourcePopoverOpen(!isSourcePopoverOpen);
-                currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paper.id);
+                !isSourcePopoverOpen &&
+                  dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'dropdownSourceBtn'));
               },
               style: !showFullText ? reverseBtnStyle : btnStyle,
               className: styles.dropdownBtn,
@@ -108,4 +112,4 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
   );
 };
 
-export default withStyles<typeof SourceButton>(styles)(SourceButton);
+export default connect()(withStyles<typeof SourceButton>(styles)(SourceButton));

@@ -1,22 +1,19 @@
 import * as React from 'react';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
-import { CurrentUser } from '../../../model/currentUser';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-import homeAPI from '../../../api/home';
 const s = require('./citeBox.scss');
 
 interface CiteBoxProps {
   paper: Paper;
   actionArea: string;
-  currentUser: CurrentUser;
   btnStyle?: React.CSSProperties;
 }
 
 const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
-  const { paper, btnStyle, actionArea, currentUser } = props;
+  const { paper, btnStyle, actionArea } = props;
 
   if (!paper.doi) return null;
 
@@ -26,7 +23,6 @@ const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
       className={s.citeButton}
       onClick={() => {
         GlobalDialogManager.openCitationDialog(paper.id);
-        currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paper.id);
         ActionTicketManager.trackTicket({
           pageType: 'paperShow',
           actionType: 'fire',

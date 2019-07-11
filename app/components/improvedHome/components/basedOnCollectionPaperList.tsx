@@ -4,8 +4,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Collection } from '../../../model/collection';
 import { Paper } from '../../../model/paper';
-import { BasedOnCollectionPapersParams } from '../../../api/home';
-import CollectionPaperItem, { trackToBasedOnCollectionPaper } from './BasedOnCollectionPaperItem';
+import { BasedOnCollectionPapersParams } from '../../../api/recommendation';
+import CollectionPaperItem, { trackToBasedOnCollectionPaper } from './basedOnCollectionPaperItem';
 const styles = require('./recommendedPapers.scss');
 
 interface BasedOnCollectionPapersProps {

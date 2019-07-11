@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Popper from '@material-ui/core/Popper';
@@ -13,7 +15,7 @@ import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import CollectionButton from './collectionButton';
 import formatNumber from '../../../helpers/formatNumber';
-import homeAPI from '../../../api/home';
+import { addPaperToRecommendation } from '../../../actions/recommendation';
 import { PaperSource } from '../../../api/paper';
 const styles = require('./paperActionButtons.scss');
 
@@ -24,9 +26,10 @@ interface DomainSourceBtnProps {
   source: PaperSource;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
+  onClick: () => void;
 }
 
-const DomainSourceBtn: React.FC<DomainSourceBtnProps> = ({ source, pageType, actionArea }) => {
+const DomainSourceBtn: React.FC<DomainSourceBtnProps> = ({ source, onClick }) => {
   if (!source.source || !source.doi) return null;
 
   return (
@@ -35,16 +38,7 @@ const DomainSourceBtn: React.FC<DomainSourceBtnProps> = ({ source, pageType, act
       target="_blank"
       rel="noopener nofollow noreferrer"
       className={styles.sourceButton}
-      onClick={() => {
-        ActionTicketManager.trackTicket({
-          pageType,
-          actionType: 'fire',
-          actionArea: actionArea || pageType,
-          actionTag: 'source',
-          actionLabel: String(source.paperId),
-        });
-        homeAPI.addBasedOnRecommendationPaper(source.paperId);
-      }}
+      onClick={onClick}
     >
       <img
         className={styles.faviconIcon}
@@ -52,6 +46,7 @@ const DomainSourceBtn: React.FC<DomainSourceBtnProps> = ({ source, pageType, act
         alt={`${source.host} favicon`}
       />
       <span>{source.host}</span>
+      <Icon icon="SOURCE" className={styles.extSourceIcon} />
     </a>
   );
 };
@@ -63,6 +58,7 @@ export interface PaperActionButtonsProps {
   hasCollection: boolean;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
+  dispatch: Dispatch<any>;
   hasRemoveButton?: boolean;
   handleRemovePaper?: (paper: Paper) => void;
   isRepresentative?: boolean;
@@ -108,10 +104,26 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   }
 
   private getSourceButton = () => {
-    const { paper, pageType, actionArea, currentUser, sourceDomain } = this.props;
+    const { paper, pageType, actionArea, currentUser, sourceDomain, dispatch } = this.props;
 
     if (sourceDomain) {
-      return <DomainSourceBtn pageType={pageType} actionArea={actionArea} source={sourceDomain} />;
+      return (
+        <DomainSourceBtn
+          onClick={() => {
+            ActionTicketManager.trackTicket({
+              pageType,
+              actionType: 'fire',
+              actionArea: actionArea || pageType,
+              actionTag: 'source',
+              actionLabel: String(paper.id),
+            });
+            dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'sourceButton'));
+          }}
+          pageType={pageType}
+          actionArea={actionArea}
+          source={sourceDomain}
+        />
+      );
     }
 
     const buttonContent = (
@@ -139,7 +151,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             actionTag: 'source',
             actionLabel: String(paper.id),
           });
-          currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paper.id);
+          dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'sourceButton'));
         }}
       >
         {buttonContent}
@@ -148,7 +160,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   };
 
   private getCitedButton = () => {
-    const { paper, pageType, actionArea, currentUser } = this.props;
+    const { paper, pageType, actionArea, currentUser, dispatch } = this.props;
 
     if (!paper.citedCount) {
       return null;
@@ -167,7 +179,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
               actionTag: 'citedList',
               actionLabel: String(paper.id),
             });
-            currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paper.id);
+            dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'citationButton'));
           }}
           className={styles.citedButton}
         >
@@ -178,7 +190,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   };
 
   private getCitationQuoteButton = () => {
-    const { paper, pageType, actionArea, currentUser } = this.props;
+    const { paper, pageType, actionArea } = this.props;
 
     if (paper.doi) {
       return (
@@ -194,7 +206,6 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
                 actionTag: 'citePaper',
                 actionLabel: String(paper.id),
               });
-              currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(paper.id);
             }}
           >
             <Icon className={styles.citationIcon} icon="CITATION_QUOTE" />
@@ -320,4 +331,4 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   };
 }
 
-export default withStyles<typeof PaperActionButtons>(styles)(PaperActionButtons);
+export default connect()(withStyles<typeof PaperActionButtons>(styles)(PaperActionButtons));

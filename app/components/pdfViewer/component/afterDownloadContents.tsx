@@ -11,6 +11,7 @@ interface AfterDownloadContentsProps {
   relatedPaperList: Paper[];
   isLoggedIn: boolean;
   isRelatedPaperLoading: boolean;
+  title: string;
 }
 
 const SearchQueryBoxAtPaperShow: React.FC = () => {
@@ -25,15 +26,13 @@ const SearchQueryBoxAtPaperShow: React.FC = () => {
 };
 
 const AfterDownloadContents: React.FC<AfterDownloadContentsProps> = props => {
-  const { onClickReloadBtn } = props;
+  const { onClickReloadBtn, title } = props;
 
   return (
     <>
       <div className={styles.afterDownloadContainer}>
         <div className={styles.titleContext}>Thanks for downloading</div>
-        <div className={styles.subContext}>
-          “Where Is Current Research on Blockchain Technology?-A Systematic Review.”
-        </div>
+        <div className={styles.subContext}>“{title}"</div>
         <button className={styles.reloadBtn} onClick={() => onClickReloadBtn()}>
           <Icon icon="RELOAD" className={styles.reloadIcon} />
           Reload Full-Text

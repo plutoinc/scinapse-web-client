@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { withStyles } from '../../helpers/withStylesHelper';
 import FullTextDialog from './components/fullTextDialog';
 import PaperShowCollectionControlButton from '../paperShowCollectionControlButton';
@@ -8,14 +10,17 @@ import { CurrentUser } from '../../model/currentUser';
 import SourceButton from '../../components/paperShow/components/sourceButton';
 import ViewFullTextBtn from '../../components/paperShow/components/viewFullTextBtn';
 import RequestFullTextBtn from './components/fullTextRequestBtn';
+import { addPaperToRecommendation } from '../../actions/recommendation';
 const s = require('./actionBar.scss');
 
 interface PaperShowActionBarProps {
   paper: Paper;
+  dispatch: Dispatch<any>;
   hasPDFFullText: boolean;
   isLoadingPDF: boolean;
   currentUser: CurrentUser;
   handleClickFullText: () => void;
+  lastRequestedDate: string | null;
 }
 
 const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props => {
@@ -33,8 +38,8 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props =
                 actionArea="paperDescription"
                 isLoading={props.isLoadingPDF}
                 paperId={props.paper!.id}
-                currentUser={props.currentUser}
                 handleSetIsOpen={setIsOpen}
+                lastRequestedDate={props.lastRequestedDate}
               />
             </div>
           ) : (
@@ -57,13 +62,16 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props =
               </div>
             )}
           <div className={s.actionItem}>
-            <CiteBox actionArea="paperDescription" paper={props.paper} currentUser={props.currentUser} />
+            <CiteBox actionArea="paperDescription" paper={props.paper} />
           </div>
           <FullTextDialog
             paperId={props.paper.id}
             isOpen={isOpen}
             onClose={() => {
               setIsOpen(false);
+              props.dispatch(
+                addPaperToRecommendation(props.currentUser.isLoggedIn, props.paper.id, 'requestFullTextBtn')
+              );
             }}
           />
         </div>
@@ -75,4 +83,4 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props =
   );
 });
 
-export default withStyles<typeof PaperShowActionBar>(s)(PaperShowActionBar);
+export default connect()(withStyles<typeof PaperShowActionBar>(s)(PaperShowActionBar));
