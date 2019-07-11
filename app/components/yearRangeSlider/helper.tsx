@@ -6,8 +6,8 @@ import { trackSelectFilter } from '../../helpers/trackSelectFilter';
 
 export interface GoToYearFilteredSearchResultPageParams {
   qs: string;
-  min: number;
-  max: number;
+  min: number | string;
+  max: number | string;
   history: History;
   fromBtn?: boolean;
 }
@@ -19,6 +19,9 @@ export function goToYearFilteredSearchResultPage({
   history,
   fromBtn,
 }: GoToYearFilteredSearchResultPageParams) {
+  if (typeof min === 'string' && min.length > 0) return;
+  if (typeof max === 'string' && max.length > 0) return;
+
   const qp: SearchPageQueryParams = getQueryParamsObject(qs);
   const filter = PapersQueryFormatter.objectifyPaperFilter(qp.filter);
   const newFilter = { ...filter, yearFrom: min, yearTo: max };

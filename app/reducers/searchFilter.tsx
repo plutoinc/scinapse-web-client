@@ -4,16 +4,16 @@ import { FILTER_BUTTON_TYPE } from '../components/filterButton';
 
 export interface SearchFilterState extends AggregationData {
   activeButton: FILTER_BUTTON_TYPE | null;
-  currentYearFrom: number;
-  currentYearTo: number;
+  currentYearFrom: number | string;
+  currentYearTo: number | string;
   selectedJournalIds: number[];
   selectedFOSIds: number[];
 }
 
 export const SEARCH_FILTER_INITIAL_STATE: SearchFilterState = {
   activeButton: null,
-  currentYearFrom: 0,
-  currentYearTo: 0,
+  currentYearFrom: '',
+  currentYearTo: '',
   selectedJournalIds: [],
   selectedFOSIds: [],
   fosList: [],

@@ -26,7 +26,10 @@ interface YearFilterDropdownProps {
 const YearFilterDropdown: React.FC<
   YearFilterDropdownProps & ReturnType<typeof mapStateToProps> & RouteComponentProps
 > = React.memo(props => {
-  const [minMaxYears, setMinMaxYears] = React.useState([props.currentYearFrom, props.currentYearTo]);
+  const [minMaxYears, setMinMaxYears] = React.useState<(number | string)[]>([
+    props.currentYearFrom,
+    props.currentYearTo,
+  ]);
   React.useEffect(
     () => {
       setMinMaxYears([props.currentYearFrom, props.currentYearTo]);
@@ -40,7 +43,7 @@ const YearFilterDropdown: React.FC<
   const maxYear = minMaxYears[1];
 
   let buttonText = 'Any time';
-  if (props.currentYearTo && props.currentYearFrom) {
+  if (props.currentYearTo || props.currentYearFrom) {
     buttonText = `${props.currentYearFrom} - ${props.currentYearTo}`;
   }
 
@@ -130,7 +133,7 @@ const YearFilterDropdown: React.FC<
                 onChange={e => {
                   const { value } = e.currentTarget;
                   if (!value) {
-                    return setMinMaxYears([0, maxYear]);
+                    return setMinMaxYears(['', maxYear]);
                   }
                   const year = parseInt(value, 10);
                   if (!isNaN(year)) {
@@ -146,7 +149,7 @@ const YearFilterDropdown: React.FC<
                 onChange={e => {
                   const { value } = e.currentTarget;
                   if (!value) {
-                    return setMinMaxYears([minYear, 0]);
+                    return setMinMaxYears([minYear, '']);
                   }
                   const year = parseInt(value, 10);
                   if (!isNaN(year)) {
@@ -160,7 +163,7 @@ const YearFilterDropdown: React.FC<
               <button
                 className={s.clearBtn}
                 onClick={() => {
-                  setMinMaxYears([props.currentYearFrom, props.currentYearTo]);
+                  setMinMaxYears(['', '']);
                 }}
               >
                 Clear
