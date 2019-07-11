@@ -46,11 +46,11 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
     <>
       <RequestFullTextBtn
         actionArea="contentNavBar"
-        currentUser={currentUser}
         isLoading={isLoading}
         paperId={paper!.id}
         handleSetIsOpen={setIsOpen}
         btnStyle={{ flex: '1 0 auto', height: '36px', padding: '0 12px 0 8px' }}
+        lastRequestedDate={props.lastRequestedDate}
       />
       <RequestFullTextDialog
         paperId={paper.id}
@@ -114,6 +114,7 @@ const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(pro
               actionBtnEl={actionBtnEl.current}
               onClickDownloadPDF={props.onClickDownloadPDF!}
               afterDownloadPDF={props.afterDownloadPDF!}
+              lastRequestedDate={props.lastRequestedDate}
             />
           </div>
         </div>

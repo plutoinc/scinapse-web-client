@@ -111,6 +111,8 @@ export enum ACTION_TYPES {
   // tslint:disable-next-line:max-line-length
   PAPER_SHOW_COLLECTION_BUTTON_STALE_UPDATED_COLLECTION_NOTE = 'PAPER_SHOW_COLLECTION_BUTTON_STALE_UPDATED_COLLECTION_NOTE',
 
+  PAPER_SHOW_FETCH_LAST_FULL_TEXT_REQUESTED_DATE = 'PAPER_SHOW_FETCH_LAST_FULL_TEXT_REQUESTED_DATE',
+
   ARTICLE_SEARCH_CHANGE_SEARCH_INPUT = 'ARTICLE_SEARCH_CHANGE_SEARCH_INPUT',
   ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT = 'ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT',
   ARTICLE_SEARCH_START_TO_GET_PAPERS = 'ARTICLE_SEARCH_START_TO_GET_PAPERS',
@@ -1036,6 +1038,10 @@ export const ActionCreators = {
 
   closeKnowledgeBaseNoti() {
     return createAction({ type: ACTION_TYPES.KNOWLEDGE_BASE_NOTI_CLOSE });
+  },
+
+  fetchLastFullTextRequestedDate(payload: { requestedAt: string | null }) {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_FETCH_LAST_FULL_TEXT_REQUESTED_DATE, payload });
   },
 
   addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {
