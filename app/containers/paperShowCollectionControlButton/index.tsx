@@ -36,7 +36,7 @@ import { trackEvent } from '../../helpers/handleGA';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { ActionCreators } from '../../actions/actionTypes';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../helpers/checkAuthDialog';
-import homeAPI from '../../api/home';
+import { addPaperToRecommendation } from '../../actions/recommendation';
 const styles = require('./paperShowCollectionControlButton.scss');
 
 const LAST_USER_COLLECTION_ID = 'l_u_c_id';
@@ -542,8 +542,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           cancelToken: this.cancelToken.token,
         })
       );
-      currentUser.isLoggedIn && homeAPI.addBasedOnRecommendationPaper(targetPaperId);
-
+      dispatch(addPaperToRecommendation(currentUser.isLoggedIn, targetPaperId, 'addToCollectionButton'));
       store.set(LAST_USER_COLLECTION_ID, selectedCollection.id);
     } else if (selectedCollection && targetPaperId && selectedCollection.containsSelected) {
       trackEvent({

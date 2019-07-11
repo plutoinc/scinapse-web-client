@@ -112,6 +112,8 @@ export enum ACTION_TYPES {
   // tslint:disable-next-line:max-line-length
   PAPER_SHOW_COLLECTION_BUTTON_STALE_UPDATED_COLLECTION_NOTE = 'PAPER_SHOW_COLLECTION_BUTTON_STALE_UPDATED_COLLECTION_NOTE',
 
+  PAPER_SHOW_FETCH_LAST_FULL_TEXT_REQUESTED_DATE = 'PAPER_SHOW_FETCH_LAST_FULL_TEXT_REQUESTED_DATE',
+
   ARTICLE_SEARCH_CHANGE_SEARCH_INPUT = 'ARTICLE_SEARCH_CHANGE_SEARCH_INPUT',
   ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT = 'ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT',
   ARTICLE_SEARCH_START_TO_GET_PAPERS = 'ARTICLE_SEARCH_START_TO_GET_PAPERS',
@@ -216,6 +218,9 @@ export enum ACTION_TYPES {
   PDF_VIEWER_CLICK_RELOAD_BTN = 'PDF_VIEWER_CLICK_RELOAD_BTN',
   PDF_VIEWER_CLICK_VIEW_MORE_BTN = 'PDF_VIEWER_CLICK_VIEW_MORE_BTN',
   PDF_VIEWER_GET_BEST_PDF_OF_PAPER = 'PDF_VIEWER_GET_BEST_PDF_OF_PAPER',
+
+  KNOWLEDGE_BASE_NOTI_OPEN = 'KNOWLEDGE_BASE_NOTI_OPEN',
+  KNOWLEDGE_BASE_NOTI_CLOSE = 'KNOWLEDGE_BASE_NOTI_CLOSE',
 }
 
 export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
@@ -1027,6 +1032,18 @@ export const ActionCreators = {
 
   changeSearchQuery(payload: { query: string }) {
     return createAction({ type: ACTION_TYPES.SEARCH_QUERY_CHANGE_QUERY, payload });
+  },
+
+  openKnowledgeBaseNoti(payload: { actionArea: string }) {
+    return createAction({ type: ACTION_TYPES.KNOWLEDGE_BASE_NOTI_OPEN, payload });
+  },
+
+  closeKnowledgeBaseNoti() {
+    return createAction({ type: ACTION_TYPES.KNOWLEDGE_BASE_NOTI_CLOSE });
+  },
+
+  fetchLastFullTextRequestedDate(payload: { requestedAt: string | null }) {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_FETCH_LAST_FULL_TEXT_REQUESTED_DATE, payload });
   },
 
   addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {

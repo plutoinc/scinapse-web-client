@@ -138,6 +138,25 @@ export function postNewCollection(params: PostCollectionParams) {
   };
 }
 
+export function fetchLastFullTextRequestedDate(paperId: number) {
+  return async (dispatch: Dispatch<any>) => {
+    let requestedAt;
+    try {
+      const res = await PaperAPI.getLastRequestDate(paperId);
+
+      if (res) {
+        requestedAt = res.requestedAt;
+      } else {
+        requestedAt = null;
+      }
+
+      dispatch(ActionCreators.fetchLastFullTextRequestedDate({ requestedAt }));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+}
+
 export function openCollectionDropdown() {
   return ActionCreators.openCollectionDropdownInPaperShowCollectionDropdown();
 }

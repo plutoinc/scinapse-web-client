@@ -19,6 +19,8 @@ export interface PaperShowState
       referencePaperIds: number[];
       citedPaperIds: number[];
 
+      lastRequestedAt: string | null;
+
       hasFailedToLoadMyCollections: boolean;
       hasFailedToPositingNewCollection: boolean;
 
@@ -42,6 +44,8 @@ export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
 
   hasFailedToLoadMyCollections: false,
   hasFailedToPositingNewCollection: false,
+
+  lastRequestedAt: null,
 
   paperId: 0,
   referencePaperIds: [],

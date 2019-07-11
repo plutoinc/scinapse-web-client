@@ -1,6 +1,6 @@
 import { Paper } from '../../model/paper';
 import { AggregationData, AggregationJournal, AggregationFos } from '../../model/aggregation';
-import { MatchAuthor, MatchEntityAuthor } from '../../api/search';
+import { MatchAuthor } from '../../api/search';
 import { Filter } from '../../api/member';
 
 export interface ArticleSearchState
@@ -34,7 +34,6 @@ export interface ArticleSearchState
       searchFromSuggestion: boolean;
       myFilters: Filter[];
       selectedFilter: Filter | null;
-      topRefAuthors: MatchEntityAuthor[] | null;
       detectedYear: number | null;
     }> {}
 
@@ -68,6 +67,5 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   searchFromSuggestion: false,
   myFilters: [],
   selectedFilter: null,
-  topRefAuthors: null,
   detectedYear: null,
 };

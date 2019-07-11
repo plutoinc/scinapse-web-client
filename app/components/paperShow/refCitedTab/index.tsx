@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import * as classNames from 'classnames';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import CiteBox from '../../../containers/paperShowActionBar/components/citeBox';
@@ -6,6 +7,7 @@ import PdfDownloadButton from '../components/pdfDownloadButton';
 import RequestFullTextBtn from '../../../containers/paperShowActionBar/components/fullTextRequestBtn';
 import RequestFullTextDialog from '../../../containers/paperShowActionBar/components/fullTextDialog';
 import { PDFButtonProps, TabItemProps, PaperShowRefCitedTabProps } from './types';
+import { addPaperToRecommendation } from '../../../actions/recommendation';
 const styles = require('./refCitedTab.scss');
 
 const TabItem: React.FunctionComponent<TabItemProps> = props => {
@@ -23,7 +25,7 @@ const TabItem: React.FunctionComponent<TabItemProps> = props => {
 };
 
 const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
-  const { paper, isLoading, canShowFullPDF, onClickDownloadPDF, afterDownloadPDF, currentUser } = props;
+  const { dispatch, paper, isLoading, canShowFullPDF, onClickDownloadPDF, afterDownloadPDF, currentUser } = props;
   const [isOpen, setIsOpen] = React.useState(false);
 
   if (canShowFullPDF) {
@@ -44,22 +46,25 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
     <>
       <RequestFullTextBtn
         actionArea="contentNavBar"
-        currentUser={currentUser}
         isLoading={isLoading}
         paperId={paper!.id}
         handleSetIsOpen={setIsOpen}
         btnStyle={{ flex: '1 0 auto', height: '36px', padding: '0 12px 0 8px' }}
+        lastRequestedDate={props.lastRequestedDate}
       />
       <RequestFullTextDialog
         paperId={paper.id}
         isOpen={isOpen}
         onClose={() => {
           setIsOpen(false);
+          dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper!.id, 'requestFullTextBtn'));
         }}
       />
     </>
   );
 };
+
+const PDFButtonWithDialog = connect()(PDFButton);
 
 const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(props => {
   let fullTextNode;
@@ -97,12 +102,11 @@ const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(pro
             <CiteBox
               actionArea="contentNavBar"
               paper={props.paper}
-              currentUser={props.currentUser}
               btnStyle={{ maxWidth: '74px', width: '100%', height: '36px' }}
             />
           </div>
           <div className={styles.actionItem} ref={actionBtnEl}>
-            <PDFButton
+            <PDFButtonWithDialog
               currentUser={props.currentUser}
               paper={props.paper}
               isLoading={props.isLoading}
@@ -110,6 +114,7 @@ const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(pro
               actionBtnEl={actionBtnEl.current}
               onClickDownloadPDF={props.onClickDownloadPDF!}
               afterDownloadPDF={props.afterDownloadPDF!}
+              lastRequestedDate={props.lastRequestedDate}
             />
           </div>
         </div>

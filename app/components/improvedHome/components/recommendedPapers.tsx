@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { withStyles } from '../../../helpers/withStylesHelper';
-import BaseOnActivityPaperList from './BasedOnActivityPaperList';
-import BaseOnCollectionPaperList from './BasedOnCollectionPaperList';
+import BaseOnActivityPaperList from './basedOnActivityPaperList';
+import BaseOnCollectionPaperList from './basedOnCollectionPaperList';
 import { Paper } from '../../../model/paper';
-import { BasedOnCollectionPapersParams } from '../../../api/home';
+import { BasedOnCollectionPapersParams } from '../../../api/recommendation';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import EnvChecker from '../../../helpers/envChecker';
 const styles = require('./recommendedPapers.scss');
+const NAVBAR_HEIGHT = 64;
 
 interface RecommendedPapersProps {
   shouldShow: boolean;
@@ -14,8 +17,9 @@ interface RecommendedPapersProps {
   basedOnActivityPapers: Paper[];
   basedOnCollectionPapers: BasedOnCollectionPapersParams | undefined;
 }
+type Props = RouteComponentProps<any> & RecommendedPapersProps;
 
-const RecommendedPapers: React.FC<RecommendedPapersProps> = props => {
+const RecommendedPapers: React.FC<Props> = props => {
   const {
     isLoadingActivityPapers,
     isLoadingCollectionPapers,
@@ -23,13 +27,28 @@ const RecommendedPapers: React.FC<RecommendedPapersProps> = props => {
     basedOnCollectionPapers,
     shouldShow,
     isLoggingIn,
+    location,
   } = props;
+  const recommendedEl = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(
+    () => {
+      let target: HTMLDivElement | null = null;
+      if (location.hash === '#recommended' && shouldShow) {
+        target = recommendedEl.current;
+      }
+      if (!EnvChecker.isOnServer() && target) {
+        window.scrollTo(0, target.offsetTop - NAVBAR_HEIGHT);
+      }
+    },
+    [shouldShow, location]
+  );
 
   if (!shouldShow) return null;
 
   return (
     <>
-      <div className={styles.contentBlockDivider} />
+      <div className={styles.contentBlockDivider} ref={recommendedEl} />
       <div className={styles.recommendedPapersContainer}>
         <div className={styles.titleSection}>
           <div className={styles.title}>Recommended papers for you</div>
@@ -54,4 +73,4 @@ const RecommendedPapers: React.FC<RecommendedPapersProps> = props => {
   );
 };
 
-export default withStyles<typeof RecommendedPapers>(styles)(RecommendedPapers);
+export default withRouter(withStyles<typeof RecommendedPapers>(styles)(RecommendedPapers));
