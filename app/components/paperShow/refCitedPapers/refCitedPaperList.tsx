@@ -12,7 +12,7 @@ import { PaperShowState } from '../../../containers/paperShow/records';
 import { getStringifiedUpdatedQueryParams } from './searchContainer';
 const styles = require('./referencePapers.scss');
 
-interface ReferencePaperListProps {
+interface RefCitedPaperListProps {
   history: History;
   type: RELATED_PAPERS;
   papers: Paper[];
@@ -44,7 +44,7 @@ const NoResultSearchContext: React.FC<NoResultSearchContextProps> = props => {
   );
 };
 
-const ReferencePaperList: React.FC<ReferencePaperListProps> = props => {
+const RefCitedPaperList: React.FC<RefCitedPaperListProps> = props => {
   const { history, type, papers, currentUser, paperShow, queryParamsObject } = props;
   const [totalPage, setTotalPage] = React.useState(0);
   const [isPapersLoading, setIsPapersLoading] = React.useState(false);
@@ -112,4 +112,4 @@ const ReferencePaperList: React.FC<ReferencePaperListProps> = props => {
   return <div className={styles.searchItems}>{referenceItems}</div>;
 };
 
-export default withStyles<typeof ReferencePaperList>(styles)(ReferencePaperList);
+export default withStyles<typeof RefCitedPaperList>(styles)(RefCitedPaperList);

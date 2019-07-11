@@ -178,7 +178,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                     </div>
                     <div className={styles.selectedPaperDescription} />
                     <div className={styles.searchSortWrapper}>
-                      <div>
+                      <div className={styles.searchContainer}>
                         <ScinapseInput
                           placeholder="Search papers"
                           onSubmit={this.handleSubmitPublicationSearch}
@@ -186,7 +186,6 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                           wrapperStyle={{
                             borderRadius: '4px',
                             borderColor: '#f1f3f6',
-                            width: '320px',
                             height: '36px',
                           }}
                         />

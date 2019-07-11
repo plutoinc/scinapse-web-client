@@ -6,7 +6,7 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { CurrentUser } from '../../../model/currentUser';
 import getQueryParamsObject from '../../../helpers/getQueryParamsObject';
-import ReferencePaperList from './referencePaperList';
+import RefCitedPaperList from './refCitedPaperList';
 import SearchContainer, { getStringifiedUpdatedQueryParams } from './searchContainer';
 import { AppState } from '../../../reducers';
 import { makeGetMemoizedPapers, getMemoizedReferencePaperIds } from '../../../selectors/papersSelector';
@@ -85,7 +85,7 @@ const ReferencePapers: React.FC<Props> = props => {
     <>
       <SearchContainer paperShow={paperShow} type="reference" queryParamsObject={queryParamsObject} history={history} />
       <div>
-        <ReferencePaperList
+        <RefCitedPaperList
           history={history}
           type="reference"
           papers={referencePapers}
