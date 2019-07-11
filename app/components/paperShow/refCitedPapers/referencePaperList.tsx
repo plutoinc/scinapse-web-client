@@ -75,11 +75,11 @@ const ReferencePaperList: React.FC<ReferencePaperListProps> = props => {
         pageQueryParams = { 'cited-query': '', 'cited-page': 1 };
       }
 
+      setSearchInput('');
       history.push({
         pathname: `/papers/${paperShow.paperId}`,
         search: getStringifiedUpdatedQueryParams(queryParamsObject, pageQueryParams),
       });
-      setSearchInput('');
     },
     [paperShow.paperId]
   );

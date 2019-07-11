@@ -13,10 +13,11 @@ import { clearPaperShowState } from '../../actions/paperShow';
 import { PaperShowState } from './records';
 import ActionBar from '../paperShowActionBar';
 import FOSList from '../../components/paperShow/components/fosList';
-import ReferencePapers from '../../components/paperShow/referencePapers';
+import ReferencePapers from '../../components/paperShow/refCitedPapers/referencePapers';
+import CitedPapers from '../../components/paperShow/refCitedPapers/citedPapers';
 import PaperShowRefCitedTab from '../../components/paperShow/refCitedTab';
 import { Paper } from '../../model/paper';
-import { fetchCitedPaperData, fetchMyCollection, fetchPaperShowData, fetchRefPaperData } from './sideEffect';
+import { fetchMyCollection, fetchPaperShowData } from './sideEffect';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 import { LayoutState, UserDevice } from '../../components/layouts/records';
 import { getMemoizedPaper } from './select';
@@ -34,11 +35,6 @@ import PaperShowHelmet from '../../components/paperShow/helmet';
 import GoBackResultBtn from '../../components/paperShow/backButton';
 import { getMemoizedCurrentUser } from '../../selectors/getCurrentUser';
 import { getRelatedPapers } from '../../actions/relatedPapers';
-import {
-  makeGetMemoizedPapers,
-  getMemoizedReferencePaperIds,
-  getMemoizedCitedPaperIds,
-} from '../../selectors/papersSelector';
 import { getMemoizedPaperShow } from '../../selectors/getPaperShow';
 import { getMemoizedLayout } from '../../selectors/getLayout';
 import { getMemoizedPDFViewerState } from '../../selectors/getPDFViewer';
@@ -54,9 +50,6 @@ const styles = require('./paperShow.scss');
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
 let ticking = false;
 
-const getReferencePapers = makeGetMemoizedPapers(getMemoizedReferencePaperIds);
-const getCitedPapers = makeGetMemoizedPapers(getMemoizedCitedPaperIds);
-
 function mapStateToProps(state: AppState) {
   return {
     layout: getMemoizedLayout(state),
@@ -65,8 +58,6 @@ function mapStateToProps(state: AppState) {
     paperShow: getMemoizedPaperShow(state),
     paper: getMemoizedPaper(state),
     PDFViewerState: getMemoizedPDFViewerState(state),
-    referencePapers: getReferencePapers(state),
-    citedPapers: getCitedPapers(state),
   };
 }
 
@@ -78,8 +69,6 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
   PDFViewerState: PDFViewerState;
   dispatch: Dispatch<any>;
   paper: Paper | null;
-  referencePapers: Paper[];
-  citedPapers: Paper[];
 }
 
 interface PaperShowStates
@@ -135,22 +124,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public async componentDidUpdate(prevProps: PaperShowProps) {
-    const { dispatch, match, location, currentUser } = prevProps;
-    const prevQueryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
-    const nextQueryParams: PaperShowPageQueryParams = getQueryParamsObject(this.props.location.search);
+    const { dispatch, match, currentUser } = prevProps;
 
     const moveToDifferentPage = match.params.paperId !== this.props.match.params.paperId;
-
-    const changeRefPage = prevQueryParams['ref-page'] !== nextQueryParams['ref-page'];
-    const changeRefSort = prevQueryParams['ref-sort'] !== nextQueryParams['ref-sort'];
-    const changeRefQuery = prevQueryParams['ref-query'] !== nextQueryParams['ref-query'];
-
-    const changeCitedPage = prevQueryParams['cited-page'] !== nextQueryParams['cited-page'];
-    const changeCitedSort = prevQueryParams['cited-sort'] !== nextQueryParams['cited-sort'];
-    const changeCitedQuery = prevQueryParams['cited-query'] !== nextQueryParams['cited-query'];
-
-    const changeRef = changeRefPage || changeRefSort || changeRefQuery;
-    const changeCited = changeCitedPage || changeCitedSort || changeCitedQuery;
 
     if (moveToDifferentPage) {
       dispatch(clearPaperShowState());
@@ -167,34 +143,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     ) {
       return dispatch(fetchMyCollection(this.props.paper.id, this.cancelToken.token));
     }
-
-    if (this.props.paper && changeRef) {
-      await dispatch(
-        fetchRefPaperData(
-          this.props.paper.id,
-          nextQueryParams['ref-page'],
-          nextQueryParams['ref-query'] || '',
-          nextQueryParams['ref-sort'] || 'NEWEST_FIRST',
-          this.cancelToken.token
-        )
-      );
-      if (this.refTabWrapper) {
-        window.scrollTo(0, this.refTabWrapper.offsetTop - NAVBAR_HEIGHT);
-      }
-    } else if (this.props.paper && changeCited) {
-      await dispatch(
-        fetchCitedPaperData(
-          this.props.paper.id,
-          nextQueryParams['cited-page'],
-          nextQueryParams['cited-query'] || '',
-          nextQueryParams['cited-sort'] || 'NEWEST_FIRST',
-          this.cancelToken.token
-        )
-      );
-      if (this.citedTabWrapper) {
-        window.scrollTo(0, this.citedTabWrapper.offsetTop - NAVBAR_HEIGHT);
-      }
-    }
   }
 
   public componentWillUnmount() {
@@ -206,7 +154,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public render() {
-    const { layout, paperShow, currentUser, paper, referencePapers, citedPapers, PDFViewerState } = this.props;
+    const { layout, paperShow, currentUser, paper, PDFViewerState } = this.props;
     const { isOnFullText, isOnCited, isOnRef } = this.state;
 
     if (paperShow.isLoadingPaper) {
@@ -303,11 +251,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               <div className={styles.otherPapers}>
                 <div className={styles.references}>
                   <ReferencePapers
-                    type="reference"
                     isMobile={layout.userDevice !== UserDevice.DESKTOP}
-                    papers={referencePapers}
                     currentUser={currentUser}
-                    paperShow={paperShow}
+                    tabElement={this.refTabWrapper}
                   />
                 </div>
               </div>
@@ -322,12 +268,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <span className={styles.sectionCount}>{paper.citedCount}</span>
               </div>
               <div className={styles.otherPapers}>
-                <ReferencePapers
-                  type="cited"
+                <CitedPapers
                   isMobile={layout.userDevice !== UserDevice.DESKTOP}
-                  papers={citedPapers}
                   currentUser={currentUser}
-                  paperShow={paperShow}
+                  tabElement={this.citedTabWrapper}
                 />
               </div>
             </article>
