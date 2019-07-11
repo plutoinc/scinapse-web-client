@@ -32,7 +32,7 @@ type Props = ReturnType<typeof mapStateToProps> &
     isMobile: boolean;
     currentUser: CurrentUser;
     dispatch: Dispatch<any>;
-    tabElement: HTMLDivElement | null;
+    citedTabEl: HTMLDivElement | null;
   };
 
 const getCitedPaginationLink = (paperId: number, queryParamsObject: any) => (page: number) => {
@@ -43,7 +43,7 @@ const getCitedPaginationLink = (paperId: number, queryParamsObject: any) => (pag
 };
 
 const CitedPapers: React.FC<Props> = props => {
-  const { isMobile, paperShow, citedPapers, currentUser, location, history, dispatch, tabElement } = props;
+  const { isMobile, paperShow, citedPapers, currentUser, location, history, dispatch, citedTabEl } = props;
   const [queryParamsObject, setQueryParamsObject] = React.useState<PaperShowPageQueryParams>(
     getQueryParamsObject(location.search)
   );
@@ -71,7 +71,7 @@ const CitedPapers: React.FC<Props> = props => {
         );
       }
       fetchCitedPapers();
-      tabElement && window.scrollTo(0, tabElement.offsetTop - NAVBAR_HEIGHT);
+      citedTabEl && window.scrollTo(0, citedTabEl.offsetTop - NAVBAR_HEIGHT);
 
       return () => {
         cancelToken.cancel();

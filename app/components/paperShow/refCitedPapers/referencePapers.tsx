@@ -33,7 +33,7 @@ type Props = ReturnType<typeof mapStateToProps> &
     isMobile: boolean;
     currentUser: CurrentUser;
     dispatch: Dispatch<any>;
-    tabElement: HTMLDivElement | null;
+    refTabEl: HTMLDivElement | null;
   };
 
 const getRefPaginationLink = (paperId: number, queryParamsObject: any) => (page: number) => {
@@ -44,7 +44,7 @@ const getRefPaginationLink = (paperId: number, queryParamsObject: any) => (page:
 };
 
 const ReferencePapers: React.FC<Props> = props => {
-  const { isMobile, paperShow, referencePapers, currentUser, location, history, dispatch, tabElement } = props;
+  const { isMobile, paperShow, referencePapers, currentUser, location, history, dispatch, refTabEl } = props;
   const [queryParamsObject, setQueryParamsObject] = React.useState<PaperShowPageQueryParams>(
     getQueryParamsObject(location.search)
   );
@@ -72,7 +72,7 @@ const ReferencePapers: React.FC<Props> = props => {
         );
       }
       fetchRefPapers();
-      tabElement && window.scrollTo(0, tabElement.offsetTop - NAVBAR_HEIGHT);
+      refTabEl && window.scrollTo(0, refTabEl.offsetTop - NAVBAR_HEIGHT);
 
       return () => {
         cancelToken.cancel();

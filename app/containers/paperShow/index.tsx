@@ -253,7 +253,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   <ReferencePapers
                     isMobile={layout.userDevice !== UserDevice.DESKTOP}
                     currentUser={currentUser}
-                    tabElement={this.refTabWrapper}
+                    refTabEl={this.refTabWrapper}
                   />
                 </div>
               </div>
@@ -271,7 +271,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <CitedPapers
                   isMobile={layout.userDevice !== UserDevice.DESKTOP}
                   currentUser={currentUser}
-                  tabElement={this.citedTabWrapper}
+                  citedTabEl={this.citedTabWrapper}
                 />
               </div>
             </article>

@@ -175,7 +175,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                       <div className={styles.searchInputWrapper}>
                         <ScinapseInput
                           onSubmit={this.handleSubmitSearch}
-                          placeholder="Search papers in this collection"
+                          placeholder="Search papers"
                           icon="SEARCH_ICON"
                           inputStyle={{ maxWidth: '486px', height: '40px' }}
                         />

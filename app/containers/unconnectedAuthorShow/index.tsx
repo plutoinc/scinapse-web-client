@@ -354,7 +354,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
   };
 
   private resetQuery = () => {
-    const { dispatch, author, authorShow } = this.props;
+    const { dispatch, author } = this.props;
 
     if (author) {
       dispatch!(
@@ -363,7 +363,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
           page: 1,
           size: DEFAULT_AUTHOR_PAPERS_SIZE,
           query: '',
-          sort: authorShow.papersSort,
+          sort: 'NEWEST_FIRST',
           cancelToken: this.cancelToken.token,
         })
       );
