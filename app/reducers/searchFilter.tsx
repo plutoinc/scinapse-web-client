@@ -1,6 +1,8 @@
 import { AggregationData } from '../model/aggregation';
 import { ACTION_TYPES, SearchActions } from '../actions/actionTypes';
 import { FILTER_BUTTON_TYPE } from '../components/filterButton';
+import { JournalSuggestion } from '../api/completion';
+import { toggleElementFromArray } from '../helpers/toggleElementFromArray';
 
 export interface SearchFilterState extends AggregationData {
   activeButton: FILTER_BUTTON_TYPE | null;
@@ -8,6 +10,7 @@ export interface SearchFilterState extends AggregationData {
   currentYearTo: number | string;
   selectedJournalIds: number[];
   selectedFOSIds: number[];
+  addedJournals: JournalSuggestion[];
 }
 
 export const SEARCH_FILTER_INITIAL_STATE: SearchFilterState = {
@@ -16,10 +19,12 @@ export const SEARCH_FILTER_INITIAL_STATE: SearchFilterState = {
   currentYearTo: '',
   selectedJournalIds: [],
   selectedFOSIds: [],
+  // data
   fosList: [],
   journals: [],
   yearAll: [],
   yearFiltered: [],
+  addedJournals: [],
 };
 
 export function reducer(state = SEARCH_FILTER_INITIAL_STATE, action: SearchActions) {
@@ -51,6 +56,13 @@ export function reducer(state = SEARCH_FILTER_INITIAL_STATE, action: SearchActio
         currentYearTo: filters.yearTo,
         selectedJournalIds: filters.journal,
         selectedFOSIds: filters.fos,
+      };
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM: {
+      return {
+        ...state,
+        selectedJournalIds: toggleElementFromArray(action.payload.journalId, state.selectedJournalIds),
       };
     }
 

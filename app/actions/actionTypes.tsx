@@ -129,6 +129,7 @@ export enum ACTION_TYPES {
   ARTICLE_SEARCH_SUCCEEDED_TO_GET_AUTHORS = 'ARTICLE_SEARCH_SUCCEEDED_TO_GET_AUTHORS',
   ARTICLE_SEARCH_SET_ACTIVE_FILTER_BOX_BUTTON = 'ARTICLE_SEARCH_SET_ACTIVE_FILTER_BOX_BUTTON',
   ARTICLE_SEARCH_SYNC_FILTERS_WITH_QUERY_PARAMS = 'ARTICLE_SEARCH_SYNC_FILTERS_WITH_QUERY_PARAMS',
+  ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM = 'ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM',
 
   AUTHOR_SHOW_START_TO_LOAD_DATA_FOR_PAGE = 'AUTHOR_SHOW_START_TO_LOAD_DATA_FOR_PAGE',
   AUTHOR_SHOW_FINISH_TO_LOAD_DATA_FOR_PAGE = 'AUTHOR_SHOW_FINISH_TO_LOAD_DATA_FOR_PAGE',
@@ -1057,9 +1058,15 @@ export interface SyncFilterWithQueryParamsAction {
   payload: { filters: FilterObject };
 }
 
+interface SelectJournalFilterItem {
+  type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM;
+  payload: { journalId: number };
+}
+
 export type SearchActions =
   | SucceedToGetSearchResultAction
   | SetActiveFilterBoxButtonAction
-  | SyncFilterWithQueryParamsAction;
+  | SyncFilterWithQueryParamsAction
+  | SelectJournalFilterItem;
 
 export type Actions = ActionUnion<typeof ActionCreators>;

@@ -50,7 +50,9 @@ const YearFilterDropdown: React.FC<
   return (
     <ClickAwayListener
       onClickAway={() => {
-        props.dispatch(setActiveFilterButton(null));
+        if (props.isActive) {
+          props.dispatch(setActiveFilterButton(null));
+        }
       }}
     >
       <div ref={anchorEl}>

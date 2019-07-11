@@ -10,6 +10,7 @@ import YearFilterDropdown from '../../components/yearFilterDropdown';
 import FilterButton, { FILTER_BUTTON_TYPE } from '../../components/filterButton';
 import { getMemoizedSearchFilterState } from '../../selectors/getSearchFilter';
 import { ACTION_TYPES, SearchActions } from '../../actions/actionTypes';
+import JournalFilterDropdown from '../../components/journalFilterDropdown';
 const s = require('./filterBox.scss');
 
 type FilterBoxProps = RouteComponentProps & ReturnType<typeof mapStateToProps> & { dispatch: Dispatch<SearchActions> };
@@ -31,11 +32,7 @@ const FilterBox: React.FC<FilterBoxProps> = props => {
         <YearFilterDropdown />
       </span>
       <span className={s.btnWrapper}>
-        <FilterButton
-          onClick={() => {}}
-          content={'Any journal'}
-          isActive={searchFilterState.activeButton === FILTER_BUTTON_TYPE.JOURNAL}
-        />
+        <JournalFilterDropdown />
       </span>
       <span className={s.btnWrapper}>
         <FilterButton
