@@ -48,7 +48,7 @@ const JournalItem: React.FC<JournalItemProps> = props => {
     >
       <span className={s.title}>{props.title}</span>
       {ImpactFactor}
-      {props.docCount && <span className={s.countBox}>{`(${formatNumber(props.docCount)})`}</span>}
+      <span className={s.countBox}>{`(${formatNumber(props.docCount)})`}</span>
     </button>
   );
 };

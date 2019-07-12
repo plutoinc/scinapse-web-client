@@ -6,11 +6,12 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { withStyles } from '../../helpers/withStylesHelper';
 import SearchQueryManager from '../../helpers/searchQueryManager';
 import { AppState } from '../../reducers';
-import YearFilterDropdown from '../../components/yearFilterDropdown';
 import FilterButton, { FILTER_BUTTON_TYPE } from '../../components/filterButton';
 import { getMemoizedSearchFilterState } from '../../selectors/getSearchFilter';
 import { ACTION_TYPES, SearchActions } from '../../actions/actionTypes';
+import YearFilterDropdown from '../../components/yearFilterDropdown';
 import JournalFilterDropdown from '../../components/journalFilterDropdown';
+import FOSFilterDropdown from '../../components/fosFilterDropdown';
 const s = require('./filterBox.scss');
 
 type FilterBoxProps = RouteComponentProps & ReturnType<typeof mapStateToProps> & { dispatch: Dispatch<SearchActions> };
@@ -23,7 +24,7 @@ const FilterBox: React.FC<FilterBoxProps> = props => {
       props.dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_SYNC_FILTERS_WITH_QUERY_PARAMS, payload: { filters } });
     },
 
-    [props.location.search]
+    [props.location.search, searchFilterState.activeButton]
   );
 
   return (
@@ -35,11 +36,7 @@ const FilterBox: React.FC<FilterBoxProps> = props => {
         <JournalFilterDropdown />
       </span>
       <span className={s.btnWrapper}>
-        <FilterButton
-          onClick={() => {}}
-          content={'Any field'}
-          isActive={searchFilterState.activeButton === FILTER_BUTTON_TYPE.FOS}
-        />
+        <FOSFilterDropdown />
       </span>
       <span>{` | Sort By `}</span>
       <FilterButton

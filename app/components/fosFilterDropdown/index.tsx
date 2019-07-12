@@ -1,6 +1,7 @@
 import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import * as classNames from 'classnames';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Popper from '@material-ui/core/Popper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -8,40 +9,58 @@ import { withStyles } from '../../helpers/withStylesHelper';
 import { setActiveFilterButton } from '../../actions/searchFilter';
 import { ACTION_TYPES, SearchActions } from '../../actions/actionTypes';
 import FilterButton, { FILTER_BUTTON_TYPE } from '../filterButton';
-import JournalItem from '../journalFilterItem';
 import { AppState } from '../../reducers';
 import { trackSelectFilter } from '../../helpers/trackSelectFilter';
 import makeNewFilterLink from '../../helpers/makeNewFilterLink';
+import { AggregationFos } from '../../model/aggregation';
 
-const s = require('./journalFilterDropdown.scss');
+const s = require('./fosFilterDropdown.scss');
 
-interface JournalFilterDropdownProps {
+interface FOSFilterDropdownProps {
   dispatch: Dispatch<SearchActions>;
 }
 
-const JournalFilterDropdown: React.FC<
-  JournalFilterDropdownProps & ReturnType<typeof mapStateToProps> & RouteComponentProps
+interface FOSItemProps {
+  FOS: AggregationFos;
+  selected: boolean;
+  onClick: () => void;
+}
+
+const FOSItem: React.FC<FOSItemProps> = ({ FOS, onClick, selected }) => {
+  return (
+    <button
+      onClick={onClick}
+      className={classNames({
+        [s.FOSItemBtn]: true,
+        [s.selected]: selected,
+      })}
+    >
+      <span className={s.fosName}>{FOS.name}</span>
+      <span className={s.docCount}>{`(${FOS.docCount})`}</span>
+    </button>
+  );
+};
+
+const FOSFilterDropdown: React.FC<
+  FOSFilterDropdownProps & ReturnType<typeof mapStateToProps> & RouteComponentProps
 > = props => {
   const anchorEl = React.useRef(null);
 
-  let buttonText = 'Any journal';
-  if (props.selectedJournalIds.length > 0) {
-    buttonText = `${props.selectedJournalIds.length} journals`;
+  let buttonText = 'Any field';
+  if (props.selectedFOSIds.length > 0) {
+    buttonText = `${props.selectedFOSIds.length} fields`;
   }
 
-  const journalList = props.journalData.map(journal => {
+  const FOSList = props.FOSData.map(FOS => {
     return (
-      <JournalItem
-        key={journal.id}
-        title={journal.title}
-        checked={props.selectedJournalIds.includes(journal.id)}
-        isHighlight={false}
-        docCount={journal.docCount}
-        IF={journal.impactFactor}
+      <FOSItem
+        key={FOS.id}
+        FOS={FOS}
+        selected={props.selectedFOSIds.includes(FOS.id)}
         onClick={() => {
           props.dispatch({
-            type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM,
-            payload: { journalId: journal.id },
+            type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_FOS_FILTER_ITEM,
+            payload: { FOSId: FOS.id },
           });
         }}
       />
@@ -62,22 +81,21 @@ const JournalFilterDropdown: React.FC<
             if (props.isActive) {
               props.dispatch(setActiveFilterButton(null));
             } else {
-              props.dispatch(setActiveFilterButton(FILTER_BUTTON_TYPE.JOURNAL));
+              props.dispatch(setActiveFilterButton(FILTER_BUTTON_TYPE.FOS));
             }
           }}
           content={buttonText}
           isActive={props.isActive}
         />
-
         <Popper open={props.isActive} anchorEl={anchorEl.current} placement="bottom-start" disablePortal>
           <div className={s.dropBoxWrapper}>
-            <div>{journalList}</div>
+            <div>{FOSList}</div>
             <div className={s.controlBtnsWrapper}>
               <button
                 className={s.clearBtn}
                 onClick={() => {
                   props.dispatch({
-                    type: ACTION_TYPES.ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER,
+                    type: ACTION_TYPES.ARTICLE_SEARCH_CLEAR_FOS_FILTER,
                   });
                 }}
               >
@@ -86,9 +104,9 @@ const JournalFilterDropdown: React.FC<
               <button
                 className={s.applyBtn}
                 onClick={() => {
-                  trackSelectFilter('JOURNAL', JSON.stringify(props.selectedJournalIds));
+                  trackSelectFilter('FOS', JSON.stringify(props.selectedFOSIds));
                   props.dispatch(setActiveFilterButton(null));
-                  const link = makeNewFilterLink({ journal: props.selectedJournalIds }, props.location);
+                  const link = makeNewFilterLink({ fos: props.selectedFOSIds }, props.location);
                   props.history.push(link);
                 }}
               >
@@ -104,10 +122,10 @@ const JournalFilterDropdown: React.FC<
 
 function mapStateToProps(state: AppState) {
   return {
-    selectedJournalIds: state.searchFilterState.selectedJournalIds,
-    journalData: state.searchFilterState.journals,
-    isActive: state.searchFilterState.activeButton === FILTER_BUTTON_TYPE.JOURNAL,
+    selectedFOSIds: state.searchFilterState.selectedFOSIds,
+    FOSData: state.searchFilterState.fosList,
+    isActive: state.searchFilterState.activeButton === FILTER_BUTTON_TYPE.FOS,
   };
 }
 
-export default withRouter(connect(mapStateToProps)(withStyles<typeof JournalFilterDropdown>(s)(JournalFilterDropdown)));
+export default withRouter(connect(mapStateToProps)(withStyles<typeof FOSFilterDropdown>(s)(FOSFilterDropdown)));

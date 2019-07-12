@@ -66,6 +66,27 @@ export function reducer(state = SEARCH_FILTER_INITIAL_STATE, action: SearchActio
       };
     }
 
+    case ACTION_TYPES.ARTICLE_SEARCH_SELECT_FOS_FILTER_ITEM: {
+      return {
+        ...state,
+        selectedFOSIds: toggleElementFromArray(action.payload.FOSId, state.selectedFOSIds),
+      };
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER: {
+      return {
+        ...state,
+        selectedJournalIds: [],
+      };
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_CLEAR_FOS_FILTER: {
+      return {
+        ...state,
+        selectedFOSIds: [],
+      };
+    }
+
     default:
       return state;
   }

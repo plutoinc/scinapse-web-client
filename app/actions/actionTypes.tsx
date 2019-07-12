@@ -130,6 +130,9 @@ export enum ACTION_TYPES {
   ARTICLE_SEARCH_SET_ACTIVE_FILTER_BOX_BUTTON = 'ARTICLE_SEARCH_SET_ACTIVE_FILTER_BOX_BUTTON',
   ARTICLE_SEARCH_SYNC_FILTERS_WITH_QUERY_PARAMS = 'ARTICLE_SEARCH_SYNC_FILTERS_WITH_QUERY_PARAMS',
   ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM = 'ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM',
+  ARTICLE_SEARCH_SELECT_FOS_FILTER_ITEM = 'ARTICLE_SEARCH_SELECT_FOS_FILTER_ITEM',
+  ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER = 'ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER',
+  ARTICLE_SEARCH_CLEAR_FOS_FILTER = 'ARTICLE_SEARCH_CLEAR_FOS_FILTER',
 
   AUTHOR_SHOW_START_TO_LOAD_DATA_FOR_PAGE = 'AUTHOR_SHOW_START_TO_LOAD_DATA_FOR_PAGE',
   AUTHOR_SHOW_FINISH_TO_LOAD_DATA_FOR_PAGE = 'AUTHOR_SHOW_FINISH_TO_LOAD_DATA_FOR_PAGE',
@@ -1058,15 +1061,31 @@ export interface SyncFilterWithQueryParamsAction {
   payload: { filters: FilterObject };
 }
 
-interface SelectJournalFilterItem {
+interface SelectJournalFilterItemAction {
   type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM;
   payload: { journalId: number };
+}
+
+interface SelectFOSFilterItemAction {
+  type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_FOS_FILTER_ITEM;
+  payload: { FOSId: number };
+}
+
+interface ClearJournalFilterAction {
+  type: ACTION_TYPES.ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER;
+}
+
+interface ClearFOSFilterAction {
+  type: ACTION_TYPES.ARTICLE_SEARCH_CLEAR_FOS_FILTER;
 }
 
 export type SearchActions =
   | SucceedToGetSearchResultAction
   | SetActiveFilterBoxButtonAction
   | SyncFilterWithQueryParamsAction
-  | SelectJournalFilterItem;
+  | SelectJournalFilterItemAction
+  | SelectFOSFilterItemAction
+  | ClearJournalFilterAction
+  | ClearFOSFilterAction;
 
 export type Actions = ActionUnion<typeof ActionCreators>;

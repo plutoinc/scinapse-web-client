@@ -1,0 +1,67 @@
+.dropBoxWrapper {
+  width: 486px;
+  border-radius: 4px;
+  box-shadow: 0 8px 24px 2px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  padding: 24px;
+}
+
+.FOSItemBtn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+
+  &:hover {
+    .fosName {
+      color: $dark-blue0;
+    }
+  }
+
+  &.selected {
+    .fosName {
+      color: $main_blue1;
+    }
+  }
+
+  & + & {
+    margin-top: 8px;
+  }
+
+  .fosName {
+    font-size: 16px;
+    color: $gray9;
+  }
+
+  .docCount {
+    font-size: 16px;
+    text-align: right;
+    color: $gray9;
+  }
+}
+
+.controlBtnsWrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+}
+
+.clearBtn {
+  cursor: pointer;
+  font-size: 16px;
+  color: $gray5;
+}
+
+.applyBtn {
+  cursor: pointer;
+  font-size: 16px;
+  color: $main_blue1;
+}
+
+@media (max-width: $mobile-width) {
+  .dropBoxWrapper {
+    width: 100vw;
+    padding: 12px;
+  }
+}
