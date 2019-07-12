@@ -1,6 +1,6 @@
 import { ActionCreatorsMapObject } from 'redux';
 import { AppEntities } from '../reducers/entity';
-import { CommonPaginationResponsePart, NormalizedDataWithPaginationV2 } from '../api/types/common';
+import { NormalizedDataWithPaginationV2, PageObjectV2 } from '../api/types/common';
 import { AvailableCitationType } from '../containers/paperShow/records';
 import { GetCollectionsResponse } from '../api/member';
 import { GLOBAL_DIALOG_TYPE } from '../components/dialog/reducer';
@@ -11,6 +11,7 @@ import { PaperInCollection } from '../model/paperInCollection';
 import { SIGN_UP_STEP } from '../components/auth/signUp/types';
 import { OAuthCheckParams } from '../api/types/auth';
 import { SignUpConversionExpTicketContext } from '../constants/abTest';
+import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
 
 export enum ACTION_TYPES {
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = 'GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING',
@@ -236,8 +237,9 @@ interface GetMultiPapersInCollection {
   query?: string;
 }
 
-interface GetMultiPapers extends CommonPaginationResponsePart {
+interface GetMultiPapers extends PageObjectV2 {
   paperIds: number[];
+  sort?: AUTHOR_PAPER_LIST_SORT_TYPES;
   query?: string;
 }
 

@@ -31,7 +31,7 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
           isLoadingReferencePapers: false,
           isFailedToGetReferencePapers: false,
           referencePaperTotalPage: action.payload.totalPages,
-          referencePaperCurrentPage: action.payload.number,
+          referencePaperCurrentPage: action.payload.page,
           referencePaperIds: action.payload.paperIds,
         },
       };
@@ -52,7 +52,7 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
           isLoadingCitedPapers: false,
           isFailedToGetCitedPapers: false,
           citedPaperTotalPage: action.payload.totalPages,
-          citedPaperCurrentPage: action.payload.number,
+          citedPaperCurrentPage: action.payload.page,
           citedPaperIds: action.payload.paperIds,
         },
       };

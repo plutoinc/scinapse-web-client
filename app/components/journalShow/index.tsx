@@ -159,7 +159,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
                         <ScinapseInput
                           value={currentQueryParams.q}
                           onSubmit={this.handleSubmitSearch}
-                          placeholder="Search papers in this journal"
+                          placeholder="Search papers"
                           icon="SEARCH_ICON"
                         />
                       </div>
@@ -319,6 +319,26 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
     });
   };
 
+  private resetQuery = () => {
+    const { journalShow, history } = this.props;
+
+    const currentQueryParams = this.getQueryParamsObject();
+    const nextQueryParams = { ...currentQueryParams, q: '', p: 1 };
+
+    ActionTicketManager.trackTicket({
+      pageType: 'journalShow',
+      actionType: 'fire',
+      actionArea: 'paperList',
+      actionTag: 'queryInJournal',
+      actionLabel: '',
+    });
+
+    history.push({
+      pathname: `/journals/${journalShow.journalId}`,
+      search: stringify(nextQueryParams, { addQueryPrefix: true }),
+    });
+  };
+
   private getPaperList = () => {
     const { journalShow, papers, currentUser } = this.props;
 
@@ -353,7 +373,13 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
       return (
         <div className={styles.noPaperWrapper}>
           <Icon icon="UFO" className={styles.ufoIcon} />
-          <div className={styles.noPaperDescription}>No paper in this collection.</div>
+          <div className={styles.noPaperDescription}>
+            Your search <b>{journalShow.searchKeyword}</b> did not match any papers.
+          </div>
+          <button className={styles.reloadBtn} onClick={this.resetQuery}>
+            <Icon icon="RELOAD" className={styles.reloadIcon} />
+            Reload papers
+          </button>
         </div>
       );
     }

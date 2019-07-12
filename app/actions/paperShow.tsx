@@ -68,8 +68,7 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
         ActionCreators.getReferencePapers({
           paperIds: getPapersResult.result,
           size: getPapersResult.size,
-          number: getPapersResult.number,
-          sort: '',
+          page: getPapersResult.page,
           first: getPapersResult.first,
           last: getPapersResult.last,
           numberOfElements: getPapersResult.numberOfElements,
@@ -100,8 +99,7 @@ export function getCitedPapers(params: GetRefOrCitedPapersParams) {
         ActionCreators.getCitedPapers({
           paperIds: getPapersResult.result,
           size: getPapersResult.size,
-          number: getPapersResult.number,
-          sort: '',
+          page: getPapersResult.page,
           first: getPapersResult.first,
           last: getPapersResult.last,
           numberOfElements: getPapersResult.numberOfElements,

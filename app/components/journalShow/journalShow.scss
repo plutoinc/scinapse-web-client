@@ -168,6 +168,36 @@ $right_box_width: 267px;
   }
 }
 
+.reloadIcon {
+  display: inline-flex;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.reloadBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+  height: 40px;
+  padding: 4px 16px 4px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.43;
+  background-color: $main_blue1;
+  cursor: pointer;
+  color: white;
+
+  &:hover {
+    background-color: $main_blue_light0;
+    transition: $button-hover-transition;
+  }
+}
+
 .searchInputWrapper {
   position: absolute;
   top: 0;
