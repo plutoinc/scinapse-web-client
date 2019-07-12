@@ -24,7 +24,6 @@ import restoreScroll from '../../helpers/scrollRestoration';
 import { SearchPageQueryParams } from './types';
 import { MatchAuthor } from '../../api/search';
 import formatNumber from '../../helpers/formatNumber';
-import SortBar from './components/SortBar';
 import Pagination from './components/pagination';
 import SignBanner from './components/signBanner';
 import FilterBox from '../../containers/filterBox';
@@ -164,7 +163,6 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
             <span className={styles.categoryHeader}>Publication</span>
             <span className={styles.categoryCount}>{formatNumber(articleSearchState.totalElements)}</span>
           </div>
-          <SortBar query={queryParams.query || ''} sortOption={queryParams.sort || 'RELEVANCE'} filter={filter} />
         </div>
         <SearchList
           currentUser={currentUserState}

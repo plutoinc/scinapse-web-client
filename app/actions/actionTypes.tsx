@@ -14,7 +14,6 @@ import { SignUpConversionExpTicketContext } from '../constants/abTest';
 import { SearchResult } from '../api/search';
 import { FILTER_BUTTON_TYPE } from '../components/filterButton';
 import { FilterObject } from '../helpers/searchQueryManager';
-import { SEARCH_PAPER_SORT_TYPE } from '../reducers/searchFilter';
 
 export enum ACTION_TYPES {
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = 'GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING',
@@ -1059,7 +1058,7 @@ export interface SetActiveFilterBoxButtonAction {
 
 export interface SyncFilterWithQueryParamsAction {
   type: ACTION_TYPES.ARTICLE_SEARCH_SYNC_FILTERS_WITH_QUERY_PARAMS;
-  payload: { filters: FilterObject; sorting: SEARCH_PAPER_SORT_TYPE };
+  payload: { filters: FilterObject; sorting: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS };
 }
 
 interface SelectJournalFilterItemAction {
