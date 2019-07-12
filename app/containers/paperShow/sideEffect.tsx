@@ -9,7 +9,7 @@ import {
   fetchLastFullTextRequestedDate,
 } from '../../actions/paperShow';
 import { CurrentUser } from '../../model/currentUser';
-import { PaperShowMatchParams } from './types';
+import { PaperShowMatchParams, PaperShowPageQueryParams } from './types';
 import { ActionCreators } from '../../actions/actionTypes';
 
 export function fetchMyCollection(paperId: number, cancelToken: CancelToken) {
@@ -56,6 +56,34 @@ export function fetchRefPaperData(
       })
     );
   };
+}
+
+export async function fetchRefCitedPaperData(params: LoadDataParams<PaperShowMatchParams>) {
+  const { dispatch, match, queryParams, cancelToken } = params;
+
+  const paperId = parseInt(match.params.paperId, 10);
+  const queryParamsObject: PaperShowPageQueryParams = queryParams ? queryParams : { 'cited-page': 1, 'ref-page': 1 };
+
+  await Promise.all([
+    dispatch(
+      fetchCitedPaperData(
+        paperId,
+        queryParamsObject['cited-page'],
+        queryParamsObject['cited-query'] || '',
+        queryParamsObject['cited-sort'] || 'NEWEST_FIRST',
+        cancelToken
+      )
+    ),
+    dispatch(
+      fetchRefPaperData(
+        paperId,
+        queryParamsObject['ref-page'],
+        queryParamsObject['ref-query'] || '',
+        queryParamsObject['ref-sort'] || 'NEWEST_FIRST',
+        cancelToken
+      )
+    ),
+  ]);
 }
 
 export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchParams>, currentUser?: CurrentUser) {

@@ -82,8 +82,9 @@ export const routesMap: ServerRoutesMap[] = [
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<PaperShowMatchParams>) => {
-      const { fetchPaperShowData } = await import('./containers/paperShow/sideEffect');
-      await fetchPaperShowData(params);
+      const { fetchPaperShowData, fetchRefCitedPaperData } = await import('./containers/paperShow/sideEffect');
+
+      await Promise.all([fetchPaperShowData(params), fetchRefCitedPaperData(params)]);
     },
   },
   {
