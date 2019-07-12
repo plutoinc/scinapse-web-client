@@ -33,6 +33,7 @@ import FinalSignUpContent from '../auth/signUp/components/finalSignUpContent';
 import EnvChecker from '../../helpers/envChecker';
 import SurveyForm from '../auth/signUp/components/surveyForm';
 import { addPaperToRecommendation } from '../../actions/recommendation';
+import PaperFigureDetail from '../common/paperFigureDetail/paperFigureDetail';
 const styles = require('./dialog.scss');
 
 function mapStateToProps(state: AppState) {
@@ -347,6 +348,9 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
           );
         }
         return null;
+
+      case GLOBAL_DIALOG_TYPE.PAPER_FIGURE_DETAIL:
+        return <PaperFigureDetail handleCloseDialogRequest={this.closeDialog} />;
 
       default:
         return null;

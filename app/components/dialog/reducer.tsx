@@ -1,7 +1,7 @@
 import { ACTION_TYPES, Actions } from '../../actions/actionTypes';
 import { AvailableCitationType } from '../../containers/paperShow/records';
 import { Collection } from '../../model/collection';
-import { Paper } from '../../model/paper';
+import { Paper, PaperFigure } from '../../model/paper';
 import { SIGN_UP_STEP } from '../auth/signUp/types';
 import { OAuthCheckParams } from '../../api/types/auth';
 import { SignUpConversionExpTicketContext } from '../../constants/abTest';
@@ -21,6 +21,7 @@ export enum GLOBAL_DIALOG_TYPE {
   CITATION,
   AUTHOR_LIST_DIALOG,
   ADD_PUBLICATIONS_TO_AUTHOR_DIALOG,
+  PAPER_FIGURE_DETAIL,
 }
 
 export interface DialogState
@@ -52,6 +53,9 @@ export interface DialogState
       isBlocked: boolean | undefined;
 
       nextSignUpStep: string | undefined;
+
+      paperFigures: PaperFigure[] | undefined;
+      currentPaperFigureIndex: number | undefined;
     }> {} // TODO: remove below attribute after finishing the experiment
 
 export const DIALOG_INITIAL_STATE: DialogState = {
@@ -80,6 +84,8 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   authorListTargetPaper: undefined,
   isBlocked: undefined,
   nextSignUpStep: undefined,
+  paperFigures: undefined,
+  currentPaperFigureIndex: undefined,
 };
 
 export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actions): DialogState {
@@ -97,6 +103,8 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
         authContext: action.payload.authContext,
         isBlocked: action.payload.isBlocked,
         nextSignUpStep: action.payload.nextSignUpStep,
+        paperFigures: action.payload.paperFigures,
+        currentPaperFigureIndex: action.payload.currentPaperFigureIndex,
       };
     }
 

@@ -7,9 +7,10 @@ const MAX_LENGTH_OF_CAPTION = 80;
 
 interface LargePaperFigureProps {
   figure: PaperFigure;
+  handleOpenFigureDetailDialog: () => void;
 }
 
-const LargePaperFigure: React.FC<LargePaperFigureProps> = ({ figure }) => {
+const LargePaperFigure: React.FC<LargePaperFigureProps> = ({ figure, handleOpenFigureDetailDialog }) => {
   let finalCaption;
 
   if (figure.caption.length > MAX_LENGTH_OF_CAPTION) {
@@ -20,7 +21,7 @@ const LargePaperFigure: React.FC<LargePaperFigureProps> = ({ figure }) => {
 
   return (
     <div className={styles.figureContainer}>
-      <div className={styles.figureImageWrapper}>
+      <div className={styles.figureImageWrapper} onClick={handleOpenFigureDetailDialog}>
         <div className={styles.figureImageBackground} />
         <picture>
           <source srcSet={`${FIGURE_PREFIX}${figure.path}`} type="image/jpeg" />

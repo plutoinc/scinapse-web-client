@@ -1,0 +1,70 @@
+.paperFigureDetailContainer {
+  max-width: 920px !important;
+  max-height: 600px !important;
+  padding: 40px;
+  position: relative;
+}
+
+.figureDetailImageWrapper {
+  width: 100%;
+  height: 100%;
+  margin-bottom: 40px;
+}
+
+.figureDetailImage {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.closeButtonWrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  .closeButtonIcon {
+    color: $gray4;
+    display: inline-block;
+    vertical-align: top;
+    width: 14px;
+    height: 14px;
+    margin-top: 16px;
+    margin-right: 16px;
+    cursor: pointer;
+
+    svg {
+      display: inline-block;
+      vertical-align: top;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.sliderBtnWrapper {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  width: 120%;
+  top: 45%;
+  left: -10%;
+}
+
+.nextIcon {
+  width: 54px;
+  height: 54px;
+
+  svg {
+    width: 16px;
+    height: 30px;
+    opacity: 0.8;
+    color: white;
+  }
+}
+
+.prevIcon {
+  @extend .nextIcon;
+  svg {
+    transform: scaleX(-1);
+  }
+}
