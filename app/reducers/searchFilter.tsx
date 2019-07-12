@@ -11,6 +11,7 @@ export interface SearchFilterState extends AggregationData {
   selectedJournalIds: number[];
   selectedFOSIds: number[];
   addedJournals: JournalSuggestion[];
+  sorting: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS;
 }
 
 export const SEARCH_FILTER_INITIAL_STATE: SearchFilterState = {
@@ -19,6 +20,7 @@ export const SEARCH_FILTER_INITIAL_STATE: SearchFilterState = {
   currentYearTo: '',
   selectedJournalIds: [],
   selectedFOSIds: [],
+  sorting: 'RELEVANCE',
   // data
   fosList: [],
   journals: [],
@@ -48,7 +50,7 @@ export function reducer(state = SEARCH_FILTER_INITIAL_STATE, action: SearchActio
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_SYNC_FILTERS_WITH_QUERY_PARAMS: {
-      const { filters } = action.payload;
+      const { filters, sorting } = action.payload;
 
       return {
         ...state,
@@ -56,6 +58,7 @@ export function reducer(state = SEARCH_FILTER_INITIAL_STATE, action: SearchActio
         currentYearTo: filters.yearTo,
         selectedJournalIds: filters.journal,
         selectedFOSIds: filters.fos,
+        sorting,
       };
     }
 

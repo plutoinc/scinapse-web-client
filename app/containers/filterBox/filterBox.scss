@@ -1,4 +1,6 @@
 .wrapper {
+  display: flex;
+  align-items: center;
   margin-top: 16px;
   margin-bottom: 12px;
   padding: 12px 16px;
@@ -6,6 +8,15 @@
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
   background-color: white;
   max-width: $search_container_width;
+}
+
+.divider {
+  display: inline-block;
+  margin: 0 12px;
+}
+
+.sortText {
+  margin-right: 8px;
 }
 
 .btnWrapper {

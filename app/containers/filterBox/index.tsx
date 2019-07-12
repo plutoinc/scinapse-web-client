@@ -6,25 +6,29 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { withStyles } from '../../helpers/withStylesHelper';
 import SearchQueryManager from '../../helpers/searchQueryManager';
 import { AppState } from '../../reducers';
-import FilterButton, { FILTER_BUTTON_TYPE } from '../../components/filterButton';
-import { getMemoizedSearchFilterState } from '../../selectors/getSearchFilter';
 import { ACTION_TYPES, SearchActions } from '../../actions/actionTypes';
 import YearFilterDropdown from '../../components/yearFilterDropdown';
 import JournalFilterDropdown from '../../components/journalFilterDropdown';
 import FOSFilterDropdown from '../../components/fosFilterDropdown';
+import SortingDropdown from '../../components/sortingDropdown';
 const s = require('./filterBox.scss');
 
 type FilterBoxProps = RouteComponentProps & ReturnType<typeof mapStateToProps> & { dispatch: Dispatch<SearchActions> };
 const FilterBox: React.FC<FilterBoxProps> = props => {
-  const { searchFilterState } = props;
   React.useEffect(
     () => {
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
       const filters = SearchQueryManager.objectifyPaperFilter(currentQueryParams.filter);
-      props.dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_SYNC_FILTERS_WITH_QUERY_PARAMS, payload: { filters } });
+      props.dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_SYNC_FILTERS_WITH_QUERY_PARAMS,
+        payload: {
+          filters,
+          sorting: currentQueryParams.sort || 'Relevance',
+        },
+      });
     },
 
-    [props.location.search, searchFilterState.activeButton]
+    [props.location.search, props.activeButton]
   );
 
   return (
@@ -38,12 +42,11 @@ const FilterBox: React.FC<FilterBoxProps> = props => {
       <span className={s.btnWrapper}>
         <FOSFilterDropdown />
       </span>
-      <span>{` | Sort By `}</span>
-      <FilterButton
-        onClick={() => {}}
-        content={'Relevance'}
-        isActive={searchFilterState.activeButton === FILTER_BUTTON_TYPE.SORTING}
-      />
+      <span className={s.divider}>{'|'}</span>
+      <span className={s.sortText}>{`Sort By`}</span>
+      <span className={s.btnWrapper}>
+        <SortingDropdown />
+      </span>
     </div>
   );
 };
@@ -51,7 +54,7 @@ const FilterBox: React.FC<FilterBoxProps> = props => {
 // TODO: Remove below connect logic(it doesn't need it)
 function mapStateToProps(state: AppState) {
   return {
-    searchFilterState: getMemoizedSearchFilterState(state),
+    activeButton: state.searchFilterState.activeButton,
   };
 }
 
