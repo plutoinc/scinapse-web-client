@@ -54,7 +54,7 @@ const PaperFigureDetail: React.FC<Props> = props => {
           />
         </picture>
       </div>
-      <div calssName={styles.figureDetailCaption}>{currentFigure.caption}</div>
+      <div className={styles.figureDetailCaption}>{currentFigure.caption}</div>
       <div className={styles.sliderBtnWrapper}>
         <button className={styles.prevBtn} onClick={onClickPrevBtn}>
           <Icon icon="ARROW_RIGHT" className={styles.prevIcon} />

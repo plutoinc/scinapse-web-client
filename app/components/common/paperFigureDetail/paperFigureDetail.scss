@@ -1,6 +1,5 @@
 .paperFigureDetailContainer {
   max-width: 920px !important;
-  max-height: 600px !important;
   padding: 40px;
   position: relative;
 }
@@ -14,7 +13,7 @@
 }
 
 .figureDetailImage {
-  width: auto;
+  max-width: 840px;
   max-height: 440px;
   object-fit: contain;
 }
