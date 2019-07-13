@@ -1,8 +1,10 @@
 import * as React from 'react';
 import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import * as format from 'date-fns/format';
+import classNames from 'classnames';
 import { CurrentUser } from '../../../model/currentUser';
 import Abstract from './abstract';
+import Figures from './figures';
 import PaperActionButtons from './paperActionButtons';
 import Title from './title';
 import VenueAndAuthors from './venueAndAuthors';
@@ -15,8 +17,6 @@ import { getUserGroupName } from '../../../helpers/abTestHelper';
 import { BROAD_AUTHOR_VENUE_TEST } from '../../../constants/abTestGlobalValue';
 import { STOP_WORDS } from '../highLightedContent';
 import { PaperSource } from '../../../api/paper';
-import Figures from './figures';
-import classNames from 'classnames';
 const styles = require('./paperItem.scss');
 
 export interface PaperItemProps {
