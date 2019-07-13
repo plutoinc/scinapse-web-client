@@ -15,6 +15,8 @@ import { getUserGroupName } from '../../../helpers/abTestHelper';
 import { BROAD_AUTHOR_VENUE_TEST } from '../../../constants/abTestGlobalValue';
 import { STOP_WORDS } from '../highLightedContent';
 import { PaperSource } from '../../../api/paper';
+import Figures from './figures';
+import classNames from 'classnames';
 const styles = require('./paperItem.scss');
 
 export interface PaperItemProps {
@@ -134,13 +136,20 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
           source={source}
         />
         {venueAndAuthor}
-        <Abstract
-          paperId={paper.id}
-          pageType={pageType}
-          actionArea={actionArea}
-          abstract={paper.abstractHighlighted || paper.abstract}
-          searchQueryText={searchQueryText}
-        />
+        <div
+          className={classNames({
+            [styles.abstractAndFigureWrapper]: paper.figures.length > 0 && paper.figures.length <= 2,
+          })}
+        >
+          <Abstract
+            paperId={paper.id}
+            pageType={pageType}
+            actionArea={actionArea}
+            abstract={paper.abstractHighlighted || paper.abstract}
+            searchQueryText={searchQueryText}
+          />
+          <Figures figures={paper.figures} />
+        </div>
         <NotIncludedWords
           title={paper.title}
           abstract={paper.abstract || paper.abstractHighlighted || ''}
