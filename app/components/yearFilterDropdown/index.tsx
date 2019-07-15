@@ -76,7 +76,14 @@ const YearFilterDropdown: React.FC<
                   [s.active]: minYear === currentYear && maxYear === currentYear,
                 })}
                 onClick={() => {
-                  setMinMaxYears([currentYear, currentYear]);
+                  goToYearFilteredSearchResultPage({
+                    qs: props.location.search,
+                    history: props.history,
+                    min: currentYear,
+                    max: currentYear,
+                    fromBtn: true,
+                  });
+                  props.dispatch(setActiveFilterButton(null));
                 }}
               >
                 This Year
@@ -87,7 +94,14 @@ const YearFilterDropdown: React.FC<
                   [s.active]: minYear === currentYear - 3 + 1 && maxYear === currentYear,
                 })}
                 onClick={() => {
-                  setMinMaxYears([currentYear - 3 + 1, currentYear]);
+                  goToYearFilteredSearchResultPage({
+                    qs: props.location.search,
+                    history: props.history,
+                    min: currentYear - 3 + 1,
+                    max: currentYear,
+                    fromBtn: true,
+                  });
+                  props.dispatch(setActiveFilterButton(null));
                 }}
               >
                 Recent 3 years
@@ -98,7 +112,14 @@ const YearFilterDropdown: React.FC<
                   [s.active]: minYear === currentYear - 5 + 1 && maxYear === currentYear,
                 })}
                 onClick={() => {
-                  setMinMaxYears([currentYear - 5 + 1, currentYear]);
+                  goToYearFilteredSearchResultPage({
+                    qs: props.location.search,
+                    history: props.history,
+                    min: currentYear - 5 + 1,
+                    max: currentYear,
+                    fromBtn: true,
+                  });
+                  props.dispatch(setActiveFilterButton(null));
                 }}
               >
                 Recent 5 years
@@ -111,7 +132,14 @@ const YearFilterDropdown: React.FC<
                   [s.active]: minYear === 2010 && maxYear === currentYear,
                 })}
                 onClick={() => {
-                  setMinMaxYears([2010, currentYear]);
+                  goToYearFilteredSearchResultPage({
+                    qs: props.location.search,
+                    history: props.history,
+                    min: 2010,
+                    max: currentYear,
+                    fromBtn: true,
+                  });
+                  props.dispatch(setActiveFilterButton(null));
                 }}
               >
                 Since 2010
@@ -122,7 +150,14 @@ const YearFilterDropdown: React.FC<
                   [s.active]: minYear === 2000 && maxYear === currentYear,
                 })}
                 onClick={() => {
-                  setMinMaxYears([2000, currentYear]);
+                  goToYearFilteredSearchResultPage({
+                    qs: props.location.search,
+                    history: props.history,
+                    min: 2000,
+                    max: currentYear,
+                    fromBtn: true,
+                  });
+                  props.dispatch(setActiveFilterButton(null));
                 }}
               >
                 Since 2000
