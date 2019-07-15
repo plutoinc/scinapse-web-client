@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { withStyles } from '../../helpers/withStylesHelper';
+import Icon from '../../icons';
 const s = require('./filterButton.scss');
 
 export enum FILTER_BUTTON_TYPE {
@@ -25,6 +26,13 @@ const FilterButton: React.FC<FilterButtonProps> = ({ content, onClick, isActive 
       onClick={onClick}
     >
       {content}
+      <Icon
+        icon="ARROW_POINT_TO_DOWN"
+        className={classNames({
+          [s.arrowIcon]: true,
+          [s.activeIcon]: isActive,
+        })}
+      />
     </button>
   );
 };
