@@ -64,7 +64,7 @@ $top-toast-bar-height: 48px;
   }
 }
 
-@media (max-width: $mobile-width) {
+@media (max-width: $mobile_width) {
   .iconWrapper {
     position: static;
     margin-right: 5px;

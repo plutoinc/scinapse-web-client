@@ -236,7 +236,7 @@
   justify-content: center;
 }
 
-@media (max-width: $tablet-width) {
+@media (max-width: $tablet_width) {
   .leftContentWrapper {
     padding: 0 12px;
   }
@@ -247,7 +247,7 @@
 }
 
 // Mobile (0~768)
-@media (max-width: $mobile-width) {
+@media (max-width: $mobile_width) {
   .container {
     display: block;
     width: $mobile-container-width;

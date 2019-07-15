@@ -105,7 +105,7 @@
   height: 84px;
 }
 
-@media (max-width: $mobile-width) {
+@media (max-width: $mobile_width) {
   .articleSearchContainer {
     margin-top: $search-mobile-navbar-height;
   }

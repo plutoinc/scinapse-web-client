@@ -106,7 +106,7 @@
   align-items: center;
 }
 
-@media (max-width: $mobile-width) {
+@media (max-width: $mobile_width) {
   .searchContainer {
     flex-direction: column;
     justify-content: flex-start;

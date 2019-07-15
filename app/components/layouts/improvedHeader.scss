@@ -292,7 +292,7 @@
   }
 }
 
-@media (max-width: $tablet-width) {
+@media (max-width: $tablet_width) {
   .searchFormContainer {
     max-width: 100%;
     margin-right: 8px;
@@ -310,7 +310,7 @@
   }
 }
 
-@media (max-width: $mobile-width) {
+@media (max-width: $mobile_width) {
   .rightBox {
     .externalCollectionButton {
       display: none;

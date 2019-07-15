@@ -29,7 +29,7 @@
   cursor: pointer;
 
   // Mobile
-  @media (max-width: $mobile-width) {
+  @media (max-width: $mobile_width) {
     display: none;
   }
   &:hover {
