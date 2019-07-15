@@ -4,10 +4,10 @@ import { withStyles } from '../../helpers/withStylesHelper';
 const s = require('./filterButton.scss');
 
 export enum FILTER_BUTTON_TYPE {
-  YEAR,
-  JOURNAL,
-  FOS,
-  SORTING,
+  YEAR = 'YEAR',
+  JOURNAL = 'JOURNAL',
+  FOS = 'FOS',
+  SORTING = 'SORTING',
 }
 
 export interface FilterButtonProps {

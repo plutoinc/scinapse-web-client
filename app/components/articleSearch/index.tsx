@@ -157,13 +157,13 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
   if (queryParams) {
     return (
       <div className={styles.innerContainer}>
-        <FilterBox />
         <div className={styles.searchSummary}>
           <div>
             <span className={styles.categoryHeader}>Publication</span>
             <span className={styles.categoryCount}>{formatNumber(articleSearchState.totalElements)}</span>
           </div>
         </div>
+        <FilterBox />
         <SearchList
           currentUser={currentUserState}
           papers={articleSearchState.searchItemsToShow}

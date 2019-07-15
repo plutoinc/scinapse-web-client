@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { parse } from 'qs';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -11,6 +12,7 @@ import YearFilterDropdown from '../../components/yearFilterDropdown';
 import JournalFilterDropdown from '../../components/journalFilterDropdown';
 import FOSFilterDropdown from '../../components/fosFilterDropdown';
 import SortingDropdown from '../../components/sortingDropdown';
+
 const s = require('./filterBox.scss');
 
 type FilterBoxProps = RouteComponentProps & ReturnType<typeof mapStateToProps> & { dispatch: Dispatch<SearchActions> };
@@ -32,22 +34,35 @@ const FilterBox: React.FC<FilterBoxProps> = props => {
   );
 
   return (
-    <div className={s.wrapper}>
-      <span className={s.btnWrapper}>
-        <YearFilterDropdown />
-      </span>
-      <span className={s.btnWrapper}>
-        <JournalFilterDropdown />
-      </span>
-      <span className={s.btnWrapper}>
-        <FOSFilterDropdown />
-      </span>
-      <span className={s.divider}>{'|'}</span>
-      <span className={s.sortText}>{`Sort By`}</span>
-      <span className={s.btnWrapper}>
-        <SortingDropdown />
-      </span>
-    </div>
+    <>
+      <div
+        className={classNames({
+          [s.wrapper]: true,
+          [s.activeWrapper]: !!props.activeButton,
+        })}
+      >
+        <span className={s.btnWrapper}>
+          <YearFilterDropdown />
+        </span>
+        <span className={s.btnWrapper}>
+          <JournalFilterDropdown />
+        </span>
+        <span className={s.btnWrapper}>
+          <FOSFilterDropdown />
+        </span>
+        <span className={s.divider}>{'|'}</span>
+        <span className={s.sortText}>{`Sort By`}</span>
+        <span className={s.btnWrapper}>
+          <SortingDropdown />
+        </span>
+      </div>
+      <div
+        className={classNames({
+          [s.backdrop]: true,
+          [s.activeBackdrop]: !!props.activeButton,
+        })}
+      />
+    </>
   );
 };
 
