@@ -7,18 +7,19 @@
   color: $gray9;
   cursor: pointer;
   text-align: left;
-  padding: 2px 0;
-
-  & + & {
-    margin-top: 8px;
-  }
+  padding: 8px;
+  border-radius: 4px;
 
   &:hover {
-    color: $dark-blue0;
+    background-color: $main_blue_light1;
   }
 
   &.isSelected {
     color: $main_blue1;
+  }
+
+  &.highlighted {
+    background-color: $main_blue_light1;
   }
 }
 
@@ -27,7 +28,7 @@
 
   display: inline-block;
   vertical-align: top;
-  width: 415px;
+  width: 373px;
 }
 
 .ifLabel {
@@ -39,6 +40,10 @@
   font-size: 14px;
   text-align: right;
   color: $main_blue0;
+
+  &.noDocCount {
+    right: 8px;
+  }
 }
 
 .ifIconWrapper {
@@ -53,9 +58,13 @@
 
 .countBox {
   position: absolute;
-  right: 0;
+  top: 0;
+  right: 8px;
+  bottom: 0;
   font-size: 16px;
   color: $gray9;
+  display: flex;
+  align-items: center;
 }
 
 .arrowBottomTooltip {

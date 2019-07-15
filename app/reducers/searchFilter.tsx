@@ -1,3 +1,4 @@
+import { uniq, uniqBy } from 'lodash';
 import { AggregationData } from '../model/aggregation';
 import { ACTION_TYPES, SearchActions } from '../actions/actionTypes';
 import { FILTER_BUTTON_TYPE } from '../components/filterButton';
@@ -87,6 +88,16 @@ export function reducer(state = SEARCH_FILTER_INITIAL_STATE, action: SearchActio
       return {
         ...state,
         selectedFOSIds: [],
+      };
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_ADD_JOURNAL_FILTER_ITEMS: {
+      const journalIds = action.payload.journals.map(j => j.id);
+
+      return {
+        ...state,
+        selectedJournalIds: uniq([...journalIds, ...state.selectedJournalIds]),
+        journals: uniqBy([...action.payload.journals, ...state.journals], j => j.id),
       };
     }
 

@@ -6,6 +6,9 @@
   background-color: white;
   padding: 24px;
   margin-top: 8px;
+}
+
+.content {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -26,6 +29,12 @@
   cursor: pointer;
   font-size: 16px;
   color: $main_blue1;
+}
+
+.journalListWrapper {
+  height: 496px;
+  overflow-y: auto;
+  margin-bottom: 24px;
 }
 
 @media (max-width: $mobile-width) {

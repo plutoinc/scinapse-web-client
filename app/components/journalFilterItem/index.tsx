@@ -12,6 +12,7 @@ interface JournalItemProps {
   checked: boolean;
   isHighlight: boolean;
   onClick: () => void;
+  omitDocCount?: boolean;
   docCount?: number;
   IF?: number;
 }
@@ -20,7 +21,12 @@ const JournalItem: React.FC<JournalItemProps> = props => {
   let ImpactFactor = null;
   if (props.IF) {
     ImpactFactor = (
-      <span className={s.ifLabel}>
+      <span
+        className={classNames({
+          [s.ifLabel]: true,
+          [s.noDocCount]: props.omitDocCount,
+        })}
+      >
         <Tooltip
           disableFocusListener={true}
           disableTouchListener={true}
@@ -37,6 +43,11 @@ const JournalItem: React.FC<JournalItemProps> = props => {
     );
   }
 
+  let docCount = null;
+  if (props.docCount) {
+    docCount = <span className={s.countBox}>{`(${formatNumber(props.docCount)})`}</span>;
+  }
+
   return (
     <button
       onClick={props.onClick}
@@ -48,7 +59,7 @@ const JournalItem: React.FC<JournalItemProps> = props => {
     >
       <span className={s.title}>{props.title}</span>
       {ImpactFactor}
-      <span className={s.countBox}>{`(${formatNumber(props.docCount)})`}</span>
+      <span className={s.countBox}>{docCount}</span>
     </button>
   );
 };

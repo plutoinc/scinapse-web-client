@@ -14,6 +14,7 @@ import { SignUpConversionExpTicketContext } from '../constants/abTest';
 import { SearchResult } from '../api/search';
 import { FILTER_BUTTON_TYPE } from '../components/filterButton';
 import { FilterObject } from '../helpers/searchQueryManager';
+import { AggregationJournal } from '../model/aggregation';
 
 export enum ACTION_TYPES {
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = 'GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING',
@@ -132,6 +133,7 @@ export enum ACTION_TYPES {
   ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM = 'ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM',
   ARTICLE_SEARCH_SELECT_FOS_FILTER_ITEM = 'ARTICLE_SEARCH_SELECT_FOS_FILTER_ITEM',
   ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER = 'ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER',
+  ARTICLE_SEARCH_ADD_JOURNAL_FILTER_ITEMS = 'ARTICLE_SEARCH_ADD_JOURNAL_FILTER_ITEMS',
   ARTICLE_SEARCH_CLEAR_FOS_FILTER = 'ARTICLE_SEARCH_CLEAR_FOS_FILTER',
 
   AUTHOR_SHOW_START_TO_LOAD_DATA_FOR_PAGE = 'AUTHOR_SHOW_START_TO_LOAD_DATA_FOR_PAGE',
@@ -1079,6 +1081,13 @@ interface ClearFOSFilterAction {
   type: ACTION_TYPES.ARTICLE_SEARCH_CLEAR_FOS_FILTER;
 }
 
+interface AddJournalFilterItems {
+  type: ACTION_TYPES.ARTICLE_SEARCH_ADD_JOURNAL_FILTER_ITEMS;
+  payload: {
+    journals: AggregationJournal[];
+  };
+}
+
 export type SearchActions =
   | SucceedToGetSearchResultAction
   | SetActiveFilterBoxButtonAction
@@ -1086,6 +1095,7 @@ export type SearchActions =
   | SelectJournalFilterItemAction
   | SelectFOSFilterItemAction
   | ClearJournalFilterAction
-  | ClearFOSFilterAction;
+  | ClearFOSFilterAction
+  | AddJournalFilterItems;
 
 export type Actions = ActionUnion<typeof ActionCreators>;

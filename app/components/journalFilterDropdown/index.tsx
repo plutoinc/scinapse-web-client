@@ -12,6 +12,8 @@ import JournalItem from '../journalFilterItem';
 import { AppState } from '../../reducers';
 import { trackSelectFilter } from '../../helpers/trackSelectFilter';
 import makeNewFilterLink from '../../helpers/makeNewFilterLink';
+import JournalFilterInput from '../journalFilterInput';
+import { AggregationJournal } from '../../model/aggregation';
 
 const s = require('./journalFilterDropdown.scss');
 
@@ -68,32 +70,36 @@ const JournalFilterDropdown: React.FC<
           content={buttonText}
           isActive={props.isActive}
         />
-
         <Popper open={props.isActive} anchorEl={anchorEl.current} placement="bottom-start" disablePortal>
           <div className={s.dropBoxWrapper}>
-            <div>{journalList}</div>
-            <div className={s.controlBtnsWrapper}>
-              <button
-                className={s.clearBtn}
-                onClick={() => {
-                  props.dispatch({
-                    type: ACTION_TYPES.ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER,
-                  });
-                }}
-              >
-                Clear
-              </button>
-              <button
-                className={s.applyBtn}
-                onClick={() => {
-                  trackSelectFilter('JOURNAL', JSON.stringify(props.selectedJournalIds));
-                  props.dispatch(setActiveFilterButton(null));
-                  const link = makeNewFilterLink({ journal: props.selectedJournalIds }, props.location);
-                  props.history.push(link);
-                }}
-              >
-                Apply
-              </button>
+            <JournalFilterInput
+              onSubmit={(journals: AggregationJournal[]) => {
+                props.dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_ADD_JOURNAL_FILTER_ITEMS, payload: { journals } });
+              }}
+            />
+            <div className={s.content}>
+              <div className={s.journalListWrapper}>{journalList}</div>
+              <div className={s.controlBtnsWrapper}>
+                <button
+                  className={s.clearBtn}
+                  onClick={() => {
+                    props.dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER });
+                  }}
+                >
+                  Clear
+                </button>
+                <button
+                  className={s.applyBtn}
+                  onClick={() => {
+                    trackSelectFilter('JOURNAL', JSON.stringify(props.selectedJournalIds));
+                    props.dispatch(setActiveFilterButton(null));
+                    const link = makeNewFilterLink({ journal: props.selectedJournalIds }, props.location);
+                    props.history.push(link);
+                  }}
+                >
+                  Apply
+                </button>
+              </div>
             </div>
           </div>
         </Popper>
