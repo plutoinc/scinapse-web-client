@@ -89,11 +89,10 @@
 .searchSummary {
   position: relative;
   display: flex;
-  margin-top: 32px;
   font-size: 15px;
   align-items: center;
   line-height: 28px;
-  margin-bottom: 16px;
+  margin: 16px 0;
 
   .searchResult {
     color: $main_blue0;
@@ -109,20 +108,20 @@
 
 .categoryHeader {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: bold;
   margin-right: 8px;
-  color: $black1;
+  color: $dark-blue0;
+  margin-bottom: 4px;
 }
 
 .categoryCount {
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 14px;
   color: $gray5;
 }
 
 .authorItemsHeader {
   position: relative;
-  padding: 32px 0 16px 0;
+  padding: 24px 0 16px 0;
 
   .moreAuthorLink {
     display: inline;

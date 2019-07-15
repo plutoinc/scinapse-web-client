@@ -87,8 +87,11 @@ const AuthorSearchResult: React.FC<AuthorSearchResult> = React.memo(
     return (
       <div className={styles.authorItemSectionWrapper}>
         <div className={styles.authorItemsHeader}>
-          <span className={styles.categoryHeader}>Author</span>
-          <span className={styles.categoryCount}>{authorCount}</span>
+          <div className={styles.categoryHeader}>Author</div>
+          <div className={styles.categoryCount}>
+            {authorCount}
+            {authorCount > 1 ? ' authors' : ' author'}
+          </div>
           {authorCount <= 2 ? null : moreAuthorPage}
         </div>
         <div className={styles.authorItemsWrapper}>{authorItems}</div>
@@ -102,12 +105,11 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
 
   const hasNoSearchResult =
     (!articleSearchState.searchItemsToShow || articleSearchState.searchItemsToShow.length === 0) && queryParams;
-  const hasNoSearchResultAndNoAuthorResult =
-    hasNoSearchResult &&
-    (!articleSearchState.matchAuthors ||
-      (articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements === 0));
-  const hasNoSearchResultButHasAuthorResult =
-    hasNoSearchResult && articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements > 0;
+  const hasNoMatchedAuthors =
+    !articleSearchState.matchAuthors ||
+    (articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements === 0);
+  const hasNoSearchResultAndNoAuthorResult = hasNoSearchResult && hasNoMatchedAuthors;
+  const hasNoSearchResultButHasAuthorResult = !hasNoMatchedAuthors;
   const blockedDoiMatchedSearch =
     !currentUserState.isLoggedIn && articleSearchState.doiPatternMatched && !hasNoSearchResult;
 
@@ -130,6 +132,7 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
       </div>
     );
   }
+
   if (hasNoSearchResultAndNoAuthorResult) {
     return (
       <div className={styles.innerContainer}>
@@ -145,6 +148,7 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
       </div>
     );
   }
+
   if (blockedDoiMatchedSearch) {
     return (
       <NoSsr>
@@ -154,13 +158,18 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
       </NoSsr>
     );
   }
+
   if (queryParams) {
     return (
       <div className={styles.innerContainer}>
         <div className={styles.searchSummary}>
           <div>
-            <span className={styles.categoryHeader}>Publication</span>
-            <span className={styles.categoryCount}>{formatNumber(articleSearchState.totalElements)}</span>
+            {!hasNoMatchedAuthors && <div className={styles.categoryHeader}>Publication</div>}
+            <div className={styles.categoryCount}>
+              {formatNumber(articleSearchState.totalElements)}
+              {articleSearchState.totalElements > 1 ? ' Papers ' : ' Paper '}
+              {`Showing results for ${articleSearchState.searchInput}`}
+            </div>
           </div>
         </div>
         <FilterBox />
