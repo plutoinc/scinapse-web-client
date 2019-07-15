@@ -1,5 +1,5 @@
 .dropBoxWrapper {
-  width: 387px;
+  width: 245px;
   border-radius: 4px;
   box-shadow: 0 8px 24px 2px rgba(0, 0, 0, 0.2);
   background-color: white;
@@ -33,20 +33,20 @@
 }
 
 .hyphen {
-  width: 24px;
+  width: 13px;
   height: 2px;
   border-radius: 2px;
   background-color: $gray4;
-  margin: 0 12px;
+  margin: 0 4px;
 }
 
 .yearInput {
-  width: 144px;
-  height: 32px;
+  width: 88px;
+  height: 24px;
   border-radius: 2px;
   border: solid 1px $gray2;
   background-color: $gray0;
-  padding: 8px;
+  padding: 6px 8px;
   opacity: 0.7;
   font-size: 14px;
   color: $gray6;

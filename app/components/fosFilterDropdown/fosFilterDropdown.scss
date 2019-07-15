@@ -13,22 +13,17 @@
   align-items: center;
   width: 100%;
   cursor: pointer;
-  padding: 2px 0;
+  padding: 8px;
+  border-radius: 4px;
 
   &:hover {
-    .fosName {
-      color: $dark-blue0;
-    }
+    background-color: $main_blue_light1;
   }
 
   &.selected {
     .fosName {
       color: $main_blue1;
     }
-  }
-
-  & + & {
-    margin-top: 8px;
   }
 
   .fosName {
