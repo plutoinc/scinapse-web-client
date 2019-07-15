@@ -63,6 +63,16 @@ const PaperFigureDetail: React.FC<Props> = props => {
           <Icon icon="ARROW_RIGHT" className={styles.nextIcon} />
         </button>
       </div>
+      <div className={styles.mobileSliderBtnWrapper}>
+        <button className={styles.mobileSliderBtn} onClick={onClickPrevBtn}>
+          <Icon icon="ARROW_RIGHT" className={styles.prevIcon} />
+          PREV
+        </button>
+        <button className={styles.mobileSliderBtn} onClick={onClickNextBtn}>
+          NEXT
+          <Icon icon="ARROW_RIGHT" className={styles.nextIcon} />
+        </button>
+      </div>
     </div>
   );
 };

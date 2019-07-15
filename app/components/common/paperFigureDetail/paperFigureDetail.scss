@@ -1,5 +1,6 @@
 .paperFigureDetailContainer {
   max-width: 920px !important;
+  width: 100%;
   padding: 40px;
   position: relative;
 }
@@ -73,5 +74,76 @@
   @extend .nextIcon;
   svg {
     transform: scaleX(-1);
+  }
+}
+
+.mobileSliderBtnWrapper {
+  display: none;
+}
+
+@media (max-width: $tablet_width) {
+  .figureDetailImage {
+    max-width: 328px;
+    max-height: 188px;
+    object-fit: contain;
+  }
+
+  .figureDetailImageWrapper {
+    margin-top: 28px;
+    margin-bottom: 24px;
+  }
+
+  .figureDetailCaption {
+    font-size: 13px;
+    line-height: 1.54;
+    color: $black1;
+  }
+
+  .sliderBtnWrapper {
+    display: none;
+  }
+
+  .mobileSliderBtnWrapper {
+    display: flex;
+  }
+
+  .mobileSliderBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 160px;
+    height: 40px;
+    border-radius: 3px;
+    background-color: $gray1;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.54;
+    letter-spacing: 0.75px;
+    color: $black1;
+    margin-top: 16px;
+
+    & + & {
+      margin-left: 8px;
+    }
+
+    .nextIcon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 0 0 6px;
+
+      svg {
+        width: 8px;
+        height: 15px;
+        opacity: 1;
+        color: $gray4;
+      }
+    }
+
+    .prevIcon {
+      margin: 0 6px 0 0;
+    }
   }
 }

@@ -252,7 +252,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <div className={styles.fos}>
                   <FOSList FOSList={paper.fosList} />
                 </div>
-                <PaperShowFigureList paper={paper} />
+                <PaperShowFigureList paper={paper} isMobile={layout.userDevice !== UserDevice.DESKTOP} />
               </div>
             </div>
           </article>

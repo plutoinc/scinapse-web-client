@@ -41,3 +41,19 @@
   font-size: 13px;
   color: $black1;
 }
+
+@media (max-width: $mobile-width) {
+  .figureContainer {
+    margin-bottom: 4px;
+  }
+
+  .figureImageWrapper {
+    width: 160px;
+    height: 160px;
+    margin-right: 8px;
+  }
+
+  .figureCaption {
+    width: 160px;
+  }
+}
