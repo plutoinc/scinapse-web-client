@@ -37,7 +37,6 @@ const SliderButtons: React.FC<SliderButtonsProps> = props => {
   return (
     <div
       className={classNames({
-        [styles.sliderBtnWrapper]: !isMobile,
         [styles.mobileSliderBtnWrapper]: isMobile,
       })}
     >
