@@ -263,3 +263,6 @@ $s3_url: 'https://dd2gn9pwu61vr.cloudfront.net';
   justify-content: center;
   align-items: center;
 }
+:export {
+  navbarHeight: $navbar_height;
+}

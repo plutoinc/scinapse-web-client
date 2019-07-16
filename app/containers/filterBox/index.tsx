@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { parse } from 'qs';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
 import { withStyles } from '../../helpers/withStylesHelper';
 import SearchQueryManager from '../../helpers/searchQueryManager';
 import { AppState } from '../../reducers';
@@ -12,11 +12,15 @@ import YearFilterDropdown from '../../components/yearFilterDropdown';
 import JournalFilterDropdown from '../../components/journalFilterDropdown';
 import FOSFilterDropdown from '../../components/fosFilterDropdown';
 import SortingDropdown from '../../components/sortingDropdown';
+import Icon from '../../icons';
+import makeNewFilterLink from '../../helpers/makeNewFilterLink';
 
 const s = require('./filterBox.scss');
 
 type FilterBoxProps = RouteComponentProps & ReturnType<typeof mapStateToProps> & { dispatch: Dispatch<SearchActions> };
 const FilterBox: React.FC<FilterBoxProps> = props => {
+  const filterBoxRef = React.useRef(null);
+
   React.useEffect(
     () => {
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
@@ -36,25 +40,45 @@ const FilterBox: React.FC<FilterBoxProps> = props => {
   return (
     <>
       <div
+        ref={filterBoxRef}
         className={classNames({
           [s.wrapper]: true,
           [s.activeWrapper]: !!props.activeButton,
         })}
       >
-        <span className={s.btnWrapper}>
-          <YearFilterDropdown />
-        </span>
-        <span className={s.btnWrapper}>
-          <JournalFilterDropdown />
-        </span>
-        <span className={s.btnWrapper}>
-          <FOSFilterDropdown />
-        </span>
-        <span className={s.divider}>{'|'}</span>
-        <span className={s.sortText}>{`Sort By`}</span>
-        <span className={s.btnWrapper}>
-          <SortingDropdown />
-        </span>
+        <div className={s.controlBtns}>
+          <span className={s.btnWrapper}>
+            <YearFilterDropdown />
+          </span>
+          <span className={s.btnWrapper}>
+            <JournalFilterDropdown />
+          </span>
+          <span className={s.btnWrapper}>
+            <FOSFilterDropdown />
+          </span>
+          <span className={s.divider}>{'|'}</span>
+          <span className={s.sortText}>{`Sort By`}</span>
+          <span className={s.btnWrapper}>
+            <SortingDropdown />
+          </span>
+        </div>
+        {props.isFilterApplied && (
+          <Link
+            to={makeNewFilterLink(
+              {
+                yearFrom: undefined,
+                yearTo: undefined,
+                fos: [],
+                journal: [],
+              },
+              props.location
+            )}
+            className={s.clearButton}
+          >
+            <Icon icon="X_BUTTON" className={s.xIcon} />
+            <span>Clear All</span>
+          </Link>
+        )}
       </div>
       <div
         className={classNames({
@@ -66,10 +90,15 @@ const FilterBox: React.FC<FilterBoxProps> = props => {
   );
 };
 
-// TODO: Remove below connect logic(it doesn't need it)
 function mapStateToProps(state: AppState) {
+  const { searchFilterState } = state;
   return {
-    activeButton: state.searchFilterState.activeButton,
+    activeButton: searchFilterState.activeButton,
+    isFilterApplied:
+      !!searchFilterState.currentYearFrom ||
+      !!searchFilterState.currentYearTo ||
+      searchFilterState.selectedFOSIds.length > 0 ||
+      searchFilterState.selectedJournalIds.length > 0,
   };
 }
 
