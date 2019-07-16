@@ -17,7 +17,7 @@
   display: none;
 }
 
-@media (max-width: $mobile-width) {
+@media (max-width: $mobile_width) {
   .paperFigureContainer {
     justify-content: space-around;
   }
