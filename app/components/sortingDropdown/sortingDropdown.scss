@@ -13,12 +13,10 @@
   font-size: 16px;
   font-weight: 500;
   color: $dark-blue0;
-
-  & + & {
-    margin-top: 12px;
-  }
+  padding: 8px;
+  border-radius: 4px;
 
   &:hover {
-    color: $main_blue1;
+    background-color: $main_blue_light1;
   }
 }
