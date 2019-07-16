@@ -53,9 +53,9 @@
   display: flex;
   justify-content: space-between;
   position: absolute;
-  width: 120%;
+  width: 100%;
   top: 45%;
-  left: -10%;
+  left: 0;
 }
 
 .nextIcon {
@@ -75,6 +75,16 @@
   svg {
     transform: scaleX(-1);
   }
+}
+
+.prevBtn {
+  position: absolute;
+  left: -54px;
+}
+
+.nextBtn {
+  position: absolute;
+  right: -54px;
 }
 
 .mobileSliderBtnWrapper {
