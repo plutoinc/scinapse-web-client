@@ -100,7 +100,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       );
     }
 
-    if (dialogState.type === GLOBAL_DIALOG_TYPE.PAPER_FIGURE_DETAIL && dialogState.currentPaperFigureIndex) {
+    if (dialogState.type === GLOBAL_DIALOG_TYPE.PAPER_FIGURE_DETAIL) {
       return (
         <Dialog
           open={dialogState.isOpen}

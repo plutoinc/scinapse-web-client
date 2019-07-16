@@ -13,7 +13,13 @@ type Props = ReturnType<typeof mapStateToProps> & { handleCloseDialogRequest: ()
 const PaperFigureDetail: React.FC<Props> = props => {
   const { DialogState, handleCloseDialogRequest } = props;
   const { paperFigures, currentPaperFigureIndex } = DialogState;
+  const paperFigureEl = React.useRef<HTMLDivElement | null>(null);
+
   const [showFigureIndex, setShowFigureIndex] = React.useState(currentPaperFigureIndex!);
+
+  React.useEffect(() => {
+    paperFigureEl.current && paperFigureEl.current.focus();
+  }, []);
 
   const onClickPrevBtn = React.useCallback(
     () => {
@@ -37,12 +43,39 @@ const PaperFigureDetail: React.FC<Props> = props => {
     [paperFigures, showFigureIndex]
   );
 
+  const onKeyDownInFigureContainer = React.useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      switch (e.keyCode) {
+        case 37: {
+          // left
+          onClickPrevBtn();
+          break;
+        }
+
+        case 39: {
+          // right
+          onClickNextBtn();
+          break;
+        }
+
+        default:
+          break;
+      }
+    },
+    [onClickPrevBtn, onClickNextBtn]
+  );
+
   if (!paperFigures) return null;
 
   const currentFigure = paperFigures[showFigureIndex];
 
   return (
-    <div className={styles.paperFigureDetailContainer}>
+    <div
+      className={styles.paperFigureDetailContainer}
+      ref={paperFigureEl}
+      tabIndex={1}
+      onKeyDown={onKeyDownInFigureContainer}
+    >
       <div onClick={handleCloseDialogRequest} className={styles.closeButtonWrapper}>
         <Icon icon="X_BUTTON" className={styles.closeButtonIcon} />
       </div>
