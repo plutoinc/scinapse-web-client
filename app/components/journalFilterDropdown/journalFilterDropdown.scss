@@ -1,6 +1,6 @@
 .dropBoxWrapper {
   width: 588px;
-  height: 639px;
+  max-height: 639px;
   border-radius: 4px;
   box-shadow: 0 8px 24px 2px rgba(0, 0, 0, 0.2);
   background-color: white;
@@ -32,7 +32,7 @@
 }
 
 .journalListWrapper {
-  height: 496px;
+  max-height: 496px;
   overflow-y: auto;
   margin-bottom: 24px;
 }

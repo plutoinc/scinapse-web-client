@@ -89,7 +89,7 @@ const FOSFilterDropdown: React.FC<
         />
         <Popper open={props.isActive} anchorEl={anchorEl.current} placement="bottom-start" disablePortal>
           <div className={s.dropBoxWrapper}>
-            <div>{FOSList}</div>
+            <div className={s.FOSListWrapper}>{FOSList}</div>
             <div className={s.controlBtnsWrapper}>
               <button
                 className={s.clearBtn}

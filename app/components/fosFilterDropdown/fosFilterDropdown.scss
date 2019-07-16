@@ -56,6 +56,11 @@
   color: $main_blue1;
 }
 
+.FOSListWrapper {
+  max-height: 496px;
+  overflow-y: auto;
+}
+
 @media (max-width: $mobile-width) {
   .dropBoxWrapper {
     width: 100vw;
