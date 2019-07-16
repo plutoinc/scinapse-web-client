@@ -26,7 +26,7 @@ const JournalFilterDropdown: React.FC<
 > = props => {
   const anchorEl = React.useRef(null);
 
-  let buttonText = 'Any journal';
+  let buttonText = 'Any journal/conf';
   if (props.selectedJournalIds.length > 0) {
     buttonText = `${props.selectedJournalIds.length} journals`;
   }

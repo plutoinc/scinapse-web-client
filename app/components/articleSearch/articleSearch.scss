@@ -52,40 +52,6 @@
   margin-left: 22px;
 }
 
-.suggestionBox {
-  margin-top: 24px;
-  padding-bottom: 16px;
-  font-size: 16px;
-  text-align: left;
-  color: $gray6;
-  width: 100%;
-  border-bottom: 1px solid $gray3;
-
-  .noResult {
-    font-size: 18px;
-    margin-bottom: 4px;
-  }
-
-  .suggestionResult {
-    font-size: 14px;
-
-    b {
-      font-weight: normal;
-      color: $red0;
-    }
-  }
-
-  .suggestionLink {
-    color: $navy0;
-    font-style: italic;
-    text-decoration: underline;
-  }
-
-  b {
-    font-weight: bold;
-  }
-}
-
 .searchSummary {
   position: relative;
   display: flex;
@@ -103,6 +69,48 @@
     border-left: solid 1px $gray3;
     margin-left: 12px;
     margin-right: 12px;
+  }
+}
+
+.countDivider {
+  display: inline-block;
+  margin: 0 8px;
+}
+
+.additionalContent {
+  font-size: 14px;
+  line-height: 18px;
+  color: $gray5;
+
+  .boldQuery {
+    font-weight: bold;
+  }
+
+  .wrongQuery {
+    color: $red0;
+    font-weight: bold;
+  }
+
+  .suggestionKeyword {
+    color: $main-blue1;
+    font-weight: bold;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .weirdQuery {
+    font-weight: bold;
+  }
+
+  .suggestionLink {
+    color: $gray6;
+    font-weight: bold;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 

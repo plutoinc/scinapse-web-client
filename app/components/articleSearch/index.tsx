@@ -12,7 +12,7 @@ import { AppState } from '../../reducers';
 import NoResult from './components/noResult';
 import NoResultInSearch from './components/noResultInSearch';
 import TabNavigationBar from '../common/tabNavigationBar';
-import Suggestions from './components/suggestions';
+import PaperSearchResultInfo from './components/PaperSearchResultInfo';
 import ErrorPage from '../error/errorPage';
 import { searchPapers } from './actions';
 import SearchList from './components/searchList';
@@ -23,7 +23,6 @@ import { Actions } from '../../actions/actionTypes';
 import restoreScroll from '../../helpers/scrollRestoration';
 import { SearchPageQueryParams } from './types';
 import { MatchAuthor } from '../../api/search';
-import formatNumber from '../../helpers/formatNumber';
 import Pagination from './components/pagination';
 import SignBanner from './components/signBanner';
 import FilterBox from '../../containers/filterBox';
@@ -109,7 +108,7 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
     !articleSearchState.matchAuthors ||
     (articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements === 0);
   const hasNoSearchResultAndNoAuthorResult = hasNoSearchResult && hasNoMatchedAuthors;
-  const hasNoSearchResultButHasAuthorResult = !hasNoMatchedAuthors;
+  const hasNoSearchResultButHasAuthorResult = hasNoSearchResult && !hasNoMatchedAuthors;
   const blockedDoiMatchedSearch =
     !currentUserState.isLoggedIn && articleSearchState.doiPatternMatched && !hasNoSearchResult;
 
@@ -163,14 +162,13 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
     return (
       <div className={styles.innerContainer}>
         <div className={styles.searchSummary}>
-          <div>
-            {!hasNoMatchedAuthors && <div className={styles.categoryHeader}>Publication</div>}
-            <div className={styles.categoryCount}>
-              {formatNumber(articleSearchState.totalElements)}
-              {articleSearchState.totalElements > 1 ? ' Papers ' : ' Paper '}
-              {`Showing results for ${articleSearchState.searchInput}`}
-            </div>
-          </div>
+          <PaperSearchResultInfo
+            searchFromSuggestion={articleSearchState.searchFromSuggestion}
+            suggestionKeyword={articleSearchState.suggestionKeyword}
+            query={articleSearchState.searchInput}
+            docCount={articleSearchState.totalElements}
+            shouldShowTitle={!hasNoMatchedAuthors}
+          />
         </div>
         <FilterBox />
         <SearchList
@@ -259,11 +257,6 @@ const SearchContainer: React.FC<Props> = props => {
           query={queryParams.query}
           detectedYear={articleSearchState.detectedYear}
           handleSetUseAutoYearFilter={setUseAutoYearFilter}
-        />
-        <Suggestions
-          searchFromSuggestion={articleSearchState.searchFromSuggestion}
-          suggestionKeyword={articleSearchState.suggestionKeyword}
-          queryParams={queryParams}
         />
         <AuthorSearchResult
           isLoading={articleSearchState.isContentLoading}
