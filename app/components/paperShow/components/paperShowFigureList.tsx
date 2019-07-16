@@ -40,13 +40,6 @@ const PaperShowFigureList: React.FC<{ paper: Paper; isMobile: boolean }> = ({ pa
 
   if (!paper || rawPaperFigures.length === 0) return null;
 
-  // const showAllBtn =
-  //   {rawPaperFigures.length > 6 && (
-  //     <button className={styles.showAllBtn} onClick={() => setShouldShowAll(!shouldShowAll)}>
-  //       {showAllBtnText}
-  //     </button>
-  //   )} ;
-
   const figureList = finalFigures.map((figure, i) => {
     return (
       <LargePaperFigure figure={figure} key={i} handleOpenFigureDetailDialog={() => openPaperFigureDetailDialog(i)} />
