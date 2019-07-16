@@ -40,12 +40,12 @@ const PaperShowFigureList: React.FC<{ paper: Paper; isMobile: boolean }> = ({ pa
 
   if (!paper || rawPaperFigures.length === 0) return null;
 
-  const showAllBtn =
-    rawPaperFigures.length > 6 ? (
-      <button className={styles.showAllBtn} onClick={() => setShouldShowAll(!shouldShowAll)}>
-        {showAllBtnText}
-      </button>
-    ) : null;
+  // const showAllBtn =
+  //   {rawPaperFigures.length > 6 && (
+  //     <button className={styles.showAllBtn} onClick={() => setShouldShowAll(!shouldShowAll)}>
+  //       {showAllBtnText}
+  //     </button>
+  //   )} ;
 
   const figureList = finalFigures.map((figure, i) => {
     return (
@@ -59,7 +59,11 @@ const PaperShowFigureList: React.FC<{ paper: Paper; isMobile: boolean }> = ({ pa
         <div className={styles.paperFigureHeader}>Figures & Tables</div>
         {figureList}
       </div>
-      {showAllBtn}
+      {rawPaperFigures.length > 6 && (
+        <button className={styles.showAllBtn} onClick={() => setShouldShowAll(!shouldShowAll)}>
+          {showAllBtnText}
+        </button>
+      )}
     </>
   );
 };
