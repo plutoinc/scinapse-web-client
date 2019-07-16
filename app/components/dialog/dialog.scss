@@ -9,7 +9,7 @@
 
 .figureDetailDialog {
   @extend .dialogPaper;
-  position: unset;
+  position: static;
 }
 
 .mobileFigureDetailDialog {

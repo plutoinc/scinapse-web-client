@@ -98,7 +98,7 @@
 
 .nextBtn {
   @extend .prevBtn;
-  left: unset;
+  left: auto;
   right: 0;
 }
 
