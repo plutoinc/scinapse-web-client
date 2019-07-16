@@ -106,7 +106,8 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
           open={dialogState.isOpen}
           onClose={() => this.closeDialog()}
           classes={{
-            paper: layout.userDevice !== UserDevice.DESKTOP ? styles.figureDetailDialog : styles.dialogPaper,
+            paper:
+              layout.userDevice !== UserDevice.DESKTOP ? styles.mobileFigureDetailDialog : styles.figureDetailDialog,
           }}
           maxWidth={'lg'}
         >

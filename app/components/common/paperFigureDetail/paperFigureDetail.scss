@@ -2,7 +2,6 @@
   max-width: 920px !important;
   width: 100%;
   padding: 40px;
-  position: relative;
 }
 
 .figureDetailImageWrapper {
@@ -26,9 +25,9 @@
 }
 
 .closeButtonWrapper {
-  position: absolute;
-  top: 0;
-  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
 
   .closeButtonIcon {
     color: $gray4;
@@ -36,8 +35,8 @@
     vertical-align: top;
     width: 14px;
     height: 14px;
-    margin-top: 16px;
-    margin-right: 16px;
+    margin-top: -16px;
+    margin-right: -16px;
     cursor: pointer;
 
     svg {
@@ -79,12 +78,12 @@
 
 .prevBtn {
   position: absolute;
-  left: -54px;
+  left: 54px;
 }
 
 .nextBtn {
   position: absolute;
-  right: -54px;
+  right: 54px;
 }
 
 .mobileSliderBtnWrapper {

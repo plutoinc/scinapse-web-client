@@ -9,7 +9,11 @@
 
 .figureDetailDialog {
   @extend .dialogPaper;
+  position: unset;
+}
 
+.mobileFigureDetailDialog {
+  @extend .dialogPaper;
   position: absolute;
   bottom: 0;
   margin: 0 auto;
