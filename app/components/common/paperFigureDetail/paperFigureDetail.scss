@@ -54,7 +54,8 @@
   justify-content: space-between;
   position: absolute;
   width: 100%;
-  top: 45%;
+  height: 100%;
+  top: 0;
   left: 0;
 }
 
@@ -79,18 +80,21 @@
 
 .prevBtn {
   position: absolute;
-  width: 80px;
-  height: 80px;
+  width: 108px;
+  height: 100%;
+  left: 0;
   cursor: pointer;
-  left: 54px;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    transition: $button-hover-transition;
+  }
 }
 
 .nextBtn {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  cursor: pointer;
-  right: 54px;
+  @extend .prevBtn;
+  left: unset;
+  right: 0;
 }
 
 .mobileSliderBtnWrapper {
