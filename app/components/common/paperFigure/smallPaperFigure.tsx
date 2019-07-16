@@ -11,15 +11,13 @@ interface SmallPaperFigureProps {
 
 const SmallPaperFigure: React.FC<SmallPaperFigureProps> = ({ figure, handleOpenFigureDetailDialog }) => {
   return (
-    <>
-      <div className={styles.figureImageWrapper} onClick={handleOpenFigureDetailDialog}>
-        <div className={styles.figureImageBackground} />
-        <picture>
-          <source srcSet={`${FIGURE_PREFIX}${figure.path}`} type="image/jpeg" />
-          <img className={styles.figureImage} src={`${FIGURE_PREFIX}${figure.path}`} alt={'paperFigureImage'} />
-        </picture>
-      </div>
-    </>
+    <div className={styles.figureImageWrapper} onClick={handleOpenFigureDetailDialog}>
+      <div className={styles.figureImageBackground} />
+      <picture>
+        <source srcSet={`${FIGURE_PREFIX}${figure.path}`} type="image/jpeg" />
+        <img className={styles.figureImage} src={`${FIGURE_PREFIX}${figure.path}`} alt={'paperFigureImage'} />
+      </picture>
+    </div>
   );
 };
 

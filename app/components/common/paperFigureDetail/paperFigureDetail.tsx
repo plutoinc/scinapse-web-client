@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { AppState } from '../../../reducers';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
+import { UserDevice } from '../../layouts/records';
+import SliderButtons from './sliderButtons';
 const styles = require('./paperFigureDetail.scss');
 const FIGURE_PREFIX = 'https://asset-pdf.scinapse.io/';
 
@@ -55,30 +57,18 @@ const PaperFigureDetail: React.FC<Props> = props => {
         </picture>
       </div>
       <div className={styles.figureDetailCaption}>{currentFigure.caption}</div>
-      <div className={styles.sliderBtnWrapper}>
-        <button className={styles.prevBtn} onClick={onClickPrevBtn}>
-          <Icon icon="ARROW_RIGHT" className={styles.prevIcon} />
-        </button>
-        <button className={styles.nextBtn} onClick={onClickNextBtn}>
-          <Icon icon="ARROW_RIGHT" className={styles.nextIcon} />
-        </button>
-      </div>
-      <div className={styles.mobileSliderBtnWrapper}>
-        <button className={styles.mobileSliderBtn} onClick={onClickPrevBtn}>
-          <Icon icon="ARROW_RIGHT" className={styles.prevIcon} />
-          PREV
-        </button>
-        <button className={styles.mobileSliderBtn} onClick={onClickNextBtn}>
-          NEXT
-          <Icon icon="ARROW_RIGHT" className={styles.nextIcon} />
-        </button>
-      </div>
+      <SliderButtons
+        isMobile={props.layout.userDevice !== UserDevice.DESKTOP}
+        handleClickPrevBtn={onClickPrevBtn}
+        handleClickNextBtn={onClickNextBtn}
+      />
     </div>
   );
 };
 
 function mapStateToProps(state: AppState) {
   return {
+    layout: state.layout,
     DialogState: state.dialog,
   };
 }
