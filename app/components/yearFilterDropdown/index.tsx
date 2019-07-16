@@ -44,7 +44,22 @@ const YearFilterDropdown: React.FC<
 
   let buttonText = 'Any time';
   if (props.currentYearTo || props.currentYearFrom) {
-    buttonText = `${props.currentYearFrom} - ${props.currentYearTo}`;
+    buttonText = `${props.currentYearFrom || 'Past'} - ${props.currentYearTo || 'Current'}`;
+  }
+
+  function handleSubmit() {
+    props.dispatch(setActiveFilterButton(null));
+    goToYearFilteredSearchResultPage({
+      qs: props.location.search,
+      history: props.history,
+      min: minYear,
+      max: maxYear,
+    });
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.keyCode !== 13) return;
+    handleSubmit();
   }
 
   return (
@@ -166,7 +181,9 @@ const YearFilterDropdown: React.FC<
             <div className={s.inputBoxWrapper}>
               <input
                 type="text"
+                placeholder="From year"
                 className={s.yearInput}
+                onKeyDown={handleKeyDown}
                 onChange={e => {
                   const { value } = e.currentTarget;
                   if (!value) {
@@ -182,7 +199,9 @@ const YearFilterDropdown: React.FC<
               <div className={s.hyphen} />
               <input
                 type="text"
+                placeholder="To year"
                 className={s.yearInput}
+                onKeyDown={handleKeyDown}
                 onChange={e => {
                   const { value } = e.currentTarget;
                   if (!value) {
@@ -205,18 +224,7 @@ const YearFilterDropdown: React.FC<
               >
                 Clear
               </button>
-              <button
-                className={s.applyBtn}
-                onClick={() => {
-                  props.dispatch(setActiveFilterButton(null));
-                  goToYearFilteredSearchResultPage({
-                    qs: props.location.search,
-                    history: props.history,
-                    min: minYear,
-                    max: maxYear,
-                  });
-                }}
-              >
+              <button className={s.applyBtn} onClick={handleSubmit}>
                 Apply
               </button>
             </div>

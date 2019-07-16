@@ -11,12 +11,11 @@
   display: block;
   cursor: pointer;
   font-size: 16px;
-  font-weight: 500;
   color: $dark-blue0;
   padding: 8px;
   border-radius: 4px;
 
   &:hover {
-    background-color: $main_blue_light1;
+    background-color: $main_blue_light2;
   }
 }

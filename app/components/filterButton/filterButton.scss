@@ -38,6 +38,7 @@
     width: 9px;
     height: 5px;
     color: $dark-blue0;
+    transition: transform 150ms ease;
   }
 
   &.activeIcon {

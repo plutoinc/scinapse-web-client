@@ -28,7 +28,7 @@
   text-align: left;
 
   &:hover {
-    background-color: $main_blue_light1;
+    background-color: $main_blue_light2;
   }
 
   &.active {
@@ -45,15 +45,14 @@
 
 .hyphen {
   width: 13px;
-  height: 2px;
+  height: 1px;
   border-radius: 2px;
   background-color: $gray4;
-  margin: 0 4px;
+  margin: 0 8px;
 }
 
 .yearInput {
-  width: 88px;
-  height: 24px;
+  width: 84px;
   border-radius: 2px;
   border: solid 1px $gray2;
   background-color: $gray0;
