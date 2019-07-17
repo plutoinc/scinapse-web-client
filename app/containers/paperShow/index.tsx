@@ -52,6 +52,8 @@ import PlutoAxios from '../../api/pluto';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
 import KnowledgeBaseNoti from '../../components/knowledgeBaseNoti';
 import PaperShowFigureList from '../../components/paperShow/components/paperShowFigureList';
+import { getUserGroupName } from '../../helpers/abTestHelper';
+import { FIGURE_TEST } from '../../constants/abTestGlobalValue';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -91,6 +93,7 @@ interface PaperShowStates
       isOnRef: boolean;
       isOnCited: boolean;
       isOnFullText: boolean;
+      shouldShowFigure: boolean;
     }> {}
 
 const Title: React.FC<{ title: string }> = React.memo(({ title }) => {
@@ -116,6 +119,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isOnRef: false,
       isOnCited: false,
       isOnFullText: false,
+      shouldShowFigure: false,
     };
   }
 
@@ -135,6 +139,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     } else {
       this.logPageView(match.params.paperId, paperShow.errorStatusCode);
     }
+
+    this.setState(prevState => ({ ...prevState, shouldShowFigure: getUserGroupName(FIGURE_TEST) !== 'control' }));
   }
 
   public async componentDidUpdate(prevProps: PaperShowProps) {
@@ -252,7 +258,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <div className={styles.fos}>
                   <FOSList FOSList={paper.fosList} />
                 </div>
-                <PaperShowFigureList paper={paper} isMobile={layout.userDevice !== UserDevice.DESKTOP} />
+                {this.state.shouldShowFigure && (
+                  <PaperShowFigureList paper={paper} isMobile={layout.userDevice !== UserDevice.DESKTOP} />
+                )}
               </div>
             </div>
           </article>

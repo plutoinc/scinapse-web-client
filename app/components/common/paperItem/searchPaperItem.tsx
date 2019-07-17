@@ -14,7 +14,7 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import SavedCollections from './savedCollections';
 import { getUserGroupName } from '../../../helpers/abTestHelper';
-import { BROAD_AUTHOR_VENUE_TEST } from '../../../constants/abTestGlobalValue';
+import { BROAD_AUTHOR_VENUE_TEST, FIGURE_TEST } from '../../../constants/abTestGlobalValue';
 import { STOP_WORDS } from '../highLightedContent';
 import { PaperSource } from '../../../api/paper';
 const styles = require('./paperItem.scss');
@@ -66,11 +66,13 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
   const { doi, urls, relation } = paper;
 
   const [venueAuthorType, setVenueAuthorType] = React.useState<'broadAuthorVenue' | 'control' | ''>('');
+  const [shouldShowFigure, setShouldShowFigure] = React.useState(false);
 
   React.useEffect(() => {
     setVenueAuthorType(
       getUserGroupName(BROAD_AUTHOR_VENUE_TEST) === 'broadAuthorVenue' ? 'broadAuthorVenue' : 'control'
     );
+    setShouldShowFigure(getUserGroupName(FIGURE_TEST) === 'both');
   }, []);
 
   let historyContent = null;
@@ -148,7 +150,7 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
             abstract={paper.abstractHighlighted || paper.abstract}
             searchQueryText={searchQueryText}
           />
-          <Figures figures={paper.figures} />
+          {shouldShowFigure && <Figures figures={paper.figures} />}
         </div>
         <NotIncludedWords
           title={paper.title}

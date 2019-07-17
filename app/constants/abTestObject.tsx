@@ -5,6 +5,7 @@ import {
   SOURCE_DOMAIN_TEST,
   DUMMY_TEST,
   AUTO_YEAR_FILTER_TEST,
+  FIGURE_TEST,
 } from './abTestGlobalValue';
 
 export const broadAuthorVenue: Test = {
@@ -30,4 +31,13 @@ export const dummy: Test = {
 export const sourceDomain: Test = {
   name: SOURCE_DOMAIN_TEST,
   userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'sourceDomain', weight: 1 }],
+};
+
+export const figure: Test = {
+  name: FIGURE_TEST,
+  userGroup: [
+    { groupName: 'control', weight: 1 },
+    { groupName: 'onlyPaperShow', weight: 2 },
+    { groupName: 'both', weight: 2 },
+  ],
 };
