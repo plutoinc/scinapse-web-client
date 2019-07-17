@@ -8,12 +8,17 @@
 }
 
 .figureDetailDialog {
-  @extend .dialogPaper;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border-radius: 4px;
+  overflow-y: visible !important;
+  max-width: 100%;
   position: static;
 }
 
 .mobileFigureDetailDialog {
-  @extend .dialogPaper;
+  @extend .figureDetailDialog;
   position: absolute;
   bottom: 0;
   margin: 0 auto;
@@ -23,6 +28,10 @@
   .dialogPaper {
     max-width: 384px !important;
     width: 100% !important;
+  }
+
+  .mobileFigureDetailDialog {
+    max-width: 100% !important;
   }
 }
 
