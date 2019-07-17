@@ -122,6 +122,7 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
   if (hasNoSearchResultButHasAuthorResult) {
     return (
       <div className={styles.innerContainer}>
+        <FilterBox />
         <NoResultInSearch
           searchText={queryParams.query}
           otherCategoryCount={articleSearchState.totalElements}
@@ -134,6 +135,7 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
   if (hasNoSearchResultAndNoAuthorResult) {
     return (
       <div className={styles.innerContainer}>
+        <FilterBox />
         <NoResult
           searchText={
             articleSearchState.suggestionKeyword.length > 0
