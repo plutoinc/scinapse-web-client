@@ -1,8 +1,9 @@
 import React from 'react';
 import { PaperFigure } from '../../../model/paper';
 import { withStyles } from '../../../helpers/withStylesHelper';
+import { FIGURE_PREFIX } from '../../../constants/paperFigure';
 const styles = require('./largePaperFigure.scss');
-const FIGURE_PREFIX = 'https://asset-pdf.scinapse.io/';
+
 const MAX_LENGTH_OF_CAPTION = 80;
 
 interface LargePaperFigureProps {

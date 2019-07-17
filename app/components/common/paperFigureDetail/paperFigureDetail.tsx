@@ -5,8 +5,8 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import { UserDevice } from '../../layouts/records';
 import SliderButtons from './sliderButtons';
+import { FIGURE_PREFIX } from '../../../constants/paperFigure';
 const styles = require('./paperFigureDetail.scss');
-const FIGURE_PREFIX = 'https://asset-pdf.scinapse.io/';
 
 type Props = ReturnType<typeof mapStateToProps> & { handleCloseDialogRequest: () => void };
 

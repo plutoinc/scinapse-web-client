@@ -1,8 +1,8 @@
 import React from 'react';
 import { PaperFigure } from '../../../model/paper';
 import { withStyles } from '../../../helpers/withStylesHelper';
+import { FIGURE_PREFIX } from '../../../constants/paperFigure';
 const styles = require('./smallPaperFigure.scss');
-const FIGURE_PREFIX = 'https://asset-pdf.scinapse.io/';
 
 interface SmallPaperFigureProps {
   figure: PaperFigure;

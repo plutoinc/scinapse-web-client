@@ -2,7 +2,7 @@ import React from 'react';
 import { Paper, PaperFigure } from '../../../model/paper';
 import LargePaperFigure from '../../common/paperFigure/largePaperFigure';
 import { withStyles } from '../../../helpers/withStylesHelper';
-import GlobalDialogManager from '../../../helpers/globalDialogManager';
+import { openPaperFigureDetailDialog } from '../../../constants/paperFigure';
 const styles = require('./paperShowFigureList.scss');
 
 const MOBILE_FIGURES_MAX_LENGTH = 6;
@@ -10,7 +10,19 @@ const MOBILE_FIGURES_MAX_LENGTH = 6;
 const PaperShowFigureList: React.FC<{ paper: Paper; isMobile: boolean }> = ({ paper, isMobile }) => {
   const [finalFigures, setFinalFigures] = React.useState<PaperFigure[]>([]);
   const [shouldShowAll, setShouldShowAll] = React.useState(false);
-  const rawPaperFigures = paper.figures;
+
+  React.useEffect(
+    () => {
+      if (paper.figures.length > MOBILE_FIGURES_MAX_LENGTH && isMobile && !shouldShowAll) {
+        setFinalFigures(paper.figures.slice(0, MOBILE_FIGURES_MAX_LENGTH));
+      } else {
+        setFinalFigures(paper.figures);
+      }
+    },
+    [isMobile, shouldShowAll, paper.figures]
+  );
+
+  if (!paper || paper.figures.length === 0) return null;
 
   let showAllBtnText;
 
@@ -20,29 +32,13 @@ const PaperShowFigureList: React.FC<{ paper: Paper; isMobile: boolean }> = ({ pa
     showAllBtnText = 'Show All Figure';
   }
 
-  React.useEffect(
-    () => {
-      if (rawPaperFigures.length > 6 && isMobile && !shouldShowAll) {
-        setFinalFigures(rawPaperFigures.slice(0, MOBILE_FIGURES_MAX_LENGTH));
-      } else {
-        setFinalFigures(rawPaperFigures);
-      }
-    },
-    [isMobile, shouldShowAll, rawPaperFigures]
-  );
-
-  const openPaperFigureDetailDialog = React.useCallback(
-    (index: number) => {
-      return GlobalDialogManager.openPaperFigureDetailDialog(rawPaperFigures, index);
-    },
-    [rawPaperFigures]
-  );
-
-  if (!paper || rawPaperFigures.length === 0) return null;
-
   const figureList = finalFigures.map((figure, i) => {
     return (
-      <LargePaperFigure figure={figure} key={i} handleOpenFigureDetailDialog={() => openPaperFigureDetailDialog(i)} />
+      <LargePaperFigure
+        figure={figure}
+        key={i}
+        handleOpenFigureDetailDialog={() => openPaperFigureDetailDialog(paper.figures, i)}
+      />
     );
   });
 
@@ -52,7 +48,7 @@ const PaperShowFigureList: React.FC<{ paper: Paper; isMobile: boolean }> = ({ pa
         <div className={styles.paperFigureHeader}>Figures & Tables</div>
         {figureList}
       </div>
-      {rawPaperFigures.length > 6 && (
+      {paper.figures.length > MOBILE_FIGURES_MAX_LENGTH && (
         <button className={styles.showAllBtn} onClick={() => setShouldShowAll(!shouldShowAll)}>
           {showAllBtnText}
         </button>
