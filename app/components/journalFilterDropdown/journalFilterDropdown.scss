@@ -1,3 +1,9 @@
+%column-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: $dark-blue0;
+}
+
 .dropBoxWrapper {
   width: 588px;
   max-height: 639px;
@@ -35,6 +41,34 @@
   max-height: 496px;
   overflow-y: auto;
   margin-bottom: 24px;
+}
+
+.listHeader {
+  position: relative;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.journalLabel {
+  @extend %column-label;
+  margin-left: 28px;
+}
+
+.IFLabel {
+  @extend %column-label;
+  position: absolute;
+  right: 78px;
+  text-align: right;
+}
+
+.countLabel {
+  @extend %column-label;
+  position: absolute;
+  top: 0;
+  right: 8px;
+  bottom: 0;
+  text-align: right;
 }
 
 @media (max-width: $mobile-width) {

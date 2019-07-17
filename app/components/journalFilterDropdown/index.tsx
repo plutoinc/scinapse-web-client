@@ -78,7 +78,14 @@ const JournalFilterDropdown: React.FC<
               }}
             />
             <div className={s.content}>
-              <div className={s.journalListWrapper}>{journalList}</div>
+              <div className={s.journalListWrapper}>
+                <div className={s.listHeader}>
+                  <label className={s.journalLabel}>Journal name</label>
+                  <label className={s.IFLabel}>Impact Factor</label>
+                  <label className={s.countLabel}>Count</label>
+                </div>
+                {journalList}
+              </div>
               <div className={s.controlBtnsWrapper}>
                 <button
                   className={s.clearBtn}

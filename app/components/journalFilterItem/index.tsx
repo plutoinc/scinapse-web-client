@@ -64,7 +64,7 @@ const JournalItem: React.FC<JournalItemProps> = props => {
       <input type="checkbox" className={s.checkbox} checked={props.checked} readOnly />
       <span className={s.title}>{props.title}</span>
       {ImpactFactor}
-      <span className={s.countBox}>{docCount}</span>
+      {docCount}
     </button>
   );
 };
