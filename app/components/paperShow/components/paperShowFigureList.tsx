@@ -16,7 +16,7 @@ function openPaperFigureDetailDialog(figures: PaperFigure[], index: number) {
     actionType: 'fire',
     actionArea: 'figureList',
     actionTag: 'clickPaperFigure',
-    actionLabel: String(index + 1),
+    actionLabel: String(index),
   });
 
   return GlobalDialogManager.openPaperFigureDetailDialog(figures, index);
@@ -31,7 +31,7 @@ const PaperShowFigureList: React.FC<{ paper: Paper; isMobile: boolean }> = ({ pa
     actionType: 'view',
     actionArea: 'figureList',
     actionTag: 'viewFigureList',
-    actionLabel: String(finalFigures.length),
+    actionLabel: String(paper.figures.length),
   };
 
   const { elRef } = useObserver(0.1, actionTicketContext);

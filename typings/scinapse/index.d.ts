@@ -115,6 +115,8 @@ declare namespace Scinapse {
       | 'cancelAutoYearFilter'
       | 'clickPaperFigure'
       | 'viewFigureList'
+      | 'clickPrevBtn'
+      | 'clickNextBtn'
       | '';
 
     type ActionArea = string;

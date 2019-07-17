@@ -6,6 +6,8 @@ import Icon from '../../../icons';
 import { UserDevice } from '../../layouts/records';
 import SliderButtons from './sliderButtons';
 import { FIGURE_PREFIX } from '../../../constants/paperFigure';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import { getCurrentPageType } from '../../locationListener';
 const styles = require('./paperFigureDetail.scss');
 
 type Props = ReturnType<typeof mapStateToProps> & { handleCloseDialogRequest: () => void };
@@ -23,6 +25,14 @@ const PaperFigureDetail: React.FC<Props> = props => {
 
   const onClickPrevBtn = React.useCallback(
     () => {
+      ActionTicketManager.trackTicket({
+        pageType: getCurrentPageType(),
+        actionType: 'fire',
+        actionArea: 'figureDetail',
+        actionTag: 'clickPrevBtn',
+        actionLabel: String(showFigureIndex),
+      });
+
       if (showFigureIndex === 0) {
         setShowFigureIndex(paperFigures!.length - 1);
       } else {
@@ -34,6 +44,14 @@ const PaperFigureDetail: React.FC<Props> = props => {
 
   const onClickNextBtn = React.useCallback(
     () => {
+      ActionTicketManager.trackTicket({
+        pageType: getCurrentPageType(),
+        actionType: 'fire',
+        actionArea: 'figureDetail',
+        actionTag: 'clickNextBtn',
+        actionLabel: String(showFigureIndex),
+      });
+
       if (showFigureIndex === paperFigures!.length - 1) {
         setShowFigureIndex(0);
       } else {

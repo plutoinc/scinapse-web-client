@@ -17,7 +17,7 @@ function openPaperFigureDetailDialog(figures: PaperFigure[], index: number) {
     actionType: 'fire',
     actionArea: 'figureList',
     actionTag: 'clickPaperFigure',
-    actionLabel: String(index + 1),
+    actionLabel: String(index),
   });
 
   return GlobalDialogManager.openPaperFigureDetailDialog(figures, index);
