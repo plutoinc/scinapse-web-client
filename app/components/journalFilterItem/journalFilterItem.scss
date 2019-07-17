@@ -21,6 +21,16 @@
   &.highlighted {
     background-color: $main_blue_light2;
   }
+
+  &.disabled {
+    cursor: not-allowed;
+
+    .title,
+    .countBox,
+    .ifLabel {
+      color: $gray4;
+    }
+  }
 }
 
 .title {
@@ -72,4 +82,8 @@
   color: white !important;
   font-size: 10px !important;
   margin-bottom: 6px !important;
+}
+
+.checkbox {
+  margin-right: 8px;
 }

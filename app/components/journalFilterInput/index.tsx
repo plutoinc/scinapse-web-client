@@ -155,7 +155,7 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
                   dispatch({ type: 'CLOSE_BOX' });
                 }}
               >
-                Apply
+                Add
               </button>
             </div>
           </div>

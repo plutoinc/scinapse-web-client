@@ -44,19 +44,24 @@ const JournalItem: React.FC<JournalItemProps> = props => {
   }
 
   let docCount = null;
-  if (props.docCount) {
+  if (!props.omitDocCount) {
     docCount = <span className={s.countBox}>{`(${formatNumber(props.docCount)})`}</span>;
   }
 
   return (
     <button
-      onClick={props.onClick}
+      onClick={() => {
+        if (!props.docCount) return;
+        props.onClick();
+      }}
       className={classNames({
         [s.journalItem]: true,
         [s.isSelected]: props.checked,
         [s.highlighted]: props.isHighlight,
+        [s.disabled]: !props.docCount,
       })}
     >
+      <input type="checkbox" className={s.checkbox} checked={props.checked} readOnly />
       <span className={s.title}>{props.title}</span>
       {ImpactFactor}
       <span className={s.countBox}>{docCount}</span>
