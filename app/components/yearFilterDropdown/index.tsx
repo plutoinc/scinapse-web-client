@@ -30,6 +30,7 @@ const YearFilterDropdown: React.FC<
     props.currentYearFrom,
     props.currentYearTo,
   ]);
+
   React.useEffect(
     () => {
       setMinMaxYears([props.currentYearFrom, props.currentYearTo]);
@@ -41,6 +42,7 @@ const YearFilterDropdown: React.FC<
   const currentYear = new Date().getFullYear();
   const minYear = minMaxYears[0];
   const maxYear = minMaxYears[1];
+  const selectChanged = props.currentYearFrom !== minYear || props.currentYearTo !== maxYear;
 
   let buttonText = 'Any time';
   if (props.currentYearTo || props.currentYearFrom) {
@@ -49,12 +51,14 @@ const YearFilterDropdown: React.FC<
 
   function handleSubmit() {
     props.dispatch(setActiveFilterButton(null));
-    goToYearFilteredSearchResultPage({
-      qs: props.location.search,
-      history: props.history,
-      min: minYear,
-      max: maxYear,
-    });
+    if (selectChanged) {
+      goToYearFilteredSearchResultPage({
+        qs: props.location.search,
+        history: props.history,
+        min: minYear,
+        max: maxYear,
+      });
+    }
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -66,7 +70,7 @@ const YearFilterDropdown: React.FC<
     <ClickAwayListener
       onClickAway={() => {
         if (props.isActive) {
-          props.dispatch(setActiveFilterButton(null));
+          handleSubmit();
         }
       }}
     >

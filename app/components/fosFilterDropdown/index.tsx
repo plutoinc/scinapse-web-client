@@ -2,6 +2,7 @@ import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import * as classNames from 'classnames';
+import { isEqual } from 'lodash';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Popper from '@material-ui/core/Popper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -45,6 +46,8 @@ const FOSFilterDropdown: React.FC<
   FOSFilterDropdownProps & ReturnType<typeof mapStateToProps> & RouteComponentProps
 > = props => {
   const anchorEl = React.useRef(null);
+  const lastSelectedFOS = React.useRef(props.selectedFOSIds);
+  const selectChanged = !isEqual(props.selectedFOSIds, lastSelectedFOS.current);
 
   let buttonText = 'Any field';
   if (props.selectedFOSIds.length > 0) {
@@ -67,11 +70,21 @@ const FOSFilterDropdown: React.FC<
     );
   });
 
+  function handleSubmit() {
+    props.dispatch(setActiveFilterButton(null));
+
+    if (selectChanged) {
+      trackSelectFilter('FOS', JSON.stringify(props.selectedFOSIds));
+      const link = makeNewFilterLink({ fos: props.selectedFOSIds }, props.location);
+      props.history.push(link);
+    }
+  }
+
   return (
     <ClickAwayListener
       onClickAway={() => {
         if (props.isActive) {
-          props.dispatch(setActiveFilterButton(null));
+          handleSubmit();
         }
       }}
     >
@@ -101,15 +114,7 @@ const FOSFilterDropdown: React.FC<
               >
                 Clear
               </button>
-              <button
-                className={s.applyBtn}
-                onClick={() => {
-                  trackSelectFilter('FOS', JSON.stringify(props.selectedFOSIds));
-                  props.dispatch(setActiveFilterButton(null));
-                  const link = makeNewFilterLink({ fos: props.selectedFOSIds }, props.location);
-                  props.history.push(link);
-                }}
-              >
+              <button className={s.applyBtn} onClick={handleSubmit}>
                 Apply
               </button>
             </div>

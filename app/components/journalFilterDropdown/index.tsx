@@ -1,4 +1,5 @@
 import React from 'react';
+import { isEqual } from 'lodash';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -25,6 +26,8 @@ const JournalFilterDropdown: React.FC<
   JournalFilterDropdownProps & ReturnType<typeof mapStateToProps> & RouteComponentProps
 > = props => {
   const anchorEl = React.useRef(null);
+  const lastSelectedJournals = React.useRef(props.selectedJournalIds);
+  const selectChanged = !isEqual(props.selectedJournalIds, lastSelectedJournals.current);
 
   let buttonText = 'Any journal';
   if (props.selectedJournalIds.length > 0) {
@@ -50,12 +53,22 @@ const JournalFilterDropdown: React.FC<
     );
   });
 
+  function handleSubmit() {
+    props.dispatch(setActiveFilterButton(null));
+
+    if (selectChanged) {
+      trackSelectFilter('JOURNAL', JSON.stringify(props.selectedJournalIds));
+      lastSelectedJournals.current = props.selectedJournalIds;
+      const link = makeNewFilterLink({ journal: props.selectedJournalIds }, props.location);
+      props.history.push(link);
+    }
+  }
+
   return (
     <ClickAwayListener
       onClickAway={() => {
-        if (props.isActive) {
-          props.dispatch(setActiveFilterButton(null));
-        }
+        if (!props.isActive) return;
+        handleSubmit();
       }}
     >
       <div ref={anchorEl}>
@@ -95,15 +108,7 @@ const JournalFilterDropdown: React.FC<
                 >
                   Clear
                 </button>
-                <button
-                  className={s.applyBtn}
-                  onClick={() => {
-                    trackSelectFilter('JOURNAL', JSON.stringify(props.selectedJournalIds));
-                    props.dispatch(setActiveFilterButton(null));
-                    const link = makeNewFilterLink({ journal: props.selectedJournalIds }, props.location);
-                    props.history.push(link);
-                  }}
-                >
+                <button className={s.applyBtn} onClick={handleSubmit}>
                   Apply
                 </button>
               </div>

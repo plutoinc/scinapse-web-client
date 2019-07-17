@@ -22,21 +22,17 @@ type FilterBoxProps = RouteComponentProps & ReturnType<typeof mapStateToProps> &
 const FilterBox: React.FC<FilterBoxProps> = props => {
   const filterBoxRef = React.useRef(null);
 
-  React.useEffect(
-    () => {
-      const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
-      const filters = SearchQueryManager.objectifyPaperFilter(currentQueryParams.filter);
-      props.dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SYNC_FILTERS_WITH_QUERY_PARAMS,
-        payload: {
-          filters,
-          sorting: currentQueryParams.sort || 'Relevance',
-        },
-      });
-    },
-
-    [props.location.search, props.activeButton]
-  );
+  React.useEffect(() => {
+    const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
+    const filters = SearchQueryManager.objectifyPaperFilter(currentQueryParams.filter);
+    props.dispatch({
+      type: ACTION_TYPES.ARTICLE_SEARCH_SYNC_FILTERS_WITH_QUERY_PARAMS,
+      payload: {
+        filters,
+        sorting: currentQueryParams.sort || 'Relevance',
+      },
+    });
+  }, []);
 
   if (props.isMobile) return null;
 
