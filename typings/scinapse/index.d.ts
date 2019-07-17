@@ -113,6 +113,8 @@ declare namespace Scinapse {
       | 'viewKnowledgeBaseNoti'
       | 'autoYearFilterQuery'
       | 'cancelAutoYearFilter'
+      | 'clickPaperFigure'
+      | 'viewFigureList'
       | '';
 
     type ActionArea = string;

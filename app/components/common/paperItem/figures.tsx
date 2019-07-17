@@ -3,6 +3,7 @@ import { PaperFigure } from '../../../model/paper';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import SmallPaperFigure from '../paperFigure/smallPaperFigure';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
 const styles = require('./figures.scss');
 const MAX_FIGURE_SHOW_LENGTH = 8;
 
@@ -11,6 +12,14 @@ interface FiguresProps {
 }
 
 function openPaperFigureDetailDialog(figures: PaperFigure[], index: number) {
+  ActionTicketManager.trackTicket({
+    pageType: 'searchResult',
+    actionType: 'fire',
+    actionArea: 'figureList',
+    actionTag: 'clickPaperFigure',
+    actionLabel: String(index + 1),
+  });
+
   return GlobalDialogManager.openPaperFigureDetailDialog(figures, index);
 }
 

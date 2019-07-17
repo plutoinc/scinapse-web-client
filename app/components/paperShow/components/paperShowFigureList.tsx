@@ -3,17 +3,38 @@ import { Paper, PaperFigure } from '../../../model/paper';
 import LargePaperFigure from '../../common/paperFigure/largePaperFigure';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import { ActionTicketParams } from '../../../helpers/actionTicketManager/actionTicket';
+import { useObserver } from '../../../hooks/useIntersectionHook';
 const styles = require('./paperShowFigureList.scss');
 
 const MOBILE_FIGURES_MAX_LENGTH = 6;
 
 function openPaperFigureDetailDialog(figures: PaperFigure[], index: number) {
+  ActionTicketManager.trackTicket({
+    pageType: 'paperShow',
+    actionType: 'fire',
+    actionArea: 'figureList',
+    actionTag: 'clickPaperFigure',
+    actionLabel: String(index + 1),
+  });
+
   return GlobalDialogManager.openPaperFigureDetailDialog(figures, index);
 }
 
 const PaperShowFigureList: React.FC<{ paper: Paper; isMobile: boolean }> = ({ paper, isMobile }) => {
   const [finalFigures, setFinalFigures] = React.useState<PaperFigure[]>([]);
   const [shouldShowAll, setShouldShowAll] = React.useState(false);
+
+  const actionTicketContext: ActionTicketParams = {
+    pageType: 'paperShow',
+    actionType: 'view',
+    actionArea: 'figureList',
+    actionTag: 'viewFigureList',
+    actionLabel: String(finalFigures.length),
+  };
+
+  const { elRef } = useObserver(0.1, actionTicketContext);
 
   React.useEffect(
     () => {
@@ -48,7 +69,7 @@ const PaperShowFigureList: React.FC<{ paper: Paper; isMobile: boolean }> = ({ pa
 
   return (
     <>
-      <div className={styles.paperFigureContainer}>
+      <div className={styles.paperFigureContainer} ref={elRef}>
         <div className={styles.paperFigureHeader}>Figures & Tables</div>
         {figureList}
       </div>
