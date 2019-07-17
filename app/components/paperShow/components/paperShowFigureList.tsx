@@ -2,10 +2,14 @@ import React from 'react';
 import { Paper, PaperFigure } from '../../../model/paper';
 import LargePaperFigure from '../../common/paperFigure/largePaperFigure';
 import { withStyles } from '../../../helpers/withStylesHelper';
-import { openPaperFigureDetailDialog } from '../../../constants/paperFigure';
+import GlobalDialogManager from '../../../helpers/globalDialogManager';
 const styles = require('./paperShowFigureList.scss');
 
 const MOBILE_FIGURES_MAX_LENGTH = 6;
+
+function openPaperFigureDetailDialog(figures: PaperFigure[], index: number) {
+  return GlobalDialogManager.openPaperFigureDetailDialog(figures, index);
+}
 
 const PaperShowFigureList: React.FC<{ paper: Paper; isMobile: boolean }> = ({ paper, isMobile }) => {
   const [finalFigures, setFinalFigures] = React.useState<PaperFigure[]>([]);

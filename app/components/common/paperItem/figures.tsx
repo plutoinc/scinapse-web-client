@@ -2,12 +2,16 @@ import React from 'react';
 import { PaperFigure } from '../../../model/paper';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import SmallPaperFigure from '../paperFigure/smallPaperFigure';
-import { openPaperFigureDetailDialog } from '../../../constants/paperFigure';
+import GlobalDialogManager from '../../../helpers/globalDialogManager';
 const styles = require('./figures.scss');
 const MAX_FIGURE_SHOW_LENGTH = 8;
 
 interface FiguresProps {
   figures: PaperFigure[];
+}
+
+function openPaperFigureDetailDialog(figures: PaperFigure[], index: number) {
+  return GlobalDialogManager.openPaperFigureDetailDialog(figures, index);
 }
 
 const Figures: React.FC<FiguresProps> = ({ figures }) => {
