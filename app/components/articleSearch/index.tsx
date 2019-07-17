@@ -33,7 +33,6 @@ import ImprovedFooter from '../layouts/improvedFooter';
 import KnowledgeBaseNoti from '../knowledgeBaseNoti';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { AUTO_YEAR_FILTER_TEST } from '../../constants/abTestGlobalValue';
-import AutoYearFilter from './components/autoYearFilter';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -253,11 +252,6 @@ const SearchContainer: React.FC<Props> = props => {
       <SearchHelmet query={queryParams.query || ''} />
       <TabNavigationBar searchKeyword={articleSearchState.searchInput} />
       <div className={styles.articleSearchContainer}>
-        <AutoYearFilter
-          query={queryParams.query}
-          detectedYear={articleSearchState.detectedYear}
-          handleSetUseAutoYearFilter={setUseAutoYearFilter}
-        />
         <AuthorSearchResult
           isLoading={articleSearchState.isContentLoading}
           matchAuthors={articleSearchState.matchAuthors}
