@@ -21,16 +21,6 @@
   &.highlighted {
     background-color: $main_blue_light2;
   }
-
-  &.disabled {
-    cursor: not-allowed;
-
-    .title,
-    .countBox,
-    .ifLabel {
-      color: $gray4;
-    }
-  }
 }
 
 .title {
@@ -63,12 +53,6 @@
     width: 10px;
     height: 10px;
     color: $main_blue0;
-  }
-
-  &.disabled {
-    svg {
-      color: $gray4;
-    }
   }
 }
 

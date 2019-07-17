@@ -35,13 +35,7 @@ const JournalItem: React.FC<JournalItemProps> = props => {
           classes={{ tooltip: s.arrowBottomTooltip }}
         >
           <span>
-            <Icon
-              className={classNames({
-                [s.ifIconWrapper]: true,
-                [s.disabled]: !props.docCount,
-              })}
-              icon="IMPACT_FACTOR"
-            />
+            <Icon className={s.ifIconWrapper} icon="IMPACT_FACTOR" />
             {props.IF.toFixed(2)}
           </span>
         </Tooltip>
@@ -57,14 +51,12 @@ const JournalItem: React.FC<JournalItemProps> = props => {
   return (
     <button
       onClick={() => {
-        if (!props.docCount) return;
         props.onClick();
       }}
       className={classNames({
         [s.journalItem]: true,
         [s.isSelected]: props.checked,
         [s.highlighted]: props.isHighlight,
-        [s.disabled]: !props.docCount,
       })}
     >
       <input type="checkbox" className={s.checkbox} checked={props.checked} readOnly />
