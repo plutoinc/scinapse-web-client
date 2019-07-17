@@ -116,7 +116,7 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
               const { value } = e.currentTarget;
               dispatch({ type: 'CHANGE_INPUT', payload: { inputValue: value } });
             }}
-            placeholder="Search for journal or conference"
+            placeholder="Search for journal"
             className={classNames({
               [s.input]: true,
               [s.listOpened]: shouldShowList,

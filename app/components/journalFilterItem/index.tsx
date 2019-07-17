@@ -35,7 +35,13 @@ const JournalItem: React.FC<JournalItemProps> = props => {
           classes={{ tooltip: s.arrowBottomTooltip }}
         >
           <span>
-            <Icon className={s.ifIconWrapper} icon="IMPACT_FACTOR" />
+            <Icon
+              className={classNames({
+                [s.ifIconWrapper]: true,
+                [s.disabled]: !props.docCount,
+              })}
+              icon="IMPACT_FACTOR"
+            />
             {props.IF.toFixed(2)}
           </span>
         </Tooltip>

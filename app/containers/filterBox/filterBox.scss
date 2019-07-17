@@ -32,10 +32,8 @@
 }
 
 .btnWrapper {
-  position: relative;
   display: inline-block;
   vertical-align: top;
-  z-index: 2;
 
   & + & {
     margin-left: 8px;

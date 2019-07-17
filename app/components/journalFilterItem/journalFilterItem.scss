@@ -64,6 +64,12 @@
     height: 10px;
     color: $main_blue0;
   }
+
+  &.disabled {
+    svg {
+      color: $gray4;
+    }
+  }
 }
 
 .countBox {
