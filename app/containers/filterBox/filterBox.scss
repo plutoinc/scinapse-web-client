@@ -82,3 +82,9 @@
     height: 100%;
   }
 }
+
+@media (max-width: $mobile-width) {
+  .wrapper {
+    display: none;
+  }
+}

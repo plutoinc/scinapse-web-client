@@ -14,6 +14,7 @@ import FOSFilterDropdown from '../../components/fosFilterDropdown';
 import SortingDropdown from '../../components/sortingDropdown';
 import Icon from '../../icons';
 import makeNewFilterLink from '../../helpers/makeNewFilterLink';
+import { UserDevice } from '../../components/layouts/records';
 
 const s = require('./filterBox.scss');
 
@@ -36,6 +37,8 @@ const FilterBox: React.FC<FilterBoxProps> = props => {
 
     [props.location.search, props.activeButton]
   );
+
+  if (props.isMobile) return null;
 
   return (
     <>
@@ -91,8 +94,9 @@ const FilterBox: React.FC<FilterBoxProps> = props => {
 };
 
 function mapStateToProps(state: AppState) {
-  const { searchFilterState } = state;
+  const { searchFilterState, layout } = state;
   return {
+    isMobile: layout.userDevice === UserDevice.MOBILE,
     activeButton: searchFilterState.activeButton,
     isFilterApplied:
       !!searchFilterState.currentYearFrom ||
