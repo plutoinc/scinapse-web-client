@@ -24,11 +24,12 @@ import GlobalDialogManager from '../../helpers/globalDialogManager';
 import { HOME_PATH } from '../../constants/routes';
 import { ACTION_TYPES, ActionCreators } from '../../actions/actionTypes';
 import { CurrentUser } from '../../model/currentUser';
-import { DEFAULT_FILTER } from '../../helpers/searchQueryManager';
+import SearchQueryManager from '../../helpers/searchQueryManager';
 import { getCollections } from '../collections/actions';
 import { collectionSchema } from '../../model/collection';
 import { getMemoizedPaper } from '../../containers/paperShow/select';
 import ResearchHistory from '../researchHistory';
+import { parse } from 'qs';
 const styles = require('./improvedHeader.scss');
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -235,8 +236,10 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
   private getSearchFormContainer = () => {
     const { location } = this.props;
     const shouldShowSearchFormContainer = location.pathname !== HOME_PATH;
-
     if (!shouldShowSearchFormContainer) return null;
+
+    const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
+    const filter = SearchQueryManager.objectifyPaperFilter(currentQueryParams.filter);
 
     return (
       <div className={styles.searchFormContainer}>
@@ -244,7 +247,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
           wrapperClassName={styles.searchWrapper}
           listWrapperClassName={styles.suggestionListWrapper}
           inputClassName={styles.searchInput}
-          initialFilter={DEFAULT_FILTER}
+          currentFilter={filter}
           actionArea="topBar"
           maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
         />

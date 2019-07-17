@@ -83,7 +83,20 @@ const JournalFilterDropdown: React.FC<
           content={buttonText}
           isActive={props.isActive}
         />
-        <Popper open={props.isActive} anchorEl={anchorEl.current} placement="bottom-start" disablePortal>
+        <Popper
+          modifiers={{
+            flip: {
+              enabled: false,
+            },
+            preventOverflow: {
+              enabled: false,
+            },
+          }}
+          open={props.isActive}
+          anchorEl={anchorEl.current}
+          placement="bottom-start"
+          disablePortal
+        >
           <div className={s.dropBoxWrapper}>
             <JournalFilterInput
               onSubmit={(journals: AggregationJournal[]) => {
