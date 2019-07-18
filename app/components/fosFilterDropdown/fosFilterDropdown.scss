@@ -1,3 +1,9 @@
+%column-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: $dark-blue0;
+}
+
 .dropBoxWrapper {
   width: 486px;
   border-radius: 4px;
@@ -71,9 +77,20 @@
   margin-right: 8px;
 }
 
-@media (max-width: $mobile-width) {
-  .dropBoxWrapper {
-    width: 100vw;
-    padding: 12px;
-  }
+.listHeader {
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.FOSLabel {
+  @extend %column-label;
+  margin-left: 28px;
+}
+
+.countLabel {
+  @extend %column-label;
+  margin-right: 6px;
+  text-align: right;
 }

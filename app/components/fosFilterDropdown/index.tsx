@@ -118,7 +118,13 @@ const FOSFilterDropdown: React.FC<
           disablePortal
         >
           <div className={s.dropBoxWrapper}>
-            <div className={s.FOSListWrapper}>{FOSList}</div>
+            <div className={s.FOSListWrapper}>
+              <div className={s.listHeader}>
+                <label className={s.FOSLabel}>Field</label>
+                <label className={s.countLabel}>Count</label>
+              </div>
+              {FOSList}
+            </div>
             <div className={s.controlBtnsWrapper}>
               <button
                 className={s.clearBtn}
