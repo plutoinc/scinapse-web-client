@@ -5,7 +5,7 @@ import { AvailableCitationType } from '../containers/paperShow/records';
 import { GetCollectionsResponse } from '../api/member';
 import { GLOBAL_DIALOG_TYPE } from '../components/dialog/reducer';
 import { Collection } from '../model/collection';
-import { Paper, PaperPdf } from '../model/paper';
+import { Paper, PaperPdf, PaperFigure } from '../model/paper';
 import { CVInfoType, Award, Education, Experience } from '../model/profile';
 import { PaperInCollection } from '../model/paperInCollection';
 import { SIGN_UP_STEP } from '../components/auth/signUp/types';
@@ -261,6 +261,8 @@ export const ActionCreators = {
     authContext?: SignUpConversionExpTicketContext;
     isBlocked?: boolean;
     nextSignUpStep?: string;
+    paperFigures?: PaperFigure[];
+    currentPaperFigureIndex?: number;
   }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
   },

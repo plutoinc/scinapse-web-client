@@ -1,8 +1,10 @@
 import * as React from 'react';
 import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import * as format from 'date-fns/format';
+import classNames from 'classnames';
 import { CurrentUser } from '../../../model/currentUser';
 import Abstract from './abstract';
+import Figures from './figures';
 import PaperActionButtons from './paperActionButtons';
 import Title from './title';
 import VenueAndAuthors from './venueAndAuthors';
@@ -12,7 +14,7 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import SavedCollections from './savedCollections';
 import { getUserGroupName } from '../../../helpers/abTestHelper';
-import { BROAD_AUTHOR_VENUE_TEST } from '../../../constants/abTestGlobalValue';
+import { BROAD_AUTHOR_VENUE_TEST, FIGURE_TEST } from '../../../constants/abTestGlobalValue';
 import { STOP_WORDS } from '../highLightedContent';
 import { PaperSource } from '../../../api/paper';
 const styles = require('./paperItem.scss');
@@ -64,11 +66,13 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
   const { doi, urls, relation } = paper;
 
   const [venueAuthorType, setVenueAuthorType] = React.useState<'broadAuthorVenue' | 'control' | ''>('');
+  const [shouldShowFigure, setShouldShowFigure] = React.useState(false);
 
   React.useEffect(() => {
     setVenueAuthorType(
       getUserGroupName(BROAD_AUTHOR_VENUE_TEST) === 'broadAuthorVenue' ? 'broadAuthorVenue' : 'control'
     );
+    setShouldShowFigure(getUserGroupName(FIGURE_TEST) === 'both');
   }, []);
 
   let historyContent = null;
@@ -134,13 +138,20 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
           source={source}
         />
         {venueAndAuthor}
-        <Abstract
-          paperId={paper.id}
-          pageType={pageType}
-          actionArea={actionArea}
-          abstract={paper.abstractHighlighted || paper.abstract}
-          searchQueryText={searchQueryText}
-        />
+        <div
+          className={classNames({
+            [styles.abstractAndFigureWrapper]: paper.figures.length > 0 && paper.figures.length <= 2,
+          })}
+        >
+          <Abstract
+            paperId={paper.id}
+            pageType={pageType}
+            actionArea={actionArea}
+            abstract={paper.abstractHighlighted || paper.abstract}
+            searchQueryText={searchQueryText}
+          />
+          {shouldShowFigure && <Figures figures={paper.figures} />}
+        </div>
         <NotIncludedWords
           title={paper.title}
           abstract={paper.abstract || paper.abstractHighlighted || ''}

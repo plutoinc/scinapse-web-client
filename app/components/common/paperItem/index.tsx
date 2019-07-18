@@ -60,6 +60,7 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
         searchQueryText={searchQueryText}
       />
     ) : null;
+
     const buttons =
       !omitButtons && currentUser ? (
         <PaperActionButtons

@@ -13,6 +13,13 @@ export interface PaperPdf {
   hasBest: boolean;
 }
 
+export interface PaperFigure {
+  type: string;
+  name: string;
+  caption: string;
+  path: string;
+}
+
 export interface Paper {
   id: number;
   cognitivePaperId: number;
@@ -27,6 +34,7 @@ export interface Paper {
   publisher: string;
   venue: string;
   fosList: Fos[];
+  figures: PaperFigure[];
   authors: PaperAuthor[];
   abstract: string;
   commentCount: number;
