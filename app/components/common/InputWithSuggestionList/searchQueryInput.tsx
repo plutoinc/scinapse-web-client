@@ -82,12 +82,6 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     wait: 200,
   });
 
-  // prevent suggestion box is opened by auto focusing
-  const [blockOpen, setBlockOpen] = React.useState(true);
-  React.useEffect(() => {
-    setBlockOpen(false);
-  }, []);
-
   const [genuineInputValue, setGenuineInputValue] = React.useState('');
   React.useEffect(
     () => {
@@ -95,6 +89,12 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     },
     [genuineInputValue]
   );
+
+  // prevent suggestion box is opened by auto focusing
+  const [blockOpen, setBlockOpen] = React.useState(true);
+  React.useEffect(() => {
+    setBlockOpen(false);
+  }, []);
 
   React.useEffect(
     () => {
@@ -277,6 +277,9 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
             setInputValue(value);
             setGenuineInputValue(value);
             setParams(value);
+            if (!isOpen) {
+              setIsOpen(true);
+            }
           }}
           placeholder={placeholder}
           autoFocus={props.autoFocus}
