@@ -149,12 +149,7 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
           />
           {shouldShowFigure && <Figures figures={paper.figures} />}
         </div>
-        <NotIncludedWords
-          title={paper.title}
-          abstract={paper.abstract || paper.abstractHighlighted || ''}
-          searchKeyword={searchQueryText}
-          missingKeywords={paper.missingKeywords}
-        />
+        <NotIncludedWords missingKeywords={paper.missingKeywords} />
         <PaperActionButtons
           currentUser={currentUser}
           paper={paper}
