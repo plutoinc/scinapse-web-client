@@ -16,6 +16,7 @@ import ReduxAutoSizeTextarea from '../../../components/common/autoSizeTextarea/r
 import Icon from '../../../icons';
 import { ACTION_TYPES } from '../../../actions/actionTypes';
 import { LAST_SUCCEEDED_EMAIL_KEY } from '../../../constants/requestDialogConstant';
+import { fetchLastFullTextRequestedDate } from '../../../actions/paperShow';
 const s = require('./fullTextDialog.scss');
 
 interface RequestFullTextProps {
@@ -69,6 +70,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
           message: 'Sent request successfully.',
         },
       });
+      props.dispatch(fetchLastFullTextRequestedDate(props.paperId));
       props.onClose();
     } catch (err) {
       console.error(err);

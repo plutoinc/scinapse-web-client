@@ -68,8 +68,7 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
         ActionCreators.getReferencePapers({
           paperIds: getPapersResult.result,
           size: getPapersResult.size,
-          number: getPapersResult.number,
-          sort: '',
+          page: getPapersResult.page,
           first: getPapersResult.first,
           last: getPapersResult.last,
           numberOfElements: getPapersResult.numberOfElements,
@@ -100,8 +99,7 @@ export function getCitedPapers(params: GetRefOrCitedPapersParams) {
         ActionCreators.getCitedPapers({
           paperIds: getPapersResult.result,
           size: getPapersResult.size,
-          number: getPapersResult.number,
-          sort: '',
+          page: getPapersResult.page,
           first: getPapersResult.first,
           last: getPapersResult.last,
           numberOfElements: getPapersResult.numberOfElements,
@@ -136,6 +134,25 @@ export function postNewCollection(params: PostCollectionParams) {
     } catch (err) {
       dispatch(ActionCreators.failedToPostCollectionInCollectionDropdown());
       throw err;
+    }
+  };
+}
+
+export function fetchLastFullTextRequestedDate(paperId: number) {
+  return async (dispatch: Dispatch<any>) => {
+    let requestedAt;
+    try {
+      const res = await PaperAPI.getLastRequestDate(paperId);
+
+      if (res) {
+        requestedAt = res.requestedAt;
+      } else {
+        requestedAt = null;
+      }
+
+      dispatch(ActionCreators.fetchLastFullTextRequestedDate({ requestedAt }));
+    } catch (err) {
+      console.error(err);
     }
   };
 }

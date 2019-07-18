@@ -50,6 +50,13 @@
   }
 }
 
+.abstractAndFigureWrapper {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+}
+
 // Mobile
 @media (max-width: $mobile-width) {
   .searchItemWrapper {

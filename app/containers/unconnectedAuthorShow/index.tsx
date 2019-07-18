@@ -12,7 +12,7 @@ import { Configuration } from '../../reducers/configuration';
 import { CurrentUser } from '../../model/currentUser';
 import { Author, authorSchema } from '../../model/author/author';
 import { Paper, paperSchema } from '../../model/paper';
-import SortBox, { PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
+import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
 import PaperItem from '../../components/common/paperItem';
 import { getAuthorPapers, toggleConnectProfileDialog, connectAuthor } from './actions';
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from '../../api/author';
@@ -30,6 +30,8 @@ import { fetchAuthorPapers } from '../../actions/author';
 import EnvChecker from '../../helpers/envChecker';
 import ErrorPage from '../../components/error/errorPage';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
+import ScinapseInput from '../../components/common/scinapseInput';
+import Icon from '../../icons';
 const styles = require('./authorShow.scss');
 
 export interface AuthorShowMatchParams {
@@ -150,14 +152,21 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
                         <span className={styles.paperListTitle}>Publications</span>
                         <span className={styles.paperListTitleNumber}>{` ${author.paperCount}`}</span>
                       </div>
-
-                      <div className={styles.paperListRight}>
-                        <SortBox
-                          sortOption={authorShow.papersSort}
-                          handleClickSortOption={this.handleClickSortOption}
-                          currentPage="authorShow"
-                        />
-                      </div>
+                    </div>
+                    <div className={styles.paperSearchContainer}>
+                      <ScinapseInput
+                        aria-label="Scinapse search box in author show"
+                        value={authorShow.paperSearchQuery}
+                        onSubmit={this.handleSubmitSearch}
+                        placeholder="Search papers"
+                        icon="SEARCH_ICON"
+                        wrapperStyle={{ marginRight: '8px', maxWidth: '500px', width: '100%' }}
+                      />
+                      <SortBox
+                        sortOption={authorShow.papersSort}
+                        handleClickSortOption={this.handleClickSortOption}
+                        currentPage="authorShow"
+                      />
                     </div>
 
                     <div className={styles.paperListContent}>{this.getPaperList()}</div>
@@ -344,7 +353,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
     );
   };
 
-  private handleClickSortOption = (sortOption: PAPER_LIST_SORT_TYPES) => {
+  private resetQuery = () => {
     const { dispatch, author } = this.props;
 
     if (author) {
@@ -353,6 +362,41 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
           authorId: author.id,
           page: 1,
           size: DEFAULT_AUTHOR_PAPERS_SIZE,
+          query: '',
+          sort: 'NEWEST_FIRST',
+          cancelToken: this.cancelToken.token,
+        })
+      );
+    }
+  };
+
+  private handleSubmitSearch = (query: string) => {
+    const { dispatch, author, authorShow } = this.props;
+
+    if (author) {
+      dispatch!(
+        getAuthorPapers({
+          authorId: author.id,
+          page: 1,
+          size: DEFAULT_AUTHOR_PAPERS_SIZE,
+          query,
+          sort: authorShow.papersSort,
+          cancelToken: this.cancelToken.token,
+        })
+      );
+    }
+  };
+
+  private handleClickSortOption = (sortOption: AUTHOR_PAPER_LIST_SORT_TYPES) => {
+    const { dispatch, author, authorShow } = this.props;
+
+    if (author) {
+      dispatch!(
+        getAuthorPapers({
+          authorId: author.id,
+          page: 1,
+          size: DEFAULT_AUTHOR_PAPERS_SIZE,
+          query: authorShow.paperSearchQuery,
           sort: sortOption,
           cancelToken: this.cancelToken.token,
         })
@@ -372,7 +416,33 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
   };
 
   private getPaperList = () => {
-    const { papers, currentUser } = this.props;
+    const { papers, currentUser, authorShow } = this.props;
+
+    if (authorShow.isLoadingPapers) {
+      return (
+        <div className={styles.loadingContainer}>
+          <ArticleSpinner className={styles.loadingSpinner} />
+        </div>
+      );
+    }
+
+    if (
+      !papers ||
+      (papers.length === 0 && authorShow.papersTotalPage === 0 && authorShow.paperSearchQuery.length > 0)
+    ) {
+      return (
+        <div className={styles.noPaperWrapper}>
+          <Icon icon="UFO" className={styles.ufoIcon} />
+          <div className={styles.noPaperDescription}>
+            Your search <b>{authorShow.paperSearchQuery}</b> did not match any papers.
+          </div>
+          <button className={styles.reloadBtn} onClick={this.resetQuery}>
+            <Icon icon="RELOAD" className={styles.reloadIcon} />
+            Reload papers
+          </button>
+        </div>
+      );
+    }
 
     return papers.map(paper => {
       if (paper) {

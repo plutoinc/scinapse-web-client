@@ -2,7 +2,7 @@ import StoreManager from '../../store/store';
 import { ActionCreators } from '../../actions/actionTypes';
 import { GLOBAL_DIALOG_TYPE } from '../../components/dialog/reducer';
 import { Collection } from '../../model/collection';
-import { Paper } from '../../model/paper';
+import { Paper, PaperFigure } from '../../model/paper';
 import { SignUpConversionExpTicketContext as AuthContext } from '../../constants/abTest';
 
 interface OpenAuthDialogParams {
@@ -118,6 +118,16 @@ class GlobalDialogManager {
       ActionCreators.openGlobalDialog({
         type: GLOBAL_DIALOG_TYPE.AUTHOR_LIST_DIALOG,
         authorListTargetPaper: paper,
+      })
+    );
+  }
+
+  public openPaperFigureDetailDialog(paperFigures: PaperFigure[], currentPaperFigureIndex: number) {
+    StoreManager.store.dispatch(
+      ActionCreators.openGlobalDialog({
+        type: GLOBAL_DIALOG_TYPE.PAPER_FIGURE_DETAIL,
+        paperFigures,
+        currentPaperFigureIndex,
       })
     );
   }

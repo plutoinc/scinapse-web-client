@@ -15,7 +15,8 @@ export interface GetRefOrCitedPapersParams {
   size?: number;
   paperId: number;
   page: number;
-  filter: string;
+  query: string;
+  sort: string | null;
   cancelToken: CancelToken;
 }
 

@@ -1,11 +1,11 @@
 import { ActionCreatorsMapObject } from 'redux';
 import { AppEntities } from '../reducers/entity';
-import { CommonPaginationResponsePart, NormalizedDataWithPaginationV2 } from '../api/types/common';
+import { NormalizedDataWithPaginationV2, PageObjectV2 } from '../api/types/common';
 import { AvailableCitationType } from '../containers/paperShow/records';
 import { GetCollectionsResponse } from '../api/member';
 import { GLOBAL_DIALOG_TYPE } from '../components/dialog/reducer';
 import { Collection } from '../model/collection';
-import { Paper, PaperPdf } from '../model/paper';
+import { Paper, PaperPdf, PaperFigure } from '../model/paper';
 import { CVInfoType, Award, Education, Experience } from '../model/profile';
 import { PaperInCollection } from '../model/paperInCollection';
 import { SIGN_UP_STEP } from '../components/auth/signUp/types';
@@ -15,6 +15,7 @@ import { SearchResult } from '../api/search';
 import { FILTER_BUTTON_TYPE } from '../components/filterButton';
 import { FilterObject } from '../helpers/searchQueryManager';
 import { AggregationJournal } from '../model/aggregation';
+import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
 
 export enum ACTION_TYPES {
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = 'GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING',
@@ -114,6 +115,8 @@ export enum ACTION_TYPES {
   PAPER_SHOW_COLLECTION_BUTTON_TOGGLE_NOTE_EDIT_MODE = 'PAPER_SHOW_COLLECTION_BUTTON_TOGGLE_NOTE_EDIT_MODE',
   // tslint:disable-next-line:max-line-length
   PAPER_SHOW_COLLECTION_BUTTON_STALE_UPDATED_COLLECTION_NOTE = 'PAPER_SHOW_COLLECTION_BUTTON_STALE_UPDATED_COLLECTION_NOTE',
+
+  PAPER_SHOW_FETCH_LAST_FULL_TEXT_REQUESTED_DATE = 'PAPER_SHOW_FETCH_LAST_FULL_TEXT_REQUESTED_DATE',
 
   ARTICLE_SEARCH_CHANGE_SEARCH_INPUT = 'ARTICLE_SEARCH_CHANGE_SEARCH_INPUT',
   ARTICLE_SEARCH_START_TO_GET_PAPERS = 'ARTICLE_SEARCH_START_TO_GET_PAPERS',
@@ -234,8 +237,9 @@ interface GetMultiPapersInCollection {
   query?: string;
 }
 
-interface GetMultiPapers extends CommonPaginationResponsePart {
+interface GetMultiPapers extends PageObjectV2 {
   paperIds: number[];
+  sort?: AUTHOR_PAPER_LIST_SORT_TYPES;
   query?: string;
 }
 
@@ -257,6 +261,8 @@ export const ActionCreators = {
     authContext?: SignUpConversionExpTicketContext;
     isBlocked?: boolean;
     nextSignUpStep?: string;
+    paperFigures?: PaperFigure[];
+    currentPaperFigureIndex?: number;
   }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
   },
@@ -1036,6 +1042,10 @@ export const ActionCreators = {
 
   closeKnowledgeBaseNoti() {
     return createAction({ type: ACTION_TYPES.KNOWLEDGE_BASE_NOTI_CLOSE });
+  },
+
+  fetchLastFullTextRequestedDate(payload: { requestedAt: string | null }) {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_FETCH_LAST_FULL_TEXT_REQUESTED_DATE, payload });
   },
 
   addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {

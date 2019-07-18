@@ -178,16 +178,14 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                     </div>
                     <div className={styles.selectedPaperDescription} />
                     <div className={styles.searchSortWrapper}>
-                      <div>
+                      <div className={styles.searchContainer}>
                         <ScinapseInput
-                          placeholder="Search paper in author's publication list"
+                          placeholder="Search papers"
                           onSubmit={this.handleSubmitPublicationSearch}
                           icon="SEARCH_ICON"
                           wrapperStyle={{
                             borderRadius: '4px',
                             borderColor: '#f1f3f6',
-                            backgroundColor: '#f8f9fb',
-                            width: '320px',
                             height: '36px',
                           }}
                         />

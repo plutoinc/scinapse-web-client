@@ -1,8 +1,10 @@
 import * as React from 'react';
 import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import * as format from 'date-fns/format';
+import classNames from 'classnames';
 import { CurrentUser } from '../../../model/currentUser';
 import Abstract from './abstract';
+import Figures from './figures';
 import PaperActionButtons from './paperActionButtons';
 import Title from './title';
 import VenueAndAuthors from './venueAndAuthors';
@@ -12,8 +14,7 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import SavedCollections from './savedCollections';
 import { getUserGroupName } from '../../../helpers/abTestHelper';
-import { BROAD_AUTHOR_VENUE_TEST } from '../../../constants/abTestGlobalValue';
-import { STOP_WORDS } from '../highLightedContent';
+import { BROAD_AUTHOR_VENUE_TEST, FIGURE_TEST } from '../../../constants/abTestGlobalValue';
 import { PaperSource } from '../../../api/paper';
 const styles = require('./paperItem.scss');
 
@@ -28,25 +29,16 @@ export interface PaperItemProps {
   sourceDomain?: PaperSource;
 }
 
-export function getMissingWords(sentence: string, source: string): string[] {
-  return Array.from(new Set(sentence.toLowerCase().split(' '))).filter(
-    word => !STOP_WORDS.includes(word) && !source.toLowerCase().includes(word)
-  );
-}
+const NotIncludedWords: React.FC<{ missingKeywords: string[] }> = React.memo(props => {
+  const { missingKeywords } = props;
 
-const NotIncludedWords: React.FC<{ title: string; abstract: string; searchKeyword: string }> = React.memo(props => {
-  const { title, abstract, searchKeyword } = props;
-  const missingWordsFromTitle = getMissingWords(searchKeyword, title);
-  const missingWordsFromAbstract = getMissingWords(searchKeyword, abstract);
-  const missingWords = new Set(missingWordsFromTitle.filter(word => missingWordsFromAbstract.includes(word)));
+  if (missingKeywords.length === 0) return null;
 
-  if (missingWords.size === 0) return null;
-
-  const wordComponents = Array.from(missingWords).map((word, i) => {
+  const wordComponents = missingKeywords.map((word, i) => {
     return (
       <React.Fragment key={i}>
         <span className={styles.missingWord}>{word}</span>
-        {i !== missingWords.size - 1 && ` `}
+        {i !== missingKeywords.length - 1 && ` `}
       </React.Fragment>
     );
   });
@@ -64,11 +56,13 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
   const { doi, urls, relation } = paper;
 
   const [venueAuthorType, setVenueAuthorType] = React.useState<'broadAuthorVenue' | 'control' | ''>('');
+  const [shouldShowFigure, setShouldShowFigure] = React.useState(false);
 
   React.useEffect(() => {
     setVenueAuthorType(
       getUserGroupName(BROAD_AUTHOR_VENUE_TEST) === 'broadAuthorVenue' ? 'broadAuthorVenue' : 'control'
     );
+    setShouldShowFigure(getUserGroupName(FIGURE_TEST) === 'both');
   }, []);
 
   let historyContent = null;
@@ -134,18 +128,21 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
           source={source}
         />
         {venueAndAuthor}
-        <Abstract
-          paperId={paper.id}
-          pageType={pageType}
-          actionArea={actionArea}
-          abstract={paper.abstractHighlighted || paper.abstract}
-          searchQueryText={searchQueryText}
-        />
-        <NotIncludedWords
-          title={paper.title}
-          abstract={paper.abstract || paper.abstractHighlighted || ''}
-          searchKeyword={searchQueryText}
-        />
+        <div
+          className={classNames({
+            [styles.abstractAndFigureWrapper]: paper.figures.length > 0 && paper.figures.length <= 2,
+          })}
+        >
+          <Abstract
+            paperId={paper.id}
+            pageType={pageType}
+            actionArea={actionArea}
+            abstract={paper.abstractHighlighted || paper.abstract}
+            searchQueryText={searchQueryText}
+          />
+          {shouldShowFigure && <Figures figures={paper.figures} />}
+        </div>
+        <NotIncludedWords missingKeywords={paper.missingKeywords} />
         <PaperActionButtons
           currentUser={currentUser}
           paper={paper}

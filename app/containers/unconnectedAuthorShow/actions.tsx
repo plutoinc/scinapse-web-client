@@ -77,10 +77,10 @@ export function getAuthorPapers(params: GetAuthorPapersParams) {
       dispatch(
         ActionCreators.getAuthorPapers({
           query: params.query,
+          sort: params.sort,
           paperIds: paperResponse.result,
           size: paperResponse.size,
-          number: paperResponse.number,
-          sort: params.sort,
+          page: paperResponse.page,
           first: paperResponse.first,
           last: paperResponse.last,
           numberOfElements: paperResponse.numberOfElements,

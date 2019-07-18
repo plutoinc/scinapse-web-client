@@ -1,6 +1,5 @@
 import * as React from 'react';
 import axios from 'axios';
-import { stringify } from 'qs';
 import NoSsr from '@material-ui/core/NoSsr';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Dispatch } from 'redux';
@@ -10,14 +9,15 @@ import { AppState } from '../../reducers';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { CurrentUser } from '../../model/currentUser';
 import ArticleSpinner from '../../components/common/spinner/articleSpinner';
-import { clearPaperShowState } from '../../actions/paperShow';
+import { clearPaperShowState, fetchLastFullTextRequestedDate } from '../../actions/paperShow';
 import { PaperShowState } from './records';
 import ActionBar from '../paperShowActionBar';
 import FOSList from '../../components/paperShow/components/fosList';
-import ReferencePapers from '../../components/paperShow/components/relatedPapers';
+import ReferencePapers from '../../components/paperShow/refCitedPapers/referencePapers';
+import CitedPapers from '../../components/paperShow/refCitedPapers/citedPapers';
 import PaperShowRefCitedTab from '../../components/paperShow/refCitedTab';
 import { Paper } from '../../model/paper';
-import { fetchCitedPaperData, fetchMyCollection, fetchPaperShowData, fetchRefPaperData } from './sideEffect';
+import { fetchMyCollection, fetchPaperShowData } from './sideEffect';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 import { LayoutState, UserDevice } from '../../components/layouts/records';
 import { getMemoizedPaper } from './select';
@@ -35,11 +35,6 @@ import PaperShowHelmet from '../../components/paperShow/helmet';
 import GoBackResultBtn from '../../components/paperShow/backButton';
 import { getMemoizedCurrentUser } from '../../selectors/getCurrentUser';
 import { getRelatedPapers } from '../../actions/relatedPapers';
-import {
-  makeGetMemoizedPapers,
-  getMemoizedReferencePaperIds,
-  getMemoizedCitedPaperIds,
-} from '../../selectors/papersSelector';
 import { getMemoizedPaperShow } from '../../selectors/getPaperShow';
 import { getMemoizedLayout } from '../../selectors/getLayout';
 import { getMemoizedPDFViewerState } from '../../selectors/getPDFViewer';
@@ -51,13 +46,13 @@ import { getMemoizedConfiguration } from '../../selectors/getConfiguration';
 import PlutoAxios from '../../api/pluto';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
 import KnowledgeBaseNoti from '../../components/knowledgeBaseNoti';
+import PaperShowFigureList from '../../components/paperShow/components/paperShowFigureList';
+import { getUserGroupName } from '../../helpers/abTestHelper';
+import { FIGURE_TEST } from '../../constants/abTestGlobalValue';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
 let ticking = false;
-
-const getReferencePapers = makeGetMemoizedPapers(getMemoizedReferencePaperIds);
-const getCitedPapers = makeGetMemoizedPapers(getMemoizedCitedPaperIds);
 
 function mapStateToProps(state: AppState) {
   return {
@@ -67,8 +62,6 @@ function mapStateToProps(state: AppState) {
     paperShow: getMemoizedPaperShow(state),
     paper: getMemoizedPaper(state),
     PDFViewerState: getMemoizedPDFViewerState(state),
-    referencePapers: getReferencePapers(state),
-    citedPapers: getCitedPapers(state),
   };
 }
 
@@ -80,8 +73,6 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
   PDFViewerState: PDFViewerState;
   dispatch: Dispatch<any>;
   paper: Paper | null;
-  referencePapers: Paper[];
-  citedPapers: Paper[];
 }
 
 interface PaperShowStates
@@ -90,6 +81,7 @@ interface PaperShowStates
       isOnRef: boolean;
       isOnCited: boolean;
       isOnFullText: boolean;
+      shouldShowFigure: boolean;
     }> {}
 
 const Title: React.FC<{ title: string }> = React.memo(({ title }) => {
@@ -115,6 +107,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isOnRef: false,
       isOnCited: false,
       isOnFullText: false,
+      shouldShowFigure: false,
     };
   }
 
@@ -134,16 +127,14 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     } else {
       this.logPageView(match.params.paperId, paperShow.errorStatusCode);
     }
+
+    this.setState(prevState => ({ ...prevState, shouldShowFigure: getUserGroupName(FIGURE_TEST) !== 'control' }));
   }
 
   public async componentDidUpdate(prevProps: PaperShowProps) {
-    const { dispatch, match, location, currentUser } = prevProps;
-    const prevQueryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
-    const nextQueryParams: PaperShowPageQueryParams = getQueryParamsObject(this.props.location.search);
+    const { dispatch, match, currentUser } = prevProps;
 
     const moveToDifferentPage = match.params.paperId !== this.props.match.params.paperId;
-    const changeRefPage = prevQueryParams['ref-page'] !== nextQueryParams['ref-page'];
-    const changeCitedPage = prevQueryParams['cited-page'] !== nextQueryParams['cited-page'];
 
     if (moveToDifferentPage) {
       dispatch(clearPaperShowState());
@@ -158,19 +149,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       this.props.currentUser.isLoggedIn &&
       this.props.paper
     ) {
+      dispatch(fetchLastFullTextRequestedDate(this.props.paper.id));
       return dispatch(fetchMyCollection(this.props.paper.id, this.cancelToken.token));
-    }
-
-    if (this.props.paper && changeRefPage) {
-      await dispatch(fetchRefPaperData(this.props.paper.id, nextQueryParams['ref-page'], this.cancelToken.token));
-      if (this.refTabWrapper) {
-        this.refTabWrapper.scrollIntoView();
-      }
-    } else if (this.props.paper && changeCitedPage) {
-      await dispatch(fetchCitedPaperData(this.props.paper.id, nextQueryParams['cited-page'], this.cancelToken.token));
-      if (this.citedTabWrapper) {
-        this.citedTabWrapper.scrollIntoView();
-      }
     }
   }
 
@@ -183,16 +163,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public render() {
-    const {
-      layout,
-      paperShow,
-      location,
-      currentUser,
-      paper,
-      referencePapers,
-      citedPapers,
-      PDFViewerState,
-    } = this.props;
+    const { layout, paperShow, currentUser, paper, PDFViewerState } = this.props;
     const { isOnFullText, isOnCited, isOnRef } = this.state;
 
     if (paperShow.isLoadingPaper) {
@@ -237,6 +208,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     currentUser={currentUser}
                     hasPDFFullText={!!PDFViewerState.parsedPDFObject}
                     handleClickFullText={this.scrollToSection('fullText')}
+                    lastRequestedDate={paperShow.lastRequestedAt}
                   />
                 </NoSsr>
               </div>
@@ -249,6 +221,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <div className={styles.fos}>
                   <FOSList FOSList={paper.fosList} />
                 </div>
+                {this.state.shouldShowFigure && (
+                  <PaperShowFigureList paper={paper} isMobile={layout.userDevice !== UserDevice.DESKTOP} />
+                )}
               </div>
             </div>
           </article>
@@ -267,6 +242,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 isOnFullText={isOnFullText}
                 isLoading={PDFViewerState.isLoading}
                 canShowFullPDF={!!PDFViewerState.parsedPDFObject}
+                lastRequestedDate={paperShow.lastRequestedAt}
               />
             </div>
             <NoSsr>
@@ -289,13 +265,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               <div className={styles.otherPapers}>
                 <div className={styles.references}>
                   <ReferencePapers
-                    type="reference"
                     isMobile={layout.userDevice !== UserDevice.DESKTOP}
-                    papers={referencePapers}
                     currentUser={currentUser}
-                    paperShow={paperShow}
-                    getLinkDestination={this.getReferencePaperPaginationLink}
-                    location={location}
+                    refTabEl={this.refTabWrapper}
                   />
                 </div>
               </div>
@@ -310,14 +282,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <span className={styles.sectionCount}>{paper.citedCount}</span>
               </div>
               <div className={styles.otherPapers}>
-                <ReferencePapers
-                  type="cited"
+                <CitedPapers
                   isMobile={layout.userDevice !== UserDevice.DESKTOP}
-                  papers={citedPapers}
                   currentUser={currentUser}
-                  paperShow={paperShow}
-                  getLinkDestination={this.getCitedPaperPaginationLink}
-                  location={location}
+                  citedTabEl={this.citedTabWrapper}
                 />
               </div>
             </article>
@@ -468,42 +436,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
 
     ticking = false;
-  };
-
-  private getCitedPaperPaginationLink = (page: number) => {
-    const { paper, location } = this.props;
-    const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
-
-    const updatedQueryParamsObject: PaperShowPageQueryParams = {
-      ...queryParamsObject,
-      ...{ 'cited-page': page },
-    };
-    const stringifiedQueryParams = stringify(updatedQueryParamsObject, {
-      addQueryPrefix: true,
-    });
-
-    return {
-      to: `/papers/${paper ? paper.id : 0}`,
-      search: stringifiedQueryParams,
-    };
-  };
-
-  private getReferencePaperPaginationLink = (page: number) => {
-    const { paper, location } = this.props;
-    const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
-
-    const updatedQueryParamsObject: PaperShowPageQueryParams = {
-      ...queryParamsObject,
-      ...{ 'ref-page': page },
-    };
-    const stringifiedQueryParams = stringify(updatedQueryParamsObject, {
-      addQueryPrefix: true,
-    });
-
-    return {
-      to: `/papers/${paper ? paper.id : 0}`,
-      search: stringifiedQueryParams,
-    };
   };
 
   private handleClickRefCitedTabItem = (section: RefCitedTabItem) => () => {
