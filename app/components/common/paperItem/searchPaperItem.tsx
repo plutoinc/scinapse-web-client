@@ -15,7 +15,6 @@ import { Paper } from '../../../model/paper';
 import SavedCollections from './savedCollections';
 import { getUserGroupName } from '../../../helpers/abTestHelper';
 import { BROAD_AUTHOR_VENUE_TEST, FIGURE_TEST } from '../../../constants/abTestGlobalValue';
-import { STOP_WORDS } from '../highLightedContent';
 import { PaperSource } from '../../../api/paper';
 const styles = require('./paperItem.scss');
 
@@ -28,12 +27,6 @@ export interface PaperItemProps {
   wrapperClassName: string;
   currentUser: CurrentUser;
   sourceDomain?: PaperSource;
-}
-
-export function getMissingWords(sentence: string, source: string): string[] {
-  return Array.from(new Set(sentence.toLowerCase().split(' '))).filter(
-    word => !STOP_WORDS.includes(word) && !source.toLowerCase().includes(word)
-  );
 }
 
 const NotIncludedWords: React.FC<{ missingKeywords: string[] }> = React.memo(props => {
