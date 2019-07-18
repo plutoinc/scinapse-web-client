@@ -33,11 +33,9 @@ const PaperFigureDetail: React.FC<Props> = props => {
         actionLabel: String(showFigureIndex),
       });
 
-      if (showFigureIndex === 0) {
-        setShowFigureIndex(paperFigures!.length - 1);
-      } else {
-        setShowFigureIndex(showFigureIndex - 1);
-      }
+      const figuresLength = paperFigures!.length;
+      const nextFigureIndex = (figuresLength + showFigureIndex - 1) % figuresLength;
+      setShowFigureIndex(nextFigureIndex);
     },
     [paperFigures, showFigureIndex]
   );
@@ -52,11 +50,9 @@ const PaperFigureDetail: React.FC<Props> = props => {
         actionLabel: String(showFigureIndex),
       });
 
-      if (showFigureIndex === paperFigures!.length - 1) {
-        setShowFigureIndex(0);
-      } else {
-        setShowFigureIndex(showFigureIndex + 1);
-      }
+      const figuresLength = paperFigures!.length;
+      const nextFigureIndex = (figuresLength + showFigureIndex + 1) % figuresLength;
+      setShowFigureIndex(nextFigureIndex);
     },
     [paperFigures, showFigureIndex]
   );
