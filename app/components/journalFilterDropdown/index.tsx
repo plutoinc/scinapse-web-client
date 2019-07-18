@@ -85,10 +85,10 @@ const JournalFilterDropdown: React.FC<
         />
         <Popper
           modifiers={{
-            flip: {
+            preventOverflow: {
               enabled: false,
             },
-            preventOverflow: {
+            flip: {
               enabled: false,
             },
           }}

@@ -36,7 +36,10 @@ const FOSItem: React.FC<FOSItemProps> = ({ FOS, onClick, selected }) => {
         [s.selected]: selected,
       })}
     >
-      <span className={s.fosName}>{FOS.name}</span>
+      <div className={s.fosNameWrapper}>
+        <input type="checkbox" className={s.checkbox} checked={selected} readOnly />
+        <span className={s.fosName}>{FOS.name}</span>
+      </div>
       <span className={s.docCount}>{`(${FOS.docCount})`}</span>
     </button>
   );

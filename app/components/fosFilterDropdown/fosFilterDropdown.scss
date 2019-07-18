@@ -13,7 +13,8 @@
   align-items: center;
   width: 100%;
   cursor: pointer;
-  padding: 8px;
+  padding: 6px;
+  font-size: 14px;
   border-radius: 4px;
 
   &:hover {
@@ -27,12 +28,12 @@
   }
 
   .fosName {
-    font-size: 16px;
+    font-size: 14px;
     color: $gray9;
   }
 
   .docCount {
-    font-size: 16px;
+    font-size: 14px;
     text-align: right;
     color: $gray9;
   }
@@ -57,8 +58,17 @@
 }
 
 .FOSListWrapper {
-  max-height: 496px;
+  max-height: 295px;
   overflow-y: auto;
+}
+
+.fosNameWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox {
+  margin-right: 8px;
 }
 
 @media (max-width: $mobile-width) {

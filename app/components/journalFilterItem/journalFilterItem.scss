@@ -3,11 +3,11 @@
   display: flex;
   align-items: center;
   width: 100%;
-  font-size: 16px;
+  font-size: 14px;
   color: $gray9;
   cursor: pointer;
   text-align: left;
-  padding: 8px;
+  padding: 6px;
   border-radius: 4px;
 
   &:hover {
@@ -28,7 +28,7 @@
 
   display: inline-block;
   vertical-align: top;
-  width: 373px;
+  width: 303px;
 }
 
 .ifLabel {
@@ -61,7 +61,7 @@
   top: 0;
   right: 8px;
   bottom: 0;
-  font-size: 16px;
+  font-size: 14px;
   color: $gray9;
   display: flex;
   align-items: center;
