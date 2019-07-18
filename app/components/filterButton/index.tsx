@@ -14,14 +14,16 @@ export enum FILTER_BUTTON_TYPE {
 export interface FilterButtonProps {
   content: string;
   isActive: boolean;
+  selected: boolean;
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
-const FilterButton: React.FC<FilterButtonProps> = ({ content, onClick, isActive }) => {
+const FilterButton: React.FC<FilterButtonProps> = ({ content, onClick, isActive, selected }) => {
   return (
     <button
       className={classNames({
         [s.filterBtn]: !isActive,
         [s.active]: isActive,
+        [s.selected]: selected,
       })}
       onClick={onClick}
     >
@@ -31,6 +33,7 @@ const FilterButton: React.FC<FilterButtonProps> = ({ content, onClick, isActive 
         className={classNames({
           [s.arrowIcon]: true,
           [s.activeIcon]: isActive,
+          [s.selected]: selected,
         })}
       />
     </button>

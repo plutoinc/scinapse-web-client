@@ -74,6 +74,7 @@ const SortingDropdown: React.FC<
           }}
           content={getSortText(props.sorting)}
           isActive={props.isActive}
+          selected={false}
         />
         <Popper open={props.isActive} anchorEl={anchorEl.current} placement="bottom-start" disablePortal>
           <div className={s.dropBoxWrapper}>

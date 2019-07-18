@@ -57,9 +57,12 @@
   border: solid 1px $gray2;
   background-color: $gray0;
   padding: 6px 8px;
-  opacity: 0.7;
   font-size: 14px;
-  color: $gray6;
+  color: $dark-blue0;
+
+  &::placeholder {
+    color: $gray4;
+  }
 }
 
 .controlBtnsWrapper {

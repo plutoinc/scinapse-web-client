@@ -82,6 +82,7 @@ const JournalFilterDropdown: React.FC<
           }}
           content={buttonText}
           isActive={props.isActive}
+          selected={props.selectedJournalIds.length > 0}
         />
         <Popper
           modifiers={{

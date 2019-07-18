@@ -1,12 +1,16 @@
 %base-filter-button {
   height: 35px;
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 8px 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-weight: 500;
   cursor: pointer;
+
+  &:hover {
+    border-color: $gray4;
+  }
 }
 
 .filterBtn {
@@ -19,9 +23,21 @@
 .active {
   @extend %base-filter-button;
 
-  border: solid 1px $gray3;
+  border: 1px solid $main_blue0;
   color: white;
   background-color: $main_blue0;
+
+  &:hover {
+    border-color: $main_blue0;
+  }
+
+  &.selected {
+    color: white;
+  }
+}
+
+.selected {
+  color: $main_blue0;
 }
 
 .arrowIcon {
@@ -45,6 +61,18 @@
     svg {
       transform: rotate(180deg);
       color: white;
+    }
+
+    &.selected {
+      svg {
+        color: white;
+      }
+    }
+  }
+
+  &.selected {
+    svg {
+      color: $main_blue0;
     }
   }
 }

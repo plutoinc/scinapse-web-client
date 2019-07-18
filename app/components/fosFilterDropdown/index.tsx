@@ -102,6 +102,7 @@ const FOSFilterDropdown: React.FC<
           }}
           content={buttonText}
           isActive={props.isActive}
+          selected={props.selectedFOSIds.length > 0}
         />
         <Popper
           modifiers={{

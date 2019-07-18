@@ -85,6 +85,7 @@ const YearFilterDropdown: React.FC<
           }}
           content={buttonText}
           isActive={props.isActive}
+          selected={!!props.currentYearTo || !!props.currentYearFrom}
         />
         <Popper
           modifiers={{
