@@ -36,19 +36,16 @@ export function getMissingWords(sentence: string, source: string): string[] {
   );
 }
 
-const NotIncludedWords: React.FC<{ title: string; abstract: string; searchKeyword: string }> = React.memo(props => {
-  const { title, abstract, searchKeyword } = props;
-  const missingWordsFromTitle = getMissingWords(searchKeyword, title);
-  const missingWordsFromAbstract = getMissingWords(searchKeyword, abstract);
-  const missingWords = new Set(missingWordsFromTitle.filter(word => missingWordsFromAbstract.includes(word)));
+const NotIncludedWords: React.FC<{ missingKeywords: string[] }> = React.memo(props => {
+  const { missingKeywords } = props;
 
-  if (missingWords.size === 0) return null;
+  if (missingKeywords.length === 0) return null;
 
-  const wordComponents = Array.from(missingWords).map((word, i) => {
+  const wordComponents = missingKeywords.map((word, i) => {
     return (
       <React.Fragment key={i}>
         <span className={styles.missingWord}>{word}</span>
-        {i !== missingWords.size - 1 && ` `}
+        {i !== missingKeywords.length - 1 && ` `}
       </React.Fragment>
     );
   });
@@ -156,6 +153,7 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
           title={paper.title}
           abstract={paper.abstract || paper.abstractHighlighted || ''}
           searchKeyword={searchQueryText}
+          missingKeywords={paper.missingKeywords}
         />
         <PaperActionButtons
           currentUser={currentUser}
