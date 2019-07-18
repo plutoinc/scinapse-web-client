@@ -1,0 +1,79 @@
+.journalItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 14px;
+  color: $gray9;
+  cursor: pointer;
+  text-align: left;
+  padding: 6px;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: $main_blue_light2;
+  }
+
+  &.isSelected {
+    color: $main_blue1;
+  }
+
+  &.highlighted {
+    background-color: $main_blue_light2;
+  }
+}
+
+.title {
+  @extend %one-line-overflow-ellipsis;
+
+  display: inline-block;
+  vertical-align: top;
+  width: 303px;
+}
+
+.ifLabel {
+  position: absolute;
+  display: inline-block;
+  vertical-align: top;
+  right: 78px;
+  opacity: 0.9;
+  font-size: 14px;
+  text-align: right;
+  color: $main_blue0;
+
+  &.noDocCount {
+    right: 8px;
+  }
+}
+
+.ifIconWrapper {
+  margin-right: 4px;
+
+  svg {
+    width: 10px;
+    height: 10px;
+    color: $main_blue0;
+  }
+}
+
+.countBox {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  bottom: 0;
+  font-size: 14px;
+  color: $gray9;
+  display: flex;
+  align-items: center;
+}
+
+.arrowBottomTooltip {
+  background-color: #606269 !important;
+  color: white !important;
+  font-size: 10px !important;
+  margin-bottom: 6px !important;
+}
+
+.checkbox {
+  margin-right: 8px;
+}

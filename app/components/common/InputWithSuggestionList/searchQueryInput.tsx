@@ -33,7 +33,7 @@ type SearchQueryInputProps = React.InputHTMLAttributes<HTMLInputElement> &
     dispatch: Dispatch<any>;
     actionArea: 'home' | 'topBar' | 'paperShow';
     maxCount: number;
-    initialFilter?: FilterObject;
+    currentFilter?: FilterObject;
     wrapperClassName?: string;
     listWrapperClassName?: string;
     inputClassName?: string;
@@ -190,7 +190,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
       from = 'suggestion';
     }
 
-    handleSubmit({ query: genuineInputValue, filter: props.initialFilter, from });
+    handleSubmit({ query: genuineInputValue, filter: props.currentFilter, from });
   }
 
   const keywordItems = keywordsToShow.slice(0, props.maxCount).map((k, i) => {
@@ -202,7 +202,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
           [s.highlight]: highlightIdx === i,
         })}
         onClick={() => {
-          handleSubmit({ query: k.text, filter: props.initialFilter, from: k.removable ? 'history' : 'suggestion' });
+          handleSubmit({ query: k.text, filter: props.currentFilter, from: k.removable ? 'history' : 'suggestion' });
         }}
       >
         <span dangerouslySetInnerHTML={{ __html: getHighlightedContent(k.text, genuineInputValue) }} />
@@ -259,7 +259,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
 
                 handleSubmit({
                   query: keywordsToShow[i] ? keywordsToShow[i].text : genuineInputValue,
-                  filter: props.initialFilter,
+                  filter: props.currentFilter,
                   from,
                 });
               },

@@ -1,0 +1,96 @@
+%column-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: $dark-blue0;
+}
+
+.dropBoxWrapper {
+  width: 486px;
+  border-radius: 4px;
+  box-shadow: 0 8px 24px 2px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  padding: 24px;
+  margin-top: 8px;
+}
+
+.FOSItemBtn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+  padding: 6px;
+  font-size: 14px;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: $main_blue_light2;
+  }
+
+  &.selected {
+    .fosName {
+      color: $main_blue1;
+    }
+  }
+
+  .fosName {
+    font-size: 14px;
+    color: $gray9;
+  }
+
+  .docCount {
+    font-size: 14px;
+    text-align: right;
+    color: $gray9;
+  }
+}
+
+.controlBtnsWrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+}
+
+.clearBtn {
+  cursor: pointer;
+  font-size: 16px;
+  color: $gray5;
+}
+
+.applyBtn {
+  cursor: pointer;
+  font-size: 16px;
+  color: $main_blue1;
+}
+
+.FOSListWrapper {
+  max-height: 295px;
+  overflow-y: auto;
+}
+
+.fosNameWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox {
+  margin-right: 8px;
+}
+
+.listHeader {
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.FOSLabel {
+  @extend %column-label;
+  margin-left: 28px;
+}
+
+.countLabel {
+  @extend %column-label;
+  margin-right: 6px;
+  text-align: right;
+}

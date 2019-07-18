@@ -2,11 +2,6 @@ $action-bar-height: 55px;
 $ref-cited-bar-height: 50px;
 $side-navigation-bottom-padding: 24px;
 
-:export {
-  navbarHeight: $navbar_height;
-  refCitedBarHeight: $ref-cited-bar-height;
-}
-
 :global {
   @import '~react-pdf/dist/Page/AnnotationLayer';
 }

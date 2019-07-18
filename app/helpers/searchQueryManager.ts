@@ -5,8 +5,8 @@ import SafeURIStringHandler from './safeURIStringHandler';
 import { isEmpty } from 'lodash';
 
 export interface FilterObject {
-  yearFrom: number;
-  yearTo: number;
+  yearFrom: number | string;
+  yearTo: number | string;
   fos: number[];
   journal: number[];
 }
@@ -76,8 +76,16 @@ class SearchQueryManager {
         const mappedObject: Partial<FilterObject> = {};
         if (current.year) {
           const yearSet = current.year.split(':');
-          mappedObject.yearFrom = parseInt(yearSet[0] || '0', 10);
-          mappedObject.yearTo = parseInt(yearSet[1] || '0', 10);
+          let yearFrom: string | number = parseInt(yearSet[0], 10);
+          let yearTo: string | number = parseInt(yearSet[1], 10);
+          if (isNaN(yearFrom)) {
+            yearFrom = '';
+          }
+          if (isNaN(yearTo)) {
+            yearTo = '';
+          }
+          mappedObject.yearFrom = yearFrom;
+          mappedObject.yearTo = yearTo;
         }
         if (current.journal) {
           mappedObject.journal = this.parseNumberArray(current.journal);

@@ -50,7 +50,7 @@ describe('SearchQueryManager', () => {
       it('should return parsed object', () => {
         expect(SearchQueryManager.objectifyPaperFilter('year=2015:,fos=154945302,journal=')).toEqual({
           yearFrom: 2015,
-          yearTo: 0,
+          yearTo: '',
           fos: [154945302],
           journal: [],
         });
@@ -60,8 +60,8 @@ describe('SearchQueryManager', () => {
     describe('when filter string exists and all filter is empty', () => {
       it('should return parsed object', () => {
         expect(SearchQueryManager.objectifyPaperFilter('year=:,fos=,journal=')).toEqual({
-          yearFrom: 0,
-          yearTo: 0,
+          yearFrom: '',
+          yearTo: '',
           fos: [],
           journal: [],
         });

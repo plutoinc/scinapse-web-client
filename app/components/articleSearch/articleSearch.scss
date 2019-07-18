@@ -52,48 +52,13 @@
   margin-left: 22px;
 }
 
-.suggestionBox {
-  margin-top: 24px;
-  padding-bottom: 16px;
-  font-size: 16px;
-  text-align: left;
-  color: $gray6;
-  width: 100%;
-  border-bottom: 1px solid $gray3;
-
-  .noResult {
-    font-size: 18px;
-    margin-bottom: 4px;
-  }
-
-  .suggestionResult {
-    font-size: 14px;
-
-    b {
-      font-weight: normal;
-      color: $red0;
-    }
-  }
-
-  .suggestionLink {
-    color: $navy0;
-    font-style: italic;
-    text-decoration: underline;
-  }
-
-  b {
-    font-weight: bold;
-  }
-}
-
 .searchSummary {
   position: relative;
   display: flex;
-  margin-top: 32px;
   font-size: 15px;
   align-items: center;
   line-height: 28px;
-  margin-bottom: 16px;
+  margin: 16px 0;
 
   .searchResult {
     color: $main_blue0;
@@ -107,22 +72,64 @@
   }
 }
 
+.countDivider {
+  display: inline-block;
+  margin: 0 8px;
+}
+
+.additionalContent {
+  font-size: 14px;
+  line-height: 18px;
+  color: $gray5;
+
+  .boldQuery {
+    font-weight: bold;
+  }
+
+  .wrongQuery {
+    color: $red0;
+    font-weight: bold;
+  }
+
+  .suggestionKeyword {
+    color: $main-blue1;
+    font-weight: bold;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .weirdQuery {
+    font-weight: bold;
+  }
+
+  .suggestionLink {
+    color: $gray6;
+    font-weight: bold;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 .categoryHeader {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: bold;
   margin-right: 8px;
-  color: $black1;
+  color: $dark-blue0;
+  margin-bottom: 4px;
 }
 
 .categoryCount {
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 14px;
   color: $gray5;
 }
 
 .authorItemsHeader {
   position: relative;
-  padding: 32px 0 16px 0;
+  padding: 24px 0 16px 0;
 
   .moreAuthorLink {
     display: inline;
