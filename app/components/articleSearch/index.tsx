@@ -19,7 +19,7 @@ import SearchList from './components/searchList';
 import DoiSearchBlocked from './components/doiSearchBlocked';
 import { Paper } from '../../model/paper';
 import AuthorSearchItem from '../authorSearchItem';
-import { Actions } from '../../actions/actionTypes';
+import { Actions, SearchActions } from '../../actions/actionTypes';
 import restoreScroll from '../../helpers/scrollRestoration';
 import { SearchPageQueryParams } from './types';
 import { MatchAuthor } from '../../api/search';
@@ -171,7 +171,7 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
             shouldShowTitle={!hasNoMatchedAuthors}
           />
         </div>
-        <FilterBox />
+        <FilterBox query={queryParams.query} />
         <SearchList
           currentUser={currentUserState}
           papers={articleSearchState.searchItemsToShow}
@@ -192,11 +192,17 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
 };
 
 const SearchContainer: React.FC<Props> = props => {
-  const { articleSearchState, currentUserState, location, searchPapers, changeSearchQuery } = props;
+  const {
+    articleSearchState,
+    currentUserState,
+    location,
+    searchPapers,
+    changeSearchQuery,
+    enableAutoYearFilter,
+  } = props;
   const [queryParams, setQueryParams] = React.useState<SearchPageQueryParams>(
     parse(location.search, { ignoreQueryPrefix: true })
   );
-  const [useAutoYearFilter, setUseAutoYearFilter] = React.useState(true);
   const [filter, setFilter] = React.useState(SearchQueryManager.objectifyPaperFilter(queryParams.filter));
   const cancelToken = React.useRef(axios.CancelToken.source());
 
@@ -204,13 +210,8 @@ const SearchContainer: React.FC<Props> = props => {
     () => {
       if (currentUserState.isLoggingIn) return;
 
-      const doAutoYearFilterSearch = getUserGroupName(AUTO_YEAR_FILTER_TEST) === 'auto';
-
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
-
-      if (articleSearchState.searchInput !== currentQueryParams.query) {
-        setUseAutoYearFilter(true);
-      }
+      const doAutoYearFilterSearch = getUserGroupName(AUTO_YEAR_FILTER_TEST) === 'auto';
 
       changeSearchQuery(SafeURIStringHandler.decode(currentQueryParams.query || ''));
       setQueryParams(currentQueryParams);
@@ -219,12 +220,8 @@ const SearchContainer: React.FC<Props> = props => {
       // set params
       const params = SearchQueryManager.makeSearchQueryFromParamsObject(currentQueryParams);
       params.cancelToken = cancelToken.current.token;
-
-      if (doAutoYearFilterSearch && useAutoYearFilter) {
-        params.detectYear = true;
-      } else {
-        params.detectYear = false;
-      }
+      params.detectYear =
+        articleSearchState.searchInput !== currentQueryParams.query || (doAutoYearFilterSearch && enableAutoYearFilter);
 
       searchPapers(params).then(() => {
         restoreScroll(location.key);
@@ -235,14 +232,7 @@ const SearchContainer: React.FC<Props> = props => {
         cancelToken.current = axios.CancelToken.source();
       };
     },
-    [
-      location.key,
-      location.search,
-      currentUserState.isLoggedIn,
-      currentUserState.isLoggingIn,
-      searchPapers,
-      useAutoYearFilter,
-    ]
+    [location.key, location.search, currentUserState.isLoggedIn, currentUserState.isLoggingIn, searchPapers]
   );
 
   if (articleSearchState.pageErrorCode) {
@@ -283,10 +273,11 @@ const mapStateToProps = (state: AppState) => {
     articleSearchState: state.articleSearch,
     currentUserState: state.currentUser,
     configuration: state.configuration,
+    enableAutoYearFilter: state.searchFilterState.enableAutoYearFilter,
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) =>
+const mapDispatchToProps = (dispatch: Dispatch<Actions | SearchActions>) =>
   bindActionCreators(
     {
       searchPapers,

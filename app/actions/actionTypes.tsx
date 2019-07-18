@@ -135,6 +135,7 @@ export enum ACTION_TYPES {
   ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER = 'ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER',
   ARTICLE_SEARCH_ADD_JOURNAL_FILTER_ITEMS = 'ARTICLE_SEARCH_ADD_JOURNAL_FILTER_ITEMS',
   ARTICLE_SEARCH_CLEAR_FOS_FILTER = 'ARTICLE_SEARCH_CLEAR_FOS_FILTER',
+  ARTICLE_SEARCH_DISABLE_AUTO_YEAR_FILTER = 'ARTICLE_SEARCH_DISABLE_AUTO_YEAR_FILTER',
 
   AUTHOR_SHOW_START_TO_LOAD_DATA_FOR_PAGE = 'AUTHOR_SHOW_START_TO_LOAD_DATA_FOR_PAGE',
   AUTHOR_SHOW_FINISH_TO_LOAD_DATA_FOR_PAGE = 'AUTHOR_SHOW_FINISH_TO_LOAD_DATA_FOR_PAGE',
@@ -1088,6 +1089,10 @@ interface AddJournalFilterItems {
   };
 }
 
+interface DisableAutoYearFilter {
+  type: ACTION_TYPES.ARTICLE_SEARCH_DISABLE_AUTO_YEAR_FILTER;
+}
+
 export type SearchActions =
   | SucceedToGetSearchResultAction
   | SetActiveFilterBoxButtonAction
@@ -1096,6 +1101,7 @@ export type SearchActions =
   | SelectFOSFilterItemAction
   | ClearJournalFilterAction
   | ClearFOSFilterAction
-  | AddJournalFilterItems;
+  | AddJournalFilterItems
+  | DisableAutoYearFilter;
 
 export type Actions = ActionUnion<typeof ActionCreators>;

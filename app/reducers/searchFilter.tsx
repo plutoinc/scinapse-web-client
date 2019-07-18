@@ -11,8 +11,10 @@ export interface SearchFilterState extends AggregationData {
   currentYearTo: number | string;
   selectedJournalIds: number[];
   selectedFOSIds: number[];
+  detectedYear: number | null;
   addedJournals: JournalSuggestion[];
   sorting: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS;
+  enableAutoYearFilter: boolean;
 }
 
 export const SEARCH_FILTER_INITIAL_STATE: SearchFilterState = {
@@ -22,6 +24,8 @@ export const SEARCH_FILTER_INITIAL_STATE: SearchFilterState = {
   selectedJournalIds: [],
   selectedFOSIds: [],
   sorting: 'RELEVANCE',
+  detectedYear: null,
+  enableAutoYearFilter: true,
   // data
   fosList: [],
   journals: [],
@@ -40,6 +44,8 @@ export function reducer(state = SEARCH_FILTER_INITIAL_STATE, action: SearchActio
       return {
         ...state,
         ...data.aggregation,
+        detectedYear: data.detectedYear,
+        enableAutoYearFilter: true,
       };
     }
 
@@ -47,6 +53,13 @@ export function reducer(state = SEARCH_FILTER_INITIAL_STATE, action: SearchActio
       return {
         ...state,
         activeButton: action.payload.button,
+      };
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_DISABLE_AUTO_YEAR_FILTER: {
+      return {
+        ...state,
+        enableAutoYearFilter: false,
       };
     }
 

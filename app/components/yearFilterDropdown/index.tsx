@@ -26,16 +26,18 @@ interface YearFilterDropdownProps {
 const YearFilterDropdown: React.FC<
   YearFilterDropdownProps & ReturnType<typeof mapStateToProps> & RouteComponentProps
 > = React.memo(props => {
-  const [minMaxYears, setMinMaxYears] = React.useState<(number | string)[]>([
-    props.currentYearFrom,
-    props.currentYearTo,
-  ]);
+  function getCurrentYearSet() {
+    if (props.detectedYear) return [props.detectedYear, props.detectedYear];
+    return [props.currentYearFrom, props.currentYearTo];
+  }
+
+  const [minMaxYears, setMinMaxYears] = React.useState<(number | string)[]>(getCurrentYearSet());
 
   React.useEffect(
     () => {
-      setMinMaxYears([props.currentYearFrom, props.currentYearTo]);
+      setMinMaxYears(getCurrentYearSet());
     },
-    [props.currentYearFrom, props.currentYearTo]
+    [props.currentYearFrom, props.currentYearTo, props.detectedYear]
   );
 
   const anchorEl = React.useRef(null);
@@ -45,8 +47,8 @@ const YearFilterDropdown: React.FC<
   const selectChanged = props.currentYearFrom !== minYear || props.currentYearTo !== maxYear;
 
   let buttonText = 'Any time';
-  if (props.currentYearTo || props.currentYearFrom) {
-    buttonText = `${props.currentYearFrom || 'Past'} - ${props.currentYearTo || 'Current'}`;
+  if (minYear || maxYear) {
+    buttonText = `${minYear || 'Past'} - ${maxYear || 'Current'}`;
   }
 
   function handleSubmit() {
@@ -85,7 +87,7 @@ const YearFilterDropdown: React.FC<
           }}
           content={buttonText}
           isActive={props.isActive}
-          selected={!!props.currentYearTo || !!props.currentYearFrom}
+          selected={!!minYear || !!maxYear}
         />
         <Popper
           modifiers={{
@@ -255,6 +257,7 @@ const YearFilterDropdown: React.FC<
 
 function mapStateToProps(state: AppState) {
   return {
+    detectedYear: state.searchFilterState.detectedYear,
     currentYearFrom: state.searchFilterState.currentYearFrom,
     currentYearTo: state.searchFilterState.currentYearTo,
     isActive: state.searchFilterState.activeButton === FILTER_BUTTON_TYPE.YEAR,

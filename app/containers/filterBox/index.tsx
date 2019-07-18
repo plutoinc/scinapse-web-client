@@ -15,10 +15,15 @@ import SortingDropdown from '../../components/sortingDropdown';
 import Icon from '../../icons';
 import makeNewFilterLink from '../../helpers/makeNewFilterLink';
 import { UserDevice } from '../../components/layouts/records';
+import ActionTicketManager from '../../helpers/actionTicketManager';
 
 const s = require('./filterBox.scss');
 
-type FilterBoxProps = RouteComponentProps & ReturnType<typeof mapStateToProps> & { dispatch: Dispatch<SearchActions> };
+type FilterBoxProps = RouteComponentProps &
+  ReturnType<typeof mapStateToProps> & {
+    dispatch: Dispatch<SearchActions>;
+    query?: string;
+  };
 const FilterBox: React.FC<FilterBoxProps> = props => {
   const filterBoxRef = React.useRef(null);
 
@@ -33,6 +38,21 @@ const FilterBox: React.FC<FilterBoxProps> = props => {
       },
     });
   }, []);
+
+  React.useEffect(
+    () => {
+      if (props.detectedYear) {
+        ActionTicketManager.trackTicket({
+          pageType: 'searchResult',
+          actionType: 'fire',
+          actionArea: 'autoYearFilter',
+          actionTag: 'autoYearFilterQuery',
+          actionLabel: props.query || '',
+        });
+      }
+    },
+    [props.detectedYear, props.query]
+  );
 
   if (props.isMobile) return null;
 
@@ -63,6 +83,18 @@ const FilterBox: React.FC<FilterBoxProps> = props => {
         </div>
         {props.isFilterApplied && (
           <Link
+            onClick={() => {
+              if (props.enableAutoYearFilter && props.detectedYear) {
+                ActionTicketManager.trackTicket({
+                  pageType: 'searchResult',
+                  actionType: 'fire',
+                  actionArea: 'autoYearFilter',
+                  actionTag: 'cancelAutoYearFilter',
+                  actionLabel: props.query || '',
+                });
+                props.dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_DISABLE_AUTO_YEAR_FILTER });
+              }
+            }}
             to={makeNewFilterLink(
               {
                 yearFrom: undefined,
@@ -91,14 +123,18 @@ const FilterBox: React.FC<FilterBoxProps> = props => {
 
 function mapStateToProps(state: AppState) {
   const { searchFilterState, layout } = state;
+
   return {
     isMobile: layout.userDevice === UserDevice.MOBILE,
+    detectedYear: searchFilterState.detectedYear,
+    enableAutoYearFilter: searchFilterState.enableAutoYearFilter,
     activeButton: searchFilterState.activeButton,
     isFilterApplied:
       !!searchFilterState.currentYearFrom ||
       !!searchFilterState.currentYearTo ||
       searchFilterState.selectedFOSIds.length > 0 ||
-      searchFilterState.selectedJournalIds.length > 0,
+      searchFilterState.selectedJournalIds.length > 0 ||
+      (searchFilterState.detectedYear && searchFilterState.enableAutoYearFilter),
   };
 }
 
