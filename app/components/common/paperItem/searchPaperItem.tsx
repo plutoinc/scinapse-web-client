@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import * as format from 'date-fns/format';
-import classNames from 'classnames';
 import { CurrentUser } from '../../../model/currentUser';
 import Abstract from './abstract';
 import Figures from './figures';
