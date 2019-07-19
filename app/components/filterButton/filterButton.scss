@@ -1,7 +1,7 @@
 %base-filter-button {
   height: 35px;
   border-radius: 4px;
-  padding: 8px 12px;
+  padding: 8px 8px 8px 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -16,8 +16,10 @@
 .filterBtn {
   @extend %base-filter-button;
 
-  border: solid 1px $gray3;
-  color: $dark-blue0;
+  border: solid 1px #d8dde7;
+  color: $black1;
+  font-weight: 500;
+  font-size: 15px;
 }
 
 .active {
@@ -53,7 +55,7 @@
     vertical-align: top;
     width: 9px;
     height: 5px;
-    color: $dark-blue0;
+    color: $black0;
     transition: transform 150ms ease;
   }
 

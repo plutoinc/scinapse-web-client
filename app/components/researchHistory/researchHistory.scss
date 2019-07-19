@@ -27,11 +27,11 @@
   cursor: pointer;
 
   &.openHeaderWrapper {
-    background-color: $gray7;
+    background-color: $gray8;
   }
 
   &:hover {
-    background-color: $gray7;
+    background-color: $gray8;
     color: $black1;
     transition: $button-hover-transition;
   }

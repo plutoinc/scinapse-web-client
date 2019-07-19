@@ -21,14 +21,14 @@
   display: block;
   width: 100%;
   font-size: 16px;
-  color: $dark-blue0;
+  color: $black0;
   cursor: pointer;
   padding: 8px;
   border-radius: 4px;
   text-align: left;
 
   &:hover {
-    background-color: $main_blue_light2;
+    background-color: $gray0;
   }
 
   &.active {
@@ -58,7 +58,7 @@
   background-color: $gray0;
   padding: 6px 8px;
   font-size: 14px;
-  color: $dark-blue0;
+  color: $black0;
 
   &::placeholder {
     color: $gray4;

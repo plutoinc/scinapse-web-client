@@ -3,22 +3,17 @@ $main_blue0: #6096ff; // main color
 $main_blue1: #3e7fff;
 $main_blue_light0: #81acff; // main color when hover
 $main_blue_light1: #ecf1fa;
-$main_blue_light2: #f1f6fd;
-$dark-blue0: #1b2a36;
 
 $gray0: #f8f9fb;
+$gray8: #f4f4f5;
+$gray10: #fafbfc;
 $gray1: #f1f3f6;
 $gray2: #e7eaef;
 $gray3: #d8dde7;
 $gray4: #bbc2d0;
 $gray5: #9aa3b5;
-$gray6: #666d7c;
-$gray7: #f2f3f4;
-$gray8: #f4f4f5;
 $gray9: #7e8698;
-$gray10: #fafbfc;
-$gray11: #dbdfe8;
-$gray12: #fafbff;
+$gray6: #666d7c;
 
 $black0: #1e2a35; // primary text
 $black1: #34495e;
@@ -26,7 +21,7 @@ $black1: #34495e;
 $navy0: #133f7a; // link
 $purple0: #3e39ac; // visited link
 
-$red0: #f54b5e; // caution
+$red0: #e22319; // caution
 $green0: #48d2a0; // success
 $yellow0: #ffcf48; // warning
 
@@ -207,7 +202,7 @@ $s3_url: 'https://dd2gn9pwu61vr.cloudfront.net';
   padding: 8px 8px;
   border-radius: 4px;
   color: $color;
-  background-color: $gray7;
+  background-color: $gray8;
   font-weight: 400;
   margin-right: 8px;
   transition: background-color 200ms ease, color 200ms ease;

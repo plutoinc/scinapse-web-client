@@ -20,7 +20,7 @@
   font-size: 14px;
   font-weight: bold;
   line-height: 1.43;
-  color: $dark-blue0;
+  color: $black0;
   padding-bottom: 12px;
   border-bottom: 1px solid $gray2;
 
@@ -56,7 +56,7 @@
 .currentCollectionItemTitle {
   @extend .collectionItemTitle;
   font-weight: 500;
-  color: $dark-blue0;
+  color: $black0;
 
   &:hover {
     color: $black1;

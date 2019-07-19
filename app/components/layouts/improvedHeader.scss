@@ -22,7 +22,7 @@
   }
 
   &.searchHomeNavbar {
-    background-color: $gray12;
+    background-color: $gray10;
     border-bottom: 1px solid $gray1;
   }
 }
@@ -90,7 +90,7 @@
     display: flex;
 
     &:hover {
-      background-color: $gray7;
+      background-color: $gray8;
       color: $black1;
       transition: $button-hover-transition;
     }
