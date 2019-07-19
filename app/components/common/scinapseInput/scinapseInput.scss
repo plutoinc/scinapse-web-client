@@ -10,7 +10,7 @@
     padding: 8px 32px 8px 8px;
     margin: 0;
     border-radius: 5px;
-    border: solid 1px $gray3;
+    border: solid 1px $gray400;
     background-color: transparent;
     font-family: Roboto;
 
@@ -20,7 +20,7 @@
   }
 
   ::placeholder {
-    color: $gray4;
+    color: $gray500;
   }
 }
 
@@ -37,7 +37,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: $gray6;
+  color: $gray800;
   cursor: pointer;
 
   i,
@@ -51,7 +51,7 @@
 
 select {
   font-family: Roboto;
-  color: $gray6;
+  color: $gray800;
 }
 
 select:invalid {
@@ -74,7 +74,7 @@ select:invalid {
     padding: 8px 32px 8px 8px;
     margin: 0;
     border-radius: 5px;
-    border: solid 1px $gray3;
+    border: solid 1px $gray400;
     background-color: transparent;
 
     &.error {
@@ -83,7 +83,7 @@ select:invalid {
   }
 
   ::placeholder {
-    color: $gray4;
+    color: $gray500;
   }
 
   .errorMessage {

@@ -20,18 +20,18 @@
   border-radius: 4px;
   font-size: 14px;
   font-weight: 500;
-  color: $gray6;
+  color: $gray800;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
 
   &.openHeaderWrapper {
-    background-color: $gray8;
+    background-color: $gray50;
   }
 
   &:hover {
-    background-color: $gray8;
+    background-color: $gray50;
     color: $black1;
     transition: $button-hover-transition;
   }
@@ -43,7 +43,7 @@
   width: 24px;
   height: 24px;
   margin-right: 2px;
-  color: $gray5;
+  color: $gray600;
 }
 
 .sectionTitle {
@@ -51,7 +51,7 @@
   vertical-align: top;
   font-size: 14px;
   font-weight: 500;
-  color: $gray6;
+  color: $gray800;
 }
 
 .countBtn {
@@ -59,7 +59,7 @@
   vertical-align: top;
   margin-left: 6px;
   border-radius: 9.5px;
-  background-color: $gray4;
+  background-color: $gray500;
   font-size: 11px;
   font-weight: bold;
   text-align: center;
@@ -77,6 +77,6 @@
 .noHistoryContext {
   font-size: 14px;
   font-weight: 500;
-  color: $gray5;
+  color: $gray600;
   line-height: 2;
 }

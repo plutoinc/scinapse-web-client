@@ -1,6 +1,6 @@
 .paperItemWrapper {
   padding-bottom: 12px;
-  border-bottom: $gray2 1px solid;
+  border-bottom: $gray300 1px solid;
   margin-bottom: 12px;
   max-width: $search_container_width;
   background-color: white;
@@ -46,7 +46,7 @@
   color: $red0;
 
   &:hover {
-    background-color: $gray0;
+    background-color: $gray30;
   }
 }
 
@@ -77,9 +77,9 @@
 // TODO: move or remove below after experiments
 .visitedHistory {
   padding-bottom: 8px;
-  border-bottom: 1px solid $gray1;
+  border-bottom: 1px solid $gray200;
   margin-bottom: 8px;
-  color: $gray9;
+  color: $gray700;
   font-size: 14px;
 }
 

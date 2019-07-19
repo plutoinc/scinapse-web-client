@@ -126,7 +126,7 @@ body {
 
 .searchFormContainer {
   position: relative;
-  background-color: $gray10;
+  background-color: $gray100;
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;
@@ -173,7 +173,7 @@ body {
   width: 100%;
   margin: 0 auto;
   height: 1px;
-  background-color: $gray3;
+  background-color: $gray400;
   margin-bottom: 44px;
 }
 
@@ -197,7 +197,7 @@ body {
 
   .searchFormContainer {
     position: relative;
-    background-color: $gray10;
+    background-color: $gray100;
     display: flex;
     justify-content: center;
     align-items: center;

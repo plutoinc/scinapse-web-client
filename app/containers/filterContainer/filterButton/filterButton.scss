@@ -1,12 +1,12 @@
 .button {
   width: 99px;
   border-radius: 4px;
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
   padding: 8px 0;
   text-align: center;
   font-size: 13px;
   text-align: center;
-  color: $gray5;
+  color: $gray600;
   cursor: pointer;
 
   & + & {
@@ -14,7 +14,7 @@
   }
 
   &:hover {
-    border-color: $gray4;
+    border-color: $gray500;
   }
 
   &.isActive {

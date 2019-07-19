@@ -21,7 +21,7 @@
     margin-bottom: 8px;
     font-size: 14px;
     line-height: 1.43;
-    color: $gray6;
+    color: $gray800;
   }
 }
 
@@ -49,7 +49,7 @@
 .alreadySelectedPapers {
   margin-bottom: 14px;
   padding-bottom: 8px;
-  border-bottom: 1px solid $gray4;
+  border-bottom: 1px solid $gray500;
 }
 
 .paperItemWrapper {
@@ -67,7 +67,7 @@
   }
 
   &:hover {
-    background-color: $gray0;
+    background-color: $gray30;
   }
 }
 
@@ -81,7 +81,7 @@
   margin-right: 8px;
   width: 16px;
   height: 16px;
-  color: $gray5 !important;
+  color: $gray600 !important;
   padding: 0;
 
   svg {

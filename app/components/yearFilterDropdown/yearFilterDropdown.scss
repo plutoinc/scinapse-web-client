@@ -13,8 +13,8 @@
 
 .belowBtnsWrapper {
   padding: 12px 0;
-  border-top: 1px solid $gray1;
-  border-bottom: 1px solid $gray1;
+  border-top: 1px solid $gray200;
+  border-bottom: 1px solid $gray200;
 }
 
 .quickSelectText {
@@ -28,7 +28,7 @@
   text-align: left;
 
   &:hover {
-    background-color: $gray0;
+    background-color: $gray30;
   }
 
   &.active {
@@ -47,21 +47,21 @@
   width: 13px;
   height: 1px;
   border-radius: 2px;
-  background-color: $gray4;
+  background-color: $gray500;
   margin: 0 8px;
 }
 
 .yearInput {
   width: 84px;
   border-radius: 2px;
-  border: solid 1px $gray2;
-  background-color: $gray0;
+  border: solid 1px $gray300;
+  background-color: $gray30;
   padding: 6px 8px;
   font-size: 14px;
   color: $black0;
 
   &::placeholder {
-    color: $gray4;
+    color: $gray500;
   }
 }
 
@@ -73,7 +73,7 @@
 
 .clearBtn {
   font-size: 16px;
-  color: $gray5;
+  color: $gray600;
   cursor: pointer;
 }
 

@@ -1,5 +1,5 @@
 .footerWrapper {
-  background-color: $gray0;
+  background-color: $gray30;
   box-shadow: inset 0 2px 8px -2px rgba(0, 0, 0, 0.07);
 }
 .footerContainer {
@@ -11,7 +11,7 @@
   flex-direction: column;
   font-size: 13px;
   line-height: 1.6;
-  color: $gray5;
+  color: $gray600;
   padding: 32px 16px 16px 16px;
 }
 
@@ -38,7 +38,7 @@
 
     .logoContext {
       font-size: 16px;
-      color: $gray5;
+      color: $gray600;
     }
   }
 }
@@ -73,7 +73,7 @@
   }
 
   &:hover {
-    color: $gray6;
+    color: $gray800;
     transition: 0.2s ease-in-out;
   }
 }

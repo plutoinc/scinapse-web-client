@@ -9,7 +9,7 @@
   width: 100%;
   margin: 0 auto;
   height: 1px;
-  background-color: $gray3;
+  background-color: $gray400;
 }
 
 .title {
@@ -22,7 +22,7 @@
 .subTitle {
   font-size: 15px;
   font-weight: 500;
-  color: $gray5;
+  color: $gray600;
   margin-bottom: 16px;
 }
 
@@ -42,7 +42,7 @@
   padding: 12px 14px 8px 14px;
   border-radius: 5px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
-  border: solid 1px $gray2;
+  border: solid 1px $gray300;
   background-color: white;
 }
 
@@ -79,7 +79,7 @@
   width: 302px;
   height: 100%;
   border-radius: 8px;
-  background-color: $gray0;
+  background-color: $gray30;
 
   .sectionTitle {
     position: relative;
@@ -115,7 +115,7 @@
 
   .sectionContent {
     display: flex;
-    border: 1px solid $gray1;
+    border: 1px solid $gray200;
     border-radius: 0 0 8px 8px;
     flex-direction: column;
     justify-content: center;
@@ -129,7 +129,7 @@
   .fromCollectionInfo {
     font-size: 14px;
     line-height: 1.43;
-    color: $gray5;
+    color: $gray600;
     .fromCollectionLink {
       color: $main-blue1;
       cursor: pointer;
@@ -155,10 +155,10 @@
     font-size: 14px;
     line-height: 1.43;
     margin-top: 8px;
-    color: $gray5;
+    color: $gray600;
 
     .detailInfo {
-      color: $gray6;
+      color: $gray800;
     }
   }
 
@@ -167,7 +167,7 @@
   }
 
   .authorInfo {
-    color: $gray6;
+    color: $gray800;
 
     &:hover {
       text-decoration: underline;
@@ -179,7 +179,7 @@
   }
 
   .affiliationInfo {
-    color: $gray5;
+    color: $gray600;
   }
 }
 

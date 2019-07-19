@@ -18,7 +18,7 @@
   font-size: 16px;
   line-height: 1.5;
   text-align: center;
-  color: $gray6;
+  color: $gray800;
 }
 
 .dialogHeader {
@@ -35,7 +35,7 @@
 .description {
   font-size: 14px;
   line-height: 1.43;
-  color: $gray5;
+  color: $gray600;
   margin-bottom: 12px;
 }
 
@@ -47,7 +47,7 @@
 
 .alreadyAddedPaper {
   font-size: 13px;
-  color: $gray6;
+  color: $gray800;
   margin-bottom: 6px;
 }
 
@@ -59,13 +59,13 @@
   padding: 8px 0;
 
   &:hover {
-    background-color: $gray0;
+    background-color: $gray30;
   }
 }
 
 .paperWrapper {
   flex-direction: column;
-  color: $gray4;
+  color: $gray500;
   padding: 0 8px;
 }
 
@@ -175,11 +175,11 @@
   vertical-align: top;
   width: 250px;
   height: 24px;
-  background-color: $gray1;
+  background-color: $gray200;
   font-size: 14px;
   line-height: 1.43;
   padding: 2px 0 2px 10px;
-  color: $gray5;
+  color: $gray600;
   border-radius: 12px;
   margin-bottom: 8px;
 
@@ -194,7 +194,7 @@
 
 .noSelectedContent {
   @extend .selectedPaperItemWrapper;
-  color: $gray5;
+  color: $gray600;
   font-size: 14px;
   line-height: 1.43;
   padding: 18px;
@@ -213,7 +213,7 @@
   margin: 3px;
   width: 16px;
   height: 16px;
-  color: $gray4;
+  color: $gray500;
 
   .unSelectedButton {
     margin: 4px;
@@ -240,7 +240,7 @@
 
   .selectedCount {
     font-size: 14px;
-    color: $gray5;
+    color: $gray600;
   }
 }
 

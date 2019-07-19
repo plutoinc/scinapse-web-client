@@ -21,7 +21,7 @@
 .nameImgBoxWrapper {
   @extend .profileImageBox;
   margin-top: 8px;
-  background-color: $gray3;
+  background-color: $gray400;
 
   .imgBox {
     display: flex;
@@ -46,7 +46,7 @@
   margin-top: 8px;
 
   .profileImage {
-    border: 1px solid $gray2;
+    border: 1px solid $gray300;
     display: inline-block;
     vertical-align: top;
     width: 80px;

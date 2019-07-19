@@ -1,13 +1,13 @@
 .collectionItem {
   position: relative;
   border-radius: 5px;
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
   padding: 16px 24px;
   height: 75px;
   cursor: pointer;
 
   &:hover {
-    background-color: $gray0;
+    background-color: $gray30;
   }
 
   &.selected {
@@ -38,7 +38,7 @@
   .paperCount {
     font-size: 12px;
     line-height: 1.33;
-    color: $gray6;
+    color: $gray800;
   }
 
   .collectionIconWrapper {
@@ -56,7 +56,7 @@
       vertical-align: top;
       width: 14px;
       height: 14px;
-      color: $gray3;
+      color: $gray400;
     }
   }
 }

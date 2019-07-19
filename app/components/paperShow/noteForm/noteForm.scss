@@ -1,7 +1,7 @@
 .form {
   border-radius: 8px;
   background-color: white;
-  border: solid 1px $gray2;
+  border: solid 1px $gray300;
 
   &:hover {
     .editButtonWrapper.hideEditButtonWrapper {
@@ -28,14 +28,14 @@
 
 .noteTextArea {
   &::placeholder {
-    color: $gray3;
+    color: $gray400;
   }
 }
 
 .noteEditButton {
   padding: 2px 8px;
   border-radius: 8.5px;
-  background-color: $gray8;
+  background-color: $gray50;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
@@ -44,7 +44,7 @@
     cursor: not-allowed;
 
     .doneButton {
-      color: $gray4;
+      color: $gray500;
     }
   }
 
@@ -53,7 +53,7 @@
   }
 
   &:hover {
-    background-color: $gray2;
+    background-color: $gray300;
 
     .cancelButton {
       color: $red0;

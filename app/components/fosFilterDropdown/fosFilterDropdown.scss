@@ -24,7 +24,7 @@
   border-radius: 4px;
 
   &:hover {
-    background-color: $gray0;
+    background-color: $gray30;
   }
 
   &.selected {
@@ -35,13 +35,13 @@
 
   .fosName {
     font-size: 14px;
-    color: $gray9;
+    color: $gray700;
   }
 
   .docCount {
     font-size: 14px;
     text-align: right;
-    color: $gray9;
+    color: $gray700;
   }
 }
 
@@ -54,7 +54,7 @@
 .clearBtn {
   cursor: pointer;
   font-size: 16px;
-  color: $gray5;
+  color: $gray600;
 }
 
 .applyBtn {

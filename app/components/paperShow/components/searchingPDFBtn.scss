@@ -9,14 +9,14 @@
   font-size: 14px;
   font-weight: bold;
   color: white;
-  background-color: $gray4;
+  background-color: $gray500;
 
   &:disabled {
     cursor: not-allowed;
   }
 
   &:hover {
-    background-color: $gray3;
+    background-color: $gray400;
   }
 }
 

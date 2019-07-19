@@ -22,7 +22,7 @@
   height: 46.5px;
   line-height: 46.5px;
   border-radius: 45px;
-  background-color: $gray5;
+  background-color: $gray600;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05);
   text-align: center;
   color: white;
@@ -33,7 +33,7 @@
     display: none;
   }
   &:hover {
-    background-color: $gray4;
+    background-color: $gray500;
     transition: 0.3s ease-in-out;
   }
 }
@@ -64,7 +64,7 @@
   width: 100%;
   justify-content: flex-end;
   text-align: right;
-  color: $gray6;
+  color: $gray800;
 }
 
 .greetingBox {
@@ -98,7 +98,7 @@
   font-size: 13.5px;
   line-height: 1.6;
   text-align: left;
-  color: $gray6;
+  color: $gray800;
   padding: 16px;
 }
 
@@ -113,13 +113,13 @@
   font-size: 14px;
   text-align: center;
   color: #6096ff;
-  border-top: solid 1px $gray3;
+  border-top: solid 1px $gray400;
   width: 100%;
   height: auto;
   padding: 0;
 
   &:hover {
-    background-color: $gray0;
+    background-color: $gray30;
   }
 
   a {
@@ -129,7 +129,7 @@
   }
 
   &:last-of-type {
-    border-bottom: solid 1px $gray3;
+    border-bottom: solid 1px $gray400;
   }
 }
 
@@ -148,7 +148,7 @@
   font-size: 14px;
   font-weight: 500;
   padding: 18px 12px 16px 12px;
-  color: $gray6;
+  color: $gray800;
   text-align: left;
 }
 
@@ -159,11 +159,11 @@
     display: block;
     text-align: left;
     font-size: 12px;
-    color: $gray6;
+    color: $gray800;
   }
 
   input {
-    color: $gray6;
+    color: $gray800;
     height: 32px;
     padding: 0 5px;
   }
@@ -182,7 +182,7 @@
   textarea {
     display: block;
     margin: 0;
-    border: 1px solid $gray3;
+    border: 1px solid $gray400;
     width: 100%;
     border-radius: 5px;
     font-size: 13px;
@@ -209,7 +209,7 @@
 
   &.loadingButton {
     button {
-      background-color: $gray4;
+      background-color: $gray500;
       cursor: not-allowed;
     }
   }

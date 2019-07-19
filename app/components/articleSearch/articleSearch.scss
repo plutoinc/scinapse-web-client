@@ -1,5 +1,5 @@
 .rootWrapper {
-  background-color: $gray0;
+  background-color: $gray30;
   position: relative;
   min-height: 100vh;
   padding-bottom: 202px;
@@ -30,7 +30,7 @@
 
   .loadingSpinner {
     div {
-      background-color: $gray3;
+      background-color: $gray400;
     }
   }
 
@@ -66,7 +66,7 @@
 
   .separatorLine {
     height: 25px;
-    border-left: solid 1px $gray3;
+    border-left: solid 1px $gray400;
     margin-left: 12px;
     margin-right: 12px;
   }
@@ -80,7 +80,7 @@
 .additionalContent {
   font-size: 14px;
   line-height: 18px;
-  color: $gray5;
+  color: $gray600;
 
   .boldQuery {
     font-weight: bold;
@@ -105,7 +105,7 @@
   }
 
   .suggestionLink {
-    color: $gray6;
+    color: $gray800;
     font-weight: bold;
 
     &:hover {
@@ -124,7 +124,7 @@
 
 .categoryCount {
   font-size: 14px;
-  color: $gray5;
+  color: $gray600;
 }
 
 .authorItemsHeader {
@@ -177,7 +177,7 @@
 
   .searchSummary {
     font-size: 14px;
-    color: $gray3;
+    color: $gray400;
     flex-flow: column;
     align-items: start;
   }
