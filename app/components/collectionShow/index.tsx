@@ -142,8 +142,10 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
               <div className={styles.headSection}>
                 <div className={styles.container}>
                   <div className={styles.leftBox}>
+                    <div className={styles.categoryName}>COLLECTION</div>
                     <div className={styles.title}>
                       <span>{userCollection.title}</span>
+                      {this.getEditButton()}
                     </div>
                     <div className={styles.description}>{userCollection.description}</div>
                     <div className={styles.infoWrapper}>
@@ -160,7 +162,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                       <span>ago</span>
                     </div>
                   </div>
-                  <div className={styles.rightBox}>{this.getCollectionControlBtns()}</div>
+                  <div className={styles.rightBox}>{this.getCollectionShareButton()}</div>
                 </div>
               </div>
 
@@ -172,14 +174,26 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                 <div className={styles.leftBox}>
                   <div className={styles.paperListBox}>
                     <div className={styles.header}>
-                      <div className={styles.searchInputWrapper}>
-                        <ScinapseInput
-                          onSubmit={this.handleSubmitSearch}
-                          placeholder="Search papers"
-                          icon="SEARCH_ICON"
-                          inputStyle={{ maxWidth: '486px', height: '40px' }}
-                        />
+                      <div className={styles.searchContainer}>
+                        <div className={styles.searchInputWrapper}>
+                          <ScinapseInput
+                            onSubmit={this.handleSubmitSearch}
+                            placeholder="Search papers in this collection"
+                            icon="SEARCH_ICON"
+                            inputStyle={{ maxWidth: '486px', height: '40px' }}
+                          />
+                        </div>
+                        <div className={styles.sortBoxWrapper}>
+                          <SortBox
+                            sortOption={collectionShow.sortType}
+                            handleClickSortOption={this.handleClickSort}
+                            currentPage="collectionShow"
+                            exposeRecentlyUpdated={true}
+                            exposeRelevanceOption={false}
+                          />
+                        </div>
                       </div>
+
                       <div className={styles.subHeader}>
                         <div>
                           <span className={styles.resultPaperCount}>
@@ -190,15 +204,6 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                               collectionShow.totalPaperListPage
                             )} pages)`}
                           </span>
-                        </div>
-                        <div className={styles.sortBoxWrapper}>
-                          <SortBox
-                            sortOption={collectionShow.sortType}
-                            handleClickSortOption={this.handleClickSort}
-                            currentPage="collectionShow"
-                            exposeRecentlyUpdated={true}
-                            exposeRelevanceOption={false}
-                          />
                         </div>
                       </div>
                     </div>
@@ -383,28 +388,45 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
     }
   };
 
-  private getCollectionControlBtns = () => {
-    const { currentUser, userCollection, collectionShow } = this.props;
+  private getEditButton = () => {
+    const { currentUser, userCollection } = this.props;
     const isMine =
       userCollection &&
       currentUser.isLoggedIn &&
       userCollection.createdBy.id === currentUser.id &&
       !userCollection.isDefault;
 
+    if (!isMine) return null;
+
+    return (
+      <button
+        className={styles.editButton}
+        onClick={() => GlobalDialogManager.openEditCollectionDialog(userCollection!)}
+      >
+        <Icon icon="PEN" className={styles.editIcon} />Edit
+      </button>
+    );
+  };
+
+  private getCollectionShareButton = () => {
+    const { collectionShow } = this.props;
     const collectionShareButton = (
       <TransparentButton
         style={{
-          width: '123px',
+          display: 'flex',
+          justifyContent: 'space-evenly',
+          width: '93px',
           height: '40px',
           fontWeight: 500,
-          padding: '0 16px 0 8px',
-          marginTop: '4px',
+          padding: '8px',
+          marginTop: '32px',
+          color: '#3e7fff',
         }}
         iconStyle={{
           marginRight: '8px',
-          width: '20px',
-          height: '16px',
-          color: '#666d7c',
+          width: '17px',
+          height: '14px',
+          color: '#3e7fff',
         }}
         onClick={() => {
           this.handleToggleShareDropdown();
@@ -412,33 +434,9 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
         gaCategory="Collection Show"
         gaAction="Click Share Collection"
         content="Share"
-        icon="MASK"
+        icon="SHARE"
       />
     );
-
-    if (isMine) {
-      return (
-        <div className={styles.collectionHeaderBtnWrapper}>
-          <TransparentButton
-            style={{ width: '123px', height: '40px', fontWeight: 500, padding: '0 16px 0 8px' }}
-            iconStyle={{ marginRight: '8px', width: '20px', height: '20px', color: '#666d7c' }}
-            onClick={() => {
-              GlobalDialogManager.openEditCollectionDialog(userCollection!);
-            }}
-            gaCategory="Collection Show"
-            gaAction="Click Edit Collection"
-            content="Edit"
-            icon="PEN"
-          />
-          <ClickAwayListener onClickAway={this.handleCloseShareDropdown}>
-            <div>
-              {collectionShareButton}
-              {collectionShow.isShareDropdownOpen ? this.getShareDropdownContent() : null}
-            </div>
-          </ClickAwayListener>
-        </div>
-      );
-    }
 
     return (
       <div className={styles.collectionHeaderBtnWrapper}>

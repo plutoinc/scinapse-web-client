@@ -54,20 +54,59 @@ $semi_full_width: 997px;
     margin-right: 12px;
     margin-left: 244px;
 
+    .categoryName {
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 2.4;
+      letter-spacing: 0.58px;
+      color: $main_blue1;
+    }
+
     .title {
       word-break: break-all;
-      font-size: 26px;
+      font-size: 28px;
       font-weight: bold;
-      line-height: 1.38;
+      line-height: 1.29;
       color: $black0;
-      margin-bottom: 8px;
+      margin-bottom: 16px;
+    }
+
+    .editButton {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 500;
+      color: $gray5;
+      margin-left: 8px;
+      cursor: pointer;
+
+      &:hover {
+        border-bottom: 1px solid $gray5;
+      }
+
+      .editIcon {
+        width: 24px;
+        height: 24px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 4px;
+
+        svg {
+          width: 21px;
+          height: 21px;
+          color: $gray4;
+        }
+      }
     }
 
     .description {
-      font-size: 18px;
-      line-height: 1.33;
+      width: 792px;
+      font-size: 16px;
+      line-height: 1.5;
       color: $gray6;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       white-space: pre-wrap;
       word-break: break-all;
     }
@@ -79,7 +118,7 @@ $semi_full_width: 997px;
         vertical-align: top;
         font-size: 14px;
         line-height: 1.43;
-        color: $gray6;
+        color: $gray5;
         white-space: pre-wrap;
       }
 
@@ -171,19 +210,19 @@ $semi_full_width: 997px;
 .resultPaperCount {
   font-size: 16px;
   line-height: 1.5;
-  font-weight: 500;
-  color: $black1;
+  font-weight: bold;
+  color: $gray5;
   margin-left: 12px;
 }
 .resultPaperPageCount {
   font-size: 16px;
   line-height: 1.5;
-  color: $black1;
+  color: $gray5;
 }
 
 .sortBoxWrapper {
   position: absolute;
-  top: 0;
+  top: 12px;
   right: 0;
   bottom: 0;
 }
