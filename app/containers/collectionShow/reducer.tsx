@@ -6,7 +6,6 @@ export interface CollectionShowState
       isLoadingCollection: boolean;
       pageErrorCode: number | null;
       isLoadingPaperToCollection: boolean;
-      isShareDropdownOpen: boolean;
       mainCollectionId: number;
       totalPaperListPage: number;
       currentPaperListPage: number;
@@ -20,7 +19,6 @@ export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
   isLoadingCollection: false,
   pageErrorCode: null,
   isLoadingPaperToCollection: false,
-  isShareDropdownOpen: false,
   mainCollectionId: 0,
   totalPaperListPage: 0,
   currentPaperListPage: 1,
@@ -87,20 +85,6 @@ export function reducer(
             searchKeyword: action.payload.query ? action.payload.query : '',
           }
         : { ...state, isLoadingPaperToCollection: false, paperIds };
-    }
-
-    case ACTION_TYPES.COLLECTION_SHOW_OPEN_SHARE_DROPDOWN: {
-      return {
-        ...state,
-        isShareDropdownOpen: true,
-      };
-    }
-
-    case ACTION_TYPES.COLLECTION_SHOW_CLOSE_SHARE_DROPDOWN: {
-      return {
-        ...state,
-        isShareDropdownOpen: false,
-      };
     }
 
     case ACTION_TYPES.GLOBAL_FAILED_TO_ADD_PAPER_TO_COLLECTION:
