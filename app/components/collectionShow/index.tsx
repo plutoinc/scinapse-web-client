@@ -193,7 +193,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
                           />
                         </div>
                       </div>
-
+                      {this.getCollectionControlBtns()}
                       <div className={styles.subHeader}>
                         <div>
                           <span className={styles.resultPaperCount}>
@@ -386,6 +386,31 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
       default:
         break;
     }
+  };
+
+  private getCollectionControlBtns = () => {
+    const { currentUser, userCollection } = this.props;
+    const isMine =
+      userCollection &&
+      currentUser.isLoggedIn &&
+      userCollection.createdBy.id === currentUser.id &&
+      !userCollection.isDefault;
+
+    if (!isMine) return null;
+
+    return (
+      <div>
+        <div className={styles.collectionControlBtnsWrapper}>
+          <button className={styles.collectionControlBtn}>
+            <Icon icon="TRASH_CAN" className={styles.deleteIcon} />DELETE
+          </button>
+          <button className={styles.collectionControlBtn}>
+            <Icon icon="CITED" className={styles.citedIcon} />CITATION EXPORT
+          </button>
+        </div>
+        <div className={styles.collectionControlBtnsDivider} />
+      </div>
+    );
   };
 
   private getEditButton = () => {
