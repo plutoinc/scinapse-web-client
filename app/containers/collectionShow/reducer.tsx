@@ -1,5 +1,5 @@
 import { ACTION_TYPES, Actions } from '../../actions/actionTypes';
-import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../common/sortBox';
+import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
 
 export interface CollectionShowState
   extends Readonly<{

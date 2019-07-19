@@ -1,0 +1,59 @@
+.collectionControlBtnsWrapper {
+  display: flex;
+
+  .collectionControlBtn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.33;
+    letter-spacing: 0.5px;
+    padding: 8px;
+    color: $gray6;
+    cursor: pointer;
+
+    & + & {
+      margin-left: 4px;
+    }
+
+    &:hover {
+      border-radius: 4px;
+      background-color: $gray0;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      color: $black1;
+    }
+
+    .deleteIcon {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .citedIcon {
+      @extend .deleteIcon;
+
+      svg {
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+}
+
+.collectionControlBtnsDivider {
+  width: 100%;
+  height: 1px;
+  background-color: $gray3;
+  margin-top: 8px;
+}

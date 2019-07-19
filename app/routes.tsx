@@ -8,7 +8,7 @@ import { CancelToken } from 'axios';
 import { PaperShowMatchParams } from './containers/paperShow/types';
 import { AuthorShowMatchParams } from './containers/authorShow/types';
 import { JournalShowMatchParams } from './components/journalShow/types';
-import { CollectionShowMatchParams } from './components/collectionShow/types';
+import { CollectionShowMatchParams } from './containers/collectionShow/types';
 import ErrorPage from './components/error/errorPage';
 import LocationListener from './components/locationListener';
 import DeviceDetector from './components/deviceDetector';
@@ -99,11 +99,11 @@ export const routesMap: ServerRoutesMap[] = [
   },
   {
     path: COLLECTION_SHOW_PATH,
-    component: loadable(() => import('./components/collectionShow'), {
+    component: loadable(() => import('./containers/collectionShow'), {
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<CollectionShowMatchParams>) => {
-      const { fetchCollectionShowData } = await import('./components/collectionShow/sideEffect');
+      const { fetchCollectionShowData } = await import('./containers/collectionShow/sideEffect');
       await Promise.all([fetchCollectionShowData(params)]);
     },
   },

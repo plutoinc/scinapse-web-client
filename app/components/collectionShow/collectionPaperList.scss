@@ -1,0 +1,40 @@
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-top: 250px;
+  align-items: center;
+  margin-top: $navbar_height;
+  min-height: 738.5px;
+
+  .loadingSpinner {
+    div {
+      background-color: $gray4;
+    }
+  }
+}
+
+.noPaperWrapper {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .ufoIcon {
+    display: inline-block;
+    vertical-align: top;
+    width: 64px;
+    height: 59px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .noPaperDescription {
+    font-size: 18px;
+    color: $gray6;
+    margin-top: 24px;
+  }
+}
