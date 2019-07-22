@@ -80,7 +80,12 @@ class Authors extends React.PureComponent<AuthorsProps> {
       .slice(0, 2)
       .join();
 
-    return `(${trimmedOrganization})`;
+    let abbrev = '';
+    if (affiliation.nameAbbrev) {
+      abbrev = ` - ${affiliation.nameAbbrev}`;
+    }
+
+    return `(${trimmedOrganization}${abbrev}) `;
   };
 
   private mapAuthorNodeToEndIndex = (authors: PaperAuthor[], endIndex: number, isSliced: boolean) => {
@@ -102,8 +107,8 @@ class Authors extends React.PureComponent<AuthorsProps> {
         const authorNode = readOnly ? (
           <span
             className={classNames({
-              [`${styles.authorName}`]: true,
-              [`${styles.noUnderlineAuthorName}`]: style !== null,
+              [styles.authorName]: true,
+              [styles.noUnderlineAuthorName]: style !== null,
             })}
           >
             {author.name}

@@ -23,6 +23,57 @@ interface PaperItemVenueProps {
   style?: React.CSSProperties;
 }
 
+const ConferenceTitle: React.FC<{
+  conferenceInstance: ConferenceInstance;
+}> = ({ conferenceInstance }) => {
+  if (!conferenceInstance.conferenceSeries) return null;
+
+  if (conferenceInstance.conferenceSeries.nameAbbrev) {
+    return (
+      <span className={styles.venueNameReadonly}>
+        {' '}
+        in {`${conferenceInstance.conferenceSeries.name}(${conferenceInstance.conferenceSeries.nameAbbrev})`}
+      </span>
+    );
+  }
+
+  return <span className={styles.venueNameReadonly}> in {conferenceInstance.conferenceSeries.name}</span>;
+};
+
+const JournalTitle: React.FC<{
+  journal: Journal;
+  readOnly?: boolean;
+  pageType: Scinapse.ActionTicket.PageType;
+  actionArea?: Scinapse.ActionTicket.ActionArea;
+}> = ({ journal, readOnly, pageType, actionArea }) => {
+  let content = `in ${journal.title}`;
+  if (journal.titleAbbrev) {
+    content = `in ${journal.title}(${journal.titleAbbrev})`;
+  }
+
+  if (readOnly) {
+    return <span className={styles.venueNameReadonly}>{content}</span>;
+  }
+
+  return (
+    <Link
+      to={`/journals/${journal.id}`}
+      onClick={() => {
+        ActionTicketManager.trackTicket({
+          pageType,
+          actionType: 'fire',
+          actionArea: actionArea || pageType,
+          actionTag: 'journalShow',
+          actionLabel: String(journal.id),
+        });
+      }}
+      className={styles.venueName}
+    >
+      {content}
+    </Link>
+  );
+};
+
 const PaperItemVenue = ({
   journal,
   paperId,
@@ -40,33 +91,11 @@ const PaperItemVenue = ({
 
   let title = null;
   let impactFactor = null;
-
   if (journal && journal.title) {
-    title = readOnly ? (
-      <span className={styles.venueNameReadonly}>in {journal.title}</span>
-    ) : (
-      <>
-        in{' '}
-        <Link
-          to={`/journals/${journal.id}`}
-          onClick={() => {
-            ActionTicketManager.trackTicket({
-              pageType,
-              actionType: 'fire',
-              actionArea: actionArea || pageType,
-              actionTag: 'journalShow',
-              actionLabel: String(journal.id),
-            });
-          }}
-          className={styles.venueName}
-        >
-          {journal.title}
-        </Link>
-      </>
-    );
+    title = <JournalTitle journal={journal} readOnly={readOnly} pageType={pageType} actionArea={actionArea} />;
     impactFactor = journal.impactFactor;
-  } else if (conferenceInstance && conferenceInstance.conferenceSeries && conferenceInstance.conferenceSeries.name) {
-    title = <span className={styles.venueNameReadonly}> in {conferenceInstance.conferenceSeries.name}</span>;
+  } else if (conferenceInstance) {
+    title = <ConferenceTitle conferenceInstance={conferenceInstance} />;
   }
 
   const yearStr = publishedDate ? (
