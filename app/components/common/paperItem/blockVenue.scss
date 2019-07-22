@@ -33,14 +33,20 @@
 }
 
 .journalContent {
-  display: inline-flex;
-  align-items: center;
   font-size: 13px;
   line-height: 20px;
   color: $gray9;
 }
 
+.middleDot {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 4px;
+}
+
 .journalTitle {
+  @extend %one-line-overflow-ellipsis;
+  max-width: 565px;
   text-decoration: underline;
 
   &:hover {
@@ -54,6 +60,14 @@
   text-align: center;
   color: $main_blue0;
   padding: 0 8px;
+}
+
+.SCILabel {
+  margin-left: 8px;
+}
+
+.ifLabel + .SCILabel {
+  margin-left: 0;
 }
 
 .arrowBottomTooltip {

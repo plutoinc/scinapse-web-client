@@ -69,7 +69,7 @@ const BlockVenue: React.FC<BlockVenueProps> = ({
         className={styles.journalContent}
       >
         {publishedAtNode}
-        {publishedAtNode && journal.title && <span>{`・`}</span>}
+        {publishedAtNode && journal.title && <span className={styles.middleDot}>{`·`}</span>}
         <span className={styles.journalTitle}>{title}</span>
         {impactFactor}
         {journal.sci && <JournalBadge text="SCI" labelClassName={styles.SCILabel} />}

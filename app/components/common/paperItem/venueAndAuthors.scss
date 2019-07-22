@@ -62,14 +62,17 @@
   }
 }
 
+.SCILabel {
+  margin-left: 8px;
+}
+
+.ifLabel + .SCILabel {
+  margin-left: 0;
+}
+
 .journalIcon {
   display: flex;
   justify-content: center;
-  align-items: center;
-}
-
-.journalText {
-  display: flex;
   align-items: center;
 }
 
