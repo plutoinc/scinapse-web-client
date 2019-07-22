@@ -27,7 +27,10 @@ interface AuthorItemProps {
 const AuthorItem: React.FC<AuthorItemProps> = ({ author, pageType, actionArea }) => {
   let affiliation = null;
   if (author.affiliation) {
-    affiliation = <span className={styles.affiliation}>{`(${author.affiliation.name})`}</span>;
+    const affiliationName = author.affiliation.nameAbbrev
+      ? `${author.affiliation.name} - ${author.affiliation.nameAbbrev}`
+      : author.affiliation.name;
+    affiliation = <span className={styles.affiliation}>{`(${affiliationName})`}</span>;
   }
 
   let hIndex = null;
