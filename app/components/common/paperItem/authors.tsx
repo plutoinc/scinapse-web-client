@@ -82,10 +82,10 @@ class Authors extends React.PureComponent<AuthorsProps> {
 
     let abbrev = '';
     if (affiliation.nameAbbrev) {
-      abbrev = ` - ${affiliation.nameAbbrev}`;
+      abbrev = `${affiliation.nameAbbrev} - `;
     }
 
-    return `(${trimmedOrganization}${abbrev}) `;
+    return `(${abbrev}${trimmedOrganization}) `;
   };
 
   private mapAuthorNodeToEndIndex = (authors: PaperAuthor[], endIndex: number, isSliced: boolean) => {

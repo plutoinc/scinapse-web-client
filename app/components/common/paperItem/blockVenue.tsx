@@ -34,7 +34,6 @@ const BlockVenue: React.FC<BlockVenueProps> = ({
 
   let content = null;
   if (journal) {
-    const title = journal.titleAbbrev ? `${journal.title}(${journal.titleAbbrev})` : journal.title;
     const impactFactor = journal.impactFactor && (
       <span className={styles.ifLabel}>
         <span>
@@ -70,7 +69,7 @@ const BlockVenue: React.FC<BlockVenueProps> = ({
       >
         {publishedAtNode}
         {publishedAtNode && journal.title && <span className={styles.middleDot}>{`·`}</span>}
-        <span className={styles.journalTitle}>{title}</span>
+        <span className={styles.journalTitle}>{journal.title}</span>
         {impactFactor}
         {journal.sci && <JournalBadge text="SCI" labelClassName={styles.SCILabel} />}
       </Link>
@@ -79,7 +78,7 @@ const BlockVenue: React.FC<BlockVenueProps> = ({
 
   if (conferenceInstance && conferenceInstance.conferenceSeries && conferenceInstance.conferenceSeries.name) {
     const title = conferenceInstance.conferenceSeries.nameAbbrev
-      ? `${conferenceInstance.conferenceSeries.name}(${conferenceInstance.conferenceSeries.nameAbbrev})`
+      ? `${conferenceInstance.conferenceSeries.nameAbbrev} (${conferenceInstance.conferenceSeries.name})`
       : conferenceInstance.conferenceSeries.name;
     content = (
       <span className={styles.journalContent}>

@@ -33,7 +33,7 @@ const ConferenceTitle: React.FC<{
     return (
       <span className={styles.venueNameReadonly}>
         {' '}
-        in {`${conferenceInstance.conferenceSeries.name}(${conferenceInstance.conferenceSeries.nameAbbrev})`}
+        in {`${conferenceInstance.conferenceSeries.nameAbbrev} (${conferenceInstance.conferenceSeries.name})`}
       </span>
     );
   }
@@ -47,10 +47,7 @@ const JournalTitle: React.FC<{
   pageType: Scinapse.ActionTicket.PageType;
   actionArea?: Scinapse.ActionTicket.ActionArea;
 }> = ({ journal, readOnly, pageType, actionArea }) => {
-  let content = `in ${journal.title}`;
-  if (journal.titleAbbrev) {
-    content = `in ${journal.title}(${journal.titleAbbrev})`;
-  }
+  const content = `in ${journal.title}`;
 
   if (readOnly) {
     return <span className={styles.venueNameReadonly}>{content}</span>;
