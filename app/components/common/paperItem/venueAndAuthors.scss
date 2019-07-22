@@ -15,6 +15,7 @@
 
   .venue {
     display: flex;
+    align-items: center;
   }
 
   .margin {
@@ -59,6 +60,17 @@
       margin-right: 4px;
     }
   }
+}
+
+.journalIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.journalText {
+  display: flex;
+  align-items: center;
 }
 
 .arrowBottomTooltip {

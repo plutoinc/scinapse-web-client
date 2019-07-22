@@ -1,5 +1,7 @@
 .wrapper {
   margin-top: 8px;
+  display: flex;
+  align-items: center;
 }
 
 .journalIcon {
@@ -31,8 +33,8 @@
 }
 
 .journalContent {
-  display: inline-block;
-  vertical-align: top;
+  display: inline-flex;
+  align-items: center;
   font-size: 13px;
   line-height: 20px;
   color: $gray9;

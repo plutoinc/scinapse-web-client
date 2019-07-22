@@ -7,6 +7,7 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { Journal } from '../../../model/journal';
 import Icon from '../../../icons';
 import { withStyles } from '../../../helpers/withStylesHelper';
+import JournalBadge from '../../journalBadge';
 const styles = require('./blockVenue.scss');
 
 interface BlockVenueProps {
@@ -71,6 +72,7 @@ const BlockVenue: React.FC<BlockVenueProps> = ({
         {publishedAtNode && journal.title && <span>{`・`}</span>}
         <span className={styles.journalTitle}>{title}</span>
         {impactFactor}
+        {journal.sci && <JournalBadge text="SCI" labelClassName={styles.SCILabel} />}
       </Link>
     );
   }

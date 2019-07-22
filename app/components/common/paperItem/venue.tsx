@@ -9,6 +9,7 @@ import Icon from '../../../icons';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { ConferenceInstance } from '../../../model/conferenceInstance';
 import DoiInPaperShow from '../../paperShow/components/doiInPaperShow';
+import JournalBadge from '../../journalBadge';
 const styles = require('./venueAndAuthors.scss');
 
 interface PaperItemVenueProps {
@@ -69,7 +70,28 @@ const JournalTitle: React.FC<{
       }}
       className={styles.venueName}
     >
-      {content}
+      <>
+        {content}
+        {journal.impactFactor && (
+          <span className={styles.ifLabel}>
+            <span>
+              <Tooltip
+                title="Impact Factor"
+                placement="top"
+                classes={{ tooltip: styles.arrowBottomTooltip }}
+                disableFocusListener
+                disableTouchListener
+              >
+                <span>
+                  <Icon className={styles.ifIconWrapper} icon="IMPACT_FACTOR" />
+                </span>
+              </Tooltip>
+              {journal.impactFactor.toFixed(2)}
+            </span>
+          </span>
+        )}
+        {journal.sci && <JournalBadge text="SCI" labelClassName={styles.SCILabel} />}
+      </>
     </Link>
   );
 };
@@ -90,10 +112,8 @@ const PaperItemVenue = ({
   }
 
   let title = null;
-  let impactFactor = null;
   if (journal && journal.title) {
     title = <JournalTitle journal={journal} readOnly={readOnly} pageType={pageType} actionArea={actionArea} />;
-    impactFactor = journal.impactFactor;
   } else if (conferenceInstance) {
     title = <ConferenceTitle conferenceInstance={conferenceInstance} />;
   }
@@ -115,28 +135,10 @@ const PaperItemVenue = ({
         [`${styles.venue} ${styles.margin}`]: isPaperShow && isPaperDescription,
       })}
     >
-      <Icon icon="JOURNAL" />
+      <Icon className={styles.journalIcon} icon="JOURNAL" />
       <div className={styles.journalText}>
         Published {publishedDate ? <span className={styles.bold}>{yearStr}</span> : null}
         {title}
-        {impactFactor ? (
-          <span className={styles.ifLabel}>
-            <span>
-              <Tooltip
-                title="Impact Factor"
-                placement="top"
-                classes={{ tooltip: styles.arrowBottomTooltip }}
-                disableFocusListener
-                disableTouchListener
-              >
-                <span>
-                  <Icon className={styles.ifIconWrapper} icon="IMPACT_FACTOR" />
-                </span>
-              </Tooltip>
-              {impactFactor ? impactFactor.toFixed(2) : 0}
-            </span>
-          </span>
-        ) : null}
         {isPaperShow && isPaperDescription ? <DoiInPaperShow doi={doi} paperId={paperId} /> : null}
       </div>
     </div>
