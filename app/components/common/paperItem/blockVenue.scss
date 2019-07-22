@@ -56,10 +56,12 @@
 
 .ifLabel {
   display: inline-block;
+  vertical-align: bottom;
   font-size: 12px;
   text-align: center;
   color: $main_blue0;
-  padding: 0 8px;
+  padding-left: 8px;
+  padding-right: 4px;
 }
 
 .SCILabel {

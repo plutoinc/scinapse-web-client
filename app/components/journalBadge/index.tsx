@@ -1,6 +1,7 @@
 import React from 'react';
-import { withStyles } from '../../helpers/withStylesHelper';
 import classNames from 'classnames';
+import { withStyles } from '../../helpers/withStylesHelper';
+import Icon from '../../icons';
 
 const s = require('./journalBadge.scss');
 
@@ -17,7 +18,8 @@ const JournalBadge: React.FC<JournalBadgeProps> = ({ text, labelClassName }) => 
         [labelClassName!]: !!labelClassName,
       })}
     >
-      {text}
+      <Icon icon="STAR_BADGE" className={s.starBadgeIcon} />
+      <span className={s.text}>{text}</span>
     </label>
   );
 };

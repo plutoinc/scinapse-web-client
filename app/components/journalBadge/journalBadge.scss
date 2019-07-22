@@ -1,8 +1,18 @@
 .label {
+  color: $gray9;
+}
+
+.starBadgeIcon {
+  display: inline-block;
+  vertical-align: bottom;
+  width: 18px;
+  height: 18px;
+  margin-bottom: 1px;
+}
+
+.text {
+  display: inline-block;
+  vertical-align: bottom;
   font-size: 14px;
   font-weight: 500;
-  color: $gray9;
-  padding: 2px 6px;
-  background-color: $gray1;
-  border-radius: 4px;
 }

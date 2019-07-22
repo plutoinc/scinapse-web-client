@@ -47,49 +47,50 @@ const JournalTitle: React.FC<{
   pageType: Scinapse.ActionTicket.PageType;
   actionArea?: Scinapse.ActionTicket.ActionArea;
 }> = ({ journal, readOnly, pageType, actionArea }) => {
-  const content = `in ${journal.title}`;
+  if (!journal.title) return null;
 
   if (readOnly) {
-    return <span className={styles.venueNameReadonly}>{content}</span>;
+    return <span className={styles.venueNameReadonly}>{`in ${journal.title}`}</span>;
   }
 
   return (
-    <Link
-      to={`/journals/${journal.id}`}
-      onClick={() => {
-        ActionTicketManager.trackTicket({
-          pageType,
-          actionType: 'fire',
-          actionArea: actionArea || pageType,
-          actionTag: 'journalShow',
-          actionLabel: String(journal.id),
-        });
-      }}
-      className={styles.venueName}
-    >
-      <>
-        {content}
-        {journal.impactFactor && (
-          <span className={styles.ifLabel}>
-            <span>
-              <Tooltip
-                title="Impact Factor"
-                placement="top"
-                classes={{ tooltip: styles.arrowBottomTooltip }}
-                disableFocusListener
-                disableTouchListener
-              >
-                <span>
-                  <Icon className={styles.ifIconWrapper} icon="IMPACT_FACTOR" />
-                </span>
-              </Tooltip>
-              {journal.impactFactor.toFixed(2)}
-            </span>
+    <>
+      <span>{`in `}</span>
+      <Link
+        to={`/journals/${journal.id}`}
+        onClick={() => {
+          ActionTicketManager.trackTicket({
+            pageType,
+            actionType: 'fire',
+            actionArea: actionArea || pageType,
+            actionTag: 'journalShow',
+            actionLabel: String(journal.id),
+          });
+        }}
+        className={styles.venueName}
+      >
+        {journal.title}
+      </Link>
+      {journal.impactFactor && (
+        <span className={styles.ifLabel}>
+          <span>
+            <Tooltip
+              title="Impact Factor"
+              placement="top"
+              classes={{ tooltip: styles.arrowBottomTooltip }}
+              disableFocusListener
+              disableTouchListener
+            >
+              <span>
+                <Icon className={styles.ifIconWrapper} icon="IMPACT_FACTOR" />
+              </span>
+            </Tooltip>
+            {journal.impactFactor.toFixed(2)}
           </span>
-        )}
-        {journal.sci && <JournalBadge text="SCI" labelClassName={styles.SCILabel} />}
-      </>
-    </Link>
+        </span>
+      )}
+      {journal.sci && <JournalBadge text="SCI" labelClassName={styles.SCILabel} />}
+    </>
   );
 };
 
