@@ -102,7 +102,7 @@ $semi_full_width: 997px;
     }
 
     .description {
-      width: 792px;
+      max-width: 792px;
       font-size: 16px;
       line-height: 1.5;
       color: $gray6;

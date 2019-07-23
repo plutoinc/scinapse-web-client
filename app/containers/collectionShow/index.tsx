@@ -165,7 +165,7 @@ const CollectionShow: React.FC<Props> = props => {
         cancelTokenSource.current = axios.CancelToken.source();
       };
     },
-    [match, currentUser.isLoggedIn]
+    [match.params.collectionId, currentUser.isLoggedIn]
   );
 
   const handleSubmitSearch = React.useCallback(
