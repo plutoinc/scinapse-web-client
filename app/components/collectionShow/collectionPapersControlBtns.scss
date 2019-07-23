@@ -29,6 +29,10 @@
     color: $black1;
   }
 
+  &:disabled {
+    cursor: not-allowed;
+  }
+
   .deleteIcon {
     display: inline-flex;
     justify-content: center;
