@@ -10,18 +10,9 @@ import { withStyles } from '../../helpers/withStylesHelper';
 import { CollectionShowState } from '../../containers/collectionShow/reducer';
 import { ACTION_TYPES } from '../../actions/actionTypes';
 import { AvailableExportCitationType } from '../../containers/paperShow/records';
-import getAPIHost from '../../api/getHost';
+import { exportCitationText } from '../../helpers/exportCitationText';
 
 const styles = require('./collectionPapersControlBtns.scss');
-
-function exportMultipleCitation(type: AvailableExportCitationType, selectedPaperIds: number[]) {
-  const paperIds = selectedPaperIds.join(',');
-  const enumValue = AvailableExportCitationType[type];
-
-  const exportUrl = getAPIHost() + `/citations/export?pids=${paperIds}&format=${enumValue}`;
-
-  window.open(exportUrl, '_blank');
-}
 
 const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: number[] }> = ({ selectedPaperIds }) => {
   const anchorEl = React.useRef(null);
@@ -62,7 +53,7 @@ const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: number[] }> = ({
           <div
             className={styles.menuItem}
             onClick={() => {
-              exportMultipleCitation(AvailableExportCitationType.RIS, selectedPaperIds);
+              exportCitationText(AvailableExportCitationType.RIS, selectedPaperIds);
               setIsOpen(false);
             }}
           >
@@ -71,7 +62,7 @@ const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: number[] }> = ({
           <div
             className={styles.menuItem}
             onClick={() => {
-              exportMultipleCitation(AvailableExportCitationType.BIBTEX, selectedPaperIds);
+              exportCitationText(AvailableExportCitationType.BIBTEX, selectedPaperIds);
               setIsOpen(false);
             }}
           >

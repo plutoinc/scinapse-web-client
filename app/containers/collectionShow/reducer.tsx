@@ -128,7 +128,7 @@ export function reducer(
     }
 
     case ACTION_TYPES.COLLECTION_SHOW_SELECT_ALL_PAPER_ITEMS: {
-      if (state.selectedPaperIds.length > 0) {
+      if (state.selectedPaperIds.length > 0 && state.selectedPaperIds.length === action.payload.paperIds.length) {
         return {
           ...state,
           selectedPaperIds: [],

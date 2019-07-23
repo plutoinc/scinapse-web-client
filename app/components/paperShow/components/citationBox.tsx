@@ -6,7 +6,7 @@ import copySelectedTextToClipboard from '../../../helpers/copySelectedTextToClip
 import { AvailableCitationType, AvailableExportCitationType } from '../../../containers/paperShow/records';
 import { trackEvent } from '../../../helpers/handleGA';
 import Icon from '../../../icons';
-import getAPIHost from '../../../api/getHost';
+import { exportCitationText } from '../../../helpers/exportCitationText';
 const styles = require('./citationBox.scss');
 
 export interface CitationBoxProps {
@@ -14,7 +14,6 @@ export interface CitationBoxProps {
   activeTab: AvailableCitationType;
   isLoading: boolean;
   citationText: string;
-  selectedPaperIds: number[];
   handleClickCitationTab: (tab: AvailableCitationType) => void;
   fetchCitationText: () => void;
   closeCitationDialog: () => void;
@@ -26,7 +25,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
   }
 
   public render() {
-    const { closeCitationDialog } = this.props;
+    const { paperId, closeCitationDialog } = this.props;
 
     return (
       <div className={styles.boxContainer}>
@@ -44,13 +43,13 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
           <span className={styles.orSyntax}>or</span> Download as
           <button
             className={styles.downloadBtn}
-            onClick={() => this.exportSingleCitation(AvailableExportCitationType.RIS)}
+            onClick={() => exportCitationText(AvailableExportCitationType.RIS, [paperId])}
           >
             RIS
           </button>
           <button
             className={styles.downloadBtn}
-            onClick={() => this.exportSingleCitation(AvailableExportCitationType.BIBTEX)}
+            onClick={() => exportCitationText(AvailableExportCitationType.RIS, [paperId])}
           >
             BibTeX
           </button>
@@ -58,16 +57,6 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
       </div>
     );
   }
-
-  private exportSingleCitation = (type: AvailableExportCitationType) => {
-    const { paperId } = this.props;
-    const paperIds = [paperId].join(',');
-    const enumValue = AvailableExportCitationType[type];
-
-    const exportUrl = getAPIHost() + `/citations/export?pids=${paperIds}&format=${enumValue}`;
-
-    window.open(exportUrl, '_blank');
-  };
 
   private getFullFeatureTabs = () => {
     const { handleClickCitationTab, activeTab } = this.props;

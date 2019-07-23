@@ -137,16 +137,13 @@ const CollectionShow: React.FC<Props> = props => {
 
   React.useEffect(
     () => {
-      setItsMine(
-        userCollection &&
-          currentUser.isLoggedIn &&
-          userCollection.createdBy.id === currentUser.id &&
-          !userCollection.isDefault
-      );
+      const itsNotMine =
+        !currentUser.isLoggedIn ||
+        (currentUser.isLoggedIn && userCollection && userCollection.createdBy.id !== currentUser.id);
 
-      const itsNotMine = currentUser.isLoggedIn && userCollection && userCollection.createdBy.id !== currentUser.id;
+      setItsMine(!itsNotMine);
 
-      if ((!currentUser.isLoggedIn || itsNotMine) && userCollection) {
+      if (itsNotMine && userCollection) {
         dispatch(getCollections(userCollection.createdBy.id, cancelTokenSource.current.token, false));
       }
 
@@ -168,7 +165,7 @@ const CollectionShow: React.FC<Props> = props => {
         cancelTokenSource.current = axios.CancelToken.source();
       };
     },
-    [match.params.collectionId, currentUser.isLoggedIn, collectionShow.mainCollectionId]
+    [match, currentUser.isLoggedIn]
   );
 
   const handleSubmitSearch = React.useCallback(
