@@ -1,5 +1,6 @@
 import { ACTION_TYPES, Actions } from '../../actions/actionTypes';
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
+import { toggleElementFromArray } from '../../helpers/toggleElementFromArray';
 
 export interface CollectionShowState
   extends Readonly<{
@@ -13,6 +14,7 @@ export interface CollectionShowState
       sortType: AUTHOR_PAPER_LIST_SORT_TYPES;
       searchKeyword: string;
       paperIds: number | number[];
+      selectedPaperIds: number[];
     }> {}
 
 export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
@@ -26,6 +28,7 @@ export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
   sortType: 'RECENTLY_ADDED',
   searchKeyword: '',
   paperIds: [],
+  selectedPaperIds: [],
 };
 
 export function reducer(
@@ -92,13 +95,14 @@ export function reducer(
       if (action.payload.collection.id === state.mainCollectionId) {
         const removePaperIds = action.payload.paperIds;
         if (typeof state.paperIds === 'object') {
-          const paperIndex = state.paperIds.indexOf(removePaperIds[0]);
-          const paperIdsLength = state.paperIds.length;
+          let newPaperIds = [...state.paperIds];
 
-          const newPaperIds = [
-            ...state.paperIds.slice(0, paperIndex),
-            ...state.paperIds.slice(paperIndex + 1, paperIdsLength),
-          ];
+          removePaperIds.forEach(removePaperId => {
+            const paperIndex = newPaperIds.indexOf(removePaperId);
+            const paperIdsLength = newPaperIds.length;
+
+            newPaperIds = [...newPaperIds.slice(0, paperIndex), ...newPaperIds.slice(paperIndex + 1, paperIdsLength)];
+          });
 
           return {
             ...state,
@@ -114,6 +118,27 @@ export function reducer(
         }
       }
       return state;
+    }
+
+    case ACTION_TYPES.COLLECTION_SHOW_SELECT_PAPER_ITEM: {
+      return {
+        ...state,
+        selectedPaperIds: toggleElementFromArray(action.payload.paperId, state.selectedPaperIds),
+      };
+    }
+
+    case ACTION_TYPES.COLLECTION_SHOW_SELECT_ALL_PAPER_ITEMS: {
+      if (state.selectedPaperIds.length > 0) {
+        return {
+          ...state,
+          selectedPaperIds: [],
+        };
+      }
+
+      return {
+        ...state,
+        selectedPaperIds: action.payload.paperIds,
+      };
     }
 
     default:

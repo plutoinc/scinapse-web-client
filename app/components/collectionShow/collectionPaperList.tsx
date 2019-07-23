@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { PaperInCollection } from '../../model/paperInCollection';
 import { CurrentUser } from '../../model/currentUser';
 import { CollectionShowState } from '../../containers/collectionShow/reducer';
@@ -7,12 +9,14 @@ import CollectionPaperItem from './collectionPaperItem';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import Icon from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import { removePaperFromCollection } from '../dialog/actions';
+import formatNumber from '../../helpers/formatNumber';
+import CollectionPapersControlBtns from './collectionPapersControlBtns';
+import { ACTION_TYPES } from '../../actions/actionTypes';
 const styles = require('./collectionPaperList.scss');
 
 interface CollectionPaperListProps {
+  itsMine: boolean;
   papersInCollection: PaperInCollection[];
   currentUser: CurrentUser;
   collectionShow: CollectionShowState;
@@ -20,14 +24,34 @@ interface CollectionPaperListProps {
   dispatch: Dispatch<any>;
 }
 
+const CollectionPaperInfo: React.FC<{ collectionShow: CollectionShowState }> = ({ collectionShow }) => {
+  return (
+    <div className={styles.subHeader}>
+      <div>
+        <span className={styles.resultPaperCount}>{`${formatNumber(collectionShow.papersTotalCount)} Papers `}</span>
+        <span className={styles.resultPaperPageCount}>
+          {`(${collectionShow.currentPaperListPage} page of ${formatNumber(collectionShow.totalPaperListPage)} pages)`}
+        </span>
+      </div>
+    </div>
+  );
+};
+
 const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
-  const { papersInCollection, currentUser, collectionShow, userCollection, dispatch } = props;
+  const { itsMine, papersInCollection, currentUser, collectionShow, userCollection, dispatch } = props;
 
   const handleRemovePaperFromCollection = React.useCallback(
-    async (paperId: number) => {
+    async (paperIds: number | number[]) => {
+      let param;
+      if (typeof paperIds === 'object') {
+        param = paperIds;
+      } else {
+        param = [paperIds];
+      }
+
       if (userCollection && confirm(`Are you sure to remove this paper from '${userCollection.title}'?`)) {
         try {
-          await dispatch(removePaperFromCollection({ paperIds: [paperId], collection: userCollection }));
+          await dispatch(removePaperFromCollection({ paperIds: param, collection: userCollection }));
         } catch (err) {}
       }
     },
@@ -45,19 +69,44 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
   if (userCollection && papersInCollection && papersInCollection.length > 0) {
     const collectionPaperList = papersInCollection.map(paper => {
       return (
-        <CollectionPaperItem
-          currentUser={currentUser}
-          pageType="collectionShow"
-          actionArea="paperList"
-          paperNote={paper.note ? paper.note : ''}
-          paper={paper.paper}
-          collection={userCollection}
-          onRemovePaperCollection={handleRemovePaperFromCollection}
-          key={paper.paperId}
-        />
+        <div className={styles.paperItemWrapper} key={paper.paperId}>
+          {itsMine && (
+            <input
+              type="checkbox"
+              className={styles.paperCheckBox}
+              checked={collectionShow.selectedPaperIds.includes(paper.paperId)}
+              onClick={() => {
+                dispatch({
+                  type: ACTION_TYPES.COLLECTION_SHOW_SELECT_PAPER_ITEM,
+                  payload: { paperId: paper.paperId },
+                });
+              }}
+              readOnly
+            />
+          )}
+          <CollectionPaperItem
+            currentUser={currentUser}
+            pageType="collectionShow"
+            actionArea="paperList"
+            paperNote={paper.note ? paper.note : ''}
+            paper={paper.paper}
+            collection={userCollection}
+            onRemovePaperCollection={handleRemovePaperFromCollection}
+          />
+        </div>
       );
     });
-    return <>{collectionPaperList}</>;
+    return (
+      <>
+        <CollectionPapersControlBtns
+          itsMine={itsMine}
+          collectionShow={collectionShow}
+          onRemovePaperCollection={handleRemovePaperFromCollection}
+        />
+        <CollectionPaperInfo collectionShow={collectionShow} />
+        {collectionPaperList}
+      </>
+    );
   } else {
     return (
       <div className={styles.noPaperWrapper}>

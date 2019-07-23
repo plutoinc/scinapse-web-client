@@ -1,5 +1,10 @@
 .collectionControlBtnsWrapper {
   display: flex;
+  align-items: center;
+
+  .allCheckBox {
+    margin-right: 20px;
+  }
 
   .collectionControlBtn {
     display: inline-flex;

@@ -61,11 +61,3 @@ export function getPapers(params: GetCollectionsPapersParams) {
     }
   };
 }
-
-export function openShareDropdown() {
-  return ActionCreators.openShareDropdownInCollectionShow();
-}
-
-export function closeShareDropdown() {
-  return ActionCreators.closeShareDropdownInCollectionShow();
-}

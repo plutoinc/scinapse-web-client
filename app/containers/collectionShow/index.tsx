@@ -20,7 +20,6 @@ import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/s
 import { getPapers } from './actions';
 import { LayoutState, UserDevice } from '../../components/layouts/records';
 import ScinapseInput from '../../components/common/scinapseInput';
-import formatNumber from '../../helpers/formatNumber';
 import restoreScroll from '../../helpers/scrollRestoration';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import ErrorPage from '../../components/error/errorPage';
@@ -32,7 +31,6 @@ import ImprovedFooter from '../../components/layouts/improvedFooter';
 import { withStyles } from '../../helpers/withStylesHelper';
 import PageHelmet from '../../components/collectionShow/pageHelmet';
 import CollectionShareButton from '../../components/collectionShow/collectionShareButton';
-import CollectionPapersControlBtns from '../../components/collectionShow/collectionPapersControlBtns';
 import CollectionPaperList from '../../components/collectionShow/collectionPaperList';
 const styles = require('./collectionShow.scss');
 
@@ -170,7 +168,7 @@ const CollectionShow: React.FC<Props> = props => {
         cancelTokenSource.current = axios.CancelToken.source();
       };
     },
-    [match.params.collectionId, currentUser.isLoggedIn]
+    [match.params.collectionId, currentUser.isLoggedIn, collectionShow.mainCollectionId]
   );
 
   const handleSubmitSearch = React.useCallback(
@@ -297,22 +295,10 @@ const CollectionShow: React.FC<Props> = props => {
                         />
                       </div>
                     </div>
-                    <CollectionPapersControlBtns itsMine={itsMine} />
-                    <div className={styles.subHeader}>
-                      <div>
-                        <span className={styles.resultPaperCount}>
-                          {`${formatNumber(collectionShow.papersTotalCount)} Papers `}
-                        </span>
-                        <span className={styles.resultPaperPageCount}>
-                          {`(${collectionShow.currentPaperListPage} page of ${formatNumber(
-                            collectionShow.totalPaperListPage
-                          )} pages)`}
-                        </span>
-                      </div>
-                    </div>
                   </div>
                   <div>
                     <CollectionPaperList
+                      itsMine={itsMine}
                       papersInCollection={papersInCollection}
                       currentUser={currentUser}
                       collectionShow={collectionShow}
