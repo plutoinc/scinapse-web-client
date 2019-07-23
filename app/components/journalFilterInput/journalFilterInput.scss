@@ -19,7 +19,7 @@
   border-radius: 19px;
   border: solid 1px $gray2;
   background-color: $gray0;
-  padding: 8px 12px;
+  padding: 8px 12px 8px 32px;
   font-size: 14px;
   color: $black0;
   transition: border-radius 150ms ease;
@@ -50,7 +50,7 @@
 .searchIcon {
   position: absolute;
   top: 0;
-  right: 12px;
+  left: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
