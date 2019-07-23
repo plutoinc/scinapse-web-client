@@ -3,10 +3,9 @@
   font-size: 14px;
 
   .author {
-    display: inline;
-    color: $gray9;
-    white-space: pre-wrap;
-    vertical-align: top;
+    display: inline-block;
+    white-space: pre;
+    word-break: break-all;
   }
 
   .authorName {
