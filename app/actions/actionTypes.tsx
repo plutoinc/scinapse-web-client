@@ -847,14 +847,6 @@ export const ActionCreators = {
     });
   },
 
-  selectToPaperInCollectionShow(payload: { paperId: number }) {
-    return createAction({ type: ACTION_TYPES.COLLECTION_SHOW_SELECT_PAPER_ITEM, payload });
-  },
-
-  selectToAllPapersInCollectionShow(payload: { paperIds: number[] }) {
-    return createAction({ type: ACTION_TYPES.COLLECTION_SHOW_SELECT_ALL_PAPER_ITEMS, payload });
-  },
-
   clearPaperShowState() {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE,
