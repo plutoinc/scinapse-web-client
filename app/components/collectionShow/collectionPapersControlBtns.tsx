@@ -15,7 +15,7 @@ import { exportCitationText } from '../../helpers/exportCitationText';
 const styles = require('./collectionPapersControlBtns.scss');
 
 const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: number[] }> = ({ selectedPaperIds }) => {
-  const anchorEl = React.useRef(null);
+  const dropdownMenuEl = React.useRef(null);
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
@@ -24,7 +24,7 @@ const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: number[] }> = ({
         setIsOpen(false);
       }}
     >
-      <div ref={anchorEl}>
+      <div ref={dropdownMenuEl}>
         <button
           className={classNames({
             [styles.hoverCitationExportButton]: isOpen,
@@ -46,7 +46,7 @@ const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: number[] }> = ({
             },
           }}
           open={isOpen}
-          anchorEl={anchorEl.current}
+          anchorEl={dropdownMenuEl.current}
           placement="bottom-start"
           disablePortal
         >
