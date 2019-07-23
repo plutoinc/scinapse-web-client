@@ -1,12 +1,87 @@
 import React from 'react';
-import Icon from '../../icons';
-import { isEqual } from 'lodash';
-import { withStyles } from '../../helpers/withStylesHelper';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import * as classNames from 'classnames';
+import { isEqual } from 'lodash';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Popper from '@material-ui/core/Popper';
+import Icon from '../../icons';
+import { withStyles } from '../../helpers/withStylesHelper';
 import { CollectionShowState } from '../../containers/collectionShow/reducer';
 import { ACTION_TYPES } from '../../actions/actionTypes';
+import { AvailableExportCitationType } from '../../containers/paperShow/records';
+import getAPIHost from '../../api/getHost';
+
 const styles = require('./collectionPapersControlBtns.scss');
+
+function exportMultipleCitation(type: AvailableExportCitationType, selectedPaperIds: number[]) {
+  const paperIds = selectedPaperIds.join(',');
+  const enumValue = AvailableExportCitationType[type];
+
+  const exportUrl = getAPIHost() + `/citations/export?pids=${paperIds}&format=${enumValue}`;
+
+  window.open(exportUrl, '_blank');
+}
+
+const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: number[] }> = ({ selectedPaperIds }) => {
+  const anchorEl = React.useRef(null);
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  return (
+    <ClickAwayListener
+      onClickAway={() => {
+        setIsOpen(false);
+      }}
+    >
+      <div ref={anchorEl}>
+        <button
+          className={classNames({
+            [styles.hoverCitationExportButton]: isOpen,
+            [styles.collectionControlBtn]: !isOpen,
+          })}
+          onClick={() => setIsOpen(!isOpen)}
+          disabled={selectedPaperIds.length === 0}
+        >
+          <Icon icon="CITED" className={styles.citedIcon} />CITATION EXPORT
+        </button>
+        <Popper
+          className={styles.citationExportDropdownMenu}
+          modifiers={{
+            preventOverflow: {
+              enabled: false,
+            },
+            flip: {
+              enabled: false,
+            },
+          }}
+          open={isOpen}
+          anchorEl={anchorEl.current}
+          placement="bottom-start"
+          disablePortal
+        >
+          <div
+            className={styles.menuItem}
+            onClick={() => {
+              exportMultipleCitation(AvailableExportCitationType.RIS, selectedPaperIds);
+              setIsOpen(false);
+            }}
+          >
+            RIS
+          </div>
+          <div
+            className={styles.menuItem}
+            onClick={() => {
+              exportMultipleCitation(AvailableExportCitationType.BIBTEX, selectedPaperIds);
+              setIsOpen(false);
+            }}
+          >
+            BibTeX
+          </div>
+        </Popper>
+      </div>
+    </ClickAwayListener>
+  );
+};
 
 const CollectionPapersControlBtns: React.FC<{
   itsMine: boolean;
@@ -43,12 +118,11 @@ const CollectionPapersControlBtns: React.FC<{
         <button
           className={styles.collectionControlBtn}
           onClick={() => onRemovePaperCollection(collectionShow.selectedPaperIds)}
+          disabled={collectionShow.selectedPaperIds.length === 0}
         >
           <Icon icon="TRASH_CAN" className={styles.deleteIcon} />DELETE
         </button>
-        <button className={styles.collectionControlBtn}>
-          <Icon icon="CITED" className={styles.citedIcon} />CITATION EXPORT
-        </button>
+        <MultiCitationExportDropdown selectedPaperIds={collectionShow.selectedPaperIds} />
       </div>
       <div className={styles.collectionControlBtnsDivider} />
     </div>

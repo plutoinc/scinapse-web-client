@@ -5,55 +5,61 @@
   .allCheckBox {
     margin-right: 20px;
   }
+}
 
-  .collectionControlBtn {
+.collectionControlBtn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.33;
+  letter-spacing: 0.5px;
+  padding: 8px;
+  color: $gray6;
+  cursor: pointer;
+  margin-left: 4px;
+
+  &:hover {
+    border-radius: 4px;
+    background-color: $gray0;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    color: $black1;
+  }
+
+  .deleteIcon {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    height: 40px;
-    font-size: 15px;
-    font-weight: 500;
-    line-height: 1.33;
-    letter-spacing: 0.5px;
-    padding: 8px;
-    color: $gray6;
-    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
 
-    & + & {
-      margin-left: 4px;
-    }
-
-    &:hover {
-      border-radius: 4px;
-      background-color: $gray0;
-      font-weight: bold;
-      letter-spacing: 0.5px;
-      color: $black1;
-    }
-
-    .deleteIcon {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      width: 24px;
-      height: 24px;
-      margin-right: 8px;
-
-      svg {
-        width: 20px;
-        height: 20px;
-      }
-    }
-
-    .citedIcon {
-      @extend .deleteIcon;
-
-      svg {
-        width: 14px;
-        height: 14px;
-      }
+    svg {
+      width: 20px;
+      height: 20px;
     }
   }
+
+  .citedIcon {
+    @extend .deleteIcon;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+}
+
+.hoverCitationExportButton {
+  @extend .collectionControlBtn;
+  border-radius: 4px;
+  background-color: $gray0;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  color: $black1;
 }
 
 .collectionControlBtnsDivider {
@@ -61,4 +67,29 @@
   height: 1px;
   background-color: $gray3;
   margin-top: 8px;
+}
+
+.citationExportDropdownMenu {
+  z-index: 2;
+  border-radius: 4px;
+  box-shadow: 0 5px 17px 0 rgba(0, 0, 0, 0.15);
+  background-color: white;
+}
+
+.menuItem {
+  width: 144px;
+  height: 40px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: $black1;
+  padding: 10px 0 10px 16px;
+  cursor: pointer;
+
+  & + & {
+    border-top: 1px solid $gray1;
+  }
+
+  &:hover {
+    color: $main_blue0;
+  }
 }

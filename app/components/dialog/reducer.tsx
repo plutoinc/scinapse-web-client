@@ -72,7 +72,7 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   citationPaperId: 0,
   citationText: '',
   isLoadingCitationText: false,
-  activeCitationTab: AvailableCitationType.BIBTEX,
+  activeCitationTab: AvailableCitationType.APA,
   // collection dialog
   isLoadingMyCollections: false,
   hasErrorToCollectionDialog: false,
