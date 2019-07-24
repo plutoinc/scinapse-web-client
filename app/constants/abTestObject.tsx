@@ -4,7 +4,6 @@ import {
   KNOWLEDGE_BASED_RECOMMEND_TEST,
   SOURCE_DOMAIN_TEST,
   DUMMY_TEST,
-  AUTO_YEAR_FILTER_TEST,
   FIGURE_TEST,
   QUERY_LOVER_EXPERIMENT,
 } from './abTestGlobalValue';
@@ -22,11 +21,6 @@ export const broadAuthorVenue: Test = {
 export const knowledgeBasedRecommend: Test = {
   name: KNOWLEDGE_BASED_RECOMMEND_TEST,
   userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'knowledgeBasedRecommend', weight: 1 }],
-};
-
-export const autoYearFilter: Test = {
-  name: AUTO_YEAR_FILTER_TEST,
-  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'auto', weight: 1 }],
 };
 
 export const dummy: Test = {
