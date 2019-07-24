@@ -43,6 +43,8 @@ import AuthorCvSection from '../authorCvSection';
 import { getAuthor } from '../unconnectedAuthorShow/actions';
 import ErrorPage from '../../components/error/errorPage';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+import { getCurrentPageType } from '../../components/locationListener';
 const styles = require('./connectedAuthor.scss');
 
 export interface ConnectedAuthorShowMatchParams {
@@ -521,10 +523,14 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
   private handleSubmitPublicationSearch = (query: string) => {
     const { dispatch, authorShow, author } = this.props;
 
-    trackEvent({
-      category: 'New Author Show',
-      action: "search author's all publication",
-      label: query,
+    if (!author || !dispatch) return;
+
+    ActionTicketManager.trackTicket({
+      pageType: getCurrentPageType(),
+      actionType: 'fire',
+      actionArea: 'authorShow',
+      actionTag: 'query',
+      actionLabel: query,
     });
 
     dispatch(

@@ -32,6 +32,8 @@ import ErrorPage from '../../components/error/errorPage';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
 import ScinapseInput from '../../components/common/scinapseInput';
 import Icon from '../../icons';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+import { getCurrentPageType } from '../../components/locationListener';
 const styles = require('./authorShow.scss');
 
 export interface AuthorShowMatchParams {
@@ -373,18 +375,26 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
   private handleSubmitSearch = (query: string) => {
     const { dispatch, author, authorShow } = this.props;
 
-    if (author) {
-      dispatch!(
-        getAuthorPapers({
-          authorId: author.id,
-          page: 1,
-          size: DEFAULT_AUTHOR_PAPERS_SIZE,
-          query,
-          sort: authorShow.papersSort,
-          cancelToken: this.cancelToken.token,
-        })
-      );
-    }
+    if (!author || !dispatch) return;
+
+    ActionTicketManager.trackTicket({
+      pageType: getCurrentPageType(),
+      actionType: 'fire',
+      actionArea: 'authorShow',
+      actionTag: 'query',
+      actionLabel: query,
+    });
+
+    dispatch(
+      getAuthorPapers({
+        authorId: author.id,
+        page: 1,
+        size: DEFAULT_AUTHOR_PAPERS_SIZE,
+        query,
+        sort: authorShow.papersSort,
+        cancelToken: this.cancelToken.token,
+      })
+    );
   };
 
   private handleClickSortOption = (sortOption: AUTHOR_PAPER_LIST_SORT_TYPES) => {
