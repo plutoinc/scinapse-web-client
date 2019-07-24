@@ -31,7 +31,7 @@ const PaperShowFigureList: React.FC<{ paper: Paper; isMobile: boolean }> = ({ pa
     actionType: 'view',
     actionArea: 'figureList',
     actionTag: 'viewFigureList',
-    actionLabel: String(paper.figures.length),
+    actionLabel: String(paper.id),
   };
 
   const { elRef } = useObserver(0.1, actionTicketContext);
