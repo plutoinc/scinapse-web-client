@@ -6,7 +6,13 @@ import {
   DUMMY_TEST,
   AUTO_YEAR_FILTER_TEST,
   FIGURE_TEST,
+  QUERY_LOVER_EXPERIMENT,
 } from './abTestGlobalValue';
+
+export const queryLover: Test = {
+  name: QUERY_LOVER_EXPERIMENT,
+  userGroup: [{ groupName: 'control', weight: 9 }, { groupName: 'queryLover', weight: 1 }],
+};
 
 export const broadAuthorVenue: Test = {
   name: BROAD_AUTHOR_VENUE_TEST,

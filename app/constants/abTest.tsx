@@ -1,4 +1,12 @@
-import { broadAuthorVenue, knowledgeBasedRecommend, sourceDomain, dummy, autoYearFilter, figure } from './abTestObject';
+import {
+  broadAuthorVenue,
+  knowledgeBasedRecommend,
+  sourceDomain,
+  dummy,
+  autoYearFilter,
+  figure,
+  queryLover,
+} from './abTestObject';
 
 export interface UserGroup {
   groupName: string;
@@ -18,7 +26,8 @@ export type ABTest =
   | 'knowledgeBasedRecommend'
   | 'dummy'
   | 'autoYearFilter'
-  | 'figure';
+  | 'figure'
+  | 'queryLover';
 
 export const SIGN_UP_CONVERSION_KEY = 'b_exp';
 
@@ -45,6 +54,7 @@ export const LIVE_TESTS: Test[] = [
   dummy,
   autoYearFilter,
   figure,
+  queryLover,
 ];
 
 function getRandomPool(): { [key: string]: string[] } {
