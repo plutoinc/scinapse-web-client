@@ -54,9 +54,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
         <div className={styles.boxWrapper}>
           <div style={{ marginTop: 0 }} className={styles.header}>
             <div className={styles.title}>Cite</div>
-            <div onClick={closeCitationDialog} className={styles.iconWrapper}>
-              <Icon icon="X_BUTTON" />
-            </div>
+            <Icon icon="X_BUTTON" className={styles.iconWrapper} onClick={closeCitationDialog} />
           </div>
           {this.getTabs()}
           {this.getTextBox()}

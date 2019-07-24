@@ -8,20 +8,28 @@
 
 .header {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 8px;
 }
 
 .title {
-  flex: 1;
   font-size: 18px;
   font-weight: 500;
   color: $black0;
 }
 
 .iconWrapper {
-  width: 12px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
   cursor: pointer;
+
   svg {
+    width: 12px;
+    height: 12px;
     color: $gray4;
   }
 }
