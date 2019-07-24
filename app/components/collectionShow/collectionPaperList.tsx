@@ -49,7 +49,15 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
         param = [paperIds];
       }
 
-      if (userCollection && confirm(`Are you sure to remove this paper from '${userCollection.title}'?`)) {
+      let removeConfirm;
+
+      if (param.length >= 2) {
+        removeConfirm = confirm(`Are you sure to remove ${param.length} paper from '${userCollection.title}'?`);
+      } else {
+        removeConfirm = confirm(`Are you sure to remove this paper from '${userCollection.title}'?`);
+      }
+
+      if (userCollection && removeConfirm) {
         try {
           await dispatch(removePaperFromCollection({ paperIds: param, collection: userCollection }));
         } catch (err) {}

@@ -49,7 +49,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
           </button>
           <button
             className={styles.downloadBtn}
-            onClick={() => exportCitationText(AvailableExportCitationType.RIS, [paperId])}
+            onClick={() => exportCitationText(AvailableExportCitationType.BIBTEX, [paperId])}
           >
             BibTeX
           </button>
@@ -166,29 +166,26 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
   };
 
   private getTextBox = () => {
-    const { isLoading, activeTab, citationText } = this.props;
+    const { isLoading, citationText } = this.props;
 
     if (isLoading) {
       return (
-        <div
-          className={styles.textBoxWrapper}
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <ButtonSpinner />
+        <div className={styles.textBoxWrapper}>
+          <div
+            className={styles.textArea}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <ButtonSpinner />
+          </div>
         </div>
       );
     } else {
       return (
-        <div
-          style={{
-            borderTopLeftRadius: activeTab === AvailableCitationType.BIBTEX ? '0' : '3px',
-          }}
-          className={styles.textBoxWrapper}
-        >
+        <div className={styles.textBoxWrapper}>
           <textarea value={citationText} className={styles.textArea} readOnly={true} />
           <div className={styles.copyButtonWrapper}>
             <div

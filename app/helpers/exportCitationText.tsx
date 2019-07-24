@@ -7,5 +7,5 @@ export function exportCitationText(type: AvailableExportCitationType, selectedPa
 
   const exportUrl = getAPIHost() + `/citations/export?pids=${paperIds}&format=${enumValue}`;
 
-  window.open(exportUrl, '_blank');
+  window.location.href = exportUrl;
 }

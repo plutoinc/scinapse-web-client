@@ -1,6 +1,7 @@
 import { ACTION_TYPES, Actions } from '../../actions/actionTypes';
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
 import { toggleElementFromArray } from '../../helpers/toggleElementFromArray';
+import { multiRemoveElementFromArray } from '../../helpers/multiRemoveElementFromArray';
 
 export interface CollectionShowState
   extends Readonly<{
@@ -94,26 +95,28 @@ export function reducer(
     case ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_FROM_COLLECTION: {
       if (action.payload.collection.id === state.mainCollectionId) {
         const removePaperIds = action.payload.paperIds;
+        let newSelectedPaperIds = [...state.selectedPaperIds];
+
+        if (removePaperIds.length === newSelectedPaperIds.length) {
+          newSelectedPaperIds = [];
+        }
+
         if (typeof state.paperIds === 'object') {
-          let newPaperIds = [...state.paperIds];
-
-          removePaperIds.forEach(removePaperId => {
-            const paperIndex = newPaperIds.indexOf(removePaperId);
-            const paperIdsLength = newPaperIds.length;
-
-            newPaperIds = [...newPaperIds.slice(0, paperIndex), ...newPaperIds.slice(paperIndex + 1, paperIdsLength)];
-          });
+          let newPaperIds = multiRemoveElementFromArray(removePaperIds, [...state.paperIds]);
+          let newSelectedPaperIds = multiRemoveElementFromArray(removePaperIds, [...state.selectedPaperIds]);
 
           return {
             ...state,
             paperIds: newPaperIds,
             papersTotalCount: newPaperIds.length,
+            selectedPaperIds: newSelectedPaperIds,
           };
         } else {
           return {
             ...state,
             paperIds: [],
             papersTotalCount: 0,
+            selectedPaperIds: newSelectedPaperIds,
           };
         }
       }
