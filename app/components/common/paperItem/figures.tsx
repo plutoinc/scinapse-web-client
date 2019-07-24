@@ -23,7 +23,7 @@ function openPaperFigureDetailDialog(figures: PaperFigure[], index: number, pape
     actionLabel: String(paperId),
   });
 
-  return GlobalDialogManager.openPaperFigureDetailDialog(figures, index);
+  return GlobalDialogManager.openPaperFigureDetailDialog(figures, index, paperId);
 }
 
 const Figures: React.FC<FiguresProps> = ({ figures, paperId }) => {
