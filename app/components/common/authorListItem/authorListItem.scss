@@ -3,7 +3,7 @@
 .itemWrapper {
   padding: 8px 12px 8px 8px;
   height: 37px;
-  border-bottom: 1px solid $gray3;
+  border-bottom: 1px solid $gray400;
   margin-right: 4px;
   cursor: pointer;
 
@@ -12,7 +12,7 @@
   }
 
   &:hover {
-    background-color: $gray0;
+    background-color: $gray30;
   }
 }
 

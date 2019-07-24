@@ -1,12 +1,12 @@
 .doiContext {
   font-size: 14px;
   line-height: 1.43;
-  color: $gray5;
+  color: $gray600;
 }
 
 .doiTitle {
   @extend .doiContext;
-  color: $gray6;
+  color: $gray800;
   font-weight: 500;
 }
 
@@ -26,7 +26,7 @@
   color: $main_blue1;
 
   &:hover {
-    background-color: $gray8;
+    background-color: $gray50;
   }
 
   &:active {

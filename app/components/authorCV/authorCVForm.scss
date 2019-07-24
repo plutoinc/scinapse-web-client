@@ -1,6 +1,6 @@
 .contentSection {
   width: 690px;
-  background-color: $gray1;
+  background-color: $gray200;
   margin-bottom: 16px;
   padding: 16px 24px;
 
@@ -18,7 +18,7 @@
     height: 20px;
     font-size: 13px;
     line-height: 1.54;
-    color: $gray6;
+    color: $gray800;
   }
 }
 
@@ -48,7 +48,7 @@
   display: inline-flex !important;
   color: $black0;
   border-radius: 5px;
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
   background-color: white !important;
   margin-top: 4px;
 
@@ -81,7 +81,7 @@
       font-size: 12px;
 
       &::placeholder {
-        color: $gray6;
+        color: $gray800;
         opacity: 0.5;
       }
     }
@@ -93,7 +93,7 @@
 
     .toSyntax {
       margin: 0 8px;
-      color: $gray6;
+      color: $gray800;
       font-size: 14px;
     }
   }
@@ -111,7 +111,7 @@
     display: flex;
     align-items: center;
     margin-top: 2px;
-    color: $gray6;
+    color: $gray800;
     font-size: 14px;
     height: 32px;
     width: 114px;
@@ -157,7 +157,7 @@
     padding: 8px 32px 8px 8px;
     margin: 0;
     border-radius: 5px;
-    border: solid 1px $gray3;
+    border: solid 1px $gray400;
     background-color: transparent;
 
     &.error {
@@ -166,7 +166,7 @@
   }
 
   input::placeholder {
-    color: $gray6;
+    color: $gray800;
     opacity: 0.5;
   }
 

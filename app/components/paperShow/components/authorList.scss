@@ -1,12 +1,12 @@
 .tinyButton {
-  background-color: $gray8;
+  background-color: $gray50;
   border-radius: 8px;
   padding: 2px 6px 2px 4px;
   color: $main_blue1;
   cursor: pointer;
 
   &:hover {
-    background-color: $gray2;
+    background-color: $gray300;
   }
 
   &:active {
@@ -71,11 +71,11 @@
         height: 100%;
         margin: 0 8px;
         font-size: 10px;
-        color: $gray5;
+        color: $gray600;
 
         &:hover {
           color: $main_blue1;
-          background-color: $gray8;
+          background-color: $gray50;
         }
 
         &:active {

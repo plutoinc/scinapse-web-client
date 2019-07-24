@@ -27,13 +27,13 @@ $semi_full_width: 997px;
 
   .loadingSpinner {
     div {
-      background-color: $gray4;
+      background-color: $gray500;
     }
   }
 }
 
 .headSection {
-  background-color: $gray0;
+  background-color: $gray30;
   padding: 32px 0;
   display: flex;
   justify-content: center;
@@ -66,7 +66,7 @@ $semi_full_width: 997px;
     .description {
       font-size: 18px;
       line-height: 1.33;
-      color: $gray6;
+      color: $gray800;
       margin-bottom: 16px;
       white-space: pre-wrap;
       word-break: break-all;
@@ -79,7 +79,7 @@ $semi_full_width: 997px;
         vertical-align: top;
         font-size: 14px;
         line-height: 1.43;
-        color: $gray6;
+        color: $gray800;
         white-space: pre-wrap;
       }
 
@@ -158,7 +158,7 @@ $semi_full_width: 997px;
 
   .noPaperDescription {
     font-size: 18px;
-    color: $gray6;
+    color: $gray800;
     margin-top: 24px;
   }
 }
@@ -202,7 +202,7 @@ $semi_full_width: 997px;
   width: 214px;
   height: 110px;
   border-radius: 4px;
-  border: 1px solid $gray2;
+  border: 1px solid $gray300;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -217,7 +217,7 @@ $semi_full_width: 997px;
     width: 0;
     height: 0;
     border: 11px solid transparent;
-    border-bottom-color: $gray2;
+    border-bottom-color: $gray300;
     border-top: 0;
     margin-left: -35px;
     margin-top: -11px;
@@ -241,7 +241,7 @@ $semi_full_width: 997px;
 
   .shareGuideMessage {
     font-size: 14px;
-    color: $gray6;
+    color: $gray800;
   }
 
   .shareBtnsWrapper {
@@ -257,7 +257,7 @@ $semi_full_width: 997px;
     height: 40px;
     cursor: pointer;
     border-radius: 4px;
-    background-color: $gray8;
+    background-color: $gray50;
     display: inline-flex;
     justify-content: center;
     align-items: center;

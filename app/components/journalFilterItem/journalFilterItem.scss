@@ -4,14 +4,14 @@
   align-items: center;
   width: 100%;
   font-size: 14px;
-  color: $gray9;
+  color: $gray700;
   cursor: pointer;
   text-align: left;
   padding: 6px;
   border-radius: 4px;
 
   &:hover {
-    background-color: $main_blue_light2;
+    background-color: $gray30;
   }
 
   &.isSelected {
@@ -19,7 +19,7 @@
   }
 
   &.highlighted {
-    background-color: $main_blue_light2;
+    background-color: $gray30;
   }
 }
 
@@ -62,7 +62,7 @@
   right: 8px;
   bottom: 0;
   font-size: 14px;
-  color: $gray9;
+  color: $gray700;
   display: flex;
   align-items: center;
 }

@@ -6,7 +6,7 @@
 
 .contentWrapper {
   overflow: unset;
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
   border-radius: 4px;
 
   &:before {
@@ -17,7 +17,7 @@
     width: 0;
     height: 0;
     border: 11px solid transparent;
-    border-bottom-color: $gray3;
+    border-bottom-color: $gray400;
     border-top: 0;
     margin-left: -14px;
     margin-top: -10px;

@@ -67,7 +67,7 @@
 
 .loadingSubmitButton {
   margin-top: 10.2px;
-  @include common-button($gray3);
+  @include common-button($gray400);
   cursor: wait;
   position: relative;
 }
@@ -80,7 +80,7 @@
   .dashedSeparator {
     width: 156.5px;
     height: 1.2px;
-    border-top: dashed 0.8px $gray3;
+    border-top: dashed 0.8px $gray400;
     margin-left: 3.9px;
     margin-right: 3.9px;
   }
@@ -91,7 +91,7 @@
     font-size: 12px;
     text-align: center;
     color: #d8dde7;
-    color: $gray3;
+    color: $gray400;
   }
 }
 
@@ -136,7 +136,7 @@
 }
 
 .goBackButton {
-  @include common-button($gray2);
+  @include common-button($gray300);
   margin-top: 10.2px;
   margin-bottom: 28.7px;
 }
@@ -151,7 +151,7 @@
   border-radius: 3px;
   padding: 0 10px;
   background-color: white;
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
   overflow: hidden;
   margin: 10px auto 0;
 
@@ -172,7 +172,7 @@
   font-size: 15px;
   font-weight: 500;
   letter-spacing: 2.7px;
-  color: $gray6;
+  color: $gray800;
   margin-top: -4px;
   margin-bottom: 11.3px;
 }
@@ -180,7 +180,7 @@
 .subHeader {
   font-size: 15px;
   font-weight: 400;
-  color: $gray6;
+  color: $gray800;
   margin-top: -4px;
   margin-bottom: 11.3px;
 }

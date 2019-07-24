@@ -10,14 +10,14 @@
   font-size: 120px;
   font-weight: bold;
   letter-spacing: 8px;
-  color: $gray3;
+  color: $gray400;
 }
 
 .errorContent {
   margin-top: 16px;
   font-size: 30px;
   font-weight: bold;
-  color: $gray6;
+  color: $gray800;
 }
 
 .goBackButton {
@@ -29,7 +29,7 @@
   color: $black0;
   border-radius: 5px;
   line-height: 44px;
-  border: 1px solid $gray3;
+  border: 1px solid $gray400;
   cursor: pointer;
 }
 

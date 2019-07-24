@@ -23,12 +23,13 @@
 .divider {
   display: inline-block;
   margin: 0 12px;
-  color: $gray5;
+  color: $gray600;
 }
 
 .sortText {
-  margin-right: 8px;
-  color: $gray6;
+  margin-right: 12px;
+  color: $gray800;
+  font-size: 15px;
 }
 
 .btnWrapper {
@@ -57,7 +58,7 @@
 
 .clearButton {
   font-size: 14px;
-  color: $gray5;
+  color: $gray600;
   display: flex;
   justify-content: center;
   align-items: center;

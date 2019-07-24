@@ -3,9 +3,9 @@
   align-items: center;
   height: 30px;
   border-radius: 5px;
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
   font-size: 14px;
-  color: $gray6;
+  color: $gray800;
   padding: 0 8px 0 8px;
   cursor: pointer;
 
@@ -16,7 +16,7 @@
     justify-content: center;
     align-items: center;
     margin-right: 8px;
-    color: $gray5;
+    color: $gray600;
 
     svg {
       display: inline-block;
@@ -27,7 +27,7 @@
   }
 
   &:hover {
-    background-color: $gray1;
+    background-color: $gray200;
     transition: $button-hover-transition;
   }
 }

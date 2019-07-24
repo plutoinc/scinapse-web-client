@@ -25,13 +25,13 @@ $right_box_width: 267px;
 
   .loadingSpinner {
     div {
-      background-color: $gray4;
+      background-color: $gray500;
     }
   }
 }
 
 .headSection {
-  background-color: $gray0;
+  background-color: $gray30;
   padding: 48px 0;
 
   .container {
@@ -68,7 +68,7 @@ $right_box_width: 267px;
     font-size: 17px;
     font-weight: 500;
     line-height: 1.4;
-    color: $gray4;
+    color: $gray500;
     min-width: 72px;
     margin-bottom: 4px;
   }
@@ -163,7 +163,7 @@ $right_box_width: 267px;
 
   .noPaperDescription {
     font-size: 18px;
-    color: $gray6;
+    color: $gray800;
     margin-top: 24px;
   }
 }
@@ -221,7 +221,7 @@ $right_box_width: 267px;
 .resultPaperCount {
   font-size: 14px;
   line-height: 1.43;
-  color: $gray6;
+  color: $gray800;
 }
 
 .externalIconWrapper {
@@ -238,10 +238,10 @@ $right_box_width: 267px;
     vertical-align: top;
     width: 20px;
     height: 20px;
-    color: $gray5;
+    color: $gray600;
 
     &:hover {
-      color: $gray6;
+      color: $gray800;
       transition: ease-in-out 0.2s;
     }
   }

@@ -5,7 +5,7 @@
   border-radius: 4px;
   box-shadow: 0 2px 20px -2px rgba(0, 0, 0, 0.06), 0 2px 4px 0px rgba(0, 0, 0, 0.06),
     0 2px 40px 2px rgba(39, 65, 85, 0.07), 0 2px 8px 0 rgba(69, 119, 228, 0.05), 0 2px 3px 0 rgba(0, 0, 0, 0.05);
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
 }
 
 .improvedWrapper {
@@ -37,7 +37,7 @@
   right: 0;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  box-shadow: 0 1px 2px 0 $gray4;
+  box-shadow: 0 1px 2px 0 $gray500;
   z-index: 3;
   margin-top: 1px;
 
@@ -60,7 +60,7 @@
   font-size: 15px;
   font-weight: 400;
   color: $black1;
-  border-bottom: solid 1px $gray1;
+  border-bottom: solid 1px $gray200;
   cursor: pointer;
   white-space: pre;
   border-radius: 4px;
@@ -80,7 +80,7 @@
   &:focus,
   &:hover {
     outline: none;
-    background-color: $gray0;
+    background-color: $gray30;
   }
 
   b {
@@ -89,7 +89,7 @@
   }
 
   &.highlight {
-    background-color: $gray0;
+    background-color: $gray30;
   }
 }
 
@@ -99,7 +99,7 @@
   align-items: center;
   width: 32px;
   height: 100%;
-  color: $gray4;
+  color: $gray500;
   margin-left: 12px;
   margin-right: -12px;
 
