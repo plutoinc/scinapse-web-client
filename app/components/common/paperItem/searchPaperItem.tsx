@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import * as format from 'date-fns/format';
-import classNames from 'classnames';
 import { CurrentUser } from '../../../model/currentUser';
 import Abstract from './abstract';
 import Figures from './figures';
@@ -128,20 +127,14 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
           source={source}
         />
         {venueAndAuthor}
-        <div
-          className={classNames({
-            [styles.abstractAndFigureWrapper]: paper.figures.length > 0 && paper.figures.length <= 2,
-          })}
-        >
-          <Abstract
-            paperId={paper.id}
-            pageType={pageType}
-            actionArea={actionArea}
-            abstract={paper.abstractHighlighted || paper.abstract}
-            searchQueryText={searchQueryText}
-          />
-          {shouldShowFigure && <Figures figures={paper.figures} />}
-        </div>
+        <Abstract
+          paperId={paper.id}
+          pageType={pageType}
+          actionArea={actionArea}
+          abstract={paper.abstractHighlighted || paper.abstract}
+          searchQueryText={searchQueryText}
+        />
+        {shouldShowFigure && <Figures figures={paper.figures} />}
         <NotIncludedWords missingKeywords={paper.missingKeywords} />
         <PaperActionButtons
           currentUser={currentUser}

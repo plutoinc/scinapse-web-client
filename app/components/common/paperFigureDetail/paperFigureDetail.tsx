@@ -10,10 +10,44 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../../locationListener';
 const styles = require('./paperFigureDetail.scss');
 
+const MAX_LENGTH_OF_MOBILE_CAPTION = 250;
+
 type Props = ReturnType<typeof mapStateToProps> & { handleCloseDialogRequest: () => void };
 
+const PaperFigureCaption: React.FC<{ isMobile: boolean; caption: string }> = props => {
+  const { isMobile, caption } = props;
+  const [shouldShowMoreCaption, setShouldShowMoreCaption] = React.useState(false);
+
+  if (!isMobile) return <div className={styles.figureDetailCaption}>{caption}</div>;
+  let truncatedCaption;
+
+  if (caption.length > MAX_LENGTH_OF_MOBILE_CAPTION) {
+    truncatedCaption = caption.slice(0, MAX_LENGTH_OF_MOBILE_CAPTION) + '...';
+  } else {
+    truncatedCaption = caption;
+  }
+
+  const finalCaption = shouldShowMoreCaption ? caption : truncatedCaption;
+
+  return (
+    <div className={styles.figureDetailCaption}>
+      {finalCaption}
+      <label
+        className={styles.moreOrLess}
+        onClick={() => {
+          setShouldShowMoreCaption(!shouldShowMoreCaption);
+        }}
+      >
+        {caption.length > MAX_LENGTH_OF_MOBILE_CAPTION && (
+          <div className={styles.moreOrLess}>{shouldShowMoreCaption ? <span>less</span> : <span>more</span>}</div>
+        )}
+      </label>
+    </div>
+  );
+};
+
 const PaperFigureDetail: React.FC<Props> = props => {
-  const { DialogState, handleCloseDialogRequest } = props;
+  const { layout, DialogState, handleCloseDialogRequest } = props;
   const { paperFigures, currentPaperFigureIndex } = DialogState;
   const paperFigureEl = React.useRef<HTMLDivElement | null>(null);
 
@@ -33,11 +67,9 @@ const PaperFigureDetail: React.FC<Props> = props => {
         actionLabel: String(showFigureIndex),
       });
 
-      if (showFigureIndex === 0) {
-        setShowFigureIndex(paperFigures!.length - 1);
-      } else {
-        setShowFigureIndex(showFigureIndex - 1);
-      }
+      const figuresLength = paperFigures!.length;
+      const nextFigureIndex = (figuresLength + showFigureIndex - 1) % figuresLength;
+      setShowFigureIndex(nextFigureIndex);
     },
     [paperFigures, showFigureIndex]
   );
@@ -52,11 +84,9 @@ const PaperFigureDetail: React.FC<Props> = props => {
         actionLabel: String(showFigureIndex),
       });
 
-      if (showFigureIndex === paperFigures!.length - 1) {
-        setShowFigureIndex(0);
-      } else {
-        setShowFigureIndex(showFigureIndex + 1);
-      }
+      const figuresLength = paperFigures!.length;
+      const nextFigureIndex = (figuresLength + showFigureIndex + 1) % figuresLength;
+      setShowFigureIndex(nextFigureIndex);
     },
     [paperFigures, showFigureIndex]
   );
@@ -107,9 +137,9 @@ const PaperFigureDetail: React.FC<Props> = props => {
           />
         </picture>
       </div>
-      <div className={styles.figureDetailCaption}>{currentFigure.caption}</div>
+      <PaperFigureCaption isMobile={layout.userDevice !== UserDevice.DESKTOP} caption={currentFigure.caption} />
       <SliderButtons
-        isMobile={props.layout.userDevice !== UserDevice.DESKTOP}
+        isMobile={layout.userDevice !== UserDevice.DESKTOP}
         handleClickPrevBtn={onClickPrevBtn}
         handleClickNextBtn={onClickNextBtn}
       />
