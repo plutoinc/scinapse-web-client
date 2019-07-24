@@ -6,3 +6,4 @@ export const KNOWLEDGE_BASED_RECOMMEND_TEST: ABTest = 'knowledgeBasedRecommend';
 export const AUTO_YEAR_FILTER_TEST: ABTest = 'autoYearFilter';
 export const DUMMY_TEST: ABTest = 'dummy';
 export const FIGURE_TEST: ABTest = 'figure';
+export const QUERY_LOVER_EXPERIMENT = 'queryLover';
