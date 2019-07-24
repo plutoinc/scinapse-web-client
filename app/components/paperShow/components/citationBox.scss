@@ -1,5 +1,6 @@
 .boxContainer {
   font-family: $fallback !important;
+  width: 666px;
 }
 
 .boxWrapper {
@@ -170,5 +171,11 @@
 
   & + & {
     margin-left: 8px;
+  }
+}
+
+@media (max-width: $tablet-width) {
+  .boxContainer {
+    width: 100%;
   }
 }
