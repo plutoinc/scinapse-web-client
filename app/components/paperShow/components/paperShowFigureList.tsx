@@ -10,13 +10,13 @@ const styles = require('./paperShowFigureList.scss');
 
 const MOBILE_FIGURES_MAX_LENGTH = 6;
 
-function openPaperFigureDetailDialog(figures: PaperFigure[], index: number) {
+function openPaperFigureDetailDialog(figures: PaperFigure[], index: number, paperId: number) {
   ActionTicketManager.trackTicket({
     pageType: 'paperShow',
     actionType: 'fire',
     actionArea: 'figureList',
     actionTag: 'clickPaperFigure',
-    actionLabel: String(index),
+    actionLabel: String(paperId),
   });
 
   return GlobalDialogManager.openPaperFigureDetailDialog(figures, index);
@@ -62,7 +62,7 @@ const PaperShowFigureList: React.FC<{ paper: Paper; isMobile: boolean }> = ({ pa
       <LargePaperFigure
         figure={figure}
         key={i}
-        handleOpenFigureDetailDialog={() => openPaperFigureDetailDialog(paper.figures, i)}
+        handleOpenFigureDetailDialog={() => openPaperFigureDetailDialog(paper.figures, i, paper.id)}
       />
     );
   });
