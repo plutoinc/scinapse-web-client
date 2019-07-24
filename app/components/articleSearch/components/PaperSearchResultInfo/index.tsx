@@ -32,7 +32,7 @@ const PaperSearchResultInfo: React.FC<PaperSearchResultInfoProps> = ({
     </span>
   );
 
-  if (!searchFromSuggestion && suggestionKeyword) {
+  if (searchFromSuggestion && suggestionKeyword) {
     additionalContent = (
       <span className={styles.additionalContent}>
         {`No result for `}
@@ -56,17 +56,17 @@ const PaperSearchResultInfo: React.FC<PaperSearchResultInfoProps> = ({
     );
   }
 
-  if (searchFromSuggestion && suggestionKeyword) {
+  if (!searchFromSuggestion && suggestionKeyword) {
     additionalContent = (
       <span className={styles.additionalContent}>
         {`Showing results for `}
-        <span className={styles.weirdQuery}>{suggestionKeyword}</span>
+        <span className={styles.weirdQuery}>{query}</span>
         <span>{`. Did you mean `}</span>
         <Link
           to={{
             pathname: '/search',
             search: PaperSearchQueryFormatter.stringifyPapersQuery({
-              query: query,
+              query: suggestionKeyword,
               sort: 'RELEVANCE',
               filter: {},
               page: 1,
@@ -74,7 +74,7 @@ const PaperSearchResultInfo: React.FC<PaperSearchResultInfoProps> = ({
           }}
           className={styles.suggestionLink}
         >
-          {query}
+          {suggestionKeyword}
         </Link>
         <span>?</span>
       </span>
