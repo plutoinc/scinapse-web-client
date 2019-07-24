@@ -16,22 +16,6 @@ export function generateFullHTML({ reactDom, scriptTags, helmet, initialState, c
     <!doctype html>
     <html lang="en">
       <head>
-      <script>
-      window.__performance__track__list = [];
-      const observer = new PerformanceObserver((list) => {
-        for (const entry of list.getEntries()) {
-          const metricName = entry.name;
-          const time = Math.round(entry.startTime + entry.duration);
-          __performance__track__list.push({
-            eventCategory: 'Performance Metrics',
-            eventAction: metricName,
-            eventValue: time,
-            nonInteraction: true,
-          });
-        }
-      });
-      observer.observe({entryTypes: ['paint']});
-      </script>    
         ${helmet.title.toString()}
         ${helmet.script.toString()}
         ${helmet.meta.toString()}
