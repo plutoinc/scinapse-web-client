@@ -21,7 +21,7 @@ export interface CitationBoxProps {
   closeCitationDialog: () => void;
 }
 
-function singleCitationExport(type: AvailableExportCitationType, selectedPaperIds: number[]) {
+function exportSingleCitation(type: AvailableExportCitationType, selectedPaperIds: number[]) {
   let actionLabel;
 
   if (type === AvailableExportCitationType.RIS) {
@@ -35,7 +35,7 @@ function singleCitationExport(type: AvailableExportCitationType, selectedPaperId
   ActionTicketManager.trackTicket({
     pageType: getCurrentPageType(),
     actionType: 'fire',
-    actionArea: 'singleCitationExportButton',
+    actionArea: 'exportSingleCitationButton',
     actionTag: 'citePaper',
     actionLabel,
   });
@@ -63,13 +63,13 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
           <span className={styles.orSyntax}>or</span> Download as
           <button
             className={styles.downloadBtn}
-            onClick={() => singleCitationExport(AvailableExportCitationType.RIS, [paperId])}
+            onClick={() => exportSingleCitation(AvailableExportCitationType.RIS, [paperId])}
           >
             RIS
           </button>
           <button
             className={styles.downloadBtn}
-            onClick={() => singleCitationExport(AvailableExportCitationType.BIBTEX, [paperId])}
+            onClick={() => exportSingleCitation(AvailableExportCitationType.BIBTEX, [paperId])}
           >
             BibTeX
           </button>

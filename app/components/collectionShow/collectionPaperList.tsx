@@ -40,31 +40,28 @@ const CollectionPaperInfo: React.FC<{ collectionShow: CollectionShowState }> = (
 const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
   const { itsMine, papersInCollection, currentUser, collectionShow, userCollection, dispatch } = props;
 
-  const handleRemovePaperFromCollection = React.useCallback(
-    async (paperIds: number | number[]) => {
-      let param;
-      if (typeof paperIds === 'object') {
-        param = paperIds;
-      } else {
-        param = [paperIds];
-      }
+  const handleRemovePaperFromCollection = React.useCallback(async (paperIds: number | number[]) => {
+    let param;
+    if (typeof paperIds === 'object') {
+      param = paperIds;
+    } else {
+      param = [paperIds];
+    }
 
-      let removeConfirm;
+    let removeConfirm;
 
-      if (param.length >= 2) {
-        removeConfirm = confirm(`Are you sure to remove ${param.length} paper from '${userCollection.title}'?`);
-      } else {
-        removeConfirm = confirm(`Are you sure to remove this paper from '${userCollection.title}'?`);
-      }
+    if (param.length >= 2) {
+      removeConfirm = confirm(`Are you sure to remove ${param.length} paper from '${userCollection.title}'?`);
+    } else {
+      removeConfirm = confirm(`Are you sure to remove this paper from '${userCollection.title}'?`);
+    }
 
-      if (userCollection && removeConfirm) {
-        try {
-          await dispatch(removePaperFromCollection({ paperIds: param, collection: userCollection }));
-        } catch (err) {}
-      }
-    },
-    [dispatch, userCollection]
-  );
+    if (userCollection && removeConfirm) {
+      try {
+        await dispatch(removePaperFromCollection({ paperIds: param, collection: userCollection }));
+      } catch (err) {}
+    }
+  }, []);
 
   if (collectionShow.isLoadingPaperToCollection) {
     return (
@@ -74,48 +71,7 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
     );
   }
 
-  if (userCollection && papersInCollection && papersInCollection.length > 0) {
-    const collectionPaperList = papersInCollection.map(paper => {
-      return (
-        <div className={styles.paperItemWrapper} key={paper.paperId}>
-          {itsMine && (
-            <input
-              type="checkbox"
-              className={styles.paperCheckBox}
-              checked={collectionShow.selectedPaperIds.includes(paper.paperId)}
-              onClick={() => {
-                dispatch({
-                  type: ACTION_TYPES.COLLECTION_SHOW_SELECT_PAPER_ITEM,
-                  payload: { paperId: paper.paperId },
-                });
-              }}
-              readOnly
-            />
-          )}
-          <CollectionPaperItem
-            currentUser={currentUser}
-            pageType="collectionShow"
-            actionArea="paperList"
-            paperNote={paper.note ? paper.note : ''}
-            paper={paper.paper}
-            collection={userCollection}
-            onRemovePaperCollection={handleRemovePaperFromCollection}
-          />
-        </div>
-      );
-    });
-    return (
-      <>
-        <CollectionPapersControlBtns
-          itsMine={itsMine}
-          collectionShow={collectionShow}
-          onRemovePaperCollection={handleRemovePaperFromCollection}
-        />
-        <CollectionPaperInfo collectionShow={collectionShow} />
-        {collectionPaperList}
-      </>
-    );
-  } else {
+  if (!userCollection || (!papersInCollection || papersInCollection.length === 0)) {
     return (
       <div className={styles.noPaperWrapper}>
         <Icon icon="UFO" className={styles.ufoIcon} />
@@ -123,6 +79,48 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
       </div>
     );
   }
+
+  const collectionPaperList = papersInCollection.map(paper => {
+    return (
+      <div className={styles.paperItemWrapper} key={paper.paperId}>
+        {itsMine && (
+          <input
+            type="checkbox"
+            className={styles.paperCheckBox}
+            checked={collectionShow.selectedPaperIds.includes(paper.paperId)}
+            onClick={() => {
+              dispatch({
+                type: ACTION_TYPES.COLLECTION_SHOW_SELECT_PAPER_ITEM,
+                payload: { paperId: paper.paperId },
+              });
+            }}
+            readOnly
+          />
+        )}
+        <CollectionPaperItem
+          currentUser={currentUser}
+          pageType="collectionShow"
+          actionArea="paperList"
+          paperNote={paper.note ? paper.note : ''}
+          paper={paper.paper}
+          collection={userCollection}
+          onRemovePaperCollection={handleRemovePaperFromCollection}
+        />
+      </div>
+    );
+  });
+
+  return (
+    <>
+      <CollectionPapersControlBtns
+        itsMine={itsMine}
+        collectionShow={collectionShow}
+        onRemovePaperCollection={handleRemovePaperFromCollection}
+      />
+      <CollectionPaperInfo collectionShow={collectionShow} />
+      {collectionPaperList}
+    </>
+  );
 };
 
 export default connect()(withStyles<typeof CollectionPaperList>(styles)(CollectionPaperList));

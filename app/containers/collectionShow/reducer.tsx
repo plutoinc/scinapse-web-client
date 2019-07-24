@@ -144,6 +144,13 @@ export function reducer(
       };
     }
 
+    case ACTION_TYPES.COLLECTION_SHOW_CLEAR_SELECT_PAPER_ITEM: {
+      return {
+        ...state,
+        selectedPaperIds: [],
+      };
+    }
+
     default:
       return state;
   }

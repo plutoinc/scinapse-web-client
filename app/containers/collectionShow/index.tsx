@@ -193,7 +193,7 @@ const CollectionShow: React.FC<Props> = props => {
         cancelTokenSource.current = axios.CancelToken.source();
       };
     },
-    [dispatch, collectionShow]
+    [dispatch, collectionShow.mainCollectionId, collectionShow.sortType]
   );
 
   const handleClickSort = React.useCallback(
@@ -213,7 +213,7 @@ const CollectionShow: React.FC<Props> = props => {
         cancelTokenSource.current = axios.CancelToken.source();
       };
     },
-    [dispatch, collectionShow]
+    [dispatch, collectionShow.mainCollectionId, collectionShow.currentPaperListPage, collectionShow.searchKeyword]
   );
 
   if (collectionShow.pageErrorCode) {

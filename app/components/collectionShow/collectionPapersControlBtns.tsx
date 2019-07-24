@@ -15,7 +15,7 @@ import ActionTicketManager from '../../helpers/actionTicketManager';
 
 const styles = require('./collectionPapersControlBtns.scss');
 
-function multiCitationExport(type: AvailableExportCitationType, selectedPaperIds: number[]) {
+function exportMultiCitations(type: AvailableExportCitationType, selectedPaperIds: number[]) {
   let actionLabel;
 
   if (type === AvailableExportCitationType.RIS) {
@@ -29,7 +29,7 @@ function multiCitationExport(type: AvailableExportCitationType, selectedPaperIds
   ActionTicketManager.trackTicket({
     pageType: 'collectionShow',
     actionType: 'fire',
-    actionArea: 'multiCitationExportButton',
+    actionArea: 'exportMultiCitationsButton',
     actionTag: 'citePaper',
     actionLabel,
   });
@@ -74,7 +74,7 @@ const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: number[] }> = ({
           <div
             className={styles.menuItem}
             onClick={() => {
-              multiCitationExport(AvailableExportCitationType.RIS, selectedPaperIds);
+              exportMultiCitations(AvailableExportCitationType.RIS, selectedPaperIds);
               setIsOpen(false);
             }}
           >
@@ -83,7 +83,7 @@ const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: number[] }> = ({
           <div
             className={styles.menuItem}
             onClick={() => {
-              multiCitationExport(AvailableExportCitationType.BIBTEX, selectedPaperIds);
+              exportMultiCitations(AvailableExportCitationType.BIBTEX, selectedPaperIds);
               setIsOpen(false);
             }}
           >

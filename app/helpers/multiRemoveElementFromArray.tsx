@@ -1,12 +1,5 @@
-export function multiRemoveElementFromArray<T>(removeElements: T[], array: T[]) {
-  let newArray = [...array];
-
-  removeElements.forEach(target => {
-    const targetIndex = newArray.indexOf(target);
-    const newArrayLength = newArray.length;
-
-    newArray = [...newArray.slice(0, targetIndex), ...newArray.slice(targetIndex + 1, newArrayLength)];
+export function multiRemoveElementFromArray<T>(targetArray: T[], originalArray: T[]) {
+  return originalArray.filter(element => {
+    return !targetArray.includes(element);
   });
-
-  return newArray;
 }
