@@ -7,6 +7,8 @@ import { AvailableCitationType, AvailableExportCitationType } from '../../../con
 import { trackEvent } from '../../../helpers/handleGA';
 import Icon from '../../../icons';
 import { exportCitationText } from '../../../helpers/exportCitationText';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import { getCurrentPageType } from '../../locationListener';
 const styles = require('./citationBox.scss');
 
 export interface CitationBoxProps {
@@ -17,6 +19,26 @@ export interface CitationBoxProps {
   handleClickCitationTab: (tab: AvailableCitationType) => void;
   fetchCitationText: () => void;
   closeCitationDialog: () => void;
+}
+
+function singleCitationExport(type: AvailableExportCitationType, selectedPaperIds: number[]) {
+  let actionLabel;
+
+  if (type === AvailableExportCitationType.RIS) {
+    actionLabel = 'RIS';
+  } else {
+    actionLabel = 'BIBTEX';
+  }
+
+  exportCitationText(type, selectedPaperIds);
+
+  ActionTicketManager.trackTicket({
+    pageType: getCurrentPageType(),
+    actionType: 'fire',
+    actionArea: 'singleCitationExportButton',
+    actionTag: 'citePaper',
+    actionLabel,
+  });
 }
 
 class CitationBox extends React.PureComponent<CitationBoxProps> {
@@ -43,13 +65,13 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
           <span className={styles.orSyntax}>or</span> Download as
           <button
             className={styles.downloadBtn}
-            onClick={() => exportCitationText(AvailableExportCitationType.RIS, [paperId])}
+            onClick={() => singleCitationExport(AvailableExportCitationType.RIS, [paperId])}
           >
             RIS
           </button>
           <button
             className={styles.downloadBtn}
-            onClick={() => exportCitationText(AvailableExportCitationType.BIBTEX, [paperId])}
+            onClick={() => singleCitationExport(AvailableExportCitationType.BIBTEX, [paperId])}
           >
             BibTeX
           </button>

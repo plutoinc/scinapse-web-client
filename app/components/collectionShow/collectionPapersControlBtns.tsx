@@ -11,8 +11,29 @@ import { CollectionShowState } from '../../containers/collectionShow/reducer';
 import { ACTION_TYPES } from '../../actions/actionTypes';
 import { AvailableExportCitationType } from '../../containers/paperShow/records';
 import { exportCitationText } from '../../helpers/exportCitationText';
+import ActionTicketManager from '../../helpers/actionTicketManager';
 
 const styles = require('./collectionPapersControlBtns.scss');
+
+function multiCitationExport(type: AvailableExportCitationType, selectedPaperIds: number[]) {
+  let actionLabel;
+
+  if (type === AvailableExportCitationType.RIS) {
+    actionLabel = 'RIS';
+  } else {
+    actionLabel = 'BIBTEX';
+  }
+
+  exportCitationText(type, selectedPaperIds);
+
+  ActionTicketManager.trackTicket({
+    pageType: 'collectionShow',
+    actionType: 'fire',
+    actionArea: 'multiCitationExportButton',
+    actionTag: 'citePaper',
+    actionLabel,
+  });
+}
 
 const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: number[] }> = ({ selectedPaperIds }) => {
   const dropdownMenuEl = React.useRef(null);
@@ -53,7 +74,7 @@ const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: number[] }> = ({
           <div
             className={styles.menuItem}
             onClick={() => {
-              exportCitationText(AvailableExportCitationType.RIS, selectedPaperIds);
+              multiCitationExport(AvailableExportCitationType.RIS, selectedPaperIds);
               setIsOpen(false);
             }}
           >
@@ -62,7 +83,7 @@ const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: number[] }> = ({
           <div
             className={styles.menuItem}
             onClick={() => {
-              exportCitationText(AvailableExportCitationType.BIBTEX, selectedPaperIds);
+              multiCitationExport(AvailableExportCitationType.BIBTEX, selectedPaperIds);
               setIsOpen(false);
             }}
           >
@@ -108,7 +129,16 @@ const CollectionPapersControlBtns: React.FC<{
         />
         <button
           className={styles.collectionControlBtn}
-          onClick={() => onRemovePaperCollection(collectionShow.selectedPaperIds)}
+          onClick={() => {
+            onRemovePaperCollection(collectionShow.selectedPaperIds);
+            ActionTicketManager.trackTicket({
+              pageType: 'collectionShow',
+              actionType: 'fire',
+              actionArea: 'multiPaperRemoveButton',
+              actionTag: 'removeFromCollection',
+              actionLabel: collectionShow.selectedPaperIds.join(','),
+            });
+          }}
           disabled={collectionShow.selectedPaperIds.length === 0}
         >
           <Icon icon="TRASH_CAN" className={styles.deleteIcon} />DELETE
