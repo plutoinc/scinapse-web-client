@@ -239,6 +239,7 @@ const CollectionShow: React.FC<Props> = props => {
                       currentUser={currentUser}
                       collectionShow={collectionShow}
                       userCollection={userCollection}
+                      dispatch={dispatch}
                     />
                   </div>
                   <div>
