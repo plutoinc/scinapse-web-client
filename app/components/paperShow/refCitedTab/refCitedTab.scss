@@ -3,15 +3,15 @@
   justify-content: space-between;
   width: 100%;
   line-height: 1.5;
-  border-top: solid 1px $gray1;
-  border-bottom: solid 1px $gray1;
+  border-top: solid 1px $gray200;
+  border-bottom: solid 1px $gray200;
 
   &.stick {
     position: fixed;
     top: $header-height;
     width: 100%;
     background-color: white;
-    border-bottom: 1px solid $gray8;
+    border-bottom: 1px solid $gray50;
     margin: 0;
     z-index: 99;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -41,7 +41,7 @@
       font-size: 16px;
       font-weight: 500;
       line-height: 44px;
-      color: $gray5;
+      color: $gray600;
       padding: 0 8px;
       cursor: pointer;
 
@@ -63,7 +63,7 @@
       color: $main_blue0;
 
       &:hover {
-        background-color: $gray8;
+        background-color: $gray50;
       }
 
       &:active {

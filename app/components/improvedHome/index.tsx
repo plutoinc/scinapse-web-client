@@ -11,8 +11,6 @@ import { LayoutState, UserDevice } from '../layouts/records';
 import { withStyles } from '../../helpers/withStylesHelper';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
 import TrendingPaper from './components/trendingPaper';
-import { getUserGroupName } from '../../helpers/abTestHelper';
-import { KNOWLEDGE_BASED_RECOMMEND_TEST } from '../../constants/abTestGlobalValue';
 import Icon from '../../icons';
 import JournalsInfo from './components/journalsInfo';
 import AffiliationsInfo from './components/affiliationsInfo';
@@ -113,7 +111,6 @@ const ScinapseFigureContent: React.FC<{ shouldShow: boolean; papersFoundCount: n
 
 const ImprovedHome: React.FC<Props> = props => {
   const { currentUser } = props;
-  const [isKnowledgeBasedRecommended, setIsKnowledgeBasedRecommended] = React.useState(false);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
   const [basedOnActivityPapers, setBasedOnActivityPapers] = React.useState<Paper[]>([]);
   const [basedOnCollectionPapers, setBasedOnCollectionPapers] = React.useState<BasedOnCollectionPapersParams>();
@@ -122,8 +119,6 @@ const ImprovedHome: React.FC<Props> = props => {
   const cancelToken = React.useRef(axios.CancelToken.source());
 
   React.useEffect(() => {
-    setIsKnowledgeBasedRecommended(getUserGroupName(KNOWLEDGE_BASED_RECOMMEND_TEST) === 'knowledgeBasedRecommend');
-
     HomeAPI.getPapersFoundCount().then(res => {
       setPapersFoundCount(res.data.content);
     });
@@ -172,7 +167,6 @@ const ImprovedHome: React.FC<Props> = props => {
   );
 
   const shouldShow =
-    isKnowledgeBasedRecommended &&
     currentUser.isLoggedIn &&
     basedOnActivityPapers &&
     basedOnActivityPapers.length > 0 &&

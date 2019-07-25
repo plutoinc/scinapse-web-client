@@ -14,6 +14,7 @@ import { AppState } from '../../reducers';
 import { trackSelectFilter } from '../../helpers/trackSelectFilter';
 import makeNewFilterLink from '../../helpers/makeNewFilterLink';
 import { AggregationFos } from '../../model/aggregation';
+import formatNumber from '../../helpers/formatNumber';
 
 const s = require('./fosFilterDropdown.scss');
 
@@ -40,7 +41,7 @@ const FOSItem: React.FC<FOSItemProps> = ({ FOS, onClick, selected }) => {
         <input type="checkbox" className={s.checkbox} checked={selected} readOnly />
         <span className={s.fosName}>{FOS.name}</span>
       </div>
-      <span className={s.docCount}>{`(${FOS.docCount})`}</span>
+      <span className={s.docCount}>{`(${formatNumber(FOS.docCount)})`}</span>
     </button>
   );
 };

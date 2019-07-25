@@ -41,12 +41,4 @@ export default class EnvChecker {
       return false;
     }
   }
-
-  public static getOrigin(): string {
-    if (EnvChecker.isDev()) {
-      return 'https://dev.scinapse.io';
-    } else {
-      return 'https://scinapse.io';
-    }
-  }
 }

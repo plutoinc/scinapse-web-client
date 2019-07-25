@@ -25,7 +25,7 @@
     }
     &Value {
       font-size: $paper-info-subText-fontSize;
-      color: $gray6;
+      color: $gray800;
       font-weight: 500;
       border-radius: 9999px;
       transition: $transition-ease;
@@ -68,7 +68,7 @@
 }
 
 .verificationTooltip {
-  background-color: $gray2 !important;
+  background-color: $gray300 !important;
   color: $black0 !important;
   font-size: 12px;
 }

@@ -3,22 +3,17 @@ $main_blue0: #6096ff; // main color
 $main_blue1: #3e7fff;
 $main_blue_light0: #81acff; // main color when hover
 $main_blue_light1: #ecf1fa;
-$main_blue_light2: #f1f6fd;
-$dark-blue0: #1b2a36;
 
-$gray0: #f8f9fb;
-$gray1: #f1f3f6;
-$gray2: #e7eaef;
-$gray3: #d8dde7;
-$gray4: #bbc2d0;
-$gray5: #9aa3b5;
-$gray6: #666d7c;
-$gray7: #f2f3f4;
-$gray8: #f4f4f5;
-$gray9: #7e8698;
-$gray10: #fafbfc;
-$gray11: #dbdfe8;
-$gray12: #fafbff;
+$gray30: #f8f9fb;
+$gray50: #f4f4f5;
+$gray100: #fafbfc;
+$gray200: #f1f3f6;
+$gray300: #e7eaef;
+$gray400: #d8dde7;
+$gray500: #bbc2d0;
+$gray600: #9aa3b5;
+$gray700: #7e8698;
+$gray800: #666d7c;
 
 $black0: #1e2a35; // primary text
 $black1: #34495e;
@@ -26,7 +21,7 @@ $black1: #34495e;
 $navy0: #133f7a; // link
 $purple0: #3e39ac; // visited link
 
-$red0: #f54b5e; // caution
+$red0: #e22319; // caution
 $green0: #48d2a0; // success
 $yellow0: #ffcf48; // warning
 
@@ -87,10 +82,10 @@ $transition-smooth-scroll: top ease 0.1s;
 
 // paperInfo Text Styling
 $paper-info-maintext-fontSize: 14px;
-$paper-info-maintext-color: $gray6;
+$paper-info-maintext-color: $gray800;
 $paper-info-maintext-lineHeight: 1.4;
 $paper-info-subText-fontSize: 12px;
-$paper-info-subText-color: $gray5;
+$paper-info-subText-color: $gray600;
 $paper-info-subText-lineHeight: 1.4;
 
 // regularDisplay Variables
@@ -135,7 +130,7 @@ $s3_url: 'https://dd2gn9pwu61vr.cloudfront.net';
   font-size: 13px;
   padding: 0;
   &:hover {
-    background-color: $gray0;
+    background-color: $gray30;
   }
   a,
   div {
@@ -187,15 +182,15 @@ $s3_url: 'https://dd2gn9pwu61vr.cloudfront.net';
     &:hover {
       background-color: $main_blue_light0;
     }
-  } @else if $bgc == $gray3 {
-    color: $gray6;
+  } @else if $bgc == $gray400 {
+    color: $gray800;
     &:hover {
-      background-color: $gray1;
+      background-color: $gray200;
     }
-  } @else if $bgc == $gray2 {
-    color: $gray5;
+  } @else if $bgc == $gray300 {
+    color: $gray600;
     &:hover {
-      background-color: $gray1;
+      background-color: $gray200;
     }
   } @else {
     color: #fff;
@@ -207,20 +202,20 @@ $s3_url: 'https://dd2gn9pwu61vr.cloudfront.net';
   padding: 8px 8px;
   border-radius: 4px;
   color: $color;
-  background-color: $gray7;
+  background-color: $gray50;
   font-weight: 400;
   margin-right: 8px;
   transition: background-color 200ms ease, color 200ms ease;
   cursor: pointer;
   &:hover {
-    background-color: $gray2;
+    background-color: $gray300;
   }
 }
 @mixin small-action-button($color) {
   display: flex;
   align-items: center;
   padding: 4px 8px 4px 4px;
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
   border-radius: 4px;
   color: $color;
   background-color: white;
@@ -230,7 +225,7 @@ $s3_url: 'https://dd2gn9pwu61vr.cloudfront.net';
   transition: background-color 200ms ease, color 200ms ease;
   cursor: pointer;
   &:hover {
-    background-color: $gray0;
+    background-color: $gray30;
   }
 }
 @mixin popper-paper($width) {
@@ -249,13 +244,13 @@ $s3_url: 'https://dd2gn9pwu61vr.cloudfront.net';
   font-size: 14px;
   line-height: 1.43;
   color: $black0;
-  border-bottom: 1px solid $gray3;
+  border-bottom: 1px solid $gray400;
   cursor: pointer;
   &:last-of-type {
     border-bottom: unset;
   }
   &:hover {
-    background-color: $gray0;
+    background-color: $gray30;
   }
 }
 @mixin flex-center-vertical-horizontal($flex-type) {

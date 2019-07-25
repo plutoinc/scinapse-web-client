@@ -16,6 +16,7 @@ import Icon from '../../icons';
 import makeNewFilterLink from '../../helpers/makeNewFilterLink';
 import { UserDevice } from '../../components/layouts/records';
 import ActionTicketManager from '../../helpers/actionTicketManager';
+import { useEnvHook } from '../../hooks/useEnvHook';
 
 const s = require('./filterBox.scss');
 
@@ -24,7 +25,17 @@ type FilterBoxProps = RouteComponentProps &
     dispatch: Dispatch<SearchActions>;
     query?: string;
   };
+
+function setBodyOverflowToPreventScrolling(isOnClient: boolean, hasActiveButton: boolean) {
+  if (isOnClient && hasActiveButton) {
+    document.body.style.overflow = 'hidden';
+  } else if (isOnClient && !hasActiveButton) {
+    document.body.style.overflow = '';
+  }
+}
+
 const FilterBox: React.FC<FilterBoxProps> = props => {
+  const { isOnClient } = useEnvHook();
   const filterBoxRef = React.useRef(null);
 
   React.useEffect(() => {
@@ -55,6 +66,8 @@ const FilterBox: React.FC<FilterBoxProps> = props => {
   );
 
   if (props.isMobile) return null;
+
+  setBodyOverflowToPreventScrolling(isOnClient, !!props.activeButton);
 
   return (
     <>

@@ -7,7 +7,7 @@
   height: 30px;
 
   .citedButton {
-    @include small-button($gray6);
+    @include small-button($gray800);
     font-size: 14px;
 
     .citedIconWrapper {
@@ -16,7 +16,7 @@
   }
 
   .sourceButton {
-    @include small-action-button($gray6);
+    @include small-action-button($gray800);
     position: relative;
 
     .faviconIcon {
@@ -60,7 +60,7 @@
   }
 
   .explanation {
-    color: $gray6;
+    color: $gray800;
     margin-right: 9px;
   }
 
@@ -70,7 +70,7 @@
 
   .separatorLine {
     height: 30px;
-    border-left: solid 1px $gray3;
+    border-left: solid 1px $gray400;
     margin-left: 12px;
     margin-right: 15px;
   }
@@ -92,12 +92,12 @@
   vertical-align: top;
   width: 1px;
   height: 31px;
-  background-color: $gray4;
+  background-color: $gray500;
   margin: 0 10px;
 }
 
 .citationIconWrapper {
-  @include small-action-button($gray6);
+  @include small-action-button($gray800);
   .citationIcon {
     margin-right: 4px;
     display: flex;
@@ -167,10 +167,10 @@
 
 .additionalMenuItem {
   font-size: 14px !important;
-  color: $gray6;
+  color: $gray800;
 
   &:hover {
-    background-color: $gray0 !important;
+    background-color: $gray30 !important;
   }
 }
 
@@ -183,7 +183,7 @@
 
 .contentWrapper {
   overflow: unset;
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
   border-radius: 4px;
 
   &:before {
@@ -194,7 +194,7 @@
     width: 0;
     height: 0;
     border: 11px solid transparent;
-    border-bottom-color: $gray3;
+    border-bottom-color: $gray400;
     border-top: 0;
     margin-left: -14px;
     margin-top: -10px;

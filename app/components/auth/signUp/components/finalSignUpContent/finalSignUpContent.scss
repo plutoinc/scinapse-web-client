@@ -43,7 +43,7 @@
 }
 
 .finalSignUpSubmitButton {
-  @include common-button($gray2);
+  @include common-button($gray300);
   max-width: 331px;
   width: 100%;
   margin-top: 46.5px;

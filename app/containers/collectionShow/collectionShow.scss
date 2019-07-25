@@ -27,13 +27,13 @@ $semi_full_width: 997px;
 
   .loadingSpinner {
     div {
-      background-color: $gray4;
+      background-color: $gray500;
     }
   }
 }
 
 .headSection {
-  background-color: $gray0;
+  background-color: $gray30;
   padding: 32px 0;
   display: flex;
   justify-content: center;
@@ -77,12 +77,12 @@ $semi_full_width: 997px;
       align-items: center;
       font-size: 14px;
       font-weight: 500;
-      color: $gray5;
+      color: $gray600;
       margin-left: 8px;
       cursor: pointer;
 
       &:hover {
-        border-bottom: 1px solid $gray5;
+        border-bottom: 1px solid $gray600;
       }
 
       .editIcon {
@@ -96,7 +96,7 @@ $semi_full_width: 997px;
         svg {
           width: 21px;
           height: 21px;
-          color: $gray4;
+          color: $gray500;
         }
       }
     }
@@ -105,7 +105,7 @@ $semi_full_width: 997px;
       max-width: 792px;
       font-size: 16px;
       line-height: 1.5;
-      color: $gray6;
+      color: $gray800;
       margin-bottom: 12px;
       white-space: pre-wrap;
       word-break: break-all;
@@ -118,7 +118,7 @@ $semi_full_width: 997px;
         vertical-align: top;
         font-size: 14px;
         line-height: 1.43;
-        color: $gray5;
+        color: $gray600;
         white-space: pre-wrap;
       }
 

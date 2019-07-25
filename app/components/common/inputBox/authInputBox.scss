@@ -7,7 +7,7 @@
   border-radius: 3px;
   padding: 0 10px;
   background-color: white;
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
   overflow: hidden;
   margin-top: 14px;
 
@@ -37,7 +37,7 @@
     margin-right: 10px;
 
     svg {
-      color: $gray3;
+      color: $gray400;
     }
 
     &.EMAIL_ICON {

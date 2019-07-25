@@ -31,7 +31,7 @@
   svg {
     width: 12px;
     height: 12px;
-    color: $gray4;
+    color: $gray500;
   }
 }
 
@@ -47,7 +47,7 @@
   width: 93px;
   height: 40px;
   border-radius: 4px;
-  background-color: $gray8;
+  background-color: $gray50;
   color: $main_blue0;
   font-size: 16px;
   font-weight: 500;
@@ -88,7 +88,7 @@
   font-weight: 500;
   text-align: center;
   line-height: 1.63;
-  color: $gray5;
+  color: $gray600;
   cursor: pointer;
 }
 
@@ -105,7 +105,7 @@
   width: 22px;
   height: 22px;
   border-radius: 3px;
-  background-color: $gray1;
+  background-color: $gray200;
   cursor: pointer;
 }
 
@@ -125,7 +125,7 @@
   position: relative;
   padding-top: 16px;
   height: 180px;
-  border-top: solid 1px $gray3;
+  border-top: solid 1px $gray400;
 }
 
 .textArea {
@@ -139,28 +139,28 @@
   line-height: 1.54;
   text-align: left;
   color: $black1;
-  background-color: $gray8;
+  background-color: $gray50;
 }
 
 .downloadBtnWrapper {
   width: 100%;
   padding: 16px 24px;
-  border-top: 1px solid $gray3;
+  border-top: 1px solid $gray400;
   font-size: 16px;
   font-weight: 500;
   line-height: 1.63;
-  color: $gray6;
+  color: $gray800;
 }
 
 .orSyntax {
-  color: $gray4;
+  color: $gray500;
 }
 
 .downloadBtn {
   height: 40px;
   padding: 8px 16px;
   border-radius: 4px;
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
   font-size: 16px;
   font-weight: 500;
   line-height: 1.63;

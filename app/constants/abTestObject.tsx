@@ -1,26 +1,20 @@
 import { Test } from './abTest';
 import {
   BROAD_AUTHOR_VENUE_TEST,
-  KNOWLEDGE_BASED_RECOMMEND_TEST,
   SOURCE_DOMAIN_TEST,
   DUMMY_TEST,
-  AUTO_YEAR_FILTER_TEST,
   FIGURE_TEST,
+  QUERY_LOVER_EXPERIMENT,
 } from './abTestGlobalValue';
+
+export const queryLover: Test = {
+  name: QUERY_LOVER_EXPERIMENT,
+  userGroup: [{ groupName: 'control', weight: 9 }, { groupName: 'queryLover', weight: 1 }],
+};
 
 export const broadAuthorVenue: Test = {
   name: BROAD_AUTHOR_VENUE_TEST,
   userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'broadAuthorVenue', weight: 1 }],
-};
-
-export const knowledgeBasedRecommend: Test = {
-  name: KNOWLEDGE_BASED_RECOMMEND_TEST,
-  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'knowledgeBasedRecommend', weight: 1 }],
-};
-
-export const autoYearFilter: Test = {
-  name: AUTO_YEAR_FILTER_TEST,
-  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'auto', weight: 1 }],
 };
 
 export const dummy: Test = {

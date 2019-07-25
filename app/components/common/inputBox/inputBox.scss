@@ -5,7 +5,7 @@
   height: 50px;
   border-radius: 8px;
   background-color: #fff;
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
   overflow: hidden;
 
   .inputBox {
@@ -13,10 +13,10 @@
     border: 0;
     font-size: 16px;
     flex: 1;
-    color: $gray6;
+    color: $gray800;
 
     &::placeholder {
-      color: $gray4;
+      color: $gray500;
     }
   }
 }
@@ -36,10 +36,10 @@
     font-size: 16px;
     flex: 1;
     height: 100%;
-    color: $gray6;
+    color: $gray800;
 
     &::placeholder {
-      color: $gray4;
+      color: $gray500;
     }
   }
 
@@ -61,7 +61,7 @@
   width: 550px;
   border-radius: 4px;
   background-color: #fff;
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
   overflow: hidden;
   align-items: center;
 
@@ -71,10 +71,10 @@
     font-size: 16px;
     flex: 1;
     height: 100%;
-    color: $gray6;
+    color: $gray800;
 
     &::placeholder {
-      color: $gray4;
+      color: $gray500;
     }
   }
 
@@ -84,11 +84,11 @@
     svg {
       width: 17px;
       height: 17px;
-      color: $gray6;
+      color: $gray800;
     }
   }
   &:focus-within {
-    border: solid 1px $gray5;
+    border: solid 1px $gray600;
     transition: 0.3s ease-in-out;
   }
 }

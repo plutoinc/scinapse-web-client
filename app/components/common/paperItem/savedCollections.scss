@@ -1,7 +1,7 @@
 .itemWrapper {
   margin-bottom: 8px;
   padding-bottom: 8px;
-  border-bottom: 1px solid $gray1;
+  border-bottom: 1px solid $gray200;
 }
 
 .bookmarkIcon {
@@ -24,13 +24,13 @@
 }
 
 .subContext {
-  color: $gray5;
+  color: $gray600;
   font-size: 14px;
   line-height: 20px;
 }
 
 .collectionTitle {
-  color: $gray9;
+  color: $gray700;
   font-weight: 500;
   font-size: 14px;
 

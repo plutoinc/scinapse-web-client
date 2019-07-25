@@ -15,7 +15,7 @@
 
   .arrowIcon {
     @include flex-center-vertical-horizontal(flex);
-    color: $gray4;
+    color: $gray500;
 
     svg {
       width: 24px;
@@ -78,11 +78,11 @@
 .dropdownBtn,
 .linkClassName {
   background-color: white;
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
   border-right: none;
 
   &:hover {
-    background-color: $gray0;
+    background-color: $gray30;
   }
 
   &:active {
