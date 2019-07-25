@@ -1,0 +1,51 @@
+.formRow {
+  display: flex;
+}
+
+.formWrapper + .formWrapper {
+  margin-left: 21px;
+}
+
+.inputForm {
+  font-family: SFProText;
+  font-size: 15px;
+  line-height: 1.6;
+  letter-spacing: -0.23px;
+  color: #000000;
+  width: 278px;
+  padding: 10px 12px;
+  border-radius: 4px;
+  border: solid 1px $gray500;
+
+  &:hover,
+  &:focus {
+    border-color: $main_blue0;
+  }
+
+  &:disabled {
+    border-color: $gray400;
+  }
+}
+
+.formLabel {
+  display: block;
+  font-family: SFProText;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.47px;
+  color: $gray700;
+  margin-bottom: 8px;
+}
+
+.editButton {
+  padding: 12px 8px;
+  border-radius: 4px;
+  border: solid 1px $gray500;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 2;
+  letter-spacing: -0.19px;
+  text-align: center;
+  color: #2f4960;
+  cursor: pointer;
+}
