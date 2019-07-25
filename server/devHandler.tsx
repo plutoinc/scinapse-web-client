@@ -1,7 +1,6 @@
 import * as AWS from 'aws-sdk';
 import * as https from 'https';
 import fs from 'fs';
-// import rimraf from 'rimraf';
 import * as DeployConfig from '../scripts/deploy/config';
 
 const s3 = new AWS.S3();
@@ -15,21 +14,22 @@ AWS.config.update({
   },
 });
 
-async function getSources(branch: string, version: string) {
-  if (!fs.existsSync(`/tmp/${branch}`)) {
-    fs.mkdirSync(`/tmp/${branch}`);
+async function getSources(branch: string, version: string, escapedBranch: string) {
+  if (fs.existsSync(`/tmp/${escapedBranch}/${version}`)) return;
+
+  if (!fs.existsSync(`/tmp/${escapedBranch}`)) {
+    fs.mkdirSync(`/tmp/${escapedBranch}`);
   }
 
-  if (!fs.existsSync(`/tmp/${branch}/${version}`)) {
-    fs.mkdirSync(`/tmp/${branch}/${version}`);
-    return;
+  if (!fs.existsSync(`/tmp/${escapedBranch}/${version}`)) {
+    fs.mkdirSync(`/tmp/${escapedBranch}/${version}`);
   }
 
-  if (!fs.existsSync(`/tmp/${branch}/${version}/client`)) {
-    fs.mkdirSync(`/tmp/${branch}/${version}/client`);
+  if (!fs.existsSync(`/tmp/${escapedBranch}/${version}/client`)) {
+    fs.mkdirSync(`/tmp/${escapedBranch}/${version}/client`);
   }
-  if (!fs.existsSync(`/tmp/${branch}/${version}/server`)) {
-    fs.mkdirSync(`/tmp/${branch}/${version}/server`);
+  if (!fs.existsSync(`/tmp/${escapedBranch}/${version}/server`)) {
+    fs.mkdirSync(`/tmp/${escapedBranch}/${version}/server`);
   }
 
   const prefix = `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${branch}`;
@@ -60,7 +60,7 @@ async function getSources(branch: string, version: string) {
           if (pwdArr[pwdArr.length - 2] !== 'client' && pwdArr[pwdArr.length - 2] !== 'server') {
             filePath = pwdArr[pwdArr.length - 1];
           }
-          fs.writeFileSync(`/tmp/${branch}/${version}/${filePath}`, objectRes.Body);
+          fs.writeFileSync(`/tmp/${escapedBranch}/${version}/${filePath}`, objectRes.Body);
         });
     });
 
@@ -75,9 +75,17 @@ export const ssr = async (event: LambdaProxy.Event) => {
   if (!branch) throw new Error('missing branch queryParams flag');
   if (!version) throw new Error('missing version flag');
 
+  // NOTE: If / isn't escaped, it can be treated as path
+  const escapedBranch = branch.replace('/', '-');
+
   console.log(`start to render ${branch} ${version}`);
-  await getSources(branch, version);
-  const bundle = require(`/tmp/${branch}/${version}/server/main.js`);
+
+  await getSources(branch, version, escapedBranch);
+  const localHome = fs.readdirSync(`/tmp/${escapedBranch}/${version}`);
+  console.log(localHome);
+  const serverHome = fs.readdirSync(`/tmp/${escapedBranch}/${version}/server`);
+  console.log(serverHome);
+  const bundle = require(`/tmp/${escapedBranch}/${version}/server/main.js`);
 
   try {
     const res = await bundle.ssr(event);
