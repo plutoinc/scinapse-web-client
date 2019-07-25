@@ -56,6 +56,7 @@ export interface DialogState
 
       paperFigures: PaperFigure[] | undefined;
       currentPaperFigureIndex: number | undefined;
+      viewDetailFigureTargetPaperId: number | undefined;
     }> {} // TODO: remove below attribute after finishing the experiment
 
 export const DIALOG_INITIAL_STATE: DialogState = {
@@ -86,6 +87,7 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   nextSignUpStep: undefined,
   paperFigures: undefined,
   currentPaperFigureIndex: undefined,
+  viewDetailFigureTargetPaperId: undefined,
 };
 
 export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actions): DialogState {
@@ -105,6 +107,7 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
         nextSignUpStep: action.payload.nextSignUpStep,
         paperFigures: action.payload.paperFigures,
         currentPaperFigureIndex: action.payload.currentPaperFigureIndex,
+        viewDetailFigureTargetPaperId: action.payload.viewDetailFigureTargetPaperId,
       };
     }
 
