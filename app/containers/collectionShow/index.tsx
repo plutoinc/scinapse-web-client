@@ -34,17 +34,6 @@ import { checkAuthStatus } from '../../components/auth/actions';
 import { removePaperFromCollection } from '../../components/dialog/actions';
 const styles = require('./collectionShow.scss');
 
-function mapStateToProps(state: AppState) {
-  return {
-    layout: state.layout,
-    currentUser: state.currentUser,
-    collectionShow: state.collectionShow,
-    configuration: state.configuration,
-    userCollection: denormalize(state.collectionShow.mainCollectionId, collectionSchema, state.entities) as Collection,
-    papersInCollection: denormalize(state.collectionShow.paperIds, [paperInCollectionSchema], state.entities),
-  };
-}
-
 type Props = ReturnType<typeof mapStateToProps> &
   RouteComponentProps<CollectionShowMatchParams> & {
     dispatch: Dispatch<any>;
@@ -157,7 +146,7 @@ const CollectionShow: React.FC<Props> = props => {
     [dispatch, collectionShow.mainCollectionId, collectionShow.currentPaperListPage, collectionShow.searchKeyword]
   );
 
-  const handleSelectPaperItem = React.useCallback(
+  const handleSelectedPaperItem = React.useCallback(
     (paperId: number) => {
       dispatch({
         type: ACTION_TYPES.COLLECTION_SHOW_SELECT_PAPER_ITEM,
@@ -282,7 +271,7 @@ const CollectionShow: React.FC<Props> = props => {
                       currentUser={currentUser}
                       collectionShow={collectionShow}
                       userCollection={userCollection}
-                      onSelectedPaperInCollection={handleSelectPaperItem}
+                      onSelectedPaperInCollection={handleSelectedPaperItem}
                       onRemovePaperFromCollection={handleRemovePaperFromCollection}
                     />
                   </div>
@@ -302,5 +291,16 @@ const CollectionShow: React.FC<Props> = props => {
     return null;
   }
 };
+
+function mapStateToProps(state: AppState) {
+  return {
+    layout: state.layout,
+    currentUser: state.currentUser,
+    collectionShow: state.collectionShow,
+    configuration: state.configuration,
+    userCollection: denormalize(state.collectionShow.mainCollectionId, collectionSchema, state.entities) as Collection,
+    papersInCollection: denormalize(state.collectionShow.paperIds, [paperInCollectionSchema], state.entities),
+  };
+}
 
 export default connect(mapStateToProps)(withRouter(withStyles<typeof CollectionShow>(styles)(CollectionShow)));
