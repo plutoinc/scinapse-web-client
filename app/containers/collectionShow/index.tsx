@@ -31,7 +31,7 @@ import CollectionPaperList from '../../components/collectionShow/collectionPaper
 import { ACTION_TYPES } from '../../actions/actionTypes';
 import Pagination from '../../components/collectionShow/pagination';
 import { checkAuthStatus } from '../../components/auth/actions';
-import { removePaperFromCollection } from '../../actions/collection';
+import { removePaperFromCollection } from '../../components/dialog/actions';
 const styles = require('./collectionShow.scss');
 
 function mapStateToProps(state: AppState) {
@@ -40,7 +40,7 @@ function mapStateToProps(state: AppState) {
     currentUser: state.currentUser,
     collectionShow: state.collectionShow,
     configuration: state.configuration,
-    userCollection: denormalize(state.collectionShow.mainCollectionId, collectionSchema, state.entities),
+    userCollection: denormalize(state.collectionShow.mainCollectionId, collectionSchema, state.entities) as Collection,
     papersInCollection: denormalize(state.collectionShow.paperIds, [paperInCollectionSchema], state.entities),
   };
 }

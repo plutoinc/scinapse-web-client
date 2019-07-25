@@ -108,7 +108,7 @@ export function reducer(
           return {
             ...state,
             paperIds: newPaperIds,
-            papersTotalCount: newPaperIds.length,
+            papersTotalCount: state.papersTotalCount - removePaperIds.length,
             selectedPaperIds: newSelectedPaperIds,
           };
         } else {

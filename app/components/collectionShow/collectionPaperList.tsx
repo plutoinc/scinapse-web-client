@@ -41,7 +41,7 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
     currentUser,
     collectionShow,
     userCollection,
-    selectedPaper,
+    onSelectedPaperInCollection,
     onRemovePaperFromCollection,
   } = props;
 
@@ -70,7 +70,7 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
             type="checkbox"
             className={styles.paperCheckBox}
             checked={collectionShow.selectedPaperIds.includes(paper.paperId)}
-            onClick={() => selectedPaper(paper.paperId)}
+            onClick={() => onSelectedPaperInCollection(paper.paperId)}
             readOnly
           />
         )}
