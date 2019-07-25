@@ -195,7 +195,7 @@ const CollectionShow: React.FC<Props> = props => {
         } catch (err) {}
       }
     },
-    [userCollection.id]
+    [dispatch, userCollection]
   );
 
   if (collectionShow.pageErrorCode) {
