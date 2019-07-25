@@ -31,6 +31,7 @@ import CollectionPaperList from '../../components/collectionShow/collectionPaper
 import { ACTION_TYPES } from '../../actions/actionTypes';
 import Pagination from '../../components/collectionShow/pagination';
 import { checkAuthStatus } from '../../components/auth/actions';
+import { removePaperFromCollection } from '../../actions/collection';
 const styles = require('./collectionShow.scss');
 
 function mapStateToProps(state: AppState) {
@@ -156,6 +157,47 @@ const CollectionShow: React.FC<Props> = props => {
     [dispatch, collectionShow.mainCollectionId, collectionShow.currentPaperListPage, collectionShow.searchKeyword]
   );
 
+  const handleSelectPaperItem = React.useCallback(
+    (paperId: number) => {
+      dispatch({
+        type: ACTION_TYPES.COLLECTION_SHOW_SELECT_PAPER_ITEM,
+        payload: { paperId: paperId },
+      });
+    },
+    [dispatch]
+  );
+
+  const handleRemovePaperFromCollection = React.useCallback(
+    async (paperIds: number | number[]) => {
+      const auth = await checkAuthStatus()(dispatch);
+      const isLoggedIn = auth && auth.loggedIn;
+
+      if (!isLoggedIn) return window.alert('Your login status has changed. Please refresh the page and try again.');
+
+      let param;
+      if (typeof paperIds === 'object') {
+        param = paperIds;
+      } else {
+        param = [paperIds];
+      }
+
+      let removeConfirm;
+
+      if (param.length >= 2) {
+        removeConfirm = confirm(`Are you sure to remove ${param.length} paper from '${userCollection.title}'?`);
+      } else {
+        removeConfirm = confirm(`Are you sure to remove this paper from '${userCollection.title}'?`);
+      }
+
+      if (userCollection && removeConfirm) {
+        try {
+          await dispatch(removePaperFromCollection({ paperIds: param, collection: userCollection }));
+        } catch (err) {}
+      }
+    },
+    [userCollection.id]
+  );
+
   if (collectionShow.pageErrorCode) {
     return <ErrorPage errorNum={collectionShow.pageErrorCode} />;
   }
@@ -240,7 +282,8 @@ const CollectionShow: React.FC<Props> = props => {
                       currentUser={currentUser}
                       collectionShow={collectionShow}
                       userCollection={userCollection}
-                      authValidateFunc={checkAuthStatus}
+                      onSelectedPaperInCollection={handleSelectPaperItem}
+                      onRemovePaperFromCollection={handleRemovePaperFromCollection}
                     />
                   </div>
                   <div>

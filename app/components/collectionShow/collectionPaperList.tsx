@@ -1,6 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import { PaperInCollection } from '../../model/paperInCollection';
 import { CurrentUser } from '../../model/currentUser';
 import { CollectionShowState } from '../../containers/collectionShow/reducer';
@@ -9,11 +7,8 @@ import CollectionPaperItem from './collectionPaperItem';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import Icon from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
-import { removePaperFromCollection } from '../dialog/actions';
 import formatNumber from '../../helpers/formatNumber';
 import CollectionPapersControlBtns from './collectionPapersControlBtns';
-import { ACTION_TYPES } from '../../actions/actionTypes';
-import { SignInResult } from '../../api/types/auth';
 const styles = require('./collectionPaperList.scss');
 
 interface CollectionPaperListProps {
@@ -22,8 +17,8 @@ interface CollectionPaperListProps {
   currentUser: CurrentUser;
   collectionShow: CollectionShowState;
   userCollection: Collection;
-  dispatch: Dispatch<any>;
-  authValidateFunc: () => (dispatch: Dispatch<any>) => Promise<SignInResult | undefined>;
+  onSelectedPaperInCollection: (paperId: number) => void;
+  onRemovePaperFromCollection: (paperIds: number | number[]) => Promise<void>;
 }
 
 const CollectionPaperInfo: React.FC<{ collectionShow: CollectionShowState }> = ({ collectionShow }) => {
@@ -46,40 +41,9 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
     currentUser,
     collectionShow,
     userCollection,
-    dispatch,
-    authValidateFunc,
+    selectedPaper,
+    onRemovePaperFromCollection,
   } = props;
-
-  const handleRemovePaperFromCollection = React.useCallback(
-    async (paperIds: number | number[]) => {
-      const auth = await authValidateFunc()(dispatch);
-      const isLoggedIn = auth && auth.loggedIn;
-
-      if (!isLoggedIn) return window.alert('Your login status has changed. Please refresh the page and try again.');
-
-      let param;
-      if (typeof paperIds === 'object') {
-        param = paperIds;
-      } else {
-        param = [paperIds];
-      }
-
-      let removeConfirm;
-
-      if (param.length >= 2) {
-        removeConfirm = confirm(`Are you sure to remove ${param.length} paper from '${userCollection.title}'?`);
-      } else {
-        removeConfirm = confirm(`Are you sure to remove this paper from '${userCollection.title}'?`);
-      }
-
-      if (userCollection && removeConfirm) {
-        try {
-          await dispatch(removePaperFromCollection({ paperIds: param, collection: userCollection }));
-        } catch (err) {}
-      }
-    },
-    [userCollection.id]
-  );
 
   if (collectionShow.isLoadingPaperToCollection) {
     return (
@@ -106,12 +70,7 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
             type="checkbox"
             className={styles.paperCheckBox}
             checked={collectionShow.selectedPaperIds.includes(paper.paperId)}
-            onClick={() => {
-              dispatch({
-                type: ACTION_TYPES.COLLECTION_SHOW_SELECT_PAPER_ITEM,
-                payload: { paperId: paper.paperId },
-              });
-            }}
+            onClick={() => selectedPaper(paper.paperId)}
             readOnly
           />
         )}
@@ -122,7 +81,7 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
           paperNote={paper.note ? paper.note : ''}
           paper={paper.paper}
           collection={userCollection}
-          onRemovePaperCollection={handleRemovePaperFromCollection}
+          onRemovePaperCollection={onRemovePaperFromCollection}
         />
       </div>
     );
@@ -133,7 +92,7 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
       <CollectionPapersControlBtns
         itsMine={itsMine}
         collectionShow={collectionShow}
-        onRemovePaperCollection={handleRemovePaperFromCollection}
+        onRemovePaperCollection={onRemovePaperFromCollection}
       />
       <CollectionPaperInfo collectionShow={collectionShow} />
       {collectionPaperList}
@@ -141,4 +100,4 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
   );
 };
 
-export default connect()(withStyles<typeof CollectionPaperList>(styles)(CollectionPaperList));
+export default withStyles<typeof CollectionPaperList>(styles)(CollectionPaperList);
