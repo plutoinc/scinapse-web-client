@@ -30,6 +30,7 @@ import CollectionShareButton from '../../components/collectionShow/collectionSha
 import CollectionPaperList from '../../components/collectionShow/collectionPaperList';
 import { ACTION_TYPES } from '../../actions/actionTypes';
 import Pagination from '../../components/collectionShow/pagination';
+import { checkAuthStatus } from '../../components/auth/actions';
 const styles = require('./collectionShow.scss');
 
 function mapStateToProps(state: AppState) {
@@ -239,7 +240,7 @@ const CollectionShow: React.FC<Props> = props => {
                       currentUser={currentUser}
                       collectionShow={collectionShow}
                       userCollection={userCollection}
-                      dispatch={dispatch}
+                      authValidateFunc={checkAuthStatus}
                     />
                   </div>
                   <div>

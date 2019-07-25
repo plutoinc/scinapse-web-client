@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Dispatch, bindActionCreators } from 'redux';
+import { Dispatch } from 'redux';
 import { PaperInCollection } from '../../model/paperInCollection';
 import { CurrentUser } from '../../model/currentUser';
 import { CollectionShowState } from '../../containers/collectionShow/reducer';
@@ -12,18 +12,19 @@ import { withStyles } from '../../helpers/withStylesHelper';
 import { removePaperFromCollection } from '../dialog/actions';
 import formatNumber from '../../helpers/formatNumber';
 import CollectionPapersControlBtns from './collectionPapersControlBtns';
-import { ACTION_TYPES, Actions } from '../../actions/actionTypes';
-import { checkAuthStatus } from '../auth/actions';
+import { ACTION_TYPES } from '../../actions/actionTypes';
+import { SignInResult } from '../../api/types/auth';
 const styles = require('./collectionPaperList.scss');
 
-type Props = ReturnType<typeof mapDispatchToProps> & {
+interface CollectionPaperListProps {
   itsMine: boolean;
   papersInCollection: PaperInCollection[];
   currentUser: CurrentUser;
   collectionShow: CollectionShowState;
   userCollection: Collection;
   dispatch: Dispatch<any>;
-};
+  authValidateFunc: () => (dispatch: Dispatch<any>) => Promise<SignInResult | undefined>;
+}
 
 const CollectionPaperInfo: React.FC<{ collectionShow: CollectionShowState }> = ({ collectionShow }) => {
   return (
@@ -38,16 +39,21 @@ const CollectionPaperInfo: React.FC<{ collectionShow: CollectionShowState }> = (
   );
 };
 
-const CollectionPaperList: React.FC<Props> = props => {
-  const { itsMine, papersInCollection, currentUser, collectionShow, userCollection, dispatch, checkAuthStatus } = props;
+const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
+  const {
+    itsMine,
+    papersInCollection,
+    currentUser,
+    collectionShow,
+    userCollection,
+    dispatch,
+    authValidateFunc,
+  } = props;
 
   const handleRemovePaperFromCollection = React.useCallback(
     async (paperIds: number | number[]) => {
-      let isLoggedIn;
-
-      await checkAuthStatus().then(auth => {
-        isLoggedIn = auth && auth.loggedIn;
-      });
+      const auth = await authValidateFunc()(dispatch);
+      const isLoggedIn = auth && auth.loggedIn;
 
       if (!isLoggedIn) return window.alert('Your login status has changed. Please refresh the page and try again.');
 
@@ -135,15 +141,4 @@ const CollectionPaperList: React.FC<Props> = props => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) =>
-  bindActionCreators(
-    {
-      checkAuthStatus,
-    },
-    dispatch
-  );
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(withStyles<typeof CollectionPaperList>(styles)(CollectionPaperList));
+export default connect()(withStyles<typeof CollectionPaperList>(styles)(CollectionPaperList));
