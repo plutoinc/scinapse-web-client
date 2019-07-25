@@ -3,7 +3,6 @@ import loadable from '@loadable/component';
 import { Route, Switch, match, withRouter, RouteComponentProps } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
 import { CancelToken } from 'axios';
 import { PaperShowMatchParams } from './containers/paperShow/types';
 import { AuthorShowMatchParams } from './containers/authorShow/types';
@@ -12,11 +11,7 @@ import { CollectionShowMatchParams } from './components/collectionShow/types';
 import ErrorPage from './components/error/errorPage';
 import LocationListener from './components/locationListener';
 import DeviceDetector from './components/deviceDetector';
-import { AppState } from './reducers';
-import { LayoutState } from './components/layouts/records';
 import { withStyles } from './helpers/withStylesHelper';
-import { CurrentUser } from './model/currentUser';
-import Icon from './icons';
 import {
   HOME_PATH,
   SEARCH_RESULT_PATH,
@@ -31,7 +26,6 @@ import {
   TERMS_OF_SERVICE_PATH,
   PRIVACY_POLICY_PATH,
 } from './constants/routes';
-import { Configuration } from './reducers/configuration';
 const styles = require('./root.scss');
 
 export interface LoadDataParams<P> {
@@ -157,35 +151,11 @@ export const routesMap: ServerRoutesMap[] = [
   { component: ErrorPage },
 ];
 
-interface RootRoutesProps extends RouteComponentProps<any> {
-  layout: LayoutState;
-  currentUser: CurrentUser;
-  configuration: Configuration;
-  dispatch: Dispatch<any>;
-}
-
-function mapStateToProps(state: AppState) {
-  return {
-    layout: state.layout,
-    currentUser: state.currentUser,
-    configuration: state.configuration,
-  };
-}
+interface RootRoutesProps extends RouteComponentProps<any> {}
 
 const DialogComponent = loadable(() => import('./components/dialog'));
 const FeedbackButton = loadable(() => import('./containers/feedbackButton'));
 const ImprovedHeader = loadable(() => import('./components/layouts/improvedHeader'));
-
-const LoadingComponent: React.FC<{ shouldShow: boolean }> = ({ shouldShow }) => {
-  if (!shouldShow) return null;
-
-  return (
-    <div className={styles.jsLoaderWrapper}>
-      <Icon icon="SCINAPSE_LOGO_SMALL" />
-      <div className={styles.loadingMessage}>scinapse is loading now...</div>
-    </div>
-  );
-};
 
 const DefaultHelmet = () => {
   return (
@@ -268,11 +238,10 @@ const DefaultHelmet = () => {
 };
 
 const RootRoutes: React.FC<RootRoutesProps> = props => {
-  const { location, configuration, currentUser } = props;
+  const { location } = props;
 
   return (
     <div>
-      <LoadingComponent shouldShow={!configuration.renderedAtClient && currentUser.isLoggingIn} />
       <DefaultHelmet />
       <ImprovedHeader />
       <div>
@@ -288,6 +257,4 @@ const RootRoutes: React.FC<RootRoutesProps> = props => {
   );
 };
 
-export const ConnectedRootRoutes = withRouter(
-  connect(mapStateToProps)(withStyles<typeof RootRoutes>(styles)(RootRoutes))
-);
+export const ConnectedRootRoutes = withRouter(withStyles<typeof RootRoutes>(styles)(RootRoutes));
