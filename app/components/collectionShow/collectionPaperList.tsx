@@ -43,10 +43,13 @@ const CollectionPaperList: React.FC<Props> = props => {
 
   const handleRemovePaperFromCollection = React.useCallback(
     async (paperIds: number | number[]) => {
+      let isLoggedIn;
+
       await checkAuthStatus().then(auth => {
-        const isLoggedIn = auth && auth.loggedIn;
-        if (!isLoggedIn) return window.alert('Your login status has changed. Please refresh the page and try again.');
+        isLoggedIn = auth && auth.loggedIn;
       });
+
+      if (!isLoggedIn) return window.alert('Your login status has changed. Please refresh the page and try again.');
 
       let param;
       if (typeof paperIds === 'object') {
