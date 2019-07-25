@@ -71,6 +71,7 @@ const JournalTitle: React.FC<{
       >
         {journal.title}
       </Link>
+      {journal.sci && <JournalBadge text="SCI" labelClassName={styles.journalBadge} />}
       {journal.impactFactor && (
         <span className={styles.ifLabel}>
           <span>
@@ -89,7 +90,6 @@ const JournalTitle: React.FC<{
           </span>
         </span>
       )}
-      {journal.sci && <JournalBadge text="SCI" labelClassName={styles.SCILabel} />}
     </>
   );
 };

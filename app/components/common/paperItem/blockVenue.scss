@@ -27,7 +27,7 @@
   svg {
     width: 10px;
     height: 10px;
-    color: $main_blue0;
+    color: $main_blue1;
     margin-right: 4px;
   }
 }
@@ -57,20 +57,18 @@
 .ifLabel {
   display: inline-block;
   vertical-align: bottom;
-  font-size: 12px;
+  font-size: 13px;
   text-align: center;
-  color: $main_blue0;
+  font-weight: 500;
+  color: $main_blue1;
   padding-left: 8px;
   padding-right: 4px;
 }
 
-.SCILabel {
-  margin-left: 8px;
+.journalBadge {
+  margin-left: 2px;
 }
 
-.ifLabel + .SCILabel {
-  margin-left: 0;
-}
 
 .arrowBottomTooltip {
   background-color: #606269 !important;

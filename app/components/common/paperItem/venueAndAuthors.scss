@@ -41,9 +41,10 @@
   .ifLabel {
     display: inline-block;
     vertical-align: bottom;
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: 500;
     text-align: center;
-    color: $main_blue0;
+    color: $main_blue1;
     padding-left: 8px;
     padding-right: 4px;
   }
@@ -52,7 +53,7 @@
     svg {
       width: 10px;
       height: 10px;
-      color: $main_blue0;
+      color: $main_blue1;
       margin-right: 4px;
     }
   }
@@ -71,14 +72,9 @@
   }
 }
 
-.SCILabel {
+.journalBadge {
   display: inline-block;
-  margin-left: 8px;
   text-decoration: none;
-}
-
-.ifLabel + .SCILabel {
-  margin-left: 0;
 }
 
 .journalIcon {
