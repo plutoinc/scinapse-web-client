@@ -43,7 +43,7 @@ const CollectionPaperList: React.FC<Props> = props => {
 
   const handleRemovePaperFromCollection = React.useCallback(
     async (paperIds: number | number[]) => {
-      checkAuthStatus().then(auth => {
+      await checkAuthStatus().then(auth => {
         const isLoggedIn = auth && auth.loggedIn;
         if (!isLoggedIn) return window.alert('Your login status has changed. Please refresh the page and try again.');
       });
@@ -140,4 +140,7 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>) =>
     dispatch
   );
 
-export default connect(mapDispatchToProps)(withStyles<typeof CollectionPaperList>(styles)(CollectionPaperList));
+export default connect(
+  null,
+  mapDispatchToProps
+)(withStyles<typeof CollectionPaperList>(styles)(CollectionPaperList));
