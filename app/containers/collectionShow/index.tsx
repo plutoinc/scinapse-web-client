@@ -8,9 +8,6 @@ import * as parse from 'date-fns/parse';
 import { denormalize } from 'normalizr';
 import { AppState } from '../../reducers';
 import ArticleSpinner from '../../components/common/spinner/articleSpinner';
-import MobilePagination from '../../components/common/mobilePagination';
-import DesktopPagination from '../../components/common/desktopPagination';
-import { CollectionShowState } from './reducer';
 import { Collection, collectionSchema } from '../../model/collection';
 import { fetchCollectionShowData } from './sideEffect';
 import { paperInCollectionSchema } from '../../model/paperInCollection';
@@ -18,7 +15,6 @@ import Icon from '../../icons';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
 import { getPapers } from './actions';
-import { LayoutState, UserDevice } from '../../components/layouts/records';
 import ScinapseInput from '../../components/common/scinapseInput';
 import restoreScroll from '../../helpers/scrollRestoration';
 import ActionTicketManager from '../../helpers/actionTicketManager';
@@ -32,6 +28,8 @@ import { withStyles } from '../../helpers/withStylesHelper';
 import PageHelmet from '../../components/collectionShow/pageHelmet';
 import CollectionShareButton from '../../components/collectionShow/collectionShareButton';
 import CollectionPaperList from '../../components/collectionShow/collectionPaperList';
+import { ACTION_TYPES } from '../../actions/actionTypes';
+import Pagination from '../../components/collectionShow/pagination';
 const styles = require('./collectionShow.scss');
 
 function mapStateToProps(state: AppState) {
@@ -58,66 +56,6 @@ const EditButton: React.FC<{ itsMine: boolean; userCollection: Collection }> = (
       <Icon icon="PEN" className={styles.editIcon} />Edit
     </button>
   );
-};
-
-const Pagination: React.FC<{
-  dispatch: Dispatch<any>;
-  collectionShow: CollectionShowState;
-  layout: LayoutState;
-}> = ({ dispatch, collectionShow, layout }) => {
-  const { currentPaperListPage, totalPaperListPage } = collectionShow;
-  const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
-
-  const fetchPapers = React.useCallback(
-    (page: number) => {
-      dispatch(
-        getPapers({
-          collectionId: collectionShow.mainCollectionId,
-          page,
-          sort: collectionShow.sortType,
-          cancelToken: cancelTokenSource.current.token,
-          query: collectionShow.searchKeyword,
-        })
-      );
-
-      return () => {
-        cancelTokenSource.current.cancel();
-        cancelTokenSource.current = axios.CancelToken.source();
-      };
-    },
-    [collectionShow, dispatch]
-  );
-
-  if (totalPaperListPage === 1) {
-    return null;
-  }
-
-  const currentPageIndex: number = currentPaperListPage - 1;
-
-  if (layout.userDevice !== UserDevice.DESKTOP) {
-    return (
-      <MobilePagination
-        totalPageCount={totalPaperListPage}
-        currentPageIndex={currentPageIndex}
-        onItemClick={fetchPapers}
-        wrapperStyle={{
-          margin: '12px 0',
-        }}
-      />
-    );
-  } else {
-    return (
-      <DesktopPagination
-        type="collection_show"
-        totalPage={totalPaperListPage}
-        currentPageIndex={currentPageIndex}
-        onItemClick={fetchPapers}
-        wrapperStyle={{
-          margin: '24px 0',
-        }}
-      />
-    );
-  }
 };
 
 const CollectionShow: React.FC<Props> = props => {
@@ -151,6 +89,7 @@ const CollectionShow: React.FC<Props> = props => {
         !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
 
       if (notRenderedAtServerOrJSAlreadyInitialized) {
+        dispatch({ type: ACTION_TYPES.COLLECTION_SHOW_CLEAR_SELECT_PAPER_ITEM });
         fetchCollectionShowData({
           dispatch,
           match,
@@ -193,7 +132,7 @@ const CollectionShow: React.FC<Props> = props => {
         cancelTokenSource.current = axios.CancelToken.source();
       };
     },
-    [dispatch, collectionShow.mainCollectionId, collectionShow.sortType]
+    [collectionShow.mainCollectionId]
   );
 
   const handleClickSort = React.useCallback(
@@ -213,7 +152,7 @@ const CollectionShow: React.FC<Props> = props => {
         cancelTokenSource.current = axios.CancelToken.source();
       };
     },
-    [dispatch, collectionShow.mainCollectionId, collectionShow.currentPaperListPage, collectionShow.searchKeyword]
+    [collectionShow.mainCollectionId]
   );
 
   if (collectionShow.pageErrorCode) {
@@ -303,7 +242,7 @@ const CollectionShow: React.FC<Props> = props => {
                     />
                   </div>
                   <div>
-                    <Pagination dispatch={dispatch} collectionShow={collectionShow} layout={layout} />
+                    <Pagination collectionShow={collectionShow} layout={layout} />
                   </div>
                 </div>
                 <RelatedPaperInCollectionShow collectionId={userCollection.id} />

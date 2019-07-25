@@ -13,6 +13,8 @@ import { removePaperFromCollection } from '../dialog/actions';
 import formatNumber from '../../helpers/formatNumber';
 import CollectionPapersControlBtns from './collectionPapersControlBtns';
 import { ACTION_TYPES } from '../../actions/actionTypes';
+import { checkAuthStatus } from '../auth/actions';
+import StoreManager from '../../store/store';
 const styles = require('./collectionPaperList.scss');
 
 interface CollectionPaperListProps {
@@ -40,28 +42,35 @@ const CollectionPaperInfo: React.FC<{ collectionShow: CollectionShowState }> = (
 const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
   const { itsMine, papersInCollection, currentUser, collectionShow, userCollection, dispatch } = props;
 
-  const handleRemovePaperFromCollection = React.useCallback(async (paperIds: number | number[]) => {
-    let param;
-    if (typeof paperIds === 'object') {
-      param = paperIds;
-    } else {
-      param = [paperIds];
-    }
+  const handleRemovePaperFromCollection = React.useCallback(
+    async (paperIds: number | number[]) => {
+      const auth = await StoreManager.store.dispatch(checkAuthStatus());
+      const isLoggedIn = auth && auth.loggedIn;
+      if (!isLoggedIn) return window.alert('Your login status has changed. Please refresh the page and try again.');
 
-    let removeConfirm;
+      let param;
+      if (typeof paperIds === 'object') {
+        param = paperIds;
+      } else {
+        param = [paperIds];
+      }
 
-    if (param.length >= 2) {
-      removeConfirm = confirm(`Are you sure to remove ${param.length} paper from '${userCollection.title}'?`);
-    } else {
-      removeConfirm = confirm(`Are you sure to remove this paper from '${userCollection.title}'?`);
-    }
+      let removeConfirm;
 
-    if (userCollection && removeConfirm) {
-      try {
-        await dispatch(removePaperFromCollection({ paperIds: param, collection: userCollection }));
-      } catch (err) {}
-    }
-  }, []);
+      if (param.length >= 2) {
+        removeConfirm = confirm(`Are you sure to remove ${param.length} paper from '${userCollection.title}'?`);
+      } else {
+        removeConfirm = confirm(`Are you sure to remove this paper from '${userCollection.title}'?`);
+      }
+
+      if (userCollection && removeConfirm) {
+        try {
+          await dispatch(removePaperFromCollection({ paperIds: param, collection: userCollection }));
+        } catch (err) {}
+      }
+    },
+    [userCollection.id]
+  );
 
   if (collectionShow.isLoadingPaperToCollection) {
     return (
