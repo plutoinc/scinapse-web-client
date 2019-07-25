@@ -1,7 +1,7 @@
 import * as AWS from 'aws-sdk';
 import * as https from 'https';
 import fs from 'fs';
-import rimraf from 'rimraf';
+// import rimraf from 'rimraf';
 import * as DeployConfig from '../scripts/deploy/config';
 
 const s3 = new AWS.S3();
@@ -15,28 +15,26 @@ AWS.config.update({
   },
 });
 
-let isDownloading = false;
-
-async function downloadSrcFromS3(branch?: string) {
-  isDownloading = true;
-  console.log('-------------------------------------------------------');
-  console.log('REMOVE OLD TMP DIRECTORY');
-  rimraf.sync('/tmp/*');
-
-  if (!fs.existsSync('/tmp/client')) {
-    fs.mkdirSync('/tmp/client');
+async function getSources(branch: string, version: string) {
+  if (!fs.existsSync(`/tmp/${branch}`)) {
+    fs.mkdirSync(`/tmp/${branch}`);
   }
 
-  if (!fs.existsSync('/tmp/server')) {
-    fs.mkdirSync('/tmp/server');
+  if (!fs.existsSync(`/tmp/${branch}/${version}`)) {
+    fs.mkdirSync(`/tmp/${branch}/${version}`);
+    return;
   }
 
-  const prefix = branch
-    ? `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${branch}`
-    : DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX;
+  if (!fs.existsSync(`/tmp/${branch}/${version}/client`)) {
+    fs.mkdirSync(`/tmp/${branch}/${version}/client`);
+  }
+  if (!fs.existsSync(`/tmp/${branch}/${version}/server`)) {
+    fs.mkdirSync(`/tmp/${branch}/${version}/server`);
+  }
 
+  const prefix = `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${branch}`;
   console.log('-------------------------------------------------------');
-  console.log('LIST FILES');
+  console.log('LIST S3 FILES');
   const res = await s3
     .listObjectsV2({
       Bucket: DeployConfig.AWS_S3_BUCKET,
@@ -45,7 +43,7 @@ async function downloadSrcFromS3(branch?: string) {
     .promise();
 
   console.log('-------------------------------------------------------');
-  console.log('DOWNLOAD FILES');
+  console.log('DOWNLOAD S3 FILES');
   if (res.Contents && res.Contents.length > 0) {
     const promiseArr = res.Contents.map(content => {
       const params: AWS.S3.Types.GetObjectRequest = {
@@ -62,37 +60,30 @@ async function downloadSrcFromS3(branch?: string) {
           if (pwdArr[pwdArr.length - 2] !== 'client' && pwdArr[pwdArr.length - 2] !== 'server') {
             filePath = pwdArr[pwdArr.length - 1];
           }
-          fs.writeFileSync(`/tmp/${filePath}`, objectRes.Body);
+          fs.writeFileSync(`/tmp/${branch}/${version}/${filePath}`, objectRes.Body);
         });
     });
 
     await Promise.all(promiseArr);
   }
-  isDownloading = false;
 }
 
 export const ssr = async (event: LambdaProxy.Event) => {
   const branch = event.queryStringParameters && event.queryStringParameters.branch;
+  const version = fs.readFileSync('./version').toString();
 
-  if (event.path.includes('sw.js') || event.path.includes('favicon')) {
-    return {
-      statusCode: 200,
-      body: '',
-    };
-  }
+  if (!branch) throw new Error('missing branch queryParams flag');
+  if (!version) throw new Error('missing version flag');
 
-  if (!isDownloading && !fs.existsSync('/tmp/server/main.js')) {
-    await downloadSrcFromS3(branch);
-  }
-
-  const bundle = require('/tmp/server/main.js');
-  (global as any).__webpack_public_path__ = '/tmp/server';
+  console.log(`start to render ${branch} ${version}`);
+  await getSources(branch, version);
+  const bundle = require(`/tmp/${branch}/${version}/server/main.js`);
 
   try {
     const res = await bundle.ssr(event);
     return res;
   } catch (err) {
-    console.error(err);
+    console.trace(err);
     return {
       statusCode: 500,
       headers: {
