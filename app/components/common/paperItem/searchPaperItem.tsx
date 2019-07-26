@@ -6,14 +6,13 @@ import Abstract from './abstract';
 import Figures from './figures';
 import PaperActionButtons from './paperActionButtons';
 import Title from './title';
-import VenueAndAuthors from './venueAndAuthors';
 import BlockVenue from './blockVenue';
 import BlockAuthorList from './blockAuthorList';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import SavedCollections from './savedCollections';
 import { getUserGroupName } from '../../../helpers/abTestHelper';
-import { BROAD_AUTHOR_VENUE_TEST, FIGURE_TEST } from '../../../constants/abTestGlobalValue';
+import { FIGURE_TEST } from '../../../constants/abTestGlobalValue';
 import { PaperSource } from '../../../api/paper';
 const styles = require('./paperItem.scss');
 
@@ -54,13 +53,9 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
   const { searchQueryText, paper, wrapperClassName, currentUser, pageType, actionArea, savedAt, sourceDomain } = props;
   const { doi, urls, relation } = paper;
 
-  const [venueAuthorType, setVenueAuthorType] = React.useState<'broadAuthorVenue' | 'control' | ''>('');
   const [shouldShowFigure, setShouldShowFigure] = React.useState(false);
 
   React.useEffect(() => {
-    setVenueAuthorType(
-      getUserGroupName(BROAD_AUTHOR_VENUE_TEST) === 'broadAuthorVenue' ? 'broadAuthorVenue' : 'control'
-    );
     setShouldShowFigure(getUserGroupName(FIGURE_TEST) === 'both');
   }, []);
 
@@ -70,34 +65,6 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
     const lastVisitFrom = distanceInWordsToNow(savedAt);
     historyContent = (
       <div className={styles.visitedHistory}>{`You visited at ${lastVisitDate} (${lastVisitFrom} ago)`}</div>
-    );
-  }
-
-  let venueAndAuthor = null;
-  if (venueAuthorType === 'broadAuthorVenue') {
-    venueAndAuthor = (
-      <>
-        <BlockVenue
-          journal={paper.journal}
-          conferenceInstance={paper.conferenceInstance}
-          publishedDate={paper.publishedDate}
-          pageType={pageType}
-          actionArea={actionArea}
-        />
-        <BlockAuthorList paper={paper} authors={paper.authors} pageType={pageType} actionArea={actionArea} />
-      </>
-    );
-  } else if (venueAuthorType === 'control') {
-    venueAndAuthor = (
-      <VenueAndAuthors
-        pageType={pageType}
-        actionArea={actionArea}
-        paper={paper}
-        journal={paper.journal}
-        conferenceInstance={paper.conferenceInstance}
-        publishedDate={paper.publishedDate}
-        authors={paper.authors}
-      />
     );
   }
 
@@ -126,14 +93,23 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
           actionArea={actionArea}
           source={source}
         />
-        {venueAndAuthor}
-        <Abstract
-          paperId={paper.id}
-          pageType={pageType}
-          actionArea={actionArea}
-          abstract={paper.abstractHighlighted || paper.abstract}
-          searchQueryText={searchQueryText}
-        />
+        <div className={styles.venueAndAuthorWrapper}>
+          <BlockVenue
+            journal={paper.journal}
+            conferenceInstance={paper.conferenceInstance}
+            publishedDate={paper.publishedDate}
+            pageType={pageType}
+            actionArea={actionArea}
+          />
+          <BlockAuthorList paper={paper} authors={paper.authors} pageType={pageType} actionArea={actionArea} />{' '}
+          <Abstract
+            paperId={paper.id}
+            pageType={pageType}
+            actionArea={actionArea}
+            abstract={paper.abstractHighlighted || paper.abstract}
+            searchQueryText={searchQueryText}
+          />
+        </div>
         {shouldShowFigure && <Figures figures={paper.figures} paperId={paper.id} />}
         <NotIncludedWords missingKeywords={paper.missingKeywords} />
         <PaperActionButtons
