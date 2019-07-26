@@ -14,6 +14,7 @@ const styles = require('./affiliationSelectBox.scss');
 
 interface AffiliationSelectBoxProps extends FieldProps {
   className: string;
+  disabled?: boolean;
 }
 
 interface AffiliationSelectBoxState {
@@ -48,7 +49,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
   }
 
   public render() {
-    const { field, form, className } = this.props;
+    const { field, form, className, disabled } = this.props;
     const { touched, errors } = form;
     const { availableAffiliations } = this.state;
     const rawFieldValue = field.value as Affiliation | SuggestAffiliation | string;
@@ -60,6 +61,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
       <div className={styles.affiliationSelectBox}>
         <div className={styles.inputWrapper}>
           <InputWithSuggestionList
+            disabled={disabled}
             defaultValue={displayValue}
             onChange={this.handleInputChange}
             placeholder="Current Affiliation"
