@@ -28,10 +28,9 @@ class VenueAndAuthors extends React.PureComponent<VenueAndAuthorsProps, {}> {
           pageType={pageType}
           actionArea={actionArea}
         />
-
         {authors ? (
           <div className={styles.author}>
-            <Icon icon="AUTHOR" />
+            <Icon className={styles.authorIcon} icon="AUTHOR" />
             <Authors paper={paper} authors={authors} pageType={pageType} actionArea={actionArea} />
           </div>
         ) : null}

@@ -10,6 +10,8 @@ export interface Journal {
   paperCount: number;
   title: string;
   webPage: string | null;
+  titleAbbrev: string | null;
+  sci: boolean;
 }
 
 export const journalSchema = new schema.Entity('journals');
