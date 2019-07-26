@@ -86,6 +86,7 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
     >
       <div className={classNames({ [s.wrapper]: true, [s.listOpened]: state.isOpen && !!journalList })}>
         <div className={s.inputWrapper}>
+          <Icon icon="SEARCH_ICON" className={s.searchIcon} />
           <input
             value={state.inputValue}
             onKeyDown={e => {
@@ -122,7 +123,6 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
               [s.listOpened]: shouldShowList,
             })}
           />
-          <Icon icon="SEARCH_ICON" className={s.searchIcon} />
         </div>
         {shouldShowList && (
           <div className={s.listWrapper}>

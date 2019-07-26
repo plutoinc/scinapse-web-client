@@ -1,6 +1,6 @@
 .yearFilter {
   padding-top: 24px;
-  border-top: solid 1px $gray3;
+  border-top: solid 1px $gray400;
 }
 
 .content {
@@ -20,7 +20,7 @@
   height: 18px;
   font-size: 15px;
   font-weight: bold;
-  color: $gray6;
+  color: $gray800;
   margin-bottom: 24px;
 
   .resetBtn {
@@ -29,7 +29,7 @@
     right: 0;
     font-size: 13px;
     text-align: right;
-    color: $gray5;
+    color: $gray600;
     font-weight: normal;
     cursor: pointer;
   }
@@ -61,7 +61,7 @@
   }
 
   &:hover {
-    background-color: $gray5;
+    background-color: $gray600;
 
     &.activeColumn {
       background-color: $main_blue0;
@@ -87,7 +87,7 @@
     background-color: white;
     overflow: unset;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
-    border: 1px solid $gray3;
+    border: 1px solid $gray400;
     border-radius: 4px;
     z-index: 2;
 
@@ -103,7 +103,7 @@
       height: 0;
       border-left: 12px solid transparent;
       border-right: 12px solid transparent;
-      border-top: 12px solid $gray3;
+      border-top: 12px solid $gray400;
     }
 
     &:after {
@@ -122,14 +122,14 @@
     height: 14px;
     font-size: 12px;
     text-align: center;
-    color: $gray6;
+    color: $gray800;
     margin-bottom: 4px;
   }
 
   .yearNum {
     height: 11px;
     font-size: 10px;
-    color: $gray5;
+    color: $gray600;
   }
 }
 
@@ -137,7 +137,7 @@
   position: relative;
   height: 4px;
   border-radius: 2.5px;
-  background-color: $gray3;
+  background-color: $gray400;
 
   .activeLine {
     position: absolute;
@@ -155,7 +155,7 @@
   margin-left: -9.5px;
   bottom: -9.5px;
   border-radius: 100%;
-  border: 1px solid $gray9;
+  border: 1px solid $gray700;
   background-color: white;
   z-index: 3;
   cursor: pointer;
@@ -165,7 +165,7 @@
   position: absolute;
   bottom: -28px;
   left: -6px;
-  color: $gray9;
+  color: $gray700;
   font-size: 12px;
   cursor: default;
 }

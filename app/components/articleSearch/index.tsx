@@ -31,8 +31,6 @@ import { changeSearchQuery } from '../../actions/searchQuery';
 import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
 import ImprovedFooter from '../layouts/improvedFooter';
 import KnowledgeBaseNoti from '../knowledgeBaseNoti';
-import { getUserGroupName } from '../../helpers/abTestHelper';
-import { AUTO_YEAR_FILTER_TEST } from '../../constants/abTestGlobalValue';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -211,7 +209,6 @@ const SearchContainer: React.FC<Props> = props => {
       if (currentUserState.isLoggingIn) return;
 
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
-      const doAutoYearFilterSearch = getUserGroupName(AUTO_YEAR_FILTER_TEST) === 'auto';
 
       changeSearchQuery(SafeURIStringHandler.decode(currentQueryParams.query || ''));
       setQueryParams(currentQueryParams);
@@ -220,8 +217,7 @@ const SearchContainer: React.FC<Props> = props => {
       // set params
       const params = SearchQueryManager.makeSearchQueryFromParamsObject(currentQueryParams);
       params.cancelToken = cancelToken.current.token;
-      params.detectYear =
-        articleSearchState.searchInput !== currentQueryParams.query || (doAutoYearFilterSearch && enableAutoYearFilter);
+      params.detectYear = articleSearchState.searchInput !== currentQueryParams.query || enableAutoYearFilter;
 
       searchPapers(params).then(() => {
         restoreScroll(location.key);

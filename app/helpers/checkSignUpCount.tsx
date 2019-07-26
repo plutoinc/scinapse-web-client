@@ -2,6 +2,8 @@ import * as store from 'store';
 import { SIGN_UP_CONVERSION_KEY, SignUpConversion, SignUpConversionObject } from '../constants/abTest';
 import { DEVICE_ID_KEY, SESSION_ID_KEY } from '../constants/actionTicket';
 import { AUTH_LEVEL, blockUnverifiedUser } from './checkAuthDialog';
+import { getUserGroupName } from './abTestHelper';
+import { QUERY_LOVER_EXPERIMENT } from '../constants/abTestGlobalValue';
 
 interface CheckBenefitExpCount {
   type: SignUpConversion;
@@ -24,6 +26,9 @@ export async function checkBlockSignUpConversion({
   const exp: SignUpConversionObject | undefined = store.get(SIGN_UP_CONVERSION_KEY);
   const currentSessionId = store.get(SESSION_ID_KEY);
   const currentDeviceId = store.get(DEVICE_ID_KEY);
+  const queryLoverUserGroup = getUserGroupName(QUERY_LOVER_EXPERIMENT);
+
+  if (type === 'queryLover' && queryLoverUserGroup !== 'queryLover') return false;
 
   if (
     exp &&

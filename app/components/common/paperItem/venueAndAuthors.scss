@@ -2,7 +2,7 @@
   margin-top: 7px;
   font-size: 14px;
   line-height: 1.5;
-  color: $gray5;
+  color: $gray600;
   flex-direction: column;
 
   .venue {
@@ -16,7 +16,7 @@
   }
 
   .venueNameReadonly {
-    color: $gray9;
+    color: $gray700;
     font-weight: 400;
     margin-right: 3px;
   }
@@ -30,7 +30,7 @@
   }
 
   .bold {
-    color: $gray5;
+    color: $gray600;
   }
 
   .author {

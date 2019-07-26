@@ -122,12 +122,17 @@ class GlobalDialogManager {
     );
   }
 
-  public openPaperFigureDetailDialog(paperFigures: PaperFigure[], currentPaperFigureIndex: number) {
+  public openPaperFigureDetailDialog(
+    paperFigures: PaperFigure[],
+    currentPaperFigureIndex: number,
+    viewDetailFigureTargetPaperId: number
+  ) {
     StoreManager.store.dispatch(
       ActionCreators.openGlobalDialog({
         type: GLOBAL_DIALOG_TYPE.PAPER_FIGURE_DETAIL,
         paperFigures,
         currentPaperFigureIndex,
+        viewDetailFigureTargetPaperId,
       })
     );
   }

@@ -17,15 +17,15 @@
   align-items: center;
   width: 100%;
   border-radius: 19px;
-  border: solid 1px $gray2;
-  background-color: $gray0;
-  padding: 8px 12px;
+  border: solid 1px $gray300;
+  background-color: $gray30;
+  padding: 8px 12px 8px 32px;
   font-size: 14px;
   color: $black0;
   transition: border-radius 150ms ease;
 
   &:hover {
-    border: solid 1px $gray3;
+    border: solid 1px $gray400;
   }
 
   &:active {
@@ -37,7 +37,7 @@
   }
 
   &::placeholder {
-    color: $gray4;
+    color: $gray500;
   }
 
   &.listOpened {
@@ -50,13 +50,13 @@
 .searchIcon {
   position: absolute;
   top: 0;
-  right: 12px;
+  left: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 16px;
   height: 100%;
-  color: $gray5;
+  color: $gray600;
 
   svg {
     width: 11px;
@@ -72,8 +72,8 @@
   padding: 16px;
   border-bottom-left-radius: 19px;
   border-bottom-right-radius: 19px;
-  background-color: $gray10;
-  border: solid 1px $gray2;
+  background-color: $gray100;
+  border: solid 1px $gray300;
   border-top: 0;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
   z-index: 1;
@@ -88,7 +88,7 @@
 .clearBtn {
   cursor: pointer;
   font-size: 16px;
-  color: $gray5;
+  color: $gray600;
 }
 
 .applyBtn {

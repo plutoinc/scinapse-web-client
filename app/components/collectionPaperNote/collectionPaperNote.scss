@@ -31,9 +31,9 @@
       align-items: center;
       width: 20px;
       height: 20px;
-      background-color: $gray8;
+      background-color: $gray50;
       border-radius: 2px;
-      color: $gray5;
+      color: $gray600;
       cursor: pointer;
 
       &:hover {
@@ -62,8 +62,8 @@
     padding: 12px;
     padding-right: 12px + 17px;
     border-radius: 8px;
-    background-color: $gray8;
-    color: $gray6;
+    background-color: $gray50;
+    color: $gray800;
     font-size: 14px;
     line-height: 1.4;
     white-space: pre-wrap;
@@ -81,6 +81,6 @@
   height: 21px;
 
   &::placeholder {
-    color: $gray3;
+    color: $gray400;
   }
 }

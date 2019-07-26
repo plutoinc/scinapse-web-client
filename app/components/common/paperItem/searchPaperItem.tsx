@@ -134,7 +134,7 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
           abstract={paper.abstractHighlighted || paper.abstract}
           searchQueryText={searchQueryText}
         />
-        {shouldShowFigure && <Figures figures={paper.figures} />}
+        {shouldShowFigure && <Figures figures={paper.figures} paperId={paper.id} />}
         <NotIncludedWords missingKeywords={paper.missingKeywords} />
         <PaperActionButtons
           currentUser={currentUser}

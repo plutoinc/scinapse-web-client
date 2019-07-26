@@ -140,7 +140,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                   borderRadius: '3px',
                   padding: '0 10px',
                   backgroundColor: 'white',
-                  border: 'solid 1px $gray3',
+                  border: 'solid 1px $gray400',
                   overflow: 'hidden',
                   marginTop: '14px',
                 }}

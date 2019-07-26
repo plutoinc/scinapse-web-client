@@ -20,7 +20,7 @@
   font-weight: 500;
   letter-spacing: 2.7px;
   text-align: center;
-  color: $gray6;
+  color: $gray800;
 }
 
 .content {
@@ -28,7 +28,7 @@
   font-size: 15px;
   line-height: 1.47;
   text-align: center;
-  color: $gray5;
+  color: $gray600;
   white-space: pre-line;
   text-align: center;
 }
@@ -44,7 +44,7 @@
 
 .confirmButton {
   margin-top: 60.5px;
-  @include common-button($gray2);
+  @include common-button($gray300);
 }
 
 .resendEmailButton {
@@ -64,7 +64,7 @@
 .toEmail {
   margin-top: 12.2px;
   font-size: 15px;
-  color: $gray5;
+  color: $gray600;
   line-height: 1.47;
 
   .email {

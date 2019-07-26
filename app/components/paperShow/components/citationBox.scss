@@ -18,7 +18,7 @@
   width: 12px;
   cursor: pointer;
   svg {
-    color: $gray4;
+    color: $gray500;
   }
 }
 
@@ -55,18 +55,18 @@
   padding: 12px;
   font-size: 14px;
   text-align: center;
-  color: $gray5;
+  color: $gray600;
   cursor: pointer;
 }
 
 .tabItem.active {
   position: relative;
-  color: $gray6;
+  color: $gray800;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  border-top: solid 1px $gray3;
-  border-right: solid 1px $gray3;
-  border-left: solid 1px $gray3;
+  border-top: solid 1px $gray400;
+  border-right: solid 1px $gray400;
+  border-left: solid 1px $gray400;
   border-bottom: none;
   &::after {
     position: absolute;
@@ -87,7 +87,7 @@
   width: 22px;
   height: 22px;
   border-radius: 3px;
-  background-color: $gray1;
+  background-color: $gray200;
   cursor: pointer;
 }
 
@@ -108,7 +108,7 @@
   padding-left: 8px;
   padding-top: 8px;
   height: 180px;
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
 }
 
 .textArea {
@@ -119,5 +119,5 @@
   font-size: 14px;
   line-height: 1.54;
   text-align: left;
-  color: $gray6;
+  color: $gray800;
 }

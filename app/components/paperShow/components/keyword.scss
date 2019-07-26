@@ -3,12 +3,12 @@
   vertical-align: top;
   border-radius: 4px;
   padding: 8px 12px;
-  background-color: $gray1;
+  background-color: $gray200;
   text-align: center;
   margin-right: 8px;
   margin-bottom: 8px;
   font-size: 14px;
-  color: $gray6;
+  color: $gray800;
   cursor: pointer;
 
   &:last-of-type {
@@ -16,7 +16,7 @@
   }
 
   &:hover {
-    background-color: $gray2;
+    background-color: $gray300;
     transition: $button-hover-transition;
   }
 }

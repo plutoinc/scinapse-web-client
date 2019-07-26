@@ -17,7 +17,7 @@
 
   .loadingSpinner {
     div {
-      background-color: $gray3;
+      background-color: $gray400;
     }
   }
 
@@ -50,7 +50,7 @@
 .doiBlockedContent {
   font-size: 16px;
   line-height: 1.5;
-  color: $gray6;
+  color: $gray800;
   margin-top: 20px;
 
   .keyword {
@@ -81,7 +81,7 @@
   background-color: $main_blue1;
   font-size: 16px;
   font-weight: 500;
-  color: $gray0;
+  color: $gray30;
   cursor: pointer;
   margin-top: 16px;
 

@@ -7,7 +7,7 @@
   font-weight: 500;
   color: $main_blue0;
   line-height: 1.43;
-  background-color: $gray8;
+  background-color: $gray50;
   border-radius: 4px;
   cursor: pointer;
   padding: 0 12px 0 10px;
@@ -18,7 +18,7 @@
   }
 
   &:hover {
-    background-color: $gray2;
+    background-color: $gray300;
   }
 
   &:active {

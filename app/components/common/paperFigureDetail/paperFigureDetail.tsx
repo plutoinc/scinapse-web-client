@@ -48,7 +48,7 @@ const PaperFigureCaption: React.FC<{ isMobile: boolean; caption: string }> = pro
 
 const PaperFigureDetail: React.FC<Props> = props => {
   const { layout, DialogState, handleCloseDialogRequest } = props;
-  const { paperFigures, currentPaperFigureIndex } = DialogState;
+  const { paperFigures, currentPaperFigureIndex, viewDetailFigureTargetPaperId } = DialogState;
   const paperFigureEl = React.useRef<HTMLDivElement | null>(null);
 
   const [showFigureIndex, setShowFigureIndex] = React.useState(currentPaperFigureIndex!);
@@ -64,14 +64,14 @@ const PaperFigureDetail: React.FC<Props> = props => {
         actionType: 'fire',
         actionArea: 'figureDetail',
         actionTag: 'clickPrevBtn',
-        actionLabel: String(showFigureIndex),
+        actionLabel: String(viewDetailFigureTargetPaperId!),
       });
 
       const figuresLength = paperFigures!.length;
       const nextFigureIndex = (figuresLength + showFigureIndex - 1) % figuresLength;
       setShowFigureIndex(nextFigureIndex);
     },
-    [paperFigures, showFigureIndex]
+    [paperFigures, showFigureIndex, viewDetailFigureTargetPaperId]
   );
 
   const onClickNextBtn = React.useCallback(
@@ -81,14 +81,14 @@ const PaperFigureDetail: React.FC<Props> = props => {
         actionType: 'fire',
         actionArea: 'figureDetail',
         actionTag: 'clickNextBtn',
-        actionLabel: String(showFigureIndex),
+        actionLabel: String(viewDetailFigureTargetPaperId!),
       });
 
       const figuresLength = paperFigures!.length;
       const nextFigureIndex = (figuresLength + showFigureIndex + 1) % figuresLength;
       setShowFigureIndex(nextFigureIndex);
     },
-    [paperFigures, showFigureIndex]
+    [paperFigures, showFigureIndex, viewDetailFigureTargetPaperId]
   );
 
   const onKeyDownInFigureContainer = React.useCallback(

@@ -10,16 +10,16 @@ const styles = require('./paperShowFigureList.scss');
 
 const MOBILE_FIGURES_MAX_LENGTH = 6;
 
-function openPaperFigureDetailDialog(figures: PaperFigure[], index: number) {
+function openPaperFigureDetailDialog(figures: PaperFigure[], index: number, paperId: number) {
   ActionTicketManager.trackTicket({
     pageType: 'paperShow',
     actionType: 'fire',
     actionArea: 'figureList',
     actionTag: 'clickPaperFigure',
-    actionLabel: String(index),
+    actionLabel: String(paperId),
   });
 
-  return GlobalDialogManager.openPaperFigureDetailDialog(figures, index);
+  return GlobalDialogManager.openPaperFigureDetailDialog(figures, index, paperId);
 }
 
 const PaperShowFigureList: React.FC<{ paper: Paper; isMobile: boolean }> = ({ paper, isMobile }) => {
@@ -31,7 +31,7 @@ const PaperShowFigureList: React.FC<{ paper: Paper; isMobile: boolean }> = ({ pa
     actionType: 'view',
     actionArea: 'figureList',
     actionTag: 'viewFigureList',
-    actionLabel: String(paper.figures.length),
+    actionLabel: String(paper.id),
   };
 
   const { elRef } = useObserver(0.1, actionTicketContext);
@@ -62,7 +62,7 @@ const PaperShowFigureList: React.FC<{ paper: Paper; isMobile: boolean }> = ({ pa
       <LargePaperFigure
         figure={figure}
         key={i}
-        handleOpenFigureDetailDialog={() => openPaperFigureDetailDialog(paper.figures, i)}
+        handleOpenFigureDetailDialog={() => openPaperFigureDetailDialog(paper.figures, i, paper.id)}
       />
     );
   });

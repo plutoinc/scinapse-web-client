@@ -5,7 +5,7 @@
   right: 0;
   z-index: 1555;
   border-radius: 5px;
-  box-shadow: 0 1px 2px 0 $gray4;
+  box-shadow: 0 1px 2px 0 $gray500;
 }
 
 .keywordCompletionItem {
@@ -20,7 +20,7 @@
   font-size: 15px;
   font-weight: 400;
   color: $black1;
-  border-bottom: solid 1px $gray1;
+  border-bottom: solid 1px $gray200;
 
   &:first-of-type {
     border-radius: 4px;
@@ -34,15 +34,15 @@
   &:focus,
   &:hover {
     outline: none;
-    background-color: $gray0;
+    background-color: $gray30;
   }
 
   .keywordCompletionItemContext {
     font-size: 13px;
-    color: $gray6;
+    color: $gray800;
 
     b {
-      color: $gray6;
+      color: $gray800;
       font-weight: bold;
     }
   }
@@ -51,5 +51,5 @@
 .highLightKeywordCompletionItem {
   @extend .keywordCompletionItem;
 
-  background-color: $gray0;
+  background-color: $gray30;
 }
