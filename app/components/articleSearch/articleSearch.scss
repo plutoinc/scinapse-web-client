@@ -41,20 +41,19 @@
   }
 }
 
-.rightBoxWrapper {
+.noAuthorRightBoxWrapper {
   display: flex;
   flex: 1 1;
   max-width: 354px;
   height: 100%;
   flex-direction: column;
-  margin-top: 273px;
   margin-left: 22px;
+  margin-top: 60px;
 }
 
-.noAuthorRightBoxWrapper {
-  @extend .rightBoxWrapper;
-
-  margin-top: 60px;
+.rightBoxWrapper {
+  @extend .noAuthorRightBoxWrapper;
+  margin-top: 273px;
 }
 
 .searchSummary {

@@ -252,9 +252,9 @@ const SearchContainer: React.FC<Props> = props => {
         </div>
         <div
           className={classNames({
-            [styles.rightBoxWrapper]: true,
-            [styles.noAuthorRightBoxWrapper]:
-              articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements === 0,
+            [styles.noAuthorRightBoxWrapper]: true,
+            [styles.rightBoxWrapper]:
+              articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements > 0,
           })}
         >
           {!currentUserState.isLoggedIn && <SignBanner isLoading={articleSearchState.isContentLoading} />}
