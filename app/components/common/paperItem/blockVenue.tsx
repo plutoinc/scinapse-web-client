@@ -7,6 +7,7 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { Journal } from '../../../model/journal';
 import Icon from '../../../icons';
 import { withStyles } from '../../../helpers/withStylesHelper';
+import JournalBadge from '../../journalBadge';
 const styles = require('./blockVenue.scss');
 
 interface BlockVenueProps {
@@ -67,18 +68,22 @@ const BlockVenue: React.FC<BlockVenueProps> = ({
         className={styles.journalContent}
       >
         {publishedAtNode}
-        {publishedAtNode && journal.title && <span>{`・`}</span>}
+        {publishedAtNode && journal.title && <span className={styles.middleDot}>{`·`}</span>}
         <span className={styles.journalTitle}>{journal.title}</span>
+        {journal.sci && <JournalBadge text="SCI" labelClassName={styles.journalBadge} />}
         {impactFactor}
       </Link>
     );
   }
 
   if (conferenceInstance && conferenceInstance.conferenceSeries && conferenceInstance.conferenceSeries.name) {
+    const title = conferenceInstance.conferenceSeries.nameAbbrev
+      ? `${conferenceInstance.conferenceSeries.nameAbbrev} (${conferenceInstance.conferenceSeries.name})`
+      : conferenceInstance.conferenceSeries.name;
     content = (
       <span className={styles.journalContent}>
         {publishedAtNode}
-        <span className={styles.venueNameReadonly}> in {conferenceInstance.conferenceSeries.name}</span>
+        <span className={styles.venueNameReadonly}> in {title}</span>
       </span>
     );
   }

@@ -1,5 +1,6 @@
 .wrapper {
-  margin-top: 8px;
+  display: flex;
+  align-items: center;
 }
 
 .journalIcon {
@@ -31,14 +32,20 @@
 }
 
 .journalContent {
-  display: inline-block;
-  vertical-align: top;
   font-size: 13px;
   line-height: 20px;
   color: $gray700;
 }
 
+.middleDot {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 4px;
+}
+
 .journalTitle {
+  @extend %one-line-overflow-ellipsis;
+  max-width: 565px;
   text-decoration: underline;
 
   &:hover {
@@ -48,10 +55,17 @@
 
 .ifLabel {
   display: inline-block;
-  font-size: 12px;
+  vertical-align: bottom;
+  font-size: 13px;
   text-align: center;
+  font-weight: 500;
   color: $main_blue0;
-  padding: 0 8px;
+  padding-left: 8px;
+  padding-right: 4px;
+}
+
+.journalBadge {
+  margin-left: 2px;
 }
 
 .arrowBottomTooltip {

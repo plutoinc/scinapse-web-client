@@ -3,6 +3,9 @@
   font-size: 14px;
 
   .author {
+    display: inline-block;
+    white-space: pre;
+    word-break: break-all;
     color: $gray700;
   }
 

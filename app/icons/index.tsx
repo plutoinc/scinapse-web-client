@@ -99,6 +99,7 @@ const ICONS: { [key: string]: any } = {
   SCINAPSE_IMPROVEMENT_LOGO: require('./scinapse-improvement-logo.svg').default,
   SOURCE: require('./source.svg').default,
   FILLED_STAR: require('./filled-star.svg').default,
+  STAR_BADGE: require('./star-badge.svg').default,
 };
 
 @withStyles<typeof Icon>(styles)
