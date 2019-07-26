@@ -1,20 +1,9 @@
 import { Test } from './abTest';
-import {
-  BROAD_AUTHOR_VENUE_TEST,
-  SOURCE_DOMAIN_TEST,
-  DUMMY_TEST,
-  FIGURE_TEST,
-  QUERY_LOVER_EXPERIMENT,
-} from './abTestGlobalValue';
+import { SOURCE_DOMAIN_TEST, DUMMY_TEST, FIGURE_TEST, QUERY_LOVER_EXPERIMENT } from './abTestGlobalValue';
 
 export const queryLover: Test = {
   name: QUERY_LOVER_EXPERIMENT,
   userGroup: [{ groupName: 'control', weight: 9 }, { groupName: 'queryLover', weight: 1 }],
-};
-
-export const broadAuthorVenue: Test = {
-  name: BROAD_AUTHOR_VENUE_TEST,
-  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'broadAuthorVenue', weight: 1 }],
 };
 
 export const dummy: Test = {
