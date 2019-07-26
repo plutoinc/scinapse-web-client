@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import { parse } from 'qs';
+import classNames from 'classnames';
 import NoSsr from '@material-ui/core/NoSsr';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
@@ -247,7 +248,13 @@ const SearchContainer: React.FC<Props> = props => {
           shouldShow={articleSearchState.page === 1 && SearchQueryManager.isFilterEmpty(filter)}
         />
         <SearchResult {...props} queryParams={queryParams} filter={filter} />
-        <div className={styles.rightBoxWrapper}>
+        <div
+          className={classNames({
+            [styles.rightBoxWrapper]: true,
+            [styles.noAuthorRightBoxWrapper]:
+              articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements === 0,
+          })}
+        >
           {!currentUserState.isLoggedIn && <SignBanner isLoading={articleSearchState.isContentLoading} />}
         </div>
       </div>

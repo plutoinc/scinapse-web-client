@@ -48,8 +48,14 @@
   max-width: 354px;
   height: 100%;
   flex-direction: column;
-  margin-top: 78px;
+  margin-top: 92px;
   margin-left: 22px;
+}
+
+.noAuthorRightBoxWrapper {
+  @extend .rightBoxWrapper;
+
+  margin-top: 60px;
 }
 
 .searchSummary {
