@@ -150,6 +150,10 @@
   }
 }
 
+.authorItemSectionWrapper {
+  @extend .innerContainer;
+}
+
 // content-like width
 @media (max-width: 1200px) {
   .rightBoxWrapper {
