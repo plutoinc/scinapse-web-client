@@ -9,10 +9,12 @@ const serverConfig = require('../../webpack.dev.server.config');
 const handlerConfig = require('../../webpack.dev.handler.config');
 
 const VERSION = new Date().toISOString();
-
+const escapedBranch = process.env.CIRCLE_BRANCH.replace('/', '-');
 clientConfig.output.publicPath = `${CDN_BASE_HOST}/${AWS_S3_DEV_FOLDER_PREFIX}/${
   process.env.CIRCLE_BRANCH
 }/${VERSION}/client/`;
+
+serverConfig.output.publicPath = `${CDN_BASE_HOST}/${AWS_S3_DEV_FOLDER_PREFIX}/${escapedBranch}/${VERSION}/server/`;
 
 function cleanArtifacts() {
   rimraf.sync(path.resolve(__dirname, '../../dist/client'));
@@ -35,7 +37,7 @@ function build() {
 
 async function buildAndUpload() {
   await build();
-  await uploadDevFiles();
+  await uploadDevFiles(VERSION);
   cleanArtifacts();
   fs.writeFileSync(`./${APP_DEST}/version`, VERSION);
 }

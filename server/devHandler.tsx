@@ -81,11 +81,7 @@ export const ssr = async (event: LambdaProxy.Event) => {
   console.log(`start to render ${branch} ${version}`);
 
   await getSources(branch, version, escapedBranch);
-  const localHome = fs.readdirSync(`/tmp/${escapedBranch}/${version}`);
-  console.log(localHome);
-  const serverHome = fs.readdirSync(`/tmp/${escapedBranch}/${version}/server`);
-  console.log(serverHome);
-  const bundle = require(`/tmp/${escapedBranch}/${version}/server/main.js`);
+  const bundle: any = __non_webpack_require__(`/tmp/${escapedBranch}/${version}/server/main.js`);
 
   try {
     const res = await bundle.ssr(event);
