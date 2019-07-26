@@ -241,13 +241,15 @@ const SearchContainer: React.FC<Props> = props => {
       <SearchHelmet query={queryParams.query || ''} />
       <TabNavigationBar searchKeyword={articleSearchState.searchInput} />
       <div className={styles.articleSearchContainer}>
-        <AuthorSearchResult
-          isLoading={articleSearchState.isContentLoading}
-          matchAuthors={articleSearchState.matchAuthors}
-          queryParams={queryParams}
-          shouldShow={articleSearchState.page === 1 && SearchQueryManager.isFilterEmpty(filter)}
-        />
-        <SearchResult {...props} queryParams={queryParams} filter={filter} />
+        <div>
+          <AuthorSearchResult
+            isLoading={articleSearchState.isContentLoading}
+            matchAuthors={articleSearchState.matchAuthors}
+            queryParams={queryParams}
+            shouldShow={articleSearchState.page === 1 && SearchQueryManager.isFilterEmpty(filter)}
+          />
+          <SearchResult {...props} queryParams={queryParams} filter={filter} />
+        </div>
         <div
           className={classNames({
             [styles.rightBoxWrapper]: true,
