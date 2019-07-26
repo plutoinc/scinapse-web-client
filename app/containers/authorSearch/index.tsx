@@ -133,7 +133,14 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
               {this.getPaginationComponent()}
             </div>
           </div>
-          <ImprovedFooter containerStyle={{ backgroundColor: 'white' }} />
+          <ImprovedFooter
+            containerStyle={{
+              position: 'absolute',
+              bottom: 0,
+              backgroundColor: 'white',
+              width: '100%',
+            }}
+          />
         </div>
       );
     } else {
