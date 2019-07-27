@@ -90,8 +90,11 @@ const handler = async (event: LambdaProxy.Event): Promise<LambdaProxy.Response> 
   }
 
   let version = '';
-  if (process.env.NODE_ENV === 'production') {
+  const branch = event.queryStringParameters && event.queryStringParameters.branch;
+  if (process.env.NODE_ENV === 'production' && !branch) {
     version = fs.readFileSync(path.resolve(__dirname, './version')).toString('utf8');
+  } else if (branch) {
+    version = fs.readFileSync(`./${branch.replace('/', '-')}`).toString();
   }
 
   const cookies = cookie.parse(headers.cookie || '');

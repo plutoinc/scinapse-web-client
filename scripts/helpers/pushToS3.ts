@@ -45,9 +45,9 @@ export async function uploadProdFiles() {
   });
 }
 
-export function uploadDevFiles() {
+export function uploadDevFiles(version: string) {
   return new Promise(async (resolve, reject) => {
-    const prefix = `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${process.env.CIRCLE_BRANCH}`;
+    const prefix = `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${process.env.CIRCLE_BRANCH}/${version}`;
     const cacheControl = "public, max-age=0";
 
     const listRes = await awsS3.listObjects({ Bucket: DeployConfig.AWS_S3_BUCKET, Prefix: prefix }).promise();

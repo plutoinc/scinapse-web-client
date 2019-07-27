@@ -143,11 +143,6 @@ class PlutoRenderer {
         page: window.location.pathname + window.location.search,
       });
       ReactGA.pageview(window.location.pathname + window.location.search);
-      if (typeof (window as any).__performance__track__list !== 'undefined') {
-        (window as any).__performance__track__list.forEach((perfObj: any) => {
-          ReactGA.ga()('send', 'event', perfObj);
-        });
-      }
     }
   }
 
