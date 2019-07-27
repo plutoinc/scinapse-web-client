@@ -70,13 +70,14 @@ async function getSources(branch: string, version: string, escapedBranch: string
 
 export const ssr = async (event: LambdaProxy.Event) => {
   const branch = event.queryStringParameters && event.queryStringParameters.branch;
-  const version = fs.readFileSync('./version').toString();
-
   if (!branch) throw new Error('missing branch queryParams flag');
+
+  const escapedBranch = branch.replace('/', '-');
+  const version = fs.readFileSync(`./${escapedBranch }`).toString();
+
   if (!version) throw new Error('missing version flag');
 
   // NOTE: If / isn't escaped, it can be treated as path
-  const escapedBranch = branch.replace('/', '-');
 
   console.log(`start to render ${branch} ${version}`);
 

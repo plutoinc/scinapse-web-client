@@ -38,16 +38,17 @@ function build() {
 async function buildAndUpload() {
   await build();
   await uploadDevFiles(VERSION);
+  fs.writeFileSync(`${APP_DEST}${escapedBranch}`, VERSION);
   cleanArtifacts();
-  fs.writeFileSync(`./${APP_DEST}/version`, VERSION);
 }
 
 buildAndUpload()
   .then(() => {
     console.log('DONE');
   })
-  .catch(_err => {
+  .catch(err => {
     console.log('================================================================================');
+    console.log(err);
     console.log('WARNING!');
     console.log('FAILED TO BUILD SOURCES!');
     console.log('================================================================================');
