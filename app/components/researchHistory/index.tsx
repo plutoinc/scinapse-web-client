@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { groupBy } from 'lodash';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import * as format from 'date-fns/format';
 import * as isToday from 'date-fns/is_today';
 import * as classNames from 'classnames';
 import { withStyles } from '../../helpers/withStylesHelper';
@@ -34,7 +35,7 @@ function aggregatedHistoryPaper(rawPapers: HistoryPaper[]) {
   if (rawPapers.length === 0) return null;
   const rawAggregatedPapers: AggregatedPaper[] = rawPapers.map(rawPaper => {
     const date = new Date(rawPaper.savedAt);
-    const dateStr = date.toDateString();
+    const dateStr = format(date, 'D, MMM, YYYY');
     return { aggregatedDate: dateStr, historyPaper: rawPaper };
   });
   const aggregatedPapers = groupBy(rawAggregatedPapers, rawAggregatedPapers => rawAggregatedPapers.aggregatedDate);
@@ -94,7 +95,7 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper,
       {aggregatedDates && aggregatedDates.length > 0 ? (
         aggregatedDates.map((date, i) => {
           const today = new Date();
-          const finalDate = today.toDateString() === date ? 'Today' : date;
+          const finalDate = format(today, 'D, MMM, YYYY') === date ? 'Today' : date;
           const contents = aggregatedPapers[date].map((paper: AggregatedPaper) => (
             <RelatedPaperItem
               key={paper.historyPaper.id}
