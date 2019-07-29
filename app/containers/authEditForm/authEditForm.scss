@@ -1,24 +1,30 @@
 @import '../userSettings/userSettings';
 
 .title {
+  font-size: 24px;
   font-weight: 600;
   line-height: 1.83;
   letter-spacing: -0.67px;
-  font-size: 24px;
   color: $black0;
   margin-bottom: 24px;
 }
 
-.formRow {
-  display: flex;
+.formLabel {
+  @extend %base-label;
+}
+
+.fieldWrapper + .fieldWrapper {
+  margin-top: 20px;
 }
 
 .formWrapper + .formWrapper {
-  margin-left: 21px;
+  margin-top: 36px;
 }
 
 .inputForm {
   @extend %base-input-style;
+  flex: 1;
+  min-width: 424px;
 
   &:disabled {
     background-color: transparent;
@@ -27,18 +33,38 @@
   }
 }
 
-.formLabel {
-  @extend %base-label;
+.readOnlyInput {
+  @extend %base-input-style;
+
+  flex: 1;
+  background-color: $gray100;
+  color: $gray500;
+  border-color: $gray400;
+
+  &:hover {
+    border-color: inherit;
+  }
 }
 
-.editButton {
+.toggleButton {
   @extend %base-form-button;
-
   border: solid 1px $gray500;
+  margin-left: 8px;
 
   &:hover {
     background-color: $gray30;
   }
+}
+
+.emailFieldWrapper {
+  display: flex;
+}
+
+.errorMsg {
+  font-family: $fallback;
+  font-size: 13px;
+  color: $red0;
+  margin: 8px 0 0 8px;
 }
 
 .submitButton {
@@ -46,6 +72,7 @@
 
   background-color: $main_blue0;
   color: white;
+  margin-top: 28px;
 
   &:hover {
     background-color: $main_blue1;
@@ -56,23 +83,4 @@
     background-color: $gray50;
     opacity: 0.9;
   }
-}
-
-.affiliationFormWrapper {
-  margin-top: 44px;
-  margin-bottom: 36px;
-}
-
-.errorMsg {
-  font-family: $fallback;
-  font-size: 13px;
-  color: $red0;
-  margin: 8px 0 0 8px;
-}
-
-.affiliationErrorMsg {
-  font-family: $fallback;
-  font-size: 13px;
-  color: $red0;
-  margin-top: 8px;
 }

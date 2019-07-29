@@ -9,6 +9,11 @@ export interface SignUpWithEmailParams {
   affiliation: string;
 }
 
+export interface ChangePasswordParams {
+  oldPassword: string;
+  newPassword: string;
+}
+
 export interface UpdateUserInformationParams {
   firstName: string;
   lastName: string;

@@ -1114,6 +1114,11 @@ interface SucceedCheckAuthStatusAction {
   };
 }
 
+export interface AlertAction {
+  type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION;
+  payload: Scinapse.Alert.NotificationActionPayload;
+}
+
 export type AuthActions = SucceedCheckAuthStatusAction;
 
 export type SearchActions =

@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Field, Form, Formik } from 'formik';
 import { Affiliation } from '../../model/affiliation';
@@ -10,6 +9,7 @@ import { withStyles } from '../../helpers/withStylesHelper';
 import { AppState } from '../../reducers';
 import { updateUserProfile } from '../../actions/auth';
 import { AuthActions } from '../../actions/actionTypes';
+import { ThunkDispatch } from 'redux-thunk';
 
 const s = require('./profileForm.scss');
 
@@ -62,7 +62,7 @@ const ErrorMessage: React.FC<{ errorMsg?: string }> = ({ errorMsg }) => {
 };
 
 interface ProfileFormContainerProps {
-  dispatch: Dispatch<AuthActions>;
+  dispatch: ThunkDispatch<{}, {}, AuthActions>;
 }
 const ProfileFormContainer: React.FC<ProfileFormContainerProps & ReturnType<typeof mapStateToProps>> = ({
   currentUser,
@@ -79,107 +79,115 @@ const ProfileFormContainer: React.FC<ProfileFormContainerProps & ReturnType<type
       affiliation = { id: affiliation.affiliationId, name: affiliation.keyword, nameAbbrev: '' };
     }
 
-    setIsLoading(true);
-    // TODO: Change any type
-    await dispatch(updateUserProfile({
-      firstName: values.firstName,
-      lastName: values.lastName,
-      affiliation: affiliation,
-    }) as any);
-
-    setIsLoading(false);
-    setEditMode(false);
+    try {
+      setIsLoading(true);
+      await dispatch(
+        updateUserProfile({
+          firstName: values.firstName,
+          lastName: values.lastName,
+          affiliation: affiliation,
+        })
+      );
+      setIsLoading(false);
+      setEditMode(false);
+    } catch (err) {
+      setIsLoading(false);
+      window.alert('Sorry. we had an error to update your profile.');
+    }
   }
 
   return (
-    <Formik
-      initialValues={{
-        firstName: currentUser.firstName,
-        lastName: currentUser.lastName,
-        affiliation: {
-          id: null,
-          name: currentUser.affiliation,
-          nameAbbrev: null,
-        },
-      }}
-      validate={validateForm}
-      onSubmit={handleSubmit}
-      validateOnChange={false}
-      render={({ errors, touched }) => {
-        let formButton = (
-          <div
-            className={s.editButton}
-            onClick={() => {
-              setEditMode(true);
-            }}
-          >
-            Edit Profile
-          </div>
-        );
-        if (editMode) {
-          formButton = (
-            <button
-              type="submit"
-              className={classNames({
-                [s.submitButton]: true,
-                [s.isLoading]: isLoading,
-              })}
+    <div>
+      <h1 className={s.title}>Profile</h1>
+      <Formik
+        initialValues={{
+          firstName: currentUser.firstName,
+          lastName: currentUser.lastName,
+          affiliation: {
+            id: null,
+            name: currentUser.affiliation,
+            nameAbbrev: null,
+          },
+        }}
+        validate={validateForm}
+        onSubmit={handleSubmit}
+        validateOnChange={false}
+        render={({ errors, touched }) => {
+          let formButton = (
+            <div
+              className={s.editButton}
+              onClick={() => {
+                setEditMode(true);
+              }}
             >
-              Save changes
-            </button>
+              Edit Profile
+            </div>
           );
-        }
-
-        return (
-          <Form>
-            <div className={s.formRow}>
-              <div className={s.formWrapper}>
-                <label className={s.formLabel}>FIRST NAME</label>
-                <Field
-                  className={classNames({
-                    [s.inputForm]: true,
-                    [s.hasError]: !!errors.firstName && touched.firstName,
-                  })}
-                  name="firstName"
-                  placeholder="First Name"
-                  disabled={!editMode}
-                />
-                <ErrorMessage errorMsg={errors.firstName} />
-              </div>
-              <div className={s.formWrapper}>
-                <label className={s.formLabel}>LAST NAME</label>
-                <Field
-                  className={classNames({
-                    [s.inputForm]: true,
-                    [s.hasError]: !!errors.lastName && touched.lastName,
-                  })}
-                  name="lastName"
-                  placeholder="Last Name"
-                  disabled={!editMode}
-                />
-                <ErrorMessage errorMsg={errors.lastName} />
-              </div>
-            </div>
-            <div className={s.affiliationFormWrapper}>
-              <label className={s.formLabel}>AFFILIATION / COMPANY</label>
-              <Field
-                name="affiliation"
-                component={AffiliationSelectBox}
-                placeholder="Affiliation / Company"
+          if (editMode) {
+            formButton = (
+              <button
+                type="submit"
                 className={classNames({
-                  [s.inputForm]: true,
-                  [s.hasError]: !!errors.affiliation && !!touched.affiliation,
+                  [s.submitButton]: true,
+                  [s.isLoading]: isLoading,
                 })}
-                errorWrapperClassName={s.affiliationErrorMsg}
-                disabled={!editMode}
-                format={formatAffiliation}
-              />
-            </div>
-            {formButton}
-          </Form>
-        );
-      }}
-    />
+              >
+                Save changes
+              </button>
+            );
+          }
+
+          return (
+            <Form>
+              <div className={s.formRow}>
+                <div className={s.formWrapper}>
+                  <label className={s.formLabel}>FIRST NAME</label>
+                  <Field
+                    className={classNames({
+                      [s.inputForm]: true,
+                      [s.hasError]: !!errors.firstName && touched.firstName,
+                    })}
+                    name="firstName"
+                    placeholder="First Name"
+                    disabled={!editMode}
+                  />
+                  <ErrorMessage errorMsg={errors.firstName} />
+                </div>
+                <div className={s.formWrapper}>
+                  <label className={s.formLabel}>LAST NAME</label>
+                  <Field
+                    className={classNames({
+                      [s.inputForm]: true,
+                      [s.hasError]: !!errors.lastName && touched.lastName,
+                    })}
+                    name="lastName"
+                    placeholder="Last Name"
+                    disabled={!editMode}
+                  />
+                  <ErrorMessage errorMsg={errors.lastName} />
+                </div>
+              </div>
+              <div className={s.affiliationFormWrapper}>
+                <label className={s.formLabel}>AFFILIATION / COMPANY</label>
+                <Field
+                  name="affiliation"
+                  component={AffiliationSelectBox}
+                  placeholder="Affiliation / Company"
+                  className={classNames({
+                    [s.inputForm]: true,
+                    [s.hasError]: !!errors.affiliation && !!touched.affiliation,
+                  })}
+                  errorWrapperClassName={s.affiliationErrorMsg}
+                  disabled={!editMode}
+                  format={formatAffiliation}
+                />
+              </div>
+              {formButton}
+            </Form>
+          );
+        }}
+      />
+    </div>
   );
 };
 

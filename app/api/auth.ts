@@ -14,6 +14,7 @@ import {
   OAUTH_VENDOR,
   OAuthCheckResult,
   UpdateUserInformationParams,
+  ChangePasswordParams,
 } from './types/auth';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
@@ -132,6 +133,15 @@ class AuthAPI extends PlutoAxios {
       affiliation_name: params.affiliation.name,
       firstName: params.firstName,
       lastName: params.lastName,
+    });
+
+    return camelCaseKeys(res.data);
+  }
+
+  public async changePassword({ oldPassword, newPassword }: ChangePasswordParams) {
+    const res = await this.put('/members/me/password', {
+      old_password: oldPassword,
+      new_password: newPassword,
     });
 
     return camelCaseKeys(res.data);
