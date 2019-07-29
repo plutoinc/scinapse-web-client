@@ -1,5 +1,5 @@
 %base-form-button {
-  padding: 16px;
+  padding: 8px 16px;
   border-radius: 4px;
   font-size: 14px;
   font-weight: 500;
@@ -22,11 +22,12 @@
   font-size: 15px;
   line-height: 1.6;
   letter-spacing: -0.23px;
-  color: #000000;
+  color: $black0;
   width: 278px;
   padding: 10px 12px;
   border-radius: 4px;
   border: solid 1px $gray500;
+  cursor: text;
 
   &:hover,
   &:focus {
@@ -36,6 +37,7 @@
   &:disabled {
     background-color: transparent;
     border-color: $gray400;
+    color: $gray700;
   }
 
   &.hasError {
@@ -85,4 +87,11 @@
   font-size: 13px;
   color: $red0;
   margin: 8px 0 0 8px;
+}
+
+.affiliationErrorMsg {
+  font-family: $fallback;
+  font-size: 13px;
+  color: $red0;
+  margin-top: 8px;
 }

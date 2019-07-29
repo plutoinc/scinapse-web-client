@@ -11,12 +11,30 @@ import { AppState } from '../../reducers';
 
 const s = require('./profileForm.scss');
 
-const validateEmptyField = (value: string) => {
-  let errorMessage;
-  if (!value) {
-    errorMessage = 'Please fill this field';
+interface ProfileFormValues {
+  firstName: string;
+  lastName: string;
+  affiliation: Affiliation;
+}
+
+type ProfileFormErrors = { [K in keyof ProfileFormValues]: string };
+
+const validateForm = (values: ProfileFormValues) => {
+  const errors: Partial<ProfileFormErrors> = {};
+
+  if (!values.firstName) {
+    errors.firstName = 'Please enter your first name';
   }
-  return errorMessage;
+
+  if (!values.lastName) {
+    errors.lastName = 'Please enter your last name';
+  }
+
+  if (!values.affiliation || !values.affiliation.name) {
+    errors.affiliation = 'Please enter your affiliation';
+  }
+
+  return errors;
 };
 
 function formatAffiliation(value?: Affiliation | SuggestAffiliation | string) {
@@ -33,12 +51,6 @@ const ErrorMessage: React.FC<{ errorMsg?: string }> = ({ errorMsg }) => {
 
   return <div className={s.errorMsg}>{errorMsg}</div>;
 };
-
-interface ProfileFormValues {
-  firstName: string;
-  lastName: string;
-  affiliation: Affiliation;
-}
 
 interface ProfileFormProps {
   firstName: string;
@@ -64,6 +76,7 @@ const ProfileForm: React.FC<ProfileFormProps> = React.memo(props => {
           nameAbbrev: null,
         },
       }}
+      validate={validateForm}
       onSubmit={handleSubmit}
       validateOnChange={false}
       render={({ errors, touched }) => {
@@ -94,7 +107,6 @@ const ProfileForm: React.FC<ProfileFormProps> = React.memo(props => {
               <div className={s.formWrapper}>
                 <label className={s.formLabel}>FIRST NAME</label>
                 <Field
-                  validate={validateEmptyField}
                   className={classNames({
                     [s.inputForm]: true,
                     [s.hasError]: !!errors.firstName && touched.firstName,
@@ -108,7 +120,6 @@ const ProfileForm: React.FC<ProfileFormProps> = React.memo(props => {
               <div className={s.formWrapper}>
                 <label className={s.formLabel}>LAST NAME</label>
                 <Field
-                  validate={validateEmptyField}
                   className={classNames({
                     [s.inputForm]: true,
                     [s.hasError]: !!errors.lastName && touched.lastName,
@@ -130,10 +141,10 @@ const ProfileForm: React.FC<ProfileFormProps> = React.memo(props => {
                   [s.inputForm]: true,
                   [s.hasError]: !!errors.affiliation && !!touched.affiliation,
                 })}
+                errorWrapperClassName={s.affiliationErrorMsg}
                 disabled={!editMode}
                 format={formatAffiliation}
               />
-              {/*<ErrorMessage errorMsg={errors.affiliation} />*/}
             </div>
             {formButton}
           </Form>

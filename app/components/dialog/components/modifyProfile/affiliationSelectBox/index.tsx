@@ -15,6 +15,7 @@ const styles = require('./affiliationSelectBox.scss');
 interface AffiliationSelectBoxProps extends FieldProps {
   className: string;
   disabled?: boolean;
+  errorWrapperClassName: string;
 }
 
 interface AffiliationSelectBoxState {
@@ -49,7 +50,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
   }
 
   public render() {
-    const { field, form, className, disabled } = this.props;
+    const { field, form, className, disabled, errorWrapperClassName } = this.props;
     const { touched, errors } = form;
     const { availableAffiliations } = this.state;
     const rawFieldValue = field.value as Affiliation | SuggestAffiliation | string;
@@ -92,7 +93,17 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
               <Icon icon="X_BUTTON" className={styles.deleteIcon} onClick={this.handleClickDeleteButton} />
             }
           />
-          {touched && error && <div className={styles.errorMessage}>{error}</div>}
+          {touched &&
+            error && (
+              <div
+                className={classNames({
+                  [styles.errorMessage]: !errorWrapperClassName,
+                  [errorWrapperClassName]: !!errorWrapperClassName,
+                })}
+              >
+                {error}
+              </div>
+            )}
         </div>
       </div>
     );
