@@ -31,15 +31,16 @@ interface ResearchHistoryProps extends RouteComponentProps<any> {
   isLoggedIn: boolean;
 }
 
-function aggregatedHistoryPaper(rawPapers: HistoryPaper[]) {
+function getAggregatedHistoryPapers(rawPapers: HistoryPaper[]) {
   if (rawPapers.length === 0) return null;
-  const rawAggregatedPapers: AggregatedPaper[] = rawPapers.map(rawPaper => {
-    const date = new Date(rawPaper.savedAt);
-    const dateStr = format(date, 'D, MMM, YYYY');
+
+  const aggregatedPapers: AggregatedPaper[] = rawPapers.map(rawPaper => {
+    const dateStr = format(rawPaper.savedAt, 'D, MMM, YYYY');
     return { aggregatedDate: dateStr, historyPaper: rawPaper };
   });
-  const aggregatedPapers = groupBy(rawAggregatedPapers, rawAggregatedPapers => rawAggregatedPapers.aggregatedDate);
-  return aggregatedPapers;
+
+  const finalAggregatedPapers = groupBy(aggregatedPapers, aggregatedPapers => aggregatedPapers.aggregatedDate);
+  return finalAggregatedPapers;
 }
 
 const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper, isLoggedIn, location }) => {
@@ -51,8 +52,9 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper,
   React.useEffect(
     () => {
       if (isLoggedIn) {
-        setPapers(store.get(RESEARCH_HISTORY_KEY) || []);
-        setAggregatedPapers(aggregatedHistoryPaper(store.get(RESEARCH_HISTORY_KEY) || []));
+        const historyPapers = store.get(RESEARCH_HISTORY_KEY) || [];
+        setPapers(historyPapers);
+        setAggregatedPapers(getAggregatedHistoryPapers(historyPapers));
       }
     },
     [isLoggedIn]
@@ -81,7 +83,7 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper,
             : [newPaper, ...oldPapers].slice(0, MAXIMUM_COUNT);
         store.set(RESEARCH_HISTORY_KEY, newPapers);
         setPapers(newPapers);
-        setAggregatedPapers(aggregatedHistoryPaper(newPapers));
+        setAggregatedPapers(getAggregatedHistoryPapers(newPapers));
       }
     },
     [paper]
@@ -89,14 +91,16 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper,
 
   const todayPapers = papers.filter(p => p.savedAt && isToday(p.savedAt));
   const countBtn = todayPapers.length === 0 ? null : <div className={s.countBtn}>{todayPapers.length}</div>;
+
   const aggregatedDates = aggregatedPapers && Object.keys(aggregatedPapers);
+
   const innerContent = (
     <div className={s.paperListWrapper}>
       {aggregatedDates && aggregatedDates.length > 0 ? (
         aggregatedDates.map((date, i) => {
-          const today = new Date();
-          const finalDate = format(today, 'D, MMM, YYYY') === date ? 'Today' : date;
-          const contents = aggregatedPapers[date].map((paper: AggregatedPaper) => (
+          const finalDate = isToday(new Date(date)) ? 'Today' : date;
+
+          const historyPapersContent = aggregatedPapers[date].map((paper: AggregatedPaper) => (
             <RelatedPaperItem
               key={paper.historyPaper.id}
               paper={paper.historyPaper}
@@ -108,7 +112,7 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper,
           return (
             <div className={s.historyItemWrapper} key={i}>
               <div className={s.dayLabel}>{finalDate}</div>
-              {contents}
+              {historyPapersContent}
             </div>
           );
         })
