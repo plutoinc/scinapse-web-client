@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { groupBy } from 'lodash';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import * as isToday from 'date-fns/is_today';
 import * as classNames from 'classnames';
@@ -19,20 +20,38 @@ export interface HistoryPaper extends Paper {
   savedAt: number; // Unix time
 }
 
+interface AggregatedPaper {
+  aggregatedDate: string;
+  historyPaper: HistoryPaper;
+}
+
 interface ResearchHistoryProps extends RouteComponentProps<any> {
   paper: Paper | undefined;
   isLoggedIn: boolean;
 }
 
+function aggregatedHistoryPaper(rawPapers: HistoryPaper[]) {
+  if (rawPapers.length === 0) return null;
+  const rawAggregatedPapers: AggregatedPaper[] = rawPapers.map(rawPaper => {
+    const date = new Date(rawPaper.savedAt);
+    const dateStr = date.toDateString();
+    return { aggregatedDate: dateStr, historyPaper: rawPaper };
+  });
+  const aggregatedPapers = groupBy(rawAggregatedPapers, rawAggregatedPapers => rawAggregatedPapers.aggregatedDate);
+  return aggregatedPapers;
+}
+
 const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper, isLoggedIn, location }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [papers, setPapers] = React.useState<HistoryPaper[]>([]);
+  const [aggregatedPapers, setAggregatedPapers] = React.useState();
   const currentLocation = React.useRef(location);
 
   React.useEffect(
     () => {
       if (isLoggedIn) {
         setPapers(store.get(RESEARCH_HISTORY_KEY) || []);
+        setAggregatedPapers(aggregatedHistoryPaper(store.get(RESEARCH_HISTORY_KEY) || []));
       }
     },
     [isLoggedIn]
@@ -61,6 +80,7 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper,
             : [newPaper, ...oldPapers].slice(0, MAXIMUM_COUNT);
         store.set(RESEARCH_HISTORY_KEY, newPapers);
         setPapers(newPapers);
+        setAggregatedPapers(aggregatedHistoryPaper(newPapers));
       }
     },
     [paper]
@@ -68,10 +88,29 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper,
 
   const todayPapers = papers.filter(p => p.savedAt && isToday(p.savedAt));
   const countBtn = todayPapers.length === 0 ? null : <div className={s.countBtn}>{todayPapers.length}</div>;
+  const aggregatedDates = aggregatedPapers && Object.keys(aggregatedPapers);
   const innerContent = (
     <div className={s.paperListWrapper}>
-      {papers.length > 0 ? (
-        papers.map(p => <RelatedPaperItem key={p.id} paper={p} actionArea="researchHistory" disableVisitedColour />)
+      {aggregatedDates && aggregatedDates.length > 0 ? (
+        aggregatedDates.map((date, i) => {
+          const today = new Date();
+          const finalDate = today.toDateString() === date ? 'Today' : date;
+          const contents = aggregatedPapers[date].map((paper: AggregatedPaper) => (
+            <RelatedPaperItem
+              key={paper.historyPaper.id}
+              paper={paper.historyPaper}
+              actionArea="researchHistory"
+              disableVisitedColour
+            />
+          ));
+
+          return (
+            <div className={s.historyItemWrapper} key={i}>
+              <div className={s.dayLabel}>{finalDate}</div>
+              {contents}
+            </div>
+          );
+        })
       ) : (
         <span className={s.noHistoryContext}>Browse Scinapse! Your research history will be here.</span>
       )}

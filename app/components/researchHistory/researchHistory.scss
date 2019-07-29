@@ -80,3 +80,19 @@
   color: $gray600;
   line-height: 2;
 }
+
+.historyItemWrapper {
+  margin-top: 8px;
+
+  & + & {
+    margin-top: 48px;
+  }
+}
+
+.dayLabel {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #efefef;
+  padding-bottom: 8px;
+}
