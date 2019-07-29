@@ -5,22 +5,22 @@ import { Formik, Form, Field, FormikErrors } from 'formik';
 import AuthAPI from '../../../../../api/auth';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
 import AuthInputBox from '../../../../common/inputBox/authInputBox';
-import { OAUTH_VENDOR } from '../../../../../api/types/auth';
+import { OAUTH_VENDOR, SignInResult } from '../../../../../api/types/auth';
 import AuthButton from '../../../authButton';
 import GoogleAuthButton from '../../../authButton/googleAuthButton';
 import ORSeparator from '../../../separator';
 import AuthTabs from '../../../authTabs';
 import validateEmail from '../../../../../helpers/validateEmail';
 import { GLOBAL_DIALOG_TYPE, DialogState } from '../../../../dialog/reducer';
-import { debouncedCheckDuplicate } from '../../helpers/checkDuplicateEmail';
 import AuthGuideContext from '../../../authGuideContext';
 import AuthContextText from '../../../authContextText';
 import { closeDialog } from '../../../../dialog/actions';
-import { handleClickORCIDBtn } from '../../actions';
-import { signInWithSocial } from '../../../signIn/actions';
+import { handleClickORCIDBtn, checkDuplicatedEmail } from '../../actions';
+import { signInWithSocial, signInWithEmail } from '../../../signIn/actions';
 import { AppState } from '../../../../../reducers';
 import ActionTicketManager from '../../../../../helpers/actionTicketManager';
 import useFBIsLoading from '../../../../../hooks/FBisLoadingHook';
+import { getCollections } from '../../../../collections/actions';
 const s = require('./firstForm.scss');
 
 declare var FB: any;
@@ -46,7 +46,46 @@ export const oAuthBtnBaseStyle: React.CSSProperties = { position: 'relative', fo
 const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
   const { dispatch, dialogState } = props;
   const [isLoading, setIsLoading] = React.useState(false);
+  const [networkError, setNetworkError] = React.useState('');
   const FBIsLoading = useFBIsLoading();
+
+  async function onSubmit(values: FormValues) {
+    const { email, password } = values;
+    const duplicatedEmail = await checkDuplicatedEmail(email);
+
+    if (!duplicatedEmail) return props.onSubmit(values);
+
+    try {
+      setIsLoading(true);
+      const res: SignInResult = await signInWithEmail({ email, password }, true)(props.dispatch);
+      const authContext = props.dialogState.authContext;
+      if (authContext) {
+        let actionLabel: string | null = authContext.expName || authContext.actionLabel;
+
+        if (!actionLabel) {
+          actionLabel = 'topBar';
+        }
+
+        ActionTicketManager.trackTicket({
+          pageType: authContext.pageType,
+          actionType: 'fire',
+          actionArea: authContext.actionArea,
+          actionTag: 'signIn',
+          actionLabel,
+          expName: authContext.expName,
+        });
+      }
+      if (res.member) {
+        await props.dispatch(getCollections(res.member.id));
+      }
+      setIsLoading(false);
+
+      props.dispatch(closeDialog());
+    } catch (err) {
+      setIsLoading(false);
+      setNetworkError('Your already sign up. Please checked password.');
+    }
+  }
 
   function handleClickFBLogin() {
     FB.login(async (res: any) => {
@@ -85,16 +124,8 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
     const errors: FormikErrors<FormValues> = {};
     const { email, password } = values;
 
-    if (!validateEmail(values.email)) {
+    if (!validateEmail(email)) {
       errors.email = 'Please enter a valid email address';
-    }
-
-    setIsLoading(true);
-    const errorMsg = await debouncedCheckDuplicate(email);
-    setIsLoading(false);
-
-    if (errorMsg) {
-      errors.email = errorMsg;
     }
 
     if (password.length < 8) {
@@ -116,7 +147,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
           <div className={s.formWrapper}>
             <Formik
               initialValues={{ email: '', password: '' }}
-              onSubmit={props.onSubmit}
+              onSubmit={onSubmit}
               validate={validateForm}
               render={() => {
                 return (
@@ -135,6 +166,8 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
                       placeholder="Password"
                       iconName="PASSWORD_ICON"
                     />
+                    {networkError && <div className={s.errorContent}>{networkError}</div>}
+
                     <AuthButton
                       type="submit"
                       isLoading={isLoading}

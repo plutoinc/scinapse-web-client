@@ -11,7 +11,6 @@
   position: relative;
   max-width: $container_width;
   display: flex;
-  flex-wrap: wrap;
 
   .innerContainer {
     flex: $search_container_width;
@@ -42,14 +41,19 @@
   }
 }
 
-.rightBoxWrapper {
+.noAuthorRightBoxWrapper {
   display: flex;
   flex: 1 1;
   max-width: 354px;
   height: 100%;
   flex-direction: column;
-  margin-top: 78px;
   margin-left: 22px;
+  margin-top: 60px;
+}
+
+.rightBoxWrapper {
+  @extend .noAuthorRightBoxWrapper;
+  margin-top: 273px;
 }
 
 .searchSummary {
@@ -148,6 +152,10 @@
       cursor: pointer;
     }
   }
+}
+
+.authorItemSectionWrapper {
+  @extend .innerContainer;
 }
 
 // content-like width

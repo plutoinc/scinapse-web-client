@@ -100,6 +100,7 @@ const ICONS: { [key: string]: any } = {
   SOURCE: require('./source.svg').default,
   FILLED_STAR: require('./filled-star.svg').default,
   SHARE: require('./share.svg').default,
+  STAR_BADGE: require('./star-badge.svg').default,
 };
 
 @withStyles<typeof Icon>(styles)

@@ -264,6 +264,7 @@ export const ActionCreators = {
     nextSignUpStep?: string;
     paperFigures?: PaperFigure[];
     currentPaperFigureIndex?: number;
+    viewDetailFigureTargetPaperId?: number;
   }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
   },
