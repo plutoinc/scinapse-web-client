@@ -8,16 +8,22 @@ import { SuggestAffiliation } from '../../api/suggest';
 import AffiliationSelectBox from '../../components/dialog/components/modifyProfile/affiliationSelectBox';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { AppState } from '../../reducers';
+import { updateUserProfile } from '../../actions/auth';
+import { AuthActions } from '../../actions/actionTypes';
 
 const s = require('./profileForm.scss');
 
 interface ProfileFormValues {
   firstName: string;
   lastName: string;
-  affiliation: Affiliation;
+  affiliation: Affiliation | SuggestAffiliation;
 }
 
 type ProfileFormErrors = { [K in keyof ProfileFormValues]: string };
+
+function isSuggestedAffiliation(affiliation: Affiliation | SuggestAffiliation): affiliation is SuggestAffiliation {
+  return !!(affiliation as SuggestAffiliation).keyword;
+}
 
 const validateForm = (values: ProfileFormValues) => {
   const errors: Partial<ProfileFormErrors> = {};
@@ -30,7 +36,10 @@ const validateForm = (values: ProfileFormValues) => {
     errors.lastName = 'Please enter your last name';
   }
 
-  if (!values.affiliation || !values.affiliation.name) {
+  if (
+    !values.affiliation ||
+    (!(values.affiliation as Affiliation).name && !(values.affiliation as SuggestAffiliation).keyword)
+  ) {
     errors.affiliation = 'Please enter your affiliation';
   }
 
@@ -52,27 +61,44 @@ const ErrorMessage: React.FC<{ errorMsg?: string }> = ({ errorMsg }) => {
   return <div className={s.errorMsg}>{errorMsg}</div>;
 };
 
-interface ProfileFormProps {
-  firstName: string;
-  lastName: string;
-  affiliation: string;
+interface ProfileFormContainerProps {
+  dispatch: Dispatch<AuthActions>;
 }
-const ProfileForm: React.FC<ProfileFormProps> = React.memo(props => {
-  // const [isLoading, setIsLoading] = React.useState(false);
+const ProfileFormContainer: React.FC<ProfileFormContainerProps & ReturnType<typeof mapStateToProps>> = ({
+  currentUser,
+  dispatch,
+}) => {
+  const [isLoading, setIsLoading] = React.useState(false);
   const [editMode, setEditMode] = React.useState(false);
 
-  function handleSubmit(values: ProfileFormValues) {
-    console.log(values);
+  if (!currentUser.isLoggedIn) return null;
+
+  async function handleSubmit(values: ProfileFormValues) {
+    let affiliation = values.affiliation;
+    if (isSuggestedAffiliation(affiliation)) {
+      affiliation = { id: affiliation.affiliationId, name: affiliation.keyword, nameAbbrev: '' };
+    }
+
+    setIsLoading(true);
+    // TODO: Change any type
+    await dispatch(updateUserProfile({
+      firstName: values.firstName,
+      lastName: values.lastName,
+      affiliation: affiliation,
+    }) as any);
+
+    setIsLoading(false);
+    setEditMode(false);
   }
 
   return (
     <Formik
       initialValues={{
-        firstName: props.firstName,
-        lastName: props.lastName,
+        firstName: currentUser.firstName,
+        lastName: currentUser.lastName,
         affiliation: {
           id: null,
-          name: props.affiliation,
+          name: currentUser.affiliation,
           nameAbbrev: null,
         },
       }}
@@ -81,25 +107,28 @@ const ProfileForm: React.FC<ProfileFormProps> = React.memo(props => {
       validateOnChange={false}
       render={({ errors, touched }) => {
         let formButton = (
-          <button
-            type="button"
+          <div
             className={s.editButton}
             onClick={() => {
               setEditMode(true);
             }}
           >
             Edit Profile
-          </button>
+          </div>
         );
         if (editMode) {
           formButton = (
-            <button type="submit" className={s.submitButton}>
+            <button
+              type="submit"
+              className={classNames({
+                [s.submitButton]: true,
+                [s.isLoading]: isLoading,
+              })}
+            >
               Save changes
             </button>
           );
         }
-
-        console.log(errors);
 
         return (
           <Form>
@@ -150,24 +179,6 @@ const ProfileForm: React.FC<ProfileFormProps> = React.memo(props => {
           </Form>
         );
       }}
-    />
-  );
-});
-
-interface ProfileFormContainerProps {
-  // TODO: change any to specific actions
-  dispatch: Dispatch<any>;
-}
-const ProfileFormContainer: React.FC<ProfileFormContainerProps & ReturnType<typeof mapStateToProps>> = ({
-  currentUser,
-}) => {
-  if (!currentUser.isLoggedIn) return null;
-
-  return (
-    <ProfileForm
-      firstName={currentUser.firstName}
-      lastName={currentUser.lastName || ''}
-      affiliation={currentUser.affiliation}
     />
   );
 };

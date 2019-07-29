@@ -16,6 +16,7 @@ import { FILTER_BUTTON_TYPE } from '../components/filterButton';
 import { FilterObject } from '../helpers/searchQueryManager';
 import { AggregationJournal } from '../model/aggregation';
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
+import { Member } from '../model/member';
 
 export enum ACTION_TYPES {
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = 'GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING',
@@ -1103,6 +1104,17 @@ interface AddJournalFilterItems {
 interface DisableAutoYearFilter {
   type: ACTION_TYPES.ARTICLE_SEARCH_DISABLE_AUTO_YEAR_FILTER;
 }
+
+interface SucceedCheckAuthStatusAction {
+  type: ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN;
+  payload: {
+    user: Member | null;
+    loggedIn: boolean;
+    oauthLoggedIn: boolean;
+  };
+}
+
+export type AuthActions = SucceedCheckAuthStatusAction;
 
 export type SearchActions =
   | SucceedToGetSearchResultAction

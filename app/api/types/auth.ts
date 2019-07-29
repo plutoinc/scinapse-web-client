@@ -1,4 +1,5 @@
 import { Member } from '../../model/member';
+import { Affiliation } from '../../model/affiliation';
 
 export interface SignUpWithEmailParams {
   email: string;
@@ -6,6 +7,12 @@ export interface SignUpWithEmailParams {
   firstName: string;
   lastName: string;
   affiliation: string;
+}
+
+export interface UpdateUserInformationParams {
+  firstName: string;
+  lastName: string;
+  affiliation: Affiliation;
 }
 
 export interface SignUpWithSocialParams {
