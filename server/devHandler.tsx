@@ -2,8 +2,10 @@ import * as AWS from 'aws-sdk';
 import * as https from 'https';
 import fs from 'fs';
 import * as DeployConfig from '../scripts/deploy/config';
+import { AWS_SSM_PARAM_STORE_NAME } from '../scripts/deploy/config';
 
 const s3 = new AWS.S3();
+const ssm = new AWS.SSM({ region: 'us-east-1' });
 
 AWS.config.update({
   region: 'us-east-1',
@@ -72,12 +74,23 @@ export const ssr = async (event: LambdaProxy.Event) => {
   const branch = event.queryStringParameters && event.queryStringParameters.branch;
   if (!branch) throw new Error('missing branch queryParams flag');
 
+  // NOTE: If branch name isn't escaped, it can be treated as path
   const escapedBranch = branch.replace('/', '-');
-  const version = fs.readFileSync(`./${escapedBranch }`).toString();
+  const globalParams = await ssm
+    .getParameter({
+      Name: AWS_SSM_PARAM_STORE_NAME,
+    })
+    .promise();
+
+  if (!globalParams.Parameter || !globalParams.Parameter.Value) {
+    throw new Error('No global parameters exist in AWS-SSM');
+  }
+  const currentBranchVersionString = globalParams.Parameter.Value;
+  const branchMap = JSON.parse(currentBranchVersionString);
+
+  const version = branchMap[escapedBranch];
 
   if (!version) throw new Error('missing version flag');
-
-  // NOTE: If / isn't escaped, it can be treated as path
 
   console.log(`start to render ${branch} ${version}`);
 

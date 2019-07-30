@@ -2,8 +2,7 @@ import * as AWS from 'aws-sdk';
 import * as webpack from 'webpack';
 import * as path from 'path';
 import * as rimraf from 'rimraf';
-import * as fs from 'fs';
-import { CDN_BASE_HOST, AWS_S3_DEV_FOLDER_PREFIX, APP_DEST } from '../deploy/config';
+import { CDN_BASE_HOST, AWS_S3_DEV_FOLDER_PREFIX, AWS_SSM_PARAM_STORE_NAME } from '../deploy/config';
 import { uploadDevFiles } from '../helpers/pushToS3';
 const clientConfig = require('../../webpack.dev.browser.config');
 const serverConfig = require('../../webpack.dev.server.config');
@@ -41,22 +40,21 @@ function build() {
 async function buildAndUpload() {
   await build();
   await uploadDevFiles(VERSION);
-  fs.writeFileSync(`${APP_DEST}${escapedBranch}`, VERSION);
 
   const globalParams = await ssm
     .getParameter({
-      Name: '/scinapse-web-client/dev/branch-mapper',
+      Name: AWS_SSM_PARAM_STORE_NAME,
     })
     .promise();
 
   if (!globalParams.Parameter) throw new Error('No global parameters exist in AWS-SSM');
+
   const currentBranchVersionString = globalParams.Parameter.Value;
   const branchMap = JSON.parse(currentBranchVersionString);
   const updatedBranchMap = { ...branchMap, [escapedBranch]: VERSION };
-
   await ssm
     .putParameter({
-      Name: '/scinapse-web-client/dev/branch-mapper',
+      Name: AWS_SSM_PARAM_STORE_NAME,
       Value: JSON.stringify(updatedBranchMap),
       Type: 'String',
       Overwrite: true,
