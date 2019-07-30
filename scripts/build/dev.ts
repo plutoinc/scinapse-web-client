@@ -1,3 +1,4 @@
+import * as AWS from 'aws-sdk';
 import * as webpack from 'webpack';
 import * as path from 'path';
 import * as rimraf from 'rimraf';
@@ -13,6 +14,8 @@ const escapedBranch = process.env.CIRCLE_BRANCH.replace('/', '-');
 clientConfig.output.publicPath = `${CDN_BASE_HOST}/${AWS_S3_DEV_FOLDER_PREFIX}/${
   process.env.CIRCLE_BRANCH
 }/${VERSION}/client/`;
+
+const ssm = new AWS.SSM({ region: 'us-east-1' });
 
 serverConfig.output.publicPath = `${CDN_BASE_HOST}/${AWS_S3_DEV_FOLDER_PREFIX}/${escapedBranch}/${VERSION}/server/`;
 
@@ -39,6 +42,26 @@ async function buildAndUpload() {
   await build();
   await uploadDevFiles(VERSION);
   fs.writeFileSync(`${APP_DEST}${escapedBranch}`, VERSION);
+
+  const globalParams = await ssm
+    .getParameter({
+      Name: '/scinapse-web-client/dev/branch-mapper',
+    })
+    .promise();
+
+  if (!globalParams.Parameter) throw new Error('No global parameters exist in AWS-SSM');
+  const currentBranchVersionString = globalParams.Parameter.Value;
+  const branchMap = JSON.parse(currentBranchVersionString);
+  const updatedBranchMap = { ...branchMap, [escapedBranch]: VERSION };
+
+  await ssm
+    .putParameter({
+      Name: '/scinapse-web-client/dev/branch-mapper',
+      Value: JSON.stringify(updatedBranchMap),
+      Type: 'String',
+      Overwrite: true,
+    })
+    .promise();
   cleanArtifacts();
 }
 
