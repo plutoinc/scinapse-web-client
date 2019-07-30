@@ -26,6 +26,8 @@ const handler = async (event: LambdaProxy.Event): Promise<LambdaProxy.Response> 
     headers[key.toLowerCase()] = event.headers[key];
   }
 
+  console.log(event.headers);
+
   if (SITEMAP_REGEX.test(pathname)) {
     const res = await getSitemap(pathname);
     return {
@@ -94,7 +96,8 @@ const handler = async (event: LambdaProxy.Event): Promise<LambdaProxy.Response> 
 
   let version = '';
   const branch = event.queryStringParameters && event.queryStringParameters.branch;
-  if (process.env.NODE_ENV === 'production' && !branch) {
+  console.log('currentBranch =', branch);
+  if (headers.host === 'scinapse.io') {
     version = fs.readFileSync(path.resolve(__dirname, './version')).toString('utf8');
   } else if (branch) {
     const escapedBranch = branch.replace('/', '-');

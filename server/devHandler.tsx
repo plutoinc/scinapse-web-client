@@ -101,6 +101,8 @@ export const ssr = async (event: LambdaProxy.Event) => {
     const res = await bundle.ssr(event);
     return res;
   } catch (err) {
+    console.log(err);
+    console.error(err);
     console.trace(err);
     return {
       statusCode: 500,
