@@ -197,8 +197,9 @@ export enum ACTION_TYPES {
   COLLECTION_SHOW_START_TO_GET_PAPERS = 'COLLECTION_SHOW_START_TO_GET_PAPERS',
   COLLECTION_SHOW_SUCCEEDED_GET_PAPERS = 'COLLECTION_SHOW_SUCCEEDED_GET_PAPERS',
   COLLECTION_SHOW_FAILED_TO_GET_PAPERS = 'COLLECTION_SHOW_FAILED_TO_GET_PAPERS',
-  COLLECTION_SHOW_OPEN_SHARE_DROPDOWN = 'COLLECTION_SHOW_OPEN_SHARE_DROPDOWN',
-  COLLECTION_SHOW_CLOSE_SHARE_DROPDOWN = 'COLLECTION_SHOW_CLOSE_SHARE_DROPDOWN',
+  COLLECTION_SHOW_CLEAR_SELECT_PAPER_ITEM = 'COLLECTION_SHOW_CLEAR_SELECT_PAPER_ITEM',
+  COLLECTION_SHOW_SELECT_PAPER_ITEM = 'COLLECTION_SHOW_SELECT_PAPER_ITEM',
+  COLLECTION_SHOW_SELECT_ALL_PAPER_ITEMS = 'COLLECTION_SHOW_SELECT_ALL_PAPER_ITEMS',
 
   JOURNAL_SHOW_START_TO_GET_JOURNAL = 'JOURNAL_SHOW_START_TO_GET_JOURNAL',
   JOURNAL_SHOW_SUCCEEDED_TO_GET_JOURNAL = 'JOURNAL_SHOW_SUCCEEDED_TO_GET_JOURNAL',
@@ -849,6 +850,18 @@ export const ActionCreators = {
     });
   },
 
+  clearToSelectedPaperInCollectionShow() {
+    return createAction({ type: ACTION_TYPES.COLLECTION_SHOW_CLEAR_SELECT_PAPER_ITEM });
+  },
+
+  selectToPaperInCollectionShow(payload: { paperId: number }) {
+    return createAction({ type: ACTION_TYPES.COLLECTION_SHOW_SELECT_PAPER_ITEM, payload });
+  },
+
+  selectToAllPapersInCollectionShow(payload: { paperIds: number[] }) {
+    return createAction({ type: ACTION_TYPES.COLLECTION_SHOW_SELECT_ALL_PAPER_ITEMS, payload });
+  },
+
   clearPaperShowState() {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE,
@@ -876,18 +889,6 @@ export const ActionCreators = {
   closeNoteDropdownInPaperShow() {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_CLOSE_NOTE_DROPDOWN,
-    });
-  },
-
-  openShareDropdownInCollectionShow() {
-    return createAction({
-      type: ACTION_TYPES.COLLECTION_SHOW_OPEN_SHARE_DROPDOWN,
-    });
-  },
-
-  closeShareDropdownInCollectionShow() {
-    return createAction({
-      type: ACTION_TYPES.COLLECTION_SHOW_CLOSE_SHARE_DROPDOWN,
     });
   },
 

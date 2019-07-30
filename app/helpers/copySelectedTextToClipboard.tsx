@@ -12,9 +12,19 @@ export default function copySelectedTextToClipboard(text: string) {
       textField.textContent = text;
       textField.style.whiteSpace = 'pre';
       document.body.appendChild(textField);
-      textField.select();
-      document.execCommand('copy');
-      textField.remove();
+
+      const selection = document.getSelection();
+      const range = document.createRange();
+      range.selectNode(textField);
+
+      if (selection) {
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand('copy');
+        document.body.removeChild(textField);
+      } else {
+        document.body.removeChild(textField);
+      }
     }
 
     alertToast({

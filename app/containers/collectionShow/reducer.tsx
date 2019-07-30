@@ -1,12 +1,13 @@
 import { ACTION_TYPES, Actions } from '../../actions/actionTypes';
-import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../common/sortBox';
+import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
+import { toggleElementFromArray } from '../../helpers/toggleElementFromArray';
+import { multiRemoveElementFromArray } from '../../helpers/multiRemoveElementFromArray';
 
 export interface CollectionShowState
   extends Readonly<{
       isLoadingCollection: boolean;
       pageErrorCode: number | null;
       isLoadingPaperToCollection: boolean;
-      isShareDropdownOpen: boolean;
       mainCollectionId: number;
       totalPaperListPage: number;
       currentPaperListPage: number;
@@ -14,13 +15,13 @@ export interface CollectionShowState
       sortType: AUTHOR_PAPER_LIST_SORT_TYPES;
       searchKeyword: string;
       paperIds: number | number[];
+      selectedPaperIds: number[];
     }> {}
 
 export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
   isLoadingCollection: false,
   pageErrorCode: null,
   isLoadingPaperToCollection: false,
-  isShareDropdownOpen: false,
   mainCollectionId: 0,
   totalPaperListPage: 0,
   currentPaperListPage: 1,
@@ -28,6 +29,7 @@ export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
   sortType: 'RECENTLY_ADDED',
   searchKeyword: '',
   paperIds: [],
+  selectedPaperIds: [],
 };
 
 export function reducer(
@@ -89,47 +91,64 @@ export function reducer(
         : { ...state, isLoadingPaperToCollection: false, paperIds };
     }
 
-    case ACTION_TYPES.COLLECTION_SHOW_OPEN_SHARE_DROPDOWN: {
-      return {
-        ...state,
-        isShareDropdownOpen: true,
-      };
-    }
-
-    case ACTION_TYPES.COLLECTION_SHOW_CLOSE_SHARE_DROPDOWN: {
-      return {
-        ...state,
-        isShareDropdownOpen: false,
-      };
-    }
-
     case ACTION_TYPES.GLOBAL_FAILED_TO_ADD_PAPER_TO_COLLECTION:
     case ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_FROM_COLLECTION: {
       if (action.payload.collection.id === state.mainCollectionId) {
         const removePaperIds = action.payload.paperIds;
-        if (typeof state.paperIds === 'object') {
-          const paperIndex = state.paperIds.indexOf(removePaperIds[0]);
-          const paperIdsLength = state.paperIds.length;
+        let newSelectedPaperIds = [...state.selectedPaperIds];
 
-          const newPaperIds = [
-            ...state.paperIds.slice(0, paperIndex),
-            ...state.paperIds.slice(paperIndex + 1, paperIdsLength),
-          ];
+        if (removePaperIds.length === newSelectedPaperIds.length) {
+          newSelectedPaperIds = [];
+        }
+
+        if (typeof state.paperIds === 'object') {
+          let newPaperIds = multiRemoveElementFromArray(removePaperIds, [...state.paperIds]);
+          let newSelectedPaperIds = multiRemoveElementFromArray(removePaperIds, [...state.selectedPaperIds]);
 
           return {
             ...state,
             paperIds: newPaperIds,
-            papersTotalCount: newPaperIds.length,
+            papersTotalCount: state.papersTotalCount - removePaperIds.length,
+            selectedPaperIds: newSelectedPaperIds,
           };
         } else {
           return {
             ...state,
             paperIds: [],
             papersTotalCount: 0,
+            selectedPaperIds: newSelectedPaperIds,
           };
         }
       }
       return state;
+    }
+
+    case ACTION_TYPES.COLLECTION_SHOW_SELECT_PAPER_ITEM: {
+      return {
+        ...state,
+        selectedPaperIds: toggleElementFromArray(action.payload.paperId, state.selectedPaperIds),
+      };
+    }
+
+    case ACTION_TYPES.COLLECTION_SHOW_SELECT_ALL_PAPER_ITEMS: {
+      if (state.selectedPaperIds.length > 0 && state.selectedPaperIds.length === action.payload.paperIds.length) {
+        return {
+          ...state,
+          selectedPaperIds: [],
+        };
+      }
+
+      return {
+        ...state,
+        selectedPaperIds: action.payload.paperIds,
+      };
+    }
+
+    case ACTION_TYPES.COLLECTION_SHOW_CLEAR_SELECT_PAPER_ITEM: {
+      return {
+        ...state,
+        selectedPaperIds: [],
+      };
     }
 
     default:

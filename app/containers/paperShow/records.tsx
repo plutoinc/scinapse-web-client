@@ -7,6 +7,12 @@ export enum AvailableCitationType {
   HARVARD,
   VANCOUVER,
   CHICAGO,
+  ACS,
+}
+
+export enum AvailableExportCitationType {
+  BIBTEX,
+  RIS,
 }
 
 export interface PaperShowState

@@ -26,7 +26,7 @@ import {
   reducer as CollectionShowReducer,
   CollectionShowState,
   INITIAL_COLLECTION_SHOW_STATE,
-} from '../components/collectionShow/reducer';
+} from '../containers/collectionShow/reducer';
 import {
   reducer as UserCollectionsReducer,
   UserCollectionsState,
