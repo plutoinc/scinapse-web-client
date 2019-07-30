@@ -28,7 +28,6 @@ interface AggregatedPaper {
 
 interface ResearchHistoryProps extends RouteComponentProps<any> {
   paper: Paper | undefined;
-  isLoggedIn: boolean;
 }
 
 function getAggregatedHistoryPapers(rawPapers: HistoryPaper[]) {
@@ -43,22 +42,17 @@ function getAggregatedHistoryPapers(rawPapers: HistoryPaper[]) {
   return finalAggregatedPapers;
 }
 
-const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper, isLoggedIn, location }) => {
+const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper, location }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [papers, setPapers] = React.useState<HistoryPaper[]>([]);
   const [aggregatedPapers, setAggregatedPapers] = React.useState();
   const currentLocation = React.useRef(location);
 
-  React.useEffect(
-    () => {
-      if (isLoggedIn) {
-        const historyPapers = store.get(RESEARCH_HISTORY_KEY) || [];
-        setPapers(historyPapers);
-        setAggregatedPapers(getAggregatedHistoryPapers(historyPapers));
-      }
-    },
-    [isLoggedIn]
-  );
+  React.useEffect(() => {
+    const historyPapers = store.get(RESEARCH_HISTORY_KEY) || [];
+    setPapers(historyPapers);
+    setAggregatedPapers(getAggregatedHistoryPapers(historyPapers));
+  }, []);
 
   React.useEffect(
     () => {
