@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { Field, Form, Formik, FormikErrors, FormikTouched } from 'formik';
@@ -9,6 +9,7 @@ import { MINIMUM_PASSWORD_LENGTH } from '../../constants/auth';
 import { changePassword } from '../../actions/auth';
 import { ThunkDispatch } from 'redux-thunk';
 import AuthAPI from '../../api/auth';
+import PlutoAxios from '../../api/pluto';
 
 const s = require('./authEditForm.scss');
 
@@ -79,14 +80,21 @@ const EmailField: React.FC<EmailFieldProps> = ({ email, editMode, userVerified, 
 };
 
 interface PasswordFieldProps {
+  editMode: boolean;
+  setEditMode: Dispatch<SetStateAction<boolean>>;
   isLoading: boolean;
   isSocialUser: boolean;
   errors: FormikErrors<AuthEditFormValues>;
   touched: FormikTouched<AuthEditFormValues>;
 }
-const PasswordField: React.FC<PasswordFieldProps> = ({ isSocialUser, errors, touched, isLoading }) => {
-  const [editMode, setEditMode] = React.useState(false);
-
+const PasswordField: React.FC<PasswordFieldProps> = ({
+  isSocialUser,
+  errors,
+  touched,
+  isLoading,
+  editMode,
+  setEditMode,
+}) => {
   if (isSocialUser) {
     return (
       <div className={s.formWrapper}>
@@ -151,7 +159,7 @@ const PasswordField: React.FC<PasswordFieldProps> = ({ isSocialUser, errors, tou
           [s.isLoading]: isLoading,
         })}
       >
-        Reset Password
+        Change Password
       </button>
       <div
         className={s.toggleButton}
@@ -208,9 +216,24 @@ const AuthEditForm: React.FC<AuthEditFormProps & ReturnType<typeof mapStateToPro
       await dispatch(changePassword({ oldPassword: values.oldPassword, newPassword: values.newPassword }));
       setIsLoading(false);
       setEditMode(false);
+      dispatch({
+        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
+        payload: {
+          type: 'success',
+          message: 'Successfully changed password.',
+        },
+      });
     } catch (err) {
       setIsLoading(false);
-      window.alert('Sorry. we had an error during changing your password.');
+      const error = PlutoAxios.getGlobalError(err);
+      console.log(error);
+      dispatch({
+        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
+        payload: {
+          type: 'error',
+          message: 'Sorry. we had an error during resending the verification email.',
+        },
+      });
     }
   }
 
@@ -247,6 +270,8 @@ const AuthEditForm: React.FC<AuthEditFormProps & ReturnType<typeof mapStateToPro
                   isSocialUser={currentUser.oauthLoggedIn}
                   errors={errors}
                   touched={touched}
+                  editMode={editMode}
+                  setEditMode={setEditMode}
                 />
               </div>
             </Form>
