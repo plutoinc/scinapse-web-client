@@ -8,7 +8,7 @@ import AffiliationSelectBox from '../../components/dialog/components/modifyProfi
 import { withStyles } from '../../helpers/withStylesHelper';
 import { AppState } from '../../reducers';
 import { updateUserProfile } from '../../actions/auth';
-import { AuthActions } from '../../actions/actionTypes';
+import { ACTION_TYPES, AlertAction, AuthActions } from '../../actions/actionTypes';
 import { ThunkDispatch } from 'redux-thunk';
 
 const s = require('./profileForm.scss');
@@ -62,7 +62,7 @@ const ErrorMessage: React.FC<{ errorMsg?: string }> = ({ errorMsg }) => {
 };
 
 interface ProfileFormContainerProps {
-  dispatch: ThunkDispatch<{}, {}, AuthActions>;
+  dispatch: ThunkDispatch<{}, {}, AuthActions | AlertAction>;
 }
 const ProfileFormContainer: React.FC<ProfileFormContainerProps & ReturnType<typeof mapStateToProps>> = ({
   currentUser,
@@ -88,11 +88,24 @@ const ProfileFormContainer: React.FC<ProfileFormContainerProps & ReturnType<type
           affiliation: affiliation,
         })
       );
+      dispatch({
+        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
+        payload: {
+          type: 'success',
+          message: 'Successfully changed your profile.',
+        },
+      });
       setIsLoading(false);
       setEditMode(false);
     } catch (err) {
       setIsLoading(false);
-      window.alert('Sorry. we had an error to update your profile.');
+      dispatch({
+        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
+        payload: {
+          type: 'error',
+          message: 'Sorry. we had an error to update your profile.',
+        },
+      });
     }
   }
 

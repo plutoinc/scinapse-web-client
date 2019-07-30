@@ -26,7 +26,7 @@ const validateForm = (values: AuthEditFormValues) => {
   }
 
   if (values.newPassword.length < MINIMUM_PASSWORD_LENGTH) {
-    errors.newPassword = 'Must have at least 8 characters!';
+    errors.newPassword = 'Must have at least 8 characters.';
   }
 
   return errors;

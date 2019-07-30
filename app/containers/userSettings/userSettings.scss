@@ -1,3 +1,5 @@
+$wrapper-vertical-margin: 128px;
+
 %base-form-button {
   display: inline-block;
   padding: 8px 16px;
@@ -45,7 +47,10 @@
 
 .wrapper {
   width: 578px;
-  margin: 128px auto 320px auto;
+  min-height: calc(
+    100vh - #{$navbar_height} - #{$footer-height} - #{$wrapper-vertical-margin} - #{$wrapper-vertical-margin}
+  );
+  margin: $wrapper-vertical-margin auto;
 }
 
 .title {
