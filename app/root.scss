@@ -1,6 +1,7 @@
 :global {
   @import './middlewares/notifier';
   @import '~normalize.css/normalize';
+  @import '~notie/src/notie';
 }
 
 * {

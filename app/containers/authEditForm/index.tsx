@@ -46,14 +46,7 @@ interface EmailFieldProps {
   errorMsg: string | undefined;
   onClickResendButton: () => void;
 }
-const EmailField: React.FC<EmailFieldProps> = ({
-  email,
-  hasError,
-  editMode,
-  userVerified,
-  errorMsg,
-  onClickResendButton,
-}) => {
+const EmailField: React.FC<EmailFieldProps> = ({ email, editMode, userVerified, errorMsg, onClickResendButton }) => {
   if (!userVerified) {
     return (
       <>
@@ -70,15 +63,16 @@ const EmailField: React.FC<EmailFieldProps> = ({
 
   return (
     <>
-      <Field
-        className={classNames({
-          [s.inputForm]: true,
-          [s.hasError]: hasError,
-        })}
-        name="email"
-        placeholder="EMAIL"
-        disabled={!editMode}
-      />
+      <div className={s.emailFieldWrapper}>
+        <Field
+          className={classNames({
+            [s.readOnlyInput]: true,
+          })}
+          name="email"
+          placeholder="EMAIL"
+          disabled={!editMode}
+        />
+      </div>
       <ErrorMessage errorMsg={errorMsg} />
     </>
   );
@@ -159,6 +153,14 @@ const PasswordField: React.FC<PasswordFieldProps> = ({ isSocialUser, errors, tou
       >
         Reset Password
       </button>
+      <div
+        className={s.toggleButton}
+        onClick={() => {
+          setEditMode(false);
+        }}
+      >
+        Cancel
+      </div>
     </div>
   );
 };

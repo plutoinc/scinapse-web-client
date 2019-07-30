@@ -23,7 +23,7 @@
   &:disabled {
     background-color: transparent;
     border-color: $gray400;
-    color: $gray700;
+    color: $gray500;
   }
 }
 
@@ -55,6 +55,10 @@
     cursor: not-allowed;
     background-color: $gray50;
     opacity: 0.9;
+  }
+
+  & + .editButton {
+    margin-left: 8px;
   }
 }
 

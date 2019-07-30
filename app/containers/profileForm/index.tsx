@@ -138,15 +138,25 @@ const ProfileFormContainer: React.FC<ProfileFormContainerProps & ReturnType<type
           );
           if (editMode) {
             formButton = (
-              <button
-                type="submit"
-                className={classNames({
-                  [s.submitButton]: true,
-                  [s.isLoading]: isLoading,
-                })}
-              >
-                Save changes
-              </button>
+              <>
+                <button
+                  type="submit"
+                  className={classNames({
+                    [s.submitButton]: true,
+                    [s.isLoading]: isLoading,
+                  })}
+                >
+                  Save changes
+                </button>
+                <div
+                  className={s.editButton}
+                  onClick={() => {
+                    setEditMode(false);
+                  }}
+                >
+                  Cancel
+                </div>
+              </>
             );
           }
 
