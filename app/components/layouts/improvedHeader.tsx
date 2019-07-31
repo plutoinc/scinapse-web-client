@@ -348,16 +348,24 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
     );
   };
 
+  private getHistoryButton = () => {
+    const { paper } = this.props;
+
+    return (
+      <div className={styles.historyBtnWrapper}>
+        <ResearchHistory paper={paper} />
+      </div>
+    );
+  };
+
   private getUserDropdown = () => {
-    const { currentUserState, myCollectionsState, paper } = this.props;
+    const { currentUserState, myCollectionsState } = this.props;
 
     const firstCharacterOfUsername = currentUserState.firstName.slice(0, 1).toUpperCase();
 
     return (
       <div className={styles.rightBox}>
-        <div className={styles.historyBtnWrapper}>
-          <ResearchHistory paper={paper} isLoggedIn={currentUserState.isLoggedIn} />
-        </div>
+        {this.getHistoryButton()}
         <Link
           className={styles.externalCollectionButton}
           onClick={() => {
@@ -421,6 +429,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
     if (!isLoggedIn) {
       return (
         <div className={styles.rightBox}>
+          {this.getHistoryButton()}
           <div
             onClick={() => {
               this.handleOpenSignIn();
