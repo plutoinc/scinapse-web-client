@@ -32,6 +32,7 @@ import ErrorPage from '../../components/error/errorPage';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
 import ScinapseInput from '../../components/common/scinapseInput';
 import Icon from '../../icons';
+import ActionTicketManager from '../../helpers/actionTicketManager';
 const styles = require('./authorShow.scss');
 
 export interface AuthorShowMatchParams {
@@ -372,6 +373,14 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
 
   private handleSubmitSearch = (query: string) => {
     const { dispatch, author, authorShow } = this.props;
+
+    ActionTicketManager.trackTicket({
+      pageType: 'authorShow',
+      actionType: 'fire',
+      actionArea: 'paperList',
+      actionTag: 'searchList',
+      actionLabel: query,
+    });
 
     if (author) {
       dispatch!(
