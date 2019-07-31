@@ -8,6 +8,7 @@ import AuthInputBox from '../../common/inputBox/authInputBox';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import alertToast from '../../../helpers/makePlutoToastAction';
 import PlutoAxios from '../../../api/pluto';
+import { MINIMUM_PASSWORD_LENGTH } from '../../../constants/auth';
 const styles = require('./resetPassword.scss');
 
 interface FormValues {
@@ -18,11 +19,11 @@ interface FormValues {
 const validateForm = (values: FormValues) => {
   const errors: FormikErrors<FormValues> = {};
 
-  if (!values.password || values.password.length < 8) {
+  if (!values.password || values.password.length < MINIMUM_PASSWORD_LENGTH) {
     errors.password = 'Minimum length is 8';
   }
 
-  if (!values.confirmPassword || values.confirmPassword.length < 8) {
+  if (!values.confirmPassword || values.confirmPassword.length < MINIMUM_PASSWORD_LENGTH) {
     errors.confirmPassword = 'Minimum length is 8';
   }
 

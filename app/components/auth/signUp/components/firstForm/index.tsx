@@ -20,6 +20,7 @@ import { signInWithSocial, signInWithEmail } from '../../../signIn/actions';
 import { AppState } from '../../../../../reducers';
 import ActionTicketManager from '../../../../../helpers/actionTicketManager';
 import useFBIsLoading from '../../../../../hooks/FBisLoadingHook';
+import { MINIMUM_PASSWORD_LENGTH } from '../../../../../constants/auth';
 import { getCollections } from '../../../../collections/actions';
 const s = require('./firstForm.scss');
 
@@ -128,7 +129,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
       errors.email = 'Please enter a valid email address';
     }
 
-    if (password.length < 8) {
+    if (password.length < MINIMUM_PASSWORD_LENGTH) {
       errors.password = 'Must have at least 8 characters!';
     }
 

@@ -1,0 +1,90 @@
+@import '../userSettings/userSettings';
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.83;
+  letter-spacing: -0.67px;
+  color: $black0;
+  margin-bottom: 24px;
+}
+
+.formLabel {
+  @extend %base-label;
+}
+
+.fieldWrapper + .fieldWrapper {
+  margin-top: 20px;
+}
+
+.formWrapper + .formWrapper {
+  margin-top: 36px;
+}
+
+.inputForm {
+  @extend %base-input-style;
+  flex: 1;
+  min-width: 424px;
+
+  &:disabled {
+    background-color: transparent;
+    border-color: $gray400;
+    color: $gray700;
+  }
+}
+
+.readOnlyInput {
+  @extend %base-input-style;
+
+  flex: 1;
+  background-color: $gray100;
+  color: $gray500;
+  border-color: $gray400;
+
+  &:hover {
+    border-color: inherit;
+  }
+}
+
+.toggleButton {
+  @extend %base-form-button;
+  border: solid 1px $gray500;
+  margin-left: 8px;
+
+  &:hover {
+    background-color: $gray30;
+  }
+}
+
+.emailFieldWrapper {
+  display: flex;
+}
+
+.errorMsg {
+  font-family: $fallback;
+  font-size: 13px;
+  color: $red0;
+  margin: 8px 0 0 8px;
+}
+
+.submitButton {
+  @extend %base-form-button;
+
+  background-color: $main_blue0;
+  color: white;
+  margin-top: 28px;
+
+  &:hover {
+    background-color: $main_blue1;
+  }
+
+  &.isLoading {
+    cursor: not-allowed;
+    background-color: $gray50;
+    opacity: 0.9;
+  }
+
+  & + .toggleButton {
+    margin-left: 8px;
+  }
+}

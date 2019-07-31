@@ -25,6 +25,7 @@ import { AppState } from '../../../reducers';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import AuthContextText from '../authContextText';
 import useFBIsLoading from '../../../hooks/FBisLoadingHook';
+import { MINIMUM_PASSWORD_LENGTH } from '../../../constants/auth';
 const s = require('./signIn.scss');
 
 declare var FB: any;
@@ -51,7 +52,7 @@ const validateForm = (values: EmailFormValues) => {
     errors.email = 'E-Mail is invalid';
   }
 
-  if (!values.password || values.password.length < 8) {
+  if (!values.password || values.password.length < MINIMUM_PASSWORD_LENGTH) {
     errors.password = 'Minimum length is 8';
   }
 

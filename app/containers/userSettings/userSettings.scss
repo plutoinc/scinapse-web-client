@@ -1,0 +1,65 @@
+$wrapper-vertical-margin: 128px;
+
+%base-form-button {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 2;
+  letter-spacing: -0.19px;
+  text-align: center;
+  cursor: pointer;
+  color: $black1;
+}
+
+%base-input-style {
+  font-family: $fallback;
+  font-size: 15px;
+  line-height: 1.6;
+  letter-spacing: -0.23px;
+  color: $black0;
+  width: 278px;
+  padding: 10px 12px;
+  border-radius: 4px;
+  border: solid 1px $gray500;
+  cursor: text;
+
+  &:hover,
+  &:focus {
+    border-color: $main_blue0;
+  }
+
+  &.hasError {
+    border-color: $red0;
+  }
+}
+
+%base-label {
+  display: block;
+  font-family: $fallback;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.47px;
+  color: $gray700;
+  margin-bottom: 8px;
+}
+
+.wrapper {
+  width: 578px;
+  min-height: calc(
+    100vh - #{$navbar_height} - #{$footer-height} - #{$wrapper-vertical-margin} - #{$wrapper-vertical-margin}
+  );
+  margin: $wrapper-vertical-margin auto;
+}
+.title {
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1.22;
+  letter-spacing: -1px;
+  color: $black0;
+  margin-bottom: 53px;
+}
+.authFormWrapper {
+  margin-top: 88px;
+}

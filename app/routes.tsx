@@ -25,6 +25,7 @@ import {
   ADMIN_PATH,
   TERMS_OF_SERVICE_PATH,
   PRIVACY_POLICY_PATH,
+  USER_SETTINGS_PATH,
 } from './constants/routes';
 const styles = require('./root.scss');
 
@@ -125,6 +126,12 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: AUTH_PATH,
     component: loadable(() => import('./components/auth'), {
+      fallback: <div>loading ...</div>,
+    }),
+  },
+  {
+    path: USER_SETTINGS_PATH,
+    component: loadable(() => import('./containers/userSettings'), {
       fallback: <div>loading ...</div>,
     }),
   },

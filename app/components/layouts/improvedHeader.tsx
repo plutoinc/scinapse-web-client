@@ -320,7 +320,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
         {currentUserState.isAuthorConnected ? (
           <MenuItem classes={{ root: styles.profileButton }}>
             <Link
-              className={styles.buttonOnLink}
+              className={styles.linkOnButton}
               onClick={this.handleRequestCloseUserDropdown}
               to={`/authors/${currentUserState.authorId}?beta=true`}
             >
@@ -330,7 +330,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
         ) : null}
         <MenuItem classes={{ root: styles.collectionButton }}>
           <Link
-            className={styles.buttonOnLink}
+            className={styles.linkOnButton}
             onClick={this.handleRequestCloseUserDropdown}
             to={
               !!myCollectionsState && myCollectionsState.collectionIds.length > 0
@@ -339,6 +339,11 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
             }
           >
             Collection
+          </Link>
+        </MenuItem>
+        <MenuItem classes={{ root: styles.settingsButton }}>
+          <Link className={styles.linkOnButton} onClick={this.handleRequestCloseUserDropdown} to="/settings">
+            Settings
           </Link>
         </MenuItem>
         <MenuItem classes={{ root: styles.signOutButton }} onClick={this.handleClickSignOut}>
