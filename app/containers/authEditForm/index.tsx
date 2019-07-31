@@ -1,13 +1,13 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
+import { ThunkDispatch } from 'redux-thunk';
 import { Field, Form, Formik, FormikErrors, FormikTouched } from 'formik';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { AppState } from '../../reducers';
 import { ACTION_TYPES, AlertAction, AuthActions } from '../../actions/actionTypes';
 import { MINIMUM_PASSWORD_LENGTH } from '../../constants/auth';
 import { changePassword } from '../../actions/auth';
-import { ThunkDispatch } from 'redux-thunk';
 import AuthAPI from '../../api/auth';
 import PlutoAxios from '../../api/pluto';
 

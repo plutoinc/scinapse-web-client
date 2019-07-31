@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
+import { ThunkDispatch } from 'redux-thunk';
 import { Field, Form, Formik } from 'formik';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
@@ -9,7 +10,6 @@ import { withStyles } from '../../helpers/withStylesHelper';
 import { AppState } from '../../reducers';
 import { updateUserProfile } from '../../actions/auth';
 import { ACTION_TYPES, AlertAction, AuthActions } from '../../actions/actionTypes';
-import { ThunkDispatch } from 'redux-thunk';
 
 const s = require('./profileForm.scss');
 
