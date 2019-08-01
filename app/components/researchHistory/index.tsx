@@ -34,7 +34,7 @@ function getAggregatedHistoryPapers(rawPapers: HistoryPaper[]) {
   if (rawPapers.length === 0) return null;
 
   const aggregatedPapers: AggregatedPaper[] = rawPapers.map(rawPaper => {
-    const dateStr = format(rawPaper.savedAt, 'D, MMM, YYYY');
+    const dateStr = format(rawPaper.savedAt, 'MMM D, YYYY');
     return { aggregatedDate: dateStr, historyPaper: rawPaper };
   });
 
