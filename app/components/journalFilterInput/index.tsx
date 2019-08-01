@@ -57,7 +57,7 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
           checked={state.selectedJournalIds.includes(journal.journalId)}
           isHighlight={i === state.highlightIdx}
           title={journal.keyword}
-          omitDocCount
+          isSearchResult
         />
       );
     });

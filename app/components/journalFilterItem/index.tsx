@@ -12,7 +12,7 @@ interface JournalItemProps {
   checked: boolean;
   isHighlight: boolean;
   onClick: () => void;
-  omitDocCount?: boolean;
+  isSearchResult?: boolean;
   docCount?: number;
   IF?: number;
   fromSearch?: boolean;
@@ -25,7 +25,7 @@ const JournalItem: React.FC<JournalItemProps> = props => {
       <span
         className={classNames({
           [s.ifLabel]: true,
-          [s.noDocCount]: props.omitDocCount,
+          [s.noDocCount]: props.isSearchResult,
         })}
       >
         <Tooltip
@@ -45,7 +45,7 @@ const JournalItem: React.FC<JournalItemProps> = props => {
   }
 
   let docCount = null;
-  if (!props.omitDocCount && !props.fromSearch) {
+  if (!props.isSearchResult && !props.fromSearch) {
     docCount = <span className={s.countBox}>{`(${formatNumber(props.docCount)})`}</span>;
   }
 
@@ -56,6 +56,7 @@ const JournalItem: React.FC<JournalItemProps> = props => {
       }}
       className={classNames({
         [s.journalItem]: true,
+        [s.searchResult]: props.isSearchResult,
         [s.isSelected]: props.checked,
         [s.highlighted]: props.isHighlight,
       })}
