@@ -37,6 +37,7 @@ type SearchQueryInputProps = React.InputHTMLAttributes<HTMLInputElement> &
     wrapperClassName?: string;
     listWrapperClassName?: string;
     inputClassName?: string;
+    sort?: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS;
   };
 
 type SearchSourceType = 'history' | 'suggestion' | 'raw';
@@ -44,7 +45,6 @@ type SearchSourceType = 'history' | 'suggestion' | 'raw';
 interface SubmitParams {
   from: SearchSourceType;
   query: string;
-  filter?: FilterObject;
 }
 
 function validateSearchInput(query: string) {
@@ -125,7 +125,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     [props.location]
   );
 
-  async function handleSubmit({ query, filter, from }: SubmitParams) {
+  async function handleSubmit({ query, from }: SubmitParams) {
     const searchKeyword = (query || inputValue).trim();
 
     if (!validateSearchInput(searchKeyword)) {
@@ -169,8 +169,8 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     const currentPage = getCurrentPageType();
     const searchQuery = PapersQueryFormatter.stringifyPapersQuery({
       query: searchKeyword,
-      sort: 'RELEVANCE',
-      filter: filter || {},
+      sort: props.sort || 'RELEVANCE',
+      filter: props.currentFilter || {},
       page: 1,
     });
 
@@ -190,7 +190,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
       from = 'suggestion';
     }
 
-    handleSubmit({ query: genuineInputValue, filter: props.currentFilter, from });
+    handleSubmit({ query: genuineInputValue, from });
   }
 
   const keywordItems = keywordsToShow.slice(0, props.maxCount).map((k, i) => {
@@ -202,7 +202,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
           [s.highlight]: highlightIdx === i,
         })}
         onClick={() => {
-          handleSubmit({ query: k.text, filter: props.currentFilter, from: k.removable ? 'history' : 'suggestion' });
+          handleSubmit({ query: k.text, from: k.removable ? 'history' : 'suggestion' });
         }}
       >
         <span dangerouslySetInnerHTML={{ __html: getHighlightedContent(k.text, genuineInputValue) }} />
@@ -259,7 +259,6 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
 
                 handleSubmit({
                   query: keywordsToShow[i] ? keywordsToShow[i].text : genuineInputValue,
-                  filter: props.currentFilter,
                   from,
                 });
               },

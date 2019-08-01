@@ -26,12 +26,14 @@ const JournalFilterDropdown: React.FC<
   JournalFilterDropdownProps & ReturnType<typeof mapStateToProps> & RouteComponentProps
 > = props => {
   const anchorEl = React.useRef(null);
+  const inputEl = React.useRef<HTMLInputElement | null>(null);
+  const [isHintOpened, setIsHintOpened] = React.useState(false);
   const lastSelectedJournals = React.useRef(props.selectedJournalIds);
   const selectChanged = !isEqual(props.selectedJournalIds, lastSelectedJournals.current);
 
-  let buttonText = 'Any journal';
+  let buttonText = 'Any journal / conference';
   if (props.selectedJournalIds.length > 0) {
-    buttonText = `${props.selectedJournalIds.length} journals`;
+    buttonText = `${props.selectedJournalIds.length} journals / conferences`;
   }
 
   const journalList = props.journalData.map(journal => {
@@ -43,6 +45,7 @@ const JournalFilterDropdown: React.FC<
         isHighlight={false}
         docCount={journal.docCount}
         IF={journal.impactFactor}
+        fromSearch={journal.fromSearch}
         onClick={() => {
           props.dispatch({
             type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM,
@@ -85,33 +88,51 @@ const JournalFilterDropdown: React.FC<
           selected={props.selectedJournalIds.length > 0}
         />
         <Popper
-          modifiers={{
-            preventOverflow: {
-              enabled: false,
-            },
-            flip: {
-              enabled: false,
-            },
-          }}
+          modifiers={{ preventOverflow: { enabled: false }, flip: { enabled: false } }}
           open={props.isActive}
           anchorEl={anchorEl.current}
           placement="bottom-start"
           disablePortal
         >
           <div className={s.dropBoxWrapper}>
-            <JournalFilterInput
-              onSubmit={(journals: AggregationJournal[]) => {
-                props.dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_ADD_JOURNAL_FILTER_ITEMS, payload: { journals } });
-              }}
-            />
+            <div className={s.filterWrapper}>
+              <JournalFilterInput
+                forwardedRef={inputEl}
+                onSubmit={(journals: AggregationJournal[]) => {
+                  props.dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_ADD_JOURNAL_FILTER_ITEMS, payload: { journals } });
+                }}
+              />
+              {isHintOpened && (
+                <ClickAwayListener
+                  onClickAway={() => {
+                    setIsHintOpened(false);
+                  }}
+                >
+                  <div className={s.hint}>Search journal or conference here</div>
+                </ClickAwayListener>
+              )}
+            </div>
             <div className={s.content}>
               <div className={s.journalListWrapper}>
                 <div className={s.listHeader}>
-                  <label className={s.journalLabel}>Journal name</label>
+                  <label className={s.journalLabel}>Journal or Conference name</label>
                   <label className={s.IFLabel}>Impact Factor</label>
                   <label className={s.countLabel}>Count</label>
                 </div>
                 {journalList}
+                <div className={s.searchInfo}>
+                  <span>{`Couldn't find any journal? `}</span>
+                  <button
+                    onClick={() => {
+                      if (!inputEl.current) return;
+                      setIsHintOpened(true);
+                      inputEl.current.focus();
+                    }}
+                    className={s.searchFocusButton}
+                  >
+                    Search more journals or conferences!
+                  </button>
+                </div>
               </div>
               <div className={s.controlBtnsWrapper}>
                 <button

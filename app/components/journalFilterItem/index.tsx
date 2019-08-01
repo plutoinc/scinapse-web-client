@@ -15,6 +15,7 @@ interface JournalItemProps {
   omitDocCount?: boolean;
   docCount?: number;
   IF?: number;
+  fromSearch?: boolean;
 }
 
 const JournalItem: React.FC<JournalItemProps> = props => {
@@ -44,7 +45,7 @@ const JournalItem: React.FC<JournalItemProps> = props => {
   }
 
   let docCount = null;
-  if (!props.omitDocCount) {
+  if (!props.omitDocCount && !props.fromSearch) {
     docCount = <span className={s.countBox}>{`(${formatNumber(props.docCount)})`}</span>;
   }
 

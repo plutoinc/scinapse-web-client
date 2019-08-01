@@ -34,6 +34,7 @@
 
   &:focus {
     background-color: white;
+    border-color: $main_blue1;
   }
 
   &::placeholder {
