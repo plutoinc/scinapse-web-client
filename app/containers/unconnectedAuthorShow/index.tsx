@@ -378,7 +378,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
       pageType: 'authorShow',
       actionType: 'fire',
       actionArea: 'paperList',
-      actionTag: 'searchList',
+      actionTag: 'query',
       actionLabel: query,
     });
 

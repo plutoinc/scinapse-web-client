@@ -114,7 +114,7 @@ const CollectionShow: React.FC<Props> = props => {
         pageType: 'collectionShow',
         actionType: 'fire',
         actionArea: 'paperList',
-        actionTag: 'searchList',
+        actionTag: 'query',
         actionLabel: query,
       });
 

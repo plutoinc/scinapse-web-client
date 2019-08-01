@@ -116,7 +116,6 @@ declare namespace Scinapse {
       | 'clickPrevBtn'
       | 'clickNextBtn'
       | 'viewFigure'
-      | 'searchList'
       | '';
 
     type ActionArea = string;

@@ -55,7 +55,7 @@ const SearchContainer: React.FC<SearchContainerProps> = props => {
         pageType: getCurrentPageType(),
         actionType: 'fire',
         actionArea: type,
-        actionTag: 'searchList',
+        actionTag: 'query',
         actionLabel: query,
       });
 

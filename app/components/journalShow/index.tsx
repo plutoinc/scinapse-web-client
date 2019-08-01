@@ -309,7 +309,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
       pageType: 'journalShow',
       actionType: 'fire',
       actionArea: 'paperList',
-      actionTag: 'searchList',
+      actionTag: 'query',
       actionLabel: query,
     });
 
@@ -329,7 +329,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
       pageType: 'journalShow',
       actionType: 'fire',
       actionArea: 'paperList',
-      actionTag: 'searchList',
+      actionTag: 'query',
       actionLabel: '',
     });
 

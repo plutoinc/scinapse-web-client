@@ -526,7 +526,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
       pageType: 'authorShow',
       actionType: 'fire',
       actionArea: 'paperList',
-      actionTag: 'searchList',
+      actionTag: 'query',
       actionLabel: query,
     });
 
