@@ -11,8 +11,6 @@ import BlockAuthorList from './blockAuthorList';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import SavedCollections from './savedCollections';
-import { getUserGroupName } from '../../../helpers/abTestHelper';
-import { FIGURE_TEST } from '../../../constants/abTestGlobalValue';
 import { PaperSource } from '../../../api/paper';
 const styles = require('./paperItem.scss');
 
@@ -52,12 +50,6 @@ const NotIncludedWords: React.FC<{ missingKeywords: string[] }> = React.memo(pro
 const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
   const { searchQueryText, paper, wrapperClassName, currentUser, pageType, actionArea, savedAt, sourceDomain } = props;
   const { doi, urls, relation } = paper;
-
-  const [shouldShowFigure, setShouldShowFigure] = React.useState(false);
-
-  React.useEffect(() => {
-    setShouldShowFigure(getUserGroupName(FIGURE_TEST) === 'both');
-  }, []);
 
   let historyContent = null;
   if (savedAt) {
@@ -110,7 +102,7 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
             searchQueryText={searchQueryText}
           />
         </div>
-        {shouldShowFigure && <Figures figures={paper.figures} paperId={paper.id} />}
+        <Figures figures={paper.figures} paperId={paper.id} />
         <NotIncludedWords missingKeywords={paper.missingKeywords} />
         <PaperActionButtons
           currentUser={currentUser}

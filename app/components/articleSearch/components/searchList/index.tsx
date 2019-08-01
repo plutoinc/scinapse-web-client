@@ -7,8 +7,6 @@ import PaperItem from '../../../common/paperItem/searchPaperItem';
 import ArticleSpinner from '../../../common/spinner/articleSpinner';
 import { RESEARCH_HISTORY_KEY, HistoryPaper } from '../../../researchHistory';
 import PaperAPI, { PaperSource } from '../../../../api/paper';
-import { getUserGroupName } from '../../../../helpers/abTestHelper';
-import { SOURCE_DOMAIN_TEST } from '../../../../constants/abTestGlobalValue';
 const styles = require('./searchList.scss');
 
 interface SearchListProps {
@@ -25,11 +23,9 @@ const SearchList: React.FC<SearchListProps> = props => {
 
   React.useEffect(
     () => {
-      if (getUserGroupName(SOURCE_DOMAIN_TEST) === 'sourceDomain') {
-        PaperAPI.getSources(papers.map(p => p.id)).then(domains => {
-          setSourceDomains(domains);
-        });
-      }
+      PaperAPI.getSources(papers.map(p => p.id)).then(domains => {
+        setSourceDomains(domains);
+      });
     },
     [papers]
   );
