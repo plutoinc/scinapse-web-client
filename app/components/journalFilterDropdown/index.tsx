@@ -31,9 +31,9 @@ const JournalFilterDropdown: React.FC<
   const lastSelectedJournals = React.useRef(props.selectedJournalIds);
   const selectChanged = !isEqual(props.selectedJournalIds, lastSelectedJournals.current);
 
-  let buttonText = 'Any journal / conference';
+  let buttonText = 'Any journal · conference';
   if (props.selectedJournalIds.length > 0) {
-    buttonText = `${props.selectedJournalIds.length} journals / conferences`;
+    buttonText = `${props.selectedJournalIds.length} journals · conferences`;
   }
 
   const journalList = props.journalData.map(journal => {
