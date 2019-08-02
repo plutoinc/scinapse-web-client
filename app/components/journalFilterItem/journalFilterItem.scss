@@ -21,6 +21,12 @@
   &.highlighted {
     background-color: $gray30;
   }
+
+  &.searchResult {
+    &:hover {
+      background-color: $main_blue_light1;
+    }
+  }
 }
 
 .title {

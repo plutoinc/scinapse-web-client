@@ -13,6 +13,7 @@ import { AggregationJournal } from '../../model/aggregation';
 const s = require('./journalFilterInput.scss');
 
 interface JournalFilterInputProps {
+  forwardedRef: React.MutableRefObject<HTMLInputElement | null>;
   onSubmit: (journals: AggregationJournal[]) => void;
 }
 
@@ -56,7 +57,7 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
           checked={state.selectedJournalIds.includes(journal.journalId)}
           isHighlight={i === state.highlightIdx}
           title={journal.keyword}
-          omitDocCount
+          isSearchResult
         />
       );
     });
@@ -88,6 +89,7 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
         <div className={s.inputWrapper}>
           <Icon icon="SEARCH_ICON" className={s.searchIcon} />
           <input
+            ref={props.forwardedRef}
             value={state.inputValue}
             onKeyDown={e => {
               if (journalSuggestions && journalSuggestions.length > 0) {
@@ -117,7 +119,7 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
               const { value } = e.currentTarget;
               dispatch({ type: 'CHANGE_INPUT', payload: { inputValue: value } });
             }}
-            placeholder="Search for journal"
+            placeholder="Search journal or conference"
             className={classNames({
               [s.input]: true,
               [s.listOpened]: shouldShowList,
@@ -150,6 +152,7 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
                       title: j.keyword,
                       docCount: 0,
                       impactFactor: j.impactFactor,
+                      fromSearch: true,
                     }));
                   props.onSubmit(journals);
                   dispatch({ type: 'CLOSE_BOX' });

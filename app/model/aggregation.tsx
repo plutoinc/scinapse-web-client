@@ -3,6 +3,8 @@ export interface AggregationJournal {
   title: string;
   docCount: number;
   impactFactor: number;
+  // added by client
+  fromSearch?: boolean;
 }
 
 export interface AggregationFos {

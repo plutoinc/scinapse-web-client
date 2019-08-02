@@ -240,6 +240,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
 
     const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
     const filter = SearchQueryManager.objectifyPaperFilter(currentQueryParams.filter);
+    const sort = currentQueryParams.sort as Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS;
 
     return (
       <div className={styles.searchFormContainer}>
@@ -248,6 +249,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
           listWrapperClassName={styles.suggestionListWrapper}
           inputClassName={styles.searchInput}
           currentFilter={filter}
+          sort={sort}
           actionArea="topBar"
           maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
         />
