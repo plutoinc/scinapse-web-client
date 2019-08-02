@@ -1,5 +1,8 @@
 service: pluto-web-client
 
+plugins:
+  - serverless-pseudo-parameters
+
 provider:
   name: aws
   runtime: nodejs8.10
@@ -78,3 +81,11 @@ resources:
                   Action:
                     - cloudwatch:PutMetricData
                   Resource: "*"
+          - PolicyName: SSMPolicy
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - ssm:GetParameter
+                  Resource: "arn:aws:ssm:#{AWS::Region}:#{AWS::AccountId}:parameter/scinapse-web-client/dev/branch-mapper"
