@@ -16,8 +16,6 @@ clientConfig.output.publicPath = `${CDN_BASE_HOST}/${AWS_S3_DEV_FOLDER_PREFIX}/$
 
 const ssm = new AWS.SSM({ region: 'us-east-1' });
 
-serverConfig.output.publicPath = `${CDN_BASE_HOST}/${AWS_S3_DEV_FOLDER_PREFIX}/${escapedBranch}/${VERSION}/server/`;
-
 function cleanArtifacts() {
   rimraf.sync(path.resolve(__dirname, '../../dist/client'));
   rimraf.sync(path.resolve(__dirname, '../../dist/server'));
