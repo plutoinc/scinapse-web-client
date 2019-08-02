@@ -20,9 +20,6 @@ const ssm = new AWS.SSM({ region: 'us-east-1' });
 
 const handler = async (event: LambdaProxy.Event): Promise<LambdaProxy.Response> => {
   console.log(JSON.stringify(event, null, 2));
-  console.log(fs.readdirSync(path.resolve(__dirname)));
-  console.log('-----------');
-  console.log(fs.readdirSync(path.resolve(__dirname, '../client/loadable-stats.json')));
   const pathname = event.path;
   const headers: { [key: string]: string } = {};
   for (const key of Object.keys(event.headers)) {
