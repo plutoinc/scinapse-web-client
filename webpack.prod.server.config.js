@@ -79,9 +79,6 @@ module.exports = {
     __dirname: false,
     __filename: false,
   },
-  externals: {
-    'aws-sdk': 'aws-sdk'
-  },
   plugins: [
     new webpack.DefinePlugin({
       "process.env.TARGET": JSON.stringify("server"),
