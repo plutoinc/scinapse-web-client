@@ -27,10 +27,15 @@ type FilterBoxProps = RouteComponentProps &
   };
 
 function setBodyOverflowToPreventScrolling(isOnClient: boolean, hasActiveButton: boolean) {
+  // TODO: below code can make side effect to overflow styles. should change later
   if (isOnClient && hasActiveButton) {
     document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = '17px';
+    document.body.style.marginRight = '0';
   } else if (isOnClient && !hasActiveButton) {
     document.body.style.overflow = '';
+    document.body.style.paddingRight = '0';
+    document.body.style.marginRight = '0';
   }
 }
 
