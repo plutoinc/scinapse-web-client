@@ -47,12 +47,5 @@ module.exports = {
       'process.env.TARGET': JSON.stringify('server'),
     }),
   ],
-  externals: [
-    function(context, request, callback) {
-      if (/^\/tmp/.test(request)) {
-        return callback(null, 'commonjs ' + request);
-      }
-      callback();
-    },
-  ],
+  externals: [/(tmp\/server\/main\.js)/i],
 };

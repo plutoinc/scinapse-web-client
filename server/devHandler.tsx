@@ -1,11 +1,10 @@
 import * as AWS from 'aws-sdk';
 import * as https from 'https';
 import fs from 'fs';
+import rimraf from 'rimraf';
 import * as DeployConfig from '../scripts/deploy/config';
-import { AWS_SSM_PARAM_STORE_NAME } from '../scripts/deploy/config';
 
 const s3 = new AWS.S3();
-const ssm = new AWS.SSM({ region: 'us-east-1' });
 
 AWS.config.update({
   region: 'us-east-1',
@@ -16,25 +15,28 @@ AWS.config.update({
   },
 });
 
-async function getSources(branch: string, version: string, escapedBranch: string) {
-  if (fs.existsSync(`/tmp/${escapedBranch}/${version}`)) return;
+let isDownloading = false;
 
-  if (!fs.existsSync(`/tmp/${escapedBranch}`)) {
-    fs.mkdirSync(`/tmp/${escapedBranch}`);
+async function downloadSrcFromS3(branch?: string) {
+  isDownloading = true;
+  console.log('-------------------------------------------------------');
+  console.log('REMOVE OLD TMP DIRECTORY');
+  rimraf.sync('/tmp/*');
+
+  if (!fs.existsSync('/tmp/client')) {
+    fs.mkdirSync('/tmp/client');
   }
 
-  if (!fs.existsSync(`/tmp/${escapedBranch}/${version}`)) {
-    fs.mkdirSync(`/tmp/${escapedBranch}/${version}`);
+  if (!fs.existsSync('/tmp/server')) {
+    fs.mkdirSync('/tmp/server');
   }
 
-  if (!fs.existsSync(`/tmp/${escapedBranch}/${version}/client`)) {
-    fs.mkdirSync(`/tmp/${escapedBranch}/${version}/client`);
-  }
-  if (!fs.existsSync(`/tmp/${escapedBranch}/${version}/server`)) {
-    fs.mkdirSync(`/tmp/${escapedBranch}/${version}/server`);
-  }
+  const prefix = branch
+    ? `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${branch}`
+    : DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX;
 
-  const prefix = `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${branch}`;
+  console.log('-------------------------------------------------------');
+  console.log('LIST FILES');
   const res = await s3
     .listObjectsV2({
       Bucket: DeployConfig.AWS_S3_BUCKET,
@@ -42,6 +44,8 @@ async function getSources(branch: string, version: string, escapedBranch: string
     })
     .promise();
 
+  console.log('-------------------------------------------------------');
+  console.log('DOWNLOAD FILES');
   if (res.Contents && res.Contents.length > 0) {
     const promiseArr = res.Contents.map(content => {
       const params: AWS.S3.Types.GetObjectRequest = {
@@ -58,48 +62,37 @@ async function getSources(branch: string, version: string, escapedBranch: string
           if (pwdArr[pwdArr.length - 2] !== 'client' && pwdArr[pwdArr.length - 2] !== 'server') {
             filePath = pwdArr[pwdArr.length - 1];
           }
-          fs.writeFileSync(`/tmp/${escapedBranch}/${version}/${filePath}`, objectRes.Body);
+          fs.writeFileSync(`/tmp/${filePath}`, objectRes.Body);
         });
     });
 
     await Promise.all(promiseArr);
   }
+  isDownloading = false;
 }
 
 export const ssr = async (event: LambdaProxy.Event) => {
   const branch = event.queryStringParameters && event.queryStringParameters.branch;
-  if (!branch) throw new Error('missing branch queryParams flag');
 
-  // NOTE: If branch name isn't escaped, it can be treated as path
-  const escapedBranch = branch.replace('/', '-');
-  const globalParams = await ssm
-    .getParameter({
-      Name: AWS_SSM_PARAM_STORE_NAME,
-    })
-    .promise();
-
-  if (!globalParams.Parameter || !globalParams.Parameter.Value) {
-    throw new Error('No global parameters exist in AWS-SSM');
+  if (event.path.includes('sw.js') || event.path.includes('favicon')) {
+    return {
+      statusCode: 200,
+      body: '',
+    };
   }
-  const currentBranchVersionString = globalParams.Parameter.Value;
-  const branchMap = JSON.parse(currentBranchVersionString);
 
-  const version = branchMap[escapedBranch];
+  if (!isDownloading && !fs.existsSync('/tmp/server/main.js')) {
+    await downloadSrcFromS3(branch);
+  }
 
-  if (!version) throw new Error('missing version flag');
-
-  console.log(`start to render ${branch} ${version}`);
-
-  await getSources(branch, version, escapedBranch);
-  const bundle: any = __non_webpack_require__(`/tmp/${escapedBranch}/${version}/server/main.js`);
+  const bundle = require('/tmp/server/main.js');
+  (global as any).__webpack_public_path__ = '/tmp/server';
 
   try {
     const res = await bundle.ssr(event);
     return res;
   } catch (err) {
-    console.log(err);
     console.error(err);
-    console.trace(err);
     return {
       statusCode: 500,
       headers: {

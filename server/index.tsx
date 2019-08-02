@@ -1,14 +1,12 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import * as cookie from 'cookie';
-import * as AWS from 'aws-sdk';
 import getSitemap from './routes/sitemap';
 import manifestJSON from './routes/manifest';
 import getRobotTxt from './routes/robots';
 import getOpenSearchXML from './routes/openSearchXML';
 import { LIVE_TESTS, getRandomUserGroup } from '../app/constants/abTest';
 import ssr from './ssr';
-import { AWS_SSM_PARAM_STORE_NAME } from '../scripts/deploy/config';
 
 interface CustomCookieObject {
   value: string;
@@ -16,7 +14,6 @@ interface CustomCookieObject {
 }
 
 const SITEMAP_REGEX = /^\/sitemap(\/sitemap_[0-9]+\.xml)?\/?$/;
-const ssm = new AWS.SSM({ region: 'us-east-1' });
 
 const handler = async (event: LambdaProxy.Event): Promise<LambdaProxy.Response> => {
   console.log(JSON.stringify(event, null, 2));
@@ -93,24 +90,8 @@ const handler = async (event: LambdaProxy.Event): Promise<LambdaProxy.Response> 
   }
 
   let version = '';
-  const branch = event.queryStringParameters && event.queryStringParameters.branch;
-  if (headers.host === 'scinapse.io') {
+  if (process.env.NODE_ENV === 'production') {
     version = fs.readFileSync(path.resolve(__dirname, './version')).toString('utf8');
-  } else if (branch) {
-    const escapedBranch = branch.replace('/', '-');
-    const globalParams = await ssm
-      .getParameter({
-        Name: AWS_SSM_PARAM_STORE_NAME,
-      })
-      .promise();
-
-    if (!globalParams.Parameter || !globalParams.Parameter.Value) {
-      throw new Error('No global parameters exist in AWS-SSM');
-    }
-    const currentBranchVersionString = globalParams.Parameter.Value;
-    const branchMap = JSON.parse(currentBranchVersionString);
-
-    version = branchMap[escapedBranch];
   }
 
   const cookies = cookie.parse(headers.cookie || '');

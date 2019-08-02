@@ -5,10 +5,10 @@ import { CDN_BASE_HOST, AWS_S3_PRODUCTION_FOLDER_PREFIX } from '../deploy/config
 import { uploadProdFiles } from '../helpers/pushToS3';
 const clientConfig = require('../../webpack.prod.browser.config');
 const serverConfig = require('../../webpack.prod.server.config');
-
-const VERSION = new Date().toISOString();
-
+const version = new Date().toISOString();
 clientConfig.output.publicPath = `${CDN_BASE_HOST}/${AWS_S3_PRODUCTION_FOLDER_PREFIX}/client/`;
+
+console.log('version is ', version);
 
 function cleanArtifacts() {
   const fileList = fs.readdirSync(path.resolve(__dirname, '../../dist/client'));
@@ -40,9 +40,9 @@ function build() {
     await build();
     await uploadProdFiles();
     cleanArtifacts();
-    fs.writeFileSync(path.resolve(__dirname, '../../dist/server/version'), VERSION);
-    fs.writeFileSync('./version', VERSION);
-    console.log(`${VERSION} version is successfully built and uploaded.`);
+    fs.writeFileSync(path.resolve(__dirname, '../../dist/server/version'), version);
+    fs.writeFileSync('./version', version);
+    console.log('DONE');
   } catch (err) {
     console.log('================================================================================');
     console.log('WARNING!');
