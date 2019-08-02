@@ -6,6 +6,8 @@ jobs:
     working_directory: ~/scinapse
     docker:
       - image: circleci/node:8.10
+    environment:
+      TZ: "Asia/Seoul"
     steps:
       - checkout
       - run:
@@ -22,6 +24,8 @@ jobs:
     working_directory: ~/scinapse
     docker:
       - image: circleci/node:8.10
+    environment:
+      TZ: "Asia/Seoul"
     steps:
       - checkout
       - run:
@@ -39,6 +43,8 @@ jobs:
     working_directory: ~/scinapse
     docker:
       - image: circleci/node:8.10
+    environment:
+      TZ: "Asia/Seoul"
     steps:
       - checkout
       - run:
@@ -53,7 +59,7 @@ jobs:
           name: Update PATH and Define Environment Variable at Runtime
           command: |
             echo 'export DEPLOYED_VERSION=$(cat ./version)' >> $BASH_ENV
-            source $BASH_ENV   
+            source $BASH_ENV
       - run:
           name: Update commit messages and Define Environment Variable at Runtime
           command: |
@@ -89,4 +95,4 @@ workflows:
             branches:
               only:
                 - hotfix
-                - master 
+                - master
