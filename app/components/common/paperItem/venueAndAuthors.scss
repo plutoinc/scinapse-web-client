@@ -7,8 +7,9 @@
 
   .venue {
     display: flex;
-    align-items: center;
-    height: 20px;
+    align-items: flex-start;
+    height: 100%;
+    min-height: 20px;
   }
 
   .margin {
@@ -35,6 +36,7 @@
 
   .author {
     display: flex;
+    align-items: flex-start;
     margin-top: 2px;
   }
 
@@ -64,6 +66,7 @@
   justify-content: center;
   align-items: center;
   margin-right: 8px;
+  margin-top: 4px;
   max-height: 26px;
 
   svg {
@@ -81,6 +84,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 4px;
   margin-right: 8px;
 
   svg {
