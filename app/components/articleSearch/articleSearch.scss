@@ -160,10 +160,6 @@
 
 // content-like width
 @media (max-width: 1200px) {
-  .rightBoxWrapper {
-    display: none;
-  }
-
   .innerContainer {
     margin: 0 auto;
   }
@@ -173,6 +169,7 @@
 @media (max-width: $mobile-width) {
   .articleSearchContainer {
     padding-bottom: 0;
+    flex-direction: column;
   }
 
   .rootWrapper {
@@ -217,5 +214,11 @@
       margin-top: 12px;
       font-size: 12px;
     }
+  }
+
+  .noAuthorRightBoxWrapper {
+    max-width: 100%;
+    margin: 20px 0 0 0;
+    align-items: center;
   }
 }
