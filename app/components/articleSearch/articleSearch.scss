@@ -160,21 +160,16 @@
 
 // content-like width
 @media (max-width: 1200px) {
+  .articleSearchContainer {
+    justify-content: center;
+  }
+
   .innerContainer {
     margin: 0 auto;
   }
-}
-
-@media (max-width: $tablet_width) {
-  .articleSearchContainer {
-    padding-bottom: 0;
-    flex-direction: column;
-  }
 
   .noAuthorRightBoxWrapper {
-    max-width: 100%;
-    margin: 20px 0 0 0;
-    align-items: center;
+    display: none;
   }
 }
 
