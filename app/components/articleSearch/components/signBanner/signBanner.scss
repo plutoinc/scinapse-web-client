@@ -1,7 +1,8 @@
 .bannerContainer {
   max-width: 354px;
+  min-height: 345px;
   width: 100%;
-  height: 345px;
+  height: 100%;
   border-radius: 4px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
   border: 1px solid $gray300;
@@ -40,7 +41,8 @@
 }
 
 .bannerImage {
-  width: 284px;
+  max-width: 284px;
+  width: 100%;
   height: 180px;
 }
 
