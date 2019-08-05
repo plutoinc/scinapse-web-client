@@ -31,7 +31,7 @@
   text-align: center;
   font-size: 14px;
   font-weight: bold;
-  color: $gray6;
+  color: $gray800;
   padding: 14px 0;
   margin-right: 16px;
   cursor: pointer;
@@ -80,10 +80,10 @@
 .selectedPaperDescription {
   font-size: 16px;
   line-height: 1.33;
-  color: $gray6;
+  color: $gray800;
   margin-top: 12px;
   margin-bottom: 16px;
-  border-bottom: solid 1px $gray3;
+  border-bottom: solid 1px $gray400;
 }
 
 .allPublicationHeader {
@@ -144,9 +144,9 @@
   align-items: center;
   height: 30px;
   border-radius: 5px;
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
   font-size: 14px;
-  color: $gray6;
+  color: $gray800;
   padding: 0 8px 0 4px;
   cursor: pointer;
 
@@ -157,7 +157,7 @@
     justify-content: center;
     align-items: center;
     margin-right: 4px;
-    color: $gray5;
+    color: $gray600;
 
     svg {
       display: inline-block;
@@ -199,7 +199,7 @@
 
   .noPaperDescription {
     font-size: 18px;
-    color: $gray6;
+    color: $gray800;
     margin-top: 24px;
   }
 }
@@ -208,7 +208,7 @@
   height: 20px;
   font-size: 14px;
   line-height: 1.43;
-  color: $gray6;
+  color: $gray800;
   margin-top: 16px;
 }
 
@@ -216,7 +216,7 @@
   height: 20px;
   font-size: 15px;
   text-align: right;
-  color: $gray5;
+  color: $gray600;
   margin-top: 8px;
 }
 

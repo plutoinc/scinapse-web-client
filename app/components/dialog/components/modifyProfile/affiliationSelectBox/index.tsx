@@ -14,6 +14,8 @@ const styles = require('./affiliationSelectBox.scss');
 
 interface AffiliationSelectBoxProps extends FieldProps {
   className: string;
+  disabled?: boolean;
+  errorWrapperClassName: string;
 }
 
 interface AffiliationSelectBoxState {
@@ -48,7 +50,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
   }
 
   public render() {
-    const { field, form, className } = this.props;
+    const { field, form, className, disabled, errorWrapperClassName } = this.props;
     const { touched, errors } = form;
     const { availableAffiliations } = this.state;
     const rawFieldValue = field.value as Affiliation | SuggestAffiliation | string;
@@ -60,6 +62,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
       <div className={styles.affiliationSelectBox}>
         <div className={styles.inputWrapper}>
           <InputWithSuggestionList
+            disabled={disabled}
             defaultValue={displayValue}
             onChange={this.handleInputChange}
             placeholder="Current Affiliation"
@@ -90,7 +93,17 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
               <Icon icon="X_BUTTON" className={styles.deleteIcon} onClick={this.handleClickDeleteButton} />
             }
           />
-          {touched && error && <div className={styles.errorMessage}>{error}</div>}
+          {touched &&
+            error && (
+              <div
+                className={classNames({
+                  [styles.errorMessage]: !errorWrapperClassName,
+                  [errorWrapperClassName]: !!errorWrapperClassName,
+                })}
+              >
+                {error}
+              </div>
+            )}
         </div>
       </div>
     );
@@ -130,7 +143,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
   private handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
     const { form, field } = this.props;
     const newInput = e.currentTarget.value;
-    const customAffiliation: Affiliation = { id: null, name: newInput };
+    const customAffiliation: Affiliation = { id: null, name: newInput, nameAbbrev: null };
 
     form.setFieldTouched(field.name);
     form.setFieldValue(field.name, customAffiliation);
@@ -146,7 +159,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
     const targetAffiliation = availableAffiliations.find(affiliation => affiliation.keyword === affiliationName);
 
     if (!targetAffiliation && affiliationName) {
-      const customAffiliation: Affiliation = { id: null, name: affiliationName };
+      const customAffiliation: Affiliation = { id: null, name: affiliationName, nameAbbrev: null };
       form.setFieldValue(field.name, customAffiliation);
     } else if (targetAffiliation) {
       form.setFieldValue(field.name, targetAffiliation);

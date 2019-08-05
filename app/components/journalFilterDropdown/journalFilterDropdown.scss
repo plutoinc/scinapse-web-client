@@ -1,0 +1,143 @@
+%column-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: $black0;
+}
+
+.dropBoxWrapper {
+  width: 533px;
+  max-height: 639px;
+  border-radius: 4px;
+  box-shadow: 0 8px 24px 2px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  padding: 24px;
+  margin-top: 8px;
+}
+
+.filterWrapper {
+  position: relative;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.controlBtnsWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.clearBtn {
+  cursor: pointer;
+  font-size: 16px;
+  color: $gray600;
+}
+
+.applyBtn {
+  cursor: pointer;
+  font-size: 16px;
+  color: $main_blue1;
+}
+
+.journalListWrapper {
+  max-height: 312px;
+  overflow-y: auto;
+  margin-bottom: 24px;
+}
+
+.listHeader {
+  position: relative;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+}
+
+.journalLabel {
+  @extend %column-label;
+  margin-left: 28px;
+}
+
+.IFLabel {
+  @extend %column-label;
+  position: absolute;
+  right: 78px;
+  text-align: right;
+}
+
+.countLabel {
+  @extend %column-label;
+  position: absolute;
+  top: 0;
+  right: 8px;
+  bottom: 0;
+  text-align: right;
+}
+
+.searchInfo {
+  margin: 8px 0;
+  font-size: 14px;
+  color: $black1;
+  font-weight: 500;
+  text-align: center;
+  padding: 6px;
+  white-space: pre;
+}
+
+.searchFocusButton {
+  display: inline;
+  cursor: pointer;
+  text-decoration: underline;
+  color: inherit;
+  font-weight: inherit;
+}
+
+.hint {
+  position: absolute;
+  top: -41px;
+  left: 123px;
+  overflow: unset;
+  border-radius: 20px;
+  color: white;
+  background-color: $black1;
+  font-size: 14px;
+  padding: 8px 20px;
+  animation-duration: 1s;
+  animation-name: wave;
+  animation-iteration-count: infinite;
+
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: -7px;
+    left: 117.5px;
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid $black1;
+    z-index: 2;
+  }
+}
+
+@media (max-width: $mobile-width) {
+  .dropBoxWrapper {
+    width: 100vw;
+    padding: 12px;
+  }
+}
+
+@keyframes wave {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, -3px, 0);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}

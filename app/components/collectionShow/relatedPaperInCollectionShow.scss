@@ -1,7 +1,7 @@
 .relatedPaperContainer {
   border-radius: 4px;
-  border: solid 1px $gray2;
-  background-color: $gray0;
+  border: solid 1px $gray300;
+  background-color: $gray30;
   padding: 24px;
 
   .titleContext {
@@ -18,7 +18,7 @@
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
   padding: 12px 16px 4px 16px;
   border-radius: 5px;
-  border: solid 1px $gray2;
+  border: solid 1px $gray300;
   background-color: white;
 }
 
@@ -32,7 +32,7 @@
 
   .loadingSpinner {
     div {
-      background-color: $gray3;
+      background-color: $gray400;
     }
   }
 

@@ -1,0 +1,228 @@
+$left_box_width: 691px;
+$semi_full_width: 997px;
+
+.collectionShowWrapper {
+  display: flex;
+}
+
+.collectionShowContentsWrapper {
+  margin-top: $navbar_height;
+  min-height: calc(100vh - #{$navbar_height} - #{$footer-height});
+  width: 100%;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-top: 250px;
+  align-items: center;
+  margin-top: $navbar_height;
+  min-height: 738.5px;
+
+  .loadingSpinner {
+    div {
+      background-color: $gray500;
+    }
+  }
+}
+
+.headSection {
+  background-color: $gray30;
+  padding: 32px 0;
+  display: flex;
+  justify-content: center;
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: $regular_width;
+  }
+
+  .rightBox {
+    margin-right: 24px;
+  }
+
+  .leftBox {
+    max-width: $small-container-width;
+    margin-right: 12px;
+    margin-left: 244px;
+
+    .categoryName {
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 2.4;
+      letter-spacing: 0.58px;
+      color: $main_blue1;
+    }
+
+    .title {
+      word-break: break-all;
+      font-size: 28px;
+      font-weight: bold;
+      line-height: 1.29;
+      color: $black0;
+      margin-bottom: 16px;
+    }
+
+    .editButton {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 500;
+      color: $gray600;
+      margin-left: 8px;
+      cursor: pointer;
+
+      &:hover {
+        border-bottom: 1px solid $gray600;
+      }
+
+      .editIcon {
+        width: 24px;
+        height: 24px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 4px;
+
+        svg {
+          width: 21px;
+          height: 21px;
+          color: $gray500;
+        }
+      }
+    }
+
+    .description {
+      max-width: 792px;
+      font-size: 16px;
+      line-height: 1.5;
+      color: $gray800;
+      margin-bottom: 12px;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .infoWrapper {
+      span,
+      strong {
+        display: inline-block;
+        vertical-align: top;
+        font-size: 14px;
+        line-height: 1.43;
+        color: $gray600;
+        white-space: pre-wrap;
+      }
+
+      strong {
+        font-weight: bold;
+      }
+
+      .collectionCreatedUser {
+        strong {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+.paperListContainer {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  margin: 0 auto 60px auto;
+  max-width: 1200px;
+
+  .leftBox {
+    max-width: $small-container-width;
+    margin-left: 228px;
+    margin-right: 24px;
+    width: 100%;
+  }
+}
+
+.paperListBox {
+  margin-top: 24px;
+  margin-bottom: 32px;
+
+  .header {
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  .listTitle {
+    display: inline-block;
+    vertical-align: top;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.4;
+    color: $black0;
+
+    .paperCount {
+      margin-left: 8px;
+      font-size: 20px;
+      font-weight: bold;
+      line-height: 1.33;
+      color: $main_blue0;
+    }
+  }
+}
+
+.sortBoxWrapper {
+  position: absolute;
+  top: 12px;
+  right: 0;
+  bottom: 0;
+}
+
+.searchContainer {
+  margin-bottom: 28px;
+}
+
+.searchInputWrapper {
+  position: relative;
+  max-width: 486px;
+  height: 40px;
+  border-radius: 4px;
+}
+
+// Tablet
+@media (max-width: $tablet_width) {
+  .headSection {
+    .container {
+      margin: 0 48px;
+      .leftBox {
+        margin-left: 0px;
+      }
+    }
+  }
+
+  .paperListContainer {
+    .leftBox {
+      margin: 0 24px;
+    }
+  }
+}
+
+// Mobile
+@media (max-width: $mobile_width) {
+  .rightBox {
+    display: none;
+  }
+
+  .sortBoxWrapper {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+  }
+}

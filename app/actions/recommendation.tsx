@@ -2,8 +2,6 @@ import * as Cookies from 'js-cookie';
 import { Dispatch } from 'redux';
 import RecommendationAPI from '../api/recommendation';
 import { ActionCreators } from './actionTypes';
-import { getUserGroupName } from '../helpers/abTestHelper';
-import { KNOWLEDGE_BASED_RECOMMEND_TEST } from '../constants/abTestGlobalValue';
 export const BASED_ACTIVITY_COUNT_COOKIE_KEY = 'basedActivityCount';
 
 const MAX_COUNT = 16;
@@ -24,7 +22,7 @@ export function addPaperToRecommendation(isLoggedIn: boolean, paperId: number, a
   return async (dispatch: Dispatch<any>) => {
     const prevActionCount = Cookies.get(BASED_ACTIVITY_COUNT_COOKIE_KEY);
 
-    if (!isLoggedIn || getUserGroupName(KNOWLEDGE_BASED_RECOMMEND_TEST) === 'control') return;
+    if (!isLoggedIn) return;
 
     RecommendationAPI.addPaperToRecommendationPool(paperId);
 

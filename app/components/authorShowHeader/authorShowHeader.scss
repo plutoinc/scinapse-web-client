@@ -4,7 +4,7 @@
 }
 
 .headerBox {
-  background-color: $gray0;
+  background-color: $gray30;
   padding-top: 38px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   margin-bottom: 40px;
@@ -55,7 +55,7 @@
   height: 24px;
   font-size: 16px;
   line-height: 1.5;
-  color: $gray6;
+  color: $gray800;
   margin-bottom: 12px;
 }
 
@@ -78,7 +78,7 @@
   display: inline-block;
   font-size: 16px;
   line-height: 1.5;
-  color: $gray6;
+  color: $gray800;
 }
 
 .metricLabel + .metricValue {
@@ -93,7 +93,7 @@
   white-space: pre-wrap;
   font-size: 16px;
   line-height: 1.5;
-  color: $gray6;
+  color: $gray800;
   margin-bottom: 16px;
   word-break: break-word;
   overflow-wrap: break-word;
@@ -105,7 +105,7 @@
   height: 24px;
   font-size: 14px;
   line-height: 1.71;
-  color: $gray6;
+  color: $gray800;
   flex-direction: row;
   margin-bottom: 24px;
   margin-right: 16px;
@@ -132,7 +132,7 @@
 
   .emailIcon {
     @extend .occupiedIcon;
-    color: $gray5;
+    color: $gray600;
   }
 
   .externalSource {
@@ -147,7 +147,7 @@
 }
 
 .verificationTooltip {
-  background-color: $gray2 !important;
+  background-color: $gray300 !important;
   color: $black0 !important;
   font-size: 12px;
 }

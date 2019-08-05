@@ -112,7 +112,7 @@
     }
 
     &.opened {
-      background-color: $gray3;
+      background-color: $gray400;
       border: 0;
 
       .plusIcon {
@@ -160,7 +160,7 @@
     display: block;
     font-size: 12px;
     line-height: 1.33;
-    color: $gray6;
+    color: $gray800;
     margin-bottom: 5px;
   }
 
@@ -170,7 +170,7 @@
     height: 40px;
     border-radius: 5px;
     padding: 0 8px;
-    border: solid 1px $gray4;
+    border: solid 1px $gray500;
   }
 
   textarea {
@@ -179,7 +179,7 @@
     height: 70px;
     padding: 8px;
     border-radius: 5px;
-    border: solid 1px $gray4;
+    border: solid 1px $gray500;
     resize: vertical;
   }
 

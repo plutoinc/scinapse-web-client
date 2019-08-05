@@ -54,7 +54,7 @@
   width: 222px;
   height: 40px;
   border-radius: 4px;
-  background-color: $gray8;
+  background-color: $gray50;
   font-size: 14px;
   color: $black0;
   border-top-right-radius: 0;
@@ -63,7 +63,7 @@
   cursor: pointer;
 
   &:hover {
-    background-color: $gray2;
+    background-color: $gray300;
   }
 }
 
@@ -89,7 +89,7 @@
   align-items: center;
   width: 20px;
   height: 20px;
-  color: $gray6 !important;
+  color: $gray800 !important;
 
   svg {
     width: 12px;
@@ -120,7 +120,7 @@
       padding-left: 16px;
 
       &:hover {
-        background-color: $gray0;
+        background-color: $gray30;
       }
     }
 
@@ -128,7 +128,7 @@
       padding-left: 32px;
       font-size: 14px;
       font-weight: bold;
-      color: $gray6;
+      color: $gray800;
     }
 
     .newCollectionCancel {
@@ -140,13 +140,13 @@
       right: 0;
 
       &:hover {
-        background-color: $gray0;
+        background-color: $gray30;
       }
 
       .newCollectionCancelContext {
         width: 100%;
         text-align: center;
-        color: $gray5;
+        color: $gray600;
       }
     }
   }
@@ -199,7 +199,7 @@
   min-height: 80px;
   border-radius: 8px;
   overflow: unset;
-  border: solid 1px $gray2;
+  border: solid 1px $gray300;
   font-size: 14px;
   line-height: 1.5;
   margin-top: 7px;
@@ -214,7 +214,7 @@
     z-index: 2;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
-    border-bottom: 6px solid $gray2;
+    border-bottom: 6px solid $gray300;
   }
 }
 
@@ -226,7 +226,7 @@
 .renderNoteBox {
   @extend .noteBox;
   position: relative;
-  background-color: $gray2;
+  background-color: $gray300;
   padding: 10px 12px;
   color: $black0;
   word-break: break-all;
@@ -255,7 +255,7 @@
       align-items: center;
       width: 16px;
       height: 16px;
-      color: $gray4;
+      color: $gray500;
       cursor: pointer;
 
       &:hover {
@@ -310,10 +310,10 @@
   justify-content: center;
   align-items: center;
   border-radius: 4px;
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
   font-size: 14px;
   font-weight: bold;
-  color: $gray6;
+  color: $gray800;
   padding: 8px 12px;
 
   .collectionIcon {
@@ -331,7 +331,7 @@
   }
 
   &:hover {
-    background-color: $gray2;
+    background-color: $gray300;
   }
 }
 

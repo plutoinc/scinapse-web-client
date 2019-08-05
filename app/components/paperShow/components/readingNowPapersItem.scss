@@ -1,6 +1,6 @@
 .paperItemWrapper {
   padding: 8px 12px;
-  border: 1px solid $gray2;
+  border: 1px solid $gray300;
   border-radius: 8px;
   background-color: #ffffff;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
@@ -43,7 +43,7 @@
 }
 
 .journalLink {
-  color: $gray9;
+  color: $gray700;
 
   &:hover {
     text-decoration: underline;
@@ -58,6 +58,6 @@
   }
   margin-top: 6px;
   font-size: 13px;
-  color: $gray5;
+  color: $gray600;
   line-height: 18px;
 }

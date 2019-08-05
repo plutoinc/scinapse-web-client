@@ -33,10 +33,11 @@ type SearchQueryInputProps = React.InputHTMLAttributes<HTMLInputElement> &
     dispatch: Dispatch<any>;
     actionArea: 'home' | 'topBar' | 'paperShow';
     maxCount: number;
-    initialFilter?: FilterObject;
+    currentFilter?: FilterObject;
     wrapperClassName?: string;
     listWrapperClassName?: string;
     inputClassName?: string;
+    sort?: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS;
   };
 
 type SearchSourceType = 'history' | 'suggestion' | 'raw';
@@ -44,7 +45,6 @@ type SearchSourceType = 'history' | 'suggestion' | 'raw';
 interface SubmitParams {
   from: SearchSourceType;
   query: string;
-  filter?: FilterObject;
 }
 
 function validateSearchInput(query: string) {
@@ -82,12 +82,6 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     wait: 200,
   });
 
-  // prevent suggestion box is opened by auto focusing
-  const [blockOpen, setBlockOpen] = React.useState(true);
-  React.useEffect(() => {
-    setBlockOpen(false);
-  }, []);
-
   const [genuineInputValue, setGenuineInputValue] = React.useState('');
   React.useEffect(
     () => {
@@ -95,6 +89,12 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     },
     [genuineInputValue]
   );
+
+  // prevent suggestion box is opened by auto focusing
+  const [blockOpen, setBlockOpen] = React.useState(true);
+  React.useEffect(() => {
+    setBlockOpen(false);
+  }, []);
 
   React.useEffect(
     () => {
@@ -125,7 +125,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     [props.location]
   );
 
-  async function handleSubmit({ query, filter, from }: SubmitParams) {
+  async function handleSubmit({ query, from }: SubmitParams) {
     const searchKeyword = (query || inputValue).trim();
 
     if (!validateSearchInput(searchKeyword)) {
@@ -169,8 +169,8 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     const currentPage = getCurrentPageType();
     const searchQuery = PapersQueryFormatter.stringifyPapersQuery({
       query: searchKeyword,
-      sort: 'RELEVANCE',
-      filter: filter || {},
+      sort: props.sort || 'RELEVANCE',
+      filter: props.currentFilter || {},
       page: 1,
     });
 
@@ -190,7 +190,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
       from = 'suggestion';
     }
 
-    handleSubmit({ query: genuineInputValue, filter: props.initialFilter, from });
+    handleSubmit({ query: genuineInputValue, from });
   }
 
   const keywordItems = keywordsToShow.slice(0, props.maxCount).map((k, i) => {
@@ -202,7 +202,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
           [s.highlight]: highlightIdx === i,
         })}
         onClick={() => {
-          handleSubmit({ query: k.text, filter: props.initialFilter, from: k.removable ? 'history' : 'suggestion' });
+          handleSubmit({ query: k.text, from: k.removable ? 'history' : 'suggestion' });
         }}
       >
         <span dangerouslySetInnerHTML={{ __html: getHighlightedContent(k.text, genuineInputValue) }} />
@@ -259,7 +259,6 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
 
                 handleSubmit({
                   query: keywordsToShow[i] ? keywordsToShow[i].text : genuineInputValue,
-                  filter: props.initialFilter,
                   from,
                 });
               },
@@ -277,6 +276,9 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
             setInputValue(value);
             setGenuineInputValue(value);
             setParams(value);
+            if (!isOpen) {
+              setIsOpen(true);
+            }
           }}
           placeholder={placeholder}
           autoFocus={props.autoFocus}

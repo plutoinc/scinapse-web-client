@@ -19,7 +19,6 @@ import * as Actions from '../actions';
 import { generateMockStore } from '../../../__tests__/mockStore';
 import { ACTION_TYPES } from '../../../actions/actionTypes';
 import { SearchPapersParams } from '../../../api/types/paper';
-import { FILTER_RANGE_TYPE, FILTER_TYPE_HAS_RANGE } from '../../../constants/paperSearch';
 
 describe('articleSearch actions', () => {
   let store: any;
@@ -94,31 +93,6 @@ describe('articleSearch actions', () => {
           },
           query: 'test',
           sort: 'RELEVANCE',
-        },
-      });
-    });
-  });
-
-  describe('changeRangeInput action', () => {
-    it('should return ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT action with type and year payload', () => {
-      const mockRangeType = FILTER_RANGE_TYPE.FROM;
-      const mockYear = 2000;
-
-      store.dispatch(
-        Actions.changeRangeInput({
-          rangeType: mockRangeType,
-          numberValue: mockYear,
-          type: FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
-        })
-      );
-      const actions = store.getActions();
-
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT,
-        payload: {
-          rangeType: mockRangeType,
-          numberValue: mockYear,
-          type: FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
         },
       });
     });

@@ -14,7 +14,7 @@
       cursor: pointer;
 
       svg {
-        color: $gray5;
+        color: $gray600;
         width: 13px;
         height: 13px;
       }
@@ -33,7 +33,7 @@
   }
 
   &:hover {
-    background-color: $gray0;
+    background-color: $gray30;
 
     .hoverButtonWrapper {
       display: unset;
@@ -48,7 +48,7 @@
     margin-top: 2px;
     font-size: 13px;
     line-height: 1.54;
-    color: $gray6;
+    color: $gray800;
 
     .dateContent {
       width: 88px;
@@ -87,7 +87,7 @@
       display: flex;
       font-size: 13px;
       line-height: 1.54;
-      color: $gray6;
+      color: $gray800;
     }
 
     .relatedLinkContent {
@@ -110,7 +110,7 @@
       display: flex;
       font-size: 12px;
       line-height: 1.33;
-      color: $gray5;
+      color: $gray600;
       margin-top: 8px;
     }
   }

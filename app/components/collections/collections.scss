@@ -1,7 +1,7 @@
 $collections-container-width: 793px;
 
 .pageWrapper {
-  background-color: $gray0;
+  background-color: $gray30;
 }
 
 .contentWrapper {
@@ -54,7 +54,7 @@ $collections-container-width: 793px;
 }
 
 .newCollectionBtnWrapper {
-  @include small-action-button($gray6);
+  @include small-action-button($gray800);
   height: 30px;
   background-color: transparent;
 
@@ -111,11 +111,11 @@ $collections-container-width: 793px;
     cursor: pointer;
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
-    color: $gray5;
+    color: $gray600;
     margin-right: 8px;
 
     &:hover {
-      color: $gray6;
+      color: $gray800;
     }
   }
 
@@ -126,7 +126,7 @@ $collections-container-width: 793px;
     width: 32px;
     height: 32px;
     border-radius: 4px;
-    background-color: $gray0;
+    background-color: $gray30;
 
     svg {
       display: inline-block;
@@ -153,7 +153,7 @@ $collections-container-width: 793px;
       vertical-align: top;
       line-height: 1.43;
       font-size: 14px;
-      color: $gray6;
+      color: $gray800;
     }
 
     span > b {

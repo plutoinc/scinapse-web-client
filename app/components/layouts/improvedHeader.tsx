@@ -24,11 +24,12 @@ import GlobalDialogManager from '../../helpers/globalDialogManager';
 import { HOME_PATH } from '../../constants/routes';
 import { ACTION_TYPES, ActionCreators } from '../../actions/actionTypes';
 import { CurrentUser } from '../../model/currentUser';
-import { FilterObject, DEFAULT_FILTER } from '../../helpers/searchQueryManager';
+import SearchQueryManager from '../../helpers/searchQueryManager';
 import { getCollections } from '../collections/actions';
 import { collectionSchema } from '../../model/collection';
 import { getMemoizedPaper } from '../../containers/paperShow/select';
 import ResearchHistory from '../researchHistory';
+import { parse } from 'qs';
 const styles = require('./improvedHeader.scss');
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -233,14 +234,13 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private getSearchFormContainer = () => {
-    const { location, articleSearchState } = this.props;
-
+    const { location } = this.props;
     const shouldShowSearchFormContainer = location.pathname !== HOME_PATH;
-    const currentFilter: FilterObject = articleSearchState.selectedFilter
-      ? articleSearchState.selectedFilter.filter
-      : DEFAULT_FILTER;
-
     if (!shouldShowSearchFormContainer) return null;
+
+    const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
+    const filter = SearchQueryManager.objectifyPaperFilter(currentQueryParams.filter);
+    const sort = currentQueryParams.sort as Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS;
 
     return (
       <div className={styles.searchFormContainer}>
@@ -248,7 +248,8 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
           wrapperClassName={styles.searchWrapper}
           listWrapperClassName={styles.suggestionListWrapper}
           inputClassName={styles.searchInput}
-          initialFilter={currentFilter}
+          currentFilter={filter}
+          sort={sort}
           actionArea="topBar"
           maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
         />
@@ -321,7 +322,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
         {currentUserState.isAuthorConnected ? (
           <MenuItem classes={{ root: styles.profileButton }}>
             <Link
-              className={styles.buttonOnLink}
+              className={styles.linkOnButton}
               onClick={this.handleRequestCloseUserDropdown}
               to={`/authors/${currentUserState.authorId}?beta=true`}
             >
@@ -331,7 +332,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
         ) : null}
         <MenuItem classes={{ root: styles.collectionButton }}>
           <Link
-            className={styles.buttonOnLink}
+            className={styles.linkOnButton}
             onClick={this.handleRequestCloseUserDropdown}
             to={
               !!myCollectionsState && myCollectionsState.collectionIds.length > 0
@@ -342,6 +343,11 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
             Collection
           </Link>
         </MenuItem>
+        <MenuItem classes={{ root: styles.settingsButton }}>
+          <Link className={styles.linkOnButton} onClick={this.handleRequestCloseUserDropdown} to="/settings">
+            Settings
+          </Link>
+        </MenuItem>
         <MenuItem classes={{ root: styles.signOutButton }} onClick={this.handleClickSignOut}>
           <span className={styles.buttonText}>Sign Out</span>
         </MenuItem>
@@ -349,16 +355,24 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
     );
   };
 
+  private getHistoryButton = () => {
+    const { paper } = this.props;
+
+    return (
+      <div className={styles.historyBtnWrapper}>
+        <ResearchHistory paper={paper} />
+      </div>
+    );
+  };
+
   private getUserDropdown = () => {
-    const { currentUserState, myCollectionsState, paper } = this.props;
+    const { currentUserState, myCollectionsState } = this.props;
 
     const firstCharacterOfUsername = currentUserState.firstName.slice(0, 1).toUpperCase();
 
     return (
       <div className={styles.rightBox}>
-        <div className={styles.historyBtnWrapper}>
-          <ResearchHistory paper={paper} isLoggedIn={currentUserState.isLoggedIn} />
-        </div>
+        {this.getHistoryButton()}
         <Link
           className={styles.externalCollectionButton}
           onClick={() => {
@@ -422,6 +436,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
     if (!isLoggedIn) {
       return (
         <div className={styles.rightBox}>
+          {this.getHistoryButton()}
           <div
             onClick={() => {
               this.handleOpenSignIn();

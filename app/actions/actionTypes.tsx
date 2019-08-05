@@ -5,13 +5,18 @@ import { AvailableCitationType } from '../containers/paperShow/records';
 import { GetCollectionsResponse } from '../api/member';
 import { GLOBAL_DIALOG_TYPE } from '../components/dialog/reducer';
 import { Collection } from '../model/collection';
-import { Paper, PaperPdf } from '../model/paper';
+import { Paper, PaperPdf, PaperFigure } from '../model/paper';
 import { CVInfoType, Award, Education, Experience } from '../model/profile';
 import { PaperInCollection } from '../model/paperInCollection';
 import { SIGN_UP_STEP } from '../components/auth/signUp/types';
 import { OAuthCheckParams } from '../api/types/auth';
 import { SignUpConversionExpTicketContext } from '../constants/abTest';
+import { SearchResult } from '../api/search';
+import { FILTER_BUTTON_TYPE } from '../components/filterButton';
+import { FilterObject } from '../helpers/searchQueryManager';
+import { AggregationJournal } from '../model/aggregation';
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
+import { Member } from '../model/member';
 
 export enum ACTION_TYPES {
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = 'GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING',
@@ -115,11 +120,9 @@ export enum ACTION_TYPES {
   PAPER_SHOW_FETCH_LAST_FULL_TEXT_REQUESTED_DATE = 'PAPER_SHOW_FETCH_LAST_FULL_TEXT_REQUESTED_DATE',
 
   ARTICLE_SEARCH_CHANGE_SEARCH_INPUT = 'ARTICLE_SEARCH_CHANGE_SEARCH_INPUT',
-  ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT = 'ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT',
   ARTICLE_SEARCH_START_TO_GET_PAPERS = 'ARTICLE_SEARCH_START_TO_GET_PAPERS',
   ARTICLE_SEARCH_FAILED_TO_GET_PAPERS = 'ARTICLE_SEARCH_FAILED_TO_GET_PAPERS',
   ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS = 'ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS',
-  ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX = 'ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX',
   ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS = 'ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS',
   ARTICLE_SEARCH_FAILED_TO_GET_CITED_PAPERS = 'ARTICLE_SEARCH_FAILED_TO_GET_CITED_PAPERS',
   ARTICLE_SEARCH_SUCCEEDED_TO_GET_CITED_PAPERS = 'ARTICLE_SEARCH_SUCCEEDED_TO_GET_CITED_PAPERS',
@@ -129,16 +132,14 @@ export enum ACTION_TYPES {
   ARTICLE_SEARCH_START_TO_GET_AUTHORS = 'ARTICLE_SEARCH_START_TO_GET_AUTHORS',
   ARTICLE_SEARCH_FAILED_TO_GET_AUTHORS = 'ARTICLE_SEARCH_FAILED_TO_GET_AUTHORS',
   ARTICLE_SEARCH_SUCCEEDED_TO_GET_AUTHORS = 'ARTICLE_SEARCH_SUCCEEDED_TO_GET_AUTHORS',
-
-  ARTICLE_SEARCH_GENERATED_TO_NEW_FILTER = 'ARTICLE_SEARCH_GENERATED_TO_NEW_FILTER',
-  ARTICLE_SEARCH_GENERATED_FAILED_TO_NEW_FILTER = 'ARTICLE_SEARCH_GENERATED_FAILED_TO_NEW_FILTER',
-  ARTICLE_SEARCH_START_TO_GET_CURRENT_USER_FILTERS = 'ARTICLE_SEARCH_START_TO_GET_CURRENT_USER_FILTERS',
-  ARTICLE_SEARCH_SUCCEEDED_TO_GET_CURRENT_USER_FILTERS = 'ARTICLE_SEARCH_SUCCEEDED_TO_GET_CURRENT_USER_FILTERS',
-  ARTICLE_SEARCH_FAILED_TO_GET_CURRENT_USER_FILTERS = 'ARTICLE_SEARCH_FAILED_TO_GET_CURRENT_USER_FILTERS',
-  ARTICLE_SEARCH_START_TO_PUT_CURRENT_USER_FILTERS = 'ARTICLE_SEARCH_START_TO_PUT_CURRENT_USER_FILTERS',
-  ARTICLE_SEARCH_SUCCEEDED_TO_PUT_CURRENT_USER_FILTERS = 'ARTICLE_SEARCH_SUCCEEDED_TO_PUT_CURRENT_USER_FILTERS',
-  ARTICLE_SEARCH_FAILED_TO_PUT_CURRENT_USER_FILTERS = 'ARTICLE_SEARCH_FAILED_TO_PUT_CURRENT_USER_FILTERS',
-  ARTICLE_SEARCH_SET_FILTER_IN_FILTER_SET = 'ARTICLE_SEARCH_SET_FILTER_IN_FILTER_SET',
+  ARTICLE_SEARCH_SET_ACTIVE_FILTER_BOX_BUTTON = 'ARTICLE_SEARCH_SET_ACTIVE_FILTER_BOX_BUTTON',
+  ARTICLE_SEARCH_SYNC_FILTERS_WITH_QUERY_PARAMS = 'ARTICLE_SEARCH_SYNC_FILTERS_WITH_QUERY_PARAMS',
+  ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM = 'ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM',
+  ARTICLE_SEARCH_SELECT_FOS_FILTER_ITEM = 'ARTICLE_SEARCH_SELECT_FOS_FILTER_ITEM',
+  ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER = 'ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER',
+  ARTICLE_SEARCH_ADD_JOURNAL_FILTER_ITEMS = 'ARTICLE_SEARCH_ADD_JOURNAL_FILTER_ITEMS',
+  ARTICLE_SEARCH_CLEAR_FOS_FILTER = 'ARTICLE_SEARCH_CLEAR_FOS_FILTER',
+  ARTICLE_SEARCH_DISABLE_AUTO_YEAR_FILTER = 'ARTICLE_SEARCH_DISABLE_AUTO_YEAR_FILTER',
 
   AUTHOR_SHOW_START_TO_LOAD_DATA_FOR_PAGE = 'AUTHOR_SHOW_START_TO_LOAD_DATA_FOR_PAGE',
   AUTHOR_SHOW_FINISH_TO_LOAD_DATA_FOR_PAGE = 'AUTHOR_SHOW_FINISH_TO_LOAD_DATA_FOR_PAGE',
@@ -196,8 +197,9 @@ export enum ACTION_TYPES {
   COLLECTION_SHOW_START_TO_GET_PAPERS = 'COLLECTION_SHOW_START_TO_GET_PAPERS',
   COLLECTION_SHOW_SUCCEEDED_GET_PAPERS = 'COLLECTION_SHOW_SUCCEEDED_GET_PAPERS',
   COLLECTION_SHOW_FAILED_TO_GET_PAPERS = 'COLLECTION_SHOW_FAILED_TO_GET_PAPERS',
-  COLLECTION_SHOW_OPEN_SHARE_DROPDOWN = 'COLLECTION_SHOW_OPEN_SHARE_DROPDOWN',
-  COLLECTION_SHOW_CLOSE_SHARE_DROPDOWN = 'COLLECTION_SHOW_CLOSE_SHARE_DROPDOWN',
+  COLLECTION_SHOW_CLEAR_SELECT_PAPER_ITEM = 'COLLECTION_SHOW_CLEAR_SELECT_PAPER_ITEM',
+  COLLECTION_SHOW_SELECT_PAPER_ITEM = 'COLLECTION_SHOW_SELECT_PAPER_ITEM',
+  COLLECTION_SHOW_SELECT_ALL_PAPER_ITEMS = 'COLLECTION_SHOW_SELECT_ALL_PAPER_ITEMS',
 
   JOURNAL_SHOW_START_TO_GET_JOURNAL = 'JOURNAL_SHOW_START_TO_GET_JOURNAL',
   JOURNAL_SHOW_SUCCEEDED_TO_GET_JOURNAL = 'JOURNAL_SHOW_SUCCEEDED_TO_GET_JOURNAL',
@@ -261,6 +263,9 @@ export const ActionCreators = {
     authContext?: SignUpConversionExpTicketContext;
     isBlocked?: boolean;
     nextSignUpStep?: string;
+    paperFigures?: PaperFigure[];
+    currentPaperFigureIndex?: number;
+    viewDetailFigureTargetPaperId?: number;
   }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
   },
@@ -845,6 +850,18 @@ export const ActionCreators = {
     });
   },
 
+  clearToSelectedPaperInCollectionShow() {
+    return createAction({ type: ACTION_TYPES.COLLECTION_SHOW_CLEAR_SELECT_PAPER_ITEM });
+  },
+
+  selectToPaperInCollectionShow(payload: { paperId: number }) {
+    return createAction({ type: ACTION_TYPES.COLLECTION_SHOW_SELECT_PAPER_ITEM, payload });
+  },
+
+  selectToAllPapersInCollectionShow(payload: { paperIds: number[] }) {
+    return createAction({ type: ACTION_TYPES.COLLECTION_SHOW_SELECT_ALL_PAPER_ITEMS, payload });
+  },
+
   clearPaperShowState() {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE,
@@ -872,18 +889,6 @@ export const ActionCreators = {
   closeNoteDropdownInPaperShow() {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_CLOSE_NOTE_DROPDOWN,
-    });
-  },
-
-  openShareDropdownInCollectionShow() {
-    return createAction({
-      type: ACTION_TYPES.COLLECTION_SHOW_OPEN_SHARE_DROPDOWN,
-    });
-  },
-
-  closeShareDropdownInCollectionShow() {
-    return createAction({
-      type: ACTION_TYPES.COLLECTION_SHOW_CLOSE_SHARE_DROPDOWN,
     });
   },
 
@@ -1056,5 +1061,76 @@ export const ActionCreators = {
 };
 
 export type ActionUnion<T extends ActionCreatorsMapObject> = ReturnType<T[keyof T]>;
+
+interface SucceedToGetSearchResultAction {
+  type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS;
+  payload: SearchResult;
+}
+
+export interface SetActiveFilterBoxButtonAction {
+  type: ACTION_TYPES.ARTICLE_SEARCH_SET_ACTIVE_FILTER_BOX_BUTTON;
+  payload: { button: FILTER_BUTTON_TYPE | null };
+}
+
+export interface SyncFilterWithQueryParamsAction {
+  type: ACTION_TYPES.ARTICLE_SEARCH_SYNC_FILTERS_WITH_QUERY_PARAMS;
+  payload: { filters: FilterObject; sorting: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS };
+}
+
+interface SelectJournalFilterItemAction {
+  type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM;
+  payload: { journalId: number };
+}
+
+interface SelectFOSFilterItemAction {
+  type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_FOS_FILTER_ITEM;
+  payload: { FOSId: number };
+}
+
+interface ClearJournalFilterAction {
+  type: ACTION_TYPES.ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER;
+}
+
+interface ClearFOSFilterAction {
+  type: ACTION_TYPES.ARTICLE_SEARCH_CLEAR_FOS_FILTER;
+}
+
+interface AddJournalFilterItems {
+  type: ACTION_TYPES.ARTICLE_SEARCH_ADD_JOURNAL_FILTER_ITEMS;
+  payload: {
+    journals: AggregationJournal[];
+  };
+}
+
+interface DisableAutoYearFilter {
+  type: ACTION_TYPES.ARTICLE_SEARCH_DISABLE_AUTO_YEAR_FILTER;
+}
+
+interface SucceedCheckAuthStatusAction {
+  type: ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN;
+  payload: {
+    user: Member | null;
+    loggedIn: boolean;
+    oauthLoggedIn: boolean;
+  };
+}
+
+export interface AlertAction {
+  type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION;
+  payload: Scinapse.Alert.NotificationActionPayload;
+}
+
+export type AuthActions = SucceedCheckAuthStatusAction;
+
+export type SearchActions =
+  | SucceedToGetSearchResultAction
+  | SetActiveFilterBoxButtonAction
+  | SyncFilterWithQueryParamsAction
+  | SelectJournalFilterItemAction
+  | SelectFOSFilterItemAction
+  | ClearJournalFilterAction
+  | ClearFOSFilterAction
+  | AddJournalFilterItems
+  | DisableAutoYearFilter;
 
 export type Actions = ActionUnion<typeof ActionCreators>;

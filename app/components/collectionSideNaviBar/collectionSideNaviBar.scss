@@ -1,10 +1,10 @@
 .sideNaviBarWrapper {
   width: 180px;
-  margin-top: -91px;
+  top: $navbar_height + 32px;
   margin-left: 24px;
   position: absolute;
   border-radius: 8px;
-  background-color: $gray1;
+  background-color: $gray200;
   padding: 16px;
   display: inline-flex;
   flex-direction: column;
@@ -20,9 +20,9 @@
   font-size: 14px;
   font-weight: bold;
   line-height: 1.43;
-  color: $dark-blue0;
+  color: $black0;
   padding-bottom: 12px;
-  border-bottom: 1px solid $gray2;
+  border-bottom: 1px solid $gray300;
 
   .naviBarTitleLink {
     display: flex;
@@ -41,10 +41,10 @@
   overflow-wrap: break-word;
   font-size: 14px;
   line-height: 1.43;
-  color: $gray6;
+  color: $gray800;
 
   &:hover {
-    color: $gray5;
+    color: $gray600;
     text-decoration: underline;
   }
 
@@ -56,7 +56,7 @@
 .currentCollectionItemTitle {
   @extend .collectionItemTitle;
   font-weight: 500;
-  color: $dark-blue0;
+  color: $black0;
 
   &:hover {
     color: $black1;
@@ -82,7 +82,7 @@
   justify-content: center;
 
   .loadingSpinner {
-    color: $gray6;
+    color: $gray800;
   }
 }
 

@@ -10,6 +10,7 @@ import AuthButton from '../../../authButton';
 import AffiliationBox from '../../../../authorCV/affiliationBox';
 import validateEmail from '../../../../../helpers/validateEmail';
 import { debouncedCheckDuplicate } from '../../helpers/checkDuplicateEmail';
+import { MINIMUM_PASSWORD_LENGTH } from '../../../../../constants/auth';
 const s = require('./style.scss');
 
 interface SignUpFormProps {
@@ -40,7 +41,7 @@ const validateForm = async (values: SignUpFormValues, withSocial: boolean) => {
     errors.email = 'Please enter a valid email address';
   }
 
-  if ((!withSocial && !values.password) || (values.password && values.password.length < 8)) {
+  if ((!withSocial && !values.password) || (values.password && values.password.length < MINIMUM_PASSWORD_LENGTH)) {
     errors.password = 'Must have at least 8 characters!';
   }
   if (!values.firstName) {
@@ -140,7 +141,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                   borderRadius: '3px',
                   padding: '0 10px',
                   backgroundColor: 'white',
-                  border: 'solid 1px $gray3',
+                  border: 'solid 1px $gray400',
                   overflow: 'hidden',
                   marginTop: '14px',
                 }}

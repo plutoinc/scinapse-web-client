@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import { parse } from 'qs';
+import classNames from 'classnames';
 import NoSsr from '@material-ui/core/NoSsr';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
@@ -12,30 +13,25 @@ import { AppState } from '../../reducers';
 import NoResult from './components/noResult';
 import NoResultInSearch from './components/noResultInSearch';
 import TabNavigationBar from '../common/tabNavigationBar';
-import Suggestions from './components/suggestions';
+import PaperSearchResultInfo from './components/PaperSearchResultInfo';
 import ErrorPage from '../error/errorPage';
-import { fetchCurrentUserFilters, searchPapers, toggleExpandingFilter, changeRangeInput } from './actions';
+import { searchPapers } from './actions';
 import SearchList from './components/searchList';
 import DoiSearchBlocked from './components/doiSearchBlocked';
 import { Paper } from '../../model/paper';
 import AuthorSearchItem from '../authorSearchItem';
-import { Actions } from '../../actions/actionTypes';
+import { Actions, SearchActions } from '../../actions/actionTypes';
 import restoreScroll from '../../helpers/scrollRestoration';
 import { SearchPageQueryParams } from './types';
 import { MatchAuthor } from '../../api/search';
-import formatNumber from '../../helpers/formatNumber';
-import SortBar from './components/SortBar';
 import Pagination from './components/pagination';
 import SignBanner from './components/signBanner';
-import FilterContainer from '../../containers/filterContainer';
+import FilterBox from '../../containers/filterBox';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import { changeSearchQuery } from '../../actions/searchQuery';
 import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
 import ImprovedFooter from '../layouts/improvedFooter';
 import KnowledgeBaseNoti from '../knowledgeBaseNoti';
-import { getUserGroupName } from '../../helpers/abTestHelper';
-import { AUTO_YEAR_FILTER_TEST } from '../../constants/abTestGlobalValue';
-import AutoYearFilter from './components/autoYearFilter';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -88,8 +84,11 @@ const AuthorSearchResult: React.FC<AuthorSearchResult> = React.memo(
     return (
       <div className={styles.authorItemSectionWrapper}>
         <div className={styles.authorItemsHeader}>
-          <span className={styles.categoryHeader}>Author</span>
-          <span className={styles.categoryCount}>{authorCount}</span>
+          <div className={styles.categoryHeader}>Author</div>
+          <div className={styles.categoryCount}>
+            {authorCount}
+            {authorCount > 1 ? ' authors' : ' author'}
+          </div>
           {authorCount <= 2 ? null : moreAuthorPage}
         </div>
         <div className={styles.authorItemsWrapper}>{authorItems}</div>
@@ -103,12 +102,11 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
 
   const hasNoSearchResult =
     (!articleSearchState.searchItemsToShow || articleSearchState.searchItemsToShow.length === 0) && queryParams;
-  const hasNoSearchResultAndNoAuthorResult =
-    hasNoSearchResult &&
-    (!articleSearchState.matchAuthors ||
-      (articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements === 0));
-  const hasNoSearchResultButHasAuthorResult =
-    hasNoSearchResult && articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements > 0;
+  const hasNoMatchedAuthors =
+    !articleSearchState.matchAuthors ||
+    (articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements === 0);
+  const hasNoSearchResultAndNoAuthorResult = hasNoSearchResult && hasNoMatchedAuthors;
+  const hasNoSearchResultButHasAuthorResult = hasNoSearchResult && !hasNoMatchedAuthors;
   const blockedDoiMatchedSearch =
     !currentUserState.isLoggedIn && articleSearchState.doiPatternMatched && !hasNoSearchResult;
 
@@ -123,6 +121,7 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
   if (hasNoSearchResultButHasAuthorResult) {
     return (
       <div className={styles.innerContainer}>
+        <FilterBox />
         <NoResultInSearch
           searchText={queryParams.query}
           otherCategoryCount={articleSearchState.totalElements}
@@ -131,9 +130,11 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
       </div>
     );
   }
+
   if (hasNoSearchResultAndNoAuthorResult) {
     return (
       <div className={styles.innerContainer}>
+        <FilterBox />
         <NoResult
           searchText={
             articleSearchState.suggestionKeyword.length > 0
@@ -146,6 +147,7 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
       </div>
     );
   }
+
   if (blockedDoiMatchedSearch) {
     return (
       <NoSsr>
@@ -155,16 +157,20 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
       </NoSsr>
     );
   }
+
   if (queryParams) {
     return (
       <div className={styles.innerContainer}>
         <div className={styles.searchSummary}>
-          <div>
-            <span className={styles.categoryHeader}>Publication</span>
-            <span className={styles.categoryCount}>{formatNumber(articleSearchState.totalElements)}</span>
-          </div>
-          <SortBar query={queryParams.query || ''} sortOption={queryParams.sort || 'RELEVANCE'} filter={filter} />
+          <PaperSearchResultInfo
+            searchFromSuggestion={articleSearchState.searchFromSuggestion}
+            suggestionKeyword={articleSearchState.suggestionKeyword}
+            query={articleSearchState.searchInput}
+            docCount={articleSearchState.totalElements}
+            shouldShowTitle={!hasNoMatchedAuthors}
+          />
         </div>
+        <FilterBox query={queryParams.query} />
         <SearchList
           currentUser={currentUserState}
           papers={articleSearchState.searchItemsToShow}
@@ -189,16 +195,13 @@ const SearchContainer: React.FC<Props> = props => {
     articleSearchState,
     currentUserState,
     location,
-    fetchUserFilters,
     searchPapers,
-    toggleExpandingFilter,
-    changeRangeInput,
     changeSearchQuery,
+    enableAutoYearFilter,
   } = props;
   const [queryParams, setQueryParams] = React.useState<SearchPageQueryParams>(
     parse(location.search, { ignoreQueryPrefix: true })
   );
-  const [useAutoYearFilter, setUseAutoYearFilter] = React.useState(true);
   const [filter, setFilter] = React.useState(SearchQueryManager.objectifyPaperFilter(queryParams.filter));
   const cancelToken = React.useRef(axios.CancelToken.source());
 
@@ -206,13 +209,7 @@ const SearchContainer: React.FC<Props> = props => {
     () => {
       if (currentUserState.isLoggingIn) return;
 
-      const doAutoYearFilterSearch = getUserGroupName(AUTO_YEAR_FILTER_TEST) === 'auto';
-
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
-
-      if (articleSearchState.searchInput !== currentQueryParams.query) {
-        setUseAutoYearFilter(true);
-      }
 
       changeSearchQuery(SafeURIStringHandler.decode(currentQueryParams.query || ''));
       setQueryParams(currentQueryParams);
@@ -221,12 +218,7 @@ const SearchContainer: React.FC<Props> = props => {
       // set params
       const params = SearchQueryManager.makeSearchQueryFromParamsObject(currentQueryParams);
       params.cancelToken = cancelToken.current.token;
-
-      if (doAutoYearFilterSearch && useAutoYearFilter) {
-        params.detectYear = true;
-      } else {
-        params.detectYear = false;
-      }
+      params.detectYear = articleSearchState.searchInput !== currentQueryParams.query || enableAutoYearFilter;
 
       searchPapers(params).then(() => {
         restoreScroll(location.key);
@@ -237,27 +229,7 @@ const SearchContainer: React.FC<Props> = props => {
         cancelToken.current = axios.CancelToken.source();
       };
     },
-    [
-      location.key,
-      location.search,
-      currentUserState.isLoggedIn,
-      currentUserState.isLoggingIn,
-      searchPapers,
-      useAutoYearFilter,
-    ]
-  );
-
-  React.useEffect(
-    () => {
-      if (currentUserState.isLoggedIn) {
-        fetchUserFilters(cancelToken.current.token);
-      }
-      return () => {
-        cancelToken.current.cancel();
-        cancelToken.current = axios.CancelToken.source();
-      };
-    },
-    [currentUserState.isLoggedIn, fetchUserFilters]
+    [location.key, location.search, currentUserState.isLoggedIn, currentUserState.isLoggingIn, searchPapers]
   );
 
   if (articleSearchState.pageErrorCode) {
@@ -269,31 +241,23 @@ const SearchContainer: React.FC<Props> = props => {
       <SearchHelmet query={queryParams.query || ''} />
       <TabNavigationBar searchKeyword={articleSearchState.searchInput} />
       <div className={styles.articleSearchContainer}>
-        <AutoYearFilter
-          query={queryParams.query}
-          detectedYear={articleSearchState.detectedYear}
-          handleSetUseAutoYearFilter={setUseAutoYearFilter}
-        />
-        <Suggestions
-          searchFromSuggestion={articleSearchState.searchFromSuggestion}
-          suggestionKeyword={articleSearchState.suggestionKeyword}
-          queryParams={queryParams}
-        />
-        <AuthorSearchResult
-          isLoading={articleSearchState.isContentLoading}
-          matchAuthors={articleSearchState.matchAuthors}
-          queryParams={queryParams}
-          shouldShow={articleSearchState.page === 1 && SearchQueryManager.isFilterEmpty(filter)}
-        />
-        <SearchResult {...props} queryParams={queryParams} filter={filter} />
-        <div className={styles.rightBoxWrapper}>
-          {!currentUserState.isLoggedIn && <SignBanner isLoading={articleSearchState.isContentLoading} />}
-          <FilterContainer
-            handleChangeRangeInput={changeRangeInput}
-            articleSearchState={articleSearchState}
-            currentUserState={currentUserState}
-            handleToggleExpandingFilter={toggleExpandingFilter}
+        <div>
+          <AuthorSearchResult
+            isLoading={articleSearchState.isContentLoading}
+            matchAuthors={articleSearchState.matchAuthors}
+            queryParams={queryParams}
+            shouldShow={articleSearchState.page === 1 && SearchQueryManager.isFilterEmpty(filter)}
           />
+          <SearchResult {...props} queryParams={queryParams} filter={filter} />
+        </div>
+        <div
+          className={classNames({
+            [styles.noAuthorRightBoxWrapper]: true,
+            [styles.rightBoxWrapper]:
+              articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements > 0,
+          })}
+        >
+          {!currentUserState.isLoggedIn && <SignBanner isLoading={articleSearchState.isContentLoading} />}
         </div>
       </div>
       <ImprovedFooter
@@ -314,16 +278,14 @@ const mapStateToProps = (state: AppState) => {
     articleSearchState: state.articleSearch,
     currentUserState: state.currentUser,
     configuration: state.configuration,
+    enableAutoYearFilter: state.searchFilterState.enableAutoYearFilter,
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) =>
+const mapDispatchToProps = (dispatch: Dispatch<Actions | SearchActions>) =>
   bindActionCreators(
     {
-      fetchUserFilters: fetchCurrentUserFilters,
       searchPapers,
-      toggleExpandingFilter,
-      changeRangeInput,
       changeSearchQuery,
     },
     dispatch

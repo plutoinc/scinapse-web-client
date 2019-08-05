@@ -46,6 +46,7 @@ import { getMemoizedConfiguration } from '../../selectors/getConfiguration';
 import PlutoAxios from '../../api/pluto';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
 import KnowledgeBaseNoti from '../../components/knowledgeBaseNoti';
+import PaperShowFigureList from '../../components/paperShow/components/paperShowFigureList';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -214,6 +215,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <div className={styles.fos}>
                   <FOSList FOSList={paper.fosList} />
                 </div>
+                <PaperShowFigureList paper={paper} isMobile={layout.userDevice !== UserDevice.DESKTOP} />
               </div>
             </div>
           </article>
@@ -282,7 +284,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           </div>
         </div>
         <div className={styles.footerWrapper}>
-          <ImprovedFooter containerStyle={{ backgroundColor: '#f8f9fb' }} />{' '}
+          <ImprovedFooter containerStyle={{ backgroundColor: '#f8f9fb' }} />
         </div>
         <BottomBanner currentUser={currentUser} />
         <NextPaperTab />

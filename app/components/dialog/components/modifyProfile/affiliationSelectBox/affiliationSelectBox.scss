@@ -58,7 +58,7 @@
     padding: 8px 32px 8px 8px;
     margin: 0;
     border-radius: 5px;
-    border: solid 1px $gray3;
+    border: solid 1px $gray400;
     background-color: transparent;
 
     &.error {
@@ -67,7 +67,7 @@
   }
 
   ::placeholder {
-    color: $gray4;
+    color: $gray500;
   }
 
   .errorMessage {
@@ -89,7 +89,7 @@
     right: 10px;
     width: 16px;
     height: 100%;
-    color: $gray4;
+    color: $gray500;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -107,7 +107,7 @@
   display: flex;
   align-items: center;
   font-size: 12px;
-  color: $gray6;
+  color: $gray800;
   height: 30px;
   padding: 8px;
 
@@ -123,7 +123,7 @@
     width: 16px;
     height: 16px;
     margin-right: 4px;
-    color: $gray5;
+    color: $gray600;
 
     svg {
       width: 9px;

@@ -7,6 +7,8 @@ import { RELATED_PAPERS } from '../constants';
 import { PaperShowState } from '../../../containers/paperShow/records';
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../common/sortBox';
 import { PaperShowPageQueryParams } from '../../../containers/paperShow/types';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import { getCurrentPageType } from '../../locationListener';
 const styles = require('./referencePapers.scss');
 
 interface SearchContainerProps {
@@ -49,8 +51,15 @@ const SearchContainer: React.FC<SearchContainerProps> = props => {
 
   const handleSubmitSearch = React.useCallback(
     (query: string) => {
-      let pageQueryParams;
+      ActionTicketManager.trackTicket({
+        pageType: getCurrentPageType(),
+        actionType: 'fire',
+        actionArea: type,
+        actionTag: 'query',
+        actionLabel: query,
+      });
 
+      let pageQueryParams;
       if (type === 'reference') {
         pageQueryParams = { 'ref-query': query, 'ref-page': 1 };
       } else {

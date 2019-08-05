@@ -9,7 +9,7 @@
 .dialogHeader {
   position: relative;
   padding: 16px 0;
-  border-bottom: solid 1px $gray4;
+  border-bottom: solid 1px $gray500;
   margin-bottom: 24px;
   line-height: 1.4;
 
@@ -21,7 +21,7 @@
   .subtitle {
     font-size: 14px;
     line-height: 1.43;
-    color: $gray6;
+    color: $gray800;
   }
 }
 
@@ -65,7 +65,7 @@
   label {
     display: block;
     font-size: 15px;
-    color: $gray6;
+    color: $gray800;
     margin-bottom: 8px;
   }
 
@@ -93,11 +93,11 @@
 .textAreaWrapper,
 .inputField {
   border-radius: 5px;
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
 
   &:focus {
     border-radius: 5px;
-    border: solid 1px $gray5;
+    border: solid 1px $gray600;
   }
 }
 
@@ -134,5 +134,5 @@
   height: 20px;
   font-size: 13px;
   line-height: 1.54;
-  color: $gray6;
+  color: $gray800;
 }

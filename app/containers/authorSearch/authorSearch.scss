@@ -1,8 +1,8 @@
 .rootWrapper {
-  background-color: $gray0;
+  background-color: $gray30;
   position: relative;
-  min-height: calc(100vh - #{$navbar_height});
-  padding-bottom: 60px;
+  min-height: 100vh;
+  padding-bottom: 202px;
 }
 
 .articleSearchContainer {
@@ -28,7 +28,7 @@
 
   .loadingSpinner {
     div {
-      background-color: $gray3;
+      background-color: $gray400;
     }
   }
 
@@ -50,12 +50,19 @@
 .categoryCount {
   font-size: 18px;
   font-weight: 500;
-  color: $gray5;
+  color: $gray600;
 }
 
 .authorItemsHeader {
   position: relative;
   padding: 32px 0 16px 0;
+}
+
+// content-like width
+@media (max-width: 1200px) {
+  .innerContainer {
+    margin: 0 auto;
+  }
 }
 
 // Mobile

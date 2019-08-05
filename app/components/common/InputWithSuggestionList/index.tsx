@@ -95,7 +95,7 @@ class InputWithSuggestionList extends React.PureComponent<
             >
               {iconNode}
             </span>
-            {inputValue ? (
+            {inputValue && !inputProps.disabled ? (
               <span
                 onClick={() => {
                   onSubmitQuery('');

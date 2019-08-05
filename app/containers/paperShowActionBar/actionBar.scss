@@ -38,11 +38,11 @@
   text-align: center;
   background-color: white;
   color: $main_blue1;
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
   cursor: pointer;
 
   &:hover {
-    background-color: $gray2;
+    background-color: $gray300;
   }
 
   &:disabled {

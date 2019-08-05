@@ -6,12 +6,12 @@
 .title {
   font-size: 24px;
   font-weight: bold;
-  color: $dark-blue0;
+  color: $black0;
 }
 
 .description {
   font-size: 14px;
-  color: $gray6;
+  color: $gray800;
 }
 
 .answersWrapper {
@@ -44,7 +44,7 @@
   .answerDesc {
     margin-left: 8px;
     font-size: 16px;
-    color: $dark-blue0;
+    color: $black0;
   }
 
   &:hover {

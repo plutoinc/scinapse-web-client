@@ -9,7 +9,7 @@
     margin: 0 auto;
     border-radius: 1.7px;
     background-color: white;
-    border: solid 1px $gray3;
+    border: solid 1px $gray400;
     padding: 0 35px 35px 35px;
   }
 }
@@ -20,7 +20,7 @@
   font-weight: 500;
   letter-spacing: 2.7px;
   text-align: center;
-  color: $gray6;
+  color: $gray800;
 }
 
 .content {
@@ -28,7 +28,7 @@
   font-size: 15px;
   line-height: 1.47;
   text-align: center;
-  color: $gray5;
+  color: $gray600;
   white-space: pre-line;
   text-align: center;
 }
@@ -50,7 +50,7 @@
 .toEmail {
   margin-top: 12.2px;
   font-size: 15px;
-  color: $gray5;
+  color: $gray600;
   line-height: 1.47;
 
   .email {

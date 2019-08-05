@@ -1,4 +1,4 @@
-import { broadAuthorVenue, knowledgeBasedRecommend, sourceDomain, dummy, autoYearFilter } from './abTestObject';
+import { dummy, queryLover } from './abTestObject';
 
 export interface UserGroup {
   groupName: string;
@@ -12,7 +12,7 @@ export interface Test {
 
 export type SignUpConversion = 'queryLover' | 'downloadCount';
 
-export type ABTest = 'broadAuthorVenue' | 'sourceDomain' | 'knowledgeBasedRecommend' | 'dummy' | 'autoYearFilter';
+export type ABTest = 'dummy' | 'queryLover';
 
 export const SIGN_UP_CONVERSION_KEY = 'b_exp';
 
@@ -32,7 +32,7 @@ export interface SignUpConversionExpTicketContext {
   expName?: string;
 }
 
-export const LIVE_TESTS: Test[] = [broadAuthorVenue, knowledgeBasedRecommend, sourceDomain, dummy, autoYearFilter];
+export const LIVE_TESTS: Test[] = [dummy, queryLover];
 
 function getRandomPool(): { [key: string]: string[] } {
   const randomPool: { [key: string]: string[] } = {};

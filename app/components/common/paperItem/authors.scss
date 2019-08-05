@@ -3,7 +3,10 @@
   font-size: 14px;
 
   .author {
-    color: $gray9;
+    display: inline-block;
+    white-space: pre;
+    word-break: break-all;
+    color: $gray700;
   }
 
   .authorName {
@@ -25,16 +28,16 @@
     display: inline-block;
     font-size: 13px;
     text-align: center;
-    color: $gray6;
+    color: $gray800;
     border-radius: 4px;
-    background-color: $gray8;
+    background-color: $gray50;
     font-weight: 400;
     padding: 4px;
     cursor: pointer;
     margin: 0 8px;
 
     &:hover {
-      background-color: $gray2;
+      background-color: $gray300;
       transition: 0.2s;
     }
   }
@@ -44,10 +47,10 @@
     display: -ms-inline-flexbox;
     display: inline-flex;
     border-radius: 100px;
-    border: solid 1px $gray2;
+    border: solid 1px $gray300;
     font-size: 12px;
-    background-color: $gray8;
-    color: $gray9;
+    background-color: $gray50;
+    color: $gray700;
     line-height: 1.5;
     text-align: center;
     margin-left: 2px;
@@ -81,7 +84,7 @@
 
 .contentWrapper {
   overflow: unset;
-  border: solid 1px $gray3;
+  border: solid 1px $gray400;
   border-radius: 4px;
   width: 150px;
   height: 35px;
@@ -97,7 +100,7 @@
     width: 0;
     height: 0;
     border: 11px solid transparent;
-    border-top-color: $gray3;
+    border-top-color: $gray400;
     border-bottom: 0;
     margin-left: -11px;
     z-index: 2;

@@ -52,7 +52,7 @@
   height: 20px;
   line-height: 20px;
   font-size: 14px;
-  color: $gray6;
+  color: $gray800;
   margin-bottom: 4px;
 }
 
@@ -62,7 +62,7 @@
   height: 16px;
   font-size: 12px;
   line-height: 16px;
-  color: $gray5;
+  color: $gray600;
 }
 
 .metaItem {
@@ -75,7 +75,7 @@
     line-height: 20px;
     font-size: 13px;
     font-weight: 500;
-    color: $gray5;
+    color: $gray600;
     margin-bottom: 4px;
   }
 
@@ -116,7 +116,7 @@
 }
 
 .verificationTooltip {
-  background-color: $gray2 !important;
+  background-color: $gray300 !important;
   color: $black0 !important;
   font-size: 12px;
 }

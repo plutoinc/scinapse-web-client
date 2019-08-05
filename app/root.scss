@@ -1,6 +1,7 @@
 :global {
   @import './middlewares/notifier';
   @import '~normalize.css/normalize';
+  @import '~notie/src/notie';
 }
 
 * {
@@ -59,7 +60,7 @@ button {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: $gray1;
+  background-color: $gray200;
   opacity: 0.93;
   z-index: 16777271;
   display: flex;

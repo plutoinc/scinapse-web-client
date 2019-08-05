@@ -3,6 +3,8 @@ export interface AggregationJournal {
   title: string;
   docCount: number;
   impactFactor: number;
+  // added by client
+  fromSearch?: boolean;
 }
 
 export interface AggregationFos {
@@ -17,17 +19,9 @@ export interface Year {
   docCount: number;
 }
 
-interface ImpactFactor {
-  from: number;
-  to: number | null;
-  docCount: number;
-}
-
 export interface AggregationData {
   fosList: AggregationFos[];
   journals: AggregationJournal[];
-  impactFactors: ImpactFactor[];
-  keywordList: string[];
   yearAll: Year[] | null;
   yearFiltered: Year[] | null;
 }

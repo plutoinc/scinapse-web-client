@@ -1,0 +1,82 @@
+@import '../userSettings/userSettings';
+
+.title {
+  font-weight: 600;
+  line-height: 1.83;
+  letter-spacing: -0.67px;
+  font-size: 24px;
+  color: $black0;
+  margin-bottom: 24px;
+}
+
+.formRow {
+  display: flex;
+}
+
+.formWrapper + .formWrapper {
+  margin-left: 21px;
+}
+
+.inputForm {
+  @extend %base-input-style;
+
+  &:disabled {
+    background-color: transparent;
+    border-color: $gray400;
+    color: $gray500;
+  }
+}
+
+.formLabel {
+  @extend %base-label;
+}
+
+.editButton {
+  @extend %base-form-button;
+
+  border: solid 1px $gray500;
+
+  &:hover {
+    background-color: $gray30;
+  }
+}
+
+.submitButton {
+  @extend %base-form-button;
+
+  background-color: $main_blue0;
+  color: white;
+
+  &:hover {
+    background-color: $main_blue1;
+  }
+
+  &.isLoading {
+    cursor: not-allowed;
+    background-color: $gray50;
+    opacity: 0.9;
+  }
+
+  & + .editButton {
+    margin-left: 8px;
+  }
+}
+
+.affiliationFormWrapper {
+  margin-top: 44px;
+  margin-bottom: 36px;
+}
+
+.errorMsg {
+  font-family: $fallback;
+  font-size: 13px;
+  color: $red0;
+  margin: 8px 0 0 8px;
+}
+
+.affiliationErrorMsg {
+  font-family: $fallback;
+  font-size: 13px;
+  color: $red0;
+  margin-top: 8px;
+}

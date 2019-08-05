@@ -22,10 +22,10 @@
 .sectionDescription {
   font-size: 16px;
   line-height: 1.33;
-  color: $gray6;
+  color: $gray800;
   margin-top: 12px;
   margin-bottom: 16px;
-  border-bottom: solid 1px $gray3;
+  border-bottom: solid 1px $gray400;
 }
 
 .areaWrapper {
@@ -40,7 +40,7 @@
   cursor: pointer;
 
   &:hover {
-    background-color: $gray0;
+    background-color: $gray30;
     transition: 0.3s;
   }
 
@@ -69,7 +69,7 @@
   padding: 12px 0;
 
   .noItemSectionContext {
-    color: $gray6;
+    color: $gray800;
     text-align: center;
   }
 }
@@ -90,7 +90,7 @@
       cursor: pointer;
 
       svg {
-        color: $gray6;
+        color: $gray800;
         width: 11px;
         height: 10px;
       }
@@ -102,7 +102,7 @@
   }
 
   &:hover {
-    background-color: $gray0;
+    background-color: $gray30;
 
     .hoverButtonWrapper {
       display: unset;
@@ -116,7 +116,7 @@
     margin-right: 16px;
     font-size: 13px;
     line-height: 1.54;
-    color: $gray6;
+    color: $gray800;
 
     .dateContent {
       width: 55px;
@@ -147,7 +147,7 @@
       display: flex;
       font-size: 13px;
       line-height: 1.54;
-      color: $gray6;
+      color: $gray800;
     }
 
     .detailDescriptionSection {

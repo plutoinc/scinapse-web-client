@@ -33,10 +33,13 @@ import FinalSignUpContent from '../auth/signUp/components/finalSignUpContent';
 import EnvChecker from '../../helpers/envChecker';
 import SurveyForm from '../auth/signUp/components/surveyForm';
 import { addPaperToRecommendation } from '../../actions/recommendation';
+import PaperFigureDetail from '../common/paperFigureDetail/paperFigureDetail';
+import { UserDevice } from '../layouts/records';
 const styles = require('./dialog.scss');
 
 function mapStateToProps(state: AppState) {
   return {
+    layout: state.layout,
     dialogState: state.dialog,
     currentUser: state.currentUser,
     myCollections: denormalize(state.dialog.myCollectionIds, [collectionSchema], state.entities),
@@ -52,7 +55,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   }
 
   public render() {
-    const { dialogState, currentUser, myCollections } = this.props;
+    const { layout, dialogState, currentUser, myCollections } = this.props;
 
     if (dialogState.type === GLOBAL_DIALOG_TYPE.COLLECTION && dialogState.collectionDialogTargetPaperId) {
       return (
@@ -93,6 +96,22 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
             handleClickCitationTab={this.handleClickCitationTab}
             fetchCitationText={this.fetchCitationText}
           />
+        </Dialog>
+      );
+    }
+
+    if (dialogState.type === GLOBAL_DIALOG_TYPE.PAPER_FIGURE_DETAIL) {
+      return (
+        <Dialog
+          open={dialogState.isOpen}
+          onClose={() => this.closeDialog()}
+          classes={{
+            paper:
+              layout.userDevice !== UserDevice.DESKTOP ? styles.mobileFigureDetailDialog : styles.figureDetailDialog,
+          }}
+          maxWidth={'lg'}
+        >
+          <PaperFigureDetail handleCloseDialogRequest={this.closeDialog} />
         </Dialog>
       );
     }

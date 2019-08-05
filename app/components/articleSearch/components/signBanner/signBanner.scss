@@ -2,7 +2,8 @@
   max-width: 354px;
   height: 345px;
   border-radius: 4px;
-  box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid $gray300;
   background-color: white;
   padding: 24px 16px;
   margin-bottom: 16px;
@@ -18,7 +19,7 @@
   margin-top: 8px;
   font-size: 16px;
   line-height: 1.2;
-  color: $gray6;
+  color: $gray800;
 }
 
 .bannerSignButton {
@@ -28,7 +29,7 @@
   background-color: $main_blue1;
   font-size: 16px;
   font-weight: 500;
-  color: $gray0;
+  color: $gray30;
   cursor: pointer;
 
   &:hover {

@@ -1,5 +1,5 @@
 .rootWrapper {
-  background-color: $gray0;
+  background-color: $gray30;
   position: relative;
   min-height: 100vh;
   padding-bottom: 202px;
@@ -11,7 +11,6 @@
   position: relative;
   max-width: $container_width;
   display: flex;
-  flex-wrap: wrap;
 
   .innerContainer {
     flex: $search_container_width;
@@ -30,7 +29,7 @@
 
   .loadingSpinner {
     div {
-      background-color: $gray3;
+      background-color: $gray400;
     }
   }
 
@@ -42,58 +41,28 @@
   }
 }
 
-.rightBoxWrapper {
+.noAuthorRightBoxWrapper {
   display: flex;
   flex: 1 1;
   max-width: 354px;
   height: 100%;
   flex-direction: column;
-  margin-top: 78px;
   margin-left: 22px;
+  margin-top: 60px;
 }
 
-.suggestionBox {
-  margin-top: 24px;
-  padding-bottom: 16px;
-  font-size: 16px;
-  text-align: left;
-  color: $gray6;
-  width: 100%;
-  border-bottom: 1px solid $gray3;
-
-  .noResult {
-    font-size: 18px;
-    margin-bottom: 4px;
-  }
-
-  .suggestionResult {
-    font-size: 14px;
-
-    b {
-      font-weight: normal;
-      color: $red0;
-    }
-  }
-
-  .suggestionLink {
-    color: $navy0;
-    font-style: italic;
-    text-decoration: underline;
-  }
-
-  b {
-    font-weight: bold;
-  }
+.rightBoxWrapper {
+  @extend .noAuthorRightBoxWrapper;
+  margin-top: 273px;
 }
 
 .searchSummary {
   position: relative;
   display: flex;
-  margin-top: 32px;
   font-size: 15px;
   align-items: center;
   line-height: 28px;
-  margin-bottom: 16px;
+  margin: 16px 0;
 
   .searchResult {
     color: $main_blue0;
@@ -101,28 +70,70 @@
 
   .separatorLine {
     height: 25px;
-    border-left: solid 1px $gray3;
+    border-left: solid 1px $gray400;
     margin-left: 12px;
     margin-right: 12px;
   }
 }
 
+.countDivider {
+  display: inline-block;
+  margin: 0 8px;
+}
+
+.additionalContent {
+  font-size: 14px;
+  line-height: 18px;
+  color: $gray600;
+
+  .boldQuery {
+    font-weight: bold;
+  }
+
+  .wrongQuery {
+    color: $red0;
+    font-weight: bold;
+  }
+
+  .suggestionKeyword {
+    color: $main-blue1;
+    font-weight: bold;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .weirdQuery {
+    font-weight: bold;
+  }
+
+  .suggestionLink {
+    color: $gray800;
+    font-weight: bold;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 .categoryHeader {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: bold;
   margin-right: 8px;
-  color: $black1;
+  color: $black0;
+  margin-bottom: 4px;
 }
 
 .categoryCount {
-  font-size: 18px;
-  font-weight: 500;
-  color: $gray5;
+  font-size: 14px;
+  color: $gray600;
 }
 
 .authorItemsHeader {
   position: relative;
-  padding: 32px 0 16px 0;
+  padding: 24px 0 16px 0;
 
   .moreAuthorLink {
     display: inline;
@@ -141,6 +152,10 @@
       cursor: pointer;
     }
   }
+}
+
+.authorItemSectionWrapper {
+  @extend .innerContainer;
 }
 
 // content-like width
@@ -170,7 +185,7 @@
 
   .searchSummary {
     font-size: 14px;
-    color: $gray3;
+    color: $gray400;
     flex-flow: column;
     align-items: start;
   }

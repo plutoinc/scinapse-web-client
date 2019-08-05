@@ -20,13 +20,13 @@
   outline: none;
   border: none;
   cursor: pointer;
-  background-color: $gray8;
+  background-color: $gray50;
   border-radius: 8px;
   padding: 2px 6px 2px 4px;
   color: $main_blue1;
 
   &:hover {
-    background-color: $gray2;
+    background-color: $gray300;
   }
 
   &:active {

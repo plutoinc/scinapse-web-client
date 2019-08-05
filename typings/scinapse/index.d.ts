@@ -55,8 +55,6 @@ declare namespace Scinapse {
       | 'signInViaCollection'
       | 'blogPost'
       | 'journalHomepage'
-      | 'queryInJournal'
-      | 'queryInCollection'
       | 'authorEntityItem'
       | 'paperSorting'
       | 'collectionSharing'
@@ -113,6 +111,11 @@ declare namespace Scinapse {
       | 'viewKnowledgeBaseNoti'
       | 'autoYearFilterQuery'
       | 'cancelAutoYearFilter'
+      | 'clickPaperFigure'
+      | 'viewFigureList'
+      | 'clickPrevBtn'
+      | 'clickNextBtn'
+      | 'viewFigure'
       | '';
 
     type ActionArea = string;

@@ -2,11 +2,6 @@ $action-bar-height: 55px;
 $ref-cited-bar-height: 50px;
 $side-navigation-bottom-padding: 24px;
 
-:export {
-  navbarHeight: $navbar_height;
-  refCitedBarHeight: $ref-cited-bar-height;
-}
-
 :global {
   @import '~react-pdf/dist/Page/AnnotationLayer';
 }
@@ -23,11 +18,11 @@ button {
   cursor: pointer;
 
   &.smallButton {
-    background-color: $gray8;
+    background-color: $gray50;
     border-radius: 8px;
     color: $main_blue1;
     &:hover {
-      background-color: $gray2;
+      background-color: $gray300;
     }
     svg {
       width: 16px;
@@ -83,7 +78,7 @@ article.paperShow {
   .paperContentBlockDivider {
     width: 100%;
     height: 1px;
-    background-color: $gray8;
+    background-color: $gray50;
     margin-top: $paper-show-interblock-divider-margin;
     margin-bottom: $paper-show-interblock-divider-margin;
   }
@@ -175,12 +170,12 @@ article.paperShow {
 .sectionDivider {
   width: 100%;
   height: 80px;
-  background-color: $gray8;
+  background-color: $gray50;
   box-shadow: inset 0px 0px 5px 2px rgba(0, 0, 0, 0.02);
 }
 
 .footerWrapper {
-  background-color: $gray8;
+  background-color: $gray50;
 }
 
 // RegularDisplay (1024~1200)
