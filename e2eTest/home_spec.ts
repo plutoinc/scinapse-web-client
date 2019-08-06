@@ -1,12 +1,18 @@
-import { Page } from 'puppeteer';
 import getHost from './helpers/getHost';
+import clickWithCapture from './helpers/clickWithCapture';
 
-declare var page: Page;
+const TEST_NAME = 'desktop Home page test';
 
-describe('Desktop Home page test', () => {
+describe(TEST_NAME, () => {
   beforeAll(async () => {
     await page.setViewport({ width: 1920, height: 1080 });
     await page.goto(`https://${getHost()}`, { waitUntil: 'networkidle0' });
+  });
+
+  afterAll(async () => {
+    // TODO: Change below 'as any' after type definition package being updated
+    // follow https://github.com/DefinitelyTyped/DefinitelyTyped/pull/37390
+    await (jestPuppeteer as any).resetBrowser();
   });
 
   describe('when enter the page', () => {
@@ -32,7 +38,13 @@ describe('Desktop Home page test', () => {
       it('should show the search result page', async () => {
         await Promise.all([
           page.waitForSelector("[class^='searchList_searchItems']", { timeout: 30000 }),
-          page.click("[class^='searchQueryInput_searchButton']"),
+          clickWithCapture({
+            page,
+            testName: TEST_NAME,
+            caseName: 'user use search feature',
+            actionName: 'click search icon',
+            selector: "[class^='searchQueryInput_searchButton']",
+          }),
         ]);
 
         await expect(page.$("[class^='searchList_searchItems']")).resolves.not.toBeNull();
