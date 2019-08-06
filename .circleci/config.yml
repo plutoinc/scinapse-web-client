@@ -20,7 +20,7 @@ jobs:
           name: installing dev dependencies...
           command: npm ci
       - run: npm run test:ci
-      - run: npm run deploy:prod
+      - run: npm run deploy:dev
       - slack/notify:
           message: "Build DONE! $CIRCLE_BRANCH please check https://dev.scinapse.io?branch=$CIRCLE_BRANCH"
   deploy_to_stage:
