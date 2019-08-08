@@ -87,15 +87,18 @@
 
 @media (max-width: $search_container_width + 32px) {
   .name {
-    width: 190px;
+    max-width: 190px;
+    width: 100%;
   }
 
   .affiliation {
-    width: 190px;
+    max-width: 190px;
+    width: 100%;
   }
 
   .fosList {
-    width: 190px;
+    max-width: 190px;
+    width: 100%;
   }
 
   .itemWrapper {

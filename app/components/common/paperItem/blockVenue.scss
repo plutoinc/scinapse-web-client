@@ -32,6 +32,8 @@
 }
 
 .journalContent {
+  max-width: 565px;
+  width: 100%;
   font-size: 13px;
   line-height: 20px;
   color: $gray700;
@@ -44,8 +46,6 @@
 }
 
 .journalTitle {
-  @extend %one-line-overflow-ellipsis;
-  max-width: 565px;
   text-decoration: underline;
 
   &:hover {

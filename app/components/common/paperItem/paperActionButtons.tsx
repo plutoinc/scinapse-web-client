@@ -17,6 +17,8 @@ import CollectionButton from './collectionButton';
 import formatNumber from '../../../helpers/formatNumber';
 import { addPaperToRecommendation } from '../../../actions/recommendation';
 import { PaperSource } from '../../../api/paper';
+import { AppState } from '../../../reducers';
+import { LayoutState, UserDevice } from '../../layouts/records';
 const styles = require('./paperActionButtons.scss');
 
 interface HandleClickClaim {
@@ -26,11 +28,14 @@ interface DomainSourceBtnProps {
   source: PaperSource;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
+  currentUserDevice: UserDevice;
   onClick: () => void;
 }
 
-const DomainSourceBtn: React.FC<DomainSourceBtnProps> = ({ source, onClick }) => {
+const DomainSourceBtn: React.FC<DomainSourceBtnProps> = ({ source, onClick, currentUserDevice }) => {
   if (!source.source || !source.doi) return null;
+
+  const buttonContext = currentUserDevice == UserDevice.MOBILE ? 'Source' : source.host;
 
   return (
     <a
@@ -45,7 +50,7 @@ const DomainSourceBtn: React.FC<DomainSourceBtnProps> = ({ source, onClick }) =>
         src={`https://www.google.com/s2/favicons?domain=${source.source}`}
         alt={`${source.host} favicon`}
       />
-      <span>{source.host}</span>
+      <span className={styles.sourceHostInfo}> {buttonContext}</span>
       <Icon icon="SOURCE" className={styles.extSourceIcon} />
     </a>
   );
@@ -65,6 +70,7 @@ export interface PaperActionButtonsProps {
   handleToggleRepresentative?: (paper: Paper) => void;
   onRemovePaperCollection?: (paperId: number) => Promise<void>;
   sourceDomain?: PaperSource;
+  layout: LayoutState;
 }
 
 export interface PaperActionButtonsState
@@ -104,7 +110,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   }
 
   private getSourceButton = () => {
-    const { paper, pageType, actionArea, currentUser, sourceDomain, dispatch } = this.props;
+    const { paper, pageType, actionArea, currentUser, sourceDomain, dispatch, layout } = this.props;
 
     if (sourceDomain) {
       return (
@@ -122,6 +128,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
           pageType={pageType}
           actionArea={actionArea}
           source={sourceDomain}
+          currentUserDevice={layout.userDevice}
         />
       );
     }
@@ -331,4 +338,10 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   };
 }
 
-export default connect()(withStyles<typeof PaperActionButtons>(styles)(PaperActionButtons));
+const mapStateToProps = (state: AppState) => {
+  return {
+    layout: state.layout,
+  };
+};
+
+export default connect(mapStateToProps)(withStyles<typeof PaperActionButtons>(styles)(PaperActionButtons));

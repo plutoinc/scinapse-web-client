@@ -160,21 +160,21 @@
 
 // content-like width
 @media (max-width: 1200px) {
-  .rightBoxWrapper {
-    display: none;
+  .articleSearchContainer {
+    justify-content: center;
   }
 
   .innerContainer {
     margin: 0 auto;
   }
+
+  .noAuthorRightBoxWrapper {
+    display: none;
+  }
 }
 
 // Mobile
 @media (max-width: $mobile-width) {
-  .articleSearchContainer {
-    padding-bottom: 0;
-  }
-
   .rootWrapper {
     padding-bottom: 332px;
   }
