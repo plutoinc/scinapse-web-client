@@ -83,7 +83,7 @@ const PaperShowHelmet: React.FC<{ paper: Paper }> = React.memo(({ paper }) => {
 
   return (
     <Helmet>
-      <title>{`${metaTitleContent} | Scinapse | Academic search engine for paper}`}</title>
+      <title>{`${metaTitleContent} | Scinapse | Academic search engine for paper`}</title>
       <link rel="canonical" href={`https://scinapse.io/papers/${paper.id}`} />
       <meta itemProp="name" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
       <meta name="description" content={buildPageDescription(paper)} />
