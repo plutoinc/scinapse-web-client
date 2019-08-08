@@ -3,9 +3,9 @@ import getHost from './helpers/getHost';
 
 declare var page: Page;
 
-describe('Desktop Home page test', () => {
+function homeE2E(width: number, height: number) {
   beforeAll(async () => {
-    await page.setViewport({ width: 1920, height: 1080 });
+    await page.setViewport({ width, height });
     await page.goto(`https://${getHost()}`, { waitUntil: 'networkidle0' });
   });
 
@@ -21,6 +21,7 @@ describe('Desktop Home page test', () => {
 
   describe('when user use search feature', () => {
     beforeEach(async () => {
+      await page.click("input[class^='improvedHome_searchInput']");
       await page.type("input[class^='improvedHome_searchInput']", 'machine learning');
     });
 
@@ -50,4 +51,8 @@ describe('Desktop Home page test', () => {
       });
     });
   });
-});
+}
+
+describe('Desktop Home page test', () => homeE2E(1920, 1080));
+
+describe('Mobile Home page test', () => homeE2E(320, 568));
