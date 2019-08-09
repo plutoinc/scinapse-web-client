@@ -1,28 +1,34 @@
 import getHost from './helpers/getHost';
 import clickWithCapture from './helpers/clickWithCapture';
 
-const DESKTOP_TEST_NAME = 'desktop paper show page test';
-const MOBILE_TEST_NAME = 'mobile paper show page test';
+const DESKTOP_TEST_NAME = 'desktop search result page test';
+const MOBILE_TEST_NAME = 'mobile search result page test';
 
-function paperShowE2E(TEST_NAME: string, width: number, height: number) {
-  describe(TEST_NAME, () => {
+function searchResultE2E(TEST_NAME: string, width: number, height: number) {
+  describe('Desktop search result page test', () => {
     beforeAll(async () => {
       await page.setViewport({ width, height });
-      await page.goto(`https://${getHost()}/papers/2559394418`, { waitUntil: 'networkidle0' });
+      await page.goto(`https://${getHost()}/search?query=machine%20learning`, { waitUntil: 'networkidle0' });
     });
 
     describe('when enter the page', () => {
+      // 페이지 로드 여부
       it('should render proper title', async () => {
-        await expect(page.title()).resolves.toMatch(
-          '[PDF] Quantum Machine Learning | Scinapse | Academic search engine for paper'
-        );
+        await expect(page.title()).resolves.toMatch('machine learning | Scinapse | Academic search engine for paper');
       });
 
-      it('should render the search input element', async () => {
-        await expect(page.$("input[class^='improvedHeader_searchInput']")).resolves.not.toBeNull();
+      // 검색 결과 체크
+      it('should render proper search result', async () => {
+        await expect(page.$("[class^='searchList_searchItems']")).resolves.not.toBeNull();
+      });
+
+      //헤더 로드 여부
+      it('should render proper header', async () => {
+        await expect(page.$("[class^='improvedHeader_headerContainer']")).resolves.not.toBeNull();
       });
     });
 
+    // 서치 기능 작동 여부 ( 돋보기 / 엔터 )
     describe('when user use search feature', () => {
       beforeEach(async () => {
         await page.click("input[class^='improvedHeader_searchInput']", { clickCount: 3 });
@@ -64,5 +70,5 @@ function paperShowE2E(TEST_NAME: string, width: number, height: number) {
   });
 }
 
-paperShowE2E(DESKTOP_TEST_NAME, 1920, 1080);
-paperShowE2E(MOBILE_TEST_NAME, 320, 568);
+searchResultE2E(DESKTOP_TEST_NAME, 1920, 1080);
+searchResultE2E(MOBILE_TEST_NAME, 320, 568);

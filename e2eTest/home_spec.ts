@@ -1,58 +1,72 @@
-import { Page } from 'puppeteer';
 import getHost from './helpers/getHost';
+import clickWithCapture from './helpers/clickWithCapture';
 
-declare var page: Page;
+const DESKTOP_TEST_NAME = 'desktop Home page test';
+const MOBILE_TEST_NAME = 'mobile Home page test';
 
-function homeE2E(width: number, height: number) {
-  beforeAll(async () => {
-    await page.setViewport({ width, height });
-    await page.goto(`https://${getHost()}`, { waitUntil: 'networkidle0' });
-  });
-
-  describe('when enter the page', () => {
-    it('should render proper title', async () => {
-      await expect(page.title()).resolves.toMatch('Scinapse | Academic search engine for paper');
+function homeE2E(TEST_NAME: string, width: number, height: number) {
+  describe(TEST_NAME, () => {
+    beforeAll(async () => {
+      await page.setViewport({ width, height });
+      await page.goto(`https://${getHost()}`, { waitUntil: 'networkidle0' });
     });
 
-    it('should render the search input element', async () => {
-      await expect(page.$("input[class^='improvedHome_searchInput']")).resolves.not.toBeNull();
-    });
-  });
-
-  describe('when user use search feature', () => {
-    beforeEach(async () => {
-      await page.click("input[class^='improvedHome_searchInput']");
-      await page.type("input[class^='improvedHome_searchInput']", 'machine learning');
+    afterAll(async () => {
+      // TODO: Change below 'as any' after type definition package being updated
+      // follow https://github.com/DefinitelyTyped/DefinitelyTyped/pull/37390
+      await (jestPuppeteer as any).resetBrowser();
     });
 
-    afterEach(async () => {
-      await page.goBack();
-    });
+    describe('when enter the page', () => {
+      it('should render proper title', async () => {
+        await expect(page.title()).resolves.toMatch('Scinapse | Academic search engine for paper');
+      });
 
-    describe('when user click the search icon', () => {
-      it('should show the search result page', async () => {
-        await Promise.all([
-          page.waitForSelector("[class^='searchList_searchItems']", { timeout: 30000 }),
-          page.click("[class^='searchQueryInput_searchButton']"),
-        ]);
-
-        await expect(page.$("[class^='searchList_searchItems']")).resolves.not.toBeNull();
+      it('should render the search input element', async () => {
+        await expect(page.$("input[class^='improvedHome_searchInput']")).resolves.not.toBeNull();
       });
     });
 
-    describe('when user press the enter key', () => {
-      it('should show the search result page', async () => {
-        await Promise.all([
-          page.waitForSelector("[class^='searchList_searchItems']", { timeout: 30000 }),
-          page.keyboard.press('Enter'),
-        ]);
+    describe('when user use search feature', () => {
+      beforeEach(async () => {
+        await page.click("input[class^='improvedHome_searchInput']");
+        await page.type("input[class^='improvedHome_searchInput']", 'machine learning');
+      });
 
-        await expect(page.$("[class^='searchList_searchItems']")).resolves.not.toBeNull();
+      afterEach(async () => {
+        await page.goBack();
+      });
+
+      describe('when user click the search icon', () => {
+        it('should show the search result page', async () => {
+          await Promise.all([
+            page.waitForSelector("[class^='searchList_searchItems']", { timeout: 30000 }),
+            clickWithCapture({
+              page,
+              testName: TEST_NAME,
+              caseName: 'user use search feature',
+              actionName: 'click search icon',
+              selector: "[class^='searchQueryInput_searchButton']",
+            }),
+          ]);
+
+          await expect(page.$("[class^='searchList_searchItems']")).resolves.not.toBeNull();
+        });
+      });
+
+      describe('when user press the enter key', () => {
+        it('should show the search result page', async () => {
+          await Promise.all([
+            page.waitForSelector("[class^='searchList_searchItems']", { timeout: 30000 }),
+            page.keyboard.press('Enter'),
+          ]);
+
+          await expect(page.$("[class^='searchList_searchItems']")).resolves.not.toBeNull();
+        });
       });
     });
   });
 }
 
-describe('Desktop Home page test', () => homeE2E(1920, 1080));
-
-describe('Mobile Home page test', () => homeE2E(320, 568));
+homeE2E(DESKTOP_TEST_NAME, 1920, 1080);
+homeE2E(MOBILE_TEST_NAME, 1920, 1080);
