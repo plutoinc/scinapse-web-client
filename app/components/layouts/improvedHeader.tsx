@@ -3,11 +3,13 @@ import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as Cookies from 'js-cookie';
-import { denormalize } from 'normalizr';
 import MenuItem from '@material-ui/core/MenuItem';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import * as addDays from 'date-fns/add_days';
 import * as isAfter from 'date-fns/is_after';
+import { parse } from 'qs';
+import { getMemoizedCurrentUser } from '../../selectors/getCurrentUser';
+import { getMemoizedLayout } from '../../selectors/getLayout';
 import TopToastBar from '../topToastBar';
 import BubblePopover from '../common/bubblePopover';
 import { AppState } from '../../reducers';
@@ -26,10 +28,8 @@ import { ACTION_TYPES, ActionCreators } from '../../actions/actionTypes';
 import { CurrentUser } from '../../model/currentUser';
 import SearchQueryManager from '../../helpers/searchQueryManager';
 import { getCollections } from '../collections/actions';
-import { collectionSchema } from '../../model/collection';
 import { getMemoizedPaper } from '../../containers/paperShow/select';
 import ResearchHistory from '../researchHistory';
-import { parse } from 'qs';
 const styles = require('./improvedHeader.scss');
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -39,12 +39,9 @@ let ticking = false;
 
 function mapStateToProps(state: AppState) {
   return {
-    currentUserState: state.currentUser,
-    layoutState: state.layout,
-    articleSearchState: state.articleSearch,
-    authorSearchState: state.authorSearch,
+    currentUserState: getMemoizedCurrentUser(state),
+    layoutState: getMemoizedLayout(state),
     myCollectionsState: state.myCollections,
-    userCollections: denormalize(state.myCollections.collectionIds, [collectionSchema], state.entities),
     paper: getMemoizedPaper(state),
   };
 }
