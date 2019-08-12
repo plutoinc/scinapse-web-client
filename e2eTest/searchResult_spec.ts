@@ -5,30 +5,26 @@ const DESKTOP_TEST_NAME = 'desktop search result page test';
 const MOBILE_TEST_NAME = 'mobile search result page test';
 
 function searchResultE2E(TEST_NAME: string, width: number, height: number) {
-  describe('Desktop search result page test', () => {
+  describe(TEST_NAME, () => {
     beforeAll(async () => {
       await page.setViewport({ width, height });
       await page.goto(`https://${getHost()}/search?query=machine%20learning`, { waitUntil: 'networkidle0' });
     });
 
     describe('when enter the page', () => {
-      // 페이지 로드 여부
       it('should render proper title', async () => {
         await expect(page.title()).resolves.toMatch('machine learning | Scinapse | Academic search engine for paper');
       });
 
-      // 검색 결과 체크
       it('should render proper search result', async () => {
         await expect(page.$("[class^='searchList_searchItems']")).resolves.not.toBeNull();
       });
 
-      //헤더 로드 여부
       it('should render proper header', async () => {
         await expect(page.$("[class^='improvedHeader_headerContainer']")).resolves.not.toBeNull();
       });
     });
 
-    // 서치 기능 작동 여부 ( 돋보기 / 엔터 )
     describe('when user use search feature', () => {
       beforeEach(async () => {
         await page.click("input[class^='improvedHeader_searchInput']", { clickCount: 3 });
@@ -51,6 +47,10 @@ function searchResultE2E(TEST_NAME: string, width: number, height: number) {
               selector: "[class^='searchQueryInput_searchIconButton']",
             }),
           ]);
+
+          page.title().then(res => {
+            console.log(res);
+          });
 
           await expect(page.$("[class^='searchList_searchItems']")).resolves.not.toBeNull();
         });

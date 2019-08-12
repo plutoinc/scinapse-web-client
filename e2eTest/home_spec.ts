@@ -29,7 +29,7 @@ function homeE2E(TEST_NAME: string, width: number, height: number) {
 
     describe('when user use search feature', () => {
       beforeEach(async () => {
-        await page.click("input[class^='improvedHome_searchInput']");
+        await page.click("input[class^='improvedHome_searchInput']", { clickCount: 3 });
         await page.type("input[class^='improvedHome_searchInput']", 'machine learning');
       });
 
@@ -69,4 +69,4 @@ function homeE2E(TEST_NAME: string, width: number, height: number) {
 }
 
 homeE2E(DESKTOP_TEST_NAME, 1920, 1080);
-homeE2E(MOBILE_TEST_NAME, 1920, 1080);
+homeE2E(MOBILE_TEST_NAME, 320, 568);
