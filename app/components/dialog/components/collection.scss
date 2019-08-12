@@ -13,8 +13,7 @@
 
 .dialogWrapper {
   position: relative;
-  max-width: 504px;
-  width: 100%;
+  width: 504px;
   height: 446px;
   border-radius: 10px;
   padding: 0 16px;
@@ -204,5 +203,12 @@
 
   .formControl + .formControl {
     margin-top: 8px;
+  }
+}
+
+@media (max-width: $mobile-width) {
+  .dialogWrapper {
+    max-width: 504px;
+    width: 100%;
   }
 }
