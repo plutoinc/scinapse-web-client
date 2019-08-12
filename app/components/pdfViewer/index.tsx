@@ -334,6 +334,8 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                         if (!EnvChecker.isOnServer()) {
                           e.preventDefault();
 
+                          await addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'downloadPdfButton');
+
                           const isBlocked = await blockUnverifiedUser({
                             authLevel: AUTH_LEVEL.VERIFIED,
                             actionArea: 'pdfViewer',
@@ -347,7 +349,6 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                           dispatch(ActionCreators.clickPDFDownloadBtn());
                           trackClickButton('downloadPdf', paper.id);
                           window.open(paper.bestPdf.url, '_blank');
-                          await addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'downloadPdfButton');
                           afterDownloadPDF();
                         }
                       }}

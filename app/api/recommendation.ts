@@ -9,8 +9,17 @@ export interface BasedOnCollectionPapersParams {
 }
 
 class RecommendationAPI extends PlutoAxios {
-  public async getPapersFromUserAction(): Promise<Paper[]> {
-    const res = await this.get(`/recommendations/sample`);
+  public async getPapersFromUserAction(paperIds?: number[]): Promise<Paper[]> {
+    let res;
+    if (paperIds && paperIds.length > 0) {
+      res = await this.get(`/recommendations/sample`, {
+        params: {
+          pids: String(paperIds),
+        },
+      });
+    } else {
+      res = await this.get(`/recommendations/sample`);
+    }
     const camelizedRes = camelCaseKeys(res.data);
     return camelizedRes.data.content;
   }

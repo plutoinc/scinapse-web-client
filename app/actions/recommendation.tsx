@@ -1,7 +1,10 @@
 import * as Cookies from 'js-cookie';
 import { Dispatch } from 'redux';
+import { uniq } from 'lodash';
 import RecommendationAPI from '../api/recommendation';
 import { ActionCreators } from './actionTypes';
+const store = require('store');
+export const BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY = 'b_a_p_ids';
 export const BASED_ACTIVITY_COUNT_COOKIE_KEY = 'basedActivityCount';
 
 const MAX_COUNT = 16;
@@ -21,10 +24,15 @@ function setActionCount(count: number): number {
 export function addPaperToRecommendation(isLoggedIn: boolean, paperId: number, actionArea: string) {
   return async (dispatch: Dispatch<any>) => {
     const prevActionCount = Cookies.get(BASED_ACTIVITY_COUNT_COOKIE_KEY);
+    let newPaperIds: number[] = [];
 
-    if (!isLoggedIn) return;
-
-    RecommendationAPI.addPaperToRecommendationPool(paperId);
+    if (!isLoggedIn) {
+      const basedPaperIdsForNonUser = store.get(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY) || [];
+      newPaperIds = uniq([paperId, ...basedPaperIdsForNonUser]).slice(0, 20);
+      store.set(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY, newPaperIds);
+    } else {
+      RecommendationAPI.addPaperToRecommendationPool(paperId);
+    }
 
     if (prevActionCount === 'null') return;
 
@@ -35,7 +43,7 @@ export function addPaperToRecommendation(isLoggedIn: boolean, paperId: number, a
       case 2:
       case 5:
       case 13: {
-        await RecommendationAPI.getPapersFromUserAction()
+        await RecommendationAPI.getPapersFromUserAction(newPaperIds)
           .then(basedOnActivityPapers => {
             if (!basedOnActivityPapers || basedOnActivityPapers.length === 0) {
               return;

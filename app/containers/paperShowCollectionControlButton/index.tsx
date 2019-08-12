@@ -517,6 +517,8 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         actionTag: 'signInViaCollection',
         actionLabel: null,
       });
+
+      dispatch(addPaperToRecommendation(currentUser.isLoggedIn, targetPaperId, 'addToCollectionButton'));
       return;
     }
 

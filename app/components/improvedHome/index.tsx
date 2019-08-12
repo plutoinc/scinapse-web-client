@@ -19,6 +19,8 @@ import RecommendationAPI, { BasedOnCollectionPapersParams } from '../../api/reco
 import ImprovedFooter from '../layouts/improvedFooter';
 import RecommendedPapers from './components/recommendedPapers';
 import { Paper } from '../../model/paper';
+import { BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY } from '../../actions/recommendation';
+const store = require('store');
 const styles = require('./improvedHome.scss');
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
@@ -118,6 +120,36 @@ const ImprovedHome: React.FC<Props> = props => {
   const [isLoadingBasedOnCollectionPapers, setIsLoadingBasedOnCollectionPapers] = React.useState(false);
   const cancelToken = React.useRef(axios.CancelToken.source());
 
+  const getBasedOnActivityPapers = React.useCallback(
+    () => {
+      const basedActivityPaperIdsForNonUser = store.get(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY) || [];
+      setIsLoadingBasedOnActivityPapers(true);
+      RecommendationAPI.getPapersFromUserAction(!currentUser.isLoggedIn ? basedActivityPaperIdsForNonUser : null)
+        .then(res => {
+          setBasedOnActivityPapers(res);
+          setIsLoadingBasedOnActivityPapers(false);
+        })
+        .catch(err => {
+          console.error(err);
+          setIsLoadingBasedOnActivityPapers(false);
+        });
+    },
+    [currentUser.isLoggedIn]
+  );
+
+  const getBasedOnCollectionPapers = React.useCallback(() => {
+    setIsLoadingBasedOnCollectionPapers(true);
+    RecommendationAPI.getPapersFromCollection()
+      .then(res => {
+        setBasedOnCollectionPapers(res);
+        setIsLoadingBasedOnCollectionPapers(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setIsLoadingBasedOnCollectionPapers(false);
+      });
+  }, []);
+
   React.useEffect(() => {
     HomeAPI.getPapersFoundCount().then(res => {
       setPapersFoundCount(res.data.content);
@@ -131,29 +163,10 @@ const ImprovedHome: React.FC<Props> = props => {
 
   React.useEffect(
     () => {
+      getBasedOnActivityPapers();
+
       if (currentUser.isLoggedIn) {
-        setIsLoadingBasedOnActivityPapers(true);
-        setIsLoadingBasedOnCollectionPapers(true);
-
-        RecommendationAPI.getPapersFromUserAction()
-          .then(res => {
-            setBasedOnActivityPapers(res);
-            setIsLoadingBasedOnActivityPapers(false);
-          })
-          .catch(err => {
-            console.error(err);
-            setIsLoadingBasedOnActivityPapers(false);
-          });
-
-        RecommendationAPI.getPapersFromCollection()
-          .then(res => {
-            setBasedOnCollectionPapers(res);
-            setIsLoadingBasedOnCollectionPapers(false);
-          })
-          .catch(err => {
-            console.error(err);
-            setIsLoadingBasedOnCollectionPapers(false);
-          });
+        getBasedOnCollectionPapers();
       }
 
       return () => {
@@ -167,10 +180,7 @@ const ImprovedHome: React.FC<Props> = props => {
   );
 
   const shouldShow =
-    currentUser.isLoggedIn &&
-    basedOnActivityPapers &&
-    basedOnActivityPapers.length > 0 &&
-    props.layout.userDevice === UserDevice.DESKTOP;
+    basedOnActivityPapers && basedOnActivityPapers.length > 0 && props.layout.userDevice === UserDevice.DESKTOP;
 
   return (
     <div className={styles.articleSearchFormContainer}>
@@ -209,6 +219,7 @@ const ImprovedHome: React.FC<Props> = props => {
           isLoadingCollectionPapers={isLoadingBasedOnCollectionPapers}
           basedOnActivityPapers={basedOnActivityPapers}
           basedOnCollectionPapers={basedOnCollectionPapers}
+          handleGetBasedOnActivityPapers={getBasedOnActivityPapers}
         />
         <ScinapseInformation isMobile={props.layout.userDevice === UserDevice.MOBILE} shouldShow={!shouldShow} />
         <ImprovedFooter />

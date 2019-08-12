@@ -16,6 +16,7 @@ interface RecommendedPapersProps {
   isLoadingCollectionPapers: boolean;
   basedOnActivityPapers: Paper[];
   basedOnCollectionPapers: BasedOnCollectionPapersParams | undefined;
+  handleGetBasedOnActivityPapers: () => void;
 }
 type Props = RouteComponentProps<any> & RecommendedPapersProps;
 
@@ -25,6 +26,7 @@ const RecommendedPapers: React.FC<Props> = props => {
     isLoadingCollectionPapers,
     basedOnActivityPapers,
     basedOnCollectionPapers,
+    handleGetBasedOnActivityPapers,
     shouldShow,
     isLoggingIn,
     location,
@@ -59,6 +61,7 @@ const RecommendedPapers: React.FC<Props> = props => {
             <BaseOnActivityPaperList
               isLoading={isLoadingActivityPapers || isLoggingIn}
               papers={basedOnActivityPapers}
+              refreshBasedOnActivityPapers={handleGetBasedOnActivityPapers}
             />
           </div>
           <div className={styles.basedOnCollectionPapers}>

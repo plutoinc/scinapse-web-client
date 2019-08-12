@@ -57,6 +57,8 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
           e.preventDefault();
           trackActionToClickPdfDownloadBtn();
 
+          dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'downloadPdfBtn'));
+
           const isBlocked = await blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,
             actionArea: actionArea,
@@ -70,7 +72,6 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
 
           window.open(pdfUrl, '_blank');
           onDownloadedPDF(true);
-          dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'downloadPdfBtn'));
           handleSetScrollAfterDownload();
         }}
       >
