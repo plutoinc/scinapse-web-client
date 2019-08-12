@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
+import { RouteComponentProps } from 'react-router';
 import { LayoutState } from '../records';
 import { CurrentUser } from '../../../model/currentUser';
-import { RouteComponentProps } from 'react-router';
 import { MyCollectionsState } from '../../../containers/paperShowCollectionControlButton/reducer';
 import { Paper } from '../../../model/paper';
 

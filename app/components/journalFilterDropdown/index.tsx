@@ -36,22 +36,25 @@ const JournalFilterDropdown: React.FC<
     buttonText = `${props.selectedJournalIds.length} journals · conferences`;
   }
 
+  const handleClickJournalItem = React.useCallback((journalId: number) => {
+    props.dispatch({
+      type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM,
+      payload: { journalId },
+    });
+  }, []);
+
   const journalList = props.journalData.map(journal => {
     return (
       <JournalItem
         key={journal.id}
+        id={journal.id}
         title={journal.title}
         checked={props.selectedJournalIds.includes(journal.id)}
         isHighlight={false}
         docCount={journal.docCount}
         IF={journal.impactFactor}
         fromSearch={journal.fromSearch}
-        onClick={() => {
-          props.dispatch({
-            type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM,
-            payload: { journalId: journal.id },
-          });
-        }}
+        onClick={handleClickJournalItem}
       />
     );
   });
