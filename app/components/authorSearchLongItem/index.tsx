@@ -41,21 +41,27 @@ const AuthorSearchLongItem: React.SFC<AuthorSearchLongItemProps> = props => {
       to={`/authors/${author.id}`}
       className={styles.itemWrapper}
     >
-      {profileImage}
-      <span className={styles.nameAffiliationBox}>
-        <div className={styles.name}>
-          {author.name}{' '}
-          {author.isLayered ? (
-            <MuiTooltip classes={{ tooltip: styles.verificationTooltip }} title="Verification Author" placement="right">
-              <div className={styles.contactIconWrapper}>
-                <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
-              </div>
-            </MuiTooltip>
-          ) : null}
-        </div>
-        <div className={styles.affiliation}>{author.lastKnownAffiliation && author.lastKnownAffiliation.name}</div>
-        <div className={styles.fosList}>{fosContent}</div>
-      </span>
+      <div className={styles.profileInfoWrapper}>
+        {profileImage}
+        <span className={styles.nameAffiliationBox}>
+          <div className={styles.name}>
+            {author.name}{' '}
+            {author.isLayered ? (
+              <MuiTooltip
+                classes={{ tooltip: styles.verificationTooltip }}
+                title="Verification Author"
+                placement="right"
+              >
+                <div className={styles.contactIconWrapper}>
+                  <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
+                </div>
+              </MuiTooltip>
+            ) : null}
+          </div>
+          <div className={styles.affiliation}>{author.lastKnownAffiliation && author.lastKnownAffiliation.name}</div>
+          <div className={styles.fosList}>{fosContent}</div>
+        </span>
+      </div>
       <div className={styles.metaBox}>
         <span className={styles.metaItem}>
           <div className={styles.metaTitle}>PUBLICATIONS</div>
