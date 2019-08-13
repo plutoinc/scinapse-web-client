@@ -1,5 +1,5 @@
 .itemWrapper {
-  display: block;
+  display: flex;
   position: relative;
   width: 792px;
   height: 96px;
@@ -16,6 +16,10 @@
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
     transition: 0.2s ease-in-out;
   }
+}
+
+.profileInfoWrapper {
+  display: flex;
 }
 
 .userImg {
@@ -122,20 +126,20 @@
 }
 
 @media (max-width: $search_container_width + 32px) {
-  .name {
-    width: 190px;
+  .nameAffiliationBox {
+    max-width: 170px;
+    width: 100%;
   }
 
-  .affiliation {
-    width: 190px;
-  }
-
+  .name,
+  .affiliation,
   .fosList {
-    width: 190px;
+    width: 100%;
   }
 
   .metaItem {
-    width: 80px;
+    max-width: 80px;
+    width: 100%;
   }
 
   .metaBox {
