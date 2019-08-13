@@ -19,7 +19,7 @@ import RecommendationAPI, { BasedOnCollectionPapersParams } from '../../api/reco
 import ImprovedFooter from '../layouts/improvedFooter';
 import RecommendedPapers from './components/recommendedPapers';
 import { Paper } from '../../model/paper';
-import { BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY } from '../../actions/recommendation';
+import { BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY } from '../recommendPapersDialog/recommendPapersDialogConstants';
 const store = require('store');
 const styles = require('./improvedHome.scss');
 
