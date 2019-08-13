@@ -19,6 +19,9 @@ export interface JournalSuggestion {
   type: string;
   journalId: number;
   impactFactor: number;
+  abbrev: string | null;
+  sci: boolean;
+  jc: 'JOURNAL' | 'CONFERENCE';
 }
 
 const CancelToken = Axios.CancelToken;

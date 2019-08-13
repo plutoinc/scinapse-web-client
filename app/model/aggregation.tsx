@@ -3,6 +3,9 @@ export interface AggregationJournal {
   title: string;
   docCount: number;
   impactFactor: number;
+  abbrev: string | null;
+  sci: boolean;
+  jc: 'JOURNAL' | 'CONFERENCE';
   // added by client
   fromSearch?: boolean;
 }

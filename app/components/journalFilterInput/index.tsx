@@ -17,6 +17,19 @@ interface JournalFilterInputProps {
   onSubmit: (journals: AggregationJournal[]) => void;
 }
 
+const mapJournalSuggestionToAggregationJournal = (j: JournalSuggestion): AggregationJournal => {
+  return {
+    id: j.journalId,
+    title: j.keyword,
+    abbrev: j.abbrev,
+    sci: j.sci,
+    jc: j.jc,
+    docCount: 0,
+    impactFactor: j.impactFactor,
+    fromSearch: true,
+  };
+};
+
 const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
   const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
   const [state, dispatch] = React.useReducer(reducer, journalFilterInputInitialState);
@@ -40,13 +53,7 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
 
     const journals: AggregationJournal[] = journalSuggestions
       .filter(j => state.selectedJournalIds.includes(j.journalId))
-      .map(j => ({
-        id: j.journalId,
-        title: j.keyword,
-        docCount: 0,
-        impactFactor: j.impactFactor,
-        fromSearch: true,
-      }));
+      .map(mapJournalSuggestionToAggregationJournal);
     props.onSubmit(journals);
     dispatch({ type: 'CLOSE_BOX' });
   };
@@ -76,13 +83,11 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
     journalList = journalSuggestions.map((journal, i) => {
       return (
         <JournalItem
-          id={journal.journalId}
           key={journal.journalId}
+          journal={mapJournalSuggestionToAggregationJournal(journal)}
           onClick={handleSelectItem}
-          IF={journal.impactFactor}
           checked={state.selectedJournalIds.includes(journal.journalId)}
           isHighlight={i === state.highlightIdx}
-          title={journal.keyword}
           isSearchResult
         />
       );

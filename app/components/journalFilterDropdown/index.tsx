@@ -47,12 +47,9 @@ const JournalFilterDropdown: React.FC<
     return (
       <JournalItem
         key={journal.id}
-        id={journal.id}
-        title={journal.title}
+        journal={journal}
         checked={props.selectedJournalIds.includes(journal.id)}
         isHighlight={false}
-        docCount={journal.docCount}
-        IF={journal.impactFactor}
         fromSearch={journal.fromSearch}
         onClick={handleClickJournalItem}
       />
