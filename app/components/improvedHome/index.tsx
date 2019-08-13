@@ -122,9 +122,9 @@ const ImprovedHome: React.FC<Props> = props => {
 
   const getBasedOnActivityPapers = React.useCallback(
     () => {
-      const basedActivityPaperIdsForNonUser = store.get(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY) || [];
+      const basedActivityPaperIdsForNonUser: number[] = store.get(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY) || [];
       setIsLoadingBasedOnActivityPapers(true);
-      RecommendationAPI.getPapersFromUserAction(!currentUser.isLoggedIn ? basedActivityPaperIdsForNonUser : null)
+      RecommendationAPI.getPapersFromUserAction(!currentUser.isLoggedIn ? basedActivityPaperIdsForNonUser : undefined)
         .then(res => {
           setBasedOnActivityPapers(res);
           setIsLoadingBasedOnActivityPapers(false);

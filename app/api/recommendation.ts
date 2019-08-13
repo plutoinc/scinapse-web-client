@@ -11,7 +11,7 @@ export interface BasedOnCollectionPapersParams {
 class RecommendationAPI extends PlutoAxios {
   public async getPapersFromUserAction(paperIds?: number[]): Promise<Paper[]> {
     let res;
-    if (paperIds && paperIds.length > 0) {
+    if (!!paperIds) {
       res = await this.get(`/recommendations/sample`, {
         params: {
           pids: String(paperIds),
