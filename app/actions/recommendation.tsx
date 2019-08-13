@@ -24,7 +24,7 @@ function setActionCount(count: number): number {
 export function addPaperToRecommendation(isLoggedIn: boolean, paperId: number, actionArea: string) {
   return async (dispatch: Dispatch<any>) => {
     const prevActionCount = Cookies.get(BASED_ACTIVITY_COUNT_COOKIE_KEY);
-    let newPaperIds: number[] = [];
+    let newPaperIds;
 
     if (!isLoggedIn) {
       const basedPaperIdsForNonUser = store.get(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY) || [];
