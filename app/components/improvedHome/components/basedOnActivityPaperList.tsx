@@ -52,7 +52,7 @@ const BaseOnActivityPaperList: React.FC<BasedOnActivityPaperListProps> = props =
   if (isLoading) return <>{skeletonPaperItems}</>;
 
   const refreshButton = (
-    <div className={styles.moreItem} onClick={refreshBasedOnActivityPapers}>
+    <div className={styles.refreshBottomButton} onClick={refreshBasedOnActivityPapers}>
       <Icon className={styles.refreshIcon} icon="RELOAD" />REFRESH
     </div>
   );

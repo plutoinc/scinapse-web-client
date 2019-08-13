@@ -20,6 +20,8 @@
 }
 
 .subTitle {
+  display: flex;
+  align-items: center;
   font-size: 15px;
   font-weight: 500;
   color: $gray600;
@@ -46,19 +48,25 @@
   background-color: white;
 }
 
-.moreItem {
+.refreshButton {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 24px;
   font-size: 15px;
   font-weight: 500;
+  margin-left: 332px;
   color: $main-blue1;
   cursor: pointer;
 
   &:hover {
     color: $main_blue_light0;
   }
+}
+
+.refreshBottomButton {
+  @extend .refreshButton;
+  margin-top: 24px;
+  margin-left: 0;
 }
 
 .basedOnCollectionPapers {

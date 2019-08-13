@@ -6,6 +6,7 @@ import { Paper } from '../../../model/paper';
 import { BasedOnCollectionPapersParams } from '../../../api/recommendation';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import EnvChecker from '../../../helpers/envChecker';
+import Icon from '../../../icons';
 const styles = require('./recommendedPapers.scss');
 const NAVBAR_HEIGHT = 64;
 
@@ -54,7 +55,12 @@ const RecommendedPapers: React.FC<Props> = props => {
       <div className={styles.recommendedPapersContainer}>
         <div className={styles.titleSection}>
           <div className={styles.title}>Recommended papers for you</div>
-          <div className={styles.subTitle}>BASED ON YOUR SEARCH ACTIVITY</div>
+          <div className={styles.subTitle}>
+            BASED ON YOUR SEARCH ACTIVITY
+            <div className={styles.refreshButton} onClick={handleGetBasedOnActivityPapers}>
+              <Icon className={styles.refreshIcon} icon="RELOAD" />REFRESH
+            </div>
+          </div>
         </div>
         <div className={styles.contentSection}>
           <div className={styles.basedOnActivityPapers}>
