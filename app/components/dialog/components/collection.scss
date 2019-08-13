@@ -199,7 +199,10 @@
   .formControl + .formControl {
     margin-top: 8px;
   }
-}
+  
+  .rightBox {
+    display: flex;
+  }
 
 @media (max-width: $tablet-width) {
   .dialogWrapper {
