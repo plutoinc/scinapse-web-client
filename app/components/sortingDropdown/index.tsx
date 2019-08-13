@@ -3,8 +3,7 @@ import { parse } from 'qs';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-import Popper from '@material-ui/core/Popper';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Popover from '@material-ui/core/Popover';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { setActiveFilterButton } from '../../actions/searchFilter';
 import { SearchActions } from '../../actions/actionTypes';
@@ -56,86 +55,97 @@ const SortingDropdown: React.FC<
   const filter = SearchQueryManager.objectifyPaperFilter(queryParams.filter);
 
   return (
-    <ClickAwayListener
-      onClickAway={() => {
-        if (props.isActive) {
-          props.dispatch(setActiveFilterButton(null));
-        }
-      }}
-    >
-      <div ref={anchorEl}>
-        <FilterButton
-          onClick={() => {
-            if (props.isActive) {
-              props.dispatch(setActiveFilterButton(null));
-            } else {
-              props.dispatch(setActiveFilterButton(FILTER_BUTTON_TYPE.SORTING));
-            }
+    <div ref={anchorEl}>
+      <FilterButton
+        onClick={() => {
+          if (props.isActive) {
+            props.dispatch(setActiveFilterButton(null));
+          } else {
+            props.dispatch(setActiveFilterButton(FILTER_BUTTON_TYPE.SORTING));
+          }
+        }}
+        content={getSortText(props.sorting)}
+        isActive={props.isActive}
+        selected={false}
+      />
+      <Popover
+        onClose={() => {
+          if (props.isActive) {
+            props.dispatch(setActiveFilterButton(null));
+          }
+        }}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        elevation={0}
+        transitionDuration={150}
+        classes={{
+          paper: s.dropBoxWrapper,
+        }}
+        open={props.isActive}
+        anchorEl={anchorEl.current}
+      >
+        <Link
+          to={{
+            pathname: '/search',
+            search: SearchQueryManager.stringifyPapersQuery({
+              query: props.query,
+              page: 1,
+              sort: 'RELEVANCE',
+              filter,
+            }),
           }}
-          content={getSortText(props.sorting)}
-          isActive={props.isActive}
-          selected={false}
-        />
-        <Popper open={props.isActive} anchorEl={anchorEl.current} placement="bottom-start" disablePortal>
-          <div className={s.dropBoxWrapper}>
-            <Link
-              to={{
-                pathname: '/search',
-                search: SearchQueryManager.stringifyPapersQuery({
-                  query: props.query,
-                  page: 1,
-                  sort: 'RELEVANCE',
-                  filter,
-                }),
-              }}
-              className={s.sortBtn}
-              onClick={() => {
-                trackSorting('RELEVANCE');
-                props.dispatch(setActiveFilterButton(null));
-              }}
-            >
-              Relevance
-            </Link>
-            <Link
-              to={{
-                pathname: '/search',
-                search: SearchQueryManager.stringifyPapersQuery({
-                  query: props.query,
-                  page: 1,
-                  sort: 'NEWEST_FIRST',
-                  filter,
-                }),
-              }}
-              className={s.sortBtn}
-              onClick={() => {
-                trackSorting('NEWEST_FIRST');
-                props.dispatch(setActiveFilterButton(null));
-              }}
-            >
-              Newest
-            </Link>
-            <Link
-              to={{
-                pathname: '/search',
-                search: SearchQueryManager.stringifyPapersQuery({
-                  query: props.query,
-                  page: 1,
-                  sort: 'MOST_CITATIONS',
-                  filter,
-                }),
-              }}
-              className={s.sortBtn}
-              onClick={() => {
-                trackSorting('MOST_CITATIONS');
-                props.dispatch(setActiveFilterButton(null));
-              }}
-            >
-              Most citations
-            </Link>
-          </div>
-        </Popper>
-      </div>
-    </ClickAwayListener>
+          className={s.sortBtn}
+          onClick={() => {
+            trackSorting('RELEVANCE');
+            props.dispatch(setActiveFilterButton(null));
+          }}
+        >
+          Relevance
+        </Link>
+        <Link
+          to={{
+            pathname: '/search',
+            search: SearchQueryManager.stringifyPapersQuery({
+              query: props.query,
+              page: 1,
+              sort: 'NEWEST_FIRST',
+              filter,
+            }),
+          }}
+          className={s.sortBtn}
+          onClick={() => {
+            trackSorting('NEWEST_FIRST');
+            props.dispatch(setActiveFilterButton(null));
+          }}
+        >
+          Newest
+        </Link>
+        <Link
+          to={{
+            pathname: '/search',
+            search: SearchQueryManager.stringifyPapersQuery({
+              query: props.query,
+              page: 1,
+              sort: 'MOST_CITATIONS',
+              filter,
+            }),
+          }}
+          className={s.sortBtn}
+          onClick={() => {
+            trackSorting('MOST_CITATIONS');
+            props.dispatch(setActiveFilterButton(null));
+          }}
+        >
+          Most citations
+        </Link>
+      </Popover>
+    </div>
   );
 });
 

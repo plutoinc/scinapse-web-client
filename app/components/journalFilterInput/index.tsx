@@ -33,6 +33,33 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
     wait: 200,
   });
 
+  const handleSubmit = () => {
+    if (!journalSuggestions) {
+      return dispatch({ type: 'CLOSE_BOX' });
+    }
+
+    const journals: AggregationJournal[] = journalSuggestions
+      .filter(j => state.selectedJournalIds.includes(j.journalId))
+      .map(j => ({
+        id: j.journalId,
+        title: j.keyword,
+        docCount: 0,
+        impactFactor: j.impactFactor,
+        fromSearch: true,
+      }));
+    props.onSubmit(journals);
+    dispatch({ type: 'CLOSE_BOX' });
+  };
+
+  const handleSelectItem = React.useCallback((journalId: number) => {
+    dispatch({
+      type: 'TOGGLE_JOURNAL',
+      payload: {
+        journalId,
+      },
+    });
+  }, []);
+
   React.useEffect(
     () => {
       setKeyword(state.genuineInputValue);
@@ -49,10 +76,9 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
     journalList = journalSuggestions.map((journal, i) => {
       return (
         <JournalItem
+          id={journal.journalId}
           key={journal.journalId}
-          onClick={() => {
-            handleSelectItem(i);
-          }}
+          onClick={handleSelectItem}
           IF={journal.impactFactor}
           checked={state.selectedJournalIds.includes(journal.journalId)}
           isHighlight={i === state.highlightIdx}
@@ -64,24 +90,11 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
   }
   const shouldShowList = state.isOpen && journalList && journalList.length > 0;
 
-  function handleSelectItem(index: number) {
-    if (index > -1 && journalSuggestions) {
-      const journal = journalSuggestions[index];
-
-      dispatch({
-        type: 'TOGGLE_JOURNAL',
-        payload: {
-          journalId: journal.journalId,
-        },
-      });
-    }
-  }
-
   return (
     <ClickAwayListener
       onClickAway={() => {
         if (state.isOpen) {
-          dispatch({ type: 'CLOSE_BOX' });
+          handleSubmit();
         }
       }}
     >
@@ -107,7 +120,9 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
                     });
                   },
                   onSelect: i => {
-                    handleSelectItem(i);
+                    if (i > -1 && journalSuggestions[i]) {
+                      handleSelectItem(journalSuggestions[i].journalId);
+                    }
                   },
                 });
               }
@@ -138,26 +153,7 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
               >
                 Clear
               </button>
-              <button
-                className={s.applyBtn}
-                onClick={() => {
-                  if (!journalSuggestions) {
-                    return dispatch({ type: 'CLOSE_BOX' });
-                  }
-
-                  const journals: AggregationJournal[] = journalSuggestions
-                    .filter(j => state.selectedJournalIds.includes(j.journalId))
-                    .map(j => ({
-                      id: j.journalId,
-                      title: j.keyword,
-                      docCount: 0,
-                      impactFactor: j.impactFactor,
-                      fromSearch: true,
-                    }));
-                  props.onSubmit(journals);
-                  dispatch({ type: 'CLOSE_BOX' });
-                }}
-              >
+              <button className={s.applyBtn} onClick={handleSubmit}>
                 Add
               </button>
             </div>
