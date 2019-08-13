@@ -32,6 +32,8 @@ import { changeSearchQuery } from '../../actions/searchQuery';
 import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
 import ImprovedFooter from '../layouts/improvedFooter';
 import KnowledgeBaseNoti from '../recommendPapersDialog';
+import { getUserGroupName } from '../../helpers/abTestHelper';
+import { WEIGHTED_CITATION_EXPERIMENT } from '../../constants/abTestGlobalValue';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -209,6 +211,8 @@ const SearchContainer: React.FC<Props> = props => {
     () => {
       if (currentUserState.isLoggingIn) return;
 
+      const doWeightedCitationSearch = getUserGroupName(WEIGHTED_CITATION_EXPERIMENT) === 'wc';
+
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
 
       changeSearchQuery(SafeURIStringHandler.decode(currentQueryParams.query || ''));
@@ -219,6 +223,7 @@ const SearchContainer: React.FC<Props> = props => {
       const params = SearchQueryManager.makeSearchQueryFromParamsObject(currentQueryParams);
       params.cancelToken = cancelToken.current.token;
       params.detectYear = articleSearchState.searchInput !== currentQueryParams.query || enableAutoYearFilter;
+      params.weightedCitation = doWeightedCitationSearch;
 
       searchPapers(params).then(() => {
         restoreScroll(location.key);
