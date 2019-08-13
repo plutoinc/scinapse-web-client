@@ -6,6 +6,7 @@ import SkeletonPaperItem from '../../common/skeletonPaperItem/skeletonPaperItem'
 import PaperItem from '../../common/paperItem';
 import { ActionTicketParams } from '../../../helpers/actionTicketManager/actionTicket';
 import { useObserver } from '../../../hooks/useIntersectionHook';
+import Icon from '../../../icons';
 const styles = require('./recommendedPapers.scss');
 const BASED_ON_ACTIVITY_PAPER_COUNT = 5;
 
@@ -52,7 +53,7 @@ const BaseOnActivityPaperList: React.FC<BasedOnActivityPaperListProps> = props =
 
   const refreshButton = (
     <div className={styles.moreItem} onClick={refreshBasedOnActivityPapers}>
-      refresh
+      <Icon className={styles.refreshIcon} icon="RELOAD" />REFRESH
     </div>
   );
 

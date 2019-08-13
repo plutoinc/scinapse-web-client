@@ -37,6 +37,12 @@ class RecommendationAPI extends PlutoAxios {
     const camelizedRes = camelCaseKeys(res.data);
     return camelizedRes.data.content;
   }
+
+  public async syncRecommendationPool(paperIds: number[]) {
+    await this.put(`/recommendations/base/init`, {
+      paper_ids: paperIds,
+    });
+  }
 }
 
 const recommendationAPI = new RecommendationAPI();
