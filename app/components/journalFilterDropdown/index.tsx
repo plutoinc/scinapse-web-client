@@ -3,7 +3,7 @@ import { isEqual } from 'lodash';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import Popper from '@material-ui/core/Popper';
+import Popover from '@material-ui/core/Popover';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { setActiveFilterButton } from '../../actions/searchFilter';
@@ -36,22 +36,25 @@ const JournalFilterDropdown: React.FC<
     buttonText = `${props.selectedJournalIds.length} journals · conferences`;
   }
 
+  const handleClickJournalItem = React.useCallback((journalId: number) => {
+    props.dispatch({
+      type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM,
+      payload: { journalId },
+    });
+  }, []);
+
   const journalList = props.journalData.map(journal => {
     return (
       <JournalItem
         key={journal.id}
+        id={journal.id}
         title={journal.title}
         checked={props.selectedJournalIds.includes(journal.id)}
         isHighlight={false}
         docCount={journal.docCount}
         IF={journal.impactFactor}
         fromSearch={journal.fromSearch}
-        onClick={() => {
-          props.dispatch({
-            type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM,
-            payload: { journalId: journal.id },
-          });
-        }}
+        onClick={handleClickJournalItem}
       />
     );
   });
@@ -68,90 +71,95 @@ const JournalFilterDropdown: React.FC<
   }
 
   return (
-    <ClickAwayListener
-      onClickAway={() => {
-        if (!props.isActive) return;
-        handleSubmit();
-      }}
-    >
-      <div ref={anchorEl}>
-        <FilterButton
-          onClick={() => {
-            if (props.isActive) {
-              props.dispatch(setActiveFilterButton(null));
-            } else {
-              props.dispatch(setActiveFilterButton(FILTER_BUTTON_TYPE.JOURNAL));
-            }
-          }}
-          content={buttonText}
-          isActive={props.isActive}
-          selected={props.selectedJournalIds.length > 0}
-        />
-        <Popper
-          modifiers={{ preventOverflow: { enabled: false }, flip: { enabled: false } }}
-          open={props.isActive}
-          anchorEl={anchorEl.current}
-          placement="bottom-start"
-          disablePortal
-        >
-          <div className={s.dropBoxWrapper}>
-            <div className={s.filterWrapper}>
-              <JournalFilterInput
-                forwardedRef={inputEl}
-                onSubmit={(journals: AggregationJournal[]) => {
-                  props.dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_ADD_JOURNAL_FILTER_ITEMS, payload: { journals } });
-                }}
-              />
-              {isHintOpened && (
-                <ClickAwayListener
-                  onClickAway={() => {
-                    setIsHintOpened(false);
-                  }}
-                >
-                  <div className={s.hint}>Search journal or conference here</div>
-                </ClickAwayListener>
-              )}
+    <div ref={anchorEl}>
+      <FilterButton
+        onClick={() => {
+          if (props.isActive) {
+            props.dispatch(setActiveFilterButton(null));
+          } else {
+            props.dispatch(setActiveFilterButton(FILTER_BUTTON_TYPE.JOURNAL));
+          }
+        }}
+        content={buttonText}
+        isActive={props.isActive}
+        selected={props.selectedJournalIds.length > 0}
+      />
+      <Popover
+        onClose={() => {
+          if (!props.isActive) return;
+          handleSubmit();
+        }}
+        open={props.isActive}
+        anchorEl={anchorEl.current}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        elevation={0}
+        transitionDuration={150}
+        classes={{
+          paper: s.dropBoxWrapper,
+        }}
+      >
+        <div className={s.filterWrapper}>
+          <JournalFilterInput
+            forwardedRef={inputEl}
+            onSubmit={(journals: AggregationJournal[]) => {
+              props.dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_ADD_JOURNAL_FILTER_ITEMS, payload: { journals } });
+            }}
+          />
+          {isHintOpened && (
+            <ClickAwayListener
+              onClickAway={() => {
+                setIsHintOpened(false);
+              }}
+            >
+              <div className={s.hint}>Search journal or conference here</div>
+            </ClickAwayListener>
+          )}
+        </div>
+        <div className={s.content}>
+          <div className={s.journalListWrapper}>
+            <div className={s.listHeader}>
+              <label className={s.journalLabel}>Journal or Conference name</label>
+              <label className={s.IFLabel}>Impact Factor</label>
+              <label className={s.countLabel}>Count</label>
             </div>
-            <div className={s.content}>
-              <div className={s.journalListWrapper}>
-                <div className={s.listHeader}>
-                  <label className={s.journalLabel}>Journal or Conference name</label>
-                  <label className={s.IFLabel}>Impact Factor</label>
-                  <label className={s.countLabel}>Count</label>
-                </div>
-                {journalList}
-                <div className={s.searchInfo}>
-                  <span>{`Couldn't find any journal? `}</span>
-                  <button
-                    onClick={() => {
-                      if (!inputEl.current) return;
-                      setIsHintOpened(true);
-                      inputEl.current.focus();
-                    }}
-                    className={s.searchFocusButton}
-                  >
-                    Search more journals or conferences!
-                  </button>
-                </div>
-              </div>
-              <div className={s.controlBtnsWrapper}>
-                <button
-                  className={s.clearBtn}
-                  onClick={() => {
-                    props.dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER });
-                  }}
-                >
-                  Clear
-                </button>
-                <button className={s.applyBtn} onClick={handleSubmit}>
-                  Apply
-                </button>
-              </div>
+            {journalList}
+            <div className={s.searchInfo}>
+              <span>{`Couldn't find any journal? `}</span>
+              <button
+                onClick={() => {
+                  if (!inputEl.current) return;
+                  setIsHintOpened(true);
+                  inputEl.current.focus();
+                }}
+                className={s.searchFocusButton}
+              >
+                Search more journals or conferences!
+              </button>
             </div>
           </div>
-        </Popper>
-      </div>
-    </ClickAwayListener>
+          <div className={s.controlBtnsWrapper}>
+            <button
+              className={s.clearBtn}
+              onClick={() => {
+                props.dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER });
+              }}
+            >
+              Clear
+            </button>
+            <button className={s.applyBtn} onClick={handleSubmit}>
+              Apply
+            </button>
+          </div>
+        </div>
+      </Popover>
+    </div>
   );
 };
 

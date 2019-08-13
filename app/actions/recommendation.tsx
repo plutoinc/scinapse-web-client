@@ -1,8 +1,11 @@
-import * as Cookies from 'js-cookie';
 import { Dispatch } from 'redux';
 import RecommendationAPI from '../api/recommendation';
 import { ActionCreators } from './actionTypes';
-export const BASED_ACTIVITY_COUNT_COOKIE_KEY = 'basedActivityCount';
+import {
+  ALREADY_VISITED_RECOMMEND_PAPERS,
+  BASED_ACTIVITY_COUNT_STORE_KEY,
+} from '../components/recommendPapersDialog/recommendPapersDialogConstants';
+const store = require('store');
 
 const MAX_COUNT = 16;
 
@@ -14,19 +17,19 @@ function setActionCount(count: number): number {
     nextCount = count + 1;
   }
 
-  Cookies.set(BASED_ACTIVITY_COUNT_COOKIE_KEY, String(nextCount));
+  store.set(BASED_ACTIVITY_COUNT_STORE_KEY, String(nextCount));
   return nextCount;
 }
 
 export function addPaperToRecommendation(isLoggedIn: boolean, paperId: number, actionArea: string) {
   return async (dispatch: Dispatch<any>) => {
-    const prevActionCount = Cookies.get(BASED_ACTIVITY_COUNT_COOKIE_KEY);
+    const prevActionCount = store.get(BASED_ACTIVITY_COUNT_STORE_KEY);
 
     if (!isLoggedIn) return;
 
     RecommendationAPI.addPaperToRecommendationPool(paperId);
 
-    if (prevActionCount === 'null') return;
+    if (prevActionCount === ALREADY_VISITED_RECOMMEND_PAPERS) return;
 
     const currentActionCount = parseInt(prevActionCount || '0', 10);
     const nextActionCount = setActionCount(currentActionCount);
@@ -35,17 +38,15 @@ export function addPaperToRecommendation(isLoggedIn: boolean, paperId: number, a
       case 2:
       case 5:
       case 13: {
-        await RecommendationAPI.getPapersFromUserAction()
-          .then(basedOnActivityPapers => {
-            if (!basedOnActivityPapers || basedOnActivityPapers.length === 0) {
-              return;
-            }
+        try {
+          const recommendPapers = await RecommendationAPI.getPapersFromUserAction();
 
-            dispatch(ActionCreators.openKnowledgeBaseNoti({ actionArea }));
-          })
-          .catch(err => {
-            console.error(err);
-          });
+          if (!recommendPapers || recommendPapers.length === 0) return;
+
+          dispatch(ActionCreators.openRecommendPapersDialog({ actionArea }));
+        } catch (err) {
+          console.error(err);
+        }
         break;
       }
     }
