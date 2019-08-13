@@ -1,20 +1,20 @@
 import React from 'react';
-import * as Cookies from 'js-cookie';
-import { withStyles } from '../../helpers/withStylesHelper';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import Dialog from '@material-ui/core/Dialog';
 import { AppState } from '../../reducers';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { withStyles } from '../../helpers/withStylesHelper';
 import { ActionCreators } from '../../actions/actionTypes';
-import { BASED_ACTIVITY_COUNT_COOKIE_KEY } from '../../actions/recommendation';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../locationListener';
-const styles = require('./knowledgeBaseNoti.scss');
+import { ALREADY_VISITED_RECOMMEND_PAPERS, BASED_ACTIVITY_COUNT_STORE_KEY } from './recommendPapersDialogConstants';
+const styles = require('./recommendPapersDialog.scss');
+const store = require('store');
 
 type Props = ReturnType<typeof mapStateToProps> & { dispatch: Dispatch<any> };
 
 function clickLetMeSeeBtn(actionArea: string) {
-  Cookies.set(BASED_ACTIVITY_COUNT_COOKIE_KEY, 'null');
+  store.set(BASED_ACTIVITY_COUNT_STORE_KEY, ALREADY_VISITED_RECOMMEND_PAPERS);
   ActionTicketManager.trackTicket({
     pageType: getCurrentPageType(),
     actionType: 'fire',
@@ -24,9 +24,9 @@ function clickLetMeSeeBtn(actionArea: string) {
   });
 }
 
-const KnowledgeBaseNoti: React.FC<Props> = props => {
-  const { knowledgeBaseNotiState, dispatch } = props;
-  const { isOpen, actionArea } = knowledgeBaseNotiState;
+const RecommendPapersDialog: React.FC<Props> = props => {
+  const { recommendPapersDialogState, dispatch } = props;
+  const { isOpen, actionArea } = recommendPapersDialogState;
 
   React.useEffect(
     () => {
@@ -57,7 +57,7 @@ const KnowledgeBaseNoti: React.FC<Props> = props => {
         <button
           className={styles.noThxBtn}
           onClick={() => {
-            dispatch(ActionCreators.closeKnowledgeBaseNoti());
+            dispatch(ActionCreators.closeRecommendPapersDialog());
             ActionTicketManager.trackTicket({
               pageType: getCurrentPageType(),
               actionType: 'fire',
@@ -77,8 +77,8 @@ const KnowledgeBaseNoti: React.FC<Props> = props => {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    knowledgeBaseNotiState: state.knowledgeBaseNotiState,
+    recommendPapersDialogState: state.recommendPapersDialogState,
   };
 };
 
-export default connect(mapStateToProps)(withStyles<typeof KnowledgeBaseNoti>(styles)(KnowledgeBaseNoti));
+export default connect(mapStateToProps)(withStyles<typeof RecommendPapersDialog>(styles)(RecommendPapersDialog));

@@ -47,10 +47,10 @@ import { RelatedPapersState, RELATED_PAPERS_INITIAL_STATE, reducer as RelatedPap
 import { PDFViewerState, reducer as PDFViewerReducer, PDF_VIEWER_INITIAL_STATE } from './pdfViewer';
 import { SEARCH_QUERY_INITIAL_STATE, SearchQueryState, reducer as SearchQueryReducer } from './searchQuery';
 import {
-  KnowledgeBaseNotiState,
-  reducer as KnowledgeBaseNotiReducer,
-  KNOWLEDGE_BASE_NOTI_INITIAL_STATE,
-} from './knowledgeBaseNoti';
+  RecommendPapersDialogState,
+  reducer as RecommendPapersDialogReducer,
+  RECOMMEND_PAPERS_DIALOG_INITIAL_STATE,
+} from './recommendPapersDialog';
 
 import { SearchFilterState, reducer as SearchFilterReducer, SEARCH_FILTER_INITIAL_STATE } from './searchFilter';
 
@@ -72,7 +72,7 @@ export interface AppState {
   relatedPapersState: RelatedPapersState;
   PDFViewerState: PDFViewerState;
   searchQueryState: SearchQueryState;
-  knowledgeBaseNotiState: KnowledgeBaseNotiState;
+  recommendPapersDialogState: RecommendPapersDialogState;
   searchFilterState: SearchFilterState;
   entities: EntityState;
 }
@@ -95,7 +95,7 @@ export const initialState: AppState = {
   relatedPapersState: RELATED_PAPERS_INITIAL_STATE,
   PDFViewerState: PDF_VIEWER_INITIAL_STATE,
   searchQueryState: SEARCH_QUERY_INITIAL_STATE,
-  knowledgeBaseNotiState: KNOWLEDGE_BASE_NOTI_INITIAL_STATE,
+  recommendPapersDialogState: RECOMMEND_PAPERS_DIALOG_INITIAL_STATE,
   searchFilterState: SEARCH_FILTER_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
 };
@@ -118,7 +118,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   relatedPapersState: RelatedPapersReducer,
   PDFViewerState: PDFViewerReducer,
   searchQueryState: SearchQueryReducer,
-  knowledgeBaseNotiState: KnowledgeBaseNotiReducer,
+  recommendPapersDialogState: RecommendPapersDialogReducer,
   searchFilterState: SearchFilterReducer,
   entities: EntityReducer,
 });
