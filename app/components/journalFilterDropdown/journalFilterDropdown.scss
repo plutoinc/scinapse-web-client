@@ -12,6 +12,9 @@
   background-color: white;
   padding: 24px;
   margin-top: 8px;
+  // below overflow attributes are needed for override default Material-ui's Paper component behavior
+  overflow-x: visible;
+  overflow-y: visible;
 }
 
 .filterWrapper {
