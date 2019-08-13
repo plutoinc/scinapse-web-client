@@ -34,7 +34,7 @@ async function getSources(branch: string, version: string, escapedBranch: string
     fs.mkdirSync(`/tmp/${escapedBranch}/${version}/server`);
   }
 
-  const prefix = `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${branch}`;
+  const prefix = `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${branch}/${version}`;
   const res = await s3
     .listObjectsV2({
       Bucket: DeployConfig.AWS_S3_BUCKET,
