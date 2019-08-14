@@ -224,8 +224,8 @@ const SearchContainer: React.FC<Props> = props => {
       const params = SearchQueryManager.makeSearchQueryFromParamsObject(currentQueryParams);
       params.cancelToken = cancelToken.current.token;
       params.detectYear = articleSearchState.searchInput !== currentQueryParams.query || enableAutoYearFilter;
-      params.weightedCitation = doWeightedCitationSearch;
-      params.strictSort = doStrictSortSearch;
+      params.weightedCitation = !!doWeightedCitationSearch;
+      params.strictSort = !!doStrictSortSearch;
 
       searchPapers(params).then(() => {
         restoreScroll(location.key);

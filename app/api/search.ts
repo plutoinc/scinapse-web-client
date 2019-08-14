@@ -16,8 +16,8 @@ export interface BaseSearchParams {
   page?: number;
   cancelToken?: CancelToken;
   detectYear?: boolean;
-  weightedCitation?: boolean;
-  strictSort?: boolean;
+  weightedCitation: boolean;
+  strictSort: boolean;
 }
 
 export interface PaperSearchParams extends BaseSearchParams {
