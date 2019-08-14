@@ -40,9 +40,11 @@ const FOSFilterDropdown: React.FC<
     [props.isActive, props.selectedFOSIds]
   );
 
-  let buttonText = 'Any field';
-  if (props.selectedFOSIds.length > 0) {
-    buttonText = `${props.selectedFOSIds.length} fields`;
+  let buttonText = 'Any topic';
+  if (props.selectedFOSIds.length === 1) {
+    buttonText = `${props.selectedFOSIds.length} topic`;
+  } else if (props.selectedFOSIds.length > 1) {
+    buttonText = `${props.selectedFOSIds.length} topics`;
   }
 
   const FOSList = props.FOSData.map(FOS => {
@@ -121,7 +123,7 @@ const FOSFilterDropdown: React.FC<
               }}
             >
               <div className={s.hintWrapper}>
-                <div className={s.hint}>Search other fields here</div>
+                <div className={s.hint}>Search other topics here</div>
               </div>
             </ClickAwayListener>
           )}
@@ -129,12 +131,12 @@ const FOSFilterDropdown: React.FC<
         <div className={s.content}>
           <div className={s.FOSListWrapper}>
             <div className={s.listHeader}>
-              <label className={s.FOSLabel}>Field</label>
+              <label className={s.FOSLabel}>Topic</label>
               <label className={s.countLabel}>Count</label>
             </div>
             {FOSList}
             <div className={s.searchInfo}>
-              <span>{`Couldn't find any fields? `}</span>
+              <span>{`Couldn't find topics? `}</span>
               <button
                 onClick={() => {
                   if (!inputEl.current) return;
@@ -143,7 +145,7 @@ const FOSFilterDropdown: React.FC<
                 }}
                 className={s.searchFocusButton}
               >
-                Search more fields!
+                Search more topics!
               </button>
             </div>
           </div>

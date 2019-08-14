@@ -138,7 +138,7 @@ const FOSFilterInput: React.FC<FOSFilterInputProps> = props => {
               const { value } = e.currentTarget;
               dispatch({ type: 'CHANGE_INPUT', payload: { inputValue: value } });
             }}
-            placeholder="Search other fields"
+            placeholder="Search other topics"
             className={classNames({
               [s.input]: true,
               [s.listOpened]: shouldShowList,

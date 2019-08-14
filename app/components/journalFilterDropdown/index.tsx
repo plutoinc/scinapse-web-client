@@ -42,7 +42,9 @@ const JournalFilterDropdown: React.FC<
   );
 
   let buttonText = 'Any journal · conference';
-  if (props.selectedJournalIds.length > 0) {
+  if (props.selectedJournalIds.length === 1) {
+    buttonText = `${props.selectedJournalIds.length} journal · conference`;
+  } else if (props.selectedJournalIds.length > 1) {
     buttonText = `${props.selectedJournalIds.length} journals · conferences`;
   }
 
