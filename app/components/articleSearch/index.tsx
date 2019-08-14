@@ -32,6 +32,8 @@ import { changeSearchQuery } from '../../actions/searchQuery';
 import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
 import ImprovedFooter from '../layouts/improvedFooter';
 import KnowledgeBaseNoti from '../recommendPapersDialog';
+import { getUserGroupName } from '../../helpers/abTestHelper';
+import { STRICT_SORT_EXPERIMENT } from '../../constants/abTestGlobalValue';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -211,6 +213,7 @@ const SearchContainer: React.FC<Props> = props => {
 
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
 
+      const doStrictSortSearch = getUserGroupName(STRICT_SORT_EXPERIMENT) === 'ss';
       changeSearchQuery(SafeURIStringHandler.decode(currentQueryParams.query || ''));
       setQueryParams(currentQueryParams);
       setFilter(SearchQueryManager.objectifyPaperFilter(currentQueryParams.filter));
@@ -219,6 +222,7 @@ const SearchContainer: React.FC<Props> = props => {
       const params = SearchQueryManager.makeSearchQueryFromParamsObject(currentQueryParams);
       params.cancelToken = cancelToken.current.token;
       params.detectYear = articleSearchState.searchInput !== currentQueryParams.query || enableAutoYearFilter;
+      params.strictSort = doStrictSortSearch;
 
       searchPapers(params).then(() => {
         restoreScroll(location.key);

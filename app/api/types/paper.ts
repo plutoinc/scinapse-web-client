@@ -9,6 +9,7 @@ export interface SearchPapersParams {
   size?: number;
   cancelToken?: CancelToken;
   detectYear?: boolean;
+  strictSort?: boolean;
 }
 
 export interface GetRefOrCitedPapersParams {
