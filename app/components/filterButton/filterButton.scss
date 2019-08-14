@@ -7,6 +7,8 @@
   justify-content: center;
   font-weight: 500;
   cursor: pointer;
+  transition: width 150ms, font-size 150ms, background-color 150ms;
+  transition-timing-function: ease;
 
   &:hover {
     border-color: $gray500;

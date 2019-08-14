@@ -45,7 +45,7 @@ import { Configuration } from '../../reducers/configuration';
 import { getMemoizedConfiguration } from '../../selectors/getConfiguration';
 import PlutoAxios from '../../api/pluto';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
-import KnowledgeBaseNoti from '../../components/knowledgeBaseNoti';
+import KnowledgeBaseNoti from '../../components/recommendPapersDialog';
 import PaperShowFigureList from '../../components/paperShow/components/paperShowFigureList';
 const styles = require('./paperShow.scss');
 

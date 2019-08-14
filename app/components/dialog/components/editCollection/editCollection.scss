@@ -143,3 +143,10 @@
     }
   }
 }
+
+@media (max-width: $mobile-width) {
+  .dialogWrapper {
+    max-width: 504px;
+    width: 100%;
+  }
+}

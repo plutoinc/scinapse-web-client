@@ -32,7 +32,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 365px;
+    max-width: 365px;
+    width: 100%;
   }
 
   .paperCount {

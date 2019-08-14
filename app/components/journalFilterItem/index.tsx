@@ -8,17 +8,18 @@ import formatNumber from '../../helpers/formatNumber';
 const s = require('./journalFilterItem.scss');
 
 interface JournalItemProps {
+  id: number;
   title: string;
   checked: boolean;
   isHighlight: boolean;
-  onClick: () => void;
+  onClick: (journalId: number) => void;
   isSearchResult?: boolean;
   docCount?: number;
   IF?: number;
   fromSearch?: boolean;
 }
 
-const JournalItem: React.FC<JournalItemProps> = props => {
+const JournalItem: React.FC<JournalItemProps> = React.memo(props => {
   let ImpactFactor = null;
   if (props.IF) {
     ImpactFactor = (
@@ -52,7 +53,7 @@ const JournalItem: React.FC<JournalItemProps> = props => {
   return (
     <button
       onClick={() => {
-        props.onClick();
+        props.onClick(props.id);
       }}
       className={classNames({
         [s.journalItem]: true,
@@ -67,6 +68,6 @@ const JournalItem: React.FC<JournalItemProps> = props => {
       {docCount}
     </button>
   );
-};
+});
 
 export default withStyles<typeof JournalItem>(s)(JournalItem);

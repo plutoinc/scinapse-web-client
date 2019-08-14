@@ -3,8 +3,7 @@ import classNames from 'classnames';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import Popper from '@material-ui/core/Popper';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Popover from '@material-ui/core/Popover';
 import FilterButton, { FILTER_BUTTON_TYPE } from '../filterButton';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { Year } from '../../model/aggregation';
@@ -69,189 +68,187 @@ const YearFilterDropdown: React.FC<
   }
 
   return (
-    <ClickAwayListener
-      onClickAway={() => {
-        if (props.isActive) {
-          handleSubmit();
-        }
-      }}
-    >
-      <div ref={anchorEl}>
-        <FilterButton
-          onClick={() => {
-            if (props.isActive) {
+    <div ref={anchorEl}>
+      <FilterButton
+        onClick={() => {
+          if (props.isActive) {
+            props.dispatch(setActiveFilterButton(null));
+          } else {
+            props.dispatch(setActiveFilterButton(FILTER_BUTTON_TYPE.YEAR));
+          }
+        }}
+        content={buttonText}
+        isActive={props.isActive}
+        selected={!!minYear || !!maxYear}
+      />
+      <Popover
+        onClose={() => {
+          if (props.isActive) {
+            handleSubmit();
+          }
+        }}
+        open={props.isActive}
+        anchorEl={anchorEl.current}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        elevation={0}
+        transitionDuration={150}
+        classes={{
+          paper: s.dropBoxWrapper,
+        }}
+      >
+        <div className={s.upperBtnsWrapper}>
+          <button
+            className={classNames({
+              [s.quickSelectText]: true,
+              [s.active]: minYear === currentYear && maxYear === currentYear,
+            })}
+            onClick={() => {
+              goToYearFilteredSearchResultPage({
+                qs: props.location.search,
+                history: props.history,
+                min: currentYear,
+                max: currentYear,
+                fromBtn: true,
+              });
               props.dispatch(setActiveFilterButton(null));
-            } else {
-              props.dispatch(setActiveFilterButton(FILTER_BUTTON_TYPE.YEAR));
-            }
-          }}
-          content={buttonText}
-          isActive={props.isActive}
-          selected={!!minYear || !!maxYear}
-        />
-        <Popper
-          modifiers={{
-            flip: {
-              enabled: false,
-            },
-            preventOverflow: {
-              enabled: false,
-            },
-          }}
-          open={props.isActive}
-          anchorEl={anchorEl.current}
-          placement="bottom-start"
-          disablePortal
-        >
-          <div className={s.dropBoxWrapper}>
-            <div className={s.upperBtnsWrapper}>
-              <button
-                className={classNames({
-                  [s.quickSelectText]: true,
-                  [s.active]: minYear === currentYear && maxYear === currentYear,
-                })}
-                onClick={() => {
-                  goToYearFilteredSearchResultPage({
-                    qs: props.location.search,
-                    history: props.history,
-                    min: currentYear,
-                    max: currentYear,
-                    fromBtn: true,
-                  });
-                  props.dispatch(setActiveFilterButton(null));
-                }}
-              >
-                This Year
-              </button>
-              <button
-                className={classNames({
-                  [s.quickSelectText]: true,
-                  [s.active]: minYear === currentYear - 3 + 1 && maxYear === currentYear,
-                })}
-                onClick={() => {
-                  goToYearFilteredSearchResultPage({
-                    qs: props.location.search,
-                    history: props.history,
-                    min: currentYear - 3 + 1,
-                    max: currentYear,
-                    fromBtn: true,
-                  });
-                  props.dispatch(setActiveFilterButton(null));
-                }}
-              >
-                Recent 3 years
-              </button>
-              <button
-                className={classNames({
-                  [s.quickSelectText]: true,
-                  [s.active]: minYear === currentYear - 5 + 1 && maxYear === currentYear,
-                })}
-                onClick={() => {
-                  goToYearFilteredSearchResultPage({
-                    qs: props.location.search,
-                    history: props.history,
-                    min: currentYear - 5 + 1,
-                    max: currentYear,
-                    fromBtn: true,
-                  });
-                  props.dispatch(setActiveFilterButton(null));
-                }}
-              >
-                Recent 5 years
-              </button>
-            </div>
-            <div className={s.belowBtnsWrapper}>
-              <button
-                className={classNames({
-                  [s.quickSelectText]: true,
-                  [s.active]: minYear === 2010 && maxYear === currentYear,
-                })}
-                onClick={() => {
-                  goToYearFilteredSearchResultPage({
-                    qs: props.location.search,
-                    history: props.history,
-                    min: 2010,
-                    max: currentYear,
-                    fromBtn: true,
-                  });
-                  props.dispatch(setActiveFilterButton(null));
-                }}
-              >
-                Since 2010
-              </button>
-              <button
-                className={classNames({
-                  [s.quickSelectText]: true,
-                  [s.active]: minYear === 2000 && maxYear === currentYear,
-                })}
-                onClick={() => {
-                  goToYearFilteredSearchResultPage({
-                    qs: props.location.search,
-                    history: props.history,
-                    min: 2000,
-                    max: currentYear,
-                    fromBtn: true,
-                  });
-                  props.dispatch(setActiveFilterButton(null));
-                }}
-              >
-                Since 2000
-              </button>
-            </div>
-            <div className={s.inputBoxWrapper}>
-              <input
-                type="text"
-                placeholder="From year"
-                className={s.yearInput}
-                onKeyDown={handleKeyDown}
-                onChange={e => {
-                  const { value } = e.currentTarget;
-                  if (!value) {
-                    return setMinMaxYears(['', maxYear]);
-                  }
-                  const year = parseInt(value, 10);
-                  if (!isNaN(year)) {
-                    setMinMaxYears([year, maxYear]);
-                  }
-                }}
-                value={minYear}
-              />
-              <div className={s.hyphen} />
-              <input
-                type="text"
-                placeholder="To year"
-                className={s.yearInput}
-                onKeyDown={handleKeyDown}
-                onChange={e => {
-                  const { value } = e.currentTarget;
-                  if (!value) {
-                    return setMinMaxYears([minYear, '']);
-                  }
-                  const year = parseInt(value, 10);
-                  if (!isNaN(year)) {
-                    setMinMaxYears([minYear, year]);
-                  }
-                }}
-                value={maxYear}
-              />
-            </div>
-            <div className={s.controlBtnsWrapper}>
-              <button
-                className={s.clearBtn}
-                onClick={() => {
-                  setMinMaxYears(['', '']);
-                }}
-              >
-                Clear
-              </button>
-              <button className={s.applyBtn} onClick={handleSubmit}>
-                Apply
-              </button>
-            </div>
-          </div>
-        </Popper>
-      </div>
-    </ClickAwayListener>
+            }}
+          >
+            This Year
+          </button>
+          <button
+            className={classNames({
+              [s.quickSelectText]: true,
+              [s.active]: minYear === currentYear - 3 + 1 && maxYear === currentYear,
+            })}
+            onClick={() => {
+              goToYearFilteredSearchResultPage({
+                qs: props.location.search,
+                history: props.history,
+                min: currentYear - 3 + 1,
+                max: currentYear,
+                fromBtn: true,
+              });
+              props.dispatch(setActiveFilterButton(null));
+            }}
+          >
+            Recent 3 years
+          </button>
+          <button
+            className={classNames({
+              [s.quickSelectText]: true,
+              [s.active]: minYear === currentYear - 5 + 1 && maxYear === currentYear,
+            })}
+            onClick={() => {
+              goToYearFilteredSearchResultPage({
+                qs: props.location.search,
+                history: props.history,
+                min: currentYear - 5 + 1,
+                max: currentYear,
+                fromBtn: true,
+              });
+              props.dispatch(setActiveFilterButton(null));
+            }}
+          >
+            Recent 5 years
+          </button>
+        </div>
+        <div className={s.belowBtnsWrapper}>
+          <button
+            className={classNames({
+              [s.quickSelectText]: true,
+              [s.active]: minYear === 2010 && maxYear === currentYear,
+            })}
+            onClick={() => {
+              goToYearFilteredSearchResultPage({
+                qs: props.location.search,
+                history: props.history,
+                min: 2010,
+                max: currentYear,
+                fromBtn: true,
+              });
+              props.dispatch(setActiveFilterButton(null));
+            }}
+          >
+            Since 2010
+          </button>
+          <button
+            className={classNames({
+              [s.quickSelectText]: true,
+              [s.active]: minYear === 2000 && maxYear === currentYear,
+            })}
+            onClick={() => {
+              goToYearFilteredSearchResultPage({
+                qs: props.location.search,
+                history: props.history,
+                min: 2000,
+                max: currentYear,
+                fromBtn: true,
+              });
+              props.dispatch(setActiveFilterButton(null));
+            }}
+          >
+            Since 2000
+          </button>
+        </div>
+        <div className={s.inputBoxWrapper}>
+          <input
+            type="text"
+            placeholder="From year"
+            className={s.yearInput}
+            onKeyDown={handleKeyDown}
+            onChange={e => {
+              const { value } = e.currentTarget;
+              if (!value) {
+                return setMinMaxYears(['', maxYear]);
+              }
+              const year = parseInt(value, 10);
+              if (!isNaN(year)) {
+                setMinMaxYears([year, maxYear]);
+              }
+            }}
+            value={minYear}
+          />
+          <div className={s.hyphen} />
+          <input
+            type="text"
+            placeholder="To year"
+            className={s.yearInput}
+            onKeyDown={handleKeyDown}
+            onChange={e => {
+              const { value } = e.currentTarget;
+              if (!value) {
+                return setMinMaxYears([minYear, '']);
+              }
+              const year = parseInt(value, 10);
+              if (!isNaN(year)) {
+                setMinMaxYears([minYear, year]);
+              }
+            }}
+            value={maxYear}
+          />
+        </div>
+        <div className={s.controlBtnsWrapper}>
+          <button
+            className={s.clearBtn}
+            onClick={() => {
+              setMinMaxYears(['', '']);
+            }}
+          >
+            Clear
+          </button>
+          <button className={s.applyBtn} onClick={handleSubmit}>
+            Apply
+          </button>
+        </div>
+      </Popover>
+    </div>
   );
 });
 

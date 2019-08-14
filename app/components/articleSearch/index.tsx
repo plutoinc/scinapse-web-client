@@ -31,7 +31,7 @@ import ArticleSpinner from '../common/spinner/articleSpinner';
 import { changeSearchQuery } from '../../actions/searchQuery';
 import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
 import ImprovedFooter from '../layouts/improvedFooter';
-import KnowledgeBaseNoti from '../knowledgeBaseNoti';
+import KnowledgeBaseNoti from '../recommendPapersDialog';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &

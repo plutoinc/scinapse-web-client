@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import * as classNames from 'classnames';
 import { isEqual } from 'lodash';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import Popper from '@material-ui/core/Popper';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Popover from '@material-ui/core/Popover';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { setActiveFilterButton } from '../../actions/searchFilter';
 import { ACTION_TYPES, SearchActions } from '../../actions/actionTypes';
@@ -85,67 +84,65 @@ const FOSFilterDropdown: React.FC<
   }
 
   return (
-    <ClickAwayListener
-      onClickAway={() => {
-        if (props.isActive) {
-          handleSubmit();
-        }
-      }}
-    >
-      <div ref={anchorEl}>
-        <FilterButton
-          onClick={() => {
-            if (props.isActive) {
-              props.dispatch(setActiveFilterButton(null));
-            } else {
-              props.dispatch(setActiveFilterButton(FILTER_BUTTON_TYPE.FOS));
-            }
-          }}
-          content={buttonText}
-          isActive={props.isActive}
-          selected={props.selectedFOSIds.length > 0}
-        />
-        <Popper
-          modifiers={{
-            flip: {
-              enabled: false,
-            },
-            preventOverflow: {
-              enabled: false,
-            },
-          }}
-          open={props.isActive}
-          anchorEl={anchorEl.current}
-          placement="bottom-start"
-          disablePortal
-        >
-          <div className={s.dropBoxWrapper}>
-            <div className={s.FOSListWrapper}>
-              <div className={s.listHeader}>
-                <label className={s.FOSLabel}>Field</label>
-                <label className={s.countLabel}>Count</label>
-              </div>
-              {FOSList}
-            </div>
-            <div className={s.controlBtnsWrapper}>
-              <button
-                className={s.clearBtn}
-                onClick={() => {
-                  props.dispatch({
-                    type: ACTION_TYPES.ARTICLE_SEARCH_CLEAR_FOS_FILTER,
-                  });
-                }}
-              >
-                Clear
-              </button>
-              <button className={s.applyBtn} onClick={handleSubmit}>
-                Apply
-              </button>
-            </div>
+    <div ref={anchorEl}>
+      <FilterButton
+        onClick={() => {
+          if (props.isActive) {
+            props.dispatch(setActiveFilterButton(null));
+          } else {
+            props.dispatch(setActiveFilterButton(FILTER_BUTTON_TYPE.FOS));
+          }
+        }}
+        content={buttonText}
+        isActive={props.isActive}
+        selected={props.selectedFOSIds.length > 0}
+      />
+      <Popover
+        onClose={() => {
+          if (props.isActive) {
+            handleSubmit();
+          }
+        }}
+        open={props.isActive}
+        anchorEl={anchorEl.current}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        elevation={0}
+        transitionDuration={150}
+        classes={{
+          paper: s.dropBoxWrapper,
+        }}
+      >
+        <div className={s.FOSListWrapper}>
+          <div className={s.listHeader}>
+            <label className={s.FOSLabel}>Field</label>
+            <label className={s.countLabel}>Count</label>
           </div>
-        </Popper>
-      </div>
-    </ClickAwayListener>
+          {FOSList}
+        </div>
+        <div className={s.controlBtnsWrapper}>
+          <button
+            className={s.clearBtn}
+            onClick={() => {
+              props.dispatch({
+                type: ACTION_TYPES.ARTICLE_SEARCH_CLEAR_FOS_FILTER,
+              });
+            }}
+          >
+            Clear
+          </button>
+          <button className={s.applyBtn} onClick={handleSubmit}>
+            Apply
+          </button>
+        </div>
+      </Popover>
+    </div>
   );
 };
 

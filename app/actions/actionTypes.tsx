@@ -221,8 +221,8 @@ export enum ACTION_TYPES {
   PDF_VIEWER_CLICK_VIEW_MORE_BTN = 'PDF_VIEWER_CLICK_VIEW_MORE_BTN',
   PDF_VIEWER_GET_BEST_PDF_OF_PAPER = 'PDF_VIEWER_GET_BEST_PDF_OF_PAPER',
 
-  KNOWLEDGE_BASE_NOTI_OPEN = 'KNOWLEDGE_BASE_NOTI_OPEN',
-  KNOWLEDGE_BASE_NOTI_CLOSE = 'KNOWLEDGE_BASE_NOTI_CLOSE',
+  RECOMMEND_PAPERS_DIALOG_OPEN_DIALOG = 'RECOMMEND_PAPERS_DIALOG_OPEN_DIALOG',
+  RECOMMEND_PAPERS_DIALOG_CLOSE_DIALOG = 'RECOMMEND_PAPERS_DIALOG_CLOSE_DIALOG',
 }
 
 export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
@@ -1039,12 +1039,12 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.SEARCH_QUERY_CHANGE_QUERY, payload });
   },
 
-  openKnowledgeBaseNoti(payload: { actionArea: string }) {
-    return createAction({ type: ACTION_TYPES.KNOWLEDGE_BASE_NOTI_OPEN, payload });
+  openRecommendPapersDialog(payload: { actionArea: string }) {
+    return createAction({ type: ACTION_TYPES.RECOMMEND_PAPERS_DIALOG_OPEN_DIALOG, payload });
   },
 
-  closeKnowledgeBaseNoti() {
-    return createAction({ type: ACTION_TYPES.KNOWLEDGE_BASE_NOTI_CLOSE });
+  closeRecommendPapersDialog() {
+    return createAction({ type: ACTION_TYPES.RECOMMEND_PAPERS_DIALOG_CLOSE_DIALOG });
   },
 
   fetchLastFullTextRequestedDate(payload: { requestedAt: string | null }) {

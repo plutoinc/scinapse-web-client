@@ -61,8 +61,9 @@
 }
 
 .dialogFooter {
-  position: relative;
   margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
 
   .newCollectionButtonWrapper {
     display: flex;
@@ -125,12 +126,6 @@
         color: $black0;
       }
     }
-  }
-
-  .rightBox {
-    position: absolute;
-    top: 0;
-    right: 0;
   }
 
   .cancelButton {
@@ -203,5 +198,44 @@
 
   .formControl + .formControl {
     margin-top: 8px;
+  }
+}
+
+.rightBox {
+  display: flex;
+}
+
+@media (max-width: $tablet_width) {
+  .dialogWrapper {
+    max-width: 504px;
+    width: 100%;
+    min-height: 446px;
+    height: 100%;
+    padding: 0 16px 16px 16px;
+  }
+
+  .dialogHeader {
+    font-size: 18px;
+  }
+
+  .dialogFooter {
+    flex-direction: column;
+
+    .newCollectionButtonWrapper {
+      width: 100%;
+    }
+
+    .rightBox {
+      margin-top: 8px;
+    }
+
+    .cancelButton {
+      width: 50%;
+      margin: 0;
+    }
+
+    .nextButton {
+      width: 50%;
+    }
   }
 }

@@ -1,6 +1,7 @@
 .authorListWrapper {
   position: relative;
   margin-bottom: 12px;
+  display: flex;
 
   &:before {
     content: '';

@@ -59,7 +59,7 @@ const SignBanner: React.FC<SignBannerProps> = props => {
 
   if (isLoading) {
     return (
-      <div className={styles.bannerContainer}>
+      <div className={styles.bannerLoadingContainer}>
         <div className={styles.loadingContainer}>
           <CircularProgress size={100} thickness={2} style={{ color: '#d8dde7' }} />
         </div>
