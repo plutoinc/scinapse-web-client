@@ -120,7 +120,9 @@ const FOSFilterDropdown: React.FC<
                 setIsHintOpened(false);
               }}
             >
-              <div className={s.hint}>Search journal or conference here</div>
+              <div className={s.hintWrapper}>
+                <div className={s.hint}>Search other fields here</div>
+              </div>
             </ClickAwayListener>
           )}
         </div>
@@ -131,6 +133,19 @@ const FOSFilterDropdown: React.FC<
               <label className={s.countLabel}>Count</label>
             </div>
             {FOSList}
+            <div className={s.searchInfo}>
+              <span>{`Couldn't find any fields? `}</span>
+              <button
+                onClick={() => {
+                  if (!inputEl.current) return;
+                  setIsHintOpened(true);
+                  inputEl.current.focus();
+                }}
+                className={s.searchFocusButton}
+              >
+                Search more fields!
+              </button>
+            </div>
           </div>
           <div className={s.controlBtnsWrapper}>
             <button

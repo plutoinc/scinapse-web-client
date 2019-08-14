@@ -22,6 +22,9 @@
   background-color: white;
   padding: 24px;
   margin-top: 8px;
+  // below overflow attributes are needed for override default Material-ui's Paper component behavior
+  overflow-x: visible;
+  overflow-y: visible;
 }
 
 .FOSItemBtn {
@@ -85,7 +88,7 @@
 }
 
 .FOSListWrapper {
-  max-height: 295px;
+  max-height: 286px;
   overflow-y: auto;
 }
 
@@ -114,4 +117,57 @@
   @extend %column-label;
   margin-right: 6px;
   text-align: right;
+}
+
+.searchInfo {
+  margin: 8px 0;
+  font-size: 14px;
+  color: $black1;
+  font-weight: 500;
+  text-align: center;
+  padding: 6px;
+  white-space: pre;
+}
+
+.searchFocusButton {
+  display: inline;
+  cursor: pointer;
+  text-decoration: underline;
+  color: inherit;
+  font-weight: inherit;
+}
+
+.hintWrapper {
+  position: absolute;
+  top: -41px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.hint {
+  position: relative;
+  overflow: unset;
+  border-radius: 20px;
+  color: white;
+  background-color: $black1;
+  font-size: 14px;
+  padding: 8px 20px;
+  animation-duration: 1s;
+  animation-name: wave;
+  animation-iteration-count: infinite;
+
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: -7px;
+    left: calc(50% - 3.5px);
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid $black1;
+    z-index: 2;
+  }
 }
