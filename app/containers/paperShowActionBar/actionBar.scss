@@ -106,7 +106,7 @@
 }
 
 // Mobile (0~768)
-@media (max-width: $mobile-width) {
+@media (max-width: $mobile_width) {
   .leftSide {
     flex-direction: column;
   }
