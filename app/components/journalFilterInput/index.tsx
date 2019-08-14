@@ -17,15 +17,15 @@ interface JournalFilterInputProps {
   onSubmit: (journals: AggregationJournal[]) => void;
 }
 
-const mapJournalSuggestionToAggregationJournal = (j: JournalSuggestion): AggregationJournal => {
+const mapJournalSuggestionToAggregationJournal = (journal: JournalSuggestion): AggregationJournal => {
   return {
-    id: j.journalId,
-    title: j.keyword,
-    abbrev: j.abbrev,
-    sci: j.sci,
-    jc: j.jc,
+    id: journal.journalId,
+    title: journal.keyword,
+    abbrev: journal.abbrev,
+    sci: journal.sci,
+    jc: journal.jc,
     docCount: 0,
-    impactFactor: j.impactFactor,
+    impactFactor: journal.impactFactor,
     missingDocCount: true,
   };
 };
