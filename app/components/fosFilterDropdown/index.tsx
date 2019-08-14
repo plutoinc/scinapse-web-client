@@ -1,8 +1,8 @@
 import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import * as classNames from 'classnames';
 import { isEqual } from 'lodash';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Popover from '@material-ui/core/Popover';
 import { withStyles } from '../../helpers/withStylesHelper';
@@ -12,8 +12,9 @@ import FilterButton, { FILTER_BUTTON_TYPE } from '../filterButton';
 import { AppState } from '../../reducers';
 import { trackSelectFilter } from '../../helpers/trackSelectFilter';
 import makeNewFilterLink from '../../helpers/makeNewFilterLink';
+import FOSFilterInput from '../fosFilterInput';
+import FOSItem from './fosItem';
 import { AggregationFos } from '../../model/aggregation';
-import formatNumber from '../../helpers/formatNumber';
 
 const s = require('./fosFilterDropdown.scss');
 
@@ -21,33 +22,11 @@ interface FOSFilterDropdownProps {
   dispatch: Dispatch<SearchActions>;
 }
 
-interface FOSItemProps {
-  FOS: AggregationFos;
-  selected: boolean;
-  onClick: () => void;
-}
-
-const FOSItem: React.FC<FOSItemProps> = ({ FOS, onClick, selected }) => {
-  return (
-    <button
-      onClick={onClick}
-      className={classNames({
-        [s.FOSItemBtn]: true,
-        [s.selected]: selected,
-      })}
-    >
-      <div className={s.fosNameWrapper}>
-        <input type="checkbox" className={s.checkbox} checked={selected} readOnly />
-        <span className={s.fosName}>{FOS.name}</span>
-      </div>
-      <span className={s.docCount}>{`(${formatNumber(FOS.docCount)})`}</span>
-    </button>
-  );
-};
-
 const FOSFilterDropdown: React.FC<
   FOSFilterDropdownProps & ReturnType<typeof mapStateToProps> & RouteComponentProps
 > = props => {
+  const [isHintOpened, setIsHintOpened] = React.useState(false);
+  const inputEl = React.useRef<HTMLInputElement | null>(null);
   const anchorEl = React.useRef(null);
   const lastSelectedFOS = React.useRef(props.selectedFOSIds);
   const selectChanged = !isEqual(props.selectedFOSIds, lastSelectedFOS.current);
@@ -119,27 +98,46 @@ const FOSFilterDropdown: React.FC<
           paper: s.dropBoxWrapper,
         }}
       >
-        <div className={s.FOSListWrapper}>
-          <div className={s.listHeader}>
-            <label className={s.FOSLabel}>Field</label>
-            <label className={s.countLabel}>Count</label>
-          </div>
-          {FOSList}
-        </div>
-        <div className={s.controlBtnsWrapper}>
-          <button
-            className={s.clearBtn}
-            onClick={() => {
-              props.dispatch({
-                type: ACTION_TYPES.ARTICLE_SEARCH_CLEAR_FOS_FILTER,
-              });
+        <div className={s.filterWrapper}>
+          <FOSFilterInput
+            forwardedRef={inputEl}
+            onSubmit={(FOSList: AggregationFos[]) => {
+              props.dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_ADD_FOS_FILTER_ITEMS, payload: { FOSList } });
             }}
-          >
-            Clear
-          </button>
-          <button className={s.applyBtn} onClick={handleSubmit}>
-            Apply
-          </button>
+          />
+          {isHintOpened && (
+            <ClickAwayListener
+              onClickAway={() => {
+                setIsHintOpened(false);
+              }}
+            >
+              <div className={s.hint}>Search journal or conference here</div>
+            </ClickAwayListener>
+          )}
+        </div>
+        <div className={s.content}>
+          <div className={s.FOSListWrapper}>
+            <div className={s.listHeader}>
+              <label className={s.FOSLabel}>Field</label>
+              <label className={s.countLabel}>Count</label>
+            </div>
+            {FOSList}
+          </div>
+          <div className={s.controlBtnsWrapper}>
+            <button
+              className={s.clearBtn}
+              onClick={() => {
+                props.dispatch({
+                  type: ACTION_TYPES.ARTICLE_SEARCH_CLEAR_FOS_FILTER,
+                });
+              }}
+            >
+              Clear
+            </button>
+            <button className={s.applyBtn} onClick={handleSubmit}>
+              Apply
+            </button>
+          </div>
         </div>
       </Popover>
     </div>

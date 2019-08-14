@@ -14,7 +14,7 @@ import { SignUpConversionExpTicketContext } from '../constants/abTest';
 import { SearchResult } from '../api/search';
 import { FILTER_BUTTON_TYPE } from '../components/filterButton';
 import { FilterObject } from '../helpers/searchQueryManager';
-import { AggregationJournal } from '../model/aggregation';
+import { AggregationJournal, AggregationFos } from '../model/aggregation';
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
 import { Member } from '../model/member';
 
@@ -139,6 +139,7 @@ export enum ACTION_TYPES {
   ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER = 'ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER',
   ARTICLE_SEARCH_ADD_JOURNAL_FILTER_ITEMS = 'ARTICLE_SEARCH_ADD_JOURNAL_FILTER_ITEMS',
   ARTICLE_SEARCH_CLEAR_FOS_FILTER = 'ARTICLE_SEARCH_CLEAR_FOS_FILTER',
+  ARTICLE_SEARCH_ADD_FOS_FILTER_ITEMS = 'ARTICLE_SEARCH_ADD_FOS_FILTER_ITEMS',
   ARTICLE_SEARCH_DISABLE_AUTO_YEAR_FILTER = 'ARTICLE_SEARCH_DISABLE_AUTO_YEAR_FILTER',
 
   AUTHOR_SHOW_START_TO_LOAD_DATA_FOR_PAGE = 'AUTHOR_SHOW_START_TO_LOAD_DATA_FOR_PAGE',
@@ -1102,6 +1103,13 @@ interface AddJournalFilterItems {
   };
 }
 
+interface AddFOSFilterItems {
+  type: ACTION_TYPES.ARTICLE_SEARCH_ADD_FOS_FILTER_ITEMS;
+  payload: {
+    FOSList: AggregationFos[];
+  };
+}
+
 interface DisableAutoYearFilter {
   type: ACTION_TYPES.ARTICLE_SEARCH_DISABLE_AUTO_YEAR_FILTER;
 }
@@ -1131,6 +1139,7 @@ export type SearchActions =
   | ClearJournalFilterAction
   | ClearFOSFilterAction
   | AddJournalFilterItems
-  | DisableAutoYearFilter;
+  | DisableAutoYearFilter
+  | AddFOSFilterItems;
 
 export type Actions = ActionUnion<typeof ActionCreators>;

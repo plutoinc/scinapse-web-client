@@ -4,6 +4,17 @@
   color: $black0;
 }
 
+.filterWrapper {
+  position: relative;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 295px;
+}
+
 .dropBoxWrapper {
   width: 486px;
   border-radius: 4px;
@@ -30,6 +41,16 @@
   &.selected {
     .fosName {
       color: $main_blue1;
+    }
+  }
+
+  &.highlighted {
+    background-color: $main_blue_light1;
+  }
+
+  &.searchResult {
+    &:hover {
+      background-color: $main_blue_light1;
     }
   }
 

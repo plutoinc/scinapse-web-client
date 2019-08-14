@@ -49,9 +49,8 @@ const JournalFilterDropdown: React.FC<
         key={journal.id}
         journal={journal}
         checked={props.selectedJournalIds.includes(journal.id)}
-        isHighlight={false}
-        fromSearch={journal.fromSearch}
         onClick={handleClickJournalItem}
+        isHighlight={false}
       />
     );
   });

@@ -13,7 +13,6 @@ interface JournalItemProps {
   isHighlight: boolean;
   onClick: (journalId: number) => void;
   isSearchResult?: boolean;
-  fromSearch?: boolean;
 }
 
 const JournalItem: React.FC<JournalItemProps> = React.memo(props => {
@@ -47,7 +46,7 @@ const JournalItem: React.FC<JournalItemProps> = React.memo(props => {
   }
 
   let docCount = null;
-  if (!props.isSearchResult && !props.fromSearch) {
+  if (!props.isSearchResult && !journal.missingDocCount) {
     docCount = <span className={s.countBox}>{`(${formatNumber(journal.docCount)})`}</span>;
   }
 
