@@ -27,7 +27,7 @@ function setActionCount(count: number): number {
 
 export function addPaperToRecommendation(isLoggedIn: boolean, paperId: number, actionArea: string) {
   return async (dispatch: Dispatch<any>) => {
-    const doRandomizedRec = getUserGroupName(RANDOM_RECOMMENDATION_EXPERIMENT) === 'random';
+    const randomizeRec = getUserGroupName(RANDOM_RECOMMENDATION_EXPERIMENT) === 'random';
     const prevActionCount = store.get(BASED_ACTIVITY_COUNT_STORE_KEY);
     let newPaperIds;
 
@@ -49,7 +49,7 @@ export function addPaperToRecommendation(isLoggedIn: boolean, paperId: number, a
       case 5:
       case 13: {
         try {
-          const recommendPapers = await RecommendationAPI.getPapersFromUserAction(doRandomizedRec);
+          const recommendPapers = await RecommendationAPI.getPapersFromUserAction(randomizeRec);
 
           if (!recommendPapers || recommendPapers.length === 0) return;
 

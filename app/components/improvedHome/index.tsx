@@ -113,7 +113,7 @@ const ScinapseFigureContent: React.FC<{ shouldShow: boolean; papersFoundCount: n
 
 const ImprovedHome: React.FC<Props> = props => {
   const { currentUser } = props;
-  const [doRandomizedRec, setDoRandomizedRec] = React.useState(false);
+  const [randomizeRec, setRandomizeRec] = React.useState(false);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
   const [basedOnActivityPapers, setBasedOnActivityPapers] = React.useState<Paper[]>([]);
   const [basedOnCollectionPapers, setBasedOnCollectionPapers] = React.useState<BasedOnCollectionPapersParams>();
@@ -122,7 +122,7 @@ const ImprovedHome: React.FC<Props> = props => {
   const cancelToken = React.useRef(axios.CancelToken.source());
 
   React.useEffect(() => {
-    setDoRandomizedRec(getUserGroupName(RANDOM_RECOMMENDATION_EXPERIMENT) === 'random');
+    setRandomizeRec(getUserGroupName(RANDOM_RECOMMENDATION_EXPERIMENT) === 'random');
     HomeAPI.getPapersFoundCount().then(res => {
       setPapersFoundCount(res.data.content);
     });
@@ -136,7 +136,7 @@ const ImprovedHome: React.FC<Props> = props => {
   const getBasedOnActivityPapers = React.useCallback(
     () => {
       setIsLoadingBasedOnActivityPapers(true);
-      RecommendationAPI.getPapersFromUserAction(doRandomizedRec)
+      RecommendationAPI.getPapersFromUserAction(randomizeRec)
         .then(res => {
           setBasedOnActivityPapers(res);
           setIsLoadingBasedOnActivityPapers(false);
@@ -146,7 +146,7 @@ const ImprovedHome: React.FC<Props> = props => {
           setIsLoadingBasedOnActivityPapers(false);
         });
     },
-    [doRandomizedRec]
+    [randomizeRec]
   );
 
   const getBasedOnCollectionPapers = React.useCallback(() => {
@@ -217,7 +217,7 @@ const ImprovedHome: React.FC<Props> = props => {
           isLoggingIn={currentUser.isLoggingIn}
           isLoadingActivityPapers={isLoadingBasedOnActivityPapers}
           isLoadingCollectionPapers={isLoadingBasedOnCollectionPapers}
-          randomRec={doRandomizedRec}
+          doRandomizeRec={randomizeRec}
           basedOnActivityPapers={basedOnActivityPapers}
           basedOnCollectionPapers={basedOnCollectionPapers}
           handleGetBasedOnActivityPapers={getBasedOnActivityPapers}

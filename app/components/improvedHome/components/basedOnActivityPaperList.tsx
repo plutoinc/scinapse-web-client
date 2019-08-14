@@ -14,7 +14,7 @@ const BASED_ON_ACTIVITY_PAPER_COUNT = 5;
 
 interface BasedOnActivityPaperListProps {
   isLoading: boolean;
-  randomRec: boolean;
+  doRandomizeRec: boolean;
   refreshBasedOnActivityPapers: () => void;
   papers: Paper[];
 }
@@ -44,7 +44,7 @@ const ActivityPaperItem: React.FC<{ paper: Paper }> = ({ paper }) => {
 };
 
 const BaseOnActivityPaperList: React.FC<BasedOnActivityPaperListProps> = props => {
-  const { isLoading, randomRec, papers, refreshBasedOnActivityPapers } = props;
+  const { isLoading, doRandomizeRec, papers, refreshBasedOnActivityPapers } = props;
   const [isPaperExpanding, setIsPaperExpanding] = React.useState(false);
 
   if (!papers) return null;
@@ -55,10 +55,10 @@ const BaseOnActivityPaperList: React.FC<BasedOnActivityPaperListProps> = props =
 
   if (isLoading) return <>{skeletonPaperItems}</>;
 
-  const targetPaper = randomRec || isPaperExpanding ? papers : papers.slice(0, BASED_ON_ACTIVITY_PAPER_COUNT);
+  const targetPaper = doRandomizeRec || isPaperExpanding ? papers : papers.slice(0, BASED_ON_ACTIVITY_PAPER_COUNT);
 
   const moreButton =
-    papers.length <= BASED_ON_ACTIVITY_PAPER_COUNT || randomRec ? null : (
+    papers.length <= BASED_ON_ACTIVITY_PAPER_COUNT || doRandomizeRec ? null : (
       <div
         onClick={() => {
           ActionTicketManager.trackTicket({
@@ -83,8 +83,20 @@ const BaseOnActivityPaperList: React.FC<BasedOnActivityPaperListProps> = props =
       </div>
     );
 
-  const refreshButton = randomRec && (
-    <div className={styles.refreshBottomButton} onClick={refreshBasedOnActivityPapers}>
+  const refreshButton = doRandomizeRec && (
+    <div
+      className={styles.refreshBottomButton}
+      onClick={() => {
+        refreshBasedOnActivityPapers();
+        ActionTicketManager.trackTicket({
+          pageType: 'home',
+          actionType: 'fire',
+          actionArea: 'basedOnActivityPaperList',
+          actionTag: 'clickRefreshButton',
+          actionLabel: null,
+        });
+      }}
+    >
       <Icon className={styles.refreshIcon} icon="RELOAD" />REFRESH
     </div>
   );

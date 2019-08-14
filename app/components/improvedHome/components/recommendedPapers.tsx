@@ -7,6 +7,7 @@ import { BasedOnCollectionPapersParams } from '../../../api/recommendation';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import EnvChecker from '../../../helpers/envChecker';
 import Icon from '../../../icons';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
 const styles = require('./recommendedPapers.scss');
 const NAVBAR_HEIGHT = 64;
 
@@ -15,7 +16,7 @@ interface RecommendedPapersProps {
   isLoggingIn: boolean;
   isLoadingActivityPapers: boolean;
   isLoadingCollectionPapers: boolean;
-  randomRec: boolean;
+  doRandomizeRec: boolean;
   basedOnActivityPapers: Paper[];
   basedOnCollectionPapers: BasedOnCollectionPapersParams | undefined;
   handleGetBasedOnActivityPapers: () => void;
@@ -29,7 +30,7 @@ const RecommendedPapers: React.FC<Props> = props => {
     basedOnActivityPapers,
     basedOnCollectionPapers,
     handleGetBasedOnActivityPapers,
-    randomRec,
+    doRandomizeRec,
     shouldShow,
     isLoggingIn,
     location,
@@ -59,8 +60,20 @@ const RecommendedPapers: React.FC<Props> = props => {
           <div className={styles.title}>Recommended papers for you</div>
           <div className={styles.subTitle}>
             BASED ON YOUR SEARCH ACTIVITY
-            {randomRec && (
-              <div className={styles.refreshButton} onClick={handleGetBasedOnActivityPapers}>
+            {doRandomizeRec && (
+              <div
+                className={styles.refreshButton}
+                onClick={() => {
+                  handleGetBasedOnActivityPapers();
+                  ActionTicketManager.trackTicket({
+                    pageType: 'home',
+                    actionType: 'fire',
+                    actionArea: 'basedOnActivityPaperList',
+                    actionTag: 'clickRefreshButton',
+                    actionLabel: null,
+                  });
+                }}
+              >
                 <Icon className={styles.refreshIcon} icon="RELOAD" />REFRESH
               </div>
             )}
@@ -71,7 +84,7 @@ const RecommendedPapers: React.FC<Props> = props => {
             <BaseOnActivityPaperList
               isLoading={isLoadingActivityPapers || isLoggingIn}
               papers={basedOnActivityPapers}
-              randomRec={randomRec}
+              doRandomizeRec={doRandomizeRec}
               refreshBasedOnActivityPapers={handleGetBasedOnActivityPapers}
             />
           </div>
