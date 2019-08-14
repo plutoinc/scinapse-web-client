@@ -20,6 +20,8 @@ export interface BaseSearchParams {
 
 export interface PaperSearchParams extends BaseSearchParams {
   filter: string;
+  weightedCitation: boolean;
+  strictSort: boolean;
 }
 
 export interface MatchEntityAuthor extends BasePaperAuthor {
@@ -58,7 +60,16 @@ export interface AuthorSearchResult extends PaginationResponseV2<Author[]> {
 }
 
 class SearchAPI extends PlutoAxios {
-  public async search({ query, sort, filter, page = 0, cancelToken, detectYear }: PaperSearchParams) {
+  public async search({
+    query,
+    sort,
+    filter,
+    page = 0,
+    cancelToken,
+    detectYear,
+    weightedCitation,
+    strictSort,
+  }: PaperSearchParams) {
     const res = await this.get('/search', {
       params: {
         q: query,
@@ -66,6 +77,8 @@ class SearchAPI extends PlutoAxios {
         filter,
         page,
         yd: detectYear,
+        wc: weightedCitation,
+        ss: strictSort,
       },
       cancelToken,
     });

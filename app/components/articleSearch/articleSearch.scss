@@ -161,6 +161,7 @@
 // content-like width
 @media (max-width: 1200px) {
   .articleSearchContainer {
+    padding: 0 16px 16px 16px;
     justify-content: center;
   }
 
@@ -174,7 +175,7 @@
 }
 
 // Mobile
-@media (max-width: $mobile-width) {
+@media (max-width: $mobile_width) {
   .rootWrapper {
     padding-bottom: 332px;
   }

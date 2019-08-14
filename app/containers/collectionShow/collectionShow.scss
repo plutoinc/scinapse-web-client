@@ -196,7 +196,7 @@ $semi_full_width: 997px;
 }
 
 // Tablet
-@media (max-width: $tablet-width) {
+@media (max-width: $tablet_width) {
   .headSection {
     .container {
       margin: 0 48px;
@@ -214,7 +214,7 @@ $semi_full_width: 997px;
 }
 
 // Mobile
-@media (max-width: $mobile-width) {
+@media (max-width: $mobile_width) {
   .rightBox {
     display: none;
   }
