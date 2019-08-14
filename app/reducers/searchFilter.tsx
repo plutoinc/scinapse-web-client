@@ -114,6 +114,16 @@ export function reducer(state = SEARCH_FILTER_INITIAL_STATE, action: SearchActio
       };
     }
 
+    case ACTION_TYPES.ARTICLE_SEARCH_ADD_FOS_FILTER_ITEMS: {
+      const FOSIds = action.payload.FOSList.map(FOS => FOS.id);
+
+      return {
+        ...state,
+        selectedFOSIds: uniq([...FOSIds, ...state.selectedFOSIds]),
+        fosList: uniqBy([...action.payload.FOSList, ...state.fosList], FOS => FOS.id),
+      };
+    }
+
     default:
       return state;
   }

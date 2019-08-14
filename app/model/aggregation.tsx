@@ -3,8 +3,11 @@ export interface AggregationJournal {
   title: string;
   docCount: number;
   impactFactor: number;
+  abbrev: string | null;
+  sci: boolean;
+  jc: 'JOURNAL' | 'CONFERENCE';
   // added by client
-  fromSearch?: boolean;
+  missingDocCount?: boolean;
 }
 
 export interface AggregationFos {
@@ -12,6 +15,8 @@ export interface AggregationFos {
   name: string;
   level: number;
   docCount: number;
+  // added by client
+  missingDocCount?: boolean;
 }
 
 export interface Year {

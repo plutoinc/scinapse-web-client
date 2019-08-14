@@ -19,7 +19,7 @@
   }
 
   &.highlighted {
-    background-color: $gray30;
+    background-color: $main_blue_light1;
   }
 
   &.searchResult {
@@ -34,13 +34,13 @@
 
   display: inline-block;
   vertical-align: top;
-  width: 303px;
+  max-width: 244px;
 }
 
 .ifLabel {
   position: absolute;
-  display: inline-block;
-  vertical-align: top;
+  display: flex;
+  align-items: center;
   right: 78px;
   opacity: 0.9;
   font-size: 14px;
@@ -81,5 +81,11 @@
 }
 
 .checkbox {
+  margin-right: 8px;
+}
+
+.journalBadge {
+  display: flex;
+  align-items: center;
   margin-right: 8px;
 }

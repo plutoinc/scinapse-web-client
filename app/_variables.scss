@@ -261,3 +261,15 @@ $s3_url: 'https://dd2gn9pwu61vr.cloudfront.net';
 :export {
   navbarHeight: $navbar_height;
 }
+// animations
+@keyframes wave {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -3px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}

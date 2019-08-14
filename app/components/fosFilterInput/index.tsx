@@ -4,40 +4,37 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import * as classNames from 'classnames';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { useDebouncedAsyncFetch } from '../../hooks/debouncedFetchAPIHook';
-import CompletionAPI, { JournalSuggestion } from '../../api/completion';
+import CompletionAPI, { FOSSuggestion } from '../../api/completion';
 import Icon from '../../icons';
-import reducer, { journalFilterInputInitialState } from './reducer';
+import reducer, { FOSFilterInputInitialState } from './reducer';
 import { handleInputKeydown } from '../common/InputWithSuggestionList/helpers/handleInputKeydown';
-import JournalItem from '../journalFilterItem';
-import { AggregationJournal } from '../../model/aggregation';
-const s = require('./journalFilterInput.scss');
+import { AggregationFos } from '../../model/aggregation';
+import FOSItem from '../fosFilterDropdown/fosItem';
+const s = require('./fosFilterInput.scss');
 
-interface JournalFilterInputProps {
+interface FOSFilterInputProps {
   forwardedRef: React.MutableRefObject<HTMLInputElement | null>;
-  onSubmit: (journals: AggregationJournal[]) => void;
+  onSubmit: (FOSList: AggregationFos[]) => void;
 }
 
-const mapJournalSuggestionToAggregationJournal = (journal: JournalSuggestion): AggregationJournal => {
+const mapFOSSuggestionToAggregationFOS = (FOS: FOSSuggestion): AggregationFos => {
   return {
-    id: journal.journalId,
-    title: journal.keyword,
-    abbrev: journal.abbrev,
-    sci: journal.sci,
-    jc: journal.jc,
+    id: FOS.fosId,
+    name: FOS.keyword,
     docCount: 0,
-    impactFactor: journal.impactFactor,
     missingDocCount: true,
+    level: 1,
   };
 };
 
-const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
+const FOSFilterInput: React.FC<FOSFilterInputProps> = props => {
   const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
-  const [state, dispatch] = React.useReducer(reducer, journalFilterInputInitialState);
+  const [state, dispatch] = React.useReducer(reducer, FOSFilterInputInitialState);
 
-  const { data: journalSuggestions, setParams: setKeyword } = useDebouncedAsyncFetch<string, JournalSuggestion[]>({
+  const { data: FOSSuggestions, setParams: setKeyword } = useDebouncedAsyncFetch<string, FOSSuggestion[]>({
     initialParams: '',
     fetchFunc: async (q: string) => {
-      const res = await CompletionAPI.fetchJournalSuggestion(q, cancelTokenSource.current.token);
+      const res = await CompletionAPI.fetchFOSSuggestion(q, cancelTokenSource.current.token);
       return res;
     },
     validateFunc: (query: string) => {
@@ -47,22 +44,24 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
   });
 
   const handleSubmit = () => {
-    if (!journalSuggestions) {
+    if (!FOSSuggestions) {
       return dispatch({ type: 'CLOSE_BOX' });
     }
 
-    const journals: AggregationJournal[] = journalSuggestions
-      .filter(j => state.selectedJournalIds.includes(j.journalId))
-      .map(mapJournalSuggestionToAggregationJournal);
-    props.onSubmit(journals);
+    const FOSList: AggregationFos[] = FOSSuggestions.filter(FOS => state.selectedFOSIds.includes(FOS.fosId)).map(
+      mapFOSSuggestionToAggregationFOS
+    );
+
+    props.onSubmit(FOSList);
+
     dispatch({ type: 'CLOSE_BOX' });
   };
 
-  const handleSelectItem = React.useCallback((journalId: number) => {
+  const handleSelectItem = React.useCallback((FOSId: number) => {
     dispatch({
-      type: 'TOGGLE_JOURNAL',
+      type: 'TOGGLE_FOS',
       payload: {
-        journalId,
+        FOSId,
       },
     });
   }, []);
@@ -78,22 +77,22 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
     [state.genuineInputValue]
   );
 
-  let journalList = null;
-  if (journalSuggestions && journalSuggestions.length > 0) {
-    journalList = journalSuggestions.map((journal, i) => {
+  let FOSList = null;
+  if (FOSSuggestions && FOSSuggestions.length > 0) {
+    FOSList = FOSSuggestions.map((FOS, i) => {
       return (
-        <JournalItem
-          key={journal.journalId}
-          journal={mapJournalSuggestionToAggregationJournal(journal)}
-          onClick={handleSelectItem}
-          checked={state.selectedJournalIds.includes(journal.journalId)}
+        <FOSItem
+          key={FOS.fosId}
+          FOS={mapFOSSuggestionToAggregationFOS(FOS)}
+          selected={state.selectedFOSIds.includes(FOS.fosId)}
           isHighlight={i === state.highlightIdx}
+          onClick={handleSelectItem}
           isSearchResult
         />
       );
     });
   }
-  const shouldShowList = state.isOpen && journalList && journalList.length > 0;
+  const shouldShowList = state.isOpen && FOSList && FOSList.length > 0;
 
   return (
     <ClickAwayListener
@@ -103,30 +102,30 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
         }
       }}
     >
-      <div className={classNames({ [s.wrapper]: true, [s.listOpened]: state.isOpen && !!journalList })}>
+      <div className={classNames({ [s.wrapper]: true, [s.listOpened]: state.isOpen && !!FOSList })}>
         <div className={s.inputWrapper}>
           <Icon icon="SEARCH_ICON" className={s.searchIcon} />
           <input
             ref={props.forwardedRef}
             value={state.inputValue}
             onKeyDown={e => {
-              if (journalSuggestions && journalSuggestions.length > 0) {
-                handleInputKeydown<JournalSuggestion>({
+              if (FOSSuggestions && FOSSuggestions.length > 0) {
+                handleInputKeydown<FOSSuggestion>({
                   e,
-                  list: journalSuggestions || [],
+                  list: FOSSuggestions || [],
                   currentIdx: state.highlightIdx,
                   onMove: i => {
                     dispatch({
                       type: 'ARROW_KEYDOWN',
                       payload: {
                         targetIndex: i,
-                        inputValue: journalSuggestions[i] ? journalSuggestions[i].keyword : state.genuineInputValue,
+                        inputValue: FOSSuggestions[i] ? FOSSuggestions[i].keyword : state.genuineInputValue,
                       },
                     });
                   },
                   onSelect: i => {
-                    if (i > -1 && journalSuggestions[i]) {
-                      handleSelectItem(journalSuggestions[i].journalId);
+                    if (i > -1 && FOSSuggestions[i]) {
+                      handleSelectItem(FOSSuggestions[i].fosId);
                     }
                   },
                 });
@@ -139,7 +138,7 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
               const { value } = e.currentTarget;
               dispatch({ type: 'CHANGE_INPUT', payload: { inputValue: value } });
             }}
-            placeholder="Search journal or conference"
+            placeholder="Search other topics"
             className={classNames({
               [s.input]: true,
               [s.listOpened]: shouldShowList,
@@ -148,7 +147,7 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
         </div>
         {shouldShowList && (
           <div className={s.listWrapper}>
-            {journalList}
+            {FOSList}
             <div className={s.controlBtnsWrapper}>
               <button
                 className={s.clearBtn}
@@ -169,4 +168,4 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
   );
 };
 
-export default withStyles<typeof JournalFilterInput>(s)(JournalFilterInput);
+export default withStyles<typeof FOSFilterInput>(s)(FOSFilterInput);
