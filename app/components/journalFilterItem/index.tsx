@@ -5,6 +5,8 @@ import Icon from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
 import formatNumber from '../../helpers/formatNumber';
 import { AggregationJournal } from '../../model/aggregation';
+import JournalBadge from '../journalBadge';
+import { Link } from 'react-router-dom';
 
 const s = require('./journalFilterItem.scss');
 interface JournalItemProps {
@@ -14,6 +16,8 @@ interface JournalItemProps {
   onClick: (journalId: number) => void;
   isSearchResult?: boolean;
 }
+
+const ImpactFactor: React.FC<{ IF: number }> = () => {};
 
 const JournalItem: React.FC<JournalItemProps> = React.memo(props => {
   const { journal } = props;
@@ -27,12 +31,13 @@ const JournalItem: React.FC<JournalItemProps> = React.memo(props => {
           [s.noDocCount]: props.isSearchResult,
         })}
       >
+        {journal.sci && <JournalBadge text="SCI" labelClassName={s.journalBadge} />}
         <Tooltip
-          disableFocusListener={true}
-          disableTouchListener={true}
           title="Impact Factor"
           placement="top"
           classes={{ tooltip: s.arrowBottomTooltip }}
+          disableFocusListener
+          disableTouchListener
         >
           <span>
             <Icon className={s.ifIconWrapper} icon="IMPACT_FACTOR" />
