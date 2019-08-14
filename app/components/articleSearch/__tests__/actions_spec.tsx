@@ -79,6 +79,8 @@ describe('articleSearch actions', () => {
         filter: '',
         cancelToken: axios.CancelToken.source().token,
         sort: mockSort,
+        weightedCitation: true,
+        strictSort: true,
       };
       await store.dispatch(Actions.searchPapers(mockParams));
       const actions = store.getActions();

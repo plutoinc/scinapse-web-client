@@ -16,12 +16,12 @@ export interface BaseSearchParams {
   page?: number;
   cancelToken?: CancelToken;
   detectYear?: boolean;
-  weightedCitation: boolean;
-  strictSort: boolean;
 }
 
 export interface PaperSearchParams extends BaseSearchParams {
   filter: string;
+  weightedCitation: boolean;
+  strictSort: boolean;
 }
 
 export interface MatchEntityAuthor extends BasePaperAuthor {
