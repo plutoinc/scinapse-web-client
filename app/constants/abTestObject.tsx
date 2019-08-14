@@ -1,5 +1,10 @@
 import { Test } from './abTest';
-import { DUMMY_TEST, QUERY_LOVER_EXPERIMENT, WEIGHTED_CITATION_EXPERIMENT } from './abTestGlobalValue';
+import {
+  DUMMY_TEST,
+  QUERY_LOVER_EXPERIMENT,
+  WEIGHTED_CITATION_EXPERIMENT,
+  STRICT_SORT_EXPERIMENT,
+} from './abTestGlobalValue';
 
 export const queryLover: Test = {
   name: QUERY_LOVER_EXPERIMENT,
@@ -14,4 +19,9 @@ export const dummy: Test = {
 export const weightedCitation: Test = {
   name: WEIGHTED_CITATION_EXPERIMENT,
   userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'wc', weight: 3 }],
+};
+
+export const strictSort: Test = {
+  name: STRICT_SORT_EXPERIMENT,
+  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'ss', weight: 3 }],
 };

@@ -10,6 +10,7 @@ export interface SearchPapersParams {
   cancelToken?: CancelToken;
   detectYear?: boolean;
   weightedCitation?: boolean;
+  strictSort?: boolean;
 }
 
 export interface GetRefOrCitedPapersParams {

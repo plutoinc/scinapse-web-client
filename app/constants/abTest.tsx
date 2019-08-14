@@ -1,4 +1,4 @@
-import { dummy, queryLover, weightedCitation } from './abTestObject';
+import { dummy, queryLover, weightedCitation, strictSort } from './abTestObject';
 
 export interface UserGroup {
   groupName: string;
@@ -12,7 +12,7 @@ export interface Test {
 
 export type SignUpConversion = 'queryLover' | 'downloadCount';
 
-export type ABTest = 'dummy' | 'queryLover' | 'weightedCitation';
+export type ABTest = 'dummy' | 'queryLover' | 'weightedCitation' | 'strictSort';
 
 export const SIGN_UP_CONVERSION_KEY = 'b_exp';
 
@@ -32,7 +32,7 @@ export interface SignUpConversionExpTicketContext {
   expName?: string;
 }
 
-export const LIVE_TESTS: Test[] = [dummy, queryLover, weightedCitation];
+export const LIVE_TESTS: Test[] = [dummy, queryLover, weightedCitation, strictSort];
 
 function getRandomPool(): { [key: string]: string[] } {
   const randomPool: { [key: string]: string[] } = {};

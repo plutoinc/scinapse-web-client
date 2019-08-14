@@ -29,11 +29,11 @@
 
 .activeTabItem {
   @extend .nonActiveTabItem;
-  box-shadow: inset 0 -3px 0 0 $black1;
+  box-shadow: inset 0 -4px 0 -1px $black1;
   color: $black1;
 
   &:hover {
     color: $gray800;
-    box-shadow: inset 0 -3px 0 0 $gray800;
+    box-shadow: inset 0 -4px 0 -1px $gray800;
   }
 }
