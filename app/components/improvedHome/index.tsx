@@ -19,8 +19,8 @@ import RecommendationAPI, { BasedOnCollectionPapersParams } from '../../api/reco
 import ImprovedFooter from '../layouts/improvedFooter';
 import RecommendedPapers from './components/recommendedPapers';
 import { Paper } from '../../model/paper';
-import { BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY } from '../recommendPapersDialog/recommendPapersDialogConstants';
-const store = require('store');
+import { getUserGroupName } from '../../helpers/abTestHelper';
+import { RANDOM_RECOMMENDATION_EXPERIMENT } from '../../constants/abTestGlobalValue';
 const styles = require('./improvedHome.scss');
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
@@ -113,6 +113,7 @@ const ScinapseFigureContent: React.FC<{ shouldShow: boolean; papersFoundCount: n
 
 const ImprovedHome: React.FC<Props> = props => {
   const { currentUser } = props;
+  const [doRandomizedRec, setDoRandomizedRec] = React.useState(false);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
   const [basedOnActivityPapers, setBasedOnActivityPapers] = React.useState<Paper[]>([]);
   const [basedOnCollectionPapers, setBasedOnCollectionPapers] = React.useState<BasedOnCollectionPapersParams>();
@@ -120,11 +121,22 @@ const ImprovedHome: React.FC<Props> = props => {
   const [isLoadingBasedOnCollectionPapers, setIsLoadingBasedOnCollectionPapers] = React.useState(false);
   const cancelToken = React.useRef(axios.CancelToken.source());
 
+  React.useEffect(() => {
+    setDoRandomizedRec(getUserGroupName(RANDOM_RECOMMENDATION_EXPERIMENT) === 'random');
+    HomeAPI.getPapersFoundCount().then(res => {
+      setPapersFoundCount(res.data.content);
+    });
+
+    return () => {
+      cancelToken.current.cancel();
+      cancelToken.current = axios.CancelToken.source();
+    };
+  }, []);
+
   const getBasedOnActivityPapers = React.useCallback(
     () => {
-      const basedActivityPaperIdsForNonUser: number[] = store.get(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY) || [];
       setIsLoadingBasedOnActivityPapers(true);
-      RecommendationAPI.getPapersFromUserAction(!currentUser.isLoggedIn ? basedActivityPaperIdsForNonUser : undefined)
+      RecommendationAPI.getPapersFromUserAction(doRandomizedRec)
         .then(res => {
           setBasedOnActivityPapers(res);
           setIsLoadingBasedOnActivityPapers(false);
@@ -134,7 +146,7 @@ const ImprovedHome: React.FC<Props> = props => {
           setIsLoadingBasedOnActivityPapers(false);
         });
     },
-    [currentUser.isLoggedIn]
+    [doRandomizedRec]
   );
 
   const getBasedOnCollectionPapers = React.useCallback(() => {
@@ -150,22 +162,10 @@ const ImprovedHome: React.FC<Props> = props => {
       });
   }, []);
 
-  React.useEffect(() => {
-    HomeAPI.getPapersFoundCount().then(res => {
-      setPapersFoundCount(res.data.content);
-    });
-
-    return () => {
-      cancelToken.current.cancel();
-      cancelToken.current = axios.CancelToken.source();
-    };
-  }, []);
-
   React.useEffect(
     () => {
-      getBasedOnActivityPapers();
-
       if (currentUser.isLoggedIn) {
+        getBasedOnActivityPapers();
         getBasedOnCollectionPapers();
       }
 
@@ -217,6 +217,7 @@ const ImprovedHome: React.FC<Props> = props => {
           isLoggingIn={currentUser.isLoggingIn}
           isLoadingActivityPapers={isLoadingBasedOnActivityPapers}
           isLoadingCollectionPapers={isLoadingBasedOnCollectionPapers}
+          randomRec={doRandomizedRec}
           basedOnActivityPapers={basedOnActivityPapers}
           basedOnCollectionPapers={basedOnCollectionPapers}
           handleGetBasedOnActivityPapers={getBasedOnActivityPapers}

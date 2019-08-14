@@ -15,6 +15,7 @@ interface RecommendedPapersProps {
   isLoggingIn: boolean;
   isLoadingActivityPapers: boolean;
   isLoadingCollectionPapers: boolean;
+  randomRec: boolean;
   basedOnActivityPapers: Paper[];
   basedOnCollectionPapers: BasedOnCollectionPapersParams | undefined;
   handleGetBasedOnActivityPapers: () => void;
@@ -28,6 +29,7 @@ const RecommendedPapers: React.FC<Props> = props => {
     basedOnActivityPapers,
     basedOnCollectionPapers,
     handleGetBasedOnActivityPapers,
+    randomRec,
     shouldShow,
     isLoggingIn,
     location,
@@ -57,9 +59,11 @@ const RecommendedPapers: React.FC<Props> = props => {
           <div className={styles.title}>Recommended papers for you</div>
           <div className={styles.subTitle}>
             BASED ON YOUR SEARCH ACTIVITY
-            <div className={styles.refreshButton} onClick={handleGetBasedOnActivityPapers}>
-              <Icon className={styles.refreshIcon} icon="RELOAD" />REFRESH
-            </div>
+            {randomRec && (
+              <div className={styles.refreshButton} onClick={handleGetBasedOnActivityPapers}>
+                <Icon className={styles.refreshIcon} icon="RELOAD" />REFRESH
+              </div>
+            )}
           </div>
         </div>
         <div className={styles.contentSection}>
@@ -67,6 +71,7 @@ const RecommendedPapers: React.FC<Props> = props => {
             <BaseOnActivityPaperList
               isLoading={isLoadingActivityPapers || isLoggingIn}
               papers={basedOnActivityPapers}
+              randomRec={randomRec}
               refreshBasedOnActivityPapers={handleGetBasedOnActivityPapers}
             />
           </div>

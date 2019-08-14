@@ -196,6 +196,35 @@
   }
 }
 
+.moreItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
+  font-size: 15px;
+  font-weight: 500;
+  color: $main-blue1;
+  cursor: pointer;
+
+  .downIcon {
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 14px;
+      height: 8px;
+    }
+  }
+}
+
+.upIcon {
+  @extend .downIcon;
+  transform: rotate(180deg);
+}
+
 @media (max-width: $tablet_width) {
   .recommendedPapersContainer {
     display: none;
