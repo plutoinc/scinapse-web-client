@@ -25,23 +25,36 @@ interface JournalFilterDropdownProps {
 const JournalFilterDropdown: React.FC<
   JournalFilterDropdownProps & ReturnType<typeof mapStateToProps> & RouteComponentProps
 > = props => {
+  const { dispatch } = props;
   const anchorEl = React.useRef(null);
   const inputEl = React.useRef<HTMLInputElement | null>(null);
   const [isHintOpened, setIsHintOpened] = React.useState(false);
-  const lastSelectedJournals = React.useRef(props.selectedJournalIds);
-  const selectChanged = !isEqual(props.selectedJournalIds, lastSelectedJournals.current);
+  const [lastSelectedJournals, setLastSelectedJournals] = React.useState(props.selectedJournalIds);
+  const selectChanged = !isEqual(props.selectedJournalIds, lastSelectedJournals);
+
+  React.useEffect(
+    () => {
+      if (!props.isActive) {
+        setLastSelectedJournals(props.selectedJournalIds);
+      }
+    },
+    [props.isActive, props.selectedJournalIds]
+  );
 
   let buttonText = 'Any journal · conference';
   if (props.selectedJournalIds.length > 0) {
     buttonText = `${props.selectedJournalIds.length} journals · conferences`;
   }
 
-  const handleClickJournalItem = React.useCallback((journalId: number) => {
-    props.dispatch({
-      type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM,
-      payload: { journalId },
-    });
-  }, []);
+  const handleClickJournalItem = React.useCallback(
+    (journalId: number) => {
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM,
+        payload: { journalId },
+      });
+    },
+    [dispatch]
+  );
 
   const journalList = props.journalData.map(journal => {
     return (
@@ -60,7 +73,6 @@ const JournalFilterDropdown: React.FC<
 
     if (selectChanged) {
       trackSelectFilter('JOURNAL', JSON.stringify(props.selectedJournalIds));
-      lastSelectedJournals.current = props.selectedJournalIds;
       const link = makeNewFilterLink({ journal: props.selectedJournalIds }, props.location);
       props.history.push(link);
     }

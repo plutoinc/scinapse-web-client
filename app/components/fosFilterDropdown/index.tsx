@@ -28,8 +28,17 @@ const FOSFilterDropdown: React.FC<
   const [isHintOpened, setIsHintOpened] = React.useState(false);
   const inputEl = React.useRef<HTMLInputElement | null>(null);
   const anchorEl = React.useRef(null);
-  const lastSelectedFOS = React.useRef(props.selectedFOSIds);
-  const selectChanged = !isEqual(props.selectedFOSIds, lastSelectedFOS.current);
+  const [lastSelectedFOS, setLastSelectedFOS] = React.useState(props.selectedFOSIds);
+  const selectChanged = !isEqual(props.selectedFOSIds, lastSelectedFOS);
+
+  React.useEffect(
+    () => {
+      if (!props.isActive) {
+        setLastSelectedFOS(props.selectedFOSIds);
+      }
+    },
+    [props.isActive, props.selectedFOSIds]
+  );
 
   let buttonText = 'Any field';
   if (props.selectedFOSIds.length > 0) {

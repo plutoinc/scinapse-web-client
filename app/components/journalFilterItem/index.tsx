@@ -18,8 +18,6 @@ interface JournalItemProps {
 const JournalItem: React.FC<JournalItemProps> = React.memo(props => {
   const { journal } = props;
 
-  console.log('RENDERING');
-
   let ImpactFactor = null;
   if (journal.impactFactor) {
     ImpactFactor = (
