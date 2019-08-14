@@ -38,7 +38,7 @@ function searchResultE2E(TEST_NAME: string, width: number, height: number) {
       describe('when user click the search icon', () => {
         it('should show the search result page', async () => {
           await Promise.all([
-            page.waitForSelector("[class^='searchList_searchItems']", { timeout: 30000 }),
+            page.waitFor(3000),
             clickWithCapture({
               page,
               testName: TEST_NAME,
@@ -48,20 +48,13 @@ function searchResultE2E(TEST_NAME: string, width: number, height: number) {
             }),
           ]);
 
-          page.title().then(res => {
-            console.log(res);
-          });
-
           await expect(page.$("[class^='searchList_searchItems']")).resolves.not.toBeNull();
         });
       });
 
       describe('when user press the enter key', () => {
         it('should show the search result page', async () => {
-          await Promise.all([
-            page.waitForSelector("[class^='searchList_searchItems']", { timeout: 30000 }),
-            page.keyboard.press('Enter'),
-          ]);
+          await Promise.all([page.waitFor(3000), page.keyboard.press('Enter')]);
 
           await expect(page.$("[class^='searchList_searchItems']")).resolves.not.toBeNull();
         });

@@ -4,7 +4,7 @@ import clickWithCapture from './helpers/clickWithCapture';
 const DESKTOP_TEST_NAME = 'desktop sign in test';
 const MOBILE_TEST_NAME = 'mobile sign in test';
 
-describe(MOBILE_TEST_NAME, () => {
+describe.skip(MOBILE_TEST_NAME, () => {
   beforeAll(async () => {
     await page.setViewport({ width: 320, height: 568 });
     await page.goto(`https://${getHost()}`, { waitUntil: 'networkidle0' });
@@ -71,10 +71,12 @@ describe(MOBILE_TEST_NAME, () => {
   });
 });
 
-describe(DESKTOP_TEST_NAME, () => {
+describe.skip(DESKTOP_TEST_NAME, () => {
   beforeAll(async () => {
     await page.setViewport({ width: 1920, height: 1080 });
     await page.goto(`https://${getHost()}`, { waitUntil: 'networkidle0' });
+    await page.reload();
+    await page.screenshot({ path: './output/screenshots/testtesttest.png' });
   });
 
   afterAll(async () => {
