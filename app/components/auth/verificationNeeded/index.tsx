@@ -33,7 +33,9 @@ const VerificationNeeded = ({ email, resendEmailFunc }: VerificationNeededParams
         </div>
         <div className={styles.notiContentList}>
           <Icon className={styles.notiContentCheckIcon} icon="CHECK" />
-          <span className={styles.notiContent}>Check whether you are using spam solution.</span>
+          <span className={styles.notiContent}>
+            Check whether you are using spam solution. <br /> ex) BitBounce
+          </span>
         </div>
       </div>
     </div>

@@ -57,7 +57,9 @@ const FinalSignUpContent: React.FunctionComponent<FinalSignUpContentProps> = pro
           </div>
           <div className={s.notiContentList}>
             <Icon className={s.notiContentCheckIcon} icon="CHECK" />
-            <span className={s.notiContent}>Check whether you are using spam solution.</span>
+            <span className={s.notiContent}>
+              Check whether you are using spam solution. <br /> ex) BitBounce
+            </span>
           </div>
         </div>
       </form>
