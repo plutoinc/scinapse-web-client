@@ -15,7 +15,7 @@ const BASED_ON_ACTIVITY_PAPER_COUNT = 5;
 interface BasedOnActivityPaperListProps {
   isLoading: boolean;
   doRandomizeRec: boolean;
-  refreshBasedOnActivityPapers: () => void;
+  refreshBasedOnActivityPapers: (shouldRandom: boolean) => void;
   papers: Paper[];
 }
 
@@ -87,7 +87,7 @@ const BaseOnActivityPaperList: React.FC<BasedOnActivityPaperListProps> = props =
     <div
       className={styles.refreshBottomButton}
       onClick={() => {
-        refreshBasedOnActivityPapers();
+        refreshBasedOnActivityPapers(doRandomizeRec);
         ActionTicketManager.trackTicket({
           pageType: 'home',
           actionType: 'fire',

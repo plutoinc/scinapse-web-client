@@ -122,7 +122,6 @@ const ImprovedHome: React.FC<Props> = props => {
   const cancelToken = React.useRef(axios.CancelToken.source());
 
   React.useEffect(() => {
-    setRandomizeRec(getUserGroupName(RANDOM_RECOMMENDATION_EXPERIMENT) === 'random');
     HomeAPI.getPapersFoundCount().then(res => {
       setPapersFoundCount(res.data.content);
     });
@@ -133,21 +132,18 @@ const ImprovedHome: React.FC<Props> = props => {
     };
   }, []);
 
-  const getBasedOnActivityPapers = React.useCallback(
-    () => {
-      setIsLoadingBasedOnActivityPapers(true);
-      RecommendationAPI.getPapersFromUserAction(randomizeRec)
-        .then(res => {
-          setBasedOnActivityPapers(res);
-          setIsLoadingBasedOnActivityPapers(false);
-        })
-        .catch(err => {
-          console.error(err);
-          setIsLoadingBasedOnActivityPapers(false);
-        });
-    },
-    [randomizeRec]
-  );
+  const getBasedOnActivityPapers = React.useCallback((shouldRandom: boolean) => {
+    setIsLoadingBasedOnActivityPapers(true);
+    RecommendationAPI.getPapersFromUserAction(shouldRandom)
+      .then(res => {
+        setBasedOnActivityPapers(res);
+        setIsLoadingBasedOnActivityPapers(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setIsLoadingBasedOnActivityPapers(false);
+      });
+  }, []);
 
   const getBasedOnCollectionPapers = React.useCallback(() => {
     setIsLoadingBasedOnCollectionPapers(true);
@@ -164,8 +160,10 @@ const ImprovedHome: React.FC<Props> = props => {
 
   React.useEffect(
     () => {
+      const shouldRandom = getUserGroupName(RANDOM_RECOMMENDATION_EXPERIMENT) === 'random';
+      setRandomizeRec(shouldRandom);
       if (currentUser.isLoggedIn) {
-        getBasedOnActivityPapers();
+        getBasedOnActivityPapers(shouldRandom);
         getBasedOnCollectionPapers();
       }
 

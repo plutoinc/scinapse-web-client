@@ -19,7 +19,7 @@ interface RecommendedPapersProps {
   doRandomizeRec: boolean;
   basedOnActivityPapers: Paper[];
   basedOnCollectionPapers: BasedOnCollectionPapersParams | undefined;
-  handleGetBasedOnActivityPapers: () => void;
+  handleGetBasedOnActivityPapers: (shouldRandom: boolean) => void;
 }
 type Props = RouteComponentProps<any> & RecommendedPapersProps;
 
@@ -56,7 +56,7 @@ const RecommendedPapers: React.FC<Props> = props => {
     <div
       className={styles.refreshButton}
       onClick={() => {
-        handleGetBasedOnActivityPapers();
+        handleGetBasedOnActivityPapers(doRandomizeRec);
         ActionTicketManager.trackTicket({
           pageType: 'home',
           actionType: 'fire',
