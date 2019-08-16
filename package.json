@@ -179,7 +179,6 @@
     "redux": "^4.0.4",
     "redux-logger": "3.0.6",
     "redux-starter-kit": "^0.6.3",
-    "redux-thunk": "2.3.0",
     "reselect": "3.0.1",
     "shave": "2.5.3",
     "store": "2.0.12",
