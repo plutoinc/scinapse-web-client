@@ -19,7 +19,7 @@ function withSocialCompleteContent() {
   );
 }
 
-function withEmailCompleteContent(email: string) {
+function withEmailCompleteContent(email?: string) {
   return (
     <>
       <div className={s.finalSignUpContent}>{`Please check your email
@@ -35,7 +35,7 @@ and verify your email address`}</div>
 const FinalSignUpContent: React.FunctionComponent<FinalSignUpContentProps> = props => {
   const { onSubmit, contentType, email } = props;
 
-  const finalContent = contentType === 'email' ? withEmailCompleteContent(email!) : withSocialCompleteContent();
+  const finalContent = contentType === 'email' ? withEmailCompleteContent(email) : withSocialCompleteContent();
 
   return (
     <div className={s.signUpContainer}>
