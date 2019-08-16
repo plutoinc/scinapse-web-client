@@ -26,11 +26,9 @@ interface FeedbackButtonStates {
   isLoadingFeedback: boolean;
   emailInput: string;
   feedbackContent: string;
-  isAutoOpen: boolean;
   hasSentFeedback: boolean;
 }
 
-const FEEDBACK_PV_COOKIE_KEY = 'pvForFeedback';
 const FEEDBACK_ALREADY_SENT = 'pvAlreadySent';
 
 const UserSurveyMenu: React.SFC<{
@@ -62,23 +60,11 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
       isLoadingFeedback: false,
       emailInput: (props.currentUser && props.currentUser.email) || '',
       feedbackContent: '',
-      isAutoOpen: false,
       hasSentFeedback: false,
     };
   }
 
   public componentWillReceiveProps(nextProps: FeedbackButtonProps) {
-    if (this.props.location !== nextProps.location) {
-      const rawPVCount = Cookies.get(FEEDBACK_PV_COOKIE_KEY);
-      const PVCount = parseInt(rawPVCount || '0', 10);
-
-      if (PVCount > 100) {
-        Cookies.set(FEEDBACK_PV_COOKIE_KEY, '0');
-      } else {
-        Cookies.set(FEEDBACK_PV_COOKIE_KEY, (PVCount + 1).toString());
-      }
-    }
-
     if (this.props.currentUser.isLoggedIn !== nextProps.currentUser.isLoggedIn) {
       this.setState(prevState => ({ ...prevState, emailInput: nextProps.currentUser.email || '' }));
     }
@@ -140,12 +126,6 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
   }
 
   private getFAQorSurvey = () => {
-    const { isAutoOpen } = this.state;
-
-    if (isAutoOpen) {
-      return <UserSurveyMenu handleClick={this.trackClickMenu} />;
-    }
-
     return (
       <a
         onClick={this.trackClickMenu}
@@ -160,25 +140,15 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
   };
 
   private getMessage = () => {
-    const { isAutoOpen } = this.state;
-
-    if (isAutoOpen) {
-      return 'Help us improve.\nAnything you want in Scinapse?';
-    }
     return 'Any problem?\nTake a look at FAQ, or drop us a message.';
   };
 
   private getDirectTitle = () => {
-    const { isAutoOpen } = this.state;
-
-    if (isAutoOpen) {
-      return 'Suggest anything';
-    }
     return 'Direct Feedback';
   };
 
   private getDirectFeedbackOrSurveyMenu = () => {
-    const { hasSentFeedback, isAutoOpen, emailInput, feedbackContent, isLoadingFeedback } = this.state;
+    const { hasSentFeedback, emailInput, feedbackContent, isLoadingFeedback } = this.state;
 
     if (!hasSentFeedback) {
       return (
@@ -207,26 +177,20 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
       );
     }
 
-    if (!isAutoOpen) {
-      return (
-        <MenuItem onClick={this.handleCloseRequest} classes={{ root: styles.borderLessMenuItem }}>
-          <UserSurveyMenu handleClick={this.trackClickMenu} />
-        </MenuItem>
-      );
-    }
-
-    return null;
+    return (
+      <MenuItem onClick={this.handleCloseRequest} classes={{ root: styles.borderLessMenuItem }}>
+        <UserSurveyMenu handleClick={this.trackClickMenu} />
+      </MenuItem>
+    );
   };
 
   private trackClickMenu = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const { isAutoOpen } = this.state;
-    const rawPVCount = Cookies.get(FEEDBACK_PV_COOKIE_KEY) || 0;
     const menu = e.currentTarget.innerText;
 
     trackEvent({
       category: 'Feedback Action',
       action: `Click Feedback Menu ${menu}`,
-      label: `pv: ${rawPVCount}, autoOpen: ${isAutoOpen}`,
+      label: '',
     });
   };
 
@@ -244,8 +208,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
 
   private handleSubmitFeedbackForm = async (e: React.FormEvent<HTMLFormElement>) => {
     const { currentUser } = this.props;
-    const { emailInput, feedbackContent, isAutoOpen } = this.state;
-    const rawPVCount = Cookies.get(FEEDBACK_PV_COOKIE_KEY) || 0;
+    const { emailInput, feedbackContent } = this.state;
 
     e.preventDefault();
 
@@ -282,7 +245,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
       trackEvent({
         category: 'Feedback Action',
         action: 'Send feedback',
-        label: `pv: ${rawPVCount}, autoOpen: ${isAutoOpen}`,
+        label: '',
       });
 
       this.setState(prevState => ({
@@ -303,14 +266,9 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
 
   private toggleFeedbackDropdown = (e?: React.MouseEvent<HTMLDivElement>) => {
     const isDirectOpen = !this.state.isPopoverOpen && e;
-    const isAutoOpen = !this.state.isPopoverOpen && !e;
-    const rawPVCount = Cookies.get(FEEDBACK_PV_COOKIE_KEY) || 0;
 
     if (isDirectOpen) {
-      trackEvent({ category: 'Feedback Action', action: 'Toggle Feedback', label: `pv: ${rawPVCount}` });
-      this.setState(prevState => ({ ...prevState, isPopoverOpen: !prevState.isPopoverOpen }));
-    } else if (isAutoOpen) {
-      trackEvent({ category: 'Feedback Action', action: 'Open Automatically', label: `pv: ${rawPVCount}` });
+      trackEvent({ category: 'Feedback Action', action: 'Toggle Feedback', label: '' });
       this.setState(prevState => ({ ...prevState, isPopoverOpen: !prevState.isPopoverOpen }));
     } else {
       this.setState(prevState => ({ ...prevState, isPopoverOpen: !prevState.isPopoverOpen }));

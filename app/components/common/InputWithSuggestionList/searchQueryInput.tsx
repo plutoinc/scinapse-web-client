@@ -23,7 +23,6 @@ import { AppState } from '../../../reducers';
 import { UserDevice } from '../../layouts/records';
 import { getCurrentPageType } from '../../locationListener';
 import { handleInputKeydown } from './helpers/handleInputKeydown';
-import { checkBlockSignUpConversion } from '../../../helpers/checkSignUpCount';
 import { changeSearchQuery } from '../../../actions/searchQuery';
 const s = require('./searchQueryInput.scss');
 
@@ -52,17 +51,6 @@ function validateSearchInput(query: string) {
     return false;
   }
   return true;
-}
-
-async function shouldBlockUnsignedUser(actionArea: string) {
-  return await checkBlockSignUpConversion({
-    type: 'queryLover',
-    matching: 'session',
-    maxCount: 2,
-    actionArea,
-    userActionType: 'queryLover',
-    expName: 'queryLover',
-  });
 }
 
 const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props => {
@@ -136,11 +124,6 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
           message: 'You should search more than 2 characters.',
         },
       });
-      return;
-    }
-
-    const shouldBlock = await shouldBlockUnsignedUser(props.actionArea);
-    if (shouldBlock) {
       return;
     }
 
