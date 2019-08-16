@@ -41,6 +41,21 @@ const FinalSignUpContent: React.FunctionComponent<FinalSignUpContentProps> = pro
         <button type="submit" className={s.finalSignUpSubmitButton}>
           CONFIRM
         </button>
+        <div className={s.additionalNoti}>
+          <div className={s.notiTitle}>Didn't get the verification mail?</div>
+          <div className={s.notiContentList}>
+            <Icon className={s.notiContentCheckIcon} icon="CHECK" />
+            <span className={s.notiContent}>Check typo in your email address.</span>
+          </div>
+          <div className={s.notiContentList}>
+            <Icon className={s.notiContentCheckIcon} icon="CHECK" />
+            <span className={s.notiContent}>Check your spam box.</span>
+          </div>
+          <div className={s.notiContentList}>
+            <Icon className={s.notiContentCheckIcon} icon="CHECK" />
+            <span className={s.notiContent}>Check whether you are using spam solution.</span>
+          </div>
+        </div>
       </form>
     </div>
   );

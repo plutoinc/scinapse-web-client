@@ -16,7 +16,7 @@
 
 .title {
   margin-top: 50px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 500;
   letter-spacing: 2.7px;
   text-align: center;
@@ -54,6 +54,38 @@
   line-height: 1.47;
 
   .email {
-    color: $black0;
+    color: $black1;
   }
+}
+
+.additionalNoti {
+  width: 100%;
+}
+
+.notiTitle {
+  width: 100%;
+  margin-top: 32px;
+  font-size: 16px;
+  line-height: 1.47;
+  text-align: center;
+  color: $gray700;
+  border-top: solid $gray300 1px;
+  padding: 16px 0px;
+  font-weight: 400;
+}
+
+.notiContentCheckIcon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+}
+
+.notiContent {
+  width: 100%;
+  font-size: 15px;
+  line-height: 2;
+  text-align: center;
+  color: $gray600;
+  padding: 16px 0px;
 }

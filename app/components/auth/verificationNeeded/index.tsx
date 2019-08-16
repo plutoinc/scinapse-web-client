@@ -21,6 +21,21 @@ const VerificationNeeded = ({ email, resendEmailFunc }: VerificationNeededParams
       <div className={styles.toEmail}>
         to <span className={styles.email}>{email}</span>
       </div>
+      <div className={styles.additionalNoti}>
+        <div className={styles.notiTitle}>Didn't get the verification mail?</div>
+        <div className={styles.notiContentList}>
+          <Icon className={styles.notiContentCheckIcon} icon="CHECK" />
+          <span className={styles.notiContent}>Check typo in your email address.</span>
+        </div>
+        <div className={styles.notiContentList}>
+          <Icon className={styles.notiContentCheckIcon} icon="CHECK" />
+          <span className={styles.notiContent}>Check your spam box.</span>
+        </div>
+        <div className={styles.notiContentList}>
+          <Icon className={styles.notiContentCheckIcon} icon="CHECK" />
+          <span className={styles.notiContent}>Check whether you are using spam solution.</span>
+        </div>
+      </div>
     </div>
   </div>
 );

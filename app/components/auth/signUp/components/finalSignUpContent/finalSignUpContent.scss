@@ -47,5 +47,38 @@
   max-width: 331px;
   width: 100%;
   margin-top: 46.5px;
-  margin-bottom: 28.7px;
+  margin-bottom: 16px;
+}
+
+.additionalNoti {
+  width: 100%;
+  padding: 16px 0px 20px 0px;
+}
+
+.notiTitle {
+  width: 100%;
+  margin-top: 8px;
+  font-size: 16px;
+  line-height: 1.47;
+  text-align: center;
+  color: $gray700;
+  border-top: solid $gray300 1px;
+  padding: 16px 0px;
+  font-weight: 400;
+}
+
+.notiContentCheckIcon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+}
+
+.notiContent {
+  width: 100%;
+  font-size: 15px;
+  line-height: 2;
+  text-align: center;
+  color: $gray600;
+  padding: 16px 0px;
 }
