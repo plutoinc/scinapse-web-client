@@ -15,7 +15,7 @@ const BASED_ON_ACTIVITY_PAPER_COUNT = 5;
 interface BasedOnActivityPaperListProps {
   isLoading: boolean;
   doRandomizeRec: boolean;
-  refreshBasedOnActivityPapers: (shouldRandom: boolean) => void;
+  refreshBasedOnActivityPapers: (random: boolean) => void;
   papers: Paper[];
 }
 

@@ -19,7 +19,7 @@ interface RecommendedPapersProps {
   doRandomizeRec: boolean;
   basedOnActivityPapers: Paper[];
   basedOnCollectionPapers: BasedOnCollectionPapersParams | undefined;
-  handleGetBasedOnActivityPapers: (shouldRandom: boolean) => void;
+  handleGetBasedOnActivityPapers: (random: boolean) => void;
 }
 type Props = RouteComponentProps<any> & RecommendedPapersProps;
 

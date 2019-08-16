@@ -132,9 +132,9 @@ const ImprovedHome: React.FC<Props> = props => {
     };
   }, []);
 
-  const getBasedOnActivityPapers = React.useCallback((shouldRandom: boolean) => {
+  const getBasedOnActivityPapers = React.useCallback((random: boolean) => {
     setIsLoadingBasedOnActivityPapers(true);
-    RecommendationAPI.getPapersFromUserAction(shouldRandom)
+    RecommendationAPI.getPapersFromUserAction(random)
       .then(res => {
         setBasedOnActivityPapers(res);
         setIsLoadingBasedOnActivityPapers(false);
