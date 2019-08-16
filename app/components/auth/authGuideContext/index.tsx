@@ -77,15 +77,6 @@ const GuideContentsByActionType: React.FunctionComponent<AuthGuideContextProps> 
           webpUrl={'https://assets.pluto.network/signup_modal/signup_unlimited.webp'}
         />
       );
-    case 'queryLover':
-      return (
-        <GuideContent
-          mainText={'Researchers\nLove\nScinapse'}
-          subText={''}
-          imageUrl={'https://assets.pluto.network/signup_modal/signup_query.png'}
-          webpUrl={'https://assets.pluto.network/signup_modal/signup_query.webp'}
-        />
-      );
     case 'doiSearch':
       return (
         <GuideContent
