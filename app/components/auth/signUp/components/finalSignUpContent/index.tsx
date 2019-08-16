@@ -19,12 +19,15 @@ function withSocialCompleteContent() {
   );
 }
 
-function withEmailCompleteContent() {
+function withEmailCompleteContent(email: string) {
   return (
     <>
       <div className={s.finalSignUpContent}>{`Please check your email
 and verify your email address`}</div>
       <Icon className={s.finalSignUpIconWrapper} icon="VERIFICATION_EMAIL_ICON" />
+      <div className={s.toEmail}>
+        Sent to <span className={s.email}>{email}</span>
+      </div>
     </>
   );
 }
@@ -32,16 +35,13 @@ and verify your email address`}</div>
 const FinalSignUpContent: React.FunctionComponent<FinalSignUpContentProps> = props => {
   const { onSubmit, contentType, email } = props;
 
-  const finalContent = contentType === 'email' ? withEmailCompleteContent() : withSocialCompleteContent();
+  const finalContent = contentType === 'email' ? withEmailCompleteContent(email!) : withSocialCompleteContent();
 
   return (
     <div className={s.signUpContainer}>
       <form onSubmit={onSubmit} className={s.formContainer}>
         <div className={s.finalSignUpTitle}>THANK YOU FOR REGISTERING</div>
         {finalContent}
-        <div className={s.toEmail}>
-          Sent to <span className={s.email}>{email}</span>
-        </div>
         <button type="submit" className={s.finalSignUpSubmitButton}>
           OK
         </button>
