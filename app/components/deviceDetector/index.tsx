@@ -1,29 +1,26 @@
 import * as React from 'react';
 import { throttle, Cancelable } from 'lodash';
-import { connect, DispatchProp } from 'react-redux';
+import { connect } from 'react-redux';
 import EnvChecker from '../../helpers/envChecker';
 import UserAgentHelper from '../../helpers/userAgentHelper';
 import { AppState } from '../../reducers';
-import { LayoutState, UserDevice } from '../layouts/records';
-import { setDeviceToMobile, setDeviceToDesktop, setDeviceToTablet } from '../layouts/actions';
+import { UserDevice, setDeviceType } from '../layouts/reducer';
 
 const MOBILE_WIDTH = 768;
 const TABLET_WIDTH = 1024;
 
-function mapStateToProps(state: AppState) {
+const mapStateToProps = (state: AppState) => {
   return {
     layout: state.layout,
   };
-}
+};
+const mapDispatchToProps = { setDeviceType };
 
-interface DeviceDetectorProps extends DispatchProp {
-  layout: LayoutState;
-}
-
-class DeviceDetector extends React.PureComponent<DeviceDetectorProps, {}> {
+type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
+class DeviceDetector extends React.Component<Props> {
   private throttledHandlingWindowSizeChange: (() => void) & Cancelable;
 
-  public constructor(props: DeviceDetectorProps) {
+  public constructor(props: Props) {
     super(props);
 
     this.throttledHandlingWindowSizeChange = throttle(this.handleWindowSizeChange, 300);
@@ -31,11 +28,10 @@ class DeviceDetector extends React.PureComponent<DeviceDetectorProps, {}> {
 
   public componentDidMount() {
     if (!EnvChecker.isOnServer()) {
-      const { dispatch } = this.props;
       const device = UserAgentHelper.getDevice();
 
       if (device && device.type === 'mobile') {
-        dispatch!(setDeviceToMobile());
+        this.props.setDeviceType({ userDevice: UserDevice.MOBILE });
       }
 
       window.addEventListener('resize', this.throttledHandlingWindowSizeChange);
@@ -49,30 +45,33 @@ class DeviceDetector extends React.PureComponent<DeviceDetectorProps, {}> {
   }
 
   public render() {
-    return <span />;
+    return null;
   }
 
   private handleWindowSizeChange = () => {
-    const { dispatch, layout } = this.props;
+    const { layout, setDeviceType } = this.props;
 
     if (!EnvChecker.isOnServer()) {
       if (document.documentElement) {
         const currentWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
         if (currentWidth < MOBILE_WIDTH && layout.userDevice !== UserDevice.MOBILE) {
-          dispatch!(setDeviceToMobile());
+          setDeviceType({ userDevice: UserDevice.MOBILE });
         } else if (
           currentWidth >= MOBILE_WIDTH &&
           currentWidth < TABLET_WIDTH &&
           layout.userDevice !== UserDevice.TABLET
         ) {
-          dispatch!(setDeviceToTablet());
+          setDeviceType({ userDevice: UserDevice.TABLET });
         } else if (currentWidth >= TABLET_WIDTH && layout.userDevice !== UserDevice.DESKTOP) {
-          dispatch!(setDeviceToDesktop());
+          setDeviceType({ userDevice: UserDevice.DESKTOP });
         }
       }
     }
   };
 }
 
-export default connect(mapStateToProps)(DeviceDetector);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DeviceDetector);

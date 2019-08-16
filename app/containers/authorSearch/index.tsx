@@ -13,7 +13,7 @@ import ArticleSpinner from '../../components/common/spinner/articleSpinner';
 import ErrorPage from '../../components/error/errorPage';
 import { AuthorSearchState } from './records';
 import { CurrentUser } from '../../model/currentUser';
-import { LayoutState, UserDevice } from '../../components/layouts/records';
+import { LayoutState } from '../../components/layouts/reducer';
 import { Configuration } from '../../reducers/configuration';
 import { Helmet } from 'react-helmet';
 import AuthorSearchLongItem from '../../components/authorSearchLongItem';
@@ -27,6 +27,7 @@ import EnvChecker from '../../helpers/envChecker';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { Author } from '../../model/author/author';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
+import { UserDevice } from '../../components/layouts/reducer';
 const styles = require('./authorSearch.scss');
 
 function mapStateToProps(state: AppState) {

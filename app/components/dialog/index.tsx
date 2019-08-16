@@ -34,7 +34,7 @@ import EnvChecker from '../../helpers/envChecker';
 import SurveyForm from '../auth/signUp/components/surveyForm';
 import { addPaperToRecommendation } from '../../actions/recommendation';
 import PaperFigureDetail from '../common/paperFigureDetail/paperFigureDetail';
-import { UserDevice } from '../layouts/records';
+import { UserDevice } from '../layouts/reducer';
 const styles = require('./dialog.scss');
 
 function mapStateToProps(state: AppState) {

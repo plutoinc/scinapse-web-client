@@ -3,8 +3,7 @@ import * as ConfigurationReducer from './configuration';
 import * as currentUserReducer from './currentUser';
 import { CURRENT_USER_INITIAL_STATE, CurrentUser } from '../model/currentUser';
 import * as dialogReducer from '../components/dialog/reducer';
-import * as layoutReducer from '../components/layouts/reducer';
-import { LAYOUT_INITIAL_STATE, LayoutState } from '../components/layouts/records';
+import LayoutReducer, { LayoutState, LAYOUT_INITIAL_STATE } from '../components/layouts/reducer';
 import * as articleSearchReducer from '../components/articleSearch/reducer';
 import * as authorSearchReducer from '../containers/authorSearch/reducer';
 import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from '../components/articleSearch/records';
@@ -103,7 +102,7 @@ export const initialState: AppState = {
 export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   configuration: ConfigurationReducer.reducer,
   dialog: dialogReducer.reducer,
-  layout: layoutReducer.reducer,
+  layout: LayoutReducer,
   articleSearch: articleSearchReducer.reducer,
   authorSearch: authorSearchReducer.reducer,
   emailVerification: emailVerificationReducer.reducer,

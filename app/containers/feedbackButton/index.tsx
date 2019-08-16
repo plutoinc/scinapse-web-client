@@ -9,10 +9,11 @@ import Icon from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { trackEvent } from '../../helpers/handleGA';
 import { CurrentUser } from '../../model/currentUser';
-import { LayoutState, UserDevice } from '../../components/layouts/records';
+import { LayoutState } from '../../components/layouts/reducer';
 import { AppState } from '../../reducers';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import * as classNames from 'classnames';
+import { UserDevice } from '../../components/layouts/reducer';
 declare var ga: any;
 const styles = require('./feedbackButton.scss');
 
