@@ -35,6 +35,7 @@ export function addPaperToRecommendation(isLoggedIn: boolean, paperId: number, a
       const basedPaperIdsForNonUser = store.get(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY) || [];
       newPaperIds = uniq([paperId, ...basedPaperIdsForNonUser]).slice(0, 20);
       store.set(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY, newPaperIds);
+      return;
     } else {
       RecommendationAPI.addPaperToRecommendationPool(paperId);
     }
