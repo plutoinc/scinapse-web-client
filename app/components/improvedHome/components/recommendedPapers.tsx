@@ -52,6 +52,24 @@ const RecommendedPapers: React.FC<Props> = props => {
 
   if (!shouldShow) return null;
 
+  const refreshButton = (
+    <div
+      className={styles.refreshButton}
+      onClick={() => {
+        handleGetBasedOnActivityPapers();
+        ActionTicketManager.trackTicket({
+          pageType: 'home',
+          actionType: 'fire',
+          actionArea: 'basedOnActivityPaperList',
+          actionTag: 'clickRefreshButton',
+          actionLabel: null,
+        });
+      }}
+    >
+      <Icon className={styles.refreshIcon} icon="RELOAD" />REFRESH
+    </div>
+  );
+
   return (
     <>
       <div className={styles.contentBlockDivider} ref={recommendedEl} />
@@ -60,23 +78,7 @@ const RecommendedPapers: React.FC<Props> = props => {
           <div className={styles.title}>Recommended papers for you</div>
           <div className={styles.subTitle}>
             BASED ON YOUR SEARCH ACTIVITY
-            {doRandomizeRec && (
-              <div
-                className={styles.refreshButton}
-                onClick={() => {
-                  handleGetBasedOnActivityPapers();
-                  ActionTicketManager.trackTicket({
-                    pageType: 'home',
-                    actionType: 'fire',
-                    actionArea: 'basedOnActivityPaperList',
-                    actionTag: 'clickRefreshButton',
-                    actionLabel: null,
-                  });
-                }}
-              >
-                <Icon className={styles.refreshIcon} icon="RELOAD" />REFRESH
-              </div>
-            )}
+            {doRandomizeRec && refreshButton}
           </div>
         </div>
         <div className={styles.contentSection}>

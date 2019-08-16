@@ -180,7 +180,10 @@ const ImprovedHome: React.FC<Props> = props => {
   );
 
   const shouldShow =
-    basedOnActivityPapers && basedOnActivityPapers.length > 0 && props.layout.userDevice === UserDevice.DESKTOP;
+    currentUser.isLoggedIn &&
+    basedOnActivityPapers &&
+    basedOnActivityPapers.length > 0 &&
+    props.layout.userDevice === UserDevice.DESKTOP;
 
   return (
     <div className={styles.articleSearchFormContainer}>
