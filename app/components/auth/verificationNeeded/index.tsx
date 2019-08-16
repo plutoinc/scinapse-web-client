@@ -19,7 +19,7 @@ const VerificationNeeded = ({ email, resendEmailFunc }: VerificationNeededParams
         RESEND MAIL
       </div>
       <div className={styles.toEmail}>
-        to <span className={styles.email}>{email}</span>
+        Sent to <span className={styles.email}>{email}</span>
       </div>
       <div className={styles.additionalNoti}>
         <div className={styles.notiTitle}>Didn't get the verification mail?</div>

@@ -46,7 +46,7 @@
   @include common-button($gray300);
   max-width: 331px;
   width: 100%;
-  margin-top: 46.5px;
+  margin-top: 40px;
   margin-bottom: 16px;
 }
 
@@ -81,4 +81,15 @@
   text-align: center;
   color: $gray600;
   padding: 16px 0px;
+}
+
+.toEmail {
+  margin-top: 16px;
+  font-size: 14px;
+  color: $gray600;
+  line-height: 1.47;
+
+  .email {
+    color: $black1;
+  }
 }

@@ -6,6 +6,7 @@ const s = require('./finalSignUpContent.scss');
 interface FinalSignUpContentProps {
   onSubmit: () => void;
   contentType: string;
+  email?: string;
 }
 
 function withSocialCompleteContent() {
@@ -29,7 +30,7 @@ and verify your email address`}</div>
 }
 
 const FinalSignUpContent: React.FunctionComponent<FinalSignUpContentProps> = props => {
-  const { onSubmit, contentType } = props;
+  const { onSubmit, contentType, email } = props;
 
   const finalContent = contentType === 'email' ? withEmailCompleteContent() : withSocialCompleteContent();
 
@@ -38,8 +39,11 @@ const FinalSignUpContent: React.FunctionComponent<FinalSignUpContentProps> = pro
       <form onSubmit={onSubmit} className={s.formContainer}>
         <div className={s.finalSignUpTitle}>THANK YOU FOR REGISTERING</div>
         {finalContent}
+        <div className={s.toEmail}>
+          Sent to <span className={s.email}>{email}</span>
+        </div>
         <button type="submit" className={s.finalSignUpSubmitButton}>
-          CONFIRM
+          OK
         </button>
         <div className={s.additionalNoti}>
           <div className={s.notiTitle}>Didn't get the verification mail?</div>
