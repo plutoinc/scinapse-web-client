@@ -54,7 +54,7 @@ function searchResultE2E(TEST_NAME: string, width: number, height: number) {
 
       describe('when user press the enter key', () => {
         it('should show the search result page', async () => {
-          await Promise.all([page.waitFor(3000), page.keyboard.press('Enter')]);
+          await Promise.all([page.waitFor(10000), page.keyboard.press('Enter')]);
 
           await expect(page.$("[class^='searchList_searchItems']")).resolves.not.toBeNull();
         });
