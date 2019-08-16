@@ -16,7 +16,7 @@ async function syncRecommendationPoolToUser() {
     await RecommendationAPI.syncRecommendationPool(targetPaperIds);
   }
 
-  store.set(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY, null);
+  store.remove(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY);
 }
 
 export const checkDuplicatedEmail = async (email: string) => {
