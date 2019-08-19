@@ -51,6 +51,7 @@ interface PaperShowCollectionControlButtonProps {
 }
 
 interface TitleAreaProps {
+  paperId: number;
   currentUser: CurrentUser;
   collection: Collection | null;
   isLoading: boolean;
@@ -87,6 +88,8 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
               actionTag: 'addToCollection',
               actionLabel: null,
             });
+
+            addPaperToRecommendation(props.currentUser.isLoggedIn, props.paperId);
 
             await blockUnverifiedUser({
               authLevel: AUTH_LEVEL.VERIFIED,
@@ -235,7 +238,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   }
 
   private getCollectionItemInDropdown = () => {
-    const { selectedCollection, currentUser, myCollectionsState, myCollections } = this.props;
+    const { selectedCollection, currentUser, myCollectionsState, myCollections, paperId } = this.props;
 
     const collections =
       myCollections &&
@@ -259,6 +262,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         <div className={styles.actionItemWrapper}>
           <TitleArea
             currentUser={currentUser}
+            paperId={paperId}
             collection={selectedCollection}
             isLoading={
               currentUser.isLoggingIn ||

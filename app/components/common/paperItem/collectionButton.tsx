@@ -12,6 +12,7 @@ import { Collection, collectionSchema } from '../../../model/collection';
 import { MyCollectionsState } from '../../../containers/paperShowCollectionControlButton/reducer';
 import CollectionPaperNote from '../../collectionPaperNote';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
+import { addPaperToRecommendation } from '../../../actions/recommendation';
 const styles = require('./collectionButton.scss');
 
 function mapStateToProps(state: AppState) {
@@ -143,6 +144,8 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
     <button
       className={styles.addCollectionBtnWrapper}
       onClick={async () => {
+        addPaperToRecommendation(currentUser.isLoggedIn, paperId);
+
         const isBlocked = await blockUnverifiedUser({
           authLevel: AUTH_LEVEL.VERIFIED,
           actionArea: actionArea || pageType,

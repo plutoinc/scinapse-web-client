@@ -101,6 +101,7 @@ const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(pro
         <div className={styles.rightBtnBox}>
           <div className={styles.actionItem}>
             <CiteBox
+              currentUser={props.currentUser}
               actionArea="contentNavBar"
               paper={props.paper}
               btnStyle={{ maxWidth: '74px', width: '100%', height: '36px' }}

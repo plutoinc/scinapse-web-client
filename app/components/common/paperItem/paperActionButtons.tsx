@@ -200,7 +200,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   };
 
   private getCitationQuoteButton = () => {
-    const { paper, pageType, actionArea } = this.props;
+    const { paper, currentUser, pageType, actionArea } = this.props;
 
     if (paper.doi) {
       return (
@@ -208,6 +208,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
           <span
             className={styles.citationIconWrapper}
             onClick={() => {
+              addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
               GlobalDialogManager.openCitationDialog(paper.id);
               ActionTicketManager.trackTicket({
                 pageType,

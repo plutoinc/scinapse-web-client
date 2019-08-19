@@ -57,15 +57,13 @@ export function openRecommendationPapersGuideDialog(isLoggedIn: boolean, actionA
 }
 
 export function addPaperToRecommendation(isLoggedIn: boolean, paperId: number) {
-  return async () => {
-    let newPaperIds;
+  let newPaperIds;
 
-    if (!isLoggedIn) {
-      const basedPaperIdsForNonUser = store.get(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY) || [];
-      newPaperIds = uniq([paperId, ...basedPaperIdsForNonUser]).slice(0, 20);
-      store.set(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY, newPaperIds);
-    } else {
-      RecommendationAPI.addPaperToRecommendationPool(paperId);
-    }
-  };
+  if (!isLoggedIn) {
+    const basedPaperIdsForNonUser = store.get(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY) || [];
+    newPaperIds = uniq([paperId, ...basedPaperIdsForNonUser]).slice(0, 20);
+    store.set(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY, newPaperIds);
+  } else {
+    RecommendationAPI.addPaperToRecommendationPool(paperId);
+  }
 }

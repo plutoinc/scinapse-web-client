@@ -62,7 +62,7 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props =
               </div>
             )}
           <div className={s.actionItem}>
-            <CiteBox actionArea="paperDescription" paper={props.paper} />
+            <CiteBox actionArea="paperDescription" paper={props.paper} currentUser={props.currentUser} />
           </div>
           <FullTextDialog
             paperId={props.paper.id}
