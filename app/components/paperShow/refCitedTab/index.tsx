@@ -46,6 +46,7 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
     <>
       <RequestFullTextBtn
         actionArea="contentNavBar"
+        isLoggedIn={currentUser.isLoggedIn}
         isLoading={isLoading}
         paperId={paper!.id}
         handleSetIsOpen={setIsOpen}

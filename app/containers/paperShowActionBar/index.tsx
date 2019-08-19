@@ -35,6 +35,7 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props =
           {!props.hasPDFFullText ? (
             <div className={s.actionItem} ref={requestFullTextBtnEl}>
               <RequestFullTextBtn
+                isLoggedIn={props.currentUser.isLoggedIn}
                 actionArea="paperDescription"
                 isLoading={props.isLoadingPDF}
                 paperId={props.paper!.id}

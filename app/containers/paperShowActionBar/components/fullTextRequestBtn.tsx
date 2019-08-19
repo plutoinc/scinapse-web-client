@@ -5,9 +5,11 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import SearchingPDFBtn from '../../../components/paperShow/components/searchingPDFBtn';
+import { addPaperToRecommendation } from '../../../actions/recommendation';
 const s = require('../actionBar.scss');
 
 interface RequesrFullTextBtnProps {
+  isLoggedIn: boolean;
   isLoading: boolean;
   paperId: number;
   handleSetIsOpen: (value: React.SetStateAction<boolean>) => void;
@@ -17,7 +19,7 @@ interface RequesrFullTextBtnProps {
 }
 
 const RequestFullTextBtn: React.FC<RequesrFullTextBtnProps> = React.memo(props => {
-  const { isLoading, paperId, actionArea, handleSetIsOpen, btnStyle, lastRequestedDate } = props;
+  const { isLoggedIn, isLoading, paperId, actionArea, handleSetIsOpen, btnStyle, lastRequestedDate } = props;
 
   if (isLoading) {
     return <SearchingPDFBtn isLoading={isLoading} />;
@@ -42,6 +44,8 @@ const RequestFullTextBtn: React.FC<RequesrFullTextBtnProps> = React.memo(props =
             actionTag: 'clickRequestFullTextBtn',
             actionLabel: String(paperId),
           });
+
+          addPaperToRecommendation(isLoggedIn, paperId);
 
           const isBlocked = await blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,
