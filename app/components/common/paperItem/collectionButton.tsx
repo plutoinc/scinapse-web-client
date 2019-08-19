@@ -144,7 +144,7 @@ const CollectionButton: React.SFC<CollectionButtonProps> = ({
     <button
       className={styles.addCollectionBtnWrapper}
       onClick={async () => {
-        addPaperToRecommendation(currentUser.isLoggedIn, paperId);
+        await addPaperToRecommendation(currentUser.isLoggedIn, paperId);
 
         const isBlocked = await blockUnverifiedUser({
           authLevel: AUTH_LEVEL.VERIFIED,
