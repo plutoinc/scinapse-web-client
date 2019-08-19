@@ -310,7 +310,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       }
 
       case GLOBAL_DIALOG_TYPE.FINAL_SIGN_UP_WITH_EMAIL: {
-        return <FinalSignUpContent onSubmit={this.closeDialog} contentType="email" />;
+        return <FinalSignUpContent onSubmit={this.closeDialog} contentType="email" email={currentUser.email} />;
       }
 
       case GLOBAL_DIALOG_TYPE.FINAL_SIGN_UP_WITH_SOCIAL: {
