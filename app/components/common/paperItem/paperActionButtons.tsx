@@ -115,7 +115,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
     if (sourceDomain) {
       return (
         <DomainSourceBtn
-          onClick={() => {
+          onClick={async () => {
             ActionTicketManager.trackTicket({
               pageType,
               actionType: 'fire',
@@ -123,7 +123,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
               actionTag: 'source',
               actionLabel: String(paper.id),
             });
-            addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
+            await addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
             dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'sourceButton'));
           }}
           pageType={pageType}
@@ -151,7 +151,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         target="_blank"
         rel="noopener nofollow noreferrer"
         className={styles.sourceButton}
-        onClick={() => {
+        onClick={async () => {
           ActionTicketManager.trackTicket({
             pageType,
             actionType: 'fire',
@@ -159,7 +159,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             actionTag: 'source',
             actionLabel: String(paper.id),
           });
-          addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
+          await addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
           dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'sourceButton'));
         }}
       >
@@ -180,7 +180,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             pathname: `/papers/${paper.id}`,
             hash: 'cited',
           }}
-          onClick={() => {
+          onClick={async () => {
             ActionTicketManager.trackTicket({
               pageType,
               actionType: 'fire',
@@ -188,7 +188,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
               actionTag: 'citedList',
               actionLabel: String(paper.id),
             });
-            addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
+            await addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
             dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'citationButton'));
           }}
           className={styles.citedButton}
@@ -207,8 +207,8 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         <span className={styles.DOIMetaButtonsWrapper}>
           <span
             className={styles.citationIconWrapper}
-            onClick={() => {
-              addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
+            onClick={async () => {
+              await addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
               GlobalDialogManager.openCitationDialog(paper.id);
               ActionTicketManager.trackTicket({
                 pageType,

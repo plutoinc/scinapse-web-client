@@ -56,7 +56,7 @@ export function openRecommendationPapersGuideDialog(isLoggedIn: boolean, actionA
   };
 }
 
-export function addPaperToRecommendation(isLoggedIn: boolean, paperId: number) {
+export async function addPaperToRecommendation(isLoggedIn: boolean, paperId: number) {
   let newPaperIds;
 
   if (!isLoggedIn) {

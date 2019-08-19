@@ -45,7 +45,7 @@ const RequestFullTextBtn: React.FC<RequesrFullTextBtnProps> = React.memo(props =
             actionLabel: String(paperId),
           });
 
-          addPaperToRecommendation(isLoggedIn, paperId);
+          await addPaperToRecommendation(isLoggedIn, paperId);
 
           const isBlocked = await blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,

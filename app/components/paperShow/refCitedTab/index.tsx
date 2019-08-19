@@ -56,9 +56,9 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
       <RequestFullTextDialog
         paperId={paper.id}
         isOpen={isOpen}
-        onClose={() => {
+        onClose={async () => {
           setIsOpen(false);
-          addPaperToRecommendation(currentUser.isLoggedIn, paper!.id);
+          await addPaperToRecommendation(currentUser.isLoggedIn, paper!.id);
           dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'requestFullTextBtn'));
         }}
       />

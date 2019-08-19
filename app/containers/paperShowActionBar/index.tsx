@@ -68,9 +68,9 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props =
           <FullTextDialog
             paperId={props.paper.id}
             isOpen={isOpen}
-            onClose={() => {
+            onClose={async () => {
               setIsOpen(false);
-              addPaperToRecommendation(props.currentUser.isLoggedIn, props.paper.id);
+              await addPaperToRecommendation(props.currentUser.isLoggedIn, props.paper.id);
               props.dispatch(openRecommendationPapersGuideDialog(props.currentUser.isLoggedIn, 'requestFullTextBtn'));
             }}
           />

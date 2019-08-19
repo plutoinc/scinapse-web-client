@@ -79,19 +79,19 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
               target: '_blank',
               rel: 'noopener',
               className: styles.linkClassName,
-              onClick: e => {
+              onClick: async e => {
                 e.preventDefault();
                 handleClickSource();
-                addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
+                await addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
                 dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'sourceButton'));
                 window.open(sourceUrl, '_blank');
               },
             }}
             dropdownBtnProps={{
-              onClick: () => {
+              onClick: async () => {
                 setIsSourcePopoverOpen(!isSourcePopoverOpen);
                 if (!isSourcePopoverOpen) {
-                  addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
+                  await addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
                   dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'dropdownSourceBtn'));
                 }
               },

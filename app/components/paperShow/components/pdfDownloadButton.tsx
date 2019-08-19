@@ -57,7 +57,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
           e.preventDefault();
           trackActionToClickPdfDownloadBtn();
 
-          addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
+          await addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
 
           const isBlocked = await blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,

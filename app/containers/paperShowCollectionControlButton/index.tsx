@@ -89,7 +89,7 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
               actionLabel: null,
             });
 
-            addPaperToRecommendation(props.currentUser.isLoggedIn, props.paperId);
+            await addPaperToRecommendation(props.currentUser.isLoggedIn, props.paperId);
 
             await blockUnverifiedUser({
               authLevel: AUTH_LEVEL.VERIFIED,
@@ -521,7 +521,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         actionTag: 'signInViaCollection',
         actionLabel: null,
       });
-      addPaperToRecommendation(currentUser.isLoggedIn, targetPaperId);
+      await addPaperToRecommendation(currentUser.isLoggedIn, targetPaperId);
       dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'addToCollectionButton'));
       return;
     }
@@ -548,7 +548,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           cancelToken: this.cancelToken.token,
         })
       );
-      addPaperToRecommendation(currentUser.isLoggedIn, targetPaperId);
+      await addPaperToRecommendation(currentUser.isLoggedIn, targetPaperId);
       dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'addToCollectionButton'));
       store.set(LAST_USER_COLLECTION_ID, selectedCollection.id);
     } else if (selectedCollection && targetPaperId && selectedCollection.containsSelected) {
