@@ -15,7 +15,7 @@ import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import CollectionButton from './collectionButton';
 import formatNumber from '../../../helpers/formatNumber';
-import { addPaperToRecommendation } from '../../../actions/recommendation';
+import { addPaperToRecommendation, openRecommendationPapersGuideDialog } from '../../../actions/recommendation';
 import { PaperSource } from '../../../api/paper';
 import { AppState } from '../../../reducers';
 import { LayoutState, UserDevice } from '../../layouts/records';
@@ -123,7 +123,8 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
               actionTag: 'source',
               actionLabel: String(paper.id),
             });
-            dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'sourceButton'));
+            addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
+            dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'sourceButton'));
           }}
           pageType={pageType}
           actionArea={actionArea}
@@ -158,7 +159,8 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             actionTag: 'source',
             actionLabel: String(paper.id),
           });
-          dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'sourceButton'));
+          addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
+          dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'sourceButton'));
         }}
       >
         {buttonContent}
@@ -186,7 +188,8 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
               actionTag: 'citedList',
               actionLabel: String(paper.id),
             });
-            dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'citationButton'));
+            addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
+            dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'citationButton'));
           }}
           className={styles.citedButton}
         >

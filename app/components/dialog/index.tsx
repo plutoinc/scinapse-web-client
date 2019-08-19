@@ -32,7 +32,7 @@ import alertToast from '../../helpers/makePlutoToastAction';
 import FinalSignUpContent from '../auth/signUp/components/finalSignUpContent';
 import EnvChecker from '../../helpers/envChecker';
 import SurveyForm from '../auth/signUp/components/surveyForm';
-import { addPaperToRecommendation } from '../../actions/recommendation';
+import { openRecommendationPapersGuideDialog } from '../../actions/recommendation';
 import PaperFigureDetail from '../common/paperFigureDetail/paperFigureDetail';
 import { UserDevice } from '../layouts/records';
 const styles = require('./dialog.scss');
@@ -139,13 +139,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
 
     this.closeDialog();
     if (dialogState.collectionDialogTargetPaperId) {
-      dispatch(
-        addPaperToRecommendation(
-          currentUser.isLoggedIn,
-          dialogState.collectionDialogTargetPaperId,
-          'addToCollectionBtn'
-        )
-      );
+      dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'addToCollectionBtn'));
     }
   };
 
@@ -154,7 +148,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
 
     this.closeDialog();
     if (dialogState.citationPaperId) {
-      dispatch(addPaperToRecommendation(currentUser.isLoggedIn, dialogState.citationPaperId, 'citeButton'));
+      dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'citeButton'));
     }
   };
 

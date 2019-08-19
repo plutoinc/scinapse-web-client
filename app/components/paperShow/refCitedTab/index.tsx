@@ -7,7 +7,7 @@ import PdfDownloadButton from '../components/pdfDownloadButton';
 import RequestFullTextBtn from '../../../containers/paperShowActionBar/components/fullTextRequestBtn';
 import RequestFullTextDialog from '../../../containers/paperShowActionBar/components/fullTextDialog';
 import { PDFButtonProps, TabItemProps, PaperShowRefCitedTabProps } from './types';
-import { addPaperToRecommendation } from '../../../actions/recommendation';
+import { addPaperToRecommendation, openRecommendationPapersGuideDialog } from '../../../actions/recommendation';
 const styles = require('./refCitedTab.scss');
 
 const TabItem: React.FunctionComponent<TabItemProps> = props => {
@@ -57,7 +57,8 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
         isOpen={isOpen}
         onClose={() => {
           setIsOpen(false);
-          dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper!.id, 'requestFullTextBtn'));
+          addPaperToRecommendation(currentUser.isLoggedIn, paper!.id);
+          dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'requestFullTextBtn'));
         }}
       />
     </>

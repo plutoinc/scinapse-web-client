@@ -25,20 +25,12 @@ function setActionCount(count: number): number {
   return nextCount;
 }
 
-export function addPaperToRecommendation(isLoggedIn: boolean, paperId: number, actionArea: string) {
+export function openRecommendationPapersGuideDialog(isLoggedIn: boolean, actionArea: string) {
   return async (dispatch: Dispatch<any>) => {
+    if (!isLoggedIn) return;
+
     const randomizeRec = getUserGroupName(RANDOM_RECOMMENDATION_EXPERIMENT) === 'random';
     const prevActionCount = store.get(BASED_ACTIVITY_COUNT_STORE_KEY);
-    let newPaperIds;
-
-    if (!isLoggedIn) {
-      const basedPaperIdsForNonUser = store.get(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY) || [];
-      newPaperIds = uniq([paperId, ...basedPaperIdsForNonUser]).slice(0, 20);
-      store.set(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY, newPaperIds);
-      return;
-    } else {
-      RecommendationAPI.addPaperToRecommendationPool(paperId);
-    }
 
     if (prevActionCount === ALREADY_VISITED_RECOMMEND_PAPERS) return;
 
@@ -60,6 +52,20 @@ export function addPaperToRecommendation(isLoggedIn: boolean, paperId: number, a
         }
         break;
       }
+    }
+  };
+}
+
+export function addPaperToRecommendation(isLoggedIn: boolean, paperId: number) {
+  return async () => {
+    let newPaperIds;
+
+    if (!isLoggedIn) {
+      const basedPaperIdsForNonUser = store.get(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY) || [];
+      newPaperIds = uniq([paperId, ...basedPaperIdsForNonUser]).slice(0, 20);
+      store.set(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY, newPaperIds);
+    } else {
+      RecommendationAPI.addPaperToRecommendationPool(paperId);
     }
   };
 }

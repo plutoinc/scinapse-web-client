@@ -8,7 +8,7 @@ import Icon from '../../../icons';
 import SearchingPDFBtn from './searchingPDFBtn';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../../helpers/checkAuthDialog';
 import { CurrentUser } from '../../../model/currentUser';
-import { addPaperToRecommendation } from '../../../actions/recommendation';
+import { addPaperToRecommendation, openRecommendationPapersGuideDialog } from '../../../actions/recommendation';
 const styles = require('./pdfSourceButton.scss');
 
 interface PdfDownloadButtonProps {
@@ -57,7 +57,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
           e.preventDefault();
           trackActionToClickPdfDownloadBtn();
 
-          dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'downloadPdfBtn'));
+          addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
 
           const isBlocked = await blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,
@@ -73,6 +73,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
           window.open(pdfUrl, '_blank');
           onDownloadedPDF(true);
           handleSetScrollAfterDownload();
+          dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'downloadPdfBtn'));
         }}
       >
         <Icon icon="DOWNLOAD" className={styles.sourceIcon} />

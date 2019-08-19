@@ -23,7 +23,7 @@ import { getMemoizedCurrentUser } from '../../selectors/getCurrentUser';
 import { getMemoizedPDFViewerState } from '../../selectors/getPDFViewer';
 import ProgressSpinner from './component/progressSpinner';
 import BlurBlocker from './component/blurBlocker';
-import { addPaperToRecommendation } from '../../actions/recommendation';
+import { addPaperToRecommendation, openRecommendationPapersGuideDialog } from '../../actions/recommendation';
 const { Document, Page, pdfjs } = require('react-pdf');
 const styles = require('./pdfViewer.scss');
 
@@ -334,7 +334,8 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                         if (!EnvChecker.isOnServer()) {
                           e.preventDefault();
 
-                          await addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'downloadPdfButton');
+                          addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
+                          dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'downloadPdfButton'));
 
                           const isBlocked = await blockUnverifiedUser({
                             authLevel: AUTH_LEVEL.VERIFIED,

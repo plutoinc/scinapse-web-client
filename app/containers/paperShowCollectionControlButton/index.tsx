@@ -36,7 +36,7 @@ import { trackEvent } from '../../helpers/handleGA';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { ActionCreators } from '../../actions/actionTypes';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../helpers/checkAuthDialog';
-import { addPaperToRecommendation } from '../../actions/recommendation';
+import { addPaperToRecommendation, openRecommendationPapersGuideDialog } from '../../actions/recommendation';
 const styles = require('./paperShowCollectionControlButton.scss');
 
 const LAST_USER_COLLECTION_ID = 'l_u_c_id';
@@ -517,8 +517,8 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         actionTag: 'signInViaCollection',
         actionLabel: null,
       });
-
-      dispatch(addPaperToRecommendation(currentUser.isLoggedIn, targetPaperId, 'addToCollectionButton'));
+      addPaperToRecommendation(currentUser.isLoggedIn, targetPaperId);
+      dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'addToCollectionButton'));
       return;
     }
 
@@ -544,7 +544,8 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           cancelToken: this.cancelToken.token,
         })
       );
-      dispatch(addPaperToRecommendation(currentUser.isLoggedIn, targetPaperId, 'addToCollectionButton'));
+      addPaperToRecommendation(currentUser.isLoggedIn, targetPaperId);
+      dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'addToCollectionButton'));
       store.set(LAST_USER_COLLECTION_ID, selectedCollection.id);
     } else if (selectedCollection && targetPaperId && selectedCollection.containsSelected) {
       trackEvent({
