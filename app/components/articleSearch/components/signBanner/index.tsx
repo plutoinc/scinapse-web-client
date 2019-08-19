@@ -5,13 +5,14 @@ import GlobalDialogManager from '../../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import { useObserver } from '../../../../hooks/useIntersectionHook';
 import { ActionTicketParams } from '../../../../helpers/actionTicketManager/actionTicket';
+import Icon from '../../../../icons';
 const styles = require('./signBanner.scss');
 
 interface SignBannerProps {
   isLoading: boolean;
 }
 
-const SignBannerSignButtonText: React.FC = React.memo(() => {
+const SignBannerSignButtonText: React.FC = () => {
   return (
     <div className={styles.bannerSignButtonWrapper}>
       <button
@@ -38,11 +39,11 @@ const SignBannerSignButtonText: React.FC = React.memo(() => {
         }}
         className={styles.bannerSignButton}
       >
-        Join Now
+        Quick example for you
       </button>
     </div>
   );
-});
+};
 
 const SignBanner: React.FC<SignBannerProps> = props => {
   const { isLoading } = props;
@@ -69,18 +70,10 @@ const SignBanner: React.FC<SignBannerProps> = props => {
 
   return (
     <div className={styles.bannerContainer} ref={elRef}>
-      <div className={styles.bannerTitle}>Be a Scinapse Member</div>
-      <div className={styles.bannerBody}>Become a Scinapse member. Members can use all features unlimitedly.</div>
+      <div className={styles.bannerTitle}>Make your PAPER recipe!</div>
+      <div className={styles.bannerBody}>We recommend relevant papers based on your paper set. Try now!</div>
       <div className={styles.bannerImageWrapper}>
-        <picture>
-          <source srcSet={'https://assets.pluto.network/signup_modal/researchers.webp'} type="image/webp" />
-          <source srcSet={'https://assets.pluto.network/signup_modal/researchers.jpg'} type="image/jpeg" />
-          <img
-            className={styles.bannerImage}
-            src={'https://assets.pluto.network/signup_modal/researchers.jpg'}
-            alt={'bannerImage'}
-          />
-        </picture>
+        <Icon className={styles.bannerImage} icon="RECOMMEND_SIGN_UP_BANNER" />
       </div>
       <SignBannerSignButtonText />
     </div>

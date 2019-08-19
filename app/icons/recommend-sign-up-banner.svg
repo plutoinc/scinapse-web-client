@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="322" height="139" viewBox="0 0 322 139">
+    <defs>
+        <path id="a" d="M.68.34h25.856a.68.68 0 0 1 .68.68v2.042a.68.68 0 0 1-.68.68H.68a.68.68 0 0 1-.68-.68V1.02A.68.68 0 0 1 .68.34zm0 6.804h25.856a.68.68 0 0 1 .68.68v2.042a.68.68 0 0 1-.68.68H.68a.68.68 0 0 1-.68-.68V7.825a.68.68 0 0 1 .68-.68zm0 6.805h12.248a.68.68 0 0 1 .68.68v2.041a.68.68 0 0 1-.68.68H.68a.68.68 0 0 1-.68-.68V14.63a.68.68 0 0 1 .68-.68z"/>
+        <path id="c" d="M.68.34h25.856a.68.68 0 0 1 .68.68v2.042a.68.68 0 0 1-.68.68H.68a.68.68 0 0 1-.68-.68V1.02A.68.68 0 0 1 .68.34zm0 6.804h25.856a.68.68 0 0 1 .68.68v2.042a.68.68 0 0 1-.68.68H.68a.68.68 0 0 1-.68-.68V7.825a.68.68 0 0 1 .68-.68zm0 6.805h12.248a.68.68 0 0 1 .68.68v2.041a.68.68 0 0 1-.68.68H.68a.68.68 0 0 1-.68-.68V14.63a.68.68 0 0 1 .68-.68z"/>
+        <linearGradient id="e" x1="50%" x2="50%" y1="100%" y2="0%">
+            <stop offset="0%" stop-color="#F9F9FA"/>
+            <stop offset="100%" stop-color="#FFF"/>
+        </linearGradient>
+        <linearGradient id="f" x1="93.995%" x2="33.342%" y1="58.935%" y2="41.065%">
+            <stop offset="0%" stop-color="#F2F7FF"/>
+            <stop offset="100%" stop-color="#FFF"/>
+        </linearGradient>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g transform="translate(23.815 44.14)">
+            <rect width="40.825" height="55.794" fill="#D8DDE7" rx="1.361"/>
+            <g transform="translate(6.804 18.371)">
+                <mask id="b" fill="#fff">
+                    <use xlink:href="#a"/>
+                </mask>
+                <g fill="#F9F9FA" mask="url(#b)">
+                    <rect width="40.825" height="40.825" rx="3.402" transform="translate(-6.804 -11.567)"/>
+                </g>
+            </g>
+            <text fill="#F9F9FA" font-family="Roboto-Bold, Roboto" font-size="10.887" font-weight="bold">
+                <tspan x="15.975" y="13.8">A</tspan>
+            </text>
+        </g>
+        <path fill="#3E80FF" d="M184.89 44.14h38.074a1.36 1.36 0 0 1 1.347 1.558l-7.767 53.073a1.36 1.36 0 0 1-1.346 1.164h-38.075a1.36 1.36 0 0 1-1.346-1.558l7.766-53.073a1.36 1.36 0 0 1 1.347-1.164z"/>
+        <g fill="#F9F9FA" fill-rule="nonzero" transform="translate(183.714 62.512)">
+            <path d="M4.527.34h25.838a.68.68 0 0 1 .672.788l-.326 2.041a.68.68 0 0 1-.672.573H4.2a.68.68 0 0 1-.672-.788l.327-2.04A.68.68 0 0 1 4.527.34zM3.846 6.804h25.839a.68.68 0 0 1 .672.788l-.327 2.041a.68.68 0 0 1-.672.573H3.52a.68.68 0 0 1-.672-.788l.326-2.04a.68.68 0 0 1 .672-.574z"/>
+            <rect width="13.608" height="3.402" y="13.949" rx="1.361"/>
+        </g>
+        <text fill="#F9F9FA" font-family="Roboto-BoldItalic, Roboto" font-size="8.165" font-style="italic" font-weight="bold" transform="translate(175.549 44.14)">
+            <tspan x="18.371" y="14.124">NEW</tspan>
+        </text>
+        <path fill="#3E80FF" d="M231.839 44.14h38.074a1.36 1.36 0 0 1 1.347 1.558l-7.767 53.073a1.36 1.36 0 0 1-1.346 1.164h-38.075a1.36 1.36 0 0 1-1.346-1.558l7.766-53.073a1.36 1.36 0 0 1 1.347-1.164z"/>
+        <text fill="#F9F9FA" font-family="Roboto-BoldItalic, Roboto" font-size="8.165" font-style="italic" font-weight="bold" transform="translate(222.498 44.14)">
+            <tspan x="18.371" y="14.124">NEW</tspan>
+        </text>
+        <path fill="#F9F9FA" fill-rule="nonzero" d="M235.19 62.852h25.838a.68.68 0 0 1 .672.788l-.327 2.041a.68.68 0 0 1-.672.573h-25.838a.68.68 0 0 1-.672-.788l.326-2.041a.68.68 0 0 1 .672-.573zM234.509 69.316h25.838a.68.68 0 0 1 .672.788l-.326 2.041a.68.68 0 0 1-.672.573h-25.839a.68.68 0 0 1-.672-.788l.327-2.041a.68.68 0 0 1 .672-.573z"/>
+        <text fill="#3E80FF" font-family="Roboto-Bold, Roboto" font-size="10.887" font-weight="bold" transform="translate(0 19.645)">
+            <tspan x="204.126" y="20.206">+</tspan>
+        </text>
+        <text fill="#3E80FF" font-family="Roboto-Bold, Roboto" font-size="10.887" font-weight="bold" transform="translate(0 19.645)">
+            <tspan x="269.447" y="21.567">+</tspan>
+        </text>
+        <g>
+            <g transform="rotate(-20 129.341 -171.732)">
+                <rect width="40.825" height="55.794" fill="#D8DDE7" rx="1.361"/>
+                <g transform="translate(6.804 18.371)">
+                    <mask id="d" fill="#fff">
+                        <use xlink:href="#c"/>
+                    </mask>
+                    <g fill="#F9F9FA" mask="url(#d)">
+                        <rect width="40.825" height="40.825" rx="3.402" transform="translate(-6.804 -11.567)"/>
+                    </g>
+                </g>
+                <text fill="#F9F9FA" font-family="Roboto-Bold, Roboto" font-size="10.887" font-weight="bold">
+                    <tspan x="15.975" y="13.721">C</tspan>
+                </text>
+            </g>
+        </g>
+        <path fill="url(#e)" stroke="#D8DDE7" stroke-width="2.722" d="M143.016 99.682V76.817h-3.53V56.475H1.361v57.836a2.722 2.722 0 0 0 2.722 2.721h135.403v-17.35h3.53z" transform="translate(0 19.645)"/>
+        <path fill="url(#f)" stroke="#3E80FF" stroke-width="2.722" d="M151.658 74.877h3.377l-3.098 26.831h-3.164l-1.648 15.324H283.28a4.083 4.083 0 0 0 4.057-3.623l6.442-56.934H153.637l-1.98 18.402z" transform="translate(0 19.645)"/>
+        <g fill="#34495E">
+            <text font-family="Roboto-Bold, Roboto" font-size="16.33" font-weight="bold" transform="translate(18.371 94.491)">
+                <tspan x="25.856" y="17.722">Collection</tspan>
+            </text>
+            <path d="M31.702 109.27l1.25-1.824c.137-.2.364-.32.606-.32h4.41a.735.735 0 0 1 0 1.47h-4.023l-1.25 1.825a.735.735 0 0 1-.606.319h-2.94a.735.735 0 0 1-.606-.32l-1.25-1.823H23.27a.735.735 0 1 1 0-1.47h4.41c.242 0 .469.12.606.32l1.25 1.823h2.166z"/>
+            <path d="M27.165 100.697h6.907c.868 0 1.658.499 2.014 1.28l2.55 5.58c.044.095.066.2.066.305v3.572c0 1.2-.991 2.164-2.204 2.164H24.74c-1.213 0-2.204-.964-2.204-2.164v-3.572c0-.106.022-.21.066-.306l2.55-5.58a2.207 2.207 0 0 1 2.013-1.28zm10.068 7.325l-2.484-5.435a.738.738 0 0 0-.676-.42h-6.908a.738.738 0 0 0-.676.42l-2.484 5.435v3.412c0 .378.325.694.735.694h11.758c.41 0 .735-.316.735-.694v-3.412z"/>
+        </g>
+        <text fill="#2A73FF" font-family="Roboto-BoldItalic, Roboto" font-size="16.33" font-style="italic" font-weight="bold" transform="translate(0 19.645)">
+            <tspan x="169.425" y="92.568">+ Recommend</tspan>
+        </text>
+        <text fill="#3E80FF" font-family="Roboto-Bold, Roboto" font-size="10.887" font-weight="bold" transform="translate(0 19.645)">
+            <tspan x="286.457" y="69.197">+</tspan>
+        </text>
+        <path stroke="#D8DDE7" stroke-linecap="square" stroke-width=".68" d="M84.372 1.171v19.734M90.836 9.666v19.668M263.896 91.77h34.883M283.346 111.162h38.309M253.381 125.45h34.884"/>
+    </g>
+</svg>

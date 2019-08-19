@@ -1,14 +1,12 @@
 .bannerContainer {
   max-width: 354px;
-  min-height: 345px;
   width: 100%;
   height: 100%;
   border-radius: 4px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
   border: 1px solid $gray300;
   background-color: white;
-  padding: 24px 16px;
-  margin-bottom: 16px;
+  padding: 24px;
 }
 
 .bannerLoadingContainer {
@@ -20,13 +18,13 @@
 .bannerTitle {
   font-size: 24px;
   font-weight: bold;
-  color: $main_blue1;
+  line-height: 1;
+  color: $black0;
 }
 
 .bannerBody {
   margin-top: 8px;
   font-size: 16px;
-  line-height: 1.2;
   color: $gray800;
 }
 
@@ -49,7 +47,7 @@
 .bannerImage {
   max-width: 284px;
   width: 100%;
-  height: 180px;
+  height: 138px;
 }
 
 .loadingContainer {
@@ -66,4 +64,5 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 16px;
 }
