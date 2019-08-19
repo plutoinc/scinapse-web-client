@@ -34,6 +34,7 @@ import ImprovedFooter from '../layouts/improvedFooter';
 import KnowledgeBaseNoti from '../recommendPapersDialog';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { WEIGHTED_CITATION_EXPERIMENT, STRICT_SORT_EXPERIMENT } from '../../constants/abTestGlobalValue';
+import EmailBanner from './components/emailBanner';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -264,7 +265,9 @@ const SearchContainer: React.FC<Props> = props => {
               articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements > 0,
           })}
         >
-          {!currentUserState.isLoggedIn && <SignBanner isLoading={articleSearchState.isContentLoading} />}
+          {!currentUserState.isLoggedIn &&
+            !articleSearchState.isContentLoading && <SignBanner isLoading={articleSearchState.isContentLoading} />}
+          {!currentUserState.isLoggedIn && !articleSearchState.isContentLoading && <EmailBanner />}
         </div>
       </div>
       <ImprovedFooter
