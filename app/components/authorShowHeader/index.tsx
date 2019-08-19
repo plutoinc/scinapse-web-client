@@ -8,7 +8,7 @@ import Icon from '../../icons';
 import formatNumber from '../../helpers/formatNumber';
 import UploadableProfileImage from './uploadableProfileImage';
 import { CurrentUser } from '../../model/currentUser';
-import { UserDevice } from '../layouts/records';
+import { UserDevice } from '../layouts/reducer';
 const styles = require('./authorShowHeader.scss');
 
 interface AuthorShowHeaderProps {

@@ -3,10 +3,11 @@ import axios, { CancelTokenSource } from 'axios';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { CollectionShowState } from '../../containers/collectionShow/reducer';
-import { LayoutState, UserDevice } from '../layouts/records';
+import { LayoutState } from '../layouts/reducer';
 import { getPapers } from '../../containers/collectionShow/actions';
 import MobilePagination from '../common/mobilePagination';
 import DesktopPagination from '../common/desktopPagination';
+import { UserDevice } from '../layouts/reducer';
 
 const Pagination: React.FC<{
   dispatch: Dispatch<any>;

@@ -20,10 +20,10 @@ import PapersQueryFormatter, { FilterObject } from '../../../helpers/searchQuery
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { ACTION_TYPES } from '../../../actions/actionTypes';
 import { AppState } from '../../../reducers';
-import { UserDevice } from '../../layouts/records';
 import { getCurrentPageType } from '../../locationListener';
 import { handleInputKeydown } from './helpers/handleInputKeydown';
 import { changeSearchQuery } from '../../../actions/searchQuery';
+import { UserDevice } from '../../layouts/reducer';
 const s = require('./searchQueryInput.scss');
 
 type SearchQueryInputProps = React.InputHTMLAttributes<HTMLInputElement> &

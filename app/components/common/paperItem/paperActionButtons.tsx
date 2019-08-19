@@ -18,7 +18,8 @@ import formatNumber from '../../../helpers/formatNumber';
 import { addPaperToRecommendation } from '../../../actions/recommendation';
 import { PaperSource } from '../../../api/paper';
 import { AppState } from '../../../reducers';
-import { LayoutState, UserDevice } from '../../layouts/records';
+import { LayoutState } from '../../layouts/reducer';
+import { UserDevice } from '../../layouts/reducer';
 const styles = require('./paperActionButtons.scss');
 
 interface HandleClickClaim {

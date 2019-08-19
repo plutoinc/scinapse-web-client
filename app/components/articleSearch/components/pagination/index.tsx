@@ -3,9 +3,9 @@ import { Location } from 'history';
 import SearchQueryManager from '../../../../helpers/searchQueryManager';
 import DesktopPagination from '../../../common/desktopPagination';
 import MobilePagination from '../../../common/mobilePagination';
-import { UserDevice } from '../../../layouts/records';
 import { getUrlDecodedQueryParamsObject } from '../../../../helpers/makeNewFilterLink';
 import { withStyles } from '../../../../helpers/withStylesHelper';
+import { UserDevice } from '../../../layouts/reducer';
 const styles = require('../../articleSearch.scss');
 
 interface PaginationProps {

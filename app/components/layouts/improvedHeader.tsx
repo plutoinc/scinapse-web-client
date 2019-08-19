@@ -18,7 +18,6 @@ import { signOut } from '../auth/actions';
 import { trackDialogView } from '../../helpers/handleGA';
 import { HeaderProps } from './types/header';
 import { withStyles } from '../../helpers/withStylesHelper';
-import { UserDevice } from './records';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../locationListener';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
@@ -30,6 +29,7 @@ import SearchQueryManager from '../../helpers/searchQueryManager';
 import { getCollections } from '../collections/actions';
 import { getMemoizedPaper } from '../../containers/paperShow/select';
 import ResearchHistory from '../researchHistory';
+import { UserDevice } from './reducer';
 const styles = require('./improvedHeader.scss');
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;

@@ -19,7 +19,7 @@ import PaperShowRefCitedTab from '../../components/paperShow/refCitedTab';
 import { Paper } from '../../model/paper';
 import { fetchMyCollection, fetchPaperShowData } from './sideEffect';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
-import { LayoutState, UserDevice } from '../../components/layouts/records';
+import { LayoutState } from '../../components/layouts/reducer';
 import { getMemoizedPaper } from './select';
 import { formulaeToHTMLStr } from '../../helpers/displayFormula';
 import restoreScroll from '../../helpers/scrollRestoration';
@@ -47,6 +47,7 @@ import PlutoAxios from '../../api/pluto';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
 import KnowledgeBaseNoti from '../../components/recommendPapersDialog';
 import PaperShowFigureList from '../../components/paperShow/components/paperShowFigureList';
+import { UserDevice } from '../../components/layouts/reducer';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;

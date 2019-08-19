@@ -1,5 +1,4 @@
-import { createStore, applyMiddleware, compose, Store, AnyAction } from 'redux';
-import thunkMiddleware, { ThunkDispatch } from 'redux-thunk';
+import { configureStore, getDefaultMiddleware, EnhancedStore, AnyAction } from 'redux-starter-kit';
 import { createLogger } from 'redux-logger';
 import ReduxNotifier from '../middlewares/notifier';
 import setUserToTracker from '../middlewares/trackUser';
@@ -8,7 +7,7 @@ import { rootReducer, initialState, AppState } from '../reducers';
 import { logException } from '../helpers/errorHandler';
 
 class StoreManager {
-  private _store: Store<AppState, AnyAction> & { dispatch: ThunkDispatch<AppState, undefined, AnyAction> };
+  private _store: EnhancedStore<AppState, AnyAction>;
 
   public get store() {
     if (this._store) {
@@ -19,20 +18,19 @@ class StoreManager {
   }
 
   public initializeStore() {
+    const loggerMiddleware = createLogger({ collapsed: true });
+    const preloadedState = this.getBrowserInitialState();
+    const middlewares = [...getDefaultMiddleware(), ReduxNotifier, setUserToTracker];
     if (EnvChecker.isLocal() || EnvChecker.isDev()) {
-      const loggerMiddleware = createLogger({ collapsed: true });
-      return createStore(
-        rootReducer,
-        this.getBrowserInitialState(),
-        compose(applyMiddleware(thunkMiddleware, ReduxNotifier, loggerMiddleware, setUserToTracker))
-      );
-    } else {
-      return createStore(
-        rootReducer,
-        this.getBrowserInitialState(),
-        compose(applyMiddleware(thunkMiddleware, ReduxNotifier, setUserToTracker))
-      );
+      middlewares.push(loggerMiddleware);
     }
+
+    return configureStore({
+      reducer: rootReducer,
+      middleware: middlewares,
+      devTools: process.env.NODE_ENV !== 'production',
+      preloadedState,
+    });
   }
 
   private getBrowserInitialState() {
