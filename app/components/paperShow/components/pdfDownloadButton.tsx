@@ -8,7 +8,8 @@ import Icon from '../../../icons';
 import SearchingPDFBtn from './searchingPDFBtn';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../../helpers/checkAuthDialog';
 import { CurrentUser } from '../../../model/currentUser';
-import { addPaperToRecommendation, openRecommendationPapersGuideDialog } from '../../../actions/recommendation';
+import { openRecommendationPapersGuideDialog } from '../../../actions/recommendation';
+import { addPaperToRecommendation } from '../../../helpers/recommendationPoolManager';
 const styles = require('./pdfSourceButton.scss');
 
 interface PdfDownloadButtonProps {

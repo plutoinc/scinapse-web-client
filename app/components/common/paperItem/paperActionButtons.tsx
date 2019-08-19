@@ -15,10 +15,11 @@ import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import CollectionButton from './collectionButton';
 import formatNumber from '../../../helpers/formatNumber';
-import { addPaperToRecommendation, openRecommendationPapersGuideDialog } from '../../../actions/recommendation';
+import { openRecommendationPapersGuideDialog } from '../../../actions/recommendation';
 import { PaperSource } from '../../../api/paper';
 import { AppState } from '../../../reducers';
 import { LayoutState, UserDevice } from '../../layouts/records';
+import { addPaperToRecommendation } from '../../../helpers/recommendationPoolManager';
 const styles = require('./paperActionButtons.scss');
 
 interface HandleClickClaim {

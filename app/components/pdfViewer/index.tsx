@@ -23,7 +23,8 @@ import { getMemoizedCurrentUser } from '../../selectors/getCurrentUser';
 import { getMemoizedPDFViewerState } from '../../selectors/getPDFViewer';
 import ProgressSpinner from './component/progressSpinner';
 import BlurBlocker from './component/blurBlocker';
-import { addPaperToRecommendation, openRecommendationPapersGuideDialog } from '../../actions/recommendation';
+import { openRecommendationPapersGuideDialog } from '../../actions/recommendation';
+import { addPaperToRecommendation } from '../../helpers/recommendationPoolManager';
 const { Document, Page, pdfjs } = require('react-pdf');
 const styles = require('./pdfViewer.scss');
 

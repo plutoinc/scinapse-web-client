@@ -10,7 +10,8 @@ import ScinapseButtonFactory, { ScinapseButtonType } from '../../common/scinapse
 import SourceURLPopover from '../../common/sourceURLPopover';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-import { addPaperToRecommendation, openRecommendationPapersGuideDialog } from '../../../actions/recommendation';
+import { openRecommendationPapersGuideDialog } from '../../../actions/recommendation';
+import { addPaperToRecommendation } from '../../../helpers/recommendationPoolManager';
 const styles = require('./pdfSourceButton.scss');
 
 interface SourceButtonProps {

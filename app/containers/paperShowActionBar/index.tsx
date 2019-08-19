@@ -10,7 +10,8 @@ import { CurrentUser } from '../../model/currentUser';
 import SourceButton from '../../components/paperShow/components/sourceButton';
 import ViewFullTextBtn from '../../components/paperShow/components/viewFullTextBtn';
 import RequestFullTextBtn from './components/fullTextRequestBtn';
-import { addPaperToRecommendation, openRecommendationPapersGuideDialog } from '../../actions/recommendation';
+import { openRecommendationPapersGuideDialog } from '../../actions/recommendation';
+import { addPaperToRecommendation } from '../../helpers/recommendationPoolManager';
 const s = require('./actionBar.scss');
 
 interface PaperShowActionBarProps {

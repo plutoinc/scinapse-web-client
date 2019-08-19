@@ -7,7 +7,8 @@ import PdfDownloadButton from '../components/pdfDownloadButton';
 import RequestFullTextBtn from '../../../containers/paperShowActionBar/components/fullTextRequestBtn';
 import RequestFullTextDialog from '../../../containers/paperShowActionBar/components/fullTextDialog';
 import { PDFButtonProps, TabItemProps, PaperShowRefCitedTabProps } from './types';
-import { addPaperToRecommendation, openRecommendationPapersGuideDialog } from '../../../actions/recommendation';
+import { openRecommendationPapersGuideDialog } from '../../../actions/recommendation';
+import { addPaperToRecommendation } from '../../../helpers/recommendationPoolManager';
 const styles = require('./refCitedTab.scss');
 
 const TabItem: React.FunctionComponent<TabItemProps> = props => {
