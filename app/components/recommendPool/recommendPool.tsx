@@ -1,17 +1,14 @@
 import React from 'react';
-import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Dialog from '@material-ui/core/Dialog';
-import { AppState } from '../../reducers';
 import { withStyles } from '../../helpers/withStylesHelper';
-import { ActionCreators } from '../../actions/actionTypes';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../locationListener';
-import { ALREADY_VISITED_RECOMMEND_PAPERS, BASED_ACTIVITY_COUNT_STORE_KEY } from './recommendPapersDialogConstants';
-const styles = require('./recommendPapersDialog.scss');
-const store = require('store');
-
-type Props = ReturnType<typeof mapStateToProps> & { dispatch: Dispatch<any> };
+import { ActionCreators } from '../../actions/actionTypes';
+import { RecommendPapersDialogState } from '../../reducers/recommendPapersDialog';
+import { AppState } from '../../reducers';
+import { ALREADY_VISITED_RECOMMEND_PAPERS, BASED_ACTIVITY_COUNT_STORE_KEY } from './constants';
+const styles = require('./recommendPool.scss');
 
 function clickLetMeSeeBtn(actionArea: string) {
   store.set(BASED_ACTIVITY_COUNT_STORE_KEY, ALREADY_VISITED_RECOMMEND_PAPERS);
@@ -24,9 +21,10 @@ function clickLetMeSeeBtn(actionArea: string) {
   });
 }
 
-const RecommendPapersDialog: React.FC<Props> = props => {
-  const { recommendPapersDialogState, dispatch } = props;
-  const { isOpen, actionArea } = recommendPapersDialogState;
+const RecommendPool: React.FC = () => {
+  const dispatch = useDispatch();
+  const dialogState = useSelector<AppState, RecommendPapersDialogState>(state => state.recommendPapersDialogState);
+  const { isOpen, actionArea } = dialogState;
 
   React.useEffect(
     () => {
@@ -75,10 +73,4 @@ const RecommendPapersDialog: React.FC<Props> = props => {
   );
 };
 
-const mapStateToProps = (state: AppState) => {
-  return {
-    recommendPapersDialogState: state.recommendPapersDialogState,
-  };
-};
-
-export default connect(mapStateToProps)(withStyles<typeof RecommendPapersDialog>(styles)(RecommendPapersDialog));
+export default withStyles<typeof RecommendPool>(styles)(RecommendPool);

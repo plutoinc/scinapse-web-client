@@ -4,7 +4,7 @@ import { ActionCreators } from './actionTypes';
 import {
   ALREADY_VISITED_RECOMMEND_PAPERS,
   BASED_ACTIVITY_COUNT_STORE_KEY,
-} from '../components/recommendPapersDialog/recommendPapersDialogConstants';
+} from '../components/recommendPool/constants';
 import { getUserGroupName } from '../helpers/abTestHelper';
 import { RANDOM_RECOMMENDATION_EXPERIMENT } from '../constants/abTestGlobalValue';
 const store = require('store');

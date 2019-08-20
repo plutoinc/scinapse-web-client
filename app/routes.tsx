@@ -163,6 +163,7 @@ interface RootRoutesProps extends RouteComponentProps<any> {}
 const DialogComponent = loadable(() => import('./components/dialog'));
 const FeedbackButton = loadable(() => import('./containers/feedbackButton'));
 const ImprovedHeader = loadable(() => import('./components/layouts/improvedHeader'));
+const RecommendPool = loadable(() => import('./components/recommendPool/recommendPool'));
 
 const DefaultHelmet = () => {
   return (
@@ -260,6 +261,7 @@ const RootRoutes: React.FC<RootRoutesProps> = props => {
       <LocationListener />
       <DialogComponent />
       <FeedbackButton />
+      <RecommendPool />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { uniq } from 'lodash';
-import { BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY } from '../components/recommendPapersDialog/recommendPapersDialogConstants';
+import { BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY } from '../components/recommendPool/constants';
 import RecommendationAPI from '../api/recommendation';
 const store = require('store');
 
