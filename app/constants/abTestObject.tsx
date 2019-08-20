@@ -1,16 +1,10 @@
 import { Test } from './abTest';
 import {
   DUMMY_TEST,
-  QUERY_LOVER_EXPERIMENT,
   WEIGHTED_CITATION_EXPERIMENT,
   STRICT_SORT_EXPERIMENT,
   RANDOM_RECOMMENDATION_EXPERIMENT,
 } from './abTestGlobalValue';
-
-export const queryLover: Test = {
-  name: QUERY_LOVER_EXPERIMENT,
-  userGroup: [{ groupName: 'control', weight: 9 }, { groupName: 'queryLover', weight: 1 }],
-};
 
 export const dummy: Test = {
   name: DUMMY_TEST,

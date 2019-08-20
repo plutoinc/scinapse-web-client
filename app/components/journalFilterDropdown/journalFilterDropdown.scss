@@ -12,6 +12,9 @@
   background-color: white;
   padding: 24px;
   margin-top: 8px;
+  // below overflow attributes are needed for override default Material-ui's Paper component behavior
+  overflow-x: visible;
+  overflow-y: visible;
 }
 
 .filterWrapper {
@@ -44,7 +47,8 @@
 .journalListWrapper {
   max-height: 312px;
   overflow-y: auto;
-  margin-bottom: 24px;
+  margin: 0 -24px 24px -24px;
+  padding: 0 24px;
 }
 
 .listHeader {
@@ -125,19 +129,5 @@
   .dropBoxWrapper {
     width: 100vw;
     padding: 12px;
-  }
-}
-
-@keyframes wave {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  50% {
-    transform: translate3d(0, -3px, 0);
-  }
-
-  100% {
-    transform: translate3d(0, 0, 0);
   }
 }

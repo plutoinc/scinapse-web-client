@@ -7,7 +7,7 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import Helmet from 'react-helmet';
 import ReactCountUp from 'react-countup';
 import { AppState } from '../../reducers';
-import { LayoutState, UserDevice } from '../layouts/records';
+import { LayoutState } from '../layouts/reducer';
 import { withStyles } from '../../helpers/withStylesHelper';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
 import TrendingPaper from './components/trendingPaper';
@@ -21,6 +21,7 @@ import RecommendedPapers from './components/recommendedPapers';
 import { Paper } from '../../model/paper';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { RANDOM_RECOMMENDATION_EXPERIMENT } from '../../constants/abTestGlobalValue';
+import { UserDevice } from '../layouts/reducer';
 const styles = require('./improvedHome.scss');
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;

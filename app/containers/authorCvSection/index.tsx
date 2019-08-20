@@ -3,7 +3,7 @@ import { denormalize } from 'normalizr';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { ConnectedAuthorShowState } from '../connectedAuthorShow/reducer';
-import { LayoutState } from '../../components/layouts/records';
+import { LayoutState } from '../../components/layouts/reducer';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { AppState } from '../../reducers';
 import { CurrentUser } from '../../model/currentUser';

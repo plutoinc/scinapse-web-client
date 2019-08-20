@@ -4,24 +4,23 @@ import classNames from 'classnames';
 import Icon from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
 import formatNumber from '../../helpers/formatNumber';
+import { AggregationJournal } from '../../model/aggregation';
+import JournalBadge from '../journalBadge';
 
 const s = require('./journalFilterItem.scss');
-
 interface JournalItemProps {
-  id: number;
-  title: string;
+  journal: AggregationJournal;
   checked: boolean;
   isHighlight: boolean;
   onClick: (journalId: number) => void;
   isSearchResult?: boolean;
-  docCount?: number;
-  IF?: number;
-  fromSearch?: boolean;
 }
 
 const JournalItem: React.FC<JournalItemProps> = React.memo(props => {
+  const { journal } = props;
+
   let ImpactFactor = null;
-  if (props.IF) {
+  if (journal.impactFactor) {
     ImpactFactor = (
       <span
         className={classNames({
@@ -29,16 +28,17 @@ const JournalItem: React.FC<JournalItemProps> = React.memo(props => {
           [s.noDocCount]: props.isSearchResult,
         })}
       >
+        {journal.sci && <JournalBadge text="SCI" labelClassName={s.journalBadge} />}
         <Tooltip
-          disableFocusListener={true}
-          disableTouchListener={true}
           title="Impact Factor"
           placement="top"
           classes={{ tooltip: s.arrowBottomTooltip }}
+          disableFocusListener
+          disableTouchListener
         >
           <span>
             <Icon className={s.ifIconWrapper} icon="IMPACT_FACTOR" />
-            {props.IF.toFixed(2)}
+            {journal.impactFactor.toFixed(2)}
           </span>
         </Tooltip>
       </span>
@@ -46,14 +46,19 @@ const JournalItem: React.FC<JournalItemProps> = React.memo(props => {
   }
 
   let docCount = null;
-  if (!props.isSearchResult && !props.fromSearch) {
-    docCount = <span className={s.countBox}>{`(${formatNumber(props.docCount)})`}</span>;
+  if (!props.isSearchResult && !journal.missingDocCount) {
+    docCount = <span className={s.countBox}>{`(${formatNumber(journal.docCount)})`}</span>;
+  }
+
+  let title = journal.title;
+  if (journal.jc === 'CONFERENCE' && journal.abbrev) {
+    title = `${journal.abbrev}: ${journal.title}`;
   }
 
   return (
     <button
       onClick={() => {
-        props.onClick(props.id);
+        props.onClick(journal.id);
       }}
       className={classNames({
         [s.journalItem]: true,
@@ -63,7 +68,7 @@ const JournalItem: React.FC<JournalItemProps> = React.memo(props => {
       })}
     >
       <input type="checkbox" className={s.checkbox} checked={props.checked} readOnly />
-      <span className={s.title}>{props.title}</span>
+      <span className={s.title}>{title}</span>
       {ImpactFactor}
       {docCount}
     </button>

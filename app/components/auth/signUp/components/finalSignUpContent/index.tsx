@@ -6,6 +6,7 @@ const s = require('./finalSignUpContent.scss');
 interface FinalSignUpContentProps {
   onSubmit: () => void;
   contentType: string;
+  email?: string;
 }
 
 function withSocialCompleteContent() {
@@ -18,20 +19,23 @@ function withSocialCompleteContent() {
   );
 }
 
-function withEmailCompleteContent() {
+function withEmailCompleteContent(email?: string) {
   return (
     <>
       <div className={s.finalSignUpContent}>{`Please check your email
 and verify your email address`}</div>
       <Icon className={s.finalSignUpIconWrapper} icon="VERIFICATION_EMAIL_ICON" />
+      <div className={s.toEmail}>
+        Sent to <span className={s.email}>{email}</span>
+      </div>
     </>
   );
 }
 
 const FinalSignUpContent: React.FunctionComponent<FinalSignUpContentProps> = props => {
-  const { onSubmit, contentType } = props;
+  const { onSubmit, contentType, email } = props;
 
-  const finalContent = contentType === 'email' ? withEmailCompleteContent() : withSocialCompleteContent();
+  const finalContent = contentType === 'email' ? withEmailCompleteContent(email) : withSocialCompleteContent();
 
   return (
     <div className={s.signUpContainer}>
@@ -39,8 +43,25 @@ const FinalSignUpContent: React.FunctionComponent<FinalSignUpContentProps> = pro
         <div className={s.finalSignUpTitle}>THANK YOU FOR REGISTERING</div>
         {finalContent}
         <button type="submit" className={s.finalSignUpSubmitButton}>
-          CONFIRM
+          OK
         </button>
+        <div className={s.additionalNoti}>
+          <div className={s.notiTitle}>Didn't get the verification mail?</div>
+          <div className={s.notiContentList}>
+            <Icon className={s.notiContentCheckIcon} icon="CHECK" />
+            <span className={s.notiContent}>Check typo in your email address.</span>
+          </div>
+          <div className={s.notiContentList}>
+            <Icon className={s.notiContentCheckIcon} icon="CHECK" />
+            <span className={s.notiContent}>Check your spam box.</span>
+          </div>
+          <div className={s.notiContentList}>
+            <Icon className={s.notiContentCheckIcon} icon="CHECK" />
+            <span className={s.notiContent}>
+              Check whether you are using spam solution. <br /> ex) BitBounce
+            </span>
+          </div>
+        </div>
       </form>
     </div>
   );

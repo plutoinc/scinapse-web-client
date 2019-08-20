@@ -20,7 +20,7 @@ import { paperSchema, Paper } from '../../model/paper';
 import { journalSchema, Journal } from '../../model/journal';
 import { JournalShowState } from './reducer';
 import Icon from '../../icons';
-import { LayoutState, UserDevice } from '../layouts/records';
+import { LayoutState } from '../layouts/reducer';
 import formatNumber from '../../helpers/formatNumber';
 import SortBox, { PAPER_LIST_SORT_TYPES } from '../common/sortBox';
 import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
@@ -30,6 +30,7 @@ import restoreScroll from '../../helpers/scrollRestoration';
 import ErrorPage from '../error/errorPage';
 import { JournalShowMatchParams } from './types';
 import ImprovedFooter from '../layouts/improvedFooter';
+import { UserDevice } from '../layouts/reducer';
 const styles = require('./journalShow.scss');
 
 function mapStateToProps(state: AppState) {

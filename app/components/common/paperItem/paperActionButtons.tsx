@@ -18,7 +18,7 @@ import formatNumber from '../../../helpers/formatNumber';
 import { openRecommendationPapersGuideDialog } from '../../../actions/recommendation';
 import { PaperSource } from '../../../api/paper';
 import { AppState } from '../../../reducers';
-import { LayoutState, UserDevice } from '../../layouts/records';
+import { LayoutState, UserDevice } from '../../layouts/reducer';
 import { addPaperToRecommendation } from '../../../helpers/recommendationPoolManager';
 const styles = require('./paperActionButtons.scss');
 

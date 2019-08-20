@@ -3,7 +3,7 @@ import { Dispatch } from 'redux';
 import { DialogState } from '../reducer';
 import { CurrentUser } from '../../../model/currentUser';
 import { Collection } from '../../../model/collection';
-import { LayoutState } from '../../layouts/records';
+import { LayoutState } from '../../layouts/reducer';
 
 export interface DialogContainerProps
   extends Readonly<{

@@ -18,6 +18,7 @@
     "strictNullChecks": true,
     "typeRoots": ["./node_modules/@types", "./typings"]
   },
-  "include": ["app/**/*", "e2eTest/**/*", "localServer/**/*", "server/**/*"],
+  "include": ["app/**/*",
+    "e2eTest/**/*", "localServer/**/*", "server/**/*"],
   "exclude": ["node_modules/**/*"]
 }

@@ -14,8 +14,8 @@ import FOSFilterDropdown from '../../components/fosFilterDropdown';
 import SortingDropdown from '../../components/sortingDropdown';
 import Icon from '../../icons';
 import makeNewFilterLink from '../../helpers/makeNewFilterLink';
-import { UserDevice } from '../../components/layouts/records';
 import ActionTicketManager from '../../helpers/actionTicketManager';
+import { UserDevice } from '../../components/layouts/reducer';
 
 const s = require('./filterBox.scss');
 

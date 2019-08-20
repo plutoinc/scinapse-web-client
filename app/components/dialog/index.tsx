@@ -34,7 +34,7 @@ import EnvChecker from '../../helpers/envChecker';
 import SurveyForm from '../auth/signUp/components/surveyForm';
 import { openRecommendationPapersGuideDialog } from '../../actions/recommendation';
 import PaperFigureDetail from '../common/paperFigureDetail/paperFigureDetail';
-import { UserDevice } from '../layouts/records';
+import { UserDevice } from '../layouts/reducer';
 const styles = require('./dialog.scss');
 
 function mapStateToProps(state: AppState) {
@@ -304,7 +304,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       }
 
       case GLOBAL_DIALOG_TYPE.FINAL_SIGN_UP_WITH_EMAIL: {
-        return <FinalSignUpContent onSubmit={this.closeDialog} contentType="email" />;
+        return <FinalSignUpContent onSubmit={this.closeDialog} contentType="email" email={currentUser.email} />;
       }
 
       case GLOBAL_DIALOG_TYPE.FINAL_SIGN_UP_WITH_SOCIAL: {

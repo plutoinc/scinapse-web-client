@@ -20,7 +20,7 @@ import ArticleSpinner from '../../components/common/spinner/articleSpinner';
 import CoAuthor from '../../components/common/coAuthor';
 import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
 import TransparentButton from '../../components/common/transparentButton';
-import { LayoutState, UserDevice } from '../../components/layouts/records';
+import { LayoutState } from '../../components/layouts/reducer';
 import AuthorShowHeader from '../../components/authorShowHeader';
 import { SuggestAffiliation } from '../../api/suggest';
 import { Affiliation } from '../../model/affiliation';
@@ -33,6 +33,7 @@ import ImprovedFooter from '../../components/layouts/improvedFooter';
 import ScinapseInput from '../../components/common/scinapseInput';
 import Icon from '../../icons';
 import ActionTicketManager from '../../helpers/actionTicketManager';
+import { UserDevice } from '../../components/layouts/reducer';
 const styles = require('./authorShow.scss');
 
 export interface AuthorShowMatchParams {

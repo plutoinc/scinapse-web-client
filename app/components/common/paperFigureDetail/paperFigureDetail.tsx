@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { AppState } from '../../../reducers';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
-import { UserDevice } from '../../layouts/records';
 import SliderButtons from './sliderButtons';
 import { FIGURE_PREFIX } from '../../../constants/paperFigure';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../../locationListener';
+import { UserDevice } from '../../layouts/reducer';
 const styles = require('./paperFigureDetail.scss');
 
 const MAX_LENGTH_OF_MOBILE_CAPTION = 250;
