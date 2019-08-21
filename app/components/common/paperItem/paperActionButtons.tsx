@@ -15,11 +15,13 @@ import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import CollectionButton from './collectionButton';
 import formatNumber from '../../../helpers/formatNumber';
-import { openRecommendationPapersGuideDialog } from '../../../actions/recommendation';
 import { PaperSource } from '../../../api/paper';
 import { AppState } from '../../../reducers';
 import { LayoutState, UserDevice } from '../../layouts/reducer';
-import { addPaperToRecommendation } from '../../../helpers/recommendationPoolManager';
+import {
+  addPaperToRecommendPool,
+  addPaperToRecommendPoolAndOpenDialog,
+} from '../../recommendPool/recommendPoolActions';
 const styles = require('./paperActionButtons.scss');
 
 interface HandleClickClaim {
@@ -111,7 +113,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   }
 
   private getSourceButton = () => {
-    const { paper, pageType, actionArea, currentUser, sourceDomain, dispatch, layout } = this.props;
+    const { paper, pageType, actionArea, sourceDomain, dispatch, layout } = this.props;
 
     if (sourceDomain) {
       return (
@@ -124,8 +126,13 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
               actionTag: 'source',
               actionLabel: String(paper.id),
             });
-            await addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
-            dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'sourceButton'));
+            dispatch(
+              addPaperToRecommendPoolAndOpenDialog({
+                pageType,
+                actionArea: 'sourceButton',
+                paperId: paper.id,
+              })
+            );
           }}
           pageType={pageType}
           actionArea={actionArea}
@@ -160,8 +167,13 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             actionTag: 'source',
             actionLabel: String(paper.id),
           });
-          await addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
-          dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'sourceButton'));
+          dispatch(
+            addPaperToRecommendPoolAndOpenDialog({
+              pageType,
+              actionArea: 'sourceButton',
+              paperId: paper.id,
+            })
+          );
         }}
       >
         {buttonContent}
@@ -170,7 +182,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   };
 
   private getCitedButton = () => {
-    const { paper, pageType, actionArea, currentUser, dispatch } = this.props;
+    const { paper, pageType, actionArea, dispatch } = this.props;
 
     if (!paper.citedCount) {
       return null;
@@ -189,8 +201,13 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
               actionTag: 'citedList',
               actionLabel: String(paper.id),
             });
-            await addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
-            dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'citationButton'));
+            dispatch(
+              addPaperToRecommendPoolAndOpenDialog({
+                pageType,
+                actionArea: 'citationButton',
+                paperId: paper.id,
+              })
+            );
           }}
           className={styles.citedButton}
         >
@@ -201,7 +218,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   };
 
   private getCitationQuoteButton = () => {
-    const { paper, currentUser, pageType, actionArea } = this.props;
+    const { paper, pageType, actionArea, dispatch } = this.props;
 
     if (paper.doi) {
       return (
@@ -209,7 +226,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
           <span
             className={styles.citationIconWrapper}
             onClick={async () => {
-              await addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
+              dispatch(addPaperToRecommendPool(paper.id));
               GlobalDialogManager.openCitationDialog(paper.id);
               ActionTicketManager.trackTicket({
                 pageType,

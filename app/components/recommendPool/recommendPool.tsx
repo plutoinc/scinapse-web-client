@@ -1,45 +1,32 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Dialog from '@material-ui/core/Dialog';
+import { Link } from 'react-router-dom';
 import { withStyles } from '../../helpers/withStylesHelper';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../locationListener';
-import { ActionCreators } from '../../actions/actionTypes';
-import { RecommendPapersDialogState } from '../../reducers/recommendPapersDialog';
 import { AppState } from '../../reducers';
-import { ALREADY_VISITED_RECOMMEND_PAPERS, BASED_ACTIVITY_COUNT_STORE_KEY } from './constants';
+import { ALREADY_VISITED_RECOMMEND_PAPERS, BASED_ACTIVITY_COUNT_STORE_KEY } from './recommendPoolConstants';
+import { RecommendPoolState, closeRecommendPapersDialog } from './recommendPoolReducer';
 const styles = require('./recommendPool.scss');
-
-function clickLetMeSeeBtn(actionArea: string) {
-  store.set(BASED_ACTIVITY_COUNT_STORE_KEY, ALREADY_VISITED_RECOMMEND_PAPERS);
-  ActionTicketManager.trackTicket({
-    pageType: getCurrentPageType(),
-    actionType: 'fire',
-    actionArea: 'knowledgeBaseNoti',
-    actionTag: 'clickLetMeSeeBtn',
-    actionLabel: actionArea,
-  });
-}
+const store = require('store');
 
 const RecommendPool: React.FC = () => {
   const dispatch = useDispatch();
-  const dialogState = useSelector<AppState, RecommendPapersDialogState>(state => state.recommendPapersDialogState);
+  const dialogState = useSelector<AppState, RecommendPoolState>(state => state.recommendPoolState);
   const { isOpen, actionArea } = dialogState;
 
-  React.useEffect(
-    () => {
-      if (isOpen) {
-        ActionTicketManager.trackTicket({
-          pageType: getCurrentPageType(),
-          actionType: 'view',
-          actionArea: 'knowledgeBaseNoti',
-          actionTag: 'viewKnowledgeBaseNoti',
-          actionLabel: actionArea,
-        });
-      }
-    },
-    [isOpen]
-  );
+  function clickLetMeSeeBtn(actionArea: string) {
+    store.set(BASED_ACTIVITY_COUNT_STORE_KEY, ALREADY_VISITED_RECOMMEND_PAPERS);
+    ActionTicketManager.trackTicket({
+      pageType: getCurrentPageType(),
+      actionType: 'fire',
+      actionArea: 'knowledgeBaseNoti',
+      actionTag: 'clickLetMeSeeBtn',
+      actionLabel: actionArea,
+    });
+    dispatch(closeRecommendPapersDialog());
+  }
 
   return (
     <Dialog open={isOpen} classes={{ paper: styles.notiContainer }}>
@@ -49,13 +36,13 @@ const RecommendPool: React.FC = () => {
         <span className={styles.notiContent}>Do you want to check it?</span>
       </div>
       <div className={styles.notiBtnWrapper}>
-        <a className={styles.letMeSeeBtn} href="/#recommended" onClick={() => clickLetMeSeeBtn(actionArea)}>
+        <Link className={styles.letMeSeeBtn} to="/#recommended" onClick={() => clickLetMeSeeBtn(actionArea)}>
           Let me see
-        </a>
+        </Link>
         <button
           className={styles.noThxBtn}
           onClick={() => {
-            dispatch(ActionCreators.closeRecommendPapersDialog());
+            dispatch(closeRecommendPapersDialog());
             ActionTicketManager.trackTicket({
               pageType: getCurrentPageType(),
               actionType: 'fire',

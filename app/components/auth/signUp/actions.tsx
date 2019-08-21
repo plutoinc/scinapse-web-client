@@ -2,7 +2,7 @@ import { Dispatch } from 'redux';
 import AuthAPI from '../../../api/auth';
 import { SignUpWithEmailParams, SignUpWithSocialParams } from '../../../api/types/auth';
 import RecommendationAPI from '../../../api/recommendation';
-import { BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY } from '../../recommendPool/constants';
+import { BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY } from '../../recommendPool/recommendPoolConstants';
 import { ACTION_TYPES } from '../../../actions/actionTypes';
 import alertToast from '../../../helpers/makePlutoToastAction';
 import EnvChecker from '../../../helpers/envChecker';

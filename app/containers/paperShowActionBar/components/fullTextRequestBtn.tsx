@@ -5,21 +5,19 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import SearchingPDFBtn from '../../../components/paperShow/components/searchingPDFBtn';
-import { addPaperToRecommendation } from '../../../helpers/recommendationPoolManager';
 const s = require('../actionBar.scss');
 
-interface RequesrFullTextBtnProps {
-  isLoggedIn: boolean;
+interface RequestFullTextBtnProps {
   isLoading: boolean;
   paperId: number;
-  handleSetIsOpen: (value: React.SetStateAction<boolean>) => void;
+  onClick: () => void;
   actionArea: Scinapse.ActionTicket.ActionArea;
   btnStyle?: React.CSSProperties;
   lastRequestedDate: string | null;
 }
 
-const RequestFullTextBtn: React.FC<RequesrFullTextBtnProps> = React.memo(props => {
-  const { isLoggedIn, isLoading, paperId, actionArea, handleSetIsOpen, btnStyle, lastRequestedDate } = props;
+const RequestFullTextBtn: React.FC<RequestFullTextBtnProps> = React.memo(props => {
+  const { isLoading, paperId, actionArea, onClick, btnStyle, lastRequestedDate } = props;
 
   if (isLoading) {
     return <SearchingPDFBtn isLoading={isLoading} />;
@@ -45,8 +43,6 @@ const RequestFullTextBtn: React.FC<RequesrFullTextBtnProps> = React.memo(props =
             actionLabel: String(paperId),
           });
 
-          if (!isLoggedIn) await addPaperToRecommendation(isLoggedIn, paperId);
-
           const isBlocked = await blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,
             actionArea,
@@ -55,7 +51,7 @@ const RequestFullTextBtn: React.FC<RequesrFullTextBtnProps> = React.memo(props =
           });
 
           if (!isBlocked) {
-            handleSetIsOpen(true);
+            onClick();
           }
         }}
         className={s.fullTextBtn}

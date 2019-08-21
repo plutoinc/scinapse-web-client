@@ -4,26 +4,23 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { Paper } from '../../../model/paper';
-import { CurrentUser } from '../../../model/currentUser';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import ScinapseButtonFactory, { ScinapseButtonType } from '../../common/scinapseButton/scinapseButtonFactory';
 import SourceURLPopover from '../../common/sourceURLPopover';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-import { openRecommendationPapersGuideDialog } from '../../../actions/recommendation';
-import { addPaperToRecommendation } from '../../../helpers/recommendationPoolManager';
+import { addPaperToRecommendPoolAndOpenDialog } from '../../recommendPool/recommendPoolActions';
 const styles = require('./pdfSourceButton.scss');
 
 interface SourceButtonProps {
   paper: Paper;
   showFullText: boolean;
-  currentUser: CurrentUser;
   dispatch: Dispatch<any>;
   wrapperStyle?: React.CSSProperties;
 }
 
 const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
-  const { paper, showFullText, currentUser, dispatch } = props;
+  const { paper, showFullText, dispatch } = props;
   const [isSourcePopoverOpen, setIsSourcePopoverOpen] = React.useState(false);
   const anchorEl = React.useRef<HTMLDivElement | null>(null);
 
@@ -83,8 +80,13 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
               onClick: async e => {
                 e.preventDefault();
                 handleClickSource();
-                await addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
-                dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'sourceButton'));
+                dispatch(
+                  addPaperToRecommendPoolAndOpenDialog({
+                    pageType: 'paperShow',
+                    actionArea: 'sourceButton',
+                    paperId: paper.id,
+                  })
+                );
                 window.open(sourceUrl, '_blank');
               },
             }}
@@ -92,8 +94,13 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
               onClick: async () => {
                 setIsSourcePopoverOpen(!isSourcePopoverOpen);
                 if (!isSourcePopoverOpen) {
-                  await addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
-                  dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'dropdownSourceBtn'));
+                  dispatch(
+                    addPaperToRecommendPoolAndOpenDialog({
+                      pageType: 'paperShow',
+                      actionArea: 'sourceButton',
+                      paperId: paper.id,
+                    })
+                  );
                 }
               },
               style: !showFullText ? reverseBtnStyle : btnStyle,

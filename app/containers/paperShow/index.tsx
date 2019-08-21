@@ -109,6 +109,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public async componentDidMount() {
     const { dispatch, match, paperShow, configuration } = this.props;
+
     const notRenderedAtServerOrJSAlreadyInitialized =
       !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
 
@@ -195,16 +196,14 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               />
               <div className={styles.paperContentBlockDivider} />
               <div className={styles.actionBarWrapper}>
-                <NoSsr>
-                  <ActionBar
-                    paper={paper}
-                    isLoadingPDF={PDFViewerState.isLoading}
-                    currentUser={currentUser}
-                    hasPDFFullText={!!PDFViewerState.parsedPDFObject}
-                    handleClickFullText={this.scrollToSection('fullText')}
-                    lastRequestedDate={paperShow.lastRequestedAt}
-                  />
-                </NoSsr>
+                <ActionBar
+                  paper={paper}
+                  isLoadingPDF={PDFViewerState.isLoading}
+                  currentUser={currentUser}
+                  hasPDFFullText={PDFViewerState.hasSucceed}
+                  handleClickFullText={this.scrollToSection('fullText')}
+                  lastRequestedDate={paperShow.lastRequestedAt}
+                />
               </div>
               <div className={styles.paperContentBlockDivider} />
               <div className={styles.paperContent}>
@@ -233,18 +232,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 isOnCited={isOnCited}
                 isOnFullText={isOnFullText}
                 isLoading={PDFViewerState.isLoading}
-                canShowFullPDF={!!PDFViewerState.parsedPDFObject}
+                canShowFullPDF={PDFViewerState.hasSucceed}
                 lastRequestedDate={paperShow.lastRequestedAt}
               />
             </div>
             <NoSsr>
-              {layout.userDevice === UserDevice.DESKTOP && (
-                <PDFViewer
-                  paper={paper}
-                  shouldShowRelatedPapers={!paper.bestPdf || !paper.bestPdf.hasBest}
-                  afterDownloadPDF={this.scrollToSection('fullText')}
-                />
-              )}
+              <PDFViewer paper={paper} afterDownloadPDF={this.scrollToSection('fullText')} />
             </NoSsr>
           </div>
           <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)} />

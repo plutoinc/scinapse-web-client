@@ -1,30 +1,28 @@
 import * as React from 'react';
 import Axios, { CancelTokenSource } from 'axios';
 import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '../../helpers/withStylesHelper';
 import PaperAPI from '../../api/paper';
 import ScinapseButton from '../common/scinapseButton';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import Icon from '../../icons';
-import { PaperPdf, Paper } from '../../model/paper';
+import { PaperPdf, Paper, paperSchema } from '../../model/paper';
 import { ActionCreators } from '../../actions/actionTypes';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../helpers/checkAuthDialog';
-import { PaperSource } from '../../model/paperSource';
-import { EXTENSION_APP_ID } from '../../constants/scinapse-extension';
 import EnvChecker from '../../helpers/envChecker';
 import RelatedPapers from '../relatedPapers';
 import AfterDownloadContents from './component/afterDownloadContents';
 import { PDFViewerProps } from './types';
 import { AppState } from '../../reducers';
-import { makeGetMemoizedPapers } from '../../selectors/papersSelector';
-import { getMemoizedCurrentUser } from '../../selectors/getCurrentUser';
-import { getMemoizedPDFViewerState } from '../../selectors/getPDFViewer';
 import ProgressSpinner from './component/progressSpinner';
 import BlurBlocker from './component/blurBlocker';
-import { openRecommendationPapersGuideDialog } from '../../actions/recommendation';
-import { addPaperToRecommendation } from '../../helpers/recommendationPoolManager';
+import { addPaperToRecommendPoolAndOpenDialog } from '../recommendPool/recommendPoolActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { PDFViewerState } from '../../reducers/pdfViewer';
+import { CurrentUser } from '../../model/currentUser';
+import { createSelector } from 'redux-starter-kit';
+import { denormalize } from 'normalizr';
 const { Document, Page, pdfjs } = require('react-pdf');
 const styles = require('./pdfViewer.scss');
 
@@ -67,40 +65,8 @@ const downloadPdfBtnStyle: React.CSSProperties = {
   marginLeft: '16px',
 };
 
-function fetchPDFFromExtension(sources: PaperSource[]): Promise<{ data: Blob }> {
-  return new Promise((resolve, reject) => {
-    if (typeof window !== 'undefined' && typeof chrome !== 'undefined') {
-      chrome.runtime.sendMessage(EXTENSION_APP_ID, { message: 'CHECK_EXTENSION_EXIST' }, reply => {
-        if (!reply || !reply.success) {
-          return reject();
-        }
-      });
-
-      const channel = new MessageChannel();
-      window.postMessage(
-        {
-          type: 'GET_PDF',
-          sources,
-        },
-        '*',
-        [channel.port2]
-      );
-
-      channel.port1.onmessage = e => {
-        if (e.data.success) {
-          console.log('SUCCESS TO GET PDF from EXTENSION');
-          resolve(e.data);
-        } else {
-          reject();
-        }
-      };
-    } else {
-      reject();
-    }
-  });
-}
-
 async function fetchPDFFromAPI(paper: Paper, cancelTokenSource: CancelTokenSource, dispatch: Dispatch<any>) {
+  console.log('INSIDE FETCH PDF FROM');
   let pdf: PaperPdf | undefined = paper.bestPdf;
   const cancelToken = cancelTokenSource.token;
 
@@ -125,6 +91,12 @@ interface OnClickViewMorePdfBtnParams {
 async function onClickViewMorePdfBtn(params: OnClickViewMorePdfBtnParams) {
   const { paperId, dispatch } = params;
   trackClickButton('viewMorePDF', paperId);
+
+  addPaperToRecommendPoolAndOpenDialog({
+    pageType: 'paperShow',
+    actionArea: 'viewMorePDF',
+    paperId,
+  });
 
   const isBlocked = await blockUnverifiedUser({
     authLevel: AUTH_LEVEL.VERIFIED,
@@ -171,59 +143,52 @@ const PDFContent: React.FC<{
   return <>{pageContent}</>;
 });
 
-const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
-  const {
-    dispatch,
-    paper,
-    PDFViewerState,
-    relatedPaperList,
-    isLoadingRelatedPaperList,
-    shouldShowRelatedPapers,
-    afterDownloadPDF,
-    currentUser,
-  } = props;
+const selectRelatedPapers = createSelector(
+  [(state: AppState) => state.relatedPapersState.paperIds, (state: AppState) => state.entities.papers],
+  (paperIds, paperEntities) => {
+    return denormalize(paperIds, [paperSchema], { papers: paperEntities });
+  }
+);
+
+const PDFViewer: React.FC<PDFViewerProps> = props => {
+  const { paper, afterDownloadPDF } = props;
+  const dispatch = useDispatch();
+  const PDFViewerState = useSelector<AppState, PDFViewerState>(state => state.PDFViewerState);
+  const currentUser = useSelector<AppState, CurrentUser>(state => state.currentUser);
+  const isLoadingRelatedPaperList = useSelector<AppState, boolean>(state => state.relatedPapersState.isLoading);
+  const relatedPaperList = useSelector(selectRelatedPapers);
+
+  const [pdfBlob, setPdfBlob] = React.useState<Blob | null>(null);
+  const [parsedPdfObject, setParsedPdfObject] = React.useState<any>(null);
   const wrapperNode = React.useRef<HTMLDivElement | null>(null);
   const viewMorePDFBtnEl = React.useRef<HTMLDivElement | null>(null);
+  const cancelTokenSource = React.useRef<CancelTokenSource>(Axios.CancelToken.source());
   const actionTag = PDFViewerState.isExpanded ? 'viewLessPDF' : 'viewMorePDF';
 
   React.useEffect(
     () => {
-      if (paper.urls.length > 0) {
-        const cancelToken = Axios.CancelToken.source();
-        dispatch(ActionCreators.startToFetchPDF());
-        fetchPDFFromExtension(paper.urls)
-          .then(res => {
-            dispatch(ActionCreators.setPDFBlob({ blob: res.data }));
-          })
-          .catch(err => {
-            if (!Axios.isCancel(err)) {
-              return fetchPDFFromAPI(paper, cancelToken, dispatch);
-            } else {
-              throw err;
-            }
-          })
-          .then(res => {
-            if (res && res.data) {
-              dispatch(ActionCreators.setPDFBlob({ blob: res.data }));
-            } else {
-              throw new Error();
-            }
-          })
-          .catch(err => {
-            if (!Axios.isCancel(err)) {
-              dispatch(ActionCreators.failToFetchPDF());
-            }
-          });
+      dispatch(ActionCreators.startToFetchPDF());
+      fetchPDFFromAPI(paper, cancelTokenSource.current, dispatch)
+        .then(res => {
+          if (res && res.data) {
+            setPdfBlob(res.data);
+          }
+        })
+        .catch(err => {
+          if (!Axios.isCancel(err)) {
+            dispatch(ActionCreators.failToFetchPDF());
+          }
+        });
 
-        return () => {
-          cancelToken.cancel();
-        };
-      }
+      return () => {
+        cancelTokenSource.current.cancel();
+        cancelTokenSource.current = Axios.CancelToken.source();
+      };
     },
-    [paper.id]
+    [dispatch, paper]
   );
 
-  if (PDFViewerState.isLoading) {
+  if (PDFViewerState.isLoading && !pdfBlob) {
     return <ProgressSpinner />;
   }
 
@@ -243,7 +208,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     );
   }
 
-  if (!!PDFViewerState.pdfBlob) {
+  if (!!pdfBlob) {
     const ReadAllPDFButton = (
       <div ref={viewMorePDFBtnEl}>
         <ScinapseButton
@@ -273,7 +238,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
     return (
       <div ref={wrapperNode} className={styles.contentWrapper}>
         <Document
-          file={PDFViewerState.pdfBlob}
+          file={pdfBlob}
           error={null}
           loading={
             <div className={styles.loadingContainerWrapper}>
@@ -283,7 +248,8 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
             </div>
           }
           onLoadSuccess={(pdf: any) => {
-            dispatch(ActionCreators.succeedToFetchPDF({ pdf }));
+            setParsedPdfObject(pdf);
+            dispatch(ActionCreators.succeedToFetchPDF({ pageCount: pdf.numPages }));
             ActionTicketManager.trackTicket({
               pageType: 'paperShow',
               actionType: 'view',
@@ -298,7 +264,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
         >
           <PDFContent
             shouldShowBlurBlocker={shouldShowBlurBlocker}
-            pdfBlob={PDFViewerState.parsedPDFObject}
+            pdfBlob={parsedPdfObject}
             isExpanded={PDFViewerState.isExpanded}
             pageCountToShow={PDFViewerState.pageCountToShow}
           />
@@ -335,9 +301,6 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                         if (!EnvChecker.isOnServer()) {
                           e.preventDefault();
 
-                          await addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
-                          dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'downloadPdfButton'));
-
                           const isBlocked = await blockUnverifiedUser({
                             authLevel: AUTH_LEVEL.VERIFIED,
                             actionArea: 'pdfViewer',
@@ -357,7 +320,7 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
                       isExternalLink
                       downloadAttr
                     />
-                    <RelatedPapers shouldShowRelatedPapers={shouldShowRelatedPapers} />
+                    <RelatedPapers shouldShowRelatedPapers={!paper.bestPdf || !paper.bestPdf.hasBest} />
                   </>
                 ) : (
                   componentToShowReadAllArea
@@ -371,15 +334,4 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = props => {
   return null;
 };
 
-function mapStateToProps(state: AppState) {
-  const getRelatedPapers = makeGetMemoizedPapers(() => state.relatedPapersState.paperIds);
-
-  return {
-    currentUser: getMemoizedCurrentUser(state),
-    PDFViewerState: getMemoizedPDFViewerState(state),
-    relatedPaperList: getRelatedPapers(state),
-    isLoadingRelatedPaperList: state.relatedPapersState.isLoading,
-  };
-}
-
-export default connect(mapStateToProps)(withStyles<typeof PDFViewer>(styles)(PDFViewer));
+export default withStyles<typeof PDFViewer>(styles)(PDFViewer);

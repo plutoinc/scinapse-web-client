@@ -32,9 +32,10 @@ import alertToast from '../../helpers/makePlutoToastAction';
 import FinalSignUpContent from '../auth/signUp/components/finalSignUpContent';
 import EnvChecker from '../../helpers/envChecker';
 import SurveyForm from '../auth/signUp/components/surveyForm';
-import { openRecommendationPapersGuideDialog } from '../../actions/recommendation';
 import PaperFigureDetail from '../common/paperFigureDetail/paperFigureDetail';
 import { UserDevice } from '../layouts/reducer';
+import { openRecommendPoolDialog } from '../recommendPool/recommendPoolActions';
+import { getCurrentPageType } from '../locationListener';
 const styles = require('./dialog.scss');
 
 function mapStateToProps(state: AppState) {
@@ -135,20 +136,20 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   }
 
   private closeCollectionDialog = () => {
-    const { dispatch, currentUser, dialogState } = this.props;
+    const { dispatch, dialogState } = this.props;
 
     this.closeDialog();
     if (dialogState.collectionDialogTargetPaperId) {
-      dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'addToCollectionBtn'));
+      dispatch(openRecommendPoolDialog(getCurrentPageType(), 'addToCollectionBtn'));
     }
   };
 
   private closeCitationDialog = () => {
-    const { dispatch, currentUser, dialogState } = this.props;
+    const { dispatch, dialogState } = this.props;
 
     this.closeDialog();
     if (dialogState.citationPaperId) {
-      dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'citeButton'));
+      dispatch(openRecommendPoolDialog(getCurrentPageType(), 'citeButton'));
     }
   };
 

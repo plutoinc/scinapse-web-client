@@ -294,13 +294,6 @@ export const ActionCreators = {
     });
   },
 
-  setPDFBlob(payload: { blob: Blob }) {
-    return createAction({
-      type: ACTION_TYPES.PDF_VIEWER_SET_PDF_BLOB,
-      payload,
-    });
-  },
-
   startToFetchPDF() {
     return createAction({ type: ACTION_TYPES.PDF_VIEWER_START_TO_FETCH_PDF });
   },
@@ -309,7 +302,7 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.PDF_VIEWER_FAIL_TO_FETCH_PDF });
   },
 
-  succeedToFetchPDF(payload: { pdf: any }) {
+  succeedToFetchPDF(payload: { pageCount: number }) {
     return createAction({ type: ACTION_TYPES.PDF_VIEWER_SUCCEED_TO_FETCH_PDF, payload });
   },
 

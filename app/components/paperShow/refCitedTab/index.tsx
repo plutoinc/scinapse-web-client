@@ -7,8 +7,7 @@ import PdfDownloadButton from '../components/pdfDownloadButton';
 import RequestFullTextBtn from '../../../containers/paperShowActionBar/components/fullTextRequestBtn';
 import RequestFullTextDialog from '../../../containers/paperShowActionBar/components/fullTextDialog';
 import { PDFButtonProps, TabItemProps, PaperShowRefCitedTabProps } from './types';
-import { openRecommendationPapersGuideDialog } from '../../../actions/recommendation';
-import { addPaperToRecommendation } from '../../../helpers/recommendationPoolManager';
+import { addPaperToRecommendPool, openRecommendPoolDialog } from '../../recommendPool/recommendPoolActions';
 const styles = require('./refCitedTab.scss');
 
 const TabItem: React.FunctionComponent<TabItemProps> = props => {
@@ -26,7 +25,7 @@ const TabItem: React.FunctionComponent<TabItemProps> = props => {
 };
 
 const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
-  const { dispatch, paper, isLoading, canShowFullPDF, onClickDownloadPDF, afterDownloadPDF, currentUser } = props;
+  const { dispatch, paper, isLoading, canShowFullPDF, onClickDownloadPDF, afterDownloadPDF } = props;
   const [isOpen, setIsOpen] = React.useState(false);
 
   if (canShowFullPDF) {
@@ -35,7 +34,6 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
         <PdfDownloadButton
           actionArea="contentNavBar"
           paper={paper}
-          currentUser={currentUser}
           isLoading={isLoading}
           onDownloadedPDF={onClickDownloadPDF!}
           handleSetScrollAfterDownload={afterDownloadPDF}
@@ -47,10 +45,12 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
     <>
       <RequestFullTextBtn
         actionArea="contentNavBar"
-        isLoggedIn={currentUser.isLoggedIn}
         isLoading={isLoading}
         paperId={paper!.id}
-        handleSetIsOpen={setIsOpen}
+        onClick={() => {
+          setIsOpen(true);
+          props.dispatch(addPaperToRecommendPool(props.paper!.id));
+        }}
         btnStyle={{ flex: '1 0 auto', height: '36px', padding: '0 12px 0 8px' }}
         lastRequestedDate={props.lastRequestedDate}
       />
@@ -59,8 +59,7 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
         isOpen={isOpen}
         onClose={async () => {
           setIsOpen(false);
-          await addPaperToRecommendation(currentUser.isLoggedIn, paper!.id);
-          dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'requestFullTextBtn'));
+          dispatch(openRecommendPoolDialog('paperShow', 'requestFullTextBtn'));
         }}
       />
     </>
@@ -103,7 +102,6 @@ const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(pro
         <div className={styles.rightBtnBox}>
           <div className={styles.actionItem}>
             <CiteBox
-              currentUser={props.currentUser}
               actionArea="contentNavBar"
               paper={props.paper}
               btnStyle={{ maxWidth: '74px', width: '100%', height: '36px' }}

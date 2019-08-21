@@ -1,8 +1,10 @@
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import SearchingPDFBtn from './searchingPDFBtn';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
+import { addPaperToRecommendPoolAndOpenDialog } from '../../recommendPool/recommendPoolActions';
 
 const styles = require('./viewFullTextBtn.scss');
 
@@ -12,8 +14,9 @@ interface ViewFullTextBtnProps {
   isLoading: boolean;
 }
 
-const ViewFullTextBtn: React.FunctionComponent<ViewFullTextBtnProps> = props => {
-  const { isLoading, handleClickFullText } = props;
+const ViewFullTextBtn: React.FC<ViewFullTextBtnProps> = props => {
+  const { isLoading, handleClickFullText, paperId } = props;
+  const dispatch = useDispatch();
 
   if (isLoading) {
     return <SearchingPDFBtn isLoading={isLoading} />;
@@ -28,9 +31,16 @@ const ViewFullTextBtn: React.FunctionComponent<ViewFullTextBtnProps> = props => 
           actionType: 'fire',
           actionArea: 'paperDescription',
           actionTag: 'viewFullText',
-          actionLabel: String(props.paperId),
+          actionLabel: String(paperId),
         });
         handleClickFullText();
+        dispatch(
+          addPaperToRecommendPoolAndOpenDialog({
+            pageType: 'paperShow',
+            actionArea: 'viewFullTextButton',
+            paperId,
+          })
+        );
       }}
     >
       <Icon className={styles.pdfIcon} icon={'PDF_PAPER'} />View Full-Text

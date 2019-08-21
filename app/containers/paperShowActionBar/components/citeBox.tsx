@@ -1,22 +1,22 @@
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-import { CurrentUser } from '../../../model/currentUser';
-import { addPaperToRecommendation } from '../../../helpers/recommendationPoolManager';
+import { addPaperToRecommendPool } from '../../../components/recommendPool/recommendPoolActions';
 const s = require('./citeBox.scss');
 
 interface CiteBoxProps {
   paper: Paper;
-  currentUser: CurrentUser;
   actionArea: string;
   btnStyle?: React.CSSProperties;
 }
 
 const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
-  const { paper, currentUser, btnStyle, actionArea } = props;
+  const { paper, btnStyle, actionArea } = props;
+  const dispatch = useDispatch();
 
   if (!paper.doi) return null;
 
@@ -26,7 +26,7 @@ const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
       className={s.citeButton}
       onClick={async () => {
         GlobalDialogManager.openCitationDialog(paper.id);
-        await addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
+        dispatch(addPaperToRecommendPool(paper.id));
         ActionTicketManager.trackTicket({
           pageType: 'paperShow',
           actionType: 'fire',

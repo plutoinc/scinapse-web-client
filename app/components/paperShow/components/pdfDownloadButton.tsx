@@ -7,15 +7,12 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
 import SearchingPDFBtn from './searchingPDFBtn';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../../helpers/checkAuthDialog';
-import { CurrentUser } from '../../../model/currentUser';
-import { openRecommendationPapersGuideDialog } from '../../../actions/recommendation';
-import { addPaperToRecommendation } from '../../../helpers/recommendationPoolManager';
+import { addPaperToRecommendPoolAndOpenDialog } from '../../recommendPool/recommendPoolActions';
 const styles = require('./pdfSourceButton.scss');
 
 interface PdfDownloadButtonProps {
   paper: Paper;
   isLoading: boolean;
-  currentUser: CurrentUser;
   actionArea: Scinapse.ActionTicket.ActionArea;
   dispatch: Dispatch<any>;
   onDownloadedPDF: (isDownload: boolean) => void;
@@ -24,7 +21,7 @@ interface PdfDownloadButtonProps {
 }
 
 const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props => {
-  const { paper, isLoading, onDownloadedPDF, handleSetScrollAfterDownload, actionArea, currentUser, dispatch } = props;
+  const { paper, isLoading, onDownloadedPDF, handleSetScrollAfterDownload, actionArea, dispatch } = props;
 
   function trackActionToClickPdfDownloadBtn() {
     ActionTicketManager.trackTicket({
@@ -58,8 +55,6 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
           e.preventDefault();
           trackActionToClickPdfDownloadBtn();
 
-          await addPaperToRecommendation(currentUser.isLoggedIn, paper.id);
-
           const isBlocked = await blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,
             actionArea: actionArea,
@@ -74,7 +69,13 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
           window.open(pdfUrl, '_blank');
           onDownloadedPDF(true);
           handleSetScrollAfterDownload();
-          dispatch(openRecommendationPapersGuideDialog(currentUser.isLoggedIn, 'downloadPdfBtn'));
+          dispatch(
+            addPaperToRecommendPoolAndOpenDialog({
+              pageType: 'paperShow',
+              actionArea: 'downloadPdfBtn',
+              paperId: paper.id,
+            })
+          );
         }}
       >
         <Icon icon="DOWNLOAD" className={styles.sourceIcon} />
