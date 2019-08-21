@@ -3,11 +3,16 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
 import actionTicketManager from '../../../helpers/actionTicketManager';
+import { addPaperToRecommendPoolAndOpenDialog } from '../../recommendPool/recommendPoolActions';
+import { useDispatch } from 'react-redux';
 const s = require('./blurBlocker.scss');
 
-interface BlurBlockerProps {}
+interface BlurBlockerProps {
+  paperId: number;
+}
 
-const BlurBlocker: React.FC<BlurBlockerProps> = () => {
+const BlurBlocker: React.FC<BlurBlockerProps> = ({ paperId }) => {
+  const dispatch = useDispatch();
   return (
     <div
       onClick={async () => {
@@ -18,6 +23,14 @@ const BlurBlocker: React.FC<BlurBlockerProps> = () => {
           actionLabel: 'viewMorePDF',
           actionType: 'fire',
         });
+
+        dispatch(
+          addPaperToRecommendPoolAndOpenDialog({
+            pageType: 'paperShow',
+            actionArea: 'viewMorePDF',
+            paperId,
+          })
+        );
 
         await blockUnverifiedUser({
           authLevel: AUTH_LEVEL.VERIFIED,

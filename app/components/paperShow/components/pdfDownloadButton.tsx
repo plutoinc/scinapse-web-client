@@ -55,6 +55,14 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
           e.preventDefault();
           trackActionToClickPdfDownloadBtn();
 
+          dispatch(
+            addPaperToRecommendPoolAndOpenDialog({
+              pageType: 'paperShow',
+              actionArea: 'downloadPdfInRefCitedBar',
+              paperId: paper.id,
+            })
+          );
+
           const isBlocked = await blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,
             actionArea: actionArea,
@@ -69,13 +77,6 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
           window.open(pdfUrl, '_blank');
           onDownloadedPDF(true);
           handleSetScrollAfterDownload();
-          dispatch(
-            addPaperToRecommendPoolAndOpenDialog({
-              pageType: 'paperShow',
-              actionArea: 'downloadPdfBtn',
-              paperId: paper.id,
-            })
-          );
         }}
       >
         <Icon icon="DOWNLOAD" className={styles.sourceIcon} />

@@ -5,6 +5,8 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import SearchingPDFBtn from '../../../components/paperShow/components/searchingPDFBtn';
+import { addPaperToTempPool } from '../../../components/recommendPool/recommendPoolActions';
+import { useDispatch } from 'react-redux';
 const s = require('../actionBar.scss');
 
 interface RequestFullTextBtnProps {
@@ -18,6 +20,7 @@ interface RequestFullTextBtnProps {
 
 const RequestFullTextBtn: React.FC<RequestFullTextBtnProps> = React.memo(props => {
   const { isLoading, paperId, actionArea, onClick, btnStyle, lastRequestedDate } = props;
+  const dispatch = useDispatch();
 
   if (isLoading) {
     return <SearchingPDFBtn isLoading={isLoading} />;
@@ -42,6 +45,14 @@ const RequestFullTextBtn: React.FC<RequestFullTextBtnProps> = React.memo(props =
             actionTag: 'clickRequestFullTextBtn',
             actionLabel: String(paperId),
           });
+
+          dispatch(
+            addPaperToTempPool({
+              pageType: 'paperShow',
+              actionArea: ' ',
+              paperId,
+            })
+          );
 
           const isBlocked = await blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,

@@ -171,8 +171,10 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
       fetchPDFFromAPI(paper, cancelTokenSource.current, dispatch)
         .then(res => {
           if (res && res.data) {
+            console.log(!!res.data, '=======================================================');
             setPdfBlob(res.data);
           }
+          throw new Error('No PDF');
         })
         .catch(err => {
           if (!Axios.isCancel(err)) {
@@ -233,7 +235,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
     );
 
     const shouldShowBlurBlocker = !currentUser.isLoggedIn && !currentUser.isLoggingIn;
-    const componentToShowReadAllArea = shouldShowBlurBlocker ? <BlurBlocker /> : ReadAllPDFButton;
+    const componentToShowReadAllArea = shouldShowBlurBlocker ? <BlurBlocker paperId={paper.id} /> : ReadAllPDFButton;
 
     return (
       <div ref={wrapperNode} className={styles.contentWrapper}>
@@ -301,6 +303,14 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
                         if (!EnvChecker.isOnServer()) {
                           e.preventDefault();
 
+                          dispatch(
+                            addPaperToRecommendPoolAndOpenDialog({
+                              pageType: 'paperShow',
+                              actionArea: 'downloadPdf',
+                              paperId: paper.id,
+                            })
+                          );
+
                           const isBlocked = await blockUnverifiedUser({
                             authLevel: AUTH_LEVEL.VERIFIED,
                             actionArea: 'pdfViewer',
@@ -311,6 +321,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
                           if (isBlocked) {
                             return;
                           }
+
                           dispatch(ActionCreators.clickPDFDownloadBtn());
                           trackClickButton('downloadPdf', paper.id);
                           window.open(paper.bestPdf.url, '_blank');
