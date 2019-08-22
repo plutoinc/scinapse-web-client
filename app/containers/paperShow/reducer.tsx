@@ -38,11 +38,11 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
     }
 
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS: {
-      return { ...state, ...{ isLoadingReferencePapers: false, isFailedToGetReferencePapers: true } };
+      return { ...state, isLoadingReferencePapers: false, isFailedToGetReferencePapers: true };
     }
 
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_CITED_PAPERS: {
-      return { ...state, ...{ isLoadingCitedPapers: true, isFailedToGetCitedPapers: false } };
+      return { ...state, isLoadingCitedPapers: true, isFailedToGetCitedPapers: false };
     }
 
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_CITED_PAPERS: {

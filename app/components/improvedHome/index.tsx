@@ -19,6 +19,8 @@ import RecommendationAPI, { BasedOnCollectionPapersParams } from '../../api/reco
 import ImprovedFooter from '../layouts/improvedFooter';
 import RecommendedPapers from './components/recommendedPapers';
 import { Paper } from '../../model/paper';
+import { getUserGroupName } from '../../helpers/abTestHelper';
+import { RANDOM_RECOMMENDATION_EXPERIMENT } from '../../constants/abTestGlobalValue';
 import { UserDevice } from '../layouts/reducer';
 const styles = require('./improvedHome.scss');
 
@@ -112,6 +114,7 @@ const ScinapseFigureContent: React.FC<{ shouldShow: boolean; papersFoundCount: n
 
 const ImprovedHome: React.FC<Props> = props => {
   const { currentUser } = props;
+  const [randomizeRec, setRandomizeRec] = React.useState(false);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
   const [basedOnActivityPapers, setBasedOnActivityPapers] = React.useState<Paper[]>([]);
   const [basedOnCollectionPapers, setBasedOnCollectionPapers] = React.useState<BasedOnCollectionPapersParams>();
@@ -130,31 +133,39 @@ const ImprovedHome: React.FC<Props> = props => {
     };
   }, []);
 
+  const getBasedOnActivityPapers = React.useCallback((random: boolean) => {
+    setIsLoadingBasedOnActivityPapers(true);
+    RecommendationAPI.getPapersFromUserAction(random)
+      .then(res => {
+        setBasedOnActivityPapers(res);
+        setIsLoadingBasedOnActivityPapers(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setIsLoadingBasedOnActivityPapers(false);
+      });
+  }, []);
+
+  const getBasedOnCollectionPapers = React.useCallback(() => {
+    setIsLoadingBasedOnCollectionPapers(true);
+    RecommendationAPI.getPapersFromCollection()
+      .then(res => {
+        setBasedOnCollectionPapers(res);
+        setIsLoadingBasedOnCollectionPapers(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setIsLoadingBasedOnCollectionPapers(false);
+      });
+  }, []);
+
   React.useEffect(
     () => {
+      const shouldRandom = getUserGroupName(RANDOM_RECOMMENDATION_EXPERIMENT) === 'random';
+      setRandomizeRec(shouldRandom);
       if (currentUser.isLoggedIn) {
-        setIsLoadingBasedOnActivityPapers(true);
-        setIsLoadingBasedOnCollectionPapers(true);
-
-        RecommendationAPI.getPapersFromUserAction()
-          .then(res => {
-            setBasedOnActivityPapers(res);
-            setIsLoadingBasedOnActivityPapers(false);
-          })
-          .catch(err => {
-            console.error(err);
-            setIsLoadingBasedOnActivityPapers(false);
-          });
-
-        RecommendationAPI.getPapersFromCollection()
-          .then(res => {
-            setBasedOnCollectionPapers(res);
-            setIsLoadingBasedOnCollectionPapers(false);
-          })
-          .catch(err => {
-            console.error(err);
-            setIsLoadingBasedOnCollectionPapers(false);
-          });
+        getBasedOnActivityPapers(shouldRandom);
+        getBasedOnCollectionPapers();
       }
 
       return () => {
@@ -208,8 +219,10 @@ const ImprovedHome: React.FC<Props> = props => {
           isLoggingIn={currentUser.isLoggingIn}
           isLoadingActivityPapers={isLoadingBasedOnActivityPapers}
           isLoadingCollectionPapers={isLoadingBasedOnCollectionPapers}
+          doRandomizeRec={randomizeRec}
           basedOnActivityPapers={basedOnActivityPapers}
           basedOnCollectionPapers={basedOnCollectionPapers}
+          handleGetBasedOnActivityPapers={getBasedOnActivityPapers}
         />
         <ScinapseInformation isMobile={props.layout.userDevice === UserDevice.MOBILE} shouldShow={!shouldShow} />
         <ImprovedFooter />

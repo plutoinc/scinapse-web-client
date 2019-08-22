@@ -4,7 +4,9 @@ import { ActionCreators } from './actionTypes';
 import {
   ALREADY_VISITED_RECOMMEND_PAPERS,
   BASED_ACTIVITY_COUNT_STORE_KEY,
-} from '../components/recommendPapersDialog/recommendPapersDialogConstants';
+} from '../components/recommendPool/recommendPoolConstants';
+import { getUserGroupName } from '../helpers/abTestHelper';
+import { RANDOM_RECOMMENDATION_EXPERIMENT } from '../constants/abTestGlobalValue';
 const store = require('store');
 
 const MAX_COUNT = 16;
@@ -21,13 +23,12 @@ function setActionCount(count: number): number {
   return nextCount;
 }
 
-export function addPaperToRecommendation(isLoggedIn: boolean, paperId: number, actionArea: string) {
+export function openRecommendationPapersGuideDialog(isLoggedIn: boolean, actionArea: string) {
   return async (dispatch: Dispatch<any>) => {
-    const prevActionCount = store.get(BASED_ACTIVITY_COUNT_STORE_KEY);
-
     if (!isLoggedIn) return;
 
-    RecommendationAPI.addPaperToRecommendationPool(paperId);
+    const randomizeRec = getUserGroupName(RANDOM_RECOMMENDATION_EXPERIMENT) === 'random';
+    const prevActionCount = store.get(BASED_ACTIVITY_COUNT_STORE_KEY);
 
     if (prevActionCount === ALREADY_VISITED_RECOMMEND_PAPERS) return;
 
@@ -39,7 +40,7 @@ export function addPaperToRecommendation(isLoggedIn: boolean, paperId: number, a
       case 5:
       case 13: {
         try {
-          const recommendPapers = await RecommendationAPI.getPapersFromUserAction();
+          const recommendPapers = await RecommendationAPI.getPapersFromUserAction(randomizeRec);
 
           if (!recommendPapers || recommendPapers.length === 0) return;
 

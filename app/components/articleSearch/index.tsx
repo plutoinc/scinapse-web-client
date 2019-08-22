@@ -31,7 +31,6 @@ import ArticleSpinner from '../common/spinner/articleSpinner';
 import { changeSearchQuery } from '../../actions/searchQuery';
 import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
 import ImprovedFooter from '../layouts/improvedFooter';
-import KnowledgeBaseNoti from '../recommendPapersDialog';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { WEIGHTED_CITATION_EXPERIMENT, STRICT_SORT_EXPERIMENT } from '../../constants/abTestGlobalValue';
 import EmailBanner from './components/emailBanner';
@@ -186,7 +185,6 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
           currentUserDevice={layout.userDevice}
           location={location}
         />
-        <KnowledgeBaseNoti />
       </div>
     );
   }

@@ -10,7 +10,7 @@ import { CurrentUser } from '../../model/currentUser';
 import SourceButton from '../../components/paperShow/components/sourceButton';
 import ViewFullTextBtn from '../../components/paperShow/components/viewFullTextBtn';
 import RequestFullTextBtn from './components/fullTextRequestBtn';
-import { addPaperToRecommendation } from '../../actions/recommendation';
+import { addPaperToRecommendPool, openRecommendPoolDialog } from '../../components/recommendPool/recommendPoolActions';
 const s = require('./actionBar.scss');
 
 interface PaperShowActionBarProps {
@@ -23,10 +23,9 @@ interface PaperShowActionBarProps {
   lastRequestedDate: string | null;
 }
 
-const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props => {
+const PaperShowActionBar: React.FC<PaperShowActionBarProps> = props => {
   const [isOpen, setIsOpen] = React.useState(false);
   const requestFullTextBtnEl = React.useRef<HTMLDivElement | null>(null);
-  const hasSource = props.paper.urls.length > 0;
 
   return (
     <div className={s.actionBar}>
@@ -37,8 +36,11 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props =
               <RequestFullTextBtn
                 actionArea="paperDescription"
                 isLoading={props.isLoadingPDF}
-                paperId={props.paper!.id}
-                handleSetIsOpen={setIsOpen}
+                paperId={props.paper.id}
+                onClick={() => {
+                  setIsOpen(true);
+                  props.dispatch(addPaperToRecommendPool(props.paper.id));
+                }}
                 lastRequestedDate={props.lastRequestedDate}
               />
             </div>
@@ -51,27 +53,20 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props =
               />
             </div>
           )}
-          {hasSource &&
-            props.paper.bestPdf && (
-              <div className={s.actionItem}>
-                <SourceButton
-                  paper={props.paper}
-                  showFullText={props.paper.bestPdf.hasBest}
-                  currentUser={props.currentUser}
-                />
-              </div>
-            )}
+          {props.paper.bestPdf && (
+            <div className={s.actionItem}>
+              <SourceButton paper={props.paper} showFullText={props.paper.bestPdf.hasBest} />
+            </div>
+          )}
           <div className={s.actionItem}>
             <CiteBox actionArea="paperDescription" paper={props.paper} />
           </div>
           <FullTextDialog
             paperId={props.paper.id}
             isOpen={isOpen}
-            onClose={() => {
+            onClose={async () => {
               setIsOpen(false);
-              props.dispatch(
-                addPaperToRecommendation(props.currentUser.isLoggedIn, props.paper.id, 'requestFullTextBtn')
-              );
+              props.dispatch(openRecommendPoolDialog('paperShow', 'requestFullTextBtn'));
             }}
           />
         </div>
@@ -81,6 +76,6 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = React.memo(props =
       </div>
     </div>
   );
-});
+};
 
 export default connect()(withStyles<typeof PaperShowActionBar>(s)(PaperShowActionBar));

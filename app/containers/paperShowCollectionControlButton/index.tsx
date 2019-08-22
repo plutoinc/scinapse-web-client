@@ -3,7 +3,7 @@ import axios from 'axios';
 import * as store from 'store';
 import { denormalize } from 'normalizr';
 import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import * as classNames from 'classnames';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Popper from '@material-ui/core/Popper';
@@ -36,7 +36,10 @@ import { trackEvent } from '../../helpers/handleGA';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { ActionCreators } from '../../actions/actionTypes';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../helpers/checkAuthDialog';
-import { addPaperToRecommendation } from '../../actions/recommendation';
+import {
+  addPaperToRecommendPool,
+  addPaperToRecommendPoolAndOpenDialog,
+} from '../../components/recommendPool/recommendPoolActions';
 const styles = require('./paperShowCollectionControlButton.scss');
 
 const LAST_USER_COLLECTION_ID = 'l_u_c_id';
@@ -51,6 +54,7 @@ interface PaperShowCollectionControlButtonProps {
 }
 
 interface TitleAreaProps {
+  paperId: number;
   currentUser: CurrentUser;
   collection: Collection | null;
   isLoading: boolean;
@@ -58,6 +62,7 @@ interface TitleAreaProps {
 }
 
 const TitleArea: React.FC<TitleAreaProps> = props => {
+  const dispatch = useDispatch();
   const addToCollectionBtnEl = React.useRef<HTMLDivElement | null>(null);
 
   if (props.isLoading) {
@@ -88,12 +93,14 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
               actionLabel: null,
             });
 
-            await blockUnverifiedUser({
+            blockUnverifiedUser({
               authLevel: AUTH_LEVEL.VERIFIED,
               actionArea: 'paperDescription',
               actionLabel: 'addToCollection',
               userActionType: 'addToCollection',
             });
+
+            dispatch(addPaperToRecommendPool(props.paperId));
           }}
           className={styles.unsignedTitleBtn}
         >
@@ -235,7 +242,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   }
 
   private getCollectionItemInDropdown = () => {
-    const { selectedCollection, currentUser, myCollectionsState, myCollections } = this.props;
+    const { selectedCollection, currentUser, myCollectionsState, myCollections, paperId } = this.props;
 
     const collections =
       myCollections &&
@@ -259,6 +266,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         <div className={styles.actionItemWrapper}>
           <TitleArea
             currentUser={currentUser}
+            paperId={paperId}
             collection={selectedCollection}
             isLoading={
               currentUser.isLoggingIn ||
@@ -495,7 +503,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private handleClickSaveButton = async () => {
-    const { dispatch, selectedCollection, paperId: targetPaperId, currentUser } = this.props;
+    const { dispatch, selectedCollection, paperId: targetPaperId } = this.props;
     const isBlocked = await blockUnverifiedUser({
       authLevel: AUTH_LEVEL.VERIFIED,
       actionArea: 'paperDescription',
@@ -517,6 +525,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         actionTag: 'signInViaCollection',
         actionLabel: null,
       });
+      dispatch(addPaperToRecommendPool(targetPaperId));
       return;
     }
 
@@ -542,7 +551,13 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           cancelToken: this.cancelToken.token,
         })
       );
-      dispatch(addPaperToRecommendation(currentUser.isLoggedIn, targetPaperId, 'addToCollectionButton'));
+      dispatch(
+        addPaperToRecommendPoolAndOpenDialog({
+          pageType: 'paperShow',
+          actionArea: 'addToCollection',
+          paperId: targetPaperId,
+        })
+      );
       store.set(LAST_USER_COLLECTION_ID, selectedCollection.id);
     } else if (selectedCollection && targetPaperId && selectedCollection.containsSelected) {
       trackEvent({

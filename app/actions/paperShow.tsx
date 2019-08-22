@@ -113,7 +113,6 @@ export function getCitedPapers(params: GetRefOrCitedPapersParams) {
           type: 'error',
           message: `Failed to get papers. ${err}`,
         });
-        dispatch(ActionCreators.startToGetCitedPapers());
       }
     }
   };
