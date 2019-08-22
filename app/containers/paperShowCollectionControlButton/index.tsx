@@ -36,7 +36,10 @@ import { trackEvent } from '../../helpers/handleGA';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { ActionCreators } from '../../actions/actionTypes';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../helpers/checkAuthDialog';
-import { addPaperToRecommendPool } from '../../components/recommendPool/recommendPoolActions';
+import {
+  addPaperToRecommendPool,
+  addPaperToRecommendPoolAndOpenDialog,
+} from '../../components/recommendPool/recommendPoolActions';
 const styles = require('./paperShowCollectionControlButton.scss');
 
 const LAST_USER_COLLECTION_ID = 'l_u_c_id';
@@ -548,7 +551,13 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           cancelToken: this.cancelToken.token,
         })
       );
-      dispatch(addPaperToRecommendPool(targetPaperId));
+      dispatch(
+        addPaperToRecommendPoolAndOpenDialog({
+          pageType: 'paperShow',
+          actionArea: 'addToCollection',
+          paperId: targetPaperId,
+        })
+      );
       store.set(LAST_USER_COLLECTION_ID, selectedCollection.id);
     } else if (selectedCollection && targetPaperId && selectedCollection.containsSelected) {
       trackEvent({
