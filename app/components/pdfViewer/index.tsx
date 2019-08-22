@@ -66,7 +66,6 @@ const downloadPdfBtnStyle: React.CSSProperties = {
 };
 
 async function fetchPDFFromAPI(paper: Paper, cancelTokenSource: CancelTokenSource, dispatch: Dispatch<any>) {
-  console.log('INSIDE FETCH PDF FROM');
   let pdf: PaperPdf | undefined = paper.bestPdf;
   const cancelToken = cancelTokenSource.token;
 
@@ -171,7 +170,6 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
       fetchPDFFromAPI(paper, cancelTokenSource.current, dispatch)
         .then(res => {
           if (res && res.data) {
-            console.log(!!res.data, '=======================================================');
             setPdfBlob(res.data);
           }
           throw new Error('No PDF');

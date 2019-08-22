@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { useDispatch } from 'react-redux';
 import { Paper } from '../../../model/paper';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
@@ -14,14 +13,14 @@ interface PdfDownloadButtonProps {
   paper: Paper;
   isLoading: boolean;
   actionArea: Scinapse.ActionTicket.ActionArea;
-  dispatch: Dispatch<any>;
   onDownloadedPDF: (isDownload: boolean) => void;
   handleSetScrollAfterDownload: () => void;
   wrapperStyle?: React.CSSProperties;
 }
 
 const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props => {
-  const { paper, isLoading, onDownloadedPDF, handleSetScrollAfterDownload, actionArea, dispatch } = props;
+  const { paper, isLoading, onDownloadedPDF, handleSetScrollAfterDownload, actionArea } = props;
+  const dispatch = useDispatch();
 
   function trackActionToClickPdfDownloadBtn() {
     ActionTicketManager.trackTicket({
@@ -88,4 +87,4 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
   return null;
 };
 
-export default connect()(withStyles<typeof PdfDownloadButton>(styles)(PdfDownloadButton));
+export default withStyles<typeof PdfDownloadButton>(styles)(PdfDownloadButton);

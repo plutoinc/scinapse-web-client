@@ -36,10 +36,10 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = props => {
               <RequestFullTextBtn
                 actionArea="paperDescription"
                 isLoading={props.isLoadingPDF}
-                paperId={props.paper!.id}
+                paperId={props.paper.id}
                 onClick={() => {
                   setIsOpen(true);
-                  props.dispatch(addPaperToRecommendPool(props.paper!.id));
+                  props.dispatch(addPaperToRecommendPool(props.paper.id));
                 }}
                 lastRequestedDate={props.lastRequestedDate}
               />

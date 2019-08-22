@@ -1,10 +1,10 @@
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
 import actionTicketManager from '../../../helpers/actionTicketManager';
 import { addPaperToRecommendPoolAndOpenDialog } from '../../recommendPool/recommendPoolActions';
-import { useDispatch } from 'react-redux';
 const s = require('./blurBlocker.scss');
 
 interface BlurBlockerProps {
@@ -16,14 +16,6 @@ const BlurBlocker: React.FC<BlurBlockerProps> = ({ paperId }) => {
   return (
     <div
       onClick={async () => {
-        actionTicketManager.trackTicket({
-          pageType: 'paperShow',
-          actionArea: 'pdfViewer',
-          actionTag: 'viewMorePDF',
-          actionLabel: 'viewMorePDF',
-          actionType: 'fire',
-        });
-
         dispatch(
           addPaperToRecommendPoolAndOpenDialog({
             pageType: 'paperShow',
@@ -31,6 +23,14 @@ const BlurBlocker: React.FC<BlurBlockerProps> = ({ paperId }) => {
             paperId,
           })
         );
+
+        actionTicketManager.trackTicket({
+          pageType: 'paperShow',
+          actionArea: 'pdfViewer',
+          actionTag: 'viewMorePDF',
+          actionLabel: 'viewMorePDF',
+          actionType: 'fire',
+        });
 
         await blockUnverifiedUser({
           authLevel: AUTH_LEVEL.VERIFIED,
