@@ -158,6 +158,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
                       name="email"
                       type="email"
                       component={AuthInputBox}
+                      autoFocus={!props.initialEmail}
                       placeholder="E-mail"
                       iconName="EMAIL_ICON"
                     />

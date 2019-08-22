@@ -115,6 +115,7 @@ declare namespace Scinapse {
       | 'clickPrevBtn'
       | 'clickNextBtn'
       | 'viewFigure'
+      | 'recommendEmailBanner'
       | '';
 
     type ActionArea = string;
