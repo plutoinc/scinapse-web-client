@@ -19,9 +19,9 @@ const EmailBanner: React.FC = () => {
   React.useEffect(() => {
     const userGroup = getUserGroupName(EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER) as EmailRecommendPaperSignUpBannerTestType;
     if (
-      userGroup !== EmailRecommendPaperSignUpBannerTestType.RECOMMEND &&
+      userGroup !== EmailRecommendPaperSignUpBannerTestType.LETTERS &&
       userGroup !== EmailRecommendPaperSignUpBannerTestType.TIRED &&
-      userGroup !== EmailRecommendPaperSignUpBannerTestType.WONDER
+      userGroup !== EmailRecommendPaperSignUpBannerTestType.WANDERING
     ) {
       return;
     }
@@ -34,7 +34,7 @@ const EmailBanner: React.FC = () => {
   let title;
   let subtitle;
   switch (testType) {
-    case EmailRecommendPaperSignUpBannerTestType.RECOMMEND: {
+    case EmailRecommendPaperSignUpBannerTestType.LETTERS: {
       title = 'Get recommendation letters';
       subtitle = 'Stay connected with relevant researches.';
       break;
@@ -46,8 +46,8 @@ const EmailBanner: React.FC = () => {
       break;
     }
 
-    case EmailRecommendPaperSignUpBannerTestType.WONDER: {
-      title = 'Are you wondering?';
+    case EmailRecommendPaperSignUpBannerTestType.WANDERING: {
+      title = 'Are you wandering?';
       subtitle = 'Get recommendations based on your activity.';
       break;
     }
