@@ -1,0 +1,102 @@
+.small {
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 4px 4px;
+  border-radius: 4px;
+  border: 0px;
+
+  cursor: pointer;
+  text-align: center;
+  display: inline-flex;
+  flex-direction: row;
+  -ms-flex-align: center;
+  align-items: center;
+
+  i {
+    display: flex;
+  }
+
+  svg {
+    width: 1.4em;
+    height: 1.4em;
+  }
+
+  span {
+    margin: 0 4px;
+  }
+  margin-right: 8px;
+}
+
+.disabled {
+  cursor: no-drop;
+}
+
+.outlined {
+  border: 1px solid $gray400;
+  &:hover {
+    background-color: $gray50;
+  }
+}
+
+.outlined.gray {
+  color: $gray800;
+}
+
+.outlined.blue {
+  color: $main_blue0;
+}
+
+.outlined.black {
+  color: $black0;
+}
+
+.outlined.disabled {
+  color: $gray500;
+  &:hover {
+    background-color: white;
+  }
+}
+
+.contained.blue {
+  color: white;
+  background-color: $main_blue0;
+  &:hover {
+    background-color: $main_blue1;
+  }
+}
+
+.contained.gray {
+  color: $main_blue1;
+  background-color: $gray200;
+  &:hover {
+    background-color: $gray300;
+  }
+}
+
+.contained.disabled {
+  background-color: $gray400;
+  &:hover {
+    background-color: $gray400;
+  }
+}
+
+.text {
+  @extend .outlined;
+  border: none;
+}
+
+.text.blue {
+  color: $main_blue0;
+}
+
+.text.black {
+  color: $black0;
+}
+
+.text.gray {
+  color: $gray800;
+}
+
+.text.disabled {
+  color: $gray500;
+}
