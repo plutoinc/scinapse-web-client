@@ -1,10 +1,22 @@
 import { Dispatch } from 'redux';
 import AuthAPI from '../../../api/auth';
 import { SignUpWithEmailParams, SignUpWithSocialParams } from '../../../api/types/auth';
+import RecommendationAPI from '../../../api/recommendation';
+import { BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY } from '../../recommendPool/recommendPoolConstants';
 import { ACTION_TYPES } from '../../../actions/actionTypes';
 import alertToast from '../../../helpers/makePlutoToastAction';
 import EnvChecker from '../../../helpers/envChecker';
 import { Member } from '../../../model/member';
+const store = require('store');
+
+async function syncRecommendationPoolToUser() {
+  const targetPaperIds: number[] = store.get(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY) || [];
+
+  if (targetPaperIds.length > 0) {
+    await RecommendationAPI.syncRecommendationPool(targetPaperIds);
+    store.remove(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY);
+  }
+}
 
 export const checkDuplicatedEmail = async (email: string) => {
   const checkDuplicatedEmailResult = await AuthAPI.checkDuplicatedEmail(email);
@@ -18,6 +30,7 @@ export function signUpWithSocial(params: SignUpWithSocialParams) {
   return async (dispatch: Dispatch<any>) => {
     try {
       const signUpResult: Member = await AuthAPI.signUpWithSocial(params);
+      await syncRecommendationPoolToUser();
       dispatch({
         type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
         payload: {
@@ -40,6 +53,7 @@ export function signUpWithEmail(params: SignUpWithEmailParams) {
   return async (dispatch: Dispatch<any>) => {
     try {
       const signUpResult: Member = await AuthAPI.signUpWithEmail(params);
+      await syncRecommendationPoolToUser();
       dispatch({
         type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
         payload: {

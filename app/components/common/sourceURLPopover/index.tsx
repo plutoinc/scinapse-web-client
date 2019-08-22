@@ -22,47 +22,40 @@ interface SourceURLPopover {
 }
 
 const SourceURLPopover: React.SFC<SourceURLPopover> = props => {
-  const sources = props.paperSources
-    .sort((a, b) => {
-      if (isPDFLink(a) && !isPDFLink(b)) {
-        return -1;
-      }
-      return 0;
-    })
-    .map(source => {
-      const urlObj = URL.parse(source.url);
+  const sources = props.paperSources.map(source => {
+    const urlObj = URL.parse(source.url);
 
-      return (
-        <a
-          className={styles.sourceItem}
-          onClick={e => {
-            trackAndOpenLink('search-item-source-button');
-            ActionTicketManager.trackTicket({
-              pageType: props.pageType,
-              actionType: 'fire',
-              actionArea: props.actionArea || props.pageType,
-              actionTag: 'source',
-              actionLabel: String(props.paperId),
-            });
-            props.handleCloseFunc(e);
-          }}
-          target="_blank"
-          rel="noopener nofollow noreferrer"
-          href={source.url}
-          key={source.id}
+    return (
+      <a
+        className={styles.sourceItem}
+        onClick={e => {
+          trackAndOpenLink('search-item-source-button');
+          ActionTicketManager.trackTicket({
+            pageType: props.pageType,
+            actionType: 'fire',
+            actionArea: props.actionArea || props.pageType,
+            actionTag: 'source',
+            actionLabel: String(props.paperId),
+          });
+          props.handleCloseFunc(e);
+        }}
+        target="_blank"
+        rel="noopener nofollow noreferrer"
+        href={source.url}
+        key={source.id}
+      >
+        <span
+          className={classNames({
+            [styles.host]: true,
+            [styles.pdfHost]: isPDFLink(source),
+          })}
         >
-          <span
-            className={classNames({
-              [styles.host]: true,
-              [styles.pdfHost]: isPDFLink(source),
-            })}
-          >
-            {urlObj.host}
-          </span>
-          <Icon icon="EXTERNAL_SOURCE" className={styles.sourceIcon} />
-        </a>
-      );
-    });
+          {urlObj.host}
+        </span>
+        <Icon icon="EXTERNAL_SOURCE" className={styles.sourceIcon} />
+      </a>
+    );
+  });
 
   return (
     <>

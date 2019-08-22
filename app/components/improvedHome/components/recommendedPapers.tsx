@@ -6,6 +6,8 @@ import { Paper } from '../../../model/paper';
 import { BasedOnCollectionPapersParams } from '../../../api/recommendation';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import EnvChecker from '../../../helpers/envChecker';
+import Icon from '../../../icons';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
 const styles = require('./recommendedPapers.scss');
 const NAVBAR_HEIGHT = 64;
 
@@ -14,8 +16,10 @@ interface RecommendedPapersProps {
   isLoggingIn: boolean;
   isLoadingActivityPapers: boolean;
   isLoadingCollectionPapers: boolean;
+  doRandomizeRec: boolean;
   basedOnActivityPapers: Paper[];
   basedOnCollectionPapers: BasedOnCollectionPapersParams | undefined;
+  handleGetBasedOnActivityPapers: (random: boolean) => void;
 }
 type Props = RouteComponentProps<any> & RecommendedPapersProps;
 
@@ -25,6 +29,8 @@ const RecommendedPapers: React.FC<Props> = props => {
     isLoadingCollectionPapers,
     basedOnActivityPapers,
     basedOnCollectionPapers,
+    handleGetBasedOnActivityPapers,
+    doRandomizeRec,
     shouldShow,
     isLoggingIn,
     location,
@@ -46,19 +52,42 @@ const RecommendedPapers: React.FC<Props> = props => {
 
   if (!shouldShow) return null;
 
+  const refreshButton = (
+    <div
+      className={styles.refreshButton}
+      onClick={() => {
+        handleGetBasedOnActivityPapers(doRandomizeRec);
+        ActionTicketManager.trackTicket({
+          pageType: 'home',
+          actionType: 'fire',
+          actionArea: 'basedOnActivityPaperList',
+          actionTag: 'clickRefreshButton',
+          actionLabel: null,
+        });
+      }}
+    >
+      <Icon className={styles.refreshIcon} icon="RELOAD" />REFRESH
+    </div>
+  );
+
   return (
     <>
       <div className={styles.contentBlockDivider} ref={recommendedEl} />
       <div className={styles.recommendedPapersContainer}>
         <div className={styles.titleSection}>
           <div className={styles.title}>Recommended papers for you</div>
-          <div className={styles.subTitle}>BASED ON YOUR SEARCH ACTIVITY</div>
+          <div className={styles.subTitle}>
+            BASED ON YOUR SEARCH ACTIVITY
+            {doRandomizeRec && refreshButton}
+          </div>
         </div>
         <div className={styles.contentSection}>
           <div className={styles.basedOnActivityPapers}>
             <BaseOnActivityPaperList
               isLoading={isLoadingActivityPapers || isLoggingIn}
               papers={basedOnActivityPapers}
+              doRandomizeRec={doRandomizeRec}
+              refreshBasedOnActivityPapers={handleGetBasedOnActivityPapers}
             />
           </div>
           <div className={styles.basedOnCollectionPapers}>
