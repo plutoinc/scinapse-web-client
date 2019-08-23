@@ -54,7 +54,7 @@ const EmailBanner: React.FC<{ testType: EmailRecommendPaperSignUpBannerTestType 
             authContext: {
               pageType: getCurrentPageType(),
               actionArea: 'recommendEmailBanner',
-              actionLabel: null,
+              actionLabel: 'recommendEmailBanner',
             },
             userActionType: 'recommendEmailBanner',
             isBlocked: false,
