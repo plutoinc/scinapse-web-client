@@ -105,6 +105,12 @@ export interface EmailSettingItemResponse {
   setting: 'ON' | 'OFF';
 }
 
+export interface UpdateEmailSettingParams {
+  type: EmailSettingTypes;
+  setting: boolean;
+  token?: string;
+}
+
 export interface EmailSettingsResponse {
   data: {
     content: EmailSettingItemResponse[];

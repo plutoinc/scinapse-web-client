@@ -13,6 +13,7 @@ import {
   UpdateUserInformationParams,
   ChangePasswordParams,
   EmailSettingsResponse,
+  UpdateEmailSettingParams,
 } from './types/auth';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
@@ -123,6 +124,20 @@ class AuthAPI extends PlutoAxios {
   public async getEmailSettings(token?: string): Promise<EmailSettingsResponse> {
     const res = await this.get(`/notifications/email/settings?token=${token}`);
     return camelCaseKeys(res.data);
+  }
+
+  public async updateEmailSetting({
+    token,
+    type,
+    setting,
+  }: UpdateEmailSettingParams): Promise<{
+    success: boolean;
+  }> {
+    const res = await this.put(`/notifications/email/settings?token=${token}`, {
+      type,
+      setting: setting ? 'ON' : 'OFF',
+    });
+    return res.data.data.content;
   }
 }
 

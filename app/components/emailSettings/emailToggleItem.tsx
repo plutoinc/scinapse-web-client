@@ -3,10 +3,21 @@ import classNames from 'classnames';
 import { withStyles } from '../../helpers/withStylesHelper';
 const s = require('./emailToggleItem.scss');
 
-const EmailToggleItem: React.FC<{ title: string; subtitle: string; active: boolean }> = ({
+interface EmailToggleItemProps {
+  title: string;
+  subtitle: string;
+  active: boolean;
+  onClick: (nextStatus: boolean) => void;
+  isLoading: boolean;
+  hasFailed: boolean;
+}
+const EmailToggleItem: React.FC<EmailToggleItemProps> = ({
   title,
   subtitle,
   active,
+  onClick,
+  isLoading,
+  hasFailed,
 }) => {
   return (
     <div className={s.toggleItemWrapper}>
@@ -16,6 +27,9 @@ const EmailToggleItem: React.FC<{ title: string; subtitle: string; active: boole
       </div>
       <div>
         <button
+          onClick={() => {
+            onClick(true);
+          }}
           className={classNames({
             [s.toggleButton]: true,
             [s.toggleActive]: active,
@@ -24,6 +38,9 @@ const EmailToggleItem: React.FC<{ title: string; subtitle: string; active: boole
           On
         </button>
         <button
+          onClick={() => {
+            onClick(false);
+          }}
           className={classNames({
             [s.toggleButton]: true,
             [s.toggleInactive]: !active,
