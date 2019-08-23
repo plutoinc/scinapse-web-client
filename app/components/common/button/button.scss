@@ -17,14 +17,29 @@
   }
 
   svg {
-    width: 1.4em;
-    height: 1.4em;
+    width: 1.3em;
+    height: 1.3em;
   }
 
   span {
     margin: 0 4px;
   }
-  margin-right: 8px;
+}
+
+.medium {
+  @extend .small;
+  font-size: 15px;
+  padding: 8px 8px;
+  font-weight: 500;
+
+  svg {
+    width: 1.2em;
+    height: 1.2em;
+  }
+
+  span {
+    margin: 0 8px;
+  }
 }
 
 .disabled {
@@ -47,7 +62,7 @@
 }
 
 .outlined.black {
-  color: $black0;
+  color: $black1;
 }
 
 .outlined.disabled {
@@ -66,7 +81,7 @@
 }
 
 .contained.gray {
-  color: $main_blue1;
+  color: $main_blue0;
   background-color: $gray200;
   &:hover {
     background-color: $gray300;
@@ -90,7 +105,7 @@
 }
 
 .text.black {
-  color: $black0;
+  color: $black1;
 }
 
 .text.gray {
