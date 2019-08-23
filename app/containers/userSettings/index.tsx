@@ -3,6 +3,7 @@ import ProfileForm from '../profileForm';
 import AuthEditForm from '../authEditForm';
 import { withStyles } from '../../helpers/withStylesHelper';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
+import EmailSettings from '../../components/emailSettings/emailSettings';
 
 const s = require('./userSettings.scss');
 
@@ -14,6 +15,9 @@ const UserSettings: React.FC = () => {
         <ProfileForm />
         <div className={s.authFormWrapper}>
           <AuthEditForm />
+        </div>
+        <div>
+          <EmailSettings />
         </div>
       </div>
       <ImprovedFooter containerStyle={{ backgroundColor: '#f8f9fb' }} />
