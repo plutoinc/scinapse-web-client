@@ -23,18 +23,38 @@
 
   span {
     margin: 0 4px;
+    text-align: center;
+    width: 100%;
   }
 }
 
 .medium {
   @extend .small;
   font-size: 15px;
-  padding: 8px 8px;
+  padding: 8px;
+  font-weight: 500;
+
+  svg {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 2px;
+  }
+
+  span {
+    margin: 0 8px;
+  }
+}
+
+.large {
+  @extend .small;
+  font-size: 15px;
+  padding: 12px 16px;
   font-weight: 500;
 
   svg {
     width: 1.2em;
     height: 1.2em;
+    margin: 2px;
   }
 
   span {
@@ -88,10 +108,19 @@
   }
 }
 
-.contained.disabled {
-  background-color: $gray400;
+.contained.black {
+  color: $black1;
+  background-color: $gray200;
   &:hover {
-    background-color: $gray400;
+    background-color: $gray300;
+  }
+}
+
+.contained.disabled {
+  background-color: $gray200;
+  color: $gray500;
+  &:hover {
+    background-color: $gray200;
   }
 }
 
@@ -114,4 +143,8 @@
 
 .text.disabled {
   color: $gray500;
+}
+
+.full {
+  width: 100%;
 }

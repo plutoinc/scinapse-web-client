@@ -4,10 +4,10 @@ import classNames from 'classnames/bind';
 const styles = require('./button.scss');
 
 interface ButtonProps {
-  size?: 'small' | 'medium' | 'large';
-  variant?: 'text' | 'outlined' | 'contained';
-  color?: 'blue' | 'gray' | 'black';
-  width?: 'full-width';
+  size: 'small' | 'medium' | 'large';
+  variant: 'text' | 'outlined' | 'contained';
+  color: 'blue' | 'gray' | 'black';
+  width?: 'full';
   state?: 'disabled';
   onClick?: ((e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void);
   href?: '';
@@ -16,13 +16,13 @@ interface ButtonProps {
 class Button extends React.PureComponent<ButtonProps, {}> {
   public render() {
     let cx = classNames.bind(styles);
-    let className = cx(this.props.size, this.props.variant, this.props.color, this.props.state);
+    let className = cx(this.props.size, this.props.variant, this.props.color, this.props.state, this.props.width);
 
     if (this.props.href) {
       return (
-        <link className={className} href={this.props.href}>
+        <a className={className} href={this.props.href}>
           {this.props.children}
-        </link>
+        </a>
       );
     }
     return (
