@@ -13,13 +13,13 @@
 .bannerTitle {
   font-size: 24px;
   font-weight: bold;
-  line-height: 1;
-  color: $black0;
+  color: $main_blue1;
 }
 
 .bannerBody {
   margin-top: 8px;
   font-size: 16px;
+  line-height: 1.2;
   color: $gray800;
 }
 
@@ -42,7 +42,7 @@
 .bannerImage {
   max-width: 284px;
   width: 100%;
-  height: 138px;
+  height: 180px;
 }
 
 .loadingContainer {
@@ -59,5 +59,4 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 16px;
 }

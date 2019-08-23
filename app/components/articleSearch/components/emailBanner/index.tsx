@@ -5,31 +5,13 @@ import { useDispatch } from 'react-redux';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../../../locationListener';
 import GlobalDialogManager from '../../../../helpers/globalDialogManager';
-import { getUserGroupName } from '../../../../helpers/abTestHelper';
-import { EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER } from '../../../../constants/abTestGlobalValue';
 import { EmailRecommendPaperSignUpBannerTestType } from '../../../../constants/abTestObject';
 
 const s = require('./emailBanner.scss');
 
-const EmailBanner: React.FC = () => {
+const EmailBanner: React.FC<{ testType: EmailRecommendPaperSignUpBannerTestType }> = ({ testType }) => {
   const dispatch = useDispatch();
   const [email, setEmail] = React.useState('');
-  const [testType, setTestType] = React.useState<EmailRecommendPaperSignUpBannerTestType | null>(null);
-
-  React.useEffect(() => {
-    const userGroup = getUserGroupName(EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER) as EmailRecommendPaperSignUpBannerTestType;
-    if (
-      userGroup !== EmailRecommendPaperSignUpBannerTestType.LETTERS &&
-      userGroup !== EmailRecommendPaperSignUpBannerTestType.TIRED &&
-      userGroup !== EmailRecommendPaperSignUpBannerTestType.WANDERING
-    ) {
-      return;
-    }
-
-    setTestType(userGroup);
-  }, []);
-
-  if (!testType) return null;
 
   let title;
   let subtitle;

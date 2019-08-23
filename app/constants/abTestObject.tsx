@@ -8,6 +8,7 @@ import {
 } from './abTestGlobalValue';
 
 export const enum EmailRecommendPaperSignUpBannerTestType {
+  CONTROL = 'control',
   LETTERS = 'letters',
   TIRED = 'tired',
   WANDERING = 'wandering',
@@ -31,7 +32,7 @@ export const strictSort: Test = {
 export const emailRecommendPaperSignUpBanner: Test = {
   name: EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER,
   userGroup: [
-    { groupName: 'control', weight: 1 },
+    { groupName: EmailRecommendPaperSignUpBannerTestType.CONTROL, weight: 1 },
     { groupName: EmailRecommendPaperSignUpBannerTestType.LETTERS, weight: 1 },
     { groupName: EmailRecommendPaperSignUpBannerTestType.TIRED, weight: 1 },
     { groupName: EmailRecommendPaperSignUpBannerTestType.WANDERING, weight: 1 },

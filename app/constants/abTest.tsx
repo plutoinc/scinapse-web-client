@@ -10,7 +10,7 @@ export interface Test {
   userGroup: UserGroup[];
 }
 
-export type ABTest = 'dummy' | 'weightedCitation' | 'strictSort' | 'randomRec' | 'emailRecommend';
+export type ABTest = 'dummy' | 'weightedCitation' | 'strictSort' | 'randomRec' | 'signBannerAtSearch-recommend';
 
 export interface SignUpConversionExpTicketContext {
   pageType: Scinapse.ActionTicket.PageType;
