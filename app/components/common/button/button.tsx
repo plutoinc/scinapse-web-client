@@ -4,10 +4,14 @@ import classNames from 'classnames/bind';
 import { withStyles } from '../../../helpers/withStylesHelper';
 const styles = require('./button.scss');
 
+export type ButtonSize = 'small' | 'medium' | 'large';
+export type ButtonVariant = 'text' | 'outlined' | 'contained';
+export type ButtonColor = 'blue' | 'gray' | 'black';
+
 interface BaseButtonProps {
-  size?: 'small' | 'medium' | 'large';
-  variant?: 'text' | 'outlined' | 'contained';
-  color?: 'blue' | 'gray' | 'black';
+  size?: ButtonSize;
+  variant?: ButtonVariant;
+  color?: ButtonColor;
   fullWidth?: boolean;
   disabled?: boolean;
 }
