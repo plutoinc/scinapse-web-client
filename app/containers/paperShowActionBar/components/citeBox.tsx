@@ -1,9 +1,11 @@
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
+import { addPaperToRecommendPool } from '../../../components/recommendPool/recommendPoolActions';
 const s = require('./citeBox.scss');
 
 interface CiteBoxProps {
@@ -14,6 +16,7 @@ interface CiteBoxProps {
 
 const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
   const { paper, btnStyle, actionArea } = props;
+  const dispatch = useDispatch();
 
   if (!paper.doi) return null;
 
@@ -21,8 +24,9 @@ const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
     <div
       style={!!btnStyle ? btnStyle : {}}
       className={s.citeButton}
-      onClick={() => {
+      onClick={async () => {
         GlobalDialogManager.openCitationDialog(paper.id);
+        dispatch(addPaperToRecommendPool(paper.id));
         ActionTicketManager.trackTicket({
           pageType: 'paperShow',
           actionType: 'fire',

@@ -1,19 +1,21 @@
 import React from 'react';
-import classNames from 'classnames';
 import { range } from 'lodash';
+import classNames from 'classnames';
 import { withStyles } from '../../../helpers/withStylesHelper';
-import Icon from '../../../icons';
 import { Paper } from '../../../model/paper';
 import SkeletonPaperItem from '../../common/skeletonPaperItem/skeletonPaperItem';
 import PaperItem from '../../common/paperItem';
 import { ActionTicketParams } from '../../../helpers/actionTicketManager/actionTicket';
 import { useObserver } from '../../../hooks/useIntersectionHook';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
+import Icon from '../../../icons';
 const styles = require('./recommendedPapers.scss');
 const BASED_ON_ACTIVITY_PAPER_COUNT = 5;
 
 interface BasedOnActivityPaperListProps {
   isLoading: boolean;
+  doRandomizeRec: boolean;
+  refreshBasedOnActivityPapers: (random: boolean) => void;
   papers: Paper[];
 }
 
@@ -42,7 +44,7 @@ const ActivityPaperItem: React.FC<{ paper: Paper }> = ({ paper }) => {
 };
 
 const BaseOnActivityPaperList: React.FC<BasedOnActivityPaperListProps> = props => {
-  const { isLoading, papers } = props;
+  const { isLoading, doRandomizeRec, papers, refreshBasedOnActivityPapers } = props;
   const [isPaperExpanding, setIsPaperExpanding] = React.useState(false);
 
   if (!papers) return null;
@@ -53,10 +55,10 @@ const BaseOnActivityPaperList: React.FC<BasedOnActivityPaperListProps> = props =
 
   if (isLoading) return <>{skeletonPaperItems}</>;
 
-  const targetPapers = isPaperExpanding ? papers : papers.slice(0, BASED_ON_ACTIVITY_PAPER_COUNT);
+  const targetPaper = doRandomizeRec || isPaperExpanding ? papers : papers.slice(0, BASED_ON_ACTIVITY_PAPER_COUNT);
 
   const moreButton =
-    papers.length <= BASED_ON_ACTIVITY_PAPER_COUNT ? null : (
+    papers.length <= BASED_ON_ACTIVITY_PAPER_COUNT || doRandomizeRec ? null : (
       <div
         onClick={() => {
           ActionTicketManager.trackTicket({
@@ -81,12 +83,31 @@ const BaseOnActivityPaperList: React.FC<BasedOnActivityPaperListProps> = props =
       </div>
     );
 
-  const activityPapers = targetPapers.map(paper => <ActivityPaperItem key={paper.id} paper={paper} />);
+  const refreshButton = doRandomizeRec && (
+    <div
+      className={styles.refreshBottomButton}
+      onClick={() => {
+        refreshBasedOnActivityPapers(doRandomizeRec);
+        ActionTicketManager.trackTicket({
+          pageType: 'home',
+          actionType: 'fire',
+          actionArea: 'basedOnActivityPaperList',
+          actionTag: 'clickRefreshButton',
+          actionLabel: null,
+        });
+      }}
+    >
+      <Icon className={styles.refreshIcon} icon="RELOAD" />REFRESH
+    </div>
+  );
+
+  const activityPapers = targetPaper.map(paper => <ActivityPaperItem key={paper.id} paper={paper} />);
 
   return (
     <>
       {activityPapers}
       {moreButton}
+      {refreshButton}
     </>
   );
 };

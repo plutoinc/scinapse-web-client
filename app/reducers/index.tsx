@@ -45,12 +45,10 @@ import { AuthorSearchState, AUTHOR_SEARCH_INITIAL_STATE } from '../containers/au
 import { RelatedPapersState, RELATED_PAPERS_INITIAL_STATE, reducer as RelatedPapersReducer } from './realtedPapers';
 import { PDFViewerState, reducer as PDFViewerReducer, PDF_VIEWER_INITIAL_STATE } from './pdfViewer';
 import { SEARCH_QUERY_INITIAL_STATE, SearchQueryState, reducer as SearchQueryReducer } from './searchQuery';
-import {
-  RecommendPapersDialogState,
-  reducer as RecommendPapersDialogReducer,
-  RECOMMEND_PAPERS_DIALOG_INITIAL_STATE,
-} from './recommendPapersDialog';
-
+import RecommendPoolReducer, {
+  RecommendPoolState,
+  RECOMMEND_POOL_INITIAL_STATE,
+} from '../components/recommendPool/recommendPoolReducer';
 import { SearchFilterState, reducer as SearchFilterReducer, SEARCH_FILTER_INITIAL_STATE } from './searchFilter';
 
 export interface AppState {
@@ -71,7 +69,7 @@ export interface AppState {
   relatedPapersState: RelatedPapersState;
   PDFViewerState: PDFViewerState;
   searchQueryState: SearchQueryState;
-  recommendPapersDialogState: RecommendPapersDialogState;
+  recommendPoolState: RecommendPoolState;
   searchFilterState: SearchFilterState;
   entities: EntityState;
 }
@@ -94,7 +92,7 @@ export const initialState: AppState = {
   relatedPapersState: RELATED_PAPERS_INITIAL_STATE,
   PDFViewerState: PDF_VIEWER_INITIAL_STATE,
   searchQueryState: SEARCH_QUERY_INITIAL_STATE,
-  recommendPapersDialogState: RECOMMEND_PAPERS_DIALOG_INITIAL_STATE,
+  recommendPoolState: RECOMMEND_POOL_INITIAL_STATE,
   searchFilterState: SEARCH_FILTER_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
 };
@@ -117,7 +115,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   relatedPapersState: RelatedPapersReducer,
   PDFViewerState: PDFViewerReducer,
   searchQueryState: SearchQueryReducer,
-  recommendPapersDialogState: RecommendPapersDialogReducer,
+  recommendPoolState: RecommendPoolReducer,
   searchFilterState: SearchFilterReducer,
   entities: EntityReducer,
 });

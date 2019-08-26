@@ -5,19 +5,22 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import SearchingPDFBtn from '../../../components/paperShow/components/searchingPDFBtn';
+import { useDispatch } from 'react-redux';
+import { addPaperToTempPool } from '../../../components/recommendPool/recommendPoolReducer';
 const s = require('../actionBar.scss');
 
-interface RequesrFullTextBtnProps {
+interface RequestFullTextBtnProps {
   isLoading: boolean;
   paperId: number;
-  handleSetIsOpen: (value: React.SetStateAction<boolean>) => void;
+  onClick: () => void;
   actionArea: Scinapse.ActionTicket.ActionArea;
   btnStyle?: React.CSSProperties;
   lastRequestedDate: string | null;
 }
 
-const RequestFullTextBtn: React.FC<RequesrFullTextBtnProps> = React.memo(props => {
-  const { isLoading, paperId, actionArea, handleSetIsOpen, btnStyle, lastRequestedDate } = props;
+const RequestFullTextBtn: React.FC<RequestFullTextBtnProps> = React.memo(props => {
+  const { isLoading, paperId, actionArea, onClick, btnStyle, lastRequestedDate } = props;
+  const dispatch = useDispatch();
 
   if (isLoading) {
     return <SearchingPDFBtn isLoading={isLoading} />;
@@ -43,6 +46,14 @@ const RequestFullTextBtn: React.FC<RequesrFullTextBtnProps> = React.memo(props =
             actionLabel: String(paperId),
           });
 
+          dispatch(
+            addPaperToTempPool({
+              pageType: 'paperShow',
+              actionArea: ' ',
+              paperId,
+            })
+          );
+
           const isBlocked = await blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,
             actionArea,
@@ -51,7 +62,7 @@ const RequestFullTextBtn: React.FC<RequesrFullTextBtnProps> = React.memo(props =
           });
 
           if (!isBlocked) {
-            handleSetIsOpen(true);
+            onClick();
           }
         }}
         className={s.fullTextBtn}

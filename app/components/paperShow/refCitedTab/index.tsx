@@ -7,7 +7,7 @@ import PdfDownloadButton from '../components/pdfDownloadButton';
 import RequestFullTextBtn from '../../../containers/paperShowActionBar/components/fullTextRequestBtn';
 import RequestFullTextDialog from '../../../containers/paperShowActionBar/components/fullTextDialog';
 import { PDFButtonProps, TabItemProps, PaperShowRefCitedTabProps } from './types';
-import { addPaperToRecommendation } from '../../../actions/recommendation';
+import { addPaperToRecommendPool, openRecommendPoolDialog } from '../../recommendPool/recommendPoolActions';
 const styles = require('./refCitedTab.scss');
 
 const TabItem: React.FunctionComponent<TabItemProps> = props => {
@@ -25,7 +25,7 @@ const TabItem: React.FunctionComponent<TabItemProps> = props => {
 };
 
 const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
-  const { dispatch, paper, isLoading, canShowFullPDF, onClickDownloadPDF, afterDownloadPDF, currentUser } = props;
+  const { dispatch, paper, isLoading, canShowFullPDF, onClickDownloadPDF, afterDownloadPDF } = props;
   const [isOpen, setIsOpen] = React.useState(false);
 
   if (canShowFullPDF) {
@@ -34,7 +34,6 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
         <PdfDownloadButton
           actionArea="contentNavBar"
           paper={paper}
-          currentUser={currentUser}
           isLoading={isLoading}
           onDownloadedPDF={onClickDownloadPDF!}
           handleSetScrollAfterDownload={afterDownloadPDF}
@@ -48,16 +47,19 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
         actionArea="contentNavBar"
         isLoading={isLoading}
         paperId={paper!.id}
-        handleSetIsOpen={setIsOpen}
+        onClick={() => {
+          setIsOpen(true);
+          props.dispatch(addPaperToRecommendPool(props.paper.id));
+        }}
         btnStyle={{ flex: '1 0 auto', height: '36px', padding: '0 12px 0 8px' }}
         lastRequestedDate={props.lastRequestedDate}
       />
       <RequestFullTextDialog
         paperId={paper.id}
         isOpen={isOpen}
-        onClose={() => {
+        onClose={async () => {
           setIsOpen(false);
-          dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper!.id, 'requestFullTextBtn'));
+          dispatch(openRecommendPoolDialog('paperShow', 'requestFullTextBtnAtRefBar'));
         }}
       />
     </>

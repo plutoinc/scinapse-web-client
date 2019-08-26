@@ -4,25 +4,23 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { Paper } from '../../../model/paper';
-import { CurrentUser } from '../../../model/currentUser';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import ScinapseButtonFactory, { ScinapseButtonType } from '../../common/scinapseButton/scinapseButtonFactory';
 import SourceURLPopover from '../../common/sourceURLPopover';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-import { addPaperToRecommendation } from '../../../actions/recommendation';
+import { addPaperToRecommendPoolAndOpenDialog } from '../../recommendPool/recommendPoolActions';
 const styles = require('./pdfSourceButton.scss');
 
 interface SourceButtonProps {
   paper: Paper;
   showFullText: boolean;
-  currentUser: CurrentUser;
   dispatch: Dispatch<any>;
   wrapperStyle?: React.CSSProperties;
 }
 
 const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
-  const { paper, showFullText, currentUser, dispatch } = props;
+  const { paper, showFullText, dispatch } = props;
   const [isSourcePopoverOpen, setIsSourcePopoverOpen] = React.useState(false);
   const anchorEl = React.useRef<HTMLDivElement | null>(null);
 
@@ -79,18 +77,31 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
               target: '_blank',
               rel: 'noopener',
               className: styles.linkClassName,
-              onClick: e => {
+              onClick: async e => {
                 e.preventDefault();
                 handleClickSource();
-                dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'sourceButton'));
+                dispatch(
+                  addPaperToRecommendPoolAndOpenDialog({
+                    pageType: 'paperShow',
+                    actionArea: 'sourceButton',
+                    paperId: paper.id,
+                  })
+                );
                 window.open(sourceUrl, '_blank');
               },
             }}
             dropdownBtnProps={{
-              onClick: () => {
+              onClick: async () => {
                 setIsSourcePopoverOpen(!isSourcePopoverOpen);
-                !isSourcePopoverOpen &&
-                  dispatch(addPaperToRecommendation(currentUser.isLoggedIn, paper.id, 'dropdownSourceBtn'));
+                if (!isSourcePopoverOpen) {
+                  dispatch(
+                    addPaperToRecommendPoolAndOpenDialog({
+                      pageType: 'paperShow',
+                      actionArea: 'sourceButton',
+                      paperId: paper.id,
+                    })
+                  );
+                }
               },
               style: !showFullText ? reverseBtnStyle : btnStyle,
               className: styles.dropdownBtn,
