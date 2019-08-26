@@ -46,14 +46,14 @@ const EmailBanner: React.FC<{ testType: EmailRecommendPaperSignUpBannerTestType 
           ActionTicketManager.trackTicket({
             pageType: getCurrentPageType(),
             actionType: 'fire',
-            actionArea: 'recommendEmailBanner',
             actionTag: 'signUpPopup',
+            actionArea: 'signBanner',
             actionLabel: 'recommendEmailBanner',
           });
           GlobalDialogManager.openSignUpDialog({
             authContext: {
               pageType: getCurrentPageType(),
-              actionArea: 'recommendEmailBanner',
+              actionArea: 'signBanner',
               actionLabel: 'recommendEmailBanner',
             },
             userActionType: 'recommendEmailBanner',
