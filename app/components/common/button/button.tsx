@@ -1,45 +1,69 @@
 import * as React from 'react';
-import { LocationDescriptor } from 'history';
+import { Link, LinkProps as ReactRouterLinkProps } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import { Link } from 'react-router-dom';
 import { withStyles } from '../../../helpers/withStylesHelper';
 const styles = require('./button.scss');
 
-interface BaseButtonProps {}
-
-interface ButtonProps {
-  size: 'small' | 'medium' | 'large';
-  variant: 'text' | 'outlined' | 'contained';
-  color: 'blue' | 'gray' | 'black';
+interface BaseButtonProps {
+  size?: 'small' | 'medium' | 'large';
+  variant?: 'text' | 'outlined' | 'contained';
+  color?: 'blue' | 'gray' | 'black';
   fullWidth?: boolean;
-  state?: 'disabled';
-  onClick?: ((e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void);
-  href?: string;
-  to?: LocationDescriptor;
+  disabled?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = props => {
-  let cx = classNames.bind(styles);
-  let className = cx(props.size, props.variant, props.color, props.state, { [styles.full]: props.fullWidth });
+type LinkProps = BaseButtonProps & ReactRouterLinkProps;
+type ButtonProps = BaseButtonProps &
+  React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
+type AnchorProps = BaseButtonProps &
+  React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>;
+type GeneralButtonProps = LinkProps | ButtonProps | AnchorProps;
 
-  // if ("to" in props) {
-  //   return <Link to={props.to}>
-  //     {props.children}
-  //   </Link>
-  // }
+function isButtonProps(props: GeneralButtonProps): props is ButtonProps {
+  return (props as AnchorProps).href === undefined && (props as LinkProps).to === undefined;
+}
 
-  if (props.href) {
+function isLinkProps(props: GeneralButtonProps): props is LinkProps {
+  return (props as LinkProps).to !== undefined;
+}
+
+function isAnchorProps(props: GeneralButtonProps): props is AnchorProps {
+  return (props as AnchorProps).href === undefined;
+}
+
+const Button: React.FC<GeneralButtonProps> = props => {
+  const { color = 'blue', variant = 'contained', size = 'medium' } = props;
+  const cx = classNames.bind(styles);
+  const className = cx(size, variant, color, { [styles.disabled]: props.disabled }, { [styles.full]: props.fullWidth });
+
+  if (isLinkProps(props)) {
+    const { color, variant, size, fullWidth, disabled, ...ownProps } = props;
     return (
-      <a className={className} href={props.href}>
+      <Link {...ownProps} className={className}>
+        {props.children}
+      </Link>
+    );
+  }
+
+  if (isAnchorProps(props)) {
+    const { color, variant, size, fullWidth, disabled, ...ownProps } = props;
+    return (
+      <a {...ownProps} className={className}>
         {props.children}
       </a>
     );
   }
-  return (
-    <button className={className} onClick={props.onClick}>
-      {props.children}
-    </button>
-  );
+
+  if (isButtonProps(props)) {
+    const { color, variant, size, fullWidth, disabled, ...ownProps } = props;
+    return (
+      <button {...ownProps} className={className}>
+        {props.children}
+      </button>
+    );
+  }
+
+  return null;
 };
 
 export default withStyles<typeof Button>(styles)(Button);
