@@ -20,7 +20,6 @@ const EmailToggleItem: React.FC<EmailToggleItemProps> = ({
   active,
   onClick,
   isLoading,
-  hasFailed,
   globalInActive,
 }) => {
   const disabledButton = globalInActive || isLoading;
