@@ -1,36 +1,45 @@
 import * as React from 'react';
-import { withStyles } from '../../../helpers/withStylesHelper';
+import { LocationDescriptor } from 'history';
 import classNames from 'classnames/bind';
+import { Link } from 'react-router-dom';
+import { withStyles } from '../../../helpers/withStylesHelper';
 const styles = require('./button.scss');
+
+interface BaseButtonProps {}
 
 interface ButtonProps {
   size: 'small' | 'medium' | 'large';
   variant: 'text' | 'outlined' | 'contained';
   color: 'blue' | 'gray' | 'black';
-  width?: 'full';
+  fullWidth?: boolean;
   state?: 'disabled';
   onClick?: ((e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void);
-  href?: '';
+  href?: string;
+  to?: LocationDescriptor;
 }
 
-class Button extends React.PureComponent<ButtonProps, {}> {
-  public render() {
-    let cx = classNames.bind(styles);
-    let className = cx(this.props.size, this.props.variant, this.props.color, this.props.state, this.props.width);
+const Button: React.FC<ButtonProps> = props => {
+  let cx = classNames.bind(styles);
+  let className = cx(props.size, props.variant, props.color, props.state, { [styles.full]: props.fullWidth });
 
-    if (this.props.href) {
-      return (
-        <a className={className} href={this.props.href}>
-          {this.props.children}
-        </a>
-      );
-    }
+  // if ("to" in props) {
+  //   return <Link to={props.to}>
+  //     {props.children}
+  //   </Link>
+  // }
+
+  if (props.href) {
     return (
-      <button className={className} onClick={this.props.onClick}>
-        {this.props.children}
-      </button>
+      <a className={className} href={props.href}>
+        {props.children}
+      </a>
     );
   }
-}
+  return (
+    <button className={className} onClick={props.onClick}>
+      {props.children}
+    </button>
+  );
+};
 
 export default withStyles<typeof Button>(styles)(Button);
