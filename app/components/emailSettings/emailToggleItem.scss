@@ -1,4 +1,100 @@
 .toggleItemWrapper {
   display: flex;
   justify-content: space-between;
+
+  & + & {
+    margin-top: 40px;
+  }
+}
+
+.toggleItemContext {
+  max-width: 377px;
+  width: 100%;
+  margin-right: 8px;
+}
+
+.toggleItemTitle {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.33;
+  color: $black0;
+  margin-bottom: 8px;
+}
+
+.toggleItemSubtitle {
+  font-size: 15px;
+  line-height: 1.33;
+  color: $black0;
+}
+
+.toggleButtonWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.loadingSpinner {
+  color: $gray400 !important;
+  margin-right: 8px;
+}
+
+.toggleButton {
+  font-size: 14px;
+  width: 56px;
+  height: 32px;
+  border: solid 1px $gray400;
+  cursor: pointer;
+  transition: background-color 0.15s;
+
+  &:first-of-type {
+    border-radius: 4px 0 0 4px;
+    border-right: 0px;
+  }
+
+  &:last-of-type {
+    border-radius: 0 4px 4px 0;
+  }
+}
+
+.toggleActive {
+  background-color: $main_blue0;
+  color: white;
+  border: solid 1px $main_blue0;
+}
+
+.toggleInactive {
+  @extend .toggleActive;
+
+  background-color: $gray400;
+  border: solid 1px $gray400;
+  color: $gray700;
+}
+
+.blockedToggleButtonWrapper {
+  opacity: 0.5;
+  button {
+    cursor: not-allowed !important;
+  }
+}
+
+@media (max-width: $mobile_width) {
+  .toggleItemWrapper {
+    flex-direction: column;
+  }
+
+  .toggleItemContext {
+    margin-right: 0px;
+    max-width: 100%;
+  }
+
+  .toggleButtonWrapper {
+    margin-top: 24px;
+  }
+
+  .toggleButton {
+    width: 100%;
+  }
+
+  .loadingSpinner {
+    display: none !important;
+  }
 }

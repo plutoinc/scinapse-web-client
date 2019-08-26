@@ -114,7 +114,7 @@ export default function reducer(state: ReducerState, action: EmailSettingsAction
       return {
         ...state,
         isLoading: false,
-        succeedToFecth: true,
+        succeedToFetch: true,
         activeStatus: newActiveStatus,
       };
 

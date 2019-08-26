@@ -111,6 +111,7 @@ const ProfileFormContainer: React.FC<ProfileFormContainerProps & ReturnType<type
 
   return (
     <div>
+      <div className={s.divider} />
       <h1 className={s.title}>Profile</h1>
       <Formik
         initialValues={{
@@ -210,6 +211,7 @@ const ProfileFormContainer: React.FC<ProfileFormContainerProps & ReturnType<type
           );
         }}
       />
+      <div className={s.divider} />
     </div>
   );
 };

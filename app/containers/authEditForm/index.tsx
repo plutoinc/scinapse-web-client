@@ -278,6 +278,7 @@ const AuthEditForm: React.FC<AuthEditFormProps & ReturnType<typeof mapStateToPro
           );
         }}
       />
+      <div className={s.divider} />
     </div>
   );
 };

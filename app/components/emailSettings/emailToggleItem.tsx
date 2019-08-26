@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { withStyles } from '../../helpers/withStylesHelper';
+import CircularProgress from '@material-ui/core/CircularProgress';
 const s = require('./emailToggleItem.scss');
 
 interface EmailToggleItemProps {
@@ -10,7 +11,9 @@ interface EmailToggleItemProps {
   onClick: (nextStatus: boolean) => void;
   isLoading: boolean;
   hasFailed: boolean;
+  globalInActive?: boolean;
 }
+
 const EmailToggleItem: React.FC<EmailToggleItemProps> = ({
   title,
   subtitle,
@@ -18,15 +21,25 @@ const EmailToggleItem: React.FC<EmailToggleItemProps> = ({
   onClick,
   isLoading,
   hasFailed,
+  globalInActive,
 }) => {
+  const disabledButton = globalInActive || isLoading;
+
   return (
     <div className={s.toggleItemWrapper}>
-      <div>
+      <div className={s.toggleItemContext}>
         <div className={s.toggleItemTitle}>{title}</div>
         <div className={s.toggleItemSubtitle}>{subtitle}</div>
       </div>
-      <div>
+      <div
+        className={classNames({
+          [s.toggleButtonWrapper]: true,
+          [s.blockedToggleButtonWrapper]: disabledButton,
+        })}
+      >
+        {isLoading && <CircularProgress className={s.loadingSpinner} disableShrink={true} size={20} thickness={8} />}
         <button
+          disabled={globalInActive}
           onClick={() => {
             onClick(true);
           }}
@@ -38,6 +51,7 @@ const EmailToggleItem: React.FC<EmailToggleItemProps> = ({
           On
         </button>
         <button
+          disabled={globalInActive}
           onClick={() => {
             onClick(false);
           }}

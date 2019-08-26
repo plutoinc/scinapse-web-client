@@ -19,7 +19,6 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
 
   useEffect(
     () => {
-      // TODO: handle no user and no token situation
       if (!currentUser.isLoggedIn && !token) return;
 
       dispatch({ type: 'START_TO_FETCHING_SETTINGS' });
@@ -40,12 +39,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
     [currentUser]
   );
 
-  // TODO: Add loading
-  // if (!state.succeedToFetch) return <loading />;
-
-  // TODO: Add error component
-  // below logic is pseudo code. don't trust conditional statement
-  // if ((!state.succeedToFetch && !currentUser.isLoggedIn && !token) || state.hasError) return null;
+  if ((!state.succeedToFetch && !currentUser.isLoggedIn && !token) || state.failedToFetch) return null;
 
   const handleClickItem = async (type: EmailSettingTypes, nextStatus: boolean) => {
     if (state.activeStatus[type] === nextStatus) return;
@@ -77,54 +71,57 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
 
   return (
     <>
-      <div className={s.divider} />
       <div className={s.title}>Emails from Scinapse</div>
       <EmailToggleItem
         title="Feature Instruction Mail"
         subtitle="Regular introductions on use of Scinapse"
         active={state.activeStatus.FEATURE_INSTRUCTION}
-        isLoading={state.updateStatus.FEATURE_INSTRUCTION.isLoading}
+        isLoading={state.updateStatus.FEATURE_INSTRUCTION.isLoading || !state.succeedToFetch}
         hasFailed={state.updateStatus.FEATURE_INSTRUCTION.hasFailed}
         onClick={(nextStatus: boolean) => {
           handleClickItem('FEATURE_INSTRUCTION', nextStatus);
         }}
+        globalInActive={!state.activeStatus.GLOBAL}
       />
       <EmailToggleItem
         title="Paper Recommendation Mail"
         subtitle="Send recommendations based on your history"
         active={state.activeStatus.PAPER_RECOMMENDATION}
-        isLoading={state.updateStatus.PAPER_RECOMMENDATION.isLoading}
+        isLoading={state.updateStatus.PAPER_RECOMMENDATION.isLoading || !state.succeedToFetch}
         hasFailed={state.updateStatus.PAPER_RECOMMENDATION.hasFailed}
         onClick={(nextStatus: boolean) => {
           handleClickItem('PAPER_RECOMMENDATION', nextStatus);
         }}
+        globalInActive={!state.activeStatus.GLOBAL}
       />
       <EmailToggleItem
         title="Collection Remind Mail"
         subtitle="Send an aggregated papers you saved."
         active={state.activeStatus.COLLECTION_REMIND}
-        isLoading={state.updateStatus.COLLECTION_REMIND.isLoading}
+        isLoading={state.updateStatus.COLLECTION_REMIND.isLoading || !state.succeedToFetch}
         hasFailed={state.updateStatus.COLLECTION_REMIND.hasFailed}
         onClick={(nextStatus: boolean) => {
           handleClickItem('COLLECTION_REMIND', nextStatus);
         }}
+        globalInActive={!state.activeStatus.GLOBAL}
       />
       <EmailToggleItem
         title="Full-text Request Confirmation"
         subtitle="Send a confirmation mail when you request full-text."
         active={state.activeStatus.REQUEST_CONFIRMATION}
-        isLoading={state.updateStatus.REQUEST_CONFIRMATION.isLoading}
+        isLoading={state.updateStatus.REQUEST_CONFIRMATION.isLoading || !state.succeedToFetch}
         hasFailed={state.updateStatus.REQUEST_CONFIRMATION.hasFailed}
         onClick={(nextStatus: boolean) => {
           handleClickItem('REQUEST_CONFIRMATION', nextStatus);
         }}
+        globalInActive={!state.activeStatus.GLOBAL}
       />
       <div className={s.divider} />
       <EmailToggleItem
         title="All Email"
         subtitle="Control whether to receive email from Scinapse. You’ll still receive administrative emails even if this setting is off."
         active={state.activeStatus.GLOBAL}
-        isLoading={state.updateStatus.GLOBAL.isLoading}
+        isLoading={state.updateStatus.GLOBAL.isLoading || !state.succeedToFetch}
         hasFailed={state.updateStatus.GLOBAL.hasFailed}
         onClick={(nextStatus: boolean) => {
           handleClickItem('GLOBAL', nextStatus);
