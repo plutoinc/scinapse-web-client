@@ -43,7 +43,7 @@ export interface Paper {
   conferenceInstance: ConferenceInstance | null;
   urls: PaperSource[];
   isAuthorIncluded?: boolean;
-  relation: { savedInCollections: SavedInCollections[] };
+  relation?: { savedInCollections: SavedInCollections[] } | null;
   bestPdf: PaperPdf;
   titleHighlighted?: string;
   abstractHighlighted?: string;
