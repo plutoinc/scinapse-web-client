@@ -1,10 +1,10 @@
 import * as React from 'react';
-import Authors from './authors';
-import PaperItemVenue from './venue';
-import { withStyles } from '../../../helpers/withStylesHelper';
+import LineVenue from './lineVenue';
+import LineAuthors from './lineAuthors';
 import Icon from '../../../icons';
 import { Paper } from '../../../model/paper';
-const styles = require('./venueAndAuthors.scss');
+import { withStyles } from '../../../helpers/withStylesHelper';
+const styles = require('./lineVenueAuthors.scss');
 
 export interface VenueAndAuthorsProps {
   paper: Paper;
@@ -12,21 +12,21 @@ export interface VenueAndAuthorsProps {
   actionArea: Scinapse.ActionTicket.ActionArea;
 }
 
-const VenueAndAuthors: React.FC<VenueAndAuthorsProps> = props => {
+const LineVenueAuthors: React.FC<VenueAndAuthorsProps> = props => {
   const { paper, pageType, actionArea } = props;
   const { authors } = paper;
 
   return (
     <div className={styles.publishInfoList}>
-      <PaperItemVenue paper={paper} pageType={pageType} actionArea={actionArea} />
+      <LineVenue paper={paper} pageType={pageType} actionArea={actionArea} />
       {authors && (
         <div className={styles.author}>
           <Icon className={styles.authorIcon} icon="AUTHOR" />
-          <Authors paper={paper} authors={authors} pageType={pageType} actionArea={actionArea} />
+          <LineAuthors paper={paper} authors={authors} pageType={pageType} actionArea={actionArea} />
         </div>
       )}
     </div>
   );
 };
 
-export default withStyles<typeof VenueAndAuthors>(styles)(VenueAndAuthors);
+export default withStyles<typeof LineVenueAuthors>(styles)(LineVenueAuthors);

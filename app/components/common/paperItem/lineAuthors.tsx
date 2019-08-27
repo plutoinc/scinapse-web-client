@@ -21,7 +21,7 @@ export interface AuthorsProps {
   disableTruncate?: boolean;
 }
 
-class Authors extends React.PureComponent<AuthorsProps> {
+class LineAuthors extends React.PureComponent<AuthorsProps> {
   public render() {
     const { authors, disableTruncate, paper } = this.props;
 
@@ -144,4 +144,4 @@ class Authors extends React.PureComponent<AuthorsProps> {
   };
 }
 
-export default withStyles<typeof Authors>(styles)(Authors);
+export default withStyles<typeof LineAuthors>(styles)(LineAuthors);

@@ -16,7 +16,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
       <span
         className="subContext"
       >
-        Saved in 
+        Saved in
       </span>
       <a
         className="collectionTitle"
@@ -67,7 +67,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
           <span
             className="bold"
           >
-            2007 in 
+            2007 in
           </span>
           <a
             className="venueName"
@@ -102,9 +102,9 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
             >
               Dmitriy A. Dikin
             </a>
-             
+
             <span>
-              , 
+              ,
             </span>
           </span>
           <span
@@ -117,13 +117,13 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
             >
               Sasha Stankovich
             </a>
-             
+
           </span>
           <span
             className="toggleAuthorsButton"
             onClick={[Function]}
           >
-            + 5 Authors
+            + 5 LineAuthors
           </span>
           <span
             className="author"
@@ -135,7 +135,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
             >
               Rodney S. Ruoff
             </a>
-             
+
           </span>
         </span>
       </div>
@@ -248,7 +248,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
       <span
         className="subContext"
       >
-        Saved in 
+        Saved in
       </span>
       <a
         className="collectionTitle"
@@ -299,7 +299,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
           <span
             className="bold"
           >
-            2007 in 
+            2007 in
           </span>
           <a
             className="venueName"
@@ -334,9 +334,9 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
             >
               Dmitriy A. Dikin
             </a>
-             
+
             <span>
-              , 
+              ,
             </span>
           </span>
           <span
@@ -349,13 +349,13 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
             >
               Sasha Stankovich
             </a>
-             
+
           </span>
           <span
             className="toggleAuthorsButton"
             onClick={[Function]}
           >
-            + 5 Authors
+            + 5 LineAuthors
           </span>
           <span
             className="author"
@@ -367,7 +367,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
             >
               Rodney S. Ruoff
             </a>
-             
+
           </span>
         </span>
       </div>

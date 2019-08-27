@@ -27,7 +27,7 @@ import ErrorPage from '../../components/error/errorPage';
 import EnvChecker from '../../helpers/envChecker';
 import NextPaperTab from '../nextPaperTab';
 import { PaperShowMatchParams, PaperShowPageQueryParams, RefCitedTabItem } from './types';
-import VenueAndAuthors from '../../components/common/paperItem/venueAndAuthors';
+import VenueAndAuthors from '../../components/common/paperItem/lineVenueAuthors';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import RelatedPapers from '../../components/relatedPapers';
 import { CommonError } from '../../model/error';

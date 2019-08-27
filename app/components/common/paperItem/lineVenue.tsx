@@ -11,7 +11,7 @@ import { ConferenceInstance } from '../../../model/conferenceInstance';
 import DoiInPaperShow from '../../paperShow/components/doiInPaperShow';
 import JournalBadge from '../../journalBadge';
 import { Paper } from '../../../model/paper';
-const styles = require('./venueAndAuthors.scss');
+const styles = require('./lineVenueAuthors.scss');
 
 interface PaperItemVenueProps {
   paper: Paper;
@@ -91,7 +91,7 @@ const JournalTitle: React.FC<{
   );
 };
 
-const PaperItemVenue = ({ style, readOnly, pageType, paper, actionArea }: PaperItemVenueProps) => {
+const LineVenue = ({ style, readOnly, pageType, paper, actionArea }: PaperItemVenueProps) => {
   const { conferenceInstance, publishedDate, doi, journal } = paper;
   if (!journal && !publishedDate) return null;
 
@@ -129,4 +129,4 @@ const PaperItemVenue = ({ style, readOnly, pageType, paper, actionArea }: PaperI
   );
 };
 
-export default withStyles<typeof PaperItemVenue>(styles)(PaperItemVenue);
+export default withStyles<typeof LineVenue>(styles)(LineVenue);

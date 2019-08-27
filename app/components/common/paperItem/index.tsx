@@ -3,7 +3,7 @@ import { CurrentUser } from '../../../model/currentUser';
 import Abstract from './abstract';
 import PaperActionButtons from './paperActionButtons';
 import Title from './title';
-import VenueAndAuthors from './venueAndAuthors';
+import VenueAndAuthors from './lineVenueAuthors';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import SavedCollections from './savedCollections';

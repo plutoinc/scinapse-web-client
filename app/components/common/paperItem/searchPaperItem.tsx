@@ -6,12 +6,11 @@ import Abstract from './abstract';
 import Figures from './figures';
 import PaperActionButtons from './paperActionButtons';
 import Title from './title';
-import BlockVenue from './blockVenue';
-import BlockAuthorList from './blockAuthorList';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import SavedCollections from './savedCollections';
 import { PaperSource } from '../../../api/paper';
+import BlockVenueAuthor from './blockVenueAuthor';
 const styles = require('./paperItem.scss');
 
 export interface PaperItemProps {
@@ -69,14 +68,7 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
         {historyContent}
         <Title paper={paper} pageType={pageType} actionArea={actionArea} />
         <div className={styles.venueAndAuthorWrapper}>
-          <BlockVenue
-            journal={paper.journal}
-            conferenceInstance={paper.conferenceInstance}
-            publishedDate={paper.publishedDate}
-            pageType={pageType}
-            actionArea={actionArea}
-          />
-          <BlockAuthorList paper={paper} authors={paper.authors} pageType={pageType} actionArea={actionArea} />{' '}
+          <BlockVenueAuthor paper={paper} pageType={pageType} actionArea={actionArea} />
           <Abstract
             paperId={paper.id}
             pageType={pageType}

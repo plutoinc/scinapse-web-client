@@ -39,7 +39,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                 >
                   H. Goldschmidt
                 </span>
-                 
+
                 <div
                   aria-describedby={null}
                   className="contactIconWrapper"
@@ -212,11 +212,11 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                 className="paperCountMetadata"
               >
                 1
-                 page of 
+                 page of
                 1
                  pages (
                 1
-                 
+
                 results)
               </div>
             </div>
@@ -257,7 +257,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                 <span
                   className="subContext"
                 >
-                  Saved in 
+                  Saved in
                 </span>
                 <a
                   className="collectionTitle"
@@ -308,7 +308,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                     <span
                       className="bold"
                     >
-                      2007 in 
+                      2007 in
                     </span>
                     <a
                       className="venueName"
@@ -343,9 +343,9 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                       >
                         Dmitriy A. Dikin
                       </a>
-                       
+
                       <span>
-                        , 
+                        ,
                       </span>
                     </span>
                     <span
@@ -358,13 +358,13 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                       >
                         Sasha Stankovich
                       </a>
-                       
+
                     </span>
                     <span
                       className="toggleAuthorsButton"
                       onClick={[Function]}
                     >
-                      + 5 Authors
+                      + 5 LineAuthors
                     </span>
                     <span
                       className="author"
@@ -376,7 +376,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                       >
                         Rodney S. Ruoff
                       </a>
-                       
+
                     </span>
                   </span>
                 </div>
@@ -631,7 +631,7 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
                 >
                   H. Goldschmidt
                 </span>
-                 
+
                 <div
                   aria-describedby={null}
                   className="contactIconWrapper"
@@ -804,11 +804,11 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
                 className="paperCountMetadata"
               >
                 1
-                 page of 
+                 page of
                 1
                  pages (
                 1
-                 
+
                 results)
               </div>
             </div>
@@ -1010,7 +1010,7 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
                 >
                   H. Goldschmidt
                 </span>
-                 
+
                 <div
                   aria-describedby={null}
                   className="contactIconWrapper"
@@ -1183,11 +1183,11 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
                 className="paperCountMetadata"
               >
                 1
-                 page of 
+                 page of
                 1
                  pages (
                 1
-                 
+
                 results)
               </div>
             </div>

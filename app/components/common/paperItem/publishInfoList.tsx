@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import Authors, { AuthorsProps } from './authors';
+import Authors, { AuthorsProps } from './lineAuthors';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { trackEvent } from '../../../helpers/handleGA';
 import Icon from '../../../icons';
