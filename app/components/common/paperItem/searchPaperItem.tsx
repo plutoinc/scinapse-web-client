@@ -48,8 +48,8 @@ const NotIncludedWords: React.FC<{ missingKeywords: string[] }> = React.memo(pro
 });
 
 const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
-  const { searchQueryText, paper, wrapperClassName, currentUser, pageType, actionArea, savedAt, sourceDomain } = props;
-  const { doi, urls, relation } = paper;
+  const { paper, wrapperClassName, currentUser, pageType, actionArea, savedAt, sourceDomain } = props;
+  const { relation } = paper;
 
   let historyContent = null;
   if (savedAt) {
@@ -60,15 +60,6 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
     );
   }
 
-  let source;
-  if (!!doi) {
-    source = `https://doi.org/${doi}`;
-  } else if (urls && urls.length > 0) {
-    source = urls[0].url;
-  } else {
-    source = '';
-  }
-
   return (
     <div className={`${wrapperClassName ? wrapperClassName : styles.paperItemWrapper}`}>
       <div className={styles.contentSection}>
@@ -76,15 +67,7 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
           <SavedCollections collections={relation.savedInCollections} />
         ) : null}
         {historyContent}
-        <Title
-          paperId={paper.id}
-          paperTitle={paper.title}
-          highlightTitle={paper.titleHighlighted}
-          highlightAbstract={paper.abstractHighlighted}
-          pageType={pageType}
-          actionArea={actionArea}
-          source={source}
-        />
+        <Title paper={paper} pageType={pageType} actionArea={actionArea} />
         <div className={styles.venueAndAuthorWrapper}>
           <BlockVenue
             journal={paper.journal}
@@ -99,7 +82,6 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
             pageType={pageType}
             actionArea={actionArea}
             abstract={paper.abstractHighlighted || paper.abstract}
-            searchQueryText={searchQueryText}
           />
         </div>
         <Figures figures={paper.figures} paperId={paper.id} />

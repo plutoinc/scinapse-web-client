@@ -13,10 +13,8 @@ export interface PaperItemProps {
   paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
-  currentPage?: number;
   hasCollection?: boolean;
   paperNote?: string;
-  searchQueryText?: string;
   wrapperClassName?: string;
   wrapperStyle?: React.CSSProperties;
   currentUser?: CurrentUser;
@@ -32,7 +30,6 @@ export interface PaperItemProps {
 class BasePaperItem extends React.PureComponent<PaperItemProps> {
   public render() {
     const {
-      searchQueryText,
       paper,
       paperNote,
       wrapperClassName,
@@ -49,7 +46,7 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
       hasCollection,
       onRemovePaperCollection,
     } = this.props;
-    const { authors, publishedDate, doi, urls, journal, conferenceInstance, relation } = paper;
+    const { authors, publishedDate, journal, conferenceInstance, relation } = paper;
 
     const abstract = !omitAbstract ? (
       <Abstract
@@ -57,7 +54,6 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
         pageType={pageType}
         actionArea={actionArea}
         abstract={paper.abstractHighlighted || paper.abstract}
-        searchQueryText={searchQueryText}
       />
     ) : null;
 
@@ -78,30 +74,13 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
         />
       ) : null;
 
-    let source: string;
-    if (!!doi) {
-      source = `https://doi.org/${doi}`;
-    } else if (urls && urls.length > 0) {
-      source = urls[0].url;
-    } else {
-      source = '';
-    }
-
     return (
       <div style={wrapperStyle} className={`${wrapperClassName ? wrapperClassName : styles.paperItemWrapper}`}>
         <div className={styles.contentSection}>
           {!!relation && relation.savedInCollections.length >= 1 ? (
             <SavedCollections collections={relation.savedInCollections} />
           ) : null}
-          <Title
-            paperId={paper.id}
-            paperTitle={paper.title}
-            highlightTitle={paper.titleHighlighted}
-            highlightAbstract={paper.abstractHighlighted}
-            pageType={pageType}
-            actionArea={actionArea}
-            source={source}
-          />
+          <Title paper={paper} pageType={pageType} actionArea={actionArea} />
           <VenueAndAuthors
             pageType={pageType}
             actionArea={actionArea}
