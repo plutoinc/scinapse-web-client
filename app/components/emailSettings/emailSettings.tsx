@@ -22,7 +22,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
       if (!currentUser.isLoggedIn && !token) return;
 
       dispatch({ type: 'START_TO_FETCHING_SETTINGS' });
-      AuthAPI.getEmailSettings()
+      AuthAPI.getEmailSettings(token)
         .then(res => {
           dispatch({
             type: 'SUCCEED_TO_FETCHING_SETTINGS',
