@@ -46,13 +46,13 @@
   }
 
   span {
-    margin: 0 8px;
+    margin: 0 6px;
   }
 }
 
 .large {
   @extend .small;
-  font-size: 15px;
+  font-size: 16px;
   padding: 12px;
   font-weight: 500;
 
@@ -74,7 +74,10 @@
 .outlined {
   border: 1px solid $gray400;
   &:hover {
-    background-color: $gray50;
+    background-color: $gray200;
+  }
+  &:active {
+    background-color: $gray300;
   }
 }
 
@@ -83,7 +86,7 @@
 }
 
 .outlined.blue {
-  color: $main_blue0;
+  color: $main_blue1;
 }
 
 .outlined.black {
@@ -100,17 +103,23 @@
 
 .contained.blue {
   color: white;
-  background-color: $main_blue0;
+  background-color: $main_blue1;
   &:hover {
-    background-color: $main_blue1;
+    background-color: $main_blue0;
+  }
+  &:active {
+    background-color: $main_blue_light0;
   }
 }
 
 .contained.gray {
-  color: $main_blue0;
+  color: $main_blue1;
   background-color: $gray200;
   &:hover {
     background-color: $gray300;
+  }
+  &:active {
+    background-color: $gray400;
   }
 }
 
@@ -119,6 +128,9 @@
   background-color: $gray200;
   &:hover {
     background-color: $gray300;
+  }
+  &:active {
+    background-color: $gray400;
   }
 }
 
@@ -136,7 +148,7 @@
 }
 
 .text.blue {
-  color: $main_blue0;
+  color: $main_blue1;
 }
 
 .text.black {
