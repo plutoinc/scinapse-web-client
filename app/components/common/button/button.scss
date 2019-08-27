@@ -26,6 +26,10 @@
     text-align: center;
     width: 100%;
   }
+
+  &:hover {
+    transition: background-color ease 0.2s;
+  }
 }
 
 .medium {
@@ -48,7 +52,7 @@
 .large {
   @extend .small;
   font-size: 15px;
-  padding: 12px 16px;
+  padding: 12px;
   font-weight: 500;
 
   svg {
@@ -88,6 +92,7 @@
 .outlined.disabled {
   color: $gray500;
   &:hover {
+    transition: ease 0.2s;
     background-color: white;
   }
 }

@@ -25,6 +25,24 @@ const ButtonDemo: React.FC = () => {
     });
   });
 
+  const rightIconBasicButtons = availableVariant.map(variant => {
+    return availableColor.map(color => {
+      return availableSizes.map(size => {
+        return (
+          <div style={{ margin: '10px 0', textAlign: 'center' }} key={size + variant + color}>
+            <Button size={size} variant={variant} color={color}>
+              <span>Bookmark</span>
+              <Icon icon="BOOKMARK" />
+            </Button>
+            <small style={{ display: 'block', textAlign: 'center', margin: '8px', color: '#666666' }}>
+              {`basic button : ${size}/${variant}/${color}`}
+            </small>
+          </div>
+        );
+      });
+    });
+  });
+
   const onlyTextButtons = availableVariant.map(variant => {
     return availableColor.map(color => {
       return availableSizes.map(size => {
@@ -89,7 +107,8 @@ const ButtonDemo: React.FC = () => {
             key={size + variant + color}
           >
             <Button size={size} variant={variant} color={color} fullWidth={true}>
-              <span>Bookmark</span>
+              <Icon icon="BOOKMARK" />
+              <span>Sign up</span>
             </Button>
             <small style={{ display: 'block', textAlign: 'center', margin: '8px', color: '#666666' }}>
               {`only text full-width button : ${size}/${variant}/${color}`}
@@ -111,6 +130,7 @@ const ButtonDemo: React.FC = () => {
       }}
     >
       {basicButtons}
+      {rightIconBasicButtons}
       {onlyTextButtons}
       {onlyIconButtons}
       {basicFullWidthButtons}
