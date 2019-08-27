@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { withStyles } from '../../helpers/withStylesHelper';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import reducer, { EmailSettingsInitialState } from './emailSettingsReducer';
+import alertToast from '../../helpers/makePlutoToastAction';
 const s = require('./emailToggleItem.scss');
 
 interface EmailToggleItemProps {
@@ -19,9 +21,22 @@ const EmailToggleItem: React.FC<EmailToggleItemProps> = ({
   subtitle,
   active,
   onClick,
+  hasFailed,
   isLoading,
   globalInActive,
 }) => {
+  useEffect(
+    () => {
+      if (hasFailed) {
+        alertToast({
+          type: 'error',
+          message: 'Failed to update email setting!',
+        });
+      }
+    },
+    [hasFailed]
+  );
+
   const disabledButton = globalInActive || isLoading;
 
   return (
