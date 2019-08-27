@@ -41,7 +41,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
 
   if ((!state.succeedToFetch && !currentUser.isLoggedIn && !token) || state.failedToFetch) return null;
 
-  const handleClickItem = async (type: EmailSettingTypes, nextStatus: boolean) => {
+  const handleClickItem = async (token: string, type: EmailSettingTypes, nextStatus: boolean) => {
     if (state.activeStatus[type] === nextStatus) return;
 
     try {
@@ -51,7 +51,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
           emailSettingTypes: type,
         },
       });
-      await AuthAPI.updateEmailSetting({ type, setting: nextStatus });
+      await AuthAPI.updateEmailSetting({ token, type, setting: nextStatus });
       dispatch({
         type: 'SUCCEED_TO_UPDATING_SETTING',
         payload: {
@@ -79,7 +79,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
         isLoading={state.updateStatus.FEATURE_INSTRUCTION.isLoading || !state.succeedToFetch}
         hasFailed={state.updateStatus.FEATURE_INSTRUCTION.hasFailed}
         onClick={(nextStatus: boolean) => {
-          handleClickItem('FEATURE_INSTRUCTION', nextStatus);
+          handleClickItem(token, 'FEATURE_INSTRUCTION', nextStatus);
         }}
         globalInActive={!state.activeStatus.GLOBAL}
       />
@@ -90,7 +90,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
         isLoading={state.updateStatus.PAPER_RECOMMENDATION.isLoading || !state.succeedToFetch}
         hasFailed={state.updateStatus.PAPER_RECOMMENDATION.hasFailed}
         onClick={(nextStatus: boolean) => {
-          handleClickItem('PAPER_RECOMMENDATION', nextStatus);
+          handleClickItem(token, 'PAPER_RECOMMENDATION', nextStatus);
         }}
         globalInActive={!state.activeStatus.GLOBAL}
       />
@@ -101,7 +101,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
         isLoading={state.updateStatus.COLLECTION_REMIND.isLoading || !state.succeedToFetch}
         hasFailed={state.updateStatus.COLLECTION_REMIND.hasFailed}
         onClick={(nextStatus: boolean) => {
-          handleClickItem('COLLECTION_REMIND', nextStatus);
+          handleClickItem(token, 'COLLECTION_REMIND', nextStatus);
         }}
         globalInActive={!state.activeStatus.GLOBAL}
       />
@@ -112,7 +112,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
         isLoading={state.updateStatus.REQUEST_CONFIRMATION.isLoading || !state.succeedToFetch}
         hasFailed={state.updateStatus.REQUEST_CONFIRMATION.hasFailed}
         onClick={(nextStatus: boolean) => {
-          handleClickItem('REQUEST_CONFIRMATION', nextStatus);
+          handleClickItem(token, 'REQUEST_CONFIRMATION', nextStatus);
         }}
         globalInActive={!state.activeStatus.GLOBAL}
       />
@@ -124,7 +124,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
         isLoading={state.updateStatus.GLOBAL.isLoading || !state.succeedToFetch}
         hasFailed={state.updateStatus.GLOBAL.hasFailed}
         onClick={(nextStatus: boolean) => {
-          handleClickItem('GLOBAL', nextStatus);
+          handleClickItem(token, 'GLOBAL', nextStatus);
         }}
       />
     </>
