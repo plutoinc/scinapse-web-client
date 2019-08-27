@@ -119,6 +119,22 @@ const ButtonDemo: React.FC = () => {
     });
   });
 
+  const disbaledButtons = availableVariant.map(variant => {
+    return availableSizes.map(size => {
+      return (
+        <div style={{ margin: '10px 0', textAlign: 'center', width: '200px', display: 'inline' }} key={size + variant}>
+          <Button size={size} variant={variant} disabled={true}>
+            <Icon icon="BOOKMARK" />
+            <span>Confirm</span>
+          </Button>
+          <small style={{ display: 'block', textAlign: 'center', margin: '8px', color: '#666666' }}>
+            {`disabled button : ${size}/${variant}`}
+          </small>
+        </div>
+      );
+    });
+  });
+
   return (
     <div
       style={{
@@ -135,6 +151,7 @@ const ButtonDemo: React.FC = () => {
       {onlyIconButtons}
       {basicFullWidthButtons}
       {onlyTextFullWidthButtons}
+      {disbaledButtons}
     </div>
   );
 };
