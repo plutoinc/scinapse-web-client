@@ -23,7 +23,6 @@ import Icon from '../../icons';
 import { LayoutState } from '../layouts/reducer';
 import formatNumber from '../../helpers/formatNumber';
 import SortBox, { PAPER_LIST_SORT_TYPES } from '../common/sortBox';
-import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
 import PaperShowKeyword from '../paperShow/components/keyword';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import restoreScroll from '../../helpers/scrollRestoration';
@@ -343,9 +342,6 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
   private getPaperList = () => {
     const { journalShow, papers, currentUser } = this.props;
 
-    const queryParams = this.getQueryParamsObject();
-    const query = SafeURIStringHandler.decode(queryParams.q || '');
-
     if (journalShow.isLoadingPapers) {
       return (
         <div className={styles.loadingContainer}>
@@ -361,7 +357,6 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
             <PaperItem
               pageType="journalShow"
               actionArea="paperList"
-              searchQueryText={query}
               currentUser={currentUser}
               paper={paper}
               key={`collection_papers_${paper.id}`}

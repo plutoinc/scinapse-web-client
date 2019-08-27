@@ -185,15 +185,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             <div className={styles.paperShowContent}>
               <GoBackResultBtn />
               <Title title={paper.title} />
-              <VenueAndAuthors
-                pageType={'paperShow'}
-                actionArea={'paperDescription'}
-                paper={paper}
-                journal={paper.journal}
-                conferenceInstance={paper.conferenceInstance}
-                publishedDate={paper.publishedDate}
-                authors={paper.authors}
-              />
+              <VenueAndAuthors pageType="paperShow" actionArea="paperDescription" paper={paper} />
               <div className={styles.paperContentBlockDivider} />
               <div className={styles.actionBarWrapper}>
                 <ActionBar

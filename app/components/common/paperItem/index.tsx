@@ -46,7 +46,7 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
       hasCollection,
       onRemovePaperCollection,
     } = this.props;
-    const { authors, publishedDate, journal, conferenceInstance, relation } = paper;
+    const { relation } = paper;
 
     const abstract = !omitAbstract ? (
       <Abstract
@@ -81,15 +81,7 @@ class BasePaperItem extends React.PureComponent<PaperItemProps> {
             <SavedCollections collections={relation.savedInCollections} />
           ) : null}
           <Title paper={paper} pageType={pageType} actionArea={actionArea} />
-          <VenueAndAuthors
-            pageType={pageType}
-            actionArea={actionArea}
-            paper={paper}
-            journal={journal}
-            conferenceInstance={conferenceInstance}
-            publishedDate={publishedDate}
-            authors={authors}
-          />
+          <VenueAndAuthors pageType={pageType} actionArea={actionArea} paper={paper} />
           {abstract}
           {buttons}
         </div>

@@ -218,13 +218,9 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
               <PaperItemVenue
                 pageType={getCurrentPageType()}
                 actionArea="allPublications"
-                paperId={paper.id}
-                doi={paper.doi}
-                journal={paper.journal}
-                conferenceInstance={paper.conferenceInstance}
-                publishedDate={paper.publishedDate}
-                readOnly={true}
+                paper={paper}
                 style={{ display: 'flex', color: '#bbc2d0', fontSize: '14px' }}
+                readOnly
               />
             </div>
           </div>
@@ -266,12 +262,8 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
             <PaperItemVenue
               pageType={getCurrentPageType()}
               actionArea="allPublications"
-              paperId={paper.id}
-              doi={paper.doi}
-              journal={paper.journal}
-              conferenceInstance={paper.conferenceInstance}
-              publishedDate={paper.publishedDate}
-              readOnly={true}
+              paper={paper}
+              readOnly
               style={{ display: 'flex', color: '#7e8698', fontSize: '14px' }}
             />
           </div>
