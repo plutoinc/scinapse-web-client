@@ -6,15 +6,6 @@
   font-size: 13px;
   height: 30px;
 
-  .citedButton {
-    @include small-button($gray800);
-    font-size: 14px;
-
-    .citedIconWrapper {
-      margin-right: 6px;
-    }
-  }
-
   .sourceButton {
     @include small-action-button($gray800);
     position: relative;

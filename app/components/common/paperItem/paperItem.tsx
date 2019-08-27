@@ -30,3 +30,5 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(
     );
   }
 );
+
+export default PaperItem;

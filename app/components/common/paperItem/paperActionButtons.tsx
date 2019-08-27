@@ -193,7 +193,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             pathname: `/papers/${paper.id}`,
             hash: 'cited',
           }}
-          onClick={async () => {
+          onClick={() => {
             ActionTicketManager.trackTicket({
               pageType,
               actionType: 'fire',

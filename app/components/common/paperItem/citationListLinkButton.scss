@@ -1,0 +1,8 @@
+.citedButton {
+  @include small-button($gray800);
+  font-size: 14px;
+
+  .citedIconWrapper {
+    margin-right: 6px;
+  }
+}
