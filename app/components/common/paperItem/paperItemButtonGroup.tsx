@@ -2,6 +2,7 @@ import React from 'react';
 import { Paper } from '../../../model/paper';
 import CitationListLinkButton from './citationListLinkButton';
 import SourceButton from './sourceButton';
+import CiteButton from './citeButton';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { PaperSource } from '../../../api/paper';
 const s = require('./paperItemButtonGroup.scss');
@@ -18,6 +19,7 @@ const PaperItemButtonGroup: React.FC<PaperItemButtonGroupProps> = ({ paper, page
     <>
       <CitationListLinkButton paper={paper} pageType={pageType} actionArea={actionArea} />
       <SourceButton paperId={paper.id} pageType={pageType} actionArea={actionArea} paperSource={paperSource} />
+      <CiteButton paper={paper} pageType={pageType} actionArea={actionArea} />
     </>
   );
 };

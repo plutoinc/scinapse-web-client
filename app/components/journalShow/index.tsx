@@ -7,7 +7,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { denormalize } from 'normalizr';
 import { Helmet } from 'react-helmet';
 import { AppState } from '../../reducers';
-import PaperItem from '../common/paperItem';
+import PaperItem from '../common/paperItem/paperItem';
 import MobilePagination from '../common/mobilePagination';
 import DesktopPagination from '../common/desktopPagination';
 import ArticleSpinner from '../common/spinner/articleSpinner';
@@ -340,7 +340,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
   };
 
   private getPaperList = () => {
-    const { journalShow, papers, currentUser } = this.props;
+    const { journalShow, papers } = this.props;
 
     if (journalShow.isLoadingPapers) {
       return (
@@ -353,15 +353,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
     if (papers && papers.length > 0) {
       return papers.map(paper => {
         if (paper) {
-          return (
-            <PaperItem
-              pageType="journalShow"
-              actionArea="paperList"
-              currentUser={currentUser}
-              paper={paper}
-              key={`collection_papers_${paper.id}`}
-            />
-          );
+          return <PaperItem key={paper.id} paper={paper} pageType="journalShow" actionArea="paperList" />;
         }
         return null;
       });

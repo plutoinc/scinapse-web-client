@@ -92,24 +92,6 @@
   margin: 0 10px;
 }
 
-.citationIconWrapper {
-  @include small-action-button($gray800);
-  .citationIcon {
-    margin-right: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-
-    svg {
-      padding-top: 2px;
-      width: 12px;
-      height: 12px;
-    }
-  }
-}
-
 .claimButton {
   @include small-action-button($red0);
   height: 30px;
@@ -215,10 +197,6 @@
 
 // Mobile
 @media (max-width: $mobile_width) {
-  .citationIconWrapper {
-    display: none;
-  }
-
   .addCollectionBtnWrapper {
     display: none;
   }

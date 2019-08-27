@@ -1,5 +1,6 @@
 .citedButton {
   @include small-button($gray800);
+  display: inline-flex;
   font-size: 14px;
 
   .citedIconWrapper {
