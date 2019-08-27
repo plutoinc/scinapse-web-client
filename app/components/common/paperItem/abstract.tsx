@@ -9,9 +9,9 @@ const MAX_LENGTH_OF_ABSTRACT = 500;
 export interface AbstractProps {
   paperId: number;
   abstract: string;
-  pageType: Scinapse.ActionTicket.PageType;
   maxLength?: number;
-  actionArea?: Scinapse.ActionTicket.ActionArea;
+  pageType: Scinapse.ActionTicket.PageType;
+  actionArea: Scinapse.ActionTicket.ActionArea;
 }
 
 export interface AbstractStates extends Readonly<{}> {
@@ -22,62 +22,49 @@ function createLatexParsedMarkup(rawHTML: string) {
   return { __html: formulaeToHTMLStr(rawHTML) };
 }
 
-@withStyles<typeof Abstract>(styles)
-class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
-  public constructor(props: AbstractProps) {
-    super(props);
-    this.state = {
-      isExtendContent: false,
-    };
+const Abstract: React.FC<AbstractProps> = ({ abstract, maxLength, pageType, actionArea, paperId }) => {
+  const [isExtendContent, setIsExtendContent] = React.useState(false);
+  const abstractMaxLength = maxLength || MAX_LENGTH_OF_ABSTRACT;
+
+  if (!abstract) {
+    return null;
   }
 
-  public render() {
-    const { abstract, maxLength } = this.props;
-    const abstractMaxLength = maxLength || MAX_LENGTH_OF_ABSTRACT;
+  const cleanAbstract = abstract
+    .replace(/^ /gi, '')
+    .replace(/\s{2,}/g, ' ')
+    .replace(/#[A-Z0-9]+#/g, '')
+    .replace(/\n|\r/g, ' ');
 
-    if (!abstract) {
-      return null;
-    }
-
-    const cleanAbstract = abstract
-      .replace(/^ /gi, '')
-      .replace(/\s{2,}/g, ' ')
-      .replace(/#[A-Z0-9]+#/g, '')
-      .replace(/\n|\r/g, ' ');
-
-    let finalAbstract;
-    if (cleanAbstract.length > abstractMaxLength) {
-      finalAbstract = cleanAbstract.slice(0, abstractMaxLength) + '...';
-    } else {
-      finalAbstract = cleanAbstract;
-    }
-
-    return (
-      <div className={styles.abstract}>
-        <span dangerouslySetInnerHTML={createLatexParsedMarkup(finalAbstract)} />
-        {finalAbstract.length > abstractMaxLength ? (
-          <label className={styles.moreOrLess} onClick={this.handelExtendContent}>
-            {this.state.isExtendContent ? <span>less</span> : <span>more</span>}
-          </label>
-        ) : null}
-      </div>
-    );
+  let finalAbstract;
+  if (cleanAbstract.length > abstractMaxLength) {
+    finalAbstract = cleanAbstract.slice(0, abstractMaxLength) + '...';
+  } else {
+    finalAbstract = cleanAbstract;
   }
 
-  public handelExtendContent = async () => {
-    const { pageType, actionArea, paperId } = this.props;
-    const { isExtendContent } = this.state;
+  return (
+    <div className={styles.abstract}>
+      <span dangerouslySetInnerHTML={createLatexParsedMarkup(finalAbstract)} />
+      {finalAbstract.length > abstractMaxLength ? (
+        <label
+          className={styles.moreOrLess}
+          onClick={() => {
+            setIsExtendContent(!isExtendContent);
+            ActionTicketManager.trackTicket({
+              pageType,
+              actionType: 'fire',
+              actionArea: actionArea || pageType,
+              actionTag: isExtendContent ? 'collapseAbstract' : 'extendAbstract',
+              actionLabel: String(paperId),
+            });
+          }}
+        >
+          {isExtendContent ? <span>less</span> : <span>more</span>}
+        </label>
+      ) : null}
+    </div>
+  );
+};
 
-    this.setState({ isExtendContent: !isExtendContent });
-
-    ActionTicketManager.trackTicket({
-      pageType,
-      actionType: 'fire',
-      actionArea: actionArea || pageType,
-      actionTag: isExtendContent ? 'collapseAbstract' : 'extendAbstract',
-      actionLabel: String(paperId),
-    });
-  };
-}
-
-export default Abstract;
+export default withStyles<typeof Abstract>(styles)(Abstract);
