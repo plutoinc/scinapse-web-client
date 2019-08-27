@@ -12,31 +12,6 @@
   background-color: white;
 }
 
-.headerWrapper {
-  position: relative;
-  margin-left: 8px;
-  width: 117px;
-  height: 44px;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
-  color: $gray800;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-
-  &.openHeaderWrapper {
-    background-color: $gray50;
-  }
-
-  &:hover {
-    background-color: $gray50;
-    color: $black1;
-    transition: $button-hover-transition;
-  }
-}
-
 .historyIcon {
   display: inline-block;
   vertical-align: top;

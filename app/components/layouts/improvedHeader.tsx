@@ -30,6 +30,7 @@ import { getCollections } from '../collections/actions';
 import { getMemoizedPaper } from '../../containers/paperShow/select';
 import ResearchHistory from '../researchHistory';
 import { UserDevice } from './reducer';
+import Button from '../common/button/button';
 const styles = require('./improvedHeader.scss');
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -369,27 +370,32 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
 
     return (
       <div className={styles.rightBox}>
-        {this.getHistoryButton()}
-        <Link
-          className={styles.externalCollectionButton}
-          onClick={() => {
-            this.handleRequestCloseUserDropdown();
-            ActionTicketManager.trackTicket({
-              pageType: getCurrentPageType(),
-              actionType: 'fire',
-              actionArea: 'topBar',
-              actionTag: 'collectionShow',
-              actionLabel: String(myCollectionsState.collectionIds[0]),
-            });
-          }}
-          to={
-            !!myCollectionsState && myCollectionsState.collectionIds.length > 0
-              ? `/collections/${myCollectionsState.collectionIds[0]}`
-              : `/users/${currentUserState.id}/collections`
-          }
-        >
-          <Icon className={styles.collectionIcon} icon="COLLECTION" />Collection
-        </Link>
+        <div className={styles.rightButtons}>
+          {this.getHistoryButton()}
+          <Button
+            size="large"
+            variant="text"
+            color="gray"
+            onClick={() => {
+              this.handleRequestCloseUserDropdown();
+              ActionTicketManager.trackTicket({
+                pageType: getCurrentPageType(),
+                actionType: 'fire',
+                actionArea: 'topBar',
+                actionTag: 'collectionShow',
+                actionLabel: String(myCollectionsState.collectionIds[0]),
+              });
+            }}
+            to={
+              !!myCollectionsState && myCollectionsState.collectionIds.length > 0
+                ? `/collections/${myCollectionsState.collectionIds[0]}`
+                : `/users/${currentUserState.id}/collections`
+            }
+          >
+            <Icon icon="COLLECTION" />
+            <span>Collection</span>
+          </Button>
+        </div>
         <div>
           {!currentUserState.profileImageUrl ? (
             <div
@@ -433,24 +439,29 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
     if (!isLoggedIn) {
       return (
         <div className={styles.rightBox}>
-          {this.getHistoryButton()}
-          <div
-            onClick={() => {
-              this.handleOpenSignIn();
-              trackDialogView('headerSignInOpen');
-              ActionTicketManager.trackTicket({
-                pageType: getCurrentPageType(),
-                actionType: 'fire',
-                actionArea: 'topBar',
-                actionTag: 'signInPopup',
-                actionLabel: 'topBar',
-              });
-            }}
-            className={styles.signInButton}
-          >
-            Sign in
+          <div className={styles.rightButtons}>
+            {this.getHistoryButton()}
+            <Button
+              size="large"
+              variant="text"
+              style={{ marginRight: '8px' }}
+              onClick={() => {
+                this.handleOpenSignIn();
+                trackDialogView('headerSignInOpen');
+                ActionTicketManager.trackTicket({
+                  pageType: getCurrentPageType(),
+                  actionType: 'fire',
+                  actionArea: 'topBar',
+                  actionTag: 'signInPopup',
+                  actionLabel: 'topBar',
+                });
+              }}
+            >
+              <span>Sign in</span>
+            </Button>
           </div>
-          <div
+          <Button
+            size="large"
             onClick={() => {
               this.handleOpenSignUp();
               trackDialogView('headerSignUpOpen');
@@ -462,10 +473,9 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
                 actionLabel: 'topBar',
               });
             }}
-            className={styles.signUpButton}
           >
-            Sign up
-          </div>
+            <span>Sign up</span>
+          </Button>
         </div>
       );
     } else {

@@ -26,6 +26,7 @@
     margin: 0 4px;
     text-align: center;
     width: 100%;
+    white-space: nowrap;
   }
 
   &:hover {
@@ -53,7 +54,7 @@
 .large {
   @extend .small;
   font-size: 16px;
-  padding: 12px;
+  padding: 10px 12px;
   font-weight: 500;
 
   svg {
@@ -63,7 +64,7 @@
   }
 
   span {
-    margin: 0 8px;
+    margin: 0 6px;
   }
 }
 
@@ -83,6 +84,9 @@
 
 .outlined.gray {
   color: $gray800;
+  svg {
+    color: $gray800;
+  }
 }
 
 .outlined.blue {
@@ -157,6 +161,10 @@
 
 .text.gray {
   color: $gray800;
+
+  svg {
+    color: $gray800;
+  }
 }
 
 .text.disabled {
