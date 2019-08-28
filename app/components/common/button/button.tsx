@@ -21,7 +21,7 @@ type ButtonProps = BaseButtonProps &
   React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & { type: 'button' };
 type AnchorProps = BaseButtonProps &
   React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> & { type: 'anchor' };
-type GeneralButtonProps = LinkProps | ButtonProps | AnchorProps;
+export type GeneralButtonProps = LinkProps | ButtonProps | AnchorProps;
 
 const Button: React.FC<GeneralButtonProps> = props => {
   const { color = 'blue', variant = 'contained', size = 'medium', type, fullWidth, disabled, ...ownProps } = props;
