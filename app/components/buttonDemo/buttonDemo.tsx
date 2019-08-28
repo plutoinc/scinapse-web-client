@@ -12,7 +12,7 @@ const ButtonDemo: React.FC = () => {
       return availableSizes.map(size => {
         return (
           <div style={{ margin: '10px 0', textAlign: 'center' }} key={size + variant + color}>
-            <Button size={size} variant={variant} color={color}>
+            <Button type="button" size={size} variant={variant} color={color}>
               <Icon icon="BOOKMARK" />
               <span>Bookmark</span>
             </Button>
@@ -30,7 +30,7 @@ const ButtonDemo: React.FC = () => {
       return availableSizes.map(size => {
         return (
           <div style={{ margin: '10px 0', textAlign: 'center' }} key={size + variant + color}>
-            <Button size={size} variant={variant} color={color}>
+            <Button type="button" size={size} variant={variant} color={color}>
               <span>Bookmark</span>
               <Icon icon="BOOKMARK" />
             </Button>
@@ -48,7 +48,7 @@ const ButtonDemo: React.FC = () => {
       return availableSizes.map(size => {
         return (
           <div style={{ margin: '10px 0', textAlign: 'center' }} key={size + variant + color}>
-            <Button size={size} variant={variant} color={color}>
+            <Button type="button" size={size} variant={variant} color={color}>
               <span>Bookmark</span>
             </Button>
             <small style={{ display: 'block', textAlign: 'center', margin: '8px', color: '#666666' }}>
@@ -65,7 +65,7 @@ const ButtonDemo: React.FC = () => {
       return availableSizes.map(size => {
         return (
           <div style={{ margin: '10px 0', textAlign: 'center' }} key={size + variant + color}>
-            <Button size={size} variant={variant} color={color}>
+            <Button type="button" size={size} variant={variant} color={color}>
               <Icon icon="BOOKMARK" />
             </Button>
             <small style={{ display: 'block', textAlign: 'center', margin: '8px', color: '#666666' }}>
@@ -85,7 +85,7 @@ const ButtonDemo: React.FC = () => {
             style={{ margin: '10px 0', textAlign: 'center', width: '200px', display: 'inline' }}
             key={size + variant + color}
           >
-            <Button size={size} variant={variant} color={color} fullWidth={true}>
+            <Button type="button" size={size} variant={variant} color={color} fullWidth={true}>
               <Icon icon="BOOKMARK" />
               <span>Bookmark</span>
             </Button>
@@ -106,7 +106,7 @@ const ButtonDemo: React.FC = () => {
             style={{ margin: '10px 0', textAlign: 'center', width: '200px', display: 'inline' }}
             key={size + variant + color}
           >
-            <Button size={size} variant={variant} color={color} fullWidth={true}>
+            <Button type="button" size={size} variant={variant} color={color} fullWidth={true}>
               <Icon icon="BOOKMARK" />
               <span>Sign up</span>
             </Button>
@@ -123,7 +123,7 @@ const ButtonDemo: React.FC = () => {
     return availableSizes.map(size => {
       return (
         <div style={{ margin: '10px 0', textAlign: 'center', width: '200px', display: 'inline' }} key={size + variant}>
-          <Button size={size} variant={variant} disabled={true}>
+          <Button type="button" size={size} variant={variant} disabled={true}>
             <Icon icon="BOOKMARK" />
             <span>Confirm</span>
           </Button>
