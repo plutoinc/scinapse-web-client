@@ -5,16 +5,15 @@ import {
   SignUpWithSocialParams,
   SignInWithEmailParams,
   SignInResult,
-  SignInWithSocialParams,
   SignInData,
-  GetAuthorizeUriParams,
-  GetAuthorizeUriResult,
   VerifyEmailResult,
   CheckDuplicatedEmailResult,
   OAUTH_VENDOR,
   OAuthCheckResult,
   UpdateUserInformationParams,
   ChangePasswordParams,
+  EmailSettingsResponse,
+  UpdateEmailSettingParams,
 } from './types/auth';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
@@ -38,20 +37,6 @@ class AuthAPI extends PlutoAxios {
     return camelCaseKeys(signInData);
   }
 
-  public async signInWithSocial(exchangeData: SignInWithSocialParams): Promise<SignInResult> {
-    const signInWithSocialResponse = await this.post('/auth/oauth/login', {
-      code: exchangeData.code,
-      redirectUri: exchangeData.redirectUri,
-      vendor: exchangeData.vendor,
-    });
-    const signInData: SignInData = signInWithSocialResponse.data;
-    return camelCaseKeys(signInData);
-  }
-
-  public async refresh() {
-    await this.get('auth/refresh');
-  }
-
   public async signOut() {
     await this.post('auth/logout');
   }
@@ -71,17 +56,6 @@ class AuthAPI extends PlutoAxios {
     const checkLoggedInData: SignInData = checkLoggedInResponse.data;
 
     return camelCaseKeys(checkLoggedInData);
-  }
-
-  public async getAuthorizeURI({ vendor, redirectURI }: GetAuthorizeUriParams): Promise<GetAuthorizeUriResult> {
-    const res = await this.get('/auth/oauth/authorize-uri', {
-      params: {
-        vendor,
-        redirectUri: redirectURI,
-      },
-    });
-
-    return res.data;
   }
 
   public async verifyToken(token: string): Promise<VerifyEmailResult> {
@@ -145,6 +119,25 @@ class AuthAPI extends PlutoAxios {
     });
 
     return camelCaseKeys(res.data);
+  }
+
+  public async getEmailSettings(token?: string): Promise<EmailSettingsResponse> {
+    const res = await this.get(`/notifications/email/settings?token=${token}`);
+    return camelCaseKeys(res.data);
+  }
+
+  public async updateEmailSetting({
+    token,
+    type,
+    setting,
+  }: UpdateEmailSettingParams): Promise<{
+    success: boolean;
+  }> {
+    const res = await this.put(`/notifications/email/settings?token=${token}`, {
+      type,
+      setting: setting ? 'ON' : 'OFF',
+    });
+    return res.data.data.content;
   }
 }
 
