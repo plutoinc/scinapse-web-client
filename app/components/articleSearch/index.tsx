@@ -32,7 +32,9 @@ import { changeSearchQuery } from '../../actions/searchQuery';
 import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
 import ImprovedFooter from '../layouts/improvedFooter';
 import { getUserGroupName } from '../../helpers/abTestHelper';
-import { WEIGHTED_CITATION_EXPERIMENT } from '../../constants/abTestGlobalValue';
+import { WEIGHTED_CITATION_EXPERIMENT, EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER } from '../../constants/abTestGlobalValue';
+import EmailBanner from './components/emailBanner';
+import { EmailRecommendPaperSignUpBannerTestType } from '../../constants/abTestObject';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -204,6 +206,11 @@ const SearchContainer: React.FC<Props> = props => {
   );
   const [filter, setFilter] = React.useState(SearchQueryManager.objectifyPaperFilter(queryParams.filter));
   const cancelToken = React.useRef(axios.CancelToken.source());
+  const [bannerTestType, setBannerTestType] = React.useState<EmailRecommendPaperSignUpBannerTestType | null>(null);
+  React.useEffect(() => {
+    const userGroup = getUserGroupName(EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER) as EmailRecommendPaperSignUpBannerTestType;
+    setBannerTestType(userGroup);
+  }, []);
 
   React.useEffect(
     () => {
@@ -239,6 +246,17 @@ const SearchContainer: React.FC<Props> = props => {
     return <ErrorPage errorNum={articleSearchState.pageErrorCode} />;
   }
 
+  const shouldShowSignBanner =
+    !articleSearchState.isContentLoading &&
+    !currentUserState.isLoggedIn &&
+    bannerTestType === EmailRecommendPaperSignUpBannerTestType.CONTROL;
+
+  const shouldShowEmailBanner =
+    !currentUserState.isLoggedIn &&
+    !articleSearchState.isContentLoading &&
+    !!bannerTestType &&
+    bannerTestType !== EmailRecommendPaperSignUpBannerTestType.CONTROL;
+
   return (
     <div className={styles.rootWrapper}>
       <SearchHelmet query={queryParams.query || ''} />
@@ -260,7 +278,16 @@ const SearchContainer: React.FC<Props> = props => {
               articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements > 0,
           })}
         >
-          {!currentUserState.isLoggedIn && <SignBanner isLoading={articleSearchState.isContentLoading} />}
+          {shouldShowSignBanner && (
+            <div className={styles.rightItemWrapper}>
+              <SignBanner />
+            </div>
+          )}
+          {shouldShowEmailBanner && (
+            <div className={styles.rightItemWrapper}>
+              <EmailBanner testType={bannerTestType!} />
+            </div>
+          )}
         </div>
       </div>
       <ImprovedFooter

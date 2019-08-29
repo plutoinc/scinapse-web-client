@@ -154,6 +154,10 @@
   }
 }
 
+.rightItemWrapper + .rightItemWrapper {
+  margin-top: 16px;
+}
+
 .authorItemSectionWrapper {
   @extend .innerContainer;
 }

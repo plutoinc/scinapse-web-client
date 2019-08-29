@@ -61,7 +61,6 @@ $wrapper-vertical-margin: 128px;
   );
   margin: $wrapper-vertical-margin auto;
 }
-
 .title {
   font-size: 36px;
   font-weight: 500;
@@ -70,7 +69,6 @@ $wrapper-vertical-margin: 128px;
   color: $black0;
   margin-bottom: 36px;
 }
-
 @media (max-width: $mobile_width) {
   .wrapper {
     padding: 0 16px;

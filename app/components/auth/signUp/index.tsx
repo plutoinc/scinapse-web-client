@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { withRouter } from 'react-router-dom';
+import { Dispatch } from 'redux';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as Actions from './actions';
-import { SignUpContainerProps, SIGN_UP_STEP } from './types';
+import { SIGN_UP_STEP } from './types';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import FirstForm from './components/firstForm';
 import SignUpForm, { SignUpFormValues } from './components/signUpForm';
@@ -11,10 +12,23 @@ import { AppState } from '../../../reducers';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import { ActionCreators } from '../../../actions/actionTypes';
+import { GLOBAL_DIALOG_TYPE } from '../../dialog/reducer';
 const styles = require('./signUp.scss');
 
+type SignUpContainerProps = RouteComponentProps<SignUpSearchParams> &
+  ReturnType<typeof mapStateToProps> & {
+    dispatch: Dispatch<any>;
+    handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void;
+    userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
+  };
+
+interface SignUpSearchParams {
+  code?: string;
+  vendor?: OAUTH_VENDOR;
+}
+
 const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
-  const { dialogState, dispatch } = props;
+  const { dialogState, dispatch, signUpModalState } = props;
   const [signUpStep, setSignUpStep] = React.useState(dialogState.signUpStep || SIGN_UP_STEP.FIRST);
   const [email, setEmail] = React.useState(dialogState.oauthResult ? dialogState.oauthResult.email || '' : '');
   const [password, setPassword] = React.useState('');
@@ -179,6 +193,7 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
     default:
       return (
         <FirstForm
+          initialEmail={signUpModalState.email}
           onSubmit={values => {
             setEmail(values.email);
             setPassword(values.password);
@@ -230,6 +245,7 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
 function mapStateToProps(state: AppState) {
   return {
     dialogState: state.dialog,
+    signUpModalState: state.signUpModalState,
   };
 }
 

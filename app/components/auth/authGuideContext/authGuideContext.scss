@@ -1,5 +1,6 @@
 .container {
   width: 408px;
+  min-height: 520px;
   padding: 24px 32px;
   overflow: hidden;
   position: relative;
@@ -14,7 +15,6 @@
 
 .mainText {
   width: 344px;
-  height: 156px;
   margin-top: 36px;
   font-family: Georgia;
   font-size: 46px;
@@ -49,5 +49,6 @@
 @media (max-width: $tablet_width) {
   .container {
     display: none;
+    min-height: unset;
   }
 }

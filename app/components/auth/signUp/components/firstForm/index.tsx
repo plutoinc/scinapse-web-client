@@ -27,6 +27,7 @@ const s = require('./firstForm.scss');
 declare var FB: any;
 
 interface FirstFormProps {
+  initialEmail: string;
   onSubmit: (values: FormValues) => void;
   onClickTab: (type: GLOBAL_DIALOG_TYPE) => void;
   userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
@@ -45,7 +46,7 @@ interface FormValues {
 export const oAuthBtnBaseStyle: React.CSSProperties = { position: 'relative', fontSize: '13px', marginTop: '10px' };
 
 const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
-  const { dispatch, dialogState } = props;
+  const { dispatch, dialogState, initialEmail } = props;
   const [isLoading, setIsLoading] = React.useState(false);
   const [networkError, setNetworkError] = React.useState('');
   const FBIsLoading = useFBIsLoading();
@@ -147,7 +148,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
           <AuthTabs onClickTab={props.onClickTab} activeTab={'sign up'} />
           <div className={s.formWrapper}>
             <Formik
-              initialValues={{ email: '', password: '' }}
+              initialValues={{ email: initialEmail, password: '' }}
               onSubmit={onSubmit}
               validate={validateForm}
               render={() => {
@@ -157,6 +158,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
                       name="email"
                       type="email"
                       component={AuthInputBox}
+                      autoFocus={!props.initialEmail}
                       placeholder="E-mail"
                       iconName="EMAIL_ICON"
                     />
@@ -166,6 +168,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
                       component={AuthInputBox}
                       placeholder="Password"
                       iconName="PASSWORD_ICON"
+                      autoFocus={!!props.initialEmail}
                     />
                     {networkError && <div className={s.errorContent}>{networkError}</div>}
 

@@ -4,6 +4,7 @@ import * as currentUserReducer from './currentUser';
 import { CURRENT_USER_INITIAL_STATE, CurrentUser } from '../model/currentUser';
 import * as dialogReducer from '../components/dialog/reducer';
 import LayoutReducer, { LayoutState, LAYOUT_INITIAL_STATE } from '../components/layouts/reducer';
+import SignUpModalReducer, { SignUpModalState, SIGN_UP_MODAL_INITIAL_STATE } from './signUpModal';
 import * as articleSearchReducer from '../components/articleSearch/reducer';
 import * as authorSearchReducer from '../containers/authorSearch/reducer';
 import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from '../components/articleSearch/records';
@@ -71,6 +72,7 @@ export interface AppState {
   searchQueryState: SearchQueryState;
   recommendPoolState: RecommendPoolState;
   searchFilterState: SearchFilterState;
+  signUpModalState: SignUpModalState;
   entities: EntityState;
 }
 
@@ -94,6 +96,7 @@ export const initialState: AppState = {
   searchQueryState: SEARCH_QUERY_INITIAL_STATE,
   recommendPoolState: RECOMMEND_POOL_INITIAL_STATE,
   searchFilterState: SEARCH_FILTER_INITIAL_STATE,
+  signUpModalState: SIGN_UP_MODAL_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
 };
 
@@ -117,5 +120,6 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   searchQueryState: SearchQueryReducer,
   recommendPoolState: RecommendPoolReducer,
   searchFilterState: SearchFilterReducer,
+  signUpModalState: SignUpModalReducer,
   entities: EntityReducer,
 });
