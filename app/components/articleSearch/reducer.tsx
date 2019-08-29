@@ -47,6 +47,7 @@ export function reducer(
         searchFromSuggestion: payload.data.resultModified,
         matchAuthors: payload.data.matchedAuthor,
         detectedYear: payload.data.detectedYear,
+        detectedPhrases: payload.data.detectedPhrases,
       };
     }
 

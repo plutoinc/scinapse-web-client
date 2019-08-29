@@ -11,6 +11,7 @@ interface PaperSearchResultInfoProps {
   query: string;
   docCount: number;
   shouldShowTitle: boolean;
+  matchingPhrases: string[];
 }
 
 const PaperSearchResultInfo: React.FC<PaperSearchResultInfoProps> = ({
@@ -19,6 +20,7 @@ const PaperSearchResultInfo: React.FC<PaperSearchResultInfoProps> = ({
   query,
   shouldShowTitle,
   docCount,
+  matchingPhrases,
 }) => {
   let title = null;
   if (shouldShowTitle) {
@@ -31,6 +33,23 @@ const PaperSearchResultInfo: React.FC<PaperSearchResultInfoProps> = ({
       <span className={styles.boldQuery}>{query}</span>
     </span>
   );
+
+  if (matchingPhrases && matchingPhrases.length > 0) {
+    const clearPhrases = matchingPhrases.map((phrases, i) => {
+      if (i < matchingPhrases.length - 1) return `"${phrases}", `;
+      else return `"${phrases}"`;
+    });
+
+    additionalContent = (
+      <span className={styles.additionalContent}>
+        {`Showing results for `}
+        <span className={styles.boldQuery}>{query.replace(/"/g, '')}</span>
+        {` ( Exact matching results for `}
+        <span className={styles.boldMatchingPhrases}>{clearPhrases}</span>
+        {`. )`}
+      </span>
+    );
+  }
 
   if (searchFromSuggestion && suggestionKeyword) {
     additionalContent = (

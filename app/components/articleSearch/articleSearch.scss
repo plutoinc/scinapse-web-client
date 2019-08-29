@@ -84,9 +84,14 @@
 .additionalContent {
   font-size: 14px;
   line-height: 18px;
-  color: $gray600;
+  color: $gray700;
 
   .boldQuery {
+    font-weight: bold;
+  }
+
+  .boldMatchingPhrases {
+    color: $gray800;
     font-weight: bold;
   }
 
