@@ -253,7 +253,9 @@ const SearchContainer: React.FC<Props> = props => {
   }
 
   const shouldShowSignBanner =
-    !currentUserState.isLoggedIn && bannerTestType === EmailRecommendPaperSignUpBannerTestType.CONTROL;
+    !articleSearchState.isContentLoading &&
+    !currentUserState.isLoggedIn &&
+    bannerTestType === EmailRecommendPaperSignUpBannerTestType.CONTROL;
 
   const shouldShowEmailBanner =
     !currentUserState.isLoggedIn &&
@@ -284,7 +286,7 @@ const SearchContainer: React.FC<Props> = props => {
         >
           {shouldShowSignBanner && (
             <div className={styles.rightItemWrapper}>
-              <SignBanner isLoading={articleSearchState.isContentLoading} />
+              <SignBanner />
             </div>
           )}
           {shouldShowEmailBanner && (

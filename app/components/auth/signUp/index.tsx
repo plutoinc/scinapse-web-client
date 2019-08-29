@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Dispatch } from 'redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as Actions from './actions';
@@ -11,7 +12,6 @@ import { AppState } from '../../../reducers';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import { ActionCreators } from '../../../actions/actionTypes';
-import { Dispatch } from 'redux';
 import { GLOBAL_DIALOG_TYPE } from '../../dialog/reducer';
 const styles = require('./signUp.scss');
 

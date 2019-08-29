@@ -1,15 +1,10 @@
 import * as React from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '../../../../helpers/withStylesHelper';
 import GlobalDialogManager from '../../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import { useObserver } from '../../../../hooks/useIntersectionHook';
 import { ActionTicketParams } from '../../../../helpers/actionTicketManager/actionTicket';
 const styles = require('./signBanner.scss');
-
-interface SignBannerProps {
-  isLoading: boolean;
-}
 
 const SignBannerSignButtonText: React.FC = React.memo(() => {
   return (
@@ -44,9 +39,7 @@ const SignBannerSignButtonText: React.FC = React.memo(() => {
   );
 });
 
-const SignBanner: React.FC<SignBannerProps> = props => {
-  const { isLoading } = props;
-
+const SignBanner: React.FC = () => {
   const bannerViewTicketContext: ActionTicketParams = {
     pageType: 'searchResult',
     actionType: 'view',
@@ -56,16 +49,6 @@ const SignBanner: React.FC<SignBannerProps> = props => {
     expName: 'signBannerAtSearch',
   };
   const { elRef } = useObserver(0.1, bannerViewTicketContext);
-
-  if (isLoading) {
-    return (
-      <div className={styles.bannerLoadingContainer}>
-        <div className={styles.loadingContainer}>
-          <CircularProgress size={100} thickness={2} style={{ color: '#d8dde7' }} />
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className={styles.bannerContainer} ref={elRef}>
