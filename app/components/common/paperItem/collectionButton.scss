@@ -1,3 +1,25 @@
+.button {
+  border-radius: 4px;
+  background-color: $main_blue0;
+  padding: 8px 12px 8px 8px;
+  display: flex;
+  align-items: center;
+
+  .bookmarkIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+  }
+
+  &.savedButton {
+    background-color: $black1;
+  }
+}
+
+// DEPRECATED WARNING
+// Below code are deprecated
 %button-icon {
   margin-right: 4px;
   display: flex;

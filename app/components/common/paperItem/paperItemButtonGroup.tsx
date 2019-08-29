@@ -3,6 +3,7 @@ import { Paper } from '../../../model/paper';
 import CitationListLinkButton from './citationListLinkButton';
 import SourceButton from './sourceButton';
 import CiteButton from './citeButton';
+import CollectionButton from './collectionButton';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { PaperSource } from '../../../api/paper';
 const s = require('./paperItemButtonGroup.scss');
@@ -12,15 +13,27 @@ interface PaperItemButtonGroupProps {
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
   paperSource?: PaperSource;
+  saved?: boolean;
 }
 
-const PaperItemButtonGroup: React.FC<PaperItemButtonGroupProps> = ({ paper, pageType, actionArea, paperSource }) => {
+const PaperItemButtonGroup: React.FC<PaperItemButtonGroupProps> = ({
+  paper,
+  pageType,
+  actionArea,
+  paperSource,
+  saved,
+}) => {
   return (
-    <>
-      <CitationListLinkButton paper={paper} pageType={pageType} actionArea={actionArea} />
-      <SourceButton paperId={paper.id} pageType={pageType} actionArea={actionArea} paperSource={paperSource} />
-      <CiteButton paper={paper} pageType={pageType} actionArea={actionArea} />
-    </>
+    <div className={s.groupWrapper}>
+      <div className={s.buttonListBox}>
+        <CitationListLinkButton paper={paper} pageType={pageType} actionArea={actionArea} />
+        <SourceButton paperId={paper.id} pageType={pageType} actionArea={actionArea} paperSource={paperSource} />
+      </div>
+      <div className={s.buttonListBox}>
+        <CiteButton paper={paper} pageType={pageType} actionArea={actionArea} />
+        <CollectionButton paper={paper} saved={!!saved} pageType={pageType} actionArea={actionArea} />
+      </div>
+    </div>
   );
 };
 

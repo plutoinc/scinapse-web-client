@@ -1,5 +1,15 @@
+.citeButton {
+  display: flex;
+  border-radius: 4px;
+  border: solid 1px $gray400;
+  background-color: white;
+  font-size: 14px;
+  line-height: 1.14;
+  color: $main_blue0;
+  padding: 10px 9px;
+}
+
 .citationIconWrapper {
-  @include small-action-button($gray800);
   .citationIcon {
     margin-right: 4px;
     display: flex;

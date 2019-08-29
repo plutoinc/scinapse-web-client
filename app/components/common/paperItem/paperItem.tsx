@@ -13,7 +13,7 @@ interface PaperItemProps {
 }
 
 const PaperItem: React.FC<PaperItemProps> = React.memo(
-  ({ paper, actionArea, pageType, omitAbstract, venueAuthorType, paperSource }) => {
+  ({ paper, actionArea, pageType, omitAbstract, venueAuthorType }) => {
     return (
       <>
         <Title paper={paper} actionArea={actionArea} pageType={pageType} />

@@ -20,7 +20,7 @@ const CiteButton: React.FC<CiteButtonProps> = ({ paper, pageType, actionArea }) 
   if (!paper.doi) return null;
 
   return (
-    <button className={styles.DOIMetaButtonsWrapper}>
+    <button className={styles.citeButton}>
       <span
         className={styles.citationIconWrapper}
         onClick={async () => {

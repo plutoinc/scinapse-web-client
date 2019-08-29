@@ -30,6 +30,7 @@ import ErrorPage from '../error/errorPage';
 import { JournalShowMatchParams } from './types';
 import ImprovedFooter from '../layouts/improvedFooter';
 import { UserDevice } from '../layouts/reducer';
+import PaperItemButtonGroup from '../common/paperItem/paperItemButtonGroup';
 const styles = require('./journalShow.scss');
 
 function mapStateToProps(state: AppState) {
@@ -79,11 +80,15 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
   }
 
   public async componentWillReceiveProps(nextProps: JournalShowProps) {
-    const { dispatch, match, location } = nextProps;
+    const { dispatch, match, location, currentUser } = nextProps;
     const currentJournalId = this.props.match.params.journalId;
     const nextJournalId = match.params.journalId;
 
-    if (currentJournalId !== nextJournalId || this.props.location.search !== location.search) {
+    if (
+      currentJournalId !== nextJournalId ||
+      this.props.location.search !== location.search ||
+      currentUser.isLoggedIn !== this.props.currentUser.isLoggedIn
+    ) {
       await fetchJournalShowPageData({
         dispatch,
         match,
@@ -352,25 +357,32 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
 
     if (papers && papers.length > 0) {
       return papers.map(paper => {
-        if (paper) {
-          return <PaperItem key={paper.id} paper={paper} pageType="journalShow" actionArea="paperList" />;
-        }
-        return null;
-      });
-    } else {
-      return (
-        <div className={styles.noPaperWrapper}>
-          <Icon icon="UFO" className={styles.ufoIcon} />
-          <div className={styles.noPaperDescription}>
-            Your search <b>{journalShow.searchKeyword}</b> did not match any papers.
+        return (
+          <div className={styles.paperItemWrapper} key={paper.id}>
+            <PaperItem paper={paper} pageType="journalShow" actionArea="paperList" />
+            <PaperItemButtonGroup
+              paper={paper}
+              pageType="journalShow"
+              actionArea="paperList"
+              saved={!!paper.relation}
+            />
           </div>
-          <button className={styles.reloadBtn} onClick={this.resetQuery}>
-            <Icon icon="RELOAD" className={styles.reloadIcon} />
-            Reload papers
-          </button>
-        </div>
-      );
+        );
+      });
     }
+    
+    return (
+      <div className={styles.noPaperWrapper}>
+        <Icon icon="UFO" className={styles.ufoIcon} />
+        <div className={styles.noPaperDescription}>
+          Your search <b>{journalShow.searchKeyword}</b> did not match any papers.
+        </div>
+        <button className={styles.reloadBtn} onClick={this.resetQuery}>
+          <Icon icon="RELOAD" className={styles.reloadIcon} />
+          Reload papers
+        </button>
+      </div>
+    );
   };
 
   private handleClickPage = (page: number) => {

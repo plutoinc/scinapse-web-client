@@ -93,20 +93,13 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   }
 
   public render() {
-    const { paper, pageType, paperNote, actionArea, hasCollection, onRemovePaperCollection } = this.props;
+    const { paper, pageType, actionArea } = this.props;
     return (
       <div className={styles.infoList}>
         {this.getCitedButton()}
         {this.getSourceButton()}
         {this.getCitationQuoteButton()}
-        <CollectionButton
-          hasCollection={hasCollection}
-          paperId={paper.id}
-          paperNote={paperNote}
-          pageType={pageType}
-          actionArea={actionArea}
-          onRemove={onRemovePaperCollection}
-        />
+        <CollectionButton paper={paper} pageType={pageType} actionArea={actionArea} saved={false} />
         {this.getMoreButton()}
       </div>
     );

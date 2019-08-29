@@ -111,7 +111,7 @@ export function reducer(
       const paperId = payload.paperIds[0];
 
       const newSearchItemsToShow: Paper[] = state.searchItemsToShow.map(paper => {
-        if (paper.id === paperId) {
+        if (paper.id === paperId && paper.relation) {
           const savedInCollection = paper.relation.savedInCollections;
 
           const removedIndex: number = savedInCollection
