@@ -42,12 +42,12 @@ const PaperSearchResultInfo: React.FC<PaperSearchResultInfoProps> = ({
 
     additionalContent = (
       <span className={styles.additionalContent}>
-        {`Showing results for`}
+        {`Showing results for `}
         <span className={styles.boldQuery}>{query.replace(/"/g, '')}</span>
         <span className={styles.matchingPhrasesContent}>
-          {`( Exact matching results for `}
+          {`(Exact matching results for `}
           <span className={styles.boldMatchingPhrases}>{clearPhrases}</span>
-          {`. )`}
+          {`.)`}
         </span>
       </span>
     );
