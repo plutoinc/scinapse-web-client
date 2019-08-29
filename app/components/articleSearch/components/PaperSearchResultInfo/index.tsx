@@ -47,7 +47,7 @@ const PaperSearchResultInfo: React.FC<PaperSearchResultInfoProps> = ({
         <span className={styles.matchingPhrasesContent}>
           {`(Exact matching results for `}
           <span className={styles.boldMatchingPhrases}>{clearPhrases}</span>
-          {`.)`}
+          {`)`}
         </span>
       </span>
     );
