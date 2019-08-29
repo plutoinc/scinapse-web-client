@@ -1,4 +1,4 @@
-import { dummy, weightedCitation, strictSort, randomRec } from './abTestObject';
+import { dummy, weightedCitation, randomRec } from './abTestObject';
 
 export interface UserGroup {
   groupName: string;
@@ -10,7 +10,7 @@ export interface Test {
   userGroup: UserGroup[];
 }
 
-export type ABTest = 'dummy' | 'weightedCitation' | 'strictSort' | 'randomRec';
+export type ABTest = 'dummy' | 'weightedCitation' | 'randomRec';
 
 export interface SignUpConversionExpTicketContext {
   pageType: Scinapse.ActionTicket.PageType;
@@ -19,7 +19,7 @@ export interface SignUpConversionExpTicketContext {
   expName?: string;
 }
 
-export const LIVE_TESTS: Test[] = [dummy, weightedCitation, strictSort, randomRec];
+export const LIVE_TESTS: Test[] = [dummy, weightedCitation, randomRec];
 
 function getRandomPool(): { [key: string]: string[] } {
   const randomPool: { [key: string]: string[] } = {};
