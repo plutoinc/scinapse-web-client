@@ -6,6 +6,7 @@ import CiteButton from './citeButton';
 import CollectionButton from './collectionButton';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { PaperSource } from '../../../api/paper';
+import MoreDropdownButton from './moreDropdownButton';
 const s = require('./paperItemButtonGroup.scss');
 
 interface PaperItemButtonGroupProps {
@@ -14,6 +15,7 @@ interface PaperItemButtonGroupProps {
   actionArea: Scinapse.ActionTicket.ActionArea;
   paperSource?: PaperSource;
   saved?: boolean;
+  dropdownContents?: React.ReactElement[];
 }
 
 const PaperItemButtonGroup: React.FC<PaperItemButtonGroupProps> = ({
@@ -22,12 +24,14 @@ const PaperItemButtonGroup: React.FC<PaperItemButtonGroupProps> = ({
   actionArea,
   paperSource,
   saved,
+  dropdownContents,
 }) => {
   return (
     <div className={s.groupWrapper}>
       <div className={s.buttonListBox}>
         <CitationListLinkButton paper={paper} pageType={pageType} actionArea={actionArea} />
         <SourceButton paperId={paper.id} pageType={pageType} actionArea={actionArea} paperSource={paperSource} />
+        <MoreDropdownButton dropdownContents={dropdownContents} paper={paper} />
       </div>
       <div className={s.buttonListBox}>
         <CiteButton paper={paper} pageType={pageType} actionArea={actionArea} />

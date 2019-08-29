@@ -15,7 +15,7 @@ module.exports = {
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
       '<rootDir>/app/__tests__/fileMock.js',
     '\\.(css|scss|less)$': 'identity-obj-proxy',
-    'isomorphic-style-loader/lib/withStyles': '<rootDir>/app/__tests__/withStyles.js',
+    'isomorphic-style-loader/withStyles': '<rootDir>/app/__tests__/withStyles.js',
   },
   unmockedModulePathPatterns: ['/.*\\.scss$', '<rootDir>/app/__mocks__', '<rootDir>/app/__tests__'],
   setupFiles: ['<rootDir>/app/__tests__/preload.tsx'],

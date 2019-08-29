@@ -370,7 +370,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
         );
       });
     }
-    
+
     return (
       <div className={styles.noPaperWrapper}>
         <Icon icon="UFO" className={styles.ufoIcon} />

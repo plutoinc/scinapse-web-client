@@ -7,7 +7,6 @@ import * as ReactDom from 'react-dom';
 import { Store, AnyAction } from 'redux';
 import { Provider } from 'react-redux';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import CssInjector from './helpers/cssInjector';
 import EnvChecker from './helpers/envChecker';
 import ErrorTracker from './helpers/errorHandler';
 import { ConnectedRootRoutes as RootRoutes } from './routes';
@@ -18,6 +17,7 @@ import { checkAuthStatus } from './components/auth/actions';
 import { getCurrentPageType } from './components/locationListener';
 import { ThunkDispatch } from 'redux-thunk';
 import { getGAId, getOptimizeId } from './helpers/handleGA';
+const StyleContext = require('isomorphic-style-loader/StyleContext');
 declare var Sentry: any;
 declare var FB: any;
 
@@ -166,17 +166,13 @@ class PlutoRenderer {
       },
     });
 
-    const context = {
-      insertCss: (...styles: any[]) => {
-        const removeCss = styles.map(x => x._insertCss());
-        return () => {
-          removeCss.forEach(f => f());
-        };
-      },
+    const insertCss = (...styles: any[]) => {
+      const removeCss = styles.map(style => style._insertCss());
+      return () => removeCss.forEach(dispose => dispose());
     };
 
     const App = (
-      <CssInjector context={context}>
+      <StyleContext.Provider value={{ insertCss }}>
         <ErrorTracker>
           <Provider store={this.store}>
             <BrowserRouter>
@@ -186,7 +182,7 @@ class PlutoRenderer {
             </BrowserRouter>
           </Provider>
         </ErrorTracker>
-      </CssInjector>
+      </StyleContext.Provider>
     );
 
     ReactDom.hydrate(App, document.getElementById('react-app'), () => {
