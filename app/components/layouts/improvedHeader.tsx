@@ -373,6 +373,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
         <div className={styles.rightButtons}>
           {this.getHistoryButton()}
           <Button
+            type="link"
             size="large"
             variant="text"
             color="gray"
@@ -442,6 +443,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
           <div className={styles.rightButtons}>
             {this.getHistoryButton()}
             <Button
+              type="button"
               size="large"
               variant="text"
               style={{ marginRight: '8px' }}
@@ -461,6 +463,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
             </Button>
           </div>
           <Button
+            type="button"
             size="large"
             onClick={() => {
               this.handleOpenSignUp();
