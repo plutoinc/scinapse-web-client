@@ -44,7 +44,6 @@ class SearchQueryManager {
       filter: filter || '',
       sort: sort || '',
       weightedCitation: true,
-      strictSort: true,
     };
   }
 

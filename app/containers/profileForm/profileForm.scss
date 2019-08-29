@@ -13,6 +13,10 @@
   display: flex;
 }
 
+.formWrapper {
+  width: 100%;
+}
+
 .formWrapper + .formWrapper {
   margin-left: 21px;
 }
@@ -79,4 +83,10 @@
   font-size: 13px;
   color: $red0;
   margin-top: 8px;
+}
+
+.divider {
+  @extend %base-divider;
+
+  margin: 40px 0 16px 0;
 }
