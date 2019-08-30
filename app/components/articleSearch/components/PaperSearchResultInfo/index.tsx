@@ -35,10 +35,7 @@ const PaperSearchResultInfo: React.FC<PaperSearchResultInfoProps> = ({
   );
 
   if (matchingPhrases && matchingPhrases.length > 0) {
-    const clearPhrases = matchingPhrases.map((phrases, i) => {
-      if (i < matchingPhrases.length - 1) return `"${phrases}", `;
-      else return `"${phrases}"`;
-    });
+    const phrasesString = matchingPhrases.map(word => `"${word}"`).join(', ');
 
     additionalContent = (
       <span className={styles.additionalContent}>
@@ -46,7 +43,7 @@ const PaperSearchResultInfo: React.FC<PaperSearchResultInfoProps> = ({
         <span className={styles.boldQuery}>{query.replace(/"/g, '')}</span>
         <span className={styles.matchingPhrasesContent}>
           {`(Exact matching results for `}
-          <span className={styles.boldMatchingPhrases}>{clearPhrases}</span>
+          <span className={styles.boldMatchingPhrases}>{phrasesString}</span>
           {`)`}
         </span>
       </span>
