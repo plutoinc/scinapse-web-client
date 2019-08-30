@@ -2,11 +2,9 @@ import React from 'react';
 import { Link, LinkProps as ReactRouterLinkProps } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { withStyles } from '../../../helpers/withStylesHelper';
+import ButtonSpinner from './spinner';
+import { ButtonColor, ButtonSize, ButtonVariant } from './types';
 const styles = require('./button.scss');
-
-export type ButtonSize = 'small' | 'medium' | 'large';
-export type ButtonVariant = 'text' | 'outlined' | 'contained';
-export type ButtonColor = 'blue' | 'gray' | 'black';
 
 interface BaseButtonProps {
   size?: ButtonSize;
@@ -18,7 +16,10 @@ interface BaseButtonProps {
 
 type LinkProps = BaseButtonProps & ReactRouterLinkProps & { elementType: 'link' };
 type ButtonProps = BaseButtonProps &
-  React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & { elementType: 'button' };
+  React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
+    elementType: 'button';
+    isLoading?: boolean;
+  };
 type AnchorProps = BaseButtonProps &
   React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> & { elementType: 'anchor' };
 export type GeneralButtonProps = LinkProps | ButtonProps | AnchorProps;
@@ -46,8 +47,21 @@ const Button: React.FC<GeneralButtonProps> = props => {
     }
 
     case 'button': {
+      const { isLoading, ...buttonProps } = ownProps as ButtonProps;
+
+      if (!isLoading) {
+        const style = { ...buttonProps.style, position: 'relative' } as React.CSSProperties;
+
+        return (
+          <button {...buttonProps as ButtonProps} style={style} className={className}>
+            <div style={{ visibility: 'hidden', display: 'flex' }}>{props.children}</div>
+            <ButtonSpinner color={style.color || 'white'} size={size} />
+          </button>
+        );
+      }
+
       return (
-        <button {...ownProps as ButtonProps} className={className}>
+        <button {...buttonProps as ButtonProps} className={className}>
           {props.children}
         </button>
       );

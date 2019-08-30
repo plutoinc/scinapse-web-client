@@ -193,7 +193,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
                     >
                       Forgot Password?
                     </div>
-                    <Button type="submit" elementType="button" style={{ marginTop: '10px' }} fullWidth>
+                    <Button type="submit" elementType="button" style={{ marginTop: '10px', color: 'red' }} fullWidth>
                       <span>Sign in</span>
                     </Button>
                   </Form>
