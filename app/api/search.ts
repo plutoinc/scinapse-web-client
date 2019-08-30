@@ -48,6 +48,7 @@ export interface SearchResult extends PaginationResponseV2<Paper[]> {
     resultModified: boolean;
     suggestion: Suggestion | null;
     detectedYear: number | null;
+    detectedPhrases: string[];
   };
 }
 

@@ -171,6 +171,7 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
             query={articleSearchState.searchInput}
             docCount={articleSearchState.totalElements}
             shouldShowTitle={!hasNoMatchedAuthors}
+            matchingPhrases={articleSearchState.detectedPhrases}
           />
         </div>
         <FilterBox query={queryParams.query} />

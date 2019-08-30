@@ -21,6 +21,7 @@ export interface ArticleSearchState
       targetPaper: Paper | null;
       searchFromSuggestion: boolean;
       detectedYear: number | null;
+      detectedPhrases: string[];
     }> {}
 
 export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
@@ -42,4 +43,5 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   highlightedSuggestionKeyword: '',
   searchFromSuggestion: false,
   detectedYear: null,
+  detectedPhrases: [],
 };
