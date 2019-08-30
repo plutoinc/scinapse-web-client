@@ -1,6 +1,7 @@
 import React from 'react';
 // import { renderToString } from 'react-dom/server'
-import Button, { ButtonSize, ButtonVariant, ButtonColor, GeneralButtonProps } from '../common/button/button';
+import Button, { GeneralButtonProps } from '../common/button/button';
+import { ButtonSize, ButtonVariant, ButtonColor } from '../common/button/types';
 import copySelectedTextToClipboard from '../../helpers/copySelectedTextToClipboard';
 import Icon from '../../icons';
 
