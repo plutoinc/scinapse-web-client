@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Link, LinkProps as ReactRouterLinkProps } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { withStyles } from '../../../helpers/withStylesHelper';
@@ -16,19 +16,27 @@ interface BaseButtonProps {
   disabled?: boolean;
 }
 
-type LinkProps = BaseButtonProps & ReactRouterLinkProps & { type: 'link' };
+type LinkProps = BaseButtonProps & ReactRouterLinkProps & { elementType: 'link' };
 type ButtonProps = BaseButtonProps &
-  React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & { type: 'button' };
+  React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & { elementType: 'button' };
 type AnchorProps = BaseButtonProps &
-  React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> & { type: 'anchor' };
+  React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> & { elementType: 'anchor' };
 export type GeneralButtonProps = LinkProps | ButtonProps | AnchorProps;
 
 const Button: React.FC<GeneralButtonProps> = props => {
-  const { color = 'blue', variant = 'contained', size = 'medium', type, fullWidth, disabled, ...ownProps } = props;
+  const {
+    color = 'blue',
+    variant = 'contained',
+    size = 'medium',
+    elementType,
+    fullWidth,
+    disabled,
+    ...ownProps
+  } = props;
   const cx = classNames.bind(styles);
   const className = cx(size, variant, color, { [styles.disabled]: disabled }, { [styles.full]: fullWidth });
 
-  switch (type) {
+  switch (elementType) {
     case 'link': {
       return (
         <Link {...ownProps as LinkProps} className={className}>

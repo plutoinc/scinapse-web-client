@@ -6,6 +6,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import AuthInputBox from '../../common/inputBox/authInputBox';
+import Button from '../../common/button/button';
 import { GLOBAL_DIALOG_TYPE, DialogState } from '../../dialog/reducer';
 import AuthButton from '../authButton';
 import GoogleAuthButton from '../authButton/googleAuthButton';
@@ -192,12 +193,9 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
                     >
                       Forgot Password?
                     </div>
-                    <AuthButton
-                      type="submit"
-                      isLoading={isLoading}
-                      text="SIGN IN"
-                      style={{ backgroundColor: '#6096ff', marginTop: '10px', fontSize: '14px' }}
-                    />
+                    <Button type="submit" elementType="button" style={{ marginTop: '10px' }} fullWidth>
+                      <span>Sign in</span>
+                    </Button>
                   </Form>
                 );
               }}

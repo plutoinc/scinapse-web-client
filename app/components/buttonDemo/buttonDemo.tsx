@@ -91,7 +91,7 @@ const ButtonDemo: React.FC = () => {
                 <div style={{ margin: '16px 0' }} key={size + variant + color}>
                   <div style={{ display: 'inline-block', width: '200px' }}>
                     <PositionHandledButton
-                      type="button"
+                      elementType="button"
                       disabled={disabled}
                       fullWidth={fullWidth}
                       size={size}
