@@ -17,6 +17,7 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(
     return (
       <>
         <Title paper={paper} actionArea={actionArea} pageType={pageType} />
+        <VenueAuthors paper={paper} pageType={pageType} actionArea={actionArea} venueAuthorType={venueAuthorType} />
         {!omitAbstract && (
           <Abstract
             paperId={paper.id}
@@ -25,7 +26,6 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(
             actionArea={actionArea}
           />
         )}
-        <VenueAuthors paper={paper} pageType={pageType} actionArea={actionArea} venueAuthorType={venueAuthorType} />
       </>
     );
   }
