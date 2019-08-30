@@ -72,7 +72,6 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
               [className]: true,
               [styles.error]: !!touched && !!error,
             })}
-            style={{ height: '40px' }}
             listItemStyle={{
               height: '30px',
               display: 'block',
