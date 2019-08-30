@@ -1,46 +1,29 @@
 import React from 'react';
 import classNames from 'classnames';
-import { withStyles } from '../../../helpers/withStylesHelper';
 import { ButtonSize } from './types';
+import { withStyles } from '../../../helpers/withStylesHelper';
 
 const s = require('./spinner.scss');
 
 interface ButtonSpinnerProps {
-  color: string;
   size: ButtonSize;
   className?: string;
 }
-const ButtonSpinner: React.FC<ButtonSpinnerProps> = ({ className, size, color = 'white' }) => {
+const ButtonSpinner: React.FC<ButtonSpinnerProps> = ({ className, size }) => {
   return (
     <div className={s.wrapper}>
       <div
         className={classNames({
-          [s['lds-ring']]: true,
+          ['lds-ring']: true,
           className: !!className,
           [s.mediumRing]: size === 'medium',
           [s.largeRing]: size === 'large',
         })}
       >
-        <div
-          style={{
-            borderColor: `${color} transparent transparent transparent`,
-          }}
-        />
-        <div
-          style={{
-            borderColor: `${color} transparent transparent transparent`,
-          }}
-        />
-        <div
-          style={{
-            borderColor: `${color} transparent transparent transparent`,
-          }}
-        />
-        <div
-          style={{
-            borderColor: `${color} transparent transparent transparent`,
-          }}
-        />
+        <div />
+        <div />
+        <div />
+        <div />
       </div>
     </div>
   );

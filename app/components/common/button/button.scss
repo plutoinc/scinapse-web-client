@@ -84,65 +84,106 @@
 
 .outlined.gray {
   color: $gray800;
+
   svg {
     color: $gray800;
+  }
+
+  :global(.lds-ring div) {
+    border-color: $gray800 transparent transparent transparent;
   }
 }
 
 .outlined.blue {
   color: $main_blue1;
+
+  :global(.lds-ring div) {
+    border-color: $main_blue1 transparent transparent transparent;
+  }
 }
 
 .outlined.black {
   color: $black1;
+
+  :global(.lds-ring div) {
+    border-color: $black1 transparent transparent transparent;
+  }
 }
 
 .outlined.disabled {
   color: $gray500;
+
   &:hover {
     transition: ease 0.2s;
     background-color: white;
+  }
+
+  :global(.lds-ring div) {
+    border-color: $gray500 transparent transparent transparent;
   }
 }
 
 .contained.blue {
   color: white;
   background-color: $main_blue1;
+
   &:hover {
     background-color: $main_blue0;
   }
+
   &:active {
     background-color: $main_blue_light0;
+  }
+
+  :global(.lds-ring div) {
+    border-color: white transparent transparent transparent;
   }
 }
 
 .contained.gray {
   color: $main_blue1;
   background-color: $gray200;
+
   &:hover {
     background-color: $gray300;
   }
+
   &:active {
     background-color: $gray400;
+  }
+
+  :global(.lds-ring div) {
+    border-color: $main_blue1 transparent transparent transparent;
   }
 }
 
 .contained.black {
   color: $black1;
   background-color: $gray200;
+
   &:hover {
     background-color: $gray300;
   }
+
   &:active {
     background-color: $gray400;
+  }
+
+  :global(.lds-ring div) {
+    border-color: $black1 transparent transparent transparent;
   }
 }
 
 .contained.disabled {
   background-color: $gray200;
   color: $gray500;
+
   &:hover {
     background-color: $gray200;
+  }
+
+  :global(.lds-ring div) {
+    border-color: $gray500 transparent transparent transparent;
   }
 }
 
@@ -153,10 +194,18 @@
 
 .text.blue {
   color: $main_blue1;
+
+  :global(.lds-ring div) {
+    border-color: $main_blue1 transparent transparent transparent;
+  }
 }
 
 .text.black {
   color: $black1;
+
+  :global(.lds-ring div) {
+    border-color: $black1 transparent transparent transparent;
+  }
 }
 
 .text.gray {
@@ -165,10 +214,18 @@
   svg {
     color: $gray800;
   }
+
+  :global(.lds-ring div) {
+    border-color: $gray800 transparent transparent transparent;
+  }
 }
 
 .text.disabled {
   color: $gray500;
+
+  :global(.lds-ring div) {
+    border-color: $gray500 transparent transparent transparent;
+  }
 }
 
 .full {
