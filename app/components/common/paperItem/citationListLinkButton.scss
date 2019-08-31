@@ -1,10 +1,28 @@
 .citedButton {
-  @include small-button($gray800);
   display: inline-flex;
   font-size: 14px;
   line-height: 1;
+  align-items: center;
+  padding: 8px;
+  border-radius: 4px;
+  color: $gray800;
+  background-color: $gray50;
+  cursor: pointer;
 
   .citedIconWrapper {
     margin-right: 6px;
+  }
+}
+
+@media (max-width: $mobile_width) {
+  .citedButton {
+    font-size: 16px;
+    padding: 12px 10px;
+    line-height: 20px;
+    color: $black0;
+    white-space: nowrap;
+    overflow: hidden;
+    justify-content: center;
+    width: 100%;
   }
 }

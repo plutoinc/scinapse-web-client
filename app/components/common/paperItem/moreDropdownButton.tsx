@@ -48,7 +48,6 @@ const MoreDropdownButton: React.FC<MoreDropdownButtonProps> = ({ dropdownContent
             <Icon className={s.ellipsisIcon} icon="ELLIPSIS" />
           </IconButton>
         </div>
-
         <Popper
           className={s.moreDropdown}
           anchorEl={buttonAnchor.current}

@@ -7,6 +7,9 @@ import CollectionButton from './collectionButton';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { PaperSource } from '../../../api/paper';
 import MoreDropdownButton from './moreDropdownButton';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../../reducers';
+import { UserDevice } from '../../layouts/reducer';
 const s = require('./paperItemButtonGroup.scss');
 
 interface PaperItemButtonGroupProps {
@@ -26,6 +29,23 @@ const PaperItemButtonGroup: React.FC<PaperItemButtonGroupProps> = ({
   saved,
   dropdownContents,
 }) => {
+  const userDevice = useSelector<AppState, UserDevice>(state => state.layout.userDevice);
+  if (userDevice === UserDevice.MOBILE && paperSource && (paperSource.doi || paperSource.source)) {
+    return (
+      <div className={s.mobileWrapper}>
+        <div className={s.buttonWrapper}>
+          <CitationListLinkButton paper={paper} pageType={pageType} actionArea={actionArea} />
+        </div>
+        <div className={s.buttonWrapper}>
+          <SourceButton paperId={paper.id} pageType={pageType} actionArea={actionArea} paperSource={paperSource} />
+        </div>
+        <div className={s.buttonWrapper}>
+          <CollectionButton paper={paper} saved={!!saved} pageType={pageType} actionArea={actionArea} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={s.groupWrapper}>
       <div className={s.buttonListBox}>

@@ -207,6 +207,7 @@ $s3_url: 'https://dd2gn9pwu61vr.cloudfront.net';
   margin-right: 8px;
   transition: background-color 200ms ease, color 200ms ease;
   cursor: pointer;
+
   &:hover {
     background-color: $gray300;
   }

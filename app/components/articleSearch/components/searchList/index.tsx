@@ -3,7 +3,7 @@ import * as store from 'store';
 import { Paper } from '../../../../model/paper';
 import { CurrentUser } from '../../../../model/currentUser';
 import { withStyles } from '../../../../helpers/withStylesHelper';
-import PaperItem from '../../../common/paperItem/searchPaperItem';
+import SearchPaperItem from '../../../common/paperItem/searchPaperItem';
 import ArticleSpinner from '../../../common/spinner/articleSpinner';
 import { RESEARCH_HISTORY_KEY, HistoryPaper } from '../../../researchHistory';
 import PaperAPI, { PaperSource } from '../../../../api/paper';
@@ -48,14 +48,11 @@ const SearchList: React.FC<SearchListProps> = props => {
     }
 
     return (
-      <PaperItem
+      <SearchPaperItem
         key={paper.id}
         paper={paper}
         pageType="searchResult"
         actionArea="searchResult"
-        searchQueryText={searchQueryText}
-        currentUser={currentUser}
-        wrapperClassName={styles.searchItemWrapper}
         savedAt={savedAt}
         sourceDomain={sourceDomains.find(source => source.paperId === paper.id)}
       />

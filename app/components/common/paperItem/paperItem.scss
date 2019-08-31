@@ -1,17 +1,9 @@
 .paperItemWrapper {
-  padding-bottom: 12px;
-  border-bottom: $gray300 1px solid;
-  margin-bottom: 12px;
-  max-width: $search_container_width;
-  background-color: white;
+  @extend %default-paper-item-wrapper;
 }
 
 .venueAndAuthorWrapper {
   margin-top: 8px;
-}
-
-.contentSection {
-  margin-bottom: 8px;
 }
 
 .claimButton {
@@ -56,11 +48,6 @@
 
 // Mobile
 @media (max-width: $mobile_width) {
-  .searchItemWrapper {
-    margin-top: 13px;
-    padding: 0 15px;
-  }
-
   .claimButton {
     display: none !important;
   }

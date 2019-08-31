@@ -14,8 +14,6 @@ const DeviceDetector: React.FC = () => {
   const layout = useSelector<AppState, LayoutState>(state => state.layout);
 
   React.useEffect(() => {
-    if (EnvChecker.isOnServer()) return;
-
     const device = UserAgentHelper.getDevice();
     if (device && device.type === 'mobile') {
       dispatch(setDeviceType({ userDevice: UserDevice.MOBILE }));
@@ -41,7 +39,6 @@ const DeviceDetector: React.FC = () => {
     const throttledHandlingWindowSizeChange = throttle(handleWindowSizeChange, 300);
     window.addEventListener('resize', throttledHandlingWindowSizeChange);
     return () => {
-      if (EnvChecker.isOnServer()) return;
       window.removeEventListener('resize', throttledHandlingWindowSizeChange);
     };
   });

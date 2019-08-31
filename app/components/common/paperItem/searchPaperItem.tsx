@@ -1,16 +1,13 @@
 import * as React from 'react';
 import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import * as format from 'date-fns/format';
-import { CurrentUser } from '../../../model/currentUser';
-import Abstract from './abstract';
+import PaperItem from './paperItem';
 import Figures from './figures';
-import PaperActionButtons from './paperActionButtons';
-import Title from './title';
+import PaperItemButtonGroup from './paperItemButtonGroup';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import SavedCollections from './savedCollections';
 import { PaperSource } from '../../../api/paper';
-import BlockVenueAuthor from './blockVenueAuthor';
 const styles = require('./paperItem.scss');
 
 export interface PaperItemProps {
@@ -18,9 +15,6 @@ export interface PaperItemProps {
   savedAt: number | null; // unix time
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
-  searchQueryText: string;
-  wrapperClassName: string;
-  currentUser: CurrentUser;
   sourceDomain?: PaperSource;
 }
 
@@ -46,8 +40,8 @@ const NotIncludedWords: React.FC<{ missingKeywords: string[] }> = React.memo(pro
   );
 });
 
-const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
-  const { paper, wrapperClassName, currentUser, pageType, actionArea, savedAt, sourceDomain } = props;
+const SearchPaperItem: React.FC<PaperItemProps> = React.memo(props => {
+  const { paper, pageType, actionArea, savedAt, sourceDomain } = props;
   const { relation } = paper;
 
   let historyContent = null;
@@ -60,35 +54,22 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
   }
 
   return (
-    <div className={`${wrapperClassName ? wrapperClassName : styles.paperItemWrapper}`}>
-      <div className={styles.contentSection}>
-        {!!relation && relation.savedInCollections.length >= 1 ? (
-          <SavedCollections collections={relation.savedInCollections} />
-        ) : null}
-        {historyContent}
-        <Title paper={paper} pageType={pageType} actionArea={actionArea} />
-        <div className={styles.venueAndAuthorWrapper}>
-          <BlockVenueAuthor paper={paper} pageType={pageType} actionArea={actionArea} />
-          <Abstract
-            paperId={paper.id}
-            pageType={pageType}
-            actionArea={actionArea}
-            abstract={paper.abstractHighlighted || paper.abstract}
-          />
-        </div>
-        <Figures figures={paper.figures} paperId={paper.id} />
-        <NotIncludedWords missingKeywords={paper.missingKeywords} />
-        <PaperActionButtons
-          currentUser={currentUser}
-          paper={paper}
-          pageType={pageType}
-          actionArea={actionArea}
-          hasCollection={false}
-          sourceDomain={sourceDomain}
-        />
-      </div>
+    <div className={styles.paperItemWrapper}>
+      {!!relation &&
+        relation.savedInCollections.length >= 1 && <SavedCollections collections={relation.savedInCollections} />}
+      {historyContent}
+      <PaperItem pageType={pageType} actionArea={actionArea} paper={paper} venueAuthorType="block" />
+      <Figures figures={paper.figures} paperId={paper.id} />
+      <NotIncludedWords missingKeywords={paper.missingKeywords} />
+      <PaperItemButtonGroup
+        paper={paper}
+        pageType={pageType}
+        actionArea={actionArea}
+        paperSource={sourceDomain}
+        saved={!!paper.relation}
+      />
     </div>
   );
 });
 
-export default withStyles<typeof PaperItem>(styles)(PaperItem);
+export default withStyles<typeof SearchPaperItem>(styles)(SearchPaperItem);

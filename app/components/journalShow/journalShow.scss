@@ -257,6 +257,10 @@ $right_box_width: 267px;
 }
 
 @media (max-width: $tablet_width) {
+  .container {
+    width: 100%;
+  }
+
   .rightBox {
     display: none;
   }

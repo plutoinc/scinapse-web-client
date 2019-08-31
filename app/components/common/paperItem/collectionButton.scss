@@ -15,6 +15,7 @@
     align-items: center;
     width: 16px;
     height: 16px;
+    margin-right: 4px;
 
     svg {
       width: 16px;
@@ -24,5 +25,20 @@
 
   &.savedButton {
     background-color: $black1;
+  }
+}
+
+@media (max-width: $mobile_width) {
+  .button {
+    font-size: 16px;
+    padding: 10px;
+    line-height: 20px;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .bookmarkIcon {
+    width: 24px;
+    height: 24px;
   }
 }

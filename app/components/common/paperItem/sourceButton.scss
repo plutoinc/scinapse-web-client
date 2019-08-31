@@ -1,7 +1,14 @@
 .sourceButton {
-  @include small-action-button($gray800);
+  display: flex;
+  align-items: center;
   position: relative;
   overflow: hidden;
+  border-radius: 4px;
+  border: solid 1px $gray400;
+  font-size: 14px;
+  line-height: 16px;
+  padding: 4px 8px;
+  color: $gray800;
 
   .faviconIcon {
     display: flex;
@@ -44,5 +51,27 @@
       width: 20px;
       height: 20px;
     }
+  }
+}
+
+@media (max-width: $tablet_width) {
+  .sourceButton {
+  }
+}
+
+@media (max-width: $mobile_width) {
+  .sourceButton {
+    font-size: 16px;
+    line-height: 20px;
+    color: $black0;
+    padding: 12px 10px;
+    background-color: $gray50;
+    border: 0;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .extSourceIcon {
+    color: $gray800;
   }
 }
