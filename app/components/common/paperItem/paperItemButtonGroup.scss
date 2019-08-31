@@ -1,12 +1,19 @@
 .groupWrapper {
   display: flex;
-  margin-top: 12px;
+  margin-top: 11.5px;
   padding: 8px 0;
   align-items: center;
   justify-content: space-between;
+  border-top: 1px solid $gray300;
 }
 
 .buttonListBox {
   display: flex;
   align-items: center;
+}
+
+.buttonWrapper {
+  & + & {
+    margin-left: 8px;
+  }
 }

@@ -20,24 +20,23 @@ const CiteButton: React.FC<CiteButtonProps> = ({ paper, pageType, actionArea }) 
   if (!paper.doi) return null;
 
   return (
-    <button className={styles.citeButton}>
-      <span
-        className={styles.citationIconWrapper}
-        onClick={async () => {
-          dispatch(addPaperToRecommendPool(paper.id));
-          GlobalDialogManager.openCitationDialog(paper.id);
-          ActionTicketManager.trackTicket({
-            pageType,
-            actionType: 'fire',
-            actionArea: actionArea || pageType,
-            actionTag: 'citePaper',
-            actionLabel: String(paper.id),
-          });
-        }}
-      >
-        <Icon className={styles.citationIcon} icon="CITATION_QUOTE" />
-        <span>Cite</span>
-      </span>
+    <button
+      className={styles.citeButton}
+      onClick={async () => {
+        dispatch(addPaperToRecommendPool(paper.id));
+        GlobalDialogManager.openCitationDialog(paper.id);
+        ActionTicketManager.trackTicket({
+          pageType,
+          actionType: 'fire',
+          actionArea: actionArea || pageType,
+          actionTag: 'citePaper',
+          actionLabel: String(paper.id),
+        });
+      }}
+    >
+      <Icon className={styles.citationIcon} icon="CITATION_QUOTE" />
+
+      <span>Cite</span>
     </button>
   );
 };

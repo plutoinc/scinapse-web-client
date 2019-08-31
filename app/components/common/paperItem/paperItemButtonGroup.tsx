@@ -34,8 +34,12 @@ const PaperItemButtonGroup: React.FC<PaperItemButtonGroupProps> = ({
         <MoreDropdownButton dropdownContents={dropdownContents} paper={paper} />
       </div>
       <div className={s.buttonListBox}>
-        <CiteButton paper={paper} pageType={pageType} actionArea={actionArea} />
-        <CollectionButton paper={paper} saved={!!saved} pageType={pageType} actionArea={actionArea} />
+        <div className={s.buttonWrapper}>
+          <CiteButton paper={paper} pageType={pageType} actionArea={actionArea} />
+        </div>
+        <div className={s.buttonWrapper}>
+          <CollectionButton paper={paper} saved={!!saved} pageType={pageType} actionArea={actionArea} />
+        </div>
       </div>
     </div>
   );

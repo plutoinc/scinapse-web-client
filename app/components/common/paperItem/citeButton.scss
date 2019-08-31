@@ -1,30 +1,30 @@
 .citeButton {
   display: flex;
+  align-items: center;
   border-radius: 4px;
   border: solid 1px $gray400;
   background-color: white;
   font-size: 14px;
-  line-height: 1.14;
+  line-height: 1;
+  padding: 7px 8px;
   color: $main_blue0;
-  padding: 10px 9px;
+  cursor: pointer;
 }
 
-.citationIconWrapper {
-  .citationIcon {
-    margin-right: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
+.citationIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
 
-    svg {
-      padding-top: 2px;
-      width: 12px;
-      height: 12px;
-    }
+  svg {
+    width: 10px;
+    height: 10px;
   }
 }
+
 @media (max-width: $mobile_width) {
   .citationIconWrapper {
     display: none;

@@ -2,6 +2,7 @@
   @include small-button($gray800);
   display: inline-flex;
   font-size: 14px;
+  line-height: 1;
 
   .citedIconWrapper {
     margin-right: 6px;

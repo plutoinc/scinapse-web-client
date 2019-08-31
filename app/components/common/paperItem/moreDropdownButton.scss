@@ -1,15 +1,17 @@
 .moreButton {
-  @include small-action-button($red0);
   height: 30px;
   width: 30px;
   overflow: hidden;
   padding: 0px;
+  border-radius: 4px;
+  border: solid 1px $gray400;
 
   .moreButtonIcon {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 30px;
+    height: 30px;
 
     svg {
       display: inline-block;
