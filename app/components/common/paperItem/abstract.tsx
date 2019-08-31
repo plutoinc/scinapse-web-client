@@ -30,8 +30,6 @@ const Abstract: React.FC<AbstractProps> = ({ abstract, pageType, actionArea, pap
   const userDevice = useSelector<AppState, UserDevice>(state => state.layout.userDevice);
   const abstractMaxLength = userDevice === UserDevice.MOBILE ? MOBILE_MAX_LENGTH_OF_ABSTRACT : MAX_LENGTH_OF_ABSTRACT;
 
-  console.log(userDevice);
-
   if (!abstract) {
     return null;
   }

@@ -265,9 +265,11 @@ $right_box_width: 267px;
     position: relative;
   }
 
-  .leftBox,
-  .container {
-    width: 100%;
+  .paperListContainer {
+    .leftBox,
+    .container {
+      width: 100%;
+    }
   }
 
   .headSection {
@@ -306,5 +308,12 @@ $right_box_width: 267px;
   .sortBoxWrapper {
     position: static;
     margin-top: 20px;
+  }
+
+  .paperListContainer {
+    .leftBox,
+    .container {
+      width: 100%;
+    }
   }
 }

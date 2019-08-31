@@ -1,0 +1,31 @@
+.oneLineAuthors {
+  @extend %one-line-overflow-ellipsis;
+
+  font-size: 14px;
+  color: $gray800;
+}
+
+.blockAuthorList {
+  margin-top: 12px;
+}
+
+.blockAuthorItem {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: $gray800;
+
+  .authorName {
+    font-weight: bold;
+  }
+
+  & + & {
+    margin-top: 4px;
+  }
+}
+
+.authorCount {
+  margin-top: 8px;
+  font-size: 14px;
+  color: $gray800;
+}

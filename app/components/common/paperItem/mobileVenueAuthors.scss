@@ -1,0 +1,30 @@
+.wrapper {
+  margin-top: 12px;
+}
+
+.authorBox {
+  margin-top: 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.arrowIcon {
+  // position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+
+  svg {
+    width: 9px;
+    height: 5px;
+  }
+
+  &.isExpanded {
+    svg {
+      transform: rotate(180deg);
+    }
+  }
+}
