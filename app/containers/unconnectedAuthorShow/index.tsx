@@ -13,7 +13,8 @@ import { CurrentUser } from '../../model/currentUser';
 import { Author, authorSchema } from '../../model/author/author';
 import { Paper, paperSchema } from '../../model/paper';
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
-import PaperItem from '../../components/common/paperItem';
+import PaperItem from '../../components/common/paperItem/paperItem';
+import PaperItemButtonGroup from '../../components/common/paperItem/paperItemButtonGroup';
 import { getAuthorPapers, toggleConnectProfileDialog, connectAuthor } from './actions';
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from '../../api/author';
 import ArticleSpinner from '../../components/common/spinner/articleSpinner';
@@ -457,13 +458,15 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
     return papers.map(paper => {
       if (paper) {
         return (
-          <PaperItem
-            currentUser={currentUser}
-            pageType="authorShow"
-            actionArea="paperList"
-            paper={paper}
-            key={`author_papers_${paper.id}`}
-          />
+          <div className={styles.paperItemWrapper} key={paper.id}>
+            <PaperItem paper={paper} pageType="authorShow" actionArea="paperList" />
+            <PaperItemButtonGroup
+              paper={paper}
+              pageType="journalShow"
+              actionArea="paperList"
+              saved={!!paper.relation}
+            />
+          </div>
         );
       }
     });
