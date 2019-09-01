@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withStyles } from '../../helpers/withStylesHelper';
 import CollectionAPI from '../../api/collection';
 import { Paper } from '../../model/paper';
-import PaperItem from '../common/paperItem';
+import PaperItem from '../common/paperItem/paperItem';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import { useObserver } from '../../hooks/useIntersectionHook';
 import { ActionTicketParams } from '../../helpers/actionTicketManager/actionTicket';
@@ -25,15 +25,8 @@ const RelatedPaperItem: React.FunctionComponent<{ paper: Paper }> = props => {
   const { elRef } = useObserver(0.1, actionTicketContext);
 
   return (
-    <div ref={elRef}>
-      <PaperItem
-        key={paper.id}
-        paper={paper}
-        omitAbstract={true}
-        pageType="collectionShow"
-        actionArea="relatedPaperList"
-        wrapperClassName={styles.paperItemWrapper}
-      />
+    <div className={styles.paperItemWrapper} ref={elRef}>
+      <PaperItem key={paper.id} paper={paper} pageType="collectionShow" actionArea="relatedPaperList" omitAbstract />
     </div>
   );
 };

@@ -3,7 +3,8 @@ import { PaperInCollection } from '../../model/paperInCollection';
 import { CurrentUser } from '../../model/currentUser';
 import { CollectionShowState } from '../../containers/collectionShow/reducer';
 import { Collection } from '../../model/collection';
-import CollectionPaperItem from './collectionPaperItem';
+import PaperItem from '../common/paperItem/paperItem';
+import PaperItemButtonGroup from '../common/paperItem/paperItemButtonGroup';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import Icon from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
@@ -38,7 +39,6 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
   const {
     itsMine,
     papersInCollection,
-    currentUser,
     collectionShow,
     userCollection,
     onSelectedPaperInCollection,
@@ -74,15 +74,10 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
             readOnly
           />
         )}
-        <CollectionPaperItem
-          currentUser={currentUser}
-          pageType="collectionShow"
-          actionArea="paperList"
-          paperNote={paper.note ? paper.note : ''}
-          paper={paper.paper}
-          collection={userCollection}
-          onRemovePaperCollection={onRemovePaperFromCollection}
-        />
+        <div className={styles.itemWrapper}>
+          <PaperItem pageType="collectionShow" actionArea="paperList" paper={paper.paper} omitAbstract />
+          <PaperItemButtonGroup pageType="collectionShow" actionArea="paperList" paper={paper.paper} saved />
+        </div>
       </div>
     );
   });

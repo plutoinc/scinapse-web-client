@@ -4,7 +4,7 @@ import Abstract from './abstract';
 import { Paper } from '../../../model/paper';
 import VenueAuthors, { VenueAuthorType } from './venueAuthors';
 
-interface PaperItemProps {
+export interface PaperItemProps {
   paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;

@@ -91,7 +91,6 @@ const ReferencePapers: React.FC<Props> = props => {
           papers={referencePapers}
           paperShow={paperShow}
           queryParamsObject={queryParamsObject}
-          currentUser={currentUser}
         />
       </div>
       <div>

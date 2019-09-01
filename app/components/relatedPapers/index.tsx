@@ -3,7 +3,7 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { Paper } from '../../model/paper';
-import PaperItem from '../common/paperItem';
+import PaperItem from '../common/paperItem/paperItem';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../helpers/checkAuthDialog';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import { AppState } from '../../reducers';
@@ -48,14 +48,9 @@ const ContentBlocker: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
 
 const RelatedPaperItem: React.FunctionComponent<{ paper: Paper }> = ({ paper }) => {
   return (
-    <PaperItem
-      key={paper.id}
-      paper={paper}
-      omitAbstract={true}
-      pageType="paperShow"
-      actionArea="relatedPaperList"
-      wrapperClassName={styles.paperItemWrapper}
-    />
+    <div key={paper.id} className={styles.paperItemWrapper}>
+      <PaperItem paper={paper} pageType="paperShow" actionArea="relatedPaperList" omitAbstract />
+    </div>
   );
 };
 

@@ -90,7 +90,6 @@ const CitedPapers: React.FC<Props> = props => {
           papers={citedPapers}
           paperShow={paperShow}
           queryParamsObject={queryParamsObject}
-          currentUser={currentUser}
         />
       </div>
       <div>

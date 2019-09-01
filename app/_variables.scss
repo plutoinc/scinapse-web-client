@@ -207,7 +207,6 @@ $s3_url: 'https://dd2gn9pwu61vr.cloudfront.net';
   margin-right: 8px;
   transition: background-color 200ms ease, color 200ms ease;
   cursor: pointer;
-
   &:hover {
     background-color: $gray300;
   }
@@ -260,15 +259,12 @@ $s3_url: 'https://dd2gn9pwu61vr.cloudfront.net';
   border: solid 1px $gray300;
   background-color: white;
   padding: 16px 16px 0 16px;
-
   & + & {
     margin-top: 16px;
   }
-
   @media (max-width: $mobile_width) {
     width: 100%;
     border: solid 1px #eaedf4;
-
     & + & {
       margin-top: 12px;
     }

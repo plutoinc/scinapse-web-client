@@ -37,7 +37,7 @@ const MobileAuthors: React.FC<MobileAuthorsProps> = ({ isExpanded, paper }) => {
   if (!paper.authors || paper.authors.length === 0) return null;
 
   if (isExpanded) {
-    let authorCount = null;
+    let authorCount = <div className={s.authorCount} />;
     if (paper.authorCount > 3) {
       authorCount = <div className={s.authorCount}>{`+ ${paper.authorCount - 3} Authors`}</div>;
     }

@@ -60,10 +60,19 @@
 
 .paperItemWrapper {
   display: flex;
+
+  & + & {
+    margin-top: 16px;
+  }
 }
 
 .paperCheckBox {
   margin: 8px 16px 0 0;
+}
+
+.itemWrapper {
+  @extend %default-paper-item-wrapper;
+  width: 100%;
 }
 
 @media (max-width: $mobile_width) {

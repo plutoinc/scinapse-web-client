@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import SkeletonPaperItem from '../../common/skeletonPaperItem/skeletonPaperItem';
-import PaperItem from '../../common/paperItem';
+import PaperItem from '../../common/paperItem/paperItem';
 import { ActionTicketParams } from '../../../helpers/actionTicketManager/actionTicket';
 import { useObserver } from '../../../hooks/useIntersectionHook';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
@@ -31,14 +31,8 @@ const ActivityPaperItem: React.FC<{ paper: Paper }> = ({ paper }) => {
   const { elRef } = useObserver(0.1, actionTicketContext);
 
   return (
-    <div ref={elRef} className={styles.paperItemContainer}>
-      <PaperItem
-        paper={paper}
-        omitAbstract={true}
-        pageType="home"
-        actionArea="basedOnActivityPaperList"
-        wrapperClassName={styles.paperItemWrapper}
-      />
+    <div ref={elRef} className={styles.paperItemWrapper}>
+      <PaperItem paper={paper} omitAbstract={true} pageType="home" actionArea="basedOnActivityPaperList" />
     </div>
   );
 };
