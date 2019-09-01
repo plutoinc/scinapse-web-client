@@ -4,18 +4,17 @@
 
 .authorBox {
   margin-top: 2px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  position: relative;
+  display: block;
 }
 
 .arrowIcon {
-  // position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 16px;
   height: 16px;
+  color: $navy0;
 
   svg {
     width: 9px;
@@ -26,5 +25,13 @@
     svg {
       transform: rotate(180deg);
     }
+  }
+}
+
+@media (max-width: $mobile_width) {
+  .arrowIcon {
+    position: absolute;
+    right: 0;
+    bottom: 0;
   }
 }

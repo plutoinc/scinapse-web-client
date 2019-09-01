@@ -246,7 +246,7 @@ const SearchContainer: React.FC<Props> = props => {
       <SearchHelmet query={queryParams.query || ''} />
       <TabNavigationBar searchKeyword={articleSearchState.searchInput} />
       <div className={styles.articleSearchContainer}>
-        <div>
+        <div className={styles.leftBoxWrapper}>
           <AuthorSearchResult
             isLoading={articleSearchState.isContentLoading}
             matchAuthors={articleSearchState.matchAuthors}

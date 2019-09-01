@@ -1,6 +1,7 @@
 .oneLineAuthors {
   @extend %one-line-overflow-ellipsis;
 
+  width: calc(100% - 24px);
   font-size: 14px;
   color: $gray800;
 }
@@ -10,13 +11,25 @@
 }
 
 .blockAuthorItem {
-  display: flex;
-  justify-content: space-between;
+  position: relative;
   font-size: 14px;
   color: $gray800;
 
   .authorName {
     font-weight: bold;
+  }
+
+  .authorName,
+  .affiliation {
+    @extend %one-line-overflow-ellipsis;
+
+    width: calc(100% - 64px);
+  }
+
+  .rightBox {
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 
   & + & {

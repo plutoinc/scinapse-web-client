@@ -52,7 +52,7 @@ const SourceButton: React.FC<SourceButtonProps> = ({ paperSource, paperId, pageT
         src={`https://www.google.com/s2/favicons?domain=${paperSource.source}`}
         alt={`${paperSource.host} favicon`}
       />
-      <span className={styles.sourceHostInfo}> {buttonContext}</span>
+      <span className={styles.sourceHostInfo}>{buttonContext}</span>
       <Icon icon="SOURCE" className={styles.extSourceIcon} />
     </a>
   );

@@ -54,11 +54,6 @@
   }
 }
 
-@media (max-width: $tablet_width) {
-  .sourceButton {
-  }
-}
-
 @media (max-width: $mobile_width) {
   .sourceButton {
     font-size: 16px;
@@ -69,9 +64,19 @@
     border: 0;
     justify-content: center;
     width: 100%;
+
+    .extSourceIcon {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 374px) {
+  .sourceButton {
+    padding: 16px 10px;
   }
 
-  .extSourceIcon {
-    color: $gray800;
+  .sourceHostInfo {
+    display: none;
   }
 }

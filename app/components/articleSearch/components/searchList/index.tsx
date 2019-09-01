@@ -17,7 +17,7 @@ interface SearchListProps {
 }
 
 const SearchList: React.FC<SearchListProps> = props => {
-  const { currentUser, papers, searchQueryText, isLoading } = props;
+  const { papers, searchQueryText, isLoading } = props;
   const historyPapers: HistoryPaper[] = store.get(RESEARCH_HISTORY_KEY) || [];
   const [sourceDomains, setSourceDomains] = React.useState<PaperSource[]>([]);
 

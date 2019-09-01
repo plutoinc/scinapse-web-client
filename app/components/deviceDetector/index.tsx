@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { throttle } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
-import EnvChecker from '../../helpers/envChecker';
 import UserAgentHelper from '../../helpers/userAgentHelper';
 import { UserDevice, setDeviceType, LayoutState } from '../layouts/reducer';
 import { AppState } from '../../reducers';

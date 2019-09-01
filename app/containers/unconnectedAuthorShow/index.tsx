@@ -427,7 +427,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
   };
 
   private getPaperList = () => {
-    const { papers, currentUser, authorShow } = this.props;
+    const { papers, authorShow } = this.props;
 
     if (authorShow.isLoadingPapers) {
       return (
