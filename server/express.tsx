@@ -11,12 +11,21 @@ import setABTestCookie from './helpers/setABTest';
 import manifestJSON from './routes/manifest';
 const compression = require('compression');
 const SITEMAP_REGEX = /^\/sitemap(\/sitemap_[0-9]+\.xml)?\/?$/;
+const proxy = require('express-http-proxy');
 
 const app = express();
 app.disable('x-powered-by');
 app.use(cookieParser());
 app.use(compression({ filter: shouldCompress }));
 app.use(morgan('combined'));
+app.use(
+  /^\/client.*/,
+  proxy('http://localhost:8080', {
+    proxyReqPathResolver(req: express.Request) {
+      return req.originalUrl;
+    },
+  })
+);
 
 function shouldCompress(req: express.Request, res: express.Response) {
   if (SITEMAP_REGEX.test(req.path)) return false;
@@ -26,7 +35,7 @@ function shouldCompress(req: express.Request, res: express.Response) {
 app.get(SITEMAP_REGEX, async (req, res) => {
   res.setHeader('Content-Encoding', 'gzip');
   res.setHeader('Content-Type', 'text/xml');
-  res.setHeader('Access-Contrl-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   const sitemap = await getSitemap(req.path);
   res.send(sitemap.body);
 });

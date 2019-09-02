@@ -27,7 +27,6 @@
   }
 
   .dialogPaper {
-    max-width: 384px !important;
     width: 100% !important;
   }
 
@@ -38,6 +37,6 @@
 
 @media (max-width: $mobile_width) {
   .dialogPaper {
-    margin: 0 !important;
+    margin: 0;
   }
 }
