@@ -364,7 +364,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
               paper={paper}
               pageType="journalShow"
               actionArea="paperList"
-              saved={!!paper.relation}
+              saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
             />
           </div>
         );

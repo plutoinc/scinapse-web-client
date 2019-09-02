@@ -241,11 +241,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               </div>
               <div className={styles.otherPapers}>
                 <div className={styles.references}>
-                  <ReferencePapers
-                    isMobile={layout.userDevice !== UserDevice.DESKTOP}
-                    currentUser={currentUser}
-                    refTabEl={this.refTabWrapper}
-                  />
+                  <ReferencePapers isMobile={layout.userDevice !== UserDevice.DESKTOP} refTabEl={this.refTabWrapper} />
                 </div>
               </div>
             </article>
@@ -259,11 +255,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <span className={styles.sectionCount}>{paper.citedCount}</span>
               </div>
               <div className={styles.otherPapers}>
-                <CitedPapers
-                  isMobile={layout.userDevice !== UserDevice.DESKTOP}
-                  currentUser={currentUser}
-                  citedTabEl={this.citedTabWrapper}
-                />
+                <CitedPapers isMobile={layout.userDevice !== UserDevice.DESKTOP} citedTabEl={this.citedTabWrapper} />
               </div>
             </article>
           </div>

@@ -5,7 +5,6 @@ import { PaperSource } from './paperSource';
 import { Fos } from './fos';
 import { Journal } from './journal';
 import { ConferenceInstance } from './conferenceInstance';
-import { SavedInCollections } from './savedInCollecctions';
 
 export interface PaperPdf {
   url: string;
@@ -18,6 +17,13 @@ export interface PaperFigure {
   name: string;
   caption: string;
   path: string;
+}
+
+export interface SavedInCollection {
+  id: number; // collection id
+  title: string;
+  readLater: boolean;
+  updatedAt: string;
 }
 
 export interface Paper {
@@ -43,7 +49,9 @@ export interface Paper {
   conferenceInstance: ConferenceInstance | null;
   urls: PaperSource[];
   isAuthorIncluded?: boolean;
-  relation?: { savedInCollections: SavedInCollections[] } | null;
+  relation?: {
+    savedInCollections: SavedInCollection[];
+  } | null;
   bestPdf: PaperPdf;
   titleHighlighted?: string;
   abstractHighlighted?: string;

@@ -2,7 +2,7 @@ import { ACTION_TYPES } from '../../actions/actionTypes';
 import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from './records';
 import { SearchResult } from '../../api/search';
 import { AddPaperToCollectionParams, RemovePapersFromCollectionParams } from '../../api/collection';
-import { Paper } from '../../model/paper';
+import { Paper, SavedInCollection } from '../../model/paper';
 
 export function reducer(
   state: ArticleSearchState = ARTICLE_SEARCH_INITIAL_STATE,
@@ -80,8 +80,13 @@ export function reducer(
 
     case ACTION_TYPES.GLOBAL_SUCCEEDED_ADD_PAPER_TO_COLLECTION: {
       const payload: AddPaperToCollectionParams = action.payload;
-
-      const newSavedInCollection = payload.collection;
+      const collection = payload.collection;
+      const newSavedInCollection: SavedInCollection = {
+        id: collection.id,
+        title: collection.title,
+        readLater: false,
+        updatedAt: collection.updatedAt,
+      };
       const paperId = payload.paperId;
 
       const newSearchItemsToShow: Paper[] = state.searchItemsToShow.map(paper => {
@@ -90,7 +95,7 @@ export function reducer(
             ...paper,
             relation: {
               savedInCollections:
-                !!paper.relation && paper.relation.savedInCollections.length >= 1
+                !!paper.relation && paper.relation.savedInCollections.length > 0
                   ? [newSavedInCollection, ...paper.relation.savedInCollections]
                   : [newSavedInCollection],
             },

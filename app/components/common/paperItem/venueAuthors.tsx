@@ -24,10 +24,18 @@ const VenueAuthors: React.FC<VenueAuthorsProps> = ({ venueAuthorType, paper, pag
   }
 
   if (venueAuthorType === 'block') {
-    return <BlockVenueAuthor paper={paper} pageType={pageType} actionArea={actionArea} />;
+    return (
+      <div style={{ marginTop: '12px' }}>
+        <BlockVenueAuthor paper={paper} pageType={pageType} actionArea={actionArea} />
+      </div>
+    );
   }
 
-  return <LineVenueAuthors paper={paper} pageType={pageType} actionArea={actionArea} />;
+  return (
+    <div style={{ marginTop: '7px' }}>
+      <LineVenueAuthors paper={paper} pageType={pageType} actionArea={actionArea} />
+    </div>
+  );
 };
 
 export default VenueAuthors;

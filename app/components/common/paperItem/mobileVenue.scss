@@ -38,6 +38,12 @@
   font-size: 14px;
   font-weight: 500;
   color: $gray800;
+
+  & + .venueName {
+    &:before {
+      content: ' · ';
+    }
+  }
 }
 
 .sciLabel {
@@ -55,4 +61,5 @@
 .venueName {
   font-size: 14px;
   color: $gray800;
+  white-space: pre;
 }

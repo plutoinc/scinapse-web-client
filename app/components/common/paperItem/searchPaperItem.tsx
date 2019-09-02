@@ -66,7 +66,7 @@ const SearchPaperItem: React.FC<PaperItemProps> = React.memo(props => {
         pageType={pageType}
         actionArea={actionArea}
         paperSource={sourceDomain}
-        saved={!!paper.relation}
+        saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
       />
     </div>
   );

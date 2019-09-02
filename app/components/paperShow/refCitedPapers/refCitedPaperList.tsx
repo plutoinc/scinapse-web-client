@@ -102,7 +102,7 @@ const RefCitedPaperList: React.FC<RefCitedPaperListProps> = props => {
           pageType="paperShow"
           actionArea={type === 'reference' ? 'refList' : 'citedList'}
           paper={paper}
-          saved={!!paper.relation}
+          saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
         />
       </div>
     );

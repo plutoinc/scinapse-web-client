@@ -36,8 +36,13 @@ const JournalTitle: React.FC<{
   journal: Journal;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea?: Scinapse.ActionTicket.ActionArea;
-}> = ({ journal, pageType, actionArea }) => {
+  readonly?: boolean;
+}> = ({ journal, pageType, actionArea, readonly }) => {
   if (!journal.title) return null;
+
+  if (readonly) {
+    return <span className={s.venueName}>{journal.title}</span>;
+  }
 
   return (
     <Link
@@ -65,7 +70,7 @@ const MobileVenue: React.FC<MobileVenueProps> = ({ paper, isExpanded, pageType, 
 
   let title = null;
   if (journal && journal.title) {
-    title = <JournalTitle journal={journal} pageType={pageType} actionArea={actionArea} />;
+    title = <JournalTitle journal={journal} pageType={pageType} actionArea={actionArea} readonly={!isExpanded} />;
   } else if (conferenceInstance) {
     title = <ConferenceTitle conferenceInstance={conferenceInstance} />;
   }
