@@ -14,7 +14,7 @@
 .dialogWrapper {
   position: relative;
   width: 504px;
-  height: 446px;
+  min-height: 446px;
   border-radius: 10px;
   padding: 0 16px;
 }
@@ -209,8 +209,6 @@
   .dialogWrapper {
     max-width: 504px;
     width: 100%;
-    min-height: 446px;
-    height: 100%;
     padding: 0 16px 16px 16px;
   }
 
