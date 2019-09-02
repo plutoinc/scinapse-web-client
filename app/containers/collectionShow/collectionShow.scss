@@ -199,7 +199,8 @@ $semi_full_width: 997px;
 @media (max-width: $tablet_width) {
   .headSection {
     .container {
-      margin: 0 48px;
+      margin: 0 12px;
+
       .leftBox {
         margin-left: 0px;
       }
@@ -208,7 +209,8 @@ $semi_full_width: 997px;
 
   .paperListContainer {
     .leftBox {
-      margin: 0 24px;
+      margin: 0;
+      padding: 0 12px;
     }
   }
 }

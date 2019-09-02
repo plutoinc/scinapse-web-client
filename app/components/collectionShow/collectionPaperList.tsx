@@ -10,6 +10,9 @@ import Icon from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
 import formatNumber from '../../helpers/formatNumber';
 import CollectionPapersControlBtns from './collectionPapersControlBtns';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../reducers';
+import { UserDevice } from '../layouts/reducer';
 const styles = require('./collectionPaperList.scss');
 
 interface CollectionPaperListProps {
@@ -45,6 +48,8 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
     onRemovePaperFromCollection,
   } = props;
 
+  const userDevice = useSelector((state: AppState) => state.layout.userDevice);
+
   if (collectionShow.isLoadingPaperToCollection) {
     return (
       <div className={styles.loadingContainer}>
@@ -65,15 +70,16 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
   const collectionPaperList = papersInCollection.map(paper => {
     return (
       <div className={styles.paperItemWrapper} key={paper.paperId}>
-        {itsMine && (
-          <input
-            type="checkbox"
-            className={styles.paperCheckBox}
-            checked={collectionShow.selectedPaperIds.includes(paper.paperId)}
-            onClick={() => onSelectedPaperInCollection(paper.paperId)}
-            readOnly
-          />
-        )}
+        {itsMine &&
+          userDevice !== UserDevice.MOBILE && (
+            <input
+              type="checkbox"
+              className={styles.paperCheckBox}
+              checked={collectionShow.selectedPaperIds.includes(paper.paperId)}
+              onClick={() => onSelectedPaperInCollection(paper.paperId)}
+              readOnly
+            />
+          )}
         <div className={styles.itemWrapper}>
           <PaperItem pageType="collectionShow" actionArea="paperList" paper={paper.paper} omitAbstract />
           <CollectionPaperItemButtonGroup
@@ -90,11 +96,13 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
 
   return (
     <>
-      <CollectionPapersControlBtns
-        itsMine={itsMine}
-        collectionShow={collectionShow}
-        onRemovePaperCollection={onRemovePaperFromCollection}
-      />
+      {userDevice !== UserDevice.MOBILE && (
+        <CollectionPapersControlBtns
+          itsMine={itsMine}
+          collectionShow={collectionShow}
+          onRemovePaperCollection={onRemovePaperFromCollection}
+        />
+      )}
       <CollectionPaperInfo collectionShow={collectionShow} />
       {collectionPaperList}
     </>

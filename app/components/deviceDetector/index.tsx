@@ -37,6 +37,7 @@ const DeviceDetector: React.FC = () => {
     };
     const throttledHandlingWindowSizeChange = throttle(handleWindowSizeChange, 300);
     window.addEventListener('resize', throttledHandlingWindowSizeChange);
+    handleWindowSizeChange();
     return () => {
       window.removeEventListener('resize', throttledHandlingWindowSizeChange);
     };
