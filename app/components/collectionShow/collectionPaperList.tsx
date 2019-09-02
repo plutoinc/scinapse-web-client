@@ -4,7 +4,7 @@ import { CurrentUser } from '../../model/currentUser';
 import { CollectionShowState } from '../../containers/collectionShow/reducer';
 import { Collection } from '../../model/collection';
 import PaperItem from '../common/paperItem/paperItem';
-import PaperItemButtonGroup from '../common/paperItem/paperItemButtonGroup';
+import CollectionPaperItemButtonGroup from '../common/paperItem/collectionPaperItemButtonGroup';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import Icon from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
@@ -76,7 +76,13 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
         )}
         <div className={styles.itemWrapper}>
           <PaperItem pageType="collectionShow" actionArea="paperList" paper={paper.paper} omitAbstract />
-          <PaperItemButtonGroup pageType="collectionShow" actionArea="paperList" paper={paper.paper} saved />
+          <CollectionPaperItemButtonGroup
+            pageType="collectionShow"
+            actionArea="paperList"
+            paper={paper.paper}
+            collectionId={userCollection.id}
+            note={paper.note || undefined}
+          />
         </div>
       </div>
     );

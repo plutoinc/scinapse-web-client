@@ -1,0 +1,78 @@
+import React from 'react';
+import { Paper } from '../../../model/paper';
+import CitationListLinkButton from './citationListLinkButton';
+import SourceButton from './sourceButton';
+import CiteButton from './citeButton';
+import { withStyles } from '../../../helpers/withStylesHelper';
+import { PaperSource } from '../../../api/paper';
+import MoreDropdownButton from './moreDropdownButton';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../../reducers';
+import { UserDevice } from '../../layouts/reducer';
+import NoteButton from './noteButton';
+const s = require('./paperItemButtonGroup.scss');
+
+interface PaperItemButtonGroupProps {
+  paper: Paper;
+  collectionId: number;
+  pageType: Scinapse.ActionTicket.PageType;
+  actionArea: Scinapse.ActionTicket.ActionArea;
+  paperSource?: PaperSource;
+  dropdownContents?: React.ReactElement[];
+  note?: string;
+}
+
+const PaperItemButtonGroup: React.FC<PaperItemButtonGroupProps> = ({
+  paper,
+  collectionId,
+  pageType,
+  actionArea,
+  paperSource,
+  dropdownContents,
+  note,
+}) => {
+  const userDevice = useSelector<AppState, UserDevice>(state => state.layout.userDevice);
+  if (userDevice === UserDevice.MOBILE && paperSource && (paperSource.doi || paperSource.source)) {
+    return (
+      <div className={s.mobileWrapper}>
+        {!!paper.citedCount && (
+          <div className={s.buttonWrapper}>
+            <CitationListLinkButton paper={paper} pageType={pageType} actionArea={actionArea} />
+          </div>
+        )}
+        <div className={s.buttonWrapper}>
+          <SourceButton paperId={paper.id} pageType={pageType} actionArea={actionArea} paperSource={paperSource} />
+        </div>
+        <div className={s.buttonWrapper}>
+          <NoteButton paperId={paper.id} collectionId={collectionId} pageType={pageType} actionArea={actionArea} />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={s.groupWrapper}>
+      <div className={s.buttonListBox}>
+        <CitationListLinkButton paper={paper} pageType={pageType} actionArea={actionArea} />
+        <SourceButton paperId={paper.id} pageType={pageType} actionArea={actionArea} paperSource={paperSource} />
+        <MoreDropdownButton dropdownContents={dropdownContents} paper={paper} />
+      </div>
+      <div className={s.buttonListBox}>
+        <div className={s.buttonWrapper}>
+          <CiteButton paper={paper} pageType={pageType} actionArea={actionArea} />
+        </div>
+        <div className={s.buttonWrapper}>
+          <NoteButton
+            note={note}
+            paperId={paper.id}
+            collectionId={collectionId}
+            pageType={pageType}
+            actionArea={actionArea}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default withStyles<typeof PaperItemButtonGroup>(s)(PaperItemButtonGroup);
