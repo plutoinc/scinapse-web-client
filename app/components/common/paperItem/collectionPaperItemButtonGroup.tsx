@@ -38,11 +38,9 @@ const PaperItemButtonGroup: React.FC<PaperItemButtonGroupProps> = ({
     return (
       <>
         <div className={s.mobileWrapper}>
-          {!!paper.citedCount && (
-            <div className={s.buttonWrapper}>
-              <CitationListLinkButton paper={paper} pageType={pageType} actionArea={actionArea} />
-            </div>
-          )}
+          <div className={s.buttonWrapper}>
+            <CitationListLinkButton paper={paper} pageType={pageType} actionArea={actionArea} />
+          </div>
           <div className={s.buttonWrapper}>
             <SourceButton paperId={paper.id} pageType={pageType} actionArea={actionArea} paperSource={paperSource} />
           </div>

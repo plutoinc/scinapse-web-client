@@ -64,7 +64,7 @@ const RelatedPapersInPaperShow: React.FC<RelatedPapersProps> = React.memo(props 
   const relatedPaperItems = relatedPapers.map((paper, index) => {
     if (index < 3) {
       return (
-        <div key={paper.id}>
+        <div className={styles.paperList} key={paper.id}>
           <RelatedPaperItem paper={paper} />
         </div>
       );

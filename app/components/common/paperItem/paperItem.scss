@@ -46,23 +46,10 @@
   }
 }
 
-// Mobile
-@media (max-width: $mobile_width) {
-  .claimButton {
-    display: none !important;
-  }
-
-  .contentSection {
-    width: 100%;
-  }
-}
-
-// Experiment In Progress
-// TODO: move or remove below after experiments
 .visitedHistory {
-  padding-bottom: 8px;
+  padding-bottom: 12px;
   border-bottom: 1px solid $gray200;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   color: $gray700;
   font-size: 14px;
 }
@@ -76,4 +63,25 @@
 .missingWord {
   text-decoration: line-through;
   font-weight: 500;
+}
+
+// Mobile
+@media (max-width: $mobile_width) {
+  .claimButton {
+    display: none !important;
+  }
+
+  .contentSection {
+    width: 100%;
+  }
+
+  .visitedHistory {
+    width: 100%;
+    padding-bottom: 8px;
+    margin-top: -4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-bottom: 1px solid #f8f9fb;
+  }
 }

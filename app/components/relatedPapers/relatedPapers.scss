@@ -39,7 +39,7 @@
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
   padding: 12px 16px;
   border-radius: 5px;
-  border: solid 1px $gray300;
+  border: solid 1px $gray200;
   background-color: white;
 }
 
@@ -104,5 +104,15 @@
     font-size: 15px;
     line-height: 2.4;
     color: $black0;
+  }
+}
+
+@media (max-width: $mobile_width) {
+  .paperItemWrapper {
+    width: 100%;
+  }
+
+  .paperList {
+    padding: 0 12px;
   }
 }
