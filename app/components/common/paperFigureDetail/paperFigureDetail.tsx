@@ -124,8 +124,10 @@ const PaperFigureDetail: React.FC<Props> = props => {
       tabIndex={1}
       onKeyDown={onKeyDownInFigureContainer}
     >
-      <div onClick={handleCloseDialogRequest} className={styles.closeButtonWrapper}>
-        <Icon icon="X_BUTTON" className={styles.closeButtonIcon} />
+      <div className={styles.closeButtonContainer}>
+        <div onClick={handleCloseDialogRequest} className={styles.closeButtonWrapper}>
+          <Icon icon="X_BUTTON" className={styles.closeButtonIcon} />
+        </div>
       </div>
       <div className={styles.figureDetailImageWrapper}>
         <picture>
