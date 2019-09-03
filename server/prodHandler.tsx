@@ -1,6 +1,8 @@
+import * as newrelic from 'newrelic';
+require('@newrelic/aws-sdk');
 import handler from '.';
 
-export const ssr = async (event: LambdaProxy.Event, _context: LambdaProxy.Context) => {
+export const ssr = newrelic.setLambdaHandler(async (event: LambdaProxy.Event, _context: LambdaProxy.Context) => {
   try {
     const resBody = handler(event);
     return resBody;
@@ -13,4 +15,4 @@ export const ssr = async (event: LambdaProxy.Event, _context: LambdaProxy.Contex
       body: JSON.stringify({ error: err.message }),
     };
   }
-};
+});
