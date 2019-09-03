@@ -8,6 +8,7 @@ provider:
   runtime: nodejs8.10
   region: us-east-1
   role: WebClientRole
+  environment: ${file(./env/${opt:stage}.yml)}
   logRetentionInDays: 30
   apiGateway:
     minimumCompressionSize: 0
