@@ -18,8 +18,14 @@
 
   svg {
     margin: 2px;
-    width: 1.3em;
-    height: 1.3em;
+    width: 16px;
+    height: 16px;
+  }
+
+  img {
+    margin: 2px;
+    width: 16px;
+    height: 16px;
   }
 
   span {
@@ -41,8 +47,14 @@
   font-weight: 500;
 
   svg {
-    width: 1.25em;
-    height: 1.25em;
+    width: 18px;
+    height: 18px;
+    margin: 2px;
+  }
+
+  img {
+    width: 18px;
+    height: 18px;
     margin: 2px;
   }
 
@@ -56,15 +68,22 @@
   font-size: 16px;
   padding: 10px 12px;
   font-weight: 500;
-
-  svg {
-    width: 1.3em;
-    height: 1.3em;
-    margin: 2px;
-  }
+  letter-spacing: 0.2px;
 
   span {
     margin: 0 6px;
+  }
+
+  svg {
+    margin: 2px;
+    width: 24px;
+    height: 24px;
+  }
+
+  img {
+    margin: 2px;
+    width: 24px;
+    height: 24px;
   }
 }
 
@@ -109,10 +128,12 @@
   color: white;
   background-color: $main_blue1;
   &:hover {
-    background-color: $main_blue0;
+    transition: ease 0.2s;
+    opacity: 0.9;
   }
   &:active {
-    background-color: $main_blue_light0;
+    transition: ease 0.2s;
+    opacity: 0.8;
   }
 }
 
@@ -139,7 +160,7 @@
 }
 
 .contained.disabled {
-  background-color: $gray200;
+  background-color: $gray200 !important;
   color: $gray500;
   &:hover {
     background-color: $gray200;

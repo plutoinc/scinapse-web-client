@@ -6,7 +6,7 @@ import AuthAPI from '../../../../../api/auth';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
 import AuthInputBox from '../../../../common/inputBox/authInputBox';
 import { OAUTH_VENDOR, SignInResult } from '../../../../../api/types/auth';
-import AuthButton from '../../../authButton';
+import Button from '../../../../common/button/button';
 import GoogleAuthButton from '../../../authButton/googleAuthButton';
 import ORSeparator from '../../../separator';
 import AuthTabs from '../../../authTabs';
@@ -22,6 +22,7 @@ import ActionTicketManager from '../../../../../helpers/actionTicketManager';
 import useFBIsLoading from '../../../../../hooks/FBisLoadingHook';
 import { MINIMUM_PASSWORD_LENGTH } from '../../../../../constants/auth';
 import { getCollections } from '../../../../collections/actions';
+import Icon from '../../../../../icons';
 const s = require('./firstForm.scss');
 
 declare var FB: any;
@@ -168,27 +169,30 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
                       iconName="PASSWORD_ICON"
                     />
                     {networkError && <div className={s.errorContent}>{networkError}</div>}
-
-                    <AuthButton
-                      type="submit"
-                      isLoading={isLoading}
-                      text="SIGN UP"
-                      style={{ backgroundColor: '#6096ff', marginTop: '10px', fontSize: '14px' }}
-                    />
+                    <div className={s.authButtonWrapper}>
+                      <Button type="submit" elementType="button" isLoading={isLoading} fullWidth size="large">
+                        <span>Sign up</span>
+                      </Button>
+                    </div>
                   </Form>
                 );
               }}
             />
             <ORSeparator />
-            <AuthButton
-              isLoading={isLoading}
-              text="CONTINUE WITH FACEBOOK"
-              style={{ ...oAuthBtnBaseStyle, backgroundColor: '#3859ab', marginTop: '18px' }}
-              iconName="FACEBOOK_LOGO"
-              iconClassName={s.fbIconWrapper}
-              onClick={handleClickFBLogin}
-              disabled={FBIsLoading}
-            />
+            <div className={s.authButtonWrapper}>
+              <Button
+                size="large"
+                elementType="button"
+                style={{ backgroundColor: '#3859ab' }}
+                onClick={handleClickFBLogin}
+                disabled={FBIsLoading}
+                isLoading={isLoading}
+                fullWidth
+              >
+                <Icon icon="FACEBOOK_LOGO" />
+                <span>Continue with Facebook</span>
+              </Button>
+            </div>
             <GoogleAuthButton
               isLoading={isLoading}
               text="CONTINUE WITH GOOGLE"
@@ -197,14 +201,20 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
               iconClassName={s.googleIconWrapper}
               onSignUpWithSocial={props.onSignUpWithSocial}
             />
-            <AuthButton
-              isLoading={isLoading}
-              text="CONTINUE WITH ORCID"
-              style={{ ...oAuthBtnBaseStyle, backgroundColor: '#a5d027' }}
-              iconName="ORCID_LOGO"
-              iconClassName={s.orcidIconWrapper}
-              onClick={handleClickORCIDBtn}
-            />
+            <div className={s.authButtonWrapper}>
+              <Button
+                size="large"
+                elementType="button"
+                style={{ backgroundColor: '#a5d027' }}
+                disabled={FBIsLoading}
+                isLoading={isLoading}
+                onClick={handleClickORCIDBtn}
+                fullWidth
+              >
+                <Icon icon="ORCID_LOGO" />
+                <span>Continue with ORCID</span>
+              </Button>
+            </div>
           </div>
         </div>
       </div>

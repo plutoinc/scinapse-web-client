@@ -14,7 +14,7 @@
   color: $gray600;
   text-align: right;
   align-self: flex-end;
-  margin-top: 8px;
+  margin: 8px auto;
 }
 
 .formWrapper {
@@ -30,9 +30,9 @@
 
 .googleIconWrapper {
   position: absolute;
-  left: 19px;
-  width: 13px;
-  height: 13px;
+  left: 14px;
+  width: 24px;
+  height: 24px;
 }
 
 .orcidIconWrapper {
@@ -55,6 +55,10 @@
   bottom: -32px;
   right: 12px;
   cursor: pointer;
+}
+
+.authButtonWrapper {
+  margin-top: 8px;
 }
 
 @media (max-width: $mobile_width) {

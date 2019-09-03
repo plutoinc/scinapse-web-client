@@ -22,7 +22,7 @@
   z-index: 100;
   width: 100%;
   background-color: white;
-  border-bottom: 1px solid $gray200;
+  border-bottom: 1px solid $gray300;
   transition: box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
 
   .isTop {
@@ -31,6 +31,7 @@
 
   .headerContainer {
     height: $navbar_height;
+    max-width: $container-width;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -79,9 +80,9 @@
 .searchFormContainer {
   position: relative;
   display: flex;
-  max-width: 60%;
+  max-width: 70%;
   width: 100%;
-  margin-left: 64px;
+  margin-left: 24px;
   margin-right: 16px;
   height: 44px;
   align-items: center;

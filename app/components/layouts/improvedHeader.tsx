@@ -374,7 +374,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
           {this.getHistoryButton()}
           <Button
             elementType="link"
-            size="large"
+            size="medium"
             variant="text"
             color="gray"
             onClick={() => {
@@ -444,7 +444,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
             {this.getHistoryButton()}
             <Button
               elementType="button"
-              size="large"
+              size="medium"
               variant="text"
               style={{ marginRight: '8px' }}
               onClick={() => {
@@ -464,7 +464,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
           </div>
           <Button
             elementType="button"
-            size="large"
+            size="medium"
             onClick={() => {
               this.handleOpenSignUp();
               trackDialogView('headerSignUpOpen');

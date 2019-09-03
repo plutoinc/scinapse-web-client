@@ -122,7 +122,7 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper,
     <>
       <Button
         elementType="button"
-        size="large"
+        size="medium"
         variant="text"
         color="gray"
         onClick={() => {

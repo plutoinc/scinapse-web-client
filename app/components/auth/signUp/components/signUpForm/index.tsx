@@ -6,7 +6,7 @@ import { withStyles } from '../../../../../helpers/withStylesHelper';
 import { GLOBAL_DIALOG_TYPE } from '../../../../dialog/reducer';
 import AuthTabs from '../../../authTabs';
 import AuthInputBox from '../../../../common/inputBox/authInputBox';
-import AuthButton from '../../../authButton';
+import Button from '../../../../common/button/button';
 import AffiliationBox from '../../../../authorCV/affiliationBox';
 import validateEmail from '../../../../../helpers/validateEmail';
 import { debouncedCheckDuplicate } from '../../helpers/checkDuplicateEmail';
@@ -95,80 +95,89 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
             <Form>
               <div className={s.additionalInformation}>ADDITIONAL INFORMATION</div>
               <div className={s.subHeader}>No abbreviation preferred</div>
-              <Field name="email" type="email" component={AuthInputBox} placeholder="E-mail" iconName="EMAIL_ICON" />
-              {!props.withSocial && (
+              <div className={s.formContainer}>
+                <Field name="email" type="email" component={AuthInputBox} placeholder="E-mail" iconName="EMAIL_ICON" />
+                {!props.withSocial && (
+                  <Field
+                    name="password"
+                    type="password"
+                    component={AuthInputBox}
+                    placeholder="Password"
+                    iconName="PASSWORD_ICON"
+                  />
+                )}
+                <div className={s.nameItemWrapper}>
+                  <div className={s.nameItemSection}>
+                    <Field
+                      name="firstName"
+                      type="text"
+                      component={AuthInputBox}
+                      placeholder="First Name"
+                      iconName="FULL_NAME_ICON"
+                    />
+                  </div>
+                  <div className={s.nameItemSection}>
+                    <Field
+                      name="lastName"
+                      type="text"
+                      component={AuthInputBox}
+                      placeholder="Last Name"
+                      iconName="FULL_NAME_ICON"
+                    />
+                  </div>
+                </div>
                 <Field
-                  name="password"
-                  type="password"
-                  component={AuthInputBox}
-                  placeholder="Password"
-                  iconName="PASSWORD_ICON"
+                  name="affiliation"
+                  placeholder="Affiliation / Company"
+                  type="text"
+                  component={AffiliationBox}
+                  inputBoxStyle={{ width: '100%' }}
+                  listWrapperStyle={{ top: '56px' }}
+                  inputStyle={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignContent: 'flex-start',
+                    alignItems: 'center',
+                    height: '47px',
+                    borderRadius: '3px',
+                    padding: '0 10px',
+                    backgroundColor: 'white',
+                    border: 'solid 1px $gray400',
+                    overflow: 'hidden',
+                    marginTop: '14px',
+                  }}
                 />
-              )}
-              <div className={s.nameItemWrapper}>
-                <div className={s.nameItemSection}>
-                  <Field
-                    name="firstName"
-                    type="text"
-                    component={AuthInputBox}
-                    placeholder="First Name"
-                    iconName="FULL_NAME_ICON"
-                  />
-                </div>
-                <div className={s.nameItemSection}>
-                  <Field
-                    name="lastName"
-                    type="text"
-                    component={AuthInputBox}
-                    placeholder="Last Name"
-                    iconName="FULL_NAME_ICON"
-                  />
-                </div>
               </div>
-              <Field
-                name="affiliation"
-                placeholder="Affiliation / Company"
-                type="text"
-                component={AffiliationBox}
-                inputBoxStyle={{ width: '100%' }}
-                listWrapperStyle={{ top: '56px' }}
-                inputStyle={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignContent: 'flex-start',
-                  alignItems: 'center',
-                  height: '47px',
-                  borderRadius: '3px',
-                  padding: '0 10px',
-                  backgroundColor: 'white',
-                  border: 'solid 1px $gray400',
-                  overflow: 'hidden',
-                  marginTop: '14px',
-                }}
-              />
-              <AuthButton
-                type="submit"
-                onClick={props.onClickNext}
-                isLoading={isLoading}
-                text="SIGN UP"
-                style={{ backgroundColor: '#6096ff', marginTop: '10px', fontSize: '14px' }}
-              />
+              <div className={s.authButtonWrapper}>
+                <Button
+                  type="submit"
+                  elementType="button"
+                  onClick={props.onClickNext}
+                  isLoading={isLoading}
+                  fullWidth
+                  size="large"
+                >
+                  <span>Sign up</span>
+                </Button>
+              </div>
             </Form>
           )}
         />
-        <AuthButton
-          isLoading={isLoading}
-          type="button"
-          onClick={props.onClickBack}
-          style={{
-            backgroundColor: '#e7eaef',
-            fontSize: '14px',
-            color: '#9aa3b5',
-            marginTop: '10px',
-            marginBottom: '12px',
-          }}
-          text="GO BACK"
-        />
+
+        <div className={s.authButtonWrapper}>
+          <Button
+            type="submit"
+            size="large"
+            variant="outlined"
+            color="gray"
+            elementType="button"
+            onClick={props.onClickBack}
+            isLoading={isLoading}
+            fullWidth
+          >
+            <span>Go back</span>
+          </Button>
+        </div>
         <div className={s.signUpPrivacyPolicy}>
           {'By signing up, you agree with our '}
           <a href="https://scinapse.io/terms-of-service" target="_blank" rel="noopener nofollow noreferrer">

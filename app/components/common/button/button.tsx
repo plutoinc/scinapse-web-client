@@ -49,7 +49,7 @@ const Button: React.FC<GeneralButtonProps> = props => {
     case 'button': {
       const { isLoading, ...buttonProps } = ownProps as ButtonProps;
 
-      if (!isLoading) {
+      if (isLoading) {
         const style = { ...buttonProps.style, position: 'relative' } as React.CSSProperties;
 
         return (
