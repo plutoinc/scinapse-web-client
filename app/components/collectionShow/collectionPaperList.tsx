@@ -81,7 +81,14 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
             />
           )}
         <div className={styles.itemWrapper}>
-          <PaperItem pageType="collectionShow" actionArea="paperList" paper={paper.paper} omitAbstract />
+          <Icon
+            onClick={() => onRemovePaperFromCollection(paper.paperId)}
+            icon="X_BUTTON"
+            className={styles.removeIcon}
+          />
+          <div className={styles.paperInformationWrapper}>
+            <PaperItem pageType="collectionShow" actionArea="paperList" paper={paper.paper} omitAbstract />
+          </div>
           <CollectionPaperItemButtonGroup
             pageType="collectionShow"
             actionArea="paperList"
