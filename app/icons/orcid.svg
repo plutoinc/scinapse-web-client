@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <path d="M20,13.8778317 C20,17.9592772 17.0765296,20 11.2295889,20 L8.81972594,20 L8.81972594,7.85714286 L11.2295889,7.85714286 C17.0765296,7.7894899 20,9.79638618 20,13.8778317 Z M6.40986297,7.85714286 L6.40986297,20 L4,20 L4,7.85714286 L6.40986297,7.85714286 Z M12.7878976,10.2857143 L11.2295889,10.2857143 L11.2295889,17.5714286 L12.7878976,17.5714286 C15.9883876,17.5511327 17.5886326,16.336847 17.5886326,13.9285714 C17.5886326,11.5202959 15.9883876,10.3060102 12.7878976,10.2857143 Z M5.20493148,4 C5.87039677,4 6.40986297,4.54365423 6.40986297,5.21428571 C6.40986297,5.8849172 5.87039677,6.42857143 5.20493148,6.42857143 C4.5394662,6.42857143 4,5.8849172 4,5.21428571 C4,4.54365423 4.5394662,4 5.20493148,4 Z" id="path-1"></path>
+    </defs>
+    <g id="Icons-/-Logo-/-ORCID" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group">
+            <rect id="Rectangle" x="0" y="0" width="24" height="24"></rect>
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Shape" fill="#6096FF" xlink:href="#path-1"></use>
+            <rect id="Rectangle" fill="currentColor" fill-rule="nonzero" mask="url(#mask-2)" x="0" y="0" width="24" height="24"></rect>
+        </g>
+    </g>
+</svg>
