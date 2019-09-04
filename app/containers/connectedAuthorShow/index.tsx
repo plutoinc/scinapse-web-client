@@ -554,7 +554,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
               pageType="authorShow"
               actionArea="paperList"
               paper={paper}
-              saved={!!paper.relation && paper.relation.length > 0}
+              saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
             />
           </div>
         );
@@ -597,7 +597,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
               pageType="authorShow"
               actionArea="paperList"
               paper={paper}
-              saved={!!paper.relation && paper.relation.length > 0}
+              saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
             />
           </div>
         );

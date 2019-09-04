@@ -8,7 +8,7 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import SavedCollections from './savedCollections';
 import { PaperSource } from '../../../api/paper';
-const styles = require('./paperItem.scss');
+const styles = require('./searchPaperItem.scss');
 
 export interface PaperItemProps {
   paper: Paper;
