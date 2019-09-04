@@ -243,6 +243,15 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
         gaId,
       });
 
+      await feedbackManger.sendTicketToFreshdesk({
+        email: emailInput,
+        description: feedbackContent,
+        subject: 'Direct Message : ' + emailInput,
+        status: 2,
+        priority: 2,
+        source: 1,
+      });
+
       trackEvent({
         category: 'Feedback Action',
         action: 'Send feedback',
