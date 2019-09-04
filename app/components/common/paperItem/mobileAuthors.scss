@@ -16,7 +16,7 @@
   color: $gray800;
 
   .authorName {
-    font-weight: bold;
+    font-weight: 500;
   }
 
   .authorName,
@@ -24,6 +24,10 @@
     @extend %one-line-overflow-ellipsis;
 
     width: calc(100% - 64px);
+  }
+
+  .affiliation {
+    color: $gray600;
   }
 
   .rightBox {

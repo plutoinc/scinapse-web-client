@@ -12,19 +12,25 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 16px;
-  height: 16px;
+  width: 32px;
+  height: 32px;
   color: $navy0;
+  padding-left: 16px;
+  padding-top: 16px;
 
   svg {
-    width: 9px;
-    height: 5px;
+    width: 14px;
+    height: 8px;
   }
 
   &.isExpanded {
     svg {
       transform: rotate(180deg);
     }
+  }
+
+  &:active {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
 }
 

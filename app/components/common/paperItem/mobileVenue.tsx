@@ -89,7 +89,7 @@ const MobileVenue: React.FC<MobileVenueProps> = ({ paper, isExpanded, pageType, 
             )}
           {journal && journal.sci && <span className={s.sciLabel}> (SCI)</span>}
         </div>
-        <div>{title}</div>
+        <div className={s.expandedTitle}>{title}</div>
       </>
     );
   }

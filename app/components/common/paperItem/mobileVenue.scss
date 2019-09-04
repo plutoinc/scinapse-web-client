@@ -63,3 +63,10 @@
   color: $gray800;
   white-space: pre;
 }
+
+.expandedTitle {
+  .venueName {
+    font-weight: 500;
+    white-space: unset;
+  }
+}
