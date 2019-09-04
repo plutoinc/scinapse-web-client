@@ -16,7 +16,7 @@ import ArticleSpinner from '../../components/common/spinner/articleSpinner';
 import ScinapseInput from '../../components/common/scinapseInput';
 import { LayoutState } from '../../components/layouts/reducer';
 import { ConnectedAuthorShowState } from './reducer';
-import PaperItem from '../../components/common/paperItem';
+import PaperItem from '../../components/common/paperItem/paperItem';
 import DesktopPagination from '../../components/common/desktopPagination';
 import CoAuthor from '../../components/common/coAuthor';
 import RepresentativePublicationsDialog from '../../components/dialog/components/representativePublications';
@@ -25,13 +25,7 @@ import TransparentButton from '../../components/common/transparentButton';
 import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
-import {
-  updateAuthor,
-  removePaperFromPaperList,
-  openAddPublicationsToAuthorDialog,
-  fetchAuthorPapers,
-  updateRepresentativePapers,
-} from '../../actions/author';
+import { updateAuthor, openAddPublicationsToAuthorDialog, fetchAuthorPapers } from '../../actions/author';
 import PlutoAxios from '../../api/pluto';
 import { ActionCreators } from '../../actions/actionTypes';
 import alertToast from '../../helpers/makePlutoToastAction';
@@ -44,11 +38,8 @@ import { getAuthor } from '../unconnectedAuthorShow/actions';
 import ErrorPage from '../../components/error/errorPage';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
 import ActionTicketManager from '../../helpers/actionTicketManager';
+import PaperItemButtonGroup from '../../components/common/paperItem/paperItemButtonGroup';
 const styles = require('./connectedAuthor.scss');
-
-export interface ConnectedAuthorShowMatchParams {
-  authorId: string;
-}
 
 interface ConnectedAuthorShowOwnState {
   isOpenSelectedPaperDialog: boolean;
@@ -375,26 +366,6 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     return null;
   };
 
-  private handleRemovePaper = async (paper: Paper) => {
-    const { dispatch, author, currentUser } = this.props;
-
-    if (
-      confirm(
-        // tslint:disable-next-line:max-line-length
-        "Do you REALLY want to remove this paper from your publication list?\nThis will also delete it from your 'Representative Publications'."
-      )
-    ) {
-      await dispatch(
-        removePaperFromPaperList({
-          authorId: author.id,
-          papers: [paper],
-          cancelToken: this.cancelToken.token,
-          currentUser,
-        })
-      );
-    }
-  };
-
   private handleOpenAllPublicationsDialog = () => {
     const { dispatch } = this.props;
 
@@ -567,29 +538,6 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     );
   };
 
-  private handleToggleRepresentativePaperButton = (paper: Paper) => {
-    const { dispatch, author } = this.props;
-
-    const isRepresentative = author.representativePapers.some(repPaper => repPaper.id === paper.id);
-
-    if (author.representativePapers.length === 5 && !isRepresentative) {
-      return window.alert('You have exceeded the number of choices available.');
-    }
-
-    let newRepresentativePapers: Paper[] = [];
-    if (isRepresentative) {
-      const index = author.representativePapers.findIndex(repPaper => repPaper.id === paper.id);
-      newRepresentativePapers = [
-        ...author.representativePapers.slice(0, index),
-        ...author.representativePapers.slice(index + 1),
-      ];
-    } else {
-      newRepresentativePapers = [...author.representativePapers, ...[paper]];
-    }
-
-    dispatch(updateRepresentativePapers(author.id, newRepresentativePapers));
-  };
-
   private getAllPublications = () => {
     const { authorShow, papers, currentUser, author } = this.props;
 
@@ -600,18 +548,15 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     if (papers && papers.length > 0) {
       return papers.map(paper => {
         return (
-          <PaperItem
-            key={paper.id}
-            pageType="authorShow"
-            actionArea="paperList"
-            paper={paper}
-            currentUser={currentUser}
-            omitAbstract={true}
-            hasRemoveButton={true}
-            handleRemovePaper={this.handleRemovePaper}
-            isRepresentative={author.representativePapers.some(repPaper => repPaper.id === paper.id)}
-            handleToggleRepresentative={this.handleToggleRepresentativePaperButton}
-          />
+          <div key={paper.id} className={styles.paperItemWrapper}>
+            <PaperItem pageType="authorShow" actionArea="paperList" paper={paper} omitAbstract />
+            <PaperItemButtonGroup
+              pageType="authorShow"
+              actionArea="paperList"
+              paper={paper}
+              saved={!!paper.relation && paper.relation.length > 0}
+            />
+          </div>
         );
       });
     }
@@ -641,21 +586,20 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
   };
 
   private getSelectedPapers = () => {
-    const { author, currentUser } = this.props;
+    const { author } = this.props;
 
     if (author.representativePapers && author.representativePapers.length > 0) {
       return author.representativePapers.map(paper => {
         return (
-          <PaperItem
-            pageType="authorShow"
-            actionArea="paperList"
-            key={paper.id}
-            paper={paper}
-            omitAbstract={true}
-            currentUser={currentUser}
-            isRepresentative={author.representativePapers.some(repPaper => repPaper.id === paper.id)}
-            handleToggleRepresentative={this.handleToggleRepresentativePaperButton}
-          />
+          <div key={paper.id} className={styles.paperItemWrapper}>
+            <PaperItem pageType="authorShow" actionArea="paperList" paper={paper} omitAbstract />
+            <PaperItemButtonGroup
+              pageType="authorShow"
+              actionArea="paperList"
+              paper={paper}
+              saved={!!paper.relation && paper.relation.length > 0}
+            />
+          </div>
         );
       });
     }
