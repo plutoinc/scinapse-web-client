@@ -44,8 +44,6 @@ interface SignInProps {
   query?: string;
 }
 
-const oAuthBtnBaseStyle: React.CSSProperties = { position: 'relative', fontSize: '13px', marginTop: '10px' };
-
 const validateForm = (values: EmailFormValues) => {
   const errors: FormikErrors<EmailFormValues> = {};
 
@@ -215,22 +213,20 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
                 <span>Continue with Facebook</span>
               </Button>
             </div>
-            <GoogleAuthButton
-              isLoading={isLoading}
-              text="CONTINUE WITH GOOGLE"
-              style={{ ...oAuthBtnBaseStyle, backgroundColor: '#dc5240' }}
-              iconName="GOOGLE_LOGO"
-              iconClassName={s.googleIconWrapper}
-              onSignUpWithSocial={values => {
-                props.dispatch(
-                  ActionCreators.changeGlobalDialog({
-                    type: GLOBAL_DIALOG_TYPE.SIGN_UP,
-                    signUpStep: SIGN_UP_STEP.WITH_SOCIAL,
-                    oauthResult: values,
-                  })
-                );
-              }}
-            />
+            <div className={s.authButtonWrapper}>
+              <GoogleAuthButton
+                isLoading={isLoading}
+                onSignUpWithSocial={values => {
+                  props.dispatch(
+                    ActionCreators.changeGlobalDialog({
+                      type: GLOBAL_DIALOG_TYPE.SIGN_UP,
+                      signUpStep: SIGN_UP_STEP.WITH_SOCIAL,
+                      oauthResult: values,
+                    })
+                  );
+                }}
+              />
+            </div>
             <div className={s.authButtonWrapper}>
               <Button
                 size="large"

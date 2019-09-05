@@ -193,14 +193,9 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
                 <span>Continue with Facebook</span>
               </Button>
             </div>
-            <GoogleAuthButton
-              isLoading={isLoading}
-              text="CONTINUE WITH GOOGLE"
-              style={{ ...oAuthBtnBaseStyle, backgroundColor: '#dc5240' }}
-              iconName="GOOGLE_LOGO"
-              iconClassName={s.googleIconWrapper}
-              onSignUpWithSocial={props.onSignUpWithSocial}
-            />
+            <div className={s.authButtonWrapper}>
+              <GoogleAuthButton isLoading={isLoading} onSignUpWithSocial={props.onSignUpWithSocial} />
+            </div>
             <div className={s.authButtonWrapper}>
               <Button
                 size="large"

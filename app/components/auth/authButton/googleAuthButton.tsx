@@ -1,9 +1,7 @@
 import * as React from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { OAuthCheckParams } from '../../../api/types/auth';
-import { withStyles } from '../../../helpers/withStylesHelper';
 import AuthAPI from '../../../api/auth';
 import Icon from '../../../icons';
 import { signInWithSocial } from '../signIn/actions';
@@ -11,25 +9,21 @@ import { closeDialog } from '../../dialog/actions';
 import { AppState } from '../../../reducers';
 import { DialogState } from '../../dialog/reducer';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
-const s = require('./authButton.scss');
+import Button from '../../common/button/button';
 
 declare var gapi: any;
 
-interface AuthButtonProps
-  extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
-  isLoading: boolean;
-  text: string;
+interface AuthButtonProps {
   dispatch: Dispatch<any>;
   dialogState: DialogState;
-  iconName?: string;
-  iconClassName?: string;
+  isLoading: boolean;
   onSignUpWithSocial: (values: OAuthCheckParams) => void;
 }
 
 const AuthButton: React.FunctionComponent<AuthButtonProps> = props => {
-  const { dispatch, isLoading, text, iconName, iconClassName, onSignUpWithSocial, dialogState, ...btnProps } = props;
+  const { dispatch, onSignUpWithSocial, dialogState, isLoading } = props;
   const [gapiIsLoading, setGapiIsLoading] = React.useState(typeof gapi === 'undefined');
-  const buttonEl = React.useRef<HTMLButtonElement | null>(null);
+  const buttonEl = React.useRef<HTMLDivElement | null>(null);
   let auth2: any;
 
   React.useEffect(
@@ -101,19 +95,20 @@ const AuthButton: React.FunctionComponent<AuthButtonProps> = props => {
     [buttonEl.current, typeof gapi]
   );
 
-  const iconNode = iconName ? <Icon icon={iconName} className={iconClassName} /> : null;
-  const spinnerStyle: React.CSSProperties = iconName ? { right: '20px' } : { left: '20px' };
-  const spinner =
-    isLoading || gapiIsLoading ? (
-      <CircularProgress size={16} thickness={4} color="inherit" style={spinnerStyle} className={s.buttonSpinner} />
-    ) : null;
-
   return (
-    <button {...btnProps} ref={buttonEl} className={s.authBtn} disabled={btnProps.disabled || gapiIsLoading}>
-      {iconNode}
-      {spinner}
-      {text}
-    </button>
+    <div ref={buttonEl}>
+      <Button
+        size="large"
+        elementType="button"
+        style={{ backgroundColor: '#dc5240' }}
+        disabled={gapiIsLoading}
+        isLoading={isLoading}
+        fullWidth
+      >
+        <Icon icon="GOOGLE_LOGO" />
+        <span>Continue with Google</span>
+      </Button>
+    </div>
   );
 };
 
@@ -123,4 +118,4 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default connect(mapStateToProps)(withStyles<typeof AuthButton>(s)(AuthButton));
+export default connect(mapStateToProps)(AuthButton);
