@@ -14,7 +14,6 @@ import { AppState } from '../../reducers';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import * as classNames from 'classnames';
 import { UserDevice } from '../../components/layouts/reducer';
-declare var ga: any;
 const styles = require('./feedbackButton.scss');
 
 interface FeedbackButtonProps extends RouteComponentProps<any> {
@@ -208,7 +207,6 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
   };
 
   private handleSubmitFeedbackForm = async (e: React.FormEvent<HTMLFormElement>) => {
-    const { currentUser } = this.props;
     const { emailInput, feedbackContent } = this.state;
 
     e.preventDefault();
@@ -220,28 +218,8 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
 
     const feedbackManger = new FeedbackManager();
 
-    let gaId = '';
-    if (typeof ga !== 'undefined') {
-      ga((tracker: any) => {
-        gaId = tracker.get('clientId');
-      });
-    }
-
-    let href = '';
-    if (typeof window !== 'undefined') {
-      href = window.location.href;
-    }
-
     try {
       this.setState(prevState => ({ ...prevState, isLoadingFeedback: true }));
-
-      await feedbackManger.sendFeedback({
-        content: feedbackContent,
-        email: emailInput,
-        referer: href,
-        userId: currentUser.isLoggedIn ? currentUser.id.toString() : '',
-        gaId,
-      });
 
       await feedbackManger.sendTicketToFreshdesk({
         email: emailInput,
