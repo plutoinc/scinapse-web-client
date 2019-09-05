@@ -1,0 +1,48 @@
+.container {
+  margin: 60px auto;
+  width: 792px;
+}
+
+.title {
+  text-align: center;
+  padding: 24px 0;
+  margin: 0;
+}
+
+.optionSection {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+  color: $black1;
+
+  span + input {
+    margin-left: 8px;
+  }
+}
+
+.defaultPaperItemWrapper {
+  @extend %default-paper-item-wrapper;
+}
+
+.paperItemBox {
+  & + & {
+    margin-top: 24px;
+  }
+}
+
+.description {
+  font-size: 14px;
+  margin-top: 8px;
+  text-align: center;
+  color: $black0;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+@media (max-width: $mobile_width) {
+  .container {
+    padding: 0 12px 12px 12px;
+    width: 100%;
+  }
+}

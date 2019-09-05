@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from 'redux-starter-kit';
 
-export enum UserDevice {
-  DESKTOP,
-  TABLET,
-  MOBILE,
+export const enum UserDevice {
+  DESKTOP = 'DESKTOP',
+  TABLET = 'TABLET',
+  MOBILE = 'MOBILE',
 }
 
 export interface LayoutState {
@@ -19,7 +19,8 @@ const layoutSlice = createSlice({
   initialState: LAYOUT_INITIAL_STATE,
   reducers: {
     setDeviceType(state, action: SetDeviceAction) {
-      state.userDevice = action.payload.userDevice;
+      if (state.userDevice === action.payload.userDevice) return state;
+      return { ...state, userDevice: action.payload.userDevice };
     },
   },
 });
