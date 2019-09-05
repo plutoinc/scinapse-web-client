@@ -1,5 +1,7 @@
 .onelineWrapper {
   @extend %one-line-overflow-ellipsis;
+
+  width: calc(100% - 24px);
 }
 
 .ifIconWrapper {

@@ -24,8 +24,7 @@
     @extend %one-line-overflow-ellipsis;
   }
 
-  .sourceButtonIcon,
-  .pdfIconWrapper {
+  .sourceButtonIcon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -87,10 +86,16 @@
 
 @media (max-width: 374px) {
   .sourceButton {
-    padding: 16px 10px;
+    padding: 8px 10px;
   }
 
   .sourceHostInfo {
     display: none;
+  }
+
+  .sourceButtonIcon,
+  .extSourceIcon {
+    margin-left: 0;
+    margin-right: 0;
   }
 }

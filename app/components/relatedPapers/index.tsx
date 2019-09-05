@@ -61,14 +61,8 @@ const RelatedPapersInPaperShow: React.FC<RelatedPapersProps> = React.memo(props 
     return null;
   }
 
-  const relatedPaperItems = relatedPapers.map((paper, index) => {
-    if (index < 3) {
-      return (
-        <div className={styles.paperList} key={paper.id}>
-          <RelatedPaperItem paper={paper} />
-        </div>
-      );
-    }
+  const relatedPaperItems = relatedPapers.slice(0, 3).map(paper => {
+    return <RelatedPaperItem paper={paper} key={paper.id} />;
   });
 
   return (
@@ -80,7 +74,7 @@ const RelatedPapersInPaperShow: React.FC<RelatedPapersProps> = React.memo(props 
         </div>
       ) : (
         <>
-          <div className={!currentUser.isLoggedIn ? styles.relatedPaperWrapper : undefined}>{relatedPaperItems}</div>
+          <div className={styles.relatedPaperWrapper}>{relatedPaperItems}</div>
           <ContentBlocker isLoggedIn={currentUser.isLoggedIn} />
         </>
       )}
