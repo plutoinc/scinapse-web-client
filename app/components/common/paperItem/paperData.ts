@@ -22,7 +22,7 @@ export const paperWithNote = camelCaseKeys({
     pageStart: null,
     pageEnd: null,
     referenceCount: 0,
-    citedCount: 0,
+    citedCount: 35,
     fosCount: 0,
     urlCount: 0,
     commentCount: 0,

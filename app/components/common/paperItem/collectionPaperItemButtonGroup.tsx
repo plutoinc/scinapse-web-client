@@ -42,7 +42,7 @@ const PaperItemButtonGroup: React.FC<PaperItemButtonGroupProps> = ({
             <CitationListLinkButton paper={paper} pageType={pageType} actionArea={actionArea} />
           </div>
           <div className={s.buttonWrapper}>
-            <SourceButton paperId={paper.id} pageType={pageType} actionArea={actionArea} paperSource={paperSource} />
+            <SourceButton paper={paper} pageType={pageType} actionArea={actionArea} paperSource={paperSource} />
           </div>
           <div className={s.buttonWrapper}>
             <CollectionButton paper={paper} pageType={pageType} actionArea={actionArea} saved />
@@ -57,7 +57,7 @@ const PaperItemButtonGroup: React.FC<PaperItemButtonGroupProps> = ({
     <div className={s.groupWrapper}>
       <div className={s.buttonListBox}>
         <CitationListLinkButton paper={paper} pageType={pageType} actionArea={actionArea} />
-        <SourceButton paperId={paper.id} pageType={pageType} actionArea={actionArea} paperSource={paperSource} />
+        <SourceButton paper={paper} pageType={pageType} actionArea={actionArea} paperSource={paperSource} />
         <MoreDropdownButton dropdownContents={dropdownContents} paper={paper} />
       </div>
       <div className={s.buttonListBox}>

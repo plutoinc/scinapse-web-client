@@ -52,6 +52,20 @@
       height: 20px;
     }
   }
+
+  .linkIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
 }
 
 @media (max-width: $mobile_width) {
