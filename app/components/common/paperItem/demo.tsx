@@ -8,6 +8,8 @@ import { camelCaseKeys } from '../../../helpers/camelCaseKeys';
 import { paperSource, paperWithFigureAndManyAuthors, paperWithNote } from './paperData';
 import { useEnvHook } from '../../../hooks/useEnvHook';
 import { PaperSource } from '../../../api/paper';
+import { useDispatch } from 'react-redux';
+import { setDeviceType, UserDevice } from '../../layouts/reducer';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./demo.scss');
 
@@ -102,6 +104,7 @@ const dummyPaper: Paper = camelCaseKeys({
 const PaperItemDemo: React.FC = () => {
   useStyles(s);
   const { isOnClient } = useEnvHook();
+  const dispatch = useDispatch();
   const [containerWidth, setContainerWidth] = React.useState('792');
 
   if (!isOnClient) return null;
@@ -268,7 +271,7 @@ const PaperItemDemo: React.FC = () => {
     <div
       className={s.container}
       style={{
-        width: `${containerWidth}px`,
+        maxWidth: `${containerWidth}px`,
       }}
     >
       <h1 className={s.title}>Paper Item museum</h1>
@@ -280,7 +283,18 @@ const PaperItemDemo: React.FC = () => {
             <small style={{ display: 'block', textAlign: 'right' }}>minimum: 320(iphone 4, 5)</small>
           </div>
           <span>{`current container width: `}</span>
-          <input value={containerWidth} onChange={e => setContainerWidth(e.currentTarget.value)} />
+          <input
+            value={containerWidth}
+            onChange={e => {
+              const nextValue = e.currentTarget.value;
+              setContainerWidth(nextValue);
+              if (parseInt(nextValue, 10) <= 768) {
+                dispatch(setDeviceType({ userDevice: UserDevice.MOBILE }));
+              } else {
+                dispatch(setDeviceType({ userDevice: UserDevice.DESKTOP }));
+              }
+            }}
+          />
         </div>
       </div>
       {basicPaperItems}
