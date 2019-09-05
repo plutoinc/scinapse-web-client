@@ -136,7 +136,7 @@ class LineAuthors extends React.PureComponent<AuthorsProps> {
             {authorNode}
             {this.getHIndexTooltip(author.hindex)}
             {` ${this.getAuthorOrganization(author.affiliation)}`}
-            {!isLastAuthor ? <span>{`, `}</span> : null}
+            {!isLastAuthor ? <span style={{ whiteSpace: 'pre' }}>{`, `}</span> : null}
           </span>
         );
       }

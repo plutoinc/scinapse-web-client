@@ -48,11 +48,7 @@ const dummyPaper: Paper = camelCaseKeys({
     {
       id: 2056207806,
       name: 'Patrick D. McDaniel',
-      affiliation: {
-        id: 130769515,
-        name: 'Pennsylvania State University',
-        name_abbrev: 'PSU',
-      },
+      affiliation: null,
       paper_count: 258,
       citation_count: 14634,
       order: 1,
@@ -71,7 +67,7 @@ const dummyPaper: Paper = camelCaseKeys({
       paper_count: 42,
       citation_count: 2554,
       order: 2,
-      hindex: 20,
+      hindex: null,
       profile_image_url: null,
       is_layered: false,
     },
@@ -102,9 +98,6 @@ const dummyPaper: Paper = camelCaseKeys({
   relation: null,
   is_layered: false,
 });
-{
-  /*<CollectionPaperItemButtonGroup paper={dummyPaper} pageType={pageType} actionArea={actionArea} />*/
-}
 
 const PaperItemDemo: React.FC = () => {
   useStyles(s);
@@ -141,7 +134,13 @@ const PaperItemDemo: React.FC = () => {
               omitAbstract={omitAbstract}
               venueAuthorType={venueAuthorType}
             />
-            <PaperItemButtonGroup paperSource={source} paper={dummyPaper} pageType={pageType} actionArea={actionArea} />
+            <PaperItemButtonGroup
+              paperSource={source}
+              paper={paper}
+              pageType={pageType}
+              actionArea={actionArea}
+              saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
+            />
           </div>
           <div className={s.description}>
             <div>{`venueAuthorType: ${venueAuthorType}, omit abstract: ${omitAbstract}`}</div>
@@ -183,6 +182,54 @@ const PaperItemDemo: React.FC = () => {
   }
 
   const basicPaperItems = getBasicPaperItems(dummyPaper, '');
+  const noSourceItems = getBasicPaperItems({ ...dummyPaper, doi: '', urls: [] }, 'no source');
+  const noSourceCollectionItems = getCollectionPaperItems(
+    {
+      ...paperWithNote,
+      paper: {
+        ...paperWithNote.paper,
+        doi: '',
+        urls: [],
+      },
+    },
+    'no source collection items'
+  );
+  const noCitationBasicItems = getBasicPaperItems({ ...dummyPaper, citedCount: 0 }, 'no citation count');
+  const noCitationCollectionItems = getCollectionPaperItems(
+    {
+      ...paperWithNote,
+      paper: {
+        ...paperWithNote.paper,
+        citedCount: 0,
+      },
+    },
+    'no citation count'
+  );
+  const savedCollectionItems = getBasicPaperItems(
+    {
+      ...dummyPaper,
+      relation: {
+        savedInCollections: [
+          {
+            id: 1,
+            title: 'dummy',
+            readLater: false,
+            updatedAt: 'Thu Sep 05 2019 15:42:56 GMT+0900',
+          },
+        ],
+      },
+    },
+    'saved collection'
+  );
+  const smallAbstractPaperItem = getBasicPaperItems(
+    { ...dummyPaper, abstractHighlighted: dummyPaper.abstractHighlighted!.slice(0, 200) },
+    'small abstract (< 250)'
+  );
+  const paperItemWithoutPublishedDate = getBasicPaperItems({ ...dummyPaper, publishedDate: '' }, 'no published date');
+  const paperItemWithoutJournalName = getBasicPaperItems(
+    { ...dummyPaper, venue: '', journal: null, conferenceInstance: null },
+    'no journal name'
+  );
   const basicPaperItemsWithSource = getBasicPaperItems(dummyPaper, 'has source icon', paperSource);
   const longTitlePaperItems = getBasicPaperItems(
     {
@@ -196,6 +243,16 @@ const PaperItemDemo: React.FC = () => {
     paperWithFigureAndManyAuthors,
     'has figure, many authors, sci, if label'
   );
+  const authorVariationItems = [0, 1, 2, 3, 4].map(authorCount => {
+    return getBasicPaperItems(
+      {
+        ...paperWithFigureAndManyAuthors,
+        authorCount,
+        authors: paperWithFigureAndManyAuthors.authors.slice(0, authorCount),
+      },
+      `has ${authorCount} authors`
+    );
+  });
   const collectionPaperItems = getCollectionPaperItems(
     { ...paperWithNote, note: '' },
     'collection show paper item, no note'
@@ -227,6 +284,12 @@ const PaperItemDemo: React.FC = () => {
         </div>
       </div>
       {basicPaperItems}
+      {noSourceItems}
+      {smallAbstractPaperItem}
+      {noCitationBasicItems}
+      {paperItemWithoutJournalName}
+      {paperItemWithoutPublishedDate}
+      {authorVariationItems}
       {paperItemsWithoutAbstractAndButtons}
       {basicPaperItemsWithSource}
       {longTitlePaperItems}
@@ -234,6 +297,9 @@ const PaperItemDemo: React.FC = () => {
       {collectionPaperItems}
       {collectionPaperItemsWithSource}
       {collectionPaperItemsHasNote}
+      {noCitationCollectionItems}
+      {savedCollectionItems}
+      {noSourceCollectionItems}
     </div>
   );
 };

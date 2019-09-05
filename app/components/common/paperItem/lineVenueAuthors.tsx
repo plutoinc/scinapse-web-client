@@ -19,12 +19,13 @@ const LineVenueAuthors: React.FC<VenueAndAuthorsProps> = props => {
   return (
     <div className={styles.publishInfoList}>
       <LineVenue paper={paper} pageType={pageType} actionArea={actionArea} />
-      {authors && (
-        <div className={styles.author}>
-          <Icon className={styles.authorIcon} icon="AUTHOR" />
-          <LineAuthors paper={paper} authors={authors} pageType={pageType} actionArea={actionArea} />
-        </div>
-      )}
+      {authors &&
+        authors.length > 0 && (
+          <div className={styles.author}>
+            <Icon className={styles.authorIcon} icon="AUTHOR" />
+            <LineAuthors paper={paper} authors={authors} pageType={pageType} actionArea={actionArea} />
+          </div>
+        )}
     </div>
   );
 };

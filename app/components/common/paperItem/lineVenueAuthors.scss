@@ -67,6 +67,7 @@
   margin-right: 8px;
   margin-top: 4px;
   max-height: 26px;
+  width: 20px;
 
   svg {
     width: 14px;
@@ -81,10 +82,11 @@
 
 .journalIcon {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   margin-top: 4px;
   margin-right: 8px;
+  width: 14px;
 
   svg {
     width: 14px;
