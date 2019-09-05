@@ -86,16 +86,25 @@
 
 @media (max-width: 374px) {
   .sourceButton {
-    padding: 8px 10px;
-  }
+    padding: 12px 10px;
 
-  .sourceHostInfo {
-    display: none;
-  }
+    .sourceHostInfo {
+      display: none;
+    }
 
-  .sourceButtonIcon,
-  .extSourceIcon {
-    margin-left: 0;
-    margin-right: 0;
+    .faviconIcon,
+    .linkIcon {
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .linkIcon {
+      width: 16px;
+      height: 12px;
+
+      svg {
+        width: 100%;
+      }
+    }
   }
 }
