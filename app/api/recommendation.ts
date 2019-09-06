@@ -9,12 +9,8 @@ export interface BasedOnCollectionPapersParams {
 }
 
 class RecommendationAPI extends PlutoAxios {
-  public async getPapersFromUserAction(randomRec: boolean): Promise<Paper[]> {
-    const res = await this.get(`/recommendations/sample`, {
-      params: {
-        random: randomRec,
-      },
-    });
+  public async getPapersFromUserAction(): Promise<Paper[]> {
+    const res = await this.get(`/recommendations/sample`);
     const camelizedRes = camelCaseKeys(res.data);
     return camelizedRes.data.content;
   }
