@@ -21,3 +21,4 @@ describe('SearchQueryHighlightedContent Component', () => {
     });
   });
 });
+co;

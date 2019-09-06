@@ -108,6 +108,10 @@
 }
 
 @media (max-width: $mobile_width) {
+  .contentBlockedContainer {
+    width: 100%;
+  }
+
   .paperItemWrapper {
     width: 100%;
     padding: 12px;
