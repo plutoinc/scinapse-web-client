@@ -1,19 +1,20 @@
 import * as React from 'react';
+import * as classNames from 'classnames';
+import * as Cookies from 'js-cookie';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import FeedbackManager from '@pluto_network/scinapse-feedback';
-import * as Cookies from 'js-cookie';
 import Icon from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { trackEvent } from '../../helpers/handleGA';
 import { CurrentUser } from '../../model/currentUser';
 import { LayoutState } from '../../components/layouts/reducer';
 import { AppState } from '../../reducers';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import * as classNames from 'classnames';
 import { UserDevice } from '../../components/layouts/reducer';
+import validateEmail from '../../helpers/validateEmail';
 const styles = require('./feedbackButton.scss');
 
 interface FeedbackButtonProps extends RouteComponentProps<any> {
@@ -210,6 +211,11 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     const { emailInput, feedbackContent } = this.state;
 
     e.preventDefault();
+
+    if (!validateEmail(emailInput)) {
+      alert('Please enter a valid email address');
+      return;
+    }
 
     if (!feedbackContent || feedbackContent.length <= 5) {
       alert('You should leave more than 5 character of the feedback content');
