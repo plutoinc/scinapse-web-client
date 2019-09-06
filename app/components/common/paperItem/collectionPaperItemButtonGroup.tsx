@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Paper } from '../../../model/paper';
 import CitationListLinkButton from './citationListLinkButton';
 import SourceButton from './sourceButton';
@@ -7,7 +8,6 @@ import CollectionButton from './collectionButton';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { PaperSource } from '../../../api/paper';
 import MoreDropdownButton from './moreDropdownButton';
-import { useSelector } from 'react-redux';
 import { AppState } from '../../../reducers';
 import { UserDevice } from '../../layouts/reducer';
 import NoteButton from './noteButton';

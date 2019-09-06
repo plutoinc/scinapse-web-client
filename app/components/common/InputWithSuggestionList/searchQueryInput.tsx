@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import CompletionAPI, { CompletionKeyword } from '../../../api/completion';
 import { useDebouncedAsyncFetch } from '../../../hooks/debouncedFetchAPIHook';
-import { getHighlightedContent } from '../highLightedContent';
+import { getHighlightedContent } from '../../../helpers/highlightContent';
 import Icon from '../../../icons';
 import { trackEvent } from '../../../helpers/handleGA';
 import {

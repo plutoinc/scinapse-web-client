@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { PaperInCollection } from '../../model/paperInCollection';
 import { CurrentUser } from '../../model/currentUser';
 import { CollectionShowState } from '../../containers/collectionShow/reducer';
@@ -10,7 +11,6 @@ import Icon from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
 import formatNumber from '../../helpers/formatNumber';
 import CollectionPapersControlBtns from './collectionPapersControlBtns';
-import { useSelector } from 'react-redux';
 import { AppState } from '../../reducers';
 import { UserDevice } from '../layouts/reducer';
 const styles = require('./collectionPaperList.scss');
