@@ -5,8 +5,6 @@ import {
   ALREADY_VISITED_RECOMMEND_PAPERS,
   BASED_ACTIVITY_COUNT_STORE_KEY,
 } from '../components/recommendPool/recommendPoolConstants';
-import { getUserGroupName } from '../helpers/abTestHelper';
-import { RANDOM_RECOMMENDATION_EXPERIMENT } from '../constants/abTestGlobalValue';
 const store = require('store');
 
 const MAX_COUNT = 16;
@@ -27,7 +25,6 @@ export function openRecommendationPapersGuideDialog(isLoggedIn: boolean, actionA
   return async (dispatch: Dispatch<any>) => {
     if (!isLoggedIn) return;
 
-    const randomizeRec = getUserGroupName(RANDOM_RECOMMENDATION_EXPERIMENT) === 'random';
     const prevActionCount = store.get(BASED_ACTIVITY_COUNT_STORE_KEY);
 
     if (prevActionCount === ALREADY_VISITED_RECOMMEND_PAPERS) return;
@@ -40,7 +37,7 @@ export function openRecommendationPapersGuideDialog(isLoggedIn: boolean, actionA
       case 5:
       case 13: {
         try {
-          const recommendPapers = await RecommendationAPI.getPapersFromUserAction(randomizeRec);
+          const recommendPapers = await RecommendationAPI.getPapersFromUserAction();
 
           if (!recommendPapers || recommendPapers.length === 0) return;
 

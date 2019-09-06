@@ -16,10 +16,9 @@ interface RecommendedPapersProps {
   isLoggingIn: boolean;
   isLoadingActivityPapers: boolean;
   isLoadingCollectionPapers: boolean;
-  doRandomizeRec: boolean;
   basedOnActivityPapers: Paper[];
   basedOnCollectionPapers: BasedOnCollectionPapersParams | undefined;
-  handleGetBasedOnActivityPapers: (random: boolean) => void;
+  handleGetBasedOnActivityPapers: () => void;
 }
 type Props = RouteComponentProps<any> & RecommendedPapersProps;
 
@@ -30,7 +29,6 @@ const RecommendedPapers: React.FC<Props> = props => {
     basedOnActivityPapers,
     basedOnCollectionPapers,
     handleGetBasedOnActivityPapers,
-    doRandomizeRec,
     shouldShow,
     isLoggingIn,
     location,
@@ -56,7 +54,7 @@ const RecommendedPapers: React.FC<Props> = props => {
     <div
       className={styles.refreshButton}
       onClick={() => {
-        handleGetBasedOnActivityPapers(doRandomizeRec);
+        handleGetBasedOnActivityPapers();
         ActionTicketManager.trackTicket({
           pageType: 'home',
           actionType: 'fire',
@@ -78,7 +76,7 @@ const RecommendedPapers: React.FC<Props> = props => {
           <div className={styles.title}>Recommended papers for you</div>
           <div className={styles.subTitle}>
             BASED ON YOUR SEARCH ACTIVITY
-            {doRandomizeRec && refreshButton}
+            {refreshButton}
           </div>
         </div>
         <div className={styles.contentSection}>
@@ -86,7 +84,6 @@ const RecommendedPapers: React.FC<Props> = props => {
             <BaseOnActivityPaperList
               isLoading={isLoadingActivityPapers || isLoggingIn}
               papers={basedOnActivityPapers}
-              doRandomizeRec={doRandomizeRec}
               refreshBasedOnActivityPapers={handleGetBasedOnActivityPapers}
             />
           </div>

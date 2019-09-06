@@ -2,8 +2,6 @@ import { Dispatch } from 'redux';
 import RecommendationAPI from '../../api/recommendation';
 import { AppState } from '../../reducers';
 import { addPaperToTempPool, openRecommendPapersDialog } from './recommendPoolReducer';
-import { getUserGroupName } from '../../helpers/abTestHelper';
-import { RANDOM_RECOMMENDATION_EXPERIMENT } from '../../constants/abTestGlobalValue';
 import { ALREADY_VISITED_RECOMMEND_PAPERS, BASED_ACTIVITY_COUNT_STORE_KEY } from './recommendPoolConstants';
 const store = require('store');
 
@@ -49,7 +47,6 @@ export const openRecommendPoolDialog = (pageType: Scinapse.ActionTicket.PageType
   return async (dispatch: Dispatch<any>, getState: () => AppState) => {
     if (!getState().currentUser.isLoggedIn) return;
 
-    const shouldRandomizeRecommendPapers = getUserGroupName(RANDOM_RECOMMENDATION_EXPERIMENT) === 'random';
     const prevActionCount = store.get(BASED_ACTIVITY_COUNT_STORE_KEY);
 
     if (prevActionCount === ALREADY_VISITED_RECOMMEND_PAPERS) return;
@@ -61,7 +58,7 @@ export const openRecommendPoolDialog = (pageType: Scinapse.ActionTicket.PageType
       case 5:
       case 13: {
         try {
-          const recommendPapers = await RecommendationAPI.getPapersFromUserAction(shouldRandomizeRecommendPapers);
+          const recommendPapers = await RecommendationAPI.getPapersFromUserAction();
           if (!recommendPapers || recommendPapers.length === 0) return;
           dispatch(openRecommendPapersDialog({ actionArea, pageType }));
         } catch (err) {
