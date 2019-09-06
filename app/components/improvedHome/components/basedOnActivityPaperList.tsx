@@ -1,6 +1,5 @@
 import React from 'react';
 import { range } from 'lodash';
-import classNames from 'classnames';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import SkeletonPaperItem from '../../common/skeletonPaperItem/skeletonPaperItem';
@@ -39,7 +38,6 @@ const ActivityPaperItem: React.FC<{ paper: Paper }> = ({ paper }) => {
 
 const BaseOnActivityPaperList: React.FC<BasedOnActivityPaperListProps> = props => {
   const { isLoading, doRandomizeRec, papers, refreshBasedOnActivityPapers } = props;
-  const [isPaperExpanding, setIsPaperExpanding] = React.useState(false);
 
   if (!papers) return null;
 
@@ -49,35 +47,9 @@ const BaseOnActivityPaperList: React.FC<BasedOnActivityPaperListProps> = props =
 
   if (isLoading) return <>{skeletonPaperItems}</>;
 
-  const targetPaper = doRandomizeRec || isPaperExpanding ? papers : papers.slice(0, BASED_ON_ACTIVITY_PAPER_COUNT);
+  const targetPaper = papers;
 
-  const moreButton =
-    papers.length <= BASED_ON_ACTIVITY_PAPER_COUNT || doRandomizeRec ? null : (
-      <div
-        onClick={() => {
-          ActionTicketManager.trackTicket({
-            pageType: 'home',
-            actionType: 'fire',
-            actionArea: 'basedOnActivityPaperList',
-            actionTag: isPaperExpanding ? 'clickSeeLess' : 'clickSeeMore',
-            actionLabel: null,
-          });
-          setIsPaperExpanding(!isPaperExpanding);
-        }}
-        className={styles.moreItem}
-      >
-        {isPaperExpanding ? 'See Less' : 'See More'}
-        <Icon
-          icon="ARROW_POINT_TO_DOWN"
-          className={classNames({
-            [styles.downIcon]: !isPaperExpanding,
-            [styles.upIcon]: isPaperExpanding,
-          })}
-        />
-      </div>
-    );
-
-  const refreshButton = doRandomizeRec && (
+  const refreshButton = (
     <div
       className={styles.refreshBottomButton}
       onClick={() => {
@@ -100,7 +72,6 @@ const BaseOnActivityPaperList: React.FC<BasedOnActivityPaperListProps> = props =
   return (
     <>
       {activityPapers}
-      {moreButton}
       {refreshButton}
     </>
   );
