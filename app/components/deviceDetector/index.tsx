@@ -1,21 +1,16 @@
 import * as React from 'react';
 import { throttle } from 'lodash';
-import { useDispatch, useSelector } from 'react-redux';
-import EnvChecker from '../../helpers/envChecker';
+import { useDispatch } from 'react-redux';
 import UserAgentHelper from '../../helpers/userAgentHelper';
-import { UserDevice, setDeviceType, LayoutState } from '../layouts/reducer';
-import { AppState } from '../../reducers';
+import { UserDevice, setDeviceType } from '../layouts/reducer';
 
 const MOBILE_WIDTH = 768;
 const TABLET_WIDTH = 1024;
 
 const DeviceDetector: React.FC = () => {
   const dispatch = useDispatch();
-  const layout = useSelector<AppState, LayoutState>(state => state.layout);
 
   React.useEffect(() => {
-    if (EnvChecker.isOnServer()) return;
-
     const device = UserAgentHelper.getDevice();
     if (device && device.type === 'mobile') {
       dispatch(setDeviceType({ userDevice: UserDevice.MOBILE }));
@@ -25,26 +20,22 @@ const DeviceDetector: React.FC = () => {
       if (document.documentElement) {
         const currentWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
-        if (currentWidth < MOBILE_WIDTH && layout.userDevice !== UserDevice.MOBILE) {
+        if (currentWidth < MOBILE_WIDTH) {
           dispatch(setDeviceType({ userDevice: UserDevice.MOBILE }));
-        } else if (
-          currentWidth >= MOBILE_WIDTH &&
-          currentWidth < TABLET_WIDTH &&
-          layout.userDevice !== UserDevice.TABLET
-        ) {
+        } else if (currentWidth >= MOBILE_WIDTH && currentWidth < TABLET_WIDTH) {
           dispatch(setDeviceType({ userDevice: UserDevice.TABLET }));
-        } else if (currentWidth >= TABLET_WIDTH && layout.userDevice !== UserDevice.DESKTOP) {
+        } else if (currentWidth >= TABLET_WIDTH) {
           dispatch(setDeviceType({ userDevice: UserDevice.DESKTOP }));
         }
       }
     };
-    const throttledHandlingWindowSizeChange = throttle(handleWindowSizeChange, 300);
+    const throttledHandlingWindowSizeChange = throttle(handleWindowSizeChange, 400);
     window.addEventListener('resize', throttledHandlingWindowSizeChange);
+    handleWindowSizeChange();
     return () => {
-      if (EnvChecker.isOnServer()) return;
       window.removeEventListener('resize', throttledHandlingWindowSizeChange);
     };
-  });
+  }, []);
 
   return null;
 };

@@ -7,7 +7,6 @@ export interface SearchPapersParams {
   query: string;
   filter: string;
   weightedCitation: boolean;
-  strictSort: boolean;
   size?: number;
   cancelToken?: CancelToken;
   detectYear?: boolean;

@@ -12,9 +12,9 @@ import { ChunkExtractor } from '@loadable/server';
 import StoreManager from '../app/store/serverStore';
 import { ConnectedRootRoutes as RootRoutes, routesMap } from '../app/routes';
 import { ACTION_TYPES } from '../app/actions/actionTypes';
-import CssInjector from '../app/helpers/cssInjector';
 import { generateFullHTML } from '../app/helpers/htmlWrapper';
 import PlutoAxios from '../app/api/pluto';
+const StyleContext = require('isomorphic-style-loader/StyleContext');
 const JssProvider = require('react-jss/lib/JssProvider').default;
 const { SheetsRegistry } = require('react-jss/lib/jss');
 const statsFile = path.resolve(__dirname, '../client/loadable-stats.json');
@@ -92,10 +92,8 @@ const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
     });
 
   const css = new Set();
-  const context = {
-    insertCss: (...styles: any[]) => styles.forEach(style => css.add(style._getCss())),
-  };
   const routeContext: { statusCode?: number } = {};
+  const insertCss = (...styles: any[]) => styles.forEach(style => css.add(style._getCss()));
 
   // Create Material-UI theme and sheet
   const sheetsRegistry = new SheetsRegistry();
@@ -107,7 +105,7 @@ const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
 
   const generateClassName = createGenerateClassName();
   const jsx = extractor.collectChunks(
-    <CssInjector context={context}>
+    <StyleContext.Provider value={{ insertCss }}>
       <Provider store={store}>
         <StaticRouter location={fullURL} context={routeContext}>
           <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
@@ -117,7 +115,7 @@ const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
           </JssProvider>
         </StaticRouter>
       </Provider>
-    </CssInjector>
+    </StyleContext.Provider>
   );
 
   const renderedHTML = ReactDOMServer.renderToString(jsx);

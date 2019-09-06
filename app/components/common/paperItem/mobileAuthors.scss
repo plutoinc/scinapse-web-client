@@ -1,0 +1,49 @@
+.oneLineAuthors {
+  @extend %one-line-overflow-ellipsis;
+
+  width: calc(100% - 24px);
+  font-size: 14px;
+  color: $gray800;
+}
+
+.blockAuthorList {
+  margin-top: 12px;
+}
+
+.blockAuthorItem {
+  position: relative;
+  font-size: 14px;
+  color: $gray800;
+
+  .authorName {
+    font-weight: 500;
+  }
+
+  .authorName,
+  .affiliation {
+    @extend %one-line-overflow-ellipsis;
+
+    width: calc(100% - 64px);
+  }
+
+  .affiliation {
+    color: $gray600;
+  }
+
+  .rightBox {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  & + & {
+    margin-top: 4px;
+  }
+}
+
+.authorCount {
+  height: 16px;
+  margin-top: 8px;
+  font-size: 14px;
+  color: $gray800;
+}

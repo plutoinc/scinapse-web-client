@@ -1,0 +1,56 @@
+@import '../../common';
+
+.wrapper {
+  @extend %right-item-wrapper;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1;
+  color: $black0;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: $gray800;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.inputWrapper {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.emailInput {
+  border-radius: 4px;
+  border: solid 1px $gray400;
+  background-color: white;
+  padding: 4px 12px;
+  line-height: 1.5;
+  font-size: 16px;
+  color: $black0;
+  flex: 1;
+  min-width: 0;
+
+  &::placeholder {
+    color: $gray500;
+  }
+}
+
+.signUpBtn {
+  display: block;
+  border-radius: 4px;
+  background-color: #3e80ff;
+  padding: 10px 16px;
+  margin-left: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+.bannerImage {
+  width: 100%;
+  margin-top: 16px;
+}

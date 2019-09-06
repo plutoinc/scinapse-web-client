@@ -1,0 +1,43 @@
+.wrapper {
+  margin-top: 12px;
+}
+
+.authorBox {
+  margin-top: 2px;
+  position: relative;
+  display: block;
+}
+
+.arrowIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  color: $navy0;
+  padding-left: 16px;
+  padding-top: 16px;
+
+  svg {
+    width: 14px;
+    height: 8px;
+  }
+
+  &.isExpanded {
+    svg {
+      transform: rotate(180deg);
+    }
+  }
+
+  &:active {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+}
+
+@media (max-width: $mobile_width) {
+  .arrowIcon {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+}

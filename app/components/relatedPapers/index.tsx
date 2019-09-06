@@ -3,7 +3,7 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { Paper } from '../../model/paper';
-import PaperItem from '../common/paperItem';
+import PaperItem from '../common/paperItem/paperItem';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../helpers/checkAuthDialog';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import { AppState } from '../../reducers';
@@ -48,14 +48,9 @@ const ContentBlocker: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
 
 const RelatedPaperItem: React.FunctionComponent<{ paper: Paper }> = ({ paper }) => {
   return (
-    <PaperItem
-      key={paper.id}
-      paper={paper}
-      omitAbstract={true}
-      pageType="paperShow"
-      actionArea="relatedPaperList"
-      wrapperClassName={styles.paperItemWrapper}
-    />
+    <div key={paper.id} className={styles.paperItemWrapper}>
+      <PaperItem paper={paper} pageType="paperShow" actionArea="relatedPaperList" omitAbstract />
+    </div>
   );
 };
 
@@ -66,14 +61,8 @@ const RelatedPapersInPaperShow: React.FC<RelatedPapersProps> = React.memo(props 
     return null;
   }
 
-  const relatedPaperItems = relatedPapers.map((paper, index) => {
-    if (index < 3) {
-      return (
-        <div key={paper.id}>
-          <RelatedPaperItem paper={paper} />
-        </div>
-      );
-    }
+  const relatedPaperItems = relatedPapers.slice(0, 3).map(paper => {
+    return <RelatedPaperItem paper={paper} key={paper.id} />;
   });
 
   return (
@@ -85,7 +74,7 @@ const RelatedPapersInPaperShow: React.FC<RelatedPapersProps> = React.memo(props 
         </div>
       ) : (
         <>
-          <div className={!currentUser.isLoggedIn ? styles.relatedPaperWrapper : undefined}>{relatedPaperItems}</div>
+          <div className={styles.relatedPaperWrapper}>{relatedPaperItems}</div>
           <ContentBlocker isLoggedIn={currentUser.isLoggedIn} />
         </>
       )}

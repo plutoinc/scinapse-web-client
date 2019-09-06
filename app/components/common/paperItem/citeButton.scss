@@ -1,0 +1,32 @@
+.citeButton {
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  border: solid 1px $gray400;
+  background-color: white;
+  font-size: 14px;
+  line-height: 1;
+  padding: 7px 8px;
+  color: $main_blue0;
+  cursor: pointer;
+}
+
+.citationIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+
+  svg {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media (max-width: $mobile_width) {
+  .citeButton {
+    display: none;
+  }
+}

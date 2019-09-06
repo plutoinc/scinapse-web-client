@@ -7,8 +7,8 @@ import { Dispatch } from 'redux';
 import Checkbox from '@material-ui/core/Checkbox';
 import AuthorAPI from '../../../../api/author';
 import ScinapseInput from '../../../common/scinapseInput';
-import Authors from '../../../common/paperItem/authors';
-import PaperItemVenue from '../../../common/paperItem/venue';
+import Authors from '../../../common/paperItem/lineAuthors';
+import PaperItemVenue from '../../../common/paperItem/lineVenue';
 import { withStyles } from '../../../../helpers/withStylesHelper';
 import ScinapseButton from '../../../common/scinapseButton';
 import Icon from '../../../../icons';
@@ -218,13 +218,9 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
               <PaperItemVenue
                 pageType={getCurrentPageType()}
                 actionArea="allPublications"
-                paperId={paper.id}
-                doi={paper.doi}
-                journal={paper.journal}
-                conferenceInstance={paper.conferenceInstance}
-                publishedDate={paper.publishedDate}
-                readOnly={true}
+                paper={paper}
                 style={{ display: 'flex', color: '#bbc2d0', fontSize: '14px' }}
+                readOnly
               />
             </div>
           </div>
@@ -266,12 +262,8 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
             <PaperItemVenue
               pageType={getCurrentPageType()}
               actionArea="allPublications"
-              paperId={paper.id}
-              doi={paper.doi}
-              journal={paper.journal}
-              conferenceInstance={paper.conferenceInstance}
-              publishedDate={paper.publishedDate}
-              readOnly={true}
+              paper={paper}
+              readOnly
               style={{ display: 'flex', color: '#7e8698', fontSize: '14px' }}
             />
           </div>

@@ -253,6 +253,23 @@ $s3_url: 'https://dd2gn9pwu61vr.cloudfront.net';
     background-color: $gray30;
   }
 }
+%default-paper-item-wrapper {
+  border-radius: 4px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+  border: solid 1px $gray200;
+  background-color: white;
+  padding: 16px 16px 0 16px;
+  & + & {
+    margin-top: 16px;
+  }
+  @media (max-width: $mobile_width) {
+    width: 100%;
+    border: solid 1px #eaedf4;
+    & + & {
+      margin-top: 12px;
+    }
+  }
+}
 @mixin flex-center-vertical-horizontal($flex-type) {
   display: $flex-type;
   justify-content: center;

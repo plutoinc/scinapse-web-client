@@ -223,6 +223,10 @@
   margin-top: -60px;
 }
 
+.paperItemWrapper {
+  @extend %default-paper-item-wrapper;
+}
+
 // Mobile (0~768)
 @media (max-width: $mobile_width) {
   .container {

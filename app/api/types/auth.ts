@@ -92,3 +92,29 @@ export interface OAuthCheckParams {
   token: string;
   vendor: OAUTH_VENDOR;
 }
+
+export type EmailSettingTypes =
+  | 'GLOBAL'
+  | 'COLLECTION_REMIND'
+  | 'FEATURE_INSTRUCTION'
+  | 'PAPER_RECOMMENDATION'
+  | 'REQUEST_CONFIRMATION';
+
+export interface EmailSettingItemResponse {
+  type: EmailSettingTypes;
+  setting: 'ON' | 'OFF';
+}
+
+export interface UpdateEmailSettingParams {
+  type: EmailSettingTypes;
+  setting: boolean;
+  token?: string;
+}
+
+export interface EmailSettingsResponse {
+  data: {
+    content: EmailSettingItemResponse[];
+    page: null;
+  };
+  error: null;
+}

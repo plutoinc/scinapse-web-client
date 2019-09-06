@@ -30,10 +30,21 @@
   color: $black1;
 }
 
-.closeButtonWrapper {
+.closeButtonContainer {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 8px;
+}
+
+.closeButtonWrapper {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: 20px;
+  height: 20px;
+  margin-top: -16px;
+  margin-right: -16px;
+  z-index: 2;
 
   .closeButtonIcon {
     color: $gray500;
@@ -41,8 +52,6 @@
     vertical-align: top;
     width: 14px;
     height: 14px;
-    margin-top: -16px;
-    margin-right: -16px;
     cursor: pointer;
 
     svg {

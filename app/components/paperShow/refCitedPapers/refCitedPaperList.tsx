@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { History } from 'history';
 import { Paper } from '../../../model/paper';
-import { CurrentUser } from '../../../model/currentUser';
 import { RELATED_PAPERS } from '../constants';
 import ArticleSpinner from '../../common/spinner/articleSpinner';
 import Icon from '../../../icons';
-import PaperItem from '../../common/paperItem';
+import PaperItem from '../../common/paperItem/paperItem';
+import PaperItemButtonGroup from '../../common/paperItem/paperItemButtonGroup';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { PaperShowPageQueryParams } from '../../../containers/paperShow/types';
 import { PaperShowState } from '../../../containers/paperShow/records';
@@ -16,7 +16,6 @@ interface RefCitedPaperListProps {
   history: History;
   type: RELATED_PAPERS;
   papers: Paper[];
-  currentUser: CurrentUser;
   paperShow: PaperShowState;
   queryParamsObject: PaperShowPageQueryParams;
 }
@@ -45,7 +44,7 @@ const NoResultSearchContext: React.FC<NoResultSearchContextProps> = props => {
 };
 
 const RefCitedPaperList: React.FC<RefCitedPaperListProps> = props => {
-  const { history, type, papers, currentUser, paperShow, queryParamsObject } = props;
+  const { history, type, papers, paperShow, queryParamsObject } = props;
   const [totalPage, setTotalPage] = React.useState(0);
   const [isPapersLoading, setIsPapersLoading] = React.useState(false);
   const [searchInput, setSearchInput] = React.useState('');
@@ -98,12 +97,12 @@ const RefCitedPaperList: React.FC<RefCitedPaperListProps> = props => {
   const referenceItems = papers.map(paper => {
     return (
       <div className={styles.paperShowPaperItemWrapper} key={paper.id}>
-        <PaperItem
+        <PaperItem pageType="paperShow" actionArea={type === 'reference' ? 'refList' : 'citedList'} paper={paper} />
+        <PaperItemButtonGroup
           pageType="paperShow"
           actionArea={type === 'reference' ? 'refList' : 'citedList'}
-          currentUser={currentUser}
           paper={paper}
-          wrapperStyle={{ borderBottom: 'none', marginBottom: 0, paddingBottom: 0, maxWidth: '100%' }}
+          saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
         />
       </div>
     );

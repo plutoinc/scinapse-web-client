@@ -20,7 +20,7 @@ const GuideContent: React.FunctionComponent<{
   return (
     <>
       <div className={styles.mainText}>{mainText}</div>
-      <div className={styles.subText}>{subText}</div>
+      {subText && <div className={styles.subText}>{subText}</div>}
       <picture>
         <source srcSet={webpUrl} type="image/webp" />
         <source srcSet={imageUrl} type="image/jpeg" />
@@ -84,6 +84,15 @@ const GuideContentsByActionType: React.FunctionComponent<AuthGuideContextProps> 
           subText={''}
           imageUrl={'https://assets.pluto.network/signup_modal/signup_query.png'}
           webpUrl={'https://assets.pluto.network/signup_modal/signup_query.webp'}
+        />
+      );
+    case 'recommendEmailBanner':
+      return (
+        <GuideContent
+          mainText={'Get\nCurated\nPapers\nFor You'}
+          subText={''}
+          imageUrl={'https://assets.pluto.network/signup_modal/researchers.jpg'}
+          webpUrl={'https://assets.pluto.network/signup_modal/researchers.webp'}
         />
       );
     default:

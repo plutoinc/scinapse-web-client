@@ -27,7 +27,7 @@ import ErrorPage from '../../components/error/errorPage';
 import EnvChecker from '../../helpers/envChecker';
 import NextPaperTab from '../nextPaperTab';
 import { PaperShowMatchParams, PaperShowPageQueryParams, RefCitedTabItem } from './types';
-import VenueAndAuthors from '../../components/common/paperItem/venueAndAuthors';
+import VenueAndAuthors from '../../components/common/paperItem/lineVenueAuthors';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import RelatedPapers from '../../components/relatedPapers';
 import { CommonError } from '../../model/error';
@@ -185,15 +185,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             <div className={styles.paperShowContent}>
               <GoBackResultBtn />
               <Title title={paper.title} />
-              <VenueAndAuthors
-                pageType={'paperShow'}
-                actionArea={'paperDescription'}
-                paper={paper}
-                journal={paper.journal}
-                conferenceInstance={paper.conferenceInstance}
-                publishedDate={paper.publishedDate}
-                authors={paper.authors}
-              />
+              <VenueAndAuthors pageType="paperShow" actionArea="paperDescription" paper={paper} />
               <div className={styles.paperContentBlockDivider} />
               <div className={styles.actionBarWrapper}>
                 <ActionBar
@@ -249,11 +241,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               </div>
               <div className={styles.otherPapers}>
                 <div className={styles.references}>
-                  <ReferencePapers
-                    isMobile={layout.userDevice !== UserDevice.DESKTOP}
-                    currentUser={currentUser}
-                    refTabEl={this.refTabWrapper}
-                  />
+                  <ReferencePapers isMobile={layout.userDevice !== UserDevice.DESKTOP} refTabEl={this.refTabWrapper} />
                 </div>
               </div>
             </article>
@@ -267,11 +255,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <span className={styles.sectionCount}>{paper.citedCount}</span>
               </div>
               <div className={styles.otherPapers}>
-                <CitedPapers
-                  isMobile={layout.userDevice !== UserDevice.DESKTOP}
-                  currentUser={currentUser}
-                  citedTabEl={this.citedTabWrapper}
-                />
+                <CitedPapers isMobile={layout.userDevice !== UserDevice.DESKTOP} citedTabEl={this.citedTabWrapper} />
               </div>
             </article>
           </div>

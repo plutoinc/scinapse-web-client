@@ -1,1 +1,1 @@
-module.exports = { default: () => component => component };
+module.exports = () => component => component;

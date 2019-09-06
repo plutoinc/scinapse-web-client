@@ -1,75 +1,31 @@
 import * as React from 'react';
-import * as classNames from 'classnames';
-import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { formulaeToHTMLStr } from '../../../helpers/displayFormula';
 import actionTicketManager from '../../../helpers/actionTicketManager';
 import { ActionCreators } from '../../../actions/actionTypes';
 import Icon from '../../../icons';
+import { Paper } from '../../../model/paper';
 const styles = require('./title.scss');
 
 export interface TitleProps extends RouteComponentProps<any> {
-  dispatch: Dispatch<any>;
-  paperId: number;
-  paperTitle: string;
-  highlightTitle?: string;
-  highlightAbstract?: string;
-  source: string;
+  paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
-  titleClassName?: string;
   actionArea?: Scinapse.ActionTicket.ActionArea;
 }
 
-class Title extends React.PureComponent<TitleProps> {
-  public render() {
-    const { paperTitle, highlightTitle, paperId, titleClassName } = this.props;
-    const finalTitle = highlightTitle || paperTitle;
+const Title: React.FC<TitleProps> = props => {
+  const { paper, pageType, actionArea } = props;
+  const dispatch = useDispatch();
 
-    if (!finalTitle) {
-      return null;
-    }
-
-    const trimmedTitle = finalTitle
-      .replace(/^ /gi, '')
-      .replace(/\s{2,}/g, ' ')
-      .replace(/#[A-Z0-9]+#/g, '');
-
-    return (
-      <div>
-        <Link
-          to={`/papers/${paperId}`}
-          onClick={() => {
-            this.handleClickTitle(false);
-          }}
-          dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(trimmedTitle) }}
-          className={classNames({
-            [styles.title]: !titleClassName,
-            [titleClassName!]: !!titleClassName,
-          })}
-        />
-        <a href={`/papers/${paperId}`} target="_blank" rel="noopener noreferrer" className={styles.externalIconWrapper}>
-          <Icon
-            onClick={() => {
-              this.handleClickTitle(true);
-            }}
-            icon="NEW_TAB"
-            className={styles.externalIcon}
-          />
-        </a>
-      </div>
-    );
-  }
-
-  private handleClickTitle = (fromNewTab?: boolean) => {
-    const { dispatch, pageType, actionArea, paperId, highlightTitle, highlightAbstract } = this.props;
+  const handleClickTitle = (fromNewTab?: boolean) => {
     actionTicketManager.trackTicket({
       pageType,
       actionType: 'fire',
       actionArea: actionArea || pageType,
       actionTag: 'paperShow',
-      actionLabel: String(paperId),
+      actionLabel: String(paper.id),
     });
 
     if (fromNewTab) {
@@ -78,19 +34,46 @@ class Title extends React.PureComponent<TitleProps> {
         actionType: 'fire',
         actionArea: 'titleNewTab',
         actionTag: 'paperShow',
-        actionLabel: String(paperId),
+        actionLabel: String(paper.id),
       });
     }
 
-    if (highlightTitle || highlightAbstract) {
+    if (paper.titleHighlighted || paper.abstractHighlighted) {
       dispatch(
         ActionCreators.setHighlightContentInPaperShow({
-          title: highlightTitle || '',
-          abstract: highlightAbstract || '',
+          title: paper.titleHighlighted || '',
+          abstract: paper.abstractHighlighted || '',
         })
       );
     }
   };
-}
 
-export default connect()(withRouter(withStyles<typeof Title>(styles)(Title)));
+  const trimmedTitle = paper.title
+    .replace(/^ /gi, '')
+    .replace(/\s{2,}/g, ' ')
+    .replace(/#[A-Z0-9]+#/g, '');
+
+  return (
+    <div>
+      <Link
+        to={`/papers/${paper.id}`}
+        onClick={() => {
+          handleClickTitle(false);
+        }}
+        dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(trimmedTitle) }}
+        className={styles.title}
+      />
+      <a href={`/papers/${paper.id}`} target="_blank" rel="noopener noreferrer" className={styles.externalIconWrapper}>
+        <Icon
+          onClick={() => {
+            handleClickTitle(true);
+          }}
+          icon="NEW_TAB"
+          className={styles.externalIcon}
+        />
+      </a>
+    </div>
+  );
+};
+
+export default withRouter(withStyles<typeof Title>(styles)(Title));

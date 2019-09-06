@@ -24,7 +24,7 @@
 .inputForm {
   @extend %base-input-style;
   flex: 1;
-  min-width: 424px;
+  max-width: 424px;
 
   &:disabled {
     background-color: transparent;
@@ -87,4 +87,10 @@
   & + .toggleButton {
     margin-left: 8px;
   }
+}
+
+.divider {
+  @extend %base-divider;
+
+  margin: 68px 0 16px 0;
 }

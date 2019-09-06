@@ -1,4 +1,4 @@
-import { getWordsArraySplitBySpaceWithoutStopWords } from '../components/common/highLightedContent';
+import { getWordsArraySplitBySpaceWithoutStopWords } from './highlightContent';
 import { SuggestionItem } from '../components/common/InputWithSuggestionList';
 const store = require('store');
 

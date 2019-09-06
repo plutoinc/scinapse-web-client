@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { SavedInCollections } from '../../../model/savedInCollecctions';
+import { SavedInCollection } from '../../../model/savedInCollection';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 const styles = require('./savedCollections.scss');
@@ -8,7 +8,7 @@ const styles = require('./savedCollections.scss');
 const MAX_LENGTH_OF_COLLECTION_NAME = 45;
 
 export interface SavedCollectionsProps {
-  collections: SavedInCollections[];
+  collections: SavedInCollection[];
 }
 
 class SavedCollections extends React.PureComponent<SavedCollectionsProps> {

@@ -1,14 +1,18 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { PaperInCollection } from '../../model/paperInCollection';
 import { CurrentUser } from '../../model/currentUser';
 import { CollectionShowState } from '../../containers/collectionShow/reducer';
 import { Collection } from '../../model/collection';
-import CollectionPaperItem from './collectionPaperItem';
+import PaperItem from '../common/paperItem/paperItem';
+import CollectionPaperItemButtonGroup from '../common/paperItem/collectionPaperItemButtonGroup';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import Icon from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
 import formatNumber from '../../helpers/formatNumber';
 import CollectionPapersControlBtns from './collectionPapersControlBtns';
+import { AppState } from '../../reducers';
+import { UserDevice } from '../layouts/reducer';
 const styles = require('./collectionPaperList.scss');
 
 interface CollectionPaperListProps {
@@ -38,12 +42,13 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
   const {
     itsMine,
     papersInCollection,
-    currentUser,
     collectionShow,
     userCollection,
     onSelectedPaperInCollection,
     onRemovePaperFromCollection,
   } = props;
+
+  const userDevice = useSelector((state: AppState) => state.layout.userDevice);
 
   if (collectionShow.isLoadingPaperToCollection) {
     return (
@@ -65,35 +70,46 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
   const collectionPaperList = papersInCollection.map(paper => {
     return (
       <div className={styles.paperItemWrapper} key={paper.paperId}>
-        {itsMine && (
-          <input
-            type="checkbox"
-            className={styles.paperCheckBox}
-            checked={collectionShow.selectedPaperIds.includes(paper.paperId)}
-            onClick={() => onSelectedPaperInCollection(paper.paperId)}
-            readOnly
+        {itsMine &&
+          userDevice !== UserDevice.MOBILE && (
+            <input
+              type="checkbox"
+              className={styles.paperCheckBox}
+              checked={collectionShow.selectedPaperIds.includes(paper.paperId)}
+              onClick={() => onSelectedPaperInCollection(paper.paperId)}
+              readOnly
+            />
+          )}
+        <div className={styles.itemWrapper}>
+          <Icon
+            onClick={() => onRemovePaperFromCollection(paper.paperId)}
+            icon="X_BUTTON"
+            className={styles.removeIcon}
           />
-        )}
-        <CollectionPaperItem
-          currentUser={currentUser}
-          pageType="collectionShow"
-          actionArea="paperList"
-          paperNote={paper.note ? paper.note : ''}
-          paper={paper.paper}
-          collection={userCollection}
-          onRemovePaperCollection={onRemovePaperFromCollection}
-        />
+          <div className={styles.paperInformationWrapper}>
+            <PaperItem pageType="collectionShow" actionArea="paperList" paper={paper.paper} omitAbstract />
+          </div>
+          <CollectionPaperItemButtonGroup
+            pageType="collectionShow"
+            actionArea="paperList"
+            paper={paper.paper}
+            collectionId={userCollection.id}
+            note={paper.note || undefined}
+          />
+        </div>
       </div>
     );
   });
 
   return (
     <>
-      <CollectionPapersControlBtns
-        itsMine={itsMine}
-        collectionShow={collectionShow}
-        onRemovePaperCollection={onRemovePaperFromCollection}
-      />
+      {userDevice !== UserDevice.MOBILE && (
+        <CollectionPapersControlBtns
+          itsMine={itsMine}
+          collectionShow={collectionShow}
+          onRemovePaperCollection={onRemovePaperFromCollection}
+        />
+      )}
       <CollectionPaperInfo collectionShow={collectionShow} />
       {collectionPaperList}
     </>
