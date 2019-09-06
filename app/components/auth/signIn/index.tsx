@@ -6,8 +6,8 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import AuthInputBox from '../../common/inputBox/authInputBox';
+import Button from '../../common/button/button';
 import { GLOBAL_DIALOG_TYPE, DialogState } from '../../dialog/reducer';
-import AuthButton from '../authButton';
 import GoogleAuthButton from '../authButton/googleAuthButton';
 import ORSeparator from '../separator';
 import AuthTabs from '../authTabs';
@@ -26,6 +26,7 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import AuthContextText from '../authContextText';
 import useFBIsLoading from '../../../hooks/FBisLoadingHook';
 import { MINIMUM_PASSWORD_LENGTH } from '../../../constants/auth';
+import Icon from '../../../icons';
 const s = require('./signIn.scss');
 
 declare var FB: any;
@@ -42,8 +43,6 @@ interface SignInProps {
   userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
   query?: string;
 }
-
-const oAuthBtnBaseStyle: React.CSSProperties = { position: 'relative', fontSize: '13px', marginTop: '10px' };
 
 const validateForm = (values: EmailFormValues) => {
   const errors: FormikErrors<EmailFormValues> = {};
@@ -192,50 +191,56 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
                     >
                       Forgot Password?
                     </div>
-                    <AuthButton
-                      type="submit"
-                      isLoading={isLoading}
-                      text="SIGN IN"
-                      style={{ backgroundColor: '#6096ff', marginTop: '10px', fontSize: '14px' }}
-                    />
+                    <Button size="large" type="submit" elementType="button" fullWidth isLoading={isLoading}>
+                      <span>Sign in</span>
+                    </Button>
                   </Form>
                 );
               }}
             />
             <ORSeparator />
-            <AuthButton
-              isLoading={isLoading}
-              text="CONTINUE WITH FACEBOOK"
-              style={{ ...oAuthBtnBaseStyle, backgroundColor: '#3859ab', marginTop: '18px' }}
-              iconName="FACEBOOK_LOGO"
-              iconClassName={s.fbIconWrapper}
-              onClick={handleClickFBLogin}
-              disabled={FBIsLoading}
-            />
-            <GoogleAuthButton
-              isLoading={isLoading}
-              text="CONTINUE WITH GOOGLE"
-              style={{ ...oAuthBtnBaseStyle, backgroundColor: '#dc5240' }}
-              iconName="GOOGLE_LOGO"
-              iconClassName={s.googleIconWrapper}
-              onSignUpWithSocial={values => {
-                props.dispatch(
-                  ActionCreators.changeGlobalDialog({
-                    type: GLOBAL_DIALOG_TYPE.SIGN_UP,
-                    signUpStep: SIGN_UP_STEP.WITH_SOCIAL,
-                    oauthResult: values,
-                  })
-                );
-              }}
-            />
-            <AuthButton
-              isLoading={isLoading}
-              text="CONTINUE WITH ORCID"
-              style={{ ...oAuthBtnBaseStyle, backgroundColor: '#a5d027' }}
-              iconName="ORCID_LOGO"
-              iconClassName={s.orcidIconWrapper}
-              onClick={handleClickORCIDBtn}
-            />
+            <div className={s.authButtonWrapper}>
+              <Button
+                size="large"
+                elementType="button"
+                style={{ backgroundColor: '#3859ab' }}
+                onClick={handleClickFBLogin}
+                disabled={FBIsLoading}
+                isLoading={isLoading}
+                fullWidth
+              >
+                <Icon icon="FACEBOOK_LOGO" />
+                <span>Continue with Facebook</span>
+              </Button>
+            </div>
+            <div className={s.authButtonWrapper}>
+              <GoogleAuthButton
+                isLoading={isLoading}
+                onSignUpWithSocial={values => {
+                  props.dispatch(
+                    ActionCreators.changeGlobalDialog({
+                      type: GLOBAL_DIALOG_TYPE.SIGN_UP,
+                      signUpStep: SIGN_UP_STEP.WITH_SOCIAL,
+                      oauthResult: values,
+                    })
+                  );
+                }}
+              />
+            </div>
+            <div className={s.authButtonWrapper}>
+              <Button
+                size="large"
+                elementType="button"
+                style={{ backgroundColor: '#a5d027' }}
+                disabled={FBIsLoading}
+                isLoading={isLoading}
+                onClick={handleClickORCIDBtn}
+                fullWidth
+              >
+                <Icon icon="ORCID_LOGO" />
+                <span>Continue with ORCID</span>
+              </Button>
+            </div>
           </div>
         </div>
       </div>

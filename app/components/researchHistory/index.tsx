@@ -11,6 +11,7 @@ import RelatedPaperItem from '../paperShow/components/relatedPaperItem';
 import { getCurrentPageType } from '../locationListener';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+import Button from '../common/button/button';
 const store = require('store');
 const s = require('./researchHistory.scss');
 
@@ -84,7 +85,6 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper,
   );
 
   const todayPapers = papers.filter(p => p.savedAt && isToday(p.savedAt));
-  const countBtn = todayPapers.length === 0 ? null : <div className={s.countBtn}>{todayPapers.length}</div>;
 
   const aggregatedDates = aggregatedPapers && Object.keys(aggregatedPapers);
 
@@ -120,8 +120,11 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper,
 
   const content = (
     <>
-      <div
-        className={s.headerWrapper}
+      <Button
+        elementType="button"
+        size="medium"
+        variant="text"
+        color="gray"
         onClick={() => {
           setIsOpen(!isOpen);
           if (!isOpen) {
@@ -135,10 +138,9 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper,
           }
         }}
       >
-        <Icon className={s.historyIcon} icon="HISTORY" />
-        <div className={s.sectionTitle}>History</div>
-        {countBtn}
-      </div>
+        <Icon icon="HISTORY" />
+        <span>History</span>
+      </Button>
       <div className={classNames({ [s.boxWrapper]: isOpen })}>{paperList}</div>
     </>
   );

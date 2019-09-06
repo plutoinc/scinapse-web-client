@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<g fill="none" fill-rule="evenodd">
-<g fill="currentColor">
-<g transform="translate(4 4.5)">
-<path d="m8.4 0c-2.8 0-5.28 1.5-6.56 3.7895l-1.84-1.8158v5.1316h5.2l-2.24-2.2105c1.04-1.9737 3.04-3.3158 5.44-3.3158 3.28 0 6 2.6842 6 5.9211 0 3.2368-2.72 5.9211-6 5.9211-2.64 0-4.8-1.6579-5.68-3.9474h-1.68c0.88 3.1579 3.84 5.5263 7.36 5.5263 4.24 0 7.6-3.3947 7.6-7.5 0-4.1053-3.44-7.5-7.6-7.5zm-1.2 3.9474v4.0263l3.76 2.2105 0.64-1.0263-3.2-1.8947v-3.3158h-1.2z"/>
-</g>
-</g>
-</g>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Icons-/-Action-/-History" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icons-/-Navigation-/-Plus" transform="translate(0.000000, 0.000000)">
+            <rect id="Rectangle" x="0" y="0" width="24" height="24"></rect>
+            <g id="history" transform="translate(2.000000, 2.000000)" fill="currentColor" fill-rule="nonzero">
+                <path d="M10.5,0.625 C7,0.625 3.9,2.5 2.3,5.361875 L0,3.092125 L0,9.506625 L6.5,9.506625 L3.7,6.7435 C5,4.276375 7.5,2.59875 10.5,2.59875 C14.6,2.59875 18,5.954 18,10.000125 C18,14.046125 14.6,17.4015 10.5,17.4015 C7.2,17.4015 4.5,15.329125 3.4,12.46725 L1.3,12.46725 C2.4,16.414625 6.1,19.375125 10.5,19.375125 C15.8,19.375125 20,15.13175 20,10.000125 C20,4.8685 15.7,0.625 10.5,0.625 L10.5,0.625 Z M9,5.55925 L9,10.592125 L13.7,13.35525 L14.5,12.072375 L10.5,9.704 L10.5,5.55925 L9,5.55925 L9,5.55925 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
 </svg>

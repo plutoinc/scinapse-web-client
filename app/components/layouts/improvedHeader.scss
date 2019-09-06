@@ -22,7 +22,7 @@
   z-index: 100;
   width: 100%;
   background-color: white;
-  border-bottom: 1px solid $gray200;
+  border-bottom: 1px solid $gray300;
   transition: box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
 
   .isTop {
@@ -31,6 +31,7 @@
 
   .headerContainer {
     height: $navbar_height;
+    max-width: $container-width;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -57,11 +58,10 @@
 
 .headerLogo {
   display: inline-block;
-  margin-right: 24px;
+  margin-right: 30px;
 
   svg {
-    width: 112px;
-    height: 32px;
+    height: 30px;
     object-fit: contain;
   }
 }
@@ -80,9 +80,9 @@
 .searchFormContainer {
   position: relative;
   display: flex;
-  max-width: 60%;
+  max-width: 70%;
   width: 100%;
-  margin-left: 64px;
+  margin-left: 24px;
   margin-right: 16px;
   height: 44px;
   align-items: center;
@@ -93,69 +93,11 @@
   align-items: center;
   font-size: 14px;
   color: $black1;
+}
 
-  .externalCollectionButton {
-    margin-left: 4px;
-    margin-right: 8px;
-    width: 109px;
-    height: 44px;
-    border-radius: 4px;
-    justify-content: center;
-    align-items: center;
-    font-size: 14px;
-    font-weight: 500;
-    color: $gray800;
-    display: flex;
-
-    &:hover {
-      background-color: $gray50;
-      color: $black1;
-      transition: $button-hover-transition;
-    }
-
-    .collectionIcon {
-      width: 20px;
-      height: 20px;
-      color: $gray600;
-      margin-right: 4px;
-    }
-  }
-
-  .signInButton {
-    display: flex;
-    width: 93px;
-    height: 40px;
-    align-items: center;
-    justify-content: center;
-    color: $main_blue1;
-    font-size: 16px;
-    font-weight: 500;
-    margin-right: 15.5px;
-    cursor: pointer;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  .signUpButton {
-    display: flex;
-    width: 93px;
-    height: 40px;
-    align-items: center;
-    justify-content: center;
-    background-color: $main_blue0;
-    border-radius: 4px;
-    color: white;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-
-    &:hover {
-      background-color: $main_blue_light0;
-      transition: 0.3s ease-in-out;
-    }
-  }
+.rightButtons {
+  display: flex;
+  align-items: center;
 }
 
 .menuItems {
@@ -319,14 +261,8 @@
 }
 
 @media (max-width: $mobile_width) {
-  .rightBox {
-    .externalCollectionButton {
-      display: none;
-    }
-
-    .historyBtnWrapper {
-      display: none;
-    }
+  .rightButtons {
+    display: none;
   }
   .searchFormContainer {
     max-width: 100%;

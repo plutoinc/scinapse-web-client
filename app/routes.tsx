@@ -156,6 +156,11 @@ export const routesMap: ServerRoutesMap[] = [
     exact: true,
   },
   {
+    path: '/button-demo',
+    component: loadable(() => import('./components/buttonDemo/buttonDemo')),
+    exact: true,
+  },
+  {
     path: '/paper-item-demo',
     component: loadable(() => import('./components/common/paperItem/demo'), {
       fallback: <div>loading ...</div>,

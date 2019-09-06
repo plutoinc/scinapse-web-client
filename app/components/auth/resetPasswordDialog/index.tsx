@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import AuthButton from '../authButton';
+import Button from '../../common/button/button';
 import AuthInputBox from '../../common/inputBox/authInputBox';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import validateEmail from '../../../helpers/validateEmail';
@@ -88,20 +88,29 @@ const ResetPasswordContainer: React.FunctionComponent<ResetPasswordProps> = prop
                   iconName="EMAIL_ICON"
                   wrapperStyles={{ width: '100%' }}
                 />
-                <AuthButton
-                  type="submit"
-                  isLoading={isLoading}
-                  text="RESET PASSWORD"
-                  style={{ backgroundColor: '#6096ff', marginTop: '42px', fontSize: '14px' }}
-                />
-                <AuthButton
-                  isLoading={isLoading}
-                  text="GO BACK"
-                  onClick={() => {
-                    handleClickGoBackButton();
-                  }}
-                  style={{ backgroundColor: '#e7eaef', marginTop: '10px', marginBottom: '42px', fontSize: '14px' }}
-                />
+                <div className={styles.buttonContainer}>
+                  <div className={styles.buttonWrapper}>
+                    <Button type="submit" isLoading={isLoading} elementType="button" size="large" fullWidth>
+                      <span>Reset password</span>
+                    </Button>
+                  </div>
+                  <div className={styles.buttonWrapper}>
+                    <Button
+                      type="submit"
+                      variant="outlined"
+                      color="gray"
+                      isLoading={isLoading}
+                      elementType="button"
+                      size="large"
+                      fullWidth
+                      onClick={() => {
+                        handleClickGoBackButton();
+                      }}
+                    >
+                      <span>Go back</span>
+                    </Button>
+                  </div>
+                </div>
               </Form>
             );
           }}

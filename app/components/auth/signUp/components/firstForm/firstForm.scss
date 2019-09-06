@@ -11,25 +11,11 @@
   padding: 22px 32px 32px 24px;
 }
 
-.fbIconWrapper {
-  position: absolute;
-  left: 19px;
-  width: 7px;
-  height: 14px;
-}
-
 .googleIconWrapper {
   position: absolute;
-  left: 19px;
-  width: 13px;
-  height: 13px;
-}
-
-.orcidIconWrapper {
-  position: absolute;
-  left: 17px;
-  width: 15px;
-  height: 16px;
+  left: 14px;
+  width: 24px;
+  height: 24px;
 }
 
 .errorContent {
@@ -47,20 +33,16 @@
   cursor: pointer;
 }
 
+.authButtonWrapper {
+  margin-top: 8px;
+}
+
 @media (max-width: $mobile_width) {
   .authFormWrapper {
     width: 100%;
   }
 
-  .fbIconWrapper {
-    display: none;
-  }
-
   .googleIconWrapper {
-    display: none;
-  }
-
-  .orcidIconWrapper {
     display: none;
   }
 }

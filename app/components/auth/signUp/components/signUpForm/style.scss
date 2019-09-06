@@ -52,6 +52,14 @@
   }
 }
 
+.authButtonWrapper {
+  margin-top: 8px;
+}
+
+.formContainer {
+  margin-bottom: 16px;
+}
+
 @media (max-width: $mobile_width) {
   .nameItemWrapper {
     display: block;
