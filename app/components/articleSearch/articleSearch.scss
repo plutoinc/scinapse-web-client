@@ -178,6 +178,10 @@
     justify-content: center;
   }
 
+  .leftBoxWrapper {
+    width: 100%;
+  }
+
   .innerContainer {
     margin: 0 auto;
   }
@@ -189,6 +193,11 @@
 
 // Mobile
 @media (max-width: $mobile_width) {
+  .articleSearchContainer {
+    padding: 0 12px 12px 12px;
+    justify-content: center;
+  }
+
   .rootWrapper {
     padding-bottom: 332px;
   }

@@ -1,8 +1,6 @@
 %common-note {
-  display: inline-block;
   margin: auto;
   width: 284px;
-  vertical-align: top;
 }
 
 .note {
@@ -67,7 +65,7 @@
     font-size: 14px;
     line-height: 1.4;
     white-space: pre-wrap;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 }
 

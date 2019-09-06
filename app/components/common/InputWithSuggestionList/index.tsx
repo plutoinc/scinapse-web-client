@@ -2,7 +2,7 @@ import * as React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import * as classNames from 'classnames';
 import { withStyles } from '../../../helpers/withStylesHelper';
-import { getHighlightedContent } from '../highLightedContent';
+import { getHighlightedContent } from '../../../helpers/highlightContent';
 const styles = require('./inputWithSuggestionList.scss');
 
 export interface DefaultItemComponentProps {

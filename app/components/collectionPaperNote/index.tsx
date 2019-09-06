@@ -13,7 +13,6 @@ interface CollectionPaperNoteProps {
   paperId: number;
   collectionId: number;
   maxHeight: number;
-  isMine: boolean;
   note?: string;
 }
 
@@ -34,12 +33,12 @@ class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, 
   }
 
   public render() {
-    const { note, maxHeight, isMine } = this.props;
+    const { note, maxHeight } = this.props;
     const { isEdit, isLoading } = this.state;
 
     if (!maxHeight) return null;
 
-    if ((!note && isMine) || (isEdit && isMine)) {
+    if (!note || isEdit) {
       return (
         <div className={styles.memoForm}>
           <PaperNoteForm
@@ -64,6 +63,7 @@ class CollectionPaperNote extends React.PureComponent<CollectionPaperNoteProps, 
         </div>
       );
     }
+
     if (note) {
       return (
         <NoteContent

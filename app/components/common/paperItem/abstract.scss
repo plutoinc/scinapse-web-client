@@ -13,10 +13,22 @@
   }
 }
 
+.moreOrLess {
+  color: $navy0;
+  font-weight: 500;
+  margin-left: 4px;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+
 // Mobile
 @media (max-width: $mobile_width) {
   .abstract {
-    margin-top: 10px;
-    font-size: 13px;
+    margin-top: 12px;
+    font-size: 14px;
+    color: $black0;
   }
 }

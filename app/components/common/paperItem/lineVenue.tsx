@@ -10,14 +10,11 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { ConferenceInstance } from '../../../model/conferenceInstance';
 import DoiInPaperShow from '../../paperShow/components/doiInPaperShow';
 import JournalBadge from '../../journalBadge';
-const styles = require('./venueAndAuthors.scss');
+import { Paper } from '../../../model/paper';
+const styles = require('./lineVenueAuthors.scss');
 
 interface PaperItemVenueProps {
-  journal: Journal | null;
-  paperId: number;
-  conferenceInstance: ConferenceInstance | null;
-  publishedDate: string | null;
-  doi: string;
+  paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea?: Scinapse.ActionTicket.ActionArea;
   readOnly?: boolean;
@@ -94,20 +91,9 @@ const JournalTitle: React.FC<{
   );
 };
 
-const PaperItemVenue = ({
-  journal,
-  paperId,
-  conferenceInstance,
-  publishedDate,
-  doi,
-  style,
-  readOnly,
-  pageType,
-  actionArea,
-}: PaperItemVenueProps) => {
-  if (!journal && !publishedDate) {
-    return null;
-  }
+const LineVenue = ({ style, readOnly, pageType, paper, actionArea }: PaperItemVenueProps) => {
+  const { conferenceInstance, publishedDate, doi, journal } = paper;
+  if (!journal && !publishedDate) return null;
 
   let title = null;
   if (journal && journal.title) {
@@ -130,17 +116,17 @@ const PaperItemVenue = ({
       style={style}
       className={classNames({
         [styles.venue]: true,
-        [`${styles.venue} ${styles.margin}`]: isPaperShow && isPaperDescription,
+        [styles.margin]: isPaperShow && isPaperDescription,
       })}
     >
       <Icon className={styles.journalIcon} icon="JOURNAL" />
       <div className={styles.journalText}>
         Published {publishedDate ? <span className={styles.bold}>{yearStr}</span> : null}
         {title}
-        {isPaperShow && isPaperDescription ? <DoiInPaperShow doi={doi} paperId={paperId} /> : null}
+        {isPaperShow && isPaperDescription ? <DoiInPaperShow doi={doi} paperId={paper.id} /> : null}
       </div>
     </div>
   );
 };
 
-export default withStyles<typeof PaperItemVenue>(styles)(PaperItemVenue);
+export default withStyles<typeof LineVenue>(styles)(LineVenue);

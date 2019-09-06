@@ -155,6 +155,13 @@ export const routesMap: ServerRoutesMap[] = [
     }),
     exact: true,
   },
+  {
+    path: '/paper-item-demo',
+    component: loadable(() => import('./components/common/paperItem/demo'), {
+      fallback: <div>loading ...</div>,
+    }),
+    exact: true,
+  },
   { component: ErrorPage },
 ];
 

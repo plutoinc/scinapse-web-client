@@ -63,7 +63,9 @@ const AuthorItem: React.FC<AuthorItemProps> = ({ author, pageType, actionArea })
 };
 
 const BlockAuthorList: React.FC<BlockAuthorListProps> = ({ paper, authors, pageType, actionArea }) => {
-  const hasMore = authors.length > MAXIMUM_PRE_AUTHOR_COUNT + MAXIMUM_POST_AUTHOR_COUNT;
+  if (authors.length === 0) return null;
+
+  const hasMore = authors.length >= MAXIMUM_PRE_AUTHOR_COUNT + MAXIMUM_POST_AUTHOR_COUNT;
   let viewAllAuthorsBtn = null;
   if (hasMore) {
     viewAllAuthorsBtn = (

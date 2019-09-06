@@ -13,7 +13,7 @@ module.exports = {
   entry: ['@babel/polyfill', './app/clientIndex.tsx'],
   output: {
     path: path.resolve(__dirname, 'dist', 'client'),
-    publicPath: 'http://localhost:8080/client/',
+    publicPath: '/client/',
     filename: '[name].js',
     chunkFilename: '[name].chunk.js',
   },
@@ -24,7 +24,7 @@ module.exports = {
     },
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx']
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   stats: 'minimal',
   module: {

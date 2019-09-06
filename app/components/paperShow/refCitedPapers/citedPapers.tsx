@@ -4,7 +4,6 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { withStyles } from '../../../helpers/withStylesHelper';
-import { CurrentUser } from '../../../model/currentUser';
 import getQueryParamsObject from '../../../helpers/getQueryParamsObject';
 import RefCitedPaperList from './refCitedPaperList';
 import SearchContainer, { getStringifiedUpdatedQueryParams } from './searchContainer';
@@ -30,7 +29,6 @@ function mapStateToProps(state: AppState) {
 type Props = ReturnType<typeof mapStateToProps> &
   RouteComponentProps<any> & {
     isMobile: boolean;
-    currentUser: CurrentUser;
     dispatch: Dispatch<any>;
     citedTabEl: HTMLDivElement | null;
   };
@@ -43,7 +41,7 @@ const getCitedPaginationLink = (paperId: number, queryParamsObject: any) => (pag
 };
 
 const CitedPapers: React.FC<Props> = props => {
-  const { isMobile, paperShow, citedPapers, currentUser, location, history, dispatch, citedTabEl } = props;
+  const { isMobile, paperShow, citedPapers, location, history, dispatch, citedTabEl } = props;
   const [queryParamsObject, setQueryParamsObject] = React.useState<PaperShowPageQueryParams>(
     getQueryParamsObject(location.search)
   );
@@ -90,7 +88,6 @@ const CitedPapers: React.FC<Props> = props => {
           papers={citedPapers}
           paperShow={paperShow}
           queryParamsObject={queryParamsObject}
-          currentUser={currentUser}
         />
       </div>
       <div>

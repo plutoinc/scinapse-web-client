@@ -42,7 +42,11 @@
 // Mobile
 @media (max-width: $mobile_width) {
   .title {
-    width: 100%;
-    line-height: 1.35;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .externalIconWrapper {
+    display: none;
   }
 }

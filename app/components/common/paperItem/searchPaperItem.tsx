@@ -1,27 +1,20 @@
 import * as React from 'react';
 import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import * as format from 'date-fns/format';
-import { CurrentUser } from '../../../model/currentUser';
-import Abstract from './abstract';
+import PaperItem from './paperItem';
 import Figures from './figures';
-import PaperActionButtons from './paperActionButtons';
-import Title from './title';
-import BlockVenue from './blockVenue';
-import BlockAuthorList from './blockAuthorList';
+import PaperItemButtonGroup from './paperItemButtonGroup';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import SavedCollections from './savedCollections';
 import { PaperSource } from '../../../api/paper';
-const styles = require('./paperItem.scss');
+const styles = require('./searchPaperItem.scss');
 
 export interface PaperItemProps {
   paper: Paper;
   savedAt: number | null; // unix time
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
-  searchQueryText: string;
-  wrapperClassName: string;
-  currentUser: CurrentUser;
   sourceDomain?: PaperSource;
 }
 
@@ -47,9 +40,9 @@ const NotIncludedWords: React.FC<{ missingKeywords: string[] }> = React.memo(pro
   );
 });
 
-const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
-  const { searchQueryText, paper, wrapperClassName, currentUser, pageType, actionArea, savedAt, sourceDomain } = props;
-  const { doi, urls, relation } = paper;
+const SearchPaperItem: React.FC<PaperItemProps> = React.memo(props => {
+  const { paper, pageType, actionArea, savedAt, sourceDomain } = props;
+  const { relation } = paper;
 
   let historyContent = null;
   if (savedAt) {
@@ -60,61 +53,23 @@ const PaperItem: React.FC<PaperItemProps> = React.memo(props => {
     );
   }
 
-  let source;
-  if (!!doi) {
-    source = `https://doi.org/${doi}`;
-  } else if (urls && urls.length > 0) {
-    source = urls[0].url;
-  } else {
-    source = '';
-  }
-
   return (
-    <div className={`${wrapperClassName ? wrapperClassName : styles.paperItemWrapper}`}>
-      <div className={styles.contentSection}>
-        {!!relation && relation.savedInCollections.length >= 1 ? (
-          <SavedCollections collections={relation.savedInCollections} />
-        ) : null}
-        {historyContent}
-        <Title
-          paperId={paper.id}
-          paperTitle={paper.title}
-          highlightTitle={paper.titleHighlighted}
-          highlightAbstract={paper.abstractHighlighted}
-          pageType={pageType}
-          actionArea={actionArea}
-          source={source}
-        />
-        <div className={styles.venueAndAuthorWrapper}>
-          <BlockVenue
-            journal={paper.journal}
-            conferenceInstance={paper.conferenceInstance}
-            publishedDate={paper.publishedDate}
-            pageType={pageType}
-            actionArea={actionArea}
-          />
-          <BlockAuthorList paper={paper} authors={paper.authors} pageType={pageType} actionArea={actionArea} />{' '}
-          <Abstract
-            paperId={paper.id}
-            pageType={pageType}
-            actionArea={actionArea}
-            abstract={paper.abstractHighlighted || paper.abstract}
-            searchQueryText={searchQueryText}
-          />
-        </div>
-        <Figures figures={paper.figures} paperId={paper.id} />
-        <NotIncludedWords missingKeywords={paper.missingKeywords} />
-        <PaperActionButtons
-          currentUser={currentUser}
-          paper={paper}
-          pageType={pageType}
-          actionArea={actionArea}
-          hasCollection={false}
-          sourceDomain={sourceDomain}
-        />
-      </div>
+    <div className={styles.paperItemWrapper}>
+      {!!relation &&
+        relation.savedInCollections.length >= 1 && <SavedCollections collections={relation.savedInCollections} />}
+      {historyContent}
+      <PaperItem pageType={pageType} actionArea={actionArea} paper={paper} venueAuthorType="block" />
+      <Figures figures={paper.figures} paperId={paper.id} />
+      <NotIncludedWords missingKeywords={paper.missingKeywords} />
+      <PaperItemButtonGroup
+        paper={paper}
+        pageType={pageType}
+        actionArea={actionArea}
+        paperSource={sourceDomain}
+        saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
+      />
     </div>
   );
 });
 
-export default withStyles<typeof PaperItem>(styles)(PaperItem);
+export default withStyles<typeof SearchPaperItem>(styles)(SearchPaperItem);
