@@ -59,97 +59,120 @@ const UiDemo: React.FunctionComponent = () => {
   let buttonCode = '';
   switch (selectedIconPosition) {
     case 'left':
-      buttonCode = `<Icon icon="BOOKMARK" />
-  <span>Bookmark</span>`;
+      buttonCode = `<Icon icon="❤️BUTTON_ICON" />
+  <span>✍️Button Text</span>`;
       break;
 
     case 'right':
-      buttonCode = `<span>Bookmark</span>
-  <Icon icon="BOOKMARK" />`;
+      buttonCode = `<span>✍️Button Text</span>
+  <Icon icon="❤️BUTTON_ICON" />`;
       break;
 
     case 'only':
-      buttonCode = `<Icon icon="BOOKMARK" />`;
+      buttonCode = `<Icon icon="❤️BUTTON_ICON" />`;
       break;
     case 'no':
-      buttonCode = `<span>Bookmark</span>`;
+      buttonCode = `<span>✍️Button Text</span>`;
       break;
   }
 
-  const finalCode = `<Button size='${selectedSize}' variant='${selectedVariant}' color='${selectedColor}' fullWidth={${isFullWidth}} disabled={${isDisabled}}>
+  const finalCode = `<Button elementType='button' size='${selectedSize}' variant='${selectedVariant}' color='${selectedColor}' fullWidth={${isFullWidth}} disabled={${isDisabled}}>
   ${buttonCode}
 </Button>`;
 
   return (
     <div className={s.uiDemoWrapper}>
       <div className={s.leftBox}>
-        <select
-          className={s.selectBox}
-          onChange={(e: React.FormEvent<HTMLSelectElement>) => setSelectedIconPosition(e.currentTarget.value as any)}
-        >
-          {availableIconDisplay.map(iconPosition => {
-            return (
-              <option key={iconPosition} value={iconPosition}>
-                {iconPosition}
-              </option>
-            );
-          })}
-        </select>
-        <select
-          className={s.selectBox}
-          onChange={(e: React.FormEvent<HTMLSelectElement>) => setSelectedSize(e.currentTarget.value as any)}
-        >
-          {availableSizes.map(size => {
-            return (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            );
-          })}
-        </select>
-        <select
-          className={s.selectBox}
-          onChange={(e: React.FormEvent<HTMLSelectElement>) => setSelectedVariant(e.currentTarget.value as any)}
-        >
-          {availableVariant.map(variant => {
-            return (
-              <option key={variant} value={variant}>
-                {variant}
-              </option>
-            );
-          })}
-        </select>
-        <select
-          className={s.selectBox}
-          onChange={(e: React.FormEvent<HTMLSelectElement>) => setSelectedColor(e.currentTarget.value as any)}
-        >
-          {availableColor.map(color => {
-            return (
-              <option key={color} value={color}>
-                {color}
-              </option>
-            );
-          })}
-        </select>
-
-        <div className={s.toggle}>
-          <span className={s.toggleLabel}>Disabled</span>
-          <input
-            className={s.checkbox}
-            type="checkbox"
-            checked={isDisabled}
-            onChange={e => setDisabled(e.currentTarget.checked)}
-          />
+        <div className={s.demoTitle}>Buttons</div>
+        <div className={s.selectBoxLabel}>Icon Position</div>
+        <div className={s.selectBoxWrapper}>
+          <select
+            className={s.selectBox}
+            onChange={(e: React.FormEvent<HTMLSelectElement>) => setSelectedIconPosition(e.currentTarget.value as any)}
+          >
+            {availableIconDisplay.map(iconPosition => {
+              return (
+                <option key={iconPosition} value={iconPosition}>
+                  {iconPosition}
+                </option>
+              );
+            })}
+          </select>
+          <Icon className={s.dropdownIcon} icon="ARROW_POINT_TO_DOWN" />
         </div>
 
-        <div className={s.toggle}>
-          <span className={s.toggleLabel}>Full Width</span>
-          <input
-            className={s.checkbox}
-            type="checkbox"
-            checked={isFullWidth}
-            onChange={e => setFullWidth(e.currentTarget.checked)}
-          />
+        <div className={s.selectBoxLabel}>Size</div>
+        <div className={s.selectBoxWrapper}>
+          <select
+            className={s.selectBox}
+            onChange={(e: React.FormEvent<HTMLSelectElement>) => setSelectedSize(e.currentTarget.value as any)}
+          >
+            {availableSizes.map(size => {
+              return (
+                <option key={size} value={size}>
+                  {size}
+                </option>
+              );
+            })}
+          </select>
+          <Icon className={s.dropdownIcon} icon="ARROW_POINT_TO_DOWN" />
+        </div>
+
+        <div className={s.selectBoxLabel}>Variant</div>
+        <div className={s.selectBoxWrapper}>
+          <select
+            className={s.selectBox}
+            onChange={(e: React.FormEvent<HTMLSelectElement>) => setSelectedVariant(e.currentTarget.value as any)}
+          >
+            {availableVariant.map(variant => {
+              return (
+                <option key={variant} value={variant}>
+                  {variant}
+                </option>
+              );
+            })}
+          </select>
+          <Icon className={s.dropdownIcon} icon="ARROW_POINT_TO_DOWN" />
+        </div>
+
+        <div className={s.selectBoxLabel}>Color</div>
+        <div className={s.selectBoxWrapper}>
+          <select
+            className={s.selectBox}
+            onChange={(e: React.FormEvent<HTMLSelectElement>) => setSelectedColor(e.currentTarget.value as any)}
+          >
+            {availableColor.map(color => {
+              return (
+                <option key={color} value={color}>
+                  {color}
+                </option>
+              );
+            })}
+          </select>
+          <Icon className={s.dropdownIcon} icon="ARROW_POINT_TO_DOWN" />
+        </div>
+
+        <div className={s.selectBoxLabel}>Options</div>
+        <div className={s.checkboxWrapper}>
+          <div className={s.checkboxWrapper}>
+            <span className={s.checkboxLabel}>Disabled</span>
+            <input
+              className={s.checkbox}
+              type="checkbox"
+              checked={isDisabled}
+              onChange={e => setDisabled(e.currentTarget.checked)}
+            />
+          </div>
+
+          <div className={s.checkboxWrapper}>
+            <span className={s.checkboxLabel}>Full Width</span>
+            <input
+              className={s.checkbox}
+              type="checkbox"
+              checked={isFullWidth}
+              onChange={e => setFullWidth(e.currentTarget.checked)}
+            />
+          </div>
         </div>
       </div>
 
