@@ -53,6 +53,10 @@
   font-weight: 500;
   color: $gray800;
 
+  &:before {
+    content: ' · ';
+  }
+
   & + .venueName {
     &:before {
       content: ' · ';
