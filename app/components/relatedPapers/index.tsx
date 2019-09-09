@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { Paper } from '../../model/paper';
 import PaperItem from '../common/paperItem/paperItem';
@@ -74,7 +75,14 @@ const RelatedPapersInPaperShow: React.FC<RelatedPapersProps> = React.memo(props 
         </div>
       ) : (
         <>
-          <div className={styles.relatedPaperWrapper}>{relatedPaperItems}</div>
+          <div
+            className={classNames({
+              [styles.relatedPaperWrapper]: true,
+              [styles.blurRelatedPaperWrapper]: !currentUser.isLoggedIn,
+            })}
+          >
+            {relatedPaperItems}
+          </div>
           <ContentBlocker isLoggedIn={currentUser.isLoggedIn} />
         </>
       )}

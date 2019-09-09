@@ -7,6 +7,10 @@
   max-width: 100%;
 }
 
+.collectionDialogContainer {
+  @extend .dialogPaper;
+}
+
 @media (max-width: $tablet_width) {
   .figureDetailDialog {
     display: flex;
@@ -26,8 +30,9 @@
     margin: 0 auto;
   }
 
-  .dialogPaper {
+  .collectionDialogContainer {
     width: 100% !important;
+    max-width: 504px;
   }
 
   .mobileFigureDetailDialog {

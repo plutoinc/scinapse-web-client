@@ -12,6 +12,10 @@
 .relatedPaperWrapper {
   overflow: hidden;
   position: relative;
+}
+
+.blurRelatedPaperWrapper {
+  @extend .relatedPaperWrapper;
 
   &:after {
     position: absolute;
@@ -45,7 +49,7 @@
 
 .contentBlockedContainer {
   position: absolute;
-  bottom: 48px;
+  bottom: 24px;
   padding: 40px 0;
   width: 692px;
   height: 188px;
@@ -123,9 +127,5 @@
 
   .relatedPaperWrapper {
     width: 100%;
-
-    &:after {
-      display: none;
-    }
   }
 }

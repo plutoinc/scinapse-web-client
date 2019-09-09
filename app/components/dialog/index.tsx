@@ -63,7 +63,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         <Dialog
           open={dialogState.isOpen}
           onClose={this.closeCollectionDialog}
-          classes={{ paper: styles.dialogPaper }}
+          classes={{ paper: styles.collectionDialogContainer }}
           maxWidth={'lg'}
         >
           <CollectionDialog
