@@ -1,4 +1,4 @@
-import { dummy, weightedCitation, emailRecommendPaperSignUpBanner } from './abTestObject';
+import { dummy, weightedCitation, emailRecommendPaperSignUpBanner, filterButtonColor } from './abTestObject';
 
 export interface UserGroup {
   groupName: string;
@@ -10,7 +10,7 @@ export interface Test {
   userGroup: UserGroup[];
 }
 
-export type ABTest = 'dummy' | 'weightedCitation' | 'signBannerAtSearch-recommend';
+export type ABTest = 'dummy' | 'weightedCitation' | 'signBannerAtSearch-recommend' | 'filterButtonColor';
 
 export interface SignUpConversionExpTicketContext {
   pageType: Scinapse.ActionTicket.PageType;
@@ -19,7 +19,7 @@ export interface SignUpConversionExpTicketContext {
   expName?: string;
 }
 
-export const LIVE_TESTS: Test[] = [dummy, weightedCitation, emailRecommendPaperSignUpBanner];
+export const LIVE_TESTS: Test[] = [dummy, weightedCitation, emailRecommendPaperSignUpBanner, filterButtonColor];
 
 function getRandomPool(): { [key: string]: string[] } {
   const randomPool: { [key: string]: string[] } = {};
