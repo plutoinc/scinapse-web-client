@@ -105,7 +105,7 @@ const MobileVenue: React.FC<MobileVenueProps> = ({ paper, isExpanded, pageType, 
             {journal.impactFactor.toFixed(2)}
           </span>
         )}
-      {journal && journal.sci && <JournalBadge text="SCI(E)" labelClassName={s.sciLabel} textClassName={s.sciText} />}
+      {journal && journal.sci && <JournalBadge text="SCI(E)" labelClassName={s.sciLabel} />}
       {title}
     </div>
   );

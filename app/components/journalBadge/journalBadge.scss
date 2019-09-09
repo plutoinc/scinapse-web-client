@@ -17,3 +17,16 @@
   font-size: 14px;
   font-weight: 500;
 }
+
+@media (max-width: $mobile_width) {
+  .starBadgeIcon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .text {
+    display: inline-block;
+    vertical-align: text-top;
+    font-size: 14px;
+  }
+}

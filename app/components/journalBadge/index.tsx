@@ -8,10 +8,9 @@ const s = require('./journalBadge.scss');
 interface JournalBadgeProps {
   text: string;
   labelClassName?: string;
-  textClassName?: string;
 }
 
-const JournalBadge: React.FC<JournalBadgeProps> = ({ text, labelClassName, textClassName }) => {
+const JournalBadge: React.FC<JournalBadgeProps> = ({ text, labelClassName }) => {
   return (
     <label
       className={classNames({
@@ -20,14 +19,7 @@ const JournalBadge: React.FC<JournalBadgeProps> = ({ text, labelClassName, textC
       })}
     >
       <Icon icon="STAR_BADGE" className={s.starBadgeIcon} />
-      <span
-        className={classNames({
-          [s.text]: !textClassName,
-          [textClassName!]: !!textClassName,
-        })}
-      >
-        {text}
-      </span>
+      <span className={s.text}>{text}</span>
     </label>
   );
 };
