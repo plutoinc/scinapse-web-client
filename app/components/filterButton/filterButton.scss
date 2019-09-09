@@ -80,3 +80,9 @@
     }
   }
 }
+
+.grayFilterBtn {
+  @extend .filterBtn;
+
+  background-color: $gray30;
+}
