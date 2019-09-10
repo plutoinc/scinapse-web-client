@@ -3,9 +3,8 @@ import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import { parse } from 'qs';
 import classNames from 'classnames';
-import { Snackbar } from '@material-ui/core';
 import NoSsr from '@material-ui/core/NoSsr';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
 import { Dispatch, bindActionCreators } from 'redux';
 import { withStyles } from '../../helpers/withStylesHelper';
@@ -36,10 +35,7 @@ import { getUserGroupName } from '../../helpers/abTestHelper';
 import { WEIGHTED_CITATION_EXPERIMENT, EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER } from '../../constants/abTestGlobalValue';
 import EmailBanner from './components/emailBanner';
 import { EmailRecommendPaperSignUpBannerTestType } from '../../constants/abTestObject';
-import { closeCollectionSnackBar } from '../../reducers/collectionSnackBar';
-import Icon from '../../icons';
-import { closeDialog } from '../dialog/actions';
-import Button from '../common/button/button';
+import CollectionSnackBar from '../common/collectionSnackBar';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -206,9 +202,7 @@ const SearchContainer: React.FC<Props> = props => {
     searchPapers,
     changeSearchQuery,
     enableAutoYearFilter,
-    collectionSnackBarState,
   } = props;
-  const dispatch = useDispatch();
 
   const [queryParams, setQueryParams] = React.useState<SearchPageQueryParams>(
     parse(location.search, { ignoreQueryPrefix: true })
@@ -307,49 +301,7 @@ const SearchContainer: React.FC<Props> = props => {
           width: '100%',
         }}
       />
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={collectionSnackBarState.isOpen}
-        onClose={() => dispatch(closeCollectionSnackBar())}
-        autoHideDuration={6000}
-        ContentProps={{
-          'aria-describedby': 'message-id',
-        }}
-        message={
-          <span id="message-id" className={styles.snackbarContext}>
-            The paper has been saved to {collectionSnackBarState.collectionName}.
-          </span>
-        }
-        action={[
-          <Link
-            className={styles.goToCollectionBtn}
-            key={`goToCollection`}
-            to={`/collections/${collectionSnackBarState.collectionId}`}
-            onClick={() => {
-              dispatch(closeCollectionSnackBar());
-              dispatch(closeDialog());
-            }}
-          >
-            Go to Collection
-          </Link>,
-          <Button
-            elementType="button"
-            size="small"
-            variant="text"
-            color="gray"
-            fullWidth={false}
-            disabled={false}
-            key={`close`}
-            style={{ marginLeft: '16px' }}
-            onClick={() => dispatch(closeCollectionSnackBar())}
-          >
-            <Icon icon="X_BUTTON" />
-          </Button>,
-        ]}
-      />
+      <CollectionSnackBar />
     </div>
   );
 };
@@ -361,7 +313,6 @@ const mapStateToProps = (state: AppState) => {
     currentUserState: state.currentUser,
     configuration: state.configuration,
     enableAutoYearFilter: state.searchFilterState.enableAutoYearFilter,
-    collectionSnackBarState: state.collectionSnackBarState,
   };
 };
 

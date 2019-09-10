@@ -179,18 +179,6 @@ article.paperShow {
   background-color: $gray50;
 }
 
-.snackbarContext {
-  font-size: 16px;
-  color: white;
-}
-
-.goToCollectionBtn {
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  color: $main_blue0;
-}
-
 // RegularDisplay (1024~1200)
 @media (max-width: $regular_width) {
   .container {
