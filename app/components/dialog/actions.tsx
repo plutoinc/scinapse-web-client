@@ -12,6 +12,7 @@ import CollectionAPI, {
 } from '../../api/collection';
 import { AvailableCitationType } from '../../containers/paperShow/records';
 import PlutoAxios from '../../api/pluto';
+import { openCollectionSnackBar } from '../../reducers/collectionSnackBar';
 
 export interface OpenGlobalDialogParams {
   type: GLOBAL_DIALOG_TYPE;
@@ -58,6 +59,7 @@ export function addPaperToCollection(params: AddPaperToCollectionParams) {
           collection: params.collection,
         })
       );
+      dispatch(openCollectionSnackBar({ collectionId: params.collection.id, collectionName: params.collection.title }));
       return res;
     } catch (err) {
       dispatch(
