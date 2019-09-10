@@ -29,6 +29,12 @@
     }
   }
 
+  & + .sciLabel {
+    &:before {
+      content: ' · ';
+    }
+  }
+
   & + .venueName {
     &:before {
       content: ' · ';
@@ -41,8 +47,10 @@
   font-weight: 500;
   color: $gray800;
 
-  &:after {
-    content: ' · ';
+  & + .sciLabel {
+    &:before {
+      content: ' · ';
+    }
   }
 
   & + .venueName {
