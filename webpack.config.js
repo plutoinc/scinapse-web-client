@@ -54,11 +54,16 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        loader: 'svg-sprite-loader',
-        options: {
-          classPrefix: false,
-          idPrefix: true,
-        },
+        use: [
+          {
+            loader: 'svg-sprite-loader',
+            options: {
+              classPrefix: false,
+              idPrefix: true,
+            },
+          },
+          'svgo-loader',
+        ],
       },
       {
         test: /\.css$/,
