@@ -159,7 +159,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public render() {
-    const { layout, paperShow, currentUser, paper, PDFViewerState } = this.props;
+    const { layout, paperShow, currentUser, paper, PDFViewerState, location } = this.props;
     const { isOnFullText, isOnCited, isOnRef } = this.state;
 
     if (paperShow.isLoadingPaper) {
