@@ -22,8 +22,8 @@ const CollectionSnackBar: React.FC<Props> = props => {
         horizontal: 'right',
       }}
       open={collectionSnackBarState.isOpen}
-      // onClose={() => dispatch(closeCollectionSnackBar())}
-      // autoHideDuration={6000}
+      onClose={() => dispatch(closeCollectionSnackBar())}
+      autoHideDuration={6000}
       ContentProps={{
         'aria-describedby': 'message-id',
       }}
