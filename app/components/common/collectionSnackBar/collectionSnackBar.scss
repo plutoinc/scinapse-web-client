@@ -9,3 +9,16 @@
   cursor: pointer;
   color: $main_blue0;
 }
+
+.closeBtn {
+  color: $gray200;
+  width: 24px;
+  height: 24px;
+  margin-left: 16px;
+  cursor: pointer;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}

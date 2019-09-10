@@ -5,7 +5,6 @@ import { connect, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { closeCollectionSnackBar } from '../../../reducers/collectionSnackBar';
 import { closeDialog } from '../../dialog/actions';
-import Button from '../button/button';
 import Icon from '../../../icons';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./collectionSnackBar.scss');
@@ -44,19 +43,9 @@ const CollectionSnackBar: React.FC<Props> = props => {
         >
           Go to Collection
         </Link>,
-        <Button
-          elementType="button"
-          size="small"
-          variant="text"
-          color="gray"
-          fullWidth={false}
-          disabled={false}
-          key={`close`}
-          style={{ marginLeft: '16px' }}
-          onClick={() => dispatch(closeCollectionSnackBar())}
-        >
+        <button className={s.closeBtn} key={`close`} onClick={() => dispatch(closeCollectionSnackBar())}>
           <Icon icon="X_BUTTON" />
-        </Button>,
+        </button>,
       ]}
     />
   );
