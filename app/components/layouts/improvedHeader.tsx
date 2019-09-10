@@ -461,24 +461,24 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
             >
               <span>Sign in</span>
             </Button>
-            <Button
-              elementType="button"
-              size="medium"
-              onClick={() => {
-                this.handleOpenSignUp();
-                trackDialogView('headerSignUpOpen');
-                ActionTicketManager.trackTicket({
-                  pageType: getCurrentPageType(),
-                  actionType: 'fire',
-                  actionArea: 'topBar',
-                  actionTag: 'signUpPopup',
-                  actionLabel: 'topBar',
-                });
-              }}
-            >
-              <span>Sign up</span>
-            </Button>
           </div>
+          <Button
+            elementType="button"
+            size="medium"
+            onClick={() => {
+              this.handleOpenSignUp();
+              trackDialogView('headerSignUpOpen');
+              ActionTicketManager.trackTicket({
+                pageType: getCurrentPageType(),
+                actionType: 'fire',
+                actionArea: 'topBar',
+                actionTag: 'signUpPopup',
+                actionLabel: 'topBar',
+              });
+            }}
+          >
+            <span>Sign up</span>
+          </Button>
         </div>
       );
     } else {

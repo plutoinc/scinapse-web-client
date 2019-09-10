@@ -108,6 +108,7 @@
 
 @media (max-width: $mobile_width) {
   .contentBlockedContainer {
+    display: none;
     width: 100%;
   }
 
