@@ -1,19 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { connect, useDispatch } from 'react-redux';
+import { Location } from 'history';
 import Snackbar from '@material-ui/core/Snackbar';
 import { AppState } from '../../../reducers';
-import { connect, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { closeCollectionSnackBar } from '../../../reducers/collectionSnackBar';
 import { closeDialog } from '../../dialog/actions';
 import Icon from '../../../icons';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./collectionSnackBar.scss');
-type Props = ReturnType<typeof mapStateToProps>;
+type Props = ReturnType<typeof mapStateToProps> & {
+  location: Location;
+};
 
 const CollectionSnackBar: React.FC<Props> = props => {
   useStyles(s);
   const dispatch = useDispatch();
-  const { collectionSnackBarState } = props;
+  const { collectionSnackBarState, location } = props;
+
+  useEffect(
+    () => {
+      dispatch(closeCollectionSnackBar());
+    },
+    [location]
+  );
+
   return (
     <Snackbar
       classes={{ root: s.snackbarWrapper }}
@@ -23,7 +34,8 @@ const CollectionSnackBar: React.FC<Props> = props => {
       }}
       open={collectionSnackBarState.isOpen}
       onClose={() => dispatch(closeCollectionSnackBar())}
-      autoHideDuration={6000}
+      // autoHideDuration={1500}
+      ClickAwayListenerProps={{ mouseEvent: false }}
       ContentProps={{
         'aria-describedby': 'message-id',
       }}

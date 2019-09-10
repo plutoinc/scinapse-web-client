@@ -301,7 +301,7 @@ const SearchContainer: React.FC<Props> = props => {
           width: '100%',
         }}
       />
-      <CollectionSnackBar />
+      <CollectionSnackBar location={location} />
     </div>
   );
 };

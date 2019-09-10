@@ -47,7 +47,6 @@ import PlutoAxios from '../../api/pluto';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
 import PaperShowFigureList from '../../components/paperShow/components/paperShowFigureList';
 import { UserDevice } from '../../components/layouts/reducer';
-import { CollectionSnackBarState } from '../../reducers/collectionSnackBar';
 import CollectionSnackBar from '../../components/common/collectionSnackBar';
 const styles = require('./paperShow.scss');
 
@@ -71,7 +70,6 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
   currentUser: CurrentUser;
   paperShow: PaperShowState;
   PDFViewerState: PDFViewerState;
-  collectionSnackBarState: CollectionSnackBarState;
   dispatch: Dispatch<any>;
   paper: Paper | null;
 }
@@ -268,7 +266,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         </div>
         <BottomBanner currentUser={currentUser} />
         <NextPaperTab />
-        <CollectionSnackBar />
+        <CollectionSnackBar location={location} />
       </>
     );
   }

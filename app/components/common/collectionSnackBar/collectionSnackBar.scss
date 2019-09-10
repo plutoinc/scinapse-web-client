@@ -2,12 +2,14 @@
   & > div:first-of-type {
     border-radius: 8px;
     background-color: rgba(30, 42, 53, 0.9);
+    flex-direction: column;
   }
 }
 
 .snackbarContext {
   font-size: 16px;
   color: white;
+  padding-right: 24px;
 }
 
 .goToCollectionBtn {
@@ -18,7 +20,10 @@
 }
 
 .closeBtn {
-  color: $gray200;
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  color: $gray700;
   width: 24px;
   height: 24px;
   margin-left: 16px;
@@ -34,6 +39,7 @@
   .snackbarWrapper {
     & > div:first-of-type {
       border-radius: 0px;
+      align-items: flex-start;
     }
   }
 }
