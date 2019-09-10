@@ -28,7 +28,7 @@ const JournalItem: React.FC<JournalItemProps> = React.memo(props => {
           [s.noDocCount]: props.isSearchResult,
         })}
       >
-        {journal.sci && <JournalBadge text="SCI" labelClassName={s.journalBadge} />}
+        {journal.sci && <JournalBadge text="SCI(E)" labelClassName={s.journalBadge} />}
         <Tooltip
           title="Impact Factor"
           placement="top"
