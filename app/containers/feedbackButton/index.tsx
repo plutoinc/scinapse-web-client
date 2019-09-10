@@ -1,20 +1,22 @@
 import * as React from 'react';
+import * as classNames from 'classnames';
+import * as Cookies from 'js-cookie';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import FeedbackManager from '@pluto_network/scinapse-feedback';
-import * as Cookies from 'js-cookie';
 import Icon from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { trackEvent } from '../../helpers/handleGA';
 import { CurrentUser } from '../../model/currentUser';
 import { LayoutState } from '../../components/layouts/reducer';
 import { AppState } from '../../reducers';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import * as classNames from 'classnames';
 import { UserDevice } from '../../components/layouts/reducer';
-declare var ga: any;
+import validateEmail from '../../helpers/validateEmail';
+import { FEEDBACK_SOURCE, FEEDBACK_PRIORITY, FEEDBACK_STATUS } from '../../constants/feedback';
+
 const styles = require('./feedbackButton.scss');
 
 interface FeedbackButtonProps extends RouteComponentProps<any> {
@@ -208,39 +210,32 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
   };
 
   private handleSubmitFeedbackForm = async (e: React.FormEvent<HTMLFormElement>) => {
-    const { currentUser } = this.props;
     const { emailInput, feedbackContent } = this.state;
 
     e.preventDefault();
+
+    if (!validateEmail(emailInput)) {
+      alert('Please enter a valid email address');
+      return;
+    }
 
     if (!feedbackContent || feedbackContent.length <= 5) {
       alert('You should leave more than 5 character of the feedback content');
       return;
     }
 
-    const feedbackManger = new FeedbackManager();
-
-    let gaId = '';
-    if (typeof ga !== 'undefined') {
-      ga((tracker: any) => {
-        gaId = tracker.get('clientId');
-      });
-    }
-
-    let href = '';
-    if (typeof window !== 'undefined') {
-      href = window.location.href;
-    }
+    const feedbackManager = new FeedbackManager();
 
     try {
       this.setState(prevState => ({ ...prevState, isLoadingFeedback: true }));
 
-      await feedbackManger.sendFeedback({
-        content: feedbackContent,
+      await feedbackManager.sendTicketToFreshdesk({
         email: emailInput,
-        referer: href,
-        userId: currentUser.isLoggedIn ? currentUser.id.toString() : '',
-        gaId,
+        description: feedbackContent,
+        subject: 'Direct Message : ' + emailInput,
+        status: FEEDBACK_STATUS.OPEN,
+        priority: FEEDBACK_PRIORITY.MEDIUM,
+        source: FEEDBACK_SOURCE.EMAIL,
       });
 
       trackEvent({
