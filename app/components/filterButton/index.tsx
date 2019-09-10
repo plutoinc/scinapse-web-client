@@ -23,7 +23,7 @@ const FilterButton: React.FC<FilterButtonProps> = ({ content, onClick, isActive,
   const [applyButtonStyle, setApplyButtonStyle] = React.useState(false);
 
   React.useEffect(() => {
-    const doChangeFilterButtonStyle = getUserGroupName(FILTER_BUTTON_COLOR_EXPERIMENT) === 'contained/block';
+    const doChangeFilterButtonStyle = getUserGroupName(FILTER_BUTTON_COLOR_EXPERIMENT) === 'contained/black';
     setApplyButtonStyle(doChangeFilterButtonStyle);
   }, []);
 

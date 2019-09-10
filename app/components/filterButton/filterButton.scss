@@ -87,4 +87,10 @@
   font-weight: 500;
   font-size: 15px;
   background-color: $gray200;
+  border: none;
+
+  &:hover {
+    background-color: #e7eaef;
+    transition: $button-hover-transition;
+  }
 }

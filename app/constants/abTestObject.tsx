@@ -35,5 +35,5 @@ export const emailRecommendPaperSignUpBanner: Test = {
 
 export const filterButtonColor: Test = {
   name: FILTER_BUTTON_COLOR_EXPERIMENT,
-  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'contained/block', weight: 1 }],
+  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'contained/black', weight: 1 }],
 };
