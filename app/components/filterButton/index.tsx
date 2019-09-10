@@ -20,18 +20,18 @@ export interface FilterButtonProps {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 const FilterButton: React.FC<FilterButtonProps> = ({ content, onClick, isActive, selected }) => {
-  const [applyButtonColor, setApplyButtonColor] = React.useState(false);
+  const [applyButtonStyle, setApplyButtonStyle] = React.useState(false);
 
   React.useEffect(() => {
-    const doChangeButtonColor = getUserGroupName(FILTER_BUTTON_COLOR_EXPERIMENT) === 'gray30';
-    setApplyButtonColor(doChangeButtonColor);
+    const doChangeFilterButtonStyle = getUserGroupName(FILTER_BUTTON_COLOR_EXPERIMENT) === 'contained/block';
+    setApplyButtonStyle(doChangeFilterButtonStyle);
   }, []);
 
   return (
     <button
       className={classNames({
-        [s.filterBtn]: !isActive && !applyButtonColor,
-        [s.grayFilterBtn]: !isActive && applyButtonColor,
+        [s.filterBtn]: !isActive && !applyButtonStyle,
+        [s.containedBlockFilterBtn]: !isActive && applyButtonStyle,
         [s.active]: isActive,
         [s.selected]: selected,
       })}

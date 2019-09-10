@@ -57,7 +57,6 @@
     vertical-align: top;
     width: 9px;
     height: 5px;
-    color: $black0;
     transition: transform 150ms ease;
   }
 
@@ -81,8 +80,11 @@
   }
 }
 
-.grayFilterBtn {
+.containedBlockFilterBtn {
   @extend .filterBtn;
 
-  background-color: $gray30;
+  color: $black1;
+  font-weight: 500;
+  font-size: 15px;
+  background-color: $gray200;
 }
