@@ -28,25 +28,31 @@ const FilterButton: React.FC<FilterButtonProps> = ({ content, onClick, isActive,
   }, []);
 
   return (
-    <button
+    <div
       className={classNames({
-        [s.filterBtn]: !isActive && !applyButtonStyle,
-        [s.containedBlockFilterBtn]: !isActive && applyButtonStyle,
-        [s.active]: isActive,
-        [s.selected]: selected,
+        [s.filterBtnWrapper]: !applyButtonStyle,
+        [s.containedBlackFilterBtnWrapper]: applyButtonStyle,
       })}
-      onClick={onClick}
     >
-      {content}
-      <Icon
-        icon="ARROW_POINT_TO_DOWN"
+      <button
         className={classNames({
-          [s.arrowIcon]: true,
-          [s.activeIcon]: isActive,
+          [s.filterBtn]: !isActive,
+          [s.active]: isActive,
           [s.selected]: selected,
         })}
-      />
-    </button>
+        onClick={onClick}
+      >
+        {content}
+        <Icon
+          icon="ARROW_POINT_TO_DOWN"
+          className={classNames({
+            [s.arrowIcon]: true,
+            [s.activeIcon]: isActive,
+            [s.selected]: selected,
+          })}
+        />
+      </button>
+    </div>
   );
 };
 

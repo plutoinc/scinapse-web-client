@@ -80,17 +80,49 @@
   }
 }
 
-.containedBlockFilterBtn {
-  @extend .filterBtn;
+.containedBlackFilterBtnWrapper {
+  .filterBtn {
+    @extend .filterBtn;
 
-  color: $black1;
-  font-weight: 500;
-  font-size: 15px;
-  background-color: $gray200;
-  border: none;
+    color: $black1;
+    font-weight: 500;
+    font-size: 15px;
+    background-color: $gray200;
+    border: none;
 
-  &:hover {
-    background-color: #e7eaef;
-    transition: $button-hover-transition;
+    &:hover {
+      background-color: #e7eaef;
+      transition: $button-hover-transition;
+    }
+  }
+
+  .active {
+    @extend %base-filter-button;
+
+    border: none;
+    color: $black1;
+    background-color: $gray400;
+  }
+
+  .arrowIcon {
+    @extend .arrowIcon;
+
+    &.activeIcon {
+      svg {
+        color: $black1;
+      }
+
+      &.selected {
+        svg {
+          color: $black1;
+        }
+      }
+    }
+
+    &.selected {
+      svg {
+        color: $black1;
+      }
+    }
   }
 }
