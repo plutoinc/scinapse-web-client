@@ -16,13 +16,14 @@ const CollectionSnackBar: React.FC<Props> = props => {
   const { collectionSnackBarState } = props;
   return (
     <Snackbar
+      classes={{ root: s.snackbarWrapper }}
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'right',
       }}
       open={collectionSnackBarState.isOpen}
-      onClose={() => dispatch(closeCollectionSnackBar())}
-      autoHideDuration={6000}
+      // onClose={() => dispatch(closeCollectionSnackBar())}
+      // autoHideDuration={6000}
       ContentProps={{
         'aria-describedby': 'message-id',
       }}

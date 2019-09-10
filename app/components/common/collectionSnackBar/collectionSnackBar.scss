@@ -1,3 +1,10 @@
+.snackbarWrapper {
+  & > div:first-of-type {
+    border-radius: 8px;
+    background-color: rgba(30, 42, 53, 0.9);
+  }
+}
+
 .snackbarContext {
   font-size: 16px;
   color: white;
@@ -20,5 +27,13 @@
   svg {
     width: 14px;
     height: 14px;
+  }
+}
+
+@media (max-width: 959.95px) {
+  .snackbarWrapper {
+    & > div:first-of-type {
+      border-radius: 0px;
+    }
   }
 }
