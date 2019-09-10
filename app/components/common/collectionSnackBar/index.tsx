@@ -35,7 +35,7 @@ const CollectionSnackBar: React.FC<Props> = props => {
       open={collectionSnackBarState.isOpen}
       onClose={() => dispatch(closeCollectionSnackBar())}
       autoHideDuration={1500}
-      ClickAwayListenerProps={{ mouseEvent: false }}
+      ClickAwayListenerProps={{ mouseEvent: false, touchEvent: false }}
       ContentProps={{
         'aria-describedby': 'message-id',
       }}
