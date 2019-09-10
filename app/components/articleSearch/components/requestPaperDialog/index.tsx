@@ -17,6 +17,8 @@ import { ACTION_TYPES } from '../../../../actions/actionTypes';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import Icon from '../../../../icons';
 import { LAST_SUCCEEDED_EMAIL_KEY } from '../../../../constants/requestDialogConstant';
+import { FEEDBACK_SOURCE, FEEDBACK_PRIORITY, FEEDBACK_STATUS } from '../../../../constants/feedback';
+
 const styles = require('./requestPaperDialog.scss');
 
 interface RequestPaperDialogProps extends RouteComponentProps<any> {
@@ -48,17 +50,17 @@ const RequestPaperDialog: React.FunctionComponent<RequestPaperDialogProps> = pro
   async function handleSubmitForm(values: FormState) {
     setIsLoading(true);
 
-    const feedbackManger = new FeedbackManager();
+    const feedbackManager = new FeedbackManager();
     const feedbackDesc = `query : ${query} / comment : ${values.content}`;
 
     try {
-      await feedbackManger.sendTicketToFreshdesk({
+      await feedbackManager.sendTicketToFreshdesk({
         email: values.email,
         description: feedbackDesc,
         subject: 'Not include paper : ' + values.email,
-        status: 2,
-        priority: 2,
-        source: 1,
+        status: FEEDBACK_STATUS.OPEN,
+        priority: FEEDBACK_PRIORITY.MEDIUM,
+        source: FEEDBACK_SOURCE.EMAIL,
       });
 
       ActionTicketManager.trackTicket({

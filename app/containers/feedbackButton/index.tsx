@@ -15,6 +15,8 @@ import { LayoutState } from '../../components/layouts/reducer';
 import { AppState } from '../../reducers';
 import { UserDevice } from '../../components/layouts/reducer';
 import validateEmail from '../../helpers/validateEmail';
+import { FEEDBACK_SOURCE, FEEDBACK_PRIORITY, FEEDBACK_STATUS } from '../../constants/feedback';
+
 const styles = require('./feedbackButton.scss');
 
 interface FeedbackButtonProps extends RouteComponentProps<any> {
@@ -222,18 +224,18 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
       return;
     }
 
-    const feedbackManger = new FeedbackManager();
+    const feedbackManager = new FeedbackManager();
 
     try {
       this.setState(prevState => ({ ...prevState, isLoadingFeedback: true }));
 
-      await feedbackManger.sendTicketToFreshdesk({
+      await feedbackManager.sendTicketToFreshdesk({
         email: emailInput,
         description: feedbackContent,
         subject: 'Direct Message : ' + emailInput,
-        status: 2,
-        priority: 2,
-        source: 1,
+        status: FEEDBACK_STATUS.OPEN,
+        priority: FEEDBACK_PRIORITY.MEDIUM,
+        source: FEEDBACK_SOURCE.EMAIL,
       });
 
       trackEvent({
