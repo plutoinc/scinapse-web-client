@@ -1,4 +1,5 @@
 import * as React from 'react';
+import classNames from 'classnames';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '../../helpers/withStylesHelper';
@@ -74,7 +75,13 @@ const RelatedPapersInPaperShow: React.FC<RelatedPapersProps> = React.memo(props 
         </div>
       ) : (
         <>
-          <div className={styles.relatedPaperWrapper}>{relatedPaperItems}</div>
+          <div
+            className={classNames({
+              [styles.relatedPaperWrapper]: !currentUser.isLoggedIn,
+            })}
+          >
+            {relatedPaperItems}
+          </div>
           <ContentBlocker isLoggedIn={currentUser.isLoggedIn} />
         </>
       )}
