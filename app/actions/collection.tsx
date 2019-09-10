@@ -9,6 +9,7 @@ import CollectionAPI, {
 } from '../api/collection';
 import { Collection } from '../model/collection';
 import { fetchMyCollection } from '../containers/paperShow/sideEffect';
+import { openCollectionSnackBar } from '../reducers/collectionSnackBar';
 
 export function savePaperToCollection(params: AddPaperToCollectionParams) {
   return async (dispatch: Dispatch<any>) => {
@@ -26,6 +27,8 @@ export function savePaperToCollection(params: AddPaperToCollectionParams) {
       if (params.cancelToken) {
         dispatch(fetchMyCollection(params.paperId, params.cancelToken));
       }
+
+      dispatch(openCollectionSnackBar({ collectionId: params.collection.id, collectionName: params.collection.title }));
     } catch (err) {
       dispatch(ActionCreators.failedToPostPaperToCollection());
       const error = PlutoAxios.getGlobalError(err);

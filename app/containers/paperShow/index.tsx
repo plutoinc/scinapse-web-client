@@ -1,7 +1,7 @@
 import * as React from 'react';
 import axios from 'axios';
 import NoSsr from '@material-ui/core/NoSsr';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import PDFViewer from '../../components/pdfViewer';
@@ -47,6 +47,11 @@ import PlutoAxios from '../../api/pluto';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
 import PaperShowFigureList from '../../components/paperShow/components/paperShowFigureList';
 import { UserDevice } from '../../components/layouts/reducer';
+import { getMemorizedCollectionSnackBar } from '../../selectors/getCollectionSnackBar';
+import { CollectionSnackBarState, closeCollectionSnackBar } from '../../reducers/collectionSnackBar';
+import Snackbar from '@material-ui/core/Snackbar';
+import Button from '../../components/common/button/button';
+import Icon from '../../icons';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -60,6 +65,7 @@ function mapStateToProps(state: AppState) {
     paperShow: getMemoizedPaperShow(state),
     paper: getMemoizedPaper(state),
     PDFViewerState: getMemoizedPDFViewerState(state),
+    collectionSnackBarState: getMemorizedCollectionSnackBar(state),
   };
 }
 
@@ -69,6 +75,7 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
   currentUser: CurrentUser;
   paperShow: PaperShowState;
   PDFViewerState: PDFViewerState;
+  collectionSnackBarState: CollectionSnackBarState;
   dispatch: Dispatch<any>;
   paper: Paper | null;
 }
@@ -158,7 +165,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public render() {
-    const { layout, paperShow, currentUser, paper, PDFViewerState } = this.props;
+    const { layout, paperShow, currentUser, paper, PDFViewerState, dispatch, collectionSnackBarState } = this.props;
     const { isOnFullText, isOnCited, isOnRef } = this.state;
 
     if (paperShow.isLoadingPaper) {
@@ -265,6 +272,48 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         </div>
         <BottomBanner currentUser={currentUser} />
         <NextPaperTab />
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          open={collectionSnackBarState.isOpen}
+          onClose={() => dispatch(closeCollectionSnackBar())}
+          autoHideDuration={6000}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={
+            <span id="message-id" className={styles.snackbarContext}>
+              The paper has been saved to {collectionSnackBarState.collectionName}.
+            </span>
+          }
+          action={[
+            <Link
+              className={styles.goToCollectionBtn}
+              key={`goToCollection`}
+              to={`/collections/${collectionSnackBarState.collectionId}`}
+              onClick={() => {
+                dispatch(closeCollectionSnackBar());
+              }}
+            >
+              Go to Collection
+            </Link>,
+            <Button
+              elementType="button"
+              size="small"
+              variant="text"
+              color="gray"
+              fullWidth={false}
+              disabled={false}
+              key={`close`}
+              style={{ marginLeft: '16px' }}
+              onClick={() => dispatch(closeCollectionSnackBar())}
+            >
+              <Icon icon="X_BUTTON" />
+            </Button>,
+          ]}
+        />
       </>
     );
   }
