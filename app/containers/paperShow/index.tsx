@@ -275,7 +275,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         <Snackbar
           anchorOrigin={{
             vertical: 'bottom',
-            horizontal: 'left',
+            horizontal: 'right',
           }}
           open={collectionSnackBarState.isOpen}
           onClose={() => dispatch(closeCollectionSnackBar())}

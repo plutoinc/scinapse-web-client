@@ -310,7 +310,7 @@ const SearchContainer: React.FC<Props> = props => {
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left',
+          horizontal: 'right',
         }}
         open={collectionSnackBarState.isOpen}
         onClose={() => dispatch(closeCollectionSnackBar())}
