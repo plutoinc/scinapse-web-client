@@ -35,11 +35,25 @@
   }
 }
 
-@media (max-width: 959.95px) {
+@media (min-width: 960px) {
   .snackbarWrapper {
+    bottom: 48px;
+    right: 48px;
+  }
+}
+
+@media (max-width: 960px) {
+  .snackbarWrapper {
+    right: 12px;
+    left: 12px;
+    bottom: 12px;
+
     & > div:first-of-type {
-      border-radius: 0px;
       align-items: flex-start;
+
+      & > div:first-of-type {
+        padding-right: 24px;
+      }
     }
   }
 }

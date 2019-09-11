@@ -24,8 +24,6 @@ const collectionSnackBarSlice = createSlice({
       return {
         ...state,
         isOpen: false,
-        collectionId: 0,
-        collectionName: '',
       };
     },
   },
