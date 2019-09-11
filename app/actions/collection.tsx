@@ -9,12 +9,13 @@ import CollectionAPI, {
 } from '../api/collection';
 import { Collection } from '../model/collection';
 import { fetchMyCollection } from '../containers/paperShow/sideEffect';
-import { openCollectionSnackBar } from '../reducers/collectionSnackBar';
+import { openCollectionSnackBar, closeCollectionSnackBar } from '../reducers/collectionSnackBar';
 
 export function savePaperToCollection(params: AddPaperToCollectionParams) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToPostPaperToCollection());
+      dispatch(closeCollectionSnackBar());
 
       await CollectionAPI.addPaperToCollection(params);
 
