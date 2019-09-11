@@ -7,6 +7,8 @@ import { AppState } from '../../../reducers';
 import { closeCollectionSnackBar } from '../../../reducers/collectionSnackBar';
 import { closeDialog } from '../../dialog/actions';
 import Icon from '../../../icons';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import { getCurrentPageType } from '../../locationListener';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./collectionSnackBar.scss');
 type Props = ReturnType<typeof mapStateToProps> & {
@@ -23,6 +25,21 @@ const CollectionSnackBar: React.FC<Props> = props => {
       dispatch(closeCollectionSnackBar());
     },
     [location]
+  );
+
+  useEffect(
+    () => {
+      if (collectionSnackBarState.isOpen) {
+        ActionTicketManager.trackTicket({
+          pageType: getCurrentPageType(),
+          actionType: 'view',
+          actionArea: 'collectionSnackbar',
+          actionTag: 'viewCollectionSnackBar',
+          actionLabel: String(collectionSnackBarState.collectionId),
+        });
+      }
+    },
+    [collectionSnackBarState.isOpen, collectionSnackBarState.collectionId]
   );
 
   return (
@@ -51,13 +68,35 @@ const CollectionSnackBar: React.FC<Props> = props => {
           key={`goToCollection`}
           to={`/collections/${collectionSnackBarState.collectionId}`}
           onClick={() => {
+            ActionTicketManager.trackTicket({
+              pageType: getCurrentPageType(),
+              actionType: 'fire',
+              actionArea: 'collectionSnackbar',
+              actionTag: 'clickGoToCollection',
+              actionLabel: String(collectionSnackBarState.collectionId),
+            });
+
             dispatch(closeCollectionSnackBar());
             dispatch(closeDialog());
           }}
         >
           Go to Collection
         </Link>,
-        <button className={s.closeBtn} key={`close`} onClick={() => dispatch(closeCollectionSnackBar())}>
+        <button
+          className={s.closeBtn}
+          key={`close`}
+          onClick={() => {
+            ActionTicketManager.trackTicket({
+              pageType: getCurrentPageType(),
+              actionType: 'fire',
+              actionArea: 'collectionSnackbar',
+              actionTag: 'clickCloseButton',
+              actionLabel: String(collectionSnackBarState.collectionId),
+            });
+
+            dispatch(closeCollectionSnackBar());
+          }}
+        >
           <Icon icon="X_BUTTON" />
         </button>,
       ]}
