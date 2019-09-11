@@ -24,6 +24,7 @@
   z-index: 99;
   transition: box-shadow 300ms ease-in 0s;
   width: 297px;
+  overflow: scroll;
 }
 
 .rightBox {
@@ -151,4 +152,26 @@
 
 .checkbox {
   display: inline-block;
+}
+
+@media (max-width: 768px) {
+  .uiDemoWrapper {
+    flex-direction: column;
+  }
+
+  .leftBox {
+    width: 100%;
+    height: auto;
+  }
+
+  .rightBox {
+    width: 100%;
+  }
+
+  .exampleButtonWrapper {
+  }
+
+  .buttonCodeWrapper {
+    width: 100%;
+  }
 }
