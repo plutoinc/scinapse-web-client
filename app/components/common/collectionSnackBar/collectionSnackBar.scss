@@ -7,6 +7,7 @@
     & > div:first-of-type {
       padding-right: 24px;
       max-width: 300px;
+      word-break: break-all;
     }
   }
 }
@@ -22,6 +23,7 @@
   font-weight: 500;
   cursor: pointer;
   color: $main_blue0;
+  margin-bottom: 8px;
 }
 
 .closeBtn {

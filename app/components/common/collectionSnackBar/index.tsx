@@ -41,7 +41,8 @@ const CollectionSnackBar: React.FC<Props> = props => {
       }}
       message={
         <span id="message-id" className={s.snackbarContext}>
-          The paper has been saved to {collectionSnackBarState.collectionName}.
+          The paper has been saved to<br />
+          {collectionSnackBarState.collectionName}.
         </span>
       }
       action={[
