@@ -91,7 +91,7 @@ const CollectionSnackBar: React.FC<Props> = props => {
               actionType: 'fire',
               actionArea: 'collectionSnackbar',
               actionTag: 'clickCloseButton',
-              actionLabel: String(collectionSnackBarState.collectionId),
+              actionLabel: null,
             });
 
             dispatch(closeCollectionSnackBar());
