@@ -25,7 +25,7 @@ import { getCollections } from '../../../../collections/actions';
 import Icon from '../../../../../icons';
 import { getUserGroupName } from '../../../../../helpers/abTestHelper';
 import { AUTH_METHOD_EXPERIMENT } from '../../../../../constants/abTestGlobalValue';
-import { AuthMethodTestType } from '../../../../../constants/abTestObject';
+import { getAuthOrderType, authButtonType } from '../../helpers/getAuthBtnOrderType';
 const s = require('./firstForm.scss');
 
 declare var FB: any;
@@ -46,28 +46,8 @@ interface FormValues {
   email: string;
   password: string;
 }
-const enum authButtonType {
-  FACEBOOK,
-  GOOGLE,
-  ORCID,
-}
 
 export const oAuthBtnBaseStyle: React.CSSProperties = { position: 'relative', fontSize: '13px', marginTop: '10px' };
-
-function getAuthOrderType(currentAuthMethodType: string) {
-  switch (currentAuthMethodType) {
-    case AuthMethodTestType.ORCID_TOP:
-      return [authButtonType.ORCID, authButtonType.GOOGLE, authButtonType.FACEBOOK];
-    case AuthMethodTestType.NO_FACEBOOK:
-      return [authButtonType.ORCID, authButtonType.GOOGLE];
-    case AuthMethodTestType.NO_GOOGLE:
-      return [authButtonType.ORCID, authButtonType.FACEBOOK];
-    case AuthMethodTestType.ONLY_ORCID:
-      return [authButtonType.ORCID];
-    default:
-      return [authButtonType.FACEBOOK, authButtonType.GOOGLE, authButtonType.ORCID];
-  }
-}
 
 const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
   const { dispatch, dialogState, initialEmail } = props;
