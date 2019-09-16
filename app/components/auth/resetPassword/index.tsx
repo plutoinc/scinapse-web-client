@@ -9,7 +9,7 @@ import alertToast from '../../../helpers/makePlutoToastAction';
 import PlutoAxios from '../../../api/pluto';
 import { MINIMUM_PASSWORD_LENGTH } from '../../../constants/auth';
 import { handleClickORCIDBtn } from '../signUp/actions';
-import Button from '../../common/button/button';
+import Button from '../../common/button';
 const styles = require('./resetPassword.scss');
 
 interface FormValues {

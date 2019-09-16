@@ -11,7 +11,7 @@ import RelatedPaperItem from '../paperShow/components/relatedPaperItem';
 import { getCurrentPageType } from '../locationListener';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import Button from '../common/button/button';
+import Button from '../common/button';
 const store = require('store');
 const s = require('./researchHistory.scss');
 

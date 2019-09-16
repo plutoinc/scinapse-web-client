@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
 import { Location } from 'history';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -10,6 +9,7 @@ import Icon from '../../../icons';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../../locationListener';
 import { UserDevice } from '../../layouts/reducer';
+import Button from '../button';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./collectionSnackBar.scss');
 
@@ -65,46 +65,54 @@ const CollectionSnackBar: React.FC<Props> = props => {
         <span id="message-id" className={s.snackbarContext}>
           {`Saved to `}
           {isLongName && <br />}
-          {`${collectionName}.`}
+          <a className={s.collectionName} href={`/collections/${collectionId}`}>{`${collectionName}.`}</a>
         </span>
       }
       action={[
-        <Link
-          className={s.goToCollectionBtn}
-          key={`goToCollection`}
-          to={`/collections/${collectionId}`}
-          onClick={() => {
-            ActionTicketManager.trackTicket({
-              pageType: getCurrentPageType(),
-              actionType: 'fire',
-              actionArea: 'collectionSnackbar',
-              actionTag: 'clickViewCollection',
-              actionLabel: String(collectionId),
-            });
+        <div className={s.goToCollectionBtn} key={`goToCollection`}>
+          <Button
+            elementType="link"
+            variant="text"
+            color="blue"
+            size="large"
+            to={`/collections/${collectionId}`}
+            onClick={() => {
+              ActionTicketManager.trackTicket({
+                pageType: getCurrentPageType(),
+                actionType: 'fire',
+                actionArea: 'collectionSnackbar',
+                actionTag: 'clickViewCollection',
+                actionLabel: String(collectionId),
+              });
 
-            dispatch(closeCollectionSnackBar());
-            dispatch(closeDialog());
-          }}
-        >
-          View Collection
-        </Link>,
-        <button
-          className={s.closeBtn}
-          key={`close`}
-          onClick={() => {
-            ActionTicketManager.trackTicket({
-              pageType: getCurrentPageType(),
-              actionType: 'fire',
-              actionArea: 'collectionSnackbar',
-              actionTag: 'clickCloseButton',
-              actionLabel: null,
-            });
+              dispatch(closeCollectionSnackBar());
+              dispatch(closeDialog());
+            }}
+          >
+            View Collection
+          </Button>
+        </div>,
+        <div className={s.closeBtn} key={`close`}>
+          <Button
+            elementType="button"
+            variant="text"
+            color="gray"
+            size="small"
+            onClick={() => {
+              ActionTicketManager.trackTicket({
+                pageType: getCurrentPageType(),
+                actionType: 'fire',
+                actionArea: 'collectionSnackbar',
+                actionTag: 'clickCloseButton',
+                actionLabel: null,
+              });
 
-            dispatch(closeCollectionSnackBar());
-          }}
-        >
-          <Icon icon="X_BUTTON" />
-        </button>,
+              dispatch(closeCollectionSnackBar());
+            }}
+          >
+            <Icon icon="X_BUTTON" />
+          </Button>
+        </div>,
       ]}
     />
   );

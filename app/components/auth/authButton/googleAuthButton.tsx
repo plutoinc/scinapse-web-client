@@ -9,7 +9,7 @@ import { closeDialog } from '../../dialog/actions';
 import { AppState } from '../../../reducers';
 import { DialogState } from '../../dialog/reducer';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
-import Button from '../../common/button/button';
+import Button from '../../common/button';
 
 declare var gapi: any;
 

@@ -6,7 +6,7 @@ import AuthAPI from '../../../../../api/auth';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
 import AuthInputBox from '../../../../common/inputBox/authInputBox';
 import { OAUTH_VENDOR, SignInResult } from '../../../../../api/types/auth';
-import Button from '../../../../common/button/button';
+import Button from '../../../../common/button';
 import GoogleAuthButton from '../../../authButton/googleAuthButton';
 import ORSeparator from '../../../separator';
 import AuthTabs from '../../../authTabs';

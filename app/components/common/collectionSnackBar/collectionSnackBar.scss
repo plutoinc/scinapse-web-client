@@ -1,10 +1,10 @@
 .snackbarWrapper {
-  bottom: 40px;
+  bottom: 60px;
 
   & > div:first-of-type {
     border-radius: 8px;
-    background-color: rgba(30, 42, 53, 0.9);
-    padding: 20px 16px 20px 24px;
+    background-color: rgba(30, 42, 53, 0.97);
+    padding: 12px 24px 12px 24px;
     max-width: 100%;
 
     & > div:first-of-type {
@@ -14,33 +14,19 @@
   }
 }
 
+.goToCollectionBtn {
+  margin-right: 8px;
+}
+
+.collectionName {
+  font-weight: 700;
+  color: white;
+}
+
 .snackbarContext {
   font-size: 16px;
-  color: white;
+  color: rgba(256, 256, 256, 0.8);
   padding-right: 48px;
-}
-
-.goToCollectionBtn {
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  color: $main_blue0;
-}
-
-.closeBtn {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  color: $gray700;
-  width: 24px;
-  height: 24px;
-  margin-left: 16px;
-  cursor: pointer;
-
-  svg {
-    width: 14px;
-    height: 14px;
-  }
 }
 
 @media (min-width: 960px) {
@@ -55,16 +41,16 @@
   .snackbarWrapper {
     left: 16px;
     right: 16px;
-    bottom: 18px;
+    bottom: 16px;
 
     & > div:first-of-type {
       align-items: flex-start;
       flex-direction: column;
-      padding: 16px;
+      padding: 4px;
 
       & > div:first-of-type {
         max-width: 100%;
-        padding: 0 36px 0 0;
+        padding: 12px;
       }
     }
   }
@@ -73,13 +59,9 @@
     padding-right: 0px;
   }
 
-  .goToCollectionBtn {
-    margin: 8px 8px 0 0;
-  }
-
   .closeBtn {
     position: absolute;
-    right: 16px;
-    top: 16px;
+    right: 8px;
+    top: 14px;
   }
 }

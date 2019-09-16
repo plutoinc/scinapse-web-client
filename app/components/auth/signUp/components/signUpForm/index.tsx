@@ -6,7 +6,7 @@ import { withStyles } from '../../../../../helpers/withStylesHelper';
 import { GLOBAL_DIALOG_TYPE } from '../../../../dialog/reducer';
 import AuthTabs from '../../../authTabs';
 import AuthInputBox from '../../../../common/inputBox/authInputBox';
-import Button from '../../../../common/button/button';
+import Button from '../../../../common/button';
 import AffiliationBox from '../../../../authorCV/affiliationBox';
 import validateEmail from '../../../../../helpers/validateEmail';
 import { debouncedCheckDuplicate } from '../../helpers/checkDuplicateEmail';
