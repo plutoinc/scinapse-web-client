@@ -118,7 +118,7 @@ declare namespace Scinapse {
       | 'recommendEmailBanner'
       | 'clickRefreshButton'
       | 'savedCollection'
-      | 'clickGoToCollection'
+      | 'clickViewCollection'
       | 'clickCloseButton'
       | 'viewCollectionSnackBar'
       | '';

@@ -19,6 +19,8 @@ const CollectionSnackBar: React.FC<Props> = props => {
   useStyles(s);
   const dispatch = useDispatch();
   const { collectionSnackBarState, location } = props;
+  const { collectionId, collectionName, isOpen } = collectionSnackBarState;
+  const isLongName = collectionName.length >= 30;
 
   useEffect(
     () => {
@@ -29,17 +31,17 @@ const CollectionSnackBar: React.FC<Props> = props => {
 
   useEffect(
     () => {
-      if (collectionSnackBarState.isOpen) {
+      if (isOpen) {
         ActionTicketManager.trackTicket({
           pageType: getCurrentPageType(),
           actionType: 'view',
           actionArea: 'collectionSnackbar',
           actionTag: 'viewCollectionSnackBar',
-          actionLabel: String(collectionSnackBarState.collectionId),
+          actionLabel: String(collectionId),
         });
       }
     },
-    [collectionSnackBarState.isOpen, collectionSnackBarState.collectionId]
+    [isOpen, collectionId]
   );
 
   return (
@@ -47,9 +49,9 @@ const CollectionSnackBar: React.FC<Props> = props => {
       classes={{ root: s.snackbarWrapper }}
       anchorOrigin={{
         vertical: 'bottom',
-        horizontal: 'right',
+        horizontal: 'center',
       }}
-      open={collectionSnackBarState.isOpen}
+      open={isOpen}
       onClose={() => dispatch(closeCollectionSnackBar())}
       autoHideDuration={5000}
       ClickAwayListenerProps={{ mouseEvent: false, touchEvent: false }}
@@ -58,29 +60,30 @@ const CollectionSnackBar: React.FC<Props> = props => {
       }}
       message={
         <span id="message-id" className={s.snackbarContext}>
-          The paper has been saved to<br />
-          {collectionSnackBarState.collectionName}.
+          {`Saved to `}
+          {isLongName && <br />}
+          {`${collectionName}.`}
         </span>
       }
       action={[
         <Link
           className={s.goToCollectionBtn}
           key={`goToCollection`}
-          to={`/collections/${collectionSnackBarState.collectionId}`}
+          to={`/collections/${collectionId}`}
           onClick={() => {
             ActionTicketManager.trackTicket({
               pageType: getCurrentPageType(),
               actionType: 'fire',
               actionArea: 'collectionSnackbar',
-              actionTag: 'clickGoToCollection',
-              actionLabel: String(collectionSnackBarState.collectionId),
+              actionTag: 'clickViewCollection',
+              actionLabel: String(collectionId),
             });
 
             dispatch(closeCollectionSnackBar());
             dispatch(closeDialog());
           }}
         >
-          Go to Collection
+          View Collection
         </Link>,
         <button
           className={s.closeBtn}
