@@ -9,18 +9,21 @@ import { closeDialog } from '../../dialog/actions';
 import Icon from '../../../icons';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../../locationListener';
+import { UserDevice } from '../../layouts/reducer';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./collectionSnackBar.scss');
+
 type Props = ReturnType<typeof mapStateToProps> & {
   location: Location;
+  currentUserDevice: UserDevice;
 };
 
 const CollectionSnackBar: React.FC<Props> = props => {
   useStyles(s);
   const dispatch = useDispatch();
-  const { collectionSnackBarState, location } = props;
+  const { collectionSnackBarState, location, currentUserDevice } = props;
   const { collectionId, collectionName, isOpen } = collectionSnackBarState;
-  const isLongName = collectionName.length >= 30;
+  const isLongName = collectionName.length >= 30 && currentUserDevice === UserDevice.MOBILE;
 
   useEffect(
     () => {
