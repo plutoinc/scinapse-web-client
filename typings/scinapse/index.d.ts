@@ -119,6 +119,7 @@ declare namespace Scinapse {
       | 'clickRefreshButton'
       | 'savedCollection'
       | 'clickViewCollection'
+      | 'clickCollectionTitle'
       | 'clickCloseButton'
       | 'viewCollectionSnackBar'
       | '';

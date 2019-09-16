@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Location } from 'history';
 import Snackbar from '@material-ui/core/Snackbar';
 import { AppState } from '../../../reducers';
@@ -65,7 +66,22 @@ const CollectionSnackBar: React.FC<Props> = props => {
         <span id="message-id" className={s.snackbarContext}>
           {`Saved to `}
           {isLongName && <br />}
-          <a className={s.collectionName} href={`/collections/${collectionId}`}>{`${collectionName}.`}</a>
+          <Link
+            className={s.collectionName}
+            to={`/collections/${collectionId}`}
+            onClick={() => {
+              ActionTicketManager.trackTicket({
+                pageType: getCurrentPageType(),
+                actionType: 'fire',
+                actionArea: 'collectionSnackbar',
+                actionTag: 'clickCollectionTitle',
+                actionLabel: String(collectionId),
+              });
+
+              dispatch(closeCollectionSnackBar());
+              dispatch(closeDialog());
+            }}
+          >{`${collectionName}.`}</Link>
         </span>
       }
       action={[
