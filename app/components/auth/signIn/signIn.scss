@@ -63,7 +63,7 @@
 
 @media (max-width: $mobile_width) {
   .authFormWrapper {
-    width: 100%;
+    max-width: 100%;
   }
 
   .fbIconWrapper {
