@@ -8,7 +8,6 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import AuthInputBox from '../../common/inputBox/authInputBox';
 import Button from '../../common/button/button';
 import { GLOBAL_DIALOG_TYPE, DialogState } from '../../dialog/reducer';
-import GoogleAuthButton from '../authButton/googleAuthButton';
 import ORSeparator from '../separator';
 import AuthTabs from '../authTabs';
 import AuthAPI from '../../../api/auth';
@@ -20,17 +19,13 @@ import validateEmail from '../../../helpers/validateEmail';
 import AuthGuideContext from '../authGuideContext';
 import { ActionCreators } from '../../../actions/actionTypes';
 import { SIGN_UP_STEP } from '../signUp/types';
-import { handleClickORCIDBtn } from '../signUp/actions';
 import { AppState } from '../../../reducers';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import AuthContextText from '../authContextText';
 import useFBIsLoading from '../../../hooks/FBisLoadingHook';
 import { MINIMUM_PASSWORD_LENGTH } from '../../../constants/auth';
-import Icon from '../../../icons';
-import { getUserGroupName } from '../../../helpers/abTestHelper';
-import { AUTH_METHOD_EXPERIMENT } from '../../../constants/abTestGlobalValue';
-import { getSortedAuthType, AuthMethodType } from '../signUp/helpers/getAuthBtnOrderType';
-import { AuthMethodTestType } from '../../../constants/abTestObject';
+import AuthButtons from '../authButton/authButtons';
+import { SIGN_TYPE } from '../types';
 const s = require('./signIn.scss');
 
 declare var FB: any;
@@ -65,19 +60,9 @@ const validateForm = (values: EmailFormValues) => {
 const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = props => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [networkError, setNetworkError] = React.useState('');
-  const [sortedAuthType, setSortedAuthType] = React.useState<AuthMethodType[]>([]);
 
   const isDialog = !!props.handleChangeDialogType;
   const FBIsLoading = useFBIsLoading();
-
-  React.useEffect(() => {
-    const authMethod = getUserGroupName(AUTH_METHOD_EXPERIMENT) || '';
-    if (authMethod === AuthMethodTestType.ORCID_TOP) {
-      setSortedAuthType(getSortedAuthType(authMethod));
-    } else {
-      setSortedAuthType(getSortedAuthType(AuthMethodTestType.CONTROL));
-    }
-  }, []);
 
   function handleClickFBLogin() {
     FB.login(async (res: any) => {
@@ -163,61 +148,6 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
     }
   }
 
-  const buttons = sortedAuthType.map(type => {
-    if (type === AuthMethodType.FACEBOOK) {
-      return (
-        <div className={s.authButtonWrapper}>
-          <Button
-            size="large"
-            elementType="button"
-            style={{ backgroundColor: '#3859ab' }}
-            onClick={handleClickFBLogin}
-            disabled={FBIsLoading}
-            isLoading={isLoading}
-            fullWidth
-          >
-            <Icon icon="FACEBOOK_LOGO" />
-            <span>Continue with Facebook</span>
-          </Button>
-        </div>
-      );
-    } else if (type === AuthMethodType.GOOGLE) {
-      return (
-        <div className={s.authButtonWrapper}>
-          <GoogleAuthButton
-            isLoading={isLoading}
-            onSignUpWithSocial={values => {
-              props.dispatch(
-                ActionCreators.changeGlobalDialog({
-                  type: GLOBAL_DIALOG_TYPE.SIGN_UP,
-                  signUpStep: SIGN_UP_STEP.WITH_SOCIAL,
-                  oauthResult: values,
-                })
-              );
-            }}
-          />
-        </div>
-      );
-    } else {
-      return (
-        <div className={s.authButtonWrapper}>
-          <Button
-            size="large"
-            elementType="button"
-            style={{ backgroundColor: '#a5d027' }}
-            disabled={FBIsLoading}
-            isLoading={isLoading}
-            onClick={handleClickORCIDBtn}
-            fullWidth
-          >
-            <Icon icon="ORCID_LOGO" />
-            <span>Continue with ORCID</span>
-          </Button>
-        </div>
-      );
-    }
-  });
-
   return (
     <>
       <AuthContextText userActionType={props.userActionType} />
@@ -269,7 +199,21 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
               }}
             />
             <ORSeparator />
-            {buttons}
+            <AuthButtons
+              signType={SIGN_TYPE.SIGN_IN}
+              handleClickFBLogin={handleClickFBLogin}
+              handleClickGoogleLogin={values => {
+                props.dispatch(
+                  ActionCreators.changeGlobalDialog({
+                    type: GLOBAL_DIALOG_TYPE.SIGN_UP,
+                    signUpStep: SIGN_UP_STEP.WITH_SOCIAL,
+                    oauthResult: values,
+                  })
+                );
+              }}
+              FBIsLoading={FBIsLoading}
+              isLoading={isLoading}
+            />
           </div>
         </div>
       </div>
