@@ -266,7 +266,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         </div>
         <BottomBanner currentUser={currentUser} />
         <NextPaperTab />
-        <CollectionSnackBar location={location} currentUserDevice={layout.userDevice} />
+        <CollectionSnackBar location={location} />
       </>
     );
   }

@@ -302,7 +302,7 @@ const SearchContainer: React.FC<Props> = props => {
           width: '100%',
         }}
       />
-      <CollectionSnackBar location={location} currentUserDevice={layout.userDevice} />
+      <CollectionSnackBar location={location} />
     </div>
   );
 };

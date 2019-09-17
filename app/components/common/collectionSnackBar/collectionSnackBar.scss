@@ -1,3 +1,5 @@
+$mui-md-width: 960px;
+
 .snackbarWrapper {
   bottom: 60px;
 
@@ -14,7 +16,7 @@
   }
 }
 
-.goToCollectionBtn {
+.viewCollectionBtn {
   margin-right: 8px;
 }
 
@@ -29,7 +31,7 @@
   padding-right: 48px;
 }
 
-@media (min-width: 960px) {
+@media (min-width: $mui-md-width) {
   .snackbarWrapper {
     left: 0;
     right: 0;
@@ -37,7 +39,7 @@
   }
 }
 
-@media (max-width: 960px) {
+@media (max-width: $mui-md-width) {
   .snackbarWrapper {
     left: 16px;
     right: 16px;

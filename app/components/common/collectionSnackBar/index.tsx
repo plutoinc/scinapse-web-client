@@ -16,21 +16,20 @@ const s = require('./collectionSnackBar.scss');
 
 type Props = ReturnType<typeof mapStateToProps> & {
   location: Location;
-  currentUserDevice: UserDevice;
 };
 
 const CollectionSnackBar: React.FC<Props> = props => {
   useStyles(s);
   const dispatch = useDispatch();
-  const { collectionSnackBarState, location, currentUserDevice } = props;
+  const { collectionSnackBarState, location, layout } = props;
   const { collectionId, collectionName, isOpen } = collectionSnackBarState;
-  const isLongName = collectionName.length >= 30 && currentUserDevice === UserDevice.MOBILE;
+  const isLongName = collectionName.length >= 30 && layout.userDevice === UserDevice.MOBILE;
 
   useEffect(
     () => {
       dispatch(closeCollectionSnackBar());
     },
-    [location]
+    [dispatch, location]
   );
 
   useEffect(
@@ -85,7 +84,7 @@ const CollectionSnackBar: React.FC<Props> = props => {
         </span>
       }
       action={[
-        <div className={s.goToCollectionBtn} key={`goToCollection`}>
+        <div className={s.viewCollectionBtn} key={`viewCollection`}>
           <Button
             elementType="link"
             variant="text"
@@ -137,6 +136,7 @@ const CollectionSnackBar: React.FC<Props> = props => {
 const mapStateToProps = (state: AppState) => {
   return {
     collectionSnackBarState: state.collectionSnackBarState,
+    layout: state.layout,
   };
 };
 
