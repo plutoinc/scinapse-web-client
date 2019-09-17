@@ -29,7 +29,7 @@ import { MINIMUM_PASSWORD_LENGTH } from '../../../constants/auth';
 import Icon from '../../../icons';
 import { getUserGroupName } from '../../../helpers/abTestHelper';
 import { AUTH_METHOD_EXPERIMENT } from '../../../constants/abTestGlobalValue';
-import { getAuthOrderType, authButtonType } from '../signUp/helpers/getAuthBtnOrderType';
+import { getSortedAuthType, AuthMethodType } from '../signUp/helpers/getAuthBtnOrderType';
 import { AuthMethodTestType } from '../../../constants/abTestObject';
 const s = require('./signIn.scss');
 
@@ -65,17 +65,17 @@ const validateForm = (values: EmailFormValues) => {
 const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = props => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [networkError, setNetworkError] = React.useState('');
-  const [authBtnOrderType, setAuthBtnOrderType] = React.useState<authButtonType[]>([]);
+  const [sortedAuthType, setSortedAuthType] = React.useState<AuthMethodType[]>([]);
 
   const isDialog = !!props.handleChangeDialogType;
   const FBIsLoading = useFBIsLoading();
 
   React.useEffect(() => {
-    const authMethodType = getUserGroupName(AUTH_METHOD_EXPERIMENT) || '';
-    if (authMethodType === AuthMethodTestType.ORCID_TOP) {
-      setAuthBtnOrderType(getAuthOrderType(authMethodType));
+    const authMethod = getUserGroupName(AUTH_METHOD_EXPERIMENT) || '';
+    if (authMethod === AuthMethodTestType.ORCID_TOP) {
+      setSortedAuthType(getSortedAuthType(authMethod));
     } else {
-      setAuthBtnOrderType(getAuthOrderType(AuthMethodTestType.CONTROL));
+      setSortedAuthType(getSortedAuthType(AuthMethodTestType.CONTROL));
     }
   }, []);
 
@@ -163,8 +163,8 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
     }
   }
 
-  const buttons = authBtnOrderType.map(type => {
-    if (type === authButtonType.FACEBOOK) {
+  const buttons = sortedAuthType.map(type => {
+    if (type === AuthMethodType.FACEBOOK) {
       return (
         <div className={s.authButtonWrapper}>
           <Button
@@ -181,7 +181,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
           </Button>
         </div>
       );
-    } else if (type === authButtonType.GOOGLE) {
+    } else if (type === AuthMethodType.GOOGLE) {
       return (
         <div className={s.authButtonWrapper}>
           <GoogleAuthButton

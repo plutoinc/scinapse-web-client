@@ -25,7 +25,7 @@ import { getCollections } from '../../../../collections/actions';
 import Icon from '../../../../../icons';
 import { getUserGroupName } from '../../../../../helpers/abTestHelper';
 import { AUTH_METHOD_EXPERIMENT } from '../../../../../constants/abTestGlobalValue';
-import { getAuthOrderType, authButtonType } from '../../helpers/getAuthBtnOrderType';
+import { getSortedAuthType, AuthMethodType } from '../../helpers/getAuthBtnOrderType';
 const s = require('./firstForm.scss');
 
 declare var FB: any;
@@ -53,12 +53,12 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
   const { dispatch, dialogState, initialEmail } = props;
   const [isLoading, setIsLoading] = React.useState(false);
   const [networkError, setNetworkError] = React.useState('');
-  const [authBtnOrderType, setAuthBtnOrderType] = React.useState<authButtonType[]>([]);
+  const [sortedAuthType, setSortedAuthType] = React.useState<AuthMethodType[]>([]);
   const FBIsLoading = useFBIsLoading();
 
   React.useEffect(() => {
-    const authMethodType = getUserGroupName(AUTH_METHOD_EXPERIMENT) || '';
-    setAuthBtnOrderType(getAuthOrderType(authMethodType));
+    const authMethod = getUserGroupName(AUTH_METHOD_EXPERIMENT) || '';
+    setSortedAuthType(getSortedAuthType(authMethod));
   }, []);
 
   async function onSubmit(values: FormValues) {
@@ -149,8 +149,8 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
     }
   };
 
-  const buttons = authBtnOrderType.map(type => {
-    if (type === authButtonType.FACEBOOK) {
+  const buttons = sortedAuthType.map(type => {
+    if (type === AuthMethodType.FACEBOOK) {
       return (
         <div className={s.authButtonWrapper} key={type}>
           <Button
@@ -167,7 +167,7 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
           </Button>
         </div>
       );
-    } else if (type === authButtonType.GOOGLE) {
+    } else if (type === AuthMethodType.GOOGLE) {
       return (
         <div className={s.authButtonWrapper} key={type}>
           <GoogleAuthButton isLoading={isLoading} onSignUpWithSocial={props.onSignUpWithSocial} />

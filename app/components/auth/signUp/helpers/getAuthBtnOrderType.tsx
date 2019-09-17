@@ -1,22 +1,22 @@
 import { AuthMethodTestType } from '../../../../constants/abTestObject';
 
-export const enum authButtonType {
+export const enum AuthMethodType {
   FACEBOOK,
   GOOGLE,
   ORCID,
 }
 
-export function getAuthOrderType(currentAuthMethodType: string) {
+export function getSortedAuthType(currentAuthMethodType: string) {
   switch (currentAuthMethodType) {
     case AuthMethodTestType.ORCID_TOP:
-      return [authButtonType.ORCID, authButtonType.GOOGLE, authButtonType.FACEBOOK];
+      return [AuthMethodType.ORCID, AuthMethodType.GOOGLE, AuthMethodType.FACEBOOK];
     case AuthMethodTestType.NO_FACEBOOK:
-      return [authButtonType.ORCID, authButtonType.GOOGLE];
+      return [AuthMethodType.ORCID, AuthMethodType.GOOGLE];
     case AuthMethodTestType.NO_GOOGLE:
-      return [authButtonType.ORCID, authButtonType.FACEBOOK];
+      return [AuthMethodType.ORCID, AuthMethodType.FACEBOOK];
     case AuthMethodTestType.ONLY_ORCID:
-      return [authButtonType.ORCID];
+      return [AuthMethodType.ORCID];
     default:
-      return [authButtonType.FACEBOOK, authButtonType.GOOGLE, authButtonType.ORCID];
+      return [AuthMethodType.FACEBOOK, AuthMethodType.GOOGLE, AuthMethodType.ORCID];
   }
 }
