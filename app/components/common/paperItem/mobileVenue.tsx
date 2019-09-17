@@ -6,6 +6,7 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { ConferenceInstance } from '../../../model/conferenceInstance';
 import { Journal } from '../../../model/journal';
 import Icon from '../../../icons';
+import JournalBadge from '../../journalBadge';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./mobileVenue.scss');
 
@@ -87,7 +88,7 @@ const MobileVenue: React.FC<MobileVenueProps> = ({ paper, isExpanded, pageType, 
                 {journal.impactFactor.toFixed(2)}
               </span>
             )}
-          {journal && journal.sci && <span className={s.sciLabel}> (SCI)</span>}
+          {journal && journal.sci && <JournalBadge text="SCI(E)" labelClassName={s.sciLabel} />}
         </div>
         <div className={s.expandedTitle}>{title}</div>
       </>
@@ -104,7 +105,7 @@ const MobileVenue: React.FC<MobileVenueProps> = ({ paper, isExpanded, pageType, 
             {journal.impactFactor.toFixed(2)}
           </span>
         )}
-      {journal && journal.sci && <span className={s.sciLabel}> (SCI)</span>}
+      {journal && journal.sci && <JournalBadge text="SCI(E)" labelClassName={s.sciLabel} />}
       {title}
     </div>
   );

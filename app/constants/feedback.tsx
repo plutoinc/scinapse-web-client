@@ -1,0 +1,23 @@
+export enum FEEDBACK_SOURCE {
+  EMAIL = 1,
+  PORTAL,
+  PHONE,
+  CHAT = 7,
+  MOBILHELP,
+  FEEDBACK_WIDGET,
+  OUTBOUND_EMAIL,
+}
+
+export enum FEEDBACK_STATUS {
+  OPEN = 2,
+  PENDING,
+  RESOLVED,
+  CLOSED,
+}
+
+export enum FEEDBACK_PRIORITY {
+  LOW = 1,
+  MEDIUM,
+  HIGH,
+  URGENT,
+}

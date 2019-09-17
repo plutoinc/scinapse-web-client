@@ -17,7 +17,8 @@ import { ACTION_TYPES } from '../../../../actions/actionTypes';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import Icon from '../../../../icons';
 import { LAST_SUCCEEDED_EMAIL_KEY } from '../../../../constants/requestDialogConstant';
-declare var ga: any;
+import { FEEDBACK_SOURCE, FEEDBACK_PRIORITY, FEEDBACK_STATUS } from '../../../../constants/feedback';
+
 const styles = require('./requestPaperDialog.scss');
 
 interface RequestPaperDialogProps extends RouteComponentProps<any> {
@@ -42,31 +43,24 @@ function validateForm(values: FormState) {
 }
 
 const RequestPaperDialog: React.FunctionComponent<RequestPaperDialogProps> = props => {
-  const { currentUser, location, isOpen, onClose, dispatch, query } = props;
+  const { currentUser, isOpen, onClose, dispatch, query } = props;
   const [email, setEmail] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
 
   async function handleSubmitForm(values: FormState) {
     setIsLoading(true);
 
-    const feedbackManger = new FeedbackManager();
-
-    let gaId = '';
-    if (typeof ga !== 'undefined') {
-      ga((tracker: any) => {
-        gaId = tracker.get('clientId');
-      });
-    }
-
-    const href: string = location.pathname;
+    const feedbackManager = new FeedbackManager();
+    const feedbackDesc = `query : ${query} / comment : ${values.content}`;
 
     try {
-      await feedbackManger.sendFeedback({
-        content: values.content,
+      await feedbackManager.sendTicketToFreshdesk({
         email: values.email,
-        referer: href,
-        userId: currentUser.isLoggedIn ? currentUser.id.toString() : '',
-        gaId,
+        description: feedbackDesc,
+        subject: 'Not include paper : ' + values.email,
+        status: FEEDBACK_STATUS.OPEN,
+        priority: FEEDBACK_PRIORITY.MEDIUM,
+        source: FEEDBACK_SOURCE.EMAIL,
       });
 
       ActionTicketManager.trackTicket({

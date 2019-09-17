@@ -226,7 +226,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
         className={styles.headerLogo}
         aria-label="Scinapse header logo"
       >
-        <Icon icon="SCINAPSE_IMPROVEMENT_LOGO" />{' '}
+        <Icon icon="SCINAPSE_IMPROVEMENT_LOGO" />
       </Link>
     );
   };

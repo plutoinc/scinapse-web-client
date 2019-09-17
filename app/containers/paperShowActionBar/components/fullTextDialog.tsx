@@ -51,7 +51,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
         paperId: props.paperId,
         email: values.email,
         message: values.message,
-        name: props.currentUser.firstName + props.currentUser.lastName,
+        name: `${props.currentUser.firstName} ${props.currentUser.lastName}`,
       });
 
       ActionTicketManager.trackTicket({
