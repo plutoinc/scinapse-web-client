@@ -202,7 +202,6 @@ const SearchContainer: React.FC<Props> = props => {
     searchPapers,
     changeSearchQuery,
     enableAutoYearFilter,
-    layout,
   } = props;
 
   const [queryParams, setQueryParams] = React.useState<SearchPageQueryParams>(
@@ -302,7 +301,7 @@ const SearchContainer: React.FC<Props> = props => {
           width: '100%',
         }}
       />
-      <CollectionSnackBar location={location} />
+      <CollectionSnackBar />
     </div>
   );
 };

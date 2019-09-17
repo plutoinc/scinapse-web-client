@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
-import { connect, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Location } from 'history';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import { AppState } from '../../../reducers';
-import { closeCollectionSnackBar } from '../../../reducers/collectionSnackBar';
+import { closeCollectionSnackBar, CollectionSnackBarState } from '../../../reducers/collectionSnackBar';
 import { closeDialog } from '../../dialog/actions';
 import Icon from '../../../icons';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
@@ -14,16 +13,20 @@ import Button from '../button';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./collectionSnackBar.scss');
 
-type Props = ReturnType<typeof mapStateToProps> & {
-  location: Location;
-};
+type Props = RouteComponentProps<any>;
 
 const CollectionSnackBar: React.FC<Props> = props => {
   useStyles(s);
   const dispatch = useDispatch();
-  const { collectionSnackBarState, location, layout } = props;
+
+  const collectionSnackBarState = useSelector<AppState, CollectionSnackBarState>(
+    state => state.collectionSnackBarState
+  );
+  const userDevice = useSelector((state: AppState) => state.layout.userDevice);
+
+  const { location } = props;
   const { collectionId, collectionName, isOpen } = collectionSnackBarState;
-  const isLongName = collectionName.length >= 30 && layout.userDevice === UserDevice.MOBILE;
+  const isLongName = collectionName.length >= 30 && userDevice === UserDevice.MOBILE;
 
   useEffect(
     () => {
@@ -133,11 +136,4 @@ const CollectionSnackBar: React.FC<Props> = props => {
   );
 };
 
-const mapStateToProps = (state: AppState) => {
-  return {
-    collectionSnackBarState: state.collectionSnackBarState,
-    layout: state.layout,
-  };
-};
-
-export default connect(mapStateToProps)(CollectionSnackBar);
+export default withRouter(CollectionSnackBar);
