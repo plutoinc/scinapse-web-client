@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import Button from '../../common/button/button';
+import Button from '../../common/button';
 import AuthInputBox from '../../common/inputBox/authInputBox';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import validateEmail from '../../../helpers/validateEmail';

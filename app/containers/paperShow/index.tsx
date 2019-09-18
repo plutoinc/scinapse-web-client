@@ -47,6 +47,7 @@ import PlutoAxios from '../../api/pluto';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
 import PaperShowFigureList from '../../components/paperShow/components/paperShowFigureList';
 import { UserDevice } from '../../components/layouts/reducer';
+import CollectionSnackBar from '../../components/common/collectionSnackBar';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -265,6 +266,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         </div>
         <BottomBanner currentUser={currentUser} />
         <NextPaperTab />
+        <CollectionSnackBar />
       </>
     );
   }
