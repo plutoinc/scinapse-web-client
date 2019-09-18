@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 57.1 (83088) - https://sketch.com -->
+    <title>Icons / Logo / Facebook</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M12,2 C6.47714844,2 2,6.50450982 2,12.0611134 C2,17.0829059 5.65685547,21.24522 10.4375,22 L10.4375,14.969404 L7.8984375,14.969404 L7.8984375,12.0611134 L10.4375,12.0611134 L10.4375,9.84452436 C10.4375,7.32295781 11.9304297,5.93012242 14.2146484,5.93012242 C15.3087305,5.93012242 16.453125,6.12662854 16.453125,6.12662854 L16.453125,8.60260567 L15.1921484,8.60260567 C13.9499023,8.60260567 13.5625,9.37815638 13.5625,10.1738097 L13.5625,12.0611134 L16.3359375,12.0611134 L15.8925781,14.969404 L13.5625,14.969404 L13.5625,22 C18.3431445,21.24522 22,17.0829059 22,12.0611134 C22,6.50450982 17.5228516,2 12,2 Z" id="path-1"></path>
+    </defs>
+    <g id="Icons-/-Logo-/-Facebook" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group">
+            <rect id="Rectangle" x="0" y="0" width="24" height="24"></rect>
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Fill-1" fill="currentColor" xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>
