@@ -1,0 +1,177 @@
+* {
+  font-family: $fallback;
+}
+
+.uiDemoWrapper {
+  width: 100vw;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex: 1 1 0%;
+  background: white;
+}
+
+.leftBox {
+  height: 100vh;
+  width: 297px;
+  padding: 88px 40px;
+  display: flex;
+  flex-direction: column;
+  background-color: $gray50;
+  flex-grow: 0;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 99;
+  transition: box-shadow 300ms ease-in 0s;
+  width: 297px;
+  overflow: scroll;
+}
+
+.rightBox {
+  flex-grow: 1;
+  flex-shrink: 1;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  z-index: 1;
+  width: calc(100vw - 297px);
+  height: 100vh;
+  max-height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.exampleButtonContainer {
+  display: flex;
+  height: 60vh;
+  width: 240px;
+  align-items: center;
+  justify-content: center;
+}
+
+.exampleButtonWrapper {
+  width: 100%;
+}
+
+.buttonCodeContainer {
+  display: flex;
+  height: 40vh;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.buttonCodeWrapper {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  background-color: $black0;
+  padding: 16px;
+  color: white;
+  line-height: 1.4;
+  cursor: text;
+  overflow: scroll;
+}
+
+.buttonCodeBox {
+  height: 50vh;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.demoTitle {
+  color: $black0;
+  font-weight: 500;
+  font-size: 32px;
+  margin: 16px 4px 16px 4px;
+}
+
+.selectBoxLabel {
+  color: $black0;
+  margin: 16px 4px 2px 4px;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.selectBoxWrapper {
+  background-color: white;
+  border-radius: 4px;
+  border: 1px solid $gray300;
+  font-family: inherit;
+  color: $gray800;
+  margin: 8px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.dropdownIcon {
+  color: $gray500;
+  width: 16px;
+  height: 16px;
+  margin: 4px 12px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.selectBox {
+  padding: 4px 12px;
+  background-color: white;
+  width: 100%;
+  border-radius: 4px;
+  font-family: inherit;
+  border: 1px solid white;
+  color: $gray800;
+  margin: 4px 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+.checkboxWrapper {
+  display: block;
+  padding: 8px 4px;
+}
+
+.checkboxLabel {
+  display: inline-block;
+  color: $gray800;
+  width: 180px;
+}
+
+.checkbox {
+  display: inline-block;
+}
+
+@media (max-width: 768px) {
+  .uiDemoWrapper {
+    flex-direction: column;
+  }
+
+  .leftBox {
+    width: 100%;
+    height: auto;
+  }
+
+  .rightBox {
+    width: 100%;
+  }
+
+  .exampleButtonWrapper {
+  }
+
+  .buttonCodeWrapper {
+    width: 100%;
+  }
+}
