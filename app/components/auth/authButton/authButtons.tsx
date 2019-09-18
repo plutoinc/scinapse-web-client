@@ -40,7 +40,7 @@ const AuthButtons: React.FC<AuthButtonsProps> = props => {
   const buttons = sortedAuthType.map(authType => {
     if (authType === AuthMethodType.FACEBOOK) {
       return (
-        <div className={s.authButtonWrapper}>
+        <div className={s.authButtonWrapper} key={authType}>
           <Button
             size="large"
             elementType="button"
@@ -57,13 +57,13 @@ const AuthButtons: React.FC<AuthButtonsProps> = props => {
       );
     } else if (authType === AuthMethodType.GOOGLE) {
       return (
-        <div className={s.authButtonWrapper}>
+        <div className={s.authButtonWrapper} key={authType}>
           <GoogleAuthButton isLoading={isLoading} onSignUpWithSocial={handleClickGoogleLogin} />
         </div>
       );
     } else {
       return (
-        <div className={s.authButtonWrapper}>
+        <div className={s.authButtonWrapper} key={authType}>
           <Button
             size="large"
             elementType="button"
