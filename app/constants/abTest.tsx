@@ -1,3 +1,9 @@
+import {
+  DUMMY_TEST,
+  WEIGHTED_CITATION_EXPERIMENT,
+  EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER,
+  AUTH_METHOD_EXPERIMENT,
+} from './abTestGlobalValue';
 import { dummy, weightedCitation, emailRecommendPaperSignUpBanner, authMethod } from './abTestObject';
 
 export interface UserGroup {
@@ -10,7 +16,11 @@ export interface Test {
   userGroup: UserGroup[];
 }
 
-export type ABTest = 'dummy' | 'weightedCitation' | 'signBannerAtSearch-recommend' | 'authMethod';
+export type ABTest =
+  | typeof DUMMY_TEST
+  | typeof WEIGHTED_CITATION_EXPERIMENT
+  | typeof EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER
+  | typeof AUTH_METHOD_EXPERIMENT;
 
 export interface SignUpConversionExpTicketContext {
   pageType: Scinapse.ActionTicket.PageType;
