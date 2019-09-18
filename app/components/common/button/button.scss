@@ -94,10 +94,10 @@
 .outlined {
   border: 1px solid $gray400;
   &:hover {
-    background-color: $gray200;
+    background-color: rgba(52, 73, 94, 0.05);
   }
   &:active {
-    background-color: $gray300;
+    background-color: rgba(52, 73, 94, 0.08);
   }
 }
 
@@ -121,6 +121,9 @@
   &:hover {
     transition: ease 0.2s;
     background-color: white;
+  }
+  svg {
+    color: $gray500;
   }
 }
 
@@ -190,6 +193,9 @@
 
 .text.disabled {
   color: $gray500;
+  svg {
+    color: $gray500;
+  }
 }
 
 .full {
