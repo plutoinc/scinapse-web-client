@@ -3,7 +3,7 @@ import { AuthMethodType, getSortedAuthType } from '../signUp/helpers/getAuthBtnO
 import { getUserGroupName } from '../../../helpers/abTestHelper';
 import { AUTH_METHOD_EXPERIMENT } from '../../../constants/abTestGlobalValue';
 import { AuthMethodTestType } from '../../../constants/abTestObject';
-import Button from '../../common/button/button';
+import Button from '../../common/button';
 import GoogleAuthButton from './googleAuthButton';
 import Icon from '../../../icons';
 import { handleClickORCIDBtn } from '../signUp/actions';
