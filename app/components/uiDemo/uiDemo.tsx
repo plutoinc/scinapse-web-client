@@ -1,6 +1,5 @@
 import React from 'react';
-// import { renderToString } from 'react-dom/server'
-import Button, { GeneralButtonProps } from '../common/button/button';
+import Button, { GeneralButtonProps } from '../common/button';
 import { ButtonSize, ButtonVariant, ButtonColor } from '../common/button/types';
 import Icon from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
