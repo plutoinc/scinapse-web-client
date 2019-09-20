@@ -5,8 +5,10 @@ exports[`BlockVenue Component when paper is from conference should render correc
   className="wrapper"
 >
   <i
-    className="icon journalIcon"
-  />
+    className="journalIcon"
+  >
+    JOURNAL
+  </i>
   <span
     className="journalContent"
   >

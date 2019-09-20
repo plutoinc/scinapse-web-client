@@ -33,11 +33,16 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        loader: 'svg-sprite-loader',
-        options: {
-          classPrefix: false,
-          idPrefix: true,
-        },
+        use: [
+          {
+            loader: 'svg-sprite-loader',
+            options: {
+              esModule: false,
+            },
+          },
+          'svg-transform-loader',
+          'svgo-loader',
+        ],
       },
       {
         test: /\.css$/,
