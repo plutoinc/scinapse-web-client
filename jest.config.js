@@ -4,13 +4,14 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/jest/jestReporter.js'],
   verbose: true,
   rootDir: '',
+  roots: ['<rootDir>/app/'],
   moduleFileExtensions: ['js', 'ts', 'tsx'],
   coveragePathIgnorePatterns: ['/node_modules/'],
   watchPathIgnorePatterns: ['/node_modules/'],
+  transformIgnorePatterns: ['node_modules'],
   coverageDirectory: 'output/coverage',
   testMatch: null,
   testRegex: '__tests__/.*_spec.tsx$',
-  transformIgnorePatterns: ['node_modules'],
   moduleNameMapper: {
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
       '<rootDir>/app/__tests__/fileMock.js',

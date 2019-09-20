@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { withStyles } from '../helpers/withStylesHelper';
-const styles = require('./icons.scss');
 
 interface IconProps extends React.SVGAttributes<SVGElement> {
   icon: string;
@@ -102,38 +100,21 @@ const ICONS: { [key: string]: any } = {
   STAR_BADGE: require('./star-badge.svg'),
 };
 
-@withStyles<typeof Icon>(styles)
-class Icon extends React.PureComponent<IconProps> {
-  public render() {
-    let className = styles.icon;
-    if (this.props.className) {
-      className = `${styles.icon} ${this.props.className}`;
-    }
+const Icon: React.FC<IconProps> = ({ className, icon, onClick, style }) => {
+  const symbol = ICONS[icon];
 
-    const imgSrc = ICONS[this.props.icon];
+  console.log(symbol);
 
-    if (!imgSrc) {
-      return <i className={className}>{imgSrc}</i>;
-    } else if (typeof imgSrc === 'string') {
-      const s3Url = 'https://dd2gn9pwu61vr.cloudfront.net';
-
-      return <img className={className} src={`${s3Url}/${imgSrc}`} alt={this.props.icon} />;
-    } else {
-      const icon = `
-      <svg viewBox="${imgSrc.viewBox}">
-        <use xlink:href="#${imgSrc.id}" />
-      </svg>`;
-
-      return (
-        <i
-          onClick={this.props.onClick}
-          style={this.props.style}
-          className={className}
-          dangerouslySetInnerHTML={{ __html: icon }}
-        />
-      );
-    }
+  if (!symbol) {
+    return null;
   }
-}
+
+  if (typeof symbol === 'string' /* INFO: this is needed for jest-test */) {
+    return <i className={className}>{icon}</i>;
+  }
+
+  const svg = `<svg viewBox="${symbol.viewBox}"><use xlink:href="#${symbol.id}" /></svg>`;
+  return <i onClick={onClick} style={style} className={className} dangerouslySetInnerHTML={{ __html: svg }} />;
+};
 
 export default Icon;
