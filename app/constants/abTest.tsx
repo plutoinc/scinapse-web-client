@@ -6,14 +6,14 @@ import {
 } from './abTestGlobalValue';
 import { dummy, weightedCitation, emailRecommendPaperSignUpBanner, authMethod } from './abTestObject';
 
-export interface UserGroup {
-  groupName: string;
+export interface UserGroup<N = string> {
+  groupName: N;
   weight: number;
 }
 
-export interface Test {
+export interface Test<N = string> {
   name: ABTest;
-  userGroup: UserGroup[];
+  userGroup: UserGroup<N>[];
 }
 
 export type ABTest =
