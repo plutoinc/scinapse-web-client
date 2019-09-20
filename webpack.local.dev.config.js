@@ -48,10 +48,10 @@ module.exports = {
           {
             loader: 'svg-sprite-loader',
             options: {
-              classPrefix: false,
-              idPrefix: true,
+              esModule: false,
             },
           },
+          'svg-transform-loader',
           'svgo-loader',
         ],
       },
