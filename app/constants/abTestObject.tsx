@@ -26,9 +26,16 @@ export const dummy: Test = {
   userGroup: [{ groupName: 'a', weight: 1 }, { groupName: 'b', weight: 1 }],
 };
 
-export const weightedCitation: Test = {
+export type WeightedCitationUserGroup = 'a' | 'b' | 'c' | 'd';
+
+export const weightedCitation: Test<WeightedCitationUserGroup> = {
   name: WEIGHTED_CITATION_EXPERIMENT,
-  userGroup: [{ groupName: 'control', weight: 1 }, { groupName: 'wc', weight: 3 }],
+  userGroup: [
+    { groupName: 'a', weight: 1 },
+    { groupName: 'b', weight: 1 },
+    { groupName: 'c', weight: 1 },
+    { groupName: 'd', weight: 1 },
+  ],
 };
 
 export const emailRecommendPaperSignUpBanner: Test = {

@@ -1,15 +1,16 @@
 import { CancelToken } from 'axios';
 import { Paper } from '../../model/paper';
+import { WeightedCitationUserGroup } from '../../constants/abTestObject';
 
 export interface SearchPapersParams {
   sort: string;
   page: number;
   query: string;
   filter: string;
-  weightedCitation: boolean;
   size?: number;
   cancelToken?: CancelToken;
   detectYear?: boolean;
+  wcm?: WeightedCitationUserGroup;
 }
 
 export interface GetRefOrCitedPapersParams {

@@ -43,7 +43,6 @@ class SearchQueryManager {
       page: searchPage,
       filter: filter || '',
       sort: sort || '',
-      weightedCitation: true,
     };
   }
 
