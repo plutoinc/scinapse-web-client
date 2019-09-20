@@ -121,9 +121,21 @@ const handler = async (event: LambdaProxy.Event): Promise<LambdaProxy.Response> 
   LIVE_TESTS.forEach(test => {
     if (!keys.includes(test.name)) {
       const randomUserGroup = getRandomUserGroup(test.name);
-      newCookies[test.name] = { value: randomUserGroup, options: { maxAge: 2592000 } };
+      newCookies[test.name] = {
+        value: randomUserGroup,
+        options: {
+          path: '/',
+          maxAge: 2592000,
+        },
+      };
     } else {
-      newCookies[test.name] = { value: cookies[test.name], options: { maxAge: 2592000 } };
+      newCookies[test.name] = {
+        value: cookies[test.name],
+        options: {
+          path: '/',
+          maxAge: 2592000,
+        },
+      };
     }
   });
 

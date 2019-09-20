@@ -30,7 +30,7 @@ import { getCollections } from '../collections/actions';
 import { getMemoizedPaper } from '../../containers/paperShow/select';
 import ResearchHistory from '../researchHistory';
 import { UserDevice } from './reducer';
-import Button from '../common/button/button';
+import Button from '../common/button';
 const styles = require('./improvedHeader.scss');
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;

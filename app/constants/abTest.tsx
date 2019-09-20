@@ -1,16 +1,26 @@
-import { dummy, weightedCitation, emailRecommendPaperSignUpBanner } from './abTestObject';
+import {
+  DUMMY_TEST,
+  WEIGHTED_CITATION_EXPERIMENT,
+  EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER,
+  AUTH_METHOD_EXPERIMENT,
+} from './abTestGlobalValue';
+import { dummy, weightedCitation, emailRecommendPaperSignUpBanner, authMethod } from './abTestObject';
 
-export interface UserGroup {
-  groupName: string;
+export interface UserGroup<N = string> {
+  groupName: N;
   weight: number;
 }
 
-export interface Test {
+export interface Test<N = string> {
   name: ABTest;
-  userGroup: UserGroup[];
+  userGroup: UserGroup<N>[];
 }
 
-export type ABTest = 'dummy' | 'weightedCitation' | 'signBannerAtSearch-recommend';
+export type ABTest =
+  | typeof DUMMY_TEST
+  | typeof WEIGHTED_CITATION_EXPERIMENT
+  | typeof EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER
+  | typeof AUTH_METHOD_EXPERIMENT;
 
 export interface SignUpConversionExpTicketContext {
   pageType: Scinapse.ActionTicket.PageType;
@@ -19,7 +29,7 @@ export interface SignUpConversionExpTicketContext {
   expName?: string;
 }
 
-export const LIVE_TESTS: Test[] = [dummy, weightedCitation, emailRecommendPaperSignUpBanner];
+export const LIVE_TESTS: Test[] = [dummy, weightedCitation, emailRecommendPaperSignUpBanner, authMethod];
 
 function getRandomPool(): { [key: string]: string[] } {
   const randomPool: { [key: string]: string[] } = {};

@@ -16,9 +16,9 @@ const ICONS: { [key: string]: any } = {
   EMAIL_VERIFICATION_FAIL: require('./email-verification-fail.svg'),
   EMAIL_VERIFICATION_NEEDED: require('./email-verification-needed.svg'),
   ERROR_BACKGROUND: require('./error-background.svg'),
-  FACEBOOK_LOGO: require('./facebook-logo.svg'),
+  GOOGLE_LOGO: require('./google.svg'),
+  FACEBOOK_LOGO: require('./facebook.svg'),
   FULL_NAME_ICON: require('./full-name-icon.svg'),
-  GOOGLE_LOGO: require('./google-logo.svg'),
   H_INDEX_TOOLTIP: require('./h-index-tooltip.svg'),
   INTUITIVE_FEED: require('./intuitive-feed.svg'),
   LAST_PAGE: require('./last-page.svg'),
@@ -102,8 +102,6 @@ const ICONS: { [key: string]: any } = {
 
 const Icon: React.FC<IconProps> = ({ className, icon, onClick, style }) => {
   const symbol = ICONS[icon];
-
-  console.log(symbol);
 
   if (!symbol) {
     return null;

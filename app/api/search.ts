@@ -9,6 +9,7 @@ import { Affiliation } from '../model/affiliation';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
 import { Author } from '../model/author/author';
 import { NewFOS } from '../model/fos';
+import { WeightedCitationUserGroup } from '../constants/abTestObject';
 
 export interface BaseSearchParams {
   query: string;
@@ -20,7 +21,7 @@ export interface BaseSearchParams {
 
 export interface PaperSearchParams extends BaseSearchParams {
   filter: string;
-  weightedCitation: boolean;
+  wcm?: WeightedCitationUserGroup;
 }
 
 export interface MatchEntityAuthor extends BasePaperAuthor {
@@ -60,7 +61,7 @@ export interface AuthorSearchResult extends PaginationResponseV2<Author[]> {
 }
 
 class SearchAPI extends PlutoAxios {
-  public async search({ query, sort, filter, page = 0, cancelToken, detectYear, weightedCitation }: PaperSearchParams) {
+  public async search({ query, sort, filter, page = 0, cancelToken, detectYear, wcm }: PaperSearchParams) {
     const res = await this.get('/search', {
       params: {
         q: query,
@@ -68,7 +69,7 @@ class SearchAPI extends PlutoAxios {
         filter,
         page,
         yd: detectYear,
-        wc: weightedCitation,
+        wcm,
       },
       cancelToken,
     });

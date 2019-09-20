@@ -17,7 +17,13 @@ const app = express();
 app.disable('x-powered-by');
 app.use(cookieParser());
 app.use(compression({ filter: shouldCompress }));
-app.use(morgan('combined'));
+app.use(
+  morgan('combined', {
+    skip: function(_req, res) {
+      return res.statusCode < 400;
+    },
+  })
+);
 app.use(
   /^\/client.*/,
   proxy('http://localhost:8080', {

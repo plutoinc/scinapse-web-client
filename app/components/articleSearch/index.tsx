@@ -34,7 +34,8 @@ import ImprovedFooter from '../layouts/improvedFooter';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { WEIGHTED_CITATION_EXPERIMENT, EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER } from '../../constants/abTestGlobalValue';
 import EmailBanner from './components/emailBanner';
-import { EmailRecommendPaperSignUpBannerTestType } from '../../constants/abTestObject';
+import { EmailRecommendPaperSignUpBannerTestType, WeightedCitationUserGroup } from '../../constants/abTestObject';
+import CollectionSnackBar from '../common/collectionSnackBar';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -202,6 +203,7 @@ const SearchContainer: React.FC<Props> = props => {
     changeSearchQuery,
     enableAutoYearFilter,
   } = props;
+
   const [queryParams, setQueryParams] = React.useState<SearchPageQueryParams>(
     parse(location.search, { ignoreQueryPrefix: true })
   );
@@ -217,7 +219,7 @@ const SearchContainer: React.FC<Props> = props => {
     () => {
       if (currentUserState.isLoggingIn) return;
 
-      const doWeightedCitationSearch = getUserGroupName(WEIGHTED_CITATION_EXPERIMENT) === 'wc';
+      const weightedCitationType = getUserGroupName(WEIGHTED_CITATION_EXPERIMENT) as WeightedCitationUserGroup;
 
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
 
@@ -229,7 +231,7 @@ const SearchContainer: React.FC<Props> = props => {
       const params = SearchQueryManager.makeSearchQueryFromParamsObject(currentQueryParams);
       params.cancelToken = cancelToken.current.token;
       params.detectYear = articleSearchState.searchInput !== currentQueryParams.query || enableAutoYearFilter;
-      params.weightedCitation = !!doWeightedCitationSearch;
+      params.wcm = weightedCitationType;
 
       searchPapers(params).then(() => {
         restoreScroll(location.key);
@@ -299,6 +301,7 @@ const SearchContainer: React.FC<Props> = props => {
           width: '100%',
         }}
       />
+      <CollectionSnackBar />
     </div>
   );
 };

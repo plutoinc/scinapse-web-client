@@ -51,6 +51,10 @@ import RecommendPoolReducer, {
   RECOMMEND_POOL_INITIAL_STATE,
 } from '../components/recommendPool/recommendPoolReducer';
 import { SearchFilterState, reducer as SearchFilterReducer, SEARCH_FILTER_INITIAL_STATE } from './searchFilter';
+import CollectionSnackBarReducer, {
+  CollectionSnackBarState,
+  COLLECTION_SNACK_BAR_INITIAL_STATE,
+} from './collectionSnackBar';
 
 export interface AppState {
   configuration: ConfigurationReducer.Configuration;
@@ -73,6 +77,7 @@ export interface AppState {
   recommendPoolState: RecommendPoolState;
   searchFilterState: SearchFilterState;
   signUpModalState: SignUpModalState;
+  collectionSnackBarState: CollectionSnackBarState;
   entities: EntityState;
 }
 
@@ -97,6 +102,7 @@ export const initialState: AppState = {
   recommendPoolState: RECOMMEND_POOL_INITIAL_STATE,
   searchFilterState: SEARCH_FILTER_INITIAL_STATE,
   signUpModalState: SIGN_UP_MODAL_INITIAL_STATE,
+  collectionSnackBarState: COLLECTION_SNACK_BAR_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
 };
 
@@ -121,5 +127,6 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   recommendPoolState: RecommendPoolReducer,
   searchFilterState: SearchFilterReducer,
   signUpModalState: SignUpModalReducer,
+  collectionSnackBarState: CollectionSnackBarReducer,
   entities: EntityReducer,
 });

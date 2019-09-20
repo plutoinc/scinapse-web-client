@@ -8,8 +8,7 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import alertToast from '../../../helpers/makePlutoToastAction';
 import PlutoAxios from '../../../api/pluto';
 import { MINIMUM_PASSWORD_LENGTH } from '../../../constants/auth';
-import { handleClickORCIDBtn } from '../signUp/actions';
-import Button from '../../common/button/button';
+import Button from '../../common/button';
 const styles = require('./resetPassword.scss');
 
 interface FormValues {
@@ -102,7 +101,6 @@ const ResetPasswordPage: React.FunctionComponent<RouteComponentProps<any>> = pro
               elementType="button"
               style={{ backgroundColor: '#6096ff', marginTop: '42px', fontSize: '14px' }}
               isLoading={isLoading}
-              onClick={handleClickORCIDBtn}
               fullWidth
             >
               <span>RESET PASSWORD & SIGN IN</span>

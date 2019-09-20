@@ -98,7 +98,8 @@ export type EmailSettingTypes =
   | 'COLLECTION_REMIND'
   | 'FEATURE_INSTRUCTION'
   | 'PAPER_RECOMMENDATION'
-  | 'REQUEST_CONFIRMATION';
+  | 'REQUEST_CONFIRMATION'
+  | 'LAST_WEEK_ACTIVITY';
 
 export interface EmailSettingItemResponse {
   type: EmailSettingTypes;
