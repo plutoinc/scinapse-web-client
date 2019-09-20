@@ -4,6 +4,7 @@ import {
   WEIGHTED_CITATION_EXPERIMENT,
   EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER,
   AUTH_METHOD_EXPERIMENT,
+  COLLECTION_BUTTON_TEXT_EXPERIMENT,
 } from './abTestGlobalValue';
 
 export const enum EmailRecommendPaperSignUpBannerTestType {
@@ -19,6 +20,13 @@ export const enum AuthMethodTestType {
   NO_FACEBOOK = 'noFacebook',
   NO_GOOGLE = 'noGoogle',
   ONLY_ORCID = 'onlyORCID',
+}
+
+export const enum CollectionButtonTextTestType {
+  CONTROL = 'control',
+  ADD = 'add_to_collection',
+  KEEP = 'keep',
+  READ_LATER = 'read_later',
 }
 
 export const dummy: Test = {
@@ -56,5 +64,15 @@ export const authMethod: Test = {
     { groupName: AuthMethodTestType.NO_FACEBOOK, weight: 1 },
     { groupName: AuthMethodTestType.NO_GOOGLE, weight: 1 },
     { groupName: AuthMethodTestType.ONLY_ORCID, weight: 1 },
+  ],
+};
+
+export const collectionButtonText: Test = {
+  name: COLLECTION_BUTTON_TEXT_EXPERIMENT,
+  userGroup: [
+    { groupName: CollectionButtonTextTestType.CONTROL, weight: 7 },
+    { groupName: CollectionButtonTextTestType.ADD, weight: 1 },
+    { groupName: CollectionButtonTextTestType.KEEP, weight: 1 },
+    { groupName: CollectionButtonTextTestType.READ_LATER, weight: 1 },
   ],
 };

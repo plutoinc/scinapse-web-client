@@ -10,6 +10,10 @@ import { AppState } from '../../../reducers';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
 import { addPaperToRecommendPool } from '../../recommendPool/recommendPoolActions';
 import { Paper } from '../../../model/paper';
+import { getUserGroupName } from '../../../helpers/abTestHelper';
+import { COLLECTION_BUTTON_TEXT_EXPERIMENT } from '../../../constants/abTestGlobalValue';
+import { CollectionButtonTextTestType } from '../../../constants/abTestObject';
+import { UserDevice } from '../../layouts/reducer';
 
 const styles = require('./collectionButton.scss');
 
@@ -27,8 +31,32 @@ const selectUserHasCollection = createSelector([(state: AppState) => state.myCol
 const CollectionButton: React.FC<CollectionButtonProps> = ({ saved, paper, pageType, actionArea }) => {
   const dispatch = useDispatch();
   const userHasCollection = useSelector<AppState, boolean>(selectUserHasCollection);
+  const userDevice = useSelector((state: AppState) => state.layout.userDevice);
+  const [collectionButtonTextType, setCollectionButtonTextType] = React.useState();
 
   let buttonContent = 'Save';
+
+  React.useEffect(() => {
+    setCollectionButtonTextType(getUserGroupName(COLLECTION_BUTTON_TEXT_EXPERIMENT));
+  }, []);
+
+  if (userDevice !== UserDevice.MOBILE) {
+    switch (collectionButtonTextType) {
+      case CollectionButtonTextTestType.ADD:
+        buttonContent = 'Add to Collection';
+        break;
+      case CollectionButtonTextTestType.KEEP:
+        buttonContent = 'Keep';
+        break;
+      case CollectionButtonTextTestType.READ_LATER:
+        buttonContent = 'Read Later';
+        break;
+      default:
+        buttonContent = 'Save';
+        break;
+    }
+  }
+
   if (saved) {
     buttonContent = 'Saved';
   }
