@@ -116,6 +116,17 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
         }}
         globalInActive={!state.activeStatus.GLOBAL}
       />
+      <EmailToggleItem
+        title="Last Week Activity"
+        subtitle="Send a usage report about your last week Scinapse activity."
+        active={state.activeStatus.LAST_WEEK_ACTIVITY}
+        isLoading={state.updateStatus.LAST_WEEK_ACTIVITY.isLoading || !state.succeedToFetch}
+        hasFailed={state.updateStatus.LAST_WEEK_ACTIVITY.hasFailed}
+        onClick={(nextStatus: boolean) => {
+          handleClickItem(token, 'LAST_WEEK_ACTIVITY', nextStatus);
+        }}
+        globalInActive={!state.activeStatus.GLOBAL}
+      />
       <div className={s.divider} />
       <EmailToggleItem
         title="All Email"
