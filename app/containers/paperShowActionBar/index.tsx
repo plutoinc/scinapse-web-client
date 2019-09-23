@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '../../helpers/withStylesHelper';
-import FullTextDialog from './components/fullTextDialog';
+import FullTextDialog from './components/requestFulltextDialog';
 import PaperShowCollectionControlButton from '../paperShowCollectionControlButton';
 import CiteBox from './components/citeBox';
 import { Paper } from '../../model/paper';
