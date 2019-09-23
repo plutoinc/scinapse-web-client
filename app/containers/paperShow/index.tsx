@@ -49,6 +49,10 @@ import PaperShowFigureList from '../../components/paperShow/components/paperShow
 import { UserDevice } from '../../components/layouts/reducer';
 import CollectionSnackBar from '../../components/common/collectionSnackBar';
 import RequestFullTextDialog from '../../components/requestFullTextDialog/requestFulltextDialog';
+import { getUserGroupName } from '../../helpers/abTestHelper';
+import { REQUEST_FULL_TEXT_DIALOG_EXPERIMENT } from '../../constants/abTestGlobalValue';
+import { requestFullTextDialogExperimentType } from '../../constants/abTestObject';
+import SimpleRequestFullTextDialog from '../../components/requestFullTextDialog/fullTextDialog';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -90,6 +94,22 @@ const Title: React.FC<{ title: string }> = React.memo(({ title }) => {
 const Abstract: React.FC<{ abstract: string }> = React.memo(({ abstract }) => {
   return <div className={styles.abstractContent} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(abstract) }} />;
 });
+
+const RequestFullTextDialogExperiment: React.FC<{ paperId: number }> = ({ paperId }) => {
+  const [dialogType, setDialogType] = React.useState<requestFullTextDialogExperimentType>();
+  React.useEffect(() => {
+    const groupName = getUserGroupName(REQUEST_FULL_TEXT_DIALOG_EXPERIMENT) as requestFullTextDialogExperimentType;
+    setDialogType(groupName);
+  }, []);
+
+  if (!dialogType) return null;
+
+  if (dialogType === requestFullTextDialogExperimentType.CONTROL) {
+    return <SimpleRequestFullTextDialog paperId={paperId} />;
+  }
+
+  return <RequestFullTextDialog paperId={paperId} />;
+};
 
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
@@ -268,7 +288,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         <BottomBanner currentUser={currentUser} />
         <NextPaperTab />
         <CollectionSnackBar />
-        <RequestFullTextDialog paperId={paper.id} />
+        <RequestFullTextDialogExperiment paperId={paper.id} />
       </>
     );
   }

@@ -133,6 +133,8 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
         validate={validateForm}
         onSubmit={handleSubmitForm}
         enableReinitialize
+        validateOnChange={false}
+        validateOnBlur={false}
         render={({ errors }) => (
           <Form className={s.form}>
             <div className={s.inputWrapper}>
