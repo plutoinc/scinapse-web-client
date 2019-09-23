@@ -1,87 +1,41 @@
 import * as Redux from 'redux';
 import * as ConfigurationReducer from './configuration';
 import * as currentUserReducer from './currentUser';
-import { CURRENT_USER_INITIAL_STATE, CurrentUser } from '../model/currentUser';
+import { CURRENT_USER_INITIAL_STATE } from '../model/currentUser';
 import * as dialogReducer from '../components/dialog/reducer';
-import LayoutReducer, { LayoutState, LAYOUT_INITIAL_STATE } from '../components/layouts/reducer';
-import SignUpModalReducer, { SignUpModalState, SIGN_UP_MODAL_INITIAL_STATE } from './signUpModal';
+import LayoutReducer, { LAYOUT_INITIAL_STATE } from '../components/layouts/reducer';
+import SignUpModalReducer, { SIGN_UP_MODAL_INITIAL_STATE } from './signUpModal';
 import * as articleSearchReducer from '../components/articleSearch/reducer';
 import * as authorSearchReducer from '../containers/authorSearch/reducer';
-import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from '../components/articleSearch/records';
+import { ARTICLE_SEARCH_INITIAL_STATE } from '../components/articleSearch/records';
 import * as emailVerificationReducer from '../components/auth/emailVerification/reducer';
-import { PaperShowState, PAPER_SHOW_INITIAL_STATE } from '../containers/paperShow/records';
+import { PAPER_SHOW_INITIAL_STATE } from '../containers/paperShow/records';
 import { reducer as paperShowReducer } from '../containers/paperShow/reducer';
-import {
-  reducer as AuthorShowReducer,
-  AuthorShowState,
-  AUTHOR_SHOW_INITIAL_STATE,
-} from '../containers/unconnectedAuthorShow/reducer';
-import { reducer as EntityReducer, INITIAL_ENTITY_STATE, EntityState } from './entity';
+import { reducer as AuthorShowReducer, AUTHOR_SHOW_INITIAL_STATE } from '../containers/unconnectedAuthorShow/reducer';
+import { reducer as EntityReducer, INITIAL_ENTITY_STATE } from './entity';
 import {
   reducer as MyCollectionsReducer,
-  MyCollectionsState,
   MY_COLLECTIONS_INITIAL_STATE,
 } from '../containers/paperShowCollectionControlButton/reducer';
-import {
-  reducer as CollectionShowReducer,
-  CollectionShowState,
-  INITIAL_COLLECTION_SHOW_STATE,
-} from '../containers/collectionShow/reducer';
-import {
-  reducer as UserCollectionsReducer,
-  UserCollectionsState,
-  USER_COLLECTIONS_INITIAL_STATE,
-} from '../components/collections/reducer';
-import {
-  reducer as JournalShowReducer,
-  JournalShowState,
-  JOURNAL_SHOW_INITIAL_STATE,
-} from '../components/journalShow/reducer';
+import { reducer as CollectionShowReducer, INITIAL_COLLECTION_SHOW_STATE } from '../containers/collectionShow/reducer';
+import { reducer as UserCollectionsReducer, USER_COLLECTIONS_INITIAL_STATE } from '../components/collections/reducer';
+import { reducer as JournalShowReducer, JOURNAL_SHOW_INITIAL_STATE } from '../components/journalShow/reducer';
 import {
   reducer as ConnectedAuthorShowReducer,
-  ConnectedAuthorShowState,
   CONNECTED_AUTHOR_SHOW_INITIAL_STATE,
 } from '../containers/connectedAuthorShow/reducer';
-import { AuthorSearchState, AUTHOR_SEARCH_INITIAL_STATE } from '../containers/authorSearch/records';
-import { RelatedPapersState, RELATED_PAPERS_INITIAL_STATE, reducer as RelatedPapersReducer } from './realtedPapers';
-import { PDFViewerState, reducer as PDFViewerReducer, PDF_VIEWER_INITIAL_STATE } from './pdfViewer';
-import { SEARCH_QUERY_INITIAL_STATE, SearchQueryState, reducer as SearchQueryReducer } from './searchQuery';
-import RecommendPoolReducer, {
-  RecommendPoolState,
-  RECOMMEND_POOL_INITIAL_STATE,
-} from '../components/recommendPool/recommendPoolReducer';
-import { SearchFilterState, reducer as SearchFilterReducer, SEARCH_FILTER_INITIAL_STATE } from './searchFilter';
-import CollectionSnackBarReducer, {
-  CollectionSnackBarState,
-  COLLECTION_SNACK_BAR_INITIAL_STATE,
-} from './collectionSnackBar';
+import { AUTHOR_SEARCH_INITIAL_STATE } from '../containers/authorSearch/records';
+import { RELATED_PAPERS_INITIAL_STATE, reducer as RelatedPapersReducer } from './realtedPapers';
+import { reducer as PDFViewerReducer, PDF_VIEWER_INITIAL_STATE } from './pdfViewer';
+import { SEARCH_QUERY_INITIAL_STATE, reducer as SearchQueryReducer } from './searchQuery';
+import RecommendPoolReducer, { RECOMMEND_POOL_INITIAL_STATE } from '../components/recommendPool/recommendPoolReducer';
+import { reducer as SearchFilterReducer, SEARCH_FILTER_INITIAL_STATE } from './searchFilter';
+import CollectionSnackBarReducer, { COLLECTION_SNACK_BAR_INITIAL_STATE } from './collectionSnackBar';
+import RequestFullTextDialogReducer, { REQUEST_FULL_TEXT_DIALOG_INITIAL_STATE } from './requestFullTextDialog';
 
-export interface AppState {
-  configuration: ConfigurationReducer.Configuration;
-  dialog: dialogReducer.DialogState;
-  layout: LayoutState;
-  emailVerification: emailVerificationReducer.EmailVerificationState;
-  currentUser: CurrentUser;
-  articleSearch: ArticleSearchState;
-  authorSearch: AuthorSearchState;
-  paperShow: PaperShowState;
-  authorShow: AuthorShowState;
-  connectedAuthorShow: ConnectedAuthorShowState;
-  journalShow: JournalShowState;
-  collectionShow: CollectionShowState;
-  myCollections: MyCollectionsState;
-  userCollections: UserCollectionsState;
-  relatedPapersState: RelatedPapersState;
-  PDFViewerState: PDFViewerState;
-  searchQueryState: SearchQueryState;
-  recommendPoolState: RecommendPoolState;
-  searchFilterState: SearchFilterState;
-  signUpModalState: SignUpModalState;
-  collectionSnackBarState: CollectionSnackBarState;
-  entities: EntityState;
-}
+export type AppState = typeof initialState;
 
-export const initialState: AppState = {
+export const initialState = {
   configuration: ConfigurationReducer.CONFIGURATION_INITIAL_STATE,
   dialog: dialogReducer.DIALOG_INITIAL_STATE,
   layout: LAYOUT_INITIAL_STATE,
@@ -103,6 +57,7 @@ export const initialState: AppState = {
   searchFilterState: SEARCH_FILTER_INITIAL_STATE,
   signUpModalState: SIGN_UP_MODAL_INITIAL_STATE,
   collectionSnackBarState: COLLECTION_SNACK_BAR_INITIAL_STATE,
+  requestFullTextDialogState: REQUEST_FULL_TEXT_DIALOG_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
 };
 
@@ -128,5 +83,6 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   searchFilterState: SearchFilterReducer,
   signUpModalState: SignUpModalReducer,
   collectionSnackBarState: CollectionSnackBarReducer,
+  requestFullTextDialogState: RequestFullTextDialogReducer,
   entities: EntityReducer,
 });

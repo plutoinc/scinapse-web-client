@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '../../helpers/withStylesHelper';
-import FullTextDialog from './components/requestFulltextDialog';
 import PaperShowCollectionControlButton from '../paperShowCollectionControlButton';
 import CiteBox from './components/citeBox';
 import { Paper } from '../../model/paper';
@@ -10,7 +9,8 @@ import { CurrentUser } from '../../model/currentUser';
 import SourceButton from '../../components/paperShow/components/sourceButton';
 import ViewFullTextBtn from '../../components/paperShow/components/viewFullTextBtn';
 import RequestFullTextBtn from './components/fullTextRequestBtn';
-import { addPaperToRecommendPool, openRecommendPoolDialog } from '../../components/recommendPool/recommendPoolActions';
+import { addPaperToRecommendPool } from '../../components/recommendPool/recommendPoolActions';
+import { openRequestFullTextDialog } from '../../reducers/requestFullTextDialog';
 const s = require('./actionBar.scss');
 
 interface PaperShowActionBarProps {
@@ -24,7 +24,6 @@ interface PaperShowActionBarProps {
 }
 
 const PaperShowActionBar: React.FC<PaperShowActionBarProps> = props => {
-  const [isOpen, setIsOpen] = React.useState(false);
   const requestFullTextBtnEl = React.useRef<HTMLDivElement | null>(null);
 
   return (
@@ -38,7 +37,7 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = props => {
                 isLoading={props.isLoadingPDF}
                 paperId={props.paper.id}
                 onClick={() => {
-                  setIsOpen(true);
+                  props.dispatch(openRequestFullTextDialog({ from: 'actionBar' }));
                   props.dispatch(addPaperToRecommendPool(props.paper.id));
                 }}
                 lastRequestedDate={props.lastRequestedDate}
@@ -61,14 +60,6 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = props => {
           <div className={s.actionItem}>
             <CiteBox actionArea="paperDescription" paper={props.paper} />
           </div>
-          <FullTextDialog
-            paperId={props.paper.id}
-            isOpen={isOpen}
-            onClose={async () => {
-              setIsOpen(false);
-              props.dispatch(openRecommendPoolDialog('paperShow', 'requestFullTextBtn'));
-            }}
-          />
         </div>
         <div className={s.rightSide}>
           <PaperShowCollectionControlButton paperId={props.paper.id} />

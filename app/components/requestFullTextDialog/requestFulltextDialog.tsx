@@ -4,22 +4,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as classNames from 'classnames';
 import Dialog from '@material-ui/core/Dialog';
 import { Formik, Form, Field, FormikErrors } from 'formik';
-import PaperAPI from '../../../api/paper';
-import { AppState } from '../../../reducers';
-import validateEmail from '../../../helpers/validateEmail';
-import ActionTicketManager from '../../../helpers/actionTicketManager';
-import ScinapseFormikInput from '../../../components/common/scinapseInput/scinapseFormikInput';
-import Icon from '../../../icons';
-import { ACTION_TYPES } from '../../../actions/actionTypes';
-import { LAST_SUCCEEDED_EMAIL_KEY } from '../../../constants/requestDialogConstant';
-import { fetchLastFullTextRequestedDate } from '../../../actions/paperShow';
+import PaperAPI from '../../api/paper';
+import { AppState } from '../../reducers';
+import validateEmail from '../../helpers/validateEmail';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+import ScinapseFormikInput from '../common/scinapseInput/scinapseFormikInput';
+import Icon from '../../icons';
+import { ACTION_TYPES } from '../../actions/actionTypes';
+import { LAST_SUCCEEDED_EMAIL_KEY } from '../../constants/requestDialogConstant';
+import { fetchLastFullTextRequestedDate } from '../../actions/paperShow';
+import { openRecommendPoolDialog } from '../recommendPool/recommendPoolActions';
+import { closeRequestFullTextDialog } from '../../reducers/requestFullTextDialog';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./fullTextDialog.scss');
 
 interface RequestFullTextProps {
-  isOpen: boolean;
   paperId: number;
-  onClose: () => void;
 }
 
 type FormState = ReturnType<typeof getInitialValues>;
@@ -66,21 +66,30 @@ function buildMessage(values: FormState) {
   `;
 }
 
-const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => {
+const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperId }) => {
   useStyles(s);
   const dispatch = useDispatch();
-  const currentUser = useSelector((appState: AppState) => appState.currentUser);
+  const { currentUser, isOpen, openFrom } = useSelector((appState: AppState) => ({
+    currentUser: appState.currentUser,
+    isOpen: appState.requestFullTextDialogState.isOpen,
+    openFrom: appState.requestFullTextDialogState.from,
+  }));
   const [isLoading, setIsLoading] = React.useState(false);
+  const actionArea = openFrom === 'refCited' ? 'requestFullTextBtnAtRefBar' : 'requestFullTextBtn';
+
+  function handleClose() {
+    dispatch(openRecommendPoolDialog('paperShow', actionArea));
+    dispatch(closeRequestFullTextDialog());
+  }
 
   async function handleSubmitForm(values: FormState) {
     setIsLoading(true);
 
     const message = buildMessage(values);
-    console.log(message);
 
     try {
       await PaperAPI.requestFullText({
-        paperId: props.paperId,
+        paperId: paperId,
         email: values.email,
         message,
         name: `${currentUser.firstName} ${currentUser.lastName}`,
@@ -91,10 +100,11 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
         actionType: 'fire',
         actionArea: 'paperDescription',
         actionTag: 'sendRequestFullText',
-        actionLabel: String(props.paperId),
+        actionLabel: String(paperId),
       });
 
       Cookies.set(LAST_SUCCEEDED_EMAIL_KEY, values.email);
+
       dispatch({
         type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
         payload: {
@@ -102,8 +112,8 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
           message: 'Sent request successfully.',
         },
       });
-      dispatch(fetchLastFullTextRequestedDate(props.paperId));
-      props.onClose();
+      dispatch(fetchLastFullTextRequestedDate(paperId));
+      handleClose();
     } catch (err) {
       console.error(err);
     }
@@ -111,7 +121,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
   }
 
   return (
-    <Dialog open={props.isOpen} onClose={props.onClose} classes={{ paper: s.dialogPaper }}>
+    <Dialog open={isOpen} onClose={handleClose} classes={{ paper: s.dialogPaper }}>
       <div className={s.title}>Request Full-text</div>
       <div className={s.subtitle}>
         This is not automated. We’re trying to contact authors when many requests are accepted.<br />
@@ -197,7 +207,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
               />
             </div>
             <div className={s.btnWrapper}>
-              <button className={s.cancelBtn} type="button" onClick={props.onClose}>
+              <button className={s.cancelBtn} type="button" onClick={handleClose}>
                 Cancel
               </button>
               <button disabled={isLoading} className={s.submitBtn} type="submit">

@@ -5,9 +5,9 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import CiteBox from '../../../containers/paperShowActionBar/components/citeBox';
 import PdfDownloadButton from '../components/pdfDownloadButton';
 import RequestFullTextBtn from '../../../containers/paperShowActionBar/components/fullTextRequestBtn';
-import RequestFullTextDialog from '../../../containers/paperShowActionBar/components/fullTextDialog';
 import { PDFButtonProps, TabItemProps, PaperShowRefCitedTabProps } from './types';
-import { addPaperToRecommendPool, openRecommendPoolDialog } from '../../recommendPool/recommendPoolActions';
+import { addPaperToRecommendPool } from '../../recommendPool/recommendPoolActions';
+import { openRequestFullTextDialog } from '../../../reducers/requestFullTextDialog';
 const styles = require('./refCitedTab.scss');
 
 const TabItem: React.FunctionComponent<TabItemProps> = props => {
@@ -26,7 +26,6 @@ const TabItem: React.FunctionComponent<TabItemProps> = props => {
 
 const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
   const { dispatch, paper, isLoading, canShowFullPDF, onClickDownloadPDF, afterDownloadPDF } = props;
-  const [isOpen, setIsOpen] = React.useState(false);
 
   if (canShowFullPDF) {
     return (
@@ -48,19 +47,11 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
         isLoading={isLoading}
         paperId={paper!.id}
         onClick={() => {
-          setIsOpen(true);
-          props.dispatch(addPaperToRecommendPool(props.paper.id));
+          dispatch(openRequestFullTextDialog({ from: 'refCited' }));
+          dispatch(addPaperToRecommendPool(props.paper.id));
         }}
         btnStyle={{ flex: '1 0 auto', height: '36px', padding: '0 12px 0 8px' }}
         lastRequestedDate={props.lastRequestedDate}
-      />
-      <RequestFullTextDialog
-        paperId={paper.id}
-        isOpen={isOpen}
-        onClose={async () => {
-          setIsOpen(false);
-          dispatch(openRecommendPoolDialog('paperShow', 'requestFullTextBtnAtRefBar'));
-        }}
       />
     </>
   );
