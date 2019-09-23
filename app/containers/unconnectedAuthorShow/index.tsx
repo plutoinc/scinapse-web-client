@@ -163,7 +163,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
                         onSubmit={this.handleSubmitSearch}
                         placeholder="Search papers"
                         icon="SEARCH_ICON"
-                        wrapperStyle={{ marginRight: '8px', maxWidth: '500px', width: '100%' }}
+                        wrapperStyle={{ marginRight: '8px', maxWidth: '500px', width: 'calc(100% - 120px)' }}
                       />
                       <SortBox
                         sortOption={authorShow.papersSort}
