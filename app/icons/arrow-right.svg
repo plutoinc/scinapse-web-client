@@ -1,6 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="8" height="15" viewBox="0 0 8 15">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
-        <path id="a" d="M11.308 8.284l-6.02 5.94a.953.953 0 0 0-.288.684c0 .258.104.506.287.684a.99.99 0 0 0 1.387 0l5.327-5.257 5.326 5.257a.99.99 0 0 0 1.386 0 .954.954 0 0 0 .287-.684.954.954 0 0 0-.287-.685l-6.02-5.94A.984.984 0 0 0 12.002 8a.983.983 0 0 0-.693.284z"/>
+        <path d="M9,6.71063109 C8.61,7.10063109 8.61,7.73063109 9,8.12063109 L12.88,12.0006311 L9,15.8806311 C8.61,16.2706311 8.61,16.9006311 9,17.2906311 C9.39,17.6806311 10.02,17.6806311 10.41,17.2906311 L15,12.7006311 C15.39,12.3106311 15.39,11.6806311 15,11.2906311 L10.41,6.70063109 C10.03,6.32063109 9.39,6.32063109 9,6.71063109 Z" id="path-1"></path>
     </defs>
-    <use fill="currentColor" fill-rule="evenodd" transform="matrix(0 -1 -1 0 15.938 19.938)" xlink:href="#a"/>
+    <g id="Icons-/-Navigation-/-Arrow-Right-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g>
+            <rect id="Rectangle" x="0" y="0" width="24" height="24"></rect>
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Mask" fill="currentColor" fill-rule="nonzero" xlink:href="#path-1"></use>
+        </g>
+    </g>
 </svg>

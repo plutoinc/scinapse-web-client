@@ -14,6 +14,7 @@ const ICONS: { [key: string]: any } = {
   GOOGLE_LOGO: require('./google.svg'),
   FACEBOOK_LOGO: require('./facebook.svg'),
   ORCID_LOGO: require('./orcid.svg'),
+  TWITTER_LOGO: require('./twitter-logo.svg'),
   FULL_NAME_ICON: require('./full-name-icon.svg'),
   LAST_PAGE: require('./last-page.svg'),
   NEXT_PAGE: require('./next-page.svg'),
