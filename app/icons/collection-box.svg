@@ -1,9 +1,0 @@
-<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Icon/Collection</title>
-    <g id="Icon/Collection" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="inbox" transform="translate(3.000000, 5.000000)" stroke="#9AA3B5" stroke-width="1.5">
-            <polyline id="Collection-Box-Shape" points="18 7.875 12.6 7.875 10.8 10.5 7.2 10.5 5.4 7.875 0 7.875"></polyline>
-            <path d="M3.123,1.04125 L0,7.875 L0,12.25 C0,13.2164983 0.80588745,14 1.8,14 L16.2,14 C17.1941125,14 18,13.2164983 18,12.25 L18,7.875 L14.877,1.04125 C14.5883976,0.407807207 13.9425988,-0.000473332268 13.23,1.05879118e-22 L4.77,1.05879118e-22 C4.05740124,-0.000473332268 3.4116024,0.407807207 3.123,1.04125 Z" id="Collection-Box-Shape-2"></path>
-        </g>
-    </g>
-</svg>
