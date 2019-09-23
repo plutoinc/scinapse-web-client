@@ -86,9 +86,9 @@
 
 .contentLeftBox {
   display: flex;
+  width: 100%;
   vertical-align: top;
   flex-direction: row;
-  width: $small-container-left-container-width;
 }
 
 .paperListBox {
