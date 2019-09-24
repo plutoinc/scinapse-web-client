@@ -1,6 +1,6 @@
 import React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import TransparentButton from '../common/transparentButton';
+import Button from '../common/button';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { Collection } from '../../model/collection';
 import copySelectedTextToClipboard from '../../helpers/copySelectedTextToClipboard';
@@ -91,31 +91,21 @@ const ShareDropdownContent: React.FC<{ userCollection: Collection }> = ({ userCo
 const CollectionShareButton: React.FC<{ userCollection: Collection }> = ({ userCollection }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const collectionShareButton = (
-    <TransparentButton
-      style={{
-        display: 'flex',
-        justifyContent: 'space-evenly',
-        width: '93px',
-        height: '40px',
-        fontWeight: 500,
-        padding: '8px',
-        marginTop: '32px',
-        color: '#3e7fff',
-      }}
-      iconStyle={{
-        marginRight: '8px',
-        width: '17px',
-        height: '14px',
-        color: '#3e7fff',
-      }}
+    <Button
+      elementType="button"
+      size="medium"
+      variant="outlined"
+      color="blue"
+      fullWidth={false}
+      disabled={false}
       onClick={() => {
         setIsOpen(!isOpen);
       }}
-      gaCategory="Collection Show"
-      gaAction="Click Share Collection"
-      content="Share"
-      icon="SHARE"
-    />
+      style={{ marginTop: '32px' }}
+    >
+      <Icon icon="MASK" />
+      <span>Share</span>
+    </Button>
   );
 
   return (

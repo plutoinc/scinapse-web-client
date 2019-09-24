@@ -75,6 +75,9 @@
 }
 
 .signInBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 242px;
   height: 43px;
   border-radius: 4px;
@@ -91,11 +94,13 @@
   }
 
   .arrowRightIcon {
+    width: 20px;
     height: 20px;
     margin-left: 4px;
 
     svg {
-      height: 12px;
+      width: 20px;
+      height: 20px;
     }
   }
 }
