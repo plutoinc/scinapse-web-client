@@ -15,6 +15,7 @@ import { LAST_SUCCEEDED_EMAIL_KEY } from '../../constants/requestDialogConstant'
 import { fetchLastFullTextRequestedDate } from '../../actions/paperShow';
 import { openRecommendPoolDialog } from '../recommendPool/recommendPoolActions';
 import { closeRequestFullTextDialog } from '../../reducers/requestFullTextDialog';
+import ReduxAutoSizeTextarea from '../common/autoSizeTextarea/reduxAutoSizeTextarea';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./fullTextDialog.scss');
 
@@ -43,26 +44,18 @@ function validateForm(values: FormState) {
 function getInitialValues(email?: string) {
   return {
     email: email || '',
-    interest: '',
     whoami: '',
     important: '',
-    profileLink: '',
   };
 }
 
 function buildMessage(values: FormState) {
   return `
-  Interesting point:
-  ${values.interest}
-
-  Who am I:
-  ${values.whoami}
-
-  How important to you:
+  Why important to me:
   ${values.important}
-  
-  Your profile link:
-  ${values.profileLink}
+
+  Who am I (Adding your profile link is preferred):
+  ${values.whoami}
   `;
 }
 
@@ -153,59 +146,29 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
               />
             </div>
             <div className={s.inputWrapper}>
-              <label htmlFor="interest" className={s.label}>
-                Interesting points*
+              <label htmlFor="important" className={s.label}>
+                Why important to me? *
               </label>
               <Field
-                name="interest"
-                type="text"
-                className={classNames({
-                  [s.emailInput]: true,
-                  [s.emailInputError]: !!errors.interest,
-                })}
-                component={ScinapseFormikInput}
+                name="important"
+                component={ReduxAutoSizeTextarea}
+                textareaClassName={s.textAreaWrapper}
+                textareaStyle={{ padding: '8px' }}
+                rows={3}
+                placeholder=" Ex) The interesting point is..."
               />
             </div>
             <div className={s.inputWrapper}>
               <label htmlFor="whoami" className={s.label}>
-                Who am I?*
+                Who am I? (Adding your profile link is preferred) *
               </label>
               <Field
                 name="whoami"
-                type="text"
-                className={classNames({
-                  [s.emailInput]: true,
-                  [s.emailInputError]: !!errors.whoami,
-                })}
-                component={ScinapseFormikInput}
-              />
-            </div>
-            <div className={s.inputWrapper}>
-              <label htmlFor="important" className={s.label}>
-                How important to you?*
-              </label>
-              <Field
-                name="important"
-                type="text"
-                className={classNames({
-                  [s.emailInput]: true,
-                  [s.emailInputError]: !!errors.important,
-                })}
-                component={ScinapseFormikInput}
-              />
-            </div>
-            <div className={s.inputWrapper}>
-              <label htmlFor="profileLink" className={s.label}>
-                Your profile link*
-              </label>
-              <Field
-                name="profileLink"
-                type="text"
-                className={classNames({
-                  [s.emailInput]: true,
-                  [s.emailInputError]: !!errors.profileLink,
-                })}
-                component={ScinapseFormikInput}
+                component={ReduxAutoSizeTextarea}
+                textareaClassName={s.textAreaWrapper}
+                textareaStyle={{ padding: '8px' }}
+                rows={3}
+                placeholder="Ex) I'm John from Scinapse... my profile link is ..."
               />
             </div>
             <div className={s.btnWrapper}>
