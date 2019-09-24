@@ -56,7 +56,7 @@ function buildMessage(values: FormState) {
 
   Who am I (Adding your profile link is preferred):
   ${values.whoami}
-  `;
+  `.trim();
 }
 
 const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperId }) => {
