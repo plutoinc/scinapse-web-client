@@ -5,7 +5,7 @@ jobs:
   deploy_to_dev:
     working_directory: ~/scinapse
     docker:
-      - image: circleci/node:8.10
+      - image: circleci/node:10
     environment:
       TZ: "Asia/Seoul"
     steps:
