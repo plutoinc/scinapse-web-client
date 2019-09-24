@@ -18,7 +18,6 @@ const StyleContext = require('isomorphic-style-loader/StyleContext');
 const JssProvider = require('react-jss/lib/JssProvider').default;
 const { SheetsRegistry } = require('react-jss/lib/jss');
 const statsFile = path.resolve(__dirname, '../client/loadable-stats.json');
-const extractor = new ChunkExtractor({ statsFile });
 
 function isExpressRequest(req: Request | LambdaProxy.Event): req is Request {
   return !!(req as Request).originalUrl;
@@ -45,6 +44,7 @@ function getQueryParamsObject(req: Request | LambdaProxy.Event): { [key: string]
 }
 
 const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
+  const extractor = new ChunkExtractor({ statsFile });
   const fullURL = getFullUrl(req);
 
   // override user request

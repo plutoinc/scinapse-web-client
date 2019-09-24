@@ -1,4 +1,4 @@
-# scinapse.io [![GitHub Starts](https://img.shields.io/github/stars/pluto-net/scinapse-web-client.svg)](https://github.com/pluto-net/scinapse-web-client) [![GitHub contributors](https://img.shields.io/github/contributors/pluto-net/scinapse-web-client.svg)](https://github.com/pluto-net/scinapse-web-client/graphs/contributors/) [![Node version](https://img.shields.io/badge/Node-8.10.1-green.svg)](https://nodejs.org/)
+# scinapse.io [![GitHub Starts](https://img.shields.io/github/stars/pluto-net/scinapse-web-client.svg)](https://github.com/pluto-net/scinapse-web-client) [![GitHub contributors](https://img.shields.io/github/contributors/pluto-net/scinapse-web-client.svg)](https://github.com/pluto-net/scinapse-web-client/graphs/contributors/) [![Node version](https://img.shields.io/badge/Node-10-green.svg)](https://nodejs.org/)
 
 [scinapse](https://scinapse.io)'s Web App repository.  
 
