@@ -74,6 +74,10 @@
   .messageLabel {
     margin-top: 16px;
   }
+
+  .inputWrapper + .inputWrapper {
+    margin-top: 16px;
+  }
 }
 
 .btnWrapper {
