@@ -71,8 +71,8 @@ const ICONS: { [key: string]: any } = {
   SOURCE: require('./source.svg'),
   SHARE: require('./share.svg'),
   STAR_BADGE: require('./star-badge.svg'),
+  FEEDBACK_LABEL: require('./feedback-label.svg'),
   MASK: require('./mask.svg'),
-  FEEDBACK_PENCIL: require('./feedback-pencil.svg'),
 };
 
 const Icon: React.FC<IconProps> = ({ className, icon, onClick, style }) => {
