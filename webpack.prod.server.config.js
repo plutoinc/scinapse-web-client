@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -88,7 +87,6 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.TARGET': JSON.stringify('server'),
     }),
-    new LodashModuleReplacementPlugin(),
     new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('production') }),
   ],
   externals: {
