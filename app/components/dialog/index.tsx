@@ -136,12 +136,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   }
 
   private closeCollectionDialog = () => {
-    const { dispatch, dialogState } = this.props;
-
     this.closeDialog();
-    if (dialogState.collectionDialogTargetPaperId) {
-      dispatch(openRecommendPoolDialog(getCurrentPageType(), 'addToCollectionBtn'));
-    }
   };
 
   private closeCitationDialog = () => {
