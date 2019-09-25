@@ -34,11 +34,26 @@
   color: $black1;
 }
 
+.detailTitle {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.5;
+  color: $black1;
+  margin-bottom: 4px;
+}
+
 .subtitle {
   font-size: 13px;
   line-height: 20px;
   color: $gray600;
   margin-bottom: 24px;
+}
+
+.detailSubtitle {
+  font-size: 13px;
+  line-height: 18px;
+  color: $gray600;
+  margin-bottom: 12px;
 }
 
 .form {
@@ -69,6 +84,10 @@
     font-size: 12px;
     letter-spacing: 0.7px;
     margin-bottom: 3px;
+  }
+
+  .detailLabel {
+    font-weight: bold;
   }
 
   .messageLabel {
