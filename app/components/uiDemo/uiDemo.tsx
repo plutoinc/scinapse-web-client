@@ -1,22 +1,23 @@
 import React from 'react';
 import Button, { GeneralButtonProps } from '../common/button';
 import { ButtonSize, ButtonVariant, ButtonColor } from '../common/button/types';
-import Icon from '../../icons';
+import Icon, { ICONS } from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
 
 const s = require('./uiDemo.scss');
 
 type AvailableIconPosition = 'left' | 'right' | 'only' | 'no';
 
-const PositionHandledButton: React.FC<{ iconPosition: AvailableIconPosition } & GeneralButtonProps> = ({
-  iconPosition,
-  ...props
-}) => {
+const PositionHandledButton: React.FC<
+  { iconPosition: AvailableIconPosition; iconName?: string } & GeneralButtonProps
+> = ({ iconPosition, iconName, ...props }) => {
+  const icon = iconName ? iconName : 'BOOKMARK';
+
   switch (iconPosition) {
     case 'left':
       return (
         <Button {...props}>
-          <Icon icon="BOOKMARK" />
+          <Icon icon={icon} />
           <span>Bookmark</span>
         </Button>
       );
@@ -24,13 +25,13 @@ const PositionHandledButton: React.FC<{ iconPosition: AvailableIconPosition } & 
       return (
         <Button {...props}>
           <span>Bookmark</span>
-          <Icon icon="BOOKMARK" />
+          <Icon icon={icon} />
         </Button>
       );
     case 'only':
       return (
         <Button {...props}>
-          <Icon icon="BOOKMARK" />
+          <Icon icon={icon} />
         </Button>
       );
     case 'no':
@@ -49,6 +50,7 @@ const UiDemo: React.FunctionComponent = () => {
   const [selectedColor, setSelectedColor] = React.useState<ButtonColor>('blue');
   const [isDisabled, setDisabled] = React.useState(false);
   const [isFullWidth, setFullWidth] = React.useState(false);
+  const [icon, setIcon] = React.useState('BOOKMARK');
 
   const availableSizes: ButtonSize[] = ['small', 'medium', 'large'];
   const availableVariant: ButtonVariant[] = ['contained', 'outlined', 'text'];
@@ -151,6 +153,24 @@ const UiDemo: React.FunctionComponent = () => {
           <Icon className={s.dropdownIcon} icon="ARROW_POINT_TO_DOWN" />
         </div>
 
+        <div className={s.selectBoxLabel}>Icon</div>
+        <div className={s.selectBoxWrapper}>
+          <select
+            className={s.selectBox}
+            onChange={(e: React.FormEvent<HTMLSelectElement>) => setIcon(e.currentTarget.value)}
+          >
+            {Object.keys(ICONS).map(iconName => {
+              return (
+                <option key={iconName} value={iconName}>
+                  <Icon icon={iconName} />
+                  {iconName}
+                </option>
+              );
+            })}
+          </select>
+          <Icon className={s.dropdownIcon} icon="ARROW_POINT_TO_DOWN" />
+        </div>
+
         <div className={s.selectBoxLabel}>Options</div>
         <div className={s.checkboxWrapper}>
           <div className={s.checkboxWrapper}>
@@ -180,6 +200,7 @@ const UiDemo: React.FunctionComponent = () => {
           <div className={s.exampleButtonWrapper}>
             <PositionHandledButton
               elementType="button"
+              iconName={icon}
               iconPosition={selectedIconPosition}
               size={selectedSize}
               variant={selectedVariant}
