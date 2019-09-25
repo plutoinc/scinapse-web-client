@@ -167,7 +167,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
                 textareaClassName={s.textAreaWrapper}
                 textareaStyle={{ padding: '8px' }}
                 rows={3}
-                placeholder="Ex) I'm John from Scinapse... my profile link is ..."
+                placeholder="Make them not wary... (Ex. Name, Research topic, Corresponding author, ...)"
               />
             </div>
             <div className={s.btnWrapper}>
