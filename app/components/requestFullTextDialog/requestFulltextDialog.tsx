@@ -154,7 +154,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
                 textareaClassName={s.textAreaWrapper}
                 textareaStyle={{ padding: '8px' }}
                 rows={3}
-                placeholder=" Ex) The interesting point is..."
+                placeholder="ex) The interesting point is..."
               />
             </div>
             <div className={s.inputWrapper}>
