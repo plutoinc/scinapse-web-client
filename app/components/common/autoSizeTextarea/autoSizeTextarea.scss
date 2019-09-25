@@ -5,5 +5,8 @@
   border-radius: 4px;
   line-height: 1.4;
   margin: 0;
-  resize: none;
+
+  &::placeholder {
+    color: $gray500;
+  }
 }
