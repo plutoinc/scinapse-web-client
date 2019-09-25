@@ -142,6 +142,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                     alignContent: 'flex-start',
                     alignItems: 'center',
                     height: '47px',
+                    fontSize: '14px',
                     borderRadius: '3px',
                     padding: '0 10px',
                     backgroundColor: 'white',
