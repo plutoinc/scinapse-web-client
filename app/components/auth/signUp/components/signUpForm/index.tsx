@@ -33,6 +33,7 @@ export interface SignUpFormValues {
   firstName: string;
   lastName: string;
   affiliation: string;
+  profileLink: string;
 }
 
 const validateForm = async (values: SignUpFormValues, withSocial: boolean) => {
@@ -72,6 +73,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
     try {
       await props.onSubmit(values);
       props.onSucceed();
+      props.onClickNext();
     } catch (err) {
       setIsLoading(false);
     }
@@ -88,6 +90,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
             firstName: props.firstName,
             lastName: props.lastName,
             affiliation: '',
+            profileLink: '',
           }}
           onSubmit={handleSubmit}
           validate={value => validateForm(value, props.withSocial)}
@@ -147,16 +150,15 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                     marginTop: '14px',
                   }}
                 />
+                <Field
+                  name="profileLink"
+                  type="url"
+                  component={AuthInputBox}
+                  placeholder="Profile Link(it should start with http(s)://"
+                />
               </div>
               <div className={s.authButtonWrapper}>
-                <Button
-                  type="submit"
-                  elementType="button"
-                  onClick={props.onClickNext}
-                  isLoading={isLoading}
-                  fullWidth
-                  size="large"
-                >
+                <Button type="submit" elementType="button" isLoading={isLoading} fullWidth size="large">
                   <span>Sign up</span>
                 </Button>
               </div>

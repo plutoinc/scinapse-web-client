@@ -91,6 +91,7 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
       firstName,
       lastName,
       affiliation,
+      profileLink: values.profileLink,
       token: {
         vendor: token.vendor as OAUTH_VENDOR,
         token: token.token,

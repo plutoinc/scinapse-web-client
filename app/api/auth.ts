@@ -1,8 +1,6 @@
 import PlutoAxios from './pluto';
 import { Member } from '../model/member';
 import {
-  SignUpWithEmailParams,
-  SignUpWithSocialParams,
   SignInWithEmailParams,
   SignInResult,
   SignInData,
@@ -14,16 +12,18 @@ import {
   ChangePasswordParams,
   EmailSettingsResponse,
   UpdateEmailSettingParams,
+  SignUpWithSocialAPIParams,
+  SignUpWithEmailAPIParams,
 } from './types/auth';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
 class AuthAPI extends PlutoAxios {
-  public async signUpWithEmail(userInfo: SignUpWithEmailParams): Promise<Member> {
+  public async signUpWithEmail(userInfo: SignUpWithEmailAPIParams): Promise<Member> {
     const signUpWithEmailResponse = await this.post('/members', userInfo);
     return camelCaseKeys(signUpWithEmailResponse.data);
   }
 
-  public async signUpWithSocial(userInfo: SignUpWithSocialParams): Promise<Member> {
+  public async signUpWithSocial(userInfo: SignUpWithSocialAPIParams): Promise<Member> {
     const signUpWithSocialResponse = await this.post('/members/oauth', userInfo);
     return camelCaseKeys(signUpWithSocialResponse.data);
   }
