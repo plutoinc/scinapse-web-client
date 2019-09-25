@@ -1,87 +1,5 @@
-.notiContainer {
-  width: 518px;
-  min-height: 220px;
-  border-radius: 8px;
-  box-shadow: 0 10px 23px 0 rgba(0, 0, 0, 0.11);
-  background-color: white;
-  font-family: $fallback !important;
-  padding: 32px 24px 24px 40px;
-}
-
-.notiTitle {
-  font-size: 16px;
-  line-height: 1.5;
-  color: $black0;
-}
-
-.notiBody {
-  margin-top: 16px;
-  display: flex;
-  flex-direction: column;
-}
-
-.notiContent {
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 1.44;
-  color: $black0;
-  white-space: pre-line;
-}
-
-.notiBtnWrapper {
-  margin-top: 32px;
-}
-
-.letMeSeeBtn {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 115px;
-  height: 41px;
-  border-radius: 4px;
-  background-color: $main-blue1;
-  font-size: 16px;
-  font-weight: 500;
-  color: white;
-
-  &:hover {
-    transition: $button-hover-transition;
-    background-color: $main_blue_light0;
-  }
-}
-
-.noThxBtn {
-  width: 115px;
-  height: 41px;
-  border-radius: 4px;
-  font-size: 16px;
-  font-weight: 500;
-  color: #98a5b3;
-  margin-left: 8px;
-  cursor: pointer;
-
-  &:hover {
-    transition: $button-hover-transition;
-    text-decoration: underline;
-  }
-}
-
-$mui-md-width: 960px;
-
 .snackbarWrapper {
-  bottom: 60px;
-
-  & > div:first-of-type {
-    border-radius: 8px;
-    background-color: rgba(30, 42, 53, 0.97);
-    padding: 12px 24px 12px 24px;
-    max-width: 100%;
-
-    & > div:first-of-type {
-      padding: 0;
-      word-break: break-all;
-    }
-  }
+  @extend %snackbar-wrapper;
 }
 
 .letMeSeeBtn {
@@ -99,32 +17,7 @@ $mui-md-width: 960px;
   padding-right: 48px;
 }
 
-@media (min-width: $mui-md-width) {
-  .snackbarWrapper {
-    left: 0;
-    right: 0;
-    transform: none;
-  }
-}
-
 @media (max-width: $mui-md-width) {
-  .snackbarWrapper {
-    left: 16px;
-    right: 16px;
-    bottom: 16px;
-
-    & > div:first-of-type {
-      align-items: flex-start;
-      flex-direction: column;
-      padding: 4px;
-
-      & > div:first-of-type {
-        max-width: 100%;
-        padding: 12px;
-      }
-    }
-  }
-
   .snackbarContext {
     padding-right: 0px;
   }

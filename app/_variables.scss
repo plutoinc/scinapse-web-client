@@ -64,6 +64,7 @@ $search_container_width: 792px;
 $mobile_width: 768px;
 $tablet_width: 1024px;
 $regular_width: 1200px;
+$mui-md-width: 960px;
 
 // container variables
 $header-height: 64px;
@@ -288,5 +289,44 @@ $s3_url: 'https://dd2gn9pwu61vr.cloudfront.net';
   }
   100% {
     transform: translate3d(0, 0, 0);
+  }
+}
+
+%snackbar-wrapper {
+  bottom: 60px;
+
+  & > div:first-of-type {
+    border-radius: 8px;
+    background-color: rgba(30, 42, 53, 0.97);
+    padding: 12px 24px 12px 24px;
+    max-width: 100%;
+
+    & > div:first-of-type {
+      padding: 0;
+      word-break: break-all;
+    }
+  }
+
+  @media (min-width: $mui-md-width) {
+    left: 0;
+    right: 0;
+    transform: none;
+  }
+
+  @media (max-width: $mui-md-width) {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+
+    & > div:first-of-type {
+      align-items: flex-start;
+      flex-direction: column;
+      padding: 4px;
+
+      & > div:first-of-type {
+        max-width: 100%;
+        padding: 12px;
+      }
+    }
   }
 }

@@ -1,19 +1,5 @@
-$mui-md-width: 960px;
-
 .snackbarWrapper {
-  bottom: 60px;
-
-  & > div:first-of-type {
-    border-radius: 8px;
-    background-color: rgba(30, 42, 53, 0.97);
-    padding: 12px 24px 12px 24px;
-    max-width: 100%;
-
-    & > div:first-of-type {
-      padding: 0;
-      word-break: break-all;
-    }
-  }
+  @extend %snackbar-wrapper;
 }
 
 .viewCollectionBtn {
@@ -31,32 +17,7 @@ $mui-md-width: 960px;
   padding-right: 48px;
 }
 
-@media (min-width: $mui-md-width) {
-  .snackbarWrapper {
-    left: 0;
-    right: 0;
-    transform: none;
-  }
-}
-
 @media (max-width: $mui-md-width) {
-  .snackbarWrapper {
-    left: 16px;
-    right: 16px;
-    bottom: 16px;
-
-    & > div:first-of-type {
-      align-items: flex-start;
-      flex-direction: column;
-      padding: 4px;
-
-      & > div:first-of-type {
-        max-width: 100%;
-        padding: 12px;
-      }
-    }
-  }
-
   .snackbarContext {
     padding-right: 0px;
   }
