@@ -48,6 +48,55 @@ const PositionHandledButton: React.FC<
   }
 };
 
+const PositionHandledButtonString = ({
+  iconPosition,
+  iconName,
+  content,
+  ...props
+}: { iconPosition: AvailableIconPosition; content: string; iconName?: string } & GeneralButtonProps) => {
+  const icon = iconName ? iconName : 'BOOKMARK';
+
+  const propsString = Object.keys(props)
+    .map(key => {
+      if (key === 'color' && (props as any)[key] === 'blue') return;
+      if (key === 'variant' && (props as any)[key] === 'contained') return;
+      if (key === 'size' && (props as any)[key] === 'medium') return;
+      if (key === 'fullWidth' && !(props as any)[key]) return;
+      if (key === 'disabled' && !(props as any)[key]) return;
+      if (typeof (props as any)[key] === 'string') {
+        return `${key}='${(props as any)[key]}'`;
+      }
+      return `${key}={${(props as any)[key]}}`;
+    })
+    .filter(prop => !!prop)
+    .join(' ');
+
+  switch (iconPosition) {
+    case 'left':
+      return `
+<Button ${propsString}>
+  <Icon icon=${icon} />
+  <span>${content}</span>
+</Button>`;
+    case 'right':
+      return `
+<Button ${propsString}>
+  <span>{content}</span>
+  <Icon icon=${icon} />
+</Button>`;
+    case 'only':
+      return `
+<Button ${propsString}>
+  <Icon icon=${icon} />
+</Button>`;
+    case 'no':
+      return `
+<Button ${propsString}>
+  <span>{content}</span>
+</Button>`;
+  }
+};
+
 const UiDemo: React.FunctionComponent = () => {
   const [selectedSize, setSelectedSize] = React.useState<ButtonSize>('small');
   const [selectedVariant, setSelectedVariant] = React.useState<ButtonVariant>('contained');
@@ -62,30 +111,6 @@ const UiDemo: React.FunctionComponent = () => {
   const availableVariant: ButtonVariant[] = ['contained', 'outlined', 'text'];
   const availableColor: ButtonColor[] = ['blue', 'gray', 'black'];
   const availableIconDisplay: AvailableIconPosition[] = ['left', 'right', 'only', 'no'];
-
-  let buttonCode = '';
-  switch (selectedIconPosition) {
-    case 'left':
-      buttonCode = `<Icon icon="❤️BUTTON_ICON" />
-  <span>✍️Button Text</span>`;
-      break;
-
-    case 'right':
-      buttonCode = `<span>✍️Button Text</span>
-  <Icon icon="❤️BUTTON_ICON" />`;
-      break;
-
-    case 'only':
-      buttonCode = `<Icon icon="❤️BUTTON_ICON" />`;
-      break;
-    case 'no':
-      buttonCode = `<span>✍️Button Text</span>`;
-      break;
-  }
-
-  const finalCode = `<Button elementType='button' size='${selectedSize}' variant='${selectedVariant}' color='${selectedColor}' fullWidth={${isFullWidth}} disabled={${isDisabled}}>
-  ${buttonCode}
-</Button>`;
 
   return (
     <div className={s.uiDemoWrapper}>
@@ -245,7 +270,19 @@ const UiDemo: React.FunctionComponent = () => {
 
         <div className={s.buttonCodeContainer}>
           <pre className={s.buttonCodeWrapper}>
-            <code>{finalCode}</code>
+            <code>
+              {PositionHandledButtonString({
+                elementType: 'button',
+                iconName: icon,
+                content: content,
+                iconPosition: selectedIconPosition,
+                size: selectedSize,
+                variant: selectedVariant,
+                color: selectedColor,
+                disabled: isDisabled,
+                fullWidth: isFullWidth,
+              }).trim()}
+            </code>
           </pre>
         </div>
       </div>
