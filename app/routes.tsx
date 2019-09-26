@@ -26,6 +26,7 @@ import {
   TERMS_OF_SERVICE_PATH,
   PRIVACY_POLICY_PATH,
   USER_SETTINGS_PATH,
+  KEYWORD_SETTINGS_PATH,
 } from './constants/routes';
 const styles = require('./root.scss');
 
@@ -132,6 +133,12 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: USER_SETTINGS_PATH,
     component: loadable(() => import('./containers/userSettings'), {
+      fallback: <div>loading ...</div>,
+    }),
+  },
+  {
+    path: KEYWORD_SETTINGS_PATH,
+    component: loadable(() => import('./containers/keywordSettings'), {
       fallback: <div>loading ...</div>,
     }),
   },

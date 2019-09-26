@@ -32,6 +32,8 @@ import RecommendPoolReducer, { RECOMMEND_POOL_INITIAL_STATE } from '../component
 import { reducer as SearchFilterReducer, SEARCH_FILTER_INITIAL_STATE } from './searchFilter';
 import CollectionSnackBarReducer, { COLLECTION_SNACK_BAR_INITIAL_STATE } from './collectionSnackBar';
 import RequestFullTextDialogReducer, { REQUEST_FULL_TEXT_DIALOG_INITIAL_STATE } from './requestFullTextDialog';
+import KeywordSettingsReducer, { KEYWORD_SETTINGS_INITIAL_STATE } from './keywordSettings';
+import CreateKeywordAlertDialogReducer, { CREATE_KEYWORD_ALERT_DIALOG_INITIAL_STATE } from './createKeywordAlertDialog';
 
 export type AppState = typeof initialState;
 
@@ -58,6 +60,8 @@ export const initialState = {
   signUpModalState: SIGN_UP_MODAL_INITIAL_STATE,
   collectionSnackBarState: COLLECTION_SNACK_BAR_INITIAL_STATE,
   requestFullTextDialogState: REQUEST_FULL_TEXT_DIALOG_INITIAL_STATE,
+  keywordSettingsState: KEYWORD_SETTINGS_INITIAL_STATE,
+  createKeywordAlertDialogState: CREATE_KEYWORD_ALERT_DIALOG_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
 };
 
@@ -84,5 +88,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   signUpModalState: SignUpModalReducer,
   collectionSnackBarState: CollectionSnackBarReducer,
   requestFullTextDialogState: RequestFullTextDialogReducer,
+  keywordSettingsState: KeywordSettingsReducer,
+  createKeywordAlertDialogState: CreateKeywordAlertDialogReducer,
   entities: EntityReducer,
 });

@@ -1,0 +1,44 @@
+.keywordItemWrapper {
+  display: flex;
+  justify-content: space-between;
+  max-width: 578px;
+  width: 100%;
+  height: 51px;
+  padding: 16px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+  border: solid 1px $gray300;
+  background-color: white;
+
+  .keywordContext {
+    font-size: 16px;
+    font-weight: 500;
+    color: $black1;
+    height: 20px;
+  }
+
+  & + & {
+    margin-top: 8px;
+  }
+}
+
+.deleteBtn {
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+  cursor: pointer;
+
+  svg {
+    color: $gray400;
+    width: 10px;
+    height: 10px;
+  }
+
+  &:hover {
+    background-color: rgba(52, 73, 94, 0.05);
+  }
+
+  &:active {
+    background-color: rgba(52, 73, 94, 0.08);
+  }
+}
