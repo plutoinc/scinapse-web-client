@@ -43,7 +43,6 @@ export const checkDuplicatedEmail = async (email: string) => {
 export function signUpWithSocial(params: SignUpWithSocialParams) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      console.log(params);
       const { profileLink, ...signUpParams } = params;
       let profileParams = parseProfileLink(profileLink);
       let finalParams: SignUpWithSocialAPIParams = {
