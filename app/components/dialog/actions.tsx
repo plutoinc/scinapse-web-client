@@ -12,7 +12,7 @@ import CollectionAPI, {
 } from '../../api/collection';
 import { AvailableCitationType } from '../../containers/paperShow/records';
 import PlutoAxios from '../../api/pluto';
-import { openCollectionSnackBar, closeCollectionSnackBar } from '../../reducers/collectionSnackBar';
+import { openSnackbar, closeSnackbar } from '../../reducers/scinapseSnackbar';
 
 export interface OpenGlobalDialogParams {
   type: GLOBAL_DIALOG_TYPE;
@@ -51,7 +51,7 @@ export function addPaperToCollection(params: AddPaperToCollectionParams) {
           collection: params.collection,
         })
       );
-      dispatch(closeCollectionSnackBar());
+      dispatch(closeSnackbar());
 
       const res = await CollectionAPI.addPaperToCollection(params);
       dispatch(
@@ -60,7 +60,19 @@ export function addPaperToCollection(params: AddPaperToCollectionParams) {
           collection: params.collection,
         })
       );
-      dispatch(openCollectionSnackBar({ collectionId: params.collection.id, collectionName: params.collection.title }));
+      dispatch(
+        openSnackbar({
+          id: params.collection.id,
+          context: params.collection.title,
+          actionTicketParams: {
+            pageType: 'searchResult',
+            actionType: 'view',
+            actionArea: 'collectionSnackbar',
+            actionTag: 'viewCollectionSnackBar',
+            actionLabel: String(params.collection.id),
+          },
+        })
+      );
       return res;
     } catch (err) {
       dispatch(
