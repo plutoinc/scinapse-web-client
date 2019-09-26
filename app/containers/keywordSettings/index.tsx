@@ -16,6 +16,7 @@ import CreateKeywordAlertDialog from '../../components/createKeywordAlertDialog/
 import { openCreateKeywordAlertDialog } from '../../reducers/createKeywordAlertDialog';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../../components/locationListener';
+import GlobalDialogManager from '../../helpers/globalDialogManager';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./keywordSettings.scss');
 
@@ -83,7 +84,7 @@ const KeywordSettings: React.FC = () => {
         <div className={s.divider} />
         <div className={s.subTitle}>Keyword alerts</div>
         <div className={s.context}>We’ll send email related or latest papers for the registered keyword.</div>
-        <KeywordItemList keywords={keywords} onRemoveKeywordItem={handleRemoveKeywordItem} />
+        <KeywordItemList keywords={keywords} onRemoveKeywordItem={handleRemoveKeywordItem} isLoading={isLoading} />
         <Button
           elementType="button"
           size="large"
@@ -91,7 +92,19 @@ const KeywordSettings: React.FC = () => {
           color="blue"
           style={{ marginTop: '24px' }}
           isLoading={isLoading}
-          onClick={() => dispatch(openCreateKeywordAlertDialog({ from: 'keywordSettingPage' }))}
+          onClick={() => {
+            if (!isLoggedIn)
+              return GlobalDialogManager.openSignUpDialog({
+                authContext: {
+                  pageType: getCurrentPageType(),
+                  actionArea: 'keywordSettingPage',
+                  actionLabel: null,
+                },
+                isBlocked: false,
+              });
+
+            dispatch(openCreateKeywordAlertDialog({ from: 'keywordSettingPage' }));
+          }}
         >
           <Icon icon="PLUS" />
           <span>Create alert</span>

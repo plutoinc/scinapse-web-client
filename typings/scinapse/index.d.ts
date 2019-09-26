@@ -143,6 +143,7 @@ declare namespace Scinapse {
       | 'emailVerification'
       | 'terms'
       | 'privacyPolicy'
+      | 'keywordSettingPage'
       | 'unknown';
   }
 }

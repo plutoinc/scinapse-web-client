@@ -7,11 +7,12 @@ const s = require('./keywordItemList.scss');
 interface KeywordItemListProps {
   keywords: KeywordSettingItemResponse[];
   onRemoveKeywordItem: (keywordId: string, keyword: string) => void;
+  isLoading: boolean;
 }
 
 const KeywordItemList: React.FC<KeywordItemListProps> = props => {
   useStyles(s);
-  const { keywords, onRemoveKeywordItem } = props;
+  const { keywords, onRemoveKeywordItem, isLoading } = props;
 
   if (keywords.length === 0) return null;
 
@@ -28,6 +29,7 @@ const KeywordItemList: React.FC<KeywordItemListProps> = props => {
               onRemoveKeywordItem(k.id, k.keyword);
             }
           }}
+          disabled={isLoading}
         >
           <Icon icon="X_BUTTON" />
         </button>
