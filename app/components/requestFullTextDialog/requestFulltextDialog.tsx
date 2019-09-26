@@ -50,13 +50,9 @@ function getInitialValues(email?: string) {
 }
 
 function buildMessage(values: FormState) {
-  return `
-  Why important to me:
-  ${values.important}
-
-  Who am I (Adding your profile link is preferred):
-  ${values.whoami}
-  `.trim();
+  return `Why important to me:<br />${values.important}<br />Who am I (Adding your profile link is preferred):<br />${
+    values.whoami
+  }`.trim();
 }
 
 const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperId }) => {
@@ -115,12 +111,11 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
 
   return (
     <Dialog open={isOpen} onClose={handleClose} classes={{ paper: s.dialogPaper }}>
-      <div className={s.title}>Request Full-text</div>
-      <div className={s.subtitle}>
+      <div className={s.detailTitle}>Request Full-text</div>
+      <div className={s.detailSubtitle}>
         This is not automated. We’re trying to contact authors when many requests are accepted.<br />
         The notification will be sent when full-text is updated.
       </div>
-
       <Formik
         initialValues={getInitialValues(currentUser.email)}
         validate={validateForm}
@@ -131,7 +126,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
         render={({ errors }) => (
           <Form className={s.form}>
             <div className={s.inputWrapper}>
-              <label htmlFor="email" className={s.label}>
+              <label htmlFor="email" className={s.detailLabel}>
                 Email*
               </label>
               <Field
@@ -145,8 +140,12 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
                 component={ScinapseFormikInput}
               />
             </div>
+            <div style={{ marginTop: '24px' }} className={s.detailTitle}>
+              Message to Authors
+            </div>
+            <div className={s.detailSubtitle}>Your message will play a key role to get a full text!</div>
             <div className={s.inputWrapper}>
-              <label htmlFor="important" className={s.label}>
+              <label htmlFor="important" className={s.detailLabel}>
                 Why important to me? *
               </label>
               <Field
@@ -155,11 +154,11 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
                 textareaClassName={s.textAreaWrapper}
                 textareaStyle={{ padding: '8px' }}
                 rows={3}
-                placeholder=" Ex) The interesting point is..."
+                placeholder="ex) The interesting point is..."
               />
             </div>
             <div className={s.inputWrapper}>
-              <label htmlFor="whoami" className={s.label}>
+              <label htmlFor="whoami" className={s.detailLabel}>
                 Who am I? (Adding your profile link is preferred) *
               </label>
               <Field
@@ -168,7 +167,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
                 textareaClassName={s.textAreaWrapper}
                 textareaStyle={{ padding: '8px' }}
                 rows={3}
-                placeholder="Ex) I'm John from Scinapse... my profile link is ..."
+                placeholder="Make them not wary... (Ex. Name, Research topic, Corresponding author, ...)"
               />
             </div>
             <div className={s.btnWrapper}>
