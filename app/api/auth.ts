@@ -8,12 +8,12 @@ import {
   CheckDuplicatedEmailResult,
   OAUTH_VENDOR,
   OAuthCheckResult,
-  UpdateUserInformationParams,
   ChangePasswordParams,
   EmailSettingsResponse,
   UpdateEmailSettingParams,
   SignUpWithSocialAPIParams,
   SignUpWithEmailAPIParams,
+  UpdateUserInformationAPIParams,
 } from './types/auth';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
@@ -101,13 +101,8 @@ class AuthAPI extends PlutoAxios {
     return camelCaseKeys(res.data);
   }
 
-  public async update(params: UpdateUserInformationParams): Promise<Member> {
-    const res = await this.put('/members/me', {
-      affiliation_id: params.affiliation.id,
-      affiliation_name: params.affiliation.name,
-      firstName: params.firstName,
-      lastName: params.lastName,
-    });
+  public async update(params: UpdateUserInformationAPIParams): Promise<Member> {
+    const res = await this.put('/members/me', params);
 
     return camelCaseKeys(res.data);
   }

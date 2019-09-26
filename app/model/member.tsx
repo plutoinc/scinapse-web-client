@@ -12,6 +12,9 @@ export interface Member {
   oauth: MemberOAuth | null;
   isAuthorConnected: boolean;
   authorId: number;
+  gsProfile?: string;
+  orcid?: string;
+  labPage?: string;
 }
 
 export const memberSchema = new schema.Entity('members');

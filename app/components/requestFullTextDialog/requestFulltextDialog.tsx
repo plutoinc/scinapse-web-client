@@ -50,9 +50,9 @@ function getInitialValues(email?: string) {
 }
 
 function buildMessage(values: FormState) {
-  return `Why important to me:<br />${values.important}<br />Who am I (Adding your profile link is preferred):<br />${
-    values.whoami
-  }`.trim();
+  return `Why important to me:<br />${
+    values.important
+  }<br /><br />Who am I (Adding your profile link is preferred):<br />${values.whoami}`.trim();
 }
 
 const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperId }) => {

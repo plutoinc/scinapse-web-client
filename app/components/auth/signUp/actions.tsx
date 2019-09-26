@@ -9,7 +9,7 @@ import EnvChecker from '../../../helpers/envChecker';
 import { Member } from '../../../model/member';
 const store = require('store');
 
-function parseProfileLink(
+export function parseProfileLink(
   profileLink: string | null
 ): {
   gs_profile?: string;

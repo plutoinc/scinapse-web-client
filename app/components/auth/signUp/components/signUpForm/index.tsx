@@ -55,6 +55,10 @@ const validateForm = async (values: SignUpFormValues, withSocial: boolean) => {
     errors.affiliation = 'Please enter your affiliation';
   }
 
+  if (values.profileLink && values.profileLink.match(/(http(s)?:\/\/.)/g) === null) {
+    errors.profileLink = 'Please write start to http:// or https://';
+  }
+
   const emailErr = await debouncedCheckDuplicate(values.email);
   if (emailErr) {
     errors.email = emailErr;
@@ -151,12 +155,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                     marginTop: '14px',
                   }}
                 />
-                <Field
-                  name="profileLink"
-                  type="url"
-                  component={AuthInputBox}
-                  placeholder="Profile Link(it should start with http(s)://"
-                />
+                <Field name="profileLink" type="url" component={AuthInputBox} placeholder="Profile Link" />
               </div>
               <div className={s.authButtonWrapper}>
                 <Button type="submit" elementType="button" isLoading={isLoading} fullWidth size="large">

@@ -44,6 +44,17 @@ export interface UpdateUserInformationParams {
   firstName: string;
   lastName: string;
   affiliation: Affiliation;
+  profileLink: string;
+}
+
+export interface UpdateUserInformationAPIParams {
+  first_name: string;
+  last_name: string;
+  affiliation_id: number | null;
+  affiliation_name: string;
+  gs_profile?: string;
+  orcid?: string;
+  lab_page?: string;
 }
 
 export interface SignInWithEmailParams {

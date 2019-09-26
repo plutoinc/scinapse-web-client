@@ -17,6 +17,7 @@ interface ProfileFormValues {
   firstName: string;
   lastName: string;
   affiliation: Affiliation | SuggestAffiliation;
+  profileLink: string;
 }
 
 type ProfileFormErrors = { [K in keyof ProfileFormValues]: string };
@@ -41,6 +42,10 @@ const validateForm = (values: ProfileFormValues) => {
     (!(values.affiliation as Affiliation).name && !(values.affiliation as SuggestAffiliation).keyword)
   ) {
     errors.affiliation = 'Please enter your affiliation';
+  }
+
+  if (values.profileLink && values.profileLink.match(/(http(s)?:\/\/.)/g) === null) {
+    errors.profileLink = 'Please write start to http:// or https://';
   }
 
   return errors;
@@ -86,6 +91,7 @@ const ProfileFormContainer: React.FC<ProfileFormContainerProps & ReturnType<type
           firstName: values.firstName,
           lastName: values.lastName,
           affiliation: affiliation,
+          profileLink: values.profileLink,
         })
       );
       dispatch({
@@ -122,6 +128,7 @@ const ProfileFormContainer: React.FC<ProfileFormContainerProps & ReturnType<type
             name: currentUser.affiliation,
             nameAbbrev: null,
           },
+          profileLink: currentUser.gsProfile || currentUser.orcid || currentUser.labPage || '',
         }}
         validate={validateForm}
         onSubmit={handleSubmit}
@@ -205,6 +212,19 @@ const ProfileFormContainer: React.FC<ProfileFormContainerProps & ReturnType<type
                   disabled={!editMode}
                   format={formatAffiliation}
                 />
+              </div>
+              <div style={{ marginBottom: 36 }} className={s.formWrapper}>
+                <label className={s.formLabel}>Profile Link</label>
+                <Field
+                  className={classNames({
+                    [s.inputForm]: true,
+                    [s.hasError]: !!errors.profileLink && touched.profileLink,
+                  })}
+                  name="profileLink"
+                  placeholder="Profile Link"
+                  disabled={!editMode}
+                />
+                <ErrorMessage errorMsg={errors.profileLink} />
               </div>
               {formButton}
             </Form>
