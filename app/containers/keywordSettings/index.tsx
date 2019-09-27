@@ -15,7 +15,6 @@ import { ACTION_TYPES } from '../../actions/actionTypes';
 import CreateKeywordAlertDialog from '../../components/createKeywordAlertDialog/createKeywordAlertDialog';
 import { openCreateKeywordAlertDialog } from '../../reducers/createKeywordAlertDialog';
 import ActionTicketManager from '../../helpers/actionTicketManager';
-import { getCurrentPageType } from '../../components/locationListener';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
 import PlutoAxios from '../../api/pluto';
 const useStyles = require('isomorphic-style-loader/useStyles');
@@ -63,7 +62,7 @@ const KeywordSettings: React.FC = () => {
       .then(res => {
         dispatch(succeedToConnectKeywordSettingsAPI({ keywords: res.data.content }));
         ActionTicketManager.trackTicket({
-          pageType: getCurrentPageType(),
+          pageType: 'keywordSettingPage',
           actionType: 'fire',
           actionArea: 'keywordSettingPage',
           actionTag: 'removeKeywordAlert',
@@ -105,6 +104,14 @@ const KeywordSettings: React.FC = () => {
           isLoading={isLoading}
           disabled={isLoading}
           onClick={() => {
+            ActionTicketManager.trackTicket({
+              pageType: 'keywordSettingPage',
+              actionType: 'fire',
+              actionArea: 'keywordSettingPage',
+              actionTag: 'clickCreateAlertBtn',
+              actionLabel: null,
+            });
+
             if (!isLoggedIn)
               return GlobalDialogManager.openSignUpDialog({
                 authContext: {

@@ -126,6 +126,7 @@ declare namespace Scinapse {
       | 'removeKeywordAlert'
       | 'clickSeeAllBtn'
       | 'viewCreateKeywordSnackbar'
+      | 'clickCreateAlertBtn'
       | '';
 
     type ActionArea = string;

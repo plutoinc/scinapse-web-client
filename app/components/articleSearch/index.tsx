@@ -42,6 +42,7 @@ import { openCreateKeywordAlertDialog } from '../../reducers/createKeywordAlertD
 import CreateKeywordAlertDialog from '../createKeywordAlertDialog/createKeywordAlertDialog';
 import { UserDevice } from '../layouts/reducer';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
+import ActionTicketManager from '../../helpers/actionTicketManager';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -199,6 +200,14 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
               fullWidth={isMobile}
               disabled={false}
               onClick={() => {
+                ActionTicketManager.trackTicket({
+                  pageType: 'searchResult',
+                  actionType: 'fire',
+                  actionArea: 'createAlertBtn',
+                  actionTag: 'clickCreateAlertBtn',
+                  actionLabel: null,
+                });
+
                 if (!currentUserState.isLoggedIn)
                   return GlobalDialogManager.openSignUpDialog({
                     authContext: {
