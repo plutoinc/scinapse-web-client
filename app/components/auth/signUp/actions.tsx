@@ -1,6 +1,11 @@
 import { Dispatch } from 'redux';
 import AuthAPI from '../../../api/auth';
-import { SignUpWithEmailParams, SignUpWithSocialParams, SignUpWithSocialAPIParams } from '../../../api/types/auth';
+import {
+  SignUpWithEmailParams,
+  SignUpWithSocialParams,
+  SignUpWithSocialAPIParams,
+  SignUpWithEmailAPIParams,
+} from '../../../api/types/auth';
 import RecommendationAPI from '../../../api/recommendation';
 import { BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY } from '../../recommendPool/recommendPoolConstants';
 import { ACTION_TYPES } from '../../../actions/actionTypes';
@@ -8,20 +13,6 @@ import alertToast from '../../../helpers/makePlutoToastAction';
 import EnvChecker from '../../../helpers/envChecker';
 import { Member } from '../../../model/member';
 const store = require('store');
-
-export function parseProfileLink(
-  profileLink: string | null
-): {
-  gs_profile?: string;
-  orcid?: string;
-  lab_page?: string;
-} | null {
-  if (!profileLink) return null;
-  if (profileLink.startsWith('https://scholar.google')) return { gs_profile: profileLink };
-  if (profileLink.startsWith('https://orcid.org')) return { orcid: profileLink };
-
-  return { lab_page: profileLink };
-}
 
 async function syncRecommendationPoolToUser() {
   const targetPaperIds: number[] = store.get(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY) || [];
@@ -43,18 +34,14 @@ export const checkDuplicatedEmail = async (email: string) => {
 export function signUpWithSocial(params: SignUpWithSocialParams) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      const { profileLink, ...signUpParams } = params;
-      let profileParams = parseProfileLink(profileLink);
-      let finalParams: SignUpWithSocialAPIParams = {
-        email: signUpParams.email,
-        affiliation_name: signUpParams.affiliation,
-        first_name: signUpParams.firstName,
-        last_name: signUpParams.lastName,
-        token: signUpParams.token,
+      const finalParams: SignUpWithSocialAPIParams = {
+        email: params.email,
+        affiliation_name: params.affiliation,
+        first_name: params.firstName,
+        last_name: params.lastName,
+        token: params.token,
+        profile_link: params.profileLink,
       };
-      if (profileParams) {
-        finalParams = { ...finalParams, ...profileParams };
-      }
 
       const signUpResult: Member = await AuthAPI.signUpWithSocial(finalParams);
       await syncRecommendationPoolToUser();
@@ -79,18 +66,14 @@ export function signUpWithSocial(params: SignUpWithSocialParams) {
 export function signUpWithEmail(params: SignUpWithEmailParams) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      const { profileLink, ...signUpParams } = params;
-      let profileParams = parseProfileLink(profileLink);
-      let finalParams = {
-        email: signUpParams.email,
-        password: signUpParams.password,
-        affiliation_name: signUpParams.affiliation,
-        first_name: signUpParams.firstName,
-        last_name: signUpParams.lastName,
+      const finalParams: SignUpWithEmailAPIParams = {
+        email: params.email,
+        affiliation_name: params.affiliation,
+        first_name: params.firstName,
+        last_name: params.lastName,
+        password: params.password,
+        profile_link: params.profileLink,
       };
-      if (profileParams) {
-        finalParams = { ...finalParams, ...profileParams };
-      }
 
       const signUpResult: Member = await AuthAPI.signUpWithEmail(finalParams);
       await syncRecommendationPoolToUser();

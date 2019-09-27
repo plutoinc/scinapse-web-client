@@ -128,7 +128,7 @@ const ProfileFormContainer: React.FC<ProfileFormContainerProps & ReturnType<type
             name: currentUser.affiliation,
             nameAbbrev: null,
           },
-          profileLink: currentUser.gsProfile || currentUser.orcid || currentUser.labPage || '',
+          profileLink: currentUser.profileLink,
         }}
         validate={validateForm}
         onSubmit={handleSubmit}

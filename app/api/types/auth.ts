@@ -6,7 +6,7 @@ interface BaseSignUpParams {
   firstName: string;
   lastName: string;
   affiliation: string;
-  profileLink: string | null;
+  profileLink?: string;
 }
 
 export interface BaseSignUpAPIParams {
@@ -15,9 +15,7 @@ export interface BaseSignUpAPIParams {
   first_name: string;
   last_name: string;
   affiliation_id?: string;
-  gs_profile?: string;
-  orcid?: string;
-  lab_page?: string;
+  profile_link?: string;
 }
 
 export type SignUpWithEmailParams = BaseSignUpParams & { password: string };
@@ -52,9 +50,7 @@ export interface UpdateUserInformationAPIParams {
   last_name: string;
   affiliation_id: number | null;
   affiliation_name: string;
-  gs_profile?: string;
-  orcid?: string;
-  lab_page?: string;
+  profile_link?: string;
 }
 
 export interface SignInWithEmailParams {

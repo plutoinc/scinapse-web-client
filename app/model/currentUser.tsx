@@ -22,4 +22,5 @@ export const CURRENT_USER_INITIAL_STATE: CurrentUser = {
   oauth: null,
   isAuthorConnected: false,
   authorId: 0,
+  profileLink: '',
 };
