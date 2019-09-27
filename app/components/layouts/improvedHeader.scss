@@ -154,6 +154,10 @@
   @extend %menuButton;
 }
 
+.keywordSettingsButton {
+  @extend %menuButton;
+}
+
 .settingsButton {
   @extend %menuButton;
 }

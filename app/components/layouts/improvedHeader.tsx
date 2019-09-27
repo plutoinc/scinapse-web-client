@@ -341,6 +341,11 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
             Collection
           </Link>
         </MenuItem>
+        <MenuItem classes={{ root: styles.keywordSettingsButton }}>
+          <Link className={styles.linkOnButton} onClick={this.handleRequestCloseUserDropdown} to="/keyword-settings">
+            My research interest
+          </Link>
+        </MenuItem>
         <MenuItem classes={{ root: styles.settingsButton }}>
           <Link className={styles.linkOnButton} onClick={this.handleRequestCloseUserDropdown} to="/settings">
             Settings

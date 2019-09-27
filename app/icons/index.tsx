@@ -25,6 +25,7 @@ const ICONS: { [key: string]: any } = {
   VERIFICATION_EMAIL_ICON: require('./verification-email-icon.svg'),
   ELLIPSIS: require('./ellipsis.svg'),
   SMALL_PLUS: require('./small-plus.svg'),
+  PLUS: require('./plus.svg'),
   MINUS: require('./minus.svg'),
   ARROW_POINT_TO_UP: require('./arrow-point-to-up.svg'),
   ARROW_POINT_TO_DOWN: require('./arrow-point-to-down.svg'),
@@ -73,6 +74,7 @@ const ICONS: { [key: string]: any } = {
   STAR_BADGE: require('./star-badge.svg'),
   FEEDBACK_LABEL: require('./feedback-label.svg'),
   MASK: require('./mask.svg'),
+  ERROR: require('./error.svg'),
 };
 
 const Icon: React.FC<IconProps> = ({ className, icon, onClick, style }) => {

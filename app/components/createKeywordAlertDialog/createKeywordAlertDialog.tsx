@@ -1,7 +1,8 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
+import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FormikErrors } from 'formik';
 import { AppState } from '../../reducers';
 import { closeCreateKeywordAlertDialog } from '../../reducers/createKeywordAlertDialog';
 import {
@@ -17,10 +18,27 @@ import ActionTicketManager from '../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../locationListener';
 import { openSnackbar, GLOBAL_SNACKBAR_TYPE } from '../../reducers/scinapseSnackbar';
 import PlutoAxios from '../../api/pluto';
+import Icon from '../../icons';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./createKeywordAlertDialog.scss');
 
 type FormState = ReturnType<typeof getInitialValues>;
+
+function validateForm(values: FormState) {
+  const errors: FormikErrors<FormState> = {};
+
+  const englishRegex = RegExp('^[a-zA-Z0-9 ]+$');
+
+  if (!values.keyword) {
+    errors.keyword = 'Please enter keyword';
+  }
+
+  if (!englishRegex.exec(values.keyword)) {
+    errors.keyword = 'Please enter english keyword';
+  }
+
+  return errors;
+}
 
 function getInitialValues() {
   return {
@@ -89,9 +107,12 @@ const CreateKeywordAlertDialog: React.FC = () => {
       <div className={s.title}>Create keyword alert</div>
       <Formik
         initialValues={getInitialValues()}
+        validate={validateForm}
         onSubmit={handleSubmitForm}
         enableReinitialize
-        render={() => (
+        validateOnChange={false}
+        validateOnBlur={false}
+        render={({ errors }) => (
           <Form className={s.form}>
             <div className={s.inputWrapper}>
               <label htmlFor="keyword" className={s.detailLabel}>
@@ -100,8 +121,13 @@ const CreateKeywordAlertDialog: React.FC = () => {
               <Field
                 name="keyword"
                 type="keyword"
-                className={s.keywordInput}
+                className={classNames({
+                  [s.keywordInput]: true,
+                  [s.keywordInputError]: !!errors.keyword,
+                })}
                 placeholder="ex) Nanotechnology"
+                icon={!!errors.keyword ? 'ERROR' : null}
+                iconClassName={s.errorIcon}
                 component={ScinapseFormikInput}
               />
             </div>
@@ -120,6 +146,19 @@ const CreateKeywordAlertDialog: React.FC = () => {
           </Form>
         )}
       />
+      <div className={s.closeBtnWrapper}>
+        <Button
+          elementType="button"
+          size="small"
+          variant="text"
+          color="gray"
+          fullWidth={false}
+          disabled={false}
+          onClick={handleClose}
+        >
+          <Icon icon="X_BUTTON" />
+        </Button>
+      </div>
     </Dialog>
   );
 };

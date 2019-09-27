@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>plus</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M19,11 L13,11 L13,5 C13,4.447 12.552,4 12,4 C11.448,4 11,4.447 11,5 L11,11 L5,11 C4.448,11 4,11.447 4,12 C4,12.553 4.448,13 5,13 L11,13 L11,19 C11,19.553 11.448,20 12,20 C12.552,20 13,19.553 13,19 L13,13 L19,13 C19.552,13 20,12.553 20,12 C20,11.447 19.552,11 19,11" id="path-1"></path>
+    </defs>
+    <g id="plus" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="skip-back-fill">
+            <rect id="Rectangle" fill="#6096FF" opacity="0" x="0" y="0" width="24" height="24"></rect>
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="🎨-Icon-Сolor" fill="currentColor" fill-rule="nonzero" xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>

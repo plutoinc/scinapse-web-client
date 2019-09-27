@@ -25,7 +25,7 @@
 
 .errorMessage {
   color: $red0;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .icon {
@@ -86,9 +86,10 @@ select:invalid {
 
   .errorMessage {
     color: $red0;
-    font-size: 12px;
+    font-size: 13px;
     display: inline-flex;
-    margin-top: 4px;
+    margin-top: 8px;
+    margin-left: 8px;
   }
 
   .iconWrapper {
