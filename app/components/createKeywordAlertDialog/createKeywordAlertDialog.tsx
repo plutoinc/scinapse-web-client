@@ -27,14 +27,8 @@ type FormState = ReturnType<typeof getInitialValues>;
 function validateForm(values: FormState) {
   const errors: FormikErrors<FormState> = {};
 
-  const englishRegex = RegExp('^[a-zA-Z0-9 ]+$');
-
   if (!values.keyword) {
     errors.keyword = 'Please enter keyword';
-  }
-
-  if (values.keyword && !englishRegex.exec(values.keyword)) {
-    errors.keyword = 'Please enter the English keyword';
   }
 
   return errors;
