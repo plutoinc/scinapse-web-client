@@ -51,6 +51,11 @@ export function reducer(state = PDF_VIEWER_INITIAL_STATE, action: Actions): PDFV
     case ACTION_TYPES.PDF_VIEWER_FAIL_TO_FETCH_PDF: {
       return { ...state, isLoading: false, hasFailed: true };
     }
+
+    case ACTION_TYPES.PDF_VIEWER_FINISH_TO_FETCH_PDF:
+    case ACTION_TYPES.PDF_VIEWER_CANCEL_TO_FETCH_PDF: {
+      return { ...state, isLoading: false };
+    }
   }
 
   return state;
