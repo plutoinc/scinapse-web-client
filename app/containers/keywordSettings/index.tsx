@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
-import ImprovedFooter from '../../components/layouts/improvedFooter';
 import { useSelector, useDispatch } from 'react-redux';
+import ImprovedFooter from '../../components/layouts/improvedFooter';
 import { AppState } from '../../reducers';
 import {
   startToConnectKeywordSettingsAPI,
