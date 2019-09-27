@@ -1,9 +1,9 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ScinapseSnackbar from '../../common/scinapseSnackbar';
 import Button from '../../common/button';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../../locationListener';
-import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../reducers';
 import { ScinapseSnackbarState, closeSnackbar } from '../../../reducers/scinapseSnackbar';
 const useStyles = require('isomorphic-style-loader/useStyles');

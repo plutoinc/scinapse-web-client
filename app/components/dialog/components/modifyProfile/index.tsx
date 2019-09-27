@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import { Formik, Form, Field, FormikErrors, ErrorMessage } from 'formik';
+import { Formik, Form, Field, FormikErrors } from 'formik';
 import { withStyles } from '../../../../helpers/withStylesHelper';
 import { Author } from '../../../../model/author/author';
 import ScinapseButton from '../../../common/scinapseButton';
@@ -108,7 +108,6 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                         component={ScinapseFormikInput}
                         className={styles.inputField}
                       />
-                      <ErrorMessage name="authorName" className={styles.errorMessage} component="div" />
                     </div>
                     <div className={styles.inlineInput} style={{ width: '100%' }}>
                       <label htmlFor="currentAffiliation">Current Affiliation</label>
@@ -143,7 +142,6 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                         type="email"
                         placeholder="Email Address"
                       />
-                      <ErrorMessage name="email" className={styles.errorMessage} component="div" />
 
                       <div className={styles.checkboxField}>
                         <Field
@@ -167,7 +165,6 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                         type="text"
                         placeholder="e.g. https://username.com"
                       />
-                      <ErrorMessage name="website" className={styles.errorMessage} component="div" />
                     </div>
                   </div>
                 </div>

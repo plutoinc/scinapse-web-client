@@ -1,8 +1,8 @@
 import React from 'react';
-import Dialog from '@material-ui/core/Dialog';
-import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, FormikErrors } from 'formik';
+import classNames from 'classnames';
+import Dialog from '@material-ui/core/Dialog';
 import { AppState } from '../../reducers';
 import { closeCreateKeywordAlertDialog } from '../../reducers/createKeywordAlertDialog';
 import {
