@@ -47,7 +47,7 @@ const CreateKeywordSnackBar: React.FC = () => {
               dispatch(closeSnackbar());
             }}
           >
-            See all
+            See alert list
           </Button>
         </div>
       }

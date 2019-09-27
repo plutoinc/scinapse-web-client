@@ -16,6 +16,7 @@ import Button from '../common/button';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../locationListener';
 import { openSnackbar, GLOBAL_SNACKBAR_TYPE } from '../../reducers/scinapseSnackbar';
+import PlutoAxios from '../../api/pluto';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./createKeywordAlertDialog.scss');
 
@@ -44,41 +45,42 @@ const CreateKeywordAlertDialog: React.FC = () => {
   async function handleSubmitForm(values: FormState) {
     dispatch(startToConnectKeywordSettingsAPI());
 
-    await MemberAPI.newKeywordSettings(values.keyword)
-      .then(res => {
-        dispatch(succeedToConnectKeywordSettingsAPI({ keywords: res.data.content }));
-        ActionTicketManager.trackTicket({
-          pageType: getCurrentPageType(),
-          actionType: 'fire',
-          actionArea: actionArea,
-          actionTag: 'createKeywordAlert',
-          actionLabel: values.keyword,
-        });
-        dispatch(
-          openSnackbar({
-            type: GLOBAL_SNACKBAR_TYPE.CREATE_KEYWORD_ALERT,
-            id: null,
-            context: null,
-            actionTicketParams: {
-              pageType: getCurrentPageType(),
-              actionType: 'view',
-              actionArea: 'createKeywordSnackbar',
-              actionTag: 'viewCreateKeywordSnackbar',
-              actionLabel: values.keyword,
-            },
-          })
-        );
-      })
-      .catch(err => {
-        dispatch(failedToConnectKeywordSettingsAPI());
-        dispatch({
-          type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
-          payload: {
-            type: 'error',
-            message: err,
-          },
-        });
+    try {
+      const keywordRes = await MemberAPI.newKeywordSettings(values.keyword);
+      dispatch(succeedToConnectKeywordSettingsAPI({ keywords: keywordRes.data.content }));
+      ActionTicketManager.trackTicket({
+        pageType: getCurrentPageType(),
+        actionType: 'fire',
+        actionArea: actionArea,
+        actionTag: 'createKeywordAlert',
+        actionLabel: values.keyword,
       });
+      dispatch(
+        openSnackbar({
+          type: GLOBAL_SNACKBAR_TYPE.CREATE_KEYWORD_ALERT,
+          id: null,
+          context: null,
+          actionTicketParams: {
+            pageType: getCurrentPageType(),
+            actionType: 'view',
+            actionArea: 'createKeywordSnackbar',
+            actionTag: 'viewCreateKeywordSnackbar',
+            actionLabel: values.keyword,
+          },
+        })
+      );
+    } catch (err) {
+      dispatch(failedToConnectKeywordSettingsAPI());
+      const error = PlutoAxios.getGlobalError(err);
+      dispatch({
+        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
+        payload: {
+          type: 'error',
+          message: error.message,
+        },
+      });
+    }
+
     handleClose();
   }
 

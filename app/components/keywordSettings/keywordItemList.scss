@@ -1,11 +1,29 @@
-.keywordItemWrapper {
+%keyword-item-wrapper {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   max-width: 578px;
   width: 100%;
   height: 51px;
   padding: 16px;
   border-radius: 4px;
+}
+
+.noKeywordWrapper {
+  @extend %keyword-item-wrapper;
+
+  background-color: $gray200;
+
+  .keywordContext {
+    font-size: 15px;
+    line-height: 1.87;
+    color: $gray600;
+  }
+}
+
+.keywordItemWrapper {
+  @extend %keyword-item-wrapper;
+
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
   border: solid 1px $gray300;
   background-color: white;

@@ -5,6 +5,7 @@ const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./keywordItemList.scss');
 
 interface KeywordItemListProps {
+  isLoggedIn: boolean;
   keywords: KeywordSettingItemResponse[];
   onRemoveKeywordItem: (keywordId: string, keyword: string) => void;
   isLoading: boolean;
@@ -12,9 +13,14 @@ interface KeywordItemListProps {
 
 const KeywordItemList: React.FC<KeywordItemListProps> = props => {
   useStyles(s);
-  const { keywords, onRemoveKeywordItem, isLoading } = props;
+  const { isLoggedIn, keywords, onRemoveKeywordItem, isLoading } = props;
 
-  if (keywords.length === 0) return null;
+  if (keywords.length === 0 || !isLoggedIn)
+    return (
+      <div className={s.noKeywordWrapper}>
+        <span className={s.keywordContext}>You don't have any alerts.</span>
+      </div>
+    );
 
   const keywordItems = keywords.map(k => {
     return (

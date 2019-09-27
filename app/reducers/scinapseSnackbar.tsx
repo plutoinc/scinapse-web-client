@@ -54,6 +54,7 @@ const scinapseSnackbarSlice = createSlice({
         isOpen: true,
         id,
         context,
+        actionTicketParams: actionTicketParams,
       };
     },
     closeSnackbar(state) {
