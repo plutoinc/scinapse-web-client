@@ -34,7 +34,7 @@ function validateForm(values: FormState) {
   }
 
   if (values.keyword && !englishRegex.exec(values.keyword)) {
-    errors.keyword = 'Please enter english keyword';
+    errors.keyword = 'Please enter the English keyword';
   }
 
   return errors;
