@@ -100,6 +100,8 @@
 }
 
 .count {
+  font-size: 14px;
+  line-height: 18px;
   min-width: 64px;
 }
 
@@ -165,7 +167,7 @@
 
 .categoryCount {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   font-size: 14px;
   color: $gray600;
 }

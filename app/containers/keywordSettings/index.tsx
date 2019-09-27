@@ -108,8 +108,8 @@ const KeywordSettings: React.FC = () => {
             if (!isLoggedIn)
               return GlobalDialogManager.openSignUpDialog({
                 authContext: {
-                  pageType: getCurrentPageType(),
-                  actionArea: 'keywordSettingPage',
+                  pageType: 'keywordSettingPage',
+                  actionArea: 'createAlertBtn',
                   actionLabel: null,
                 },
                 isBlocked: false,

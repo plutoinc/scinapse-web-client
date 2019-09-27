@@ -1,10 +1,11 @@
 import * as React from 'react';
+import { connect, useDispatch } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import { parse } from 'qs';
 import classNames from 'classnames';
 import NoSsr from '@material-ui/core/NoSsr';
-import { connect, useDispatch } from 'react-redux';
+import Tooltip from '@material-ui/core/Tooltip';
 import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
 import { Dispatch, bindActionCreators } from 'redux';
 import { withStyles } from '../../helpers/withStylesHelper';
@@ -37,10 +38,10 @@ import EmailBanner from './components/emailBanner';
 import { EmailRecommendPaperSignUpBannerTestType, WeightedCitationUserGroup } from '../../constants/abTestObject';
 import Button from '../common/button';
 import Icon from '../../icons';
-import Tooltip from '@material-ui/core/Tooltip';
 import { openCreateKeywordAlertDialog } from '../../reducers/createKeywordAlertDialog';
 import CreateKeywordAlertDialog from '../createKeywordAlertDialog/createKeywordAlertDialog';
 import { UserDevice } from '../layouts/reducer';
+import GlobalDialogManager from '../../helpers/globalDialogManager';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -197,11 +198,25 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
               color="blue"
               fullWidth={isMobile}
               disabled={false}
-              onClick={() =>
+              onClick={() => {
+                if (!currentUserState.isLoggedIn)
+                  return GlobalDialogManager.openSignUpDialog({
+                    authContext: {
+                      pageType: 'searchResult',
+                      actionArea: 'createAlertBtn',
+                      actionLabel: articleSearchState.searchInput,
+                    },
+                    isBlocked: false,
+                  });
+
                 dispatch(
                   openCreateKeywordAlertDialog({ from: 'searchResult', keyword: articleSearchState.searchInput })
-                )
-              }
+                );
+              }}
+              style={{
+                alignSelf: 'baseline',
+                marginTop: '8px',
+              }}
             >
               <Icon icon="ALERT" />
               <span>Create alert</span>
