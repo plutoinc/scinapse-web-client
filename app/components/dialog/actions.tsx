@@ -12,7 +12,7 @@ import CollectionAPI, {
 } from '../../api/collection';
 import { AvailableCitationType } from '../../containers/paperShow/records';
 import PlutoAxios from '../../api/pluto';
-import { openSnackbar, closeSnackbar } from '../../reducers/scinapseSnackbar';
+import { openSnackbar, closeSnackbar, GLOBAL_SNACKBAR_TYPE } from '../../reducers/scinapseSnackbar';
 
 export interface OpenGlobalDialogParams {
   type: GLOBAL_DIALOG_TYPE;
@@ -62,6 +62,7 @@ export function addPaperToCollection(params: AddPaperToCollectionParams) {
       );
       dispatch(
         openSnackbar({
+          type: GLOBAL_SNACKBAR_TYPE.COLLECTION_SAVED,
           id: params.collection.id,
           context: params.collection.title,
           actionTicketParams: {

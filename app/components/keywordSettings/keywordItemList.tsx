@@ -23,7 +23,7 @@ const KeywordItemList: React.FC<KeywordItemListProps> = props => {
         <button
           className={s.deleteBtn}
           onClick={() => {
-            const c = confirm('Do you really want to DELETE this keyword?');
+            const c = confirm(`Do you really want to DELETE "${k.keyword}" alert?`);
 
             if (c) {
               onRemoveKeywordItem(k.id, k.keyword);

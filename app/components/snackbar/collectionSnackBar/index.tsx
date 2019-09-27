@@ -1,36 +1,26 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { AppState } from '../../../reducers';
 import { closeDialog } from '../../dialog/actions';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../../locationListener';
 import { UserDevice } from '../../layouts/reducer';
-import Button from '../button';
-import ScinapseSnackbar from '../scinapseSnackbar';
+import Button from '../../common/button';
+import ScinapseSnackbar from '../../common/scinapseSnackbar';
 import { ScinapseSnackbarState, closeSnackbar } from '../../../reducers/scinapseSnackbar';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./collectionSnackBar.scss');
 
-type Props = RouteComponentProps<any>;
-
-const CollectionSnackBar: React.FC<Props> = props => {
+const CollectionSnackBar: React.FC = () => {
   useStyles(s);
   const dispatch = useDispatch();
 
   const collectionSnackBarState = useSelector<AppState, ScinapseSnackbarState>(state => state.scinapseSnackbarState);
   const userDevice = useSelector((state: AppState) => state.layout.userDevice);
 
-  const { location } = props;
   const { id, context, isOpen } = collectionSnackBarState;
   const isLongName = !!context && context.length >= 30 && userDevice === UserDevice.MOBILE;
-
-  useEffect(
-    () => {
-      dispatch(closeSnackbar());
-    },
-    [dispatch, location]
-  );
 
   useEffect(
     () => {
@@ -103,4 +93,4 @@ const CollectionSnackBar: React.FC<Props> = props => {
   );
 };
 
-export default withRouter(CollectionSnackBar);
+export default CollectionSnackBar;

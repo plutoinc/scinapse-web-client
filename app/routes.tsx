@@ -188,6 +188,7 @@ const DialogComponent = loadable(() => import('./components/dialog'));
 const FeedbackButton = loadable(() => import('./containers/feedbackButton'));
 const ImprovedHeader = loadable(() => import('./components/layouts/improvedHeader'));
 const RecommendPool = loadable(() => import('./components/recommendPool/recommendPool'));
+const SnackbarComponent = loadable(() => import('./components/snackbar'));
 
 const DefaultHelmet = () => {
   return (
@@ -286,6 +287,7 @@ const RootRoutes: React.FC<RootRoutesProps> = props => {
       <DialogComponent />
       <FeedbackButton />
       <RecommendPool />
+      <SnackbarComponent />
     </div>
   );
 };

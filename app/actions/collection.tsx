@@ -9,7 +9,7 @@ import CollectionAPI, {
 } from '../api/collection';
 import { Collection } from '../model/collection';
 import { fetchMyCollection } from '../containers/paperShow/sideEffect';
-import { closeSnackbar, openSnackbar } from '../reducers/scinapseSnackbar';
+import { closeSnackbar, openSnackbar, GLOBAL_SNACKBAR_TYPE } from '../reducers/scinapseSnackbar';
 
 export function savePaperToCollection(params: AddPaperToCollectionParams) {
   return async (dispatch: Dispatch<any>) => {
@@ -31,6 +31,7 @@ export function savePaperToCollection(params: AddPaperToCollectionParams) {
 
       dispatch(
         openSnackbar({
+          type: GLOBAL_SNACKBAR_TYPE.COLLECTION_SAVED,
           id: params.collection.id,
           context: params.collection.title,
           actionTicketParams: {

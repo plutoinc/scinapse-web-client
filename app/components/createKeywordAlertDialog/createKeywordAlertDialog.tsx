@@ -15,6 +15,7 @@ import ScinapseFormikInput from '../common/scinapseInput/scinapseFormikInput';
 import Button from '../common/button';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../locationListener';
+import { openSnackbar, GLOBAL_SNACKBAR_TYPE } from '../../reducers/scinapseSnackbar';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./createKeywordAlertDialog.scss');
 
@@ -53,6 +54,20 @@ const CreateKeywordAlertDialog: React.FC = () => {
           actionTag: 'createKeywordAlert',
           actionLabel: values.keyword,
         });
+        dispatch(
+          openSnackbar({
+            type: GLOBAL_SNACKBAR_TYPE.CREATE_KEYWORD_ALERT,
+            id: null,
+            context: null,
+            actionTicketParams: {
+              pageType: getCurrentPageType(),
+              actionType: 'view',
+              actionArea: 'createKeywordSnackbar',
+              actionTag: 'viewCreateKeywordSnackbar',
+              actionLabel: values.keyword,
+            },
+          })
+        );
       })
       .catch(err => {
         dispatch(failedToConnectKeywordSettingsAPI());

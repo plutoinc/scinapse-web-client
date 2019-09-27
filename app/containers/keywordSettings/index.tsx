@@ -49,7 +49,7 @@ const KeywordSettings: React.FC = () => {
           });
         });
     },
-    [isLoggedIn]
+    [isLoggedIn, dispatch]
   );
 
   const handleRemoveKeywordItem = useCallback((keywordId: string, keyword: string) => {
@@ -92,6 +92,7 @@ const KeywordSettings: React.FC = () => {
           color="blue"
           style={{ marginTop: '24px' }}
           isLoading={isLoading}
+          disabled={isLoading}
           onClick={() => {
             if (!isLoggedIn)
               return GlobalDialogManager.openSignUpDialog({

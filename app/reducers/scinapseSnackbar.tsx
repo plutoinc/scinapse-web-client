@@ -2,7 +2,13 @@ import { createSlice, PayloadAction } from 'redux-starter-kit';
 import ActionTicketManager from '../helpers/actionTicketManager';
 import { ActionTicketParams } from '../helpers/actionTicketManager/actionTicket';
 
+export enum GLOBAL_SNACKBAR_TYPE {
+  COLLECTION_SAVED,
+  CREATE_KEYWORD_ALERT,
+}
+
 export interface ScinapseSnackbarState {
+  type: GLOBAL_SNACKBAR_TYPE | null;
   isOpen: boolean;
   actionTicketParams: ActionTicketParams | null;
   id: number | null;
@@ -10,6 +16,7 @@ export interface ScinapseSnackbarState {
 }
 
 export const SCINAPSE_SNACK_BAR_INITIAL_STATE: ScinapseSnackbarState = {
+  type: null,
   isOpen: false,
   actionTicketParams: null,
   id: null,
@@ -23,12 +30,13 @@ const scinapseSnackbarSlice = createSlice({
     openSnackbar(
       state,
       action: PayloadAction<{
+        type: GLOBAL_SNACKBAR_TYPE;
         actionTicketParams: ActionTicketParams | null;
         id: number | null;
         context: string | null;
       }>
     ) {
-      const { id, context, actionTicketParams } = action.payload;
+      const { type, id, context, actionTicketParams } = action.payload;
       if (!!actionTicketParams) {
         const { pageType, actionType, actionArea, actionTag, actionLabel } = actionTicketParams;
         ActionTicketManager.trackTicket({
@@ -42,6 +50,7 @@ const scinapseSnackbarSlice = createSlice({
 
       return {
         ...state,
+        type: type,
         isOpen: true,
         id,
         context,

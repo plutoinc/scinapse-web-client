@@ -35,7 +35,6 @@ import { getUserGroupName } from '../../helpers/abTestHelper';
 import { WEIGHTED_CITATION_EXPERIMENT, EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER } from '../../constants/abTestGlobalValue';
 import EmailBanner from './components/emailBanner';
 import { EmailRecommendPaperSignUpBannerTestType, WeightedCitationUserGroup } from '../../constants/abTestObject';
-import CollectionSnackBar from '../common/collectionSnackBar';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -301,7 +300,6 @@ const SearchContainer: React.FC<Props> = props => {
           width: '100%',
         }}
       />
-      <CollectionSnackBar />
     </div>
   );
 };
