@@ -15,19 +15,18 @@ const CreateKeywordSnackBar: React.FC = () => {
   const createKeywordSnackbarState = useSelector<AppState, ScinapseSnackbarState>(state => state.scinapseSnackbarState);
 
   const { isOpen } = createKeywordSnackbarState;
-  console.log(isOpen);
 
   return (
     <ScinapseSnackbar
-      isOpen={isOpen}
-      handleOnClose={() => dispatch(closeSnackbar())}
+      open={isOpen}
+      onClose={() => dispatch(closeSnackbar())}
       openFrom="createKeywordSnackbar"
-      snackbarMessage={
+      message={
         <span id="message-id" className={s.snackbarContext}>
           Alert created
         </span>
       }
-      actionButton={
+      action={
         <div className={s.seeAllBtn} key={`seeAll`}>
           <Button
             elementType="link"

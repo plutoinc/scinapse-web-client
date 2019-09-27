@@ -1,5 +1,5 @@
 import React from 'react';
-import Snackbar from '@material-ui/core/Snackbar';
+import Snackbar, { SnackbarProps } from '@material-ui/core/Snackbar';
 import Button from '../button';
 import { getCurrentPageType } from '../../locationListener';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
@@ -7,17 +7,15 @@ import Icon from '../../../icons';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./scinapseSnackbar.scss');
 
-interface ScinapseSnackbarProps {
-  isOpen: boolean;
-  handleOnClose: () => void;
-  snackbarMessage: React.ReactNode;
-  actionButton: React.ReactNode;
+type Props = SnackbarProps & {
   openFrom: string;
-}
+};
 
-const ScinapseSnackbar: React.FC<ScinapseSnackbarProps> = props => {
+const ScinapseSnackbar: React.FC<Props> = props => {
   useStyles(s);
-  const { isOpen, openFrom, handleOnClose, snackbarMessage, actionButton } = props;
+  const { open, openFrom, onClose, message, action } = props;
+
+  if (!onClose) return null;
 
   return (
     <Snackbar
@@ -26,23 +24,23 @@ const ScinapseSnackbar: React.FC<ScinapseSnackbarProps> = props => {
         vertical: 'bottom',
         horizontal: 'center',
       }}
-      open={isOpen}
-      onClose={handleOnClose}
+      open={open}
+      onClose={onClose}
       autoHideDuration={5000}
       ClickAwayListenerProps={{ mouseEvent: false, touchEvent: false }}
       ContentProps={{
         'aria-describedby': 'message-id',
       }}
-      message={snackbarMessage}
+      message={message}
       action={[
-        actionButton,
+        action,
         <div className={s.closeBtn} key={`close`}>
           <Button
             elementType="button"
             variant="text"
             color="gray"
             size="small"
-            onClick={() => {
+            onClick={e => {
               ActionTicketManager;
               ActionTicketManager.trackTicket({
                 pageType: getCurrentPageType(),
@@ -51,8 +49,7 @@ const ScinapseSnackbar: React.FC<ScinapseSnackbarProps> = props => {
                 actionTag: 'clickCloseButton',
                 actionLabel: null,
               });
-
-              handleOnClose();
+              onClose(e, '');
             }}
           >
             <Icon icon="X_BUTTON" />

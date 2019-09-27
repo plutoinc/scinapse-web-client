@@ -42,15 +42,15 @@ const RecommendPool: React.FC<Props> = props => {
 
   return (
     <ScinapseSnackbar
-      isOpen={isOpen}
-      handleOnClose={() => dispatch(closeRecommendPapersDialog())}
+      open={isOpen}
+      onClose={() => dispatch(closeRecommendPapersDialog())}
       openFrom="knowledgeBaseNoti"
-      snackbarMessage={
+      message={
         <span id="message-id" className={s.snackbarContext}>
           Recommended papers were updated with your activity history
         </span>
       }
-      actionButton={
+      action={
         <div className={s.letMeSeeBtn} key={`viewCollection`}>
           <Button
             elementType="link"

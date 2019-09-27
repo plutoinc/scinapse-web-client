@@ -10,7 +10,6 @@ export enum GLOBAL_SNACKBAR_TYPE {
 export interface ScinapseSnackbarState {
   type: GLOBAL_SNACKBAR_TYPE | null;
   isOpen: boolean;
-  actionTicketParams: ActionTicketParams | null;
   id: number | null;
   context: string | null;
 }
@@ -18,7 +17,6 @@ export interface ScinapseSnackbarState {
 export const SCINAPSE_SNACK_BAR_INITIAL_STATE: ScinapseSnackbarState = {
   type: null,
   isOpen: false,
-  actionTicketParams: null,
   id: null,
   context: null,
 };
@@ -31,9 +29,9 @@ const scinapseSnackbarSlice = createSlice({
       state,
       action: PayloadAction<{
         type: GLOBAL_SNACKBAR_TYPE;
-        actionTicketParams: ActionTicketParams | null;
         id: number | null;
         context: string | null;
+        actionTicketParams?: ActionTicketParams;
       }>
     ) {
       const { type, id, context, actionTicketParams } = action.payload;
@@ -54,7 +52,6 @@ const scinapseSnackbarSlice = createSlice({
         isOpen: true,
         id,
         context,
-        actionTicketParams: actionTicketParams,
       };
     },
     closeSnackbar(state) {

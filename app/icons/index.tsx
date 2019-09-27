@@ -75,6 +75,7 @@ const ICONS: { [key: string]: any } = {
   FEEDBACK_LABEL: require('./feedback-label.svg'),
   MASK: require('./mask.svg'),
   ERROR: require('./error.svg'),
+  ALERT: require('./alert.svg'),
 };
 
 const Icon: React.FC<IconProps> = ({ className, icon, onClick, style }) => {

@@ -6,7 +6,7 @@ const styles = require('./scinapseInput.scss');
 
 export interface FormikInputBoxProps extends React.HTMLProps<HTMLInputElement> {
   icon?: string;
-  iconClassName?: string;
+  iconclassname?: string;
   wrapperStyle?: React.CSSProperties;
   inputStyle?: React.CSSProperties;
 }
@@ -29,11 +29,11 @@ class ScinapseFormikInput extends React.PureComponent<FormikInputBoxProps & Fiel
   }
 
   private getIcon() {
-    const { icon, iconClassName } = this.props;
+    const { icon, iconclassname } = this.props;
 
     if (icon) {
       return (
-        <div className={`${styles.icon} ${iconClassName}`}>
+        <div className={`${styles.icon} ${iconclassname}`}>
           <Icon icon={icon} />
         </div>
       );

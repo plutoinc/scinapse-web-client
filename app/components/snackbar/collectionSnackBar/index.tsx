@@ -39,10 +39,10 @@ const CollectionSnackBar: React.FC = () => {
 
   return (
     <ScinapseSnackbar
-      isOpen={isOpen}
-      handleOnClose={() => dispatch(closeSnackbar())}
+      open={isOpen}
+      onClose={() => dispatch(closeSnackbar())}
       openFrom="collectionSnackbar"
-      snackbarMessage={
+      message={
         <span id="message-id" className={s.snackbarContext}>
           {`Saved to `}
           {isLongName && <br />}
@@ -64,7 +64,7 @@ const CollectionSnackBar: React.FC = () => {
           >{`${context}.`}</Link>
         </span>
       }
-      actionButton={
+      action={
         <div className={s.viewCollectionBtn} key={`viewCollection`}>
           <Button
             elementType="link"

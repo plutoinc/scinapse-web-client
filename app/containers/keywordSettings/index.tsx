@@ -115,7 +115,7 @@ const KeywordSettings: React.FC = () => {
                 isBlocked: false,
               });
 
-            dispatch(openCreateKeywordAlertDialog({ from: 'keywordSettingPage' }));
+            dispatch(openCreateKeywordAlertDialog({ from: 'keywordSettingPage', keyword: '' }));
           }}
         >
           <Icon icon="PLUS" />

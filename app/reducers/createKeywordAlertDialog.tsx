@@ -3,21 +3,24 @@ import { createSlice, PayloadAction } from 'redux-starter-kit';
 interface CreateKeywordAlertDialogState {
   isOpen: boolean;
   from: string;
+  keyword: string;
 }
 
 export const CREATE_KEYWORD_ALERT_DIALOG_INITIAL_STATE: CreateKeywordAlertDialogState = {
   isOpen: false,
   from: '',
+  keyword: '',
 };
 
 const createKeywordAlertDialogSlice = createSlice({
   slice: 'createKeywordAlertDialogSlice',
   initialState: CREATE_KEYWORD_ALERT_DIALOG_INITIAL_STATE,
   reducers: {
-    openCreateKeywordAlertDialog(state, action: PayloadAction<{ from: string }>) {
+    openCreateKeywordAlertDialog(state, action: PayloadAction<{ from: string; keyword: string }>) {
       return {
         ...state,
         from: action.payload.from,
+        keyword: action.payload.keyword,
         isOpen: true,
       };
     },
@@ -25,6 +28,7 @@ const createKeywordAlertDialogSlice = createSlice({
       return {
         ...state,
         from: '',
+        keyword: '',
         isOpen: false,
       };
     },

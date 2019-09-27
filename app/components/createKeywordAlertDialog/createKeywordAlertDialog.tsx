@@ -40,18 +40,19 @@ function validateForm(values: FormState) {
   return errors;
 }
 
-function getInitialValues() {
+function getInitialValues(keyword: string) {
   return {
-    keyword: '',
+    keyword,
   };
 }
 
 const CreateKeywordAlertDialog: React.FC = () => {
   useStyles(s);
   const dispatch = useDispatch();
-  const { isOpen, openFrom, isLoading } = useSelector((appState: AppState) => ({
+  const { isOpen, openFrom, keyword, isLoading } = useSelector((appState: AppState) => ({
     isOpen: appState.createKeywordAlertDialogState.isOpen,
     openFrom: appState.createKeywordAlertDialogState.from,
+    keyword: appState.createKeywordAlertDialogState.keyword,
     isLoading: appState.keywordSettingsState.isLoading,
   }));
   const actionArea = openFrom;
@@ -106,7 +107,7 @@ const CreateKeywordAlertDialog: React.FC = () => {
     <Dialog open={isOpen} onClose={handleClose} classes={{ paper: s.dialogPaper }}>
       <div className={s.title}>Create keyword alert</div>
       <Formik
-        initialValues={getInitialValues()}
+        initialValues={getInitialValues(keyword)}
         validate={validateForm}
         onSubmit={handleSubmitForm}
         enableReinitialize
@@ -127,7 +128,7 @@ const CreateKeywordAlertDialog: React.FC = () => {
                 })}
                 placeholder="ex) Nanotechnology"
                 icon={!!errors.keyword ? 'ERROR' : null}
-                iconClassName={s.errorIcon}
+                iconclassname={s.errorIcon}
                 component={ScinapseFormikInput}
               />
             </div>
