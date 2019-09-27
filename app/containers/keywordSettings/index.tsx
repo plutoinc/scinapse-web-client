@@ -31,7 +31,10 @@ const KeywordSettings: React.FC = () => {
 
   useEffect(
     () => {
-      if (!isLoggedIn) return;
+      if (!isLoggedIn) {
+        dispatch(succeedToConnectKeywordSettingsAPI({ keywords: [] }));
+        return;
+      }
 
       dispatch(startToConnectKeywordSettingsAPI());
       MemberAPI.getKeywordSettings()
