@@ -166,26 +166,27 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
 
   React.useEffect(
     () => {
-      console.log('----');
-      console.log(pdfBlob);
       if (pdfBlob || PDFViewerState.isLoading) return;
 
       dispatch(ActionCreators.startToFetchPDF());
       fetchPDFFromAPI(paper, cancelTokenSource.current, dispatch)
         .then(res => {
           if (res && res.data) {
-            return setPdfBlob(res.data);
+            setPdfBlob(res.data);
+            return dispatch(ActionCreators.finishToFetchPDF());
+          } else {
+            throw new Error('No PDF');
           }
-          throw new Error('No PDF');
         })
         .catch(err => {
           if (!Axios.isCancel(err)) {
             dispatch(ActionCreators.failToFetchPDF());
+          } else {
+            dispatch(ActionCreators.cancelToFetchPDF());
           }
         });
 
       return () => {
-        console.log('fire cancel');
         cancelTokenSource.current.cancel();
         cancelTokenSource.current = Axios.CancelToken.source();
       };
