@@ -100,6 +100,7 @@ const CreateKeywordAlertDialog: React.FC = () => {
   return (
     <Dialog open={isOpen} onClose={handleClose} classes={{ paper: s.dialogPaper }}>
       <div className={s.title}>Create keyword alert</div>
+      <div className={s.description}>We’ll send email updated papers for the registered keyword.</div>
       <Formik
         initialValues={getInitialValues(keyword)}
         validate={validateForm}

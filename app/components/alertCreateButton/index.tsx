@@ -38,7 +38,7 @@ const AlertCreateButton: React.FC<AlertCreateButtonProps> = props => {
         elementType="button"
         size="small"
         variant="outlined"
-        color="blue"
+        color="black"
         fullWidth={isMobile}
         disabled={false}
         onClick={() => {

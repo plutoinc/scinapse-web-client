@@ -1,6 +1,7 @@
 .dialogPaper {
   width: 100%;
   padding: 20px 16px;
+  top: -120px;
 }
 
 .title {
@@ -8,6 +9,13 @@
   font-weight: 600;
   letter-spacing: -0.25px;
   color: $black0;
+  margin: 4px 0 12px 0;
+}
+
+.description {
+  font-size: 15px;
+  color: $gray700;
+  line-height: 1.5;
 }
 
 .form {
@@ -19,7 +27,7 @@
     height: 44px;
     border-radius: 4px;
     border: solid 1px $gray400;
-    font-size: 13px;
+    font-size: 15px;
     padding: 8px;
     color: $black0;
     margin-top: 8px;

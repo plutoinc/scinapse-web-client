@@ -63,7 +63,7 @@
   align-items: flex-end;
   font-size: 15px;
   line-height: 28px;
-  margin: 16px 0;
+  margin: 8px 0 16px 0;
 
   .searchResult {
     color: $main_blue0;
@@ -80,22 +80,23 @@
 .count {
   font-size: 14px;
   line-height: 18px;
-  min-width: 64px;
+  min-width: 80px;
 }
 
 .countDivider {
   display: inline-block;
-  margin: 0 8px;
+  margin: 0 12px;
 }
 
 .additionalContent {
   display: inline-block;
   font-size: 14px;
-  line-height: 18px;
-  color: $gray700;
+  line-height: 1.4;
+  color: $gray800;
+  margin-right: 8px;
 
   .boldQuery {
-    font-weight: bold;
+    font-weight: 500;
   }
 
   .matchingPhrasesContent {
@@ -109,12 +110,12 @@
 
   .wrongQuery {
     color: $red0;
-    font-weight: bold;
+    font-weight: 500;
   }
 
   .suggestionKeyword {
     color: $main-blue1;
-    font-weight: bold;
+    font-weight: 500;
 
     &:hover {
       text-decoration: underline;
@@ -122,12 +123,12 @@
   }
 
   .weirdQuery {
-    font-weight: bold;
+    font-weight: 500;
   }
 
   .suggestionLink {
     color: $gray800;
-    font-weight: bold;
+    font-weight: 500;
 
     &:hover {
       text-decoration: underline;
@@ -221,6 +222,7 @@
     color: $gray400;
     flex-flow: column;
     align-items: start;
+    padding: 12px 0;
   }
 
   .loadingContainer {
