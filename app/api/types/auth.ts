@@ -15,7 +15,7 @@ export interface BaseSignUpAPIParams {
   first_name: string;
   last_name: string;
   affiliation_id?: string;
-  profile_link?: string;
+  profile_link?: string | null;
 }
 
 export type SignUpWithEmailParams = BaseSignUpParams & { password: string };
