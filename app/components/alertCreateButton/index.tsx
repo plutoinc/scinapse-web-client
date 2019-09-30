@@ -8,7 +8,7 @@ import { UserDevice } from '../layouts/reducer';
 import { getCurrentPageType } from '../locationListener';
 import { openCreateKeywordAlertDialog } from '../../reducers/createKeywordAlertDialog';
 import Icon from '../../icons';
-import GlobalDialogManager from '../../helpers/globalDialogManager';
+import { blockUnverifiedUser, AUTH_LEVEL } from '../../helpers/checkAuthDialog';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./alertCreateButton.scss');
 
@@ -19,9 +19,8 @@ interface AlertCreateButtonProps {
 const AlertCreateButton: React.FC<AlertCreateButtonProps> = props => {
   useStyles(s);
   const dispatch = useDispatch();
-  const { isMobile, isLoggedIn } = useSelector((state: AppState) => ({
+  const { isMobile } = useSelector((state: AppState) => ({
     isMobile: state.layout.userDevice === UserDevice.MOBILE,
-    isLoggedIn: state.currentUser.isLoggedIn,
   }));
 
   const { searchInput } = props;
@@ -41,7 +40,7 @@ const AlertCreateButton: React.FC<AlertCreateButtonProps> = props => {
         color="blue"
         fullWidth={isMobile}
         disabled={false}
-        onClick={() => {
+        onClick={async () => {
           ActionTicketManager.trackTicket({
             pageType: getCurrentPageType(),
             actionType: 'fire',
@@ -50,15 +49,14 @@ const AlertCreateButton: React.FC<AlertCreateButtonProps> = props => {
             actionLabel: null,
           });
 
-          if (!isLoggedIn)
-            return GlobalDialogManager.openSignUpDialog({
-              authContext: {
-                pageType: getCurrentPageType(),
-                actionArea: 'createAlertBtn',
-                actionLabel: !searchInput ? null : searchInput,
-              },
-              isBlocked: false,
-            });
+          const isBlocked = await blockUnverifiedUser({
+            authLevel: AUTH_LEVEL.VERIFIED,
+            actionArea: 'createAlertBtn',
+            actionLabel: !searchInput ? null : searchInput,
+            userActionType: 'clickCreateAlertBtn',
+          });
+
+          if (isBlocked) return;
 
           dispatch(
             openCreateKeywordAlertDialog({ from: getCurrentPageType(), keyword: !searchInput ? '' : searchInput })

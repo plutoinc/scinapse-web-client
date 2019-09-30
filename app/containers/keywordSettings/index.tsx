@@ -15,8 +15,8 @@ import { ACTION_TYPES } from '../../actions/actionTypes';
 import CreateKeywordAlertDialog from '../../components/createKeywordAlertDialog/createKeywordAlertDialog';
 import { openCreateKeywordAlertDialog } from '../../reducers/createKeywordAlertDialog';
 import ActionTicketManager from '../../helpers/actionTicketManager';
-import GlobalDialogManager from '../../helpers/globalDialogManager';
 import PlutoAxios from '../../api/pluto';
+import { blockUnverifiedUser, AUTH_LEVEL } from '../../helpers/checkAuthDialog';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./keywordSettings.scss');
 
@@ -56,31 +56,34 @@ const KeywordSettings: React.FC = () => {
     [isLoggedIn, dispatch]
   );
 
-  const handleRemoveKeywordItem = useCallback((keywordId: string, keyword: string) => {
-    dispatch(startToConnectKeywordSettingsAPI());
-    MemberAPI.deleteKeywordSettings(keywordId)
-      .then(res => {
-        dispatch(succeedToConnectKeywordSettingsAPI({ keywords: res.data.content }));
-        ActionTicketManager.trackTicket({
-          pageType: 'keywordSettingPage',
-          actionType: 'fire',
-          actionArea: 'keywordSettingPage',
-          actionTag: 'removeKeywordAlert',
-          actionLabel: keyword,
+  const handleRemoveKeywordItem = useCallback(
+    (keywordId: string, keyword: string) => {
+      dispatch(startToConnectKeywordSettingsAPI());
+      MemberAPI.deleteKeywordSettings(keywordId)
+        .then(res => {
+          dispatch(succeedToConnectKeywordSettingsAPI({ keywords: res.data.content }));
+          ActionTicketManager.trackTicket({
+            pageType: 'keywordSettingPage',
+            actionType: 'fire',
+            actionArea: 'keywordSettingPage',
+            actionTag: 'removeKeywordAlert',
+            actionLabel: keyword,
+          });
+        })
+        .catch(err => {
+          dispatch(failedToConnectKeywordSettingsAPI());
+          const error = PlutoAxios.getGlobalError(err);
+          dispatch({
+            type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
+            payload: {
+              type: 'error',
+              message: error.message,
+            },
+          });
         });
-      })
-      .catch(err => {
-        dispatch(failedToConnectKeywordSettingsAPI());
-        const error = PlutoAxios.getGlobalError(err);
-        dispatch({
-          type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
-          payload: {
-            type: 'error',
-            message: error.message,
-          },
-        });
-      });
-  }, []);
+    },
+    [dispatch]
+  );
 
   return (
     <>
@@ -101,7 +104,7 @@ const KeywordSettings: React.FC = () => {
           style={{ marginTop: '24px' }}
           isLoading={isLoading}
           disabled={isLoading}
-          onClick={() => {
+          onClick={async () => {
             ActionTicketManager.trackTicket({
               pageType: 'keywordSettingPage',
               actionType: 'fire',
@@ -110,15 +113,14 @@ const KeywordSettings: React.FC = () => {
               actionLabel: null,
             });
 
-            if (!isLoggedIn)
-              return GlobalDialogManager.openSignUpDialog({
-                authContext: {
-                  pageType: 'keywordSettingPage',
-                  actionArea: 'createAlertBtn',
-                  actionLabel: null,
-                },
-                isBlocked: false,
-              });
+            const isBlocked = await blockUnverifiedUser({
+              authLevel: AUTH_LEVEL.VERIFIED,
+              actionArea: 'keywordSettingPage',
+              actionLabel: null,
+              userActionType: 'clickCreateAlertBtn',
+            });
+
+            if (isBlocked) return;
 
             dispatch(openCreateKeywordAlertDialog({ from: 'keywordSettingPage', keyword: '' }));
           }}
