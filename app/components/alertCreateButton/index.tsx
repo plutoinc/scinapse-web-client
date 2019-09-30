@@ -32,7 +32,7 @@ const AlertCreateButton: React.FC<AlertCreateButtonProps> = props => {
       disableTouchListener={true}
       title="📩 We’ll send updated papers for this results via registered email."
       placement={isMobile ? 'bottom' : 'bottom-end'}
-      classes={{ tooltip: s.arrowTopTooltip }}
+      classes={{ tooltip: s.arrowTopTooltip, popper: s.arrowTopTooltipWrapper }}
     >
       <Button
         elementType="button"
