@@ -33,6 +33,7 @@ export interface SignUpFormValues {
   firstName: string;
   lastName: string;
   affiliation: string;
+  profileLink: string;
 }
 
 const validateForm = async (values: SignUpFormValues, withSocial: boolean) => {
@@ -54,6 +55,10 @@ const validateForm = async (values: SignUpFormValues, withSocial: boolean) => {
     errors.affiliation = 'Please enter your affiliation';
   }
 
+  if (values.profileLink && values.profileLink.match(/(http(s)?:\/\/.)/g) === null) {
+    errors.profileLink = 'Please write start to http:// or https://';
+  }
+
   const emailErr = await debouncedCheckDuplicate(values.email);
   if (emailErr) {
     errors.email = emailErr;
@@ -72,6 +77,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
     try {
       await props.onSubmit(values);
       props.onSucceed();
+      props.onClickNext();
     } catch (err) {
       setIsLoading(false);
     }
@@ -88,6 +94,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
             firstName: props.firstName,
             lastName: props.lastName,
             affiliation: '',
+            profileLink: '',
           }}
           onSubmit={handleSubmit}
           validate={value => validateForm(value, props.withSocial)}
@@ -139,6 +146,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                     alignContent: 'flex-start',
                     alignItems: 'center',
                     height: '47px',
+                    fontSize: '14px',
                     borderRadius: '3px',
                     padding: '0 10px',
                     backgroundColor: 'white',
@@ -147,16 +155,10 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                     marginTop: '14px',
                   }}
                 />
+                <Field name="profileLink" type="url" component={AuthInputBox} placeholder="Profile Link" />
               </div>
               <div className={s.authButtonWrapper}>
-                <Button
-                  type="submit"
-                  elementType="button"
-                  onClick={props.onClickNext}
-                  isLoading={isLoading}
-                  fullWidth
-                  size="large"
-                >
+                <Button type="submit" elementType="button" isLoading={isLoading} fullWidth size="large">
                   <span>Sign up</span>
                 </Button>
               </div>

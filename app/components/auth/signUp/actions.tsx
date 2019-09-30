@@ -1,6 +1,11 @@
 import { Dispatch } from 'redux';
 import AuthAPI from '../../../api/auth';
-import { SignUpWithEmailParams, SignUpWithSocialParams } from '../../../api/types/auth';
+import {
+  SignUpWithEmailParams,
+  SignUpWithSocialParams,
+  SignUpWithSocialAPIParams,
+  SignUpWithEmailAPIParams,
+} from '../../../api/types/auth';
 import RecommendationAPI from '../../../api/recommendation';
 import { BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY } from '../../recommendPool/recommendPoolConstants';
 import { ACTION_TYPES } from '../../../actions/actionTypes';
@@ -29,7 +34,16 @@ export const checkDuplicatedEmail = async (email: string) => {
 export function signUpWithSocial(params: SignUpWithSocialParams) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      const signUpResult: Member = await AuthAPI.signUpWithSocial(params);
+      const finalParams: SignUpWithSocialAPIParams = {
+        email: params.email,
+        affiliation_name: params.affiliation,
+        first_name: params.firstName,
+        last_name: params.lastName,
+        token: params.token,
+        profile_link: params.profileLink,
+      };
+
+      const signUpResult: Member = await AuthAPI.signUpWithSocial(finalParams);
       await syncRecommendationPoolToUser();
       dispatch({
         type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
@@ -52,7 +66,16 @@ export function signUpWithSocial(params: SignUpWithSocialParams) {
 export function signUpWithEmail(params: SignUpWithEmailParams) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      const signUpResult: Member = await AuthAPI.signUpWithEmail(params);
+      const finalParams: SignUpWithEmailAPIParams = {
+        email: params.email,
+        affiliation_name: params.affiliation,
+        first_name: params.firstName,
+        last_name: params.lastName,
+        password: params.password,
+        profile_link: params.profileLink,
+      };
+
+      const signUpResult: Member = await AuthAPI.signUpWithEmail(finalParams);
       await syncRecommendationPoolToUser();
       dispatch({
         type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,

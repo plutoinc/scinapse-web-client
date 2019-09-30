@@ -1,13 +1,37 @@
 import { Member } from '../../model/member';
 import { Affiliation } from '../../model/affiliation';
 
-export interface SignUpWithEmailParams {
+interface BaseSignUpParams {
   email: string;
-  password: string;
   firstName: string;
   lastName: string;
   affiliation: string;
+  profileLink?: string;
 }
+
+export interface BaseSignUpAPIParams {
+  email: string;
+  affiliation_name: string;
+  first_name: string;
+  last_name: string;
+  affiliation_id?: string;
+  profile_link?: string;
+}
+
+export type SignUpWithEmailParams = BaseSignUpParams & { password: string };
+export type SignUpWithSocialParams = BaseSignUpParams & {
+  token: {
+    vendor: OAUTH_VENDOR;
+    token: string;
+  };
+};
+export type SignUpWithEmailAPIParams = BaseSignUpAPIParams & { password: string };
+export type SignUpWithSocialAPIParams = BaseSignUpAPIParams & {
+  token: {
+    vendor: OAUTH_VENDOR;
+    token: string;
+  };
+};
 
 export interface ChangePasswordParams {
   oldPassword: string;
@@ -18,17 +42,15 @@ export interface UpdateUserInformationParams {
   firstName: string;
   lastName: string;
   affiliation: Affiliation;
+  profileLink: string;
 }
 
-export interface SignUpWithSocialParams {
-  email: string;
-  firstName: string;
-  lastName: string;
-  affiliation: string;
-  token: {
-    vendor: OAUTH_VENDOR;
-    token: string;
-  };
+export interface UpdateUserInformationAPIParams {
+  first_name: string;
+  last_name: string;
+  affiliation_id: number | null;
+  affiliation_name: string;
+  profile_link?: string;
 }
 
 export interface SignInWithEmailParams {

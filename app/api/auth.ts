@@ -1,8 +1,6 @@
 import PlutoAxios from './pluto';
 import { Member } from '../model/member';
 import {
-  SignUpWithEmailParams,
-  SignUpWithSocialParams,
   SignInWithEmailParams,
   SignInResult,
   SignInData,
@@ -10,20 +8,22 @@ import {
   CheckDuplicatedEmailResult,
   OAUTH_VENDOR,
   OAuthCheckResult,
-  UpdateUserInformationParams,
   ChangePasswordParams,
   EmailSettingsResponse,
   UpdateEmailSettingParams,
+  SignUpWithSocialAPIParams,
+  SignUpWithEmailAPIParams,
+  UpdateUserInformationAPIParams,
 } from './types/auth';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
 class AuthAPI extends PlutoAxios {
-  public async signUpWithEmail(userInfo: SignUpWithEmailParams): Promise<Member> {
+  public async signUpWithEmail(userInfo: SignUpWithEmailAPIParams): Promise<Member> {
     const signUpWithEmailResponse = await this.post('/members', userInfo);
     return camelCaseKeys(signUpWithEmailResponse.data);
   }
 
-  public async signUpWithSocial(userInfo: SignUpWithSocialParams): Promise<Member> {
+  public async signUpWithSocial(userInfo: SignUpWithSocialAPIParams): Promise<Member> {
     const signUpWithSocialResponse = await this.post('/members/oauth', userInfo);
     return camelCaseKeys(signUpWithSocialResponse.data);
   }
@@ -101,13 +101,8 @@ class AuthAPI extends PlutoAxios {
     return camelCaseKeys(res.data);
   }
 
-  public async update(params: UpdateUserInformationParams): Promise<Member> {
-    const res = await this.put('/members/me', {
-      affiliation_id: params.affiliation.id,
-      affiliation_name: params.affiliation.name,
-      firstName: params.firstName,
-      lastName: params.lastName,
-    });
+  public async update(params: UpdateUserInformationAPIParams): Promise<Member> {
+    const res = await this.put('/members/me', params);
 
     return camelCaseKeys(res.data);
   }
