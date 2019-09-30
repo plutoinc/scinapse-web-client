@@ -1,0 +1,79 @@
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import Tooltip from '@material-ui/core/Tooltip';
+import Button from '../common/button';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+import { AppState } from '../../reducers';
+import { UserDevice } from '../layouts/reducer';
+import { getCurrentPageType } from '../locationListener';
+import { openCreateKeywordAlertDialog } from '../../reducers/createKeywordAlertDialog';
+import Icon from '../../icons';
+import GlobalDialogManager from '../../helpers/globalDialogManager';
+const useStyles = require('isomorphic-style-loader/useStyles');
+const s = require('./alertCreateButton.scss');
+
+interface AlertCreateButtonProps {
+  searchInput?: string;
+}
+
+const AlertCreateButton: React.FC<AlertCreateButtonProps> = props => {
+  useStyles(s);
+  const dispatch = useDispatch();
+  const { isMobile, isLoggedIn } = useSelector((state: AppState) => ({
+    isMobile: state.layout.userDevice === UserDevice.MOBILE,
+    isLoggedIn: state.currentUser.isLoggedIn,
+  }));
+
+  const { searchInput } = props;
+
+  return (
+    <Tooltip
+      disableFocusListener={true}
+      disableTouchListener={true}
+      title="📩 We’ll send updated papers for this results via registered email."
+      placement={isMobile ? 'bottom' : 'bottom-end'}
+      classes={{ tooltip: s.arrowTopTooltip }}
+    >
+      <Button
+        elementType="button"
+        size="small"
+        variant="outlined"
+        color="blue"
+        fullWidth={isMobile}
+        disabled={false}
+        onClick={() => {
+          ActionTicketManager.trackTicket({
+            pageType: getCurrentPageType(),
+            actionType: 'fire',
+            actionArea: 'createAlertBtn',
+            actionTag: 'clickCreateAlertBtn',
+            actionLabel: null,
+          });
+
+          if (!isLoggedIn)
+            return GlobalDialogManager.openSignUpDialog({
+              authContext: {
+                pageType: getCurrentPageType(),
+                actionArea: 'createAlertBtn',
+                actionLabel: !searchInput ? null : searchInput,
+              },
+              isBlocked: false,
+            });
+
+          dispatch(
+            openCreateKeywordAlertDialog({ from: getCurrentPageType(), keyword: !searchInput ? '' : searchInput })
+          );
+        }}
+        style={{
+          alignSelf: 'baseline',
+          marginTop: '8px',
+        }}
+      >
+        <Icon icon="ALERT" />
+        <span>Create alert</span>
+      </Button>
+    </Tooltip>
+  );
+};
+
+export default AlertCreateButton;

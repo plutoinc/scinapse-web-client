@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import { parse } from 'qs';
 import classNames from 'classnames';
 import NoSsr from '@material-ui/core/NoSsr';
-import Tooltip from '@material-ui/core/Tooltip';
 import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
 import { Dispatch, bindActionCreators } from 'redux';
 import { withStyles } from '../../helpers/withStylesHelper';
@@ -36,13 +35,8 @@ import { getUserGroupName } from '../../helpers/abTestHelper';
 import { WEIGHTED_CITATION_EXPERIMENT, EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER } from '../../constants/abTestGlobalValue';
 import EmailBanner from './components/emailBanner';
 import { EmailRecommendPaperSignUpBannerTestType, WeightedCitationUserGroup } from '../../constants/abTestObject';
-import Button from '../common/button';
-import Icon from '../../icons';
-import { openCreateKeywordAlertDialog } from '../../reducers/createKeywordAlertDialog';
 import CreateKeywordAlertDialog from '../createKeywordAlertDialog/createKeywordAlertDialog';
-import { UserDevice } from '../layouts/reducer';
-import GlobalDialogManager from '../../helpers/globalDialogManager';
-import ActionTicketManager from '../../helpers/actionTicketManager';
+import AlertCreateButton from '../alertCreateButton';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -110,10 +104,6 @@ const AuthorSearchResult: React.FC<AuthorSearchResult> = React.memo(
 
 const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filter: FilterObject }> = props => {
   const { articleSearchState, currentUserState, queryParams, filter, location, layout } = props;
-
-  const dispatch = useDispatch();
-
-  const isMobile = layout.userDevice === UserDevice.MOBILE;
 
   const hasNoSearchResult =
     (!articleSearchState.searchItemsToShow || articleSearchState.searchItemsToShow.length === 0) && queryParams;
@@ -185,52 +175,7 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
             shouldShowTitle={!hasNoMatchedAuthors}
             matchingPhrases={articleSearchState.detectedPhrases}
           />
-          <Tooltip
-            disableFocusListener={true}
-            disableTouchListener={true}
-            title="📩 We’ll send updated papers for this results via registered email."
-            placement={isMobile ? 'bottom' : 'bottom-end'}
-            classes={{ tooltip: styles.arrowTopTooltip }}
-          >
-            <Button
-              elementType="button"
-              size="small"
-              variant="outlined"
-              color="blue"
-              fullWidth={isMobile}
-              disabled={false}
-              onClick={() => {
-                ActionTicketManager.trackTicket({
-                  pageType: 'searchResult',
-                  actionType: 'fire',
-                  actionArea: 'createAlertBtn',
-                  actionTag: 'clickCreateAlertBtn',
-                  actionLabel: null,
-                });
-
-                if (!currentUserState.isLoggedIn)
-                  return GlobalDialogManager.openSignUpDialog({
-                    authContext: {
-                      pageType: 'searchResult',
-                      actionArea: 'createAlertBtn',
-                      actionLabel: articleSearchState.searchInput,
-                    },
-                    isBlocked: false,
-                  });
-
-                dispatch(
-                  openCreateKeywordAlertDialog({ from: 'searchResult', keyword: articleSearchState.searchInput })
-                );
-              }}
-              style={{
-                alignSelf: 'baseline',
-                marginTop: '8px',
-              }}
-            >
-              <Icon icon="ALERT" />
-              <span>Create alert</span>
-            </Button>
-          </Tooltip>
+          <AlertCreateButton searchInput={articleSearchState.searchInput} />
         </div>
         <FilterBox query={queryParams.query} />
         <SearchList
