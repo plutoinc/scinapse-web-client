@@ -41,12 +41,17 @@ class LineAuthors extends React.PureComponent<AuthorsProps> {
       return <span className={styles.authors}>{authorItems}</span>;
     } else {
       const authorItems = this.mapAuthorNodeToEndIndex(authors, 1, true);
+      let authorCount = paper.authorCount - 3;
+
+      if (paper.authorCount === 0) {
+        authorCount = authors.length - 3;
+      }
 
       return (
         <span className={styles.authors}>
           {authorItems.slice(0, 2)}
           <span className={styles.toggleAuthorsButton} onClick={this.toggleAuthors}>
-            {`+ ${paper.authorCount - 3} Authors`}
+            {`+ ${authorCount} Authors`}
           </span>
           {authorItems[2]}
         </span>

@@ -38,8 +38,11 @@ const MobileAuthors: React.FC<MobileAuthorsProps> = ({ isExpanded, paper }) => {
 
   if (isExpanded) {
     let authorCount = <div className={s.authorCount} />;
+
     if (paper.authorCount > 3) {
       authorCount = <div className={s.authorCount}>{`+ ${paper.authorCount - 3} Authors`}</div>;
+    } else if (paper.authorCount === 0 && paper.authors.length > 3) {
+      authorCount = <div className={s.authorCount}>{`+ ${paper.authors.length - 3} Authors`}</div>;
     }
 
     const authorList = paper.authors.slice(0, 2).map(author => <BlockAuthorItem author={author} key={author.id} />);
@@ -61,8 +64,11 @@ const MobileAuthors: React.FC<MobileAuthorsProps> = ({ isExpanded, paper }) => {
   }
 
   let authorCount = `${paper.authorCount} Authors`;
+
   if (paper.authorCount === 1) {
     authorCount = '1 Author';
+  } else if (paper.authorCount === 0) {
+    authorCount = `${paper.authors.length} Authors`;
   }
 
   let authorList = `(${paper.authors[0].name}, ..., ${paper.authors[paper.authors.length - 1].name})`;
