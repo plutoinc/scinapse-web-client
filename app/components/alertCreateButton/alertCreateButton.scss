@@ -23,7 +23,7 @@
 // Mobile
 @media (max-width: $mobile_width) {
   .arrowTopTooltipWrapper {
-    z-index: 2;
+    display: none;
   }
 
   .arrowTopTooltip {
