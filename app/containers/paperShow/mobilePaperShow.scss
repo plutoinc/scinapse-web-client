@@ -4,6 +4,10 @@ $ref-cited-bar-height: 50px;
   margin: $header-height 12px 0 12px;
 }
 
+:export {
+  headerHeight: $header-height;
+}
+
 .contentWrapper {
   margin: 0 16px;
 }
@@ -85,4 +89,19 @@ article.paperShow {
   .paperItem + .paperItem {
     margin-top: 12px;
   }
+}
+
+.fixedTab {
+  display: none;
+  position: fixed;
+  top: $header-height;
+  left: 0;
+  right: 0;
+  background-color: white;
+}
+
+.tabPaperTitle {
+  @extend %one-line-overflow-ellipsis;
+
+  margin: 24px 28px 16px 28px;
 }
