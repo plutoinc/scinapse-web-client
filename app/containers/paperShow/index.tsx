@@ -7,19 +7,15 @@ import { connect } from 'react-redux';
 import PDFViewer from '../../components/pdfViewer';
 import { AppState } from '../../reducers';
 import { withStyles } from '../../helpers/withStylesHelper';
-import { CurrentUser } from '../../model/currentUser';
 import ArticleSpinner from '../../components/common/spinner/articleSpinner';
 import { clearPaperShowState, fetchLastFullTextRequestedDate } from '../../actions/paperShow';
-import { PaperShowState } from './records';
 import ActionBar from '../paperShowActionBar';
 import FOSList from '../../components/paperShow/components/fosList';
 import ReferencePapers from '../../components/paperShow/refCitedPapers/referencePapers';
 import CitedPapers from '../../components/paperShow/refCitedPapers/citedPapers';
 import PaperShowRefCitedTab from '../../components/paperShow/refCitedTab';
-import { Paper } from '../../model/paper';
 import { fetchMyCollection, fetchPaperShowData } from './sideEffect';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
-import { LayoutState } from '../../components/layouts/reducer';
 import { getMemoizedPaper } from './select';
 import { formulaeToHTMLStr } from '../../helpers/displayFormula';
 import restoreScroll from '../../helpers/scrollRestoration';
@@ -38,10 +34,8 @@ import { getRelatedPapers } from '../../actions/relatedPapers';
 import { getMemoizedPaperShow } from '../../selectors/getPaperShow';
 import { getMemoizedLayout } from '../../selectors/getLayout';
 import { getMemoizedPDFViewerState } from '../../selectors/getPDFViewer';
-import { PDFViewerState } from '../../reducers/pdfViewer';
 import { ActionCreators } from '../../actions/actionTypes';
 import BottomBanner from '../../components/preNoted/bottomBanner';
-import { Configuration } from '../../reducers/configuration';
 import { getMemoizedConfiguration } from '../../selectors/getConfiguration';
 import PlutoAxios from '../../api/pluto';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
@@ -69,15 +63,10 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams> {
-  layout: LayoutState;
-  configuration: Configuration;
-  currentUser: CurrentUser;
-  paperShow: PaperShowState;
-  PDFViewerState: PDFViewerState;
-  dispatch: Dispatch<any>;
-  paper: Paper | null;
-}
+export type PaperShowProps = RouteComponentProps<PaperShowMatchParams> &
+  ReturnType<typeof mapStateToProps> & {
+    dispatch: Dispatch<any>;
+  };
 
 interface PaperShowStates
   extends Readonly<{

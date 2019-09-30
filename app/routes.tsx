@@ -73,7 +73,7 @@ export const routesMap: ServerRoutesMap[] = [
   },
   {
     path: PAPER_SHOW_PATH,
-    component: loadable(() => import('./containers/paperShow'), {
+    component: loadable(() => import('./containers/paperShow/mobilePaperShow'), {
       fallback: <div>loading ...</div>,
     }),
     loadData: async (params: LoadDataParams<PaperShowMatchParams>) => {

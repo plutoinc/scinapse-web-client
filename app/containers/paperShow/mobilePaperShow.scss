@@ -1,0 +1,88 @@
+$ref-cited-bar-height: 50px;
+
+.container {
+  margin: $header-height 12px 0 12px;
+}
+
+.contentWrapper {
+  margin: 0 16px;
+}
+
+.title {
+  font-size: 22px;
+  line-height: 1.27;
+  font-weight: normal;
+  color: $black0;
+  font-family: Georgia;
+  margin: 0;
+  padding-top: 24px;
+  padding-bottom: 12px;
+}
+
+.abstractHeader {
+  font-size: 16px;
+  font-weight: bold;
+  color: $black0;
+  margin-top: 14px;
+  margin-bottom: 16px;
+}
+
+.abstractContent {
+  font-size: 14px;
+  line-height: 1.36;
+  color: $black0;
+}
+
+.refCitedTabWrapper {
+  min-height: $ref-cited-bar-height;
+  box-sizing: content-box;
+}
+
+.sectionDivider {
+  width: 100%;
+  height: 80px;
+  background-color: $gray50;
+  box-shadow: inset 0px 0px 5px 2px rgba(0, 0, 0, 0.02);
+}
+
+.sectionTitle {
+  font-size: 21px;
+  font-weight: bold;
+  color: $black1;
+}
+
+.sectionCount {
+  font-family: Roboto;
+  font-size: 21px;
+  color: $main_blue0;
+  margin-left: 12px;
+}
+
+.citedBy {
+  margin-top: 16px;
+  padding-bottom: 16px;
+}
+
+article.paperShow {
+  width: $mobile-content-width;
+  margin: 0 auto;
+
+  .paperInfo {
+    display: block;
+    & > div {
+      width: $mobile-paper-info-layout-width;
+      & + div {
+        margin-left: 0;
+        margin-top: 24px;
+      }
+    }
+  }
+}
+
+.otherPapers {
+  margin-top: 24px;
+
+  .paperItem + .paperItem {
+    margin-top: 12px;
+  }
+}
