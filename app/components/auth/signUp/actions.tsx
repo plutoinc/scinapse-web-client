@@ -40,7 +40,7 @@ export function signUpWithSocial(params: SignUpWithSocialParams) {
         first_name: params.firstName,
         last_name: params.lastName,
         token: params.token,
-        profile_link: params.profileLink,
+        profile_link: params.profileLink || null,
       };
 
       const signUpResult: Member = await AuthAPI.signUpWithSocial(finalParams);
@@ -72,7 +72,7 @@ export function signUpWithEmail(params: SignUpWithEmailParams) {
         first_name: params.firstName,
         last_name: params.lastName,
         password: params.password,
-        profile_link: params.profileLink,
+        profile_link: params.profileLink || null,
       };
 
       const signUpResult: Member = await AuthAPI.signUpWithEmail(finalParams);
