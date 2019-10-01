@@ -41,39 +41,44 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
   const refTabWrapper = React.useRef<HTMLDivElement | null>(null);
   const citedTabWrapper = React.useRef<HTMLDivElement | null>(null);
 
-  React.useEffect(
-    () => {
-      function handleScroll() {
-        console.log('fire handleScroll');
-        if (!ticking) {
-          requestAnimationFrame(() => {
-            if (!buttonGroupWrapper.current || !fixedButtonHeader.current) return (ticking = false);
-            console.log('inside raF', buttonGroupWrapper.current);
-            const scrollTop =
-              (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-            const currentScrollTop = scrollTop + NAVBAR_HEIGHT;
-            const buttonGroupOffsetTop = buttonGroupWrapper.current.offsetTop - 16 /* margin */;
+  React.useEffect(() => {
+    function handleScroll() {
+      console.log('fire handleScroll');
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (
+            !buttonGroupWrapper.current ||
+            !fixedButtonHeader.current ||
+            !refTabWrapper.current ||
+            !citedTabWrapper.current
+          )
+            return (ticking = false);
+          console.log('inside raF', buttonGroupWrapper.current);
+          const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+          const currentScrollTop = scrollTop + NAVBAR_HEIGHT;
+          const buttonGroupOffsetTop = buttonGroupWrapper.current.offsetTop - 16 /* margin */;
+          const refTabWrapperOffset = refTabWrapper.current.offsetTop - fixedButtonHeader.current.clientHeight;
 
-            if (currentScrollTop < buttonGroupOffsetTop) {
-              fixedButtonHeader.current.style.display = 'none';
-            } else if (currentScrollTop >= buttonGroupOffsetTop) {
-              fixedButtonHeader.current.style.display = 'block';
-            }
+          console.log(currentScrollTop, refTabWrapperOffset);
 
-            ticking = false;
-          });
-        }
-        ticking = true;
+          if (currentScrollTop < buttonGroupOffsetTop) {
+            fixedButtonHeader.current.style.display = 'none';
+          } else if (currentScrollTop >= buttonGroupOffsetTop) {
+            fixedButtonHeader.current.style.display = 'block';
+          }
+
+          ticking = false;
+        });
       }
+      ticking = true;
+    }
 
-      window.addEventListener('scroll', handleScroll, { passive: true });
-
-      return () => {
-        window.removeEventListener('scroll', handleScroll);
-      };
-    },
-    [buttonGroupWrapper.current, fixedButtonHeader.current]
-  );
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // initial time
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   React.useEffect(
     () => {
