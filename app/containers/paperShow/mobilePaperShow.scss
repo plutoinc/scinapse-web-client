@@ -37,58 +37,43 @@ $ref-cited-bar-height: 50px;
   color: $black0;
 }
 
-.refCitedTabWrapper {
-  min-height: $ref-cited-bar-height;
-  box-sizing: content-box;
-}
+.refCitedTab {
+  background-color: #f9f9fb;
+  padding: 16px 28px;
 
-.sectionDivider {
-  width: 100%;
-  height: 80px;
-  background-color: $gray50;
-  box-shadow: inset 0px 0px 5px 2px rgba(0, 0, 0, 0.02);
-}
+  span {
+    display: inline-block;
+  }
 
-.sectionTitle {
-  font-size: 21px;
-  font-weight: bold;
-  color: $black1;
-}
-
-.sectionCount {
-  font-family: Roboto;
-  font-size: 21px;
-  color: $main_blue0;
-  margin-left: 12px;
-}
-
-.citedBy {
-  margin-top: 16px;
-  padding-bottom: 16px;
-}
-
-article.paperShow {
-  width: $mobile-content-width;
-  margin: 0 auto;
-
-  .paperInfo {
-    display: block;
-    & > div {
-      width: $mobile-paper-info-layout-width;
-      & + div {
-        margin-left: 0;
-        margin-top: 24px;
-      }
-    }
+  span + span {
+    margin-left: 32px;
   }
 }
 
-.otherPapers {
-  margin-top: 24px;
+.fixedRefCitedTab {
+  background-color: #f9f9fb;
+  padding: 16px 28px;
+  margin: 16px -28px -16px -28px;
 
-  .paperItem + .paperItem {
-    margin-top: 12px;
+  span {
+    display: inline-block;
   }
+
+  span + span {
+    margin-left: 32px;
+  }
+}
+
+.activeRefCitedTabItem {
+  font-size: 16px;
+  font-weight: 500;
+  color: $black0;
+}
+
+.refCitedTabItem {
+  font-size: 16px;
+  font-weight: 500;
+  color: $gray600;
 }
 
 .fixedTab {
@@ -101,6 +86,10 @@ article.paperShow {
   padding: 24px 28px 16px 28px;
   z-index: 2;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+
+  &.active {
+    display: block;
+  }
 }
 
 .tabPaperTitle {

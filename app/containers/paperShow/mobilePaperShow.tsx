@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
+import classNames from 'classnames';
 
 import { formulaeToHTMLStr } from '../../helpers/displayFormula';
 import { getMemoizedPaper } from './select';
@@ -20,11 +21,10 @@ import { CommonError } from '../../model/error';
 const s = require('./mobilePaperShow.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
 
-const NAVBAR_HEIGHT = parseInt(s.headerHeight, 10);
-console.log(NAVBAR_HEIGHT);
-
 type MobilePaperShowProps = RouteComponentProps<PaperShowMatchParams>;
+type CurrentPosition = 'abovePaperInfo' | 'underPaperInfo' | 'onRefList' | 'onCitedList';
 
+const NAVBAR_HEIGHT = parseInt(s.headerHeight, 10);
 let ticking = false;
 
 const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
@@ -36,6 +36,8 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
     };
   });
   const dispatch = useDispatch();
+  const [currentPosition, setCurrentPosition] = React.useState<CurrentPosition>('abovePaperInfo');
+  const lastPositon = React.useRef<CurrentPosition>('abovePaperInfo');
   const buttonGroupWrapper = React.useRef<HTMLDivElement | null>(null);
   const fixedButtonHeader = React.useRef<HTMLDivElement | null>(null);
   const refTabWrapper = React.useRef<HTMLDivElement | null>(null);
@@ -43,7 +45,6 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
 
   React.useEffect(() => {
     function handleScroll() {
-      console.log('fire handleScroll');
       if (!ticking) {
         requestAnimationFrame(() => {
           if (
@@ -53,18 +54,32 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
             !citedTabWrapper.current
           )
             return (ticking = false);
-          console.log('inside raF', buttonGroupWrapper.current);
           const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
           const currentScrollTop = scrollTop + NAVBAR_HEIGHT;
           const buttonGroupOffsetTop = buttonGroupWrapper.current.offsetTop - 16 /* margin */;
-          const refTabWrapperOffset = refTabWrapper.current.offsetTop - fixedButtonHeader.current.clientHeight;
+          const refTabWrapperOffsetTop = refTabWrapper.current.offsetTop - fixedButtonHeader.current.clientHeight;
+          const citedTabWrapperOffsetTop = citedTabWrapper.current.offsetTop - fixedButtonHeader.current.clientHeight;
 
-          console.log(currentScrollTop, refTabWrapperOffset);
-
-          if (currentScrollTop < buttonGroupOffsetTop) {
-            fixedButtonHeader.current.style.display = 'none';
-          } else if (currentScrollTop >= buttonGroupOffsetTop) {
-            fixedButtonHeader.current.style.display = 'block';
+          if (currentScrollTop < buttonGroupOffsetTop && lastPositon.current !== 'abovePaperInfo') {
+            setCurrentPosition('abovePaperInfo');
+            lastPositon.current = 'abovePaperInfo';
+          } else if (
+            currentScrollTop >= buttonGroupOffsetTop &&
+            currentScrollTop < refTabWrapperOffsetTop &&
+            lastPositon.current !== 'underPaperInfo'
+          ) {
+            setCurrentPosition('underPaperInfo');
+            lastPositon.current = 'underPaperInfo';
+          } else if (
+            currentScrollTop >= refTabWrapperOffsetTop &&
+            currentScrollTop < citedTabWrapperOffsetTop &&
+            lastPositon.current !== 'onRefList'
+          ) {
+            setCurrentPosition('onRefList');
+            lastPositon.current = 'onRefList';
+          } else if (currentScrollTop >= citedTabWrapperOffsetTop && lastPositon.current !== 'onCitedList') {
+            setCurrentPosition('onCitedList');
+            lastPositon.current = 'onCitedList';
           }
 
           ticking = false;
@@ -125,6 +140,16 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
     [props.location, currentUser]
   );
 
+  function clickRefCitedTab(tab: 'ref' | 'cited') {
+    if (!refTabWrapper.current || !citedTabWrapper.current) return;
+
+    const destination =
+      tab === 'ref'
+        ? refTabWrapper.current.offsetTop - fixedButtonHeader.current.clientHeight
+        : citedTabWrapper.current.offsetTop - fixedButtonHeader.current.clientHeight;
+    window.scrollTo(0, destination);
+  }
+
   if (!paper) return null;
 
   return (
@@ -145,43 +170,61 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
         <div className={s.abstractContent} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.abstract) }} />
       </div>
 
-      <div ref={fixedButtonHeader} className={s.fixedTab}>
+      <div
+        ref={fixedButtonHeader}
+        className={classNames({
+          [s.fixedTab]: true,
+          [s.active]: currentPosition !== 'abovePaperInfo',
+        })}
+      >
         <div className={s.tabPaperTitle}>{paper.title}</div>
-        <PaperItemButtonGroup
-          paper={paper}
-          pageType={'paperShow'}
-          actionArea="refCitedTab"
-          saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
-        />
+        {currentPosition === 'underPaperInfo' && (
+          <PaperItemButtonGroup
+            paper={paper}
+            pageType={'paperShow'}
+            actionArea="refCitedTab"
+            saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
+          />
+        )}
+        {(currentPosition === 'onRefList' || currentPosition === 'onCitedList') && (
+          <div className={s.fixedRefCitedTab}>
+            <span
+              onClick={() => clickRefCitedTab('ref')}
+              className={classNames({
+                [s.refCitedTabItem]: currentPosition !== 'onRefList',
+                [s.activeRefCitedTabItem]: currentPosition === 'onRefList',
+              })}
+            >{`References (${paper.referenceCount})`}</span>
+            <span
+              onClick={() => clickRefCitedTab('cited')}
+              className={classNames({
+                [s.refCitedTabItem]: currentPosition !== 'onCitedList',
+                [s.activeRefCitedTabItem]: currentPosition === 'onCitedList',
+              })}
+            >{`Citations (${paper.citedCount})`}</span>
+          </div>
+        )}
       </div>
 
-      <div className={s.refCitedTabWrapper} ref={refTabWrapper} />
-      <div className={s.citedBy}>
-        <article className={s.paperShow}>
-          <div>
-            <span className={s.sectionTitle}>References</span>
-            <span className={s.sectionCount}>{paper.referenceCount}</span>
-          </div>
-          <div className={s.otherPapers}>
-            <div className={s.references}>
-              <ReferencePapers isMobile refTabEl={refTabWrapper.current} />
-            </div>
-          </div>
-        </article>
+      <div className={s.refCitedTab} ref={refTabWrapper}>
+        <span onClick={() => clickRefCitedTab('ref')} className={s.activeRefCitedTabItem}>{`References (${
+          paper.referenceCount
+        })`}</span>
+        <span onClick={() => clickRefCitedTab('cited')} className={s.refCitedTabItem}>{`Citations (${
+          paper.citedCount
+        })`}</span>
       </div>
-      <div className={s.sectionDivider} />
-      <div className={s.refCitedTabWrapper} ref={citedTabWrapper} />
-      <div className={s.citedBy}>
-        <article className={s.paperShow}>
-          <div>
-            <span className={s.sectionTitle}>Cited By</span>
-            <span className={s.sectionCount}>{paper.citedCount}</span>
-          </div>
-          <div className={s.otherPapers}>
-            <CitedPapers isMobile citedTabEl={citedTabWrapper.current} />
-          </div>
-        </article>
+      <ReferencePapers isMobile refTabEl={refTabWrapper.current} />
+
+      <div className={s.refCitedTab} ref={citedTabWrapper}>
+        <span onClick={() => clickRefCitedTab('ref')} className={s.refCitedTabItem}>{`References (${
+          paper.referenceCount
+        })`}</span>
+        <span onClick={() => clickRefCitedTab('cited')} className={s.activeRefCitedTabItem}>{`Citations (${
+          paper.citedCount
+        })`}</span>
       </div>
+      <CitedPapers isMobile refTabEl={citedTabWrapper.current} />
     </div>
   );
 };
