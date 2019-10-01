@@ -41,7 +41,6 @@ const ScinapseSnackbar: React.FC<Props> = props => {
             color="gray"
             size="small"
             onClick={e => {
-              ActionTicketManager;
               ActionTicketManager.trackTicket({
                 pageType: getCurrentPageType(),
                 actionType: 'fire',
