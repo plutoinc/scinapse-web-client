@@ -16,6 +16,7 @@ const BlockVenueAuthor: React.FC<BlockVenueAuthorProps> = ({ paper, pageType, ac
         journal={paper.journal}
         conferenceInstance={paper.conferenceInstance}
         publishedDate={paper.publishedDate}
+        year={paper.year}
         pageType={pageType}
         actionArea={actionArea}
       />
