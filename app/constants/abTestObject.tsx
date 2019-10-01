@@ -20,7 +20,6 @@ export const enum AuthMethodTestType {
   ORCID_TOP = 'orcid_top',
   NO_FACEBOOK = 'noFacebook',
   NO_GOOGLE = 'noGoogle',
-  ONLY_ORCID = 'onlyORCID',
 }
 
 export const enum CollectionButtonTextTestType {
@@ -69,7 +68,6 @@ export const authMethod: Test = {
     { groupName: AuthMethodTestType.ORCID_TOP, weight: 3 },
     { groupName: AuthMethodTestType.NO_FACEBOOK, weight: 1 },
     { groupName: AuthMethodTestType.NO_GOOGLE, weight: 1 },
-    { groupName: AuthMethodTestType.ONLY_ORCID, weight: 1 },
   ],
 };
 
