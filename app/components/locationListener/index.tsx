@@ -19,6 +19,7 @@ import {
   AUTH_PATH,
   AUTHOR_SEARCH_RESULT_PATH,
   PRIVACY_POLICY_PATH,
+  KEYWORD_SETTINGS_PATH,
 } from '../../constants/routes';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 import { ActionCreators } from '../../actions/actionTypes';
@@ -73,6 +74,8 @@ export function getCurrentPageType(): Scinapse.ActionTicket.PageType {
       return 'resetPassword';
     } else if (pathname.startsWith(AUTH_PATH) && pathname.endsWith('email_verification')) {
       return 'emailVerification';
+    } else if (pathname === KEYWORD_SETTINGS_PATH) {
+      return 'keywordSettingPage';
     }
 
     return 'unknown';

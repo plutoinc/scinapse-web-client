@@ -5,6 +5,7 @@ import { CommonPaginationResponsePart } from './types/common';
 import { Collection, collectionSchema } from '../model/collection';
 import { memberSchema, Member } from '../model/member';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
+import { KeywordSettingsResponse } from './types/member';
 
 export interface GetCollectionsResponse extends CommonPaginationResponsePart {
   content: Collection[];
@@ -44,6 +45,21 @@ class MemberAPI extends PlutoAxios {
     const normalizedCollections = normalize(camelizedRes.content, [collectionSchema]);
 
     return { ...camelizedRes, ...normalizedCollections };
+  }
+
+  public async getKeywordSettings(): Promise<KeywordSettingsResponse> {
+    const res = await this.get(`/members/me/alerts/keywords`);
+    return camelCaseKeys(res.data);
+  }
+
+  public async newKeywordSettings(keyword: string): Promise<KeywordSettingsResponse> {
+    const res = await this.post(`/members/me/alerts/keywords`, { keyword });
+    return camelCaseKeys(res.data);
+  }
+
+  public async deleteKeywordSettings(keywordId: string): Promise<KeywordSettingsResponse> {
+    const res = await this.delete(`/members/me/alerts/keywords/${keywordId}`);
+    return camelCaseKeys(res.data);
   }
 }
 

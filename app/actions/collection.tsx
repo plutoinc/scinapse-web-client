@@ -9,13 +9,13 @@ import CollectionAPI, {
 } from '../api/collection';
 import { Collection } from '../model/collection';
 import { fetchMyCollection } from '../containers/paperShow/sideEffect';
-import { openCollectionSnackBar, closeCollectionSnackBar } from '../reducers/collectionSnackBar';
+import { closeSnackbar, openSnackbar, GLOBAL_SNACKBAR_TYPE } from '../reducers/scinapseSnackbar';
 
 export function savePaperToCollection(params: AddPaperToCollectionParams) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToPostPaperToCollection());
-      dispatch(closeCollectionSnackBar());
+      dispatch(closeSnackbar());
 
       await CollectionAPI.addPaperToCollection(params);
 
@@ -29,7 +29,20 @@ export function savePaperToCollection(params: AddPaperToCollectionParams) {
         dispatch(fetchMyCollection(params.paperId, params.cancelToken));
       }
 
-      dispatch(openCollectionSnackBar({ collectionId: params.collection.id, collectionName: params.collection.title }));
+      dispatch(
+        openSnackbar({
+          type: GLOBAL_SNACKBAR_TYPE.COLLECTION_SAVED,
+          id: params.collection.id,
+          context: params.collection.title,
+          actionTicketParams: {
+            pageType: 'paperShow',
+            actionType: 'view',
+            actionArea: 'collectionSnackbar',
+            actionTag: 'viewCollectionSnackBar',
+            actionLabel: String(params.collection.id),
+          },
+        })
+      );
     } catch (err) {
       dispatch(ActionCreators.failedToPostPaperToCollection());
       const error = PlutoAxios.getGlobalError(err);

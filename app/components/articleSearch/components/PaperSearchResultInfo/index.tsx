@@ -103,8 +103,10 @@ const PaperSearchResultInfo: React.FC<PaperSearchResultInfoProps> = ({
     <div>
       {title}
       <div className={styles.categoryCount}>
-        {formatNumber(docCount)}
-        {docCount > 1 ? ' Papers' : ' Paper'}
+        <span className={styles.count}>
+          {formatNumber(docCount)}
+          {docCount > 1 ? ' Papers' : ' Paper'}
+        </span>
         <span className={styles.countDivider}>|</span>
         {additionalContent}
       </div>

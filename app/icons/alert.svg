@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Icons / Navigation / Alert</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M11,16.3413 C11,17.2403 10.084,18.0003 9,18.0003 C7.916,18.0003 7,17.2403 7,16.3413 L7,16.0003 L11,16.0003 L11,16.3413 Z M17.521,13.2073 L15.72,11.4043 L15.72,6.9363 C15.72,3.4553 13.218,0.4993 9.899,0.0593 C7.978,-0.1957 6.038,0.3903 4.583,1.6663 C3.119,2.9483 2.28,4.7933 2.28,6.7273 L2.279,11.4043 L0.479,13.2083 C0.01,13.6773 -0.129,14.3773 0.125,14.9903 C0.38,15.6033 0.973,16.0003 1.637,16.0003 L5,16.0003 L5,16.3413 C5,18.3593 6.794,20.0003 9,20.0003 C11.206,20.0003 13,18.3593 13,16.3413 L13,16.0003 L16.362,16.0003 C17.026,16.0003 17.619,15.6043 17.873,14.9903 C18.128,14.3773 17.989,13.6773 17.521,13.2073 L17.521,13.2073 Z" id="path-1"></path>
+    </defs>
+    <g id="Icons-/-Navigation-/-Alert" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="diagonal-arrow-right-down" transform="translate(3.000000, 2.000000)">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="🎨-Icon-Сolor" fill="currentColor" fill-rule="nonzero" xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>

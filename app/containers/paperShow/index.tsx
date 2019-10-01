@@ -47,7 +47,6 @@ import PlutoAxios from '../../api/pluto';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
 import PaperShowFigureList from '../../components/paperShow/components/paperShowFigureList';
 import { UserDevice } from '../../components/layouts/reducer';
-import CollectionSnackBar from '../../components/common/collectionSnackBar';
 import RequestFullTextDialog from '../../components/requestFullTextDialog/requestFulltextDialog';
 import { getUserGroupName } from '../../helpers/abTestHelper';
 import { REQUEST_FULL_TEXT_DIALOG_EXPERIMENT } from '../../constants/abTestGlobalValue';
@@ -287,7 +286,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         </div>
         <BottomBanner currentUser={currentUser} />
         <NextPaperTab />
-        <CollectionSnackBar />
         <RequestFullTextDialogExperiment paperId={paper.id} />
       </>
     );

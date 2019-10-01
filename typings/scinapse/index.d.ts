@@ -122,6 +122,11 @@ declare namespace Scinapse {
       | 'clickCollectionTitle'
       | 'clickCloseButton'
       | 'viewCollectionSnackBar'
+      | 'createKeywordAlert'
+      | 'removeKeywordAlert'
+      | 'clickSeeAllBtn'
+      | 'viewCreateKeywordSnackbar'
+      | 'clickCreateAlertBtn'
       | '';
 
     type ActionArea = string;
@@ -141,6 +146,7 @@ declare namespace Scinapse {
       | 'emailVerification'
       | 'terms'
       | 'privacyPolicy'
+      | 'keywordSettingPage'
       | 'unknown';
   }
 }

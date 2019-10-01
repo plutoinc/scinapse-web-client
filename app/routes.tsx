@@ -26,6 +26,7 @@ import {
   TERMS_OF_SERVICE_PATH,
   PRIVACY_POLICY_PATH,
   USER_SETTINGS_PATH,
+  KEYWORD_SETTINGS_PATH,
 } from './constants/routes';
 const styles = require('./root.scss');
 
@@ -136,6 +137,12 @@ export const routesMap: ServerRoutesMap[] = [
     }),
   },
   {
+    path: KEYWORD_SETTINGS_PATH,
+    component: loadable(() => import('./containers/keywordSettings'), {
+      fallback: <div>loading ...</div>,
+    }),
+  },
+  {
     path: ADMIN_PATH,
     component: loadable(() => import('./containers/admin'), {
       fallback: <div>loading ...</div>,
@@ -181,6 +188,7 @@ const DialogComponent = loadable(() => import('./components/dialog'));
 const FeedbackButton = loadable(() => import('./containers/feedbackButton'));
 const ImprovedHeader = loadable(() => import('./components/layouts/improvedHeader'));
 const RecommendPool = loadable(() => import('./components/recommendPool/recommendPool'));
+const SnackbarComponent = loadable(() => import('./components/snackbar'));
 
 const DefaultHelmet = () => {
   return (
@@ -279,6 +287,7 @@ const RootRoutes: React.FC<RootRoutesProps> = props => {
       <DialogComponent />
       <FeedbackButton />
       <RecommendPool />
+      <SnackbarComponent />
     </div>
   );
 };

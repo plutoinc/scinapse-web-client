@@ -1,10 +1,10 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import { parse } from 'qs';
 import classNames from 'classnames';
 import NoSsr from '@material-ui/core/NoSsr';
-import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
 import { Dispatch, bindActionCreators } from 'redux';
 import { withStyles } from '../../helpers/withStylesHelper';
@@ -35,7 +35,8 @@ import { getUserGroupName } from '../../helpers/abTestHelper';
 import { WEIGHTED_CITATION_EXPERIMENT, EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER } from '../../constants/abTestGlobalValue';
 import EmailBanner from './components/emailBanner';
 import { EmailRecommendPaperSignUpBannerTestType, WeightedCitationUserGroup } from '../../constants/abTestObject';
-import CollectionSnackBar from '../common/collectionSnackBar';
+import CreateKeywordAlertDialog from '../createKeywordAlertDialog/createKeywordAlertDialog';
+import AlertCreateButton from '../alertCreateButton';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -174,6 +175,7 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
             shouldShowTitle={!hasNoMatchedAuthors}
             matchingPhrases={articleSearchState.detectedPhrases}
           />
+          <AlertCreateButton searchInput={articleSearchState.searchInput} />
         </div>
         <FilterBox query={queryParams.query} />
         <SearchList
@@ -188,6 +190,7 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
           currentUserDevice={layout.userDevice}
           location={location}
         />
+        <CreateKeywordAlertDialog />
       </div>
     );
   }
@@ -301,7 +304,6 @@ const SearchContainer: React.FC<Props> = props => {
           width: '100%',
         }}
       />
-      <CollectionSnackBar />
     </div>
   );
 };
