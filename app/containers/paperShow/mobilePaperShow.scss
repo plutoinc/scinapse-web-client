@@ -82,14 +82,21 @@ $ref-cited-bar-height: 50px;
   top: $header-height;
   left: 0;
   right: 0;
+  height: 106px;
   background-color: white;
-  padding: 24px 28px 16px 28px;
+  padding: 16px 28px 16px 28px;
   z-index: 2;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 
   &.active {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
+}
+
+.buttonGroupWrapper {
+  margin: -12px 0 -12px 0;
 }
 
 .tabPaperTitle {

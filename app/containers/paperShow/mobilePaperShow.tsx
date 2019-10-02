@@ -29,6 +29,7 @@ let ticking = false;
 
 const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
   useStyles(s);
+  const { match, location } = props;
   const { paper, currentUser } = useSelector((state: AppState) => {
     return {
       paper: getMemoizedPaper(state),
@@ -37,7 +38,7 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
   });
   const dispatch = useDispatch();
   const [currentPosition, setCurrentPosition] = React.useState<CurrentPosition>('abovePaperInfo');
-  const lastPositon = React.useRef<CurrentPosition>('abovePaperInfo');
+  const lastPosition = React.useRef<CurrentPosition>('abovePaperInfo');
   const buttonGroupWrapper = React.useRef<HTMLDivElement | null>(null);
   const fixedButtonHeader = React.useRef<HTMLDivElement | null>(null);
   const refTabWrapper = React.useRef<HTMLDivElement | null>(null);
@@ -60,26 +61,28 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
           const refTabWrapperOffsetTop = refTabWrapper.current.offsetTop - fixedButtonHeader.current.clientHeight;
           const citedTabWrapperOffsetTop = citedTabWrapper.current.offsetTop - fixedButtonHeader.current.clientHeight;
 
-          if (currentScrollTop < buttonGroupOffsetTop && lastPositon.current !== 'abovePaperInfo') {
+          console.log(currentScrollTop, buttonGroupOffsetTop, refTabWrapperOffsetTop);
+
+          if (currentScrollTop < buttonGroupOffsetTop && lastPosition.current !== 'abovePaperInfo') {
             setCurrentPosition('abovePaperInfo');
-            lastPositon.current = 'abovePaperInfo';
+            lastPosition.current = 'abovePaperInfo';
           } else if (
             currentScrollTop >= buttonGroupOffsetTop &&
             currentScrollTop < refTabWrapperOffsetTop &&
-            lastPositon.current !== 'underPaperInfo'
+            lastPosition.current !== 'underPaperInfo'
           ) {
             setCurrentPosition('underPaperInfo');
-            lastPositon.current = 'underPaperInfo';
+            lastPosition.current = 'underPaperInfo';
           } else if (
             currentScrollTop >= refTabWrapperOffsetTop &&
             currentScrollTop < citedTabWrapperOffsetTop &&
-            lastPositon.current !== 'onRefList'
+            lastPosition.current !== 'onRefList'
           ) {
             setCurrentPosition('onRefList');
-            lastPositon.current = 'onRefList';
-          } else if (currentScrollTop >= citedTabWrapperOffsetTop && lastPositon.current !== 'onCitedList') {
+            lastPosition.current = 'onRefList';
+          } else if (currentScrollTop >= citedTabWrapperOffsetTop && lastPosition.current !== 'onCitedList') {
             setCurrentPosition('onCitedList');
-            lastPositon.current = 'onCitedList';
+            lastPosition.current = 'onCitedList';
           }
 
           ticking = false;
@@ -89,7 +92,7 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // initial time
+    handleScroll();
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -97,7 +100,6 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
 
   React.useEffect(
     () => {
-      const { match, location } = props;
       const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
       const cancelToken = axios.CancelToken.source();
 
@@ -137,11 +139,11 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
         cancelToken.cancel();
       };
     },
-    [props.location, currentUser]
+    [location, currentUser, dispatch, match]
   );
 
   function clickRefCitedTab(tab: 'ref' | 'cited') {
-    if (!refTabWrapper.current || !citedTabWrapper.current) return;
+    if (!refTabWrapper.current || !citedTabWrapper.current || !fixedButtonHeader.current) return;
 
     const destination =
       tab === 'ref'
@@ -179,12 +181,14 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
       >
         <div className={s.tabPaperTitle}>{paper.title}</div>
         {currentPosition === 'underPaperInfo' && (
-          <PaperItemButtonGroup
-            paper={paper}
-            pageType={'paperShow'}
-            actionArea="refCitedTab"
-            saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
-          />
+          <div className={s.buttonGroupWrapper}>
+            <PaperItemButtonGroup
+              paper={paper}
+              pageType={'paperShow'}
+              actionArea="refCitedTab"
+              saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
+            />
+          </div>
         )}
         {(currentPosition === 'onRefList' || currentPosition === 'onCitedList') && (
           <div className={s.fixedRefCitedTab}>
@@ -224,7 +228,7 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
           paper.citedCount
         })`}</span>
       </div>
-      <CitedPapers isMobile refTabEl={citedTabWrapper.current} />
+      <CitedPapers isMobile citedTabEl={citedTabWrapper.current} />
     </div>
   );
 };
