@@ -77,7 +77,6 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
     try {
       await props.onSubmit(values);
       props.onSucceed();
-      props.onClickNext();
     } catch (err) {
       setIsLoading(false);
     }
@@ -158,7 +157,14 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                 <Field name="profileLink" type="url" component={AuthInputBox} placeholder="Profile Link" />
               </div>
               <div className={s.authButtonWrapper}>
-                <Button type="submit" elementType="button" isLoading={isLoading} fullWidth size="large">
+                <Button
+                  type="submit"
+                  elementType="button"
+                  isLoading={isLoading}
+                  fullWidth
+                  size="large"
+                  onClick={props.onClickNext}
+                >
                   <span>Sign up</span>
                 </Button>
               </div>
