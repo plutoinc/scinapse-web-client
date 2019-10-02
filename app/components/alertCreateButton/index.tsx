@@ -41,6 +41,14 @@ const AlertCreateButton: React.FC<AlertCreateButtonProps> = props => {
         fullWidth={isMobile}
         disabled={false}
         onClick={async () => {
+          ActionTicketManager.trackTicket({
+            pageType: getCurrentPageType(),
+            actionType: 'fire',
+            actionArea: 'createAlertBtn',
+            actionTag: 'clickCreateAlertBtn',
+            actionLabel: 'clickCreateAlertBtn',
+          });
+
           const isBlocked = await blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,
             actionArea: 'createAlertBtn',
@@ -49,14 +57,6 @@ const AlertCreateButton: React.FC<AlertCreateButtonProps> = props => {
           });
 
           if (isBlocked) return;
-
-          ActionTicketManager.trackTicket({
-            pageType: getCurrentPageType(),
-            actionType: 'fire',
-            actionArea: 'createAlertBtn',
-            actionTag: 'clickCreateAlertBtn',
-            actionLabel: 'clickCreateAlertBtn',
-          });
 
           dispatch(
             openCreateKeywordAlertDialog({ from: getCurrentPageType(), keyword: !searchInput ? '' : searchInput })
