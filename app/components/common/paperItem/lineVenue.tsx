@@ -92,7 +92,7 @@ const JournalTitle: React.FC<{
 };
 
 const LineVenue = ({ style, readOnly, pageType, paper, actionArea }: PaperItemVenueProps) => {
-  const { conferenceInstance, publishedDate, doi, journal } = paper;
+  const { conferenceInstance, publishedDate, doi, journal, year } = paper;
   if (!journal && !publishedDate) return null;
 
   let title = null;
@@ -102,11 +102,17 @@ const LineVenue = ({ style, readOnly, pageType, paper, actionArea }: PaperItemVe
     title = <ConferenceTitle conferenceInstance={conferenceInstance} />;
   }
 
-  const yearStr = publishedDate ? (
+  let yearStr = format(publishedDate, 'MMM D, YYYY');
+
+  if (!publishedDate && year) {
+    yearStr = String(year);
+  }
+
+  const lineYear = (
     <span>
-      on <span className={styles.venueNameReadonly}>{format(publishedDate, 'MMM D, YYYY')}</span>
+      on <span className={styles.venueNameReadonly}>{yearStr}</span>
     </span>
-  ) : null;
+  );
 
   const isPaperShow = pageType === 'paperShow';
   const isPaperDescription = actionArea === 'paperDescription';
@@ -121,7 +127,7 @@ const LineVenue = ({ style, readOnly, pageType, paper, actionArea }: PaperItemVe
     >
       <Icon className={styles.journalIcon} icon="JOURNAL" />
       <div className={styles.journalText}>
-        Published {publishedDate ? <span className={styles.bold}>{yearStr}</span> : null}
+        Published <span className={styles.bold}>{lineYear}</span>
         {title}
         {isPaperShow && isPaperDescription ? <DoiInPaperShow doi={doi} paperId={paper.id} /> : null}
       </div>
