@@ -105,14 +105,6 @@ const KeywordSettings: React.FC = () => {
           isLoading={isLoading}
           disabled={isLoading}
           onClick={async () => {
-            ActionTicketManager.trackTicket({
-              pageType: 'keywordSettingPage',
-              actionType: 'fire',
-              actionArea: 'keywordSettingPage',
-              actionTag: 'clickCreateAlertBtn',
-              actionLabel: null,
-            });
-
             const isBlocked = await blockUnverifiedUser({
               authLevel: AUTH_LEVEL.VERIFIED,
               actionArea: 'keywordSettingPage',
@@ -121,6 +113,14 @@ const KeywordSettings: React.FC = () => {
             });
 
             if (isBlocked) return;
+
+            ActionTicketManager.trackTicket({
+              pageType: 'keywordSettingPage',
+              actionType: 'fire',
+              actionArea: 'keywordSettingPage',
+              actionTag: 'clickCreateAlertBtn',
+              actionLabel: 'clickCreateAlertBtn',
+            });
 
             dispatch(openCreateKeywordAlertDialog({ from: 'keywordSettingPage', keyword: '' }));
           }}
