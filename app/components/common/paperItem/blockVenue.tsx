@@ -14,6 +14,7 @@ interface BlockVenueProps {
   journal: Journal | null;
   conferenceInstance: ConferenceInstance | null;
   publishedDate: string | null;
+  year: number;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea?: Scinapse.ActionTicket.ActionArea;
 }
@@ -22,14 +23,18 @@ const BlockVenue: React.FC<BlockVenueProps> = ({
   journal,
   conferenceInstance,
   publishedDate,
+  year,
   pageType,
   actionArea,
 }) => {
   if (!journal && !conferenceInstance) return null;
 
   let publishedAtNode = null;
+
   if (publishedDate) {
     publishedAtNode = <span className={styles.publishedDate}>{format(publishedDate, 'MMM D, YYYY')}</span>;
+  } else if (!publishedDate && year) {
+    publishedAtNode = <span className={styles.publishedDate}>{String(year)}</span>;
   }
 
   let content = null;
