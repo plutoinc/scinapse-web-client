@@ -52,7 +52,7 @@ const AlertCreateButton: React.FC<AlertCreateButtonProps> = props => {
           const isBlocked = await blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,
             actionArea: 'createAlertBtn',
-            actionLabel: !searchInput ? null : searchInput,
+            actionLabel: 'clickCreateAlertBtn',
             userActionType: 'clickCreateAlertBtn',
           });
 
