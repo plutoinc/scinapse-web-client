@@ -1,16 +1,21 @@
-import * as React from 'react';
-import { withStyles } from '../../../helpers/withStylesHelper';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import copySelectedTextToClipboard from '../../../helpers/copySelectedTextToClipboard';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-const styles = require('./doiInPaperShow.scss');
+import { addPaperToRecommendPool } from '../../recommendPool/recommendPoolActions';
+const useStyles = require('isomorphic-style-loader/useStyles');
+
+const s = require('./doiInPaperShow.scss');
 
 interface DoiInPaperShowProps {
   doi: string;
   paperId: number;
 }
 
-const DoiInPaperShow: React.FunctionComponent<DoiInPaperShowProps> = props => {
+const DoiInPaperShow: React.FC<DoiInPaperShowProps> = props => {
+  useStyles(s);
+  const dispatch = useDispatch();
   const { doi, paperId } = props;
 
   if (!doi) {
@@ -20,6 +25,7 @@ const DoiInPaperShow: React.FunctionComponent<DoiInPaperShowProps> = props => {
   const clickDOIButton = () => {
     copySelectedTextToClipboard(`https://doi.org/${doi}`);
 
+    dispatch(addPaperToRecommendPool({ paperId, action: 'copyDoi' }));
     ActionTicketManager.trackTicket({
       pageType: 'paperShow',
       actionType: 'fire',
@@ -30,10 +36,10 @@ const DoiInPaperShow: React.FunctionComponent<DoiInPaperShowProps> = props => {
   };
 
   return (
-    <div className={styles.doiWrapper}>
-      <span className={styles.doiTitle}>· DOI :</span>
-      <span className={styles.doiContext}>{doi}</span>
-      <button className={styles.tinyButton} onClick={clickDOIButton}>
+    <div className={s.doiWrapper}>
+      <span className={s.doiTitle}>· DOI :</span>
+      <span className={s.doiContext}>{doi}</span>
+      <button className={s.tinyButton} onClick={clickDOIButton}>
         <Icon icon="COPY_DOI" />
         <span>Copy DOI</span>
       </button>
@@ -41,4 +47,4 @@ const DoiInPaperShow: React.FunctionComponent<DoiInPaperShowProps> = props => {
   );
 };
 
-export default withStyles<typeof DoiInPaperShow>(styles)(DoiInPaperShow);
+export default DoiInPaperShow;
