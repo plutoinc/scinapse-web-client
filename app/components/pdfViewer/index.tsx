@@ -94,7 +94,7 @@ async function onClickViewMorePdfBtn(params: OnClickViewMorePdfBtnParams) {
   addPaperToRecommendPoolAndOpenDialog({
     pageType: 'paperShow',
     actionArea: 'viewMorePDF',
-    paperId,
+    recAction: { paperId, action: 'viewMorePDF' },
   });
 
   const isBlocked = await blockUnverifiedUser({
@@ -311,7 +311,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
                             addPaperToRecommendPoolAndOpenDialog({
                               pageType: 'paperShow',
                               actionArea: 'downloadPdf',
-                              paperId: paper.id,
+                              recAction: { paperId: paper.id, action: 'viewMorePDF' },
                             })
                           );
 

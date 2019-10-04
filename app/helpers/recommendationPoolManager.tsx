@@ -1,16 +1,16 @@
-import { uniq } from 'lodash';
-import { BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY } from '../components/recommendPool/constants';
-import RecommendationAPI from '../api/recommendation';
+import { uniqWith, isEqual } from 'lodash';
+import { RECOMMENDED_PAPER_LOGGING_FOR_NON_USER } from '../components/recommendPool/constants';
+import RecommendationAPI, { RecommendationAction } from '../api/recommendation';
 const store = require('store');
 
-export async function addPaperToRecommendation(isLoggedIn: boolean, paperId: number) {
-  let newPaperIds;
+export async function addPaperToRecommendation(isLoggedIn: boolean, recAction: RecommendationAction) {
+  let newRecActionLogs;
 
   if (!isLoggedIn) {
-    const basedPaperIdsForNonUser = store.get(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY) || [];
-    newPaperIds = uniq([paperId, ...basedPaperIdsForNonUser]).slice(0, 20);
-    store.set(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY, newPaperIds);
+    const recommendedPaperLogsForNonUser = store.get(RECOMMENDED_PAPER_LOGGING_FOR_NON_USER) || [];
+    newRecActionLogs = uniqWith([recAction, ...recommendedPaperLogsForNonUser], isEqual).slice(0, 20);
+    store.set(RECOMMENDED_PAPER_LOGGING_FOR_NON_USER, newRecActionLogs);
   } else {
-    RecommendationAPI.addPaperToRecommendationPool(paperId);
+    RecommendationAPI.addPaperToRecommendationPool(recAction);
   }
 }

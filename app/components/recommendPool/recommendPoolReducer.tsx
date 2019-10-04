@@ -1,29 +1,30 @@
 import { createSlice, PayloadAction } from 'redux-starter-kit';
-import { uniq } from 'lodash';
+import { uniqWith, isEqual } from 'lodash';
 import ActionTicketManager from '../../helpers/actionTicketManager';
-import { BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY } from './recommendPoolConstants';
+import { RECOMMENDED_PAPER_LOGGING_FOR_NON_USER } from './recommendPoolConstants';
+import { RecommendationAction } from '../../api/recommendation';
 const store = require('store');
 
 export interface RecommendPoolState {
   isOpen: boolean;
   actionArea: string;
-  tempPaperIds: number[];
+  tempRecActionLogs: RecommendationAction[];
 }
 
 export const RECOMMEND_POOL_INITIAL_STATE: RecommendPoolState = {
   isOpen: false,
   actionArea: '',
-  tempPaperIds: store.get(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY) || [],
+  tempRecActionLogs: store.get(RECOMMENDED_PAPER_LOGGING_FOR_NON_USER) || [],
 };
 
 const recommendPoolSlice = createSlice({
   slice: 'recommendPool',
   initialState: RECOMMEND_POOL_INITIAL_STATE,
   reducers: {
-    addPaperToTempPool: (state, action: PayloadAction<{ paperId: number }>) => {
-      const newPaperIds = uniq([action.payload.paperId, ...state.tempPaperIds]).slice(0, 20);
-      state.tempPaperIds = newPaperIds;
-      store.set(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY, newPaperIds);
+    addPaperToTempPool: (state, action: PayloadAction<{ recAction: RecommendationAction }>) => {
+      const newRecActionLogs = uniqWith([action.payload.recAction, ...state.tempRecActionLogs], isEqual).slice(0, 20);
+      state.tempRecActionLogs = newRecActionLogs;
+      store.set(RECOMMENDED_PAPER_LOGGING_FOR_NON_USER, newRecActionLogs);
     },
     openRecommendPapersDialog(
       state,

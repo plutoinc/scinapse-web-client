@@ -65,7 +65,7 @@ const CollectionButton: React.FC<CollectionButtonProps> = ({ saved, paper, pageT
     <button
       onClick={async () => {
         const actionLabel = saved ? 'addToCollection' : 'savedCollection';
-        dispatch(addPaperToRecommendPool(paper.id));
+        dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'addToCollection' }));
         ActionTicketManager.trackTicket({
           pageType,
           actionType: 'fire',

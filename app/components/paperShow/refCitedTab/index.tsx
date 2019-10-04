@@ -48,7 +48,7 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
         paperId={paper!.id}
         onClick={() => {
           dispatch(openRequestFullTextDialog({ from: 'refCited' }));
-          dispatch(addPaperToRecommendPool(props.paper.id));
+          dispatch(addPaperToRecommendPool({ paperId: props.paper.id, action: 'clickRequestFullTextBtn' }));
         }}
         btnStyle={{ flex: '1 0 auto', height: '36px', padding: '0 12px 0 8px' }}
         lastRequestedDate={props.lastRequestedDate}

@@ -23,7 +23,7 @@ const CiteButton: React.FC<CiteButtonProps> = ({ paper, pageType, actionArea }) 
     <button
       className={styles.citeButton}
       onClick={async () => {
-        dispatch(addPaperToRecommendPool(paper.id));
+        dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'citePaper' }));
         GlobalDialogManager.openCitationDialog(paper.id);
         ActionTicketManager.trackTicket({
           pageType,

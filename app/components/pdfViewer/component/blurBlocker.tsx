@@ -20,7 +20,7 @@ const BlurBlocker: React.FC<BlurBlockerProps> = ({ paperId }) => {
           addPaperToRecommendPoolAndOpenDialog({
             pageType: 'paperShow',
             actionArea: 'viewMorePDF',
-            paperId,
+            recAction: { paperId, action: 'viewMorePDF' },
           })
         );
 

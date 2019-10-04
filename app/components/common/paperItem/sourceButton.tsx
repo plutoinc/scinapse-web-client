@@ -46,7 +46,7 @@ const SourceButton: React.FC<SourceButtonProps> = ({ paperSource, pageType, acti
             addPaperToRecommendPoolAndOpenDialog({
               pageType,
               actionArea: 'sourceButton',
-              paperId: paper.id,
+              recAction: { paperId: paper.id, action: 'source' },
             })
           );
         }}
@@ -82,7 +82,7 @@ const SourceButton: React.FC<SourceButtonProps> = ({ paperSource, pageType, acti
           addPaperToRecommendPoolAndOpenDialog({
             pageType,
             actionArea: 'sourceButton',
-            paperId: paper.id,
+            recAction: { paperId: paper.id, action: 'source' },
           })
         );
       }}

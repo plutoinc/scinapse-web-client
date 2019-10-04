@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import RecommendationAPI from '../../api/recommendation';
+import RecommendationAPI, { RecommendationAction } from '../../api/recommendation';
 import { AppState } from '../../reducers';
 import { addPaperToTempPool, openRecommendPapersDialog } from './recommendPoolReducer';
 import { ALREADY_VISITED_RECOMMEND_PAPERS, BASED_ACTIVITY_COUNT_STORE_KEY } from './recommendPoolConstants';
@@ -8,7 +8,7 @@ const store = require('store');
 const MAX_COUNT = 16;
 
 interface AddPaperToRecommendPoolAndOpenDialogParams {
-  paperId: number;
+  recAction: RecommendationAction;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: string;
 }
@@ -27,18 +27,18 @@ function setActionCount(count: number): number {
 
 export const addPaperToRecommendPoolAndOpenDialog = (params: AddPaperToRecommendPoolAndOpenDialogParams) => {
   return (dispatch: Dispatch<any>) => {
-    dispatch(addPaperToRecommendPool(params.paperId));
+    dispatch(addPaperToRecommendPool(params.recAction));
     dispatch(openRecommendPoolDialog(params.pageType, params.actionArea));
   };
 };
 
-export const addPaperToRecommendPool = (paperId: number) => {
+export const addPaperToRecommendPool = (recAction: RecommendationAction) => {
   return (dispatch: Dispatch<any>, getState: () => AppState) => {
     const appState = getState();
     if (!appState.currentUser.isLoggedIn) {
-      dispatch(addPaperToTempPool({ paperId }));
+      dispatch(addPaperToTempPool({ recAction }));
     } else {
-      RecommendationAPI.addPaperToRecommendationPool(paperId);
+      RecommendationAPI.addPaperToRecommendationPool(recAction);
     }
   };
 };

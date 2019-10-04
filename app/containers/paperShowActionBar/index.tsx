@@ -38,7 +38,9 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = props => {
                 paperId={props.paper.id}
                 onClick={() => {
                   props.dispatch(openRequestFullTextDialog({ from: 'actionBar' }));
-                  props.dispatch(addPaperToRecommendPool(props.paper.id));
+                  props.dispatch(
+                    addPaperToRecommendPool({ paperId: props.paper.id, action: 'clickRequestFullTextBtn' })
+                  );
                 }}
                 lastRequestedDate={props.lastRequestedDate}
               />

@@ -37,7 +37,7 @@ const CitationListLinkButton: React.FC<CitationListLinkButtonProps> = ({ paper, 
           addPaperToRecommendPoolAndOpenDialog({
             pageType,
             actionArea: 'citationButton',
-            paperId: paper.id,
+            recAction: { paperId: paper.id, action: 'citePaper' },
           })
         );
       }}

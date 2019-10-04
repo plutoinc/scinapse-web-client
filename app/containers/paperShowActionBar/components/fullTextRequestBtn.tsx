@@ -48,9 +48,7 @@ const RequestFullTextBtn: React.FC<RequestFullTextBtnProps> = React.memo(props =
 
           dispatch(
             addPaperToTempPool({
-              pageType: 'paperShow',
-              actionArea: ' ',
-              paperId,
+              recAction: { paperId, action: 'clickRequestFullTextBtn' },
             })
           );
 

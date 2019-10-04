@@ -58,7 +58,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
             addPaperToRecommendPoolAndOpenDialog({
               pageType: 'paperShow',
               actionArea: 'downloadPdfInRefCitedBar',
-              paperId: paper.id,
+              recAction: { paperId: paper.id, action: 'downloadPdf' },
             })
           );
 

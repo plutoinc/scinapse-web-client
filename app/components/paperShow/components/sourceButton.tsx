@@ -84,7 +84,7 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
                   addPaperToRecommendPoolAndOpenDialog({
                     pageType: 'paperShow',
                     actionArea: 'sourceButton',
-                    paperId: paper.id,
+                    recAction: { paperId: paper.id, action: 'source' },
                   })
                 );
                 window.open(sourceUrl, '_blank');
@@ -98,7 +98,7 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
                     addPaperToRecommendPoolAndOpenDialog({
                       pageType: 'paperShow',
                       actionArea: 'sourceButton',
-                      paperId: paper.id,
+                      recAction: { paperId: paper.id, action: 'source' },
                     })
                   );
                 }

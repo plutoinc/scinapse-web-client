@@ -38,7 +38,7 @@ const ViewFullTextBtn: React.FC<ViewFullTextBtnProps> = props => {
           addPaperToRecommendPoolAndOpenDialog({
             pageType: 'paperShow',
             actionArea: 'viewFullTextButton',
-            paperId,
+            recAction: { paperId, action: 'viewMorePDF' },
           })
         );
       }}
