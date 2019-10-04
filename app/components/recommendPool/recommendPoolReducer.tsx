@@ -1,7 +1,10 @@
 import { createSlice, PayloadAction } from 'redux-starter-kit';
 import { uniqWith, isEqual } from 'lodash';
 import ActionTicketManager from '../../helpers/actionTicketManager';
-import { RECOMMENDED_PAPER_LOGGING_FOR_NON_USER } from './recommendPoolConstants';
+import {
+  RECOMMENDED_PAPER_LOGGING_FOR_NON_USER,
+  RECOMMENDED_PAPER_LOGGING_LENGTH_FOR_NON_USER,
+} from './recommendPoolConstants';
 import { RecommendationAction } from '../../api/recommendation';
 const store = require('store');
 
@@ -22,7 +25,10 @@ const recommendPoolSlice = createSlice({
   initialState: RECOMMEND_POOL_INITIAL_STATE,
   reducers: {
     addPaperToTempPool: (state, action: PayloadAction<{ recAction: RecommendationAction }>) => {
-      const newRecActionLogs = uniqWith([action.payload.recAction, ...state.tempRecActionLogs], isEqual).slice(0, 20);
+      const newRecActionLogs = uniqWith([action.payload.recAction, ...state.tempRecActionLogs], isEqual).slice(
+        0,
+        RECOMMENDED_PAPER_LOGGING_LENGTH_FOR_NON_USER
+      );
       state.tempRecActionLogs = newRecActionLogs;
       store.set(RECOMMENDED_PAPER_LOGGING_FOR_NON_USER, newRecActionLogs);
     },
