@@ -1,8 +1,6 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
-import { addPaperToRecommendPoolAndOpenDialog } from '../../recommendPool/recommendPoolActions';
 import formatNumber from '../../../helpers/formatNumber';
 import { Paper } from '../../../model/paper';
 import { withStyles } from '../../../helpers/withStylesHelper';
@@ -15,8 +13,6 @@ interface CitationListLinkButtonProps {
 }
 
 const CitationListLinkButton: React.FC<CitationListLinkButtonProps> = ({ paper, actionArea, pageType }) => {
-  const dispatch = useDispatch();
-
   if (!paper.citedCount) return null;
 
   return (
@@ -33,13 +29,6 @@ const CitationListLinkButton: React.FC<CitationListLinkButtonProps> = ({ paper, 
           actionTag: 'citedList',
           actionLabel: String(paper.id),
         });
-        dispatch(
-          addPaperToRecommendPoolAndOpenDialog({
-            pageType,
-            actionArea: 'citationButton',
-            recAction: { paperId: paper.id, action: 'citePaper' },
-          })
-        );
       }}
       className={s.citedButton}
     >
