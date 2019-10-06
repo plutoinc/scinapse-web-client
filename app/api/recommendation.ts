@@ -46,7 +46,10 @@ class RecommendationAPI extends PlutoAxios {
   }
 
   public async syncRecommendationPool(params: RecommendationAction[]) {
-    await this.post(`/recommendations/log/paper-action-init`, params);
+    const finalParams = params.map(param => {
+      return { paper_id: param.paperId, action: param.action };
+    });
+    await this.post(`/recommendations/log/paper-action-init`, finalParams);
   }
 }
 
