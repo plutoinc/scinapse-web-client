@@ -1,14 +1,15 @@
 import { Dispatch } from 'redux';
-import RecommendationAPI, { RecommendationAction } from '../../api/recommendation';
+import RecommendationAPI from '../../api/recommendation';
 import { AppState } from '../../reducers';
 import { addPaperToTempPool, openRecommendPapersDialog } from './recommendPoolReducer';
 import { ALREADY_VISITED_RECOMMEND_PAPERS, BASED_ACTIVITY_COUNT_STORE_KEY } from './recommendPoolConstants';
+import { RecommendationActionParams } from '../../api/types/recommendation';
 const store = require('store');
 
 const MAX_COUNT = 16;
 
 interface AddPaperToRecommendPoolAndOpenDialogParams {
-  recAction: RecommendationAction;
+  recAction: RecommendationActionParams;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: string;
 }
@@ -32,7 +33,7 @@ export const addPaperToRecommendPoolAndOpenDialog = (params: AddPaperToRecommend
   };
 };
 
-export const addPaperToRecommendPool = (recAction: RecommendationAction) => {
+export const addPaperToRecommendPool = (recAction: RecommendationActionParams) => {
   return (dispatch: Dispatch<any>, getState: () => AppState) => {
     const appState = getState();
     if (!appState.currentUser.isLoggedIn) {

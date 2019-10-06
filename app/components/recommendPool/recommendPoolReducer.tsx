@@ -5,13 +5,13 @@ import {
   RECOMMENDED_PAPER_LOGGING_FOR_NON_USER,
   RECOMMENDED_PAPER_LOGGING_LENGTH_FOR_NON_USER,
 } from './recommendPoolConstants';
-import { RecommendationAction } from '../../api/recommendation';
+import { RecommendationActionParams } from '../../api/types/recommendation';
 const store = require('store');
 
 export interface RecommendPoolState {
   isOpen: boolean;
   actionArea: string;
-  tempRecActionLogs: RecommendationAction[];
+  tempRecActionLogs: RecommendationActionParams[];
 }
 
 export const RECOMMEND_POOL_INITIAL_STATE: RecommendPoolState = {
@@ -24,7 +24,7 @@ const recommendPoolSlice = createSlice({
   slice: 'recommendPool',
   initialState: RECOMMEND_POOL_INITIAL_STATE,
   reducers: {
-    addPaperToTempPool: (state, action: PayloadAction<{ recAction: RecommendationAction }>) => {
+    addPaperToTempPool: (state, action: PayloadAction<{ recAction: RecommendationActionParams }>) => {
       const newRecActionLogs = uniqWith([action.payload.recAction, ...state.tempRecActionLogs], isEqual).slice(
         0,
         RECOMMENDED_PAPER_LOGGING_LENGTH_FOR_NON_USER

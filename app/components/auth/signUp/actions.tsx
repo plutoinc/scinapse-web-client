@@ -6,19 +6,23 @@ import {
   SignUpWithSocialAPIParams,
   SignUpWithEmailAPIParams,
 } from '../../../api/types/auth';
-import RecommendationAPI, { RecommendationAction } from '../../../api/recommendation';
+import RecommendationAPI from '../../../api/recommendation';
 import { RECOMMENDED_PAPER_LOGGING_FOR_NON_USER } from '../../recommendPool/recommendPoolConstants';
 import { ACTION_TYPES } from '../../../actions/actionTypes';
 import alertToast from '../../../helpers/makePlutoToastAction';
 import EnvChecker from '../../../helpers/envChecker';
 import { Member } from '../../../model/member';
+import { RecommendationActionParams } from '../../../api/types/recommendation';
 const store = require('store');
 
 async function syncRecommendationPoolToUser() {
-  const targetActions: RecommendationAction[] = store.get(RECOMMENDED_PAPER_LOGGING_FOR_NON_USER) || [];
+  const targetActions: RecommendationActionParams[] = store.get(RECOMMENDED_PAPER_LOGGING_FOR_NON_USER) || [];
 
   if (targetActions.length > 0) {
-    await RecommendationAPI.syncRecommendationPool(targetActions);
+    const reqParams = targetActions.map(targetAction => {
+      return { paper_id: targetAction.paperId, action: targetAction.action };
+    });
+    await RecommendationAPI.syncRecommendationPool(reqParams);
     store.remove(RECOMMENDED_PAPER_LOGGING_FOR_NON_USER);
   }
 }

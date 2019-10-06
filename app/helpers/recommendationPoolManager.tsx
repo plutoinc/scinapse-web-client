@@ -1,12 +1,13 @@
 import { uniqWith, isEqual } from 'lodash';
-import RecommendationAPI, { RecommendationAction } from '../api/recommendation';
+import RecommendationAPI from '../api/recommendation';
 import {
   RECOMMENDED_PAPER_LOGGING_FOR_NON_USER,
   RECOMMENDED_PAPER_LOGGING_LENGTH_FOR_NON_USER,
 } from '../components/recommendPool/recommendPoolConstants';
+import { RecommendationActionParams } from '../api/types/recommendation';
 const store = require('store');
 
-export async function addPaperToRecommendation(isLoggedIn: boolean, recAction: RecommendationAction) {
+export async function addPaperToRecommendation(isLoggedIn: boolean, recAction: RecommendationActionParams) {
   let newRecActionLogs;
 
   if (!isLoggedIn) {

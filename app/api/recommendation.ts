@@ -2,21 +2,7 @@ import PlutoAxios from './pluto';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
 import { Paper } from '../model/paper';
 import { Collection } from '../model/collection';
-
-export type RecommendationActionTag =
-  | 'paperShow'
-  | 'copyDoi'
-  | 'downloadPdf'
-  | 'citePaper'
-  | 'clickRequestFullTextBtn'
-  | 'addToCollection'
-  | 'source'
-  | 'viewMorePDF';
-
-export interface RecommendationAction {
-  paperId: number;
-  action: RecommendationActionTag;
-}
+import { RecommendationActionParams, RecommendationActionAPIParams } from './types/recommendation';
 
 export interface BasedOnCollectionPapersParams {
   collection: Collection;
@@ -36,7 +22,7 @@ class RecommendationAPI extends PlutoAxios {
     return camelizedRes.data.content[0];
   }
 
-  public async addPaperToRecommendationPool(param: RecommendationAction) {
+  public async addPaperToRecommendationPool(param: RecommendationActionParams) {
     const res = await this.post(`/recommendations/log/paper-action`, {
       paper_id: param.paperId,
       action: param.action,
@@ -45,11 +31,8 @@ class RecommendationAPI extends PlutoAxios {
     return camelizedRes.data.content;
   }
 
-  public async syncRecommendationPool(params: RecommendationAction[]) {
-    const finalParams = params.map(param => {
-      return { paper_id: param.paperId, action: param.action };
-    });
-    await this.post(`/recommendations/log/paper-action-init`, finalParams);
+  public async syncRecommendationPool(params: RecommendationActionAPIParams[]) {
+    await this.post(`/recommendations/log/paper-action-init`, params);
   }
 }
 
