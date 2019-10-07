@@ -9,7 +9,6 @@ import {
   RECOMMENDED_PAPER_LOGGING_FOR_NON_USER,
 } from './constans';
 import { RecommendationActionParams } from '../../api/types/recommendation';
-import { uniqWith, isEqual } from 'lodash';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 const store = require('store');
 
@@ -48,7 +47,7 @@ export const addPaperToRecommendPool = (recAction: RecommendationActionParams) =
     };
 
     if (!isLoggedIn) {
-      const newRecActionLogs: RecommendationActionParams[] = uniqWith([recAction, ...recTempPool], isEqual).slice(
+      const newRecActionLogs: RecommendationActionParams[] = [recAction, ...recTempPool].slice(
         0,
         RECOMMENDED_PAPER_LOGGING_LENGTH_FOR_NON_USER
       );
