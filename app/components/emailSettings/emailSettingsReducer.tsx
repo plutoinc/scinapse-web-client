@@ -78,7 +78,6 @@ export const EmailSettingsInitialState: ReducerState = {
   activeStatus: {
     GLOBAL: false,
     COLLECTION_REMIND: false,
-    FEATURE_INSTRUCTION: false,
     PAPER_RECOMMENDATION: false,
     REQUEST_CONFIRMATION: false,
     LAST_WEEK_ACTIVITY: false,
@@ -86,7 +85,6 @@ export const EmailSettingsInitialState: ReducerState = {
   updateStatus: {
     GLOBAL: initialUpdateStatus,
     COLLECTION_REMIND: initialUpdateStatus,
-    FEATURE_INSTRUCTION: initialUpdateStatus,
     PAPER_RECOMMENDATION: initialUpdateStatus,
     REQUEST_CONFIRMATION: initialUpdateStatus,
     LAST_WEEK_ACTIVITY: initialUpdateStatus,

@@ -118,7 +118,6 @@ export interface OAuthCheckParams {
 export type EmailSettingTypes =
   | 'GLOBAL'
   | 'COLLECTION_REMIND'
-  | 'FEATURE_INSTRUCTION'
   | 'PAPER_RECOMMENDATION'
   | 'REQUEST_CONFIRMATION'
   | 'LAST_WEEK_ACTIVITY';
