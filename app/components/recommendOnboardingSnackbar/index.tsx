@@ -23,7 +23,9 @@ const RecommendPool: React.FC<Props> = props => {
 
   useEffect(
     () => {
-      dispatch(closeRecommendPapersDialog());
+      if (isOpen) {
+        dispatch(closeRecommendPapersDialog());
+      }
     },
     [dispatch, location]
   );

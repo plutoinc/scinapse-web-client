@@ -12,13 +12,16 @@ const Snackbar: React.FC<Props> = props => {
   const { location } = props;
   const dispatch = useDispatch();
 
-  const { type } = useSelector((appState: AppState) => ({
+  const { type, isOpen } = useSelector((appState: AppState) => ({
     type: appState.scinapseSnackbarState.type,
+    isOpen: appState.scinapseSnackbarState.isOpen,
   }));
 
   useEffect(
     () => {
-      dispatch(closeSnackbar());
+      if (isOpen) {
+        dispatch(closeSnackbar());
+      }
     },
     [dispatch, location]
   );
