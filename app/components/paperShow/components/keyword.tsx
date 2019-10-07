@@ -53,14 +53,6 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
 
   const onClickAlertButton = useCallback(
     async () => {
-      ActionTicketManager.trackTicket({
-        pageType: pageType,
-        actionType: 'fire',
-        actionArea: actionArea || pageType,
-        actionTag: 'clickCreateAlertBtn',
-        actionLabel: String(fos.id),
-      });
-
       const isBlocked = await blockUnverifiedUser({
         authLevel: AUTH_LEVEL.UNVERIFIED,
         actionArea: actionArea!,
