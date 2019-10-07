@@ -7,6 +7,7 @@ import actionTicketManager from '../../../helpers/actionTicketManager';
 import { ActionCreators } from '../../../actions/actionTypes';
 import Icon from '../../../icons';
 import { Paper } from '../../../model/paper';
+import { addPaperToRecommendPool } from '../../recommendPool/recommendPoolActions';
 const styles = require('./title.scss');
 
 export interface TitleProps extends RouteComponentProps<any> {
@@ -27,6 +28,8 @@ const Title: React.FC<TitleProps> = props => {
       actionTag: 'paperShow',
       actionLabel: String(paper.id),
     });
+
+    dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'paperShow' }));
 
     if (fromNewTab) {
       actionTicketManager.trackTicket({
