@@ -7,6 +7,7 @@ import Icon from '../../../icons';
 import Button from '../../common/button';
 import { createKeywordAlert, deleteKeywordAlert } from '../../../containers/keywordSettings/actions';
 import { AppState } from '../../../reducers';
+import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./keyword.scss');
 
@@ -51,7 +52,24 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
   const targetKeyword = keywords.filter(k => k.keyword === keyword)[0];
 
   const onClickAlertButton = useCallback(
-    () => {
+    async () => {
+      ActionTicketManager.trackTicket({
+        pageType: pageType,
+        actionType: 'fire',
+        actionArea: actionArea || pageType,
+        actionTag: 'clickCreateAlertBtn',
+        actionLabel: String(fos.id),
+      });
+
+      const isBlocked = await blockUnverifiedUser({
+        authLevel: AUTH_LEVEL.UNVERIFIED,
+        actionArea: actionArea!,
+        actionLabel: 'clickCreateAlertBtn',
+        userActionType: 'clickCreateAlertBtn',
+      });
+
+      if (isBlocked) return;
+
       if (!targetKeyword) {
         dispatch(createKeywordAlert(keyword, actionArea));
       } else {
