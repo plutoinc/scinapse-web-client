@@ -1,0 +1,14 @@
+.tabItem {
+  display: inline-block;
+  vertical-align: top;
+  padding: 16px 8px 12px 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: $gray600;
+  cursor: pointer;
+
+  &.active {
+    color: $black0;
+    border-bottom: 2px solid $black0;
+  }
+}
