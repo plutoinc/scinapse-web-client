@@ -17,7 +17,9 @@ type Props = RouteComponentProps<any>;
 const RecommendPool: React.FC<Props> = props => {
   useStyles(s);
   const dispatch = useDispatch();
-  const dialogState = useSelector<AppState, RecommendOnboardingSnackbarState>(state => state.recommendPoolState);
+  const dialogState = useSelector<AppState, RecommendOnboardingSnackbarState>(
+    state => state.recommendOnboardingSnackbarState
+  );
   const { isOpen, actionArea } = dialogState;
   const { location } = props;
 

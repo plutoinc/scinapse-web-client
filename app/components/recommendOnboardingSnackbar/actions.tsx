@@ -47,7 +47,7 @@ export const addPaperToRecommendPool = (recAction: RecommendationActionParams) =
       isLoggedIn: getState().currentUser.isLoggedIn,
     };
 
-    if (isLoggedIn) {
+    if (!isLoggedIn) {
       const newRecActionLogs: RecommendationActionParams[] = uniqWith([recAction, ...recTempPool], isEqual).slice(
         0,
         RECOMMENDED_PAPER_LOGGING_LENGTH_FOR_NON_USER
