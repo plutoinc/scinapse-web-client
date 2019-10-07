@@ -10,6 +10,7 @@ import {
 } from './constants';
 import { RecommendationActionParams } from '../../api/types/recommendation';
 import ActionTicketManager from '../../helpers/actionTicketManager';
+import { checkAuthStatus } from '../auth/actions';
 const store = require('store');
 
 const MAX_COUNT = 16;
@@ -42,11 +43,13 @@ export const addPaperToRecommendPoolAndOpenOnboardingSnackbar = (
 };
 
 export const addPaperToRecommendPool = (recAction: RecommendationActionParams) => {
-  return (dispatch: Dispatch<any>, getState: () => AppState) => {
-    const { recTempPool, isLoggedIn } = {
+  return async (dispatch: Dispatch<any>, getState: () => AppState) => {
+    const { recTempPool } = {
       recTempPool: getState().recommendOnboardingSnackbarState.tempRecActionLogs,
-      isLoggedIn: getState().currentUser.isLoggedIn,
     };
+
+    const auth = await checkAuthStatus()(dispatch);
+    const isLoggedIn = auth && auth.loggedIn;
 
     if (!isLoggedIn) {
       const newRecActionLogs: RecommendationActionParams[] = [recAction, ...recTempPool].slice(
@@ -63,8 +66,11 @@ export const addPaperToRecommendPool = (recAction: RecommendationActionParams) =
 };
 
 export const openRecommendOnboardingSnackbarAction = (pageType: Scinapse.ActionTicket.PageType, actionArea: string) => {
-  return async (dispatch: Dispatch<any>, getState: () => AppState) => {
-    if (!getState().currentUser.isLoggedIn) return;
+  return async (dispatch: Dispatch<any>) => {
+    const auth = await checkAuthStatus()(dispatch);
+    const isLoggedIn = auth && auth.loggedIn;
+
+    if (!isLoggedIn) return;
 
     const prevActionCount = store.get(BASED_ACTIVITY_COUNT_STORE_KEY);
 
