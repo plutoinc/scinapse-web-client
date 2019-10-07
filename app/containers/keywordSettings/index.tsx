@@ -114,7 +114,7 @@ const KeywordSettings: React.FC = () => {
             });
 
             const isBlocked = await blockUnverifiedUser({
-              authLevel: AUTH_LEVEL.VERIFIED,
+              authLevel: AUTH_LEVEL.UNVERIFIED,
               actionArea: 'keywordSettingPage',
               actionLabel: null,
               userActionType: 'clickCreateAlertBtn',
