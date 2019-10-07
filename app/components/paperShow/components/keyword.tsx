@@ -1,11 +1,12 @@
-import * as React from 'react';
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Fos, NewFOS } from '../../../model/fos';
 import SearchQueryManager from '../../../helpers/searchQueryManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
 import Button from '../../common/button';
-import { useDispatch } from 'react-redux';
-import { createKeywordAlert } from '../../../containers/keywordSettings/actions';
+import { createKeywordAlert, deleteKeywordAlert } from '../../../containers/keywordSettings/actions';
+import { AppState } from '../../../reducers';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./keyword.scss');
 
@@ -41,8 +42,29 @@ function formattedFOSLocation(keyword: string) {
 const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, actionArea }) => {
   useStyles(s);
   const dispatch = useDispatch();
+  const { keywords, isLoading } = useSelector((appState: AppState) => ({
+    keywords: appState.keywordSettingsState.keywords,
+    isLoading: appState.keywordSettingsState.isLoading,
+  }));
 
   const keyword = getFosKeyword(fos);
+  const targetKeyword = keywords.filter(k => k.keyword === keyword)[0];
+
+  const onClickAlertButton = useCallback(
+    () => {
+      if (!targetKeyword) {
+        dispatch(createKeywordAlert(keyword, actionArea));
+      } else {
+        dispatch(deleteKeywordAlert(targetKeyword.id, targetKeyword.keyword));
+      }
+    },
+    [keyword, actionArea, targetKeyword, dispatch]
+  );
+
+  const buttonStyle: React.CSSProperties = {
+    color: '#7e8698',
+    padding: '8px 12px',
+  };
 
   return (
     <div className={s.fosBtnWrapper}>
@@ -53,8 +75,7 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
         variant="contained"
         color="black"
         style={{
-          color: '#7e8698',
-          padding: '8px 12px',
+          ...buttonStyle,
           borderTopRightRadius: '0px',
           borderBottomRightRadius: '0px',
           borderRight: '1px solid #bbc2d0',
@@ -77,15 +98,16 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
       </Button>
       <Button
         elementType="button"
-        size="medium"
+        size="small"
         variant="contained"
         color="black"
         fullWidth={false}
         disabled={false}
-        style={{ color: '#7e8698', padding: '8px 12px', borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}
-        onClick={() => dispatch(createKeywordAlert(keyword, actionArea))}
+        isLoading={isLoading}
+        style={{ ...buttonStyle, borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}
+        onClick={onClickAlertButton}
       >
-        <Icon icon="ALERT_LINE" />
+        {!targetKeyword ? <Icon icon="ALERT_LINE" /> : <Icon icon="ALERT" />}
       </Button>
     </div>
   );

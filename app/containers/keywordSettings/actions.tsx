@@ -78,6 +78,7 @@ export function createKeywordAlert(keyword: string, actionArea?: string) {
 export function deleteKeywordAlert(keywordId: string, keyword: string) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(startToConnectKeywordSettingsAPI());
+    dispatch(closeSnackbar());
 
     try {
       const keywordRes = await MemberAPI.deleteKeywordSettings(keywordId);
