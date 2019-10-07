@@ -2,6 +2,10 @@ import * as React from 'react';
 import { Fos, NewFOS } from '../../../model/fos';
 import SearchQueryManager from '../../../helpers/searchQueryManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
+import Icon from '../../../icons';
+import Button from '../../common/button';
+import { useDispatch } from 'react-redux';
+import { createKeywordAlert } from '../../../containers/keywordSettings/actions';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./keyword.scss');
 
@@ -36,27 +40,54 @@ function formattedFOSLocation(keyword: string) {
 
 const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, actionArea }) => {
   useStyles(s);
+  const dispatch = useDispatch();
 
   const keyword = getFosKeyword(fos);
 
   return (
-    <a
-      href={formattedFOSLocation(keyword)}
-      rel="noopener noreferrer"
-      target="_blank"
-      onClick={() => {
-        ActionTicketManager.trackTicket({
-          pageType: pageType,
-          actionType: 'fire',
-          actionArea: actionArea || pageType,
-          actionTag: 'fos',
-          actionLabel: String(fos.id),
-        });
-      }}
-      className={s.buttonWrapper}
-    >
-      {keyword}
-    </a>
+    <div className={s.fosBtnWrapper}>
+      <Button
+        elementType="link"
+        to={formattedFOSLocation(keyword)}
+        size="small"
+        variant="contained"
+        color="black"
+        style={{
+          color: '#7e8698',
+          padding: '8px 12px',
+          borderTopRightRadius: '0px',
+          borderBottomRightRadius: '0px',
+          borderRight: '1px solid #bbc2d0',
+        }}
+        fullWidth={false}
+        disabled={false}
+        rel="noopener noreferrer"
+        target="_blank"
+        onClick={() => {
+          ActionTicketManager.trackTicket({
+            pageType: pageType,
+            actionType: 'fire',
+            actionArea: actionArea || pageType,
+            actionTag: 'fos',
+            actionLabel: String(fos.id),
+          });
+        }}
+      >
+        {keyword}
+      </Button>
+      <Button
+        elementType="button"
+        size="medium"
+        variant="contained"
+        color="black"
+        fullWidth={false}
+        disabled={false}
+        style={{ color: '#7e8698', padding: '8px 12px', borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}
+        onClick={() => dispatch(createKeywordAlert(keyword, actionArea))}
+      >
+        <Icon icon="ALERT_LINE" />
+      </Button>
+    </div>
   );
 };
 

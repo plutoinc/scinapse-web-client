@@ -2,21 +2,15 @@ import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
 import { AppState } from '../../reducers';
-import {
-  startToConnectKeywordSettingsAPI,
-  succeedToConnectKeywordSettingsAPI,
-  failedToConnectKeywordSettingsAPI,
-} from '../../reducers/keywordSettings';
-import MemberAPI from '../../api/member';
+import { succeedToConnectKeywordSettingsAPI } from '../../reducers/keywordSettings';
 import KeywordItemList from '../../components/keywordSettings/keywordItemList';
 import Button from '../../components/common/button';
 import Icon from '../../icons';
-import { ACTION_TYPES } from '../../actions/actionTypes';
 import CreateKeywordAlertDialog from '../../components/createKeywordAlertDialog/createKeywordAlertDialog';
 import { openCreateKeywordAlertDialog } from '../../reducers/createKeywordAlertDialog';
 import ActionTicketManager from '../../helpers/actionTicketManager';
-import PlutoAxios from '../../api/pluto';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../helpers/checkAuthDialog';
+import { fetchKeywordAlertList, deleteKeywordAlert } from './actions';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./keywordSettings.scss');
 
@@ -36,51 +30,14 @@ const KeywordSettings: React.FC = () => {
         return;
       }
 
-      dispatch(startToConnectKeywordSettingsAPI());
-      MemberAPI.getKeywordSettings()
-        .then(res => {
-          dispatch(succeedToConnectKeywordSettingsAPI({ keywords: res.data.content }));
-        })
-        .catch(err => {
-          dispatch(failedToConnectKeywordSettingsAPI());
-          const error = PlutoAxios.getGlobalError(err);
-          dispatch({
-            type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
-            payload: {
-              type: 'error',
-              message: error.message,
-            },
-          });
-        });
+      dispatch(fetchKeywordAlertList());
     },
     [isLoggedIn, dispatch]
   );
 
   const handleRemoveKeywordItem = useCallback(
     (keywordId: string, keyword: string) => {
-      dispatch(startToConnectKeywordSettingsAPI());
-      MemberAPI.deleteKeywordSettings(keywordId)
-        .then(res => {
-          dispatch(succeedToConnectKeywordSettingsAPI({ keywords: res.data.content }));
-          ActionTicketManager.trackTicket({
-            pageType: 'keywordSettingPage',
-            actionType: 'fire',
-            actionArea: 'keywordSettingPage',
-            actionTag: 'removeKeywordAlert',
-            actionLabel: keyword,
-          });
-        })
-        .catch(err => {
-          dispatch(failedToConnectKeywordSettingsAPI());
-          const error = PlutoAxios.getGlobalError(err);
-          dispatch({
-            type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
-            payload: {
-              type: 'error',
-              message: error.message,
-            },
-          });
-        });
+      dispatch(deleteKeywordAlert(keywordId, keyword));
     },
     [dispatch]
   );

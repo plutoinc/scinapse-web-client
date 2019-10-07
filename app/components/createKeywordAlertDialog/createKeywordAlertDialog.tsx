@@ -5,20 +5,10 @@ import classNames from 'classnames';
 import Dialog from '@material-ui/core/Dialog';
 import { AppState } from '../../reducers';
 import { closeCreateKeywordAlertDialog } from '../../reducers/createKeywordAlertDialog';
-import {
-  startToConnectKeywordSettingsAPI,
-  succeedToConnectKeywordSettingsAPI,
-  failedToConnectKeywordSettingsAPI,
-} from '../../reducers/keywordSettings';
-import MemberAPI from '../../api/member';
-import { ACTION_TYPES } from '../../actions/actionTypes';
 import ScinapseFormikInput from '../common/scinapseInput/scinapseFormikInput';
 import Button from '../common/button';
-import ActionTicketManager from '../../helpers/actionTicketManager';
-import { getCurrentPageType } from '../locationListener';
-import { openSnackbar, GLOBAL_SNACKBAR_TYPE } from '../../reducers/scinapseSnackbar';
-import PlutoAxios from '../../api/pluto';
 import Icon from '../../icons';
+import { createKeywordAlert } from '../../containers/keywordSettings/actions';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./createKeywordAlertDialog.scss');
 
@@ -49,50 +39,13 @@ const CreateKeywordAlertDialog: React.FC = () => {
     keyword: appState.createKeywordAlertDialogState.keyword,
     isLoading: appState.keywordSettingsState.isLoading,
   }));
-  const actionArea = openFrom;
 
   function handleClose() {
     dispatch(closeCreateKeywordAlertDialog());
   }
 
   async function handleSubmitForm(values: FormState) {
-    dispatch(startToConnectKeywordSettingsAPI());
-
-    try {
-      const keywordRes = await MemberAPI.newKeywordSettings(values.keyword);
-      dispatch(succeedToConnectKeywordSettingsAPI({ keywords: keywordRes.data.content }));
-      ActionTicketManager.trackTicket({
-        pageType: getCurrentPageType(),
-        actionType: 'fire',
-        actionArea: actionArea,
-        actionTag: 'createKeywordAlert',
-        actionLabel: values.keyword,
-      });
-      dispatch(
-        openSnackbar({
-          type: GLOBAL_SNACKBAR_TYPE.CREATE_KEYWORD_ALERT,
-          id: null,
-          context: null,
-          actionTicketParams: {
-            pageType: getCurrentPageType(),
-            actionType: 'view',
-            actionArea: 'createKeywordSnackbar',
-            actionTag: 'viewCreateKeywordSnackbar',
-            actionLabel: values.keyword,
-          },
-        })
-      );
-    } catch (err) {
-      dispatch(failedToConnectKeywordSettingsAPI());
-      const error = PlutoAxios.getGlobalError(err);
-      dispatch({
-        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
-        payload: {
-          type: 'error',
-          message: error.message,
-        },
-      });
-    }
+    dispatch(createKeywordAlert(values.keyword, openFrom));
 
     handleClose();
   }
