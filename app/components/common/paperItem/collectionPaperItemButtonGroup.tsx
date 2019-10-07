@@ -62,7 +62,7 @@ const PaperItemButtonGroup: React.FC<PaperItemButtonGroupProps> = ({
       </div>
       <div className={s.buttonListBox}>
         <div className={s.buttonWrapper}>
-          <CiteButton paper={paper} pageType={pageType} actionArea={actionArea} />
+          <CiteButton paper={paper} pageType={pageType} actionArea={actionArea} className={s.citeButton} />
         </div>
         <div className={s.buttonWrapper}>
           <NoteButton

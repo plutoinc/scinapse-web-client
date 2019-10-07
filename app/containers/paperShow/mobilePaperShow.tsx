@@ -8,7 +8,8 @@ import { formulaeToHTMLStr } from '../../helpers/displayFormula';
 import { getMemoizedPaper } from './select';
 import { AppState } from '../../reducers';
 import MobileVenueAuthors from '../../components/common/paperItem/mobileVenueAuthors';
-import PaperItemButtonGroup from '../../components/common/paperItem/paperItemButtonGroup';
+import MobilePaperShowButtonGroup from '../../components/mobilePaperShowButtonGroup';
+import CopyDOIButton from '../../components/copyDOIButton/copyDOIButton';
 import GoBackResultBtn from '../../components/paperShow/backButton';
 import ReferencePapers from '../../components/paperShow/refCitedPapers/referencePapers';
 import CitedPapers from '../../components/paperShow/refCitedPapers/citedPapers';
@@ -162,17 +163,27 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
         <h1 className={s.title} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.title) }} />
         <MobileVenueAuthors paper={paper} pageType={'paperShow'} actionArea="paperDescription" />
         <div ref={buttonGroupWrapper}>
-          <PaperItemButtonGroup
+          <MobilePaperShowButtonGroup
+            className={s.btnGroupWrapper}
             paper={paper}
             pageType={'paperShow'}
             actionArea="paperDescription"
             saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
           />
         </div>
-        <div className={s.abstractHeader}>Abstract</div>
+        <div className={s.abstractHeaderWrapper}>
+          <div className={s.abstractHeader}>Abstract</div>
+          <CopyDOIButton
+            className={s.copyDOIButton}
+            doi={paper.doi}
+            paperId={paper.id}
+            pageType="paperShow"
+            actionArea="paperDescription"
+          />
+        </div>
         <div className={s.abstractContent} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.abstract) }} />
       </div>
-
+      <div>View PDF</div>
       <div
         ref={fixedButtonHeader}
         className={classNames({
@@ -182,9 +193,10 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
       >
         {currentPosition === 'underPaperInfo' && (
           <div className={s.buttonGroupWrapper}>
-            <PaperItemButtonGroup
+            <MobilePaperShowButtonGroup
+              className={s.fixedBtnGroupWrapper}
               paper={paper}
-              pageType={'paperShow'}
+              pageType="paperShow"
               actionArea="refCitedTab"
               saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
             />
