@@ -5,21 +5,21 @@ import { RECOMMENDED_PAPER_LOGGING_FOR_NON_USER, RECOMMENDED_PAPER_LOGGING_LENGT
 import { RecommendationActionParams } from '../../api/types/recommendation';
 const store = require('store');
 
-export interface RecommendPoolState {
+export interface RecommendOnboardingSnackbarState {
   isOpen: boolean;
   actionArea: string;
   tempRecActionLogs: RecommendationActionParams[];
 }
 
-export const RECOMMEND_POOL_INITIAL_STATE: RecommendPoolState = {
+export const RECOMMEND_ONBOARDING_SNACKBAR_INITIAL_STATE: RecommendOnboardingSnackbarState = {
   isOpen: false,
   actionArea: '',
   tempRecActionLogs: store.get(RECOMMENDED_PAPER_LOGGING_FOR_NON_USER) || [],
 };
 
-const recommendPoolSlice = createSlice({
-  slice: 'recommendPool',
-  initialState: RECOMMEND_POOL_INITIAL_STATE,
+const recommendOnboardingSnackbarSlice = createSlice({
+  slice: 'recommendOnboardingSnackbar',
+  initialState: RECOMMEND_ONBOARDING_SNACKBAR_INITIAL_STATE,
   reducers: {
     addPaperToTempPool: (state, action: PayloadAction<{ recAction: RecommendationActionParams }>) => {
       const newRecActionLogs = uniqWith([action.payload.recAction, ...state.tempRecActionLogs], isEqual).slice(
@@ -29,7 +29,7 @@ const recommendPoolSlice = createSlice({
       state.tempRecActionLogs = newRecActionLogs;
       store.set(RECOMMENDED_PAPER_LOGGING_FOR_NON_USER, newRecActionLogs);
     },
-    openRecommendPapersDialog(
+    openRecommendOnboardingSnackbar(
       state,
       action: PayloadAction<{
         pageType: Scinapse.ActionTicket.PageType;
@@ -46,13 +46,17 @@ const recommendPoolSlice = createSlice({
       state.isOpen = true;
       state.actionArea = action.payload.actionArea;
     },
-    closeRecommendPapersDialog(state) {
+    closeRecommendOnboardingSnackbar(state) {
       state.isOpen = false;
       state.actionArea = '';
     },
   },
 });
 
-export const { addPaperToTempPool, openRecommendPapersDialog, closeRecommendPapersDialog } = recommendPoolSlice.actions;
+export const {
+  addPaperToTempPool,
+  openRecommendOnboardingSnackbar,
+  closeRecommendOnboardingSnackbar,
+} = recommendOnboardingSnackbarSlice.actions;
 
-export default recommendPoolSlice.reducer;
+export default recommendOnboardingSnackbarSlice.reducer;

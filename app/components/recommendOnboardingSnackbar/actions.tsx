@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import RecommendationAPI from '../../api/recommendation';
 import { AppState } from '../../reducers';
-import { addPaperToTempPool, openRecommendPapersDialog } from './reducer';
+import { addPaperToTempPool, openRecommendOnboardingSnackbar } from './reducer';
 import { ALREADY_VISITED_RECOMMEND_PAPERS, BASED_ACTIVITY_COUNT_STORE_KEY } from './constans';
 import { RecommendationActionParams } from '../../api/types/recommendation';
 const store = require('store');
@@ -61,7 +61,7 @@ export const openRecommendPoolDialog = (pageType: Scinapse.ActionTicket.PageType
         try {
           const recommendPapers = await RecommendationAPI.getPapersFromUserAction();
           if (!recommendPapers || recommendPapers.length === 0) return;
-          dispatch(openRecommendPapersDialog({ actionArea, pageType }));
+          dispatch(openRecommendOnboardingSnackbar({ actionArea, pageType }));
         } catch (err) {
           console.error(err);
         }

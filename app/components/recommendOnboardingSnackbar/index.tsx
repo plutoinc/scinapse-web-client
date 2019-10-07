@@ -5,7 +5,7 @@ import ActionTicketManager from '../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../locationListener';
 import { AppState } from '../../reducers';
 import { ALREADY_VISITED_RECOMMEND_PAPERS, BASED_ACTIVITY_COUNT_STORE_KEY } from './constans';
-import { RecommendPoolState, closeRecommendPapersDialog } from './reducer';
+import { RecommendOnboardingSnackbarState, closeRecommendOnboardingSnackbar } from './reducer';
 import Button from '../common/button';
 import ScinapseSnackbar from '../common/scinapseSnackbar';
 const useStyles = require('isomorphic-style-loader/useStyles');
@@ -17,14 +17,14 @@ type Props = RouteComponentProps<any>;
 const RecommendPool: React.FC<Props> = props => {
   useStyles(s);
   const dispatch = useDispatch();
-  const dialogState = useSelector<AppState, RecommendPoolState>(state => state.recommendPoolState);
+  const dialogState = useSelector<AppState, RecommendOnboardingSnackbarState>(state => state.recommendPoolState);
   const { isOpen, actionArea } = dialogState;
   const { location } = props;
 
   useEffect(
     () => {
       if (isOpen) {
-        dispatch(closeRecommendPapersDialog());
+        dispatch(closeRecommendOnboardingSnackbar());
       }
     },
     [dispatch, location]
@@ -39,13 +39,13 @@ const RecommendPool: React.FC<Props> = props => {
       actionTag: 'clickLetMeSeeBtn',
       actionLabel: actionArea,
     });
-    dispatch(closeRecommendPapersDialog());
+    dispatch(closeRecommendOnboardingSnackbar());
   }
 
   return (
     <ScinapseSnackbar
       open={isOpen}
-      onClose={() => dispatch(closeRecommendPapersDialog())}
+      onClose={() => dispatch(closeRecommendOnboardingSnackbar())}
       openFrom="knowledgeBaseNoti"
       message={
         <span id="message-id" className={s.snackbarContext}>
