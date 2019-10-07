@@ -91,11 +91,13 @@ async function onClickViewMorePdfBtn(params: OnClickViewMorePdfBtnParams) {
   const { paperId, dispatch } = params;
   trackClickButton('viewMorePDF', paperId);
 
-  addPaperToRecommendPoolAndOpenDialog({
-    pageType: 'paperShow',
-    actionArea: 'viewMorePDF',
-    recAction: { paperId, action: 'viewMorePDF' },
-  });
+  dispatch(
+    addPaperToRecommendPoolAndOpenDialog({
+      pageType: 'paperShow',
+      actionArea: 'viewMorePDF',
+      recAction: { paperId, action: 'viewMorePDF' },
+    })
+  );
 
   const isBlocked = await blockUnverifiedUser({
     authLevel: AUTH_LEVEL.VERIFIED,
