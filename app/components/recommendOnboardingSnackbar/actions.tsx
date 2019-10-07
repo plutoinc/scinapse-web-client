@@ -32,10 +32,12 @@ function setActionCount(count: number): number {
   return nextCount;
 }
 
-export const addPaperToRecommendPoolAndOpenDialog = (params: AddPaperToRecommendPoolAndOpenDialogParams) => {
+export const addPaperToRecommendPoolAndOpenOnboardingSnackbar = (
+  params: AddPaperToRecommendPoolAndOpenDialogParams
+) => {
   return (dispatch: Dispatch<any>) => {
     dispatch(addPaperToRecommendPool(params.recAction));
-    dispatch(openRecommendPoolDialog(params.pageType, params.actionArea));
+    dispatch(openRecommendOnboardingSnackbarAction(params.pageType, params.actionArea));
   };
 };
 
@@ -60,7 +62,7 @@ export const addPaperToRecommendPool = (recAction: RecommendationActionParams) =
   };
 };
 
-export const openRecommendPoolDialog = (pageType: Scinapse.ActionTicket.PageType, actionArea: string) => {
+export const openRecommendOnboardingSnackbarAction = (pageType: Scinapse.ActionTicket.PageType, actionArea: string) => {
   return async (dispatch: Dispatch<any>, getState: () => AppState) => {
     if (!getState().currentUser.isLoggedIn) return;
 

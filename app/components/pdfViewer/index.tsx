@@ -17,7 +17,7 @@ import { PDFViewerProps } from './types';
 import { AppState } from '../../reducers';
 import ProgressSpinner from './component/progressSpinner';
 import BlurBlocker from './component/blurBlocker';
-import { addPaperToRecommendPoolAndOpenDialog } from '../recommendOnboardingSnackbar/actions';
+import { addPaperToRecommendPoolAndOpenOnboardingSnackbar } from '../recommendOnboardingSnackbar/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { PDFViewerState } from '../../reducers/pdfViewer';
 import { CurrentUser } from '../../model/currentUser';
@@ -92,7 +92,7 @@ async function onClickViewMorePdfBtn(params: OnClickViewMorePdfBtnParams) {
   trackClickButton('viewMorePDF', paperId);
 
   dispatch(
-    addPaperToRecommendPoolAndOpenDialog({
+    addPaperToRecommendPoolAndOpenOnboardingSnackbar({
       pageType: 'paperShow',
       actionArea: 'viewMorePDF',
       recAction: { paperId, action: 'viewMorePDF' },
@@ -310,7 +310,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
                           e.preventDefault();
 
                           dispatch(
-                            addPaperToRecommendPoolAndOpenDialog({
+                            addPaperToRecommendPoolAndOpenOnboardingSnackbar({
                               pageType: 'paperShow',
                               actionArea: 'downloadPdf',
                               recAction: { paperId: paper.id, action: 'viewMorePDF' },

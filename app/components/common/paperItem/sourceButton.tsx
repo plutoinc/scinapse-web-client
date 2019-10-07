@@ -6,7 +6,7 @@ import { PaperSource } from '../../../api/paper';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { AppState } from '../../../reducers';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
-import { addPaperToRecommendPoolAndOpenDialog } from '../../recommendOnboardingSnackbar/actions';
+import { addPaperToRecommendPoolAndOpenOnboardingSnackbar } from '../../recommendOnboardingSnackbar/actions';
 import { Paper } from '../../../model/paper';
 const styles = require('./sourceButton.scss');
 
@@ -43,7 +43,7 @@ const SourceButton: React.FC<SourceButtonProps> = ({ paperSource, pageType, acti
             actionLabel: String(paper.id),
           });
           dispatch(
-            addPaperToRecommendPoolAndOpenDialog({
+            addPaperToRecommendPoolAndOpenOnboardingSnackbar({
               pageType,
               actionArea: 'sourceButton',
               recAction: { paperId: paper.id, action: 'source' },
@@ -79,7 +79,7 @@ const SourceButton: React.FC<SourceButtonProps> = ({ paperSource, pageType, acti
           actionLabel: String(paper.id),
         });
         dispatch(
-          addPaperToRecommendPoolAndOpenDialog({
+          addPaperToRecommendPoolAndOpenOnboardingSnackbar({
             pageType,
             actionArea: 'sourceButton',
             recAction: { paperId: paper.id, action: 'source' },

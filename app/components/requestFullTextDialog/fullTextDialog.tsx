@@ -14,7 +14,7 @@ import Icon from '../../icons';
 import { ACTION_TYPES } from '../../actions/actionTypes';
 import { LAST_SUCCEEDED_EMAIL_KEY } from '../../constants/requestDialogConstant';
 import { fetchLastFullTextRequestedDate } from '../../actions/paperShow';
-import { openRecommendPoolDialog } from '../recommendOnboardingSnackbar/actions';
+import { openRecommendOnboardingSnackbarAction } from '../recommendOnboardingSnackbar/actions';
 import { closeRequestFullTextDialog } from '../../reducers/requestFullTextDialog';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./fullTextDialog.scss');
@@ -48,7 +48,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = props => 
   const actionArea = openFrom === 'refCited' ? 'requestFullTextBtnAtRefBar' : 'requestFullTextBtn';
 
   function handleClose() {
-    dispatch(openRecommendPoolDialog('paperShow', actionArea));
+    dispatch(openRecommendOnboardingSnackbarAction('paperShow', actionArea));
     dispatch(closeRequestFullTextDialog());
   }
 
