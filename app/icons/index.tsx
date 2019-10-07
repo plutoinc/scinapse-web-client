@@ -76,6 +76,7 @@ const ICONS: { [key: string]: any } = {
   MASK: require('./mask.svg'),
   ERROR: require('./error.svg'),
   ALERT: require('./alert.svg'),
+  ALERT_LINE: require('./alert-line.svg'),
 };
 
 const Icon: React.FC<IconProps> = ({ className, icon, onClick, style }) => {
