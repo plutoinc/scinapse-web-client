@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { withStyles } from '../../../helpers/withStylesHelper';
 import { Fos, NewFOS } from '../../../model/fos';
 import SearchQueryManager from '../../../helpers/searchQueryManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
-const styles = require('./keyword.scss');
+const useStyles = require('isomorphic-style-loader/useStyles');
+const s = require('./keyword.scss');
 
 interface PaperShowKeywordProps {
   fos: Fos | NewFOS;
@@ -15,60 +15,49 @@ function isOldFos(fos: Fos | NewFOS): fos is Fos {
   return (fos as Fos).fos !== undefined;
 }
 
-const PaperShowKeyword: React.FunctionComponent<PaperShowKeywordProps> = props => {
-  const fos = props.fos;
-
+function getFosKeyword(fos: Fos | NewFOS) {
   if (isOldFos(fos)) {
-    return (
-      <a
-        href={`/search?${SearchQueryManager.stringifyPapersQuery({
-          query: fos.fos || '',
-          sort: 'RELEVANCE',
-          page: 1,
-          filter: {},
-        })}`}
-        rel="noopener noreferrer"
-        target="_blank"
-        onClick={() => {
-          ActionTicketManager.trackTicket({
-            pageType: props.pageType,
-            actionType: 'fire',
-            actionArea: props.actionArea || props.pageType,
-            actionTag: 'fos',
-            actionLabel: String(fos.id),
-          });
-        }}
-        className={styles.buttonWrapper}
-      >
-        {fos.fos}
-      </a>
-    );
+    return fos.fos;
   } else {
-    return (
-      <a
-        href={`/search?${SearchQueryManager.stringifyPapersQuery({
-          query: fos.name || '',
-          sort: 'RELEVANCE',
-          page: 1,
-          filter: {},
-        })}`}
-        rel="noopener noreferrer"
-        target="_blank"
-        onClick={() => {
-          ActionTicketManager.trackTicket({
-            pageType: props.pageType,
-            actionType: 'fire',
-            actionArea: props.actionArea || props.pageType,
-            actionTag: 'fos',
-            actionLabel: String(fos.id),
-          });
-        }}
-        className={styles.buttonWrapper}
-      >
-        {fos.name}
-      </a>
-    );
+    return fos.name;
   }
+}
+
+function formattedFOSLocation(keyword: string) {
+  const searchQuery = SearchQueryManager.stringifyPapersQuery({
+    query: keyword || '',
+    sort: 'RELEVANCE',
+    page: 1,
+    filter: {},
+  });
+
+  return `/search?${searchQuery}`;
+}
+
+const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, actionArea }) => {
+  useStyles(s);
+
+  const keyword = getFosKeyword(fos);
+
+  return (
+    <a
+      href={formattedFOSLocation(keyword)}
+      rel="noopener noreferrer"
+      target="_blank"
+      onClick={() => {
+        ActionTicketManager.trackTicket({
+          pageType: pageType,
+          actionType: 'fire',
+          actionArea: actionArea || pageType,
+          actionTag: 'fos',
+          actionLabel: String(fos.id),
+        });
+      }}
+      className={s.buttonWrapper}
+    >
+      {keyword}
+    </a>
+  );
 };
 
-export default withStyles<typeof PaperShowKeyword>(styles)(PaperShowKeyword);
+export default PaperShowKeyword;
