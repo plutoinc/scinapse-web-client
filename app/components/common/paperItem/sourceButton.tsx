@@ -6,7 +6,7 @@ import { PaperSource } from '../../../api/paper';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { AppState } from '../../../reducers';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
-import { addPaperToRecommendPoolAndOpenDialog } from '../../recommendPool/recommendPoolActions';
+import { addPaperToRecommendPoolAndOpenDialog } from '../../recommendOnboardingSnackbar/recommendPoolActions';
 import { Paper } from '../../../model/paper';
 const styles = require('./sourceButton.scss');
 

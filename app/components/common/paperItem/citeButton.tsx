@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { addPaperToRecommendPool } from '../../recommendPool/recommendPoolActions';
+import { addPaperToRecommendPool } from '../../recommendOnboardingSnackbar/recommendPoolActions';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';

@@ -9,7 +9,7 @@ import { RecommendPoolState, closeRecommendPapersDialog } from './recommendPoolR
 import Button from '../common/button';
 import ScinapseSnackbar from '../common/scinapseSnackbar';
 const useStyles = require('isomorphic-style-loader/useStyles');
-const s = require('./recommendPool.scss');
+const s = require('./recommendOnboardingSnackbar.scss');
 const store = require('store');
 
 type Props = RouteComponentProps<any>;

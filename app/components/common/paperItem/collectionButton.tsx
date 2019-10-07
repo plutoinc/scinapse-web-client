@@ -8,7 +8,7 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
 import { AppState } from '../../../reducers';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
-import { addPaperToRecommendPool } from '../../recommendPool/recommendPoolActions';
+import { addPaperToRecommendPool } from '../../recommendOnboardingSnackbar/recommendPoolActions';
 import { Paper } from '../../../model/paper';
 import { getUserGroupName } from '../../../helpers/abTestHelper';
 import { COLLECTION_BUTTON_TEXT_EXPERIMENT } from '../../../constants/abTestGlobalValue';

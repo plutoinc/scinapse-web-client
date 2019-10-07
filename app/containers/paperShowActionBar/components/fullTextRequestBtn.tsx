@@ -6,7 +6,7 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import SearchingPDFBtn from '../../../components/paperShow/components/searchingPDFBtn';
 import { useDispatch } from 'react-redux';
-import { addPaperToTempPool } from '../../../components/recommendPool/recommendPoolReducer';
+import { addPaperToTempPool } from '../../../components/recommendOnboardingSnackbar/recommendPoolReducer';
 const s = require('../actionBar.scss');
 
 interface RequestFullTextBtnProps {
