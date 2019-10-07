@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../locationListener';
 import { AppState } from '../../reducers';
-import { ALREADY_VISITED_RECOMMEND_PAPERS, BASED_ACTIVITY_COUNT_STORE_KEY } from './constans';
+import { ALREADY_VISITED_RECOMMEND_PAPERS, BASED_ACTIVITY_COUNT_STORE_KEY } from './constants';
 import { RecommendOnboardingSnackbarState, closeRecommendOnboardingSnackbar } from './reducer';
 import Button from '../common/button';
 import ScinapseSnackbar from '../common/scinapseSnackbar';

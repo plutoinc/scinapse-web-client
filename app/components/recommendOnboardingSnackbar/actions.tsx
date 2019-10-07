@@ -7,7 +7,7 @@ import {
   BASED_ACTIVITY_COUNT_STORE_KEY,
   RECOMMENDED_PAPER_LOGGING_LENGTH_FOR_NON_USER,
   RECOMMENDED_PAPER_LOGGING_FOR_NON_USER,
-} from './constans';
+} from './constants';
 import { RecommendationActionParams } from '../../api/types/recommendation';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 const store = require('store');

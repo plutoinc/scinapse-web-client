@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from 'redux-starter-kit';
-import { RECOMMENDED_PAPER_LOGGING_FOR_NON_USER } from './constans';
+import { RECOMMENDED_PAPER_LOGGING_FOR_NON_USER } from './constants';
 import { RecommendationActionParams } from '../../api/types/recommendation';
 const store = require('store');
 
