@@ -194,7 +194,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <PaperShowHelmet paper={paper} />
           <article className={styles.paperShow}>
             <div className={styles.paperShowContent}>
-              <GoBackResultBtn />
+              <GoBackResultBtn className={styles.backBtn} />
               <Title title={paper.title} />
               <VenueAndAuthors pageType="paperShow" actionArea="paperDescription" paper={paper} />
               <div className={styles.paperContentBlockDivider} />

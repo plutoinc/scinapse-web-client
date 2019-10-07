@@ -18,14 +18,15 @@ import { fetchPaperShowData } from './sideEffect';
 import PlutoAxios from '../../api/pluto';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { CommonError } from '../../model/error';
+
 const s = require('./mobilePaperShow.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
+const NAVBAR_HEIGHT = parseInt(s.headerHeight, 10);
+
+let ticking = false;
 
 type MobilePaperShowProps = RouteComponentProps<PaperShowMatchParams>;
 type CurrentPosition = 'abovePaperInfo' | 'underPaperInfo' | 'onRefList' | 'onCitedList';
-
-const NAVBAR_HEIGHT = parseInt(s.headerHeight, 10);
-let ticking = false;
 
 const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
   useStyles(s);
@@ -157,7 +158,7 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
   return (
     <div className={s.container}>
       <div className={s.contentWrapper}>
-        <GoBackResultBtn />
+        <GoBackResultBtn className={s.backBtn} />
         <h1 className={s.title} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.title) }} />
         <MobileVenueAuthors paper={paper} pageType={'paperShow'} actionArea="paperDescription" />
         <div ref={buttonGroupWrapper}>
@@ -179,7 +180,6 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
           [s.active]: currentPosition !== 'abovePaperInfo',
         })}
       >
-        <div className={s.tabPaperTitle}>{paper.title}</div>
         {currentPosition === 'underPaperInfo' && (
           <div className={s.buttonGroupWrapper}>
             <PaperItemButtonGroup

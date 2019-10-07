@@ -3,7 +3,6 @@
   width: 200px;
   font-weight: 500;
   letter-spacing: 0.5px;
-  margin-top: 24px;
   color: $gray600;
   cursor: pointer;
 
@@ -19,5 +18,33 @@
 
   &:hover {
     color: $gray800;
+  }
+}
+
+@media (max-width: $mobile_width) {
+  .goBackBtn {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    width: auto;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: $gray500;
+
+    .backIcon {
+      width: 16px;
+      height: 13px;
+      margin-right: 10px;
+
+      svg {
+        width: 16px;
+        height: 13px;
+        padding-top: 0;
+        margin-right: 0;
+      }
+    }
   }
 }

@@ -12,6 +12,14 @@ $ref-cited-bar-height: 50px;
   margin: 0 16px;
 }
 
+.backBtn {
+  padding-top: 32px;
+
+  & + .title {
+    padding-top: 28px;
+  }
+}
+
 .title {
   font-size: 22px;
   line-height: 1.27;
@@ -19,7 +27,7 @@ $ref-cited-bar-height: 50px;
   color: $black0;
   font-family: Georgia;
   margin: 0;
-  padding-top: 24px;
+  padding-top: 36px;
   padding-bottom: 12px;
 }
 
@@ -82,7 +90,7 @@ $ref-cited-bar-height: 50px;
   top: $header-height;
   left: 0;
   right: 0;
-  height: 106px;
+  height: 76px;
   background-color: white;
   padding: 16px 28px 16px 28px;
   z-index: 2;
