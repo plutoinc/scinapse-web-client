@@ -34,7 +34,7 @@ import EnvChecker from '../../helpers/envChecker';
 import SurveyForm from '../auth/signUp/components/surveyForm';
 import PaperFigureDetail from '../common/paperFigureDetail/paperFigureDetail';
 import { UserDevice } from '../layouts/reducer';
-import { openRecommendPoolDialog } from '../recommendOnboardingSnackbar/recommendPoolActions';
+import { openRecommendPoolDialog } from '../recommendOnboardingSnackbar/actions';
 import { getCurrentPageType } from '../locationListener';
 const styles = require('./dialog.scss');
 

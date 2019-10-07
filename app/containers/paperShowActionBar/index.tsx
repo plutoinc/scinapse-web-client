@@ -9,7 +9,7 @@ import { CurrentUser } from '../../model/currentUser';
 import SourceButton from '../../components/paperShow/components/sourceButton';
 import ViewFullTextBtn from '../../components/paperShow/components/viewFullTextBtn';
 import RequestFullTextBtn from './components/fullTextRequestBtn';
-import { addPaperToRecommendPool } from '../../components/recommendOnboardingSnackbar/recommendPoolActions';
+import { addPaperToRecommendPool } from '../../components/recommendOnboardingSnackbar/actions';
 import { openRequestFullTextDialog } from '../../reducers/requestFullTextDialog';
 const s = require('./actionBar.scss');
 

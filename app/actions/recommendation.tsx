@@ -4,7 +4,7 @@ import { ActionCreators } from './actionTypes';
 import {
   ALREADY_VISITED_RECOMMEND_PAPERS,
   BASED_ACTIVITY_COUNT_STORE_KEY,
-} from '../components/recommendOnboardingSnackbar/recommendPoolConstants';
+} from '../components/recommendOnboardingSnackbar/constans';
 const store = require('store');
 
 const MAX_COUNT = 16;

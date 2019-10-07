@@ -1,8 +1,8 @@
 import { Dispatch } from 'redux';
 import RecommendationAPI from '../../api/recommendation';
 import { AppState } from '../../reducers';
-import { addPaperToTempPool, openRecommendPapersDialog } from './recommendPoolReducer';
-import { ALREADY_VISITED_RECOMMEND_PAPERS, BASED_ACTIVITY_COUNT_STORE_KEY } from './recommendPoolConstants';
+import { addPaperToTempPool, openRecommendPapersDialog } from './reducer';
+import { ALREADY_VISITED_RECOMMEND_PAPERS, BASED_ACTIVITY_COUNT_STORE_KEY } from './constans';
 import { RecommendationActionParams } from '../../api/types/recommendation';
 const store = require('store');
 

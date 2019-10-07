@@ -4,7 +4,7 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import SearchingPDFBtn from './searchingPDFBtn';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
-import { addPaperToRecommendPoolAndOpenDialog } from '../../recommendOnboardingSnackbar/recommendPoolActions';
+import { addPaperToRecommendPoolAndOpenDialog } from '../../recommendOnboardingSnackbar/actions';
 
 const styles = require('./viewFullTextBtn.scss');
 

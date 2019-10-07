@@ -6,7 +6,7 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
 import SearchingPDFBtn from './searchingPDFBtn';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../../helpers/checkAuthDialog';
-import { addPaperToRecommendPoolAndOpenDialog } from '../../recommendOnboardingSnackbar/recommendPoolActions';
+import { addPaperToRecommendPoolAndOpenDialog } from '../../recommendOnboardingSnackbar/actions';
 const styles = require('./pdfSourceButton.scss');
 
 interface PdfDownloadButtonProps {

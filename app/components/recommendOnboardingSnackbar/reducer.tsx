@@ -1,10 +1,7 @@
 import { createSlice, PayloadAction } from 'redux-starter-kit';
 import { uniqWith, isEqual } from 'lodash';
 import ActionTicketManager from '../../helpers/actionTicketManager';
-import {
-  RECOMMENDED_PAPER_LOGGING_FOR_NON_USER,
-  RECOMMENDED_PAPER_LOGGING_LENGTH_FOR_NON_USER,
-} from './recommendPoolConstants';
+import { RECOMMENDED_PAPER_LOGGING_FOR_NON_USER, RECOMMENDED_PAPER_LOGGING_LENGTH_FOR_NON_USER } from './constans';
 import { RecommendationActionParams } from '../../api/types/recommendation';
 const store = require('store');
 
