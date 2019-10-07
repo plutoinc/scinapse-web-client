@@ -39,7 +39,7 @@ export const addPaperToRecommendPool = (recAction: RecommendationActionParams) =
     if (!appState.currentUser.isLoggedIn) {
       dispatch(addPaperToTempPool({ recAction }));
     } else {
-      RecommendationAPI.addPaperToRecommendationPool(recAction);
+      RecommendationAPI.addPaperToRecommendationPool({ paper_id: recAction.paperId, action: recAction.action });
     }
   };
 };

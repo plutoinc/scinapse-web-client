@@ -2,7 +2,7 @@ import PlutoAxios from './pluto';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
 import { Paper } from '../model/paper';
 import { Collection } from '../model/collection';
-import { RecommendationActionParams, RecommendationActionAPIParams } from './types/recommendation';
+import { RecommendationActionAPIParams } from './types/recommendation';
 
 export interface BasedOnCollectionPapersParams {
   collection: Collection;
@@ -22,11 +22,8 @@ class RecommendationAPI extends PlutoAxios {
     return camelizedRes.data.content[0];
   }
 
-  public async addPaperToRecommendationPool(param: RecommendationActionParams) {
-    const res = await this.post(`/recommendations/log/paper-action`, {
-      paper_id: param.paperId,
-      action: param.action,
-    });
+  public async addPaperToRecommendationPool(param: RecommendationActionAPIParams) {
+    const res = await this.post(`/recommendations/log/paper-action`, param);
     const camelizedRes = camelCaseKeys(res.data);
     return camelizedRes.data.content;
   }

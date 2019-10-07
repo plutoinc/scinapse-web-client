@@ -18,6 +18,6 @@ export async function addPaperToRecommendation(isLoggedIn: boolean, recAction: R
     );
     store.set(RECOMMENDED_PAPER_LOGGING_FOR_NON_USER, newRecActionLogs);
   } else {
-    RecommendationAPI.addPaperToRecommendationPool(recAction);
+    RecommendationAPI.addPaperToRecommendationPool({ paper_id: recAction.paperId, action: recAction.action });
   }
 }
