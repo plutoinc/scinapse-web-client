@@ -2,8 +2,15 @@ import { Dispatch } from 'redux';
 import RecommendationAPI from '../../api/recommendation';
 import { AppState } from '../../reducers';
 import { addPaperToTempPool, openRecommendOnboardingSnackbar } from './reducer';
-import { ALREADY_VISITED_RECOMMEND_PAPERS, BASED_ACTIVITY_COUNT_STORE_KEY } from './constans';
+import {
+  ALREADY_VISITED_RECOMMEND_PAPERS,
+  BASED_ACTIVITY_COUNT_STORE_KEY,
+  RECOMMENDED_PAPER_LOGGING_LENGTH_FOR_NON_USER,
+  RECOMMENDED_PAPER_LOGGING_FOR_NON_USER,
+} from './constans';
 import { RecommendationActionParams } from '../../api/types/recommendation';
+import { uniqWith, isEqual } from 'lodash';
+import ActionTicketManager from '../../helpers/actionTicketManager';
 const store = require('store');
 
 const MAX_COUNT = 16;
@@ -35,9 +42,19 @@ export const addPaperToRecommendPoolAndOpenDialog = (params: AddPaperToRecommend
 
 export const addPaperToRecommendPool = (recAction: RecommendationActionParams) => {
   return (dispatch: Dispatch<any>, getState: () => AppState) => {
-    const appState = getState();
-    if (!appState.currentUser.isLoggedIn) {
-      dispatch(addPaperToTempPool({ recAction }));
+    const { recTempPool, isLoggedIn } = {
+      recTempPool: getState().recommendOnboardingSnackbarState.tempRecActionLogs,
+      isLoggedIn: getState().currentUser.isLoggedIn,
+    };
+
+    if (isLoggedIn) {
+      const newRecActionLogs: RecommendationActionParams[] = uniqWith([recAction, ...recTempPool], isEqual).slice(
+        0,
+        RECOMMENDED_PAPER_LOGGING_LENGTH_FOR_NON_USER
+      );
+
+      store.set(RECOMMENDED_PAPER_LOGGING_FOR_NON_USER, newRecActionLogs);
+      dispatch(addPaperToTempPool({ recActions: newRecActionLogs }));
     } else {
       RecommendationAPI.addPaperToRecommendationPool({ paper_id: recAction.paperId, action: recAction.action });
     }
@@ -61,7 +78,15 @@ export const openRecommendPoolDialog = (pageType: Scinapse.ActionTicket.PageType
         try {
           const recommendPapers = await RecommendationAPI.getPapersFromUserAction();
           if (!recommendPapers || recommendPapers.length === 0) return;
-          dispatch(openRecommendOnboardingSnackbar({ actionArea, pageType }));
+          dispatch(openRecommendOnboardingSnackbar({ actionArea }));
+
+          ActionTicketManager.trackTicket({
+            pageType: pageType,
+            actionType: 'view',
+            actionArea: 'knowledgeBaseNoti',
+            actionTag: 'viewKnowledgeBaseNoti',
+            actionLabel: actionArea,
+          });
         } catch (err) {
           console.error(err);
         }
