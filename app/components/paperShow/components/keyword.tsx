@@ -65,7 +65,7 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
       userActionType: 'clickCreateAlertBtn',
     });
 
-    if (isBlocked) return;
+    if (isBlocked) return setIsLoading(false);
 
     try {
       if (!targetKeyword) {
