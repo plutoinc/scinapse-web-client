@@ -20,6 +20,13 @@
   }
 }
 
+.alertIcon {
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
 // Mobile
 @media (max-width: $mobile_width) {
   .arrowTopTooltipWrapper {

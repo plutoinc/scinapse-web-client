@@ -71,9 +71,8 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
     [keyword, actionArea, targetKeyword, dispatch]
   );
 
-  const buttonStyle: React.CSSProperties = {
+  const buttonColorStyle: React.CSSProperties = {
     color: '#7e8698',
-    padding: '8px 12px',
   };
 
   return (
@@ -85,7 +84,8 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
         variant="contained"
         color="black"
         style={{
-          ...buttonStyle,
+          ...buttonColorStyle,
+          padding: '8px 12px',
           borderTopRightRadius: '0px',
           borderBottomRightRadius: '0px',
           borderRight: '1px solid #d8dde7',
@@ -114,10 +114,14 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
         fullWidth={false}
         disabled={false}
         isLoading={isLoading}
-        style={{ ...buttonStyle, borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}
+        style={{ ...buttonColorStyle, padding: '8px', borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}
         onClick={onClickAlertButton}
       >
-        {!targetKeyword ? <Icon icon="ALERT_LINE" /> : <Icon icon="ALERT" />}
+        {!targetKeyword ? (
+          <Icon icon="ALERT_LINE" className={s.alertIcon} />
+        ) : (
+          <Icon icon="ALERT" className={s.alertIcon} />
+        )}
       </Button>
     </div>
   );
