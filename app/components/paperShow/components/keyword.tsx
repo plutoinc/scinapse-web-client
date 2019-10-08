@@ -88,7 +88,7 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
           ...buttonStyle,
           borderTopRightRadius: '0px',
           borderBottomRightRadius: '0px',
-          borderRight: '1px solid #bbc2d0',
+          borderRight: '1px solid #d8dde7',
         }}
         fullWidth={false}
         disabled={false}
