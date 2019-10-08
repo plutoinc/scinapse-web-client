@@ -16,8 +16,9 @@ import { fetchLastFullTextRequestedDate } from '../../actions/paperShow';
 import { openRecommendOnboardingSnackbarAction } from '../recommendOnboardingSnackbar/actions';
 import { closeRequestFullTextDialog } from '../../reducers/requestFullTextDialog';
 import ReduxAutoSizeTextarea from '../common/autoSizeTextarea/reduxAutoSizeTextarea';
+import Button from '../common/button';
 const useStyles = require('isomorphic-style-loader/useStyles');
-const s = require('./fullTextDialog.scss');
+const s = require('./requestFulltextDialog.scss');
 
 interface RequestFullTextProps {
   paperId: number;
@@ -55,6 +56,14 @@ function buildMessage(values: FormState) {
   }<br /><br />Who am I (Adding your profile link is preferred):<br />${values.whoami}`.trim();
 }
 
+function getActionArea(openFrom: string) {
+  if (openFrom === 'refCited') {
+    return 'requestFullTextBtnAtRefBar';
+  }
+
+  return 'requestFullTextBtn';
+}
+
 const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperId }) => {
   useStyles(s);
   const dispatch = useDispatch();
@@ -64,10 +73,9 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
     openFrom: appState.requestFullTextDialogState.from,
   }));
   const [isLoading, setIsLoading] = React.useState(false);
-  const actionArea = openFrom === 'refCited' ? 'requestFullTextBtnAtRefBar' : 'requestFullTextBtn';
 
   function handleClose() {
-    dispatch(openRecommendOnboardingSnackbarAction('paperShow', actionArea));
+    dispatch(openRecommendOnboardingSnackbarAction('paperShow', getActionArea(openFrom)));
     dispatch(closeRequestFullTextDialog());
   }
 
@@ -171,13 +179,28 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
               />
             </div>
             <div className={s.btnWrapper}>
-              <button className={s.cancelBtn} type="button" onClick={handleClose}>
-                Cancel
-              </button>
-              <button disabled={isLoading} className={s.submitBtn} type="submit">
-                <Icon icon="SEND" className={s.sendIcon} />
-                Send
-              </button>
+              <Button
+                elementType="button"
+                size="medium"
+                variant="text"
+                color="blue"
+                disabled={isLoading}
+                onClick={handleClose}
+                style={{ marginRight: '8px' }}
+              >
+                <span>Cancel</span>
+              </Button>
+              <Button
+                elementType="button"
+                type="submit"
+                size="medium"
+                variant="contained"
+                color="blue"
+                disabled={isLoading}
+              >
+                <Icon icon="SEND" />
+                <span>Send</span>
+              </Button>
             </div>
           </Form>
         )}
