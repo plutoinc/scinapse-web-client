@@ -11,7 +11,6 @@ import {
   emailRecommendPaperSignUpBanner,
   authMethod,
   collectionButtonText,
-  requestFullTextDialogExperiment,
 } from './abTestObject';
 
 export interface UserGroup<N = string> {
