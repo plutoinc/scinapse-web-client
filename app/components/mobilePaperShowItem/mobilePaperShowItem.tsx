@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { denormalize } from 'normalizr';
 import classNames from 'classnames';
+import { isEqual } from 'lodash';
 
 import { AppState } from '../../reducers';
 import { paperSchema } from '../../model/paper';
@@ -21,7 +22,7 @@ interface Props {
 
 const MobilePaperShowItem: FC<Props> = React.memo(({ paperId, pageType, actionArea, className, contentClassName }) => {
   useStyles(s);
-  const paper = useSelector((state: AppState) => denormalize(paperId, paperSchema, state.entities));
+  const paper = useSelector((state: AppState) => denormalize(paperId, paperSchema, state.entities), isEqual);
 
   if (!paper) return null;
 

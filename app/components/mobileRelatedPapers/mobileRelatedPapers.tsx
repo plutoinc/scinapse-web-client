@@ -9,7 +9,6 @@ interface Props {
 const MobileRelatedPapers: FC<Props> = ({ className, paperIds }) => {
   if (!paperIds || !paperIds.length) return null;
 
-  console.log('mobileRelatedPapers fired');
   return (
     <div className={className}>
       {paperIds.map(paperId => (

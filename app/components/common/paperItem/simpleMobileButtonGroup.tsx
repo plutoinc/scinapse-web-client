@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Paper } from '../../../model/paper';
-import CitationListLinkButton from './citationListLinkButton';
-import CollectionButton from './collectionButton';
+import MobileCitationListLinkButton from './mobileCitationListLinkButton';
+import MobileReadLaterButton from './mobileReadLaterButton';
 const s = require('./simpleMobileButtonGroup.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
 
@@ -18,10 +18,15 @@ const SimpleMobilePaperItemButtonGroup: FC<Props> = ({ paper, pageType, actionAr
   return (
     <div className={s.groupWrapper}>
       <div>
-        <CitationListLinkButton className={s.citationLink} paper={paper} pageType={pageType} actionArea={actionArea} />
+        <MobileCitationListLinkButton
+          paperId={paper.id}
+          citedCount={paper.citedCount}
+          pageType={pageType}
+          actionArea={actionArea}
+        />
       </div>
       <div>
-        <CollectionButton paper={paper} saved={!!saved} pageType={pageType} actionArea={actionArea} />
+        <MobileReadLaterButton paperId={paper.id} saved={!!saved} pageType={pageType} actionArea={actionArea} />
       </div>
     </div>
   );
