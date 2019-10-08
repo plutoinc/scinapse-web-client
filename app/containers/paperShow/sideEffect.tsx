@@ -5,18 +5,13 @@ import {
   getPaper,
   getCitedPapers,
   getReferencePapers,
-  getMyCollections,
   fetchLastFullTextRequestedDate,
+  getMyCollections,
 } from '../../actions/paperShow';
 import { CurrentUser } from '../../model/currentUser';
 import { PaperShowMatchParams, PaperShowPageQueryParams } from './types';
 import { ActionCreators } from '../../actions/actionTypes';
-
-export function fetchMyCollection(paperId: number, cancelToken: CancelToken) {
-  return async (dispatch: Dispatch<any>) => {
-    await dispatch(getMyCollections(paperId, cancelToken));
-  };
-}
+import { getRelatedPapers } from '../../actions/relatedPapers';
 
 export function fetchCitedPaperData(
   paperId: number,
@@ -96,10 +91,11 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
 
   const promiseArray = [];
   promiseArray.push(dispatch(getPaper({ paperId, cancelToken: params.cancelToken })));
-  promiseArray.push(dispatch(fetchLastFullTextRequestedDate(paperId)));
+  promiseArray.push(dispatch(getRelatedPapers(paperId, params.cancelToken)));
 
   if (currentUser && currentUser.isLoggedIn) {
-    promiseArray.push(dispatch(fetchMyCollection(paperId, params.cancelToken)));
+    promiseArray.push(dispatch(fetchLastFullTextRequestedDate(paperId)));
+    promiseArray.push(dispatch(getMyCollections(paperId, params.cancelToken)));
   }
 
   await Promise.all(promiseArray);

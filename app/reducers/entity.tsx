@@ -53,7 +53,7 @@ export interface AppEntities {
 
 export interface EntityState extends Readonly<AppEntities> {}
 
-export const INITIAL_ENTITY_STATE = {
+export const INITIAL_ENTITY_STATE: AppEntities = {
   authors: {},
   papers: {},
   papersInCollection: {},

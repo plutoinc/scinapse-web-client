@@ -14,13 +14,10 @@ import MobilePaperShowTab from '../../components/mobilePaperShowTab/mobilePaperS
 import GoBackResultBtn from '../../components/paperShow/backButton';
 import ReferencePapers from '../../components/paperShow/refCitedPapers/referencePapers';
 import CitedPapers from '../../components/paperShow/refCitedPapers/citedPapers';
-import { PaperShowMatchParams, PaperShowPageQueryParams } from './types';
-import getQueryParamsObject from '../../helpers/getQueryParamsObject';
-import { fetchPaperShowData } from './sideEffect';
-import PlutoAxios from '../../api/pluto';
-import ActionTicketManager from '../../helpers/actionTicketManager';
-import { CommonError } from '../../model/error';
+import { PaperShowMatchParams } from './types';
 import { AvailablePaperShowTab } from '../../components/paperShowTabItem/paperShowTabItem';
+import { fetchMobilePaperShowData } from '../../actions/paperShow';
+import MobileRelatedPapers from '../../components/mobileRelatedPapers/mobileRelatedPapers';
 
 const s = require('./mobilePaperShow.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
@@ -34,11 +31,12 @@ type CurrentPosition = 'abovePaperInfo' | 'underPaperInfo' | 'onRefList' | 'onCi
 const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
   useStyles(s);
   const { match, location } = props;
-  const { paper, currentUser, shouldPatch } = useSelector((state: AppState) => {
+  const { paper, currentUser, shouldPatch, relatedPaperIds } = useSelector((state: AppState) => {
     return {
       paper: getMemoizedPaper(state),
       currentUser: state.currentUser,
       shouldPatch: !state.configuration.succeedAPIFetchAtServer || state.configuration.renderedAtClient,
+      relatedPaperIds: state.relatedPapersState.paperIds,
     };
   });
   const dispatch = useDispatch();
@@ -49,6 +47,7 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
   const fixedButtonHeader = React.useRef<HTMLDivElement | null>(null);
   const refTabWrapper = React.useRef<HTMLDivElement | null>(null);
   const citedTabWrapper = React.useRef<HTMLDivElement | null>(null);
+  const relatedTabWrapper = React.useRef<HTMLDivElement | null>(null);
 
   React.useEffect(() => {
     function handleScroll() {
@@ -104,9 +103,7 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
 
   React.useEffect(
     () => {
-      const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
       const cancelToken = axios.CancelToken.source();
-
       // NOTE: prevent patching from the change of shouldPatch variable
       if (shouldPatch && !lastShouldPatch.current) {
         lastShouldPatch.current = true;
@@ -115,43 +112,19 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
       // NOTE: prevent double patching
       if (!shouldPatch) return;
 
-      fetchPaperShowData(
-        {
-          dispatch,
-          match,
-          pathname: location.pathname,
-          queryParams,
+      dispatch(
+        fetchMobilePaperShowData({
+          paperId: parseInt(match.params.paperId, 10),
+          isLoggedIn: currentUser.isLoggedIn,
           cancelToken: cancelToken.token,
-        },
-        currentUser
-      )
-        .then(() => {
-          ActionTicketManager.trackTicket({
-            pageType: 'paperShow',
-            actionType: 'view',
-            actionArea: '200',
-            actionTag: 'pageView',
-            actionLabel: String(match.params.paperId),
-          });
         })
-        .catch(err => {
-          if (!axios.isCancel(err)) {
-            const error = PlutoAxios.getGlobalError(err) as CommonError;
-            ActionTicketManager.trackTicket({
-              pageType: 'paperShow',
-              actionType: 'view',
-              actionArea: String(error.status),
-              actionTag: 'pageView',
-              actionLabel: String(match.params.paperId),
-            });
-          }
-        });
+      );
 
       return () => {
         cancelToken.cancel();
       };
     },
-    [location.search, location.pathname, currentUser, dispatch, match, shouldPatch]
+    [location.pathname, currentUser.isLoggedIn, dispatch, match, shouldPatch]
   );
 
   function handleClickPaperShowTab(tab: AvailablePaperShowTab) {
@@ -223,6 +196,10 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
         )}
       </div>
 
+      <div ref={relatedTabWrapper}>
+        <MobilePaperShowTab active={AvailablePaperShowTab.related} onClick={handleClickPaperShowTab} paper={paper} />
+        <MobileRelatedPapers paperIds={relatedPaperIds} className={s.relatedPapers} />
+      </div>
       <div ref={refTabWrapper}>
         <MobilePaperShowTab active={AvailablePaperShowTab.ref} onClick={handleClickPaperShowTab} paper={paper} />
       </div>

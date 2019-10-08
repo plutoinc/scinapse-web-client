@@ -8,13 +8,13 @@ import PDFViewer from '../../components/pdfViewer';
 import { AppState } from '../../reducers';
 import { withStyles } from '../../helpers/withStylesHelper';
 import ArticleSpinner from '../../components/common/spinner/articleSpinner';
-import { clearPaperShowState, fetchLastFullTextRequestedDate } from '../../actions/paperShow';
+import { clearPaperShowState, fetchLastFullTextRequestedDate, getMyCollections } from '../../actions/paperShow';
 import ActionBar from '../paperShowActionBar';
 import FOSList from '../../components/paperShow/components/fosList';
 import ReferencePapers from '../../components/paperShow/refCitedPapers/referencePapers';
 import CitedPapers from '../../components/paperShow/refCitedPapers/citedPapers';
 import PaperShowRefCitedTab from '../../components/paperShow/refCitedTab';
-import { fetchMyCollection, fetchPaperShowData } from './sideEffect';
+import { fetchPaperShowData } from './sideEffect';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 import { getMemoizedPaper } from './select';
 import { formulaeToHTMLStr } from '../../helpers/displayFormula';
@@ -127,7 +127,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     window.addEventListener('scroll', this.handleScroll, { passive: true });
     this.handleScrollEvent();
 
-    dispatch(getRelatedPapers(parseInt(this.props.match.params.paperId, 10), this.cancelToken));
+    dispatch(getRelatedPapers(parseInt(this.props.match.params.paperId, 10), this.cancelToken.token));
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       this.fetchPaperShowData();
@@ -144,7 +144,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (moveToDifferentPage) {
       dispatch(clearPaperShowState());
-      dispatch(getRelatedPapers(parseInt(this.props.match.params.paperId, 10), this.cancelToken));
+      dispatch(getRelatedPapers(parseInt(this.props.match.params.paperId, 10), this.cancelToken.token));
       this.fetchPaperShowData();
       this.scrollToRefCitedSection();
       return this.handleScrollEvent();
@@ -156,7 +156,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       this.props.paper
     ) {
       dispatch(fetchLastFullTextRequestedDate(this.props.paper.id));
-      return dispatch(fetchMyCollection(this.props.paper.id, this.cancelToken.token));
+      return dispatch(getMyCollections(this.props.paper.id, this.cancelToken.token));
     }
   }
 

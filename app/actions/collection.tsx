@@ -8,8 +8,8 @@ import CollectionAPI, {
   UpdatePaperNoteToCollectionParams,
 } from '../api/collection';
 import { Collection } from '../model/collection';
-import { fetchMyCollection } from '../containers/paperShow/sideEffect';
 import { openCollectionSnackBar, closeCollectionSnackBar } from '../reducers/collectionSnackBar';
+import { getMyCollections } from './paperShow';
 
 export function savePaperToCollection(params: AddPaperToCollectionParams) {
   return async (dispatch: Dispatch<any>) => {
@@ -26,7 +26,7 @@ export function savePaperToCollection(params: AddPaperToCollectionParams) {
       );
 
       if (params.cancelToken) {
-        dispatch(fetchMyCollection(params.paperId, params.cancelToken));
+        dispatch(getMyCollections(params.paperId, params.cancelToken));
       }
 
       dispatch(openCollectionSnackBar({ collectionId: params.collection.id, collectionName: params.collection.title }));
@@ -56,7 +56,7 @@ export function removePaperFromCollection(params: RemovePapersFromCollectionPara
       );
 
       if (params.cancelToken) {
-        dispatch(fetchMyCollection(params.paperIds[0], params.cancelToken));
+        dispatch(getMyCollections(params.paperIds[0], params.cancelToken));
       }
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);

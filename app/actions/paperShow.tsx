@@ -1,13 +1,17 @@
 import { Dispatch } from 'redux';
 import axios, { CancelToken } from 'axios';
+import { ThunkAction } from 'redux-thunk';
 import { ActionCreators } from './actionTypes';
 import MemberAPI from '../api/member';
 import CollectionAPI, { PostCollectionParams } from '../api/collection';
 import PaperAPI, { GetPaperParams } from '../api/paper';
 import { GetRefOrCitedPapersParams } from '../api/types/paper';
 import alertToast from '../helpers/makePlutoToastAction';
+import ActionTicketManager from '../helpers/actionTicketManager';
 import PlutoAxios from '../api/pluto';
 import { CommonError } from '../model/error';
+import { getRelatedPapers } from './relatedPapers';
+import { logException } from '../helpers/errorHandler';
 
 export function clearPaperShowState() {
   return ActionCreators.clearPaperShowState();
@@ -171,3 +175,44 @@ export function openNoteDropdown() {
 export function closeNoteDropdown() {
   return ActionCreators.closeNoteDropdownInPaperShow();
 }
+
+interface FetchMobilePaperShowData {
+  paperId: number;
+  isLoggedIn: boolean;
+  cancelToken: CancelToken;
+}
+
+export const fetchMobilePaperShowData = ({
+  paperId,
+  isLoggedIn,
+  cancelToken,
+}: FetchMobilePaperShowData): ThunkAction<Promise<void>, {}, {}, any> => {
+  return async (dispatch: Dispatch<any>) => {
+    const promiseArray = [];
+
+    promiseArray.push(dispatch(getPaper({ paperId, cancelToken })));
+    promiseArray.push(dispatch(getRelatedPapers(paperId, cancelToken)));
+
+    if (isLoggedIn) {
+      promiseArray.push(dispatch(fetchLastFullTextRequestedDate(paperId)));
+      promiseArray.push(dispatch(getMyCollections(paperId, cancelToken)));
+    }
+
+    try {
+      await Promise.all(promiseArray);
+      ActionTicketManager.trackTicket({
+        pageType: 'paperShow',
+        actionType: 'view',
+        actionArea: '200',
+        actionTag: 'pageView',
+        actionLabel: String(paperId),
+      });
+    } catch (err) {
+      if (!axios.isCancel(err)) {
+        logException(err);
+      }
+      // // TODO: Remove below logic because it's for testing Sentry
+      // logException(err);
+    }
+  };
+};
