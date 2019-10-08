@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
 import { Fos, NewFOS } from '../../../model/fos';
 import SearchQueryManager from '../../../helpers/searchQueryManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
@@ -8,6 +9,7 @@ import Button from '../../common/button';
 import { createKeywordAlert, deleteKeywordAlert } from '../../../containers/keywordSettings/actions';
 import { AppState } from '../../../reducers';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
+import { KeywordSettingItemResponse } from '../../../api/types/member';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./keyword.scss');
 
@@ -40,16 +42,18 @@ function formattedFOSLocation(keyword: string) {
   return `/search?${searchQuery}`;
 }
 
+const getTargetKeyword = (keyword: string) =>
+  createSelector([(state: AppState) => state.keywordSettingsState], keywordSettingsState => {
+    return keywordSettingsState.keywords.filter(k => k.keyword === keyword)[0];
+  });
+
 const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, actionArea }) => {
   useStyles(s);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = React.useState(false);
-  const { keywords } = useSelector((appState: AppState) => ({
-    keywords: appState.keywordSettingsState.keywords,
-  }));
 
   const keyword = getFosKeyword(fos);
-  const targetKeyword = keywords.filter(k => k.keyword === keyword)[0];
+  const targetKeyword = useSelector<AppState, KeywordSettingItemResponse>(getTargetKeyword(keyword));
 
   async function onClickAlertButton() {
     setIsLoading(true);
