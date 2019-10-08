@@ -13,7 +13,7 @@ import Icon from '../../icons';
 import { ACTION_TYPES } from '../../actions/actionTypes';
 import { LAST_SUCCEEDED_EMAIL_KEY } from '../../constants/requestDialogConstant';
 import { fetchLastFullTextRequestedDate } from '../../actions/paperShow';
-import { openRecommendPoolDialog } from '../recommendPool/recommendPoolActions';
+import { openRecommendOnboardingSnackbarAction } from '../recommendOnboardingSnackbar/actions';
 import { closeRequestFullTextDialog } from '../../reducers/requestFullTextDialog';
 import ReduxAutoSizeTextarea from '../common/autoSizeTextarea/reduxAutoSizeTextarea';
 const useStyles = require('isomorphic-style-loader/useStyles');
@@ -67,7 +67,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
   const actionArea = openFrom === 'refCited' ? 'requestFullTextBtnAtRefBar' : 'requestFullTextBtn';
 
   function handleClose() {
-    dispatch(openRecommendPoolDialog('paperShow', actionArea));
+    dispatch(openRecommendOnboardingSnackbarAction('paperShow', actionArea));
     dispatch(closeRequestFullTextDialog());
   }
 

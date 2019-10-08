@@ -5,7 +5,7 @@ import { Paper } from '../../../model/paper';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-import { addPaperToRecommendPool } from '../../../components/recommendPool/recommendPoolActions';
+import { addPaperToRecommendPool } from '../../../components/recommendOnboardingSnackbar/actions';
 const s = require('./citeBox.scss');
 
 interface CiteBoxProps {
@@ -26,7 +26,7 @@ const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
       className={s.citeButton}
       onClick={async () => {
         GlobalDialogManager.openCitationDialog(paper.id);
-        dispatch(addPaperToRecommendPool(paper.id));
+        dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'citePaper' }));
         ActionTicketManager.trackTicket({
           pageType: 'paperShow',
           actionType: 'fire',

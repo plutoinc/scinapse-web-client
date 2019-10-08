@@ -1,12 +1,12 @@
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
 import Tooltip from '@material-ui/core/Tooltip';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import SearchingPDFBtn from '../../../components/paperShow/components/searchingPDFBtn';
-import { useDispatch } from 'react-redux';
-import { addPaperToTempPool } from '../../../components/recommendPool/recommendPoolReducer';
+import { addPaperToRecommendPool } from '../../../components/recommendOnboardingSnackbar/actions';
 const s = require('../actionBar.scss');
 
 interface RequestFullTextBtnProps {
@@ -46,13 +46,7 @@ const RequestFullTextBtn: React.FC<RequestFullTextBtnProps> = React.memo(props =
             actionLabel: String(paperId),
           });
 
-          dispatch(
-            addPaperToTempPool({
-              pageType: 'paperShow',
-              actionArea: ' ',
-              paperId,
-            })
-          );
+          dispatch(addPaperToRecommendPool({ paperId, action: 'clickRequestFullTextBtn' }));
 
           const isBlocked = await blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,

@@ -6,7 +6,7 @@ import CiteBox from '../../../containers/paperShowActionBar/components/citeBox';
 import PdfDownloadButton from '../components/pdfDownloadButton';
 import RequestFullTextBtn from '../../../containers/paperShowActionBar/components/fullTextRequestBtn';
 import { PDFButtonProps, TabItemProps, PaperShowRefCitedTabProps } from './types';
-import { addPaperToRecommendPool } from '../../recommendPool/recommendPoolActions';
+import { addPaperToRecommendPool } from '../../recommendOnboardingSnackbar/actions';
 import { openRequestFullTextDialog } from '../../../reducers/requestFullTextDialog';
 const styles = require('./refCitedTab.scss');
 
@@ -48,7 +48,7 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
         paperId={paper!.id}
         onClick={() => {
           dispatch(openRequestFullTextDialog({ from: 'refCited' }));
-          dispatch(addPaperToRecommendPool(props.paper.id));
+          dispatch(addPaperToRecommendPool({ paperId: props.paper.id, action: 'clickRequestFullTextBtn' }));
         }}
         btnStyle={{ flex: '1 0 auto', height: '36px', padding: '0 12px 0 8px' }}
         lastRequestedDate={props.lastRequestedDate}
