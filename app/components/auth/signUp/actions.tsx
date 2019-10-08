@@ -44,6 +44,7 @@ export function signUpWithSocial(params: SignUpWithSocialParams) {
         first_name: params.firstName,
         last_name: params.lastName,
         token: params.token,
+        affiliation_id: params.affiliationId,
         profile_link: params.profileLink || null,
       };
 
@@ -76,6 +77,7 @@ export function signUpWithEmail(params: SignUpWithEmailParams) {
         first_name: params.firstName,
         last_name: params.lastName,
         password: params.password,
+        affiliation_id: params.affiliationId,
         profile_link: params.profileLink || null,
       };
 

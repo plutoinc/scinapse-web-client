@@ -34,6 +34,7 @@ export interface SignUpFormValues {
   lastName: string;
   affiliation: string;
   profileLink: string;
+  affiliationId: number | null;
 }
 
 const validateForm = async (values: SignUpFormValues, withSocial: boolean) => {
@@ -93,6 +94,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
             firstName: props.firstName,
             lastName: props.lastName,
             affiliation: '',
+            affiliationId: null,
             profileLink: '',
           }}
           onSubmit={handleSubmit}
@@ -137,6 +139,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                   placeholder="Affiliation / Company"
                   type="text"
                   component={AffiliationBox}
+                  affiliationIdFieldName="affiliationId"
                   inputBoxStyle={{ width: '100%' }}
                   listWrapperStyle={{ top: '56px' }}
                   inputStyle={{

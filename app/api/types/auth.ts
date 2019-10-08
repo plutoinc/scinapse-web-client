@@ -5,6 +5,7 @@ interface BaseSignUpParams {
   email: string;
   firstName: string;
   lastName: string;
+  affiliationId: number | null;
   affiliation: string;
   profileLink?: string;
 }
@@ -14,7 +15,7 @@ export interface BaseSignUpAPIParams {
   affiliation_name: string;
   first_name: string;
   last_name: string;
-  affiliation_id?: string;
+  affiliation_id: number | null;
   profile_link?: string | null;
 }
 
