@@ -43,6 +43,7 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
   });
   const dispatch = useDispatch();
   const [currentPosition, setCurrentPosition] = React.useState<CurrentPosition>('abovePaperInfo');
+  const lastShouldPatch = React.useRef(shouldPatch);
   const lastPosition = React.useRef<CurrentPosition>('abovePaperInfo');
   const buttonGroupWrapper = React.useRef<HTMLDivElement | null>(null);
   const fixedButtonHeader = React.useRef<HTMLDivElement | null>(null);
@@ -106,8 +107,12 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
       const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
       const cancelToken = axios.CancelToken.source();
 
-      console.log(shouldPatch);
-
+      // NOTE: prevent patching from the change of shouldPatch variable
+      if (shouldPatch && !lastShouldPatch.current) {
+        lastShouldPatch.current = true;
+        return;
+      }
+      // NOTE: prevent double patching
       if (!shouldPatch) return;
 
       fetchPaperShowData(
