@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Fos, NewFOS } from '../../../model/fos';
 import SearchQueryManager from '../../../helpers/searchQueryManager';
@@ -43,33 +43,38 @@ function formattedFOSLocation(keyword: string) {
 const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, actionArea }) => {
   useStyles(s);
   const dispatch = useDispatch();
-  const { keywords, isLoading } = useSelector((appState: AppState) => ({
+  const [isLoading, setIsLoading] = React.useState(false);
+  const { keywords } = useSelector((appState: AppState) => ({
     keywords: appState.keywordSettingsState.keywords,
-    isLoading: appState.keywordSettingsState.isLoading,
   }));
 
   const keyword = getFosKeyword(fos);
   const targetKeyword = keywords.filter(k => k.keyword === keyword)[0];
 
-  const onClickAlertButton = useCallback(
-    async () => {
-      const isBlocked = await blockUnverifiedUser({
-        authLevel: AUTH_LEVEL.UNVERIFIED,
-        actionArea: actionArea!,
-        actionLabel: 'clickCreateAlertBtn',
-        userActionType: 'clickCreateAlertBtn',
-      });
+  async function onClickAlertButton() {
+    setIsLoading(true);
 
-      if (isBlocked) return;
+    const isBlocked = await blockUnverifiedUser({
+      authLevel: AUTH_LEVEL.UNVERIFIED,
+      actionArea: actionArea!,
+      actionLabel: 'clickCreateAlertBtn',
+      userActionType: 'clickCreateAlertBtn',
+    });
 
+    if (isBlocked) return;
+
+    try {
       if (!targetKeyword) {
-        dispatch(createKeywordAlert(keyword, actionArea));
+        await dispatch(createKeywordAlert(keyword, actionArea));
       } else {
-        dispatch(deleteKeywordAlert(targetKeyword.id, targetKeyword.keyword));
+        await dispatch(deleteKeywordAlert(targetKeyword.id, targetKeyword.keyword));
       }
-    },
-    [keyword, actionArea, targetKeyword, dispatch]
-  );
+    } catch (err) {
+      console.error(err);
+    }
+
+    setIsLoading(false);
+  }
 
   const buttonColorStyle: React.CSSProperties = {
     color: '#7e8698',
