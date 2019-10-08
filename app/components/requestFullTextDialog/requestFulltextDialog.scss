@@ -1,24 +1,3 @@
-%baseBtn {
-  display: inline-flex;
-  height: 40px;
-  border-radius: 4px;
-  padding: 10px 16px;
-  justify-content: center;
-  align-items: center;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.43;
-
-  &:hover {
-    opacity: 0.75;
-  }
-
-  &:disabled {
-    opacity: 0.2;
-    cursor: not-allowed;
-  }
-}
-
 .dialogPaper {
   border-radius: 4px;
   box-shadow: 0 7px 32px 0 rgba(12, 0, 51, 0.15);
@@ -103,30 +82,4 @@
   display: flex;
   justify-content: flex-end;
   margin-top: 16px;
-
-  .cancelBtn {
-    @extend %baseBtn;
-    background-color: white;
-    color: $main_blue1;
-  }
-
-  .submitBtn {
-    @extend %baseBtn;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: $main_blue1;
-    color: white;
-    padding: 0 16px 0 12px;
-
-    .sendIcon {
-      width: 24px;
-      height: 24px;
-
-      svg {
-        width: 24px;
-        height: 24px;
-      }
-    }
-  }
 }
