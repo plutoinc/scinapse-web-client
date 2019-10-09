@@ -40,12 +40,14 @@ const MobilePaperShowItem: FC<Props> = React.memo(({ paperId, pageType, actionAr
       >
         <Title paper={paper} actionArea={actionArea} pageType={pageType} />
         <VenueAuthors paper={paper} pageType={pageType} actionArea={actionArea} />
-        <SimpleMobilePaperItemButtonGroup
-          pageType={pageType}
-          actionArea={actionArea}
-          paper={paper}
-          saved={paper.saved}
-        />
+        <div className={s.btnGroupWrapper}>
+          <SimpleMobilePaperItemButtonGroup
+            pageType={pageType}
+            actionArea={actionArea}
+            paper={paper}
+            saved={paper.saved}
+          />
+        </div>
       </div>
     </div>
   );
