@@ -192,7 +192,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                       <div className={styles.rightBox}>
                         <SortBox
                           sortOption={authorShow.papersSort}
-                          handleClickSortOption={this.handleClickSort}
+                          onClickOption={this.handleClickSort}
                           currentPage="authorShow"
                           exposeRecentlyUpdated={currentUser.authorId === author.id}
                           exposeRelevanceOption={false}

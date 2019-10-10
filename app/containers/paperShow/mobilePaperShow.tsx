@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import classNames from 'classnames';
+import { isEqual } from 'lodash';
 
 import { formulaeToHTMLStr } from '../../helpers/displayFormula';
 import { getMemoizedPaper } from './select';
@@ -18,6 +19,8 @@ import { PaperShowMatchParams } from './types';
 import { AvailablePaperShowTab } from '../../components/paperShowTabItem/paperShowTabItem';
 import { fetchMobilePaperShowData } from '../../actions/paperShow';
 import MobileRelatedPapers from '../../components/mobileRelatedPapers/mobileRelatedPapers';
+import getQueryParamsObject from '../../helpers/getQueryParamsObject';
+import { fetchRefPaperData, fetchCitedPaperData } from './sideEffect';
 
 const s = require('./mobilePaperShow.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
@@ -31,15 +34,15 @@ type CurrentPosition = 'abovePaperInfo' | 'underPaperInfo' | 'onRefList' | 'onCi
 const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
   useStyles(s);
   const { match, location } = props;
-  const { paper, currentUser, shouldPatch, relatedPaperIds } = useSelector((state: AppState) => {
-    return {
-      paper: getMemoizedPaper(state),
-      currentUser: state.currentUser,
-      shouldPatch: !state.configuration.succeedAPIFetchAtServer || state.configuration.renderedAtClient,
-      relatedPaperIds: state.relatedPapersState.paperIds,
-    };
-  });
   const dispatch = useDispatch();
+
+  const paper = useSelector((state: AppState) => getMemoizedPaper(state));
+  const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
+  const shouldPatch = useSelector(
+    (state: AppState) => !state.configuration.succeedAPIFetchAtServer || state.configuration.renderedAtClient
+  );
+  const relatedPaperIds = useSelector((state: AppState) => state.relatedPapersState.paperIds, isEqual);
+
   const [currentPosition, setCurrentPosition] = React.useState<CurrentPosition>('abovePaperInfo');
   const lastShouldPatch = React.useRef(shouldPatch);
   const lastPosition = React.useRef<CurrentPosition>('abovePaperInfo');
@@ -48,6 +51,8 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
   const refTabWrapper = React.useRef<HTMLDivElement | null>(null);
   const citedTabWrapper = React.useRef<HTMLDivElement | null>(null);
   const relatedTabWrapper = React.useRef<HTMLDivElement | null>(null);
+
+  const paperId = paper && paper.id;
 
   React.useEffect(() => {
     function handleScroll() {
@@ -127,6 +132,54 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
     [location.pathname, currentUser.isLoggedIn, dispatch, match, shouldPatch]
   );
 
+  const querytParams = getQueryParamsObject(location.search);
+  const refPage = querytParams['ref-page'] || 1;
+  const refQuery = querytParams['ref-query'] || '';
+  const refSort = querytParams['ref-sort'] || 'NEWEST_FIRST';
+  const citedPage = querytParams['cited-page'] || 1;
+  const citedQuery = querytParams['cited-query'] || '';
+  const citedSort = querytParams['cited-sort'] || 'NEWEST_FIRST';
+  React.useEffect(
+    () => {
+      if (!paperId) return;
+      // NOTE: prevent patching from the change of shouldPatch variable
+      if (shouldPatch && !lastShouldPatch.current) {
+        lastShouldPatch.current = true;
+        return;
+      }
+      // NOTE: prevent double patching
+      if (!shouldPatch) return;
+
+      const cancelToken = axios.CancelToken.source();
+      dispatch(fetchRefPaperData(paperId, refPage, refQuery, refSort, cancelToken.token));
+
+      return () => {
+        cancelToken.cancel();
+      };
+    },
+    [refPage, refQuery, refSort, dispatch, paperId, shouldPatch]
+  );
+  React.useEffect(
+    () => {
+      if (!paperId) return;
+      // NOTE: prevent patching from the change of shouldPatch variable
+      if (shouldPatch && !lastShouldPatch.current) {
+        lastShouldPatch.current = true;
+        return;
+      }
+      // NOTE: prevent double patching
+      if (!shouldPatch) return;
+
+      const cancelToken = axios.CancelToken.source();
+      dispatch(fetchCitedPaperData(paperId, citedPage, citedQuery, citedSort, cancelToken.token));
+
+      return () => {
+        cancelToken.cancel();
+      };
+    },
+    [citedPage, citedQuery, citedSort, dispatch, paperId, shouldPatch]
+  );
+
   function handleClickPaperShowTab(tab: AvailablePaperShowTab) {
     if (!refTabWrapper.current || !citedTabWrapper.current || !fixedButtonHeader.current) return;
 
@@ -203,11 +256,11 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
       <div ref={refTabWrapper}>
         <MobilePaperShowTab active={AvailablePaperShowTab.ref} onClick={handleClickPaperShowTab} paper={paper} />
       </div>
-      <ReferencePapers isMobile refTabEl={refTabWrapper.current} />
+      {/* <ReferencePapers isMobile refTabEl={refTabWrapper.current} /> */}
       <div ref={citedTabWrapper}>
         <MobilePaperShowTab active={AvailablePaperShowTab.cited} onClick={handleClickPaperShowTab} paper={paper} />
       </div>
-      <CitedPapers isMobile citedTabEl={citedTabWrapper.current} />
+      {/* <CitedPapers isMobile citedTabEl={citedTabWrapper.current} /> */}
     </div>
   );
 };

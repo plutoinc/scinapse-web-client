@@ -256,7 +256,7 @@ const CollectionShow: React.FC<Props> = props => {
                       <div className={styles.sortBoxWrapper}>
                         <SortBox
                           sortOption={collectionShow.sortType}
-                          handleClickSortOption={handleClickSort}
+                          onClickOption={handleClickSort}
                           currentPage="collectionShow"
                           exposeRecentlyUpdated={true}
                           exposeRelevanceOption={false}
