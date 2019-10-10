@@ -4,7 +4,7 @@
     <title>Icon/pen-only</title>
     <desc>Created with Sketch.</desc>
     <g id="Icon/pen-only" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="pen-only" transform="translate(3.000000, 3.000000)" fill="#000000">
+        <g id="pen-only" transform="translate(3.000000, 3.000000)" fill="currentColor">
             <path d="M9.1125,3.9375 L14.0625,8.8875 L5.2875,17.6625 C5.0625,17.8875 4.8375,18 4.5,18 L1.125,18 C0.45,18 0,17.55 0,16.875 L0,13.5 C0,13.1625 0.1125,12.9375 0.3375,12.7125 L9.1125,3.9375 Z M17.6625,3.7125 C18.1125,4.1625 18.1125,4.8375 17.6625,5.2875 L15.6375,7.3125 L10.6875,2.3625 L12.7125,0.3375 C13.1625,-0.1125 13.8375,-0.1125 14.2875,0.3375 L17.6625,3.7125 Z" id="Shape"></path>
         </g>
     </g>

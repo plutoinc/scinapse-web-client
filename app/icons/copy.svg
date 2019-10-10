@@ -4,7 +4,7 @@
     <title>Icon/copy</title>
     <desc>Created with Sketch.</desc>
     <g id="Icon/copy" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Group" transform="translate(4.000000, 3.000000)" fill="#000000">
+        <g id="Group" transform="translate(4.000000, 3.000000)" fill="currentColor">
             <path d="M4,0 L14,0 C15.1045695,-2.02906125e-16 16,0.8954305 16,2 L16,14 C16,14.5522847 15.5522847,15 15,15 C14.4477153,15 14,14.5522847 14,14 L14,3 C14,2.44771525 13.5522847,2 13,2 L4,2 C3.44771525,2 3,1.55228475 3,1 C3,0.44771525 3.44771525,1.01453063e-16 4,0 Z" id="Rectangle-Copy"></path>
             <rect id="Rectangle" x="0" y="4" width="12" height="14" rx="2"></rect>
         </g>

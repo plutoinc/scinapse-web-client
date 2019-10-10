@@ -4,7 +4,7 @@
     <title>Icon/citation</title>
     <desc>Created with Sketch.</desc>
     <g id="Icon/citation" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Group-2" transform="translate(4.000000, 6.000000)" fill="#000000" fill-rule="nonzero">
+        <g id="Group-2" transform="translate(4.000000, 6.000000)" fill="currentColor" fill-rule="nonzero">
             <g id="Group">
                 <path d="M0,5.74743368 C0,5.47329304 0.120572692,5.21622097 0.323359293,5.05800192 L6.5,0.25 L6.5,11.1557716 C6.5,11.6220261 6.15762951,12 5.73529412,12 L0.764705882,12 C0.342370485,12 0,11.6220261 0,11.1557716 L0,5.74743368 Z" id="Path-Copy"></path>
             </g>
