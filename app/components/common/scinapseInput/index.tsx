@@ -9,6 +9,7 @@ interface InputBoxProps {
   icon?: string;
   wrapperStyle?: React.CSSProperties;
   inputStyle?: React.CSSProperties;
+  iconStyle?: React.CSSProperties;
   value?: string;
   onSubmit?: (inputValue: string) => void;
   onChange?: (e: React.FormEvent<HTMLInputElement>) => void;
@@ -29,7 +30,16 @@ class ScinapseCommonInput extends React.PureComponent<InputBoxProps, InputBoxSta
   }
 
   public render() {
-    const { wrapperStyle, inputStyle, placeholder, onChange, onKeydown, value, autoFocus = false } = this.props;
+    const {
+      wrapperStyle,
+      inputStyle,
+      placeholder,
+      onChange,
+      onKeydown,
+      value,
+      iconStyle,
+      autoFocus = false,
+    } = this.props;
     const { inputValue } = this.state;
 
     return (
@@ -75,11 +85,11 @@ class ScinapseCommonInput extends React.PureComponent<InputBoxProps, InputBoxSta
   };
 
   private getIcon() {
-    const { icon } = this.props;
+    const { icon, iconStyle } = this.props;
 
     if (icon) {
       return (
-        <div onClick={this.handleSubmit} className={styles.icon}>
+        <div onClick={this.handleSubmit} className={styles.icon} style={iconStyle}>
           <Icon icon={icon} />
         </div>
       );

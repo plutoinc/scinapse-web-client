@@ -1,33 +1,142 @@
-// import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
+import { isEqual } from 'lodash';
+import { useSelector } from 'react-redux';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-// interface Props {
+import { REF_CITED_CONTAINER_TYPE } from '../constants';
+import MobilePaperShowItem from '../../mobilePaperShowItem/mobilePaperShowItem';
+import RefCitedPagination from './refCitedPagination';
+import { AppState } from '../../../reducers';
+import ScinapseInput from '../../common/scinapseInput';
+import ActionTicketManager from '../../../helpers/actionTicketManager';
+import { PaperShowMatchParams } from '../../../containers/paperShow/types';
+import { getStringifiedUpdatedQueryParams } from './searchContainer';
+import SortBox, { PAPER_LIST_SORT_TYPES } from '../../common/sortBox';
+import getQueryParamsObject from '../../../helpers/getQueryParamsObject';
 
-// }
+const s = require('./mobileRefCitedPapers.scss');
+const useStyles = require('isomorphic-style-loader/useStyles');
 
-// const MobileRefCitedPapers: FC<Props> = () => {
+type Props = RouteComponentProps<PaperShowMatchParams> & {
+  type: REF_CITED_CONTAINER_TYPE;
+  paperCount: number;
+  paperId: number;
+};
 
-//   return (
-//     <>
-//       <SearchContainer paperShow={paperShow} type="cited" queryParamsObject={queryParamsObject} history={history} />
-//       <div>
-//         <RefCitedPaperList
-//           history={history}
-//           type="cited"
-//           papers={citedPapers}
-//           paperShow={paperShow}
-//           queryParamsObject={queryParamsObject}
-//         />
-//       </div>
-//       <div>
-//         <RefCitedPagination
-//           isMobile={isMobile}
-//           type="cited"
-//           paperShow={paperShow}
-//           handleGetPaginationLink={getCitedPaginationLink(paperShow.paperId, queryParamsObject)}
-//         />
-//       </div>
-//     </>
-//   );
-// };
+const MobileRefCitedPapers: FC<Props> = ({ type, paperId, paperCount, history, location }) => {
+  useStyles(s);
+  const paperIds: number[] = useSelector((state: AppState) => {
+    return type === 'reference' ? state.paperShow.referencePaperIds : state.paperShow.citedPaperIds;
+  }, isEqual);
 
-// export default MobileRefCitedPapers;
+  const [query, setQuery] = React.useState('');
+  const [sortOption, setSortOption] = React.useState<PAPER_LIST_SORT_TYPES>('NEWEST_FIRST');
+
+  const queryParamsObject = getQueryParamsObject(location.search);
+  React.useEffect(
+    () => {
+      if (type === 'reference') {
+        setSortOption(queryParamsObject['ref-sort'] || 'NEWEST_FIRST');
+        setQuery(queryParamsObject['ref-query'] || '');
+      } else if (type === 'cited') {
+        setSortOption(queryParamsObject['cited-sort'] || 'NEWEST_FIRST');
+        setQuery(queryParamsObject['cited-query'] || '');
+      }
+    },
+    [queryParamsObject, type]
+  );
+
+  const handleSubmitSearch = useCallback(
+    (query: string) => {
+      ActionTicketManager.trackTicket({
+        pageType: 'paperShow',
+        actionType: 'fire',
+        actionArea: type,
+        actionTag: 'query',
+        actionLabel: query,
+      });
+
+      let pageQueryParams;
+      if (type === 'reference') {
+        pageQueryParams = { 'ref-query': query, 'ref-page': 1 };
+      } else {
+        pageQueryParams = { 'cited-query': query, 'cited-page': 1 };
+      }
+
+      history.push({
+        pathname: `/papers/${paperId}`,
+        search: getStringifiedUpdatedQueryParams(queryParamsObject, pageQueryParams),
+      });
+    },
+    [type, paperId, queryParamsObject, history]
+  );
+
+  const handleClickSortOption = useCallback(
+    (sortOption: PAPER_LIST_SORT_TYPES) => {
+      let pageQueryParams;
+
+      if (type === 'reference') {
+        pageQueryParams = { 'ref-sort': sortOption };
+      } else {
+        pageQueryParams = { 'cited-sort': sortOption };
+      }
+
+      history.push({
+        pathname: `/papers/${paperId}`,
+        search: getStringifiedUpdatedQueryParams(queryParamsObject, pageQueryParams),
+      });
+    },
+    [type, paperId, queryParamsObject, history]
+  );
+
+  if (!paperIds) return null;
+
+  const title = type === 'reference' ? `References (${paperCount || 0})` : `Citations (${paperCount || 0})`;
+  const placeholder = type === 'reference' ? 'Search papers in references' : 'Search papers in citations';
+
+  if (paperIds.length === 0) {
+    return (
+      <div className={s.titleWrapper}>
+        <div className={s.title}>{title}</div>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div className={s.titleWrapper}>
+        <div className={s.title}>{title}</div>
+        <SortBox
+          onClickOption={handleClickSortOption}
+          sortOption={sortOption}
+          currentPage="paperShow"
+          exposeRelevanceOption={false}
+        />
+      </div>
+      <ScinapseInput
+        value={query}
+        aria-label="Scinapse search box in paper show"
+        placeholder={placeholder}
+        icon="SEARCH_ICON"
+        onSubmit={handleSubmitSearch}
+        inputStyle={{
+          padding: '16px 48px 16px 16px',
+        }}
+        wrapperStyle={{ marginBottom: '12px' }}
+        iconStyle={{ right: '20px' }}
+      />
+      {paperIds.map(id => (
+        <MobilePaperShowItem
+          key={id}
+          className={s.itemWrapper}
+          paperId={id}
+          pageType="paperShow"
+          actionArea={type === 'reference' ? 'refList' : 'citedList'}
+        />
+      ))}
+      <RefCitedPagination type={type} paperId={paperId} isMobile />
+    </>
+  );
+};
+
+export default withRouter(MobileRefCitedPapers);

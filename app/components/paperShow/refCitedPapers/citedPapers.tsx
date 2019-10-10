@@ -6,7 +6,7 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import getQueryParamsObject from '../../../helpers/getQueryParamsObject';
 import RefCitedPaperList from './refCitedPaperList';
-import SearchContainer, { getStringifiedUpdatedQueryParams } from './searchContainer';
+import SearchContainer from './searchContainer';
 import { AppState } from '../../../reducers';
 import { makeGetMemoizedPapers, getMemoizedCitedPaperIds } from '../../../selectors/papersSelector';
 import { getMemoizedPaperShow } from '../../../selectors/getPaperShow';
@@ -32,13 +32,6 @@ type Props = ReturnType<typeof mapStateToProps> &
     dispatch: Dispatch<any>;
     citedTabEl: HTMLDivElement | null;
   };
-
-const getCitedPaginationLink = (paperId: number, queryParamsObject: any) => (page: number) => {
-  return {
-    to: `/papers/${paperId}`,
-    search: getStringifiedUpdatedQueryParams(queryParamsObject, { 'cited-page': page }),
-  };
-};
 
 const CitedPapers: React.FC<Props> = props => {
   const { isMobile, paperShow, citedPapers, location, history, dispatch, citedTabEl } = props;
@@ -80,7 +73,7 @@ const CitedPapers: React.FC<Props> = props => {
 
   return (
     <>
-      <SearchContainer paperShow={paperShow} type="cited" queryParamsObject={queryParamsObject} history={history} />
+      <SearchContainer paperId={paperShow.paperId} type="cited" />
       <div>
         <RefCitedPaperList
           history={history}
@@ -91,12 +84,7 @@ const CitedPapers: React.FC<Props> = props => {
         />
       </div>
       <div>
-        <RefCitedPagination
-          isMobile={isMobile}
-          type="cited"
-          paperShow={paperShow}
-          handleGetPaginationLink={getCitedPaginationLink(paperShow.paperId, queryParamsObject)}
-        />
+        <RefCitedPagination isMobile={isMobile} type="cited" paperId={paperShow.paperId} />
       </div>
     </>
   );

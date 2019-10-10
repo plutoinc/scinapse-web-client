@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { History } from 'history';
 import { Paper } from '../../../model/paper';
-import { RELATED_PAPERS } from '../constants';
+import { REF_CITED_CONTAINER_TYPE } from '../constants';
 import ArticleSpinner from '../../common/spinner/articleSpinner';
 import Icon from '../../../icons';
 import PaperItem from '../../common/paperItem/paperItem';
@@ -14,14 +14,14 @@ const styles = require('./referencePapers.scss');
 
 interface RefCitedPaperListProps {
   history: History;
-  type: RELATED_PAPERS;
+  type: REF_CITED_CONTAINER_TYPE;
   papers: Paper[];
   paperShow: PaperShowState;
   queryParamsObject: PaperShowPageQueryParams;
 }
 
 interface NoResultSearchContextProps {
-  type: RELATED_PAPERS;
+  type: REF_CITED_CONTAINER_TYPE;
   searchInput: string;
   resetQuery: () => void;
 }

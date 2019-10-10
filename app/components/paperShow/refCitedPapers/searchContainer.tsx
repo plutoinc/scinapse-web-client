@@ -2,17 +2,17 @@ import React from 'react';
 import { stringify } from 'qs';
 import { withRouter, RouteComponentProps } from 'react-router';
 import ScinapseInput from '../../common/scinapseInput';
-import { RELATED_PAPERS } from '../constants';
-import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../common/sortBox';
-import { PaperShowPageQueryParams } from '../../../containers/paperShow/types';
+import { REF_CITED_CONTAINER_TYPE } from '../constants';
+import SortBox, { PAPER_LIST_SORT_TYPES } from '../../common/sortBox';
+import { PaperShowPageQueryParams, PaperShowMatchParams } from '../../../containers/paperShow/types';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../../locationListener';
+import getQueryParamsObject from '../../../helpers/getQueryParamsObject';
 const styles = require('./referencePapers.scss');
 
-type SearchContainerProps = RouteComponentProps<any> & {
+type SearchContainerProps = RouteComponentProps<PaperShowMatchParams> & {
+  type: REF_CITED_CONTAINER_TYPE;
   paperId: number;
-  type: RELATED_PAPERS;
-  queryParamsObject: PaperShowPageQueryParams;
   placeholder?: string;
 };
 
@@ -30,9 +30,10 @@ export function getStringifiedUpdatedQueryParams(queryParamsObject: PaperShowPag
 }
 
 const SearchContainer: React.FC<SearchContainerProps> = props => {
-  const { history, type, paperId, queryParamsObject, placeholder } = props;
-  const [sortOption, setSortOption] = React.useState<AUTHOR_PAPER_LIST_SORT_TYPES>('NEWEST_FIRST');
+  const { history, type, paperId, placeholder, location } = props;
+  const [sortOption, setSortOption] = React.useState<PAPER_LIST_SORT_TYPES>('NEWEST_FIRST');
   const [searchInput, setSearchInput] = React.useState('');
+  const queryParamsObject = getQueryParamsObject(location.search);
 
   React.useEffect(
     () => {
@@ -73,7 +74,7 @@ const SearchContainer: React.FC<SearchContainerProps> = props => {
   );
 
   const handleClickSortOption = React.useCallback(
-    (sortOption: AUTHOR_PAPER_LIST_SORT_TYPES) => {
+    (sortOption: PAPER_LIST_SORT_TYPES) => {
       let pageQueryParams;
 
       if (type === 'reference') {

@@ -1,0 +1,16 @@
+.titleWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 500;
+  color: $black0;
+  margin-bottom: 12px;
+}
+
+.itemWrapper + .itemWrapper {
+  margin-top: 12px;
+}

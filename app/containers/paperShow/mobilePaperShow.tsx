@@ -13,14 +13,13 @@ import MobilePaperShowButtonGroup from '../../components/mobilePaperShowButtonGr
 import CopyDOIButton from '../../components/copyDOIButton/copyDOIButton';
 import MobilePaperShowTab from '../../components/mobilePaperShowTab/mobilePaperShowTab';
 import GoBackResultBtn from '../../components/paperShow/backButton';
-import ReferencePapers from '../../components/paperShow/refCitedPapers/referencePapers';
-import CitedPapers from '../../components/paperShow/refCitedPapers/citedPapers';
 import { PaperShowMatchParams } from './types';
 import { AvailablePaperShowTab } from '../../components/paperShowTabItem/paperShowTabItem';
 import { fetchMobilePaperShowData } from '../../actions/paperShow';
 import MobileRelatedPapers from '../../components/mobileRelatedPapers/mobileRelatedPapers';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 import { fetchRefPaperData, fetchCitedPaperData } from './sideEffect';
+import MobileRefCitedPapers from '../../components/paperShow/refCitedPapers/mobileRefCitedPapers';
 
 const s = require('./mobilePaperShow.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
@@ -193,7 +192,7 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
     window.scrollTo(0, destination);
   }
 
-  if (!paper) return null;
+  if (!paper || !paperId) return null;
 
   return (
     <div className={s.container}>
@@ -253,14 +252,12 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
         <MobilePaperShowTab active={AvailablePaperShowTab.related} onClick={handleClickPaperShowTab} paper={paper} />
         <MobileRelatedPapers paperIds={relatedPaperIds} className={s.relatedPapers} />
       </div>
-      <div ref={refTabWrapper}>
-        <MobilePaperShowTab active={AvailablePaperShowTab.ref} onClick={handleClickPaperShowTab} paper={paper} />
+      <div className={s.refCitedSection} ref={refTabWrapper}>
+        <MobileRefCitedPapers type="reference" paperId={paperId} paperCount={paper.referenceCount} />
       </div>
-      {/* <ReferencePapers isMobile refTabEl={refTabWrapper.current} /> */}
-      <div ref={citedTabWrapper}>
-        <MobilePaperShowTab active={AvailablePaperShowTab.cited} onClick={handleClickPaperShowTab} paper={paper} />
+      <div className={s.refCitedSection} ref={citedTabWrapper}>
+        <MobileRefCitedPapers type="cited" paperId={paperId} paperCount={paper.citedCount} />
       </div>
-      {/* <CitedPapers isMobile citedTabEl={citedTabWrapper.current} /> */}
     </div>
   );
 };
