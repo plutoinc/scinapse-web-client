@@ -246,7 +246,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
     return (
       <div ref={wrapperNode} className={styles.contentWrapper}>
         <Document
-          file={pdfBlob}
+          file="https://asset-pdf.scinapse.io/dev/2118020653/2118020653.pdf"
           error={null}
           loading={
             <div className={styles.loadingContainerWrapper}>
