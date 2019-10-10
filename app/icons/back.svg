@@ -1,24 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="16px" height="14px" viewBox="0 0 16 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
-    <title>Icon/Back</title>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Icon/back</title>
     <desc>Created with Sketch.</desc>
-    <defs>
-        <polygon id="path-1" points="10.7 18.7000002 12.1 17.3000002 7.8 13.0000002 20 13.0000002 20 11.0000002 7.8 11.0000002 12.1 6.70000019 10.7 5.30000019 4 12.0000002"></polygon>
-    </defs>
-    <g id="시도들" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Paper-Show---Pdf(loading)" transform="translate(-328.000000, -87.000000)">
-            <g id="Group-6" transform="translate(324.000000, 82.000000)">
-                <g id="Icon/Back">
-                    <mask id="mask-2" fill="white">
-                        <use xlink:href="#path-1"></use>
-                    </mask>
-                    <g id="Mask" fill-rule="nonzero"></g>
-                    <g id="↳-🎨Color" stroke-width="1" fill-rule="evenodd" mask="url(#mask-2)" fill="#9AA3B5">
-                        <rect id="Rectangle" x="0" y="0" width="24" height="24" rx="5"></rect>
-                    </g>
-                </g>
-            </g>
-        </g>
+    <g id="Icon/back" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M11.6903899,4.31012223 C12.0720788,4.69181113 12.1014394,5.29240872 11.7784719,5.70777588 L11.6903899,5.80752483 L6.497,11 L20.0005121,11 C20.5133479,11 20.9360193,11.3860402 20.9937844,11.8833789 L21.0005121,12 C21.0005121,12.5128358 20.6144719,12.9355072 20.1171332,12.9932723 L20.0005121,13 L6.498,13 L11.6903899,18.1924752 C12.0720788,18.5741641 12.1014394,19.1747617 11.7784719,19.5901288 L11.6903899,19.6898778 C11.2768936,20.1033741 10.6064836,20.1033741 10.1929873,19.6898778 L10.1929873,19.6898778 L3.31063433,12.8075248 C3.09739746,12.594288 2.99412521,12.3127278 3.00081756,12.033312 C3.00069696,12.0224019 3.0005121,12.0112225 3.0005121,12 C3.0005121,11.9888734 3.00069382,11.9777892 3.00105445,11.9667503 C2.99490397,11.7277737 3.06989284,11.4864668 3.22588727,11.2879556 L3.31063433,11.1924752 L10.1929873,4.31012223 C10.6064836,3.89662592 11.2768936,3.89662592 11.6903899,4.31012223 Z" id="Combined-Shape" fill="#000000" fill-rule="nonzero"></path>
     </g>
 </svg>

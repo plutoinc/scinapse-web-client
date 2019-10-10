@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
-    <title>error</title>
+    <title>Icon/error</title>
     <desc>Created with Sketch.</desc>
-    <g id="error" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="skip-back-fill" fill="#6096FF" opacity="0">
-            <rect id="Rectangle" x="0" y="0" width="24" height="24"></rect>
-        </g>
-        <g id="Icons-/-Action-/-Error-/-Fill-">
-            <g>
-                <rect id="Rectangle" x="0" y="0" width="24" height="24"></rect>
-                <path d="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z" id="Mask" fill="currentColor" fill-rule="nonzero"></path>
-            </g>
-        </g>
+    <g id="Icon/error" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M12,4.5 C16.14,4.5 19.5,7.86 19.5,12 C19.5,16.14 16.14,19.5 12,19.5 C7.86,19.5 4.5,16.14 4.5,12 C4.5,7.86 7.86,4.5 12,4.5 Z M12,7.75 C11.45,7.75 11,8.2 11,8.75 L11,8.75 L11,11.75 C11,12.3 11.45,12.75 12,12.75 C12.55,12.75 13,12.3 13,11.75 L13,11.75 L13,8.75 C13,8.2 12.55,7.75 12,7.75 Z M12,16.25 C12.5522847,16.25 13,15.8022847 13,15.25 C13,14.6977153 12.5522847,14.25 12,14.25 C11.4477153,14.25 11,14.6977153 11,15.25 C11,15.8022847 11.4477153,16.25 12,16.25 Z" id="Combined-Shape" fill="#000000" fill-rule="nonzero"></path>
     </g>
 </svg>

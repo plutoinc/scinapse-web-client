@@ -1,3 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-    <path fill="currentColor" fill-rule="evenodd" d="M9.5 6.5v6h9v-6h-9zm0-2h9a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-9a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2zM6 9v5a2 2 0 0 0 2 2h8v1a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2v-6a1 1 0 0 1 1-1h1z"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Icon/new-tab</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icon/new-tab" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M9,6 L19,6 C19.5522847,6 20,6.44771525 20,7 L20,13 C20,13.5522847 19.5522847,14 19,14 L9,14 C8.44771525,14 8,13.5522847 8,13 L8,7 C8,6.44771525 8.44771525,6 9,6 Z M8.46153846,4 L19.5384615,4 C20.8979317,4 22,5.0745166 22,6.4 L22,13.6 C22,14.9254834 20.8979317,16 19.5384615,16 L8.46153846,16 C7.10206831,16 6,14.9254834 6,13.6 L6,6.4 C6,5.0745166 7.10206831,4 8.46153846,4 Z M4,9 L4,15.1111111 C4,16.9682401 5.02904797,18 7,18 L17,18 L17,18.7777778 C17,19.4527925 16.4403559,20 15.75,20 L4.5,20 C3.11928813,20 2,18.9055849 2,17.5555556 L2,10.2222222 C2,9.54720753 2.55964406,9 3.25,9 L4,9 Z" id="Shape" fill="#000000"></path>
+    </g>
 </svg>

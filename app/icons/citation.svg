@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
-    <title>Citation</title>
-    <defs>
-        <path d="M18.3243243,5 L18.3243243,7 C17.6936905,7.34234405 17.2207223,7.959455 16.9054054,8.85135135 C16.5900885,9.7432477 16.4324324,10.9189116 16.4324324,12.3783784 L16.4324324,13 L19,13 L19,19 L13,19 L13,14.5135135 C13,11.7927792 13.441437,9.63964757 14.3243243,8.05405405 C15.2072116,6.46846054 16.5405316,5.4504527 18.3243243,5 Z M10.3243243,5 L10.3243243,7 C9.69369054,7.34234405 9.2207223,7.959455 8.90540541,8.85135135 C8.59008851,9.7432477 8.43243243,10.9189116 8.43243243,12.3783784 L8.43243243,13 L11,13 L11,19 L5,19 L5,14.5135135 C5,11.7927792 5.44143703,9.63964757 6.32432432,8.05405405 C7.20721162,6.46846054 8.54053162,5.4504527 10.3243243,5 Z" id="path-1"></path>
-    </defs>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Icon/Cited" transform="translate(-5.000000, -5.000000)">
-            <mask id="mask-2" fill="white">
-                <use xlink:href="#path-1"></use>
-            </mask>
-            <use id="Citation-Combined-Shape" fill="currentColor" fill-rule="nonzero" xlink:href="#path-1"></use>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Icon/citation</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icon/citation" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-2" transform="translate(4.000000, 6.000000)" fill="#000000" fill-rule="nonzero">
+            <g id="Group">
+                <path d="M0,5.74743368 C0,5.47329304 0.120572692,5.21622097 0.323359293,5.05800192 L6.5,0.25 L6.5,11.1557716 C6.5,11.6220261 6.15762951,12 5.73529412,12 L0.764705882,12 C0.342370485,12 0,11.6220261 0,11.1557716 L0,5.74743368 Z" id="Path-Copy"></path>
+            </g>
+            <path d="M9.5,5.74743368 C9.5,5.47329304 9.62057269,5.21622097 9.82335929,5.05800192 L16,0.25 L16,11.1557716 C16,11.6220261 15.6576295,12 15.2352941,12 L10.2647059,12 C9.84237049,12 9.5,11.6220261 9.5,11.1557716 L9.5,5.74743368 Z" id="Path-Copy-2"></path>
         </g>
     </g>
 </svg>

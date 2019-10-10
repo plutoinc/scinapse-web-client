@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="12px" height="14px" viewBox="0 0 12 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
-    <title>Icon/Copy</title>
-    <defs>
-        <path d="M11.6666667,6.66666667 C12.1666667,6.66666667 12.5,7 12.5,7.5 L12.5,15.8333333 C12.5,16.3333333 12.1666667,16.6666667 11.6666667,16.6666667 L5,16.6666667 C4.5,16.6666667 4.16666667,16.3333333 4.16666667,15.8333333 L4.16666667,7.5 C4.16666667,7 4.5,6.66666667 5,6.66666667 L11.6666667,6.66666667 Z M15,3.33333333 C15.5,3.33333333 15.8333333,3.66666667 15.8333333,4.16666667 L15.8333333,14.1666667 L14.1666667,14.1666667 L14.1666667,5 L6.66666667,5 L6.66666667,3.33333333 L15,3.33333333 Z" id="copy-path-1"></path>
-    </defs>
-    <g id="copy-Screen" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="id-Papaer-Show-Next" transform="translate(-295.000000, -215.000000)">
-            <g id="Icon/Copy" transform="translate(291.000000, 212.000000)">
-                <mask id="copy-mask-2" fill="white">
-                    <use xlink:href="#copy-path-1"></use>
-                </mask>
-                <g id="copy-Mask" fill-rule="nonzero"></g>
-                <g id="copy-Mixin/Fill/Grayscale5" mask="url(#copy-mask-2)" fill="currentColor" fill-rule="evenodd">
-                    <rect id="Box" x="0" y="0" width="20" height="20" rx="5"></rect>
-                </g>
-            </g>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Icon/copy</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icon/copy" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(4.000000, 3.000000)" fill="#000000">
+            <path d="M4,0 L14,0 C15.1045695,-2.02906125e-16 16,0.8954305 16,2 L16,14 C16,14.5522847 15.5522847,15 15,15 C14.4477153,15 14,14.5522847 14,14 L14,3 C14,2.44771525 13.5522847,2 13,2 L4,2 C3.44771525,2 3,1.55228475 3,1 C3,0.44771525 3.44771525,1.01453063e-16 4,0 Z" id="Rectangle-Copy"></path>
+            <rect id="Rectangle" x="0" y="4" width="12" height="14" rx="2"></rect>
         </g>
     </g>
 </svg>

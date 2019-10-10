@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <defs>
-        <path d="M9,6.71063109 C8.61,7.10063109 8.61,7.73063109 9,8.12063109 L12.88,12.0006311 L9,15.8806311 C8.61,16.2706311 8.61,16.9006311 9,17.2906311 C9.39,17.6806311 10.02,17.6806311 10.41,17.2906311 L15,12.7006311 C15.39,12.3106311 15.39,11.6806311 15,11.2906311 L10.41,6.70063109 C10.03,6.32063109 9.39,6.32063109 9,6.71063109 Z" id="path-1"></path>
-    </defs>
-    <g id="Icons-/-Navigation-/-Arrow-Right-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g>
-            <rect id="Rectangle" x="0" y="0" width="24" height="24"></rect>
-            <mask id="mask-2" fill="white">
-                <use xlink:href="#path-1"></use>
-            </mask>
-            <use id="Mask" fill="currentColor" fill-rule="nonzero" xlink:href="#path-1"></use>
-        </g>
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Icon/arrow-right</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icon/arrow-right" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M7.29637898,19.2894246 C6.903939,19.6780237 6.9008254,20.311181 7.28942456,20.703621 C7.67802372,21.096061 8.31118104,21.0991746 8.70362102,20.7105754 L16.703621,12.7888716 C17.0960743,12.4002593 17.0991729,11.7670758 16.7105417,11.3746411 L8.71054174,3.29634495 C8.32192379,2.90392358 7.68876632,2.9008403 7.29634495,3.28945826 C6.90392358,3.67807621 6.9008403,4.31123368 7.28945826,4.70365505 L14.5857695,12.0713755 L7.29637898,19.2894246 Z" id="Line" fill="#000000" fill-rule="nonzero"></path>
     </g>
 </svg>

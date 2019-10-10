@@ -1,3 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-    <path fill="currentColor" fill-rule="evenodd" d="M6 10h12v8c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2v-8zm10-3h4v2H4V7h4V5c0-.6.4-1 1-1h6c.6 0 1 .4 1 1v2zm-2 0V6h-4v1h4z"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Icon/trash-can</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icon/trash-can" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="trash-can" transform="translate(3.000000, 3.000000)" fill="#000000">
+            <path d="M2.25,6.75 L15.75,6.75 L15.75,15.75 C15.75,16.9875 14.7375,18 13.5,18 L4.5,18 C3.2625,18 2.25,16.9875 2.25,15.75 L2.25,6.75 Z M13.5,3.375 L18,3.375 L18,5.625 L0,5.625 L0,3.375 L4.5,3.375 L4.5,1.125 C4.5,0.45 4.95,0 5.625,0 L12.375,0 C13.05,0 13.5,0.45 13.5,1.125 L13.5,3.375 Z M11.25,3.375 L11.25,2.25 L6.75,2.25 L6.75,3.375 L11.25,3.375 Z" id="Shape"></path>
+        </g>
+    </g>
 </svg>
