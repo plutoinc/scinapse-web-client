@@ -34,7 +34,7 @@ const CiteButton: React.FC<CiteButtonProps> = ({ paper, pageType, actionArea }) 
         });
       }}
     >
-      <Icon className={styles.citationIcon} icon="CITATION_QUOTE" />
+      <Icon className={styles.citationIcon} icon="CITATION" />
 
       <span>Cite</span>
     </button>

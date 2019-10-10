@@ -62,7 +62,7 @@ const InputBox = (props: InputBoxProps) => {
             value={defaultValue}
           />
           <div onClick={onClickFunc} className={styles.searchIconWrapper}>
-            <Icon icon="SEARCH_ICON" />
+            <Icon icon="SEARCH" />
           </div>
         </div>
       );

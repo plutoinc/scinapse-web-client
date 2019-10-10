@@ -166,19 +166,13 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
               render={() => {
                 return (
                   <Form>
-                    <Field
-                      name="email"
-                      type="email"
-                      component={AuthInputBox}
-                      placeholder="E-mail"
-                      iconName="EMAIL_ICON"
-                    />
+                    <Field name="email" type="email" component={AuthInputBox} placeholder="E-mail" iconName="EMAIL" />
                     <Field
                       name="password"
                       type="password"
                       component={AuthInputBox}
                       placeholder="Password"
-                      iconName="PASSWORD_ICON"
+                      iconName="PASSWORD"
                     />
                     {networkError && <div className={s.errorContent}>{networkError}</div>}
                     <div

@@ -100,7 +100,7 @@ const SearchContainer: React.FC<SearchContainerProps> = props => {
           value={searchInput}
           onSubmit={handleSubmitSearch}
           placeholder="Search papers"
-          icon="SEARCH_ICON"
+          icon="SEARCH"
         />
       </div>
       <div className={styles.sortBoxContainer}>

@@ -174,7 +174,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                         <ScinapseInput
                           placeholder="Search papers"
                           onSubmit={this.handleSubmitPublicationSearch}
-                          icon="SEARCH_ICON"
+                          icon="SEARCH"
                           wrapperStyle={{
                             borderRadius: '4px',
                             borderColor: '#f1f3f6',

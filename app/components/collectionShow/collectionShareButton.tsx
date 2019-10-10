@@ -103,7 +103,7 @@ const CollectionShareButton: React.FC<{ userCollection: Collection }> = ({ userC
       }}
       style={{ marginTop: '32px' }}
     >
-      <Icon icon="MASK" />
+      <Icon icon="SHARE" />
       <span>Share</span>
     </Button>
   );

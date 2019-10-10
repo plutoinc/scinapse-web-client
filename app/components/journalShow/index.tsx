@@ -165,7 +165,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
                           value={currentQueryParams.q}
                           onSubmit={this.handleSubmitSearch}
                           placeholder="Search papers"
-                          icon="SEARCH_ICON"
+                          icon="SEARCH"
                         />
                       </div>
                     </div>

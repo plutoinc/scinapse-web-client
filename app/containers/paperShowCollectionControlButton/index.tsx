@@ -72,7 +72,7 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
         style={{ textAlign: 'center' }}
       >
         <CircularProgress disableShrink={true} size={14} thickness={4} />
-        <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
+        <Icon icon="ARROW_UP" className={styles.arrowIcon} />
       </span>
     );
   }
@@ -123,7 +123,7 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
       onClick={props.onClick}
     >
       {props.collection && props.collection.title}
-      <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
+      <Icon icon="ARROW_UP" className={styles.arrowIcon} />
     </span>
   );
 };

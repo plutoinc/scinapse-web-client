@@ -85,7 +85,7 @@ const ResetPasswordContainer: React.FunctionComponent<ResetPasswordProps> = prop
                   type="email"
                   component={AuthInputBox}
                   placeholder="E-mail"
-                  iconName="EMAIL_ICON"
+                  iconName="EMAIL"
                   wrapperStyles={{ width: '100%' }}
                 />
                 <div className={styles.buttonContainer}>
