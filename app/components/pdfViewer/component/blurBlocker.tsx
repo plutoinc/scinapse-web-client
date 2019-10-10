@@ -4,7 +4,7 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
 import actionTicketManager from '../../../helpers/actionTicketManager';
-import { addPaperToRecommendPoolAndOpenDialog } from '../../recommendPool/recommendPoolActions';
+import { addPaperToRecommendPoolAndOpenOnboardingSnackbar } from '../../recommendOnboardingSnackbar/actions';
 const s = require('./blurBlocker.scss');
 
 interface BlurBlockerProps {
@@ -17,10 +17,10 @@ const BlurBlocker: React.FC<BlurBlockerProps> = ({ paperId }) => {
     <div
       onClick={async () => {
         dispatch(
-          addPaperToRecommendPoolAndOpenDialog({
+          addPaperToRecommendPoolAndOpenOnboardingSnackbar({
             pageType: 'paperShow',
             actionArea: 'viewMorePDF',
-            paperId,
+            recAction: { paperId, action: 'viewMorePDF' },
           })
         );
 

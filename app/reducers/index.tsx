@@ -28,7 +28,9 @@ import { AUTHOR_SEARCH_INITIAL_STATE } from '../containers/authorSearch/records'
 import { RELATED_PAPERS_INITIAL_STATE, reducer as RelatedPapersReducer } from './realtedPapers';
 import { reducer as PDFViewerReducer, PDF_VIEWER_INITIAL_STATE } from './pdfViewer';
 import { SEARCH_QUERY_INITIAL_STATE, reducer as SearchQueryReducer } from './searchQuery';
-import RecommendPoolReducer, { RECOMMEND_POOL_INITIAL_STATE } from '../components/recommendPool/recommendPoolReducer';
+import RecommendPoolReducer, {
+  RECOMMEND_ONBOARDING_SNACKBAR_INITIAL_STATE,
+} from '../components/recommendOnboardingSnackbar/reducer';
 import { reducer as SearchFilterReducer, SEARCH_FILTER_INITIAL_STATE } from './searchFilter';
 import RequestFullTextDialogReducer, { REQUEST_FULL_TEXT_DIALOG_INITIAL_STATE } from './requestFullTextDialog';
 import KeywordSettingsReducer, { KEYWORD_SETTINGS_INITIAL_STATE } from './keywordSettings';
@@ -55,7 +57,7 @@ export const initialState = {
   relatedPapersState: RELATED_PAPERS_INITIAL_STATE,
   PDFViewerState: PDF_VIEWER_INITIAL_STATE,
   searchQueryState: SEARCH_QUERY_INITIAL_STATE,
-  recommendPoolState: RECOMMEND_POOL_INITIAL_STATE,
+  recommendOnboardingSnackbarState: RECOMMEND_ONBOARDING_SNACKBAR_INITIAL_STATE,
   searchFilterState: SEARCH_FILTER_INITIAL_STATE,
   signUpModalState: SIGN_UP_MODAL_INITIAL_STATE,
   requestFullTextDialogState: REQUEST_FULL_TEXT_DIALOG_INITIAL_STATE,
@@ -83,7 +85,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   relatedPapersState: RelatedPapersReducer,
   PDFViewerState: PDFViewerReducer,
   searchQueryState: SearchQueryReducer,
-  recommendPoolState: RecommendPoolReducer,
+  recommendOnboardingSnackbarState: RecommendPoolReducer,
   searchFilterState: SearchFilterReducer,
   signUpModalState: SignUpModalReducer,
   requestFullTextDialogState: RequestFullTextDialogReducer,

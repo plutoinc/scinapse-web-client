@@ -36,7 +36,7 @@ import { trackEvent } from '../../helpers/handleGA';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { ActionCreators } from '../../actions/actionTypes';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../helpers/checkAuthDialog';
-import { addPaperToRecommendPool } from '../../components/recommendPool/recommendPoolActions';
+import { addPaperToRecommendPool } from '../../components/recommendOnboardingSnackbar/actions';
 const styles = require('./paperShowCollectionControlButton.scss');
 
 const LAST_USER_COLLECTION_ID = 'l_u_c_id';
@@ -97,7 +97,7 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
               userActionType: 'addToCollection',
             });
 
-            dispatch(addPaperToRecommendPool(props.paperId));
+            dispatch(addPaperToRecommendPool({ paperId: props.paperId, action: 'addToCollection' }));
           }}
           className={styles.unsignedTitleBtn}
         >
@@ -522,7 +522,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         actionTag: 'signInViaCollection',
         actionLabel: null,
       });
-      dispatch(addPaperToRecommendPool(targetPaperId));
+      dispatch(addPaperToRecommendPool({ paperId: targetPaperId, action: 'addToCollection' }));
       return;
     }
 
@@ -548,7 +548,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           cancelToken: this.cancelToken.token,
         })
       );
-      dispatch(addPaperToRecommendPool(targetPaperId));
+      dispatch(addPaperToRecommendPool({ paperId: targetPaperId, action: 'addToCollection' }));
       store.set(LAST_USER_COLLECTION_ID, selectedCollection.id);
     } else if (selectedCollection && targetPaperId && selectedCollection.containsSelected) {
       trackEvent({

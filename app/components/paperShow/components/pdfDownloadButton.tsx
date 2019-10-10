@@ -6,7 +6,7 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
 import SearchingPDFBtn from './searchingPDFBtn';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../../helpers/checkAuthDialog';
-import { addPaperToRecommendPoolAndOpenDialog } from '../../recommendPool/recommendPoolActions';
+import { addPaperToRecommendPoolAndOpenOnboardingSnackbar } from '../../recommendOnboardingSnackbar/actions';
 const styles = require('./pdfSourceButton.scss');
 
 interface PdfDownloadButtonProps {
@@ -55,10 +55,10 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
           trackActionToClickPdfDownloadBtn();
 
           dispatch(
-            addPaperToRecommendPoolAndOpenDialog({
+            addPaperToRecommendPoolAndOpenOnboardingSnackbar({
               pageType: 'paperShow',
               actionArea: 'downloadPdfInRefCitedBar',
-              paperId: paper.id,
+              recAction: { paperId: paper.id, action: 'downloadPdf' },
             })
           );
 

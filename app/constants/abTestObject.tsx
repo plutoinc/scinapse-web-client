@@ -5,7 +5,6 @@ import {
   EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER,
   AUTH_METHOD_EXPERIMENT,
   COLLECTION_BUTTON_TEXT_EXPERIMENT,
-  REQUEST_FULL_TEXT_DIALOG_EXPERIMENT,
 } from './abTestGlobalValue';
 
 export const enum EmailRecommendPaperSignUpBannerTestType {
@@ -78,13 +77,5 @@ export const collectionButtonText: Test = {
     { groupName: CollectionButtonTextTestType.ADD, weight: 1 },
     { groupName: CollectionButtonTextTestType.KEEP, weight: 1 },
     { groupName: CollectionButtonTextTestType.READ_LATER, weight: 1 },
-  ],
-};
-
-export const requestFullTextDialogExperiment: Test = {
-  name: REQUEST_FULL_TEXT_DIALOG_EXPERIMENT,
-  userGroup: [
-    { groupName: requestFullTextDialogExperimentType.CONTROL, weight: 1 },
-    { groupName: requestFullTextDialogExperimentType.DETAIL, weight: 2 },
   ],
 };

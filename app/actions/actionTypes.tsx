@@ -219,9 +219,6 @@ export enum ACTION_TYPES {
   PDF_VIEWER_CLICK_RELOAD_BTN = 'PDF_VIEWER_CLICK_RELOAD_BTN',
   PDF_VIEWER_CLICK_VIEW_MORE_BTN = 'PDF_VIEWER_CLICK_VIEW_MORE_BTN',
   PDF_VIEWER_GET_BEST_PDF_OF_PAPER = 'PDF_VIEWER_GET_BEST_PDF_OF_PAPER',
-
-  RECOMMEND_PAPERS_DIALOG_OPEN_DIALOG = 'RECOMMEND_PAPERS_DIALOG_OPEN_DIALOG',
-  RECOMMEND_PAPERS_DIALOG_CLOSE_DIALOG = 'RECOMMEND_PAPERS_DIALOG_CLOSE_DIALOG',
 }
 
 export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
@@ -1037,14 +1034,6 @@ export const ActionCreators = {
 
   changeSearchQuery(payload: { query: string }) {
     return createAction({ type: ACTION_TYPES.SEARCH_QUERY_CHANGE_QUERY, payload });
-  },
-
-  openRecommendPapersDialog(payload: { actionArea: string }) {
-    return createAction({ type: ACTION_TYPES.RECOMMEND_PAPERS_DIALOG_OPEN_DIALOG, payload });
-  },
-
-  closeRecommendPapersDialog() {
-    return createAction({ type: ACTION_TYPES.RECOMMEND_PAPERS_DIALOG_CLOSE_DIALOG });
   },
 
   fetchLastFullTextRequestedDate(payload: { requestedAt: string | null }) {

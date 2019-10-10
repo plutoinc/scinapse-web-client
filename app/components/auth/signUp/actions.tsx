@@ -7,19 +7,23 @@ import {
   SignUpWithEmailAPIParams,
 } from '../../../api/types/auth';
 import RecommendationAPI from '../../../api/recommendation';
-import { BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY } from '../../recommendPool/recommendPoolConstants';
+import { RECOMMENDED_PAPER_LOGGING_FOR_NON_USER } from '../../recommendOnboardingSnackbar/constants';
 import { ACTION_TYPES } from '../../../actions/actionTypes';
 import alertToast from '../../../helpers/makePlutoToastAction';
 import EnvChecker from '../../../helpers/envChecker';
 import { Member } from '../../../model/member';
+import { RecommendationActionParams } from '../../../api/types/recommendation';
 const store = require('store');
 
 async function syncRecommendationPoolToUser() {
-  const targetPaperIds: number[] = store.get(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY) || [];
+  const targetActions: RecommendationActionParams[] = store.get(RECOMMENDED_PAPER_LOGGING_FOR_NON_USER) || [];
 
-  if (targetPaperIds.length > 0) {
-    await RecommendationAPI.syncRecommendationPool(targetPaperIds);
-    store.remove(BASED_ACTIVITY_PAPER_IDS_FOR_NON_USER_KEY);
+  if (targetActions.length > 0) {
+    const reqParams = targetActions.map(targetAction => {
+      return { paper_id: targetAction.paperId, action: targetAction.action };
+    });
+    await RecommendationAPI.syncRecommendationPool(reqParams);
+    store.remove(RECOMMENDED_PAPER_LOGGING_FOR_NON_USER);
   }
 }
 
@@ -40,6 +44,7 @@ export function signUpWithSocial(params: SignUpWithSocialParams) {
         first_name: params.firstName,
         last_name: params.lastName,
         token: params.token,
+        affiliation_id: params.affiliationId,
         profile_link: params.profileLink || null,
       };
 
@@ -72,6 +77,7 @@ export function signUpWithEmail(params: SignUpWithEmailParams) {
         first_name: params.firstName,
         last_name: params.lastName,
         password: params.password,
+        affiliation_id: params.affiliationId,
         profile_link: params.profileLink || null,
       };
 
