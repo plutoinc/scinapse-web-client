@@ -5,6 +5,7 @@ import { Request } from 'express';
 import { Provider } from 'react-redux';
 import axios from 'axios';
 import { Helmet } from 'react-helmet';
+import { UAParser } from 'ua-parser-js';
 import { matchPath, StaticRouter } from 'react-router-dom';
 import { createMuiTheme, createGenerateClassName, MuiThemeProvider } from '@material-ui/core/styles';
 import * as ReactDOMServer from 'react-dom/server';
@@ -14,6 +15,7 @@ import { ConnectedRootRoutes as RootRoutes, routesMap } from '../app/routes';
 import { ACTION_TYPES } from '../app/actions/actionTypes';
 import { generateFullHTML } from '../app/helpers/htmlWrapper';
 import PlutoAxios from '../app/api/pluto';
+import { setDeviceType, UserDevice } from '../app/components/layouts/reducer';
 const StyleContext = require('isomorphic-style-loader/StyleContext');
 const JssProvider = require('react-jss/lib/JssProvider').default;
 const { SheetsRegistry } = require('react-jss/lib/jss');
@@ -58,6 +60,20 @@ const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
 
   // Initialize and make Redux store per each request
   const store = StoreManager.getStore();
+
+  const headers: { [key: string]: string } = {};
+  for (const key of Object.keys(req.headers)) {
+    const newKey = key.toLowerCase();
+    if (newKey) {
+      headers[newKey] = req.headers[key] as string;
+    }
+  }
+
+  const userAgent = headers['user-agent'];
+  const device = new UAParser(userAgent).getDevice();
+  if (device && device.type === 'mobile') {
+    store.dispatch(setDeviceType({ userDevice: UserDevice.MOBILE }));
+  }
 
   // Load data from API server
   const promises: Promise<any>[] = [];

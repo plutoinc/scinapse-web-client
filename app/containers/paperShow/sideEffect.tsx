@@ -92,9 +92,9 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
   const promiseArray = [];
   promiseArray.push(dispatch(getPaper({ paperId, cancelToken: params.cancelToken })));
   promiseArray.push(dispatch(getRelatedPapers(paperId, params.cancelToken)));
+  promiseArray.push(dispatch(fetchLastFullTextRequestedDate(paperId)));
 
   if (currentUser && currentUser.isLoggedIn) {
-    promiseArray.push(dispatch(fetchLastFullTextRequestedDate(paperId)));
     promiseArray.push(dispatch(getMyCollections(paperId, params.cancelToken)));
   }
 

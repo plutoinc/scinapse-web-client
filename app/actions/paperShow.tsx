@@ -192,9 +192,9 @@ export const fetchMobilePaperShowData = ({
 
     promiseArray.push(dispatch(getPaper({ paperId, cancelToken })));
     promiseArray.push(dispatch(getRelatedPapers(paperId, cancelToken)));
+    promiseArray.push(dispatch(fetchLastFullTextRequestedDate(paperId)));
 
     if (isLoggedIn) {
-      promiseArray.push(dispatch(fetchLastFullTextRequestedDate(paperId)));
       promiseArray.push(dispatch(getMyCollections(paperId, cancelToken)));
     }
 
@@ -211,8 +211,6 @@ export const fetchMobilePaperShowData = ({
       if (!axios.isCancel(err)) {
         logException(err);
       }
-      // // TODO: Remove below logic because it's for testing Sentry
-      // logException(err);
     }
   };
 };

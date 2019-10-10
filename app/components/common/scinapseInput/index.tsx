@@ -30,16 +30,7 @@ class ScinapseCommonInput extends React.PureComponent<InputBoxProps, InputBoxSta
   }
 
   public render() {
-    const {
-      wrapperStyle,
-      inputStyle,
-      placeholder,
-      onChange,
-      onKeydown,
-      value,
-      iconStyle,
-      autoFocus = false,
-    } = this.props;
+    const { wrapperStyle, inputStyle, placeholder, onChange, onKeydown, value, autoFocus = false } = this.props;
     const { inputValue } = this.state;
 
     return (

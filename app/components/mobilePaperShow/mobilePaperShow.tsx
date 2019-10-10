@@ -1,27 +1,21 @@
 import React from 'react';
-import axios from 'axios';
-import { useSelector, useDispatch } from 'react-redux';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { isEqual } from 'lodash';
 
 import { formulaeToHTMLStr } from '../../helpers/displayFormula';
-import { getMemoizedPaper } from './select';
 import { AppState } from '../../reducers';
-import MobileVenueAuthors from '../../components/common/paperItem/mobileVenueAuthors';
-import MobilePaperShowButtonGroup from '../../components/mobilePaperShowButtonGroup';
-import CopyDOIButton from '../../components/copyDOIButton/copyDOIButton';
-import MobilePaperShowTab from '../../components/mobilePaperShowTab/mobilePaperShowTab';
-import GoBackResultBtn from '../../components/paperShow/backButton';
-import { PaperShowMatchParams } from './types';
-import { AvailablePaperShowTab } from '../../components/paperShowTabItem/paperShowTabItem';
-import { fetchMobilePaperShowData } from '../../actions/paperShow';
-import MobileRelatedPapers from '../../components/mobileRelatedPapers/mobileRelatedPapers';
-import getQueryParamsObject from '../../helpers/getQueryParamsObject';
-import { fetchRefPaperData, fetchCitedPaperData } from './sideEffect';
-import MobileRefCitedPapers from '../../components/paperShow/refCitedPapers/mobileRefCitedPapers';
-import Button from '../../components/common/button';
+import MobileVenueAuthors from '../common/paperItem/mobileVenueAuthors';
+import MobilePaperShowButtonGroup from '../mobilePaperShowButtonGroup';
+import CopyDOIButton from '../copyDOIButton/copyDOIButton';
+import MobilePaperShowTab from '../mobilePaperShowTab/mobilePaperShowTab';
+import GoBackResultBtn from '../paperShow/backButton';
+import { AvailablePaperShowTab } from '../paperShowTabItem/paperShowTabItem';
+import MobileRelatedPapers from '../mobileRelatedPapers/mobileRelatedPapers';
+import MobileRefCitedPapers from '../paperShow/refCitedPapers/mobileRefCitedPapers';
+import Button from '../common/button';
 import Icon from '../../icons';
+import { Paper } from '../../model/paper';
 
 const s = require('./mobilePaperShow.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
@@ -29,7 +23,9 @@ const NAVBAR_HEIGHT = parseInt(s.headerHeight, 10);
 
 let ticking = false;
 
-type MobilePaperShowProps = RouteComponentProps<PaperShowMatchParams>;
+interface MobilePaperShowProps {
+  paper: Paper;
+}
 type CurrentPosition = 'abovePaperInfo' | 'underPaperInfo' | 'onRelatedList' | 'onRefList' | 'onCitedList';
 
 function getActiveTab(currentPosition: CurrentPosition): AvailablePaperShowTab | null {
@@ -39,28 +35,17 @@ function getActiveTab(currentPosition: CurrentPosition): AvailablePaperShowTab |
   return null;
 }
 
-const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
+const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper }) => {
   useStyles(s);
-  const { match, location } = props;
-  const dispatch = useDispatch();
-
-  const paper = useSelector((state: AppState) => getMemoizedPaper(state));
-  const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
-  const shouldPatch = useSelector(
-    (state: AppState) => !state.configuration.succeedAPIFetchAtServer || state.configuration.renderedAtClient
-  );
   const relatedPaperIds = useSelector((state: AppState) => state.relatedPapersState.paperIds, isEqual);
 
   const [currentPosition, setCurrentPosition] = React.useState<CurrentPosition>('abovePaperInfo');
-  const lastShouldPatch = React.useRef(shouldPatch);
   const lastPosition = React.useRef<CurrentPosition>('abovePaperInfo');
   const buttonGroupWrapper = React.useRef<HTMLDivElement | null>(null);
   const fixedButtonHeader = React.useRef<HTMLDivElement | null>(null);
   const refSection = React.useRef<HTMLDivElement | null>(null);
   const citedSection = React.useRef<HTMLDivElement | null>(null);
   const relatedTabWrapper = React.useRef<HTMLDivElement | null>(null);
-
-  const paperId = paper && paper.id;
 
   React.useEffect(() => {
     function handleScroll() {
@@ -152,80 +137,6 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
     };
   }, []);
 
-  React.useEffect(
-    () => {
-      const cancelToken = axios.CancelToken.source();
-      // NOTE: prevent patching from the change of shouldPatch variable
-      if (shouldPatch && !lastShouldPatch.current) {
-        lastShouldPatch.current = true;
-        return;
-      }
-      // NOTE: prevent double patching
-      if (!shouldPatch) return;
-
-      dispatch(
-        fetchMobilePaperShowData({
-          paperId: parseInt(match.params.paperId, 10),
-          isLoggedIn: currentUser.isLoggedIn,
-          cancelToken: cancelToken.token,
-        })
-      );
-
-      return () => {
-        cancelToken.cancel();
-      };
-    },
-    [location.pathname, currentUser.isLoggedIn, dispatch, match, shouldPatch]
-  );
-
-  const queryParams = getQueryParamsObject(location.search);
-  const refPage = queryParams['ref-page'] || 1;
-  const refQuery = queryParams['ref-query'] || '';
-  const refSort = queryParams['ref-sort'] || 'NEWEST_FIRST';
-  const citedPage = queryParams['cited-page'] || 1;
-  const citedQuery = queryParams['cited-query'] || '';
-  const citedSort = queryParams['cited-sort'] || 'NEWEST_FIRST';
-  React.useEffect(
-    () => {
-      if (!paperId) return;
-      // NOTE: prevent patching from the change of shouldPatch variable
-      if (shouldPatch && !lastShouldPatch.current) {
-        lastShouldPatch.current = true;
-        return;
-      }
-      // NOTE: prevent double patching
-      if (!shouldPatch) return;
-
-      const cancelToken = axios.CancelToken.source();
-      dispatch(fetchRefPaperData(paperId, refPage, refQuery, refSort, cancelToken.token));
-
-      return () => {
-        cancelToken.cancel();
-      };
-    },
-    [refPage, refQuery, refSort, dispatch, paperId, shouldPatch]
-  );
-  React.useEffect(
-    () => {
-      if (!paperId) return;
-      // NOTE: prevent patching from the change of shouldPatch variable
-      if (shouldPatch && !lastShouldPatch.current) {
-        lastShouldPatch.current = true;
-        return;
-      }
-      // NOTE: prevent double patching
-      if (!shouldPatch) return;
-
-      const cancelToken = axios.CancelToken.source();
-      dispatch(fetchCitedPaperData(paperId, citedPage, citedQuery, citedSort, cancelToken.token));
-
-      return () => {
-        cancelToken.cancel();
-      };
-    },
-    [citedPage, citedQuery, citedSort, dispatch, paperId, shouldPatch]
-  );
-
   function handleClickPaperShowTab(tab: AvailablePaperShowTab) {
     if (!refSection.current || !citedSection.current || !fixedButtonHeader.current) return;
 
@@ -238,8 +149,6 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
 
     window.scrollTo(0, destination);
   }
-
-  if (!paper || !paperId) return null;
 
   const activeTabInFixedHeader = getActiveTab(currentPosition);
   // TODO: add fallback logic for PDF address
@@ -280,7 +189,7 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
           color="black"
           fullWidth={true}
           target="_blank"
-          style={{ marginTop: '12px' }}
+          style={{ marginTop: '16px' }}
         >
           <Icon icon="SOURCE" />
           <span>View PDF</span>
@@ -313,7 +222,7 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
       {relatedPaperIds &&
         relatedPaperIds.length > 0 && (
           <>
-            <div ref={relatedTabWrapper}>
+            <div ref={relatedTabWrapper} style={{ marginTop: '48px' }}>
               <MobilePaperShowTab
                 active={AvailablePaperShowTab.related}
                 onClick={handleClickPaperShowTab}
@@ -324,13 +233,13 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
           </>
         )}
       <div className={s.refCitedSection} ref={refSection}>
-        <MobileRefCitedPapers type="reference" paperId={paperId} paperCount={paper.referenceCount} />
+        <MobileRefCitedPapers type="reference" paperId={paper.id} paperCount={paper.referenceCount} />
       </div>
       <div className={s.refCitedSection} ref={citedSection}>
-        <MobileRefCitedPapers type="cited" paperId={paperId} paperCount={paper.citedCount} />
+        <MobileRefCitedPapers type="cited" paperId={paper.id} paperCount={paper.citedCount} />
       </div>
     </div>
   );
 };
 
-export default withRouter(MobilePaperShow);
+export default MobilePaperShow;
