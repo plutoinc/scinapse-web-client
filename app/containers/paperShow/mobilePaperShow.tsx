@@ -20,6 +20,8 @@ import MobileRelatedPapers from '../../components/mobileRelatedPapers/mobileRela
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 import { fetchRefPaperData, fetchCitedPaperData } from './sideEffect';
 import MobileRefCitedPapers from '../../components/paperShow/refCitedPapers/mobileRefCitedPapers';
+import Button from '../../components/common/button';
+import Icon from '../../icons';
 
 const s = require('./mobilePaperShow.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
@@ -240,6 +242,8 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
   if (!paper || !paperId) return null;
 
   const activeTabInFixedHeader = getActiveTab(currentPosition);
+  // TODO: add fallback logic for PDF address
+  const pdfURL = paper.bestPdf && paper.bestPdf.hasBest && paper.bestPdf.url;
 
   return (
     <div className={s.container}>
@@ -268,7 +272,20 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
         </div>
         <div className={s.abstractContent} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.abstract) }} />
       </div>
-      <div>View PDF</div>
+      {pdfURL && (
+        <Button
+          elementType="anchor"
+          href={pdfURL}
+          size="large"
+          color="black"
+          fullWidth={true}
+          target="_blank"
+          style={{ marginTop: '12px' }}
+        >
+          <Icon icon="SOURCE" />
+          <span>View PDF</span>
+        </Button>
+      )}
       <div
         ref={fixedButtonHeader}
         className={classNames({
