@@ -67,7 +67,7 @@ const AlertCreateButton: React.FC<AlertCreateButtonProps> = props => {
           marginTop: '8px',
         }}
       >
-        <Icon icon="ALERT" />
+        <Icon icon="ALERT" className={s.alertIcon} />
         <span>Create alert</span>
       </Button>
     </Tooltip>
