@@ -1,4 +1,4 @@
-$ref-cited-bar-height: 50px;
+$fixed-tab-height: 50px;
 
 .container {
   margin: $header-height 12px 0 12px;
@@ -62,16 +62,8 @@ $ref-cited-bar-height: 50px;
 
 .fixedRefCitedTab {
   background-color: #f9f9fb;
-  padding: 16px 28px;
-  margin: 16px -28px -16px -28px;
-
-  span {
-    display: inline-block;
-  }
-
-  span + span {
-    margin-left: 32px;
-  }
+  width: 100%;
+  padding: 0 20px;
 }
 
 .activeRefCitedTabItem {
@@ -92,20 +84,21 @@ $ref-cited-bar-height: 50px;
   top: $header-height;
   left: 0;
   right: 0;
-  height: 76px;
+  height: $fixed-tab-height;
   background-color: white;
-  padding: 16px 28px 16px 28px;
+  padding: 16px 0;
   z-index: 2;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 
   &.active {
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
+    align-items: center;
   }
 }
 
 .buttonGroupWrapper {
+  width: 100%;
   margin: -12px 0 -12px 0;
 }
 
@@ -116,6 +109,10 @@ $ref-cited-bar-height: 50px;
 .btnGroupWrapper,
 .fixedBtnGroupWrapper {
   display: flex;
+}
+
+.fixedBtnGroupWrapper {
+  padding: 0 28px;
 }
 
 .btnGroupWrapper {

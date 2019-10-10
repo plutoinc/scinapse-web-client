@@ -28,7 +28,14 @@ const NAVBAR_HEIGHT = parseInt(s.headerHeight, 10);
 let ticking = false;
 
 type MobilePaperShowProps = RouteComponentProps<PaperShowMatchParams>;
-type CurrentPosition = 'abovePaperInfo' | 'underPaperInfo' | 'onRefList' | 'onCitedList';
+type CurrentPosition = 'abovePaperInfo' | 'underPaperInfo' | 'onRelatedList' | 'onRefList' | 'onCitedList';
+
+function getActiveTab(currentPosition: CurrentPosition): AvailablePaperShowTab | null {
+  if (currentPosition === 'onRelatedList') return AvailablePaperShowTab.related;
+  if (currentPosition === 'onRefList') return AvailablePaperShowTab.ref;
+  if (currentPosition === 'onCitedList') return AvailablePaperShowTab.cited;
+  return null;
+}
 
 const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
   useStyles(s);
@@ -47,8 +54,8 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
   const lastPosition = React.useRef<CurrentPosition>('abovePaperInfo');
   const buttonGroupWrapper = React.useRef<HTMLDivElement | null>(null);
   const fixedButtonHeader = React.useRef<HTMLDivElement | null>(null);
-  const refTabWrapper = React.useRef<HTMLDivElement | null>(null);
-  const citedTabWrapper = React.useRef<HTMLDivElement | null>(null);
+  const refSection = React.useRef<HTMLDivElement | null>(null);
+  const citedSection = React.useRef<HTMLDivElement | null>(null);
   const relatedTabWrapper = React.useRef<HTMLDivElement | null>(null);
 
   const paperId = paper && paper.id;
@@ -60,36 +67,74 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
           if (
             !buttonGroupWrapper.current ||
             !fixedButtonHeader.current ||
-            !refTabWrapper.current ||
-            !citedTabWrapper.current
-          )
+            !refSection.current ||
+            !citedSection.current
+          ) {
             return (ticking = false);
+          }
+
           const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
           const currentScrollTop = scrollTop + NAVBAR_HEIGHT;
           const buttonGroupOffsetTop = buttonGroupWrapper.current.offsetTop - 16 /* margin */;
-          const refTabWrapperOffsetTop = refTabWrapper.current.offsetTop - fixedButtonHeader.current.clientHeight;
-          const citedTabWrapperOffsetTop = citedTabWrapper.current.offsetTop - fixedButtonHeader.current.clientHeight;
+          const refSectionOffsetTop = refSection.current.offsetTop - fixedButtonHeader.current.clientHeight;
+          const citedSectionOffsetTop = citedSection.current.offsetTop - fixedButtonHeader.current.clientHeight;
 
-          if (currentScrollTop < buttonGroupOffsetTop && lastPosition.current !== 'abovePaperInfo') {
-            setCurrentPosition('abovePaperInfo');
-            lastPosition.current = 'abovePaperInfo';
-          } else if (
-            currentScrollTop >= buttonGroupOffsetTop &&
-            currentScrollTop < refTabWrapperOffsetTop &&
-            lastPosition.current !== 'underPaperInfo'
-          ) {
-            setCurrentPosition('underPaperInfo');
-            lastPosition.current = 'underPaperInfo';
-          } else if (
-            currentScrollTop >= refTabWrapperOffsetTop &&
-            currentScrollTop < citedTabWrapperOffsetTop &&
-            lastPosition.current !== 'onRefList'
-          ) {
-            setCurrentPosition('onRefList');
-            lastPosition.current = 'onRefList';
-          } else if (currentScrollTop >= citedTabWrapperOffsetTop && lastPosition.current !== 'onCitedList') {
-            setCurrentPosition('onCitedList');
-            lastPosition.current = 'onCitedList';
+          if (relatedTabWrapper.current) {
+            const relatedTabWrapperOffsetTop =
+              relatedTabWrapper.current.offsetTop -
+              fixedButtonHeader.current.clientHeight +
+              relatedTabWrapper.current.clientHeight;
+
+            if (currentScrollTop < buttonGroupOffsetTop && lastPosition.current !== 'abovePaperInfo') {
+              setCurrentPosition('abovePaperInfo');
+              lastPosition.current = 'abovePaperInfo';
+            } else if (
+              currentScrollTop >= buttonGroupOffsetTop &&
+              currentScrollTop < relatedTabWrapperOffsetTop &&
+              lastPosition.current !== 'underPaperInfo'
+            ) {
+              setCurrentPosition('underPaperInfo');
+              lastPosition.current = 'underPaperInfo';
+            } else if (
+              currentScrollTop >= relatedTabWrapperOffsetTop &&
+              currentScrollTop < refSectionOffsetTop &&
+              lastPosition.current !== 'onRelatedList'
+            ) {
+              setCurrentPosition('onRelatedList');
+              lastPosition.current = 'onRelatedList';
+            } else if (
+              currentScrollTop >= refSectionOffsetTop &&
+              currentScrollTop < citedSectionOffsetTop &&
+              lastPosition.current !== 'onRefList'
+            ) {
+              setCurrentPosition('onRefList');
+              lastPosition.current = 'onRefList';
+            } else if (currentScrollTop >= citedSectionOffsetTop && lastPosition.current !== 'onCitedList') {
+              setCurrentPosition('onCitedList');
+              lastPosition.current = 'onCitedList';
+            }
+          } else {
+            if (currentScrollTop < buttonGroupOffsetTop && lastPosition.current !== 'abovePaperInfo') {
+              setCurrentPosition('abovePaperInfo');
+              lastPosition.current = 'abovePaperInfo';
+            } else if (
+              currentScrollTop >= buttonGroupOffsetTop &&
+              currentScrollTop < refSectionOffsetTop &&
+              lastPosition.current !== 'underPaperInfo'
+            ) {
+              setCurrentPosition('underPaperInfo');
+              lastPosition.current = 'underPaperInfo';
+            } else if (
+              currentScrollTop >= refSectionOffsetTop &&
+              currentScrollTop < citedSectionOffsetTop &&
+              lastPosition.current !== 'onRefList'
+            ) {
+              setCurrentPosition('onRefList');
+              lastPosition.current = 'onRefList';
+            } else if (currentScrollTop >= citedSectionOffsetTop && lastPosition.current !== 'onCitedList') {
+              setCurrentPosition('onCitedList');
+              lastPosition.current = 'onCitedList';
+            }
           }
 
           ticking = false;
@@ -131,13 +176,13 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
     [location.pathname, currentUser.isLoggedIn, dispatch, match, shouldPatch]
   );
 
-  const querytParams = getQueryParamsObject(location.search);
-  const refPage = querytParams['ref-page'] || 1;
-  const refQuery = querytParams['ref-query'] || '';
-  const refSort = querytParams['ref-sort'] || 'NEWEST_FIRST';
-  const citedPage = querytParams['cited-page'] || 1;
-  const citedQuery = querytParams['cited-query'] || '';
-  const citedSort = querytParams['cited-sort'] || 'NEWEST_FIRST';
+  const queryParams = getQueryParamsObject(location.search);
+  const refPage = queryParams['ref-page'] || 1;
+  const refQuery = queryParams['ref-query'] || '';
+  const refSort = queryParams['ref-sort'] || 'NEWEST_FIRST';
+  const citedPage = queryParams['cited-page'] || 1;
+  const citedQuery = queryParams['cited-query'] || '';
+  const citedSort = queryParams['cited-sort'] || 'NEWEST_FIRST';
   React.useEffect(
     () => {
       if (!paperId) return;
@@ -180,19 +225,21 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
   );
 
   function handleClickPaperShowTab(tab: AvailablePaperShowTab) {
-    if (!refTabWrapper.current || !citedTabWrapper.current || !fixedButtonHeader.current) return;
+    if (!refSection.current || !citedSection.current || !fixedButtonHeader.current) return;
 
     let destination = 0;
     if (tab === AvailablePaperShowTab.ref) {
-      destination = refTabWrapper.current.offsetTop - fixedButtonHeader.current.clientHeight;
+      destination = refSection.current.offsetTop - fixedButtonHeader.current.clientHeight;
     } else if (tab === AvailablePaperShowTab.cited) {
-      destination = citedTabWrapper.current.offsetTop - fixedButtonHeader.current.clientHeight;
+      destination = citedSection.current.offsetTop - fixedButtonHeader.current.clientHeight;
     }
 
     window.scrollTo(0, destination);
   }
 
   if (!paper || !paperId) return null;
+
+  const activeTabInFixedHeader = getActiveTab(currentPosition);
 
   return (
     <div className={s.container}>
@@ -222,7 +269,6 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
         <div className={s.abstractContent} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.abstract) }} />
       </div>
       <div>View PDF</div>
-
       <div
         ref={fixedButtonHeader}
         className={classNames({
@@ -241,21 +287,29 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = props => {
             />
           </div>
         )}
-        {(currentPosition === 'onRefList' || currentPosition === 'onCitedList') && (
+        {!!activeTabInFixedHeader && (
           <div className={s.fixedRefCitedTab}>
-            <MobilePaperShowTab active={AvailablePaperShowTab.ref} onClick={handleClickPaperShowTab} paper={paper} />
+            <MobilePaperShowTab active={activeTabInFixedHeader} onClick={handleClickPaperShowTab} paper={paper} />
           </div>
         )}
       </div>
-
-      <div ref={relatedTabWrapper}>
-        <MobilePaperShowTab active={AvailablePaperShowTab.related} onClick={handleClickPaperShowTab} paper={paper} />
-        <MobileRelatedPapers paperIds={relatedPaperIds} className={s.relatedPapers} />
-      </div>
-      <div className={s.refCitedSection} ref={refTabWrapper}>
+      {relatedPaperIds &&
+        relatedPaperIds.length > 0 && (
+          <>
+            <div ref={relatedTabWrapper}>
+              <MobilePaperShowTab
+                active={AvailablePaperShowTab.related}
+                onClick={handleClickPaperShowTab}
+                paper={paper}
+              />
+            </div>
+            <MobileRelatedPapers paperIds={relatedPaperIds} className={s.relatedPapers} />
+          </>
+        )}
+      <div className={s.refCitedSection} ref={refSection}>
         <MobileRefCitedPapers type="reference" paperId={paperId} paperCount={paper.referenceCount} />
       </div>
-      <div className={s.refCitedSection} ref={citedTabWrapper}>
+      <div className={s.refCitedSection} ref={citedSection}>
         <MobileRefCitedPapers type="cited" paperId={paperId} paperCount={paper.citedCount} />
       </div>
     </div>

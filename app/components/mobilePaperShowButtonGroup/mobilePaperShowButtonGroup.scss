@@ -1,0 +1,13 @@
+.buttonWrapper {
+  flex: 1 0 auto;
+}
+
+.buttonWrapper + .buttonWrapper {
+  margin-left: 8px;
+}
+
+.citeButton {
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+}

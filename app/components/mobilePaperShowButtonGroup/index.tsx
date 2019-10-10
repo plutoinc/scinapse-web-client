@@ -5,6 +5,9 @@ import SourceButton from '../common/paperItem/sourceButton';
 import CiteButton from '../common/paperItem/citeButton';
 import CollectionButton from '../common/paperItem/collectionButton';
 
+const s = require('./mobilePaperShowButtonGroup.scss');
+const useStyles = require('isomorphic-style-loader/useStyles');
+
 interface Props {
   paper: Paper;
   saved: boolean;
@@ -15,11 +18,18 @@ interface Props {
 }
 
 const MobilePaperShowButtonGroup: FC<Props> = ({ paper, pageType, actionArea, paperSource, saved, className }) => {
+  useStyles(s);
   return (
     <div className={className}>
-      <CiteButton paper={paper} pageType={pageType} actionArea={actionArea} />
-      <SourceButton paper={paper} pageType={pageType} actionArea={actionArea} paperSource={paperSource} />
-      <CollectionButton paper={paper} saved={!!saved} pageType={pageType} actionArea={actionArea} />
+      <div className={s.buttonWrapper}>
+        <CiteButton className={s.citeButton} paper={paper} pageType={pageType} actionArea={actionArea} />
+      </div>
+      <div className={s.buttonWrapper}>
+        <SourceButton paper={paper} pageType={pageType} actionArea={actionArea} paperSource={paperSource} />
+      </div>
+      <div className={s.buttonWrapper}>
+        <CollectionButton paper={paper} saved={!!saved} pageType={pageType} actionArea={actionArea} />
+      </div>
     </div>
   );
 };

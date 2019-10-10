@@ -5,7 +5,7 @@ const s = require('./paperShowTabItem.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
 
 export const enum AvailablePaperShowTab {
-  ref,
+  ref = 1,
   cited,
   related,
 }
