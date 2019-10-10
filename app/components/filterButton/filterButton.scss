@@ -48,16 +48,15 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   margin-left: 4px;
 
   svg {
     display: inline-block;
     vertical-align: top;
-    width: 9px;
-    height: 5px;
-    color: $black0;
+    width: 14px;
+    height: 14px;
     transition: transform 150ms ease;
   }
 
