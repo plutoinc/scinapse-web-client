@@ -286,7 +286,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
             <ul className={styles.popperPaper}>
               <li className={styles.newCollectionWrapper}>
                 <div className={styles.newCollectionItem} onClick={this.handleClickNewCollectionButton}>
-                  <Icon icon="SMALL_PLUS" className={styles.plusIcon} />
+                  <Icon icon="PLUS" className={styles.plusIcon} />
                   <span className={styles.newCollectionContext}>New Collection</span>
                 </div>
                 <div className={styles.newCollectionCancel} onClick={this.handleCloseCollectionDropdown}>

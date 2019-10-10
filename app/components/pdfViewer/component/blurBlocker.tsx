@@ -42,7 +42,7 @@ const BlurBlocker: React.FC<BlurBlockerProps> = ({ paperId }) => {
     >
       <div className={s.btnLikeText}>By signing up, view conclusion and full text.</div>
       <div className={s.subText}>Read More</div>
-      <Icon icon="DOUBLE_ARROW_DOWN" className={s.arrowIcon} />
+      <Icon icon="ARROW_DOWN" className={s.FarrowIcon} />
     </div>
   );
 };

@@ -5,7 +5,7 @@ interface IconProps extends React.SVGAttributes<SVGElement> {
   onClick?: (param: any) => void;
 }
 
-const ICONS: { [key: string]: any } = {
+export const ICONS: { [key: string]: any } = {
   CITATION: require('./citation.svg'),
   EMAIL: require('./email.svg'),
   EMAIL_VERIFICATION_COMPLETE: require('./email-verification-complete.svg'),
@@ -24,7 +24,6 @@ const ICONS: { [key: string]: any } = {
   SEARCH: require('./search.svg'),
   VERIFICATION_EMAIL_ICON: require('./verification-email-icon.svg'),
   ELLIPSIS: require('./ellipsis.svg'),
-  SMALL_PLUS: require('./plus.svg'),
   PLUS: require('./plus.svg'),
   MINUS: require('./minus.svg'),
   ARROW_UP: require('./arrow-up.svg'),
@@ -42,7 +41,6 @@ const ICONS: { [key: string]: any } = {
   TRASH_CAN: require('./trash-can.svg'),
   COLLECITON_LIST: require('./list.svg'),
   AUTHOR_MORE_ICON: require('./author-more-item.svg'),
-  TILDE: require('./tilde.svg'),
   COPY_DOI: require('./copy.svg'),
   CHECK: require('./check.svg'),
   ADD_NOTE: require('./add-note.svg'),
@@ -62,13 +60,12 @@ const ICONS: { [key: string]: any } = {
   BACK: require('./back.svg'),
   MATCHED_PAPER: require('./matched-paper.svg'),
   RELOAD: require('./reload.svg'),
-  DOUBLE_ARROW_DOWN: require('./double-arrow-down.svg'),
   SCINAPSE_HOME_LOGO: require('./scinapse-home-logo.svg'),
   SCINAPSE_IMPROVEMENT_LOGO: require('./scinapse-improvement-logo.svg'),
   SOURCE: require('./source.svg'),
   SHARE: require('./share.svg'),
-  STAR_BADGE: require('./star-badge.svg'),
-  FEEDBACK_LABEL: require('./feedback-label.svg'),
+  BADGE: require('./badge.svg'),
+  FEEDBACK: require('./feedback.svg'),
   ERROR: require('./error.svg'),
   ALERT: require('./alert.svg'),
   ALERT_LINE: require('./alert-line.svg'),
