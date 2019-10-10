@@ -21,6 +21,9 @@ const keywordSettingsSlice = createSlice({
     failedToConnectKeywordSettingsAPI(state) {
       return { ...state, isLoading: false };
     },
+    clearToKeywordSettings(state) {
+      return { ...state, keywords: [] };
+    },
   },
 });
 
@@ -28,6 +31,7 @@ export const {
   startToConnectKeywordSettingsAPI,
   succeedToConnectKeywordSettingsAPI,
   failedToConnectKeywordSettingsAPI,
+  clearToKeywordSettings,
 } = keywordSettingsSlice.actions;
 
 export default keywordSettingsSlice.reducer;
