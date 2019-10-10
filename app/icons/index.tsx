@@ -44,7 +44,7 @@ const ICONS: { [key: string]: any } = {
   COLLECITON_LIST: require('./list.svg'),
   AUTHOR_MORE_ICON: require('./author-more-item.svg'),
   TILDE: require('./tilde.svg'),
-  COPY_DOI: require('./copy-doi.svg'),
+  COPY_DOI: require('./copy.svg'),
   CHECK: require('./check.svg'),
   ADD_NOTE: require('./add-note.svg'),
   NOTED: require('./noted.svg'),
