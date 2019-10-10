@@ -195,6 +195,7 @@ const ImprovedHome: React.FC<Props> = props => {
               <Icon icon="SCINAPSE_HOME_LOGO" className={styles.scinapseHomeLogo} />
             </div>
             <div className={styles.subTitle}>Academic Search Engine</div>
+
             <div tabIndex={0} className={styles.searchInputForm}>
               <SearchQueryInput
                 maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
