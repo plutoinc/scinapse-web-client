@@ -5,8 +5,8 @@
   border: solid 1px $gray400;
   background-color: white;
   font-size: 14px;
-  line-height: 1;
-  padding: 7px 8px;
+  line-height: 16px;
+  padding: 8px;
   color: $main_blue0;
   cursor: pointer;
 }
@@ -15,13 +15,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 10px;
-  height: 10px;
-  margin-right: 8px;
+  margin-right: 4px;
+  width: 16px;
+  height: 16px;
 
   svg {
-    width: 10px;
-    height: 10px;
+    width: 16px;
+    height: 16px;
   }
 }
 

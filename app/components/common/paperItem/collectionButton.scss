@@ -1,13 +1,14 @@
 .button {
   border-radius: 4px;
   background-color: $main_blue0;
-  padding: 7px 12px 7px 8px;
+  padding: 8px 12px 8px 8px;
   display: flex;
   align-items: center;
   color: white;
   cursor: pointer;
   font-size: 14px;
-  line-height: 1;
+  line-height: 16px;
+  border: 1px solid;
 
   .bookmarkIcon {
     display: flex;
