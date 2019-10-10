@@ -61,7 +61,7 @@ const ShareDropdownContent: React.FC<{ userCollection: Collection }> = ({ userCo
             getPageToSharing('COPIED', userCollection.id);
           }}
         >
-          <Icon icon="LINK" className={styles.shareIcon} />
+          <Icon icon="EXTERNAL_SOURCE" className={styles.shareIcon} />
         </a>
         <a
           className={styles.shareBtn}
