@@ -15,11 +15,11 @@
 
   .arrowIcon {
     @include flex-center-vertical-horizontal(flex);
-    color: $gray500;
+    color: $gray600;
 
     svg {
-      width: 24px;
-      height: 24px;
+      width: 16px;
+      height: 16px;
     }
   }
 

@@ -254,7 +254,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           key={collection.id}
         >
           <span className={styles.collectionTitle}>{collection.title}</span>
-          {collection.containsSelected && <Icon icon="BOOKMARK_GRAY" className={styles.bookmarkIcon} />}
+          {collection.containsSelected && <Icon icon="BOOKMARK" className={styles.bookmarkIcon} />}
         </li>
       ));
 
@@ -596,7 +596,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           classes={{ tooltip: styles.arrowBottomTooltip }}
         >
           <div>
-            <Icon className={styles.saveButtonIcon} icon="BOOKMARK_THIN" />
+            <Icon className={styles.saveButtonIcon} icon="BOOKMARK" />
             <span>Saved</span>
           </div>
         </Tooltip>
@@ -612,7 +612,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         classes={{ tooltip: styles.arrowBottomTooltip }}
       >
         <div>
-          <Icon className={styles.saveButtonIcon} icon="BOOKMARK_THIN" />
+          <Icon className={styles.saveButtonIcon} icon="BOOKMARK" />
           <span>Save</span>
         </div>
       </Tooltip>
