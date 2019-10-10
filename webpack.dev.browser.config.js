@@ -4,7 +4,7 @@ const LoadablePlugin = require('@loadable/webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: ['@babel/polyfill', './app/clientIndex.tsx'],
   output: {
     path: path.resolve(__dirname, 'dist', 'client'),
@@ -17,7 +17,6 @@ module.exports = {
   },
   optimization: {
     minimize: false,
-    nodeEnv: 'production',
     splitChunks: {
       chunks: 'all',
     },
