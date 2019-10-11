@@ -17,7 +17,7 @@ export const ICONS: { [key: string]: any } = {
   TWITTER_LOGO: require('./twitter-logo.svg'),
   FULL_NAME_ICON: require('./author-filled.svg'),
   LAST_PAGE: require('./last-page.svg'),
-  NEXT_PAGE: require('./next-page.svg'),
+  NEXT_PAGE: require('./arrow-right.svg'),
   SCINAPSE_LOGO: require('./scinapse-logo.svg'),
   SCINAPSE_LOGO_SMALL: require('./scinapse-logo-small.svg'),
   PASSWORD: require('./password.svg'),
