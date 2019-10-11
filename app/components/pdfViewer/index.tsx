@@ -26,6 +26,7 @@ import { denormalize } from 'normalizr';
 const { Document, Page, pdfjs } = require('react-pdf');
 const styles = require('./pdfViewer.scss');
 
+const DIRECT_PDF_PATH_PREFIX = 'https://asset-pdf.scinapse.io/';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function trackClickButton(actionTag: Scinapse.ActionTicket.ActionTagType, paperId: number) {
@@ -87,6 +88,7 @@ interface OnClickViewMorePdfBtnParams {
   paperId: number;
   dispatch: Dispatch<any>;
 }
+
 async function onClickViewMorePdfBtn(params: OnClickViewMorePdfBtnParams) {
   const { paperId, dispatch } = params;
   trackClickButton('viewMorePDF', paperId);
@@ -168,7 +170,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
 
   React.useEffect(
     () => {
-      if (pdfBlob || PDFViewerState.isLoading) return;
+      if (pdfBlob || paper.bestPdf.path || PDFViewerState.isLoading) return;
 
       dispatch(ActionCreators.startToFetchPDF());
       fetchPDFFromAPI(paper, cancelTokenSource.current, dispatch)
@@ -196,7 +198,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
     [dispatch, paper.id]
   );
 
-  if (PDFViewerState.isLoading && !pdfBlob) {
+  if (PDFViewerState.isLoading && !pdfBlob && !paper.bestPdf.path) {
     return <ProgressSpinner />;
   }
 
@@ -216,7 +218,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
     );
   }
 
-  if (!!pdfBlob) {
+  if (!!pdfBlob || !!paper.bestPdf.path) {
     const ReadAllPDFButton = (
       <div ref={viewMorePDFBtnEl}>
         <ScinapseButton
@@ -246,7 +248,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
     return (
       <div ref={wrapperNode} className={styles.contentWrapper}>
         <Document
-          file="https://asset-pdf.scinapse.io/dev/2118020653/2118020653.pdf"
+          file={!!paper.bestPdf.path ? `${DIRECT_PDF_PATH_PREFIX}${paper.bestPdf.path}` : pdfBlob}
           error={null}
           loading={
             <div className={styles.loadingContainerWrapper}>
