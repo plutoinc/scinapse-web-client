@@ -12,3 +12,9 @@
     border-bottom: 2px solid $black0;
   }
 }
+
+@media (max-width: 375px) {
+  .tabItem {
+    font-size: 14px;
+  }
+}

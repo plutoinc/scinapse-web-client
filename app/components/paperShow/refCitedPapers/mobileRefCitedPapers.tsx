@@ -1,8 +1,9 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect, useState, useRef } from 'react';
 import { isEqual } from 'lodash';
 import { useSelector } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
+import ArticleSpinner from '../../common/spinner/articleSpinner';
 import { REF_CITED_CONTAINER_TYPE } from '../constants';
 import MobilePaperShowItem from '../../mobilePaperShowItem/mobilePaperShowItem';
 import RefCitedPagination from './refCitedPagination';
@@ -28,12 +29,15 @@ const MobileRefCitedPapers: FC<Props> = ({ type, paperId, paperCount, history, l
   const paperIds: number[] = useSelector((state: AppState) => {
     return type === 'reference' ? state.paperShow.referencePaperIds : state.paperShow.citedPaperIds;
   }, isEqual);
+  const isLoading = useSelector((state: AppState) => {
+    return type === 'reference' ? state.paperShow.isLoadingReferencePapers : state.paperShow.isLoadingCitedPapers;
+  });
 
-  const [query, setQuery] = React.useState('');
-  const [sortOption, setSortOption] = React.useState<PAPER_LIST_SORT_TYPES>('NEWEST_FIRST');
+  const [query, setQuery] = useState('');
+  const [sortOption, setSortOption] = useState<PAPER_LIST_SORT_TYPES>('NEWEST_FIRST');
 
   const queryParamsObject = getQueryParamsObject(location.search);
-  React.useEffect(
+  useEffect(
     () => {
       if (type === 'reference') {
         setSortOption(queryParamsObject['ref-sort'] || 'NEWEST_FIRST');
@@ -93,6 +97,14 @@ const MobileRefCitedPapers: FC<Props> = ({ type, paperId, paperCount, history, l
 
   const title = type === 'reference' ? `References (${paperCount || 0})` : `Citations (${paperCount || 0})`;
   const placeholder = type === 'reference' ? 'Search papers in references' : 'Search papers in citations';
+
+  if (isLoading) {
+    return (
+      <div className={s.loadingSection}>
+        <ArticleSpinner />
+      </div>
+    );
+  }
 
   if (paperIds.length === 0) {
     return (

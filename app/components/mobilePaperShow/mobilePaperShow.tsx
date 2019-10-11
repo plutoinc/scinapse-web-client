@@ -42,7 +42,7 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper }) => {
   const [currentPosition, setCurrentPosition] = React.useState<CurrentPosition>('abovePaperInfo');
   const lastPosition = React.useRef<CurrentPosition>('abovePaperInfo');
   const buttonGroupWrapper = React.useRef<HTMLDivElement | null>(null);
-  const fixedButtonHeader = React.useRef<HTMLDivElement | null>(null);
+  const fixedTab = React.useRef<HTMLDivElement | null>(null);
   const refSection = React.useRef<HTMLDivElement | null>(null);
   const citedSection = React.useRef<HTMLDivElement | null>(null);
   const relatedTabWrapper = React.useRef<HTMLDivElement | null>(null);
@@ -51,25 +51,20 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper }) => {
     function handleScroll() {
       if (!ticking) {
         requestAnimationFrame(() => {
-          if (
-            !buttonGroupWrapper.current ||
-            !fixedButtonHeader.current ||
-            !refSection.current ||
-            !citedSection.current
-          ) {
+          if (!buttonGroupWrapper.current || !fixedTab.current || !refSection.current || !citedSection.current) {
             return (ticking = false);
           }
 
           const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
           const currentScrollTop = scrollTop + NAVBAR_HEIGHT;
           const buttonGroupOffsetTop = buttonGroupWrapper.current.offsetTop - 16 /* margin */;
-          const refSectionOffsetTop = refSection.current.offsetTop - fixedButtonHeader.current.clientHeight;
-          const citedSectionOffsetTop = citedSection.current.offsetTop - fixedButtonHeader.current.clientHeight;
+          const refSectionOffsetTop = refSection.current.offsetTop - fixedTab.current.clientHeight;
+          const citedSectionOffsetTop = citedSection.current.offsetTop - fixedTab.current.clientHeight;
 
           if (relatedTabWrapper.current) {
             const relatedTabWrapperOffsetTop =
               relatedTabWrapper.current.offsetTop -
-              fixedButtonHeader.current.clientHeight +
+              fixedTab.current.clientHeight +
               relatedTabWrapper.current.clientHeight;
 
             if (currentScrollTop < buttonGroupOffsetTop && lastPosition.current !== 'abovePaperInfo') {
@@ -138,13 +133,16 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper }) => {
   }, []);
 
   function handleClickPaperShowTab(tab: AvailablePaperShowTab) {
-    if (!refSection.current || !citedSection.current || !fixedButtonHeader.current) return;
+    if (!refSection.current || !citedSection.current || !fixedTab.current) return;
 
     let destination = 0;
-    if (tab === AvailablePaperShowTab.ref) {
-      destination = refSection.current.offsetTop - fixedButtonHeader.current.clientHeight;
+    if (relatedTabWrapper.current && tab === AvailablePaperShowTab.related) {
+      destination = relatedTabWrapper.current.offsetTop - fixedTab.current.clientHeight - NAVBAR_HEIGHT;
+    } else if (tab === AvailablePaperShowTab.ref) {
+      // NOTE: 12 means kind of margin-top
+      destination = refSection.current.offsetTop - fixedTab.current.clientHeight - NAVBAR_HEIGHT;
     } else if (tab === AvailablePaperShowTab.cited) {
-      destination = citedSection.current.offsetTop - fixedButtonHeader.current.clientHeight;
+      destination = citedSection.current.offsetTop - fixedTab.current.clientHeight - NAVBAR_HEIGHT;
     }
 
     window.scrollTo(0, destination);
@@ -196,7 +194,7 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper }) => {
         </Button>
       )}
       <div
-        ref={fixedButtonHeader}
+        ref={fixedTab}
         className={classNames({
           [s.fixedTab]: true,
           [s.active]: currentPosition !== 'abovePaperInfo',

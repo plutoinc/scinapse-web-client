@@ -7,7 +7,6 @@ import PDFViewer from '../pdfViewer';
 import { AppState } from '../../reducers';
 import { withStyles } from '../../helpers/withStylesHelper';
 import ArticleSpinner from '../common/spinner/articleSpinner';
-import { clearPaperShowState } from '../../actions/paperShow';
 import ActionBar from '../../containers/paperShowActionBar';
 import FOSList from './components/fosList';
 import ReferencePapers from './refCitedPapers/referencePapers';

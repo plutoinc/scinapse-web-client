@@ -182,7 +182,7 @@ interface FetchMobilePaperShowData {
   cancelToken: CancelToken;
 }
 
-export const fetchMobilePaperShowData = ({
+export const fetchPaperShowDataAtClient = ({
   paperId,
   isLoggedIn,
   cancelToken,

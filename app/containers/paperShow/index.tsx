@@ -10,7 +10,7 @@ import { UserDevice } from '../../components/layouts/reducer';
 import MobilePaperShow from '../../components/mobilePaperShow/mobilePaperShow';
 import PaperShow from '../../components/paperShow';
 import { getMemoizedPaper } from './select';
-import { fetchMobilePaperShowData } from '../../actions/paperShow';
+import { fetchPaperShowDataAtClient } from '../../actions/paperShow';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 import { fetchCitedPaperData, fetchRefPaperData } from './sideEffect';
 
@@ -39,7 +39,7 @@ const PaperShowContainer: FC<Props> = ({ location, match }) => {
       if (!shouldPatch) return;
 
       dispatch(
-        fetchMobilePaperShowData({
+        fetchPaperShowDataAtClient({
           paperId: parseInt(match.params.paperId, 10),
           isLoggedIn: currentUser.isLoggedIn,
           cancelToken: cancelToken.token,
