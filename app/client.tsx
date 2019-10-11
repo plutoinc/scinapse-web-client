@@ -6,7 +6,7 @@ import * as ReactGA from 'react-ga';
 import * as ReactDom from 'react-dom';
 import { Store, AnyAction } from 'redux';
 import { Provider } from 'react-redux';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider, createMuiTheme, createGenerateClassName } from '@material-ui/core/styles';
 import EnvChecker from './helpers/envChecker';
 import ErrorTracker from './helpers/errorHandler';
 import { ConnectedRootRoutes as RootRoutes } from './routes';
@@ -18,6 +18,7 @@ import { getCurrentPageType } from './components/locationListener';
 import { ThunkDispatch } from 'redux-thunk';
 import { getGAId, getOptimizeId } from './helpers/handleGA';
 const StyleContext = require('isomorphic-style-loader/StyleContext');
+const JssProvider = require('react-jss/lib/JssProvider').default;
 declare var Sentry: any;
 declare var FB: any;
 
@@ -165,6 +166,7 @@ class PlutoRenderer {
         useNextVariants: true,
       },
     });
+    const generateClassName = createGenerateClassName();
 
     const insertCss = (...styles: any[]) => {
       const removeCss = styles.map(style => style._insertCss());
@@ -176,9 +178,11 @@ class PlutoRenderer {
         <ErrorTracker>
           <Provider store={this.store}>
             <BrowserRouter>
-              <MuiThemeProvider theme={theme}>
-                <Main />
-              </MuiThemeProvider>
+              <JssProvider generateClassName={generateClassName}>
+                <MuiThemeProvider theme={theme}>
+                  <Main />
+                </MuiThemeProvider>
+              </JssProvider>
             </BrowserRouter>
           </Provider>
         </ErrorTracker>

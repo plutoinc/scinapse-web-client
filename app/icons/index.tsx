@@ -5,7 +5,7 @@ interface IconProps extends React.SVGAttributes<SVGElement> {
   onClick?: (param: any) => void;
 }
 
-const ICONS: { [key: string]: any } = {
+export const ICONS: { [key: string]: any } = {
   CITED: require('./cited.svg'),
   EMAIL_ICON: require('./email-icon.svg'),
   EMAIL_VERIFICATION_COMPLETE: require('./email-verification-complete.svg'),
