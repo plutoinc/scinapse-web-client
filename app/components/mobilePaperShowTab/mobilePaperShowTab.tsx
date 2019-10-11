@@ -6,17 +6,20 @@ interface Props {
   active: AvailablePaperShowTab;
   onClick: (target: AvailablePaperShowTab) => void;
   paper: Paper;
+  shouldShowRelatedTab: boolean;
 }
 
-const MobilePaperShowTab: FC<Props> = ({ active, onClick, paper }) => {
+const MobilePaperShowTab: FC<Props> = ({ active, onClick, paper, shouldShowRelatedTab }) => {
   return (
     <div>
-      <Tab
-        content="Related"
-        active={active === AvailablePaperShowTab.related}
-        onClick={onClick}
-        type={AvailablePaperShowTab.related}
-      />
+      {shouldShowRelatedTab && (
+        <Tab
+          content="Related"
+          active={active === AvailablePaperShowTab.related}
+          onClick={onClick}
+          type={AvailablePaperShowTab.related}
+        />
+      )}
       <Tab
         content={`References (${paper.referenceCount})`}
         active={active === AvailablePaperShowTab.ref}

@@ -11,19 +11,20 @@ import MobilePaperShow from '../../components/mobilePaperShow/mobilePaperShow';
 import PaperShow from '../../components/paperShow';
 import { getMemoizedPaper } from './select';
 import { fetchPaperShowDataAtClient } from '../../actions/paperShow';
-import getQueryParamsObject from '../../helpers/getQueryParamsObject';
-import { fetchCitedPaperData, fetchRefPaperData } from './sideEffect';
+import ActionTicketManager from '../../helpers/actionTicketManager';
+import restoreScroll from '../../helpers/scrollRestoration';
 
 type Props = RouteComponentProps<PaperShowMatchParams>;
 
-const PaperShowContainer: FC<Props> = ({ location, match }) => {
+const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
   const dispatch = useDispatch();
   const shouldPatch = useSelector(
     (state: AppState) => !state.configuration.succeedAPIFetchAtServer || state.configuration.renderedAtClient
   );
   const lastShouldPatch = useRef(shouldPatch);
+  const lastPaperId = useRef(0);
 
-  const paper = useSelector((state: AppState) => getMemoizedPaper(state));
+  const paper = useSelector((state: AppState) => getMemoizedPaper(state), isEqual);
   const isMobile = useSelector((state: AppState) => state.layout.userDevice === UserDevice.MOBILE);
   const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
 
@@ -38,68 +39,45 @@ const PaperShowContainer: FC<Props> = ({ location, match }) => {
       // NOTE: prevent double patching
       if (!shouldPatch) return;
 
-      dispatch(
+      const paperId = parseInt(match.params.paperId);
+      if (paperId === lastPaperId.current) return;
+
+      const promise = dispatch(
         fetchPaperShowDataAtClient({
-          paperId: parseInt(match.params.paperId, 10),
+          paperId,
           isLoggedIn: currentUser.isLoggedIn,
           cancelToken: cancelToken.token,
         })
       );
 
-      return () => {
-        cancelToken.cancel();
-      };
-    },
-    [location.pathname, currentUser.isLoggedIn, dispatch, match, shouldPatch]
-  );
-
-  const paperId = paper && paper.id;
-  const queryParams = getQueryParamsObject(location.search);
-  const refPage = queryParams['ref-page'] || 1;
-  const refQuery = queryParams['ref-query'] || '';
-  const refSort = queryParams['ref-sort'] || 'NEWEST_FIRST';
-  const citedPage = queryParams['cited-page'] || 1;
-  const citedQuery = queryParams['cited-query'] || '';
-  const citedSort = queryParams['cited-sort'] || 'NEWEST_FIRST';
-  React.useEffect(
-    () => {
-      if (!paperId) return;
-      // NOTE: prevent patching from the change of shouldPatch variable
-      if (shouldPatch && !lastShouldPatch.current) {
-        lastShouldPatch.current = true;
-        return;
-      }
-      // NOTE: prevent double patching
-      if (!shouldPatch) return;
-
-      const cancelToken = axios.CancelToken.source();
-      dispatch(fetchRefPaperData(paperId, refPage, refQuery, refSort, cancelToken.token));
+      Promise.all([promise])
+        .then(() => {
+          ActionTicketManager.trackTicket({
+            pageType: 'paperShow',
+            actionType: 'view',
+            actionArea: '200',
+            actionTag: 'pageView',
+            actionLabel: String(paperId),
+          });
+          lastPaperId.current = paperId;
+          restoreScroll(location.key);
+        })
+        .catch(err => {
+          ActionTicketManager.trackTicket({
+            pageType: 'paperShow',
+            actionType: 'view',
+            actionArea: String(err.status),
+            actionTag: 'pageView',
+            actionLabel: String(paperId),
+          });
+          history.push(`/${err.status}`);
+        });
 
       return () => {
         cancelToken.cancel();
       };
     },
-    [refPage, refQuery, refSort, dispatch, paperId, shouldPatch]
-  );
-  React.useEffect(
-    () => {
-      if (!paperId) return;
-      // NOTE: prevent patching from the change of shouldPatch variable
-      if (shouldPatch && !lastShouldPatch.current) {
-        lastShouldPatch.current = true;
-        return;
-      }
-      // NOTE: prevent double patching
-      if (!shouldPatch) return;
-
-      const cancelToken = axios.CancelToken.source();
-      dispatch(fetchCitedPaperData(paperId, citedPage, citedQuery, citedSort, cancelToken.token));
-
-      return () => {
-        cancelToken.cancel();
-      };
-    },
-    [citedPage, citedQuery, citedSort, dispatch, paperId, shouldPatch]
+    [location, currentUser.isLoggedIn, dispatch, match, shouldPatch, history]
   );
 
   if (!paper) return null;

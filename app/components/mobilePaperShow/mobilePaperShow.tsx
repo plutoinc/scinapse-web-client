@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { isEqual } from 'lodash';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { formulaeToHTMLStr } from '../../helpers/displayFormula';
 import { AppState } from '../../reducers';
@@ -16,6 +17,9 @@ import MobileRefCitedPapers from '../paperShow/refCitedPapers/mobileRefCitedPape
 import Button from '../common/button';
 import Icon from '../../icons';
 import { Paper } from '../../model/paper';
+import { PaperShowMatchParams } from '../../containers/paperShow/types';
+import getQueryParamsObject from '../../helpers/getQueryParamsObject';
+import RefCitedPapersContainer from '../../containers/refCitedPapersContainer';
 
 const s = require('./mobilePaperShow.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
@@ -23,9 +27,9 @@ const NAVBAR_HEIGHT = parseInt(s.headerHeight, 10);
 
 let ticking = false;
 
-interface MobilePaperShowProps {
+type MobilePaperShowProps = RouteComponentProps<PaperShowMatchParams> & {
   paper: Paper;
-}
+};
 type CurrentPosition = 'abovePaperInfo' | 'underPaperInfo' | 'onRelatedList' | 'onRefList' | 'onCitedList';
 
 function getActiveTab(currentPosition: CurrentPosition): AvailablePaperShowTab | null {
@@ -35,7 +39,7 @@ function getActiveTab(currentPosition: CurrentPosition): AvailablePaperShowTab |
   return null;
 }
 
-const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper }) => {
+const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper, location }) => {
   useStyles(s);
   const relatedPaperIds = useSelector((state: AppState) => state.relatedPapersState.paperIds, isEqual);
 
@@ -46,6 +50,13 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper }) => {
   const refSection = React.useRef<HTMLDivElement | null>(null);
   const citedSection = React.useRef<HTMLDivElement | null>(null);
   const relatedTabWrapper = React.useRef<HTMLDivElement | null>(null);
+
+  // React.useEffect(
+  //   () => {
+  //     window.scrollTo(0, 0);
+  //   },
+  //   [paper.id]
+  // );
 
   React.useEffect(() => {
     function handleScroll() {
@@ -149,6 +160,14 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper }) => {
   }
 
   const activeTabInFixedHeader = getActiveTab(currentPosition);
+  const shouldShowRelatedTab = relatedPaperIds && relatedPaperIds.length > 0;
+  const queryParams = getQueryParamsObject(location.search);
+  const refPage = queryParams['ref-page'] || 1;
+  const refQuery = queryParams['ref-query'] || '';
+  const refSort = queryParams['ref-sort'] || 'NEWEST_FIRST';
+  const citedPage = queryParams['cited-page'] || 1;
+  const citedQuery = queryParams['cited-query'] || '';
+  const citedSort = queryParams['cited-sort'] || 'NEWEST_FIRST';
   // TODO: add fallback logic for PDF address
   const pdfURL = paper.bestPdf && paper.bestPdf.hasBest && paper.bestPdf.url;
 
@@ -214,34 +233,55 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper }) => {
           )}
           {!!activeTabInFixedHeader && (
             <div className={s.fixedRefCitedTab}>
-              <MobilePaperShowTab active={activeTabInFixedHeader} onClick={handleClickPaperShowTab} paper={paper} />
+              <MobilePaperShowTab
+                active={activeTabInFixedHeader}
+                onClick={handleClickPaperShowTab}
+                paper={paper}
+                shouldShowRelatedTab={shouldShowRelatedTab}
+              />
             </div>
           )}
         </div>
       </div>
       <div className={s.paperListSection}>
-        {relatedPaperIds &&
-          relatedPaperIds.length > 0 && (
-            <>
-              <div ref={relatedTabWrapper} style={{ marginTop: '48px' }}>
-                <MobilePaperShowTab
-                  active={AvailablePaperShowTab.related}
-                  onClick={handleClickPaperShowTab}
-                  paper={paper}
-                />
-              </div>
-              <MobileRelatedPapers paperIds={relatedPaperIds} className={s.relatedPapers} />
-            </>
-          )}
+        {shouldShowRelatedTab && (
+          <>
+            <div ref={relatedTabWrapper} style={{ marginTop: '48px', marginBottom: '48px' }}>
+              <MobilePaperShowTab
+                active={AvailablePaperShowTab.related}
+                onClick={handleClickPaperShowTab}
+                shouldShowRelatedTab={shouldShowRelatedTab}
+                paper={paper}
+              />
+            </div>
+            <MobileRelatedPapers paperIds={relatedPaperIds} className={s.relatedPapers} />
+          </>
+        )}
         <div className={s.refCitedSection} ref={refSection}>
-          <MobileRefCitedPapers type="reference" paperId={paper.id} paperCount={paper.referenceCount} />
+          <RefCitedPapersContainer
+            type="reference"
+            parentPaperId={paper.id}
+            page={refPage}
+            sort={refSort}
+            query={refQuery}
+          >
+            <MobileRefCitedPapers type="reference" parentPaperId={paper.id} paperCount={paper.referenceCount} />
+          </RefCitedPapersContainer>
         </div>
         <div className={s.refCitedSection} ref={citedSection}>
-          <MobileRefCitedPapers type="cited" paperId={paper.id} paperCount={paper.citedCount} />
+          <RefCitedPapersContainer
+            type="cited"
+            parentPaperId={paper.id}
+            page={citedPage}
+            sort={citedSort}
+            query={citedQuery}
+          >
+            <MobileRefCitedPapers type="cited" parentPaperId={paper.id} paperCount={paper.citedCount} />
+          </RefCitedPapersContainer>
         </div>
       </div>
     </>
   );
 };
 
-export default MobilePaperShow;
+export default withRouter(MobilePaperShow);

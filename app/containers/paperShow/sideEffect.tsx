@@ -12,12 +12,13 @@ import { CurrentUser } from '../../model/currentUser';
 import { PaperShowMatchParams, PaperShowPageQueryParams } from './types';
 import { ActionCreators } from '../../actions/actionTypes';
 import { getRelatedPapers } from '../../actions/relatedPapers';
+import { PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
 
 export function fetchCitedPaperData(
   paperId: number,
   page: number = 1,
   query: string,
-  sort: string | null,
+  sort: PAPER_LIST_SORT_TYPES,
   cancelToken: CancelToken
 ) {
   return async (dispatch: Dispatch<any>) => {
@@ -37,7 +38,7 @@ export function fetchRefPaperData(
   paperId: number,
   page: number = 1,
   query: string,
-  sort: string | null,
+  sort: PAPER_LIST_SORT_TYPES,
   cancelToken: CancelToken
 ) {
   return async (dispatch: Dispatch<any>) => {

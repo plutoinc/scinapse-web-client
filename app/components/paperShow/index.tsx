@@ -40,6 +40,8 @@ import { getUserGroupName } from '../../helpers/abTestHelper';
 import { REQUEST_FULL_TEXT_DIALOG_EXPERIMENT } from '../../constants/abTestGlobalValue';
 import { requestFullTextDialogExperimentType } from '../../constants/abTestObject';
 import SimpleRequestFullTextDialog from '../requestFullTextDialog/fullTextDialog';
+import RefCitedPapersContainer from '../../containers/refCitedPapersContainer';
+import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -111,7 +113,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public async componentDidMount() {
-    const { paperShow, configuration, match } = this.props;
+    const { configuration } = this.props;
 
     const notRenderedAtServerOrJSAlreadyInitialized =
       !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
@@ -121,8 +123,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       this.scrollToRefCitedSection();
-    } else {
-      this.logPageView(match.params.paperId, paperShow.errorStatusCode);
     }
   }
 
@@ -144,8 +144,16 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public render() {
-    const { layout, paperShow, currentUser, paper, PDFViewerState } = this.props;
+    const { layout, paperShow, currentUser, paper, PDFViewerState, location } = this.props;
     const { isOnFullText, isOnCited, isOnRef } = this.state;
+
+    const queryParams = getQueryParamsObject(location.search);
+    const refPage = queryParams['ref-page'] || 1;
+    const refQuery = queryParams['ref-query'] || '';
+    const refSort = queryParams['ref-sort'] || 'NEWEST_FIRST';
+    const citedPage = queryParams['cited-page'] || 1;
+    const citedQuery = queryParams['cited-query'] || '';
+    const citedSort = queryParams['cited-sort'] || 'NEWEST_FIRST';
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -227,7 +235,18 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               </div>
               <div className={styles.otherPapers}>
                 <div className={styles.references}>
-                  <ReferencePapers isMobile={layout.userDevice !== UserDevice.DESKTOP} refTabEl={this.refTabWrapper} />
+                  <RefCitedPapersContainer
+                    type="reference"
+                    parentPaperId={paper.id}
+                    page={refPage}
+                    sort={refSort}
+                    query={refQuery}
+                  >
+                    <ReferencePapers
+                      isMobile={layout.userDevice !== UserDevice.DESKTOP}
+                      refTabEl={this.refTabWrapper}
+                    />
+                  </RefCitedPapersContainer>
                 </div>
               </div>
             </article>
@@ -241,7 +260,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <span className={styles.sectionCount}>{paper.citedCount}</span>
               </div>
               <div className={styles.otherPapers}>
-                <CitedPapers isMobile={layout.userDevice !== UserDevice.DESKTOP} citedTabEl={this.citedTabWrapper} />
+                <RefCitedPapersContainer
+                  type="cited"
+                  parentPaperId={paper.id}
+                  page={citedPage}
+                  sort={citedSort}
+                  query={citedQuery}
+                >
+                  <CitedPapers isMobile={layout.userDevice !== UserDevice.DESKTOP} citedTabEl={this.citedTabWrapper} />
+                </RefCitedPapersContainer>
               </div>
             </article>
           </div>
@@ -256,18 +283,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       </>
     );
   }
-
-  private logPageView = (paperId: string | number, errorStatus?: number | null) => {
-    if (!EnvChecker.isOnServer()) {
-      ActionTicketManager.trackTicket({
-        pageType: 'paperShow',
-        actionType: 'view',
-        actionArea: errorStatus ? String(errorStatus) : null,
-        actionTag: 'pageView',
-        actionLabel: String(paperId),
-      });
-    }
-  };
 
   private scrollToRefCitedSection = () => {
     const { paperShow, location } = this.props;

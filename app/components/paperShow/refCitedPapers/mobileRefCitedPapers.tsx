@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState, useRef } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { isEqual } from 'lodash';
 import { useSelector } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
@@ -21,10 +21,10 @@ const useStyles = require('isomorphic-style-loader/useStyles');
 type Props = RouteComponentProps<PaperShowMatchParams> & {
   type: REF_CITED_CONTAINER_TYPE;
   paperCount: number;
-  paperId: number;
+  parentPaperId: number;
 };
 
-const MobileRefCitedPapers: FC<Props> = ({ type, paperId, paperCount, history, location }) => {
+const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, history, location }) => {
   useStyles(s);
   const paperIds: number[] = useSelector((state: AppState) => {
     return type === 'reference' ? state.paperShow.referencePaperIds : state.paperShow.citedPaperIds;
@@ -68,11 +68,11 @@ const MobileRefCitedPapers: FC<Props> = ({ type, paperId, paperCount, history, l
       }
 
       history.push({
-        pathname: `/papers/${paperId}`,
+        pathname: `/papers/${parentPaperId}`,
         search: getStringifiedUpdatedQueryParams(queryParamsObject, pageQueryParams),
       });
     },
-    [type, paperId, queryParamsObject, history]
+    [type, parentPaperId, queryParamsObject, history]
   );
 
   const handleClickSortOption = useCallback(
@@ -86,11 +86,11 @@ const MobileRefCitedPapers: FC<Props> = ({ type, paperId, paperCount, history, l
       }
 
       history.push({
-        pathname: `/papers/${paperId}`,
+        pathname: `/papers/${parentPaperId}`,
         search: getStringifiedUpdatedQueryParams(queryParamsObject, pageQueryParams),
       });
     },
-    [type, paperId, queryParamsObject, history]
+    [type, parentPaperId, queryParamsObject, history]
   );
 
   if (!paperIds) return null;
@@ -147,7 +147,7 @@ const MobileRefCitedPapers: FC<Props> = ({ type, paperId, paperCount, history, l
           actionArea={type === 'reference' ? 'refList' : 'citedList'}
         />
       ))}
-      <RefCitedPagination type={type} paperId={paperId} isMobile />
+      <RefCitedPagination type={type} paperId={parentPaperId} isMobile />
     </>
   );
 };
