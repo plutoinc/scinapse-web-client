@@ -31,12 +31,12 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
   useEffect(
     () => {
       const cancelToken = axios.CancelToken.source();
-      // NOTE: prevent patching from the change of shouldPatch variable
+      // NOTE: prevent fetching from the change of shouldPatch variable
       if (shouldPatch && !lastShouldPatch.current) {
         lastShouldPatch.current = true;
         return;
       }
-      // NOTE: prevent double patching
+      // NOTE: prevent double fetching
       if (!shouldPatch) return;
 
       const paperId = parseInt(match.params.paperId);

@@ -20,7 +20,6 @@ export interface GetRefOrCitedPapersParams {
   page: number;
   query: string;
   sort: PAPER_LIST_SORT_TYPES | null;
-  cancelToken: CancelToken;
 }
 
 export interface GetPapersResult {

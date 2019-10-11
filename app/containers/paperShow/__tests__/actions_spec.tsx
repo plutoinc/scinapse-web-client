@@ -48,7 +48,6 @@ describe('Paper Show page actions', () => {
           page: 0,
           query: '',
           sort: null,
-          cancelToken: axios.CancelToken.source().token,
         };
 
         await store.dispatch(getReferencePapers(mockParams));
@@ -71,7 +70,6 @@ describe('Paper Show page actions', () => {
           page: 0,
           query: '',
           sort: null,
-          cancelToken: axios.CancelToken.source().token,
         };
 
         await store.dispatch(getReferencePapers(mockParams));

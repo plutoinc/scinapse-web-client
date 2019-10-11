@@ -8,6 +8,8 @@ import { PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
 import { fetchRefPaperData, fetchCitedPaperData } from '../paperShow/sideEffect';
 import { AppState } from '../../reducers';
 import { CurrentUser } from '../../model/currentUser';
+import alertToast from '../../helpers/makePlutoToastAction';
+import { ActionCreators } from '../../actions/actionTypes';
 
 interface Props {
   type: REF_CITED_CONTAINER_TYPE;
@@ -35,14 +37,14 @@ const RefCitedPapersContainer: FC<Props> = ({ type, parentPaperId, page, query, 
 
   useEffect(
     () => {
-      // NOTE: prevent patching from the change of shouldPatch variable
+      // NOTE: prevent fetching from the change of shouldPatch variable
       if (shouldPatch && !lastShouldPatch.current) {
         lastShouldPatch.current = true;
         return;
       }
-      // NOTE: prevent double patching
+      // NOTE: prevent double fetching
       if (!shouldPatch) return;
-
+      // NOTE: prevent unneeded fetching
       if (
         lastParentPaperId.current === parentPaperId &&
         lastPage.current === page &&
@@ -54,22 +56,27 @@ const RefCitedPapersContainer: FC<Props> = ({ type, parentPaperId, page, query, 
       }
 
       const fetchFunc = type === 'reference' ? fetchRefPaperData : fetchCitedPaperData;
-      const cancelToken = axios.CancelToken.source();
-      const promise = dispatch(fetchFunc(parentPaperId, page, query, sort, cancelToken.token));
+      const failedActionCreator =
+        type === 'reference' ? ActionCreators.failedToGetReferencePapers : ActionCreators.failedToGetCitedPapers;
+      const promise = dispatch(fetchFunc(parentPaperId, page, query, sort));
 
-      Promise.all([promise]).then(() => {
-        lastParentPaperId.current = parentPaperId;
-        lastPage.current = page;
-        lastQuery.current = query;
-        lastSort.current = sort;
-        lastIsLoggedIn.current = isLoggedIn;
-      });
-
-      return () => {
-        if (cancelToken) {
-          cancelToken.cancel();
-        }
-      };
+      Promise.all([promise])
+        .then(() => {
+          lastParentPaperId.current = parentPaperId;
+          lastPage.current = page;
+          lastQuery.current = query;
+          lastSort.current = sort;
+          lastIsLoggedIn.current = isLoggedIn;
+        })
+        .catch(err => {
+          if (!axios.isCancel(err)) {
+            alertToast({
+              type: 'error',
+              message: `Failed to get papers. ${err}`,
+            });
+            dispatch(failedActionCreator());
+          }
+        });
     },
     [page, query, sort, type, parentPaperId, dispatch, shouldPatch, isLoggedIn]
   );

@@ -65,60 +65,40 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToGetReferencePapers());
 
-    try {
-      const getPapersResult = await PaperAPI.getReferencePapers(params);
-      dispatch(ActionCreators.addEntity(getPapersResult));
-      dispatch(
-        ActionCreators.getReferencePapers({
-          paperIds: getPapersResult.result,
-          size: getPapersResult.size,
-          page: getPapersResult.page,
-          first: getPapersResult.first,
-          last: getPapersResult.last,
-          numberOfElements: getPapersResult.numberOfElements,
-          totalPages: getPapersResult.totalPages,
-          totalElements: getPapersResult.totalElements,
-        })
-      );
-    } catch (err) {
-      if (!axios.isCancel(err)) {
-        alertToast({
-          type: 'error',
-          message: `Failed to get papers. ${err}`,
-        });
-        dispatch(ActionCreators.failedToGetReferencePapers());
-      }
-    }
+    const getPapersResult = await PaperAPI.getReferencePapers(params);
+    dispatch(ActionCreators.addEntity(getPapersResult));
+    dispatch(
+      ActionCreators.getReferencePapers({
+        paperIds: getPapersResult.result,
+        size: getPapersResult.size,
+        page: getPapersResult.page,
+        first: getPapersResult.first,
+        last: getPapersResult.last,
+        numberOfElements: getPapersResult.numberOfElements,
+        totalPages: getPapersResult.totalPages,
+        totalElements: getPapersResult.totalElements,
+      })
+    );
   };
 }
 
 export function getCitedPapers(params: GetRefOrCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToGetCitedPapers());
-
-    try {
-      const getPapersResult = await PaperAPI.getCitedPapers(params);
-      dispatch(ActionCreators.addEntity(getPapersResult));
-      dispatch(
-        ActionCreators.getCitedPapers({
-          paperIds: getPapersResult.result,
-          size: getPapersResult.size,
-          page: getPapersResult.page,
-          first: getPapersResult.first,
-          last: getPapersResult.last,
-          numberOfElements: getPapersResult.numberOfElements,
-          totalPages: getPapersResult.totalPages,
-          totalElements: getPapersResult.totalElements,
-        })
-      );
-    } catch (err) {
-      if (!axios.isCancel(err)) {
-        alertToast({
-          type: 'error',
-          message: `Failed to get papers. ${err}`,
-        });
-      }
-    }
+    const getPapersResult = await PaperAPI.getCitedPapers(params);
+    dispatch(ActionCreators.addEntity(getPapersResult));
+    dispatch(
+      ActionCreators.getCitedPapers({
+        paperIds: getPapersResult.result,
+        size: getPapersResult.size,
+        page: getPapersResult.page,
+        first: getPapersResult.first,
+        last: getPapersResult.last,
+        numberOfElements: getPapersResult.numberOfElements,
+        totalPages: getPapersResult.totalPages,
+        totalElements: getPapersResult.totalElements,
+      })
+    );
   };
 }
 

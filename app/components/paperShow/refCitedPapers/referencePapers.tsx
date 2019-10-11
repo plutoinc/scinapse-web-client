@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { withStyles } from '../../../helpers/withStylesHelper';
@@ -26,7 +25,6 @@ function mapStateToProps(state: AppState) {
 type Props = ReturnType<typeof mapStateToProps> &
   RouteComponentProps<any> & {
     isMobile: boolean;
-    dispatch: Dispatch<any>;
     refTabEl: HTMLDivElement | null;
   };
 

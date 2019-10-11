@@ -82,7 +82,6 @@ class PaperAPI extends PlutoAxios {
     paperId,
     query,
     sort,
-    cancelToken,
   }: GetRefOrCitedPapersParams): Promise<GetReferenceOrCitedPapersResult> {
     const getCitedPapersResponse: AxiosResponse = await this.get(`/search/citations`, {
       params: {
@@ -92,7 +91,6 @@ class PaperAPI extends PlutoAxios {
         q: query,
         sort,
       },
-      cancelToken,
     });
 
     const camelizedRes = camelCaseKeys(getCitedPapersResponse.data.data);
@@ -122,7 +120,6 @@ class PaperAPI extends PlutoAxios {
     query,
     sort,
     paperId,
-    cancelToken,
   }: GetRefOrCitedPapersParams): Promise<GetReferenceOrCitedPapersResult> {
     const getReferencePapersResponse: AxiosResponse = await this.get(`/search/references`, {
       params: {
@@ -132,7 +129,6 @@ class PaperAPI extends PlutoAxios {
         q: query,
         sort,
       },
-      cancelToken,
     });
     const camelizedRes = camelCaseKeys(getReferencePapersResponse.data.data);
     const papers = camelizedRes.content as Paper[];
