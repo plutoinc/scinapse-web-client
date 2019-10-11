@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Axios, { CancelTokenSource } from 'axios';
+import Axios, { CancelTokenSource, CancelToken } from 'axios';
 import { Dispatch } from 'redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '../../helpers/withStylesHelper';
@@ -7,7 +7,7 @@ import PaperAPI from '../../api/paper';
 import ScinapseButton from '../common/scinapseButton';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import Icon from '../../icons';
-import { PaperPdf, Paper, paperSchema } from '../../model/paper';
+import { PaperPdf, paperSchema } from '../../model/paper';
 import { ActionCreators } from '../../actions/actionTypes';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../helpers/checkAuthDialog';
 import EnvChecker from '../../helpers/envChecker';
@@ -23,6 +23,7 @@ import { PDFViewerState } from '../../reducers/pdfViewer';
 import { CurrentUser } from '../../model/currentUser';
 import { createSelector } from 'redux-starter-kit';
 import { denormalize } from 'normalizr';
+import { getBestPdfOfPaper } from '../../actions/pdfViewer';
 const { Document, Page, pdfjs } = require('react-pdf');
 const styles = require('./pdfViewer.scss');
 
@@ -66,22 +67,15 @@ const downloadPdfBtnStyle: React.CSSProperties = {
   marginLeft: '16px',
 };
 
-async function fetchPDFFromAPI(paper: Paper, cancelTokenSource: CancelTokenSource, dispatch: Dispatch<any>) {
-  let pdf: PaperPdf | undefined = paper.bestPdf;
-  const cancelToken = cancelTokenSource.token;
+async function fetchPDF(pdf: PaperPdf | undefined, cancelToken: CancelToken) {
+  if (!pdf) return;
 
-  if (!pdf) {
-    pdf = await PaperAPI.getBestPdfOfPaper({ paperId: paper.id, cancelToken });
-    if (pdf) {
-      dispatch(ActionCreators.getBestPDFOfPaper({ paperId: paper.id, bestPDF: pdf }));
-    }
-  }
+  if (pdf.path) return pdf.path;
 
-  if (pdf && pdf.hasBest) {
+  if (pdf.hasBest) {
     const blob = await PaperAPI.getPDFBlob(pdf.url, cancelToken);
     return blob;
   }
-  return null;
 }
 
 interface OnClickViewMorePdfBtnParams {
@@ -162,6 +156,8 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
   const relatedPaperList = useSelector(selectRelatedPapers);
 
   const [pdfBlob, setPdfBlob] = React.useState<Blob | null>(null);
+  const [directPdfPath, setDirectPdfPath] = React.useState<string | null>(null);
+
   const [parsedPdfObject, setParsedPdfObject] = React.useState<any>(null);
   const wrapperNode = React.useRef<HTMLDivElement | null>(null);
   const viewMorePDFBtnEl = React.useRef<HTMLDivElement | null>(null);
@@ -170,17 +166,26 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
 
   React.useEffect(
     () => {
-      if (pdfBlob || paper.bestPdf.path || PDFViewerState.isLoading) return;
+      if (paper.bestPdf.path) return setDirectPdfPath(`${DIRECT_PDF_PATH_PREFIX}${paper.bestPdf.path}`);
+      if (pdfBlob || PDFViewerState.isLoading) return;
+
+      dispatch(getBestPdfOfPaper(paper, cancelTokenSource.current.token));
 
       dispatch(ActionCreators.startToFetchPDF());
-      fetchPDFFromAPI(paper, cancelTokenSource.current, dispatch)
+      fetchPDF(paper.bestPdf, cancelTokenSource.current.token)
         .then(res => {
-          if (res && res.data) {
-            setPdfBlob(res.data);
-            return dispatch(ActionCreators.finishToFetchPDF());
-          } else {
+          if (!res) {
             throw new Error('No PDF');
           }
+
+          if (typeof res === 'object') {
+            const blob = res.data;
+            setPdfBlob(blob);
+          } else {
+            setDirectPdfPath(`${DIRECT_PDF_PATH_PREFIX}${res}`);
+          }
+
+          return dispatch(ActionCreators.finishToFetchPDF());
         })
         .catch(err => {
           if (!Axios.isCancel(err)) {
@@ -198,7 +203,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
     [dispatch, paper.id]
   );
 
-  if (PDFViewerState.isLoading && !pdfBlob && !paper.bestPdf.path) {
+  if (PDFViewerState.isLoading && !pdfBlob && !directPdfPath) {
     return <ProgressSpinner />;
   }
 
@@ -218,7 +223,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
     );
   }
 
-  if (!!pdfBlob || !!paper.bestPdf.path) {
+  if (!!pdfBlob || !!directPdfPath) {
     const ReadAllPDFButton = (
       <div ref={viewMorePDFBtnEl}>
         <ScinapseButton
@@ -248,7 +253,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
     return (
       <div ref={wrapperNode} className={styles.contentWrapper}>
         <Document
-          file={!!paper.bestPdf.path ? `${DIRECT_PDF_PATH_PREFIX}${paper.bestPdf.path}` : pdfBlob}
+          file={!!directPdfPath ? directPdfPath : pdfBlob}
           error={null}
           loading={
             <div className={styles.loadingContainerWrapper}>
