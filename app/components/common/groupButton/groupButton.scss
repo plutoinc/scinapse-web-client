@@ -15,10 +15,6 @@
   }
 }
 
-@mixin combined-button-borderline-color($line-color) {
-  border-left: 1px solid $line-color;
-}
-
 .outlined.groupButtonWrapper {
   a:not(:first-child),
   button:not(:first-child) {
