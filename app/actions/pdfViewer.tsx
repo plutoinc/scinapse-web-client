@@ -17,3 +17,14 @@ export function getBestPdfOfPaper(paper: Paper, cancelToken: CancelToken) {
     }
   };
 }
+
+export async function getPDFPathOrBlob(pdf: PaperPdf, cancelToken: CancelToken) {
+  if (!pdf) return null;
+
+  if (pdf.path) return pdf.path;
+
+  if (pdf.hasBest) {
+    const blob = await PaperAPI.getPDFBlob(pdf.url, cancelToken);
+    return blob;
+  }
+}

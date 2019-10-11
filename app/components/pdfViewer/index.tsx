@@ -1,13 +1,15 @@
 import * as React from 'react';
-import Axios, { CancelTokenSource, CancelToken } from 'axios';
+import Axios, { CancelTokenSource } from 'axios';
 import { Dispatch } from 'redux';
+import { createSelector } from 'redux-starter-kit';
+import { denormalize } from 'normalizr';
+import { useDispatch, useSelector } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '../../helpers/withStylesHelper';
-import PaperAPI from '../../api/paper';
 import ScinapseButton from '../common/scinapseButton';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import Icon from '../../icons';
-import { PaperPdf, paperSchema } from '../../model/paper';
+import { paperSchema } from '../../model/paper';
 import { ActionCreators } from '../../actions/actionTypes';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../helpers/checkAuthDialog';
 import EnvChecker from '../../helpers/envChecker';
@@ -18,12 +20,9 @@ import { AppState } from '../../reducers';
 import ProgressSpinner from './component/progressSpinner';
 import BlurBlocker from './component/blurBlocker';
 import { addPaperToRecommendPoolAndOpenOnboardingSnackbar } from '../recommendOnboardingSnackbar/actions';
-import { useDispatch, useSelector } from 'react-redux';
 import { PDFViewerState } from '../../reducers/pdfViewer';
 import { CurrentUser } from '../../model/currentUser';
-import { createSelector } from 'redux-starter-kit';
-import { denormalize } from 'normalizr';
-import { getBestPdfOfPaper } from '../../actions/pdfViewer';
+import { getBestPdfOfPaper, getPDFPathOrBlob } from '../../actions/pdfViewer';
 const { Document, Page, pdfjs } = require('react-pdf');
 const styles = require('./pdfViewer.scss');
 
@@ -67,20 +66,13 @@ const downloadPdfBtnStyle: React.CSSProperties = {
   marginLeft: '16px',
 };
 
-async function fetchPDF(pdf: PaperPdf | undefined, cancelToken: CancelToken) {
-  if (!pdf) return;
-
-  if (pdf.path) return pdf.path;
-
-  if (pdf.hasBest) {
-    const blob = await PaperAPI.getPDFBlob(pdf.url, cancelToken);
-    return blob;
-  }
-}
-
 interface OnClickViewMorePdfBtnParams {
   paperId: number;
   dispatch: Dispatch<any>;
+}
+
+function getDirectPDFPath(path: string) {
+  return `${DIRECT_PDF_PATH_PREFIX + path}`;
 }
 
 async function onClickViewMorePdfBtn(params: OnClickViewMorePdfBtnParams) {
@@ -162,27 +154,27 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
   const wrapperNode = React.useRef<HTMLDivElement | null>(null);
   const viewMorePDFBtnEl = React.useRef<HTMLDivElement | null>(null);
   const cancelTokenSource = React.useRef<CancelTokenSource>(Axios.CancelToken.source());
+  const cancelToken = cancelTokenSource.current.token;
   const actionTag = PDFViewerState.isExpanded ? 'viewLessPDF' : 'viewMorePDF';
 
   React.useEffect(
     () => {
-      if (paper.bestPdf.path) return setDirectPdfPath(`${DIRECT_PDF_PATH_PREFIX}${paper.bestPdf.path}`);
+      if (paper.bestPdf.path) return setDirectPdfPath(getDirectPDFPath(paper.bestPdf.path));
+
       if (pdfBlob || PDFViewerState.isLoading) return;
 
-      dispatch(getBestPdfOfPaper(paper, cancelTokenSource.current.token));
-
       dispatch(ActionCreators.startToFetchPDF());
-      fetchPDF(paper.bestPdf, cancelTokenSource.current.token)
+      dispatch(getBestPdfOfPaper(paper, cancelToken));
+
+      getPDFPathOrBlob(paper.bestPdf, cancelToken)
         .then(res => {
-          if (!res) {
-            throw new Error('No PDF');
-          }
+          if (!res) throw new Error('No PDF');
 
           if (typeof res === 'object') {
             const blob = res.data;
             setPdfBlob(blob);
           } else {
-            setDirectPdfPath(`${DIRECT_PDF_PATH_PREFIX}${res}`);
+            setDirectPdfPath(getDirectPDFPath(res));
           }
 
           return dispatch(ActionCreators.finishToFetchPDF());
@@ -203,7 +195,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
     [dispatch, paper.id]
   );
 
-  if (PDFViewerState.isLoading && !pdfBlob && !directPdfPath) {
+  if (PDFViewerState.isLoading && (!pdfBlob || !directPdfPath)) {
     return <ProgressSpinner />;
   }
 
