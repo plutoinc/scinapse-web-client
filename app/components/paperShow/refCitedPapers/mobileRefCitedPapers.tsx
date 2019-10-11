@@ -132,6 +132,7 @@ const MobileRefCitedPapers: FC<Props> = ({ type, paperId, paperCount, history, l
         icon="SEARCH_ICON"
         onSubmit={handleSubmitSearch}
         inputStyle={{
+          backgroundColor: 'white',
           padding: '16px 48px 16px 16px',
         }}
         wrapperStyle={{ marginBottom: '12px' }}

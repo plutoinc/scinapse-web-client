@@ -153,90 +153,94 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper }) => {
   const pdfURL = paper.bestPdf && paper.bestPdf.hasBest && paper.bestPdf.url;
 
   return (
-    <div className={s.container}>
-      <div className={s.contentWrapper}>
-        <GoBackResultBtn className={s.backBtn} />
-        <h1 className={s.title} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.title) }} />
-        <MobileVenueAuthors paper={paper} pageType={'paperShow'} actionArea="paperDescription" />
-        <div ref={buttonGroupWrapper}>
-          <MobilePaperShowButtonGroup
-            className={s.btnGroupWrapper}
-            paper={paper}
-            pageType={'paperShow'}
-            actionArea="paperDescription"
-            saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
-          />
-        </div>
-        <div className={s.abstractHeaderWrapper}>
-          <div className={s.abstractHeader}>Abstract</div>
-          <CopyDOIButton
-            className={s.copyDOIButton}
-            doi={paper.doi}
-            paperId={paper.id}
-            pageType="paperShow"
-            actionArea="paperDescription"
-          />
-        </div>
-        <div className={s.abstractContent} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.abstract) }} />
-      </div>
-      {pdfURL && (
-        <Button
-          elementType="anchor"
-          href={pdfURL}
-          size="large"
-          color="black"
-          fullWidth={true}
-          target="_blank"
-          style={{ marginTop: '16px' }}
-        >
-          <Icon icon="SOURCE" />
-          <span>View PDF</span>
-        </Button>
-      )}
-      <div
-        ref={fixedTab}
-        className={classNames({
-          [s.fixedTab]: true,
-          [s.active]: currentPosition !== 'abovePaperInfo',
-        })}
-      >
-        {currentPosition === 'underPaperInfo' && (
-          <div className={s.buttonGroupWrapper}>
+    <>
+      <div className={s.container}>
+        <div className={s.contentWrapper}>
+          <GoBackResultBtn className={s.backBtn} />
+          <h1 className={s.title} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.title) }} />
+          <MobileVenueAuthors paper={paper} pageType={'paperShow'} actionArea="paperDescription" />
+          <div ref={buttonGroupWrapper}>
             <MobilePaperShowButtonGroup
-              className={s.fixedBtnGroupWrapper}
+              className={s.btnGroupWrapper}
               paper={paper}
-              pageType="paperShow"
-              actionArea="refCitedTab"
+              pageType={'paperShow'}
+              actionArea="paperDescription"
               saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
             />
           </div>
-        )}
-        {!!activeTabInFixedHeader && (
-          <div className={s.fixedRefCitedTab}>
-            <MobilePaperShowTab active={activeTabInFixedHeader} onClick={handleClickPaperShowTab} paper={paper} />
+          <div className={s.abstractHeaderWrapper}>
+            <div className={s.abstractHeader}>Abstract</div>
+            <CopyDOIButton
+              className={s.copyDOIButton}
+              doi={paper.doi}
+              paperId={paper.id}
+              pageType="paperShow"
+              actionArea="paperDescription"
+            />
           </div>
+          <div className={s.abstractContent} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.abstract) }} />
+        </div>
+        {pdfURL && (
+          <Button
+            elementType="anchor"
+            href={pdfURL}
+            size="large"
+            color="black"
+            fullWidth={true}
+            target="_blank"
+            style={{ marginTop: '16px' }}
+          >
+            <Icon icon="SOURCE" />
+            <span>View PDF</span>
+          </Button>
         )}
-      </div>
-      {relatedPaperIds &&
-        relatedPaperIds.length > 0 && (
-          <>
-            <div ref={relatedTabWrapper} style={{ marginTop: '48px' }}>
-              <MobilePaperShowTab
-                active={AvailablePaperShowTab.related}
-                onClick={handleClickPaperShowTab}
+        <div
+          ref={fixedTab}
+          className={classNames({
+            [s.fixedTab]: true,
+            [s.active]: currentPosition !== 'abovePaperInfo',
+          })}
+        >
+          {currentPosition === 'underPaperInfo' && (
+            <div className={s.buttonGroupWrapper}>
+              <MobilePaperShowButtonGroup
+                className={s.fixedBtnGroupWrapper}
                 paper={paper}
+                pageType="paperShow"
+                actionArea="refCitedTab"
+                saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
               />
             </div>
-            <MobileRelatedPapers paperIds={relatedPaperIds} className={s.relatedPapers} />
-          </>
-        )}
-      <div className={s.refCitedSection} ref={refSection}>
-        <MobileRefCitedPapers type="reference" paperId={paper.id} paperCount={paper.referenceCount} />
+          )}
+          {!!activeTabInFixedHeader && (
+            <div className={s.fixedRefCitedTab}>
+              <MobilePaperShowTab active={activeTabInFixedHeader} onClick={handleClickPaperShowTab} paper={paper} />
+            </div>
+          )}
+        </div>
       </div>
-      <div className={s.refCitedSection} ref={citedSection}>
-        <MobileRefCitedPapers type="cited" paperId={paper.id} paperCount={paper.citedCount} />
+      <div className={s.paperListSection}>
+        {relatedPaperIds &&
+          relatedPaperIds.length > 0 && (
+            <>
+              <div ref={relatedTabWrapper} style={{ marginTop: '48px' }}>
+                <MobilePaperShowTab
+                  active={AvailablePaperShowTab.related}
+                  onClick={handleClickPaperShowTab}
+                  paper={paper}
+                />
+              </div>
+              <MobileRelatedPapers paperIds={relatedPaperIds} className={s.relatedPapers} />
+            </>
+          )}
+        <div className={s.refCitedSection} ref={refSection}>
+          <MobileRefCitedPapers type="reference" paperId={paper.id} paperCount={paper.referenceCount} />
+        </div>
+        <div className={s.refCitedSection} ref={citedSection}>
+          <MobileRefCitedPapers type="cited" paperId={paper.id} paperCount={paper.citedCount} />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
