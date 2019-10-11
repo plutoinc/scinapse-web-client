@@ -7,7 +7,7 @@ const store = require('store');
 
 export const addPaperToRecommendPool = (recAction: RecommendationActionParams) => {
   return async (dispatch: Dispatch<any>) => {
-    const recTempPool = store.get(RECOMMENDED_PAPER_LOGGING_FOR_NON_USER);
+    const recTempPool = store.get(RECOMMENDED_PAPER_LOGGING_FOR_NON_USER) || [];
 
     const auth = await checkAuthStatus()(dispatch);
     const isLoggedIn = auth && auth.loggedIn;
