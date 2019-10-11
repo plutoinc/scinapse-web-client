@@ -6,7 +6,7 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import SearchingPDFBtn from '../../../components/paperShow/components/searchingPDFBtn';
-import { addPaperToRecommendPool } from '../../../components/recommendOnboardingSnackbar/actions';
+import { addPaperToRecommendPool } from '../../../components/recommendPool/actions';
 const s = require('../actionBar.scss');
 
 interface RequestFullTextBtnProps {

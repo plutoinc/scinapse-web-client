@@ -6,7 +6,7 @@ import CiteBox from '../../../containers/paperShowActionBar/components/citeBox';
 import PdfDownloadButton from '../components/pdfDownloadButton';
 import RequestFullTextBtn from '../../../containers/paperShowActionBar/components/fullTextRequestBtn';
 import { PDFButtonProps, TabItemProps, PaperShowRefCitedTabProps } from './types';
-import { addPaperToRecommendPool } from '../../recommendOnboardingSnackbar/actions';
+import { addPaperToRecommendPool } from '../../recommendPool/actions';
 import { openRequestFullTextDialog } from '../../../reducers/requestFullTextDialog';
 const styles = require('./refCitedTab.scss');
 

@@ -17,7 +17,7 @@ import { PDFViewerProps } from './types';
 import { AppState } from '../../reducers';
 import ProgressSpinner from './component/progressSpinner';
 import BlurBlocker from './component/blurBlocker';
-import { addPaperToRecommendPool } from '../recommendOnboardingSnackbar/actions';
+import { addPaperToRecommendPool } from '../recommendPool/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { PDFViewerState } from '../../reducers/pdfViewer';
 import { CurrentUser } from '../../model/currentUser';
