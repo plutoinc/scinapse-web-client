@@ -105,6 +105,7 @@ $mobile-paper-show-width: 100%;
 $mobile-paper-info-layout-width: 100%;
 $mobile-cv-info-layout-width: calc(#{$mobile-container-width} - 48px * 2);
 // paper show
+$mobile-fixed-tab-height: 50px;
 $ref-cited-bar-padding: 12px 0;
 // s3 url
 $s3_url: 'https://dd2gn9pwu61vr.cloudfront.net';
@@ -278,6 +279,9 @@ $s3_url: 'https://dd2gn9pwu61vr.cloudfront.net';
 }
 :export {
   navbarHeight: $navbar_height;
+}
+:export {
+  mobileFixedHeaderHeight: $mobile-fixed-tab-height;
 }
 // animations
 @keyframes wave {

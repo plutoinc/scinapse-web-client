@@ -1,11 +1,5 @@
-$fixed-tab-height: 50px;
-
 .container {
   margin: $header-height 12px 0 12px;
-}
-
-:export {
-  headerHeight: $header-height;
 }
 
 .contentWrapper {
@@ -84,7 +78,7 @@ $fixed-tab-height: 50px;
   top: $header-height;
   left: 0;
   right: 0;
-  height: $fixed-tab-height;
+  height: $mobile-fixed-tab-height;
   background-color: white;
   padding: 16px 0;
   z-index: 2;

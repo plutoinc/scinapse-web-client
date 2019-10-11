@@ -11,6 +11,11 @@ import { CurrentUser } from '../../model/currentUser';
 import alertToast from '../../helpers/makePlutoToastAction';
 import { ActionCreators } from '../../actions/actionTypes';
 
+const s = require('./refCitedPapersContainer.scss');
+const useStyles = require('isomorphic-style-loader/useStyles');
+const NAVBAR_HEIGHT = parseInt(s.navbarHeight, 10);
+const MOBILE_FIXED_HEADER_HEIGHT = parseInt(s.mobileFixedHeaderHeight, 10);
+
 interface Props {
   type: REF_CITED_CONTAINER_TYPE;
   parentPaperId: number;
@@ -20,30 +25,32 @@ interface Props {
 }
 
 const RefCitedPapersContainer: FC<Props> = ({ type, parentPaperId, page, query, sort, children }) => {
+  useStyles(s);
   const dispatch = useDispatch();
 
-  const shouldPatch = useSelector(
+  const shouldFetch = useSelector(
     (state: AppState) => !state.configuration.succeedAPIFetchAtServer || state.configuration.renderedAtClient
   );
   const currentUser: CurrentUser | null = useSelector((state: AppState) => state.currentUser, isEqual);
   const isLoggedIn = currentUser && currentUser.isLoggedIn;
 
-  const lastParentPaperId = useRef(parentPaperId);
+  const wrapperNode = useRef<HTMLDivElement>(null);
+  const lastParentPaperId = useRef(0);
   const lastPage = useRef(page);
   const lastQuery = useRef(query);
   const lastSort = useRef(sort);
-  const lastShouldPatch = useRef(shouldPatch);
+  const lastShouldFetch = useRef(shouldFetch);
   const lastIsLoggedIn = useRef(isLoggedIn);
 
   useEffect(
     () => {
-      // NOTE: prevent fetching from the change of shouldPatch variable
-      if (shouldPatch && !lastShouldPatch.current) {
-        lastShouldPatch.current = true;
+      // NOTE: prevent fetching from the change of shouldFetch variable
+      if (shouldFetch && !lastShouldFetch.current) {
+        lastShouldFetch.current = true;
         return;
       }
       // NOTE: prevent double fetching
-      if (!shouldPatch) return;
+      if (!shouldFetch) return;
       // NOTE: prevent unneeded fetching
       if (
         lastParentPaperId.current === parentPaperId &&
@@ -62,11 +69,15 @@ const RefCitedPapersContainer: FC<Props> = ({ type, parentPaperId, page, query, 
 
       Promise.all([promise])
         .then(() => {
-          lastParentPaperId.current = parentPaperId;
-          lastPage.current = page;
-          lastQuery.current = query;
-          lastSort.current = sort;
-          lastIsLoggedIn.current = isLoggedIn;
+          if (wrapperNode.current && lastParentPaperId.current === parentPaperId) {
+            window.scrollTo(0, wrapperNode.current.offsetTop - NAVBAR_HEIGHT - MOBILE_FIXED_HEADER_HEIGHT);
+          }
+
+          // lastParentPaperId.current = parentPaperId;
+          // lastPage.current = page;
+          // lastQuery.current = query;
+          // lastSort.current = sort;
+          // lastIsLoggedIn.current = isLoggedIn;
         })
         .catch(err => {
           if (!axios.isCancel(err)) {
@@ -77,11 +88,18 @@ const RefCitedPapersContainer: FC<Props> = ({ type, parentPaperId, page, query, 
             dispatch(failedActionCreator());
           }
         });
+      return () => {
+        lastParentPaperId.current = parentPaperId;
+        lastPage.current = page;
+        lastQuery.current = query;
+        lastSort.current = sort;
+        lastIsLoggedIn.current = isLoggedIn;
+      };
     },
-    [page, query, sort, type, parentPaperId, dispatch, shouldPatch, isLoggedIn]
+    [page, query, sort, type, parentPaperId, dispatch, shouldFetch, isLoggedIn]
   );
 
-  return <>{children}</>;
+  return <div ref={wrapperNode}>{children}</div>;
 };
 
 export default RefCitedPapersContainer;

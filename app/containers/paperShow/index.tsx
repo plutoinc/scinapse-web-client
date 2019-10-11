@@ -18,10 +18,10 @@ type Props = RouteComponentProps<PaperShowMatchParams>;
 
 const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
   const dispatch = useDispatch();
-  const shouldPatch = useSelector(
+  const shouldFetch = useSelector(
     (state: AppState) => !state.configuration.succeedAPIFetchAtServer || state.configuration.renderedAtClient
   );
-  const lastShouldPatch = useRef(shouldPatch);
+  const lastShouldFetch = useRef(shouldFetch);
   const lastPaperId = useRef(0);
 
   const paper = useSelector((state: AppState) => getMemoizedPaper(state), isEqual);
@@ -31,13 +31,13 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
   useEffect(
     () => {
       const cancelToken = axios.CancelToken.source();
-      // NOTE: prevent fetching from the change of shouldPatch variable
-      if (shouldPatch && !lastShouldPatch.current) {
-        lastShouldPatch.current = true;
+      // NOTE: prevent fetching from the change of shouldFetch variable
+      if (shouldFetch && !lastShouldFetch.current) {
+        lastShouldFetch.current = true;
         return;
       }
       // NOTE: prevent double fetching
-      if (!shouldPatch) return;
+      if (!shouldFetch) return;
 
       const paperId = parseInt(match.params.paperId);
       if (paperId === lastPaperId.current) return;
@@ -77,7 +77,7 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
         cancelToken.cancel();
       };
     },
-    [location, currentUser.isLoggedIn, dispatch, match, shouldPatch, history]
+    [location, currentUser.isLoggedIn, dispatch, match, shouldFetch, history]
   );
 
   if (!paper) return null;

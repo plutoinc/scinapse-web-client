@@ -11,7 +11,7 @@ interface Props {
 
 const MobilePaperShowTab: FC<Props> = ({ active, onClick, paper, shouldShowRelatedTab }) => {
   return (
-    <div>
+    <div style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
       {shouldShowRelatedTab && (
         <Tab
           content="Related"

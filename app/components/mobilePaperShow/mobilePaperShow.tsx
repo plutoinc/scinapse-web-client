@@ -23,7 +23,7 @@ import RefCitedPapersContainer from '../../containers/refCitedPapersContainer';
 
 const s = require('./mobilePaperShow.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
-const NAVBAR_HEIGHT = parseInt(s.headerHeight, 10);
+const NAVBAR_HEIGHT = parseInt(s.navbarHeight, 10);
 
 let ticking = false;
 
@@ -50,13 +50,6 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper, location }) =>
   const refSection = React.useRef<HTMLDivElement | null>(null);
   const citedSection = React.useRef<HTMLDivElement | null>(null);
   const relatedTabWrapper = React.useRef<HTMLDivElement | null>(null);
-
-  // React.useEffect(
-  //   () => {
-  //     window.scrollTo(0, 0);
-  //   },
-  //   [paper.id]
-  // );
 
   React.useEffect(() => {
     function handleScroll() {
