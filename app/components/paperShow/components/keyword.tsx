@@ -10,6 +10,7 @@ import { createKeywordAlert, deleteKeywordAlert } from '../../../containers/keyw
 import { AppState } from '../../../reducers';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
 import { KeywordSettingItemResponse } from '../../../api/types/member';
+import GroupButton from '../../common/groupButton';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./keyword.scss');
 
@@ -80,58 +81,53 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
     setIsLoading(false);
   }
 
-  const buttonColorStyle: React.CSSProperties = {
-    color: '#7e8698',
-  };
-
   return (
     <div className={s.fosBtnWrapper}>
-      <Button
-        elementType="link"
-        to={formattedFOSLocation(keyword)}
-        size="small"
-        variant="contained"
-        color="black"
-        style={{
-          ...buttonColorStyle,
-          padding: '8px 12px',
-          borderTopRightRadius: '0px',
-          borderBottomRightRadius: '0px',
-          borderRight: '1px solid #d8dde7',
-        }}
-        fullWidth={false}
-        disabled={false}
-        rel="noopener noreferrer"
-        target="_blank"
-        onClick={() => {
-          ActionTicketManager.trackTicket({
-            pageType: pageType,
-            actionType: 'fire',
-            actionArea: actionArea || pageType,
-            actionTag: 'fos',
-            actionLabel: String(fos.id),
-          });
-        }}
-      >
-        {keyword}
-      </Button>
-      <Button
-        elementType="button"
-        size="small"
-        variant="contained"
-        color="black"
-        fullWidth={false}
-        disabled={false}
-        isLoading={isLoading}
-        style={{ ...buttonColorStyle, padding: '8px', borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}
-        onClick={onClickAlertButton}
-      >
-        {!targetKeyword ? (
-          <Icon icon="ALERT_LINE" className={s.alertIcon} />
-        ) : (
-          <Icon icon="ALERT" className={s.alertIcon} />
-        )}
-      </Button>
+      <GroupButton variant="contained" buttonBackgroundColor="gray">
+        <Button
+          elementType="link"
+          to={formattedFOSLocation(keyword)}
+          size="small"
+          variant="contained"
+          color="black"
+          style={{
+            color: '#7e8698',
+            padding: '8px 12px',
+          }}
+          fullWidth={false}
+          disabled={false}
+          rel="noopener noreferrer"
+          target="_blank"
+          onClick={() => {
+            ActionTicketManager.trackTicket({
+              pageType: pageType,
+              actionType: 'fire',
+              actionArea: actionArea || pageType,
+              actionTag: 'fos',
+              actionLabel: String(fos.id),
+            });
+          }}
+        >
+          {keyword}
+        </Button>
+        <Button
+          elementType="button"
+          size="small"
+          variant="contained"
+          color="black"
+          fullWidth={false}
+          disabled={false}
+          isLoading={isLoading}
+          style={{ color: '#7e8698', padding: '8px' }}
+          onClick={onClickAlertButton}
+        >
+          {!targetKeyword ? (
+            <Icon icon="ALERT_LINE" className={s.alertIcon} />
+          ) : (
+            <Icon icon="ALERT" className={s.alertIcon} />
+          )}
+        </Button>
+      </GroupButton>
     </div>
   );
 };

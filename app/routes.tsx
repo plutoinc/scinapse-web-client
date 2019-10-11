@@ -179,11 +179,6 @@ export const routesMap: ServerRoutesMap[] = [
     }),
     exact: true,
   },
-  {
-    path: '/group-button-demo',
-    component: loadable(() => import('./components/common/groupButton/demo')),
-    exact: true,
-  },
   { component: ErrorPage },
 ];
 
