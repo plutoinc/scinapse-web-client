@@ -37,7 +37,7 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = props => {
                 isLoading={props.isLoadingPDF}
                 paperId={props.paper.id}
                 onClick={() => {
-                  props.dispatch(openRequestFullTextDialog({ from: 'actionBar' }));
+                  props.dispatch(openRequestFullTextDialog());
                   props.dispatch(
                     addPaperToRecommendPool({ paperId: props.paper.id, action: 'clickRequestFullTextBtn' })
                   );

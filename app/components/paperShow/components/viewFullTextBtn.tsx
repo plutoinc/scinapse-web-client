@@ -4,7 +4,7 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import SearchingPDFBtn from './searchingPDFBtn';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
-import { addPaperToRecommendPoolAndOpenOnboardingSnackbar } from '../../recommendOnboardingSnackbar/actions';
+import { addPaperToRecommendPool } from '../../recommendOnboardingSnackbar/actions';
 
 const styles = require('./viewFullTextBtn.scss');
 
@@ -34,13 +34,7 @@ const ViewFullTextBtn: React.FC<ViewFullTextBtnProps> = props => {
           actionLabel: String(paperId),
         });
         handleClickFullText();
-        dispatch(
-          addPaperToRecommendPoolAndOpenOnboardingSnackbar({
-            pageType: 'paperShow',
-            actionArea: 'viewFullTextButton',
-            recAction: { paperId, action: 'viewMorePDF' },
-          })
-        );
+        dispatch(addPaperToRecommendPool({ paperId, action: 'viewMorePDF' }));
       }}
     >
       <Icon className={styles.pdfIcon} icon={'PDF_PAPER'} />View Full-Text

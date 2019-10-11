@@ -9,7 +9,7 @@ import ScinapseButtonFactory, { ScinapseButtonType } from '../../common/scinapse
 import SourceURLPopover from '../../common/sourceURLPopover';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-import { addPaperToRecommendPoolAndOpenOnboardingSnackbar } from '../../recommendOnboardingSnackbar/actions';
+import { addPaperToRecommendPool } from '../../recommendOnboardingSnackbar/actions';
 const styles = require('./pdfSourceButton.scss');
 
 interface SourceButtonProps {
@@ -80,13 +80,7 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
               onClick: async e => {
                 e.preventDefault();
                 handleClickSource();
-                dispatch(
-                  addPaperToRecommendPoolAndOpenOnboardingSnackbar({
-                    pageType: 'paperShow',
-                    actionArea: 'sourceButton',
-                    recAction: { paperId: paper.id, action: 'source' },
-                  })
-                );
+                dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'source' }));
                 window.open(sourceUrl, '_blank');
               },
             }}
@@ -94,13 +88,7 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
               onClick: async () => {
                 setIsSourcePopoverOpen(!isSourcePopoverOpen);
                 if (!isSourcePopoverOpen) {
-                  dispatch(
-                    addPaperToRecommendPoolAndOpenOnboardingSnackbar({
-                      pageType: 'paperShow',
-                      actionArea: 'sourceButton',
-                      recAction: { paperId: paper.id, action: 'source' },
-                    })
-                  );
+                  dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'source' }));
                 }
               },
               style: !showFullText ? reverseBtnStyle : btnStyle,

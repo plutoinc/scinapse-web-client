@@ -17,7 +17,7 @@ import { PDFViewerProps } from './types';
 import { AppState } from '../../reducers';
 import ProgressSpinner from './component/progressSpinner';
 import BlurBlocker from './component/blurBlocker';
-import { addPaperToRecommendPoolAndOpenOnboardingSnackbar } from '../recommendOnboardingSnackbar/actions';
+import { addPaperToRecommendPool } from '../recommendOnboardingSnackbar/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { PDFViewerState } from '../../reducers/pdfViewer';
 import { CurrentUser } from '../../model/currentUser';
@@ -91,13 +91,7 @@ async function onClickViewMorePdfBtn(params: OnClickViewMorePdfBtnParams) {
   const { paperId, dispatch } = params;
   trackClickButton('viewMorePDF', paperId);
 
-  dispatch(
-    addPaperToRecommendPoolAndOpenOnboardingSnackbar({
-      pageType: 'paperShow',
-      actionArea: 'viewMorePDF',
-      recAction: { paperId, action: 'viewMorePDF' },
-    })
-  );
+  dispatch(addPaperToRecommendPool({ paperId: paperId, action: 'viewMorePDF' }));
 
   const isBlocked = await blockUnverifiedUser({
     authLevel: AUTH_LEVEL.VERIFIED,
@@ -309,13 +303,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
                         if (!EnvChecker.isOnServer()) {
                           e.preventDefault();
 
-                          dispatch(
-                            addPaperToRecommendPoolAndOpenOnboardingSnackbar({
-                              pageType: 'paperShow',
-                              actionArea: 'downloadPdf',
-                              recAction: { paperId: paper.id, action: 'viewMorePDF' },
-                            })
-                          );
+                          dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'viewMorePDF' }));
 
                           const isBlocked = await blockUnverifiedUser({
                             authLevel: AUTH_LEVEL.VERIFIED,
