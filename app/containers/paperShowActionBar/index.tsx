@@ -9,7 +9,6 @@ import { CurrentUser } from '../../model/currentUser';
 import SourceButton from '../../components/paperShow/components/sourceButton';
 import ViewFullTextBtn from '../../components/paperShow/components/viewFullTextBtn';
 import RequestFullTextBtn from './components/fullTextRequestBtn';
-import { addPaperToRecommendPool } from '../../components/recommendPool/actions';
 import { openRequestFullTextDialog } from '../../reducers/requestFullTextDialog';
 const s = require('./actionBar.scss');
 
@@ -36,12 +35,7 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = props => {
                 actionArea="paperDescription"
                 isLoading={props.isLoadingPDF}
                 paperId={props.paper.id}
-                onClick={() => {
-                  props.dispatch(openRequestFullTextDialog());
-                  props.dispatch(
-                    addPaperToRecommendPool({ paperId: props.paper.id, action: 'clickRequestFullTextBtn' })
-                  );
-                }}
+                onClick={() => props.dispatch(openRequestFullTextDialog())}
                 lastRequestedDate={props.lastRequestedDate}
               />
             </div>
