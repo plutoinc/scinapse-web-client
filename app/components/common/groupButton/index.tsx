@@ -7,16 +7,17 @@ const s = require('./groupButton.scss');
 interface GroupButtonProps {
   variant?: ButtonVariant;
   buttonBackgroundColor?: ButtonColor;
+  className?: string;
 }
 
 const GroupButton: React.FC<GroupButtonProps> = props => {
   useStyles(s);
-  const { children, variant = 'contained', buttonBackgroundColor = 'blue' } = props;
+  const { children, variant = 'contained', buttonBackgroundColor = 'blue', className } = props;
 
   const cx = classNames.bind(s);
-  const className = cx(variant, buttonBackgroundColor, { [s.groupButtonWrapper]: true });
+  const groupButtonClassName = cx(variant, buttonBackgroundColor, [s.groupButtonWrapper], [className!]);
 
-  return <div className={className}>{children}</div>;
+  return <div className={groupButtonClassName}>{children}</div>;
 };
 
 export default GroupButton;

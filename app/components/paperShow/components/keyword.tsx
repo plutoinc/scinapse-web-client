@@ -82,53 +82,51 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
   }
 
   return (
-    <div className={s.fosBtnWrapper}>
-      <GroupButton variant="contained" buttonBackgroundColor="gray">
-        <Button
-          elementType="link"
-          to={formattedFOSLocation(keyword)}
-          size="small"
-          variant="contained"
-          color="black"
-          style={{
-            color: '#7e8698',
-            padding: '8px 12px',
-          }}
-          fullWidth={false}
-          disabled={false}
-          rel="noopener noreferrer"
-          target="_blank"
-          onClick={() => {
-            ActionTicketManager.trackTicket({
-              pageType: pageType,
-              actionType: 'fire',
-              actionArea: actionArea || pageType,
-              actionTag: 'fos',
-              actionLabel: String(fos.id),
-            });
-          }}
-        >
-          {keyword}
-        </Button>
-        <Button
-          elementType="button"
-          size="small"
-          variant="contained"
-          color="black"
-          fullWidth={false}
-          disabled={false}
-          isLoading={isLoading}
-          style={{ color: '#7e8698', padding: '8px' }}
-          onClick={onClickAlertButton}
-        >
-          {!targetKeyword ? (
-            <Icon icon="ALERT_LINE" className={s.alertIcon} />
-          ) : (
-            <Icon icon="ALERT" className={s.alertIcon} />
-          )}
-        </Button>
-      </GroupButton>
-    </div>
+    <GroupButton variant="contained" buttonBackgroundColor="gray" className={s.fosBtnWrapper}>
+      <Button
+        elementType="link"
+        to={formattedFOSLocation(keyword)}
+        size="small"
+        variant="contained"
+        color="black"
+        style={{
+          color: '#7e8698',
+          padding: '8px 12px',
+        }}
+        fullWidth={false}
+        disabled={false}
+        rel="noopener noreferrer"
+        target="_blank"
+        onClick={() => {
+          ActionTicketManager.trackTicket({
+            pageType: pageType,
+            actionType: 'fire',
+            actionArea: actionArea || pageType,
+            actionTag: 'fos',
+            actionLabel: String(fos.id),
+          });
+        }}
+      >
+        {keyword}
+      </Button>
+      <Button
+        elementType="button"
+        size="small"
+        variant="contained"
+        color="black"
+        fullWidth={false}
+        disabled={false}
+        isLoading={isLoading}
+        style={{ color: '#7e8698', padding: '8px' }}
+        onClick={onClickAlertButton}
+      >
+        {!targetKeyword ? (
+          <Icon icon="ALERT_LINE" className={s.alertIcon} />
+        ) : (
+          <Icon icon="ALERT" className={s.alertIcon} />
+        )}
+      </Button>
+    </GroupButton>
   );
 };
 
