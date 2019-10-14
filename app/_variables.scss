@@ -325,5 +325,8 @@ $s3_url: 'https://dd2gn9pwu61vr.cloudfront.net';
 }
 
 @mixin combined-button-borderline-color($line-color) {
-  border-left: 1px solid $line-color;
+  a:not(:first-child),
+  button:not(:first-child) {
+    border-left: 1px solid $line-color;
+  }
 }

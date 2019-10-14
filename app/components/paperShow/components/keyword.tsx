@@ -82,7 +82,7 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
   }
 
   return (
-    <GroupButton variant="contained" color="gray" className={s.fosBtnWrapper}>
+    <GroupButton variant="contained" color="black" className={s.fosBtnWrapper}>
       <Button
         elementType="link"
         to={formattedFOSLocation(keyword)}
