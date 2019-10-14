@@ -48,11 +48,10 @@ const BlockVenue: React.FC<BlockVenueProps> = ({
           disableFocusListener
           disableTouchListener
         >
-          <span />
+          <span className={styles.ifIconWrapper}>
+            <Icon className={styles.ifIcon} icon="IMPACT_FACTOR" />
+          </span>
         </Tooltip>
-        <span className={styles.ifIconWrapper}>
-          <Icon className={styles.ifIcon} icon="IMPACT_FACTOR" />
-        </span>
         <span className={styles.ifLabelContentWrapper}>{journal.impactFactor.toFixed(2)}</span>
       </span>
     );
