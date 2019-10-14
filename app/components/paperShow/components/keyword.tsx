@@ -10,6 +10,7 @@ import { createKeywordAlert, deleteKeywordAlert } from '../../../containers/keyw
 import { AppState } from '../../../reducers';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
 import { KeywordSettingItemResponse } from '../../../api/types/member';
+import GroupButton from '../../common/groupButton';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./keyword.scss');
 
@@ -80,12 +81,8 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
     setIsLoading(false);
   }
 
-  const buttonColorStyle: React.CSSProperties = {
-    color: '#7e8698',
-  };
-
   return (
-    <div className={s.fosBtnWrapper}>
+    <GroupButton variant="contained" color="black" className={s.fosBtnWrapper}>
       <Button
         elementType="link"
         to={formattedFOSLocation(keyword)}
@@ -93,14 +90,9 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
         variant="contained"
         color="black"
         style={{
-          ...buttonColorStyle,
+          color: '#7e8698',
           padding: '8px 12px',
-          borderTopRightRadius: '0px',
-          borderBottomRightRadius: '0px',
-          borderRight: '1px solid #d8dde7',
         }}
-        fullWidth={false}
-        disabled={false}
         rel="noopener noreferrer"
         target="_blank"
         onClick={() => {
@@ -120,10 +112,8 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
         size="small"
         variant="contained"
         color="black"
-        fullWidth={false}
-        disabled={false}
         isLoading={isLoading}
-        style={{ ...buttonColorStyle, padding: '8px', borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}
+        style={{ color: '#7e8698', padding: '8px' }}
         onClick={onClickAlertButton}
       >
         {!targetKeyword ? (
@@ -132,7 +122,7 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
           <Icon icon="ALERT" className={s.alertIcon} />
         )}
       </Button>
-    </div>
+    </GroupButton>
   );
 };
 
