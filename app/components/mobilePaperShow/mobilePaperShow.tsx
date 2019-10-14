@@ -61,7 +61,7 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper, location }) =>
           }
 
           const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-          const currentScrollTop = scrollTop + NAVBAR_HEIGHT;
+          const currentScrollTop = Math.round(scrollTop) + NAVBAR_HEIGHT;
           const buttonGroupOffsetTop = buttonGroupWrapper.current.offsetTop - 16 /* margin */;
           const refSectionOffsetTop = refSection.current.offsetTop - fixedTab.current.clientHeight;
           const citedSectionOffsetTop = citedSection.current.offsetTop - fixedTab.current.clientHeight;
