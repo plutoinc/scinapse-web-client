@@ -9,12 +9,39 @@ import reducer, { EmailSettingsInitialState } from './emailSettingsReducer';
 import { AppState } from '../../reducers';
 import { CurrentUser } from '../../model/currentUser';
 import { EmailSettingTypes } from '../../api/types/auth';
+import Button from '../common/button';
+import { UserDevice } from '../layouts/reducer';
 
 const s = require('./emailSettings.scss');
+
+const KeywordAlertGuideContext: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
+  return (
+    <div className={s.toggleItemWrapper}>
+      <div className={s.toggleItemContext}>
+        <div className={s.toggleItemTitle}>Keyword Alert</div>
+        <div className={s.toggleItemSubtitle}>Send papers about keyword you enrolled when updated.</div>
+      </div>
+      <div className={s.toggleButtonWrapper}>
+        <Button
+          elementType="link"
+          to="/keyword-settings"
+          size="medium"
+          fullWidth={isMobile}
+          style={!isMobile ? { width: '98px' } : {}}
+        >
+          <span>Setting</span>
+        </Button>
+      </div>
+    </div>
+  );
+};
 
 const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ location }) => {
   const [state, dispatch] = React.useReducer(reducer, EmailSettingsInitialState);
   const currentUser = useSelector<AppState, CurrentUser>(state => state.currentUser);
+  const userDevice = useSelector<AppState, UserDevice>(state => state.layout.userDevice);
+  const isMobile = userDevice === UserDevice.MOBILE;
+
   const token = qs.parse(location.search, { ignoreQueryPrefix: true }).token;
 
   useEffect(
@@ -82,6 +109,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
           handleClickItem(token, 'PAPER_RECOMMENDATION', nextStatus);
         }}
         globalInActive={!state.activeStatus.GLOBAL}
+        isMobile={isMobile}
       />
       <EmailToggleItem
         title="Collection Remind Mail"
@@ -93,6 +121,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
           handleClickItem(token, 'COLLECTION_REMIND', nextStatus);
         }}
         globalInActive={!state.activeStatus.GLOBAL}
+        isMobile={isMobile}
       />
       <EmailToggleItem
         title="Full-text Request Confirmation"
@@ -104,6 +133,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
           handleClickItem(token, 'REQUEST_CONFIRMATION', nextStatus);
         }}
         globalInActive={!state.activeStatus.GLOBAL}
+        isMobile={isMobile}
       />
       <EmailToggleItem
         title="Last Week Activity"
@@ -115,7 +145,9 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
           handleClickItem(token, 'LAST_WEEK_ACTIVITY', nextStatus);
         }}
         globalInActive={!state.activeStatus.GLOBAL}
+        isMobile={isMobile}
       />
+      <KeywordAlertGuideContext isMobile={isMobile} />
       <div className={s.divider} />
       <EmailToggleItem
         title="All Email"
@@ -126,6 +158,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
         onClick={(nextStatus: boolean) => {
           handleClickItem(token, 'GLOBAL', nextStatus);
         }}
+        isMobile={isMobile}
       />
     </>
   );

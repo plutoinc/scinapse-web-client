@@ -3,6 +3,9 @@ import classNames from 'classnames';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '../../helpers/withStylesHelper';
 import alertToast from '../../helpers/makePlutoToastAction';
+import GroupButton from '../common/groupButton';
+import Button from '../common/button';
+import { ButtonVariant, ButtonColor } from '../common/button/types';
 const s = require('./emailToggleItem.scss');
 
 interface EmailToggleItemProps {
@@ -12,7 +15,20 @@ interface EmailToggleItemProps {
   onClick: (nextStatus: boolean) => void;
   isLoading: boolean;
   hasFailed: boolean;
+  isMobile: boolean;
   globalInActive?: boolean;
+}
+
+function getActiveButtonProps(active: boolean) {
+  if (!active) return { variant: 'outlined' as ButtonVariant, color: 'gray' as ButtonColor };
+
+  return { variant: 'contained' as ButtonVariant, color: 'blue' as ButtonColor };
+}
+
+function getInActiveButtonProps(inActive: boolean) {
+  if (!inActive) return { variant: 'outlined' as ButtonVariant, color: 'gray' as ButtonColor };
+
+  return { variant: 'contained' as ButtonVariant, color: 'black' as ButtonColor };
 }
 
 const EmailToggleItem: React.FC<EmailToggleItemProps> = ({
@@ -22,6 +38,7 @@ const EmailToggleItem: React.FC<EmailToggleItemProps> = ({
   onClick,
   hasFailed,
   isLoading,
+  isMobile,
   globalInActive,
 }) => {
   useEffect(
@@ -51,30 +68,35 @@ const EmailToggleItem: React.FC<EmailToggleItemProps> = ({
         })}
       >
         {isLoading && <CircularProgress className={s.loadingSpinner} disableShrink={true} size={20} thickness={8} />}
-        <button
-          disabled={globalInActive}
-          onClick={() => {
-            onClick(true);
-          }}
-          className={classNames({
-            [s.toggleButton]: true,
-            [s.toggleActive]: active,
-          })}
-        >
-          On
-        </button>
-        <button
-          disabled={globalInActive}
-          onClick={() => {
-            onClick(false);
-          }}
-          className={classNames({
-            [s.toggleButton]: true,
-            [s.toggleInactive]: !active,
-          })}
-        >
-          Off
-        </button>
+        <GroupButton variant="text" disabled={globalInActive} className={s.buttonsWrapper}>
+          <Button
+            elementType="button"
+            size="medium"
+            disabled={globalInActive || isLoading}
+            onClick={() => {
+              onClick(true);
+            }}
+            {...getActiveButtonProps(active)}
+            fullWidth={isMobile}
+          >
+            <span>On</span>
+          </Button>
+          <Button
+            elementType="button"
+            size="medium"
+            variant="outlined"
+            color="gray"
+            disabled={globalInActive || isLoading}
+            onClick={() => {
+              onClick(false);
+            }}
+            {...getInActiveButtonProps(!active)}
+            style={!active ? { border: '1px solid #d8dde7' } : {}}
+            fullWidth={isMobile}
+          >
+            <span>Off</span>
+          </Button>
+        </GroupButton>
       </div>
     </div>
   );

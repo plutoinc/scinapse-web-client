@@ -13,3 +13,49 @@
   background-color: $gray300;
   margin: 40px 0 32px 0;
 }
+
+.toggleItemWrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+.toggleItemContext {
+  max-width: 377px;
+  width: 100%;
+  margin-right: 8px;
+}
+
+.toggleItemTitle {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.33;
+  color: $black0;
+  margin-bottom: 8px;
+}
+
+.toggleItemSubtitle {
+  font-size: 15px;
+  line-height: 1.33;
+  color: $gray800;
+}
+
+.toggleButtonWrapper {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: $mobile_width) {
+  .toggleItemWrapper {
+    flex-direction: column;
+  }
+
+  .toggleItemContext {
+    margin-right: 0px;
+    max-width: 100%;
+  }
+
+  .toggleButtonWrapper {
+    margin-top: 24px;
+  }
+}
