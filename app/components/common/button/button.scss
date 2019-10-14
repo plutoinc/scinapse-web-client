@@ -1,10 +1,9 @@
 .small {
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 20px;
   padding: 4px 4px;
   border-radius: 4px;
   border: 0px;
-
   cursor: pointer;
   text-align: center;
   display: inline-flex;
@@ -43,6 +42,7 @@
 
 .medium {
   @extend .small;
+
   font-size: 15px;
   padding: 8px;
   font-weight: 500;
@@ -66,6 +66,7 @@
 
 .large {
   @extend .small;
+
   font-size: 16px;
   padding: 10px 12px;
   font-weight: 500;
@@ -94,9 +95,11 @@
 
 .outlined {
   border: 1px solid $gray400;
+
   &:hover {
     background-color: rgba(52, 73, 94, 0.05);
   }
+
   &:active {
     background-color: rgba(52, 73, 94, 0.08);
   }
@@ -104,6 +107,7 @@
 
 .outlined.gray {
   color: $gray800;
+
   svg {
     color: $gray800;
   }
@@ -131,10 +135,13 @@
 .contained.blue {
   color: white;
   background-color: $main_blue1;
+  border: 1px solid $main_blue1;
+
   &:hover {
     transition: ease 0.2s;
     opacity: 0.9;
   }
+
   &:active {
     transition: ease 0.2s;
     opacity: 0.8;
@@ -144,28 +151,40 @@
 .contained.gray {
   color: $main_blue1;
   background-color: $gray200;
+  border: 1px solid $gray200;
+
   &:hover {
     background-color: $gray300;
+    border: 1px solid $gray300;
   }
+
   &:active {
     background-color: $gray400;
+    border: 1px solid $gray400;
   }
 }
 
 .contained.black {
   color: $black1;
   background-color: $gray200;
+  border: 1px solid $gray200;
+
   &:hover {
     background-color: $gray300;
+    border: 1px solid $gray300;
   }
+
   &:active {
     background-color: $gray400;
+    border: 1px solid $gray400;
   }
 }
 
 .contained.disabled {
-  background-color: $gray200 !important;
   color: $gray500;
+  background-color: $gray200;
+  border: 1px solid $gray200;
+
   &:hover {
     background-color: $gray200;
   }
@@ -173,7 +192,8 @@
 
 .text {
   @extend .outlined;
-  border: none;
+
+  border: 1px solid transparent;
 }
 
 .text.blue {
@@ -194,6 +214,7 @@
 
 .text.disabled {
   color: $gray500;
+
   svg {
     color: $gray500;
   }
