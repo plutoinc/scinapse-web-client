@@ -15,8 +15,13 @@ const s = require('./uiDemo.scss');
 type AvailableIconPosition = 'left' | 'right' | 'only' | 'no';
 
 const PositionHandledButton: React.FC<
-  { iconPosition: AvailableIconPosition; content: string; iconName?: string; combined?: boolean } & GeneralButtonProps
-> = ({ iconPosition, iconName, content, combined, ...props }) => {
+  {
+    iconPosition: AvailableIconPosition;
+    content: string;
+    iconName?: string;
+    combinedButtonIcon?: string;
+  } & GeneralButtonProps
+> = ({ iconPosition, iconName, content, combinedButtonIcon, ...props }) => {
   const icon = iconName ? iconName : 'BOOKMARK';
 
   let button = null;
@@ -54,12 +59,14 @@ const PositionHandledButton: React.FC<
       break;
   }
 
-  if (!combined) return button;
+  if (combinedButtonIcon === 'NONE') return button;
 
   return (
     <GroupButton variant={props.variant} color={props.color} disabled={props.disabled}>
       {button}
-      {button}
+      <Button {...props}>
+        <Icon icon={combinedButtonIcon!} />
+      </Button>
     </GroupButton>
   );
 };
@@ -68,13 +75,13 @@ const PositionHandledButtonString = ({
   iconPosition,
   iconName,
   content,
-  combined,
+  combinedButtonIcon,
   ...props
 }: {
   iconPosition: AvailableIconPosition;
   content: string;
   iconName?: string;
-  combined?: boolean;
+  combinedButtonIcon?: string;
 } & GeneralButtonProps) => {
   const icon = iconName ? iconName : 'BOOKMARK';
 
@@ -124,12 +131,17 @@ const PositionHandledButtonString = ({
       break;
   }
 
-  if (!combined) return buttonString;
+  if (combinedButtonIcon === 'NONE') return buttonString;
+
+  const combinedButtonString = `
+<Button ${propsString}>
+  <Icon icon='${combinedButtonIcon}' />
+</Button>`;
 
   return `
 <GroupButton variant='${props.variant}' color='${props.color}' disabled={${
     props.disabled
-  }}>${buttonString}${buttonString}
+  }}>${buttonString}${combinedButtonString}
 </GroupButton>
   `;
 };
@@ -141,9 +153,9 @@ const UiDemo: React.FunctionComponent = () => {
   const [selectedColor, setSelectedColor] = React.useState<ButtonColor>('blue');
   const [isDisabled, setDisabled] = React.useState(false);
   const [isFullWidth, setFullWidth] = React.useState(false);
-  const [isCombined, setCombined] = React.useState(false);
   const [icon, setIcon] = React.useState('BOOKMARK');
   const [content, setContent] = React.useState('BUTTON TEXT');
+  const [combinedButtonIcon, setCombinedButtonIcon] = React.useState('NONE');
 
   const availableSizes: ButtonSize[] = ['small', 'medium', 'large'];
   const availableVariant: ButtonVariant[] = ['contained', 'outlined', 'text'];
@@ -265,6 +277,30 @@ const UiDemo: React.FunctionComponent = () => {
           />
         </FormControl>
 
+        <FormControl className={s.formControl}>
+          <InputLabel htmlFor="icon-helper">COMBINED BUTTON</InputLabel>
+          <Select
+            value={combinedButtonIcon}
+            onChange={e => setCombinedButtonIcon(e.target.value)}
+            inputProps={{
+              name: 'icon',
+              id: 'icon-helper',
+            }}
+          >
+            <MenuItem key="NONE" value="NONE">
+              NONE
+            </MenuItem>
+            {Object.keys(ICONS).map(iconName => {
+              return (
+                <MenuItem key={iconName} value={iconName}>
+                  <Icon icon={iconName} className={s.iconInOption} />
+                  {iconName}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+
         <div className={s.selectBoxLabel}>Options</div>
         <div className={s.checkboxWrapper}>
           <div className={s.checkboxWrapper}>
@@ -286,16 +322,6 @@ const UiDemo: React.FunctionComponent = () => {
               onChange={e => setFullWidth(e.currentTarget.checked)}
             />
           </div>
-
-          <div className={s.checkboxWrapper}>
-            <span className={s.checkboxLabel}>Combined</span>
-            <input
-              className={s.checkbox}
-              type="checkbox"
-              checked={isCombined}
-              onChange={e => setCombined(e.currentTarget.checked)}
-            />
-          </div>
         </div>
       </div>
 
@@ -312,7 +338,7 @@ const UiDemo: React.FunctionComponent = () => {
               color={selectedColor}
               disabled={isDisabled}
               fullWidth={isFullWidth}
-              combined={isCombined}
+              combinedButtonIcon={combinedButtonIcon}
             />
           </div>
         </div>
@@ -330,7 +356,7 @@ const UiDemo: React.FunctionComponent = () => {
                 color: selectedColor,
                 disabled: isDisabled,
                 fullWidth: isFullWidth,
-                combined: isCombined,
+                combinedButtonIcon: combinedButtonIcon,
               }).trim()}
             </code>
           </pre>
