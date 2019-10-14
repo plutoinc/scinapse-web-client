@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Axios, { CancelTokenSource } from 'axios';
 import { Dispatch } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'redux-starter-kit';
 import { denormalize } from 'normalizr';
-import { useDispatch, useSelector } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '../../helpers/withStylesHelper';
 import ScinapseButton from '../common/scinapseButton';
@@ -19,7 +19,7 @@ import { PDFViewerProps } from './types';
 import { AppState } from '../../reducers';
 import ProgressSpinner from './component/progressSpinner';
 import BlurBlocker from './component/blurBlocker';
-import { addPaperToRecommendPoolAndOpenOnboardingSnackbar } from '../recommendOnboardingSnackbar/actions';
+import { addPaperToRecommendPool } from '../recommendPool/actions';
 import { PDFViewerState } from '../../reducers/pdfViewer';
 import { CurrentUser } from '../../model/currentUser';
 import { getBestPdfOfPaper, getPDFPathOrBlob } from '../../actions/pdfViewer';
@@ -79,13 +79,7 @@ async function onClickViewMorePdfBtn(params: OnClickViewMorePdfBtnParams) {
   const { paperId, dispatch } = params;
   trackClickButton('viewMorePDF', paperId);
 
-  dispatch(
-    addPaperToRecommendPoolAndOpenOnboardingSnackbar({
-      pageType: 'paperShow',
-      actionArea: 'viewMorePDF',
-      recAction: { paperId, action: 'viewMorePDF' },
-    })
-  );
+  dispatch(addPaperToRecommendPool({ paperId: paperId, action: 'viewMorePDF' }));
 
   const isBlocked = await blockUnverifiedUser({
     authLevel: AUTH_LEVEL.VERIFIED,
@@ -308,13 +302,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
                         if (!EnvChecker.isOnServer()) {
                           e.preventDefault();
 
-                          dispatch(
-                            addPaperToRecommendPoolAndOpenOnboardingSnackbar({
-                              pageType: 'paperShow',
-                              actionArea: 'downloadPdf',
-                              recAction: { paperId: paper.id, action: 'viewMorePDF' },
-                            })
-                          );
+                          dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'viewMorePDF' }));
 
                           const isBlocked = await blockUnverifiedUser({
                             authLevel: AUTH_LEVEL.VERIFIED,

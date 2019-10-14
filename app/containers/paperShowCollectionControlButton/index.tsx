@@ -36,7 +36,7 @@ import { trackEvent } from '../../helpers/handleGA';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { ActionCreators } from '../../actions/actionTypes';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../helpers/checkAuthDialog';
-import { addPaperToRecommendPool } from '../../components/recommendOnboardingSnackbar/actions';
+import { addPaperToRecommendPool } from '../../components/recommendPool/actions';
 const styles = require('./paperShowCollectionControlButton.scss');
 
 const LAST_USER_COLLECTION_ID = 'l_u_c_id';

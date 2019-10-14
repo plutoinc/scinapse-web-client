@@ -13,7 +13,6 @@ import Icon from '../../icons';
 import { ACTION_TYPES } from '../../actions/actionTypes';
 import { LAST_SUCCEEDED_EMAIL_KEY } from '../../constants/requestDialogConstant';
 import { fetchLastFullTextRequestedDate } from '../../actions/paperShow';
-import { openRecommendOnboardingSnackbarAction } from '../recommendOnboardingSnackbar/actions';
 import { closeRequestFullTextDialog } from '../../reducers/requestFullTextDialog';
 import ReduxAutoSizeTextarea from '../common/autoSizeTextarea/reduxAutoSizeTextarea';
 import Button from '../common/button';
@@ -56,26 +55,16 @@ function buildMessage(values: FormState) {
   }<br /><br />Who am I (Adding your profile link is preferred):<br />${values.whoami}`.trim();
 }
 
-function getActionArea(openFrom: string) {
-  if (openFrom === 'refCited') {
-    return 'requestFullTextBtnAtRefBar';
-  }
-
-  return 'requestFullTextBtn';
-}
-
 const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperId }) => {
   useStyles(s);
   const dispatch = useDispatch();
-  const { currentUser, isOpen, openFrom } = useSelector((appState: AppState) => ({
+  const { currentUser, isOpen } = useSelector((appState: AppState) => ({
     currentUser: appState.currentUser,
     isOpen: appState.requestFullTextDialogState.isOpen,
-    openFrom: appState.requestFullTextDialogState.from,
   }));
   const [isLoading, setIsLoading] = React.useState(false);
 
   function handleClose() {
-    dispatch(openRecommendOnboardingSnackbarAction('paperShow', getActionArea(openFrom)));
     dispatch(closeRequestFullTextDialog());
   }
 

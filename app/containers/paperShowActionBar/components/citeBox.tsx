@@ -5,7 +5,7 @@ import { Paper } from '../../../model/paper';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-import { addPaperToRecommendPool } from '../../../components/recommendOnboardingSnackbar/actions';
+import { addPaperToRecommendPool } from '../../../components/recommendPool/actions';
 const s = require('./citeBox.scss');
 
 interface CiteBoxProps {

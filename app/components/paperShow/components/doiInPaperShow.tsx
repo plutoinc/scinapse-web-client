@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import copySelectedTextToClipboard from '../../../helpers/copySelectedTextToClipboard';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-import { addPaperToRecommendPool } from '../../recommendOnboardingSnackbar/actions';
+import { addPaperToRecommendPool } from '../../recommendPool/actions';
 const useStyles = require('isomorphic-style-loader/useStyles');
 
 const s = require('./doiInPaperShow.scss');

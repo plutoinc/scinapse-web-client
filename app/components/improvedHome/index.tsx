@@ -1,34 +1,21 @@
 import React from 'react';
-import { Dispatch } from 'redux';
 import axios from 'axios';
-import classNames from 'classnames';
-import { connect } from 'react-redux';
-import { withRouter, RouteComponentProps } from 'react-router';
+import { useSelector } from 'react-redux';
 import Helmet from 'react-helmet';
 import ReactCountUp from 'react-countup';
 import { AppState } from '../../reducers';
-import { LayoutState } from '../layouts/reducer';
-import { withStyles } from '../../helpers/withStylesHelper';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
 import TrendingPaper from './components/trendingPaper';
 import Icon from '../../icons';
 import JournalsInfo from './components/journalsInfo';
 import AffiliationsInfo from './components/affiliationsInfo';
 import HomeAPI from '../../api/home';
-import RecommendationAPI, { BasedOnCollectionPapersParams } from '../../api/recommendation';
 import ImprovedFooter from '../layouts/improvedFooter';
-import RecommendedPapers from './components/recommendedPapers';
-import { Paper } from '../../model/paper';
 import { UserDevice } from '../layouts/reducer';
+const useStyles = require('isomorphic-style-loader/useStyles');
 const styles = require('./improvedHome.scss');
 
 const MAX_KEYWORD_SUGGESTION_LIST_COUNT = 5;
-
-type Props = ReturnType<typeof mapStateToProps> &
-  RouteComponentProps<any> & {
-    layout: LayoutState;
-    dispatch: Dispatch<any>;
-  };
 
 function getHelmetNode() {
   const structuredDataJSON = {
@@ -64,9 +51,7 @@ function getHelmetNode() {
   );
 }
 
-const ScinapseInformation: React.FC<{ isMobile: boolean; shouldShow: boolean }> = ({ isMobile, shouldShow }) => {
-  if (!shouldShow) return null;
-
+const ScinapseInformation: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
   return (
     <div>
       <JournalsInfo isMobile={isMobile} />
@@ -79,12 +64,7 @@ const ScinapseInformation: React.FC<{ isMobile: boolean; shouldShow: boolean }> 
   );
 };
 
-const ScinapseFigureContent: React.FC<{ shouldShow: boolean; papersFoundCount: number }> = ({
-  shouldShow,
-  papersFoundCount,
-}) => {
-  if (!shouldShow) return null;
-
+const ScinapseFigureContent: React.FC<{ papersFoundCount: number }> = ({ papersFoundCount }) => {
   return (
     <>
       <div className={styles.cumulativeCountContainer}>
@@ -110,13 +90,10 @@ const ScinapseFigureContent: React.FC<{ shouldShow: boolean; papersFoundCount: n
   );
 };
 
-const ImprovedHome: React.FC<Props> = props => {
-  const { currentUser } = props;
+const ImprovedHome: React.FC = () => {
+  useStyles(styles);
+  const userDevice = useSelector((state: AppState) => state.layout.userDevice);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
-  const [basedOnActivityPapers, setBasedOnActivityPapers] = React.useState<Paper[]>([]);
-  const [basedOnCollectionPapers, setBasedOnCollectionPapers] = React.useState<BasedOnCollectionPapersParams>();
-  const [isLoadingBasedOnActivityPapers, setIsLoadingBasedOnActivityPapers] = React.useState(false);
-  const [isLoadingBasedOnCollectionPapers, setIsLoadingBasedOnCollectionPapers] = React.useState(false);
   const cancelToken = React.useRef(axios.CancelToken.source());
 
   React.useEffect(() => {
@@ -130,66 +107,12 @@ const ImprovedHome: React.FC<Props> = props => {
     };
   }, []);
 
-  const getBasedOnActivityPapers = React.useCallback(() => {
-    setIsLoadingBasedOnActivityPapers(true);
-    RecommendationAPI.getPapersFromUserAction()
-      .then(res => {
-        setBasedOnActivityPapers(res);
-        setIsLoadingBasedOnActivityPapers(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setIsLoadingBasedOnActivityPapers(false);
-      });
-  }, []);
-
-  const getBasedOnCollectionPapers = React.useCallback(() => {
-    setIsLoadingBasedOnCollectionPapers(true);
-    RecommendationAPI.getPapersFromCollection()
-      .then(res => {
-        setBasedOnCollectionPapers(res);
-        setIsLoadingBasedOnCollectionPapers(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setIsLoadingBasedOnCollectionPapers(false);
-      });
-  }, []);
-
-  React.useEffect(
-    () => {
-      if (currentUser.isLoggedIn) {
-        getBasedOnActivityPapers();
-        getBasedOnCollectionPapers();
-      }
-
-      return () => {
-        setIsLoadingBasedOnActivityPapers(false);
-        setIsLoadingBasedOnCollectionPapers(false);
-        cancelToken.current.cancel();
-        cancelToken.current = axios.CancelToken.source();
-      };
-    },
-    [currentUser.isLoggedIn]
-  );
-
-  const shouldShow =
-    currentUser.isLoggedIn &&
-    basedOnActivityPapers &&
-    basedOnActivityPapers.length > 0 &&
-    props.layout.userDevice === UserDevice.DESKTOP;
-
   return (
     <div className={styles.articleSearchFormContainer}>
       {getHelmetNode()}
       <h1 style={{ display: 'none' }}>Scinapse | Academic search engine for paper</h1>
       <div className={styles.searchFormInnerContainer}>
-        <div
-          className={classNames({
-            [styles.searchFormContainer]: true,
-            [styles.knowledge]: shouldShow,
-          })}
-        >
+        <div className={styles.searchFormContainer}>
           <div className={styles.formWrapper}>
             <div className={styles.title}>
               <Icon icon="SCINAPSE_HOME_LOGO" className={styles.scinapseHomeLogo} />
@@ -205,31 +128,14 @@ const ImprovedHome: React.FC<Props> = props => {
             </div>
             <div className={styles.searchTryKeyword} />
             <div className={styles.catchphrase}>We’re better than Google Scholar. We mean it.</div>
-            <ScinapseFigureContent shouldShow={!shouldShow} papersFoundCount={papersFoundCount} />
+            <ScinapseFigureContent papersFoundCount={papersFoundCount} />
           </div>
-          {shouldShow && <div className={styles.recommendedPapersBlockDivider} />}
         </div>
-        <RecommendedPapers
-          shouldShow={shouldShow}
-          isLoggingIn={currentUser.isLoggingIn}
-          isLoadingActivityPapers={isLoadingBasedOnActivityPapers}
-          isLoadingCollectionPapers={isLoadingBasedOnCollectionPapers}
-          basedOnActivityPapers={basedOnActivityPapers}
-          basedOnCollectionPapers={basedOnCollectionPapers}
-          handleGetBasedOnActivityPapers={getBasedOnActivityPapers}
-        />
-        <ScinapseInformation isMobile={props.layout.userDevice === UserDevice.MOBILE} shouldShow={!shouldShow} />
+        <ScinapseInformation isMobile={userDevice === UserDevice.MOBILE} />
         <ImprovedFooter />
       </div>
     </div>
   );
 };
 
-function mapStateToProps(state: AppState) {
-  return {
-    layout: state.layout,
-    currentUser: state.currentUser,
-  };
-}
-
-export default withRouter(connect(mapStateToProps)(withStyles<typeof ImprovedHome>(styles)(ImprovedHome)));
+export default ImprovedHome;
