@@ -1,13 +1,15 @@
 import * as React from 'react';
 import Axios, { CancelTokenSource } from 'axios';
 import { Dispatch } from 'redux';
+import { createSelector } from 'redux-starter-kit';
+import { denormalize } from 'normalizr';
+import { useDispatch, useSelector } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '../../helpers/withStylesHelper';
-import PaperAPI from '../../api/paper';
 import ScinapseButton from '../common/scinapseButton';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import Icon from '../../icons';
-import { PaperPdf, Paper, paperSchema } from '../../model/paper';
+import { paperSchema } from '../../model/paper';
 import { ActionCreators } from '../../actions/actionTypes';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../helpers/checkAuthDialog';
 import EnvChecker from '../../helpers/envChecker';
@@ -18,14 +20,13 @@ import { AppState } from '../../reducers';
 import ProgressSpinner from './component/progressSpinner';
 import BlurBlocker from './component/blurBlocker';
 import { addPaperToRecommendPoolAndOpenOnboardingSnackbar } from '../recommendOnboardingSnackbar/actions';
-import { useDispatch, useSelector } from 'react-redux';
 import { PDFViewerState } from '../../reducers/pdfViewer';
 import { CurrentUser } from '../../model/currentUser';
-import { createSelector } from 'redux-starter-kit';
-import { denormalize } from 'normalizr';
+import { getBestPdfOfPaper, getPDFPathOrBlob } from '../../actions/pdfViewer';
 const { Document, Page, pdfjs } = require('react-pdf');
 const styles = require('./pdfViewer.scss');
 
+const DIRECT_PDF_PATH_PREFIX = 'https://asset-pdf.scinapse.io/';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function trackClickButton(actionTag: Scinapse.ActionTicket.ActionTagType, paperId: number) {
@@ -65,28 +66,15 @@ const downloadPdfBtnStyle: React.CSSProperties = {
   marginLeft: '16px',
 };
 
-async function fetchPDFFromAPI(paper: Paper, cancelTokenSource: CancelTokenSource, dispatch: Dispatch<any>) {
-  let pdf: PaperPdf | undefined = paper.bestPdf;
-  const cancelToken = cancelTokenSource.token;
-
-  if (!pdf) {
-    pdf = await PaperAPI.getBestPdfOfPaper({ paperId: paper.id, cancelToken });
-    if (pdf) {
-      dispatch(ActionCreators.getBestPDFOfPaper({ paperId: paper.id, bestPDF: pdf }));
-    }
-  }
-
-  if (pdf && pdf.hasBest) {
-    const blob = await PaperAPI.getPDFBlob(pdf.url, cancelToken);
-    return blob;
-  }
-  return null;
-}
-
 interface OnClickViewMorePdfBtnParams {
   paperId: number;
   dispatch: Dispatch<any>;
 }
+
+function getDirectPDFPath(path: string) {
+  return `${DIRECT_PDF_PATH_PREFIX + path}`;
+}
+
 async function onClickViewMorePdfBtn(params: OnClickViewMorePdfBtnParams) {
   const { paperId, dispatch } = params;
   trackClickButton('viewMorePDF', paperId);
@@ -160,25 +148,36 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
   const relatedPaperList = useSelector(selectRelatedPapers);
 
   const [pdfBlob, setPdfBlob] = React.useState<Blob | null>(null);
+  const [directPdfPath, setDirectPdfPath] = React.useState<string | null>(null);
+
   const [parsedPdfObject, setParsedPdfObject] = React.useState<any>(null);
   const wrapperNode = React.useRef<HTMLDivElement | null>(null);
   const viewMorePDFBtnEl = React.useRef<HTMLDivElement | null>(null);
   const cancelTokenSource = React.useRef<CancelTokenSource>(Axios.CancelToken.source());
+  const cancelToken = cancelTokenSource.current.token;
   const actionTag = PDFViewerState.isExpanded ? 'viewLessPDF' : 'viewMorePDF';
 
   React.useEffect(
     () => {
+      if (paper.bestPdf.path) return setDirectPdfPath(getDirectPDFPath(paper.bestPdf.path));
+
       if (pdfBlob || PDFViewerState.isLoading) return;
 
       dispatch(ActionCreators.startToFetchPDF());
-      fetchPDFFromAPI(paper, cancelTokenSource.current, dispatch)
+      dispatch(getBestPdfOfPaper(paper, cancelToken));
+
+      getPDFPathOrBlob(paper.bestPdf, cancelToken)
         .then(res => {
-          if (res && res.data) {
-            setPdfBlob(res.data);
-            return dispatch(ActionCreators.finishToFetchPDF());
+          if (!res) throw new Error('No PDF');
+
+          if (typeof res === 'object') {
+            const blob = res.data;
+            setPdfBlob(blob);
           } else {
-            throw new Error('No PDF');
+            setDirectPdfPath(getDirectPDFPath(res));
           }
+
+          return dispatch(ActionCreators.finishToFetchPDF());
         })
         .catch(err => {
           if (!Axios.isCancel(err)) {
@@ -196,7 +195,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
     [dispatch, paper.id]
   );
 
-  if (PDFViewerState.isLoading && !pdfBlob) {
+  if (PDFViewerState.isLoading && (!pdfBlob || !directPdfPath)) {
     return <ProgressSpinner />;
   }
 
@@ -216,7 +215,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
     );
   }
 
-  if (!!pdfBlob) {
+  if (!!pdfBlob || !!directPdfPath) {
     const ReadAllPDFButton = (
       <div ref={viewMorePDFBtnEl}>
         <ScinapseButton
@@ -246,7 +245,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
     return (
       <div ref={wrapperNode} className={styles.contentWrapper}>
         <Document
-          file={pdfBlob}
+          file={!!directPdfPath ? directPdfPath : pdfBlob}
           error={null}
           loading={
             <div className={styles.loadingContainerWrapper}>
