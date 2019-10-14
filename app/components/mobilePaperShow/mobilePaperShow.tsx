@@ -14,6 +14,7 @@ import GoBackResultBtn from '../paperShow/backButton';
 import { AvailablePaperShowTab } from '../paperShowTabItem/paperShowTabItem';
 import MobileRelatedPapers from '../mobileRelatedPapers/mobileRelatedPapers';
 import MobileRefCitedPapers from '../paperShow/refCitedPapers/mobileRefCitedPapers';
+import PaperShowFigureList from '../paperShow/components/paperShowFigureList';
 import Button from '../common/button';
 import Icon from '../../icons';
 import { Paper } from '../../model/paper';
@@ -191,6 +192,7 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper, location }) =>
             />
           </div>
           <div className={s.abstractContent} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.abstract) }} />
+          <PaperShowFigureList paper={paper} isMobile />
         </div>
         {pdfURL && (
           <Button

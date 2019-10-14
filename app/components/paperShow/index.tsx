@@ -14,7 +14,6 @@ import CitedPapers from './refCitedPapers/citedPapers';
 import PaperShowRefCitedTab from './refCitedTab';
 import { getMemoizedPaper } from '../../containers/paperShow/select';
 import { formulaeToHTMLStr } from '../../helpers/displayFormula';
-import restoreScroll from '../../helpers/scrollRestoration';
 import ErrorPage from '../error/errorPage';
 import EnvChecker from '../../helpers/envChecker';
 import NextPaperTab from '../../containers/nextPaperTab';
@@ -291,8 +290,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       this.scrollToSection('cited');
     } else if (paperShow.referencePaperCurrentPage === 1 && location.hash === '#references') {
       this.scrollToSection('ref');
-    } else {
-      restoreScroll(location.key);
     }
   };
 
