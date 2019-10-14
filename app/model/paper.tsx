@@ -10,6 +10,7 @@ export interface PaperPdf {
   url: string;
   lastCheckedAt: Date;
   hasBest: boolean;
+  path: string;
 }
 
 export interface PaperFigure {
