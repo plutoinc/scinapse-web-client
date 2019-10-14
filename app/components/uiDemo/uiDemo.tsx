@@ -127,9 +127,9 @@ const PositionHandledButtonString = ({
   if (!combined) return buttonString;
 
   return `
-<GroupButton variant='${props.variant}' color='${props.color}' disabled='${
+<GroupButton variant='${props.variant}' color='${props.color}' disabled={${
     props.disabled
-  }'>${buttonString}${buttonString}
+  }}>${buttonString}${buttonString}
 </GroupButton>
   `;
 };
