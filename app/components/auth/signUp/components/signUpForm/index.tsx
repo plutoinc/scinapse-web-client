@@ -104,14 +104,14 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
               <div className={s.additionalInformation}>ADDITIONAL INFORMATION</div>
               <div className={s.subHeader}>No abbreviation preferred</div>
               <div className={s.formContainer}>
-                <Field name="email" type="email" component={AuthInputBox} placeholder="E-mail" iconName="EMAIL_ICON" />
+                <Field name="email" type="email" component={AuthInputBox} placeholder="E-mail" iconName="EMAIL" />
                 {!props.withSocial && (
                   <Field
                     name="password"
                     type="password"
                     component={AuthInputBox}
                     placeholder="Password"
-                    iconName="PASSWORD_ICON"
+                    iconName="PASSWORD"
                   />
                 )}
                 <div className={s.nameItemWrapper}>

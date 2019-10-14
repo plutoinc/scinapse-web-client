@@ -1,20 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="11" height="13" viewBox="0 0 11 13">
-    <defs>
-        <rect id="b" width="903" height="242" rx="5"/>
-        <filter id="a" width="101.6%" height="105.8%" x="-.8%" y="-2.1%" filterUnits="objectBoundingBox">
-            <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
-            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2"/>
-            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"/>
-        </filter>
-    </defs>
-    <g fill="none" fill-rule="evenodd">
-        <g transform="translate(-16 -84)">
-            <use fill="#000" filter="url(#a)" xlink:href="#b"/>
-            <use fill="#FFF" xlink:href="#b"/>
-        </g>
-        <g fill="#FFF" stroke="#9AA3B5">
-            <rect width="7" height="9" x=".5" y=".5" rx="2"/>
-            <rect width="7" height="9" x="3.5" y="3.5" rx="2"/>
-        </g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Icon/journal</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icon/journal" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M12,2 C13.6568542,2 15,3.34314575 15,5 L15,6.199 L13,6.199 L13,5 C13,4.44771525 12.5522847,4 12,4 L6,4 C5.44771525,4 5,4.44771525 5,5 L5,15 C5,15.5522847 5.44771525,16 6,16 L9,16 L9,18 L6,18 C4.34314575,18 3,16.6568542 3,15 L3,5 C3,3.40231912 4.24891996,2.09633912 5.82372721,2.00509269 L6,2 L12,2 Z" id="Combined-Shape" fill="currentColor" fill-rule="nonzero"></path>
+        <path d="M12,6 L18,6 C19.6568542,6 21,7.34314575 21,9 L21,19 C21,20.6568542 19.6568542,22 18,22 L12,22 C10.3431458,22 9,20.6568542 9,19 L9,9 C9,7.34314575 10.3431458,6 12,6 Z M12,8 C11.4477153,8 11,8.44771525 11,9 L11,19 C11,19.5522847 11.4477153,20 12,20 L18,20 C18.5522847,20 19,19.5522847 19,19 L19,9 C19,8.44771525 18.5522847,8 18,8 L12,8 Z" id="Rectangle" fill="currentColor" fill-rule="nonzero"></path>
     </g>
 </svg>

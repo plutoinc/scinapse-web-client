@@ -87,7 +87,7 @@ const SourceButton: React.FC<SourceButtonProps> = ({ paperSource, pageType, acti
         );
       }}
     >
-      <Icon icon="LINK" className={styles.linkIcon} />
+      <Icon icon="EXTERNAL_SOURCE" className={styles.linkIcon} />
       <span className={styles.sourceHostInfo}>Source</span>
     </a>
   );

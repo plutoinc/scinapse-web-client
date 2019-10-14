@@ -6,7 +6,6 @@
   font-size: 14px;
   font-weight: 500;
   color: $main_blue0;
-  line-height: 1.43;
   background-color: $gray50;
   border-radius: 4px;
   cursor: pointer;
@@ -14,7 +13,6 @@
 
   span {
     display: inline-block;
-    height: 20px;
   }
 
   &:hover {
@@ -27,14 +25,16 @@
 
   .citeIcon {
     @include flex-center-vertical-horizontal(inline-flex);
-
-    width: 20px;
-    height: 20px;
     margin-right: 4px;
-
+    vertical-align: top;
     svg {
-      width: 12px;
-      height: 12px;
+      width: 16px;
+      height: 16px;
     }
+
+    // svg {
+    //   width: 12px;
+    //   height: 12px;
+    // }
   }
 }

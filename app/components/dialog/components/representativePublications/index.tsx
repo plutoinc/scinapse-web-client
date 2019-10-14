@@ -107,7 +107,7 @@ class RepresentativePublicationsDialog extends React.PureComponent<
           onChange={this.handleChangeSearchInput}
           value={searchInput}
           placeholder="Filter Publications"
-          icon="SEARCH_ICON"
+          icon="SEARCH"
         />
 
         {content}

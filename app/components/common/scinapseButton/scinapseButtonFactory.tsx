@@ -66,7 +66,7 @@ const ButtonWithArrow: React.SFC<ButtonWithArrowProps> = ({
               style={{
                 transform: isUpArrow ? 'rotate(180deg)' : '',
               }}
-              icon="ARROW_POINT_TO_UP"
+              icon="ARROW_UP"
               className={arrowIconClassName}
             />
           </span>

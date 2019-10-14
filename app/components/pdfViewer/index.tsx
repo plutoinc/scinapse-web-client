@@ -224,7 +224,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
           style={readAllBtnStyle}
           content={
             <span>
-              READ ALL <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
+              READ ALL <Icon icon="ARROW_UP" className={styles.arrowIcon} />
             </span>
           }
           isLoading={PDFViewerState.isLoading}

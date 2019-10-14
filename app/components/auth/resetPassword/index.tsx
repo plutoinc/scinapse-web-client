@@ -83,7 +83,7 @@ const ResetPasswordPage: React.FunctionComponent<RouteComponentProps<any>> = pro
               type="password"
               component={AuthInputBox}
               placeholder="New password"
-              iconName="PASSWORD_ICON"
+              iconName="PASSWORD"
               wrapperStyles={{ width: '100%' }}
             />
             <Field
@@ -91,7 +91,7 @@ const ResetPasswordPage: React.FunctionComponent<RouteComponentProps<any>> = pro
               type="password"
               component={AuthInputBox}
               placeholder="Confirm password"
-              iconName="PASSWORD_ICON"
+              iconName="PASSWORD"
               wrapperStyles={{ width: '100%' }}
             />
             {networkError && <div className={styles.errorContent}>{networkError}</div>}

@@ -49,15 +49,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 24px;
-    height: 24px;
+    width: 16px;
+    height: 16px;
 
     svg {
       display: inline-block;
       vertical-align: top;
-      width: 14px;
-      height: 14px;
-      color: $gray400;
+      width: 16px;
+      height: 16px;
+      color: $gray500;
     }
   }
 }

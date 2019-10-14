@@ -29,7 +29,7 @@ const FilterButton: React.FC<FilterButtonProps> = ({ content, onClick, isActive,
     >
       {content}
       <Icon
-        icon="ARROW_POINT_TO_DOWN"
+        icon="ARROW_DOWN"
         className={classNames({
           [s.arrowIcon]: true,
           [s.activeIcon]: isActive,

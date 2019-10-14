@@ -105,7 +105,7 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
     >
       <div className={classNames({ [s.wrapper]: true, [s.listOpened]: state.isOpen && !!journalList })}>
         <div className={s.inputWrapper}>
-          <Icon icon="SEARCH_ICON" className={s.searchIcon} />
+          <Icon icon="SEARCH" className={s.searchIcon} />
           <input
             ref={props.forwardedRef}
             value={state.inputValue}

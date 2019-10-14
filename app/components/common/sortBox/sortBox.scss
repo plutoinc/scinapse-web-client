@@ -7,6 +7,8 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  color: $gray800;
+  margin-right: 8px;
 
   span {
     display: inline-block;
@@ -33,13 +35,12 @@
 .sortByText {
   font-size: 14px;
   color: $gray600;
-  margin-right: 11px;
+  margin-right: 8px;
 }
 
 .sortOptionText {
   font-size: 14px;
-  color: $gray800;
-  margin-right: 10.5px;
+  margin-right: 8px;
 }
 
 body .menuItem {

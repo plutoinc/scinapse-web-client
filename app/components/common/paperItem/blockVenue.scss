@@ -1,19 +1,21 @@
 .wrapper {
   display: flex;
   align-items: center;
+  color: $gray700;
 }
 
 .journalIcon {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   margin-right: 4px;
+  color: $gray600;
 
   svg {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
   }
 }
 
@@ -22,12 +24,19 @@
   font-weight: 500;
 }
 
-.ifIconWrapper {
-  svg {
-    width: 10px;
-    height: 10px;
-    color: $main_blue0;
+.ifLabel {
+  .ifIconWrapper {
     margin-right: 4px;
+    svg {
+      width: 14px;
+      height: 14px;
+      color: $main_blue0;
+      vertical-align: top;
+    }
+  }
+
+  .ifLabelContentWrapper {
+    vertical-align: top;
   }
 }
 
@@ -35,8 +44,7 @@
   max-width: 565px;
   width: 100%;
   font-size: 13px;
-  line-height: 20px;
-  color: $gray700;
+  line-height: 16px;
 }
 
 .middleDot {

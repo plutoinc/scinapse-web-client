@@ -105,7 +105,7 @@ const ScinapseFigureContent: React.FC<{ shouldShow: boolean; papersFoundCount: n
           {` papers using Scinapse`}
         </span>
       </div>
-      <Icon icon="ARROW_POINT_TO_DOWN" className={styles.downIcon} />
+      <Icon icon="ARROW_DOWN" className={styles.downIcon} />
     </>
   );
 };

@@ -7,7 +7,7 @@
   border: solid 1px $gray400;
   font-size: 14px;
   line-height: 16px;
-  padding: 4px 8px;
+  padding: 8px;
   color: $gray800;
 
   .faviconIcon {
@@ -28,13 +28,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     margin-right: 4px;
 
     svg {
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
     }
   }
 
@@ -42,13 +42,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     margin-left: 4px;
 
     svg {
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
     }
   }
 
@@ -56,13 +56,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 20px;
-    height: 20px;
     margin-right: 4px;
 
     svg {
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
     }
   }
 }
