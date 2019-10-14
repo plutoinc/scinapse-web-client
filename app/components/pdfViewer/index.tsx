@@ -153,12 +153,13 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
 
   React.useEffect(
     () => {
+      dispatch(getBestPdfOfPaper(paper, cancelToken));
+
+      if (!paper.bestPdf || pdfBlob || PDFViewerState.isLoading) return;
+
       if (paper.bestPdf.path) return setDirectPdfPath(getDirectPDFPath(paper.bestPdf.path));
 
-      if (pdfBlob || PDFViewerState.isLoading) return;
-
       dispatch(ActionCreators.startToFetchPDF());
-      dispatch(getBestPdfOfPaper(paper, cancelToken));
 
       getPDFPathOrBlob(paper.bestPdf, cancelToken)
         .then(res => {
