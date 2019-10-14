@@ -3,17 +3,18 @@
   width: 200px;
   font-weight: 500;
   letter-spacing: 0.5px;
+  line-height: 20px;
   margin-top: 24px;
   color: $gray600;
   cursor: pointer;
+  vertical-align: top;
 
   .backIcon {
-    width: 18px;
     svg {
-      width: 18px;
+      width: 16px;
       height: 16px;
-      padding-top: 6px;
       margin-right: 4px;
+      vertical-align: top;
     }
   }
 

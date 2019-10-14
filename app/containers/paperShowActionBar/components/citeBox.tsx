@@ -37,7 +37,7 @@ const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
       }}
     >
       <div>
-        <Icon icon={'CITATION_QUOTE'} className={s.citeIcon} />
+        <Icon icon={'CITATION'} className={s.citeIcon} />
         <span>Cite</span>
       </div>
     </div>
