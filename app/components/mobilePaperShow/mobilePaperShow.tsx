@@ -237,7 +237,7 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper, location }) =>
       <div className={s.paperListSection}>
         {shouldShowRelatedTab && (
           <>
-            <div ref={relatedTabWrapper} style={{ marginTop: '48px', marginBottom: '48px' }}>
+            <div ref={relatedTabWrapper} style={{ marginTop: '48px', marginBottom: '36px' }}>
               <MobilePaperShowTab
                 active={AvailablePaperShowTab.related}
                 onClick={handleClickPaperShowTab}
@@ -245,6 +245,7 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper, location }) =>
                 paper={paper}
               />
             </div>
+            <div className={s.relatedPaperTitle}>📖 Papers frequently viewed together</div>
             <MobileRelatedPapers paperIds={relatedPaperIds} className={s.relatedPapers} />
           </>
         )}
