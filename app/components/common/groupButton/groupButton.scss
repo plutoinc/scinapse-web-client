@@ -1,4 +1,6 @@
 .groupButtonWrapper {
+  display: inline-flex;
+
   a:not(:last-child),
   button:not(:last-child) {
     border-top-right-radius: 0;
@@ -27,9 +29,19 @@
   }
 }
 
-.contained.gray.groupButtonWrapper {
+.contained.gray.groupButtonWrapper,
+.contained.black.groupButtonWrapper {
   a:not(:first-child),
   button:not(:first-child) {
     @include combined-button-borderline-color($gray400);
+  }
+}
+
+.contained.blue.disabled.groupButtonWrapper,
+.contained.gray.disabled.groupButtonWrapper,
+.contained.black.disabled.groupButtonWrapper {
+  a:not(:first-child),
+  button:not(:first-child) {
+    @include combined-button-borderline-color($gray300);
   }
 }

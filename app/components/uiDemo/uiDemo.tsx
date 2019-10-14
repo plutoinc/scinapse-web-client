@@ -8,52 +8,74 @@ import Button, { GeneralButtonProps } from '../common/button';
 import { ButtonSize, ButtonVariant, ButtonColor } from '../common/button/types';
 import Icon, { ICONS } from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
+import GroupButton from '../common/groupButton';
 
 const s = require('./uiDemo.scss');
 
 type AvailableIconPosition = 'left' | 'right' | 'only' | 'no';
 
 const PositionHandledButton: React.FC<
-  { iconPosition: AvailableIconPosition; content: string; iconName?: string } & GeneralButtonProps
-> = ({ iconPosition, iconName, content, ...props }) => {
+  { iconPosition: AvailableIconPosition; content: string; iconName?: string; combined?: boolean } & GeneralButtonProps
+> = ({ iconPosition, iconName, content, combined, ...props }) => {
   const icon = iconName ? iconName : 'BOOKMARK';
+
+  let button = null;
 
   switch (iconPosition) {
     case 'left':
-      return (
+      button = (
         <Button {...props}>
           <Icon icon={icon} />
           <span>{content}</span>
         </Button>
       );
+      break;
     case 'right':
-      return (
+      button = (
         <Button {...props}>
           <span>{content}</span>
           <Icon icon={icon} />
         </Button>
       );
+      break;
     case 'only':
-      return (
+      button = (
         <Button {...props}>
           <Icon icon={icon} />
         </Button>
       );
+      break;
     case 'no':
-      return (
+      button = (
         <Button {...props}>
           <span>{content}</span>
         </Button>
       );
+      break;
   }
+
+  if (!combined) return button;
+
+  return (
+    <GroupButton variant={props.variant} color={props.color} disabled={props.disabled}>
+      {button}
+      {button}
+    </GroupButton>
+  );
 };
 
 const PositionHandledButtonString = ({
   iconPosition,
   iconName,
   content,
+  combined,
   ...props
-}: { iconPosition: AvailableIconPosition; content: string; iconName?: string } & GeneralButtonProps) => {
+}: {
+  iconPosition: AvailableIconPosition;
+  content: string;
+  iconName?: string;
+  combined?: boolean;
+} & GeneralButtonProps) => {
   const icon = iconName ? iconName : 'BOOKMARK';
 
   const propsString = Object.keys(props)
@@ -71,30 +93,45 @@ const PositionHandledButtonString = ({
     .filter(prop => !!prop)
     .join(' ');
 
+  let buttonString = '';
+
   switch (iconPosition) {
     case 'left':
-      return `
+      buttonString = `
 <Button ${propsString}>
-  <Icon icon=${icon} />
+  <Icon icon='${icon}' />
   <span>${content}</span>
 </Button>`;
+      break;
     case 'right':
-      return `
+      buttonString = `
 <Button ${propsString}>
   <span>{content}</span>
-  <Icon icon=${icon} />
+  <Icon icon='${icon}' />
 </Button>`;
+      break;
     case 'only':
-      return `
+      buttonString = `
 <Button ${propsString}>
-  <Icon icon=${icon} />
+  <Icon icon='${icon}' />
 </Button>`;
+      break;
     case 'no':
-      return `
+      buttonString = `
 <Button ${propsString}>
   <span>{content}</span>
 </Button>`;
+      break;
   }
+
+  if (!combined) return buttonString;
+
+  return `
+<GroupButton variant='${props.variant}' color='${props.color}' disabled='${
+    props.disabled
+  }'>${buttonString}${buttonString}
+</GroupButton>
+  `;
 };
 
 const UiDemo: React.FunctionComponent = () => {
@@ -104,6 +141,7 @@ const UiDemo: React.FunctionComponent = () => {
   const [selectedColor, setSelectedColor] = React.useState<ButtonColor>('blue');
   const [isDisabled, setDisabled] = React.useState(false);
   const [isFullWidth, setFullWidth] = React.useState(false);
+  const [isCombined, setCombined] = React.useState(false);
   const [icon, setIcon] = React.useState('BOOKMARK');
   const [content, setContent] = React.useState('BUTTON TEXT');
 
@@ -248,6 +286,16 @@ const UiDemo: React.FunctionComponent = () => {
               onChange={e => setFullWidth(e.currentTarget.checked)}
             />
           </div>
+
+          <div className={s.checkboxWrapper}>
+            <span className={s.checkboxLabel}>Combined</span>
+            <input
+              className={s.checkbox}
+              type="checkbox"
+              checked={isCombined}
+              onChange={e => setCombined(e.currentTarget.checked)}
+            />
+          </div>
         </div>
       </div>
 
@@ -264,6 +312,7 @@ const UiDemo: React.FunctionComponent = () => {
               color={selectedColor}
               disabled={isDisabled}
               fullWidth={isFullWidth}
+              combined={isCombined}
             />
           </div>
         </div>
@@ -281,6 +330,7 @@ const UiDemo: React.FunctionComponent = () => {
                 color: selectedColor,
                 disabled: isDisabled,
                 fullWidth: isFullWidth,
+                combined: isCombined,
               }).trim()}
             </code>
           </pre>

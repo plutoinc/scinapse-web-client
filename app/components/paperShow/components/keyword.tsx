@@ -82,7 +82,7 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
   }
 
   return (
-    <GroupButton variant="contained" buttonBackgroundColor="gray" className={s.fosBtnWrapper}>
+    <GroupButton variant="contained" color="gray" className={s.fosBtnWrapper}>
       <Button
         elementType="link"
         to={formattedFOSLocation(keyword)}
@@ -93,8 +93,6 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
           color: '#7e8698',
           padding: '8px 12px',
         }}
-        fullWidth={false}
-        disabled={false}
         rel="noopener noreferrer"
         target="_blank"
         onClick={() => {
@@ -114,8 +112,6 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
         size="small"
         variant="contained"
         color="black"
-        fullWidth={false}
-        disabled={false}
         isLoading={isLoading}
         style={{ color: '#7e8698', padding: '8px' }}
         onClick={onClickAlertButton}
