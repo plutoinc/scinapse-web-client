@@ -294,7 +294,7 @@ const UiDemo: React.FunctionComponent = () => {
             <MenuItem key="NONE" value="NONE">
               NONE
             </MenuItem>
-            {Object.keys(ICONS).map(iconName => {
+            {orderdIconList.map(iconName => {
               return (
                 <MenuItem key={iconName} value={iconName}>
                   <Icon icon={iconName} className={s.iconInOption} />
