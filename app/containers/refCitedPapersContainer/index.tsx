@@ -37,10 +37,7 @@ const RefCitedPapersContainer: FC<Props> = ({ type, parentPaperId, page, query, 
   const wrapperNode = useRef<HTMLDivElement>(null);
   const lastParentPaperId = useRef(0);
   const lastPage = useRef(page);
-  const lastQuery = useRef(query);
-  const lastSort = useRef(sort);
   const lastShouldFetch = useRef(shouldFetch);
-  const lastIsLoggedIn = useRef(isLoggedIn);
 
   useEffect(
     () => {
@@ -50,15 +47,9 @@ const RefCitedPapersContainer: FC<Props> = ({ type, parentPaperId, page, query, 
         return;
       }
       // NOTE: prevent double fetching
-      if (!shouldFetch) return;
-      // NOTE: prevent unneeded fetching
-      if (
-        lastParentPaperId.current === parentPaperId &&
-        lastPage.current === page &&
-        lastQuery.current === query &&
-        lastSort.current === sort &&
-        lastIsLoggedIn.current === isLoggedIn
-      ) {
+      if (!shouldFetch) {
+        lastParentPaperId.current = parentPaperId;
+        lastPage.current = page;
         return;
       }
 
@@ -69,15 +60,11 @@ const RefCitedPapersContainer: FC<Props> = ({ type, parentPaperId, page, query, 
 
       Promise.all([promise])
         .then(() => {
-          if (wrapperNode.current && lastParentPaperId.current === parentPaperId) {
+          if (wrapperNode.current && lastParentPaperId.current === parentPaperId && lastPage.current !== page) {
             window.scrollTo(0, wrapperNode.current.offsetTop - NAVBAR_HEIGHT - MOBILE_FIXED_HEADER_HEIGHT);
           }
-
-          // lastParentPaperId.current = parentPaperId;
-          // lastPage.current = page;
-          // lastQuery.current = query;
-          // lastSort.current = sort;
-          // lastIsLoggedIn.current = isLoggedIn;
+          lastParentPaperId.current = parentPaperId;
+          lastPage.current = page;
         })
         .catch(err => {
           if (!axios.isCancel(err)) {
@@ -88,13 +75,6 @@ const RefCitedPapersContainer: FC<Props> = ({ type, parentPaperId, page, query, 
             dispatch(failedActionCreator());
           }
         });
-      return () => {
-        lastParentPaperId.current = parentPaperId;
-        lastPage.current = page;
-        lastQuery.current = query;
-        lastSort.current = sort;
-        lastIsLoggedIn.current = isLoggedIn;
-      };
     },
     [page, query, sort, type, parentPaperId, dispatch, shouldFetch, isLoggedIn]
   );

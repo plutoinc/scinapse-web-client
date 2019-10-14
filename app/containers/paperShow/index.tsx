@@ -12,7 +12,6 @@ import PaperShow from '../../components/paperShow';
 import { getMemoizedPaper } from './select';
 import { fetchPaperShowDataAtClient } from '../../actions/paperShow';
 import ActionTicketManager from '../../helpers/actionTicketManager';
-import restoreScroll from '../../helpers/scrollRestoration';
 
 type Props = RouteComponentProps<PaperShowMatchParams>;
 
@@ -22,11 +21,27 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
     (state: AppState) => !state.configuration.succeedAPIFetchAtServer || state.configuration.renderedAtClient
   );
   const lastShouldFetch = useRef(shouldFetch);
-  const lastPaperId = useRef(0);
 
   const paper = useSelector((state: AppState) => getMemoizedPaper(state), isEqual);
   const isMobile = useSelector((state: AppState) => state.layout.userDevice === UserDevice.MOBILE);
   const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
+  const matchedPaperId = parseInt(match.params.paperId);
+  const paperId = paper && paper.id;
+
+  useEffect(
+    () => {
+      if (paperId) {
+        ActionTicketManager.trackTicket({
+          pageType: 'paperShow',
+          actionType: 'view',
+          actionArea: '200',
+          actionTag: 'pageView',
+          actionLabel: String(paperId),
+        });
+      }
+    },
+    [paperId]
+  );
 
   useEffect(
     () => {
@@ -39,45 +54,30 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
       // NOTE: prevent double fetching
       if (!shouldFetch) return;
 
-      const paperId = parseInt(match.params.paperId);
-      if (paperId === lastPaperId.current) return;
-
       const promise = dispatch(
         fetchPaperShowDataAtClient({
-          paperId,
+          paperId: matchedPaperId,
           isLoggedIn: currentUser.isLoggedIn,
           cancelToken: cancelToken.token,
         })
       );
 
-      Promise.all([promise])
-        .then(() => {
-          ActionTicketManager.trackTicket({
-            pageType: 'paperShow',
-            actionType: 'view',
-            actionArea: '200',
-            actionTag: 'pageView',
-            actionLabel: String(paperId),
-          });
-          lastPaperId.current = paperId;
-          restoreScroll(location.key);
-        })
-        .catch(err => {
-          ActionTicketManager.trackTicket({
-            pageType: 'paperShow',
-            actionType: 'view',
-            actionArea: String(err.status),
-            actionTag: 'pageView',
-            actionLabel: String(paperId),
-          });
-          history.push(`/${err.status}`);
+      Promise.all([promise]).catch(err => {
+        ActionTicketManager.trackTicket({
+          pageType: 'paperShow',
+          actionType: 'view',
+          actionArea: String(err.status),
+          actionTag: 'pageView',
+          actionLabel: String(matchedPaperId),
         });
+        history.push(`/${err.status}`);
+      });
 
       return () => {
         cancelToken.cancel();
       };
     },
-    [location, currentUser.isLoggedIn, dispatch, match, shouldFetch, history]
+    [location.pathname, currentUser.isLoggedIn, dispatch, matchedPaperId, shouldFetch, history]
   );
 
   if (!paper) return null;
