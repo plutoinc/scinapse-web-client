@@ -5,9 +5,9 @@ const DEV_API_HOST = 'https://dev-api.scinapse.io'; // This API Host is used for
 
 export default function getAPIHost() {
   if (EnvChecker.isLocal() || EnvChecker.isLocalServer()) {
-    return PROD_API_HOST;
-  } else if (EnvChecker.isDev()) {
     return DEV_API_HOST;
+  } else if (EnvChecker.isDev()) {
+    return PROD_API_HOST;
   } else {
     return PROD_API_HOST;
   }

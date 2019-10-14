@@ -12,6 +12,7 @@ import PaperShow from '../../components/paperShow';
 import { getMemoizedPaper } from './select';
 import { fetchPaperShowDataAtClient } from '../../actions/paperShow';
 import ActionTicketManager from '../../helpers/actionTicketManager';
+import restoreScroll from '../../helpers/scrollRestoration';
 
 type Props = RouteComponentProps<PaperShowMatchParams>;
 
@@ -21,6 +22,7 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
     (state: AppState) => !state.configuration.succeedAPIFetchAtServer || state.configuration.renderedAtClient
   );
   const lastShouldFetch = useRef(shouldFetch);
+  const lastPaperId = useRef(0);
 
   const paper = useSelector((state: AppState) => getMemoizedPaper(state), isEqual);
   const isMobile = useSelector((state: AppState) => state.layout.userDevice === UserDevice.MOBILE);
@@ -30,7 +32,7 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
 
   useEffect(
     () => {
-      if (paperId) {
+      if (paperId && paperId !== lastPaperId.current) {
         ActionTicketManager.trackTicket({
           pageType: 'paperShow',
           actionType: 'view',
@@ -38,9 +40,11 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
           actionTag: 'pageView',
           actionLabel: String(paperId),
         });
+
+        restoreScroll(location.key);
       }
     },
-    [paperId]
+    [paperId, location.key]
   );
 
   useEffect(
@@ -62,16 +66,20 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
         })
       );
 
-      Promise.all([promise]).catch(err => {
-        ActionTicketManager.trackTicket({
-          pageType: 'paperShow',
-          actionType: 'view',
-          actionArea: String(err.status),
-          actionTag: 'pageView',
-          actionLabel: String(matchedPaperId),
+      Promise.all([promise])
+        .then(() => {
+          lastPaperId.current = matchedPaperId;
+        })
+        .catch(err => {
+          ActionTicketManager.trackTicket({
+            pageType: 'paperShow',
+            actionType: 'view',
+            actionArea: String(err.status),
+            actionTag: 'pageView',
+            actionLabel: String(matchedPaperId),
+          });
+          history.push(`/${err.status}`);
         });
-        history.push(`/${err.status}`);
-      });
 
       return () => {
         cancelToken.cancel();
