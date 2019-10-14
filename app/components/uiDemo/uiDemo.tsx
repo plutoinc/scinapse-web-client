@@ -112,6 +112,10 @@ const UiDemo: React.FunctionComponent = () => {
   const availableColor: ButtonColor[] = ['blue', 'gray', 'black'];
   const availableIconDisplay: AvailableIconPosition[] = ['left', 'right', 'only', 'no'];
 
+  const orderdIconList = Object.keys(ICONS).sort((a, b) => {
+    return a < b ? -1 : a > b ? 1 : 0;
+  });
+
   return (
     <div className={s.uiDemoWrapper}>
       <div className={s.leftBox}>
@@ -207,7 +211,7 @@ const UiDemo: React.FunctionComponent = () => {
               id: 'icon-helper',
             }}
           >
-            {Object.keys(ICONS).map(iconName => {
+            {orderdIconList.map(iconName => {
               return (
                 <MenuItem key={iconName} value={iconName}>
                   <Icon icon={iconName} className={s.iconInOption} />
