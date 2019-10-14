@@ -7,7 +7,7 @@ import actionTicketManager from '../../../helpers/actionTicketManager';
 import { ActionCreators } from '../../../actions/actionTypes';
 import Icon from '../../../icons';
 import { Paper } from '../../../model/paper';
-import { addPaperToRecommendPool } from '../../recommendOnboardingSnackbar/actions';
+import { addPaperToRecommendPool } from '../../recommendPool/actions';
 const styles = require('./title.scss');
 
 export interface TitleProps extends RouteComponentProps<any> {

@@ -1,9 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-    <g fill="none" fill-rule="evenodd">
-        <path fill="#98A3B7" d="M7 5h10a2 2 0 0 1 2 2v7.009L13.956 19H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/>
-        <path fill="#BAC2D1" d="M19 14v.004l-5 4.953V16a2 2 0 0 1 2-2h3z"/>
-        <rect width="8" height="1.5" x="8" y="8" fill="#FFF" rx=".75"/>
-        <rect width="8" height="1.5" x="8" y="11" fill="#FFF" rx=".75"/>
-        <rect width="4" height="1.5" x="8" y="14" fill="#FFF" rx=".75"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Icon/noted</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icon/noted" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="noted" transform="translate(3.000000, 3.000000)" fill-rule="nonzero">
+            <path d="M2.57142857,0 L15.4285714,0 C16.8487322,0 18,1.15126779 18,2.57142857 L18,11.583 L11.5148571,18 L2.57142857,18 C1.15126779,18 0,16.8487322 0,15.4285714 L0,2.57142857 C0,1.15126779 1.15126779,0 2.57142857,0 Z" id="Path" fill="#98A3B7"></path>
+            <path d="M18,11.5714286 L18,11.5765714 L11.5714286,17.9447143 L11.5714286,14.1428571 C11.5714286,12.7226964 12.7226964,11.5714286 14.1428571,11.5714286 L18,11.5714286 Z" id="Path" fill="#BAC2D1"></path>
+            <rect id="Rectangle" fill="#FFFFFF" x="3.85714286" y="3.85714286" width="10.2857143" height="1.92857143" rx="0.75"></rect>
+            <rect id="Rectangle" fill="#FFFFFF" x="3.85714286" y="7.71428571" width="10.2857143" height="1.92857143" rx="0.75"></rect>
+            <rect id="Rectangle" fill="#FFFFFF" x="3.85714286" y="11.5714286" width="5.14285714" height="1.92857143" rx="0.75"></rect>
+        </g>
     </g>
 </svg>

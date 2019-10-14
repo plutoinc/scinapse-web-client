@@ -107,7 +107,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
     ) : (
       <div className={styles.buttonWrapper}>
         <span className={styles.openFormButton} onClick={this.handleToggleAuthorCVForm('educations')}>
-          <Icon className={styles.plusIcon} icon="SMALL_PLUS" /> Add more
+          <Icon className={styles.plusIcon} icon="PLUS" /> Add more
         </span>
       </div>
     );
@@ -179,7 +179,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
     ) : (
       <div className={styles.buttonWrapper}>
         <span className={styles.openFormButton} onClick={this.handleToggleAuthorCVForm('experiences')}>
-          <Icon className={styles.plusIcon} icon="SMALL_PLUS" /> Add more
+          <Icon className={styles.plusIcon} icon="PLUS" /> Add more
         </span>
       </div>
     );
@@ -237,7 +237,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
     ) : (
       <div className={styles.buttonWrapper}>
         <span className={styles.openFormButton} onClick={this.handleToggleAuthorCVForm('awards')}>
-          <Icon className={styles.plusIcon} icon="SMALL_PLUS" /> Add more
+          <Icon className={styles.plusIcon} icon="PLUS" /> Add more
         </span>
       </div>
     );

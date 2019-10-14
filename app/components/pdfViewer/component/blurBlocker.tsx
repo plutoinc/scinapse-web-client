@@ -4,7 +4,7 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
 import actionTicketManager from '../../../helpers/actionTicketManager';
-import { addPaperToRecommendPoolAndOpenOnboardingSnackbar } from '../../recommendOnboardingSnackbar/actions';
+import { addPaperToRecommendPool } from '../../recommendPool/actions';
 const s = require('./blurBlocker.scss');
 
 interface BlurBlockerProps {
@@ -16,13 +16,7 @@ const BlurBlocker: React.FC<BlurBlockerProps> = ({ paperId }) => {
   return (
     <div
       onClick={async () => {
-        dispatch(
-          addPaperToRecommendPoolAndOpenOnboardingSnackbar({
-            pageType: 'paperShow',
-            actionArea: 'viewMorePDF',
-            recAction: { paperId, action: 'viewMorePDF' },
-          })
-        );
+        dispatch(addPaperToRecommendPool({ paperId, action: 'viewMorePDF' }));
 
         actionTicketManager.trackTicket({
           pageType: 'paperShow',
@@ -42,7 +36,7 @@ const BlurBlocker: React.FC<BlurBlockerProps> = ({ paperId }) => {
     >
       <div className={s.btnLikeText}>By signing up, view conclusion and full text.</div>
       <div className={s.subText}>Read More</div>
-      <Icon icon="DOUBLE_ARROW_DOWN" className={s.arrowIcon} />
+      <Icon icon="ARROW_DOWN" className={s.arrowIcon} />
     </div>
   );
 };

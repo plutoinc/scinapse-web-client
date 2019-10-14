@@ -34,7 +34,7 @@ const DefaultItem: React.SFC<DefaultItemComponentProps> = props => {
           }}
           className={styles.enterAffiliationItemContext}
         >
-          <Icon className={styles.plusIcon} icon="SMALL_PLUS" />Enter <b>“{props.userInput}”</b> as your institution
+          <Icon className={styles.plusIcon} icon="PLUS" />Enter <b>“{props.userInput}”</b> as your institution
         </div>
       )}
     </div>

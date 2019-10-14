@@ -81,7 +81,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
           placeholder="Search for paper to be included in the publication list"
           onSubmit={this.handleSubmitSearch}
           autoFocus={true}
-          icon="SEARCH_ICON"
+          icon="SEARCH"
         />
         <div>
           {this.getSelectedPapersTitle()}
@@ -170,7 +170,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
             <div className={styles.loadMoreButtonWrapper}>
               <div onClick={this.handleLoadMore} className={styles.loadMoreButton}>
                 <span>Load more</span>
-                <Icon icon="ARROW_POINT_TO_UP" className={styles.downArrowIcon} />
+                <Icon icon="ARROW_UP" className={styles.downArrowIcon} />
               </div>
             </div>
           ) : null}

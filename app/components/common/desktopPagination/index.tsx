@@ -84,7 +84,7 @@ function getFirstPageIcon(props: DesktopPaginationProps) {
         to={(props as LinkPaginationProps).getLinkDestination(1)}
         className={styles.pageIconButton}
       >
-        <Icon icon="LAST_PAGE" />
+        <Icon icon="ARROW_RIGHT_DOUBLE" />
       </Link>
     );
   } else {
@@ -96,7 +96,7 @@ function getFirstPageIcon(props: DesktopPaginationProps) {
         }}
         className={styles.pageIconButton}
       >
-        <Icon icon="LAST_PAGE" />
+        <Icon icon="ARROW_RIGHT_DOUBLE" />
       </span>
     );
   }
@@ -118,7 +118,7 @@ function getNextIcon(props: DesktopPaginationProps) {
             }}
             className={styles.pageIconButton}
           >
-            <Icon icon="NEXT_PAGE" />
+            <Icon icon="ARROW_RIGHT" />
           </span>
         </div>
       );
@@ -134,7 +134,7 @@ function getNextIcon(props: DesktopPaginationProps) {
           to={(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex + 2)}
           className={styles.pageIconButton}
         >
-          <Icon icon="NEXT_PAGE" />
+          <Icon icon="ARROW_RIGHT" />
         </Link>
       </div>
     );
@@ -148,7 +148,7 @@ function getNextIcon(props: DesktopPaginationProps) {
           }}
           className={styles.pageIconButton}
         >
-          <Icon icon="NEXT_PAGE" />
+          <Icon icon="ARROW_RIGHT" />
         </span>
       </div>
     );
@@ -170,7 +170,7 @@ function getPrevIcon(props: DesktopPaginationProps) {
         to={(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex)}
         className={styles.pageIconButton}
       >
-        <Icon icon="NEXT_PAGE" />
+        <Icon icon="ARROW_RIGHT" />
       </Link>
     );
   } else {
@@ -182,7 +182,7 @@ function getPrevIcon(props: DesktopPaginationProps) {
         }}
         className={styles.pageIconButton}
       >
-        <Icon icon="NEXT_PAGE" />
+        <Icon icon="ARROW_RIGHT" />
       </span>
     );
   }

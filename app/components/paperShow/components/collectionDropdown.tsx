@@ -70,7 +70,7 @@ class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, Co
     if (!isExpanded) {
       return (
         <div onClick={this.handleClickNewCollection} className={styles.createCollectionWrapper}>
-          <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
+          <Icon className={styles.plusIcon} icon="PLUS" />
           <span>Create new collection</span>
         </div>
       );

@@ -5,9 +5,9 @@
 .starBadgeIcon {
   display: inline-block;
   vertical-align: bottom;
-  width: 18px;
-  height: 18px;
-  margin-bottom: 1px;
+  width: 16px;
+  height: 16px;
+  margin: 0 2px 0 4px;
   color: $gray600;
 }
 
@@ -20,8 +20,8 @@
 
 @media (max-width: $mobile_width) {
   .starBadgeIcon {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     margin-bottom: 0px;
     vertical-align: text-bottom;
   }

@@ -5,7 +5,7 @@ import { Paper } from '../../../model/paper';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-import { addPaperToRecommendPool } from '../../../components/recommendOnboardingSnackbar/actions';
+import { addPaperToRecommendPool } from '../../../components/recommendPool/actions';
 const s = require('./citeBox.scss');
 
 interface CiteBoxProps {
@@ -37,7 +37,7 @@ const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
       }}
     >
       <div>
-        <Icon icon={'CITATION_QUOTE'} className={s.citeIcon} />
+        <Icon icon="CITATION" className={s.citeIcon} />
         <span>Cite</span>
       </div>
     </div>

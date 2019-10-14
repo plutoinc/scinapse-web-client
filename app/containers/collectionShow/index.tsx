@@ -249,7 +249,7 @@ const CollectionShow: React.FC<Props> = props => {
                         <ScinapseInput
                           onSubmit={handleSubmitSearch}
                           placeholder="Search papers in this collection"
-                          icon="SEARCH_ICON"
+                          icon="SEARCH"
                           inputStyle={{ maxWidth: '486px', height: '40px' }}
                         />
                       </div>

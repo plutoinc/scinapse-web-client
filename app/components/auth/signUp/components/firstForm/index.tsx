@@ -161,14 +161,14 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
                       component={AuthInputBox}
                       autoFocus={!props.initialEmail}
                       placeholder="E-mail"
-                      iconName="EMAIL_ICON"
+                      iconName="EMAIL"
                     />
                     <Field
                       name="password"
                       type="password"
                       component={AuthInputBox}
                       placeholder="Password"
-                      iconName="PASSWORD_ICON"
+                      iconName="PASSWORD"
                       autoFocus={!!props.initialEmail}
                     />
                     {networkError && <div className={s.errorContent}>{networkError}</div>}

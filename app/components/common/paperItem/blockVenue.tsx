@@ -41,20 +41,18 @@ const BlockVenue: React.FC<BlockVenueProps> = ({
   if (journal) {
     const impactFactor = journal.impactFactor && (
       <span className={styles.ifLabel}>
-        <span>
-          <Tooltip
-            title="Impact Factor"
-            placement="top"
-            classes={{ tooltip: styles.arrowBottomTooltip }}
-            disableFocusListener
-            disableTouchListener
-          >
-            <span>
-              <Icon className={styles.ifIconWrapper} icon="IMPACT_FACTOR" />
-            </span>
-          </Tooltip>
-          {journal.impactFactor.toFixed(2)}
-        </span>
+        <Tooltip
+          title="Impact Factor"
+          placement="top"
+          classes={{ tooltip: styles.arrowBottomTooltip }}
+          disableFocusListener
+          disableTouchListener
+        >
+          <span className={styles.ifIconWrapper}>
+            <Icon className={styles.ifIcon} icon="IMPACT_FACTOR" />
+          </span>
+        </Tooltip>
+        <span className={styles.ifLabelContentWrapper}>{journal.impactFactor.toFixed(2)}</span>
       </span>
     );
 

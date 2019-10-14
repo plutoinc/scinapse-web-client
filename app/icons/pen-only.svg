@@ -1,3 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-    <path fill="currentColor" fill-rule="evenodd" d="M12.1 7.5l4.4 4.4-7.8 7.8c-.2.2-.4.3-.7.3H5c-.6 0-1-.4-1-1v-3c0-.3.1-.5.3-.7l7.8-7.8zm7.6-.2c.4.4.4 1 0 1.4l-1.8 1.8-4.4-4.4 1.8-1.8c.4-.4 1-.4 1.4 0l3 3z"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Icon/pen-only</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icon/pen-only" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="pen-only" transform="translate(3.000000, 3.000000)" fill="currentColor">
+            <path d="M9.1125,3.9375 L14.0625,8.8875 L5.2875,17.6625 C5.0625,17.8875 4.8375,18 4.5,18 L1.125,18 C0.45,18 0,17.55 0,16.875 L0,13.5 C0,13.1625 0.1125,12.9375 0.3375,12.7125 L9.1125,3.9375 Z M17.6625,3.7125 C18.1125,4.1625 18.1125,4.8375 17.6625,5.2875 L15.6375,7.3125 L10.6875,2.3625 L12.7125,0.3375 C13.1625,-0.1125 13.8375,-0.1125 14.2875,0.3375 L17.6625,3.7125 Z" id="Shape"></path>
+        </g>
+    </g>
 </svg>

@@ -165,7 +165,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
     if (currentUser && currentUser.id === collectionUserId) {
       return (
         <button className={styles.newCollectionBtnWrapper} onClick={this.handleClickNewCollectionButton}>
-          <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
+          <Icon className={styles.plusIcon} icon="PLUS" />
           <span>Create New Collection</span>
         </button>
       );

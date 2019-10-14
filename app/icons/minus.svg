@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="14px" height="2px" viewBox="0 0 14 2" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
-    <title>minus</title>
-    <defs></defs>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Collection/Add/Option-Card---Selected" transform="translate(-413.000000, -43.000000)" fill="#FFFFFF">
-            <rect id="minus" x="413" y="43" width="14" height="2" rx="1"></rect>
-        </g>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Icon/minus</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icon/minus" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M4,13 L20,13 C20.5522847,13 21,12.5522847 21,12 C21,11.4477153 20.5522847,11 20,11 L4,11 C3.44771525,11 3,11.4477153 3,12 C3,12.5522847 3.44771525,13 4,13 Z" id="Combined-Shape" fill="currentColor" fill-rule="nonzero"></path>
     </g>
 </svg>

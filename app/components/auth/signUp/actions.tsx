@@ -7,7 +7,7 @@ import {
   SignUpWithEmailAPIParams,
 } from '../../../api/types/auth';
 import RecommendationAPI from '../../../api/recommendation';
-import { RECOMMENDED_PAPER_LOGGING_FOR_NON_USER } from '../../recommendOnboardingSnackbar/constants';
+import { RECOMMENDED_PAPER_LOGGING_FOR_NON_USER } from '../../recommendPool/constants';
 import { ACTION_TYPES } from '../../../actions/actionTypes';
 import alertToast from '../../../helpers/makePlutoToastAction';
 import EnvChecker from '../../../helpers/envChecker';

@@ -18,7 +18,7 @@ const JournalBadge: React.FC<JournalBadgeProps> = ({ text, labelClassName }) => 
         [labelClassName!]: !!labelClassName,
       })}
     >
-      <Icon icon="STAR_BADGE" className={s.starBadgeIcon} />
+      <Icon icon="BADGE" className={s.starBadgeIcon} />
       <span className={s.text}>{text}</span>
     </label>
   );

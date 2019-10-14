@@ -269,12 +269,12 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
         />
         {props.actionArea == 'home' ? (
           <button onClick={clickSearchBtn} className={s.searchButton}>
-            <Icon icon="SEARCH_ICON" className={s.searchIconInButton} />
+            <Icon icon="SEARCH" className={s.searchIconInButton} />
             <span className={s.searchButtonText}>Search</span>
           </button>
         ) : (
           <button onClick={clickSearchBtn} className={s.searchIconButton}>
-            <Icon icon="SEARCH_ICON" className={s.searchIcon} />
+            <Icon icon="SEARCH" className={s.searchIcon} />
           </button>
         )}
         {keywordList}

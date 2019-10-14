@@ -1,6 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
-    <defs>
-        <path id="a" d="M12 15l-4-4h3V5h2v6h3l-4 4zm6-2h2v5c0 .6-.4 1-1 1H5c-.6 0-1-.4-1-1v-5h2v4h12v-4z"/>
-    </defs>
-    <use fill="currentColor" fill-rule="evenodd" xlink:href="#a"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Icon/download</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icon/download" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(3.000000, 5.000000)" fill="currentColor">
+            <polygon id="a-path" points="9 11 4.5 6.6 7.875 6.6 7.875 0 10.125 0 10.125 6.6 13.5 6.6"></polygon>
+            <path d="M1,9 C1.55228475,9 2,9.44771525 2,10 L2,14 L15.9756209,14 L15.9756209,10 C15.9756209,9.48716416 16.3616611,9.06449284 16.8589998,9.00672773 L17,9 C17.5522847,9 18,9.44771525 18,10 L18,14 C18,15.1045695 17.1045695,16 16,16 L2,16 C0.8954305,16 0,15.1045695 0,14 L0,10 C0,9.44771525 0.44771525,9 1,9 Z M17,14 L17,10 L16.9756209,10 L16.9756209,14 C16.9756209,14.5128358 16.5895807,14.9355072 16.0922421,14.9932723 L16.1166211,14.9932723 C16.6139598,14.9355072 17,14.5128358 17,14 Z" id="Rectangle" fill-rule="nonzero"></path>
+        </g>
+    </g>
 </svg>

@@ -1,23 +1,15 @@
-<svg width="12px" height="8px" viewBox="0 0 12 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Icon/check</title>
+    <desc>Created with Sketch.</desc>
     <defs>
-        <path d="M12.2,4.2 L6,10.4 L3.8,8.2 C3.53333333,7.93333333 3.13333333,7.93333333 2.86666667,8.2 C2.6,8.46666667 2.6,8.86666667 2.86666667,9.13333333 L5.53333333,11.8 C5.66666667,11.9333333 5.8,12 6,12 C6.2,12 6.33333333,11.9333333 6.46666667,11.8 L13.1333333,5.13333333 C13.4,4.86666667 13.4,4.46666667 13.1333333,4.2 C12.8666667,3.93333333 12.4666667,3.93333333 12.2,4.2 Z" id="path-1"></path>
+        <path d="M19.0875,6.325 L8.625,16.4 L4.9125,12.825 C4.46249999,12.3916667 3.78749999,12.3916667 3.3375,12.825 C2.8875,13.2583333 2.8875,13.9083333 3.3375,14.3416667 L7.8375,18.675 C8.06250001,18.8916666 8.2875,19 8.625,19 C8.9625,19 9.1875,18.8916666 9.41250001,18.675 L20.6625,7.84166666 C21.1125,7.40833334 21.1125,6.75833334 20.6625,6.325 C20.2125001,5.89166667 19.5375001,5.89166667 19.0875,6.325 Z" id="path-1"></path>
     </defs>
-    <g id="New" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Occupied-Author-(Add-publication---load-more)" transform="translate(-442.000000, -363.000000)">
-            <rect fill="#FFFFFF" x="0" y="0" width="1442" height="900"></rect>
-            <g id="Group-16" transform="translate(440.000000, 313.000000)">
-                <g id="Group-15" transform="translate(0.000000, -56.000000)">
-                    <g id="Icon/Success" transform="translate(0.000000, 102.000000)">
-                        <mask id="mask-2" fill="white">
-                            <use xlink:href="#path-1"></use>
-                        </mask>
-                        <g id="Mask" fill-rule="nonzero"></g>
-                        <g id="Mixin/Fill/Accent-1" mask="url(#mask-2)" fill="#48D2A0" fill-rule="evenodd">
-                            <rect id="Box" x="0" y="0" width="16" height="16" rx="5"></rect>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </g>
+    <g id="Icon/check" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <mask id="mask-2" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <use id="path-1" fill="currentColor" xlink:href="#path-1"></use>
     </g>
 </svg>

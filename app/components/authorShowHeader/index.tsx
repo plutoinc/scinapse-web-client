@@ -149,7 +149,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
                 rel="noopener nofollow noreferrer"
                 className={styles.contactIconWrapper}
               >
-                <Icon icon="EMAIL_ICON" className={styles.emailIcon} />
+                <Icon icon="EMAIL" className={styles.emailIcon} />
               </a>
               <a href={`mailto:${author.email}`} target="_blank" rel="noopener nofollow noreferrer">
                 {author.email}

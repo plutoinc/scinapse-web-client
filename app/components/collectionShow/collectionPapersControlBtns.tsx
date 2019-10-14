@@ -54,7 +54,7 @@ const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: number[] }> = ({
           onClick={() => setIsOpen(!isOpen)}
           disabled={selectedPaperIds.length === 0}
         >
-          <Icon icon="CITED" className={styles.citedIcon} />CITATION EXPORT
+          <Icon icon="CITATION" className={styles.citedIcon} />CITATION EXPORT
         </button>
         <Popper
           className={styles.citationExportDropdownMenu}

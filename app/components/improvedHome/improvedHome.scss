@@ -95,8 +95,8 @@ body {
   color: #6f8398;
 
   svg {
-    width: 21px;
-    height: 12px;
+    width: 24px;
+    height: 24px;
   }
 }
 
@@ -135,20 +135,6 @@ body {
   min-height: 600px;
   padding-top: 8%;
   z-index: 0;
-}
-
-.knowledge {
-  min-height: 570px;
-  height: 100%;
-  flex-direction: column;
-  align-items: center;
-}
-
-.recommendedPapersBlockDivider {
-  width: 100%;
-  margin: 0 auto;
-  height: 137px;
-  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
 }
 
 .scinapseHomeLogo {
