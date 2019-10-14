@@ -14,8 +14,6 @@ export function getSortedAuthType(currentAuthMethodType: string) {
       return [AuthMethodType.ORCID, AuthMethodType.GOOGLE];
     case AuthMethodTestType.NO_GOOGLE:
       return [AuthMethodType.ORCID, AuthMethodType.FACEBOOK];
-    case AuthMethodTestType.ONLY_ORCID:
-      return [AuthMethodType.ORCID];
     default:
       return [AuthMethodType.FACEBOOK, AuthMethodType.GOOGLE, AuthMethodType.ORCID];
   }

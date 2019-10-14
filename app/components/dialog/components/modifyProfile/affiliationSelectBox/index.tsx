@@ -32,7 +32,7 @@ const DefaultItem: React.SFC<DefaultItemComponentProps> = props => {
           }}
           className={styles.enterAffiliationItemContext}
         >
-          <Icon className={styles.plusIcon} icon="SMALL_PLUS" />Enter <b>“{props.userInput}”</b> as your affiliation
+          <Icon className={styles.plusIcon} icon="PLUS" />Enter <b>“{props.userInput}”</b> as your affiliation
         </div>
       )}
     </div>

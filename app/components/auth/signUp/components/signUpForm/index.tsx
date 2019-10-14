@@ -34,6 +34,7 @@ export interface SignUpFormValues {
   lastName: string;
   affiliation: string;
   profileLink: string;
+  affiliationId: number | null;
 }
 
 const validateForm = async (values: SignUpFormValues, withSocial: boolean) => {
@@ -77,7 +78,6 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
     try {
       await props.onSubmit(values);
       props.onSucceed();
-      props.onClickNext();
     } catch (err) {
       setIsLoading(false);
     }
@@ -94,6 +94,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
             firstName: props.firstName,
             lastName: props.lastName,
             affiliation: '',
+            affiliationId: null,
             profileLink: '',
           }}
           onSubmit={handleSubmit}
@@ -103,14 +104,14 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
               <div className={s.additionalInformation}>ADDITIONAL INFORMATION</div>
               <div className={s.subHeader}>No abbreviation preferred</div>
               <div className={s.formContainer}>
-                <Field name="email" type="email" component={AuthInputBox} placeholder="E-mail" iconName="EMAIL_ICON" />
+                <Field name="email" type="email" component={AuthInputBox} placeholder="E-mail" iconName="EMAIL" />
                 {!props.withSocial && (
                   <Field
                     name="password"
                     type="password"
                     component={AuthInputBox}
                     placeholder="Password"
-                    iconName="PASSWORD_ICON"
+                    iconName="PASSWORD"
                   />
                 )}
                 <div className={s.nameItemWrapper}>
@@ -138,6 +139,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                   placeholder="Affiliation / Company"
                   type="text"
                   component={AffiliationBox}
+                  affiliationIdFieldName="affiliationId"
                   inputBoxStyle={{ width: '100%' }}
                   listWrapperStyle={{ top: '56px' }}
                   inputStyle={{
@@ -158,7 +160,14 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                 <Field name="profileLink" type="url" component={AuthInputBox} placeholder="Profile Link" />
               </div>
               <div className={s.authButtonWrapper}>
-                <Button type="submit" elementType="button" isLoading={isLoading} fullWidth size="large">
+                <Button
+                  type="submit"
+                  elementType="button"
+                  isLoading={isLoading}
+                  fullWidth
+                  size="large"
+                  onClick={props.onClickNext}
+                >
                   <span>Sign up</span>
                 </Button>
               </div>

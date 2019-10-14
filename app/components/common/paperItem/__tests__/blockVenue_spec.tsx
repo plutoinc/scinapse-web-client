@@ -14,6 +14,7 @@ describe('BlockVenue Component', () => {
             journal={paper.journal}
             conferenceInstance={paper.conferenceInstance}
             publishedDate={paper.publishedDate}
+            year={paper.year}
             pageType="searchResult"
             actionArea="fakeArea"
           />

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
-import { addPaperToRecommendPool } from '../../recommendPool/recommendPoolActions';
+import { addPaperToRecommendPool } from '../../recommendPool/actions';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
@@ -28,7 +28,7 @@ const CiteButton: React.FC<CiteButtonProps> = ({ paper, pageType, actionArea, cl
         [className!]: !!className,
       })}
       onClick={async () => {
-        dispatch(addPaperToRecommendPool(paper.id));
+        dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'citePaper' }));
         GlobalDialogManager.openCitationDialog(paper.id);
         ActionTicketManager.trackTicket({
           pageType,
@@ -39,7 +39,7 @@ const CiteButton: React.FC<CiteButtonProps> = ({ paper, pageType, actionArea, cl
         });
       }}
     >
-      <Icon className={styles.citationIcon} icon="CITATION_QUOTE" />
+      <Icon className={styles.citationIcon} icon="CITATION" />
 
       <span>Cite</span>
     </button>

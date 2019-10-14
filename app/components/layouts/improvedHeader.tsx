@@ -31,6 +31,8 @@ import { getMemoizedPaper } from '../../containers/paperShow/select';
 import ResearchHistory from '../researchHistory';
 import { UserDevice } from './reducer';
 import Button from '../common/button';
+import { fetchKeywordAlertList } from '../../containers/keywordSettings/actions';
+import { clearToKeywordSettings } from '../../reducers/keywordSettings';
 const styles = require('./improvedHeader.scss');
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -99,6 +101,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
       this.cancelToken.cancel();
       this.cancelToken = axios.CancelToken.source();
       this.props.dispatch(getCollections(currentUser.id, this.cancelToken.token, true));
+      this.props.dispatch(fetchKeywordAlertList());
     }
   }
 
@@ -260,6 +263,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
 
     try {
       await dispatch(signOut());
+      await dispatch(clearToKeywordSettings());
       this.handleRequestCloseUserDropdown();
     } catch (_err) {
       dispatch({
@@ -339,6 +343,11 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
             }
           >
             Collection
+          </Link>
+        </MenuItem>
+        <MenuItem classes={{ root: styles.keywordSettingsButton }}>
+          <Link className={styles.linkOnButton} onClick={this.handleRequestCloseUserDropdown} to="/keyword-settings">
+            Keyword alerts
           </Link>
         </MenuItem>
         <MenuItem classes={{ root: styles.settingsButton }}>

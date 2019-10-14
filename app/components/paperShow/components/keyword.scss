@@ -1,22 +1,17 @@
-.buttonWrapper {
-  display: inline-block;
+.fosBtnWrapper {
+  display: inline-flex;
   vertical-align: top;
-  border-radius: 4px;
-  padding: 8px 12px;
-  background-color: $gray200;
-  text-align: center;
+  padding: 8px 0;
   margin-right: 8px;
-  margin-bottom: 8px;
-  font-size: 14px;
-  color: $gray800;
-  cursor: pointer;
 
   &:last-of-type {
     margin-right: 0;
   }
+}
 
-  &:hover {
-    background-color: $gray300;
-    transition: $button-hover-transition;
+.alertIcon {
+  svg {
+    width: 16px;
+    height: 16px;
   }
 }

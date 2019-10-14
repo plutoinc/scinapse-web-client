@@ -73,17 +73,6 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
     <>
       <div className={s.title}>Emails from Scinapse</div>
       <EmailToggleItem
-        title="Feature Instruction Mail"
-        subtitle="Regular introductions on use of Scinapse"
-        active={state.activeStatus.FEATURE_INSTRUCTION}
-        isLoading={state.updateStatus.FEATURE_INSTRUCTION.isLoading || !state.succeedToFetch}
-        hasFailed={state.updateStatus.FEATURE_INSTRUCTION.hasFailed}
-        onClick={(nextStatus: boolean) => {
-          handleClickItem(token, 'FEATURE_INSTRUCTION', nextStatus);
-        }}
-        globalInActive={!state.activeStatus.GLOBAL}
-      />
-      <EmailToggleItem
         title="Paper Recommendation Mail"
         subtitle="Send recommendations based on your history"
         active={state.activeStatus.PAPER_RECOMMENDATION}

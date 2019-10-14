@@ -94,7 +94,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
             }}
             className={styles.feedbackButtonWrapper}
           >
-            <Icon icon="FEEDBACK_LABEL" className={styles.feedbackButtonIcon} />
+            <Icon icon="FEEDBACK" className={styles.feedbackButtonIcon} />
             <span>Feedback</span>
           </div>
 

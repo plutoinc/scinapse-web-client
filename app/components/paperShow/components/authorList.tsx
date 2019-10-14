@@ -51,7 +51,7 @@ const AuthorList: React.SFC<{ authors: PaperAuthor[]; paper: Paper }> = props =>
       return (
         <div className={styles.authorListHideLayer} key={author.id}>
           <button className={styles.authorListHideLayerButton} onClick={() => handleClickButton(props.paper)}>
-            <Icon icon="TILDE" />
+            ~
           </button>
         </div>
       );

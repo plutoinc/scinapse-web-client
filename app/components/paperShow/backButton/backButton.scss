@@ -5,14 +5,14 @@
   letter-spacing: 0.5px;
   color: $gray600;
   cursor: pointer;
+  vertical-align: top;
 
   .backIcon {
-    width: 18px;
     svg {
-      width: 18px;
+      width: 16px;
       height: 16px;
-      padding-top: 6px;
       margin-right: 4px;
+      vertical-align: top;
     }
   }
 

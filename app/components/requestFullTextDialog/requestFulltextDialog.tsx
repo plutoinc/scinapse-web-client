@@ -13,11 +13,11 @@ import Icon from '../../icons';
 import { ACTION_TYPES } from '../../actions/actionTypes';
 import { LAST_SUCCEEDED_EMAIL_KEY } from '../../constants/requestDialogConstant';
 import { fetchLastFullTextRequestedDate } from '../../actions/paperShow';
-import { openRecommendPoolDialog } from '../recommendPool/recommendPoolActions';
 import { closeRequestFullTextDialog } from '../../reducers/requestFullTextDialog';
 import ReduxAutoSizeTextarea from '../common/autoSizeTextarea/reduxAutoSizeTextarea';
+import Button from '../common/button';
 const useStyles = require('isomorphic-style-loader/useStyles');
-const s = require('./fullTextDialog.scss');
+const s = require('./requestFulltextDialog.scss');
 
 interface RequestFullTextProps {
   paperId: number;
@@ -58,16 +58,13 @@ function buildMessage(values: FormState) {
 const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperId }) => {
   useStyles(s);
   const dispatch = useDispatch();
-  const { currentUser, isOpen, openFrom } = useSelector((appState: AppState) => ({
+  const { currentUser, isOpen } = useSelector((appState: AppState) => ({
     currentUser: appState.currentUser,
     isOpen: appState.requestFullTextDialogState.isOpen,
-    openFrom: appState.requestFullTextDialogState.from,
   }));
   const [isLoading, setIsLoading] = React.useState(false);
-  const actionArea = openFrom === 'refCited' ? 'requestFullTextBtnAtRefBar' : 'requestFullTextBtn';
 
   function handleClose() {
-    dispatch(openRecommendPoolDialog('paperShow', actionArea));
     dispatch(closeRequestFullTextDialog());
   }
 
@@ -171,13 +168,28 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
               />
             </div>
             <div className={s.btnWrapper}>
-              <button className={s.cancelBtn} type="button" onClick={handleClose}>
-                Cancel
-              </button>
-              <button disabled={isLoading} className={s.submitBtn} type="submit">
-                <Icon icon="SEND" className={s.sendIcon} />
-                Send
-              </button>
+              <Button
+                elementType="button"
+                size="medium"
+                variant="text"
+                color="blue"
+                disabled={isLoading}
+                onClick={handleClose}
+                style={{ marginRight: '8px' }}
+              >
+                <span>Cancel</span>
+              </Button>
+              <Button
+                elementType="button"
+                type="submit"
+                size="medium"
+                variant="contained"
+                color="blue"
+                disabled={isLoading}
+              >
+                <Icon icon="SEND" />
+                <span>Send</span>
+              </Button>
             </div>
           </Form>
         )}

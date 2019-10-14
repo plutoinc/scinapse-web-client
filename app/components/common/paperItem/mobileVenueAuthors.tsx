@@ -23,7 +23,7 @@ const MobileVenueAuthors: React.FC<MobileVenueAuthorsProps> = ({ paper, pageType
       <div className={s.authorBox}>
         <MobileAuthors paper={paper} pageType={pageType} actionArea={actionArea} isExpanded={isExpanded} />
         <Icon
-          icon="ARROW_POINT_TO_DOWN"
+          icon="ARROW_DOWN"
           onClick={() => setIsExpanded(!isExpanded)}
           className={classNames({
             [s.arrowIcon]: true,

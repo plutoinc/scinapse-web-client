@@ -1,9 +1,7 @@
 import React, { FC } from 'react';
-import { useDispatch } from 'react-redux';
 
 import Button from '../../common/button';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
-import { addPaperToRecommendPoolAndOpenDialog } from '../../recommendPool/recommendPoolActions';
 import formatNumber from '../../../helpers/formatNumber';
 
 interface Props {
@@ -14,8 +12,6 @@ interface Props {
 }
 
 const MobileCitationListLinkButton: FC<Props> = ({ paperId, citedCount, pageType, actionArea }) => {
-  const dispatch = useDispatch();
-
   if (!citedCount) return null;
 
   function handleClickLink() {
@@ -26,13 +22,6 @@ const MobileCitationListLinkButton: FC<Props> = ({ paperId, citedCount, pageType
       actionTag: 'citedList',
       actionLabel: String(paperId),
     });
-    dispatch(
-      addPaperToRecommendPoolAndOpenDialog({
-        pageType,
-        actionArea: 'citationButton',
-        paperId,
-      })
-    );
   }
 
   return (

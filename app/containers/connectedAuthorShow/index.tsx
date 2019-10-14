@@ -174,7 +174,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                         <ScinapseInput
                           placeholder="Search papers"
                           onSubmit={this.handleSubmitPublicationSearch}
-                          icon="SEARCH_ICON"
+                          icon="SEARCH"
                           wrapperStyle={{
                             borderRadius: '4px',
                             borderColor: '#f1f3f6',
@@ -275,7 +275,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
         gaAction="Click Add Representative Publication Button"
         gaLabel="Try to add Representative Publications in no Pub section"
         content="Add Representative Publication"
-        icon="SMALL_PLUS"
+        icon="PLUS"
         style={{
           marginTop: '16px',
           height: '40px',
@@ -308,7 +308,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
           gaAction="Click Add Publication Button"
           gaLabel="Try to add Publications in Right box"
           content="Add Publications"
-          icon="SMALL_PLUS"
+          icon="PLUS"
         />
       );
     }
@@ -569,7 +569,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
         gaAction="Click Add Publication Button"
         gaLabel="Try to add Publications in no Pub section"
         content="Add Publications"
-        icon="SMALL_PLUS"
+        icon="PLUS"
         style={{
           height: '40px',
           marginTop: '16px',

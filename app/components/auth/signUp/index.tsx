@@ -84,13 +84,14 @@ const SignUp: React.FunctionComponent<SignUpContainerProps> = props => {
   }
 
   async function handleSubmitSignUpWithSocial(values: SignUpFormValues) {
-    const { firstName, lastName, affiliation } = values;
+    const { firstName, lastName, affiliation, affiliationId } = values;
 
     const params: SignUpWithSocialParams = {
       email: values.email,
       firstName,
       lastName,
       affiliation,
+      affiliationId,
       profileLink: values.profileLink,
       token: {
         vendor: token.vendor as OAUTH_VENDOR,

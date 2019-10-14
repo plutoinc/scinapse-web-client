@@ -141,14 +141,11 @@ const handler = async (event: LambdaProxy.Event): Promise<LambdaProxy.Response> 
 
   const cookieKeys = Object.keys(newCookies);
   const cookieValues = cookieKeys.map(cookieKey => {
-    if (typeof newCookies[cookieKey] === 'string') {
-      return cookie.serialize(cookieKey, newCookies[cookieKey] as string);
+    const newCookie = newCookies[cookieKey];
+    if (typeof newCookie === 'string') {
+      return cookie.serialize(cookieKey, newCookie);
     } else {
-      return cookie.serialize(
-        cookieKey,
-        (newCookies[cookieKey] as CustomCookieObject).value,
-        (newCookies[cookieKey] as CustomCookieObject).options
-      );
+      return cookie.serialize(cookieKey, newCookie.value, newCookie.options);
     }
   });
 

@@ -26,6 +26,7 @@ import useFBIsLoading from '../../../hooks/FBisLoadingHook';
 import { MINIMUM_PASSWORD_LENGTH } from '../../../constants/auth';
 import AuthButtons from '../authButton/authButtons';
 import { SIGN_TYPE } from '../types';
+import { fetchKeywordAlertList } from '../../../containers/keywordSettings/actions';
 const s = require('./signIn.scss');
 
 declare var FB: any;
@@ -134,6 +135,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
       }
       if (res.member) {
         await props.dispatch(getCollections(res.member.id));
+        await props.dispatch(fetchKeywordAlertList());
       }
       setIsLoading(false);
 
@@ -164,19 +166,13 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
               render={() => {
                 return (
                   <Form>
-                    <Field
-                      name="email"
-                      type="email"
-                      component={AuthInputBox}
-                      placeholder="E-mail"
-                      iconName="EMAIL_ICON"
-                    />
+                    <Field name="email" type="email" component={AuthInputBox} placeholder="E-mail" iconName="EMAIL" />
                     <Field
                       name="password"
                       type="password"
                       component={AuthInputBox}
                       placeholder="Password"
-                      iconName="PASSWORD_ICON"
+                      iconName="PASSWORD"
                     />
                     {networkError && <div className={s.errorContent}>{networkError}</div>}
                     <div

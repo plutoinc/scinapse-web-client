@@ -1,0 +1,35 @@
+.groupButtonWrapper {
+  display: inline-flex;
+
+  a:not(:last-child),
+  button:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  a:not(:first-child),
+  button:not(:first-child) {
+    margin-left: -1px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+.outlined.groupButtonWrapper {
+  @include combined-button-borderline-color($gray300);
+}
+
+.contained.blue.groupButtonWrapper {
+  @include combined-button-borderline-color($main-blue0);
+}
+
+.contained.gray.groupButtonWrapper,
+.contained.black.groupButtonWrapper {
+  @include combined-button-borderline-color($gray400);
+}
+
+.contained.blue.disabled.groupButtonWrapper,
+.contained.gray.disabled.groupButtonWrapper,
+.contained.black.disabled.groupButtonWrapper {
+  @include combined-button-borderline-color($gray300);
+}

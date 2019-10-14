@@ -14,6 +14,7 @@ interface BlockVenueProps {
   journal: Journal | null;
   conferenceInstance: ConferenceInstance | null;
   publishedDate: string | null;
+  year: number;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea?: Scinapse.ActionTicket.ActionArea;
 }
@@ -22,34 +23,36 @@ const BlockVenue: React.FC<BlockVenueProps> = ({
   journal,
   conferenceInstance,
   publishedDate,
+  year,
   pageType,
   actionArea,
 }) => {
   if (!journal && !conferenceInstance) return null;
 
   let publishedAtNode = null;
+
   if (publishedDate) {
     publishedAtNode = <span className={styles.publishedDate}>{format(publishedDate, 'MMM D, YYYY')}</span>;
+  } else if (!publishedDate && year) {
+    publishedAtNode = <span className={styles.publishedDate}>{String(year)}</span>;
   }
 
   let content = null;
   if (journal) {
     const impactFactor = journal.impactFactor && (
       <span className={styles.ifLabel}>
-        <span>
-          <Tooltip
-            title="Impact Factor"
-            placement="top"
-            classes={{ tooltip: styles.arrowBottomTooltip }}
-            disableFocusListener
-            disableTouchListener
-          >
-            <span>
-              <Icon className={styles.ifIconWrapper} icon="IMPACT_FACTOR" />
-            </span>
-          </Tooltip>
-          {journal.impactFactor.toFixed(2)}
-        </span>
+        <Tooltip
+          title="Impact Factor"
+          placement="top"
+          classes={{ tooltip: styles.arrowBottomTooltip }}
+          disableFocusListener
+          disableTouchListener
+        >
+          <span className={styles.ifIconWrapper}>
+            <Icon className={styles.ifIcon} icon="IMPACT_FACTOR" />
+          </span>
+        </Tooltip>
+        <span className={styles.ifLabelContentWrapper}>{journal.impactFactor.toFixed(2)}</span>
       </span>
     );
 

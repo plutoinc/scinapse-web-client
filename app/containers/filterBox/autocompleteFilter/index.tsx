@@ -158,7 +158,7 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
         })}
       >
         <div className={s.inputWrapper}>
-          <Icon icon="SEARCH_ICON" className={s.searchIcon} />
+          <Icon icon="SEARCH" className={s.searchIcon} />
           <input
             value={state.inputValue}
             onKeyDown={e => {

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '../../common/button';
-import { addPaperToRecommendPool } from '../../recommendPool/recommendPoolActions';
+import { addPaperToRecommendPool } from '../../recommendPool/actions';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
@@ -28,7 +28,7 @@ const MobileReadLaterButton: FC<Props> = ({ paperId, saved, pageType, actionArea
       color={saved ? 'black' : 'blue'}
       onClick={async () => {
         const actionLabel = saved ? 'addToCollection' : 'savedCollection';
-        dispatch(addPaperToRecommendPool(paperId));
+        dispatch(addPaperToRecommendPool({ paperId, action: 'addToCollection' }));
         ActionTicketManager.trackTicket({
           pageType,
           actionType: 'fire',

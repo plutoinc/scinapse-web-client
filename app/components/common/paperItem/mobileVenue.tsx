@@ -66,7 +66,7 @@ const JournalTitle: React.FC<{
 
 const MobileVenue: React.FC<MobileVenueProps> = ({ paper, isExpanded, pageType, actionArea }) => {
   useStyles(s);
-  const { conferenceInstance, publishedDate, journal } = paper;
+  const { conferenceInstance, publishedDate, journal, year } = paper;
   if (!journal && !publishedDate) return null;
 
   let title = null;
@@ -76,11 +76,17 @@ const MobileVenue: React.FC<MobileVenueProps> = ({ paper, isExpanded, pageType, 
     title = <ConferenceTitle conferenceInstance={conferenceInstance} />;
   }
 
+  let date = format(publishedDate, 'MMM D, YYYY');
+
+  if ((!publishedDate && year) || !isExpanded) {
+    date = String(year);
+  }
+
   if (isExpanded) {
     return (
       <>
         <div>
-          <span className={s.year}>{format(publishedDate, 'MMM D, YYYY')}</span>
+          <span className={s.year}>{date}</span>
           {journal &&
             journal.impactFactor && (
               <span className={s.ifLabel}>
@@ -97,7 +103,7 @@ const MobileVenue: React.FC<MobileVenueProps> = ({ paper, isExpanded, pageType, 
 
   return (
     <div className={s.onelineWrapper}>
-      <span className={s.year}>{format(publishedDate, 'YYYY')}</span>
+      <span className={s.year}>{date}</span>
       {journal &&
         journal.impactFactor && (
           <span className={s.ifLabel}>

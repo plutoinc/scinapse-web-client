@@ -5,6 +5,7 @@ interface BaseSignUpParams {
   email: string;
   firstName: string;
   lastName: string;
+  affiliationId: number | null;
   affiliation: string;
   profileLink?: string;
 }
@@ -14,8 +15,8 @@ export interface BaseSignUpAPIParams {
   affiliation_name: string;
   first_name: string;
   last_name: string;
-  affiliation_id?: string;
-  profile_link?: string;
+  affiliation_id: number | null;
+  profile_link?: string | null;
 }
 
 export type SignUpWithEmailParams = BaseSignUpParams & { password: string };
@@ -118,7 +119,6 @@ export interface OAuthCheckParams {
 export type EmailSettingTypes =
   | 'GLOBAL'
   | 'COLLECTION_REMIND'
-  | 'FEATURE_INSTRUCTION'
   | 'PAPER_RECOMMENDATION'
   | 'REQUEST_CONFIRMATION'
   | 'LAST_WEEK_ACTIVITY';

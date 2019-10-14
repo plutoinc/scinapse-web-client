@@ -6,7 +6,7 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
 import SearchingPDFBtn from './searchingPDFBtn';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../../helpers/checkAuthDialog';
-import { addPaperToRecommendPoolAndOpenDialog } from '../../recommendPool/recommendPoolActions';
+import { addPaperToRecommendPool } from '../../recommendPool/actions';
 const styles = require('./pdfSourceButton.scss');
 
 interface PdfDownloadButtonProps {
@@ -54,13 +54,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
           e.preventDefault();
           trackActionToClickPdfDownloadBtn();
 
-          dispatch(
-            addPaperToRecommendPoolAndOpenDialog({
-              pageType: 'paperShow',
-              actionArea: 'downloadPdfInRefCitedBar',
-              paperId: paper.id,
-            })
-          );
+          dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'downloadPdf' }));
 
           const isBlocked = await blockUnverifiedUser({
             authLevel: AUTH_LEVEL.VERIFIED,

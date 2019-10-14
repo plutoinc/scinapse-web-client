@@ -95,6 +95,15 @@ const GuideContentsByActionType: React.FunctionComponent<AuthGuideContextProps> 
           webpUrl={'https://assets.pluto.network/signup_modal/researchers.webp'}
         />
       );
+    case 'clickCreateAlertBtn':
+      return (
+        <GuideContent
+          mainText={'Get\nKeyword\nNotifications'}
+          subText={''}
+          imageUrl={'https://assets.pluto.network/signup_modal/keyword.png'}
+          webpUrl={'https://assets.pluto.network/signup_modal/keyword.webp'}
+        />
+      );
     default:
       return (
         <GuideContent

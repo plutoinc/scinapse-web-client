@@ -6,7 +6,7 @@ import { PaperSource } from '../../../api/paper';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { AppState } from '../../../reducers';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
-import { addPaperToRecommendPoolAndOpenDialog } from '../../recommendPool/recommendPoolActions';
+import { addPaperToRecommendPool } from '../../recommendPool/actions';
 import { Paper } from '../../../model/paper';
 const styles = require('./sourceButton.scss');
 
@@ -42,13 +42,7 @@ const SourceButton: React.FC<SourceButtonProps> = ({ paperSource, pageType, acti
             actionTag: 'source',
             actionLabel: String(paper.id),
           });
-          dispatch(
-            addPaperToRecommendPoolAndOpenDialog({
-              pageType,
-              actionArea: 'sourceButton',
-              paperId: paper.id,
-            })
-          );
+          dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'source' }));
         }}
       >
         <img
@@ -78,16 +72,10 @@ const SourceButton: React.FC<SourceButtonProps> = ({ paperSource, pageType, acti
           actionTag: 'source',
           actionLabel: String(paper.id),
         });
-        dispatch(
-          addPaperToRecommendPoolAndOpenDialog({
-            pageType,
-            actionArea: 'sourceButton',
-            paperId: paper.id,
-          })
-        );
+        dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'source' }));
       }}
     >
-      <Icon icon="LINK" className={styles.linkIcon} />
+      <Icon icon="EXTERNAL_SOURCE" className={styles.linkIcon} />
       <span className={styles.sourceHostInfo}>Source</span>
     </a>
   );

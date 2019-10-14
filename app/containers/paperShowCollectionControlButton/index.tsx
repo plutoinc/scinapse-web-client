@@ -36,7 +36,7 @@ import { trackEvent } from '../../helpers/handleGA';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { ActionCreators } from '../../actions/actionTypes';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../helpers/checkAuthDialog';
-import { addPaperToRecommendPool } from '../../components/recommendPool/recommendPoolActions';
+import { addPaperToRecommendPool } from '../../components/recommendPool/actions';
 const styles = require('./paperShowCollectionControlButton.scss');
 
 const LAST_USER_COLLECTION_ID = 'l_u_c_id';
@@ -72,7 +72,7 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
         style={{ textAlign: 'center' }}
       >
         <CircularProgress disableShrink={true} size={14} thickness={4} />
-        <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
+        <Icon icon="ARROW_UP" className={styles.arrowIcon} />
       </span>
     );
   }
@@ -97,7 +97,7 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
               userActionType: 'addToCollection',
             });
 
-            dispatch(addPaperToRecommendPool(props.paperId));
+            dispatch(addPaperToRecommendPool({ paperId: props.paperId, action: 'addToCollection' }));
           }}
           className={styles.unsignedTitleBtn}
         >
@@ -123,7 +123,7 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
       onClick={props.onClick}
     >
       {props.collection && props.collection.title}
-      <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
+      <Icon icon="ARROW_UP" className={styles.arrowIcon} />
     </span>
   );
 };
@@ -254,7 +254,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           key={collection.id}
         >
           <span className={styles.collectionTitle}>{collection.title}</span>
-          {collection.containsSelected && <Icon icon="BOOKMARK_GRAY" className={styles.bookmarkIcon} />}
+          {collection.containsSelected && <Icon icon="BOOKMARK" className={styles.bookmarkIcon} />}
         </li>
       ));
 
@@ -286,7 +286,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
             <ul className={styles.popperPaper}>
               <li className={styles.newCollectionWrapper}>
                 <div className={styles.newCollectionItem} onClick={this.handleClickNewCollectionButton}>
-                  <Icon icon="SMALL_PLUS" className={styles.plusIcon} />
+                  <Icon icon="PLUS" className={styles.plusIcon} />
                   <span className={styles.newCollectionContext}>New Collection</span>
                 </div>
                 <div className={styles.newCollectionCancel} onClick={this.handleCloseCollectionDropdown}>
@@ -522,7 +522,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         actionTag: 'signInViaCollection',
         actionLabel: null,
       });
-      dispatch(addPaperToRecommendPool(targetPaperId));
+      dispatch(addPaperToRecommendPool({ paperId: targetPaperId, action: 'addToCollection' }));
       return;
     }
 
@@ -548,7 +548,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           cancelToken: this.cancelToken.token,
         })
       );
-      dispatch(addPaperToRecommendPool(targetPaperId));
+      dispatch(addPaperToRecommendPool({ paperId: targetPaperId, action: 'addToCollection' }));
       store.set(LAST_USER_COLLECTION_ID, selectedCollection.id);
     } else if (selectedCollection && targetPaperId && selectedCollection.containsSelected) {
       trackEvent({
@@ -596,7 +596,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           classes={{ tooltip: styles.arrowBottomTooltip }}
         >
           <div>
-            <Icon className={styles.saveButtonIcon} icon="BOOKMARK_THIN" />
+            <Icon className={styles.saveButtonIcon} icon="BOOKMARK" />
             <span>Saved</span>
           </div>
         </Tooltip>
@@ -612,7 +612,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         classes={{ tooltip: styles.arrowBottomTooltip }}
       >
         <div>
-          <Icon className={styles.saveButtonIcon} icon="BOOKMARK_THIN" />
+          <Icon className={styles.saveButtonIcon} icon="BOOKMARK" />
           <span>Save</span>
         </div>
       </Tooltip>

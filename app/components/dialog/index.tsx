@@ -34,8 +34,6 @@ import EnvChecker from '../../helpers/envChecker';
 import SurveyForm from '../auth/signUp/components/surveyForm';
 import PaperFigureDetail from '../common/paperFigureDetail/paperFigureDetail';
 import { UserDevice } from '../layouts/reducer';
-import { openRecommendPoolDialog } from '../recommendPool/recommendPoolActions';
-import { getCurrentPageType } from '../locationListener';
 const styles = require('./dialog.scss');
 
 function mapStateToProps(state: AppState) {
@@ -140,12 +138,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   };
 
   private closeCitationDialog = () => {
-    const { dispatch, dialogState } = this.props;
-
     this.closeDialog();
-    if (dialogState.citationPaperId) {
-      dispatch(openRecommendPoolDialog(getCurrentPageType(), 'citeButton'));
-    }
   };
 
   private closeDialog = () => {

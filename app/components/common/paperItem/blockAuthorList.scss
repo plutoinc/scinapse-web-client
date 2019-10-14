@@ -2,6 +2,7 @@
   position: relative;
   margin-bottom: 12px;
   display: flex;
+  color: $gray700;
 
   &:before {
     content: '';
@@ -17,13 +18,14 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   margin-right: 4px;
+  color: $gray600;
 
   svg {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
   }
 }
 
@@ -39,7 +41,6 @@
   font-size: 10px;
   font-weight: 500;
   font-style: italic;
-  color: $gray700;
   margin-right: 4px;
 }
 
@@ -53,17 +54,12 @@
 }
 
 .authorName {
-  color: $gray700;
   text-decoration: underline;
 
   &:hover {
     color: $main_blue0;
     text-decoration: underline;
   }
-}
-
-.affiliation {
-  color: $gray700;
 }
 
 .hIndex {

@@ -13,6 +13,7 @@ const styles = require('./affiliationBox.scss');
 
 interface AffiliationSelectBoxProps extends FieldProps {
   className: string;
+  affiliationIdFieldName?: string;
   inputStyle: React.CSSProperties;
   inputBoxStyle?: React.CSSProperties;
   listWrapperStyle?: React.CSSProperties;
@@ -33,7 +34,7 @@ const DefaultItem: React.SFC<DefaultItemComponentProps> = props => {
           }}
           className={styles.enterAffiliationItemContext}
         >
-          <Icon className={styles.plusIcon} icon="SMALL_PLUS" />Enter <b>“{props.userInput}”</b> as your institution
+          <Icon className={styles.plusIcon} icon="PLUS" />Enter <b>“{props.userInput}”</b> as your institution
         </div>
       )}
     </div>
@@ -137,12 +138,12 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
   };
 
   private handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const { form, field } = this.props;
+    const { form, field, affiliationIdFieldName } = this.props;
     const newInput = e.currentTarget.value;
     const customAffiliation: Affiliation = { id: null, name: newInput, nameAbbrev: null };
 
     form.setFieldTouched(field.name);
-    form.setFieldValue('institutionId', customAffiliation.id);
+    form.setFieldValue(affiliationIdFieldName || 'institutionId', customAffiliation.id);
     form.setFieldValue(field.name, customAffiliation.name);
 
     if (newInput.length > 1) {
@@ -151,16 +152,16 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
   };
 
   private handleClickSelectBox = (affiliationName: string) => {
-    const { field, form } = this.props;
+    const { field, form, affiliationIdFieldName } = this.props;
     const { availableAffiliations } = this.state;
     const targetAffiliation = availableAffiliations.find(affiliation => affiliation.keyword === affiliationName);
 
     if (!targetAffiliation && affiliationName) {
       const customAffiliation: Affiliation = { id: null, name: affiliationName, nameAbbrev: null };
-      form.setFieldValue('institutionId', customAffiliation.id);
+      form.setFieldValue(affiliationIdFieldName || 'institutionId', customAffiliation.id);
       form.setFieldValue(field.name, customAffiliation.name);
     } else if (targetAffiliation) {
-      form.setFieldValue('institutionId', targetAffiliation.affiliationId);
+      form.setFieldValue(affiliationIdFieldName || 'institutionId', targetAffiliation.affiliationId);
       form.setFieldValue(field.name, targetAffiliation.keyword);
     }
   };

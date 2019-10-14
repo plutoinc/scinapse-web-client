@@ -67,7 +67,7 @@ class CollectionItem extends React.PureComponent<CollectionItemProps, Collection
     } else if (collection.containsSelected) {
       return <Icon icon="MINUS" />;
     } else {
-      return <Icon icon="SMALL_PLUS" />;
+      return <Icon icon="PLUS" />;
     }
   };
 

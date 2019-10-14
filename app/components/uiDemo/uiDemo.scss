@@ -154,6 +154,33 @@
   display: inline-block;
 }
 
+.formControl + .formControl {
+  margin-top: 16px;
+}
+
+.iconInOption {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  margin-right: 12px;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+ul > li > .iconInOption {
+  width: 24px;
+  height: 24px;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
 @media (max-width: 768px) {
   .uiDemoWrapper {
     flex-direction: column;
