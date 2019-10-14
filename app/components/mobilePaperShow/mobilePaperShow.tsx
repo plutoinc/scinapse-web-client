@@ -192,22 +192,18 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper, location }) =>
             />
           </div>
           <div className={s.abstractContent} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.abstract) }} />
-          <PaperShowFigureList paper={paper} isMobile />
         </div>
         {pdfURL && (
-          <Button
-            elementType="anchor"
-            href={pdfURL}
-            size="large"
-            color="black"
-            fullWidth={true}
-            target="_blank"
-            style={{ marginTop: '16px' }}
-          >
-            <Icon icon="SOURCE" />
-            <span>View PDF</span>
-          </Button>
+          <div style={{ margin: '16px 16px 0 16px' }}>
+            <Button elementType="anchor" href={pdfURL} size="large" color="black" fullWidth={true} target="_blank">
+              <Icon icon="SOURCE" />
+              <span>View PDF</span>
+            </Button>
+          </div>
         )}
+        <div className={s.container}>
+          <PaperShowFigureList paper={paper} isMobile />
+        </div>
         <div
           ref={fixedTab}
           className={classNames({
