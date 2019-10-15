@@ -21,6 +21,7 @@ import { Paper } from '../../model/paper';
 import { PaperShowMatchParams } from '../../containers/paperShow/types';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 import RefCitedPapersContainer from '../../containers/refCitedPapersContainer';
+import ArticleSpinner from '../common/spinner/articleSpinner';
 
 const s = require('./mobilePaperShow.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
@@ -42,6 +43,7 @@ function getActiveTab(currentPosition: CurrentPosition): AvailablePaperShowTab |
 
 const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper, location }) => {
   useStyles(s);
+  const isLoading = useSelector((state: AppState) => state.paperShow.isLoadingPaper);
   const relatedPaperIds = useSelector((state: AppState) => state.relatedPapersState.paperIds, isEqual);
 
   const [currentPosition, setCurrentPosition] = React.useState<CurrentPosition>('abovePaperInfo');
@@ -52,90 +54,94 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper, location }) =>
   const citedSection = React.useRef<HTMLDivElement | null>(null);
   const relatedTabWrapper = React.useRef<HTMLDivElement | null>(null);
 
-  React.useEffect(() => {
-    function handleScroll() {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          if (!buttonGroupWrapper.current || !fixedTab.current || !refSection.current || !citedSection.current) {
-            return (ticking = false);
-          }
-
-          const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-          const currentScrollTop = Math.round(scrollTop) + NAVBAR_HEIGHT;
-          const buttonGroupOffsetTop = buttonGroupWrapper.current.offsetTop - 16 /* margin */;
-          const refSectionOffsetTop = refSection.current.offsetTop - fixedTab.current.clientHeight;
-          const citedSectionOffsetTop = citedSection.current.offsetTop - fixedTab.current.clientHeight;
-
-          if (relatedTabWrapper.current) {
-            const relatedTabWrapperOffsetTop =
-              relatedTabWrapper.current.offsetTop -
-              fixedTab.current.clientHeight +
-              relatedTabWrapper.current.clientHeight;
-
-            if (currentScrollTop < buttonGroupOffsetTop && lastPosition.current !== 'abovePaperInfo') {
-              setCurrentPosition('abovePaperInfo');
-              lastPosition.current = 'abovePaperInfo';
-            } else if (
-              currentScrollTop >= buttonGroupOffsetTop &&
-              currentScrollTop < relatedTabWrapperOffsetTop &&
-              lastPosition.current !== 'underPaperInfo'
-            ) {
-              setCurrentPosition('underPaperInfo');
-              lastPosition.current = 'underPaperInfo';
-            } else if (
-              currentScrollTop >= relatedTabWrapperOffsetTop &&
-              currentScrollTop < refSectionOffsetTop &&
-              lastPosition.current !== 'onRelatedList'
-            ) {
-              setCurrentPosition('onRelatedList');
-              lastPosition.current = 'onRelatedList';
-            } else if (
-              currentScrollTop >= refSectionOffsetTop &&
-              currentScrollTop < citedSectionOffsetTop &&
-              lastPosition.current !== 'onRefList'
-            ) {
-              setCurrentPosition('onRefList');
-              lastPosition.current = 'onRefList';
-            } else if (currentScrollTop >= citedSectionOffsetTop && lastPosition.current !== 'onCitedList') {
-              setCurrentPosition('onCitedList');
-              lastPosition.current = 'onCitedList';
+  React.useEffect(
+    () => {
+      function handleScroll() {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            if (!buttonGroupWrapper.current || !fixedTab.current || !refSection.current || !citedSection.current) {
+              return (ticking = false);
             }
-          } else {
-            if (currentScrollTop < buttonGroupOffsetTop && lastPosition.current !== 'abovePaperInfo') {
-              setCurrentPosition('abovePaperInfo');
-              lastPosition.current = 'abovePaperInfo';
-            } else if (
-              currentScrollTop >= buttonGroupOffsetTop &&
-              currentScrollTop < refSectionOffsetTop &&
-              lastPosition.current !== 'underPaperInfo'
-            ) {
-              setCurrentPosition('underPaperInfo');
-              lastPosition.current = 'underPaperInfo';
-            } else if (
-              currentScrollTop >= refSectionOffsetTop &&
-              currentScrollTop < citedSectionOffsetTop &&
-              lastPosition.current !== 'onRefList'
-            ) {
-              setCurrentPosition('onRefList');
-              lastPosition.current = 'onRefList';
-            } else if (currentScrollTop >= citedSectionOffsetTop && lastPosition.current !== 'onCitedList') {
-              setCurrentPosition('onCitedList');
-              lastPosition.current = 'onCitedList';
-            }
-          }
 
-          ticking = false;
-        });
+            const scrollTop =
+              (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+            const currentScrollTop = Math.round(scrollTop) + NAVBAR_HEIGHT;
+            const buttonGroupOffsetTop = buttonGroupWrapper.current.offsetTop - 16 /* margin */;
+            const refSectionOffsetTop = refSection.current.offsetTop - fixedTab.current.clientHeight;
+            const citedSectionOffsetTop = citedSection.current.offsetTop - fixedTab.current.clientHeight;
+
+            if (relatedTabWrapper.current) {
+              const relatedTabWrapperOffsetTop =
+                relatedTabWrapper.current.offsetTop -
+                fixedTab.current.clientHeight +
+                relatedTabWrapper.current.clientHeight;
+
+              if (currentScrollTop < buttonGroupOffsetTop && lastPosition.current !== 'abovePaperInfo') {
+                setCurrentPosition('abovePaperInfo');
+                lastPosition.current = 'abovePaperInfo';
+              } else if (
+                currentScrollTop >= buttonGroupOffsetTop &&
+                currentScrollTop < relatedTabWrapperOffsetTop &&
+                lastPosition.current !== 'underPaperInfo'
+              ) {
+                setCurrentPosition('underPaperInfo');
+                lastPosition.current = 'underPaperInfo';
+              } else if (
+                currentScrollTop >= relatedTabWrapperOffsetTop &&
+                currentScrollTop < refSectionOffsetTop &&
+                lastPosition.current !== 'onRelatedList'
+              ) {
+                setCurrentPosition('onRelatedList');
+                lastPosition.current = 'onRelatedList';
+              } else if (
+                currentScrollTop >= refSectionOffsetTop &&
+                currentScrollTop < citedSectionOffsetTop &&
+                lastPosition.current !== 'onRefList'
+              ) {
+                setCurrentPosition('onRefList');
+                lastPosition.current = 'onRefList';
+              } else if (currentScrollTop >= citedSectionOffsetTop && lastPosition.current !== 'onCitedList') {
+                setCurrentPosition('onCitedList');
+                lastPosition.current = 'onCitedList';
+              }
+            } else {
+              if (currentScrollTop < buttonGroupOffsetTop && lastPosition.current !== 'abovePaperInfo') {
+                setCurrentPosition('abovePaperInfo');
+                lastPosition.current = 'abovePaperInfo';
+              } else if (
+                currentScrollTop >= buttonGroupOffsetTop &&
+                currentScrollTop < refSectionOffsetTop &&
+                lastPosition.current !== 'underPaperInfo'
+              ) {
+                setCurrentPosition('underPaperInfo');
+                lastPosition.current = 'underPaperInfo';
+              } else if (
+                currentScrollTop >= refSectionOffsetTop &&
+                currentScrollTop < citedSectionOffsetTop &&
+                lastPosition.current !== 'onRefList'
+              ) {
+                setCurrentPosition('onRefList');
+                lastPosition.current = 'onRefList';
+              } else if (currentScrollTop >= citedSectionOffsetTop && lastPosition.current !== 'onCitedList') {
+                setCurrentPosition('onCitedList');
+                lastPosition.current = 'onCitedList';
+              }
+            }
+
+            ticking = false;
+          });
+        }
+        ticking = true;
       }
-      ticking = true;
-    }
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      handleScroll();
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    },
+    [isLoading]
+  );
 
   function handleClickPaperShowTab(tab: AvailablePaperShowTab) {
     if (!refSection.current || !citedSection.current || !fixedTab.current) return;
@@ -164,6 +170,14 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper, location }) =>
   const citedSort = queryParams['cited-sort'] || 'NEWEST_FIRST';
   // TODO: add fallback logic for PDF address
   const pdfURL = paper.bestPdf && paper.bestPdf.hasBest && paper.bestPdf.url;
+
+  if (isLoading) {
+    return (
+      <div className={s.loadingContainer}>
+        <ArticleSpinner />
+      </div>
+    );
+  }
 
   return (
     <>

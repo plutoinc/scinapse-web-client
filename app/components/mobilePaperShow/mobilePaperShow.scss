@@ -2,6 +2,13 @@
   margin: $header-height 12px 0 12px;
 }
 
+.loadingContainer {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .contentWrapper {
   margin: 0 16px;
 }
