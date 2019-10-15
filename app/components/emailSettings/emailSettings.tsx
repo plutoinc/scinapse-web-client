@@ -17,7 +17,7 @@ const KeywordAlertGuideContext: React.FC = () => {
     <div className={s.toggleItemWrapper}>
       <div className={s.toggleItemContext}>
         <div className={s.toggleItemTitle}>Keyword Alert</div>
-        <div className={s.toggleItemSubtitle}>Send papers about keyword you enrolled when updated.</div>
+        <div className={s.toggleItemSubtitle}>Send updated papers related to the keywords you enrolled.</div>
       </div>
       <div className={s.toggleButtonWrapper}>
         <Button elementType="link" to="/keyword-settings" size="medium" fullWidth={true}>
