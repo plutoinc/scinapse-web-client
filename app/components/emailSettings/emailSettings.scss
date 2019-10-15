@@ -17,7 +17,10 @@
 .toggleItemWrapper {
   display: flex;
   justify-content: space-between;
-  margin-top: 40px;
+
+  & + & {
+    margin-top: 40px;
+  }
 }
 
 .toggleItemContext {
@@ -43,6 +46,25 @@
 .toggleButtonWrapper {
   display: flex;
   align-items: center;
+  width: 100px;
+}
+
+.loadingSpinner {
+  color: $gray400 !important;
+  margin-right: 8px;
+}
+
+.blockedToggleButtonWrapper {
+  @extend .toggleButtonWrapper;
+
+  opacity: 0.8;
+  button {
+    cursor: not-allowed !important;
+  }
+}
+
+.buttonsWrapper {
+  width: 100%;
 }
 
 @media (max-width: $mobile_width) {
@@ -57,5 +79,9 @@
 
   .toggleButtonWrapper {
     margin-top: 24px;
+  }
+
+  .loadingSpinner {
+    display: none !important;
   }
 }

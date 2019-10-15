@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '../../helpers/withStylesHelper';
 import alertToast from '../../helpers/makePlutoToastAction';
 import GroupButton from '../common/groupButton';
 import Button from '../common/button';
 import { ButtonVariant, ButtonColor } from '../common/button/types';
-const s = require('./emailToggleItem.scss');
+const s = require('./emailSettings.scss');
 
 interface EmailToggleItemProps {
   title: string;
@@ -15,7 +14,6 @@ interface EmailToggleItemProps {
   onClick: (nextStatus: boolean) => void;
   isLoading: boolean;
   hasFailed: boolean;
-  isMobile: boolean;
   globalInActive?: boolean;
 }
 
@@ -38,7 +36,6 @@ const EmailToggleItem: React.FC<EmailToggleItemProps> = ({
   onClick,
   hasFailed,
   isLoading,
-  isMobile,
   globalInActive,
 }) => {
   useEffect(
@@ -67,17 +64,15 @@ const EmailToggleItem: React.FC<EmailToggleItemProps> = ({
           [s.blockedToggleButtonWrapper]: disabledButton,
         })}
       >
-        {isLoading && <CircularProgress className={s.loadingSpinner} disableShrink={true} size={20} thickness={8} />}
         <GroupButton variant="text" disabled={globalInActive} className={s.buttonsWrapper}>
           <Button
             elementType="button"
             size="medium"
-            disabled={globalInActive || isLoading}
-            onClick={() => {
-              onClick(true);
-            }}
+            disabled={globalInActive}
+            onClick={() => onClick(true)}
             {...getActiveButtonProps(active)}
-            fullWidth={isMobile}
+            fullWidth={true}
+            isLoading={isLoading}
           >
             <span>On</span>
           </Button>
@@ -86,13 +81,12 @@ const EmailToggleItem: React.FC<EmailToggleItemProps> = ({
             size="medium"
             variant="outlined"
             color="gray"
-            disabled={globalInActive || isLoading}
-            onClick={() => {
-              onClick(false);
-            }}
+            disabled={globalInActive}
+            onClick={() => onClick(false)}
             {...getInActiveButtonProps(!active)}
             style={!active ? { border: '1px solid #d8dde7' } : {}}
-            fullWidth={isMobile}
+            fullWidth={true}
+            isLoading={isLoading}
           >
             <span>Off</span>
           </Button>
