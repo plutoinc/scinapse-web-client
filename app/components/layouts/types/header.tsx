@@ -9,6 +9,6 @@ export interface HeaderProps extends RouteComponentProps<any> {
   layoutState: LayoutState;
   currentUserState: CurrentUser;
   myCollectionsState: MyCollectionsState;
-  paper: Paper | undefined;
+  paper: Paper | null;
   dispatch: Dispatch<any>;
 }

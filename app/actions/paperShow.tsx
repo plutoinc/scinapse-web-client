@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux';
 import axios, { CancelToken } from 'axios';
+import { ThunkAction } from 'redux-thunk';
 import { ActionCreators } from './actionTypes';
 import MemberAPI from '../api/member';
 import CollectionAPI, { PostCollectionParams } from '../api/collection';
@@ -8,6 +9,9 @@ import { GetRefOrCitedPapersParams } from '../api/types/paper';
 import alertToast from '../helpers/makePlutoToastAction';
 import PlutoAxios from '../api/pluto';
 import { CommonError } from '../model/error';
+import { getRelatedPapers } from './relatedPapers';
+import { logException } from '../helpers/errorHandler';
+import { AppState } from '../reducers';
 
 export function clearPaperShowState() {
   return ActionCreators.clearPaperShowState();
@@ -61,60 +65,40 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToGetReferencePapers());
 
-    try {
-      const getPapersResult = await PaperAPI.getReferencePapers(params);
-      dispatch(ActionCreators.addEntity(getPapersResult));
-      dispatch(
-        ActionCreators.getReferencePapers({
-          paperIds: getPapersResult.result,
-          size: getPapersResult.size,
-          page: getPapersResult.page,
-          first: getPapersResult.first,
-          last: getPapersResult.last,
-          numberOfElements: getPapersResult.numberOfElements,
-          totalPages: getPapersResult.totalPages,
-          totalElements: getPapersResult.totalElements,
-        })
-      );
-    } catch (err) {
-      if (!axios.isCancel(err)) {
-        alertToast({
-          type: 'error',
-          message: `Failed to get papers. ${err}`,
-        });
-        dispatch(ActionCreators.failedToGetReferencePapers());
-      }
-    }
+    const getPapersResult = await PaperAPI.getReferencePapers(params);
+    dispatch(ActionCreators.addEntity(getPapersResult));
+    dispatch(
+      ActionCreators.getReferencePapers({
+        paperIds: getPapersResult.result,
+        size: getPapersResult.size,
+        page: getPapersResult.page,
+        first: getPapersResult.first,
+        last: getPapersResult.last,
+        numberOfElements: getPapersResult.numberOfElements,
+        totalPages: getPapersResult.totalPages,
+        totalElements: getPapersResult.totalElements,
+      })
+    );
   };
 }
 
 export function getCitedPapers(params: GetRefOrCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToGetCitedPapers());
-
-    try {
-      const getPapersResult = await PaperAPI.getCitedPapers(params);
-      dispatch(ActionCreators.addEntity(getPapersResult));
-      dispatch(
-        ActionCreators.getCitedPapers({
-          paperIds: getPapersResult.result,
-          size: getPapersResult.size,
-          page: getPapersResult.page,
-          first: getPapersResult.first,
-          last: getPapersResult.last,
-          numberOfElements: getPapersResult.numberOfElements,
-          totalPages: getPapersResult.totalPages,
-          totalElements: getPapersResult.totalElements,
-        })
-      );
-    } catch (err) {
-      if (!axios.isCancel(err)) {
-        alertToast({
-          type: 'error',
-          message: `Failed to get papers. ${err}`,
-        });
-      }
-    }
+    const getPapersResult = await PaperAPI.getCitedPapers(params);
+    dispatch(ActionCreators.addEntity(getPapersResult));
+    dispatch(
+      ActionCreators.getCitedPapers({
+        paperIds: getPapersResult.result,
+        size: getPapersResult.size,
+        page: getPapersResult.page,
+        first: getPapersResult.first,
+        last: getPapersResult.last,
+        numberOfElements: getPapersResult.numberOfElements,
+        totalPages: getPapersResult.totalPages,
+        totalElements: getPapersResult.totalElements,
+      })
+    );
   };
 }
 
@@ -171,3 +155,37 @@ export function openNoteDropdown() {
 export function closeNoteDropdown() {
   return ActionCreators.closeNoteDropdownInPaperShow();
 }
+
+interface FetchMobilePaperShowData {
+  paperId: number;
+  isLoggedIn: boolean;
+  cancelToken: CancelToken;
+}
+
+export const fetchPaperShowDataAtClient = ({
+  paperId,
+  isLoggedIn,
+  cancelToken,
+}: FetchMobilePaperShowData): ThunkAction<Promise<void>, AppState, {}, any> => {
+  return async (dispatch: Dispatch<any>) => {
+    const promiseArray = [];
+
+    promiseArray.push(dispatch(getPaper({ paperId, cancelToken })));
+    promiseArray.push(dispatch(getRelatedPapers(paperId, cancelToken)));
+    promiseArray.push(dispatch(fetchLastFullTextRequestedDate(paperId)));
+
+    if (isLoggedIn) {
+      promiseArray.push(dispatch(getMyCollections(paperId, cancelToken)));
+    }
+
+    try {
+      await Promise.all(promiseArray);
+    } catch (err) {
+      if (!axios.isCancel(err)) {
+        logException(err);
+        const error = PlutoAxios.getGlobalError(err);
+        throw error;
+      }
+    }
+  };
+};

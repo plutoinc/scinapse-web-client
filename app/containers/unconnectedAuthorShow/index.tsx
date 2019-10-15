@@ -167,7 +167,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
                       />
                       <SortBox
                         sortOption={authorShow.papersSort}
-                        handleClickSortOption={this.handleClickSortOption}
+                        onClickOption={this.handleClickSortOption}
                         currentPage="authorShow"
                       />
                     </div>

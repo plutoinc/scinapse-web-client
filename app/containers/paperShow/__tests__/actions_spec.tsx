@@ -48,7 +48,6 @@ describe('Paper Show page actions', () => {
           page: 0,
           query: '',
           sort: null,
-          cancelToken: axios.CancelToken.source().token,
         };
 
         await store.dispatch(getReferencePapers(mockParams));
@@ -61,29 +60,6 @@ describe('Paper Show page actions', () => {
 
       it('should dispatch GLOBAL_ADD_ENTITY action', () => {
         expect(resultActions[1].type).toEqual(ACTION_TYPES.GLOBAL_ADD_ENTITY);
-      });
-    });
-
-    describe("when failed to get paper's reference paper data", () => {
-      beforeEach(async () => {
-        const mockParams: GetRefOrCitedPapersParams = {
-          paperId: 0,
-          page: 0,
-          query: '',
-          sort: null,
-          cancelToken: axios.CancelToken.source().token,
-        };
-
-        await store.dispatch(getReferencePapers(mockParams));
-        resultActions = await store.getActions();
-      });
-
-      it('should dispatch PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS action', () => {
-        expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS);
-      });
-
-      it('should dispatch PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS action', () => {
-        expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS);
       });
     });
   });

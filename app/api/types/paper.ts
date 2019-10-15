@@ -1,6 +1,7 @@
 import { CancelToken } from 'axios';
 import { Paper } from '../../model/paper';
 import { WeightedCitationUserGroup } from '../../constants/abTestObject';
+import { PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
 
 export interface SearchPapersParams {
   sort: string;
@@ -18,8 +19,7 @@ export interface GetRefOrCitedPapersParams {
   paperId: number;
   page: number;
   query: string;
-  sort: string | null;
-  cancelToken: CancelToken;
+  sort: PAPER_LIST_SORT_TYPES | null;
 }
 
 export interface GetPapersResult {
@@ -29,7 +29,7 @@ export interface GetPapersResult {
   number: number;
   numberOfElements: number;
   size: number;
-  sort: string | null;
+  sort: PAPER_LIST_SORT_TYPES | null;
   totalElements: number;
   totalPages: number;
 }

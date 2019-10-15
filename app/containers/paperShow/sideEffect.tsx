@@ -1,30 +1,19 @@
-import { CancelToken } from 'axios';
 import { Dispatch } from 'redux';
 import { LoadDataParams } from '../../routes';
 import {
   getPaper,
   getCitedPapers,
   getReferencePapers,
-  getMyCollections,
   fetchLastFullTextRequestedDate,
+  getMyCollections,
 } from '../../actions/paperShow';
 import { CurrentUser } from '../../model/currentUser';
 import { PaperShowMatchParams, PaperShowPageQueryParams } from './types';
 import { ActionCreators } from '../../actions/actionTypes';
+import { getRelatedPapers } from '../../actions/relatedPapers';
+import { PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
 
-export function fetchMyCollection(paperId: number, cancelToken: CancelToken) {
-  return async (dispatch: Dispatch<any>) => {
-    await dispatch(getMyCollections(paperId, cancelToken));
-  };
-}
-
-export function fetchCitedPaperData(
-  paperId: number,
-  page: number = 1,
-  query: string,
-  sort: string | null,
-  cancelToken: CancelToken
-) {
+export function fetchCitedPaperData(paperId: number, page: number = 1, query: string, sort: PAPER_LIST_SORT_TYPES) {
   return async (dispatch: Dispatch<any>) => {
     await dispatch(
       getCitedPapers({
@@ -32,19 +21,12 @@ export function fetchCitedPaperData(
         page,
         query,
         sort,
-        cancelToken,
       })
     );
   };
 }
 
-export function fetchRefPaperData(
-  paperId: number,
-  page: number = 1,
-  query: string,
-  sort: string | null,
-  cancelToken: CancelToken
-) {
+export function fetchRefPaperData(paperId: number, page: number = 1, query: string, sort: PAPER_LIST_SORT_TYPES) {
   return async (dispatch: Dispatch<any>) => {
     await dispatch(
       getReferencePapers({
@@ -52,14 +34,13 @@ export function fetchRefPaperData(
         page,
         query,
         sort,
-        cancelToken,
       })
     );
   };
 }
 
-export async function fetchRefCitedPaperData(params: LoadDataParams<PaperShowMatchParams>) {
-  const { dispatch, match, queryParams, cancelToken } = params;
+export async function fetchRefCitedPaperDataAtServer(params: LoadDataParams<PaperShowMatchParams>) {
+  const { dispatch, match, queryParams } = params;
 
   const paperId = parseInt(match.params.paperId, 10);
   const queryParamsObject: PaperShowPageQueryParams = queryParams ? queryParams : { 'cited-page': 1, 'ref-page': 1 };
@@ -70,8 +51,7 @@ export async function fetchRefCitedPaperData(params: LoadDataParams<PaperShowMat
         paperId,
         queryParamsObject['cited-page'],
         queryParamsObject['cited-query'] || '',
-        queryParamsObject['cited-sort'] || 'NEWEST_FIRST',
-        cancelToken
+        queryParamsObject['cited-sort'] || 'NEWEST_FIRST'
       )
     ),
     dispatch(
@@ -79,8 +59,7 @@ export async function fetchRefCitedPaperData(params: LoadDataParams<PaperShowMat
         paperId,
         queryParamsObject['ref-page'],
         queryParamsObject['ref-query'] || '',
-        queryParamsObject['ref-sort'] || 'NEWEST_FIRST',
-        cancelToken
+        queryParamsObject['ref-sort'] || 'NEWEST_FIRST'
       )
     ),
   ]);
@@ -96,10 +75,11 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
 
   const promiseArray = [];
   promiseArray.push(dispatch(getPaper({ paperId, cancelToken: params.cancelToken })));
+  promiseArray.push(dispatch(getRelatedPapers(paperId, params.cancelToken)));
   promiseArray.push(dispatch(fetchLastFullTextRequestedDate(paperId)));
 
   if (currentUser && currentUser.isLoggedIn) {
-    promiseArray.push(dispatch(fetchMyCollection(paperId, params.cancelToken)));
+    promiseArray.push(dispatch(getMyCollections(paperId, params.cancelToken)));
   }
 
   await Promise.all(promiseArray);

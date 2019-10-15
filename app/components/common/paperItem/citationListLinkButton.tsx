@@ -3,16 +3,15 @@ import { Link } from 'react-router-dom';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import formatNumber from '../../../helpers/formatNumber';
 import { Paper } from '../../../model/paper';
-import { withStyles } from '../../../helpers/withStylesHelper';
-const s = require('./citationListLinkButton.scss');
 
 interface CitationListLinkButtonProps {
   paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
+  className: string;
 }
 
-const CitationListLinkButton: React.FC<CitationListLinkButtonProps> = ({ paper, actionArea, pageType }) => {
+const CitationListLinkButton: React.FC<CitationListLinkButtonProps> = ({ paper, actionArea, pageType, className }) => {
   if (!paper.citedCount) return null;
 
   return (
@@ -30,11 +29,11 @@ const CitationListLinkButton: React.FC<CitationListLinkButtonProps> = ({ paper, 
           actionLabel: String(paper.id),
         });
       }}
-      className={s.citedButton}
+      className={className}
     >
       <span>{`${formatNumber(paper.citedCount)} Citations`}</span>
     </Link>
   );
 };
 
-export default withStyles<typeof CitationListLinkButton>(s)(CitationListLinkButton);
+export default CitationListLinkButton;

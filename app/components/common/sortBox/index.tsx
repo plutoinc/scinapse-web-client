@@ -11,7 +11,7 @@ export type AUTHOR_PAPER_LIST_SORT_TYPES = PAPER_LIST_SORT_TYPES | 'RECENTLY_ADD
 
 interface SortBoxProps {
   sortOption: AUTHOR_PAPER_LIST_SORT_TYPES;
-  handleClickSortOption: (option: AUTHOR_PAPER_LIST_SORT_TYPES) => void;
+  onClickOption: (option: AUTHOR_PAPER_LIST_SORT_TYPES) => void;
   currentPage: Scinapse.ActionTicket.PageType;
   exposeRelevanceOption?: boolean;
   exposeRecentlyUpdated?: boolean;
@@ -34,7 +34,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
   }
 
   public render() {
-    const { sortOption, handleClickSortOption, exposeRecentlyUpdated } = this.props;
+    const { sortOption, onClickOption: handleClickSortOption, exposeRecentlyUpdated } = this.props;
     const { isOpen } = this.state;
 
     return (
@@ -107,7 +107,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
   }
 
   private getRelevanceOption = () => {
-    const { exposeRelevanceOption, handleClickSortOption } = this.props;
+    const { exposeRelevanceOption, onClickOption: handleClickSortOption } = this.props;
 
     if (exposeRelevanceOption) {
       return (

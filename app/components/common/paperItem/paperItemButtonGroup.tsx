@@ -34,7 +34,12 @@ const PaperItemButtonGroup: React.FC<PaperItemButtonGroupProps> = ({
     return (
       <div className={s.mobileWrapper}>
         <div className={s.buttonWrapper}>
-          <CitationListLinkButton paper={paper} pageType={pageType} actionArea={actionArea} />
+          <CitationListLinkButton
+            className={s.citationListButton}
+            paper={paper}
+            pageType={pageType}
+            actionArea={actionArea}
+          />
         </div>
         <div className={s.buttonWrapper}>
           <SourceButton paper={paper} pageType={pageType} actionArea={actionArea} paperSource={paperSource} />
@@ -49,7 +54,12 @@ const PaperItemButtonGroup: React.FC<PaperItemButtonGroupProps> = ({
   return (
     <div className={s.groupWrapper}>
       <div className={s.buttonListBox}>
-        <CitationListLinkButton paper={paper} pageType={pageType} actionArea={actionArea} />
+        <CitationListLinkButton
+          className={s.citationListButton}
+          paper={paper}
+          pageType={pageType}
+          actionArea={actionArea}
+        />
         <SourceButton paper={paper} pageType={pageType} actionArea={actionArea} paperSource={paperSource} />
         <MoreDropdownButton dropdownContents={dropdownContents} paper={paper} />
       </div>

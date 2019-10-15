@@ -35,11 +35,6 @@ export const dummy: Test = {
 
 export type WeightedCitationUserGroup = 'a' | 'b' | 'c' | 'd';
 
-export const enum requestFullTextDialogExperimentType {
-  CONTROL = 'control',
-  DETAIL = 'detailed_message',
-}
-
 export const weightedCitation: Test<WeightedCitationUserGroup> = {
   name: WEIGHTED_CITATION_EXPERIMENT,
   userGroup: [

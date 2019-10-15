@@ -22,6 +22,18 @@
   }
 }
 
+.citationListButton {
+  display: inline-flex;
+  font-size: 14px;
+  line-height: 1;
+  align-items: center;
+  padding: 8px;
+  border-radius: 4px;
+  color: $gray800;
+  background-color: $gray50;
+  cursor: pointer;
+}
+
 @media (max-width: $mobile_width) {
   .groupWrapper {
     border-top: 0;
@@ -37,5 +49,20 @@
     .buttonWrapper {
       flex: 1;
     }
+  }
+
+  .citeButton {
+    display: none;
+  }
+
+  .citationListButton {
+    font-size: 14px;
+    padding: 8px 10px;
+    line-height: 20px;
+    color: $black0;
+    white-space: nowrap;
+    overflow: hidden;
+    justify-content: center;
+    width: 100%;
   }
 }

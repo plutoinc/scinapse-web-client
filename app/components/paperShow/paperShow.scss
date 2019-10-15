@@ -179,6 +179,10 @@ article.paperShow {
   background-color: $gray50;
 }
 
+.backBtn {
+  padding-top: 24px;
+}
+
 // RegularDisplay (1024~1200)
 @media (max-width: $regular_width) {
   .container {

@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
 import { addPaperToRecommendPool } from '../../recommendPool/actions';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
@@ -12,16 +13,20 @@ interface CiteButtonProps {
   paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
+  className?: string;
 }
 
-const CiteButton: React.FC<CiteButtonProps> = ({ paper, pageType, actionArea }) => {
+const CiteButton: React.FC<CiteButtonProps> = ({ paper, pageType, actionArea, className }) => {
   const dispatch = useDispatch();
 
   if (!paper.doi) return null;
 
   return (
     <button
-      className={styles.citeButton}
+      className={classNames({
+        [styles.citeButton]: true,
+        [className!]: !!className,
+      })}
       onClick={async () => {
         dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'citePaper' }));
         GlobalDialogManager.openCitationDialog(paper.id);

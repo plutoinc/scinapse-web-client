@@ -1,7 +1,7 @@
 import { denormalize } from 'normalizr';
 import { createSelector } from 'reselect';
 import { getPaperEntities } from '../../selectors/papersSelector';
-import { paperSchema } from '../../model/paper';
+import { paperSchema, Paper } from '../../model/paper';
 import { AppState } from '../../reducers';
 
 function getPaperId(state: AppState) {
@@ -9,5 +9,6 @@ function getPaperId(state: AppState) {
 }
 
 export const getMemoizedPaper = createSelector([getPaperId, getPaperEntities], (paperId, paperEntities) => {
-  return denormalize(paperId, paperSchema, { papers: paperEntities });
+  const paper: Paper | null = denormalize(paperId, paperSchema, { papers: paperEntities });
+  return paper;
 });

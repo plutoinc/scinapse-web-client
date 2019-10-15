@@ -57,7 +57,7 @@ function getEventLinkButton(props: EventPaginationProps) {
             props.onItemClick(1);
           }}
         >
-          <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="LAST_PAGE" />
+          <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="ARROW_RIGHT_DOUBLE" />
         </span>
         <span>{`${props.currentPageIndex + 1} Page`}</span>
       </div>
@@ -71,7 +71,7 @@ function getEventLinkButton(props: EventPaginationProps) {
             props.onItemClick(1);
           }}
         >
-          <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="LAST_PAGE" />
+          <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="ARROW_RIGHT_DOUBLE" />
         </span>
         <span
           className={styles.pageIconWrapper}
@@ -79,7 +79,7 @@ function getEventLinkButton(props: EventPaginationProps) {
             props.onItemClick(props.currentPageIndex);
           }}
         >
-          <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="NEXT_PAGE" />
+          <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="ARROW_RIGHT" />
         </span>
         <span className={styles.pageNumber}>{`${props.currentPageIndex + 1} Page`}</span>
         <span
@@ -88,7 +88,7 @@ function getEventLinkButton(props: EventPaginationProps) {
             props.onItemClick(props.currentPageIndex + 2);
           }}
         >
-          <Icon className={styles.pageIcon} icon="NEXT_PAGE" />
+          <Icon className={styles.pageIcon} icon="ARROW_RIGHT" />
         </span>
       </div>
     );
@@ -108,7 +108,7 @@ function getLinkButton(props: LinkPaginationProps) {
     return (
       <div className={styles.pageButton}>
         <Link rel="nofollow" to={props.getLinkDestination(1)}>
-          <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="LAST_PAGE" />
+          <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="ARROW_RIGHT_DOUBLE" />
         </Link>
         <span>{`${props.currentPageIndex + 1} Page`}</span>
       </div>
@@ -117,10 +117,10 @@ function getLinkButton(props: LinkPaginationProps) {
     return (
       <div className={styles.pageButton}>
         <Link rel="nofollow" className={styles.pageIconWrapper} to={props.getLinkDestination(1)}>
-          <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="LAST_PAGE" />
+          <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="ARROW_RIGHT_DOUBLE" />
         </Link>
         <Link rel="nofollow" className={styles.pageIconWrapper} to={props.getLinkDestination(props.currentPageIndex)}>
-          <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="NEXT_PAGE" />
+          <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="ARROW_RIGHT" />
         </Link>
         <span className={styles.pageNumber}>{`${props.currentPageIndex + 1} Page`}</span>
         <Link
@@ -128,7 +128,7 @@ function getLinkButton(props: LinkPaginationProps) {
           className={styles.pageIconWrapper}
           to={props.getLinkDestination(props.currentPageIndex + 2)}
         >
-          <Icon className={styles.pageIcon} icon="NEXT_PAGE" />
+          <Icon className={styles.pageIcon} icon="ARROW_RIGHT" />
         </Link>
       </div>
     );

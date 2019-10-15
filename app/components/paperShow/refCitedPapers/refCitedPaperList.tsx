@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { History } from 'history';
 import { Paper } from '../../../model/paper';
-import { RELATED_PAPERS } from '../constants';
+import { REF_CITED_CONTAINER_TYPE } from '../constants';
 import ArticleSpinner from '../../common/spinner/articleSpinner';
 import Icon from '../../../icons';
 import PaperItem from '../../common/paperItem/paperItem';
@@ -14,14 +14,14 @@ const styles = require('./referencePapers.scss');
 
 interface RefCitedPaperListProps {
   history: History;
-  type: RELATED_PAPERS;
+  type: REF_CITED_CONTAINER_TYPE;
   papers: Paper[];
   paperShow: PaperShowState;
   queryParamsObject: PaperShowPageQueryParams;
 }
 
 interface NoResultSearchContextProps {
-  type: RELATED_PAPERS;
+  type: REF_CITED_CONTAINER_TYPE;
   searchInput: string;
   resetQuery: () => void;
 }
@@ -45,45 +45,37 @@ const NoResultSearchContext: React.FC<NoResultSearchContextProps> = props => {
 
 const RefCitedPaperList: React.FC<RefCitedPaperListProps> = props => {
   const { history, type, papers, paperShow, queryParamsObject } = props;
-  const [totalPage, setTotalPage] = React.useState(0);
-  const [isPapersLoading, setIsPapersLoading] = React.useState(false);
   const [searchInput, setSearchInput] = React.useState('');
+  const refQuery = queryParamsObject['ref-query'] || '';
+  const citedQuery = queryParamsObject['cited-query'] || '';
 
   React.useEffect(
     () => {
-      if (type === 'reference') {
-        setTotalPage(paperShow.referencePaperTotalPage);
-        setIsPapersLoading(paperShow.isLoadingReferencePapers);
-        setSearchInput(queryParamsObject['ref-query'] || '');
-      } else if (type === 'cited') {
-        setTotalPage(paperShow.citedPaperTotalPage);
-        setIsPapersLoading(paperShow.isLoadingCitedPapers);
-        setSearchInput(queryParamsObject['cited-query'] || '');
-      }
+      setSearchInput(type === 'reference' ? refQuery : citedQuery);
     },
-    [paperShow, queryParamsObject]
+    [refQuery, citedQuery, type]
   );
 
-  const handleResetQuery = React.useCallback(
-    () => {
-      let pageQueryParams;
+  const handleResetQuery = () => {
+    let pageQueryParams;
 
-      if (type === 'reference') {
-        pageQueryParams = { 'ref-query': '', 'ref-page': 1 };
-      } else {
-        pageQueryParams = { 'cited-query': '', 'cited-page': 1 };
-      }
+    if (type === 'reference') {
+      pageQueryParams = { 'ref-query': '', 'ref-page': 1 };
+    } else {
+      pageQueryParams = { 'cited-query': '', 'cited-page': 1 };
+    }
 
-      setSearchInput('');
-      history.push({
-        pathname: `/papers/${paperShow.paperId}`,
-        search: getStringifiedUpdatedQueryParams(queryParamsObject, pageQueryParams),
-      });
-    },
-    [paperShow.paperId]
-  );
+    setSearchInput('');
+    history.push({
+      pathname: `/papers/${paperShow.paperId}`,
+      search: getStringifiedUpdatedQueryParams(queryParamsObject, pageQueryParams),
+    });
+  };
 
-  if (isPapersLoading) {
+  const isLoading = type === 'reference' ? paperShow.isLoadingReferencePapers : paperShow.isLoadingCitedPapers;
+  const totalPage = type === 'reference' ? paperShow.referencePaperTotalPage : paperShow.citedPaperTotalPage;
+
+  if (isLoading) {
     return (
       <div className={styles.loadingContainer}>
         <ArticleSpinner className={styles.loadingSpinner} />

@@ -1,0 +1,167 @@
+.container {
+  margin: $header-height 12px 0 12px;
+}
+
+.loadingContainer {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contentWrapper {
+  margin: 0 16px;
+}
+
+.backBtn {
+  padding-top: 32px;
+
+  & + .title {
+    padding-top: 28px;
+  }
+}
+
+.title {
+  font-size: 22px;
+  line-height: 1.27;
+  font-weight: normal;
+  color: $black0;
+  font-family: Georgia;
+  margin: 0;
+  padding-top: 36px;
+  padding-bottom: 12px;
+}
+
+.abstractHeader {
+  font-size: 16px;
+  font-weight: bold;
+  color: $black0;
+}
+
+.abstractContent {
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: normal;
+  line-height: 1.36;
+  color: $black0;
+}
+
+.refCitedTab {
+  background-color: #f9f9fb;
+  padding: 16px 28px;
+
+  span {
+    display: inline-block;
+  }
+
+  span + span {
+    margin-left: 32px;
+  }
+}
+
+.fixedRefCitedTab {
+  background-color: #f9f9fb;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.activeRefCitedTabItem {
+  font-size: 16px;
+  font-weight: 500;
+  color: $black0;
+}
+
+.refCitedTabItem {
+  font-size: 16px;
+  font-weight: 500;
+  color: $gray600;
+}
+
+.fixedTab {
+  display: none;
+  position: fixed;
+  top: $header-height;
+  left: 0;
+  right: 0;
+  height: $mobile-fixed-tab-height;
+  background-color: white;
+  padding: 16px 0;
+  z-index: 2;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+
+  &.active {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.buttonGroupWrapper {
+  width: 100%;
+  margin: -12px 0 -12px 0;
+}
+
+.tabPaperTitle {
+  @extend %one-line-overflow-ellipsis;
+}
+
+.btnGroupWrapper,
+.fixedBtnGroupWrapper {
+  display: flex;
+}
+
+.fixedBtnGroupWrapper {
+  padding: 0 28px;
+}
+
+.btnGroupWrapper {
+  margin: 14px 0 36px 0;
+}
+
+.abstractHeaderWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.copyDOIButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 8px;
+  height: 32px;
+  color: $main_blue1;
+  font-size: 14px;
+
+  i {
+    display: flex;
+    width: 20px;
+    height: 20px;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.refCitedSection {
+  margin-top: 48px;
+}
+
+.paperListSection {
+  background-color: $gray30;
+  padding: 0 12px 100px 12px;
+}
+
+.relatedPaperTitle {
+  font-size: 16px;
+  font-weight: 500;
+  color: $black0;
+  margin-bottom: 16px;
+}

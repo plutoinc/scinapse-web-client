@@ -213,5 +213,10 @@
   "browserslist": [
     "> 1%",
     "ie > 9"
-  ]
+  ],
+  "nodemonConfig": {
+    "watch": [
+      "dist/server"
+    ]
+  }
 }

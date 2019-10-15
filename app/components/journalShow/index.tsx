@@ -244,7 +244,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
 
     return (
       <SortBox
-        handleClickSortOption={this.handleSortOptionChange}
+        onClickOption={this.handleSortOptionChange}
         sortOption={sortOption}
         currentPage="journalShow"
         exposeRelevanceOption={shouldExposeRelevanceOption}
