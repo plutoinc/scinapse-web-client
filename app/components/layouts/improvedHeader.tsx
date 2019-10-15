@@ -365,8 +365,6 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
   private getHistoryButton = () => {
     const { paper } = this.props;
 
-    if (!paper) return null;
-
     return (
       <div className={styles.historyBtnWrapper}>
         <ResearchHistory paper={paper} />
