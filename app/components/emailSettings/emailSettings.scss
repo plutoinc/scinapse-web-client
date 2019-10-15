@@ -49,9 +49,15 @@
   width: 100px;
 }
 
+.loadingSpinnerWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: -24px;
+}
+
 .loadingSpinner {
   color: $gray400 !important;
-  margin-right: 8px;
 }
 
 .blockedToggleButtonWrapper {
@@ -80,5 +86,9 @@
   .toggleButtonWrapper {
     margin-top: 24px;
     width: 100%;
+  }
+
+  .loadingSpinnerWrapper {
+    display: none;
   }
 }

@@ -4,6 +4,7 @@ import alertToast from '../../helpers/makePlutoToastAction';
 import GroupButton from '../common/groupButton';
 import Button from '../common/button';
 import { ButtonVariant, ButtonColor } from '../common/button/types';
+import CircularProgress from '@material-ui/core/CircularProgress';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./emailSettings.scss');
 
@@ -60,6 +61,9 @@ const EmailToggleItem: React.FC<EmailToggleItemProps> = ({
         <div className={s.toggleItemTitle}>{title}</div>
         <div className={s.toggleItemSubtitle}>{subtitle}</div>
       </div>
+      <div className={s.loadingSpinnerWrapper}>
+        {isLoading && <CircularProgress className={s.loadingSpinner} disableShrink={true} size={20} thickness={8} />}
+      </div>
       <div
         className={classNames({
           [s.toggleButtonWrapper]: true,
@@ -70,11 +74,10 @@ const EmailToggleItem: React.FC<EmailToggleItemProps> = ({
           <Button
             elementType="button"
             size="medium"
-            disabled={globalInActive}
+            disabled={globalInActive || isLoading}
             onClick={() => onClick(true)}
             {...getActiveButtonProps(active)}
             fullWidth={true}
-            isLoading={isLoading}
           >
             <span>On</span>
           </Button>
@@ -83,12 +86,11 @@ const EmailToggleItem: React.FC<EmailToggleItemProps> = ({
             size="medium"
             variant="outlined"
             color="gray"
-            disabled={globalInActive}
+            disabled={globalInActive || isLoading}
             onClick={() => onClick(false)}
             {...getInActiveButtonProps(!active)}
             style={!active ? { border: '1px solid #d8dde7' } : {}}
             fullWidth={true}
-            isLoading={isLoading}
           >
             <span>Off</span>
           </Button>
