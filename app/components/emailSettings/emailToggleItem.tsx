@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
-import { withStyles } from '../../helpers/withStylesHelper';
 import alertToast from '../../helpers/makePlutoToastAction';
 import GroupButton from '../common/groupButton';
 import Button from '../common/button';
 import { ButtonVariant, ButtonColor } from '../common/button/types';
+const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./emailSettings.scss');
 
 interface EmailToggleItemProps {
@@ -38,6 +38,8 @@ const EmailToggleItem: React.FC<EmailToggleItemProps> = ({
   isLoading,
   globalInActive,
 }) => {
+  useStyles(s);
+
   useEffect(
     () => {
       if (hasFailed) {
@@ -96,4 +98,4 @@ const EmailToggleItem: React.FC<EmailToggleItemProps> = ({
   );
 };
 
-export default withStyles<typeof EmailToggleItem>(s)(EmailToggleItem);
+export default EmailToggleItem;

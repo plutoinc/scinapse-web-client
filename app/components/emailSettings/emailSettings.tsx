@@ -4,13 +4,12 @@ import { useSelector } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import AuthAPI from '../../api/auth';
 import EmailToggleItem from './emailToggleItem';
-import { withStyles } from '../../helpers/withStylesHelper';
 import reducer, { EmailSettingsInitialState } from './emailSettingsReducer';
 import { AppState } from '../../reducers';
 import { CurrentUser } from '../../model/currentUser';
 import { EmailSettingTypes } from '../../api/types/auth';
 import Button from '../common/button';
-
+const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./emailSettings.scss');
 
 const KeywordAlertGuideContext: React.FC = () => {
@@ -30,6 +29,8 @@ const KeywordAlertGuideContext: React.FC = () => {
 };
 
 const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ location }) => {
+  useStyles(s);
+
   const [state, dispatch] = React.useReducer(reducer, EmailSettingsInitialState);
   const currentUser = useSelector<AppState, CurrentUser>(state => state.currentUser);
 
@@ -150,4 +151,4 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
   );
 };
 
-export default withRouter(withStyles<typeof EmailSettings>(s)(EmailSettings));
+export default withRouter(EmailSettings);
