@@ -1,16 +1,16 @@
 import React from 'react';
 import classNames from 'classnames';
-import { connect } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
+import { useSelector, useDispatch } from 'react-redux';
 import { Field, Form, Formik } from 'formik';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
 import AffiliationSelectBox from '../../components/dialog/components/modifyProfile/affiliationSelectBox';
-import { withStyles } from '../../helpers/withStylesHelper';
 import { AppState } from '../../reducers';
 import { updateUserProfile } from '../../actions/auth';
-import { ACTION_TYPES, AlertAction, AuthActions } from '../../actions/actionTypes';
-
+import { ACTION_TYPES } from '../../actions/actionTypes';
+import { CurrentUser } from '../../model/currentUser';
+import Button from '../../components/common/button';
+const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./profileForm.scss');
 
 interface ProfileFormValues {
@@ -66,13 +66,11 @@ const ErrorMessage: React.FC<{ errorMsg?: string }> = ({ errorMsg }) => {
   return <div className={s.errorMsg}>{errorMsg}</div>;
 };
 
-interface ProfileFormContainerProps {
-  dispatch: ThunkDispatch<{}, {}, AuthActions | AlertAction>;
-}
-const ProfileFormContainer: React.FC<ProfileFormContainerProps & ReturnType<typeof mapStateToProps>> = ({
-  currentUser,
-  dispatch,
-}) => {
+const ProfileFormContainer: React.FC = () => {
+  useStyles(s);
+  const dispatch = useDispatch();
+  const currentUser = useSelector<AppState, CurrentUser>(state => state.currentUser);
+
   const [isLoading, setIsLoading] = React.useState(false);
   const [editMode, setEditMode] = React.useState(false);
 
@@ -135,35 +133,25 @@ const ProfileFormContainer: React.FC<ProfileFormContainerProps & ReturnType<type
         validateOnChange={false}
         render={({ errors, touched }) => {
           let formButton = (
-            <div
-              className={s.editButton}
-              onClick={() => {
-                setEditMode(true);
-              }}
-            >
-              Edit Profile
-            </div>
+            <Button elementType="button" variant="outlined" color="gray" onClick={() => setEditMode(true)}>
+              <span>Edit Profile</span>
+            </Button>
           );
           if (editMode) {
             formButton = (
               <>
-                <button
-                  type="submit"
-                  className={classNames({
-                    [s.submitButton]: true,
-                    [s.isLoading]: isLoading,
-                  })}
+                <Button elementType="button" isLoading={isLoading} type="submit">
+                  <span>Save changes</span>
+                </Button>
+                <Button
+                  elementType="button"
+                  variant="outlined"
+                  color="gray"
+                  onClick={() => setEditMode(false)}
+                  style={{ marginLeft: '8px' }}
                 >
-                  Save changes
-                </button>
-                <div
-                  className={s.editButton}
-                  onClick={() => {
-                    setEditMode(false);
-                  }}
-                >
-                  Cancel
-                </div>
+                  <span>Cancel</span>
+                </Button>
               </>
             );
           }
@@ -236,10 +224,4 @@ const ProfileFormContainer: React.FC<ProfileFormContainerProps & ReturnType<type
   );
 };
 
-function mapStateToProps(state: AppState) {
-  return {
-    currentUser: state.currentUser,
-  };
-}
-
-export default connect(mapStateToProps)(withStyles<typeof ProfileFormContainer>(s)(ProfileFormContainer));
+export default ProfileFormContainer;
