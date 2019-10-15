@@ -3,11 +3,8 @@ import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { Field, Form, Formik, FormikErrors, FormikTouched } from 'formik';
 import { AppState } from '../../reducers';
-import { ACTION_TYPES } from '../../actions/actionTypes';
 import { MINIMUM_PASSWORD_LENGTH } from '../../constants/auth';
-import { changePassword } from '../../actions/auth';
-import AuthAPI from '../../api/auth';
-import PlutoAxios from '../../api/pluto';
+import { changePassword, resendVerificationEmail } from '../../actions/auth';
 import { CurrentUser } from '../../model/currentUser';
 import Button from '../../components/common/button';
 const useStyles = require('isomorphic-style-loader/useStyles');
@@ -53,9 +50,15 @@ const EmailField: React.FC<EmailFieldProps> = ({ email, editMode, userVerified, 
       <>
         <div className={s.emailFieldWrapper}>
           <input className={s.readOnlyInput} type="email" value={email} placeholder="EMAIL" disabled />
-          <div className={s.toggleButton} onClick={onClickResendButton}>
-            Resend Mail
-          </div>
+          <Button
+            elementType="button"
+            variant="outlined"
+            color="gray"
+            onClick={onClickResendButton}
+            style={{ marginLeft: '8px' }}
+          >
+            <span>Resend Mail</span>
+          </Button>
         </div>
         <ErrorMessage errorMsg="You are not verified yet. Please check your email to use." />
       </>
@@ -178,32 +181,6 @@ const AuthEditForm: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [editMode, setEditMode] = React.useState(false);
 
-  const handleClickResendButton = React.useCallback(
-    async () => {
-      try {
-        if (currentUser.email) {
-          await AuthAPI.resendVerificationEmail(currentUser.email);
-          dispatch({
-            type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
-            payload: {
-              type: 'success',
-              message: 'Successfully sent E-Mail. Please check your mail box.',
-            },
-          });
-        }
-      } catch (err) {
-        dispatch({
-          type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
-          payload: {
-            type: 'error',
-            message: 'Sorry. we had an error during resending the verification email.',
-          },
-        });
-      }
-    },
-    [currentUser]
-  );
-
   if (!currentUser.isLoggedIn) return null;
 
   const isVerifiedUser = currentUser.oauthLoggedIn || currentUser.emailVerified;
@@ -214,24 +191,8 @@ const AuthEditForm: React.FC = () => {
       await dispatch(changePassword({ oldPassword: values.oldPassword, newPassword: values.newPassword }));
       setIsLoading(false);
       setEditMode(false);
-      dispatch({
-        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
-        payload: {
-          type: 'success',
-          message: 'Successfully changed password.',
-        },
-      });
     } catch (err) {
       setIsLoading(false);
-      const error = PlutoAxios.getGlobalError(err);
-      console.log(error);
-      dispatch({
-        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
-        payload: {
-          type: 'error',
-          message: 'Sorry. we had an error during resending the verification email.',
-        },
-      });
     }
   }
 
@@ -260,7 +221,7 @@ const AuthEditForm: React.FC = () => {
                     userVerified={isVerifiedUser}
                     hasError={!!touched.email && !!errors.email}
                     errorMsg={errors.email}
-                    onClickResendButton={handleClickResendButton}
+                    onClickResendButton={() => dispatch(resendVerificationEmail(currentUser.email))}
                   />
                 </div>
                 <PasswordField

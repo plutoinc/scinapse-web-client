@@ -7,7 +7,6 @@ import { SuggestAffiliation } from '../../api/suggest';
 import AffiliationSelectBox from '../../components/dialog/components/modifyProfile/affiliationSelectBox';
 import { AppState } from '../../reducers';
 import { updateUserProfile } from '../../actions/auth';
-import { ACTION_TYPES } from '../../actions/actionTypes';
 import { CurrentUser } from '../../model/currentUser';
 import Button from '../../components/common/button';
 const useStyles = require('isomorphic-style-loader/useStyles');
@@ -78,6 +77,7 @@ const ProfileFormContainer: React.FC = () => {
 
   async function handleSubmit(values: ProfileFormValues) {
     let affiliation = values.affiliation;
+
     if (isSuggestedAffiliation(affiliation)) {
       affiliation = { id: affiliation.affiliationId, name: affiliation.keyword, nameAbbrev: '' };
     }
@@ -92,24 +92,10 @@ const ProfileFormContainer: React.FC = () => {
           profileLink: values.profileLink,
         })
       );
-      dispatch({
-        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
-        payload: {
-          type: 'success',
-          message: 'Successfully changed your profile.',
-        },
-      });
       setIsLoading(false);
       setEditMode(false);
     } catch (err) {
       setIsLoading(false);
-      dispatch({
-        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
-        payload: {
-          type: 'error',
-          message: 'Sorry. we had an error to update your profile.',
-        },
-      });
     }
   }
 
