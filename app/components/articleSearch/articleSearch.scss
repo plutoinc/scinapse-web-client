@@ -63,7 +63,7 @@
   align-items: flex-end;
   font-size: 15px;
   line-height: 28px;
-  margin: 8px 0 16px 0;
+  margin: 16px 0;
 
   .searchResult {
     color: $main_blue0;
@@ -180,6 +180,8 @@
 
 .authorItemSectionWrapper {
   @extend .innerContainer;
+
+  padding-bottom: 16px;
 }
 
 // content-like width
@@ -222,7 +224,6 @@
     color: $gray400;
     flex-flow: column;
     align-items: start;
-    padding: 12px 0;
   }
 
   .loadingContainer {
