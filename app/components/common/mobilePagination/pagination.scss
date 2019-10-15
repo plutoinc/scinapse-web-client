@@ -20,9 +20,10 @@
 }
 
 .pageIconWrapper {
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
+  width: 32px;
   height: 100%;
+  margin: 0 8px;
 }
 
 .pageIcon {
@@ -30,7 +31,6 @@
   align-items: center;
   width: 12px;
   height: 100%;
-  margin: 0 18px;
 
   svg {
     display: inline-block;

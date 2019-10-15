@@ -36,7 +36,7 @@ const MobileCitationListLinkButton: FC<Props> = ({ paperId, citedCount, pageType
         hash: 'cited',
       }}
     >
-      {`${formatNumber(citedCount)} Citations`}
+      <span>{`${formatNumber(citedCount)} Citations`}</span>
     </Button>
   );
 };

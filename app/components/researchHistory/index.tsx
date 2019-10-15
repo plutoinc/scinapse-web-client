@@ -28,7 +28,7 @@ interface AggregatedPaper {
 }
 
 interface ResearchHistoryProps extends RouteComponentProps<any> {
-  paper: Paper | undefined;
+  paper: Paper | null;
 }
 
 function getAggregatedHistoryPapers(rawPapers: HistoryPaper[]) {
