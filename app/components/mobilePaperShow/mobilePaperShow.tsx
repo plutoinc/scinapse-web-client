@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { isEqual } from 'lodash';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
+import PaperShowHelmet from '../paperShow/helmet';
 import { formulaeToHTMLStr } from '../../helpers/displayFormula';
 import { AppState } from '../../reducers';
 import MobileVenueAuthors from '../common/paperItem/mobileVenueAuthors';
@@ -181,6 +182,7 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper, location }) =>
 
   return (
     <>
+      <PaperShowHelmet paper={paper} />
       <div className={s.container}>
         <div className={s.contentWrapper}>
           <GoBackResultBtn className={s.backBtn} />
