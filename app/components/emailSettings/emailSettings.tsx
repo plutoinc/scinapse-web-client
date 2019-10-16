@@ -3,36 +3,21 @@ import qs from 'qs';
 import { useSelector } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import AuthAPI from '../../api/auth';
-import EmailToggleItem from './emailToggleItem';
 import reducer, { EmailSettingsInitialState } from './emailSettingsReducer';
 import { AppState } from '../../reducers';
 import { CurrentUser } from '../../model/currentUser';
 import { EmailSettingTypes } from '../../api/types/auth';
-import Button from '../common/button';
+import EmailToggleTitle from './emailToggleTitle';
+import EmailToggleButton from './emailToggleButton';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./emailSettings.scss');
-
-const KeywordAlertGuideContext: React.FC = () => {
-  return (
-    <div className={s.toggleItemWrapper}>
-      <div className={s.toggleItemContext}>
-        <div className={s.toggleItemTitle}>Keyword Alert</div>
-        <div className={s.toggleItemSubtitle}>Send updated papers related to the keywords you enrolled.</div>
-      </div>
-      <div className={s.toggleButtonWrapper}>
-        <Button elementType="link" to="/keyword-settings" size="medium" fullWidth={true}>
-          <span>Setting</span>
-        </Button>
-      </div>
-    </div>
-  );
-};
 
 const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ location }) => {
   useStyles(s);
 
   const [state, dispatch] = React.useReducer(reducer, EmailSettingsInitialState);
   const currentUser = useSelector<AppState, CurrentUser>(state => state.currentUser);
+  const globalInActive = !state.activeStatus.GLOBAL;
 
   const token = qs.parse(location.search, { ignoreQueryPrefix: true }).token;
 
@@ -91,62 +76,85 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
   return (
     <>
       <div className={s.title}>Emails from Scinapse</div>
-      <EmailToggleItem
-        title="Paper Recommendation Mail"
-        subtitle="Send recommendations based on your history"
-        active={state.activeStatus.PAPER_RECOMMENDATION}
-        isLoading={state.updateStatus.PAPER_RECOMMENDATION.isLoading || !state.succeedToFetch}
-        hasFailed={state.updateStatus.PAPER_RECOMMENDATION.hasFailed}
-        onClick={(nextStatus: boolean) => {
-          handleClickItem(token, 'PAPER_RECOMMENDATION', nextStatus);
-        }}
-        globalInActive={!state.activeStatus.GLOBAL}
-      />
-      <EmailToggleItem
-        title="Collection Remind Mail"
-        subtitle="Send an aggregated papers you saved."
-        active={state.activeStatus.COLLECTION_REMIND}
-        isLoading={state.updateStatus.COLLECTION_REMIND.isLoading || !state.succeedToFetch}
-        hasFailed={state.updateStatus.COLLECTION_REMIND.hasFailed}
-        onClick={(nextStatus: boolean) => {
-          handleClickItem(token, 'COLLECTION_REMIND', nextStatus);
-        }}
-        globalInActive={!state.activeStatus.GLOBAL}
-      />
-      <EmailToggleItem
-        title="Full-text Request Confirmation"
-        subtitle="Send a confirmation mail when you request full-text."
-        active={state.activeStatus.REQUEST_CONFIRMATION}
-        isLoading={state.updateStatus.REQUEST_CONFIRMATION.isLoading || !state.succeedToFetch}
-        hasFailed={state.updateStatus.REQUEST_CONFIRMATION.hasFailed}
-        onClick={(nextStatus: boolean) => {
-          handleClickItem(token, 'REQUEST_CONFIRMATION', nextStatus);
-        }}
-        globalInActive={!state.activeStatus.GLOBAL}
-      />
-      <EmailToggleItem
-        title="Last Week Activity"
-        subtitle="Send a usage report about your last week Scinapse activity."
-        active={state.activeStatus.LAST_WEEK_ACTIVITY}
-        isLoading={state.updateStatus.LAST_WEEK_ACTIVITY.isLoading || !state.succeedToFetch}
-        hasFailed={state.updateStatus.LAST_WEEK_ACTIVITY.hasFailed}
-        onClick={(nextStatus: boolean) => {
-          handleClickItem(token, 'LAST_WEEK_ACTIVITY', nextStatus);
-        }}
-        globalInActive={!state.activeStatus.GLOBAL}
-      />
-      <KeywordAlertGuideContext />
+      <div className={s.toggleItemWrapper}>
+        <EmailToggleTitle title="Paper Recommendation Mail" subtitle="Send recommendations based on your history." />
+        <EmailToggleButton
+          buttonType="combined"
+          active={state.activeStatus.PAPER_RECOMMENDATION}
+          hasFailed={state.updateStatus.PAPER_RECOMMENDATION.hasFailed}
+          onClick={(nextStatus: boolean) => {
+            handleClickItem(token, 'PAPER_RECOMMENDATION', nextStatus);
+          }}
+          disabled={globalInActive || state.updateStatus.PAPER_RECOMMENDATION.isLoading || !state.succeedToFetch}
+          isLoading={state.updateStatus.PAPER_RECOMMENDATION.isLoading || !state.succeedToFetch}
+        />
+      </div>
+      <div className={s.toggleItemWrapper}>
+        <EmailToggleTitle title="Collection Remind Mail" subtitle="Send an aggregated papers you saved." />
+        <EmailToggleButton
+          buttonType="combined"
+          active={state.activeStatus.COLLECTION_REMIND}
+          hasFailed={state.updateStatus.COLLECTION_REMIND.hasFailed}
+          onClick={(nextStatus: boolean) => {
+            handleClickItem(token, 'COLLECTION_REMIND', nextStatus);
+          }}
+          disabled={globalInActive || state.updateStatus.COLLECTION_REMIND.isLoading || !state.succeedToFetch}
+          isLoading={state.updateStatus.COLLECTION_REMIND.isLoading || !state.succeedToFetch}
+        />
+      </div>
+      <div className={s.toggleItemWrapper}>
+        <EmailToggleTitle
+          title="Full-text Request Confirmation"
+          subtitle="Send a confirmation mail when you request full-text."
+        />
+        <EmailToggleButton
+          buttonType="combined"
+          active={state.activeStatus.REQUEST_CONFIRMATION}
+          hasFailed={state.updateStatus.REQUEST_CONFIRMATION.hasFailed}
+          onClick={(nextStatus: boolean) => {
+            handleClickItem(token, 'REQUEST_CONFIRMATION', nextStatus);
+          }}
+          disabled={globalInActive || state.updateStatus.REQUEST_CONFIRMATION.isLoading || !state.succeedToFetch}
+          isLoading={state.updateStatus.REQUEST_CONFIRMATION.isLoading || !state.succeedToFetch}
+        />
+      </div>
+      <div className={s.toggleItemWrapper}>
+        <EmailToggleTitle
+          title="Last Week Activity"
+          subtitle="Send a usage report about your last week Scinapse activity."
+        />
+        <EmailToggleButton
+          buttonType="combined"
+          active={state.activeStatus.LAST_WEEK_ACTIVITY}
+          hasFailed={state.updateStatus.LAST_WEEK_ACTIVITY.hasFailed}
+          onClick={(nextStatus: boolean) => {
+            handleClickItem(token, 'LAST_WEEK_ACTIVITY', nextStatus);
+          }}
+          disabled={globalInActive || state.updateStatus.LAST_WEEK_ACTIVITY.isLoading || !state.succeedToFetch}
+          isLoading={state.updateStatus.LAST_WEEK_ACTIVITY.isLoading || !state.succeedToFetch}
+        />
+      </div>
+      <div className={s.toggleItemWrapper}>
+        <EmailToggleTitle title="Keyword Alert" subtitle="Send updated papers related to the keywords you enrolled." />
+        <EmailToggleButton buttonType="single" to="/keyword-settings" hasFailed={false} disabled={false} />
+      </div>
       <div className={s.divider} />
-      <EmailToggleItem
-        title="All Email"
-        subtitle="Control whether to receive email from Scinapse. You’ll still receive administrative emails even if this setting is off."
-        active={state.activeStatus.GLOBAL}
-        isLoading={state.updateStatus.GLOBAL.isLoading || !state.succeedToFetch}
-        hasFailed={state.updateStatus.GLOBAL.hasFailed}
-        onClick={(nextStatus: boolean) => {
-          handleClickItem(token, 'GLOBAL', nextStatus);
-        }}
-      />
+      <div className={s.toggleItemWrapper}>
+        <EmailToggleTitle
+          title="All Email"
+          subtitle="Control whether to receive email from Scinapse. You’ll still receive administrative emails even if this setting is off."
+        />
+        <EmailToggleButton
+          buttonType="combined"
+          active={state.activeStatus.GLOBAL}
+          hasFailed={state.updateStatus.GLOBAL.hasFailed}
+          onClick={(nextStatus: boolean) => {
+            handleClickItem(token, 'GLOBAL', nextStatus);
+          }}
+          disabled={false}
+          isLoading={state.updateStatus.GLOBAL.isLoading || !state.succeedToFetch}
+        />
+      </div>
     </>
   );
 };
