@@ -9,21 +9,26 @@ interface ButtonSpinnerProps {
   color: string;
   size: ButtonSize;
   variant: string;
+  disabled?: boolean;
   className?: string;
 }
 
-function getSpinnerColor(buttonColor: string, variant: string) {
+function getSpinnerColor(buttonColor: string, variant: string, disabled?: boolean) {
+  if (disabled) return '#bbc2d0';
+
   if (variant === 'contained' && buttonColor === 'blue') return 'white';
 
   switch (buttonColor) {
     case 'blue':
       return '#3e7fff';
+    case 'gray':
+      return '#666d7c';
     default:
-      return '#bbc2d0';
+      return '#34495e';
   }
 }
 
-const ButtonSpinner: React.FC<ButtonSpinnerProps> = ({ className, size, color = 'white', variant }) => {
+const ButtonSpinner: React.FC<ButtonSpinnerProps> = ({ className, size, color = 'white', variant, disabled }) => {
   return (
     <div className={s.wrapper}>
       <div
@@ -36,22 +41,22 @@ const ButtonSpinner: React.FC<ButtonSpinnerProps> = ({ className, size, color = 
       >
         <div
           style={{
-            borderColor: `${getSpinnerColor(color, variant)} transparent transparent transparent`,
+            borderColor: `${getSpinnerColor(color, variant, disabled)} transparent transparent transparent`,
           }}
         />
         <div
           style={{
-            borderColor: `${getSpinnerColor(color, variant)} transparent transparent transparent`,
+            borderColor: `${getSpinnerColor(color, variant, disabled)} transparent transparent transparent`,
           }}
         />
         <div
           style={{
-            borderColor: `${getSpinnerColor(color, variant)} transparent transparent transparent`,
+            borderColor: `${getSpinnerColor(color, variant, disabled)} transparent transparent transparent`,
           }}
         />
         <div
           style={{
-            borderColor: `${getSpinnerColor(color, variant)} transparent transparent transparent`,
+            borderColor: `${getSpinnerColor(color, variant, disabled)} transparent transparent transparent`,
           }}
         />
       </div>
