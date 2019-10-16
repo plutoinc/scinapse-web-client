@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from 'redux-starter-kit';
 import { KeywordSettingItemResponse } from '../api/types/member';
+import { ACTION_TYPES } from '../actions/actionTypes';
 
 export interface KeywordSettingsState {
   isLoading: boolean;
@@ -21,7 +22,9 @@ const keywordSettingsSlice = createSlice({
     failedToConnectKeywordSettingsAPI(state) {
       return { ...state, isLoading: false };
     },
-    clearToKeywordSettings(state) {
+  },
+  extraReducers: {
+    [ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT](state) {
       return { ...state, keywords: [] };
     },
   },
@@ -31,7 +34,6 @@ export const {
   startToConnectKeywordSettingsAPI,
   succeedToConnectKeywordSettingsAPI,
   failedToConnectKeywordSettingsAPI,
-  clearToKeywordSettings,
 } = keywordSettingsSlice.actions;
 
 export default keywordSettingsSlice.reducer;

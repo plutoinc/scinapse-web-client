@@ -2,7 +2,6 @@ import { Dispatch } from 'redux';
 import AuthAPI from '../../api/auth';
 import { ACTION_TYPES } from '../../actions/actionTypes';
 import { SignInResult } from '../../api/types/auth';
-import { clearToKeywordSettings } from '../../reducers/keywordSettings';
 
 export function signOut() {
   return async (dispatch: Dispatch<any>) => {
@@ -12,7 +11,6 @@ export function signOut() {
         dispatch({
           type: ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT,
         });
-        await dispatch(clearToKeywordSettings());
       }
     } catch (err) {
       dispatch({
