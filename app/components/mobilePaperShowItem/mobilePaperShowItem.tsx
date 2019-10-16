@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { isEqual } from 'lodash';
 
 import { AppState } from '../../reducers';
-import { paperSchema } from '../../model/paper';
+import { paperSchema, Paper } from '../../model/paper';
 import Title from '../../components/common/paperItem/title';
 import VenueAuthors from '../common/paperItem/venueAuthors';
 import SimpleMobilePaperItemButtonGroup from '../common/paperItem/simpleMobileButtonGroup';
@@ -22,7 +22,10 @@ interface Props {
 
 const MobilePaperShowItem: FC<Props> = React.memo(({ paperId, pageType, actionArea, className, contentClassName }) => {
   useStyles(s);
-  const paper = useSelector((state: AppState) => denormalize(paperId, paperSchema, state.entities), isEqual);
+  const paper: Paper | null = useSelector(
+    (state: AppState) => denormalize(paperId, paperSchema, state.entities),
+    isEqual
+  );
 
   if (!paper) return null;
 
@@ -45,7 +48,7 @@ const MobilePaperShowItem: FC<Props> = React.memo(({ paperId, pageType, actionAr
             pageType={pageType}
             actionArea={actionArea}
             paper={paper}
-            saved={paper.saved}
+            saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
           />
         </div>
       </div>

@@ -83,3 +83,34 @@
   justify-content: flex-end;
   margin-top: 16px;
 }
+
+.instruction {
+  display: flex;
+  color: $gray600;
+  font-size: 15px;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid $gray400;
+  margin-bottom: 16px;
+
+  b {
+    font-weight: 500;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.instructionIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}

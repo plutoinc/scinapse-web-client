@@ -4,6 +4,7 @@ import {
   EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER,
   AUTH_METHOD_EXPERIMENT,
   COLLECTION_BUTTON_TEXT_EXPERIMENT,
+  FULLTEXT_EXPERIMENT,
 } from './abTestGlobalValue';
 import {
   dummy,
@@ -11,6 +12,7 @@ import {
   emailRecommendPaperSignUpBanner,
   authMethod,
   collectionButtonText,
+  fullTextExperiment,
 } from './abTestObject';
 
 export interface UserGroup<N = string> {
@@ -28,7 +30,8 @@ export type ABTest =
   | typeof WEIGHTED_CITATION_EXPERIMENT
   | typeof EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER
   | typeof AUTH_METHOD_EXPERIMENT
-  | typeof COLLECTION_BUTTON_TEXT_EXPERIMENT;
+  | typeof COLLECTION_BUTTON_TEXT_EXPERIMENT
+  | typeof FULLTEXT_EXPERIMENT;
 
 export interface SignUpConversionExpTicketContext {
   pageType: Scinapse.ActionTicket.PageType;
@@ -43,6 +46,7 @@ export const LIVE_TESTS: Test[] = [
   emailRecommendPaperSignUpBanner,
   authMethod,
   collectionButtonText,
+  fullTextExperiment,
 ];
 
 function getRandomPool(): { [key: string]: string[] } {

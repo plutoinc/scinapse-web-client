@@ -5,6 +5,7 @@ import {
   EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER,
   AUTH_METHOD_EXPERIMENT,
   COLLECTION_BUTTON_TEXT_EXPERIMENT,
+  FULLTEXT_EXPERIMENT,
 } from './abTestGlobalValue';
 
 export const enum EmailRecommendPaperSignUpBannerTestType {
@@ -26,6 +27,12 @@ export const enum CollectionButtonTextTestType {
   ADD = 'add_to_collection',
   KEEP = 'keep',
   READ_LATER = 'read_later',
+}
+
+export const enum FullTextExperimentType {
+  CONTROL = 'control',
+  REMOVE = 'remove',
+  INSTRUCTION = 'instruction',
 }
 
 export const dummy: Test = {
@@ -72,5 +79,14 @@ export const collectionButtonText: Test = {
     { groupName: CollectionButtonTextTestType.ADD, weight: 1 },
     { groupName: CollectionButtonTextTestType.KEEP, weight: 1 },
     { groupName: CollectionButtonTextTestType.READ_LATER, weight: 1 },
+  ],
+};
+
+export const fullTextExperiment: Test = {
+  name: FULLTEXT_EXPERIMENT,
+  userGroup: [
+    { groupName: FullTextExperimentType.CONTROL, weight: 2 },
+    { groupName: FullTextExperimentType.REMOVE, weight: 1 },
+    { groupName: FullTextExperimentType.INSTRUCTION, weight: 1 },
   ],
 };

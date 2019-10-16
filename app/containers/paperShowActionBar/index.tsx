@@ -10,6 +10,8 @@ import SourceButton from '../../components/paperShow/components/sourceButton';
 import ViewFullTextBtn from '../../components/paperShow/components/viewFullTextBtn';
 import RequestFullTextBtn from './components/fullTextRequestBtn';
 import { openRequestFullTextDialog } from '../../reducers/requestFullTextDialog';
+import { useFullTextExpHook } from '../../hooks/fulltextExpHook';
+import { FullTextExperimentType } from '../../constants/abTestObject';
 const s = require('./actionBar.scss');
 
 interface PaperShowActionBarProps {
@@ -24,21 +26,26 @@ interface PaperShowActionBarProps {
 
 const PaperShowActionBar: React.FC<PaperShowActionBarProps> = props => {
   const requestFullTextBtnEl = React.useRef<HTMLDivElement | null>(null);
+  const fullTextUserGroup = useFullTextExpHook();
+
+  const requestButton = fullTextUserGroup !== FullTextExperimentType.REMOVE && (
+    <div className={s.actionItem} ref={requestFullTextBtnEl}>
+      <RequestFullTextBtn
+        actionArea="paperDescription"
+        isLoading={props.isLoadingPDF}
+        paper={props.paper}
+        onClick={() => props.dispatch(openRequestFullTextDialog())}
+        lastRequestedDate={props.lastRequestedDate}
+      />
+    </div>
+  );
 
   return (
     <div className={s.actionBar}>
       <div className={s.actions}>
         <div className={s.leftSide}>
           {!props.hasPDFFullText ? (
-            <div className={s.actionItem} ref={requestFullTextBtnEl}>
-              <RequestFullTextBtn
-                actionArea="paperDescription"
-                isLoading={props.isLoadingPDF}
-                paperId={props.paper.id}
-                onClick={() => props.dispatch(openRequestFullTextDialog())}
-                lastRequestedDate={props.lastRequestedDate}
-              />
-            </div>
+            requestButton
           ) : (
             <div className={s.actionItem}>
               <ViewFullTextBtn

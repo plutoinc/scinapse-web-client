@@ -9,13 +9,15 @@ import { AppState } from '../../reducers';
 import validateEmail from '../../helpers/validateEmail';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import ScinapseFormikInput from '../common/scinapseInput/scinapseFormikInput';
-import Icon from '../../icons';
 import { ACTION_TYPES } from '../../actions/actionTypes';
 import { LAST_SUCCEEDED_EMAIL_KEY } from '../../constants/requestDialogConstant';
 import { fetchLastFullTextRequestedDate } from '../../actions/paperShow';
 import { closeRequestFullTextDialog } from '../../reducers/requestFullTextDialog';
 import ReduxAutoSizeTextarea from '../common/autoSizeTextarea/reduxAutoSizeTextarea';
 import Button from '../common/button';
+import Icon from '../../icons';
+import { useFullTextExpHook } from '../../hooks/fulltextExpHook';
+import { FullTextExperimentType } from '../../constants/abTestObject';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./requestFulltextDialog.scss');
 
@@ -55,6 +57,23 @@ function buildMessage(values: FormState) {
   }<br /><br />Who am I (Adding your profile link is preferred):<br />${values.whoami}`.trim();
 }
 
+const InstructionMessage: React.FC = () => {
+  return (
+    <a
+      target="_blank"
+      rel="noopener nofollow noreferrer"
+      href="https://www.google.com/search?q=how+to+get+pdf+of+papers"
+      className={s.instruction}
+    >
+      <Icon style={{ marginRight: '8px' }} className={s.instructionIcon} icon="GOOGLE_LOGO" />
+      <span>
+        Search on Google: <b>How to get PDF of papers?</b>
+      </span>
+      <Icon style={{ marginLeft: '8px' }} className={s.instructionIcon} icon="ARROW_RIGHT" />
+    </a>
+  );
+};
+
 const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperId }) => {
   useStyles(s);
   const dispatch = useDispatch();
@@ -63,6 +82,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
     isOpen: appState.requestFullTextDialogState.isOpen,
   }));
   const [isLoading, setIsLoading] = React.useState(false);
+  const userGroup = useFullTextExpHook();
 
   function handleClose() {
     dispatch(closeRequestFullTextDialog());
@@ -108,6 +128,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
 
   return (
     <Dialog open={isOpen} onClose={handleClose} classes={{ paper: s.dialogPaper }}>
+      {userGroup === FullTextExperimentType.INSTRUCTION && <InstructionMessage />}
       <div className={s.detailTitle}>Request Full-text</div>
       <div className={s.detailSubtitle}>
         This is not automated. We’re trying to contact authors when many requests are accepted.<br />
