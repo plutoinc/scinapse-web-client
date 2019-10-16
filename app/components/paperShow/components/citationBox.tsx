@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
 import { withStyles } from '../../../helpers/withStylesHelper';
-import ButtonSpinner from '../../common/spinner/buttonSpinner';
 import copySelectedTextToClipboard from '../../../helpers/copySelectedTextToClipboard';
 import { AvailableCitationType, AvailableExportCitationType } from '../../../containers/paperShow/records';
 import { trackEvent } from '../../../helpers/handleGA';
@@ -9,6 +8,7 @@ import Icon from '../../../icons';
 import { exportCitationText } from '../../../helpers/exportCitationText';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../../locationListener';
+import ButtonSpinner from '../../common/button/spinner';
 const styles = require('./citationBox.scss');
 
 export interface CitationBoxProps {
@@ -199,7 +199,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
               alignItems: 'center',
             }}
           >
-            <ButtonSpinner />
+            <ButtonSpinner color="gray" variant="contained" size="small" />
           </div>
         </div>
       );
