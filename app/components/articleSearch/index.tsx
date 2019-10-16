@@ -164,18 +164,10 @@ const SearchResult: React.FC<Props & { queryParams: SearchPageQueryParams; filte
   }
 
   if (queryParams) {
+    const shouldAddMargin = articleSearchState.page > 1 && !hasNoMatchedAuthors;
     return (
       <div className={styles.innerContainer}>
-        <div
-          className={styles.searchSummary}
-          style={
-            articleSearchState.page > 1 &&
-            articleSearchState.matchAuthors &&
-            articleSearchState.matchAuthors.totalElements > 0
-              ? { marginTop: '32px' }
-              : {}
-          }
-        >
+        <div className={styles.searchSummary} style={shouldAddMargin ? { marginTop: '32px' } : {}}>
           <PaperSearchResultInfo
             searchFromSuggestion={articleSearchState.searchFromSuggestion}
             suggestionKeyword={articleSearchState.suggestionKeyword}
