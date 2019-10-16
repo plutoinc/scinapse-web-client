@@ -1,6 +1,6 @@
 import React from 'react';
 const useStyles = require('isomorphic-style-loader/useStyles');
-const s = require('./emailSettings.scss');
+const s = require('./emailToggleTitle.scss');
 
 interface EmailToggleTitleProps {
   title: string;

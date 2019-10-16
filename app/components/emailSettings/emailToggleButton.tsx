@@ -7,7 +7,7 @@ import GroupButton from '../common/groupButton';
 import Button from '../common/button';
 import alertToast from '../../helpers/makePlutoToastAction';
 const useStyles = require('isomorphic-style-loader/useStyles');
-const s = require('./emailSettings.scss');
+const s = require('./emailToggleButton.scss');
 
 interface BasedToggleButtonProps {
   disabled?: boolean;

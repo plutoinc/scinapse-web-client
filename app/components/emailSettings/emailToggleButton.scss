@@ -1,0 +1,36 @@
+.loadingSpinnerWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: -24px;
+}
+
+.toggleButtonWrapper {
+  display: flex;
+  align-items: center;
+  width: 100px;
+}
+
+.blockedToggleButtonWrapper {
+  @extend .toggleButtonWrapper;
+
+  opacity: 0.8;
+  button {
+    cursor: not-allowed !important;
+  }
+}
+
+.buttonsWrapper {
+  width: 100%;
+}
+
+@media (max-width: $mobile_width) {
+  .toggleButtonWrapper {
+    margin-top: 24px;
+    width: 100%;
+  }
+
+  .loadingSpinnerWrapper {
+    display: none;
+  }
+}
