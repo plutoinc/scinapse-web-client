@@ -29,6 +29,8 @@ function getSpinnerColor(buttonColor: string, variant: string, disabled?: boolea
 }
 
 const ButtonSpinner: React.FC<ButtonSpinnerProps> = ({ className, size, color = 'white', variant, disabled }) => {
+  const spinnerColor = getSpinnerColor(color, variant, disabled);
+
   return (
     <div className={s.wrapper}>
       <div
@@ -41,22 +43,22 @@ const ButtonSpinner: React.FC<ButtonSpinnerProps> = ({ className, size, color = 
       >
         <div
           style={{
-            borderColor: `${getSpinnerColor(color, variant, disabled)} transparent transparent transparent`,
+            borderColor: `${spinnerColor} transparent transparent transparent`,
           }}
         />
         <div
           style={{
-            borderColor: `${getSpinnerColor(color, variant, disabled)} transparent transparent transparent`,
+            borderColor: `${spinnerColor} transparent transparent transparent`,
           }}
         />
         <div
           style={{
-            borderColor: `${getSpinnerColor(color, variant, disabled)} transparent transparent transparent`,
+            borderColor: `${spinnerColor} transparent transparent transparent`,
           }}
         />
         <div
           style={{
-            borderColor: `${getSpinnerColor(color, variant, disabled)} transparent transparent transparent`,
+            borderColor: `${spinnerColor} transparent transparent transparent`,
           }}
         />
       </div>
