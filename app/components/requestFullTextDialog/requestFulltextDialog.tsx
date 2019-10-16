@@ -66,7 +66,9 @@ const InstructionMessage: React.FC = () => {
       className={s.instruction}
     >
       <Icon style={{ marginRight: '8px' }} className={s.instructionIcon} icon="GOOGLE_LOGO" />
-      <span>Search on Google: How to get pdf of papers?</span>
+      <span>
+        Search on Google: <b>How to get PDF of papers?</b>
+      </span>
       <Icon style={{ marginLeft: '8px' }} className={s.instructionIcon} icon="ARROW_RIGHT" />
     </a>
   );

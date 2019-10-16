@@ -92,14 +92,22 @@
   padding-bottom: 16px;
   border-bottom: 1px solid $gray400;
   margin-bottom: 16px;
+
+  b {
+    font-weight: 500;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .instructionIcon {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
 
   svg {
     width: 100%;
