@@ -22,13 +22,14 @@ interface CollectionButtonProps {
   saved: boolean;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
+  buttonStyle?: React.CSSProperties;
 }
 
 const selectUserHasCollection = createSelector([(state: AppState) => state.myCollections], myCollections => {
   return myCollections.collectionIds && myCollections.collectionIds.length > 0;
 });
 
-const CollectionButton: React.FC<CollectionButtonProps> = ({ saved, paper, pageType, actionArea }) => {
+const CollectionButton: React.FC<CollectionButtonProps> = ({ saved, paper, pageType, actionArea, buttonStyle }) => {
   const dispatch = useDispatch();
   const userHasCollection = useSelector<AppState, boolean>(selectUserHasCollection);
   const userDevice = useSelector((state: AppState) => state.layout.userDevice);
@@ -88,6 +89,7 @@ const CollectionButton: React.FC<CollectionButtonProps> = ({ saved, paper, pageT
         [styles.button]: true,
         [styles.savedButton]: saved,
       })}
+      style={buttonStyle}
     >
       <Icon className={styles.bookmarkIcon} icon="BOOKMARK" />
       <span>{buttonContent}</span>

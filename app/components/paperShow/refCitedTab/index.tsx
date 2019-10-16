@@ -44,7 +44,7 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
       <RequestFullTextBtn
         actionArea="contentNavBar"
         isLoading={isLoading}
-        paperId={paper!.id}
+        paper={paper}
         onClick={() => dispatch(openRequestFullTextDialog())}
         btnStyle={{ flex: '1 0 auto', height: '36px', padding: '0 12px 0 8px' }}
         lastRequestedDate={props.lastRequestedDate}

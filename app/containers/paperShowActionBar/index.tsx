@@ -34,7 +34,7 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = props => {
               <RequestFullTextBtn
                 actionArea="paperDescription"
                 isLoading={props.isLoadingPDF}
-                paperId={props.paper.id}
+                paper={props.paper}
                 onClick={() => props.dispatch(openRequestFullTextDialog())}
                 lastRequestedDate={props.lastRequestedDate}
               />
