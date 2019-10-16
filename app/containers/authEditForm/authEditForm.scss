@@ -46,16 +46,6 @@
   }
 }
 
-.toggleButton {
-  @extend %base-form-button;
-  border: solid 1px $gray500;
-  margin-left: 8px;
-
-  &:hover {
-    background-color: $gray30;
-  }
-}
-
 .emailFieldWrapper {
   display: flex;
 }
@@ -67,30 +57,12 @@
   margin: 8px 0 0 8px;
 }
 
-.submitButton {
-  @extend %base-form-button;
-
-  background-color: $main_blue0;
-  color: white;
-  margin-top: 28px;
-
-  &:hover {
-    background-color: $main_blue1;
-  }
-
-  &.isLoading {
-    cursor: not-allowed;
-    background-color: $gray50;
-    opacity: 0.9;
-  }
-
-  & + .toggleButton {
-    margin-left: 8px;
-  }
-}
-
 .divider {
   @extend %base-divider;
 
   margin: 68px 0 16px 0;
+}
+
+.buttonsWrapper {
+  margin-top: 28px;
 }

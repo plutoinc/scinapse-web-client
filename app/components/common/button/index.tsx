@@ -61,7 +61,7 @@ const Button: React.FC<GeneralButtonProps> = props => {
       }
 
       return (
-        <button {...buttonProps as ButtonProps} className={className}>
+        <button {...buttonProps as ButtonProps} className={className} disabled={disabled}>
           {props.children}
         </button>
       );

@@ -1,0 +1,26 @@
+.toggleItemContext {
+  max-width: 377px;
+  width: 100%;
+  margin-right: 8px;
+}
+
+.toggleItemTitle {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.33;
+  color: $black0;
+  margin-bottom: 8px;
+}
+
+.toggleItemSubtitle {
+  font-size: 15px;
+  line-height: 1.33;
+  color: $gray800;
+}
+
+@media (max-width: $mobile_width) {
+  .toggleItemContext {
+    margin-right: 0px;
+    max-width: 100%;
+  }
+}
