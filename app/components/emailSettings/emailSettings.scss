@@ -23,8 +23,19 @@
   }
 }
 
+.toggleButtonWrapper {
+  display: flex;
+  align-items: center;
+  width: 100px;
+}
+
 @media (max-width: $mobile_width) {
   .toggleItemWrapper {
     flex-direction: column;
+  }
+
+  .toggleButtonWrapper {
+    margin-top: 24px;
+    width: 100%;
   }
 }

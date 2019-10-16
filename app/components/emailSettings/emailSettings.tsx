@@ -9,6 +9,8 @@ import { CurrentUser } from '../../model/currentUser';
 import { EmailSettingTypes } from '../../api/types/auth';
 import EmailToggleTitle from './emailToggleTitle';
 import EmailToggleButton from './emailToggleButton';
+import alertToast from '../../helpers/makePlutoToastAction';
+import Button from '../common/button';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./emailSettings.scss');
 
@@ -70,6 +72,10 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
           emailSettingTypes: type,
         },
       });
+      alertToast({
+        type: 'error',
+        message: 'Failed to update email setting!',
+      });
     }
   };
 
@@ -79,9 +85,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
       <div className={s.toggleItemWrapper}>
         <EmailToggleTitle title="Paper Recommendation Mail" subtitle="Send recommendations based on your history." />
         <EmailToggleButton
-          buttonType="combined"
           active={state.activeStatus.PAPER_RECOMMENDATION}
-          hasFailed={state.updateStatus.PAPER_RECOMMENDATION.hasFailed}
           onClick={(nextStatus: boolean) => {
             handleClickItem(token, 'PAPER_RECOMMENDATION', nextStatus);
           }}
@@ -92,9 +96,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
       <div className={s.toggleItemWrapper}>
         <EmailToggleTitle title="Collection Remind Mail" subtitle="Send an aggregated papers you saved." />
         <EmailToggleButton
-          buttonType="combined"
           active={state.activeStatus.COLLECTION_REMIND}
-          hasFailed={state.updateStatus.COLLECTION_REMIND.hasFailed}
           onClick={(nextStatus: boolean) => {
             handleClickItem(token, 'COLLECTION_REMIND', nextStatus);
           }}
@@ -108,9 +110,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
           subtitle="Send a confirmation mail when you request full-text."
         />
         <EmailToggleButton
-          buttonType="combined"
           active={state.activeStatus.REQUEST_CONFIRMATION}
-          hasFailed={state.updateStatus.REQUEST_CONFIRMATION.hasFailed}
           onClick={(nextStatus: boolean) => {
             handleClickItem(token, 'REQUEST_CONFIRMATION', nextStatus);
           }}
@@ -124,9 +124,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
           subtitle="Send a usage report about your last week Scinapse activity."
         />
         <EmailToggleButton
-          buttonType="combined"
           active={state.activeStatus.LAST_WEEK_ACTIVITY}
-          hasFailed={state.updateStatus.LAST_WEEK_ACTIVITY.hasFailed}
           onClick={(nextStatus: boolean) => {
             handleClickItem(token, 'LAST_WEEK_ACTIVITY', nextStatus);
           }}
@@ -136,7 +134,11 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
       </div>
       <div className={s.toggleItemWrapper}>
         <EmailToggleTitle title="Keyword Alert" subtitle="Send updated papers related to the keywords you enrolled." />
-        <EmailToggleButton buttonType="single" to="/keyword-settings" hasFailed={false} disabled={false} />
+        <div className={s.toggleButtonWrapper}>
+          <Button elementType="link" to="/keyword-settings" size="medium" fullWidth={true}>
+            <span>Setting</span>
+          </Button>
+        </div>
       </div>
       <div className={s.divider} />
       <div className={s.toggleItemWrapper}>
@@ -145,9 +147,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
           subtitle="Control whether to receive email from Scinapse. You’ll still receive administrative emails even if this setting is off."
         />
         <EmailToggleButton
-          buttonType="combined"
           active={globalActive}
-          hasFailed={state.updateStatus.GLOBAL.hasFailed}
           onClick={(nextStatus: boolean) => {
             handleClickItem(token, 'GLOBAL', nextStatus);
           }}
