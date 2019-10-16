@@ -25,22 +25,20 @@ type SingleToggleButtonProps = BasedToggleButtonProps & ReactRouterLinkProps & {
 
 type GeneralToggleButtonProps = CombinedToggleButtonProps | SingleToggleButtonProps;
 
-function getActiveButtonProps(active: boolean) {
+const activeButtonProps = (active: boolean) => {
   if (!active) return { variant: 'outlined' as ButtonVariant, color: 'gray' as ButtonColor };
 
   return { variant: 'contained' as ButtonVariant, color: 'blue' as ButtonColor };
-}
+};
 
-function getInActiveButtonProps(inActive: boolean) {
+const inActiveButtonProps = (inActive: boolean) => {
   if (!inActive) return { variant: 'outlined' as ButtonVariant, color: 'gray' as ButtonColor };
 
   return { variant: 'contained' as ButtonVariant, color: 'black' as ButtonColor };
-}
+};
 
 const EmailToggleButton: React.FC<GeneralToggleButtonProps> = props => {
   useStyles(s);
-
-  console.log('render');
 
   const { buttonType, hasFailed, ...ownProps } = props;
 
@@ -79,7 +77,7 @@ const EmailToggleButton: React.FC<GeneralToggleButtonProps> = props => {
                 size="medium"
                 disabled={disabled}
                 onClick={() => onClick(true)}
-                {...getActiveButtonProps(active)}
+                {...activeButtonProps(active)}
                 fullWidth={true}
                 style={disabled ? { border: '1px solid #d8dde7' } : {}}
               >
@@ -92,7 +90,7 @@ const EmailToggleButton: React.FC<GeneralToggleButtonProps> = props => {
                 color="gray"
                 disabled={disabled}
                 onClick={() => onClick(false)}
-                {...getInActiveButtonProps(!active)}
+                {...inActiveButtonProps(!active)}
                 style={{ border: '1px solid #d8dde7' }}
                 fullWidth={true}
               >

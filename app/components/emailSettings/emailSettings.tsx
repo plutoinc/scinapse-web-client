@@ -17,7 +17,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
 
   const [state, dispatch] = React.useReducer(reducer, EmailSettingsInitialState);
   const currentUser = useSelector<AppState, CurrentUser>(state => state.currentUser);
-  const globalInActive = !state.activeStatus.GLOBAL;
+  const globalActive = state.activeStatus.GLOBAL;
 
   const token = qs.parse(location.search, { ignoreQueryPrefix: true }).token;
 
@@ -85,7 +85,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
           onClick={(nextStatus: boolean) => {
             handleClickItem(token, 'PAPER_RECOMMENDATION', nextStatus);
           }}
-          disabled={globalInActive || state.updateStatus.PAPER_RECOMMENDATION.isLoading || !state.succeedToFetch}
+          disabled={!globalActive || state.updateStatus.PAPER_RECOMMENDATION.isLoading || !state.succeedToFetch}
           isLoading={state.updateStatus.PAPER_RECOMMENDATION.isLoading || !state.succeedToFetch}
         />
       </div>
@@ -98,7 +98,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
           onClick={(nextStatus: boolean) => {
             handleClickItem(token, 'COLLECTION_REMIND', nextStatus);
           }}
-          disabled={globalInActive || state.updateStatus.COLLECTION_REMIND.isLoading || !state.succeedToFetch}
+          disabled={!globalActive || state.updateStatus.COLLECTION_REMIND.isLoading || !state.succeedToFetch}
           isLoading={state.updateStatus.COLLECTION_REMIND.isLoading || !state.succeedToFetch}
         />
       </div>
@@ -114,7 +114,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
           onClick={(nextStatus: boolean) => {
             handleClickItem(token, 'REQUEST_CONFIRMATION', nextStatus);
           }}
-          disabled={globalInActive || state.updateStatus.REQUEST_CONFIRMATION.isLoading || !state.succeedToFetch}
+          disabled={!globalActive || state.updateStatus.REQUEST_CONFIRMATION.isLoading || !state.succeedToFetch}
           isLoading={state.updateStatus.REQUEST_CONFIRMATION.isLoading || !state.succeedToFetch}
         />
       </div>
@@ -130,7 +130,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
           onClick={(nextStatus: boolean) => {
             handleClickItem(token, 'LAST_WEEK_ACTIVITY', nextStatus);
           }}
-          disabled={globalInActive || state.updateStatus.LAST_WEEK_ACTIVITY.isLoading || !state.succeedToFetch}
+          disabled={!globalActive || state.updateStatus.LAST_WEEK_ACTIVITY.isLoading || !state.succeedToFetch}
           isLoading={state.updateStatus.LAST_WEEK_ACTIVITY.isLoading || !state.succeedToFetch}
         />
       </div>
@@ -146,7 +146,7 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
         />
         <EmailToggleButton
           buttonType="combined"
-          active={state.activeStatus.GLOBAL}
+          active={globalActive}
           hasFailed={state.updateStatus.GLOBAL.hasFailed}
           onClick={(nextStatus: boolean) => {
             handleClickItem(token, 'GLOBAL', nextStatus);
