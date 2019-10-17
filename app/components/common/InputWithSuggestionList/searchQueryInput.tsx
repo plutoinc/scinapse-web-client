@@ -22,6 +22,7 @@ import { getCurrentPageType } from '../../locationListener';
 import { handleInputKeydown } from './helpers/handleInputKeydown';
 import { changeSearchQuery } from '../../../actions/searchQuery';
 import { UserDevice } from '../../layouts/reducer';
+import Button from '../button';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./searchQueryInput.scss');
 
@@ -48,6 +49,27 @@ function validateSearchInput(query: string) {
     return false;
   }
   return true;
+}
+
+function getSearchButton(actionArea: 'home' | 'topBar' | 'paperShow', onClick: () => void) {
+  if (actionArea === 'home') {
+    return (
+      <div className={s.homeSearchButtonWrapper}>
+        <Button elementType="button" size="small" onClick={onClick}>
+          <Icon icon="SEARCH" className={s.searchIconInButton} />
+          <span>SEARCH</span>
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className={s.searchButtonWrapper}>
+      <Button elementType="button" size="small" variant="text" onClick={onClick}>
+        <Icon icon="SEARCH" />
+      </Button>
+    </div>
+  );
 }
 
 const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props => {
@@ -191,15 +213,19 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
       >
         <span dangerouslySetInnerHTML={{ __html: getHighlightedContent(k.text, genuineInputValue) }} />
         {k.removable && (
-          <Icon
+          <Button
+            elementType="button"
+            size="small"
+            variant="text"
+            color="gray"
             onClick={e => {
               e.stopPropagation();
               deleteQueryFromRecentList(k.text);
               setRecentQueries(getRecentQueries(genuineInputValue));
             }}
-            className={s.removeBtn}
-            icon="X_BUTTON"
-          />
+          >
+            <Icon icon="X_BUTTON" />
+          </Button>
         )}
       </li>
     );
@@ -210,6 +236,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
   const wrapperClassName = props.wrapperClassName ? props.wrapperClassName : s.wrapper;
   const inputClassName = props.inputClassName ? props.inputClassName : s.input;
   const placeholder = isMobile ? 'Search papers by keyword' : 'Search papers by title, author, doi or keyword';
+  const searchButton = getSearchButton(props.actionArea, clickSearchBtn);
 
   return (
     <ClickAwayListener
@@ -246,7 +273,6 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
             });
           }}
           onFocus={() => {
-            console.log('test');
             if (!blockOpen && !isOpen) setIsOpen(true);
           }}
           onClick={() => {
@@ -266,16 +292,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
           autoFocus={props.autoFocus}
           className={inputClassName}
         />
-        {props.actionArea == 'home' ? (
-          <button onClick={clickSearchBtn} className={s.searchButton}>
-            <Icon icon="SEARCH" className={s.searchIconInButton} />
-            <span className={s.searchButtonText}>Search</span>
-          </button>
-        ) : (
-          <button onClick={clickSearchBtn} className={s.searchIconButton}>
-            <Icon icon="SEARCH" className={s.searchIcon} />
-          </button>
-        )}
+        {searchButton}
         {keywordList}
       </div>
     </ClickAwayListener>
