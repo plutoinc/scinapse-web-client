@@ -1,13 +1,15 @@
 import * as React from 'react';
 import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import * as format from 'date-fns/format';
-import PaperItem from './paperItem';
 import Figures from './figures';
 import PaperItemButtonGroup from './paperItemButtonGroup';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import SavedCollections from './savedCollections';
 import { PaperSource } from '../../../api/paper';
+import Title from './title';
+import BlockVenueAuthor from './blockVenueAuthor';
+import Abstract from './abstract';
 const styles = require('./searchPaperItem.scss');
 
 export interface PaperItemProps {
@@ -58,7 +60,16 @@ const SearchPaperItem: React.FC<PaperItemProps> = React.memo(props => {
       {!!relation &&
         relation.savedInCollections.length >= 1 && <SavedCollections collections={relation.savedInCollections} />}
       {historyContent}
-      <PaperItem pageType={pageType} actionArea={actionArea} paper={paper} venueAuthorType="block" />
+      <Title paper={paper} actionArea={actionArea} pageType={pageType} />
+      <div style={{ marginTop: '12px' }}>
+        <BlockVenueAuthor paper={paper} pageType={pageType} actionArea={actionArea} />
+      </div>
+      <Abstract
+        paperId={paper.id}
+        abstract={paper.abstractHighlighted || paper.abstract}
+        pageType={pageType}
+        actionArea={actionArea}
+      />
       <Figures figures={paper.figures} paperId={paper.id} />
       <NotIncludedWords missingKeywords={paper.missingKeywords} />
       <PaperItemButtonGroup
