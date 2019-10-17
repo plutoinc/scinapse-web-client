@@ -10,7 +10,7 @@
   z-index: 999;
   border-radius: 0;
   overflow: auto;
-  padding-bottom: calc(env(safe-area-inset-bottom) - 200px);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 .mobileSearchBoxFooter {
