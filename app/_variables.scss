@@ -277,12 +277,6 @@ $s3_url: 'https://dd2gn9pwu61vr.cloudfront.net';
   justify-content: center;
   align-items: center;
 }
-:export {
-  navbarHeight: $navbar_height;
-}
-:export {
-  mobileFixedHeaderHeight: $mobile-fixed-tab-height;
-}
 // animations
 @keyframes wave {
   0% {
@@ -333,4 +327,15 @@ $s3_url: 'https://dd2gn9pwu61vr.cloudfront.net';
   button:not(:first-child) {
     border-left: 1px solid $line-color;
   }
+}
+
+:export {
+  navbarHeight: $navbar_height;
+
+  mobileFixedHeaderHeight: $mobile-fixed-tab-height;
+
+  gray500: $gray500;
+  gray800: $gray800;
+  mainBlue1: $main_blue1;
+  black1: $black1;
 }
