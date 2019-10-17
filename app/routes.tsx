@@ -208,7 +208,10 @@ const DefaultHelmet = () => {
         title="Scinapse.io"
       />
       <title>Scinapse | Academic search engine for paper</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes, viewport-fit=cover"
+      />
       <meta itemProp="name" content="Scinapse | Academic search engine for paper" />
       <meta
         name="description"
