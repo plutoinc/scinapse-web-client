@@ -2,7 +2,7 @@ import * as React from 'react';
 import axios, { CancelTokenSource } from 'axios';
 import * as classNames from 'classnames';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import CompletionAPI, { CompletionKeyword } from '../../../api/completion';
 import { useDebouncedAsyncFetch } from '../../../hooks/debouncedFetchAPIHook';
@@ -14,7 +14,7 @@ import {
   getRecentQueries,
   saveQueryToRecentHistory,
 } from '../../../helpers/recentQueryManager';
-import PapersQueryFormatter, { FilterObject } from '../../../helpers/searchQueryManager';
+import PapersQueryFormatter from '../../../helpers/searchQueryManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { ACTION_TYPES } from '../../../actions/actionTypes';
 import { AppState } from '../../../reducers';
@@ -23,26 +23,9 @@ import { handleInputKeydown } from './helpers/handleInputKeydown';
 import { changeSearchQuery } from '../../../actions/searchQuery';
 import { UserDevice } from '../../layouts/reducer';
 import Button from '../button';
+import { SearchQueryInputProps, SearchSourceType, SubmitParams } from './types';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./searchQueryInput.scss');
-
-type SearchQueryInputProps = React.InputHTMLAttributes<HTMLInputElement> &
-  RouteComponentProps<any> & {
-    actionArea: 'home' | 'topBar' | 'paperShow';
-    maxCount: number;
-    currentFilter?: FilterObject;
-    wrapperClassName?: string;
-    listWrapperClassName?: string;
-    inputClassName?: string;
-    sort?: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS;
-  };
-
-type SearchSourceType = 'history' | 'suggestion' | 'raw';
-
-interface SubmitParams {
-  from: SearchSourceType;
-  query: string;
-}
 
 function validateSearchInput(query: string) {
   if (query.length < 2) {
