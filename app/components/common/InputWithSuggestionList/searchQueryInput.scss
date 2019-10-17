@@ -123,10 +123,3 @@
 .searchIconInButton {
   transform: scaleX(-1);
 }
-
-@media (max-width: $mobile_width) {
-  .list {
-    height: 100%;
-    overflow-y: scroll;
-  }
-}

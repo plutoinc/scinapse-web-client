@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../../reducers';
-// import Button from '../button';
 import { closeMobileSearchBox } from '../../../reducers/searchQuery';
 import SearchQueryInput from '../InputWithSuggestionList/searchQueryInput';
 import { withRouter, RouteComponentProps } from 'react-router';
@@ -32,19 +31,6 @@ const MobileSearchBox: React.FC<Props> = ({ location }) => {
           wrapperClassName={s.searchWrapper}
           inputClassName={s.searchInput}
         />
-
-        {/* <div className={s.mobileSearchBoxFooter}>
-          <Button
-            elementType="button"
-            size="small"
-            variant="text"
-            color="gray"
-            isLoading={false}
-            onClick={() => dispatch(closeMobileSearchBox())}
-          >
-            <span>CANCEL</span>
-          </Button>
-        </div> */}
       </div>
     );
 
