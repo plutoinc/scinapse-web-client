@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { useSelector } from 'react-redux';
 
 import { Paper } from '../../../model/paper';
@@ -22,7 +22,7 @@ interface PaperItemProps {
   sourceDomain?: PaperSource;
 }
 
-const FullPaperItem: FC<PaperItemProps> = React.memo(({ paper, actionArea, pageType, sourceDomain }) => {
+const FullPaperItem: FC<PaperItemProps> = memo(({ paper, actionArea, pageType, sourceDomain }) => {
   useStyles(s);
   const userDevice = useSelector((state: AppState) => state.layout.userDevice);
   if (userDevice === UserDevice.MOBILE) {
