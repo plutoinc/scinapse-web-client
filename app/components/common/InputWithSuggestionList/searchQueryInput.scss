@@ -126,8 +126,8 @@
 
 @media (max-width: $mobile_width) {
   .list {
-    height: 100%;
-    padding-bottom: 80px;
+    height: 100vh;
+    padding-bottom: 40px;
     overflow-y: scroll;
   }
 }
