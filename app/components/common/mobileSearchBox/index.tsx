@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../../reducers';
-import Button from '../button';
+// import Button from '../button';
 import { closeMobileSearchBox } from '../../../reducers/searchQuery';
 import SearchQueryInput from '../InputWithSuggestionList/searchQueryInput';
 import { withRouter, RouteComponentProps } from 'react-router';
@@ -33,7 +33,7 @@ const MobileSearchBox: React.FC<Props> = ({ location }) => {
           inputClassName={s.searchInput}
         />
 
-        <div className={s.mobileSearchBoxFooter}>
+        {/* <div className={s.mobileSearchBoxFooter}>
           <Button
             elementType="button"
             size="small"
@@ -44,7 +44,7 @@ const MobileSearchBox: React.FC<Props> = ({ location }) => {
           >
             <span>CANCEL</span>
           </Button>
-        </div>
+        </div> */}
       </div>
     );
 
