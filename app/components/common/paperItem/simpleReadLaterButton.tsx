@@ -15,7 +15,7 @@ interface Props {
   actionArea: Scinapse.ActionTicket.ActionArea;
 }
 
-const MobileReadLaterButton: FC<Props> = ({ paperId, saved, pageType, actionArea }) => {
+const SimpleReadLaterButton: FC<Props> = ({ paperId, saved, pageType, actionArea }) => {
   const dispatch = useDispatch();
   const userHasCollection = useSelector<AppState, boolean>(state => {
     return state.myCollections.collectionIds && state.myCollections.collectionIds.length > 0;
@@ -54,4 +54,4 @@ const MobileReadLaterButton: FC<Props> = ({ paperId, saved, pageType, actionArea
   );
 };
 
-export default MobileReadLaterButton;
+export default SimpleReadLaterButton;

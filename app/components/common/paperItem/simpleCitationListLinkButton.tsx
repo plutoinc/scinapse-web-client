@@ -11,7 +11,7 @@ interface Props {
   actionArea: Scinapse.ActionTicket.ActionArea;
 }
 
-const MobileCitationListLinkButton: FC<Props> = ({ paperId, citedCount, pageType, actionArea }) => {
+const SimpleCitationListLinkButton: FC<Props> = ({ paperId, citedCount, pageType, actionArea }) => {
   if (!citedCount) return null;
 
   function handleClickLink() {
@@ -41,4 +41,4 @@ const MobileCitationListLinkButton: FC<Props> = ({ paperId, citedCount, pageType
   );
 };
 
-export default MobileCitationListLinkButton;
+export default SimpleCitationListLinkButton;

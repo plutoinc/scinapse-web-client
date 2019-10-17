@@ -6,6 +6,7 @@ import { dummyPaper, paperSource, paperWithFigureAndManyAuthors } from './paperD
 import MediumPaperItem from './mediumPaperItem';
 import { AppState } from '../../../reducers';
 import { UserDevice } from '../../layouts/reducer';
+import { SimplePaperItem } from '../../mobilePaperShowItem/simplePaperItemContainer';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./demo.scss');
 
@@ -44,6 +45,27 @@ const PaperItemDemo: React.FC = () => {
             />
           </div>
         )}
+        <div>
+          <h2>SIMPLE PAPER ZONE</h2>
+          <SimplePaperItem
+            className={s.simplePaperItemWrapper}
+            paper={dummyPaper}
+            pageType="unknown"
+            actionArea="test"
+          />
+          <SimplePaperItem
+            className={s.simplePaperItemWrapper}
+            paper={dummyPaper}
+            pageType="unknown"
+            actionArea="test"
+          />
+          <SimplePaperItem
+            className={s.simplePaperItemWrapper}
+            paper={paperWithFigureAndManyAuthors}
+            pageType="unknown"
+            actionArea="test"
+          />
+        </div>
       </div>
     </div>
   );

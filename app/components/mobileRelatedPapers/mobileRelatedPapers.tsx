@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import MobilePaperShowItem from '../mobilePaperShowItem/mobilePaperShowItem';
+import SimplePaperItemContainer from '../mobilePaperShowItem/simplePaperItemContainer';
 const s = require('./mobileRelatedPapers.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
 
@@ -15,7 +15,7 @@ const MobileRelatedPapers: FC<Props> = ({ className, paperIds }) => {
   return (
     <div className={className}>
       {paperIds.map(paperId => (
-        <MobilePaperShowItem
+        <SimplePaperItemContainer
           className={s.relatedPaperItem}
           paperId={paperId}
           actionArea="relatedPaperList"
