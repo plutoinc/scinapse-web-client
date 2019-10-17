@@ -20,10 +20,10 @@ import { ACTION_TYPES } from '../../../actions/actionTypes';
 import { AppState } from '../../../reducers';
 import { getCurrentPageType } from '../../locationListener';
 import { handleInputKeydown } from './helpers/handleInputKeydown';
-import { changeSearchQuery } from '../../../actions/searchQuery';
 import { UserDevice } from '../../layouts/reducer';
 import Button from '../button';
 import { SearchQueryInputProps, SearchSourceType, SubmitParams } from './types';
+import { changeSearchQuery } from '../../../reducers/searchQuery';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./searchQueryInput.scss');
 
@@ -152,7 +152,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     trackEvent({ category: 'Search', action: 'Query', label: searchKeyword });
 
     saveQueryToRecentHistory(searchKeyword);
-    dispatch(changeSearchQuery(searchKeyword));
+    dispatch(changeSearchQuery({ query: searchKeyword }));
     setIsOpen(false);
 
     const currentPage = getCurrentPageType();

@@ -23,7 +23,7 @@ import { getCurrentPageType } from '../locationListener';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
 import { HOME_PATH } from '../../constants/routes';
-import { ACTION_TYPES, ActionCreators } from '../../actions/actionTypes';
+import { ACTION_TYPES } from '../../actions/actionTypes';
 import { CurrentUser } from '../../model/currentUser';
 import SearchQueryManager from '../../helpers/searchQueryManager';
 import { getCollections } from '../collections/actions';
@@ -33,6 +33,7 @@ import { UserDevice } from './reducer';
 import Button from '../common/button';
 import { fetchKeywordAlertList } from '../../containers/keywordSettings/actions';
 import { clearToKeywordSettings } from '../../reducers/keywordSettings';
+import { changeSearchQuery } from '../../reducers/searchQuery';
 const styles = require('./improvedHeader.scss');
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -203,7 +204,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
         <Link
           to="/"
           onClick={() => {
-            dispatch(ActionCreators.changeSearchQuery({ query: '' }));
+            dispatch(changeSearchQuery({ query: '' }));
           }}
           className={styles.headerLogoMark}
           aria-label="Scinapse small header logo"
@@ -217,7 +218,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
       <Link
         to="/"
         onClick={() => {
-          dispatch(ActionCreators.changeSearchQuery({ query: '' }));
+          dispatch(changeSearchQuery({ query: '' }));
           ActionTicketManager.trackTicket({
             pageType: getCurrentPageType(),
             actionType: 'fire',

@@ -28,7 +28,6 @@ import Pagination from './components/pagination';
 import SignBanner from './components/signBanner';
 import FilterBox from '../../containers/filterBox';
 import ArticleSpinner from '../common/spinner/articleSpinner';
-import { changeSearchQuery } from '../../actions/searchQuery';
 import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
 import ImprovedFooter from '../layouts/improvedFooter';
 import { getUserGroupName } from '../../helpers/abTestHelper';
@@ -37,6 +36,7 @@ import EmailBanner from './components/emailBanner';
 import { EmailRecommendPaperSignUpBannerTestType, WeightedCitationUserGroup } from '../../constants/abTestObject';
 import CreateKeywordAlertDialog from '../createKeywordAlertDialog/createKeywordAlertDialog';
 import AlertCreateButton from '../alertCreateButton';
+import { changeSearchQuery } from '../../reducers/searchQuery';
 const styles = require('./articleSearch.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -226,7 +226,7 @@ const SearchContainer: React.FC<Props> = props => {
 
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
 
-      changeSearchQuery(SafeURIStringHandler.decode(currentQueryParams.query || ''));
+      changeSearchQuery({ query: SafeURIStringHandler.decode(currentQueryParams.query || '') });
       setQueryParams(currentQueryParams);
       setFilter(SearchQueryManager.objectifyPaperFilter(currentQueryParams.filter));
 

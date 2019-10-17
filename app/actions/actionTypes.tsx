@@ -28,8 +28,6 @@ export enum ACTION_TYPES {
   GLOBAL_ADD_ENTITY = 'GLOBAL_ADD_ENTITY',
   GLOBAL_FLUSH_ENTITIES = 'GLOBAL_FLUSH_ENTITIES',
 
-  SEARCH_QUERY_CHANGE_QUERY = 'SEARCH_QUERY_CHANGE_QUERY',
-
   GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION = 'GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION',
   GLOBAL_SUCCEEDED_ADD_PAPER_TO_COLLECTION = 'GLOBAL_SUCCEEDED_ADD_PAPER_TO_COLLECTION',
   GLOBAL_FAILED_TO_ADD_PAPER_TO_COLLECTION = 'GLOBAL_FAILED_TO_ADD_PAPER_TO_COLLECTION',
@@ -1030,10 +1028,6 @@ export const ActionCreators = {
 
   failToRemoveProfileCvData() {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_REMOVE_PROFILE_CV_DATA });
-  },
-
-  changeSearchQuery(payload: { query: string }) {
-    return createAction({ type: ACTION_TYPES.SEARCH_QUERY_CHANGE_QUERY, payload });
   },
 
   fetchLastFullTextRequestedDate(payload: { requestedAt: string | null }) {
