@@ -3,8 +3,7 @@ import axios, { CancelTokenSource } from 'axios';
 import * as classNames from 'classnames';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import CompletionAPI, { CompletionKeyword } from '../../../api/completion';
 import { useDebouncedAsyncFetch } from '../../../hooks/debouncedFetchAPIHook';
 import { getHighlightedContent } from '../../../helpers/highlightContent';
@@ -27,9 +26,7 @@ const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./searchQueryInput.scss');
 
 type SearchQueryInputProps = React.InputHTMLAttributes<HTMLInputElement> &
-  ReturnType<typeof mapStateToProps> &
   RouteComponentProps<any> & {
-    dispatch: Dispatch<any>;
     actionArea: 'home' | 'topBar' | 'paperShow';
     maxCount: number;
     currentFilter?: FilterObject;
@@ -55,6 +52,9 @@ function validateSearchInput(query: string) {
 
 const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props => {
   useStyles(s);
+  const dispatch = useDispatch();
+  const searchQuery = useSelector<AppState, string>(state => state.searchQueryState.query);
+  const isMobile = useSelector<AppState, boolean>(state => state.layout.userDevice === UserDevice.MOBILE);
   const [isOpen, setIsOpen] = React.useState(false);
   const [highlightIdx, setHighlightIdx] = React.useState(-1);
   const [inputValue, setInputValue] = React.useState('');
@@ -87,10 +87,10 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
 
   React.useEffect(
     () => {
-      setInputValue(props.searchQuery);
-      setGenuineInputValue(props.searchQuery);
+      setInputValue(searchQuery);
+      setGenuineInputValue(searchQuery);
     },
-    [props.searchQuery]
+    [searchQuery]
   );
 
   const [recentQueries, setRecentQueries] = React.useState(getRecentQueries(genuineInputValue));
@@ -118,7 +118,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     const searchKeyword = (query || inputValue).trim();
 
     if (!validateSearchInput(searchKeyword)) {
-      props.dispatch({
+      dispatch({
         type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
         payload: {
           type: 'error',
@@ -147,7 +147,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     trackEvent({ category: 'Search', action: 'Query', label: searchKeyword });
 
     saveQueryToRecentHistory(searchKeyword);
-    props.dispatch(changeSearchQuery(searchKeyword));
+    dispatch(changeSearchQuery(searchKeyword));
     setIsOpen(false);
 
     const currentPage = getCurrentPageType();
@@ -209,10 +209,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
   const keywordList = isOpen ? <ul className={listWrapperClassName}>{keywordItems}</ul> : null;
   const wrapperClassName = props.wrapperClassName ? props.wrapperClassName : s.wrapper;
   const inputClassName = props.inputClassName ? props.inputClassName : s.input;
-  const placeholder =
-    props.userDevice !== UserDevice.DESKTOP
-      ? 'Search papers by keyword'
-      : 'Search papers by title, author, doi or keyword';
+  const placeholder = isMobile ? 'Search papers by keyword' : 'Search papers by title, author, doi or keyword';
 
   return (
     <ClickAwayListener
@@ -285,11 +282,4 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
   );
 };
 
-function mapStateToProps(state: AppState) {
-  return {
-    userDevice: state.layout.userDevice,
-    searchQuery: state.searchQueryState.query,
-  };
-}
-
-export default connect(mapStateToProps)(withRouter(SearchQueryInput));
+export default withRouter(SearchQueryInput);
