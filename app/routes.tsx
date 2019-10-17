@@ -28,6 +28,8 @@ import {
   USER_SETTINGS_PATH,
   KEYWORD_SETTINGS_PATH,
 } from './constants/routes';
+import { useSelector } from 'react-redux';
+import { AppState } from './reducers';
 const styles = require('./root.scss');
 
 export interface LoadDataParams<P> {
@@ -275,16 +277,19 @@ const DefaultHelmet = () => {
 
 const RootRoutes: React.FC<RootRoutesProps> = props => {
   const { location } = props;
+  const isOpenMobileSearchBox = useSelector<AppState, boolean>(state => state.searchQueryState.isOpenMobileBox);
 
   return (
     <div>
       <DefaultHelmet />
       <MobileSearchBox />
-      <ImprovedHeader />
-      <div>
-        <Switch location={location}>
-          {routesMap.map(route => <Route {...route} key={route.path || 'errorPage'} />)}
-        </Switch>
+      <div style={isOpenMobileSearchBox ? { display: 'none' } : {}}>
+        <ImprovedHeader />
+        <div>
+          <Switch location={location}>
+            {routesMap.map(route => <Route {...route} key={route.path || 'errorPage'} />)}
+          </Switch>
+        </div>
       </div>
       <DeviceDetector />
       <LocationListener />

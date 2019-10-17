@@ -1,4 +1,6 @@
 .mobileSearchBoxWrapper {
+  display: flex;
+  flex-direction: column;
   position: fixed;
   background-color: $gray300;
   z-index: 999;
@@ -8,10 +10,13 @@
 }
 
 .mobileSearchBoxFooter {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
-  margin: 4px 8px;
+  padding: 4px 8px;
+  z-index: 3;
+  background-color: $gray300;
+  border-top: 1px solid $gray500;
 }
 
 .searchWrapper {
