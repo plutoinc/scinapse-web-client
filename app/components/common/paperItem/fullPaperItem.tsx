@@ -9,9 +9,9 @@ import { PaperSource } from '../../../api/paper';
 import Figures from './figures';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
-const s = require('./fullPaperItem.scss');
+const s = require('./paperItem.scss');
 
-export interface PaperItemProps {
+interface PaperItemProps {
   paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
