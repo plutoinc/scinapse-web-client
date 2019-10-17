@@ -123,7 +123,7 @@ const ImprovedHome: React.FC = () => {
               <SearchQueryInput
                 maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
                 actionArea="home"
-                autoFocus
+                autoFocus={userDevice === UserDevice.MOBILE ? false : true}
                 inputClassName={styles.searchInput}
               />
             </div>

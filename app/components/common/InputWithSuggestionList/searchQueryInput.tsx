@@ -23,7 +23,7 @@ import { handleInputKeydown } from './helpers/handleInputKeydown';
 import { UserDevice } from '../../layouts/reducer';
 import Button from '../button';
 import { SearchQueryInputProps, SearchSourceType, SubmitParams } from './types';
-import { changeSearchQuery } from '../../../reducers/searchQuery';
+import { changeSearchQuery, openMobileSearchBox } from '../../../reducers/searchQuery';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./searchQueryInput.scss');
 
@@ -59,6 +59,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
   useStyles(s);
   const dispatch = useDispatch();
   const searchQuery = useSelector<AppState, string>(state => state.searchQueryState.query);
+  const isOpenMobileSearchBox = useSelector<AppState, boolean>(state => state.searchQueryState.isOpenMobileBox);
   const isMobile = useSelector<AppState, boolean>(state => state.layout.userDevice === UserDevice.MOBILE);
   const [isOpen, setIsOpen] = React.useState(false);
   const [highlightIdx, setHighlightIdx] = React.useState(-1);
@@ -256,6 +257,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
             });
           }}
           onFocus={() => {
+            if (isMobile && !isOpenMobileSearchBox) dispatch(openMobileSearchBox());
             if (!blockOpen && !isOpen) setIsOpen(true);
           }}
           onClick={() => {

@@ -63,7 +63,6 @@
   border-bottom: solid 1px $gray200;
   cursor: pointer;
   white-space: pre;
-  border-radius: 4px;
 
   span {
     @extend %one-line-overflow-ellipsis;
