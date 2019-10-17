@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import SimplePaperItemContainer from '../mobilePaperShowItem/simplePaperItemContainer';
+import SimplePaperItemContainer from '../simplePaperItem/simplePaperItemContainer';
 const s = require('./mobileRelatedPapers.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
 

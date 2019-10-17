@@ -7,8 +7,8 @@ import { isEqual } from 'lodash';
 import { AppState } from '../../reducers';
 import { paperSchema, Paper } from '../../model/paper';
 import Title from '../../components/common/paperItem/title';
-import VenueAuthors from '../common/paperItem/venueAuthors';
 import SimplePaperItemButtonGroup from '../common/paperItem/simplePaperItemButtonGroup';
+import MobileVenueAuthors from '../common/paperItem/mobileVenueAuthors';
 const s = require('./simplePaperItem.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
 
@@ -42,7 +42,7 @@ export const SimplePaperItem: FC<SimplePaperItemProps & { paper: Paper }> = Reac
           })}
         >
           <Title paper={paper} actionArea={actionArea} pageType={pageType} />
-          <VenueAuthors paper={paper} pageType={pageType} actionArea={actionArea} />
+          <MobileVenueAuthors paper={paper} pageType={pageType} actionArea={actionArea} />
           <div className={s.btnGroupWrapper}>
             <SimplePaperItemButtonGroup
               pageType={pageType}

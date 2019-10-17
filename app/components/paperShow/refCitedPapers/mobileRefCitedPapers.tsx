@@ -5,7 +5,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import ArticleSpinner from '../../common/spinner/articleSpinner';
 import { REF_CITED_CONTAINER_TYPE } from '../constants';
-import SimplePaperItemContainer from '../../mobilePaperShowItem/simplePaperItemContainer';
+import SimplePaperItemContainer from '../../simplePaperItem/simplePaperItemContainer';
 import RefCitedPagination from './refCitedPagination';
 import { AppState } from '../../../reducers';
 import ScinapseInput from '../../common/scinapseInput';

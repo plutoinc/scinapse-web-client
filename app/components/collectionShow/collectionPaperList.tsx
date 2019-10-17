@@ -4,7 +4,6 @@ import { PaperInCollection } from '../../model/paperInCollection';
 import { CurrentUser } from '../../model/currentUser';
 import { CollectionShowState } from '../../containers/collectionShow/reducer';
 import { Collection } from '../../model/collection';
-import PaperItem from '../common/paperItem/paperItem';
 import CollectionPaperItemButtonGroup from '../common/paperItem/collectionPaperItemButtonGroup';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import Icon from '../../icons';
@@ -13,6 +12,8 @@ import formatNumber from '../../helpers/formatNumber';
 import CollectionPapersControlBtns from './collectionPapersControlBtns';
 import { AppState } from '../../reducers';
 import { UserDevice } from '../layouts/reducer';
+import Title from '../common/paperItem/title';
+import BlockVenueAuthor from '../common/paperItem/blockVenueAuthor';
 const styles = require('./collectionPaperList.scss');
 
 interface CollectionPaperListProps {
@@ -87,7 +88,10 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
             className={styles.removeIcon}
           />
           <div className={styles.paperInformationWrapper}>
-            <PaperItem pageType="collectionShow" actionArea="paperList" paper={paper.paper} omitAbstract />
+            <Title pageType="collectionShow" actionArea="paperList" paper={paper.paper} />
+            <div style={{ marginTop: '12px' }}>
+              <BlockVenueAuthor pageType="collectionShow" actionArea="paperList" paper={paper.paper} />
+            </div>
           </div>
           <CollectionPaperItemButtonGroup
             pageType="collectionShow"

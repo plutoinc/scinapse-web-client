@@ -6,7 +6,7 @@ import { dummyPaper, paperSource, paperWithFigureAndManyAuthors } from './paperD
 import MediumPaperItem from './mediumPaperItem';
 import { AppState } from '../../../reducers';
 import { UserDevice } from '../../layouts/reducer';
-import { SimplePaperItem } from '../../mobilePaperShowItem/simplePaperItemContainer';
+import { SimplePaperItem } from '../../simplePaperItem/simplePaperItemContainer';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./demo.scss');
 

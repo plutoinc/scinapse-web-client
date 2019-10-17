@@ -304,10 +304,6 @@ $right_box_width: 267px;
   }
 }
 
-.paperItemWrapper {
-  @extend %default-paper-item-wrapper;
-}
-
 @media (max-width: $mobile_width) {
   .sortBoxWrapper {
     position: static;

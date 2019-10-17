@@ -4,8 +4,7 @@ import { Paper } from '../../../model/paper';
 import { REF_CITED_CONTAINER_TYPE } from '../constants';
 import ArticleSpinner from '../../common/spinner/articleSpinner';
 import Icon from '../../../icons';
-import PaperItem from '../../common/paperItem/paperItem';
-import PaperItemButtonGroup from '../../common/paperItem/paperItemButtonGroup';
+import MediumPaperItem from '../../common/paperItem/mediumPaperItem';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { PaperShowPageQueryParams } from '../../../containers/paperShow/types';
 import { PaperShowState } from '../../../containers/paperShow/records';
@@ -88,15 +87,12 @@ const RefCitedPaperList: React.FC<RefCitedPaperListProps> = props => {
 
   const referenceItems = papers.map(paper => {
     return (
-      <div className={styles.paperShowPaperItemWrapper} key={paper.id}>
-        <PaperItem pageType="paperShow" actionArea={type === 'reference' ? 'refList' : 'citedList'} paper={paper} />
-        <PaperItemButtonGroup
-          pageType="paperShow"
-          actionArea={type === 'reference' ? 'refList' : 'citedList'}
-          paper={paper}
-          saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
-        />
-      </div>
+      <MediumPaperItem
+        key={paper.id}
+        pageType="paperShow"
+        actionArea={type === 'reference' ? 'refList' : 'citedList'}
+        paper={paper}
+      />
     );
   });
 

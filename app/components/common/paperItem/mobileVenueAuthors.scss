@@ -34,10 +34,8 @@
   }
 }
 
-@media (max-width: $mobile_width) {
-  .arrowIcon {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-  }
+.arrowIcon {
+  position: absolute;
+  right: 0;
+  bottom: 0;
 }
