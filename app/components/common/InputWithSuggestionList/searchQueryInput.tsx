@@ -5,7 +5,6 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { withStyles } from '../../../helpers/withStylesHelper';
 import CompletionAPI, { CompletionKeyword } from '../../../api/completion';
 import { useDebouncedAsyncFetch } from '../../../hooks/debouncedFetchAPIHook';
 import { getHighlightedContent } from '../../../helpers/highlightContent';
@@ -24,6 +23,7 @@ import { getCurrentPageType } from '../../locationListener';
 import { handleInputKeydown } from './helpers/handleInputKeydown';
 import { changeSearchQuery } from '../../../actions/searchQuery';
 import { UserDevice } from '../../layouts/reducer';
+const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./searchQueryInput.scss');
 
 type SearchQueryInputProps = React.InputHTMLAttributes<HTMLInputElement> &
@@ -54,6 +54,7 @@ function validateSearchInput(query: string) {
 }
 
 const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props => {
+  useStyles(s);
   const [isOpen, setIsOpen] = React.useState(false);
   const [highlightIdx, setHighlightIdx] = React.useState(-1);
   const [inputValue, setInputValue] = React.useState('');
@@ -248,6 +249,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
             });
           }}
           onFocus={() => {
+            console.log('test');
             if (!blockOpen && !isOpen) setIsOpen(true);
           }}
           onClick={() => {
@@ -290,4 +292,4 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default connect(mapStateToProps)(withRouter(withStyles<typeof SearchQueryInput>(s)(SearchQueryInput)));
+export default connect(mapStateToProps)(withRouter(SearchQueryInput));
