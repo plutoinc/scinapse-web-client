@@ -27,7 +27,7 @@ import {
 import { AUTHOR_SEARCH_INITIAL_STATE } from '../containers/authorSearch/records';
 import { RELATED_PAPERS_INITIAL_STATE, reducer as RelatedPapersReducer } from './realtedPapers';
 import { reducer as PDFViewerReducer, PDF_VIEWER_INITIAL_STATE } from './pdfViewer';
-import { SEARCH_QUERY_INITIAL_STATE, reducer as SearchQueryReducer } from './searchQuery';
+import SearchQueryReducer, { SEARCH_QUERY_INITIAL_STATE } from './searchQuery';
 import { reducer as SearchFilterReducer, SEARCH_FILTER_INITIAL_STATE } from './searchFilter';
 import RequestFullTextDialogReducer, { REQUEST_FULL_TEXT_DIALOG_INITIAL_STATE } from './requestFullTextDialog';
 import KeywordSettingsReducer, { KEYWORD_SETTINGS_INITIAL_STATE } from './keywordSettings';
