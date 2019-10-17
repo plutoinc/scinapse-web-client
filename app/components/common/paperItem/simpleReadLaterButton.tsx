@@ -23,6 +23,7 @@ const SimpleReadLaterButton: FC<Props> = ({ paperId, saved, pageType, actionArea
 
   return (
     <Button
+      variant="text"
       elementType="button"
       size="small"
       color={saved ? 'black' : 'blue'}
