@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useSelector } from 'react-redux';
 
 import { Paper } from '../../../model/paper';
 import Title from './title';
@@ -7,6 +8,9 @@ import BlockVenueAuthor from './blockVenueAuthor';
 import PaperItemButtonGroup from './paperItemButtonGroup';
 import { PaperSource } from '../../../api/paper';
 import Figures from './figures';
+import { AppState } from '../../../reducers';
+import { UserDevice } from '../../layouts/reducer';
+import MobileFullPaperItem from './mobileFullPaperItem';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperItem.scss');
@@ -20,6 +24,13 @@ interface PaperItemProps {
 
 const FullPaperItem: FC<PaperItemProps> = React.memo(({ paper, actionArea, pageType, sourceDomain }) => {
   useStyles(s);
+  const userDevice = useSelector((state: AppState) => state.layout.userDevice);
+  if (userDevice === UserDevice.MOBILE) {
+    return (
+      <MobileFullPaperItem paper={paper} actionArea={actionArea} pageType={pageType} sourceDomain={sourceDomain} />
+    );
+  }
+
   return (
     <div className={s.paperItemWrapper}>
       <Title paper={paper} actionArea={actionArea} pageType={pageType} />
