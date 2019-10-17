@@ -14,17 +14,17 @@ interface ButtonSpinnerProps {
 }
 
 function getSpinnerColor(buttonColor: string, variant: string, disabled?: boolean) {
-  if (disabled) return '#bbc2d0';
+  if (disabled) return s.gray500;
 
   if (variant === 'contained' && buttonColor === 'blue') return 'white';
 
   switch (buttonColor) {
     case 'blue':
-      return '#3e7fff';
+      return s.mainBlue1;
     case 'gray':
-      return '#666d7c';
+      return s.gray800;
     default:
-      return '#34495e';
+      return s.black1;
   }
 }
 
