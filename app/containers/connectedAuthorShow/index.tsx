@@ -16,7 +16,7 @@ import ArticleSpinner from '../../components/common/spinner/articleSpinner';
 import ScinapseInput from '../../components/common/scinapseInput';
 import { LayoutState } from '../../components/layouts/reducer';
 import { ConnectedAuthorShowState } from './reducer';
-import PaperItem from '../../components/common/paperItem/paperItem';
+import FullPaperItem from '../../components/common/paperItem/fullPaperItem';
 import DesktopPagination from '../../components/common/desktopPagination';
 import CoAuthor from '../../components/common/coAuthor';
 import RepresentativePublicationsDialog from '../../components/dialog/components/representativePublications';
@@ -38,7 +38,6 @@ import { getAuthor } from '../unconnectedAuthorShow/actions';
 import ErrorPage from '../../components/error/errorPage';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
 import ActionTicketManager from '../../helpers/actionTicketManager';
-import PaperItemButtonGroup from '../../components/common/paperItem/paperItemButtonGroup';
 const styles = require('./connectedAuthor.scss');
 
 interface ConnectedAuthorShowOwnState {
@@ -547,17 +546,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
 
     if (papers && papers.length > 0) {
       return papers.map(paper => {
-        return (
-          <div key={paper.id} className={styles.paperItemWrapper}>
-            <PaperItem pageType="authorShow" actionArea="paperList" paper={paper} omitAbstract />
-            <PaperItemButtonGroup
-              pageType="authorShow"
-              actionArea="paperList"
-              paper={paper}
-              saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
-            />
-          </div>
-        );
+        return <FullPaperItem key={paper.id} pageType="authorShow" actionArea="paperList" paper={paper} />;
       });
     }
 
@@ -590,17 +579,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
 
     if (author.representativePapers && author.representativePapers.length > 0) {
       return author.representativePapers.map(paper => {
-        return (
-          <div key={paper.id} className={styles.paperItemWrapper}>
-            <PaperItem pageType="authorShow" actionArea="paperList" paper={paper} omitAbstract />
-            <PaperItemButtonGroup
-              pageType="authorShow"
-              actionArea="paperList"
-              paper={paper}
-              saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
-            />
-          </div>
-        );
+        return <FullPaperItem key={paper.id} pageType="authorShow" actionArea="paperList" paper={paper} />;
       });
     }
 

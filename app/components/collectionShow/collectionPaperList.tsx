@@ -4,7 +4,6 @@ import { PaperInCollection } from '../../model/paperInCollection';
 import { CurrentUser } from '../../model/currentUser';
 import { CollectionShowState } from '../../containers/collectionShow/reducer';
 import { Collection } from '../../model/collection';
-import PaperItem from '../common/paperItem/paperItem';
 import CollectionPaperItemButtonGroup from '../common/paperItem/collectionPaperItemButtonGroup';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import Icon from '../../icons';
@@ -13,6 +12,9 @@ import formatNumber from '../../helpers/formatNumber';
 import CollectionPapersControlBtns from './collectionPapersControlBtns';
 import { AppState } from '../../reducers';
 import { UserDevice } from '../layouts/reducer';
+import Title from '../common/paperItem/title';
+import BlockVenueAuthor from '../common/paperItem/blockVenueAuthor';
+import MobileVenueAuthors from '../common/paperItem/mobileVenueAuthors';
 const styles = require('./collectionPaperList.scss');
 
 interface CollectionPaperListProps {
@@ -68,6 +70,15 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
   }
 
   const collectionPaperList = papersInCollection.map(paper => {
+    let venueAuthors = (
+      <div style={{ marginTop: '12px' }}>
+        <BlockVenueAuthor paper={paper.paper} pageType="collectionShow" actionArea="paperList" />
+      </div>
+    );
+    if (userDevice === UserDevice.MOBILE) {
+      venueAuthors = <MobileVenueAuthors paper={paper.paper} pageType="collectionShow" actionArea="paperList" />;
+    }
+
     return (
       <div className={styles.paperItemWrapper} key={paper.paperId}>
         {itsMine &&
@@ -87,7 +98,8 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
             className={styles.removeIcon}
           />
           <div className={styles.paperInformationWrapper}>
-            <PaperItem pageType="collectionShow" actionArea="paperList" paper={paper.paper} omitAbstract />
+            <Title pageType="collectionShow" actionArea="paperList" paper={paper.paper} />
+            {venueAuthors}
           </div>
           <CollectionPaperItemButtonGroup
             pageType="collectionShow"

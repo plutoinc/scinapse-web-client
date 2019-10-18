@@ -7,7 +7,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { denormalize } from 'normalizr';
 import { Helmet } from 'react-helmet';
 import { AppState } from '../../reducers';
-import PaperItem from '../common/paperItem/paperItem';
+import FullPaperItem from '../common/paperItem/fullPaperItem';
 import MobilePagination from '../common/mobilePagination';
 import DesktopPagination from '../common/desktopPagination';
 import ArticleSpinner from '../common/spinner/articleSpinner';
@@ -30,7 +30,6 @@ import ErrorPage from '../error/errorPage';
 import { JournalShowMatchParams } from './types';
 import ImprovedFooter from '../layouts/improvedFooter';
 import { UserDevice } from '../layouts/reducer';
-import PaperItemButtonGroup from '../common/paperItem/paperItemButtonGroup';
 const styles = require('./journalShow.scss');
 
 function mapStateToProps(state: AppState) {
@@ -357,17 +356,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
 
     if (papers && papers.length > 0) {
       return papers.map(paper => {
-        return (
-          <div className={styles.paperItemWrapper} key={paper.id}>
-            <PaperItem paper={paper} pageType="journalShow" actionArea="paperList" />
-            <PaperItemButtonGroup
-              paper={paper}
-              pageType="journalShow"
-              actionArea="paperList"
-              saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
-            />
-          </div>
-        );
+        return <FullPaperItem key={paper.id} paper={paper} pageType="journalShow" actionArea="paperList" />;
       });
     }
 

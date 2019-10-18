@@ -4,13 +4,13 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { Paper } from '../../model/paper';
-import PaperItem from '../common/paperItem/paperItem';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../helpers/checkAuthDialog';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import { AppState } from '../../reducers';
 import { getMemoizedCurrentUser } from '../../selectors/getCurrentUser';
 import { CurrentUser } from '../../model/currentUser';
 import { makeGetMemoizedPapers } from '../../selectors/papersSelector';
+import { SimplePaperItem } from '../simplePaperItem/simplePaperItemContainer';
 const styles = require('./relatedPapers.scss');
 
 interface RelatedPapersProps {
@@ -49,9 +49,13 @@ const ContentBlocker: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
 
 const RelatedPaperItem: React.FunctionComponent<{ paper: Paper }> = ({ paper }) => {
   return (
-    <div key={paper.id} className={styles.paperItemWrapper}>
-      <PaperItem paper={paper} pageType="paperShow" actionArea="relatedPaperList" omitAbstract />
-    </div>
+    <SimplePaperItem
+      key={paper.id}
+      className={styles.paperItemWrapper}
+      paper={paper}
+      pageType="paperShow"
+      actionArea="relatedPaperList"
+    />
   );
 };
 

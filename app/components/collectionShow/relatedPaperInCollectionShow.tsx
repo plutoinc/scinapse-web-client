@@ -2,10 +2,10 @@ import * as React from 'react';
 import { withStyles } from '../../helpers/withStylesHelper';
 import CollectionAPI from '../../api/collection';
 import { Paper } from '../../model/paper';
-import PaperItem from '../common/paperItem/paperItem';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import { useObserver } from '../../hooks/useIntersectionHook';
 import { ActionTicketParams } from '../../helpers/actionTicketManager/actionTicket';
+import { SimplePaperItem } from '../simplePaperItem/simplePaperItemContainer';
 const styles = require('./relatedPaperInCollectionShow.scss');
 
 interface RelatedPaperInCollectionShowProps {
@@ -26,7 +26,7 @@ const RelatedPaperItem: React.FunctionComponent<{ paper: Paper }> = props => {
 
   return (
     <div className={styles.paperItemWrapper} ref={elRef}>
-      <PaperItem key={paper.id} paper={paper} pageType="collectionShow" actionArea="relatedPaperList" omitAbstract />
+      <SimplePaperItem key={paper.id} paper={paper} pageType="collectionShow" actionArea="relatedPaperList" />
     </div>
   );
 };

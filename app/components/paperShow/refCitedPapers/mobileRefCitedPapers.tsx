@@ -5,7 +5,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import ArticleSpinner from '../../common/spinner/articleSpinner';
 import { REF_CITED_CONTAINER_TYPE } from '../constants';
-import MobilePaperShowItem from '../../mobilePaperShowItem/mobilePaperShowItem';
+import SimplePaperItemContainer from '../../simplePaperItem/simplePaperItemContainer';
 import RefCitedPagination from './refCitedPagination';
 import { AppState } from '../../../reducers';
 import ScinapseInput from '../../common/scinapseInput';
@@ -139,7 +139,7 @@ const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, hist
         iconStyle={{ right: '20px' }}
       />
       {paperIds.map(id => (
-        <MobilePaperShowItem
+        <SimplePaperItemContainer
           key={id}
           className={s.itemWrapper}
           paperId={id}
