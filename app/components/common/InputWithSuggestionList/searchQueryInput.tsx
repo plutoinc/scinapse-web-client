@@ -23,7 +23,7 @@ import { handleInputKeydown } from './helpers/handleInputKeydown';
 import { UserDevice } from '../../layouts/reducer';
 import Button from '../button';
 import { SearchQueryInputProps, SearchSourceType, SubmitParams } from './types';
-import { changeSearchQuery, openMobileSearchBox } from '../../../reducers/searchQuery';
+import { changeSearchQuery, openMobileSearchBox, closeMobileSearchBox } from '../../../reducers/searchQuery';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./searchQueryInput.scss');
 
@@ -34,7 +34,11 @@ function validateSearchInput(query: string) {
   return true;
 }
 
-function getSearchButton(actionArea: 'home' | 'topBar' | 'paperShow', onClick: () => void) {
+function getSearchButton(
+  actionArea: 'home' | 'topBar' | 'paperShow',
+  onClick: () => void,
+  isOpenMobileSearchBox: boolean
+) {
   if (actionArea === 'home') {
     return (
       <div className={s.homeSearchButtonWrapper}>
@@ -47,8 +51,12 @@ function getSearchButton(actionArea: 'home' | 'topBar' | 'paperShow', onClick: (
   }
 
   return (
-    <div className={s.searchButtonWrapper}>
-      <Button elementType="button" size="small" variant="text" onClick={onClick}>
+    <div
+      className={classNames({
+        [s.searchButtonWrapper]: true,
+      })}
+    >
+      <Button elementType="button" size={isOpenMobileSearchBox ? 'medium' : 'small'} variant="text" onClick={onClick}>
         <Icon icon="SEARCH" />
       </Button>
     </div>
@@ -215,20 +223,60 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     );
   });
 
+  React.useEffect(
+    () => {
+      if (!isOpenMobileSearchBox) setIsOpen(false);
+    },
+    [isOpenMobileSearchBox]
+  );
+
   const listWrapperClassName = props.listWrapperClassName ? props.listWrapperClassName : s.list;
   const keywordList = isOpen ? <ul className={listWrapperClassName}>{keywordItems}</ul> : null;
   const wrapperClassName = props.wrapperClassName ? props.wrapperClassName : s.wrapper;
   const inputClassName = props.inputClassName ? props.inputClassName : s.input;
   const placeholder = isMobile ? 'Search papers by keyword' : 'Search papers by title, author, doi or keyword';
-  const searchButton = getSearchButton(props.actionArea, clickSearchBtn);
+  const searchButton = getSearchButton(props.actionArea, clickSearchBtn, isOpenMobileSearchBox);
+  const backButton = isOpenMobileSearchBox ? (
+    <Button
+      elementType="button"
+      variant="text"
+      isLoading={false}
+      style={{ position: 'absolute', top: '6px' }}
+      onClick={() => {
+        setIsOpen(false);
+        dispatch(closeMobileSearchBox());
+      }}
+    >
+      <Icon icon="BACK" />
+    </Button>
+  ) : null;
+
+  const clearButton = isOpenMobileSearchBox ? (
+    <div className={s.searchButtonWrapper} style={{ right: '52px' }}>
+      <Button
+        elementType="button"
+        variant="text"
+        isLoading={false}
+        size="medium"
+        color="gray"
+        onClick={() => {
+          setInputValue('');
+          setGenuineInputValue('');
+        }}
+      >
+        <Icon icon="X_BUTTON" />
+      </Button>
+    </div>
+  ) : null;
 
   return (
     <ClickAwayListener
       onClickAway={() => {
-        if (!isMobile) setIsOpen(false);
+        if (!isOpenMobileSearchBox) setIsOpen(false);
       }}
     >
       <div className={wrapperClassName}>
+        {backButton}
         <input
           aria-label="Scinapse search box"
           value={inputValue}
@@ -265,7 +313,10 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
               });
             }
 
-            if (isMobile && !isOpenMobileSearchBox) dispatch(openMobileSearchBox());
+            if (isMobile && !isOpenMobileSearchBox) {
+              dispatch(openMobileSearchBox());
+              setBlockOpen(true);
+            }
             if (!isOpen) setIsOpen(true);
           }}
           onClick={() => {
@@ -285,6 +336,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
           autoFocus={props.autoFocus}
           className={inputClassName}
         />
+        {clearButton}
         {searchButton}
         {keywordList}
       </div>
