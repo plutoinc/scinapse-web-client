@@ -77,7 +77,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       for (const key of Object.keys(entities)) {
         const newKey = key as keyof AppEntities;
         if (newKey) {
-          newState[newKey] = merge({}, state[newKey], entities[newKey]);
+          newState[newKey] = merge({}, state[newKey], entities[newKey]) as any;
         }
       }
 
