@@ -14,6 +14,7 @@ import { AppState } from '../../reducers';
 import { UserDevice } from '../layouts/reducer';
 import Title from '../common/paperItem/title';
 import BlockVenueAuthor from '../common/paperItem/blockVenueAuthor';
+import MobileVenueAuthors from '../common/paperItem/mobileVenueAuthors';
 const styles = require('./collectionPaperList.scss');
 
 interface CollectionPaperListProps {
@@ -69,6 +70,15 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
   }
 
   const collectionPaperList = papersInCollection.map(paper => {
+    let venueAuthors = (
+      <div style={{ marginTop: '12px' }}>
+        <BlockVenueAuthor paper={paper.paper} pageType="collectionShow" actionArea="paperList" />
+      </div>
+    );
+    if (userDevice === UserDevice.MOBILE) {
+      venueAuthors = <MobileVenueAuthors paper={paper.paper} pageType="collectionShow" actionArea="paperList" />;
+    }
+
     return (
       <div className={styles.paperItemWrapper} key={paper.paperId}>
         {itsMine &&
@@ -89,9 +99,7 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
           />
           <div className={styles.paperInformationWrapper}>
             <Title pageType="collectionShow" actionArea="paperList" paper={paper.paper} />
-            <div style={{ marginTop: '12px' }}>
-              <BlockVenueAuthor pageType="collectionShow" actionArea="paperList" paper={paper.paper} />
-            </div>
+            {venueAuthors}
           </div>
           <CollectionPaperItemButtonGroup
             pageType="collectionShow"

@@ -10,6 +10,10 @@ import { PaperSource } from '../../../api/paper';
 import Title from './title';
 import BlockVenueAuthor from './blockVenueAuthor';
 import Abstract from './abstract';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../../reducers';
+import { UserDevice } from '../../layouts/reducer';
+import MobileVenueAuthors from './mobileVenueAuthors';
 const styles = require('./searchPaperItem.scss');
 
 export interface PaperItemProps {
@@ -46,6 +50,16 @@ const SearchPaperItem: React.FC<PaperItemProps> = React.memo(props => {
   const { paper, pageType, actionArea, savedAt, sourceDomain } = props;
   const { relation } = paper;
 
+  const userDevice = useSelector((state: AppState) => state.layout.userDevice);
+  let venueAuthors = (
+    <div style={{ marginTop: '12px' }}>
+      <BlockVenueAuthor paper={paper} pageType={pageType} actionArea={actionArea} />
+    </div>
+  );
+  if (userDevice === UserDevice.MOBILE) {
+    venueAuthors = <MobileVenueAuthors paper={paper} pageType={pageType} actionArea={actionArea} />;
+  }
+
   let historyContent = null;
   if (savedAt) {
     const lastVisitDate = format(savedAt, 'MMM DD, YYYY');
@@ -61,9 +75,7 @@ const SearchPaperItem: React.FC<PaperItemProps> = React.memo(props => {
         relation.savedInCollections.length >= 1 && <SavedCollections collections={relation.savedInCollections} />}
       {historyContent}
       <Title paper={paper} actionArea={actionArea} pageType={pageType} />
-      <div style={{ marginTop: '12px' }}>
-        <BlockVenueAuthor paper={paper} pageType={pageType} actionArea={actionArea} />
-      </div>
+      {venueAuthors}
       <Abstract
         paperId={paper.id}
         abstract={paper.abstractHighlighted || paper.abstract}
