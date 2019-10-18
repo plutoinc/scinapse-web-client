@@ -259,9 +259,11 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
           onFocus={e => {
             e.persist();
 
-            window.addEventListener('touchstart', () => {
-              e.target.blur();
-            });
+            if (document.hasFocus()) {
+              window.addEventListener('touchstart', () => {
+                e.target.blur();
+              });
+            }
 
             if (isMobile && !isOpenMobileSearchBox) dispatch(openMobileSearchBox());
             if (!isOpen) setIsOpen(true);
