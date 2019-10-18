@@ -22,7 +22,7 @@ export const SCINAPSE_SNACK_BAR_INITIAL_STATE: ScinapseSnackbarState = {
 };
 
 const scinapseSnackbarSlice = createSlice({
-  slice: 'scinapseSnackbar',
+  name: 'scinapseSnackbar',
   initialState: SCINAPSE_SNACK_BAR_INITIAL_STATE,
   reducers: {
     openSnackbar(

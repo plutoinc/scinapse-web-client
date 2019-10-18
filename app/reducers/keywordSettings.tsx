@@ -10,7 +10,7 @@ export interface KeywordSettingsState {
 export const KEYWORD_SETTINGS_INITIAL_STATE: KeywordSettingsState = { isLoading: false, keywords: [] };
 
 const keywordSettingsSlice = createSlice({
-  slice: 'keywordSettings',
+  name: 'keywordSettings',
   initialState: KEYWORD_SETTINGS_INITIAL_STATE,
   reducers: {
     startToConnectKeywordSettingsAPI(state) {

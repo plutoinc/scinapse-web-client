@@ -9,7 +9,7 @@ export const REQUEST_FULL_TEXT_DIALOG_INITIAL_STATE: RequestFullTextDialogState 
 };
 
 const collectionSnackBarSlice = createSlice({
-  slice: 'requestFullTextDialog',
+  name: 'requestFullTextDialog',
   initialState: REQUEST_FULL_TEXT_DIALOG_INITIAL_STATE,
   reducers: {
     openRequestFullTextDialog(state) {
