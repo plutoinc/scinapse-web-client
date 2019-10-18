@@ -64,7 +64,7 @@
     "@types/lodash": "4.14.92",
     "@types/morgan": "1.7.35",
     "@types/newrelic": "^5.11.0",
-    "@types/node": "8.5.9",
+    "@types/node": "^12.11.1",
     "@types/notie": "0.0.27",
     "@types/prop-types": "15.5.9",
     "@types/puppeteer": "^1.19.0",
