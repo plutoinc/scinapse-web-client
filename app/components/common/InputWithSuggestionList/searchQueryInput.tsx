@@ -225,7 +225,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
   return (
     <ClickAwayListener
       onClickAway={() => {
-        setIsOpen(false);
+        if (!isMobile) setIsOpen(false);
       }}
     >
       <div className={wrapperClassName}>
@@ -256,9 +256,15 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
               },
             });
           }}
-          onFocus={() => {
+          onFocus={e => {
+            e.persist();
+
+            window.addEventListener('touchstart', () => {
+              e.target.blur();
+            });
+
             if (isMobile && !isOpenMobileSearchBox) dispatch(openMobileSearchBox());
-            if (!blockOpen && !isOpen) setIsOpen(true);
+            if (!isOpen) setIsOpen(true);
           }}
           onClick={() => {
             if (!isOpen) setIsOpen(true);

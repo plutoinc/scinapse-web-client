@@ -28,6 +28,7 @@ const MobileSearchBox: React.FC<Props> = ({ location }) => {
         <SearchQueryInput
           maxCount={10}
           actionArea="topBar"
+          autoFocus
           wrapperClassName={s.searchWrapper}
           inputClassName={s.searchInput}
         />

@@ -19,18 +19,12 @@
   padding: 4px 8px;
   z-index: 3;
   background-color: $gray300;
-  border-top: 1px solid $gray500;
+  border-top: 1px solid $gray400;
 }
 
 .searchWrapper {
   width: 100%;
-  border: solid 1px $gray500;
   background-color: $gray300;
-
-  &:focus-within {
-    border: solid 1px $gray600;
-    transition: 0.2s ease-in-out;
-  }
 }
 
 .searchInput {
