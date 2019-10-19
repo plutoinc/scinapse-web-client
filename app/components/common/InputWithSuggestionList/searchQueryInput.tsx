@@ -63,7 +63,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
   const isMobile = useSelector<AppState, boolean>(state => state.layout.userDevice === UserDevice.MOBILE);
   const [isOpen, setIsOpen] = React.useState(false);
   const [highlightIdx, setHighlightIdx] = React.useState(-1);
-  const [inputValue, setInputValue] = React.useState('');
+  const [inputValue, setInputValue] = React.useState(searchQuery || '');
   const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
   const { data: suggestionWords, setParams } = useDebouncedAsyncFetch<string, CompletionKeyword[]>({
     initialParams: '',
@@ -291,7 +291,10 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
               },
             });
           }}
-          onFocus={() => {
+          onFocus={e => {
+            const { value } = e.currentTarget;
+            setParams(value);
+
             if (isMobile && !isOpenMobileSearchBox) {
               dispatch(openMobileSearchBox());
             }
