@@ -24,7 +24,15 @@ const MobileSearchBox: React.FC<Props> = ({ location }) => {
 
   if (isOpen)
     return (
-      <div className={s.mobileSearchBoxWrapper}>
+      <div
+        className={s.mobileSearchBoxWrapper}
+        onTouchStart={() => {
+          const activeElement = document.activeElement;
+          if (!!activeElement && activeElement.tagName === 'INPUT') {
+            (activeElement as HTMLElement).blur();
+          }
+        }}
+      >
         <SearchQueryInput
           maxCount={10}
           actionArea="topBar"

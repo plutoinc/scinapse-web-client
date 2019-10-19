@@ -304,15 +304,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
               },
             });
           }}
-          onFocus={e => {
-            e.persist();
-
-            if (document.hasFocus()) {
-              window.addEventListener('touchstart', () => {
-                e.target.blur();
-              });
-            }
-
+          onFocus={() => {
             if (isMobile && !isOpenMobileSearchBox) {
               dispatch(openMobileSearchBox());
               setBlockOpen(true);
