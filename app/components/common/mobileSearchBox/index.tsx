@@ -29,10 +29,9 @@ const MobileSearchBox: React.FC<Props> = ({ location }) => {
         onTouchStart={e => {
           const activeElement = document.activeElement;
           const relatedElement = e.target;
-          if (activeElement === relatedElement) return console.log('testset');
+          if (activeElement === relatedElement) return;
 
           if (!!activeElement && activeElement.tagName === 'INPUT') {
-            console.log(activeElement as HTMLElement);
             (activeElement as HTMLElement).blur();
           }
         }}

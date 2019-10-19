@@ -110,7 +110,7 @@
 
 .searchButtonWrapper {
   position: absolute;
-  top: 6px;
+  top: 7px;
   right: 8px;
 }
 
@@ -122,4 +122,12 @@
 
 .searchIconInButton {
   transform: scaleX(-1);
+}
+
+@media (max-width: $mobile_width) {
+  .listItem {
+    &:hover {
+      background-color: white;
+    }
+  }
 }

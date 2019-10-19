@@ -34,11 +34,7 @@ function validateSearchInput(query: string) {
   return true;
 }
 
-function getSearchButton(
-  actionArea: 'home' | 'topBar' | 'paperShow',
-  onClick: () => void,
-  isOpenMobileSearchBox: boolean
-) {
+function getSearchButton(actionArea: 'home' | 'topBar' | 'paperShow', onClick: () => void) {
   if (actionArea === 'home') {
     return (
       <div className={s.homeSearchButtonWrapper}>
@@ -51,12 +47,8 @@ function getSearchButton(
   }
 
   return (
-    <div
-      className={classNames({
-        [s.searchButtonWrapper]: true,
-      })}
-    >
-      <Button elementType="button" size={isOpenMobileSearchBox ? 'medium' : 'small'} variant="text" onClick={onClick}>
+    <div className={s.searchButtonWrapper}>
+      <Button elementType="button" size="small" variant="text" onClick={onClick}>
         <Icon icon="SEARCH" />
       </Button>
     </div>
@@ -92,12 +84,6 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     },
     [genuineInputValue]
   );
-
-  // prevent suggestion box is opened by auto focusing
-  const [blockOpen, setBlockOpen] = React.useState(true);
-  React.useEffect(() => {
-    setBlockOpen(false);
-  }, []);
 
   React.useEffect(
     () => {
@@ -235,13 +221,14 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
   const wrapperClassName = props.wrapperClassName ? props.wrapperClassName : s.wrapper;
   const inputClassName = props.inputClassName ? props.inputClassName : s.input;
   const placeholder = isMobile ? 'Search papers by keyword' : 'Search papers by title, author, doi or keyword';
-  const searchButton = getSearchButton(props.actionArea, clickSearchBtn, isOpenMobileSearchBox);
+  const searchButton = getSearchButton(props.actionArea, clickSearchBtn);
   const backButton = isOpenMobileSearchBox ? (
     <Button
       elementType="button"
       variant="text"
       isLoading={false}
-      style={{ position: 'absolute', top: '6px' }}
+      size="small"
+      style={{ position: 'absolute', top: '7px', left: '2px' }}
       onClick={() => {
         setIsOpen(false);
         dispatch(closeMobileSearchBox());
@@ -257,7 +244,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
         elementType="button"
         variant="text"
         isLoading={false}
-        size="medium"
+        size="small"
         color="gray"
         onClick={() => {
           setInputValue('');
@@ -307,7 +294,6 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
           onFocus={() => {
             if (isMobile && !isOpenMobileSearchBox) {
               dispatch(openMobileSearchBox());
-              setBlockOpen(true);
             }
             if (!isOpen) setIsOpen(true);
           }}
