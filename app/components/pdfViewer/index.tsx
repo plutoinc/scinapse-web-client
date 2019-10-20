@@ -6,7 +6,6 @@ import { createSelector } from 'redux-starter-kit';
 import { denormalize } from 'normalizr';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '../../helpers/withStylesHelper';
-import ScinapseButton from '../common/scinapseButton';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import Icon from '../../icons';
 import { paperSchema } from '../../model/paper';
@@ -23,6 +22,7 @@ import { addPaperToRecommendPool } from '../recommendPool/actions';
 import { PDFViewerState } from '../../reducers/pdfViewer';
 import { CurrentUser } from '../../model/currentUser';
 import { getBestPdfOfPaper, getPDFPathOrBlob } from '../../actions/pdfViewer';
+import Button from '../common/button';
 const { Document, Page, pdfjs } = require('react-pdf');
 const styles = require('./pdfViewer.scss');
 
@@ -39,32 +39,6 @@ function trackClickButton(actionTag: Scinapse.ActionTicket.ActionTagType, paperI
     actionLabel: String(paperId),
   });
 }
-
-const baseBtnStyle: React.CSSProperties = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: '150px',
-  height: '40px',
-};
-
-const readAllBtnStyle: React.CSSProperties = {
-  ...baseBtnStyle,
-  position: 'relative',
-  borderRadius: '27.5px',
-  border: '1px solid #bbc2d0',
-  fontSize: '16px',
-  fontWeight: 500,
-  letterSpacing: '1px',
-  color: '#34495e',
-};
-
-const downloadPdfBtnStyle: React.CSSProperties = {
-  ...baseBtnStyle,
-  color: 'white',
-  backgroundColor: '#3e7fff',
-  marginLeft: '16px',
-};
 
 interface OnClickViewMorePdfBtnParams {
   paperId: number;
@@ -149,7 +123,6 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
   const viewMorePDFBtnEl = React.useRef<HTMLDivElement | null>(null);
   const cancelTokenSource = React.useRef<CancelTokenSource>(Axios.CancelToken.source());
   const cancelToken = cancelTokenSource.current.token;
-  const actionTag = PDFViewerState.isExpanded ? 'viewLessPDF' : 'viewMorePDF';
 
   React.useEffect(
     () => {
@@ -213,15 +186,10 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
   if (!!pdfBlob || !!directPdfPath) {
     const ReadAllPDFButton = (
       <div ref={viewMorePDFBtnEl}>
-        <ScinapseButton
-          gaCategory="PDF viewer"
-          gaAction={actionTag}
-          style={readAllBtnStyle}
-          content={
-            <span>
-              READ ALL <Icon icon="ARROW_UP" className={styles.arrowIcon} />
-            </span>
-          }
+        <Button
+          elementType="button"
+          variant="outlined"
+          color="black"
           isLoading={PDFViewerState.isLoading}
           disabled={PDFViewerState.hasFailed}
           onClick={() => {
@@ -230,7 +198,11 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
               dispatch,
             });
           }}
-        />
+          style={{ borderRadius: '27.5px' }}
+        >
+          <span>READ ALL</span>
+          <Icon icon="ARROW_DOWN" />
+        </Button>
       </div>
     );
 
@@ -287,18 +259,11 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
               <>
                 {PDFViewerState.isExpanded ? (
                   <>
-                    <ScinapseButton
-                      gaCategory="PDF viewer"
-                      gaAction="download PDF"
-                      style={downloadPdfBtnStyle}
+                    <Button
+                      elementType="anchor"
                       target="_blank"
                       href={paper.bestPdf.url}
                       rel="nofollow"
-                      content={
-                        <span className={styles.downloadBtnWrapper}>
-                          <Icon icon="DOWNLOAD" className={styles.downloadIcon} /> Download PDF
-                        </span>
-                      }
                       onClick={async e => {
                         if (!EnvChecker.isOnServer()) {
                           e.preventDefault();
@@ -322,9 +287,10 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
                           afterDownloadPDF();
                         }
                       }}
-                      isExternalLink
-                      downloadAttr
-                    />
+                    >
+                      <Icon icon="DOWNLOAD" />
+                      <span>Download PDF</span>
+                    </Button>
                     <RelatedPapers shouldShowRelatedPapers={!paper.bestPdf || !paper.bestPdf.hasBest} />
                   </>
                 ) : (
