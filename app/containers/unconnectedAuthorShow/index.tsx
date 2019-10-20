@@ -85,12 +85,15 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
 
     let itsMeButton = (
       <div className={styles.headerRightBox}>
-        <a
-          className={styles.authorClaimButton}
+        <Button
+          elementType="button"
+          variant="outlined"
+          color="gray"
           onClick={() => this.handleAuthorClaim({ authorId: this.props.author.id })}
         >
-          SUGGEST CHANGES
-        </a>
+          <span>SUGGEST CHANGES</span>
+        </Button>
+        ㅕ{' '}
       </div>
     );
     let guideContext = null;
