@@ -14,9 +14,10 @@ interface CiteButtonProps {
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
   className?: string;
+  isMobile?: boolean;
 }
 
-const CiteButton: React.FC<CiteButtonProps> = ({ paper, pageType, actionArea, className }) => {
+const CiteButton: React.FC<CiteButtonProps> = ({ paper, pageType, actionArea, className, isMobile }) => {
   const dispatch = useDispatch();
 
   if (!paper.doi) return null;
@@ -26,7 +27,8 @@ const CiteButton: React.FC<CiteButtonProps> = ({ paper, pageType, actionArea, cl
       <Button
         elementType="button"
         size="small"
-        variant="outlined"
+        variant={isMobile ? 'contained' : 'outlined'}
+        color={isMobile ? 'black' : 'blue'}
         onClick={async () => {
           dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'citePaper' }));
           GlobalDialogManager.openCitationDialog(paper.id);
