@@ -44,7 +44,7 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
       actionArea="contentNavBar"
       paper={paper}
       saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
-      buttonStyle={{ height: '40px', background: '#3e7fff', border: 0, fontWeight: 500 }}
+      buttonStyle={{ height: '40px', backgroundColor: '#3e7fff', border: '1px solid #3e7fff', fontWeight: 500 }}
     />
   );
 };

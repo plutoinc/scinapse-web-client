@@ -11,6 +11,7 @@ import { SearchActions } from '../../actions/actionTypes';
 import { AppState } from '../../reducers';
 import { setActiveFilterButton } from '../../actions/searchFilter';
 import { goToYearFilteredSearchResultPage } from '../yearRangeSlider/helper';
+import Button from '../common/button';
 
 const s = require('./yearFilterDropdown.scss');
 
@@ -235,17 +236,19 @@ const YearFilterDropdown: React.FC<
           />
         </div>
         <div className={s.controlBtnsWrapper}>
-          <button
-            className={s.clearBtn}
+          <Button
+            elementType="button"
+            variant="text"
+            color="gray"
             onClick={() => {
               setMinMaxYears(['', '']);
             }}
           >
-            Clear
-          </button>
-          <button className={s.applyBtn} onClick={handleSubmit}>
-            Apply
-          </button>
+            <span>Clear</span>
+          </Button>
+          <Button elementType="button" variant="text" color="blue" onClick={handleSubmit}>
+            <span>Apply</span>
+          </Button>
         </div>
       </Popover>
     </div>

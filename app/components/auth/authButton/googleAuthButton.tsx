@@ -100,7 +100,7 @@ const AuthButton: React.FunctionComponent<AuthButtonProps> = props => {
       <Button
         size="large"
         elementType="button"
-        style={{ backgroundColor: '#dc5240' }}
+        style={{ backgroundColor: '#dc5240', borderColor: '#dc5240' }}
         disabled={gapiIsLoading}
         isLoading={isLoading}
         fullWidth

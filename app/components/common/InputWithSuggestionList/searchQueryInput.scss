@@ -159,14 +159,11 @@
 }
 
 .searchIconInButton {
-  display: flex;
-  margin-right: 8px;
   color: #a8c6ff;
-  cursor: pointer;
   transform: scaleX(-1);
+}
 
-  svg {
-    width: 20px;
-    height: 20px;
-  }
+.searchButtonWrapper {
+  position: absolute;
+  right: 8px;
 }

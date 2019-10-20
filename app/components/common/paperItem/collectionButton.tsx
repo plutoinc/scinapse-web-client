@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
-import classNames from 'classnames';
-import { withStyles } from '../../../helpers/withStylesHelper';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
@@ -14,8 +12,7 @@ import { getUserGroupName } from '../../../helpers/abTestHelper';
 import { COLLECTION_BUTTON_TEXT_EXPERIMENT } from '../../../constants/abTestGlobalValue';
 import { CollectionButtonTextTestType } from '../../../constants/abTestObject';
 import { UserDevice } from '../../layouts/reducer';
-
-const styles = require('./collectionButton.scss');
+import Button from '../button';
 
 interface CollectionButtonProps {
   paper: Paper;
@@ -63,7 +60,9 @@ const CollectionButton: React.FC<CollectionButtonProps> = ({ saved, paper, pageT
   }
 
   return (
-    <button
+    <Button
+      elementType="button"
+      size="small"
       onClick={async () => {
         const actionLabel = saved ? 'addToCollection' : 'savedCollection';
         dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'addToCollection' }));
@@ -85,16 +84,12 @@ const CollectionButton: React.FC<CollectionButtonProps> = ({ saved, paper, pageT
         if (userHasCollection) GlobalDialogManager.openCollectionDialog(paper.id);
         else GlobalDialogManager.openNewCollectionDialog(paper.id);
       }}
-      className={classNames({
-        [styles.button]: true,
-        [styles.savedButton]: saved,
-      })}
-      style={buttonStyle}
+      style={saved ? { backgroundColor: '#34495e', borderColor: '#34495e', ...buttonStyle } : { ...buttonStyle }}
     >
-      <Icon className={styles.bookmarkIcon} icon="BOOKMARK" />
+      <Icon icon="BOOKMARK" />
       <span>{buttonContent}</span>
-    </button>
+    </Button>
   );
 };
 
-export default withStyles<typeof CollectionButton>(styles)(CollectionButton);
+export default CollectionButton;

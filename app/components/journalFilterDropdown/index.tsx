@@ -15,6 +15,7 @@ import { trackSelectFilter } from '../../helpers/trackSelectFilter';
 import makeNewFilterLink from '../../helpers/makeNewFilterLink';
 import JournalFilterInput from '../journalFilterInput';
 import { AggregationJournal } from '../../model/aggregation';
+import Button from '../common/button';
 
 const s = require('./journalFilterDropdown.scss');
 
@@ -155,17 +156,19 @@ const JournalFilterDropdown: React.FC<
             </div>
           </div>
           <div className={s.controlBtnsWrapper}>
-            <button
-              className={s.clearBtn}
+            <Button
+              elementType="button"
+              variant="text"
+              color="gray"
               onClick={() => {
                 props.dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER });
               }}
             >
-              Clear
-            </button>
-            <button className={s.applyBtn} onClick={handleSubmit}>
-              Apply
-            </button>
+              <span>Clear</span>
+            </Button>
+            <Button elementType="button" variant="text" color="blue" onClick={handleSubmit}>
+              <span>Apply</span>
+            </Button>
           </div>
         </div>
       </Popover>
