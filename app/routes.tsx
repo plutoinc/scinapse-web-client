@@ -30,6 +30,7 @@ import {
 } from './constants/routes';
 import { useSelector } from 'react-redux';
 import { AppState } from './reducers';
+import classNames from 'classnames';
 const styles = require('./root.scss');
 
 export interface LoadDataParams<P> {
@@ -283,7 +284,7 @@ const RootRoutes: React.FC<RootRoutesProps> = props => {
     <div>
       <DefaultHelmet />
       <MobileSearchBox />
-      <div style={isOpenMobileSearchBox ? { display: 'none' } : {}}>
+      <div className={classNames({ [styles.mainContentsAtOpenMobileSearchBox]: isOpenMobileSearchBox })}>
         <ImprovedHeader />
         <div>
           <Switch location={location}>

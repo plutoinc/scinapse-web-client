@@ -92,6 +92,10 @@ li {
   padding: 0;
 }
 
+.mainContentsAtOpenMobileSearchBox {
+  display: none;
+}
+
 @keyframes flip {
   0% {
     transform: rotateY(0deg);
