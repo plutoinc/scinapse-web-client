@@ -92,7 +92,7 @@ const ScinapseFigureContent: React.FC<{ papersFoundCount: number }> = ({ papersF
 
 const ImprovedHome: React.FC = () => {
   useStyles(styles);
-  const userDevice = useSelector((state: AppState) => state.layout.userDevice);
+  const isMobile = useSelector<AppState, boolean>((state: AppState) => state.layout.userDevice === UserDevice.MOBILE);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
   const cancelToken = React.useRef(axios.CancelToken.source());
 
@@ -123,7 +123,7 @@ const ImprovedHome: React.FC = () => {
               <SearchQueryInput
                 maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}
                 actionArea="home"
-                autoFocus={userDevice === UserDevice.MOBILE ? false : true}
+                autoFocus={!isMobile}
                 inputClassName={styles.searchInput}
               />
             </div>
@@ -132,7 +132,7 @@ const ImprovedHome: React.FC = () => {
             <ScinapseFigureContent papersFoundCount={papersFoundCount} />
           </div>
         </div>
-        <ScinapseInformation isMobile={userDevice === UserDevice.MOBILE} />
+        <ScinapseInformation isMobile={isMobile} />
         <ImprovedFooter />
       </div>
     </div>
