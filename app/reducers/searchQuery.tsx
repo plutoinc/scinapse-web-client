@@ -11,7 +11,7 @@ export const SEARCH_QUERY_INITIAL_STATE: SearchQueryState = {
 };
 
 const SearchQuerySlice = createSlice({
-  slice: 'searchQuery',
+  name: 'searchQuery',
   initialState: SEARCH_QUERY_INITIAL_STATE,
   reducers: {
     changeSearchQuery(state, action: PayloadAction<{ query: string }>) {
