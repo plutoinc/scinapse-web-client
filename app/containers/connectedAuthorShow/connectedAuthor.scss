@@ -236,10 +236,6 @@
   justify-content: center;
 }
 
-.paperItemWrapper {
-  @extend %default-paper-item-wrapper;
-}
-
 @media (max-width: $tablet_width) {
   .leftContentWrapper {
     padding: 0 12px;

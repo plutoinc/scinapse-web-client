@@ -44,7 +44,7 @@
 
   .collectionIconWrapper {
     position: absolute;
-    top: 25px;
+    top: 30px;
     right: 25px;
     display: flex;
     justify-content: center;
@@ -64,11 +64,4 @@
 
 .collectionItem + .collectionItem {
   margin-top: 8px;
-}
-
-.buttonSpinner {
-  svg {
-    width: 18px !important;
-    height: 18px !important;
-  }
 }

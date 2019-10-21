@@ -1,18 +1,5 @@
 $wrapper-vertical-margin: 128px;
 
-%base-form-button {
-  display: inline-block;
-  padding: 7px 16px;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 2;
-  letter-spacing: -0.19px;
-  text-align: center;
-  cursor: pointer;
-  color: $black1;
-}
-
 %base-input-style {
   font-family: $fallback;
   font-size: 15px;
@@ -61,6 +48,7 @@ $wrapper-vertical-margin: 128px;
   );
   margin: $wrapper-vertical-margin auto;
 }
+
 .title {
   font-size: 36px;
   font-weight: 500;
@@ -69,6 +57,7 @@ $wrapper-vertical-margin: 128px;
   color: $black0;
   margin-bottom: 36px;
 }
+
 @media (max-width: $mobile_width) {
   .wrapper {
     padding: 0 16px;

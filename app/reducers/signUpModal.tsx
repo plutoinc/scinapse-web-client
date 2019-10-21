@@ -7,7 +7,7 @@ export interface SignUpModalState {
 export const SIGN_UP_MODAL_INITIAL_STATE = { email: '' };
 
 const signUpModalSlice = createSlice({
-  slice: 'signUpModal',
+  name: 'signUpModal',
   initialState: SIGN_UP_MODAL_INITIAL_STATE,
   reducers: {
     setSignUpModalEmail(state, action: PayloadAction<{ email: string }>) {

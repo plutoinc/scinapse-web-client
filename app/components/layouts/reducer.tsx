@@ -15,7 +15,7 @@ export const LAYOUT_INITIAL_STATE = { userDevice: UserDevice.DESKTOP };
 type SetDeviceAction = PayloadAction<{ userDevice: UserDevice }>;
 
 const layoutSlice = createSlice({
-  slice: 'layout',
+  name: 'layout',
   initialState: LAYOUT_INITIAL_STATE,
   reducers: {
     setDeviceType(state, action: SetDeviceAction) {

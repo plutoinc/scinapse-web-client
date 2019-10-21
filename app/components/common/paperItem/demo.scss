@@ -40,6 +40,10 @@
   line-height: 1.6;
 }
 
+.simplePaperItemWrapper + .simplePaperItemWrapper {
+  margin-top: 12px;
+}
+
 @media (max-width: $mobile_width) {
   .container {
     padding: 0 12px 12px 12px;

@@ -4,9 +4,8 @@ import * as classNames from 'classnames';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import CiteBox from '../../../containers/paperShowActionBar/components/citeBox';
 import PdfDownloadButton from '../components/pdfDownloadButton';
-import RequestFullTextBtn from '../../../containers/paperShowActionBar/components/fullTextRequestBtn';
+import CollectionButton from '../../../components/common/paperItem/collectionButton';
 import { PDFButtonProps, TabItemProps, PaperShowRefCitedTabProps } from './types';
-import { openRequestFullTextDialog } from '../../../reducers/requestFullTextDialog';
 const styles = require('./refCitedTab.scss');
 
 const TabItem: React.FunctionComponent<TabItemProps> = props => {
@@ -24,7 +23,7 @@ const TabItem: React.FunctionComponent<TabItemProps> = props => {
 };
 
 const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
-  const { dispatch, paper, isLoading, canShowFullPDF, onClickDownloadPDF, afterDownloadPDF } = props;
+  const { paper, isLoading, canShowFullPDF, onClickDownloadPDF, afterDownloadPDF } = props;
 
   if (canShowFullPDF) {
     return (
@@ -40,16 +39,13 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
     );
   }
   return (
-    <>
-      <RequestFullTextBtn
-        actionArea="contentNavBar"
-        isLoading={isLoading}
-        paperId={paper!.id}
-        onClick={() => dispatch(openRequestFullTextDialog())}
-        btnStyle={{ flex: '1 0 auto', height: '36px', padding: '0 12px 0 8px' }}
-        lastRequestedDate={props.lastRequestedDate}
-      />
-    </>
+    <CollectionButton
+      pageType="paperShow"
+      actionArea="contentNavBar"
+      paper={paper}
+      saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
+      buttonStyle={{ height: '40px', background: '#3e7fff', border: 0, fontWeight: 500 }}
+    />
   );
 };
 

@@ -1,16 +1,13 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import classNames from 'classnames';
-import { connect } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
+import { useDispatch, useSelector } from 'react-redux';
 import { Field, Form, Formik, FormikErrors, FormikTouched } from 'formik';
-import { withStyles } from '../../helpers/withStylesHelper';
 import { AppState } from '../../reducers';
-import { ACTION_TYPES, AlertAction, AuthActions } from '../../actions/actionTypes';
 import { MINIMUM_PASSWORD_LENGTH } from '../../constants/auth';
-import { changePassword } from '../../actions/auth';
-import AuthAPI from '../../api/auth';
-import PlutoAxios from '../../api/pluto';
-
+import { changePassword, resendVerificationEmail } from '../../actions/auth';
+import { CurrentUser } from '../../model/currentUser';
+import Button from '../../components/common/button';
+const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./authEditForm.scss');
 
 interface AuthEditFormValues {
@@ -53,9 +50,15 @@ const EmailField: React.FC<EmailFieldProps> = ({ email, editMode, userVerified, 
       <>
         <div className={s.emailFieldWrapper}>
           <input className={s.readOnlyInput} type="email" value={email} placeholder="EMAIL" disabled />
-          <div className={s.toggleButton} onClick={onClickResendButton}>
-            Resend Mail
-          </div>
+          <Button
+            elementType="button"
+            variant="outlined"
+            color="gray"
+            onClick={onClickResendButton}
+            style={{ marginLeft: '8px' }}
+          >
+            <span>Resend Mail</span>
+          </Button>
         </div>
         <ErrorMessage errorMsg="You are not verified yet. Please check your email to use." />
       </>
@@ -109,14 +112,15 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
         <label className={s.formLabel}>PASSWORD</label>
         <div className={s.emailFieldWrapper}>
           <input type="password" className={s.inputForm} value="********" placeholder="Password" disabled />
-          <div
-            className={s.toggleButton}
-            onClick={() => {
-              setEditMode(true);
-            }}
+          <Button
+            elementType="button"
+            variant="outlined"
+            color="gray"
+            onClick={() => setEditMode(true)}
+            style={{ marginLeft: '8px' }}
           >
-            Change Password
-          </div>
+            <span>Change Password</span>
+          </Button>
         </div>
       </div>
     );
@@ -152,59 +156,30 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
         />
         <ErrorMessage errorMsg={errors.newPassword} />
       </div>
-      <button
-        type="submit"
-        className={classNames({
-          [s.submitButton]: true,
-          [s.isLoading]: isLoading,
-        })}
-      >
-        Change Password
-      </button>
-      <div
-        className={s.toggleButton}
-        onClick={() => {
-          setEditMode(false);
-        }}
-      >
-        Cancel
+      <div className={s.buttonsWrapper}>
+        <Button elementType="button" isLoading={isLoading} type="submit">
+          <span>Change Password</span>
+        </Button>
+        <Button
+          elementType="button"
+          variant="outlined"
+          color="gray"
+          onClick={() => setEditMode(false)}
+          style={{ marginLeft: '8px' }}
+        >
+          <span>Cancel</span>
+        </Button>
       </div>
     </div>
   );
 };
 
-interface AuthEditFormProps {
-  dispatch: ThunkDispatch<{}, {}, AuthActions | AlertAction>;
-}
-const AuthEditForm: React.FC<AuthEditFormProps & ReturnType<typeof mapStateToProps>> = ({ currentUser, dispatch }) => {
+const AuthEditForm: React.FC = () => {
+  useStyles(s);
+  const dispatch = useDispatch();
+  const currentUser = useSelector<AppState, CurrentUser>(state => state.currentUser);
   const [isLoading, setIsLoading] = React.useState(false);
   const [editMode, setEditMode] = React.useState(false);
-
-  const handleClickResendButton = React.useCallback(
-    async () => {
-      try {
-        if (currentUser.email) {
-          await AuthAPI.resendVerificationEmail(currentUser.email);
-          dispatch({
-            type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
-            payload: {
-              type: 'success',
-              message: 'Successfully sent E-Mail. Please check your mail box.',
-            },
-          });
-        }
-      } catch (err) {
-        dispatch({
-          type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
-          payload: {
-            type: 'error',
-            message: 'Sorry. we had an error during resending the verification email.',
-          },
-        });
-      }
-    },
-    [currentUser]
-  );
 
   if (!currentUser.isLoggedIn) return null;
 
@@ -216,24 +191,8 @@ const AuthEditForm: React.FC<AuthEditFormProps & ReturnType<typeof mapStateToPro
       await dispatch(changePassword({ oldPassword: values.oldPassword, newPassword: values.newPassword }));
       setIsLoading(false);
       setEditMode(false);
-      dispatch({
-        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
-        payload: {
-          type: 'success',
-          message: 'Successfully changed password.',
-        },
-      });
     } catch (err) {
       setIsLoading(false);
-      const error = PlutoAxios.getGlobalError(err);
-      console.log(error);
-      dispatch({
-        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
-        payload: {
-          type: 'error',
-          message: 'Sorry. we had an error during resending the verification email.',
-        },
-      });
     }
   }
 
@@ -262,7 +221,7 @@ const AuthEditForm: React.FC<AuthEditFormProps & ReturnType<typeof mapStateToPro
                     userVerified={isVerifiedUser}
                     hasError={!!touched.email && !!errors.email}
                     errorMsg={errors.email}
-                    onClickResendButton={handleClickResendButton}
+                    onClickResendButton={() => dispatch(resendVerificationEmail(currentUser.email))}
                   />
                 </div>
                 <PasswordField
@@ -283,10 +242,4 @@ const AuthEditForm: React.FC<AuthEditFormProps & ReturnType<typeof mapStateToPro
   );
 };
 
-function mapStateToProps(state: AppState) {
-  return {
-    currentUser: state.currentUser,
-  };
-}
-
-export default connect(mapStateToProps)(withStyles<typeof AuthEditForm>(s)(AuthEditForm));
+export default AuthEditForm;

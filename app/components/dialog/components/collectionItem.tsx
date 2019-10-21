@@ -3,7 +3,7 @@ import * as classNames from 'classnames';
 import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import * as parse from 'date-fns/parse';
 import Icon from '../../../icons';
-import Spinner from '../../common/spinner/buttonSpinner';
+import ButtonSpinner from '../../common/button/spinner';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Collection } from '../../../model/collection';
 import { AddPaperToCollectionParams, RemovePapersFromCollectionParams } from '../../../api/collection';
@@ -63,7 +63,7 @@ class CollectionItem extends React.PureComponent<CollectionItemProps, Collection
     const { isLoading } = this.state;
 
     if (isLoading) {
-      return <Spinner thickness={4} className={styles.buttonSpinner} size={18} />;
+      return <ButtonSpinner color="gray" variant="outlined" size="small" />;
     } else if (collection.containsSelected) {
       return <Icon icon="MINUS" />;
     } else {

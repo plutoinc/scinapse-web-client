@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { Paper } from '../../../model/paper';
-import MobileCitationListLinkButton from './mobileCitationListLinkButton';
-import MobileReadLaterButton from './mobileReadLaterButton';
-const s = require('./simpleMobileButtonGroup.scss');
+import SimpleCitationListLinkButton from './simpleCitationListLinkButton';
+import SimpleReadLaterButton from './simpleReadLaterButton';
+const s = require('./simplePaperItemButtonGroup.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
 
 interface Props {
@@ -12,13 +12,13 @@ interface Props {
   saved: boolean;
 }
 
-const SimpleMobilePaperItemButtonGroup: FC<Props> = ({ paper, pageType, actionArea, saved }) => {
+const SimplePaperItemButtonGroup: FC<Props> = ({ paper, pageType, actionArea, saved }) => {
   useStyles(s);
 
   return (
     <div className={s.groupWrapper}>
       <div>
-        <MobileCitationListLinkButton
+        <SimpleCitationListLinkButton
           paperId={paper.id}
           citedCount={paper.citedCount}
           pageType={pageType}
@@ -26,10 +26,10 @@ const SimpleMobilePaperItemButtonGroup: FC<Props> = ({ paper, pageType, actionAr
         />
       </div>
       <div>
-        <MobileReadLaterButton paperId={paper.id} saved={!!saved} pageType={pageType} actionArea={actionArea} />
+        <SimpleReadLaterButton paperId={paper.id} saved={!!saved} pageType={pageType} actionArea={actionArea} />
       </div>
     </div>
   );
 };
 
-export default SimpleMobilePaperItemButtonGroup;
+export default SimplePaperItemButtonGroup;

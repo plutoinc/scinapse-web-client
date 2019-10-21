@@ -153,6 +153,7 @@ const UiDemo: React.FunctionComponent = () => {
   const [selectedColor, setSelectedColor] = React.useState<ButtonColor>('blue');
   const [isDisabled, setDisabled] = React.useState(false);
   const [isFullWidth, setFullWidth] = React.useState(false);
+  const [isLoading, setLoading] = React.useState(false);
   const [icon, setIcon] = React.useState('BOOKMARK');
   const [content, setContent] = React.useState('BUTTON TEXT');
   const [combinedButtonIcon, setCombinedButtonIcon] = React.useState('NONE');
@@ -326,6 +327,16 @@ const UiDemo: React.FunctionComponent = () => {
               onChange={e => setFullWidth(e.currentTarget.checked)}
             />
           </div>
+
+          <div className={s.checkboxWrapper}>
+            <span className={s.checkboxLabel}>Loading</span>
+            <input
+              className={s.checkbox}
+              type="checkbox"
+              checked={isLoading}
+              onChange={e => setLoading(e.currentTarget.checked)}
+            />
+          </div>
         </div>
       </div>
 
@@ -342,6 +353,7 @@ const UiDemo: React.FunctionComponent = () => {
               color={selectedColor}
               disabled={isDisabled}
               fullWidth={isFullWidth}
+              isLoading={isLoading}
               combinedButtonIcon={combinedButtonIcon}
             />
           </div>
@@ -360,6 +372,7 @@ const UiDemo: React.FunctionComponent = () => {
                 color: selectedColor,
                 disabled: isDisabled,
                 fullWidth: isFullWidth,
+                isLoading,
                 combinedButtonIcon: combinedButtonIcon,
               }).trim()}
             </code>

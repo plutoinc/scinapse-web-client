@@ -22,7 +22,7 @@ import {
   JOURNAL_SHOW_PATH,
   COLLECTION_LIST_PATH,
   AUTH_PATH,
-  ADMIN_PATH,
+  DESIGN_PATH,
   TERMS_OF_SERVICE_PATH,
   PRIVACY_POLICY_PATH,
   USER_SETTINGS_PATH,
@@ -148,7 +148,7 @@ export const routesMap: ServerRoutesMap[] = [
     }),
   },
   {
-    path: ADMIN_PATH,
+    path: DESIGN_PATH,
     component: loadable(() => import('./containers/admin'), {
       fallback: <div>loading ...</div>,
     }),

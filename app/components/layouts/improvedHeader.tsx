@@ -32,7 +32,6 @@ import ResearchHistory from '../researchHistory';
 import { UserDevice } from './reducer';
 import Button from '../common/button';
 import { fetchKeywordAlertList } from '../../containers/keywordSettings/actions';
-import { clearToKeywordSettings } from '../../reducers/keywordSettings';
 import { changeSearchQuery } from '../../reducers/searchQuery';
 const styles = require('./improvedHeader.scss');
 
@@ -264,7 +263,6 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
 
     try {
       await dispatch(signOut());
-      await dispatch(clearToKeywordSettings());
       this.handleRequestCloseUserDropdown();
     } catch (_err) {
       dispatch({

@@ -35,37 +35,6 @@
   @extend %base-label;
 }
 
-.editButton {
-  @extend %base-form-button;
-
-  border: solid 1px $gray500;
-
-  &:hover {
-    background-color: $gray30;
-  }
-}
-
-.submitButton {
-  @extend %base-form-button;
-
-  background-color: $main_blue0;
-  color: white;
-
-  &:hover {
-    background-color: $main_blue1;
-  }
-
-  &.isLoading {
-    cursor: not-allowed;
-    background-color: $gray50;
-    opacity: 0.9;
-  }
-
-  & + .editButton {
-    margin-left: 8px;
-  }
-}
-
 .affiliationFormWrapper {
   margin-top: 44px;
   margin-bottom: 36px;

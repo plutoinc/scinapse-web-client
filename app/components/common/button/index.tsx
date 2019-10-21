@@ -55,13 +55,13 @@ const Button: React.FC<GeneralButtonProps> = props => {
         return (
           <button {...buttonProps as ButtonProps} style={style} className={className}>
             <div style={{ visibility: 'hidden', display: 'flex' }}>{props.children}</div>
-            <ButtonSpinner color={style.color || 'white'} size={size} />
+            <ButtonSpinner color={color} size={size} variant={variant} disabled={disabled!} />
           </button>
         );
       }
 
       return (
-        <button {...buttonProps as ButtonProps} className={className}>
+        <button {...buttonProps as ButtonProps} className={className} disabled={disabled}>
           {props.children}
         </button>
       );

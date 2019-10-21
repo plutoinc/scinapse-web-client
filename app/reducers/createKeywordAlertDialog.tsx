@@ -13,7 +13,7 @@ export const CREATE_KEYWORD_ALERT_DIALOG_INITIAL_STATE: CreateKeywordAlertDialog
 };
 
 const createKeywordAlertDialogSlice = createSlice({
-  slice: 'createKeywordAlertDialogSlice',
+  name: 'createKeywordAlertDialogSlice',
   initialState: CREATE_KEYWORD_ALERT_DIALOG_INITIAL_STATE,
   reducers: {
     openCreateKeywordAlertDialog(state, action: PayloadAction<{ from: string; keyword: string }>) {

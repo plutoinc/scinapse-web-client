@@ -13,3 +13,29 @@
   background-color: $gray300;
   margin: 40px 0 32px 0;
 }
+
+.toggleItemWrapper {
+  display: flex;
+  justify-content: space-between;
+
+  & + & {
+    margin-top: 40px;
+  }
+}
+
+.toggleButtonWrapper {
+  display: flex;
+  align-items: center;
+  width: 100px;
+}
+
+@media (max-width: $mobile_width) {
+  .toggleItemWrapper {
+    flex-direction: column;
+  }
+
+  .toggleButtonWrapper {
+    margin-top: 24px;
+    width: 100%;
+  }
+}
