@@ -93,7 +93,6 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
         >
           <span>SUGGEST CHANGES</span>
         </Button>
-        ㅕ{' '}
       </div>
     );
     let guideContext = null;

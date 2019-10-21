@@ -1,14 +1,19 @@
 .label {
   color: $gray800;
+  display: inline-flex;
+  vertical-align: middle;
 }
 
 .starBadgeIcon {
-  display: inline-block;
+  display: inline-flex;
   vertical-align: bottom;
-  width: 16px;
-  height: 16px;
   margin: 0 2px 0 4px;
   color: $gray600;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
 }
 
 .text {
@@ -20,10 +25,13 @@
 
 @media (max-width: $mobile_width) {
   .starBadgeIcon {
-    width: 14px;
-    height: 14px;
     margin-bottom: 0px;
     vertical-align: text-bottom;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
   }
 
   .text {
