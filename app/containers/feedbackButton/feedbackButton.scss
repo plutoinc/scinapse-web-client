@@ -15,26 +15,9 @@
 }
 
 .feedbackButtonWrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 160px;
-  height: 46.5px;
-  line-height: 46.5px;
-  border-radius: 45px;
-  background-color: $gray600;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05);
-  text-align: center;
-  color: white;
-  cursor: pointer;
-
   // Mobile
   @media (max-width: $mobile_width) {
     display: none;
-  }
-  &:hover {
-    background-color: $gray500;
-    transition: 0.3s ease-in-out;
   }
 }
 
@@ -140,14 +123,14 @@
 }
 
 .feedbackInput {
-  width: 300px;
   text-align: center;
+  padding: 18px 0;
 }
 
 .feedbackHeader {
   font-size: 14px;
   font-weight: 500;
-  padding: 18px 12px 16px 12px;
+  padding: 0 12px 16px 12px;
   color: $gray800;
   text-align: left;
 }
@@ -224,7 +207,8 @@
   margin: 5px 0;
 }
 
-.formStyle + .formStyle {
+.formStyle + .formStyle,
+.formStyle + button {
   margin-top: 10px;
 }
 
