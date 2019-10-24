@@ -12,7 +12,7 @@ class PrivacyPolicy extends React.Component {
           <div className={styles.title}>Privacy Policy</div>
           <p className={styles.subtitle}>INTRODUCTION AND DEFINITIONS</p>
           <p className={styles.contents}>
-            Pluto Network ("Pluto Network", "we", "us", "our", "ours", "ourselves") has begun on the belief that global
+            Pluto Inc. ("Pluto Inc.", "we", "us", "our", "ours", "ourselves") has begun on the belief that global
             research ecosystem in pursuit of advancing human knowledge works better when it is collaborative rather than
             competitive. As an endeavor to build a system to actually realize such belief we are developing and
             operating online services including https://scinapse.io/ ("the Services"), as described in our Terms of
@@ -70,7 +70,7 @@ class PrivacyPolicy extends React.Component {
           <p className={styles.contents}>
             The Services also involve transmission of information between us and some third parties ("third party",
             "third parties"), which are individuals, entities, websites, services, products, and applications that are
-            not controlled, managed, or operated by Pluto Network. This includes the cloud-based digital infrastructures
+            not controlled, managed, or operated by Pluto Inc.. This includes the cloud-based digital infrastructures
             that enable the Services.
           </p>
           <p className={styles.subtitle}>COVERAGE</p>
@@ -323,11 +323,11 @@ class PrivacyPolicy extends React.Component {
             <b>Research, Development & Improvement</b>
           </p>
           <p className={styles.contents}>
-            Improving the Services and pursuing the mission and vision of Pluto Network might require analytic services
-            by third parties. We may share non-personal information or aggregated information with researchers,
-            scholars, academics, and other interested third parties who wish to study the Services. Sharing this
-            information helps them understand usage, viewing, and demographics statistics and patterns. They then can
-            share their findings with us and our users so that we can all better understand and improve the Services.
+            Improving the Services and pursuing the mission and vision of Pluto Inc. might require analytic services by
+            third parties. We may share non-personal information or aggregated information with researchers, scholars,
+            academics, and other interested third parties who wish to study the Services. Sharing this information helps
+            them understand usage, viewing, and demographics statistics and patterns. They then can share their findings
+            with us and our users so that we can all better understand and improve the Services.
           </p>
           <p className={styles.contents}>
             When we give access to personal information to third parties, we hope they treat your information
@@ -385,7 +385,7 @@ class PrivacyPolicy extends React.Component {
             English version precedes.
           </p>
           <p className={styles.contents}>
-            Pluto Network is a non-profit team based in Seoul, Republic of Korea (South Korea), with servers and data
+            Pluto Inc. is a non-profit team based in Seoul, Republic of Korea (South Korea), with servers and data
             centers, including those operated by third parties, located in various places around the world. If you
             decide to use the Services, you understand that your personal information will be collected, transferred,
             stored, processed, disclosed and otherwise used in the Republic of Korea as described in this Privacy
