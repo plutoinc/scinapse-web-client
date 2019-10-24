@@ -159,7 +159,7 @@ const ImprovedFooter: React.FC<FooterProps> = props => {
           </div>
         </div>
         <div className={styles.title}>
-          <div>{`© ${currentYear} Pluto Network. All rights reserved`}</div>
+          <div>{`© ${currentYear} Pluto Inc. All rights reserved`}</div>
         </div>
       </footer>
     </div>

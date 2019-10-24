@@ -84,7 +84,7 @@ export default class ErrorTracker extends React.PureComponent<{}, ErrorTrackerSt
               <div className={styles.teamDescription}>
                 <div className={styles.teamHeadline}>Our team</div>
                 <div className={styles.teamDescriptionContent}>
-                  <b>Pluto Network</b>
+                  <b>Pluto Inc.</b>
                   {/* tslint:disable-next-line:max-line-length */}
                   {` is the team working on Scinapse.\nWe have mission to break the barrier of scholarly communication.\n\nGive your attention and please follow us.`}
                 </div>
