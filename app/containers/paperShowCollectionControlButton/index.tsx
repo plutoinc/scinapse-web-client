@@ -17,6 +17,8 @@ import { MyCollectionsState } from './reducer';
 import { collectionSchema, Collection } from '../../model/collection';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
 import PaperNoteForm from '../../components/paperShow/noteForm';
+import Button from '../../components/common/button';
+
 import {
   selectCollectionToCurrentCollection,
   savePaperToCollection,
@@ -80,7 +82,11 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
   if (!props.currentUser.isLoggedIn) {
     return (
       <div ref={addToCollectionBtnEl}>
-        <button
+        <Button
+          elementType="button"
+          size="medium"
+          color="gray"
+          variant="outlined"
           onClick={async () => {
             ActionTicketManager.trackTicket({
               pageType: 'paperShow',
@@ -99,11 +105,10 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
 
             dispatch(addPaperToRecommendPool({ paperId: props.paperId, action: 'addToCollection' }));
           }}
-          className={styles.unsignedTitleBtn}
         >
-          <Icon icon="COLLECITON_LIST" className={styles.collectionIcon} />
-          Add to Collection
-        </button>
+          <Icon icon="COLLECITON_LIST" />
+          <span>Add to Collection</span>
+        </Button>
       </div>
     );
   } else if (!props.collection) {

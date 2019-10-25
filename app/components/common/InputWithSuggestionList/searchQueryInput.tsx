@@ -268,14 +268,14 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
           autoFocus={props.autoFocus}
           className={inputClassName}
         />
-        <div className={s.searchButtonWrapper} style={props.actionArea == 'home' ? { top: '10px' } : { top: '7px' }}>
+        <div className={s.searchButtonWrapper} style={props.actionArea == 'home' ? { top: '4px' } : { top: '2px' }}>
           {props.actionArea == 'home' ? (
-            <Button elementType="button" size="small" onClick={clickSearchBtn}>
-              <Icon icon="SEARCH" className={s.searchIconInButton} />
-              <span>SEARCH</span>
+            <Button elementType="button" size="medium" onClick={clickSearchBtn}>
+              <Icon icon="SEARCH" />
+              <span>Search</span>
             </Button>
           ) : (
-            <Button elementType="button" size="small" variant="text" onClick={clickSearchBtn}>
+            <Button elementType="button" size="medium" variant="text" onClick={clickSearchBtn}>
               <Icon icon="SEARCH" />
             </Button>
           )}
