@@ -21,7 +21,7 @@ const MobileSearchBox: React.FC<Props> = ({ location }) => {
     () => {
       if (isOpen) dispatch(closeMobileSearchBox());
     },
-    [dispatch, isOpen, location]
+    [dispatch, location]
   );
 
   if (!isMobile || !isOpen) return null;
