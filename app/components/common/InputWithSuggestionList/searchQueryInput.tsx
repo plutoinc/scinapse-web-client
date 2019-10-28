@@ -276,8 +276,6 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
               dispatch(openMobileSearchBox());
             }
             if (!isOpen) setIsOpen(true);
-
-            e.currentTarget.setSelectionRange(value.length, value.length);
           }}
           onClick={() => {
             if (!isOpen) setIsOpen(true);
