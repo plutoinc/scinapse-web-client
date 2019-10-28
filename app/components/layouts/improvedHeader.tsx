@@ -33,6 +33,7 @@ import { UserDevice } from './reducer';
 import Button from '../common/button';
 import { fetchKeywordAlertList } from '../../containers/keywordSettings/actions';
 import { changeSearchQuery } from '../../reducers/searchQuery';
+import MobileSearchBox from '../common/mobileSearchBox';
 const styles = require('./improvedHeader.scss');
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -110,6 +111,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
 
     return (
       <nav className={`${navClassName} mui-fixed`}>
+        <MobileSearchBox />
         <div className={styles.headerContainer}>
           <div className={styles.leftBox}>
             {this.getHeaderLogo()}

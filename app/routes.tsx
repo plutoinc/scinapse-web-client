@@ -194,7 +194,6 @@ const DialogComponent = loadable(() => import('./components/dialog'));
 const FeedbackButton = loadable(() => import('./containers/feedbackButton'));
 const ImprovedHeader = loadable(() => import('./components/layouts/improvedHeader'));
 const SnackbarComponent = loadable(() => import('./components/snackbar'));
-const MobileSearchBox = loadable(() => import('./components/common/mobileSearchBox'));
 
 const DefaultHelmet = () => {
   return (
@@ -283,14 +282,11 @@ const RootRoutes: React.FC<RootRoutesProps> = props => {
   return (
     <div>
       <DefaultHelmet />
-      <MobileSearchBox />
+      <ImprovedHeader />
       <div className={classNames({ [styles.mainContentsAtOpenMobileSearchBox]: isOpenMobileSearchBox })}>
-        <ImprovedHeader />
-        <div>
-          <Switch location={location}>
-            {routesMap.map(route => <Route {...route} key={route.path || 'errorPage'} />)}
-          </Switch>
-        </div>
+        <Switch location={location}>
+          {routesMap.map(route => <Route {...route} key={route.path || 'errorPage'} />)}
+        </Switch>
       </div>
       <DeviceDetector />
       <LocationListener />
