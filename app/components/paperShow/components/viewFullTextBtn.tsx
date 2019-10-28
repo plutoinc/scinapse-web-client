@@ -5,6 +5,7 @@ import Icon from '../../../icons';
 import SearchingPDFBtn from './searchingPDFBtn';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { addPaperToRecommendPool } from '../../recommendPool/actions';
+import Button from '../../common/button';
 
 const styles = require('./viewFullTextBtn.scss');
 
@@ -23,8 +24,9 @@ const ViewFullTextBtn: React.FC<ViewFullTextBtnProps> = props => {
   }
 
   return (
-    <button
-      className={styles.btnStyle}
+    <Button
+      elementType="button"
+      isLoading={isLoading}
       onClick={() => {
         ActionTicketManager.trackTicket({
           pageType: 'paperShow',
@@ -37,8 +39,9 @@ const ViewFullTextBtn: React.FC<ViewFullTextBtnProps> = props => {
         dispatch(addPaperToRecommendPool({ paperId, action: 'viewMorePDF' }));
       }}
     >
-      <Icon className={styles.pdfIcon} icon={'PDF_PAPER'} />View Full-Text
-    </button>
+      <Icon icon="PDF_PAPER" />
+      <span>View Full-Text</span>
+    </Button>
   );
 };
 

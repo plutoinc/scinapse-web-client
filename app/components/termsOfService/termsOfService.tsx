@@ -9,21 +9,21 @@ class TermsOfService extends React.Component {
     return (
       <div className={styles.rootWrapper}>
         <div className={styles.termsOfServiceContainer}>
-          <div className={styles.title}>PLUTO NETWORK TERMS OF SERVICE</div>
+          <div className={styles.title}>Pluto Inc. TERMS OF SERVICE</div>
           <p className={styles.contents}>
-            Pluto Network craves to make a world where there is no barrier in academia. Specifically, we want to build a
+            Pluto Inc. craves to make a world where there is no barrier in academia. Specifically, we want to build a
             better ecosystem where those who pursue science and research are promoted to collaborate with rather than
-            competing each other.Pluto Network ("Pluto Network", "we", "our", "ours", or "us") is a non-profit team
-            based in Seoul, Republic of Korea (South Korea), whose mission is to empower and engage researchers around
-            the world to share and develop scientific knowledge in a collaborative, fair, and transparent environment
-            for the prosperity of knowledge of humanity. For the dynamic community of researchers to better engage with
-            each other in the designated manners, we provide the necessary infrastructures and frameworks for generating
-            and sharing information relevant to research and many other activities that support this mission. We put in
+            competing each other.Pluto Inc. ("Pluto Inc.", "we", "our", "ours", or "us") is a non-profit team based in
+            Seoul, Republic of Korea (South Korea), whose mission is to empower and engage researchers around the world
+            to share and develop scientific knowledge in a collaborative, fair, and transparent environment for the
+            prosperity of knowledge of humanity. For the dynamic community of researchers to better engage with each
+            other in the designated manners, we provide the necessary infrastructures and frameworks for generating and
+            sharing information relevant to research and many other activities that support this mission. We put in
             every effort to build an ecosystem where knowledge pieces in science and research are promoted to be openly
             shared and then to enable further studies. We are very much happy to have you ("you", "your", "yours",
             "yourself", or the "user") as a researcher, author, reviewer, reader, or contributor to the ecosystem, and
-            welcome you to join the community. Before engaging in any activity pertaining to Pluto Network, we want you
-            to thoroughly read and agree to the following Terms of Service (the "Terms"). By agreeing to the Terms, you
+            welcome you to join the community. Before engaging in any activity pertaining to Pluto Inc., we want you to
+            thoroughly read and agree to the following Terms of Service (the "Terms"). By agreeing to the Terms, you
             understand that you may be governed under the laws and legislation of any or all of the regions (i) where
             you live, (ii) where you view or edit content on our services, (iii) where other users view your content, or
             (iv) where other users who view your content live, which may include the law in the Republic of Korea where
@@ -32,7 +32,7 @@ class TermsOfService extends React.Component {
 
           <p className={styles.subtitle}>SERVICES</p>
           <p className={styles.contents}>
-            Pluto Network strives to deliver its mission to the academic community by providing services to assist
+            Pluto Inc. strives to deliver its mission to the academic community by providing services to assist
             researchers in searching, creating, modifying, and sharing scientific research outputs (the "Services"). The
             Terms apply when you view or use any or all of them through our websites located at https://pluto.network/
             or https://scinapse.io/ (our "Websites") or through any means. By accessing or using the Services and/or our
@@ -139,9 +139,9 @@ class TermsOfService extends React.Component {
           <p className={styles.subtitle}>DENIAL OF ACCESS</p>
           <p className={styles.contents}>
             The community of users has the major role in shaping, modifying, and generating the protocols that underlie
-            the Services. Pluto Network rarely intervene in community decisions about protocols and their enforcement.
-            In an unusual case, the need may arise, or the community may ask us, to address an especially problematic
-            user because of significant disturbance of the Services or dangerous behavior. In such cases, we reserve the
+            the Services. Pluto Inc. rarely intervene in community decisions about protocols and their enforcement. In
+            an unusual case, the need may arise, or the community may ask us, to address an especially problematic user
+            because of significant disturbance of the Services or dangerous behavior. In such cases, we reserve the
             rights, but do not have obligation, to:
           </p>
           <ul className={styles.bulletPoint}>
@@ -182,7 +182,7 @@ class TermsOfService extends React.Component {
             Although you have considerable freedoms for re-use of the Content on the Services under their licenses, it
             is important that we protect our trademark rights so that we can protect our users from fraudulent
             impersonators. Because of this, we ask that you please respect our trademarks. All trademarks related to
-            Pluto Network, Scinapse, the Services and our Websites belong to us, Pluto Network, and any use of our trade
+            Pluto Inc., Scinapse, the Services and our Websites belong to us, Pluto Inc., and any use of our trade
             names, trademarks, service marks, logos, or domain names must be in compliance with the Terms and applicable
             law.
           </p>
@@ -212,7 +212,7 @@ class TermsOfService extends React.Component {
 
           <p className={styles.subtitle}>THIRD PARTY RESOURCES</p>
           <p className={styles.contents}>
-            As part of the Services, Pluto Network may provide you with convenient links or content to third party
+            As part of the Services, Pluto Inc. may provide you with convenient links or content to third party
             resources including but not limited to websites, applications, software, and digital files ("third party
             resources"). Third party resources are provided to you as a courtesy. We have no control over third party
             resources or the promotions, materials, information, goods or services available on these third party
@@ -221,7 +221,7 @@ class TermsOfService extends React.Component {
             through the Services or our Websites, including the content, accuracy, offensiveness, opinions, reliability,
             privacy practices or other policies of or contained in the third party resources. Inclusion of, linking to,
             permitting the use of, or installation of any third party resources does not imply approval or endorsement
-            thereof by Pluto Network. If you decide to leave the Services or our Websites and access, use or install any
+            thereof by Pluto Inc.. If you decide to leave the Services or our Websites and access, use or install any
             third party resources, you do so at your own risk and you should be aware that the Terms no longer govern in
             such access, use or install of third party resources. You should review the applicable terms and policies,
             including privacy and data gathering practices, of any third party resources which you navigate from the
@@ -251,8 +251,8 @@ class TermsOfService extends React.Component {
 
           <p className={styles.subtitle}>LIMITATION ON LIABILITY</p>
           <p className={styles.contents}>
-            WE, PLUTO NETWORK, OUR AFFILIATES, DIRECTORS, OFFICERS, EMPLOYEES, AGENTS, LICENSORS, AND PARTNERS WILL NOT
-            BE LIABLE TO YOU OR TO ANY OTHER PARTY FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL OR
+            WE, Pluto Inc., OUR AFFILIATES, DIRECTORS, OFFICERS, EMPLOYEES, AGENTS, LICENSORS, AND PARTNERS WILL NOT BE
+            LIABLE TO YOU OR TO ANY OTHER PARTY FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL OR
             EXEMPLARY DAMAGES, INCLUDING BUT NOT LIMITED TO, DAMAGES FOR LOSS OF PROFITS, GOODWILL, USE, DATA, OR OTHER
             INTANGIBLE LOSSES, REGARDLESS OF WHETHER WE WERE ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. IN THE CASE THAT
             APPLICABLE LAW MAY NOT ALLOW THE LIMITATION OR EXCLUSION OF LIABILITY OR INCIDENTAL OR CONSEQUENTIAL
@@ -294,26 +294,26 @@ class TermsOfService extends React.Component {
           <p className={styles.subtitle}>GENERAL TERMS</p>
           <p className={styles.contents}>
             The Terms do not create an employment, agency, partnership, or any relationship other than explicitly stated
-            in the Terms between you and us, Pluto Network. If you have not signed a separate agreement with us, the
-            Terms are the entire agreement between you and us. If there is any conflict between the Terms and a signed
-            written agreement between you and us, the signed agreement will control. You understand that, unless
-            otherwise agreed to in writing by us, you have no expectation of compensation for any activity,
-            contribution, or idea that you provide to us, the community, or the Services. If any provision or part of a
-            provision of the Terms is found unlawful, invalid, void, or unenforceable, that provision or part of the
-            provision is deemed severable from the Terms and will be enforced to the maximum extent permissible with
-            applicable law, and all other provisions of the Terms will remain in full force and effect. Our rights under
-            the Terms will survive any termination of the Terms. In any circumstance, if we do not apply or enforce any
-            provision of the Terms, it is not a waiver of that provision. Nor should it be considered a waiver of such
-            provision when we fail to enforce any provision in the Terms. Notwithstanding any provision to the contrary
-            in the Terms, we and you agree not to modify the applicable terms and requirements of any license that is
-            employed on the Services or the Content when such license is authorized by the Terms. You agree that we may
-            provide you with notices, including those regarding changes to the Terms, by email, regular mail, or
-            postings on the Services or our Websites. The Terms were written in English. While we hope that translations
-            of the Terms, if any, are accurate, in the event of any differences in meaning between the original English
-            version and a translation, the original English version takes precedence. We may assign or delegate the
-            Terms, in whole or in part, to any person or entity at any time with or without your consent. You may not
-            assign or delegate any rights or obligations under the Terms without our prior written consent, and any
-            unauthorized assignment and delegation by you is void.
+            in the Terms between you and us, Pluto Inc.. If you have not signed a separate agreement with us, the Terms
+            are the entire agreement between you and us. If there is any conflict between the Terms and a signed written
+            agreement between you and us, the signed agreement will control. You understand that, unless otherwise
+            agreed to in writing by us, you have no expectation of compensation for any activity, contribution, or idea
+            that you provide to us, the community, or the Services. If any provision or part of a provision of the Terms
+            is found unlawful, invalid, void, or unenforceable, that provision or part of the provision is deemed
+            severable from the Terms and will be enforced to the maximum extent permissible with applicable law, and all
+            other provisions of the Terms will remain in full force and effect. Our rights under the Terms will survive
+            any termination of the Terms. In any circumstance, if we do not apply or enforce any provision of the Terms,
+            it is not a waiver of that provision. Nor should it be considered a waiver of such provision when we fail to
+            enforce any provision in the Terms. Notwithstanding any provision to the contrary in the Terms, we and you
+            agree not to modify the applicable terms and requirements of any license that is employed on the Services or
+            the Content when such license is authorized by the Terms. You agree that we may provide you with notices,
+            including those regarding changes to the Terms, by email, regular mail, or postings on the Services or our
+            Websites. The Terms were written in English. While we hope that translations of the Terms, if any, are
+            accurate, in the event of any differences in meaning between the original English version and a translation,
+            the original English version takes precedence. We may assign or delegate the Terms, in whole or in part, to
+            any person or entity at any time with or without your consent. You may not assign or delegate any rights or
+            obligations under the Terms without our prior written consent, and any unauthorized assignment and
+            delegation by you is void.
           </p>
 
           <p className={styles.subtitle}>END OF TERMS OF SERVICE</p>

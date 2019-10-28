@@ -121,7 +121,13 @@
 }
 
 .searchIconInButton {
+  color: #a8c6ff;
   transform: scaleX(-1);
+}
+
+.searchButtonWrapper {
+  position: absolute;
+  right: 4px;
 }
 
 @media (max-width: $mobile_width) {

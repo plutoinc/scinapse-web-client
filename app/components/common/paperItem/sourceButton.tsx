@@ -8,6 +8,7 @@ import { AppState } from '../../../reducers';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { addPaperToRecommendPool } from '../../recommendPool/actions';
 import { Paper } from '../../../model/paper';
+import Button from '../button';
 const styles = require('./sourceButton.scss');
 
 interface SourceButtonProps {
@@ -15,9 +16,10 @@ interface SourceButtonProps {
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
   paperSource?: PaperSource;
+  isMobile?: boolean;
 }
 
-const SourceButton: React.FC<SourceButtonProps> = ({ paperSource, pageType, actionArea, paper }) => {
+const SourceButton: React.FC<SourceButtonProps> = ({ paperSource, pageType, actionArea, paper, isMobile }) => {
   const dispatch = useDispatch();
   const userDevice = useSelector<AppState, UserDevice>(state => state.layout.userDevice);
   const noUrls = !paper.doi && (!paper.urls || paper.urls.length === 0);
@@ -29,11 +31,14 @@ const SourceButton: React.FC<SourceButtonProps> = ({ paperSource, pageType, acti
     const buttonContext = userDevice == UserDevice.MOBILE ? 'Source' : paperSource.host;
 
     return (
-      <a
+      <Button
+        elementType="anchor"
         href={`https://doi.org/${paperSource.doi}`}
         target="_blank"
         rel="noopener nofollow noreferrer"
-        className={styles.sourceButton}
+        size="small"
+        variant={isMobile ? 'contained' : 'outlined'}
+        color={isMobile ? 'black' : 'gray'}
         onClick={() => {
           ActionTicketManager.trackTicket({
             pageType,
@@ -46,24 +51,26 @@ const SourceButton: React.FC<SourceButtonProps> = ({ paperSource, pageType, acti
         }}
       >
         <img
-          className={styles.faviconIcon}
           src={`https://www.google.com/s2/favicons?domain=${paperSource.source}`}
           alt={`${paperSource.host} favicon`}
         />
         <span className={styles.sourceHostInfo}>{buttonContext}</span>
         <Icon icon="SOURCE" className={styles.extSourceIcon} />
-      </a>
+      </Button>
     );
   }
 
   const destination = paper.doi ? `https://doi.org/${paper.doi}` : paper.urls[0].url;
 
   return (
-    <a
+    <Button
+      elementType="anchor"
       href={destination}
       target="_blank"
       rel="noopener nofollow noreferrer"
-      className={styles.sourceButton}
+      size="small"
+      variant={isMobile ? 'contained' : 'outlined'}
+      color={isMobile ? 'black' : 'gray'}
       onClick={() => {
         ActionTicketManager.trackTicket({
           pageType,
@@ -75,9 +82,9 @@ const SourceButton: React.FC<SourceButtonProps> = ({ paperSource, pageType, acti
         dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'source' }));
       }}
     >
-      <Icon icon="EXTERNAL_SOURCE" className={styles.linkIcon} />
+      <Icon icon="EXTERNAL_SOURCE" />
       <span className={styles.sourceHostInfo}>Source</span>
-    </a>
+    </Button>
   );
 };
 

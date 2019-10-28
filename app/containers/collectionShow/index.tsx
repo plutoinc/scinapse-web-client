@@ -32,6 +32,7 @@ import { ACTION_TYPES } from '../../actions/actionTypes';
 import Pagination from '../../components/collectionShow/pagination';
 import { checkAuthStatus } from '../../components/auth/actions';
 import { removePaperFromCollection } from '../../components/dialog/actions';
+import Button from '../../components/common/button';
 const styles = require('./collectionShow.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -43,9 +44,17 @@ const EditButton: React.FC<{ itsMine: boolean; userCollection: Collection }> = (
   if (!itsMine) return null;
 
   return (
-    <button className={styles.editButton} onClick={() => GlobalDialogManager.openEditCollectionDialog(userCollection!)}>
-      <Icon icon="PEN" className={styles.editIcon} />Edit
-    </button>
+    <Button
+      elementType="button"
+      size="small"
+      variant="text"
+      color="gray"
+      onClick={() => GlobalDialogManager.openEditCollectionDialog(userCollection!)}
+      style={{ marginLeft: '8px' }}
+    >
+      <Icon icon="PEN" />
+      <span>Edit</span>
+    </Button>
   );
 };
 

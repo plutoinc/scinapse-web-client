@@ -35,20 +35,11 @@
   color: $black0;
   flex: 1;
   min-width: 0;
+  margin-right: 8px;
 
   &::placeholder {
     color: $gray500;
   }
-}
-
-.signUpBtn {
-  display: block;
-  border-radius: 4px;
-  background-color: #3e80ff;
-  padding: 10px 16px;
-  margin-left: 8px;
-  color: white;
-  cursor: pointer;
 }
 
 .bannerImage {

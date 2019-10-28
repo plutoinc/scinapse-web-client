@@ -6,7 +6,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import ScinapseInput from '../../../common/scinapseInput';
 import { withStyles } from '../../../../helpers/withStylesHelper';
 import ArticleSpinner from '../../../common/spinner/articleSpinner';
-import ScinapseButton from '../../../common/scinapseButton';
+import Button from '../../../common/button';
 import Icon from '../../../../icons';
 import alertToast from '../../../../helpers/makePlutoToastAction';
 import PlutoAxios from '../../../../api/pluto';
@@ -121,20 +121,15 @@ class RepresentativePublicationsDialog extends React.PureComponent<
             {MAXIMUM_SELECT_COUNT - this.getRemainedPaperCount()} / 5 Selected
           </span>
           <div className={styles.buttonsWrapper}>
-            <ScinapseButton
-              style={{
-                backgroundColor: isLoading ? '#ecf1fa' : '#6096ff',
-                cursor: isLoading ? 'not-allowed' : 'pointer',
-                minWidth: '200px',
-                height: '40px',
-              }}
+            <Button
+              elementType="button"
+              type="submit"
               disabled={isLoading}
               isLoading={isLoading}
-              gaCategory="New Author Show"
-              gaAction="Click Save Button in Representative Publication"
-              content={`Save ${MAXIMUM_SELECT_COUNT - this.getRemainedPaperCount()} representative publications`}
               onClick={this.handleSavingSelectedPublications}
-            />
+            >
+              <span>{`Save ${MAXIMUM_SELECT_COUNT - this.getRemainedPaperCount()} representative publications`}</span>
+            </Button>
           </div>
         </div>
       </Dialog>

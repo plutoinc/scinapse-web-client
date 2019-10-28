@@ -22,6 +22,7 @@ import restoreScroll from '../../helpers/scrollRestoration';
 import alertToast from '../../helpers/makePlutoToastAction';
 import ErrorPage from '../error/errorPage';
 import ImprovedFooter from '../layouts/improvedFooter';
+import Button from '../common/button';
 const styles = require('./collections.scss');
 
 export interface UserCollectionsProps extends RouteComponentProps<{ userId: string }> {
@@ -137,21 +138,29 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
     if (currentUser && currentUser.id === collectionUserId) {
       return (
         <div className={styles.collectionControlBox}>
-          <div
-            className={styles.controlIconWrapper}
-            onClick={() => {
-              this.handleClickEditCollection(collection);
-            }}
-          >
-            <Icon className={styles.controlIcon} icon="PEN" />
+          <div className={styles.controlIconWrapper}>
+            <Button
+              elementType="button"
+              size="small"
+              color="black"
+              onClick={() => {
+                this.handleClickEditCollection(collection);
+              }}
+            >
+              <Icon icon="PEN" />
+            </Button>
           </div>
-          <div
-            className={styles.controlIconWrapper}
-            onClick={() => {
-              this.handleDeleteCollection(collection);
-            }}
-          >
-            <Icon className={styles.controlIcon} icon="TRASH_CAN" />
+          <div className={styles.controlIconWrapper}>
+            <Button
+              elementType="button"
+              size="small"
+              color="black"
+              onClick={() => {
+                this.handleDeleteCollection(collection);
+              }}
+            >
+              <Icon icon="TRASH_CAN" />
+            </Button>
           </div>
         </div>
       );
@@ -164,10 +173,16 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
     const collectionUserId = parseInt(match.params.userId, 10);
     if (currentUser && currentUser.id === collectionUserId) {
       return (
-        <button className={styles.newCollectionBtnWrapper} onClick={this.handleClickNewCollectionButton}>
-          <Icon className={styles.plusIcon} icon="PLUS" />
+        <Button
+          elementType="button"
+          size="small"
+          variant="outlined"
+          color="gray"
+          onClick={this.handleClickNewCollectionButton}
+        >
+          <Icon icon="PLUS" />
           <span>Create New Collection</span>
-        </button>
+        </Button>
       );
     }
     return null;

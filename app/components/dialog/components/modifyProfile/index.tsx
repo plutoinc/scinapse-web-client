@@ -3,7 +3,6 @@ import Dialog from '@material-ui/core/Dialog';
 import { Formik, Form, Field, FormikErrors } from 'formik';
 import { withStyles } from '../../../../helpers/withStylesHelper';
 import { Author } from '../../../../model/author/author';
-import ScinapseButton from '../../../common/scinapseButton';
 import Icon from '../../../../icons';
 import ScinapseFormikInput from '../../../common/scinapseInput/scinapseFormikInput';
 import ReduxAutoSizeTextarea from '../../../common/autoSizeTextarea/reduxAutoSizeTextarea';
@@ -12,6 +11,7 @@ import { Affiliation } from '../../../../model/affiliation';
 import { SuggestAffiliation } from '../../../../api/suggest';
 import validateEmail from '../../../../helpers/validateEmail';
 import scinapseFormikCheckbox from '../../../common/scinapseInput/scinapseFormikCheckbox';
+import Button from '../../../common/button';
 const styles = require('./modifyProfile.scss');
 
 export interface ModifyProfileFormState {
@@ -170,22 +170,9 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                 </div>
                 <div className={styles.footer}>
                   <div className={styles.buttonsWrapper}>
-                    <ScinapseButton
-                      type="submit"
-                      style={{
-                        backgroundColor: isLoading ? '#ecf1fa' : '#6096ff',
-                        cursor: isLoading ? 'not-allowed' : 'pointer',
-                        width: '127px',
-                        height: '40px',
-                        fontWeight: 500,
-                        fontSize: '16px',
-                      }}
-                      disabled={isLoading}
-                      gaCategory="New Author Show"
-                      gaAction="Click Save Button in Edit Profile "
-                      gaLabel={`Save author : ${author.id} profile`}
-                      content="Save Changes"
-                    />
+                    <Button elementType="button" type="submit" disabled={isLoading} isLoading={isLoading}>
+                      <span>Save Changes</span>
+                    </Button>
                   </div>
                 </div>
               </Form>

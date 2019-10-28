@@ -34,27 +34,6 @@ function validateSearchInput(query: string) {
   return true;
 }
 
-function getSearchButton(actionArea: 'home' | 'topBar' | 'paperShow', onClick: () => void) {
-  if (actionArea === 'home') {
-    return (
-      <div className={s.homeSearchButtonWrapper}>
-        <Button elementType="button" size="small" onClick={onClick}>
-          <Icon icon="SEARCH" className={s.searchIconInButton} />
-          <span>SEARCH</span>
-        </Button>
-      </div>
-    );
-  }
-
-  return (
-    <div className={s.searchButtonWrapper}>
-      <Button elementType="button" size="small" variant="text" onClick={onClick}>
-        <Icon icon="SEARCH" />
-      </Button>
-    </div>
-  );
-}
-
 const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props => {
   useStyles(s);
   const dispatch = useDispatch();
@@ -221,30 +200,28 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
   const wrapperClassName = props.wrapperClassName ? props.wrapperClassName : s.wrapper;
   const inputClassName = props.inputClassName ? props.inputClassName : s.input;
   const placeholder = isMobile ? 'Search papers by keyword' : 'Search papers by title, author, doi or keyword';
-  const searchButton = getSearchButton(props.actionArea, clickSearchBtn);
   const backButton = isOpenMobileSearchBox ? (
-    <Button
-      elementType="button"
-      variant="text"
-      isLoading={false}
-      size="small"
-      style={{ position: 'absolute', top: '7px', left: '2px' }}
-      onClick={() => {
-        setIsOpen(false);
-        dispatch(closeMobileSearchBox());
-      }}
-    >
-      <Icon icon="BACK" />
-    </Button>
-  ) : null;
-
-  const clearButton = isOpenMobileSearchBox ? (
-    <div className={s.searchButtonWrapper} style={{ right: '52px' }}>
+    <div className={s.searchButtonWrapper} style={{ left: '2px', right: 0, top: '2px' }}>
       <Button
         elementType="button"
         variant="text"
         isLoading={false}
-        size="small"
+        onClick={() => {
+          setIsOpen(false);
+          dispatch(closeMobileSearchBox());
+        }}
+      >
+        <Icon icon="BACK" />
+      </Button>
+    </div>
+  ) : null;
+
+  const clearButton = isOpenMobileSearchBox ? (
+    <div className={s.searchButtonWrapper} style={{ right: '52px', top: '2px' }}>
+      <Button
+        elementType="button"
+        variant="text"
+        isLoading={false}
         color="gray"
         onClick={() => {
           setInputValue('');
@@ -318,7 +295,18 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
           className={inputClassName}
         />
         {clearButton}
-        {searchButton}
+        <div className={s.searchButtonWrapper} style={props.actionArea == 'home' ? { top: '4px' } : { top: '2px' }}>
+          {props.actionArea == 'home' ? (
+            <Button elementType="button" size="medium" onClick={clickSearchBtn}>
+              <Icon icon="SEARCH" />
+              <span>Search</span>
+            </Button>
+          ) : (
+            <Button elementType="button" size="medium" variant="text" onClick={clickSearchBtn}>
+              <Icon icon="SEARCH" />
+            </Button>
+          )}
+        </div>
         {keywordList}
       </div>
     </ClickAwayListener>

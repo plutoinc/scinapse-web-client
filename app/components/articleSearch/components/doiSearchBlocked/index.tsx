@@ -4,6 +4,7 @@ import ArticleSpinner from '../../../common/spinner/articleSpinner';
 import Icon from '../../../../icons';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../../../helpers/checkAuthDialog';
+import Button from '../../../common/button';
 const styles = require('./doiSearchBlocked.scss');
 
 interface DoiSearchBlockedProps {
@@ -63,9 +64,10 @@ const DoiSearchBlocked: React.FunctionComponent<DoiSearchBlockedProps> = props =
                 to view the result.
               </span>
               <br />
-              <button className={styles.signInBtn} onClick={openSignInDialog}>
-                Sign in and View the result<Icon className={styles.arrowRightIcon} icon="ARROW_RIGHT" />
-              </button>
+              <Button elementType="button" onClick={openSignInDialog} style={{ marginTop: '16px' }}>
+                <span>Sign in and View the result</span>
+                <Icon icon="ARROW_RIGHT" />
+              </Button>
             </div>
           </div>
         </div>

@@ -220,7 +220,7 @@ const DefaultHelmet = () => {
         content="scinapse is the fastest search engine for scientific papers. scinapse covers over 170m+ papers and 48k+ journals. Just try scinapse, you can quickly find the scientific paper exactly you want."
       />
       <meta itemProp="image" content="http://assets.pluto.network/og-image.png" />
-      <meta name="twitter:card" content="Pluto Network" />
+      <meta name="twitter:card" content="Pluto Inc." />
       <meta name="twitter:site" content="@pluto_network" />
       <meta name="twitter:title" content="Scinapse | Academic search engine for paper" />
       <meta name="twitter:creator" content="@pluto_network" />

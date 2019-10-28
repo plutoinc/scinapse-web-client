@@ -44,7 +44,7 @@ const PDFButton: React.FunctionComponent<PDFButtonProps> = props => {
       actionArea="contentNavBar"
       paper={paper}
       saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
-      buttonStyle={{ height: '40px', background: '#3e7fff', border: 0, fontWeight: 500 }}
+      buttonStyle={{ height: '40px', backgroundColor: '#3e7fff', border: '1px solid #3e7fff', fontWeight: 500 }}
     />
   );
 };
@@ -84,11 +84,7 @@ const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(pro
         </ul>
         <div className={styles.rightBtnBox}>
           <div className={styles.actionItem}>
-            <CiteBox
-              actionArea="contentNavBar"
-              paper={props.paper}
-              btnStyle={{ maxWidth: '74px', width: '100%', height: '36px' }}
-            />
+            <CiteBox actionArea="contentNavBar" paper={props.paper} />
           </div>
           <div className={styles.actionItem} ref={actionBtnEl}>
             <PDFButtonWithDialog

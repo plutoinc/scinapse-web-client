@@ -6,6 +6,7 @@ import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../../../locationListener';
 import GlobalDialogManager from '../../../../helpers/globalDialogManager';
 import { EmailRecommendPaperSignUpBannerTestType } from '../../../../constants/abTestObject';
+import Button from '../../../common/button';
 
 const s = require('./emailBanner.scss');
 
@@ -71,9 +72,9 @@ const EmailBanner: React.FC<{ testType: EmailRecommendPaperSignUpBannerTestType 
           onChange={e => setEmail(e.currentTarget.value)}
           size={15}
         />
-        <button type="submit" className={s.signUpBtn}>
-          Sign up
-        </button>
+        <Button elementType="button" type="submit">
+          <span>Sign up</span>
+        </Button>
       </form>
     </div>
   );

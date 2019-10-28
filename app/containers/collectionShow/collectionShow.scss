@@ -71,36 +71,6 @@ $semi_full_width: 997px;
       margin-bottom: 16px;
     }
 
-    .editButton {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 14px;
-      font-weight: 500;
-      color: $gray600;
-      margin-left: 8px;
-      cursor: pointer;
-
-      &:hover {
-        border-bottom: 1px solid $gray600;
-      }
-
-      .editIcon {
-        width: 16px;
-        height: 16px;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        margin-right: 4px;
-
-        svg {
-          width: 16px;
-          height: 16px;
-          color: $gray500;
-        }
-      }
-    }
-
     .description {
       max-width: 792px;
       font-size: 16px;

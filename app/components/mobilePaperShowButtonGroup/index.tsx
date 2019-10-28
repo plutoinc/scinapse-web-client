@@ -22,10 +22,22 @@ const MobilePaperShowButtonGroup: FC<Props> = ({ paper, pageType, actionArea, pa
   return (
     <div className={className}>
       <div className={s.buttonWrapper}>
-        <CiteButton className={s.citeButton} paper={paper} pageType={pageType} actionArea={actionArea} />
+        <CiteButton
+          className={s.citeButton}
+          paper={paper}
+          pageType={pageType}
+          actionArea={actionArea}
+          isMobile={true}
+        />
       </div>
       <div className={s.buttonWrapper}>
-        <SourceButton paper={paper} pageType={pageType} actionArea={actionArea} paperSource={paperSource} />
+        <SourceButton
+          paper={paper}
+          pageType={pageType}
+          actionArea={actionArea}
+          paperSource={paperSource}
+          isMobile={true}
+        />
       </div>
       <div className={s.buttonWrapper}>
         <CollectionButton paper={paper} saved={!!saved} pageType={pageType} actionArea={actionArea} />

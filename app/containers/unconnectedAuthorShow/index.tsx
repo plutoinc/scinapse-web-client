@@ -19,7 +19,7 @@ import { DEFAULT_AUTHOR_PAPERS_SIZE } from '../../api/author';
 import ArticleSpinner from '../../components/common/spinner/articleSpinner';
 import CoAuthor from '../../components/common/coAuthor';
 import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
-import TransparentButton from '../../components/common/transparentButton';
+import Button from '../../components/common/button';
 import { LayoutState } from '../../components/layouts/reducer';
 import AuthorShowHeader from '../../components/authorShowHeader';
 import { SuggestAffiliation } from '../../api/suggest';
@@ -85,33 +85,24 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
 
     let itsMeButton = (
       <div className={styles.headerRightBox}>
-        <a
-          className={styles.authorClaimButton}
+        <Button
+          elementType="button"
+          variant="outlined"
+          color="gray"
           onClick={() => this.handleAuthorClaim({ authorId: this.props.author.id })}
         >
-          SUGGEST CHANGES
-        </a>
+          <span>SUGGEST CHANGES</span>
+        </Button>
       </div>
     );
     let guideContext = null;
 
     if (isTestMode && !currentUser.isAuthorConnected) {
       itsMeButton = (
-        <TransparentButton
-          style={{
-            height: '36px',
-            fontWeight: 'bold',
-            padding: '0 16px 0 8px',
-          }}
-          iconStyle={{
-            marginRight: '8px',
-            width: '20px',
-            height: '20px',
-          }}
-          gaCategory="New Author Show"
-          gaAction="Click It's me Button, Unconnected author"
-          gaLabel="Try to occupied author page"
-          content="✋ It's me"
+        <Button
+          elementType="button"
+          variant="outlined"
+          color="gray"
           onClick={() => {
             if (
               confirm(
@@ -122,7 +113,9 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
               this.toggleModifyProfileDialog();
             }
           }}
-        />
+        >
+          <span>✋ It's me</span>
+        </Button>
       );
 
       guideContext = (

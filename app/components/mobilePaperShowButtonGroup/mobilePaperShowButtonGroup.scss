@@ -1,5 +1,11 @@
 .buttonWrapper {
   flex: 1 0 auto;
+
+  button,
+  a {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 .buttonWrapper + .buttonWrapper {
@@ -10,7 +16,8 @@
   width: 100%;
   height: 100%;
   justify-content: center;
-  background-color: $gray50 !important;
-  color: $black0 !important;
-  border: 0 !important;
+
+  button {
+    width: 100%;
+  }
 }

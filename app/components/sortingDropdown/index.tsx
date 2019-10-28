@@ -2,7 +2,7 @@ import React from 'react';
 import { parse } from 'qs';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Popover from '@material-ui/core/Popover';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { setActiveFilterButton } from '../../actions/searchFilter';
@@ -11,8 +11,11 @@ import FilterButton, { FILTER_BUTTON_TYPE } from '../filterButton';
 import { AppState } from '../../reducers';
 import SearchQueryManager from '../../helpers/searchQueryManager';
 import ActionTicketManager from '../../helpers/actionTicketManager';
+import Button from '../common/button';
 
 const s = require('./sortingDropdown.scss');
+
+const SORTING_TYPES: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS[] = ['RELEVANCE', 'NEWEST_FIRST', 'MOST_CITATIONS'];
 
 interface SortingDropdownProps {
   dispatch: Dispatch<SearchActions>;
@@ -54,6 +57,37 @@ const SortingDropdown: React.FC<
   const queryParams = parse(location.search, { ignoreQueryPrefix: true });
   const filter = SearchQueryManager.objectifyPaperFilter(queryParams.filter);
 
+  function getNextLocation(sortOption: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS) {
+    return {
+      pathname: '/search',
+      search: SearchQueryManager.stringifyPapersQuery({
+        query: props.query,
+        page: 1,
+        sort: sortOption,
+        filter,
+      }),
+    };
+  }
+
+  const sortingButtons = SORTING_TYPES.map(types => {
+    return (
+      <Button
+        key={types}
+        elementType="link"
+        to={getNextLocation(types)}
+        variant="text"
+        color="black"
+        onClick={() => {
+          trackSorting(types);
+          props.dispatch(setActiveFilterButton(null));
+        }}
+        fullWidth
+      >
+        <span style={{ textAlign: 'left' }}>{getSortText(types)}</span>
+      </Button>
+    );
+  });
+
   return (
     <div ref={anchorEl}>
       <FilterButton
@@ -90,60 +124,7 @@ const SortingDropdown: React.FC<
         open={props.isActive}
         anchorEl={anchorEl.current}
       >
-        <Link
-          to={{
-            pathname: '/search',
-            search: SearchQueryManager.stringifyPapersQuery({
-              query: props.query,
-              page: 1,
-              sort: 'RELEVANCE',
-              filter,
-            }),
-          }}
-          className={s.sortBtn}
-          onClick={() => {
-            trackSorting('RELEVANCE');
-            props.dispatch(setActiveFilterButton(null));
-          }}
-        >
-          Relevance
-        </Link>
-        <Link
-          to={{
-            pathname: '/search',
-            search: SearchQueryManager.stringifyPapersQuery({
-              query: props.query,
-              page: 1,
-              sort: 'NEWEST_FIRST',
-              filter,
-            }),
-          }}
-          className={s.sortBtn}
-          onClick={() => {
-            trackSorting('NEWEST_FIRST');
-            props.dispatch(setActiveFilterButton(null));
-          }}
-        >
-          Newest
-        </Link>
-        <Link
-          to={{
-            pathname: '/search',
-            search: SearchQueryManager.stringifyPapersQuery({
-              query: props.query,
-              page: 1,
-              sort: 'MOST_CITATIONS',
-              filter,
-            }),
-          }}
-          className={s.sortBtn}
-          onClick={() => {
-            trackSorting('MOST_CITATIONS');
-            props.dispatch(setActiveFilterButton(null));
-          }}
-        >
-          Most citations
-        </Link>
+        {sortingButtons}
       </Popover>
     </div>
   );

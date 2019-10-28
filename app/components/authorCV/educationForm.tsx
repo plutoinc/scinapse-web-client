@@ -4,9 +4,9 @@ import * as classNames from 'classnames';
 import { CvBaseInfo } from '../../api/profile';
 import { withStyles } from '../../helpers/withStylesHelper';
 import ScinapseFormikInput from '../common/scinapseInput/scinapseFormikInput';
-import ScinapseButton from '../common/scinapseButton';
 import scinapseFormikCheckbox from '../common/scinapseInput/scinapseFormikCheckbox';
 import AffiliationBox from './affiliationBox';
+import Button from '../common/button';
 const styles = require('./authorCVForm.scss');
 
 export interface EducationFormState extends CvBaseInfo {
@@ -194,42 +194,30 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                   </div>
 
                   <div className={styles.buttonsWrapper}>
-                    <ScinapseButton
-                      type="button"
+                    <Button
+                      elementType="button"
+                      variant="text"
+                      color="gray"
                       onClick={handleClose}
                       isLoading={isLoading}
-                      gaCategory="New Author Show"
-                      gaAction="Click Cancel Button in Author CV page"
-                      gaLabel="Cancel education form"
-                      content="Cancel"
                       style={{
-                        height: '42px',
-                        fontWeight: 500,
-                        fontSize: '14px',
-                        opacity: 0.25,
-                        color: '#1e2a35',
-                        border: 'none',
-                        display: 'inline-block',
                         marginRight: '8px',
                       }}
-                    />
-                    <ScinapseButton
+                    >
+                      <span>Cancel</span>
+                    </Button>
+                    <Button
+                      elementType="button"
                       type="submit"
-                      style={{
-                        backgroundColor: '#48d2a0',
-                        cursor: 'pointer',
-                        width: '57px',
-                        height: '42px',
-                        fontWeight: 500,
-                        fontSize: '14px',
-                      }}
                       disabled={isLoading}
                       isLoading={isLoading}
-                      gaCategory="New Author Show"
-                      gaAction="Click Save Button in Author CV page "
-                      gaLabel={`Save education in educationForm`}
-                      content="Save"
-                    />
+                      style={{
+                        backgroundColor: '#48d2a0',
+                        borderColor: '#48d2a0',
+                      }}
+                    >
+                      <span>Save</span>
+                    </Button>
                   </div>
                 </div>
               </div>
