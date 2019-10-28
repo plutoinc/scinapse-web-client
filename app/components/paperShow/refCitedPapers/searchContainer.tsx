@@ -98,7 +98,7 @@ const SearchContainer: React.FC<SearchContainerProps> = props => {
           aria-label="Scinapse search box in paper show"
           value={searchInput}
           placeholder={placeholder || 'Search papers'}
-          icon="SEARCH_ICON"
+          icon="SEARCH"
           onSubmit={handleSubmitSearch}
         />
       </div>
