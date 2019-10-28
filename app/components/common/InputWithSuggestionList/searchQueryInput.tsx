@@ -201,7 +201,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
   const inputClassName = props.inputClassName ? props.inputClassName : s.input;
   const placeholder = isMobile ? 'Search papers by keyword' : 'Search papers by title, author, doi or keyword';
   const backButton = isOpenMobileSearchBox ? (
-    <div className={s.searchButtonWrapper} style={{ left: '2px', right: 0, top: '2px' }}>
+    <div className={s.searchButtonWrapper} style={{ left: '2px', right: 'auto', top: '2px' }}>
       <Button
         elementType="button"
         variant="text"
