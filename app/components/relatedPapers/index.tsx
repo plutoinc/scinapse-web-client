@@ -11,6 +11,7 @@ import { getMemoizedCurrentUser } from '../../selectors/getCurrentUser';
 import { CurrentUser } from '../../model/currentUser';
 import { makeGetMemoizedPapers } from '../../selectors/papersSelector';
 import { SimplePaperItem } from '../simplePaperItem/simplePaperItemContainer';
+import Button from '../common/button';
 const styles = require('./relatedPapers.scss');
 
 interface RelatedPapersProps {
@@ -40,9 +41,9 @@ const ContentBlocker: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
       <div className={styles.contentBlockedContext}>
         {`78% of Scinapse members use related papers.\nAfter signing in, all features are free.`}
       </div>
-      <button className={styles.signInBtn} onClick={openSignInDialog}>
-        Sign in & View
-      </button>
+      <Button elementType="button" onClick={openSignInDialog} style={{ marginTop: '24px' }}>
+        <span>{`Sign in & View`}</span>
+      </Button>
     </div>
   );
 };
