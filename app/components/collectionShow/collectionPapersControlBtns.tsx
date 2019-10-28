@@ -63,6 +63,9 @@ const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: number[] }> = ({
             preventOverflow: {
               enabled: false,
             },
+            hide: {
+              enabled: false,
+            },
             flip: {
               enabled: false,
             },
