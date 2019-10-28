@@ -68,8 +68,9 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     () => {
       setInputValue(searchQuery);
       setGenuineInputValue(searchQuery);
+      setParams(searchQuery);
     },
-    [searchQuery]
+    [searchQuery, setParams]
   );
 
   const [recentQueries, setRecentQueries] = React.useState(getRecentQueries(genuineInputValue));
@@ -268,10 +269,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
               },
             });
           }}
-          onFocus={e => {
-            const { value } = e.currentTarget;
-            setParams(value);
-
+          onFocus={() => {
             if (isMobile && !isOpenMobileSearchBox) {
               dispatch(openMobileSearchBox());
             }
@@ -286,6 +284,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
             setInputValue(value);
             setGenuineInputValue(value);
             setParams(value);
+
             if (!isOpen) {
               setIsOpen(true);
             }
