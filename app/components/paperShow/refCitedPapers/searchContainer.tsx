@@ -93,13 +93,15 @@ const SearchContainer: React.FC<SearchContainerProps> = props => {
 
   return (
     <div className={styles.searchContainer}>
-      <ScinapseInput
-        aria-label="Scinapse search box in paper show"
-        value={searchInput}
-        placeholder={placeholder || 'Search papers'}
-        icon="SEARCH_ICON"
-        onSubmit={handleSubmitSearch}
-      />
+      <div className={styles.searchInputWrapper}>
+        <ScinapseInput
+          aria-label="Scinapse search box in paper show"
+          value={searchInput}
+          placeholder={placeholder || 'Search papers'}
+          icon="SEARCH_ICON"
+          onSubmit={handleSubmitSearch}
+        />
+      </div>
       <div className={styles.sortBoxContainer}>
         <SortBox
           onClickOption={handleClickSortOption}
