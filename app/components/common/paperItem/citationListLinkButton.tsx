@@ -1,25 +1,27 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import formatNumber from '../../../helpers/formatNumber';
 import { Paper } from '../../../model/paper';
+import Button from '../button';
 
 interface CitationListLinkButtonProps {
   paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
-  className: string;
 }
 
-const CitationListLinkButton: React.FC<CitationListLinkButtonProps> = ({ paper, actionArea, pageType, className }) => {
+const CitationListLinkButton: React.FC<CitationListLinkButtonProps> = ({ paper, actionArea, pageType }) => {
   if (!paper.citedCount) return null;
 
   return (
-    <Link
+    <Button
+      elementType="link"
       to={{
         pathname: `/papers/${paper.id}`,
         hash: 'cited',
       }}
+      size="small"
+      color="black"
       onClick={() => {
         ActionTicketManager.trackTicket({
           pageType,
@@ -29,10 +31,9 @@ const CitationListLinkButton: React.FC<CitationListLinkButtonProps> = ({ paper, 
           actionLabel: String(paper.id),
         });
       }}
-      className={className}
     >
       <span>{`${formatNumber(paper.citedCount)} Citations`}</span>
-    </Link>
+    </Button>
   );
 };
 

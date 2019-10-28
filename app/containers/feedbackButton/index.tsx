@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as classNames from 'classnames';
 import * as Cookies from 'js-cookie';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -15,6 +14,7 @@ import { LayoutState } from '../../components/layouts/reducer';
 import { AppState } from '../../reducers';
 import { UserDevice } from '../../components/layouts/reducer';
 import validateEmail from '../../helpers/validateEmail';
+import Button from '../../components/common/button';
 import { FEEDBACK_SOURCE, FEEDBACK_PRIORITY, FEEDBACK_STATUS } from '../../constants/feedback';
 
 const styles = require('./feedbackButton.scss');
@@ -87,15 +87,24 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     return (
       <ClickAwayListener onClickAway={this.handleCloseRequest}>
         <div className={`${styles.feedbackButtonBox} mui-fixed`}>
-          <div
-            ref={el => (this.popoverAnchorEl = el)}
-            onClick={e => {
-              this.toggleFeedbackDropdown(e);
-            }}
-            className={styles.feedbackButtonWrapper}
-          >
-            <Icon icon="FEEDBACK" className={styles.feedbackButtonIcon} />
-            <span>Feedback</span>
+          <div ref={el => (this.popoverAnchorEl = el)} className={styles.feedbackButtonWrapper}>
+            <Button
+              elementType="button"
+              size="large"
+              onClick={e => {
+                this.toggleFeedbackDropdown(e);
+              }}
+              style={{
+                width: '160px',
+                borderRadius: '45px',
+                borderColor: styles.gray600,
+                backgroundColor: styles.gray600,
+                boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.05)',
+              }}
+            >
+              <Icon icon="FEEDBACK" />
+              <span>Feedback</span>
+            </Button>
           </div>
 
           <Popper
@@ -130,15 +139,17 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
 
   private getFAQorSurvey = () => {
     return (
-      <a
+      <Button
+        elementType="anchor"
+        variant="text"
+        fullWidth={true}
         onClick={this.trackClickMenu}
         target="_blank"
         rel="noopener nofollow noreferrer"
-        className={styles.menuItemContent}
         href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
       >
-        FAQ
-      </a>
+        <span>FAQ</span>
+      </Button>
     );
   };
 
@@ -167,14 +178,9 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
               <label>Detail</label>
               <textarea value={feedbackContent} onChange={this.handleChangeFeedback} />
             </div>
-            <div
-              className={classNames({
-                [styles.btnWrapper]: true,
-                [styles.loadingButton]: isLoadingFeedback,
-              })}
-            >
-              <button disabled={isLoadingFeedback}>{!isLoadingFeedback ? 'SEND' : 'Sending...'}</button>
-            </div>
+            <Button elementType="button" fullWidth={true} isLoading={isLoadingFeedback} disabled={isLoadingFeedback}>
+              <span>{!isLoadingFeedback ? 'SEND' : 'Sending...'}</span>
+            </Button>
           </form>
         </div>
       );
@@ -260,7 +266,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     }
   };
 
-  private toggleFeedbackDropdown = (e?: React.MouseEvent<HTMLDivElement>) => {
+  private toggleFeedbackDropdown = (e?: React.MouseEvent<HTMLButtonElement>) => {
     const isDirectOpen = !this.state.isPopoverOpen && e;
 
     if (isDirectOpen) {

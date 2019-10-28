@@ -11,6 +11,7 @@ import { useFullTextExpHook } from '../../../hooks/fulltextExpHook';
 import { FullTextExperimentType } from '../../../constants/abTestObject';
 import CollectionButton from '../../../components/common/paperItem/collectionButton';
 import { Paper } from '../../../model/paper';
+import Button from '../../../components/common/button';
 const s = require('../actionBar.scss');
 
 interface RequestFullTextBtnProps {
@@ -18,13 +19,12 @@ interface RequestFullTextBtnProps {
   paper: Paper;
   onClick: () => void;
   actionArea: Scinapse.ActionTicket.ActionArea;
-  btnStyle?: React.CSSProperties;
   lastRequestedDate: string | null;
 }
 
 const RequestFullTextBtn: React.FC<RequestFullTextBtnProps> = React.memo(props => {
   const dispatch = useDispatch();
-  const { isLoading, paper, actionArea, onClick, btnStyle, lastRequestedDate } = props;
+  const { isLoading, paper, actionArea, onClick, lastRequestedDate } = props;
   const fullTextUserGroup = useFullTextExpHook();
 
   if (isLoading) {
@@ -38,7 +38,7 @@ const RequestFullTextBtn: React.FC<RequestFullTextBtnProps> = React.memo(props =
         actionArea={actionArea}
         paper={paper}
         saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
-        buttonStyle={{ height: '40px', background: '#3e7fff', border: 0, fontWeight: 500 }}
+        buttonStyle={{ height: '40px', backgroundColor: '#3e7fff', border: '1px solid #3e7fff', fontWeight: 500 }}
       />
     );
   }
@@ -52,8 +52,10 @@ const RequestFullTextBtn: React.FC<RequestFullTextBtnProps> = React.memo(props =
       placement="top"
       classes={{ tooltip: s.arrowBottomTooltip }}
     >
-      <button
-        style={!!btnStyle ? btnStyle : {}}
+      <Button
+        elementType="button"
+        variant="outlined"
+        isLoading={isLoading}
         onClick={async () => {
           ActionTicketManager.trackTicket({
             pageType: 'paperShow',
@@ -76,11 +78,10 @@ const RequestFullTextBtn: React.FC<RequestFullTextBtnProps> = React.memo(props =
             onClick();
           }
         }}
-        className={s.fullTextBtn}
       >
-        <Icon icon="SEND" className={s.sendIcon} />
-        Request Full-text
-      </button>
+        <Icon icon="SEND" />
+        <span>Request Full-text</span>
+      </Button>
     </Tooltip>
   );
 });

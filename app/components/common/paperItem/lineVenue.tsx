@@ -70,22 +70,18 @@ const JournalTitle: React.FC<{
       </Link>
       {journal.sci && <JournalBadge text="SCI(E)" labelClassName={styles.journalBadge} />}
       {journal.impactFactor && (
-        <span className={styles.ifLabel}>
-          <span>
-            <Tooltip
-              title="Impact Factor"
-              placement="top"
-              classes={{ tooltip: styles.arrowBottomTooltip }}
-              disableFocusListener
-              disableTouchListener
-            >
-              <span>
-                <Icon className={styles.ifIconWrapper} icon="IMPACT_FACTOR" />
-              </span>
-            </Tooltip>
-            {journal.impactFactor.toFixed(2)}
+        <Tooltip
+          title="Impact Factor"
+          placement="top"
+          classes={{ tooltip: styles.arrowBottomTooltip }}
+          disableFocusListener
+          disableTouchListener
+        >
+          <span className={styles.ifLabel}>
+            <Icon className={styles.ifIconWrapper} icon="IMPACT_FACTOR" />
+            <span>{journal.impactFactor.toFixed(2)}</span>
           </span>
-        </span>
+        </Tooltip>
       )}
     </>
   );

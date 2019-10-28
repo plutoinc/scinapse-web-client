@@ -1,29 +1,27 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
-import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
 import { addPaperToRecommendPool } from '../../../components/recommendPool/actions';
-const s = require('./citeBox.scss');
+import Button from '../../../components/common/button';
 
 interface CiteBoxProps {
   paper: Paper;
   actionArea: string;
-  btnStyle?: React.CSSProperties;
 }
 
 const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
-  const { paper, btnStyle, actionArea } = props;
+  const { paper, actionArea } = props;
   const dispatch = useDispatch();
 
   if (!paper.doi) return null;
 
   return (
-    <div
-      style={!!btnStyle ? btnStyle : {}}
-      className={s.citeButton}
+    <Button
+      elementType="button"
+      color="gray"
       onClick={async () => {
         GlobalDialogManager.openCitationDialog(paper.id);
         dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'citePaper' }));
@@ -36,12 +34,10 @@ const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
         });
       }}
     >
-      <div>
-        <Icon icon="CITATION" className={s.citeIcon} />
-        <span>Cite</span>
-      </div>
-    </div>
+      <Icon icon="CITATION" />
+      <span>Cite</span>
+    </Button>
   );
 };
 
-export default withStyles<typeof CiteBox>(s)(CiteBox);
+export default CiteBox;

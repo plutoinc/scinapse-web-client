@@ -61,24 +61,6 @@
   text-align: center;
 }
 
-.signInBtn {
-  width: 125px;
-  border-radius: 4px;
-  background-color: $main_blue1;
-  font-size: 14px;
-  font-weight: bold;
-  line-height: 1.43;
-  color: white;
-  padding: 8px 12px;
-  cursor: pointer;
-  margin-top: 24px;
-
-  &:hover {
-    background-color: $main_blue_light0;
-    transition: $button-hover-transition;
-  }
-}
-
 .loadingContainer {
   display: flex;
   flex-direction: column;

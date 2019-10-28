@@ -97,6 +97,7 @@ $collections-container-width: 793px;
   }
 
   .collectionControlBox {
+    display: flex;
     position: absolute;
     top: 0;
     right: 0;
@@ -104,14 +105,8 @@ $collections-container-width: 793px;
   }
 
   .controlIconWrapper {
-    display: inline-block;
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
-    cursor: pointer;
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
-    color: $gray600;
     margin-right: 8px;
 
     &:hover {

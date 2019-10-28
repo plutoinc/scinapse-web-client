@@ -21,7 +21,7 @@ import DesktopPagination from '../../components/common/desktopPagination';
 import CoAuthor from '../../components/common/coAuthor';
 import RepresentativePublicationsDialog from '../../components/dialog/components/representativePublications';
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
-import TransparentButton from '../../components/common/transparentButton';
+import Button from '../../components/common/button';
 import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
@@ -38,6 +38,7 @@ import { getAuthor } from '../unconnectedAuthorShow/actions';
 import ErrorPage from '../../components/error/errorPage';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
 import ActionTicketManager from '../../helpers/actionTicketManager';
+import Icon from '../../icons';
 const styles = require('./connectedAuthor.scss');
 
 interface ConnectedAuthorShowOwnState {
@@ -268,18 +269,19 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     }
 
     const addSelectPublicationButton = emptySelectedPapers ? (
-      <TransparentButton
+      <Button
+        elementType="button"
+        size="small"
+        variant="outlined"
+        color="gray"
         onClick={this.handleToggleRepresentativePublicationsDialog}
-        gaCategory="New Author Show"
-        gaAction="Click Add Representative Publication Button"
-        gaLabel="Try to add Representative Publications in no Pub section"
-        content="Add Representative Publication"
-        icon="PLUS"
         style={{
           marginTop: '16px',
-          height: '40px',
         }}
-      />
+      >
+        <Icon icon="PLUS" />
+        <span>Add Representative Publication</span>
+      </Button>
     ) : null;
 
     return (
@@ -301,14 +303,16 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
 
     if (currentUser.authorId === author.id) {
       return (
-        <TransparentButton
+        <Button
+          elementType="button"
+          size="small"
+          variant="outlined"
+          color="gray"
           onClick={this.handleOpenAllPublicationsDialog}
-          gaCategory="New Author Show"
-          gaAction="Click Add Publication Button"
-          gaLabel="Try to add Publications in Right box"
-          content="Add Publications"
-          icon="PLUS"
-        />
+        >
+          <Icon icon="PEN" />
+          <span>Add Publications</span>
+        </Button>
       );
     }
     return null;
@@ -319,19 +323,16 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
 
     if (currentUser.authorId === author.id) {
       return (
-        <TransparentButton
+        <Button
+          elementType="button"
+          size="small"
+          variant="outlined"
+          color="gray"
           onClick={this.handleToggleRepresentativePublicationsDialog}
-          gaCategory="New Author Show"
-          gaAction="Click Add Representative Publication Button"
-          gaLabel="Try to add Representative Publications use Manage List Button"
-          content="Manage List"
-          icon="PEN"
-          iconStyle={{
-            marginRight: '8px',
-            width: '18px',
-            height: '18px',
-          }}
-        />
+        >
+          <Icon icon="PEN" />
+          <span>Manage List</span>
+        </Button>
       );
     }
     return null;
@@ -342,24 +343,16 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
 
     if (currentUser.authorId === author.id) {
       return (
-        <TransparentButton
-          style={{
-            height: '36px',
-            fontWeight: 'bold',
-            padding: '0 16px 0 8px',
-          }}
-          iconStyle={{
-            marginRight: '8px',
-            width: '20px',
-            height: '20px',
-          }}
+        <Button
+          elementType="button"
+          size="medium"
+          variant="outlined"
+          color="gray"
           onClick={this.handleToggleModifyProfileDialog}
-          gaCategory="New Author Show"
-          gaAction="Click Edit Profile Button"
-          gaLabel="Try to Edit Profile"
-          content="Edit Profile"
-          icon="PEN"
-        />
+        >
+          <Icon icon="PEN" />
+          <span>Edit Profile</span>
+        </Button>
       );
     }
     return null;
@@ -552,18 +545,17 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
 
     const isMine = currentUser && currentUser.authorId === author.id;
     const addPublicationsBtn = isMine ? (
-      <TransparentButton
+      <Button
+        elementType="button"
+        size="medium"
+        variant="outlined"
+        color="gray"
         onClick={this.handleOpenAllPublicationsDialog}
-        gaCategory="New Author Show"
-        gaAction="Click Add Publication Button"
-        gaLabel="Try to add Publications in no Pub section"
-        content="Add Publications"
-        icon="PLUS"
-        style={{
-          height: '40px',
-          marginTop: '16px',
-        }}
-      />
+        style={{ marginTop: '16px' }}
+      >
+        <Icon icon="PLUS" />
+        <span>Add Publications</span>
+      </Button>
     ) : null;
 
     return (

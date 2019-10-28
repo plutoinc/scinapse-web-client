@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import * as classNames from 'classnames';
 import { isEqual } from 'lodash';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Popper from '@material-ui/core/Popper';
@@ -12,6 +11,7 @@ import { ACTION_TYPES } from '../../actions/actionTypes';
 import { AvailableExportCitationType } from '../../containers/paperShow/records';
 import { exportCitationText } from '../../helpers/exportCitationText';
 import ActionTicketManager from '../../helpers/actionTicketManager';
+import Button from '../common/button';
 
 const styles = require('./collectionPapersControlBtns.scss');
 
@@ -46,20 +46,24 @@ const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: number[] }> = ({
       }}
     >
       <div ref={dropdownMenuEl}>
-        <button
-          className={classNames({
-            [styles.hoverCitationExportButton]: isOpen,
-            [styles.collectionControlBtn]: !isOpen,
-          })}
+        <Button
+          elementType="button"
+          variant="text"
+          color="black"
           onClick={() => setIsOpen(!isOpen)}
           disabled={selectedPaperIds.length === 0}
         >
-          <Icon icon="CITATION" className={styles.citedIcon} />CITATION EXPORT
-        </button>
+          <Icon icon="CITATION" />
+          <span>CITATION EXPORT</span>
+        </Button>
+
         <Popper
           className={styles.citationExportDropdownMenu}
           modifiers={{
             preventOverflow: {
+              enabled: false,
+            },
+            hide: {
               enabled: false,
             },
             flip: {
@@ -127,8 +131,11 @@ const CollectionPapersControlBtns: React.FC<{
           }}
           readOnly
         />
-        <button
-          className={styles.collectionControlBtn}
+
+        <Button
+          elementType="button"
+          variant="text"
+          color="black"
           onClick={() => {
             onRemovePaperCollection(collectionShow.selectedPaperIds);
             ActionTicketManager.trackTicket({
@@ -141,8 +148,9 @@ const CollectionPapersControlBtns: React.FC<{
           }}
           disabled={collectionShow.selectedPaperIds.length === 0}
         >
-          <Icon icon="TRASH_CAN" className={styles.deleteIcon} />DELETE
-        </button>
+          <Icon icon="TRASH_CAN" />
+          <span>DELETE</span>
+        </Button>
         <MultiCitationExportDropdown selectedPaperIds={collectionShow.selectedPaperIds} />
       </div>
       <div className={styles.collectionControlBtnsDivider} />

@@ -24,6 +24,7 @@ import { getCurrentPageType } from '../../locationListener';
 import { handleInputKeydown } from './helpers/handleInputKeydown';
 import { changeSearchQuery } from '../../../actions/searchQuery';
 import { UserDevice } from '../../layouts/reducer';
+import Button from '../button';
 const s = require('./searchQueryInput.scss');
 
 type SearchQueryInputProps = React.InputHTMLAttributes<HTMLInputElement> &
@@ -267,16 +268,18 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
           autoFocus={props.autoFocus}
           className={inputClassName}
         />
-        {props.actionArea == 'home' ? (
-          <button onClick={clickSearchBtn} className={s.searchButton}>
-            <Icon icon="SEARCH" className={s.searchIconInButton} />
-            <span className={s.searchButtonText}>Search</span>
-          </button>
-        ) : (
-          <button onClick={clickSearchBtn} className={s.searchIconButton}>
-            <Icon icon="SEARCH" className={s.searchIcon} />
-          </button>
-        )}
+        <div className={s.searchButtonWrapper} style={props.actionArea == 'home' ? { top: '4px' } : { top: '2px' }}>
+          {props.actionArea == 'home' ? (
+            <Button elementType="button" size="medium" onClick={clickSearchBtn}>
+              <Icon icon="SEARCH" />
+              <span>Search</span>
+            </Button>
+          ) : (
+            <Button elementType="button" size="medium" variant="text" onClick={clickSearchBtn}>
+              <Icon icon="SEARCH" />
+            </Button>
+          )}
+        </div>
         {keywordList}
       </div>
     </ClickAwayListener>

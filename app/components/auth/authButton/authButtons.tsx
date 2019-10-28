@@ -44,7 +44,7 @@ const AuthButtons: React.FC<AuthButtonsProps> = props => {
           <Button
             size="large"
             elementType="button"
-            style={{ backgroundColor: '#3859ab' }}
+            style={{ backgroundColor: '#3859ab', borderColor: '#3859ab' }}
             onClick={handleClickFBLogin}
             disabled={FBIsLoading}
             isLoading={isLoading}
@@ -67,7 +67,7 @@ const AuthButtons: React.FC<AuthButtonsProps> = props => {
           <Button
             size="large"
             elementType="button"
-            style={{ backgroundColor: '#a5d027' }}
+            style={{ backgroundColor: '#a5d027', borderColor: '#a5d027' }}
             disabled={FBIsLoading}
             isLoading={isLoading}
             onClick={handleClickORCIDBtn}

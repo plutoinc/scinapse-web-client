@@ -10,7 +10,6 @@ import ScinapseInput from '../../../common/scinapseInput';
 import Authors from '../../../common/paperItem/lineAuthors';
 import PaperItemVenue from '../../../common/paperItem/lineVenue';
 import { withStyles } from '../../../../helpers/withStylesHelper';
-import ScinapseButton from '../../../common/scinapseButton';
 import Icon from '../../../../icons';
 import { Author, authorSchema } from '../../../../model/author/author';
 import alertToast from '../../../../helpers/makePlutoToastAction';
@@ -22,6 +21,7 @@ import { closeDialog } from '../../actions';
 import { addPapersAndFetchPapers } from '../../../../actions/author';
 import { trackEvent } from '../../../../helpers/handleGA';
 import { getCurrentPageType } from '../../../locationListener';
+import Button from '../../../common/button';
 const styles = require('./allPublications.scss');
 
 interface AllPublicationsDialogProps {
@@ -97,20 +97,14 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
         <div className={styles.contentSection}>{this.getPaperList()}</div>
         <div className={styles.footer}>
           <div className={styles.buttonsWrapper}>
-            <ScinapseButton
-              style={{
-                backgroundColor: isLoading ? '#ecf1fa' : '#6096ff',
-                cursor: isLoading ? 'not-allowed' : 'pointer',
-                width: '160px',
-                height: '40px',
-              }}
+            <Button
+              elementType="button"
               disabled={isLoading}
               isLoading={isLoading}
-              gaCategory="New Author Show"
-              gaAction="Click Add Button in Add Publication"
-              content={`Add ${selectedPapers.length} Publications`}
               onClick={this.handleSavingSelectedPublications}
-            />
+            >
+              <span>{`Add ${selectedPapers.length} Publications`}</span>
+            </Button>
           </div>
         </div>
       </div>

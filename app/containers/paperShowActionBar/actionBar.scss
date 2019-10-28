@@ -87,24 +87,6 @@
   }
 }
 
-// // RegularDisplay (1024~1200)
-@media (max-width: $regular_width) {
-  .actionBar {
-    .actions {
-      display: block;
-      & > div {
-        display: flex;
-        .actionItem {
-          width: 100%;
-          .citeButton {
-            width: 100%;
-          }
-        }
-      }
-    }
-  }
-}
-
 // Mobile (0~768)
 @media (max-width: $mobile_width) {
   .leftSide {

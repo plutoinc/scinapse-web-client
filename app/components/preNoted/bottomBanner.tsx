@@ -6,6 +6,7 @@ import { ActionTicketParams } from '../../helpers/actionTicketManager/actionTick
 import { useObserver } from '../../hooks/useIntersectionHook';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { CurrentUser } from '../../model/currentUser';
+import Button from '../common/button';
 const styles = require('./bottomBanner.scss');
 
 interface BottomBannerProps {
@@ -84,9 +85,14 @@ const BottomBanner: React.FC<BottomBannerProps> = ({ currentUser }) => {
             <button className={styles.subContext} onClick={() => handleOpenSignModal('signInPopup')}>
               Already have an account?
             </button>
-            <button className={styles.signUpBtn} onClick={() => handleOpenSignModal('signUpPopup')}>
-              Sign Up
-            </button>
+            <Button
+              elementType="button"
+              size="large"
+              onClick={() => handleOpenSignModal('signUpPopup')}
+              style={{ paddingLeft: '28px', paddingRight: '28px' }}
+            >
+              <span>Sign Up</span>
+            </Button>
           </div>
         </div>
       </div>

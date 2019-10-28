@@ -53,7 +53,7 @@ const Button: React.FC<GeneralButtonProps> = props => {
         const style = { ...buttonProps.style, position: 'relative' } as React.CSSProperties;
 
         return (
-          <button {...buttonProps as ButtonProps} style={style} className={className}>
+          <button {...buttonProps as ButtonProps} style={style} className={className} disabled={disabled}>
             <div style={{ visibility: 'hidden', display: 'flex' }}>{props.children}</div>
             <ButtonSpinner color={color} size={size} variant={variant} disabled={disabled!} />
           </button>

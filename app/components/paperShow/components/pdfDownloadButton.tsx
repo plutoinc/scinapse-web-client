@@ -7,6 +7,7 @@ import Icon from '../../../icons';
 import SearchingPDFBtn from './searchingPDFBtn';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../../helpers/checkAuthDialog';
 import { addPaperToRecommendPool } from '../../recommendPool/actions';
+import Button from '../../common/button';
 const styles = require('./pdfSourceButton.scss');
 
 interface PdfDownloadButtonProps {
@@ -44,9 +45,8 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
 
   if (pdfUrl) {
     return (
-      <a
-        aria-label="Scinapse pdf download button in paper"
-        className={styles.pdfDownloadBtn}
+      <Button
+        elementType="anchor"
         href={pdfUrl}
         target="_blank"
         rel="noopener nofollow noreferrer"
@@ -72,9 +72,9 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
           handleSetScrollAfterDownload();
         }}
       >
-        <Icon icon="DOWNLOAD" className={styles.sourceIcon} />
-        Download PDF
-      </a>
+        <Icon icon="DOWNLOAD" />
+        <span>Download PDF</span>
+      </Button>
     );
   }
 

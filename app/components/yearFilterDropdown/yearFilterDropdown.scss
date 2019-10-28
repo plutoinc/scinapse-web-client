@@ -71,18 +71,6 @@
   justify-content: space-between;
 }
 
-.clearBtn {
-  font-size: 16px;
-  color: $gray600;
-  cursor: pointer;
-}
-
-.applyBtn {
-  font-size: 16px;
-  color: $main_blue1;
-  cursor: pointer;
-}
-
 @media (max-width: $mobile_width) {
   .dropBoxWrapper {
     width: 100vw;

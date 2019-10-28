@@ -1,10 +1,10 @@
 import React from 'react';
-import IconButton from '@material-ui/core/IconButton';
 import Popper from '@material-ui/core/Popper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import PaperItemMoreDropdownItem from './moreDropdownItem';
 import Icon from '../../../icons';
 import { Paper } from '../../../model/paper';
+import Button from '../button';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./moreDropdownButton.scss');
 
@@ -43,10 +43,10 @@ const MoreDropdownButton: React.FC<MoreDropdownButtonProps> = ({ dropdownContent
   return (
     <ClickAwayListener onClickAway={() => setIsOpen(false)}>
       <div className={s.moreButton}>
-        <div onClick={() => setIsOpen(!isOpen)} ref={buttonAnchor}>
-          <IconButton classes={{ root: s.moreButtonIcon }}>
-            <Icon className={s.ellipsisIcon} icon="ELLIPSIS" />
-          </IconButton>
+        <div ref={buttonAnchor}>
+          <Button elementType="button" size="small" variant="outlined" color="gray" onClick={() => setIsOpen(!isOpen)}>
+            <Icon icon="ELLIPSIS" />
+          </Button>
         </div>
         <Popper
           className={s.moreDropdown}

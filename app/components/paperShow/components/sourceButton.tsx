@@ -1,15 +1,15 @@
 import * as React from 'react';
-import * as classNames from 'classnames';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { Paper } from '../../../model/paper';
 import { withStyles } from '../../../helpers/withStylesHelper';
-import ScinapseButtonFactory, { ScinapseButtonType } from '../../common/scinapseButton/scinapseButtonFactory';
 import SourceURLPopover from '../../common/sourceURLPopover';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
 import { addPaperToRecommendPool } from '../../recommendPool/actions';
+import GroupButton from '../../common/groupButton';
+import Button from '../../common/button';
 const styles = require('./pdfSourceButton.scss');
 
 interface SourceButtonProps {
@@ -47,55 +47,42 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
 
   const sourceUrl = paper.doi ? `https://doi.org/${paper.doi}` : paper.urls[0].url;
 
-  const btnStyle: React.CSSProperties = {
-    height: '100%',
-    width: '36px',
-    borderLeft: 'solid 1px #f1f3f6',
-    borderRight: 'solid 1px #d8dde7',
-  };
-
-  const reverseBtnStyle: React.CSSProperties = { height: '100%', width: '36px', borderLeft: 'solid 1px #6096ff' };
-  const Button = ScinapseButtonFactory(ScinapseButtonType.buttonWithArrow);
-
   return (
     <ClickAwayListener onClickAway={handleCloseSourceDropdown}>
       <div>
         <div ref={anchorEl}>
-          <Button
-            aria-label="Scinapse viewInSource button in paper"
-            isUpArrow={!isSourcePopoverOpen}
-            hasArrow={paper.urls.length > 0}
-            text="View in Source"
-            arrowIconClassName={styles.arrowIcon}
-            className={classNames({
-              [styles.downloadButton]: true,
-              [styles.reverseDownloadBtn]: !showFullText,
-            })}
-            textWrapperClassName={styles.sourceButtonTextWrapper}
-            linkProps={{
-              href: sourceUrl,
-              target: '_blank',
-              rel: 'noopener',
-              className: styles.linkClassName,
-              onClick: async e => {
+          <GroupButton variant={!showFullText ? 'contained' : 'outlined'} color="blue" disabled={false}>
+            <Button
+              elementType="anchor"
+              variant={!showFullText ? 'contained' : 'outlined'}
+              href={sourceUrl}
+              target="_blank"
+              rel="noopener"
+              onClick={async e => {
                 e.preventDefault();
                 handleClickSource();
                 dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'source' }));
                 window.open(sourceUrl, '_blank');
-              },
-            }}
-            dropdownBtnProps={{
-              onClick: async () => {
-                setIsSourcePopoverOpen(!isSourcePopoverOpen);
-                if (!isSourcePopoverOpen) {
-                  dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'source' }));
-                }
-              },
-              style: !showFullText ? reverseBtnStyle : btnStyle,
-              className: styles.dropdownBtn,
-            }}
-            leftIconNode={<Icon icon="EXTERNAL_SOURCE" className={styles.sourceIcon} />}
-          />
+              }}
+            >
+              <Icon icon="EXTERNAL_SOURCE" />
+              <span>View in Source</span>
+            </Button>
+            {paper.urls.length > 0 ? (
+              <Button
+                elementType="button"
+                variant={!showFullText ? 'contained' : 'outlined'}
+                onClick={async () => {
+                  setIsSourcePopoverOpen(!isSourcePopoverOpen);
+                  if (!isSourcePopoverOpen) {
+                    dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'source' }));
+                  }
+                }}
+              >
+                <Icon icon={!isSourcePopoverOpen ? 'ARROW_DOWN' : 'ARROW_UP'} />
+              </Button>
+            ) : null}
+          </GroupButton>
         </div>
         <SourceURLPopover
           isOpen={isSourcePopoverOpen}

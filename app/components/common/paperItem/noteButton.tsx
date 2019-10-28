@@ -3,6 +3,7 @@ import Popover from '@material-ui/core/Popover';
 import CollectionPaperNote from '../../collectionPaperNote';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
+import Button from '../button';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./noteButton.scss');
 
@@ -21,9 +22,13 @@ const NoteButton: React.FC<NoteButtonProps> = ({ note, pageType, actionArea, pap
   const hasNote = !!note;
 
   return (
-    <div ref={noteRef}>
-      <button
-        className={s.addNoteButton}
+    <div ref={noteRef} className={s.addNoteButton}>
+      <Button
+        elementType="button"
+        size="small"
+        variant="outlined"
+        color="gray"
+        isLoading={false}
         onClick={() => {
           setIsOpen(!isOpen);
           if (hasNote) {
@@ -39,14 +44,16 @@ const NoteButton: React.FC<NoteButtonProps> = ({ note, pageType, actionArea, pap
       >
         {hasNote ? (
           <>
-            <Icon className={s.addNoteIcon} icon="NOTED" />View Note
+            <Icon icon="NOTED" />
+            <span>View Note</span>
           </>
         ) : (
           <>
-            <Icon className={s.addNoteIcon} icon="ADD_NOTE" /> Add Note
+            <Icon icon="ADD_NOTE" />
+            <span>Add Note</span>
           </>
         )}
-      </button>
+      </Button>
       <Popover
         open={isOpen}
         classes={{ paper: s.collectionNoteForm }}

@@ -3,11 +3,11 @@ import { Formik, Form, Field, FormikErrors, ErrorMessage } from 'formik';
 import * as classNames from 'classnames';
 import { CvBaseInfo } from '../../api/profile';
 import ScinapseFormikInput from '../common/scinapseInput/scinapseFormikInput';
-import ScinapseButton from '../common/scinapseButton';
 import ReduxAutoSizeTextarea from '../common/autoSizeTextarea/reduxAutoSizeTextarea';
 import scinapseFormikCheckbox from '../common/scinapseInput/scinapseFormikCheckbox';
 import { withStyles } from '../../helpers/withStylesHelper';
 import AffiliationBox from './affiliationBox';
+import Button from '../common/button';
 const styles = require('./authorCVForm.scss');
 
 export interface ExperienceFormState extends CvBaseInfo {
@@ -210,42 +210,30 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                   </div>
 
                   <div className={styles.buttonsWrapper}>
-                    <ScinapseButton
-                      type="button"
+                    <Button
+                      elementType="button"
+                      variant="text"
+                      color="gray"
                       onClick={handleClose}
                       isLoading={isLoading}
-                      gaCategory="New Author Show"
-                      gaAction="Click Cancel Button in Author CV page"
-                      gaLabel="Cancel experience form"
-                      content="Cancel"
                       style={{
-                        height: '42px',
-                        fontWeight: 500,
-                        fontSize: '14px',
-                        opacity: 0.25,
-                        color: '#1e2a35',
-                        border: 'none',
-                        display: 'inline-block',
                         marginRight: '8px',
                       }}
-                    />
-                    <ScinapseButton
+                    >
+                      <span>Cancel</span>
+                    </Button>
+                    <Button
+                      elementType="button"
                       type="submit"
-                      style={{
-                        backgroundColor: '#48d2a0',
-                        cursor: 'pointer',
-                        width: '57px',
-                        height: '42px',
-                        fontWeight: 500,
-                        fontSize: '14px',
-                      }}
                       disabled={isLoading}
                       isLoading={isLoading}
-                      gaCategory="New Author Show"
-                      gaAction="Click Save Button in Author CV page "
-                      gaLabel={`Save experience in experienceForm`}
-                      content="Save"
-                    />
+                      style={{
+                        backgroundColor: '#48d2a0',
+                        borderColor: '#48d2a0',
+                      }}
+                    >
+                      <span>Save</span>
+                    </Button>
                   </div>
                 </div>
               </div>
