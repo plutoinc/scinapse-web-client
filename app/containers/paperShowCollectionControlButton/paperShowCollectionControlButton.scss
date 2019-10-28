@@ -297,19 +297,14 @@
   }
 }
 
-// regular_width (1200)
+// // regular_width (1200)
 @media (max-width: $regular_width) {
   .buttonWrapper {
-    width: 100%;
-    margin-top: 8px;
     .actionItem {
-      width: 100%;
       .currentCollectionTitle {
-        width: 100%;
-
-        &.saved {
-          width: 100%;
-        }
+        max-width: 100%;
+        width: 180px;
+        margin-left: 24px;
       }
     }
   }
