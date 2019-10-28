@@ -44,7 +44,7 @@ function searchResultE2E(TEST_NAME: string, width: number, height: number) {
               testName: TEST_NAME,
               caseName: 'user use search feature',
               actionName: 'click search icon',
-              selector: "[class^='searchQueryInput_searchIconButton']",
+              selector: "[class^='searchQueryInput_searchButtonWrapper'] > button",
             }),
           ]);
 
