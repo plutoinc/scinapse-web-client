@@ -4,6 +4,8 @@ import { Route, Switch, match, withRouter, RouteComponentProps } from 'react-rou
 import { Helmet } from 'react-helmet';
 import { Dispatch } from 'redux';
 import { CancelToken } from 'axios';
+import { useSelector } from 'react-redux';
+import classNames from 'classnames';
 import { PaperShowMatchParams } from './containers/paperShow/types';
 import { AuthorShowMatchParams } from './containers/authorShow/types';
 import { JournalShowMatchParams } from './components/journalShow/types';
@@ -28,9 +30,7 @@ import {
   USER_SETTINGS_PATH,
   KEYWORD_SETTINGS_PATH,
 } from './constants/routes';
-import { useSelector } from 'react-redux';
 import { AppState } from './reducers';
-import classNames from 'classnames';
 const styles = require('./root.scss');
 
 export interface LoadDataParams<P> {
