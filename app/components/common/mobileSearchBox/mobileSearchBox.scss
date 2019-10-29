@@ -1,0 +1,41 @@
+.mobileSearchBoxWrapper {
+  display: flex;
+  flex-direction: column;
+  background-color: $gray300;
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  top: 0px;
+  left: 0px;
+  z-index: 999;
+  border-radius: 0;
+  overflow: auto;
+}
+
+.mobileSearchBoxFooter {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 8px;
+  z-index: 3;
+  background-color: $gray300;
+  border-top: 1px solid $gray400;
+}
+
+.searchWrapper {
+  width: 100%;
+  background-color: $gray300;
+}
+
+.searchInput {
+  display: flex;
+  width: 100%;
+  height: 44px;
+  border: 0;
+  line-height: 1.5;
+  color: $black0;
+  background-color: white;
+  overflow: hidden;
+  align-items: center;
+  padding: 0 88px 0 44px;
+}

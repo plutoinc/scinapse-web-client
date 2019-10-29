@@ -8,6 +8,10 @@
   box-sizing: border-box;
 }
 
+body {
+  padding-bottom: 0;
+}
+
 input,
 textarea,
 body {
@@ -86,6 +90,10 @@ button {
 
 li {
   padding: 0;
+}
+
+.mainContentsAtOpenMobileSearchBox {
+  display: none;
 }
 
 @keyframes flip {

@@ -52,7 +52,7 @@
   justify-content: space-between;
   height: 44px;
   line-height: 44px;
-  padding: 0 18px;
+  padding: 0 8px 0 18px;
   text-align: left;
   width: 100%;
   overflow: hidden;
@@ -63,7 +63,6 @@
   border-bottom: solid 1px $gray200;
   cursor: pointer;
   white-space: pre;
-  border-radius: 4px;
 
   span {
     @extend %one-line-overflow-ellipsis;
@@ -109,53 +108,10 @@
   }
 }
 
-.searchButton {
-  width: 96px;
-  height: 36px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.searchButtonWrapper {
   position: absolute;
-  top: 6px;
+  top: 7px;
   right: 8px;
-  border-radius: 4px;
-  background-color: $main_blue0;
-  cursor: pointer;
-
-  &:hover {
-    background-color: $main_blue_light0;
-    transition: $button-hover-transition;
-  }
-}
-
-.searchIconButton {
-  width: 44px;
-  height: 44px;
-  position: absolute;
-  top: 0px;
-  right: 0px;
-}
-
-.searchIcon {
-  width: 20px;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  right: 16px;
-  color: $main_blue0;
-  cursor: pointer;
-
-  svg {
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.searchButtonText {
-  color: white;
-  font-weight: 500;
-  line-height: 1.14;
-  font-size: 14px;
 }
 
 .searchIconInButton {
@@ -166,4 +122,12 @@
 .searchButtonWrapper {
   position: absolute;
   right: 4px;
+}
+
+@media (max-width: $mobile_width) {
+  .listItem {
+    &:hover {
+      background-color: white;
+    }
+  }
 }

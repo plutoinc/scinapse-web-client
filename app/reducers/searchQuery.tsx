@@ -1,20 +1,31 @@
-import { Actions, ACTION_TYPES } from '../actions/actionTypes';
+import { createSlice, PayloadAction } from 'redux-starter-kit';
 
 export interface SearchQueryState {
   query: string;
+  isOpenMobileBox: boolean;
 }
 
 export const SEARCH_QUERY_INITIAL_STATE: SearchQueryState = {
   query: '',
+  isOpenMobileBox: false,
 };
 
-export function reducer(state = SEARCH_QUERY_INITIAL_STATE, action: Actions): SearchQueryState {
-  switch (action.type) {
-    case ACTION_TYPES.SEARCH_QUERY_CHANGE_QUERY: {
+const SearchQuerySlice = createSlice({
+  name: 'searchQuery',
+  initialState: SEARCH_QUERY_INITIAL_STATE,
+  reducers: {
+    changeSearchQuery(state, action: PayloadAction<{ query: string }>) {
       return { ...state, query: action.payload.query };
-    }
+    },
+    openMobileSearchBox(state) {
+      return { ...state, isOpenMobileBox: true };
+    },
+    closeMobileSearchBox(state) {
+      return { ...state, isOpenMobileBox: false };
+    },
+  },
+});
 
-    default:
-      return state;
-  }
-}
+export const { changeSearchQuery, openMobileSearchBox, closeMobileSearchBox } = SearchQuerySlice.actions;
+
+export default SearchQuerySlice.reducer;

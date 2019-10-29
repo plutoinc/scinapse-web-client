@@ -2,10 +2,8 @@ import * as React from 'react';
 import axios, { CancelTokenSource } from 'axios';
 import * as classNames from 'classnames';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
-import { withStyles } from '../../../helpers/withStylesHelper';
+import { withRouter } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import CompletionAPI, { CompletionKeyword } from '../../../api/completion';
 import { useDebouncedAsyncFetch } from '../../../hooks/debouncedFetchAPIHook';
 import { getHighlightedContent } from '../../../helpers/highlightContent';
@@ -16,36 +14,18 @@ import {
   getRecentQueries,
   saveQueryToRecentHistory,
 } from '../../../helpers/recentQueryManager';
-import PapersQueryFormatter, { FilterObject } from '../../../helpers/searchQueryManager';
+import PapersQueryFormatter from '../../../helpers/searchQueryManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { ACTION_TYPES } from '../../../actions/actionTypes';
 import { AppState } from '../../../reducers';
 import { getCurrentPageType } from '../../locationListener';
 import { handleInputKeydown } from './helpers/handleInputKeydown';
-import { changeSearchQuery } from '../../../actions/searchQuery';
 import { UserDevice } from '../../layouts/reducer';
 import Button from '../button';
+import { SearchQueryInputProps, SearchSourceType, SubmitParams } from './types';
+import { changeSearchQuery, openMobileSearchBox, closeMobileSearchBox } from '../../../reducers/searchQuery';
+const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./searchQueryInput.scss');
-
-type SearchQueryInputProps = React.InputHTMLAttributes<HTMLInputElement> &
-  ReturnType<typeof mapStateToProps> &
-  RouteComponentProps<any> & {
-    dispatch: Dispatch<any>;
-    actionArea: 'home' | 'topBar' | 'paperShow';
-    maxCount: number;
-    currentFilter?: FilterObject;
-    wrapperClassName?: string;
-    listWrapperClassName?: string;
-    inputClassName?: string;
-    sort?: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS;
-  };
-
-type SearchSourceType = 'history' | 'suggestion' | 'raw';
-
-interface SubmitParams {
-  from: SearchSourceType;
-  query: string;
-}
 
 function validateSearchInput(query: string) {
   if (query.length < 2) {
@@ -55,9 +35,14 @@ function validateSearchInput(query: string) {
 }
 
 const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props => {
+  useStyles(s);
+  const dispatch = useDispatch();
+  const searchQuery = useSelector<AppState, string>(state => state.searchQueryState.query);
+  const isOpenMobileSearchBox = useSelector<AppState, boolean>(state => state.searchQueryState.isOpenMobileBox);
+  const isMobile = useSelector<AppState, boolean>(state => state.layout.userDevice === UserDevice.MOBILE);
   const [isOpen, setIsOpen] = React.useState(false);
   const [highlightIdx, setHighlightIdx] = React.useState(-1);
-  const [inputValue, setInputValue] = React.useState('');
+  const [inputValue, setInputValue] = React.useState(searchQuery || '');
   const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
   const { data: suggestionWords, setParams } = useDebouncedAsyncFetch<string, CompletionKeyword[]>({
     initialParams: '',
@@ -79,18 +64,13 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     [genuineInputValue]
   );
 
-  // prevent suggestion box is opened by auto focusing
-  const [blockOpen, setBlockOpen] = React.useState(true);
-  React.useEffect(() => {
-    setBlockOpen(false);
-  }, []);
-
   React.useEffect(
     () => {
-      setInputValue(props.searchQuery);
-      setGenuineInputValue(props.searchQuery);
+      setInputValue(searchQuery);
+      setGenuineInputValue(searchQuery);
+      setParams(searchQuery);
     },
-    [props.searchQuery]
+    [searchQuery, setParams]
   );
 
   const [recentQueries, setRecentQueries] = React.useState(getRecentQueries(genuineInputValue));
@@ -118,7 +98,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     const searchKeyword = (query || inputValue).trim();
 
     if (!validateSearchInput(searchKeyword)) {
-      props.dispatch({
+      dispatch({
         type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
         payload: {
           type: 'error',
@@ -147,7 +127,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     trackEvent({ category: 'Search', action: 'Query', label: searchKeyword });
 
     saveQueryToRecentHistory(searchKeyword);
-    props.dispatch(changeSearchQuery(searchKeyword));
+    dispatch(changeSearchQuery({ query: searchKeyword }));
     setIsOpen(false);
 
     const currentPage = getCurrentPageType();
@@ -191,36 +171,77 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
       >
         <span dangerouslySetInnerHTML={{ __html: getHighlightedContent(k.text, genuineInputValue) }} />
         {k.removable && (
-          <Icon
+          <Button
+            elementType="button"
+            size="small"
+            variant="text"
+            color="gray"
             onClick={e => {
               e.stopPropagation();
               deleteQueryFromRecentList(k.text);
               setRecentQueries(getRecentQueries(genuineInputValue));
             }}
-            className={s.removeBtn}
-            icon="X_BUTTON"
-          />
+          >
+            <Icon icon="X_BUTTON" />
+          </Button>
         )}
       </li>
     );
   });
 
+  React.useEffect(
+    () => {
+      if (!isOpenMobileSearchBox) setIsOpen(false);
+    },
+    [isOpenMobileSearchBox]
+  );
+
   const listWrapperClassName = props.listWrapperClassName ? props.listWrapperClassName : s.list;
   const keywordList = isOpen ? <ul className={listWrapperClassName}>{keywordItems}</ul> : null;
   const wrapperClassName = props.wrapperClassName ? props.wrapperClassName : s.wrapper;
   const inputClassName = props.inputClassName ? props.inputClassName : s.input;
-  const placeholder =
-    props.userDevice !== UserDevice.DESKTOP
-      ? 'Search papers by keyword'
-      : 'Search papers by title, author, doi or keyword';
+  const placeholder = isMobile ? 'Search papers by keyword' : 'Search papers by title, author, doi or keyword';
+  const backButton = isOpenMobileSearchBox ? (
+    <div className={s.searchButtonWrapper} style={{ left: '2px', right: 'auto', top: '2px' }}>
+      <Button
+        elementType="button"
+        variant="text"
+        isLoading={false}
+        onClick={() => {
+          setIsOpen(false);
+          dispatch(closeMobileSearchBox());
+        }}
+      >
+        <Icon icon="BACK" />
+      </Button>
+    </div>
+  ) : null;
+
+  const clearButton = isOpenMobileSearchBox ? (
+    <div className={s.searchButtonWrapper} style={{ right: '52px', top: '2px' }}>
+      <Button
+        elementType="button"
+        variant="text"
+        isLoading={false}
+        color="gray"
+        onClick={() => {
+          setInputValue('');
+          setGenuineInputValue('');
+        }}
+      >
+        <Icon icon="X_BUTTON" />
+      </Button>
+    </div>
+  ) : null;
 
   return (
     <ClickAwayListener
       onClickAway={() => {
-        setIsOpen(false);
+        if (!isOpenMobileSearchBox) setIsOpen(false);
       }}
     >
       <div className={wrapperClassName}>
+        {backButton}
         <input
           aria-label="Scinapse search box"
           value={inputValue}
@@ -249,7 +270,10 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
             });
           }}
           onFocus={() => {
-            if (!blockOpen && !isOpen) setIsOpen(true);
+            if (isMobile && !isOpenMobileSearchBox) {
+              dispatch(openMobileSearchBox());
+            }
+            if (!isOpen) setIsOpen(true);
           }}
           onClick={() => {
             if (!isOpen) setIsOpen(true);
@@ -260,6 +284,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
             setInputValue(value);
             setGenuineInputValue(value);
             setParams(value);
+
             if (!isOpen) {
               setIsOpen(true);
             }
@@ -268,6 +293,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
           autoFocus={props.autoFocus}
           className={inputClassName}
         />
+        {clearButton}
         <div className={s.searchButtonWrapper} style={props.actionArea == 'home' ? { top: '4px' } : { top: '2px' }}>
           {props.actionArea == 'home' ? (
             <Button elementType="button" size="medium" onClick={clickSearchBtn}>
@@ -286,11 +312,4 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
   );
 };
 
-function mapStateToProps(state: AppState) {
-  return {
-    userDevice: state.layout.userDevice,
-    searchQuery: state.searchQueryState.query,
-  };
-}
-
-export default connect(mapStateToProps)(withRouter(withStyles<typeof SearchQueryInput>(s)(SearchQueryInput)));
+export default withRouter(SearchQueryInput);

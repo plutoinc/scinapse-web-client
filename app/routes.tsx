@@ -4,6 +4,8 @@ import { Route, Switch, match, withRouter, RouteComponentProps } from 'react-rou
 import { Helmet } from 'react-helmet';
 import { Dispatch } from 'redux';
 import { CancelToken } from 'axios';
+import { useSelector } from 'react-redux';
+import classNames from 'classnames';
 import { PaperShowMatchParams } from './containers/paperShow/types';
 import { AuthorShowMatchParams } from './containers/authorShow/types';
 import { JournalShowMatchParams } from './components/journalShow/types';
@@ -28,6 +30,7 @@ import {
   USER_SETTINGS_PATH,
   KEYWORD_SETTINGS_PATH,
 } from './constants/routes';
+import { AppState } from './reducers';
 const styles = require('./root.scss');
 
 export interface LoadDataParams<P> {
@@ -274,12 +277,13 @@ const DefaultHelmet = () => {
 
 const RootRoutes: React.FC<RootRoutesProps> = props => {
   const { location } = props;
+  const isOpenMobileSearchBox = useSelector<AppState, boolean>(state => state.searchQueryState.isOpenMobileBox);
 
   return (
     <div>
       <DefaultHelmet />
       <ImprovedHeader />
-      <div>
+      <div className={classNames({ [styles.mainContentsAtOpenMobileSearchBox]: isOpenMobileSearchBox })}>
         <Switch location={location}>
           {routesMap.map(route => <Route {...route} key={route.path || 'errorPage'} />)}
         </Switch>
