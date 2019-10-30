@@ -25,7 +25,7 @@ function searchResultE2E(TEST_NAME: string, width: number, height: number) {
       });
     });
 
-    describe('when user use search feature', () => {
+    describe.skip('when user use search feature', () => {
       beforeEach(async () => {
         await page.click("input[class^='improvedHeader_searchInput']", { clickCount: 3 });
         await page.type("input[class^='improvedHeader_searchInput']", 'cern');
