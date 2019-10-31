@@ -66,48 +66,51 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
   const FBIsLoading = useFBIsLoading();
 
   function handleClickFBLogin() {
-    FB.login(async (res: any) => {
-      if (res.authResponse) {
-        const accessToken = res.authResponse.accessToken;
-        const status = await AuthAPI.checkOAuthStatus('FACEBOOK', accessToken);
+    FB.login(
+      async (res: any) => {
+        if (res.authResponse) {
+          const accessToken = res.authResponse.accessToken;
+          const status = await AuthAPI.checkOAuthStatus('FACEBOOK', accessToken);
 
-        if (status.isConnected) {
-          await props.dispatch(signInWithSocial('FACEBOOK', accessToken));
-          const authContext = props.dialogState.authContext;
-          if (authContext) {
-            let actionLabel: string | null = authContext.expName || authContext.actionLabel;
+          if (status.isConnected) {
+            await props.dispatch(signInWithSocial('FACEBOOK', accessToken));
+            const authContext = props.dialogState.authContext;
+            if (authContext) {
+              let actionLabel: string | null = authContext.expName || authContext.actionLabel;
 
-            if (!actionLabel) {
-              actionLabel = 'topBar';
+              if (!actionLabel) {
+                actionLabel = 'topBar';
+              }
+
+              ActionTicketManager.trackTicket({
+                pageType: authContext.pageType,
+                actionType: 'fire',
+                actionArea: authContext.actionArea,
+                actionTag: 'signIn',
+                actionLabel,
+                expName: authContext.expName,
+              });
             }
-
-            ActionTicketManager.trackTicket({
-              pageType: authContext.pageType,
-              actionType: 'fire',
-              actionArea: authContext.actionArea,
-              actionTag: 'signIn',
-              actionLabel,
-              expName: authContext.expName,
-            });
+            props.dispatch(closeDialog());
+          } else {
+            props.dispatch(
+              ActionCreators.changeGlobalDialog({
+                type: GLOBAL_DIALOG_TYPE.SIGN_UP,
+                signUpStep: SIGN_UP_STEP.WITH_SOCIAL,
+                oauthResult: {
+                  email: status.email,
+                  firstName: status.firstName,
+                  lastName: status.lastName,
+                  token: accessToken,
+                  vendor: 'FACEBOOK',
+                },
+              })
+            );
           }
-          props.dispatch(closeDialog());
-        } else {
-          props.dispatch(
-            ActionCreators.changeGlobalDialog({
-              type: GLOBAL_DIALOG_TYPE.SIGN_UP,
-              signUpStep: SIGN_UP_STEP.WITH_SOCIAL,
-              oauthResult: {
-                email: status.email,
-                firstName: status.firstName,
-                lastName: status.lastName,
-                token: accessToken,
-                vendor: 'FACEBOOK',
-              },
-            })
-          );
         }
-      }
-    });
+      },
+      { scope: 'public_profile,email' }
+    );
   }
 
   async function handleSubmit(formValues: EmailFormValues) {
