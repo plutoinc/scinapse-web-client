@@ -91,36 +91,41 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
   }
 
   function handleClickFBLogin() {
-    FB.login(async (res: any) => {
-      if (res.authResponse) {
-        const accessToken = res.authResponse.accessToken;
-        const status = await AuthAPI.checkOAuthStatus('FACEBOOK', accessToken);
+    FB.login(
+      async (res: any) => {
+        if (res.authResponse) {
+          const accessToken = res.authResponse.accessToken;
+          const status = await AuthAPI.checkOAuthStatus('FACEBOOK', accessToken);
 
-        if (status.isConnected) {
-          await dispatch(signInWithSocial('FACEBOOK', accessToken));
-          const authContext = dialogState.authContext;
-          if (authContext) {
-            ActionTicketManager.trackTicket({
-              pageType: authContext.pageType,
-              actionType: 'fire',
-              actionArea: authContext.actionArea,
-              actionTag: 'signIn',
-              actionLabel: authContext.actionLabel,
-              expName: authContext.expName,
+          if (status.isConnected) {
+            await dispatch(signInWithSocial('FACEBOOK', accessToken));
+            const authContext = dialogState.authContext;
+            if (authContext) {
+              ActionTicketManager.trackTicket({
+                pageType: authContext.pageType,
+                actionType: 'fire',
+                actionArea: authContext.actionArea,
+                actionTag: 'signIn',
+                actionLabel: authContext.actionLabel,
+                expName: authContext.expName,
+              });
+            }
+            dispatch(closeDialog());
+          } else {
+            props.onSignUpWithSocial({
+              email: status.email,
+              firstName: status.firstName,
+              lastName: status.lastName,
+              token: accessToken,
+              vendor: 'FACEBOOK',
             });
           }
-          dispatch(closeDialog());
-        } else {
-          props.onSignUpWithSocial({
-            email: status.email,
-            firstName: status.firstName,
-            lastName: status.lastName,
-            token: accessToken,
-            vendor: 'FACEBOOK',
-          });
         }
+      },
+      {
+        scope: 'public_profile,email',
       }
-    });
+    );
   }
 
   const validateForm = async (values: FormValues) => {
