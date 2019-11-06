@@ -64,21 +64,22 @@ const CollectionButton: React.FC<CollectionButtonProps> = ({ saved, paper, pageT
       elementType="button"
       size="small"
       onClick={async () => {
-        const actionLabel = saved ? 'addToCollection' : 'savedCollection';
+        const action = saved ? 'savedCollection' : 'addToCollection';
         dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'addToCollection' }));
         ActionTicketManager.trackTicket({
           pageType,
           actionType: 'fire',
           actionArea,
-          actionTag: actionLabel,
+          actionTag: action,
           actionLabel: String(paper.id),
         });
         const isBlocked = await blockUnverifiedUser({
           authLevel: AUTH_LEVEL.VERIFIED,
           actionArea: actionArea || pageType,
-          actionLabel: actionLabel,
-          userActionType: actionLabel,
+          actionLabel: action,
+          userActionType: action,
         });
+
         if (isBlocked) return;
 
         if (userHasCollection) GlobalDialogManager.openCollectionDialog(paper.id);
