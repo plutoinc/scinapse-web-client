@@ -74,7 +74,7 @@ const BlockAuthorList: React.FC<BlockAuthorListProps> = ({ paper, authors, pageT
           GlobalDialogManager.openAuthorListDialog(paper);
         }}
         className={styles.viewAll}
-      >{`view all ${authors.length} authors...`}</div>
+      >{`view all ${paper.authorCount} authors...`}</div>
     );
   }
 
