@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import ActionTicketManager from '../helpers/actionTicketManager';
 import { ActionTicketParams } from '../helpers/actionTicketManager/actionTicket';
 
@@ -18,12 +18,14 @@ export function useObserver(threshold: number | number[] | undefined, ticketPara
         },
         { threshold }
       );
+
       if (elRef.current) {
         intersectionObserver.observe(elRef.current);
       }
+
       return () => intersectionObserver.disconnect();
     },
-    [elRef]
+    [ticketParams, threshold]
   );
   return { elRef };
 }

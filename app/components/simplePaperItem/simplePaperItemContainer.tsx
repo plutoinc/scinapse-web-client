@@ -9,6 +9,7 @@ import { paperSchema, Paper } from '../../model/paper';
 import Title from '../../components/common/paperItem/title';
 import SimplePaperItemButtonGroup from '../common/paperItem/simplePaperItemButtonGroup';
 import MobileVenueAuthors from '../common/paperItem/mobileVenueAuthors';
+import { useObserver } from '../../hooks/useIntersectionHook';
 const s = require('./simplePaperItem.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
 
@@ -26,11 +27,19 @@ interface SimplePaperItemProps {
 export const SimplePaperItem: FC<SimplePaperItemProps & { paper: Paper }> = React.memo(
   ({ pageType, actionArea, className, contentClassName, paper }) => {
     useStyles(s);
+    const { elRef } = useObserver(1, {
+      pageType,
+      actionArea,
+      actionType: 'view',
+      actionTag: 'paperShow',
+      actionLabel: String(paper.id),
+    });
 
     if (!paper) return null;
 
     return (
       <div
+        ref={elRef}
         className={classNames({
           [className!]: !!className,
         })}
