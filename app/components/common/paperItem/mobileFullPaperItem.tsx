@@ -20,7 +20,7 @@ interface Props {
 
 const MobileFullPaperItem: FC<Props> = memo(({ paper, pageType, actionArea, sourceDomain }) => {
   useStyles(s);
-  const { elRef } = useObserver(1, {
+  const { elRef } = useObserver(0.8, {
     pageType,
     actionArea,
     actionType: 'view',

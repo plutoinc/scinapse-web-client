@@ -25,7 +25,7 @@ interface PaperItemProps {
 
 const FullPaperItem: FC<PaperItemProps> = memo(({ paper, actionArea, pageType, sourceDomain }) => {
   useStyles(s);
-  const { elRef } = useObserver(1, {
+  const { elRef } = useObserver(0.8, {
     pageType,
     actionArea,
     actionType: 'view',

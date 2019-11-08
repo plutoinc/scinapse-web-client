@@ -27,7 +27,7 @@ interface SimplePaperItemProps {
 export const SimplePaperItem: FC<SimplePaperItemProps & { paper: Paper }> = React.memo(
   ({ pageType, actionArea, className, contentClassName, paper }) => {
     useStyles(s);
-    const { elRef } = useObserver(1, {
+    const { elRef } = useObserver(0.8, {
       pageType,
       actionArea,
       actionType: 'view',

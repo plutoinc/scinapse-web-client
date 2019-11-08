@@ -30,7 +30,7 @@ const CollectionPaperItem: FC<Props> = ({
 }) => {
   useStyles(styles);
 
-  const { elRef } = useObserver(1, {
+  const { elRef } = useObserver(0.8, {
     pageType: 'collectionShow',
     actionArea: 'paperList',
     actionType: 'view',

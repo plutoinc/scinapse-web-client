@@ -22,7 +22,7 @@ const RelatedPaperItem: React.FunctionComponent<{ paper: Paper }> = props => {
     actionLabel: String(paper.id),
   };
 
-  const { elRef } = useObserver(0.1, actionTicketContext);
+  const { elRef } = useObserver(0.8, actionTicketContext);
 
   return (
     <div className={styles.paperItemWrapper} ref={elRef}>

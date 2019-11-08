@@ -50,7 +50,7 @@ const NotIncludedWords: React.FC<{ missingKeywords: string[] }> = React.memo(pro
 const SearchPaperItem: React.FC<PaperItemProps> = React.memo(props => {
   const { paper, pageType, actionArea, savedAt, sourceDomain } = props;
   const { relation } = paper;
-  const { elRef } = useObserver(1, {
+  const { elRef } = useObserver(0.8, {
     pageType,
     actionArea,
     actionType: 'view',

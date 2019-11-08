@@ -48,7 +48,7 @@ const SignBanner: React.FC = () => {
     actionLabel: 'signBannerAtSearch',
     expName: 'signBannerAtSearch',
   };
-  const { elRef } = useObserver(0.1, bannerViewTicketContext);
+  const { elRef } = useObserver(0.8, bannerViewTicketContext);
 
   return (
     <div className={styles.bannerContainer} ref={elRef}>
