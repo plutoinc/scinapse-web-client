@@ -40,8 +40,11 @@ type Props = ReturnType<typeof mapStateToProps> &
     dispatch: Dispatch<any>;
   };
 
-const EditButton: React.FC<{ itsMine: boolean; userCollection: Collection }> = ({ itsMine, userCollection }) => {
-  if (!itsMine) return null;
+const EditButton: React.FC<{ inOwnCollection: boolean; userCollection: Collection }> = ({
+  inOwnCollection,
+  userCollection,
+}) => {
+  if (!inOwnCollection) return null;
 
   return (
     <Button
@@ -222,7 +225,7 @@ const CollectionShow: React.FC<Props> = props => {
                   <div className={styles.categoryName}>COLLECTION</div>
                   <div className={styles.title}>
                     <span>{userCollection.title}</span>
-                    <EditButton itsMine={inOwnCollection} userCollection={userCollection} />
+                    <EditButton inOwnCollection={inOwnCollection} userCollection={userCollection} />
                   </div>
                   <div className={styles.description}>{userCollection.description}</div>
                   <div className={styles.infoWrapper}>
@@ -275,7 +278,7 @@ const CollectionShow: React.FC<Props> = props => {
                   </div>
                   <div>
                     <CollectionPaperList
-                      itsMine={inOwnCollection}
+                      inOwnCollection={inOwnCollection}
                       papersInCollection={papersInCollection}
                       currentUser={currentUser}
                       collectionShow={collectionShow}

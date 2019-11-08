@@ -100,11 +100,11 @@ const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: number[] }> = ({
 };
 
 const CollectionPapersControlBtns: React.FC<{
-  itsMine: boolean;
+  inOwnCollection: boolean;
   dispatch: Dispatch<any>;
   collectionShow: CollectionShowState;
   onRemovePaperCollection: (paperIds: number[]) => Promise<void>;
-}> = ({ itsMine, dispatch, collectionShow, onRemovePaperCollection }) => {
+}> = ({ inOwnCollection, dispatch, collectionShow, onRemovePaperCollection }) => {
   const [checkedAll, setCheckedAll] = React.useState(false);
 
   React.useEffect(
@@ -114,7 +114,7 @@ const CollectionPapersControlBtns: React.FC<{
     [collectionShow.paperIds, collectionShow.selectedPaperIds]
   );
 
-  if (!itsMine) return null;
+  if (!inOwnCollection) return null;
 
   return (
     <div>

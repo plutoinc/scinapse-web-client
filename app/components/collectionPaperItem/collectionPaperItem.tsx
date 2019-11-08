@@ -11,7 +11,7 @@ const useStyles = require('isomorphic-style-loader/useStyles');
 
 interface Props {
   paper: PaperInCollection;
-  isMine: boolean;
+  inOwnCollection: boolean;
   isMobile: boolean;
   isChecked: boolean;
   collectionId: number;
@@ -21,7 +21,7 @@ interface Props {
 
 const CollectionPaperItem: FC<Props> = ({
   paper,
-  isMine,
+  inOwnCollection,
   isMobile,
   isChecked,
   collectionId,
@@ -49,7 +49,7 @@ const CollectionPaperItem: FC<Props> = ({
 
   return (
     <div ref={elRef} className={styles.paperItemWrapper}>
-      {isMine &&
+      {inOwnCollection &&
         !isMobile && (
           <input
             type="checkbox"
@@ -60,7 +60,9 @@ const CollectionPaperItem: FC<Props> = ({
           />
         )}
       <div className={styles.itemWrapper}>
-        <Icon onClick={() => onClickXButton(paper.paperId)} icon="X_BUTTON" className={styles.removeIcon} />
+        {inOwnCollection && (
+          <Icon onClick={() => onClickXButton(paper.paperId)} icon="X_BUTTON" className={styles.removeIcon} />
+        )}
         <div className={styles.paperInformationWrapper}>
           <Title pageType="collectionShow" actionArea="paperList" paper={paper.paper} />
           {venueAuthors}

@@ -15,7 +15,7 @@ import CollectionPaperItem from '../collectionPaperItem/collectionPaperItem';
 const styles = require('./collectionPaperList.scss');
 
 interface CollectionPaperListProps {
-  itsMine: boolean;
+  inOwnCollection: boolean;
   papersInCollection: PaperInCollection[];
   currentUser: CurrentUser;
   collectionShow: CollectionShowState;
@@ -39,7 +39,7 @@ const CollectionPaperInfo: React.FC<{ collectionShow: CollectionShowState }> = (
 
 const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
   const {
-    itsMine,
+    inOwnCollection,
     papersInCollection,
     collectionShow,
     userCollection,
@@ -71,7 +71,7 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
       <CollectionPaperItem
         key={paper.paperId}
         paper={paper}
-        isMine={itsMine}
+        inOwnCollection={inOwnCollection}
         isMobile={userDevice !== UserDevice.MOBILE}
         isChecked={collectionShow.selectedPaperIds.includes(paper.paperId)}
         collectionId={userCollection.id}
@@ -85,7 +85,7 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
     <>
       {userDevice !== UserDevice.MOBILE && (
         <CollectionPapersControlBtns
-          itsMine={itsMine}
+          inOwnCollection={inOwnCollection}
           collectionShow={collectionShow}
           onRemovePaperCollection={onRemovePaperFromCollection}
         />
