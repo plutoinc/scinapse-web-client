@@ -1,0 +1,42 @@
+.paperItemWrapper {
+  display: flex;
+
+  & + & {
+    margin-top: 16px;
+  }
+}
+
+.itemWrapper {
+  @extend %default-paper-item-wrapper;
+  position: relative;
+  width: 100%;
+
+  .removeIcon {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: $gray600;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+}
+
+.paperCheckBox {
+  margin: 8px 16px 0 0;
+}
+
+@media (max-width: $mobile_width) {
+  .itemWrapper {
+    width: 100%;
+    padding: 16px;
+  }
+}

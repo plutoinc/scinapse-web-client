@@ -65,7 +65,7 @@ const BottomBanner: React.FC<BottomBannerProps> = ({ currentUser }) => {
     actionTag: 'bannerView',
     actionLabel: 'bottomBanner',
   };
-  const { elRef } = useObserver(0.1, bannerViewTicketContext);
+  const { elRef } = useObserver(0.8, bannerViewTicketContext);
 
   if (!shouldShow) {
     return null;

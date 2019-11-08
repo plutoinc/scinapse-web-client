@@ -34,7 +34,7 @@ const Figures: React.FC<FiguresProps> = ({ figures, paperId }) => {
     actionTag: 'viewFigure',
     actionLabel: String(paperId),
   };
-  const { elRef } = useObserver(0.1, figureViewTicketContext);
+  const { elRef } = useObserver(0.8, figureViewTicketContext);
 
   if (figures.length === 0) return null;
 

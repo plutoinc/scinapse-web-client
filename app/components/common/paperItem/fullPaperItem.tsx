@@ -11,6 +11,7 @@ import Figures from './figures';
 import { AppState } from '../../../reducers';
 import { UserDevice } from '../../layouts/reducer';
 import MobileFullPaperItem from './mobileFullPaperItem';
+import { useObserver } from '../../../hooks/useIntersectionHook';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperItem.scss');
@@ -24,6 +25,14 @@ interface PaperItemProps {
 
 const FullPaperItem: FC<PaperItemProps> = memo(({ paper, actionArea, pageType, sourceDomain }) => {
   useStyles(s);
+  const { elRef } = useObserver(0.8, {
+    pageType,
+    actionArea,
+    actionType: 'view',
+    actionTag: 'paperShow',
+    actionLabel: String(paper.id),
+  });
+
   const userDevice = useSelector((state: AppState) => state.layout.userDevice);
   if (userDevice === UserDevice.MOBILE) {
     return (
@@ -32,7 +41,7 @@ const FullPaperItem: FC<PaperItemProps> = memo(({ paper, actionArea, pageType, s
   }
 
   return (
-    <div className={s.paperItemWrapper}>
+    <div ref={elRef} className={s.paperItemWrapper}>
       <Title paper={paper} actionArea={actionArea} pageType={pageType} />
       <div style={{ marginTop: '12px' }}>
         <BlockVenueAuthor paper={paper} pageType={pageType} actionArea={actionArea} />

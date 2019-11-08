@@ -40,8 +40,11 @@ type Props = ReturnType<typeof mapStateToProps> &
     dispatch: Dispatch<any>;
   };
 
-const EditButton: React.FC<{ itsMine: boolean; userCollection: Collection }> = ({ itsMine, userCollection }) => {
-  if (!itsMine) return null;
+const EditButton: React.FC<{ inOwnCollection: boolean; userCollection: Collection }> = ({
+  inOwnCollection,
+  userCollection,
+}) => {
+  if (!inOwnCollection) return null;
 
   return (
     <Button
@@ -70,7 +73,7 @@ const CollectionShow: React.FC<Props> = props => {
     papersInCollection,
     layout,
   } = props;
-  const [itsMine, setItsMine] = React.useState(false);
+  const [inOwnCollection, setInOwnCollection] = React.useState(false);
   const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
 
   React.useEffect(
@@ -79,7 +82,7 @@ const CollectionShow: React.FC<Props> = props => {
         !currentUser.isLoggedIn ||
         (currentUser.isLoggedIn && userCollection && userCollection.createdBy.id !== currentUser.id);
 
-      setItsMine(!itsNotMine);
+      setInOwnCollection(!itsNotMine);
 
       if (itsNotMine && userCollection) {
         dispatch(getCollections(userCollection.createdBy.id, cancelTokenSource.current.token, false));
@@ -222,7 +225,7 @@ const CollectionShow: React.FC<Props> = props => {
                   <div className={styles.categoryName}>COLLECTION</div>
                   <div className={styles.title}>
                     <span>{userCollection.title}</span>
-                    <EditButton itsMine={itsMine} userCollection={userCollection} />
+                    <EditButton inOwnCollection={inOwnCollection} userCollection={userCollection} />
                   </div>
                   <div className={styles.description}>{userCollection.description}</div>
                   <div className={styles.infoWrapper}>
@@ -275,7 +278,7 @@ const CollectionShow: React.FC<Props> = props => {
                   </div>
                   <div>
                     <CollectionPaperList
-                      itsMine={itsMine}
+                      inOwnCollection={inOwnCollection}
                       papersInCollection={papersInCollection}
                       currentUser={currentUser}
                       collectionShow={collectionShow}
