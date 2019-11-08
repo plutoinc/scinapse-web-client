@@ -1,3 +1,11 @@
+.paperItemWrapper {
+  display: flex;
+
+  & + & {
+    margin-top: 16px;
+  }
+}
+
 .itemWrapper {
   @extend %default-paper-item-wrapper;
   position: relative;
@@ -20,6 +28,10 @@
       height: 12px;
     }
   }
+}
+
+.paperCheckBox {
+  margin: 8px 16px 0 0;
 }
 
 @media (max-width: $mobile_width) {

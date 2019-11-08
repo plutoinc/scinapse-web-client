@@ -72,7 +72,7 @@ const CollectionPaperList: React.FC<CollectionPaperListProps> = props => {
         key={paper.paperId}
         paper={paper}
         inOwnCollection={inOwnCollection}
-        isMobile={userDevice !== UserDevice.MOBILE}
+        isMobile={userDevice === UserDevice.MOBILE}
         isChecked={collectionShow.selectedPaperIds.includes(paper.paperId)}
         collectionId={userCollection.id}
         onClickCheckBox={onSelectedPaperInCollection}
