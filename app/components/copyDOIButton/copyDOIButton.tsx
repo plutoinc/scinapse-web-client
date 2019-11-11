@@ -5,7 +5,7 @@ import ActionTicketManager from '../../helpers/actionTicketManager';
 
 interface Props {
   doi: string;
-  paperId: number;
+  paperId: string;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
   className?: string;

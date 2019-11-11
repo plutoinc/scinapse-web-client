@@ -1,6 +1,6 @@
 export interface PaperSource {
   id: number;
-  paperId: number;
+  paperId: string;
   url: string;
   isPdf: boolean;
 }

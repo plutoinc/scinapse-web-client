@@ -44,7 +44,7 @@ const styles = require('./paperShowCollectionControlButton.scss');
 const LAST_USER_COLLECTION_ID = 'l_u_c_id';
 
 interface PaperShowCollectionControlButtonProps {
-  paperId: number;
+  paperId: string;
   currentUser: CurrentUser;
   myCollectionsState: MyCollectionsState;
   myCollections: Collection[] | null;
@@ -53,7 +53,7 @@ interface PaperShowCollectionControlButtonProps {
 }
 
 interface TitleAreaProps {
-  paperId: number;
+  paperId: string;
   currentUser: CurrentUser;
   collection: Collection | null;
   isLoading: boolean;

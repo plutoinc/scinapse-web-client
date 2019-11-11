@@ -11,7 +11,7 @@ const MAX_LENGTH_OF_ABSTRACT = 500;
 const MOBILE_MAX_LENGTH_OF_ABSTRACT = 200;
 
 export interface AbstractProps {
-  paperId: number;
+  paperId: string;
   abstract: string;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;

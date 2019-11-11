@@ -14,7 +14,7 @@ interface ReadingNowPaperListState {
 }
 
 interface ReadingNowPaperListProps {
-  paperId: number;
+  paperId: string;
   cancelToken: CancelToken;
 }
 

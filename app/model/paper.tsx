@@ -27,8 +27,7 @@ export interface SavedInCollection {
 }
 
 export interface Paper {
-  id: number;
-  cognitivePaperId: number;
+  id: string;
   title: string;
   year: number;
   publishedDate: string;

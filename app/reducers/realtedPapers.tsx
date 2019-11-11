@@ -1,7 +1,7 @@
 import { Actions, ACTION_TYPES } from '../actions/actionTypes';
 
 export interface RelatedPapersState {
-  paperIds: number[];
+  paperIds: string[];
   isLoading: boolean;
   hasFailed: boolean;
 }

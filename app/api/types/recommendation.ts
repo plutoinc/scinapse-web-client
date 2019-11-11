@@ -9,11 +9,11 @@ export type RecommendationActionTag =
   | 'viewMorePDF';
 
 export interface RecommendationActionAPIParams {
-  paper_id: number;
+  paper_id: string;
   action: RecommendationActionTag;
 }
 
 export interface RecommendationActionParams {
-  paperId: number;
+  paperId: string;
   action: RecommendationActionTag;
 }

@@ -7,7 +7,7 @@ const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./mobileNoteForm.scss');
 
 interface MobileNoteFormProps {
-  paperId: number;
+  paperId: string;
   collectionId: number;
   note?: string;
 }

@@ -10,7 +10,7 @@ import { NormalizedDataWithPaginationV2, RawPaginationResponseV2 } from './types
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
 export interface UpdatePaperNoteToCollectionParams {
-  paperId: number;
+  paperId: string;
   collectionId: number;
   note: string | null;
 }
@@ -28,14 +28,14 @@ export interface UpdateCollectionParams {
 
 export interface AddPaperToCollectionParams {
   collection: Collection;
-  paperId: number;
+  paperId: string;
   note?: string;
   cancelToken?: CancelToken;
 }
 
 export interface RemovePapersFromCollectionParams {
   collection: Collection;
-  paperIds: number[];
+  paperIds: string[];
   cancelToken?: CancelToken;
 }
 
@@ -52,13 +52,13 @@ interface UpdatePaperNoteResponse {
   note: string;
   paper: null;
   collectionId: number;
-  paperId: number;
+  paperId: string;
 }
 
 interface CollectionAPIGetPapersResult
   extends NormalizedDataWithPaginationV2<{
       papersInCollection: {
-        [paperId: number]: PaperInCollection;
+        [paperId: string]: PaperInCollection;
       };
     }> {}
 

@@ -9,18 +9,18 @@ import { PaperAuthor } from '../model/author';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
 export interface GetReferenceOrCitedPapersResult extends PageObjectV2 {
-  entities: { papers: { [paperId: number]: Paper } };
-  result: number[];
+  entities: { papers: { [paperId: string]: Paper } };
+  result: string[];
 }
 
 export interface GetPaperParams {
-  paperId: number;
+  paperId: string;
   cancelToken: CancelToken;
 }
 
 export interface GetCitationTextParams {
   type: AvailableCitationType;
-  paperId: number;
+  paperId: string;
 }
 
 export interface GetCitationTextResult {
@@ -34,31 +34,31 @@ export interface GetCitationTextRawResult {
 }
 
 export interface GetRelatedPapersParams {
-  paperId: number;
+  paperId: string;
   cancelToken: CancelToken;
 }
 
 export interface GetOtherPapersFromAuthorParams {
-  paperId: number;
+  paperId: string;
   authorId: number;
   cancelToken: CancelToken;
 }
 
 export interface GetAuthorsOfPaperParams {
-  paperId: number;
+  paperId: string;
   page: number;
   cancelToken: CancelToken;
 }
 
 interface RequestFullTextParams {
-  paperId: number;
+  paperId: string;
   email: string;
   name?: string;
   message?: string;
 }
 
 export interface PaperSource {
-  paperId: number;
+  paperId: string;
   doi: string | null;
   source: string | null;
   host: string | null;
@@ -153,8 +153,8 @@ class PaperAPI extends PlutoAxios {
   public async getPaper(
     params: GetPaperParams
   ): Promise<{
-    entities: { papers: { [paperId: number]: Paper } };
-    result: number;
+    entities: { papers: { [paperId: string]: Paper } };
+    result: string;
   }> {
     const paperRes = await this.get(`/papers/${params.paperId}`, {
       cancelToken: params.cancelToken,
@@ -167,8 +167,8 @@ class PaperAPI extends PlutoAxios {
   public async getRelatedPapers(
     params: GetRelatedPapersParams
   ): Promise<{
-    entities: { papers: { [paperId: number]: Paper } };
-    result: number[];
+    entities: { papers: { [paperId: string]: Paper } };
+    result: string[];
   }> {
     const getPapersResponse = await this.get(`/papers/${params.paperId}/related`, {
       cancelToken: params.cancelToken,
@@ -181,7 +181,7 @@ class PaperAPI extends PlutoAxios {
   public async getOtherPapersFromAuthor(
     params: GetOtherPapersFromAuthorParams
   ): Promise<{
-    entities: { papers: { [paperId: number]: Paper } };
+    entities: { papers: { [paperId: string]: Paper } };
     result: number[];
   }> {
     const getPapersResponse = await this.get(`/papers/${params.paperId}/authors/${params.authorId}/related`, {
@@ -216,7 +216,7 @@ class PaperAPI extends PlutoAxios {
     return res;
   }
 
-  public async getBestPdfOfPaper(params: { paperId: number; cancelToken: CancelToken }) {
+  public async getBestPdfOfPaper(params: { paperId: string; cancelToken: CancelToken }) {
     const res = await this.post(`/papers/${params.paperId}/pdf`, null, {
       cancelToken: params.cancelToken,
     });
@@ -237,7 +237,7 @@ class PaperAPI extends PlutoAxios {
     return { data: res.data as Blob };
   }
 
-  public async getSources(paperIds: number[]) {
+  public async getSources(paperIds: string[]) {
     const res = await this.get('/papers/sources', {
       params: {
         paper_ids: paperIds.join(','),
@@ -247,7 +247,7 @@ class PaperAPI extends PlutoAxios {
     return camelCaseKeys(res.data.data.content) as PaperSource[];
   }
 
-  public async getLastRequestDate(paperId: number) {
+  public async getLastRequestDate(paperId: string) {
     const res = await this.get(`/papers/${paperId}/request`);
 
     return camelCaseKeys(res.data.data.content);

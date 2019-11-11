@@ -13,12 +13,12 @@ import { getStringifiedUpdatedQueryParams } from './searchContainer';
 type RefCitedPapersPaginationProps = RouteComponentProps<PaperShowMatchParams> & {
   isMobile: boolean;
   type: REF_CITED_CONTAINER_TYPE;
-  paperId: number;
+  paperId: string;
 };
 
 interface GetPaginationLinkParams {
   type: REF_CITED_CONTAINER_TYPE;
-  paperId: number;
+  paperId: string;
   queryParams: PaperShowPageQueryParams;
 }
 

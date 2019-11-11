@@ -1,7 +1,7 @@
 export interface FetchSearchItemsParams {
   query?: string;
   filter?: string;
-  paperId?: number;
+  paperId?: string;
   cognitiveId?: number | null;
   page: number;
 }

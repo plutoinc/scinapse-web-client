@@ -159,7 +159,7 @@ const CollectionShow: React.FC<Props> = props => {
   );
 
   const handleSelectedPaperItem = React.useCallback(
-    (paperId: number) => {
+    (paperId: string) => {
       dispatch({
         type: ACTION_TYPES.COLLECTION_SHOW_SELECT_PAPER_ITEM,
         payload: { paperId: paperId },
@@ -169,7 +169,7 @@ const CollectionShow: React.FC<Props> = props => {
   );
 
   const handleRemovePaperFromCollection = React.useCallback(
-    async (paperIds: number | number[]) => {
+    async (paperIds: string | string[]) => {
       const auth = await checkAuthStatus()(dispatch);
       const isLoggedIn = auth && auth.loggedIn;
 

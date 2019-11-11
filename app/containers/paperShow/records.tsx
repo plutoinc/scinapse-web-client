@@ -21,9 +21,9 @@ export interface PaperShowState
       isLoadingPaper: boolean;
       errorStatusCode: number | null;
 
-      paperId: number;
-      referencePaperIds: number[];
-      citedPaperIds: number[];
+      paperId: string;
+      referencePaperIds: string[];
+      citedPaperIds: string[];
 
       lastRequestedAt: string | null;
 
@@ -53,7 +53,7 @@ export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
 
   lastRequestedAt: null,
 
-  paperId: 0,
+  paperId: '',
   referencePaperIds: [],
   isLoadingReferencePapers: false,
   isFailedToGetReferencePapers: false,

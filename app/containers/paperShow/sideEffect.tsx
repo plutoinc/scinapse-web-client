@@ -13,7 +13,7 @@ import { ActionCreators } from '../../actions/actionTypes';
 import { getRelatedPapers } from '../../actions/relatedPapers';
 import { PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
 
-export function fetchCitedPaperData(paperId: number, page: number = 1, query: string, sort: PAPER_LIST_SORT_TYPES) {
+export function fetchCitedPaperData(paperId: string, page: number = 1, query: string, sort: PAPER_LIST_SORT_TYPES) {
   return async (dispatch: Dispatch<any>) => {
     await dispatch(
       getCitedPapers({
@@ -26,7 +26,7 @@ export function fetchCitedPaperData(paperId: number, page: number = 1, query: st
   };
 }
 
-export function fetchRefPaperData(paperId: number, page: number = 1, query: string, sort: PAPER_LIST_SORT_TYPES) {
+export function fetchRefPaperData(paperId: string, page: number = 1, query: string, sort: PAPER_LIST_SORT_TYPES) {
   return async (dispatch: Dispatch<any>) => {
     await dispatch(
       getReferencePapers({
@@ -42,7 +42,7 @@ export function fetchRefPaperData(paperId: number, page: number = 1, query: stri
 export async function fetchRefCitedPaperDataAtServer(params: LoadDataParams<PaperShowMatchParams>) {
   const { dispatch, match, queryParams } = params;
 
-  const paperId = parseInt(match.params.paperId, 10);
+  const paperId = match.params.paperId;
   const queryParamsObject: PaperShowPageQueryParams = queryParams ? queryParams : { 'cited-page': 1, 'ref-page': 1 };
 
   await Promise.all([
@@ -67,9 +67,9 @@ export async function fetchRefCitedPaperDataAtServer(params: LoadDataParams<Pape
 
 export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchParams>, currentUser?: CurrentUser) {
   const { dispatch, match } = params;
-  const paperId = parseInt(match.params.paperId, 10);
+  const paperId = match.params.paperId;
 
-  if (isNaN(paperId)) {
+  if (!paperId) {
     return dispatch(ActionCreators.failedToGetPaper({ statusCode: 400 }));
   }
 

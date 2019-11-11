@@ -17,7 +17,7 @@ interface SourceURLPopover {
   paperSources: PaperSource[];
   anchorEl: HTMLElement | null;
   pageType: Scinapse.ActionTicket.PageType;
-  paperId: number;
+  paperId: string;
   actionArea?: Scinapse.ActionTicket.ActionArea;
 }
 

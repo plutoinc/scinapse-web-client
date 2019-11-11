@@ -10,14 +10,14 @@ import { camelCaseKeys } from '../../helpers/camelCaseKeys';
 export const DEFAULT_AUTHOR_PAPERS_SIZE = 10;
 
 export interface SimplePaper {
-  paperId: number;
+  paperId: string;
   title: string;
   isRepresentative: boolean;
 }
 
 export interface UpdateRepresentativePapersParams {
   authorId: number;
-  paperIds: number[];
+  paperIds: string[];
 }
 
 export interface ConnectAuthorParams {
@@ -60,7 +60,7 @@ class AuthorAPI extends PlutoAxios {
     return normalizedData;
   };
 
-  public async removeAuthorPapers(authorId: number, paperIds: number[]) {
+  public async removeAuthorPapers(authorId: number, paperIds: string[]) {
     const res = await this.post(`/authors/${authorId}/papers/remove`, {
       paper_ids: paperIds,
     });
@@ -85,7 +85,7 @@ class AuthorAPI extends PlutoAxios {
     return paperListResult;
   }
 
-  public async addPapersToAuthorPaperList(authorId: number, paperIds: number[], cancelToken: CancelToken) {
+  public async addPapersToAuthorPaperList(authorId: number, paperIds: string[], cancelToken: CancelToken) {
     const res = await this.post(
       `/authors/${authorId}/papers/add`,
       {

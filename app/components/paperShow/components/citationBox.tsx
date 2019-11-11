@@ -12,7 +12,7 @@ import ButtonSpinner from '../../common/button/spinner';
 const styles = require('./citationBox.scss');
 
 export interface CitationBoxProps {
-  paperId: number;
+  paperId: string;
   activeTab: AvailableCitationType;
   isLoading: boolean;
   citationText: string;
@@ -21,7 +21,7 @@ export interface CitationBoxProps {
   closeCitationDialog: () => void;
 }
 
-function exportSingleCitation(type: AvailableExportCitationType, selectedPaperIds: number[]) {
+function exportSingleCitation(type: AvailableExportCitationType, selectedPaperIds: string[]) {
   let actionLabel;
 
   if (type === AvailableExportCitationType.RIS) {

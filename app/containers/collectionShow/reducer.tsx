@@ -14,8 +14,8 @@ export interface CollectionShowState
       papersTotalCount: number;
       sortType: AUTHOR_PAPER_LIST_SORT_TYPES;
       searchKeyword: string;
-      paperIds: number | number[];
-      selectedPaperIds: number[];
+      paperIds: string | string[];
+      selectedPaperIds: string[];
     }> {}
 
 export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {

@@ -27,7 +27,7 @@ describe('JournalShow Container Component', () => {
           ...initialState.journalShow,
           journalId: 2764552960,
           paperCurrentPage: 1,
-          paperIds: [8107],
+          paperIds: ['8107'],
           paperTotalPage: 1,
         },
         entities: {

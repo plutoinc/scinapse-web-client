@@ -22,7 +22,7 @@ describe('Paper Show page actions', () => {
     describe('when succeed to get paper data', () => {
       beforeEach(async () => {
         const mockParams = {
-          paperId: 123,
+          paperId: '123',
           cancelToken: axios.CancelToken.source().token,
         };
 
@@ -44,7 +44,7 @@ describe('Paper Show page actions', () => {
     describe("when succeed to get paper's reference paper data", () => {
       beforeEach(async () => {
         const mockParams: GetRefOrCitedPapersParams = {
-          paperId: 123,
+          paperId: '123',
           page: 0,
           query: '',
           sort: null,

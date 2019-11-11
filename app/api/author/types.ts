@@ -18,6 +18,6 @@ export interface AuthorPapersResponse {
 }
 
 export interface GetAuthorPaperResult extends PageObjectV2 {
-  entities: { papers: { [paperId: number]: Paper } };
-  result: number[];
+  entities: { papers: { [paperId: string]: Paper } };
+  result: string[];
 }

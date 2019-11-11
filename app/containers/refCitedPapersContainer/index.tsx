@@ -18,7 +18,7 @@ const MOBILE_FIXED_HEADER_HEIGHT = parseInt(s.mobileFixedHeaderHeight, 10);
 
 interface Props {
   type: REF_CITED_CONTAINER_TYPE;
-  parentPaperId: number;
+  parentPaperId: string;
   page: number;
   query: string;
   sort: PAPER_LIST_SORT_TYPES;
@@ -35,7 +35,7 @@ const RefCitedPapersContainer: FC<Props> = ({ type, parentPaperId, page, query, 
   const isLoggedIn = currentUser && currentUser.isLoggedIn;
 
   const wrapperNode = useRef<HTMLDivElement>(null);
-  const lastParentPaperId = useRef(0);
+  const lastParentPaperId = useRef('');
   const lastPage = useRef(page);
   const lastShouldFetch = useRef(shouldFetch);
 

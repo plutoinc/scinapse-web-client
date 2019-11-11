@@ -20,8 +20,8 @@ interface CollectionPaperListProps {
   currentUser: CurrentUser;
   collectionShow: CollectionShowState;
   userCollection: Collection;
-  onSelectedPaperInCollection: (paperId: number) => void;
-  onRemovePaperFromCollection: (paperIds: number | number[]) => Promise<void>;
+  onSelectedPaperInCollection: (paperId: string) => void;
+  onRemovePaperFromCollection: (paperIds: string | string[]) => Promise<void>;
 }
 
 const CollectionPaperInfo: React.FC<{ collectionShow: CollectionShowState }> = ({ collectionShow }) => {

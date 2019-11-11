@@ -4,7 +4,7 @@ import PlutoAxios from './pluto';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
 export interface GetPaperParams {
-  paperId: number;
+  paperId: string;
   cancelToken: CancelToken;
 }
 

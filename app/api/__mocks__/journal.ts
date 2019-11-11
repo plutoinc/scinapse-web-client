@@ -7,7 +7,7 @@ import { GetPapersParams } from '../journal';
 import { PageObjectV2 } from '../types/common';
 
 interface PapersResult extends PageObjectV2 {
-  entities: { papers: { [paperId: number]: Paper } };
+  entities: { papers: { [paperId: string]: Paper } };
   result: number[];
 }
 

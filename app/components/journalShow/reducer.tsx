@@ -7,7 +7,7 @@ export interface JournalShowState
       isLoadingPapers: boolean;
       failedToLoadPapers: boolean;
       journalId: number;
-      paperIds: number[];
+      paperIds: string[];
       totalPaperCount: number;
       paperTotalPage: number;
       paperCurrentPage: number;

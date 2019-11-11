@@ -22,7 +22,7 @@ const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./requestFulltextDialog.scss');
 
 interface RequestFullTextProps {
-  paperId: number;
+  paperId: string;
 }
 
 type FormState = ReturnType<typeof getInitialValues>;

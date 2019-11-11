@@ -12,7 +12,7 @@ const styles = require('./referencePapers.scss');
 
 type SearchContainerProps = RouteComponentProps<PaperShowMatchParams> & {
   type: REF_CITED_CONTAINER_TYPE;
-  paperId: number;
+  paperId: string;
   placeholder?: string;
 };
 

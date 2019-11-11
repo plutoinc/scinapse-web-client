@@ -8,7 +8,7 @@ import { addPaperToRecommendPool } from '../../recommendPool/actions';
 const s = require('./blurBlocker.scss');
 
 interface BlurBlockerProps {
-  paperId: number;
+  paperId: string;
 }
 
 const BlurBlocker: React.FC<BlurBlockerProps> = ({ paperId }) => {

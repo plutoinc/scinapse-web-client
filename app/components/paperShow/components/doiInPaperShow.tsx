@@ -10,7 +10,7 @@ const s = require('./doiInPaperShow.scss');
 
 interface DoiInPaperShowProps {
   doi: string;
-  paperId: number;
+  paperId: string;
 }
 
 const DoiInPaperShow: React.FC<DoiInPaperShowProps> = props => {

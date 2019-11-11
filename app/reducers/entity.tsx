@@ -9,7 +9,7 @@ import { PaperInCollection } from '../model/paperInCollection';
 import { Profile } from '../model/profile';
 
 export interface NormalizedPaperListResponse {
-  entities: { papers: { [paperId: number]: Paper } };
+  entities: { papers: { [paperId: string]: Paper } };
   result: number[];
 }
 /*
@@ -28,10 +28,10 @@ export interface AppEntities {
     [authorId: number]: Author;
   };
   papers: {
-    [paperId: number]: Paper;
+    [paperId: string]: Paper;
   };
   papersInCollection: {
-    [paperId: number]: PaperInCollection;
+    [paperId: string]: PaperInCollection;
   };
   collections: {
     [collectionId: number]: Collection;

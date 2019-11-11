@@ -15,7 +15,7 @@ import Button from '../common/button';
 
 const styles = require('./collectionPapersControlBtns.scss');
 
-function exportMultiCitations(type: AvailableExportCitationType, selectedPaperIds: number[]) {
+function exportMultiCitations(type: AvailableExportCitationType, selectedPaperIds: string[]) {
   let actionLabel;
 
   if (type === AvailableExportCitationType.RIS) {
@@ -35,7 +35,7 @@ function exportMultiCitations(type: AvailableExportCitationType, selectedPaperId
   });
 }
 
-const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: number[] }> = ({ selectedPaperIds }) => {
+const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: string[] }> = ({ selectedPaperIds }) => {
   const dropdownMenuEl = React.useRef(null);
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -103,7 +103,7 @@ const CollectionPapersControlBtns: React.FC<{
   inOwnCollection: boolean;
   dispatch: Dispatch<any>;
   collectionShow: CollectionShowState;
-  onRemovePaperCollection: (paperIds: number[]) => Promise<void>;
+  onRemovePaperCollection: (paperIds: string[]) => Promise<void>;
 }> = ({ inOwnCollection, dispatch, collectionShow, onRemovePaperCollection }) => {
   const [checkedAll, setCheckedAll] = React.useState(false);
 
