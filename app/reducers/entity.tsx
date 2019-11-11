@@ -2,7 +2,6 @@ import { merge } from 'lodash';
 import { Author } from '../model/author/author';
 import { Actions, ACTION_TYPES } from '../actions/actionTypes';
 import { Paper } from '../model/paper';
-import { Comment } from '../model/comment';
 import { Collection } from '../model/collection';
 import { Member } from '../model/member';
 import { Journal } from '../model/journal';
@@ -34,9 +33,6 @@ export interface AppEntities {
   papersInCollection: {
     [paperId: number]: PaperInCollection;
   };
-  comments: {
-    [commentId: number]: Comment;
-  };
   collections: {
     [collectionId: number]: Collection;
   };
@@ -57,7 +53,6 @@ export const INITIAL_ENTITY_STATE: AppEntities = {
   authors: {},
   papers: {},
   papersInCollection: {},
-  comments: {},
   collections: {},
   members: {},
   journals: {},

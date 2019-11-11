@@ -1,5 +1,4 @@
 import { schema } from 'normalizr';
-import { Comment } from './comment';
 import { PaperAuthor } from './author';
 import { PaperSource } from './paperSource';
 import { Fos } from './fos';
@@ -44,8 +43,6 @@ export interface Paper {
   figures: PaperFigure[];
   authors: PaperAuthor[];
   abstract: string;
-  commentCount: number;
-  comments: Comment[];
   journal: Journal | null;
   conferenceInstance: ConferenceInstance | null;
   urls: PaperSource[];

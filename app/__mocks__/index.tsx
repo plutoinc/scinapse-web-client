@@ -1,5 +1,4 @@
 import { Member } from '../model/member';
-import { Comment } from '../model/comment';
 import { Fos } from '../model/fos';
 import { Journal } from '../model/journal';
 import { Paper } from '../model/paper';
