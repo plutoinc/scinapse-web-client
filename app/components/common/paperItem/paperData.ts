@@ -112,7 +112,6 @@ export const paperWithNote = camelCaseKeys({
     citedCount: 35,
     fosCount: 0,
     urlCount: 0,
-    commentCount: 0,
     journal: {
       id: 57947533,
       title: 'Computer Science',
@@ -145,7 +144,6 @@ export const paperWithNote = camelCaseKeys({
     urls: [],
     figures: [],
     images: [],
-    comments: [],
     published_date: '2018-01-01',
     abstract: null,
     author_count: 1,

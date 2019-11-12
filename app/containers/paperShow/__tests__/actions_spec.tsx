@@ -1,5 +1,4 @@
 jest.mock('../../../api/paper');
-jest.mock('../../../api/comment');
 jest.mock('../../../helpers/makePlutoToastAction');
 jest.unmock('../../../actions/paperShow');
 
