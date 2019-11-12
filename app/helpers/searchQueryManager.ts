@@ -7,7 +7,7 @@ import { isEmpty } from 'lodash';
 export interface FilterObject {
   yearFrom: number | string;
   yearTo: number | string;
-  fos: number[];
+  fos: string[];
   journal: number[];
 }
 
@@ -91,7 +91,7 @@ class SearchQueryManager {
           mappedObject.journal = this.parseNumberArray(current.journal);
         }
         if (current.fos) {
-          mappedObject.fos = this.parseNumberArray(current.fos);
+          mappedObject.fos = current.fos.split('|');
         }
 
         return { ...prev, ...mappedObject };

@@ -57,7 +57,7 @@ const FOSFilterInput: React.FC<FOSFilterInputProps> = props => {
     dispatch({ type: 'CLOSE_BOX' });
   };
 
-  const handleSelectItem = React.useCallback((FOSId: number) => {
+  const handleSelectItem = React.useCallback((FOSId: string) => {
     dispatch({
       type: 'TOGGLE_FOS',
       payload: {

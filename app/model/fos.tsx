@@ -1,9 +1,9 @@
 export interface Fos {
-  id: number;
+  id: string;
   fos: string;
 }
 
 export interface NewFOS {
-  id: number;
+  id: string;
   name: string;
 }

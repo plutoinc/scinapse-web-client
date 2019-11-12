@@ -1070,7 +1070,7 @@ interface SelectJournalFilterItemAction {
 
 interface SelectFOSFilterItemAction {
   type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_FOS_FILTER_ITEM;
-  payload: { FOSId: number };
+  payload: { FOSId: string };
 }
 
 interface ClearJournalFilterAction {

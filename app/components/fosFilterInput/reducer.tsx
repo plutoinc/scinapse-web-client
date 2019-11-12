@@ -5,7 +5,7 @@ interface ReducerState {
   genuineInputValue: string;
   inputValue: string;
   highlightIdx: number;
-  selectedFOSIds: number[];
+  selectedFOSIds: string[];
 }
 
 interface OpenBoxAction {
@@ -34,7 +34,7 @@ interface ArrowKeyDownAction {
 interface ToggleJournalAction {
   type: 'TOGGLE_FOS';
   payload: {
-    FOSId: number;
+    FOSId: string;
   };
 }
 

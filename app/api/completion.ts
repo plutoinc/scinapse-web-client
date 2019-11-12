@@ -11,7 +11,7 @@ export interface CompletionKeyword
 export interface FOSSuggestion {
   keyword: string;
   type: 'FOS';
-  fosId: number;
+  fosId: string;
 }
 
 export interface JournalSuggestion {

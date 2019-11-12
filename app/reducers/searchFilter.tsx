@@ -10,7 +10,7 @@ export interface SearchFilterState extends AggregationData {
   currentYearFrom: number | string;
   currentYearTo: number | string;
   selectedJournalIds: number[];
-  selectedFOSIds: number[];
+  selectedFOSIds: string[];
   detectedYear: number | null;
   addedJournals: JournalSuggestion[];
   sorting: Scinapse.ArticleSearch.SEARCH_SORT_OPTIONS;
