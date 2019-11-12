@@ -1,5 +1,5 @@
 {
-  "id": 2406556600,
+  "id": "2406556600",
   "title": "Machine Learning in Adversarial Settings",
   "year": 2016,
   "published_date": "2016-05-01",
@@ -11,9 +11,9 @@
   "cited_count": 20,
   "journal": null,
   "conference_instance": {
-    "id": 2334792722,
+    "id": "2334792722",
     "conference_series": {
-      "id": 1163618098,
+      "id": "1163618098",
       "name": "IEEE Symposium on Security and Privacy",
       "paper_count": 3117,
       "citation_count": 143139

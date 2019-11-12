@@ -1,7 +1,7 @@
 import { schema } from 'normalizr';
 
 export interface ConferenceSeries {
-  id: number;
+  id: string;
   name: string;
   paperCount: number;
   citationCount: number;
