@@ -8,7 +8,7 @@ export interface FilterObject {
   yearFrom: number | string;
   yearTo: number | string;
   fos: string[];
-  journal: number[];
+  journal: string[];
 }
 
 interface RawFilter {
@@ -88,7 +88,7 @@ class SearchQueryManager {
           mappedObject.yearTo = yearTo;
         }
         if (current.journal) {
-          mappedObject.journal = this.parseNumberArray(current.journal);
+          mappedObject.journal = (current.journal).split('|');
         }
         if (current.fos) {
           mappedObject.fos = current.fos.split('|');
@@ -115,10 +115,6 @@ class SearchQueryManager {
       (!filter.fos || isEmpty(filter.fos)) &&
       (!filter.journal || isEmpty(filter.journal))
     );
-  }
-
-  private parseNumberArray(raw: string) {
-    return raw.split('|').map(str => parseInt(str, 10));
   }
 }
 

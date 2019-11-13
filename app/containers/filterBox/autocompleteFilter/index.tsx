@@ -74,7 +74,7 @@ const AutocompleteFilter: React.FunctionComponent<AutocompleteFilterProps> = pro
   );
 
   const currentFOS = currentFilter && currentFilter.fos ? (currentFilter.fos as string[]) : [];
-  const currentJournal = currentFilter && currentFilter.journal ? (currentFilter.journal as number[]) : [];
+  const currentJournal = currentFilter && currentFilter.journal ? (currentFilter.journal as string[]) : [];
 
   let listNode;
   if (props.type === 'FOS') {

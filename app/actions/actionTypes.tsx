@@ -793,7 +793,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToGetJournal(payload: { journalId: number }) {
+  succeededToGetJournal(payload: { journalId: string }) {
     return createAction({
       type: ACTION_TYPES.JOURNAL_SHOW_SUCCEEDED_TO_GET_JOURNAL,
       payload,
@@ -1065,7 +1065,7 @@ export interface SyncFilterWithQueryParamsAction {
 
 interface SelectJournalFilterItemAction {
   type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM;
-  payload: { journalId: number };
+  payload: { journalId: string };
 }
 
 interface SelectFOSFilterItemAction {

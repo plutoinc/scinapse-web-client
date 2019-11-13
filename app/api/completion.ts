@@ -17,7 +17,7 @@ export interface FOSSuggestion {
 export interface JournalSuggestion {
   keyword: string;
   type: string;
-  journalId: number;
+  journalId: string;
   impactFactor: number;
   abbrev: string | null;
   sci: boolean;

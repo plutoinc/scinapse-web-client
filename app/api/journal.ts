@@ -13,7 +13,7 @@ interface PapersResult extends PageObjectV2 {
 }
 
 export interface GetPapersParams {
-  journalId: number;
+  journalId: string;
   cancelToken: CancelToken;
   size?: number;
   page?: number;
@@ -23,11 +23,11 @@ export interface GetPapersParams {
 
 class JournalAPI extends PlutoAxios {
   public async getJournal(
-    journalId: number,
+    journalId: string,
     cancelToken: CancelToken
   ): Promise<{
-    entities: { journals: { [journalId: number]: Journal } };
-    result: number;
+    entities: { journals: { [journalId: string]: Journal } };
+    result: string;
   }> {
     const getJournalResponse: AxiosResponse = await this.get(`/journals/${journalId}`, { cancelToken });
     const camelizedRes = camelCaseKeys(getJournalResponse.data.data);

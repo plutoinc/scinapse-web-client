@@ -1,5 +1,5 @@
 export interface AggregationJournal {
-  id: number;
+  id: string;
   title: string;
   docCount: number;
   impactFactor: number;

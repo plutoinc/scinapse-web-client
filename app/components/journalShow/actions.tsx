@@ -6,7 +6,7 @@ import alertToast from '../../helpers/makePlutoToastAction';
 import PlutoAxios from '../../api/pluto';
 import { CommonError } from '../../model/error';
 
-export function getJournal(journalId: number, cancelToken: CancelToken) {
+export function getJournal(journalId: string, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToGetJournal());

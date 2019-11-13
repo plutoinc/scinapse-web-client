@@ -40,7 +40,7 @@ export interface AppEntities {
     [memberId: number]: Member;
   };
   journals: {
-    [journalId: number]: Journal;
+    [journalId: string]: Journal;
   };
   profiles: {
     [authorId: number]: Profile;

@@ -9,7 +9,7 @@ export interface SearchFilterState extends AggregationData {
   activeButton: FILTER_BUTTON_TYPE | null;
   currentYearFrom: number | string;
   currentYearTo: number | string;
-  selectedJournalIds: number[];
+  selectedJournalIds: string[];
   selectedFOSIds: string[];
   detectedYear: number | null;
   addedJournals: JournalSuggestion[];

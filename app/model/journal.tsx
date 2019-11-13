@@ -2,9 +2,9 @@ import { schema } from 'normalizr';
 import { NewFOS } from './fos';
 
 export interface Journal {
+  id: string;
   citationCount: number;
   fosList: NewFOS[];
-  id: number;
   impactFactor: number | null;
   issn: string | null;
   paperCount: number;

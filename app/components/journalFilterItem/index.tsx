@@ -12,7 +12,7 @@ interface JournalItemProps {
   journal: AggregationJournal;
   checked: boolean;
   isHighlight: boolean;
-  onClick: (journalId: number) => void;
+  onClick: (journalId: string) => void;
   isSearchResult?: boolean;
 }
 

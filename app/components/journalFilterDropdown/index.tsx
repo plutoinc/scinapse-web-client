@@ -50,7 +50,7 @@ const JournalFilterDropdown: React.FC<
   }
 
   const handleClickJournalItem = React.useCallback(
-    (journalId: number) => {
+    (journalId: string) => {
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM,
         payload: { journalId },
@@ -64,7 +64,7 @@ const JournalFilterDropdown: React.FC<
       <JournalItem
         key={journal.id}
         journal={journal}
-        checked={props.selectedJournalIds.includes(journal.id)}
+        checked={props.selectedJournalIds.includes(String(journal.id))}
         onClick={handleClickJournalItem}
         isHighlight={false}
       />
