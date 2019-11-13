@@ -34,7 +34,7 @@ export interface AppEntities {
     [paperId: string]: PaperInCollection;
   };
   collections: {
-    [collectionId: number]: Collection;
+    [collectionId: string]: Collection;
   };
   members: {
     [memberId: number]: Member;
@@ -138,21 +138,6 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
             containsSelected: true,
             note: action.payload.note,
             noteUpdated: !!action.payload.note,
-          },
-        },
-      };
-    }
-
-    case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_STALE_UPDATED_COLLECTION_NOTE: {
-      const targetCollectionId = action.payload.collectionId;
-
-      return {
-        ...state,
-        collections: {
-          ...state.collections,
-          [targetCollectionId]: {
-            ...state.collections[targetCollectionId],
-            noteUpdated: false,
           },
         },
       };

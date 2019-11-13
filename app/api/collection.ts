@@ -11,7 +11,7 @@ import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
 export interface UpdatePaperNoteToCollectionParams {
   paperId: string;
-  collectionId: number;
+  collectionId: string;
   note: string | null;
 }
 
@@ -21,7 +21,7 @@ export interface PostCollectionParams {
 }
 
 export interface UpdateCollectionParams {
-  collectionId: number;
+  collectionId: string;
   title: string;
   description: string;
 }
@@ -40,7 +40,7 @@ export interface RemovePapersFromCollectionParams {
 }
 
 export interface GetCollectionsPapersParams {
-  collectionId: number;
+  collectionId: string;
   page: number;
   sort: AUTHOR_PAPER_LIST_SORT_TYPES;
   cancelToken: CancelToken;
@@ -51,7 +51,7 @@ export interface GetCollectionsPapersParams {
 interface UpdatePaperNoteResponse {
   note: string;
   paper: null;
-  collectionId: number;
+  collectionId: string;
   paperId: string;
 }
 
@@ -129,11 +129,11 @@ class CollectionAPI extends PlutoAxios {
   }
 
   public async getCollection(
-    collectionId: number,
+    collectionId: string,
     cancelToken: CancelToken
   ): Promise<{
-    entities: { collections: { [collectionId: number]: Collection } };
-    result: number;
+    entities: { collections: { [collectionId: string]: Collection } };
+    result: string;
   }> {
     const res = await this.get(`/collections/${collectionId}`, { cancelToken });
     const camelizedRes = camelCaseKeys(res.data.data);
@@ -144,8 +144,8 @@ class CollectionAPI extends PlutoAxios {
     title,
     description,
   }: PostCollectionParams): Promise<{
-    entities: { collections: { [collectionId: number]: Collection } };
-    result: number;
+    entities: { collections: { [collectionId: string]: Collection } };
+    result: string;
   }> {
     const res = await this.post('/collections', {
       title,
@@ -156,7 +156,7 @@ class CollectionAPI extends PlutoAxios {
     return normalizedData;
   }
 
-  public async deleteCollection(collectionId: number): Promise<{ success: true }> {
+  public async deleteCollection(collectionId: string): Promise<{ success: true }> {
     const res = await this.delete(`/collections/${collectionId}`);
 
     return res.data;
@@ -165,8 +165,8 @@ class CollectionAPI extends PlutoAxios {
   public async updateCollection(
     params: UpdateCollectionParams
   ): Promise<{
-    entities: { collections: { [collectionId: number]: Collection } };
-    result: number;
+    entities: { collections: { [collectionId: string]: Collection } };
+    result: string;
   }> {
     const res = await this.put(`/collections/${params.collectionId}`, {
       title: params.title,
@@ -177,7 +177,7 @@ class CollectionAPI extends PlutoAxios {
     return normalizedData;
   }
 
-  public async getRelatedPaperInCollection(collectionId: number) {
+  public async getRelatedPaperInCollection(collectionId: string) {
     const res = await this.get(`/collections/${collectionId}/related/sample`);
     const camelizedRes = camelCaseKeys(res.data.data);
     return camelizedRes;

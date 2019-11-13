@@ -11,7 +11,7 @@ const styles = require('./collectionShareButton.scss');
 const FACEBOOK_SHARE_URL = 'http://www.facebook.com/sharer/sharer.php?u=';
 const TWITTER_SHARE_URL = 'https://twitter.com/intent/tweet?url=';
 
-function handleActionTicketInShared(platform: string, id: number) {
+function handleActionTicketInShared(platform: string, id: string) {
   ActionTicketManager.trackTicket({
     pageType: 'collectionShow',
     actionType: 'fire',
@@ -21,7 +21,7 @@ function handleActionTicketInShared(platform: string, id: number) {
   });
 }
 
-function getPageToSharing(platform: string, id: number) {
+function getPageToSharing(platform: string, id: string) {
   switch (platform) {
     case 'COPIED':
       copySelectedTextToClipboard(`https://scinapse.io/collections/${id}?share=copylink`);

@@ -11,7 +11,7 @@ const styles = require('./collectionPaperNote.scss');
 interface CollectionPaperNoteProps {
   dispatch: Dispatch<any>;
   paperId: string;
-  collectionId: number;
+  collectionId: string;
   maxHeight: number;
   note?: string;
 }

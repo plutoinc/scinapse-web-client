@@ -19,7 +19,7 @@ interface CollectionSideNaviBarProps {
   collections: MyCollectionsState;
   myCollections: Collection[] | undefined;
   userCollections: Collection[] | undefined;
-  currentCollectionId: number;
+  currentCollectionId: string;
   currentUser: CurrentUser;
   collectionCreateBy: Member;
 }
@@ -27,7 +27,7 @@ interface CollectionSideNaviBarProps {
 interface CollectionListProps {
   userCollections: Collection[] | undefined;
   isLoadingCollections: boolean;
-  currentCollectionId: number;
+  currentCollectionId: string;
 }
 
 const CollectionsList: React.FunctionComponent<CollectionListProps> = React.memo(props => {

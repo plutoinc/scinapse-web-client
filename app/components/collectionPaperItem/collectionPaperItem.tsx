@@ -14,7 +14,7 @@ interface Props {
   inOwnCollection: boolean;
   isMobile: boolean;
   isChecked: boolean;
-  collectionId: number;
+  collectionId: string;
   onClickCheckBox: (paperId: string) => void;
   onClickXButton: (paperId: string) => void;
 }

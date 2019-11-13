@@ -9,7 +9,7 @@ const s = require('./noteButton.scss');
 
 interface NoteButtonProps {
   paperId: string;
-  collectionId: number;
+  collectionId: string;
   note?: string;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;

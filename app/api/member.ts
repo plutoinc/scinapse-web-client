@@ -9,8 +9,8 @@ import { KeywordSettingsResponse } from './types/member';
 
 export interface GetCollectionsResponse extends CommonPaginationResponsePart {
   content: Collection[];
-  entities: { collections: { [collectionId: number]: Collection } };
-  result: number[];
+  entities: { collections: { [collectionId: string]: Collection } };
+  result: string[];
 }
 
 class MemberAPI extends PlutoAxios {

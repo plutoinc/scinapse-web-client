@@ -307,7 +307,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private selectDefaultCollection = (myCollections: Collection[]) => {
-    const lastId = parseInt(store.get(LAST_USER_COLLECTION_ID), 10);
+    const lastId = store.get(LAST_USER_COLLECTION_ID);
 
     let defaultCollection: Collection;
     defaultCollection =

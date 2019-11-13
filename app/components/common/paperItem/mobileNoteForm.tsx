@@ -8,7 +8,7 @@ const s = require('./mobileNoteForm.scss');
 
 interface MobileNoteFormProps {
   paperId: string;
-  collectionId: number;
+  collectionId: string;
   note?: string;
 }
 

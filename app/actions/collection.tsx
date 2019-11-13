@@ -32,7 +32,7 @@ export function savePaperToCollection(params: AddPaperToCollectionParams) {
       dispatch(
         openSnackbar({
           type: GLOBAL_SNACKBAR_TYPE.COLLECTION_SAVED,
-          id: params.collection.id,
+          collectionId: params.collection.id,
           context: params.collection.title,
           actionTicketParams: {
             pageType: 'paperShow',
@@ -88,10 +88,6 @@ export function selectCollectionToCurrentCollection(collection: Collection) {
 
 export function toggleNoteEditMode() {
   return ActionCreators.toggleNoteEditMode();
-}
-
-export function staleUpdatedCollectionNote(collectionId: number) {
-  return ActionCreators.staleUpdatedCollectionNote({ collectionId });
 }
 
 export function updatePaperNote(params: UpdatePaperNoteToCollectionParams) {

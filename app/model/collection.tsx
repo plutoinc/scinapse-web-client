@@ -2,7 +2,7 @@ import { schema } from 'normalizr';
 import { Member } from './member';
 
 export interface Collection {
-  id: number;
+  id: string;
   createdBy: Member;
   title: string;
   description: string;

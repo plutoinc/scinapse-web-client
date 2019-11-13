@@ -43,7 +43,7 @@ export interface DialogState
 
       isLoadingMyCollections: boolean;
       hasErrorToCollectionDialog: boolean;
-      myCollectionIds: number[];
+      myCollectionIds: string[];
       collectionDialogTargetPaperId: string | undefined;
 
       collection: Collection | undefined;

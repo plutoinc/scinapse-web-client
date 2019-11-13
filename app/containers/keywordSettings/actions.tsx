@@ -50,7 +50,7 @@ export function createKeywordAlert(keyword: string, actionArea?: string) {
       dispatch(
         openSnackbar({
           type: GLOBAL_SNACKBAR_TYPE.CREATE_KEYWORD_ALERT,
-          id: null,
+          collectionId: null,
           context: null,
           actionTicketParams: {
             pageType: getCurrentPageType(),

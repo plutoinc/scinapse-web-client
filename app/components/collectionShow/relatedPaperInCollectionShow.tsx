@@ -9,7 +9,7 @@ import { SimplePaperItem } from '../simplePaperItem/simplePaperItemContainer';
 const styles = require('./relatedPaperInCollectionShow.scss');
 
 interface RelatedPaperInCollectionShowProps {
-  collectionId: number;
+  collectionId: string;
 }
 
 const RelatedPaperItem: React.FunctionComponent<{ paper: Paper }> = props => {

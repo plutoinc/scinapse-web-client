@@ -63,7 +63,7 @@ export function addPaperToCollection(params: AddPaperToCollectionParams) {
       dispatch(
         openSnackbar({
           type: GLOBAL_SNACKBAR_TYPE.COLLECTION_SAVED,
-          id: params.collection.id,
+          collectionId: params.collection.id,
           context: params.collection.title,
           actionTicketParams: {
             pageType: 'searchResult',
@@ -168,7 +168,7 @@ export function getCitationText(params: GetCitationTextParams) {
   };
 }
 
-export function deleteCollection(collectionId: number) {
+export function deleteCollection(collectionId: string) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToDeleteCollection());
