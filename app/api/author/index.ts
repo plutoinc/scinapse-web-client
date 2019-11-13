@@ -1,7 +1,7 @@
 import { CancelToken } from 'axios';
 import { normalize } from 'normalizr';
 import PlutoAxios from '../pluto';
-import { RawAuthor, Author, authorSchema, authorListSchema } from '../../model/author/author';
+import { Author, authorSchema, authorListSchema } from '../../model/author/author';
 import { GetAuthorPapersParams, AuthorPapersResponse, GetAuthorPaperResult } from './types';
 import { paperSchema, Paper } from '../../model/paper';
 import { RawPaginationResponseV2 } from '../types/common';
@@ -54,7 +54,7 @@ class AuthorAPI extends PlutoAxios {
       web_page: params.webPage,
       is_email_hidden: params.isEmailHidden,
     });
-    const rawAuthor: RawAuthor = res.data.data.content;
+    const rawAuthor = res.data.data.content;
     const camelizedAuthor: Author = camelCaseKeys(rawAuthor);
     const normalizedData = normalize(camelizedAuthor, authorSchema);
     return normalizedData;

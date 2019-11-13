@@ -5,12 +5,11 @@ import { Paper } from '../model/paper';
 import { PaperSource } from '../model/paperSource';
 import { PaperAuthor } from '../model/author';
 import { CurrentUser } from '../model/currentUser';
-import { RawAuthor } from '../model/author/author';
 import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
 export const RAW = {
   AUTHOR_IN_PAPER: require('./paperAuthor.json') as PaperAuthor,
-  AUTHOR: require('./author.json') as RawAuthor,
+  AUTHOR: require('./author.json'),
   CURRENT_USER: require('./currentUser.json') as CurrentUser,
   FOS: require('./fos.json') as Fos,
   JOURNAL: require('./journal.json') as Journal,
