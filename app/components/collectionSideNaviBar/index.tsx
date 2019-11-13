@@ -71,9 +71,9 @@ const CollectionsList: React.FunctionComponent<CollectionListProps> = React.memo
 });
 
 const CollectionSideNaviBarTitle: React.FunctionComponent<{
-  collectionCreateById: number;
+  collectionCreateById: string;
   isLoggedIn: boolean;
-  currentUserId: number;
+  currentUserId: string;
 }> = React.memo(props => {
   const { collectionCreateById, isLoggedIn, currentUserId } = props;
 

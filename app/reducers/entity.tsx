@@ -37,7 +37,7 @@ export interface AppEntities {
     [collectionId: string]: Collection;
   };
   members: {
-    [memberId: number]: Member;
+    [memberId: string]: Member;
   };
   journals: {
     [journalId: string]: Journal;
@@ -177,8 +177,6 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
 
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA: {
       const { authorId, profileImageUrl } = action.payload;
-      // TODO: remove below after changing member id type to string
-      const memberId = parseInt(authorId, 10);
 
       return {
         ...state,
@@ -192,7 +190,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
         members: {
           ...state.members,
           [authorId]: {
-            ...state.members[memberId],
+            ...state.members[authorId],
             profileImageUrl,
           },
         },

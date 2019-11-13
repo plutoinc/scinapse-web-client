@@ -3,7 +3,7 @@ import { Dispatch } from 'redux';
 import MemberAPI from '../../api/member';
 import { ActionCreators, ACTION_TYPES } from '../../actions/actionTypes';
 
-export function getMember(memberId: number, cancelToken: CancelToken) {
+export function getMember(memberId: string, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToGetMemberInCollectionsPage());
 
@@ -32,7 +32,7 @@ export function getMember(memberId: number, cancelToken: CancelToken) {
   };
 }
 
-export function getCollections(memberId: number, cancelToken?: CancelToken, itsMe?: boolean) {
+export function getCollections(memberId: string, cancelToken?: CancelToken, itsMe?: boolean) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToGetCollectionsInCollectionsPage());
 

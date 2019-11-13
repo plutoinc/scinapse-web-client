@@ -1,12 +1,12 @@
 {
-  "id": 2258681040,
+  "id": "2258681040",
   "name": "H. Goldschmidt",
   "email": "scshinjr@gmail.com",
   "bio":
     "Local server runs with Express and webpack-dev-server.\nBecause Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file. \nLocal server runs with Express and webpack-dev-server.\nBecause Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.\nLocal server runs with Express and webpack-dev-server.\nBecause Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.\nLocal server runs with Express and webpack-dev-server.\nBecause Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.",
   "web_page": null,
   "hindex": null,
-  "last_known_affiliation": { "id": 223822909, "name": "Heidelberg University" },
+  "last_known_affiliation": { "id": "223822909", "name": "Heidelberg University" },
   "paper_count": 19,
   "citation_count": 3398,
   "is_layered": true,

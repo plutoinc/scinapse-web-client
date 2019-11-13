@@ -15,11 +15,11 @@ export interface GetCollectionsResponse extends CommonPaginationResponsePart {
 
 class MemberAPI extends PlutoAxios {
   public async getMember(
-    memberId: number,
+    memberId: string,
     cancelToken: CancelToken
   ): Promise<{
-    entities: { members: { [memberId: number]: Member } };
-    result: number;
+    entities: { members: { [memberId: string]: Member } };
+    result: string;
   }> {
     const res = await this.get(`/members/${memberId}`, { cancelToken });
     const camelizedRes = camelCaseKeys(res.data);
@@ -27,7 +27,7 @@ class MemberAPI extends PlutoAxios {
     return normalizedMember;
   }
 
-  public async getCollections(memberId: number, cancelToken?: CancelToken): Promise<GetCollectionsResponse> {
+  public async getCollections(memberId: string, cancelToken?: CancelToken): Promise<GetCollectionsResponse> {
     const res = await this.get(`/members/${memberId}/collections`, { cancelToken });
     const camelizedRes = camelCaseKeys(res.data.data);
     const normalizedCollections = normalize(camelizedRes.content, [collectionSchema]);

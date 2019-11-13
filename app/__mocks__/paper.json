@@ -1,6 +1,5 @@
 {
-  "id": 101,
-  "cognitivePaperId": 2108376819,
+  "id": "101",
   "title": "Preparation and characterization of graphene oxide paper.",
   "titleHighlighted": "Preparation and characterization of <b>graphene</b> oxide paper.",
   "year": 2007,
@@ -19,54 +18,53 @@
   "fosCount": 7,
   "urlCount": 8,
   "commentCount": 1,
-  "journal": { "id": 10, "fullTitle": "Nature", "impactFactor": 40.137, "title": "Nature" },
+  "journal": { "id": "10", "fullTitle": "Nature", "impactFactor": 40.137, "title": "Nature" },
   "authors": [
-    { "paperId": 0, "order": 1, "name": "Dmitriy A. Dikin", "organization": "Northwestern University" },
-    { "paperId": 0, "order": 2, "name": "Sasha Stankovich", "organization": "Northwestern University" },
-    { "paperId": 0, "order": 3, "name": "Eric J. Zimney", "organization": "Northwestern University" },
-    { "paperId": 0, "order": 4, "name": "Richard D. Piner", "organization": "Northwestern University" },
-    { "paperId": 0, "order": 5, "name": "Geoffrey H. B. Dommett", "organization": "Northwestern University" },
-    { "paperId": 0, "order": 6, "name": "Guennadi Evmenenko", "organization": "Northwestern University" },
-    { "paperId": 0, "order": 7, "name": "SonBinh T. Nguyen", "organization": "Northwestern University" },
-    { "paperId": 0, "order": 8, "name": "Rodney S. Ruoff", "organization": "Northwestern University" }
+    { "paperId": "0", "order": 1, "name": "Dmitriy A. Dikin", "organization": "Northwestern University" },
+    { "paperId": "0", "order": 2, "name": "Sasha Stankovich", "organization": "Northwestern University" },
+    { "paperId": "0", "order": 3, "name": "Eric J. Zimney", "organization": "Northwestern University" },
+    { "paperId": "0", "order": 4, "name": "Richard D. Piner", "organization": "Northwestern University" },
+    { "paperId": "0", "order": 5, "name": "Geoffrey H. B. Dommett", "organization": "Northwestern University" },
+    { "paperId": "0", "order": 6, "name": "Guennadi Evmenenko", "organization": "Northwestern University" },
+    { "paperId": "0", "order": 7, "name": "SonBinh T. Nguyen", "organization": "Northwestern University" },
+    { "paperId": "0", "order": 8, "name": "Rodney S. Ruoff", "organization": "Northwestern University" }
   ],
   "keywords": [],
   "fosList": [
-    { "id": 0, "fos": "graphene oxide paper" },
-    { "id": 0, "fos": "nanocomposite" },
-    { "id": 0, "fos": "graphene" },
-    { "id": 0, "fos": "carbon nanotube" },
-    { "id": 0, "fos": "nanotechnology" },
-    { "id": 0, "fos": "materials science" },
-    { "id": 0, "fos": "oxide" }
+    { "id": "0", "fos": "graphene oxide paper" },
+    { "id": "0", "fos": "nanocomposite" },
+    { "id": "0", "fos": "graphene" },
+    { "id": "0", "fos": "carbon nanotube" },
+    { "id": "0", "fos": "nanotechnology" },
+    { "id": "0", "fos": "materials science" },
+    { "id": "0", "fos": "oxide" }
   ],
   "urls": [
-    { "id": 0, "paperId": 0, "url": "https://www.ncbi.nlm.nih.gov/pubmed/17653188" },
-    { "id": 0, "paperId": 0, "url": "http://www.nature.com/doifinder/10.1038/nature06016" },
-    { "id": 0, "paperId": 0, "url": "https://www.osti.gov/scitech/biblio/929914" },
+    { "id": "0", "paperId": "0", "url": "https://www.ncbi.nlm.nih.gov/pubmed/17653188" },
+    { "id": "0", "paperId": "0", "url": "http://www.nature.com/doifinder/10.1038/nature06016" },
+    { "id": "0", "paperId": "0", "url": "https://www.osti.gov/scitech/biblio/929914" },
     {
-      "id": 0,
-      "paperId": 0,
+      "id": "0",
+      "paperId": "0",
       "url":
-        "https://www.scholars.northwestern.edu/en/publications/preparation-and-characterization-of-graphene-oxide-paper"
+      "https://www.scholars.northwestern.edu/en/publications/preparation-and-characterization-of-graphene-oxide-paper"
     },
-    { "id": 0, "paperId": 0, "url": "https://doi.org/10.1038/nature06016" },
-    { "id": 0, "paperId": 0, "url": "http://adsabs.harvard.edu/abs/2007Natur.448..457D" },
+    { "id": "0", "paperId": "0", "url": "https://doi.org/10.1038/nature06016" },
+    { "id": "0", "paperId": "0", "url": "http://adsabs.harvard.edu/abs/2007Natur.448..457D" },
     {
-      "id": 0,
-      "paperId": 0,
+      "id": "0",
+      "paperId": "0",
       "url": "http://palgrave.nature.com/nature/journal/v448/n7152/suppinfo/nature06016.html"
     },
-    { "id": 0, "paperId": 0, "url": "https://www.nature.com/articles/nature06016.pdf" }
+    { "id": "0", "paperId": "0", "url": "https://www.nature.com/articles/nature06016.pdf" }
   ],
   "comments": [
     {
-      "id": 85,
+      "id": "85",
       "comment": "test~~",
       "paperId": null,
-      "cognitivePaperId": 2108376819,
       "createdBy": {
-        "id": 41,
+        "id": "41",
         "email": "scshinjr@gmail.com",
         "emailVerified": true,
         "name": "TylorShin",
@@ -83,8 +81,8 @@
     }
   ],
   "abstract":
-    "Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: graphene oxide paper. It is based on nanoscale graphene oxide sheets that are interlocked and tiled together in a near-parallel fashion.",
+  "Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: graphene oxide paper. It is based on nanoscale graphene oxide sheets that are interlocked and tiled together in a near-parallel fashion.",
   "abstractHighlighted":
-    "Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: <b>graphene</b> oxide paper. It is based on nanoscale <b>graphene</b> oxide sheets that are interlocked and tiled together in a near-parallel fashion.",
-  "relation": { "savedInCollections": [{ "id": 22, "title": "Read Later" }] }
+  "Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: <b>graphene</b> oxide paper. It is based on nanoscale <b>graphene</b> oxide sheets that are interlocked and tiled together in a near-parallel fashion.",
+  "relation": { "savedInCollections": [{ "id": "22", "title": "Read Later" }] }
 }

@@ -32,10 +32,10 @@
   },
   "authors": [
     {
-      "id": 2056207806,
+      "id": "2056207806",
       "name": "Patrick D. McDaniel",
       "affiliation": {
-        "id": 130769515,
+        "id": "130769515",
         "name": "Pennsylvania State University"
       },
       "paper_count": 257,
@@ -46,10 +46,10 @@
       "is_layered": false
     },
     {
-      "id": 248975517,
+      "id": "248975517",
       "name": "Nicolas Papernot",
       "affiliation": {
-        "id": 130769515,
+        "id": "130769515",
         "name": "Pennsylvania State University"
       },
       "paper_count": 41,
@@ -60,10 +60,10 @@
       "is_layered": false
     },
     {
-      "id": 2250297608,
+      "id": "2250297608",
       "name": "Z. Berkay Celik",
       "affiliation": {
-        "id": 130769515,
+        "id": "130769515",
         "name": "Pennsylvania State University"
       },
       "paper_count": 23,
@@ -79,7 +79,7 @@
   "abstract": null,
   "title_highlighted": "<b>Machine</b><b> Learning</b> in Adversarial Settings",
   "abstract_highlighted":
-    "Recent advances in <b>machine</b><b> learning</b> have led to innovative applications and services that use computational structures to reason about complex phenomenon. Over the past several years, the security and <b>machine</b><b>-learning</b> communities have developed novel techniques for constructing adversarial samples--malicious inputs crafted to mislead (and therefore corrupt the integrity of) systems built on computationally learned models. The authors consider the underlying causes of adversarial samples and the future countermeasures that might mitigate them.",
+  "Recent advances in <b>machine</b><b> learning</b> have led to innovative applications and services that use computational structures to reason about complex phenomenon. Over the past several years, the security and <b>machine</b><b>-learning</b> communities have developed novel techniques for constructing adversarial samples--malicious inputs crafted to mislead (and therefore corrupt the integrity of) systems built on computationally learned models. The authors consider the underlying causes of adversarial samples and the future countermeasures that might mitigate them.",
   "relation": null,
   "is_layered": false
 }
