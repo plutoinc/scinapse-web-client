@@ -41,7 +41,7 @@ export interface AuthorShowMatchParams {
 }
 
 export interface HandleAuthorClaim {
-  authorId: number;
+  authorId: string;
 }
 
 export interface AuthorShowProps {

@@ -1,7 +1,7 @@
 import { schema } from 'normalizr';
 
 export interface Profile extends CVInfoType {
-  authorId: number[];
+  authorId: string;
 }
 
 export interface CVInfoType {

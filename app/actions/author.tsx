@@ -16,14 +16,14 @@ import { getAuthor, getCoAuthors, getAuthorPapers } from '../containers/unconnec
 import { CommonError } from '../model/error';
 
 interface AddRemovePapersAndFetchPapersParams {
-  authorId: number;
+  authorId: string;
   papers: Paper[];
   currentUser: CurrentUser;
   cancelToken: CancelToken;
 }
 
 interface FetchAuthorShowRelevantDataParams {
-  authorId: number;
+  authorId: string;
   cancelToken: CancelToken;
   currentUser?: CurrentUser;
   page?: number;
@@ -93,7 +93,7 @@ export function updateAuthor(params: ConnectAuthorParams) {
 
 export function postNewAuthorCVInfo(
   type: keyof CVInfoType,
-  authorId: number,
+  authorId: string,
   params: AwardParams | EducationParams | ExperienceParams
 ) {
   return async (dispatch: Dispatch<any>) => {
@@ -112,7 +112,7 @@ export function postNewAuthorCVInfo(
   };
 }
 
-export function removeAuthorCvInfo(type: keyof CVInfoType, authorId: number, id: string) {
+export function removeAuthorCvInfo(type: keyof CVInfoType, authorId: string, id: string) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToRemoveProfileCvData({ CVType: type }));
     let result: any;
@@ -138,7 +138,7 @@ export function removeAuthorCvInfo(type: keyof CVInfoType, authorId: number, id:
 
 export function updateAuthorCvInfo(
   type: keyof CVInfoType,
-  authorId: number,
+  authorId: string,
   params: AwardParams | EducationParams | ExperienceParams
 ) {
   return async (dispatch: Dispatch<any>) => {
@@ -156,7 +156,7 @@ export function updateAuthorCvInfo(
   };
 }
 
-export function updateProfileImage(authorId: number, formData: FormData) {
+export function updateProfileImage(authorId: string, formData: FormData) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToUpdateProfileImageData());
@@ -173,7 +173,7 @@ export function updateProfileImage(authorId: number, formData: FormData) {
   };
 }
 
-function addPaperToAuthorPaperList(authorId: number, papers: Paper[], cancelToken: CancelToken) {
+function addPaperToAuthorPaperList(authorId: string, papers: Paper[], cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     const paperIds = papers.map(paper => paper.id);
     dispatch(ActionCreators.startToAddPaperToAuthorPaperList());
@@ -232,7 +232,7 @@ export function openAddPublicationsToAuthorDialog() {
   return ActionCreators.openGlobalDialog({ type: GLOBAL_DIALOG_TYPE.ADD_PUBLICATIONS_TO_AUTHOR_DIALOG });
 }
 
-export function updateRepresentativePapers(authorId: number, papers: Paper[]) {
+export function updateRepresentativePapers(authorId: string, papers: Paper[]) {
   return async (dispatch: Dispatch<any>) => {
     await AuthorAPI.updateRepresentativePapers({
       authorId,

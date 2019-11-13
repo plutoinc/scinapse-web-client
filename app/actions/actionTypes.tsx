@@ -347,11 +347,11 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_START_TO_CONNECT_AUTHOR });
   },
 
-  succeedToConnectAuthor(payload: { authorId: number }) {
+  succeedToConnectAuthor(payload: { authorId: string }) {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR, payload });
   },
 
-  succeedToUpdateAuthorRepresentativePapers(payload: { papers: Paper[]; authorId: number }) {
+  succeedToUpdateAuthorRepresentativePapers(payload: { papers: Paper[]; authorId: string }) {
     return createAction({
       type: ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_CHANGE_REPRESENTATIVE_PAPERS,
       payload,
@@ -366,21 +366,21 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_CONNECT_AUTHOR });
   },
 
-  getProfile(payload: { authorId: number }) {
+  getProfile(payload: { authorId: string }) {
     return createAction({
       type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_PROFILE,
       payload,
     });
   },
 
-  getCoAuthors(payload: { coAuthorIds: number[] }) {
+  getCoAuthors(payload: { coAuthorIds: string[] }) {
     return createAction({
       type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_CO_AUTHORS,
       payload,
     });
   },
 
-  getAuthor(payload: { authorId: number }) {
+  getAuthor(payload: { authorId: string }) {
     return createAction({
       type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_AUTHOR,
       payload,
@@ -477,7 +477,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToUpdateProfileImageData(payload: { authorId: number; profileImageUrl: string }) {
+  succeededToUpdateProfileImageData(payload: { authorId: string; profileImageUrl: string }) {
     return createAction({
       type: ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA,
       payload,
@@ -965,7 +965,7 @@ export const ActionCreators = {
   },
 
   succeedToAddProfileCvData(payload: {
-    authorId: number;
+    authorId: string;
     cvInfoType: keyof CVInfoType;
     cvInformation: Award | Education | Experience;
   }) {
@@ -987,7 +987,7 @@ export const ActionCreators = {
   },
 
   succeededToUpdateProfileCvData(payload: {
-    authorId: number;
+    authorId: string;
     cvInfoType: keyof CVInfoType;
     cvInformation: Award | Education | Experience;
   }) {
@@ -1005,7 +1005,7 @@ export const ActionCreators = {
   },
 
   succeededToRemoveProfileCvData(payload: {
-    authorId: number;
+    authorId: string;
     cvInfoType: keyof CVInfoType;
     cvInformation: Award | Education | Experience;
   }) {

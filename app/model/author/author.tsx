@@ -4,7 +4,7 @@ import { Affiliation } from '../affiliation';
 import { NewFOS } from '../fos';
 
 export interface Author {
-  id: number;
+  id: string;
   name: string;
   hindex: number;
   lastKnownAffiliation?: Affiliation;

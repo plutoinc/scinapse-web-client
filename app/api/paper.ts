@@ -40,7 +40,7 @@ export interface GetRelatedPapersParams {
 
 export interface GetOtherPapersFromAuthorParams {
   paperId: string;
-  authorId: number;
+  authorId: string;
   cancelToken: CancelToken;
 }
 

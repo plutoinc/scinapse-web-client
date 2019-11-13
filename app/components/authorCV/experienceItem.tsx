@@ -16,7 +16,7 @@ interface ExperienceItemState {
 
 interface ExperienceItemProps {
   validConnection: boolean;
-  authorId: number;
+  authorId: string;
   experience: Experience;
   handleRemoveItem: (cvInfoId: string) => void;
   dispatch: Dispatch<any>;

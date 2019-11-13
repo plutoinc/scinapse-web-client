@@ -11,7 +11,7 @@ export interface Member {
   affiliation: string;
   oauth: MemberOAuth | null;
   isAuthorConnected: boolean;
-  authorId: number;
+  authorId: string;
   profileLink: string;
 }
 

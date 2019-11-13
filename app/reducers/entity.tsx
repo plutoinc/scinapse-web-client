@@ -25,7 +25,7 @@ export interface NormalizedPaperListResponse {
 
 export interface AppEntities {
   authors: {
-    [authorId: number]: Author;
+    [authorId: string]: Author;
   };
   papers: {
     [paperId: string]: Paper;
@@ -43,7 +43,7 @@ export interface AppEntities {
     [journalId: string]: Journal;
   };
   profiles: {
-    [authorId: number]: Profile;
+    [authorId: string]: Profile;
   };
 }
 
@@ -59,7 +59,7 @@ export const INITIAL_ENTITY_STATE: AppEntities = {
   profiles: {},
 };
 
-export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actions) {
+export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actions): AppEntities {
   switch (action.type) {
     case ACTION_TYPES.GLOBAL_ADD_ENTITY: {
       const { entities } = action.payload;
@@ -163,14 +163,12 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
     case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA: {
       const { authorId, cvInformation, cvInfoType } = action.payload;
 
-      const profiles = state.profiles[authorId];
-
       return {
         ...state,
         profiles: {
-          ...profiles,
+          ...state.profiles,
           [authorId]: {
-            ...profiles,
+            ...state.profiles[authorId],
             [cvInfoType]: cvInformation,
           },
         },
@@ -179,6 +177,8 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
 
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA: {
       const { authorId, profileImageUrl } = action.payload;
+      // TODO: remove below after changing member id type to string
+      const memberId = parseInt(authorId, 10);
 
       return {
         ...state,
@@ -192,7 +192,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
         members: {
           ...state.members,
           [authorId]: {
-            ...state.members[authorId],
+            ...state.members[memberId],
             profileImageUrl,
           },
         },

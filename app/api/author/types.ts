@@ -4,7 +4,7 @@ import { Paper } from '../../model/paper';
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
 
 export interface GetAuthorPapersParams {
-  authorId: number;
+  authorId: string;
   page: number;
   sort: AUTHOR_PAPER_LIST_SORT_TYPES;
   cancelToken: CancelToken;

@@ -21,6 +21,6 @@ export const CURRENT_USER_INITIAL_STATE: CurrentUser = {
   emailVerified: false,
   oauth: null,
   isAuthorConnected: false,
-  authorId: 0,
+  authorId: '',
   profileLink: '',
 };

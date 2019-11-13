@@ -16,12 +16,12 @@ export interface SimplePaper {
 }
 
 export interface UpdateRepresentativePapersParams {
-  authorId: number;
+  authorId: string;
   paperIds: string[];
 }
 
 export interface ConnectAuthorParams {
-  authorId: number;
+  authorId: string;
   bio: string | null;
   email: string;
   name: string;
@@ -33,7 +33,7 @@ export interface ConnectAuthorParams {
 
 interface QueryAuthorPapersParams {
   query: string;
-  authorId: number;
+  authorId: string;
   page: number;
   cancelToken: CancelToken;
 }
@@ -42,8 +42,8 @@ class AuthorAPI extends PlutoAxios {
   public connectAuthor = async (
     params: ConnectAuthorParams
   ): Promise<{
-    entities: { authors: { [authorId: number]: Author } };
-    result: number;
+    entities: { authors: { [authorId: string]: Author } };
+    result: string;
   }> => {
     const res = await this.post(`/authors/${params.authorId}/connect`, {
       affiliation_id: params.affiliationId,
@@ -60,7 +60,7 @@ class AuthorAPI extends PlutoAxios {
     return normalizedData;
   };
 
-  public async removeAuthorPapers(authorId: number, paperIds: string[]) {
+  public async removeAuthorPapers(authorId: string, paperIds: string[]) {
     const res = await this.post(`/authors/${authorId}/papers/remove`, {
       paper_ids: paperIds,
     });
@@ -85,7 +85,7 @@ class AuthorAPI extends PlutoAxios {
     return paperListResult;
   }
 
-  public async addPapersToAuthorPaperList(authorId: number, paperIds: string[], cancelToken: CancelToken) {
+  public async addPapersToAuthorPaperList(authorId: string, paperIds: string[], cancelToken: CancelToken) {
     const res = await this.post(
       `/authors/${authorId}/papers/add`,
       {
@@ -132,7 +132,7 @@ class AuthorAPI extends PlutoAxios {
     };
   }
 
-  public async getSelectedPapers(authorId: number) {
+  public async getSelectedPapers(authorId: string) {
     const res = await this.get(`/authors/${authorId}/papers/all`);
 
     const simplePapersResponse: RawPaginationResponseV2<SimplePaper[]> = camelCaseKeys(res.data);
@@ -141,11 +141,11 @@ class AuthorAPI extends PlutoAxios {
   }
 
   public async getAuthor(
-    authorId: number,
+    authorId: string,
     cancelToken: CancelToken
   ): Promise<{
-    entities: { authors: { [authorId: number]: Author } };
-    result: number;
+    entities: { authors: { [authorId: string]: Author } };
+    result: string;
   }> {
     const res = await this.get(`/authors/${authorId}`, { cancelToken });
     const author: Author = camelCaseKeys(res.data.data);
@@ -156,8 +156,8 @@ class AuthorAPI extends PlutoAxios {
   public async updateAuthor(
     params: ConnectAuthorParams
   ): Promise<{
-    entities: { authors: { [authorId: number]: Author } };
-    result: number;
+    entities: { authors: { [authorId: string]: Author } };
+    result: string;
   }> {
     const res = await this.put(`/authors/${params.authorId}`, {
       affiliation_id: params.affiliationId,
@@ -173,7 +173,7 @@ class AuthorAPI extends PlutoAxios {
     return normalizedData;
   }
 
-  public async updateAuthorProfileImage(authorId: number, profileImageData: FormData) {
+  public async updateAuthorProfileImage(authorId: string, profileImageData: FormData) {
     const res = await this.put(`/authors/${authorId}/profile-image`, profileImageData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -184,11 +184,11 @@ class AuthorAPI extends PlutoAxios {
   }
 
   public async getCoAuthors(
-    authorId: number,
+    authorId: string,
     cancelToken: CancelToken
   ): Promise<{
-    entities: { authors: { [authorId: number]: Author } };
-    result: number[];
+    entities: { authors: { [authorId: string]: Author } };
+    result: string[];
   }> {
     const res = await this.get(`/authors/${authorId}/co-authors`, { cancelToken });
     const authors: Author[] = camelCaseKeys(res.data.data);

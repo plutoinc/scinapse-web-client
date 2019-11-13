@@ -1,7 +1,7 @@
 import { Affiliation } from './affiliation';
 
 export interface BasePaperAuthor {
-  id: number;
+  id: string;
   name: string;
   isLayered: boolean;
   hindex?: number;

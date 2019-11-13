@@ -34,11 +34,11 @@ export interface ExperienceParams extends CvBaseInfo {
 
 class ProfileAPI extends PlutoAxios {
   public async getProfile(
-    authorId: number,
+    authorId: string,
     cancelToken: CancelToken
   ): Promise<{
-    entities: { profiles: { [authorId: number]: Profile } };
-    result: number;
+    entities: { profiles: { [authorId: string]: Profile } };
+    result: string;
   }> {
     const res = await this.get(`/authors/${authorId}/information`, { cancelToken });
     const profile: Profile = camelCaseKeys(res.data.data.content);
@@ -46,7 +46,7 @@ class ProfileAPI extends PlutoAxios {
     return normalizedData;
   }
 
-  public postNewAwardInAuthor = async (authorId: number, params: AwardParams) => {
+  public postNewAwardInAuthor = async (authorId: string, params: AwardParams) => {
     const res = await this.post(`/authors/${authorId}/awards`, {
       id: params.id,
       title: params.title,
@@ -57,7 +57,7 @@ class ProfileAPI extends PlutoAxios {
     return successResponse.data.content;
   };
 
-  public postNewEducationInAuthor = async (authorId: number, params: EducationParams) => {
+  public postNewEducationInAuthor = async (authorId: string, params: EducationParams) => {
     const finalParams = {
       id: params.id,
       start_date: params.startDate,
@@ -73,7 +73,7 @@ class ProfileAPI extends PlutoAxios {
     return successResponse.data.content;
   };
 
-  public postNewExperienceInAuthor = async (authorId: number, params: ExperienceParams) => {
+  public postNewExperienceInAuthor = async (authorId: string, params: ExperienceParams) => {
     const finalParams = {
       id: params.id,
       start_date: params.startDate,

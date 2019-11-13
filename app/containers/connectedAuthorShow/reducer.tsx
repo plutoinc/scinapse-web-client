@@ -5,8 +5,8 @@ import { CVInfoType } from '../../model/profile';
 export interface ConnectedAuthorShowState
   extends Readonly<{
       paperIds: string[];
-      authorId: number | null;
-      coAuthorIds: number[];
+      authorId: string | null;
+      coAuthorIds: string[];
       papersTotalPage: number;
       papersCurrentPage: number;
       papersTotalCount: number;
