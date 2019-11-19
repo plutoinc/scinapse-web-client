@@ -203,7 +203,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
   private handleConnectAuthor = async (profile: ModifyProfileFormState) => {
     const { dispatch, author } = this.props;
 
-    let affiliationId: number | null = null;
+    let affiliationId: string | null = null;
     let affiliationName = '';
     if ((profile.currentAffiliation as Affiliation).name) {
       affiliationId = (profile.currentAffiliation as Affiliation).id;

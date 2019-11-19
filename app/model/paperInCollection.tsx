@@ -3,7 +3,7 @@ import { Paper } from './paper';
 
 export interface PaperInCollection {
   note: string | null;
-  collectionId: number;
+  collectionId: string;
   paperId: string;
   paper: Paper;
 }

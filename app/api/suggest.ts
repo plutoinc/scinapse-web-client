@@ -6,7 +6,7 @@ import { camelCaseKeys } from '../helpers/camelCaseKeys';
 export interface SuggestAffiliation {
   type: string;
   keyword: string;
-  affiliationId: number;
+  affiliationId: string;
 }
 
 class SuggestAPI extends PlutoAxios {

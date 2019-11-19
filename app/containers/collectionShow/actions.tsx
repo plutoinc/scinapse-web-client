@@ -51,6 +51,7 @@ export function getPapers(params: GetCollectionsPapersParams) {
         })
       );
     } catch (err) {
+      console.error(err);
       if (!axios.isCancel(err)) {
         alertToast({
           type: 'error',

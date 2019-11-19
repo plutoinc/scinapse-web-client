@@ -24,12 +24,8 @@ export default class PlutoAxios {
     });
 
     axiosInstance.interceptors.response.use(
-      res => {
-        return camelCaseKeys(res);
-      },
-      function(error) {
-        return Promise.reject(error);
-      }
+      res => ({ ...res, data: camelCaseKeys(res.data) }),
+      error => Promise.reject(error)
     );
 
     return axiosInstance;
