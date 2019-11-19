@@ -3,6 +3,8 @@ import { PaperAuthor } from '../model/author';
 import { ConferenceInstance } from '../model/conferenceInstance';
 import { Journal } from '../model/journal';
 import { PaperSource } from '../model/paperSource';
+import { Collection } from '../model/collection';
+import { Member } from '../model/member';
 
 function getIdSafePaperAuthor(author: PaperAuthor): PaperAuthor {
   return {
@@ -55,6 +57,22 @@ function getIdSafeRelationField(
   return {
     ...relation,
     savedInCollections: relation.savedInCollections.map(c => ({ ...c, id: String(c.id) })),
+  };
+}
+
+function getSafeMember(member: Member): Member {
+  return {
+    ...member,
+    id: String(member.id),
+    authorId: String(member.authorId),
+  };
+}
+
+export function getSafeCollection(collection: Collection): Collection {
+  return {
+    ...collection,
+    id: String(collection.id),
+    createdBy: getSafeMember(collection.createdBy),
   };
 }
 

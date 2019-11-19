@@ -40,7 +40,7 @@ const RelatedPaperInCollectionShow: React.FunctionComponent<RelatedPaperInCollec
     () => {
       setIsLoading(true);
       CollectionAPI.getRelatedPaperInCollection(collectionId).then(result => {
-        setRelatedPapers(result.content);
+        setRelatedPapers(result);
         setIsLoading(false);
       });
     },

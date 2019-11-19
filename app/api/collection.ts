@@ -7,8 +7,7 @@ import { PaperInCollection, paperInCollectionSchema } from '../model/paperInColl
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from './author';
 import { NormalizedDataWithPaginationV2, PaginationResponseV2 } from './types/common';
-import { getIdSafePaper } from '../helpers/getIdSafePaper';
-import { camelCaseKeys } from '../helpers/camelCaseKeys';
+import { getIdSafePaper, getSafeCollection } from '../helpers/getIdSafePaper';
 
 export interface UpdatePaperNoteToCollectionParams {
   paperId: string;
@@ -95,7 +94,7 @@ class CollectionAPI extends PlutoAxios {
 
   public async addPaperToCollection(params: AddPaperToCollectionParams): Promise<{ success: true }> {
     const res = await this.post(`/collections/${params.collection.id}/papers`, {
-      paper_id: params.paperId,
+      paper_id: String(params.paperId),
       note: params.note,
     });
 
@@ -119,8 +118,13 @@ class CollectionAPI extends PlutoAxios {
     const res = await this.put(`/collections/${params.collectionId}/papers/${params.paperId}`, {
       note: params.note,
     });
-    const rawResData: UpdatePaperNoteResponse = camelCaseKeys(res.data.data);
-    return rawResData;
+    const updatedNote: UpdatePaperNoteResponse = res.data.data;
+
+    return {
+      ...updatedNote,
+      collectionId: String(updatedNote.collectionId),
+      paperId: String(updatedNote.paperId),
+    };
   }
 
   public async getCollection(
@@ -131,8 +135,8 @@ class CollectionAPI extends PlutoAxios {
     result: string;
   }> {
     const res = await this.get(`/collections/${collectionId}`, { cancelToken });
-    const camelizedRes = camelCaseKeys(res.data.data);
-    return normalize(camelizedRes, collectionSchema);
+    const collection = getSafeCollection(res.data.data);
+    return normalize(collection, collectionSchema);
   }
 
   public async postCollection({
@@ -146,8 +150,8 @@ class CollectionAPI extends PlutoAxios {
       title,
       description,
     });
-    const camelizedRes = camelCaseKeys(res.data.data);
-    const normalizedData = normalize(camelizedRes, collectionSchema);
+    const collection = getSafeCollection(res.data.data);
+    const normalizedData = normalize(collection, collectionSchema);
     return normalizedData;
   }
 
@@ -167,15 +171,15 @@ class CollectionAPI extends PlutoAxios {
       title: params.title,
       description: params.description,
     });
-    const camelizedRes = camelCaseKeys(res.data.data);
-    const normalizedData = normalize(camelizedRes, collectionSchema);
+    const collection = getSafeCollection(res.data.data);
+    const normalizedData = normalize(collection, collectionSchema);
     return normalizedData;
   }
 
-  public async getRelatedPaperInCollection(collectionId: string) {
+  public async getRelatedPaperInCollection(collectionId: string): Promise<Paper[]> {
     const res = await this.get(`/collections/${collectionId}/related/sample`);
-    const camelizedRes = camelCaseKeys(res.data.data);
-    return camelizedRes;
+    const papers = res.data.data.content.map(getIdSafePaper);
+    return papers;
   }
 }
 
