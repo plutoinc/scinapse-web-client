@@ -1,6 +1,5 @@
 import Axios, { AxiosResponse, CancelToken } from 'axios';
 import PlutoAxios from './pluto';
-import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
 export interface CompletionKeyword
   extends Readonly<{
@@ -46,7 +45,10 @@ class CompletionAPI extends PlutoAxios {
       cancelToken,
     });
 
-    const fosList: FOSSuggestion[] = camelCaseKeys(res.data.data.content);
+    const fosList: FOSSuggestion[] = res.data.data.content.map((fos: FOSSuggestion) => ({
+      ...fos,
+      fosId: String(fos.fosId),
+    }));
     return fosList;
   }
 
@@ -58,7 +60,10 @@ class CompletionAPI extends PlutoAxios {
       cancelToken,
     });
 
-    const journalList: JournalSuggestion[] = camelCaseKeys(res.data.data.content);
+    const journalList: JournalSuggestion[] = res.data.data.content.map((journal: JournalSuggestion) => ({
+      ...journal,
+      journalId: journal.journalId,
+    }));
     return journalList;
   }
 }
