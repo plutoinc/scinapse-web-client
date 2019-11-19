@@ -29,7 +29,7 @@ function getIdSafeConferenceInstance(conferenceInstance: ConferenceInstance | nu
   };
 }
 
-function getIdSafeJournal(journal: Journal | null) {
+export function getIdSafeJournal(journal: Journal | null) {
   if (!journal) return null;
 
   return {
