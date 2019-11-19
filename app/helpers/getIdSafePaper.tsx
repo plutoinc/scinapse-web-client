@@ -6,7 +6,7 @@ import { PaperSource } from '../model/paperSource';
 import { Collection } from '../model/collection';
 import { Member } from '../model/member';
 
-function getIdSafePaperAuthor(author: PaperAuthor): PaperAuthor {
+export function getIdSafePaperAuthor(author: PaperAuthor): PaperAuthor {
   return {
     ...author,
     id: String(author.id),
