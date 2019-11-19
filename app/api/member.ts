@@ -4,8 +4,8 @@ import PlutoAxios from './pluto';
 import { CommonPaginationResponsePart } from './types/common';
 import { Collection, collectionSchema } from '../model/collection';
 import { memberSchema, Member } from '../model/member';
-import { camelCaseKeys } from '../helpers/camelCaseKeys';
 import { KeywordSettingsResponse } from './types/member';
+import { getSafeMember, getSafeCollection } from '../helpers/getIdSafePaper';
 
 export interface GetCollectionsResponse extends CommonPaginationResponsePart {
   content: Collection[];
@@ -22,44 +22,47 @@ class MemberAPI extends PlutoAxios {
     result: string;
   }> {
     const res = await this.get(`/members/${memberId}`, { cancelToken });
-    const camelizedRes = camelCaseKeys(res.data);
-    const normalizedMember = normalize(camelizedRes, memberSchema);
+    const member = getSafeMember(res.data);
+    const normalizedMember = normalize(member, memberSchema);
     return normalizedMember;
   }
 
   public async getCollections(memberId: string, cancelToken?: CancelToken): Promise<GetCollectionsResponse> {
     const res = await this.get(`/members/${memberId}/collections`, { cancelToken });
-    const camelizedRes = camelCaseKeys(res.data.data);
-    const normalizedCollections = normalize(camelizedRes.content, [collectionSchema]);
-    return { ...camelizedRes, ...normalizedCollections };
+    const data = res.data.data;
+    const collections = res.data.data.content.map(getSafeCollection);
+    const normalizedCollections = normalize(collections, [collectionSchema]);
+
+    return { ...data, ...normalizedCollections };
   }
 
   public async getMyCollections(paperId: string, cancelToken: CancelToken): Promise<GetCollectionsResponse> {
     const res = await this.get(`/members/me/collections`, {
       params: {
-        paper_id: paperId,
+        paper_id: String(paperId),
       },
       cancelToken,
     });
-    const camelizedRes = camelCaseKeys(res.data.data);
-    const normalizedCollections = normalize(camelizedRes.content, [collectionSchema]);
+    const data = res.data.data;
+    const collections = res.data.data.content.map(getSafeCollection);
+    const normalizedCollections = normalize(collections, [collectionSchema]);
 
-    return { ...camelizedRes, ...normalizedCollections };
+    return { ...data, ...normalizedCollections };
   }
 
   public async getKeywordSettings(): Promise<KeywordSettingsResponse> {
     const res = await this.get(`/members/me/alerts/keywords`);
-    return camelCaseKeys(res.data);
+    return res.data;
   }
 
   public async newKeywordSettings(keyword: string): Promise<KeywordSettingsResponse> {
     const res = await this.post(`/members/me/alerts/keywords`, { keyword });
-    return camelCaseKeys(res.data);
+    return res.data;
   }
 
   public async deleteKeywordSettings(keywordId: string): Promise<KeywordSettingsResponse> {
     const res = await this.delete(`/members/me/alerts/keywords/${keywordId}`);
-    return camelCaseKeys(res.data);
+    return res.data;
   }
 }
 

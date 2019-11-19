@@ -60,7 +60,7 @@ function getIdSafeRelationField(
   };
 }
 
-function getSafeMember(member: Member): Member {
+export function getSafeMember(member: Member): Member {
   return {
     ...member,
     id: String(member.id),
