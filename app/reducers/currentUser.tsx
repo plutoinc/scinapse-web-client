@@ -6,7 +6,7 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
     case ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN: {
       return {
         ...action.payload.user,
-        isLoggedIn: action.payload.user,
+        isLoggedIn: action.payload.loggedIn,
         oauthLoggedIn: action.payload.oauthLoggedIn,
       };
     }

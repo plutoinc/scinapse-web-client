@@ -11,21 +11,50 @@ import {
   ChangePasswordParams,
   EmailSettingsResponse,
   UpdateEmailSettingParams,
-  SignUpWithSocialAPIParams,
-  SignUpWithEmailAPIParams,
   UpdateUserInformationAPIParams,
+  SignUpWithEmailParams,
+  SignUpWithSocialParams,
 } from './types/auth';
-import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
 class AuthAPI extends PlutoAxios {
-  public async signUpWithEmail(userInfo: SignUpWithEmailAPIParams): Promise<Member> {
-    const signUpWithEmailResponse = await this.post('/members', userInfo);
-    return camelCaseKeys(signUpWithEmailResponse.data);
+  public async signUpWithEmail(params: SignUpWithEmailParams): Promise<Member> {
+    const signUpWithEmailResponse = await this.post('/members', {
+      email: params.email,
+      affiliation_name: params.affiliation,
+      first_name: params.firstName,
+      last_name: params.lastName,
+      password: params.password,
+      affiliation_id: params.affiliationId,
+      profile_link: params.profileLink || null,
+    });
+
+    const member = signUpWithEmailResponse.data;
+
+    return {
+      ...member,
+      id: String(member.id),
+      authorId: String(member.authorId),
+    };
   }
 
-  public async signUpWithSocial(userInfo: SignUpWithSocialAPIParams): Promise<Member> {
-    const signUpWithSocialResponse = await this.post('/members/oauth', userInfo);
-    return camelCaseKeys(signUpWithSocialResponse.data);
+  public async signUpWithSocial(params: SignUpWithSocialParams): Promise<Member> {
+    const signUpWithSocialResponse = await this.post('/members/oauth', {
+      email: params.email,
+      affiliation_name: params.affiliation,
+      first_name: params.firstName,
+      last_name: params.lastName,
+      token: params.token,
+      affiliation_id: String(params.affiliationId),
+      profile_link: params.profileLink || null,
+    });
+
+    const member = signUpWithSocialResponse.data;
+
+    return {
+      ...member,
+      id: String(member.id),
+      authorId: String(member.authorId),
+    };
   }
 
   public async signInWithEmail(userInfo: SignInWithEmailParams): Promise<SignInResult> {
@@ -34,7 +63,15 @@ class AuthAPI extends PlutoAxios {
       password: userInfo.password,
     });
     const signInData: SignInData = signInWithEmailResponse.data;
-    return camelCaseKeys(signInData);
+
+    return {
+      ...signInData,
+      member: {
+        ...signInData.member,
+        id: String(signInData.member.id),
+        authorId: String(signInData.member.authorId),
+      },
+    };
   }
 
   public async signOut() {
@@ -55,7 +92,16 @@ class AuthAPI extends PlutoAxios {
     const checkLoggedInResponse = await this.get('/auth/login');
     const checkLoggedInData: SignInData = checkLoggedInResponse.data;
 
-    return camelCaseKeys(checkLoggedInData);
+    const signInData: SignInData = checkLoggedInData;
+
+    return {
+      ...signInData,
+      member: {
+        ...signInData.member,
+        id: String(signInData.member.id),
+        authorId: String(signInData.member.authorId),
+      },
+    };
   }
 
   public async verifyToken(token: string): Promise<VerifyEmailResult> {
@@ -92,33 +138,44 @@ class AuthAPI extends PlutoAxios {
   public async checkOAuthStatus(vendor: OAUTH_VENDOR, token: string): Promise<OAuthCheckResult> {
     const res = await this.post('/auth/oauth/check', { vendor, token });
 
-    return camelCaseKeys(res.data.data.content);
+    return res.data.data.content;
   }
 
   public async loginWithOAuth(vendor: OAUTH_VENDOR, token: string): Promise<SignInResult> {
     const res = await this.post('/auth/oauth/login', { vendor, token });
+    const signInData: SignInData = res.data;
 
-    return camelCaseKeys(res.data);
+    return {
+      ...signInData,
+      member: {
+        ...signInData.member,
+        id: String(signInData.member.id),
+        authorId: String(signInData.member.authorId),
+      },
+    };
   }
 
   public async update(params: UpdateUserInformationAPIParams): Promise<Member> {
     const res = await this.put('/members/me', params);
+    const member = res.data;
 
-    return camelCaseKeys(res.data);
+    return {
+      ...member,
+      id: String(member.id),
+      authorId: String(member.authorId),
+    };
   }
 
   public async changePassword({ oldPassword, newPassword }: ChangePasswordParams) {
-    const res = await this.put('/members/me/password', {
+    await this.put('/members/me/password', {
       old_password: oldPassword,
       new_password: newPassword,
     });
-
-    return camelCaseKeys(res.data);
   }
 
   public async getEmailSettings(token?: string): Promise<EmailSettingsResponse> {
     const res = await this.get(`/notifications/email/settings?token=${token}`);
-    return camelCaseKeys(res.data);
+    return res.data;
   }
 
   public async updateEmailSetting({

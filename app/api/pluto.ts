@@ -2,6 +2,7 @@ import axios, { AxiosRequestConfig, AxiosError } from 'axios';
 import getAPIHost from './getHost';
 import EnvChecker from '../helpers/envChecker';
 import { CommonError } from '../model/error';
+import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
 export const TIMEOUT_FOR_SAFE_RENDERING = 55000;
 
@@ -16,11 +17,22 @@ export default class PlutoAxios {
   }
 
   protected getInstance = () => {
-    return axios.create({
+    const axiosInstance = axios.create({
       baseURL: getAPIHost(),
       withCredentials: true,
       timeout: EnvChecker.isOnServer() ? TIMEOUT_FOR_SAFE_RENDERING : 60000,
     });
+
+    axiosInstance.interceptors.response.use(
+      res => {
+        return camelCaseKeys(res);
+      },
+      function(error) {
+        return Promise.reject(error);
+      }
+    );
+
+    return axiosInstance;
   };
 
   protected get(path: string, config?: AxiosRequestConfig) {
