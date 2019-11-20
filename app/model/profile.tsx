@@ -15,7 +15,7 @@ interface CvBaseInfo {
   startDate: string;
   endDate: string;
   isCurrent: boolean;
-  institutionId: number;
+  institutionId: string;
   institutionName: string;
 }
 

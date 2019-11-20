@@ -12,7 +12,7 @@ export async function fetchAuthorShowPageData(
   const { dispatch, match } = params;
   const authorId = match.params.authorId;
 
-  if (!isNaN(parseInt(authorId, 10))) {
+  if (isNaN(parseInt(authorId, 10))) {
     return dispatch(ActionCreators.failedToLoadAuthorShowPageData({ statusCode: 400 }));
   }
 

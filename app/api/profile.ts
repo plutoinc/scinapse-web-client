@@ -2,15 +2,14 @@ import { CancelToken } from 'axios';
 import { normalize } from 'normalizr';
 import PlutoAxios from './pluto';
 import { Profile, profileSchema, Award, Education, Experience } from '../model/profile';
-import { RawPaginationResponseV2 } from './types/common';
-import { camelCaseKeys } from '../helpers/camelCaseKeys';
+import { PaginationResponseV2 } from './types/common';
 
 export interface CvBaseInfo {
   id?: string | undefined;
   startDate: string;
   endDate: string | null;
   isCurrent: boolean;
-  institutionId: number | null;
+  institutionId: string | null;
   institutionName: string;
 }
 
@@ -41,8 +40,14 @@ class ProfileAPI extends PlutoAxios {
     result: string;
   }> {
     const res = await this.get(`/authors/${authorId}/information`, { cancelToken });
-    const profile: Profile = camelCaseKeys(res.data.data.content);
-    const normalizedData = normalize(profile, profileSchema);
+    const profile: Profile = res.data.data.content;
+    const idSafeProfile = {
+      ...profile,
+      authorId: String(profile.authorId),
+      educations: profile.educations.map(edu => ({ ...edu, institutionId: String(edu.institutionId) })),
+      experiences: profile.experiences.map(exp => ({ ...exp, institutionId: String(exp.institutionId) })),
+    };
+    const normalizedData = normalize(idSafeProfile, profileSchema);
     return normalizedData;
   }
 
@@ -53,7 +58,7 @@ class ProfileAPI extends PlutoAxios {
       received_date: params.receivedDate,
       related_link: params.relatedLink ? params.relatedLink : null,
     });
-    const successResponse: RawPaginationResponseV2<Award> = camelCaseKeys(res.data);
+    const successResponse: PaginationResponseV2<Award> = res.data;
     return successResponse.data.content;
   };
 
@@ -69,8 +74,10 @@ class ProfileAPI extends PlutoAxios {
       end_date: params.isCurrent ? null : params.endDate,
     };
     const res = await this.post(`/authors/${authorId}/educations`, finalParams);
-    const successResponse: RawPaginationResponseV2<Education> = camelCaseKeys(res.data);
-    return successResponse.data.content;
+    const data: PaginationResponseV2<Education> = res.data;
+    const education = data.data.content;
+    const safeEducation = { ...education, institutionId: String(education.institutionId) };
+    return safeEducation;
   };
 
   public postNewExperienceInAuthor = async (authorId: string, params: ExperienceParams) => {
@@ -86,26 +93,32 @@ class ProfileAPI extends PlutoAxios {
       description: params.description ? params.description : null,
     };
     const res = await this.post(`/authors/${authorId}/experiences`, finalParams);
-    const successResponse: RawPaginationResponseV2<Experience> = camelCaseKeys(res.data);
-    return successResponse.data.content;
+    const data: PaginationResponseV2<Experience> = res.data;
+    const experience = data.data.content;
+    const safeExperience = { ...experience, institutionId: String(experience.institutionId) };
+    return safeExperience;
   };
 
   public deleteAwardInAuthor = async (awardId: string) => {
     const res = await this.delete(`/authors/awards/${awardId}`);
-    const successResponse: RawPaginationResponseV2<Experience> = camelCaseKeys(res.data);
+    const successResponse: PaginationResponseV2<Experience> = res.data;
     return successResponse.data.content;
   };
 
   public deleteEducationInAuthor = async (educationId: string) => {
     const res = await this.delete(`/authors/educations/${educationId}`);
-    const successResponse: RawPaginationResponseV2<Experience> = camelCaseKeys(res.data);
-    return successResponse.data.content;
+    const data: PaginationResponseV2<Education> = res.data;
+    const education = data.data.content;
+    const safeEducation = { ...education, institutionId: String(education.institutionId) };
+    return safeEducation;
   };
 
   public deleteExperienceInAuthor = async (experienceId: string) => {
     const res = await this.delete(`/authors/experiences/${experienceId}`);
-    const successResponse: RawPaginationResponseV2<Experience> = camelCaseKeys(res.data);
-    return successResponse.data.content;
+    const data: PaginationResponseV2<Experience> = res.data;
+    const experience = data.data.content;
+    const safeExperience = { ...experience, institutionId: String(experience.institutionId) };
+    return safeExperience;
   };
 
   public updateAwardInAuthor = async (params: AwardParams) => {
@@ -115,7 +128,7 @@ class ProfileAPI extends PlutoAxios {
       received_date: params.receivedDate,
       related_link: !params.relatedLink ? null : params.relatedLink,
     });
-    const successResponse: RawPaginationResponseV2<Award> = camelCaseKeys(res.data);
+    const successResponse: PaginationResponseV2<Award> = res.data;
     return successResponse.data.content;
   };
 
@@ -124,15 +137,17 @@ class ProfileAPI extends PlutoAxios {
       id: params.id,
       start_date: params.startDate,
       is_current: params.isCurrent,
-      institution_id: params.institutionId,
+      institution_id: String(params.institutionId),
       institution_name: params.institutionName,
       department: params.department,
       degree: params.degree,
       end_date: params.isCurrent ? null : params.endDate,
     };
     const res = await this.put(`/authors/educations/${finalParams.id}`, finalParams);
-    const successResponse: RawPaginationResponseV2<Education> = camelCaseKeys(res.data);
-    return successResponse.data.content;
+    const data: PaginationResponseV2<Education> = res.data;
+    const education = data.data.content;
+    const safeEducation = { ...education, institutionId: String(education.institutionId) };
+    return safeEducation;
   };
 
   public updateExperienceInAuthor = async (params: ExperienceParams) => {
@@ -140,7 +155,7 @@ class ProfileAPI extends PlutoAxios {
       id: params.id,
       start_date: params.startDate,
       is_current: params.isCurrent,
-      institution_id: params.institutionId,
+      institution_id: String(params.institutionId),
       institution_name: params.institutionName,
       department: !params.department ? null : params.department,
       position: params.position,
@@ -148,8 +163,10 @@ class ProfileAPI extends PlutoAxios {
       description: !params.description ? null : params.description,
     };
     const res = await this.put(`/authors/experiences/${finalParams.id}`, finalParams);
-    const successResponse: RawPaginationResponseV2<Experience> = camelCaseKeys(res.data);
-    return successResponse.data.content;
+    const data: PaginationResponseV2<Experience> = res.data;
+    const experience = data.data.content;
+    const safeExperience = { ...experience, institutionId: String(experience.institutionId) };
+    return safeExperience;
   };
 }
 
