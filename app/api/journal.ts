@@ -5,7 +5,7 @@ import { Paper, paperSchema } from '../model/paper';
 import { Journal, journalSchema } from '../model/journal';
 import { PageObjectV2 } from './types/common';
 import { PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
-import { getIdSafeJournal, getIdSafePaper } from '../helpers/getIdSafePaper';
+import { getIdSafeJournal, getIdSafePaper } from '../helpers/getIdSafeData';
 
 interface PapersResult extends PageObjectV2 {
   entities: { papers: { [paperId: string]: Paper } };

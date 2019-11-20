@@ -7,7 +7,7 @@ import { PaperInCollection, paperInCollectionSchema } from '../model/paperInColl
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from './author';
 import { NormalizedDataWithPaginationV2, PaginationResponseV2 } from './types/common';
-import { getIdSafePaper, getSafeCollection } from '../helpers/getIdSafePaper';
+import { getIdSafePaper, getSafeCollection } from '../helpers/getIdSafeData';
 
 export interface UpdatePaperNoteToCollectionParams {
   paperId: string;

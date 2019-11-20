@@ -5,12 +5,26 @@ import { Journal } from '../model/journal';
 import { PaperSource } from '../model/paperSource';
 import { Collection } from '../model/collection';
 import { Member } from '../model/member';
+import { Author } from '../model/author/author';
 
 export function getIdSafePaperAuthor(author: PaperAuthor): PaperAuthor {
   return {
     ...author,
     id: String(author.id),
     affiliation: author.affiliation ? { ...author.affiliation, id: String(author.affiliation.id) } : null,
+  };
+}
+
+export function getSafeAuthor(author: Author): Author {
+  return {
+    ...author,
+    id: String(author.id),
+    lastKnownAffiliation: author.lastKnownAffiliation
+      ? { ...author.lastKnownAffiliation, id: String(author.lastKnownAffiliation.id) }
+      : undefined,
+    representativePapers: author.representativePapers.map(getIdSafePaper),
+    topPapers: author.topPapers.map(getIdSafePaper),
+    fosList: author.fosList.map(fos => ({ ...fos, id: String(fos.id) })),
   };
 }
 

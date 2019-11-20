@@ -6,7 +6,7 @@ import { GetRefOrCitedPapersParams } from './types/paper';
 import { PaginationResponseV2, PageObjectV2 } from './types/common';
 import { AvailableCitationType } from '../containers/paperShow/records';
 import { PaperAuthor } from '../model/author';
-import { getIdSafePaperAuthor, getIdSafePaper } from '../helpers/getIdSafePaper';
+import { getIdSafePaperAuthor, getIdSafePaper } from '../helpers/getIdSafeData';
 
 export interface GetReferenceOrCitedPapersResult extends PageObjectV2 {
   entities: { papers: { [paperId: string]: Paper } };

@@ -5,7 +5,7 @@ import { CommonPaginationResponsePart } from './types/common';
 import { Collection, collectionSchema } from '../model/collection';
 import { memberSchema, Member } from '../model/member';
 import { KeywordSettingsResponse } from './types/member';
-import { getSafeMember, getSafeCollection } from '../helpers/getIdSafePaper';
+import { getSafeMember, getSafeCollection } from '../helpers/getIdSafeData';
 
 export interface GetCollectionsResponse extends CommonPaginationResponsePart {
   content: Collection[];
