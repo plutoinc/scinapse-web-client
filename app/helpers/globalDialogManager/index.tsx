@@ -77,7 +77,7 @@ class GlobalDialogManager {
     );
   }
 
-  public openCitationDialog(targetPaperId: number) {
+  public openCitationDialog(targetPaperId: string) {
     StoreManager.store.dispatch(
       ActionCreators.openGlobalDialog({
         type: GLOBAL_DIALOG_TYPE.CITATION,
@@ -86,7 +86,7 @@ class GlobalDialogManager {
     );
   }
 
-  public openCollectionDialog(targetPaperId: number) {
+  public openCollectionDialog(targetPaperId: string) {
     StoreManager.store.dispatch(
       ActionCreators.openGlobalDialog({
         type: GLOBAL_DIALOG_TYPE.COLLECTION,
@@ -95,7 +95,7 @@ class GlobalDialogManager {
     );
   }
 
-  public openNewCollectionDialog(targetPaperId?: number) {
+  public openNewCollectionDialog(targetPaperId?: string) {
     StoreManager.store.dispatch(
       ActionCreators.openGlobalDialog({
         type: GLOBAL_DIALOG_TYPE.NEW_COLLECTION,
@@ -125,7 +125,7 @@ class GlobalDialogManager {
   public openPaperFigureDetailDialog(
     paperFigures: PaperFigure[],
     currentPaperFigureIndex: number,
-    viewDetailFigureTargetPaperId: number
+    viewDetailFigureTargetPaperId: string
   ) {
     StoreManager.store.dispatch(
       ActionCreators.openGlobalDialog({

@@ -10,7 +10,7 @@ const styles = require('./paperShowFigureList.scss');
 
 const MOBILE_FIGURES_MAX_LENGTH = 6;
 
-function openPaperFigureDetailDialog(figures: PaperFigure[], index: number, paperId: number) {
+function openPaperFigureDetailDialog(figures: PaperFigure[], index: number, paperId: string) {
   ActionTicketManager.trackTicket({
     pageType: 'paperShow',
     actionType: 'fire',

@@ -14,7 +14,7 @@ const s = require('./simplePaperItem.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
 
 type ContainerProps = SimplePaperItemProps & {
-  paperId: number;
+  paperId: string;
 };
 
 interface SimplePaperItemProps {

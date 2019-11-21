@@ -36,7 +36,7 @@ export interface DialogState
       userActionType: Scinapse.ActionTicket.ActionTagType | undefined;
       authContext: SignUpConversionExpTicketContext | undefined;
 
-      citationPaperId: number | undefined;
+      citationPaperId: string | undefined;
       citationText: string;
       isLoadingCitationText: boolean;
       activeCitationTab: AvailableCitationType;
@@ -44,7 +44,7 @@ export interface DialogState
       isLoadingMyCollections: boolean;
       hasErrorToCollectionDialog: boolean;
       myCollectionIds: number[];
-      collectionDialogTargetPaperId: number | undefined;
+      collectionDialogTargetPaperId: string | undefined;
 
       collection: Collection | undefined;
 
@@ -56,7 +56,7 @@ export interface DialogState
 
       paperFigures: PaperFigure[] | undefined;
       currentPaperFigureIndex: number | undefined;
-      viewDetailFigureTargetPaperId: number | undefined;
+      viewDetailFigureTargetPaperId: string | undefined;
     }> {} // TODO: remove below attribute after finishing the experiment
 
 export const DIALOG_INITIAL_STATE: DialogState = {
@@ -70,7 +70,7 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   userActionType: undefined,
   authContext: undefined,
   // citation dialog
-  citationPaperId: 0,
+  citationPaperId: '',
   citationText: '',
   isLoadingCitationText: false,
   activeCitationTab: AvailableCitationType.APA,

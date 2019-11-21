@@ -16,7 +16,7 @@ import { openSnackbar, closeSnackbar, GLOBAL_SNACKBAR_TYPE } from '../../reducer
 
 export interface OpenGlobalDialogParams {
   type: GLOBAL_DIALOG_TYPE;
-  collectionDialogTargetPaperId?: number;
+  collectionDialogTargetPaperId?: string;
 }
 
 export function openSignIn() {
@@ -63,7 +63,7 @@ export function addPaperToCollection(params: AddPaperToCollectionParams) {
       dispatch(
         openSnackbar({
           type: GLOBAL_SNACKBAR_TYPE.COLLECTION_SAVED,
-          id: params.collection.id,
+          collectionId: params.collection.id,
           context: params.collection.title,
           actionTicketParams: {
             pageType: 'searchResult',
@@ -103,7 +103,7 @@ export function removePaperFromCollection(params: RemovePapersFromCollectionPara
   };
 }
 
-export function postNewCollection(params: PostCollectionParams, targetPaperId?: number) {
+export function postNewCollection(params: PostCollectionParams, targetPaperId?: string) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToPostCollectionInGlobalDialog());
@@ -136,7 +136,7 @@ export function postNewCollection(params: PostCollectionParams, targetPaperId?: 
   };
 }
 
-export function getMyCollections(paperId: number, cancelToken: CancelToken) {
+export function getMyCollections(paperId: string, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToGetCollectionsInGlobalDialog());

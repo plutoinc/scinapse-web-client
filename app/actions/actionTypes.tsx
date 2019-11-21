@@ -226,7 +226,7 @@ export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
 interface GetMultiPapersInCollection {
   paperResponse: NormalizedDataWithPaginationV2<{
     papersInCollection: {
-      [paperId: number]: PaperInCollection;
+      [paperId: string]: PaperInCollection;
     };
   }>;
   sort?: string;
@@ -234,7 +234,7 @@ interface GetMultiPapersInCollection {
 }
 
 interface GetMultiPapers extends PageObjectV2 {
-  paperIds: number[];
+  paperIds: string[];
   sort?: AUTHOR_PAPER_LIST_SORT_TYPES;
   query?: string;
 }
@@ -249,8 +249,8 @@ export const ActionCreators = {
 
   openGlobalDialog(payload: {
     type: GLOBAL_DIALOG_TYPE;
-    collectionDialogTargetPaperId?: number;
-    citationDialogTargetPaperId?: number;
+    collectionDialogTargetPaperId?: string;
+    citationDialogTargetPaperId?: string;
     authorListTargetPaper?: Paper;
     collection?: Collection;
     userActionType?: Scinapse.ActionTicket.ActionTagType;
@@ -259,7 +259,7 @@ export const ActionCreators = {
     nextSignUpStep?: string;
     paperFigures?: PaperFigure[];
     currentPaperFigureIndex?: number;
-    viewDetailFigureTargetPaperId?: number;
+    viewDetailFigureTargetPaperId?: string;
   }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
   },
@@ -284,7 +284,7 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.RELATED_PAPERS_FAILED_TO_GET_PAPERS });
   },
 
-  getRelatedPapers(payload: { paperIds: number[] }) {
+  getRelatedPapers(payload: { paperIds: string[] }) {
     return createAction({
       type: ACTION_TYPES.RELATED_PAPERS_SUCCEEDED_TO_GET_PAPERS,
       payload,
@@ -323,7 +323,7 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.PDF_VIEWER_CLICK_VIEW_MORE_BTN });
   },
 
-  getBestPDFOfPaper(payload: { paperId: number; bestPDF: PaperPdf }) {
+  getBestPDFOfPaper(payload: { paperId: string; bestPDF: PaperPdf }) {
     return createAction({ type: ACTION_TYPES.PDF_VIEWER_GET_BEST_PDF_OF_PAPER, payload });
   },
 
@@ -347,11 +347,11 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_START_TO_CONNECT_AUTHOR });
   },
 
-  succeedToConnectAuthor(payload: { authorId: number }) {
+  succeedToConnectAuthor(payload: { authorId: string }) {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR, payload });
   },
 
-  succeedToUpdateAuthorRepresentativePapers(payload: { papers: Paper[]; authorId: number }) {
+  succeedToUpdateAuthorRepresentativePapers(payload: { papers: Paper[]; authorId: string }) {
     return createAction({
       type: ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_CHANGE_REPRESENTATIVE_PAPERS,
       payload,
@@ -366,21 +366,21 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_CONNECT_AUTHOR });
   },
 
-  getProfile(payload: { authorId: number }) {
+  getProfile(payload: { authorId: string }) {
     return createAction({
       type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_PROFILE,
       payload,
     });
   },
 
-  getCoAuthors(payload: { coAuthorIds: number[] }) {
+  getCoAuthors(payload: { coAuthorIds: string[] }) {
     return createAction({
       type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_CO_AUTHORS,
       payload,
     });
   },
 
-  getAuthor(payload: { authorId: number }) {
+  getAuthor(payload: { authorId: string }) {
     return createAction({
       type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_AUTHOR,
       payload,
@@ -414,7 +414,7 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER, payload });
   },
 
-  getPaper(payload: { paperId: number }) {
+  getPaper(payload: { paperId: string }) {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_PAPER,
       payload,
@@ -477,7 +477,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToUpdateProfileImageData(payload: { authorId: number; profileImageUrl: string }) {
+  succeededToUpdateProfileImageData(payload: { authorId: string; profileImageUrl: string }) {
     return createAction({
       type: ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA,
       payload,
@@ -598,42 +598,42 @@ export const ActionCreators = {
     });
   },
 
-  startToAddPaperToCollectionInGlobalDialog(payload: { collection: Collection; paperIds: number[] }) {
+  startToAddPaperToCollectionInGlobalDialog(payload: { collection: Collection; paperIds: string[] }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION,
       payload,
     });
   },
 
-  succeededToAddPaperToCollectionInGlobalDialog(payload: { collection: Collection; paperId: number }) {
+  succeededToAddPaperToCollectionInGlobalDialog(payload: { collection: Collection; paperId: string }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_SUCCEEDED_ADD_PAPER_TO_COLLECTION,
       payload,
     });
   },
 
-  failedToAddPaperToCollectionInGlobalDialog(payload: { collection: Collection; paperIds: number[] }) {
+  failedToAddPaperToCollectionInGlobalDialog(payload: { collection: Collection; paperIds: string[] }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_FAILED_TO_ADD_PAPER_TO_COLLECTION,
       payload,
     });
   },
 
-  startToRemovePaperFromCollection(payload: { collection: Collection; paperIds: number[] }) {
+  startToRemovePaperFromCollection(payload: { collection: Collection; paperIds: string[] }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_FROM_COLLECTION,
       payload,
     });
   },
 
-  succeededToRemovePaperFromCollection(payload: { collection: Collection; paperIds: number[] }) {
+  succeededToRemovePaperFromCollection(payload: { collection: Collection; paperIds: string[] }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION,
       payload,
     });
   },
 
-  failedToRemovePaperFromCollection(payload: { collection: Collection; paperIds: number[] }) {
+  failedToRemovePaperFromCollection(payload: { collection: Collection; paperIds: string[] }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION,
       payload,
@@ -793,7 +793,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToGetJournal(payload: { journalId: number }) {
+  succeededToGetJournal(payload: { journalId: string }) {
     return createAction({
       type: ACTION_TYPES.JOURNAL_SHOW_SUCCEEDED_TO_GET_JOURNAL,
       payload,
@@ -814,7 +814,7 @@ export const ActionCreators = {
   },
 
   succeededToGetJournalPapers(payload: {
-    paperIds: number[];
+    paperIds: string[];
     totalPage: number;
     currentPage: number;
     paperCount: number;
@@ -849,11 +849,11 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.COLLECTION_SHOW_CLEAR_SELECT_PAPER_ITEM });
   },
 
-  selectToPaperInCollectionShow(payload: { paperId: number }) {
+  selectToPaperInCollectionShow(payload: { paperId: string }) {
     return createAction({ type: ACTION_TYPES.COLLECTION_SHOW_SELECT_PAPER_ITEM, payload });
   },
 
-  selectToAllPapersInCollectionShow(payload: { paperIds: number[] }) {
+  selectToAllPapersInCollectionShow(payload: { paperIds: string[] }) {
     return createAction({ type: ACTION_TYPES.COLLECTION_SHOW_SELECT_ALL_PAPER_ITEMS, payload });
   },
 
@@ -931,7 +931,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToUpdatePaperNote(payload: { paperId: number; collectionId: number; note: string | null }) {
+  succeededToUpdatePaperNote(payload: { paperId: string; collectionId: number; note: string | null }) {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_SUCCEEDED_TO_UPDATE_PAPER_NOTE,
       payload,
@@ -950,13 +950,6 @@ export const ActionCreators = {
     });
   },
 
-  staleUpdatedCollectionNote(payload: { collectionId: number }) {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_STALE_UPDATED_COLLECTION_NOTE,
-      payload,
-    });
-  },
-
   selectCollection(payload: { collection: Collection }) {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_SELECT_COLLECTION,
@@ -972,7 +965,7 @@ export const ActionCreators = {
   },
 
   succeedToAddProfileCvData(payload: {
-    authorId: number;
+    authorId: string;
     cvInfoType: keyof CVInfoType;
     cvInformation: Award | Education | Experience;
   }) {
@@ -994,7 +987,7 @@ export const ActionCreators = {
   },
 
   succeededToUpdateProfileCvData(payload: {
-    authorId: number;
+    authorId: string;
     cvInfoType: keyof CVInfoType;
     cvInformation: Award | Education | Experience;
   }) {
@@ -1012,7 +1005,7 @@ export const ActionCreators = {
   },
 
   succeededToRemoveProfileCvData(payload: {
-    authorId: number;
+    authorId: string;
     cvInfoType: keyof CVInfoType;
     cvInformation: Award | Education | Experience;
   }) {
@@ -1034,7 +1027,10 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.PAPER_SHOW_FETCH_LAST_FULL_TEXT_REQUESTED_DATE, payload });
   },
 
-  addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {
+  addEntity(payload: {
+    entities: { [K in keyof AppEntities]?: AppEntities[K] };
+    result: number | number[] | string | string[];
+  }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_ADD_ENTITY, payload });
   },
 
@@ -1062,12 +1058,12 @@ export interface SyncFilterWithQueryParamsAction {
 
 interface SelectJournalFilterItemAction {
   type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_JOURNAL_FILTER_ITEM;
-  payload: { journalId: number };
+  payload: { journalId: string };
 }
 
 interface SelectFOSFilterItemAction {
   type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_FOS_FILTER_ITEM;
-  payload: { FOSId: number };
+  payload: { FOSId: string };
 }
 
 interface ClearJournalFilterAction {

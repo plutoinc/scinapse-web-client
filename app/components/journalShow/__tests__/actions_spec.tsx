@@ -19,7 +19,7 @@ describe('Journal Show actions spec', () => {
   describe('getJournal Action', () => {
     describe('when succeed to fetch data', () => {
       beforeEach(async () => {
-        await store.dispatch(Actions.getJournal(2764552960, axios.CancelToken.source().token));
+        await store.dispatch(Actions.getJournal('2764552960', axios.CancelToken.source().token));
         actions = store.getActions();
       });
 
@@ -36,7 +36,7 @@ describe('Journal Show actions spec', () => {
             entities: {
               journals: {
                 '2764552960': {
-                  id: 2764552960,
+                  id: "2764552960",
                   title: 'Applied Mathematics and Computation',
                   issn: null,
                   webPage: null,
@@ -44,17 +44,17 @@ describe('Journal Show actions spec', () => {
                   paperCount: 19555,
                   citationCount: 253265,
                   fosList: [
-                    { id: 33923547, name: 'Mathematics' },
-                    { id: 48753275, name: 'Numerical analysis' },
-                    { id: 126255220, name: 'Mathematical optimization' },
-                    { id: 134306372, name: 'Mathematical analysis' },
-                    { id: 182310444, name: 'Boundary value problem' },
+                    { id: '33923547', name: 'Mathematics' },
+                    { id: '48753275', name: 'Numerical analysis' },
+                    { id: '126255220', name: 'Mathematical optimization' },
+                    { id: '134306372', name: 'Mathematical analysis' },
+                    { id: '182310444', name: 'Boundary value problem' },
                   ],
                   fullTitle: 'Applied Mathematics and Computation',
                 },
               },
             },
-            result: 2764552960,
+            result: '2764552960',
           },
         });
       });
@@ -62,14 +62,14 @@ describe('Journal Show actions spec', () => {
       it('should return JOURNAL_SHOW_SUCCEEDED_TO_GET_JOURNAL with proper payload', async () => {
         expect(actions[2]).toEqual({
           type: ACTION_TYPES.JOURNAL_SHOW_SUCCEEDED_TO_GET_JOURNAL,
-          payload: { journalId: 2764552960 },
+          payload: { journalId: '2764552960' },
         });
       });
     });
 
     describe('when failed to fetch data', () => {
       beforeEach(async () => {
-        await store.dispatch(Actions.getJournal(0, axios.CancelToken.source().token));
+        await store.dispatch(Actions.getJournal('', axios.CancelToken.source().token));
         actions = store.getActions();
       });
 
@@ -94,7 +94,7 @@ describe('Journal Show actions spec', () => {
     describe('when succeed to fetch data', () => {
       beforeEach(async () => {
         await store.dispatch(
-          Actions.getPapers({ journalId: 2764552960, cancelToken: axios.CancelToken.source().token })
+          Actions.getPapers({ journalId: '2764552960', cancelToken: axios.CancelToken.source().token })
         );
         actions = store.getActions();
       });
@@ -110,7 +110,7 @@ describe('Journal Show actions spec', () => {
           type: ACTION_TYPES.GLOBAL_ADD_ENTITY,
           payload: {
             entities: { papers: { '8107': RAW.JOURNAL_PAPERS_RESPONSE.data.content[0] } },
-            result: [8107],
+            result: ['8107'],
             size: 10,
             page: 1,
             first: true,
@@ -128,7 +128,7 @@ describe('Journal Show actions spec', () => {
           payload: {
             currentPage: 1,
             paperCount: 1,
-            paperIds: [8107],
+            paperIds: ['8107'],
             totalPage: 1,
             filteredPaperCount: 1,
             searchKeyword: '',
@@ -139,7 +139,7 @@ describe('Journal Show actions spec', () => {
 
     describe('when failed to fetch data', () => {
       beforeEach(async () => {
-        await store.dispatch(Actions.getPapers({ journalId: 0, cancelToken: axios.CancelToken.source().token }));
+        await store.dispatch(Actions.getPapers({ journalId: '', cancelToken: axios.CancelToken.source().token }));
         actions = store.getActions();
       });
 

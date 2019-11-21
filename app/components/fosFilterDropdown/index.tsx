@@ -53,7 +53,7 @@ const FOSFilterDropdown: React.FC<
       <FOSItem
         key={FOS.id}
         FOS={FOS}
-        selected={props.selectedFOSIds.includes(FOS.id)}
+        selected={props.selectedFOSIds.includes(String(FOS.id))}
         onClick={() => {
           props.dispatch({
             type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_FOS_FILTER_ITEM,

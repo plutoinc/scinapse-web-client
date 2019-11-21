@@ -17,7 +17,7 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
     }
 
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER: {
-      return { ...state, ...{ errorStatusCode: action.payload.statusCode, isLoadingPaper: false, paperId: 0 } };
+      return { ...state, ...{ errorStatusCode: action.payload.statusCode, isLoadingPaper: false, paperId: '' } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS: {

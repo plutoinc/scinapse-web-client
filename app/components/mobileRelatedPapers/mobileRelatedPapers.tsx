@@ -4,7 +4,7 @@ const s = require('./mobileRelatedPapers.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
 
 interface Props {
-  paperIds: number[];
+  paperIds: string[];
   className?: string;
 }
 

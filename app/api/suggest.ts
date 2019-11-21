@@ -1,25 +1,34 @@
 import { AxiosResponse } from 'axios';
 import PlutoAxios from './pluto';
-import { RawPaginationResponseV2 } from './types/common';
-import { camelCaseKeys } from '../helpers/camelCaseKeys';
+import { PaginationResponseV2 } from './types/common';
 
 export interface SuggestAffiliation {
   type: string;
   keyword: string;
-  affiliationId: number;
+  affiliationId: string;
 }
 
 class SuggestAPI extends PlutoAxios {
-  public async getAffiliationSuggest(q: string): Promise<RawPaginationResponseV2<SuggestAffiliation[]>> {
+  public async getAffiliationSuggest(q: string): Promise<PaginationResponseV2<SuggestAffiliation[]>> {
     const res: AxiosResponse = await this.get(`/complete/affiliation`, {
       params: {
         q,
       },
     });
 
-    const suggestionData: RawPaginationResponseV2<SuggestAffiliation[]> = camelCaseKeys(res.data);
+    const suggestionData: PaginationResponseV2<SuggestAffiliation[]> = res.data;
+    const safeSuggestionData = {
+      ...suggestionData,
+      data: {
+        ...suggestionData.data,
+        content: suggestionData.data.content.map(affiliation => ({
+          ...affiliation,
+          affiliationId: String(affiliation.affiliationId),
+        })),
+      },
+    };
 
-    return suggestionData;
+    return safeSuggestionData;
   }
 }
 

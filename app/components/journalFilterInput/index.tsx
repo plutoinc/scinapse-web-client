@@ -58,7 +58,7 @@ const JournalFilterInput: React.FC<JournalFilterInputProps> = props => {
     dispatch({ type: 'CLOSE_BOX' });
   };
 
-  const handleSelectItem = React.useCallback((journalId: number) => {
+  const handleSelectItem = React.useCallback((journalId: string) => {
     dispatch({
       type: 'TOGGLE_JOURNAL',
       payload: {

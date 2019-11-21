@@ -5,7 +5,7 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import formatNumber from '../../../helpers/formatNumber';
 
 interface Props {
-  paperId: number;
+  paperId: string;
   citedCount: number;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;

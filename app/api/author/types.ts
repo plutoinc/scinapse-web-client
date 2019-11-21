@@ -4,7 +4,7 @@ import { Paper } from '../../model/paper';
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
 
 export interface GetAuthorPapersParams {
-  authorId: number;
+  authorId: string;
   page: number;
   sort: AUTHOR_PAPER_LIST_SORT_TYPES;
   cancelToken: CancelToken;
@@ -18,6 +18,6 @@ export interface AuthorPapersResponse {
 }
 
 export interface GetAuthorPaperResult extends PageObjectV2 {
-  entities: { papers: { [paperId: number]: Paper } };
-  result: number[];
+  entities: { papers: { [paperId: string]: Paper } };
+  result: string[];
 }

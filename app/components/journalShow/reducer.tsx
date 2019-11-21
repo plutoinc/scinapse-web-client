@@ -6,8 +6,8 @@ export interface JournalShowState
       pageErrorCode: number | null;
       isLoadingPapers: boolean;
       failedToLoadPapers: boolean;
-      journalId: number;
-      paperIds: number[];
+      journalId: string;
+      paperIds: string[];
       totalPaperCount: number;
       paperTotalPage: number;
       paperCurrentPage: number;
@@ -20,7 +20,7 @@ export const JOURNAL_SHOW_INITIAL_STATE: JournalShowState = {
   pageErrorCode: null,
   isLoadingPapers: false,
   failedToLoadPapers: false,
-  journalId: 0,
+  journalId: '',
   paperTotalPage: 0,
   paperCurrentPage: 0,
   paperIds: [],

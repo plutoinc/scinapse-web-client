@@ -22,12 +22,12 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
     (state: AppState) => !state.configuration.succeedAPIFetchAtServer || state.configuration.renderedAtClient
   );
   const lastShouldFetch = useRef(shouldFetch);
-  const lastPaperId = useRef(0);
+  const lastPaperId = useRef('');
 
   const paper = useSelector((state: AppState) => getMemoizedPaper(state), isEqual);
   const isMobile = useSelector((state: AppState) => state.layout.userDevice === UserDevice.MOBILE);
   const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
-  const matchedPaperId = parseInt(match.params.paperId);
+  const matchedPaperId = match.params.paperId;
   const paperId = paper && paper.id;
 
   useEffect(

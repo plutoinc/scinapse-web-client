@@ -15,7 +15,7 @@ export const getMemoizedCitedPaperIds = (state: AppState) => {
   return state.paperShow.citedPaperIds;
 };
 
-export const makeGetMemoizedPapers = (getPaperIds: (state: AppState) => number[]) => {
+export const makeGetMemoizedPapers = (getPaperIds: (state: AppState) => string[]) => {
   return createSelector([getPaperIds, getPaperEntities], (paperIds, paperEntities) => {
     return denormalize(paperIds, [paperSchema], { papers: paperEntities });
   });

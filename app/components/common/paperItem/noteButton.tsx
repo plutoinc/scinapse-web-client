@@ -8,7 +8,7 @@ const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./noteButton.scss');
 
 interface NoteButtonProps {
-  paperId: number;
+  paperId: string;
   collectionId: number;
   note?: string;
   pageType: Scinapse.ActionTicket.PageType;

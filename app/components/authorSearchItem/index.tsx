@@ -11,7 +11,7 @@ interface AuthorSearchItemProps extends RouteComponentProps<any> {
   authorEntity: MatchEntityAuthor;
 }
 
-export function trackActionToClickAuthorEntity(authorId: number) {
+export function trackActionToClickAuthorEntity(authorId: string) {
   ActionTicketManager.trackTicket({
     pageType: 'searchResult',
     actionType: 'fire',

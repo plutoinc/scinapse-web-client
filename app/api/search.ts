@@ -6,10 +6,10 @@ import { AggregationData } from '../model/aggregation';
 import { Suggestion } from '../model/suggestion';
 import { BasePaperAuthor } from '../model/author';
 import { Affiliation } from '../model/affiliation';
-import { camelCaseKeys } from '../helpers/camelCaseKeys';
 import { Author } from '../model/author/author';
 import { NewFOS } from '../model/fos';
 import { WeightedCitationUserGroup } from '../constants/abTestObject';
+import { getIdSafePaper, getSafeAuthor } from '../helpers/getIdSafeData';
 
 export interface BaseSearchParams {
   query: string;
@@ -73,16 +73,38 @@ class SearchAPI extends PlutoAxios {
       },
       cancelToken,
     });
-    const camelizedRes = camelCaseKeys(res.data);
-    const searchRes: SearchResult = camelizedRes;
+    
+    const searchResult: SearchResult = res.data;
+    const searchResultData = searchResult.data;
+    const safeSearchResultData = {
+      ...searchResultData, 
+      content: searchResultData.content.map(getIdSafePaper),
+      aggregation: {
+        ...searchResultData.aggregation,
+        fosList: searchResultData.aggregation?.fosList.map(fos => ({ ...fos, id: String(fos.id)})) || [],
+        journals: searchResultData.aggregation?.journals.map(journal => ({...journal, id: String(journal.id)}))
+      },
+      matchedAuthor: {
+        ...searchResultData.matchedAuthor,
+        content: searchResultData.matchedAuthor.content.map(author => ({
+          ...author,
+          id: String(author.id),
+          lastKnownAffiliation: {
+            ...author.lastKnownAffiliation,
+            id: String(author.lastKnownAffiliation?.id)
+          },
+          fosList: author.fosList.map(fos => ({ ...fos, id: String(fos.id)}))
+        }))
+      }
+    }
 
     return {
-      ...searchRes,
+      ...searchResult,
       data: {
-        ...searchRes.data,
+        ...safeSearchResultData,
         page: {
-          ...searchRes.data.page,
-          page: searchRes.data.page ? searchRes.data.page.page + 1 : 1,
+          ...safeSearchResultData.page,
+          page: safeSearchResultData.page ? safeSearchResultData.page.page + 1 : 1,
         },
       },
     };
@@ -97,16 +119,22 @@ class SearchAPI extends PlutoAxios {
       },
       cancelToken,
     });
-    const camelizedRes = camelCaseKeys(res.data);
-    const searchRes: AuthorSearchResult = camelizedRes;
+    
+    const searchResult: AuthorSearchResult = res.data;
+    const searchResultData = res.data.data;
+    const safeSearchResultData = {
+      ...searchResultData,
+      content: searchResultData.content.map(getSafeAuthor)
+    }
+    
 
     return {
-      ...searchRes,
+      ...searchResult,
       data: {
-        ...searchRes.data,
+        ...safeSearchResultData,
         page: {
-          ...searchRes.data.page,
-          page: searchRes.data.page ? searchRes.data.page.page + 1 : 1,
+          ...safeSearchResultData.page,
+          page: safeSearchResultData.page ? safeSearchResultData.page.page + 1 : 1,
         },
       },
     };

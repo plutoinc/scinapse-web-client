@@ -211,7 +211,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     }
   };
 
-  private handleSubmitNewCollection = async (params: PostCollectionParams, targetPaperId?: number) => {
+  private handleSubmitNewCollection = async (params: PostCollectionParams, targetPaperId?: string) => {
     const { dispatch } = this.props;
 
     this.validateCollection(params);

@@ -11,7 +11,7 @@ import { trackEvent } from '../../../helpers/handleGA';
 const styles = require('./collectionItem.scss');
 
 interface CollectionItemProps {
-  collectionDialogPaperId: number;
+  collectionDialogPaperId: string;
   collection: Collection;
   handleAddingPaperToCollections: (params: AddPaperToCollectionParams) => Promise<void>;
   handleRemovingPaperFromCollection: (params: RemovePapersFromCollectionParams) => Promise<void>;

@@ -1,7 +1,7 @@
 import { schema } from 'normalizr';
 
 export interface Profile extends CVInfoType {
-  authorId: number[];
+  authorId: string;
 }
 
 export interface CVInfoType {
@@ -15,7 +15,7 @@ interface CvBaseInfo {
   startDate: string;
   endDate: string;
   isCurrent: boolean;
-  institutionId: number;
+  institutionId: string;
   institutionName: string;
 }
 

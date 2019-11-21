@@ -16,7 +16,7 @@ interface EducationItemState {
 
 interface EducationItemProps {
   validConnection: boolean;
-  authorId: number;
+  authorId: string;
   education: Education;
   handleRemoveItem: (cvInfoId: string) => void;
   dispatch: Dispatch<any>;

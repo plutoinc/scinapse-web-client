@@ -15,8 +15,8 @@ interface Props {
   isMobile: boolean;
   isChecked: boolean;
   collectionId: number;
-  onClickCheckBox: (paperId: number) => void;
-  onClickXButton: (paperId: number) => void;
+  onClickCheckBox: (paperId: string) => void;
+  onClickXButton: (paperId: string) => void;
 }
 
 const CollectionPaperItem: FC<Props> = ({

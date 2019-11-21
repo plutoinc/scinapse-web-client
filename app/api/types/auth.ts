@@ -49,7 +49,7 @@ export interface UpdateUserInformationParams {
 export interface UpdateUserInformationAPIParams {
   first_name: string;
   last_name: string;
-  affiliation_id: number | null;
+  affiliation_id: string | null;
   affiliation_name: string;
   profile_link?: string;
 }

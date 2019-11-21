@@ -1,31 +1,31 @@
 import { CancelToken } from 'axios';
 import { normalize } from 'normalizr';
 import PlutoAxios from '../pluto';
-import { RawAuthor, Author, authorSchema, authorListSchema } from '../../model/author/author';
+import { Author, authorSchema, authorListSchema } from '../../model/author/author';
 import { GetAuthorPapersParams, AuthorPapersResponse, GetAuthorPaperResult } from './types';
 import { paperSchema, Paper } from '../../model/paper';
-import { RawPaginationResponseV2 } from '../types/common';
-import { camelCaseKeys } from '../../helpers/camelCaseKeys';
+import { PaginationResponseV2 } from '../types/common';
+import { getSafeAuthor, getIdSafePaper } from '../../helpers/getIdSafeData';
 
 export const DEFAULT_AUTHOR_PAPERS_SIZE = 10;
 
 export interface SimplePaper {
-  paperId: number;
+  paperId: string;
   title: string;
   isRepresentative: boolean;
 }
 
 export interface UpdateRepresentativePapersParams {
-  authorId: number;
-  paperIds: number[];
+  authorId: string;
+  paperIds: string[];
 }
 
 export interface ConnectAuthorParams {
-  authorId: number;
+  authorId: string;
   bio: string | null;
   email: string;
   name: string;
-  affiliationId: number | null;
+  affiliationId: string | null;
   affiliationName: string;
   webPage: string | null;
   isEmailHidden: boolean;
@@ -33,7 +33,7 @@ export interface ConnectAuthorParams {
 
 interface QueryAuthorPapersParams {
   query: string;
-  authorId: number;
+  authorId: string;
   page: number;
   cancelToken: CancelToken;
 }
@@ -42,11 +42,11 @@ class AuthorAPI extends PlutoAxios {
   public connectAuthor = async (
     params: ConnectAuthorParams
   ): Promise<{
-    entities: { authors: { [authorId: number]: Author } };
-    result: number;
+    entities: { authors: { [authorId: string]: Author } };
+    result: string;
   }> => {
     const res = await this.post(`/authors/${params.authorId}/connect`, {
-      affiliation_id: params.affiliationId,
+      affiliation_id: String(params.affiliationId),
       affiliation_name: params.affiliationName,
       bio: params.bio,
       email: params.email,
@@ -54,46 +54,53 @@ class AuthorAPI extends PlutoAxios {
       web_page: params.webPage,
       is_email_hidden: params.isEmailHidden,
     });
-    const rawAuthor: RawAuthor = res.data.data.content;
-    const camelizedAuthor: Author = camelCaseKeys(rawAuthor);
+    const rawAuthor = res.data.data.content;
+    const camelizedAuthor: Author = getSafeAuthor(rawAuthor);
     const normalizedData = normalize(camelizedAuthor, authorSchema);
     return normalizedData;
   };
 
-  public async removeAuthorPapers(authorId: number, paperIds: number[]) {
+  public async removeAuthorPapers(authorId: string, paperIds: string[]) {
     const res = await this.post(`/authors/${authorId}/papers/remove`, {
-      paper_ids: paperIds,
+      paper_ids: paperIds.map(id => String(id)),
     });
 
-    const successResponse: RawPaginationResponseV2<{ success: true }> = res.data;
+    const successResponse: PaginationResponseV2<{ success: true }> = res.data;
 
     return successResponse;
   }
 
-  public async queryAuthorPapers(params: QueryAuthorPapersParams): Promise<RawPaginationResponseV2<Paper[]>> {
+  public async queryAuthorPapers(params: QueryAuthorPapersParams): Promise<PaginationResponseV2<Paper[]>> {
     const res = await this.get('/search/to-add', {
       params: {
         q: params.query,
-        check_author_included: params.authorId,
+        check_author_included: String(params.authorId),
         page: params.page - 1,
       },
       cancelToken: params.cancelToken,
     });
 
-    const paperListResult: RawPaginationResponseV2<Paper[]> = camelCaseKeys(res.data);
+    const paperListResult: PaginationResponseV2<Paper[]> = res.data;
+    const safePaperListResult = {
+      ...paperListResult,
+      data: {
+        ...paperListResult.data,
+        content: paperListResult.data.content.map(getIdSafePaper),
+      },
+    };
 
-    return paperListResult;
+    return safePaperListResult;
   }
 
-  public async addPapersToAuthorPaperList(authorId: number, paperIds: number[], cancelToken: CancelToken) {
+  public async addPapersToAuthorPaperList(authorId: string, paperIds: string[], cancelToken: CancelToken) {
     const res = await this.post(
       `/authors/${authorId}/papers/add`,
       {
-        paper_ids: paperIds,
+        paper_ids: paperIds.map(id => String(id)),
       },
       { cancelToken }
     );
-    const successResponse: RawPaginationResponseV2<{ success: true }> = res.data;
+    const successResponse: PaginationResponseV2<{ success: true }> = res.data;
 
     return successResponse;
   }
@@ -102,7 +109,7 @@ class AuthorAPI extends PlutoAxios {
     const { authorId, query, page, size, sort, cancelToken } = params;
     const res = await this.get(`/search/author-papers`, {
       params: {
-        aid: authorId,
+        aid: String(authorId),
         q: query || null,
         page: page - 1,
         size: size || DEFAULT_AUTHOR_PAPERS_SIZE,
@@ -111,44 +118,48 @@ class AuthorAPI extends PlutoAxios {
       cancelToken,
     });
 
-    const paperResponse: AuthorPapersResponse = res.data.data;
-    const authorSlicedResult = paperResponse.content.map(rawPaper => {
-      return camelCaseKeys({ ...rawPaper, authors: rawPaper.authors.slice(0, 10) });
-    });
-    const camelizedPageRes = camelCaseKeys(paperResponse.page);
+    const paperResult: AuthorPapersResponse = res.data.data;
+    const safePaperList = paperResult.content.map(getIdSafePaper);
+    const pageResult = paperResult.page;
 
-    const normalizedPapersData = normalize(authorSlicedResult, [paperSchema]);
+    const normalizedPapersData = normalize(safePaperList, [paperSchema]);
 
     return {
       entities: normalizedPapersData.entities,
       result: normalizedPapersData.result,
-      size: camelizedPageRes.size,
-      page: camelizedPageRes.page + 1,
-      first: camelizedPageRes.first,
-      last: camelizedPageRes.last,
-      numberOfElements: camelizedPageRes.numberOfElements,
-      totalPages: camelizedPageRes.totalPages,
-      totalElements: camelizedPageRes.totalElements,
+      size: pageResult.size,
+      page: pageResult.page + 1,
+      first: pageResult.first,
+      last: pageResult.last,
+      numberOfElements: pageResult.numberOfElements,
+      totalPages: pageResult.totalPages,
+      totalElements: pageResult.totalElements,
     };
   }
 
-  public async getSelectedPapers(authorId: number) {
+  public async getSelectedPapers(authorId: string) {
     const res = await this.get(`/authors/${authorId}/papers/all`);
 
-    const simplePapersResponse: RawPaginationResponseV2<SimplePaper[]> = camelCaseKeys(res.data);
-
-    return simplePapersResponse;
+    const simplePapersResponse: PaginationResponseV2<SimplePaper[]> = res.data;
+    const simplePapers = {
+      ...simplePapersResponse,
+      data: {
+        ...simplePapersResponse.data,
+        content: simplePapersResponse.data.content.map(paper => ({ ...paper, paperId: String(paper.paperId) })),
+      },
+    };
+    return simplePapers;
   }
 
   public async getAuthor(
-    authorId: number,
+    authorId: string,
     cancelToken: CancelToken
   ): Promise<{
-    entities: { authors: { [authorId: number]: Author } };
-    result: number;
+    entities: { authors: { [authorId: string]: Author } };
+    result: string;
   }> {
     const res = await this.get(`/authors/${authorId}`, { cancelToken });
-    const author: Author = camelCaseKeys(res.data.data);
+    const author: Author = getSafeAuthor(res.data.data);
     const normalizedData = normalize(author, authorSchema);
     return normalizedData;
   }
@@ -156,11 +167,11 @@ class AuthorAPI extends PlutoAxios {
   public async updateAuthor(
     params: ConnectAuthorParams
   ): Promise<{
-    entities: { authors: { [authorId: number]: Author } };
-    result: number;
+    entities: { authors: { [authorId: string]: Author } };
+    result: string;
   }> {
     const res = await this.put(`/authors/${params.authorId}`, {
-      affiliation_id: params.affiliationId,
+      affiliation_id: String(params.affiliationId),
       affiliation_name: params.affiliationName,
       bio: params.bio,
       email: params.email,
@@ -168,31 +179,30 @@ class AuthorAPI extends PlutoAxios {
       web_page: params.webPage,
       is_email_hidden: params.isEmailHidden,
     });
-    const author: Author = camelCaseKeys(res.data.data.content);
+    const author: Author = getSafeAuthor(res.data.data.content);
     const normalizedData = normalize(author, authorSchema);
     return normalizedData;
   }
 
-  public async updateAuthorProfileImage(authorId: number, profileImageData: FormData) {
+  public async updateAuthorProfileImage(authorId: string, profileImageData: FormData) {
     const res = await this.put(`/authors/${authorId}/profile-image`, profileImageData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
 
-    return camelCaseKeys(res.data);
+    return res.data;
   }
 
   public async getCoAuthors(
-    authorId: number,
+    authorId: string,
     cancelToken: CancelToken
   ): Promise<{
-    entities: { authors: { [authorId: number]: Author } };
-    result: number[];
+    entities: { authors: { [authorId: string]: Author } };
+    result: string[];
   }> {
     const res = await this.get(`/authors/${authorId}/co-authors`, { cancelToken });
-    const authors: Author[] = camelCaseKeys(res.data.data);
-
+    const authors: Author[] = res.data.data.map(getSafeAuthor);
     const authorsArray = authors.slice(0, 10);
     const normalizedData = normalize(authorsArray, authorListSchema);
     return normalizedData;
@@ -200,11 +210,11 @@ class AuthorAPI extends PlutoAxios {
 
   public async updateRepresentativePapers(params: UpdateRepresentativePapersParams): Promise<Paper[]> {
     const res = await this.put(`/authors/${params.authorId}/papers/representative`, {
-      paper_ids: params.paperIds,
+      paper_ids: params.paperIds.map(id => String(id)),
     });
 
-    const paperResponse: RawPaginationResponseV2<Paper[]> = camelCaseKeys(res.data);
-    const papers = paperResponse.data.content;
+    const paperResponse: PaginationResponseV2<Paper[]> = res.data;
+    const papers = paperResponse.data.content.map(getIdSafePaper);
 
     return papers;
   }

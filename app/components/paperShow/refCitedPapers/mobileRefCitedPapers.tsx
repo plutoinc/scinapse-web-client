@@ -21,12 +21,12 @@ const useStyles = require('isomorphic-style-loader/useStyles');
 type Props = RouteComponentProps<PaperShowMatchParams> & {
   type: REF_CITED_CONTAINER_TYPE;
   paperCount: number;
-  parentPaperId: number;
+  parentPaperId: string;
 };
 
 const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, history, location }) => {
   useStyles(s);
-  const paperIds: number[] = useSelector((state: AppState) => {
+  const paperIds: string[] = useSelector((state: AppState) => {
     return type === 'reference' ? state.paperShow.referencePaperIds : state.paperShow.citedPaperIds;
   }, isEqual);
   const isLoading = useSelector((state: AppState) => {

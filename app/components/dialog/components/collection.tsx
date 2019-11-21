@@ -18,7 +18,7 @@ const styles = require('./collection.scss');
 interface CollectionDialogProps {
   currentUser: CurrentUser;
   myCollections: Collection[];
-  collectionDialogPaperId: number;
+  collectionDialogPaperId: string;
   getMyCollections: (cancelToken: CancelToken) => void;
   handleCloseDialogRequest: () => void;
   handleSubmitNewCollection: (params: PostCollectionParams) => void;

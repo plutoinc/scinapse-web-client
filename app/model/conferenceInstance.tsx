@@ -2,7 +2,7 @@ import { schema } from 'normalizr';
 import { ConferenceSeries } from './conferenceSeries';
 
 export interface ConferenceInstance {
-  id: number;
+  id: string;
   conferenceSeries: ConferenceSeries | null;
   name: string;
   location: string | null;

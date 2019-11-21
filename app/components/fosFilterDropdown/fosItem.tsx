@@ -8,7 +8,7 @@ const s = require('./fosFilterDropdown.scss');
 interface FOSItemProps {
   FOS: AggregationFos;
   selected: boolean;
-  onClick: (FOSId: number) => void;
+  onClick: (FOSId: string) => void;
   isHighlight?: boolean;
   isSearchResult?: boolean;
 }

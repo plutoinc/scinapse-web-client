@@ -1,5 +1,5 @@
 export interface AggregationJournal {
-  id: number;
+  id: string;
   title: string;
   docCount: number;
   impactFactor: number;
@@ -11,7 +11,7 @@ export interface AggregationJournal {
 }
 
 export interface AggregationFos {
-  id: number;
+  id: string;
   name: string;
   level: number;
   docCount: number;

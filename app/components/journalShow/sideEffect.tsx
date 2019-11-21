@@ -13,7 +13,7 @@ export interface JournalShowQueryParams {
   s?: PAPER_LIST_SORT_TYPES;
 }
 
-export function fetchPapers(journalId: number, queryParamsObj: JournalShowQueryParams, cancelToken: CancelToken) {
+export function fetchPapers(journalId: string, queryParamsObj: JournalShowQueryParams, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     await dispatch(
       getPapers({
@@ -31,8 +31,8 @@ export async function fetchJournalShowPageData(params: LoadDataParams<JournalSho
   const { dispatch, match, queryParams } = params;
   const queryParamsObj: JournalShowQueryParams = parse(queryParams, { ignoreQueryPrefix: true });
 
-  const journalId = parseInt(match.params.journalId, 10);
-  if (isNaN(journalId)) {
+  const journalId =match.params.journalId;
+  if (!journalId) {
     dispatch(ActionCreators.failedToGetJournal({ statusCode: 400 }));
     return;
   } else {

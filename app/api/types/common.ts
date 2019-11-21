@@ -77,7 +77,7 @@ export interface PaginationResponseV2<C> {
 
 export interface NormalizedDataWithPaginationV2<E> {
   entities: E;
-  result: number | number[];
+  result: string | string[];
   page: PageObjectV2 | null;
   error: CommonError | null;
 }

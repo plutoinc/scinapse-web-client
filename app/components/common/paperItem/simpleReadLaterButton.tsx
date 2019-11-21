@@ -9,7 +9,7 @@ import { AppState } from '../../../reducers';
 import Icon from '../../../icons';
 
 interface Props {
-  paperId: number;
+  paperId: string;
   saved: boolean;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;

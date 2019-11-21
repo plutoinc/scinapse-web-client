@@ -16,7 +16,7 @@ interface AwardItemState {
 
 interface AwardItemProps {
   validConnection: boolean;
-  authorId: number;
+  authorId: string;
   award: Award;
   handleRemoveItem: (cvInfoId: string) => void;
   dispatch: Dispatch<any>;

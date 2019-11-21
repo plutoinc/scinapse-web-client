@@ -109,7 +109,7 @@ const ProfileFormContainer: React.FC = () => {
           lastName: currentUser.lastName,
           affiliation: {
             id: null,
-            name: currentUser.affiliation,
+            name: currentUser.affiliationName || '',
             nameAbbrev: null,
           },
           profileLink: currentUser.profileLink,

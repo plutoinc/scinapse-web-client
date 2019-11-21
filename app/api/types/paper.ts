@@ -16,7 +16,7 @@ export interface SearchPapersParams {
 
 export interface GetRefOrCitedPapersParams {
   size?: number;
-  paperId: number;
+  paperId: string;
   page: number;
   query: string;
   sort: PAPER_LIST_SORT_TYPES | null;

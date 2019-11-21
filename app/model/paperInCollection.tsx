@@ -4,7 +4,7 @@ import { Paper } from './paper';
 export interface PaperInCollection {
   note: string | null;
   collectionId: number;
-  paperId: number;
+  paperId: string;
   paper: Paper;
 }
 

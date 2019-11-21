@@ -56,7 +56,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
 
   public async componentWillReceiveProps(nextProps: UserCollectionsProps) {
     if (this.props.match.params.userId !== nextProps.match.params.userId) {
-      const userId = parseInt(nextProps.match.params.userId, 10);
+      const userId = nextProps.match.params.userId;
       await this.fetchCollections(userId);
       restoreScroll(nextProps.location.key);
     }
@@ -221,7 +221,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
     });
   };
 
-  private fetchCollections = (userId?: number) => {
+  private fetchCollections = (userId?: string) => {
     const { dispatch, match, location } = this.props;
 
     getCollections({

@@ -10,7 +10,7 @@ import Button from '../../common/button';
 const styles = require('./viewFullTextBtn.scss');
 
 interface ViewFullTextBtnProps {
-  paperId: number;
+  paperId: string;
   handleClickFullText: () => void;
   isLoading: boolean;
 }

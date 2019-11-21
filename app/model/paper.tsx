@@ -1,5 +1,4 @@
 import { schema } from 'normalizr';
-import { Comment } from './comment';
 import { PaperAuthor } from './author';
 import { PaperSource } from './paperSource';
 import { Fos } from './fos';
@@ -21,15 +20,14 @@ export interface PaperFigure {
 }
 
 export interface SavedInCollection {
-  id: number; // collection id
+  id: number;
   title: string;
   readLater: boolean;
   updatedAt: string;
 }
 
 export interface Paper {
-  id: number;
-  cognitivePaperId: number;
+  id: string;
   title: string;
   year: number;
   publishedDate: string;
@@ -44,8 +42,6 @@ export interface Paper {
   figures: PaperFigure[];
   authors: PaperAuthor[];
   abstract: string;
-  commentCount: number;
-  comments: Comment[];
   journal: Journal | null;
   conferenceInstance: ConferenceInstance | null;
   urls: PaperSource[];

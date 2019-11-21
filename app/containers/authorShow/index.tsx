@@ -16,7 +16,7 @@ import restoreScroll from '../../helpers/scrollRestoration';
 import { AuthorShowMatchParams } from './types';
 
 export interface HandleAuthorClaim {
-  authorId: number;
+  authorId: string;
 }
 
 export interface AuthorShowPageProps extends RouteComponentProps<AuthorShowMatchParams> {

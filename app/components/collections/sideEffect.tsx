@@ -6,7 +6,7 @@ import PlutoAxios from '../../api/pluto';
 import { CommonError } from '../../model/error';
 
 export interface GetCollectionsParams extends LoadDataParams<{ userId: string }> {
-  userId?: number;
+  userId?: string;
 }
 
 export async function getCollections(params: GetCollectionsParams) {
@@ -14,7 +14,8 @@ export async function getCollections(params: GetCollectionsParams) {
 
   try {
     const promiseArray: ((dispatch: Dispatch<any>) => Promise<any>)[] = [];
-    const userId = params.userId ? params.userId : parseInt(match.params.userId, 10);
+    const userIdStr = params.userId ? params.userId : match.params.userId;
+    const userId = parseInt(userIdStr, 10);
 
     if (isNaN(userId)) {
       return dispatch(ActionCreators.failedToGetCollectionsPageData({ statusCode: 400 }));

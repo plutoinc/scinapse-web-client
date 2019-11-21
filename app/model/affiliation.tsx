@@ -1,5 +1,5 @@
 export interface Affiliation {
-  id: number | null;
+  id: string | null;
   name: string;
   nameAbbrev: string | null;
 }

@@ -14,10 +14,10 @@ import { MyCollectionsState } from '../../../../containers/paperShowCollectionCo
 interface NewCollectionDialogProps {
   currentUser: CurrentUser;
   myCollections: MyCollectionsState;
-  targetPaperId?: number;
+  targetPaperId?: string;
   handleCloseDialogRequest: () => void;
   handleAddingPaperToCollections: (params: AddPaperToCollectionParams) => Promise<void>;
-  handleMakeCollection: (params: PostCollectionParams, targetPaperId?: number) => Promise<void>;
+  handleMakeCollection: (params: PostCollectionParams, targetPaperId?: string) => Promise<void>;
 }
 
 interface NewCollectionDialogStates {

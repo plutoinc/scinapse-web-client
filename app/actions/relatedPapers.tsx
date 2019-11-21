@@ -3,7 +3,7 @@ import PaperAPI from '../api/paper';
 import { Dispatch } from 'redux';
 import { ActionCreators } from './actionTypes';
 
-export function getRelatedPapers(paperId: number, cancelToken: CancelToken) {
+export function getRelatedPapers(paperId: string, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToGetRelatedPapers());
 

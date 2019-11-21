@@ -19,7 +19,7 @@ const CollectionSnackBar: React.FC = () => {
   const collectionSnackBarState = useSelector<AppState, ScinapseSnackbarState>(state => state.scinapseSnackbarState);
   const userDevice = useSelector((state: AppState) => state.layout.userDevice);
 
-  const { id, context, isOpen } = collectionSnackBarState;
+  const { collectionId, context, isOpen } = collectionSnackBarState;
   const isLongName = !!context && context.length >= 30 && userDevice === UserDevice.MOBILE;
 
   useEffect(
@@ -30,11 +30,11 @@ const CollectionSnackBar: React.FC = () => {
           actionType: 'view',
           actionArea: 'collectionSnackbar',
           actionTag: 'viewCollectionSnackBar',
-          actionLabel: String(id),
+          actionLabel: String(collectionId),
         });
       }
     },
-    [isOpen, id]
+    [isOpen, collectionId]
   );
 
   return (
@@ -48,14 +48,14 @@ const CollectionSnackBar: React.FC = () => {
           {isLongName && <br />}
           <Link
             className={s.collectionName}
-            to={`/collections/${id}`}
+            to={`/collections/${collectionId}`}
             onClick={() => {
               ActionTicketManager.trackTicket({
                 pageType: getCurrentPageType(),
                 actionType: 'fire',
                 actionArea: 'collectionSnackbar',
                 actionTag: 'clickCollectionTitle',
-                actionLabel: String(id),
+                actionLabel: String(collectionId),
               });
 
               dispatch(closeSnackbar());
@@ -71,14 +71,14 @@ const CollectionSnackBar: React.FC = () => {
             variant="text"
             color="blue"
             size="large"
-            to={`/collections/${id}`}
+            to={`/collections/${collectionId}`}
             onClick={() => {
               ActionTicketManager.trackTicket({
                 pageType: getCurrentPageType(),
                 actionType: 'fire',
                 actionArea: 'collectionSnackbar',
                 actionTag: 'clickViewCollection',
-                actionLabel: String(id),
+                actionLabel: String(collectionId),
               });
 
               dispatch(closeSnackbar());

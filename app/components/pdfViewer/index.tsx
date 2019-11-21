@@ -29,7 +29,7 @@ const styles = require('./pdfViewer.scss');
 const DIRECT_PDF_PATH_PREFIX = 'https://asset-pdf.scinapse.io/';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-function trackClickButton(actionTag: Scinapse.ActionTicket.ActionTagType, paperId: number) {
+function trackClickButton(actionTag: Scinapse.ActionTicket.ActionTagType, paperId: string) {
   ActionTicketManager.trackTicket({
     pageType: 'paperShow',
     actionType: 'fire',
@@ -41,7 +41,7 @@ function trackClickButton(actionTag: Scinapse.ActionTicket.ActionTagType, paperI
 }
 
 interface OnClickViewMorePdfBtnParams {
-  paperId: number;
+  paperId: string;
   dispatch: Dispatch<any>;
 }
 

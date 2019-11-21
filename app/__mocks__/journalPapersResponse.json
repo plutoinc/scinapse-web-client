@@ -2,7 +2,7 @@
   "data": {
     "content": [
       {
-        "id": 8107,
+        "id": "8107",
         "title": "Understanding the very nature of Project Management : a praxiological approach",
         "year": 2005,
         "lang": null,
@@ -19,19 +19,19 @@
         "urlCount": 1,
         "commentCount": 0,
         "journal": {
-          "id": 2764552960,
+          "id": "2764552960",
           "fullTitle": "Science & Engineering Faculty",
           "impactFactor": null,
           "paperCount": 8859
         },
         "authors": [
           {
-            "paperId": 8107,
-            "id": 538589259,
+            "paperId": "8107",
+            "id": "538589259",
             "name": "Christophe Bredillet",
             "organization": "Queensland University of Technology",
             "affiliation": {
-              "id": 160993911,
+              "id": "160993911",
               "name": "Queensland University of Technology"
             },
             "order": 1,
@@ -41,7 +41,7 @@
         "fosList": [],
         "urls": [
           {
-            "paperId": 8107,
+            "paperId": "8107",
             "id": 68,
             "url": "http://eprints.qut.edu.au/49501/"
           }

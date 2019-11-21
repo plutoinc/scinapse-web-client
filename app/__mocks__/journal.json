@@ -1,5 +1,5 @@
 {
-  "id": 2764552960,
+  "id": "2764552960",
   "title": "Applied Mathematics and Computation",
   "issn": null,
   "webPage": null,
@@ -7,11 +7,11 @@
   "paperCount": 19555,
   "citationCount": 253265,
   "fosList": [
-    { "id": 33923547, "name": "Mathematics" },
-    { "id": 48753275, "name": "Numerical analysis" },
-    { "id": 126255220, "name": "Mathematical optimization" },
-    { "id": 134306372, "name": "Mathematical analysis" },
-    { "id": 182310444, "name": "Boundary value problem" }
+    { "id": "33923547", "name": "Mathematics" },
+    { "id": "48753275", "name": "Numerical analysis" },
+    { "id": "126255220", "name": "Mathematical optimization" },
+    { "id": "134306372", "name": "Mathematical analysis" },
+    { "id": "182310444", "name": "Boundary value problem" }
   ],
   "fullTitle": "Applied Mathematics and Computation"
 }

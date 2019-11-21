@@ -17,7 +17,7 @@ export function clearPaperShowState() {
   return ActionCreators.clearPaperShowState();
 }
 
-export function getMyCollections(paperId: number, cancelToken: CancelToken, isOpenDropdown?: boolean) {
+export function getMyCollections(paperId: string, cancelToken: CancelToken, isOpenDropdown?: boolean) {
   return async (dispatch: Dispatch<any>) => {
     try {
       if (isOpenDropdown) {
@@ -121,7 +121,7 @@ export function postNewCollection(params: PostCollectionParams) {
   };
 }
 
-export function fetchLastFullTextRequestedDate(paperId: number) {
+export function fetchLastFullTextRequestedDate(paperId: string) {
   return async (dispatch: Dispatch<any>) => {
     let requestedAt;
     try {
@@ -157,7 +157,7 @@ export function closeNoteDropdown() {
 }
 
 interface FetchMobilePaperShowData {
-  paperId: number;
+  paperId: string;
   isLoggedIn: boolean;
   cancelToken: CancelToken;
 }

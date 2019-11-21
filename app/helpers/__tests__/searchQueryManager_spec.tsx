@@ -29,8 +29,8 @@ describe('SearchQueryManager', () => {
         ).toEqual({
           yearFrom: 2015,
           yearTo: 2019,
-          fos: [154945302],
-          journal: [933803995, 2764999920, 118988714],
+          fos: ["154945302"],
+          journal: ["933803995", "2764999920", "118988714"],
         });
       });
     });
@@ -40,7 +40,7 @@ describe('SearchQueryManager', () => {
         expect(SearchQueryManager.objectifyPaperFilter('year=2015:2019,fos=154945302,journal=')).toEqual({
           yearFrom: 2015,
           yearTo: 2019,
-          fos: [154945302],
+          fos: ["154945302"],
           journal: [],
         });
       });
@@ -51,7 +51,7 @@ describe('SearchQueryManager', () => {
         expect(SearchQueryManager.objectifyPaperFilter('year=2015:,fos=154945302,journal=')).toEqual({
           yearFrom: 2015,
           yearTo: '',
-          fos: [154945302],
+          fos: ["154945302"],
           journal: [],
         });
       });

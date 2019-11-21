@@ -2,7 +2,6 @@ import { merge } from 'lodash';
 import { Author } from '../model/author/author';
 import { Actions, ACTION_TYPES } from '../actions/actionTypes';
 import { Paper } from '../model/paper';
-import { Comment } from '../model/comment';
 import { Collection } from '../model/collection';
 import { Member } from '../model/member';
 import { Journal } from '../model/journal';
@@ -10,7 +9,7 @@ import { PaperInCollection } from '../model/paperInCollection';
 import { Profile } from '../model/profile';
 
 export interface NormalizedPaperListResponse {
-  entities: { papers: { [paperId: number]: Paper } };
+  entities: { papers: { [paperId: string]: Paper } };
   result: number[];
 }
 /*
@@ -26,28 +25,25 @@ export interface NormalizedPaperListResponse {
 
 export interface AppEntities {
   authors: {
-    [authorId: number]: Author;
+    [authorId: string]: Author;
   };
   papers: {
-    [paperId: number]: Paper;
+    [paperId: string]: Paper;
   };
   papersInCollection: {
-    [paperId: number]: PaperInCollection;
-  };
-  comments: {
-    [commentId: number]: Comment;
+    [paperId: string]: PaperInCollection;
   };
   collections: {
-    [collectionId: number]: Collection;
+    [collectionId: string]: Collection;
   };
   members: {
-    [memberId: number]: Member;
+    [memberId: string]: Member;
   };
   journals: {
-    [journalId: number]: Journal;
+    [journalId: string]: Journal;
   };
   profiles: {
-    [authorId: number]: Profile;
+    [authorId: string]: Profile;
   };
 }
 
@@ -57,14 +53,13 @@ export const INITIAL_ENTITY_STATE: AppEntities = {
   authors: {},
   papers: {},
   papersInCollection: {},
-  comments: {},
   collections: {},
   members: {},
   journals: {},
   profiles: {},
 };
 
-export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actions) {
+export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actions): AppEntities {
   switch (action.type) {
     case ACTION_TYPES.GLOBAL_ADD_ENTITY: {
       const { entities } = action.payload;
@@ -148,21 +143,6 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       };
     }
 
-    case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_STALE_UPDATED_COLLECTION_NOTE: {
-      const targetCollectionId = action.payload.collectionId;
-
-      return {
-        ...state,
-        collections: {
-          ...state.collections,
-          [targetCollectionId]: {
-            ...state.collections[targetCollectionId],
-            noteUpdated: false,
-          },
-        },
-      };
-    }
-
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_CHANGE_REPRESENTATIVE_PAPERS: {
       const { authorId, papers } = action.payload;
 
@@ -183,14 +163,12 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
     case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA: {
       const { authorId, cvInformation, cvInfoType } = action.payload;
 
-      const profiles = state.profiles[authorId];
-
       return {
         ...state,
         profiles: {
-          ...profiles,
+          ...state.profiles,
           [authorId]: {
-            ...profiles,
+            ...state.profiles[authorId],
             [cvInfoType]: cvInformation,
           },
         },

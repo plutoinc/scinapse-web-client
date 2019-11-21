@@ -3,9 +3,9 @@ import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
 
 export interface AuthorShowState
   extends Readonly<{
-      paperIds: number[];
-      authorId: number | null;
-      coAuthorIds: number[];
+      paperIds: string[];
+      authorId: string | null;
+      coAuthorIds: string[];
       papersTotalPage: number;
       papersCurrentPage: number;
       papersTotalCount: number;
