@@ -219,7 +219,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     await dispatch(Actions.postNewCollection(params, targetPaperId));
   };
 
-  private handleDeleteCollection = async (collectionId: string) => {
+  private handleDeleteCollection = async (collectionId: number) => {
     const { dispatch, currentUser, history } = this.props;
 
     try {

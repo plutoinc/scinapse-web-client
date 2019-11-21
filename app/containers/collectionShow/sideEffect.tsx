@@ -7,8 +7,8 @@ import { Dispatch } from 'redux';
 export async function fetchCollectionShowData(params: LoadDataParams<CollectionShowMatchParams>) {
   const { dispatch, match } = params;
 
-  const collectionId = match.params.collectionId;
-  if (!(collectionId)) {
+  const collectionId = parseInt(match.params.collectionId);
+  if (isNaN(collectionId)) {
     return dispatch(
       ActionCreators.failedToGetCollectionInCollectionShow({
         statusCode: 400,

@@ -546,7 +546,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToGetCollectionInCollectionShow(payload: { collectionId: string }) {
+  succeededToGetCollectionInCollectionShow(payload: { collectionId: number }) {
     return createAction({
       type: ACTION_TYPES.COLLECTION_SHOW_SUCCEEDED_GET_COLLECTION,
       payload,
@@ -566,7 +566,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToGetCollectionsInGlobalDialog(payload: { collectionIds: string[] }) {
+  succeededToGetCollectionsInGlobalDialog(payload: { collectionIds: number[] }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_GET_COLLECTIONS,
       payload,
@@ -585,7 +585,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToPostCollectionInGlobalDialog(payload: { collectionId: string }) {
+  succeededToPostCollectionInGlobalDialog(payload: { collectionId: number }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_POST_COLLECTION,
       payload,
@@ -671,7 +671,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToPostCollectionInCollectionDropdown(payload: { collectionId: string }) {
+  succeededToPostCollectionInCollectionDropdown(payload: { collectionId: number }) {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_POST_COLLECTION,
       payload,
@@ -755,7 +755,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToDeleteCollection(payload: { collectionId: string }) {
+  succeededToDeleteCollection(payload: { collectionId: number }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_DELETE_COLLECTION,
       payload,
@@ -774,7 +774,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToUpdateCollection(payload: { collectionId: string }) {
+  succeededToUpdateCollection(payload: { collectionId: number }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_UPDATE_COLLECTION,
       payload,
@@ -931,7 +931,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToUpdatePaperNote(payload: { paperId: string; collectionId: string; note: string | null }) {
+  succeededToUpdatePaperNote(payload: { paperId: string; collectionId: number; note: string | null }) {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_SUCCEEDED_TO_UPDATE_PAPER_NOTE,
       payload,

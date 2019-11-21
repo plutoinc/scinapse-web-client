@@ -1,4 +1,4 @@
-import { Paper, SavedInCollection } from '../model/paper';
+import { Paper } from '../model/paper';
 import { PaperAuthor } from '../model/author';
 import { ConferenceInstance } from '../model/conferenceInstance';
 import { Journal } from '../model/journal';
@@ -61,19 +61,6 @@ function getIdSafePaperSource(paperSource: PaperSource): PaperSource {
   };
 }
 
-function getIdSafeRelationField(
-  relation?: {
-    savedInCollections: SavedInCollection[];
-  } | null
-) {
-  if (!relation) return null;
-
-  return {
-    ...relation,
-    savedInCollections: relation.savedInCollections.map(c => ({ ...c, id: String(c.id) })),
-  };
-}
-
 export function getSafeMember(member: Member): Member {
   return {
     ...member,
@@ -85,7 +72,7 @@ export function getSafeMember(member: Member): Member {
 export function getSafeCollection(collection: Collection): Collection {
   return {
     ...collection,
-    id: String(collection.id),
+    id: collection.id,
     createdBy: getSafeMember(collection.createdBy),
   };
 }
@@ -99,6 +86,5 @@ export function getIdSafePaper(paper: Paper): Paper {
     journal: getIdSafeJournal(paper.journal),
     conferenceInstance: getIdSafeConferenceInstance(paper.conferenceInstance),
     urls: paper.urls.map(getIdSafePaperSource),
-    relation: getIdSafeRelationField(paper.relation),
   };
 }

@@ -1,4 +1,4 @@
 export interface SavedInCollection {
-  id: string;
+  id: number;
   title: string;
 }

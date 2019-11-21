@@ -8,7 +8,7 @@ export interface CollectionShowState
       isLoadingCollection: boolean;
       pageErrorCode: number | null;
       isLoadingPaperToCollection: boolean;
-      mainCollectionId: string;
+      mainCollectionId: number;
       totalPaperListPage: number;
       currentPaperListPage: number;
       papersTotalCount: number;
@@ -22,7 +22,7 @@ export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
   isLoadingCollection: false,
   pageErrorCode: null,
   isLoadingPaperToCollection: false,
-  mainCollectionId: '',
+  mainCollectionId: 0,
   totalPaperListPage: 0,
   currentPaperListPage: 1,
   papersTotalCount: 0,

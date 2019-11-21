@@ -9,8 +9,8 @@ import { getSafeMember, getSafeCollection } from '../helpers/getIdSafeData';
 
 export interface GetCollectionsResponse extends CommonPaginationResponsePart {
   content: Collection[];
-  entities: { collections: { [collectionId: string]: Collection } };
-  result: string[];
+  entities: { collections: { [collectionId: number]: Collection } };
+  result: number[];
 }
 
 class MemberAPI extends PlutoAxios {

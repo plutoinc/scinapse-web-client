@@ -11,7 +11,7 @@ import { getIdSafePaper, getSafeCollection } from '../helpers/getIdSafeData';
 
 export interface UpdatePaperNoteToCollectionParams {
   paperId: string;
-  collectionId: string;
+  collectionId: number;
   note: string | null;
 }
 
@@ -21,7 +21,7 @@ export interface PostCollectionParams {
 }
 
 export interface UpdateCollectionParams {
-  collectionId: string;
+  collectionId: number;
   title: string;
   description: string;
 }
@@ -40,7 +40,7 @@ export interface RemovePapersFromCollectionParams {
 }
 
 export interface GetCollectionsPapersParams {
-  collectionId: string;
+  collectionId: number;
   page: number;
   sort: AUTHOR_PAPER_LIST_SORT_TYPES;
   cancelToken: CancelToken;
@@ -51,7 +51,7 @@ export interface GetCollectionsPapersParams {
 interface UpdatePaperNoteResponse {
   note: string;
   paper: null;
-  collectionId: string;
+  collectionId: number;
   paperId: string;
 }
 
@@ -122,17 +122,17 @@ class CollectionAPI extends PlutoAxios {
 
     return {
       ...updatedNote,
-      collectionId: String(updatedNote.collectionId),
+      collectionId: updatedNote.collectionId,
       paperId: String(updatedNote.paperId),
     };
   }
 
   public async getCollection(
-    collectionId: string,
+    collectionId: number,
     cancelToken: CancelToken
   ): Promise<{
-    entities: { collections: { [collectionId: string]: Collection } };
-    result: string;
+    entities: { collections: { [collectionId: number]: Collection } };
+    result: number;
   }> {
     const res = await this.get(`/collections/${collectionId}`, { cancelToken });
     const collection = getSafeCollection(res.data.data);
@@ -143,8 +143,8 @@ class CollectionAPI extends PlutoAxios {
     title,
     description,
   }: PostCollectionParams): Promise<{
-    entities: { collections: { [collectionId: string]: Collection } };
-    result: string;
+    entities: { collections: { [collectionId: number]: Collection } };
+    result: number;
   }> {
     const res = await this.post('/collections', {
       title,
@@ -155,7 +155,7 @@ class CollectionAPI extends PlutoAxios {
     return normalizedData;
   }
 
-  public async deleteCollection(collectionId: string): Promise<{ success: true }> {
+  public async deleteCollection(collectionId: number): Promise<{ success: true }> {
     const res = await this.delete(`/collections/${collectionId}`);
 
     return res.data;
@@ -164,8 +164,8 @@ class CollectionAPI extends PlutoAxios {
   public async updateCollection(
     params: UpdateCollectionParams
   ): Promise<{
-    entities: { collections: { [collectionId: string]: Collection } };
-    result: string;
+    entities: { collections: { [collectionId: number]: Collection } };
+    result: number;
   }> {
     const res = await this.put(`/collections/${params.collectionId}`, {
       title: params.title,
@@ -176,7 +176,7 @@ class CollectionAPI extends PlutoAxios {
     return normalizedData;
   }
 
-  public async getRelatedPaperInCollection(collectionId: string): Promise<Paper[]> {
+  public async getRelatedPaperInCollection(collectionId: number): Promise<Paper[]> {
     const res = await this.get(`/collections/${collectionId}/related/sample`);
     const papers = res.data.data.content.map(getIdSafePaper);
     return papers;

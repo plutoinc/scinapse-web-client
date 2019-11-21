@@ -168,7 +168,7 @@ export function getCitationText(params: GetCitationTextParams) {
   };
 }
 
-export function deleteCollection(collectionId: string) {
+export function deleteCollection(collectionId: number) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToDeleteCollection());

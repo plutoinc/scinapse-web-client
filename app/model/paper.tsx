@@ -20,7 +20,7 @@ export interface PaperFigure {
 }
 
 export interface SavedInCollection {
-  id: string;
+  id: number;
   title: string;
   readLater: boolean;
   updatedAt: string;

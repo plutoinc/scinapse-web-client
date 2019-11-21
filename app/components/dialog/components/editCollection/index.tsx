@@ -11,7 +11,7 @@ const styles = require('./editCollection.scss');
 interface CollectionEditDialogProps {
   currentUser: CurrentUser;
   collection: Collection;
-  handleDeleteCollection: (collectionId: string) => Promise<void>;
+  handleDeleteCollection: (collectionId: number) => Promise<void>;
   handleCloseDialogRequest: () => void;
   handleUpdateCollection: (params: UpdateCollectionParams) => Promise<void>;
 }

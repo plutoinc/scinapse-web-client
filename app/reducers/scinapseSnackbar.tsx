@@ -10,7 +10,7 @@ export enum GLOBAL_SNACKBAR_TYPE {
 export interface ScinapseSnackbarState {
   type: GLOBAL_SNACKBAR_TYPE | null;
   isOpen: boolean;
-  collectionId: string | null;
+  collectionId: number | null;
   context: string | null;
 }
 
@@ -29,7 +29,7 @@ const scinapseSnackbarSlice = createSlice({
       state,
       action: PayloadAction<{
         type: GLOBAL_SNACKBAR_TYPE;
-        collectionId: string | null;
+        collectionId: number | null;
         context: string | null;
         actionTicketParams?: ActionTicketParams;
       }>

@@ -4,12 +4,12 @@ export interface MyCollectionsState
   extends Readonly<{
       isFetchingPaper: boolean;
       isFetchingMemo: boolean;
-      collectionIds: string[];
+      collectionIds: number[];
       isLoadingCollections: boolean;
       isLoadingCollectionsInDropdown: boolean;
       isPositingNewCollection: boolean;
       hasFailedToPositingNewCollection: boolean;
-      selectedCollectionId: string;
+      selectedCollectionId: number;
       isCollectionDropdownOpen: boolean;
       isNoteDropdownOpen: boolean;
       isPostingNote: boolean;
@@ -24,7 +24,7 @@ export const MY_COLLECTIONS_INITIAL_STATE: MyCollectionsState = {
   isPositingNewCollection: false,
   hasFailedToPositingNewCollection: false,
   collectionIds: [],
-  selectedCollectionId: "",
+  selectedCollectionId: 0,
   isCollectionDropdownOpen: false,
   isNoteDropdownOpen: false,
   isPostingNote: false,

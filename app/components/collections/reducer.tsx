@@ -4,7 +4,7 @@ export interface UserCollectionsState
   extends Readonly<{
       isLoadingCollections: boolean;
       pageErrorCode: number | null;
-      collectionIds: string[];
+      collectionIds: number[];
       maxCollectionCount: number;
       targetMemberId: number;
     }> {}

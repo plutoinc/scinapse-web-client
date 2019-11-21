@@ -16,7 +16,7 @@ const s = require('./paperItemButtonGroup.scss');
 
 interface PaperItemButtonGroupProps {
   paper: Paper;
-  collectionId: string;
+  collectionId: number;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
   paperSource?: PaperSource;
