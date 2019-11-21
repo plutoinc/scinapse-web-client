@@ -86,7 +86,7 @@ class SearchAPI extends PlutoAxios {
       },
       matchedAuthor: {
         ...searchResultData.matchedAuthor,
-        content: searchResultData.matchedAuthor.content.map(author => ({
+        content: searchResultData.matchedAuthor ? searchResultData.matchedAuthor.content.map(author => ({
           ...author,
           id: String(author.id),
           lastKnownAffiliation: {
@@ -94,7 +94,7 @@ class SearchAPI extends PlutoAxios {
             id: String(author.lastKnownAffiliation?.id)
           },
           fosList: author.fosList.map(fos => ({ ...fos, id: String(fos.id)}))
-        }))
+        })) : []
       }
     }
 

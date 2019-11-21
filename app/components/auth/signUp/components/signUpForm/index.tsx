@@ -34,7 +34,7 @@ export interface SignUpFormValues {
   lastName: string;
   affiliation: string;
   profileLink: string;
-  affiliationId: number | null;
+  affiliationId: string | null;
 }
 
 const validateForm = async (values: SignUpFormValues, withSocial: boolean) => {

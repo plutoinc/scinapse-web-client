@@ -23,7 +23,7 @@ class AuthAPI extends PlutoAxios {
       password: params.password,
       first_name: params.firstName,
       last_name: params.lastName,
-      affiliation_id: String(params.affiliationId),
+      affiliation_id: params.affiliationId,
       affiliation_name: params.affiliation,
       profile_link: params.profileLink || null,
     });
@@ -42,7 +42,7 @@ class AuthAPI extends PlutoAxios {
       token: params.token,
       first_name: params.firstName,
       last_name: params.lastName,
-      affiliation_id: String(params.affiliationId),
+      affiliation_id: params.affiliationId,
       affiliation_name: params.affiliation,
       profile_link: params.profileLink || null,
     });
