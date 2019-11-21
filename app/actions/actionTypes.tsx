@@ -716,7 +716,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToGetMemberInCollectionsPage(payload: { memberId: string }) {
+  succeededToGetMemberInCollectionsPage(payload: { memberId: number }) {
     return createAction({
       type: ACTION_TYPES.COLLECTIONS_SUCCEEDED_GET_MEMBER,
       payload,

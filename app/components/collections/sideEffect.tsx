@@ -14,9 +14,10 @@ export async function getCollections(params: GetCollectionsParams) {
 
   try {
     const promiseArray: ((dispatch: Dispatch<any>) => Promise<any>)[] = [];
-    const userId = params.userId ? params.userId : match.params.userId;
+    const userIdStr = params.userId ? params.userId : match.params.userId;
+    const userId = parseInt(userIdStr, 10);
 
-    if (isNaN(parseInt(userId, 10))) {
+    if (isNaN(userId)) {
       return dispatch(ActionCreators.failedToGetCollectionsPageData({ statusCode: 400 }));
     }
 

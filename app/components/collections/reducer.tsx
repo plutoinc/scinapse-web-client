@@ -6,7 +6,7 @@ export interface UserCollectionsState
       pageErrorCode: number | null;
       collectionIds: string[];
       maxCollectionCount: number;
-      targetMemberId: string;
+      targetMemberId: number;
     }> {}
 
 export const USER_COLLECTIONS_INITIAL_STATE: UserCollectionsState = {
@@ -14,7 +14,7 @@ export const USER_COLLECTIONS_INITIAL_STATE: UserCollectionsState = {
   pageErrorCode: null,
   collectionIds: [],
   maxCollectionCount: 0,
-  targetMemberId: '',
+  targetMemberId: 0,
 };
 
 export function reducer(

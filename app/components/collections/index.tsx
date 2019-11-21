@@ -133,7 +133,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
 
   private getCollectionControlBtns = (collection: Collection) => {
     const { currentUser, match } = this.props;
-    const collectionUserId = match.params.userId;
+    const collectionUserId = parseInt(match.params.userId, 10);
 
     if (currentUser && currentUser.id === collectionUserId) {
       return (
@@ -170,7 +170,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
 
   private getNewCollectionBtn = () => {
     const { currentUser, match } = this.props;
-    const collectionUserId = match.params.userId;
+    const collectionUserId = parseInt(match.params.userId, 10);
     if (currentUser && currentUser.id === collectionUserId) {
       return (
         <Button

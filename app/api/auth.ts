@@ -68,7 +68,7 @@ class AuthAPI extends PlutoAxios {
       ...signInData,
       member: {
         ...signInData.member,
-        id: String(signInData.member.id),
+        id: signInData.member.id,
         authorId: String(signInData.member.authorId),
       },
     };
@@ -98,7 +98,7 @@ class AuthAPI extends PlutoAxios {
       ...signInData,
       member: {
         ...signInData.member,
-        id: String(signInData.member.id),
+        id: signInData.member.id,
         authorId: String(signInData.member.authorId),
       },
     };
@@ -149,7 +149,7 @@ class AuthAPI extends PlutoAxios {
       ...signInData,
       member: {
         ...signInData.member,
-        id: String(signInData.member.id),
+        id: signInData.member.id,
         authorId: String(signInData.member.authorId),
       },
     };

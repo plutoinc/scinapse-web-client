@@ -15,7 +15,7 @@ export const CURRENT_USER_INITIAL_STATE: CurrentUser = {
   email: '',
   firstName: '',
   lastName: '',
-  id: '',
+  id: 0,
   profileImageUrl: '',
   affiliation: '',
   emailVerified: false,

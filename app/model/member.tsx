@@ -2,7 +2,7 @@ import { schema } from 'normalizr';
 import { MemberOAuth } from './oauth';
 
 export interface Member {
-  id: string;
+  id: number;
   email: string;
   emailVerified: boolean;
   firstName: string;

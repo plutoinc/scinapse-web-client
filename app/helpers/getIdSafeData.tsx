@@ -77,7 +77,7 @@ function getIdSafeRelationField(
 export function getSafeMember(member: Member): Member {
   return {
     ...member,
-    id: String(member.id),
+    id: member.id,
     authorId: String(member.authorId),
   };
 }
