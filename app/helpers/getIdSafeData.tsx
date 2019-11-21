@@ -56,7 +56,6 @@ export function getIdSafeJournal(journal: Journal | null) {
 function getIdSafePaperSource(paperSource: PaperSource): PaperSource {
   return {
     ...paperSource,
-    id: String(paperSource.id),
     paperId: String(paperSource.paperId),
   };
 }
@@ -64,7 +63,6 @@ function getIdSafePaperSource(paperSource: PaperSource): PaperSource {
 export function getSafeMember(member: Member): Member {
   return {
     ...member,
-    id: member.id,
     authorId: String(member.authorId),
   };
 }
@@ -72,7 +70,6 @@ export function getSafeMember(member: Member): Member {
 export function getSafeCollection(collection: Collection): Collection {
   return {
     ...collection,
-    id: collection.id,
     createdBy: getSafeMember(collection.createdBy),
   };
 }

@@ -8,7 +8,8 @@ export interface Member {
   firstName: string;
   lastName: string;
   profileImageUrl: string;
-  affiliation: string;
+  affiliationId: string | null;
+  affiliationName: string | null;
   oauth: MemberOAuth | null;
   isAuthorConnected: boolean;
   authorId: string;

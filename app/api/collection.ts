@@ -78,7 +78,6 @@ class CollectionAPI extends PlutoAxios {
     const paperInfoList = resData.data.content.map(paperInfo => ({
       ...paperInfo,
       paper: getIdSafePaper(paperInfo.paper),
-      collectionId: String(paperInfo.collectionId),
       paperId: String(paperInfo.paperId),
     }));
 
@@ -122,7 +121,6 @@ class CollectionAPI extends PlutoAxios {
 
     return {
       ...updatedNote,
-      collectionId: updatedNote.collectionId,
       paperId: String(updatedNote.paperId),
     };
   }

@@ -20,11 +20,11 @@ class AuthAPI extends PlutoAxios {
   public async signUpWithEmail(params: SignUpWithEmailParams): Promise<Member> {
     const signUpWithEmailResponse = await this.post('/members', {
       email: params.email,
-      affiliation_name: params.affiliation,
+      password: params.password,
       first_name: params.firstName,
       last_name: params.lastName,
-      password: params.password,
-      affiliation_id: params.affiliationId,
+      affiliation_id: String(params.affiliationId),
+      affiliation_name: params.affiliation,
       profile_link: params.profileLink || null,
     });
 
@@ -32,7 +32,6 @@ class AuthAPI extends PlutoAxios {
 
     return {
       ...member,
-      id: String(member.id),
       authorId: String(member.authorId),
     };
   }
@@ -40,11 +39,11 @@ class AuthAPI extends PlutoAxios {
   public async signUpWithSocial(params: SignUpWithSocialParams): Promise<Member> {
     const signUpWithSocialResponse = await this.post('/members/oauth', {
       email: params.email,
-      affiliation_name: params.affiliation,
+      token: params.token,
       first_name: params.firstName,
       last_name: params.lastName,
-      token: params.token,
       affiliation_id: String(params.affiliationId),
+      affiliation_name: params.affiliation,
       profile_link: params.profileLink || null,
     });
 
@@ -52,7 +51,6 @@ class AuthAPI extends PlutoAxios {
 
     return {
       ...member,
-      id: String(member.id),
       authorId: String(member.authorId),
     };
   }
@@ -68,7 +66,6 @@ class AuthAPI extends PlutoAxios {
       ...signInData,
       member: {
         ...signInData.member,
-        id: signInData.member.id,
         authorId: String(signInData.member.authorId),
       },
     };
@@ -98,7 +95,6 @@ class AuthAPI extends PlutoAxios {
       ...signInData,
       member: {
         ...signInData.member,
-        id: signInData.member.id,
         authorId: String(signInData.member.authorId),
       },
     };
@@ -149,7 +145,6 @@ class AuthAPI extends PlutoAxios {
       ...signInData,
       member: {
         ...signInData.member,
-        id: signInData.member.id,
         authorId: String(signInData.member.authorId),
       },
     };
@@ -161,7 +156,6 @@ class AuthAPI extends PlutoAxios {
 
     return {
       ...member,
-      id: String(member.id),
       authorId: String(member.authorId),
     };
   }
