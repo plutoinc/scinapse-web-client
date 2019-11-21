@@ -59,17 +59,19 @@ const JournalFilterDropdown: React.FC<
     [dispatch]
   );
 
-  const journalList = props.journalData.map(journal => {
-    return (
-      <JournalItem
-        key={journal.id}
-        journal={journal}
-        checked={props.selectedJournalIds.includes(String(journal.id))}
-        onClick={handleClickJournalItem}
-        isHighlight={false}
-      />
-    );
-  });
+  const journalList =
+    props.journalData &&
+    props.journalData.map(journal => {
+      return (
+        <JournalItem
+          key={journal.id}
+          journal={journal}
+          checked={props.selectedJournalIds.includes(String(journal.id))}
+          onClick={handleClickJournalItem}
+          isHighlight={false}
+        />
+      );
+    });
 
   function handleSubmit() {
     props.dispatch(setActiveFilterButton(null));
