@@ -7,9 +7,6 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import SearchingPDFBtn from '../../../components/paperShow/components/searchingPDFBtn';
 import { addPaperToRecommendPool } from '../../../components/recommendPool/actions';
-import { useFullTextExpHook } from '../../../hooks/fulltextExpHook';
-import { FullTextExperimentType } from '../../../constants/abTestObject';
-import CollectionButton from '../../../components/common/paperItem/collectionButton';
 import { Paper } from '../../../model/paper';
 import Button from '../../../components/common/button';
 const s = require('../actionBar.scss');
@@ -25,22 +22,9 @@ interface RequestFullTextBtnProps {
 const RequestFullTextBtn: React.FC<RequestFullTextBtnProps> = React.memo(props => {
   const dispatch = useDispatch();
   const { isLoading, paper, actionArea, onClick, lastRequestedDate } = props;
-  const fullTextUserGroup = useFullTextExpHook();
 
   if (isLoading) {
     return <SearchingPDFBtn isLoading={isLoading} />;
-  }
-
-  if (fullTextUserGroup === FullTextExperimentType.REMOVE) {
-    return (
-      <CollectionButton
-        pageType="paperShow"
-        actionArea={actionArea}
-        paper={paper}
-        saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
-        buttonStyle={{ height: '40px', backgroundColor: '#3e7fff', border: '1px solid #3e7fff', fontWeight: 500 }}
-      />
-    );
   }
 
   return (

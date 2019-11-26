@@ -59,7 +59,7 @@ export interface AuthorSearchResult extends PaginationResponseV2<Author[]> {
 }
 
 class SearchAPI extends PlutoAxios {
-  public async search({ query, sort, filter, page = 0, cancelToken, detectYear, wcm }: PaperSearchParams) {
+  public async search({ query, sort, filter, page = 0, cancelToken, detectYear, }: PaperSearchParams) {
     const res = await this.get('/search', {
       params: {
         q: query,
@@ -67,7 +67,6 @@ class SearchAPI extends PlutoAxios {
         filter,
         page,
         yd: detectYear,
-        wcm,
       },
       cancelToken,
     });
