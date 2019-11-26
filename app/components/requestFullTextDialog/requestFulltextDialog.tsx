@@ -16,8 +16,6 @@ import { closeRequestFullTextDialog } from '../../reducers/requestFullTextDialog
 import ReduxAutoSizeTextarea from '../common/autoSizeTextarea/reduxAutoSizeTextarea';
 import Button from '../common/button';
 import Icon from '../../icons';
-import { useFullTextExpHook } from '../../hooks/fulltextExpHook';
-import { FullTextExperimentType } from '../../constants/abTestObject';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./requestFulltextDialog.scss');
 
@@ -82,7 +80,6 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
     isOpen: appState.requestFullTextDialogState.isOpen,
   }));
   const [isLoading, setIsLoading] = React.useState(false);
-  const userGroup = useFullTextExpHook();
 
   function handleClose() {
     dispatch(closeRequestFullTextDialog());
@@ -128,7 +125,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
 
   return (
     <Dialog open={isOpen} onClose={handleClose} classes={{ paper: s.dialogPaper }}>
-      {userGroup === FullTextExperimentType.INSTRUCTION && <InstructionMessage />}
+      <InstructionMessage />
       <div className={s.detailTitle}>Request Full-text</div>
       <div className={s.detailSubtitle}>
         This is not automated. We’re trying to contact authors when many requests are accepted.<br />

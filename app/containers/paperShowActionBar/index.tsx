@@ -10,8 +10,6 @@ import SourceButton from '../../components/paperShow/components/sourceButton';
 import ViewFullTextBtn from '../../components/paperShow/components/viewFullTextBtn';
 import RequestFullTextBtn from './components/fullTextRequestBtn';
 import { openRequestFullTextDialog } from '../../reducers/requestFullTextDialog';
-import { useFullTextExpHook } from '../../hooks/fulltextExpHook';
-import { FullTextExperimentType } from '../../constants/abTestObject';
 const s = require('./actionBar.scss');
 
 interface PaperShowActionBarProps {
@@ -26,9 +24,8 @@ interface PaperShowActionBarProps {
 
 const PaperShowActionBar: React.FC<PaperShowActionBarProps> = props => {
   const requestFullTextBtnEl = React.useRef<HTMLDivElement | null>(null);
-  const fullTextUserGroup = useFullTextExpHook();
 
-  const requestButton = fullTextUserGroup !== FullTextExperimentType.REMOVE && (
+  const requestButton = (
     <div className={s.actionItem} ref={requestFullTextBtnEl}>
       <RequestFullTextBtn
         actionArea="paperDescription"

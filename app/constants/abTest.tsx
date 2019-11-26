@@ -1,19 +1,5 @@
-import {
-  DUMMY_TEST,
-  WEIGHTED_CITATION_EXPERIMENT,
-  EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER,
-  AUTH_METHOD_EXPERIMENT,
-  COLLECTION_BUTTON_TEXT_EXPERIMENT,
-  FULLTEXT_EXPERIMENT,
-} from './abTestGlobalValue';
-import {
-  dummy,
-  weightedCitation,
-  emailRecommendPaperSignUpBanner,
-  authMethod,
-  collectionButtonText,
-  fullTextExperiment,
-} from './abTestObject';
+import { DUMMY_TEST } from './abTestGlobalValue';
+import { dummy } from './abTestObject';
 
 export interface UserGroup<N = string> {
   groupName: N;
@@ -25,13 +11,7 @@ export interface Test<N = string> {
   userGroup: UserGroup<N>[];
 }
 
-export type ABTest =
-  | typeof DUMMY_TEST
-  | typeof WEIGHTED_CITATION_EXPERIMENT
-  | typeof EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER
-  | typeof AUTH_METHOD_EXPERIMENT
-  | typeof COLLECTION_BUTTON_TEXT_EXPERIMENT
-  | typeof FULLTEXT_EXPERIMENT;
+export type ABTest = typeof DUMMY_TEST;
 
 export interface SignUpConversionExpTicketContext {
   pageType: Scinapse.ActionTicket.PageType;
@@ -40,14 +20,7 @@ export interface SignUpConversionExpTicketContext {
   expName?: string;
 }
 
-export const LIVE_TESTS: Test[] = [
-  dummy,
-  weightedCitation,
-  emailRecommendPaperSignUpBanner,
-  authMethod,
-  collectionButtonText,
-  fullTextExperiment,
-];
+export const LIVE_TESTS: Test[] = [dummy];
 
 function getRandomPool(): { [key: string]: string[] } {
   const randomPool: { [key: string]: string[] } = {};

@@ -5,36 +5,16 @@ import { useDispatch } from 'react-redux';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../../../locationListener';
 import GlobalDialogManager from '../../../../helpers/globalDialogManager';
-import { EmailRecommendPaperSignUpBannerTestType } from '../../../../constants/abTestObject';
 import Button from '../../../common/button';
 
 const s = require('./emailBanner.scss');
 
-const EmailBanner: React.FC<{ testType: EmailRecommendPaperSignUpBannerTestType }> = ({ testType }) => {
+const EmailBanner: React.FC = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = React.useState('');
 
-  let title;
-  let subtitle;
-  switch (testType) {
-    case EmailRecommendPaperSignUpBannerTestType.LETTERS: {
-      title = 'Get recommendation letters';
-      subtitle = 'Stay connected with relevant researches.';
-      break;
-    }
-
-    case EmailRecommendPaperSignUpBannerTestType.TIRED: {
-      title = 'Tired of searching papers?';
-      subtitle = 'Get recommendations based on your activity.';
-      break;
-    }
-
-    case EmailRecommendPaperSignUpBannerTestType.WANDERING: {
-      title = 'Are you wandering?';
-      subtitle = 'Get recommendations based on your activity.';
-      break;
-    }
-  }
+  const title = 'Tired of searching papers?';
+  const subtitle = 'Get recommendations based on your activity.';
 
   return (
     <div className={s.wrapper}>
