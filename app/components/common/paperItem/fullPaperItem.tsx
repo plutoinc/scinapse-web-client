@@ -1,6 +1,5 @@
 import React, { FC, memo } from 'react';
 import { useSelector } from 'react-redux';
-
 import { Paper } from '../../../model/paper';
 import Title from './title';
 import Abstract from './abstract';

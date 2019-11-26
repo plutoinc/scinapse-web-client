@@ -5,7 +5,6 @@ import Icon from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
 import formatNumber from '../../helpers/formatNumber';
 import { AggregationJournal } from '../../model/aggregation';
-import JournalBadge from '../journalBadge';
 
 const s = require('./journalFilterItem.scss');
 interface JournalItemProps {
@@ -28,7 +27,6 @@ const JournalItem: React.FC<JournalItemProps> = React.memo(props => {
           [s.noDocCount]: props.isSearchResult,
         })}
       >
-        {journal.sci && <JournalBadge text="SCI(E)" labelClassName={s.journalBadge} />}
         <Tooltip
           title="Impact Factor"
           placement="top"

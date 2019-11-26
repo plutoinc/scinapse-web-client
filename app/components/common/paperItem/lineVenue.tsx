@@ -9,7 +9,6 @@ import Icon from '../../../icons';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { ConferenceInstance } from '../../../model/conferenceInstance';
 import DoiInPaperShow from '../../paperShow/components/doiInPaperShow';
-import JournalBadge from '../../journalBadge';
 import { Paper } from '../../../model/paper';
 const styles = require('./lineVenueAuthors.scss');
 
@@ -68,7 +67,6 @@ const JournalTitle: React.FC<{
       >
         {journal.title}
       </Link>
-      {journal.sci && <JournalBadge text="SCI(E)" labelClassName={styles.journalBadge} />}
       {journal.impactFactor && (
         <Tooltip
           title="Impact Factor"
