@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import classNames from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -21,10 +21,13 @@ const YearFilterDropdown: React.FC<Props> = React.memo(props => {
   const currentYearTo = useSelector((state: AppState) => state.searchFilterState.currentYearTo);
   const isActive = useSelector((state: AppState) => state.searchFilterState.activeButton === FILTER_BUTTON_TYPE.YEAR);
 
-  function getCurrentYearSet() {
-    if (detectedYear) return [detectedYear, detectedYear];
-    return [currentYearFrom, currentYearTo];
-  }
+  const getCurrentYearSet = useCallback(
+    () => {
+      if (detectedYear) return [detectedYear, detectedYear];
+      return [currentYearFrom, currentYearTo];
+    },
+    [currentYearFrom, detectedYear, currentYearTo]
+  );
 
   const [minMaxYears, setMinMaxYears] = React.useState<(number | string)[]>(getCurrentYearSet());
 
@@ -32,7 +35,7 @@ const YearFilterDropdown: React.FC<Props> = React.memo(props => {
     () => {
       setMinMaxYears(getCurrentYearSet());
     },
-    [currentYearFrom, currentYearTo, detectedYear]
+    [currentYearFrom, currentYearTo, detectedYear, getCurrentYearSet]
   );
 
   const anchorEl = React.useRef(null);
