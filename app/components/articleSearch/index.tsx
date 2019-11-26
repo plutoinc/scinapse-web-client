@@ -25,15 +25,11 @@ import restoreScroll from '../../helpers/scrollRestoration';
 import { SearchPageQueryParams } from './types';
 import { MatchAuthor } from '../../api/search';
 import Pagination from './components/pagination';
-import SignBanner from './components/signBanner';
 import FilterBox from '../../containers/filterBox';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
 import ImprovedFooter from '../layouts/improvedFooter';
-import { getUserGroupName } from '../../helpers/abTestHelper';
-import { EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER } from '../../constants/abTestGlobalValue';
 import EmailBanner from './components/emailBanner';
-import { EmailRecommendPaperSignUpBannerTestType } from '../../constants/abTestObject';
 import CreateKeywordAlertDialog from '../createKeywordAlertDialog/createKeywordAlertDialog';
 import AlertCreateButton from '../alertCreateButton';
 import { changeSearchQuery } from '../../reducers/searchQuery';
@@ -213,11 +209,6 @@ const SearchContainer: React.FC<Props> = props => {
   );
   const [filter, setFilter] = React.useState(SearchQueryManager.objectifyPaperFilter(queryParams.filter));
   const cancelToken = React.useRef(axios.CancelToken.source());
-  const [bannerTestType, setBannerTestType] = React.useState<EmailRecommendPaperSignUpBannerTestType | null>(null);
-  React.useEffect(() => {
-    const userGroup = getUserGroupName(EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER) as EmailRecommendPaperSignUpBannerTestType;
-    setBannerTestType(userGroup);
-  }, []);
 
   React.useEffect(
     () => {
@@ -250,16 +241,7 @@ const SearchContainer: React.FC<Props> = props => {
     return <ErrorPage errorNum={articleSearchState.pageErrorCode} />;
   }
 
-  const shouldShowSignBanner =
-    !articleSearchState.isContentLoading &&
-    !currentUserState.isLoggedIn &&
-    bannerTestType === EmailRecommendPaperSignUpBannerTestType.CONTROL;
-
-  const shouldShowEmailBanner =
-    !currentUserState.isLoggedIn &&
-    !articleSearchState.isContentLoading &&
-    !!bannerTestType &&
-    bannerTestType !== EmailRecommendPaperSignUpBannerTestType.CONTROL;
+  const shouldShowEmailBanner = !currentUserState.isLoggedIn && !articleSearchState.isContentLoading;
 
   return (
     <div className={styles.rootWrapper}>
@@ -282,14 +264,9 @@ const SearchContainer: React.FC<Props> = props => {
               articleSearchState.matchAuthors && articleSearchState.matchAuthors.totalElements > 0,
           })}
         >
-          {shouldShowSignBanner && (
-            <div className={styles.rightItemWrapper}>
-              <SignBanner />
-            </div>
-          )}
           {shouldShowEmailBanner && (
             <div className={styles.rightItemWrapper}>
-              <EmailBanner testType={bannerTestType!} />
+              <EmailBanner />
             </div>
           )}
         </div>

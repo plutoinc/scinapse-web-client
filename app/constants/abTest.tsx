@@ -1,9 +1,5 @@
-import {
-  DUMMY_TEST,
-  EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER,
-  COLLECTION_BUTTON_TEXT_EXPERIMENT,
-} from './abTestGlobalValue';
-import { dummy, emailRecommendPaperSignUpBanner, collectionButtonText } from './abTestObject';
+import { DUMMY_TEST } from './abTestGlobalValue';
+import { dummy } from './abTestObject';
 
 export interface UserGroup<N = string> {
   groupName: N;
@@ -15,10 +11,7 @@ export interface Test<N = string> {
   userGroup: UserGroup<N>[];
 }
 
-export type ABTest =
-  | typeof DUMMY_TEST
-  | typeof EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER
-  | typeof COLLECTION_BUTTON_TEXT_EXPERIMENT;
+export type ABTest = typeof DUMMY_TEST;
 
 export interface SignUpConversionExpTicketContext {
   pageType: Scinapse.ActionTicket.PageType;
@@ -27,7 +20,7 @@ export interface SignUpConversionExpTicketContext {
   expName?: string;
 }
 
-export const LIVE_TESTS: Test[] = [dummy, emailRecommendPaperSignUpBanner, collectionButtonText];
+export const LIVE_TESTS: Test[] = [dummy];
 
 function getRandomPool(): { [key: string]: string[] } {
   const randomPool: { [key: string]: string[] } = {};
