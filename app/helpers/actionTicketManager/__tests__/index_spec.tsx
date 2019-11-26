@@ -1,7 +1,7 @@
 import * as store from 'store';
 import ActionTicketManager from '..';
 import ActionTicket, { ActionTicketParams, FinalActionTicket } from '../actionTicket';
-import { TICKET_QUEUE_KEY, DEVICE_ID_KEY, SESSION_ID_KEY } from '../../../constants/actionTicket';
+import { DEVICE_ID_KEY, SESSION_ID_KEY } from '../../../constants/actionTicket';
 
 describe('ActionTicketManager helper', () => {
   const mockTicketParams: ActionTicketParams = {
@@ -26,7 +26,7 @@ describe('ActionTicketManager helper', () => {
     });
 
     beforeEach(() => {
-      ticket = new ActionTicket(store.get(TICKET_QUEUE_KEY)[0]).getTicketWithoutMeta();
+      ticket = new ActionTicket(mockTicketParams).getTicketWithoutMeta();
       deviceKey = store.get(DEVICE_ID_KEY);
       sessionKey = store.get(SESSION_ID_KEY);
     });

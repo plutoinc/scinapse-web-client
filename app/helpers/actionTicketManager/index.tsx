@@ -15,7 +15,6 @@ import {
   SESSION_COUNT_KEY,
   SESSION_ID_INITIALIZED_KEY,
   SESSION_ID_KEY,
-  TICKET_QUEUE_KEY,
   TIME_INTERVAL_TO_SEND_TICKETS,
 } from '../../constants/actionTicket';
 import { trackEvent } from '../handleGA';
@@ -27,10 +26,10 @@ class ActionTicketManager {
   public constructor() {
     if (!EnvChecker.isOnServer()) {
       window.addEventListener('beforeunload', () => {
-        this.sendTicketsBeforeCloseSession();
+        this.sendTicketsBeforeSessionClosed();
       });
       window.addEventListener('unload', () => {
-        this.sendTicketsBeforeCloseSession();
+        this.sendTicketsBeforeSessionClosed();
       });
 
       this.checkAndSetDeviceKey();
@@ -39,27 +38,22 @@ class ActionTicketManager {
   }
 
   public trackTicket(params: ActionTicketParams) {
-    if (!EnvChecker.isOnServer() && (EnvChecker.isDev() || EnvChecker.isLocal())) {
-      const ticket = new ActionTicket(params);
-      console.log(ticket);
+    if (EnvChecker.isOnServer()) return;
+
+    this.setSessionKey();
+    const ticket = new ActionTicket(params);
+    this.addToQueue([ticket]);
+
+    if (params.actionType === 'fire') {
+      trackEvent({
+        category: params.actionArea || '',
+        action: params.actionTag,
+        label: params.actionLabel || '',
+      });
     }
 
-    if (!EnvChecker.isOnServer() && EnvChecker.isProdBrowser()) {
-      this.renewSessionKey();
-      const ticket = new ActionTicket(params);
-      this.addToQueue([ticket]);
-
-      if (params.actionType === 'fire') {
-        trackEvent({
-          category: params.actionArea || '',
-          action: params.actionTag,
-          label: params.actionLabel || '',
-        });
-      }
-
-      if (this.queue.length > MAXIMUM_TICKET_COUNT_IN_QUEUE && EnvChecker.isProdBrowser()) {
-        this.sendTickets();
-      }
+    if (this.queue.length > MAXIMUM_TICKET_COUNT_IN_QUEUE) {
+      this.sendTickets();
     }
   }
 
@@ -68,7 +62,11 @@ class ActionTicketManager {
       const targetTickets = this.queue;
       this.flushQueue();
       try {
-        await this.postTickets(targetTickets);
+        if (EnvChecker.isProdBrowser()) {
+          await this.postTickets(targetTickets);
+        } else {
+          console.log(targetTickets);
+        }
       } catch (err) {
         targetTickets.forEach(ticket => ticket.increaseErrorCount());
 
@@ -87,7 +85,6 @@ class ActionTicketManager {
 
   public flushQueue() {
     this.queue = [];
-    store.set(TICKET_QUEUE_KEY, this.queue);
   }
 
   private addToDeadLetterQueue(tickets: ActionTicket[]) {
@@ -97,8 +94,6 @@ class ActionTicketManager {
 
   private addToQueue(tickets: ActionTicket[]) {
     this.queue = [...this.queue, ...tickets];
-
-    store.set(TICKET_QUEUE_KEY, this.queue);
   }
 
   private checkAndSetDeviceKey() {
@@ -109,7 +104,7 @@ class ActionTicketManager {
     }
   }
 
-  private renewSessionKey() {
+  private setSessionKey() {
     (store as any).removeExpiredKeys();
     const sessionKey: string | undefined = store.get(SESSION_ID_KEY);
     let sessionCount: number = store.get(SESSION_COUNT_KEY) || 0;
@@ -117,8 +112,7 @@ class ActionTicketManager {
     const currentTime = currentDate.getTime();
 
     if (!sessionKey) {
-      const newKey = uuid();
-      (store as any).set(SESSION_ID_KEY, newKey, currentTime + LIVE_SESSION_LENGTH);
+      (store as any).set(SESSION_ID_KEY, uuid(), currentTime + LIVE_SESSION_LENGTH);
       (store as any).set(SESSION_ID_INITIALIZED_KEY, true);
       (store as any).set(SESSION_COUNT_KEY, ++sessionCount);
     } else {
@@ -152,7 +146,7 @@ class ActionTicketManager {
     }
   }
 
-  private sendTicketsBeforeCloseSession() {
+  private sendTicketsBeforeSessionClosed() {
     if (this.sentLastTickets || this.queue.length === 0) {
       return;
     }
@@ -178,7 +172,7 @@ class ActionTicketManager {
 store.addPlugin(expirePlugin);
 const actionTicketManager = new ActionTicketManager();
 
-if (!EnvChecker.isOnServer() && EnvChecker.isProdBrowser()) {
+if (!EnvChecker.isOnServer()) {
   setInterval(() => {
     actionTicketManager.sendTickets();
   }, TIME_INTERVAL_TO_SEND_TICKETS);
