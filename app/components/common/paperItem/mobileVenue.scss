@@ -29,12 +29,6 @@
     }
   }
 
-  & + .sciLabel {
-    &:before {
-      content: ' · ';
-    }
-  }
-
   & + .venueName {
     &:before {
       content: ' · ';
@@ -44,24 +38,6 @@
 
 .ifLabel {
   font-size: 14px;
-  font-weight: 500;
-  color: $gray800;
-
-  & + .sciLabel {
-    &:before {
-      content: ' · ';
-    }
-  }
-
-  & + .venueName {
-    &:before {
-      content: ' · ';
-    }
-  }
-}
-
-.sciLabel {
-  font-size: 13px;
   font-weight: 500;
   color: $gray800;
 
