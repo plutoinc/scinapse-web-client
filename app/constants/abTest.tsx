@@ -1,6 +1,5 @@
 import {
   DUMMY_TEST,
-  WEIGHTED_CITATION_EXPERIMENT,
   EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER,
   AUTH_METHOD_EXPERIMENT,
   COLLECTION_BUTTON_TEXT_EXPERIMENT,
@@ -8,7 +7,6 @@ import {
 } from './abTestGlobalValue';
 import {
   dummy,
-  weightedCitation,
   emailRecommendPaperSignUpBanner,
   authMethod,
   collectionButtonText,
@@ -27,7 +25,6 @@ export interface Test<N = string> {
 
 export type ABTest =
   | typeof DUMMY_TEST
-  | typeof WEIGHTED_CITATION_EXPERIMENT
   | typeof EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER
   | typeof AUTH_METHOD_EXPERIMENT
   | typeof COLLECTION_BUTTON_TEXT_EXPERIMENT
@@ -42,7 +39,6 @@ export interface SignUpConversionExpTicketContext {
 
 export const LIVE_TESTS: Test[] = [
   dummy,
-  weightedCitation,
   emailRecommendPaperSignUpBanner,
   authMethod,
   collectionButtonText,

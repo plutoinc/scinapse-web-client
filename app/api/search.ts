@@ -8,7 +8,6 @@ import { BasePaperAuthor } from '../model/author';
 import { Affiliation } from '../model/affiliation';
 import { Author } from '../model/author/author';
 import { NewFOS } from '../model/fos';
-import { WeightedCitationUserGroup } from '../constants/abTestObject';
 import { getIdSafePaper, getSafeAuthor } from '../helpers/getIdSafeData';
 
 export interface BaseSearchParams {
@@ -21,7 +20,6 @@ export interface BaseSearchParams {
 
 export interface PaperSearchParams extends BaseSearchParams {
   filter: string;
-  wcm?: WeightedCitationUserGroup;
 }
 
 export interface MatchEntityAuthor extends BasePaperAuthor {

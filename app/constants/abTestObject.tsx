@@ -1,7 +1,6 @@
 import { Test } from './abTest';
 import {
   DUMMY_TEST,
-  WEIGHTED_CITATION_EXPERIMENT,
   EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER,
   AUTH_METHOD_EXPERIMENT,
   COLLECTION_BUTTON_TEXT_EXPERIMENT,
@@ -38,18 +37,6 @@ export const enum FullTextExperimentType {
 export const dummy: Test = {
   name: DUMMY_TEST,
   userGroup: [{ groupName: 'a', weight: 1 }, { groupName: 'b', weight: 1 }],
-};
-
-export type WeightedCitationUserGroup = 'a' | 'b' | 'c' | 'd';
-
-export const weightedCitation: Test<WeightedCitationUserGroup> = {
-  name: WEIGHTED_CITATION_EXPERIMENT,
-  userGroup: [
-    { groupName: 'a', weight: 1 },
-    { groupName: 'b', weight: 1 },
-    { groupName: 'c', weight: 1 },
-    { groupName: 'd', weight: 1 },
-  ],
 };
 
 export const emailRecommendPaperSignUpBanner: Test = {

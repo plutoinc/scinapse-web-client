@@ -31,9 +31,9 @@ import ArticleSpinner from '../common/spinner/articleSpinner';
 import SafeURIStringHandler from '../../helpers/safeURIStringHandler';
 import ImprovedFooter from '../layouts/improvedFooter';
 import { getUserGroupName } from '../../helpers/abTestHelper';
-import { WEIGHTED_CITATION_EXPERIMENT, EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER } from '../../constants/abTestGlobalValue';
+import { EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER } from '../../constants/abTestGlobalValue';
 import EmailBanner from './components/emailBanner';
-import { EmailRecommendPaperSignUpBannerTestType, WeightedCitationUserGroup } from '../../constants/abTestObject';
+import { EmailRecommendPaperSignUpBannerTestType } from '../../constants/abTestObject';
 import CreateKeywordAlertDialog from '../createKeywordAlertDialog/createKeywordAlertDialog';
 import AlertCreateButton from '../alertCreateButton';
 import { changeSearchQuery } from '../../reducers/searchQuery';
@@ -223,8 +223,6 @@ const SearchContainer: React.FC<Props> = props => {
     () => {
       if (currentUserState.isLoggingIn) return;
 
-      const weightedCitationType = getUserGroupName(WEIGHTED_CITATION_EXPERIMENT) as WeightedCitationUserGroup;
-
       const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
 
       changeSearchQuery({ query: SafeURIStringHandler.decode(currentQueryParams.query || '') });
@@ -235,7 +233,6 @@ const SearchContainer: React.FC<Props> = props => {
       const params = SearchQueryManager.makeSearchQueryFromParamsObject(currentQueryParams);
       params.cancelToken = cancelToken.current.token;
       params.detectYear = articleSearchState.searchInput !== currentQueryParams.query || enableAutoYearFilter;
-      params.wcm = weightedCitationType;
 
       searchPapers(params).then(() => {
         restoreScroll(location.key);
