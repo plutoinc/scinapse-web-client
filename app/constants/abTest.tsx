@@ -1,10 +1,9 @@
 import {
   DUMMY_TEST,
   EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER,
-  AUTH_METHOD_EXPERIMENT,
   COLLECTION_BUTTON_TEXT_EXPERIMENT,
 } from './abTestGlobalValue';
-import { dummy, emailRecommendPaperSignUpBanner, authMethod, collectionButtonText } from './abTestObject';
+import { dummy, emailRecommendPaperSignUpBanner, collectionButtonText } from './abTestObject';
 
 export interface UserGroup<N = string> {
   groupName: N;
@@ -19,7 +18,6 @@ export interface Test<N = string> {
 export type ABTest =
   | typeof DUMMY_TEST
   | typeof EMAIL_RECOMMEND_PAPER_SIGN_UP_BANNER
-  | typeof AUTH_METHOD_EXPERIMENT
   | typeof COLLECTION_BUTTON_TEXT_EXPERIMENT;
 
 export interface SignUpConversionExpTicketContext {
@@ -29,7 +27,7 @@ export interface SignUpConversionExpTicketContext {
   expName?: string;
 }
 
-export const LIVE_TESTS: Test[] = [dummy, emailRecommendPaperSignUpBanner, authMethod, collectionButtonText];
+export const LIVE_TESTS: Test[] = [dummy, emailRecommendPaperSignUpBanner, collectionButtonText];
 
 function getRandomPool(): { [key: string]: string[] } {
   const randomPool: { [key: string]: string[] } = {};

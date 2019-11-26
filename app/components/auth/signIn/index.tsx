@@ -25,7 +25,6 @@ import AuthContextText from '../authContextText';
 import useFBIsLoading from '../../../hooks/FBisLoadingHook';
 import { MINIMUM_PASSWORD_LENGTH } from '../../../constants/auth';
 import AuthButtons from '../authButton/authButtons';
-import { SIGN_TYPE } from '../types';
 import { fetchKeywordAlertList } from '../../../containers/keywordSettings/actions';
 const s = require('./signIn.scss');
 
@@ -199,7 +198,6 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
             />
             <ORSeparator />
             <AuthButtons
-              signType={SIGN_TYPE.SIGN_IN}
               handleClickFBLogin={handleClickFBLogin}
               handleClickGoogleLogin={values => {
                 props.dispatch(

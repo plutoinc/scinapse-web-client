@@ -22,7 +22,6 @@ import useFBIsLoading from '../../../../../hooks/FBisLoadingHook';
 import { MINIMUM_PASSWORD_LENGTH } from '../../../../../constants/auth';
 import { getCollections } from '../../../../collections/actions';
 import AuthButtons from '../../../authButton/authButtons';
-import { SIGN_TYPE } from '../../../types';
 const s = require('./firstForm.scss');
 
 declare var FB: any;
@@ -188,7 +187,6 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
             />
             <ORSeparator />
             <AuthButtons
-              signType={SIGN_TYPE.SIGN_UP}
               handleClickFBLogin={handleClickFBLogin}
               handleClickGoogleLogin={props.onSignUpWithSocial}
               FBIsLoading={FBIsLoading}
