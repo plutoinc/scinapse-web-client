@@ -160,44 +160,6 @@ const YearFilterDropdown: React.FC<
             Recent 5 years
           </button>
         </div>
-        <div className={s.belowBtnsWrapper}>
-          <button
-            className={classNames({
-              [s.quickSelectText]: true,
-              [s.active]: minYear === 2010 && maxYear === currentYear,
-            })}
-            onClick={() => {
-              goToYearFilteredSearchResultPage({
-                qs: props.location.search,
-                history: props.history,
-                min: 2010,
-                max: currentYear,
-                fromBtn: true,
-              });
-              props.dispatch(setActiveFilterButton(null));
-            }}
-          >
-            Since 2010
-          </button>
-          <button
-            className={classNames({
-              [s.quickSelectText]: true,
-              [s.active]: minYear === 2000 && maxYear === currentYear,
-            })}
-            onClick={() => {
-              goToYearFilteredSearchResultPage({
-                qs: props.location.search,
-                history: props.history,
-                min: 2000,
-                max: currentYear,
-                fromBtn: true,
-              });
-              props.dispatch(setActiveFilterButton(null));
-            }}
-          >
-            Since 2000
-          </button>
-        </div>
         <div className={s.inputBoxWrapper}>
           <input
             type="text"
