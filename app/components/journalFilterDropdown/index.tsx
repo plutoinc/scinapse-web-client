@@ -1,11 +1,10 @@
 import React from 'react';
 import { isEqual } from 'lodash';
 import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Popover from '@material-ui/core/Popover';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import { withStyles } from '../../helpers/withStylesHelper';
 import { setActiveFilterButton } from '../../actions/searchFilter';
 import { ACTION_TYPES, SearchActions } from '../../actions/actionTypes';
 import FilterButton, { FILTER_BUTTON_TYPE } from '../filterButton';
@@ -16,37 +15,38 @@ import makeNewFilterLink from '../../helpers/makeNewFilterLink';
 import JournalFilterInput from '../journalFilterInput';
 import { AggregationJournal } from '../../model/aggregation';
 import Button from '../common/button';
-
+const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./journalFilterDropdown.scss');
 
-interface JournalFilterDropdownProps {
-  dispatch: Dispatch<SearchActions>;
-}
+type Props = RouteComponentProps & { dispatch: Dispatch<SearchActions> };
 
-const JournalFilterDropdown: React.FC<
-  JournalFilterDropdownProps & ReturnType<typeof mapStateToProps> & RouteComponentProps
-> = props => {
-  const { dispatch } = props;
+const JournalFilterDropdown: React.FC<Props> = ({ location, history, dispatch }) => {
+  useStyles(s);
+  const selectedJournalIds = useSelector((state: AppState) => state.searchFilterState.selectedJournalIds);
+  const journalData = useSelector((state: AppState) => state.searchFilterState.journals);
+  const isActive = useSelector(
+    (state: AppState) => state.searchFilterState.activeButton === FILTER_BUTTON_TYPE.JOURNAL
+  );
   const anchorEl = React.useRef(null);
   const inputEl = React.useRef<HTMLInputElement | null>(null);
   const [isHintOpened, setIsHintOpened] = React.useState(false);
-  const [lastSelectedJournals, setLastSelectedJournals] = React.useState(props.selectedJournalIds);
-  const selectChanged = !isEqual(props.selectedJournalIds, lastSelectedJournals);
+  const [lastSelectedJournals, setLastSelectedJournals] = React.useState(selectedJournalIds);
+  const selectChanged = !isEqual(selectedJournalIds, lastSelectedJournals);
 
   React.useEffect(
     () => {
-      if (!props.isActive) {
-        setLastSelectedJournals(props.selectedJournalIds);
+      if (!isActive) {
+        setLastSelectedJournals(selectedJournalIds);
       }
     },
-    [props.isActive, props.selectedJournalIds]
+    [isActive, selectedJournalIds]
   );
 
   let buttonText = 'Any journal · conference';
-  if (props.selectedJournalIds.length === 1) {
-    buttonText = `${props.selectedJournalIds.length} journal · conference`;
-  } else if (props.selectedJournalIds.length > 1) {
-    buttonText = `${props.selectedJournalIds.length} journals · conferences`;
+  if (selectedJournalIds.length === 1) {
+    buttonText = `${selectedJournalIds.length} journal · conference`;
+  } else if (selectedJournalIds.length > 1) {
+    buttonText = `${selectedJournalIds.length} journals · conferences`;
   }
 
   const handleClickJournalItem = React.useCallback(
@@ -60,13 +60,13 @@ const JournalFilterDropdown: React.FC<
   );
 
   const journalList =
-    props.journalData &&
-    props.journalData.map(journal => {
+    journalData &&
+    journalData.map(journal => {
       return (
         <JournalItem
           key={journal.id}
           journal={journal}
-          checked={props.selectedJournalIds.includes(String(journal.id))}
+          checked={selectedJournalIds.includes(String(journal.id))}
           onClick={handleClickJournalItem}
           isHighlight={false}
         />
@@ -74,12 +74,12 @@ const JournalFilterDropdown: React.FC<
     });
 
   function handleSubmit() {
-    props.dispatch(setActiveFilterButton(null));
+    dispatch(setActiveFilterButton(null));
 
     if (selectChanged) {
-      trackSelectFilter('JOURNAL', JSON.stringify(props.selectedJournalIds));
-      const link = makeNewFilterLink({ journal: props.selectedJournalIds }, props.location);
-      props.history.push(link);
+      trackSelectFilter('JOURNAL', JSON.stringify(selectedJournalIds));
+      const link = makeNewFilterLink({ journal: selectedJournalIds }, location);
+      history.push(link);
     }
   }
 
@@ -87,22 +87,22 @@ const JournalFilterDropdown: React.FC<
     <div ref={anchorEl}>
       <FilterButton
         onClick={() => {
-          if (props.isActive) {
-            props.dispatch(setActiveFilterButton(null));
+          if (isActive) {
+            dispatch(setActiveFilterButton(null));
           } else {
-            props.dispatch(setActiveFilterButton(FILTER_BUTTON_TYPE.JOURNAL));
+            dispatch(setActiveFilterButton(FILTER_BUTTON_TYPE.JOURNAL));
           }
         }}
         content={buttonText}
-        isActive={props.isActive}
-        selected={props.selectedJournalIds.length > 0}
+        isActive={isActive}
+        selected={selectedJournalIds.length > 0}
       />
       <Popover
         onClose={() => {
-          if (!props.isActive) return;
+          if (!isActive) return;
           handleSubmit();
         }}
-        open={props.isActive}
+        open={isActive}
         anchorEl={anchorEl.current}
         anchorOrigin={{
           vertical: 'bottom',
@@ -122,7 +122,7 @@ const JournalFilterDropdown: React.FC<
           <JournalFilterInput
             forwardedRef={inputEl}
             onSubmit={(journals: AggregationJournal[]) => {
-              props.dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_ADD_JOURNAL_FILTER_ITEMS, payload: { journals } });
+              dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_ADD_JOURNAL_FILTER_ITEMS, payload: { journals } });
             }}
           />
           {isHintOpened && (
@@ -163,7 +163,7 @@ const JournalFilterDropdown: React.FC<
               variant="text"
               color="gray"
               onClick={() => {
-                props.dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER });
+                dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_CLEAR_JOURNAL_FILTER });
               }}
             >
               <span>Clear</span>
@@ -178,12 +178,4 @@ const JournalFilterDropdown: React.FC<
   );
 };
 
-function mapStateToProps(state: AppState) {
-  return {
-    selectedJournalIds: state.searchFilterState.selectedJournalIds,
-    journalData: state.searchFilterState.journals,
-    isActive: state.searchFilterState.activeButton === FILTER_BUTTON_TYPE.JOURNAL,
-  };
-}
-
-export default withRouter(connect(mapStateToProps)(withStyles<typeof JournalFilterDropdown>(s)(JournalFilterDropdown)));
+export default withRouter(JournalFilterDropdown);

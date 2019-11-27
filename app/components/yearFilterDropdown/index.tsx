@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, Dispatch } from 'react';
 import classNames from 'classnames';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Popover from '@material-ui/core/Popover';
 import FilterButton, { FILTER_BUTTON_TYPE } from '../filterButton';
@@ -8,14 +8,14 @@ import { AppState } from '../../reducers';
 import { setActiveFilterButton } from '../../actions/searchFilter';
 import { goToYearFilteredSearchResultPage } from '../yearRangeSlider/helper';
 import Button from '../common/button';
+import { SearchActions } from '../../actions/actionTypes';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./yearFilterDropdown.scss');
 
-type Props = RouteComponentProps;
+type Props = RouteComponentProps & { dispatch: Dispatch<SearchActions> };
 
-const YearFilterDropdown: React.FC<Props> = React.memo(props => {
+const YearFilterDropdown: React.FC<Props> = React.memo(({ location, history, dispatch }) => {
   useStyles(s);
-  const dispatch = useDispatch();
   const detectedYear = useSelector((state: AppState) => state.searchFilterState.detectedYear);
   const currentYearFrom = useSelector((state: AppState) => state.searchFilterState.currentYearFrom);
   const currentYearTo = useSelector((state: AppState) => state.searchFilterState.currentYearTo);
@@ -53,8 +53,8 @@ const YearFilterDropdown: React.FC<Props> = React.memo(props => {
     dispatch(setActiveFilterButton(null));
     if (selectChanged) {
       goToYearFilteredSearchResultPage({
-        qs: props.location.search,
-        history: props.history,
+        qs: location.search,
+        history: history,
         min: minYear,
         max: maxYear,
       });
@@ -110,8 +110,8 @@ const YearFilterDropdown: React.FC<Props> = React.memo(props => {
             })}
             onClick={() => {
               goToYearFilteredSearchResultPage({
-                qs: props.location.search,
-                history: props.history,
+                qs: location.search,
+                history: history,
                 min: currentYear,
                 max: currentYear,
                 fromBtn: true,
@@ -128,8 +128,8 @@ const YearFilterDropdown: React.FC<Props> = React.memo(props => {
             })}
             onClick={() => {
               goToYearFilteredSearchResultPage({
-                qs: props.location.search,
-                history: props.history,
+                qs: location.search,
+                history: history,
                 min: currentYear - 3 + 1,
                 max: currentYear,
                 fromBtn: true,
@@ -146,8 +146,8 @@ const YearFilterDropdown: React.FC<Props> = React.memo(props => {
             })}
             onClick={() => {
               goToYearFilteredSearchResultPage({
-                qs: props.location.search,
-                history: props.history,
+                qs: location.search,
+                history: history,
                 min: currentYear - 5 + 1,
                 max: currentYear,
                 fromBtn: true,

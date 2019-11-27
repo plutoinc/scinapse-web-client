@@ -1,11 +1,10 @@
 import React from 'react';
 import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { isEqual } from 'lodash';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Popover from '@material-ui/core/Popover';
-import { withStyles } from '../../helpers/withStylesHelper';
 import { setActiveFilterButton } from '../../actions/searchFilter';
 import { ACTION_TYPES, SearchActions } from '../../actions/actionTypes';
 import FilterButton, { FILTER_BUTTON_TYPE } from '../filterButton';
@@ -16,46 +15,46 @@ import FOSFilterInput from '../fosFilterInput';
 import FOSItem from './fosItem';
 import { AggregationFos } from '../../model/aggregation';
 import Button from '../common/button';
-
+const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./fosFilterDropdown.scss');
 
-interface FOSFilterDropdownProps {
-  dispatch: Dispatch<SearchActions>;
-}
+type Props = RouteComponentProps & { dispatch: Dispatch<SearchActions> };
 
-const FOSFilterDropdown: React.FC<
-  FOSFilterDropdownProps & ReturnType<typeof mapStateToProps> & RouteComponentProps
-> = props => {
+const FOSFilterDropdown: React.FC<Props> = ({ location, history, dispatch }) => {
+  useStyles(s);
+  const selectedFOSIds = useSelector((state: AppState) => state.searchFilterState.selectedFOSIds);
+  const FOSData = useSelector((state: AppState) => state.searchFilterState.fosList);
+  const isActive = useSelector((state: AppState) => state.searchFilterState.activeButton === FILTER_BUTTON_TYPE.FOS);
   const [isHintOpened, setIsHintOpened] = React.useState(false);
   const inputEl = React.useRef<HTMLInputElement | null>(null);
   const anchorEl = React.useRef(null);
-  const [lastSelectedFOS, setLastSelectedFOS] = React.useState(props.selectedFOSIds);
-  const selectChanged = !isEqual(props.selectedFOSIds, lastSelectedFOS);
+  const [lastSelectedFOS, setLastSelectedFOS] = React.useState(selectedFOSIds);
+  const selectChanged = !isEqual(selectedFOSIds, lastSelectedFOS);
 
   React.useEffect(
     () => {
-      if (!props.isActive) {
-        setLastSelectedFOS(props.selectedFOSIds);
+      if (!isActive) {
+        setLastSelectedFOS(selectedFOSIds);
       }
     },
-    [props.isActive, props.selectedFOSIds]
+    [isActive, selectedFOSIds]
   );
 
   let buttonText = 'Any topic';
-  if (props.selectedFOSIds.length === 1) {
-    buttonText = `${props.selectedFOSIds.length} topic`;
-  } else if (props.selectedFOSIds.length > 1) {
-    buttonText = `${props.selectedFOSIds.length} topics`;
+  if (selectedFOSIds.length === 1) {
+    buttonText = `${selectedFOSIds.length} topic`;
+  } else if (selectedFOSIds.length > 1) {
+    buttonText = `${selectedFOSIds.length} topics`;
   }
 
-  const FOSList = props.FOSData.map(FOS => {
+  const FOSList = FOSData.map(FOS => {
     return (
       <FOSItem
         key={FOS.id}
         FOS={FOS}
-        selected={props.selectedFOSIds.includes(String(FOS.id))}
+        selected={selectedFOSIds.includes(String(FOS.id))}
         onClick={() => {
-          props.dispatch({
+          dispatch({
             type: ACTION_TYPES.ARTICLE_SEARCH_SELECT_FOS_FILTER_ITEM,
             payload: { FOSId: FOS.id },
           });
@@ -65,12 +64,12 @@ const FOSFilterDropdown: React.FC<
   });
 
   function handleSubmit() {
-    props.dispatch(setActiveFilterButton(null));
+    dispatch(setActiveFilterButton(null));
 
     if (selectChanged) {
-      trackSelectFilter('FOS', JSON.stringify(props.selectedFOSIds));
-      const link = makeNewFilterLink({ fos: props.selectedFOSIds }, props.location);
-      props.history.push(link);
+      trackSelectFilter('FOS', JSON.stringify(selectedFOSIds));
+      const link = makeNewFilterLink({ fos: selectedFOSIds }, location);
+      history.push(link);
     }
   }
 
@@ -78,23 +77,23 @@ const FOSFilterDropdown: React.FC<
     <div ref={anchorEl}>
       <FilterButton
         onClick={() => {
-          if (props.isActive) {
-            props.dispatch(setActiveFilterButton(null));
+          if (isActive) {
+            dispatch(setActiveFilterButton(null));
           } else {
-            props.dispatch(setActiveFilterButton(FILTER_BUTTON_TYPE.FOS));
+            dispatch(setActiveFilterButton(FILTER_BUTTON_TYPE.FOS));
           }
         }}
         content={buttonText}
-        isActive={props.isActive}
-        selected={props.selectedFOSIds.length > 0}
+        isActive={isActive}
+        selected={selectedFOSIds.length > 0}
       />
       <Popover
         onClose={() => {
-          if (props.isActive) {
+          if (isActive) {
             handleSubmit();
           }
         }}
-        open={props.isActive}
+        open={isActive}
         anchorEl={anchorEl.current}
         anchorOrigin={{
           vertical: 'bottom',
@@ -114,7 +113,7 @@ const FOSFilterDropdown: React.FC<
           <FOSFilterInput
             forwardedRef={inputEl}
             onSubmit={(FOSList: AggregationFos[]) => {
-              props.dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_ADD_FOS_FILTER_ITEMS, payload: { FOSList } });
+              dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_ADD_FOS_FILTER_ITEMS, payload: { FOSList } });
             }}
           />
           {isHintOpened && (
@@ -156,7 +155,7 @@ const FOSFilterDropdown: React.FC<
               variant="text"
               color="gray"
               onClick={() => {
-                props.dispatch({
+                dispatch({
                   type: ACTION_TYPES.ARTICLE_SEARCH_CLEAR_FOS_FILTER,
                 });
               }}
@@ -173,12 +172,4 @@ const FOSFilterDropdown: React.FC<
   );
 };
 
-function mapStateToProps(state: AppState) {
-  return {
-    selectedFOSIds: state.searchFilterState.selectedFOSIds,
-    FOSData: state.searchFilterState.fosList,
-    isActive: state.searchFilterState.activeButton === FILTER_BUTTON_TYPE.FOS,
-  };
-}
-
-export default withRouter(connect(mapStateToProps)(withStyles<typeof FOSFilterDropdown>(s)(FOSFilterDropdown)));
+export default withRouter(FOSFilterDropdown);
