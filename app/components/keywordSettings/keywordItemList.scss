@@ -13,6 +13,7 @@
   @extend %keyword-item-wrapper;
 
   background-color: $gray200;
+  margin-top: 32px;
 
   .keywordContext {
     font-size: 15px;
@@ -41,15 +42,24 @@
 }
 
 .deleteBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 20px;
   height: 20px;
   border-radius: 2px;
   cursor: pointer;
 
+  i {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   svg {
     color: $gray400;
-    width: 10px;
-    height: 10px;
+    width: 16px;
+    height: 16px;
   }
 
   &:hover {
@@ -59,4 +69,8 @@
   &:active {
     background-color: rgba(52, 73, 94, 0.08);
   }
+}
+
+.keywordItemListWrapper {
+  margin-top: 32px;
 }

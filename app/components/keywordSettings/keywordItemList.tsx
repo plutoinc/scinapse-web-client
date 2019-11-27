@@ -43,7 +43,7 @@ const KeywordItemList: React.FC<KeywordItemListProps> = props => {
     );
   });
 
-  return <div>{keywordItems}</div>;
+  return <div className={s.keywordItemListWrapper}>{keywordItems}</div>;
 };
 
 export default KeywordItemList;
