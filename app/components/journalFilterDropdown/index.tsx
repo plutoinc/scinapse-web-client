@@ -1,7 +1,7 @@
 import React from 'react';
 import { isEqual } from 'lodash';
 import { Dispatch } from 'redux';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Popover from '@material-ui/core/Popover';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
