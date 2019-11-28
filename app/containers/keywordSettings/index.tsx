@@ -43,7 +43,7 @@ const KeywordSettings: React.FC = () => {
       <div className={s.wrapper}>
         <div className={s.title}>Keyword alerts</div>
         <div className={s.context}>We’ll send email updated papers for the registered keyword.</div>
-        <CreateKeywordInput />
+        <CreateKeywordInput isLoading={isLoading} isLoggedIn={isLoggedIn} />
         <KeywordItemList
           isLoggedIn={isLoggedIn}
           keywords={keywords}

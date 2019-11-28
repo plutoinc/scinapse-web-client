@@ -1,11 +1,10 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { createKeywordAlert } from '../../containers/keywordSettings/actions';
 import { Formik, Form, FormikErrors, Field, FormikActions } from 'formik';
 import FormikInput from '../common/formikInput';
 import Icon from '../../icons';
 import { Button } from '@pluto_network/pluto-design-elements';
-import { AppState } from '../../reducers';
 
 type FormState = ReturnType<typeof getInitialValues>;
 
@@ -25,12 +24,13 @@ function getInitialValues(keyword: string) {
   };
 }
 
-const CreateKeywordInput: React.FC = () => {
+interface CreateKeywordInputProps {
+  isLoggedIn: boolean;
+  isLoading: boolean;
+}
+
+const CreateKeywordInput: React.FC<CreateKeywordInputProps> = ({ isLoggedIn, isLoading }) => {
   const dispatch = useDispatch();
-  const { isLoggedIn, isLoading } = useSelector((appState: AppState) => ({
-    isLoggedIn: appState.currentUser.isLoggedIn,
-    isLoading: appState.keywordSettingsState.isLoading,
-  }));
 
   async function handleSubmitForm(values: FormState, actions: FormikActions<FormState>) {
     await dispatch(createKeywordAlert(values.keyword, 'keywordSettingPage'));
@@ -69,7 +69,7 @@ const CreateKeywordInput: React.FC = () => {
                 marginTop: '4px',
               }}
               isLoading={isLoading}
-              disabled={!isLoggedIn || isLoading}
+              disabled={!isLoggedIn}
             >
               <Icon icon="PLUS" />
             </Button>
