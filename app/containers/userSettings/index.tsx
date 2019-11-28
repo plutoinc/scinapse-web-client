@@ -12,46 +12,6 @@ const UserSettings: React.FC = () => {
     <>
       <div className={s.wrapper}>
         <h1 className={s.title}>Settings</h1>
-        <div
-          style={{
-            display: 'flex',
-            borderBottom: '1px solid #e7eaef',
-          }}
-        >
-          <div
-            style={{
-              fontSize: `18px`,
-              fontWeight: 500,
-              color: '#3e7fff',
-              borderBottom: `2px solid #327fff`,
-              padding: '4px 8px',
-            }}
-          >
-            User
-          </div>
-          <div
-            style={{
-              fontSize: `18px`,
-              fontWeight: 500,
-              color: '#9aa3b5',
-              marginLeft: '16px',
-              padding: '4px 8px',
-            }}
-          >
-            Email
-          </div>
-          <div
-            style={{
-              fontSize: `18px`,
-              fontWeight: 500,
-              color: '#9aa3b5',
-              marginLeft: '16px',
-              padding: '4px 8px',
-            }}
-          >
-            Keyword
-          </div>
-        </div>
         <ProfileForm />
         <div className={s.authFormWrapper}>
           <AuthEditForm />
