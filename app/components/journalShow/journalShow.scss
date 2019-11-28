@@ -261,12 +261,6 @@ $right_box_width: 267px;
     flex-direction: column-reverse;
   }
 
-  .rightBox {
-    margin-left: 0 !important;
-    border-bottom: 1px solid $gray300;
-    padding-bottom: 24px;
-  }
-
   .infoWrapper {
     position: relative;
   }
@@ -275,6 +269,12 @@ $right_box_width: 267px;
     .leftBox,
     .container {
       width: 100%;
+    }
+
+    .rightBox {
+      margin-left: 0;
+      border-bottom: 1px solid $gray300;
+      padding-bottom: 24px;
     }
   }
 
