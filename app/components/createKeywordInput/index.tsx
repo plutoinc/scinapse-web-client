@@ -1,10 +1,12 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { createKeywordAlert } from '../../containers/keywordSettings/actions';
 import { Formik, Form, FormikErrors, Field, FormikActions } from 'formik';
+import { Button } from '@pluto_network/pluto-design-elements';
+import { createKeywordAlert } from '../../containers/keywordSettings/actions';
 import FormikInput from '../common/formikInput';
 import Icon from '../../icons';
-import { Button } from '@pluto_network/pluto-design-elements';
+const useStyles = require('isomorphic-style-loader/useStyles');
+const s = require('./createKeywordInput.scss');
 
 type FormState = ReturnType<typeof getInitialValues>;
 
@@ -30,6 +32,7 @@ interface CreateKeywordInputProps {
 }
 
 const CreateKeywordInput: React.FC<CreateKeywordInputProps> = ({ isLoggedIn, isLoading }) => {
+  useStyles(s);
   const dispatch = useDispatch();
 
   async function handleSubmitForm(values: FormState, actions: FormikActions<FormState>) {
@@ -47,8 +50,8 @@ const CreateKeywordInput: React.FC<CreateKeywordInputProps> = ({ isLoggedIn, isL
       validateOnBlur={false}
       render={({ errors }) => (
         <Form autoComplete="off">
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div style={{ marginRight: '8px', width: '100%' }}>
+          <div className={s.formWrapper}>
+            <div className={s.inputFieldWrapper}>
               <Field
                 name="keyword"
                 type="keyword"
@@ -62,12 +65,9 @@ const CreateKeywordInput: React.FC<CreateKeywordInputProps> = ({ isLoggedIn, isL
               />
             </div>
             <Button
+              className={s.submitButton}
               elementType="button"
               type="submit"
-              style={{
-                height: `44px`,
-                marginTop: '4px',
-              }}
               isLoading={isLoading}
               disabled={!isLoggedIn}
             >
