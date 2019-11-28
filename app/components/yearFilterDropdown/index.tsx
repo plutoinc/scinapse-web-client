@@ -1,35 +1,33 @@
-import React from 'react';
+import React, { useCallback, Dispatch } from 'react';
 import classNames from 'classnames';
-import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Popover from '@material-ui/core/Popover';
 import FilterButton, { FILTER_BUTTON_TYPE } from '../filterButton';
-import { withStyles } from '../../helpers/withStylesHelper';
-import { Year } from '../../model/aggregation';
-import { SearchActions } from '../../actions/actionTypes';
 import { AppState } from '../../reducers';
 import { setActiveFilterButton } from '../../actions/searchFilter';
 import { goToYearFilteredSearchResultPage } from '../yearRangeSlider/helper';
 import Button from '../common/button';
-
+import { SearchActions } from '../../actions/actionTypes';
+const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./yearFilterDropdown.scss');
 
-interface YearFilterDropdownProps {
-  isActive: boolean;
-  currentYearFrom: number;
-  currentYearTo: number;
-  allYearData: Year[] | null;
-  filteredYearData: Year[] | null;
-  dispatch: Dispatch<SearchActions>;
-}
-const YearFilterDropdown: React.FC<
-  YearFilterDropdownProps & ReturnType<typeof mapStateToProps> & RouteComponentProps
-> = React.memo(props => {
-  function getCurrentYearSet() {
-    if (props.detectedYear) return [props.detectedYear, props.detectedYear];
-    return [props.currentYearFrom, props.currentYearTo];
-  }
+type Props = RouteComponentProps & { dispatch: Dispatch<SearchActions> };
+
+const YearFilterDropdown: React.FC<Props> = React.memo(({ location, history, dispatch }) => {
+  useStyles(s);
+  const detectedYear = useSelector((state: AppState) => state.searchFilterState.detectedYear);
+  const currentYearFrom = useSelector((state: AppState) => state.searchFilterState.currentYearFrom);
+  const currentYearTo = useSelector((state: AppState) => state.searchFilterState.currentYearTo);
+  const isActive = useSelector((state: AppState) => state.searchFilterState.activeButton === FILTER_BUTTON_TYPE.YEAR);
+
+  const getCurrentYearSet = useCallback(
+    () => {
+      if (detectedYear) return [detectedYear, detectedYear];
+      return [currentYearFrom, currentYearTo];
+    },
+    [currentYearFrom, detectedYear, currentYearTo]
+  );
 
   const [minMaxYears, setMinMaxYears] = React.useState<(number | string)[]>(getCurrentYearSet());
 
@@ -37,14 +35,14 @@ const YearFilterDropdown: React.FC<
     () => {
       setMinMaxYears(getCurrentYearSet());
     },
-    [props.currentYearFrom, props.currentYearTo, props.detectedYear]
+    [currentYearFrom, currentYearTo, detectedYear, getCurrentYearSet]
   );
 
   const anchorEl = React.useRef(null);
   const currentYear = new Date().getFullYear();
   const minYear = minMaxYears[0];
   const maxYear = minMaxYears[1];
-  const selectChanged = props.currentYearFrom !== minYear || props.currentYearTo !== maxYear;
+  const selectChanged = currentYearFrom !== minYear || currentYearTo !== maxYear;
 
   let buttonText = 'Any time';
   if (minYear || maxYear) {
@@ -52,11 +50,11 @@ const YearFilterDropdown: React.FC<
   }
 
   function handleSubmit() {
-    props.dispatch(setActiveFilterButton(null));
+    dispatch(setActiveFilterButton(null));
     if (selectChanged) {
       goToYearFilteredSearchResultPage({
-        qs: props.location.search,
-        history: props.history,
+        qs: location.search,
+        history: history,
         min: minYear,
         max: maxYear,
       });
@@ -72,23 +70,23 @@ const YearFilterDropdown: React.FC<
     <div ref={anchorEl}>
       <FilterButton
         onClick={() => {
-          if (props.isActive) {
-            props.dispatch(setActiveFilterButton(null));
+          if (isActive) {
+            dispatch(setActiveFilterButton(null));
           } else {
-            props.dispatch(setActiveFilterButton(FILTER_BUTTON_TYPE.YEAR));
+            dispatch(setActiveFilterButton(FILTER_BUTTON_TYPE.YEAR));
           }
         }}
         content={buttonText}
-        isActive={props.isActive}
+        isActive={isActive}
         selected={!!minYear || !!maxYear}
       />
       <Popover
         onClose={() => {
-          if (props.isActive) {
+          if (isActive) {
             handleSubmit();
           }
         }}
-        open={props.isActive}
+        open={isActive}
         anchorEl={anchorEl.current}
         anchorOrigin={{
           vertical: 'bottom',
@@ -112,13 +110,13 @@ const YearFilterDropdown: React.FC<
             })}
             onClick={() => {
               goToYearFilteredSearchResultPage({
-                qs: props.location.search,
-                history: props.history,
+                qs: location.search,
+                history: history,
                 min: currentYear,
                 max: currentYear,
                 fromBtn: true,
               });
-              props.dispatch(setActiveFilterButton(null));
+              dispatch(setActiveFilterButton(null));
             }}
           >
             This Year
@@ -130,13 +128,13 @@ const YearFilterDropdown: React.FC<
             })}
             onClick={() => {
               goToYearFilteredSearchResultPage({
-                qs: props.location.search,
-                history: props.history,
+                qs: location.search,
+                history: history,
                 min: currentYear - 3 + 1,
                 max: currentYear,
                 fromBtn: true,
               });
-              props.dispatch(setActiveFilterButton(null));
+              dispatch(setActiveFilterButton(null));
             }}
           >
             Recent 3 years
@@ -148,54 +146,16 @@ const YearFilterDropdown: React.FC<
             })}
             onClick={() => {
               goToYearFilteredSearchResultPage({
-                qs: props.location.search,
-                history: props.history,
+                qs: location.search,
+                history: history,
                 min: currentYear - 5 + 1,
                 max: currentYear,
                 fromBtn: true,
               });
-              props.dispatch(setActiveFilterButton(null));
+              dispatch(setActiveFilterButton(null));
             }}
           >
             Recent 5 years
-          </button>
-        </div>
-        <div className={s.belowBtnsWrapper}>
-          <button
-            className={classNames({
-              [s.quickSelectText]: true,
-              [s.active]: minYear === 2010 && maxYear === currentYear,
-            })}
-            onClick={() => {
-              goToYearFilteredSearchResultPage({
-                qs: props.location.search,
-                history: props.history,
-                min: 2010,
-                max: currentYear,
-                fromBtn: true,
-              });
-              props.dispatch(setActiveFilterButton(null));
-            }}
-          >
-            Since 2010
-          </button>
-          <button
-            className={classNames({
-              [s.quickSelectText]: true,
-              [s.active]: minYear === 2000 && maxYear === currentYear,
-            })}
-            onClick={() => {
-              goToYearFilteredSearchResultPage({
-                qs: props.location.search,
-                history: props.history,
-                min: 2000,
-                max: currentYear,
-                fromBtn: true,
-              });
-              props.dispatch(setActiveFilterButton(null));
-            }}
-          >
-            Since 2000
           </button>
         </div>
         <div className={s.inputBoxWrapper}>
@@ -255,15 +215,4 @@ const YearFilterDropdown: React.FC<
   );
 });
 
-function mapStateToProps(state: AppState) {
-  return {
-    detectedYear: state.searchFilterState.detectedYear,
-    currentYearFrom: state.searchFilterState.currentYearFrom,
-    currentYearTo: state.searchFilterState.currentYearTo,
-    isActive: state.searchFilterState.activeButton === FILTER_BUTTON_TYPE.YEAR,
-    allYearData: state.searchFilterState.yearAll,
-    filteredYearData: state.searchFilterState.yearFiltered,
-  };
-}
-
-export default withRouter(connect(mapStateToProps)(withStyles<typeof YearFilterDropdown>(s)(YearFilterDropdown)));
+export default withRouter(YearFilterDropdown);
