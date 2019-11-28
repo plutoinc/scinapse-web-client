@@ -1,7 +1,7 @@
 import React from 'react';
 import { isEqual } from 'lodash';
 import { Dispatch } from 'redux';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Popover from '@material-ui/core/Popover';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -18,10 +18,11 @@ import Button from '../common/button';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./journalFilterDropdown.scss');
 
-type Props = RouteComponentProps & { dispatch: Dispatch<SearchActions> };
+type Props = RouteComponentProps;
 
-const JournalFilterDropdown: React.FC<Props> = ({ location, history, dispatch }) => {
+const JournalFilterDropdown: React.FC<Props> = ({ location, history }) => {
   useStyles(s);
+  const dispatch = useDispatch<Dispatch<SearchActions>>();
   const selectedJournalIds = useSelector((state: AppState) => state.searchFilterState.selectedJournalIds);
   const journalData = useSelector((state: AppState) => state.searchFilterState.journals);
   const isActive = useSelector(

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dispatch } from 'redux';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { isEqual } from 'lodash';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -18,10 +18,11 @@ import Button from '../common/button';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./fosFilterDropdown.scss');
 
-type Props = RouteComponentProps & { dispatch: Dispatch<SearchActions> };
+type Props = RouteComponentProps;
 
-const FOSFilterDropdown: React.FC<Props> = ({ location, history, dispatch }) => {
+const FOSFilterDropdown: React.FC<Props> = ({ location, history }) => {
   useStyles(s);
+  const dispatch = useDispatch<Dispatch<SearchActions>>();
   const selectedFOSIds = useSelector((state: AppState) => state.searchFilterState.selectedFOSIds);
   const FOSData = useSelector((state: AppState) => state.searchFilterState.fosList);
   const isActive = useSelector((state: AppState) => state.searchFilterState.activeButton === FILTER_BUTTON_TYPE.FOS);

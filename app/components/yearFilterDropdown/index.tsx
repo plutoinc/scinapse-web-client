@@ -1,6 +1,6 @@
 import React, { useCallback, Dispatch } from 'react';
 import classNames from 'classnames';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Popover from '@material-ui/core/Popover';
 import FilterButton, { FILTER_BUTTON_TYPE } from '../filterButton';
@@ -12,10 +12,11 @@ import { SearchActions } from '../../actions/actionTypes';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./yearFilterDropdown.scss');
 
-type Props = RouteComponentProps & { dispatch: Dispatch<SearchActions> };
+type Props = RouteComponentProps;
 
-const YearFilterDropdown: React.FC<Props> = React.memo(({ location, history, dispatch }) => {
+const YearFilterDropdown: React.FC<Props> = React.memo(({ location, history }) => {
   useStyles(s);
+  const dispatch = useDispatch<Dispatch<SearchActions>>();
   const detectedYear = useSelector((state: AppState) => state.searchFilterState.detectedYear);
   const currentYearFrom = useSelector((state: AppState) => state.searchFilterState.currentYearFrom);
   const currentYearTo = useSelector((state: AppState) => state.searchFilterState.currentYearTo);
