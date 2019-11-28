@@ -181,10 +181,6 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
                 <div className={styles.rightBox}>
                   <div className={styles.fosSection}>
                     <div className={styles.topFosTitle}>Top fields of study</div>
-                    <div className={styles.topFosSubContext}>
-                      If you click on the 🔔 icon,<br />We will e-mail you papers that is highly relevant to that
-                      keyword.
-                    </div>
                     <div className={styles.fosWrapper}>{this.getTopFOSList()}</div>
                   </div>
                 </div>

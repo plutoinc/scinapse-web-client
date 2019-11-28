@@ -177,9 +177,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <Abstract abstract={paperShow.highlightAbstract || paper.abstract} />
                 <div className={styles.fos}>
                   <div className={styles.paperContentBlockHeader}>Top fields of study</div>
-                  <div className={styles.subContext}>
-                    If you click on the 🔔 icon,<br />We will e-mail you papers that is highly relevant to that keyword.
-                  </div>
                   <FOSList FOSList={paper.fosList} />
                 </div>
                 <PaperShowFigureList paper={paper} isMobile={layout.userDevice !== UserDevice.DESKTOP} />
