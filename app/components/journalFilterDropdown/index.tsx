@@ -18,10 +18,11 @@ import Button from '../common/button';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./journalFilterDropdown.scss');
 
-type Props = RouteComponentProps & { dispatch: Dispatch<SearchActions> };
+type Props = RouteComponentProps;
 
-const JournalFilterDropdown: React.FC<Props> = ({ location, history, dispatch }) => {
+const JournalFilterDropdown: React.FC<Props> = ({ location, history }) => {
   useStyles(s);
+  const dispatch = useDispatch<Dispatch<SearchActions>>();
   const selectedJournalIds = useSelector((state: AppState) => state.searchFilterState.selectedJournalIds);
   const journalData = useSelector((state: AppState) => state.searchFilterState.journals);
   const isActive = useSelector(
