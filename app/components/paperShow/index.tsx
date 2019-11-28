@@ -8,7 +8,6 @@ import { AppState } from '../../reducers';
 import { withStyles } from '../../helpers/withStylesHelper';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import ActionBar from '../../containers/paperShowActionBar';
-import FOSList from './components/fosList';
 import ReferencePapers from './refCitedPapers/referencePapers';
 import CitedPapers from './refCitedPapers/citedPapers';
 import PaperShowRefCitedTab from './refCitedTab';
@@ -175,10 +174,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   <div className={styles.paperContentBlockHeader}>Abstract</div>
                 </div>
                 <Abstract abstract={paperShow.highlightAbstract || paper.abstract} />
-                <div className={styles.fos}>
-                  <div className={styles.paperContentBlockHeader}>Top fields of study</div>
-                  <FOSList FOSList={paper.fosList} />
-                </div>
                 <PaperShowFigureList paper={paper} isMobile={layout.userDevice !== UserDevice.DESKTOP} />
               </div>
             </div>
