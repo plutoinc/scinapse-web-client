@@ -252,17 +252,13 @@ $right_box_width: 267px;
   font-weight: bold;
   line-height: 1.4;
   color: $black0;
-  margin-top: 8px;
-  margin-bottom: 16px;
+  margin: 8px 0;
 }
 
 @media (max-width: $tablet_width) {
   .container {
     width: 100%;
-  }
-
-  .rightBox {
-    display: none;
+    flex-direction: column-reverse;
   }
 
   .infoWrapper {
@@ -273,6 +269,12 @@ $right_box_width: 267px;
     .leftBox,
     .container {
       width: 100%;
+    }
+
+    .rightBox {
+      margin-left: 0;
+      border-bottom: 1px solid $gray300;
+      padding-bottom: 24px;
     }
   }
 

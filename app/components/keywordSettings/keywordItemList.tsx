@@ -15,14 +15,21 @@ const KeywordItemList: React.FC<KeywordItemListProps> = props => {
   useStyles(s);
   const { isLoggedIn, keywords, onRemoveKeywordItem, isLoading } = props;
 
+  let keywordItems: JSX.Element | JSX.Element[] = (
+    <div className={s.noKeywordWrapper}>
+      <span className={s.keywordContext}>You don't have any alerts.</span>
+    </div>
+  );
+
   if (keywords.length === 0 || !isLoggedIn)
     return (
-      <div className={s.noKeywordWrapper}>
-        <span className={s.keywordContext}>You don't have any alerts.</span>
+      <div className={s.keywordItemListWrapper}>
+        <div className={s.keywordItemListTitle}>KEYWORD LIST</div>
+        {keywordItems}
       </div>
     );
 
-  const keywordItems = keywords.map(k => {
+  keywordItems = keywords.map(k => {
     return (
       <div className={s.keywordItemWrapper} key={k.id}>
         <span className={s.keywordContext}>{k.keyword}</span>
@@ -43,7 +50,12 @@ const KeywordItemList: React.FC<KeywordItemListProps> = props => {
     );
   });
 
-  return <div>{keywordItems}</div>;
+  return (
+    <div className={s.keywordItemListWrapper}>
+      <div className={s.keywordItemListTitle}>KEYWORD LIST</div>
+      {keywordItems}
+    </div>
+  );
 };
 
 export default KeywordItemList;
