@@ -13,7 +13,6 @@
   @extend %keyword-item-wrapper;
 
   background-color: $gray200;
-  margin-top: 32px;
 
   .keywordContext {
     font-size: 15px;
@@ -72,5 +71,15 @@
 }
 
 .keywordItemListWrapper {
-  margin-top: 32px;
+  margin-top: 52px;
+}
+
+.keywordItemListTitle {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  line-height: 1.5;
+  color: $gray700;
+  padding-left: 10px;
+  margin-bottom: 4px;
 }
