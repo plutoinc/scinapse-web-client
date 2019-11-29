@@ -19,7 +19,7 @@ import { DEFAULT_AUTHOR_PAPERS_SIZE } from '../../api/author';
 import ArticleSpinner from '../../components/common/spinner/articleSpinner';
 import CoAuthor from '../../components/common/coAuthor';
 import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
-import { Button } from '@pluto_network/pluto-design-elements';
+import { Button, InputField } from '@pluto_network/pluto-design-elements';
 import { LayoutState } from '../../components/layouts/reducer';
 import AuthorShowHeader from '../../components/authorShowHeader';
 import { SuggestAffiliation } from '../../api/suggest';
@@ -30,7 +30,6 @@ import { fetchAuthorPapers } from '../../actions/author';
 import EnvChecker from '../../helpers/envChecker';
 import ErrorPage from '../../components/error/errorPage';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
-import ScinapseInput from '../../components/common/scinapseInput';
 import Icon from '../../icons';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { UserDevice } from '../../components/layouts/reducer';
@@ -145,18 +144,24 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
                     <div className={styles.paperListHeader}>
                       <div className={styles.paperListLeft}>
                         <span className={styles.paperListTitle}>Publications</span>
-                        <span className={styles.paperListTitleNumber}>{` ${author.paperCount}`}</span>
+                        <span className={styles.paperListTitleNumber}>{` ${authorShow.papersTotalCount}`}</span>
                       </div>
                     </div>
                     <div className={styles.paperSearchContainer}>
-                      <ScinapseInput
-                        aria-label="Scinapse search box in author show"
-                        value={authorShow.paperSearchQuery}
-                        onSubmit={this.handleSubmitSearch}
-                        placeholder="Search papers"
-                        icon="SEARCH"
-                        wrapperStyle={{ marginRight: '8px', maxWidth: '500px', width: 'calc(100% - 130px)' }}
-                      />
+                      <div className={styles.searchInputWrapper}>
+                        <InputField
+                          aria-label="Scinapse search box in author show"
+                          defaultValue={authorShow.paperSearchQuery}
+                          trailingIcon={<Icon icon="SEARCH" />}
+                          placeholder="Search papers"
+                          onKeyPress={e => {
+                            if (e.key === 'Enter') {
+                              this.handleSubmitSearch(e.currentTarget.value);
+                            }
+                          }}
+                        />
+                      </div>
+
                       <SortBox
                         sortOption={authorShow.papersSort}
                         onClickOption={this.handleClickSortOption}

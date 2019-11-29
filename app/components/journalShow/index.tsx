@@ -11,7 +11,6 @@ import FullPaperItem from '../common/paperItem/fullPaperItem';
 import MobilePagination from '../common/mobilePagination';
 import DesktopPagination from '../common/desktopPagination';
 import ArticleSpinner from '../common/spinner/articleSpinner';
-import ScinapseInput from '../common/scinapseInput';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { CurrentUser } from '../../model/currentUser';
 import { Configuration } from '../../reducers/configuration';
@@ -30,6 +29,7 @@ import ErrorPage from '../error/errorPage';
 import { JournalShowMatchParams } from './types';
 import ImprovedFooter from '../layouts/improvedFooter';
 import { UserDevice } from '../layouts/reducer';
+import { InputField } from '@pluto_network/pluto-design-elements';
 const styles = require('./journalShow.scss');
 
 function mapStateToProps(state: AppState) {
@@ -160,11 +160,15 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
                         <span className={styles.paperCount}>{journalShow.filteredPaperCount}</span>
                       </div>
                       <div className={styles.searchInputWrapper}>
-                        <ScinapseInput
-                          value={currentQueryParams.q}
-                          onSubmit={this.handleSubmitSearch}
+                        <InputField
+                          trailingIcon={<Icon icon="SEARCH" />}
                           placeholder="Search papers"
-                          icon="SEARCH"
+                          onKeyPress={e => {
+                            if (e.key === 'Enter') {
+                              this.handleSubmitSearch(e.currentTarget.value);
+                            }
+                          }}
+                          defaultValue={currentQueryParams.q}
                         />
                       </div>
                     </div>

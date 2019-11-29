@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import Checkbox from '@material-ui/core/Checkbox';
 import AuthorAPI from '../../../../api/author';
-import ScinapseInput from '../../../common/scinapseInput';
 import Authors from '../../../common/paperItem/lineAuthors';
 import PaperItemVenue from '../../../common/paperItem/lineVenue';
 import { withStyles } from '../../../../helpers/withStylesHelper';
@@ -21,7 +20,7 @@ import { closeDialog } from '../../actions';
 import { addPapersAndFetchPapers } from '../../../../actions/author';
 import { trackEvent } from '../../../../helpers/handleGA';
 import { getCurrentPageType } from '../../../locationListener';
-import { Button } from '@pluto_network/pluto-design-elements';
+import { Button, InputField } from '@pluto_network/pluto-design-elements';
 const styles = require('./allPublications.scss');
 
 interface AllPublicationsDialogProps {
@@ -75,13 +74,16 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
             <Icon className={styles.closeIcon} icon="X_BUTTON" />
           </div>
         </div>
-        <ScinapseInput
-          onChange={this.handleChangeSearchInput}
-          value={searchInput}
+        <InputField
+          trailingIcon={<Icon icon="SEARCH" onClick={() => this.handleSubmitSearch} />}
           placeholder="Search for paper to be included in the publication list"
-          onSubmit={this.handleSubmitSearch}
-          autoFocus={true}
-          icon="SEARCH"
+          onKeyPress={e => {
+            if (e.key === 'Enter') {
+              this.handleSubmitSearch();
+            }
+          }}
+          defaultValue={searchInput}
+          onChange={this.handleChangeSearchInput}
         />
         <div>
           {this.getSelectedPapersTitle()}

@@ -3,7 +3,7 @@ import Icon from '../../../icons';
 import { withStyles } from '../../../helpers/withStylesHelper';
 const styles = require('./scinapseInput.scss');
 
-interface InputBoxProps {
+interface InputBoxProps extends React.HTMLProps<HTMLInputElement> {
   placeholder: string;
   autoFocus?: boolean;
   icon?: string;
@@ -11,7 +11,7 @@ interface InputBoxProps {
   inputStyle?: React.CSSProperties;
   iconStyle?: React.CSSProperties;
   value?: string;
-  onSubmit?: (inputValue: string) => void;
+  handleInputSubmit?: (inputValue: string) => void;
   onChange?: (e: React.FormEvent<HTMLInputElement>) => void;
   onKeydown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
@@ -30,7 +30,16 @@ class ScinapseCommonInput extends React.PureComponent<InputBoxProps, InputBoxSta
   }
 
   public render() {
-    const { wrapperStyle, inputStyle, placeholder, onChange, onKeydown, value, autoFocus = false } = this.props;
+    const {
+      wrapperStyle,
+      inputStyle,
+      placeholder,
+      onChange,
+      onKeydown,
+      value,
+      autoFocus = false,
+      ...inputProps
+    } = this.props;
     const { inputValue } = this.state;
 
     return (
@@ -42,6 +51,7 @@ class ScinapseCommonInput extends React.PureComponent<InputBoxProps, InputBoxSta
           autoFocus={autoFocus}
           defaultValue={value === undefined ? inputValue : value}
           placeholder={placeholder}
+          {...inputProps}
         />
         {this.getIcon()}
       </div>
@@ -49,7 +59,7 @@ class ScinapseCommonInput extends React.PureComponent<InputBoxProps, InputBoxSta
   }
 
   private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.keyCode === 13 && this.props.onSubmit) {
+    if (e.keyCode === 13 && this.props.handleInputSubmit) {
       e.preventDefault();
       this.handleSubmit();
     }
@@ -67,11 +77,11 @@ class ScinapseCommonInput extends React.PureComponent<InputBoxProps, InputBoxSta
   };
 
   private handleSubmit = () => {
-    const { onSubmit } = this.props;
+    const { handleInputSubmit } = this.props;
     const { inputValue } = this.state;
 
-    if (onSubmit) {
-      onSubmit(inputValue);
+    if (handleInputSubmit) {
+      handleInputSubmit(inputValue);
     }
   };
 

@@ -13,7 +13,6 @@ import { CurrentUser } from '../../model/currentUser';
 import { Author, authorSchema } from '../../model/author/author';
 import { Paper, paperSchema } from '../../model/paper';
 import ArticleSpinner from '../../components/common/spinner/articleSpinner';
-import ScinapseInput from '../../components/common/scinapseInput';
 import { LayoutState } from '../../components/layouts/reducer';
 import { ConnectedAuthorShowState } from './reducer';
 import FullPaperItem from '../../components/common/paperItem/fullPaperItem';
@@ -21,7 +20,7 @@ import DesktopPagination from '../../components/common/desktopPagination';
 import CoAuthor from '../../components/common/coAuthor';
 import RepresentativePublicationsDialog from '../../components/dialog/components/representativePublications';
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
-import { Button } from '@pluto_network/pluto-design-elements';
+import { Button, InputField } from '@pluto_network/pluto-design-elements';
 import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
@@ -171,16 +170,18 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                     <div className={styles.selectedPaperDescription} />
                     <div className={styles.searchSortWrapper}>
                       <div className={styles.searchContainer}>
-                        <ScinapseInput
-                          placeholder="Search papers"
-                          onSubmit={this.handleSubmitPublicationSearch}
-                          icon="SEARCH"
-                          wrapperStyle={{
-                            borderRadius: '4px',
-                            borderColor: '#f1f3f6',
-                            height: '36px',
-                          }}
-                        />
+                        <div className={styles.searchInputWrapper}>
+                          <InputField
+                            leadingIcon={<Icon icon="SEARCH" />}
+                            placeholder="Search papers"
+                            onKeyPress={e => {
+                              if (e.key === 'Enter') {
+                                this.handleSubmitPublicationSearch(e.currentTarget.value);
+                              }
+                            }}
+                          />
+                        </div>
+
                         <div className={styles.paperCountMetadata}>
                           {/* tslint:disable-next-line:max-line-length */}
                           {authorShow.papersCurrentPage} page of {formatNumber(authorShow.papersTotalPage)} pages ({formatNumber(

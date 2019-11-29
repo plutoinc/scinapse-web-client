@@ -236,6 +236,12 @@
   justify-content: center;
 }
 
+.searchInputWrapper {
+  width: 100%;
+  max-width: 500px;
+  margin-right: 16px;
+}
+
 @media (max-width: $tablet_width) {
   .leftContentWrapper {
     padding: 0 12px;

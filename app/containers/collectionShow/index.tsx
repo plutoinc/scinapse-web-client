@@ -15,7 +15,6 @@ import Icon from '../../icons';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
 import { getPapers } from './actions';
-import ScinapseInput from '../../components/common/scinapseInput';
 import restoreScroll from '../../helpers/scrollRestoration';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import ErrorPage from '../../components/error/errorPage';
@@ -32,7 +31,7 @@ import { ACTION_TYPES } from '../../actions/actionTypes';
 import Pagination from '../../components/collectionShow/pagination';
 import { checkAuthStatus } from '../../components/auth/actions';
 import { removePaperFromCollection } from '../../components/dialog/actions';
-import { Button } from '@pluto_network/pluto-design-elements';
+import { Button, InputField } from '@pluto_network/pluto-design-elements';
 const styles = require('./collectionShow.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -75,6 +74,7 @@ const CollectionShow: React.FC<Props> = props => {
     layout,
   } = props;
   const [inOwnCollection, setInOwnCollection] = React.useState(false);
+  const [searchInput, setSearchInput] = React.useState<string>('');
   const cancelTokenSource = React.useRef<CancelTokenSource>(axios.CancelToken.source());
 
   React.useEffect(
@@ -259,11 +259,17 @@ const CollectionShow: React.FC<Props> = props => {
                   <div className={styles.header}>
                     <div className={styles.searchContainer}>
                       <div className={styles.searchInputWrapper}>
-                        <ScinapseInput
-                          onSubmit={handleSubmitSearch}
+                        <InputField
+                          aria-label="Scinapse search box in paper show"
+                          trailingIcon={<Icon icon="SEARCH" onClick={() => handleSubmitSearch(searchInput)} />}
                           placeholder="Search papers in this collection"
-                          icon="SEARCH"
-                          inputStyle={{ maxWidth: '486px', height: '40px' }}
+                          onKeyPress={e => {
+                            if (e.key === 'Enter') {
+                              handleSubmitSearch(e.currentTarget.value);
+                            }
+                          }}
+                          onChange={e => setSearchInput(e.currentTarget.value)}
+                          value={searchInput}
                         />
                       </div>
                       <div className={styles.sortBoxWrapper}>
