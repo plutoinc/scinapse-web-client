@@ -119,18 +119,25 @@ const ProfileFormContainer: React.FC = () => {
         validateOnChange={false}
         render={({ errors, touched }) => {
           let formButton = (
-            <Button elementType="button" variant="outlined" color="gray" onClick={() => setEditMode(true)}>
+            <Button
+              elementType="button"
+              aria-label="Edit profile button"
+              variant="outlined"
+              color="gray"
+              onClick={() => setEditMode(true)}
+            >
               <span>Edit Profile</span>
             </Button>
           );
           if (editMode) {
             formButton = (
               <>
-                <Button elementType="button" isLoading={isLoading} type="submit">
+                <Button elementType="button" aria-label="Save changes button" isLoading={isLoading} type="submit">
                   <span>Save changes</span>
                 </Button>
                 <Button
                   elementType="button"
+                  aria-label="Cancel to save changes button"
                   variant="outlined"
                   color="gray"
                   onClick={() => setEditMode(false)}

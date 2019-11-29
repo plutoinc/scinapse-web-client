@@ -177,7 +177,14 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
                     />
                     {networkError && <div className={s.errorContent}>{networkError}</div>}
                     <div className={s.authButtonWrapper}>
-                      <Button type="submit" elementType="button" isLoading={isLoading} fullWidth size="large">
+                      <Button
+                        type="submit"
+                        elementType="button"
+                        aria-label="Scinapse sign up button"
+                        isLoading={isLoading}
+                        fullWidth
+                        size="large"
+                      >
                         <span>Sign up</span>
                       </Button>
                     </div>

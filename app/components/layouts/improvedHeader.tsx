@@ -454,6 +454,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
             {this.getHistoryButton()}
             <Button
               elementType="button"
+              aria-label="Scinapse sign in button"
               size="medium"
               variant="text"
               style={{ marginRight: '8px' }}
@@ -474,6 +475,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
           </div>
           <Button
             elementType="button"
+            aria-label="Scinapse sign up button"
             size="medium"
             onClick={() => {
               this.handleOpenSignUp();

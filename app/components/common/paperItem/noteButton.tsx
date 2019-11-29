@@ -25,6 +25,7 @@ const NoteButton: React.FC<NoteButtonProps> = ({ note, pageType, actionArea, pap
     <div ref={noteRef} className={s.addNoteButton}>
       <Button
         elementType="button"
+        aria-label="Note to paper button"
         size="small"
         variant="outlined"
         color="gray"

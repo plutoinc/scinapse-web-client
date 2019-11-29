@@ -101,6 +101,7 @@ const ResetPasswordContainer: React.FunctionComponent<ResetPasswordProps> = prop
                       color="gray"
                       isLoading={isLoading}
                       elementType="button"
+                      aria-label="Go back button"
                       size="large"
                       fullWidth
                       onClick={() => {

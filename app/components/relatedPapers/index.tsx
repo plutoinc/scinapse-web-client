@@ -41,7 +41,12 @@ const ContentBlocker: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
       <div className={styles.contentBlockedContext}>
         {`78% of Scinapse members use related papers.\nAfter signing in, all features are free.`}
       </div>
-      <Button elementType="button" onClick={openSignInDialog} style={{ marginTop: '24px' }}>
+      <Button
+        elementType="button"
+        aria-label="Scinapse sign in button"
+        onClick={openSignInDialog}
+        style={{ marginTop: '24px' }}
+      >
         <span>{`Sign in & View`}</span>
       </Button>
     </div>

@@ -99,6 +99,7 @@ const ResetPasswordPage: React.FunctionComponent<RouteComponentProps<any>> = pro
               type="submit"
               size="large"
               elementType="button"
+              aria-label="Reset password and sign in button"
               style={{ backgroundColor: '#6096ff', marginTop: '42px', fontSize: '14px' }}
               isLoading={isLoading}
               fullWidth

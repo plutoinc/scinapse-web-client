@@ -100,6 +100,7 @@ const AuthButton: React.FunctionComponent<AuthButtonProps> = props => {
       <Button
         size="large"
         elementType="button"
+        aria-label="Google oauth button"
         style={{ backgroundColor: '#dc5240', borderColor: '#dc5240' }}
         disabled={gapiIsLoading}
         isLoading={isLoading}

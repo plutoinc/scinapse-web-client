@@ -188,6 +188,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
             <div className={s.btnWrapper}>
               <Button
                 elementType="button"
+                aria-label="Cancel full text request button"
                 size="medium"
                 variant="text"
                 color="blue"
@@ -199,6 +200,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
               </Button>
               <Button
                 elementType="button"
+                aria-label="Send full text request button"
                 type="submit"
                 size="medium"
                 variant="contained"

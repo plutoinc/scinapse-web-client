@@ -153,6 +153,7 @@ const FOSFilterDropdown: React.FC<Props> = ({ location, history }) => {
           <div className={s.controlBtnsWrapper}>
             <Button
               elementType="button"
+              aria-label="Clear fos filter button"
               variant="text"
               color="gray"
               onClick={() => {
@@ -163,7 +164,13 @@ const FOSFilterDropdown: React.FC<Props> = ({ location, history }) => {
             >
               <span>Clear</span>
             </Button>
-            <Button elementType="button" variant="text" color="blue" onClick={handleSubmit}>
+            <Button
+              elementType="button"
+              aria-label="Apply fos filter button"
+              variant="text"
+              color="blue"
+              onClick={handleSubmit}
+            >
               <span>Apply</span>
             </Button>
           </div>

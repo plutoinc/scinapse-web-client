@@ -52,6 +52,7 @@ const EmailField: React.FC<EmailFieldProps> = ({ email, editMode, userVerified, 
           <input className={s.readOnlyInput} type="email" value={email} placeholder="EMAIL" disabled />
           <Button
             elementType="button"
+            aria-label="Resend mail button"
             variant="outlined"
             color="gray"
             onClick={onClickResendButton}
@@ -114,6 +115,7 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
           <input type="password" className={s.inputForm} value="********" placeholder="Password" disabled />
           <Button
             elementType="button"
+            aria-label="Change password button"
             variant="outlined"
             color="gray"
             onClick={() => setEditMode(true)}
@@ -157,11 +159,12 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
         <ErrorMessage errorMsg={errors.newPassword} />
       </div>
       <div className={s.buttonsWrapper}>
-        <Button elementType="button" isLoading={isLoading} type="submit">
+        <Button elementType="button" aria-label="Change password button" isLoading={isLoading} type="submit">
           <span>Change Password</span>
         </Button>
         <Button
           elementType="button"
+          aria-label="Cancel password change button"
           variant="outlined"
           color="gray"
           onClick={() => setEditMode(false)}

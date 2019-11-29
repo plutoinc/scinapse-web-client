@@ -37,6 +37,7 @@ const ScinapseSnackbar: React.FC<Props> = props => {
         <div className={s.closeBtn} key={`close`}>
           <Button
             elementType="button"
+            aria-label="Close scinapse snackbar button"
             variant="text"
             color="gray"
             size="small"

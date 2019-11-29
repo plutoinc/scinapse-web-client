@@ -141,6 +141,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
           <div className={styles.controlIconWrapper}>
             <Button
               elementType="button"
+              aria-label="Edit collection button"
               size="small"
               color="black"
               onClick={() => {
@@ -153,6 +154,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
           <div className={styles.controlIconWrapper}>
             <Button
               elementType="button"
+              aria-label="Delete collection button"
               size="small"
               color="black"
               onClick={() => {
@@ -175,6 +177,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
       return (
         <Button
           elementType="button"
+          aria-label="Create new collection button"
           size="small"
           variant="outlined"
           color="gray"

@@ -35,6 +35,7 @@ const CollectionButton: React.FC<CollectionButtonProps> = ({ saved, paper, pageT
   return (
     <Button
       elementType="button"
+      aria-label="Save paper to collection button"
       size="small"
       onClick={async () => {
         const action = saved ? 'savedCollection' : 'addToCollection';

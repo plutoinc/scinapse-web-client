@@ -90,6 +90,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
           <div ref={el => (this.popoverAnchorEl = el)} className={styles.feedbackButtonWrapper}>
             <Button
               elementType="button"
+              aria-label="Open feedback form button"
               size="large"
               onClick={e => {
                 this.toggleFeedbackDropdown(e);
@@ -178,7 +179,13 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
               <label>Detail</label>
               <textarea value={feedbackContent} onChange={this.handleChangeFeedback} />
             </div>
-            <Button elementType="button" fullWidth={true} isLoading={isLoadingFeedback} disabled={isLoadingFeedback}>
+            <Button
+              elementType="button"
+              aria-label="Send feedback button"
+              fullWidth={true}
+              isLoading={isLoadingFeedback}
+              disabled={isLoadingFeedback}
+            >
               <span>{!isLoadingFeedback ? 'SEND' : 'Sending...'}</span>
             </Button>
           </form>

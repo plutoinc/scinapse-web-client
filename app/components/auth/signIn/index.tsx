@@ -189,7 +189,14 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
                     >
                       Forgot Password?
                     </div>
-                    <Button size="large" type="submit" elementType="button" fullWidth isLoading={isLoading}>
+                    <Button
+                      size="large"
+                      type="submit"
+                      elementType="button"
+                      aria-label="Scinapse sign in button"
+                      fullWidth
+                      isLoading={isLoading}
+                    >
                       <span>Sign in</span>
                     </Button>
                   </Form>

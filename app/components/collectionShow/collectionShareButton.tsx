@@ -93,6 +93,7 @@ const CollectionShareButton: React.FC<{ userCollection: Collection }> = ({ userC
   const collectionShareButton = (
     <Button
       elementType="button"
+      aria-label="Share collection button"
       size="medium"
       variant="outlined"
       color="blue"

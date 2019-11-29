@@ -48,6 +48,7 @@ const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: string[] }> = ({
       <div ref={dropdownMenuEl}>
         <Button
           elementType="button"
+          aria-label="Export citation button"
           variant="text"
           color="black"
           onClick={() => setIsOpen(!isOpen)}
@@ -134,6 +135,7 @@ const CollectionPapersControlBtns: React.FC<{
 
         <Button
           elementType="button"
+          aria-label="Delete paper in collection button"
           variant="text"
           color="black"
           onClick={() => {

@@ -64,7 +64,12 @@ const DoiSearchBlocked: React.FunctionComponent<DoiSearchBlockedProps> = props =
                 to view the result.
               </span>
               <br />
-              <Button elementType="button" onClick={openSignInDialog} style={{ marginTop: '16px' }}>
+              <Button
+                elementType="button"
+                aria-label="Scinapse sign in button"
+                onClick={openSignInDialog}
+                style={{ marginTop: '16px' }}
+              >
                 <span>Sign in and View the result</span>
                 <Icon icon="ARROW_RIGHT" />
               </Button>

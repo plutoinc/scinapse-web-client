@@ -26,6 +26,7 @@ const ViewFullTextBtn: React.FC<ViewFullTextBtnProps> = props => {
   return (
     <Button
       elementType="button"
+      aria-label="View full text button"
       isLoading={isLoading}
       onClick={() => {
         ActionTicketManager.trackTicket({

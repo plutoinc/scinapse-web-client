@@ -49,6 +49,7 @@ const EditButton: React.FC<{ inOwnCollection: boolean; userCollection: Collectio
   return (
     <Button
       elementType="button"
+      aria-label="Edit collection button"
       size="small"
       variant="text"
       color="gray"

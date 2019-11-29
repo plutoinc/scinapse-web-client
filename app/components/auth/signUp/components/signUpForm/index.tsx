@@ -163,6 +163,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                 <Button
                   type="submit"
                   elementType="button"
+                  aria-label="Scinapse sign up button"
                   isLoading={isLoading}
                   fullWidth
                   size="large"
@@ -182,6 +183,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
             variant="outlined"
             color="gray"
             elementType="button"
+            aria-label="Go back button"
             onClick={props.onClickBack}
             isLoading={isLoading}
             fullWidth

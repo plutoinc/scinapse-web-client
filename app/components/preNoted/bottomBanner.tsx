@@ -87,6 +87,7 @@ const BottomBanner: React.FC<BottomBannerProps> = ({ currentUser }) => {
             </button>
             <Button
               elementType="button"
+              aria-label="Scinapse sign up button"
               size="large"
               onClick={() => handleOpenSignModal('signUpPopup')}
               style={{ paddingLeft: '28px', paddingRight: '28px' }}

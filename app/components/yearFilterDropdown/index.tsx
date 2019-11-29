@@ -199,6 +199,7 @@ const YearFilterDropdown: React.FC<Props> = React.memo(({ location, history }) =
         <div className={s.controlBtnsWrapper}>
           <Button
             elementType="button"
+            aria-label="Clear year filter button"
             variant="text"
             color="gray"
             onClick={() => {
@@ -207,7 +208,13 @@ const YearFilterDropdown: React.FC<Props> = React.memo(({ location, history }) =
           >
             <span>Clear</span>
           </Button>
-          <Button elementType="button" variant="text" color="blue" onClick={handleSubmit}>
+          <Button
+            elementType="button"
+            aria-label="Apply year filter button"
+            variant="text"
+            color="blue"
+            onClick={handleSubmit}
+          >
             <span>Apply</span>
           </Button>
         </div>

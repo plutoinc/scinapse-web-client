@@ -48,6 +48,7 @@ const EmailToggleButton: React.FC<EmailToggleButtonProps> = props => {
         <GroupButton variant="text" disabled={disabled} className={s.buttonsWrapper}>
           <Button
             elementType="button"
+            aria-label="Email option toggle ON button"
             size="medium"
             disabled={disabled}
             onClick={() => onClick(true)}
@@ -59,6 +60,7 @@ const EmailToggleButton: React.FC<EmailToggleButtonProps> = props => {
           </Button>
           <Button
             elementType="button"
+            aria-label="Email option toggle OFF button"
             size="medium"
             variant="outlined"
             color="gray"

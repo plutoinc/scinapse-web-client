@@ -71,6 +71,7 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
             {paper.urls.length > 0 ? (
               <Button
                 elementType="button"
+                aria-label="Source dropdown button"
                 variant={!showFullText ? 'contained' : 'outlined'}
                 onClick={async () => {
                   setIsSourcePopoverOpen(!isSourcePopoverOpen);

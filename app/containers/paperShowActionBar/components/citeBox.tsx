@@ -21,6 +21,7 @@ const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
   return (
     <Button
       elementType="button"
+      aria-label="Cite button"
       color="gray"
       onClick={async () => {
         GlobalDialogManager.openCitationDialog(paper.id);

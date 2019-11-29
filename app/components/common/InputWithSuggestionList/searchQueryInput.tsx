@@ -173,6 +173,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
         {k.removable && (
           <Button
             elementType="button"
+            aria-label="Remove search keyword button"
             size="small"
             variant="text"
             color="gray"
@@ -205,6 +206,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     <div className={s.searchButtonWrapper} style={{ left: '2px', right: 'auto', top: '2px' }}>
       <Button
         elementType="button"
+        aria-label="Go back button"
         variant="text"
         isLoading={false}
         onClick={() => {
@@ -221,6 +223,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     <div className={s.searchButtonWrapper} style={{ right: '52px', top: '2px' }}>
       <Button
         elementType="button"
+        aria-label="Clear keyword button"
         variant="text"
         isLoading={false}
         color="gray"
@@ -296,12 +299,18 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
         {clearButton}
         <div className={s.searchButtonWrapper} style={props.actionArea == 'home' ? { top: '4px' } : { top: '2px' }}>
           {props.actionArea == 'home' ? (
-            <Button elementType="button" size="medium" onClick={clickSearchBtn}>
+            <Button elementType="button" aria-label="Search keyword button" size="medium" onClick={clickSearchBtn}>
               <Icon icon="SEARCH" />
               <span>Search</span>
             </Button>
           ) : (
-            <Button elementType="button" size="medium" variant="text" onClick={clickSearchBtn}>
+            <Button
+              elementType="button"
+              aria-label="Simple search keyword button"
+              size="medium"
+              variant="text"
+              onClick={clickSearchBtn}
+            >
               <Icon icon="SEARCH" />
             </Button>
           )}

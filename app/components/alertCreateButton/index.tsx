@@ -35,6 +35,7 @@ const AlertCreateButton: React.FC<AlertCreateButtonProps> = props => {
     >
       <Button
         elementType="button"
+        aria-label="Create keyword alert"
         size="small"
         variant="outlined"
         color="blue"

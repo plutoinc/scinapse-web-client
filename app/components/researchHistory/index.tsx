@@ -122,6 +122,7 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper,
     <>
       <Button
         elementType="button"
+        aria-label="History button"
         size="medium"
         variant="text"
         color="gray"

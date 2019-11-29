@@ -50,6 +50,7 @@ const MobileSearchBox: React.FC<Props> = ({ location }) => {
       <div className={s.mobileSearchBoxFooter}>
         <Button
           elementType="button"
+          aria-label="Cancel mobile search box button"
           size="small"
           variant="text"
           color="gray"

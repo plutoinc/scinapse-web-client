@@ -109,6 +109,7 @@ const PaperShowKeyword: React.FC<PaperShowKeywordProps> = ({ fos, pageType, acti
       </Button>
       <Button
         elementType="button"
+        aria-label="Create keyword alert button"
         size="small"
         variant="contained"
         color="black"

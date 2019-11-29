@@ -38,6 +38,7 @@ const RequestFullTextBtn: React.FC<RequestFullTextBtnProps> = React.memo(props =
     >
       <Button
         elementType="button"
+        aria-label="Open dialog to request full text button"
         variant="outlined"
         isLoading={isLoading}
         onClick={async () => {

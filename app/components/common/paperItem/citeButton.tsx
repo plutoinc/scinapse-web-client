@@ -26,6 +26,7 @@ const CiteButton: React.FC<CiteButtonProps> = ({ paper, pageType, actionArea, cl
     <div className={className}>
       <Button
         elementType="button"
+        aria-label="Cite button"
         size="small"
         variant={isMobile ? 'contained' : 'outlined'}
         color={isMobile ? 'black' : 'blue'}

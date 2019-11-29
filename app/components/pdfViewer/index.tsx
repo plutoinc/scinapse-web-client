@@ -188,6 +188,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
       <div ref={viewMorePDFBtnEl}>
         <Button
           elementType="button"
+          aria-label="Read all button"
           variant="outlined"
           color="black"
           isLoading={PDFViewerState.isLoading}

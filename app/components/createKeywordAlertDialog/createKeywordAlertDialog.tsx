@@ -83,6 +83,7 @@ const CreateKeywordAlertDialog: React.FC = () => {
             <div className={s.btnWrapper}>
               <Button
                 elementType="button"
+                aria-label="Create keyword button"
                 size="medium"
                 variant="contained"
                 color="blue"
@@ -98,6 +99,7 @@ const CreateKeywordAlertDialog: React.FC = () => {
       <div className={s.closeBtnWrapper}>
         <Button
           elementType="button"
+          aria-label="Cancel to create keyword button"
           size="small"
           variant="text"
           color="gray"

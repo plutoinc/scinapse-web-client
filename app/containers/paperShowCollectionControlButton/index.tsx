@@ -84,6 +84,7 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
       <div ref={addToCollectionBtnEl}>
         <Button
           elementType="button"
+          aria-label="Add paper to collection button"
           size="medium"
           color="gray"
           variant="outlined"

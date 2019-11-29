@@ -24,6 +24,7 @@ const AuthButtons: React.FC<AuthButtonsProps> = props => {
         <Button
           size="large"
           elementType="button"
+          aria-label="Facebook oauth button"
           style={{ backgroundColor: '#3859ab', borderColor: '#3859ab' }}
           onClick={handleClickFBLogin}
           disabled={FBIsLoading}
@@ -41,6 +42,7 @@ const AuthButtons: React.FC<AuthButtonsProps> = props => {
         <Button
           size="large"
           elementType="button"
+          aria-label="ORCID oauth button"
           style={{ backgroundColor: '#a5d027', borderColor: '#a5d027' }}
           disabled={FBIsLoading}
           isLoading={isLoading}

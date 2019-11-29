@@ -25,6 +25,7 @@ const SimpleReadLaterButton: FC<Props> = ({ paperId, saved, pageType, actionArea
     <Button
       variant="text"
       elementType="button"
+      aria-label="Simple read later button"
       size="small"
       color={saved ? 'black' : 'blue'}
       onClick={async () => {

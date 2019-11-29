@@ -44,7 +44,14 @@ const MoreDropdownButton: React.FC<MoreDropdownButtonProps> = ({ dropdownContent
     <ClickAwayListener onClickAway={() => setIsOpen(false)}>
       <div className={s.moreButton}>
         <div ref={buttonAnchor}>
-          <Button elementType="button" size="small" variant="outlined" color="gray" onClick={() => setIsOpen(!isOpen)}>
+          <Button
+            elementType="button"
+            aria-label="More menu button"
+            size="small"
+            variant="outlined"
+            color="gray"
+            onClick={() => setIsOpen(!isOpen)}
+          >
             <Icon icon="ELLIPSIS" />
           </Button>
         </div>
