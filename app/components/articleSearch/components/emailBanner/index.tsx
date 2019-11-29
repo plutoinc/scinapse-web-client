@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../../../locationListener';
 import GlobalDialogManager from '../../../../helpers/globalDialogManager';
-import Button from '../../../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 
 const s = require('./emailBanner.scss');
 

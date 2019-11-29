@@ -6,7 +6,7 @@ import { ActionTicketParams } from '../../helpers/actionTicketManager/actionTick
 import { useObserver } from '../../hooks/useIntersectionHook';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { CurrentUser } from '../../model/currentUser';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const styles = require('./bottomBanner.scss');
 
 interface BottomBannerProps {

@@ -6,7 +6,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import ScinapseInput from '../../../common/scinapseInput';
 import { withStyles } from '../../../../helpers/withStylesHelper';
 import ArticleSpinner from '../../../common/spinner/articleSpinner';
-import Button from '../../../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import Icon from '../../../../icons';
 import alertToast from '../../../../helpers/makePlutoToastAction';
 import PlutoAxios from '../../../../api/pluto';

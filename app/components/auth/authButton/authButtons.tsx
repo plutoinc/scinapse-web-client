@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '../../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import GoogleAuthButton from './googleAuthButton';
 import Icon from '../../../icons';
 import { handleClickORCIDBtn } from '../signUp/actions';

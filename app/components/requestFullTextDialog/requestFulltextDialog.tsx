@@ -14,7 +14,7 @@ import { LAST_SUCCEEDED_EMAIL_KEY } from '../../constants/requestDialogConstant'
 import { fetchLastFullTextRequestedDate } from '../../actions/paperShow';
 import { closeRequestFullTextDialog } from '../../reducers/requestFullTextDialog';
 import ReduxAutoSizeTextarea from '../common/autoSizeTextarea/reduxAutoSizeTextarea';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import Icon from '../../icons';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./requestFulltextDialog.scss');

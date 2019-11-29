@@ -8,7 +8,7 @@ import { withStyles } from '../../../helpers/withStylesHelper';
 import alertToast from '../../../helpers/makePlutoToastAction';
 import PlutoAxios from '../../../api/pluto';
 import { MINIMUM_PASSWORD_LENGTH } from '../../../constants/auth';
-import Button from '../../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const styles = require('./resetPassword.scss');
 
 interface FormValues {

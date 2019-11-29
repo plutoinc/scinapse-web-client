@@ -6,7 +6,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import AuthInputBox from '../../common/inputBox/authInputBox';
-import Button from '../../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { GLOBAL_DIALOG_TYPE, DialogState } from '../../dialog/reducer';
 import ORSeparator from '../separator';
 import AuthTabs from '../authTabs';

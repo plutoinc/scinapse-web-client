@@ -32,7 +32,7 @@ import { ACTION_TYPES } from '../../actions/actionTypes';
 import Pagination from '../../components/collectionShow/pagination';
 import { checkAuthStatus } from '../../components/auth/actions';
 import { removePaperFromCollection } from '../../components/dialog/actions';
-import Button from '../../components/common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const styles = require('./collectionShow.scss');
 
 type Props = ReturnType<typeof mapStateToProps> &

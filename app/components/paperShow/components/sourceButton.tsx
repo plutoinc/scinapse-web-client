@@ -9,7 +9,7 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
 import { addPaperToRecommendPool } from '../../recommendPool/actions';
 import GroupButton from '../../common/groupButton';
-import Button from '../../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const styles = require('./pdfSourceButton.scss');
 
 interface SourceButtonProps {

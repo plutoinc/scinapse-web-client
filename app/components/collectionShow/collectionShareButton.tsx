@@ -1,6 +1,6 @@
 import React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { Collection } from '../../model/collection';
 import copySelectedTextToClipboard from '../../helpers/copySelectedTextToClipboard';

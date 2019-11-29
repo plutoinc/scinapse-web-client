@@ -21,7 +21,7 @@ import DesktopPagination from '../../components/common/desktopPagination';
 import CoAuthor from '../../components/common/coAuthor';
 import RepresentativePublicationsDialog from '../../components/dialog/components/representativePublications';
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
-import Button from '../../components/common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';

@@ -3,7 +3,7 @@ import { Formik, Form, Field, FormikErrors, ErrorMessage } from 'formik';
 import * as classNames from 'classnames';
 import { withStyles } from '../../helpers/withStylesHelper';
 import ScinapseFormikInput from '../common/scinapseInput/scinapseFormikInput';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const styles = require('./authorCVForm.scss');
 
 export interface AwardFormState {

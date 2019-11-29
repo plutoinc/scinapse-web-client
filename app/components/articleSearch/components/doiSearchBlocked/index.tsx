@@ -4,7 +4,7 @@ import ArticleSpinner from '../../../common/spinner/articleSpinner';
 import Icon from '../../../../icons';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../../../helpers/checkAuthDialog';
-import Button from '../../../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const styles = require('./doiSearchBlocked.scss');
 
 interface DoiSearchBlockedProps {

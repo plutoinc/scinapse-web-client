@@ -6,7 +6,7 @@ import { AppState } from '../../reducers';
 import { MINIMUM_PASSWORD_LENGTH } from '../../constants/auth';
 import { changePassword, resendVerificationEmail } from '../../actions/auth';
 import { CurrentUser } from '../../model/currentUser';
-import Button from '../../components/common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./authEditForm.scss');
 

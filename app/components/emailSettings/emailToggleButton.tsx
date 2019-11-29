@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { ButtonVariant, ButtonColor } from '../common/button/types';
 import GroupButton from '../common/groupButton';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./emailToggleButton.scss');
 

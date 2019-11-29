@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Button from '../../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { addPaperToRecommendPool } from '../../recommendPool/actions';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';

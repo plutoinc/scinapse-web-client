@@ -19,7 +19,7 @@ import { DEFAULT_AUTHOR_PAPERS_SIZE } from '../../api/author';
 import ArticleSpinner from '../../components/common/spinner/articleSpinner';
 import CoAuthor from '../../components/common/coAuthor';
 import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
-import Button from '../../components/common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { LayoutState } from '../../components/layouts/reducer';
 import AuthorShowHeader from '../../components/authorShowHeader';
 import { SuggestAffiliation } from '../../api/suggest';

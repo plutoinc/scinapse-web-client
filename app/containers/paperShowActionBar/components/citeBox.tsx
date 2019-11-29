@@ -5,7 +5,7 @@ import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
 import { addPaperToRecommendPool } from '../../../components/recommendPool/actions';
-import Button from '../../../components/common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 
 interface CiteBoxProps {
   paper: Paper;

@@ -17,7 +17,7 @@ import { MyCollectionsState } from './reducer';
 import { collectionSchema, Collection } from '../../model/collection';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
 import PaperNoteForm from '../../components/paperShow/noteForm';
-import Button from '../../components/common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 
 import {
   selectCollectionToCurrentCollection,

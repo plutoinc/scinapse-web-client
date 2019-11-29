@@ -10,7 +10,7 @@ import { EmailSettingTypes } from '../../api/types/auth';
 import EmailToggleTitle from './emailToggleTitle';
 import EmailToggleButton from './emailToggleButton';
 import alertToast from '../../helpers/makePlutoToastAction';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./emailSettings.scss');
 

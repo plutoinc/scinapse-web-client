@@ -30,7 +30,7 @@ import { getCollections } from '../collections/actions';
 import { getMemoizedPaper } from '../../containers/paperShow/select';
 import ResearchHistory from '../researchHistory';
 import { UserDevice } from './reducer';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { fetchKeywordAlertList } from '../../containers/keywordSettings/actions';
 import { changeSearchQuery } from '../../reducers/searchQuery';
 import MobileSearchBox from '../common/mobileSearchBox';

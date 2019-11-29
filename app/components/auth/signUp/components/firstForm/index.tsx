@@ -6,7 +6,7 @@ import AuthAPI from '../../../../../api/auth';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
 import AuthInputBox from '../../../../common/inputBox/authInputBox';
 import { OAUTH_VENDOR, SignInResult } from '../../../../../api/types/auth';
-import Button from '../../../../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import ORSeparator from '../../../separator';
 import AuthTabs from '../../../authTabs';
 import validateEmail from '../../../../../helpers/validateEmail';

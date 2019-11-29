@@ -14,7 +14,7 @@ import { LayoutState } from '../../components/layouts/reducer';
 import { AppState } from '../../reducers';
 import { UserDevice } from '../../components/layouts/reducer';
 import validateEmail from '../../helpers/validateEmail';
-import Button from '../../components/common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { FEEDBACK_SOURCE, FEEDBACK_PRIORITY, FEEDBACK_STATUS } from '../../constants/feedback';
 
 const styles = require('./feedbackButton.scss');

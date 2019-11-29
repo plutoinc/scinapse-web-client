@@ -2,7 +2,7 @@ import React from 'react';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import formatNumber from '../../../helpers/formatNumber';
 import { Paper } from '../../../model/paper';
-import Button from '../button';
+import { Button } from '@pluto_network/pluto-design-elements';
 
 interface CitationListLinkButtonProps {
   paper: Paper;

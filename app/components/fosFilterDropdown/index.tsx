@@ -14,7 +14,7 @@ import makeNewFilterLink from '../../helpers/makeNewFilterLink';
 import FOSFilterInput from '../fosFilterInput';
 import FOSItem from './fosItem';
 import { AggregationFos } from '../../model/aggregation';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./fosFilterDropdown.scss');
 

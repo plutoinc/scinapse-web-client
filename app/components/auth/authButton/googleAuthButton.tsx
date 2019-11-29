@@ -9,7 +9,7 @@ import { closeDialog } from '../../dialog/actions';
 import { AppState } from '../../../reducers';
 import { DialogState } from '../../dialog/reducer';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
-import Button from '../../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 
 declare var gapi: any;
 

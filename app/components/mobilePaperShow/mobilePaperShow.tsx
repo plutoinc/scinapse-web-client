@@ -16,7 +16,7 @@ import { AvailablePaperShowTab } from '../paperShowTabItem/paperShowTabItem';
 import MobileRelatedPapers from '../mobileRelatedPapers/mobileRelatedPapers';
 import MobileRefCitedPapers from '../paperShow/refCitedPapers/mobileRefCitedPapers';
 import PaperShowFigureList from '../paperShow/components/paperShowFigureList';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import Icon from '../../icons';
 import { Paper } from '../../model/paper';
 import { PaperShowMatchParams } from '../../containers/paperShow/types';

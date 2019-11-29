@@ -6,7 +6,7 @@ import Dialog from '@material-ui/core/Dialog';
 import { AppState } from '../../reducers';
 import { closeCreateKeywordAlertDialog } from '../../reducers/createKeywordAlertDialog';
 import ScinapseFormikInput from '../common/scinapseInput/scinapseFormikInput';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import Icon from '../../icons';
 import { createKeywordAlert } from '../../containers/keywordSettings/actions';
 const useStyles = require('isomorphic-style-loader/useStyles');

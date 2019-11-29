@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../../reducers';
 import { closeMobileSearchBox } from '../../../reducers/searchQuery';
 import SearchQueryInput from '../InputWithSuggestionList/searchQueryInput';
-import Button from '../button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { UserDevice } from '../../layouts/reducer';
 const useStyle = require('isomorphic-style-loader/useStyles');
 const s = require('./mobileSearchBox.scss');

@@ -11,7 +11,7 @@ import { Affiliation } from '../../../../model/affiliation';
 import { SuggestAffiliation } from '../../../../api/suggest';
 import validateEmail from '../../../../helpers/validateEmail';
 import scinapseFormikCheckbox from '../../../common/scinapseInput/scinapseFormikCheckbox';
-import Button from '../../../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const styles = require('./modifyProfile.scss');
 
 export interface ModifyProfileFormState {

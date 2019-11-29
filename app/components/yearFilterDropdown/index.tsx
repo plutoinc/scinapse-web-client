@@ -7,7 +7,7 @@ import FilterButton, { FILTER_BUTTON_TYPE } from '../filterButton';
 import { AppState } from '../../reducers';
 import { setActiveFilterButton } from '../../actions/searchFilter';
 import { goToYearFilteredSearchResultPage } from '../yearRangeSlider/helper';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { SearchActions } from '../../actions/actionTypes';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./yearFilterDropdown.scss');

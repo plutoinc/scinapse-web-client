@@ -21,7 +21,7 @@ import { AppState } from '../../../reducers';
 import { getCurrentPageType } from '../../locationListener';
 import { handleInputKeydown } from './helpers/handleInputKeydown';
 import { UserDevice } from '../../layouts/reducer';
-import Button from '../button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { SearchQueryInputProps, SearchSourceType, SubmitParams } from './types';
 import { changeSearchQuery, openMobileSearchBox, closeMobileSearchBox } from '../../../reducers/searchQuery';
 const useStyles = require('isomorphic-style-loader/useStyles');

@@ -11,7 +11,7 @@ import { ACTION_TYPES } from '../../actions/actionTypes';
 import { AvailableExportCitationType } from '../../containers/paperShow/records';
 import { exportCitationText } from '../../helpers/exportCitationText';
 import ActionTicketManager from '../../helpers/actionTicketManager';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 
 const styles = require('./collectionPapersControlBtns.scss');
 

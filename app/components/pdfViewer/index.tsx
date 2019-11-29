@@ -22,7 +22,7 @@ import { addPaperToRecommendPool } from '../recommendPool/actions';
 import { PDFViewerState } from '../../reducers/pdfViewer';
 import { CurrentUser } from '../../model/currentUser';
 import { getBestPdfOfPaper, getPDFPathOrBlob } from '../../actions/pdfViewer';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const { Document, Page, pdfjs } = require('react-pdf');
 const styles = require('./pdfViewer.scss');
 

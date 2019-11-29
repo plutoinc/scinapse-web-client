@@ -22,7 +22,7 @@ import restoreScroll from '../../helpers/scrollRestoration';
 import alertToast from '../../helpers/makePlutoToastAction';
 import ErrorPage from '../error/errorPage';
 import ImprovedFooter from '../layouts/improvedFooter';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const styles = require('./collections.scss');
 
 export interface UserCollectionsProps extends RouteComponentProps<{ userId: string }> {

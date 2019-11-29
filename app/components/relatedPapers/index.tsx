@@ -11,7 +11,7 @@ import { getMemoizedCurrentUser } from '../../selectors/getCurrentUser';
 import { CurrentUser } from '../../model/currentUser';
 import { makeGetMemoizedPapers } from '../../selectors/papersSelector';
 import { SimplePaperItem } from '../simplePaperItem/simplePaperItemContainer';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const styles = require('./relatedPapers.scss');
 
 interface RelatedPapersProps {

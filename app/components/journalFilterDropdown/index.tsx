@@ -14,7 +14,7 @@ import { trackSelectFilter } from '../../helpers/trackSelectFilter';
 import makeNewFilterLink from '../../helpers/makeNewFilterLink';
 import JournalFilterInput from '../journalFilterInput';
 import { AggregationJournal } from '../../model/aggregation';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./journalFilterDropdown.scss');
 

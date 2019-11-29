@@ -8,7 +8,7 @@ import { AppState } from '../../../reducers';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { addPaperToRecommendPool } from '../../recommendPool/actions';
 import { Paper } from '../../../model/paper';
-import Button from '../button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const styles = require('./sourceButton.scss');
 
 interface SourceButtonProps {

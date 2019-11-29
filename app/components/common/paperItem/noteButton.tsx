@@ -3,7 +3,7 @@ import Popover from '@material-ui/core/Popover';
 import CollectionPaperNote from '../../collectionPaperNote';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-import Button from '../button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./noteButton.scss');
 

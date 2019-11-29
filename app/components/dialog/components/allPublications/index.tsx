@@ -21,7 +21,7 @@ import { closeDialog } from '../../actions';
 import { addPapersAndFetchPapers } from '../../../../actions/author';
 import { trackEvent } from '../../../../helpers/handleGA';
 import { getCurrentPageType } from '../../../locationListener';
-import Button from '../../../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const styles = require('./allPublications.scss');
 
 interface AllPublicationsDialogProps {

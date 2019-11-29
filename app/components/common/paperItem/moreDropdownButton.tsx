@@ -4,7 +4,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import PaperItemMoreDropdownItem from './moreDropdownItem';
 import Icon from '../../../icons';
 import { Paper } from '../../../model/paper';
-import Button from '../button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./moreDropdownButton.scss');
 

@@ -11,7 +11,7 @@ import FilterButton, { FILTER_BUTTON_TYPE } from '../filterButton';
 import { AppState } from '../../reducers';
 import SearchQueryManager from '../../helpers/searchQueryManager';
 import ActionTicketManager from '../../helpers/actionTicketManager';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 
 const s = require('./sortingDropdown.scss');
 
