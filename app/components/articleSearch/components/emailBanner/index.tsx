@@ -51,6 +51,7 @@ const EmailBanner: React.FC = () => {
           value={email}
           onChange={e => setEmail(e.currentTarget.value)}
           size={15}
+          aria-label="Email address input"
         />
         <Button elementType="button" type="submit" aria-label="Scinapse sign up button">
           <span>Sign up</span>
