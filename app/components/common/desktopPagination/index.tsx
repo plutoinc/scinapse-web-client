@@ -83,6 +83,7 @@ function getFirstPageIcon(props: DesktopPaginationProps) {
         rel="nofollow"
         to={(props as LinkPaginationProps).getLinkDestination(1)}
         className={styles.pageIconButton}
+        aria-label="Get First page icon"
       >
         <Icon icon="ARROW_RIGHT_DOUBLE" />
       </Link>
@@ -133,6 +134,7 @@ function getNextIcon(props: DesktopPaginationProps) {
           }}
           to={(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex + 2)}
           className={styles.pageIconButton}
+          aria-label="Next page Icon"
         >
           <Icon icon="ARROW_RIGHT" />
         </Link>
@@ -169,6 +171,7 @@ function getPrevIcon(props: DesktopPaginationProps) {
         }}
         to={(props as LinkPaginationProps).getLinkDestination(props.currentPageIndex)}
         className={styles.pageIconButton}
+        aria-label="Go prev page icon"
       >
         <Icon icon="ARROW_RIGHT" />
       </Link>
@@ -240,6 +243,7 @@ const getLinkPageItem = (props: LinkPaginationProps, pageNumber: number, current
         [`${styles.pageItem}`]: true,
         [`${styles.active}`]: currentPage === pageNumber,
       })}
+      aria-label="Go target number of page icon"
     >
       {pageNumber}
     </Link>
