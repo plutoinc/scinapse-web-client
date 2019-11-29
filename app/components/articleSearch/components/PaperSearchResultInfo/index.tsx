@@ -24,7 +24,7 @@ const PaperSearchResultInfo: React.FC<PaperSearchResultInfoProps> = ({
 }) => {
   let title = null;
   if (shouldShowTitle) {
-    title = <div className={styles.categoryHeader}>Publication</div>;
+    title = <h1 className={styles.categoryHeader}>Publication</h1>;
   }
 
   let additionalContent = (

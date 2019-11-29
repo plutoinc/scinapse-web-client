@@ -85,7 +85,7 @@ const AuthorSearchResult: React.FC<AuthorSearchResult> = React.memo(
     return (
       <div className={styles.authorItemSectionWrapper}>
         <div className={styles.authorItemsHeader}>
-          <div className={styles.categoryHeader}>Author</div>
+          <h1 className={styles.categoryHeader}>Author</h1>
           <div className={styles.categoryCount}>
             {authorCount}
             {authorCount > 1 ? ' authors' : ' author'}
