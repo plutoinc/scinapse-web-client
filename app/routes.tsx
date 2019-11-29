@@ -169,11 +169,6 @@ export const routesMap: ServerRoutesMap[] = [
     exact: true,
   },
   {
-    path: '/button-demo',
-    component: loadable(() => import('./components/buttonDemo/buttonDemo')),
-    exact: true,
-  },
-  {
     path: '/ui-demo',
     component: loadable(() => import('./components/uiDemo/uiDemo')),
     exact: true,

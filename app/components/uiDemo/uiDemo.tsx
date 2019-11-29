@@ -4,11 +4,12 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
-import Button, { GeneralButtonProps } from '../common/button';
 import { ButtonSize, ButtonVariant, ButtonColor } from '../common/button/types';
 import Icon, { ICONS } from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
 import GroupButton from '../common/groupButton';
+import { Button } from '@pluto_network/pluto-design-elements';
+import { GeneralButtonProps } from '@pluto_network/pluto-design-elements/build/components/button/types';
 
 const s = require('./uiDemo.scss');
 
