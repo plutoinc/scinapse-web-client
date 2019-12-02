@@ -38,6 +38,7 @@ function formatPublisherToStructuredData(journal: Journal) {
   return {
     '@type': 'Organization',
     name: journal.title,
+    issn: journal.issn,
     contentRating: {
       '@type': 'Rating',
       name: 'impact factor',
@@ -64,7 +65,7 @@ const getStructuredData = (paper: Paper) => {
     image: ['https://assets.pluto.network/scinapse/scinapse-logo.png'],
     datePublished: paper.publishedDate,
     dateModified: paper.publishedDate,
-    about: paper.fosList.map(fos => ({ '@type': 'TopFieldsOfStudy', name: fos.fos })),
+    about: paper.fosList.map(fos => ({ '@type': 'Dataset', name: fos.fos })),
     mainEntityOfPage: `https://scinapse.io/papers/${paper.id}`,
     author,
     publisher,
