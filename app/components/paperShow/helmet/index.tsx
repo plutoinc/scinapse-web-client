@@ -36,9 +36,8 @@ function formatAuthorsToStructuredData(authors: PaperAuthor[]) {
 
 function formatPublisherToStructuredData(journal: Journal) {
   return {
-    '@type': 'Organization',
+    '@type': 'CreativeWorkSeries',
     name: journal.title,
-    logo: journal.title,
     issn: journal.issn,
     contentRating: {
       '@type': 'Rating',
@@ -55,7 +54,7 @@ const getStructuredData = (paper: Paper) => {
       : { '@type': 'Person', name: '' };
   const publisher = paper.journal
     ? formatPublisherToStructuredData(paper.journal)
-    : { '@type': 'Organization', name: '' };
+    : { '@type': 'CreativeWorkSeries', name: '' };
   const structuredData: any = {
     '@context': 'http://schema.org',
     '@type': 'ScholarlyArticle',
