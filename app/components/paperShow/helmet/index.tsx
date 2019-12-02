@@ -37,7 +37,6 @@ function formatPublisherToStructuredData(journal: Journal) {
   return {
     '@type': 'Organization',
     name: journal.title,
-    publisher: journal.title,
     contentRating: {
       '@type': 'Rating',
       name: 'impact factor',
