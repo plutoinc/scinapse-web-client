@@ -21,7 +21,7 @@ const buildPageDescription = (paper: Paper) => {
 };
 
 function formatAuthorsToStructuredData(authors: PaperAuthor[]) {
-  authors.map(author => {
+  return authors.map(author => {
     const affiliationName = author.organization || (author.affiliation && author.affiliation.name);
     return {
       '@type': 'Person',
@@ -35,7 +35,7 @@ function formatAuthorsToStructuredData(authors: PaperAuthor[]) {
 
 function formatPublisherToStructuredData(journal: Journal) {
   return {
-    '@type': ['PublicationVolume', 'Periodical'],
+    '@type': 'Organization',
     name: journal.title,
     publisher: journal.title,
     contentRating: {
@@ -47,8 +47,8 @@ function formatPublisherToStructuredData(journal: Journal) {
 }
 
 const getStructuredData = (paper: Paper) => {
-  const author = paper.authors && paper.authors.length > 0 ? formatAuthorsToStructuredData(paper.authors) : null;
-  const publisher = paper.journal ? formatPublisherToStructuredData(paper.journal) : null;
+  const author = paper.authors && paper.authors.length > 0 ? formatAuthorsToStructuredData(paper.authors) : 'null';
+  const publisher = paper.journal ? formatPublisherToStructuredData(paper.journal) : 'null';
   const structuredData: any = {
     '@context': 'http://schema.org',
     '@type': 'ScholarlyArticle',
@@ -81,6 +81,7 @@ const PaperShowHelmet: React.FC<{ paper: Paper }> = React.memo(({ paper }) => {
           .replace(/,/gi, ', ')
       : '';
 
+  console.log(getStructuredData(paper));
   return (
     <Helmet>
       <title>{`${metaTitleContent} | Scinapse | Academic search engine for paper`}</title>
