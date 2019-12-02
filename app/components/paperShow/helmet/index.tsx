@@ -39,6 +39,7 @@ function formatPublisherToStructuredData(journal: Journal) {
     '@type': 'Organization',
     name: journal.title,
     issn: journal.issn,
+    logo: '',
     contentRating: {
       '@type': 'Rating',
       name: 'impact factor',
@@ -51,10 +52,10 @@ const getStructuredData = (paper: Paper) => {
   const author =
     paper.authors && paper.authors.length > 0
       ? formatAuthorsToStructuredData(paper.authors)
-      : { '@type': 'Person', name: 'null' };
+      : { '@type': 'Person', name: '' };
   const publisher = paper.journal
     ? formatPublisherToStructuredData(paper.journal)
-    : { '@type': 'Organization', name: 'null' };
+    : { '@type': 'Organization', name: '' };
   const structuredData: any = {
     '@context': 'http://schema.org',
     '@type': 'ScholarlyArticle',
@@ -87,7 +88,6 @@ const PaperShowHelmet: React.FC<{ paper: Paper }> = React.memo(({ paper }) => {
           .replace(/,/gi, ', ')
       : '';
 
-  console.log(getStructuredData(paper));
   return (
     <Helmet>
       <title>{`${metaTitleContent} | Scinapse | Academic search engine for paper`}</title>
