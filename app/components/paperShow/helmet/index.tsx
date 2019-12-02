@@ -36,14 +36,8 @@ function formatAuthorsToStructuredData(authors: PaperAuthor[]) {
 
 function formatPublisherToStructuredData(journal: Journal) {
   return {
-    '@type': 'CreativeWorkSeries',
+    '@type': 'Organization',
     name: journal.title,
-    issn: journal.issn,
-    contentRating: {
-      '@type': 'Rating',
-      name: 'impact factor',
-      ratingValue: journal.impactFactor || 0,
-    },
   };
 }
 
@@ -54,7 +48,7 @@ const getStructuredData = (paper: Paper) => {
       : { '@type': 'Person', name: '' };
   const publisher = paper.journal
     ? formatPublisherToStructuredData(paper.journal)
-    : { '@type': 'CreativeWorkSeries', name: '' };
+    : { '@type': 'Organization', name: '' };
   const structuredData: any = {
     '@context': 'http://schema.org',
     '@type': 'ScholarlyArticle',
@@ -67,6 +61,11 @@ const getStructuredData = (paper: Paper) => {
     dateModified: paper.publishedDate,
     about: paper.fosList.map(fos => ({ '@type': 'Thing', name: fos.fos })),
     mainEntityOfPage: `https://scinapse.io/papers/${paper.id}`,
+    contentRating: {
+      '@type': 'Rating',
+      name: 'impact factor',
+      ratingValue: paper.journal ? paper.journal.impactFactor : 0,
+    },
     author,
     publisher,
   };
