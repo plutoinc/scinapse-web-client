@@ -27,6 +27,7 @@ function formatAuthorsToStructuredData(authors: PaperAuthor[]) {
       '@type': 'Person',
       name: author.name,
       affiliation: {
+        '@type': 'Affilitation',
         name: affiliationName || '',
       },
     };
@@ -46,8 +47,13 @@ function formatPublisherToStructuredData(journal: Journal) {
 }
 
 const getStructuredData = (paper: Paper) => {
-  const author = paper.authors && paper.authors.length > 0 ? formatAuthorsToStructuredData(paper.authors) : 'null';
-  const publisher = paper.journal ? formatPublisherToStructuredData(paper.journal) : 'null';
+  const author =
+    paper.authors && paper.authors.length > 0
+      ? formatAuthorsToStructuredData(paper.authors)
+      : { '@type': 'Person', name: 'null' };
+  const publisher = paper.journal
+    ? formatPublisherToStructuredData(paper.journal)
+    : { '@type': 'Organization', name: 'null' };
   const structuredData: any = {
     '@context': 'http://schema.org',
     '@type': 'ScholarlyArticle',
@@ -58,7 +64,7 @@ const getStructuredData = (paper: Paper) => {
     image: ['https://assets.pluto.network/scinapse/scinapse-logo.png'],
     datePublished: paper.publishedDate,
     dateModified: paper.publishedDate,
-    about: paper.fosList.map(fos => fos.fos),
+    about: paper.fosList.map(fos => ({ '@type': 'TopFieldsOfStudy', name: fos.fos })),
     mainEntityOfPage: `https://scinapse.io/papers/${paper.id}`,
     author,
     publisher,
