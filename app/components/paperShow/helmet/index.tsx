@@ -27,7 +27,7 @@ function formatAuthorsToStructuredData(authors: PaperAuthor[]) {
       '@type': 'Person',
       name: author.name,
       affiliation: {
-        '@type': 'Affilitation',
+        '@type': 'Organization',
         name: affiliationName || '',
       },
     };
@@ -65,7 +65,7 @@ const getStructuredData = (paper: Paper) => {
     image: ['https://assets.pluto.network/scinapse/scinapse-logo.png'],
     datePublished: paper.publishedDate,
     dateModified: paper.publishedDate,
-    about: paper.fosList.map(fos => ({ '@type': 'Dataset', name: fos.fos })),
+    about: paper.fosList.map(fos => ({ '@type': 'Thing', name: fos.fos })),
     mainEntityOfPage: `https://scinapse.io/papers/${paper.id}`,
     author,
     publisher,
