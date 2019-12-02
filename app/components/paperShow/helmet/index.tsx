@@ -39,6 +39,7 @@ function formatPublisherToStructuredData(journal: Journal) {
     '@type': 'Organization',
     name: journal.title,
     logo: {
+      '@type': 'ImageObject',
       url: 'https://assets.pluto.network/scinapse/scinapse-logo.png',
     },
   };
