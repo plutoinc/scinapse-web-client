@@ -12,10 +12,11 @@ const JournalsInfo: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
     return (
       <div className={styles.journalImageWrapper} key={index}>
         <picture>
-          <source srcSet={`https://assets.pluto.network/journals/${journal}.webp`} type="image/webp" />
-          <source srcSet={`https://assets.pluto.network/journals/${journal}.png`} type="image/png" />
+          <source data-srcset={`https://assets.pluto.network/journals/${journal}.webp`} type="image/webp" />
+          <source data-srcset={`https://assets.pluto.network/journals/${journal}.png`} type="image/png" />
           <img
             className={classNames([styles.journalImage, 'lazyload'])}
+            data-sizes="auto"
             data-src={`https://assets.pluto.network/journals/${journal}.png`}
             alt={`${journal}LogoImage`}
           />
