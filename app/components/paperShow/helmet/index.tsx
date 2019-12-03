@@ -92,15 +92,15 @@ const PaperShowHelmet: React.FC<{ paper: Paper }> = React.memo(({ paper }) => {
 
   return (
     <Helmet>
-      <title>{`${metaTitleContent} | Scinapse | Academic search engine for paper`}</title>
+      <title>{`${metaTitleContent} | Scinapse`}</title>
       <link rel="canonical" href={`https://scinapse.io/papers/${paper.id}`} />
-      <meta itemProp="name" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
+      <meta itemProp="name" content={`${metaTitleContent} | Scinapse`} />
       <meta name="description" content={buildPageDescription(paper)} />
       <meta name="keyword" content={fosListContent} />
       <meta name="twitter:description" content={buildPageDescription(paper)} />
-      <meta name="twitter:card" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
-      <meta name="twitter:title" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
-      <meta property="og:title" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
+      <meta name="twitter:card" content={`${metaTitleContent} | Scinapse`} />
+      <meta name="twitter:title" content={`${metaTitleContent} | Scinapse`} />
+      <meta property="og:title" content={`${metaTitleContent} | Scinapse`} />
       <meta property="og:type" content="article" />
       <meta property="og:url" content={`https://scinapse.io/papers/${paper.id}`} />
       <meta property="og:description" content={buildPageDescription(paper)} />
