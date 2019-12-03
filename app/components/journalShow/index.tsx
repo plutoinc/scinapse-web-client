@@ -282,26 +282,29 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
           <title>{journal.title} | Scinapse</title>
           <link rel="canonical" href={`https://scinapse.io/journals/${journal.id}`} />
           <meta itemProp="name" content={`${journal.title} | Scinapse`} />
-          {/* tslint:disable-next-line:max-line-length */}
           <meta
             name="description"
-            content={`${journal.title} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ${journal.paperCount} papers`}
+            content={`${journal.title} | ISSN: ${journal.issn || 0} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ${
+              journal.paperCount
+            } papers`}
           />
-          {/* tslint:disable-next-line:max-line-length */}
+          <meta name="twitter:title" content={`${journal.title} | Scinapse`} />
           <meta
             name="twitter:description"
-            content={`${journal.title} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ${journal.paperCount} papers`}
+            content={`${journal.title} | ISSN: ${journal.issn || 0} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ${
+              journal.paperCount
+            } papers`}
           />
           <meta name="twitter:card" content={`${journal.title} | Scinapse`} />
-          <meta name="twitter:title" content={`${journal.title} | Scinapse`} />
           <meta property="og:title" content={`${journal.title} | Scinapse`} />
-          <meta property="og:type" content="article" />
-          <meta property="og:url" content={`https://scinapse.io/journals/${journal.id}`} />
-          {/* tslint:disable-next-line:max-line-length */}
           <meta
             property="og:description"
-            content={`${journal.title} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ${journal.paperCount} papers`}
+            content={`${journal.title} | ISSN: ${journal.issn || 0} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ${
+              journal.paperCount
+            } papers`}
           />
+          <meta property="og:type" content="article" />
+          <meta property="og:url" content={`https://scinapse.io/journals/${journal.id}`} />
         </Helmet>
       );
     }

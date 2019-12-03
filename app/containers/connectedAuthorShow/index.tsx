@@ -597,11 +597,12 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
         '@type': 'Person',
         name: coAuthor.name,
         affiliation: {
+          '@type': 'Organization',
           name: coAuthorAffiliation,
         },
-        description: `${coAuthorAffiliation ? `${coAuthorAffiliation},` : ''} citation: ${
+        description: `${coAuthorAffiliation ? `${coAuthorAffiliation} |` : ''} citation: ${
           coAuthor.citationCount
-        }, h-index: ${coAuthor.hindex}`,
+        } | h-index: ${coAuthor.hindex}`,
         mainEntityOfPage: 'https://scinapse.io',
       };
     });
@@ -611,10 +612,11 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
       '@type': 'Person',
       name: author.name,
       affiliation: {
+        '@type': 'Organization',
         name: affiliationName,
       },
       colleague: colleagues,
-      description: `${affiliationName ? `${affiliationName},` : ''} citation: ${author.citationCount}, h-index: ${
+      description: `${affiliationName ? `${affiliationName} |` : ''} citation: ${author.citationCount} | h-index: ${
         author.hindex
       }`,
       mainEntityOfPage: 'https://scinapse.io',
@@ -627,9 +629,9 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     const { author } = this.props;
 
     const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : '';
-    const description = `${affiliationName ? `${affiliationName},` : ''} citation: ${author.citationCount}, h-index: ${
-      author.hindex
-    }`;
+    const description = `${affiliationName ? `${affiliationName} |` : ''} citation: ${
+      author.citationCount
+    } | h-index: ${author.hindex}`;
 
     return (
       <Helmet>

@@ -250,7 +250,7 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
   private getResultHelmet = (query: string) => {
     return (
       <Helmet>
-        <title>{`${query} | Scinapse Search`}</title>
+        <title>{`${query} | Search | Scinapse`}</title>
       </Helmet>
     );
   };

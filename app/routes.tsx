@@ -207,26 +207,26 @@ const DefaultHelmet = () => {
       <meta itemProp="name" content="Scinapse | Academic search engine for paper" />
       <meta
         name="description"
-        content="scinapse is the fastest search engine for scientific papers. scinapse covers over 170m+ papers and 48k+ journals. Just try scinapse, you can quickly find the scientific paper exactly you want."
-      />
-      <meta
-        name="twitter:description"
-        content="scinapse is the fastest search engine for scientific papers. scinapse covers over 170m+ papers and 48k+ journals. Just try scinapse, you can quickly find the scientific paper exactly you want."
+        content="Scinapse is the fastest search engine for scientific papers. Just try Scinapse, you can quickly find the scientific paper exactly you want."
       />
       <meta itemProp="image" content="http://assets.pluto.network/og-image.png" />
+      <meta name="twitter:title" content="Scinapse | Academic search engine for paper" />
+      <meta
+        name="twitter:description"
+        content="Scinapse is the fastest search engine for scientific papers. Just try Scinapse, you can quickly find the scientific paper exactly you want."
+      />
       <meta name="twitter:card" content="Pluto Inc." />
       <meta name="twitter:site" content="@pluto_network" />
-      <meta name="twitter:title" content="Scinapse | Academic search engine for paper" />
       <meta name="twitter:creator" content="@pluto_network" />
       <meta name="twitter:image" content="http://assets.pluto.network/og-image.png" />
       <meta property="og:title" content="Scinapse | Academic search engine for paper" />
+      <meta
+        property="og:description"
+        content="Scinapse is the fastest search engine for scientific papers. Just try Scinapse, you can quickly find the scientific paper exactly you want."
+      />
       <meta property="og:type" content="article" />
       <meta property="og:url" content="https://scinapse.io" />
       <meta property="og:image" content="http://assets.pluto.network/og-image.png" />
-      <meta
-        property="og:description"
-        content="scinapse is the fastest search engine for scientific papers. scinapse covers over 170m+ papers and 48k+ journals. Just try scinapse, you can quickly find the scientific paper exactly you want."
-      />
       <meta property="og:site_name" content="Scinapse" />
       <meta name="google-site-verification" content="YHiVYg7vff8VWXZge2D1aOZsT8rCUxnkjwbQqFT2QEI" />
       <meta name="msvalidate.01" content="55ADC81A3C8F5F3DAA9B90F27CA16E2B" />

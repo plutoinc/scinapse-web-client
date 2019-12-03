@@ -44,7 +44,7 @@ type Props = ReturnType<typeof mapStateToProps> &
 const SearchHelmet: React.FC<{ query: string }> = ({ query }) => {
   return (
     <Helmet>
-      <title>{`${query} | Scinapse Search`}</title>
+      <title>{`${query} | Search | Scinapse`}</title>
     </Helmet>
   );
 };

@@ -240,25 +240,29 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
     const { collections, member } = this.props;
 
     if (collections && member) {
-      const headCollections = collections
-        .map(c => c.title)
-        .slice(0, 3)
-        .join(' | ');
-
       return (
         <Helmet>
           <title>{`${member.firstName} ${member.lastName || ''}'s collections | Scinapse`}</title>
           <link rel="canonical" href={`https://scinapse.io/collections/users/${member.id}/collections`} />
           <meta itemProp="name" content={`${member.firstName} ${member.lastName || ''}'s collections | Scinapse`} />
-          <meta name="description" content={headCollections} />
-          <meta name="twitter:description" content={headCollections} />
-          <meta property="og:description" content={headCollections} />
-          <meta name="twitter:card" content={`${member.firstName} ${member.lastName || ''}'s collections | Scinapse`} />
+          <meta
+            name="description"
+            content={`Collection list created by ${member.firstName} ${member.lastName || ''} in Scinapse`}
+          />
           <meta
             name="twitter:title"
             content={`${member.firstName} ${member.lastName || ''}'s collections | Scinapse`}
           />
+          <meta
+            name="twitter:description"
+            content={`Collection list created by ${member.firstName} ${member.lastName || ''} in Scinapse`}
+          />
+          <meta name="twitter:card" content={`${member.firstName} ${member.lastName || ''}'s collections | Scinapse`} />
           <meta property="og:title" content={`${member.firstName} ${member.lastName || ''}'s collections | Scinapse`} />
+          <meta
+            property="og:description"
+            content={`Collection list created by ${member.firstName} ${member.lastName || ''} in Scinapse`}
+          />
           <meta property="og:type" content="article" />
           <meta property="og:url" content={`https://scinapse.io/collections/users/${member.id}/collections`} />
         </Helmet>

@@ -80,15 +80,6 @@ const getStructuredData = (paper: Paper) => {
 const PaperShowHelmet: React.FC<{ paper: Paper }> = React.memo(({ paper }) => {
   const pdfSourceRecord = getPDFLink(paper.urls);
   const metaTitleContent = !!pdfSourceRecord ? '[PDF] ' + paper.title : paper.title;
-  const fosListContent =
-    paper.fosList && typeof paper.fosList !== 'undefined'
-      ? paper.fosList
-          .map(fos => {
-            return fos.fos;
-          })
-          .toString()
-          .replace(/,/gi, ', ')
-      : '';
 
   return (
     <Helmet>
@@ -96,10 +87,9 @@ const PaperShowHelmet: React.FC<{ paper: Paper }> = React.memo(({ paper }) => {
       <link rel="canonical" href={`https://scinapse.io/papers/${paper.id}`} />
       <meta itemProp="name" content={`${metaTitleContent} | Scinapse`} />
       <meta name="description" content={buildPageDescription(paper)} />
-      <meta name="keyword" content={fosListContent} />
+      <meta name="twitter:title" content={`${metaTitleContent} | Scinapse`} />
       <meta name="twitter:description" content={buildPageDescription(paper)} />
       <meta name="twitter:card" content={`${metaTitleContent} | Scinapse`} />
-      <meta name="twitter:title" content={`${metaTitleContent} | Scinapse`} />
       <meta property="og:title" content={`${metaTitleContent} | Scinapse`} />
       <meta property="og:type" content="article" />
       <meta property="og:url" content={`https://scinapse.io/papers/${paper.id}`} />
