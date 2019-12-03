@@ -11,8 +11,8 @@ const AffiliationsInfo: React.FC = () => {
     return (
       <div className={styles.affiliationImageWrapper} key={index}>
         <picture>
-          <source srcSet={`https://assets.pluto.network/affiliations/${affiliation}.webp`} type="image/webp" />
-          <source srcSet={`https://assets.pluto.network/affiliations/${affiliation}.jpg`} type="image/jpeg" />
+          <source data-srcset={`https://assets.pluto.network/affiliations/${affiliation}.webp`} type="image/webp" />
+          <source data-srcset={`https://assets.pluto.network/affiliations/${affiliation}.jpg`} type="image/jpeg" />
           <img
             className={classNames([styles.affiliationImage, 'lazyload'])}
             data-src={`https://assets.pluto.network/affiliations/${affiliation}.jpg`}
