@@ -15,6 +15,7 @@ const AffiliationsInfo: React.FC = () => {
           <source data-srcset={`https://assets.pluto.network/affiliations/${affiliation}.jpg`} type="image/jpeg" />
           <img
             className={classNames([styles.affiliationImage, 'lazyload'])}
+            data-sizes="auto"
             data-src={`https://assets.pluto.network/affiliations/${affiliation}.jpg`}
             alt={`${affiliation}LogoImage`}
           />
