@@ -9,6 +9,7 @@ import { setActiveFilterButton } from '../../actions/searchFilter';
 import { goToYearFilteredSearchResultPage } from '../yearRangeSlider/helper';
 import Button from '../common/button';
 import { SearchActions } from '../../actions/actionTypes';
+import YearGraph from '../yearGraph';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./yearFilterDropdown.scss');
 
@@ -195,6 +196,9 @@ const YearFilterDropdown: React.FC<Props> = React.memo(({ location, history }) =
             }}
             value={maxYear}
           />
+        </div>
+        <div style={{ margin: '24px 0' }}>
+          <YearGraph />
         </div>
         <div className={s.controlBtnsWrapper}>
           <Button
