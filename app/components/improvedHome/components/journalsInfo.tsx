@@ -1,6 +1,10 @@
 import * as React from 'react';
+import classNames from 'classnames';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { JOURNALS, MOBILE_JOURNALS } from '../constants';
+import 'lazysizes';
+import 'lazysizes/plugins/attrchange/ls.attrchange';
+
 const styles = require('./journalsInfo.scss');
 
 const JournalsInfo: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
@@ -11,8 +15,8 @@ const JournalsInfo: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
           <source srcSet={`https://assets.pluto.network/journals/${journal}.webp`} type="image/webp" />
           <source srcSet={`https://assets.pluto.network/journals/${journal}.png`} type="image/png" />
           <img
-            className={styles.journalImage}
-            src={`https://assets.pluto.network/journals/${journal}.png`}
+            className={classNames([styles.journalImage, 'lazyload'])}
+            data-src={`https://assets.pluto.network/journals/${journal}.png`}
             alt={`${journal}LogoImage`}
           />
         </picture>

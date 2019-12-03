@@ -1,8 +1,9 @@
 import React from 'react';
+import classNames from 'classnames';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { AFFILIATIONS } from '../constants';
-import classNames from 'classnames';
 import 'lazysizes';
+import 'lazysizes/plugins/attrchange/ls.attrchange';
 const styles = require('./affiliationsInfo.scss');
 
 const AffiliationsInfo: React.FC = () => {
