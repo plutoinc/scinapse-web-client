@@ -1,6 +1,8 @@
 import React from 'react';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { AFFILIATIONS } from '../constants';
+import classNames from 'classnames';
+import 'lazysizes';
 const styles = require('./affiliationsInfo.scss');
 
 const AffiliationsInfo: React.FC = () => {
@@ -11,8 +13,8 @@ const AffiliationsInfo: React.FC = () => {
           <source srcSet={`https://assets.pluto.network/affiliations/${affiliation}.webp`} type="image/webp" />
           <source srcSet={`https://assets.pluto.network/affiliations/${affiliation}.jpg`} type="image/jpeg" />
           <img
-            className={styles.affiliationImage}
-            src={`https://assets.pluto.network/affiliations/${affiliation}.jpg`}
+            className={classNames([styles.affiliationImage, 'lazyload'])}
+            data-src={`https://assets.pluto.network/affiliations/${affiliation}.jpg`}
             alt={`${affiliation}LogoImage`}
           />
         </picture>
