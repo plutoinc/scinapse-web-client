@@ -1,25 +1,20 @@
 import React from 'react';
-import classNames from 'classnames';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { AFFILIATIONS } from '../constants';
-import 'lazysizes';
-import 'lazysizes/plugins/attrchange/ls.attrchange';
+import LazyImage from '../../common/lazyImage';
 const styles = require('./affiliationsInfo.scss');
 
 const AffiliationsInfo: React.FC = () => {
   const affiliationList = AFFILIATIONS.map((affiliation, index) => {
     return (
       <div className={styles.affiliationImageWrapper} key={index}>
-        <picture>
-          <source data-srcset={`https://assets.pluto.network/affiliations/${affiliation}.webp`} type="image/webp" />
-          <source data-srcset={`https://assets.pluto.network/affiliations/${affiliation}.jpg`} type="image/jpeg" />
-          <img
-            className={classNames([styles.affiliationImage, 'lazyload'])}
-            data-sizes="auto"
-            data-src={`https://assets.pluto.network/affiliations/${affiliation}.jpg`}
-            alt={`${affiliation}LogoImage`}
-          />
-        </picture>
+        <LazyImage
+          src={`https://assets.pluto.network/affiliations/${affiliation}.jpg`}
+          webpSrc={`https://assets.pluto.network/affiliations/${affiliation}.webp`}
+          imgClassName={styles.affiliationImage}
+          loading="lazy"
+          alt={`${affiliation}LogoImage`}
+        />
       </div>
     );
   });
