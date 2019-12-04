@@ -1,10 +1,10 @@
 import React, { ImgHTMLAttributes } from 'react';
 
-type LazyLoading = 'lazy' | 'eager' | 'auto';
+type LoadType = 'lazy' | 'eager' | 'auto';
 
 type Props = ImgHTMLAttributes<HTMLImageElement> & {
   webpSrc?: string;
-  loading?: LazyLoading;
+  loading?: LoadType;
   imgClassName?: string;
 };
 
