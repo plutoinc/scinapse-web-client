@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import ScinapseSnackbar from '../../common/scinapseSnackbar';
 import { Button } from '@pluto_network/pluto-design-elements';
+import ScinapseSnackbar from '../../common/scinapseSnackbar';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../../locationListener';
 import { AppState } from '../../../reducers';

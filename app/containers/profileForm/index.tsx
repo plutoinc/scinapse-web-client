@@ -2,13 +2,13 @@ import React from 'react';
 import classNames from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import { Field, Form, Formik } from 'formik';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
 import AffiliationSelectBox from '../../components/dialog/components/modifyProfile/affiliationSelectBox';
 import { AppState } from '../../reducers';
 import { updateUserProfile } from '../../actions/auth';
 import { CurrentUser } from '../../model/currentUser';
-import { Button } from '@pluto_network/pluto-design-elements';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./profileForm.scss');
 

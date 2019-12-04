@@ -7,6 +7,7 @@ import { RouteComponentProps, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import * as parse from 'date-fns/parse';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { AppState } from '../../reducers';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { getCollections } from './sideEffect';
@@ -22,7 +23,6 @@ import restoreScroll from '../../helpers/scrollRestoration';
 import alertToast from '../../helpers/makePlutoToastAction';
 import ErrorPage from '../error/errorPage';
 import ImprovedFooter from '../layouts/improvedFooter';
-import { Button } from '@pluto_network/pluto-design-elements';
 const styles = require('./collections.scss');
 
 export interface UserCollectionsProps extends RouteComponentProps<{ userId: string }> {

@@ -4,6 +4,7 @@ import { Dispatch } from 'redux';
 import { isEqual } from 'lodash';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Popper from '@material-ui/core/Popper';
+import { Button } from '@pluto_network/pluto-design-elements';
 import Icon from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { CollectionShowState } from '../../containers/collectionShow/reducer';
@@ -11,7 +12,6 @@ import { ACTION_TYPES } from '../../actions/actionTypes';
 import { AvailableExportCitationType } from '../../containers/paperShow/records';
 import { exportCitationText } from '../../helpers/exportCitationText';
 import ActionTicketManager from '../../helpers/actionTicketManager';
-import { Button } from '@pluto_network/pluto-design-elements';
 
 const styles = require('./collectionPapersControlBtns.scss');
 

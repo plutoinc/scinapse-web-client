@@ -1,10 +1,10 @@
 import React from 'react';
 import Popper from '@material-ui/core/Popper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { Button } from '@pluto_network/pluto-design-elements';
 import PaperItemMoreDropdownItem from './moreDropdownItem';
 import Icon from '../../../icons';
 import { Paper } from '../../../model/paper';
-import { Button } from '@pluto_network/pluto-design-elements';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./moreDropdownButton.scss');
 

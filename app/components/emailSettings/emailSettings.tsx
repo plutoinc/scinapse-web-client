@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import qs from 'qs';
 import { useSelector } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Button } from '@pluto_network/pluto-design-elements';
 import AuthAPI from '../../api/auth';
 import reducer, { EmailSettingsInitialState } from './emailSettingsReducer';
 import { AppState } from '../../reducers';
@@ -10,7 +11,6 @@ import { EmailSettingTypes } from '../../api/types/auth';
 import EmailToggleTitle from './emailToggleTitle';
 import EmailToggleButton from './emailToggleButton';
 import alertToast from '../../helpers/makePlutoToastAction';
-import { Button } from '@pluto_network/pluto-design-elements';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./emailSettings.scss');
 

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { Paper } from '../../../model/paper';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
 import { addPaperToRecommendPool } from '../../../components/recommendPool/actions';
-import { Button } from '@pluto_network/pluto-design-elements';
 
 interface CiteBoxProps {
   paper: Paper;

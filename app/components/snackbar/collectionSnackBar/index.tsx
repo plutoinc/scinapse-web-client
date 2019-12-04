@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { AppState } from '../../../reducers';
 import { closeDialog } from '../../dialog/actions';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../../locationListener';
 import { UserDevice } from '../../layouts/reducer';
-import { Button } from '@pluto_network/pluto-design-elements';
 import ScinapseSnackbar from '../../common/scinapseSnackbar';
 import { ScinapseSnackbarState, closeSnackbar } from '../../../reducers/scinapseSnackbar';
 const useStyles = require('isomorphic-style-loader/useStyles');

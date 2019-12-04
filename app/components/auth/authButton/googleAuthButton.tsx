@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { OAuthCheckParams } from '../../../api/types/auth';
 import AuthAPI from '../../../api/auth';
 import Icon from '../../../icons';
@@ -9,7 +10,6 @@ import { closeDialog } from '../../dialog/actions';
 import { AppState } from '../../../reducers';
 import { DialogState } from '../../dialog/reducer';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
-import { Button } from '@pluto_network/pluto-design-elements';
 
 declare var gapi: any;
 

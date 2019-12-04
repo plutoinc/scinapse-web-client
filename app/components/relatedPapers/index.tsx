@@ -2,6 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { Paper } from '../../model/paper';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../helpers/checkAuthDialog';
@@ -11,7 +12,6 @@ import { getMemoizedCurrentUser } from '../../selectors/getCurrentUser';
 import { CurrentUser } from '../../model/currentUser';
 import { makeGetMemoizedPapers } from '../../selectors/papersSelector';
 import { SimplePaperItem } from '../simplePaperItem/simplePaperItemContainer';
-import { Button } from '@pluto_network/pluto-design-elements';
 const styles = require('./relatedPapers.scss');
 
 interface RelatedPapersProps {

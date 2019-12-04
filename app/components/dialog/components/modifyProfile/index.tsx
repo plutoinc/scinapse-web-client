@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Dialog from '@material-ui/core/Dialog';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { Formik, Form, Field, FormikErrors } from 'formik';
 import { withStyles } from '../../../../helpers/withStylesHelper';
 import { Author } from '../../../../model/author/author';
@@ -11,7 +12,6 @@ import { Affiliation } from '../../../../model/affiliation';
 import { SuggestAffiliation } from '../../../../api/suggest';
 import validateEmail from '../../../../helpers/validateEmail';
 import scinapseFormikCheckbox from '../../../common/scinapseInput/scinapseFormikCheckbox';
-import { Button } from '@pluto_network/pluto-design-elements';
 const styles = require('./modifyProfile.scss');
 
 export interface ModifyProfileFormState {

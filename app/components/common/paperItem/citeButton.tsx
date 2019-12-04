@@ -1,12 +1,12 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { addPaperToRecommendPool } from '../../recommendPool/actions';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { Paper } from '../../../model/paper';
-import { Button } from '@pluto_network/pluto-design-elements';
 const styles = require('./citeButton.scss');
 
 interface CiteButtonProps {
