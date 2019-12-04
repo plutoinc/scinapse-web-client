@@ -1,8 +1,8 @@
 import React from 'react';
+import { LazyImage } from '@pluto_network/pluto-design-elements';
 import { PaperFigure } from '../../../model/paper';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { FIGURE_PREFIX } from '../../../constants/paperFigure';
-import LazyImage from '../lazyImage';
 
 const styles = require('./largePaperFigure.scss');
 

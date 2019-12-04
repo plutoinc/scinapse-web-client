@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { LazyImage } from '@pluto_network/pluto-design-elements';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { JOURNALS, MOBILE_JOURNALS } from '../constants';
-import LazyImage from '../../common/lazyImage';
 
 const styles = require('./journalsInfo.scss');
 
