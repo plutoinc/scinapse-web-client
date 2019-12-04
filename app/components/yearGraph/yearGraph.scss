@@ -1,0 +1,37 @@
+.wrapper {
+  position: relative;
+}
+
+.yearLabel {
+  position: absolute;
+  color: $gray700;
+  font-size: 12px;
+  width: 28px;
+  height: 14px;
+  top: 8px;
+}
+
+.column {
+  fill: $gray600;
+}
+
+.boxWrapper {
+  &:hover {
+    .column {
+      fill: $navy0;
+    }
+  }
+}
+
+.labelWrapper {
+  position: relative;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+}
+
+.labelText {
+  color: $gray700;
+  font-size: 12px;
+}
