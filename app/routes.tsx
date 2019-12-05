@@ -207,13 +207,13 @@ const DefaultHelmet = () => {
       <meta itemProp="name" content="Scinapse | Academic search engine for paper" />
       <meta
         name="description"
-        content="Scinapse is the fastest search engine for scientific papers. Just try Scinapse, you can quickly find the scientific paper exactly you want."
+        content="Every research begins here. Find papers from over 170m papers in major STEM journals. Save time and never re-search."
       />
       <meta itemProp="image" content="http://assets.pluto.network/og-image.png" />
       <meta name="twitter:title" content="Scinapse | Academic search engine for paper" />
       <meta
         name="twitter:description"
-        content="Scinapse is the fastest search engine for scientific papers. Just try Scinapse, you can quickly find the scientific paper exactly you want."
+        content="Every research begins here. Find papers from over 170m papers in major STEM journals. Save time and never re-search."
       />
       <meta name="twitter:card" content="Pluto Inc." />
       <meta name="twitter:site" content="@pluto_network" />
@@ -222,7 +222,7 @@ const DefaultHelmet = () => {
       <meta property="og:title" content="Scinapse | Academic search engine for paper" />
       <meta
         property="og:description"
-        content="Scinapse is the fastest search engine for scientific papers. Just try Scinapse, you can quickly find the scientific paper exactly you want."
+        content="Every research begins here. Find papers from over 170m papers in major STEM journals. Save time and never re-search."
       />
       <meta property="og:type" content="article" />
       <meta property="og:url" content="https://scinapse.io" />
