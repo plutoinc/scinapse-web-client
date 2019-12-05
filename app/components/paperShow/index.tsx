@@ -201,7 +201,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             </NoSsr>
           </div>
           <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)} />
-          <div className={styles.citedBy}>
+          <div className={styles.referenceWrapper}>
             <article className={styles.paperShow}>
               <div>
                 <span className={styles.sectionTitle}>References</span>
@@ -227,7 +227,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           </div>
           <div className={styles.sectionDivider} />
           <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)} />
-          <div className={styles.citedBy}>
+          <div className={styles.citedWrapper}>
             <article className={styles.paperShow}>
               <div>
                 <span className={styles.sectionTitle}>Cited By</span>

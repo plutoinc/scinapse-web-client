@@ -2,10 +2,6 @@ $action-bar-height: 55px;
 $ref-cited-bar-height: 50px;
 $side-navigation-bottom-padding: 24px;
 
-:global {
-  @import '~react-pdf/dist/Page/AnnotationLayer';
-}
-
 ul {
   list-style: none;
   margin: 0;
@@ -137,9 +133,9 @@ article.paperShow {
   }
 }
 
-.citedBy {
-  margin-top: 16px;
-  padding-bottom: 16px;
+.citedWrapper,
+.referenceWrapper {
+  padding: 16px 0;
 }
 
 .paperContentBlockHeaderTabsHeight {
