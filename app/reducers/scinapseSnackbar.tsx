@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from 'redux-starter-kit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import ActionTicketManager from '../helpers/actionTicketManager';
 import { ActionTicketParams } from '../helpers/actionTicketManager/actionTicket';
 

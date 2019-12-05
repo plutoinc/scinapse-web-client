@@ -1,6 +1,6 @@
 import React, { FC, useRef, useEffect } from 'react';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { isEqual } from 'lodash';
 
 import { REF_CITED_CONTAINER_TYPE } from '../../components/paperShow/constants';
@@ -10,6 +10,7 @@ import { AppState } from '../../reducers';
 import { CurrentUser } from '../../model/currentUser';
 import alertToast from '../../helpers/makePlutoToastAction';
 import { ActionCreators } from '../../actions/actionTypes';
+import { useThunkDispatch } from '../../hooks/useThunkDispatch';
 
 const s = require('./refCitedPapersContainer.scss');
 const useStyles = require('isomorphic-style-loader/useStyles');
@@ -26,7 +27,7 @@ interface Props {
 
 const RefCitedPapersContainer: FC<Props> = ({ type, parentPaperId, page, query, sort, children }) => {
   useStyles(s);
-  const dispatch = useDispatch();
+  const dispatch = useThunkDispatch();
 
   const shouldFetch = useSelector(
     (state: AppState) => !state.configuration.succeedAPIFetchAtServer || state.configuration.renderedAtClient
@@ -37,28 +38,22 @@ const RefCitedPapersContainer: FC<Props> = ({ type, parentPaperId, page, query, 
   const wrapperNode = useRef<HTMLDivElement>(null);
   const lastParentPaperId = useRef('');
   const lastPage = useRef(page);
-  const lastShouldFetch = useRef(shouldFetch);
 
   useEffect(
     () => {
-      // NOTE: prevent fetching from the change of shouldFetch variable
-      if (shouldFetch && !lastShouldFetch.current) {
-        lastShouldFetch.current = true;
-        return;
-      }
-      // NOTE: prevent double fetching
       if (!shouldFetch) {
         lastParentPaperId.current = parentPaperId;
         lastPage.current = page;
         return;
       }
 
+      if (lastParentPaperId.current === parentPaperId && lastPage.current === page) return;
+
       const fetchFunc = type === 'reference' ? fetchRefPaperData : fetchCitedPaperData;
       const failedActionCreator =
         type === 'reference' ? ActionCreators.failedToGetReferencePapers : ActionCreators.failedToGetCitedPapers;
-      const promise = dispatch(fetchFunc(parentPaperId, page, query, sort));
 
-      Promise.all([promise])
+      dispatch(fetchFunc(parentPaperId, page, query, sort))
         .then(() => {
           if (wrapperNode.current && lastParentPaperId.current === parentPaperId && lastPage.current !== page) {
             window.scrollTo(0, wrapperNode.current.offsetTop - NAVBAR_HEIGHT - MOBILE_FIXED_HEADER_HEIGHT);

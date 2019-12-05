@@ -1,7 +1,8 @@
 import * as React from 'react';
 import Axios, { CancelTokenSource } from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { createSelector } from 'redux-starter-kit';
+import { createSelector } from '@reduxjs/toolkit';
+import { Document, Page } from 'react-pdf';
 import { denormalize } from 'normalizr';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '../../helpers/withStylesHelper';
@@ -22,11 +23,9 @@ import { PDFViewerState } from '../../reducers/pdfViewer';
 import { CurrentUser } from '../../model/currentUser';
 import { getBestPdfOfPaper, getPDFPathOrBlob } from '../../actions/pdfViewer';
 import Button from '../common/button';
-const { Document, Page, pdfjs } = require('react-pdf');
 const styles = require('./pdfViewer.scss');
 
 const DIRECT_PDF_PATH_PREFIX = 'https://asset-pdf.scinapse.io/';
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function trackClickButton(actionTag: Scinapse.ActionTicket.ActionTagType, paperId: string) {
   ActionTicketManager.trackTicket({
@@ -124,7 +123,6 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
     <div ref={wrapperNode} className={styles.contentWrapper}>
       <Document
         file={!!directPdfPath ? directPdfPath : pdfBlob}
-        error={null}
         loading={
           <div className={styles.loadingContainerWrapper}>
             <div className={styles.loadingContainer}>
@@ -152,7 +150,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
           }}
           className={styles.pageLayer}
         >
-          <Page width={996} margin={'0 auto'} pageNumber={1} />
+          <Page width={996} className={styles.page} pageNumber={1} />
         </div>
       </Document>
       <div
