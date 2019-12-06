@@ -55,9 +55,21 @@ export interface JournalShowProps
       dispatch: Dispatch<any>;
     }> {}
 
+interface JournalShowLocalState {
+  currentQuery: string;
+}
+
 @withStyles<typeof JournalShowContainer>(styles)
-class JournalShowContainer extends React.PureComponent<JournalShowProps> {
+class JournalShowContainer extends React.PureComponent<JournalShowProps, JournalShowLocalState> {
   private cancelToken = axios.CancelToken.source();
+
+  public constructor(props: JournalShowProps) {
+    super(props);
+
+    this.state = {
+      currentQuery: '',
+    };
+  }
 
   public async componentDidMount() {
     const { dispatch, match, configuration, location, journalShow } = this.props;
@@ -105,6 +117,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
 
   public render() {
     const { journalShow, journal } = this.props;
+    const { currentQuery } = this.state;
 
     if (journalShow.pageErrorCode) {
       return <ErrorPage errorNum={journalShow.pageErrorCode} />;
@@ -161,12 +174,22 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
                       </div>
                       <div className={styles.searchInputWrapper}>
                         <InputField
-                          trailingIcon={<Icon icon="SEARCH" />}
+                          trailingIcon={
+                            <Icon
+                              icon="SEARCH"
+                              onClick={() => {
+                                this.handleSubmitSearch(currentQuery);
+                              }}
+                            />
+                          }
                           placeholder="Search papers"
                           onKeyPress={e => {
                             if (e.key === 'Enter') {
                               this.handleSubmitSearch(e.currentTarget.value);
                             }
+                          }}
+                          onChange={e => {
+                            this.setState({ currentQuery: e.currentTarget.value });
                           }}
                           defaultValue={currentQueryParams.q}
                         />

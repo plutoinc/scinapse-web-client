@@ -55,9 +55,21 @@ export interface AuthorShowProps {
   dispatch: Dispatch<any>;
 }
 
+interface UnconnectedAuthorShowState {
+  currentQuery: string;
+}
+
 @withStyles<typeof AuthorShow>(styles)
-class AuthorShow extends React.PureComponent<AuthorShowProps> {
+class AuthorShow extends React.PureComponent<AuthorShowProps, UnconnectedAuthorShowState> {
   private cancelToken = axios.CancelToken.source();
+
+  public constructor(props: AuthorShowProps) {
+    super(props);
+
+    this.state = {
+      currentQuery: '',
+    };
+  }
 
   public componentWillUnmount() {
     this.cancelToken.cancel();
@@ -65,6 +77,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
 
   public render() {
     const { author, authorShow, currentUser, isTestMode, layout } = this.props;
+    const { currentQuery } = this.state;
 
     if (authorShow.pageErrorStatusCode) {
       return <ErrorPage errorNum={authorShow.pageErrorStatusCode} />;
@@ -152,8 +165,18 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
                         <InputField
                           aria-label="Scinapse search box in author show"
                           defaultValue={authorShow.paperSearchQuery}
-                          trailingIcon={<Icon icon="SEARCH" />}
+                          trailingIcon={
+                            <Icon
+                              icon="SEARCH"
+                              onClick={() => {
+                                this.handleSubmitSearch(currentQuery);
+                              }}
+                            />
+                          }
                           placeholder="Search papers"
+                          onChange={e => {
+                            this.setState({ currentQuery: e.currentTarget.value });
+                          }}
                           onKeyPress={e => {
                             if (e.key === 'Enter') {
                               this.handleSubmitSearch(e.currentTarget.value);
