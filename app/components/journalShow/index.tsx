@@ -284,14 +284,14 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
           <meta itemProp="name" content={`${journal.title} | Scinapse`} />
           <meta
             name="description"
-            content={`${journal.title} | ISSN: ${journal.issn || 0} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ${
+            content={`${journal.title} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ISSN: ${journal.issn || 0} | ${
               journal.paperCount
             } papers`}
           />
           <meta name="twitter:title" content={`${journal.title} | Scinapse`} />
           <meta
             name="twitter:description"
-            content={`${journal.title} | ISSN: ${journal.issn || 0} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ${
+            content={`${journal.title} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ISSN: ${journal.issn || 0} | ${
               journal.paperCount
             } papers`}
           />
@@ -299,7 +299,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
           <meta property="og:title" content={`${journal.title} | Scinapse`} />
           <meta
             property="og:description"
-            content={`${journal.title} | ISSN: ${journal.issn || 0} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ${
+            content={`${journal.title} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ISSN: ${journal.issn || 0} | ${
               journal.paperCount
             } papers`}
           />

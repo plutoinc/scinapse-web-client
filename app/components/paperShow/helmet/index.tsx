@@ -65,11 +65,6 @@ const getStructuredData = (paper: Paper) => {
     dateModified: paper.publishedDate,
     about: paper.fosList.map(fos => ({ '@type': 'Thing', name: fos.fos })),
     mainEntityOfPage: `https://scinapse.io/papers/${paper.id}`,
-    contentRating: {
-      '@type': 'Rating',
-      name: 'impact factor',
-      ratingValue: paper.journal ? paper.journal.impactFactor : 0,
-    },
     author,
     publisher,
   };
