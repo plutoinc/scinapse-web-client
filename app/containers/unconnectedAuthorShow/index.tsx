@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import DesktopPagination from '../../components/common/desktopPagination';
 import MobilePagination from '../../components/common/mobilePagination';
 import { withStyles } from '../../helpers/withStylesHelper';
-import { AuthorShowState } from './reducer';
+import { AuthorShowState as AuthorShowGlobalState } from './reducer';
 import { Configuration } from '../../reducers/configuration';
 import { CurrentUser } from '../../model/currentUser';
 import { Author, authorSchema } from '../../model/author/author';
@@ -48,19 +48,19 @@ export interface AuthorShowProps {
   author: Author;
   coAuthors: Author[];
   papers: Paper[];
-  authorShow: AuthorShowState;
+  authorShow: AuthorShowGlobalState;
   configuration: Configuration;
   currentUser: CurrentUser;
   isTestMode: boolean;
   dispatch: Dispatch<any>;
 }
 
-interface UnconnectedAuthorShowState {
+interface AuthorShowLocalState {
   currentQuery: string;
 }
 
 @withStyles<typeof AuthorShow>(styles)
-class AuthorShow extends React.PureComponent<AuthorShowProps, UnconnectedAuthorShowState> {
+class AuthorShow extends React.PureComponent<AuthorShowProps, AuthorShowLocalState> {
   private cancelToken = axios.CancelToken.source();
 
   public constructor(props: AuthorShowProps) {

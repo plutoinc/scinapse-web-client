@@ -17,7 +17,7 @@ import { Configuration } from '../../reducers/configuration';
 import { fetchJournalShowPageData, JournalShowQueryParams } from './sideEffect';
 import { paperSchema, Paper } from '../../model/paper';
 import { journalSchema, Journal } from '../../model/journal';
-import { JournalShowState } from './reducer';
+import { JournalShowState as JournalShowGlobalState } from './reducer';
 import Icon from '../../icons';
 import { LayoutState } from '../layouts/reducer';
 import formatNumber from '../../helpers/formatNumber';
@@ -49,7 +49,7 @@ export interface JournalShowProps
       layout: LayoutState;
       currentUser: CurrentUser;
       configuration: Configuration;
-      journalShow: JournalShowState;
+      journalShow: JournalShowGlobalState;
       journal: Journal | undefined;
       papers: Paper[] | undefined;
       dispatch: Dispatch<any>;
