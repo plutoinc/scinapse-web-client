@@ -11,6 +11,7 @@
     "lib": ["es2016", "dom", "esnext.asynciterable"],
     "typeRoots": ["../node_modules/@types", "../typings"],
     "removeComments": true,
+    "skipLibCheck": true,
     "experimentalDecorators": true
   },
   "include": ["**/*.ts"],
