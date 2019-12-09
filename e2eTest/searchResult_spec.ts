@@ -13,7 +13,7 @@ function searchResultE2E(TEST_NAME: string, width: number, height: number) {
 
     describe('when enter the page', () => {
       it('should render proper title', async () => {
-        await expect(page.title()).resolves.toMatch('machine learning | Scinapse | Academic search engine for paper');
+        await expect(page.title()).resolves.toMatch('machine learning | Search | Scinapse');
       });
 
       it('should render proper search result', async () => {

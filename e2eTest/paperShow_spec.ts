@@ -13,9 +13,7 @@ function paperShowE2E(TEST_NAME: string, width: number, height: number) {
 
     describe('when enter the page', () => {
       it('should render proper title', async () => {
-        await expect(page.title()).resolves.toMatch(
-          '[PDF] Quantum Machine Learning | Scinapse | Academic search engine for paper'
-        );
+        await expect(page.title()).resolves.toMatch('[PDF] Quantum Machine Learning | Scinapse');
       });
 
       it('should render the search input element', async () => {
