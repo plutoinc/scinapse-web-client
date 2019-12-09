@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import * as Cookies from 'js-cookie';
 import MenuItem from '@material-ui/core/MenuItem';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { Button } from '@pluto_network/pluto-design-elements';
 import * as addDays from 'date-fns/add_days';
 import * as isAfter from 'date-fns/is_after';
 import { parse } from 'qs';
@@ -30,7 +31,6 @@ import { getCollections } from '../collections/actions';
 import { getMemoizedPaper } from '../../containers/paperShow/select';
 import ResearchHistory from '../researchHistory';
 import { UserDevice } from './reducer';
-import Button from '../common/button';
 import { fetchKeywordAlertList } from '../../containers/keywordSettings/actions';
 import { changeSearchQuery } from '../../reducers/searchQuery';
 import MobileSearchBox from '../common/mobileSearchBox';
@@ -454,6 +454,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
             {this.getHistoryButton()}
             <Button
               elementType="button"
+              aria-label="Scinapse sign in button"
               size="medium"
               variant="text"
               style={{ marginRight: '8px' }}
@@ -474,6 +475,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
           </div>
           <Button
             elementType="button"
+            aria-label="Scinapse sign up button"
             size="medium"
             onClick={() => {
               this.handleOpenSignUp();

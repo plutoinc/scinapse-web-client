@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Tooltip from '@material-ui/core/Tooltip';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { AppState } from '../../reducers';
 import { UserDevice } from '../layouts/reducer';
@@ -35,6 +35,7 @@ const AlertCreateButton: React.FC<AlertCreateButtonProps> = props => {
     >
       <Button
         elementType="button"
+        aria-label="Create keyword alert"
         size="small"
         variant="outlined"
         color="blue"

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { Paper } from '../../../model/paper';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import SourceURLPopover from '../../common/sourceURLPopover';
@@ -9,7 +10,6 @@ import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
 import { addPaperToRecommendPool } from '../../recommendPool/actions';
 import GroupButton from '../../common/groupButton';
-import Button from '../../common/button';
 const styles = require('./pdfSourceButton.scss');
 
 interface SourceButtonProps {
@@ -71,6 +71,7 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
             {paper.urls.length > 0 ? (
               <Button
                 elementType="button"
+                aria-label="Source dropdown button"
                 variant={!showFullText ? 'contained' : 'outlined'}
                 onClick={async () => {
                   setIsSourcePopoverOpen(!isSourcePopoverOpen);

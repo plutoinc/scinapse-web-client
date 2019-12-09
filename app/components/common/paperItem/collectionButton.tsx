@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+import { Button } from '@pluto_network/pluto-design-elements';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
@@ -8,7 +9,6 @@ import { AppState } from '../../../reducers';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
 import { addPaperToRecommendPool } from '../../recommendPool/actions';
 import { Paper } from '../../../model/paper';
-import Button from '../button';
 
 interface CollectionButtonProps {
   paper: Paper;
@@ -35,6 +35,7 @@ const CollectionButton: React.FC<CollectionButtonProps> = ({ saved, paper, pageT
   return (
     <Button
       elementType="button"
+      aria-label="Save paper to collection button"
       size="small"
       onClick={async () => {
         const action = saved ? 'savedCollection' : 'addToCollection';

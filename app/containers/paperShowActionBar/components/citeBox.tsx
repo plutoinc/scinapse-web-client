@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { Paper } from '../../../model/paper';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
 import { addPaperToRecommendPool } from '../../../components/recommendPool/actions';
-import Button from '../../../components/common/button';
 
 interface CiteBoxProps {
   paper: Paper;
@@ -21,6 +21,7 @@ const CiteBox: React.FunctionComponent<CiteBoxProps> = props => {
   return (
     <Button
       elementType="button"
+      aria-label="Cite button"
       color="gray"
       onClick={async () => {
         GlobalDialogManager.openCitationDialog(paper.id);

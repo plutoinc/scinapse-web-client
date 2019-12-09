@@ -2,13 +2,13 @@ import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { parse } from 'qs';
 import { Field, Form, Formik, FormikErrors } from 'formik';
+import { Button } from '@pluto_network/pluto-design-elements';
 import AuthAPI from '../../../api/auth';
 import AuthInputBox from '../../common/inputBox/authInputBox';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import alertToast from '../../../helpers/makePlutoToastAction';
 import PlutoAxios from '../../../api/pluto';
 import { MINIMUM_PASSWORD_LENGTH } from '../../../constants/auth';
-import Button from '../../common/button';
 const styles = require('./resetPassword.scss');
 
 interface FormValues {
@@ -99,6 +99,7 @@ const ResetPasswordPage: React.FunctionComponent<RouteComponentProps<any>> = pro
               type="submit"
               size="large"
               elementType="button"
+              aria-label="Reset password and sign in button"
               style={{ backgroundColor: '#6096ff', marginTop: '42px', fontSize: '14px' }}
               isLoading={isLoading}
               fullWidth

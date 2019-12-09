@@ -9,6 +9,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Popper from '@material-ui/core/Popper';
 import Tooltip from '@material-ui/core/Tooltip';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { withStyles } from '../../helpers/withStylesHelper';
 import Icon from '../../icons';
 import ScinapseButton from '../../components/common/scinapseButton';
@@ -17,7 +18,6 @@ import { MyCollectionsState } from './reducer';
 import { collectionSchema, Collection } from '../../model/collection';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
 import PaperNoteForm from '../../components/paperShow/noteForm';
-import Button from '../../components/common/button';
 
 import {
   selectCollectionToCurrentCollection,
@@ -84,6 +84,7 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
       <div ref={addToCollectionBtnEl}>
         <Button
           elementType="button"
+          aria-label="Add paper to collection button"
           size="medium"
           color="gray"
           variant="outlined"

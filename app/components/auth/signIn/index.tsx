@@ -3,10 +3,10 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Formik, Form, Field, FormikErrors } from 'formik';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { Button } from '@pluto_network/pluto-design-elements';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import AuthInputBox from '../../common/inputBox/authInputBox';
-import Button from '../../common/button';
 import { GLOBAL_DIALOG_TYPE, DialogState } from '../../dialog/reducer';
 import ORSeparator from '../separator';
 import AuthTabs from '../authTabs';
@@ -189,7 +189,14 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
                     >
                       Forgot Password?
                     </div>
-                    <Button size="large" type="submit" elementType="button" fullWidth isLoading={isLoading}>
+                    <Button
+                      size="large"
+                      type="submit"
+                      elementType="button"
+                      aria-label="Scinapse sign in button"
+                      fullWidth
+                      isLoading={isLoading}
+                    >
                       <span>Sign in</span>
                     </Button>
                   </Form>

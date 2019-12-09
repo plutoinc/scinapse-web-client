@@ -4,6 +4,7 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Popover from '@material-ui/core/Popover';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { setActiveFilterButton } from '../../actions/searchFilter';
 import { SearchActions } from '../../actions/actionTypes';
@@ -11,7 +12,6 @@ import FilterButton, { FILTER_BUTTON_TYPE } from '../filterButton';
 import { AppState } from '../../reducers';
 import SearchQueryManager from '../../helpers/searchQueryManager';
 import ActionTicketManager from '../../helpers/actionTicketManager';
-import Button from '../common/button';
 
 const s = require('./sortingDropdown.scss');
 

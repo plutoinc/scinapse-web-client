@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'redux-starter-kit';
 import { denormalize } from 'normalizr';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { withStyles } from '../../helpers/withStylesHelper';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import Icon from '../../icons';
@@ -22,7 +23,6 @@ import { addPaperToRecommendPool } from '../recommendPool/actions';
 import { PDFViewerState } from '../../reducers/pdfViewer';
 import { CurrentUser } from '../../model/currentUser';
 import { getBestPdfOfPaper, getPDFPathOrBlob } from '../../actions/pdfViewer';
-import Button from '../common/button';
 const { Document, Page, pdfjs } = require('react-pdf');
 const styles = require('./pdfViewer.scss');
 
@@ -188,6 +188,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
       <div ref={viewMorePDFBtnEl}>
         <Button
           elementType="button"
+          aria-label="Read all button"
           variant="outlined"
           color="black"
           isLoading={PDFViewerState.isLoading}

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
 import Tooltip from '@material-ui/core/Tooltip';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { withStyles } from '../../../helpers/withStylesHelper';
@@ -8,7 +9,6 @@ import Icon from '../../../icons';
 import SearchingPDFBtn from '../../../components/paperShow/components/searchingPDFBtn';
 import { addPaperToRecommendPool } from '../../../components/recommendPool/actions';
 import { Paper } from '../../../model/paper';
-import Button from '../../../components/common/button';
 const s = require('../actionBar.scss');
 
 interface RequestFullTextBtnProps {
@@ -38,6 +38,7 @@ const RequestFullTextBtn: React.FC<RequestFullTextBtnProps> = React.memo(props =
     >
       <Button
         elementType="button"
+        aria-label="Open dialog to request full text button"
         variant="outlined"
         isLoading={isLoading}
         onClick={async () => {

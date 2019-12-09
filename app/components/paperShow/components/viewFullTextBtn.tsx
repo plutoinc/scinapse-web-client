@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import SearchingPDFBtn from './searchingPDFBtn';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { addPaperToRecommendPool } from '../../recommendPool/actions';
-import Button from '../../common/button';
 
 const styles = require('./viewFullTextBtn.scss');
 
@@ -26,6 +26,7 @@ const ViewFullTextBtn: React.FC<ViewFullTextBtnProps> = props => {
   return (
     <Button
       elementType="button"
+      aria-label="View full text button"
       isLoading={isLoading}
       onClick={() => {
         ActionTicketManager.trackTicket({

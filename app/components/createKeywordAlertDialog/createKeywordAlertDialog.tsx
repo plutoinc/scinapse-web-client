@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, FormikErrors } from 'formik';
 import classNames from 'classnames';
 import Dialog from '@material-ui/core/Dialog';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { AppState } from '../../reducers';
 import { closeCreateKeywordAlertDialog } from '../../reducers/createKeywordAlertDialog';
 import ScinapseFormikInput from '../common/scinapseInput/scinapseFormikInput';
-import Button from '../common/button';
 import Icon from '../../icons';
 import { createKeywordAlert } from '../../containers/keywordSettings/actions';
 const useStyles = require('isomorphic-style-loader/useStyles');
@@ -83,6 +83,7 @@ const CreateKeywordAlertDialog: React.FC = () => {
             <div className={s.btnWrapper}>
               <Button
                 elementType="button"
+                aria-label="Create keyword button"
                 size="medium"
                 variant="contained"
                 color="blue"
@@ -98,6 +99,7 @@ const CreateKeywordAlertDialog: React.FC = () => {
       <div className={s.closeBtnWrapper}>
         <Button
           elementType="button"
+          aria-label="Cancel to create keyword button"
           size="small"
           variant="text"
           color="gray"

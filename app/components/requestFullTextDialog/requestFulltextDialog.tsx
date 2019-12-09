@@ -3,6 +3,7 @@ import * as Cookies from 'js-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import * as classNames from 'classnames';
 import Dialog from '@material-ui/core/Dialog';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { Formik, Form, Field, FormikErrors } from 'formik';
 import PaperAPI from '../../api/paper';
 import { AppState } from '../../reducers';
@@ -14,7 +15,6 @@ import { LAST_SUCCEEDED_EMAIL_KEY } from '../../constants/requestDialogConstant'
 import { fetchLastFullTextRequestedDate } from '../../actions/paperShow';
 import { closeRequestFullTextDialog } from '../../reducers/requestFullTextDialog';
 import ReduxAutoSizeTextarea from '../common/autoSizeTextarea/reduxAutoSizeTextarea';
-import Button from '../common/button';
 import Icon from '../../icons';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./requestFulltextDialog.scss');
@@ -188,6 +188,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
             <div className={s.btnWrapper}>
               <Button
                 elementType="button"
+                aria-label="Cancel full text request button"
                 size="medium"
                 variant="text"
                 color="blue"
@@ -199,6 +200,7 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
               </Button>
               <Button
                 elementType="button"
+                aria-label="Send full text request button"
                 type="submit"
                 size="medium"
                 variant="contained"

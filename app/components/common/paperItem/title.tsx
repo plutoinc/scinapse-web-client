@@ -66,7 +66,13 @@ const Title: React.FC<TitleProps> = props => {
         dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(trimmedTitle) }}
         className={styles.title}
       />
-      <a href={`/papers/${paper.id}`} target="_blank" rel="noopener noreferrer" className={styles.externalIconWrapper}>
+      <a
+        href={`/papers/${paper.id}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={styles.externalIconWrapper}
+        aria-label="External window icon"
+      >
         <Icon
           onClick={() => {
             handleClickTitle(true);

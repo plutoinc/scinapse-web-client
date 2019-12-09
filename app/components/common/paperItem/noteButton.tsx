@@ -1,9 +1,9 @@
 import React from 'react';
 import Popover from '@material-ui/core/Popover';
+import { Button } from '@pluto_network/pluto-design-elements';
 import CollectionPaperNote from '../../collectionPaperNote';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-import Button from '../button';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./noteButton.scss');
 
@@ -25,6 +25,7 @@ const NoteButton: React.FC<NoteButtonProps> = ({ note, pageType, actionArea, pap
     <div ref={noteRef} className={s.addNoteButton}>
       <Button
         elementType="button"
+        aria-label="Note to paper button"
         size="small"
         variant="outlined"
         color="gray"

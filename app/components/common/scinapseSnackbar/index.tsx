@@ -1,6 +1,6 @@
 import React from 'react';
 import Snackbar, { SnackbarProps } from '@material-ui/core/Snackbar';
-import Button from '../button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { getCurrentPageType } from '../../locationListener';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
@@ -37,6 +37,7 @@ const ScinapseSnackbar: React.FC<Props> = props => {
         <div className={s.closeBtn} key={`close`}>
           <Button
             elementType="button"
+            aria-label="Close scinapse snackbar button"
             variant="text"
             color="gray"
             size="small"

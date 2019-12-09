@@ -11,7 +11,7 @@ import RelatedPaperItem from '../paperShow/components/relatedPaperItem';
 import { getCurrentPageType } from '../locationListener';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 const store = require('store');
 const s = require('./researchHistory.scss');
 
@@ -122,6 +122,7 @@ const ResearchHistory: React.FunctionComponent<ResearchHistoryProps> = ({ paper,
     <>
       <Button
         elementType="button"
+        aria-label="History button"
         size="medium"
         variant="text"
         color="gray"

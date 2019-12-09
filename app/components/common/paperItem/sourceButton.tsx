@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { UserDevice } from '../../layouts/reducer';
 import Icon from '../../../icons';
 import { PaperSource } from '../../../api/paper';
@@ -8,7 +9,6 @@ import { AppState } from '../../../reducers';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { addPaperToRecommendPool } from '../../recommendPool/actions';
 import { Paper } from '../../../model/paper';
-import Button from '../button';
 const styles = require('./sourceButton.scss');
 
 interface SourceButtonProps {

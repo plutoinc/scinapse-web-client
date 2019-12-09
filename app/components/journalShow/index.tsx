@@ -11,14 +11,13 @@ import FullPaperItem from '../common/paperItem/fullPaperItem';
 import MobilePagination from '../common/mobilePagination';
 import DesktopPagination from '../common/desktopPagination';
 import ArticleSpinner from '../common/spinner/articleSpinner';
-import ScinapseInput from '../common/scinapseInput';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { CurrentUser } from '../../model/currentUser';
 import { Configuration } from '../../reducers/configuration';
 import { fetchJournalShowPageData, JournalShowQueryParams } from './sideEffect';
 import { paperSchema, Paper } from '../../model/paper';
 import { journalSchema, Journal } from '../../model/journal';
-import { JournalShowState } from './reducer';
+import { JournalShowState as JournalShowGlobalState } from './reducer';
 import Icon from '../../icons';
 import { LayoutState } from '../layouts/reducer';
 import formatNumber from '../../helpers/formatNumber';
@@ -30,6 +29,7 @@ import ErrorPage from '../error/errorPage';
 import { JournalShowMatchParams } from './types';
 import ImprovedFooter from '../layouts/improvedFooter';
 import { UserDevice } from '../layouts/reducer';
+import { InputField } from '@pluto_network/pluto-design-elements';
 const styles = require('./journalShow.scss');
 
 function mapStateToProps(state: AppState) {
@@ -49,15 +49,27 @@ export interface JournalShowProps
       layout: LayoutState;
       currentUser: CurrentUser;
       configuration: Configuration;
-      journalShow: JournalShowState;
+      journalShow: JournalShowGlobalState;
       journal: Journal | undefined;
       papers: Paper[] | undefined;
       dispatch: Dispatch<any>;
     }> {}
 
+interface JournalShowLocalState {
+  currentQuery: string;
+}
+
 @withStyles<typeof JournalShowContainer>(styles)
-class JournalShowContainer extends React.PureComponent<JournalShowProps> {
+class JournalShowContainer extends React.PureComponent<JournalShowProps, JournalShowLocalState> {
   private cancelToken = axios.CancelToken.source();
+
+  public constructor(props: JournalShowProps) {
+    super(props);
+
+    this.state = {
+      currentQuery: '',
+    };
+  }
 
   public async componentDidMount() {
     const { dispatch, match, configuration, location, journalShow } = this.props;
@@ -105,6 +117,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
 
   public render() {
     const { journalShow, journal } = this.props;
+    const { currentQuery } = this.state;
 
     if (journalShow.pageErrorCode) {
       return <ErrorPage errorNum={journalShow.pageErrorCode} />;
@@ -160,11 +173,25 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
                         <span className={styles.paperCount}>{journalShow.filteredPaperCount}</span>
                       </div>
                       <div className={styles.searchInputWrapper}>
-                        <ScinapseInput
-                          value={currentQueryParams.q}
-                          onSubmit={this.handleSubmitSearch}
+                        <InputField
+                          trailingIcon={
+                            <Icon
+                              icon="SEARCH"
+                              onClick={() => {
+                                this.handleSubmitSearch(currentQuery);
+                              }}
+                            />
+                          }
                           placeholder="Search papers"
-                          icon="SEARCH"
+                          onKeyPress={e => {
+                            if (e.key === 'Enter') {
+                              this.handleSubmitSearch(e.currentTarget.value);
+                            }
+                          }}
+                          onChange={e => {
+                            this.setState({ currentQuery: e.currentTarget.value });
+                          }}
+                          defaultValue={currentQueryParams.q}
                         />
                       </div>
                     </div>
@@ -278,26 +305,29 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
           <title>{journal.title} | Scinapse</title>
           <link rel="canonical" href={`https://scinapse.io/journals/${journal.id}`} />
           <meta itemProp="name" content={`${journal.title} | Scinapse`} />
-          {/* tslint:disable-next-line:max-line-length */}
           <meta
             name="description"
-            content={`${journal.title} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ${journal.paperCount} papers`}
+            content={`${journal.title} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ISSN: ${journal.issn || 0} | ${
+              journal.paperCount
+            } papers`}
           />
-          {/* tslint:disable-next-line:max-line-length */}
+          <meta name="twitter:title" content={`${journal.title} | Scinapse`} />
           <meta
             name="twitter:description"
-            content={`${journal.title} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ${journal.paperCount} papers`}
+            content={`${journal.title} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ISSN: ${journal.issn || 0} | ${
+              journal.paperCount
+            } papers`}
           />
           <meta name="twitter:card" content={`${journal.title} | Scinapse`} />
-          <meta name="twitter:title" content={`${journal.title} | Scinapse`} />
           <meta property="og:title" content={`${journal.title} | Scinapse`} />
-          <meta property="og:type" content="article" />
-          <meta property="og:url" content={`https://scinapse.io/journals/${journal.id}`} />
-          {/* tslint:disable-next-line:max-line-length */}
           <meta
             property="og:description"
-            content={`${journal.title} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ${journal.paperCount} papers`}
+            content={`${journal.title} | IF: ${(journal.impactFactor || 0).toFixed(2)} | ISSN: ${journal.issn || 0} | ${
+              journal.paperCount
+            } papers`}
           />
+          <meta property="og:type" content="article" />
+          <meta property="og:url" content={`https://scinapse.io/journals/${journal.id}`} />
         </Helmet>
       );
     }

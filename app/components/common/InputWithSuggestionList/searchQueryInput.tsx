@@ -4,6 +4,7 @@ import * as classNames from 'classnames';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { Button } from '@pluto_network/pluto-design-elements';
 import CompletionAPI, { CompletionKeyword } from '../../../api/completion';
 import { useDebouncedAsyncFetch } from '../../../hooks/debouncedFetchAPIHook';
 import { getHighlightedContent } from '../../../helpers/highlightContent';
@@ -21,7 +22,6 @@ import { AppState } from '../../../reducers';
 import { getCurrentPageType } from '../../locationListener';
 import { handleInputKeydown } from './helpers/handleInputKeydown';
 import { UserDevice } from '../../layouts/reducer';
-import Button from '../button';
 import { SearchQueryInputProps, SearchSourceType, SubmitParams } from './types';
 import { changeSearchQuery, openMobileSearchBox, closeMobileSearchBox } from '../../../reducers/searchQuery';
 const useStyles = require('isomorphic-style-loader/useStyles');
@@ -173,6 +173,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
         {k.removable && (
           <Button
             elementType="button"
+            aria-label="Remove search keyword button"
             size="small"
             variant="text"
             color="gray"
@@ -205,6 +206,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     <div className={s.searchButtonWrapper} style={{ left: '2px', right: 'auto', top: '2px' }}>
       <Button
         elementType="button"
+        aria-label="Go back button"
         variant="text"
         isLoading={false}
         onClick={() => {
@@ -221,6 +223,7 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
     <div className={s.searchButtonWrapper} style={{ right: '52px', top: '2px' }}>
       <Button
         elementType="button"
+        aria-label="Clear keyword button"
         variant="text"
         isLoading={false}
         color="gray"
@@ -296,12 +299,18 @@ const SearchQueryInput: React.FunctionComponent<SearchQueryInputProps> = props =
         {clearButton}
         <div className={s.searchButtonWrapper} style={props.actionArea == 'home' ? { top: '4px' } : { top: '2px' }}>
           {props.actionArea == 'home' ? (
-            <Button elementType="button" size="medium" onClick={clickSearchBtn}>
+            <Button elementType="button" aria-label="Search keyword button" size="medium" onClick={clickSearchBtn}>
               <Icon icon="SEARCH" />
               <span>Search</span>
             </Button>
           ) : (
-            <Button elementType="button" size="medium" variant="text" onClick={clickSearchBtn}>
+            <Button
+              elementType="button"
+              aria-label="Simple search keyword button"
+              size="medium"
+              variant="text"
+              onClick={clickSearchBtn}
+            >
               <Icon icon="SEARCH" />
             </Button>
           )}

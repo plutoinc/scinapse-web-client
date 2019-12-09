@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { isEqual } from 'lodash';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-
+import { Button } from '@pluto_network/pluto-design-elements';
 import PaperShowHelmet from '../paperShow/helmet';
 import { formulaeToHTMLStr } from '../../helpers/displayFormula';
 import { AppState } from '../../reducers';
@@ -16,7 +16,6 @@ import { AvailablePaperShowTab } from '../paperShowTabItem/paperShowTabItem';
 import MobileRelatedPapers from '../mobileRelatedPapers/mobileRelatedPapers';
 import MobileRefCitedPapers from '../paperShow/refCitedPapers/mobileRefCitedPapers';
 import PaperShowFigureList from '../paperShow/components/paperShowFigureList';
-import Button from '../common/button';
 import Icon from '../../icons';
 import { Paper } from '../../model/paper';
 import { PaperShowMatchParams } from '../../containers/paperShow/types';

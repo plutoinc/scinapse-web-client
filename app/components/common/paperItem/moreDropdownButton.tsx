@@ -1,10 +1,10 @@
 import React from 'react';
 import Popper from '@material-ui/core/Popper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { Button } from '@pluto_network/pluto-design-elements';
 import PaperItemMoreDropdownItem from './moreDropdownItem';
 import Icon from '../../../icons';
 import { Paper } from '../../../model/paper';
-import Button from '../button';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./moreDropdownButton.scss');
 
@@ -44,7 +44,14 @@ const MoreDropdownButton: React.FC<MoreDropdownButtonProps> = ({ dropdownContent
     <ClickAwayListener onClickAway={() => setIsOpen(false)}>
       <div className={s.moreButton}>
         <div ref={buttonAnchor}>
-          <Button elementType="button" size="small" variant="outlined" color="gray" onClick={() => setIsOpen(!isOpen)}>
+          <Button
+            elementType="button"
+            aria-label="More menu button"
+            size="small"
+            variant="outlined"
+            color="gray"
+            onClick={() => setIsOpen(!isOpen)}
+          >
             <Icon icon="ELLIPSIS" />
           </Button>
         </div>

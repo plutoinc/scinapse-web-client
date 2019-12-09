@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import DesktopPagination from '../../components/common/desktopPagination';
 import MobilePagination from '../../components/common/mobilePagination';
 import { withStyles } from '../../helpers/withStylesHelper';
-import { AuthorShowState } from './reducer';
+import { AuthorShowState as AuthorShowGlobalState } from './reducer';
 import { Configuration } from '../../reducers/configuration';
 import { CurrentUser } from '../../model/currentUser';
 import { Author, authorSchema } from '../../model/author/author';
@@ -19,7 +19,7 @@ import { DEFAULT_AUTHOR_PAPERS_SIZE } from '../../api/author';
 import ArticleSpinner from '../../components/common/spinner/articleSpinner';
 import CoAuthor from '../../components/common/coAuthor';
 import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
-import Button from '../../components/common/button';
+import { Button, InputField } from '@pluto_network/pluto-design-elements';
 import { LayoutState } from '../../components/layouts/reducer';
 import AuthorShowHeader from '../../components/authorShowHeader';
 import { SuggestAffiliation } from '../../api/suggest';
@@ -30,7 +30,6 @@ import { fetchAuthorPapers } from '../../actions/author';
 import EnvChecker from '../../helpers/envChecker';
 import ErrorPage from '../../components/error/errorPage';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
-import ScinapseInput from '../../components/common/scinapseInput';
 import Icon from '../../icons';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { UserDevice } from '../../components/layouts/reducer';
@@ -49,16 +48,28 @@ export interface AuthorShowProps {
   author: Author;
   coAuthors: Author[];
   papers: Paper[];
-  authorShow: AuthorShowState;
+  authorShow: AuthorShowGlobalState;
   configuration: Configuration;
   currentUser: CurrentUser;
   isTestMode: boolean;
   dispatch: Dispatch<any>;
 }
 
+interface AuthorShowLocalState {
+  currentQuery: string;
+}
+
 @withStyles<typeof AuthorShow>(styles)
-class AuthorShow extends React.PureComponent<AuthorShowProps> {
+class AuthorShow extends React.PureComponent<AuthorShowProps, AuthorShowLocalState> {
   private cancelToken = axios.CancelToken.source();
+
+  public constructor(props: AuthorShowProps) {
+    super(props);
+
+    this.state = {
+      currentQuery: '',
+    };
+  }
 
   public componentWillUnmount() {
     this.cancelToken.cancel();
@@ -66,6 +77,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
 
   public render() {
     const { author, authorShow, currentUser, isTestMode, layout } = this.props;
+    const { currentQuery } = this.state;
 
     if (authorShow.pageErrorStatusCode) {
       return <ErrorPage errorNum={authorShow.pageErrorStatusCode} />;
@@ -145,18 +157,34 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
                     <div className={styles.paperListHeader}>
                       <div className={styles.paperListLeft}>
                         <span className={styles.paperListTitle}>Publications</span>
-                        <span className={styles.paperListTitleNumber}>{` ${author.paperCount}`}</span>
+                        <span className={styles.paperListTitleNumber}>{` ${authorShow.papersTotalCount}`}</span>
                       </div>
                     </div>
                     <div className={styles.paperSearchContainer}>
-                      <ScinapseInput
-                        aria-label="Scinapse search box in author show"
-                        value={authorShow.paperSearchQuery}
-                        onSubmit={this.handleSubmitSearch}
-                        placeholder="Search papers"
-                        icon="SEARCH"
-                        wrapperStyle={{ marginRight: '8px', maxWidth: '500px', width: 'calc(100% - 130px)' }}
-                      />
+                      <div className={styles.searchInputWrapper}>
+                        <InputField
+                          aria-label="Scinapse search box in author show"
+                          defaultValue={authorShow.paperSearchQuery}
+                          trailingIcon={
+                            <Icon
+                              icon="SEARCH"
+                              onClick={() => {
+                                this.handleSubmitSearch(currentQuery);
+                              }}
+                            />
+                          }
+                          placeholder="Search papers"
+                          onChange={e => {
+                            this.setState({ currentQuery: e.currentTarget.value });
+                          }}
+                          onKeyPress={e => {
+                            if (e.key === 'Enter') {
+                              this.handleSubmitSearch(e.currentTarget.value);
+                            }
+                          }}
+                        />
+                      </div>
+
                       <SortBox
                         sortOption={authorShow.papersSort}
                         onClickOption={this.handleClickSortOption}
@@ -297,11 +325,12 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
         '@type': 'Person',
         name: coAuthor.name,
         affiliation: {
+          '@type': 'Organization',
           name: coAuthorAffiliation,
         },
-        description: `${coAuthorAffiliation ? `${coAuthorAffiliation},` : ''} citation: ${
+        description: `${coAuthorAffiliation ? `${coAuthorAffiliation} |` : ''} citation: ${
           coAuthor.citationCount
-        }, h-index: ${coAuthor.hindex}`,
+        } | h-index: ${coAuthor.hindex}`,
         mainEntityOfPage: 'https://scinapse.io',
       };
     });
@@ -311,10 +340,11 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
       '@type': 'Person',
       name: author.name,
       affiliation: {
+        '@type': 'Organization',
         name: affiliationName,
       },
       colleague: colleagues,
-      description: `${affiliationName ? `${affiliationName},` : ''} citation: ${author.citationCount}, h-index: ${
+      description: `${affiliationName ? `${affiliationName} |` : ''} citation: ${author.citationCount} | h-index: ${
         author.hindex
       }`,
       mainEntityOfPage: 'https://scinapse.io',
@@ -326,20 +356,20 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
   private getPageHelmet = () => {
     const { author } = this.props;
     const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : '';
-    const description = `${affiliationName ? `${affiliationName},` : ''} citation: ${author.citationCount}, h-index: ${
-      author.hindex
-    }`;
+    const description = `${affiliationName ? `${affiliationName} |` : ''} citation: ${
+      author.citationCount
+    } | h-index: ${author.hindex}`;
 
     return (
       <Helmet>
-        <title>{author.name}</title>
+        <title>{`${author.name} | Scinapse`}</title>
         <link rel="canonical" href={`https://scinapse.io/authors/${author.id}`} />
-        <meta itemProp="name" content={`${author.name} | Scinapse | Academic search engine for paper`} />
+        <meta itemProp="name" content={`${author.name} | Scinapse`} />
         <meta name="description" content={description} />
         <meta name="twitter:description" content={description} />
-        <meta name="twitter:card" content={`${author.name} | Scinapse | Academic search engine for paper`} />
-        <meta name="twitter:title" content={`${author.name} | Scinapse | Academic search engine for paper`} />
-        <meta property="og:title" content={`${author.name} | Scinapse | Academic search engine for paper`} />
+        <meta name="twitter:card" content={`${author.name} | Scinapse`} />
+        <meta name="twitter:title" content={`${author.name} | Scinapse`} />
+        <meta property="og:title" content={`${author.name} | Scinapse`} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={`https://scinapse.io/authors/${author.id}`} />
         <meta property="og:description" content={description} />

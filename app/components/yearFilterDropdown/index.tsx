@@ -3,11 +3,11 @@ import classNames from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Popover from '@material-ui/core/Popover';
+import { Button } from '@pluto_network/pluto-design-elements';
 import FilterButton, { FILTER_BUTTON_TYPE } from '../filterButton';
 import { AppState } from '../../reducers';
 import { setActiveFilterButton } from '../../actions/searchFilter';
 import { goToYearFilteredSearchResultPage } from '../yearRangeSlider/helper';
-import Button from '../common/button';
 import { SearchActions } from '../../actions/actionTypes';
 import YearGraph from '../yearGraph';
 const useStyles = require('isomorphic-style-loader/useStyles');
@@ -203,6 +203,7 @@ const YearFilterDropdown: React.FC<Props> = React.memo(({ location, history }) =
         <div className={s.controlBtnsWrapper}>
           <Button
             elementType="button"
+            aria-label="Clear year filter button"
             variant="text"
             color="gray"
             onClick={() => {
@@ -211,7 +212,13 @@ const YearFilterDropdown: React.FC<Props> = React.memo(({ location, history }) =
           >
             <span>Clear</span>
           </Button>
-          <Button elementType="button" variant="text" color="blue" onClick={handleSubmit}>
+          <Button
+            elementType="button"
+            aria-label="Apply year filter button"
+            variant="text"
+            color="blue"
+            onClick={handleSubmit}
+          >
             <span>Apply</span>
           </Button>
         </div>

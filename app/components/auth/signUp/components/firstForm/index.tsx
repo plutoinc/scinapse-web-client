@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Formik, Form, Field, FormikErrors } from 'formik';
+import { Button } from '@pluto_network/pluto-design-elements';
 import AuthAPI from '../../../../../api/auth';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
 import AuthInputBox from '../../../../common/inputBox/authInputBox';
 import { OAUTH_VENDOR, SignInResult } from '../../../../../api/types/auth';
-import Button from '../../../../common/button';
 import ORSeparator from '../../../separator';
 import AuthTabs from '../../../authTabs';
 import validateEmail from '../../../../../helpers/validateEmail';
@@ -177,7 +177,14 @@ const FirstForm: React.FunctionComponent<FirstFormProps> = props => {
                     />
                     {networkError && <div className={s.errorContent}>{networkError}</div>}
                     <div className={s.authButtonWrapper}>
-                      <Button type="submit" elementType="button" isLoading={isLoading} fullWidth size="large">
+                      <Button
+                        type="submit"
+                        elementType="button"
+                        aria-label="Scinapse sign up button"
+                        isLoading={isLoading}
+                        fullWidth
+                        size="large"
+                      >
                         <span>Sign up</span>
                       </Button>
                     </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Button from '../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { Collection } from '../../model/collection';
 import copySelectedTextToClipboard from '../../helpers/copySelectedTextToClipboard';
@@ -93,6 +93,7 @@ const CollectionShareButton: React.FC<{ userCollection: Collection }> = ({ userC
   const collectionShareButton = (
     <Button
       elementType="button"
+      aria-label="Share collection button"
       size="medium"
       variant="outlined"
       color="blue"

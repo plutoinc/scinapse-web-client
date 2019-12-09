@@ -4,6 +4,7 @@ import { Dispatch } from 'redux';
 import { isEqual } from 'lodash';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Popper from '@material-ui/core/Popper';
+import { Button } from '@pluto_network/pluto-design-elements';
 import Icon from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { CollectionShowState } from '../../containers/collectionShow/reducer';
@@ -11,7 +12,6 @@ import { ACTION_TYPES } from '../../actions/actionTypes';
 import { AvailableExportCitationType } from '../../containers/paperShow/records';
 import { exportCitationText } from '../../helpers/exportCitationText';
 import ActionTicketManager from '../../helpers/actionTicketManager';
-import Button from '../common/button';
 
 const styles = require('./collectionPapersControlBtns.scss');
 
@@ -48,6 +48,7 @@ const MultiCitationExportDropdown: React.FC<{ selectedPaperIds: string[] }> = ({
       <div ref={dropdownMenuEl}>
         <Button
           elementType="button"
+          aria-label="Export citation button"
           variant="text"
           color="black"
           onClick={() => setIsOpen(!isOpen)}
@@ -134,6 +135,7 @@ const CollectionPapersControlBtns: React.FC<{
 
         <Button
           elementType="button"
+          aria-label="Delete paper in collection button"
           variant="text"
           color="black"
           onClick={() => {

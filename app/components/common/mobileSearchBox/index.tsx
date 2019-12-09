@@ -1,10 +1,10 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { AppState } from '../../../reducers';
 import { closeMobileSearchBox } from '../../../reducers/searchQuery';
 import SearchQueryInput from '../InputWithSuggestionList/searchQueryInput';
-import Button from '../button';
 import { UserDevice } from '../../layouts/reducer';
 const useStyle = require('isomorphic-style-loader/useStyles');
 const s = require('./mobileSearchBox.scss');
@@ -50,6 +50,7 @@ const MobileSearchBox: React.FC<Props> = ({ location }) => {
       <div className={s.mobileSearchBoxFooter}>
         <Button
           elementType="button"
+          aria-label="Cancel mobile search box button"
           size="small"
           variant="text"
           color="gray"

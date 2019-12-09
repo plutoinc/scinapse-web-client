@@ -7,6 +7,7 @@ import { RouteComponentProps, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import * as parse from 'date-fns/parse';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { AppState } from '../../reducers';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { getCollections } from './sideEffect';
@@ -22,7 +23,6 @@ import restoreScroll from '../../helpers/scrollRestoration';
 import alertToast from '../../helpers/makePlutoToastAction';
 import ErrorPage from '../error/errorPage';
 import ImprovedFooter from '../layouts/improvedFooter';
-import Button from '../common/button';
 const styles = require('./collections.scss');
 
 export interface UserCollectionsProps extends RouteComponentProps<{ userId: string }> {
@@ -141,6 +141,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
           <div className={styles.controlIconWrapper}>
             <Button
               elementType="button"
+              aria-label="Edit collection button"
               size="small"
               color="black"
               onClick={() => {
@@ -153,6 +154,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
           <div className={styles.controlIconWrapper}>
             <Button
               elementType="button"
+              aria-label="Delete collection button"
               size="small"
               color="black"
               onClick={() => {
@@ -175,6 +177,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
       return (
         <Button
           elementType="button"
+          aria-label="Create new collection button"
           size="small"
           variant="outlined"
           color="gray"
@@ -237,33 +240,28 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
     const { collections, member } = this.props;
 
     if (collections && member) {
-      const headCollections = collections
-        .map(c => c.title)
-        .slice(0, 3)
-        .join(' | ');
-
       return (
         <Helmet>
-          <title>{`${member.firstName} ${member.lastName || ''}'s paper collections | Scinapse`}</title>
+          <title>{`${member.firstName} ${member.lastName || ''}'s collections | Scinapse`}</title>
           <link rel="canonical" href={`https://scinapse.io/collections/users/${member.id}/collections`} />
+          <meta itemProp="name" content={`${member.firstName} ${member.lastName || ''}'s collections | Scinapse`} />
           <meta
-            itemProp="name"
-            content={`${member.firstName} ${member.lastName || ''}'s paper collections | Scinapse`}
-          />
-          <meta name="description" content={headCollections} />
-          <meta name="twitter:description" content={headCollections} />
-          <meta property="og:description" content={headCollections} />
-          <meta
-            name="twitter:card"
-            content={`${member.firstName} ${member.lastName || ''}'s paper collections | Scinapse`}
+            name="description"
+            content={`Collection list created by ${member.firstName} ${member.lastName || ''} in Scinapse`}
           />
           <meta
             name="twitter:title"
-            content={`${member.firstName} ${member.lastName || ''}'s paper collections | Scinapse`}
+            content={`${member.firstName} ${member.lastName || ''}'s collections | Scinapse`}
           />
           <meta
-            property="og:title"
-            content={`${member.firstName} ${member.lastName || ''}'s paper collections | Scinapse`}
+            name="twitter:description"
+            content={`Collection list created by ${member.firstName} ${member.lastName || ''} in Scinapse`}
+          />
+          <meta name="twitter:card" content={`${member.firstName} ${member.lastName || ''}'s collections | Scinapse`} />
+          <meta property="og:title" content={`${member.firstName} ${member.lastName || ''}'s collections | Scinapse`} />
+          <meta
+            property="og:description"
+            content={`Collection list created by ${member.firstName} ${member.lastName || ''} in Scinapse`}
           />
           <meta property="og:type" content="article" />
           <meta property="og:url" content={`https://scinapse.io/collections/users/${member.id}/collections`} />
