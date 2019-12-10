@@ -15,7 +15,6 @@ import { getMemoizedPaper } from '../../containers/paperShow/select';
 import { formulaeToHTMLStr } from '../../helpers/displayFormula';
 import ErrorPage from '../error/errorPage';
 import EnvChecker from '../../helpers/envChecker';
-import NextPaperTab from '../../containers/nextPaperTab';
 import { PaperShowMatchParams, RefCitedTabItem } from '../../containers/paperShow/types';
 import VenueAndAuthors from '../common/paperItem/lineVenueAuthors';
 import ActionTicketManager from '../../helpers/actionTicketManager';
@@ -251,7 +250,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <ImprovedFooter containerStyle={{ backgroundColor: '#f8f9fb' }} />
         </div>
         <BottomBanner currentUser={currentUser} />
-        <NextPaperTab />
         <RequestFullTextDialog paperId={paper.id} />
       </>
     );
