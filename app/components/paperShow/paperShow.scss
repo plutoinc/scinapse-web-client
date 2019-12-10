@@ -63,14 +63,13 @@ article.paperShow {
   width: $paper-show-width;
   margin: 0 auto;
   font-size: 16px;
-  color: $black1;
+  color: $black_light_0;
   height: fit-content;
 
   .paperContentBlockHeader {
     width: 100%;
     font-size: 21px;
-    font-weight: bold;
-    color: $black1;
+    font-weight: 500;
     padding-bottom: 4px;
     margin-bottom: 8px;
     position: relative;
@@ -85,6 +84,7 @@ article.paperShow {
   }
 
   .abstractContent {
+    font-family: Georgia;
     word-break: break-word;
     overflow-wrap: break-word;
 
@@ -99,7 +99,7 @@ article.paperShow {
     font-size: 40px;
     line-height: 1.2;
     font-weight: 500;
-    color: $black1;
+    color: $black_light_0;
     margin-top: 32px;
     margin-bottom: 16px;
 
@@ -120,8 +120,8 @@ article.paperShow {
   .paperContent {
     position: relative;
     font-size: 18px;
-    line-height: 1.6;
-    color: $black1;
+    line-height: 1.8;
+    color: $black_light_0;
     margin-bottom: 64px;
   }
 
@@ -155,8 +155,8 @@ article.paperShow {
 
 .sectionTitle {
   font-size: 21px;
-  font-weight: bold;
-  color: $black1;
+  font-weight: 500;
+  color: $black_light_0;
 }
 
 .sectionCount {
