@@ -7,6 +7,7 @@ import { ActionTicketParams } from '../../helpers/actionTicketManager/actionTick
 import { useObserver } from '../../hooks/useIntersectionHook';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { CurrentUser } from '../../model/currentUser';
+import Icon from '../../icons';
 const styles = require('./bottomBanner.scss');
 
 interface BottomBannerProps {
@@ -90,12 +91,15 @@ const BottomBanner: React.FC<BottomBannerProps> = ({ currentUser }) => {
               aria-label="Scinapse sign up button"
               size="large"
               onClick={() => handleOpenSignModal('signUpPopup')}
-              style={{ paddingLeft: '28px', paddingRight: '28px' }}
+              style={{ paddingLeft: '16px', paddingRight: '16px' }}
             >
               <span>Sign Up</span>
             </Button>
           </div>
         </div>
+        <button className={styles.closeBtn} onClick={() => setShouldShow(false)}>
+          <Icon icon="X_BUTTON" />
+        </button>
       </div>
     </NoSsr>
   );

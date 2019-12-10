@@ -87,6 +87,8 @@ article.paperShow {
     font-family: Georgia;
     word-break: break-word;
     overflow-wrap: break-word;
+    line-height: 1.8;
+    letter-spacing: 0.5px;
 
     b {
       font-weight: 700;
@@ -120,7 +122,6 @@ article.paperShow {
   .paperContent {
     position: relative;
     font-size: 18px;
-    line-height: 1.8;
     color: $black_light_0;
     margin-bottom: 64px;
   }
