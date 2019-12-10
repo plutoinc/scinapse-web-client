@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Formik, Field, FormikErrors, Form } from 'formik';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
 import { GLOBAL_DIALOG_TYPE } from '../../../../dialog/reducer';
 import AuthTabs from '../../../authTabs';
 import AuthInputBox from '../../../../common/inputBox/authInputBox';
-import Button from '../../../../common/button';
 import AffiliationBox from '../../../../authorCV/affiliationBox';
 import validateEmail from '../../../../../helpers/validateEmail';
 import { debouncedCheckDuplicate } from '../../helpers/checkDuplicateEmail';
@@ -163,6 +163,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                 <Button
                   type="submit"
                   elementType="button"
+                  aria-label="Scinapse sign up button"
                   isLoading={isLoading}
                   fullWidth
                   size="large"
@@ -182,6 +183,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
             variant="outlined"
             color="gray"
             elementType="button"
+            aria-label="Go back button"
             onClick={props.onClickBack}
             isLoading={isLoading}
             fullWidth

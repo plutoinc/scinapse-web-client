@@ -6,6 +6,7 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import FeedbackManager from '@pluto_network/scinapse-feedback';
+import { Button } from '@pluto_network/pluto-design-elements';
 import Icon from '../../icons';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { trackEvent } from '../../helpers/handleGA';
@@ -14,7 +15,6 @@ import { LayoutState } from '../../components/layouts/reducer';
 import { AppState } from '../../reducers';
 import { UserDevice } from '../../components/layouts/reducer';
 import validateEmail from '../../helpers/validateEmail';
-import Button from '../../components/common/button';
 import { FEEDBACK_SOURCE, FEEDBACK_PRIORITY, FEEDBACK_STATUS } from '../../constants/feedback';
 
 const styles = require('./feedbackButton.scss');
@@ -90,6 +90,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
           <div ref={el => (this.popoverAnchorEl = el)} className={styles.feedbackButtonWrapper}>
             <Button
               elementType="button"
+              aria-label="Open feedback form button"
               size="large"
               onClick={e => {
                 this.toggleFeedbackDropdown(e);
@@ -178,7 +179,13 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
               <label>Detail</label>
               <textarea value={feedbackContent} onChange={this.handleChangeFeedback} />
             </div>
-            <Button elementType="button" fullWidth={true} isLoading={isLoadingFeedback} disabled={isLoadingFeedback}>
+            <Button
+              elementType="button"
+              aria-label="Send feedback button"
+              fullWidth={true}
+              isLoading={isLoadingFeedback}
+              disabled={isLoadingFeedback}
+            >
               <span>{!isLoadingFeedback ? 'SEND' : 'Sending...'}</span>
             </Button>
           </form>

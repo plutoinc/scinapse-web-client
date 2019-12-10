@@ -5,6 +5,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import { Document, Page } from 'react-pdf';
 import { denormalize } from 'normalizr';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { withStyles } from '../../helpers/withStylesHelper';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import Icon from '../../icons';
@@ -22,7 +23,6 @@ import { addPaperToRecommendPool } from '../recommendPool/actions';
 import { PDFViewerState } from '../../reducers/pdfViewer';
 import { CurrentUser } from '../../model/currentUser';
 import { getBestPdfOfPaper, getPDFPathOrBlob } from '../../actions/pdfViewer';
-import Button from '../common/button';
 const styles = require('./pdfViewer.scss');
 
 const DIRECT_PDF_PATH_PREFIX = 'https://asset-pdf.scinapse.io/';

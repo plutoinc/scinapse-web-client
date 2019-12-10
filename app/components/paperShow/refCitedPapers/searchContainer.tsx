@@ -1,13 +1,14 @@
 import React from 'react';
 import { stringify } from 'qs';
 import { withRouter, RouteComponentProps } from 'react-router';
-import ScinapseInput from '../../common/scinapseInput';
 import { REF_CITED_CONTAINER_TYPE } from '../constants';
 import SortBox, { PAPER_LIST_SORT_TYPES } from '../../common/sortBox';
 import { PaperShowPageQueryParams, PaperShowMatchParams } from '../../../containers/paperShow/types';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../../locationListener';
 import getQueryParamsObject from '../../../helpers/getQueryParamsObject';
+import { InputField } from '@pluto_network/pluto-design-elements';
+import Icon from '../../../icons';
 const styles = require('./referencePapers.scss');
 
 type SearchContainerProps = RouteComponentProps<PaperShowMatchParams> & {
@@ -33,10 +34,11 @@ const SearchContainer: React.FC<SearchContainerProps> = props => {
   const { history, type, paperId, placeholder, location } = props;
   const [sortOption, setSortOption] = React.useState<PAPER_LIST_SORT_TYPES>('NEWEST_FIRST');
   const [searchInput, setSearchInput] = React.useState('');
-  const queryParamsObject = getQueryParamsObject(location.search);
 
   React.useEffect(
     () => {
+      const queryParamsObject = getQueryParamsObject(location.search);
+
       if (type === 'reference') {
         setSortOption(queryParamsObject['ref-sort'] || 'NEWEST_FIRST');
         setSearchInput(queryParamsObject['ref-query'] || '');
@@ -45,11 +47,13 @@ const SearchContainer: React.FC<SearchContainerProps> = props => {
         setSearchInput(queryParamsObject['cited-query'] || '');
       }
     },
-    [queryParamsObject, type]
+    [location.search, type]
   );
 
   const handleSubmitSearch = React.useCallback(
     (query: string) => {
+      const queryParamsObject = getQueryParamsObject(location.search);
+
       ActionTicketManager.trackTicket({
         pageType: getCurrentPageType(),
         actionType: 'fire',
@@ -70,11 +74,13 @@ const SearchContainer: React.FC<SearchContainerProps> = props => {
         search: getStringifiedUpdatedQueryParams(queryParamsObject, pageQueryParams),
       });
     },
-    [type, paperId, queryParamsObject, history]
+    [type, paperId, location.search, history]
   );
 
   const handleClickSortOption = React.useCallback(
     (sortOption: PAPER_LIST_SORT_TYPES) => {
+      const queryParamsObject = getQueryParamsObject(location.search);
+
       let pageQueryParams;
 
       if (type === 'reference') {
@@ -88,18 +94,23 @@ const SearchContainer: React.FC<SearchContainerProps> = props => {
         search: getStringifiedUpdatedQueryParams(queryParamsObject, pageQueryParams),
       });
     },
-    [type, paperId, queryParamsObject, history]
+    [type, paperId, location.search, history]
   );
 
   return (
     <div className={styles.searchContainer}>
       <div className={styles.searchInputWrapper}>
-        <ScinapseInput
+        <InputField
           aria-label="Scinapse search box in paper show"
-          value={searchInput}
+          leadingIcon={<Icon icon="SEARCH" onClick={() => handleSubmitSearch(searchInput)} />}
           placeholder={placeholder || 'Search papers'}
-          icon="SEARCH"
-          onSubmit={handleSubmitSearch}
+          onKeyPress={e => {
+            if (e.key === 'Enter') {
+              handleSubmitSearch(searchInput);
+            }
+          }}
+          onChange={e => setSearchInput(e.currentTarget.value)}
+          value={searchInput}
         />
       </div>
       <div className={styles.sortBoxContainer}>

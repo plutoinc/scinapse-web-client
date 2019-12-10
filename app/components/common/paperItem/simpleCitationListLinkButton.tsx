@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
-
-import Button from '../../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import formatNumber from '../../../helpers/formatNumber';
 

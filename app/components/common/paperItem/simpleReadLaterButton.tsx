@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Button from '../../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { addPaperToRecommendPool } from '../../recommendPool/actions';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
@@ -25,6 +25,7 @@ const SimpleReadLaterButton: FC<Props> = ({ paperId, saved, pageType, actionArea
     <Button
       variant="text"
       elementType="button"
+      aria-label="Simple read later button"
       size="small"
       color={saved ? 'black' : 'blue'}
       onClick={async () => {

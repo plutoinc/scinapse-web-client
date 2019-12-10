@@ -1,10 +1,10 @@
 import * as React from 'react';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { withStyles } from '../../../../helpers/withStylesHelper';
 import ArticleSpinner from '../../../common/spinner/articleSpinner';
 import Icon from '../../../../icons';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../../../helpers/checkAuthDialog';
-import Button from '../../../common/button';
 const styles = require('./doiSearchBlocked.scss');
 
 interface DoiSearchBlockedProps {
@@ -64,7 +64,12 @@ const DoiSearchBlocked: React.FunctionComponent<DoiSearchBlockedProps> = props =
                 to view the result.
               </span>
               <br />
-              <Button elementType="button" onClick={openSignInDialog} style={{ marginTop: '16px' }}>
+              <Button
+                elementType="button"
+                aria-label="Scinapse sign in button"
+                onClick={openSignInDialog}
+                style={{ marginTop: '16px' }}
+              >
                 <span>Sign in and View the result</span>
                 <Icon icon="ARROW_RIGHT" />
               </Button>

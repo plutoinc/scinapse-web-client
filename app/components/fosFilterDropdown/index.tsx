@@ -1,10 +1,11 @@
 import React from 'react';
 import { Dispatch } from 'redux';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { isEqual } from 'lodash';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Popover from '@material-ui/core/Popover';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { setActiveFilterButton } from '../../actions/searchFilter';
 import { ACTION_TYPES, SearchActions } from '../../actions/actionTypes';
 import FilterButton, { FILTER_BUTTON_TYPE } from '../filterButton';
@@ -14,7 +15,6 @@ import makeNewFilterLink from '../../helpers/makeNewFilterLink';
 import FOSFilterInput from '../fosFilterInput';
 import FOSItem from './fosItem';
 import { AggregationFos } from '../../model/aggregation';
-import Button from '../common/button';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./fosFilterDropdown.scss');
 
@@ -153,6 +153,7 @@ const FOSFilterDropdown: React.FC<Props> = ({ location, history }) => {
           <div className={s.controlBtnsWrapper}>
             <Button
               elementType="button"
+              aria-label="Clear fos filter button"
               variant="text"
               color="gray"
               onClick={() => {
@@ -163,7 +164,13 @@ const FOSFilterDropdown: React.FC<Props> = ({ location, history }) => {
             >
               <span>Clear</span>
             </Button>
-            <Button elementType="button" variant="text" color="blue" onClick={handleSubmit}>
+            <Button
+              elementType="button"
+              aria-label="Apply fos filter button"
+              variant="text"
+              color="blue"
+              onClick={handleSubmit}
+            >
               <span>Apply</span>
             </Button>
           </div>

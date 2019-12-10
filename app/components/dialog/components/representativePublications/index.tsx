@@ -3,10 +3,9 @@ import { debounce } from 'lodash';
 import * as classNames from 'classnames';
 import Dialog from '@material-ui/core/Dialog';
 import Checkbox from '@material-ui/core/Checkbox';
-import ScinapseInput from '../../../common/scinapseInput';
 import { withStyles } from '../../../../helpers/withStylesHelper';
 import ArticleSpinner from '../../../common/spinner/articleSpinner';
-import Button from '../../../common/button';
+import { Button, InputField } from '@pluto_network/pluto-design-elements';
 import Icon from '../../../../icons';
 import alertToast from '../../../../helpers/makePlutoToastAction';
 import PlutoAxios from '../../../../api/pluto';
@@ -103,11 +102,11 @@ class RepresentativePublicationsDialog extends React.PureComponent<
           </div>
           <span className={styles.sectionGuideContext}>Select the best papers to represent you! (Up to 5 papers)</span>
         </div>
-        <ScinapseInput
-          onChange={this.handleChangeSearchInput}
-          value={searchInput}
+        <InputField
+          trailingIcon={<Icon icon="SEARCH" />}
           placeholder="Filter Publications"
-          icon="SEARCH"
+          defaultValue={searchInput}
+          onChange={this.handleChangeSearchInput}
         />
 
         {content}

@@ -1,7 +1,9 @@
 import React from 'react';
+import { LazyImage } from '@pluto_network/pluto-design-elements';
 import { PaperFigure } from '../../../model/paper';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { FIGURE_PREFIX } from '../../../constants/paperFigure';
+
 const styles = require('./largePaperFigure.scss');
 
 const MAX_LENGTH_OF_CAPTION = 80;
@@ -24,10 +26,12 @@ const LargePaperFigure: React.FC<LargePaperFigureProps> = ({ figure, handleOpenF
     <div className={styles.figureContainer}>
       <div className={styles.figureImageWrapper} onClick={handleOpenFigureDetailDialog}>
         <div className={styles.figureImageBackground} />
-        <picture>
-          <source srcSet={`${FIGURE_PREFIX}${figure.path}`} type="image/jpeg" />
-          <img className={styles.figureImage} src={`${FIGURE_PREFIX}${figure.path}`} alt={'paperFigureImage'} />
-        </picture>
+        <LazyImage
+          src={`${FIGURE_PREFIX}${figure.path}`}
+          imgClassName={styles.figureImage}
+          loading="lazy"
+          alt={'paperFigureImage'}
+        />
       </div>
       <div className={styles.figureCaption}>
         <span>{finalCaption}</span>

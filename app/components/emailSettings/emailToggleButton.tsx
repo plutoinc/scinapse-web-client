@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { ButtonVariant, ButtonColor } from '../common/button/types';
 import GroupButton from '../common/groupButton';
-import Button from '../common/button';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./emailToggleButton.scss');
 
@@ -48,6 +48,7 @@ const EmailToggleButton: React.FC<EmailToggleButtonProps> = props => {
         <GroupButton variant="text" disabled={disabled} className={s.buttonsWrapper}>
           <Button
             elementType="button"
+            aria-label="Email option toggle ON button"
             size="medium"
             disabled={disabled}
             onClick={() => onClick(true)}
@@ -59,6 +60,7 @@ const EmailToggleButton: React.FC<EmailToggleButtonProps> = props => {
           </Button>
           <Button
             elementType="button"
+            aria-label="Email option toggle OFF button"
             size="medium"
             variant="outlined"
             color="gray"

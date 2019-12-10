@@ -2,13 +2,13 @@ import React from 'react';
 import classNames from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import { Field, Form, Formik } from 'formik';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
 import AffiliationSelectBox from '../../components/dialog/components/modifyProfile/affiliationSelectBox';
 import { AppState } from '../../reducers';
 import { updateUserProfile } from '../../actions/auth';
 import { CurrentUser } from '../../model/currentUser';
-import Button from '../../components/common/button';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./profileForm.scss');
 
@@ -119,18 +119,25 @@ const ProfileFormContainer: React.FC = () => {
         validateOnChange={false}
         render={({ errors, touched }) => {
           let formButton = (
-            <Button elementType="button" variant="outlined" color="gray" onClick={() => setEditMode(true)}>
+            <Button
+              elementType="button"
+              aria-label="Edit profile button"
+              variant="outlined"
+              color="gray"
+              onClick={() => setEditMode(true)}
+            >
               <span>Edit Profile</span>
             </Button>
           );
           if (editMode) {
             formButton = (
               <>
-                <Button elementType="button" isLoading={isLoading} type="submit">
+                <Button elementType="button" aria-label="Save changes button" isLoading={isLoading} type="submit">
                   <span>Save changes</span>
                 </Button>
                 <Button
                   elementType="button"
+                  aria-label="Cancel to save changes button"
                   variant="outlined"
                   color="gray"
                   onClick={() => setEditMode(false)}

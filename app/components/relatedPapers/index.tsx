@@ -2,6 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { Paper } from '../../model/paper';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../helpers/checkAuthDialog';
@@ -11,7 +12,6 @@ import { getMemoizedCurrentUser } from '../../selectors/getCurrentUser';
 import { CurrentUser } from '../../model/currentUser';
 import { makeGetMemoizedPapers } from '../../selectors/papersSelector';
 import { SimplePaperItem } from '../simplePaperItem/simplePaperItemContainer';
-import Button from '../common/button';
 const styles = require('./relatedPapers.scss');
 
 interface RelatedPapersProps {
@@ -41,7 +41,12 @@ const ContentBlocker: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
       <div className={styles.contentBlockedContext}>
         {`78% of Scinapse members use related papers.\nAfter signing in, all features are free.`}
       </div>
-      <Button elementType="button" onClick={openSignInDialog} style={{ marginTop: '24px' }}>
+      <Button
+        elementType="button"
+        aria-label="Scinapse sign in button"
+        onClick={openSignInDialog}
+        style={{ marginTop: '24px' }}
+      >
         <span>{`Sign in & View`}</span>
       </Button>
     </div>

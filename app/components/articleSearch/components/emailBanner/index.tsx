@@ -1,11 +1,11 @@
 import React from 'react';
+import { Button } from '@pluto_network/pluto-design-elements';
+import { useDispatch } from 'react-redux';
 import { withStyles } from '../../../../helpers/withStylesHelper';
 import { setSignUpModalEmail } from '../../../../reducers/signUpModal';
-import { useDispatch } from 'react-redux';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import { getCurrentPageType } from '../../../locationListener';
 import GlobalDialogManager from '../../../../helpers/globalDialogManager';
-import Button from '../../../common/button';
 
 const s = require('./emailBanner.scss');
 
@@ -51,8 +51,9 @@ const EmailBanner: React.FC = () => {
           value={email}
           onChange={e => setEmail(e.currentTarget.value)}
           size={15}
+          aria-label="Email address input"
         />
-        <Button elementType="button" type="submit">
+        <Button elementType="button" type="submit" aria-label="Scinapse sign up button">
           <span>Sign up</span>
         </Button>
       </form>

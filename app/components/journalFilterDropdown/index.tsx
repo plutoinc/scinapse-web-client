@@ -4,6 +4,7 @@ import { Dispatch } from 'redux';
 import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Popover from '@material-ui/core/Popover';
+import { Button } from '@pluto_network/pluto-design-elements';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { setActiveFilterButton } from '../../actions/searchFilter';
 import { ACTION_TYPES, SearchActions } from '../../actions/actionTypes';
@@ -14,7 +15,6 @@ import { trackSelectFilter } from '../../helpers/trackSelectFilter';
 import makeNewFilterLink from '../../helpers/makeNewFilterLink';
 import JournalFilterInput from '../journalFilterInput';
 import { AggregationJournal } from '../../model/aggregation';
-import Button from '../common/button';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./journalFilterDropdown.scss');
 
@@ -161,6 +161,7 @@ const JournalFilterDropdown: React.FC<Props> = ({ location, history }) => {
           <div className={s.controlBtnsWrapper}>
             <Button
               elementType="button"
+              aria-label="Clear journal filter button"
               variant="text"
               color="gray"
               onClick={() => {
@@ -169,7 +170,13 @@ const JournalFilterDropdown: React.FC<Props> = ({ location, history }) => {
             >
               <span>Clear</span>
             </Button>
-            <Button elementType="button" variant="text" color="blue" onClick={handleSubmit}>
+            <Button
+              elementType="button"
+              aria-label="Apply journal filter button"
+              variant="text"
+              color="blue"
+              onClick={handleSubmit}
+            >
               <span>Apply</span>
             </Button>
           </div>

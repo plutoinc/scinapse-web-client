@@ -1,4 +1,5 @@
 import React from 'react';
+import { LazyImage } from '@pluto_network/pluto-design-elements';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { AFFILIATIONS } from '../constants';
 const styles = require('./affiliationsInfo.scss');
@@ -7,15 +8,13 @@ const AffiliationsInfo: React.FC = () => {
   const affiliationList = AFFILIATIONS.map((affiliation, index) => {
     return (
       <div className={styles.affiliationImageWrapper} key={index}>
-        <picture>
-          <source srcSet={`https://assets.pluto.network/affiliations/${affiliation}.webp`} type="image/webp" />
-          <source srcSet={`https://assets.pluto.network/affiliations/${affiliation}.jpg`} type="image/jpeg" />
-          <img
-            className={styles.affiliationImage}
-            src={`https://assets.pluto.network/affiliations/${affiliation}.jpg`}
-            alt={`${affiliation}LogoImage`}
-          />
-        </picture>
+        <LazyImage
+          src={`https://assets.pluto.network/affiliations/${affiliation}.jpg`}
+          webpSrc={`https://assets.pluto.network/affiliations/${affiliation}.webp`}
+          imgClassName={styles.affiliationImage}
+          loading="lazy"
+          alt={`${affiliation}LogoImage`}
+        />
       </div>
     );
   });

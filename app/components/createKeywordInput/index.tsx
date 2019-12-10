@@ -67,6 +67,7 @@ const CreateKeywordInput: React.FC<CreateKeywordInputProps> = ({ isLoggedIn, isL
             <Button
               className={s.submitButton}
               elementType="button"
+              aria-label="Create keyword button"
               type="submit"
               isLoading={isLoading}
               disabled={!isLoggedIn}

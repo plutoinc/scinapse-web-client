@@ -1,12 +1,12 @@
 import * as React from 'react';
 import NoSsr from '@material-ui/core/NoSsr';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { withStyles } from '../../helpers/withStylesHelper';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
 import { ActionTicketParams } from '../../helpers/actionTicketManager/actionTicket';
 import { useObserver } from '../../hooks/useIntersectionHook';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import { CurrentUser } from '../../model/currentUser';
-import Button from '../common/button';
 const styles = require('./bottomBanner.scss');
 
 interface BottomBannerProps {
@@ -87,6 +87,7 @@ const BottomBanner: React.FC<BottomBannerProps> = ({ currentUser }) => {
             </button>
             <Button
               elementType="button"
+              aria-label="Scinapse sign up button"
               size="large"
               onClick={() => handleOpenSignModal('signUpPopup')}
               style={{ paddingLeft: '28px', paddingRight: '28px' }}

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import Button from '../../common/button';
+import { Button } from '@pluto_network/pluto-design-elements';
 import AuthInputBox from '../../common/inputBox/authInputBox';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import validateEmail from '../../../helpers/validateEmail';
@@ -101,6 +101,7 @@ const ResetPasswordContainer: React.FunctionComponent<ResetPasswordProps> = prop
                       color="gray"
                       isLoading={isLoading}
                       elementType="button"
+                      aria-label="Go back button"
                       size="large"
                       fullWidth
                       onClick={() => {

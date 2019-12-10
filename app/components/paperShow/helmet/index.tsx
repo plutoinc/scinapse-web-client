@@ -21,12 +21,13 @@ const buildPageDescription = (paper: Paper) => {
 };
 
 function formatAuthorsToStructuredData(authors: PaperAuthor[]) {
-  authors.map(author => {
+  return authors.map(author => {
     const affiliationName = author.organization || (author.affiliation && author.affiliation.name);
     return {
       '@type': 'Person',
       name: author.name,
       affiliation: {
+        '@type': 'Organization',
         name: affiliationName || '',
       },
     };
@@ -35,20 +36,23 @@ function formatAuthorsToStructuredData(authors: PaperAuthor[]) {
 
 function formatPublisherToStructuredData(journal: Journal) {
   return {
-    '@type': ['PublicationVolume', 'Periodical'],
+    '@type': 'Organization',
     name: journal.title,
-    publisher: journal.title,
-    contentRating: {
-      '@type': 'Rating',
-      name: 'impact factor',
-      ratingValue: journal.impactFactor || 0,
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://assets.pluto.network/scinapse/scinapse-logo.png',
     },
   };
 }
 
 const getStructuredData = (paper: Paper) => {
-  const author = paper.authors && paper.authors.length > 0 ? formatAuthorsToStructuredData(paper.authors) : null;
-  const publisher = paper.journal ? formatPublisherToStructuredData(paper.journal) : null;
+  const author =
+    paper.authors && paper.authors.length > 0
+      ? formatAuthorsToStructuredData(paper.authors)
+      : { '@type': 'Person', name: '' };
+  const publisher = paper.journal
+    ? formatPublisherToStructuredData(paper.journal)
+    : { '@type': 'Organization', name: '' };
   const structuredData: any = {
     '@context': 'http://schema.org',
     '@type': 'ScholarlyArticle',
@@ -59,7 +63,7 @@ const getStructuredData = (paper: Paper) => {
     image: ['https://assets.pluto.network/scinapse/scinapse-logo.png'],
     datePublished: paper.publishedDate,
     dateModified: paper.publishedDate,
-    about: paper.fosList.map(fos => fos.fos),
+    about: paper.fosList.map(fos => ({ '@type': 'Thing', name: fos.fos })),
     mainEntityOfPage: `https://scinapse.io/papers/${paper.id}`,
     author,
     publisher,
@@ -71,27 +75,17 @@ const getStructuredData = (paper: Paper) => {
 const PaperShowHelmet: React.FC<{ paper: Paper }> = React.memo(({ paper }) => {
   const pdfSourceRecord = getPDFLink(paper.urls);
   const metaTitleContent = !!pdfSourceRecord ? '[PDF] ' + paper.title : paper.title;
-  const fosListContent =
-    paper.fosList && typeof paper.fosList !== 'undefined'
-      ? paper.fosList
-          .map(fos => {
-            return fos.fos;
-          })
-          .toString()
-          .replace(/,/gi, ', ')
-      : '';
 
   return (
     <Helmet>
-      <title>{`${metaTitleContent} | Scinapse | Academic search engine for paper`}</title>
+      <title>{`${metaTitleContent} | Scinapse`}</title>
       <link rel="canonical" href={`https://scinapse.io/papers/${paper.id}`} />
-      <meta itemProp="name" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
+      <meta itemProp="name" content={`${metaTitleContent} | Scinapse`} />
       <meta name="description" content={buildPageDescription(paper)} />
-      <meta name="keyword" content={fosListContent} />
+      <meta name="twitter:title" content={`${metaTitleContent} | Scinapse`} />
       <meta name="twitter:description" content={buildPageDescription(paper)} />
-      <meta name="twitter:card" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
-      <meta name="twitter:title" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
-      <meta property="og:title" content={`${metaTitleContent} | Scinapse | Academic search engine for paper`} />
+      <meta name="twitter:card" content={`${metaTitleContent} | Scinapse`} />
+      <meta property="og:title" content={`${metaTitleContent} | Scinapse`} />
       <meta property="og:type" content="article" />
       <meta property="og:url" content={`https://scinapse.io/papers/${paper.id}`} />
       <meta property="og:description" content={buildPageDescription(paper)} />
