@@ -1,6 +1,6 @@
 .doiContext {
-  font-size: 14px;
-  line-height: 1.43;
+  font-size: 16px;
+  line-height: 1.6;
   color: $gray600;
 }
 
@@ -16,13 +16,16 @@
 }
 
 .tinyButton {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   float: right;
   margin-left: 4px;
   outline: none;
   border: none;
   cursor: pointer;
   border-radius: 8px;
-  padding: 2px 6px 2px 4px;
+  padding: 4px 6px;
   color: $main_blue1;
 
   &:hover {
@@ -33,16 +36,22 @@
     filter: brightness(95%);
   }
 
+  i {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   svg {
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 16px;
     vertical-align: middle;
     margin-right: 4px;
   }
 
   span {
     color: $main_blue1;
-    font-size: 12px;
+    font-size: 14px;
     vertical-align: middle;
   }
 }

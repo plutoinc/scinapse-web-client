@@ -68,7 +68,8 @@ article.paperShow {
 
   .paperContentBlockHeader {
     width: 100%;
-    font-weight: 700;
+    font-size: 21px;
+    font-weight: bold;
     color: $black1;
     padding-bottom: 4px;
     margin-bottom: 8px;
@@ -95,9 +96,9 @@ article.paperShow {
   .paperTitle {
     max-width: 792px;
     font-family: Georgia;
-    font-size: 30px;
-    line-height: 1.4;
-    font-weight: 400;
+    font-size: 40px;
+    line-height: 1.2;
+    font-weight: 500;
     color: $black1;
     margin-top: 32px;
     margin-bottom: 16px;
@@ -118,7 +119,8 @@ article.paperShow {
 
   .paperContent {
     position: relative;
-    line-height: 1.5;
+    font-size: 18px;
+    line-height: 1.6;
     color: $black1;
     margin-bottom: 64px;
   }

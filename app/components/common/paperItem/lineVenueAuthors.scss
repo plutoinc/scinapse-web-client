@@ -1,6 +1,6 @@
 .publishInfoList {
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 16px;
+  line-height: 1.6;
   color: $gray600;
   flex-direction: column;
 
@@ -41,13 +41,12 @@
 
   .ifLabel {
     display: inline-flex;
-    vertical-align: middle;
-    font-size: 13px;
+    vertical-align: bottom;
+    font-size: 16px;
     font-weight: 500;
     text-align: center;
     color: $main_blue0;
-    padding-left: 8px;
-    padding-right: 4px;
+    padding: 0 4px;
   }
 
   .ifIconWrapper {
@@ -68,14 +67,12 @@
   justify-content: center;
   align-items: center;
   margin-right: 8px;
-  margin-top: 4px;
-  width: 16px;
-  height: 16px;
+  margin-top: 2px;
   color: $gray600;
 
   svg {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -83,12 +80,12 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-top: 4px;
+  margin-top: 2px;
   margin-right: 8px;
 
   svg {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
   }
 }
 
