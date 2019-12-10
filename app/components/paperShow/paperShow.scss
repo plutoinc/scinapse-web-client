@@ -87,7 +87,6 @@ article.paperShow {
     font-family: Georgia;
     word-break: break-word;
     overflow-wrap: break-word;
-    line-height: 1.8;
     letter-spacing: 0.5px;
 
     b {
@@ -98,8 +97,8 @@ article.paperShow {
   .paperTitle {
     max-width: 792px;
     font-family: Georgia;
-    font-size: 40px;
-    line-height: 1.2;
+    font-size: 36px;
+    line-height: 1.5;
     font-weight: 500;
     color: $black_light_0;
     margin-top: 32px;
@@ -123,6 +122,7 @@ article.paperShow {
     position: relative;
     font-size: 18px;
     color: $black_light_0;
+    line-height: 1.6;
     margin-bottom: 64px;
   }
 
