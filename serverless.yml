@@ -34,6 +34,43 @@ functions:
           path: /{proxy+}
 resources:
   Resources:
+    BundleProxyResourceParent:
+      Type: AWS::ApiGateway::Resource
+      Properties:
+        ParentId:
+          Fn::GetAtt:
+            - ApiGatewayRestApi
+            - RootResourceId
+        PathPart: bundle
+        RestApiId:
+          Ref: ApiGatewayRestApi
+    BundleProxyResource:
+      Type: AWS::ApiGateway::Resource
+      Properties:
+        ParentId:
+          Ref: BundleProxyResourceParent
+        PathPart: '{proxy+}'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+    BundleProxyMethod:
+      Type: AWS::ApiGateway::Method
+      Properties:
+        ResourceId:
+          Ref: BundleProxyResource
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        HttpMethod: ANY
+        AuthorizationType: NONE
+        RequestParameters:
+         method.request.path.proxy: true
+        Integration:
+          IntegrationHttpMethod: any
+          Type: HTTP_PROXY
+          Uri: 'https://bundle.scinapse.io/{proxy}'
+          RequestParameters:
+           integration.request.path.proxy: method.request.path.proxy
+          IntegrationResponses:
+            - StatusCode: 200
     WebClientRole:
       Type: AWS::IAM::Role
       Properties:
