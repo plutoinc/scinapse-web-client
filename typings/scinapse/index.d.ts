@@ -98,8 +98,6 @@ declare namespace Scinapse {
       | 'clickOk'
       | 'childRefList'
       | 'childCitedList'
-      | 'submitSurvey'
-      | 'skipSurvey'
       | 'viewBasedOnCollectionPaper'
       | 'viewBasedOnActivityPaper'
       | 'clickSeeMore'
