@@ -16,6 +16,9 @@ import { ACTION_TYPES } from '../app/actions/actionTypes';
 import { generateFullHTML } from '../app/helpers/htmlWrapper';
 import PlutoAxios from '../app/api/pluto';
 import { setDeviceType, UserDevice } from '../app/components/layouts/reducer';
+import { parse } from 'cookie';
+import { SignInResult } from '../app/api/types/auth';
+import { camelCaseKeys } from '../app/helpers/camelCaseKeys';
 const StyleContext = require('isomorphic-style-loader/StyleContext');
 const JssProvider = require('react-jss/lib/JssProvider').default;
 const { SheetsRegistry } = require('react-jss/lib/jss');
@@ -74,6 +77,45 @@ const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
   if (device && device.type === 'mobile') {
     store.dispatch(setDeviceType({ userDevice: UserDevice.MOBILE }));
   }
+
+  // Get the latest JWT
+  const cookies = parse(headers.cookie);
+  let setCookies: string[] = [];
+  if (cookies['pluto_jwt']) {
+    try {
+      const res = await axios.get('https://api.scinapse.io/auth/login', {
+        headers: {
+          cookie: headers.cookie,
+        },
+        transformResponse: [(data: any) => {
+          return camelCaseKeys(JSON.parse(data))
+        }]
+      });
+  
+      const signInResult: SignInResult = res.data;
+
+
+      if (signInResult.loggedIn) {
+        setCookies = res.headers['set-cookie'];
+        store.dispatch({
+          type: ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN,
+          payload: {
+            user: signInResult.member,
+            loggedIn: signInResult.loggedIn,
+            oauthLoggedIn: signInResult.oauthLoggedIn,
+          },
+        });
+      }
+    } catch(err) {
+      console.log('Failed to get logged in user when even token existed: ', err);
+    }    
+  }
+
+  let pluto_jwt;
+  const tokenCookie = setCookies.map(cookieString => parse(cookieString)).find(cookieObj => !!cookieObj.pluto_jwt);
+  pluto_jwt = tokenCookie?.['pluto_jwt'];
+
+  console.log('pluto_jwt === ', pluto_jwt);
 
   // Load data from API server
   const promises: Promise<any>[] = [];

@@ -24,6 +24,9 @@ app.use(
     },
   })
 );
+
+app.use('/api', proxy('https://api.scinapse.io'));
+
 app.use(
   /^\/client.*/,
   proxy('http://localhost:8080', {
