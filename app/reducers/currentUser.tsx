@@ -13,7 +13,7 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
     }
 
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT: {
-      return { ...CURRENT_USER_INITIAL_STATE, isLoggingIn: false };
+      return { ...CURRENT_USER_INITIAL_STATE, isLoggingIn: false, ipInstitute: state.ipInstitute };
     }
 
     case ACTION_TYPES.AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR: {
@@ -33,17 +33,13 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
     }
 
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN: {
-      if (action.payload.loggedIn) {
-        return {
-          ...action.payload.user,
-          isLoggedIn: action.payload.loggedIn,
-          oauthLoggedIn: action.payload.oauthLoggedIn,
-          isLoggingIn: false,
-          ipInstitute: action.payload.ipInstitute,
-        };
-      } else {
-        return { ...state, isLoggingIn: false };
-      }
+      return {
+        ...action.payload.user,
+        isLoggedIn: action.payload.loggedIn,
+        oauthLoggedIn: action.payload.oauthLoggedIn,
+        isLoggingIn: false,
+        ipInstitute: action.payload.ipInstitute,
+      };
     }
 
     case ACTION_TYPES.EMAIL_VERIFICATION_SUCCEEDED_TO_VERIFY_TOKEN: {
