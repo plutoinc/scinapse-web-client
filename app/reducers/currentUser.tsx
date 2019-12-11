@@ -8,6 +8,7 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
         ...action.payload.user,
         isLoggedIn: action.payload.loggedIn,
         oauthLoggedIn: action.payload.oauthLoggedIn,
+        ipInstitute: action.payload.ipInstitute,
       };
     }
 
@@ -38,6 +39,7 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
           isLoggedIn: action.payload.loggedIn,
           oauthLoggedIn: action.payload.oauthLoggedIn,
           isLoggingIn: false,
+          ipInstitute: action.payload.ipInstitute,
         };
       } else {
         return { ...state, isLoggingIn: false };

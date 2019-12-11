@@ -1,4 +1,5 @@
 import { Member } from './member';
+import { Institute } from './Institute';
 
 export interface CurrentUser
   extends Member,
@@ -6,6 +7,7 @@ export interface CurrentUser
       isLoggedIn: boolean;
       oauthLoggedIn: boolean;
       isLoggingIn: boolean;
+      ipInstitute: Institute | null;
     }> {}
 
 export const CURRENT_USER_INITIAL_STATE: CurrentUser = {
@@ -24,4 +26,5 @@ export const CURRENT_USER_INITIAL_STATE: CurrentUser = {
   isAuthorConnected: false,
   authorId: '',
   profileLink: '',
+  ipInstitute: null,
 };

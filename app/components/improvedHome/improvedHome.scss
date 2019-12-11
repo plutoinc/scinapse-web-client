@@ -17,8 +17,19 @@
   font-size: 18px;
   letter-spacing: -0.3px;
   color: #667f98;
-  margin: 12px 0 48px 0;
+  margin: 12px 0 8px 0;
   text-align: center;
+}
+
+.instituteName {
+  text-align: center;
+  font-size: 18px;
+  color: #667f98;
+  letter-spacing: -0.3px;
+
+  b {
+    font-weight: 500;
+  }
 }
 
 .catchphrase {
@@ -101,6 +112,7 @@
   width: 590px;
   position: relative;
   border-radius: 6px;
+  margin-top: 48px;
 
   &:focus {
     outline: none;
