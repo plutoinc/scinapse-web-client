@@ -23,7 +23,13 @@ const LineVenueAuthors: React.FC<VenueAndAuthorsProps> = props => {
         authors.length > 0 && (
           <div className={styles.author}>
             <Icon className={styles.authorIcon} icon="AUTHOR" />
-            <LineAuthors paper={paper} authors={authors} pageType={pageType} actionArea={actionArea} />
+            <LineAuthors
+              paper={paper}
+              authors={authors}
+              pageType={pageType}
+              actionArea={actionArea}
+              style={{ fontSize: '16px' }}
+            />
           </div>
         )}
     </div>
