@@ -18,6 +18,7 @@ module.exports = {
     splitChunks: {
       chunks: 'all',
     },
+    minimize: true,
     minimizer: [
       new TerserPlugin({
         cache: true,

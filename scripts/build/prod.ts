@@ -37,7 +37,9 @@ function build() {
 
 (async () => {
   try {
+    console.log('Start to build src files');
     await build();
+    console.log('Start to upload src files');
     await uploadProdFiles();
     cleanArtifacts();
     fs.writeFileSync(path.resolve(__dirname, '../../dist/server/version'), VERSION);
