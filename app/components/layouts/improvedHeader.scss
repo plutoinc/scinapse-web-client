@@ -84,12 +84,25 @@
     }
   }
 
-  .instituteName {
-    color: $black1;
-    font-weight: bold;
+  .instituteLogo {
+    color: $black_light_0;
+    font-weight: 500;
     letter-spacing: 1.5px;
-    font-size: 18px;
+    font-size: 13px;
     margin-left: 8px;
+
+    .serviceName {
+      margin-bottom: 2px;
+      font-size: 18px;
+      line-height: 1.4;
+    }
+
+    .instituteName {
+      @extend %one-line-overflow-ellipsis;
+
+      display: inline-block;
+      max-width: 140px;
+    }
   }
 }
 
