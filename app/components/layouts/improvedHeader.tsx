@@ -228,7 +228,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
           <Icon icon="SCINAPSE_LOGO_SMALL" />
           <div className={styles.instituteLogo}>
             <div className={styles.serviceName}>scinapse</div>
-            <div className={styles.instituteName}>{currentUserState.ipInstitute.nameAbbrev}</div>
+            <div className={styles.instituteName}>{currentUserState.ipInstitute.name}</div>
           </div>
         </Link>
       );
