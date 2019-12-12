@@ -100,7 +100,7 @@
     .instituteName {
       @extend %one-line-overflow-ellipsis;
 
-      letter-spacing: 3px;
+      letter-spacing: 2px;
       display: inline-block;
       max-width: 140px;
     }
