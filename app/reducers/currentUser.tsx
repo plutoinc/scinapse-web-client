@@ -3,12 +3,14 @@ import { CURRENT_USER_INITIAL_STATE, CurrentUser } from '../model/currentUser';
 
 export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action: ReduxAction<any>): CurrentUser {
   switch (action.type) {
+    case ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN:
     case ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN: {
       return {
         ...action.payload.user,
         isLoggedIn: action.payload.loggedIn,
         oauthLoggedIn: action.payload.oauthLoggedIn,
         ipInstitute: action.payload.ipInstitute,
+        isLoggingIn: false,
       };
     }
 
@@ -30,16 +32,6 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
 
     case ACTION_TYPES.AUTH_FAILED_TO_CHECK_LOGGED_IN: {
       return { ...state, isLoggingIn: false };
-    }
-
-    case ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN: {
-      return {
-        ...action.payload.user,
-        isLoggedIn: action.payload.loggedIn,
-        oauthLoggedIn: action.payload.oauthLoggedIn,
-        isLoggingIn: false,
-        ipInstitute: action.payload.ipInstitute,
-      };
     }
 
     case ACTION_TYPES.EMAIL_VERIFICATION_SUCCEEDED_TO_VERIFY_TOKEN: {
