@@ -31,7 +31,6 @@ import AuthorListDialog from '../authorListDialog';
 import alertToast from '../../helpers/makePlutoToastAction';
 import FinalSignUpContent from '../auth/signUp/components/finalSignUpContent';
 import EnvChecker from '../../helpers/envChecker';
-import SurveyForm from '../auth/signUp/components/surveyForm';
 import PaperFigureDetail from '../common/paperFigureDetail/paperFigureDetail';
 import { UserDevice } from '../layouts/reducer';
 const styles = require('./dialog.scss');
@@ -286,10 +285,6 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
 
       case GLOBAL_DIALOG_TYPE.ADD_PUBLICATIONS_TO_AUTHOR_DIALOG: {
         return <AllPublicationsDialog />;
-      }
-
-      case GLOBAL_DIALOG_TYPE.SURVEY_FORM: {
-        return <SurveyForm />;
       }
 
       case GLOBAL_DIALOG_TYPE.FINAL_SIGN_UP_WITH_EMAIL: {

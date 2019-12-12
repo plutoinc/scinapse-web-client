@@ -22,30 +22,27 @@
 }
 
 .title {
-  font-size: 22px;
-  line-height: 1.27;
-  font-weight: normal;
-  color: $black0;
+  font-size: 30px;
+  line-height: 1.4;
+  font-weight: 500;
+  color: $black_light_0;
   font-family: Georgia;
   margin: 0;
   padding-top: 36px;
-  padding-bottom: 12px;
 }
 
 .abstractHeader {
-  font-size: 16px;
-  font-weight: bold;
-  color: $black0;
+  font-size: 18px;
+  font-weight: 500;
+  color: $black_light_0;
 }
 
 .abstractContent {
-  font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: normal;
-  line-height: 1.36;
-  color: $black0;
+  font-family: Georgia;
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: 0.5px;
+  color: $black_light_0;
   word-break: break-word;
 }
 
