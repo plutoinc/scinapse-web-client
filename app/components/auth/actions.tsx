@@ -32,6 +32,7 @@ export function checkAuthStatus() {
           user: checkLoggedInResult.member,
           loggedIn: checkLoggedInResult.loggedIn,
           oauthLoggedIn: checkLoggedInResult.oauthLoggedIn,
+          ipInstitute: checkLoggedInResult.ipInstitute,
         },
       });
 

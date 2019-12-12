@@ -1,5 +1,6 @@
 import { Member } from '../../model/member';
 import { Affiliation } from '../../model/affiliation';
+import { Institute } from '../../model/Institute';
 
 interface BaseSignUpParams {
   email: string;
@@ -86,6 +87,7 @@ export interface SignInData {
   oauthLoggedIn: boolean;
   token: string;
   member: Member;
+  ipInstitute: Institute | null;
 }
 
 export interface SignInResult {
@@ -93,6 +95,7 @@ export interface SignInResult {
   oauthLoggedIn: boolean;
   token: string;
   member: Member | null;
+  ipInstitute: Institute | null;
 }
 
 export interface CheckDuplicatedEmailResult {

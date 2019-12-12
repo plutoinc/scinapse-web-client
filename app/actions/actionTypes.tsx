@@ -17,6 +17,7 @@ import { FilterObject } from '../helpers/searchQueryManager';
 import { AggregationJournal, AggregationFos } from '../model/aggregation';
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
 import { Member } from '../model/member';
+import { Institute } from '../model/Institute';
 
 export enum ACTION_TYPES {
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = 'GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING',
@@ -1098,6 +1099,7 @@ interface SucceedCheckAuthStatusAction {
     user: Member | null;
     loggedIn: boolean;
     oauthLoggedIn: boolean;
+    ipInstitute: Institute | null;
   };
 }
 

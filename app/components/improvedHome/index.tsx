@@ -12,6 +12,7 @@ import AffiliationsInfo from './components/affiliationsInfo';
 import HomeAPI from '../../api/home';
 import ImprovedFooter from '../layouts/improvedFooter';
 import { UserDevice } from '../layouts/reducer';
+import { Institute } from '../../model/Institute';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const styles = require('./improvedHome.scss');
 
@@ -93,6 +94,7 @@ const ScinapseFigureContent: React.FC<{ papersFoundCount: number }> = ({ papersF
 const ImprovedHome: React.FC = () => {
   useStyles(styles);
   const isMobile = useSelector<AppState, boolean>((state: AppState) => state.layout.userDevice === UserDevice.MOBILE);
+  const instituteInfo = useSelector<AppState, Institute | null>((state: AppState) => state.currentUser.ipInstitute);
   const [papersFoundCount, setPapersFoundCount] = React.useState(0);
   const cancelToken = React.useRef(axios.CancelToken.source());
 
@@ -118,6 +120,11 @@ const ImprovedHome: React.FC = () => {
               <Icon icon="SCINAPSE_HOME_LOGO" className={styles.scinapseHomeLogo} />
             </div>
             <div className={styles.subTitle}>Academic Search Engine</div>
+            {instituteInfo && (
+              <div className={styles.instituteName}>
+                for <b>{instituteInfo.name}</b>
+              </div>
+            )}
             <div tabIndex={0} className={styles.searchInputForm}>
               <SearchQueryInput
                 maxCount={MAX_KEYWORD_SUGGESTION_LIST_COUNT}

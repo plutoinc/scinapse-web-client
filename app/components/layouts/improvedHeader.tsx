@@ -197,7 +197,7 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private getHeaderLogo = () => {
-    const { location, layoutState, dispatch } = this.props;
+    const { location, layoutState, dispatch, currentUserState } = this.props;
     const isNotHome = location.pathname !== HOME_PATH;
 
     if (layoutState.userDevice !== UserDevice.DESKTOP && isNotHome) {
@@ -211,6 +211,22 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
           aria-label="Scinapse small header logo"
         >
           <Icon icon="SCINAPSE_LOGO_SMALL" />
+        </Link>
+      );
+    }
+
+    if (!!currentUserState.ipInstitute) {
+      return (
+        <Link
+          to="/"
+          onClick={() => {
+            dispatch(changeSearchQuery({ query: '' }));
+          }}
+          className={styles.headerLogoMark}
+          aria-label="Scinapse small header logo"
+        >
+          <Icon icon="SCINAPSE_LOGO_SMALL" />
+          <div className={styles.instituteName}>{currentUserState.ipInstitute.nameAbbrev}</div>
         </Link>
       );
     }

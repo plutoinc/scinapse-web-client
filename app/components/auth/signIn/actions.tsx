@@ -16,6 +16,7 @@ export function signInWithSocial(vendor: OAUTH_VENDOR, accessToken: string) {
         user: user.member,
         loggedIn: user.loggedIn,
         oauthLoggedIn: user.oauthLoggedIn,
+        ipInstitute: user.ipInstitute,
       },
     });
   };
@@ -44,6 +45,7 @@ export function signInWithEmail(params: SignInWithEmailParams, isDialog: boolean
           user: signInResult.member,
           loggedIn: signInResult.loggedIn,
           oauthLoggedIn: signInResult.oauthLoggedIn,
+          ipInstitute: signInResult.ipInstitute,
         },
       });
       return signInResult;

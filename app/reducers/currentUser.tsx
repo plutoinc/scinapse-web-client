@@ -8,11 +8,13 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
         ...action.payload.user,
         isLoggedIn: action.payload.loggedIn,
         oauthLoggedIn: action.payload.oauthLoggedIn,
+        ipInstitute: action.payload.ipInstitute,
+        isLoggingIn: false,
       };
     }
 
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT: {
-      return { ...CURRENT_USER_INITIAL_STATE, isLoggingIn: false };
+      return { ...CURRENT_USER_INITIAL_STATE, isLoggingIn: false, ipInstitute: state.ipInstitute };
     }
 
     case ACTION_TYPES.AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR: {
@@ -31,21 +33,26 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
       return { ...state, isLoggingIn: false };
     }
 
+    case ACTION_TYPES.EMAIL_VERIFICATION_SUCCEEDED_TO_VERIFY_TOKEN: {
+      return { ...state, emailVerified: true };
+    }
+
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN: {
       if (action.payload.loggedIn) {
         return {
           ...action.payload.user,
           isLoggedIn: action.payload.loggedIn,
           oauthLoggedIn: action.payload.oauthLoggedIn,
+          ipInstitute: action.payload.ipInstitute,
           isLoggingIn: false,
         };
-      } else {
-        return { ...state, isLoggingIn: false };
       }
-    }
 
-    case ACTION_TYPES.EMAIL_VERIFICATION_SUCCEEDED_TO_VERIFY_TOKEN: {
-      return { ...state, emailVerified: true };
+      return {
+        ...state,
+        ipInstitute: action.payload.ipInstitute,
+        isLoggingIn: false,
+      };
     }
 
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA: {

@@ -68,13 +68,28 @@
 }
 
 .headerLogoMark {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  margin-right: 20px;
 
-  svg {
+  i {
     width: 36px;
     height: 36px;
-    object-fit: contain;
-    margin-right: 16px;
+
+    svg {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      margin-right: 16px;
+    }
+  }
+
+  .instituteName {
+    color: $black1;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    font-size: 18px;
+    margin-left: 8px;
   }
 }
 
