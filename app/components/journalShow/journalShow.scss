@@ -40,7 +40,8 @@ $right_box_width: 267px;
 
   .leftBox {
     position: relative;
-    width: $left_box_width;
+    max-width: $left_box_width;
+    width: 100%;
 
     .title {
       display: flex;
