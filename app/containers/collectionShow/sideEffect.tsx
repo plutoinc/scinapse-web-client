@@ -16,12 +16,11 @@ export async function fetchCollectionShowData(params: LoadDataParams<CollectionS
     );
   } else {
     const promiseArr: ((dispatch: Dispatch<any>) => Promise<any>)[] = [];
-    promiseArr.push(dispatch(getCollection(collectionId, params.cancelToken)));
+    promiseArr.push(dispatch(getCollection(collectionId)));
     promiseArr.push(
       dispatch(
         getPapers({
           collectionId,
-          cancelToken: params.cancelToken,
           sort: 'RECENTLY_ADDED',
           page: 1,
         })

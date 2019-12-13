@@ -28,7 +28,7 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
     }
 
     case ACTION_TYPES.AUTH_FAILED_TO_CHECK_LOGGED_IN: {
-      return { ...state, isLoggingIn: false };
+      return { ...CURRENT_USER_INITIAL_STATE, isLoggingIn: false };
     }
 
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN: {
@@ -37,6 +37,7 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
           ...action.payload.user,
           isLoggedIn: action.payload.loggedIn,
           oauthLoggedIn: action.payload.oauthLoggedIn,
+          token: action.payload.token,
           isLoggingIn: false,
         };
       } else {

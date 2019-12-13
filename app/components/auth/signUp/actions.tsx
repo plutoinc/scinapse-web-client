@@ -3,11 +3,10 @@ import AuthAPI from '../../../api/auth';
 import { SignUpWithEmailParams, SignUpWithSocialParams } from '../../../api/types/auth';
 import RecommendationAPI from '../../../api/recommendation';
 import { RECOMMENDED_PAPER_LOGGING_FOR_NON_USER } from '../../recommendPool/constants';
-import { ACTION_TYPES } from '../../../actions/actionTypes';
 import alertToast from '../../../helpers/makePlutoToastAction';
 import EnvChecker from '../../../helpers/envChecker';
-import { Member } from '../../../model/member';
 import { RecommendationActionParams } from '../../../api/types/recommendation';
+import { checkAuthStatus } from '../actions';
 const store = require('store');
 
 async function syncRecommendationPoolToUser() {
@@ -33,16 +32,9 @@ export const checkDuplicatedEmail = async (email: string) => {
 export function signUpWithSocial(params: SignUpWithSocialParams) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      const signUpResult: Member = await AuthAPI.signUpWithSocial(params);
+      await AuthAPI.signUpWithSocial(params);
       await syncRecommendationPoolToUser();
-      dispatch({
-        type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
-        payload: {
-          user: signUpResult,
-          loggedIn: true,
-          oauthLoggedIn: true,
-        },
-      });
+      await dispatch(checkAuthStatus());
     } catch (err) {
       alertToast({
         type: 'error',
@@ -56,16 +48,9 @@ export function signUpWithSocial(params: SignUpWithSocialParams) {
 export function signUpWithEmail(params: SignUpWithEmailParams) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      const signUpResult: Member = await AuthAPI.signUpWithEmail(params);
+      await AuthAPI.signUpWithEmail(params);
       await syncRecommendationPoolToUser();
-      dispatch({
-        type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
-        payload: {
-          user: signUpResult,
-          loggedIn: true,
-          oauthLoggedIn: false,
-        },
-      });
+      await dispatch(checkAuthStatus());
       alertToast({
         type: 'success',
         message: 'Succeeded to Sign Up',

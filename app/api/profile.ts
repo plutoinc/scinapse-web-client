@@ -34,7 +34,7 @@ export interface ExperienceParams extends CvBaseInfo {
 class ProfileAPI extends PlutoAxios {
   public async getProfile(
     authorId: string,
-    cancelToken: CancelToken
+    cancelToken?: CancelToken
   ): Promise<{
     entities: { profiles: { [authorId: string]: Profile } };
     result: string;

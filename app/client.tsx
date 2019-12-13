@@ -191,6 +191,7 @@ class PlutoRenderer {
 
     ReactDom.hydrate(App, document.getElementById('react-app'), () => {
       this.checkRender();
+      // TODO: Remove below check after migrating authentication to server
       this.checkAuthStatus();
     });
   }

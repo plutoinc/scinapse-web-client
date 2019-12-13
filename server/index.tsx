@@ -149,7 +149,7 @@ const handler = async (event: LambdaProxy.Event): Promise<LambdaProxy.Response> 
     }
   });
 
-  const html = await ssr(event, version);
+  const { html, setCookies } = await ssr(event, version);
 
   return {
     statusCode: 200,
@@ -157,7 +157,7 @@ const handler = async (event: LambdaProxy.Event): Promise<LambdaProxy.Response> 
       'Content-Type': 'text/html; charset=utf-8',
     },
     multiValueHeaders: {
-      'Set-Cookie': cookieValues,
+      'Set-Cookie': [...cookieValues, ...setCookies],
     },
     body: html,
   };

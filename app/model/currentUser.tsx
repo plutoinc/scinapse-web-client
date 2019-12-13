@@ -1,12 +1,12 @@
 import { Member } from './member';
 
-export interface CurrentUser
-  extends Member,
-    Readonly<{
-      isLoggedIn: boolean;
-      oauthLoggedIn: boolean;
-      isLoggingIn: boolean;
-    }> {}
+export type CurrentUser = Member &
+  Readonly<{
+    isLoggedIn: boolean;
+    oauthLoggedIn: boolean;
+    isLoggingIn: boolean;
+    token: string;
+  }>;
 
 export const CURRENT_USER_INITIAL_STATE: CurrentUser = {
   isLoggedIn: false,
@@ -24,4 +24,5 @@ export const CURRENT_USER_INITIAL_STATE: CurrentUser = {
   isAuthorConnected: false,
   authorId: '',
   profileLink: '',
+  token: '',
 };

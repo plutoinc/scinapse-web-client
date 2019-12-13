@@ -232,7 +232,6 @@ class UserCollections extends React.PureComponent<UserCollectionsProps> {
       match,
       pathname: location.pathname,
       userId,
-      cancelToken: this.cancelToken.token,
     });
   };
 

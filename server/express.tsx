@@ -81,8 +81,8 @@ app.use(async (req, res) => {
   setABTestCookie(req, res);
 
   try {
-    const html = await ssr(req, version);
-    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    const { html, setCookies } = await ssr(req, version);
+    setCookies.forEach(setCookieStr => res.append('Set-Cookie', setCookieStr));
     res.send(html);
   } catch (err) {
     console.error(err);

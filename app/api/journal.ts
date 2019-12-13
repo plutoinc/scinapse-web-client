@@ -14,7 +14,7 @@ interface PapersResult extends PageObjectV2 {
 
 export interface GetPapersParams {
   journalId: string;
-  cancelToken: CancelToken;
+  cancelToken?: CancelToken;
   size?: number;
   page?: number;
   query?: string;
@@ -24,7 +24,7 @@ export interface GetPapersParams {
 class JournalAPI extends PlutoAxios {
   public async getJournal(
     journalId: string,
-    cancelToken: CancelToken
+    cancelToken?: CancelToken
   ): Promise<{
     entities: { journals: { [journalId: string]: Journal } };
     result: string;

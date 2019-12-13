@@ -7,7 +7,7 @@ export interface GetAuthorPapersParams {
   authorId: string;
   page: number;
   sort: AUTHOR_PAPER_LIST_SORT_TYPES;
-  cancelToken: CancelToken;
+  cancelToken?: CancelToken;
   query?: string;
   size?: number;
 }

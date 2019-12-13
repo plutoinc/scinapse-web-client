@@ -3,7 +3,6 @@ import * as React from 'react';
 import { stringify } from 'qs';
 import { Request } from 'express';
 import { Provider } from 'react-redux';
-import axios from 'axios';
 import { Helmet } from 'react-helmet';
 import { UAParser } from 'ua-parser-js';
 import { matchPath, StaticRouter } from 'react-router-dom';
@@ -18,7 +17,7 @@ import PlutoAxios from '../app/api/pluto';
 import { setDeviceType, UserDevice } from '../app/components/layouts/reducer';
 import { parse } from 'cookie';
 import { SignInResult } from '../app/api/types/auth';
-import { camelCaseKeys } from '../app/helpers/camelCaseKeys';
+import { getAxiosInstance } from '../app/api/axios';
 const StyleContext = require('isomorphic-style-loader/StyleContext');
 const JssProvider = require('react-jss/lib/JssProvider').default;
 const { SheetsRegistry } = require('react-jss/lib/jss');
@@ -52,18 +51,6 @@ const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
   const extractor = new ChunkExtractor({ statsFile });
   const fullURL = getFullUrl(req);
 
-  // override user request
-  axios.defaults.headers.common = {
-    ...axios.defaults.headers.common,
-    'user-agent': req.headers['user-agent'] || '',
-    'x-forwarded-for': req.headers['x-forwarded-for'] || '',
-    referer: req.headers.referer || '',
-    'x-from-ssr': true,
-  };
-
-  // Initialize and make Redux store per each request
-  const store = StoreManager.getStore();
-
   const headers: { [key: string]: string } = {};
   for (const key of Object.keys(req.headers)) {
     const newKey = key.toLowerCase();
@@ -71,6 +58,19 @@ const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
       headers[newKey] = req.headers[key] as string;
     }
   }
+
+  const axios = getAxiosInstance({
+    headers: {
+      cookie: headers.cookie,
+      'user-agent': headers['user-agent'] || '',
+      'x-forwarded-for': headers['x-forwarded-for'] || '',
+      referer: headers.referer || '',
+      'x-from-ssr': true,
+    },
+  });
+
+  // Initialize and make Redux store per each request
+  const store = StoreManager.getStore({ axios });
 
   const userAgent = headers['user-agent'];
   const device = new UAParser(userAgent).getDevice();
@@ -83,17 +83,8 @@ const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
   let setCookies: string[] = [];
   if (cookies['pluto_jwt']) {
     try {
-      const res = await axios.get('https://api.scinapse.io/auth/login', {
-        headers: {
-          cookie: headers.cookie,
-        },
-        transformResponse: [(data: any) => {
-          return camelCaseKeys(JSON.parse(data))
-        }]
-      });
-  
+      const res = await axios.get('/auth/login');
       const signInResult: SignInResult = res.data;
-
 
       if (signInResult.loggedIn) {
         setCookies = res.headers['set-cookie'];
@@ -106,16 +97,10 @@ const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
           },
         });
       }
-    } catch(err) {
+    } catch (err) {
       console.log('Failed to get logged in user when even token existed: ', err);
-    }    
+    }
   }
-
-  let pluto_jwt;
-  const tokenCookie = setCookies.map(cookieString => parse(cookieString)).find(cookieObj => !!cookieObj.pluto_jwt);
-  pluto_jwt = tokenCookie?.['pluto_jwt'];
-
-  console.log('pluto_jwt === ', pluto_jwt);
 
   // Load data from API server
   const promises: Promise<any>[] = [];
@@ -129,7 +114,6 @@ const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
             match,
             queryParams: getQueryParamsObject(req),
             pathname: req.path,
-            cancelToken: axios.CancelToken.source().token,
           })
         );
       }
@@ -197,7 +181,10 @@ const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
     version,
   });
 
-  return html;
+  return {
+    html,
+    setCookies,
+  };
 };
 
 export default ssr;

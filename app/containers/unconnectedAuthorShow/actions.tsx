@@ -7,7 +7,7 @@ import { ActionCreators } from '../../actions/actionTypes';
 import { GetAuthorPapersParams } from '../../api/author/types';
 import PlutoAxios from '../../api/pluto';
 
-export function getProfile(authorId: string, cancelToken: CancelToken) {
+export function getProfile(authorId: string, cancelToken?: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     try {
       const profileResponse = await ProfileAPI.getProfile(authorId, cancelToken);
@@ -25,7 +25,7 @@ export function getProfile(authorId: string, cancelToken: CancelToken) {
   };
 }
 
-export function getCoAuthors(authorId: string, cancelToken: CancelToken) {
+export function getCoAuthors(authorId: string, cancelToken?: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     try {
       const coAuthorsResponse = await AuthorAPI.getCoAuthors(authorId, cancelToken);
@@ -43,7 +43,7 @@ export function getCoAuthors(authorId: string, cancelToken: CancelToken) {
   };
 }
 
-export function getAuthor(authorId: string, cancelToken: CancelToken) {
+export function getAuthor(authorId: string, cancelToken?: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     try {
       const authorResponse = await AuthorAPI.getAuthor(authorId, cancelToken);

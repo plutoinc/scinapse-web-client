@@ -3,7 +3,6 @@ import loadable from '@loadable/component';
 import { Route, Switch, match, withRouter, RouteComponentProps } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { Dispatch } from 'redux';
-import { CancelToken } from 'axios';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { PaperShowMatchParams } from './containers/paperShow/types';
@@ -38,7 +37,6 @@ export interface LoadDataParams<P> {
   match: match<P>;
   pathname: string;
   queryParams?: any;
-  cancelToken: CancelToken;
 }
 
 interface ServerRoutesMap {

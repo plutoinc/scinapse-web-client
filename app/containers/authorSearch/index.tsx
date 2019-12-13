@@ -1,5 +1,4 @@
 import * as React from 'react';
-import axios from 'axios';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
@@ -51,8 +50,6 @@ export interface AuthorSearchProps extends RouteComponentProps<null> {
 
 @withStyles<typeof AuthorSearch>(styles)
 class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
-  private cancelToken = axios.CancelToken.source();
-
   public async componentDidMount() {
     const { configuration, dispatch, match, location, authorSearch } = this.props;
     const notRenderedAtServerOrJSAlreadyInitialized =
@@ -64,7 +61,6 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
         match,
         pathname: location.pathname,
         queryParams: getQueryParamsObject(location.search),
-        cancelToken: this.cancelToken.token,
       };
 
       const authors = await getAuthorSearchData(currentParams);
@@ -88,15 +84,10 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
         match,
         pathname: nextProps.location.pathname,
         queryParams: getQueryParamsObject(afterSearch),
-        cancelToken: this.cancelToken.token,
       });
       this.logSearchResult(authors);
       restoreScroll(nextProps.location.key);
     }
-  }
-
-  public componentWillUnmount() {
-    this.cancelToken.cancel();
   }
 
   public render() {

@@ -1,10 +1,10 @@
 import { Dispatch } from 'redux';
-import axios, { CancelToken } from 'axios';
+import { normalize } from 'normalizr';
 import { ThunkAction } from 'redux-thunk';
+import Axios, { CancelToken } from 'axios';
 import { ActionCreators } from './actionTypes';
-import MemberAPI from '../api/member';
 import CollectionAPI, { PostCollectionParams } from '../api/collection';
-import PaperAPI, { GetPaperParams } from '../api/paper';
+import { GetPaperParams } from '../api/paper';
 import { GetRefOrCitedPapersParams } from '../api/types/paper';
 import alertToast from '../helpers/makePlutoToastAction';
 import PlutoAxios from '../api/pluto';
@@ -12,25 +12,41 @@ import { CommonError } from '../model/error';
 import { getRelatedPapers } from './relatedPapers';
 import { logException } from '../helpers/errorHandler';
 import { AppState } from '../reducers';
+import { AppThunkAction } from '../store/types';
+import { Paper, paperSchema } from '../model/paper';
+import { getIdSafePaper, getSafeCollection } from '../helpers/getIdSafeData';
+import { collectionSchema } from '../model/collection';
 
 export function clearPaperShowState() {
   return ActionCreators.clearPaperShowState();
 }
 
-export function getMyCollections(paperId: string, cancelToken: CancelToken, isOpenDropdown?: boolean) {
-  return async (dispatch: Dispatch<any>) => {
+export function getMyCollections(paperId: string, cancelToken?: CancelToken, isOpenDropdown?: boolean): AppThunkAction {
+  return async (dispatch, getState, { axios }) => {
+    if (!getState().currentUser.isLoggedIn) return;
+
     try {
       if (isOpenDropdown) {
         dispatch(ActionCreators.startToGetCollectionsInPaperShowDropdown());
       } else {
         dispatch(ActionCreators.startToGetCollectionsInPaperShow());
       }
-      const res = await MemberAPI.getMyCollections(paperId, cancelToken);
-      dispatch(ActionCreators.addEntity(res));
-      dispatch(ActionCreators.succeededToGetCollectionsInPaperShow(res));
-      return res;
+
+      const res = await axios.get(`/members/me/collections`, {
+        params: {
+          paper_id: String(paperId),
+        },
+        cancelToken,
+      });
+      const data = res.data.data;
+      const collections = res.data.data.content.map(getSafeCollection);
+      const normalizedCollections = normalize(collections, [collectionSchema]);
+      const myCollections = { ...data, ...normalizedCollections };
+
+      dispatch(ActionCreators.addEntity(myCollections));
+      dispatch(ActionCreators.succeededToGetCollectionsInPaperShow(myCollections));
     } catch (err) {
-      if (!axios.isCancel(err)) {
+      if (!Axios.isCancel(err)) {
         dispatch(ActionCreators.failedToGetCollectionsInPaperShow());
         const error = PlutoAxios.getGlobalError(err);
         if (error) {
@@ -44,15 +60,20 @@ export function getMyCollections(paperId: string, cancelToken: CancelToken, isOp
   };
 }
 
-export function getPaper(params: GetPaperParams) {
-  return async (dispatch: Dispatch<any>) => {
+export function getPaper(params: GetPaperParams): AppThunkAction {
+  return async (dispatch, _getState, { axios }) => {
     try {
       dispatch(ActionCreators.startToGetPaper());
-      const paperResponse = await PaperAPI.getPaper(params);
+      const res = await axios.get(`/papers/${params.paperId}`, {
+        cancelToken: params.cancelToken,
+      });
+      const paper: Paper = getIdSafePaper(res.data);
+      const paperResponse = normalize(paper, paperSchema);
+
       dispatch(ActionCreators.addEntity(paperResponse));
       dispatch(ActionCreators.getPaper({ paperId: paperResponse.result }));
     } catch (err) {
-      if (!axios.isCancel(err)) {
+      if (!Axios.isCancel(err)) {
         const error = PlutoAxios.getGlobalError(err);
         dispatch(ActionCreators.failedToGetPaper({ statusCode: (error as CommonError).status }));
         throw err;
@@ -61,45 +82,57 @@ export function getPaper(params: GetPaperParams) {
   };
 }
 
-export function getReferencePapers(params: GetRefOrCitedPapersParams) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToGetReferencePapers());
 
-    const getPapersResult = await PaperAPI.getReferencePapers(params);
-    dispatch(ActionCreators.addEntity(getPapersResult));
+export function getReferencePapers({ paperId, size, page, query, sort }: GetRefOrCitedPapersParams): AppThunkAction {
+  return async (dispatch, _getState, { axios }) => {
+    dispatch(ActionCreators.startToGetReferencePapers());
+    const getReferencePapersResponse = await axios.get(`/search/references`, {
+      params: {
+        pid: String(paperId),
+        size,
+        page: page - 1,
+        q: query,
+        sort,
+      },
+    });
+    const res = getReferencePapersResponse.data.data;
+    const papers: Paper[] = res.content.map(getIdSafePaper);
+    const normalizedPapersData = normalize(papers, [paperSchema]);
+  
+    dispatch(ActionCreators.addEntity(normalizedPapersData));
     dispatch(
       ActionCreators.getReferencePapers({
-        paperIds: getPapersResult.result,
-        size: getPapersResult.size,
-        page: getPapersResult.page,
-        first: getPapersResult.first,
-        last: getPapersResult.last,
-        numberOfElements: getPapersResult.numberOfElements,
-        totalPages: getPapersResult.totalPages,
-        totalElements: getPapersResult.totalElements,
+        ...res.page,
+        paperIds: normalizedPapersData.result,
       })
     );
   };
 }
 
-export function getCitedPapers(params: GetRefOrCitedPapersParams) {
-  return async (dispatch: Dispatch<any>) => {
+export function getCitedPapers({ paperId, size, page, query, sort }: GetRefOrCitedPapersParams): AppThunkAction {
+  return async (dispatch, _getState, { axios }) => {
     dispatch(ActionCreators.startToGetCitedPapers());
-    const getPapersResult = await PaperAPI.getCitedPapers(params);
-    dispatch(ActionCreators.addEntity(getPapersResult));
+    const getCitedPapersResponse = await axios.get(`/search/citations`, {
+      params: {
+        pid: String(paperId),
+        size,
+        page: page - 1,
+        q: query,
+        sort,
+      },
+    });
+
+    const res = getCitedPapersResponse.data.data;
+    const papers: Paper[] = res.content.map(getIdSafePaper);
+    const normalizedPapersData = normalize(papers, [paperSchema]);
+    
+    dispatch(ActionCreators.addEntity(normalizedPapersData));
     dispatch(
       ActionCreators.getCitedPapers({
-        paperIds: getPapersResult.result,
-        size: getPapersResult.size,
-        page: getPapersResult.page,
-        first: getPapersResult.first,
-        last: getPapersResult.last,
-        numberOfElements: getPapersResult.numberOfElements,
-        totalPages: getPapersResult.totalPages,
-        totalElements: getPapersResult.totalElements,
-      })
-    );
-  };
+        ...res.page,
+        paperIds: normalizedPapersData.result,
+      }));
+  }
 }
 
 export function postNewCollection(params: PostCollectionParams) {
@@ -121,19 +154,14 @@ export function postNewCollection(params: PostCollectionParams) {
   };
 }
 
-export function fetchLastFullTextRequestedDate(paperId: string) {
-  return async (dispatch: Dispatch<any>) => {
-    let requestedAt;
+export function fetchLastFullTextRequestedDate(paperId: string): AppThunkAction {
+  return async (dispatch, getState, { axios }) => {
+    if (!getState().currentUser.isLoggedIn) return;
+
     try {
-      const res = await PaperAPI.getLastRequestDate(paperId);
-
-      if (res) {
-        requestedAt = res.requestedAt;
-      } else {
-        requestedAt = null;
-      }
-
-      dispatch(ActionCreators.fetchLastFullTextRequestedDate({ requestedAt }));
+      const res = await axios.get(`/papers/${paperId}/request`);
+      const requestAtData = res.data.data.content;
+      dispatch(ActionCreators.fetchLastFullTextRequestedDate({ requestedAt: requestAtData?.requestedAt || null }));
     } catch (err) {
       console.error(err);
     }
@@ -158,13 +186,11 @@ export function closeNoteDropdown() {
 
 interface FetchMobilePaperShowData {
   paperId: string;
-  isLoggedIn: boolean;
   cancelToken: CancelToken;
 }
 
 export const fetchPaperShowDataAtClient = ({
   paperId,
-  isLoggedIn,
   cancelToken,
 }: FetchMobilePaperShowData): ThunkAction<Promise<void>, AppState, {}, any> => {
   return async (dispatch: Dispatch<any>) => {
@@ -173,15 +199,12 @@ export const fetchPaperShowDataAtClient = ({
     promiseArray.push(dispatch(getPaper({ paperId, cancelToken })));
     promiseArray.push(dispatch(getRelatedPapers(paperId, cancelToken)));
     promiseArray.push(dispatch(fetchLastFullTextRequestedDate(paperId)));
-
-    if (isLoggedIn) {
-      promiseArray.push(dispatch(getMyCollections(paperId, cancelToken)));
-    }
+    promiseArray.push(dispatch(getMyCollections(paperId, cancelToken)));
 
     try {
       await Promise.all(promiseArray);
     } catch (err) {
-      if (!axios.isCancel(err)) {
+      if (!Axios.isCancel(err)) {
         logException(err);
         const error = PlutoAxios.getGlobalError(err);
         throw error;

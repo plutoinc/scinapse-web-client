@@ -5,6 +5,7 @@ import setUserToTracker from '../middlewares/trackUser';
 import EnvChecker from '../helpers/envChecker';
 import { rootReducer, initialState, AppState } from '../reducers';
 import { logException } from '../helpers/errorHandler';
+import { getAxiosInstance } from '../api/axios';
 
 class StoreManager {
   private _store: EnhancedStore<AppState, AnyAction>;
@@ -20,7 +21,17 @@ class StoreManager {
   public initializeStore() {
     const loggerMiddleware = createLogger({ collapsed: true });
     const preloadedState = this.getBrowserInitialState();
-    const middlewares = [...getDefaultMiddleware(), ReduxNotifier, setUserToTracker];
+    const middlewares = [
+      ...getDefaultMiddleware({
+        thunk: {
+          extraArgument: {
+            axios: getAxiosInstance(),
+          },
+        },
+      }),
+      ReduxNotifier,
+      setUserToTracker,
+    ];
     if (EnvChecker.isLocal() || EnvChecker.isDev()) {
       middlewares.push(loggerMiddleware);
     }

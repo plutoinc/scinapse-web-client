@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { LoadDataParams } from '../../routes';
 import { CurrentUser } from '../../model/currentUser';
 import { AuthorShowMatchParams } from '../unconnectedAuthorShow';
@@ -20,7 +19,6 @@ export async function fetchAuthorShowPageData(
     fetchAuthorShowRelevantData({
       authorId,
       currentUser,
-      cancelToken: axios.CancelToken.source().token,
     })
   );
 }

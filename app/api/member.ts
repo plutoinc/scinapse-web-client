@@ -16,7 +16,7 @@ export interface GetCollectionsResponse extends CommonPaginationResponsePart {
 class MemberAPI extends PlutoAxios {
   public async getMember(
     memberId: number,
-    cancelToken: CancelToken
+    cancelToken?: CancelToken
   ): Promise<{
     entities: { members: { [memberId: number]: Member } };
     result: number;
@@ -36,7 +36,7 @@ class MemberAPI extends PlutoAxios {
     return { ...data, ...normalizedCollections };
   }
 
-  public async getMyCollections(paperId: string, cancelToken: CancelToken): Promise<GetCollectionsResponse> {
+  public async getMyCollections(paperId: string, cancelToken?: CancelToken): Promise<GetCollectionsResponse> {
     const res = await this.get(`/members/me/collections`, {
       params: {
         paper_id: String(paperId),
