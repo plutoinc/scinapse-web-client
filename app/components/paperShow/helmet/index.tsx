@@ -75,7 +75,6 @@ const getStructuredData = (paper: Paper) => {
 const PaperShowHelmet: React.FC<{ paper: Paper }> = React.memo(({ paper }) => {
   const pdfSourceRecord = getPDFLink(paper.urls);
   const metaTitleContent = !!pdfSourceRecord ? '[PDF] ' + paper.title : paper.title;
-  const authorsContext = paper.authors.map(author => author.name);
 
   return (
     <Helmet>
@@ -93,8 +92,7 @@ const PaperShowHelmet: React.FC<{ paper: Paper }> = React.memo(({ paper }) => {
       <meta property="og:description" content={buildPageDescription(paper)} />
       {paper.journal && <meta name="citation_journal_title" content={paper.journal.title} />}
       {paper.journal && paper.journal.issn && <meta name="citation_issn" content={paper.journal.issn} />}
-      <meta name="citation_author" content={paper.authors[0].name} />
-      <meta name="citation_authors" content={authorsContext.join(', ')} />
+      {paper.authors.map(author => <meta name="citation_author" content={author.name} key={author.name} />)}
       <meta name="citation_title" content={paper.title} />
       <meta name="citation_doi" content={paper.doi} />
       <meta name="citation_abstract_html_url" content={`https://scinapse.io/papers/${paper.id}`} />
