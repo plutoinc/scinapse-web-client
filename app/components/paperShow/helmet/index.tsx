@@ -75,11 +75,13 @@ const getStructuredData = (paper: Paper) => {
 const PaperShowHelmet: React.FC<{ paper: Paper }> = React.memo(({ paper }) => {
   const pdfSourceRecord = getPDFLink(paper.urls);
   const metaTitleContent = !!pdfSourceRecord ? '[PDF] ' + paper.title : paper.title;
+  const authorsContext = paper.authors.map(author => author.name);
 
   return (
     <Helmet>
       <title>{`${metaTitleContent} | Scinapse`}</title>
       <link rel="canonical" href={`https://scinapse.io/papers/${paper.id}`} />
+      <link rel="meta" href={`https://doi.org/${paper.doi}`} />
       <meta itemProp="name" content={`${metaTitleContent} | Scinapse`} />
       <meta name="description" content={buildPageDescription(paper)} />
       <meta name="twitter:title" content={`${metaTitleContent} | Scinapse`} />
@@ -89,6 +91,14 @@ const PaperShowHelmet: React.FC<{ paper: Paper }> = React.memo(({ paper }) => {
       <meta property="og:type" content="article" />
       <meta property="og:url" content={`https://scinapse.io/papers/${paper.id}`} />
       <meta property="og:description" content={buildPageDescription(paper)} />
+      {paper.journal && <meta name="citation_journal_title" content={paper.journal.title} />}
+      {paper.journal && paper.journal.issn && <meta name="citation_issn" content={paper.journal.issn} />}
+      <meta name="citation_author" content={paper.authors[0].name} />
+      <meta name="citation_authors" content={authorsContext.join(', ')} />
+      <meta name="citation_title" content={paper.title} />
+      <meta name="citation_doi" content={paper.doi} />
+      <meta name="citation_abstract_html_url" content={`https://scinapse.io/papers/${paper.id}`} />
+      <meta name="citation_date" content={`${paper.publishedDate.replace(/-/gi, '/')}`} />
       <script type="application/ld+json">{JSON.stringify(getStructuredData(paper))}</script>
     </Helmet>
   );
