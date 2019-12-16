@@ -53,6 +53,7 @@ export function fetchAuthorShowRelevantData(params: FetchAuthorShowRelevantDataP
       dispatch(ActionCreators.startToLoadAuthorShowPageData());
       const isMine =
         currentUser && currentUser.isLoggedIn && currentUser.isAuthorConnected && currentUser.authorId === authorId;
+
       const promiseArr = [];
       promiseArr.push(dispatch(getAuthor(authorId)));
       promiseArr.push(dispatch(getCoAuthors(authorId)));
@@ -68,6 +69,7 @@ export function fetchAuthorShowRelevantData(params: FetchAuthorShowRelevantDataP
       );
 
       await Promise.all(promiseArr);
+
       dispatch(ActionCreators.finishToLoadAuthorShowPageData());
     } catch (err) {
       if (!axios.isCancel(err)) {

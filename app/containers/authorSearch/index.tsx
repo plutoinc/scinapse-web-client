@@ -51,26 +51,18 @@ export interface AuthorSearchProps extends RouteComponentProps<null> {
 @withStyles<typeof AuthorSearch>(styles)
 class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
   public async componentDidMount() {
-    const { configuration, dispatch, match, location, authorSearch } = this.props;
-    const notRenderedAtServerOrJSAlreadyInitialized =
-      !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
+    const { dispatch, match, location } = this.props;
+    const currentParams = {
+      dispatch,
+      match,
+      pathname: location.pathname,
+      queryParams: getQueryParamsObject(location.search),
+    };
 
-    if (notRenderedAtServerOrJSAlreadyInitialized) {
-      const currentParams = {
-        dispatch,
-        match,
-        pathname: location.pathname,
-        queryParams: getQueryParamsObject(location.search),
-      };
-
-      const authors = await getAuthorSearchData(currentParams);
-      // TODO: change logging logic much easier after chainging the class component to React hooks.
-      this.logSearchResult(authors);
-      restoreScroll(location.key);
-    } else {
-      // TODO: change logging logic much easier after chainging the class component to React hooks.
-      this.logSearchResult(authorSearch.searchItemsToShow);
-    }
+    const authors = await getAuthorSearchData(currentParams);
+    // TODO: change logging logic much easier after changing the class component to React hooks.
+    this.logSearchResult(authors);
+    restoreScroll(location.key);
   }
 
   public async componentWillReceiveProps(nextProps: AuthorSearchProps) {

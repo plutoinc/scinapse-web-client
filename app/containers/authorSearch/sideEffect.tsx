@@ -8,6 +8,7 @@ import { Author } from '../../model/author/author';
 export async function getAuthorSearchData(params: LoadDataParams<null>): Promise<Author[] | null | undefined> {
   const { queryParams, dispatch } = params;
   const searchQueryObject: GetAuthorsParam = PaperSearchQueryFormatter.makeSearchQueryFromParamsObject(queryParams);
+
   if (!searchQueryObject.query) {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_AUTHORS,
