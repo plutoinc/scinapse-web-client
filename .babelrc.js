@@ -14,7 +14,7 @@ if (process.env.TARGET === 'server') {
     {
       useBuiltIns: 'usage',
       targets: {
-        node: '8',
+        node: '12',
       },
       exclude: ['@babel/plugin-transform-classes', 'babel-plugin-transform-classes'],
       modules: false,

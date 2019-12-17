@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Axios, { CancelTokenSource } from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from '@reduxjs/toolkit';
@@ -63,9 +63,9 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
 
   React.useEffect(
     () => {
-      dispatch(getBestPdfOfPaper(paper, cancelToken));
-
       if (!paper.bestPdf || pdfBlob || PDFViewerState.isLoading) return;
+
+      dispatch(getBestPdfOfPaper(paper, cancelToken));
 
       if (paper.bestPdf.path) return setDirectPdfPath(getDirectPDFPath(paper.bestPdf.path));
 
