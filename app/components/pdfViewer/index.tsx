@@ -1,12 +1,12 @@
-import React from 'react';
-import Axios, { CancelTokenSource } from 'axios';
+import React, { memo } from 'react';
+import PaperAPI from '../../api/paper';
+import Axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from '@reduxjs/toolkit';
 import { Document, Page } from 'react-pdf';
 import { denormalize } from 'normalizr';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Button } from '@pluto_network/pluto-design-elements';
-import { withStyles } from '../../helpers/withStylesHelper';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import Icon from '../../icons';
 import { paperSchema } from '../../model/paper';
@@ -21,8 +21,8 @@ import ProgressSpinner from './component/progressSpinner';
 import BlurBlocker from './component/blurBlocker';
 import { addPaperToRecommendPool } from '../recommendPool/actions';
 import { PDFViewerState } from '../../reducers/pdfViewer';
-import { CurrentUser } from '../../model/currentUser';
-import { getBestPdfOfPaper, getPDFPathOrBlob } from '../../actions/pdfViewer';
+import { getBestPdf } from '../../actions/pdfViewer';
+const useStyles = require('isomorphic-style-loader/useStyles');
 const styles = require('./pdfViewer.scss');
 
 const DIRECT_PDF_PATH_PREFIX = 'https://asset-pdf.scinapse.io/';
@@ -48,60 +48,51 @@ const selectRelatedPapers = createSelector(
   }
 );
 
-const PDFViewer: React.FC<PDFViewerProps> = props => {
+const PDFViewer: React.FC<PDFViewerProps> = memo(props => {
+  useStyles(styles);
+
   const { paper, afterDownloadPDF } = props;
   const dispatch = useDispatch();
   const PDFViewerState = useSelector<AppState, PDFViewerState>(state => state.PDFViewerState);
-  const currentUser = useSelector<AppState, CurrentUser>(state => state.currentUser);
+  const isLoggedIn = useSelector<AppState, boolean>(state => state.currentUser.isLoggedIn);
   const isLoadingRelatedPaperList = useSelector<AppState, boolean>(state => state.relatedPapersState.isLoading);
   const relatedPaperList = useSelector(selectRelatedPapers);
-  const [pdfBlob, setPdfBlob] = React.useState<Blob | null>(null);
-  const [directPdfPath, setDirectPdfPath] = React.useState<string | null>(null);
+  const [pdfFile, setPdfFile] = React.useState<{ data: ArrayBuffer } | null>(null);
   const wrapperNode = React.useRef<HTMLDivElement | null>(null);
-  const cancelTokenSource = React.useRef<CancelTokenSource>(Axios.CancelToken.source());
-  const cancelToken = cancelTokenSource.current.token;
 
   React.useEffect(
     () => {
-      if (!paper.bestPdf || pdfBlob || PDFViewerState.isLoading) return;
+      let shouldUpdate = true;
 
-      dispatch(getBestPdfOfPaper(paper, cancelToken));
+      getBestPdf(paper)
+        .then(bestPdf => {
+          dispatch(ActionCreators.startToFetchPDF());
 
-      if (paper.bestPdf.path) return setDirectPdfPath(getDirectPDFPath(paper.bestPdf.path));
+          if (!bestPdf.path) return dispatch(ActionCreators.finishToFetchPDF());
 
-      dispatch(ActionCreators.startToFetchPDF());
-
-      getPDFPathOrBlob(paper.bestPdf, cancelToken)
-        .then(res => {
-          if (!res) throw new Error('No PDF');
-
-          if (typeof res === 'object') {
-            const blob = res.data;
-            setPdfBlob(blob);
-          } else {
-            setDirectPdfPath(getDirectPDFPath(res));
-          }
-
-          return dispatch(ActionCreators.finishToFetchPDF());
+          // paper exists in Pluto server
+          Axios.get(getDirectPDFPath(bestPdf.path), {
+            responseType: 'arraybuffer',
+          }).then(res => {
+            if (shouldUpdate) {
+              setPdfFile({ data: res.data });
+              dispatch(ActionCreators.finishToFetchPDF());
+            }
+          });
         })
-        .catch(err => {
-          if (!Axios.isCancel(err)) {
-            dispatch(ActionCreators.failToFetchPDF());
-          } else {
-            dispatch(ActionCreators.cancelToFetchPDF());
-          }
+        .catch(_err => {
+          dispatch(ActionCreators.failToFetchPDF());
         });
-
       return () => {
-        cancelTokenSource.current.cancel();
-        cancelTokenSource.current = Axios.CancelToken.source();
+        shouldUpdate = false;
+        dispatch(ActionCreators.cancelToFetchPDF());
       };
     },
-    [dispatch, paper.id]
+    [dispatch, paper]
   );
 
-  if (PDFViewerState.isLoading) return <ProgressSpinner />; // handle loading state
-  if (!pdfBlob && !directPdfPath) return null; // handle empty state
+  if (PDFViewerState.isLoading) return <ProgressSpinner />; // loading state
+  if (!pdfFile) return null; // empty state
 
   if (PDFViewerState.hasClickedDownloadBtn) {
     return (
@@ -111,7 +102,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
             dispatch(ActionCreators.clickPDFReloadBtn());
           }}
           relatedPaperList={relatedPaperList}
-          isLoggedIn={currentUser.isLoggedIn}
+          isLoggedIn={isLoggedIn}
           isRelatedPaperLoading={isLoadingRelatedPaperList}
           title={paper.title}
         />
@@ -122,7 +113,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
   return (
     <div ref={wrapperNode} className={styles.contentWrapper}>
       <Document
-        file={!!directPdfPath ? directPdfPath : pdfBlob}
+        file={pdfFile}
         loading={
           <div className={styles.loadingContainerWrapper}>
             <div className={styles.loadingContainer}>
@@ -146,7 +137,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
       >
         <div
           style={{
-            height: !currentUser.isLoggedIn ? '500px' : 'auto',
+            height: !isLoggedIn ? '500px' : 'auto',
           }}
           className={styles.pageLayer}
         >
@@ -163,8 +154,8 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
           alignItems: 'center',
         }}
       >
-        {!currentUser.isLoggedIn && <BlurBlocker paperId={paper.id} />}
-        {currentUser.isLoggedIn &&
+        {!isLoggedIn && <BlurBlocker paperId={paper.id} />}
+        {isLoggedIn &&
           !PDFViewerState.hasFailed &&
           paper.bestPdf && (
             <>
@@ -192,7 +183,7 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
 
                     dispatch(ActionCreators.clickPDFDownloadBtn());
                     trackClickButton('downloadPdf', paper.id);
-                    window.open(paper.bestPdf.url, '_blank');
+                    window.open(paper.bestPdf!.url, '_blank');
                     afterDownloadPDF();
                   }
                 }}
@@ -206,6 +197,6 @@ const PDFViewer: React.FC<PDFViewerProps> = props => {
       </div>
     </div>
   );
-};
+}, (prev, next) => prev.paper.id === next.paper.id);
 
-export default withStyles<typeof PDFViewer>(styles)(PDFViewer);
+export default PDFViewer;
