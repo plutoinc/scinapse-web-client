@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import PaperAPI from '../../api/paper';
 import Axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from '@reduxjs/toolkit';
@@ -188,7 +187,7 @@ const PDFViewer: React.FC<PDFViewerProps> = memo(props => {
                   }
                 }}
               >
-                <Icon icon="DOWNLOAD" />
+                <Icon icon="PDF_PAPER" />
                 <span>Show PDF</span>
               </Button>
               <RelatedPapers shouldShowRelatedPapers={!paper.bestPdf || !paper.bestPdf.hasBest} />
