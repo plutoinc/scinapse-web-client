@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const LoadablePlugin = require('@loadable/webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -105,5 +106,6 @@ module.exports = {
       swSrc: './app/sw.js',
       swDest: '../server/sw.js',
     }),
+    new webpack.IgnorePlugin(/^\.\/pdf.worker.js$/),
   ],
 };

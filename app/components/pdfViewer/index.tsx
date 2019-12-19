@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import Axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from '@reduxjs/toolkit';
-import { Document, Page } from 'react-pdf';
+import { pdfjs, Document, Page } from 'react-pdf';
 import { denormalize } from 'normalizr';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Button } from '@pluto_network/pluto-design-elements';
@@ -23,6 +23,8 @@ import { PDFViewerState } from '../../reducers/pdfViewer';
 import { getBestPdf } from '../../actions/pdfViewer';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const styles = require('./pdfViewer.scss');
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const DIRECT_PDF_PATH_PREFIX = 'https://asset-pdf.scinapse.io/';
 
@@ -130,7 +132,8 @@ const PDFViewer: React.FC<PDFViewerProps> = memo(props => {
             actionLabel: String(paper.id),
           });
         }}
-        onLoadError={() => {
+        onLoadError={err => {
+          console.error(err);
           dispatch(ActionCreators.failToFetchPDF());
         }}
       >
