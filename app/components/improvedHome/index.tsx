@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import Helmet from 'react-helmet';
-import ReactCountUp from 'react-countup';
+import CountUp from 'react-countup';
 import { AppState } from '../../reducers';
 import SearchQueryInput from '../common/InputWithSuggestionList/searchQueryInput';
 import TrendingPaper from './components/trendingPaper';
@@ -75,7 +75,7 @@ const ScinapseFigureContent: React.FC<{ papersFoundCount: number }> = ({ papersF
         <br />
         <span>
           <b>
-            <ReactCountUp
+            <CountUp
               start={papersFoundCount > 10000 ? papersFoundCount - 10000 : papersFoundCount}
               end={papersFoundCount}
               separator=","
