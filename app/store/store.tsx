@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware, EnhancedStore, AnyAction } from 'redux-starter-kit';
+import { configureStore, getDefaultMiddleware, EnhancedStore, AnyAction } from '@reduxjs/toolkit';
 import { createLogger } from 'redux-logger';
 import ReduxNotifier from '../middlewares/notifier';
 import setUserToTracker from '../middlewares/trackUser';

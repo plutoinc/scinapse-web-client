@@ -1,4 +1,4 @@
-import { configureStore } from 'redux-starter-kit';
+import { configureStore } from '@reduxjs/toolkit';
 import { rootReducer, initialState } from '../reducers';
 
 export default class ServerStoreManager {

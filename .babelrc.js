@@ -1,22 +1,22 @@
 let babelPresetEnv = [
-  "@babel/preset-env",
+  '@babel/preset-env',
   {
     targets: {
-      browsers: ["last 2 versions"],
+      browsers: ['last 2 versions'],
     },
     modules: false,
   },
 ];
 
-if (process.env.TARGET === "server") {
+if (process.env.TARGET === 'server') {
   babelPresetEnv = [
-    "@babel/preset-env",
+    '@babel/preset-env',
     {
-      useBuiltIns: "usage",
+      useBuiltIns: 'usage',
       targets: {
-        node: "8",
+        node: '12',
       },
-      exclude: ["@babel/plugin-transform-classes", "babel-plugin-transform-classes"],
+      exclude: ['@babel/plugin-transform-classes', 'babel-plugin-transform-classes'],
       modules: false,
     },
   ];
@@ -24,12 +24,12 @@ if (process.env.TARGET === "server") {
 
 module.exports = {
   plugins: [
-    "lodash",
-    "@loadable/babel-plugin",
-    "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-transform-runtime",
+    'lodash',
+    '@loadable/babel-plugin',
+    '@babel/plugin-syntax-dynamic-import',
+    '@babel/plugin-proposal-class-properties',
+    '@babel/plugin-transform-runtime',
   ],
-  presets: ["@babel/preset-react", babelPresetEnv],
-  exclude: "/node_modules/",
+  presets: ['@babel/preset-react', babelPresetEnv],
+  exclude: '/node_modules/',
 };

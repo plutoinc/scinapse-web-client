@@ -45,7 +45,6 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper, location }) =>
   useStyles(s);
   const isLoading = useSelector((state: AppState) => state.paperShow.isLoadingPaper);
   const relatedPaperIds = useSelector((state: AppState) => state.relatedPapersState.paperIds, isEqual);
-
   const [currentPosition, setCurrentPosition] = React.useState<CurrentPosition>('abovePaperInfo');
   const lastPosition = React.useRef<CurrentPosition>('abovePaperInfo');
   const buttonGroupWrapper = React.useRef<HTMLDivElement | null>(null);
