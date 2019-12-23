@@ -33,6 +33,7 @@ export function checkAuthStatus() {
           loggedIn: checkLoggedInResult.loggedIn,
           oauthLoggedIn: checkLoggedInResult.oauthLoggedIn,
           token: checkLoggedInResult.token,
+          ipInstitute: checkLoggedInResult.ipInstitute,
         },
       });
 

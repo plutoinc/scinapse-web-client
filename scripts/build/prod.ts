@@ -1,14 +1,14 @@
 import * as webpack from 'webpack';
 import * as path from 'path';
 import * as fs from 'fs';
-import { CDN_BASE_HOST, AWS_S3_PRODUCTION_FOLDER_PREFIX } from '../deploy/config';
+import { BUNDLE_BASE_PATH, AWS_S3_PRODUCTION_FOLDER_PREFIX } from '../deploy/config';
 import { uploadProdFiles } from '../helpers/pushToS3';
 const clientConfig = require('../../webpack.prod.browser.config');
 const serverConfig = require('../../webpack.prod.server.config');
 
 const VERSION = new Date().toISOString();
 
-clientConfig.output.publicPath = `${CDN_BASE_HOST}/${AWS_S3_PRODUCTION_FOLDER_PREFIX}/client/`;
+clientConfig.output.publicPath = `${BUNDLE_BASE_PATH}/${AWS_S3_PRODUCTION_FOLDER_PREFIX}/client/`;
 
 function cleanArtifacts() {
   const fileList = fs.readdirSync(path.resolve(__dirname, '../../dist/client'));
@@ -37,7 +37,9 @@ function build() {
 
 (async () => {
   try {
+    console.log('Start to build src files');
     await build();
+    console.log('Start to upload src files');
     await uploadProdFiles();
     cleanArtifacts();
     fs.writeFileSync(path.resolve(__dirname, '../../dist/server/version'), VERSION);

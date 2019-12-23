@@ -5,7 +5,7 @@ import { AvailableCitationType } from '../containers/paperShow/records';
 import { GetCollectionsResponse } from '../api/member';
 import { GLOBAL_DIALOG_TYPE } from '../components/dialog/reducer';
 import { Collection } from '../model/collection';
-import { Paper, PaperPdf, PaperFigure } from '../model/paper';
+import { Paper, PaperFigure } from '../model/paper';
 import { CVInfoType, Award, Education, Experience } from '../model/profile';
 import { PaperInCollection } from '../model/paperInCollection';
 import { SIGN_UP_STEP } from '../components/auth/signUp/types';
@@ -17,6 +17,7 @@ import { FilterObject } from '../helpers/searchQueryManager';
 import { AggregationJournal, AggregationFos } from '../model/aggregation';
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
 import { Member } from '../model/member';
+import { Institute } from '../model/Institute';
 
 export enum ACTION_TYPES {
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = 'GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING',
@@ -321,10 +322,6 @@ export const ActionCreators = {
 
   clickPDFViewMoreBtn() {
     return createAction({ type: ACTION_TYPES.PDF_VIEWER_CLICK_VIEW_MORE_BTN });
-  },
-
-  getBestPDFOfPaper(payload: { paperId: string; bestPDF: PaperPdf }) {
-    return createAction({ type: ACTION_TYPES.PDF_VIEWER_GET_BEST_PDF_OF_PAPER, payload });
   },
 
   startToLoadAuthorShowPageData() {
@@ -1098,6 +1095,7 @@ interface SucceedCheckAuthStatusAction {
     user: Member | null;
     loggedIn: boolean;
     oauthLoggedIn: boolean;
+    ipInstitute: Institute | null;
   };
 }
 

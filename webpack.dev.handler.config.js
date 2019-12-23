@@ -11,6 +11,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    alias: {
+      'react-pdf': 'react-pdf/dist/esm/entry.webpack',
+    },
   },
   devtool: 'source-map',
   module: {
@@ -47,7 +50,4 @@ module.exports = {
       'process.env.TARGET': JSON.stringify('server'),
     }),
   ],
-  externals: {
-    newrelic: true
-  },
 };

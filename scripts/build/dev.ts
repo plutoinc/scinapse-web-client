@@ -2,7 +2,7 @@ import * as AWS from 'aws-sdk';
 import * as webpack from 'webpack';
 import * as path from 'path';
 import * as rimraf from 'rimraf';
-import { CDN_BASE_HOST, AWS_S3_DEV_FOLDER_PREFIX, AWS_SSM_PARAM_STORE_NAME } from '../deploy/config';
+import { BUNDLE_BASE_PATH, AWS_S3_DEV_FOLDER_PREFIX, AWS_SSM_PARAM_STORE_NAME } from '../deploy/config';
 import { uploadDevFiles } from '../helpers/pushToS3';
 const clientConfig = require('../../webpack.dev.browser.config');
 const serverConfig = require('../../webpack.dev.server.config');
@@ -10,7 +10,7 @@ const handlerConfig = require('../../webpack.dev.handler.config');
 
 const VERSION = new Date().toISOString();
 const escapedBranch = process.env.CIRCLE_BRANCH.replace('/', '-');
-clientConfig.output.publicPath = `${CDN_BASE_HOST}/${AWS_S3_DEV_FOLDER_PREFIX}/${
+clientConfig.output.publicPath = `${BUNDLE_BASE_PATH}/${AWS_S3_DEV_FOLDER_PREFIX}/${
   process.env.CIRCLE_BRANCH
 }/${VERSION}/client/`;
 

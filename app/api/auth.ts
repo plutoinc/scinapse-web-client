@@ -91,6 +91,10 @@ class AuthAPI extends PlutoAxios {
 
     const signInData: SignInData = checkLoggedInData;
 
+    if (!signInData.member) {
+      return signInData;
+    }
+
     return {
       ...signInData,
       member: {

@@ -12,6 +12,9 @@ module.exports = {
   devtool: false,
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    alias: {
+      'react-pdf': 'react-pdf/dist/esm/entry.webpack',
+    },
   },
   module: {
     rules: [
@@ -89,7 +92,4 @@ module.exports = {
     }),
     new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('production') }),
   ],
-  externals: {
-    newrelic: true,
-  },
 };

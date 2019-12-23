@@ -2,8 +2,8 @@ import React, { FC, useEffect, useRef } from 'react';
 import Axios from 'axios';
 import { isEqual } from 'lodash';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { PaperShowMatchParams } from './types';
-import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../reducers';
 import { UserDevice } from '../../components/layouts/reducer';
 import MobilePaperShow from '../../components/mobilePaperShow/mobilePaperShow';
@@ -12,11 +12,12 @@ import { getMemoizedPaper } from './select';
 import { fetchPaperShowDataAtClient } from '../../actions/paperShow';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import restoreScroll from '../../helpers/scrollRestoration';
+import { useThunkDispatch } from '../../hooks/useThunkDispatch';
 
 type Props = RouteComponentProps<PaperShowMatchParams>;
 
 const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
-  const dispatch = useDispatch();
+  const dispatch = useThunkDispatch();
   const shouldFetch = useSelector(
     (state: AppState) => !state.configuration.succeedAPIFetchAtServer || state.configuration.renderedAtClient
   );
@@ -39,7 +40,6 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
           actionTag: 'pageView',
           actionLabel: String(paperId),
         });
-
         restoreScroll(location.key);
       }
     },
@@ -57,14 +57,12 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
       // NOTE: prevent double fetching
       if (!shouldFetch) return;
 
-      const promise = dispatch(
+      dispatch(
         fetchPaperShowDataAtClient({
           paperId: matchedPaperId,
           cancelToken: cancelToken.token,
         })
-      );
-
-      Promise.all([promise])
+      )
         .then(() => {
           lastPaperId.current = matchedPaperId;
         })
@@ -89,9 +87,7 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
 
   if (!paper) return null;
 
-  if (isMobile) {
-    return <MobilePaperShow paper={paper} />;
-  }
+  if (isMobile) return <MobilePaperShow paper={paper} />;
 
   return <PaperShow />;
 };

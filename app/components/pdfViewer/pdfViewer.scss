@@ -9,6 +9,7 @@
 }
 
 .contentWrapper {
+  position: relative;
   background-color: $gray50;
   padding: 32px 0;
 }
@@ -77,6 +78,10 @@
   height: auto;
   overflow-y: hidden;
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+.page {
+  margin: 0 auto;
 }
 
 // RegularDisplay (1024~1200)

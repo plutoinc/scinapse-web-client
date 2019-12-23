@@ -49,10 +49,10 @@ export interface Paper {
   relation?: {
     savedInCollections: SavedInCollection[];
   } | null;
-  bestPdf: PaperPdf;
   titleHighlighted?: string;
   abstractHighlighted?: string;
   missingKeywords: string[];
+  bestPdf?: PaperPdf;
 }
 
 export const paperSchema = new schema.Entity('papers');

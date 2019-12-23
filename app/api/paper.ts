@@ -1,6 +1,6 @@
 import { AxiosResponse, CancelToken } from 'axios';
 import PlutoAxios from './pluto';
-import { Paper } from '../model/paper';
+import { Paper, PaperPdf } from '../model/paper';
 import { PaginationResponseV2, PageObjectV2 } from './types/common';
 import { AvailableCitationType } from '../containers/paperShow/records';
 import { PaperAuthor } from '../model/author';
@@ -96,24 +96,21 @@ class PaperAPI extends PlutoAxios {
     return res;
   }
 
-  public async getBestPdfOfPaper(params: { paperId: string; cancelToken: CancelToken }) {
-    const res = await this.post(`/papers/${params.paperId}/pdf`, null, {
-      cancelToken: params.cancelToken,
-    });
+  public async getBestPdfOfPaper(params: { paperId: string }) {
+    const res = await this.post(`/papers/${params.paperId}/pdf`, null);
 
-    return res.data.data.content;
+    return res.data.data.content as PaperPdf;
   }
 
-  public async getPDFBlob(targetURL: string, cancelToken: CancelToken) {
+  public async getPDFBlob(targetURL: string) {
     const res = await this.get(`/proxy/pdf`, {
       params: {
         url: targetURL,
       },
-      responseType: 'blob',
-      cancelToken,
+      responseType: 'arraybuffer',
     });
 
-    return { data: res.data as Blob };
+    return { data: res.data as ArrayBuffer };
   }
 
   public async getSources(paperIds: string[]): Promise<PaperSource[]> {

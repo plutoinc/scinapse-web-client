@@ -58,6 +58,7 @@ class AuthAPI extends PlutoAxios {
         oauthLoggedIn: false,
         token: '',
         member: mockMember,
+        ipInstitute: null,
       };
       return mockSignInResult;
     }
@@ -74,6 +75,7 @@ class AuthAPI extends PlutoAxios {
         oauthLoggedIn: true,
         token: '',
         member: mockMember,
+        ipInstitute: null,
       };
       return mockSignInResult;
     }
@@ -105,6 +107,7 @@ class AuthAPI extends PlutoAxios {
       oauthLoggedIn: false,
       token: '',
       member: mockMember,
+      ipInstitute: null,
     };
     return mockCheckLoggedInResult;
   }

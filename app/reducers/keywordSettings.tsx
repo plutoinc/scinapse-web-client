@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from 'redux-starter-kit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { KeywordSettingItemResponse } from '../api/types/member';
 import { ACTION_TYPES } from '../actions/actionTypes';
 

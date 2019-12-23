@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware } from 'redux-starter-kit';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { rootReducer, initialState } from '../reducers';
 
 export default class ServerStoreManager {

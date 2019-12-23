@@ -1,7 +1,8 @@
 .wrapper {
   position: absolute;
   bottom: 40px;
-  width: 996px;
+  left: 0;
+  right: 0;
   height: 220px;
   background-image: linear-gradient(
     0deg,
@@ -11,10 +12,16 @@
   );
   z-index: 81;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding-top: 64px;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
 

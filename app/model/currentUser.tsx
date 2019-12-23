@@ -1,12 +1,14 @@
 import { Member } from './member';
+import { Institute } from './Institute';
 
-export type CurrentUser = Member &
-  Readonly<{
-    isLoggedIn: boolean;
-    oauthLoggedIn: boolean;
-    isLoggingIn: boolean;
-    token: string;
-  }>;
+export interface CurrentUser
+  extends Member,
+    Readonly<{
+      isLoggedIn: boolean;
+      oauthLoggedIn: boolean;
+      isLoggingIn: boolean;
+      ipInstitute: Institute | null;
+    }> {}
 
 export const CURRENT_USER_INITIAL_STATE: CurrentUser = {
   isLoggedIn: false,
@@ -24,5 +26,5 @@ export const CURRENT_USER_INITIAL_STATE: CurrentUser = {
   isAuthorConnected: false,
   authorId: '',
   profileLink: '',
-  token: '',
+  ipInstitute: null,
 };

@@ -68,13 +68,42 @@
 }
 
 .headerLogoMark {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  margin-right: 20px;
 
-  svg {
+  i {
     width: 36px;
     height: 36px;
-    object-fit: contain;
-    margin-right: 16px;
+
+    svg {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      margin-right: 16px;
+    }
+  }
+
+  .instituteLogo {
+    color: $black_light_0;
+    font-size: 13px;
+    margin-left: 8px;
+
+    .serviceName {
+      margin-bottom: 2px;
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: 1.5px;
+    }
+
+    .instituteName {
+      @extend %one-line-overflow-ellipsis;
+
+      letter-spacing: 2px;
+      display: inline-block;
+      max-width: 140px;
+    }
   }
 }
 

@@ -15,6 +15,9 @@ module.exports = {
   devtool: false,
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    alias: {
+      'react-pdf': 'react-pdf/dist/esm/entry.webpack',
+    },
   },
   stats: 'errors-only',
   module: {

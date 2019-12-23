@@ -2,10 +2,6 @@ $action-bar-height: 55px;
 $ref-cited-bar-height: 50px;
 $side-navigation-bottom-padding: 24px;
 
-:global {
-  @import '~react-pdf/dist/Page/AnnotationLayer';
-}
-
 ul {
   list-style: none;
   margin: 0;
@@ -63,13 +59,13 @@ article.paperShow {
   width: $paper-show-width;
   margin: 0 auto;
   font-size: 16px;
-  color: $black1;
+  color: $black_light_0;
   height: fit-content;
 
   .paperContentBlockHeader {
     width: 100%;
-    font-weight: 700;
-    color: $black1;
+    font-size: 21px;
+    font-weight: 500;
     padding-bottom: 4px;
     margin-bottom: 8px;
     position: relative;
@@ -86,6 +82,7 @@ article.paperShow {
   .abstractContent {
     word-break: break-word;
     overflow-wrap: break-word;
+    letter-spacing: 0.3px;
 
     b {
       font-weight: 700;
@@ -95,10 +92,10 @@ article.paperShow {
   .paperTitle {
     max-width: 792px;
     font-family: Georgia;
-    font-size: 30px;
-    line-height: 1.4;
-    font-weight: 400;
-    color: $black1;
+    font-size: 36px;
+    line-height: 1.5;
+    font-weight: 500;
+    color: $black_light_0;
     margin-top: 32px;
     margin-bottom: 16px;
 
@@ -118,8 +115,9 @@ article.paperShow {
 
   .paperContent {
     position: relative;
-    line-height: 1.5;
-    color: $black1;
+    font-size: 18px;
+    color: $black_light_0;
+    line-height: 1.6;
     margin-bottom: 64px;
   }
 
@@ -137,9 +135,9 @@ article.paperShow {
   }
 }
 
-.citedBy {
-  margin-top: 16px;
-  padding-bottom: 16px;
+.citedWrapper,
+.referenceWrapper {
+  padding: 16px 0;
 }
 
 .paperContentBlockHeaderTabsHeight {
@@ -153,8 +151,8 @@ article.paperShow {
 
 .sectionTitle {
   font-size: 21px;
-  font-weight: bold;
-  color: $black1;
+  font-weight: 500;
+  color: $black_light_0;
 }
 
 .sectionCount {
