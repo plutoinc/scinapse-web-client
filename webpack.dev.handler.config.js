@@ -50,7 +50,4 @@ module.exports = {
       'process.env.TARGET': JSON.stringify('server'),
     }),
   ],
-  externals: {
-    newrelic: true,
-  },
 };

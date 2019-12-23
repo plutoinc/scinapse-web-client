@@ -63,7 +63,6 @@
     "@types/loadable__server": "^5.9.1",
     "@types/lodash": "4.14.92",
     "@types/morgan": "1.7.35",
-    "@types/newrelic": "^5.11.0",
     "@types/node": "^12.11.1",
     "@types/notie": "0.0.27",
     "@types/prop-types": "15.5.9",
@@ -156,7 +155,6 @@
   "dependencies": {
     "@babel/runtime": "^7.7.4",
     "@material-ui/core": "3.9.3",
-    "@newrelic/aws-sdk": "^0.3.0",
     "@pluto_network/pluto-design-elements": "0.0.24",
     "@pluto_network/scinapse-feedback": "0.0.7",
     "@reduxjs/toolkit": "^1.1.0",
@@ -176,7 +174,6 @@
     "js-cookie": "2.2.0",
     "lodash": "^4.17.15",
     "morgan": "1.9.1",
-    "newrelic": "^5.11.0",
     "normalize.css": "7.0.0",
     "normalizr": "3.2.4",
     "notie": "4.3.1",
