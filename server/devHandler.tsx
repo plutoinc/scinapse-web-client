@@ -1,5 +1,3 @@
-import * as newrelic from 'newrelic';
-require('@newrelic/aws-sdk');
 import * as AWS from 'aws-sdk';
 import * as https from 'https';
 import fs from 'fs';
@@ -68,7 +66,7 @@ async function getSources(branch: string, version: string, escapedBranch: string
   }
 }
 
-export const ssr = newrelic.setLambdaHandler(async (event: LambdaProxy.Event) => {
+export const ssr = async (event: LambdaProxy.Event) => {
   const branch = event.queryStringParameters && event.queryStringParameters.branch;
   if (!branch) throw new Error('missing branch queryParams flag');
 
@@ -110,4 +108,4 @@ export const ssr = newrelic.setLambdaHandler(async (event: LambdaProxy.Event) =>
       body: JSON.stringify({ error: err.message }),
     };
   }
-});
+};
