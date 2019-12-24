@@ -5,6 +5,17 @@ import { camelCaseKeys } from '../helpers/camelCaseKeys';
 
 let axiosIns: AxiosInstance | null = null;
 
+function transformJSONKeysToCamelCase(data: any) {
+  if (typeof data === 'string') {
+    try {
+      data = camelCaseKeys(JSON.parse(data));
+    } catch (e) {
+      /* Ignore */
+    }
+  }
+  return data;
+}
+
 export function getAxiosInstance(config?: AxiosRequestConfig) {
   if (EnvChecker.isOnServer()) {
     return Axios.create({
@@ -12,11 +23,7 @@ export function getAxiosInstance(config?: AxiosRequestConfig) {
       baseURL: getAPIHost(),
       withCredentials: true,
       timeout: 55000,
-      transformResponse: [
-        data => {
-          return camelCaseKeys(JSON.parse(data));
-        },
-      ],
+      transformResponse: [transformJSONKeysToCamelCase],
     });
   }
   // client
@@ -26,10 +33,6 @@ export function getAxiosInstance(config?: AxiosRequestConfig) {
     baseURL: getAPIHost(),
     withCredentials: true,
     timeout: 60000,
-    transformResponse: [
-      data => {
-        return camelCaseKeys(JSON.parse(data));
-      },
-    ],
+    transformResponse: [transformJSONKeysToCamelCase],
   }));
 }
