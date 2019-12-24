@@ -13,13 +13,13 @@ import ScinapseFormikInput from '../common/scinapseInput/scinapseFormikInput';
 import { ACTION_TYPES } from '../../actions/actionTypes';
 import { LAST_SUCCEEDED_EMAIL_KEY } from '../../constants/requestDialogConstant';
 import { fetchLastFullTextRequestedDate } from '../../actions/paperShow';
-import { closeRequestFullTextDialog } from '../../reducers/requestFullTextDialog';
+import { closeRequestPreprintDialog } from '../../reducers/requestPreprintDialog';
 import ReduxAutoSizeTextarea from '../common/autoSizeTextarea/reduxAutoSizeTextarea';
 import Icon from '../../icons';
 const useStyles = require('isomorphic-style-loader/useStyles');
-const s = require('./requestFulltextDialog.scss');
+const s = require('./requestPreprintDialog.scss');
 
-interface RequestFullTextProps {
+interface RequestPreprintProps {
   paperId: string;
 }
 
@@ -55,34 +55,17 @@ function buildMessage(values: FormState) {
   }<br /><br />Who am I (Adding your profile link is preferred):<br />${values.whoami}`.trim();
 }
 
-const InstructionMessage: React.FC = () => {
-  return (
-    <a
-      target="_blank"
-      rel="noopener nofollow noreferrer"
-      href="https://www.google.com/search?q=how+to+get+pdf+of+papers"
-      className={s.instruction}
-    >
-      <Icon style={{ marginRight: '8px' }} className={s.instructionIcon} icon="GOOGLE_LOGO" />
-      <span>
-        Search on Google: <b>How to get PDF of papers?</b>
-      </span>
-      <Icon style={{ marginLeft: '8px' }} className={s.instructionIcon} icon="ARROW_RIGHT" />
-    </a>
-  );
-};
-
-const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperId }) => {
+const RequestPreprint: React.FunctionComponent<RequestPreprintProps> = ({ paperId }) => {
   useStyles(s);
   const dispatch = useDispatch();
   const { currentUser, isOpen } = useSelector((appState: AppState) => ({
     currentUser: appState.currentUser,
-    isOpen: appState.requestFullTextDialogState.isOpen,
+    isOpen: appState.requestPreprintDialogState.isOpen,
   }));
   const [isLoading, setIsLoading] = React.useState(false);
 
   function handleClose() {
-    dispatch(closeRequestFullTextDialog());
+    dispatch(closeRequestPreprintDialog());
   }
 
   async function handleSubmitForm(values: FormState) {
@@ -125,11 +108,10 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
 
   return (
     <Dialog open={isOpen} onClose={handleClose} classes={{ paper: s.dialogPaper }}>
-      <InstructionMessage />
-      <div className={s.detailTitle}>Request Full-text</div>
+      <div className={s.detailTitle}>Request Preprint</div>
       <div className={s.detailSubtitle}>
         This is not automated. We’re trying to contact authors when many requests are accepted.<br />
-        The notification will be sent when full-text is updated.
+        The notification will be sent when preprint is updated.
       </div>
       <Formik
         initialValues={getInitialValues(currentUser.email)}
@@ -218,4 +200,4 @@ const RequestFullText: React.FunctionComponent<RequestFullTextProps> = ({ paperI
   );
 };
 
-export default RequestFullText;
+export default RequestPreprint;

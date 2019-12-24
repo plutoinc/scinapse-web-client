@@ -100,7 +100,7 @@ const RequestPaperDialog: React.FunctionComponent<RequestPaperDialogProps> = pro
 
   return (
     <Dialog open={isOpen} onClose={onClose} classes={{ paper: styles.dialogPaper }}>
-      <div className={styles.title}>Request Full-text</div>
+      <div className={styles.title}>Request Preprint</div>
       <div className={styles.subtitle}>
         We will send you a checked paper by sending a request to the authors instead.
       </div>
