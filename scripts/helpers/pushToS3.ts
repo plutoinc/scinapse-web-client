@@ -2,8 +2,8 @@ import * as path from 'path';
 import * as http from 'http';
 import * as https from 'https';
 import * as DeployConfig from '../deploy/config';
-import * as s3 from 's3';
 import * as AWS from 'aws-sdk';
+const s3 = require('@auth0/s3');
 
 const awsS3 = new AWS.S3({
   region: 'us-east-1',

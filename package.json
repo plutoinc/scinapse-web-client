@@ -37,6 +37,7 @@
   },
   "homepage": "httpS://scinapse.io",
   "devDependencies": {
+    "@auth0/s3": "^1.0.0",
     "@babel/cli": "7.0.0",
     "@babel/core": "7.0.0",
     "@babel/plugin-proposal-class-properties": "7.4.4",
@@ -128,7 +129,6 @@
     "react-test-renderer": "16.8.2",
     "redux-mock-store": "1.5.3",
     "rimraf": "2.6.3",
-    "s3": "4.4.0",
     "sass-loader": "7.0.1",
     "sass-resources-loader": "2.0.0",
     "serverless": "1.44.1",
