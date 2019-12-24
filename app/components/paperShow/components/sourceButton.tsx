@@ -66,7 +66,7 @@ const SourceButton: React.FunctionComponent<SourceButtonProps> = props => {
               }}
             >
               <Icon icon="EXTERNAL_SOURCE" />
-              <span>View in Source</span>
+              <span>{paper.urls.length > 1 ? 'Sources' : 'Source'}</span>
             </Button>
             {paper.urls.length > 0 ? (
               <Button

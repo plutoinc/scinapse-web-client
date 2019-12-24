@@ -31,7 +31,7 @@ import { getMemoizedConfiguration } from '../../selectors/getConfiguration';
 import ImprovedFooter from '../layouts/improvedFooter';
 import PaperShowFigureList from './components/paperShowFigureList';
 import { UserDevice } from '../layouts/reducer';
-import RequestFullTextDialog from '../requestFullTextDialog/requestFulltextDialog';
+import RequestPreprintDialog from '../requestPreprintDialog/requestPreprintDialog';
 import RefCitedPapersContainer from '../../containers/refCitedPapersContainer';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 const styles = require('./paperShow.scss');
@@ -250,7 +250,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <ImprovedFooter containerStyle={{ backgroundColor: '#f8f9fb' }} />
         </div>
         <BottomBanner currentUser={currentUser} />
-        <RequestFullTextDialog paperId={paper.id} />
+        <RequestPreprintDialog paperId={paper.id} />
       </>
     );
   }
