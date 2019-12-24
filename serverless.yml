@@ -34,6 +34,43 @@ functions:
           path: /{proxy+}
 resources:
   Resources:
+    APIProxyResourceParent:
+      Type: AWS::ApiGateway::Resource
+      Properties:
+        ParentId:
+          Fn::GetAtt:
+            - ApiGatewayRestApi
+            - RootResourceId
+        PathPart: api
+        RestApiId:
+          Ref: ApiGatewayRestApi
+    APIProxyResource:
+      Type: AWS::ApiGateway::Resource
+      Properties:
+        ParentId:
+          Ref: APIProxyResourceParent
+        PathPart: '{proxy+}'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+    APIProxyMethod:
+      Type: AWS::ApiGateway::Method
+      Properties:
+        ResourceId:
+          Ref: APIProxyResource
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        HttpMethod: ANY
+        AuthorizationType: NONE
+        RequestParameters:
+         method.request.path.proxy: true
+        Integration:
+          IntegrationHttpMethod: any
+          Type: HTTP_PROXY
+          Uri: ${file(./env/${opt:stage}.yml):API_ENDPOINT}
+          RequestParameters:
+           integration.request.path.proxy: method.request.path.proxy
+          IntegrationResponses:
+            - StatusCode: 200
     BundleProxyResourceParent:
       Type: AWS::ApiGateway::Resource
       Properties:
