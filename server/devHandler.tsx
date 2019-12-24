@@ -68,7 +68,14 @@ async function getSources(branch: string, version: string, escapedBranch: string
 
 export const ssr = async (event: LambdaProxy.Event) => {
   const branch = event.queryStringParameters && event.queryStringParameters.branch;
-  if (!branch) throw new Error('missing branch queryParams flag');
+  if (!branch)
+    return {
+      statusCode: 500,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ error: 'not proper query params.' }),
+    };
 
   // NOTE: If branch name isn't escaped, it can be treated as path
   const escapedBranch = branch.replace('/', '-');
