@@ -98,7 +98,6 @@ const CollectionShow: React.FC<Props> = props => {
           dispatch,
           match,
           pathname: location.pathname,
-          cancelToken: cancelTokenSource.current.token,
         });
         restoreScroll(location.key);
       }

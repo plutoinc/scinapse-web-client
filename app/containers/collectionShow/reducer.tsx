@@ -102,8 +102,8 @@ export function reducer(
         }
 
         if (typeof state.paperIds === 'object') {
-          let newPaperIds = multiRemoveElementFromArray(removePaperIds, [...state.paperIds]);
-          let newSelectedPaperIds = multiRemoveElementFromArray(removePaperIds, [...state.selectedPaperIds]);
+          const newPaperIds = multiRemoveElementFromArray(removePaperIds, [...state.paperIds]);
+          const newSelectedPaperIds = multiRemoveElementFromArray(removePaperIds, [...state.selectedPaperIds]);
 
           return {
             ...state,

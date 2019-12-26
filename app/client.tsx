@@ -13,7 +13,6 @@ import { ConnectedRootRoutes as RootRoutes } from './routes';
 import StoreManager from './store/store';
 import { ACTION_TYPES } from './actions/actionTypes';
 import { AppState } from './reducers';
-import { checkAuthStatus } from './components/auth/actions';
 import { getCurrentPageType } from './components/locationListener';
 import { ThunkDispatch } from 'redux-thunk';
 import { getGAId, getOptimizeId } from './helpers/handleGA';
@@ -156,10 +155,6 @@ class PlutoRenderer {
     });
   }
 
-  private checkAuthStatus() {
-    this.store.dispatch(checkAuthStatus());
-  }
-
   private renderAtClient() {
     const theme = createMuiTheme({
       typography: {
@@ -191,7 +186,6 @@ class PlutoRenderer {
 
     ReactDom.hydrate(App, document.getElementById('react-app'), () => {
       this.checkRender();
-      this.checkAuthStatus();
     });
   }
 }

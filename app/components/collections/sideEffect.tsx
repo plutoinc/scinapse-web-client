@@ -21,8 +21,8 @@ export async function getCollections(params: GetCollectionsParams) {
       return dispatch(ActionCreators.failedToGetCollectionsPageData({ statusCode: 400 }));
     }
 
-    promiseArray.push(dispatch(getMember(userId, params.cancelToken)));
-    promiseArray.push(dispatch(getUserCollections(userId, params.cancelToken)));
+    promiseArray.push(dispatch(getMember(userId)));
+    promiseArray.push(dispatch(getUserCollections(userId)));
 
     await Promise.all(promiseArray);
   } catch (err) {

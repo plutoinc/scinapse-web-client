@@ -17,7 +17,7 @@ export function camelCaseKeys(rawObject: any): any {
 
   const keys = Object.keys(rawObject);
 
-  for (let key of keys) {
+  for (const key of keys) {
     let newKey: string;
 
     if (typeof calculatedObject[key] === 'object') {

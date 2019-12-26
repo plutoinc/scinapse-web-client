@@ -43,7 +43,7 @@ export interface GetCollectionsPapersParams {
   collectionId: number;
   page: number;
   sort: AUTHOR_PAPER_LIST_SORT_TYPES;
-  cancelToken: CancelToken;
+  cancelToken?: CancelToken;
   query?: string;
   size?: number;
 }
@@ -127,7 +127,7 @@ class CollectionAPI extends PlutoAxios {
 
   public async getCollection(
     collectionId: number,
-    cancelToken: CancelToken
+    cancelToken?: CancelToken
   ): Promise<{
     entities: { collections: { [collectionId: number]: Collection } };
     result: number;

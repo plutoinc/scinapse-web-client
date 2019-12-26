@@ -7,13 +7,12 @@ import {
   fetchLastFullTextRequestedDate,
   getMyCollections,
 } from '../../actions/paperShow';
-import { CurrentUser } from '../../model/currentUser';
 import { PaperShowMatchParams, PaperShowPageQueryParams } from './types';
 import { ActionCreators } from '../../actions/actionTypes';
 import { getRelatedPapers } from '../../actions/relatedPapers';
 import { PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
 
-export function fetchCitedPaperData(paperId: string, page: number = 1, query: string, sort: PAPER_LIST_SORT_TYPES) {
+export function fetchCitedPaperData(paperId: string, page = 1, query: string, sort: PAPER_LIST_SORT_TYPES) {
   return async (dispatch: Dispatch<any>) => {
     await dispatch(
       getCitedPapers({
@@ -26,7 +25,7 @@ export function fetchCitedPaperData(paperId: string, page: number = 1, query: st
   };
 }
 
-export function fetchRefPaperData(paperId: string, page: number = 1, query: string, sort: PAPER_LIST_SORT_TYPES) {
+export function fetchRefPaperData(paperId: string, page = 1, query: string, sort: PAPER_LIST_SORT_TYPES) {
   return async (dispatch: Dispatch<any>) => {
     await dispatch(
       getReferencePapers({
@@ -65,7 +64,7 @@ export async function fetchRefCitedPaperDataAtServer(params: LoadDataParams<Pape
   ]);
 }
 
-export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchParams>, currentUser?: CurrentUser) {
+export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchParams>) {
   const { dispatch, match } = params;
   const paperId = match.params.paperId;
 
@@ -74,13 +73,10 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
   }
 
   const promiseArray = [];
-  promiseArray.push(dispatch(getPaper({ paperId, cancelToken: params.cancelToken })));
-  promiseArray.push(dispatch(getRelatedPapers(paperId, params.cancelToken)));
+  promiseArray.push(dispatch(getPaper({ paperId })));
+  promiseArray.push(dispatch(getRelatedPapers(paperId)));
   promiseArray.push(dispatch(fetchLastFullTextRequestedDate(paperId)));
-
-  if (currentUser && currentUser.isLoggedIn) {
-    promiseArray.push(dispatch(getMyCollections(paperId, params.cancelToken)));
-  }
+  promiseArray.push(dispatch(getMyCollections(paperId)));
 
   await Promise.all(promiseArray);
 }

@@ -6,7 +6,7 @@ import alertToast from '../../helpers/__mocks__/makePlutoToastAction';
 import PlutoAxios from '../../api/pluto';
 import { CommonError } from '../../model/error';
 
-export function getCollection(collectionId: number, cancelToken: CancelToken) {
+export function getCollection(collectionId: number, cancelToken?: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToGetCollectionInCollectionShow());

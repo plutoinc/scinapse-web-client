@@ -3,7 +3,6 @@ import loadable from '@loadable/component';
 import { Route, Switch, match, withRouter, RouteComponentProps } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { Dispatch } from 'redux';
-import { CancelToken } from 'axios';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { PaperShowMatchParams } from './containers/paperShow/types';
@@ -38,7 +37,6 @@ export interface LoadDataParams<P> {
   match: match<P>;
   pathname: string;
   queryParams?: any;
-  cancelToken: CancelToken;
 }
 
 interface ServerRoutesMap {
@@ -69,10 +67,6 @@ export const routesMap: ServerRoutesMap[] = [
     component: loadable(() => import('./containers/authorSearch'), {
       fallback: <div>loading ...</div>,
     }),
-    loadData: async (params: LoadDataParams<null>) => {
-      const { getAuthorSearchData } = await import('./containers/authorSearch/sideEffect');
-      await Promise.all([getAuthorSearchData(params)]);
-    },
     exact: true,
   },
   {

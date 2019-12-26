@@ -3,7 +3,7 @@ import { Dispatch } from 'redux';
 import MemberAPI from '../../api/member';
 import { ActionCreators, ACTION_TYPES } from '../../actions/actionTypes';
 
-export function getMember(memberId: number, cancelToken: CancelToken) {
+export function getMember(memberId: number, cancelToken?: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToGetMemberInCollectionsPage());
 

@@ -21,7 +21,7 @@ import { trackEvent } from '../handleGA';
 
 class ActionTicketManager {
   public queue: ActionTicket[] = [];
-  private sentLastTickets: boolean = false;
+  private sentLastTickets = false;
 
   public constructor() {
     if (!EnvChecker.isOnServer()) {

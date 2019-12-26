@@ -1,5 +1,4 @@
 import * as React from 'react';
-import axios from 'axios';
 import { denormalize } from 'normalizr';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -35,8 +34,6 @@ function mapStateToProps(state: AppState) {
 }
 
 class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
-  private cancelToken = axios.CancelToken.source();
-
   public async componentDidMount() {
     const { dispatch, location, match, configuration, currentUser } = this.props;
     const notRenderedAtServerOrJSAlreadyInitialized =
@@ -48,16 +45,11 @@ class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
           dispatch,
           match,
           pathname: location.pathname,
-          cancelToken: this.cancelToken.token,
         },
         currentUser
       );
       restoreScroll(location.key);
     }
-  }
-
-  public componentWillUnmount() {
-    this.cancelToken.cancel();
   }
 
   public async componentWillReceiveProps(nextProps: AuthorShowPageProps) {
@@ -69,7 +61,6 @@ class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
           dispatch,
           match,
           pathname: location.pathname,
-          cancelToken: this.cancelToken.token,
         },
         currentUser
       );

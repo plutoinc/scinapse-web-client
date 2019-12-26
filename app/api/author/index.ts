@@ -153,7 +153,7 @@ class AuthorAPI extends PlutoAxios {
 
   public async getAuthor(
     authorId: string,
-    cancelToken: CancelToken
+    cancelToken?: CancelToken
   ): Promise<{
     entities: { authors: { [authorId: string]: Author } };
     result: string;
@@ -196,7 +196,7 @@ class AuthorAPI extends PlutoAxios {
 
   public async getCoAuthors(
     authorId: string,
-    cancelToken: CancelToken
+    cancelToken?: CancelToken
   ): Promise<{
     entities: { authors: { [authorId: string]: Author } };
     result: string[];

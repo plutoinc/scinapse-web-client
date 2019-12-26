@@ -30,7 +30,7 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
     }
 
     case ACTION_TYPES.AUTH_FAILED_TO_CHECK_LOGGED_IN: {
-      return { ...state, isLoggingIn: false };
+      return { ...CURRENT_USER_INITIAL_STATE, isLoggingIn: false };
     }
 
     case ACTION_TYPES.EMAIL_VERIFICATION_SUCCEEDED_TO_VERIFY_TOKEN: {

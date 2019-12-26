@@ -2,11 +2,11 @@
   "name": "pluto-web-client",
   "devDependencies": {},
   "dependencies": {
-    "s3": "4.4.0",
-    "aws-sdk": "2.403.0",
-    "core-js": "2.6.5",
+    "@auth0/s3": "^1.0.0",
     "@babel/plugin-proposal-class-properties": "7.4.4",
     "@babel/plugin-transform-runtime": "7.4.4",
-    "@babel/runtime": "7.4.4"
+    "@babel/runtime": "7.4.4",
+    "aws-sdk": "2.403.0",
+    "core-js": "2.6.5"
   }
 }

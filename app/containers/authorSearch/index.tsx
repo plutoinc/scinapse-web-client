@@ -1,5 +1,4 @@
 import * as React from 'react';
-import axios from 'axios';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
@@ -51,30 +50,19 @@ export interface AuthorSearchProps extends RouteComponentProps<null> {
 
 @withStyles<typeof AuthorSearch>(styles)
 class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
-  private cancelToken = axios.CancelToken.source();
-
   public async componentDidMount() {
-    const { configuration, dispatch, match, location, authorSearch } = this.props;
-    const notRenderedAtServerOrJSAlreadyInitialized =
-      !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
+    const { dispatch, match, location } = this.props;
+    const currentParams = {
+      dispatch,
+      match,
+      pathname: location.pathname,
+      queryParams: getQueryParamsObject(location.search),
+    };
 
-    if (notRenderedAtServerOrJSAlreadyInitialized) {
-      const currentParams = {
-        dispatch,
-        match,
-        pathname: location.pathname,
-        queryParams: getQueryParamsObject(location.search),
-        cancelToken: this.cancelToken.token,
-      };
-
-      const authors = await getAuthorSearchData(currentParams);
-      // TODO: change logging logic much easier after chainging the class component to React hooks.
-      this.logSearchResult(authors);
-      restoreScroll(location.key);
-    } else {
-      // TODO: change logging logic much easier after chainging the class component to React hooks.
-      this.logSearchResult(authorSearch.searchItemsToShow);
-    }
+    const authors = await getAuthorSearchData(currentParams);
+    // TODO: change logging logic much easier after changing the class component to React hooks.
+    this.logSearchResult(authors);
+    restoreScroll(location.key);
   }
 
   public async componentWillReceiveProps(nextProps: AuthorSearchProps) {
@@ -88,15 +76,10 @@ class AuthorSearch extends React.PureComponent<AuthorSearchProps> {
         match,
         pathname: nextProps.location.pathname,
         queryParams: getQueryParamsObject(afterSearch),
-        cancelToken: this.cancelToken.token,
       });
       this.logSearchResult(authors);
       restoreScroll(nextProps.location.key);
     }
-  }
-
-  public componentWillUnmount() {
-    this.cancelToken.cancel();
   }
 
   public render() {

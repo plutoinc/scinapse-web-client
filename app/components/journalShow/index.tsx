@@ -1,5 +1,4 @@
 import * as React from 'react';
-import axios from 'axios';
 import { parse, stringify } from 'qs';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -61,8 +60,6 @@ interface JournalShowLocalState {
 
 @withStyles<typeof JournalShowContainer>(styles)
 class JournalShowContainer extends React.PureComponent<JournalShowProps, JournalShowLocalState> {
-  private cancelToken = axios.CancelToken.source();
-
   public constructor(props: JournalShowProps) {
     super(props);
 
@@ -84,7 +81,6 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps, Journal
         match,
         pathname: location.pathname,
         queryParams: location.search,
-        cancelToken: this.cancelToken.token,
       });
       restoreScroll(location.key);
     }
@@ -105,14 +101,9 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps, Journal
         match,
         pathname: location.pathname,
         queryParams: location.search,
-        cancelToken: this.cancelToken.token,
       });
       restoreScroll(location.key);
     }
-  }
-
-  public componentWillUnmount() {
-    this.cancelToken.cancel();
   }
 
   public render() {

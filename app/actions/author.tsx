@@ -24,7 +24,7 @@ interface AddRemovePapersAndFetchPapersParams {
 
 interface FetchAuthorShowRelevantDataParams {
   authorId: string;
-  cancelToken: CancelToken;
+  cancelToken?: CancelToken;
   currentUser?: CurrentUser;
   page?: number;
   sort?: AUTHOR_PAPER_LIST_SORT_TYPES;
@@ -47,15 +47,16 @@ export function fetchAuthorPapers(params: GetAuthorPapersParams) {
 
 export function fetchAuthorShowRelevantData(params: FetchAuthorShowRelevantDataParams) {
   return async (dispatch: Dispatch<any>) => {
-    const { currentUser, authorId, cancelToken } = params;
+    const { currentUser, authorId } = params;
 
     try {
       dispatch(ActionCreators.startToLoadAuthorShowPageData());
       const isMine =
         currentUser && currentUser.isLoggedIn && currentUser.isAuthorConnected && currentUser.authorId === authorId;
+
       const promiseArr = [];
-      promiseArr.push(dispatch(getAuthor(authorId, cancelToken)));
-      promiseArr.push(dispatch(getCoAuthors(authorId, cancelToken)));
+      promiseArr.push(dispatch(getAuthor(authorId)));
+      promiseArr.push(dispatch(getCoAuthors(authorId)));
       promiseArr.push(
         dispatch(
           fetchAuthorPapers({
@@ -63,12 +64,12 @@ export function fetchAuthorShowRelevantData(params: FetchAuthorShowRelevantDataP
             size: DEFAULT_AUTHOR_PAPERS_SIZE,
             page: params.page ? params.page : 1,
             sort: isMine ? 'RECENTLY_ADDED' : 'NEWEST_FIRST',
-            cancelToken: params.cancelToken,
           })
         )
       );
 
       await Promise.all(promiseArr);
+
       dispatch(ActionCreators.finishToLoadAuthorShowPageData());
     } catch (err) {
       if (!axios.isCancel(err)) {

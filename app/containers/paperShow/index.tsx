@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef } from 'react';
-import axios from 'axios';
+import Axios from 'axios';
 import { isEqual } from 'lodash';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -48,7 +48,7 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
 
   useEffect(
     () => {
-      const cancelToken = axios.CancelToken.source();
+      const cancelToken = Axios.CancelToken.source();
       // NOTE: prevent fetching from the change of shouldFetch variable
       if (shouldFetch && !lastShouldFetch.current) {
         lastShouldFetch.current = true;
@@ -60,7 +60,6 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
       dispatch(
         fetchPaperShowDataAtClient({
           paperId: matchedPaperId,
-          isLoggedIn: currentUser.isLoggedIn,
           cancelToken: cancelToken.token,
         })
       )
@@ -68,6 +67,7 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
           lastPaperId.current = matchedPaperId;
         })
         .catch(err => {
+          console.error(err);
           ActionTicketManager.trackTicket({
             pageType: 'paperShow',
             actionType: 'view',
