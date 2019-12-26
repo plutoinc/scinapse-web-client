@@ -29,9 +29,6 @@ module.exports = {
   devtool: 'source-map',
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
-    alias: {
-      'react-pdf': 'react-pdf/dist/esm/entry.webpack',
-    },
   },
   module: {
     rules: [
@@ -44,6 +41,9 @@ module.exports = {
           },
           {
             loader: 'ts-loader',
+            options: {
+              onlyCompileBundledFiles: true,
+            },
           },
         ],
       },

@@ -41,6 +41,7 @@ module.exports = {
             options: {
               transpileOnly: true,
               happyPackMode: true,
+              onlyCompileBundledFiles: true,
             },
           },
         ],
