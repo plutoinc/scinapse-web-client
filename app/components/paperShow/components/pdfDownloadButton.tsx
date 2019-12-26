@@ -73,7 +73,7 @@ const PdfDownloadButton: React.FunctionComponent<PdfDownloadButtonProps> = props
         }}
       >
         <Icon icon="DOWNLOAD" />
-        <span>Download PDF</span>
+        <span>Download</span>
       </Button>
     );
   }

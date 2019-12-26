@@ -41,7 +41,7 @@ const ViewFullTextBtn: React.FC<ViewFullTextBtnProps> = props => {
       }}
     >
       <Icon icon="PDF_PAPER" />
-      <span>View Full-Text</span>
+      <span>View Paper</span>
     </Button>
   );
 };
