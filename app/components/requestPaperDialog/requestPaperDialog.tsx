@@ -13,13 +13,13 @@ import ScinapseFormikInput from '../common/scinapseInput/scinapseFormikInput';
 import { ACTION_TYPES } from '../../actions/actionTypes';
 import { LAST_SUCCEEDED_EMAIL_KEY } from '../../constants/requestDialogConstant';
 import { fetchLastFullTextRequestedDate } from '../../actions/paperShow';
-import { closeRequestPreprintDialog } from '../../reducers/requestPreprintDialog';
+import { closeRequestPaperDialog } from '../../reducers/requestPaperDialog';
 import ReduxAutoSizeTextarea from '../common/autoSizeTextarea/reduxAutoSizeTextarea';
 import Icon from '../../icons';
 const useStyles = require('isomorphic-style-loader/useStyles');
-const s = require('./requestPreprintDialog.scss');
+const s = require('./requestPaperDialog.scss');
 
-interface RequestPreprintProps {
+interface RequestPaperProps {
   paperId: string;
 }
 
@@ -55,17 +55,17 @@ function buildMessage(values: FormState) {
   }<br /><br />Who am I (Adding your profile link is preferred):<br />${values.whoami}`.trim();
 }
 
-const RequestPreprint: React.FunctionComponent<RequestPreprintProps> = ({ paperId }) => {
+const RequestPaper: React.FunctionComponent<RequestPaperProps> = ({ paperId }) => {
   useStyles(s);
   const dispatch = useDispatch();
   const { currentUser, isOpen } = useSelector((appState: AppState) => ({
     currentUser: appState.currentUser,
-    isOpen: appState.requestPreprintDialogState.isOpen,
+    isOpen: appState.requestPaperDialogState.isOpen,
   }));
   const [isLoading, setIsLoading] = React.useState(false);
 
   function handleClose() {
-    dispatch(closeRequestPreprintDialog());
+    dispatch(closeRequestPaperDialog());
   }
 
   async function handleSubmitForm(values: FormState) {
@@ -108,10 +108,10 @@ const RequestPreprint: React.FunctionComponent<RequestPreprintProps> = ({ paperI
 
   return (
     <Dialog open={isOpen} onClose={handleClose} classes={{ paper: s.dialogPaper }}>
-      <div className={s.detailTitle}>Request Preprint</div>
+      <div className={s.detailTitle}>Request Paper</div>
       <div className={s.detailSubtitle}>
         This is not automated. We’re trying to contact authors when many requests are accepted.<br />
-        The notification will be sent when preprint is updated.
+        The notification will be sent when paper is updated.
       </div>
       <Formik
         initialValues={getInitialValues(currentUser.email)}
@@ -140,7 +140,7 @@ const RequestPreprint: React.FunctionComponent<RequestPreprintProps> = ({ paperI
             <div style={{ marginTop: '24px' }} className={s.detailTitle}>
               Message to Authors
             </div>
-            <div className={s.detailSubtitle}>Your message will play a key role to get a full text!</div>
+            <div className={s.detailSubtitle}>Your message will play a key role to get a paper!</div>
             <div className={s.inputWrapper}>
               <label htmlFor="important" className={s.detailLabel}>
                 Why important to me? *
@@ -200,4 +200,4 @@ const RequestPreprint: React.FunctionComponent<RequestPreprintProps> = ({ paperI
   );
 };
 
-export default RequestPreprint;
+export default RequestPaper;

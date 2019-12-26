@@ -8,8 +8,8 @@ import { Paper } from '../../model/paper';
 import { CurrentUser } from '../../model/currentUser';
 import SourceButton from '../../components/paperShow/components/sourceButton';
 import ViewFullTextBtn from '../../components/paperShow/components/viewFullTextBtn';
-import RequestPreprintBtn from './components/preprintRequestBtn';
-import { openRequestPreprintDialog } from '../../reducers/requestPreprintDialog';
+import RequestPaperBtn from './components/paperRequestBtn';
+import { openRequestPaperDialog } from '../../reducers/requestPaperDialog';
 const s = require('./actionBar.scss');
 
 interface PaperShowActionBarProps {
@@ -27,11 +27,11 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = props => {
 
   const requestButton = (
     <div className={s.actionItem} ref={requestFullTextBtnEl}>
-      <RequestPreprintBtn
+      <RequestPaperBtn
         actionArea="paperDescription"
         isLoading={props.isLoadingPDF}
         paper={props.paper}
-        onClick={() => props.dispatch(openRequestPreprintDialog())}
+        onClick={() => props.dispatch(openRequestPaperDialog())}
         lastRequestedDate={props.lastRequestedDate}
       />
     </div>
