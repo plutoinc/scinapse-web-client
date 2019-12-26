@@ -51,7 +51,7 @@ const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
   const extractor = new ChunkExtractor({ statsFile });
   const fullURL = getFullUrl(req);
 
-  const headers: { [key: string]: string } = {};
+  const headers: { [key: string]: string | undefined } = {};
   for (const key of Object.keys(req.headers)) {
     const newKey = key.toLowerCase();
     if (newKey) {
@@ -79,7 +79,7 @@ const ssr = async (req: Request | LambdaProxy.Event, version: string) => {
   }
 
   // Get the latest JWT
-  const cookies = parse(headers.cookie);
+  const cookies = parse(headers.cookie || '');
   let setCookies: string[] = [];
   if (cookies['pluto_jwt']) {
     try {
