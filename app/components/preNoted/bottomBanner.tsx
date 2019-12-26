@@ -79,7 +79,7 @@ const BottomBanner: React.FC<BottomBannerProps> = ({ currentUser }) => {
           <div className={styles.contextWrapper}>
             <div className={styles.titleContext}>PREVIEW OF SCINAPSE</div>
             <div className={styles.mainContext}>
-              Sign up to get unlimited search results and full-texts. It's free and always will be.
+              Sign up to get unlimited search results and papers. It's free and always will be.
             </div>
           </div>
           <div className={styles.buttonWrapper}>

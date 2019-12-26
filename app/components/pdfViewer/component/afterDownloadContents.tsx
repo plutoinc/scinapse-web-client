@@ -35,7 +35,7 @@ const AfterDownloadContents: React.FC<AfterDownloadContentsProps> = props => {
         <div className={styles.subContext}>“{title}"</div>
         <button className={styles.reloadBtn} onClick={() => onClickReloadBtn()}>
           <Icon icon="RELOAD" className={styles.reloadIcon} />
-          Reload Full-Text
+          Reload Paper
         </button>
       </div>
       <SearchQueryBoxAtPaperShow />
