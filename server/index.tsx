@@ -113,7 +113,8 @@ const handler = async (event: LambdaProxy.Event): Promise<LambdaProxy.Response> 
     version = branchMap[escapedBranch];
   }
 
-  const cookies = cookie.parse(headers.cookie || '');
+  console.log('headers.cookie === ', headers.cookie);
+  const cookies = cookie.parse(!!headers.cookie ? headers.cookie : '');
   const newCookies: { [key: string]: string | CustomCookieObject } = {
     ...cookies,
   };
