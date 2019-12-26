@@ -140,7 +140,7 @@ const RequestPaper: React.FunctionComponent<RequestPaperProps> = ({ paperId }) =
             <div style={{ marginTop: '24px' }} className={s.detailTitle}>
               Message to Authors
             </div>
-            <div className={s.detailSubtitle}>Your message will play a key role to get a full text!</div>
+            <div className={s.detailSubtitle}>Your message will play a key role to get a paper!</div>
             <div className={s.inputWrapper}>
               <label htmlFor="important" className={s.detailLabel}>
                 Why important to me? *
