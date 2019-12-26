@@ -56,9 +56,7 @@ const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(pro
   const actionBtnEl = React.useRef<HTMLDivElement | null>(null);
 
   if (props.canShowFullPDF) {
-    fullTextNode = (
-      <TabItem active={!!props.isOnFullText} onClick={props.onClickTabItem('fullText')} text="Full Text" />
-    );
+    fullTextNode = <TabItem active={!!props.isOnFullText} onClick={props.onClickTabItem('fullText')} text="Paper" />;
   }
 
   return (

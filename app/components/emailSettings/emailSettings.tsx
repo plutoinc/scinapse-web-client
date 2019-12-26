@@ -106,8 +106,8 @@ const EmailSettings: React.FC<RouteComponentProps<{ token?: string }>> = ({ loca
       </div>
       <div className={s.toggleItemWrapper}>
         <EmailToggleTitle
-          title="Preprint Request Confirmation"
-          subtitle="Send a confirmation mail when you request preprint."
+          title="Paper Request Confirmation"
+          subtitle="Send a confirmation mail when you request paper."
         />
         <EmailToggleButton
           active={state.activeStatus.REQUEST_CONFIRMATION}

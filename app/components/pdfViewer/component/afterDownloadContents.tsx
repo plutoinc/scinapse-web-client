@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import SearchQueryInput from '../../common/InputWithSuggestionList/searchQueryInput';
 import Icon from '../../../icons';
@@ -33,10 +34,15 @@ const AfterDownloadContents: React.FC<AfterDownloadContentsProps> = props => {
       <div className={styles.afterDownloadContainer}>
         <div className={styles.titleContext}>Thanks for downloading</div>
         <div className={styles.subContext}>“{title}"</div>
-        <button className={styles.reloadBtn} onClick={() => onClickReloadBtn()}>
+        <Button
+          elementType="button"
+          aria-label="Paper Reload button"
+          onClick={() => onClickReloadBtn()}
+          style={{ paddingLeft: '16px', paddingRight: '16px' }}
+        >
           <Icon icon="RELOAD" className={styles.reloadIcon} />
-          Reload Full-Text
-        </button>
+          <span>Reload Paper</span>
+        </Button>
       </div>
       <SearchQueryBoxAtPaperShow />
       <RelatedPapers />

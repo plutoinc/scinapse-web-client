@@ -191,7 +191,7 @@ const PDFViewer: React.FC<PDFViewerProps> = memo(props => {
                 }}
               >
                 <Icon icon="PDF_PAPER" />
-                <span>Show PDF</span>
+                <span>Show All</span>
               </Button>
               <RelatedPapers shouldShowRelatedPapers={!paper.bestPdf || !paper.bestPdf.hasBest} />
             </>

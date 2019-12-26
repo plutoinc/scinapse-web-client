@@ -11,7 +11,7 @@ import { addPaperToRecommendPool } from '../../../components/recommendPool/actio
 import { Paper } from '../../../model/paper';
 const s = require('../actionBar.scss');
 
-interface RequestPreprintBtnProps {
+interface RequestPaperBtnProps {
   isLoading: boolean;
   paper: Paper;
   onClick: () => void;
@@ -19,7 +19,7 @@ interface RequestPreprintBtnProps {
   lastRequestedDate: string | null;
 }
 
-const RequestPreprintBtn: React.FC<RequestPreprintBtnProps> = React.memo(props => {
+const RequestPaperBtn: React.FC<RequestPaperBtnProps> = React.memo(props => {
   const dispatch = useDispatch();
   const { isLoading, paper, actionArea, onClick, lastRequestedDate } = props;
 
@@ -65,10 +65,10 @@ const RequestPreprintBtn: React.FC<RequestPreprintBtnProps> = React.memo(props =
         }}
       >
         <Icon icon="SEND" />
-        <span>Request Preprint</span>
+        <span>Request Paper</span>
       </Button>
     </Tooltip>
   );
 });
 
-export default withStyles<typeof RequestPreprintBtn>(s)(RequestPreprintBtn);
+export default withStyles<typeof RequestPaperBtn>(s)(RequestPaperBtn);

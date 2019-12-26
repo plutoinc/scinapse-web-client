@@ -15,7 +15,7 @@ const SearchingPDFBtn: React.FunctionComponent<SearchingPDFBtnProps> = props => 
       <div className={styles.spinnerWrapper}>
         <CircularProgress color="inherit" disableShrink={true} size={14} thickness={4} />
       </div>
-      Searching PDF
+      Searching Paper
     </button>
   );
 };
