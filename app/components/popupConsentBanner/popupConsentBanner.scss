@@ -28,6 +28,10 @@
 
 .link {
   text-decoration: underline;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 @media (max-width: $mobile_width) {
