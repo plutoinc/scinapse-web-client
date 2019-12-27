@@ -10,7 +10,9 @@ type AcceptAnswer = 'true' | 'false';
 
 const PopupConsentBanner: React.FC = () => {
   useStyles(s);
-  const [acceptCookie, setAcceptCookie] = useState<AcceptAnswer>('true');
+  const [acceptCookie, setAcceptCookie] = useState<AcceptAnswer>(
+    (Cookies.get(ACCEPT_COOKIE_KEY) as AcceptAnswer) || 'false'
+  );
 
   useEffect(() => {
     setAcceptCookie((Cookies.get(ACCEPT_COOKIE_KEY) as AcceptAnswer) || 'false');
@@ -36,7 +38,7 @@ const PopupConsentBanner: React.FC = () => {
           elementType="button"
           onClick={() => {
             setAcceptCookie('true');
-            Cookies.set(ACCEPT_COOKIE_KEY, 'true');
+            Cookies.set(ACCEPT_COOKIE_KEY, 'true', { expires: 365 });
           }}
         >
           Accept
