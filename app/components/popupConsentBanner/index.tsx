@@ -23,7 +23,7 @@ const PopupConsentBanner: React.FC = () => {
       <div className={s.bannerText}>
         <div className={s.title}>This website uses cookies.</div>
         <div className={s.context}>
-          We use cookies to improve your online experience. While you continue to use this website, you agree to the
+          We use cookies to improve your online experience. By continuing to use our website we assume you agree to the
           placement of these cookies.<br />
           To learn more, you can find in our{' '}
           <a className={s.link} href="https://scinapse.io/privacy-policy">
