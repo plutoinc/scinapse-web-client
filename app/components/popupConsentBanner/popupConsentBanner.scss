@@ -1,0 +1,55 @@
+.bannerWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  background-color: rgba(30, 42, 53, 0.8);
+  color: white;
+  width: 100%;
+  padding: 12px 24px;
+  line-height: 1.33;
+  z-index: 101;
+}
+
+.bannerText {
+  margin: 0 36px 0 0;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.context {
+  font-size: 14px;
+}
+
+.link {
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+@media (max-width: $mobile_width) {
+  .bannerWrapper {
+    flex-direction: column;
+  }
+
+  .bannerText {
+    margin: 0 0 12px 0;
+  }
+
+  .bannerButton {
+    width: 100%;
+    margin-top: 8px;
+
+    button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
