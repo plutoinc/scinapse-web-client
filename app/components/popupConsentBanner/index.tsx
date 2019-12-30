@@ -6,6 +6,7 @@ const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./popupConsentBanner.scss');
 
 const ACCEPT_COOKIE_KEY = 'a_c';
+const BANNER_COOKIES_EXPIRED_DAY = 365;
 
 type AcceptAnswer = 'true' | 'false';
 
@@ -40,7 +41,7 @@ const PopupConsentBanner: React.FC = () => {
             elementType="button"
             onClick={() => {
               setAcceptCookie('true');
-              Cookies.set(ACCEPT_COOKIE_KEY, 'true', { expires: 365 });
+              Cookies.set(ACCEPT_COOKIE_KEY, 'true', { expires: BANNER_COOKIES_EXPIRED_DAY });
             }}
           >
             Accept
