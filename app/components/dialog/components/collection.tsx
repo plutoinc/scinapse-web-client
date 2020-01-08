@@ -127,20 +127,29 @@ class CollectionDialog extends React.PureComponent<CollectionDialogProps, Collec
       handleRemovingPaperFromCollection,
     } = this.props;
 
-    return (
-      myCollections &&
-      myCollections.map(collection => {
-        return (
-          <CollectionItem
-            key={`collection_item_${collection.id}`}
-            collection={collection}
-            collectionDialogPaperId={collectionDialogPaperId}
-            handleAddingPaperToCollections={handleAddingPaperToCollections}
-            handleRemovingPaperFromCollection={handleRemovingPaperFromCollection}
-          />
-        );
-      })
-    );
+    if (!myCollections || myCollections.length === 0) {
+      return (
+        <div className={styles.emptyList}>
+          <Icon icon="UFO" className={styles.ufoIcon} />
+          <div>
+            You don't have any collection. <br />
+            Please make a new collection.
+          </div>
+        </div>
+      );
+    }
+
+    return myCollections.map(collection => {
+      return (
+        <CollectionItem
+          key={`collection_item_${collection.id}`}
+          collection={collection}
+          collectionDialogPaperId={collectionDialogPaperId}
+          handleAddingPaperToCollections={handleAddingPaperToCollections}
+          handleRemovingPaperFromCollection={handleRemovingPaperFromCollection}
+        />
+      );
+    })
   };
 
   private handleChangeCollectionName = (e: React.FormEvent<HTMLInputElement>) => {

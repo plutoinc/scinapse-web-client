@@ -58,6 +58,31 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  height: 100%;
+}
+
+.emptyList {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  line-height: 1.6;
+  height: 100%;
+  color: $gray700;
+}
+
+.ufoIcon {
+  display: inline-block;
+  vertical-align: top;
+  width: 64px;
+  height: 59px;
+  margin-bottom: 16px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .dialogFooter {

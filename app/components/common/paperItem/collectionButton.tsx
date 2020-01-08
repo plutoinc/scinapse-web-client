@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { createSelector } from 'reselect';
+import { useDispatch } from 'react-redux';
 import { Button } from '@pluto_network/pluto-design-elements';
 import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import Icon from '../../../icons';
-import { AppState } from '../../../reducers';
 import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
 import { addPaperToRecommendPool } from '../../recommendPool/actions';
 import { Paper } from '../../../model/paper';
@@ -18,19 +16,9 @@ interface CollectionButtonProps {
   buttonStyle?: React.CSSProperties;
 }
 
-const selectUserHasCollection = createSelector([(state: AppState) => state.myCollections], myCollections => {
-  return myCollections.collectionIds && myCollections.collectionIds.length > 0;
-});
-
 const CollectionButton: React.FC<CollectionButtonProps> = ({ saved, paper, pageType, actionArea, buttonStyle }) => {
   const dispatch = useDispatch();
-  const userHasCollection = useSelector<AppState, boolean>(selectUserHasCollection);
-
-  let buttonContent = 'Save';
-
-  if (saved) {
-    buttonContent = 'Saved';
-  }
+  const buttonContent = saved ? 'Saved' : 'Save';
 
   return (
     <Button
@@ -54,10 +42,10 @@ const CollectionButton: React.FC<CollectionButtonProps> = ({ saved, paper, pageT
           userActionType: action,
         });
 
-        if (isBlocked) return;
+        if (!isBlocked) {
+          GlobalDialogManager.openCollectionDialog(paper.id);
+        }
 
-        if (userHasCollection) GlobalDialogManager.openCollectionDialog(paper.id);
-        else GlobalDialogManager.openNewCollectionDialog(paper.id);
       }}
       style={saved ? { backgroundColor: '#34495e', borderColor: '#34495e', ...buttonStyle } : { ...buttonStyle }}
     >
