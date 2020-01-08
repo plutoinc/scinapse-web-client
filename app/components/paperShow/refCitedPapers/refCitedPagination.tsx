@@ -46,7 +46,7 @@ const RefCitedPagination: React.FC<RefCitedPapersPaginationProps> = props => {
     return (
       <MobilePagination
         totalPageCount={totalPage}
-        currentPageIndex={currentPage - 1}
+        currentPageIndex={currentPage}
         getLinkDestination={getRefPaginationLink({ type, paperId, queryParams })}
         wrapperStyle={{
           margin: '12px 0',
@@ -58,7 +58,7 @@ const RefCitedPagination: React.FC<RefCitedPapersPaginationProps> = props => {
       <DesktopPagination
         type={`paper_show_${type}_papers`}
         totalPage={totalPage}
-        currentPageIndex={currentPage - 1}
+        currentPageIndex={currentPage}
         getLinkDestination={getRefPaginationLink({ type, paperId, queryParams })}
         wrapperStyle={{ margin: '32px 0 56px 0' }}
         actionArea={type === 'reference' ? 'refList' : 'citedList'}
