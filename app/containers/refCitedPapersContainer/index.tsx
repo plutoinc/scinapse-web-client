@@ -38,16 +38,19 @@ const RefCitedPapersContainer: FC<Props> = ({ type, parentPaperId, page, query, 
   const wrapperNode = useRef<HTMLDivElement>(null);
   const lastParentPaperId = useRef('');
   const lastPage = useRef(page);
+  const lastSort = useRef(sort);
 
   useEffect(
     () => {
       if (!shouldFetch) {
         lastParentPaperId.current = parentPaperId;
         lastPage.current = page;
+        lastSort.current = sort;
         return;
       }
+      
+      if (lastParentPaperId.current === parentPaperId && lastPage.current === page && lastSort.current === sort) return;
 
-      if (lastParentPaperId.current === parentPaperId && lastPage.current === page) return;
 
       const fetchFunc = type === 'reference' ? fetchRefPaperData : fetchCitedPaperData;
       const failedActionCreator =
@@ -55,11 +58,12 @@ const RefCitedPapersContainer: FC<Props> = ({ type, parentPaperId, page, query, 
 
       dispatch(fetchFunc(parentPaperId, page, query, sort))
         .then(() => {
-          if (wrapperNode.current && lastParentPaperId.current === parentPaperId && lastPage.current !== page) {
+          if (wrapperNode.current && lastParentPaperId.current === parentPaperId && lastPage.current !== page && lastSort.current !== sort) {
             window.scrollTo(0, wrapperNode.current.offsetTop - NAVBAR_HEIGHT - MOBILE_FIXED_HEADER_HEIGHT);
           }
           lastParentPaperId.current = parentPaperId;
           lastPage.current = page;
+          lastSort.current = sort;
         })
         .catch(err => {
           if (!axios.isCancel(err)) {
