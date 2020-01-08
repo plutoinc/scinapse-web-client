@@ -118,7 +118,7 @@ const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, hist
   }
 
   return (
-    <>
+    <div id={type === 'reference' ? 'referencePapers' : 'citedPapers'}>
       <div className={s.titleWrapper}>
         <div className={s.title}>{title}</div>
         <SortBox
@@ -153,7 +153,7 @@ const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, hist
         />
       ))}
       <RefCitedPagination type={type} paperId={parentPaperId} isMobile />
-    </>
+    </div>
   );
 };
 

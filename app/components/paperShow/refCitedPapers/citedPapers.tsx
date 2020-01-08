@@ -9,7 +9,6 @@ import SearchContainer from './searchContainer';
 import { AppState } from '../../../reducers';
 import { makeGetMemoizedPapers, getMemoizedCitedPaperIds } from '../../../selectors/papersSelector';
 import { getMemoizedPaperShow } from '../../../selectors/getPaperShow';
-import { PaperShowPageQueryParams } from '../../../containers/paperShow/types';
 import RefCitedPagination from './refCitedPagination';
 const styles = require('./referencePapers.scss');
 
@@ -31,19 +30,9 @@ type Props = ReturnType<typeof mapStateToProps> &
 
 const CitedPapers: React.FC<Props> = props => {
   const { isMobile, paperShow, citedPapers, location, history } = props;
-  const [queryParamsObject, setQueryParamsObject] = React.useState<PaperShowPageQueryParams>(
-    getQueryParamsObject(location.search)
-  );
-
-  React.useEffect(
-    () => {
-      setQueryParamsObject(getQueryParamsObject(location.search));
-    },
-    [location.search]
-  );
 
   return (
-    <>
+    <div id="citedPapers">
       <SearchContainer paperId={paperShow.paperId} type="cited" />
       <div>
         <RefCitedPaperList
@@ -51,13 +40,13 @@ const CitedPapers: React.FC<Props> = props => {
           type="cited"
           papers={citedPapers}
           paperShow={paperShow}
-          queryParamsObject={queryParamsObject}
+          queryParamsObject={getQueryParamsObject(location.search)}
         />
       </div>
       <div>
         <RefCitedPagination isMobile={isMobile} type="cited" paperId={paperShow.paperId} />
       </div>
-    </>
+    </div>
   );
 };
 

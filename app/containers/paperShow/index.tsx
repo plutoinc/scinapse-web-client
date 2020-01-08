@@ -13,6 +13,8 @@ import { fetchPaperShowDataAtClient } from '../../actions/paperShow';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import restoreScroll from '../../helpers/scrollRestoration';
 import { useThunkDispatch } from '../../hooks/useThunkDispatch';
+import getQueryParamsObject from '../../helpers/getQueryParamsObject';
+import { useFetchRefCitedPapers } from '../../hooks/useFetchRefCited';
 
 type Props = RouteComponentProps<PaperShowMatchParams>;
 
@@ -22,7 +24,6 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
     (state: AppState) => !state.configuration.succeedAPIFetchAtServer || state.configuration.renderedAtClient
   );
   const lastShouldFetch = useRef(shouldFetch);
-  const lastPaperId = useRef('');
 
   const paper = useSelector((state: AppState) => getMemoizedPaper(state), isEqual);
   const isMobile = useSelector((state: AppState) => state.layout.userDevice === UserDevice.MOBILE);
@@ -30,9 +31,33 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
   const matchedPaperId = match.params.paperId;
   const paperId = paper && paper.id;
 
+  const queryParams = getQueryParamsObject(location.search);
+  const refPage = queryParams['ref-page'];
+  const refQuery = queryParams['ref-query'] || '';
+  const refSort = queryParams['ref-sort'] || 'NEWEST_FIRST';
+  const citedPage = queryParams['cited-page'];
+  const citedQuery = queryParams['cited-query'] || '';
+  const citedSort = queryParams['cited-sort'] || 'NEWEST_FIRST';
+
+  useFetchRefCitedPapers({
+    type: 'reference',
+    paperId: matchedPaperId,
+    page: refPage,
+    query: refQuery,
+    sort: refSort
+  });
+
+  useFetchRefCitedPapers({
+    type: 'cited',
+    paperId: matchedPaperId,
+    page: citedPage,
+    query: citedQuery,
+    sort: citedSort
+  });
+
   useEffect(
     () => {
-      if (paperId && paperId !== lastPaperId.current) {
+      if (paperId) {
         ActionTicketManager.trackTicket({
           pageType: 'paperShow',
           actionType: 'view',
@@ -40,10 +65,9 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
           actionTag: 'pageView',
           actionLabel: String(paperId),
         });
-        restoreScroll(location.key);
       }
     },
-    [paperId, location.key]
+    [paperId]
   );
 
   useEffect(
@@ -57,15 +81,13 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
       // NOTE: prevent double fetching
       if (!shouldFetch) return;
 
+
       dispatch(
         fetchPaperShowDataAtClient({
           paperId: matchedPaperId,
           cancelToken: cancelToken.token,
         })
       )
-        .then(() => {
-          lastPaperId.current = matchedPaperId;
-        })
         .catch(err => {
           console.error(err);
           ActionTicketManager.trackTicket({

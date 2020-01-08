@@ -19,8 +19,6 @@ import PaperShowFigureList from '../paperShow/components/paperShowFigureList';
 import Icon from '../../icons';
 import { Paper } from '../../model/paper';
 import { PaperShowMatchParams } from '../../containers/paperShow/types';
-import getQueryParamsObject from '../../helpers/getQueryParamsObject';
-import RefCitedPapersContainer from '../../containers/refCitedPapersContainer';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 
 const s = require('./mobilePaperShow.scss');
@@ -160,13 +158,6 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper, location }) =>
 
   const activeTabInFixedHeader = getActiveTab(currentPosition);
   const shouldShowRelatedTab = relatedPaperIds && relatedPaperIds.length > 0;
-  const queryParams = getQueryParamsObject(location.search);
-  const refPage = queryParams['ref-page'] || 1;
-  const refQuery = queryParams['ref-query'] || '';
-  const refSort = queryParams['ref-sort'] || 'NEWEST_FIRST';
-  const citedPage = queryParams['cited-page'] || 1;
-  const citedQuery = queryParams['cited-query'] || '';
-  const citedSort = queryParams['cited-sort'] || 'NEWEST_FIRST';
   // TODO: add fallback logic for PDF address
   const pdfURL = paper.bestPdf && paper.bestPdf.hasBest && paper.bestPdf.url;
 
@@ -264,26 +255,10 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper, location }) =>
           </>
         )}
         <div className={s.refCitedSection} ref={refSection}>
-          <RefCitedPapersContainer
-            type="reference"
-            parentPaperId={paper.id}
-            page={refPage}
-            sort={refSort}
-            query={refQuery}
-          >
-            <MobileRefCitedPapers type="reference" parentPaperId={paper.id} paperCount={paper.referenceCount} />
-          </RefCitedPapersContainer>
+          <MobileRefCitedPapers type="reference" parentPaperId={paper.id} paperCount={paper.referenceCount} />
         </div>
         <div className={s.refCitedSection} ref={citedSection}>
-          <RefCitedPapersContainer
-            type="cited"
-            parentPaperId={paper.id}
-            page={citedPage}
-            sort={citedSort}
-            query={citedQuery}
-          >
-            <MobileRefCitedPapers type="cited" parentPaperId={paper.id} paperCount={paper.citedCount} />
-          </RefCitedPapersContainer>
+          <MobileRefCitedPapers type="cited" parentPaperId={paper.id} paperCount={paper.citedCount} />
         </div>
       </div>
     </>
