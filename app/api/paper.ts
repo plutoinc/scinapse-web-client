@@ -62,6 +62,20 @@ export interface PaperSource {
   host: string | null;
 }
 
+interface RequestLibraryLinkParams {
+  paperId: string;
+  email: string;
+  affiliationName: string;
+  affiliationId: string | null;
+}
+
+interface RequestLibraryLinkResult {
+  alreadyRequested: boolean;
+  email: string;
+  affiliationName: string;
+  totalRequestCount: number;
+}
+
 class PaperAPI extends PlutoAxios {
   public async getAuthorsOfPaper({
     paperId,
@@ -118,6 +132,17 @@ class PaperAPI extends PlutoAxios {
       params: {
         paper_ids: paperIds.join(','),
       },
+    });
+
+    return res.data.data.content;
+  }
+
+  public async requestLibraryLink(params: RequestLibraryLinkParams): Promise<RequestLibraryLinkResult> {
+    const res = await this.post(`/library-link/request`, {
+      paper_id: params.paperId,
+      email: params.email,
+      affiliation_name: params.affiliationName,
+      affiliation_id: params.affiliationId || null,
     });
 
     return res.data.data.content;

@@ -3,12 +3,6 @@
   width: 100%;
 }
 
-input::placeholder {
-  color: $black0;
-  opacity: 0.25;
-  font-size: 16px;
-}
-
 .suggestionList {
   position: absolute;
   list-style: none;

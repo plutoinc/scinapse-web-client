@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useDispatch } from 'react-redux';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Button } from '@pluto_network/pluto-design-elements';
-import { blockUnverifiedUser, AUTH_LEVEL } from '../../../helpers/checkAuthDialog';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
@@ -52,20 +51,11 @@ const RequestPaperBtn: React.FC<RequestPaperBtnProps> = React.memo(props => {
 
           dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'clickRequestFullTextBtn' }));
 
-          const isBlocked = await blockUnverifiedUser({
-            authLevel: AUTH_LEVEL.VERIFIED,
-            actionArea,
-            actionLabel: 'clickRequestFullTextBtn',
-            userActionType: 'clickRequestFullTextBtn',
-          });
-
-          if (!isBlocked) {
-            onClick();
-          }
+          onClick();
         }}
       >
-        <Icon icon="SEND" />
-        <span>Request Paper</span>
+        <Icon icon="SEARCH" />
+        <span>Find in Lib.</span>
       </Button>
     </Tooltip>
   );

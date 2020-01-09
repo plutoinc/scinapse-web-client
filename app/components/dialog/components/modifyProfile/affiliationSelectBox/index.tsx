@@ -15,6 +15,7 @@ const styles = require('./affiliationSelectBox.scss');
 interface AffiliationSelectBoxProps extends FieldProps {
   className: string;
   disabled?: boolean;
+  placeholder?: string;
   errorWrapperClassName: string;
 }
 
@@ -50,7 +51,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
   }
 
   public render() {
-    const { field, form, className, disabled, errorWrapperClassName } = this.props;
+    const { field, form, className, disabled, errorWrapperClassName, placeholder } = this.props;
     const { touched, errors } = form;
     const { availableAffiliations } = this.state;
     const rawFieldValue = field.value as Affiliation | SuggestAffiliation | string;
@@ -65,7 +66,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
             disabled={disabled}
             defaultValue={displayValue}
             onChange={this.handleInputChange}
-            placeholder="Current Affiliation"
+            placeholder={placeholder || 'Current Affiliation'}
             onSubmitQuery={this.handleClickSelectBox}
             suggestionList={availableAffiliations.slice(0, 5).map(affiliation => ({ text: affiliation.keyword }))}
             className={classNames({

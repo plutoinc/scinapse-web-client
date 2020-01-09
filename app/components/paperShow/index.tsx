@@ -31,9 +31,9 @@ import { getMemoizedConfiguration } from '../../selectors/getConfiguration';
 import ImprovedFooter from '../layouts/improvedFooter';
 import PaperShowFigureList from './components/paperShowFigureList';
 import { UserDevice } from '../layouts/reducer';
-import RequestPaperDialog from '../requestPaperDialog/requestPaperDialog';
 import RefCitedPapersContainer from '../../containers/refCitedPapersContainer';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
+import FindAtLibraryDialog from '../findAtLibraryDialog';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -250,7 +250,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <ImprovedFooter containerStyle={{ backgroundColor: '#f8f9fb' }} />
         </div>
         <BottomBanner currentUser={currentUser} />
-        <RequestPaperDialog paperId={paper.id} />
+        <FindAtLibraryDialog paperId={paper.id} />
       </>
     );
   }
