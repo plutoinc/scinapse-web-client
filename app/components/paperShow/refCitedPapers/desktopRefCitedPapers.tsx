@@ -24,13 +24,22 @@ const DesktopRefCitedPapers: React.FC<Props> = props => {
     }
     return state.paperShow.citedPaperIds;
   });
+
   const isLoading = useSelector((state: AppState) =>
     props.type === 'reference' ? state.paperShow.isLoadingReferencePapers : state.paperShow.isLoadingCitedPapers
   );
 
+  React.useEffect(() => {
+    if (isLoading && location.state?.scrollTo === props.type && wrapperNode.current) {
+      window.scrollTo(0, wrapperNode.current.offsetTop - 175);
+    }
+  }, [isLoading, location.state, props.type]);
+
+  const wrapperNode = React.useRef<HTMLDivElement | null>(null);
+
   return (
-    <div>
-      <SearchContainer paperId={props.paperId} type="reference" />
+    <div ref={wrapperNode}>
+      <SearchContainer paperId={props.paperId} type={props.type} />
       <div>
         <RefCitedPaperList
           type={props.type}

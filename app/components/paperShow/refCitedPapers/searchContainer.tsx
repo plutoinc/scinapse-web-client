@@ -35,20 +35,17 @@ const SearchContainer: React.FC<SearchContainerProps> = props => {
   const [sortOption, setSortOption] = React.useState<PAPER_LIST_SORT_TYPES>('NEWEST_FIRST');
   const [searchInput, setSearchInput] = React.useState('');
 
-  React.useEffect(
-    () => {
-      const queryParamsObject = getQueryParamsObject(location.search);
+  React.useEffect(() => {
+    const queryParamsObject = getQueryParamsObject(location.search);
 
-      if (type === 'reference') {
-        setSortOption(queryParamsObject['ref-sort'] || 'NEWEST_FIRST');
-        setSearchInput(queryParamsObject['ref-query'] || '');
-      } else if (type === 'cited') {
-        setSortOption(queryParamsObject['cited-sort'] || 'NEWEST_FIRST');
-        setSearchInput(queryParamsObject['cited-query'] || '');
-      }
-    },
-    [location.search, type]
-  );
+    if (type === 'reference') {
+      setSortOption(queryParamsObject['ref-sort'] || 'NEWEST_FIRST');
+      setSearchInput(queryParamsObject['ref-query'] || '');
+    } else if (type === 'cited') {
+      setSortOption(queryParamsObject['cited-sort'] || 'NEWEST_FIRST');
+      setSearchInput(queryParamsObject['cited-query'] || '');
+    }
+  }, [location.search, type]);
 
   const handleSubmitSearch = React.useCallback(
     (query: string) => {
@@ -72,6 +69,9 @@ const SearchContainer: React.FC<SearchContainerProps> = props => {
       history.push({
         pathname: `/papers/${paperId}`,
         search: getStringifiedUpdatedQueryParams(queryParamsObject, pageQueryParams),
+        state: {
+          scrollTo: type,
+        },
       });
     },
     [type, paperId, location.search, history]
@@ -92,6 +92,9 @@ const SearchContainer: React.FC<SearchContainerProps> = props => {
       history.push({
         pathname: `/papers/${paperId}`,
         search: getStringifiedUpdatedQueryParams(queryParamsObject, pageQueryParams),
+        state: {
+          scrollTo: type,
+        },
       });
     },
     [type, paperId, location.search, history]

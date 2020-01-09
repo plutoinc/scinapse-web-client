@@ -27,6 +27,7 @@ const getRefPaginationLink = ({ type, paperId, queryParams }: GetPaginationLinkP
   return {
     to: `/papers/${paperId}`,
     search: getStringifiedUpdatedQueryParams(queryParams, { [queryParamsKey]: page }),
+    state: { scrollTo: type },
   };
 };
 

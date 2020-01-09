@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState, useRef } from 'react';
 import { isEqual } from 'lodash';
 import { useSelector } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
@@ -32,9 +32,9 @@ const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, hist
   const isLoading = useSelector((state: AppState) => {
     return type === 'reference' ? state.paperShow.isLoadingReferencePapers : state.paperShow.isLoadingCitedPapers;
   });
-
   const [query, setQuery] = useState<string>('');
   const [sortOption, setSortOption] = useState<PAPER_LIST_SORT_TYPES>('NEWEST_FIRST');
+  const wrapperNode = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const queryParamsObject = getQueryParamsObject(location.search);
@@ -46,6 +46,12 @@ const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, hist
       setQuery(queryParamsObject['cited-query'] || '');
     }
   }, [location.search, type]);
+
+  useEffect(() => {
+    if (isLoading && location.state?.scrollTo === type && wrapperNode.current) {
+      window.scrollTo(0, wrapperNode.current.offsetTop - 100);
+    }
+  }, [isLoading, location.state, type]);
 
   const handleSubmitSearch = useCallback(
     (query: string) => {
@@ -69,6 +75,7 @@ const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, hist
       history.push({
         pathname: `/papers/${parentPaperId}`,
         search: getStringifiedUpdatedQueryParams(queryParamsObject, pageQueryParams),
+        state: { scrollTo: type },
       });
     },
     [type, parentPaperId, location.search, history]
@@ -88,6 +95,7 @@ const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, hist
       history.push({
         pathname: `/papers/${parentPaperId}`,
         search: getStringifiedUpdatedQueryParams(queryParamsObject, pageQueryParams),
+        state: { scrollTo: type },
       });
     },
     [type, parentPaperId, location.search, history]
@@ -100,7 +108,7 @@ const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, hist
 
   if (isLoading) {
     return (
-      <div className={s.loadingSection}>
+      <div ref={wrapperNode} className={s.loadingSection}>
         <ArticleSpinner />
       </div>
     );
@@ -115,7 +123,7 @@ const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, hist
   }
 
   return (
-    <div id={type === 'reference' ? 'referencePapers' : 'citedPapers'}>
+    <div>
       <div className={s.titleWrapper}>
         <div className={s.title}>{title}</div>
         <SortBox
