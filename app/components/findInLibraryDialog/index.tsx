@@ -11,11 +11,11 @@ import PaperAPI from '../../api/paper';
 import SuccessRequestContext from './successRequestContext';
 import AlreadyRequestContext from './alreadyRequestContext';
 const useStyles = require('isomorphic-style-loader/useStyles');
-const s = require('./findAtLibraryDialog.scss');
+const s = require('./findInLibraryDialog.scss');
 
-type FindAtLibraryDialogProps = { paperId: string };
+type FindInLibraryDialogProps = { paperId: string };
 
-const FindAtLibraryDialog: React.FC<FindAtLibraryDialogProps> = ({ paperId }) => {
+const FindInLibraryDialog: React.FC<FindInLibraryDialogProps> = ({ paperId }) => {
   useStyles(s);
   const dispatch = useDispatch();
 
@@ -85,4 +85,4 @@ const FindAtLibraryDialog: React.FC<FindAtLibraryDialogProps> = ({ paperId }) =>
   );
 };
 
-export default FindAtLibraryDialog;
+export default FindInLibraryDialog;

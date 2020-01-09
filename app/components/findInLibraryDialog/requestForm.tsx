@@ -10,7 +10,7 @@ import validateEmail from '../../helpers/validateEmail';
 import Icon from '../../icons';
 import { CurrentUser } from '../../model/currentUser';
 const useStyles = require('isomorphic-style-loader/useStyles');
-const s = require('./findAtLibraryDialog.scss');
+const s = require('./findInLibraryDialog.scss');
 
 export interface RequestFormState {
   email: string;

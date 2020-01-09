@@ -33,7 +33,7 @@ import PaperShowFigureList from './components/paperShowFigureList';
 import { UserDevice } from '../layouts/reducer';
 import RefCitedPapersContainer from '../../containers/refCitedPapersContainer';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
-import FindAtLibraryDialog from '../findAtLibraryDialog';
+import FindInLibraryDialog from '../findInLibraryDialog';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -250,7 +250,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <ImprovedFooter containerStyle={{ backgroundColor: '#f8f9fb' }} />
         </div>
         <BottomBanner currentUser={currentUser} />
-        <FindAtLibraryDialog paperId={paper.id} />
+        <FindInLibraryDialog paperId={paper.id} />
       </>
     );
   }
