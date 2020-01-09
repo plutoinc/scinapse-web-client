@@ -9,7 +9,7 @@ import { CurrentUser } from '../../model/currentUser';
 import SourceButton from '../../components/paperShow/components/sourceButton';
 import ViewFullTextBtn from '../../components/paperShow/components/viewFullTextBtn';
 import RequestPaperBtn from './components/paperRequestBtn';
-import { openRequestPaperDialog } from '../../reducers/requestPaperDialog';
+import { openFindInLibraryDialog } from '../../reducers/findInLibraryDialog';
 const s = require('./actionBar.scss');
 
 interface PaperShowActionBarProps {
@@ -31,7 +31,7 @@ const PaperShowActionBar: React.FC<PaperShowActionBarProps> = props => {
         actionArea="paperDescription"
         isLoading={props.isLoadingPDF}
         paper={props.paper}
-        onClick={() => props.dispatch(openRequestPaperDialog())}
+        onClick={() => props.dispatch(openFindInLibraryDialog())}
         lastRequestedDate={props.lastRequestedDate}
       />
     </div>

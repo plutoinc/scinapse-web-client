@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Dialog from '@material-ui/core/Dialog';
 import { AppState } from '../../reducers';
-import { closeRequestPaperDialog } from '../../reducers/requestPaperDialog';
+import { closeFindInLibraryDialog } from '../../reducers/findInLibraryDialog';
 import { REQUEST_STEP } from './types';
 import RequestForm, { RequestFormState } from './requestForm';
 import { Affiliation } from '../../model/affiliation';
@@ -22,7 +22,7 @@ const FindInLibraryDialog: React.FC<FindInLibraryDialogProps> = ({ paperId }) =>
   const [isLoading, setIsLoading] = React.useState(false);
   const [requestStep, setRequestStep] = React.useState(REQUEST_STEP.REQUEST_FORM);
   const { isOpen, currentUser } = useSelector((appState: AppState) => ({
-    isOpen: appState.requestPaperDialogState.isOpen,
+    isOpen: appState.findInLibraryDialogState.isOpen,
     currentUser: appState.currentUser,
   }));
 
@@ -59,7 +59,7 @@ const FindInLibraryDialog: React.FC<FindInLibraryDialogProps> = ({ paperId }) =>
   }
 
   function handleClose() {
-    dispatch(closeRequestPaperDialog());
+    dispatch(closeFindInLibraryDialog());
     setRequestStep(REQUEST_STEP.REQUEST_FORM);
   }
 
