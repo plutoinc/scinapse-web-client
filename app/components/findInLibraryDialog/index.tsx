@@ -10,6 +10,7 @@ import { SuggestAffiliation } from '../../api/suggest';
 import PaperAPI from '../../api/paper';
 import SuccessRequestContext from './successRequestContext';
 import AlreadyRequestContext from './alreadyRequestContext';
+import ActionTicketManager from '../../helpers/actionTicketManager';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./findInLibraryDialog.scss');
 
@@ -53,6 +54,14 @@ const FindInLibraryDialog: React.FC<FindInLibraryDialogProps> = ({ paperId }) =>
       } else {
         setRequestStep(REQUEST_STEP.SUCCESS);
       }
+
+      ActionTicketManager.trackTicket({
+        pageType: 'paperShow',
+        actionType: 'fire',
+        actionArea: 'paperDescription',
+        actionTag: 'sendRequestLibraryLink',
+        actionLabel: String(paperId),
+      });
 
       setTotalRequestCount(res.totalRequestCount);
     } catch (err) {
