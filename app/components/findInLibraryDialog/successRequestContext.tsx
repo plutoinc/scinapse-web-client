@@ -3,7 +3,7 @@ import Icon from '../../icons';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./findInLibraryDialog.scss');
 
-const SuccessRequestContext: React.FC = () => {
+const SuccessRequestContext: React.FC<{ count: number }> = ({ count }) => {
   useStyles(s);
 
   return (
@@ -14,7 +14,8 @@ const SuccessRequestContext: React.FC = () => {
         <div className={s.subTitle}>
           Your request is a bridge<br />between Scinapse and the institution.
           <div className={s.contentDivider} />
-          There are currently <b className={s.highLightContext}>N</b> requests<br />being received for the institution.<br />
+          There are currently <b className={s.highLightContext}>{count}</b> requests<br />being received for the
+          institution.<br />
         </div>
       </div>
     </div>

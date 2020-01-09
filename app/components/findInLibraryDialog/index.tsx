@@ -21,6 +21,7 @@ const FindInLibraryDialog: React.FC<FindInLibraryDialogProps> = ({ paperId }) =>
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [requestStep, setRequestStep] = React.useState(REQUEST_STEP.REQUEST_FORM);
+  const [totalRequestCount, setTotalRequestCount] = React.useState(0);
   const { isOpen, currentUser } = useSelector((appState: AppState) => ({
     isOpen: appState.findInLibraryDialogState.isOpen,
     currentUser: appState.currentUser,
@@ -52,6 +53,8 @@ const FindInLibraryDialog: React.FC<FindInLibraryDialogProps> = ({ paperId }) =>
       } else {
         setRequestStep(REQUEST_STEP.SUCCESS);
       }
+
+      setTotalRequestCount(res.totalRequestCount);
     } catch (err) {
       console.error(err);
     }
@@ -67,10 +70,10 @@ const FindInLibraryDialog: React.FC<FindInLibraryDialogProps> = ({ paperId }) =>
 
   switch (requestStep) {
     case REQUEST_STEP.SUCCESS:
-      mainSection = <SuccessRequestContext />;
+      mainSection = <SuccessRequestContext count={totalRequestCount} />;
       break;
     case REQUEST_STEP.ALREADY:
-      mainSection = <AlreadyRequestContext />;
+      mainSection = <AlreadyRequestContext count={totalRequestCount} />;
       break;
   }
 

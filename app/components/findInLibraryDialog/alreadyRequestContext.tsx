@@ -3,7 +3,7 @@ import Icon from '../../icons';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./findInLibraryDialog.scss');
 
-const AlreadyRequestContext: React.FC = () => {
+const AlreadyRequestContext: React.FC<{ count: number }> = ({ count }) => {
   useStyles(s);
 
   return (
@@ -15,7 +15,8 @@ const AlreadyRequestContext: React.FC = () => {
           You have already requested the institution.<br />
           Please wait a little longer.<br />We'll let you know as soon as the institution responds.
           <div className={s.contentDivider} />
-          There are currently <b className={s.highLightContext}>N</b> requests<br />being received for the institution.<br />
+          There are currently <b className={s.highLightContext}>{count}</b> requests<br />being received for the
+          institution.<br />
         </div>
       </div>
     </div>
