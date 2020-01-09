@@ -12,7 +12,6 @@ export interface PaperShowRefCitedTabProps {
   isLoading: boolean;
   currentUser: CurrentUser;
   canShowFullPDF: boolean;
-  lastRequestedDate: string | null;
 
   afterDownloadPDF: () => void;
   onClickDownloadPDF: () => void;
@@ -32,7 +31,6 @@ export interface PDFButtonProps {
   canShowFullPDF: boolean;
   actionBtnEl: HTMLDivElement | null;
   currentUser: CurrentUser;
-  lastRequestedDate: string | null;
   afterDownloadPDF: () => void;
   onClickDownloadPDF: () => void;
 }

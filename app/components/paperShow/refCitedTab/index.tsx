@@ -93,7 +93,6 @@ const PaperShowRefCitedTab: React.FC<PaperShowRefCitedTabProps> = React.memo(pro
               actionBtnEl={actionBtnEl.current}
               onClickDownloadPDF={props.onClickDownloadPDF!}
               afterDownloadPDF={props.afterDownloadPDF!}
-              lastRequestedDate={props.lastRequestedDate}
             />
           </div>
         </div>

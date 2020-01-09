@@ -1,12 +1,6 @@
 import { Dispatch } from 'redux';
 import { LoadDataParams } from '../../routes';
-import {
-  getPaper,
-  getCitedPapers,
-  getReferencePapers,
-  fetchLastFullTextRequestedDate,
-  getMyCollections,
-} from '../../actions/paperShow';
+import { getPaper, getCitedPapers, getReferencePapers, getMyCollections } from '../../actions/paperShow';
 import { PaperShowMatchParams, PaperShowPageQueryParams } from './types';
 import { ActionCreators } from '../../actions/actionTypes';
 import { getRelatedPapers } from '../../actions/relatedPapers';
@@ -75,7 +69,6 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
   const promiseArray = [];
   promiseArray.push(dispatch(getPaper({ paperId })));
   promiseArray.push(dispatch(getRelatedPapers(paperId)));
-  promiseArray.push(dispatch(fetchLastFullTextRequestedDate(paperId)));
   promiseArray.push(dispatch(getMyCollections(paperId)));
 
   await Promise.all(promiseArray);

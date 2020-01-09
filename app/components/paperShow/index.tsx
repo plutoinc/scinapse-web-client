@@ -164,7 +164,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   currentUser={currentUser}
                   hasPDFFullText={PDFViewerState.hasSucceed}
                   handleClickFullText={this.scrollToSection('fullText')}
-                  lastRequestedDate={paperShow.lastRequestedAt}
                 />
               </div>
               <div className={styles.paperContentBlockDivider} />
@@ -192,7 +191,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 isOnFullText={isOnFullText}
                 isLoading={PDFViewerState.isLoading}
                 canShowFullPDF={PDFViewerState.hasSucceed}
-                lastRequestedDate={paperShow.lastRequestedAt}
               />
             </div>
             <NoSsr>
