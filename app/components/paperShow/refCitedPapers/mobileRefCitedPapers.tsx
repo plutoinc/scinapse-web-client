@@ -36,19 +36,16 @@ const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, hist
   const [query, setQuery] = useState<string>('');
   const [sortOption, setSortOption] = useState<PAPER_LIST_SORT_TYPES>('NEWEST_FIRST');
 
-  useEffect(
-    () => {
-      const queryParamsObject = getQueryParamsObject(location.search);
-      if (type === 'reference') {
-        setSortOption(queryParamsObject['ref-sort'] || 'NEWEST_FIRST');
-        setQuery(queryParamsObject['ref-query'] || '');
-      } else if (type === 'cited') {
-        setSortOption(queryParamsObject['cited-sort'] || 'NEWEST_FIRST');
-        setQuery(queryParamsObject['cited-query'] || '');
-      }
-    },
-    [location.search, type]
-  );
+  useEffect(() => {
+    const queryParamsObject = getQueryParamsObject(location.search);
+    if (type === 'reference') {
+      setSortOption(queryParamsObject['ref-sort'] || 'NEWEST_FIRST');
+      setQuery(queryParamsObject['ref-query'] || '');
+    } else if (type === 'cited') {
+      setSortOption(queryParamsObject['cited-sort'] || 'NEWEST_FIRST');
+      setQuery(queryParamsObject['cited-query'] || '');
+    }
+  }, [location.search, type]);
 
   const handleSubmitSearch = useCallback(
     (query: string) => {
@@ -152,7 +149,7 @@ const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, hist
           actionArea={type === 'reference' ? 'refList' : 'citedList'}
         />
       ))}
-      <RefCitedPagination type={type} paperId={parentPaperId} isMobile />
+      <RefCitedPagination type={type} paperId={parentPaperId} />
     </div>
   );
 };

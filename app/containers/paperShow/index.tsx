@@ -11,7 +11,6 @@ import PaperShow from '../../components/paperShow';
 import { getMemoizedPaper } from './select';
 import { fetchPaperShowDataAtClient } from '../../actions/paperShow';
 import ActionTicketManager from '../../helpers/actionTicketManager';
-import restoreScroll from '../../helpers/scrollRestoration';
 import { useThunkDispatch } from '../../hooks/useThunkDispatch';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 import { useFetchRefCitedPapers } from '../../hooks/useFetchRefCited';
@@ -44,7 +43,7 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
     paperId: matchedPaperId,
     page: refPage,
     query: refQuery,
-    sort: refSort
+    sort: refSort,
   });
 
   useFetchRefCitedPapers({
@@ -52,60 +51,52 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
     paperId: matchedPaperId,
     page: citedPage,
     query: citedQuery,
-    sort: citedSort
+    sort: citedSort,
   });
 
-  useEffect(
-    () => {
-      if (paperId) {
-        ActionTicketManager.trackTicket({
-          pageType: 'paperShow',
-          actionType: 'view',
-          actionArea: '200',
-          actionTag: 'pageView',
-          actionLabel: String(paperId),
-        });
-      }
-    },
-    [paperId]
-  );
+  useEffect(() => {
+    if (paperId) {
+      ActionTicketManager.trackTicket({
+        pageType: 'paperShow',
+        actionType: 'view',
+        actionArea: '200',
+        actionTag: 'pageView',
+        actionLabel: String(paperId),
+      });
+    }
+  }, [paperId]);
 
-  useEffect(
-    () => {
-      const cancelToken = Axios.CancelToken.source();
-      // NOTE: prevent fetching from the change of shouldFetch variable
-      if (shouldFetch && !lastShouldFetch.current) {
-        lastShouldFetch.current = true;
-        return;
-      }
-      // NOTE: prevent double fetching
-      if (!shouldFetch) return;
+  useEffect(() => {
+    const cancelToken = Axios.CancelToken.source();
+    // NOTE: prevent fetching from the change of shouldFetch variable
+    if (shouldFetch && !lastShouldFetch.current) {
+      lastShouldFetch.current = true;
+      return;
+    }
+    // NOTE: prevent double fetching
+    if (!shouldFetch) return;
 
+    dispatch(
+      fetchPaperShowDataAtClient({
+        paperId: matchedPaperId,
+        cancelToken: cancelToken.token,
+      })
+    ).catch(err => {
+      console.error(err);
+      ActionTicketManager.trackTicket({
+        pageType: 'paperShow',
+        actionType: 'view',
+        actionArea: String(err.status),
+        actionTag: 'pageView',
+        actionLabel: String(matchedPaperId),
+      });
+      history.push(`/${err.status}`);
+    });
 
-      dispatch(
-        fetchPaperShowDataAtClient({
-          paperId: matchedPaperId,
-          cancelToken: cancelToken.token,
-        })
-      )
-        .catch(err => {
-          console.error(err);
-          ActionTicketManager.trackTicket({
-            pageType: 'paperShow',
-            actionType: 'view',
-            actionArea: String(err.status),
-            actionTag: 'pageView',
-            actionLabel: String(matchedPaperId),
-          });
-          history.push(`/${err.status}`);
-        });
-
-      return () => {
-        cancelToken.cancel();
-      };
-    },
-    [location.pathname, currentUser.isLoggedIn, dispatch, matchedPaperId, shouldFetch, history]
-  );
+    return () => {
+      cancelToken.cancel();
+    };
+  }, [location.pathname, currentUser.isLoggedIn, dispatch, matchedPaperId, shouldFetch, history]);
 
   if (!paper) return null;
 

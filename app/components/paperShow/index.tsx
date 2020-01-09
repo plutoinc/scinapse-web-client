@@ -8,8 +8,7 @@ import { AppState } from '../../reducers';
 import { withStyles } from '../../helpers/withStylesHelper';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import ActionBar from '../../containers/paperShowActionBar';
-import ReferencePapers from './refCitedPapers/referencePapers';
-import CitedPapers from './refCitedPapers/citedPapers';
+import DesktopRefCitedPapers from './refCitedPapers/desktopRefCitedPapers';
 import PaperShowRefCitedTab from './refCitedTab';
 import { getMemoizedPaper } from '../../containers/paperShow/select';
 import { formulaeToHTMLStr } from '../../helpers/displayFormula';
@@ -59,7 +58,7 @@ interface PaperShowStates
     isOnRef: boolean;
     isOnCited: boolean;
     isOnFullText: boolean;
-  }> { }
+  }> {}
 
 const Title: React.FC<{ title: string }> = React.memo(({ title }) => {
   return <h1 className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(title) }} />;
@@ -120,7 +119,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   public render() {
     const { layout, paperShow, currentUser, paper, PDFViewerState } = this.props;
     const { isOnFullText, isOnCited, isOnRef } = this.state;
-
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -199,10 +197,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               </div>
               <div className={styles.otherPapers}>
                 <div className={styles.references}>
-                  <ReferencePapers
-                    isMobile={layout.userDevice !== UserDevice.DESKTOP}
-                    refTabEl={this.refTabWrapper}
-                  />
+                  <DesktopRefCitedPapers type="reference" paperId={paper.id} />
                 </div>
               </div>
             </article>
@@ -216,7 +211,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <span className={styles.sectionCount}>{paper.citedCount}</span>
               </div>
               <div className={styles.otherPapers}>
-                <CitedPapers isMobile={layout.userDevice !== UserDevice.DESKTOP} citedTabEl={this.citedTabWrapper} />
+                <DesktopRefCitedPapers type="cited" paperId={paper.id} />
               </div>
             </article>
           </div>
