@@ -31,6 +31,7 @@ const DesktopRefCitedPapers: React.FC<Props> = props => {
 
   React.useEffect(() => {
     if (isLoading && location.state?.scrollTo === props.type && wrapperNode.current) {
+      // 175 means means margin top for comfortable of viewing 
       window.scrollTo(0, wrapperNode.current.offsetTop - 175);
     }
   }, [isLoading, location.state, props.type]);

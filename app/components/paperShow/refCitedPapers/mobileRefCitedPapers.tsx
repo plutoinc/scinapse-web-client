@@ -49,6 +49,7 @@ const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, hist
 
   useEffect(() => {
     if (isLoading && location.state?.scrollTo === type && wrapperNode.current) {
+      // 100 means means margin top for comfortable of viewing 
       window.scrollTo(0, wrapperNode.current.offsetTop - 100);
     }
   }, [isLoading, location.state, type]);
