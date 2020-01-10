@@ -16,7 +16,7 @@ const AlreadyRequestContext: React.FC<{ count: number }> = ({ count }) => {
           Please wait a little longer.<br />We'll let you know as soon as the institution responds.
           <div className={s.contentDivider} />
           There are currently <b className={s.highLightContext}>{count}</b> requests<br />being received for the
-          institution.<br />
+          institution.
         </div>
       </div>
     </div>

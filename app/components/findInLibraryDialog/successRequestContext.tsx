@@ -15,7 +15,7 @@ const SuccessRequestContext: React.FC<{ count: number }> = ({ count }) => {
           Your request is a bridge<br />between Scinapse and the institution.
           <div className={s.contentDivider} />
           There are currently <b className={s.highLightContext}>{count}</b> requests<br />being received for the
-          institution.<br />
+          institution.
         </div>
       </div>
     </div>
