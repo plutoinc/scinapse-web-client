@@ -15,7 +15,6 @@ interface BlockedBubbleContextStructure {
 
 const blockedBubbleVerbAndNoun: { [key: string]: BlockedBubbleKeywords } = {
   downloadPdf: { verb: 'download', noun: 'PDF' },
-  clickRequestFullTextBtn: { verb: 'request', noun: 'paper' },
   viewMorePDF: { verb: 'view', noun: 'PDF' },
   addToCollection: { verb: 'save to', noun: 'Collection' },
 };

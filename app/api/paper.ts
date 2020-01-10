@@ -48,13 +48,6 @@ export interface GetAuthorsOfPaperParams {
   cancelToken: CancelToken;
 }
 
-interface RequestFullTextParams {
-  paperId: string;
-  email: string;
-  name?: string;
-  message?: string;
-}
-
 export interface PaperSource {
   paperId: string;
   doi: string | null;
@@ -99,15 +92,6 @@ class PaperAPI extends PlutoAxios {
     const res: AxiosResponse = await this.get(`/papers/${params.paperId}/citation?format=${enumValue}`);
 
     return res.data.data;
-  }
-
-  public async requestFullText(params: RequestFullTextParams) {
-    const res = await this.post(`/papers/${params.paperId}/request`, {
-      email: params.email,
-      message: params.message || null,
-      name: params.name || null,
-    });
-    return res;
   }
 
   public async getBestPdfOfPaper(params: { paperId: string }) {

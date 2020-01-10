@@ -22,10 +22,10 @@ interface PaperShowActionBarProps {
 }
 
 const PaperShowActionBar: React.FC<PaperShowActionBarProps> = props => {
-  const requestFullTextBtnEl = React.useRef<HTMLDivElement | null>(null);
+  const findInLibraryBtnEl = React.useRef<HTMLDivElement | null>(null);
 
   const requestButton = (
-    <div className={s.actionItem} ref={requestFullTextBtnEl}>
+    <div className={s.actionItem} ref={findInLibraryBtnEl}>
       <FindInLibraryBtn
         actionArea="paperDescription"
         isLoading={props.isLoadingPDF}
