@@ -107,7 +107,7 @@ function getLinkButton(props: LinkPaginationProps) {
   } else if (props.currentPageIndex === indexOfMaxPage) {
     return (
       <div className={styles.pageButton}>
-        <Link rel="nofollow" to={props.getLinkDestination(1)}>
+        <Link className={styles.pageIconWrapper} rel="nofollow" to={props.getLinkDestination(1)}>
           <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="ARROW_RIGHT_DOUBLE" />
         </Link>
         <span>{`${props.currentPageIndex + 1} Page`}</span>

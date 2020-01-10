@@ -11,8 +11,9 @@ import PaperShow from '../../components/paperShow';
 import { getMemoizedPaper } from './select';
 import { fetchPaperShowDataAtClient } from '../../actions/paperShow';
 import ActionTicketManager from '../../helpers/actionTicketManager';
-import restoreScroll from '../../helpers/scrollRestoration';
 import { useThunkDispatch } from '../../hooks/useThunkDispatch';
+import getQueryParamsObject from '../../helpers/getQueryParamsObject';
+import { useFetchRefCitedPapers } from '../../hooks/useFetchRefCited';
 
 type Props = RouteComponentProps<PaperShowMatchParams>;
 
@@ -22,7 +23,6 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
     (state: AppState) => !state.configuration.succeedAPIFetchAtServer || state.configuration.renderedAtClient
   );
   const lastShouldFetch = useRef(shouldFetch);
-  const lastPaperId = useRef('');
 
   const paper = useSelector((state: AppState) => getMemoizedPaper(state), isEqual);
   const isMobile = useSelector((state: AppState) => state.layout.userDevice === UserDevice.MOBILE);
@@ -30,60 +30,73 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
   const matchedPaperId = match.params.paperId;
   const paperId = paper && paper.id;
 
-  useEffect(
-    () => {
-      if (paperId && paperId !== lastPaperId.current) {
-        ActionTicketManager.trackTicket({
-          pageType: 'paperShow',
-          actionType: 'view',
-          actionArea: '200',
-          actionTag: 'pageView',
-          actionLabel: String(paperId),
-        });
-        restoreScroll(location.key);
-      }
-    },
-    [paperId, location.key]
-  );
+  const queryParams = getQueryParamsObject(location.search);
+  const refPage = queryParams['ref-page'];
+  const refQuery = queryParams['ref-query'] || '';
+  const refSort = queryParams['ref-sort'] || 'NEWEST_FIRST';
+  const citedPage = queryParams['cited-page'];
+  const citedQuery = queryParams['cited-query'] || '';
+  const citedSort = queryParams['cited-sort'] || 'NEWEST_FIRST';
 
-  useEffect(
-    () => {
-      const cancelToken = Axios.CancelToken.source();
-      // NOTE: prevent fetching from the change of shouldFetch variable
-      if (shouldFetch && !lastShouldFetch.current) {
-        lastShouldFetch.current = true;
-        return;
-      }
-      // NOTE: prevent double fetching
-      if (!shouldFetch) return;
+  useFetchRefCitedPapers({
+    type: 'reference',
+    paperId: matchedPaperId,
+    page: refPage,
+    query: refQuery,
+    sort: refSort,
+  });
 
-      dispatch(
-        fetchPaperShowDataAtClient({
-          paperId: matchedPaperId,
-          cancelToken: cancelToken.token,
-        })
-      )
-        .then(() => {
-          lastPaperId.current = matchedPaperId;
-        })
-        .catch(err => {
-          console.error(err);
-          ActionTicketManager.trackTicket({
-            pageType: 'paperShow',
-            actionType: 'view',
-            actionArea: String(err.status),
-            actionTag: 'pageView',
-            actionLabel: String(matchedPaperId),
-          });
-          history.push(`/${err.status}`);
-        });
+  useFetchRefCitedPapers({
+    type: 'cited',
+    paperId: matchedPaperId,
+    page: citedPage,
+    query: citedQuery,
+    sort: citedSort,
+  });
 
-      return () => {
-        cancelToken.cancel();
-      };
-    },
-    [location.pathname, currentUser.isLoggedIn, dispatch, matchedPaperId, shouldFetch, history]
-  );
+  useEffect(() => {
+    if (paperId) {
+      ActionTicketManager.trackTicket({
+        pageType: 'paperShow',
+        actionType: 'view',
+        actionArea: '200',
+        actionTag: 'pageView',
+        actionLabel: String(paperId),
+      });
+    }
+  }, [paperId]);
+
+  useEffect(() => {
+    const cancelToken = Axios.CancelToken.source();
+    // NOTE: prevent fetching from the change of shouldFetch variable
+    if (shouldFetch && !lastShouldFetch.current) {
+      lastShouldFetch.current = true;
+      return;
+    }
+    // NOTE: prevent double fetching
+    if (!shouldFetch) return;
+
+    dispatch(
+      fetchPaperShowDataAtClient({
+        paperId: matchedPaperId,
+        cancelToken: cancelToken.token,
+      })
+    ).catch(err => {
+      console.error(err);
+      ActionTicketManager.trackTicket({
+        pageType: 'paperShow',
+        actionType: 'view',
+        actionArea: String(err.status),
+        actionTag: 'pageView',
+        actionLabel: String(matchedPaperId),
+      });
+      history.push(`/${err.status}`);
+    });
+
+    return () => {
+      cancelToken.cancel();
+    };
+  }, [location.pathname, currentUser.isLoggedIn, dispatch, matchedPaperId, shouldFetch, history]);
 
   if (!paper) return null;
 

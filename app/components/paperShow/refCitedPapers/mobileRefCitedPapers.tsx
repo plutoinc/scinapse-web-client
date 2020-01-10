@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState, useRef } from 'react';
 import { isEqual } from 'lodash';
 import { useSelector } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
@@ -32,23 +32,27 @@ const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, hist
   const isLoading = useSelector((state: AppState) => {
     return type === 'reference' ? state.paperShow.isLoadingReferencePapers : state.paperShow.isLoadingCitedPapers;
   });
-
   const [query, setQuery] = useState<string>('');
   const [sortOption, setSortOption] = useState<PAPER_LIST_SORT_TYPES>('NEWEST_FIRST');
+  const wrapperNode = useRef<HTMLDivElement | null>(null);
 
-  useEffect(
-    () => {
-      const queryParamsObject = getQueryParamsObject(location.search);
-      if (type === 'reference') {
-        setSortOption(queryParamsObject['ref-sort'] || 'NEWEST_FIRST');
-        setQuery(queryParamsObject['ref-query'] || '');
-      } else if (type === 'cited') {
-        setSortOption(queryParamsObject['cited-sort'] || 'NEWEST_FIRST');
-        setQuery(queryParamsObject['cited-query'] || '');
-      }
-    },
-    [location.search, type]
-  );
+  useEffect(() => {
+    const queryParamsObject = getQueryParamsObject(location.search);
+    if (type === 'reference') {
+      setSortOption(queryParamsObject['ref-sort'] || 'NEWEST_FIRST');
+      setQuery(queryParamsObject['ref-query'] || '');
+    } else if (type === 'cited') {
+      setSortOption(queryParamsObject['cited-sort'] || 'NEWEST_FIRST');
+      setQuery(queryParamsObject['cited-query'] || '');
+    }
+  }, [location.search, type]);
+
+  useEffect(() => {
+    if (isLoading && location.state?.scrollTo === type && wrapperNode.current) {
+      // 100 means means margin top for comfortable of viewing 
+      window.scrollTo(0, wrapperNode.current.offsetTop - 100);
+    }
+  }, [isLoading, location.state, type]);
 
   const handleSubmitSearch = useCallback(
     (query: string) => {
@@ -72,6 +76,7 @@ const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, hist
       history.push({
         pathname: `/papers/${parentPaperId}`,
         search: getStringifiedUpdatedQueryParams(queryParamsObject, pageQueryParams),
+        state: { scrollTo: type },
       });
     },
     [type, parentPaperId, location.search, history]
@@ -91,6 +96,7 @@ const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, hist
       history.push({
         pathname: `/papers/${parentPaperId}`,
         search: getStringifiedUpdatedQueryParams(queryParamsObject, pageQueryParams),
+        state: { scrollTo: type },
       });
     },
     [type, parentPaperId, location.search, history]
@@ -103,7 +109,7 @@ const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, hist
 
   if (isLoading) {
     return (
-      <div className={s.loadingSection}>
+      <div ref={wrapperNode} className={s.loadingSection}>
         <ArticleSpinner />
       </div>
     );
@@ -118,7 +124,7 @@ const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, hist
   }
 
   return (
-    <>
+    <div>
       <div className={s.titleWrapper}>
         <div className={s.title}>{title}</div>
         <SortBox
@@ -152,8 +158,8 @@ const MobileRefCitedPapers: FC<Props> = ({ type, parentPaperId, paperCount, hist
           actionArea={type === 'reference' ? 'refList' : 'citedList'}
         />
       ))}
-      <RefCitedPagination type={type} paperId={parentPaperId} isMobile />
-    </>
+      <RefCitedPagination type={type} paperId={parentPaperId} />
+    </div>
   );
 };
 

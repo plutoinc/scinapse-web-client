@@ -8,8 +8,7 @@ import { AppState } from '../../reducers';
 import { withStyles } from '../../helpers/withStylesHelper';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 import ActionBar from '../../containers/paperShowActionBar';
-import ReferencePapers from './refCitedPapers/referencePapers';
-import CitedPapers from './refCitedPapers/citedPapers';
+import DesktopRefCitedPapers from './refCitedPapers/desktopRefCitedPapers';
 import PaperShowRefCitedTab from './refCitedTab';
 import { getMemoizedPaper } from '../../containers/paperShow/select';
 import { formulaeToHTMLStr } from '../../helpers/displayFormula';
@@ -32,8 +31,6 @@ import ImprovedFooter from '../layouts/improvedFooter';
 import PaperShowFigureList from './components/paperShowFigureList';
 import { UserDevice } from '../layouts/reducer';
 import RequestPaperDialog from '../requestPaperDialog/requestPaperDialog';
-import RefCitedPapersContainer from '../../containers/refCitedPapersContainer';
-import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -57,11 +54,11 @@ export type PaperShowProps = RouteComponentProps<PaperShowMatchParams> &
 
 interface PaperShowStates
   extends Readonly<{
-      isAboveRef: boolean;
-      isOnRef: boolean;
-      isOnCited: boolean;
-      isOnFullText: boolean;
-    }> {}
+    isAboveRef: boolean;
+    isOnRef: boolean;
+    isOnCited: boolean;
+    isOnFullText: boolean;
+  }> {}
 
 const Title: React.FC<{ title: string }> = React.memo(({ title }) => {
   return <h1 className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(title) }} />;
@@ -120,16 +117,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public render() {
-    const { layout, paperShow, currentUser, paper, PDFViewerState, location } = this.props;
+    const { layout, paperShow, currentUser, paper, PDFViewerState } = this.props;
     const { isOnFullText, isOnCited, isOnRef } = this.state;
-
-    const queryParams = getQueryParamsObject(location.search);
-    const refPage = queryParams['ref-page'] || 1;
-    const refQuery = queryParams['ref-query'] || '';
-    const refSort = queryParams['ref-sort'] || 'NEWEST_FIRST';
-    const citedPage = queryParams['cited-page'] || 1;
-    const citedQuery = queryParams['cited-query'] || '';
-    const citedSort = queryParams['cited-sort'] || 'NEWEST_FIRST';
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -208,18 +197,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               </div>
               <div className={styles.otherPapers}>
                 <div className={styles.references}>
-                  <RefCitedPapersContainer
-                    type="reference"
-                    parentPaperId={paper.id}
-                    page={refPage}
-                    sort={refSort}
-                    query={refQuery}
-                  >
-                    <ReferencePapers
-                      isMobile={layout.userDevice !== UserDevice.DESKTOP}
-                      refTabEl={this.refTabWrapper}
-                    />
-                  </RefCitedPapersContainer>
+                  <DesktopRefCitedPapers type="reference" paperId={paper.id} />
                 </div>
               </div>
             </article>
@@ -233,15 +211,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <span className={styles.sectionCount}>{paper.citedCount}</span>
               </div>
               <div className={styles.otherPapers}>
-                <RefCitedPapersContainer
-                  type="cited"
-                  parentPaperId={paper.id}
-                  page={citedPage}
-                  sort={citedSort}
-                  query={citedQuery}
-                >
-                  <CitedPapers isMobile={layout.userDevice !== UserDevice.DESKTOP} citedTabEl={this.citedTabWrapper} />
-                </RefCitedPapersContainer>
+                <DesktopRefCitedPapers type="cited" paperId={paper.id} />
               </div>
             </article>
           </div>
