@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
 import { Button } from '@pluto_network/pluto-design-elements';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import SearchingPDFBtn from '../../../components/paperShow/components/searchingPDFBtn';
-import { addPaperToRecommendPool } from '../../../components/recommendPool/actions';
 import { Paper } from '../../../model/paper';
 const s = require('../actionBar.scss');
 
@@ -17,7 +15,6 @@ interface FindInLibraryBtnProps {
 }
 
 const FindInLibraryBtn: React.FC<FindInLibraryBtnProps> = React.memo(props => {
-  const dispatch = useDispatch();
   const { isLoading, paper, actionArea, onClick } = props;
 
   if (isLoading) {
@@ -38,8 +35,6 @@ const FindInLibraryBtn: React.FC<FindInLibraryBtnProps> = React.memo(props => {
           actionTag: 'clickFindInLibraryBtn',
           actionLabel: String(paper.id),
         });
-
-        dispatch(addPaperToRecommendPool({ paperId: paper.id, action: 'clickFindInLibraryBtn' }));
 
         onClick();
       }}

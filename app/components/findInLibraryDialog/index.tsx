@@ -23,6 +23,7 @@ const FindInLibraryDialog: React.FC<FindInLibraryDialogProps> = ({ paperId }) =>
   const [isLoading, setIsLoading] = React.useState(false);
   const [requestStep, setRequestStep] = React.useState(REQUEST_STEP.REQUEST_FORM);
   const [totalRequestCount, setTotalRequestCount] = React.useState(0);
+  const [requestedAffiliation, setRequestedAffiliation] = React.useState('');
   const { isOpen, currentUser } = useSelector((appState: AppState) => ({
     isOpen: appState.findInLibraryDialogState.isOpen,
     currentUser: appState.currentUser,
@@ -64,6 +65,7 @@ const FindInLibraryDialog: React.FC<FindInLibraryDialogProps> = ({ paperId }) =>
       });
 
       setTotalRequestCount(res.totalRequestCount);
+      setRequestedAffiliation(res.affiliationName);
     } catch (err) {
       console.error(err);
     }
@@ -79,10 +81,10 @@ const FindInLibraryDialog: React.FC<FindInLibraryDialogProps> = ({ paperId }) =>
 
   switch (requestStep) {
     case REQUEST_STEP.SUCCESS:
-      mainSection = <SuccessRequestContext count={totalRequestCount} />;
+      mainSection = <SuccessRequestContext count={totalRequestCount} affiliationName={requestedAffiliation} />;
       break;
     case REQUEST_STEP.ALREADY:
-      mainSection = <AlreadyRequestContext count={totalRequestCount} />;
+      mainSection = <AlreadyRequestContext count={totalRequestCount} affiliationName={requestedAffiliation} />;
       break;
   }
 

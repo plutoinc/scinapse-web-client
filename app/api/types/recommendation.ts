@@ -3,7 +3,6 @@ export type RecommendationActionTag =
   | 'copyDoi'
   | 'downloadPdf'
   | 'citePaper'
-  | 'clickFindInLibraryBtn'
   | 'addToCollection'
   | 'source'
   | 'viewMorePDF';
