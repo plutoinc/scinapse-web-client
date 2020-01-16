@@ -91,8 +91,7 @@ const FindInLibraryDialog: React.FC<FindInLibraryDialogProps> = ({ paperId }) =>
   return (
     <Dialog open={isOpen} onClose={handleClose} classes={{ paper: s.dialogContainer }}>
       <div className={s.topBanner}>
-        Request paper is not available any more. <br />Now, try using a new,{' '}
-        <b className={s.highLightKeyword}>Find in Lib.</b>
+        Request Paper is not available.<br />Please use the new request form to ask your library.
       </div>
       {mainSection}
     </Dialog>

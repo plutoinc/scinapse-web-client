@@ -12,9 +12,9 @@ const SuccessRequestContext: React.FC<{ count: number; affiliationName: string }
         <Icon icon="COMPLETE" className={s.completeIcon} />
         <div className={s.title}>SUCCESS</div>
         <div className={s.subTitle}>
-          Thank you.<br />We will email you when the integration is complete.
+          Thank you.<br />We will notify you when the paper is available through your institution
           <div className={s.contentDivider} />
-          There are currently <b className={s.highLightContext}>{count}</b> requests<br />being received for{' '}
+          There are currently <b className={s.highLightContext}>{count}</b> requests<br /> for{' '}
           <span className={s.highLightAffiliationName}>{affiliationName}</span>.
         </div>
       </div>
