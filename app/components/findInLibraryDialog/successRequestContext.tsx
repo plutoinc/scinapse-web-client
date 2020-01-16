@@ -12,7 +12,7 @@ const SuccessRequestContext: React.FC<{ count: number; affiliationName: string }
         <Icon icon="COMPLETE" className={s.completeIcon} />
         <div className={s.title}>SUCCESS</div>
         <div className={s.subTitle}>
-          Your request is a bridge<br />between Scinapse and the institution.
+          Thank you.<br />We will email you when the integration is complete.
           <div className={s.contentDivider} />
           There are currently <b className={s.highLightContext}>{count}</b> requests<br />being received for{' '}
           <span className={s.highLightAffiliationName}>{affiliationName}</span>.
