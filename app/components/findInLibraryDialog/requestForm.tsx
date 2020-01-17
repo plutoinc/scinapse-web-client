@@ -66,10 +66,10 @@ const RequestForm: React.FC<{
       <div className={s.formWrapper}>
         <Formik
           initialValues={{
-            email: '' || currentUser.email,
+            email: currentUser.email || '',
             affiliation:
-              '' ||
-              ({ id: currentUser.affiliationId, name: currentUser.affiliationName, nameAbbrev: null } as Affiliation),
+              ({ id: currentUser.affiliationId, name: currentUser.affiliationName, nameAbbrev: null } as Affiliation) ||
+              '',
           }}
           validate={validateForm}
           onSubmit={handleSubmit}
@@ -79,9 +79,7 @@ const RequestForm: React.FC<{
               <Form>
                 <div className={s.fieldWrapper}>
                   <Field
-                    className={classNames({
-                      [s.emailInput]: true,
-                    })}
+                    className={s.emailInput}
                     name="email"
                     placeholder="Email"
                     labelText="EMAIL"
