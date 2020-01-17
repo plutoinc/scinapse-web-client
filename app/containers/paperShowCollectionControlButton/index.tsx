@@ -115,7 +115,7 @@ const TitleArea: React.FC<TitleAreaProps> = props => {
   } else if (!props.collection) {
     return (
       <div className={styles.signInTextWrapper}>
-        <span>Save the paper in Collection</span>
+        <span>Save the paper in collection</span>
       </div>
     );
   }
@@ -195,11 +195,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
                   whiteSpace: 'nowrap',
                 }}
                 disabled={isLoadingCollection || myCollectionsState.isFetchingPaper}
-                onClick={
-                  (myCollections && myCollections.length > 0) || !currentUser.isLoggedIn
-                    ? this.handleClickSaveButton
-                    : this.handleClickNewCollectionButton
-                }
+                onClick={this.handleClickSaveButton}
               />
             )}
             <ClickAwayListener onClickAway={this.handleClickNoteBoxBackdrop}>
@@ -334,18 +330,18 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         {selectedCollection && selectedCollection.note ? (
           <Icon className={styles.addNoteIcon} icon="NOTED" />
         ) : (
-          <Tooltip
-            disableFocusListener={true}
-            disableTouchListener={true}
-            title="Add Memo"
-            placement="top"
-            classes={{ tooltip: styles.arrowBottomTooltip }}
-          >
-            <div>
-              <Icon className={styles.addNoteIcon} icon="ADD_NOTE" />
-            </div>
-          </Tooltip>
-        )}
+            <Tooltip
+              disableFocusListener={true}
+              disableTouchListener={true}
+              title="Add Memo"
+              placement="top"
+              classes={{ tooltip: styles.arrowBottomTooltip }}
+            >
+              <div>
+                <Icon className={styles.addNoteIcon} icon="ADD_NOTE" />
+              </div>
+            </Tooltip>
+          )}
       </div>
     );
   };
@@ -528,6 +524,10 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       });
       dispatch(addPaperToRecommendPool({ paperId: targetPaperId, action: 'addToCollection' }));
       return;
+    }
+
+    if (!selectedCollection) {
+      return GlobalDialogManager.openCollectionDialog(targetPaperId);
     }
 
     if (selectedCollection && targetPaperId && !selectedCollection.containsSelected) {

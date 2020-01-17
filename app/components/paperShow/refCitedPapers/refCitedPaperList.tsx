@@ -1,22 +1,24 @@
 import * as React from 'react';
-import { History } from 'history';
-import { Paper } from '../../../model/paper';
+import { useSelector } from 'react-redux';
+import { denormalize } from 'normalizr';
+import { isEqual } from 'lodash';
+import { useHistory } from 'react-router-dom';
 import { REF_CITED_CONTAINER_TYPE } from '../constants';
 import ArticleSpinner from '../../common/spinner/articleSpinner';
 import Icon from '../../../icons';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import { PaperShowPageQueryParams } from '../../../containers/paperShow/types';
-import { PaperShowState } from '../../../containers/paperShow/records';
 import { getStringifiedUpdatedQueryParams } from './searchContainer';
 import FullPaperItem from '../../common/paperItem/fullPaperItem';
+import { AppState } from '../../../reducers';
+import { paperSchema, Paper } from '../../../model/paper';
 const styles = require('./referencePapers.scss');
 
 interface RefCitedPaperListProps {
-  history: History;
   type: REF_CITED_CONTAINER_TYPE;
-  papers: Paper[];
-  paperShow: PaperShowState;
+  paperIds: string[];
   queryParamsObject: PaperShowPageQueryParams;
+  isLoading: boolean;
 }
 
 interface NoResultSearchContextProps {
@@ -43,17 +45,15 @@ const NoResultSearchContext: React.FC<NoResultSearchContextProps> = props => {
 };
 
 const RefCitedPaperList: React.FC<RefCitedPaperListProps> = props => {
-  const { history, type, papers, paperShow, queryParamsObject } = props;
+  const history = useHistory();
+  const { type, paperIds, queryParamsObject, isLoading } = props;
   const [searchInput, setSearchInput] = React.useState('');
   const refQuery = queryParamsObject['ref-query'] || '';
   const citedQuery = queryParamsObject['cited-query'] || '';
 
-  React.useEffect(
-    () => {
-      setSearchInput(type === 'reference' ? refQuery : citedQuery);
-    },
-    [refQuery, citedQuery, type]
-  );
+  React.useEffect(() => {
+    setSearchInput(type === 'reference' ? refQuery : citedQuery);
+  }, [refQuery, citedQuery, type]);
 
   const handleResetQuery = () => {
     let pageQueryParams;
@@ -66,13 +66,9 @@ const RefCitedPaperList: React.FC<RefCitedPaperListProps> = props => {
 
     setSearchInput('');
     history.push({
-      pathname: `/papers/${paperShow.paperId}`,
       search: getStringifiedUpdatedQueryParams(queryParamsObject, pageQueryParams),
     });
   };
-
-  const isLoading = type === 'reference' ? paperShow.isLoadingReferencePapers : paperShow.isLoadingCitedPapers;
-  const totalPage = type === 'reference' ? paperShow.referencePaperTotalPage : paperShow.citedPaperTotalPage;
 
   if (isLoading) {
     return (
@@ -82,21 +78,30 @@ const RefCitedPaperList: React.FC<RefCitedPaperListProps> = props => {
     );
   }
 
-  if ((!papers || papers.length === 0) && totalPage === 0 && searchInput.length > 0)
+  if ((!paperIds || paperIds.length === 0) && searchInput.length > 0)
     return <NoResultSearchContext type={type} searchInput={searchInput} resetQuery={handleResetQuery} />;
 
-  const referenceItems = papers.map(paper => {
+  const referenceItems = paperIds.map(paperId => {
     return (
-      <FullPaperItem
-        key={paper.id}
-        pageType="paperShow"
-        actionArea={type === 'reference' ? 'refList' : 'citedList'}
-        paper={paper}
-      />
+      <RefCitedPaperItem key={paperId} paperId={paperId} actionArea={type === 'reference' ? 'refList' : 'citedList'} />
     );
   });
 
   return <div className={styles.searchItems}>{referenceItems}</div>;
 };
+
+const RefCitedPaperItem: React.FC<{
+  paperId: string;
+  actionArea: Scinapse.ActionTicket.ActionArea;
+}> = React.memo(({ paperId, actionArea }) => {
+  const paper: Paper | null = useSelector(
+    (state: AppState) => denormalize(paperId, paperSchema, state.entities),
+    isEqual
+  );
+
+  if (!paper) return null;
+
+  return <FullPaperItem pageType="paperShow" actionArea={actionArea} paper={paper} />;
+});
 
 export default withStyles<typeof RefCitedPaperList>(styles)(RefCitedPaperList);

@@ -19,8 +19,6 @@ import PaperShowFigureList from '../paperShow/components/paperShowFigureList';
 import Icon from '../../icons';
 import { Paper } from '../../model/paper';
 import { PaperShowMatchParams } from '../../containers/paperShow/types';
-import getQueryParamsObject from '../../helpers/getQueryParamsObject';
-import RefCitedPapersContainer from '../../containers/refCitedPapersContainer';
 import ArticleSpinner from '../common/spinner/articleSpinner';
 
 const s = require('./mobilePaperShow.scss');
@@ -41,7 +39,7 @@ function getActiveTab(currentPosition: CurrentPosition): AvailablePaperShowTab |
   return null;
 }
 
-const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper, location }) => {
+const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper }) => {
   useStyles(s);
   const isLoading = useSelector((state: AppState) => state.paperShow.isLoadingPaper);
   const relatedPaperIds = useSelector((state: AppState) => state.relatedPapersState.paperIds, isEqual);
@@ -53,94 +51,90 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper, location }) =>
   const citedSection = React.useRef<HTMLDivElement | null>(null);
   const relatedTabWrapper = React.useRef<HTMLDivElement | null>(null);
 
-  React.useEffect(
-    () => {
-      function handleScroll() {
-        if (!ticking) {
-          requestAnimationFrame(() => {
-            if (!buttonGroupWrapper.current || !fixedTab.current || !refSection.current || !citedSection.current) {
-              return (ticking = false);
+  React.useEffect(() => {
+    function handleScroll() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (!buttonGroupWrapper.current || !fixedTab.current || !refSection.current || !citedSection.current) {
+            return (ticking = false);
+          }
+
+          const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+          const currentScrollTop = Math.round(scrollTop) + NAVBAR_HEIGHT;
+          const buttonGroupOffsetTop = buttonGroupWrapper.current.offsetTop - 16 /* margin */;
+          const refSectionOffsetTop = refSection.current.offsetTop - fixedTab.current.clientHeight;
+          const citedSectionOffsetTop = citedSection.current.offsetTop - fixedTab.current.clientHeight;
+
+          if (relatedTabWrapper.current) {
+            const relatedTabWrapperOffsetTop =
+              relatedTabWrapper.current.offsetTop -
+              fixedTab.current.clientHeight +
+              relatedTabWrapper.current.clientHeight;
+
+            if (currentScrollTop < buttonGroupOffsetTop && lastPosition.current !== 'abovePaperInfo') {
+              setCurrentPosition('abovePaperInfo');
+              lastPosition.current = 'abovePaperInfo';
+            } else if (
+              currentScrollTop >= buttonGroupOffsetTop &&
+              currentScrollTop < relatedTabWrapperOffsetTop &&
+              lastPosition.current !== 'underPaperInfo'
+            ) {
+              setCurrentPosition('underPaperInfo');
+              lastPosition.current = 'underPaperInfo';
+            } else if (
+              currentScrollTop >= relatedTabWrapperOffsetTop &&
+              currentScrollTop < refSectionOffsetTop &&
+              lastPosition.current !== 'onRelatedList'
+            ) {
+              setCurrentPosition('onRelatedList');
+              lastPosition.current = 'onRelatedList';
+            } else if (
+              currentScrollTop >= refSectionOffsetTop &&
+              currentScrollTop < citedSectionOffsetTop &&
+              lastPosition.current !== 'onRefList'
+            ) {
+              setCurrentPosition('onRefList');
+              lastPosition.current = 'onRefList';
+            } else if (currentScrollTop >= citedSectionOffsetTop && lastPosition.current !== 'onCitedList') {
+              setCurrentPosition('onCitedList');
+              lastPosition.current = 'onCitedList';
             }
-
-            const scrollTop =
-              (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-            const currentScrollTop = Math.round(scrollTop) + NAVBAR_HEIGHT;
-            const buttonGroupOffsetTop = buttonGroupWrapper.current.offsetTop - 16 /* margin */;
-            const refSectionOffsetTop = refSection.current.offsetTop - fixedTab.current.clientHeight;
-            const citedSectionOffsetTop = citedSection.current.offsetTop - fixedTab.current.clientHeight;
-
-            if (relatedTabWrapper.current) {
-              const relatedTabWrapperOffsetTop =
-                relatedTabWrapper.current.offsetTop -
-                fixedTab.current.clientHeight +
-                relatedTabWrapper.current.clientHeight;
-
-              if (currentScrollTop < buttonGroupOffsetTop && lastPosition.current !== 'abovePaperInfo') {
-                setCurrentPosition('abovePaperInfo');
-                lastPosition.current = 'abovePaperInfo';
-              } else if (
-                currentScrollTop >= buttonGroupOffsetTop &&
-                currentScrollTop < relatedTabWrapperOffsetTop &&
-                lastPosition.current !== 'underPaperInfo'
-              ) {
-                setCurrentPosition('underPaperInfo');
-                lastPosition.current = 'underPaperInfo';
-              } else if (
-                currentScrollTop >= relatedTabWrapperOffsetTop &&
-                currentScrollTop < refSectionOffsetTop &&
-                lastPosition.current !== 'onRelatedList'
-              ) {
-                setCurrentPosition('onRelatedList');
-                lastPosition.current = 'onRelatedList';
-              } else if (
-                currentScrollTop >= refSectionOffsetTop &&
-                currentScrollTop < citedSectionOffsetTop &&
-                lastPosition.current !== 'onRefList'
-              ) {
-                setCurrentPosition('onRefList');
-                lastPosition.current = 'onRefList';
-              } else if (currentScrollTop >= citedSectionOffsetTop && lastPosition.current !== 'onCitedList') {
-                setCurrentPosition('onCitedList');
-                lastPosition.current = 'onCitedList';
-              }
-            } else {
-              if (currentScrollTop < buttonGroupOffsetTop && lastPosition.current !== 'abovePaperInfo') {
-                setCurrentPosition('abovePaperInfo');
-                lastPosition.current = 'abovePaperInfo';
-              } else if (
-                currentScrollTop >= buttonGroupOffsetTop &&
-                currentScrollTop < refSectionOffsetTop &&
-                lastPosition.current !== 'underPaperInfo'
-              ) {
-                setCurrentPosition('underPaperInfo');
-                lastPosition.current = 'underPaperInfo';
-              } else if (
-                currentScrollTop >= refSectionOffsetTop &&
-                currentScrollTop < citedSectionOffsetTop &&
-                lastPosition.current !== 'onRefList'
-              ) {
-                setCurrentPosition('onRefList');
-                lastPosition.current = 'onRefList';
-              } else if (currentScrollTop >= citedSectionOffsetTop && lastPosition.current !== 'onCitedList') {
-                setCurrentPosition('onCitedList');
-                lastPosition.current = 'onCitedList';
-              }
+          } else {
+            if (currentScrollTop < buttonGroupOffsetTop && lastPosition.current !== 'abovePaperInfo') {
+              setCurrentPosition('abovePaperInfo');
+              lastPosition.current = 'abovePaperInfo';
+            } else if (
+              currentScrollTop >= buttonGroupOffsetTop &&
+              currentScrollTop < refSectionOffsetTop &&
+              lastPosition.current !== 'underPaperInfo'
+            ) {
+              setCurrentPosition('underPaperInfo');
+              lastPosition.current = 'underPaperInfo';
+            } else if (
+              currentScrollTop >= refSectionOffsetTop &&
+              currentScrollTop < citedSectionOffsetTop &&
+              lastPosition.current !== 'onRefList'
+            ) {
+              setCurrentPosition('onRefList');
+              lastPosition.current = 'onRefList';
+            } else if (currentScrollTop >= citedSectionOffsetTop && lastPosition.current !== 'onCitedList') {
+              setCurrentPosition('onCitedList');
+              lastPosition.current = 'onCitedList';
             }
+          }
 
-            ticking = false;
-          });
-        }
-        ticking = true;
+          ticking = false;
+        });
       }
+      ticking = true;
+    }
 
-      window.addEventListener('scroll', handleScroll, { passive: true });
-      handleScroll();
-      return () => {
-        window.removeEventListener('scroll', handleScroll);
-      };
-    },
-    [isLoading]
-  );
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isLoading]);
 
   function handleClickPaperShowTab(tab: AvailablePaperShowTab) {
     if (!refSection.current || !citedSection.current || !fixedTab.current) return;
@@ -160,13 +154,6 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper, location }) =>
 
   const activeTabInFixedHeader = getActiveTab(currentPosition);
   const shouldShowRelatedTab = relatedPaperIds && relatedPaperIds.length > 0;
-  const queryParams = getQueryParamsObject(location.search);
-  const refPage = queryParams['ref-page'] || 1;
-  const refQuery = queryParams['ref-query'] || '';
-  const refSort = queryParams['ref-sort'] || 'NEWEST_FIRST';
-  const citedPage = queryParams['cited-page'] || 1;
-  const citedQuery = queryParams['cited-query'] || '';
-  const citedSort = queryParams['cited-sort'] || 'NEWEST_FIRST';
   // TODO: add fallback logic for PDF address
   const pdfURL = paper.bestPdf && paper.bestPdf.hasBest && paper.bestPdf.url;
 
@@ -264,26 +251,10 @@ const MobilePaperShow: React.FC<MobilePaperShowProps> = ({ paper, location }) =>
           </>
         )}
         <div className={s.refCitedSection} ref={refSection}>
-          <RefCitedPapersContainer
-            type="reference"
-            parentPaperId={paper.id}
-            page={refPage}
-            sort={refSort}
-            query={refQuery}
-          >
-            <MobileRefCitedPapers type="reference" parentPaperId={paper.id} paperCount={paper.referenceCount} />
-          </RefCitedPapersContainer>
+          <MobileRefCitedPapers type="reference" parentPaperId={paper.id} paperCount={paper.referenceCount} />
         </div>
         <div className={s.refCitedSection} ref={citedSection}>
-          <RefCitedPapersContainer
-            type="cited"
-            parentPaperId={paper.id}
-            page={citedPage}
-            sort={citedSort}
-            query={citedQuery}
-          >
-            <MobileRefCitedPapers type="cited" parentPaperId={paper.id} paperCount={paper.citedCount} />
-          </RefCitedPapersContainer>
+          <MobileRefCitedPapers type="cited" parentPaperId={paper.id} paperCount={paper.citedCount} />
         </div>
       </div>
     </>

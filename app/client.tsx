@@ -90,7 +90,7 @@ class PlutoRenderer {
       src: 'https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js',
       crossOrigin: 'anonymous',
     });
-    (window as any).fbAsyncInit = function() {
+    (window as any).fbAsyncInit = function () {
       FB.init({
         appId: '149975229038179',
         autoLogAppEvents: true,
