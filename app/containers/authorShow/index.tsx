@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { AppState } from '../../reducers';
 import AuthorShow from '../unconnectedAuthorShow';
-import ConnectedAuthorShow from '../connectedAuthorShow';
 import { Configuration } from '../../reducers/configuration';
 import { fetchAuthorShowPageData } from './sideEffect';
 import { CurrentUser } from '../../model/currentUser';
@@ -13,6 +12,7 @@ import { authorSchema, Author } from '../../model/author/author';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 import restoreScroll from '../../helpers/scrollRestoration';
 import { AuthorShowMatchParams } from './types';
+import ProfilePage from '../connectedAuthorShow/profile';
 
 export interface HandleAuthorClaim {
   authorId: string;
@@ -35,35 +35,29 @@ function mapStateToProps(state: AppState) {
 
 class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
   public async componentDidMount() {
-    const { dispatch, location, match, configuration, currentUser } = this.props;
+    const { dispatch, location, match, configuration } = this.props;
     const notRenderedAtServerOrJSAlreadyInitialized =
       !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
-      await fetchAuthorShowPageData(
-        {
-          dispatch,
-          match,
-          pathname: location.pathname,
-        },
-        currentUser
-      );
+      await fetchAuthorShowPageData({
+        dispatch,
+        match,
+        pathname: location.pathname,
+      });
       restoreScroll(location.key);
     }
   }
 
   public async componentWillReceiveProps(nextProps: AuthorShowPageProps) {
-    const { match, dispatch, location, currentUser } = nextProps;
+    const { match, dispatch, location } = nextProps;
 
     if (this.props.match.params.authorId !== nextProps.match.params.authorId) {
-      await fetchAuthorShowPageData(
-        {
-          dispatch,
-          match,
-          pathname: location.pathname,
-        },
-        currentUser
-      );
+      await fetchAuthorShowPageData({
+        dispatch,
+        match,
+        pathname: location.pathname,
+      });
       restoreScroll(location.key);
     }
   }
@@ -76,7 +70,7 @@ class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
     if (!author || !author.isLayered) {
       return <AuthorShow isTestMode={isTestMode} />;
     } else if (author && author.isLayered) {
-      return <ConnectedAuthorShow />;
+      return <ProfilePage />;
     }
 
     return null;

@@ -1,13 +1,9 @@
 import { LoadDataParams } from '../../routes';
-import { CurrentUser } from '../../model/currentUser';
 import { AuthorShowMatchParams } from '../unconnectedAuthorShow';
 import { fetchAuthorShowRelevantData } from '../../actions/author';
 import { ActionCreators } from '../../actions/actionTypes';
 
-export async function fetchAuthorShowPageData(
-  params: LoadDataParams<AuthorShowMatchParams>,
-  currentUser?: CurrentUser
-) {
+export async function fetchAuthorShowPageData(params: LoadDataParams<AuthorShowMatchParams>) {
   const { dispatch, match } = params;
   const authorId = match.params.authorId;
 
@@ -18,7 +14,6 @@ export async function fetchAuthorShowPageData(
   await dispatch(
     fetchAuthorShowRelevantData({
       authorId,
-      currentUser,
     })
   );
 }

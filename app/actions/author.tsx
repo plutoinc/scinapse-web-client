@@ -14,6 +14,7 @@ import { GLOBAL_DIALOG_TYPE } from '../components/dialog/reducer';
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
 import { getAuthor, getCoAuthors, getAuthorPapers } from '../containers/unconnectedAuthorShow/actions';
 import { CommonError } from '../model/error';
+import { AppThunkAction } from '../store/types';
 
 interface AddRemovePapersAndFetchPapersParams {
   authorId: string;
@@ -24,8 +25,6 @@ interface AddRemovePapersAndFetchPapersParams {
 
 interface FetchAuthorShowRelevantDataParams {
   authorId: string;
-  cancelToken?: CancelToken;
-  currentUser?: CurrentUser;
   page?: number;
   sort?: AUTHOR_PAPER_LIST_SORT_TYPES;
 }
@@ -45,9 +44,10 @@ export function fetchAuthorPapers(params: GetAuthorPapersParams) {
   };
 }
 
-export function fetchAuthorShowRelevantData(params: FetchAuthorShowRelevantDataParams) {
-  return async (dispatch: Dispatch<any>) => {
-    const { currentUser, authorId } = params;
+export function fetchAuthorShowRelevantData(params: FetchAuthorShowRelevantDataParams): AppThunkAction {
+  return async (dispatch: Dispatch<any>, getState) => {
+    const { currentUser } = getState();
+    const { authorId } = params;
 
     try {
       dispatch(ActionCreators.startToLoadAuthorShowPageData());
@@ -195,8 +195,6 @@ export function addPapersAndFetchPapers(params: AddRemovePapersAndFetchPapersPar
       await dispatch(
         fetchAuthorShowRelevantData({
           authorId: params.authorId,
-          currentUser: params.currentUser,
-          cancelToken: params.cancelToken,
         })
       );
     } catch (err) {
@@ -214,8 +212,6 @@ export function removePaperFromPaperList(params: AddRemovePapersAndFetchPapersPa
       await dispatch(
         fetchAuthorShowRelevantData({
           authorId: params.authorId,
-          currentUser: params.currentUser,
-          cancelToken: params.cancelToken,
         })
       );
     } catch (err) {
