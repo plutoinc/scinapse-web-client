@@ -50,7 +50,7 @@ const RequestForm: React.FC<{
       <div className={s.titleArea}>
         <div className={s.title}>
           Not yet linked <br />
-          <span className={s.subTitle}>to Scinapse.</span>
+          <span className={s.subTitle}>with Scinapse.</span>
         </div>
       </div>
       <div className={s.contentsArea}>
@@ -59,7 +59,7 @@ const RequestForm: React.FC<{
           <br />
           <span>and let us know about your associated library.</span>
           <br />
-          <span>We will notify you via email once we’ve integrated with your library.</span>
+          <span>We will notify you via email once we’ve linked with your library.</span>
         </div>
       </div>
       <div className={s.contentDivider} />
