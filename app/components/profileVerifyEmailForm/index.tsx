@@ -53,9 +53,11 @@ const ProfileVerifyEmailForm: FC = () => {
         initialValues={initialValues}
         onSubmit={handleSubmit}
       >
-        {({ values, errors, touched, submitForm }) => {
+        {({ values, errors, touched, submitForm }) => { 
           if (!affiliationSelected && (values.affiliation as SuggestAffiliation).affiliationId) {
             setAffiliationSelected(true);
+          } else if (affiliationSelected && !(values.affiliation as SuggestAffiliation).affiliationId) {
+            setAffiliationSelected(false);
           }
           return (
             <Form>
