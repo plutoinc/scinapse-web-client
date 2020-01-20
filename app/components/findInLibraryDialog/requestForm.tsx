@@ -49,8 +49,10 @@ const RequestForm: React.FC<{
     <div className={s.mainContainer}>
       <div className={s.titleArea}>
         <div className={s.title}>
+          <span className={s.smallTitle}>Your library has</span>
+          <br />
           Not yet linked <br />
-          <span className={s.subTitle}>with Scinapse.</span>
+          <span className={s.midTitle}>with Scinapse.</span>
         </div>
       </div>
       <div className={s.contentsArea}>

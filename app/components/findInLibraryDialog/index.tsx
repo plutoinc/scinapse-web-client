@@ -90,10 +90,11 @@ const FindInLibraryDialog: React.FC<FindInLibraryDialogProps> = ({ paperId }) =>
 
   return (
     <Dialog open={isOpen} onClose={handleClose} classes={{ paper: s.dialogContainer }}>
-      <div className={s.topBanner}>
-        Request Paper is not available.<br />Please use the new request form to ask your library.
-      </div>
       {mainSection}
+      <div className={s.bottomBanner}>
+        Request Paper is not available.<br />Please use the new request form{' '}
+        <span className={s.highLightKeyword}>to ask your library.</span>
+      </div>
     </Dialog>
   );
 };
