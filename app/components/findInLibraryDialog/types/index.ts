@@ -1,0 +1,5 @@
+export enum REQUEST_STEP {
+  REQUEST_FORM,
+  SUCCESS,
+  ALREADY,
+}

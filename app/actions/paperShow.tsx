@@ -82,7 +82,6 @@ export function getPaper(params: GetPaperParams): AppThunkAction {
   };
 }
 
-
 export function getReferencePapers({ paperId, size, page, query, sort }: GetRefOrCitedPapersParams): AppThunkAction {
   return async (dispatch, _getState, { axios }) => {
     dispatch(ActionCreators.startToGetReferencePapers());
@@ -98,7 +97,7 @@ export function getReferencePapers({ paperId, size, page, query, sort }: GetRefO
     const res = getReferencePapersResponse.data.data;
     const papers: Paper[] = res.content.map(getIdSafePaper);
     const normalizedPapersData = normalize(papers, [paperSchema]);
-  
+
     dispatch(ActionCreators.addEntity(normalizedPapersData));
     dispatch(
       ActionCreators.getReferencePapers({
@@ -125,14 +124,15 @@ export function getCitedPapers({ paperId, size, page, query, sort }: GetRefOrCit
     const res = getCitedPapersResponse.data.data;
     const papers: Paper[] = res.content.map(getIdSafePaper);
     const normalizedPapersData = normalize(papers, [paperSchema]);
-    
+
     dispatch(ActionCreators.addEntity(normalizedPapersData));
     dispatch(
       ActionCreators.getCitedPapers({
         ...res.page,
         paperIds: normalizedPapersData.result,
-      }));
-  }
+      })
+    );
+  };
 }
 
 export function postNewCollection(params: PostCollectionParams) {
@@ -150,20 +150,6 @@ export function postNewCollection(params: PostCollectionParams) {
     } catch (err) {
       dispatch(ActionCreators.failedToPostCollectionInCollectionDropdown());
       throw err;
-    }
-  };
-}
-
-export function fetchLastFullTextRequestedDate(paperId: string): AppThunkAction {
-  return async (dispatch, getState, { axios }) => {
-    if (!getState().currentUser.isLoggedIn) return;
-
-    try {
-      const res = await axios.get(`/papers/${paperId}/request`);
-      const requestAtData = res.data.data.content;
-      dispatch(ActionCreators.fetchLastFullTextRequestedDate({ requestedAt: requestAtData?.requestedAt || null }));
-    } catch (err) {
-      console.error(err);
     }
   };
 }
@@ -198,7 +184,6 @@ export const fetchPaperShowDataAtClient = ({
 
     promiseArray.push(dispatch(getPaper({ paperId, cancelToken })));
     promiseArray.push(dispatch(getRelatedPapers(paperId, cancelToken)));
-    promiseArray.push(dispatch(fetchLastFullTextRequestedDate(paperId)));
     promiseArray.push(dispatch(getMyCollections(paperId, cancelToken)));
 
     try {

@@ -48,18 +48,25 @@ export interface GetAuthorsOfPaperParams {
   cancelToken: CancelToken;
 }
 
-interface RequestFullTextParams {
-  paperId: string;
-  email: string;
-  name?: string;
-  message?: string;
-}
-
 export interface PaperSource {
   paperId: string;
   doi: string | null;
   source: string | null;
   host: string | null;
+}
+
+interface RequestLibraryLinkParams {
+  paperId: string;
+  email: string;
+  affiliationName: string;
+  affiliationId: string | null;
+}
+
+interface RequestLibraryLinkResult {
+  alreadyRequested: boolean;
+  email: string;
+  affiliationName: string;
+  totalRequestCount: number;
 }
 
 class PaperAPI extends PlutoAxios {
@@ -87,15 +94,6 @@ class PaperAPI extends PlutoAxios {
     return res.data.data;
   }
 
-  public async requestFullText(params: RequestFullTextParams) {
-    const res = await this.post(`/papers/${params.paperId}/request`, {
-      email: params.email,
-      message: params.message || null,
-      name: params.name || null,
-    });
-    return res;
-  }
-
   public async getBestPdfOfPaper(params: { paperId: string }) {
     const res = await this.post(`/papers/${params.paperId}/pdf`, null);
 
@@ -118,6 +116,17 @@ class PaperAPI extends PlutoAxios {
       params: {
         paper_ids: paperIds.join(','),
       },
+    });
+
+    return res.data.data.content;
+  }
+
+  public async requestLibraryLink(params: RequestLibraryLinkParams): Promise<RequestLibraryLinkResult> {
+    const res = await this.post(`/library-link/request`, {
+      paper_id: params.paperId,
+      email: params.email,
+      affiliation_name: params.affiliationName,
+      affiliation_id: params.affiliationId || null,
     });
 
     return res.data.data.content;

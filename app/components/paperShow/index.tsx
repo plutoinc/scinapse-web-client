@@ -30,7 +30,7 @@ import { getMemoizedConfiguration } from '../../selectors/getConfiguration';
 import ImprovedFooter from '../layouts/improvedFooter';
 import PaperShowFigureList from './components/paperShowFigureList';
 import { UserDevice } from '../layouts/reducer';
-import RequestPaperDialog from '../requestPaperDialog/requestPaperDialog';
+import FindInLibraryDialog from '../findInLibraryDialog';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -54,11 +54,11 @@ export type PaperShowProps = RouteComponentProps<PaperShowMatchParams> &
 
 interface PaperShowStates
   extends Readonly<{
-    isAboveRef: boolean;
-    isOnRef: boolean;
-    isOnCited: boolean;
-    isOnFullText: boolean;
-  }> {}
+      isAboveRef: boolean;
+      isOnRef: boolean;
+      isOnCited: boolean;
+      isOnFullText: boolean;
+    }> {}
 
 const Title: React.FC<{ title: string }> = React.memo(({ title }) => {
   return <h1 className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(title) }} />;
@@ -153,7 +153,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   currentUser={currentUser}
                   hasPDFFullText={PDFViewerState.hasSucceed}
                   handleClickFullText={this.scrollToSection('fullText')}
-                  lastRequestedDate={paperShow.lastRequestedAt}
                 />
               </div>
               <div className={styles.paperContentBlockDivider} />
@@ -181,7 +180,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 isOnFullText={isOnFullText}
                 isLoading={PDFViewerState.isLoading}
                 canShowFullPDF={PDFViewerState.hasSucceed}
-                lastRequestedDate={paperShow.lastRequestedAt}
               />
             </div>
             <NoSsr>
@@ -220,7 +218,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <ImprovedFooter containerStyle={{ backgroundColor: '#f8f9fb' }} />
         </div>
         <BottomBanner currentUser={currentUser} />
-        <RequestPaperDialog paperId={paper.id} />
+        <FindInLibraryDialog paperId={paper.id} />
       </>
     );
   }

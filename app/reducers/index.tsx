@@ -29,7 +29,7 @@ import { RELATED_PAPERS_INITIAL_STATE, reducer as RelatedPapersReducer } from '.
 import { reducer as PDFViewerReducer, PDF_VIEWER_INITIAL_STATE } from './pdfViewer';
 import SearchQueryReducer, { SEARCH_QUERY_INITIAL_STATE } from './searchQuery';
 import { reducer as SearchFilterReducer, SEARCH_FILTER_INITIAL_STATE } from './searchFilter';
-import RequestPaperDialogReducer, { REQUEST_PAPER_DIALOG_INITIAL_STATE } from './requestPaperDialog';
+import FindInLibraryDialogReducer, { FIND_IN_LIBRARY_DIALOG_INITIAL_STATE } from './findInLibraryDialog';
 import KeywordSettingsReducer, { KEYWORD_SETTINGS_INITIAL_STATE } from './keywordSettings';
 import CreateKeywordAlertDialogReducer, { CREATE_KEYWORD_ALERT_DIALOG_INITIAL_STATE } from './createKeywordAlertDialog';
 import ScinapseSnackbarReducer, { SCINAPSE_SNACK_BAR_INITIAL_STATE } from './scinapseSnackbar';
@@ -56,7 +56,7 @@ export const initialState = {
   searchQueryState: SEARCH_QUERY_INITIAL_STATE,
   searchFilterState: SEARCH_FILTER_INITIAL_STATE,
   signUpModalState: SIGN_UP_MODAL_INITIAL_STATE,
-  requestPaperDialogState: REQUEST_PAPER_DIALOG_INITIAL_STATE,
+  findInLibraryDialogState: FIND_IN_LIBRARY_DIALOG_INITIAL_STATE,
   keywordSettingsState: KEYWORD_SETTINGS_INITIAL_STATE,
   createKeywordAlertDialogState: CREATE_KEYWORD_ALERT_DIALOG_INITIAL_STATE,
   scinapseSnackbarState: SCINAPSE_SNACK_BAR_INITIAL_STATE,
@@ -83,7 +83,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   searchQueryState: SearchQueryReducer,
   searchFilterState: SearchFilterReducer,
   signUpModalState: SignUpModalReducer,
-  requestPaperDialogState: RequestPaperDialogReducer,
+  findInLibraryDialogState: FindInLibraryDialogReducer,
   keywordSettingsState: KeywordSettingsReducer,
   createKeywordAlertDialogState: CreateKeywordAlertDialogReducer,
   scinapseSnackbarState: ScinapseSnackbarReducer,
