@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ACTION_TYPES, Actions } from '../actions/actionTypes';
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
 
 export interface ProfilePageState {

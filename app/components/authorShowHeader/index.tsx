@@ -37,14 +37,14 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
   }
 
   public render() {
-    const { author, rightBoxContent, navigationContent, guideBubbleSpeech, userDevice } = this.props;
+    const { author, rightBoxContent, navigationContent, guideBubbleSpeech, userDevice, currentUser } = this.props;
 
     return (
       <div className={styles.headerBox}>
         <div className={styles.container}>
           <div className={styles.leftContentWrapper}>
             <div className={styles.nameBox}>
-              {author.isLayered && <UploadableProfileImage />}
+              {author.isLayered && <UploadableProfileImage author={author} currentUser={currentUser} />}
               <span className={styles.nameHeaderBox}>
                 <div className={styles.usernameWrapper}>
                   <span className={styles.username}>{author.name}</span>{' '}

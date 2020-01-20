@@ -25,7 +25,7 @@ app.use(
   })
 );
 
-app.use('/api', proxy('https://api.scinapse.io'));
+app.use('/api', proxy('https://stage-api.scinapse.io:8443'));
 
 app.use(
   /^\/client.*/,

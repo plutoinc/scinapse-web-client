@@ -12,7 +12,7 @@ import { CVInfoType } from '../model/profile';
 import { CurrentUser } from '../model/currentUser';
 import { GLOBAL_DIALOG_TYPE } from '../components/dialog/reducer';
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
-import { getAuthor, getCoAuthors, getAuthorPapers } from '../containers/unconnectedAuthorShow/actions';
+import { getAuthor, getCoAuthors, getAuthorPapers } from '../containers/authorShow/actions';
 import { CommonError } from '../model/error';
 import { AppThunkAction } from '../store/types';
 
@@ -160,8 +160,6 @@ export function updateAuthorCvInfo(
 export function updateProfileImage(authorId: string, formData: FormData) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      dispatch(ActionCreators.startToUpdateProfileImageData());
-
       const profileImg = await AuthorAPI.updateAuthorProfileImage(authorId, formData);
       const profileImageUrl = profileImg.data.content.profileImageUrl;
 
@@ -169,7 +167,6 @@ export function updateProfileImage(authorId: string, formData: FormData) {
       dispatch(ActionCreators.succeededToUpdateProfileImageData({ authorId, profileImageUrl }));
     } catch (err) {
       alertToast({ type: 'error', message: 'Had an error to upload profile image' });
-      dispatch(ActionCreators.failedToUpdateProfileImageData());
     }
   };
 }

@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { denormalize } from 'normalizr';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { Author, authorSchema } from '../../model/author/author';
+import { Author } from '../../model/author/author';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { updateProfileImage } from '../../actions/author';
-import { AppState } from '../../reducers';
 import { CurrentUser } from '../../model/currentUser';
 import alertToast from '../../helpers/makePlutoToastAction';
 import Icon from '../../icons';
@@ -18,7 +16,6 @@ interface UploadableProfileImageProps {
   author: Author;
   currentUser: CurrentUser;
   dispatch: Dispatch<any>;
-  isLoading: boolean;
 }
 
 const CameraBackground: React.SFC = () => {
@@ -30,9 +27,16 @@ const CameraBackground: React.SFC = () => {
 };
 
 @withStyles<typeof UploadableProfileImage>(styles)
-class UploadableProfileImage extends React.PureComponent<UploadableProfileImageProps> {
+class UploadableProfileImage extends React.PureComponent<UploadableProfileImageProps, { isLoading: boolean }> {
+  public constructor(props: UploadableProfileImageProps) {
+    super(props);
+
+    this.state = { isLoading: false };
+  }
+
   public render() {
-    const { author, currentUser, isLoading } = this.props;
+    const { author, currentUser } = this.props;
+    const { isLoading } = this.state;
     const isMine = author.isLayered && currentUser.authorId === author.id;
 
     if (isLoading) {
@@ -81,13 +85,12 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
     );
   };
 
-  private fileChangedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  private fileChangedHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { author, dispatch } = this.props;
     const formData = new FormData();
-    let file: File | null = null;
 
     if (e.currentTarget.files) {
-      file = e.currentTarget.files[0];
+      const file = e.currentTarget.files[0];
       if (file.size >= LIMIT_FILE_SIZE) {
         return alertToast({
           type: 'error',
@@ -98,16 +101,10 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
       formData.append('profile-image', file);
     }
 
-    dispatch(updateProfileImage(author.id, formData));
+    this.setState({ isLoading: true });
+    await dispatch(updateProfileImage(author.id, formData));
+    this.setState({ isLoading: false });
   };
 }
 
-function mapStateToProps(state: AppState) {
-  return {
-    author: denormalize(state.connectedAuthorShow.authorId, authorSchema, state.entities),
-    currentUser: state.currentUser,
-    isLoading: state.connectedAuthorShow.isLoadingToUpdateProfileImage,
-  };
-}
-
-export default connect(mapStateToProps)(UploadableProfileImage);
+export default connect()(UploadableProfileImage);

@@ -11,7 +11,7 @@ import { ARTICLE_SEARCH_INITIAL_STATE } from '../components/articleSearch/record
 import * as emailVerificationReducer from '../components/auth/emailVerification/reducer';
 import { PAPER_SHOW_INITIAL_STATE } from '../containers/paperShow/records';
 import { reducer as paperShowReducer } from '../containers/paperShow/reducer';
-import { reducer as AuthorShowReducer, AUTHOR_SHOW_INITIAL_STATE } from '../containers/unconnectedAuthorShow/reducer';
+import { reducer as AuthorShowReducer, AUTHOR_SHOW_INITIAL_STATE } from '../containers/authorShow/reducer';
 import { reducer as EntityReducer, INITIAL_ENTITY_STATE } from './entity';
 import {
   reducer as MyCollectionsReducer,
@@ -20,10 +20,6 @@ import {
 import { reducer as CollectionShowReducer, INITIAL_COLLECTION_SHOW_STATE } from '../containers/collectionShow/reducer';
 import { reducer as UserCollectionsReducer, USER_COLLECTIONS_INITIAL_STATE } from '../components/collections/reducer';
 import { reducer as JournalShowReducer, JOURNAL_SHOW_INITIAL_STATE } from '../components/journalShow/reducer';
-import {
-  reducer as ConnectedAuthorShowReducer,
-  CONNECTED_AUTHOR_SHOW_INITIAL_STATE,
-} from '../containers/connectedAuthorShow/reducer';
 import { AUTHOR_SEARCH_INITIAL_STATE } from '../containers/authorSearch/records';
 import { RELATED_PAPERS_INITIAL_STATE, reducer as RelatedPapersReducer } from './realtedPapers';
 import { reducer as PDFViewerReducer, PDF_VIEWER_INITIAL_STATE } from './pdfViewer';
@@ -47,7 +43,6 @@ export const initialState = {
   authorSearch: AUTHOR_SEARCH_INITIAL_STATE,
   paperShow: PAPER_SHOW_INITIAL_STATE,
   authorShow: AUTHOR_SHOW_INITIAL_STATE,
-  connectedAuthorShow: CONNECTED_AUTHOR_SHOW_INITIAL_STATE,
   journalShow: JOURNAL_SHOW_INITIAL_STATE,
   collectionShow: INITIAL_COLLECTION_SHOW_STATE,
   myCollections: MY_COLLECTIONS_INITIAL_STATE,
@@ -74,7 +69,6 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   emailVerification: emailVerificationReducer.reducer,
   paperShow: paperShowReducer,
   authorShow: AuthorShowReducer,
-  connectedAuthorShow: ConnectedAuthorShowReducer,
   journalShow: JournalShowReducer,
   currentUser: currentUserReducer.reducer,
   collectionShow: CollectionShowReducer,

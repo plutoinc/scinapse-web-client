@@ -203,7 +203,6 @@
     margin-top: 24px;
   }
 }
-
 .paperCountMetadata {
   height: 20px;
   font-size: 14px;
@@ -240,6 +239,10 @@
   width: 100%;
   max-width: 500px;
   margin-right: 16px;
+}
+
+.simplePaperItem + .simplePaperItem {
+  margin-top: 12px;
 }
 
 @media (max-width: $tablet_width) {
