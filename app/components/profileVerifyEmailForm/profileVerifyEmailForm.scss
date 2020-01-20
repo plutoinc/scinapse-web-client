@@ -1,0 +1,71 @@
+@import '../../containers/userSettings/userSettings';
+
+.formRow {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  margin: 0 0 24px 0;
+
+  & + & {
+    margin-top: 24px;
+  }
+
+  &.dynamicFormRow {
+    opacity: 1;
+    will-change: opacity;
+    transition: opacity 160ms ease;
+
+    &.hide {
+      opacity: 0.3;
+      will-change: opacity;
+      transition: opacity 160ms ease;
+    }
+  }
+}
+
+.formWrapper {
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.formWrapper + .formWrapper {
+  margin-left: 12px;
+}
+
+.inputForm {
+  @extend %base-input-style;
+  cursor: auto;
+
+  &:disabled {
+    background-color: $gray400;
+    border-color: $gray400;
+    color: $gray500;
+    cursor: not-allowed;
+  }
+}
+
+.formLabel {
+  @extend %base-label;
+}
+
+.errorMsg {
+  font-family: $fallback;
+  font-size: 13px;
+  color: $red0;
+  margin: 8px 0 0 8px;
+}
+
+.affiliationErrorMsg {
+  font-family: $fallback;
+  font-size: 13px;
+  color: $red0;
+  margin-top: 8px;
+}
+
+.emailDomainPostfixLabel {
+  font-family: $fallback;
+  font-size: 16px;
+  letter-spacing: 1px;
+  margin-top: 24px;
+}

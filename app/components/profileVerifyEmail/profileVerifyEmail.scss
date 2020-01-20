@@ -1,0 +1,18 @@
+$wrapper-vertical-margin: 128px;
+$card-container-max-width: 768px;
+
+.wrapper {
+  width: 100%;
+  max-width: 578px;
+  min-height: calc(
+    100vh - #{$navbar_height} - #{$footer-height} - #{$wrapper-vertical-margin} - #{$wrapper-vertical-margin}
+  );
+  margin: $wrapper-vertical-margin auto;
+}
+
+.cardContainer {
+  margin: 16px;
+  max-width: $card-container-max-width;
+  padding: 24px 32px;
+  border: solid 1px $gray400;
+}

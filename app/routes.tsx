@@ -27,6 +27,8 @@ import {
   TERMS_OF_SERVICE_PATH,
   PRIVACY_POLICY_PATH,
   USER_SETTINGS_PATH,
+  PROFILE_EMAIL_VERIFY,
+  PROFILE_REGISTER_PATH,
   KEYWORD_SETTINGS_PATH,
 } from './constants/routes';
 import { AppState } from './reducers';
@@ -140,6 +142,18 @@ export const routesMap: ServerRoutesMap[] = [
     path: KEYWORD_SETTINGS_PATH,
     component: loadable(() => import('./containers/keywordSettings'), {
       fallback: <div>loading ...</div>,
+    }),
+  },
+  {
+    path: PROFILE_REGISTER_PATH,
+    component: loadable(() => import('./components/profileRegister'), {
+      fallback: <div>loading...</div>,
+    }),
+  },
+  {
+    path: PROFILE_EMAIL_VERIFY,
+    component: loadable(() => import('./components/profileVerifyEmail'), {
+      fallback: <div>loading...</div>,
     }),
   },
   {
