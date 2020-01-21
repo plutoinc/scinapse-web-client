@@ -1,0 +1,24 @@
+$wrapper-vertical-margin: 128px;
+
+.wrapper {
+  width: 100%;
+  max-width: 578px;
+  min-height: calc(
+    100vh - #{$navbar_height} - #{$footer-height} - #{$wrapper-vertical-margin} - #{$wrapper-vertical-margin}
+  );
+  margin: $wrapper-vertical-margin auto;
+}
+
+.keyButtonContainer {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.signinLabel {
+  margin: 8px 0;
+  color: $gray700;
+  .signinTextLinkButton {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
