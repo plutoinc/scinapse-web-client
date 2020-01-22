@@ -6,10 +6,12 @@ import { CurrentUser } from '../../model/currentUser';
 import { Button } from '@pluto_network/pluto-design-elements';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
 import { getCurrentPageType } from '../locationListener';
+import { useLocation } from 'react-router-dom';
 const s = require('./profileLanding.scss');
 
 const ProfileLanding: FC = () => {
   const currentUser = useSelector<AppState, CurrentUser>(state => state.currentUser);
+  const location = useLocation();
 
   const openSigninModal = () => {
     GlobalDialogManager.openSignInDialog({
@@ -29,20 +31,40 @@ const ProfileLanding: FC = () => {
         <p>Some appealing description to hookup the user to make them want to create a profile.</p>
         <div className={s.keyButtonContainer}>
           {currentUser.isLoggedIn ? (
-            <Button elementType="link" to="/profile/verify-email" color="blue">
+            <Button
+              elementType="link"
+              to={{
+                pathname: '/profile/verify-email',
+                search: location.search,
+              }}
+              color="blue"
+            >
               <span>
                 Continue as <b>{currentUser.firstName}</b>
               </span>
             </Button>
           ) : (
             <>
-              <Button elementType="link" to="/profile/verify-email" color="blue">
-                <span>Continue</span>
+              <div className={s.signinLabel}>
+                Not a Scinapse user?
+              </div>
+              <Button
+                elementType="link"
+                to={{
+                  pathname: '/profile/verify-email',
+                  search: location.search,
+                }}
+                color="blue"
+              >
+                <span>Create an account & make profile</span>
               </Button>
               <div className={s.signinLabel}>
-                If you have an account,
-                <span className={s.signinTextLinkButton} onClick={openSigninModal}>sign in</span>
+                Already a user?
+                {/* <span className={s.signinTextLinkButton} onClick={openSigninModal}>sign in</span> */}
               </div>
+              <Button elementType="button" color="gray" onClick={openSigninModal}>
+                <span>Sign in</span>
+              </Button>
             </>
           )}
         </div>

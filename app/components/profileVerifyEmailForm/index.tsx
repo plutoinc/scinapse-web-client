@@ -7,6 +7,7 @@ import { withStyles } from '../../helpers/withStylesHelper';
 import classNames from 'classnames';
 import { Button } from '@pluto_network/pluto-design-elements';
 import Icon from '../../icons';
+import { useHistory } from 'react-router-dom';
 const s = require('./profileVerifyEmailForm.scss');
 
 type ProfileVerifyEmailFormValues = {
@@ -33,6 +34,7 @@ function getDomainPostfixByAffiliation(affiliation: Affiliation | SuggestAffilia
 const ProfileVerifyEmailForm: FC = () => {
   const [affiliationSelected, setAffiliationSelected] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const history = useHistory();
 
   const initialValues: ProfileVerifyEmailFormValues = {
     affiliation: {
@@ -45,6 +47,9 @@ const ProfileVerifyEmailForm: FC = () => {
 
   const handleSubmit = () => {
     setIsLoading(true);
+    setTimeout(() => {
+      history.push('/profile/new');
+    }, 1000);
   }
 
   return (
