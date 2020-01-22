@@ -10,7 +10,6 @@ import DesktopPagination from '../../components/common/desktopPagination';
 import { useThunkDispatch } from '../../hooks/useThunkDispatch';
 import { fetchAuthorPapers, updateAuthor } from '../../actions/author';
 import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
-import Keyword from '../../components/paperShow/components/keyword';
 import { getAuthor, getCoAuthors } from '../authorShow/actions';
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from '../../api/author';
 import { authorSchema, Author } from '../../model/author/author';
@@ -27,6 +26,7 @@ import { ActionCreators } from '../../actions/actionTypes';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
 import alertToast from '../../helpers/makePlutoToastAction';
+import DashBox from '../../components/dashbox';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./connectedAuthor.scss');
 
@@ -190,8 +190,9 @@ const ProfilePage: FC = () => {
             {activeTab === AvailableTab.PUBLICATIONS && (
               <>
                 <div className={s.leftContentWrapper}>
+                  <DashBox>You have 3 UNMATCHED publications.</DashBox>
                   <div className={s.allPublicationHeader}>
-                    <span className={s.sectionTitle}>All Publications</span>
+                    <span className={s.sectionTitle}>Publications</span>
                     <span className={s.countBadge}>{author.paperCount}</span>
                   </div>
                   <div className={s.selectedPaperDescription} />
@@ -260,15 +261,8 @@ const ProfilePage: FC = () => {
                 </div>
                 <div className={s.rightContentWrapper}>
                   <div>
-                    <div className={s.coAuthorHeader}>Co-authors</div>
+                    <div className={s.coAuthorHeader}>Network</div>
                     {coAuthorIds && coAuthorIds.map(id => <CoAuthor key={id} authorId={id} />)}
-                  </div>
-                  <div className={s.fosListWrapper}>
-                    <div className={s.fosHeader}>Top Field Of Study</div>
-                    <div className={s.fosList}>
-                      {author.fosList &&
-                        author.fosList.map(fos => <Keyword pageType="profileShow" fos={fos} key={fos.id} />)}
-                    </div>
                   </div>
                 </div>
               </>
