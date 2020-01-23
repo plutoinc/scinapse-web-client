@@ -23,7 +23,50 @@ interface PaperItemProps {
   sourceDomain?: PaperSource;
 }
 
-const FullPaperItem: FC<PaperItemProps> = memo(({ paperId, actionArea, pageType, sourceDomain, hideFigure }) => {
+interface FullPaperItemWithPaperProps {
+  paper: Paper;
+  pageType: Scinapse.ActionTicket.PageType;
+  actionArea: Scinapse.ActionTicket.ActionArea;
+  hideFigure?: boolean;
+  sourceDomain?: PaperSource;
+}
+
+export const FullPaperItemWithPaper: FC<FullPaperItemWithPaperProps> = memo(
+  ({ paper, actionArea, pageType, sourceDomain, hideFigure }) => {
+    const userDevice = useSelector((state: AppState) => state.layout.userDevice);
+    if (userDevice === UserDevice.MOBILE) {
+      return (
+        <MobileFullPaperItem paper={paper} actionArea={actionArea} pageType={pageType} sourceDomain={sourceDomain} />
+      );
+    }
+
+    return (
+      <div className={s.paperItemWrapper}>
+        <Title paper={paper} actionArea={actionArea} pageType={pageType} />
+        <div style={{ marginTop: '12px' }}>
+          <BlockVenueAuthor paper={paper} pageType={pageType} actionArea={actionArea} />
+        </div>
+        <Abstract
+          paperId={paper.id}
+          abstract={paper.abstractHighlighted || paper.abstract}
+          pageType={pageType}
+          actionArea={actionArea}
+        />
+        {!hideFigure && <Figures figures={paper.figures} paperId={paper.id} />}
+        <PaperItemButtonGroup
+          paper={paper}
+          pageType={pageType}
+          actionArea={actionArea}
+          paperSource={sourceDomain}
+          saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
+        />
+      </div>
+    );
+  },
+  isEqual
+);
+
+const FullPaperItem: FC<PaperItemProps> = memo(({ paperId, ...props }) => {
   useStyles(s);
   const paper = useSelector<AppState, Paper | undefined>(
     state => denormalize(paperId, paperSchema, state.entities),
@@ -32,35 +75,7 @@ const FullPaperItem: FC<PaperItemProps> = memo(({ paperId, actionArea, pageType,
 
   if (!paper) return null;
 
-  const userDevice = useSelector((state: AppState) => state.layout.userDevice);
-  if (userDevice === UserDevice.MOBILE) {
-    return (
-      <MobileFullPaperItem paper={paper} actionArea={actionArea} pageType={pageType} sourceDomain={sourceDomain} />
-    );
-  }
-
-  return (
-    <div className={s.paperItemWrapper}>
-      <Title paper={paper} actionArea={actionArea} pageType={pageType} />
-      <div style={{ marginTop: '12px' }}>
-        <BlockVenueAuthor paper={paper} pageType={pageType} actionArea={actionArea} />
-      </div>
-      <Abstract
-        paperId={paper.id}
-        abstract={paper.abstractHighlighted || paper.abstract}
-        pageType={pageType}
-        actionArea={actionArea}
-      />
-      {!hideFigure && <Figures figures={paper.figures} paperId={paper.id} />}
-      <PaperItemButtonGroup
-        paper={paper}
-        pageType={pageType}
-        actionArea={actionArea}
-        paperSource={sourceDomain}
-        saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
-      />
-    </div>
-  );
+  return <FullPaperItemWithPaper paper={paper} {...props} />;
 });
 
 export default FullPaperItem;

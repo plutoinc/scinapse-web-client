@@ -1,5 +1,5 @@
 import { schema } from 'normalizr';
-import { Paper } from '../paper';
+import { Paper, paperSchema } from '../paper';
 import { Affiliation } from '../affiliation';
 import { NewFOS } from '../fos';
 
@@ -21,5 +21,7 @@ export interface Author {
   fosList: NewFOS[];
 }
 
-export const authorSchema = new schema.Entity('authors');
+export const authorSchema = new schema.Entity('authors', {
+  representativePapers: [paperSchema],
+});
 export const authorListSchema = [authorSchema];

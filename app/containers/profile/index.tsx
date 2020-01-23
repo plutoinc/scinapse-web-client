@@ -1,10 +1,10 @@
 import React, { FC, useState, useRef, useEffect } from 'react';
 import { denormalize } from 'normalizr';
-import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
+import RepresentativePublicationsDialog from '../../components/dialog/components/representativePublications';
 import { AppState } from '../../reducers';
 import DesktopPagination from '../../components/common/desktopPagination';
 import { useThunkDispatch } from '../../hooks/useThunkDispatch';
@@ -26,6 +26,9 @@ import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
 import alertToast from '../../helpers/makePlutoToastAction';
 import FullPaperItem from '../../components/common/paperItem/fullPaperItem';
+import ProfileShowPageHelmet from './components/helmet';
+import RepresentativePaperListSection from './components/representativePapers';
+import { Paper } from '../../model/paper';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./connectedAuthor.scss');
 
@@ -42,7 +45,6 @@ const ProfilePage: FC = () => {
     (state: AppState) => !state.configuration.succeedAPIFetchAtServer || state.configuration.renderedAtClient
   );
   const lastShouldFetch = useRef(shouldFetch);
-
   const author = useSelector<AppState, Author | undefined>(
     state => denormalize(profileId, authorSchema, state.entities),
     isEqual
@@ -56,6 +58,7 @@ const ProfilePage: FC = () => {
   const sort = useSelector((state: AppState) => state.profilePageState.sort);
   const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
   const [isOpenModifyProfileDialog, setIsOpenModifyProfileDialog] = useState(false);
+  const [isOpenRepresentativePublicationDialog, setIsOpenRepresentativePublicationDialog] = useState(false);
   const [activeTab, setActiveTab] = useState(AvailableTab.PUBLICATIONS);
 
   const handleSearch = (query: string) => {
@@ -107,40 +110,10 @@ const ProfilePage: FC = () => {
   if (!author) return null;
 
   const isMine = author.id === currentUser.authorId;
-  const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : '';
-  const description = `${affiliationName ? `${affiliationName} |` : ''} citation: ${author.citationCount} | h-index: ${
-    author.hindex
-  }`;
-  const structuredData: any = {
-    '@context': 'http://schema.org',
-    '@type': 'Person',
-    name: author.name,
-    affiliation: {
-      '@type': 'Organization',
-      name: affiliationName,
-    },
-    description: `${affiliationName ? `${affiliationName} |` : ''} citation: ${author.citationCount} | h-index: ${
-      author.hindex
-    }`,
-    mainEntityOfPage: 'https://scinapse.io',
-  };
 
   return (
     <div className={s.authorShowPageWrapper}>
-      <Helmet>
-        <title>{`${author.name} | Scinapse`}</title>
-        <link rel="canonical" href={`https://scinapse.io/authors/${author.id}`} />
-        <meta itemProp="name" content={`${author.name} | Scinapse`} />
-        <meta name="description" content={description} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:card" content={`${author.name} | Scinapse`} />
-        <meta name="twitter:title" content={`${author.name} | Scinapse`} />
-        <meta property="og:title" content={`${author.name} | Scinapse`} />
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://scinapse.io/authors/${author.id}`} />
-        <meta property="og:description" content={description} />
-        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
-      </Helmet>
+      <ProfileShowPageHelmet author={author} />
       <div className={s.rootWrapper}>
         <AuthorShowHeader
           author={author}
@@ -189,6 +162,11 @@ const ProfilePage: FC = () => {
             {activeTab === AvailableTab.PUBLICATIONS && (
               <>
                 <div className={s.leftContentWrapper}>
+                  <RepresentativePaperListSection
+                    author={author}
+                    isMine={isMine}
+                    onClickManageButton={() => setIsOpenRepresentativePublicationDialog(prev => !prev)}
+                  />
                   <div className={s.allPublicationHeader}>
                     <span className={s.sectionTitle}>Publications</span>
                     <span className={s.countBadge}>{author.paperCount}</span>
@@ -309,6 +287,20 @@ const ProfilePage: FC = () => {
           email: author.email || '',
           isEmailHidden: author.isEmailHidden || false,
         }}
+      />
+      <RepresentativePublicationsDialog
+        currentUser={currentUser}
+        isOpen={isOpenRepresentativePublicationDialog}
+        author={author}
+        handleClose={() => setIsOpenRepresentativePublicationDialog(prev => !prev)}
+        handleSubmit={(papers: Paper[]) =>
+          dispatch(
+            ActionCreators.succeedToUpdateAuthorRepresentativePapers({
+              authorId: author.id,
+              papers,
+            })
+          )
+        }
       />
     </div>
   );
