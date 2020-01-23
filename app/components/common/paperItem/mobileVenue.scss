@@ -31,6 +31,7 @@
 
   & + .venueName {
     &:before {
+      display: inline-block;
       content: ' · ';
     }
   }
@@ -43,6 +44,7 @@
 
   & + .venueName {
     &:before {
+      display: inline-block;
       content: ' · ';
     }
   }
@@ -52,6 +54,7 @@
   font-size: 14px;
   color: $gray800;
   white-space: pre;
+  text-decoration: underline;
 }
 
 .expandedTitle {

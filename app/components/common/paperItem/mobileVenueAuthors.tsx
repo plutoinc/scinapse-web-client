@@ -19,7 +19,7 @@ const MobileVenueAuthors: React.FC<MobileVenueAuthorsProps> = ({ paper, pageType
 
   return (
     <div className={s.wrapper}>
-      <MobileVenue paper={paper} pageType={pageType} actionArea={actionArea} isExpanded={isExpanded} />
+      <MobileVenue paper={paper} pageType={pageType} actionArea={actionArea} />
       <div className={s.authorBox}>
         <MobileAuthors paper={paper} pageType={pageType} actionArea={actionArea} isExpanded={isExpanded} />
         <Icon
