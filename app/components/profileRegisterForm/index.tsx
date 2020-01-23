@@ -13,6 +13,8 @@ import AuthInputBox from '../common/inputBox/authInputBox';
 const s = require('./profileRegisterForm.scss');
 
 type ProfileRegisterFormValues = {
+  email: string;
+  password: string;
   firstName: string;
   lastName: string;
   affiliation: Affiliation | SuggestAffiliation;
@@ -87,6 +89,8 @@ const ProfileRegisterForm: FC = () => {
   const currentUser = useSelector<AppState, CurrentUser>(state => state.currentUser);
 
   const initialValues: ProfileRegisterFormValues = {
+    email: currentUser.email || '',
+    password: '',
     firstName: currentUser.firstName || '',
     lastName: currentUser.lastName || '',
     affiliation: {
@@ -110,11 +114,11 @@ const ProfileRegisterForm: FC = () => {
               <AffiliationInputField formikProps={formikProps} />
               <div className={s.formRow}>
                 {isLoggedIn ? (
-                  <Button elementType="button" color="blue">
+                  <Button elementType="button" type="submit" color="blue">
                     <span>Create profile</span>
                   </Button>
                 ) : (
-                  <Button elementType="button" color="blue">
+                  <Button elementType="button" type="submit" color="blue">
                     <span>Create account & profile</span>
                   </Button>
                 )}

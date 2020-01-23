@@ -29,6 +29,7 @@ function getDomainPostfixByAffiliation(affiliation: Affiliation | SuggestAffilia
   if ((affiliation as SuggestAffiliation).affiliationId === '123900574') {
     return 'postech.ac.kr';
   }
+  return '';
 }
 
 const ProfileVerifyEmailForm: FC = () => {
