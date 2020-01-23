@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
@@ -9,6 +9,10 @@ import { Button } from '@pluto_network/pluto-design-elements';
 import Icon from '../../icons';
 import { useHistory } from 'react-router-dom';
 const s = require('./profileVerifyEmailForm.scss');
+
+type ProfileVerifyEmailFormProps = {
+  aid?: string;
+}
 
 type ProfileVerifyEmailFormValues = {
   affiliation: Affiliation | SuggestAffiliation;
@@ -32,10 +36,16 @@ function getDomainPostfixByAffiliation(affiliation: Affiliation | SuggestAffilia
   return '';
 }
 
-const ProfileVerifyEmailForm: FC = () => {
+const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
+  const { aid } = props;
   const [affiliationSelected, setAffiliationSelected] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const history = useHistory();
+
+  useEffect(() => {
+    // search affiliation with aid;
+    console.log(aid);
+  }, [aid])
 
   const initialValues: ProfileVerifyEmailFormValues = {
     affiliation: {
