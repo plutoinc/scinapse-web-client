@@ -76,7 +76,6 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
             {this.getProfileInformation()}
             {navigationContent}
           </div>
-
           <div className={styles.rightContentWrapper}>
             {rightBoxContent}
             {guideBubbleSpeech}

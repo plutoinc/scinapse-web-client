@@ -10,7 +10,6 @@ import DesktopPagination from '../../components/common/desktopPagination';
 import { useThunkDispatch } from '../../hooks/useThunkDispatch';
 import { fetchAuthorPapers, updateAuthor } from '../../actions/author';
 import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
-import Keyword from '../../components/paperShow/components/keyword';
 import { getAuthor, getCoAuthors } from '../authorShow/actions';
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from '../../api/author';
 import { authorSchema, Author } from '../../model/author/author';
@@ -20,13 +19,13 @@ import Icon from '../../icons';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import formatNumber from '../../helpers/formatNumber';
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
-import SimplePaperItemContainer from '../../components/simplePaperItem/simplePaperItemContainer';
 import CoAuthor from '../../components/common/coAuthor';
 import AuthorCvSection from '../authorCvSection';
 import { ActionCreators } from '../../actions/actionTypes';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
 import alertToast from '../../helpers/makePlutoToastAction';
+import FullPaperItem from '../../components/common/paperItem/fullPaperItem';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./connectedAuthor.scss');
 
@@ -231,13 +230,7 @@ const ProfilePage: FC = () => {
                   </div>
                   {paperIds &&
                     paperIds.map(id => (
-                      <SimplePaperItemContainer
-                        key={id}
-                        paperId={id}
-                        pageType="profileShow"
-                        actionArea="paperList"
-                        className={s.simplePaperItem}
-                      />
+                      <FullPaperItem key={id} paperId={id} pageType="profileShow" actionArea="paperList" hideFigure />
                     ))}
                   <DesktopPagination
                     type="AUTHOR_SHOW_PAPERS_PAGINATION"

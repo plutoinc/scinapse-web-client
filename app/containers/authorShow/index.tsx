@@ -50,7 +50,7 @@ export interface AuthorShowProps extends RouteComponentProps<{ authorId: string 
   layout: LayoutState;
   author: Author;
   coAuthors: Author[];
-  papers: Paper[];
+  paperIds: string[];
   authorShow: AuthorShowGlobalState;
   configuration: Configuration;
   currentUser: CurrentUser;
@@ -467,7 +467,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps, AuthorShowLocalSta
   };
 
   private getPaperList = () => {
-    const { papers, authorShow } = this.props;
+    const { paperIds, authorShow } = this.props;
 
     if (authorShow.isLoadingPapers) {
       return (
@@ -478,8 +478,8 @@ class AuthorShow extends React.PureComponent<AuthorShowProps, AuthorShowLocalSta
     }
 
     if (
-      !papers ||
-      (papers.length === 0 && authorShow.papersTotalPage === 0 && authorShow.paperSearchQuery.length > 0)
+      !paperIds ||
+      (paperIds.length === 0 && authorShow.papersTotalPage === 0 && authorShow.paperSearchQuery.length > 0)
     ) {
       return (
         <div className={styles.noPaperWrapper}>
@@ -495,9 +495,9 @@ class AuthorShow extends React.PureComponent<AuthorShowProps, AuthorShowLocalSta
       );
     }
 
-    return papers.map(paper => {
-      if (paper) {
-        return <FullPaperItem key={paper.id} paper={paper} pageType="authorShow" actionArea="paperList" />;
+    return paperIds.map(paperId => {
+      if (paperId) {
+        return <FullPaperItem key={paperId} paperId={paperId} pageType="authorShow" actionArea="paperList" />;
       }
     });
   };
@@ -521,7 +521,7 @@ function mapStateToProps(state: AppState) {
     authorShow: state.authorShow,
     author: denormalize(state.authorShow.authorId, authorSchema, state.entities),
     coAuthors: denormalize(state.authorShow.coAuthorIds, [authorSchema], state.entities),
-    papers: denormalize(state.authorShow.paperIds, [paperSchema], state.entities),
+    paperIds: state.authorShow.paperIds,
     configuration: state.configuration,
     currentUser: state.currentUser,
   };

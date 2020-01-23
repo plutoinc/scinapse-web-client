@@ -178,13 +178,6 @@ export const routesMap: ServerRoutesMap[] = [
     component: loadable(() => import('./components/uiDemo/uiDemo')),
     exact: true,
   },
-  {
-    path: '/paper-item-demo',
-    component: loadable(() => import('./components/common/paperItem/demo'), {
-      fallback: <div>loading ...</div>,
-    }),
-    exact: true,
-  },
   { component: ErrorPage },
 ];
 

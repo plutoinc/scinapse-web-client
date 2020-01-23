@@ -1,6 +1,8 @@
 import React, { FC, memo } from 'react';
 import { useSelector } from 'react-redux';
-import { Paper } from '../../../model/paper';
+import { denormalize } from 'normalizr';
+import { isEqual } from 'lodash';
+import { Paper, paperSchema } from '../../../model/paper';
 import Title from './title';
 import Abstract from './abstract';
 import BlockVenueAuthor from './blockVenueAuthor';
@@ -10,27 +12,25 @@ import Figures from './figures';
 import { AppState } from '../../../reducers';
 import { UserDevice } from '../../layouts/reducer';
 import MobileFullPaperItem from './mobileFullPaperItem';
-import { useObserver } from '../../../hooks/useIntersectionHook';
-
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperItem.scss');
 
 interface PaperItemProps {
-  paper: Paper;
+  paperId: string;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
+  hideFigure?: boolean;
   sourceDomain?: PaperSource;
 }
 
-const FullPaperItem: FC<PaperItemProps> = memo(({ paper, actionArea, pageType, sourceDomain }) => {
+const FullPaperItem: FC<PaperItemProps> = memo(({ paperId, actionArea, pageType, sourceDomain, hideFigure }) => {
   useStyles(s);
-  const { elRef } = useObserver(0.8, {
-    pageType,
-    actionArea,
-    actionType: 'view',
-    actionTag: 'paperShow',
-    actionLabel: String(paper.id),
-  });
+  const paper = useSelector<AppState, Paper | undefined>(
+    state => denormalize(paperId, paperSchema, state.entities),
+    isEqual
+  );
+
+  if (!paper) return null;
 
   const userDevice = useSelector((state: AppState) => state.layout.userDevice);
   if (userDevice === UserDevice.MOBILE) {
@@ -40,7 +40,7 @@ const FullPaperItem: FC<PaperItemProps> = memo(({ paper, actionArea, pageType, s
   }
 
   return (
-    <div ref={elRef} className={s.paperItemWrapper}>
+    <div className={s.paperItemWrapper}>
       <Title paper={paper} actionArea={actionArea} pageType={pageType} />
       <div style={{ marginTop: '12px' }}>
         <BlockVenueAuthor paper={paper} pageType={pageType} actionArea={actionArea} />
@@ -51,7 +51,7 @@ const FullPaperItem: FC<PaperItemProps> = memo(({ paper, actionArea, pageType, s
         pageType={pageType}
         actionArea={actionArea}
       />
-      <Figures figures={paper.figures} paperId={paper.id} />
+      {!hideFigure && <Figures figures={paper.figures} paperId={paper.id} />}
       <PaperItemButtonGroup
         paper={paper}
         pageType={pageType}
