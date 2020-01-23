@@ -5,7 +5,7 @@ import { ActionCreators } from './actionTypes';
 import alertToast from '../helpers/makePlutoToastAction';
 import PlutoAxios from '../api/pluto';
 import AuthorAPI, { ConnectAuthorParams, DEFAULT_AUTHOR_PAPERS_SIZE } from '../api/author';
-import ProfileAPI, { AwardParams, EducationParams, ExperienceParams } from '../api/profile';
+import ProfileInfoAPI, { AwardParams, EducationParams, ExperienceParams } from '../api/profileInfo';
 import { GetAuthorPapersParams } from '../api/author/types';
 import { Paper, paperSchema } from '../model/paper';
 import { CVInfoType } from '../model/profile';
@@ -102,11 +102,11 @@ export function postNewAuthorCVInfo(
 
     let result: any;
     if (type === 'awards') {
-      result = await ProfileAPI.postNewAwardInAuthor(authorId, params as AwardParams);
+      result = await ProfileInfoAPI.postNewAwardInAuthor(authorId, params as AwardParams);
     } else if (type === 'educations') {
-      result = await ProfileAPI.postNewEducationInAuthor(authorId, params as EducationParams);
+      result = await ProfileInfoAPI.postNewEducationInAuthor(authorId, params as EducationParams);
     } else if (type === 'experiences') {
-      result = await ProfileAPI.postNewExperienceInAuthor(authorId, params as ExperienceParams);
+      result = await ProfileInfoAPI.postNewExperienceInAuthor(authorId, params as ExperienceParams);
     }
 
     dispatch(ActionCreators.succeedToAddProfileCvData({ authorId, cvInfoType: type, cvInformation: result }));
@@ -119,11 +119,11 @@ export function removeAuthorCvInfo(type: keyof CVInfoType, authorId: string, id:
     let result: any;
     try {
       if (type === 'awards') {
-        result = await ProfileAPI.deleteAwardInAuthor(id);
+        result = await ProfileInfoAPI.deleteAwardInAuthor(id);
       } else if (type === 'educations') {
-        result = await ProfileAPI.deleteEducationInAuthor(id);
+        result = await ProfileInfoAPI.deleteEducationInAuthor(id);
       } else if (type === 'experiences') {
-        result = await ProfileAPI.deleteExperienceInAuthor(id);
+        result = await ProfileInfoAPI.deleteExperienceInAuthor(id);
       }
 
       dispatch(ActionCreators.succeededToRemoveProfileCvData({ authorId, cvInfoType: type, cvInformation: result }));
@@ -146,11 +146,11 @@ export function updateAuthorCvInfo(
     dispatch(ActionCreators.startToUpdateProfileCvData({ CVType: type }));
     let result: any;
     if (type === 'awards') {
-      result = await ProfileAPI.updateAwardInAuthor(params as AwardParams);
+      result = await ProfileInfoAPI.updateAwardInAuthor(params as AwardParams);
     } else if (type === 'educations') {
-      result = await ProfileAPI.updateEducationInAuthor(params as EducationParams);
+      result = await ProfileInfoAPI.updateEducationInAuthor(params as EducationParams);
     } else if (type === 'experiences') {
-      result = await ProfileAPI.updateExperienceInAuthor(params as ExperienceParams);
+      result = await ProfileInfoAPI.updateExperienceInAuthor(params as ExperienceParams);
     }
 
     dispatch(ActionCreators.succeededToUpdateProfileCvData({ authorId, cvInfoType: type, cvInformation: result }));

@@ -31,7 +31,7 @@ export interface ExperienceParams extends CvBaseInfo {
   position: string;
 }
 
-class ProfileAPI extends PlutoAxios {
+class ProfileInfoAPI extends PlutoAxios {
   public async getProfile(
     authorId: string,
     cancelToken?: CancelToken
@@ -170,6 +170,6 @@ class ProfileAPI extends PlutoAxios {
   };
 }
 
-const profileAPI = new ProfileAPI();
+const profileInfoAPI = new ProfileInfoAPI();
 
-export default profileAPI;
+export default profileInfoAPI;
