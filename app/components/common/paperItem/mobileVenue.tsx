@@ -74,7 +74,7 @@ const MobileVenue: React.FC<MobileVenueProps> = ({ paper, pageType, actionArea }
     title = <ConferenceTitle conferenceInstance={conferenceInstance} />;
   }
 
-  let date = format(publishedDate, 'MMM D, YYYY');
+  let date = format(publishedDate, 'YYYY');
 
   if (!publishedDate && year) {
     date = String(year);
