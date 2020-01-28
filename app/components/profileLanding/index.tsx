@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../reducers';
@@ -7,7 +7,13 @@ import { Button } from '@pluto_network/pluto-design-elements';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
 import { getCurrentPageType } from '../locationListener';
 import { useLocation } from 'react-router-dom';
+import QueryString from 'qs';
+import AffiliationAPI from '../../api/affiliation';
 const s = require('./profileLanding.scss');
+
+type ProfileLandingQuery = {
+  aid: string;
+}
 
 const ProfileLanding: FC = () => {
   const currentUser = useSelector<AppState, CurrentUser>(state => state.currentUser);
@@ -23,6 +29,14 @@ const ProfileLanding: FC = () => {
       isBlocked: false,
     });
   }
+
+  useEffect(() => {
+    const queryString = location.search.split('?')[1];
+    const { aid } = QueryString.parse(queryString) as ProfileLandingQuery;
+    AffiliationAPI.getAffiliation(aid).then(profileAff => {
+      console.log(profileAff.domains);
+    });
+  }, [location.search]);
 
   return (
     <>
