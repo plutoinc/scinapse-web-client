@@ -13,7 +13,6 @@ interface MobileVenueProps {
   paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
-  isExpanded: boolean;
 }
 
 const ConferenceTitle: React.FC<{
@@ -23,7 +22,7 @@ const ConferenceTitle: React.FC<{
 
   if (conferenceInstance.conferenceSeries.nameAbbrev) {
     return (
-      <span className={s.venueName}>
+      <span className={s.readonly}>
         {`${conferenceInstance.conferenceSeries.nameAbbrev}: ${conferenceInstance.conferenceSeries.name}`}
       </span>
     );
@@ -41,7 +40,7 @@ const JournalTitle: React.FC<{
   if (!journal.title) return null;
 
   if (readonly) {
-    return <span className={s.venueName}>{journal.title}</span>;
+    return <span className={s.readonly}>{journal.title}</span>;
   }
 
   return (
@@ -63,40 +62,22 @@ const JournalTitle: React.FC<{
   );
 };
 
-const MobileVenue: React.FC<MobileVenueProps> = ({ paper, isExpanded, pageType, actionArea }) => {
+const MobileVenue: React.FC<MobileVenueProps> = ({ paper, pageType, actionArea }) => {
   useStyles(s);
   const { conferenceInstance, publishedDate, journal, year } = paper;
   if (!journal && !publishedDate) return null;
 
   let title = null;
   if (journal && journal.title) {
-    title = <JournalTitle journal={journal} pageType={pageType} actionArea={actionArea} readonly={!isExpanded} />;
+    title = <JournalTitle journal={journal} pageType={pageType} actionArea={actionArea} />;
   } else if (conferenceInstance) {
     title = <ConferenceTitle conferenceInstance={conferenceInstance} />;
   }
 
-  let date = format(publishedDate, 'MMM D, YYYY');
+  let date = format(publishedDate, 'YYYY');
 
-  if ((!publishedDate && year) || !isExpanded) {
+  if (!publishedDate && year) {
     date = String(year);
-  }
-
-  if (isExpanded) {
-    return (
-      <>
-        <div>
-          <span className={s.year}>{date}</span>
-          {journal &&
-            journal.impactFactor && (
-              <span className={s.ifLabel}>
-                <Icon className={s.ifIconWrapper} icon="IMPACT_FACTOR" />
-                {journal.impactFactor.toFixed(2)}
-              </span>
-            )}
-        </div>
-        <div className={s.expandedTitle}>{title}</div>
-      </>
-    );
   }
 
   return (

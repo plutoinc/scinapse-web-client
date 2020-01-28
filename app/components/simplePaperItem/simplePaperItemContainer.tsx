@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { denormalize } from 'normalizr';
 import classNames from 'classnames';
 import { isEqual } from 'lodash';
-
 import { AppState } from '../../reducers';
 import { paperSchema, Paper } from '../../model/paper';
 import Title from '../../components/common/paperItem/title';

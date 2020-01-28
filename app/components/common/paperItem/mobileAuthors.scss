@@ -11,12 +11,15 @@
 }
 
 .blockAuthorItem {
+  display: block;
   position: relative;
   font-size: 14px;
   color: $gray800;
+  padding: 12px 0;
 
   .authorName {
     font-weight: 500;
+    text-decoration: underline;
   }
 
   .authorName,
@@ -33,11 +36,7 @@
   .rightBox {
     position: absolute;
     right: 0;
-    top: 0;
-  }
-
-  & + & {
-    margin-top: 4px;
+    top: 12px;
   }
 }
 
