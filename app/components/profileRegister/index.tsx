@@ -1,13 +1,27 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { withStyles } from '../../helpers/withStylesHelper';
 import ProfileRegisterForm from '../profileRegisterForm';
+import { useLocation } from 'react-router-dom';
+import QueryString from 'qs';
 const s = require('./profileRegiser.scss');
 
+export type ProfileRegisterParams = {
+  aid?: string;
+}
+
 const ProfileRegister: FC = () => {
+  const location = useLocation();
+
+  const queryParams: ProfileRegisterParams = useMemo(() => {
+    return QueryString.parse(location.search.split('?')[1])
+  }, [location.search])
+
   return (
     <>
       <div className={s.wrapper}>
-        <ProfileRegisterForm/>
+        <ProfileRegisterForm
+          queryParams={queryParams}
+        />
       </div>
     </>
   )

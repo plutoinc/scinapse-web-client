@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { Formik, Form, Field, FormikProps } from 'formik';
 import { SuggestAffiliation } from '../../api/suggest';
 import { Affiliation } from '../../model/affiliation';
@@ -10,7 +10,14 @@ import { withStyles } from '../../helpers/withStylesHelper';
 import classNames from 'classnames';
 import { Button } from '@pluto_network/pluto-design-elements';
 import AuthInputBox from '../common/inputBox/authInputBox';
+import { ProfileRegisterParams } from '../profileRegister';
+import { ProfileAffiliation } from '../../model/profileAffiliation';
+import affiliationAPI from '../../api/affiliation';
 const s = require('./profileRegisterForm.scss');
+
+type ProfileRegisterFormProps = {
+  queryParams: ProfileRegisterParams;
+}
 
 type ProfileRegisterFormValues = {
   email: string;
@@ -63,8 +70,19 @@ const NameInputFields: FC = () => (
   </div>
 );
 
-const AffiliationInputField: FC<{ formikProps: FormikProps<ProfileRegisterFormValues> }> = props => {
-  const { errors, touched } = props.formikProps;
+const AffiliationInputField: FC<{ formikProps: FormikProps<ProfileRegisterFormValues>, profileAffiliation: ProfileAffiliation | null }> = props => {
+  const { formikProps, profileAffiliation } = props;
+  const { values, errors, touched, setFieldValue } = formikProps;
+
+  if (profileAffiliation && (values.affiliation as Affiliation).id !== profileAffiliation.id) {
+    const { id, name, nameAbbrev } = profileAffiliation;
+    setFieldValue('affiliation', {
+      id,
+      name,
+      nameAbbrev
+    })
+  }
+
   return (
     <div className={s.formRow}>
       <div className={s.formWrapper}>
@@ -72,7 +90,7 @@ const AffiliationInputField: FC<{ formikProps: FormikProps<ProfileRegisterFormVa
         <Field
           name="affiliation"
           component={AffiliationSelectBox}
-          placeholder="Last Name"
+          placeholder="Affiliation"
           className={classNames({
             [s.inputForm]: true,
             [s.hasError]: !!errors.affiliation && !!touched.affiliation,
@@ -85,8 +103,10 @@ const AffiliationInputField: FC<{ formikProps: FormikProps<ProfileRegisterFormVa
   );
 };
 
-const ProfileRegisterForm: FC = () => {
+const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
+  const { queryParams } = props;
   const currentUser = useSelector<AppState, CurrentUser>(state => state.currentUser);
+  const [profileAffiliation, setProfileAffiliation] = useState<ProfileAffiliation | null>(null);
 
   const initialValues: ProfileRegisterFormValues = {
     email: currentUser.email || '',
@@ -102,6 +122,18 @@ const ProfileRegisterForm: FC = () => {
   };
   const handleSubmit = () => {};
 
+  useEffect(() => {
+    async function fetchAffiliation() {
+      if (queryParams.aid) {
+        const affiliation = await affiliationAPI.getAffiliation(queryParams.aid);
+        if (affiliation) {
+          setProfileAffiliation(affiliation);
+        }
+      }
+    }
+    fetchAffiliation();
+  }, [queryParams.aid])  
+
   return (
     <>
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
@@ -111,7 +143,10 @@ const ProfileRegisterForm: FC = () => {
             <Form>
               {isLoggedIn || <EmailPasswordFields formikProps={formikProps} />}
               <NameInputFields />
-              <AffiliationInputField formikProps={formikProps} />
+              <AffiliationInputField
+                formikProps={formikProps}
+                profileAffiliation={profileAffiliation}
+              />
               <div className={s.formRow}>
                 {isLoggedIn ? (
                   <Button elementType="button" type="submit" color="blue">
