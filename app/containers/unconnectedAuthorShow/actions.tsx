@@ -1,7 +1,7 @@
 import axios, { CancelToken } from 'axios';
 import { Dispatch } from 'redux';
 import AuthorAPI, { ConnectAuthorParams } from '../../api/author';
-import ProfileAPI from '../../api/profile';
+import ProfileInfoAPI from '../../api/profileInfo';
 import alertToast from '../../helpers/makePlutoToastAction';
 import { ActionCreators } from '../../actions/actionTypes';
 import { GetAuthorPapersParams } from '../../api/author/types';
@@ -10,7 +10,7 @@ import PlutoAxios from '../../api/pluto';
 export function getProfile(authorId: string, cancelToken?: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      const profileResponse = await ProfileAPI.getProfile(authorId, cancelToken);
+      const profileResponse = await ProfileInfoAPI.getProfile(authorId, cancelToken);
 
       dispatch(ActionCreators.addEntity(profileResponse));
       dispatch(ActionCreators.getProfile({ authorId: profileResponse.result }));
