@@ -12,8 +12,9 @@ import { CVInfoType } from '../model/profile';
 import { CurrentUser } from '../model/currentUser';
 import { GLOBAL_DIALOG_TYPE } from '../components/dialog/reducer';
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
-import { getAuthor, getCoAuthors, getAuthorPapers } from '../containers/unconnectedAuthorShow/actions';
+import { getAuthor, getCoAuthors, getAuthorPapers } from '../containers/authorShow/actions';
 import { CommonError } from '../model/error';
+import { AppThunkAction } from '../store/types';
 
 interface AddRemovePapersAndFetchPapersParams {
   authorId: string;
@@ -24,8 +25,6 @@ interface AddRemovePapersAndFetchPapersParams {
 
 interface FetchAuthorShowRelevantDataParams {
   authorId: string;
-  cancelToken?: CancelToken;
-  currentUser?: CurrentUser;
   page?: number;
   sort?: AUTHOR_PAPER_LIST_SORT_TYPES;
 }
@@ -45,9 +44,10 @@ export function fetchAuthorPapers(params: GetAuthorPapersParams) {
   };
 }
 
-export function fetchAuthorShowRelevantData(params: FetchAuthorShowRelevantDataParams) {
-  return async (dispatch: Dispatch<any>) => {
-    const { currentUser, authorId } = params;
+export function fetchAuthorShowRelevantData(params: FetchAuthorShowRelevantDataParams): AppThunkAction {
+  return async (dispatch: Dispatch<any>, getState) => {
+    const { currentUser } = getState();
+    const { authorId } = params;
 
     try {
       dispatch(ActionCreators.startToLoadAuthorShowPageData());
@@ -160,8 +160,6 @@ export function updateAuthorCvInfo(
 export function updateProfileImage(authorId: string, formData: FormData) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      dispatch(ActionCreators.startToUpdateProfileImageData());
-
       const profileImg = await AuthorAPI.updateAuthorProfileImage(authorId, formData);
       const profileImageUrl = profileImg.data.content.profileImageUrl;
 
@@ -169,7 +167,6 @@ export function updateProfileImage(authorId: string, formData: FormData) {
       dispatch(ActionCreators.succeededToUpdateProfileImageData({ authorId, profileImageUrl }));
     } catch (err) {
       alertToast({ type: 'error', message: 'Had an error to upload profile image' });
-      dispatch(ActionCreators.failedToUpdateProfileImageData());
     }
   };
 }
@@ -195,8 +192,6 @@ export function addPapersAndFetchPapers(params: AddRemovePapersAndFetchPapersPar
       await dispatch(
         fetchAuthorShowRelevantData({
           authorId: params.authorId,
-          currentUser: params.currentUser,
-          cancelToken: params.cancelToken,
         })
       );
     } catch (err) {
@@ -214,8 +209,6 @@ export function removePaperFromPaperList(params: AddRemovePapersAndFetchPapersPa
       await dispatch(
         fetchAuthorShowRelevantData({
           authorId: params.authorId,
-          currentUser: params.currentUser,
-          cancelToken: params.cancelToken,
         })
       );
     } catch (err) {

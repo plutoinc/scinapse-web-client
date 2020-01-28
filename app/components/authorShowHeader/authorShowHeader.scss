@@ -1,6 +1,7 @@
 .container {
   margin: 0 auto;
   max-width: $small-container-width;
+  display: flex;
 }
 
 .headerBox {
@@ -21,17 +22,8 @@
 }
 
 .nameHeaderBox {
-  position: relative;
-  display: inline-block;
-  vertical-align: top;
   width: 100%;
   flex: 1;
-
-  .rightBox {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
 }
 
 .usernameWrapper {
@@ -56,7 +48,6 @@
   font-size: 16px;
   line-height: 1.5;
   color: $gray800;
-  margin-bottom: 12px;
 }
 
 .metricWrapper {
@@ -86,6 +77,7 @@
 }
 
 .metricInformation {
+  margin-top: 12px;
   margin-bottom: 24px;
 }
 
@@ -152,6 +144,26 @@
   font-size: 12px;
 }
 
+.fosItem {
+  font-size: 14px;
+  color: $gray700;
+
+  &::before {
+    content: ' · ';
+  }
+
+  &:last-of-type,
+  &:first-of-type {
+    &::before {
+      content: '';
+    }
+  }
+}
+
+.rightContentWrapper {
+  margin-top: 8px;
+}
+
 @media (max-width: $tablet_width) {
   .headerBox {
     padding-left: 12px;
@@ -208,7 +220,7 @@
     margin-left: 0 !important;
   }
 
-  .rightBox {
+  .rightContentWrapper {
     display: none;
   }
 }

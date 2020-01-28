@@ -2,12 +2,9 @@ import * as React from 'react';
 import { denormalize } from 'normalizr';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { ConnectedAuthorShowState } from '../connectedAuthorShow/reducer';
-import { LayoutState } from '../../components/layouts/reducer';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { AppState } from '../../reducers';
-import { CurrentUser } from '../../model/currentUser';
-import { authorSchema, Author } from '../../model/author/author';
+import { Author } from '../../model/author/author';
 import { profileSchema, Profile, CVInfoType } from '../../model/profile';
 import Icon from '../../icons';
 import AwardForm, { AwardFormState } from '../../components/authorCV/awardForm';
@@ -30,18 +27,17 @@ interface AuthorCvSectionState {
   isLoadingExperienceForm: boolean;
 }
 
-interface AuthorCvSectionProps {
-  layout: LayoutState;
-  author: Author;
-  authorShow: ConnectedAuthorShowState;
-  currentUser: CurrentUser;
-  profile: Profile | undefined;
+type Props = ReturnType<typeof mapStateToProps> & {
   dispatch: Dispatch<any>;
+};
+
+interface AuthorCvSectionProps {
+  author: Author;
 }
 
 @withStyles<typeof AuthorCvSection>(styles)
-class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCvSectionState> {
-  public constructor(props: AuthorCvSectionProps) {
+class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps & Props, AuthorCvSectionState> {
+  public constructor(props: AuthorCvSectionProps & Props) {
     super(props);
 
     this.state = {
@@ -342,13 +338,11 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
   };
 }
 
-function mapStateToProps(state: AppState) {
+function mapStateToProps(state: AppState, ownProps: AuthorCvSectionProps) {
   return {
     layout: state.layout,
-    authorShow: state.connectedAuthorShow,
     currentUser: state.currentUser,
-    profile: denormalize(state.connectedAuthorShow.authorId, profileSchema, state.entities),
-    author: denormalize(state.connectedAuthorShow.authorId, authorSchema, state.entities),
+    profile: denormalize(ownProps.author.id, profileSchema, state.entities) as Profile | undefined,
   };
 }
 

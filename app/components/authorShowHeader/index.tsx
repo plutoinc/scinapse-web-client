@@ -37,18 +37,18 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
   }
 
   public render() {
-    const { author, rightBoxContent, navigationContent, guideBubbleSpeech, userDevice } = this.props;
+    const { author, rightBoxContent, navigationContent, guideBubbleSpeech, userDevice, currentUser } = this.props;
 
     return (
       <div className={styles.headerBox}>
         <div className={styles.container}>
           <div className={styles.leftContentWrapper}>
             <div className={styles.nameBox}>
-              {author.isLayered && <UploadableProfileImage />}
+              {author.isLayered && <UploadableProfileImage author={author} currentUser={currentUser} />}
               <span className={styles.nameHeaderBox}>
                 <div className={styles.usernameWrapper}>
                   <span className={styles.username}>{author.name}</span>{' '}
-                  {author.isLayered ? (
+                  {author.isLayered && (
                     <MuiTooltip
                       classes={{ tooltip: styles.verificationTooltip }}
                       title="Verification Author"
@@ -58,19 +58,27 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
                         <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
                       </div>
                     </MuiTooltip>
-                  ) : null}
+                  )}
                 </div>
                 <div className={styles.affiliation}>
                   {author.lastKnownAffiliation ? author.lastKnownAffiliation.name || '' : ''}
                 </div>
+                {author.fosList &&
+                  author.fosList.map(fos => (
+                    <span className={styles.fosItem} key={fos.id}>
+                      {fos.name}
+                    </span>
+                  ))}
                 {userDevice === UserDevice.DESKTOP && this.getMetricInformation()}
-                <div className={styles.rightBox}>{rightBoxContent}</div>
-                {guideBubbleSpeech}
               </span>
             </div>
             {userDevice !== UserDevice.DESKTOP && this.getMetricInformation()}
             {this.getProfileInformation()}
             {navigationContent}
+          </div>
+          <div className={styles.rightContentWrapper}>
+            {rightBoxContent}
+            {guideBubbleSpeech}
           </div>
         </div>
       </div>

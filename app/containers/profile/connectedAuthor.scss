@@ -168,17 +168,6 @@
   }
 }
 
-.fosListWrapper {
-  margin-top: 40px;
-}
-
-.fosHeader {
-  font-size: 18px;
-  font-weight: bold;
-  color: $black0;
-  margin-bottom: 16px;
-}
-
 .noPaperWrapper {
   margin-top: 80px;
   display: flex;
@@ -240,6 +229,10 @@
   width: 100%;
   max-width: 500px;
   margin-right: 16px;
+}
+
+.simplePaperItem + .simplePaperItem {
+  margin-top: 12px;
 }
 
 @media (max-width: $tablet_width) {

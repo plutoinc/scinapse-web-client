@@ -1,24 +1,34 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import MuiTooltip from '@material-ui/core/Tooltip';
-import { Author } from '../../../model/author/author';
+import { isEqual } from 'lodash';
+import { denormalize } from 'normalizr';
+import { useSelector } from 'react-redux';
+import { Author, authorSchema } from '../../../model/author/author';
 import { trackEvent } from '../../../helpers/handleGA';
 import HIndexBox from '../hIndexBox';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import Icon from '../../../icons';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
+import { AppState } from '../../../reducers';
 const styles = require('./coAuthor.scss');
 
 interface CoAuthorProps {
-  author: Author;
+  authorId: string;
 }
 
-const CoAuthor = (props: CoAuthorProps) => {
-  const author = props.author;
+const CoAuthor = React.memo(({ authorId }: CoAuthorProps) => {
+  const author = useSelector<AppState, Author | undefined>(
+    state => denormalize(authorId, authorSchema, state.entities),
+    isEqual
+  );
+
+  if (!author) return null;
+
   return (
     <Link
       className={styles.authorItem}
-      to={`/authors/${author.id}`}
+      to={`/authors/${authorId}`}
       onClick={() => {
         trackEvent({
           category: 'Flow to Author Show',
@@ -54,6 +64,6 @@ const CoAuthor = (props: CoAuthorProps) => {
       </span>
     </Link>
   );
-};
+});
 
 export default withStyles<typeof CoAuthor>(styles)(CoAuthor);

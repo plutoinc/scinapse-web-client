@@ -130,6 +130,7 @@ declare namespace Scinapse {
     type ActionArea = string;
 
     type PageType =
+      | 'profileShow'
       | 'paperShow'
       | 'authorShow'
       | 'home'

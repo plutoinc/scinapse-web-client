@@ -31,6 +31,7 @@ import {
   PROFILE_EMAIL_VERIFY_PATH,
   PROFILE_REGISTER_PATH,
   KEYWORD_SETTINGS_PATH,
+  PROFILE_SHOW_PATH,
 } from './constants/routes';
 import { AppState } from './reducers';
 const styles = require('./root.scss');
@@ -93,6 +94,16 @@ export const routesMap: ServerRoutesMap[] = [
     }),
     loadData: async (params: LoadDataParams<AuthorShowMatchParams>) => {
       const { fetchAuthorShowPageData } = await import('./containers/authorShow/sideEffect');
+      await Promise.all([fetchAuthorShowPageData(params)]);
+    },
+  },
+  {
+    path: PROFILE_SHOW_PATH,
+    component: loadable(() => import('./containers/profile'), {
+      fallback: <div>loading ...</div>,
+    }),
+    loadData: async (params: LoadDataParams<{ profileId: string }>) => {
+      const { fetchAuthorShowPageData } = await import('./containers/profile/sideEffects');
       await Promise.all([fetchAuthorShowPageData(params)]);
     },
   },
@@ -186,13 +197,6 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: '/ui-demo',
     component: loadable(() => import('./components/uiDemo/uiDemo')),
-    exact: true,
-  },
-  {
-    path: '/paper-item-demo',
-    component: loadable(() => import('./components/common/paperItem/demo'), {
-      fallback: <div>loading ...</div>,
-    }),
     exact: true,
   },
   { component: ErrorPage },

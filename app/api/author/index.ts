@@ -159,8 +159,7 @@ class AuthorAPI extends PlutoAxios {
     result: string;
   }> {
     const res = await this.get(`/authors/${authorId}`, { cancelToken });
-    const author: Author = getSafeAuthor(res.data.data);
-    const normalizedData = normalize(author, authorSchema);
+    const normalizedData = normalize(res.data.data, authorSchema);
     return normalizedData;
   }
 
