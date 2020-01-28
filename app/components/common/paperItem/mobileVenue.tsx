@@ -22,7 +22,7 @@ const ConferenceTitle: React.FC<{
 
   if (conferenceInstance.conferenceSeries.nameAbbrev) {
     return (
-      <span className={s.venueName}>
+      <span className={s.readonly}>
         {`${conferenceInstance.conferenceSeries.nameAbbrev}: ${conferenceInstance.conferenceSeries.name}`}
       </span>
     );
@@ -40,7 +40,7 @@ const JournalTitle: React.FC<{
   if (!journal.title) return null;
 
   if (readonly) {
-    return <span className={s.venueName}>{journal.title}</span>;
+    return <span className={s.readonly}>{journal.title}</span>;
   }
 
   return (

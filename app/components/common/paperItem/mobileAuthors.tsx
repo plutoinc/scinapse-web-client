@@ -93,10 +93,10 @@ const MobileAuthors: React.FC<MobileAuthorsProps> = ({ isExpanded, paper }) => {
       <span>
         {'('}
         {paper.authors.map((author, i) => (
-          <>
-            <SimpleAuthorItem key={author.id} author={author} />
+          <React.Fragment key={author.id}>
+            <SimpleAuthorItem author={author} />
             {i !== paper.authors.length - 1 && ', '}
-          </>
+          </React.Fragment>
         ))}
         {')'}
       </span>

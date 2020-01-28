@@ -50,10 +50,14 @@
   }
 }
 
-.venueName {
+.venueName,
+.readonly {
   font-size: 14px;
   color: $gray800;
   white-space: pre;
+}
+
+.venueName {
   text-decoration: underline;
 }
 
