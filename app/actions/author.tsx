@@ -8,7 +8,7 @@ import AuthorAPI, { ConnectAuthorParams, DEFAULT_AUTHOR_PAPERS_SIZE } from '../a
 import ProfileInfoAPI, { AwardParams, EducationParams, ExperienceParams } from '../api/profileInfo';
 import { GetAuthorPapersParams } from '../api/author/types';
 import { Paper, paperSchema } from '../model/paper';
-import { CVInfoType } from '../model/profile';
+import { CVInfoType } from '../model/profileInfo';
 import { CurrentUser } from '../model/currentUser';
 import { GLOBAL_DIALOG_TYPE } from '../components/dialog/reducer';
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';

@@ -1,7 +1,7 @@
 import { CancelToken } from 'axios';
 import { normalize } from 'normalizr';
 import PlutoAxios from './pluto';
-import { Profile, profileSchema, Award, Education, Experience } from '../model/profile';
+import { ProfileInfo, profileSchema, Award, Education, Experience } from '../model/profileInfo';
 import { PaginationResponseV2 } from './types/common';
 
 export interface CvBaseInfo {
@@ -36,11 +36,11 @@ class ProfileInfoAPI extends PlutoAxios {
     authorId: string,
     cancelToken?: CancelToken
   ): Promise<{
-    entities: { profiles: { [authorId: string]: Profile } };
+    entities: { profiles: { [authorId: string]: ProfileInfo } };
     result: string;
   }> {
     const res = await this.get(`/authors/${authorId}/information`, { cancelToken });
-    const profile: Profile = res.data.data.content;
+    const profile: ProfileInfo = res.data.data.content;
     const idSafeProfile = {
       ...profile,
       authorId: String(profile.authorId),

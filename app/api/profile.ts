@@ -12,9 +12,11 @@ export type ProfileParams = {
 }
 
 class ProfileAPI extends PlutoAxios {
-  public async getProfile(profileId: string) {
-    const res = await this.get(`/profile/${profileId}`);
-    console.log(res.data);
+  public async createProfile(params: ProfileParams) {
+    const res = await this.post('/profiles/me', {
+      ...params,
+    });
+    
   }
 }
 

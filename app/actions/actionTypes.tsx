@@ -6,7 +6,7 @@ import { GetCollectionsResponse } from '../api/member';
 import { GLOBAL_DIALOG_TYPE } from '../components/dialog/reducer';
 import { Collection } from '../model/collection';
 import { Paper, PaperFigure } from '../model/paper';
-import { CVInfoType, Award, Education, Experience } from '../model/profile';
+import { CVInfoType, Award, Education, Experience } from '../model/profileInfo';
 import { PaperInCollection } from '../model/paperInCollection';
 import { SIGN_UP_STEP } from '../components/auth/signUp/types';
 import { OAuthCheckParams } from '../api/types/auth';

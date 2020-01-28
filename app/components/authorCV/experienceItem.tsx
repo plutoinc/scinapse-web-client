@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { Experience } from '../../model/profile';
+import { Experience } from '../../model/profileInfo';
 import { withStyles } from '../../helpers/withStylesHelper';
 import Icon from '../../icons';
 import ExperienceForm, { ExperienceFormState } from './experienceForm';

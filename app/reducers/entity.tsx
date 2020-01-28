@@ -6,7 +6,7 @@ import { Collection } from '../model/collection';
 import { Member } from '../model/member';
 import { Journal } from '../model/journal';
 import { PaperInCollection } from '../model/paperInCollection';
-import { Profile } from '../model/profile';
+import { ProfileInfo } from '../model/profileInfo';
 
 export interface NormalizedPaperListResponse {
   entities: { papers: { [paperId: string]: Paper } };
@@ -43,7 +43,7 @@ export interface AppEntities {
     [journalId: string]: Journal;
   };
   profiles: {
-    [authorId: string]: Profile;
+    [authorId: string]: ProfileInfo;
   };
 }
 

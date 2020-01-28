@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { AppState } from '../../reducers';
 import { Author } from '../../model/author/author';
-import { profileSchema, Profile, CVInfoType } from '../../model/profile';
+import { profileSchema, ProfileInfo, CVInfoType } from '../../model/profileInfo';
 import Icon from '../../icons';
 import AwardForm, { AwardFormState } from '../../components/authorCV/awardForm';
 import { postNewAuthorCVInfo, removeAuthorCvInfo } from '../../actions/author';
@@ -342,7 +342,7 @@ function mapStateToProps(state: AppState, ownProps: AuthorCvSectionProps) {
   return {
     layout: state.layout,
     currentUser: state.currentUser,
-    profile: denormalize(ownProps.author.id, profileSchema, state.entities) as Profile | undefined,
+    profile: denormalize(ownProps.author.id, profileSchema, state.entities) as ProfileInfo | undefined,
   };
 }
 

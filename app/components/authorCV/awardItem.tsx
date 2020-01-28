@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Icon from '../../icons';
 import PlutoAxios from '../../api/pluto';
 import { updateAuthorCvInfo } from '../../actions/author';
-import { Award } from '../../model/profile';
+import { Award } from '../../model/profileInfo';
 import AwardForm, { AwardFormState } from './awardForm';
 import alertToast from '../../helpers/makePlutoToastAction';
 import { withStyles } from '../../helpers/withStylesHelper';

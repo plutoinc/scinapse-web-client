@@ -3,7 +3,7 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '../../helpers/withStylesHelper';
 import Icon from '../../icons';
-import { Education } from '../../model/profile';
+import { Education } from '../../model/profileInfo';
 import EducationForm, { EducationFormState } from './educationForm';
 import PlutoAxios from '../../api/pluto';
 import alertToast from '../../helpers/makePlutoToastAction';
