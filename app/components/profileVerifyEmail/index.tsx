@@ -5,16 +5,16 @@ import { useLocation } from 'react-router-dom';
 import QueryString from 'qs';
 const s = require('./profileVerifyEmail.scss');
 
-type QueryParams = {
+export type ProfileEmailQueryParams = {
   aid?: string;
 }
 
 const ProfileVerifyEmail: FC = () => {
   const location = useLocation();
 
-  const queryParams: QueryParams = useMemo(() => {
+  const queryParams: ProfileEmailQueryParams = useMemo(() => {
     return QueryString.parse(location.search.split('?')[1])
-  }, [location.search])
+  }, [location.search]);
 
   return (
     <>
@@ -24,7 +24,7 @@ const ProfileVerifyEmail: FC = () => {
             Verify by email
           </h2>
           <ProfileVerifyEmailForm
-            aid={queryParams.aid}
+            queryParams={queryParams}
           />
         </div>
       </div>

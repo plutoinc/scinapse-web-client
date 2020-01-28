@@ -33,9 +33,11 @@ const ProfileLanding: FC = () => {
   useEffect(() => {
     const queryString = location.search.split('?')[1];
     const { aid } = QueryString.parse(queryString) as ProfileLandingQuery;
-    AffiliationAPI.getAffiliation(aid).then(profileAff => {
-      console.log(profileAff.domains);
-    });
+    if (aid) {
+      AffiliationAPI.getAffiliation(aid).then(profileAff => {
+        console.log(profileAff.domains);
+      }); 
+    }
   }, [location.search]);
 
   return (

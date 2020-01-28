@@ -8,10 +8,13 @@ import classNames from 'classnames';
 import { Button } from '@pluto_network/pluto-design-elements';
 import Icon from '../../icons';
 import { useHistory } from 'react-router-dom';
+import { ProfileEmailQueryParams } from '../profileVerifyEmail';
+import { ProfileAffiliation } from '../../model/profileAffiliation';
+import affiliationAPI from '../../api/affiliation';
 const s = require('./profileVerifyEmailForm.scss');
 
 type ProfileVerifyEmailFormProps = {
-  aid?: string;
+  queryParams: ProfileEmailQueryParams;
 }
 
 type ProfileVerifyEmailFormValues = {
@@ -28,24 +31,24 @@ function formatAffiliation(value?: Affiliation | SuggestAffiliation | string) {
   return value;
 }
 
-function getDomainPostfixByAffiliation(affiliation: Affiliation | SuggestAffiliation) {
-  // test case: POSTECH for available affiliation
-  if ((affiliation as SuggestAffiliation).affiliationId === '123900574') {
-    return 'postech.ac.kr';
-  }
-  return '';
-}
-
 const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
-  const { aid } = props;
+  const { queryParams } = props;
   const [affiliationSelected, setAffiliationSelected] = useState<boolean>(false);
+  const [profileAffiliation, setProfileAffiliation] = useState<ProfileAffiliation | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const history = useHistory();
 
   useEffect(() => {
-    // search affiliation with aid;
-    console.log(aid);
-  }, [aid])
+    async function fetchProfileAffiliation () {
+      if (queryParams.aid) {
+        const profileAffiliation = await affiliationAPI.getAffiliation(queryParams.aid);
+        if (profileAffiliation) {
+          setProfileAffiliation(profileAffiliation);
+        }
+      }
+    }
+    fetchProfileAffiliation();
+  }, [queryParams.aid]);
 
   const initialValues: ProfileVerifyEmailFormValues = {
     affiliation: {
@@ -69,11 +72,15 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
         initialValues={initialValues}
         onSubmit={handleSubmit}
       >
-        {({ values, errors, touched, submitForm }) => { 
-          if (!affiliationSelected && (values.affiliation as SuggestAffiliation).affiliationId) {
+        {({ values, errors, touched, submitForm, setFieldValue }) => { 
+          if (profileAffiliation?.domains && profileAffiliation.domains.length > 0 && (values.affiliation as Affiliation).id !== profileAffiliation.id) {
+            const { id, name, nameAbbrev } = profileAffiliation;
             setAffiliationSelected(true);
-          } else if (affiliationSelected && !(values.affiliation as SuggestAffiliation).affiliationId) {
-            setAffiliationSelected(false);
+            setFieldValue('affiliation', {
+              id,
+              name,
+              nameAbbrev,
+            })
           }
           return (
             <Form>
@@ -90,7 +97,7 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
                       [s.hasError]: !!errors.affiliation && !!touched.affiliation,
                     })}
                     errorWrapperClassName={s.affiliationErrorMsg}
-                    disabled={isLoading}
+                    disabled={isLoading || profileAffiliation}
                   />
                 </div>
               </div>
@@ -116,8 +123,8 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
                 <div className={s.formWrapper}>
                   <span className={s.emailDomainPostfixLabel}>
                     {
-                      (values.affiliation as SuggestAffiliation).affiliationId
-                        && `@ ${getDomainPostfixByAffiliation(values.affiliation)}`
+                      profileAffiliation
+                        && `@ ${profileAffiliation.domains[0].domain}`
                     }
                   </span>
                 </div>
