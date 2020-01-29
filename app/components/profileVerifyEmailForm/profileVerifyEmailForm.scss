@@ -38,6 +38,7 @@
   cursor: auto;
 
   &:disabled {
+    color: $gray500;
     border-color: $gray400;
     cursor: not-allowed;
   }

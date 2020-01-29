@@ -19,7 +19,7 @@ type ProfileVerifyEmailFormProps = {
 
 type ProfileVerifyEmailFormValues = {
   affiliation: Affiliation | SuggestAffiliation;
-  email: string;
+  emailPrefix: string;
 }
 
 function formatAffiliation(value?: Affiliation | SuggestAffiliation | string) {
@@ -56,7 +56,7 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
       name: '',
       nameAbbrev: null,
     },
-    email: '',
+    emailPrefix: '',
   }
 
   const handleSubmit = () => {
@@ -115,7 +115,7 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
                     placeholder="Email"
                     className={classNames({
                       [s.inputForm]: true,
-                      [s.hasError]: !!errors.email && touched.email,
+                      [s.hasError]: !!errors.emailPrefix && touched.emailPrefix,
                     })}
                     disabled={!affiliationSelected || isLoading}
                   />

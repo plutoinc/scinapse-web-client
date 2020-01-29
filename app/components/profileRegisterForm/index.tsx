@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react';
-import { Formik, Form, Field, FormikProps, FormikConfig } from 'formik';
+import { Formik, Form, Field, FormikProps } from 'formik';
 import { SuggestAffiliation } from '../../api/suggest';
 import { Affiliation } from '../../model/affiliation';
 import { useSelector } from 'react-redux';
@@ -124,8 +124,12 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
 
   const handleSubmit = (values: ProfileRegisterFormValues) => {
     const { id: affiliation_id, name: affiliation_name } = values.affiliation as Affiliation
+    if (!affiliation_id || !affiliation_name) {
+      return;
+    }
+
     profileAPI.createProfile({
-      affiliation_id: affiliation_id || '',
+      affiliation_id,
       affiliation_name,
       bio: ' ',
       email: currentUser.email,
