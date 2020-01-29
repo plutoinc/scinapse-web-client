@@ -33,6 +33,36 @@
   margin-left: 12px;
 }
 
+.emailPrefixInputCotainer {
+  display: flex;
+  flex-flow: row nowrap;
+  position: relative;
+
+  .inputForm {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  i {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 0 8px;
+    width: 16px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    color: $gray700;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
 .inputForm {
   @extend %base-input-style;
   cursor: auto;
@@ -42,6 +72,19 @@
     border-color: $gray400;
     cursor: not-allowed;
   }
+}
+
+.selectForm {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  display: inline-flex;
+  padding: 0 32px 0 16px;
+  border-color: $gray500;
+  border-radius: 0 5px 5px 0;
+  border-left: 0;
+  background-color: $gray200;
+  color: $gray700;
+  cursor: pointer;
 }
 
 .formLabel {

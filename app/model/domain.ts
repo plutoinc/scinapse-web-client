@@ -1,4 +1,4 @@
 export type Domain = {
-  id: string;
+  id: number | null;
   domain: string;
 }

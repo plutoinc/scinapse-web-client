@@ -10,7 +10,7 @@ import Icon from '../../icons';
 import { useHistory } from 'react-router-dom';
 import { ProfileEmailQueryParams } from '../profileVerifyEmail';
 import { ProfileAffiliation } from '../../model/profileAffiliation';
-import affiliationAPI from '../../api/affiliation';
+import AffiliationAPI from '../../api/affiliation';
 const s = require('./profileVerifyEmailForm.scss');
 
 type ProfileVerifyEmailFormProps = {
@@ -20,6 +20,7 @@ type ProfileVerifyEmailFormProps = {
 type ProfileVerifyEmailFormValues = {
   affiliation: Affiliation | SuggestAffiliation;
   emailPrefix: string;
+  domain: number;
 }
 
 function formatAffiliation(value?: Affiliation | SuggestAffiliation | string) {
@@ -31,20 +32,22 @@ function formatAffiliation(value?: Affiliation | SuggestAffiliation | string) {
   return value;
 }
 
+
 const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
   const { queryParams } = props;
   const [affiliationSelected, setAffiliationSelected] = useState<boolean>(false);
   const [profileAffiliation, setProfileAffiliation] = useState<ProfileAffiliation | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const history = useHistory();
 
   useEffect(() => {
     async function fetchProfileAffiliation () {
       if (queryParams.aid) {
-        const profileAffiliation = await affiliationAPI.getAffiliation(queryParams.aid);
+        const profileAffiliation = await AffiliationAPI.getAffiliation(queryParams.aid);
         if (profileAffiliation) {
           setProfileAffiliation(profileAffiliation);
         }
+        setIsLoading(false);
       }
     }
     fetchProfileAffiliation();
@@ -57,13 +60,22 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
       nameAbbrev: null,
     },
     emailPrefix: '',
+    domain: -1,
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async (values: ProfileVerifyEmailFormValues) => {
+    const { affiliation: inputAffiliation, emailPrefix, domain: domainId } = values;
+    const affiliation = inputAffiliation as Affiliation;
     setIsLoading(true);
-    setTimeout(() => {
-      history.push('/profile/new');
-    }, 1000);
+    const domainName = profileAffiliation?.domains.filter(domain => (domain.id === Number(domainId)))[0].domain;
+    if (affiliation.id && domainId && domainName) {
+      const res = await AffiliationAPI.verifyAffiliation({
+        affiliation_id: affiliation.id,
+        affiliation_domain_id: domainId,
+        email: `${emailPrefix}@${domainName}`,
+      })
+    }
+    setIsLoading(false);
   }
 
   return (
@@ -74,13 +86,14 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
       >
         {({ values, errors, touched, submitForm, setFieldValue }) => { 
           if (profileAffiliation?.domains && profileAffiliation.domains.length > 0 && (values.affiliation as Affiliation).id !== profileAffiliation.id) {
-            const { id, name, nameAbbrev } = profileAffiliation;
+            const { id, name, nameAbbrev, domains } = profileAffiliation;
             setAffiliationSelected(true);
             setFieldValue('affiliation', {
               id,
               name,
               nameAbbrev,
             })
+            setFieldValue('domain', domains[0].id );
           }
           return (
             <Form>
@@ -90,7 +103,6 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
                   <Field
                     name="affiliation"
                     component={AffiliationSelectBox}
-                    placeholder="Affiliation"
                     format={formatAffiliation}
                     className={classNames({
                       [s.inputForm]: true,
@@ -110,23 +122,32 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
               >
                 <div className={s.formWrapper}>
                   <label className={s.formLabel}>Email</label>
-                  <Field
-                    name="emailPrefix"
-                    placeholder="Email"
-                    className={classNames({
-                      [s.inputForm]: true,
-                      [s.hasError]: !!errors.emailPrefix && touched.emailPrefix,
-                    })}
-                    disabled={!affiliationSelected || isLoading}
-                  />
-                </div>
-                <div className={s.formWrapper}>
-                  <span className={s.emailDomainPostfixLabel}>
-                    {
-                      profileAffiliation
-                        && `@ ${profileAffiliation.domains[0].domain}`
-                    }
-                  </span>
+                  <div className={s.emailPrefixInputCotainer}>
+                    <Field
+                      name="emailPrefix"
+                      placeholder="Email"
+                      className={classNames({
+                        [s.inputForm]: true,
+                        [s.hasError]: !!errors.emailPrefix && touched.emailPrefix,
+                      })}
+                      disabled={!affiliationSelected || isLoading}
+                    />
+                    <Field
+                      component="select"
+                      name="domain"
+                      className={s.selectForm}
+                    >
+                      {
+                        profileAffiliation?.domains.map(domain => (
+                          domain.id &&
+                            <option key={domain.id} value={domain.id}>
+                              @{domain.domain}
+                            </option>
+                        ))
+                      }
+                    </Field>
+                    <Icon icon="ARROW_DOWN"/>
+                  </div>
                 </div>
               </div>
               <Button
