@@ -6,7 +6,6 @@ import { GetCollectionsResponse } from '../api/member';
 import { GLOBAL_DIALOG_TYPE } from '../components/dialog/reducer';
 import { Collection } from '../model/collection';
 import { Paper, PaperFigure } from '../model/paper';
-import { CVInfoType, Award, Education, Experience } from '../model/profileInfo';
 import { PaperInCollection } from '../model/paperInCollection';
 import { SIGN_UP_STEP } from '../components/auth/signUp/types';
 import { OAuthCheckParams } from '../api/types/auth';
@@ -141,22 +140,9 @@ export enum ACTION_TYPES {
   AUTHOR_SHOW_SUCCEEDED_GET_AUTHOR = 'AUTHOR_SHOW_SUCCEEDED_GET_AUTHOR',
   AUTHOR_SHOW_FAILED_GET_AUTHOR = 'AUTHOR_SHOW_FAILED_GET_AUTHOR',
   AUTHOR_SHOW_SUCCEEDED_GET_CO_AUTHORS = 'AUTHOR_SHOW_SUCCEEDED_GET_CO_AUTHORS',
-  AUTHOR_SHOW_SUCCEEDED_GET_PROFILE = 'AUTHOR_SHOW_SUCCEEDED_GET_PROFILE',
   AUTHOR_SHOW_START_TO_GET_PAPERS = 'AUTHOR_SHOW_START_TO_GET_PAPERS',
   AUTHOR_SHOW_FAILED_TO_GET_PAPERS = 'AUTHOR_SHOW_FAILED_TO_GET_PAPERS',
   AUTHOR_SHOW_SUCCEEDED_TO_GET_PAPERS = 'AUTHOR_SHOW_SUCCEEDED_TO_GET_PAPERS',
-  AUTHOR_SHOW_TOGGLE_CONNECT_MEMBER_DIALOG = 'AUTHOR_SHOW_TOGGLE_CONNECT_MEMBER_DIALOG',
-  AUTHOR_SHOW_START_TO_CONNECT_AUTHOR = 'AUTHOR_SHOW_START_TO_CONNECT_AUTHOR',
-  AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR = 'AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR',
-  AUTHOR_SHOW_FAIL_TO_CONNECT_AUTHOR = 'AUTHOR_SHOW_FAIL_TO_CONNECT_AUTHOR',
-  AUTHOR_SHOW_START_TO_ADD_PROFILE_CV_DATA = 'AUTHOR_SHOW_START_TO_ADD_PROFILE_CV_DATA',
-  AUTHOR_SHOW_SUCCEEDED_TO_ADD_PROFILE_CV_DATA = 'AUTHOR_SHOW_SUCCEEDED_TO_ADD_PROFILE_CV_DATA',
-  AUTHOR_SHOW_FAIL_TO_ADD_PROFILE_CV_DATA = 'AUTHOR_SHOW_FAIL_TO_ADD_PROFILE_CV_DATA',
-  AUTHOR_SHOW_START_TO_UPDATE_PROFILE_CV_DATA = 'AUTHOR_SHOW_START_TO_UPDATE_PROFILE_CV_DATA',
-  AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_CV_DATA = 'AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_CV_DATA',
-  AUTHOR_SHOW_START_TO_REMOVE_PROFILE_CV_DATA = 'AUTHOR_SHOW_START_TO_REMOVE_PROFILE_CV_DATA',
-  AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA = 'AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA',
-  AUTHOR_SHOW_FAIL_TO_REMOVE_PROFILE_CV_DATA = 'AUTHOR_SHOW_FAIL_TO_REMOVE_PROFILE_CV_DATA',
 
   // tslint:disable-next-line:max-line-length
   CONNECTED_AUTHOR_SHOW_START_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST = 'CONNECTED_AUTHOR_SHOW_START_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST',
@@ -164,9 +150,6 @@ export enum ACTION_TYPES {
   CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST = 'CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST',
   // tslint:disable-next-line:max-line-length
   CONNECTED_AUTHOR_SHOW_FAILED_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST = 'CONNECTED_AUTHOR_SHOW_FAILED_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST',
-  CONNECTED_AUTHOR_SHOW_START_TO_UPDATE_PROFILE_DATA = 'CONNECTED_AUTHOR_SHOW_START_TO_UPDATE_PROFILE_DATA',
-  CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_DATA = 'CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_DATA',
-  CONNECTED_AUTHOR_SHOW_FAILED_TO_UPDATE_PROFILE_DATA = 'CONNECTED_AUTHOR_SHOW_FAILED_TO_UPDATE_PROFILE_DATA',
   // tslint:disable-next-line:max-line-length
   CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA = 'CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA',
   // tslint:disable-next-line:max-line-length
@@ -331,18 +314,6 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAILED_TO_LOAD_DATA_FOR_PAGE, payload });
   },
 
-  toggleConnectAuthorDialog() {
-    return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_TOGGLE_CONNECT_MEMBER_DIALOG });
-  },
-
-  startToConnectAuthor() {
-    return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_START_TO_CONNECT_AUTHOR });
-  },
-
-  succeedToConnectAuthor(payload: { authorId: string }) {
-    return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR, payload });
-  },
-
   succeedToUpdateAuthorRepresentativePapers(payload: { papers: Paper[]; authorId: string }) {
     return createAction({
       type: ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_CHANGE_REPRESENTATIVE_PAPERS,
@@ -352,17 +323,6 @@ export const ActionCreators = {
 
   signOut() {
     return createAction({ type: ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT });
-  },
-
-  failToConnectAuthor() {
-    return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_CONNECT_AUTHOR });
-  },
-
-  getProfile(payload: { authorId: string }) {
-    return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_PROFILE,
-      payload,
-    });
   },
 
   getCoAuthors(payload: { coAuthorIds: string[] }) {
@@ -442,24 +402,6 @@ export const ActionCreators = {
   failedToAddPaperToAuthorPaperList() {
     return createAction({
       type: ACTION_TYPES.CONNECTED_AUTHOR_SHOW_FAILED_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST,
-    });
-  },
-
-  startToUpdateProfileData() {
-    return createAction({
-      type: ACTION_TYPES.CONNECTED_AUTHOR_SHOW_START_TO_UPDATE_PROFILE_DATA,
-    });
-  },
-
-  succeededToUpdateProfileData() {
-    return createAction({
-      type: ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_DATA,
-    });
-  },
-
-  failedToUpdateProfileData() {
-    return createAction({
-      type: ACTION_TYPES.CONNECTED_AUTHOR_SHOW_FAILED_TO_UPDATE_PROFILE_DATA,
     });
   },
 
@@ -937,70 +879,8 @@ export const ActionCreators = {
     });
   },
 
-  startToAddProfileCvData(payload: { CVType: keyof CVInfoType }) {
-    return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_ADD_PROFILE_CV_DATA,
-      payload,
-    });
-  },
-
-  succeedToAddProfileCvData(payload: {
-    authorId: string;
-    cvInfoType: keyof CVInfoType;
-    cvInformation: Award | Education | Experience;
-  }) {
-    return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_ADD_PROFILE_CV_DATA,
-      payload,
-    });
-  },
-
-  failToAddProfileCvData() {
-    return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_ADD_PROFILE_CV_DATA });
-  },
-
-  startToUpdateProfileCvData(payload: { CVType: keyof CVInfoType }) {
-    return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_UPDATE_PROFILE_CV_DATA,
-      payload,
-    });
-  },
-
-  succeededToUpdateProfileCvData(payload: {
-    authorId: string;
-    cvInfoType: keyof CVInfoType;
-    cvInformation: Award | Education | Experience;
-  }) {
-    return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_CV_DATA,
-      payload,
-    });
-  },
-
-  startToRemoveProfileCvData(payload: { CVType: keyof CVInfoType }) {
-    return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_REMOVE_PROFILE_CV_DATA,
-      payload,
-    });
-  },
-
-  succeededToRemoveProfileCvData(payload: {
-    authorId: string;
-    cvInfoType: keyof CVInfoType;
-    cvInformation: Award | Education | Experience;
-  }) {
-    return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA,
-      payload,
-    });
-  },
-
   setHighlightContentInPaperShow(payload: { title: string; abstract: string }) {
     return createAction({ type: ACTION_TYPES.PAPER_SHOW_SET_HIGHLIGHT, payload });
-  },
-
-  failToRemoveProfileCvData() {
-    return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_REMOVE_PROFILE_CV_DATA });
   },
 
   addEntity(payload: {

@@ -16,7 +16,7 @@ interface EducationItemState {
 
 interface EducationItemProps {
   validConnection: boolean;
-  authorId: string;
+  profileId: string;
   education: Education;
   handleRemoveItem: (cvInfoId: string) => void;
   dispatch: Dispatch<any>;
@@ -109,11 +109,11 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
   };
 
   private handelUpdateEducation = async (params: EducationFormState) => {
-    const { dispatch, authorId } = this.props;
+    const { dispatch, profileId } = this.props;
 
     try {
       await dispatch(
-        updateAuthorCvInfo('educations', authorId, {
+        updateAuthorCvInfo('educations', profileId, {
           ...params,
           endDate: params.isCurrent ? null : params.endDate,
         })

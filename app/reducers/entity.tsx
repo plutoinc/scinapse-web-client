@@ -6,7 +6,6 @@ import { Collection } from '../model/collection';
 import { Member } from '../model/member';
 import { Journal } from '../model/journal';
 import { PaperInCollection } from '../model/paperInCollection';
-import { ProfileInfo } from '../model/profileInfo';
 
 export interface NormalizedPaperListResponse {
   entities: { papers: { [paperId: string]: Paper } };
@@ -42,9 +41,6 @@ export interface AppEntities {
   journals: {
     [journalId: string]: Journal;
   };
-  profiles: {
-    [authorId: string]: ProfileInfo;
-  };
 }
 
 export interface EntityState extends Readonly<AppEntities> {}
@@ -56,7 +52,6 @@ export const INITIAL_ENTITY_STATE: AppEntities = {
   collections: {},
   members: {},
   journals: {},
-  profiles: {},
 };
 
 export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actions): AppEntities {
@@ -158,35 +153,11 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       };
     }
 
-    case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_ADD_PROFILE_CV_DATA:
-    case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_CV_DATA:
-    case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA: {
-      const { authorId, cvInformation, cvInfoType } = action.payload;
-
-      return {
-        ...state,
-        profiles: {
-          ...state.profiles,
-          [authorId]: {
-            ...state.profiles[authorId],
-            [cvInfoType]: cvInformation,
-          },
-        },
-      };
-    }
-
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA: {
       const { authorId, profileImageUrl } = action.payload;
 
       return {
         ...state,
-        authors: {
-          ...state.authors,
-          [authorId]: {
-            ...state.authors[authorId],
-            profileImageUrl,
-          },
-        },
         members: {
           ...state.members,
           [authorId]: {

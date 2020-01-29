@@ -16,7 +16,7 @@ interface ExperienceItemState {
 
 interface ExperienceItemProps {
   validConnection: boolean;
-  authorId: string;
+  profileId: string;
   experience: Experience;
   handleRemoveItem: (cvInfoId: string) => void;
   dispatch: Dispatch<any>;
@@ -120,11 +120,11 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
   };
 
   private handelUpdateExperience = async (params: ExperienceFormState) => {
-    const { dispatch, authorId } = this.props;
+    const { dispatch, profileId } = this.props;
 
     try {
       await dispatch(
-        updateAuthorCvInfo('experiences', authorId, {
+        updateAuthorCvInfo('experiences', profileId, {
           ...params,
           endDate: params.isCurrent ? null : params.endDate,
         })

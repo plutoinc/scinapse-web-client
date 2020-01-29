@@ -16,7 +16,7 @@ interface AwardItemState {
 
 interface AwardItemProps {
   validConnection: boolean;
-  authorId: string;
+  profileId: string;
   award: Award;
   handleRemoveItem: (cvInfoId: string) => void;
   dispatch: Dispatch<any>;
@@ -96,10 +96,10 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
   };
 
   private handelUpdateAward = async (params: AwardFormState) => {
-    const { dispatch, authorId } = this.props;
+    const { dispatch, profileId } = this.props;
 
     try {
-      await dispatch(updateAuthorCvInfo('awards', authorId, params));
+      await dispatch(updateAuthorCvInfo('awards', profileId, params));
       this.handelToggleAwardEditForm();
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);

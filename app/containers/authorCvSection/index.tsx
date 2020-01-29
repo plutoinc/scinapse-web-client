@@ -1,11 +1,9 @@
-import * as React from 'react';
-import { denormalize } from 'normalizr';
+import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { AppState } from '../../reducers';
-import { Author } from '../../model/author/author';
-import { profileSchema, ProfileInfo, CVInfoType } from '../../model/profileInfo';
+import { CVInfoType, selectHydratedProfileInfo } from '../../model/profileInfo';
 import Icon from '../../icons';
 import AwardForm, { AwardFormState } from '../../components/authorCV/awardForm';
 import { postNewAuthorCVInfo, removeAuthorCvInfo } from '../../actions/author';
@@ -14,11 +12,11 @@ import ExperienceForm, { ExperienceFormState } from '../../components/authorCV/e
 import ExperienceItem from '../../components/authorCV/experienceItem';
 import EducationItem from '../../components/authorCV/educationItem';
 import AwardItem from '../../components/authorCV/awardItem';
-import { ActionCreators } from '../../actions/actionTypes';
 import alertToast from '../../helpers/makePlutoToastAction';
+import { Profile } from '../../model/profile';
 const styles = require('./authorCvSection.scss');
 
-interface AuthorCvSectionState {
+interface ProfileCvSectionState {
   isOpenAwardForm: boolean;
   isOpenEducationForm: boolean;
   isOpenExperienceForm: boolean;
@@ -31,13 +29,13 @@ type Props = ReturnType<typeof mapStateToProps> & {
   dispatch: Dispatch<any>;
 };
 
-interface AuthorCvSectionProps {
-  author: Author;
+interface ProfileCvSectionProps {
+  profile: Profile;
 }
 
-@withStyles<typeof AuthorCvSection>(styles)
-class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps & Props, AuthorCvSectionState> {
-  public constructor(props: AuthorCvSectionProps & Props) {
+@withStyles<typeof ProfileCvSection>(styles)
+class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props, ProfileCvSectionState> {
+  public constructor(props: ProfileCvSectionProps & Props) {
     super(props);
 
     this.state = {
@@ -110,14 +108,14 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps & Props, 
   };
 
   private getEducationList = () => {
-    const { profile, author } = this.props;
+    const { profile, profileInfo } = this.props;
 
-    if (profile && profile.educations && profile.educations.length > 0) {
-      const educations = profile.educations.map(education => {
+    if (profileInfo && profileInfo.educations && profileInfo.educations.length > 0) {
+      const educations = profileInfo.educations.map(education => {
         return (
           <EducationItem
             validConnection={this.isValidConnected()}
-            authorId={author.id}
+            profileId={profile.id}
             key={education.id}
             education={education}
             handleRemoveItem={this.handleDeleteCVInfo('educations')}
@@ -182,13 +180,13 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps & Props, 
   };
 
   private getExperienceList = () => {
-    const { profile, author } = this.props;
-    if (profile && profile.experiences && profile.experiences.length > 0) {
-      const experiences = profile.experiences.map(experience => {
+    const { profile, profileInfo } = this.props;
+    if (profileInfo && profileInfo.experiences && profileInfo.experiences.length > 0) {
+      const experiences = profileInfo.experiences.map(experience => {
         return (
           <ExperienceItem
             validConnection={this.isValidConnected()}
-            authorId={author.id}
+            profileId={profile.id}
             key={experience.id}
             experience={experience}
             handleRemoveItem={this.handleDeleteCVInfo('experiences')}
@@ -240,14 +238,14 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps & Props, 
   };
 
   private getAwardList = () => {
-    const { profile, author } = this.props;
+    const { profile, profileInfo } = this.props;
 
-    if (profile && profile.awards && profile.awards.length > 0) {
-      const awards = profile.awards.map(award => {
+    if (profileInfo && profileInfo.awards && profileInfo.awards.length > 0) {
+      const awards = profileInfo.awards.map(award => {
         return (
           <AwardItem
             validConnection={this.isValidConnected()}
-            authorId={author.id}
+            profileId={profile.id}
             key={award.id}
             award={award}
             handleRemoveItem={this.handleDeleteCVInfo('awards')}
@@ -261,32 +259,28 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps & Props, 
   };
 
   private isValidConnected = () => {
-    const { author, currentUser } = this.props;
-    return currentUser.isAuthorConnected && author.id === currentUser.authorId;
+    return this.props.profile.isEditable;
   };
 
   private handleDeleteCVInfo = (cvInfoType: keyof CVInfoType) => (cvInfoId: string) => {
-    const { author, dispatch } = this.props;
+    const { profile, dispatch } = this.props;
     if (confirm(`Do you really want to delete the ${cvInfoType.slice(0, -1)} data?`)) {
-      dispatch(removeAuthorCvInfo(cvInfoType, author.id, cvInfoId));
+      dispatch(removeAuthorCvInfo(cvInfoType, profile.id, cvInfoId));
     }
-
-    return null;
   };
 
   private handleAddCVInfo = (cvInfoType: keyof CVInfoType) => async (
     cvInfo: EducationFormState | ExperienceFormState | AwardFormState
   ) => {
-    const { author, dispatch } = this.props;
+    const { profile, dispatch } = this.props;
 
     this.handleLoadingFlagAuthorCVForm(cvInfoType);
 
     try {
-      await dispatch(postNewAuthorCVInfo(cvInfoType, author.id, cvInfo));
+      await dispatch(postNewAuthorCVInfo(cvInfoType, profile.id, cvInfo));
       this.handleLoadingFlagAuthorCVForm(cvInfoType);
       this.handleToggleAuthorCVForm(cvInfoType)();
     } catch (err) {
-      dispatch(ActionCreators.failToAddProfileCvData());
       this.handleLoadingFlagAuthorCVForm(cvInfoType);
       alertToast({
         type: 'error',
@@ -338,12 +332,12 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps & Props, 
   };
 }
 
-function mapStateToProps(state: AppState, ownProps: AuthorCvSectionProps) {
+function mapStateToProps(state: AppState, props: ProfileCvSectionProps) {
   return {
     layout: state.layout,
     currentUser: state.currentUser,
-    profile: denormalize(ownProps.author.id, profileSchema, state.entities) as ProfileInfo | undefined,
+    profileInfo: selectHydratedProfileInfo(state, props.profile.id),
   };
 }
 
-export default connect(mapStateToProps)(AuthorCvSection);
+export default connect(mapStateToProps)(ProfileCvSection);
