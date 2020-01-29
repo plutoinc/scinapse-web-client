@@ -16,7 +16,9 @@ class ProfileAPI extends PlutoAxios {
     const res = await this.post('/profiles/me', {
       ...params,
     });
-    
+    if (res) {
+      return res.data.data.content;
+    }
   }
 }
 

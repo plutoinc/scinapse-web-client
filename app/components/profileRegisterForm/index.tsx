@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react';
-import { Formik, Form, Field, FormikProps } from 'formik';
+import { Formik, Form, Field, FormikProps, FormikConfig } from 'formik';
 import { SuggestAffiliation } from '../../api/suggest';
 import { Affiliation } from '../../model/affiliation';
 import { useSelector } from 'react-redux';
@@ -13,6 +13,7 @@ import AuthInputBox from '../common/inputBox/authInputBox';
 import { ProfileRegisterParams } from '../profileRegister';
 import { ProfileAffiliation } from '../../model/profileAffiliation';
 import affiliationAPI from '../../api/affiliation';
+import profileAPI from '../../api/profile';
 const s = require('./profileRegisterForm.scss');
 
 type ProfileRegisterFormProps = {
@@ -120,7 +121,20 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
     },
     profileLink: '',
   };
-  const handleSubmit = () => {};
+
+  const handleSubmit = (values: ProfileRegisterFormValues) => {
+    const { id: affiliation_id, name: affiliation_name } = values.affiliation as Affiliation
+    profileAPI.createProfile({
+      affiliation_id: affiliation_id || '',
+      affiliation_name,
+      bio: ' ',
+      email: currentUser.email,
+      first_name: values.firstName,
+      last_name: values.lastName,
+      is_email_public: true,
+      web_page: ' '
+    });
+  };
 
   useEffect(() => {
     async function fetchAffiliation() {
@@ -132,7 +146,7 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
       }
     }
     fetchAffiliation();
-  }, [queryParams.aid])  
+  }, [queryParams.aid])
 
   return (
     <>
