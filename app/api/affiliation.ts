@@ -7,6 +7,16 @@ type VerificationParams = {
   email: string;
 }
 
+type TokenVerificationRes = {
+  affiliation: ProfileAffiliation;
+  affiliationDomain: {
+    id: string;
+    domain: string;
+  };
+  email: string;
+  isMember: boolean;
+}
+
 class AffiliationAPI extends PlutoAxios {
   public async getAffiliation(affiliationId: string): Promise<ProfileAffiliation> {
     const { data } = await this.get(`/affiliations/${affiliationId}`);
@@ -16,6 +26,11 @@ class AffiliationAPI extends PlutoAxios {
   public async verifyAffiliation(params: VerificationParams) {
     const { data } = await this.post(`/affiliation-verification/token`, params);
     return data.data.content;
+  }
+
+  public async verifyByToken(token: string) {
+    const { data } = await this.get(`/affiliation-verification/token?token=${token}`);
+    return data.data.content as TokenVerificationRes;
   }
 }
 

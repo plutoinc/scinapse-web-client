@@ -7,7 +7,6 @@ import { withStyles } from '../../helpers/withStylesHelper';
 import classNames from 'classnames';
 import { Button } from '@pluto_network/pluto-design-elements';
 import Icon from '../../icons';
-import { useHistory } from 'react-router-dom';
 import { ProfileEmailQueryParams } from '../profileVerifyEmail';
 import { ProfileAffiliation } from '../../model/profileAffiliation';
 import AffiliationAPI from '../../api/affiliation';
@@ -38,7 +37,6 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
   const [affiliationSelected, setAffiliationSelected] = useState<boolean>(false);
   const [profileAffiliation, setProfileAffiliation] = useState<ProfileAffiliation | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const history = useHistory();
 
   useEffect(() => {
     async function fetchProfileAffiliation () {
@@ -74,6 +72,9 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
         affiliation_domain_id: domainId,
         email: `${emailPrefix}@${domainName}`,
       })
+      if (res) {
+        console.log('Email sent!')
+      }
     }
     setIsLoading(false);
   }

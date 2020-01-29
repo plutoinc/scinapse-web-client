@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useMemo } from 'react';
 import { Formik, Form, Field, FormikProps } from 'formik';
 import { SuggestAffiliation } from '../../api/suggest';
 import { Affiliation } from '../../model/affiliation';
@@ -12,9 +12,11 @@ import { Button } from '@pluto_network/pluto-design-elements';
 import AuthInputBox from '../common/inputBox/authInputBox';
 import { ProfileRegisterParams } from '../profileRegister';
 import { ProfileAffiliation } from '../../model/profileAffiliation';
-import affiliationAPI from '../../api/affiliation';
+import AffiliationAPI, { TokenVerificationRes } from '../../api/affiliation';
 import profileAPI from '../../api/profile';
 const s = require('./profileRegisterForm.scss');
+
+type ProfileRegisterStatus = 'NOT_SET' | 'MEMBER_PROFILE' | 'NEED_LOGIN' | 'PROFILE';
 
 type ProfileRegisterFormProps = {
   queryParams: ProfileRegisterParams;
@@ -107,7 +109,17 @@ const AffiliationInputField: FC<{ formikProps: FormikProps<ProfileRegisterFormVa
 const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
   const { queryParams } = props;
   const currentUser = useSelector<AppState, CurrentUser>(state => state.currentUser);
-  const [profileAffiliation, setProfileAffiliation] = useState<ProfileAffiliation | null>(null);
+  const [verificationState, setVerificationState] = useState<TokenVerificationRes | null>(null);
+
+  const formStatus: ProfileRegisterStatus = useMemo(() => {
+    if (!verificationState) return 'NOT_SET';
+    if (verificationState.isMember && currentUser.isLoggedIn) {
+      return 'PROFILE';
+    } else if (verificationState.isMember && !currentUser.isLoggedIn) {
+      return 'NEED_LOGIN';
+    }
+    return 'MEMBER_PROFILE';
+  }, [currentUser, verificationState]);
 
   const initialValues: ProfileRegisterFormValues = {
     email: currentUser.email || '',
@@ -121,6 +133,16 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
     },
     profileLink: '',
   };
+
+  useEffect(() => {
+    AffiliationAPI.verifyByToken(queryParams.token).then(res => {
+      setVerificationState(res);
+    });
+  }, [queryParams.token, currentUser]);
+
+  useEffect(() => {
+    console.log(formStatus);
+  }, [formStatus]);
 
   const handleSubmit = (values: ProfileRegisterFormValues) => {
     const { id: affiliation_id, name: affiliation_name } = values.affiliation as Affiliation
@@ -140,18 +162,6 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
     });
   };
 
-  useEffect(() => {
-    async function fetchAffiliation() {
-      if (queryParams.aid) {
-        const affiliation = await affiliationAPI.getAffiliation(queryParams.aid);
-        if (affiliation) {
-          setProfileAffiliation(affiliation);
-        }
-      }
-    }
-    fetchAffiliation();
-  }, [queryParams.aid])
-
   return (
     <>
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
@@ -163,7 +173,7 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
               <NameInputFields />
               <AffiliationInputField
                 formikProps={formikProps}
-                profileAffiliation={profileAffiliation}
+                profileAffiliation={verificationState && verificationState?.affiliation}
               />
               <div className={s.formRow}>
                 {isLoggedIn ? (
