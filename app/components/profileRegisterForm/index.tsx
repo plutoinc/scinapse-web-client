@@ -1,109 +1,37 @@
 import React, { FC, useState, useEffect, useMemo } from 'react';
-import { Formik, Form, Field, FormikProps } from 'formik';
+import { Formik, Form } from 'formik';
 import { SuggestAffiliation } from '../../api/suggest';
 import { Affiliation } from '../../model/affiliation';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../reducers';
 import { CurrentUser } from '../../model/currentUser';
-import AffiliationSelectBox from '../dialog/components/modifyProfile/affiliationSelectBox';
 import { withStyles } from '../../helpers/withStylesHelper';
-import classNames from 'classnames';
 import { Button } from '@pluto_network/pluto-design-elements';
-import AuthInputBox from '../common/inputBox/authInputBox';
 import { ProfileRegisterParams } from '../profileRegister';
-import { ProfileAffiliation } from '../../model/profileAffiliation';
 import AffiliationAPI, { TokenVerificationRes } from '../../api/affiliation';
 import profileAPI from '../../api/profile';
+import EmailPasswordFields from './emailPasswordFields';
+import NameInputFields from './nameInputFields';
+import AffiliationInputField from './affiliationField';
 const s = require('./profileRegisterForm.scss');
 
-type ProfileRegisterStatus = 'NOT_SET' | 'MEMBER_PROFILE' | 'NEED_LOGIN' | 'PROFILE';
+type ProfileRegisterStatus =
+  'NOT_SET' | // NOT SET! NEED VERIFICATION
+  'NOT_A_MEMBER' | // NEED TO SIGNUP WITH CREATING PROFILE
+  'NEED_LOGIN' | // IS A USER! NEED TO LOGIN
+  'PROFILE'; // IS A USER! CONTINUE TO CREATE A PROFILE
 
 type ProfileRegisterFormProps = {
   queryParams: ProfileRegisterParams;
 }
 
-type ProfileRegisterFormValues = {
+export type ProfileRegisterFormValues = {
   email: string;
   password: string;
   firstName: string;
   lastName: string;
   affiliation: Affiliation | SuggestAffiliation;
   profileLink: string;
-};
-
-function formatAffiliation(value?: Affiliation | SuggestAffiliation | string) {
-  if (value && (value as Affiliation).name) {
-    return (value as Affiliation).name;
-  } else if (value && (value as SuggestAffiliation).keyword) {
-    return (value as SuggestAffiliation).keyword;
-  }
-  return value;
-}
-
-const EmailPasswordFields: FC<{ formikProps: FormikProps<ProfileRegisterFormValues> }> = props => {
-  const {} = props.formikProps;
-  return (
-    <>
-      <div className={s.formRow}>
-        <div className={s.formWrapper}>
-          <label className={s.formLabel}>Email</label>
-          <Field name="email" type="email" component={AuthInputBox} className={s.inputForm} iconName="EMAIL" />
-        </div>
-      </div>
-      <div className={s.formRow}>
-        <div className={s.formWrapper}>
-          <label className={s.formLabel}>Password</label>
-          <Field name="password" type="password" component={AuthInputBox} className={s.inputForm} iconName="PASSWORD" />
-        </div>
-      </div>
-    </>
-  );
-};
-
-const NameInputFields: FC = () => (
-  <div className={s.formRow}>
-    <div className={s.formWrapper}>
-      <label className={s.formLabel}>First Name</label>
-      <Field name="firstName" placeholder="First Name" className={s.inputForm} />
-    </div>
-    <div className={s.formWrapper}>
-      <label className={s.formLabel}>Last Name</label>
-      <Field name="lastName" placeholder="Last Name" className={s.inputForm} />
-    </div>
-  </div>
-);
-
-const AffiliationInputField: FC<{ formikProps: FormikProps<ProfileRegisterFormValues>, profileAffiliation: ProfileAffiliation | null }> = props => {
-  const { formikProps, profileAffiliation } = props;
-  const { values, errors, touched, setFieldValue } = formikProps;
-
-  if (profileAffiliation && (values.affiliation as Affiliation).id !== profileAffiliation.id) {
-    const { id, name, nameAbbrev } = profileAffiliation;
-    setFieldValue('affiliation', {
-      id,
-      name,
-      nameAbbrev
-    })
-  }
-
-  return (
-    <div className={s.formRow}>
-      <div className={s.formWrapper}>
-        <label className={s.formLabel}>Affiliation</label>
-        <Field
-          name="affiliation"
-          component={AffiliationSelectBox}
-          placeholder="Affiliation"
-          className={classNames({
-            [s.inputForm]: true,
-            [s.hasError]: !!errors.affiliation && !!touched.affiliation,
-          })}
-          errorWrapperClassName={s.affiliationErrorMsg}
-          format={formatAffiliation}
-        />
-      </div>
-    </div>
-  );
 };
 
 const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
@@ -118,11 +46,11 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
     } else if (verificationState.isMember && !currentUser.isLoggedIn) {
       return 'NEED_LOGIN';
     }
-    return 'MEMBER_PROFILE';
+    return 'NOT_A_MEMBER';
   }, [currentUser, verificationState]);
 
   const initialValues: ProfileRegisterFormValues = {
-    email: currentUser.email || '',
+    email: '',
     password: '',
     firstName: currentUser.firstName || '',
     lastName: currentUser.lastName || '',
@@ -169,12 +97,16 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
           const { isLoggedIn } = currentUser;
           return (
             <Form>
-              {isLoggedIn || <EmailPasswordFields formikProps={formikProps} />}
-              <NameInputFields />
+              <EmailPasswordFields
+                formikProps={formikProps}
+                needPwd={formStatus !== 'NOT_A_MEMBER'}
+                email={verificationState?.email}
+              />
               <AffiliationInputField
                 formikProps={formikProps}
                 profileAffiliation={verificationState && verificationState?.affiliation}
               />
+              <NameInputFields />
               <div className={s.formRow}>
                 {isLoggedIn ? (
                   <Button elementType="button" type="submit" color="blue">

@@ -7,7 +7,7 @@ type VerificationParams = {
   email: string;
 }
 
-type TokenVerificationRes = {
+export type TokenVerificationRes = {
   affiliation: ProfileAffiliation;
   affiliationDomain: {
     id: string;

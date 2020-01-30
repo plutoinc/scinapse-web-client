@@ -6,7 +6,7 @@ import QueryString from 'qs';
 const s = require('./profileRegiser.scss');
 
 export type ProfileRegisterParams = {
-  aid?: string;
+  token: string;
 }
 
 const ProfileRegister: FC = () => {

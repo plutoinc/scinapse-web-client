@@ -35,9 +35,10 @@
 .inputForm {
   @extend %base-input-style;
   cursor: auto;
+}
 
+.inputForm, input {
   &:disabled {
-    background-color: $gray400;
     border-color: $gray400;
     color: $gray500;
     cursor: not-allowed;
