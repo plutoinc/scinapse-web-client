@@ -151,8 +151,6 @@ export enum ACTION_TYPES {
   // tslint:disable-next-line:max-line-length
   CONNECTED_AUTHOR_SHOW_FAILED_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST = 'CONNECTED_AUTHOR_SHOW_FAILED_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST',
   // tslint:disable-next-line:max-line-length
-  CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA = 'CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA',
-  // tslint:disable-next-line:max-line-length
   CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_CHANGE_REPRESENTATIVE_PAPERS = 'CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_CHANGE_REPRESENTATIVE_PAPERS',
 
   COLLECTIONS_START_TO_GET_COLLECTIONS = 'COLLECTIONS_START_TO_GET_COLLECTIONS',
@@ -402,13 +400,6 @@ export const ActionCreators = {
   failedToAddPaperToAuthorPaperList() {
     return createAction({
       type: ACTION_TYPES.CONNECTED_AUTHOR_SHOW_FAILED_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST,
-    });
-  },
-
-  succeededToUpdateProfileImageData(payload: { authorId: string; profileImageUrl: string }) {
-    return createAction({
-      type: ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA,
-      payload,
     });
   },
 

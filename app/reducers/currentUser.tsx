@@ -47,11 +47,6 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
       };
     }
 
-    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA: {
-      const { profileImageUrl } = action.payload;
-      return { ...state, profileImageUrl: profileImageUrl };
-    }
-
     default:
       return state;
   }

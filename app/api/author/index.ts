@@ -6,6 +6,7 @@ import { GetAuthorPapersParams, AuthorPapersResponse, GetAuthorPaperResult } fro
 import { paperSchema, Paper } from '../../model/paper';
 import { PaginationResponseV2 } from '../types/common';
 import { getSafeAuthor, getIdSafePaper } from '../../helpers/getIdSafeData';
+import { profileEntitySchema } from '../../model/profile';
 
 export const DEFAULT_AUTHOR_PAPERS_SIZE = 10;
 
@@ -163,14 +164,15 @@ class AuthorAPI extends PlutoAxios {
     return normalizedData;
   }
 
-  public async updateAuthorProfileImage(authorId: string, profileImageData: FormData) {
-    const res = await this.put(`/authors/${authorId}/profile-image`, profileImageData, {
+  public async updateAuthorProfileImage(profileId: string, profileImageData: FormData) {
+    const res = await this.put(`/profiles/${profileId}/profile-image`, profileImageData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
+    const normalizedData = normalize(res.data.data.content, profileEntitySchema);
 
-    return res.data;
+    return normalizedData;
   }
 
   public async getCoAuthors(
