@@ -54,9 +54,7 @@ class ProfileInfoAPI extends PlutoAxios {
     };
     const res = await this.post(`/profiles/${authorId}/educations`, finalParams);
     const data: PaginationResponseV2<Education> = res.data;
-    const education = data.data.content;
-    const safeEducation = { ...education, institutionId: String(education.institutionId) };
-    return safeEducation;
+    return data.data.content;
   };
 
   public postNewExperienceInAuthor = async (authorId: string, params: ExperienceParams) => {
@@ -73,9 +71,7 @@ class ProfileInfoAPI extends PlutoAxios {
     };
     const res = await this.post(`/profiles/${authorId}/experiences`, finalParams);
     const data: PaginationResponseV2<Experience> = res.data;
-    const experience = data.data.content;
-    const safeExperience = { ...experience, institutionId: String(experience.institutionId) };
-    return safeExperience;
+    return data.data.content;
   };
 
   public deleteAwardInAuthor = async (awardId: string) => {
@@ -87,17 +83,13 @@ class ProfileInfoAPI extends PlutoAxios {
   public deleteEducationInAuthor = async (educationId: string) => {
     const res = await this.delete(`/profiles/educations/${educationId}`);
     const data: PaginationResponseV2<Education> = res.data;
-    const education = data.data.content;
-    const safeEducation = { ...education, institutionId: String(education.institutionId) };
-    return safeEducation;
+    return data.data.content;
   };
 
   public deleteExperienceInAuthor = async (experienceId: string) => {
     const res = await this.delete(`/profiles/experiences/${experienceId}`);
     const data: PaginationResponseV2<Experience> = res.data;
-    const experience = data.data.content;
-    const safeExperience = { ...experience, institutionId: String(experience.institutionId) };
-    return safeExperience;
+    return data.data.content;
   };
 
   public updateAwardInAuthor = async (params: AwardParams) => {
@@ -124,9 +116,7 @@ class ProfileInfoAPI extends PlutoAxios {
     };
     const res = await this.put(`/profiles/educations/${finalParams.id}`, finalParams);
     const data: PaginationResponseV2<Education> = res.data;
-    const education = data.data.content;
-    const safeEducation = { ...education, institutionId: String(education.institutionId) };
-    return safeEducation;
+    return data.data.content;
   };
 
   public updateExperienceInAuthor = async (params: ExperienceParams) => {
@@ -143,9 +133,7 @@ class ProfileInfoAPI extends PlutoAxios {
     };
     const res = await this.put(`/profiles/experiences/${finalParams.id}`, finalParams);
     const data: PaginationResponseV2<Experience> = res.data;
-    const experience = data.data.content;
-    const safeExperience = { ...experience, institutionId: String(experience.institutionId) };
-    return safeExperience;
+    return data.data.content;
   };
 }
 

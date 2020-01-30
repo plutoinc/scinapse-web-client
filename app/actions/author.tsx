@@ -15,7 +15,6 @@ import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
 import { getAuthor, getCoAuthors, getAuthorPapers } from '../containers/authorShow/actions';
 import { CommonError } from '../model/error';
 import { AppThunkAction } from '../store/types';
-import { getProfileCVInformation } from './profileInfo';
 
 interface AddRemovePapersAndFetchPapersParams {
   authorId: string;
@@ -82,58 +81,55 @@ export function fetchAuthorShowRelevantData(params: FetchAuthorShowRelevantDataP
   };
 }
 
-export function postNewAuthorCVInfo(
+export async function postNewAuthorCVInfo(
   type: keyof CVInfoType,
   profileId: string,
   params: AwardParams | EducationParams | ExperienceParams
-): AppThunkAction {
-  return async dispatch => {
+) {
+  try {
     if (type === 'awards') {
-      await ProfileInfoAPI.postNewAwardInAuthor(profileId, params as AwardParams);
+      return await ProfileInfoAPI.postNewAwardInAuthor(profileId, params as AwardParams);
     } else if (type === 'educations') {
-      await ProfileInfoAPI.postNewEducationInAuthor(profileId, params as EducationParams);
+      return await ProfileInfoAPI.postNewEducationInAuthor(profileId, params as EducationParams);
     } else if (type === 'experiences') {
-      await ProfileInfoAPI.postNewExperienceInAuthor(profileId, params as ExperienceParams);
+      return await ProfileInfoAPI.postNewExperienceInAuthor(profileId, params as ExperienceParams);
     }
-    await dispatch(getProfileCVInformation(profileId));
-  };
+  } catch (err) {
+    alertToast({
+      type: 'error',
+      message: `Had an error to add ${type} data.`,
+    });
+  }
 }
 
-export function removeAuthorCvInfo(type: keyof CVInfoType, profileId: string, id: string): AppThunkAction {
-  return async dispatch => {
-    try {
-      if (type === 'awards') {
-        await ProfileInfoAPI.deleteAwardInAuthor(id);
-      } else if (type === 'educations') {
-        await ProfileInfoAPI.deleteEducationInAuthor(id);
-      } else if (type === 'experiences') {
-        await ProfileInfoAPI.deleteExperienceInAuthor(id);
-      }
-      await dispatch(getProfileCVInformation(profileId));
-    } catch (err) {
-      alertToast({
-        type: 'error',
-        message: `Had an error to delete ${type} data.`,
-      });
+export async function removeAuthorCvInfo(type: keyof CVInfoType, id: string) {
+  try {
+    if (type === 'awards') {
+      return await ProfileInfoAPI.deleteAwardInAuthor(id);
+    } else if (type === 'educations') {
+      return await ProfileInfoAPI.deleteEducationInAuthor(id);
+    } else if (type === 'experiences') {
+      return await ProfileInfoAPI.deleteExperienceInAuthor(id);
     }
-  };
+  } catch (err) {
+    alertToast({
+      type: 'error',
+      message: `Had an error to delete ${type} data.`,
+    });
+  }
 }
 
-export function updateAuthorCvInfo(
+export async function updateAuthorCvInfo(
   type: keyof CVInfoType,
-  profileId: string,
   params: AwardParams | EducationParams | ExperienceParams
-): AppThunkAction {
-  return async dispatch => {
-    if (type === 'awards') {
-      await ProfileInfoAPI.updateAwardInAuthor(params as AwardParams);
-    } else if (type === 'educations') {
-      await ProfileInfoAPI.updateEducationInAuthor(params as EducationParams);
-    } else if (type === 'experiences') {
-      await ProfileInfoAPI.updateExperienceInAuthor(params as ExperienceParams);
-    }
-    await dispatch(getProfileCVInformation(profileId));
-  };
+) {
+  if (type === 'awards') {
+    return await ProfileInfoAPI.updateAwardInAuthor(params as AwardParams);
+  } else if (type === 'educations') {
+    return await ProfileInfoAPI.updateEducationInAuthor(params as EducationParams);
+  } else if (type === 'experiences') {
+    return await ProfileInfoAPI.updateExperienceInAuthor(params as ExperienceParams);
+  }
 }
 
 export function updateProfileImage(authorId: string, formData: FormData) {

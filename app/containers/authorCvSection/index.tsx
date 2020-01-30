@@ -3,26 +3,30 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { AppState } from '../../reducers';
-import { CVInfoType, selectHydratedProfileInfo } from '../../model/profileInfo';
+import { CVInfoType } from '../../model/profileInfo';
 import Icon from '../../icons';
 import AwardForm, { AwardFormState } from '../../components/authorCV/awardForm';
-import { postNewAuthorCVInfo, removeAuthorCvInfo } from '../../actions/author';
+import { postNewAuthorCVInfo, removeAuthorCvInfo, updateAuthorCvInfo } from '../../actions/author';
 import EducationForm, { EducationFormState } from '../../components/authorCV/educationForm';
 import ExperienceForm, { ExperienceFormState } from '../../components/authorCV/experienceForm';
 import ExperienceItem from '../../components/authorCV/experienceItem';
 import EducationItem from '../../components/authorCV/educationItem';
 import AwardItem from '../../components/authorCV/awardItem';
-import alertToast from '../../helpers/makePlutoToastAction';
 import { Profile } from '../../model/profile';
+import { getProfileCVInformation } from '../../actions/profileInfo';
+import classNames from 'classnames';
+import ArticleSpinner from '../../components/common/spinner/articleSpinner';
 const styles = require('./authorCvSection.scss');
 
 interface ProfileCvSectionState {
+  profileInfo: CVInfoType;
   isOpenAwardForm: boolean;
   isOpenEducationForm: boolean;
   isOpenExperienceForm: boolean;
   isLoadingAwardForm: boolean;
   isLoadingEducationForm: boolean;
   isLoadingExperienceForm: boolean;
+  isLoadingPage: boolean;
 }
 
 type Props = ReturnType<typeof mapStateToProps> & {
@@ -45,12 +49,31 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
       isLoadingAwardForm: false,
       isLoadingEducationForm: false,
       isLoadingExperienceForm: false,
+      isLoadingPage: false,
+      profileInfo: { awards: [], educations: [], experiences: [] },
     };
   }
 
+  public componentDidMount() {
+    this.fetchProfileInfo(this.props.profile.id);
+  }
+
+  public componentWillReceiveProps(nextProps: ProfileCvSectionProps & Props) {
+    if (this.props.profile.id !== nextProps.profile.id) {
+      this.fetchProfileInfo(nextProps.profile.id);
+    }
+  }
+
   public render() {
+    const { isLoadingPage } = this.state;
     return (
-      <div className={styles.leftContentWrapper}>
+      <div
+        className={classNames({
+          [styles.leftContentWrapper]: true,
+          [styles.isLoadingPage]: isLoadingPage,
+        })}
+      >
+        {isLoadingPage && <ArticleSpinner className={styles.spinner} />}
         {this.getEducationArea()}
         {this.getExperienceArea()}
         {this.getAwardArea()}
@@ -58,14 +81,31 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
     );
   }
 
+  private fetchProfileInfo = async (profileId: string) => {
+    this.setState(state => ({ ...state, isLoadingPage: true }));
+    const profileInfo = await getProfileCVInformation(profileId);
+    if (profileInfo) {
+      this.setState(state => ({ ...state, profileInfo }));
+    }
+    this.setState(state => ({ ...state, isLoadingPage: false }));
+  };
+
   private getEducationArea = () => {
+    const { isLoadingEducationForm } = this.state;
+
     return (
-      <div className={styles.areaWrapper}>
+      <div
+        className={classNames({
+          [styles.areaWrapper]: true,
+          [styles.loadingSection]: isLoadingEducationForm,
+        })}
+      >
+        {isLoadingEducationForm && <ArticleSpinner className={styles.spinner} />}
         <div className={styles.sectionHeader}>
           <span className={styles.sectionTitle}>Education</span>
         </div>
         <div className={styles.sectionDescription} />
-        {this.isValidConnected() ? this.getEducationForm() : null}
+        {this.isValidConnected() && this.getEducationForm()}
         {this.getEducationList()}
       </div>
     );
@@ -108,7 +148,8 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
   };
 
   private getEducationList = () => {
-    const { profile, profileInfo } = this.props;
+    const { profile } = this.props;
+    const { profileInfo } = this.state;
 
     if (profileInfo && profileInfo.educations && profileInfo.educations.length > 0) {
       const educations = profileInfo.educations.map(education => {
@@ -118,6 +159,7 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
             profileId={profile.id}
             key={education.id}
             education={education}
+            onUpdate={this.handleUpdateCVInfo('educations')}
             handleRemoveItem={this.handleDeleteCVInfo('educations')}
           />
         );
@@ -130,8 +172,16 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
   };
 
   private getExperienceArea = () => {
+    const { isLoadingExperienceForm } = this.state;
+
     return (
-      <div className={styles.areaWrapper}>
+      <div
+        className={classNames({
+          [styles.areaWrapper]: true,
+          [styles.loadingSection]: isLoadingExperienceForm,
+        })}
+      >
+        {isLoadingExperienceForm && <ArticleSpinner className={styles.spinner} />}
         <div className={styles.sectionHeader}>
           <span className={styles.sectionTitle}>Experience</span>
         </div>
@@ -180,7 +230,9 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
   };
 
   private getExperienceList = () => {
-    const { profile, profileInfo } = this.props;
+    const { profile } = this.props;
+    const { profileInfo } = this.state;
+
     if (profileInfo && profileInfo.experiences && profileInfo.experiences.length > 0) {
       const experiences = profileInfo.experiences.map(experience => {
         return (
@@ -189,6 +241,7 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
             profileId={profile.id}
             key={experience.id}
             experience={experience}
+            onUpdate={this.handleUpdateCVInfo('experiences')}
             handleRemoveItem={this.handleDeleteCVInfo('experiences')}
           />
         );
@@ -201,8 +254,16 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
   };
 
   private getAwardArea = () => {
+    const { isLoadingAwardForm } = this.state;
+
     return (
-      <div className={styles.areaWrapper}>
+      <div
+        className={classNames({
+          [styles.areaWrapper]: true,
+          [styles.loadingSection]: isLoadingAwardForm,
+        })}
+      >
+        {isLoadingAwardForm && <ArticleSpinner className={styles.spinner} />}
         <div className={styles.sectionHeader}>
           <span className={styles.sectionTitle}>Award</span>
         </div>
@@ -238,7 +299,8 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
   };
 
   private getAwardList = () => {
-    const { profile, profileInfo } = this.props;
+    const { profile } = this.props;
+    const { profileInfo } = this.state;
 
     if (profileInfo && profileInfo.awards && profileInfo.awards.length > 0) {
       const awards = profileInfo.awards.map(award => {
@@ -248,6 +310,7 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
             profileId={profile.id}
             key={award.id}
             award={award}
+            onUpdate={this.handleUpdateCVInfo('awards')}
             handleRemoveItem={this.handleDeleteCVInfo('awards')}
           />
         );
@@ -262,36 +325,36 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
     return this.props.profile.isEditable;
   };
 
-  private handleDeleteCVInfo = (cvInfoType: keyof CVInfoType) => (cvInfoId: string) => {
-    const { profile, dispatch } = this.props;
-    if (confirm(`Do you really want to delete the ${cvInfoType.slice(0, -1)} data?`)) {
-      dispatch(removeAuthorCvInfo(cvInfoType, profile.id, cvInfoId));
+  private handleDeleteCVInfo = (type: keyof CVInfoType) => async (cvInfoId: string) => {
+    if (confirm(`Do you really want to delete the ${type.slice(0, -1)} data?`)) {
+      this.handleLoadingFlagAuthorCVForm(type);
+      const result = await removeAuthorCvInfo(type, cvInfoId);
+      this.setState(state => ({ ...state, profileInfo: { ...state.profileInfo, [type]: result } }));
+      this.handleLoadingFlagAuthorCVForm(type);
     }
   };
 
-  private handleAddCVInfo = (cvInfoType: keyof CVInfoType) => async (
+  private handleUpdateCVInfo = (type: keyof CVInfoType) => async (
     cvInfo: EducationFormState | ExperienceFormState | AwardFormState
   ) => {
-    const { profile, dispatch } = this.props;
+    const result = await updateAuthorCvInfo(type, cvInfo);
+    this.setState(state => ({ ...state, profileInfo: { ...state.profileInfo, [type]: result } }));
+  };
 
-    this.handleLoadingFlagAuthorCVForm(cvInfoType);
+  private handleAddCVInfo = (type: keyof CVInfoType) => async (
+    cvInfo: EducationFormState | ExperienceFormState | AwardFormState
+  ) => {
+    const { profile } = this.props;
 
-    try {
-      await dispatch(postNewAuthorCVInfo(cvInfoType, profile.id, cvInfo));
-      this.handleLoadingFlagAuthorCVForm(cvInfoType);
-      this.handleToggleAuthorCVForm(cvInfoType)();
-    } catch (err) {
-      this.handleLoadingFlagAuthorCVForm(cvInfoType);
-      alertToast({
-        type: 'error',
-        message: `Had an error to add ${cvInfoType} data.`,
-      });
-    }
+    this.handleLoadingFlagAuthorCVForm(type);
+    const result = await postNewAuthorCVInfo(type, profile.id, cvInfo);
+    this.setState(state => ({ ...state, profileInfo: { ...state.profileInfo, [type]: result } }));
+    this.handleLoadingFlagAuthorCVForm(type);
+    this.handleToggleAuthorCVForm(type)();
   };
 
   private handleToggleAuthorCVForm = (formType: keyof CVInfoType) => () => {
     const { isOpenAwardForm, isOpenEducationForm, isOpenExperienceForm } = this.state;
-
     switch (formType) {
       case 'awards':
         this.setState(prevState => ({ ...prevState, isOpenAwardForm: !isOpenAwardForm }));
@@ -332,11 +395,10 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
   };
 }
 
-function mapStateToProps(state: AppState, props: ProfileCvSectionProps) {
+function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
     currentUser: state.currentUser,
-    profileInfo: selectHydratedProfileInfo(state, props.profile.id),
   };
 }
 

@@ -15,7 +15,7 @@ export interface ExperienceFormState extends CvBaseInfo {
   description: string | null;
   position: string;
   startDate: string;
-  endDate: string;
+  endDate: string | null;
 }
 
 interface ExperienceFormProps {

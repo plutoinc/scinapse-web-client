@@ -7,11 +7,11 @@ import Icon from '../../icons';
 import ExperienceForm, { ExperienceFormState } from './experienceForm';
 import PlutoAxios from '../../api/pluto';
 import alertToast from '../../helpers/makePlutoToastAction';
-import { updateAuthorCvInfo } from '../../actions/author';
 const styles = require('./authorCVItem.scss');
 
 interface ExperienceItemState {
   isEditMode: boolean;
+  isLoading: boolean;
 }
 
 interface ExperienceItemProps {
@@ -19,6 +19,7 @@ interface ExperienceItemProps {
   profileId: string;
   experience: Experience;
   handleRemoveItem: (cvInfoId: string) => void;
+  onUpdate: (cvInfo: ExperienceFormState) => Promise<void>;
   dispatch: Dispatch<any>;
 }
 
@@ -29,6 +30,7 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
 
     this.state = {
       isEditMode: false,
+      isLoading: false,
     };
   }
 
@@ -115,20 +117,15 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
 
   private handelToggleExperienceEditForm = () => {
     const { isEditMode } = this.state;
-
     this.setState({ isEditMode: !isEditMode });
   };
 
   private handelUpdateExperience = async (params: ExperienceFormState) => {
-    const { dispatch, profileId } = this.props;
-
+    const { onUpdate } = this.props;
     try {
-      await dispatch(
-        updateAuthorCvInfo('experiences', profileId, {
-          ...params,
-          endDate: params.isCurrent ? null : params.endDate,
-        })
-      );
+      this.setState(state => ({ ...state, isLoading: true }));
+      await onUpdate({ ...params, endDate: params.isCurrent ? null : params.endDate });
+      this.setState(state => ({ ...state, isLoading: false }));
       this.handelToggleExperienceEditForm();
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
@@ -137,6 +134,7 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
         type: 'error',
         message: 'Had an error to add experience data.',
       });
+      this.setState(state => ({ ...state, isLoading: false }));
     }
   };
 }

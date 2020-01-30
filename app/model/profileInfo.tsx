@@ -1,7 +1,7 @@
 import { schema, denormalize } from 'normalizr';
 import { AppState } from '../reducers';
 
-export type ProfileInfo = { profileId: string } & CVInfoType;
+export type ProfileInfo = CVInfoType;
 
 export interface CVInfoType {
   awards: Award[];

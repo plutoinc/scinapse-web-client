@@ -1,7 +1,6 @@
 import { LoadDataParams } from '../../routes';
 import { ActionCreators } from '../../actions/actionTypes';
 import { fetchProfileData } from '../../actions/profile';
-import { getProfileCVInformation } from '../../actions/profileInfo';
 
 export async function fetchAuthorShowPageData(params: LoadDataParams<{ profileId: string }>) {
   const { dispatch, match } = params;
@@ -12,5 +11,5 @@ export async function fetchAuthorShowPageData(params: LoadDataParams<{ profileId
     return dispatch(ActionCreators.failedToLoadAuthorShowPageData({ statusCode: 400 }));
   }
 
-  await Promise.all([dispatch(fetchProfileData(profileId)), dispatch(getProfileCVInformation(profileId))]);
+  await dispatch(fetchProfileData(profileId));
 }
