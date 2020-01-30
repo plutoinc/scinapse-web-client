@@ -4,7 +4,7 @@ import { Dispatch } from 'redux';
 import { ActionCreators } from './actionTypes';
 import alertToast from '../helpers/makePlutoToastAction';
 import PlutoAxios from '../api/pluto';
-import AuthorAPI, { ConnectAuthorParams, DEFAULT_AUTHOR_PAPERS_SIZE } from '../api/author';
+import AuthorAPI, { DEFAULT_AUTHOR_PAPERS_SIZE } from '../api/author';
 import ProfileInfoAPI, { AwardParams, EducationParams, ExperienceParams } from '../api/profileInfo';
 import { GetAuthorPapersParams } from '../api/author/types';
 import { Paper, paperSchema } from '../model/paper';
@@ -15,6 +15,7 @@ import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
 import { getAuthor, getCoAuthors, getAuthorPapers } from '../containers/authorShow/actions';
 import { CommonError } from '../model/error';
 import { AppThunkAction } from '../store/types';
+import { addProfileEntities } from '../reducers/profileEntity';
 
 interface AddRemovePapersAndFetchPapersParams {
   authorId: string;
@@ -81,90 +82,62 @@ export function fetchAuthorShowRelevantData(params: FetchAuthorShowRelevantDataP
   };
 }
 
-export function updateAuthor(params: ConnectAuthorParams) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToUpdateProfileData());
-
-    const authorResponse = await AuthorAPI.updateAuthor(params);
-
-    dispatch(ActionCreators.addEntity(authorResponse));
-    dispatch(ActionCreators.succeededToUpdateProfileData());
-  };
-}
-
-export function postNewAuthorCVInfo(
+export async function postNewAuthorCVInfo(
   type: keyof CVInfoType,
-  authorId: string,
+  profileId: string,
   params: AwardParams | EducationParams | ExperienceParams
 ) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToAddProfileCvData({ CVType: type }));
-
-    let result: any;
+  try {
     if (type === 'awards') {
-      result = await ProfileInfoAPI.postNewAwardInAuthor(authorId, params as AwardParams);
+      return await ProfileInfoAPI.postNewAwardInAuthor(profileId, params as AwardParams);
     } else if (type === 'educations') {
-      result = await ProfileInfoAPI.postNewEducationInAuthor(authorId, params as EducationParams);
+      return await ProfileInfoAPI.postNewEducationInAuthor(profileId, params as EducationParams);
     } else if (type === 'experiences') {
-      result = await ProfileInfoAPI.postNewExperienceInAuthor(authorId, params as ExperienceParams);
+      return await ProfileInfoAPI.postNewExperienceInAuthor(profileId, params as ExperienceParams);
     }
-
-    dispatch(ActionCreators.succeedToAddProfileCvData({ authorId, cvInfoType: type, cvInformation: result }));
-  };
+  } catch (err) {
+    alertToast({
+      type: 'error',
+      message: `Had an error to add ${type} data.`,
+    });
+  }
 }
 
-export function removeAuthorCvInfo(type: keyof CVInfoType, authorId: string, id: string) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToRemoveProfileCvData({ CVType: type }));
-    let result: any;
-    try {
-      if (type === 'awards') {
-        result = await ProfileInfoAPI.deleteAwardInAuthor(id);
-      } else if (type === 'educations') {
-        result = await ProfileInfoAPI.deleteEducationInAuthor(id);
-      } else if (type === 'experiences') {
-        result = await ProfileInfoAPI.deleteExperienceInAuthor(id);
-      }
-
-      dispatch(ActionCreators.succeededToRemoveProfileCvData({ authorId, cvInfoType: type, cvInformation: result }));
-    } catch (err) {
-      dispatch(ActionCreators.failToRemoveProfileCvData());
-      alertToast({
-        type: 'error',
-        message: `Had an error to delete ${type} data.`,
-      });
+export async function removeAuthorCvInfo(type: keyof CVInfoType, id: string) {
+  try {
+    if (type === 'awards') {
+      return await ProfileInfoAPI.deleteAwardInAuthor(id);
+    } else if (type === 'educations') {
+      return await ProfileInfoAPI.deleteEducationInAuthor(id);
+    } else if (type === 'experiences') {
+      return await ProfileInfoAPI.deleteExperienceInAuthor(id);
     }
-  };
+  } catch (err) {
+    alertToast({
+      type: 'error',
+      message: `Had an error to delete ${type} data.`,
+    });
+  }
 }
 
-export function updateAuthorCvInfo(
+export async function updateAuthorCvInfo(
   type: keyof CVInfoType,
-  authorId: string,
   params: AwardParams | EducationParams | ExperienceParams
 ) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToUpdateProfileCvData({ CVType: type }));
-    let result: any;
-    if (type === 'awards') {
-      result = await ProfileInfoAPI.updateAwardInAuthor(params as AwardParams);
-    } else if (type === 'educations') {
-      result = await ProfileInfoAPI.updateEducationInAuthor(params as EducationParams);
-    } else if (type === 'experiences') {
-      result = await ProfileInfoAPI.updateExperienceInAuthor(params as ExperienceParams);
-    }
-
-    dispatch(ActionCreators.succeededToUpdateProfileCvData({ authorId, cvInfoType: type, cvInformation: result }));
-  };
+  if (type === 'awards') {
+    return await ProfileInfoAPI.updateAwardInAuthor(params as AwardParams);
+  } else if (type === 'educations') {
+    return await ProfileInfoAPI.updateEducationInAuthor(params as EducationParams);
+  } else if (type === 'experiences') {
+    return await ProfileInfoAPI.updateExperienceInAuthor(params as ExperienceParams);
+  }
 }
 
-export function updateProfileImage(authorId: string, formData: FormData) {
+export function updateProfileImage(profileId: string, formData: FormData) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      const profileImg = await AuthorAPI.updateAuthorProfileImage(authorId, formData);
-      const profileImageUrl = profileImg.data.content.profileImageUrl;
-
-      dispatch(ActionCreators.addEntity(profileImg));
-      dispatch(ActionCreators.succeededToUpdateProfileImageData({ authorId, profileImageUrl }));
+      const normalizedProfile = await AuthorAPI.updateAuthorProfileImage(profileId, formData);
+      dispatch(addProfileEntities(normalizedProfile.entities));
     } catch (err) {
       alertToast({ type: 'error', message: 'Had an error to upload profile image' });
     }

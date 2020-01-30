@@ -2,6 +2,29 @@
   display: inline-block;
   vertical-align: top;
   width: 691px;
+
+  &.isLoadingPage {
+    width: 739px;
+    position: relative;
+    background-color: $gray100;
+    padding: 0 24px;
+  }
+}
+
+.loadingSection {
+  position: relative;
+  background-color: $gray100;
+}
+
+.spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .sectionHeader {

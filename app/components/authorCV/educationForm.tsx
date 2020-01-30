@@ -13,7 +13,7 @@ export interface EducationFormState extends CvBaseInfo {
   degree: string;
   department: string;
   startDate: string;
-  endDate: string;
+  endDate: string | null;
 }
 
 interface EducationFormProps {

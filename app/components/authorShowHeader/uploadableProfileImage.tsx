@@ -2,18 +2,18 @@ import * as React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { Author } from '../../model/author/author';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { updateProfileImage } from '../../actions/author';
 import { CurrentUser } from '../../model/currentUser';
 import alertToast from '../../helpers/makePlutoToastAction';
 import Icon from '../../icons';
+import { Profile } from '../../model/profile';
 const styles = require('./uploadableProfileImage.scss');
 
 const LIMIT_FILE_SIZE = 3 * 1024 * 1024;
 
 interface UploadableProfileImageProps {
-  author: Author;
+  profile: Profile;
   currentUser: CurrentUser;
   dispatch: Dispatch<any>;
 }
@@ -35,9 +35,8 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
   }
 
   public render() {
-    const { author, currentUser } = this.props;
+    const { profile } = this.props;
     const { isLoading } = this.state;
-    const isMine = author.isLayered && currentUser.authorId === author.id;
 
     if (isLoading) {
       return (
@@ -49,24 +48,24 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
       );
     }
 
-    return !author.profileImageUrl ? (
+    return !profile.profileImageUrl ? (
       <span className={styles.nameImgBoxWrapper}>
         <div className={styles.imgBox}>
-          {author.name.slice(0, 1).toUpperCase()}
-          {isMine && this.getImageFileUpload()}
-          {isMine && <CameraBackground />}
+          {profile.firstName.slice(0, 1).toUpperCase()}
+          {profile.isEditable && this.getImageFileUpload()}
+          {profile.isEditable && <CameraBackground />}
         </div>
       </span>
     ) : (
       <span className={styles.profileImgBoxWrapper}>
         <div
           style={{
-            backgroundImage: `url(${author.profileImageUrl})`,
+            backgroundImage: `url(${profile.profileImageUrl})`,
           }}
           className={styles.profileImage}
         />
-        {isMine && this.getImageFileUpload()}
-        {isMine && <CameraBackground />}
+        {profile.isEditable && this.getImageFileUpload()}
+        {profile.isEditable && <CameraBackground />}
       </span>
     );
   }
@@ -86,7 +85,7 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
   };
 
   private fileChangedHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { author, dispatch } = this.props;
+    const { profile, dispatch } = this.props;
     const formData = new FormData();
 
     if (e.currentTarget.files) {
@@ -102,7 +101,7 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
     }
 
     this.setState({ isLoading: true });
-    await dispatch(updateProfileImage(author.id, formData));
+    await dispatch(updateProfileImage(profile.id, formData));
     this.setState({ isLoading: false });
   };
 }

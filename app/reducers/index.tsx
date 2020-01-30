@@ -30,6 +30,7 @@ import KeywordSettingsReducer, { KEYWORD_SETTINGS_INITIAL_STATE } from './keywor
 import CreateKeywordAlertDialogReducer, { CREATE_KEYWORD_ALERT_DIALOG_INITIAL_STATE } from './createKeywordAlertDialog';
 import ScinapseSnackbarReducer, { SCINAPSE_SNACK_BAR_INITIAL_STATE } from './scinapseSnackbar';
 import ProfilePageReducer, { PROFILE_PAGE_INITIAL_STATE } from './profilePage';
+import ProfileEntitiesReducer, { PROFILE_ENTITIES_INITIAL_STATE } from './profileEntity';
 
 export type AppState = typeof initialState;
 
@@ -57,6 +58,7 @@ export const initialState = {
   createKeywordAlertDialogState: CREATE_KEYWORD_ALERT_DIALOG_INITIAL_STATE,
   scinapseSnackbarState: SCINAPSE_SNACK_BAR_INITIAL_STATE,
   profilePageState: PROFILE_PAGE_INITIAL_STATE,
+  profileEntities: PROFILE_ENTITIES_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
 };
 
@@ -84,5 +86,6 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   createKeywordAlertDialogState: CreateKeywordAlertDialogReducer,
   scinapseSnackbarState: ScinapseSnackbarReducer,
   profilePageState: ProfilePageReducer,
+  profileEntities: ProfileEntitiesReducer,
   entities: EntityReducer,
 });

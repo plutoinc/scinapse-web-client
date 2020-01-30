@@ -1,42 +1,43 @@
 import React, { FC, memo } from 'react';
 import { Helmet } from 'react-helmet';
-import { Author } from '../../../../model/author/author';
+import { Profile } from '../../../../model/profile';
 
 interface Props {
-  author: Author;
+  profile: Profile;
 }
 
-const ProfileShowPageHelmet: FC<Props> = memo(({ author }) => {
-  const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : '';
-  const description = `${affiliationName ? `${affiliationName} |` : ''} citation: ${author.citationCount} | h-index: ${
-    author.hindex
+const ProfileShowPageHelmet: FC<Props> = memo(({ profile }) => {
+  const affiliationName = profile.affiliationName || '';
+  const description = `${affiliationName ? `${affiliationName} |` : ''} citation: ${profile.citationCount} | h-index: ${
+    profile.hindex
   }`;
+  const name = `${profile.firstName} ${profile.lastName}`;
   const structuredData: any = {
     '@context': 'http://schema.org',
     '@type': 'Person',
-    name: author.name,
+    name,
     affiliation: {
       '@type': 'Organization',
       name: affiliationName,
     },
-    description: `${affiliationName ? `${affiliationName} |` : ''} citation: ${author.citationCount} | h-index: ${
-      author.hindex
+    description: `${affiliationName ? `${affiliationName} |` : ''} citation: ${profile.citationCount} | h-index: ${
+      profile.hindex
     }`,
     mainEntityOfPage: 'https://scinapse.io',
   };
 
   return (
     <Helmet>
-      <title>{`${author.name} | Scinapse`}</title>
-      <link rel="canonical" href={`https://scinapse.io/authors/${author.id}`} />
-      <meta itemProp="name" content={`${author.name} | Scinapse`} />
+      <title>{`${name} | Scinapse`}</title>
+      <link rel="canonical" href={`https://scinapse.io/authors/${profile.id}`} />
+      <meta itemProp="name" content={`${name} | Scinapse`} />
       <meta name="description" content={description} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:card" content={`${author.name} | Scinapse`} />
-      <meta name="twitter:title" content={`${author.name} | Scinapse`} />
-      <meta property="og:title" content={`${author.name} | Scinapse`} />
+      <meta name="twitter:card" content={`${name} | Scinapse`} />
+      <meta name="twitter:title" content={`${name} | Scinapse`} />
+      <meta property="og:title" content={`${name} | Scinapse`} />
       <meta property="og:type" content="article" />
-      <meta property="og:url" content={`https://scinapse.io/authors/${author.id}`} />
+      <meta property="og:url" content={`https://scinapse.io/authors/${profile.id}`} />
       <meta property="og:description" content={description} />
       <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
     </Helmet>

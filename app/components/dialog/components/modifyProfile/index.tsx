@@ -3,7 +3,6 @@ import Dialog from '@material-ui/core/Dialog';
 import { Button } from '@pluto_network/pluto-design-elements';
 import { Formik, Form, Field, FormikErrors } from 'formik';
 import { withStyles } from '../../../../helpers/withStylesHelper';
-import { Author } from '../../../../model/author/author';
 import Icon from '../../../../icons';
 import ScinapseFormikInput from '../../../common/scinapseInput/scinapseFormikInput';
 import ReduxAutoSizeTextarea from '../../../common/autoSizeTextarea/reduxAutoSizeTextarea';
@@ -15,16 +14,16 @@ import scinapseFormikCheckbox from '../../../common/scinapseInput/scinapseFormik
 const styles = require('./modifyProfile.scss');
 
 export interface ModifyProfileFormState {
-  authorName: string;
+  firstName: string;
+  lastName: string;
   currentAffiliation: Affiliation | SuggestAffiliation | string;
   bio: string;
   email: string;
   website: string;
-  isEmailHidden: boolean;
+  isEmailPublic: boolean;
 }
 
 interface ModifyProfileProps {
-  author: Author;
   isOpen: boolean;
   isLoading: boolean;
   initialValues: ModifyProfileFormState;
@@ -35,7 +34,7 @@ interface ModifyProfileProps {
 const validateForm = (values: ModifyProfileFormState) => {
   const errors: FormikErrors<ModifyProfileFormState> = {};
 
-  if (!validateEmail(values.email) && !values.isEmailHidden) {
+  if (!validateEmail(values.email)) {
     errors.email = 'Please enter valid e-mail address.';
   }
 
@@ -47,8 +46,12 @@ const validateForm = (values: ModifyProfileFormState) => {
     errors.currentAffiliation = 'Not available affiliation';
   }
 
-  if (!values.authorName && values.authorName.length < 2) {
-    errors.authorName = 'Minimum length is 1';
+  if (!values.firstName && values.firstName.length < 2) {
+    errors.firstName = 'Minimum length is 1';
+  }
+
+  if (!values.lastName && values.lastName.length < 2) {
+    errors.lastName = 'Minimum length is 1';
   }
 
   if (values.website.length > 0 && !values.website.includes('http://') && !values.website.includes('https://')) {
@@ -69,7 +72,7 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
   }
 
   public render() {
-    const { author, isOpen, handleClose, isLoading, handleSubmitForm, initialValues } = this.props;
+    const { isOpen, handleClose, isLoading, handleSubmitForm, initialValues } = this.props;
 
     return (
       <Dialog
@@ -80,9 +83,7 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
         }}
       >
         <div className={styles.dialogHeader}>
-          <div className={styles.mainTitle}>
-            {author.isLayered ? 'Edit author information' : 'Check and fill your information'}
-          </div>
+          <div className={styles.mainTitle}>Edit author information</div>
           <div className={styles.closeButton} onClick={handleClose}>
             <Icon className={styles.closeIcon} icon="X_BUTTON" />
           </div>
@@ -100,24 +101,34 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                 <div className={styles.contentSection}>
                   <div className={styles.formControl}>
                     <div className={styles.inlineInput}>
-                      <label htmlFor="authorName">Author Name</label>
+                      <label htmlFor="firstName">First Name</label>
                       <Field
-                        name="authorName"
+                        name="firstName"
                         type="text"
-                        placeholder="Author Name"
+                        placeholder="First Name"
                         component={ScinapseFormikInput}
                         className={styles.inputField}
                       />
                     </div>
-                    <div className={styles.inlineInput} style={{ width: '100%' }}>
-                      <label htmlFor="currentAffiliation">Current Affiliation</label>
+                    <div className={styles.inlineInput}>
+                      <label htmlFor="lastName">Last Name</label>
                       <Field
-                        name="currentAffiliation"
-                        component={AffiliationSelectBox}
+                        name="lastName"
+                        type="text"
+                        placeholder="Last Name"
+                        component={ScinapseFormikInput}
                         className={styles.inputField}
-                        format={this.formatAffiliation}
                       />
                     </div>
+                  </div>
+                  <div className={styles.inlineInput} style={{ width: '100%', margin: '24px 0' }}>
+                    <label htmlFor="currentAffiliation">Current Affiliation</label>
+                    <Field
+                      name="currentAffiliation"
+                      component={AffiliationSelectBox}
+                      className={styles.inputField}
+                      format={this.formatAffiliation}
+                    />
                   </div>
                   <div className={styles.bioWrapper}>
                     <label htmlFor="bio">
@@ -147,9 +158,9 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                         <Field
                           className={styles.checkBox}
                           component={scinapseFormikCheckbox}
-                          name="isEmailHidden"
+                          name="isEmailPublic"
                           type="checkbox"
-                          checked={initialValues.isEmailHidden}
+                          checked={initialValues.isEmailPublic}
                         />
                         <span className={styles.checkboxInfo}>Hide email from other users</span>
                       </div>

@@ -1,8 +1,7 @@
-import { schema } from 'normalizr';
+import { schema, denormalize } from 'normalizr';
+import { AppState } from '../reducers';
 
-export interface ProfileInfo extends CVInfoType {
-  authorId: string;
-}
+export type ProfileInfo = CVInfoType;
 
 export interface CVInfoType {
   awards: Award[];
@@ -37,10 +36,13 @@ export interface Experience extends CvBaseInfo {
   department: string | null;
 }
 
-export const profileSchema = new schema.Entity(
-  'profiles',
+export const profileInfoSchema = new schema.Entity(
+  'profileInfoEntities',
   {},
   {
-    idAttribute: 'authorId',
+    idAttribute: 'profileId',
   }
 );
+
+export const selectHydratedProfileInfo = (state: AppState, id: string | undefined): ProfileInfo | undefined =>
+  denormalize(id, profileInfoSchema, state);

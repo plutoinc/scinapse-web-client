@@ -17,14 +17,6 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
       return { ...CURRENT_USER_INITIAL_STATE, isLoggingIn: false, ipInstitute: state.ipInstitute };
     }
 
-    case ACTION_TYPES.AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR: {
-      return {
-        ...state,
-        isAuthorConnected: true,
-        authorId: action.payload.authorId,
-      };
-    }
-
     case ACTION_TYPES.AUTH_START_TO_CHECK_LOGGED_IN: {
       return { ...state, isLoggingIn: true };
     }
@@ -53,11 +45,6 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
         ipInstitute: action.payload.ipInstitute,
         isLoggingIn: false,
       };
-    }
-
-    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA: {
-      const { profileImageUrl } = action.payload;
-      return { ...state, profileImageUrl: profileImageUrl };
     }
 
     default:

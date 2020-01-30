@@ -3,7 +3,6 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import Icon from '../../icons';
 import PlutoAxios from '../../api/pluto';
-import { updateAuthorCvInfo } from '../../actions/author';
 import { Award } from '../../model/profileInfo';
 import AwardForm, { AwardFormState } from './awardForm';
 import alertToast from '../../helpers/makePlutoToastAction';
@@ -12,13 +11,15 @@ const styles = require('./authorCVItem.scss');
 
 interface AwardItemState {
   isEditMode: boolean;
+  isLoading: boolean;
 }
 
 interface AwardItemProps {
   validConnection: boolean;
-  authorId: string;
+  profileId: string;
   award: Award;
   handleRemoveItem: (cvInfoId: string) => void;
+  onUpdate: (cvInfo: AwardFormState) => Promise<void>;
   dispatch: Dispatch<any>;
 }
 
@@ -29,19 +30,20 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
 
     this.state = {
       isEditMode: false,
+      isLoading: false,
     };
   }
 
   public render() {
     const { award } = this.props;
-    const { isEditMode } = this.state;
+    const { isEditMode, isLoading } = this.state;
     const { id, title, receivedDate, relatedLink } = award;
     return isEditMode ? (
       <AwardForm
         handleClose={this.handelToggleAwardEditForm}
         isOpen={isEditMode}
         handleSubmitForm={this.handelUpdateAward}
-        isLoading={false}
+        isLoading={isLoading}
         initialValues={{
           id,
           title,
@@ -96,12 +98,14 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
   };
 
   private handelUpdateAward = async (params: AwardFormState) => {
-    const { dispatch, authorId } = this.props;
-
+    const { onUpdate } = this.props;
     try {
-      await dispatch(updateAuthorCvInfo('awards', authorId, params));
+      this.setState(state => ({ ...state, isLoading: true }));
+      await onUpdate(params);
+      this.setState(state => ({ ...state, isLoading: false }));
       this.handelToggleAwardEditForm();
     } catch (err) {
+      this.setState(state => ({ ...state, isLoading: false }));
       const error = PlutoAxios.getGlobalError(err);
       console.error(error);
       alertToast({

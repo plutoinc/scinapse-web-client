@@ -9,22 +9,16 @@ import MobilePagination from '../../components/common/mobilePagination';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { AuthorShowState as AuthorShowGlobalState } from './reducer';
 import { Configuration } from '../../reducers/configuration';
-import { CurrentUser } from '../../model/currentUser';
 import { Author, authorSchema } from '../../model/author/author';
-import { Paper, paperSchema } from '../../model/paper';
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
 import FullPaperItem from '../../components/common/paperItem/fullPaperItem';
-import { getAuthorPapers, toggleConnectProfileDialog, connectAuthor } from './actions';
+import { getAuthorPapers } from './actions';
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from '../../api/author';
 import ArticleSpinner from '../../components/common/spinner/articleSpinner';
 import CoAuthor from '../../components/common/coAuthor';
-import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
 import { Button, InputField } from '@pluto_network/pluto-design-elements';
 import { LayoutState } from '../../components/layouts/reducer';
 import AuthorShowHeader from '../../components/authorShowHeader';
-import { SuggestAffiliation } from '../../api/suggest';
-import { Affiliation } from '../../model/affiliation';
-import { AUTH_LEVEL, blockUnverifiedUser } from '../../helpers/checkAuthDialog';
 import { AppState } from '../../reducers';
 import { fetchAuthorPapers } from '../../actions/author';
 import EnvChecker from '../../helpers/envChecker';
@@ -35,7 +29,6 @@ import ActionTicketManager from '../../helpers/actionTicketManager';
 import { UserDevice } from '../../components/layouts/reducer';
 import { fetchAuthorShowPageData } from './sideEffect';
 import restoreScroll from '../../helpers/scrollRestoration';
-import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 const styles = require('./authorShow.scss');
 
 export interface AuthorShowMatchParams {
@@ -53,7 +46,6 @@ export interface AuthorShowProps extends RouteComponentProps<{ authorId: string 
   paperIds: string[];
   authorShow: AuthorShowGlobalState;
   configuration: Configuration;
-  currentUser: CurrentUser;
   dispatch: Dispatch<any>;
 }
 
@@ -99,10 +91,8 @@ class AuthorShow extends React.PureComponent<AuthorShowProps, AuthorShowLocalSta
     }
   }
   public render() {
-    const { author, authorShow, currentUser, location, layout } = this.props;
+    const { author, authorShow, layout } = this.props;
     const { currentQuery } = this.state;
-    const queryParams = getQueryParamsObject(location.search);
-    const isTestMode = queryParams.beta === 'true';
 
     if (authorShow.pageErrorStatusCode) {
       return <ErrorPage errorNum={authorShow.pageErrorStatusCode} />;
@@ -120,7 +110,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps, AuthorShowLocalSta
       );
     }
 
-    let itsMeButton = (
+    const itsMeButton = (
       <div className={styles.headerRightBox}>
         <Button
           elementType="button"
@@ -133,35 +123,6 @@ class AuthorShow extends React.PureComponent<AuthorShowProps, AuthorShowLocalSta
       </div>
     );
 
-    let guideContext = null;
-    if (isTestMode && !currentUser.isAuthorConnected) {
-      itsMeButton = (
-        <Button
-          elementType="button"
-          variant="outlined"
-          color="gray"
-          onClick={() => {
-            if (
-              confirm(
-                // tslint:disable-next-line:max-line-length
-                `Are you ${author.name}?\nThen press OK button, you can manage this page. (Beta)`
-              )
-            ) {
-              this.toggleModifyProfileDialog();
-            }
-          }}
-        >
-          <span>✋ It's me</span>
-        </Button>
-      );
-
-      guideContext = (
-        <div className={styles.speechBubble}>
-          <div>You can manage your author page here!</div>
-        </div>
-      );
-    }
-
     return (
       <div className={styles.authorShowPageWrapper}>
         {this.getPageHelmet()}
@@ -169,10 +130,8 @@ class AuthorShow extends React.PureComponent<AuthorShowProps, AuthorShowLocalSta
           <AuthorShowHeader
             userDevice={layout.userDevice}
             author={author}
-            currentUser={currentUser}
             rightBoxContent={itsMeButton}
             navigationContent={null}
-            guideBubbleSpeech={guideContext}
           />
           <div className={styles.contentBox}>
             <div className={styles.container}>
@@ -231,68 +190,11 @@ class AuthorShow extends React.PureComponent<AuthorShowProps, AuthorShowLocalSta
               </div>
             </div>
           </div>
-
-          <ModifyProfile
-            author={author}
-            handleClose={this.toggleModifyProfileDialog}
-            isOpen={authorShow.isOpenConnectProfileDialog}
-            isLoading={authorShow.isLoadingToUpdateProfile}
-            handleSubmitForm={this.handleConnectAuthor}
-            initialValues={{
-              authorName: author.name,
-              currentAffiliation: author.lastKnownAffiliation || '',
-              bio: author.bio || '',
-              website: author.webPage || '',
-              email: currentUser.isLoggedIn ? currentUser.email : '',
-              isEmailHidden: author.isEmailHidden || false,
-            }}
-          />
         </div>
         <ImprovedFooter containerStyle={{ backgroundColor: '#f8f9fb' }} />
       </div>
     );
   }
-
-  private handleConnectAuthor = async (profile: ModifyProfileFormState) => {
-    const { dispatch, author } = this.props;
-
-    let affiliationId: string | null = null;
-    let affiliationName = '';
-    if ((profile.currentAffiliation as Affiliation).name) {
-      affiliationId = (profile.currentAffiliation as Affiliation).id;
-      affiliationName = (profile.currentAffiliation as Affiliation).name;
-    } else if ((profile.currentAffiliation as SuggestAffiliation).keyword) {
-      affiliationId = (profile.currentAffiliation as SuggestAffiliation).affiliationId;
-      affiliationName = (profile.currentAffiliation as SuggestAffiliation).keyword;
-    }
-
-    dispatch(
-      connectAuthor({
-        authorId: author.id,
-        bio: profile.bio || null,
-        email: profile.email,
-        name: profile.authorName,
-        webPage: profile.website || null,
-        affiliationId,
-        affiliationName,
-        isEmailHidden: profile.isEmailHidden,
-      })
-    );
-  };
-
-  private toggleModifyProfileDialog = async () => {
-    const { dispatch } = this.props;
-
-    const isBlocked = await blockUnverifiedUser({
-      authLevel: AUTH_LEVEL.VERIFIED,
-      actionArea: 'authorShow',
-      actionLabel: 'toggleConnectProfileDialog',
-    });
-
-    if (!isBlocked) {
-      dispatch(toggleConnectProfileDialog());
-    }
-  };
 
   private getPagination = () => {
     const { authorShow, layout } = this.props;
@@ -523,7 +425,6 @@ function mapStateToProps(state: AppState) {
     coAuthors: denormalize(state.authorShow.coAuthorIds, [authorSchema], state.entities),
     paperIds: state.authorShow.paperIds,
     configuration: state.configuration,
-    currentUser: state.currentUser,
   };
 }
 

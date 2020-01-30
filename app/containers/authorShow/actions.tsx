@@ -1,30 +1,11 @@
 import axios, { CancelToken } from 'axios';
 import { Dispatch } from 'redux';
-import AuthorAPI, { ConnectAuthorParams } from '../../api/author';
-import ProfileInfoAPI from '../../api/profileInfo';
+import AuthorAPI from '../../api/author';
 import alertToast from '../../helpers/makePlutoToastAction';
 import { ActionCreators } from '../../actions/actionTypes';
 import { GetAuthorPapersParams } from '../../api/author/types';
 import PlutoAxios from '../../api/pluto';
 import { getPapers } from '../../reducers/profilePage';
-
-export function getProfile(authorId: string, cancelToken?: CancelToken) {
-  return async (dispatch: Dispatch<any>) => {
-    try {
-      const profileResponse = await ProfileInfoAPI.getProfile(authorId, cancelToken);
-
-      dispatch(ActionCreators.addEntity(profileResponse));
-      dispatch(ActionCreators.getProfile({ authorId: profileResponse.result }));
-    } catch (err) {
-      if (!axios.isCancel(err)) {
-        alertToast({
-          type: 'error',
-          message: 'Failed to get profile information',
-        });
-      }
-    }
-  };
-}
 
 export function getCoAuthors(authorId: string, cancelToken?: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
@@ -48,13 +29,8 @@ export function getAuthor(authorId: string, cancelToken?: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     try {
       const authorResponse = await AuthorAPI.getAuthor(authorId, cancelToken);
-
       dispatch(ActionCreators.addEntity(authorResponse));
       dispatch(ActionCreators.getAuthor({ authorId: authorResponse.result }));
-
-      if (authorResponse.entities.authors[authorResponse.result].isLayered) {
-        await dispatch(getProfile(authorId, cancelToken));
-      }
     } catch (err) {
       if (!axios.isCancel(err)) {
         const error = PlutoAxios.getGlobalError(err);
@@ -103,31 +79,6 @@ export function getAuthorPapers(params: GetAuthorPapersParams) {
       alertToast({
         type: 'error',
         message: "Failed to get author's papers information",
-      });
-    }
-  };
-}
-
-export function toggleConnectProfileDialog() {
-  return ActionCreators.toggleConnectAuthorDialog();
-}
-
-export function connectAuthor(params: ConnectAuthorParams) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToConnectAuthor());
-
-    try {
-      const res = await AuthorAPI.connectAuthor(params);
-
-      dispatch(ActionCreators.addEntity(res));
-      dispatch(ActionCreators.succeedToConnectAuthor({ authorId: res.result }));
-    } catch (err) {
-      const error = PlutoAxios.getGlobalError(err);
-      console.error(error);
-      dispatch(ActionCreators.failToConnectAuthor());
-      alertToast({
-        type: 'error',
-        message: 'Had an error to connect author',
       });
     }
   };
