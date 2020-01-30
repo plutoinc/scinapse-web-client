@@ -97,14 +97,14 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
           const { isLoggedIn } = currentUser;
           return (
             <Form>
+              <AffiliationInputField
+                formikProps={formikProps}
+                profileAffiliation={verificationState && verificationState?.affiliation}
+              />
               <EmailPasswordFields
                 formikProps={formikProps}
                 needPwd={formStatus !== 'NOT_A_MEMBER'}
                 email={verificationState?.email}
-              />
-              <AffiliationInputField
-                formikProps={formikProps}
-                profileAffiliation={verificationState && verificationState?.affiliation}
               />
               <NameInputFields />
               <div className={s.formRow}>
