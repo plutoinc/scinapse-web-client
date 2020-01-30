@@ -13,6 +13,9 @@ import profileAPI from '../../api/profile';
 import EmailPasswordFields from './emailPasswordFields';
 import NameInputFields from './nameInputFields';
 import AffiliationInputField from './affiliationField';
+import GlobalDialogManager from '../../helpers/globalDialogManager';
+import { getCurrentPageType } from '../locationListener';
+import memberAPI from '../../api/member';
 const s = require('./profileRegisterForm.scss');
 
 type ProfileRegisterStatus =
@@ -33,6 +36,64 @@ export type ProfileRegisterFormValues = {
   affiliation: Affiliation | SuggestAffiliation;
   profileLink: string;
 };
+
+const createProfile = (values: ProfileRegisterFormValues) => {
+  const { id: affiliation_id, name: affiliation_name } = values.affiliation as Affiliation;
+  profileAPI.createProfile({
+    affiliation_id,
+    affiliation_name,
+    bio: ' ',
+    email: values.email,
+    first_name: values.firstName,
+    last_name: values.lastName,
+    is_email_public: true,
+    web_page: ' '
+  });
+}
+
+const createMemberAndProfile = (token: string, values: ProfileRegisterFormValues) => {
+  const { id: affiliation_id, name: affiliation_name } = values.affiliation as Affiliation;
+  memberAPI.createMemberWithProfile(token, {
+    affiliation_id,
+    affiliation_name,
+    bio: ' ',
+    email: values.email,
+    first_name: values.firstName,
+    last_name: values.lastName,
+    is_email_public: true,
+    web_page: ' ',
+    password: values.password,
+  })
+}
+
+const SigninContent: FC = () => {
+  const openSigninModal = () => {
+    GlobalDialogManager.openSignInDialog({
+      authContext: {
+        pageType: getCurrentPageType(),
+        actionArea: 'profileRegister',
+        actionLabel: 'profileRegisterSignin',
+      },
+      isBlocked: false,
+    })
+  }
+
+  return (
+    <>
+      <div>
+        <p>Sign in to continue</p>
+        <Button
+          elementType="button"
+          variant="contained"
+          color="blue"
+          onClick={openSigninModal}
+        >
+          <span>Sign in</span>
+        </Button>
+      </div>
+    </>
+  )
+}
 
 const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
   const { queryParams } = props;
@@ -78,50 +139,50 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
       return;
     }
 
-    profileAPI.createProfile({
-      affiliation_id,
-      affiliation_name,
-      bio: ' ',
-      email: currentUser.email,
-      first_name: values.firstName,
-      last_name: values.lastName,
-      is_email_public: true,
-      web_page: ' '
-    });
+    if (formStatus === 'PROFILE') {
+      createProfile(values);
+    } else if (formStatus === 'NOT_A_MEMBER' && queryParams.token) {
+      createMemberAndProfile(queryParams.token, values);
+    }
   };
 
   return (
     <>
-      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-        {formikProps => {
-          const { isLoggedIn } = currentUser;
-          return (
-            <Form>
-              <AffiliationInputField
-                formikProps={formikProps}
-                profileAffiliation={verificationState && verificationState?.affiliation}
-              />
-              <EmailPasswordFields
-                formikProps={formikProps}
-                needPwd={formStatus !== 'NOT_A_MEMBER'}
-                email={verificationState?.email}
-              />
-              <NameInputFields />
-              <div className={s.formRow}>
-                {isLoggedIn ? (
-                  <Button elementType="button" type="submit" color="blue">
-                    <span>Create profile</span>
-                  </Button>
-                ) : (
-                  <Button elementType="button" type="submit" color="blue">
-                    <span>Create account & profile</span>
-                  </Button>
-                )}
-              </div>
-            </Form>
-          );
-        }}
-      </Formik>
+      {
+        formStatus === 'NEED_LOGIN'
+          ? <SigninContent />
+          : (
+            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+              {formikProps => {
+                return (
+                  <Form>
+                    <AffiliationInputField
+                      formikProps={formikProps}
+                      profileAffiliation={verificationState && verificationState?.affiliation}
+                    />
+                    <EmailPasswordFields
+                      formikProps={formikProps}
+                      needPwd={formStatus !== 'NOT_A_MEMBER'}
+                      email={verificationState?.email}
+                    />
+                    <NameInputFields />
+                    <div className={s.formRow}>
+                      {formStatus === 'PROFILE' ? (
+                        <Button elementType="button" type="submit" color="blue">
+                          <span>Create profile</span>
+                        </Button>
+                      ) : (
+                        <Button elementType="button" type="submit" color="blue">
+                          <span>Create account & profile</span>
+                        </Button>
+                      )}
+                    </div>
+                  </Form>
+                );
+              }}
+            </Formik>
+          )
+      }
     </>
   );
 };
