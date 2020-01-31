@@ -13,6 +13,7 @@ export const PRIVACY_POLICY_PATH = '/privacy-policy';
 export const USER_SETTINGS_PATH = '/settings';
 export const KEYWORD_SETTINGS_PATH = '/keyword-settings';
 export const PROFILE_LANDING_PATH = '/profile/landing';
+export const PROFILE_LANDING_ENQUIRY_PATH = '/profile/landing/enquiry';
 export const PROFILE_EMAIL_VERIFY_PATH = '/profile/verify-email';
 export const PROFILE_REGISTER_PATH = '/profile/new';
 export const DESIGN_PATH = '/design';

@@ -28,6 +28,7 @@ import {
   PRIVACY_POLICY_PATH,
   USER_SETTINGS_PATH,
   PROFILE_LANDING_PATH,
+  PROFILE_LANDING_ENQUIRY_PATH,
   PROFILE_EMAIL_VERIFY_PATH,
   PROFILE_REGISTER_PATH,
   KEYWORD_SETTINGS_PATH,
@@ -155,6 +156,12 @@ export const routesMap: ServerRoutesMap[] = [
     component: loadable(() => import('./containers/keywordSettings'), {
       fallback: <div>loading ...</div>,
     }),
+  },
+  {
+    path: PROFILE_LANDING_ENQUIRY_PATH,
+    component: loadable(() => import('./components/profileLanding/enquiry'), {
+      fallback: <div>loading...</div>,
+    })
   },
   {
     path: PROFILE_LANDING_PATH,

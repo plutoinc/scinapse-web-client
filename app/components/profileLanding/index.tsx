@@ -21,14 +21,22 @@ const ProfileLanding: FC = () => {
     const { aid } = QueryString.parse(queryString) as ProfileLandingQuery;
     if (aid) {
       AffiliationAPI.getAffiliation(aid).then(profileAff => {
-        setIsLoaded(true);
         setIsValidAffiliationId(profileAff.domains.length > 0);
-      }).catch(() => {
         setIsLoaded(true);
+      }).catch(() => {
         setIsValidAffiliationId(false);
+        setIsLoaded(true);
       });
+    } else {
+      setIsValidAffiliationId(false);
+      setIsLoaded(true);
     }
   }, [location.search]);
+
+  useEffect(() => {
+    if (isValidAffiliationId || !isLoaded) return;
+    history.push('/profile/landing/enquiry');
+  }, [isValidAffiliationId, isLoaded]);
 
   const handleContinueButtonClick = () => {
     if (isLoaded && isValidAffiliationId) {
