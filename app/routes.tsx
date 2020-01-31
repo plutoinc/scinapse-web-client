@@ -99,16 +99,6 @@ export const routesMap: ServerRoutesMap[] = [
     },
   },
   {
-    path: PROFILE_SHOW_PATH,
-    component: loadable(() => import('./containers/profile'), {
-      fallback: <div>loading ...</div>,
-    }),
-    loadData: async (params: LoadDataParams<{ profileId: string }>) => {
-      const { fetchAuthorShowPageData } = await import('./containers/profile/sideEffects');
-      await Promise.all([fetchAuthorShowPageData(params)]);
-    },
-  },
-  {
     path: COLLECTION_SHOW_PATH,
     component: loadable(() => import('./containers/collectionShow'), {
       fallback: <div>loading ...</div>,
@@ -161,25 +151,39 @@ export const routesMap: ServerRoutesMap[] = [
     path: PROFILE_LANDING_ENQUIRY_PATH,
     component: loadable(() => import('./components/profileLanding/enquiry'), {
       fallback: <div>loading...</div>,
-    })
+    }),
+    exact: true,
   },
   {
     path: PROFILE_LANDING_PATH,
     component: loadable(() => import('./components/profileLanding'), {
       fallback: <div>loading...</div>,
-    })
+    }),
+    exact: true,
   },
   {
     path: PROFILE_REGISTER_PATH,
     component: loadable(() => import('./components/profileRegister'), {
       fallback: <div>loading...</div>,
     }),
+    exact: true,
   },
   {
     path: PROFILE_EMAIL_VERIFY_PATH,
     component: loadable(() => import('./components/profileVerifyEmail'), {
       fallback: <div>loading...</div>,
     }),
+    exact: true,
+  },
+  {
+    path: PROFILE_SHOW_PATH,
+    component: loadable(() => import('./containers/profile'), {
+      fallback: <div>loading ...</div>,
+    }),
+    loadData: async (params: LoadDataParams<{ profileId: string }>) => {
+      const { fetchAuthorShowPageData } = await import('./containers/profile/sideEffects');
+      await Promise.all([fetchAuthorShowPageData(params)]);
+    },
   },
   {
     path: DESIGN_PATH,
