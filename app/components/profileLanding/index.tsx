@@ -35,12 +35,12 @@ const ProfileLanding: FC = () => {
 
   useEffect(() => {
     if (isValidAffiliationId || !isLoaded) return;
-    history.push('/profile/landing/enquiry');
+    history.push('/profiles/landing/enquiry');
   }, [isValidAffiliationId, isLoaded]);
 
   const handleContinueButtonClick = () => {
     if (isLoaded && isValidAffiliationId) {
-      history.push(`/profile/verify-email${location.search}`);
+      history.push(`/profiles/verify-email${location.search}`);
     }
   }
 
