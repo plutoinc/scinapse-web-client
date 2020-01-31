@@ -31,12 +31,20 @@ function formatAffiliation(value?: Affiliation | SuggestAffiliation | string) {
   return value;
 }
 
+const ProfileVerifyEmailSentContent: FC = () => {
+  return (
+    <div>
+      Email Sent!
+    </div>
+  )
+}
 
 const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
   const { queryParams } = props;
   const [affiliationSelected, setAffiliationSelected] = useState<boolean>(false);
   const [profileAffiliation, setProfileAffiliation] = useState<ProfileAffiliation | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isEmailSent, setIsEmailSent] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchProfileAffiliation () {
@@ -73,7 +81,7 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
         email: `${emailPrefix}@${domainName}`,
       })
       if (res) {
-        console.log('Email sent!')
+        setIsEmailSent(true);
       }
     }
     setIsLoading(false);
@@ -81,90 +89,96 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
 
   return (
     <div>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={handleSubmit}
-      >
-        {({ values, errors, touched, submitForm, setFieldValue }) => { 
-          if (profileAffiliation?.domains && profileAffiliation.domains.length > 0 && (values.affiliation as Affiliation).id !== profileAffiliation.id) {
-            const { id, name, nameAbbrev, domains } = profileAffiliation;
-            setAffiliationSelected(true);
-            setFieldValue('affiliation', {
-              id,
-              name,
-              nameAbbrev,
-            })
-            setFieldValue('domain', domains[0].id );
-          }
-          return (
-            <Form>
-              <div className={s.formRow}>
-                <div className={s.formWrapper}>
-                  <label className={s.formLabel}>Affiliation</label>
-                  <Field
-                    name="affiliation"
-                    component={AffiliationSelectBox}
-                    format={formatAffiliation}
-                    className={classNames({
-                      [s.inputForm]: true,
-                      [s.hasError]: !!errors.affiliation && !!touched.affiliation,
-                    })}
-                    errorWrapperClassName={s.affiliationErrorMsg}
-                    disabled={isLoading || profileAffiliation}
-                  />
-                </div>
-              </div>
-              <div
-                className={classNames({
-                  [s.formRow]: true,
-                  [s.dynamicFormRow]: true,
-                  [s.hide]: !affiliationSelected,
-                })}
-              >
-                <div className={s.formWrapper}>
-                  <label className={s.formLabel}>Email</label>
-                  <div className={s.emailPrefixInputCotainer}>
-                    <Field
-                      name="emailPrefix"
-                      placeholder="Email"
+      {
+        isEmailSent
+          ? <ProfileVerifyEmailSentContent />
+          : (
+            <Formik
+              initialValues={initialValues}
+              onSubmit={handleSubmit}
+            >
+              {({ values, errors, touched, submitForm, setFieldValue }) => { 
+                if (profileAffiliation?.domains && profileAffiliation.domains.length > 0 && (values.affiliation as Affiliation).id !== profileAffiliation.id) {
+                  const { id, name, nameAbbrev, domains } = profileAffiliation;
+                  setAffiliationSelected(true);
+                  setFieldValue('affiliation', {
+                    id,
+                    name,
+                    nameAbbrev,
+                  })
+                  setFieldValue('domain', domains[0].id );
+                }
+                return (
+                  <Form>
+                    <div className={s.formRow}>
+                      <div className={s.formWrapper}>
+                        <label className={s.formLabel}>Affiliation</label>
+                        <Field
+                          name="affiliation"
+                          component={AffiliationSelectBox}
+                          format={formatAffiliation}
+                          className={classNames({
+                            [s.inputForm]: true,
+                            [s.hasError]: !!errors.affiliation && !!touched.affiliation,
+                          })}
+                          errorWrapperClassName={s.affiliationErrorMsg}
+                          disabled={isLoading || profileAffiliation}
+                        />
+                      </div>
+                    </div>
+                    <div
                       className={classNames({
-                        [s.inputForm]: true,
-                        [s.hasError]: !!errors.emailPrefix && touched.emailPrefix,
+                        [s.formRow]: true,
+                        [s.dynamicFormRow]: true,
+                        [s.hide]: !affiliationSelected,
                       })}
-                      disabled={!affiliationSelected || isLoading}
-                    />
-                    <Field
-                      component="select"
-                      name="domain"
-                      className={s.selectForm}
                     >
-                      {
-                        profileAffiliation?.domains.map(domain => (
-                          domain.id &&
-                            <option key={domain.id} value={domain.id}>
-                              @{domain.domain}
-                            </option>
-                        ))
-                      }
-                    </Field>
-                    <Icon icon="ARROW_DOWN"/>
-                  </div>
-                </div>
-              </div>
-              <Button
-                elementType="button"
-                variant="contained"
-                color="blue"
-                onClick={submitForm}
-                isLoading={isLoading}
-              >
-                <Icon icon="SEND" />
-                <span>Send email</span>
-              </Button>
-            </Form>
+                      <div className={s.formWrapper}>
+                        <label className={s.formLabel}>Email</label>
+                        <div className={s.emailPrefixInputCotainer}>
+                          <Field
+                            name="emailPrefix"
+                            placeholder="Email"
+                            className={classNames({
+                              [s.inputForm]: true,
+                              [s.hasError]: !!errors.emailPrefix && touched.emailPrefix,
+                            })}
+                            disabled={!affiliationSelected || isLoading}
+                          />
+                          <Field
+                            component="select"
+                            name="domain"
+                            className={s.selectForm}
+                          >
+                            {
+                              profileAffiliation?.domains.map(domain => (
+                                domain.id &&
+                                  <option key={domain.id} value={domain.id}>
+                                    @{domain.domain}
+                                  </option>
+                              ))
+                            }
+                          </Field>
+                          <Icon icon="ARROW_DOWN"/>
+                        </div>
+                      </div>
+                    </div>
+                    <Button
+                      elementType="button"
+                      variant="contained"
+                      color="blue"
+                      onClick={submitForm}
+                      isLoading={isLoading}
+                    >
+                      <Icon icon="SEND" />
+                      <span>Send email</span>
+                    </Button>
+                  </Form>
+                )
+              }}
+            </Formik>
           )
-        }}
-      </Formik>
+      }
     </div>
   );
 };
