@@ -16,6 +16,8 @@ import AffiliationInputField from './affiliationField';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
 import { getCurrentPageType } from '../locationListener';
 import memberAPI from '../../api/member';
+import { Profile } from '../../model/profile';
+import { useHistory } from 'react-router-dom';
 const s = require('./profileRegisterForm.scss');
 
 type ProfileRegisterStatus =
@@ -118,6 +120,7 @@ const SigninContent: FC = () => {
 
 const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
   const { queryParams } = props;
+  const history = useHistory();
   const currentUser = useSelector<AppState, CurrentUser>(state => state.currentUser);
   const [verificationState, setVerificationState] = useState<TokenVerificationRes | null>(null);
 
@@ -159,11 +162,15 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
     if (!affiliation_id || !affiliation_name) {
       return;
     }
-
+    let res = null;
     if (formStatus === 'PROFILE') {
-      createProfile(values);
+      res = createProfile(values);
     } else if (formStatus === 'NOT_A_MEMBER' && queryParams.token) {
-      createMemberAndProfile(queryParams.token, values);
+      res = createMemberAndProfile(queryParams.token, values);
+    }
+
+    if (res && (res as Profile).id) {
+      history.push(`/profiles/${(res as Profile).id}`);
     }
   };
 

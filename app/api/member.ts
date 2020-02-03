@@ -72,7 +72,7 @@ class MemberAPI extends PlutoAxios {
 
   public async createMemberWithProfile(token: string, params: MemberProfileParam) {
     const res = await this.post(`/members/profile?token=${token}`, params);
-    return res.data;
+    return res.data.data.content;
   }
 }
 
