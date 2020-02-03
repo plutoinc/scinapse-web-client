@@ -1,4 +1,5 @@
 import PlutoAxios from './pluto';
+import { Paper } from '../model/paper';
 
 export type ProfileParams = {
   affiliation_id: string | null;
@@ -11,6 +12,14 @@ export type ProfileParams = {
   web_page: string;
 };
 
+type GscImportRes = {
+  totalImportedCount: number;
+  successCount: number;
+  pendingCount: number;
+  successPapers: Paper[];
+  pendingPapers: Paper[];
+};
+
 class ProfileAPI extends PlutoAxios {
   public async createProfile(params: ProfileParams) {
     const res = await this.post('/profiles/me', {
@@ -19,6 +28,11 @@ class ProfileAPI extends PlutoAxios {
     if (res) {
       return res.data.data.content;
     }
+  }
+
+  public async importFromGSC(params: { profileId: string; url: string }): Promise<GscImportRes> {
+    const res = await this.post(`/profiles/${params.profileId}/import-papers/gs?url=${params.url}`);
+    return res.data.data.content;
   }
 }
 

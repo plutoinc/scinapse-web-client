@@ -1,0 +1,181 @@
+.boxContainer {
+  font-family: $fallback !important;
+  width: 666px;
+}
+
+.boxWrapper {
+  padding: 22px 24px 16px 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 500;
+  color: $black0;
+}
+
+.iconWrapper {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    color: $gray500;
+  }
+}
+
+.copyButtonWrapper {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+}
+
+.copyButton {
+  display: flex;
+  padding: 8px 16px;
+  width: 93px;
+  height: 40px;
+  border-radius: 4px;
+  background-color: $gray50;
+  color: $main_blue0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.63;
+  cursor: pointer;
+}
+
+.copyIcon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  margin-left: 8px;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.tabBoxWrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 16.5px;
+}
+
+.normalTabWrapper {
+  flex: 1;
+}
+
+.tabItem {
+  display: inline-block;
+  vertical-align: top;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.63;
+  color: $gray600;
+  cursor: pointer;
+}
+
+.tabItem.active {
+  position: relative;
+  color: $black1;
+  border-bottom: solid 3px $main_blue0;
+}
+
+.plusIconWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
+  background-color: $gray200;
+  cursor: pointer;
+}
+
+.plusIcon {
+  display: inline-block;
+  vertical-align: top;
+  width: 9px;
+  height: 9px;
+  margin-top: -9px;
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.textBoxWrapper {
+  position: relative;
+  padding-top: 16px;
+  height: 180px;
+  border-top: solid 1px $gray400;
+}
+
+.textArea {
+  padding: 20px 16px;
+  border-radius: 4px;
+  resize: none;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+  line-height: 1.54;
+  text-align: left;
+  color: $black1;
+  background-color: $gray50;
+}
+
+.downloadBtnWrapper {
+  width: 100%;
+  padding: 16px 24px;
+  border-top: 1px solid $gray400;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.63;
+  color: $gray800;
+}
+
+.orSyntax {
+  color: $gray500;
+}
+
+.downloadBtn {
+  height: 40px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: solid 1px $gray400;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.63;
+  text-align: center;
+  color: $main_blue0;
+  margin-left: 16px;
+  cursor: pointer;
+
+  & + & {
+    margin-left: 8px;
+  }
+}
+
+@media (max-width: $tablet_width) {
+  .boxContainer {
+    width: 100%;
+  }
+}

@@ -237,6 +237,7 @@ export const ActionCreators = {
     paperFigures?: PaperFigure[];
     currentPaperFigureIndex?: number;
     viewDetailFigureTargetPaperId?: string;
+    profileId?: string;
   }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
   },
