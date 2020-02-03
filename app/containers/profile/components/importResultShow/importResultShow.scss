@@ -1,0 +1,36 @@
+.header {
+  font-weight: 500;
+  font-size: 18px;
+  text-align: center;
+  letter-spacing: 1px;
+  color: $black_light_0;
+}
+
+.resultIcon {
+  display: flex;
+  width: 40px;
+  height: 40px;
+
+  svg {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.importResultSection {
+  display: flex;
+  flex: 1;
+  padding: 16px 0;
+
+  .successResultSection,
+  .pendingResultSection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .successResultSection + .pendingResultSection {
+    border-left: 1px solid $gray400;
+  }
+}
