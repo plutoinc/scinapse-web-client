@@ -5,6 +5,9 @@ import { Formik, FormikErrors, Form, Field } from 'formik';
 import { Button } from '@pluto_network/pluto-design-elements';
 import FormikInput from '../../../../components/common/formikInput';
 
+const useStyles = require('isomorphic-style-loader/useStyles');
+const s = require('./gscImportForm.scss');
+
 const GOOGLE_SCHOLAR_URL_PREFIX = 'https://scholar.google.com/citations?';
 
 export interface GscFormState {
@@ -37,10 +40,12 @@ function gscImportValidateForm(values: GscFormState) {
 }
 
 const GscImportForm: React.FC<GscImportFormProps> = props => {
+  useStyles(s);
+
   const { isLoading, handleGscSubmit } = props;
 
   return (
-    <div>
+    <div className={s.formWrapper}>
       <Formik
         initialValues={{ url: '' }}
         validate={gscImportValidateForm}
@@ -63,14 +68,16 @@ const GscImportForm: React.FC<GscImportFormProps> = props => {
                   variant="underlined"
                 />
               </div>
-              <Button
-                elementType="button"
-                aria-label="Import paper on gsc profile link"
-                type="submit"
-                isLoading={isLoading}
-              >
-                <span>SEND URL</span>
-              </Button>
+              <div className={s.submitBtn}>
+                <Button
+                  elementType="button"
+                  aria-label="Import paper on gsc profile link"
+                  type="submit"
+                  isLoading={isLoading}
+                >
+                  <span>IMPORT</span>
+                </Button>
+              </div>
             </div>
           </Form>
         )}

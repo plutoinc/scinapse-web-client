@@ -3,6 +3,9 @@ import { Formik, Form, Field } from 'formik';
 import FormikInput from '../../../../components/common/formikInput';
 import { Button, InputField } from '@pluto_network/pluto-design-elements';
 
+const useStyles = require('isomorphic-style-loader/useStyles');
+const s = require('./bibTexImportForm.scss');
+
 export interface BibTexFormState {
   bibTexStr: string;
 }
@@ -13,12 +16,16 @@ interface BibTexImportFormProps {
 }
 
 const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
+  useStyles(s);
+
   const { isLoading, handleBibTexSubmit } = props;
   const [bibTexString, setBibTexString] = useState<string>('');
+  const [targetFile, setTargetFile] = useState<File | null>(null);
 
   const fileChangedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.files) {
       const file = e.currentTarget.files[0];
+      setTargetFile(file);
 
       const fileReader = new FileReader();
       fileReader.readAsText(file, 'UTF8');
@@ -31,7 +38,7 @@ const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
   };
 
   return (
-    <div>
+    <div className={s.formWrapper}>
       <Formik
         initialValues={{ bibTexStr: bibTexString }}
         onSubmit={handleBibTexSubmit}
@@ -42,15 +49,28 @@ const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
           <Form autoComplete="off">
             <div>
               <div>
-                <InputField
-                  type="file"
-                  accept=".bib"
-                  labelText="BIBTEX FILE"
-                  helperText="Write bibTex file here."
-                  placeholder={'Write bibTex file here.'}
-                  variant="underlined"
-                  onChange={fileChangedHandler}
-                />
+                <div className={s.bibTexFileUploaderContainer}>
+                  <div className={s.bibTexFileUploaderWrapper}>
+                    <input
+                      type="file"
+                      id="bibTexFile"
+                      accept=".bib"
+                      onChange={fileChangedHandler}
+                      className={s.bibTexFileUploader}
+                    />
+                    <div className={s.bibTexFileUploadSection}>
+                      {!targetFile ? `Drop File here or click UPLOAD button` : targetFile.name}
+                    </div>
+                  </div>
+                  <label htmlFor="bibTexFile" className={s.bibTexFileUploaderButton}>
+                    UPLOAD
+                  </label>
+                </div>
+                <div className={s.orSeparatorBox}>
+                  <div className={s.dashedSeparator} />
+                  <div className={s.orContent}>or</div>
+                  <div className={s.dashedSeparator} />
+                </div>
                 <Field
                   name="bibTexStr"
                   type="text"
@@ -63,14 +83,16 @@ const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
                   multiline={true}
                 />
               </div>
-              <Button
-                elementType="button"
-                aria-label="Import paper from bibTex string"
-                type="submit"
-                isLoading={isLoading}
-              >
-                <span>SEND STRING</span>
-              </Button>
+              <div className={s.submitBtn}>
+                <Button
+                  elementType="button"
+                  aria-label="Import paper from bibTex string"
+                  type="submit"
+                  isLoading={isLoading}
+                >
+                  <span>IMPORT</span>
+                </Button>
+              </div>
             </div>
           </Form>
         )}
