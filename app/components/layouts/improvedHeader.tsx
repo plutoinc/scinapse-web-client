@@ -34,7 +34,7 @@ import { UserDevice } from './reducer';
 import { fetchKeywordAlertList } from '../../containers/keywordSettings/actions';
 import { changeSearchQuery } from '../../reducers/searchQuery';
 import MobileSearchBox from '../common/mobileSearchBox';
-import { getMemorizedProfile } from '../../selectors/getProfile';
+
 const styles = require('./improvedHeader.scss');
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -44,7 +44,6 @@ let ticking = false;
 
 function mapStateToProps(state: AppState) {
   return {
-    profile: getMemorizedProfile(state),
     currentUserState: getMemoizedCurrentUser(state),
     layoutState: getMemoizedLayout(state),
     myCollectionsState: state.myCollections,
@@ -336,19 +335,19 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private userDropdownMenuItems = () => {
-    const { currentUserState, myCollectionsState, profile } = this.props;
+    const { currentUserState, myCollectionsState } = this.props;
 
     return (
       <div className={styles.menuItems}>
         <MenuItem classes={{ root: styles.userInfoMenuItem }} disabled disableGutters>
           <UserInformation user={currentUserState} />
         </MenuItem>
-        {profile.isEditable ? (
+        {currentUserState.profileId ? (
           <MenuItem classes={{ root: styles.profileButton }}>
             <Link
               className={styles.linkOnButton}
               onClick={this.handleRequestCloseUserDropdown}
-              to={`/profiles/${profile.id}`}
+              to={`/profiles/${currentUserState.profileId}`}
             >
               Profile
             </Link>
