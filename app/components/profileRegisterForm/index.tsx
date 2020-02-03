@@ -62,7 +62,7 @@ const validateForm = (values: ProfileRegisterFormValues, type: ProfileRegisterSt
 
 const createProfile = (values: ProfileRegisterFormValues) => {
   const { id: affiliation_id, name: affiliation_name } = values.affiliation as Affiliation;
-  profileAPI.createProfile({
+  return profileAPI.createProfile({
     affiliation_id,
     affiliation_name,
     bio: ' ',
@@ -76,7 +76,7 @@ const createProfile = (values: ProfileRegisterFormValues) => {
 
 const createMemberAndProfile = (token: string, values: ProfileRegisterFormValues) => {
   const { id: affiliation_id, name: affiliation_name } = values.affiliation as Affiliation;
-  memberAPI.createMemberWithProfile(token, {
+  return memberAPI.createMemberWithProfile(token, {
     affiliation_id,
     affiliation_name,
     bio: ' ',
@@ -157,16 +157,16 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
     });
   }, [queryParams.token, currentUser]);
 
-  const handleSubmit = (values: ProfileRegisterFormValues) => {
+  const handleSubmit = async (values: ProfileRegisterFormValues) => {
     const { id: affiliation_id, name: affiliation_name } = values.affiliation as Affiliation
     if (!affiliation_id || !affiliation_name) {
       return;
     }
     let res = null;
     if (formStatus === 'PROFILE') {
-      res = createProfile(values);
+      res = await createProfile(values);
     } else if (formStatus === 'NOT_A_MEMBER' && queryParams.token) {
-      res = createMemberAndProfile(queryParams.token, values);
+      res = (await createMemberAndProfile(queryParams.token, values)).profile;
     }
 
     if (res && (res as Profile).id) {
