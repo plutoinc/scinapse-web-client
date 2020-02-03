@@ -14,7 +14,7 @@ export interface VenueAndAuthorsProps {
 
 const LineVenueAuthors: React.FC<VenueAndAuthorsProps> = props => {
   const { paper, pageType, actionArea } = props;
-  const { authors } = paper;
+  const { authors, profiles } = paper;
 
   return (
     <div className={styles.publishInfoList}>
@@ -26,6 +26,7 @@ const LineVenueAuthors: React.FC<VenueAndAuthorsProps> = props => {
             <LineAuthors
               paper={paper}
               authors={authors}
+              profiles={profiles}
               pageType={pageType}
               actionArea={actionArea}
               style={{ fontSize: '16px' }}

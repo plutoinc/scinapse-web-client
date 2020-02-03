@@ -20,7 +20,7 @@ const BlockVenueAuthor: React.FC<BlockVenueAuthorProps> = ({ paper, pageType, ac
         pageType={pageType}
         actionArea={actionArea}
       />
-      <BlockAuthorList paper={paper} authors={paper.authors} pageType={pageType} actionArea={actionArea} />
+      <BlockAuthorList paper={paper} authors={paper.authors} profiles={paper.profiles} pageType={pageType} actionArea={actionArea} />
     </>
   );
 };

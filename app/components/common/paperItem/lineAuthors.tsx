@@ -7,12 +7,14 @@ import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import { Paper } from '../../../model/paper';
 import ActionTicketManager from '../../../helpers/actionTicketManager';
 import { Affiliation } from '../../../model/affiliation';
+import { PaperProfile } from '../../../model/profile';
 const styles = require('./authors.scss');
 
 const MINIMUM_SHOWING_AUTHOR_NUMBER = 3;
 
 export interface AuthorsProps {
   authors: PaperAuthor[];
+  profiles: PaperProfile[];
   paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea?: Scinapse.ActionTicket.ActionArea;
@@ -63,6 +65,14 @@ class LineAuthors extends React.PureComponent<AuthorsProps> {
     const { paper } = this.props;
     return GlobalDialogManager.openAuthorListDialog(paper);
   };
+
+  private getAuthorLink = (author: PaperAuthor) => {
+    if (!author) return null;
+    const { profiles } = this.props;
+    const result = profiles.find(profile => profile.order === author.order)
+    if (result) return `/profiles/${result.id}`;
+    return `/authors/${author.id}`;
+  }
 
   private getHIndexTooltip = (hIndex?: number) => {
     if (!hIndex) return null;
@@ -120,7 +130,7 @@ class LineAuthors extends React.PureComponent<AuthorsProps> {
           </span>
         ) : (
           <Link
-            to={`/authors/${author.id}`}
+            to={this.getAuthorLink(author) || ''}
             onClick={() => {
               ActionTicketManager.trackTicket({
                 pageType,

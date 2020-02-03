@@ -4,6 +4,7 @@ import { PaperSource } from './paperSource';
 import { Fos } from './fos';
 import { Journal } from './journal';
 import { ConferenceInstance } from './conferenceInstance';
+import { PaperProfile } from './profile';
 
 export interface PaperPdf {
   url: string;
@@ -41,6 +42,7 @@ export interface Paper {
   fosList: Fos[];
   figures: PaperFigure[];
   authors: PaperAuthor[];
+  profiles: PaperProfile[];
   abstract: string;
   journal: Journal | null;
   conferenceInstance: ConferenceInstance | null;
