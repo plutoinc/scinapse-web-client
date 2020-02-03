@@ -30,6 +30,7 @@ import {
   KEYWORD_SETTINGS_PATH,
 } from './constants/routes';
 import { AppState } from './reducers';
+import ArticleSpinner from './components/common/spinner/articleSpinner';
 const styles = require('./root.scss');
 
 export interface LoadDataParams<P> {
@@ -47,32 +48,40 @@ interface ServerRoutesMap {
   render?: any;
 }
 
+const LoadingSpinner: React.FC = () => {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', width: '100vw' }}>
+      <ArticleSpinner />
+    </div>
+  );
+};
+
 export const routesMap: ServerRoutesMap[] = [
   {
     path: HOME_PATH,
     exact: true,
     component: loadable(() => import('./components/improvedHome'), {
-      fallback: <div>loading ...</div>,
+      fallback: <LoadingSpinner />,
     }),
   },
   {
     path: SEARCH_RESULT_PATH,
     component: loadable(() => import('./components/articleSearch'), {
-      fallback: <div>loading ...</div>,
+      fallback: <LoadingSpinner />,
     }),
     exact: true,
   },
   {
     path: AUTHOR_SEARCH_RESULT_PATH,
     component: loadable(() => import('./containers/authorSearch'), {
-      fallback: <div>loading ...</div>,
+      fallback: <LoadingSpinner />,
     }),
     exact: true,
   },
   {
     path: PAPER_SHOW_PATH,
     component: loadable(() => import('./containers/paperShow'), {
-      fallback: <div>loading ...</div>,
+      fallback: <LoadingSpinner />,
     }),
     loadData: async (params: LoadDataParams<PaperShowMatchParams>) => {
       const {
@@ -86,7 +95,7 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: AUTHOR_SHOW_PATH,
     component: loadable(() => import('./containers/authorShow'), {
-      fallback: <div>loading ...</div>,
+      fallback: <LoadingSpinner />,
     }),
     loadData: async (params: LoadDataParams<AuthorShowMatchParams>) => {
       const { fetchAuthorShowPageData } = await import('./containers/authorShow/sideEffect');
@@ -96,7 +105,7 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: COLLECTION_SHOW_PATH,
     component: loadable(() => import('./containers/collectionShow'), {
-      fallback: <div>loading ...</div>,
+      fallback: <LoadingSpinner />,
     }),
     loadData: async (params: LoadDataParams<CollectionShowMatchParams>) => {
       const { fetchCollectionShowData } = await import('./containers/collectionShow/sideEffect');
@@ -106,7 +115,7 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: JOURNAL_SHOW_PATH,
     component: loadable(() => import('./components/journalShow'), {
-      fallback: <div>loading ...</div>,
+      fallback: <LoadingSpinner />,
     }),
     loadData: async (params: LoadDataParams<JournalShowMatchParams>) => {
       const { fetchJournalShowPageData } = await import('./components/journalShow/sideEffect');
@@ -116,7 +125,7 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: COLLECTION_LIST_PATH,
     component: loadable(() => import('./components/collections'), {
-      fallback: <div>loading ...</div>,
+      fallback: <LoadingSpinner />,
     }),
     loadData: async (params: LoadDataParams<{ userId: string }>) => {
       const { getCollections } = await import('./components/collections/sideEffect');
@@ -127,38 +136,38 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: AUTH_PATH,
     component: loadable(() => import('./components/auth'), {
-      fallback: <div>loading ...</div>,
+      fallback: <LoadingSpinner />,
     }),
   },
   {
     path: USER_SETTINGS_PATH,
     component: loadable(() => import('./containers/userSettings'), {
-      fallback: <div>loading ...</div>,
+      fallback: <LoadingSpinner />,
     }),
   },
   {
     path: KEYWORD_SETTINGS_PATH,
     component: loadable(() => import('./containers/keywordSettings'), {
-      fallback: <div>loading ...</div>,
+      fallback: <LoadingSpinner />,
     }),
   },
   {
     path: DESIGN_PATH,
     component: loadable(() => import('./containers/admin'), {
-      fallback: <div>loading ...</div>,
+      fallback: <LoadingSpinner />,
     }),
   },
   {
     path: TERMS_OF_SERVICE_PATH,
     component: loadable(() => import('./components/termsOfService/termsOfService'), {
-      fallback: <div>loading ...</div>,
+      fallback: <LoadingSpinner />,
     }),
     exact: true,
   },
   {
     path: PRIVACY_POLICY_PATH,
     component: loadable(() => import('./components/privacyPolicy/privacyPolicy'), {
-      fallback: <div>loading ...</div>,
+      fallback: <LoadingSpinner />,
     }),
     exact: true,
   },
@@ -170,7 +179,7 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: '/paper-item-demo',
     component: loadable(() => import('./components/common/paperItem/demo'), {
-      fallback: <div>loading ...</div>,
+      fallback: <LoadingSpinner />,
     }),
     exact: true,
   },
