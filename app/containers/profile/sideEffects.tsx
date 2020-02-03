@@ -1,9 +1,9 @@
 import { LoadDataParams } from '../../routes';
 import { ActionCreators } from '../../actions/actionTypes';
-import { fetchProfileData } from '../../actions/profile';
+import { fetchProfileData, fetchProfilePapers } from '../../actions/profile';
 
 export async function fetchAuthorShowPageData(params: LoadDataParams<{ profileId: string }>) {
-  const { dispatch, match } = params;
+  const { dispatch, match, queryParams } = params;
   const profileId = match.params.profileId;
 
   if (isNaN(parseInt(profileId, 10))) {
@@ -11,5 +11,8 @@ export async function fetchAuthorShowPageData(params: LoadDataParams<{ profileId
     return dispatch(ActionCreators.failedToLoadAuthorShowPageData({ statusCode: 400 }));
   }
 
-  await dispatch(fetchProfileData(profileId));
+  await Promise.all([
+    await dispatch(fetchProfileData(profileId)),
+    await dispatch(fetchProfilePapers({ profileId, page: queryParams?.page || 0 })),
+  ]);
 }

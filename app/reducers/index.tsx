@@ -29,7 +29,7 @@ import FindInLibraryDialogReducer, { FIND_IN_LIBRARY_DIALOG_INITIAL_STATE } from
 import KeywordSettingsReducer, { KEYWORD_SETTINGS_INITIAL_STATE } from './keywordSettings';
 import CreateKeywordAlertDialogReducer, { CREATE_KEYWORD_ALERT_DIALOG_INITIAL_STATE } from './createKeywordAlertDialog';
 import ScinapseSnackbarReducer, { SCINAPSE_SNACK_BAR_INITIAL_STATE } from './scinapseSnackbar';
-import ProfilePageReducer, { PROFILE_PAGE_INITIAL_STATE } from './profilePage';
+import profilePaperListReducer, { PROFILE_PAPER_LIST_INITIAL_STATE } from './profilePaperList';
 import ProfileEntitiesReducer, { PROFILE_ENTITIES_INITIAL_STATE } from './profileEntity';
 
 export type AppState = typeof initialState;
@@ -57,7 +57,7 @@ export const initialState = {
   keywordSettingsState: KEYWORD_SETTINGS_INITIAL_STATE,
   createKeywordAlertDialogState: CREATE_KEYWORD_ALERT_DIALOG_INITIAL_STATE,
   scinapseSnackbarState: SCINAPSE_SNACK_BAR_INITIAL_STATE,
-  profilePageState: PROFILE_PAGE_INITIAL_STATE,
+  profilePaperListState: PROFILE_PAPER_LIST_INITIAL_STATE,
   profileEntities: PROFILE_ENTITIES_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
 };
@@ -85,7 +85,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   keywordSettingsState: KeywordSettingsReducer,
   createKeywordAlertDialogState: CreateKeywordAlertDialogReducer,
   scinapseSnackbarState: ScinapseSnackbarReducer,
-  profilePageState: ProfilePageReducer,
+  profilePaperListState: profilePaperListReducer,
   profileEntities: ProfileEntitiesReducer,
   entities: EntityReducer,
 });

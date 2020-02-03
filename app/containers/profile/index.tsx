@@ -1,11 +1,11 @@
 import React, { FC, useState, useRef, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 // import RepresentativePublicationsDialog from '../../components/dialog/components/representativePublications';
 import { AppState } from '../../reducers';
-// import DesktopPagination from '../../components/common/desktopPagination';
+import DesktopPagination from '../../components/common/desktopPagination';
 import { useThunkDispatch } from '../../hooks/useThunkDispatch';
 import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
 // import { DEFAULT_AUTHOR_PAPERS_SIZE } from '../../api/author';
@@ -14,7 +14,6 @@ import { Button, InputField } from '@pluto_network/pluto-design-elements';
 import Icon from '../../icons';
 // import ActionTicketManager from '../../helpers/actionTicketManager';
 import formatNumber from '../../helpers/formatNumber';
-// import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from '../../components/common/sortBox';
 import CoAuthor from '../../components/common/coAuthor';
 import ProfileCvSection from '../authorCvSection';
 import { Affiliation } from '../../model/affiliation';
@@ -24,9 +23,10 @@ import ProfileShowPageHelmet from './components/helmet';
 // import RepresentativePaperListSection from './components/representativePapers';
 // import { Paper } from '../../model/paper';
 import { selectHydratedProfile, Profile } from '../../model/profile';
-import { fetchProfileData, updateProfile } from '../../actions/profile';
+import { fetchProfileData, updateProfile, fetchProfilePapers } from '../../actions/profile';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
 import { ACTION_TYPES } from '../../actions/actionTypes';
+import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./connectedAuthor.scss');
 
@@ -39,38 +39,24 @@ const ProfilePage: FC = () => {
   useStyles(s);
   const { profileId } = useParams();
   const dispatch = useThunkDispatch();
-  const shouldFetch = useSelector(
-    (state: AppState) => !state.configuration.succeedAPIFetchAtServer || state.configuration.renderedAtClient
-  );
-  const lastShouldFetch = useRef(shouldFetch);
+  const location = useLocation();
+  const queryParams = getQueryParamsObject(location.search);
+  const currentPage = parseInt(queryParams.page || '', 10) || 0;
   const profile = useSelector<AppState, Profile | undefined>(state => selectHydratedProfile(state, profileId));
   const coAuthorIds = useSelector<AppState, string[] | undefined>(state => state.authorShow.coAuthorIds, isEqual);
   const userDevice = useSelector((state: AppState) => state.layout.userDevice);
-  const currentPage = useSelector((state: AppState) => state.profilePageState.currentPage);
-  const totalPaperCount = useSelector((state: AppState) => state.profilePageState.totalCount);
-  const maxPage = useSelector((state: AppState) => state.profilePageState.maxPage);
-  const paperIds = useSelector<AppState, string[] | undefined>(state => state.profilePageState.paperIds, isEqual);
-  // const sort = useSelector((state: AppState) => state.profilePageState.sort);
+  const totalPaperCount = useSelector((state: AppState) => state.profilePaperListState.totalCount);
+  const maxPage = useSelector((state: AppState) => state.profilePaperListState.maxPage);
+  const paperIds = useSelector<AppState, string[]>(state => state.profilePaperListState.paperIds, isEqual);
   const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
   const [isOpenModifyProfileDialog, setIsOpenModifyProfileDialog] = useState(false);
   // const [isOpenRepresentativePublicationDialog, setIsOpenRepresentativePublicationDialog] = useState(false);
   const [activeTab, setActiveTab] = useState(AvailableTab.PUBLICATIONS);
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
-
-  // const handleSearch = (query: string) => {
-  //   if (query.length < 2) return;
-  //   if (!profile) return;
-
-  //   ActionTicketManager.trackTicket({
-  //     pageType: 'authorShow',
-  //     actionType: 'fire',
-  //     actionArea: 'paperList',
-  //     actionTag: 'query',
-  //     actionLabel: query,
-  //   });
-
-  //   dispatch(fetchAuthorPapers({ query, authorId: author.id, sort, page: 1 }));
-  // };
+  const shouldFetch = useSelector(
+    (state: AppState) => !state.configuration.succeedAPIFetchAtServer || state.configuration.renderedAtClient
+  );
+  const lastShouldFetch = useRef(shouldFetch);
 
   useEffect(
     () => {
@@ -79,33 +65,23 @@ const ProfilePage: FC = () => {
 
       dispatch(fetchProfileData(profileId));
     },
-    [profileId, dispatch]
+    [profileId, dispatch, currentUser]
   );
 
-  // useEffect(
-  //   () => {
-  //     if (!lastShouldFetch.current) {
-  //       lastShouldFetch.current = true;
-  //       return;
-  //     }
-  //     if (!profileId) return;
+  useEffect(
+    () => {
+      if (!lastShouldFetch.current) {
+        lastShouldFetch.current = true;
+        return;
+      }
+      if (!profileId) return;
 
-  //     dispatch(
-  //       fetchAuthorPapers({
-  //         authorId: profileId,
-  //         size: DEFAULT_AUTHOR_PAPERS_SIZE,
-  //         page: currentPage,
-  //         sort: 'MOST_CITATIONS',
-  //       })
-  //     );
-  //   },
-  //   [profileId, dispatch, currentPage]
-  // );
+      dispatch(fetchProfilePapers({ profileId, page: currentPage }));
+    },
+    [profileId, currentPage, dispatch, currentUser]
+  );
 
   if (!profile) return null;
-
-  // TODO: Change below
-  const isEditable = true;
 
   return (
     <div className={s.authorShowPageWrapper}>
@@ -116,7 +92,7 @@ const ProfilePage: FC = () => {
           userDevice={userDevice}
           currentUser={currentUser}
           rightBoxContent={
-            isEditable && (
+            profile.isEditable && (
               <Button
                 elementType="button"
                 size="medium"
@@ -166,101 +142,65 @@ const ProfilePage: FC = () => {
                   <div className={s.allPublicationHeader}>
                     <span className={s.sectionTitle}>Publications</span>
                     <span className={s.countBadge}>{profile.paperCount}</span>
-                    <Button
-                      elementType="button"
-                      size="medium"
-                      onClick={() => {
-                        if (!profileId) {
-                          dispatch({
-                            type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
-                            payload: {
-                              type: 'error',
-                              message: 'Sorry. we had an error to open paper import dialog.',
-                            },
-                          });
-                        } else {
-                          GlobalDialogManager.openPaperImportDialog(profileId);
-                        }
-                      }}
-                    >
-                      <Icon icon="ADD_NOTE" />
-                      <span>Import Paper</span>
-                    </Button>
-                  </div>
-                  <div className={s.selectedPaperDescription} />
-                  <div className={s.searchSortWrapper}>
-                    <div className={s.searchContainer}>
-                      <div className={s.searchInputWrapper}>
-                        <InputField
-                          leadingIcon={<Icon icon="SEARCH" />}
-                          placeholder="Search papers"
-                          onKeyPress={e => {
-                            // TODO: restore below logic
-                            // e.key === 'Enter' && handleSearch(e.currentTarget.value);
-                            console.log(e.key);
-                          }}
-                        />
-                      </div>
-                      <div className={s.paperCountMetadata}>
-                        {currentPage} page of {formatNumber(maxPage)} pages ({formatNumber(totalPaperCount)} results)
-                      </div>
-                    </div>
                     <div className={s.rightBox}>
-                      // TODO: restore below logic
-                      {/* <SortBox
-                        sortOption={sort}
-                        onClickOption={(sort: AUTHOR_PAPER_LIST_SORT_TYPES) =>
-                          dispatch(
-                            fetchAuthorPapers({
-                              authorId: author.id,
-                              size: DEFAULT_AUTHOR_PAPERS_SIZE,
-                              page: 1,
-                              sort,
-                            })
-                          )
-                        }
-                        currentPage="authorShow"
-                        exposeRecentlyUpdated={currentUser.authorId === author.id}
-                        exposeRelevanceOption={false}
-                      /> */}
+                      {profile.isEditable && (
+                        <Button
+                          elementType="button"
+                          size="medium"
+                          onClick={() => {
+                            GlobalDialogManager.openPaperImportDialog(profile.id);
+                          }}
+                        >
+                          <Icon icon="ADD_NOTE" />
+                          <span>Import Publications</span>
+                        </Button>
+                      )}
                     </div>
                   </div>
-                  {paperIds &&
-                    paperIds.map(id => (
-                      <FullPaperItem key={id} paperId={id} pageType="profileShow" actionArea="paperList" hideFigure />
-                    ))}
-                  {/* // TODO: restore below logic */}
-                  {/* <DesktopPagination
+                  <div className={s.paperCountMetadata}>
+                    {currentPage + 1} page of {formatNumber(maxPage)} pages ({formatNumber(totalPaperCount)} results)
+                  </div>
+                  <div className={s.divider} />
+                  {paperIds.length === 0 &&
+                    profile.isEditable && (
+                      <div className={s.noPapers}>
+                        <span className={s.noPaperContent}>You have not yet imported your paper list.</span>
+                        <Button
+                          elementType="button"
+                          size="medium"
+                          onClick={() => {
+                            GlobalDialogManager.openPaperImportDialog(profile.id);
+                          }}
+                        >
+                          <Icon icon="ADD_NOTE" />
+                          <span>Import Publications</span>
+                        </Button>
+                      </div>
+                    )}
+                  {paperIds.map(id => (
+                    <FullPaperItem key={id} paperId={id} pageType="profileShow" actionArea="paperList" hideFigure />
+                  ))}
+                  <DesktopPagination
                     type="AUTHOR_SHOW_PAPERS_PAGINATION"
+                    getLinkDestination={page => `/profiles/${profileId}?page=${page - 1}`}
                     totalPage={maxPage}
-                    currentPageIndex={currentPage - 1}
-                    onItemClick={(page: number) => {
-                      dispatch(
-                        fetchAuthorPapers({
-                          authorId: author.id,
-                          size: DEFAULT_AUTHOR_PAPERS_SIZE,
-                          page,
-                          sort: 'MOST_CITATIONS',
-                        })
-                      );
-                    }}
+                    currentPageIndex={currentPage}
                     wrapperStyle={{
                       margin: '45px 0 40px 0',
                     }}
-                  /> */}
+                  />
                 </div>
-                <div className={s.rightContentWrapper}>
+                {/* <div className={s.rightContentWrapper}>
                   <div>
                     <div className={s.coAuthorHeader}>Close Researchers</div>
                     {coAuthorIds && coAuthorIds.map(id => <CoAuthor key={id} authorId={id} />)}
                   </div>
-                </div>
+                </div> */}
               </>
             )}
           </div>
         </div>
       </div>
-      {/* // TODO: restore below logic */}
       <ModifyProfile
         handleClose={() => setIsOpenModifyProfileDialog(prev => !prev)}
         isOpen={isOpenModifyProfileDialog}

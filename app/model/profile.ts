@@ -25,7 +25,7 @@ export type PaperProfile = Profile & {
   order: number;
   matchedAutorId: string;
   affiliation: Affiliation;
-}
+};
 
 export const profileEntitySchema = new schema.Entity('profileEntities');
 

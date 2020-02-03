@@ -5,7 +5,6 @@ import alertToast from '../../helpers/makePlutoToastAction';
 import { ActionCreators } from '../../actions/actionTypes';
 import { GetAuthorPapersParams } from '../../api/author/types';
 import PlutoAxios from '../../api/pluto';
-import { getPapers } from '../../reducers/profilePage';
 
 export function getCoAuthors(authorId: string, cancelToken?: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
@@ -61,15 +60,6 @@ export function getAuthorPapers(params: GetAuthorPapersParams) {
           first: paperResponse.first,
           last: paperResponse.last,
           numberOfElements: paperResponse.numberOfElements,
-          totalPages: paperResponse.totalPages,
-          totalElements: paperResponse.totalElements,
-        })
-      );
-      dispatch(
-        getPapers({
-          sort: params.sort,
-          page: paperResponse.page,
-          paperIds: paperResponse.result,
           totalPages: paperResponse.totalPages,
           totalElements: paperResponse.totalElements,
         })

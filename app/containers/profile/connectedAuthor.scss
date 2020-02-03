@@ -77,7 +77,7 @@
   color: $green0;
 }
 
-.selectedPaperDescription {
+.divider {
   font-size: 16px;
   line-height: 1.33;
   color: $gray800;
@@ -94,6 +94,21 @@
     position: absolute;
     top: 0;
     right: 0;
+  }
+}
+
+.noPapers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 200px;
+
+  .noPaperContent {
+    color: $black0;
+    font-size: 18px;
+    margin-top: 16px;
+    margin-bottom: 32px;
   }
 }
 
