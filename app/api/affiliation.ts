@@ -15,6 +15,7 @@ export type TokenVerificationRes = {
   };
   email: string;
   isMember: boolean;
+  memberId: number;
 }
 
 class AffiliationAPI extends PlutoAxios {

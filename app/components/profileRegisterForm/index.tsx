@@ -16,11 +16,13 @@ import AffiliationInputField from './affiliationField';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
 import { getCurrentPageType } from '../locationListener';
 import memberAPI from '../../api/member';
+import { useHistory } from 'react-router-dom';
 const s = require('./profileRegisterForm.scss');
 
 type ProfileRegisterStatus =
   'NOT_SET' | // NOT SET! NEED VERIFICATION
   'NOT_A_MEMBER' | // NEED TO SIGNUP WITH CREATING PROFILE
+  'WRONG_MEMBER' | // CURRENT USER DOES NOT MATCH WITH THE MEMBER SENT VERIFICATION EMAIL
   'NEED_LOGIN' | // IS A USER! NEED TO LOGIN
   'PROFILE'; // IS A USER! CONTINUE TO CREATE A PROFILE
 
@@ -97,13 +99,18 @@ const SigninContent: FC = () => {
 
 const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
   const { queryParams } = props;
+  const history = useHistory();
   const currentUser = useSelector<AppState, CurrentUser>(state => state.currentUser);
   const [verificationState, setVerificationState] = useState<TokenVerificationRes | null>(null);
 
   const formStatus: ProfileRegisterStatus = useMemo(() => {
     if (!verificationState) return 'NOT_SET';
     if (verificationState.isMember && currentUser.isLoggedIn) {
-      return 'PROFILE';
+      if (verificationState.memberId === currentUser.id) {
+        return 'PROFILE';
+      } else {
+        return 'WRONG_MEMBER';
+      }
     } else if (verificationState.isMember && !currentUser.isLoggedIn) {
       return 'NEED_LOGIN';
     }
@@ -128,10 +135,6 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
       setVerificationState(res);
     });
   }, [queryParams.token, currentUser]);
-
-  useEffect(() => {
-    console.log(formStatus);
-  }, [formStatus]);
 
   const handleSubmit = (values: ProfileRegisterFormValues) => {
     const { id: affiliation_id, name: affiliation_name } = values.affiliation as Affiliation
