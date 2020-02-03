@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import FormikInput from '../../../../components/common/formikInput';
 import { Button } from '@pluto_network/pluto-design-elements';
+import Icon from '../../../../icons';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./bibTexImportForm.scss');
@@ -59,7 +60,13 @@ const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
                       className={s.bibTexFileUploader}
                     />
                     <div className={s.bibTexFileUploadSection}>
-                      {!targetFile ? `Drop File here or click UPLOAD button` : targetFile.name}
+                      {!targetFile ? (
+                        <span className={s.uploaderGuideContext}>
+                          <Icon icon="CLOUD_UPLOAD" className={s.uploadIcon} />Drop File here or click UPLOAD button
+                        </span>
+                      ) : (
+                        targetFile.name
+                      )}
                     </div>
                   </div>
                   <label htmlFor="bibTexFile" className={s.bibTexFileUploaderButton}>

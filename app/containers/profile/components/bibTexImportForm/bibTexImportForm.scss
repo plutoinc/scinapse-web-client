@@ -49,7 +49,7 @@
     height: 48px;
     border-radius: 4px;
     border: 1px dashed $gray400;
-    color: $gray500;
+    color: $gray600;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -74,5 +74,22 @@
   &:hover {
     background-color: rgba(52, 73, 94, 0.05);
     transition: ease 0.2s;
+  }
+}
+
+.uploaderGuideContext {
+  display: flex;
+  align-items: center;
+}
+
+.uploadIcon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 4px;
+
+  svg {
+    width: 20px;
+    height: 20px;
   }
 }
