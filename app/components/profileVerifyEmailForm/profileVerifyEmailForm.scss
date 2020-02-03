@@ -67,6 +67,10 @@
   @extend %base-input-style;
   cursor: auto;
 
+  &.hasError {
+    border-color: $red0;
+  }
+
   &:disabled {
     color: $gray500;
     border-color: $gray400;

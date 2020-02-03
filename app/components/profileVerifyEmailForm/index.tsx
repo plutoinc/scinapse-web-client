@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FormikErrors } from 'formik';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
 import AffiliationSelectBox from '../dialog/components/modifyProfile/affiliationSelectBox';
@@ -29,6 +29,22 @@ function formatAffiliation(value?: Affiliation | SuggestAffiliation | string) {
     return (value as SuggestAffiliation).keyword;
   }
   return value;
+}
+
+const validateForm = (values: ProfileVerifyEmailFormValues) => {
+  const errors: FormikErrors<ProfileVerifyEmailFormValues> = {};
+  const { emailPrefix } = values;
+
+  if(emailPrefix && emailPrefix.length < 1) {
+    errors.emailPrefix = 'Please enter valid email';
+  }
+  
+  const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))$/;
+  if (emailPrefix && !reg.test(emailPrefix)) {
+    errors.emailPrefix = 'Please enter valid local part only';
+  }
+
+  return errors;
 }
 
 const ProfileVerifyEmailSentContent: FC = () => {
@@ -96,6 +112,9 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
             <Formik
               initialValues={initialValues}
               onSubmit={handleSubmit}
+              validate={validateForm}
+              validateOnBlur
+              validateOnChange
             >
               {({ values, errors, touched, submitForm, setFieldValue }) => { 
                 if (profileAffiliation?.domains && profileAffiliation.domains.length > 0 && (values.affiliation as Affiliation).id !== profileAffiliation.id) {
@@ -141,7 +160,7 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
                             placeholder="Email"
                             className={classNames({
                               [s.inputForm]: true,
-                              [s.hasError]: !!errors.emailPrefix && touched.emailPrefix,
+                              [s.hasError]: !!errors.emailPrefix && !!touched.emailPrefix,
                             })}
                             disabled={!affiliationSelected || isLoading}
                           />
@@ -161,6 +180,7 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
                           </Field>
                           <Icon icon="ARROW_DOWN"/>
                         </div>
+                        <span className={s.errorMsg}>{errors.emailPrefix}</span>
                       </div>
                     </div>
                     <Button
