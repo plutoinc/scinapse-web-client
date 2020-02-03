@@ -1,5 +1,6 @@
 import { schema, denormalize } from 'normalizr';
 import { AppState } from '../reducers';
+import { Affiliation } from './affiliation';
 
 export type Profile = {
   id: string;
@@ -19,6 +20,12 @@ export type Profile = {
   isEmailVerified: boolean;
   isEditable: boolean;
 };
+
+export type PaperProfile = Profile & {
+  order: number;
+  matchedAutorId: string;
+  affiliation: Affiliation;
+}
 
 export const profileEntitySchema = new schema.Entity('profileEntities');
 

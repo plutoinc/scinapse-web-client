@@ -207,6 +207,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
                 style={{ color: '#bbc2d0' }}
                 readOnly={true}
                 authors={paper.authors}
+                profiles={paper.profiles}
                 disableTruncate={true}
               />
             </div>
@@ -251,6 +252,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
               paper={paper}
               readOnly={true}
               authors={paper.authors}
+              profiles={paper.profiles}
               disableTruncate={true}
             />
           </div>
