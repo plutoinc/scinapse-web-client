@@ -8,6 +8,7 @@ import { PaginationResponseV2 } from '../api/types/common';
 import { Paper, paperSchema } from '../model/paper';
 import { ActionCreators } from './actionTypes';
 import { getPapers } from '../reducers/profilePaperList';
+import { getPendingPapers, PendingPaper } from '../reducers/profilePendingPaperList';
 
 interface FetchProfilePaperListParams {
   profileId: string;
@@ -38,11 +39,9 @@ export function updateProfile(params: Partial<ProfileParams> & { id: string }): 
 
 export function fetchProfilePapers(params: FetchProfilePaperListParams): AppThunkAction {
   return async (dispatch, _getState, { axios }) => {
-    const { profileId } = params;
-    const result = await axios.get(`/profiles/${profileId}/papers`, {
-      params: { page: params.page },
-    });
-    const { data } = result.data as PaginationResponseV2<Paper>;
+    const { profileId, page } = params;
+    const result = await axios.get(`/profiles/${profileId}/papers`, { params: { page } });
+    const { data } = result.data as PaginationResponseV2<Paper[]>;
     const papers = data.content;
     const entity = normalize(papers, [paperSchema]);
 
@@ -55,5 +54,15 @@ export function fetchProfilePapers(params: FetchProfilePaperListParams): AppThun
         totalElements: data.page!.totalElements,
       })
     );
+  };
+}
+
+export function fetchProfilePendingPapers(profileId: string): AppThunkAction {
+  return async (dispatch, _getState, { axios }) => {
+    const result = await axios.get(`/profiles/${profileId}/papers/pending`);
+    const { data } = result.data as PaginationResponseV2<PendingPaper[]>;
+    const papers = data.content;
+
+    dispatch(getPendingPapers({ papers }));
   };
 }

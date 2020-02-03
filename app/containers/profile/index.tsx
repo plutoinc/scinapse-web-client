@@ -10,11 +10,10 @@ import { useThunkDispatch } from '../../hooks/useThunkDispatch';
 import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
 // import { DEFAULT_AUTHOR_PAPERS_SIZE } from '../../api/author';
 import ProfileShowHeader from '../../components/authorShowHeader/profileShowHeader';
-import { Button, InputField } from '@pluto_network/pluto-design-elements';
+import { Button } from '@pluto_network/pluto-design-elements';
 import Icon from '../../icons';
 // import ActionTicketManager from '../../helpers/actionTicketManager';
 import formatNumber from '../../helpers/formatNumber';
-import CoAuthor from '../../components/common/coAuthor';
 import ProfileCvSection from '../authorCvSection';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
@@ -23,10 +22,10 @@ import ProfileShowPageHelmet from './components/helmet';
 // import RepresentativePaperListSection from './components/representativePapers';
 // import { Paper } from '../../model/paper';
 import { selectHydratedProfile, Profile } from '../../model/profile';
-import { fetchProfileData, updateProfile, fetchProfilePapers } from '../../actions/profile';
+import { fetchProfileData, updateProfile, fetchProfilePapers, fetchProfilePendingPapers } from '../../actions/profile';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
-import { ACTION_TYPES } from '../../actions/actionTypes';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
+import { PendingPaper } from '../../reducers/profilePendingPaperList';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./connectedAuthor.scss');
 
@@ -43,10 +42,13 @@ const ProfilePage: FC = () => {
   const queryParams = getQueryParamsObject(location.search);
   const currentPage = parseInt(queryParams.page || '', 10) || 0;
   const profile = useSelector<AppState, Profile | undefined>(state => selectHydratedProfile(state, profileId));
-  const coAuthorIds = useSelector<AppState, string[] | undefined>(state => state.authorShow.coAuthorIds, isEqual);
   const userDevice = useSelector((state: AppState) => state.layout.userDevice);
   const totalPaperCount = useSelector((state: AppState) => state.profilePaperListState.totalCount);
   const maxPage = useSelector((state: AppState) => state.profilePaperListState.maxPage);
+  const pendingPapers = useSelector<AppState, PendingPaper[]>(
+    state => state.profilePendingPaperListState.papers,
+    isEqual
+  );
   const paperIds = useSelector<AppState, string[]>(state => state.profilePaperListState.paperIds, isEqual);
   const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
   const [isOpenModifyProfileDialog, setIsOpenModifyProfileDialog] = useState(false);
@@ -64,6 +66,16 @@ const ProfilePage: FC = () => {
       if (!profileId) return;
 
       dispatch(fetchProfileData(profileId));
+    },
+    [profileId, dispatch, currentUser]
+  );
+
+  useEffect(
+    () => {
+      if (!lastShouldFetch.current) return;
+      if (!profileId) return;
+
+      dispatch(fetchProfilePendingPapers(profileId));
     },
     [profileId, dispatch, currentUser]
   );
@@ -139,6 +151,23 @@ const ProfilePage: FC = () => {
                     isEditable={isEditable}
                     onClickManageButton={() => setIsOpenRepresentativePublicationDialog(prev => !prev)}
                   /> */}
+                  <div className={s.allPublicationHeader}>
+                    <span className={s.sectionTitle}>Pending Publications</span>
+                    <span className={s.countBadge}>{pendingPapers.length}</span>
+                    <div className={s.rightBox}>
+                      <div>what 'pending' means?</div>
+                    </div>
+                  </div>
+                  <div className={s.divider} />
+                  {/* TODO: make paper item for pending papers */}
+                  {pendingPapers.map(paper => (
+                    <div key={paper.id}>
+                      <div>{paper.title}</div>
+                      <div>{paper.author}</div>
+                      <div>{paper.journal}</div>
+                      <div>{paper.year}</div>
+                    </div>
+                  ))}
                   <div className={s.allPublicationHeader}>
                     <span className={s.sectionTitle}>Publications</span>
                     <span className={s.countBadge}>{profile.paperCount}</span>
