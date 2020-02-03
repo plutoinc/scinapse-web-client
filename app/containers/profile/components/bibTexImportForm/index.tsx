@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import FormikInput from '../../../../components/common/formikInput';
-import { Button, InputField } from '@pluto_network/pluto-design-elements';
+import { Button } from '@pluto_network/pluto-design-elements';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./bibTexImportForm.scss');
