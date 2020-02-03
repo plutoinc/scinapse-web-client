@@ -25,6 +25,8 @@ import ProfileShowPageHelmet from './components/helmet';
 // import { Paper } from '../../model/paper';
 import { selectHydratedProfile, Profile } from '../../model/profile';
 import { fetchProfileData, updateProfile } from '../../actions/profile';
+import GlobalDialogManager from '../../helpers/globalDialogManager';
+import { ACTION_TYPES } from '../../actions/actionTypes';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./connectedAuthor.scss');
 
@@ -164,6 +166,26 @@ const ProfilePage: FC = () => {
                   <div className={s.allPublicationHeader}>
                     <span className={s.sectionTitle}>Publications</span>
                     <span className={s.countBadge}>{profile.paperCount}</span>
+                    <Button
+                      elementType="button"
+                      size="medium"
+                      onClick={() => {
+                        if (!profileId) {
+                          dispatch({
+                            type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
+                            payload: {
+                              type: 'error',
+                              message: 'Sorry. we had an error to open paper import dialog.',
+                            },
+                          });
+                        } else {
+                          GlobalDialogManager.openPaperImportDialog(profileId);
+                        }
+                      }}
+                    >
+                      <Icon icon="ADD_NOTE" />
+                      <span>Import Paper</span>
+                    </Button>
                   </div>
                   <div className={s.selectedPaperDescription} />
                   <div className={s.searchSortWrapper}>

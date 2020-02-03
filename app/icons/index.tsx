@@ -69,6 +69,8 @@ export const ICONS: { [key: string]: any } = {
   ERROR: require('./error.svg'),
   ALERT: require('./alert.svg'),
   ALERT_LINE: require('./alert-line.svg'),
+  CLOUD_UPLOAD: require('./cloud-upload-outline.svg'),
+  ACTIVE_LINE: require('./activity-outline.svg'),
 };
 
 const Icon: React.FC<IconProps> = ({ className, icon, onClick, style }) => {
