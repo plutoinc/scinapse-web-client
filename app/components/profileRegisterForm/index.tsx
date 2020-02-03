@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect, useMemo } from 'react';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikErrors } from 'formik';
 import { SuggestAffiliation } from '../../api/suggest';
 import { Affiliation } from '../../model/affiliation';
 import { useSelector } from 'react-redux';
@@ -16,11 +16,14 @@ import AffiliationInputField from './affiliationField';
 import GlobalDialogManager from '../../helpers/globalDialogManager';
 import { getCurrentPageType } from '../locationListener';
 import memberAPI from '../../api/member';
+import { Profile } from '../../model/profile';
+import { useHistory } from 'react-router-dom';
 const s = require('./profileRegisterForm.scss');
 
 type ProfileRegisterStatus =
   'NOT_SET' | // NOT SET! NEED VERIFICATION
   'NOT_A_MEMBER' | // NEED TO SIGNUP WITH CREATING PROFILE
+  'WRONG_MEMBER' | // CURRENT USER DOES NOT MATCH WITH THE MEMBER SENT VERIFICATION EMAIL
   'NEED_LOGIN' | // IS A USER! NEED TO LOGIN
   'PROFILE'; // IS A USER! CONTINUE TO CREATE A PROFILE
 
@@ -37,9 +40,29 @@ export type ProfileRegisterFormValues = {
   profileLink: string;
 };
 
+const validateForm = (values: ProfileRegisterFormValues, type: ProfileRegisterStatus) => {
+  const errors: FormikErrors<ProfileRegisterFormValues> = {};
+  const { firstName, lastName, password } = values;
+
+  if (!firstName) {
+    errors.firstName = 'Required';
+  }
+
+  if (!lastName) {
+    errors.lastName = 'Required';
+  }
+
+  if (type === 'NOT_A_MEMBER') {
+    if (!!password && password.length < 8) {
+      errors.password = 'Password must be more than 8 characters';
+    }
+  }
+  return errors;
+}
+
 const createProfile = (values: ProfileRegisterFormValues) => {
   const { id: affiliation_id, name: affiliation_name } = values.affiliation as Affiliation;
-  profileAPI.createProfile({
+  return profileAPI.createProfile({
     affiliation_id,
     affiliation_name,
     bio: ' ',
@@ -53,7 +76,7 @@ const createProfile = (values: ProfileRegisterFormValues) => {
 
 const createMemberAndProfile = (token: string, values: ProfileRegisterFormValues) => {
   const { id: affiliation_id, name: affiliation_name } = values.affiliation as Affiliation;
-  memberAPI.createMemberWithProfile(token, {
+  return memberAPI.createMemberWithProfile(token, {
     affiliation_id,
     affiliation_name,
     bio: ' ',
@@ -97,13 +120,18 @@ const SigninContent: FC = () => {
 
 const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
   const { queryParams } = props;
+  const history = useHistory();
   const currentUser = useSelector<AppState, CurrentUser>(state => state.currentUser);
   const [verificationState, setVerificationState] = useState<TokenVerificationRes | null>(null);
 
   const formStatus: ProfileRegisterStatus = useMemo(() => {
     if (!verificationState) return 'NOT_SET';
     if (verificationState.isMember && currentUser.isLoggedIn) {
-      return 'PROFILE';
+      if (verificationState.memberId === currentUser.id) {
+        return 'PROFILE';
+      } else {
+        return 'WRONG_MEMBER';
+      }
     } else if (verificationState.isMember && !currentUser.isLoggedIn) {
       return 'NEED_LOGIN';
     }
@@ -129,20 +157,20 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
     });
   }, [queryParams.token, currentUser]);
 
-  useEffect(() => {
-    console.log(formStatus);
-  }, [formStatus]);
-
-  const handleSubmit = (values: ProfileRegisterFormValues) => {
+  const handleSubmit = async (values: ProfileRegisterFormValues) => {
     const { id: affiliation_id, name: affiliation_name } = values.affiliation as Affiliation
     if (!affiliation_id || !affiliation_name) {
       return;
     }
-
+    let res = null;
     if (formStatus === 'PROFILE') {
-      createProfile(values);
+      res = await createProfile(values);
     } else if (formStatus === 'NOT_A_MEMBER' && queryParams.token) {
-      createMemberAndProfile(queryParams.token, values);
+      res = (await createMemberAndProfile(queryParams.token, values)).profile;
+    }
+
+    if (res && (res as Profile).id) {
+      history.push(`/profiles/${(res as Profile).id}`);
     }
   };
 
@@ -152,7 +180,11 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
         formStatus === 'NEED_LOGIN'
           ? <SigninContent />
           : (
-            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+            <Formik
+              initialValues={initialValues}
+              onSubmit={handleSubmit}
+              validate={(values) => validateForm(values, formStatus)}
+            >
               {formikProps => {
                 return (
                   <Form>
@@ -165,7 +197,9 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
                       needPwd={formStatus !== 'NOT_A_MEMBER'}
                       email={verificationState?.email}
                     />
-                    <NameInputFields />
+                    <NameInputFields
+                      formikProps={formikProps}
+                    />
                     <div className={s.formRow}>
                       {formStatus === 'PROFILE' ? (
                         <Button elementType="button" type="submit" color="blue">

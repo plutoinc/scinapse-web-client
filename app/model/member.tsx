@@ -7,6 +7,7 @@ export interface Member {
   emailVerified: boolean;
   firstName: string;
   lastName: string;
+  profileId: string | null;
   profileImageUrl: string;
   affiliationId: string | null;
   affiliationName: string | null;

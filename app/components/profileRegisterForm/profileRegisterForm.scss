@@ -38,6 +38,10 @@
 }
 
 .inputForm, input {
+  &.hasError {
+    border-color: $red0;
+  }
+
   &:disabled {
     border-color: $gray400;
     color: $gray500;

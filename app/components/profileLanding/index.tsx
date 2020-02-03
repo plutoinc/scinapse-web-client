@@ -4,6 +4,8 @@ import { Button } from '@pluto_network/pluto-design-elements';
 import { useLocation, useHistory } from 'react-router-dom';
 import QueryString from 'qs';
 import AffiliationAPI from '../../api/affiliation';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../reducers';
 const s = require('./profileLanding.scss');
 
 type ProfileLandingQuery = {
@@ -15,6 +17,7 @@ const ProfileLanding: FC = () => {
   const history = useHistory();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [isValidAffiliationId, setIsValidAffiliationId] = useState<boolean>(false);
+  const currentUser = useSelector((state: AppState) => state.currentUser);
 
   useEffect(() => {
     const queryString = location.search.split('?')[1];
@@ -32,6 +35,12 @@ const ProfileLanding: FC = () => {
       setIsLoaded(true);
     }
   }, [location.search]);
+
+  useEffect(() => {
+    if (currentUser.profileId) {
+      history.push(`/profiles/${currentUser.profileId}`);
+    }
+  }, [currentUser.profileId]);
 
   useEffect(() => {
     if (isValidAffiliationId || !isLoaded) return;
