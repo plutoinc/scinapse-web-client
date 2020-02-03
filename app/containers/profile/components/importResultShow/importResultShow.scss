@@ -6,15 +6,41 @@
   color: $black_light_0;
 }
 
-.resultIcon {
+.successIcon {
   display: flex;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
 
   svg {
-    width: 40px;
-    height: 40px;
+    color: $green0;
+    width: 48px;
+    height: 48px;
   }
+}
+
+.pendingIcon {
+  display: flex;
+  width: 48px;
+  height: 48px;
+
+  svg {
+    color: $red1;
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.resultTitle {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  color: $black_light_0;
+  margin: 8px 0;
+}
+
+.resultCount {
+  font-size: 28px;
+  color: $gray800;
 }
 
 .importResultSection {

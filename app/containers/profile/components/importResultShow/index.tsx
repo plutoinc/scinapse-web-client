@@ -15,14 +15,14 @@ const ImportResultShow: React.FC<{ importResult: PaperImportResType | null }> = 
       <div className={s.header}>RESULT OF PAPER IMPORT</div>
       <div className={s.importResultSection}>
         <div className={s.successResultSection}>
-          <Icon icon="CHECK" className={s.resultIcon} />
-          <div>SUCCESS</div>
-          <div>{importResult.successCount}</div>
+          <Icon icon="CHECK" className={s.successIcon} />
+          <div className={s.resultTitle}>SUCCESS</div>
+          <div className={s.resultCount}>{importResult.successCount}</div>
         </div>
         <div className={s.pendingResultSection}>
-          <Icon icon="ACTIVE_LINE" className={s.resultIcon} />
-          <div>PENDING</div>
-          <div>{importResult.pendingCount}</div>
+          <Icon icon="ACTIVE_LINE" className={s.pendingIcon} />
+          <div className={s.resultTitle}>PENDING</div>
+          <div className={s.resultCount}>{importResult.pendingCount}</div>
         </div>
       </div>
     </div>
