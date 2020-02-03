@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Paper } from '../../../model/paper';
 import { PaperAuthor } from '../../../model/author';
+import { PaperProfile } from '../../../model/profile';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./mobileAuthors.scss');
 
@@ -12,6 +13,10 @@ interface MobileAuthorsProps {
   isExpanded: boolean;
 }
 
+const getProfileFromAuthor = (author: PaperAuthor, profiles: PaperProfile[]) => {
+  return profiles.find(profile => profile.order === author.order);
+}
+
 const SimpleAuthorItem: React.FC<{ author: PaperAuthor }> = ({ author }) => {
   return (
     <Link style={{ textDecoration: 'underline' }} to={`/authors/${author.id}`}>
@@ -20,7 +25,7 @@ const SimpleAuthorItem: React.FC<{ author: PaperAuthor }> = ({ author }) => {
   );
 };
 
-const BlockAuthorItem: React.FC<{ author: PaperAuthor }> = ({ author }) => {
+const BlockAuthorItem: React.FC<{ author: PaperAuthor, profile?: PaperProfile }> = ({ author, profile }) => {
   let affiliation = null;
   if (author.affiliation) {
     if (author.affiliation.nameAbbrev) {
@@ -29,8 +34,13 @@ const BlockAuthorItem: React.FC<{ author: PaperAuthor }> = ({ author }) => {
     affiliation = author.affiliation.name;
   }
 
+  const profileAuthorLink = useMemo(() => {
+    if (profile) return `/profiles/${profile.id}`;
+    return `/authors/${author.id}`;
+  }, [profile, author]);
+
   return (
-    <Link to={`/authors/${author.id}`} className={s.blockAuthorItem}>
+    <Link to={profileAuthorLink} className={s.blockAuthorItem}>
       <div className={s.leftBox}>
         <div className={s.authorName}>{author.name}</div>
         {author.affiliation && <div className={s.affiliation}>{affiliation}</div>}
@@ -53,12 +63,14 @@ const MobileAuthors: React.FC<MobileAuthorsProps> = ({ isExpanded, paper }) => {
       authorCount = <div className={s.authorCount}>{`+ ${paper.authors.length - 3} Authors`}</div>;
     }
 
-    const authorList = paper.authors.slice(0, 2).map(author => <BlockAuthorItem author={author} key={author.id} />);
+    const authorList = paper.authors.slice(0, 2).map(author => <BlockAuthorItem author={author} key={author.id} profile={getProfileFromAuthor(author, paper.profiles)} />);
     if (paper.authors.length > 3) {
+      const author = paper.authors[paper.authors.length - 1];
       authorList.push(
         <BlockAuthorItem
-          author={paper.authors[paper.authors.length - 1]}
-          key={paper.authors[paper.authors.length - 1].id}
+          key={author.id}
+          author={author}
+          profile={getProfileFromAuthor(author, paper.profiles)}
         />
       );
     }
