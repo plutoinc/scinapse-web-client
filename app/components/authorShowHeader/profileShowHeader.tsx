@@ -157,21 +157,22 @@ class ProfileShowHeader extends React.PureComponent<ProfileShowHeaderProps, Prof
             </span>
           )}
 
-        {profile.webPage && (
-          <span className={styles.contactSection}>
-            <a
-              href={profile.webPage || '#'}
-              target="_blank"
-              rel="noopener nofollow noreferrer"
-              className={styles.contactIconWrapper}
-            >
-              <Icon icon="EXTERNAL_SOURCE" className={styles.externalSource} />
-            </a>
-            <a href={profile.webPage || '#'} target="_blank" rel="noopener nofollow noreferrer">
-              {profile.webPage || ''}
-            </a>
-          </span>
-        )}
+        {profile.webPage &&
+          profile.webPage.trim() && (
+            <span className={styles.contactSection}>
+              <a
+                href={profile.webPage || '#'}
+                target="_blank"
+                rel="noopener nofollow noreferrer"
+                className={styles.contactIconWrapper}
+              >
+                <Icon icon="EXTERNAL_SOURCE" className={styles.externalSource} />
+              </a>
+              <a href={profile.webPage || '#'} target="_blank" rel="noopener nofollow noreferrer">
+                {profile.webPage || ''}
+              </a>
+            </span>
+          )}
       </div>
     );
   };

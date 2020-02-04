@@ -165,8 +165,8 @@
 }
 
 @media (max-width: $tablet_width) {
-  .headerBox {
-    padding-left: 12px;
+  .container {
+    padding: 0 10px;
   }
 
   .mobileMetricInformation {
@@ -175,7 +175,7 @@
     margin-bottom: 16px;
 
     .metricWrapper {
-      width: 100px;
+      width: 88px;
       display: inline-grid;
       margin-right: 12px;
     }
@@ -188,7 +188,6 @@
     width: $mobile-container-width;
     margin-left: 0;
     margin-right: 0;
-    padding: 0 10px;
   }
 
   .headerBox {
