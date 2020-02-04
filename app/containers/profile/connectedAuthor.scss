@@ -6,6 +6,7 @@
   display: inline-block;
   vertical-align: top;
   width: 691px;
+  padding-top: 40px;
 }
 
 .container {
@@ -271,7 +272,7 @@
 
   .leftContentWrapper {
     width: $mobile-container-width;
-    padding: 10px;
+    padding: 24px 12px;
   }
 
   .rightBox,

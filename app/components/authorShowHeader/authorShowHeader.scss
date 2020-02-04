@@ -8,7 +8,6 @@
   background-color: $gray30;
   padding-top: 38px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
-  margin-bottom: 40px;
 }
 
 .leftContentWrapper {
@@ -165,19 +164,20 @@
 }
 
 @media (max-width: $tablet_width) {
-  .headerBox {
-    padding-left: 12px;
+  .container {
+    padding: 0 12px;
   }
 
   .mobileMetricInformation {
-    display: inline-block;
+    display: inline-flex;
+    justify-content: space-between;
     margin-top: 24px;
     margin-bottom: 16px;
+    min-width: 296px;
 
     .metricWrapper {
-      width: 100px;
+      max-width: 100px;
       display: inline-grid;
-      margin-right: 12px;
     }
   }
 }
@@ -188,7 +188,6 @@
     width: $mobile-container-width;
     margin-left: 0;
     margin-right: 0;
-    padding: 0 10px;
   }
 
   .headerBox {
