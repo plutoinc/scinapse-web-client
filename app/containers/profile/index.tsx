@@ -152,12 +152,16 @@ const ProfilePage: FC = () => {
                     isEditable={isEditable}
                     onClickManageButton={() => setIsOpenRepresentativePublicationDialog(prev => !prev)}
                   /> */}
-                  <div className={s.allPublicationHeader}>
-                    <span className={s.sectionTitle}>Pending Publications</span>
-                    <span className={s.countBadge}>{pendingPapers.length}</span>
-                  </div>
-                  <div className={s.divider} />
-                  <PendingPaperList papers={pendingPapers} />
+                  {pendingPapers.length > 0 ? (
+                    <>
+                      <div className={s.allPublicationHeader}>
+                        <span className={s.sectionTitle}>Pending Publications</span>
+                        <span className={s.countBadge}>{pendingPapers.length}</span>
+                      </div>
+                      <div className={s.divider} />
+                      <PendingPaperList papers={pendingPapers} />
+                    </>
+                  ) : null}
                   <div className={s.allPublicationHeader}>
                     <span className={s.sectionTitle}>Publications</span>
                     <span className={s.countBadge}>{profile.paperCount}</span>
