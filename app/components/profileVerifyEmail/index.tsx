@@ -1,35 +1,26 @@
-import React, { FC, useMemo, useEffect } from 'react';
-import { withStyles } from '../../helpers/withStylesHelper';
-import ProfileVerifyEmailForm from '../profileVerifyEmailForm';
-import { useLocation, useHistory } from 'react-router-dom';
-import QueryString from 'qs';
+import React, { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { isEqual } from 'lodash';
+import { useLocation, useHistory } from 'react-router-dom';
+import ProfileVerifyEmailForm from '../profileVerifyEmailForm';
 import { AppState } from '../../reducers';
+import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 const s = require('./profileVerifyEmail.scss');
+const useStyles = require('isomorphic-style-loader/useStyles');
 
 export type ProfileEmailQueryParams = {
   aid?: string;
 };
 
 const ProfileVerifyEmail: FC = () => {
+  useStyles(s);
   const location = useLocation();
   const history = useHistory();
-  const currentUser = useSelector((state: AppState) => state.currentUser);
+  const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
 
   useEffect(
-    () => {
-      if (currentUser.profileId) {
-        history.push(`/profiles/${currentUser.profileId}`);
-      }
-    },
-    [currentUser.profileId]
-  );
-
-  const queryParams: ProfileEmailQueryParams = useMemo(
-    () => {
-      return QueryString.parse(location.search.split('?')[1]);
-    },
-    [location.search]
+    () => { if (currentUser.profileId) history.push(`/profiles/${currentUser.profileId}`) },
+    [currentUser.profileId, history]
   );
 
   return (
@@ -37,11 +28,11 @@ const ProfileVerifyEmail: FC = () => {
       <div className={s.wrapper}>
         <div className={s.cardContainer}>
           <h2>Verify by email</h2>
-          <ProfileVerifyEmailForm queryParams={queryParams} />
+          <ProfileVerifyEmailForm queryParams={getQueryParamsObject(location.search)} />
         </div>
       </div>
     </>
   );
 };
 
-export default withStyles<typeof ProfileVerifyEmail>(s)(ProfileVerifyEmail);
+export default ProfileVerifyEmail;

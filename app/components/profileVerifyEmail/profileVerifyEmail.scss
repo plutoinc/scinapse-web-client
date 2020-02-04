@@ -16,3 +16,9 @@ $card-container-max-width: 768px;
   padding: 24px 32px;
   border: solid 1px $gray400;
 }
+
+@media (max-width: $mobile_width) {
+  .cardContainer {
+    padding: 12px 16px;
+  }
+}

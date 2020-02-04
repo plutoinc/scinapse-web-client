@@ -1,15 +1,18 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Formik, Form, Field, FormikErrors } from 'formik';
+import { useSelector } from 'react-redux';
+import { Button } from '@pluto_network/pluto-design-elements';
+import classNames from 'classnames';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
 import AffiliationSelectBox from '../dialog/components/modifyProfile/affiliationSelectBox';
 import { withStyles } from '../../helpers/withStylesHelper';
-import classNames from 'classnames';
-import { Button } from '@pluto_network/pluto-design-elements';
 import Icon from '../../icons';
 import { ProfileEmailQueryParams } from '../profileVerifyEmail';
 import { ProfileAffiliation } from '../../model/profileAffiliation';
 import AffiliationAPI from '../../api/affiliation';
+import { UserDevice } from '../layouts/reducer';
+import { AppState } from '../../reducers';
 const s = require('./profileVerifyEmailForm.scss');
 
 type ProfileVerifyEmailFormProps = {
@@ -35,10 +38,10 @@ const validateForm = (values: ProfileVerifyEmailFormValues) => {
   const errors: FormikErrors<ProfileVerifyEmailFormValues> = {};
   const { emailPrefix } = values;
 
-  if(!emailPrefix) {
+  if (!emailPrefix) {
     errors.emailPrefix = 'Please enter valid email';
   }
-  
+
   const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))$/;
   if (emailPrefix && !reg.test(emailPrefix)) {
     errors.emailPrefix = 'Please enter valid local part only';
@@ -62,9 +65,10 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isEmailSent, setIsEmailSent] = useState<boolean>(false);
   const [invalidEmailMessage, setInvalidEmailMessage] = useState<string | null>(null);
+  const userDevice = useSelector<AppState, UserDevice>(state => state.layout.userDevice);
 
   useEffect(() => {
-    async function fetchProfileAffiliation () {
+    async function fetchProfileAffiliation() {
       if (queryParams.aid) {
         const profileAffiliation = await AffiliationAPI.getAffiliation(queryParams.aid);
         if (profileAffiliation) {
@@ -120,7 +124,7 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
               validateOnBlur
               validateOnChange
             >
-              {({ values, errors, touched, submitForm, setFieldValue }) => { 
+              {({ values, errors, touched, submitForm, setFieldValue }) => {
                 if (profileAffiliation?.domains && profileAffiliation.domains.length > 0 && (values.affiliation as Affiliation).id !== profileAffiliation.id) {
                   const { id, name, nameAbbrev, domains } = profileAffiliation;
                   setAffiliationSelected(true);
@@ -129,7 +133,7 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
                     name,
                     nameAbbrev,
                   })
-                  setFieldValue('domain', domains[0].id );
+                  setFieldValue('domain', domains[0].id);
                 }
                 return (
                   <Form>
@@ -176,13 +180,13 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
                             {
                               profileAffiliation?.domains.map(domain => (
                                 domain.id &&
-                                  <option key={domain.id} value={domain.id}>
-                                    @{domain.domain}
-                                  </option>
+                                <option key={domain.id} value={domain.id}>
+                                  @{domain.domain}
+                                </option>
                               ))
                             }
                           </Field>
-                          <Icon icon="ARROW_DOWN"/>
+                          <Icon icon="ARROW_DOWN" />
                         </div>
                         <span className={s.errorMsg}>{touched.emailPrefix && errors.emailPrefix}</span>
                         <span className={s.errorMsg}>{touched.emailPrefix && invalidEmailMessage}</span>
@@ -195,6 +199,7 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
                       color="blue"
                       onClick={submitForm}
                       isLoading={isLoading}
+                      fullWidth={userDevice === UserDevice.MOBILE}
                     >
                       <Icon icon="SEND" />
                       <span>Send email</span>

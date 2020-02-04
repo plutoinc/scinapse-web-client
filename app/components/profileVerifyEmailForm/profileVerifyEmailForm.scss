@@ -41,6 +41,7 @@
   .inputForm {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    min-width: 0;
   }
 
   i {
@@ -66,6 +67,7 @@
 .inputForm {
   @extend %base-input-style;
   cursor: auto;
+  font-size: 16px;
 
   &.hasError {
     border-color: $red0;
@@ -114,4 +116,15 @@
   font-size: 16px;
   letter-spacing: 1px;
   margin-top: 24px;
+}
+
+@media (max-width: $mobile_width) {
+  .inputForm {
+    font-size: 14px;
+  }
+
+  .selectForm {
+    font-size: 14px;
+    padding: 0 24px 0 8px;
+  }
 }
