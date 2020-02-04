@@ -32,12 +32,20 @@
   margin-left: 24px;
 }
 
+.formContainer {
+  margin: 16px;
+  max-width: 768px;
+  padding: 24px 32px;
+  border: solid 1px $gray400;
+}
+
 .inputForm {
   @extend %base-input-style;
   cursor: auto;
 }
 
-.inputForm, input {
+.inputForm,
+input {
   &.hasError {
     border-color: $red0;
   }

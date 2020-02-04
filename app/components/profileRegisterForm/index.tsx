@@ -107,8 +107,8 @@ const SigninContent: FC = () => {
 
   return (
     <>
-      <div>
-        <p>Sign in to continue</p>
+      <div className={s.formContainer}>
+        <h2>Sign in to continue</h2>
         <Button
           elementType="button"
           variant="contained"
@@ -193,7 +193,10 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
             >
               {formikProps => {
                 return (
-                  <Form>
+                  <Form className={s.formContainer}>
+                    <h2>    
+                      Register Form
+                    </h2>
                     <AffiliationInputField
                       formikProps={formikProps}
                       profileAffiliation={verificationState && verificationState?.affiliation}
