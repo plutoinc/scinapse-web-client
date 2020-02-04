@@ -2,7 +2,6 @@
   display: inline-block;
   width: 100%;
   padding: 16px 8px;
-  border-bottom: 1px solid $gray400;
 
   .pendingPaperItemTitle {
     font-size: 16px;
@@ -16,10 +15,8 @@
     line-height: 1.54;
     color: $gray700;
   }
-}
 
-@media (max-width: $mobile_width) {
-  .pendingPaperItemWrapper {
-    padding: 0 15px;
+  & + & {
+    border-top: 1px solid $gray400;
   }
 }
