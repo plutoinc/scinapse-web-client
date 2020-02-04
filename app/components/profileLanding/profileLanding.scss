@@ -1,28 +1,38 @@
-$wrapper-vertical-margin: 128px;
-
 .wrapper {
   width: 100%;
   max-width: 578px;
-  min-height: calc(
-    100vh - #{$navbar_height} - #{$footer-height} - #{$wrapper-vertical-margin} - #{$wrapper-vertical-margin}
-  );
-  margin: $wrapper-vertical-margin auto;
-}
+  margin: 20vh auto $footer-height auto;
+  color: $black0;
 
-.keyButtonContainer {
-  display: flex;
-  flex-flow: column nowrap;
+  h1 {
+    margin: 16px 0;
+    font-size: 48px;
+  }
 
-  button + button {
-    margin-top: 12px;
+  p {
+    font-size: 24px;
+    color: $black1;
   }
 }
 
-.signinLabel {
-  margin: 8px 0;
-  color: $gray700;
-  .signinTextLinkButton {
-    text-decoration: underline;
-    cursor: pointer;
+.btnContainer {
+  margin-top: 16px;
+}
+
+@media (max-width: $mobile_width) {
+  .wrapper {
+    padding: 0 16px;
+    height: calc(100vh - #{$navbar_height});
+    display: flex;
+    align-items: center;
+    margin: 0;
+
+    h1 {
+      font-size: 32px;
+    }
+
+    p {
+      font-size: 16px;
+    }
   }
 }
