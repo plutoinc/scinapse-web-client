@@ -35,7 +35,7 @@ const validateForm = (values: ProfileVerifyEmailFormValues) => {
   const errors: FormikErrors<ProfileVerifyEmailFormValues> = {};
   const { emailPrefix } = values;
 
-  if(emailPrefix && emailPrefix.length < 1) {
+  if(!emailPrefix) {
     errors.emailPrefix = 'Please enter valid email';
   }
   
@@ -180,10 +180,11 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
                           </Field>
                           <Icon icon="ARROW_DOWN"/>
                         </div>
-                        <span className={s.errorMsg}>{errors.emailPrefix}</span>
+                        <span className={s.errorMsg}>{touched.emailPrefix && errors.emailPrefix}</span>
                       </div>
                     </div>
                     <Button
+                      type="submit"
                       elementType="button"
                       variant="contained"
                       color="blue"

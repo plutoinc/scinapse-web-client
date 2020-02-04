@@ -3,7 +3,7 @@
 .formRow {
   display: flex;
   flex-flow: row nowrap;
-  align-items: center;
+  align-items: flex-start;
   margin: 0 0 24px 0;
 
   & + & {
@@ -40,6 +40,10 @@
 .inputForm, input {
   &.hasError {
     border-color: $red0;
+  }
+
+  &::placeholder {
+    color: $gray500;
   }
 
   &:disabled {

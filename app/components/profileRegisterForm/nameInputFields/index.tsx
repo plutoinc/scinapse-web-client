@@ -23,7 +23,7 @@ const NameInputFields: FC<NameInputFieldsProps> = (props) => {
             [s.hasError]: !!touched.firstName && !!errors.firstName
           })}
         />
-        <span className={s.errorMsg}>{errors.firstName}</span>
+        <span className={s.errorMsg}>{touched.firstName && errors.firstName}</span>
       </div>
       <div className={s.formWrapper}>
         <label className={s.formLabel}>Last Name</label>
@@ -35,7 +35,7 @@ const NameInputFields: FC<NameInputFieldsProps> = (props) => {
             [s.hasError]: !!touched.lastName && !!errors.lastName
           })}
         />
-        <span className={s.errorMsg}>{errors.lastName}</span>
+        <span className={s.errorMsg}>{touched.lastName && errors.lastName}</span>
       </div>
     </div>
   )

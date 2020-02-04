@@ -54,6 +54,9 @@ const validateForm = (values: ProfileRegisterFormValues, type: ProfileRegisterSt
   }
 
   if (type === 'NOT_A_MEMBER') {
+    if (!password) {
+      errors.password = 'Password required'
+    }
     if (!!password && password.length < 8) {
       errors.password = 'Password must be more than 8 characters';
     }
