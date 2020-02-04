@@ -91,16 +91,17 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
     setIsLoading(true);
     const domainName = profileAffiliation?.domains.filter(domain => (domain.id === Number(domainId)))[0].domain;
     if (affiliation.id && domainId && domainName) {
-      const res = await AffiliationAPI.verifyAffiliation({
+      AffiliationAPI.verifyAffiliation({
         affiliation_id: affiliation.id,
         affiliation_domain_id: domainId,
         email: `${emailPrefix}@${domainName}`,
+      }).then(res => {
+        if (res) {
+          setIsEmailSent(true);
+        }
+      }).catch(error => {
+        console.log(error.response);
       })
-      if (res) {
-        setIsEmailSent(true);
-      } else {
-        console.log('errorororororo');
-      }
     }
     setIsLoading(false);
   }
