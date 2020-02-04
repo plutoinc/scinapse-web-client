@@ -157,7 +157,6 @@ const ProfilePage: FC = () => {
                     <span className={s.countBadge}>{pendingPapers.length}</span>
                   </div>
                   <div className={s.divider} />
-                  {/* TODO: make paper item for pending papers */}
                   <PendingPaperList papers={pendingPapers} />
                   <div className={s.allPublicationHeader}>
                     <span className={s.sectionTitle}>Publications</span>
