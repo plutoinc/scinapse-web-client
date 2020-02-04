@@ -8,7 +8,6 @@
   background-color: $gray30;
   padding-top: 38px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
-  margin-bottom: 40px;
 }
 
 .leftContentWrapper {
@@ -166,7 +165,7 @@
 
 @media (max-width: $tablet_width) {
   .container {
-    padding: 0 10px;
+    padding: 0 12px;
   }
 
   .mobileMetricInformation {
@@ -175,7 +174,7 @@
     margin-bottom: 16px;
 
     .metricWrapper {
-      width: 88px;
+      width: 100px;
       display: inline-grid;
       margin-right: 12px;
     }

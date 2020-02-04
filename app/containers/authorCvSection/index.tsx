@@ -67,16 +67,21 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
   public render() {
     const { isLoadingPage } = this.state;
     return (
-      <div
-        className={classNames({
-          [styles.leftContentWrapper]: true,
-          [styles.isLoadingPage]: isLoadingPage,
-        })}
-      >
-        {isLoadingPage && <ArticleSpinner className={styles.spinner} />}
-        {this.getEducationArea()}
-        {this.getExperienceArea()}
-        {this.getAwardArea()}
+      <div className={styles.leftContentWrapper}>
+        {isLoadingPage && (
+          <div className={styles.loadingContainer}>
+            <ArticleSpinner className={styles.loadingSpinner} />
+          </div>
+        )}
+        <div
+          className={classNames({
+            [styles.isLoadingPage]: isLoadingPage,
+          })}
+        >
+          {this.getEducationArea()}
+          {this.getExperienceArea()}
+          {this.getAwardArea()}
+        </div>
       </div>
     );
   }
