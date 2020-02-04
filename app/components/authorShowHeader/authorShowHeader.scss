@@ -169,14 +169,15 @@
   }
 
   .mobileMetricInformation {
-    display: inline-block;
+    display: inline-flex;
+    justify-content: space-between;
     margin-top: 24px;
     margin-bottom: 16px;
+    min-width: 296px;
 
     .metricWrapper {
-      width: 100px;
+      max-width: 100px;
       display: inline-grid;
-      margin-right: 12px;
     }
   }
 }
