@@ -61,6 +61,7 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
   const [profileAffiliation, setProfileAffiliation] = useState<ProfileAffiliation | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isEmailSent, setIsEmailSent] = useState<boolean>(false);
+  const [invalidEmailMessage, setInvalidEmailMessage] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchProfileAffiliation () {
@@ -99,8 +100,8 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
         if (res) {
           setIsEmailSent(true);
         }
-      }).catch(error => {
-        console.log(error.response);
+      }).catch(() => {
+        setInvalidEmailMessage('This email has already been verified.');
       })
     }
     setIsLoading(false);
@@ -163,7 +164,7 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
                             placeholder="Email"
                             className={classNames({
                               [s.inputForm]: true,
-                              [s.hasError]: !!errors.emailPrefix && !!touched.emailPrefix,
+                              [s.hasError]: (!!errors.emailPrefix || !!invalidEmailMessage) && !!touched.emailPrefix,
                             })}
                             disabled={!affiliationSelected || isLoading}
                           />
@@ -184,6 +185,7 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
                           <Icon icon="ARROW_DOWN"/>
                         </div>
                         <span className={s.errorMsg}>{touched.emailPrefix && errors.emailPrefix}</span>
+                        <span className={s.errorMsg}>{touched.emailPrefix && invalidEmailMessage}</span>
                       </div>
                     </div>
                     <Button
