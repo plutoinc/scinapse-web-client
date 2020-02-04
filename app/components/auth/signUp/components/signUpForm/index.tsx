@@ -154,10 +154,11 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                     backgroundColor: 'white',
                     border: 'solid 1px $gray400',
                     overflow: 'hidden',
-                    marginTop: '14px',
+                    marginTop: '10px',
                   }}
                 />
-                <Field name="profileLink" type="url" component={AuthInputBox} placeholder="Profile Link" />
+                <div className={s.divider}>optional</div>
+                <Field name="profileLink" type="url" component={AuthInputBox} placeholder="Profile Link (Optional)" />
               </div>
               <div className={s.authButtonWrapper}>
                 <Button
