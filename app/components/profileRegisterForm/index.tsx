@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect, useMemo } from 'react';
 import { Formik, Form, FormikErrors } from 'formik';
 import { SuggestAffiliation } from '../../api/suggest';
 import { Affiliation } from '../../model/affiliation';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../reducers';
 import { CurrentUser } from '../../model/currentUser';
 import { withStyles } from '../../helpers/withStylesHelper';
@@ -18,6 +18,7 @@ import { getCurrentPageType } from '../locationListener';
 import memberAPI from '../../api/member';
 import { Profile } from '../../model/profile';
 import { useHistory } from 'react-router-dom';
+import { checkAuthStatus } from '../auth/actions';
 const s = require('./profileRegisterForm.scss');
 
 type ProfileRegisterStatus =
@@ -121,6 +122,7 @@ const SigninContent: FC = () => {
 const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
   const { queryParams } = props;
   const history = useHistory();
+  const dispatch = useDispatch();
   const currentUser = useSelector<AppState, CurrentUser>(state => state.currentUser);
   const [verificationState, setVerificationState] = useState<TokenVerificationRes | null>(null);
 
@@ -170,6 +172,7 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
     }
 
     if (res && (res as Profile).id) {
+      await dispatch(checkAuthStatus());
       history.push(`/profiles/${(res as Profile).id}`);
     }
   };
