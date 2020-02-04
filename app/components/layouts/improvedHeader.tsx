@@ -34,6 +34,7 @@ import { UserDevice } from './reducer';
 import { fetchKeywordAlertList } from '../../containers/keywordSettings/actions';
 import { changeSearchQuery } from '../../reducers/searchQuery';
 import MobileSearchBox from '../common/mobileSearchBox';
+
 const styles = require('./improvedHeader.scss');
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -341,12 +342,12 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
         <MenuItem classes={{ root: styles.userInfoMenuItem }} disabled disableGutters>
           <UserInformation user={currentUserState} />
         </MenuItem>
-        {currentUserState.isAuthorConnected ? (
+        {currentUserState.profileId ? (
           <MenuItem classes={{ root: styles.profileButton }}>
             <Link
               className={styles.linkOnButton}
               onClick={this.handleRequestCloseUserDropdown}
-              to={`/authors/${currentUserState.authorId}?beta=true`}
+              to={`/profiles/${currentUserState.profileId}`}
             >
               Profile
             </Link>
