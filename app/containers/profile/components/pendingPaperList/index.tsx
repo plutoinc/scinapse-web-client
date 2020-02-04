@@ -20,8 +20,7 @@ const PendingPaperList: React.FC<PendingPaperListProps> = props => {
     <>
       <PendingPapersDialog papers={papers} isOpen={isDialogOpen} handleClose={() => setIsDialogOpen(false)} />
       <div className={s.description}>
-        what 'pending' means?<br />
-        'pending' is blablabla<br />
+        The number of papers in your paper not yet matched is {papers.length}.<br />
         If you want see your pending paper,{` `}
         <span className={s.highlightKeyword} onClick={() => setIsDialogOpen(true)}>
           CLICK HERE!
