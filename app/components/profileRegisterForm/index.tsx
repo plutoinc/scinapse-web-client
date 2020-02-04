@@ -83,12 +83,12 @@ const createMemberAndProfile = (token: string, values: ProfileRegisterFormValues
   return memberAPI.createMemberWithProfile(token, {
     affiliation_id,
     affiliation_name,
-    bio: ' ',
+    bio: null,
     email: values.email,
     first_name: values.firstName,
     last_name: values.lastName,
     is_email_public: true,
-    web_page: ' ',
+    web_page: null,
     password: values.password,
   })
 }
