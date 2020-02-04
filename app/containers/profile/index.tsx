@@ -207,7 +207,14 @@ const ProfilePage: FC = () => {
                       </div>
                     )}
                   {paperIds.map(id => (
-                    <FullPaperItem key={id} paperId={id} pageType="profileShow" actionArea="paperList" hideFigure />
+                    <FullPaperItem
+                      key={id}
+                      paperId={id}
+                      pageType="profileShow"
+                      actionArea="paperList"
+                      ownProfileId={profile.id}
+                      hideFigure
+                    />
                   ))}
                   <DesktopPagination
                     type="AUTHOR_SHOW_PAPERS_PAGINATION"

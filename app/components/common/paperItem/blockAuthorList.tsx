@@ -14,9 +14,8 @@ const MAXIMUM_POST_AUTHOR_COUNT = 1;
 
 interface BlockAuthorListProps {
   paper: Paper;
-  authors: PaperAuthor[];
-  profiles: PaperProfile[];
   pageType: Scinapse.ActionTicket.PageType;
+  ownProfileId?: string;
   actionArea?: Scinapse.ActionTicket.ActionArea;
 }
 
@@ -29,7 +28,7 @@ interface AuthorItemProps {
 
 const getProfileFromAuthor = (author: PaperAuthor, profiles: PaperProfile[]) => {
   return profiles.find(profile => profile.order === author.order);
-}
+};
 
 const AuthorItem: React.FC<AuthorItemProps> = ({ author, pageType, actionArea, profile }) => {
   let affiliation = null;
@@ -45,10 +44,13 @@ const AuthorItem: React.FC<AuthorItemProps> = ({ author, pageType, actionArea, p
     hIndex = <span className={styles.hIndex}>{`H-Index: ${author.hindex}`}</span>;
   }
 
-  const authorProfileLink = React.useMemo(() => {
-    if (profile) return `/profiles/${profile.id}`;
-    return `/authors/${author.id}`;
-  }, [profile, author])
+  const authorProfileLink = React.useMemo(
+    () => {
+      if (profile) return `/profiles/${profile.id}`;
+      return `/authors/${author.id}`;
+    },
+    [profile, author]
+  );
 
   return (
     <span className={styles.authorContentWrapper}>
@@ -74,7 +76,9 @@ const AuthorItem: React.FC<AuthorItemProps> = ({ author, pageType, actionArea, p
   );
 };
 
-const BlockAuthorList: React.FC<BlockAuthorListProps> = ({ paper, authors, pageType, actionArea, profiles }) => {
+const BlockAuthorList: React.FC<BlockAuthorListProps> = ({ paper, pageType, actionArea, ownProfileId }) => {
+  const { authors, profiles } = paper;
+
   if (authors.length === 0) return null;
 
   const hasMore = authors.length >= MAXIMUM_PRE_AUTHOR_COUNT + MAXIMUM_POST_AUTHOR_COUNT;
@@ -90,14 +94,40 @@ const BlockAuthorList: React.FC<BlockAuthorListProps> = ({ paper, authors, pageT
     );
   }
 
-  const preAuthorList = authors.slice(0, MAXIMUM_PRE_AUTHOR_COUNT).map((author, index) => {
+  let preAuthorCount = MAXIMUM_PRE_AUTHOR_COUNT;
+  let profileAuthorNode = null;
+  let preAuthors = authors;
+  if (ownProfileId) {
+    const profile = profiles.find(profile => profile.id === ownProfileId);
+    const author = authors.find(author => profile && author.order === profile.order);
+    if (profile && author) {
+      preAuthors = authors.filter(author => author.order !== profile.order);
+      preAuthorCount = MAXIMUM_PRE_AUTHOR_COUNT - 1;
+      profileAuthorNode = (
+        <div className={styles.profileAuthorItem}>
+          <span className={styles.marker}>
+            {`#`}
+            <span className={styles.markerNum}>{author.order}</span>
+          </span>
+          <AuthorItem author={author} pageType={pageType} actionArea={actionArea} profile={profile} />
+        </div>
+      );
+    }
+  }
+
+  const preAuthorList = preAuthors.slice(0, preAuthorCount).map(author => {
     return (
       <div key={author.id}>
         <span className={styles.marker}>
           {`#`}
-          <span className={styles.markerNum}>{index + 1}</span>
+          <span className={styles.markerNum}>{author.order}</span>
         </span>
-        <AuthorItem author={author} pageType={pageType} actionArea={actionArea} profile={getProfileFromAuthor(author, profiles)}/>
+        <AuthorItem
+          author={author}
+          pageType={pageType}
+          actionArea={actionArea}
+          profile={getProfileFromAuthor(author, profiles)}
+        />
       </div>
     );
   });
@@ -110,7 +140,12 @@ const BlockAuthorList: React.FC<BlockAuthorListProps> = ({ paper, authors, pageT
           <span style={{ fontWeight: 'bold' }} className={styles.marker}>
             Last.
           </span>
-          <AuthorItem author={author} pageType={pageType} actionArea={actionArea} profile={getProfileFromAuthor(author, profiles)}/>
+          <AuthorItem
+            author={author}
+            pageType={pageType}
+            actionArea={actionArea}
+            profile={getProfileFromAuthor(author, profiles)}
+          />
         </div>
       );
     });
@@ -119,6 +154,7 @@ const BlockAuthorList: React.FC<BlockAuthorListProps> = ({ paper, authors, pageT
     <div className={styles.authorListWrapper}>
       <Icon className={styles.authorIcon} icon="AUTHOR" />
       <span className={styles.listWrapper}>
+        {profileAuthorNode}
         {preAuthorList}
         {postAuthorList}
         {viewAllAuthorsBtn}

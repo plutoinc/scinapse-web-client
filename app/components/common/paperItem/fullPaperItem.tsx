@@ -15,24 +15,18 @@ import MobileFullPaperItem from './mobileFullPaperItem';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperItem.scss');
 
-interface PaperItemProps {
-  paperId: string;
+interface BasePaperItemProps {
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
   hideFigure?: boolean;
   sourceDomain?: PaperSource;
+  ownProfileId?: string;
 }
-
-interface FullPaperItemWithPaperProps {
-  paper: Paper;
-  pageType: Scinapse.ActionTicket.PageType;
-  actionArea: Scinapse.ActionTicket.ActionArea;
-  hideFigure?: boolean;
-  sourceDomain?: PaperSource;
-}
+type PaperItemProps = BasePaperItemProps & { paperId: string };
+type FullPaperItemWithPaperProps = BasePaperItemProps & { paper: Paper };
 
 export const FullPaperItemWithPaper: FC<FullPaperItemWithPaperProps> = memo(
-  ({ paper, actionArea, pageType, sourceDomain, hideFigure }) => {
+  ({ paper, actionArea, pageType, sourceDomain, hideFigure, ownProfileId }) => {
     const userDevice = useSelector((state: AppState) => state.layout.userDevice);
     if (userDevice === UserDevice.MOBILE) {
       return (
@@ -44,7 +38,7 @@ export const FullPaperItemWithPaper: FC<FullPaperItemWithPaperProps> = memo(
       <div className={s.paperItemWrapper}>
         <Title paper={paper} actionArea={actionArea} pageType={pageType} />
         <div style={{ marginTop: '12px' }}>
-          <BlockVenueAuthor paper={paper} pageType={pageType} actionArea={actionArea} />
+          <BlockVenueAuthor paper={paper} pageType={pageType} actionArea={actionArea} ownProfileId={ownProfileId} />
         </div>
         <Abstract
           paperId={paper.id}

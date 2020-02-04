@@ -7,9 +7,10 @@ interface BlockVenueAuthorProps {
   paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
+  ownProfileId?: string;
 }
 
-const BlockVenueAuthor: React.FC<BlockVenueAuthorProps> = ({ paper, pageType, actionArea }) => {
+const BlockVenueAuthor: React.FC<BlockVenueAuthorProps> = ({ paper, pageType, actionArea, ownProfileId }) => {
   return (
     <>
       <BlockVenue
@@ -20,7 +21,7 @@ const BlockVenueAuthor: React.FC<BlockVenueAuthorProps> = ({ paper, pageType, ac
         pageType={pageType}
         actionArea={actionArea}
       />
-      <BlockAuthorList paper={paper} authors={paper.authors} profiles={paper.profiles} pageType={pageType} actionArea={actionArea} />
+      <BlockAuthorList ownProfileId={ownProfileId} paper={paper} pageType={pageType} actionArea={actionArea} />
     </>
   );
 };
