@@ -9,37 +9,39 @@ const s = require('./profileVerifyEmail.scss');
 
 export type ProfileEmailQueryParams = {
   aid?: string;
-}
+};
 
 const ProfileVerifyEmail: FC = () => {
   const location = useLocation();
   const history = useHistory();
   const currentUser = useSelector((state: AppState) => state.currentUser);
-  
-  useEffect(() => {
-    if (currentUser.profileId) {
-      history.push(`/profiles/${currentUser.profileId}`);
-    }
-  }, [currentUser.profileId]);
 
-  const queryParams: ProfileEmailQueryParams = useMemo(() => {
-    return QueryString.parse(location.search.split('?')[1])
-  }, [location.search]);
+  useEffect(
+    () => {
+      if (currentUser.profileId) {
+        history.push(`/profiles/${currentUser.profileId}`);
+      }
+    },
+    [currentUser.profileId]
+  );
+
+  const queryParams: ProfileEmailQueryParams = useMemo(
+    () => {
+      return QueryString.parse(location.search.split('?')[1]);
+    },
+    [location.search]
+  );
 
   return (
     <>
       <div className={s.wrapper}>
         <div className={s.cardContainer}>
-          <h2>
-            Verify by email
-          </h2>
-          <ProfileVerifyEmailForm
-            queryParams={queryParams}
-          />
+          <h2>Verify by email</h2>
+          <ProfileVerifyEmailForm queryParams={queryParams} />
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default withStyles<typeof ProfileVerifyEmail>(s)(ProfileVerifyEmail);
