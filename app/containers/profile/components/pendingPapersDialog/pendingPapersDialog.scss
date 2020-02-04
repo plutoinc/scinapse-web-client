@@ -1,0 +1,24 @@
+.dialogPaper {
+  position: relative;
+  width: 100%;
+  padding: 20px 16px;
+  margin: 16px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.25px;
+  color: $black0;
+  margin: 4px 0 12px 0;
+}
+
+.description {
+  font-size: 15px;
+  color: $gray700;
+  line-height: 1.5;
+}
+
+.contentBox {
+  margin-top: 24px;
+}

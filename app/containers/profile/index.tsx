@@ -26,6 +26,7 @@ import { fetchProfileData, updateProfile, fetchProfilePapers, fetchProfilePendin
 import GlobalDialogManager from '../../helpers/globalDialogManager';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 import { PendingPaper } from '../../reducers/profilePendingPaperList';
+import PendingPaperList from './components/pendingPaperList';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./connectedAuthor.scss');
 
@@ -154,20 +155,10 @@ const ProfilePage: FC = () => {
                   <div className={s.allPublicationHeader}>
                     <span className={s.sectionTitle}>Pending Publications</span>
                     <span className={s.countBadge}>{pendingPapers.length}</span>
-                    <div className={s.rightBox}>
-                      <div>what 'pending' means?</div>
-                    </div>
                   </div>
                   <div className={s.divider} />
                   {/* TODO: make paper item for pending papers */}
-                  {pendingPapers.map(paper => (
-                    <div key={paper.id}>
-                      <div>{paper.title}</div>
-                      <div>{paper.author}</div>
-                      <div>{paper.journal}</div>
-                      <div>{paper.year}</div>
-                    </div>
-                  ))}
+                  <PendingPaperList papers={pendingPapers} />
                   <div className={s.allPublicationHeader}>
                     <span className={s.sectionTitle}>Publications</span>
                     <span className={s.countBadge}>{profile.paperCount}</span>
