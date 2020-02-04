@@ -21,8 +21,8 @@ export type PaperImportResType = {
 };
 
 class ProfileAPI extends PlutoAxios {
-  public async createProfile(params: ProfileParams) {
-    const res = await this.post('/profiles/me', {
+  public async createProfile(token: string, params: ProfileParams) {
+    const res = await this.post(`/profiles/me?token=${token}`, {
       ...params,
     });
     if (res) {

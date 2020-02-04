@@ -98,6 +98,8 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
       })
       if (res) {
         setIsEmailSent(true);
+      } else {
+        console.log('errorororororo');
       }
     }
     setIsLoading(false);

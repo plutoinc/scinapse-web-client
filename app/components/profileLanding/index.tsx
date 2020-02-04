@@ -6,6 +6,8 @@ import QueryString from 'qs';
 import AffiliationAPI from '../../api/affiliation';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../reducers';
+import globalDialogManager from '../../helpers/globalDialogManager';
+import { getCurrentPageType } from '../locationListener';
 const s = require('./profileLanding.scss');
 
 type ProfileLandingQuery = {
@@ -53,12 +55,38 @@ const ProfileLanding: FC = () => {
     }
   }
 
+  const handleSigninButtonClick = () => {
+    globalDialogManager.openSignInDialog({
+      authContext: {
+        pageType: getCurrentPageType(),
+        actionArea: 'createProfile',
+        actionLabel: null,
+      },
+      isBlocked: false,
+    });
+  }
+
   return (
     <>
       <div className={s.wrapper}>
         <h1>Create a profile</h1>
         <p>Some appealing description to hookup the user to make them want to create a profile.</p>
+        <p>If you are already a Scinapse user, please sign in.</p>
         <div className={s.keyButtonContainer}>
+          {
+            currentUser.isLoggedIn || (
+              <Button
+                elementType="button"
+                color="gray"
+                isLoading={!isLoaded}
+                onClick={handleSigninButtonClick}
+              >
+                <span>
+                  Sign in
+                </span>
+              </Button>
+            )
+          }
           {
             isValidAffiliationId
             ? (
@@ -69,7 +97,9 @@ const ProfileLanding: FC = () => {
                 onClick={handleContinueButtonClick}
               >
                 <span>
-                  Continue
+                  {
+                    currentUser.isLoggedIn ? 'Connect profile' : 'Create an account & make profile'
+                  }
                 </span>
               </Button>
             ) : (

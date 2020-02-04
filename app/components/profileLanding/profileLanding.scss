@@ -12,6 +12,10 @@ $wrapper-vertical-margin: 128px;
 .keyButtonContainer {
   display: flex;
   flex-flow: column nowrap;
+
+  button + button {
+    margin-top: 12px;
+  }
 }
 
 .signinLabel {
