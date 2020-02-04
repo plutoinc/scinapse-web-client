@@ -5,10 +5,12 @@ const s = require('./profileLanding.scss');
 const ProfileLandingEnquiry: FC = () => {
   return (
     <div className={s.wrapper}>
-      <p>Enquiry Needed</p>
-      <span>Send us an email</span>
+      <div>
+        <h1>Enquiry Needed</h1>
+        <p>Send us an email</p>
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default withStyles<typeof ProfileLandingEnquiry>(s)(ProfileLandingEnquiry);
