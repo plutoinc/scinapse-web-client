@@ -1,11 +1,11 @@
 import React from 'react';
-import { PaperImportResType } from '../../../../api/profile';
+import { ImportedPaperListResponse } from '../../../../api/profile';
 import Icon from '../../../../icons';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./importResultShow.scss');
 
-const ImportResultShow: React.FC<{ importResult: PaperImportResType | null }> = ({ importResult }) => {
+const ImportResultShow: React.FC<{ importResult: ImportedPaperListResponse | null }> = ({ importResult }) => {
   useStyles(s);
 
   if (!importResult) return null;

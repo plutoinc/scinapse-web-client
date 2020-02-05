@@ -2,30 +2,80 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import Dialog from '@material-ui/core/Dialog';
 import Icon from '../../../../icons';
-import profileAPI, { PaperImportResType } from '../../../../api/profile';
+import profileAPI, { ImportedPaperListResponse } from '../../../../api/profile';
 import GscImportForm, { GscFormState } from '../gscImportForm';
 import BibTexImportForm, { BibTexFormState } from '../bibTexImportForm';
 import ImportResultShow from '../importResultShow';
-
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperImportDialog.scss');
 
-enum AvailableImportType {
+enum IMPORT_SOURCE_TAB {
   GSC,
-  BibTex,
+  BIBTEX,
 }
 
-enum InProgressStepType {
+enum CURRENT_STEP {
   PROGRESS,
   RESULT,
 }
 
 interface PaperImportDialogProps {
   isOpen: boolean;
-  closePaperImportDialog: () => void;
   profileId: string;
+  closePaperImportDialog: () => void;
   fetchProfileShowData: () => void;
 }
+
+const Header: React.FC<{
+  activeTab: IMPORT_SOURCE_TAB;
+  onClickTab: (tab: IMPORT_SOURCE_TAB) => void;
+}> = ({ activeTab, onClickTab }) => {
+  return (
+    <div className={s.tabBoxWrapper}>
+      <div className={s.normalTabWrapper}>
+        <span
+          onClick={() => onClickTab(IMPORT_SOURCE_TAB.GSC)}
+          className={classNames({
+            [`${s.tabItem}`]: true,
+            [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.GSC,
+          })}
+        >
+          Google Scholar
+        </span>
+        <span
+          onClick={() => onClickTab(IMPORT_SOURCE_TAB.BIBTEX)}
+          className={classNames({
+            [`${s.tabItem}`]: true,
+            [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.BIBTEX,
+          })}
+        >
+          BibTex
+        </span>
+      </div>
+    </div>
+  );
+};
+
+interface DialogBodyProps {
+  isLoading: boolean;
+  currentStep: CURRENT_STEP;
+  activeTab: IMPORT_SOURCE_TAB;
+  importResult: ImportedPaperListResponse | null;
+  handleGSSubmit: (params: GscFormState) => void;
+  handleSubmitBibTex: (params: BibTexFormState) => void;
+}
+const DialogBody: React.FC<DialogBodyProps> = ({
+  handleGSSubmit,
+  handleSubmitBibTex,
+  currentStep,
+  activeTab,
+  importResult,
+  isLoading,
+}) => {
+  if (currentStep === CURRENT_STEP.RESULT) return <ImportResultShow importResult={importResult} />;
+  if (activeTab === IMPORT_SOURCE_TAB.GSC) return <GscImportForm isLoading={isLoading} onGSSubmit={handleGSSubmit} />;
+  return <BibTexImportForm isLoading={isLoading} onSubmitBibtex={handleSubmitBibTex} />;
+};
 
 const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
   isOpen,
@@ -35,79 +85,27 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
 }) => {
   useStyles(s);
 
-  const [inProgressStep, setInProgressStep] = useState<InProgressStepType>(InProgressStepType.PROGRESS);
-  const [activeTab, setActiveTab] = useState<AvailableImportType>(AvailableImportType.GSC);
+  const [inProgressStep, setInProgressStep] = useState<CURRENT_STEP>(CURRENT_STEP.PROGRESS);
+  const [activeTab, setActiveTab] = useState<IMPORT_SOURCE_TAB>(IMPORT_SOURCE_TAB.GSC);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [importResult, setImportResult] = useState<PaperImportResType | null>(null);
+  const [importResult, setImportResult] = useState<ImportedPaperListResponse | null>(null);
 
-  const onGscSubmit = (params: GscFormState) => {
+  const handleGSSubmit = (params: GscFormState) => {
     setIsLoading(true);
     profileAPI.importFromGSC({ profileId, url: params.url }).then(res => {
-      console.log(res);
       fetchProfileShowData();
       setImportResult(res);
       setIsLoading(false);
-      setInProgressStep(InProgressStepType.RESULT);
+      setInProgressStep(CURRENT_STEP.RESULT);
     });
   };
 
-  const onBibTexSubmit = (params: BibTexFormState) => {
+  const handleSubmitBibTex = (params: BibTexFormState) => {
     setIsLoading(true);
     console.log(params);
     setIsLoading(false);
-    setInProgressStep(InProgressStepType.RESULT);
+    setInProgressStep(CURRENT_STEP.RESULT);
   };
-
-  function getDialogBody(inProgressStep: InProgressStepType, currentTab: AvailableImportType) {
-    let headerSection: JSX.Element | null = null;
-    let mainSection: JSX.Element | null = null;
-    if (inProgressStep === InProgressStepType.PROGRESS) {
-      headerSection = (
-        <div className={s.tabBoxWrapper}>
-          <div className={s.normalTabWrapper}>
-            <span
-              onClick={() => {
-                setActiveTab(AvailableImportType.GSC);
-              }}
-              className={classNames({
-                [`${s.tabItem}`]: true,
-                [`${s.active}`]: activeTab === AvailableImportType.GSC,
-              })}
-            >
-              Google Scholar
-            </span>
-            <span
-              onClick={() => {
-                setActiveTab(AvailableImportType.BibTex);
-              }}
-              className={classNames({
-                [`${s.tabItem}`]: true,
-                [`${s.active}`]: activeTab === AvailableImportType.BibTex,
-              })}
-            >
-              BibTex
-            </span>
-          </div>
-        </div>
-      );
-
-      if (currentTab === AvailableImportType.GSC) {
-        mainSection = <GscImportForm isLoading={isLoading} handleGscSubmit={onGscSubmit} />;
-      } else {
-        mainSection = <BibTexImportForm isLoading={isLoading} handleBibTexSubmit={onBibTexSubmit} />;
-      }
-    } else {
-      headerSection = null;
-      mainSection = <ImportResultShow importResult={importResult} />;
-    }
-
-    return (
-      <>
-        {headerSection}
-        {mainSection}
-      </>
-    );
-  }
 
   return (
     <Dialog
@@ -121,10 +119,20 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
       <div className={s.boxContainer}>
         <div className={s.boxWrapper}>
           <div style={{ marginTop: 0 }} className={s.header}>
-            <div className={s.title}>Import paper</div>
+            <div className={s.title}>Import Publications</div>
             <Icon icon="X_BUTTON" className={s.iconWrapper} onClick={closePaperImportDialog} />
           </div>
-          {getDialogBody(inProgressStep, activeTab)}
+          {inProgressStep === CURRENT_STEP.PROGRESS && (
+            <Header activeTab={activeTab} onClickTab={(tab: IMPORT_SOURCE_TAB) => setActiveTab(tab)} />
+          )}
+          <DialogBody
+            handleGSSubmit={handleGSSubmit}
+            handleSubmitBibTex={handleSubmitBibTex}
+            isLoading={isLoading}
+            currentStep={inProgressStep}
+            importResult={importResult}
+            activeTab={activeTab}
+          />
         </div>
       </div>
     </Dialog>
