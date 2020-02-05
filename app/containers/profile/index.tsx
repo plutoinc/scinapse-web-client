@@ -1,5 +1,5 @@
 import React, { FC, useState, useRef, useEffect } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, RouteComponentProps } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
@@ -23,10 +23,11 @@ import ProfileShowPageHelmet from './components/helmet';
 // import { Paper } from '../../model/paper';
 import { selectHydratedProfile, Profile } from '../../model/profile';
 import { fetchProfileData, updateProfile, fetchProfilePapers, fetchProfilePendingPapers } from '../../actions/profile';
-import GlobalDialogManager from '../../helpers/globalDialogManager';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 import { PendingPaper } from '../../reducers/profilePendingPaperList';
 import PendingPaperList from './components/pendingPaperList';
+import PaperImportDialog from './components/paperImportDialog';
+import { fetchAuthorShowPageData } from './sideEffects';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./connectedAuthor.scss');
 
@@ -35,7 +36,9 @@ enum AvailableTab {
   INFORMATION,
 }
 
-const ProfilePage: FC = () => {
+type ProfilePageProps = RouteComponentProps<{ profileId: string }>;
+
+const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
   useStyles(s);
   const { profileId } = useParams();
   const dispatch = useThunkDispatch();
@@ -53,6 +56,7 @@ const ProfilePage: FC = () => {
   const paperIds = useSelector<AppState, string[]>(state => state.profilePaperListState.paperIds, isEqual);
   const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
   const [isOpenModifyProfileDialog, setIsOpenModifyProfileDialog] = useState(false);
+  const [isOpenPaperImportDialog, setIsOpenPaperImportDialog] = useState(false);
   // const [isOpenRepresentativePublicationDialog, setIsOpenRepresentativePublicationDialog] = useState(false);
   const [activeTab, setActiveTab] = useState(AvailableTab.PUBLICATIONS);
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
@@ -172,7 +176,7 @@ const ProfilePage: FC = () => {
                           elementType="button"
                           size="medium"
                           onClick={() => {
-                            GlobalDialogManager.openPaperImportDialog(profile.id);
+                            setIsOpenPaperImportDialog(true);
                           }}
                         >
                           <Icon icon="ADD_NOTE" />
@@ -193,7 +197,7 @@ const ProfilePage: FC = () => {
                           elementType="button"
                           size="medium"
                           onClick={() => {
-                            GlobalDialogManager.openPaperImportDialog(profile.id);
+                            setIsOpenPaperImportDialog(true);
                           }}
                         >
                           <Icon icon="ADD_NOTE" />
@@ -272,6 +276,12 @@ const ProfilePage: FC = () => {
           email: profile.email || '',
           isEmailPublic: profile.isEmailPublic || false,
         }}
+      />
+      <PaperImportDialog
+        isOpen={isOpenPaperImportDialog}
+        closePaperImportDialog={() => setIsOpenPaperImportDialog(false)}
+        profileId={profileId!}
+        fetchProfileShowData={() => fetchAuthorShowPageData({ dispatch, match, pathname: location.pathname })}
       />
       {/* <RepresentativePublicationsDialog
         currentUser={currentUser}

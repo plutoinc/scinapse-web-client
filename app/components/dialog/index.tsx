@@ -33,7 +33,6 @@ import FinalSignUpContent from '../auth/signUp/components/finalSignUpContent';
 import EnvChecker from '../../helpers/envChecker';
 import PaperFigureDetail from '../common/paperFigureDetail/paperFigureDetail';
 import { UserDevice } from '../layouts/reducer';
-import PaperImportDialog from '../../containers/profile/components/paperImportDialog';
 const styles = require('./dialog.scss');
 
 function mapStateToProps(state: AppState) {
@@ -343,12 +342,6 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
           return (
             <AuthorListDialog paper={dialogState.authorListTargetPaper} handleCloseDialogRequest={this.closeDialog} />
           );
-        }
-        return null;
-
-      case GLOBAL_DIALOG_TYPE.PAPER_IMPORT:
-        if (dialogState.profileId) {
-          return <PaperImportDialog closePaperImportDialog={this.closeDialog} profileId={dialogState.profileId} />;
         }
         return null;
 

@@ -126,15 +126,6 @@ class GlobalDialogManager {
       })
     );
   }
-
-  public openPaperImportDialog(profileId: string) {
-    StoreManager.store.dispatch(
-      ActionCreators.openGlobalDialog({
-        type: GLOBAL_DIALOG_TYPE.PAPER_IMPORT,
-        profileId,
-      })
-    );
-  }
 }
 
 const globalDialogManager = new GlobalDialogManager();

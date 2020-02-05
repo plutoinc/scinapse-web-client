@@ -21,7 +21,6 @@ export enum GLOBAL_DIALOG_TYPE {
   AUTHOR_LIST_DIALOG,
   ADD_PUBLICATIONS_TO_AUTHOR_DIALOG,
   PAPER_FIGURE_DETAIL,
-  PAPER_IMPORT,
 }
 
 export interface DialogState
@@ -57,8 +56,6 @@ export interface DialogState
       paperFigures: PaperFigure[] | undefined;
       currentPaperFigureIndex: number | undefined;
       viewDetailFigureTargetPaperId: string | undefined;
-
-      profileId: string | undefined;
     }> {} // TODO: remove below attribute after finishing the experiment
 
 export const DIALOG_INITIAL_STATE: DialogState = {
@@ -90,7 +87,6 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   paperFigures: undefined,
   currentPaperFigureIndex: undefined,
   viewDetailFigureTargetPaperId: undefined,
-  profileId: undefined,
 };
 
 export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actions): DialogState {
@@ -111,7 +107,6 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
         paperFigures: action.payload.paperFigures,
         currentPaperFigureIndex: action.payload.currentPaperFigureIndex,
         viewDetailFigureTargetPaperId: action.payload.viewDetailFigureTargetPaperId,
-        profileId: action.payload.profileId,
       };
     }
 

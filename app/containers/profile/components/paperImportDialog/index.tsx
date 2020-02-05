@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
+import Dialog from '@material-ui/core/Dialog';
 import Icon from '../../../../icons';
 import profileAPI, { PaperImportResType } from '../../../../api/profile';
 import GscImportForm, { GscFormState } from '../gscImportForm';
@@ -20,12 +21,20 @@ enum InProgressStepType {
 }
 
 interface PaperImportDialogProps {
+  isOpen: boolean;
   closePaperImportDialog: () => void;
   profileId: string;
+  fetchProfileShowData: () => void;
 }
 
-const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ closePaperImportDialog, profileId }) => {
+const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
+  isOpen,
+  closePaperImportDialog,
+  profileId,
+  fetchProfileShowData,
+}) => {
   useStyles(s);
+
   const [inProgressStep, setInProgressStep] = useState<InProgressStepType>(InProgressStepType.PROGRESS);
   const [activeTab, setActiveTab] = useState<AvailableImportType>(AvailableImportType.GSC);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -35,6 +44,7 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ closePaperImportD
     setIsLoading(true);
     profileAPI.importFromGSC({ profileId, url: params.url }).then(res => {
       console.log(res);
+      fetchProfileShowData();
       setImportResult(res);
       setIsLoading(false);
       setInProgressStep(InProgressStepType.RESULT);
@@ -100,15 +110,24 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ closePaperImportD
   }
 
   return (
-    <div className={s.boxContainer}>
-      <div className={s.boxWrapper}>
-        <div style={{ marginTop: 0 }} className={s.header}>
-          <div className={s.title}>Import paper</div>
-          <Icon icon="X_BUTTON" className={s.iconWrapper} onClick={closePaperImportDialog} />
+    <Dialog
+      open={isOpen}
+      onClose={closePaperImportDialog}
+      classes={{
+        paper: s.dialogPaper,
+      }}
+      maxWidth={'lg'}
+    >
+      <div className={s.boxContainer}>
+        <div className={s.boxWrapper}>
+          <div style={{ marginTop: 0 }} className={s.header}>
+            <div className={s.title}>Import paper</div>
+            <Icon icon="X_BUTTON" className={s.iconWrapper} onClick={closePaperImportDialog} />
+          </div>
+          {getDialogBody(inProgressStep, activeTab)}
         </div>
-        {getDialogBody(inProgressStep, activeTab)}
       </div>
-    </div>
+    </Dialog>
   );
 };
 

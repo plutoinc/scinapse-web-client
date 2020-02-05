@@ -1,5 +1,7 @@
 import PlutoAxios from './pluto';
 import { Paper } from '../model/paper';
+import { Profile } from '../model/profile';
+import { PendingPaper } from '../reducers/profilePendingPaperList';
 
 export type ProfileParams = {
   affiliation_id: string | null;
@@ -13,11 +15,12 @@ export type ProfileParams = {
 };
 
 export type PaperImportResType = {
+  profileDto: Profile;
   totalImportedCount: number;
   successCount: number;
   pendingCount: number;
   successPapers: Paper[];
-  pendingPapers: Paper[];
+  pendingPapers: PendingPaper[];
 };
 
 class ProfileAPI extends PlutoAxios {
