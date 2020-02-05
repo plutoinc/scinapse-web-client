@@ -11,12 +11,17 @@ interface PendingPaperItemProps {
 const PendingPaperItem: React.FC<PendingPaperItemProps> = ({ paper }) => {
   useStyles(s);
 
+  const yearNode = !paper.year ? '' : paper.year + ` ・ `;
+  const journalNode = !paper.journal ? '' : paper.journal + ` | `;
+  const authorsNode = !paper.author ? '' : paper.author;
+
   return (
     <div className={s.pendingPaperItemWrapper}>
       <div className={s.pendingPaperItemTitle}>{paper.title}</div>
       <div className={s.pendingPaperItemVenueAndAuthor}>
-        {`${paper.year} ・ ${paper.journal} | `}
-        {paper.author}
+        {yearNode}
+        {journalNode}
+        {authorsNode}
       </div>
     </div>
   );
