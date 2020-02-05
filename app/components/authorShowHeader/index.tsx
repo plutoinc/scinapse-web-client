@@ -44,12 +44,14 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
                 <div className={styles.affiliation}>
                   {author.lastKnownAffiliation ? author.lastKnownAffiliation.name || '' : ''}
                 </div>
-                {author.fosList &&
-                  author.fosList.map(fos => (
-                    <span className={styles.fosItem} key={fos.id}>
-                      {fos.name}
-                    </span>
-                  ))}
+                <div className={styles.fosList}>
+                  {author.fosList &&
+                    author.fosList.map(fos => (
+                      <span className={styles.fosItem} key={fos.id}>
+                        {fos.name}
+                      </span>
+                    ))}
+                </div>
                 {userDevice === UserDevice.DESKTOP && this.getMetricInformation()}
               </span>
             </div>

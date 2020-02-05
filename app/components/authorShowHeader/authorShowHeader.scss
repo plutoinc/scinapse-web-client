@@ -143,15 +143,18 @@
   font-size: 12px;
 }
 
+.fosList {
+  line-height: 1.5;
+}
+
 .fosItem {
-  font-size: 14px;
-  color: $gray700;
+  font-size: 13px;
+  color: $gray600;
 
   &::before {
     content: ' · ';
   }
 
-  &:last-of-type,
   &:first-of-type {
     &::before {
       content: '';

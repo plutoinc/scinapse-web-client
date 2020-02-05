@@ -29,6 +29,7 @@ import PendingPaperList from './components/pendingPaperList';
 import PaperImportDialog from './components/paperImportDialog';
 import { fetchAuthorShowPageData } from './sideEffects';
 import ProfileCoAuthor from '../../components/common/profileCoAuthor';
+import Keyword from '../../components/paperShow/components/keyword';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./connectedAuthor.scss');
@@ -234,6 +235,13 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                     <div className={s.coAuthorHeader}>Close Researchers</div>
                     {profile.coauthors.length > 0 &&
                       profile.coauthors.map(coauthor => <ProfileCoAuthor key={coauthor.id} author={coauthor} />)}
+                  </div>
+                  <div className={s.fosListWrapper}>
+                    <div className={s.fosHeader}>Top Field Of Study</div>
+                    <div className={s.fosList}>
+                      {profile.fosList.length > 0 &&
+                        profile.fosList.map(fos => <Keyword pageType="profileShow" fos={fos} key={fos.id} />)}
+                    </div>
                   </div>
                 </div>
               </>
