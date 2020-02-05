@@ -22,7 +22,7 @@ enum CURRENT_STEP {
 interface PaperImportDialogProps {
   isOpen: boolean;
   profileId: string;
-  closePaperImportDialog: () => void;
+  handleClosePaperImportDialog: () => void;
   fetchProfileShowData: () => void;
 }
 
@@ -61,11 +61,11 @@ interface DialogBodyProps {
   currentStep: CURRENT_STEP;
   activeTab: IMPORT_SOURCE_TAB;
   importResult: ImportedPaperListResponse | null;
-  handleGSSubmit: (params: GscFormState) => void;
+  handleSubmitGS: (params: GscFormState) => void;
   handleSubmitBibTex: (params: BibTexFormState) => void;
 }
 const DialogBody: React.FC<DialogBodyProps> = ({
-  handleGSSubmit,
+  handleSubmitGS,
   handleSubmitBibTex,
   currentStep,
   activeTab,
@@ -73,13 +73,13 @@ const DialogBody: React.FC<DialogBodyProps> = ({
   isLoading,
 }) => {
   if (currentStep === CURRENT_STEP.RESULT) return <ImportResultShow importResult={importResult} />;
-  if (activeTab === IMPORT_SOURCE_TAB.GSC) return <GscImportForm isLoading={isLoading} onGSSubmit={handleGSSubmit} />;
+  if (activeTab === IMPORT_SOURCE_TAB.GSC) return <GscImportForm isLoading={isLoading} onSubmitGS={handleSubmitGS} />;
   return <BibTexImportForm isLoading={isLoading} onSubmitBibtex={handleSubmitBibTex} />;
 };
 
 const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
   isOpen,
-  closePaperImportDialog,
+  handleClosePaperImportDialog,
   profileId,
   fetchProfileShowData,
 }) => {
@@ -90,7 +90,7 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [importResult, setImportResult] = useState<ImportedPaperListResponse | null>(null);
 
-  const handleGSSubmit = (params: GscFormState) => {
+  const handleSubmitGS = (params: GscFormState) => {
     setIsLoading(true);
     profileAPI.importFromGSC({ profileId, url: params.url }).then(res => {
       fetchProfileShowData();
@@ -107,10 +107,16 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
     setInProgressStep(CURRENT_STEP.RESULT);
   };
 
+  const onCloseDialog = () => {
+    handleClosePaperImportDialog();
+    setInProgressStep(CURRENT_STEP.PROGRESS);
+    setActiveTab(IMPORT_SOURCE_TAB.GSC);
+  };
+
   return (
     <Dialog
       open={isOpen}
-      onClose={closePaperImportDialog}
+      onClose={onCloseDialog}
       classes={{
         paper: s.dialogPaper,
       }}
@@ -120,13 +126,13 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
         <div className={s.boxWrapper}>
           <div style={{ marginTop: 0 }} className={s.header}>
             <div className={s.title}>Import Publications</div>
-            <Icon icon="X_BUTTON" className={s.iconWrapper} onClick={closePaperImportDialog} />
+            <Icon icon="X_BUTTON" className={s.iconWrapper} onClick={onCloseDialog} />
           </div>
           {inProgressStep === CURRENT_STEP.PROGRESS && (
             <Header activeTab={activeTab} onClickTab={(tab: IMPORT_SOURCE_TAB) => setActiveTab(tab)} />
           )}
           <DialogBody
-            handleGSSubmit={handleGSSubmit}
+            handleSubmitGS={handleSubmitGS}
             handleSubmitBibTex={handleSubmitBibTex}
             isLoading={isLoading}
             currentStep={inProgressStep}

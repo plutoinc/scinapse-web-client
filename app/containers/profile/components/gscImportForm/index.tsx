@@ -16,7 +16,7 @@ export interface GscFormState {
 
 interface GscImportFormProps {
   isLoading: boolean;
-  onGSSubmit: (params: GscFormState) => void;
+  onSubmitGS: (params: GscFormState) => void;
 }
 
 function gscImportValidateForm(values: GscFormState) {
@@ -42,14 +42,14 @@ function gscImportValidateForm(values: GscFormState) {
 const GscImportForm: React.FC<GscImportFormProps> = props => {
   useStyles(s);
 
-  const { isLoading, onGSSubmit } = props;
+  const { isLoading, onSubmitGS } = props;
 
   return (
     <div className={s.formWrapper}>
       <Formik
         initialValues={{ url: '' }}
         validate={gscImportValidateForm}
-        onSubmit={onGSSubmit}
+        onSubmit={onSubmitGS}
         enableReinitialize
         validateOnChange={false}
         validateOnBlur={false}
@@ -63,10 +63,13 @@ const GscImportForm: React.FC<GscImportFormProps> = props => {
                   labelText="GOOGLE SCHOLAR PROFILE URL"
                   component={FormikInput}
                   error={errors.url}
-                  helperText="https://scholar.google.com/citations?user={your id}"
-                  placeholder={'Write google scholar profile url here.'}
+                  helperText={`Write GS Profile url hear.`}
+                  placeholder={'https://scholar.google.com/citations?user={your id}'}
                   variant="underlined"
                 />
+                <div className={s.guideContext}>
+                  ※ Your name in the profile of Scinapse must match registered in the profile of GS.
+                </div>
               </div>
               <div className={s.submitBtn}>
                 <Button
