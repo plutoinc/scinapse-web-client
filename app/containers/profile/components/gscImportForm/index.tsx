@@ -16,7 +16,7 @@ export interface GscFormState {
 
 interface GscImportFormProps {
   isLoading: boolean;
-  handleGscSubmit: (params: GscFormState) => void;
+  onGSSubmit: (params: GscFormState) => void;
 }
 
 function gscImportValidateForm(values: GscFormState) {
@@ -42,14 +42,14 @@ function gscImportValidateForm(values: GscFormState) {
 const GscImportForm: React.FC<GscImportFormProps> = props => {
   useStyles(s);
 
-  const { isLoading, handleGscSubmit } = props;
+  const { isLoading, onGSSubmit } = props;
 
   return (
     <div className={s.formWrapper}>
       <Formik
         initialValues={{ url: '' }}
         validate={gscImportValidateForm}
-        onSubmit={handleGscSubmit}
+        onSubmit={onGSSubmit}
         enableReinitialize
         validateOnChange={false}
         validateOnBlur={false}

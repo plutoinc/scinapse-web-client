@@ -13,13 +13,13 @@ export interface BibTexFormState {
 
 interface BibTexImportFormProps {
   isLoading: boolean;
-  handleBibTexSubmit: (params: BibTexFormState) => void;
+  onSubmitBibtex: (params: BibTexFormState) => void;
 }
 
 const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
   useStyles(s);
 
-  const { isLoading, handleBibTexSubmit } = props;
+  const { isLoading, onSubmitBibtex } = props;
   const [bibTexString, setBibTexString] = useState<string>('');
   const [targetFile, setTargetFile] = useState<File | null>(null);
 
@@ -42,7 +42,7 @@ const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
     <div className={s.formWrapper}>
       <Formik
         initialValues={{ bibTexStr: bibTexString }}
-        onSubmit={handleBibTexSubmit}
+        onSubmit={onSubmitBibtex}
         enableReinitialize
         validateOnChange={false}
         validateOnBlur={false}

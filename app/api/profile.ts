@@ -14,7 +14,7 @@ export type ProfileParams = {
   web_page: string | null;
 };
 
-export type PaperImportResType = {
+export type ImportedPaperListResponse = {
   profileDto: Profile;
   totalImportedCount: number;
   successCount: number;
@@ -33,7 +33,7 @@ class ProfileAPI extends PlutoAxios {
     }
   }
 
-  public async importFromGSC(params: { profileId: string; url: string }): Promise<PaperImportResType> {
+  public async importFromGSC(params: { profileId: string; url: string }): Promise<ImportedPaperListResponse> {
     const res = await this.post(`/profiles/${params.profileId}/import-papers/gs?url=${params.url}`);
     return res.data.data.content;
   }
