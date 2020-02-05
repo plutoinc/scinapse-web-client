@@ -279,7 +279,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
       />
       <PaperImportDialog
         isOpen={isOpenPaperImportDialog}
-        closePaperImportDialog={() => setIsOpenPaperImportDialog(false)}
+        handleClosePaperImportDialog={() => setIsOpenPaperImportDialog(false)}
         profileId={profileId!}
         fetchProfileShowData={() => fetchAuthorShowPageData({ dispatch, match, pathname: location.pathname })}
       />
