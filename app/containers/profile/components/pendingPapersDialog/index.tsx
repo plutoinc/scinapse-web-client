@@ -18,7 +18,9 @@ const PendingPapersDialog: React.FC<PendingPApersDialogProps> = ({ papers, isOpe
   return (
     <Dialog open={isOpen} onClose={handleClose} classes={{ paper: s.dialogPaper }}>
       <div className={s.title}>Pending Publication ( {papers.length} )</div>
-      <div className={s.description}>대충 곧 매칭된다는 문구.</div>
+      <div className={s.description}>
+        These papers are pending because they are not yet integrated with the Scinapse database.
+      </div>
       <div className={s.contentBox}>{papers.map(paper => <PendingPaperItem paper={paper} key={paper.id} />)}</div>
     </Dialog>
   );
