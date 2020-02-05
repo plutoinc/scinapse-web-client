@@ -254,11 +254,11 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
           await dispatch(
             updateProfile({
               id: profile.id,
-              bio: profileForm.bio || '',
+              bio: profileForm.bio || null,
               email: profileForm.email,
               first_name: profileForm.firstName,
               last_name: profileForm.lastName,
-              web_page: profileForm.website || '',
+              web_page: profileForm.website || null,
               affiliation_id: affiliationId,
               affiliation_name: affiliationName,
               is_email_public: profileForm.isEmailPublic,
@@ -271,9 +271,9 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
           firstName: profile.firstName,
           lastName: profile.lastName,
           currentAffiliation: { id: profile.affiliationId, name: profile.affiliationName } || '',
-          bio: profile.bio || '',
-          website: profile.webPage || '',
-          email: profile.email || '',
+          bio: profile.bio || null,
+          website: profile.webPage || null,
+          email: profile.email,
           isEmailPublic: profile.isEmailPublic || false,
         }}
       />

@@ -17,9 +17,9 @@ export interface ModifyProfileFormState {
   firstName: string;
   lastName: string;
   currentAffiliation: Affiliation | SuggestAffiliation | string;
-  bio: string;
+  bio: string | null;
   email: string;
-  website: string;
+  website: string | null;
   isEmailPublic: boolean;
 }
 
@@ -54,7 +54,12 @@ const validateForm = (values: ModifyProfileFormState) => {
     errors.lastName = 'Minimum length is 1';
   }
 
-  if (values.website.length > 0 && !values.website.includes('http://') && !values.website.includes('https://')) {
+  if (
+    !!values.website &&
+    values.website.length > 0 &&
+    !values.website.includes('http://') &&
+    !values.website.includes('https://')
+  ) {
     errors.website = "Website URL should start with 'http://' or 'https://'";
   }
 
