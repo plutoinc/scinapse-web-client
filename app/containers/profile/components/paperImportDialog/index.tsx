@@ -92,12 +92,19 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
 
   const handleGSSubmit = (params: GscFormState) => {
     setIsLoading(true);
-    profileAPI.importFromGSC({ profileId, url: params.url }).then(res => {
-      fetchProfileShowData();
-      setImportResult(res);
-      setIsLoading(false);
-      setInProgressStep(CURRENT_STEP.RESULT);
-    });
+    profileAPI
+      .importFromGSC({ profileId, url: params.url })
+      .then(res => {
+        fetchProfileShowData();
+        setImportResult(res);
+        setIsLoading(false);
+        setInProgressStep(CURRENT_STEP.RESULT);
+      })
+      .catch(err => {
+        console.error(err);
+        alert('we had an error during importing papers. please refresh this page & try it again.');
+        setIsLoading(false);
+      });
   };
 
   const handleSubmitBibTex = (params: BibTexFormState) => {

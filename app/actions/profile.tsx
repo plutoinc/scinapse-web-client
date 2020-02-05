@@ -26,8 +26,9 @@ export function fetchProfileData(profileId: string): AppThunkAction {
 export function updateProfile(params: Partial<ProfileParams> & { id: string }): AppThunkAction {
   return async (dispatch, _getState, { axios }) => {
     try {
-      await axios.put(`/profiles/${params.id}`, params);
-      await dispatch(fetchProfileData(params.id));
+      const res = await axios.put(`/profiles/${params.id}`, params);
+      const normalizedData = normalize(res.data.data.content, profileEntitySchema);
+      dispatch(addProfileEntities(normalizedData.entities));
     } catch (err) {
       alertToast({
         type: 'error',
