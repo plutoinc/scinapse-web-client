@@ -1,6 +1,8 @@
 import { schema, denormalize } from 'normalizr';
 import { AppState } from '../reducers';
 import { Affiliation } from './affiliation';
+import { Author } from './author/author';
+import { NewFOS } from './fos';
 
 export type Profile = {
   id: string;
@@ -19,6 +21,8 @@ export type Profile = {
   isEmailPublic: boolean;
   isEmailVerified: boolean;
   isEditable: boolean;
+  coauthors: Author[];
+  fosList: NewFOS[];
 };
 
 export type PaperProfile = Profile & {

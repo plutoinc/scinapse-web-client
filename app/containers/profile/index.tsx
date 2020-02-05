@@ -28,6 +28,8 @@ import { PendingPaper } from '../../reducers/profilePendingPaperList';
 import PendingPaperList from './components/pendingPaperList';
 import PaperImportDialog from './components/paperImportDialog';
 import { fetchAuthorShowPageData } from './sideEffects';
+import ProfileCoAuthor from '../../components/common/profileCoAuthor';
+
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./connectedAuthor.scss');
 
@@ -99,6 +101,8 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
   );
 
   if (!profile) return null;
+
+  console.log(profile.coauthors);
 
   return (
     <div className={s.authorShowPageWrapper}>
@@ -225,12 +229,13 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                     }}
                   />
                 </div>
-                {/* <div className={s.rightContentWrapper}>
+                <div className={s.rightContentWrapper}>
                   <div>
                     <div className={s.coAuthorHeader}>Close Researchers</div>
-                    {coAuthorIds && coAuthorIds.map(id => <CoAuthor key={id} authorId={id} />)}
+                    {profile.coauthors.length > 0 &&
+                      profile.coauthors.map(coauthor => <ProfileCoAuthor key={coauthor.id} author={coauthor} />)}
                   </div>
-                </div> */}
+                </div>
               </>
             )}
           </div>
