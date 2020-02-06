@@ -11,10 +11,12 @@ import { Paper } from '../../model/paper';
 import Icon from '../../icons';
 import { PaperAuthor } from '../../model/author';
 import ArticleSpinner from '../common/spinner/articleSpinner';
+import { PaperProfile } from '../../model/profile';
 const styles = require('./authorListDialog.scss');
 
 interface AuthorListDialogProps {
   paper: Paper;
+  profile?: PaperProfile;
   handleCloseDialogRequest: () => void;
 }
 
@@ -125,11 +127,16 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
 
   private getAuthorList = () => {
     const { authors } = this.state;
-    const { handleCloseDialogRequest } = this.props;
+    const { handleCloseDialogRequest, profile } = this.props;
 
     if (authors && authors.length > 0) {
       return authors.map(author => (
-        <AuthorListItem author={author} key={author.id} handleCloseDialogRequest={handleCloseDialogRequest} />
+        <AuthorListItem
+          author={author}
+          profile={profile}
+          key={author.id}
+          handleCloseDialogRequest={handleCloseDialogRequest}
+        />
       ));
     }
     return <div />;

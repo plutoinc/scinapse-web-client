@@ -340,7 +340,11 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       case GLOBAL_DIALOG_TYPE.AUTHOR_LIST_DIALOG:
         if (dialogState.authorListTargetPaper) {
           return (
-            <AuthorListDialog paper={dialogState.authorListTargetPaper} handleCloseDialogRequest={this.closeDialog} />
+            <AuthorListDialog
+              paper={dialogState.authorListTargetPaper}
+              profile={dialogState.profile}
+              handleCloseDialogRequest={this.closeDialog}
+            />
           );
         }
         return null;

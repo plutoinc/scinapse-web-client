@@ -89,23 +89,23 @@ const BlockAuthorList: React.FC<BlockAuthorListProps> = ({ paper, pageType, acti
 
   if (authors.length === 0) return null;
 
+  const profile = profiles.find(profile => profile.id === ownProfileId);
+  const profileAuthor = authors.find(author => profile && author.order === profile.order);
+  const shouldAddProfileAuthor =
+    profileAuthor && profileAuthor.order > MAXIMUM_PRE_AUTHOR_COUNT && profileAuthor.order < authors.length;
+
   const hasMore = authors.length >= MAXIMUM_PRE_AUTHOR_COUNT + MAXIMUM_POST_AUTHOR_COUNT;
   let viewAllAuthorsBtn = null;
   if (hasMore) {
     viewAllAuthorsBtn = (
       <div
         onClick={() => {
-          GlobalDialogManager.openAuthorListDialog(paper);
+          GlobalDialogManager.openAuthorListDialog(paper, profile);
         }}
         className={styles.viewAll}
       >{`view all ${paper.authorCount} authors...`}</div>
     );
   }
-
-  const profile = profiles.find(profile => profile.id === ownProfileId);
-  const profileAuthor = authors.find(author => profile && author.order === profile.order);
-  const shouldAddProfileAuthor =
-    profileAuthor && profileAuthor.order > MAXIMUM_PRE_AUTHOR_COUNT && profileAuthor.order < authors.length;
 
   const preAuthorList = authors.slice(0, MAXIMUM_PRE_AUTHOR_COUNT).map(author => {
     return (

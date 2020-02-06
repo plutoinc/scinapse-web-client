@@ -5,6 +5,7 @@ import { Paper, PaperFigure } from '../../model/paper';
 import { SIGN_UP_STEP } from '../auth/signUp/types';
 import { OAuthCheckParams } from '../../api/types/auth';
 import { SignUpConversionExpTicketContext } from '../../constants/abTest';
+import { PaperProfile } from '../../model/profile';
 
 export enum GLOBAL_DIALOG_TYPE {
   SIGN_IN,
@@ -48,6 +49,7 @@ export interface DialogState
       collection: Collection | undefined;
 
       authorListTargetPaper: Paper | undefined;
+      profile: PaperProfile | undefined;
 
       isBlocked: boolean | undefined;
 
@@ -82,6 +84,8 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   collection: undefined,
   // author list dialog
   authorListTargetPaper: undefined,
+  profile: undefined,
+  // etc
   isBlocked: undefined,
   nextSignUpStep: undefined,
   paperFigures: undefined,
@@ -107,6 +111,7 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
         paperFigures: action.payload.paperFigures,
         currentPaperFigureIndex: action.payload.currentPaperFigureIndex,
         viewDetailFigureTargetPaperId: action.payload.viewDetailFigureTargetPaperId,
+        profile: action.payload.profile,
       };
     }
 
