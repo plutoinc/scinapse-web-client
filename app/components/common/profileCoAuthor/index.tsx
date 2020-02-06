@@ -39,7 +39,7 @@ const ProfileCoAuthor = React.memo(({ author }: ProfileCoAuthorProps) => {
         <div className={styles.coAuthorName}>
           {author.name}{' '}
           {author.isLayered ? (
-            <MuiTooltip classes={{ tooltip: styles.verificationTooltip }} title="Verification Author" placement="right">
+            <MuiTooltip classes={{ tooltip: styles.verificationTooltip }} title="Verified Author" placement="right">
               <div className={styles.contactIconWrapper}>
                 <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
               </div>

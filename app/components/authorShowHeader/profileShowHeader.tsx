@@ -51,7 +51,7 @@ class ProfileShowHeader extends React.PureComponent<ProfileShowHeaderProps, Prof
                     <span className={styles.username}>{`${profile.firstName} ${profile.lastName}`}</span>{' '}
                     <MuiTooltip
                       classes={{ tooltip: styles.verificationTooltip }}
-                      title="Verification Author"
+                      title="Verified Author"
                       placement="right"
                     >
                       <div className={styles.contactIconWrapper}>

@@ -27,7 +27,7 @@ const PostAuthor = ({ author }: PostAuthorProps) => {
             {author.isLayered ? (
               <MuiTooltip
                 classes={{ tooltip: styles.verificationTooltip }}
-                title="Verification Author"
+                title="Verified Author"
                 placement="right"
               >
                 <div className={styles.contactIconWrapper}>
