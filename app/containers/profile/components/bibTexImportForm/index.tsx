@@ -8,7 +8,7 @@ const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./bibTexImportForm.scss');
 
 export interface BibTexFormState {
-  bibTexStr: string;
+  bibTexString: string;
 }
 
 interface BibTexImportFormProps {
@@ -41,7 +41,7 @@ const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
   return (
     <div className={s.formWrapper}>
       <Formik
-        initialValues={{ bibTexStr: bibTexString }}
+        initialValues={{ bibTexString: bibTexString }}
         onSubmit={onSubmitBibtex}
         enableReinitialize
         validateOnChange={false}
@@ -79,11 +79,11 @@ const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
                   <div className={s.dashedSeparator} />
                 </div>
                 <Field
-                  name="bibTexStr"
+                  name="bibTexString"
                   type="text"
                   labelText="BIBTEX STRING"
                   component={FormikInput}
-                  error={errors.bibTexStr}
+                  error={errors.bibTexString}
                   helperText="Write bibTex string."
                   placeholder={'Write bibTex string.'}
                   variant="underlined"

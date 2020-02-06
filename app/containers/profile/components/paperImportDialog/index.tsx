@@ -109,9 +109,19 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
 
   const handleSubmitBibTex = (params: BibTexFormState) => {
     setIsLoading(true);
-    console.log(params);
-    setIsLoading(false);
-    setInProgressStep(CURRENT_STEP.RESULT);
+    profileAPI
+      .importFromBIBTEX({ profileId, bibtexString: params.bibTexString })
+      .then(res => {
+        fetchProfileShowData();
+        setImportResult(res);
+        setIsLoading(false);
+        setInProgressStep(CURRENT_STEP.RESULT);
+      })
+      .catch(err => {
+        console.error(err);
+        alert('we had an error during importing papers. please refresh this page & try it again.');
+        setIsLoading(false);
+      });
   };
 
   const onCloseDialog = () => {

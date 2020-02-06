@@ -34,7 +34,20 @@ class ProfileAPI extends PlutoAxios {
   }
 
   public async importFromGSC(params: { profileId: string; url: string }): Promise<ImportedPaperListResponse> {
-    const res = await this.post(`/profiles/${params.profileId}/import-papers/gs?url=${params.url}`);
+    const res = await this.post(`/profiles/${params.profileId}/import-papers/gs`, {
+      url: params.url,
+    });
+    return res.data.data.content;
+  }
+
+  public async importFromBIBTEX(params: {
+    profileId: string;
+    bibtexString: string;
+  }): Promise<ImportedPaperListResponse> {
+    const res = await this.post(`/profiles/${params.profileId}/import-papers/bibtex`, {
+      bibtex_string: params.bibtexString,
+    });
+
     return res.data.data.content;
   }
 }
