@@ -45,6 +45,17 @@
   }
 }
 
+.inputForm {
+  @extend %base-input-style;
+
+  &:disabled {
+    background-color: $gray100;
+    border-color: $gray400;
+    color: $gray500;
+    cursor: not-allowed;
+  }
+}
+
 .contentSection {
   min-height: 314px;
   margin-bottom: 16px;
@@ -82,28 +93,6 @@
   position: absolute;
   top: 0;
   right: 0;
-}
-
-.inputField {
-  width: 278px;
-  height: 40px;
-  color: $black0;
-}
-
-.textAreaWrapper,
-.inputField {
-  border-radius: 5px;
-  border: solid 1px $gray400;
-
-  &:focus {
-    border-radius: 5px;
-    border: solid 1px $gray600;
-  }
-}
-
-.errorMessage {
-  color: $red0;
-  font-size: 12px;
 }
 
 .checkboxField {

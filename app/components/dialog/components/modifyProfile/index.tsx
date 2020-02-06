@@ -4,13 +4,12 @@ import { Button } from '@pluto_network/pluto-design-elements';
 import { Formik, Form, Field, FormikErrors } from 'formik';
 import { withStyles } from '../../../../helpers/withStylesHelper';
 import Icon from '../../../../icons';
-import ScinapseFormikInput from '../../../common/scinapseInput/scinapseFormikInput';
-import ReduxAutoSizeTextarea from '../../../common/autoSizeTextarea/reduxAutoSizeTextarea';
 import AffiliationSelectBox from './affiliationSelectBox/index';
 import { Affiliation } from '../../../../model/affiliation';
 import { SuggestAffiliation } from '../../../../api/suggest';
 import validateEmail from '../../../../helpers/validateEmail';
 import scinapseFormikCheckbox from '../../../common/scinapseInput/scinapseFormikCheckbox';
+import FormikInput from '../../../common/formikInput';
 const styles = require('./modifyProfile.scss');
 
 export interface ModifyProfileFormState {
@@ -100,7 +99,7 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
           onSubmit={handleSubmitForm}
           validate={validateForm}
           enableReinitialize={true}
-          render={() => {
+          render={({ errors }) => {
             return (
               <Form>
                 <div className={styles.contentSection}>
@@ -111,8 +110,8 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                         name="firstName"
                         type="text"
                         placeholder="First Name"
-                        component={ScinapseFormikInput}
-                        className={styles.inputField}
+                        component={FormikInput}
+                        error={errors.firstName}
                       />
                     </div>
                     <div className={styles.inlineInput}>
@@ -121,8 +120,8 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                         name="lastName"
                         type="text"
                         placeholder="Last Name"
-                        component={ScinapseFormikInput}
-                        className={styles.inputField}
+                        component={FormikInput}
+                        error={errors.lastName}
                       />
                     </div>
                   </div>
@@ -131,8 +130,9 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                     <Field
                       name="currentAffiliation"
                       component={AffiliationSelectBox}
-                      className={styles.inputField}
+                      className={styles.inputForm}
                       format={this.formatAffiliation}
+                      disabled={true}
                     />
                   </div>
                   <div className={styles.bioWrapper}>
@@ -141,22 +141,21 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                     </label>
                     <Field
                       name="bio"
-                      component={ReduxAutoSizeTextarea}
+                      component={FormikInput}
                       disabled={isLoading}
-                      textareaClassName={styles.textAreaWrapper}
-                      textareaStyle={{ padding: '8px' }}
                       placeholder="Please tell us about yourself."
+                      multiline={true}
                     />
                   </div>
                   <div className={styles.formControl}>
                     <div className={styles.inlineInput}>
                       <label htmlFor="email">Email Address</label>
                       <Field
-                        component={ScinapseFormikInput}
-                        className={styles.inputField}
+                        component={FormikInput}
                         name="email"
                         type="email"
                         placeholder="Email Address"
+                        disabled={true}
                       />
 
                       <div className={styles.checkboxField}>
@@ -175,11 +174,11 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                         Website URL<small> (Optional)</small>
                       </label>
                       <Field
-                        component={ScinapseFormikInput}
-                        className={styles.inputField}
+                        component={FormikInput}
                         name="website"
                         type="text"
                         placeholder="e.g. https://username.com"
+                        error={errors.website}
                       />
                     </div>
                   </div>
