@@ -22,6 +22,8 @@ interface BlockAuthorListProps {
 interface AuthorItemProps {
   author: PaperAuthor;
   pageType: Scinapse.ActionTicket.PageType;
+  isBold: boolean;
+  isLast: boolean;
   actionArea?: Scinapse.ActionTicket.ActionArea;
   profile?: PaperProfile;
 }
@@ -30,7 +32,7 @@ const getProfileFromAuthor = (author: PaperAuthor, profiles: PaperProfile[]) => 
   return profiles.find(profile => profile.order === author.order);
 };
 
-const AuthorItem: React.FC<AuthorItemProps> = ({ author, pageType, actionArea, profile }) => {
+const AuthorItem: React.FC<AuthorItemProps> = ({ author, pageType, actionArea, profile, isBold, isLast }) => {
   let affiliation = null;
   if (author.affiliation) {
     const affiliationName = author.affiliation.nameAbbrev
@@ -53,26 +55,32 @@ const AuthorItem: React.FC<AuthorItemProps> = ({ author, pageType, actionArea, p
   );
 
   return (
-    <span className={styles.authorContentWrapper}>
-      <Link
-        to={authorProfileLink}
-        onClick={() => {
-          ActionTicketManager.trackTicket({
-            pageType,
-            actionType: 'fire',
-            actionArea: actionArea || pageType,
-            actionTag: 'authorShow',
-            actionLabel: String(author.id),
-          });
-        }}
-        className={styles.authorName}
-      >
-        {author.name}
-      </Link>
-      {author.name && author.affiliation && ' '}
-      {affiliation}
-      {hIndex}
-    </span>
+    <div style={{ fontWeight: isBold ? 'bold' : 'inherit' }} className={styles.profileAuthorItem}>
+      <span className={styles.marker}>
+        {isLast ? 'Last. ' : `#`}
+        <span className={styles.markerNum}>{!isLast && author.order}</span>
+      </span>
+      <span className={styles.authorContentWrapper}>
+        <Link
+          to={authorProfileLink}
+          onClick={() => {
+            ActionTicketManager.trackTicket({
+              pageType,
+              actionType: 'fire',
+              actionArea: actionArea || pageType,
+              actionTag: 'authorShow',
+              actionLabel: String(author.id),
+            });
+          }}
+          className={styles.authorName}
+        >
+          {author.name}
+        </Link>
+        {author.name && author.affiliation && ' '}
+        {affiliation}
+        {hIndex}
+      </span>
+    </div>
   );
 };
 
@@ -94,41 +102,22 @@ const BlockAuthorList: React.FC<BlockAuthorListProps> = ({ paper, pageType, acti
     );
   }
 
-  let preAuthorCount = MAXIMUM_PRE_AUTHOR_COUNT;
-  let profileAuthorNode = null;
-  let preAuthors = authors;
-  if (ownProfileId) {
-    const profile = profiles.find(profile => profile.id === ownProfileId);
-    const author = authors.find(author => profile && author.order === profile.order);
-    if (profile && author) {
-      preAuthors = authors.filter(author => author.order !== profile.order);
-      preAuthorCount = MAXIMUM_PRE_AUTHOR_COUNT - 1;
-      profileAuthorNode = (
-        <div className={styles.profileAuthorItem}>
-          <span className={styles.marker}>
-            {`#`}
-            <span className={styles.markerNum}>{author.order}</span>
-          </span>
-          <AuthorItem author={author} pageType={pageType} actionArea={actionArea} profile={profile} />
-        </div>
-      );
-    }
-  }
+  const profile = profiles.find(profile => profile.id === ownProfileId);
+  const profileAuthor = authors.find(author => profile && author.order === profile.order);
+  const shouldAddProfileAuthor =
+    profileAuthor && profileAuthor.order > MAXIMUM_PRE_AUTHOR_COUNT && profileAuthor.order < authors.length;
 
-  const preAuthorList = preAuthors.slice(0, preAuthorCount).map(author => {
+  const preAuthorList = authors.slice(0, MAXIMUM_PRE_AUTHOR_COUNT).map(author => {
     return (
-      <div key={author.id}>
-        <span className={styles.marker}>
-          {`#`}
-          <span className={styles.markerNum}>{author.order}</span>
-        </span>
-        <AuthorItem
-          author={author}
-          pageType={pageType}
-          actionArea={actionArea}
-          profile={getProfileFromAuthor(author, profiles)}
-        />
-      </div>
+      <AuthorItem
+        key={author.id}
+        author={author}
+        pageType={pageType}
+        actionArea={actionArea}
+        profile={getProfileFromAuthor(author, profiles)}
+        isBold={!!profileAuthor && profileAuthor.order === author.order}
+        isLast={false}
+      />
     );
   });
 
@@ -136,17 +125,15 @@ const BlockAuthorList: React.FC<BlockAuthorListProps> = ({ paper, pageType, acti
     hasMore &&
     authors.slice(-MAXIMUM_POST_AUTHOR_COUNT).map(author => {
       return (
-        <div key={author.id}>
-          <span style={{ fontWeight: 'bold' }} className={styles.marker}>
-            Last.
-          </span>
-          <AuthorItem
-            author={author}
-            pageType={pageType}
-            actionArea={actionArea}
-            profile={getProfileFromAuthor(author, profiles)}
-          />
-        </div>
+        <AuthorItem
+          key={author.id}
+          author={author}
+          pageType={pageType}
+          actionArea={actionArea}
+          profile={getProfileFromAuthor(author, profiles)}
+          isBold={!!profileAuthor && profileAuthor.order === author.order}
+          isLast
+        />
       );
     });
 
@@ -154,8 +141,18 @@ const BlockAuthorList: React.FC<BlockAuthorListProps> = ({ paper, pageType, acti
     <div className={styles.authorListWrapper}>
       <Icon className={styles.authorIcon} icon="AUTHOR" />
       <span className={styles.listWrapper}>
-        {profileAuthorNode}
         {preAuthorList}
+        {shouldAddProfileAuthor && (
+          <AuthorItem
+            key={profileAuthor!.id}
+            author={profileAuthor!}
+            pageType={pageType}
+            actionArea={actionArea}
+            profile={profile}
+            isLast={false}
+            isBold
+          />
+        )}
         {postAuthorList}
         {viewAllAuthorsBtn}
       </span>
