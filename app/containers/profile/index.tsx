@@ -102,8 +102,6 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
 
   if (!profile) return null;
 
-  console.log(profile.coauthors);
-
   return (
     <div className={s.authorShowPageWrapper}>
       <ProfileShowPageHelmet profile={profile} />
