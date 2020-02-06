@@ -139,7 +139,8 @@ export function updateProfileImage(profileId: string, formData: FormData) {
       const normalizedProfile = await AuthorAPI.updateAuthorProfileImage(profileId, formData);
       dispatch(addProfileEntities(normalizedProfile.entities));
     } catch (err) {
-      alertToast({ type: 'error', message: 'Had an error to upload profile image' });
+      const error = PlutoAxios.getGlobalError(err);
+      alertToast({ type: 'error', message: error.message });
     }
   };
 }
