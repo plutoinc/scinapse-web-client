@@ -1,14 +1,14 @@
 .dialogPaper {
   width: 596px;
-  max-height: 500px;
   border-radius: 5px;
   box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
-  padding: 0 16px 16px 16px;
+  padding: 16px;
+  margin: 16px;
 }
 
 .dialogHeader {
   position: relative;
-  padding: 16px 0;
+  padding-bottom: 16px;
   border-bottom: solid 1px $gray500;
   margin-bottom: 24px;
   line-height: 1.4;
@@ -30,19 +30,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  top: 8px;
+  top: 0px;
   right: 0px;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
 
   .closeIcon {
     display: inline-block;
     vertical-align: top;
-    width: 14px;
-    height: 14px;
-    color: $black0;
-    opacity: 0.5;
+    width: 20px;
+    height: 20px;
+    color: $gray600;
   }
 }
 
@@ -136,4 +135,16 @@
   font-size: 13px;
   line-height: 1.54;
   color: $gray800;
+}
+
+@media (max-width: $mobile_width) {
+  .contentSection {
+    .formControl {
+      flex-direction: column;
+
+      .inlineInput + .inlineInput {
+        margin: 8px 0 0 0;
+      }
+    }
+  }
 }

@@ -42,40 +42,44 @@ class ProfileShowHeader extends React.PureComponent<ProfileShowHeaderProps, Prof
     return (
       <div className={styles.headerBox}>
         <div className={styles.container}>
-          <div className={styles.leftContentWrapper}>
-            <div className={styles.nameBox}>
-              <UploadableProfileImage profile={profile} currentUser={currentUser} />
-              <span className={styles.nameHeaderBox}>
-                <div className={styles.usernameWrapper}>
-                  <span className={styles.username}>{`${profile.firstName} ${profile.lastName}`}</span>{' '}
-                  <MuiTooltip
-                    classes={{ tooltip: styles.verificationTooltip }}
-                    title="Verification Author"
-                    placement="right"
-                  >
-                    <div className={styles.contactIconWrapper}>
-                      <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
-                    </div>
-                  </MuiTooltip>
-                </div>
-                <div className={styles.affiliation}>{profile.affiliationName || ''}</div>
-                {/* {author.fosList &&
-                  author.fosList.map(fos => (
-                    <span className={styles.fosItem} key={fos.id}>
-                      {fos.name}
-                    </span>
-                  ))} */}
-                {userDevice === UserDevice.DESKTOP && this.getMetricInformation()}
-              </span>
+          <div className={styles.contentWrapper}>
+            <div className={styles.leftContentWrapper}>
+              <div className={styles.nameBox}>
+                <UploadableProfileImage profile={profile} currentUser={currentUser} />
+                <span className={styles.nameHeaderBox}>
+                  <div className={styles.usernameWrapper}>
+                    <span className={styles.username}>{`${profile.firstName} ${profile.lastName}`}</span>{' '}
+                    <MuiTooltip
+                      classes={{ tooltip: styles.verificationTooltip }}
+                      title="Verification Author"
+                      placement="right"
+                    >
+                      <div className={styles.contactIconWrapper}>
+                        <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
+                      </div>
+                    </MuiTooltip>
+                  </div>
+                  <div className={styles.affiliation}>{profile.affiliationName || ''}</div>
+                  <div className={styles.fosList}>
+                    {profile.fosList &&
+                      profile.fosList.map(fos => (
+                        <span className={styles.fosItem} key={fos.id}>
+                          {fos.name}
+                        </span>
+                      ))}
+                  </div>
+                  {userDevice === UserDevice.DESKTOP && this.getMetricInformation()}
+                </span>
+              </div>
+              {userDevice !== UserDevice.DESKTOP && this.getMetricInformation()}
+              {this.getProfileInformation()}
             </div>
-            {userDevice !== UserDevice.DESKTOP && this.getMetricInformation()}
-            {this.getProfileInformation()}
-            {navigationContent}
+            <div className={styles.rightContentWrapper}>
+              {rightBoxContent}
+              {guideBubbleSpeech}
+            </div>
           </div>
-          <div className={styles.rightContentWrapper}>
-            {rightBoxContent}
-            {guideBubbleSpeech}
-          </div>
+          {navigationContent}
         </div>
       </div>
     );
@@ -121,25 +125,27 @@ class ProfileShowHeader extends React.PureComponent<ProfileShowHeaderProps, Prof
 
     return (
       <div className={styles.profileInformationSection}>
-        <div className={styles.bioSection}>
-          <Truncate
-            lines={!expanded && 3}
-            ellipsis={
-              <a onClick={this.toggleLines} className={styles.moreOrLess}>
-                {`  ... More`}
-              </a>
-            }
-            onTruncate={this.handleTruncate}
-          >
-            {profile.bio || ''}
-          </Truncate>
-          {!isTruncated &&
-            expanded && (
-              <a className={styles.moreOrLess} onClick={this.toggleLines}>
-                {`  Less`}
-              </a>
-            )}
-        </div>
+        {profile.bio && (
+          <div className={styles.bioSection}>
+            <Truncate
+              lines={!expanded && 3}
+              ellipsis={
+                <a onClick={this.toggleLines} className={styles.moreOrLess}>
+                  {`  ... More`}
+                </a>
+              }
+              onTruncate={this.handleTruncate}
+            >
+              {profile.bio || ''}
+            </Truncate>
+            {!isTruncated &&
+              expanded && (
+                <a className={styles.moreOrLess} onClick={this.toggleLines}>
+                  {`  Less`}
+                </a>
+              )}
+          </div>
+        )}
         {profile.isEmailPublic &&
           profile.email && (
             <span className={styles.contactSection}>
