@@ -85,7 +85,7 @@ const ProfileLanding: FC = () => {
             </Button>
           )}
           <Button elementType="button" color="blue" isLoading={!isLoaded} onClick={handleClickContinueBtn} fullWidth>
-            <span>{currentUser.isLoggedIn ? 'Connect profile' : 'Create an account & make profile'}</span>
+            <span>{currentUser.isLoggedIn ? 'Create profile' : 'Create an account & make profile'}</span>
           </Button>
         </div>
       </div>
