@@ -167,16 +167,21 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
     if (!affiliation_id || !affiliation_name) {
       return;
     }
-    let res = null;
-    if (formStatus === 'PROFILE') {
-      res = await createProfile(queryParams.token, values);
-    } else if (formStatus === 'NOT_A_MEMBER' && queryParams.token) {
-      res = (await createMemberAndProfile(queryParams.token, values)).profile;
-    }
 
-    if (res && (res as Profile).id) {
-      await dispatch(checkAuthStatus());
-      history.push(`/profiles/${(res as Profile).id}`);
+    try {
+      let res: Profile | null = null;
+      if (formStatus === 'PROFILE') {
+        res = await createProfile(queryParams.token, values);
+      } else if (formStatus === 'NOT_A_MEMBER' && queryParams.token) {
+        res = (await createMemberAndProfile(queryParams.token, values)).profile;
+      }
+      if (res && res.id) {
+        await dispatch(checkAuthStatus());
+        history.push(`/profiles/${res.id}`);
+      }
+    } catch (err) {
+      console.error(err.message);
+      alert(err.message);
     }
   };
 
