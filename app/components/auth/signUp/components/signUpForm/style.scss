@@ -60,6 +60,10 @@
   margin-bottom: 16px;
 }
 
+.dashSeparatorBox {
+  margin: 12px 0;
+}
+
 @media (max-width: $mobile_width) {
   .nameItemWrapper {
     display: block;

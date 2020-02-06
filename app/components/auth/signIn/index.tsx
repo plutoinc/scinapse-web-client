@@ -8,7 +8,7 @@ import GlobalDialogManager from '../../../helpers/globalDialogManager';
 import { withStyles } from '../../../helpers/withStylesHelper';
 import AuthInputBox from '../../common/inputBox/authInputBox';
 import { GLOBAL_DIALOG_TYPE, DialogState } from '../../dialog/reducer';
-import ORSeparator from '../separator';
+import DashedDividerWithContent from '../../common/separator';
 import AuthTabs from '../authTabs';
 import AuthAPI from '../../../api/auth';
 import { SignInResult } from '../../../api/types/auth';
@@ -203,7 +203,7 @@ const SignIn: React.FunctionComponent<SignInProps & RouteComponentProps<any>> = 
                 );
               }}
             />
-            <ORSeparator />
+            <DashedDividerWithContent wrapperClassName={s.dashSeparatorBox} content="OR" />
             <AuthButtons
               handleClickFBLogin={handleClickFBLogin}
               handleClickGoogleLogin={values => {
