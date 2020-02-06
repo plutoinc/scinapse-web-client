@@ -35,30 +35,32 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
     return (
       <div className={styles.headerBox}>
         <div className={styles.container}>
-          <div className={styles.leftContentWrapper}>
-            <div className={styles.nameBox}>
-              <span className={styles.nameHeaderBox}>
-                <div className={styles.usernameWrapper}>
-                  <span className={styles.username}>{author.name}</span>{' '}
-                </div>
-                <div className={styles.affiliation}>
-                  {author.lastKnownAffiliation ? author.lastKnownAffiliation.name || '' : ''}
-                </div>
-                <div className={styles.fosList}>
-                  {author.fosList &&
-                    author.fosList.map(fos => (
-                      <span className={styles.fosItem} key={fos.id}>
-                        {fos.name}
-                      </span>
-                    ))}
-                </div>
-                {userDevice === UserDevice.DESKTOP && this.getMetricInformation()}
-              </span>
+          <div className={styles.contentWrapper}>
+            <div className={styles.leftContentWrapper}>
+              <div className={styles.nameBox}>
+                <span className={styles.nameHeaderBox}>
+                  <div className={styles.usernameWrapper}>
+                    <span className={styles.username}>{author.name}</span>{' '}
+                  </div>
+                  <div className={styles.affiliation}>
+                    {author.lastKnownAffiliation ? author.lastKnownAffiliation.name || '' : ''}
+                  </div>
+                  <div className={styles.fosList}>
+                    {author.fosList &&
+                      author.fosList.map(fos => (
+                        <span className={styles.fosItem} key={fos.id}>
+                          {fos.name}
+                        </span>
+                      ))}
+                  </div>
+                  {userDevice === UserDevice.DESKTOP && this.getMetricInformation()}
+                </span>
+              </div>
+              {userDevice !== UserDevice.DESKTOP && this.getMetricInformation()}
             </div>
-            {userDevice !== UserDevice.DESKTOP && this.getMetricInformation()}
-            {navigationContent}
+            <div className={styles.rightContentWrapper}>{rightBoxContent}</div>
           </div>
-          <div className={styles.rightContentWrapper}>{rightBoxContent}</div>
+          {navigationContent}
         </div>
       </div>
     );

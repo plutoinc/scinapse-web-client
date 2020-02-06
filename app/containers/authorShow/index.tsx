@@ -183,7 +183,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps, AuthorShowLocalSta
 
                 <div className={styles.contentRightBox}>
                   <div className={styles.coAuthorTitleBox}>
-                    <span className={styles.coAuthorListTitle}>Co-Authors</span>
+                    <span className={styles.coAuthorListTitle}>Close Researchers</span>
                   </div>
                   <div className={styles.coAuthorList}>{this.getCoAuthors()}</div>
                 </div>

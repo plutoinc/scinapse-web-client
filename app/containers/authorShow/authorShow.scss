@@ -89,7 +89,8 @@
   vertical-align: top;
   flex-direction: row;
   width: 100%;
-  padding: 24px 0;
+  max-width: 691px;
+  padding: 40px 0;
 }
 
 .paperListBox {
@@ -100,7 +101,9 @@
   flex: 1;
   display: inline-block;
   vertical-align: top;
-  padding: 24px 0 0 22px;
+  max-width: 306px;
+  width: 100%;
+  padding: 40px 0 0 22px;
 }
 
 .contentFlexWrapper {
@@ -164,7 +167,7 @@
 }
 
 .coAuthorTitleBox {
-  margin-bottom: 35px;
+  margin-bottom: 16px;
 }
 
 .searchInputWrapper {
@@ -179,10 +182,6 @@
   }
 
   .contentRightBox {
-    display: none;
-  }
-
-  .headerRightBox {
     display: none;
   }
 }

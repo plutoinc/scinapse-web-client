@@ -120,24 +120,15 @@
 .rightContentWrapper {
   display: inline-block;
   vertical-align: top;
-  width: 306px;
+  max-width: 306px;
+  width: 100%;
   padding: 40px 0 0 22px;
 }
 
 .coAuthorHeader {
-  height: 28px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
-  line-height: 1.56;
-  color: $black0;
-  margin-bottom: 16px;
-}
-
-.fosHeader {
-  height: 28px;
-  font-size: 18px;
-  font-weight: bold;
-  line-height: 1.56;
+  line-height: 1.2;
   color: $black0;
   margin-bottom: 16px;
 }
