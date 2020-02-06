@@ -60,34 +60,8 @@
   margin-bottom: 16px;
 }
 
-.divider {
-  position: relative;
-  text-align: center;
-  color: $gray700;
-  font-size: 14px;
-  padding: 6px;
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 117px;
-    height: 50%;
-    border-bottom: 2px dashed $gray400;
-  }
-
-  &:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    width: 117px;
-    height: 50%;
-    border-bottom: 2px dashed $gray400;
-  }
+.dashSeparatorBox {
+  margin: 12px 0;
 }
 
 @media (max-width: $mobile_width) {

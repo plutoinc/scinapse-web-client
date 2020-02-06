@@ -3,6 +3,7 @@ import { Formik, Field, FormikErrors, Form } from 'formik';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Button } from '@pluto_network/pluto-design-elements';
+import DashedDividerWithContent from '../../../../common/separator';
 import { withStyles } from '../../../../../helpers/withStylesHelper';
 import { GLOBAL_DIALOG_TYPE } from '../../../../dialog/reducer';
 import AuthTabs from '../../../authTabs';
@@ -140,7 +141,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                   type="text"
                   component={AffiliationBox}
                   affiliationIdFieldName="affiliationId"
-                  inputBoxStyle={{ width: '100%' }}
+                  inputBoxStyle={{ display: 'flex' }}
                   listWrapperStyle={{ top: '56px' }}
                   inputStyle={{
                     display: 'flex',
@@ -157,7 +158,7 @@ const SignUpForm: React.FunctionComponent<SignUpFormProps> = props => {
                     marginTop: '10px',
                   }}
                 />
-                <div className={s.divider}>optional</div>
+                <DashedDividerWithContent wrapperClassName={s.dashSeparatorBox} content="optional" />
                 <Field name="profileLink" type="url" component={AuthInputBox} placeholder="Profile Link (Optional)" />
               </div>
               <div className={s.authButtonWrapper}>
