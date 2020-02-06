@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { withStyles } from '../../../helpers/withStylesHelper';
+const useStyles = require('isomorphic-style-loader/useStyles');
 const styles = require('./separator.scss');
 
 interface DashedDividerWithContentProps {
@@ -10,6 +10,7 @@ interface DashedDividerWithContentProps {
 }
 const DashedDividerWithContent: React.FC<DashedDividerWithContentProps> = React.memo(
   ({ content, wrapperClassName, contentClassName }) => {
+    useStyles(styles);
     return (
       <div className={classNames({ [styles.wrapper]: true, [wrapperClassName!]: !!wrapperClassName })}>
         <div className={styles.dash} />
@@ -20,4 +21,4 @@ const DashedDividerWithContent: React.FC<DashedDividerWithContentProps> = React.
   }
 );
 
-export default withStyles<typeof DashedDividerWithContent>(styles)(DashedDividerWithContent);
+export default DashedDividerWithContent;
