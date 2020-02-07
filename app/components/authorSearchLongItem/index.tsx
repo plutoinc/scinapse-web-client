@@ -13,6 +13,8 @@ interface AuthorSearchLongItemProps extends RouteComponentProps<any> {
 
 const AuthorSearchLongItem: React.SFC<AuthorSearchLongItemProps> = props => {
   const author = props.authorEntity;
+  const profile = author.profile;
+  const href = profile ? `/profiles/${profile.id}` : `/authors/${author.id}`;
 
   const profileImage = author.profileImageUrl ? (
     <span
@@ -30,28 +32,14 @@ const AuthorSearchLongItem: React.SFC<AuthorSearchLongItemProps> = props => {
   });
 
   return (
-    <Link
-      onClick={async e => {
-        e.preventDefault();
-
-        trackActionToClickAuthorEntity(author.id);
-
-        props.history.push(`/authors/${author.id}`);
-      }}
-      to={`/authors/${author.id}`}
-      className={styles.itemWrapper}
-    >
+    <Link onClick={() => trackActionToClickAuthorEntity(author.id)} to={href} className={styles.itemWrapper}>
       <div className={styles.profileInfoWrapper}>
         {profileImage}
         <span className={styles.nameAffiliationBox}>
           <div className={styles.name}>
             {author.name}{' '}
-            {author.isLayered ? (
-              <MuiTooltip
-                classes={{ tooltip: styles.verificationTooltip }}
-                title="Verified Author"
-                placement="right"
-              >
+            {profile ? (
+              <MuiTooltip classes={{ tooltip: styles.verificationTooltip }} title="Verified Author" placement="right">
                 <div className={styles.contactIconWrapper}>
                   <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
                 </div>

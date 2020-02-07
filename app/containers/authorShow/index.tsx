@@ -15,7 +15,7 @@ import FullPaperItem from '../../components/common/paperItem/fullPaperItem';
 import { getAuthorPapers } from './actions';
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from '../../api/author';
 import ArticleSpinner from '../../components/common/spinner/articleSpinner';
-import CoAuthor from '../../components/common/coAuthor';
+import CoAuthorContainer from '../../components/common/coAuthor';
 import { Button, InputField } from '@pluto_network/pluto-design-elements';
 import { LayoutState } from '../../components/layouts/reducer';
 import AuthorShowHeader from '../../components/authorShowHeader';
@@ -364,7 +364,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps, AuthorShowLocalSta
     const { coAuthors } = this.props;
 
     return coAuthors.map(author => {
-      return <CoAuthor key={author.id} authorId={author.id} />;
+      return <CoAuthorContainer key={author.id} authorId={author.id} />;
     });
   };
 

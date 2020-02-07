@@ -1,9 +1,11 @@
 import { Affiliation } from './affiliation';
+import { Profile } from './profile';
 
 export interface BasePaperAuthor {
   id: string;
   name: string;
   isLayered: boolean;
+  profile: Profile | null;
   hindex?: number;
 }
 

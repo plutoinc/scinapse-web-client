@@ -2,6 +2,7 @@ import { schema } from 'normalizr';
 import { Paper, paperSchema } from '../paper';
 import { Affiliation } from '../affiliation';
 import { NewFOS } from '../fos';
+import { Profile } from '../profile';
 
 export interface Author {
   id: string;
@@ -19,6 +20,7 @@ export interface Author {
   isLayered: boolean;
   isEmailHidden: boolean;
   fosList: NewFOS[];
+  profile: Profile | null;
 }
 
 export const authorSchema = new schema.Entity('authors', {
