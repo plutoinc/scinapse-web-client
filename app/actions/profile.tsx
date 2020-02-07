@@ -1,7 +1,7 @@
 import { normalize } from 'normalizr';
 import { ProfileParams } from '../api/profile';
 import { AppThunkAction } from '../store/types';
-import { profileEntitySchema } from '../model/profile';
+import { profileEntitySchema, Profile } from '../model/profile';
 import { addProfileEntities } from '../reducers/profileEntity';
 import alertToast from '../helpers/makePlutoToastAction';
 import { PaginationResponseV2 } from '../api/types/common';
@@ -18,7 +18,8 @@ interface FetchProfilePaperListParams {
 export function fetchProfileData(profileId: string): AppThunkAction {
   return async (dispatch, _getState, { axios }) => {
     const res = await axios.get(`/profiles/${profileId}`);
-    const normalizedData = normalize(res.data.data.content, profileEntitySchema);
+    const profileData = { ...(res.data.data.content as Profile), isEditable: false };
+    const normalizedData = normalize(profileData, profileEntitySchema);
     dispatch(addProfileEntities(normalizedData.entities));
   };
 }
@@ -27,7 +28,8 @@ export function updateProfile(params: Partial<ProfileParams> & { id: string }): 
   return async (dispatch, _getState, { axios }) => {
     try {
       const res = await axios.put(`/profiles/${params.id}`, params);
-      const normalizedData = normalize(res.data.data.content, profileEntitySchema);
+      const profileData = { ...(res.data.data.content as Profile), isEditable: false };
+      const normalizedData = normalize(profileData, profileEntitySchema);
       dispatch(addProfileEntities(normalizedData.entities));
     } catch (err) {
       alertToast({
