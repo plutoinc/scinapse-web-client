@@ -4,8 +4,6 @@ import EnvChecker from '../helpers/envChecker';
 import { CommonError } from '../model/error';
 import { getAxiosInstance } from './axios';
 
-export const TIMEOUT_FOR_SAFE_RENDERING = 55000;
-
 export default class PlutoAxios {
   public static getGlobalError(axiosResponse: AxiosError) {
     const errorObj: CommonError =
