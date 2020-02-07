@@ -157,17 +157,18 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                     isEditable={isEditable}
                     onClickManageButton={() => setIsOpenRepresentativePublicationDialog(prev => !prev)}
                   /> */}
-                  {pendingPapers.length > 0 ? (
-                    <>
-                      <div className={s.allPublicationHeader}>
-                        <span className={s.sectionTitle}>Pending Publications</span>
-                        <span className={s.countBadge}>{pendingPapers.length}</span>
-                        <div className={s.rightBox}>what 'pending' means?</div>
-                      </div>
-                      <div className={s.divider} />
-                      <PendingPaperList papers={pendingPapers} />
-                    </>
-                  ) : null}
+                  {pendingPapers.length > 0 &&
+                    profile.isEditable && (
+                      <>
+                        <div className={s.allPublicationHeader}>
+                          <span className={s.sectionTitle}>Pending Publications</span>
+                          <span className={s.countBadge}>{pendingPapers.length}</span>
+                          <div className={s.rightBox}>what 'pending' means?</div>
+                        </div>
+                        <div className={s.divider} />
+                        <PendingPaperList papers={pendingPapers} />
+                      </>
+                    )}
                   <div className={s.allPublicationHeader}>
                     <span className={s.sectionTitle}>Publications</span>
                     <span className={s.countBadge}>{profile.paperCount}</span>
@@ -225,6 +226,18 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                       margin: '45px 0 40px 0',
                     }}
                   />
+                  {pendingPapers.length > 0 &&
+                    !profile.isEditable && (
+                      <>
+                        <div className={s.allPublicationHeader}>
+                          <span className={s.sectionTitle}>Pending Publications</span>
+                          <span className={s.countBadge}>{pendingPapers.length}</span>
+                          <div className={s.rightBox}>what 'pending' means?</div>
+                        </div>
+                        <div className={s.divider} />
+                        <PendingPaperList papers={pendingPapers} />
+                      </>
+                    )}
                 </div>
                 <div className={s.rightContentWrapper}>
                   <div>
