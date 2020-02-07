@@ -34,5 +34,10 @@
 @media (max-width: $mobile_width) {
   .dialogPaper {
     margin: 0;
+    max-height: unset;
+  }
+
+  .container {
+    overflow: auto;
   }
 }
