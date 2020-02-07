@@ -65,17 +65,18 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
   }
 
   public render() {
-    const { isLoadingPage } = this.state;
+    const { isLoadingPage, isLoadingAwardForm, isLoadingEducationForm, isLoadingExperienceForm } = this.state;
     return (
       <div className={styles.leftContentWrapper}>
-        {isLoadingPage && (
+        {(isLoadingPage || isLoadingAwardForm || isLoadingEducationForm || isLoadingExperienceForm) && (
           <div className={styles.loadingContainer}>
             <ArticleSpinner className={styles.loadingSpinner} />
           </div>
         )}
         <div
           className={classNames({
-            [styles.isLoadingPage]: isLoadingPage,
+            [styles.isLoadingPage]:
+              isLoadingPage || isLoadingAwardForm || isLoadingEducationForm || isLoadingExperienceForm,
           })}
         >
           {this.getEducationArea()}
@@ -96,16 +97,8 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
   };
 
   private getEducationArea = () => {
-    const { isLoadingEducationForm } = this.state;
-
     return (
-      <div
-        className={classNames({
-          [styles.areaWrapper]: true,
-          [styles.loadingSection]: isLoadingEducationForm,
-        })}
-      >
-        {isLoadingEducationForm && <ArticleSpinner className={styles.spinner} />}
+      <div className={styles.areaWrapper}>
         <div className={styles.sectionHeader}>
           <span className={styles.sectionTitle}>Education</span>
         </div>
@@ -177,16 +170,8 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
   };
 
   private getExperienceArea = () => {
-    const { isLoadingExperienceForm } = this.state;
-
     return (
-      <div
-        className={classNames({
-          [styles.areaWrapper]: true,
-          [styles.loadingSection]: isLoadingExperienceForm,
-        })}
-      >
-        {isLoadingExperienceForm && <ArticleSpinner className={styles.spinner} />}
+      <div className={styles.areaWrapper}>
         <div className={styles.sectionHeader}>
           <span className={styles.sectionTitle}>Experience</span>
         </div>
@@ -259,16 +244,8 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
   };
 
   private getAwardArea = () => {
-    const { isLoadingAwardForm } = this.state;
-
     return (
-      <div
-        className={classNames({
-          [styles.areaWrapper]: true,
-          [styles.loadingSection]: isLoadingAwardForm,
-        })}
-      >
-        {isLoadingAwardForm && <ArticleSpinner className={styles.spinner} />}
+      <div className={styles.areaWrapper}>
         <div className={styles.sectionHeader}>
           <span className={styles.sectionTitle}>Award</span>
         </div>

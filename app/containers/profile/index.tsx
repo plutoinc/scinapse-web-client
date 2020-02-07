@@ -3,6 +3,7 @@ import { useParams, useLocation, RouteComponentProps } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
+import { Button } from '@pluto_network/pluto-design-elements';
 // import RepresentativePublicationsDialog from '../../components/dialog/components/representativePublications';
 import { AppState } from '../../reducers';
 import DesktopPagination from '../../components/common/desktopPagination';
@@ -10,7 +11,6 @@ import { useThunkDispatch } from '../../hooks/useThunkDispatch';
 import ModifyProfile, { ModifyProfileFormState } from '../../components/dialog/components/modifyProfile';
 // import { DEFAULT_AUTHOR_PAPERS_SIZE } from '../../api/author';
 import ProfileShowHeader from '../../components/authorShowHeader/profileShowHeader';
-import { Button } from '@pluto_network/pluto-design-elements';
 import Icon from '../../icons';
 // import ActionTicketManager from '../../helpers/actionTicketManager';
 import formatNumber from '../../helpers/formatNumber';
@@ -169,63 +169,68 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                         <PendingPaperList papers={pendingPapers} />
                       </>
                     )}
-                  <div className={s.allPublicationHeader}>
-                    <span className={s.sectionTitle}>Publications</span>
-                    <span className={s.countBadge}>{profile.paperCount}</span>
-                    <div className={s.rightBox}>
-                      {profile.isEditable && (
-                        <Button
-                          elementType="button"
-                          size="medium"
-                          onClick={() => {
-                            setIsOpenPaperImportDialog(true);
-                          }}
-                        >
-                          <Icon icon="ADD_NOTE" />
-                          <span>Import Publications</span>
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                  <div className={s.paperCountMetadata}>
-                    {currentPage + 1} page of {formatNumber(maxPage)} pages ({formatNumber(totalPaperCount)} results)
-                  </div>
-                  <div className={s.divider} />
-                  {paperIds.length === 0 &&
-                    profile.isEditable && (
-                      <div className={s.noPapers}>
-                        <span className={s.noPaperContent}>You have not yet imported your paper list.</span>
-                        <Button
-                          elementType="button"
-                          size="medium"
-                          onClick={() => {
-                            setIsOpenPaperImportDialog(true);
-                          }}
-                        >
-                          <Icon icon="ADD_NOTE" />
-                          <span>Import Publications</span>
-                        </Button>
+                  {null && (
+                    <>
+                      <div className={s.allPublicationHeader}>
+                        <span className={s.sectionTitle}>Publications</span>
+                        <span className={s.countBadge}>{profile.paperCount}</span>
+                        <div className={s.rightBox}>
+                          {profile.isEditable && (
+                            <Button
+                              elementType="button"
+                              size="medium"
+                              onClick={() => {
+                                setIsOpenPaperImportDialog(true);
+                              }}
+                            >
+                              <Icon icon="ADD_NOTE" />
+                              <span>Import Publications</span>
+                            </Button>
+                          )}
+                        </div>
                       </div>
-                    )}
-                  {paperIds.map(id => (
-                    <FullPaperItem
-                      key={id}
-                      paperId={id}
-                      pageType="profileShow"
-                      actionArea="paperList"
-                      ownProfileId={profile.id}
-                      hideFigure
-                    />
-                  ))}
-                  <DesktopPagination
-                    type="AUTHOR_SHOW_PAPERS_PAGINATION"
-                    getLinkDestination={page => `/profiles/${profileId}?page=${page - 1}`}
-                    totalPage={maxPage}
-                    currentPageIndex={currentPage}
-                    wrapperStyle={{
-                      margin: '45px 0 40px 0',
-                    }}
-                  />
+                      <div className={s.paperCountMetadata}>
+                        {currentPage + 1} page of {formatNumber(maxPage)} pages ({formatNumber(totalPaperCount)}{' '}
+                        results)
+                      </div>
+                      <div className={s.divider} />
+                      {paperIds.length === 0 &&
+                        profile.isEditable && (
+                          <div className={s.noPapers}>
+                            <span className={s.noPaperContent}>You have not yet imported your paper list.</span>
+                            <Button
+                              elementType="button"
+                              size="medium"
+                              onClick={() => {
+                                setIsOpenPaperImportDialog(true);
+                              }}
+                            >
+                              <Icon icon="ADD_NOTE" />
+                              <span>Import Publications</span>
+                            </Button>
+                          </div>
+                        )}
+                      {paperIds.map(id => (
+                        <FullPaperItem
+                          key={id}
+                          paperId={id}
+                          pageType="profileShow"
+                          actionArea="paperList"
+                          ownProfileId={profile.id}
+                          hideFigure
+                        />
+                      ))}
+                      <DesktopPagination
+                        type="AUTHOR_SHOW_PAPERS_PAGINATION"
+                        getLinkDestination={page => `/profiles/${profileId}?page=${page - 1}`}
+                        totalPage={maxPage}
+                        currentPageIndex={currentPage}
+                        wrapperStyle={{
+                          margin: '45px 0 40px 0',
+                        }}
+                      />
+                    </>
+                  )}
                   {pendingPapers.length > 0 &&
                     !profile.isEditable && (
                       <>
