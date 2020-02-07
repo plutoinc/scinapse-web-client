@@ -6,6 +6,7 @@ import profileAPI, { ImportedPaperListResponse } from '../../../../api/profile';
 import GscImportForm, { GscFormState } from '../gscImportForm';
 import BibTexImportForm, { BibTexFormState } from '../bibTexImportForm';
 import ImportResultShow from '../importResultShow';
+import ActionTicketManager from '../../../../helpers/actionTicketManager';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperImportDialog.scss');
 
@@ -56,6 +57,26 @@ const Header: React.FC<{
   );
 };
 
+function trackImportFromGS(actionLabel: string) {
+  ActionTicketManager.trackTicket({
+    pageType: 'profileShow',
+    actionType: 'fire',
+    actionArea: 'paperImportFromGSDialog',
+    actionTag: 'clickSubmitGSBtn',
+    actionLabel: actionLabel,
+  });
+}
+
+function trackImportFromBibtex(actionLabel: string) {
+  ActionTicketManager.trackTicket({
+    pageType: 'profileShow',
+    actionType: 'fire',
+    actionArea: 'paperImportFromBibtexDialog',
+    actionTag: 'clickSubmitBibtex',
+    actionLabel: actionLabel,
+  });
+}
+
 interface DialogBodyProps {
   isLoading: boolean;
   currentStep: CURRENT_STEP;
@@ -92,16 +113,27 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
 
   const handleSubmitGS = (params: GscFormState) => {
     setIsLoading(true);
+
+    trackImportFromGS('clickSubmitGSBtn');
+
     profileAPI
       .importFromGSC({ profileId, url: params.url })
       .then(res => {
         fetchProfileShowData();
         setImportResult(res);
+
+        if (res.totalImportedCount === 0) {
+          trackImportFromGS('failureSubmitGS');
+        } else {
+          trackImportFromGS('successSubmitGS');
+        }
+
         setIsLoading(false);
         setInProgressStep(CURRENT_STEP.RESULT);
       })
       .catch(err => {
         console.error(err);
+        trackImportFromGS('failureSubmitGS');
         alert('we had an error during importing papers. please refresh this page & try it again.');
         setIsLoading(false);
       });
@@ -109,16 +141,26 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
 
   const handleSubmitBibTex = (params: BibTexFormState) => {
     setIsLoading(true);
+    trackImportFromBibtex('clickSubmitBibtexBtn');
     profileAPI
       .importFromBIBTEX({ profileId, bibtexString: params.bibTexString })
       .then(res => {
         fetchProfileShowData();
         setImportResult(res);
+
+        if (res.totalImportedCount === 0) {
+          trackImportFromGS('failureSubmitBibtex');
+        } else {
+          trackImportFromGS('successSubmitBibtex');
+        }
+
         setIsLoading(false);
         setInProgressStep(CURRENT_STEP.RESULT);
       })
       .catch(err => {
         console.error(err);
+        trackImportFromGS('failureSubmitBibtex');
+
         alert('we had an error during importing papers. please refresh this page & try it again.');
         setIsLoading(false);
       });
