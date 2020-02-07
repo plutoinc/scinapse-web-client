@@ -126,7 +126,7 @@ declare namespace Scinapse {
       | 'viewCreateKeywordSnackbar'
       | 'clickCreateAlertBtn'
       | 'clickSubmitGSBtn'
-      | 'clickSubmitBibtex'
+      | 'clickSubmitBibtexBtn'
       | '';
 
     type ActionArea = string;

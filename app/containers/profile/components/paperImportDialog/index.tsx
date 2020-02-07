@@ -72,7 +72,7 @@ function trackImportFromBibtex(actionLabel: string) {
     pageType: 'profileShow',
     actionType: 'fire',
     actionArea: 'paperImportFromBibtexDialog',
-    actionTag: 'clickSubmitBibtex',
+    actionTag: 'clickSubmitBibtexBtn',
     actionLabel: actionLabel,
   });
 }
