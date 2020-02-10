@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useLocation, useHistory } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import { Button } from '@pluto_network/pluto-design-elements';
-import { useLocation, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import AffiliationAPI from '../../api/affiliation';
 import { AppState } from '../../reducers';
 import globalDialogManager from '../../helpers/globalDialogManager';

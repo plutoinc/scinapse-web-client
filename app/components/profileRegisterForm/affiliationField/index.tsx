@@ -1,13 +1,14 @@
 import React, { FC } from 'react';
 import { FormikProps, Field } from 'formik';
+import classNames from 'classnames';
 import { ProfileRegisterFormValues } from '..';
 import { ProfileAffiliation } from '../../../model/profileAffiliation';
 import { Affiliation } from '../../../model/affiliation';
 import AffiliationSelectBox from '../../dialog/components/modifyProfile/affiliationSelectBox';
-import classNames from 'classnames';
 import { SuggestAffiliation } from '../../../api/suggest';
-const s = require('../profileRegisterForm.scss');
 
+const useStyles = require('isomorphic-style-loader/useStyles');
+const s = require('../profileRegisterForm.scss');
 
 function formatAffiliation(value?: Affiliation | SuggestAffiliation | string) {
   if (value && (value as Affiliation).name) {
@@ -18,7 +19,11 @@ function formatAffiliation(value?: Affiliation | SuggestAffiliation | string) {
   return value;
 }
 
-const AffiliationInputField: FC<{ formikProps: FormikProps<ProfileRegisterFormValues>, profileAffiliation: ProfileAffiliation | null }> = props => {
+const AffiliationInputField: FC<{
+  formikProps: FormikProps<ProfileRegisterFormValues>;
+  profileAffiliation: ProfileAffiliation | null;
+}> = props => {
+  useStyles(s);
   const { formikProps, profileAffiliation } = props;
   const { values, errors, touched, setFieldValue } = formikProps;
 
@@ -27,8 +32,8 @@ const AffiliationInputField: FC<{ formikProps: FormikProps<ProfileRegisterFormVa
     setFieldValue('affiliation', {
       id,
       name,
-      nameAbbrev
-    })
+      nameAbbrev,
+    });
   }
 
   return (

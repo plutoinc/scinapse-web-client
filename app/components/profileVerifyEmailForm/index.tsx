@@ -6,13 +6,14 @@ import classNames from 'classnames';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
 import AffiliationSelectBox from '../dialog/components/modifyProfile/affiliationSelectBox';
-import { withStyles } from '../../helpers/withStylesHelper';
 import Icon from '../../icons';
 import { ProfileEmailQueryParams } from '../profileVerifyEmail';
 import { ProfileAffiliation } from '../../model/profileAffiliation';
 import AffiliationAPI from '../../api/affiliation';
 import { UserDevice } from '../layouts/reducer';
 import { AppState } from '../../reducers';
+
+const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./profileVerifyEmailForm.scss');
 
 type ProfileVerifyEmailFormProps = {
@@ -59,6 +60,7 @@ const ProfileVerifyEmailSentContent: FC = () => {
 }
 
 const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
+  useStyles(s);
   const { queryParams } = props;
   const [affiliationSelected, setAffiliationSelected] = useState<boolean>(false);
   const [profileAffiliation, setProfileAffiliation] = useState<ProfileAffiliation | null>(null);
@@ -214,4 +216,4 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
   );
 };
 
-export default withStyles<typeof ProfileVerifyEmailForm>(s)(ProfileVerifyEmailForm);
+export default ProfileVerifyEmailForm;

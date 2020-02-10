@@ -1,6 +1,7 @@
 import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { AppState } from '../../reducers';
 import { CVInfoType } from '../../model/profileInfo';
@@ -14,7 +15,6 @@ import EducationItem from '../../components/authorCV/educationItem';
 import AwardItem from '../../components/authorCV/awardItem';
 import { Profile } from '../../model/profile';
 import { getProfileCVInformation } from '../../actions/profileInfo';
-import classNames from 'classnames';
 import ArticleSpinner from '../../components/common/spinner/articleSpinner';
 const styles = require('./authorCvSection.scss');
 

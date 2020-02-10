@@ -1,12 +1,12 @@
 import React, { FC, useState, useEffect, useMemo } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { Formik, Form, FormikErrors } from 'formik';
+import { Button } from '@pluto_network/pluto-design-elements';
 import { SuggestAffiliation } from '../../api/suggest';
 import { Affiliation } from '../../model/affiliation';
-import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../reducers';
 import { CurrentUser } from '../../model/currentUser';
-import { withStyles } from '../../helpers/withStylesHelper';
-import { Button } from '@pluto_network/pluto-design-elements';
 import { ProfileRegisterParams } from '../profileRegister';
 import AffiliationAPI, { TokenVerificationRes } from '../../api/affiliation';
 import profileAPI from '../../api/profile';
@@ -17,8 +17,9 @@ import GlobalDialogManager from '../../helpers/globalDialogManager';
 import { getCurrentPageType } from '../locationListener';
 import memberAPI from '../../api/member';
 import { Profile } from '../../model/profile';
-import { useHistory } from 'react-router-dom';
 import { checkAuthStatus } from '../auth/actions';
+
+const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./profileRegisterForm.scss');
 
 type ProfileRegisterStatus =
@@ -123,6 +124,7 @@ const SigninContent: FC = () => {
 }
 
 const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
+  useStyles(s);
   const { queryParams } = props;
   const history = useHistory();
   const dispatch = useDispatch();
@@ -235,4 +237,4 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
   );
 };
 
-export default withStyles<typeof ProfileRegisterForm>(s)(ProfileRegisterForm);
+export default ProfileRegisterForm;

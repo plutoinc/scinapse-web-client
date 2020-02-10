@@ -1,14 +1,18 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
+import classNames from 'classnames';
 import { Field, FormikProps } from 'formik';
 import { ProfileRegisterFormValues } from '..';
-import classNames from 'classnames';
+
+const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('../profileRegisterForm.scss');
 
 type NameInputFieldsProps = {
   formikProps: FormikProps<ProfileRegisterFormValues>;
-}
+};
 
-const NameInputFields: FC<NameInputFieldsProps> = (props) => {
+const NameInputFields: FC<NameInputFieldsProps> = props => {
+  useStyles(s);
+
   const { formikProps } = props;
   const { touched, errors } = formikProps;
   return (
@@ -20,7 +24,7 @@ const NameInputFields: FC<NameInputFieldsProps> = (props) => {
           placeholder="First Name"
           className={classNames({
             [s.inputForm]: true,
-            [s.hasError]: !!touched.firstName && !!errors.firstName
+            [s.hasError]: !!touched.firstName && !!errors.firstName,
           })}
         />
         <span className={s.errorMsg}>{touched.firstName && errors.firstName}</span>
@@ -32,13 +36,13 @@ const NameInputFields: FC<NameInputFieldsProps> = (props) => {
           placeholder="Last Name"
           className={classNames({
             [s.inputForm]: true,
-            [s.hasError]: !!touched.lastName && !!errors.lastName
+            [s.hasError]: !!touched.lastName && !!errors.lastName,
           })}
         />
         <span className={s.errorMsg}>{touched.lastName && errors.lastName}</span>
       </div>
     </div>
-  )
+  );
 };
 
 export default NameInputFields;
