@@ -88,6 +88,16 @@ function trackImportFromBibtex(actionLabel: string) {
   });
 }
 
+function trackImportFromCitationString(actionLabel: string) {
+  ActionTicketManager.trackTicket({
+    pageType: 'profileShow',
+    actionType: 'fire',
+    actionArea: 'paperImportFromCitationStringDialog',
+    actionTag: 'clickSubmitCitationStringBtn',
+    actionLabel: actionLabel,
+  });
+}
+
 const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
   isOpen,
   handleClosePaperImportDialog,
@@ -139,9 +149,9 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
         setImportResult(res);
 
         if (res.totalImportedCount === 0) {
-          trackImportFromGS('failureSubmitBibtex');
+          trackImportFromBibtex('failureSubmitBibtex');
         } else {
-          trackImportFromGS('successSubmitBibtex');
+          trackImportFromBibtex('successSubmitBibtex');
         }
 
         setIsLoading(false);
@@ -149,7 +159,7 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
       })
       .catch(err => {
         console.error(err);
-        trackImportFromGS('failureSubmitBibtex');
+        trackImportFromBibtex('failureSubmitBibtex');
 
         alert('we had an error during importing papers. please refresh this page & try it again.');
         setIsLoading(false);
@@ -158,9 +168,29 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
 
   const handleSubmitCitationString = (params: CitationStringFormState) => {
     setIsLoading(true);
-    console.log(params.citationString);
-    setInProgressStep(CURRENT_STEP.RESULT);
-    setIsLoading(false);
+    trackImportFromCitationString('clickSubmitCitationStringBtn');
+    profileAPI
+      .importFromCitationString({ profileId, citationString: params.citationString })
+      .then(res => {
+        fetchProfileShowData();
+        setImportResult(res);
+
+        if (res.totalImportedCount === 0) {
+          trackImportFromCitationString('failureSubmitCitationString');
+        } else {
+          trackImportFromCitationString('successSubmitCitationString');
+        }
+
+        setIsLoading(false);
+        setInProgressStep(CURRENT_STEP.RESULT);
+      })
+      .catch(err => {
+        console.error(err);
+        trackImportFromCitationString('failureSubmitCitationString');
+
+        alert('we had an error during importing papers. please refresh this page & try it again.');
+        setIsLoading(false);
+      });
   };
 
   const onCloseDialog = () => {
