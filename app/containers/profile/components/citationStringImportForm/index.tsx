@@ -4,27 +4,27 @@ import { Button } from '@pluto_network/pluto-design-elements';
 import FormikInput from '../../../../components/common/formikInput';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
-const s = require('./citationTextImportForm.scss');
+const s = require('./citationStringImportForm.scss');
 
-export interface CitationTextFormState {
-  citationText: string;
+export interface CitationStringFormState {
+  citationString: string;
 }
 
-interface CitationTextImportFormProps {
+interface CitationStringImportFormProps {
   isLoading: boolean;
-  onSubmitCitationText: (params: CitationTextFormState) => void;
+  onSubmitCitationString: (params: CitationStringFormState) => void;
 }
 
-const CitationTextImportForm: React.FC<CitationTextImportFormProps> = props => {
+const CitationStringImportForm: React.FC<CitationStringImportFormProps> = props => {
   useStyles(s);
 
-  const { isLoading, onSubmitCitationText } = props;
+  const { isLoading, onSubmitCitationString } = props;
 
   return (
     <div className={s.formWrapper}>
       <Formik
-        initialValues={{ citationText: '' }}
-        onSubmit={onSubmitCitationText}
+        initialValues={{ citationString: '' }}
+        onSubmit={onSubmitCitationString}
         enableReinitialize
         validateOnChange={false}
         validateOnBlur={false}
@@ -33,11 +33,11 @@ const CitationTextImportForm: React.FC<CitationTextImportFormProps> = props => {
             <div>
               <div>
                 <Field
-                  name="citationText"
+                  name="citationString"
                   type="text"
                   labelText="CITATION TEXT"
                   component={FormikInput}
-                  error={errors.citationText}
+                  error={errors.citationString}
                   helperText="Write citation text."
                   placeholder={'Write citation text.'}
                   variant="underlined"
@@ -65,4 +65,4 @@ const CitationTextImportForm: React.FC<CitationTextImportFormProps> = props => {
   );
 };
 
-export default CitationTextImportForm;
+export default CitationStringImportForm;

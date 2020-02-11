@@ -4,7 +4,7 @@ import { ImportedPaperListResponse } from '../../../../api/profile';
 import GSImportForm, { GSFormState } from '../gsImportForm';
 import BibTexImportForm, { BibTexFormState } from '../bibTexImportForm';
 import ImportResultShow from '../importResultShow';
-import CitationTextImportForm, { CitationTextFormState } from '../citationTextImportForm';
+import CitationStringImportForm, { CitationStringFormState } from '../citationStringImportForm';
 
 interface DialogBodyProps {
   isLoading: boolean;
@@ -13,7 +13,7 @@ interface DialogBodyProps {
   importResult: ImportedPaperListResponse | null;
   handleSubmitGS: (params: GSFormState) => void;
   handleSubmitBibTex: (params: BibTexFormState) => void;
-  handleSubmitCitationText: (params: CitationTextFormState) => void;
+  handleSubmitCitationString: (params: CitationStringFormState) => void;
 }
 
 const DialogBody: React.FC<DialogBodyProps> = ({
@@ -23,12 +23,12 @@ const DialogBody: React.FC<DialogBodyProps> = ({
   isLoading,
   handleSubmitGS,
   handleSubmitBibTex,
-  handleSubmitCitationText,
+  handleSubmitCitationString,
 }) => {
   if (currentStep === CURRENT_STEP.RESULT) return <ImportResultShow importResult={importResult} />;
   if (activeTab === IMPORT_SOURCE_TAB.GS) return <GSImportForm isLoading={isLoading} onSubmitGS={handleSubmitGS} />;
   if (activeTab === IMPORT_SOURCE_TAB.CITATION)
-    return <CitationTextImportForm isLoading={isLoading} onSubmitCitationText={handleSubmitCitationText} />;
+    return <CitationStringImportForm isLoading={isLoading} onSubmitCitationString={handleSubmitCitationString} />;
   return <BibTexImportForm isLoading={isLoading} onSubmitBibtex={handleSubmitBibTex} />;
 };
 

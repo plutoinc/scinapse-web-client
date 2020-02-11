@@ -50,6 +50,17 @@ class ProfileAPI extends PlutoAxios {
 
     return res.data.data.content;
   }
+
+  public async importFromCitationString(params: {
+    profileId: string;
+    citationString: string;
+  }): Promise<ImportedPaperListResponse> {
+    const res = await this.post(`/profiles/${params.profileId}/import-papers/citation`, {
+      citation_string: params.citationString,
+    });
+
+    return res.data.data.content;
+  }
 }
 
 const profileAPI = new ProfileAPI();

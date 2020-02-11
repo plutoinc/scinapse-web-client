@@ -7,7 +7,7 @@ import { GSFormState } from '../gsImportForm';
 import { BibTexFormState } from '../bibTexImportForm';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import DialogBody from '../paperImportDialogBody';
-import { CitationTextFormState } from '../citationTextImportForm';
+import { CitationStringFormState } from '../citationStringImportForm';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperImportDialog.scss');
 
@@ -156,9 +156,9 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
       });
   };
 
-  const handleSubmitCitationText = (params: CitationTextFormState) => {
+  const handleSubmitCitationString = (params: CitationStringFormState) => {
     setIsLoading(true);
-    console.log(params.citationText);
+    console.log(params.citationString);
     setInProgressStep(CURRENT_STEP.RESULT);
     setIsLoading(false);
   };
@@ -194,7 +194,7 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
             activeTab={activeTab}
             handleSubmitGS={handleSubmitGS}
             handleSubmitBibTex={handleSubmitBibTex}
-            handleSubmitCitationText={handleSubmitCitationText}
+            handleSubmitCitationString={handleSubmitCitationString}
           />
         </div>
       </div>
