@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import Dialog from '@material-ui/core/Dialog';
 import Icon from '../../../../icons';
 import profileAPI, { ImportedPaperListResponse } from '../../../../api/profile';
-import GscImportForm, { GscFormState } from '../gscImportForm';
+import GSImportForm, { GSFormState } from '../gsImportForm';
 import BibTexImportForm, { BibTexFormState } from '../bibTexImportForm';
 import ImportResultShow from '../importResultShow';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
@@ -11,8 +11,9 @@ const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperImportDialog.scss');
 
 enum IMPORT_SOURCE_TAB {
-  GSC,
+  GS,
   BIBTEX,
+  CITATION,
 }
 
 enum CURRENT_STEP {
@@ -35,10 +36,10 @@ const Header: React.FC<{
     <div className={s.tabBoxWrapper}>
       <div className={s.normalTabWrapper}>
         <span
-          onClick={() => onClickTab(IMPORT_SOURCE_TAB.GSC)}
+          onClick={() => onClickTab(IMPORT_SOURCE_TAB.GS)}
           className={classNames({
             [`${s.tabItem}`]: true,
-            [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.GSC,
+            [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.GS,
           })}
         >
           Google Scholar
@@ -82,7 +83,7 @@ interface DialogBodyProps {
   currentStep: CURRENT_STEP;
   activeTab: IMPORT_SOURCE_TAB;
   importResult: ImportedPaperListResponse | null;
-  handleSubmitGS: (params: GscFormState) => void;
+  handleSubmitGS: (params: GSFormState) => void;
   handleSubmitBibTex: (params: BibTexFormState) => void;
 }
 const DialogBody: React.FC<DialogBodyProps> = ({
@@ -94,7 +95,7 @@ const DialogBody: React.FC<DialogBodyProps> = ({
   isLoading,
 }) => {
   if (currentStep === CURRENT_STEP.RESULT) return <ImportResultShow importResult={importResult} />;
-  if (activeTab === IMPORT_SOURCE_TAB.GSC) return <GscImportForm isLoading={isLoading} onSubmitGS={handleSubmitGS} />;
+  if (activeTab === IMPORT_SOURCE_TAB.GS) return <GSImportForm isLoading={isLoading} onSubmitGS={handleSubmitGS} />;
   return <BibTexImportForm isLoading={isLoading} onSubmitBibtex={handleSubmitBibTex} />;
 };
 
@@ -107,17 +108,17 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
   useStyles(s);
 
   const [inProgressStep, setInProgressStep] = useState<CURRENT_STEP>(CURRENT_STEP.PROGRESS);
-  const [activeTab, setActiveTab] = useState<IMPORT_SOURCE_TAB>(IMPORT_SOURCE_TAB.GSC);
+  const [activeTab, setActiveTab] = useState<IMPORT_SOURCE_TAB>(IMPORT_SOURCE_TAB.GS);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [importResult, setImportResult] = useState<ImportedPaperListResponse | null>(null);
 
-  const handleSubmitGS = (params: GscFormState) => {
+  const handleSubmitGS = (params: GSFormState) => {
     setIsLoading(true);
 
     trackImportFromGS('clickSubmitGSBtn');
 
     profileAPI
-      .importFromGSC({ profileId, url: params.url })
+      .importFromGS({ profileId, url: params.url })
       .then(res => {
         fetchProfileShowData();
         setImportResult(res);
@@ -169,7 +170,7 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
   const onCloseDialog = () => {
     handleClosePaperImportDialog();
     setInProgressStep(CURRENT_STEP.PROGRESS);
-    setActiveTab(IMPORT_SOURCE_TAB.GSC);
+    setActiveTab(IMPORT_SOURCE_TAB.GS);
   };
 
   return (

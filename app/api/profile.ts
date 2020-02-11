@@ -33,7 +33,7 @@ class ProfileAPI extends PlutoAxios {
     }
   }
 
-  public async importFromGSC(params: { profileId: string; url: string }): Promise<ImportedPaperListResponse> {
+  public async importFromGS(params: { profileId: string; url: string }): Promise<ImportedPaperListResponse> {
     const res = await this.post(`/profiles/${params.profileId}/import-papers/gs`, {
       gs_uri: params.url,
     });

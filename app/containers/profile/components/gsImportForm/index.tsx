@@ -6,21 +6,21 @@ import { Button } from '@pluto_network/pluto-design-elements';
 import FormikInput from '../../../../components/common/formikInput';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
-const s = require('./gscImportForm.scss');
+const s = require('./gsImportForm.scss');
 
 const GOOGLE_SCHOLAR_URL_PREFIX = 'https://scholar.google.com/citations?';
 
-export interface GscFormState {
+export interface GSFormState {
   url: string;
 }
 
-interface GscImportFormProps {
+interface GSImportFormProps {
   isLoading: boolean;
-  onSubmitGS: (params: GscFormState) => void;
+  onSubmitGS: (params: GSFormState) => void;
 }
 
-function gscImportValidateForm(values: GscFormState) {
-  const errors: FormikErrors<GscFormState> = {};
+function gsImportValidateForm(values: GSFormState) {
+  const errors: FormikErrors<GSFormState> = {};
 
   const targetUrl = values.url;
   const targetUrlQuery = URLParse(targetUrl).query || '';
@@ -39,7 +39,7 @@ function gscImportValidateForm(values: GscFormState) {
   return errors;
 }
 
-const GscImportForm: React.FC<GscImportFormProps> = props => {
+const GSImportForm: React.FC<GSImportFormProps> = props => {
   useStyles(s);
 
   const { isLoading, onSubmitGS } = props;
@@ -48,7 +48,7 @@ const GscImportForm: React.FC<GscImportFormProps> = props => {
     <div className={s.formWrapper}>
       <Formik
         initialValues={{ url: '' }}
-        validate={gscImportValidateForm}
+        validate={gsImportValidateForm}
         onSubmit={onSubmitGS}
         enableReinitialize
         validateOnChange={false}
@@ -74,7 +74,7 @@ const GscImportForm: React.FC<GscImportFormProps> = props => {
               <div className={s.submitBtn}>
                 <Button
                   elementType="button"
-                  aria-label="Import paper on gsc profile link"
+                  aria-label="Import paper on gs profile link"
                   type="submit"
                   isLoading={isLoading}
                 >
@@ -89,4 +89,4 @@ const GscImportForm: React.FC<GscImportFormProps> = props => {
   );
 };
 
-export default GscImportForm;
+export default GSImportForm;
