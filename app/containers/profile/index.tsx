@@ -173,7 +173,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                   <>
                     <div className={s.allPublicationHeader}>
                       <span className={s.sectionTitle}>Publications</span>
-                      <span className={s.countBadge}>{profile.paperCount}</span>
+                      <span className={s.countBadge}>{totalPaperCount}</span>
                       <div className={s.rightBox}>
                         {profile.isEditable && (
                           <Button
