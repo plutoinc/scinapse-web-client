@@ -3,20 +3,21 @@ import classNames from 'classnames';
 import Dialog from '@material-ui/core/Dialog';
 import Icon from '../../../../icons';
 import profileAPI, { ImportedPaperListResponse } from '../../../../api/profile';
-import GSImportForm, { GSFormState } from '../gsImportForm';
-import BibTexImportForm, { BibTexFormState } from '../bibTexImportForm';
-import ImportResultShow from '../importResultShow';
+import { GSFormState } from '../gsImportForm';
+import { BibTexFormState } from '../bibTexImportForm';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
+import DialogBody from '../paperImportDialogBody';
+import { CitationTextFormState } from '../citationTextImportForm';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperImportDialog.scss');
 
-enum IMPORT_SOURCE_TAB {
+export enum IMPORT_SOURCE_TAB {
   GS,
   BIBTEX,
   CITATION,
 }
 
-enum CURRENT_STEP {
+export enum CURRENT_STEP {
   PROGRESS,
   RESULT,
 }
@@ -53,6 +54,15 @@ const Header: React.FC<{
         >
           BibTex
         </span>
+        <span
+          onClick={() => onClickTab(IMPORT_SOURCE_TAB.CITATION)}
+          className={classNames({
+            [`${s.tabItem}`]: true,
+            [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.CITATION,
+          })}
+        >
+          Citation Text
+        </span>
       </div>
     </div>
   );
@@ -77,27 +87,6 @@ function trackImportFromBibtex(actionLabel: string) {
     actionLabel: actionLabel,
   });
 }
-
-interface DialogBodyProps {
-  isLoading: boolean;
-  currentStep: CURRENT_STEP;
-  activeTab: IMPORT_SOURCE_TAB;
-  importResult: ImportedPaperListResponse | null;
-  handleSubmitGS: (params: GSFormState) => void;
-  handleSubmitBibTex: (params: BibTexFormState) => void;
-}
-const DialogBody: React.FC<DialogBodyProps> = ({
-  handleSubmitGS,
-  handleSubmitBibTex,
-  currentStep,
-  activeTab,
-  importResult,
-  isLoading,
-}) => {
-  if (currentStep === CURRENT_STEP.RESULT) return <ImportResultShow importResult={importResult} />;
-  if (activeTab === IMPORT_SOURCE_TAB.GS) return <GSImportForm isLoading={isLoading} onSubmitGS={handleSubmitGS} />;
-  return <BibTexImportForm isLoading={isLoading} onSubmitBibtex={handleSubmitBibTex} />;
-};
 
 const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
   isOpen,
@@ -167,6 +156,13 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
       });
   };
 
+  const handleSubmitCitationText = (params: CitationTextFormState) => {
+    setIsLoading(true);
+    console.log(params.citationText);
+    setInProgressStep(CURRENT_STEP.RESULT);
+    setIsLoading(false);
+  };
+
   const onCloseDialog = () => {
     handleClosePaperImportDialog();
     setInProgressStep(CURRENT_STEP.PROGRESS);
@@ -192,12 +188,13 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
             <Header activeTab={activeTab} onClickTab={(tab: IMPORT_SOURCE_TAB) => setActiveTab(tab)} />
           )}
           <DialogBody
-            handleSubmitGS={handleSubmitGS}
-            handleSubmitBibTex={handleSubmitBibTex}
             isLoading={isLoading}
             currentStep={inProgressStep}
             importResult={importResult}
             activeTab={activeTab}
+            handleSubmitGS={handleSubmitGS}
+            handleSubmitBibTex={handleSubmitBibTex}
+            handleSubmitCitationText={handleSubmitCitationText}
           />
         </div>
       </div>
