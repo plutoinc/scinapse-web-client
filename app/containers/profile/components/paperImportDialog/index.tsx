@@ -61,7 +61,7 @@ const Header: React.FC<{
             [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.CITATION,
           })}
         >
-          Citation Text
+          Citation String
         </span>
       </div>
     </div>
