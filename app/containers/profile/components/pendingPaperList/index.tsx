@@ -15,7 +15,8 @@ const PendingPaperList: React.FC<PendingPaperListProps> = props => {
   useStyles(s);
 
   const { papers } = props;
-  const chunkedPapers = chunk(papers, 5);
+  const chunkedPapers = useMemo(() => chunk(papers, 5), [papers]);
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showPapers, setShowPapers] = useState<PendingPaper[]>(chunkedPapers[0]);
 
