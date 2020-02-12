@@ -1,5 +1,5 @@
 import React, { FC, useState, useRef, useEffect } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, RouteComponentProps } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
@@ -28,6 +28,7 @@ import PendingPaperList from './components/pendingPaperList';
 import PaperImportDialog from './components/paperImportDialog';
 import { CoAuthor } from '../../components/common/coAuthor';
 import ProfilePaperItem from '../../components/profilePaperItem/profilePaperItem';
+import { fetchAuthorShowPageData } from './sideEffects';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./connectedAuthor.scss');
 
@@ -36,7 +37,9 @@ enum AvailableTab {
   INFORMATION,
 }
 
-const ProfilePage: FC = () => {
+type ProfilePageProps = RouteComponentProps<{ profileId: string }>;
+
+const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
   useStyles(s);
   const { profileId } = useParams();
   const dispatch = useThunkDispatch();
