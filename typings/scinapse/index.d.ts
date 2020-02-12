@@ -128,6 +128,7 @@ declare namespace Scinapse {
       | 'clickSubmitGSBtn'
       | 'clickSubmitBibtexBtn'
       | 'clickSubmitCitationStringBtn'
+      | 'clickSubmitAuthorUrlsBtn'
       | 'declinedPaper'
       | 'confirmedPaper'
       | '';
