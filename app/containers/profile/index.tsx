@@ -217,6 +217,9 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                         actionArea="paperList"
                         ownProfileId={profile.id}
                         isEditable={profile.isEditable}
+                        fetchProfileShowData={() =>
+                          fetchAuthorShowPageData({ dispatch, match, pathname: location.pathname })
+                        }
                       />
                     ))}
                     <DesktopPagination

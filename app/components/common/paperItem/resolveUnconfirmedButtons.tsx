@@ -12,13 +12,14 @@ interface ResolveUnconfirmedButtonsProps {
   paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
+  fetchProfileShowData: () => void;
   className?: string;
   isMobile?: boolean;
   ownProfileId?: string;
 }
 
 const ResolveUnconfirmedButtons: React.FC<ResolveUnconfirmedButtonsProps> = props => {
-  const { paper, pageType, actionArea, ownProfileId, isMobile } = props;
+  const { paper, pageType, actionArea, ownProfileId, isMobile, fetchProfileShowData } = props;
   useStyles(s);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,6 +30,7 @@ const ResolveUnconfirmedButtons: React.FC<ResolveUnconfirmedButtonsProps> = prop
 
     ProfileAPI.declinedPaper({ profileId: ownProfileId, paperId: paper.id })
       .then(() => {
+        fetchProfileShowData();
         setIsLoading(false);
       })
       .catch(err => {
@@ -46,6 +48,7 @@ const ResolveUnconfirmedButtons: React.FC<ResolveUnconfirmedButtonsProps> = prop
 
     ProfileAPI.confirmedPaper({ profileId: ownProfileId, paperId: paper.id })
       .then(() => {
+        fetchProfileShowData();
         setIsLoading(false);
       })
       .catch(err => {

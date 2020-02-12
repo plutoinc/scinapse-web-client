@@ -16,6 +16,7 @@ interface UnconfirmedPaperItemButtonGroupProps {
   paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
+  fetchProfileShowData: () => void;
   paperSource?: PaperSource;
   saved?: boolean;
   dropdownContents?: React.ReactElement[];
@@ -31,6 +32,7 @@ const UnconfirmedPaperItemButtonGroup: React.FC<UnconfirmedPaperItemButtonGroupP
   dropdownContents,
   ownProfileId,
   isEditable,
+  fetchProfileShowData,
 }) => {
   const userDevice = useSelector<AppState, UserDevice>(state => state.layout.userDevice);
 
@@ -58,6 +60,7 @@ const UnconfirmedPaperItemButtonGroup: React.FC<UnconfirmedPaperItemButtonGroupP
           actionArea={actionArea}
           ownProfileId={ownProfileId}
           isMobile={userDevice === UserDevice.MOBILE}
+          fetchProfileShowData={fetchProfileShowData}
         />
       </div>
     );
@@ -76,6 +79,7 @@ const UnconfirmedPaperItemButtonGroup: React.FC<UnconfirmedPaperItemButtonGroupP
           pageType={pageType}
           actionArea={actionArea}
           ownProfileId={ownProfileId}
+          fetchProfileShowData={fetchProfileShowData}
         />
       </div>
     </div>

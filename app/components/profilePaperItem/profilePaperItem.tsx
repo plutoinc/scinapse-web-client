@@ -17,6 +17,7 @@ const s = require('./profilePaperItem.scss');
 interface BasePaperItemProps {
   pageType: Scinapse.ActionTicket.PageType;
   actionArea: Scinapse.ActionTicket.ActionArea;
+  fetchProfileShowData: () => void;
   sourceDomain?: PaperSource;
   ownProfileId?: string;
   isEditable?: boolean;
@@ -25,7 +26,7 @@ type PaperItemProps = BasePaperItemProps & { paperId: string };
 type ProfilePaperItemWithPaperProps = BasePaperItemProps & { paper: Paper };
 
 export const ProfilePaperItemWithPaper: FC<ProfilePaperItemWithPaperProps> = memo(
-  ({ paper, actionArea, pageType, sourceDomain, ownProfileId, isEditable }) => {
+  ({ paper, actionArea, pageType, sourceDomain, ownProfileId, isEditable, fetchProfileShowData }) => {
     const userDevice = useSelector((state: AppState) => state.layout.userDevice);
 
     let venueAuthors = (
@@ -55,6 +56,7 @@ export const ProfilePaperItemWithPaper: FC<ProfilePaperItemWithPaperProps> = mem
           saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
           ownProfileId={ownProfileId}
           isEditable={isEditable}
+          fetchProfileShowData={fetchProfileShowData}
         />
       </div>
     );
