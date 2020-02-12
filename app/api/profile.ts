@@ -50,6 +50,18 @@ class ProfileAPI extends PlutoAxios {
 
     return res.data.data.content;
   }
+
+  public async confirmedPaper(params: { profileId: string; paperId: string }) {
+    await this.post(`/profiles/${params.profileId}/papers/confirm`, {
+      paper_id: params.paperId,
+    });
+  }
+
+  public async declinedPaper(params: { profileId: string; paperId: string }) {
+    await this.post(`/profiles/${params.profileId}/papers/decline`, {
+      paper_id: params.paperId,
+    });
+  }
 }
 
 const profileAPI = new ProfileAPI();

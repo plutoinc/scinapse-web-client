@@ -17,7 +17,6 @@ import formatNumber from '../../helpers/formatNumber';
 import ProfileCvSection from '../authorCvSection';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
-import FullPaperItem from '../../components/common/paperItem/fullPaperItem';
 import ProfileShowPageHelmet from './components/helmet';
 // import RepresentativePaperListSection from './components/representativePapers';
 // import { Paper } from '../../model/paper';
@@ -29,6 +28,7 @@ import PendingPaperList from './components/pendingPaperList';
 import PaperImportDialog from './components/paperImportDialog';
 import { fetchAuthorShowPageData } from './sideEffects';
 import { CoAuthor } from '../../components/common/coAuthor';
+import ProfilePaperItem from '../../components/profilePaperItem/profilePaperItem';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./connectedAuthor.scss');
 
@@ -210,13 +210,13 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                         </div>
                       )}
                     {paperIds.map(id => (
-                      <FullPaperItem
+                      <ProfilePaperItem
                         key={id}
                         paperId={id}
                         pageType="profileShow"
                         actionArea="paperList"
                         ownProfileId={profile.id}
-                        hideFigure
+                        isEditable={profile.isEditable}
                       />
                     ))}
                     <DesktopPagination
