@@ -128,6 +128,8 @@ declare namespace Scinapse {
       | 'clickSubmitGSBtn'
       | 'clickSubmitBibtexBtn'
       | 'clickSubmitCitationStringBtn'
+      | 'declinedPaper'
+      | 'confirmedPaper'
       | '';
 
     type ActionArea = string;

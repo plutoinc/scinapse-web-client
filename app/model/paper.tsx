@@ -55,6 +55,7 @@ export interface Paper {
   abstractHighlighted?: string;
   missingKeywords: string[];
   bestPdf?: PaperPdf;
+  isConfirmed?: boolean;
 }
 
 export const paperSchema = new schema.Entity('papers');
