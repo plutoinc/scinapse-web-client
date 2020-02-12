@@ -88,6 +88,7 @@ const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
                   placeholder={'Write bibTex string.'}
                   variant="underlined"
                   multiline={true}
+                  className={s.bibtexTextArea}
                 />
               </div>
               <div className={s.submitBtn}>

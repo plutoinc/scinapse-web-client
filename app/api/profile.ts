@@ -2,6 +2,7 @@ import PlutoAxios from './pluto';
 import { Paper } from '../model/paper';
 import { Profile } from '../model/profile';
 import { PendingPaper } from '../reducers/profilePendingPaperList';
+import { PageObjectV2 } from './types/common';
 
 export type ProfileParams = {
   affiliation_id: string | null;
@@ -20,6 +21,7 @@ export type ImportedPaperListResponse = {
   successCount: number;
   pendingCount: number;
   successPapers: Paper[];
+  successPaperPage: PageObjectV2;
   pendingPapers: PendingPaper[];
 };
 
@@ -31,24 +33,6 @@ class ProfileAPI extends PlutoAxios {
     if (res) {
       return res.data.data.content;
     }
-  }
-
-  public async importFromGSC(params: { profileId: string; url: string }): Promise<ImportedPaperListResponse> {
-    const res = await this.post(`/profiles/${params.profileId}/import-papers/gs`, {
-      gs_uri: params.url,
-    });
-    return res.data.data.content;
-  }
-
-  public async importFromBIBTEX(params: {
-    profileId: string;
-    bibtexString: string;
-  }): Promise<ImportedPaperListResponse> {
-    const res = await this.post(`/profiles/${params.profileId}/import-papers/bibtex`, {
-      bibtex_string: params.bibtexString,
-    });
-
-    return res.data.data.content;
   }
 }
 
