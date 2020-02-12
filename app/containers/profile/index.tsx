@@ -173,7 +173,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                   <>
                     <div className={s.allPublicationHeader}>
                       <span className={s.sectionTitle}>Publications</span>
-                      <span className={s.countBadge}>{profile.paperCount}</span>
+                      <span className={s.countBadge}>{formatNumber(totalPaperCount)}</span>
                       <div className={s.rightBox}>
                         {profile.isEditable && (
                           <Button
@@ -298,7 +298,6 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
         isOpen={isOpenPaperImportDialog}
         handleClosePaperImportDialog={() => setIsOpenPaperImportDialog(false)}
         profileId={profileId!}
-        fetchProfileShowData={() => fetchAuthorShowPageData({ dispatch, match, pathname: location.pathname })}
       />
       {/* <RepresentativePublicationsDialog
         currentUser={currentUser}

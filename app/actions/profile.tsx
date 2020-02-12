@@ -1,5 +1,5 @@
 import { normalize } from 'normalizr';
-import { ProfileParams } from '../api/profile';
+import { ProfileParams, ImportedPaperListResponse } from '../api/profile';
 import { AppThunkAction } from '../store/types';
 import { profileEntitySchema, Profile } from '../model/profile';
 import { addProfileEntities } from '../reducers/profileEntity';
@@ -9,6 +9,7 @@ import { Paper, paperSchema } from '../model/paper';
 import { ActionCreators } from './actionTypes';
 import { getPapers } from '../reducers/profilePaperList';
 import { getPendingPapers, PendingPaper } from '../reducers/profilePendingPaperList';
+import { IMPORT_SOURCE_TAB } from '../containers/profile/components/paperImportDialogBody';
 
 interface FetchProfilePaperListParams {
   profileId: string;
@@ -18,7 +19,9 @@ interface FetchProfilePaperListParams {
 export function fetchProfileData(profileId: string): AppThunkAction {
   return async (dispatch, _getState, { axios }) => {
     const res = await axios.get(`/profiles/${profileId}`);
-    const profileData = { ...(res.data.data.content as Profile), isEditable: false };
+    const profileData = { ...(res.data.data.content as Profile) };
+
+    // const profileData = { ...(res.data.data.content as Profile), isEditable: false };
     const normalizedData = normalize(profileData, profileEntitySchema);
     dispatch(addProfileEntities(normalizedData.entities));
   };
@@ -28,7 +31,9 @@ export function updateProfile(params: Partial<ProfileParams> & { id: string }): 
   return async (dispatch, _getState, { axios }) => {
     try {
       const res = await axios.put(`/profiles/${params.id}`, params);
-      const profileData = { ...(res.data.data.content as Profile), isEditable: false };
+      const profileData = { ...(res.data.data.content as Profile) };
+
+      // const profileData = { ...(res.data.data.content as Profile), isEditable: false };
       const normalizedData = normalize(profileData, profileEntitySchema);
       dispatch(addProfileEntities(normalizedData.entities));
     } catch (err) {
@@ -67,5 +72,58 @@ export function fetchProfilePendingPapers(profileId: string): AppThunkAction {
     const papers = data.content;
 
     dispatch(getPendingPapers({ papers }));
+  };
+}
+
+export function fetchProfileImportedPapers(
+  importSource: IMPORT_SOURCE_TAB,
+  profileId: string,
+  importedContext: string
+): AppThunkAction {
+  return async (dispatch, _getState, { axios }) => {
+    let rawRes;
+
+    try {
+      if (importSource === IMPORT_SOURCE_TAB.GS) {
+        rawRes = await axios.post(`/profiles/${profileId}/import-papers/gs`, {
+          gs_uri: importedContext,
+        });
+      } else if (importSource === IMPORT_SOURCE_TAB.BIBTEX) {
+        rawRes = await axios.post(`/profiles/${profileId}/import-papers/bibtex`, {
+          bibtex_string: importedContext,
+        });
+      } else if (importSource === IMPORT_SOURCE_TAB.CITATION) {
+        rawRes = await axios.post(`/profiles/${profileId}/import-papers/citation`, {
+          citation_string: importedContext,
+        });
+      }
+    } catch (err) {
+      throw err;
+    }
+
+    if (!rawRes) throw new Error();
+
+    const res = rawRes.data.data.content as ImportedPaperListResponse;
+
+    const successPapersRes = {
+      data: { content: res.successPapers, page: res.successPaperPage },
+    } as PaginationResponseV2<Paper[]>;
+    const successPapers = successPapersRes.data.content;
+    const entity = normalize(successPapers, [paperSchema]);
+
+    dispatch(ActionCreators.addEntity(entity));
+    dispatch(
+      getPapers({
+        paperIds: entity.result,
+        totalPages: successPapersRes.data.page!.totalPages,
+        page: successPapersRes.data.page!.page,
+        totalElements: successPapersRes.data.page!.totalElements,
+      })
+    );
+
+    const pendingPapersRes = { data: { content: res.pendingPapers } } as PaginationResponseV2<PendingPaper[]>;
+    const pendingPapers = pendingPapersRes.data.content;
+
+    dispatch(getPendingPapers({ papers: pendingPapers }));
   };
 }

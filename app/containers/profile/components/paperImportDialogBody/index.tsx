@@ -1,5 +1,4 @@
 import React from 'react';
-import { ImportedPaperListResponse } from '../../../../api/profile';
 import GSImportForm, { GSFormState } from '../gsImportForm';
 import BibTexImportForm, { BibTexFormState } from '../bibTexImportForm';
 import ImportResultShow from '../importResultShow';
@@ -20,7 +19,6 @@ interface DialogBodyProps {
   isLoading: boolean;
   currentStep: CURRENT_STEP;
   activeTab: IMPORT_SOURCE_TAB;
-  importResult: ImportedPaperListResponse | null;
   handleSubmitGS: (params: GSFormState) => void;
   handleSubmitBibTex: (params: BibTexFormState) => void;
   handleSubmitCitationString: (params: CitationStringFormState) => void;
@@ -29,13 +27,12 @@ interface DialogBodyProps {
 const DialogBody: React.FC<DialogBodyProps> = ({
   currentStep,
   activeTab,
-  importResult,
   isLoading,
   handleSubmitGS,
   handleSubmitBibTex,
   handleSubmitCitationString,
 }) => {
-  if (currentStep === CURRENT_STEP.RESULT) return <ImportResultShow importResult={importResult} />;
+  if (currentStep === CURRENT_STEP.RESULT) return <ImportResultShow />;
   if (activeTab === IMPORT_SOURCE_TAB.GS) return <GSImportForm isLoading={isLoading} onSubmitGS={handleSubmitGS} />;
   if (activeTab === IMPORT_SOURCE_TAB.CITATION)
     return <CitationStringImportForm isLoading={isLoading} onSubmitCitationString={handleSubmitCitationString} />;

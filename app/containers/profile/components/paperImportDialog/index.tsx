@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
+import { useDispatch } from 'react-redux';
 import Dialog from '@material-ui/core/Dialog';
 import Icon from '../../../../icons';
-import profileAPI, { ImportedPaperListResponse } from '../../../../api/profile';
 import { GSFormState } from '../gsImportForm';
 import { BibTexFormState } from '../bibTexImportForm';
+import { CitationStringFormState } from '../citationStringImportForm';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import DialogBody, { CURRENT_STEP, IMPORT_SOURCE_TAB } from '../paperImportDialogBody';
-import { CitationStringFormState } from '../citationStringImportForm';
+import { fetchProfileImportedPapers } from '../../../../actions/profile';
+import alertToast from '../../../../helpers/makePlutoToastAction';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperImportDialog.scss');
 
@@ -15,7 +17,6 @@ interface PaperImportDialogProps {
   isOpen: boolean;
   profileId: string;
   handleClosePaperImportDialog: () => void;
-  fetchProfileShowData: () => void;
 }
 
 const Header: React.FC<{
@@ -87,99 +88,69 @@ function trackImportFromCitationString(actionLabel: string) {
   });
 }
 
-const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
-  isOpen,
-  handleClosePaperImportDialog,
-  profileId,
-  fetchProfileShowData,
-}) => {
+const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClosePaperImportDialog, profileId }) => {
   useStyles(s);
+  const dispatch = useDispatch();
 
   const [inProgressStep, setInProgressStep] = useState<CURRENT_STEP>(CURRENT_STEP.PROGRESS);
   const [activeTab, setActiveTab] = useState<IMPORT_SOURCE_TAB>(IMPORT_SOURCE_TAB.GS);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [importResult, setImportResult] = useState<ImportedPaperListResponse | null>(null);
 
-  const handleSubmitGS = (params: GSFormState) => {
+  const handleSubmitGS = async (params: GSFormState) => {
     setIsLoading(true);
 
     trackImportFromGS('clickSubmitGSBtn');
 
-    profileAPI
-      .importFromGS({ profileId, url: params.url })
-      .then(res => {
-        fetchProfileShowData();
-        setImportResult(res);
-
-        if (res.totalImportedCount === 0) {
-          trackImportFromGS('failureSubmitGS');
-        } else {
-          trackImportFromGS('successSubmitGS');
-        }
-
-        setIsLoading(false);
-        setInProgressStep(CURRENT_STEP.RESULT);
-      })
-      .catch(err => {
-        console.error(err);
-        trackImportFromGS('failureSubmitGS');
-        alert('we had an error during importing papers. please refresh this page & try it again.');
-        setIsLoading(false);
+    try {
+      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.GS, profileId, params.url));
+      setIsLoading(false);
+      setInProgressStep(CURRENT_STEP.RESULT);
+      trackImportFromGS('successSubmitGS');
+    } catch (err) {
+      setIsLoading(false);
+      trackImportFromGS('failureSubmitGS');
+      alertToast({
+        type: 'error',
+        message: 'we had an error during importing papers. please refresh this page & try it again.',
       });
+    }
   };
 
-  const handleSubmitBibTex = (params: BibTexFormState) => {
+  const handleSubmitBibTex = async (params: BibTexFormState) => {
     setIsLoading(true);
     trackImportFromBibtex('clickSubmitBibtexBtn');
-    profileAPI
-      .importFromBIBTEX({ profileId, bibtexString: params.bibTexString })
-      .then(res => {
-        fetchProfileShowData();
-        setImportResult(res);
-
-        if (res.totalImportedCount === 0) {
-          trackImportFromBibtex('failureSubmitBibtex');
-        } else {
-          trackImportFromBibtex('successSubmitBibtex');
-        }
-
-        setIsLoading(false);
-        setInProgressStep(CURRENT_STEP.RESULT);
-      })
-      .catch(err => {
-        console.error(err);
-        trackImportFromBibtex('failureSubmitBibtex');
-
-        alert('we had an error during importing papers. please refresh this page & try it again.');
-        setIsLoading(false);
+    try {
+      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.BIBTEX, profileId, params.bibTexString));
+      setIsLoading(false);
+      setInProgressStep(CURRENT_STEP.RESULT);
+      trackImportFromBibtex('successSubmitBibtex');
+    } catch (err) {
+      setIsLoading(false);
+      trackImportFromBibtex('failureSubmitBibtex');
+      alertToast({
+        type: 'error',
+        message: 'we had an error during importing papers. please refresh this page & try it again.',
       });
+    }
   };
 
-  const handleSubmitCitationString = (params: CitationStringFormState) => {
+  const handleSubmitCitationString = async (params: CitationStringFormState) => {
     setIsLoading(true);
     trackImportFromCitationString('clickSubmitCitationStringBtn');
-    profileAPI
-      .importFromCitationString({ profileId, citationString: params.citationString })
-      .then(res => {
-        fetchProfileShowData();
-        setImportResult(res);
+    try {
+      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.BIBTEX, profileId, params.citationString));
+      setIsLoading(false);
+      setInProgressStep(CURRENT_STEP.RESULT);
+      trackImportFromBibtex('successSubmitCitationString');
+    } catch (err) {
+      setIsLoading(false);
+      trackImportFromBibtex('failureSubmitCitationString');
 
-        if (res.totalImportedCount === 0) {
-          trackImportFromCitationString('failureSubmitCitationString');
-        } else {
-          trackImportFromCitationString('successSubmitCitationString');
-        }
-
-        setIsLoading(false);
-        setInProgressStep(CURRENT_STEP.RESULT);
-      })
-      .catch(err => {
-        console.error(err);
-        trackImportFromCitationString('failureSubmitCitationString');
-
-        alert('we had an error during importing papers. please refresh this page & try it again.');
-        setIsLoading(false);
+      alertToast({
+        type: 'error',
+        message: 'we had an error during importing papers. please refresh this page & try it again.',
       });
+    }
   };
 
   const onCloseDialog = () => {
@@ -209,7 +180,6 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
           <DialogBody
             isLoading={isLoading}
             currentStep={inProgressStep}
-            importResult={importResult}
             activeTab={activeTab}
             handleSubmitGS={handleSubmitGS}
             handleSubmitBibTex={handleSubmitBibTex}
