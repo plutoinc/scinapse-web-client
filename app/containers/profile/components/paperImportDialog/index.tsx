@@ -6,21 +6,10 @@ import profileAPI, { ImportedPaperListResponse } from '../../../../api/profile';
 import { GSFormState } from '../gsImportForm';
 import { BibTexFormState } from '../bibTexImportForm';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
-import DialogBody from '../paperImportDialogBody';
+import DialogBody, { CURRENT_STEP, IMPORT_SOURCE_TAB } from '../paperImportDialogBody';
 import { CitationStringFormState } from '../citationStringImportForm';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperImportDialog.scss');
-
-export enum IMPORT_SOURCE_TAB {
-  GS,
-  BIBTEX,
-  CITATION,
-}
-
-export enum CURRENT_STEP {
-  PROGRESS,
-  RESULT,
-}
 
 interface PaperImportDialogProps {
   isOpen: boolean;

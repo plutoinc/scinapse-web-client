@@ -35,13 +35,14 @@ const CitationStringImportForm: React.FC<CitationStringImportFormProps> = props 
                 <Field
                   name="citationString"
                   type="text"
-                  labelText="CITATION TEXT"
+                  labelText="CITATION STRING"
                   component={FormikInput}
                   error={errors.citationString}
                   helperText="Write citation text."
                   placeholder={'Write citation text.'}
                   variant="underlined"
                   multiline={true}
+                  className={s.citationTextArea}
                 />
                 <div className={s.guideContext}>
                   ※ Please input citation text while paying attention to delimiter characters.

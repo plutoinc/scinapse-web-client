@@ -1,10 +1,20 @@
 import React from 'react';
-import { CURRENT_STEP, IMPORT_SOURCE_TAB } from '../paperImportDialog';
 import { ImportedPaperListResponse } from '../../../../api/profile';
 import GSImportForm, { GSFormState } from '../gsImportForm';
 import BibTexImportForm, { BibTexFormState } from '../bibTexImportForm';
 import ImportResultShow from '../importResultShow';
 import CitationStringImportForm, { CitationStringFormState } from '../citationStringImportForm';
+
+export enum IMPORT_SOURCE_TAB {
+  GS,
+  BIBTEX,
+  CITATION,
+}
+
+export enum CURRENT_STEP {
+  PROGRESS,
+  RESULT,
+}
 
 interface DialogBodyProps {
   isLoading: boolean;
