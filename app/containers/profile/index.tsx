@@ -1,5 +1,5 @@
 import React, { FC, useState, useRef, useEffect } from 'react';
-import { useParams, useLocation, RouteComponentProps } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
@@ -26,7 +26,6 @@ import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 import { PendingPaper } from '../../reducers/profilePendingPaperList';
 import PendingPaperList from './components/pendingPaperList';
 import PaperImportDialog from './components/paperImportDialog';
-import { fetchAuthorShowPageData } from './sideEffects';
 import { CoAuthor } from '../../components/common/coAuthor';
 import ProfilePaperItem from '../../components/profilePaperItem/profilePaperItem';
 const useStyles = require('isomorphic-style-loader/useStyles');
@@ -37,9 +36,7 @@ enum AvailableTab {
   INFORMATION,
 }
 
-type ProfilePageProps = RouteComponentProps<{ profileId: string }>;
-
-const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
+const ProfilePage: FC = () => {
   useStyles(s);
   const { profileId } = useParams();
   const dispatch = useThunkDispatch();
@@ -173,7 +170,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                   <>
                     <div className={s.allPublicationHeader}>
                       <span className={s.sectionTitle}>Publications</span>
-                      <span className={s.countBadge}>{profile.paperCount}</span>
+                      <span className={s.countBadge}>{formatNumber(totalPaperCount)}</span>
                       <div className={s.rightBox}>
                         {profile.isEditable && (
                           <Button
@@ -301,7 +298,6 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
         isOpen={isOpenPaperImportDialog}
         handleClosePaperImportDialog={() => setIsOpenPaperImportDialog(false)}
         profileId={profileId!}
-        fetchProfileShowData={() => fetchAuthorShowPageData({ dispatch, match, pathname: location.pathname })}
       />
       {/* <RepresentativePublicationsDialog
         currentUser={currentUser}
