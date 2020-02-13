@@ -55,12 +55,12 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
   }
 
   public componentDidMount() {
-    this.fetchProfileInfo(this.props.profile.id);
+    this.fetchProfileInfo(this.props.profile.slug);
   }
 
   public componentWillReceiveProps(nextProps: ProfileCvSectionProps & Props) {
-    if (this.props.profile.id !== nextProps.profile.id) {
-      this.fetchProfileInfo(nextProps.profile.id);
+    if (this.props.profile.slug !== nextProps.profile.slug) {
+      this.fetchProfileInfo(nextProps.profile.slug);
     }
   }
 
@@ -87,9 +87,9 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
     );
   }
 
-  private fetchProfileInfo = async (profileId: string) => {
+  private fetchProfileInfo = async (profileSlug: string) => {
     this.setState(state => ({ ...state, isLoadingPage: true }));
-    const profileInfo = await getProfileCVInformation(profileId);
+    const profileInfo = await getProfileCVInformation(profileSlug);
     if (profileInfo) {
       this.setState(state => ({ ...state, profileInfo }));
     }
@@ -154,7 +154,7 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
         return (
           <EducationItem
             validConnection={this.isValidConnected()}
-            profileId={profile.id}
+            profileSlug={profile.slug}
             key={education.id}
             education={education}
             onUpdate={this.handleUpdateCVInfo('educations')}
@@ -228,7 +228,7 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
         return (
           <ExperienceItem
             validConnection={this.isValidConnected()}
-            profileId={profile.id}
+            profileSlug={profile.slug}
             key={experience.id}
             experience={experience}
             onUpdate={this.handleUpdateCVInfo('experiences')}
@@ -289,7 +289,7 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
         return (
           <AwardItem
             validConnection={this.isValidConnected()}
-            profileId={profile.id}
+            profileSlug={profile.slug}
             key={award.id}
             award={award}
             onUpdate={this.handleUpdateCVInfo('awards')}
@@ -329,7 +329,7 @@ class ProfileCvSection extends React.PureComponent<ProfileCvSectionProps & Props
     const { profile } = this.props;
 
     this.handleLoadingFlagAuthorCVForm(type);
-    const result = await postNewAuthorCVInfo(type, profile.id, cvInfo);
+    const result = await postNewAuthorCVInfo(type, profile.slug, cvInfo);
     this.setState(state => ({ ...state, profileInfo: { ...state.profileInfo, [type]: result } }));
     this.handleLoadingFlagAuthorCVForm(type);
     this.handleToggleAuthorCVForm(type)();

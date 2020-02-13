@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Profile } from '../model/profile';
 
 export interface ProfileEntities {
-  [profileId: string]: Profile;
+  [profileSlug: string]: Profile;
 }
 export const PROFILE_ENTITIES_INITIAL_STATE: ProfileEntities = {};
 

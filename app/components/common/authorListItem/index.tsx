@@ -20,7 +20,7 @@ const AuthorListItem: FC<Props> = ({ author, profile, handleCloseDialogRequest }
   return (
     <div className={styles.itemWrapper}>
       <Link
-        to={profile && author.order === profile.order ? `/profiles/${profile.id}` : `/authors/${author.id}`}
+        to={profile && author.order === profile.order ? `/profiles/${profile.slug}` : `/authors/${author.id}`}
         onClick={() => {
           handleCloseDialogRequest();
           ActionTicketManager.trackTicket({

@@ -16,7 +16,7 @@ interface AwardItemState {
 
 interface AwardItemProps {
   validConnection: boolean;
-  profileId: string;
+  profileSlug: string;
   award: Award;
   handleRemoveItem: (cvInfoId: string) => void;
   onUpdate: (cvInfo: AwardFormState) => Promise<void>;

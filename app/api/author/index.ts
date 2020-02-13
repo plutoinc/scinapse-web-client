@@ -22,7 +22,7 @@ export interface UpdateRepresentativePapersParams {
 }
 
 export interface ProfileParams {
-  profileId: string;
+  profileSlug: string;
   bio: string | null;
   email: string;
   name: string;
@@ -46,7 +46,7 @@ class AuthorAPI extends PlutoAxios {
     entities: { authors: { [authorId: string]: Author } };
     result: string;
   }> => {
-    const res = await this.post(`/authors/${params.profileId}/connect`, {
+    const res = await this.post(`/authors/${params.profileSlug}/connect`, {
       affiliation_id: String(params.affiliationId),
       affiliation_name: params.affiliationName,
       bio: params.bio,
@@ -164,8 +164,8 @@ class AuthorAPI extends PlutoAxios {
     return normalizedData;
   }
 
-  public async updateAuthorProfileImage(profileId: string, profileImageData: FormData) {
-    const res = await this.put(`/profiles/${profileId}/profile-image`, profileImageData, {
+  public async updateAuthorProfileImage(profileSlug: string, profileImageData: FormData) {
+    const res = await this.put(`/profiles/${profileSlug}/profile-image`, profileImageData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

@@ -16,7 +16,7 @@ interface ExperienceItemState {
 
 interface ExperienceItemProps {
   validConnection: boolean;
-  profileId: string;
+  profileSlug: string;
   experience: Experience;
   handleRemoveItem: (cvInfoId: string) => void;
   onUpdate: (cvInfo: ExperienceFormState) => Promise<void>;
