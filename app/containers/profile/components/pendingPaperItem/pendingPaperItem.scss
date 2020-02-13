@@ -6,7 +6,7 @@
   .pendingPaperItemTitle {
     font-size: 16px;
     line-height: 1.4;
-    color: $navy0;
+    color: $black_light_0;
     font-weight: 500;
   }
 
@@ -17,6 +17,6 @@
   }
 
   & + & {
-    border-top: 1px solid $gray400;
+    border-top: 1px solid $gray300;
   }
 }
