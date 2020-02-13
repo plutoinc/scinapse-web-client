@@ -1,8 +1,17 @@
 .inputWrapper {
+  display: flex;
+}
+
+.urlInputContainer {
   padding-bottom: 8px;
+
   & + & {
     padding-top: 8px;
   }
+}
+
+.removeUrlBtn {
+  margin-left: 8px;
 }
 
 .formWrapper {
@@ -10,14 +19,15 @@
 }
 
 .submitBtn {
-  margin-top: 16px;
   text-align: right;
+  margin-top: 16px;
 }
 
 .addUrlBtn {
   text-align: center;
   margin-top: 8px;
 }
+
 .formTitle {
   font-size: 15px;
   font-weight: 500;
@@ -27,4 +37,11 @@
   padding-left: 10px;
   padding-bottom: 4px;
   width: 100%;
+}
+
+.errorMessage {
+  font-size: 14px;
+  padding: 0 10px;
+  color: $red0;
+  line-height: 1.5;
 }
