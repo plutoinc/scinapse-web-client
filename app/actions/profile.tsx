@@ -78,7 +78,7 @@ export function fetchProfilePendingPapers(profileSlug: string): AppThunkAction {
 export function fetchProfileImportedPapers(
   importSource: IMPORT_SOURCE_TAB,
   profileSlug: string,
-  importedContext: string
+  importedContext: string | string[]
 ): AppThunkAction {
   return async (dispatch, _getState, { axios }) => {
     let rawRes;
@@ -95,6 +95,10 @@ export function fetchProfileImportedPapers(
       } else if (importSource === IMPORT_SOURCE_TAB.CITATION) {
         rawRes = await axios.post(`/profiles/${profileSlug}/import-papers/citation`, {
           citation_string: importedContext,
+        });
+      } else if (importSource === IMPORT_SOURCE_TAB.AUTHOR_URLS) {
+        rawRes = await axios.post(`/profiles/${profileSlug}/import-papers/author`, {
+          author_ids: importedContext,
         });
       }
     } catch (err) {

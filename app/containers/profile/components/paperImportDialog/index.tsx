@@ -11,6 +11,7 @@ import DialogBody, { CURRENT_STEP, IMPORT_SOURCE_TAB } from '../paperImportDialo
 import { fetchProfileImportedPapers } from '../../../../actions/profile';
 import alertToast from '../../../../helpers/makePlutoToastAction';
 import { AuthorUrlsFormState } from '../authorUrlsImportForm';
+import { SCINAPSE_AUTHOR_SHOW_PREFIX } from '../authorUrlsImportField';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperImportDialog.scss');
 
@@ -177,7 +178,11 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClo
     setIsLoading(true);
     trackImportFromAuthorUrls('clickSubmitAuthorUrlsBtn');
     try {
-      console.log(params);
+      const authorIds = params.authorUrls.map(authorUrl => {
+        return authorUrl.split(SCINAPSE_AUTHOR_SHOW_PREFIX)[1];
+      });
+
+      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.AUTHOR_URLS, profileSlug, authorIds));
       setIsLoading(false);
       setInProgressStep(CURRENT_STEP.RESULT);
       trackImportFromAuthorUrls('successSubmitAuthorUrls');
