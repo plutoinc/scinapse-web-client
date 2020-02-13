@@ -40,7 +40,7 @@ export const profileInfoSchema = new schema.Entity(
   'profileInfoEntities',
   {},
   {
-    idAttribute: 'profileId',
+    idAttribute: 'profileSlug',
   }
 );
 

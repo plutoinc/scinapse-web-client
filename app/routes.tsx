@@ -189,7 +189,7 @@ export const routesMap: ServerRoutesMap[] = [
     component: loadable(() => import('./containers/profile'), {
       fallback: <div>loading ...</div>,
     }),
-    loadData: async (params: LoadDataParams<{ profileId: string }>) => {
+    loadData: async (params: LoadDataParams<{ profileSlug: string }>) => {
       const { fetchAuthorShowPageData } = await import('./containers/profile/sideEffects');
       await Promise.all([fetchAuthorShowPageData(params)]);
     },

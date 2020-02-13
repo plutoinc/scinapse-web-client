@@ -12,13 +12,13 @@ import { getPendingPapers, PendingPaper } from '../reducers/profilePendingPaperL
 import { IMPORT_SOURCE_TAB } from '../containers/profile/components/paperImportDialogBody';
 
 interface FetchProfilePaperListParams {
-  profileId: string;
+  profileSlug: string;
   page: number;
 }
 
-export function fetchProfileData(profileId: string): AppThunkAction {
+export function fetchProfileData(profileSlug: string): AppThunkAction {
   return async (dispatch, _getState, { axios }) => {
-    const res = await axios.get(`/profiles/${profileId}`);
+    const res = await axios.get(`/profiles/${profileSlug}`);
     const profileData = { ...(res.data.data.content as Profile) };
 
     // const profileData = { ...(res.data.data.content as Profile), isEditable: false };
@@ -47,8 +47,8 @@ export function updateProfile(params: Partial<ProfileParams> & { id: string }): 
 
 export function fetchProfilePapers(params: FetchProfilePaperListParams): AppThunkAction {
   return async (dispatch, _getState, { axios }) => {
-    const { profileId, page } = params;
-    const result = await axios.get(`/profiles/${profileId}/papers`, { params: { page } });
+    const { profileSlug, page } = params;
+    const result = await axios.get(`/profiles/${profileSlug}/papers`, { params: { page } });
     const { data } = result.data as PaginationResponseV2<Paper[]>;
     const papers = data.content;
     const entity = normalize(papers, [paperSchema]);
@@ -65,9 +65,9 @@ export function fetchProfilePapers(params: FetchProfilePaperListParams): AppThun
   };
 }
 
-export function fetchProfilePendingPapers(profileId: string): AppThunkAction {
+export function fetchProfilePendingPapers(profileSlug: string): AppThunkAction {
   return async (dispatch, _getState, { axios }) => {
-    const result = await axios.get(`/profiles/${profileId}/papers/pending`);
+    const result = await axios.get(`/profiles/${profileSlug}/papers/pending`);
     const { data } = result.data as PaginationResponseV2<PendingPaper[]>;
     const papers = data.content;
 
@@ -77,7 +77,7 @@ export function fetchProfilePendingPapers(profileId: string): AppThunkAction {
 
 export function fetchProfileImportedPapers(
   importSource: IMPORT_SOURCE_TAB,
-  profileId: string,
+  profileSlug: string,
   importedContext: string
 ): AppThunkAction {
   return async (dispatch, _getState, { axios }) => {
@@ -85,15 +85,15 @@ export function fetchProfileImportedPapers(
 
     try {
       if (importSource === IMPORT_SOURCE_TAB.GS) {
-        rawRes = await axios.post(`/profiles/${profileId}/import-papers/gs`, {
+        rawRes = await axios.post(`/profiles/${profileSlug}/import-papers/gs`, {
           gs_uri: importedContext,
         });
       } else if (importSource === IMPORT_SOURCE_TAB.BIBTEX) {
-        rawRes = await axios.post(`/profiles/${profileId}/import-papers/bibtex`, {
+        rawRes = await axios.post(`/profiles/${profileSlug}/import-papers/bibtex`, {
           bibtex_string: importedContext,
         });
       } else if (importSource === IMPORT_SOURCE_TAB.CITATION) {
-        rawRes = await axios.post(`/profiles/${profileId}/import-papers/citation`, {
+        rawRes = await axios.post(`/profiles/${profileSlug}/import-papers/citation`, {
           citation_string: importedContext,
         });
       }

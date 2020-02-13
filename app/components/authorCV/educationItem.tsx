@@ -16,7 +16,7 @@ interface EducationItemState {
 
 interface EducationItemProps {
   validConnection: boolean;
-  profileId: string;
+  profileSlug: string;
   education: Education;
   handleRemoveItem: (cvInfoId: string) => void;
   onUpdate: (cvInfo: EducationFormState) => Promise<void>;

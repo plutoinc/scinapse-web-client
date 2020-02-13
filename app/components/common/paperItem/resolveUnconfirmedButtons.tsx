@@ -15,20 +15,20 @@ interface ResolveUnconfirmedButtonsProps {
   fetchProfileShowData: () => void;
   className?: string;
   isMobile?: boolean;
-  ownProfileId?: string;
+  ownProfileSlug?: string;
 }
 
 const ResolveUnconfirmedButtons: React.FC<ResolveUnconfirmedButtonsProps> = props => {
-  const { paper, pageType, actionArea, ownProfileId, isMobile, fetchProfileShowData } = props;
+  const { paper, pageType, actionArea, ownProfileSlug, isMobile, fetchProfileShowData } = props;
   useStyles(s);
   const [isLoading, setIsLoading] = useState(false);
 
-  if (!ownProfileId) return null;
+  if (!ownProfileSlug) return null;
 
   const handleDeclinedPaper = () => {
     setIsLoading(true);
 
-    ProfileAPI.declinedPaper({ profileId: ownProfileId, paperId: paper.id })
+    ProfileAPI.declinedPaper({ profileSlug: ownProfileSlug, paperId: paper.id })
       .then(() => {
         fetchProfileShowData();
         setIsLoading(false);
@@ -46,7 +46,7 @@ const ResolveUnconfirmedButtons: React.FC<ResolveUnconfirmedButtonsProps> = prop
   const handleConfirmedPaper = () => {
     setIsLoading(true);
 
-    ProfileAPI.confirmedPaper({ profileId: ownProfileId, paperId: paper.id })
+    ProfileAPI.confirmedPaper({ profileSlug: ownProfileSlug, paperId: paper.id })
       .then(() => {
         fetchProfileShowData();
         setIsLoading(false);

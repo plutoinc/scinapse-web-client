@@ -24,7 +24,7 @@ export function trackActionToClickAuthorEntity(authorId: string) {
 const AuthorSearchItem: React.FC<AuthorSearchItemProps> = props => {
   const author = props.authorEntity;
   const profile = author.profile;
-  const href = profile ? `/profiles/${profile.id}` : `/authors/${author.id}`;
+  const href = profile ? `/profiles/${profile.slug}` : `/authors/${author.id}`;
 
   const profileImage = author.profileImageUrl ? (
     <span

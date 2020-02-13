@@ -23,7 +23,7 @@ export const CoAuthor: React.FC<{ author: Author }> = ({ author }) => {
   return (
     <Link
       className={styles.authorItem}
-      to={author.profile ? `/profiles/${author.profile.id}` : `/authors/${author.id}`}
+      to={author.profile ? `/profiles/${author.profile.slug}` : `/authors/${author.id}`}
       onClick={() => {
         trackEvent({
           category: 'Flow to Author Show',

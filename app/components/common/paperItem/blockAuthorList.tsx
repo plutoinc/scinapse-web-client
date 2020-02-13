@@ -15,7 +15,7 @@ const MAXIMUM_POST_AUTHOR_COUNT = 1;
 interface BlockAuthorListProps {
   paper: Paper;
   pageType: Scinapse.ActionTicket.PageType;
-  ownProfileId?: string;
+  ownProfileSlug?: string;
   actionArea?: Scinapse.ActionTicket.ActionArea;
 }
 
@@ -48,7 +48,7 @@ const AuthorItem: React.FC<AuthorItemProps> = ({ author, pageType, actionArea, p
 
   const authorProfileLink = React.useMemo(
     () => {
-      if (profile) return `/profiles/${profile.id}`;
+      if (profile) return `/profiles/${profile.slug}`;
       return `/authors/${author.id}`;
     },
     [profile, author]
@@ -84,12 +84,12 @@ const AuthorItem: React.FC<AuthorItemProps> = ({ author, pageType, actionArea, p
   );
 };
 
-const BlockAuthorList: React.FC<BlockAuthorListProps> = ({ paper, pageType, actionArea, ownProfileId }) => {
+const BlockAuthorList: React.FC<BlockAuthorListProps> = ({ paper, pageType, actionArea, ownProfileSlug }) => {
   const { authors, profiles } = paper;
 
   if (authors.length === 0) return null;
 
-  const profile = profiles.find(profile => profile.id === ownProfileId);
+  const profile = profiles.find(profile => profile.slug === ownProfileSlug);
   const profileAuthor = authors.find(author => profile && author.order === profile.order);
   const shouldAddProfileAuthor =
     profileAuthor && profileAuthor.order > MAXIMUM_PRE_AUTHOR_COUNT && profileAuthor.order < authors.length;

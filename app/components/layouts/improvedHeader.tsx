@@ -342,12 +342,12 @@ class ImprovedHeader extends React.PureComponent<HeaderProps, HeaderStates> {
         <MenuItem classes={{ root: styles.userInfoMenuItem }} disabled disableGutters>
           <UserInformation user={currentUserState} />
         </MenuItem>
-        {currentUserState.profileId ? (
+        {currentUserState.profileSlug ? (
           <MenuItem classes={{ root: styles.profileButton }}>
             <Link
               className={styles.linkOnButton}
               onClick={this.handleRequestCloseUserDropdown}
-              to={`/profiles/${currentUserState.profileId}`}
+              to={`/profiles/${currentUserState.profileSlug}`}
             >
               Profile
             </Link>

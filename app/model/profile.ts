@@ -6,6 +6,7 @@ import { NewFOS } from './fos';
 
 export type Profile = {
   id: string;
+  slug: string;
   email: string;
   firstName: string;
   lastName: string;
