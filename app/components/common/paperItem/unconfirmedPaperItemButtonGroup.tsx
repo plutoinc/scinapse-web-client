@@ -20,7 +20,7 @@ interface UnconfirmedPaperItemButtonGroupProps {
   paperSource?: PaperSource;
   saved?: boolean;
   dropdownContents?: React.ReactElement[];
-  ownProfileId?: string;
+  ownProfileSlug?: string;
   isEditable?: boolean;
 }
 
@@ -30,7 +30,7 @@ const UnconfirmedPaperItemButtonGroup: React.FC<UnconfirmedPaperItemButtonGroupP
   actionArea,
   paperSource,
   dropdownContents,
-  ownProfileId,
+  ownProfileSlug,
   isEditable,
   fetchProfileShowData,
 }) => {
@@ -58,7 +58,7 @@ const UnconfirmedPaperItemButtonGroup: React.FC<UnconfirmedPaperItemButtonGroupP
           paper={paper}
           pageType={pageType}
           actionArea={actionArea}
-          ownProfileId={ownProfileId}
+          ownProfileSlug={ownProfileSlug}
           isMobile={userDevice === UserDevice.MOBILE}
           fetchProfileShowData={fetchProfileShowData}
         />
@@ -78,7 +78,7 @@ const UnconfirmedPaperItemButtonGroup: React.FC<UnconfirmedPaperItemButtonGroupP
           paper={paper}
           pageType={pageType}
           actionArea={actionArea}
-          ownProfileId={ownProfileId}
+          ownProfileSlug={ownProfileSlug}
           fetchProfileShowData={fetchProfileShowData}
         />
       </div>

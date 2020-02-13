@@ -19,19 +19,24 @@ interface BasePaperItemProps {
   actionArea: Scinapse.ActionTicket.ActionArea;
   fetchProfileShowData: () => void;
   sourceDomain?: PaperSource;
-  ownProfileId?: string;
+  ownProfileSlug?: string;
   isEditable?: boolean;
 }
 type PaperItemProps = BasePaperItemProps & { paperId: string };
 type ProfilePaperItemWithPaperProps = BasePaperItemProps & { paper: Paper };
 
 export const ProfilePaperItemWithPaper: FC<ProfilePaperItemWithPaperProps> = memo(
-  ({ paper, actionArea, pageType, sourceDomain, ownProfileId, isEditable, fetchProfileShowData }) => {
+  ({ paper, actionArea, pageType, sourceDomain, ownProfileSlug, isEditable, fetchProfileShowData }) => {
     const userDevice = useSelector((state: AppState) => state.layout.userDevice);
 
     let venueAuthors = (
       <div style={{ marginTop: '12px' }}>
-        <BlockVenueAuthor paper={paper} pageType="collectionShow" actionArea="paperList" />
+        <BlockVenueAuthor
+          paper={paper}
+          pageType="collectionShow"
+          actionArea="paperList"
+          ownProfileSlug={ownProfileSlug}
+        />
       </div>
     );
     if (userDevice === UserDevice.MOBILE) {
@@ -54,7 +59,7 @@ export const ProfilePaperItemWithPaper: FC<ProfilePaperItemWithPaperProps> = mem
           actionArea={actionArea}
           paperSource={sourceDomain}
           saved={!!paper.relation && paper.relation.savedInCollections.length > 0}
-          ownProfileId={ownProfileId}
+          ownProfileSlug={ownProfileSlug}
           isEditable={isEditable}
           fetchProfileShowData={fetchProfileShowData}
         />

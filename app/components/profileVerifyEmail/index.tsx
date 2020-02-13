@@ -19,8 +19,10 @@ const ProfileVerifyEmail: FC = () => {
   const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
 
   useEffect(
-    () => { if (currentUser.profileId) history.push(`/profiles/${currentUser.profileId}`) },
-    [currentUser.profileId, history]
+    () => {
+      if (currentUser.profileSlug) history.push(`/profiles/${currentUser.profileSlug}`);
+    },
+    [currentUser.profileSlug, history]
   );
 
   return (

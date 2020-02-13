@@ -101,7 +101,7 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
     }
 
     this.setState({ isLoading: true });
-    await dispatch(updateProfileImage(profile.id, formData));
+    await dispatch(updateProfileImage(profile.slug, formData));
     this.setState({ isLoading: false });
   };
 }

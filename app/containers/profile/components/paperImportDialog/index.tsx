@@ -15,7 +15,7 @@ const s = require('./paperImportDialog.scss');
 
 interface PaperImportDialogProps {
   isOpen: boolean;
-  profileId: string;
+  profileSlug: string;
   handleClosePaperImportDialog: () => void;
 }
 
@@ -88,7 +88,7 @@ function trackImportFromCitationString(actionLabel: string) {
   });
 }
 
-const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClosePaperImportDialog, profileId }) => {
+const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClosePaperImportDialog, profileSlug }) => {
   useStyles(s);
   const dispatch = useDispatch();
 
@@ -102,7 +102,7 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClo
     trackImportFromGS('clickSubmitGSBtn');
 
     try {
-      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.GS, profileId, params.url));
+      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.GS, profileSlug, params.url));
       setIsLoading(false);
       setInProgressStep(CURRENT_STEP.RESULT);
       trackImportFromGS('successSubmitGS');
@@ -120,7 +120,7 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClo
     setIsLoading(true);
     trackImportFromBibtex('clickSubmitBibtexBtn');
     try {
-      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.BIBTEX, profileId, params.bibTexString));
+      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.BIBTEX, profileSlug, params.bibTexString));
       setIsLoading(false);
       setInProgressStep(CURRENT_STEP.RESULT);
       trackImportFromBibtex('successSubmitBibtex');
@@ -138,7 +138,7 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClo
     setIsLoading(true);
     trackImportFromCitationString('clickSubmitCitationStringBtn');
     try {
-      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.BIBTEX, profileId, params.citationString));
+      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.BIBTEX, profileSlug, params.citationString));
       setIsLoading(false);
       setInProgressStep(CURRENT_STEP.RESULT);
       trackImportFromBibtex('successSubmitCitationString');

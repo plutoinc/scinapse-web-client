@@ -29,7 +29,7 @@ const ProfileShowPageHelmet: FC<Props> = memo(({ profile }) => {
   return (
     <Helmet>
       <title>{`${name} | Scinapse`}</title>
-      <link rel="canonical" href={`https://scinapse.io/authors/${profile.id}`} />
+      <link rel="canonical" href={`https://scinapse.io/authors/${profile.slug}`} />
       <meta itemProp="name" content={`${name} | Scinapse`} />
       <meta name="description" content={description} />
       <meta name="twitter:description" content={description} />
@@ -37,7 +37,7 @@ const ProfileShowPageHelmet: FC<Props> = memo(({ profile }) => {
       <meta name="twitter:title" content={`${name} | Scinapse`} />
       <meta property="og:title" content={`${name} | Scinapse`} />
       <meta property="og:type" content="article" />
-      <meta property="og:url" content={`https://scinapse.io/authors/${profile.id}`} />
+      <meta property="og:url" content={`https://scinapse.io/authors/${profile.slug}`} />
       <meta property="og:description" content={description} />
       <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
     </Helmet>

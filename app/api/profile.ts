@@ -35,14 +35,14 @@ class ProfileAPI extends PlutoAxios {
     }
   }
 
-  public async confirmedPaper(params: { profileId: string; paperId: string }) {
-    await this.post(`/profiles/${params.profileId}/papers/confirm`, {
+  public async confirmedPaper(params: { profileSlug: string; paperId: string }) {
+    await this.post(`/profiles/${params.profileSlug}/papers/confirm`, {
       paper_id: params.paperId,
     });
   }
 
-  public async declinedPaper(params: { profileId: string; paperId: string }) {
-    await this.post(`/profiles/${params.profileId}/papers/decline`, {
+  public async declinedPaper(params: { profileSlug: string; paperId: string }) {
+    await this.post(`/profiles/${params.profileSlug}/papers/decline`, {
       paper_id: params.paperId,
     });
   }
