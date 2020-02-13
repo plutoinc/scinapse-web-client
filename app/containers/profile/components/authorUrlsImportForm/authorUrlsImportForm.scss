@@ -1,0 +1,29 @@
+.inputWrapper {
+  padding-bottom: 8px;
+  & + & {
+    padding-top: 8px;
+  }
+}
+
+.formWrapper {
+  padding: 16px 0;
+}
+
+.submitBtn {
+  margin-top: 16px;
+  text-align: right;
+}
+
+.addUrlBtn {
+  text-align: center;
+}
+.formTitle {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  line-height: 1.5;
+  color: $gray700;
+  padding-left: 10px;
+  padding-bottom: 4px;
+  width: 100%;
+}
