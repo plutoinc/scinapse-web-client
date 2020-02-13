@@ -15,7 +15,7 @@ interface MobileAuthorsProps {
 
 const getProfileFromAuthor = (author: PaperAuthor, profiles: PaperProfile[]) => {
   return profiles.find(profile => profile.order === author.order);
-}
+};
 
 const SimpleAuthorItem: React.FC<{ author: PaperAuthor }> = ({ author }) => {
   return (
@@ -25,7 +25,7 @@ const SimpleAuthorItem: React.FC<{ author: PaperAuthor }> = ({ author }) => {
   );
 };
 
-const BlockAuthorItem: React.FC<{ author: PaperAuthor, profile?: PaperProfile }> = ({ author, profile }) => {
+const BlockAuthorItem: React.FC<{ author: PaperAuthor; profile?: PaperProfile }> = ({ author, profile }) => {
   let affiliation = null;
   if (author.affiliation) {
     if (author.affiliation.nameAbbrev) {
@@ -34,10 +34,13 @@ const BlockAuthorItem: React.FC<{ author: PaperAuthor, profile?: PaperProfile }>
     affiliation = author.affiliation.name;
   }
 
-  const profileAuthorLink = useMemo(() => {
-    if (profile) return `/profiles/${profile.id}`;
-    return `/authors/${author.id}`;
-  }, [profile, author]);
+  const profileAuthorLink = useMemo(
+    () => {
+      if (profile) return `/profiles/${profile.slug}`;
+      return `/authors/${author.id}`;
+    },
+    [profile, author]
+  );
 
   return (
     <Link to={profileAuthorLink} className={s.blockAuthorItem}>
@@ -63,15 +66,15 @@ const MobileAuthors: React.FC<MobileAuthorsProps> = ({ isExpanded, paper }) => {
       authorCount = <div className={s.authorCount}>{`+ ${paper.authors.length - 3} Authors`}</div>;
     }
 
-    const authorList = paper.authors.slice(0, 2).map(author => <BlockAuthorItem author={author} key={author.id} profile={getProfileFromAuthor(author, paper.profiles)} />);
+    const authorList = paper.authors
+      .slice(0, 2)
+      .map(author => (
+        <BlockAuthorItem author={author} key={author.id} profile={getProfileFromAuthor(author, paper.profiles)} />
+      ));
     if (paper.authors.length > 3) {
       const author = paper.authors[paper.authors.length - 1];
       authorList.push(
-        <BlockAuthorItem
-          key={author.id}
-          author={author}
-          profile={getProfileFromAuthor(author, paper.profiles)}
-        />
+        <BlockAuthorItem key={author.id} author={author} profile={getProfileFromAuthor(author, paper.profiles)} />
       );
     }
 

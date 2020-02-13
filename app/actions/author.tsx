@@ -84,16 +84,16 @@ export function fetchAuthorShowRelevantData(params: FetchAuthorShowRelevantDataP
 
 export async function postNewAuthorCVInfo(
   type: keyof CVInfoType,
-  profileId: string,
+  profileSlug: string,
   params: AwardParams | EducationParams | ExperienceParams
 ) {
   try {
     if (type === 'awards') {
-      return await ProfileInfoAPI.postNewAwardInAuthor(profileId, params as AwardParams);
+      return await ProfileInfoAPI.postNewAwardInAuthor(profileSlug, params as AwardParams);
     } else if (type === 'educations') {
-      return await ProfileInfoAPI.postNewEducationInAuthor(profileId, params as EducationParams);
+      return await ProfileInfoAPI.postNewEducationInAuthor(profileSlug, params as EducationParams);
     } else if (type === 'experiences') {
-      return await ProfileInfoAPI.postNewExperienceInAuthor(profileId, params as ExperienceParams);
+      return await ProfileInfoAPI.postNewExperienceInAuthor(profileSlug, params as ExperienceParams);
     }
   } catch (err) {
     alertToast({
@@ -133,10 +133,10 @@ export async function updateAuthorCvInfo(
   }
 }
 
-export function updateProfileImage(profileId: string, formData: FormData) {
+export function updateProfileImage(profileSlug: string, formData: FormData) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      const normalizedProfile = await AuthorAPI.updateAuthorProfileImage(profileId, formData);
+      const normalizedProfile = await AuthorAPI.updateAuthorProfileImage(profileSlug, formData);
       dispatch(addProfileEntities(normalizedProfile.entities));
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);

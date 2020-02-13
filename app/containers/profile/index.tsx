@@ -17,7 +17,6 @@ import formatNumber from '../../helpers/formatNumber';
 import ProfileCvSection from '../authorCvSection';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
-import FullPaperItem from '../../components/common/paperItem/fullPaperItem';
 import ProfileShowPageHelmet from './components/helmet';
 // import RepresentativePaperListSection from './components/representativePapers';
 // import { Paper } from '../../model/paper';
@@ -27,8 +26,9 @@ import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 import { PendingPaper } from '../../reducers/profilePendingPaperList';
 import PendingPaperList from './components/pendingPaperList';
 import PaperImportDialog from './components/paperImportDialog';
-import { fetchAuthorShowPageData } from './sideEffects';
 import { CoAuthor } from '../../components/common/coAuthor';
+import ProfilePaperItem from '../../components/profilePaperItem/profilePaperItem';
+import { fetchAuthorShowPageData } from './sideEffects';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./connectedAuthor.scss');
 
@@ -37,16 +37,16 @@ enum AvailableTab {
   INFORMATION,
 }
 
-type ProfilePageProps = RouteComponentProps<{ profileId: string }>;
+type ProfilePageProps = RouteComponentProps<{ profileSlug: string }>;
 
 const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
   useStyles(s);
-  const { profileId } = useParams();
+  const { profileSlug } = useParams();
   const dispatch = useThunkDispatch();
   const location = useLocation();
   const queryParams = getQueryParamsObject(location.search);
   const currentPage = parseInt(queryParams.page || '', 10) || 0;
-  const profile = useSelector<AppState, Profile | undefined>(state => selectHydratedProfile(state, profileId));
+  const profile = useSelector<AppState, Profile | undefined>(state => selectHydratedProfile(state, profileSlug));
   const userDevice = useSelector((state: AppState) => state.layout.userDevice);
   const totalPaperCount = useSelector((state: AppState) => state.profilePaperListState.totalCount);
   const maxPage = useSelector((state: AppState) => state.profilePaperListState.maxPage);
@@ -69,21 +69,21 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
   useEffect(
     () => {
       if (!lastShouldFetch.current) return;
-      if (!profileId) return;
+      if (!profileSlug) return;
 
-      dispatch(fetchProfileData(profileId));
+      dispatch(fetchProfileData(profileSlug));
     },
-    [profileId, dispatch, currentUser]
+    [profileSlug, dispatch, currentUser]
   );
 
   useEffect(
     () => {
       if (!lastShouldFetch.current) return;
-      if (!profileId) return;
+      if (!profileSlug) return;
 
-      dispatch(fetchProfilePendingPapers(profileId));
+      dispatch(fetchProfilePendingPapers(profileSlug));
     },
-    [profileId, dispatch, currentUser]
+    [profileSlug, dispatch, currentUser]
   );
 
   useEffect(
@@ -92,11 +92,11 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
         lastShouldFetch.current = true;
         return;
       }
-      if (!profileId) return;
+      if (!profileSlug) return;
 
-      dispatch(fetchProfilePapers({ profileId, page: currentPage }));
+      dispatch(fetchProfilePapers({ profileSlug, page: currentPage }));
     },
-    [profileId, currentPage, dispatch, currentUser]
+    [profileSlug, currentPage, dispatch, currentUser]
   );
 
   if (!profile) return null;
@@ -173,7 +173,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                   <>
                     <div className={s.allPublicationHeader}>
                       <span className={s.sectionTitle}>Publications</span>
-                      <span className={s.countBadge}>{totalPaperCount}</span>
+                      <span className={s.countBadge}>{formatNumber(totalPaperCount)}</span>
                       <div className={s.rightBox}>
                         {profile.isEditable && (
                           <Button
@@ -210,18 +210,21 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                         </div>
                       )}
                     {paperIds.map(id => (
-                      <FullPaperItem
+                      <ProfilePaperItem
                         key={id}
                         paperId={id}
                         pageType="profileShow"
                         actionArea="paperList"
-                        ownProfileId={profile.id}
-                        hideFigure
+                        ownProfileSlug={profile.slug}
+                        isEditable={profile.isEditable}
+                        fetchProfileShowData={() =>
+                          fetchAuthorShowPageData({ dispatch, match, pathname: location.pathname })
+                        }
                       />
                     ))}
                     <DesktopPagination
                       type="AUTHOR_SHOW_PAPERS_PAGINATION"
-                      getLinkDestination={page => `/profiles/${profileId}?page=${page - 1}`}
+                      getLinkDestination={page => `/profiles/${profileSlug}?page=${page - 1}`}
                       totalPage={maxPage}
                       currentPageIndex={currentPage}
                       wrapperStyle={{
@@ -270,7 +273,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
           setIsUpdatingProfile(true);
           await dispatch(
             updateProfile({
-              id: profile.id,
+              id: profile.slug,
               bio: profileForm.bio || null,
               email: profileForm.email,
               first_name: profileForm.firstName,
@@ -297,8 +300,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
       <PaperImportDialog
         isOpen={isOpenPaperImportDialog}
         handleClosePaperImportDialog={() => setIsOpenPaperImportDialog(false)}
-        profileId={profileId!}
-        fetchProfileShowData={() => fetchAuthorShowPageData({ dispatch, match, pathname: location.pathname })}
+        profileSlug={profileSlug!}
       />
       {/* <RepresentativePublicationsDialog
         currentUser={currentUser}

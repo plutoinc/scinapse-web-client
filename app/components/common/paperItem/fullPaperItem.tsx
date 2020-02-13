@@ -20,13 +20,13 @@ interface BasePaperItemProps {
   actionArea: Scinapse.ActionTicket.ActionArea;
   hideFigure?: boolean;
   sourceDomain?: PaperSource;
-  ownProfileId?: string;
+  ownProfileSlug?: string;
 }
 type PaperItemProps = BasePaperItemProps & { paperId: string };
 type FullPaperItemWithPaperProps = BasePaperItemProps & { paper: Paper };
 
 export const FullPaperItemWithPaper: FC<FullPaperItemWithPaperProps> = memo(
-  ({ paper, actionArea, pageType, sourceDomain, hideFigure, ownProfileId }) => {
+  ({ paper, actionArea, pageType, sourceDomain, hideFigure, ownProfileSlug }) => {
     const userDevice = useSelector((state: AppState) => state.layout.userDevice);
     if (userDevice === UserDevice.MOBILE) {
       return (
@@ -38,7 +38,7 @@ export const FullPaperItemWithPaper: FC<FullPaperItemWithPaperProps> = memo(
       <div className={s.paperItemWrapper}>
         <Title paper={paper} actionArea={actionArea} pageType={pageType} />
         <div style={{ marginTop: '12px' }}>
-          <BlockVenueAuthor paper={paper} pageType={pageType} actionArea={actionArea} ownProfileId={ownProfileId} />
+          <BlockVenueAuthor paper={paper} pageType={pageType} actionArea={actionArea} ownProfileSlug={ownProfileSlug} />
         </div>
         <Abstract
           paperId={paper.id}

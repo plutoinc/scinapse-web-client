@@ -1,30 +1,22 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
+import { useDispatch } from 'react-redux';
 import Dialog from '@material-ui/core/Dialog';
 import Icon from '../../../../icons';
-import profileAPI, { ImportedPaperListResponse } from '../../../../api/profile';
-import GscImportForm, { GscFormState } from '../gscImportForm';
-import BibTexImportForm, { BibTexFormState } from '../bibTexImportForm';
-import ImportResultShow from '../importResultShow';
+import { GSFormState } from '../gsImportForm';
+import { BibTexFormState } from '../bibTexImportForm';
+import { CitationStringFormState } from '../citationStringImportForm';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
+import DialogBody, { CURRENT_STEP, IMPORT_SOURCE_TAB } from '../paperImportDialogBody';
+import { fetchProfileImportedPapers } from '../../../../actions/profile';
+import alertToast from '../../../../helpers/makePlutoToastAction';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperImportDialog.scss');
 
-enum IMPORT_SOURCE_TAB {
-  GSC,
-  BIBTEX,
-}
-
-enum CURRENT_STEP {
-  PROGRESS,
-  RESULT,
-}
-
 interface PaperImportDialogProps {
   isOpen: boolean;
-  profileId: string;
+  profileSlug: string;
   handleClosePaperImportDialog: () => void;
-  fetchProfileShowData: () => void;
 }
 
 const Header: React.FC<{
@@ -35,10 +27,10 @@ const Header: React.FC<{
     <div className={s.tabBoxWrapper}>
       <div className={s.normalTabWrapper}>
         <span
-          onClick={() => onClickTab(IMPORT_SOURCE_TAB.GSC)}
+          onClick={() => onClickTab(IMPORT_SOURCE_TAB.GS)}
           className={classNames({
             [`${s.tabItem}`]: true,
-            [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.GSC,
+            [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.GS,
           })}
         >
           Google Scholar
@@ -51,6 +43,15 @@ const Header: React.FC<{
           })}
         >
           BibTex
+        </span>
+        <span
+          onClick={() => onClickTab(IMPORT_SOURCE_TAB.CITATION)}
+          className={classNames({
+            [`${s.tabItem}`]: true,
+            [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.CITATION,
+          })}
+        >
+          Citation String
         </span>
       </div>
     </div>
@@ -77,99 +78,85 @@ function trackImportFromBibtex(actionLabel: string) {
   });
 }
 
-interface DialogBodyProps {
-  isLoading: boolean;
-  currentStep: CURRENT_STEP;
-  activeTab: IMPORT_SOURCE_TAB;
-  importResult: ImportedPaperListResponse | null;
-  handleSubmitGS: (params: GscFormState) => void;
-  handleSubmitBibTex: (params: BibTexFormState) => void;
+function trackImportFromCitationString(actionLabel: string) {
+  ActionTicketManager.trackTicket({
+    pageType: 'profileShow',
+    actionType: 'fire',
+    actionArea: 'paperImportFromCitationStringDialog',
+    actionTag: 'clickSubmitCitationStringBtn',
+    actionLabel: actionLabel,
+  });
 }
-const DialogBody: React.FC<DialogBodyProps> = ({
-  handleSubmitGS,
-  handleSubmitBibTex,
-  currentStep,
-  activeTab,
-  importResult,
-  isLoading,
-}) => {
-  if (currentStep === CURRENT_STEP.RESULT) return <ImportResultShow importResult={importResult} />;
-  if (activeTab === IMPORT_SOURCE_TAB.GSC) return <GscImportForm isLoading={isLoading} onSubmitGS={handleSubmitGS} />;
-  return <BibTexImportForm isLoading={isLoading} onSubmitBibtex={handleSubmitBibTex} />;
-};
 
-const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
-  isOpen,
-  handleClosePaperImportDialog,
-  profileId,
-  fetchProfileShowData,
-}) => {
+const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClosePaperImportDialog, profileSlug }) => {
   useStyles(s);
+  const dispatch = useDispatch();
 
   const [inProgressStep, setInProgressStep] = useState<CURRENT_STEP>(CURRENT_STEP.PROGRESS);
-  const [activeTab, setActiveTab] = useState<IMPORT_SOURCE_TAB>(IMPORT_SOURCE_TAB.GSC);
+  const [activeTab, setActiveTab] = useState<IMPORT_SOURCE_TAB>(IMPORT_SOURCE_TAB.GS);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [importResult, setImportResult] = useState<ImportedPaperListResponse | null>(null);
 
-  const handleSubmitGS = (params: GscFormState) => {
+  const handleSubmitGS = async (params: GSFormState) => {
     setIsLoading(true);
 
     trackImportFromGS('clickSubmitGSBtn');
 
-    profileAPI
-      .importFromGSC({ profileId, url: params.url })
-      .then(res => {
-        fetchProfileShowData();
-        setImportResult(res);
-
-        if (res.totalImportedCount === 0) {
-          trackImportFromGS('failureSubmitGS');
-        } else {
-          trackImportFromGS('successSubmitGS');
-        }
-
-        setIsLoading(false);
-        setInProgressStep(CURRENT_STEP.RESULT);
-      })
-      .catch(err => {
-        console.error(err);
-        trackImportFromGS('failureSubmitGS');
-        alert('we had an error during importing papers. please refresh this page & try it again.');
-        setIsLoading(false);
+    try {
+      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.GS, profileSlug, params.url));
+      setIsLoading(false);
+      setInProgressStep(CURRENT_STEP.RESULT);
+      trackImportFromGS('successSubmitGS');
+    } catch (err) {
+      setIsLoading(false);
+      trackImportFromGS('failureSubmitGS');
+      alertToast({
+        type: 'error',
+        message: 'we had an error during importing papers. please refresh this page & try it again.',
       });
+    }
   };
 
-  const handleSubmitBibTex = (params: BibTexFormState) => {
+  const handleSubmitBibTex = async (params: BibTexFormState) => {
     setIsLoading(true);
     trackImportFromBibtex('clickSubmitBibtexBtn');
-    profileAPI
-      .importFromBIBTEX({ profileId, bibtexString: params.bibTexString })
-      .then(res => {
-        fetchProfileShowData();
-        setImportResult(res);
-
-        if (res.totalImportedCount === 0) {
-          trackImportFromGS('failureSubmitBibtex');
-        } else {
-          trackImportFromGS('successSubmitBibtex');
-        }
-
-        setIsLoading(false);
-        setInProgressStep(CURRENT_STEP.RESULT);
-      })
-      .catch(err => {
-        console.error(err);
-        trackImportFromGS('failureSubmitBibtex');
-
-        alert('we had an error during importing papers. please refresh this page & try it again.');
-        setIsLoading(false);
+    try {
+      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.BIBTEX, profileSlug, params.bibTexString));
+      setIsLoading(false);
+      setInProgressStep(CURRENT_STEP.RESULT);
+      trackImportFromBibtex('successSubmitBibtex');
+    } catch (err) {
+      setIsLoading(false);
+      trackImportFromBibtex('failureSubmitBibtex');
+      alertToast({
+        type: 'error',
+        message: 'we had an error during importing papers. please refresh this page & try it again.',
       });
+    }
+  };
+
+  const handleSubmitCitationString = async (params: CitationStringFormState) => {
+    setIsLoading(true);
+    trackImportFromCitationString('clickSubmitCitationStringBtn');
+    try {
+      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.BIBTEX, profileSlug, params.citationString));
+      setIsLoading(false);
+      setInProgressStep(CURRENT_STEP.RESULT);
+      trackImportFromBibtex('successSubmitCitationString');
+    } catch (err) {
+      setIsLoading(false);
+      trackImportFromBibtex('failureSubmitCitationString');
+
+      alertToast({
+        type: 'error',
+        message: 'we had an error during importing papers. please refresh this page & try it again.',
+      });
+    }
   };
 
   const onCloseDialog = () => {
     handleClosePaperImportDialog();
     setInProgressStep(CURRENT_STEP.PROGRESS);
-    setActiveTab(IMPORT_SOURCE_TAB.GSC);
+    setActiveTab(IMPORT_SOURCE_TAB.GS);
   };
 
   return (
@@ -191,12 +178,12 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({
             <Header activeTab={activeTab} onClickTab={(tab: IMPORT_SOURCE_TAB) => setActiveTab(tab)} />
           )}
           <DialogBody
-            handleSubmitGS={handleSubmitGS}
-            handleSubmitBibTex={handleSubmitBibTex}
             isLoading={isLoading}
             currentStep={inProgressStep}
-            importResult={importResult}
             activeTab={activeTab}
+            handleSubmitGS={handleSubmitGS}
+            handleSubmitBibTex={handleSubmitBibTex}
+            handleSubmitCitationString={handleSubmitCitationString}
           />
         </div>
       </div>

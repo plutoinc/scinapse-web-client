@@ -24,9 +24,9 @@ const ProfileLanding: FC = () => {
 
   useEffect(
     () => {
-      if (currentUser.profileId) history.push(`/profiles/${currentUser.profileId}`);
+      if (currentUser.profileSlug) history.push(`/profiles/${currentUser.profileSlug}`);
     },
-    [currentUser.profileId, history]
+    [currentUser.profileSlug, history]
   );
 
   useEffect(
