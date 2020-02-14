@@ -8,7 +8,7 @@ import { PaginationResponseV2 } from '../api/types/common';
 import { Paper, paperSchema } from '../model/paper';
 import { ActionCreators } from './actionTypes';
 import { getPapers } from '../reducers/profilePaperList';
-import { getPendingPapers, PendingPaper } from '../reducers/profilePendingPaperList';
+import { getPendingPapers, PendingPaper, removePendingPaper } from '../reducers/profilePendingPaperList';
 import { IMPORT_SOURCE_TAB } from '../containers/profile/components/paperImportDialogBody';
 
 interface FetchProfilePaperListParams {
@@ -129,5 +129,16 @@ export function fetchProfileImportedPapers(
     const pendingPapers = pendingPapersRes.data.content;
 
     dispatch(getPendingPapers({ papers: pendingPapers }));
+  };
+}
+
+export function removeProfilePendingPaper(paperId: string): AppThunkAction {
+  return async (dispatch, _getState, { axios }) => {
+    try {
+      await axios.delete(`/profiles/papers/pending/${paperId}`);
+      dispatch(removePendingPaper({ paperId }));
+    } catch (err) {
+      throw err;
+    }
   };
 }
