@@ -4,7 +4,6 @@ import { parse as URLParse } from 'url';
 import { Formik, FormikErrors, Form, Field } from 'formik';
 import { Button } from '@pluto_network/pluto-design-elements';
 import FormikInput from '../../../../components/common/formikInput';
-
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./gsImportForm.scss');
 
@@ -63,12 +62,12 @@ const GSImportForm: React.FC<GSImportFormProps> = props => {
                   labelText="GOOGLE SCHOLAR PROFILE URL"
                   component={FormikInput}
                   error={errors.url}
-                  helperText={`Write GS Profile url hear.`}
+                  helperText={`Copy & Paste your Google Scholar Profile URL above. Then click "Import"`}
                   placeholder={'https://scholar.google.com/citations?user={your id}'}
                   variant="underlined"
                 />
                 <div className={s.guideContext}>
-                  ※ Your name in the profile of Scinapse must match registered in the profile of GS.
+                  ※ Your name on Scinapse must match the name on the Google Scholar profile page.
                 </div>
               </div>
               <div className={s.submitBtn}>
@@ -78,7 +77,7 @@ const GSImportForm: React.FC<GSImportFormProps> = props => {
                   type="submit"
                   isLoading={isLoading}
                 >
-                  <span>IMPORT</span>
+                  <span>Import</span>
                 </Button>
               </div>
             </div>

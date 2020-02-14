@@ -179,6 +179,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                           <Button
                             elementType="button"
                             size="medium"
+                            title="Update or add publication information here by using Google Scholar Profile page, BibTex, or citation string. This is not for uploading the publication itself."
                             onClick={() => {
                               setIsOpenPaperImportDialog(true);
                             }}
@@ -200,6 +201,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                           <Button
                             elementType="button"
                             size="medium"
+                            title="Update or add publication information here by using Google Scholar Profile page, BibTex, or citation string. This is not for uploading the publication itself."
                             onClick={() => {
                               setIsOpenPaperImportDialog(true);
                             }}
