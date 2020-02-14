@@ -35,17 +35,18 @@ const CitationStringImportForm: React.FC<CitationStringImportFormProps> = props 
                 <Field
                   name="citationString"
                   type="text"
-                  labelText="CITATION STRING"
+                  labelText="CITATION TEXT"
                   component={FormikInput}
                   error={errors.citationString}
-                  helperText="Write citation text."
-                  placeholder={'Write citation text.'}
+                  helperText="Write or Copy & Paste your citation text above."
+                  placeholder="Write or Copy & Paste your citation text above."
                   variant="underlined"
-                  multiline={true}
                   className={s.citationTextArea}
+                  multiline
                 />
                 <div className={s.guideContext}>
-                  ※ Please input citation text while paying attention to delimiter characters.
+                  ※ You can enter your entire citation list in any citation format. But please pay attention to
+                  inaccurate spacing, commas, and periods.
                 </div>
               </div>
               <div className={s.submitBtn}>
@@ -55,7 +56,7 @@ const CitationStringImportForm: React.FC<CitationStringImportFormProps> = props 
                   type="submit"
                   isLoading={isLoading}
                 >
-                  <span>IMPORT</span>
+                  <span>Import</span>
                 </Button>
               </div>
             </div>

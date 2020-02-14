@@ -62,7 +62,7 @@ const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
                     <div className={s.bibTexFileUploadSection}>
                       {!targetFile ? (
                         <span className={s.uploaderGuideContext}>
-                          <Icon icon="CLOUD_UPLOAD" className={s.uploadIcon} />Drop File here or click UPLOAD button
+                          <Icon icon="CLOUD_UPLOAD" className={s.uploadIcon} />Drop BibTex file here or upload a file.
                         </span>
                       ) : (
                         targetFile.name
@@ -70,7 +70,7 @@ const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
                     </div>
                   </div>
                   <label htmlFor="bibTexFile" className={s.bibTexFileUploaderButton}>
-                    UPLOAD
+                    Upload
                   </label>
                 </div>
                 <div className={s.orSeparatorBox}>
@@ -81,24 +81,24 @@ const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
                 <Field
                   name="bibTexString"
                   type="text"
-                  labelText="BIBTEX STRING"
+                  labelText="BIBTEX TEXT"
                   component={FormikInput}
                   error={errors.bibTexString}
-                  helperText="Write bibTex string."
-                  placeholder={'Write bibTex string.'}
+                  helperText="Write or Copy & Paste BibTex text above"
+                  placeholder="Write or Copy & Paste BibTex text above"
                   variant="underlined"
-                  multiline={true}
                   className={s.bibtexTextArea}
+                  multiline
                 />
               </div>
               <div className={s.submitBtn}>
                 <Button
                   elementType="button"
-                  aria-label="Import paper from bibTex string"
+                  aria-label="Import paper from BibTex text"
                   type="submit"
                   isLoading={isLoading}
                 >
-                  <span>IMPORT</span>
+                  <span>Import</span>
                 </Button>
               </div>
             </div>
