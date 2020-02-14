@@ -28,6 +28,13 @@ const PendingPaperItem: React.FC<PendingPaperItemProps> = ({ paper, isEditable }
 
   const onRemovePendingPaper = async () => {
     setIsLoading(true);
+
+    const removeConfirm = confirm('Do you really want to REMOVE this pending paper?');
+
+    if (!removeConfirm) {
+      return setIsLoading(false);
+    }
+
     try {
       await dispatch(removeProfilePendingPaper(paper.id));
       setIsLoading(false);
