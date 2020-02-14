@@ -86,6 +86,7 @@
     "@types/uuid": "3.4.4",
     "@types/webfontloader": "1.6.29",
     "@types/webpack-env": "^1.13.9",
+    "@types/yup": "^0.26.30",
     "@typescript-eslint/eslint-plugin": "^2.11.0",
     "@typescript-eslint/parser": "^2.11.0",
     "acorn": "6.1.1",
@@ -197,7 +198,8 @@
     "store": "2.0.12",
     "ua-parser-js": "0.7.17",
     "uuid": "3.3.2",
-    "webfontloader": "1.6.28"
+    "webfontloader": "1.6.28",
+    "yup": "^0.28.1"
   },
   "peerDependencies": {
     "ajv": "6.0.0"

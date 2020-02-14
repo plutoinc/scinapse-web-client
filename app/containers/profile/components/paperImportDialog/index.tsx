@@ -10,6 +10,8 @@ import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import DialogBody, { CURRENT_STEP, IMPORT_SOURCE_TAB } from '../paperImportDialogBody';
 import { fetchProfileImportedPapers } from '../../../../actions/profile';
 import alertToast from '../../../../helpers/makePlutoToastAction';
+import { AuthorUrlsFormState } from '../authorUrlsImportForm';
+import { SCINAPSE_AUTHOR_SHOW_PREFIX } from '../authorUrlsImportField';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperImportDialog.scss');
 
@@ -53,6 +55,15 @@ const Header: React.FC<{
         >
           Citation String
         </span>
+        <span
+          onClick={() => onClickTab(IMPORT_SOURCE_TAB.AUTHOR_URLS)}
+          className={classNames({
+            [`${s.tabItem}`]: true,
+            [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.AUTHOR_URLS,
+          })}
+        >
+          Author Urls
+        </span>
       </div>
     </div>
   );
@@ -84,6 +95,16 @@ function trackImportFromCitationString(actionLabel: string) {
     actionType: 'fire',
     actionArea: 'paperImportFromCitationStringDialog',
     actionTag: 'clickSubmitCitationStringBtn',
+    actionLabel: actionLabel,
+  });
+}
+
+function trackImportFromAuthorUrls(actionLabel: string) {
+  ActionTicketManager.trackTicket({
+    pageType: 'profileShow',
+    actionType: 'fire',
+    actionArea: 'paperImportFromAuthorUrlsDialog',
+    actionTag: 'clickSubmitAuthorUrlsBtn',
     actionLabel: actionLabel,
   });
 }
@@ -141,10 +162,33 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClo
       await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.BIBTEX, profileSlug, params.citationString));
       setIsLoading(false);
       setInProgressStep(CURRENT_STEP.RESULT);
-      trackImportFromBibtex('successSubmitCitationString');
+      trackImportFromCitationString('successSubmitCitationString');
     } catch (err) {
       setIsLoading(false);
-      trackImportFromBibtex('failureSubmitCitationString');
+      trackImportFromCitationString('failureSubmitCitationString');
+
+      alertToast({
+        type: 'error',
+        message: 'we had an error during importing papers. please refresh this page & try it again.',
+      });
+    }
+  };
+
+  const handleSubmitAuthorUrls = async (params: AuthorUrlsFormState) => {
+    setIsLoading(true);
+    trackImportFromAuthorUrls('clickSubmitAuthorUrlsBtn');
+    try {
+      const authorIds = params.authorUrls.map(authorUrl => {
+        return authorUrl.split(SCINAPSE_AUTHOR_SHOW_PREFIX)[1];
+      });
+
+      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.AUTHOR_URLS, profileSlug, authorIds));
+      setIsLoading(false);
+      setInProgressStep(CURRENT_STEP.RESULT);
+      trackImportFromAuthorUrls('successSubmitAuthorUrls');
+    } catch (err) {
+      setIsLoading(false);
+      trackImportFromAuthorUrls('failureSubmitAuthorUrls');
 
       alertToast({
         type: 'error',
@@ -184,6 +228,7 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClo
             handleSubmitGS={handleSubmitGS}
             handleSubmitBibTex={handleSubmitBibTex}
             handleSubmitCitationString={handleSubmitCitationString}
+            handleSubmitAuthorUrls={handleSubmitAuthorUrls}
           />
         </div>
       </div>
