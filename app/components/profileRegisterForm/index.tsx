@@ -201,9 +201,8 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
               {formikProps => {
                 return (
                   <Form className={s.formContainer}>
-                    <h2>    
-                      Register Form
-                    </h2>
+                    <h2>Registration</h2>
+                    <div>To create your account and profile page, fill in the following information below.</div>
                     <AffiliationInputField
                       formikProps={formikProps}
                       profileAffiliation={verificationState && verificationState?.affiliation}
