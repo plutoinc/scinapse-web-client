@@ -166,7 +166,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                           <div className={s.rightBox}>what 'pending' means?</div>
                         </div>
                         <div className={s.divider} />
-                        <PendingPaperList papers={pendingPapers} isEditable={profile.isEditable} />
+                        <PendingPaperList papers={pendingPapers} isEditable={true} />
                       </>
                     )}
 
@@ -243,7 +243,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                           <div className={s.rightBox}>what 'pending' means?</div>
                         </div>
                         <div className={s.divider} />
-                        <PendingPaperList papers={pendingPapers} />
+                        <PendingPaperList papers={pendingPapers} isEditable={false} />
                       </>
                     )}
                 </div>
