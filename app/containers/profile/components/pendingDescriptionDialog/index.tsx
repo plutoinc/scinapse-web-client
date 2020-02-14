@@ -31,10 +31,12 @@ const PendingDescriptionDialog: FC<DialogProps> = props => {
           <p>We update our database daily but newly published papers can take some time to be added in our database.</p>
           <p>We will notify you in case we locate a publication that you may have published.</p>
         </DialogContentText>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button size="large" elementType="button" aria-label="Okay button" onClick={props.onClose}>
+            <span>Okay</span>
+          </Button>
+        </div>
       </DialogContent>
-      <Button elementType="button" aria-label="Okay button" onClick={props.onClose}>
-        <span>Okay</span>
-      </Button>
     </Dialog>
   );
 };
