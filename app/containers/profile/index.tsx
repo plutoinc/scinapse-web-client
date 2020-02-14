@@ -29,6 +29,7 @@ import PaperImportDialog from './components/paperImportDialog';
 import { CoAuthor } from '../../components/common/coAuthor';
 import ProfilePaperItem from '../../components/profilePaperItem/profilePaperItem';
 import { fetchAuthorShowPageData } from './sideEffects';
+import PendingDescriptionDialog from './components/pendingDescriptionDialog';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./connectedAuthor.scss');
 
@@ -58,6 +59,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
   const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
   const [isOpenModifyProfileDialog, setIsOpenModifyProfileDialog] = useState(false);
   const [isOpenPaperImportDialog, setIsOpenPaperImportDialog] = useState(false);
+  const [isOpenPendingDescriptionDialog, setIsOpenPendingDescriptionDialog] = useState(false);
   // const [isOpenRepresentativePublicationDialog, setIsOpenRepresentativePublicationDialog] = useState(false);
   const [activeTab, setActiveTab] = useState(AvailableTab.PUBLICATIONS);
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
@@ -163,7 +165,15 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                         <div className={s.allPublicationHeader}>
                           <span className={s.sectionTitle}>Pending Publications</span>
                           <span className={s.countBadge}>{pendingPapers.length}</span>
-                          <div className={s.rightBox}>what 'pending' means?</div>
+                          <div
+                            onClick={() => setIsOpenPendingDescriptionDialog(true)}
+                            className={classNames({
+                              [s.rightBox]: true,
+                              [s.pendingLink]: true,
+                            })}
+                          >
+                            What are 'pending' publications?
+                          </div>
                         </div>
                         <div className={s.divider} />
                         <PendingPaperList papers={pendingPapers} />
@@ -240,7 +250,15 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                         <div className={s.allPublicationHeader}>
                           <span className={s.sectionTitle}>Pending Publications</span>
                           <span className={s.countBadge}>{pendingPapers.length}</span>
-                          <div className={s.rightBox}>what 'pending' means?</div>
+                          <div
+                            className={classNames({
+                              [s.rightBox]: true,
+                              [s.pendingLink]: true,
+                            })}
+                            onClick={() => setIsOpenPendingDescriptionDialog(true)}
+                          >
+                            What are 'pending' publications?
+                          </div>
                         </div>
                         <div className={s.divider} />
                         <PendingPaperList papers={pendingPapers} />
@@ -303,6 +321,10 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
         isOpen={isOpenPaperImportDialog}
         handleClosePaperImportDialog={() => setIsOpenPaperImportDialog(false)}
         profileSlug={profileSlug!}
+      />
+      <PendingDescriptionDialog
+        open={isOpenPendingDescriptionDialog}
+        onClose={() => setIsOpenPendingDescriptionDialog(false)}
       />
       {/* <RepresentativePublicationsDialog
         currentUser={currentUser}

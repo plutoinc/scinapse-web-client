@@ -255,6 +255,12 @@
   margin-top: 12px;
 }
 
+.pendingLink {
+  color: $main_blue0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 @media (max-width: $tablet_width) {
   .leftContentWrapper {
     padding: 24px 12px;
