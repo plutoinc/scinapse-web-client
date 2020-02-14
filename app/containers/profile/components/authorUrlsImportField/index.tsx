@@ -22,18 +22,23 @@ interface AuthorUrlsImportFieldProps {
 const AuthorUrlsImportField: FC<AuthorUrlsImportFieldProps> = ({ targetIndex, authorUrl, onRemoveField, hadError }) => {
   useStyles(s);
   const [authorName, setAuthorName] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onBlurUrlField = useCallback(
     async () => {
       const authorId = authorUrl.split(SCINAPSE_AUTHOR_SHOW_PREFIX)[1];
       if (authorId) {
+        setIsLoading(true);
         try {
           const res = await AuthorAPI.getAuthor(authorId);
           const authorData = res.entities.authors[authorId];
           setAuthorName(authorData.name);
+          setIsLoading(false);
         } catch (err) {
           const error = PlutoAxios.getGlobalError(err);
           alertToast({ type: 'error', message: error.message });
+          setAuthorName(error.message);
+          setIsLoading(false);
         }
       }
     },
@@ -50,16 +55,20 @@ const AuthorUrlsImportField: FC<AuthorUrlsImportFieldProps> = ({ targetIndex, au
           variant="outlined"
           placeholder="https://scinapse.io/authors/1234"
           onBlur={onBlurUrlField}
+          disabled={isLoading}
         />
-
         <Button
           elementType="button"
           color="black"
           aria-label="Remove author url column"
           type="button"
           variant="contained"
-          onClick={onRemoveField}
+          onClick={() => {
+            onRemoveField();
+            setAuthorName('');
+          }}
           className={s.removeUrlBtn}
+          isLoading={isLoading}
         >
           <Icon icon="MINUS" />
         </Button>
