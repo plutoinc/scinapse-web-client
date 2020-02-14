@@ -9,12 +9,13 @@ const s = require('./pendingPaperList.scss');
 
 interface PendingPaperListProps {
   papers: PendingPaper[];
+  isEditable: boolean;
 }
 
 const PendingPaperList: React.FC<PendingPaperListProps> = props => {
   useStyles(s);
 
-  const { papers } = props;
+  const { papers, isEditable } = props;
   const chunkedPapers = useMemo(() => chunk(papers, 5), [papers]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showPapers, setShowPapers] = useState<PendingPaper[]>(chunkedPapers[0]);
@@ -36,9 +37,10 @@ const PendingPaperList: React.FC<PendingPaperListProps> = props => {
     [chunkedPapers, currentIndex]
   );
 
-  const paperList = useMemo(() => showPapers.map(paper => <PendingPaperItem paper={paper} key={paper.id} />), [
-    showPapers,
-  ]);
+  const paperList = useMemo(
+    () => showPapers.map(paper => <PendingPaperItem paper={paper} key={paper.id} isEditable={isEditable} />),
+    [showPapers, isEditable]
+  );
 
   const moreLessButton = useMemo(
     () => {

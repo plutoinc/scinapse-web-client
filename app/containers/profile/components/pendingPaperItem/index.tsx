@@ -12,9 +12,10 @@ const s = require('./pendingPaperItem.scss');
 
 interface PendingPaperItemProps {
   paper: PendingPaper;
+  isEditable: boolean;
 }
 
-const PendingPaperItem: React.FC<PendingPaperItemProps> = ({ paper }) => {
+const PendingPaperItem: React.FC<PendingPaperItemProps> = ({ paper, isEditable }) => {
   useStyles(s);
   const dispatch = useDispatch();
 
@@ -47,23 +48,27 @@ const PendingPaperItem: React.FC<PendingPaperItemProps> = ({ paper }) => {
           {authorsNode}
         </div>
       </div>
-      <div className={s.resolveBtnWrapper}>
-        <Button elementType="button" size="small" color="gray" isLoading={isLoading}>
-          <span>{resolveBtnContextNode}</span>
-        </Button>
-      </div>
-      <div className={s.removeBtnWrapper}>
-        <Button
-          elementType="button"
-          size="small"
-          color="gray"
-          variant="text"
-          onClick={onRemovePendingPaper}
-          isLoading={isLoading}
-        >
-          <Icon icon="X_BUTTON" />
-        </Button>
-      </div>
+      {isEditable && (
+        <>
+          <div className={s.resolveBtnWrapper}>
+            <Button elementType="button" size="small" color="gray" isLoading={isLoading}>
+              <span>{resolveBtnContextNode}</span>
+            </Button>
+          </div>
+          <div className={s.removeBtnWrapper}>
+            <Button
+              elementType="button"
+              size="small"
+              color="gray"
+              variant="text"
+              onClick={onRemovePendingPaper}
+              isLoading={isLoading}
+            >
+              <Icon icon="X_BUTTON" />
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
