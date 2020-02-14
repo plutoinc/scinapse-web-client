@@ -7,6 +7,7 @@ export interface PendingPaper {
   author: string;
   journal: string;
   year: number;
+  tryAgain: boolean;
 }
 
 export interface ProfilePendingPaperListState {
