@@ -53,7 +53,7 @@ const Header: React.FC<{
             [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.CITATION,
           })}
         >
-          Citation String
+          Citation Text
         </span>
         <span
           onClick={() => onClickTab(IMPORT_SOURCE_TAB.AUTHOR_URLS)}
