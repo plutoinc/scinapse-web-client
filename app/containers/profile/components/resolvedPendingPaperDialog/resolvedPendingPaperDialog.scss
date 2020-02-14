@@ -1,0 +1,41 @@
+.dialogPaper {
+  position: relative;
+  margin: 16px;
+}
+
+.boxContainer {
+  font-family: $fallback !important;
+  width: 666px;
+}
+
+.boxWrapper {
+  padding: 22px 24px 16px 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 500;
+  color: $black0;
+}
+
+.iconWrapper {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    color: $gray500;
+  }
+}

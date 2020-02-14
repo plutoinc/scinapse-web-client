@@ -1,18 +1,33 @@
 import React, { FC } from 'react';
 import { PendingPaper } from '../../../../reducers/profilePendingPaperList';
+import ResolvedPendingPaperDialogBody from '../resolvedPendingPaperDialogBody';
+import Icon from '../../../../icons';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./resolvedPendingPaperDialog.scss');
 
 interface ResolvedPendingPaperDialogProps {
-  handleCloseDialog: () => void;
   paper: PendingPaper;
+  handleCloseDialog: () => void;
 }
 
-const ResolvedPendingPaperDialog: FC<ResolvedPendingPaperDialogProps> = ({}) => {
+const ResolvedPendingPaperDialog: FC<ResolvedPendingPaperDialogProps> = ({ handleCloseDialog, paper }) => {
   useStyles(s);
 
-  return <div />;
+  return (
+    <div className={s.dialogPaper}>
+      <div className={s.boxContainer}>
+        <div className={s.boxWrapper}>
+          <div style={{ marginTop: 0 }} className={s.header}>
+            <div className={s.title}>Resolved Pending Paper</div>
+            <Icon icon="X_BUTTON" className={s.iconWrapper} onClick={handleCloseDialog} />
+          </div>
+
+          <ResolvedPendingPaperDialogBody isLoading={false} paper={paper} />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ResolvedPendingPaperDialog;

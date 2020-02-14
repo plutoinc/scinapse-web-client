@@ -75,6 +75,7 @@ export function getPaper(params: GetPaperParams): AppThunkAction {
     } catch (err) {
       if (!Axios.isCancel(err)) {
         const error = PlutoAxios.getGlobalError(err);
+        alertToast({ type: 'error', message: error.message });
         dispatch(ActionCreators.failedToGetPaper({ statusCode: (error as CommonError).status }));
         throw err;
       }
