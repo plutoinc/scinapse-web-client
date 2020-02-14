@@ -6,6 +6,7 @@ import Icon from '../../../../icons';
 import { removeProfilePendingPaper } from '../../../../actions/profile';
 import PlutoAxios from '../../../../api/pluto';
 import alertToast from '../../../../helpers/makePlutoToastAction';
+import GlobalDialogManager from '../../../../helpers/globalDialogManager';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./pendingPaperItem.scss');
@@ -58,7 +59,13 @@ const PendingPaperItem: React.FC<PendingPaperItemProps> = ({ paper, isEditable }
       {isEditable && (
         <>
           <div className={s.resolveBtnWrapper}>
-            <Button elementType="button" size="small" color="gray" isLoading={isLoading}>
+            <Button
+              elementType="button"
+              size="small"
+              color="gray"
+              isLoading={isLoading}
+              onClick={() => GlobalDialogManager.openResolvedPendingPaperDialog(paper)}
+            >
               <span>{resolveBtnContextNode}</span>
             </Button>
           </div>

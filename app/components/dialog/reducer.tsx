@@ -6,6 +6,7 @@ import { SIGN_UP_STEP } from '../auth/signUp/types';
 import { OAuthCheckParams } from '../../api/types/auth';
 import { SignUpConversionExpTicketContext } from '../../constants/abTest';
 import { PaperProfile } from '../../model/profile';
+import { PendingPaper } from '../../reducers/profilePendingPaperList';
 
 export enum GLOBAL_DIALOG_TYPE {
   SIGN_IN,
@@ -22,6 +23,7 @@ export enum GLOBAL_DIALOG_TYPE {
   AUTHOR_LIST_DIALOG,
   ADD_PUBLICATIONS_TO_AUTHOR_DIALOG,
   PAPER_FIGURE_DETAIL,
+  RESOLVED_PENDING_PAPER,
 }
 
 export interface DialogState
@@ -58,6 +60,8 @@ export interface DialogState
       paperFigures: PaperFigure[] | undefined;
       currentPaperFigureIndex: number | undefined;
       viewDetailFigureTargetPaperId: string | undefined;
+
+      targetPendingPaper: PendingPaper | undefined;
     }> {} // TODO: remove below attribute after finishing the experiment
 
 export const DIALOG_INITIAL_STATE: DialogState = {
@@ -85,6 +89,8 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   // author list dialog
   authorListTargetPaper: undefined,
   profile: undefined,
+  // resolve pending paper dialog
+  targetPendingPaper: undefined,
   // etc
   isBlocked: undefined,
   nextSignUpStep: undefined,
@@ -112,6 +118,7 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
         currentPaperFigureIndex: action.payload.currentPaperFigureIndex,
         viewDetailFigureTargetPaperId: action.payload.viewDetailFigureTargetPaperId,
         profile: action.payload.profile,
+        targetPendingPaper: action.payload.targetPendingPaper,
       };
     }
 

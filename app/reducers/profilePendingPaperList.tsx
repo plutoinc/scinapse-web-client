@@ -3,7 +3,7 @@ import { remove } from 'lodash';
 
 export interface PendingPaper {
   id: string;
-  paperId: null;
+  paperId: string;
   title: string;
   author: string;
   journal: string;

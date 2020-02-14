@@ -33,6 +33,7 @@ import FinalSignUpContent from '../auth/signUp/components/finalSignUpContent';
 import EnvChecker from '../../helpers/envChecker';
 import PaperFigureDetail from '../common/paperFigureDetail/paperFigureDetail';
 import { UserDevice } from '../layouts/reducer';
+import ResolvedPendingPaperDialog from '../../containers/profile/components/resolvedPendingPaperDialog';
 const styles = require('./dialog.scss');
 
 function mapStateToProps(state: AppState) {
@@ -345,6 +346,14 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
               profile={dialogState.profile}
               handleCloseDialogRequest={this.closeDialog}
             />
+          );
+        }
+        return null;
+
+      case GLOBAL_DIALOG_TYPE.RESOLVED_PENDING_PAPER:
+        if (dialogState.targetPendingPaper) {
+          return (
+            <ResolvedPendingPaperDialog paper={dialogState.targetPendingPaper} handleCloseDialog={this.closeDialog} />
           );
         }
         return null;
