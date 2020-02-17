@@ -56,6 +56,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
     const { availableAffiliations } = this.state;
     const rawFieldValue = field.value as Affiliation | SuggestAffiliation | string;
     const error = errors[field.name];
+    const touch = touched[field.name];
 
     const displayValue: string = this.getDisplayValue(rawFieldValue || '');
 
@@ -71,7 +72,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
             suggestionList={availableAffiliations.slice(0, 5).map(affiliation => ({ text: affiliation.keyword }))}
             className={classNames({
               [className]: true,
-              [styles.error]: !!touched && !!error,
+              [styles.error]: !!touch && !!error,
             })}
             listItemStyle={{
               height: '30px',
@@ -93,7 +94,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
               <Icon icon="X_BUTTON" className={styles.deleteIcon} onClick={this.handleClickDeleteButton} />
             }
           />
-          {touched &&
+          {touch &&
             error && (
               <div
                 className={classNames({

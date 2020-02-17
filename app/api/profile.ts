@@ -25,7 +25,22 @@ export type ImportedPaperListResponse = {
   pendingPapers: PendingPaper[];
 };
 
+interface ProfileRequestParams {
+  affiliation_id: string | null;
+  affiliation_name: string | null;
+  author_id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+}
+
 class ProfileAPI extends PlutoAxios {
+  public async requestProfile(params: ProfileRequestParams) {
+    const res = await this.post('/profiles/request', params);
+
+    return res.data;
+  }
+
   public async createProfile(token: string, params: ProfileParams) {
     const res = await this.post(`/profiles/me?token=${token}`, {
       ...params,
