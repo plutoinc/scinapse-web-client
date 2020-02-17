@@ -8,7 +8,12 @@ import { PaginationResponseV2 } from '../api/types/common';
 import { Paper, paperSchema } from '../model/paper';
 import { ActionCreators } from './actionTypes';
 import { getPapers } from '../reducers/profilePaperList';
-import { getPendingPapers, PendingPaper, removePendingPaper } from '../reducers/profilePendingPaperList';
+import {
+  getPendingPapers,
+  PendingPaper,
+  removePendingPaper,
+  markTryAgainPendingPaper,
+} from '../reducers/profilePendingPaperList';
 import { IMPORT_SOURCE_TAB } from '../containers/profile/components/paperImportDialogBody';
 
 interface FetchProfilePaperListParams {
@@ -137,6 +142,34 @@ export function removeProfilePendingPaper(paperId: string): AppThunkAction {
     try {
       await axios.delete(`/profiles/papers/pending/${paperId}`);
       dispatch(removePendingPaper({ paperId }));
+    } catch (err) {
+      throw err;
+    }
+  };
+}
+
+export function markTryAgainProfilePendingPaper(paperId: string): AppThunkAction {
+  return async (dispatch, _getState, { axios }) => {
+    try {
+      const res = await axios.post(`/profiles/papers/pending/${paperId}/try-again`);
+      dispatch(markTryAgainPendingPaper({ paperId: res.data.data.content.id }));
+    } catch (err) {
+      throw err;
+    }
+  };
+}
+
+export function resolvedPendingPaper(pendingPaperId: string, paperId: string, authorId: string | null): AppThunkAction {
+  return async (dispatch, _getState, { axios }) => {
+    try {
+      const res = await axios.post(`/profiles/papers/pending/${pendingPaperId}/resolve`, {
+        paper_id: paperId,
+        author_id: authorId,
+      });
+
+      dispatch(removePendingPaper({ paperId: pendingPaperId }));
+
+      console.log(res);
     } catch (err) {
       throw err;
     }

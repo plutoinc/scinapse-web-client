@@ -22,8 +22,7 @@ const ResolvedPendingPaperDialog: FC<ResolvedPendingPaperDialogProps> = ({ handl
             <div className={s.title}>Resolved Pending Paper</div>
             <Icon icon="X_BUTTON" className={s.iconWrapper} onClick={handleCloseDialog} />
           </div>
-
-          <ResolvedPendingPaperDialogBody isLoading={false} paper={paper} />
+          <ResolvedPendingPaperDialogBody paper={paper} handleCloseDialog={handleCloseDialog} />
         </div>
       </div>
     </div>

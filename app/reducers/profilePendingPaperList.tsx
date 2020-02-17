@@ -32,9 +32,18 @@ const profilePendingPaperListSlice = createSlice({
 
       state.papers = nextPapers;
     },
+    markTryAgainPendingPaper(state, action: PayloadAction<{ paperId: string }>) {
+      const targetIndex = state.papers.findIndex(paper => paper.id === action.payload.paperId);
+
+      state.papers = [
+        ...state.papers.slice(0, targetIndex),
+        { ...state.papers[targetIndex], tryAgain: true },
+        ...state.papers.slice(targetIndex + 1),
+      ];
+    },
   },
 });
 
-export const { getPendingPapers, removePendingPaper } = profilePendingPaperListSlice.actions;
+export const { getPendingPapers, removePendingPaper, markTryAgainPendingPaper } = profilePendingPaperListSlice.actions;
 
 export default profilePendingPaperListSlice.reducer;
