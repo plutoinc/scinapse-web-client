@@ -7,7 +7,7 @@
 
 .headerBox {
   background-color: $gray30;
-  padding-top: 38px;
+  padding-top: 32px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 }
 
@@ -81,8 +81,8 @@
 }
 
 .metricInformation {
-  margin-top: 12px;
-  margin-bottom: 24px;
+  margin-top: 16px;
+  margin-bottom: 32px;
 }
 
 .bioSection {
@@ -169,6 +169,12 @@
 
 .rightContentWrapper {
   margin-top: 8px;
+}
+
+.profileDescription {
+  color: $gray800;
+  margin-top: 8px;
+  text-align: center;
 }
 
 @media (max-width: $tablet_width) {

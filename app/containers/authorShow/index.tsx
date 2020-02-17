@@ -16,12 +16,11 @@ import { getAuthorPapers } from './actions';
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from '../../api/author';
 import ArticleSpinner from '../../components/common/spinner/articleSpinner';
 import CoAuthorContainer from '../../components/common/coAuthor';
-import { Button, InputField } from '@pluto_network/pluto-design-elements';
+import { InputField } from '@pluto_network/pluto-design-elements';
 import { LayoutState } from '../../components/layouts/reducer';
 import AuthorShowHeader from '../../components/authorShowHeader';
 import { AppState } from '../../reducers';
 import { fetchAuthorPapers } from '../../actions/author';
-import EnvChecker from '../../helpers/envChecker';
 import ErrorPage from '../../components/error/errorPage';
 import ImprovedFooter from '../../components/layouts/improvedFooter';
 import Icon from '../../icons';
@@ -110,29 +109,11 @@ class AuthorShow extends React.PureComponent<AuthorShowProps, AuthorShowLocalSta
       );
     }
 
-    const itsMeButton = (
-      <div className={styles.headerRightBox}>
-        <Button
-          elementType="button"
-          variant="outlined"
-          color="gray"
-          onClick={() => this.handleAuthorClaim({ authorId: this.props.author.id })}
-        >
-          <span>SUGGEST CHANGES</span>
-        </Button>
-      </div>
-    );
-
     return (
       <div className={styles.authorShowPageWrapper}>
         {this.getPageHelmet()}
         <div className={styles.rootWrapper}>
-          <AuthorShowHeader
-            userDevice={layout.userDevice}
-            author={author}
-            rightBoxContent={itsMeButton}
-            navigationContent={null}
-          />
+          <AuthorShowHeader userDevice={layout.userDevice} author={author} navigationContent={null} />
           <div className={styles.contentBox}>
             <div className={styles.container}>
               <div className={styles.contentFlexWrapper}>
@@ -402,18 +383,6 @@ class AuthorShow extends React.PureComponent<AuthorShowProps, AuthorShowLocalSta
         return <FullPaperItem key={paperId} paperId={paperId} pageType="authorShow" actionArea="paperList" />;
       }
     });
-  };
-
-  private handleAuthorClaim = ({ authorId }: HandleAuthorClaim) => {
-    const targetId = authorId;
-
-    if (!EnvChecker.isOnServer()) {
-      window.open(
-        // tslint:disable-next-line:max-line-length
-        `https://docs.google.com/forms/d/e/1FAIpQLSd6FqawNtamoqw6NE0Q7BYS1Pn4O0FIbK1VI_47zbRWxDzgXw/viewform?entry.1961255815=${targetId}`,
-        '_blank'
-      );
-    }
   };
 }
 
