@@ -19,7 +19,7 @@ interface FindPaperOfPendingPaperFormProps {
   onCloseDialog: () => void;
 }
 
-interface FindedPaperItemProps {
+interface FoundPaperItemProps {
   paperId?: string;
   isLoading: boolean;
   isChecked: boolean;
@@ -40,7 +40,7 @@ function validateForm(values: FormState) {
   return errors;
 }
 
-const FindedPaperItem: FC<FindedPaperItemProps> = ({ isLoading, paperId, isChecked, onChange }) => {
+const FoundPaperItem: FC<FoundPaperItemProps> = ({ isLoading, paperId, isChecked, onChange }) => {
   if (isLoading)
     return (
       <div className={s.spinnerWrapper}>
@@ -134,7 +134,7 @@ const FindPaperOfPendingPaperForm: FC<FindPaperOfPendingPaperFormProps> = ({
         render={({ values, errors, setFieldValue }) => (
           <Form>
             <div className={s.recommendedPaperItemWrapper}>
-              <FindedPaperItem
+              <FoundPaperItem
                 isLoading={isRecPaperLoading}
                 paperId={recommendedPaperId}
                 isChecked={values.targetResolvedPaperId === recommendedPaperId}
@@ -172,7 +172,7 @@ const FindPaperOfPendingPaperForm: FC<FindPaperOfPendingPaperFormProps> = ({
               </div>
               {searchPaperId && (
                 <div className={s.recommendedPaperItemWrapper}>
-                  <FindedPaperItem
+                  <FoundPaperItem
                     isLoading={isSearchLoading}
                     paperId={searchPaperId}
                     isChecked={values.targetResolvedPaperId === searchPaperId}
