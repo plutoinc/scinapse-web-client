@@ -7,7 +7,7 @@ import alertToast from '../helpers/makePlutoToastAction';
 import { PaginationResponseV2 } from '../api/types/common';
 import { Paper, paperSchema } from '../model/paper';
 import { ActionCreators } from './actionTypes';
-import { getPapers } from '../reducers/profilePaperList';
+import { getPapers, addPaper } from '../reducers/profilePaperList';
 import {
   getPendingPapers,
   PendingPaper,
@@ -169,7 +169,12 @@ export function resolvedPendingPaper(pendingPaperId: string, paperId: string, au
 
       dispatch(removePendingPaper({ paperId: pendingPaperId }));
 
-      console.log(res);
+      const { data } = res.data as PaginationResponseV2<Paper>;
+      const paper = data.content;
+      const entity = normalize(paper, paperSchema);
+
+      dispatch(ActionCreators.addEntity(entity));
+      dispatch(addPaper({ paperId: paper.id }));
     } catch (err) {
       throw err;
     }
