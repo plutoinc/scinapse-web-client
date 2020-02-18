@@ -18,6 +18,7 @@ import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
 import { Member } from '../model/member';
 import { Institute } from '../model/Institute';
 import { PaperProfile } from '../model/profile';
+import { PendingPaper } from '../reducers/profilePendingPaperList';
 
 export enum ACTION_TYPES {
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = 'GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING',
@@ -239,6 +240,7 @@ export const ActionCreators = {
     currentPaperFigureIndex?: number;
     viewDetailFigureTargetPaperId?: string;
     profile?: PaperProfile;
+    targetPendingPaper?: PendingPaper;
   }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
   },

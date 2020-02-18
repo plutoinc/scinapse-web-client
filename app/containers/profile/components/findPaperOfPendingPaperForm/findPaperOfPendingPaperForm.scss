@@ -1,0 +1,75 @@
+.recommendedPaperItemWrapper {
+  display: flex;
+  padding: 8px 0;
+  margin: 8px 0;
+
+  .checkBox {
+    margin-top: 8px;
+  }
+}
+
+.searchPaperContainer {
+  padding: 8px 0;
+  margin-bottom: 8px;
+}
+
+.searchPaperItemWrapper {
+  margin-bottom: 16px;
+}
+
+.searchInputWrapper {
+  display: flex;
+}
+
+.searchButton {
+  margin-left: 8px;
+}
+
+.checkBox {
+  margin: 0 16px;
+}
+
+.contentDivider {
+  background-color: $gray300;
+  height: 1px;
+  margin: 8px 0;
+}
+
+.noContentOptionWrapper {
+  padding: 8px 0;
+  margin: 8px 0;
+  color: $black_light_0;
+  line-height: 1.5;
+
+  .checkBox {
+    vertical-align: text-top;
+  }
+}
+
+.spinnerWrapper {
+  display: flex;
+  width: 100%;
+  height: 24px;
+  margin: 12px 0;
+  align-items: center;
+  justify-content: center;
+
+  .loadingSpinner {
+    color: $gray600;
+  }
+}
+
+.footerButtonWrapper {
+  text-align: right;
+
+  button + button {
+    margin-left: 8px;
+  }
+}
+
+.guideText {
+  line-height: 1.5;
+  color: $black_light_0;
+  width: 100%;
+  text-align: center;
+}
