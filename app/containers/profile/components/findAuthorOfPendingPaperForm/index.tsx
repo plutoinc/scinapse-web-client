@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Formik, Form } from 'formik';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Button, InputField } from '@pluto_network/pluto-design-elements';
 import AuthorAPI from '../../../../api/author';
 import { PaperAuthor } from '../../../../model/author';
 import { resolvedPendingPaper } from '../../../../actions/profile';
 import HIndexBox from '../../../../components/common/hIndexBox';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Icon from '../../../../icons';
 
 const useStyles = require('isomorphic-style-loader/useStyles');

@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import FindPaperOfPendingPaperForm from '../findPaperOfPendingPaperForm';
 import { PendingPaper } from '../../../../reducers/profilePendingPaperList';
-import { useDispatch } from 'react-redux';
 import { markTryAgainProfilePendingPaper } from '../../../../actions/profile';
 import FindAuthorOfPendingPaperForm from '../findAuthorOfPendingPaperForm';
 
