@@ -1,7 +1,6 @@
 .dialogPaper {
   position: relative;
-  margin: 16px;
-  overflow-y: scroll;
+  margin: 8px;
 }
 
 .boxContainer {
@@ -10,7 +9,7 @@
 }
 
 .boxWrapper {
-  padding: 22px 24px 16px 24px;
+  padding: 24px 16px;
 }
 
 .header {
@@ -22,8 +21,8 @@
 
 .title {
   font-size: 18px;
-  font-weight: 500;
-  color: $black0;
+  font-weight: 700;
+  color: $black_light_0;
 }
 
 .iconWrapper {
@@ -38,5 +37,17 @@
     width: 20px;
     height: 20px;
     color: $gray500;
+  }
+}
+
+.dialogBody {
+  overflow-y: auto;
+  max-height: 500px;
+  height: 100%;
+}
+
+@media (max-width: $tablet_width) {
+  .boxContainer {
+    width: 100%;
   }
 }

@@ -150,7 +150,7 @@ const NonLinkableAuthorList: React.FC<{
   );
 };
 
-const NonLinableAbstract: React.FC<{
+const NonLinkableAbstract: React.FC<{
   paperId: string;
   abstract: string;
 }> = ({ abstract }) => {
@@ -212,7 +212,7 @@ const NonLinkablePaperItem: FC<{ paperId: string }> = memo(({ paperId }) => {
         />
         <NonLinkableAuthorList paper={paper} />
       </div>
-      <NonLinableAbstract paperId={paper.id} abstract={paper.abstractHighlighted || paper.abstract} />
+      <NonLinkableAbstract paperId={paper.id} abstract={paper.abstractHighlighted || paper.abstract} />
     </div>
   );
 });

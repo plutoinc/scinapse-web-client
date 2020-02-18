@@ -32,3 +32,10 @@
 .removeBtnWrapper {
   margin-left: 8px;
 }
+
+@media (max-width: $mobile_width) {
+  .resolveBtnWrapper,
+  .removeBtnWrapper {
+    display: none;
+  }
+}

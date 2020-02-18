@@ -153,6 +153,7 @@ const FindPaperOfPendingPaperForm: FC<FindPaperOfPendingPaperFormProps> = ({
                   onBlur={() => searchPaper(values.searchPaperUrl)}
                   onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
                     if (e.key === 'Enter') {
+                      e.preventDefault();
                       searchPaper(values.searchPaperUrl);
                     }
                   }}
@@ -194,11 +195,11 @@ const FindPaperOfPendingPaperForm: FC<FindPaperOfPendingPaperFormProps> = ({
               <span>I couldn't find my paper.</span>
             </div>
             <div className={s.footerButtonWrapper}>
-              <Button elementType="button" color="black" variant="text" onClick={onCloseDialog}>
-                <span>Cancel</span>
+              <Button elementType="button" color="black" variant="text" onClick={onCloseDialog} type="button">
+                <span>CANCEL</span>
               </Button>
               <Button elementType="button" color="black" variant="contained" type="submit">
-                <span>Next</span>
+                <span>NEXT</span>
               </Button>
             </div>
           </Form>

@@ -19,10 +19,12 @@ const ResolvedPendingPaperDialog: FC<ResolvedPendingPaperDialogProps> = ({ handl
       <div className={s.boxContainer}>
         <div className={s.boxWrapper}>
           <div style={{ marginTop: 0 }} className={s.header}>
-            <div className={s.title}>Resolved Pending Paper</div>
+            <div className={s.title}>Resolved Pending Publication</div>
             <Icon icon="X_BUTTON" className={s.iconWrapper} onClick={handleCloseDialog} />
           </div>
-          <ResolvedPendingPaperDialogBody paper={paper} handleCloseDialog={handleCloseDialog} />
+          <div className={s.dialogBody}>
+            <ResolvedPendingPaperDialogBody paper={paper} handleCloseDialog={handleCloseDialog} />
+          </div>
         </div>
       </div>
     </div>
