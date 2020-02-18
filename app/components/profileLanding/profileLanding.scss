@@ -1,32 +1,90 @@
-.wrapper {
-  width: 100%;
-  max-width: 1120px;
-  margin: 20vh auto $footer-height auto;
-  color: $black0;
+:global(.no-webp) .pageContainer {
+  background-image: url('https://assets.pluto.network/scinapse-new-background.png');
+  background-size: cover;
+}
 
-  h1 {
-    margin: 16px 0;
-    font-size: 36px;
-  }
+:global(.webp) .pageContainer {
+  background-image: url('https://assets.pluto.network/scinapse-new-background.webp');
+  background-size: cover;
+}
+
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+  padding-bottom: 100px;
+}
+
+.wrapper {
+  max-width: 1200px;
+  color: $black0;
+  display: flex;
+  flex: 1 0 auto;
+  margin-top: $navbar_height;
+  padding: 56px 24px 0 24px;
+  line-height: 1.5;
 }
 
 .title {
+  font-size: 56px;
   margin: 0;
 }
 
-.information {
-  margin: 32px 0;
+.paragraphTitle {
+  font-size: 24px;
+  margin: 0;
+  margin-bottom: 32px;
 }
 
-.infoWrapper {
-  display: flex;
+.subtitle {
+  color: $black1;
   font-size: 20px;
+  margin-top: 8px;
+  margin-bottom: 32px;
+}
+
+.btnContainer {
+  margin-top: 32px;
 }
 
 .bannerImage {
-  width: 410px;
-  height: 410px;
-  transform: rotateY(180deg);
+  position: absolute;
+  top: 19px;
+  left: 88px;
+  width: 640px;
+  height: auto;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 1);
+}
+
+.researchersImage {
+  width: 480px;
+  height: auto;
+  margin-top: 9px;
+}
+
+.rightBox {
+  position: relative;
+  width: 580px;
+}
+
+.leftBox {
+  margin-right: 64px;
+}
+
+.listWrapper + .listWrapper {
+  margin-top: 32px;
+}
+
+.listTitle {
+  color: $black0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.listDescription {
+  color: $black1;
+  font-size: 16px;
 }
 
 @media (max-width: $mobile_width) {
@@ -34,21 +92,16 @@
     margin-top: $navbar_height + 32px;
     padding: 0 16px;
     display: block;
+    width: 100%;
 
     h1 {
       font-size: 24px;
     }
   }
 
-  .infoWrapper {
-    display: block;
-  }
-
+  .leftBox,
+  .rightBox,
   .bannerImage {
-    width: 350px;
-    height: 350px;
-    transform: unset;
-    margin-left: -58px;
-    margin-top: 32px;
+    display: none;
   }
 }

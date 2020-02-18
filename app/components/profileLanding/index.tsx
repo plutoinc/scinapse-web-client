@@ -5,6 +5,7 @@ import { isEqual } from 'lodash';
 import { Button } from '@pluto_network/pluto-design-elements';
 import AffiliationAPI from '../../api/affiliation';
 import { AppState } from '../../reducers';
+import ImprovedFooter from '../layouts/improvedFooter';
 import globalDialogManager from '../../helpers/globalDialogManager';
 import { getCurrentPageType } from '../locationListener';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
@@ -66,30 +67,91 @@ const ProfileLanding: FC = () => {
   };
 
   return (
-    <div className={s.wrapper}>
-      <div>
-        <h1>Welcome to your professional research community</h1>
-        <p>Make your own profile, and join the research network</p>
-        <p>If you are already a Scinapse user, please sign in.</p>
-        <div className={s.btnContainer}>
-          {!currentUser.isLoggedIn && (
-            <Button
-              style={{ marginBottom: '16px' }}
-              elementType="button"
-              color="gray"
-              isLoading={!isLoaded}
-              onClick={handleSigninButtonClick}
-              fullWidth
-            >
-              <span>Sign in</span>
-            </Button>
-          )}
-          <Button elementType="button" color="blue" isLoading={!isLoaded} onClick={handleClickContinueBtn} fullWidth>
-            <span>{currentUser.isLoggedIn ? 'Create profile' : 'Create an account & make profile'}</span>
-          </Button>
+    <>
+      <div className={s.pageContainer}>
+        <div className={s.wrapper}>
+          <div>
+            <h1 className={s.title}>
+              <div>Create</div>
+              <div>your professional</div>
+              <div>researcher profile</div>
+            </h1>
+            <div className={s.subtitle}>Create your publication profile and join the community for free</div>
+            <div>If you already use scinapse, please log in first to create your profile</div>
+            <div>Or sign up & create profile now</div>
+            <div className={s.btnContainer}>
+              {!currentUser.isLoggedIn && (
+                <Button
+                  size="large"
+                  style={{ marginBottom: '16px' }}
+                  elementType="button"
+                  color="blue"
+                  variant="outlined"
+                  isLoading={!isLoaded}
+                  onClick={handleSigninButtonClick}
+                  fullWidth
+                >
+                  <span>Sign in</span>
+                </Button>
+              )}
+              <Button
+                size="large"
+                elementType="button"
+                color="blue"
+                isLoading={!isLoaded}
+                onClick={handleClickContinueBtn}
+                fullWidth
+              >
+                <span>{currentUser.isLoggedIn ? 'Create profile' : 'Create an account & make profile'}</span>
+              </Button>
+            </div>
+          </div>
+          <div className={s.rightBox}>
+            <img
+              className={s.bannerImage}
+              src="//assets.scinapse.io/images/profile_hawking_screenshot.png"
+              alt="profile show page example image"
+            />
+          </div>
+        </div>
+        <div className={s.wrapper}>
+          <div className={s.leftBox}>
+            <img
+              className={s.researchersImage}
+              src="//assets.scinapse.io/images/researchers.png"
+              alt="researchers image"
+            />
+          </div>
+          <div>
+            <h1 className={s.paragraphTitle}>Welcome to the professional research community</h1>
+            <div className={s.listWrapper}>
+              <div className={s.listTitle}>
+                Share your list of publications with colleagues and professional communities
+              </div>
+              <div className={s.listDescription}>
+                Share your professional academic profile on your website or on your organization’s site
+              </div>
+            </div>
+            <div className={s.listWrapper}>
+              <div className={s.listTitle}>Display and manage your publication list</div>
+              <div className={s.listDescription}>
+                Share your publication list, educational and experience background, awards (no personal information
+                shared) on your professional profile
+              </div>
+            </div>
+            <div className={s.listWrapper}>
+              <div className={s.listTitle}>See your profile analysis</div>
+              <div className={s.listDescription}>
+                <div>Know how many people saw your profile</div>
+                <div>Know which new papers cited your paper</div>
+                <div>and more features coming!</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+      <ImprovedFooter containerStyle={{ width: '100%', backgroundColor: 'white' }} />
+    </>
   );
 };
 
