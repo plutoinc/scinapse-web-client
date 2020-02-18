@@ -31,9 +31,13 @@ const profilePaperListSlice = createSlice({
       state.maxPage = action.payload.totalPages;
       state.paperIds = action.payload.paperIds;
     },
+    addPaper(state, action: PayloadAction<{ paperId: string }>) {
+      state.totalCount = state.totalCount + 1;
+      state.paperIds = [action.payload.paperId, ...state.paperIds];
+    },
   },
 });
 
-export const { getPapers } = profilePaperListSlice.actions;
+export const { getPapers, addPaper } = profilePaperListSlice.actions;
 
 export default profilePaperListSlice.reducer;

@@ -1,12 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { remove } from 'lodash';
 
 export interface PendingPaper {
-  id: number;
-  paperId: null;
+  id: string;
+  paperId: string;
   title: string;
   author: string;
   journal: string;
   year: number;
+  tryAgain: boolean;
 }
 
 export interface ProfilePendingPaperListState {
@@ -24,9 +26,24 @@ const profilePendingPaperListSlice = createSlice({
     getPendingPapers(state, action: PayloadAction<{ papers: PendingPaper[] }>) {
       state.papers = action.payload.papers;
     },
+    removePendingPaper(state, action: PayloadAction<{ paperId: string }>) {
+      const prevPapers = state.papers;
+      const nextPapers = remove(prevPapers, paper => paper.id !== action.payload.paperId);
+
+      state.papers = nextPapers;
+    },
+    markTryAgainPendingPaper(state, action: PayloadAction<{ paperId: string }>) {
+      const targetIndex = state.papers.findIndex(paper => paper.id === action.payload.paperId);
+
+      state.papers = [
+        ...state.papers.slice(0, targetIndex),
+        { ...state.papers[targetIndex], tryAgain: true },
+        ...state.papers.slice(targetIndex + 1),
+      ];
+    },
   },
 });
 
-export const { getPendingPapers } = profilePendingPaperListSlice.actions;
+export const { getPendingPapers, removePendingPaper, markTryAgainPendingPaper } = profilePendingPaperListSlice.actions;
 
 export default profilePendingPaperListSlice.reducer;

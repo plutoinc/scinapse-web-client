@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { chunk } from 'lodash';
 import { PendingPaper } from '../../../../reducers/profilePendingPaperList';
 import PendingPaperItem from '../pendingPaperItem';
@@ -9,22 +9,37 @@ const s = require('./pendingPaperList.scss');
 
 interface PendingPaperListProps {
   papers: PendingPaper[];
+  isEditable: boolean;
 }
 
 const PendingPaperList: React.FC<PendingPaperListProps> = props => {
   useStyles(s);
 
-  const { papers } = props;
+  const { papers, isEditable } = props;
   const chunkedPapers = useMemo(() => chunk(papers, 5), [papers]);
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showPapers, setShowPapers] = useState<PendingPaper[]>(chunkedPapers[0]);
 
-  const paperList = useMemo(
+  useEffect(
     () => {
-      return showPapers.map(paper => <PendingPaperItem paper={paper} key={paper.id} />);
+      if (currentIndex === 0) {
+        setShowPapers(chunkedPapers[0]);
+      } else {
+        const nextShowPapers = [];
+        for (let i = 0; i <= currentIndex; i++) {
+          if (!!chunkedPapers[i]) {
+            nextShowPapers.push(...chunkedPapers[i]);
+          }
+        }
+        setShowPapers(nextShowPapers);
+      }
     },
-    [showPapers]
+    [chunkedPapers, currentIndex]
+  );
+
+  const paperList = useMemo(
+    () => showPapers.map(paper => <PendingPaperItem paper={paper} key={paper.id} isEditable={isEditable} />),
+    [showPapers, isEditable]
   );
 
   const moreLessButton = useMemo(
@@ -37,7 +52,6 @@ const PendingPaperList: React.FC<PendingPaperListProps> = props => {
             className={s.paperLoadButton}
             onClick={() => {
               setCurrentIndex(currentIndex + 1);
-              setShowPapers([...showPapers, ...chunkedPapers[currentIndex + 1]]);
             }}
           >
             VIEW MORE
@@ -58,7 +72,7 @@ const PendingPaperList: React.FC<PendingPaperListProps> = props => {
         </div>
       );
     },
-    [currentIndex, chunkedPapers, showPapers]
+    [currentIndex, chunkedPapers]
   );
 
   return (

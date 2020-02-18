@@ -7,6 +7,7 @@ import { paperSchema, Paper } from '../../model/paper';
 import { PaginationResponseV2 } from '../types/common';
 import { getSafeAuthor, getIdSafePaper } from '../../helpers/getIdSafeData';
 import { profileEntitySchema } from '../../model/profile';
+import { PaperAuthor } from '../../model/author';
 
 export const DEFAULT_AUTHOR_PAPERS_SIZE = 10;
 
@@ -198,6 +199,13 @@ class AuthorAPI extends PlutoAxios {
     const papers = paperResponse.data.content.map(getIdSafePaper);
 
     return papers;
+  }
+
+  public async getAllAuthors(paperId: string): Promise<PaperAuthor[]> {
+    const res = await this.get(`/papers/${paperId}/authors/all`);
+    const authorsInfo: PaperAuthor[] = res.data.data.content;
+
+    return authorsInfo;
   }
 }
 

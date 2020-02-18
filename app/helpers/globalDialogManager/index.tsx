@@ -5,6 +5,7 @@ import { Collection } from '../../model/collection';
 import { Paper, PaperFigure } from '../../model/paper';
 import { SignUpConversionExpTicketContext as AuthContext } from '../../constants/abTest';
 import { PaperProfile } from '../../model/profile';
+import { PendingPaper } from '../../reducers/profilePendingPaperList';
 
 interface OpenAuthDialogParams {
   authContext: AuthContext;
@@ -125,6 +126,15 @@ class GlobalDialogManager {
         paperFigures,
         currentPaperFigureIndex,
         viewDetailFigureTargetPaperId,
+      })
+    );
+  }
+
+  public openResolvedPendingPaperDialog(targetPendingPaper: PendingPaper) {
+    StoreManager.store.dispatch(
+      ActionCreators.openGlobalDialog({
+        type: GLOBAL_DIALOG_TYPE.RESOLVED_PENDING_PAPER,
+        targetPendingPaper,
       })
     );
   }
