@@ -23,6 +23,14 @@
   width: 100%;
 }
 
+.formDescription {
+  line-height: 1.5;
+  color: $gray700;
+  font-size: 14px;
+  padding-left: 10px;
+  padding-bottom: 8px;
+}
+
 .errorMessage {
   font-size: 14px;
   padding: 0 10px;

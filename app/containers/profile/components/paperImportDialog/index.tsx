@@ -62,7 +62,7 @@ const Header: React.FC<{
             [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.AUTHOR_URLS,
           })}
         >
-          Author Urls
+          Author URL
         </span>
       </div>
     </div>

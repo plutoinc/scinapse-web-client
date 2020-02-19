@@ -1,11 +1,16 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import { Button } from '@pluto_network/pluto-design-elements';
 import { withStyles } from '../../helpers/withStylesHelper';
 import { Author } from '../../model/author/author';
 import formatNumber from '../../helpers/formatNumber';
 import { UserDevice } from '../layouts/reducer';
 import RequestProfileFormDialog from '../requestProfileForm';
+
 const styles = require('./authorShowHeader.scss');
 
 interface AuthorShowHeaderProps {
@@ -18,6 +23,7 @@ interface AuthorShowHeaderState {
   isTruncated: boolean;
   expanded: boolean;
   isOpenRequestProfileDialog: boolean;
+  isOpenProfileInformationDialog: boolean;
 }
 
 @withStyles<typeof AuthorShowHeader>(styles)
@@ -29,12 +35,13 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
       isTruncated: false,
       expanded: false,
       isOpenRequestProfileDialog: false,
+      isOpenProfileInformationDialog: false,
     };
   }
 
   public render() {
     const { author, navigationContent, userDevice } = this.props;
-    const { isOpenRequestProfileDialog } = this.state;
+    const { isOpenRequestProfileDialog, isOpenProfileInformationDialog } = this.state;
     return (
       <div className={styles.headerBox}>
         <div className={styles.container}>
@@ -68,10 +75,16 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
                   elementType="button"
                   variant="outlined"
                   color="gray"
+                  size="large"
                 >
-                  <span>This is me</span>
+                  <span>👋 This is me</span>
                 </Button>
-                <div className={styles.profileDescription}>What is the 'profile'? </div>
+                <div
+                  onClick={() => this.setState(prev => ({ ...prev, isOpenProfileInformationDialog: true }))}
+                  className={styles.profileDescription}
+                >
+                  What is this?
+                </div>
               </div>
             </div>
           </div>
@@ -82,6 +95,26 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
           open={isOpenRequestProfileDialog}
           authorId={author.id}
         />
+        <Dialog
+          onClose={() => this.setState(prev => ({ ...prev, isOpenProfileInformationDialog: false }))}
+          open={isOpenProfileInformationDialog}
+        >
+          <DialogTitle>What is the profile?</DialogTitle>
+          <DialogContent classes={{ root: styles.profileInformationContent }}>
+            <img
+              src="//assets.scinapse.io/images/profile_hawking_screenshot.png"
+              alt="profile show page example image"
+            />
+            <DialogContentText classes={{ root: styles.profileInformationContentText }}>
+              This allows authors to claim their author profile pages and make changes. <br />
+              In order to edit your information, we will need to verify using your email affiliated with your school or
+              organization. <br />
+              Once you are verified, you can edit your list of your publications, past & current affiliations, awards,
+              experience, education, and more. <br />
+              More features will be added to enhance your research experience and career.
+            </DialogContentText>
+          </DialogContent>
+        </Dialog>
       </div>
     );
   }

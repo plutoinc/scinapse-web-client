@@ -77,7 +77,7 @@ const ProfileLanding: FC = () => {
               <div>researcher profile</div>
             </h1>
             <div className={s.subtitle}>Create your publication profile and join the community for free</div>
-            <div>If you already use scinapse, please log in first to create your profile</div>
+            <div>If you already use Scinapse, please log in first to create your profile</div>
             <div>Or sign up & create profile now</div>
             <div className={s.btnContainer}>
               {!currentUser.isLoggedIn && (

@@ -35,7 +35,11 @@ const AuthorUrlsImportForm: React.FC<AuthorUrlsImportFormProps> = ({ isLoading, 
 
   return (
     <div className={s.formWrapper}>
-      <div className={s.formTitle}>AUTHOR URLS</div>
+      <div className={s.formTitle}>URL of author page on scinapse</div>
+      <div className={s.formDescription}>
+        Copy & Paste the URL of your author page on scinapse.<br />
+        (If you are shown on multiple pages, please put all author URLs)
+      </div>
       <Formik
         initialValues={{ authorUrls: ['', '', ''] }}
         onSubmit={onSubmitAuthorUrls}
