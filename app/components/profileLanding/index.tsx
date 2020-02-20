@@ -24,19 +24,22 @@ const ProfileLanding: FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
 
-  const getAffiliationFromQueryString = useCallback(async () => {
-    try {
-      const profileAffiliation = await AffiliationAPI.getAffiliation(aid);
-      if (profileAffiliation.domains.length === 0) {
+  const getAffiliationFromQueryString = useCallback(
+    async (aid: string) => {
+      try {
+        const profileAffiliation = await AffiliationAPI.getAffiliation(aid);
+        if (profileAffiliation.domains.length === 0) {
+          history.push('/profiles/landing/enquiry');
+        }
+
+        setIsLoaded(true);
+      } catch (err) {
+        console.error(err);
         history.push('/profiles/landing/enquiry');
       }
-
-      setIsLoaded(true);
-    } catch (err) {
-      console.error(err);
-      history.push('/profiles/landing/enquiry');
-    }
-  }, [history]);
+    },
+    [history]
+  );
 
   useEffect(() => {
     if (currentUser.profileSlug) {
@@ -52,7 +55,7 @@ const ProfileLanding: FC = () => {
       history.push('/profiles/landing/enquiry');
     }
 
-    getAffiliationFromQueryString();
+    getAffiliationFromQueryString(aid);
   }, [location.search, history, getAffiliationFromQueryString]);
 
   return (
