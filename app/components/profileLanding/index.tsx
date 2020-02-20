@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useHistory } from 'react-router-dom';
 import { isEqual } from 'lodash';
@@ -6,9 +6,10 @@ import { Button } from '@pluto_network/pluto-design-elements';
 import AffiliationAPI from '../../api/affiliation';
 import { AppState } from '../../reducers';
 import ImprovedFooter from '../layouts/improvedFooter';
-import globalDialogManager from '../../helpers/globalDialogManager';
+import GlobalDialogManager from '../../helpers/globalDialogManager';
 import { getCurrentPageType } from '../locationListener';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
+
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./profileLanding.scss');
 
@@ -23,48 +24,36 @@ const ProfileLanding: FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
 
-  useEffect(
-    () => {
-      if (currentUser.profileSlug) history.push(`/profiles/${currentUser.profileSlug}`);
-    },
-    [currentUser.profileSlug, history]
-  );
+  const getAffiliationFromQueryString = useCallback(async () => {
+    try {
+      const profileAffiliation = await AffiliationAPI.getAffiliation(aid);
+      if (profileAffiliation.domains.length === 0) {
+        history.push('/profiles/landing/enquiry');
+      }
 
-  useEffect(
-    () => {
-      const queryString = getQueryParamsObject(location.search);
-      const { aid } = queryString as ProfileLandingQuery;
-
-      if (!aid) history.push('/profiles/landing/enquiry');
-
-      AffiliationAPI.getAffiliation(aid)
-        .then(profileAff => {
-          if (profileAff.domains.length === 0) history.push('/profiles/landing/enquiry');
-          setIsLoaded(true);
-        })
-        .catch(() => {
-          history.push('/profiles/landing/enquiry');
-        });
-    },
-    [location.search, history]
-  );
-
-  const handleClickContinueBtn = () => {
-    if (isLoaded) {
-      history.push(`/profiles/verify-email${location.search}`);
+      setIsLoaded(true);
+    } catch (err) {
+      console.error(err);
+      history.push('/profiles/landing/enquiry');
     }
-  };
+  }, [history]);
 
-  const handleSigninButtonClick = () => {
-    globalDialogManager.openSignInDialog({
-      authContext: {
-        pageType: getCurrentPageType(),
-        actionArea: 'createProfile',
-        actionLabel: null,
-      },
-      isBlocked: false,
-    });
-  };
+  useEffect(() => {
+    if (currentUser.profileSlug) {
+      history.push(`/profiles/${currentUser.profileSlug}`);
+    }
+  }, [currentUser.profileSlug, history]);
+
+  useEffect(() => {
+    const queryString = getQueryParamsObject(location.search);
+    const { aid } = queryString as ProfileLandingQuery;
+
+    if (!aid) {
+      history.push('/profiles/landing/enquiry');
+    }
+
+    getAffiliationFromQueryString();
+  }, [location.search, history, getAffiliationFromQueryString]);
 
   return (
     <>
@@ -88,7 +77,16 @@ const ProfileLanding: FC = () => {
                   color="blue"
                   variant="outlined"
                   isLoading={!isLoaded}
-                  onClick={handleSigninButtonClick}
+                  onClick={() =>
+                    GlobalDialogManager.openSignInDialog({
+                      authContext: {
+                        pageType: getCurrentPageType(),
+                        actionArea: 'createProfile',
+                        actionLabel: null,
+                      },
+                      isBlocked: false,
+                    })
+                  }
                   fullWidth
                 >
                   <span>Sign in</span>
@@ -99,7 +97,11 @@ const ProfileLanding: FC = () => {
                 elementType="button"
                 color="blue"
                 isLoading={!isLoaded}
-                onClick={handleClickContinueBtn}
+                onClick={() => {
+                  if (isLoaded) {
+                    history.push(`/profiles/verify-email${location.search}`);
+                  }
+                }}
                 fullWidth
               >
                 <span>{currentUser.isLoggedIn ? 'Create profile' : 'Create an account & make profile'}</span>
