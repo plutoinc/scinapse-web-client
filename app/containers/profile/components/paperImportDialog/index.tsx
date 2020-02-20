@@ -10,8 +10,7 @@ import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import DialogBody, { CURRENT_STEP, IMPORT_SOURCE_TAB } from '../paperImportDialogBody';
 import { fetchProfileImportedPapers } from '../../../../actions/profile';
 import alertToast from '../../../../helpers/makePlutoToastAction';
-import { AuthorUrlsFormState } from '../authorUrlsImportForm';
-import { SCINAPSE_AUTHOR_SHOW_PREFIX } from '../authorUrlsImportField';
+import { AuthorUrlsFormState, SCINAPSE_AUTHOR_SHOW_PREFIX } from '../authorUrlsImportForm';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperImportDialog.scss');
 
@@ -29,15 +28,6 @@ const Header: React.FC<{
     <div className={s.tabBoxWrapper}>
       <div className={s.normalTabWrapper}>
         <span
-          onClick={() => onClickTab(IMPORT_SOURCE_TAB.GS)}
-          className={classNames({
-            [`${s.tabItem}`]: true,
-            [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.GS,
-          })}
-        >
-          Google Scholar
-        </span>
-        <span
           onClick={() => onClickTab(IMPORT_SOURCE_TAB.BIBTEX)}
           className={classNames({
             [`${s.tabItem}`]: true,
@@ -54,6 +44,15 @@ const Header: React.FC<{
           })}
         >
           Citation Text
+        </span>
+        <span
+          onClick={() => onClickTab(IMPORT_SOURCE_TAB.GS)}
+          className={classNames({
+            [`${s.tabItem}`]: true,
+            [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.GS,
+          })}
+        >
+          Google Scholar
         </span>
         <span
           onClick={() => onClickTab(IMPORT_SOURCE_TAB.AUTHOR_URLS)}
@@ -114,7 +113,7 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClo
   const dispatch = useDispatch();
 
   const [inProgressStep, setInProgressStep] = useState<CURRENT_STEP>(CURRENT_STEP.PROGRESS);
-  const [activeTab, setActiveTab] = useState<IMPORT_SOURCE_TAB>(IMPORT_SOURCE_TAB.GS);
+  const [activeTab, setActiveTab] = useState<IMPORT_SOURCE_TAB>(IMPORT_SOURCE_TAB.BIBTEX);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubmitGS = async (params: GSFormState) => {
@@ -200,7 +199,7 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClo
   const onCloseDialog = () => {
     handleClosePaperImportDialog();
     setInProgressStep(CURRENT_STEP.PROGRESS);
-    setActiveTab(IMPORT_SOURCE_TAB.GS);
+    setActiveTab(IMPORT_SOURCE_TAB.BIBTEX);
   };
 
   return (
