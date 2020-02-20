@@ -26,6 +26,18 @@
   line-height: 1.5;
 }
 
+.enquiryWrapper {
+  max-width: 1200px;
+  color: $black0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0 auto;
+  flex: 1 0 auto;
+  padding: $navbar_height + 56px 24px 0 24px;
+  line-height: 1.5;
+}
+
 .title {
   font-size: 56px;
   margin: 0;
@@ -46,6 +58,15 @@
 
 .btnContainer {
   margin-top: 32px;
+}
+
+.infoWrapper {
+  display: flex;
+}
+
+.enquiryBannerImage {
+  width: 360px;
+  height: auto;
 }
 
 .bannerImage {

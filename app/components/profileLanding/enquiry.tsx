@@ -4,18 +4,26 @@ const s = require('./profileLanding.scss');
 
 const ProfileLandingEnquiry: FC = () => {
   return (
-    <div className={s.wrapper}>
-      <h1 className={s.title}>We're sorry.</h1>
-      <div className={s.infoWrapper}>
+    <div className={s.enquiryWrapper}>
+      <div>
+        <h1 className={s.title}>We're sorry.</h1>
         <div>
           <div className={s.information}>
-            We cannot process your request at this time. Please make sure you access the page with the proper affiliation code.
-      </div>
+            We cannot process your request at this time.
+            <br />
+            Please make sure you access the page with the proper affiliation code.
+          </div>
           <div className={s.subInformation}>
-            For any other inquiries, send us an <a href="mailto:team@pluto.network"><i>email</i></a>.
-      </div>
+            For any other inquiries, send us an{' '}
+            <a href="mailto:team@pluto.network">
+              <i>email</i>
+            </a>
+            .
+          </div>
         </div>
-        <img className={s.bannerImage} src="//assets.scinapse.io/images/researcher.png" alt="researcher image" />
+      </div>
+      <div className={s.infoWrapper}>
+        <img className={s.enquiryBannerImage} src="//assets.scinapse.io/images/researcher.png" alt="researcher image" />
       </div>
     </div>
   );
