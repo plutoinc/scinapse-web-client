@@ -61,6 +61,22 @@ input {
   }
 }
 
+.title {
+  color: $black0;
+  font-size: 40px;
+  margin-top: 0;
+  margin-bottom: 32px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.description {
+  color: $black1;
+  line-height: 1.5;
+  font-size: 18px;
+  margin-bottom: 32px;
+}
+
 .formLabel {
   @extend %base-label;
 }

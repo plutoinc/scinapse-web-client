@@ -1,6 +1,5 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Formik, Form, Field, FormikErrors } from 'formik';
-import { useSelector } from 'react-redux';
 import { Button } from '@pluto_network/pluto-design-elements';
 import classNames from 'classnames';
 import { Affiliation } from '../../model/affiliation';
@@ -10,8 +9,6 @@ import Icon from '../../icons';
 import { ProfileEmailQueryParams } from '../profileVerifyEmail';
 import { ProfileAffiliation } from '../../model/profileAffiliation';
 import AffiliationAPI from '../../api/affiliation';
-import { UserDevice } from '../layouts/reducer';
-import { AppState } from '../../reducers';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./profileVerifyEmailForm.scss');
@@ -67,7 +64,6 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isEmailSent, setIsEmailSent] = useState<boolean>(false);
   const [invalidEmailMessage, setInvalidEmailMessage] = useState<string | null>(null);
-  const userDevice = useSelector<AppState, UserDevice>(state => state.layout.userDevice);
 
   useEffect(() => {
     async function fetchProfileAffiliation() {
@@ -139,6 +135,13 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
                 }
                 return (
                   <Form>
+                    <div className={s.description}>
+            In order to create your profile, we need to verify through your email address affiliated to your
+            school/organization.<br />
+            Once you click “send”, you will receive a verification email to your email address to proceed.<br />
+            (In the case we reached out to you first, your affiliation and email domain address should already be filled
+            in).
+          </div>
                     <div className={s.formRow}>
                       <div className={s.formWrapper}>
                         <label className={s.formLabel}>Affiliation</label>
@@ -164,7 +167,7 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
                     >
                       <div className={s.formWrapper}>
                         <label className={s.formLabel}>Email</label>
-                        <div className={s.emailPrefixInputCotainer}>
+                        <div className={s.emailPrefixInputContainer}>
                           <Field
                             name="emailPrefix"
                             placeholder="Email"
@@ -190,21 +193,21 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
                           </Field>
                           <Icon icon="ARROW_DOWN" />
                         </div>
-                        <span className={s.errorMsg}>{touched.emailPrefix && errors.emailPrefix}</span>
-                        <span className={s.errorMsg}>{touched.emailPrefix && invalidEmailMessage}</span>
+                        {touched.emailPrefix && errors.emailPrefix && <span className={s.errorMsg}>{errors.emailPrefix}</span>}
+                        {touched.emailPrefix && invalidEmailMessage && <span className={s.errorMsg}>{invalidEmailMessage}</span>}
                       </div>
                     </div>
                     <Button
                       type="submit"
                       elementType="button"
-                      variant="contained"
-                      color="blue"
+                      size="large"
                       onClick={submitForm}
                       isLoading={isLoading}
-                      fullWidth={userDevice === UserDevice.MOBILE}
+                      style={{ marginTop: '32px' }}
+                      fullWidth
                     >
                       <Icon icon="SEND" />
-                      <span>Send email</span>
+                      <span>Send verification email</span>
                     </Button>
                   </Form>
                 )

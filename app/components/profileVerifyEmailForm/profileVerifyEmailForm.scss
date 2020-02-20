@@ -4,10 +4,9 @@
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  margin: 0 0 24px 0;
 
   & + & {
-    margin-top: 24px;
+    margin-top: 16px;
   }
 
   &.dynamicFormRow {
@@ -27,16 +26,25 @@
   width: 100%;
   display: flex;
   flex-flow: column nowrap;
+
+  & + & {
+    margin-left: 12px;
+  }
 }
 
-.formWrapper + .formWrapper {
-  margin-left: 12px;
+.description {
+  color: $black1;
+  line-height: 1.5;
+  font-size: 18px;
+  margin-bottom: 32px;
 }
 
-.emailPrefixInputCotainer {
+.emailPrefixInputContainer {
   display: flex;
   flex-flow: row nowrap;
   position: relative;
+  border: solid 1px $gray500;
+  border-radius: 4px;
 
   .inputForm {
     border-top-right-radius: 0;
@@ -68,6 +76,7 @@
   @extend %base-input-style;
   cursor: auto;
   font-size: 16px;
+  border: 0;
 
   &.hasError {
     border-color: $red0;
@@ -86,9 +95,10 @@
   display: inline-flex;
   padding: 0 32px 0 16px;
   border-color: $gray500;
-  border-radius: 0 5px 5px 0;
-  border-left: 0;
+  border-radius: 0 4px 4px 0;
   background-color: $gray200;
+  border: 0;
+  border-left: 1px solid $gray500;
   color: $gray700;
   cursor: pointer;
 }
@@ -115,7 +125,7 @@
   font-family: $fallback;
   font-size: 16px;
   letter-spacing: 1px;
-  margin-top: 24px;
+  margin-top: 16px;
 }
 
 @media (max-width: $mobile_width) {

@@ -29,7 +29,7 @@ const ProfileVerifyEmail: FC = () => {
     <>
       <div className={s.wrapper}>
         <div className={s.cardContainer}>
-          <h2>Verify by email</h2>
+          <h2 className={s.title}>Verification</h2>
           <ProfileVerifyEmailForm queryParams={getQueryParamsObject(location.search)} />
         </div>
       </div>

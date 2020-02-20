@@ -201,8 +201,8 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
               {formikProps => {
                 return (
                   <Form className={s.formContainer}>
-                    <h2>Registration</h2>
-                    <div>To create your account and profile page, fill in the following information below.</div>
+                    <h2 className={s.title}>Registration</h2>
+                    <div className={s.description}>To create your account and profile page, fill in the following information below.</div>
                     <AffiliationInputField
                       formikProps={formikProps}
                       profileAffiliation={verificationState && verificationState?.affiliation}
@@ -217,11 +217,11 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
                     />
                     <div className={s.formRow}>
                       {formStatus === 'PROFILE' ? (
-                        <Button elementType="button" type="submit" color="blue">
+                        <Button size="large" elementType="button" type="submit" fullWidth>
                           <span>Create profile</span>
                         </Button>
                       ) : (
-                        <Button elementType="button" type="submit" color="blue">
+                        <Button size="large" elementType="button" type="submit" fullWidth>
                           <span>Create account & profile</span>
                         </Button>
                       )}
