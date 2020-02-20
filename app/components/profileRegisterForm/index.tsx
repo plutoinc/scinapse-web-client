@@ -126,25 +126,22 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = props => {
   const history = useHistory();
   const dispatch = useDispatch();
   const currentUser = useSelector<AppState, CurrentUser>(state => state.currentUser);
-  const [verificationState, setVerificationState] = useState<TokenVerificationRes | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [verificationState, setVerificationState] = useState<TokenVerificationRes | null>(null);
 
-  const formStatus: ProfileRegisterStatus = useMemo(
-    () => {
-      if (!verificationState) return 'NOT_SET';
-      if (verificationState.isMember && currentUser.isLoggedIn) {
-        if (verificationState.memberId === currentUser.id) {
-          return 'PROFILE';
-        } else {
-          return 'WRONG_MEMBER';
-        }
-      } else if (verificationState.isMember && !currentUser.isLoggedIn) {
-        return 'NEED_LOGIN';
+  const formStatus: ProfileRegisterStatus = useMemo(() => {
+    if (!verificationState) return 'NOT_SET';
+    if (verificationState.isMember && currentUser.isLoggedIn) {
+      if (verificationState.memberId === currentUser.id) {
+        return 'PROFILE';
+      } else {
+        return 'WRONG_MEMBER';
       }
-      return 'NOT_A_MEMBER';
-    },
-    [currentUser, verificationState]
-  );
+    } else if (verificationState.isMember && !currentUser.isLoggedIn) {
+      return 'NEED_LOGIN';
+    }
+    return 'NOT_A_MEMBER';
+  }, [currentUser, verificationState]);
 
   const initialValues: ProfileRegisterFormValues = {
     email: '',
@@ -159,14 +156,11 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = props => {
     profileLink: '',
   };
 
-  useEffect(
-    () => {
-      AffiliationAPI.verifyByToken(queryParams.token).then(res => {
-        setVerificationState(res);
-      });
-    },
-    [queryParams.token, currentUser]
-  );
+  useEffect(() => {
+    AffiliationAPI.verifyByToken(queryParams.token).then(res => {
+      setVerificationState(res);
+    });
+  }, [queryParams.token, currentUser]);
 
   const handleSubmit = async (values: ProfileRegisterFormValues) => {
     const { id: affiliation_id, name: affiliation_name } = values.affiliation as Affiliation;
@@ -184,6 +178,8 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = props => {
     setIsLoading(true);
 
     try {
+      setIsLoading(true);
+
       let res: Profile | null = null;
       if (formStatus === 'PROFILE') {
         res = await createProfile(queryParams.token, values);
@@ -197,6 +193,7 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = props => {
         await dispatch(checkAuthStatus());
         history.push(`/profiles/${res.id}`);
       }
+      setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
       const error = PlutoAxios.getGlobalError(err);
@@ -223,21 +220,35 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = props => {
                 </div>
                 <AffiliationInputField
                   formikProps={formikProps}
-                  profileAffiliation={verificationState ? verificationState.affiliation : null}
+                  profileAffiliation={verificationState && verificationState?.affiliation}
                 />
                 <EmailPasswordFields
                   formikProps={formikProps}
                   needPwd={formStatus !== 'NOT_A_MEMBER'}
-                  email={verificationState ? verificationState.email : ''}
+                  email={verificationState?.email}
                 />
                 <NameInputFields formikProps={formikProps} />
                 <div className={s.formRow}>
                   {formStatus === 'PROFILE' ? (
-                    <Button size="large" elementType="button" type="submit" fullWidth isLoading={isLoading}>
+                    <Button
+                      size="large"
+                      elementType="button"
+                      type="submit"
+                      isLoading={isLoading}
+                      disabled={isLoading}
+                      fullWidth
+                    >
                       <span>Create profile</span>
                     </Button>
                   ) : (
-                    <Button size="large" elementType="button" type="submit" fullWidth isLoading={isLoading}>
+                    <Button
+                      size="large"
+                      elementType="button"
+                      type="submit"
+                      isLoading={isLoading}
+                      disabled={isLoading}
+                      fullWidth
+                    >
                       <span>Create account & profile</span>
                     </Button>
                   )}
