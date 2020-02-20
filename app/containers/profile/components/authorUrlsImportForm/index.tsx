@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { Formik, Form, FieldArray, ErrorMessage } from 'formik';
 import { object, array, string } from 'yup';
 import { Button } from '@pluto_network/pluto-design-elements';
 import Icon from '../../../../icons';
 import AuthorUrlsImportField from '../authorUrlsImportField';
+import AuthorAPI from '../../../../api/author';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./authorUrlsImportForm.scss');
 
 const SCINAPSE_AUTHOR_SHOW_REGEX = /^https:\/\/scinapse\.io\/authors\//;
+export const SCINAPSE_AUTHOR_SHOW_PREFIX = 'https://scinapse.io/authors/';
 
 export interface AuthorUrlsFormState {
   authorUrls: string[];
@@ -27,11 +29,30 @@ const schema = object().shape({
         excludeEmptyString: false,
       })
     )
-    .required('Please write at least 1 URL'),
+    .required('Please write at least 1 URL')
+    .compact(),
 });
 
 const AuthorUrlsImportForm: React.FC<AuthorUrlsImportFormProps> = ({ isLoading, onSubmitAuthorUrls }) => {
   useStyles(s);
+  const [isFetchLoading, setIsFetchLoading] = useState<boolean>(false);
+
+  const handleBlurUrlField = useCallback(async (authorUrl: string) => {
+    const authorId = authorUrl.split(SCINAPSE_AUTHOR_SHOW_PREFIX)[1];
+
+    if (!authorId) return null;
+
+    setIsFetchLoading(true);
+    try {
+      const res = await AuthorAPI.getAuthor(authorId);
+      const authorData = res.entities.authors[authorId];
+      setIsFetchLoading(false);
+      return authorData.name;
+    } catch (err) {
+      setIsFetchLoading(false);
+      throw err;
+    }
+  }, []);
 
   return (
     <div className={s.formWrapper}>
@@ -43,7 +64,6 @@ const AuthorUrlsImportForm: React.FC<AuthorUrlsImportFormProps> = ({ isLoading, 
       <Formik
         initialValues={{ authorUrls: ['', '', ''] }}
         onSubmit={onSubmitAuthorUrls}
-        enableReinitialize
         validationSchema={schema}
         render={({ values, errors }) => (
           <Form autoComplete="off">
@@ -52,15 +72,27 @@ const AuthorUrlsImportForm: React.FC<AuthorUrlsImportFormProps> = ({ isLoading, 
               render={({ push, remove }) => {
                 return (
                   <div>
-                    {values.authorUrls.map((authorUrl, index) => (
-                      <AuthorUrlsImportField
-                        targetIndex={index}
-                        authorUrl={authorUrl}
-                        onRemoveField={() => remove(index)}
-                        hadError={!!errors.authorUrls && typeof errors.authorUrls === 'object'}
-                        key={index}
-                      />
-                    ))}
+                    {values.authorUrls.map((authorUrl, index) => {
+                      return (
+                        <div className={s.urlInputContainer} key={index}>
+                          <AuthorUrlsImportField
+                            targetIndex={index}
+                            authorUrl={authorUrl}
+                            hadError={!!errors.authorUrls && typeof errors.authorUrls === 'object'}
+                            onRemoveField={() => remove(index)}
+                            onBlurUrlField={handleBlurUrlField}
+                          />
+                          {values.authorUrls.length > 1 &&
+                            index === 0 && (
+                              <div className={s.orSeparatorBox}>
+                                <div className={s.dashedSeparator} />
+                                <div className={s.orContent}>OPTIONAL</div>
+                                <div className={s.dashedSeparator} />
+                              </div>
+                            )}
+                        </div>
+                      );
+                    })}
 
                     <div className={s.addUrlBtn}>
                       <Button
@@ -90,6 +122,7 @@ const AuthorUrlsImportForm: React.FC<AuthorUrlsImportFormProps> = ({ isLoading, 
                         aria-label="Import paper from author url"
                         type="submit"
                         isLoading={isLoading}
+                        disabled={isFetchLoading}
                       >
                         <span>IMPORT</span>
                       </Button>

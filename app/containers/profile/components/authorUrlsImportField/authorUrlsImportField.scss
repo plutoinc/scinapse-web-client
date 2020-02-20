@@ -2,14 +2,6 @@
   display: flex;
 }
 
-.urlInputContainer {
-  padding-bottom: 8px;
-
-  & + & {
-    padding-top: 8px;
-  }
-}
-
 .removeUrlBtn {
   margin-left: 8px;
 }

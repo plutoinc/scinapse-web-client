@@ -10,8 +10,7 @@ import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import DialogBody, { CURRENT_STEP, IMPORT_SOURCE_TAB } from '../paperImportDialogBody';
 import { fetchProfileImportedPapers } from '../../../../actions/profile';
 import alertToast from '../../../../helpers/makePlutoToastAction';
-import { AuthorUrlsFormState } from '../authorUrlsImportForm';
-import { SCINAPSE_AUTHOR_SHOW_PREFIX } from '../authorUrlsImportField';
+import { AuthorUrlsFormState, SCINAPSE_AUTHOR_SHOW_PREFIX } from '../authorUrlsImportForm';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperImportDialog.scss');
 
@@ -200,7 +199,7 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClo
   const onCloseDialog = () => {
     handleClosePaperImportDialog();
     setInProgressStep(CURRENT_STEP.PROGRESS);
-    setActiveTab(IMPORT_SOURCE_TAB.GS);
+    setActiveTab(IMPORT_SOURCE_TAB.BIBTEX);
   };
 
   return (

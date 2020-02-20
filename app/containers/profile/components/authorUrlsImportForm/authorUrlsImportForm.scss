@@ -37,3 +37,30 @@
   color: $red0;
   line-height: 1.5;
 }
+
+.orSeparatorBox {
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+
+  .dashedSeparator {
+    width: 100%;
+    border-top: dashed 1px $gray400;
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+
+  .orContent {
+    font-size: 14px;
+    text-align: center;
+    color: $gray400;
+  }
+}
+
+.urlInputContainer {
+  padding-bottom: 8px;
+
+  & + & {
+    padding-top: 8px;
+  }
+}

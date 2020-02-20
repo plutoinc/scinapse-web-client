@@ -3,50 +3,57 @@ import { ErrorMessage, Field } from 'formik';
 import { Button } from '@pluto_network/pluto-design-elements';
 import Icon from '../../../../icons';
 import FormikInput from '../../../../components/common/formikInput';
-import AuthorAPI from '../../../../api/author';
 import PlutoAxios from '../../../../api/pluto';
 import alertToast from '../../../../helpers/makePlutoToastAction';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./authorUrlsImportField.scss');
 
-export const SCINAPSE_AUTHOR_SHOW_PREFIX = 'https://scinapse.io/authors/';
-
 interface AuthorUrlsImportFieldProps {
   targetIndex: number;
   authorUrl: string;
-  onRemoveField: () => void;
   hadError: boolean;
+  onRemoveField: () => void;
+  onBlurUrlField: (authorUrl: string) => Promise<string | null>;
 }
 
-const AuthorUrlsImportField: FC<AuthorUrlsImportFieldProps> = ({ targetIndex, authorUrl, onRemoveField, hadError }) => {
+const AuthorUrlsImportField: FC<AuthorUrlsImportFieldProps> = ({
+  targetIndex,
+  authorUrl,
+  onRemoveField,
+  onBlurUrlField,
+  hadError,
+}) => {
   useStyles(s);
   const [authorName, setAuthorName] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const onBlurUrlField = useCallback(
+  const fetchAuthorNameFromAuthorUrl = useCallback(
     async () => {
-      const authorId = authorUrl.split(SCINAPSE_AUTHOR_SHOW_PREFIX)[1];
-      if (authorId) {
-        setIsLoading(true);
-        try {
-          const res = await AuthorAPI.getAuthor(authorId);
-          const authorData = res.entities.authors[authorId];
-          setAuthorName(authorData.name);
+      setIsLoading(true);
+      try {
+        const targetAuthorName = await onBlurUrlField(authorUrl);
+
+        if (!targetAuthorName) {
+          setAuthorName('');
           setIsLoading(false);
-        } catch (err) {
-          const error = PlutoAxios.getGlobalError(err);
-          alertToast({ type: 'error', message: error.message });
-          setAuthorName(error.message);
-          setIsLoading(false);
+          return;
         }
+
+        setAuthorName(targetAuthorName);
+        setIsLoading(false);
+      } catch (err) {
+        const error = PlutoAxios.getGlobalError(err);
+        alertToast({ type: 'error', message: error.message });
+        setAuthorName(error.message);
+        setIsLoading(false);
       }
     },
-    [authorUrl]
+    [authorUrl, onBlurUrlField]
   );
 
   return (
-    <div className={s.urlInputContainer}>
+    <div>
       <div className={s.inputWrapper}>
         <Field
           name={`authorUrls.${targetIndex}`}
@@ -54,7 +61,13 @@ const AuthorUrlsImportField: FC<AuthorUrlsImportFieldProps> = ({ targetIndex, au
           component={FormikInput}
           variant="outlined"
           placeholder="https://scinapse.io/authors/1234"
-          onBlur={onBlurUrlField}
+          onBlur={fetchAuthorNameFromAuthorUrl}
+          onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              fetchAuthorNameFromAuthorUrl();
+            }
+          }}
           disabled={isLoading}
         />
         <Button
@@ -74,11 +87,11 @@ const AuthorUrlsImportField: FC<AuthorUrlsImportFieldProps> = ({ targetIndex, au
         </Button>
       </div>
       {authorName && <div className={s.authorNameText}>{authorName}</div>}
-      {hadError ? (
+      {hadError && (
         <div className={s.errorMessage}>
           <ErrorMessage name={`authorUrls.${targetIndex}`} />
         </div>
-      ) : null}
+      )}
     </div>
   );
 };
