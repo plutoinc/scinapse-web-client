@@ -5,7 +5,7 @@ type VerificationParams = {
   affiliation_id: string;
   affiliation_domain_id: number;
   email: string;
-}
+};
 
 export type TokenVerificationRes = {
   affiliation: ProfileAffiliation;
@@ -16,7 +16,7 @@ export type TokenVerificationRes = {
   email: string;
   isMember: boolean;
   memberId: number;
-}
+};
 
 class AffiliationAPI extends PlutoAxios {
   public async getAffiliation(affiliationId: string): Promise<ProfileAffiliation> {
@@ -25,8 +25,7 @@ class AffiliationAPI extends PlutoAxios {
   }
 
   public async verifyAffiliation(params: VerificationParams) {
-    const { data } = await this.post(`/affiliation-verification/token`, params);
-    return data.data.content;
+    await this.post(`/affiliation-verification/token`, params);
   }
 
   public async verifyByToken(token: string) {

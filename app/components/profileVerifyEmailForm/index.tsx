@@ -9,19 +9,21 @@ import Icon from '../../icons';
 import { ProfileEmailQueryParams } from '../profileVerifyEmail';
 import { ProfileAffiliation } from '../../model/profileAffiliation';
 import AffiliationAPI from '../../api/affiliation';
+import PlutoAxios from '../../api/pluto';
+import alertToast from '../../helpers/makePlutoToastAction';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./profileVerifyEmailForm.scss');
 
 type ProfileVerifyEmailFormProps = {
   queryParams: ProfileEmailQueryParams;
-}
+};
 
 type ProfileVerifyEmailFormValues = {
   affiliation: Affiliation | SuggestAffiliation;
   emailPrefix: string;
   domain: number;
-}
+};
 
 function formatAffiliation(value?: Affiliation | SuggestAffiliation | string) {
   if (value && (value as Affiliation).name) {
@@ -46,18 +48,18 @@ const validateForm = (values: ProfileVerifyEmailFormValues) => {
   }
 
   return errors;
-}
+};
 
 const ProfileVerifyEmailSentContent: FC = () => {
   return (
     <div className={s.description}>
-      We successfully sent the verification email. Please check your email client. <br/>
+      We successfully sent the verification email. Please check your email client. <br />
       Please check your spam box in case our email didn’t reach you.
     </div>
-  )
-}
+  );
+};
 
-const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
+const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = props => {
   useStyles(s);
   const { queryParams } = props;
   const [affiliationSelected, setAffiliationSelected] = useState<boolean>(false);
@@ -87,135 +89,147 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
     },
     emailPrefix: '',
     domain: -1,
-  }
+  };
 
   const handleSubmit = async (values: ProfileVerifyEmailFormValues) => {
     const { affiliation: inputAffiliation, emailPrefix, domain: domainId } = values;
     const affiliation = inputAffiliation as Affiliation;
+
+    if (!profileAffiliation) return;
+
     setIsLoading(true);
-    const domainName = profileAffiliation?.domains.filter(domain => (domain.id === Number(domainId)))[0].domain;
-    if (affiliation.id && domainId && domainName) {
-      AffiliationAPI.verifyAffiliation({
-        affiliation_id: affiliation.id,
-        affiliation_domain_id: domainId,
-        email: `${emailPrefix}@${domainName}`,
-      }).then(res => {
-        if (res) {
-          setIsEmailSent(true);
-        }
-      }).catch(() => {
-        setInvalidEmailMessage('This email has already been verified.');
-      })
+
+    const domainName = profileAffiliation.domains.filter(domain => domain.id === Number(domainId))[0].domain;
+
+    try {
+      if (affiliation.id && domainId && domainName) {
+        await AffiliationAPI.verifyAffiliation({
+          affiliation_id: affiliation.id,
+          affiliation_domain_id: domainId,
+          email: `${emailPrefix}@${domainName}`,
+        });
+        setIsLoading(false);
+        setIsEmailSent(true);
+      }
+    } catch (err) {
+      setInvalidEmailMessage('This email has already been verified.');
+      const error = PlutoAxios.getGlobalError(err);
+      alertToast({ type: 'error', message: error.message });
+      setIsLoading(false);
     }
-    setIsLoading(false);
-  }
+  };
 
   return (
     <div>
-      {
-        isEmailSent
-          ? <ProfileVerifyEmailSentContent />
-          : (
-            <Formik
-              initialValues={initialValues}
-              onSubmit={handleSubmit}
-              validate={validateForm}
-              validateOnBlur
-              validateOnChange
-            >
-              {({ values, errors, touched, submitForm, setFieldValue }) => {
-                if (profileAffiliation?.domains && profileAffiliation.domains.length > 0 && (values.affiliation as Affiliation).id !== profileAffiliation.id) {
-                  const { id, name, nameAbbrev, domains } = profileAffiliation;
-                  setAffiliationSelected(true);
-                  setFieldValue('affiliation', {
-                    id,
-                    name,
-                    nameAbbrev,
-                  })
-                  setFieldValue('domain', domains[0].id);
-                }
-                return (
-                  <Form>
-                    <div className={s.description}>
-            In order to create your profile, we need to verify through your email address affiliated to your
-            school/organization.<br />
-            Once you click “send”, you will receive a verification email to your email address to proceed.<br />
-            (In the case we reached out to you first, your affiliation and email domain address should already be filled
-            in).
-          </div>
-                    <div className={s.formRow}>
-                      <div className={s.formWrapper}>
-                        <label className={s.formLabel}>Affiliation</label>
-                        <Field
-                          name="affiliation"
-                          component={AffiliationSelectBox}
-                          format={formatAffiliation}
-                          className={classNames({
-                            [s.inputForm]: true,
-                            [s.hasError]: !!errors.affiliation && !!touched.affiliation,
-                          })}
-                          errorWrapperClassName={s.affiliationErrorMsg}
-                          disabled={isLoading || profileAffiliation}
-                        />
-                      </div>
-                    </div>
-                    <div
+      {isEmailSent ? (
+        <ProfileVerifyEmailSentContent />
+      ) : (
+        <Formik
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+          validate={validateForm}
+          validateOnBlur
+          validateOnChange
+          render={({ values, errors, touched, setFieldValue }) => {
+            if (
+              profileAffiliation &&
+              profileAffiliation.domains &&
+              profileAffiliation.domains.length > 0 &&
+              (values.affiliation as Affiliation).id !== profileAffiliation.id
+            ) {
+              const { id, name, nameAbbrev, domains } = profileAffiliation;
+              setAffiliationSelected(true);
+              setFieldValue('affiliation', {
+                id,
+                name,
+                nameAbbrev,
+              });
+              setFieldValue('domain', domains[0].id);
+            }
+
+            return (
+              <Form>
+                <div className={s.description}>
+                  In order to create your profile, we need to verify through your email address affiliated to your
+                  school/organization.
+                  <br />
+                  Once you click “send”, you will receive a verification email to your email address to proceed.
+                  <br />
+                  (In the case we reached out to you first, your affiliation and email domain address should already be
+                  filled in).
+                </div>
+                <div className={s.formRow}>
+                  <div className={s.formWrapper}>
+                    <label className={s.formLabel}>Affiliation</label>
+                    <Field
+                      name="affiliation"
+                      component={AffiliationSelectBox}
+                      format={formatAffiliation}
                       className={classNames({
-                        [s.formRow]: true,
-                        [s.dynamicFormRow]: true,
-                        [s.hide]: !affiliationSelected,
+                        [s.inputForm]: true,
+                        [s.hasError]: !!errors.affiliation && !!touched.affiliation,
                       })}
-                    >
-                      <div className={s.formWrapper}>
-                        <label className={s.formLabel}>Email</label>
-                        <div className={s.emailPrefixInputContainer}>
-                          <Field
-                            name="emailPrefix"
-                            placeholder="Email"
-                            className={classNames({
-                              [s.inputForm]: true,
-                              [s.hasError]: (!!errors.emailPrefix || !!invalidEmailMessage) && !!touched.emailPrefix,
-                            })}
-                            disabled={!affiliationSelected || isLoading}
-                          />
-                          <Field
-                            component="select"
-                            name="domain"
-                            className={s.selectForm}
-                          >
-                            {
-                              profileAffiliation?.domains.map(domain => (
-                                domain.id &&
+                      errorWrapperClassName={s.affiliationErrorMsg}
+                      disabled={isLoading || profileAffiliation}
+                    />
+                  </div>
+                </div>
+                <div
+                  className={classNames({
+                    [s.formRow]: true,
+                    [s.dynamicFormRow]: true,
+                    [s.hide]: !affiliationSelected,
+                  })}
+                >
+                  <div className={s.formWrapper}>
+                    <label className={s.formLabel}>Email</label>
+                    <div className={s.emailPrefixInputContainer}>
+                      <Field
+                        name="emailPrefix"
+                        placeholder="Email"
+                        className={classNames({
+                          [s.inputForm]: true,
+                          [s.hasError]: (!!errors.emailPrefix || !!invalidEmailMessage) && !!touched.emailPrefix,
+                        })}
+                        disabled={!affiliationSelected || isLoading}
+                      />
+                      <Field component="select" name="domain" className={s.selectForm}>
+                        {profileAffiliation &&
+                          profileAffiliation.domains.map(
+                            domain =>
+                              domain.id && (
                                 <option key={domain.id} value={domain.id}>
-                                  @{domain.domain}
+                                  {`@${domain.domain}`}
                                 </option>
-                              ))
-                            }
-                          </Field>
-                          <Icon icon="ARROW_DOWN" />
-                        </div>
-                        {touched.emailPrefix && errors.emailPrefix && <span className={s.errorMsg}>{errors.emailPrefix}</span>}
-                        {touched.emailPrefix && invalidEmailMessage && <span className={s.errorMsg}>{invalidEmailMessage}</span>}
-                      </div>
+                              )
+                          )}
+                      </Field>
+                      <Icon icon="ARROW_DOWN" />
                     </div>
-                    <Button
-                      type="submit"
-                      elementType="button"
-                      size="large"
-                      onClick={submitForm}
-                      isLoading={isLoading}
-                      style={{ marginTop: '32px' }}
-                      fullWidth
-                    >
-                      <Icon icon="SEND" />
-                      <span>Send verification email</span>
-                    </Button>
-                  </Form>
-                )
-              }}
-            </Formik>
-          )
-      }
+                    {touched.emailPrefix && errors.emailPrefix && (
+                      <span className={s.errorMsg}>{errors.emailPrefix}</span>
+                    )}
+                    {touched.emailPrefix && invalidEmailMessage && (
+                      <span className={s.errorMsg}>{invalidEmailMessage}</span>
+                    )}
+                  </div>
+                </div>
+                <Button
+                  type="submit"
+                  elementType="button"
+                  size="large"
+                  isLoading={isLoading}
+                  style={{ marginTop: '32px' }}
+                  fullWidth
+                >
+                  <Icon icon="SEND" />
+                  <span>Send verification email</span>
+                </Button>
+              </Form>
+            );
+          }}
+        />
+      )}
     </div>
   );
 };

@@ -17,6 +17,7 @@ const EmailPasswordFields: FC<EmailPasswordFieldsProps> = props => {
   if (values.email !== email) {
     setFieldValue('email', email);
   }
+
   return (
     <>
       <div className={s.formRow}>
