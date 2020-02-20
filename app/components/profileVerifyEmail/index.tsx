@@ -30,13 +30,6 @@ const ProfileVerifyEmail: FC = () => {
       <div className={s.wrapper}>
         <div className={s.cardContainer}>
           <h2 className={s.title}>Verification</h2>
-          <div className={s.description}>
-            In order to create your profile, we need to verify through your email address affiliated to your
-            school/organization.<br />
-            Once you click “send”, you will receive a verification email to your email address to proceed.<br />
-            (In the case we reached out to you first, your affiliation and email domain address should already be filled
-            in).
-          </div>
           <ProfileVerifyEmailForm queryParams={getQueryParamsObject(location.search)} />
         </div>
       </div>

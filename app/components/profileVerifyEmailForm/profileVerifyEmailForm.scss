@@ -26,10 +26,17 @@
   width: 100%;
   display: flex;
   flex-flow: column nowrap;
+
+  & + & {
+    margin-left: 12px;
+  }
 }
 
-.formWrapper + .formWrapper {
-  margin-left: 12px;
+.description {
+  color: $black1;
+  line-height: 1.5;
+  font-size: 18px;
+  margin-bottom: 32px;
 }
 
 .emailPrefixInputContainer {

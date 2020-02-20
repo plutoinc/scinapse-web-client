@@ -8,7 +8,7 @@ type EmailPasswordFieldsProps = {
   formikProps: FormikProps<ProfileRegisterFormValues>;
   needPwd: boolean;
   email?: string;
-}
+};
 
 const EmailPasswordFields: FC<EmailPasswordFieldsProps> = props => {
   const { formikProps, needPwd, email } = props;
@@ -26,28 +26,28 @@ const EmailPasswordFields: FC<EmailPasswordFieldsProps> = props => {
             name="email"
             type="email"
             component={AuthInputBox}
+            wrapperStyles={{ padding: '0 0 0 10px' }}
+            style={{ padding: '0 12px' }}
             className={s.inputForm}
             iconName="EMAIL"
             disabled
           />
         </div>
       </div>
-      {
-        !needPwd && (
-          <div className={s.formRow}>
-            <div className={s.formWrapper}>
-              <label className={s.formLabel}>Password</label>
-              <Field
-                name="password"
-                type="password"
-                component={AuthInputBox}
-                className={s.inputForm}
-                iconName="PASSWORD"
-              />
-            </div>
+      {!needPwd && (
+        <div className={s.formRow}>
+          <div className={s.formWrapper}>
+            <label className={s.formLabel}>Password</label>
+            <Field
+              name="password"
+              type="password"
+              component={AuthInputBox}
+              className={s.inputForm}
+              iconName="PASSWORD"
+            />
           </div>
-        )
-      }
+        </div>
+      )}
     </>
   );
 };
