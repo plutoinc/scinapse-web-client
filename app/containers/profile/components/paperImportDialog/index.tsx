@@ -29,15 +29,6 @@ const Header: React.FC<{
     <div className={s.tabBoxWrapper}>
       <div className={s.normalTabWrapper}>
         <span
-          onClick={() => onClickTab(IMPORT_SOURCE_TAB.GS)}
-          className={classNames({
-            [`${s.tabItem}`]: true,
-            [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.GS,
-          })}
-        >
-          Google Scholar
-        </span>
-        <span
           onClick={() => onClickTab(IMPORT_SOURCE_TAB.BIBTEX)}
           className={classNames({
             [`${s.tabItem}`]: true,
@@ -54,6 +45,15 @@ const Header: React.FC<{
           })}
         >
           Citation Text
+        </span>
+        <span
+          onClick={() => onClickTab(IMPORT_SOURCE_TAB.GS)}
+          className={classNames({
+            [`${s.tabItem}`]: true,
+            [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.GS,
+          })}
+        >
+          Google Scholar
         </span>
         <span
           onClick={() => onClickTab(IMPORT_SOURCE_TAB.AUTHOR_URLS)}
@@ -114,7 +114,7 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClo
   const dispatch = useDispatch();
 
   const [inProgressStep, setInProgressStep] = useState<CURRENT_STEP>(CURRENT_STEP.PROGRESS);
-  const [activeTab, setActiveTab] = useState<IMPORT_SOURCE_TAB>(IMPORT_SOURCE_TAB.GS);
+  const [activeTab, setActiveTab] = useState<IMPORT_SOURCE_TAB>(IMPORT_SOURCE_TAB.BIBTEX);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubmitGS = async (params: GSFormState) => {
