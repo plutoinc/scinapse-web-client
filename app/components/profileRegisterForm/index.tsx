@@ -129,6 +129,7 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const currentUser = useSelector<AppState, CurrentUser>(state => state.currentUser);
+  const [isLoading, setIsLoading] = useState(false);
   const [verificationState, setVerificationState] = useState<TokenVerificationRes | null>(null);
 
   const formStatus: ProfileRegisterStatus = useMemo(() => {
@@ -171,6 +172,8 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
     }
 
     try {
+      setIsLoading(true);
+
       let res: Profile | null = null;
       if (formStatus === 'PROFILE') {
         res = await createProfile(queryParams.token, values);
@@ -181,7 +184,9 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
         await dispatch(checkAuthStatus());
         history.push(`/profiles/${res.id}`);
       }
+      setIsLoading(false);
     } catch (err) {
+      setIsLoading(false);
       console.error(err.message);
       alert(err.message);
     }
@@ -217,11 +222,11 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = (props) => {
                     />
                     <div className={s.formRow}>
                       {formStatus === 'PROFILE' ? (
-                        <Button size="large" elementType="button" type="submit" fullWidth>
+                        <Button size="large" elementType="button" type="submit" isLoading={isLoading} disabled={isLoading} fullWidth>
                           <span>Create profile</span>
                         </Button>
                       ) : (
-                        <Button size="large" elementType="button" type="submit" fullWidth>
+                        <Button size="large" elementType="button" type="submit" isLoading={isLoading} disabled={isLoading} fullWidth>
                           <span>Create account & profile</span>
                         </Button>
                       )}

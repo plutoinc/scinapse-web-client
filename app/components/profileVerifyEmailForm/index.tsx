@@ -62,19 +62,20 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
   const { queryParams } = props;
   const [affiliationSelected, setAffiliationSelected] = useState<boolean>(false);
   const [profileAffiliation, setProfileAffiliation] = useState<ProfileAffiliation | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isEmailSent, setIsEmailSent] = useState<boolean>(false);
   const [invalidEmailMessage, setInvalidEmailMessage] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchProfileAffiliation() {
+      setIsLoading(true);
       if (queryParams.aid) {
         const profileAffiliation = await AffiliationAPI.getAffiliation(queryParams.aid);
         if (profileAffiliation) {
           setProfileAffiliation(profileAffiliation);
         }
-        setIsLoading(false);
       }
+      setIsLoading(false);
     }
     fetchProfileAffiliation();
   }, [queryParams.aid]);
@@ -204,6 +205,7 @@ const ProfileVerifyEmailForm: FC<ProfileVerifyEmailFormProps> = (props) => {
                       size="large"
                       onClick={submitForm}
                       isLoading={isLoading}
+                      disabled={isLoading}
                       style={{ marginTop: '32px' }}
                       fullWidth
                     >
