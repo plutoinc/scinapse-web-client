@@ -18,22 +18,19 @@ const ProfileVerifyEmail: FC = () => {
   const history = useHistory();
   const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
 
-  useEffect(
-    () => {
-      if (currentUser.profileSlug) history.push(`/profiles/${currentUser.profileSlug}`);
-    },
-    [currentUser.profileSlug, history]
-  );
+  useEffect(() => {
+    if (currentUser.profileSlug) history.push(`/profiles/${currentUser.profileSlug}`);
+  }, [currentUser.profileSlug, history]);
 
   return (
-    <>
+    <div className={s.container}>
       <div className={s.wrapper}>
         <div className={s.cardContainer}>
           <h2 className={s.title}>Verification</h2>
           <ProfileVerifyEmailForm queryParams={getQueryParamsObject(location.search)} />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

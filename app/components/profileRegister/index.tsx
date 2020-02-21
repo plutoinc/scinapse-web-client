@@ -17,28 +17,22 @@ const ProfileRegister: FC = () => {
   const history = useHistory();
   const currentUser = useSelector((state: AppState) => state.currentUser);
 
-  const queryParams: ProfileRegisterParams = useMemo(
-    () => {
-      return QueryString.parse(location.search.split('?')[1]);
-    },
-    [location.search]
-  );
+  const queryParams: ProfileRegisterParams = useMemo(() => {
+    return QueryString.parse(location.search.split('?')[1]);
+  }, [location.search]);
 
-  useEffect(
-    () => {
-      if (currentUser.profileSlug) {
-        history.push(`/profiles/${currentUser.profileSlug}`);
-      }
-    },
-    [currentUser.profileSlug, history]
-  );
+  useEffect(() => {
+    if (currentUser.profileSlug) {
+      history.push(`/profiles/${currentUser.profileSlug}`);
+    }
+  }, [currentUser.profileSlug, history]);
 
   return (
-    <>
+    <div className={s.container}>
       <div className={s.wrapper}>
         <ProfileRegisterForm queryParams={queryParams} />
       </div>
-    </>
+    </div>
   );
 };
 

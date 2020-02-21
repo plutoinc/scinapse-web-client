@@ -1,10 +1,18 @@
 $wrapper-vertical-margin: 128px;
 
+.container {
+  background-color: $gray30;
+  min-height: calc(100vh - #{$navbar_height});
+  padding-top: $navbar_height;
+}
+
 .wrapper {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
   width: 100%;
   max-width: 578px;
-  min-height: calc(
-    100vh - #{$navbar_height} - #{$footer-height} - #{$wrapper-vertical-margin} - #{$wrapper-vertical-margin}
-  );
-  margin: $wrapper-vertical-margin auto;
+  min-height: calc(100vh - #{$navbar_height});
+  margin: 0 auto;
 }

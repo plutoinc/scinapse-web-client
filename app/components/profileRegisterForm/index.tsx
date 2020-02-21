@@ -214,7 +214,7 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = props => {
           {formikProps => {
             return (
               <Form className={s.formContainer}>
-                <h2 className={s.title}>Registration</h2>
+                <h2 className={s.formTitle}>Registration</h2>
                 <div className={s.description}>
                   To create your account and profile page, fill in the following information below.
                 </div>
