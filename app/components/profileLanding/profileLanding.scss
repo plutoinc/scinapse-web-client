@@ -26,15 +26,23 @@
   line-height: 1.5;
 }
 
+.enquiryContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+}
+
 .enquiryWrapper {
   max-width: 1200px;
+  width: 100%;
   color: $black0;
   display: flex;
   justify-content: space-around;
   align-items: center;
   margin: 0 auto;
   flex: 1 0 auto;
-  padding: $navbar_height + 56px 24px 0 24px;
+  padding: 56px 24px 0 24px;
   line-height: 1.5;
 }
 
@@ -112,6 +120,17 @@
   .wrapper {
     margin-top: $navbar_height + 32px;
     padding: 0 16px;
+    display: block;
+    width: 100%;
+
+    h1 {
+      font-size: 24px;
+    }
+  }
+
+  .enquiryWrapper {
+    margin-top: $navbar_height + 32px;
+    padding: 0 16px 32px 16px;
     display: block;
     width: 100%;
 
