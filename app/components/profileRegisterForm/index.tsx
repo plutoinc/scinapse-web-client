@@ -182,7 +182,7 @@ const ProfileRegisterForm: FC<ProfileRegisterFormProps> = props => {
 
       let res: Profile | null = null;
       if (formStatus === 'PROFILE') {
-        res = await createProfile(queryParams.token, values);
+        res = (await createProfile(queryParams.token, values)).profile;
       } else if (formStatus === 'NOT_A_MEMBER' && queryParams.token) {
         res = (await createMemberAndProfile(queryParams.token, values)).profile;
       }

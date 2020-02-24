@@ -3,6 +3,7 @@ import { Paper } from '../model/paper';
 import { Profile } from '../model/profile';
 import { PendingPaper } from '../reducers/profilePendingPaperList';
 import { PageObjectV2 } from './types/common';
+import { CreateMemberProfileResponse } from './member';
 
 export type ProfileParams = {
   affiliation_id: string | null;
@@ -45,9 +46,8 @@ class ProfileAPI extends PlutoAxios {
     const res = await this.post(`/profiles/me?token=${token}`, {
       ...params,
     });
-    if (res) {
-      return res.data.data.content;
-    }
+
+    return res.data.data.content as CreateMemberProfileResponse;
   }
 
   public async confirmedPaper(params: { profileSlug: string; paperId: string }) {
