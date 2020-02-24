@@ -17,10 +17,6 @@ import { Paper, paperSchema } from '../model/paper';
 import { getIdSafePaper, getSafeCollection } from '../helpers/getIdSafeData';
 import { collectionSchema } from '../model/collection';
 
-export function clearPaperShowState() {
-  return ActionCreators.clearPaperShowState();
-}
-
 export function getMyCollections(paperId: string, cancelToken?: CancelToken, isOpenDropdown?: boolean): AppThunkAction {
   return async (dispatch, getState, { axios }) => {
     if (!getState().currentUser.isLoggedIn) return;
