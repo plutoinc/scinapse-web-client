@@ -4,22 +4,11 @@ import BibTexImportForm, { BibTexFormState } from '../bibTexImportForm';
 import ImportResultShow from '../importResultShow';
 import CitationStringImportForm, { CitationStringFormState } from '../citationStringImportForm';
 import AuthorUrlsImportForm, { AuthorUrlsFormState } from '../authorUrlsImportForm';
-
-export enum IMPORT_SOURCE_TAB {
-  GS,
-  BIBTEX,
-  CITATION,
-  AUTHOR_URLS,
-}
-
-export enum CURRENT_STEP {
-  PROGRESS,
-  RESULT,
-}
+import { IMPORT_SOURCE_TAB, CURRENT_IMPORT_PROGRESS_STEP } from '../../types';
 
 interface DialogBodyProps {
   isLoading: boolean;
-  currentStep: CURRENT_STEP;
+  currentStep: CURRENT_IMPORT_PROGRESS_STEP;
   activeTab: IMPORT_SOURCE_TAB;
   handleSubmitGS: (params: GSFormState) => void;
   handleSubmitBibTex: (params: BibTexFormState) => void;
@@ -36,7 +25,7 @@ const DialogBody: React.FC<DialogBodyProps> = ({
   handleSubmitCitationString,
   handleSubmitAuthorUrls,
 }) => {
-  if (currentStep === CURRENT_STEP.RESULT) return <ImportResultShow />;
+  if (currentStep === CURRENT_IMPORT_PROGRESS_STEP.RESULT) return <ImportResultShow />;
   if (activeTab === IMPORT_SOURCE_TAB.GS) return <GSImportForm isLoading={isLoading} onSubmitGS={handleSubmitGS} />;
   if (activeTab === IMPORT_SOURCE_TAB.CITATION)
     return <CitationStringImportForm isLoading={isLoading} onSubmitCitationString={handleSubmitCitationString} />;

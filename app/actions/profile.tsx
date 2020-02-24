@@ -14,7 +14,7 @@ import {
   removePendingPaper,
   markTryAgainPendingPaper,
 } from '../reducers/profilePendingPaperList';
-import { IMPORT_SOURCE_TAB } from '../containers/profile/components/paperImportDialogBody';
+import { IMPORT_SOURCE_TAB } from '../containers/profile/types';
 
 interface FetchProfilePaperListParams {
   profileSlug: string;
@@ -114,19 +114,19 @@ export function fetchProfileImportedPapers(
 
     const res = rawRes.data.data.content as ImportedPaperListResponse;
 
-    const successPapersRes = {
-      data: { content: res.successPapers, page: res.successPaperPage },
+    const allPapersRes = {
+      data: { content: res.allPapers, page: res.allPaperPage },
     } as PaginationResponseV2<Paper[]>;
-    const successPapers = successPapersRes.data.content;
-    const entity = normalize(successPapers, [paperSchema]);
+    const allPapers = allPapersRes.data.content;
+    const entity = normalize(allPapers, [paperSchema]);
 
     dispatch(ActionCreators.addEntity(entity));
     dispatch(
       getPapers({
         paperIds: entity.result,
-        totalPages: successPapersRes.data.page!.totalPages,
-        page: successPapersRes.data.page!.page,
-        totalElements: successPapersRes.data.page!.totalElements,
+        totalPages: allPapersRes.data.page!.totalPages,
+        page: allPapersRes.data.page!.page,
+        totalElements: allPapersRes.data.page!.totalElements,
       })
     );
 
