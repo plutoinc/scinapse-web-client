@@ -32,6 +32,7 @@ import ScinapseSnackbarReducer, { SCINAPSE_SNACK_BAR_INITIAL_STATE } from './sci
 import profilePaperListReducer, { PROFILE_PAPER_LIST_INITIAL_STATE } from './profilePaperList';
 import profilePendingPaperListReducer, { PROFILE_PENDING_PAPER_LIST_INITIAL_STATE } from './profilePendingPaperList';
 import ProfileEntitiesReducer, { PROFILE_ENTITIES_INITIAL_STATE } from './profileEntity';
+import ImportPaperDialogReducer, { IMPORT_PAPER_DIALOG_INITIAL_STATE } from './importPaperDialog';
 
 export type AppState = typeof initialState;
 
@@ -60,6 +61,7 @@ export const initialState = {
   scinapseSnackbarState: SCINAPSE_SNACK_BAR_INITIAL_STATE,
   profilePaperListState: PROFILE_PAPER_LIST_INITIAL_STATE,
   profilePendingPaperListState: PROFILE_PENDING_PAPER_LIST_INITIAL_STATE,
+  importPaperDialogState: IMPORT_PAPER_DIALOG_INITIAL_STATE,
   profileEntities: PROFILE_ENTITIES_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
 };
@@ -89,6 +91,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   scinapseSnackbarState: ScinapseSnackbarReducer,
   profilePaperListState: profilePaperListReducer,
   profilePendingPaperListState: profilePendingPaperListReducer,
+  importPaperDialogState: ImportPaperDialogReducer,
   profileEntities: ProfileEntitiesReducer,
   entities: EntityReducer,
 });

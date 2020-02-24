@@ -30,6 +30,9 @@ import { CoAuthor } from '../../components/common/coAuthor';
 import ProfilePaperItem from '../../components/profilePaperItem/profilePaperItem';
 import { fetchAuthorShowPageData } from './sideEffects';
 import PendingDescriptionDialog from './components/pendingDescriptionDialog';
+import { openImportPaperDialog } from '../../reducers/importPaperDialog';
+import { IMPORT_SOURCE_TAB } from './types';
+
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./connectedAuthor.scss');
 
@@ -58,7 +61,6 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
   const paperIds = useSelector<AppState, string[]>(state => state.profilePaperListState.paperIds, isEqual);
   const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
   const [isOpenModifyProfileDialog, setIsOpenModifyProfileDialog] = useState(false);
-  const [isOpenPaperImportDialog, setIsOpenPaperImportDialog] = useState(false);
   const [isOpenPendingDescriptionDialog, setIsOpenPendingDescriptionDialog] = useState(false);
   // const [isOpenRepresentativePublicationDialog, setIsOpenRepresentativePublicationDialog] = useState(false);
   const [activeTab, setActiveTab] = useState(AvailableTab.PUBLICATIONS);
@@ -68,38 +70,29 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
   );
   const lastShouldFetch = useRef(shouldFetch);
 
-  useEffect(
-    () => {
-      if (!lastShouldFetch.current) return;
-      if (!profileSlug) return;
+  useEffect(() => {
+    if (!lastShouldFetch.current) return;
+    if (!profileSlug) return;
 
-      dispatch(fetchProfileData(profileSlug));
-    },
-    [profileSlug, dispatch, currentUser]
-  );
+    dispatch(fetchProfileData(profileSlug));
+  }, [profileSlug, dispatch, currentUser]);
 
-  useEffect(
-    () => {
-      if (!lastShouldFetch.current) return;
-      if (!profileSlug) return;
+  useEffect(() => {
+    if (!lastShouldFetch.current) return;
+    if (!profileSlug) return;
 
-      dispatch(fetchProfilePendingPapers(profileSlug));
-    },
-    [profileSlug, dispatch, currentUser]
-  );
+    dispatch(fetchProfilePendingPapers(profileSlug));
+  }, [profileSlug, dispatch, currentUser]);
 
-  useEffect(
-    () => {
-      if (!lastShouldFetch.current) {
-        lastShouldFetch.current = true;
-        return;
-      }
-      if (!profileSlug) return;
+  useEffect(() => {
+    if (!lastShouldFetch.current) {
+      lastShouldFetch.current = true;
+      return;
+    }
+    if (!profileSlug) return;
 
-      dispatch(fetchProfilePapers({ profileSlug, page: currentPage }));
-    },
-    [profileSlug, currentPage, dispatch, currentUser]
-  );
+    dispatch(fetchProfilePapers({ profileSlug, page: currentPage }));
+  }, [profileSlug, currentPage, dispatch, currentUser]);
 
   if (!profile) return null;
 
@@ -159,26 +152,25 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                     isEditable={isEditable}
                     onClickManageButton={() => setIsOpenRepresentativePublicationDialog(prev => !prev)}
                   /> */}
-                  {pendingPapers.length > 0 &&
-                    profile.isEditable && (
-                      <>
-                        <div className={s.allPublicationHeader}>
-                          <span className={s.sectionTitle}>Pending Publications</span>
-                          <span className={s.countBadge}>{pendingPapers.length}</span>
-                          <div
-                            onClick={() => setIsOpenPendingDescriptionDialog(true)}
-                            className={classNames({
-                              [s.rightBox]: true,
-                              [s.pendingLink]: true,
-                            })}
-                          >
-                            What are 'pending' publications?
-                          </div>
+                  {pendingPapers.length > 0 && profile.isEditable && (
+                    <>
+                      <div className={s.allPublicationHeader}>
+                        <span className={s.sectionTitle}>Pending Publications</span>
+                        <span className={s.countBadge}>{pendingPapers.length}</span>
+                        <div
+                          onClick={() => setIsOpenPendingDescriptionDialog(true)}
+                          className={classNames({
+                            [s.rightBox]: true,
+                            [s.pendingLink]: true,
+                          })}
+                        >
+                          What are 'pending' publications?
                         </div>
-                        <div className={s.divider} />
-                        <PendingPaperList papers={pendingPapers} isEditable={true} />
-                      </>
-                    )}
+                      </div>
+                      <div className={s.divider} />
+                      <PendingPaperList papers={pendingPapers} isEditable={true} />
+                    </>
+                  )}
 
                   <>
                     <div className={s.allPublicationHeader}>
@@ -190,9 +182,11 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                             elementType="button"
                             size="medium"
                             title="Update or add publication information here by using Google Scholar Profile page, BibTex, or citation string. This is not for uploading the publication itself."
-                            onClick={() => {
-                              setIsOpenPaperImportDialog(true);
-                            }}
+                            onClick={() =>
+                              dispatch(
+                                openImportPaperDialog({ activeImportSourceTab: IMPORT_SOURCE_TAB.BIBTEX, profileSlug })
+                              )
+                            }
                           >
                             <Icon icon="ADD_NOTE" />
                             <span>Import Publications</span>
@@ -204,23 +198,24 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                       {currentPage + 1} page of {formatNumber(maxPage)} pages ({formatNumber(totalPaperCount)} results)
                     </div>
                     <div className={s.divider} />
-                    {paperIds.length === 0 &&
-                      profile.isEditable && (
-                        <div className={s.noPapers}>
-                          <span className={s.noPaperContent}>You have not yet imported your paper list.</span>
-                          <Button
-                            elementType="button"
-                            size="medium"
-                            title="Update or add publication information here by using Google Scholar Profile page, BibTex, or citation string. This is not for uploading the publication itself."
-                            onClick={() => {
-                              setIsOpenPaperImportDialog(true);
-                            }}
-                          >
-                            <Icon icon="ADD_NOTE" />
-                            <span>Import Publications</span>
-                          </Button>
-                        </div>
-                      )}
+                    {paperIds.length === 0 && profile.isEditable && (
+                      <div className={s.noPapers}>
+                        <span className={s.noPaperContent}>You have not yet imported your paper list.</span>
+                        <Button
+                          elementType="button"
+                          size="medium"
+                          title="Update or add publication information here by using Google Scholar Profile page, BibTex, or citation string. This is not for uploading the publication itself."
+                          onClick={() =>
+                            dispatch(
+                              openImportPaperDialog({ activeImportSourceTab: IMPORT_SOURCE_TAB.BIBTEX, profileSlug })
+                            )
+                          }
+                        >
+                          <Icon icon="ADD_NOTE" />
+                          <span>Import Publications</span>
+                        </Button>
+                      </div>
+                    )}
                     {paperIds.map(id => (
                       <ProfilePaperItem
                         key={id}
@@ -244,31 +239,32 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                       }}
                     />
                   </>
-                  {pendingPapers.length > 0 &&
-                    !profile.isEditable && (
-                      <>
-                        <div className={s.allPublicationHeader}>
-                          <span className={s.sectionTitle}>Pending Publications</span>
-                          <span className={s.countBadge}>{pendingPapers.length}</span>
-                          <div
-                            className={classNames({
-                              [s.rightBox]: true,
-                              [s.pendingLink]: true,
-                            })}
-                            onClick={() => setIsOpenPendingDescriptionDialog(true)}
-                          >
-                            What are 'pending' publications?
-                          </div>
+                  {pendingPapers.length > 0 && !profile.isEditable && (
+                    <>
+                      <div className={s.allPublicationHeader}>
+                        <span className={s.sectionTitle}>Pending Publications</span>
+                        <span className={s.countBadge}>{pendingPapers.length}</span>
+                        <div
+                          className={classNames({
+                            [s.rightBox]: true,
+                            [s.pendingLink]: true,
+                          })}
+                          onClick={() => setIsOpenPendingDescriptionDialog(true)}
+                        >
+                          What are 'pending' publications?
                         </div>
-                        <div className={s.divider} />
-                        <PendingPaperList papers={pendingPapers} isEditable={false} />
-                      </>
-                    )}
+                      </div>
+                      <div className={s.divider} />
+                      <PendingPaperList papers={pendingPapers} isEditable={false} />
+                    </>
+                  )}
                 </div>
                 <div className={s.rightContentWrapper}>
                   <div>
                     <div className={s.coAuthorHeader}>Close Researchers</div>
-                    {profile.coauthors.map(coauthor => <CoAuthor key={coauthor.id} author={coauthor} />)}
+                    {profile.coauthors.map(coauthor => (
+                      <CoAuthor key={coauthor.id} author={coauthor} />
+                    ))}
                   </div>
                 </div>
               </>
@@ -317,11 +313,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
           isEmailPublic: profile.isEmailPublic || false,
         }}
       />
-      <PaperImportDialog
-        isOpen={isOpenPaperImportDialog}
-        handleClosePaperImportDialog={() => setIsOpenPaperImportDialog(false)}
-        profileSlug={profileSlug!}
-      />
+      <PaperImportDialog />
       <PendingDescriptionDialog
         open={isOpenPendingDescriptionDialog}
         onClose={() => setIsOpenPendingDescriptionDialog(false)}

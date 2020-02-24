@@ -20,8 +20,8 @@ export type ImportedPaperListResponse = {
   totalImportedCount: number;
   successCount: number;
   pendingCount: number;
-  successPapers: Paper[];
-  successPaperPage: PageObjectV2;
+  allPapers: Paper[];
+  allPaperPage: PageObjectV2;
   pendingPapers: PendingPaper[];
 };
 

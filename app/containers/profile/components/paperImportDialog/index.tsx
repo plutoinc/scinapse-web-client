@@ -1,24 +1,22 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Dialog from '@material-ui/core/Dialog';
 import Icon from '../../../../icons';
 import { GSFormState } from '../gsImportForm';
 import { BibTexFormState } from '../bibTexImportForm';
 import { CitationStringFormState } from '../citationStringImportForm';
 import ActionTicketManager from '../../../../helpers/actionTicketManager';
-import DialogBody, { CURRENT_STEP, IMPORT_SOURCE_TAB } from '../paperImportDialogBody';
+import DialogBody from '../paperImportDialogBody';
 import { fetchProfileImportedPapers } from '../../../../actions/profile';
 import alertToast from '../../../../helpers/makePlutoToastAction';
 import { AuthorUrlsFormState, SCINAPSE_AUTHOR_SHOW_PREFIX } from '../authorUrlsImportForm';
+import { AppState } from '../../../../reducers';
+import { closeImportPaperDialog, changeImportSourceTab } from '../../../../reducers/importPaperDialog';
+import { IMPORT_SOURCE_TAB, CURRENT_IMPORT_PROGRESS_STEP } from '../../types';
+
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperImportDialog.scss');
-
-interface PaperImportDialogProps {
-  isOpen: boolean;
-  profileSlug: string;
-  handleClosePaperImportDialog: () => void;
-}
 
 const Header: React.FC<{
   activeTab: IMPORT_SOURCE_TAB;
@@ -108,13 +106,19 @@ function trackImportFromAuthorUrls(actionLabel: string) {
   });
 }
 
-const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClosePaperImportDialog, profileSlug }) => {
+const PaperImportDialog: React.FC = () => {
   useStyles(s);
   const dispatch = useDispatch();
 
-  const [inProgressStep, setInProgressStep] = useState<CURRENT_STEP>(CURRENT_STEP.PROGRESS);
-  const [activeTab, setActiveTab] = useState<IMPORT_SOURCE_TAB>(IMPORT_SOURCE_TAB.BIBTEX);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { isOpen, activeTab, inProgressStep, profileSlug } = useSelector((appState: AppState) => ({
+    isOpen: appState.importPaperDialogState.isOpen,
+    activeTab: appState.importPaperDialogState.activeImportSourceTab,
+    inProgressStep: appState.importPaperDialogState.inProgressStep,
+    profileSlug: appState.importPaperDialogState.profileSlug,
+  }));
+
+  if (!profileSlug) return null;
 
   const handleSubmitGS = async (params: GSFormState) => {
     setIsLoading(true);
@@ -124,7 +128,7 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClo
     try {
       await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.GS, profileSlug, params.url));
       setIsLoading(false);
-      setInProgressStep(CURRENT_STEP.RESULT);
+
       trackImportFromGS('successSubmitGS');
     } catch (err) {
       setIsLoading(false);
@@ -142,7 +146,7 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClo
     try {
       await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.BIBTEX, profileSlug, params.bibTexString));
       setIsLoading(false);
-      setInProgressStep(CURRENT_STEP.RESULT);
+
       trackImportFromBibtex('successSubmitBibtex');
     } catch (err) {
       setIsLoading(false);
@@ -160,7 +164,7 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClo
     try {
       await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.BIBTEX, profileSlug, params.citationString));
       setIsLoading(false);
-      setInProgressStep(CURRENT_STEP.RESULT);
+
       trackImportFromCitationString('successSubmitCitationString');
     } catch (err) {
       setIsLoading(false);
@@ -183,7 +187,7 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClo
 
       await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.AUTHOR_URLS, profileSlug, authorIds));
       setIsLoading(false);
-      setInProgressStep(CURRENT_STEP.RESULT);
+
       trackImportFromAuthorUrls('successSubmitAuthorUrls');
     } catch (err) {
       setIsLoading(false);
@@ -196,16 +200,10 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClo
     }
   };
 
-  const onCloseDialog = () => {
-    handleClosePaperImportDialog();
-    setInProgressStep(CURRENT_STEP.PROGRESS);
-    setActiveTab(IMPORT_SOURCE_TAB.BIBTEX);
-  };
-
   return (
     <Dialog
       open={isOpen}
-      onClose={onCloseDialog}
+      onClose={() => dispatch(closeImportPaperDialog())}
       classes={{
         paper: s.dialogPaper,
       }}
@@ -215,10 +213,13 @@ const PaperImportDialog: React.FC<PaperImportDialogProps> = ({ isOpen, handleClo
         <div className={s.boxWrapper}>
           <div style={{ marginTop: 0 }} className={s.header}>
             <div className={s.title}>Import Publications</div>
-            <Icon icon="X_BUTTON" className={s.iconWrapper} onClick={onCloseDialog} />
+            <Icon icon="X_BUTTON" className={s.iconWrapper} onClick={() => dispatch(closeImportPaperDialog())} />
           </div>
-          {inProgressStep === CURRENT_STEP.PROGRESS && (
-            <Header activeTab={activeTab} onClickTab={(tab: IMPORT_SOURCE_TAB) => setActiveTab(tab)} />
+          {inProgressStep === CURRENT_IMPORT_PROGRESS_STEP.PROGRESS && (
+            <Header
+              activeTab={activeTab}
+              onClickTab={(tab: IMPORT_SOURCE_TAB) => dispatch(changeImportSourceTab({ activeImportSourceTab: tab }))}
+            />
           )}
           <DialogBody
             isLoading={isLoading}
