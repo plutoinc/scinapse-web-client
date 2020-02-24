@@ -14,9 +14,10 @@ const s = require('./pendingPaperItem.scss');
 interface PendingPaperItemProps {
   paper: PendingPaper;
   isEditable: boolean;
+  isLoadingToResolved: boolean;
 }
 
-const PendingPaperItem: React.FC<PendingPaperItemProps> = ({ paper, isEditable }) => {
+const PendingPaperItem: React.FC<PendingPaperItemProps> = ({ paper, isEditable, isLoadingToResolved }) => {
   useStyles(s);
   const dispatch = useDispatch();
 
@@ -63,7 +64,7 @@ const PendingPaperItem: React.FC<PendingPaperItemProps> = ({ paper, isEditable }
               elementType="button"
               size="small"
               color="gray"
-              isLoading={isLoading}
+              isLoading={isLoading || isLoadingToResolved}
               onClick={() => GlobalDialogManager.openResolvedPendingPaperDialog(paper)}
             >
               <span>{resolveBtnContextNode}</span>
@@ -76,7 +77,7 @@ const PendingPaperItem: React.FC<PendingPaperItemProps> = ({ paper, isEditable }
               color="gray"
               variant="text"
               onClick={onRemovePendingPaper}
-              isLoading={isLoading}
+              isLoading={isLoading || isLoadingToResolved}
             >
               <Icon icon="X_BUTTON" />
             </Button>
