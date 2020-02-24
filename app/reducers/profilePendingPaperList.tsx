@@ -12,10 +12,12 @@ export interface PendingPaper {
 }
 
 export interface ProfilePendingPaperListState {
+  isLoading: boolean;
   papers: PendingPaper[];
 }
 
 export const PROFILE_PENDING_PAPER_LIST_INITIAL_STATE: ProfilePendingPaperListState = {
+  isLoading: false,
   papers: [],
 };
 
@@ -41,9 +43,17 @@ const profilePendingPaperListSlice = createSlice({
         ...state.papers.slice(targetIndex + 1),
       ];
     },
+    changeLoadingStatus(state, action: PayloadAction<{ isLoading: boolean }>) {
+      state.isLoading = action.payload.isLoading;
+    },
   },
 });
 
-export const { getPendingPapers, removePendingPaper, markTryAgainPendingPaper } = profilePendingPaperListSlice.actions;
+export const {
+  getPendingPapers,
+  removePendingPaper,
+  markTryAgainPendingPaper,
+  changeLoadingStatus,
+} = profilePendingPaperListSlice.actions;
 
 export default profilePendingPaperListSlice.reducer;
