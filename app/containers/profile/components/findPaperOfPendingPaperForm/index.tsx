@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Formik, Form, Field, FormikErrors } from 'formik';
 import { Button } from '@pluto_network/pluto-design-elements';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Radio from '@material-ui/core/Radio';
 import { getPaper } from '../../../../actions/paperShow';
 import NonLinkablePaperItem from '../nonLinkablePaperItem';
 import FormikInput from '../../../../components/common/formikInput';
@@ -23,7 +24,6 @@ interface FoundPaperItemProps {
   paperId?: string;
   isLoading: boolean;
   isChecked: boolean;
-  onChange: () => void;
 }
 
 interface FormState {
@@ -40,7 +40,7 @@ function validateForm(values: FormState) {
   return errors;
 }
 
-const FoundPaperItem: FC<FoundPaperItemProps> = ({ isLoading, paperId, isChecked, onChange }) => {
+const FoundPaperItem: FC<FoundPaperItemProps> = ({ isLoading, paperId, isChecked }) => {
   if (isLoading)
     return (
       <div className={s.spinnerWrapper}>
@@ -52,15 +52,7 @@ const FoundPaperItem: FC<FoundPaperItemProps> = ({ isLoading, paperId, isChecked
 
   return (
     <>
-      <input
-        type="radio"
-        className={s.checkBox}
-        name="targetResolvedPaperId"
-        value={paperId}
-        checked={isChecked}
-        onChange={onChange}
-        readOnly
-      />
+      <Radio name="targetResolvedPaperId" value={paperId} checked={isChecked} color="default" readOnly />
       <NonLinkablePaperItem paperId={paperId} />
     </>
   );
@@ -103,26 +95,23 @@ const FindPaperOfPendingPaperForm: FC<FindPaperOfPendingPaperFormProps> = ({
     onClickNextBtn(values.targetResolvedPaperId);
   };
 
-  useEffect(
-    () => {
-      if (!recommendedPaperId) return;
+  useEffect(() => {
+    if (!recommendedPaperId) return;
 
-      const fetchRecommendedPaper = async () => {
-        setIsRecPaperLoading(true);
+    const fetchRecommendedPaper = async () => {
+      setIsRecPaperLoading(true);
 
-        try {
-          await dispatch(getPaper({ paperId: recommendedPaperId }));
-          setIsRecPaperLoading(false);
-        } catch (err) {
-          console.error(err);
-          setIsRecPaperLoading(false);
-        }
-      };
+      try {
+        await dispatch(getPaper({ paperId: recommendedPaperId }));
+        setIsRecPaperLoading(false);
+      } catch (err) {
+        console.error(err);
+        setIsRecPaperLoading(false);
+      }
+    };
 
-      fetchRecommendedPaper();
-    },
-    [dispatch, recommendedPaperId]
-  );
+    fetchRecommendedPaper();
+  }, [dispatch, recommendedPaperId]);
 
   return (
     <div>
@@ -133,12 +122,14 @@ const FindPaperOfPendingPaperForm: FC<FindPaperOfPendingPaperFormProps> = ({
         validate={validateForm}
         render={({ values, errors, setFieldValue }) => (
           <Form>
-            <div className={s.recommendedPaperItemWrapper}>
+            <div
+              className={s.recommendedPaperItemWrapper}
+              onClick={() => setFieldValue('targetResolvedPaperId', recommendedPaperId)}
+            >
               <FoundPaperItem
                 isLoading={isRecPaperLoading}
                 paperId={recommendedPaperId}
                 isChecked={values.targetResolvedPaperId === recommendedPaperId}
-                onChange={() => setFieldValue('targetResolvedPaperId', recommendedPaperId)}
               />
             </div>
             <div className={s.contentDivider} />
@@ -172,26 +163,21 @@ const FindPaperOfPendingPaperForm: FC<FindPaperOfPendingPaperFormProps> = ({
                 </Button>
               </div>
               {searchPaperId && (
-                <div className={s.recommendedPaperItemWrapper}>
+                <div
+                  className={s.recommendedPaperItemWrapper}
+                  onClick={() => setFieldValue('targetResolvedPaperId', searchPaperId)}
+                >
                   <FoundPaperItem
                     isLoading={isSearchLoading}
                     paperId={searchPaperId}
                     isChecked={values.targetResolvedPaperId === searchPaperId}
-                    onChange={() => setFieldValue('targetResolvedPaperId', searchPaperId)}
                   />
                 </div>
               )}
             </div>
             <div className={s.contentDivider} />
-            <div className={s.noContentOptionWrapper}>
-              <input
-                type="radio"
-                className={s.checkBox}
-                name="targetResolvedPaperId"
-                checked={!values.targetResolvedPaperId}
-                onChange={() => setFieldValue('targetResolvedPaperId', null)}
-                readOnly
-              />
+            <div className={s.noContentOptionWrapper} onClick={() => setFieldValue('targetResolvedPaperId', null)}>
+              <Radio checked={!values.targetResolvedPaperId} name="targetResolvedPaperId" color="default" readOnly />
               <span>I couldn't find my paper.</span>
             </div>
             <div className={s.footerButtonWrapper}>

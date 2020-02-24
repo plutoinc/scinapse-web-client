@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Formik, Form } from 'formik';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Radio from '@material-ui/core/Radio';
 import { Button, InputField } from '@pluto_network/pluto-design-elements';
 import AuthorAPI from '../../../../api/author';
 import { PaperAuthor } from '../../../../model/author';
@@ -39,14 +40,7 @@ const AuthorItem: FC<AuthorItemProps> = ({ author, isChecked, onChange }) => {
   return (
     <div className={s.itemContainer} onClick={onChange}>
       <div className={s.checkBox}>
-        <input
-          type="radio"
-          className={s.checkBox}
-          name="authorIdFromTargetResolvedPaper"
-          value={author.id}
-          checked={isChecked}
-          readOnly
-        />
+        <Radio name="authorIdFromTargetResolvedPaper" value={author.id} checked={isChecked} color="default" readOnly />
       </div>
       <div className={s.itemWrapper}>
         <div className={s.authorMajorInfo}>
@@ -100,19 +94,16 @@ const FindAuthorOfPendingPaperForm: FC<FindAuthorOfPendingPaperFormProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchAuthorKeyword, setSearchAuthorKeyword] = useState<string>('');
 
-  useEffect(
-    () => {
-      const getAuthorsFromResolvedPaper = async () => {
-        const res = await AuthorAPI.getAllAuthors(targetResolvedPaperId);
-        setAuthorsFromTargetResolvedPaper(res);
-        setIsLoading(false);
-      };
+  useEffect(() => {
+    const getAuthorsFromResolvedPaper = async () => {
+      const res = await AuthorAPI.getAllAuthors(targetResolvedPaperId);
+      setAuthorsFromTargetResolvedPaper(res);
+      setIsLoading(false);
+    };
 
-      setIsLoading(true);
-      getAuthorsFromResolvedPaper();
-    },
-    [dispatch, targetResolvedPaperId]
-  );
+    setIsLoading(true);
+    getAuthorsFromResolvedPaper();
+  }, [dispatch, targetResolvedPaperId]);
 
   const onClickSubmitBtn = (value: FormState) => {
     dispatch(resolvedPendingPaper(pendingPaperId, targetResolvedPaperId, value.authorIdFromTargetResolvedPaper));
@@ -164,11 +155,10 @@ const FindAuthorOfPendingPaperForm: FC<FindAuthorOfPendingPaperFormProps> = ({
             <div className={s.itemListWrapper}>
               <div className={s.itemContainer} onClick={() => setFieldValue('authorIdFromTargetResolvedPaper', null)}>
                 <div className={s.checkBox}>
-                  <input
-                    type="radio"
-                    className={s.checkBox}
+                  <Radio
                     name="authorIdFromTargetResolvedPaper"
                     checked={values.authorIdFromTargetResolvedPaper === null}
+                    color="default"
                     readOnly
                   />
                 </div>

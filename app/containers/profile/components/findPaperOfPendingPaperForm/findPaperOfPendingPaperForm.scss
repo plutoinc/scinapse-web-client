@@ -2,10 +2,8 @@
   display: flex;
   padding: 8px 0;
   margin: 8px 0;
-
-  .checkBox {
-    margin-top: 8px;
-  }
+  align-items: center;
+  cursor: pointer;
 }
 
 .searchPaperContainer {
@@ -25,10 +23,6 @@
   margin-left: 8px;
 }
 
-.checkBox {
-  margin: 0 16px;
-}
-
 .contentDivider {
   background-color: $gray300;
   height: 1px;
@@ -36,14 +30,13 @@
 }
 
 .noContentOptionWrapper {
+  display: flex;
+  align-items: center;
   padding: 8px 0;
   margin: 8px 0;
   color: $black_light_0;
   line-height: 1.5;
-
-  .checkBox {
-    vertical-align: text-top;
-  }
+  cursor: pointer;
 }
 
 .spinnerWrapper {
