@@ -13,8 +13,10 @@ import {
   PendingPaper,
   removePendingPaper,
   markTryAgainPendingPaper,
+  changeLoadingStatus,
 } from '../reducers/profilePendingPaperList';
-import { IMPORT_SOURCE_TAB } from '../containers/profile/types';
+import { IMPORT_SOURCE_TAB, CURRENT_IMPORT_PROGRESS_STEP } from '../containers/profile/types';
+import { changeProgressStep } from '../reducers/importPaperDialog';
 
 interface FetchProfilePaperListParams {
   profileSlug: string;
@@ -134,6 +136,8 @@ export function fetchProfileImportedPapers(
     const pendingPapers = pendingPapersRes.data.content;
 
     dispatch(getPendingPapers({ papers: pendingPapers }));
+
+    dispatch(changeProgressStep({ inProgressStep: CURRENT_IMPORT_PROGRESS_STEP.RESULT }));
   };
 }
 
@@ -161,6 +165,7 @@ export function markTryAgainProfilePendingPaper(paperId: string): AppThunkAction
 
 export function resolvedPendingPaper(pendingPaperId: string, paperId: string, authorId: string | null): AppThunkAction {
   return async (dispatch, _getState, { axios }) => {
+    dispatch(changeLoadingStatus({ isLoading: true }));
     try {
       const res = await axios.post(`/profiles/papers/pending/${pendingPaperId}/resolve`, {
         paper_id: paperId,
@@ -168,6 +173,7 @@ export function resolvedPendingPaper(pendingPaperId: string, paperId: string, au
       });
 
       dispatch(removePendingPaper({ paperId: pendingPaperId }));
+      dispatch(changeLoadingStatus({ isLoading: false }));
 
       const { data } = res.data as PaginationResponseV2<Paper>;
       const paper = data.content;
@@ -176,6 +182,7 @@ export function resolvedPendingPaper(pendingPaperId: string, paperId: string, au
       dispatch(ActionCreators.addEntity(entity));
       dispatch(addPaper({ paperId: paper.id }));
     } catch (err) {
+      dispatch(changeLoadingStatus({ isLoading: false }));
       throw err;
     }
   };
