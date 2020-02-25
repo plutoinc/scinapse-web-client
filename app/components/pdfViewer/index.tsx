@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import Axios from 'axios';
+import useSWR from 'swr'
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from '@reduxjs/toolkit';
 import { pdfjs, Document, Page } from 'react-pdf';
@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { Button } from '@pluto_network/pluto-design-elements';
 import ActionTicketManager from '../../helpers/actionTicketManager';
 import Icon from '../../icons';
-import { paperSchema } from '../../model/paper';
+import { paperSchema, Paper } from '../../model/paper';
 import { ActionCreators } from '../../actions/actionTypes';
 import { AUTH_LEVEL, blockUnverifiedUser } from '../../helpers/checkAuthDialog';
 import EnvChecker from '../../helpers/envChecker';
@@ -21,6 +21,7 @@ import BlurBlocker from './component/blurBlocker';
 import { addPaperToRecommendPool } from '../recommendPool/actions';
 import { PDFViewerState } from '../../reducers/pdfViewer';
 import { getBestPdf } from '../../actions/pdfViewer';
+import { getAxiosInstance } from '../../api/axios';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const styles = require('./pdfViewer.scss');
 
@@ -58,41 +59,31 @@ const PDFViewer: React.FC<PDFViewerProps> = memo(props => {
   const isLoggedIn = useSelector<AppState, boolean>(state => state.currentUser.isLoggedIn);
   const isLoadingRelatedPaperList = useSelector<AppState, boolean>(state => state.relatedPapersState.isLoading);
   const relatedPaperList = useSelector(selectRelatedPapers);
-  const [pdfFile, setPdfFile] = React.useState<{ data: ArrayBuffer } | null>(null);
   const wrapperNode = React.useRef<HTMLDivElement | null>(null);
 
-  React.useEffect(
-    () => {
-      let shouldUpdate = true;
+  const { data: pdfFile } = useSWR([`/papers/${paper.id}/pdf`, paper], (_url, paper) => fetchPDF(paper), {
+    revalidateOnFocus: false,
+    dedupingInterval: 600000,
+  });
 
-      getBestPdf(paper)
-        .then(bestPdf => {
-          dispatch(ActionCreators.startToFetchPDF());
+  async function fetchPDF(paper: Paper) {
+    dispatch(ActionCreators.startToFetchPDF());
 
-          if (!bestPdf.path) return dispatch(ActionCreators.finishToFetchPDF());
+    const bestPDF = await getBestPdf(paper);
+    if (!bestPDF.path) return dispatch(ActionCreators.finishToFetchPDF());
 
-          // paper exists in Pluto server
-          Axios.get(getDirectPDFPath(bestPdf.path), {
-            responseType: 'arraybuffer',
-          }).then(res => {
-            if (shouldUpdate) {
-              setPdfFile({ data: res.data });
-              dispatch(ActionCreators.finishToFetchPDF());
-            }
-          });
-        })
-        .catch(_err => {
-          dispatch(ActionCreators.failToFetchPDF());
-        });
-      return () => {
-        shouldUpdate = false;
-        dispatch(ActionCreators.cancelToFetchPDF());
-      };
-    },
-    [dispatch, paper]
-  );
+    try {
+      const PDFBufferResponse = await getAxiosInstance().get(getDirectPDFPath(bestPDF.path), {
+        responseType: 'arraybuffer',
+        withCredentials: false,
+      });
+      return PDFBufferResponse.data;
+    } catch (_err) {
+      dispatch(ActionCreators.failToFetchPDF());
+    }
+  }
 
-  if (PDFViewerState.isLoading) return <ProgressSpinner />; // loading state
+  // if (PDFViewerState.isLoading) return <ProgressSpinner />; // loading state
   if (!pdfFile) return null; // empty state
 
   if (PDFViewerState.hasClickedDownloadBtn) {
@@ -110,6 +101,8 @@ const PDFViewer: React.FC<PDFViewerProps> = memo(props => {
       </div>
     );
   }
+
+  console.log(pdfFile)
 
   return (
     <div ref={wrapperNode} className={styles.contentWrapper}>

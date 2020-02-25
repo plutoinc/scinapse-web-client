@@ -68,6 +68,7 @@ export function getPaper(params: GetPaperParams): AppThunkAction {
 
       dispatch(ActionCreators.addEntity(paperResponse));
       dispatch(ActionCreators.getPaper({ paperId: paperResponse.result }));
+      return paper;
     } catch (err) {
       if (!Axios.isCancel(err)) {
         const error = PlutoAxios.getGlobalError(err);
@@ -168,20 +169,19 @@ export function closeNoteDropdown() {
 
 interface FetchMobilePaperShowData {
   paperId: string;
-  cancelToken: CancelToken;
+  cancelToken?: CancelToken;
 }
 
 export const fetchPaperShowDataAtClient = ({
   paperId,
   cancelToken,
-}: FetchMobilePaperShowData): ThunkAction<Promise<void>, AppState, {}, any> => {
+}: FetchMobilePaperShowData): ThunkAction<Promise<boolean>, AppState, {}, any> => {
   return async (dispatch: Dispatch<any>) => {
     const promiseArray = [];
 
     promiseArray.push(dispatch(getPaper({ paperId, cancelToken })));
     promiseArray.push(dispatch(getRelatedPapers(paperId, cancelToken)));
     promiseArray.push(dispatch(getMyCollections(paperId, cancelToken)));
-
     try {
       await Promise.all(promiseArray);
     } catch (err) {
@@ -191,5 +191,7 @@ export const fetchPaperShowDataAtClient = ({
         throw error;
       }
     }
+    return true;
+
   };
 };
