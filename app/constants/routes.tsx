@@ -16,4 +16,5 @@ export const PROFILE_LANDING_PATH = '/profiles/landing';
 export const PROFILE_LANDING_ENQUIRY_PATH = '/profiles/landing/enquiry';
 export const PROFILE_EMAIL_VERIFY_PATH = '/profiles/verify-email';
 export const PROFILE_REGISTER_PATH = '/profiles/new';
+export const PROFILE_ONBOARDING_PATH = '/profiles/onboarding';
 export const DESIGN_PATH = '/design';

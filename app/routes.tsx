@@ -33,6 +33,7 @@ import {
   PROFILE_REGISTER_PATH,
   KEYWORD_SETTINGS_PATH,
   PROFILE_SHOW_PATH,
+  PROFILE_ONBOARDING_PATH,
 } from './constants/routes';
 import { AppState } from './reducers';
 import ArticleSpinner from './components/common/spinner/articleSpinner';
@@ -89,10 +90,9 @@ export const routesMap: ServerRoutesMap[] = [
       fallback: <LoadingSpinner />,
     }),
     loadData: async (params: LoadDataParams<PaperShowMatchParams>) => {
-      const {
-        fetchPaperShowData,
-        fetchRefCitedPaperDataAtServer: fetchRefCitedPaperData,
-      } = await import('./containers/paperShow/sideEffect');
+      const { fetchPaperShowData, fetchRefCitedPaperDataAtServer: fetchRefCitedPaperData } = await import(
+        './containers/paperShow/sideEffect'
+      );
 
       await Promise.all([fetchPaperShowData(params), fetchRefCitedPaperData(params)]);
     },
@@ -183,6 +183,12 @@ export const routesMap: ServerRoutesMap[] = [
       fallback: <div>loading...</div>,
     }),
     exact: true,
+  },
+  {
+    path: PROFILE_ONBOARDING_PATH,
+    component: loadable(() => import('./containers/profileOnboarding'), {
+      fallback: <LoadingSpinner />,
+    }),
   },
   {
     path: PROFILE_SHOW_PATH,
@@ -320,7 +326,9 @@ const RootRoutes: React.FC<RootRoutesProps> = props => {
       <ImprovedHeader />
       <div className={classNames({ [styles.mainContentsAtOpenMobileSearchBox]: isOpenMobileSearchBox })}>
         <Switch location={location}>
-          {routesMap.map(route => <Route {...route} key={route.path || 'errorPage'} />)}
+          {routesMap.map(route => (
+            <Route {...route} key={route.path || 'errorPage'} />
+          ))}
         </Switch>
       </div>
       <DeviceDetector />

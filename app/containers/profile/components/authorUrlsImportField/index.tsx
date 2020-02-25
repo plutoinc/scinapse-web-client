@@ -28,29 +28,26 @@ const AuthorUrlsImportField: FC<AuthorUrlsImportFieldProps> = ({
   const [authorName, setAuthorName] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const fetchAuthorNameFromAuthorUrl = useCallback(
-    async () => {
-      setIsLoading(true);
-      try {
-        const targetAuthorName = await onBlurUrlField(authorUrl);
+  const fetchAuthorNameFromAuthorUrl = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const targetAuthorName = await onBlurUrlField(authorUrl);
 
-        if (!targetAuthorName) {
-          setAuthorName('');
-          setIsLoading(false);
-          return;
-        }
-
-        setAuthorName(targetAuthorName);
+      if (!targetAuthorName) {
+        setAuthorName('');
         setIsLoading(false);
-      } catch (err) {
-        const error = PlutoAxios.getGlobalError(err);
-        alertToast({ type: 'error', message: error.message });
-        setAuthorName(error.message);
-        setIsLoading(false);
+        return;
       }
-    },
-    [authorUrl, onBlurUrlField]
-  );
+
+      setAuthorName(targetAuthorName);
+      setIsLoading(false);
+    } catch (err) {
+      const error = PlutoAxios.getGlobalError(err);
+      alertToast({ type: 'error', message: error.message });
+      setAuthorName(error.message);
+      setIsLoading(false);
+    }
+  }, [authorUrl, onBlurUrlField]);
 
   return (
     <div>
@@ -62,6 +59,7 @@ const AuthorUrlsImportField: FC<AuthorUrlsImportFieldProps> = ({
           variant="outlined"
           placeholder="https://scinapse.io/authors/1234"
           onBlur={fetchAuthorNameFromAuthorUrl}
+          onChange={fetchAuthorNameFromAuthorUrl}
           onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
             if (e.key === 'Enter') {
               e.preventDefault();
