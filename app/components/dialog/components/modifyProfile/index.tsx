@@ -19,7 +19,7 @@ export interface ModifyProfileFormState {
   bio: string | null;
   email: string;
   website: string | null;
-  isEmailPublic: boolean;
+  hideEmail: boolean;
 }
 
 interface ModifyProfileProps {
@@ -98,7 +98,7 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
           initialValues={initialValues}
           onSubmit={handleSubmitForm}
           validate={validateForm}
-          enableReinitialize={true}
+          enableReinitialize
           render={({ errors }) => {
             return (
               <Form>
@@ -162,9 +162,9 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                         <Field
                           className={styles.checkBox}
                           component={scinapseFormikCheckbox}
-                          name="isEmailPublic"
+                          name="hideEmail"
                           type="checkbox"
-                          checked={initialValues.isEmailPublic}
+                          checked={initialValues.hideEmail}
                         />
                         <span className={styles.checkboxInfo}>Hide email from other users</span>
                       </div>
