@@ -16,7 +16,7 @@ import {
   changeLoadingStatus,
 } from '../reducers/profilePendingPaperList';
 import { IMPORT_SOURCE_TAB, CURRENT_IMPORT_PROGRESS_STEP } from '../containers/profile/types';
-import { changeProgressStep } from '../reducers/importPaperDialog';
+import { changeProgressStep, fetchPaperImportResult } from '../reducers/importPaperDialog';
 
 interface FetchProfilePaperListParams {
   profileSlug: string;
@@ -136,6 +136,14 @@ export function fetchProfileImportedPapers(
     const pendingPapers = pendingPapersRes.data.content;
 
     dispatch(getPendingPapers({ papers: pendingPapers }));
+
+    dispatch(
+      fetchPaperImportResult({
+        totalImportedCount: res.totalImportedCount,
+        successCount: res.successCount,
+        pendingCount: res.pendingCount,
+      })
+    );
 
     dispatch(changeProgressStep({ inProgressStep: CURRENT_IMPORT_PROGRESS_STEP.RESULT }));
   };
