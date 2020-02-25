@@ -3,15 +3,17 @@ import Stepper from '@material-ui/core/Stepper';
 import Step, { StepProps } from '@material-ui/core/Step';
 import StepLabel, { StepLabelProps } from '@material-ui/core/StepLabel';
 import Typography from '@material-ui/core/Typography';
+import { isStepOptional } from '../../../containers/profileOnboarding/helper';
 
 interface ProgressStepperProps {
   activeStep: number;
   progressSteps: string[];
-  isStepOptional: (step: number) => boolean;
-  isStepSkipped: (step: number) => boolean;
+  skipped: any[];
 }
 
-const ProgressStepper: FC<ProgressStepperProps> = ({ activeStep, progressSteps, isStepOptional, isStepSkipped }) => {
+const ProgressStepper: FC<ProgressStepperProps> = ({ activeStep, progressSteps, skipped }) => {
+  const activeSkipped = new Set(skipped);
+
   const stepList = useMemo(
     () =>
       progressSteps.map((label, index) => {
@@ -20,7 +22,7 @@ const ProgressStepper: FC<ProgressStepperProps> = ({ activeStep, progressSteps, 
         if (isStepOptional(index)) {
           labelProps.optional = <Typography variant="caption">Optional</Typography>;
         }
-        if (isStepSkipped(index)) {
+        if (activeSkipped.has(index)) {
           stepProps.completed = false;
         }
         return (
@@ -29,7 +31,7 @@ const ProgressStepper: FC<ProgressStepperProps> = ({ activeStep, progressSteps, 
           </Step>
         );
       }),
-    [progressSteps, isStepOptional, isStepSkipped]
+    [progressSteps, activeSkipped]
   );
 
   return (

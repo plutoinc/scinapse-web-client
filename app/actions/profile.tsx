@@ -16,7 +16,8 @@ import {
   changeLoadingStatus,
 } from '../reducers/profilePendingPaperList';
 import { IMPORT_SOURCE_TAB, CURRENT_IMPORT_PROGRESS_STEP } from '../containers/profile/types';
-import { changeProgressStep, fetchPaperImportResult } from '../reducers/importPaperDialog';
+import { changeProgressStep, fetchPaperImportResult, closeImportPaperDialog } from '../reducers/importPaperDialog';
+import { clickNextStep } from '../reducers/profileOnboarding';
 
 interface FetchProfilePaperListParams {
   profileSlug: string;
@@ -85,7 +86,8 @@ export function fetchProfilePendingPapers(profileSlug: string): AppThunkAction {
 export function fetchProfileImportedPapers(
   importSource: IMPORT_SOURCE_TAB,
   profileSlug: string,
-  importedContext: string | string[]
+  importedContext: string | string[],
+  isOnboarding?: boolean
 ): AppThunkAction {
   return async (dispatch, _getState, { axios }) => {
     let rawRes;
@@ -145,7 +147,12 @@ export function fetchProfileImportedPapers(
       })
     );
 
-    dispatch(changeProgressStep({ inProgressStep: CURRENT_IMPORT_PROGRESS_STEP.RESULT }));
+    if (isOnboarding) {
+      dispatch(clickNextStep());
+      dispatch(closeImportPaperDialog());
+    } else {
+      dispatch(changeProgressStep({ inProgressStep: CURRENT_IMPORT_PROGRESS_STEP.RESULT }));
+    }
   };
 }
 

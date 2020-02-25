@@ -1,22 +1,16 @@
 import React, { FC } from 'react';
 import ProgressStepper from '../../../../components/common/progressStepper';
-import { ONBOARDING_STEPS } from '../../types';
+import { ONBOARDING_STEPS, CURRENT_ONBOARDING_PROGRESS_STEP } from '../../types';
 
 interface OnboardingHeaderProps {
-  activeStep: number;
-  handleStepOptionalFlag: (step: number) => boolean;
-  handleStepSkippedFlag: (step: number) => boolean;
+  activeStep: CURRENT_ONBOARDING_PROGRESS_STEP;
+  skipped: CURRENT_ONBOARDING_PROGRESS_STEP[];
 }
 
-const OnboardingHeader: FC<OnboardingHeaderProps> = ({ activeStep, handleStepOptionalFlag, handleStepSkippedFlag }) => {
+const OnboardingHeader: FC<OnboardingHeaderProps> = ({ activeStep, skipped }) => {
   return (
     <>
-      <ProgressStepper
-        activeStep={activeStep}
-        progressSteps={ONBOARDING_STEPS}
-        isStepOptional={handleStepOptionalFlag}
-        isStepSkipped={handleStepSkippedFlag}
-      />
+      <ProgressStepper activeStep={activeStep} progressSteps={ONBOARDING_STEPS} skipped={skipped} />
     </>
   );
 };

@@ -33,6 +33,7 @@ import profilePaperListReducer, { PROFILE_PAPER_LIST_INITIAL_STATE } from './pro
 import profilePendingPaperListReducer, { PROFILE_PENDING_PAPER_LIST_INITIAL_STATE } from './profilePendingPaperList';
 import ProfileEntitiesReducer, { PROFILE_ENTITIES_INITIAL_STATE } from './profileEntity';
 import ImportPaperDialogReducer, { IMPORT_PAPER_DIALOG_INITIAL_STATE } from './importPaperDialog';
+import ProfileOnboardingReducer, { PROFILE_ONBOARDING_INITIAL_STATE } from './profileOnboarding';
 
 export type AppState = typeof initialState;
 
@@ -62,6 +63,7 @@ export const initialState = {
   profilePaperListState: PROFILE_PAPER_LIST_INITIAL_STATE,
   profilePendingPaperListState: PROFILE_PENDING_PAPER_LIST_INITIAL_STATE,
   importPaperDialogState: IMPORT_PAPER_DIALOG_INITIAL_STATE,
+  profileOnboardingState: PROFILE_ONBOARDING_INITIAL_STATE,
   profileEntities: PROFILE_ENTITIES_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
 };
@@ -92,6 +94,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   profilePaperListState: profilePaperListReducer,
   profilePendingPaperListState: profilePendingPaperListReducer,
   importPaperDialogState: ImportPaperDialogReducer,
+  profileOnboardingState: ProfileOnboardingReducer,
   profileEntities: ProfileEntitiesReducer,
   entities: EntityReducer,
 });
