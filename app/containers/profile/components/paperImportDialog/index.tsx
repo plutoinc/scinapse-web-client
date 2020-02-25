@@ -162,7 +162,7 @@ const PaperImportDialog: React.FC = () => {
     setIsLoading(true);
     trackImportFromCitationString('clickSubmitCitationStringBtn');
     try {
-      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.BIBTEX, profileSlug, params.citationString));
+      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.CITATION, profileSlug, params.citationString));
       setIsLoading(false);
 
       trackImportFromCitationString('successSubmitCitationString');
@@ -225,10 +225,10 @@ const PaperImportDialog: React.FC = () => {
             isLoading={isLoading}
             currentStep={inProgressStep}
             activeTab={activeTab}
-            handleSubmitGS={handleSubmitGS}
-            handleSubmitBibTex={handleSubmitBibTex}
-            handleSubmitCitationString={handleSubmitCitationString}
-            handleSubmitAuthorUrls={handleSubmitAuthorUrls}
+            onSubmitGS={handleSubmitGS}
+            onSubmitBibTex={handleSubmitBibTex}
+            onSubmitCitationString={handleSubmitCitationString}
+            onSubmitAuthorUrls={handleSubmitAuthorUrls}
           />
         </div>
       </div>

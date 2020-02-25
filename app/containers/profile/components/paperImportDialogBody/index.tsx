@@ -10,20 +10,20 @@ interface DialogBodyProps {
   isLoading: boolean;
   currentStep: CURRENT_IMPORT_PROGRESS_STEP;
   activeTab: IMPORT_SOURCE_TAB;
-  handleSubmitGS: (params: GSFormState) => void;
-  handleSubmitBibTex: (params: BibTexFormState) => void;
-  handleSubmitCitationString: (params: CitationStringFormState) => void;
-  handleSubmitAuthorUrls: (params: AuthorUrlsFormState) => void;
+  onSubmitGS: (params: GSFormState) => void;
+  onSubmitBibTex: (params: BibTexFormState) => void;
+  onSubmitCitationString: (params: CitationStringFormState) => void;
+  onSubmitAuthorUrls: (params: AuthorUrlsFormState) => void;
 }
 
 const DialogBody: React.FC<DialogBodyProps> = ({
   currentStep,
   activeTab,
   isLoading,
-  handleSubmitGS,
-  handleSubmitBibTex,
-  handleSubmitCitationString,
-  handleSubmitAuthorUrls,
+  onSubmitGS: handleSubmitGS,
+  onSubmitBibTex: handleSubmitBibTex,
+  onSubmitCitationString: handleSubmitCitationString,
+  onSubmitAuthorUrls: handleSubmitAuthorUrls,
 }) => {
   if (currentStep === CURRENT_IMPORT_PROGRESS_STEP.RESULT) return <ImportResultShow />;
   if (activeTab === IMPORT_SOURCE_TAB.GS) return <GSImportForm isLoading={isLoading} onSubmitGS={handleSubmitGS} />;
