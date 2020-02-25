@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FormikErrors } from 'formik';
 import { Button } from '@pluto_network/pluto-design-elements';
 import FormikInput from '../../../../components/common/formikInput';
 import Icon from '../../../../icons';
-
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./bibTexImportForm.scss');
+
+const MIN_LENGTH_OF_BIBTEX_STRING = 4;
 
 export interface BibTexFormState {
   bibTexString: string;
@@ -15,6 +16,16 @@ interface BibTexImportFormProps {
   isLoading: boolean;
   onSubmitBibtex: (params: BibTexFormState) => void;
 }
+
+const validateForm = (values: BibTexFormState) => {
+  const errors: FormikErrors<BibTexFormState> = {};
+
+  if (!values.bibTexString || values.bibTexString.length < MIN_LENGTH_OF_BIBTEX_STRING) {
+    errors.bibTexString = `Sorry. You should fill at least ${MIN_LENGTH_OF_BIBTEX_STRING} length of BibTex text.`;
+  }
+
+  return errors;
+};
 
 const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
   useStyles(s);
@@ -43,10 +54,9 @@ const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
       <Formik
         initialValues={{ bibTexString: bibTexString }}
         onSubmit={onSubmitBibtex}
+        validate={validateForm}
         enableReinitialize
-        validateOnChange={false}
-        validateOnBlur={false}
-        render={({ errors }) => (
+        render={({ errors, touched }) => (
           <Form autoComplete="off">
             <div>
               <div>
@@ -62,7 +72,8 @@ const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
                     <div className={s.bibTexFileUploadSection}>
                       {!targetFile ? (
                         <span className={s.uploaderGuideContext}>
-                          <Icon icon="CLOUD_UPLOAD" className={s.uploadIcon} />Drop BibTex file here or upload a file.
+                          <Icon icon="CLOUD_UPLOAD" className={s.uploadIcon} />
+                          Drop BibTex file here or upload a file.
                         </span>
                       ) : (
                         targetFile.name
@@ -83,7 +94,7 @@ const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
                   type="text"
                   labelText="BIBTEX TEXT"
                   component={FormikInput}
-                  error={errors.bibTexString}
+                  error={touched.bibTexString && errors.bibTexString}
                   helperText="Write or Copy & Paste BibTex text above"
                   placeholder="Write or Copy & Paste BibTex text above"
                   variant="underlined"
