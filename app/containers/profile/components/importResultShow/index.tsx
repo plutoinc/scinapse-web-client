@@ -1,20 +1,18 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { isEqual } from 'lodash';
 import Icon from '../../../../icons';
 import { AppState } from '../../../../reducers';
-import { PendingPaper } from '../../../../reducers/profilePendingPaperList';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./importResultShow.scss');
 
 const ImportResultShow: React.FC = () => {
   useStyles(s);
-  const successPaperIds = useSelector<AppState, string[]>(state => state.profilePaperListState.paperIds, isEqual);
-  const pendingPapers = useSelector<AppState, PendingPaper[]>(
-    state => state.profilePendingPaperListState.papers,
-    isEqual
-  );
+
+  const { successCount, pendingCount } = useSelector((state: AppState) => ({
+    successCount: state.importPaperDialogState.successCount,
+    pendingCount: state.importPaperDialogState.pendingCount,
+  }));
 
   return (
     <div>
@@ -23,12 +21,12 @@ const ImportResultShow: React.FC = () => {
         <div className={s.successResultSection}>
           <Icon icon="CHECK" className={s.successIcon} />
           <div className={s.resultTitle}>SUCCESS</div>
-          <div className={s.resultCount}>{successPaperIds.length}</div>
+          <div className={s.resultCount}>{successCount}</div>
         </div>
         <div className={s.pendingResultSection}>
           <Icon icon="ACTIVE_LINE" className={s.pendingIcon} />
           <div className={s.resultTitle}>PENDING</div>
-          <div className={s.resultCount}>{pendingPapers.length}</div>
+          <div className={s.resultCount}>{pendingCount}</div>
         </div>
       </div>
     </div>
