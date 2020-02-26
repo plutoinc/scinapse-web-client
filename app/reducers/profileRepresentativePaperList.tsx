@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export interface ProfilePaperListState {
+interface ProfilePaperListState {
   currentPage: number;
   paperIds: string[];
   maxPage: number;
@@ -14,18 +14,18 @@ interface GetPapersPayload {
   totalElements: number;
 }
 
-export const PROFILE_PAPER_LIST_INITIAL_STATE: ProfilePaperListState = {
+export const PROFILE_REPRESENTATIVE_PAPER_LIST_INITIAL_STATE: ProfilePaperListState = {
   paperIds: [],
   currentPage: 0,
   maxPage: 0,
   totalCount: 0,
 };
 
-const profilePaperListSlice = createSlice({
-  name: 'profilePaperListSlice',
-  initialState: PROFILE_PAPER_LIST_INITIAL_STATE,
+const profileRepresentativePaperListSlice = createSlice({
+  name: 'profileRepresentativePaperListSlice',
+  initialState: PROFILE_REPRESENTATIVE_PAPER_LIST_INITIAL_STATE,
   reducers: {
-    getPapers(state, action: PayloadAction<GetPapersPayload>) {
+    getRepresentativePapers(state, action: PayloadAction<GetPapersPayload>) {
       state.currentPage = action.payload.page;
       state.totalCount = action.payload.totalElements;
       state.maxPage = action.payload.totalPages;
@@ -38,6 +38,6 @@ const profilePaperListSlice = createSlice({
   },
 });
 
-export const { getPapers, addPaper } = profilePaperListSlice.actions;
+export const { getRepresentativePapers, addPaper } = profileRepresentativePaperListSlice.actions;
 
-export default profilePaperListSlice.reducer;
+export default profileRepresentativePaperListSlice.reducer;

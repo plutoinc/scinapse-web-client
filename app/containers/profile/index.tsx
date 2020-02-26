@@ -21,7 +21,7 @@ import ProfileShowPageHelmet from './components/helmet';
 // import RepresentativePaperListSection from './components/representativePapers';
 // import { Paper } from '../../model/paper';
 import { selectHydratedProfile, Profile } from '../../model/profile';
-import { fetchProfileData, updateProfile, fetchProfilePapers, fetchProfilePendingPapers } from '../../actions/profile';
+import { fetchProfileData, updateProfile, fetchProfilePapers, fetchProfilePendingPapers, fetchRepresentativePapers } from '../../actions/profile';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 import { PendingPaper } from '../../reducers/profilePendingPaperList';
 import PendingPaperList from './components/pendingPaperList';
@@ -75,13 +75,8 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
     if (!profileSlug) return;
 
     dispatch(fetchProfileData(profileSlug));
-  }, [profileSlug, dispatch, currentUser]);
-
-  useEffect(() => {
-    if (!lastShouldFetch.current) return;
-    if (!profileSlug) return;
-
     dispatch(fetchProfilePendingPapers(profileSlug));
+    dispatch(fetchRepresentativePapers({ profileSlug }));
   }, [profileSlug, dispatch, currentUser]);
 
   useEffect(() => {

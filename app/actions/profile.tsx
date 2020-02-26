@@ -17,10 +17,31 @@ import {
 } from '../reducers/profilePendingPaperList';
 import { IMPORT_SOURCE_TAB, CURRENT_IMPORT_PROGRESS_STEP } from '../containers/profile/types';
 import { changeProgressStep, fetchPaperImportResult } from '../reducers/importPaperDialog';
+import { getRepresentativePapers } from '../reducers/profileRepresentativePaperList';
 
 interface FetchProfilePaperListParams {
   profileSlug: string;
-  page: number;
+  size?: number;
+  page?: number;
+}
+
+export function fetchRepresentativePapers({ profileSlug, size = 10, page = 0 }: FetchProfilePaperListParams): AppThunkAction {
+  return async (dispatch, _getState, { axios }) => {
+    const res = await axios.get(`/profiles/${profileSlug}/papers/representative`, {
+      params: { page: page }
+    });
+    const result: PaginationResponseV2<Paper[]> = res.data;
+    const normalizedPapers = normalize(result.data.content, [paperSchema]);
+    dispatch(ActionCreators.addEntity(normalizedPapers.entities));
+    dispatch(
+      getRepresentativePapers({
+        paperIds: normalizedPapers.result,
+        totalPages: result.data.page!.totalPages,
+        page: result.data.page!.page,
+        totalElements: result.data.page!.totalElements,
+      })
+    );
+  }
 }
 
 export function fetchProfileData(profileSlug: string): AppThunkAction {
