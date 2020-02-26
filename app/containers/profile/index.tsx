@@ -18,7 +18,7 @@ import ProfileCvSection from '../authorCvSection';
 import { Affiliation } from '../../model/affiliation';
 import { SuggestAffiliation } from '../../api/suggest';
 import ProfileShowPageHelmet from './components/helmet';
-// import RepresentativePaperListSection from './components/representativePapers';
+import RepresentativePaperListSection from './components/representativePapers';
 // import { Paper } from '../../model/paper';
 import { selectHydratedProfile, Profile } from '../../model/profile';
 import { fetchProfileData, updateProfile, fetchProfilePapers, fetchProfilePendingPapers, fetchRepresentativePapers } from '../../actions/profile';
@@ -59,6 +59,8 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
     isEqual
   );
   const paperIds = useSelector<AppState, string[]>(state => state.profilePaperListState.paperIds, isEqual);
+  const representativePaperIds = useSelector<AppState, string[]>(state => state.profileRepresentativePaperListState.paperIds, isEqual);
+  const totalRepresentativePaperCount = useSelector<AppState, number>(state => state.profileRepresentativePaperListState.totalCount);
   const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
   const [isOpenModifyProfileDialog, setIsOpenModifyProfileDialog] = useState(false);
   const [isOpenPendingDescriptionDialog, setIsOpenPendingDescriptionDialog] = useState(false);
@@ -142,11 +144,11 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
             {activeTab === AvailableTab.PUBLICATIONS && (
               <>
                 <div className={s.leftContentWrapper}>
-                  {/* <RepresentativePaperListSection
-                    author={author}
-                    isEditable={isEditable}
-                    onClickManageButton={() => setIsOpenRepresentativePublicationDialog(prev => !prev)}
-                  /> */}
+                  <RepresentativePaperListSection
+                    paperIds={representativePaperIds}
+                    isEditable={profile.isEditable}
+                    totalCount={totalRepresentativePaperCount}
+                  />
                   {pendingPapers.length > 0 && profile.isEditable && (
                     <>
                       <div className={s.allPublicationHeader}>
@@ -175,7 +177,8 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                         {profile.isEditable && (
                           <Button
                             elementType="button"
-                            size="medium"
+                            color="gray"
+                            variant="outlined"
                             title="Update or add publication information here by using Google Scholar Profile page, BibTex, or citation string. This is not for uploading the publication itself."
                             onClick={() =>
                               dispatch(
@@ -198,7 +201,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                         <span className={s.noPaperContent}>You have not yet imported your paper list.</span>
                         <Button
                           elementType="button"
-                          size="medium"
+                          variant="outlined"
                           title="Update or add publication information here by using Google Scholar Profile page, BibTex, or citation string. This is not for uploading the publication itself."
                           onClick={() =>
                             dispatch(
