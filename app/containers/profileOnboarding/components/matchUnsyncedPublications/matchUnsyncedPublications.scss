@@ -1,3 +1,37 @@
 .matchUnsyncedPublicationsWrapper {
-  margin-bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  padding: 0 48px 80px 48px;
+  align-items: center;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 1.75;
+  color: $black0;
+  padding: 24px 0;
+}
+
+.contextWrapper {
+  padding: 0 36px 48px 36px;
+  border-bottom: 1px solid $gray300;
+}
+
+.subContext {
+  color: $black_light_0;
+  line-height: 1.5;
+  padding-bottom: 16px;
+}
+
+.guideContext {
+  color: $gray600;
+  line-height: 1.5;
+}
+
+.highlightContext {
+  color: $main_blue0;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }

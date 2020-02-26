@@ -1,4 +1,4 @@
-.uploadPublicationListWrapper {
+.selectRepresentativePublicationsWrapper {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -12,15 +12,6 @@
   line-height: 1.75;
   color: $black0;
   padding: 24px 0 48px 0;
-}
-
-.subContext {
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 1.5;
-  color: $black1;
-  margin-bottom: 16px;
-  text-align: left;
 }
 
 .uploadButtonsGroup {

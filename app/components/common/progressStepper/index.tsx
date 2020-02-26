@@ -5,6 +5,9 @@ import StepLabel, { StepLabelProps } from '@material-ui/core/StepLabel';
 import Typography from '@material-ui/core/Typography';
 import { isStepOptional } from '../../../containers/profileOnboarding/helper';
 
+const useStyles = require('isomorphic-style-loader/useStyles');
+const s = require('./progressStepper.scss');
+
 interface ProgressStepperProps {
   activeStep: number;
   progressSteps: string[];
@@ -12,6 +15,8 @@ interface ProgressStepperProps {
 }
 
 const ProgressStepper: FC<ProgressStepperProps> = ({ activeStep, progressSteps, skipped }) => {
+  useStyles(s);
+
   const activeSkipped = new Set(skipped);
 
   const stepList = useMemo(
@@ -26,7 +31,7 @@ const ProgressStepper: FC<ProgressStepperProps> = ({ activeStep, progressSteps, 
           stepProps.completed = false;
         }
         return (
-          <Step key={label} {...stepProps}>
+          <Step key={label} {...stepProps} classes={{ root: s.stepWrapper }}>
             <StepLabel {...labelProps} />
           </Step>
         );
