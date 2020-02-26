@@ -13,8 +13,10 @@ const s = require('./profileOnboarding.scss');
 const ProfileOnboarding: FC = () => {
   useStyles(s);
   const profileSlug = useSelector((state: AppState) => state.currentUser.profileSlug);
-  const activeStep = useSelector((state: AppState) => state.profileOnboardingState.activeStep);
-  const skipped = useSelector((state: AppState) => state.profileOnboardingState.skipped);
+  const { activeStep, skipped } = useSelector((state: AppState) => ({
+    activeStep: state.profileOnboardingState.activeStep,
+    skipped: state.profileOnboardingState.skipped,
+  }));
 
   if (!profileSlug) return null;
 

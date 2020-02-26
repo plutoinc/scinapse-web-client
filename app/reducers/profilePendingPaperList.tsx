@@ -22,7 +22,7 @@ export const PROFILE_PENDING_PAPER_LIST_INITIAL_STATE: ProfilePendingPaperListSt
 };
 
 const profilePendingPaperListSlice = createSlice({
-  name: 'profilePageSlice',
+  name: 'profilePendingPaperListSlice',
   initialState: PROFILE_PENDING_PAPER_LIST_INITIAL_STATE,
   reducers: {
     getPendingPapers(state, action: PayloadAction<{ papers: PendingPaper[] }>) {

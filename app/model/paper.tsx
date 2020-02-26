@@ -56,6 +56,7 @@ export interface Paper {
   missingKeywords: string[];
   bestPdf?: PaperPdf;
   isConfirmed?: boolean;
+  isRepresentative?: boolean;
 }
 
 export const paperSchema = new schema.Entity('papers');

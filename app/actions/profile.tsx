@@ -17,11 +17,17 @@ import {
 } from '../reducers/profilePendingPaperList';
 import { IMPORT_SOURCE_TAB, CURRENT_IMPORT_PROGRESS_STEP } from '../containers/profile/types';
 import { changeProgressStep, fetchPaperImportResult, closeImportPaperDialog } from '../reducers/importPaperDialog';
-import { clickNextStep } from '../reducers/profileOnboarding';
+import { clickNextStep, clickSkipStep } from '../reducers/profileOnboarding';
+import {
+  addRepresentativePaper,
+  removeRepresentativePaper,
+  getRepresentativePapers,
+} from '../reducers/profileRepresentativePaperList';
 
 interface FetchProfilePaperListParams {
   profileSlug: string;
   page: number;
+  size?: number;
 }
 
 export function fetchProfileData(profileSlug: string): AppThunkAction {
@@ -83,11 +89,32 @@ export function fetchProfilePendingPapers(profileSlug: string): AppThunkAction {
   };
 }
 
+export function fetchProfileRepresentativePapers(params: FetchProfilePaperListParams): AppThunkAction {
+  return async (dispatch, _getState, { axios }) => {
+    const { profileSlug, page } = params;
+    const result = await axios.get(`/profiles/${profileSlug}/papers/representative`, { params: { page } });
+    const { data } = result.data as PaginationResponseV2<Paper[]>;
+    const papers = data.content;
+    const entity = normalize(papers, [paperSchema]);
+
+    dispatch(ActionCreators.addEntity(entity));
+    dispatch(
+      getRepresentativePapers({
+        paperIds: entity.result,
+        totalPages: data.page!.totalPages,
+        page: data.page!.page,
+        totalElements: data.page!.totalElements,
+      })
+    );
+  };
+}
+
 export function fetchProfileImportedPapers(
   importSource: IMPORT_SOURCE_TAB,
   profileSlug: string,
   importedContext: string | string[],
-  isOnboarding?: boolean
+  isOnboarding?: boolean,
+  markRepresentative?: boolean
 ): AppThunkAction {
   return async (dispatch, _getState, { axios }) => {
     let rawRes;
@@ -100,10 +127,12 @@ export function fetchProfileImportedPapers(
       } else if (importSource === IMPORT_SOURCE_TAB.BIBTEX) {
         rawRes = await axios.post(`/profiles/${profileSlug}/import-papers/bibtex`, {
           bibtex_string: importedContext,
+          mark_representative: !!markRepresentative,
         });
       } else if (importSource === IMPORT_SOURCE_TAB.CITATION) {
         rawRes = await axios.post(`/profiles/${profileSlug}/import-papers/citation`, {
           citation_string: importedContext,
+          mark_representative: !!markRepresentative,
         });
       } else if (importSource === IMPORT_SOURCE_TAB.AUTHOR_URLS) {
         rawRes = await axios.post(`/profiles/${profileSlug}/import-papers/author`, {
@@ -147,12 +176,21 @@ export function fetchProfileImportedPapers(
       })
     );
 
-    if (isOnboarding) {
-      dispatch(clickNextStep());
-      dispatch(closeImportPaperDialog());
-    } else {
-      dispatch(changeProgressStep({ inProgressStep: CURRENT_IMPORT_PROGRESS_STEP.RESULT }));
+    if (!isOnboarding) {
+      return dispatch(changeProgressStep({ inProgressStep: CURRENT_IMPORT_PROGRESS_STEP.RESULT }));
     }
+
+    if (res.totalImportedCount === 0) {
+      throw new Error('Try again');
+    }
+
+    dispatch(clickNextStep());
+
+    if (res.pendingCount === 0) {
+      dispatch(clickSkipStep());
+    }
+
+    dispatch(closeImportPaperDialog());
   };
 }
 
@@ -198,6 +236,32 @@ export function resolvedPendingPaper(pendingPaperId: string, paperId: string, au
       dispatch(addPaper({ paperId: paper.id }));
     } catch (err) {
       dispatch(changeLoadingStatus({ isLoading: false }));
+      throw err;
+    }
+  };
+}
+
+export function markRepresentativePaper(paperId: string, profileSlug: string): AppThunkAction {
+  return async (dispatch, _getState, { axios }) => {
+    try {
+      await axios.post(`/profiles/${profileSlug}/papers/representative/mark`, {
+        paper_id: paperId,
+      });
+      dispatch(addRepresentativePaper({ paperId }));
+    } catch (err) {
+      throw err;
+    }
+  };
+}
+
+export function unMarkRepresentativePaper(paperId: string, profileSlug: string): AppThunkAction {
+  return async (dispatch, _getState, { axios }) => {
+    try {
+      await axios.post(`/profiles/${profileSlug}/papers/representative/unmark`, {
+        paper_id: paperId,
+      });
+      dispatch(removeRepresentativePaper({ paperId }));
+    } catch (err) {
       throw err;
     }
   };
