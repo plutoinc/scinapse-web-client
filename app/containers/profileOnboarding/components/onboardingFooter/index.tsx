@@ -5,21 +5,25 @@ import { ONBOARDING_STEPS, CURRENT_ONBOARDING_PROGRESS_STEP } from '../../types'
 import { clickPrevStep, clickSkipStep, clickNextStep } from '../../../../reducers/profileOnboarding';
 import { isStepOptional } from '../../helper';
 import { AppState } from '../../../../reducers';
+import Icon from '../../../../icons';
+
+const useStyles = require('isomorphic-style-loader/useStyles');
+const s = require('./onboardingFooter.scss');
 
 interface OnboardingFooterProps {
   activeStep: CURRENT_ONBOARDING_PROGRESS_STEP;
+  shouldShow: boolean;
 }
 
-const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep }) => {
+const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep, shouldShow }) => {
+  useStyles(s);
+
   const dispatch = useDispatch();
   const { totalImportedCount, successCount, pendingCount } = useSelector((appState: AppState) => ({
     totalImportedCount: appState.importPaperDialogState.totalImportedCount,
     successCount: appState.importPaperDialogState.successCount,
     pendingCount: appState.importPaperDialogState.pendingCount,
   }));
-
-  const showFooterButtons =
-    activeStep < ONBOARDING_STEPS.length && activeStep !== CURRENT_ONBOARDING_PROGRESS_STEP.UPLOAD_PUB_LIST;
 
   const onClickNextBtn = () => {
     dispatch(clickNextStep());
@@ -31,14 +35,14 @@ const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep }) => {
 
   const importPublicationCount = useMemo(
     () => (
-      <div>
-        <div>
-          Total upload count<span>{`(${totalImportedCount})`}</span>
+      <div className={s.countSection}>
+        <div className={s.totalCount}>
+          Total upload count<span className={s.highlightNumber}>{`(${totalImportedCount})`}</span>
         </div>
-        <div>
-          Success <span>{`(${successCount})`}</span>
+        <div className={s.eachCount}>
+          Success <span className={s.highlightNumber}>{`(${successCount})`}</span>
           {` | `}
-          Pending <span>{`(${pendingCount})`}</span>
+          Pending <span className={s.highlightNumber}>{`(${pendingCount})`}</span>
         </div>
       </div>
     ),
@@ -47,8 +51,10 @@ const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep }) => {
 
   const skipButton = (
     <Button
-      variant="contained"
       elementType="button"
+      variant="text"
+      color="gray"
+      size="large"
       onClick={() => {
         if (activeStep === CURRENT_ONBOARDING_PROGRESS_STEP.MATCH_UNSYNCED_PUBS) {
           return onClickNextBtn();
@@ -57,26 +63,32 @@ const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep }) => {
         dispatch(clickSkipStep());
       }}
     >
-      Skip
+      <span>SKIP</span>
     </Button>
   );
 
+  if (!shouldShow) return null;
+
   return (
-    <div>
-      {showFooterButtons && (
-        <div>
-          <Button elementType="button" onClick={() => dispatch(clickPrevStep())}>
-            Prev
-          </Button>
-          {activeStep === CURRENT_ONBOARDING_PROGRESS_STEP.MATCH_UNSYNCED_PUBS && importPublicationCount}
-          <GroupButton>
-            {isStepOptional(activeStep) && skipButton}
-            <Button variant="contained" elementType="button" onClick={() => dispatch(clickNextStep())}>
-              {activeStep === ONBOARDING_STEPS.length - 1 ? 'Done' : 'Next'}
-            </Button>
-          </GroupButton>
-        </div>
-      )}
+    <div className={s.onboardingFooterWrapper}>
+      <Button elementType="button" variant="text" color="black" size="large" onClick={() => dispatch(clickPrevStep())}>
+        <Icon icon="ARROW_LEFT" />
+        <span>PREV</span>
+      </Button>
+      {activeStep === CURRENT_ONBOARDING_PROGRESS_STEP.MATCH_UNSYNCED_PUBS && importPublicationCount}
+      <GroupButton variant="text" color="gray">
+        {isStepOptional(activeStep) && skipButton}
+        <Button
+          elementType="button"
+          variant="text"
+          color="black"
+          size="large"
+          onClick={() => dispatch(clickNextStep())}
+        >
+          <span>{activeStep === ONBOARDING_STEPS.length - 1 ? 'DONE' : 'NEXT'}</span>
+          <Icon icon="ARROW_RIGHT" />
+        </Button>
+      </GroupButton>
     </div>
   );
 };

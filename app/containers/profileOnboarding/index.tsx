@@ -7,6 +7,7 @@ import OnboardingBody from './components/onboardingBody';
 import { AppState } from '../../reducers';
 import PaperImportDialog from '../profile/components/paperImportDialog';
 import { useHistory } from 'react-router-dom';
+import { ONBOARDING_STEPS, CURRENT_ONBOARDING_PROGRESS_STEP } from './types';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./profileOnboarding.scss');
@@ -26,13 +27,16 @@ const ProfileOnboarding: FC = () => {
     return null;
   }
 
+  const shouldShowFooter =
+    activeStep < ONBOARDING_STEPS.length && activeStep !== CURRENT_ONBOARDING_PROGRESS_STEP.UPLOAD_PUB_LIST;
+
   return (
     <>
       <div className={s.container}>
         <div className={s.wrapper}>
           <OnboardingHeader activeStep={activeStep} skipped={skipped} />
           <OnboardingBody activeStep={activeStep} profileSlug={profileSlug} />
-          <OnboardingFooter activeStep={activeStep} />
+          <OnboardingFooter activeStep={activeStep} shouldShow={shouldShowFooter} />
         </div>
       </div>
       <PaperImportDialog />

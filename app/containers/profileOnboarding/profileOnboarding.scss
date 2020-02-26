@@ -7,8 +7,8 @@ $wrapper-vertical-margin: 128px;
 }
 
 .wrapper {
+  position: relative;
   display: flex;
-  justify-content: center;
   flex-direction: column;
   background-color: white;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
@@ -16,4 +16,5 @@ $wrapper-vertical-margin: 128px;
   max-width: 768px;
   min-height: calc(100vh - #{$navbar_height});
   margin: 0 auto;
+  padding-top: 24px;
 }

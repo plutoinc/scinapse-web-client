@@ -37,13 +37,6 @@ const ProgressStepper: FC<ProgressStepperProps> = ({ activeStep, progressSteps, 
   return (
     <div>
       <Stepper activeStep={activeStep}>{stepList}</Stepper>
-      <div>
-        {activeStep === progressSteps.length && (
-          <div>
-            <Typography>All steps completed - you&apos;re finished</Typography>
-          </div>
-        )}
-      </div>
     </div>
   );
 };
