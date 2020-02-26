@@ -10,7 +10,6 @@ import { GetAuthorPapersParams } from '../api/author/types';
 import { Paper, paperSchema } from '../model/paper';
 import { CVInfoType } from '../model/profileInfo';
 import { CurrentUser } from '../model/currentUser';
-import { GLOBAL_DIALOG_TYPE } from '../components/dialog/reducer';
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from '../components/common/sortBox';
 import { getAuthor, getCoAuthors, getAuthorPapers } from '../containers/authorShow/actions';
 import { CommonError } from '../model/error';
@@ -194,10 +193,6 @@ export function removePaperFromPaperList(params: AddRemovePapersAndFetchPapersPa
       });
     }
   };
-}
-
-export function openAddPublicationsToAuthorDialog() {
-  return ActionCreators.openGlobalDialog({ type: GLOBAL_DIALOG_TYPE.ADD_PUBLICATIONS_TO_AUTHOR_DIALOG });
 }
 
 export function updateRepresentativePapers(authorId: string, papers: Paper[]) {

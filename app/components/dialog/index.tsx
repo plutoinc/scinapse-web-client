@@ -13,7 +13,6 @@ import VerificationNeeded from '../auth/verificationNeeded';
 import CollectionDialog from './components/collection';
 import NewCollectionDialog from './components/newCollection';
 import EditCollectionDialog from './components/editCollection';
-import AllPublicationsDialog from './components/allPublications';
 import { resendVerificationEmail } from '../auth/emailVerification/actions';
 import { DialogContainerProps } from './types';
 import { withStyles } from '../../helpers/withStylesHelper';
@@ -283,10 +282,6 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
 
       case GLOBAL_DIALOG_TYPE.SIGN_UP:
         return <SignUp handleChangeDialogType={this.changeDialogType} userActionType={dialogState.userActionType} />;
-
-      case GLOBAL_DIALOG_TYPE.ADD_PUBLICATIONS_TO_AUTHOR_DIALOG: {
-        return <AllPublicationsDialog />;
-      }
 
       case GLOBAL_DIALOG_TYPE.FINAL_SIGN_UP_WITH_EMAIL: {
         return <FinalSignUpContent onSubmit={this.closeDialog} contentType="email" email={currentUser.email} />;
