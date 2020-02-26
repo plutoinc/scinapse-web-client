@@ -18,6 +18,7 @@ const PendingPaperList: React.FC<PendingPaperListProps> = props => {
   useStyles(s);
 
   const { papers, isEditable } = props;
+
   const chunkedPapers = useMemo(() => chunk(papers, 5), [papers]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showPapers, setShowPapers] = useState<PendingPaper[]>(chunkedPapers[0]);
@@ -39,16 +40,16 @@ const PendingPaperList: React.FC<PendingPaperListProps> = props => {
     }
   }, [chunkedPapers, currentIndex]);
 
-  const paperList = useMemo(
-    () =>
-      showPapers.map(paper => (
-        <PendingPaperItem paper={paper} key={paper.id} isEditable={isEditable} isLoadingToResolved={isLoading} />
-      )),
-    [showPapers, isEditable, isLoading]
-  );
+  const paperList = useMemo(() => {
+    if (!showPapers || showPapers.length === 0) return null;
+
+    return showPapers.map(paper => (
+      <PendingPaperItem paper={paper} key={paper.id} isEditable={isEditable} isLoadingToResolved={isLoading} />
+    ));
+  }, [showPapers, isEditable, isLoading]);
 
   const moreLessButton = useMemo(() => {
-    if (chunkedPapers.length === 1) return null;
+    if (chunkedPapers.length <= 1) return null;
 
     if (currentIndex + 1 < chunkedPapers.length)
       return (

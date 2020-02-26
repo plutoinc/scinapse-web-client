@@ -10,12 +10,14 @@ interface ImportPaperDialogState {
   pendingCount: number;
   profileSlug?: string;
   isOnboarding?: boolean;
+  markRepresentative?: boolean;
 }
 
 export const IMPORT_PAPER_DIALOG_INITIAL_STATE: ImportPaperDialogState = {
   isOpen: false,
   profileSlug: undefined,
   isOnboarding: undefined,
+  markRepresentative: undefined,
   activeImportSourceTab: IMPORT_SOURCE_TAB.BIBTEX,
   inProgressStep: CURRENT_IMPORT_PROGRESS_STEP.PROGRESS,
   totalImportedCount: 0,
@@ -29,13 +31,19 @@ const importPaperDialogSlice = createSlice({
   reducers: {
     openImportPaperDialog(
       state,
-      action: PayloadAction<{ activeImportSourceTab: IMPORT_SOURCE_TAB; profileSlug?: string; isOnboarding?: boolean }>
+      action: PayloadAction<{
+        activeImportSourceTab: IMPORT_SOURCE_TAB;
+        profileSlug?: string;
+        isOnboarding?: boolean;
+        markRepresentative?: boolean;
+      }>
     ) {
       return {
         ...state,
         isOpen: true,
         profileSlug: action.payload.profileSlug,
         isOnboarding: action.payload.isOnboarding,
+        markRepresentative: action.payload.markRepresentative,
         inProgressStep: CURRENT_IMPORT_PROGRESS_STEP.PROGRESS,
         activeImportSourceTab: action.payload.activeImportSourceTab,
         totalImportedCount: 0,

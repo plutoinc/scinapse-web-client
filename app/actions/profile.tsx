@@ -7,7 +7,7 @@ import alertToast from '../helpers/makePlutoToastAction';
 import { PaginationResponseV2 } from '../api/types/common';
 import { Paper, paperSchema } from '../model/paper';
 import { ActionCreators } from './actionTypes';
-import { getPapers, addPaper } from '../reducers/profilePaperList';
+import { getAllPapers, addPaper } from '../reducers/profilePaperList';
 import {
   getPendingPapers,
   PendingPaper,
@@ -23,6 +23,7 @@ import {
   removeRepresentativePaper,
   getRepresentativePapers,
 } from '../reducers/profileRepresentativePaperList';
+import { CURRENT_ONBOARDING_PROGRESS_STEP } from '../containers/profileOnboarding/types';
 
 interface FetchProfilePaperListParams {
   profileSlug: string;
@@ -69,7 +70,7 @@ export function fetchProfilePapers(params: FetchProfilePaperListParams): AppThun
 
     dispatch(ActionCreators.addEntity(entity));
     dispatch(
-      getPapers({
+      getAllPapers({
         paperIds: entity.result,
         totalPages: data.page!.totalPages,
         page: data.page!.page,
@@ -109,14 +110,43 @@ export function fetchProfileRepresentativePapers(params: FetchProfilePaperListPa
   };
 }
 
+export function controlStepAfterImportPaper(): AppThunkAction {
+  return async (dispatch, getState) => {
+    const { importPaperDialogState } = getState();
+    const { isOnboarding, totalImportedCount, pendingCount } = importPaperDialogState;
+    const activeStep = getState().profileOnboardingState.activeStep;
+
+    if (totalImportedCount === 0) {
+      throw new Error('Try again');
+    }
+
+    if (!isOnboarding) {
+      return dispatch(changeProgressStep({ inProgressStep: CURRENT_IMPORT_PROGRESS_STEP.RESULT }));
+    }
+
+    dispatch(clickNextStep());
+
+    if (activeStep === CURRENT_ONBOARDING_PROGRESS_STEP.UPLOAD_PUB_LIST && pendingCount === 0) {
+      dispatch(clickSkipStep());
+
+      if (totalImportedCount < 10) {
+        dispatch(clickSkipStep());
+      }
+    }
+
+    dispatch(closeImportPaperDialog());
+  };
+}
+
 export function fetchProfileImportedPapers(
   importSource: IMPORT_SOURCE_TAB,
   profileSlug: string,
-  importedContext: string | string[],
-  isOnboarding?: boolean,
-  markRepresentative?: boolean
+  importedContext: string | string[]
 ): AppThunkAction {
-  return async (dispatch, _getState, { axios }) => {
+  return async (dispatch, getState, { axios }) => {
+    const { importPaperDialogState } = getState();
+    const { markRepresentative } = importPaperDialogState;
+
     let rawRes;
 
     try {
@@ -154,14 +184,26 @@ export function fetchProfileImportedPapers(
     const entity = normalize(allPapers, [paperSchema]);
 
     dispatch(ActionCreators.addEntity(entity));
-    dispatch(
-      getPapers({
-        paperIds: entity.result,
-        totalPages: allPapersRes.data.page!.totalPages,
-        page: allPapersRes.data.page!.page,
-        totalElements: allPapersRes.data.page!.totalElements,
-      })
-    );
+
+    if (!!markRepresentative) {
+      dispatch(
+        getRepresentativePapers({
+          paperIds: entity.result,
+          totalPages: allPapersRes.data.page!.totalPages,
+          page: allPapersRes.data.page!.page,
+          totalElements: allPapersRes.data.page!.totalElements,
+        })
+      );
+    } else {
+      dispatch(
+        getAllPapers({
+          paperIds: entity.result,
+          totalPages: allPapersRes.data.page!.totalPages,
+          page: allPapersRes.data.page!.page,
+          totalElements: allPapersRes.data.page!.totalElements,
+        })
+      );
+    }
 
     const pendingPapersRes = { data: { content: res.pendingPapers } } as PaginationResponseV2<PendingPaper[]>;
     const pendingPapers = pendingPapersRes.data.content;
@@ -176,21 +218,7 @@ export function fetchProfileImportedPapers(
       })
     );
 
-    if (!isOnboarding) {
-      return dispatch(changeProgressStep({ inProgressStep: CURRENT_IMPORT_PROGRESS_STEP.RESULT }));
-    }
-
-    if (res.totalImportedCount === 0) {
-      throw new Error('Try again');
-    }
-
-    dispatch(clickNextStep());
-
-    if (res.pendingCount === 0) {
-      dispatch(clickSkipStep());
-    }
-
-    dispatch(closeImportPaperDialog());
+    dispatch(controlStepAfterImportPaper());
   };
 }
 

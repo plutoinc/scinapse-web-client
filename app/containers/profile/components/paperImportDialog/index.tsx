@@ -111,12 +111,11 @@ const PaperImportDialog: React.FC = () => {
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { isOpen, activeTab, inProgressStep, profileSlug, isOnboarding } = useSelector((appState: AppState) => ({
+  const { isOpen, activeTab, inProgressStep, profileSlug } = useSelector((appState: AppState) => ({
     isOpen: appState.importPaperDialogState.isOpen,
     activeTab: appState.importPaperDialogState.activeImportSourceTab,
     inProgressStep: appState.importPaperDialogState.inProgressStep,
     profileSlug: appState.importPaperDialogState.profileSlug,
-    isOnboarding: appState.importPaperDialogState.isOnboarding,
   }));
 
   if (!profileSlug) return null;
@@ -127,7 +126,7 @@ const PaperImportDialog: React.FC = () => {
     trackImportFromGS('clickSubmitGSBtn');
 
     try {
-      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.GS, profileSlug, params.url, isOnboarding));
+      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.GS, profileSlug, params.url));
       setIsLoading(false);
 
       trackImportFromGS('successSubmitGS');
@@ -145,9 +144,7 @@ const PaperImportDialog: React.FC = () => {
     setIsLoading(true);
     trackImportFromBibtex('clickSubmitBibtexBtn');
     try {
-      await dispatch(
-        fetchProfileImportedPapers(IMPORT_SOURCE_TAB.BIBTEX, profileSlug, params.bibTexString, isOnboarding)
-      );
+      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.BIBTEX, profileSlug, params.bibTexString));
       setIsLoading(false);
 
       trackImportFromBibtex('successSubmitBibtex');
@@ -165,9 +162,7 @@ const PaperImportDialog: React.FC = () => {
     setIsLoading(true);
     trackImportFromCitationString('clickSubmitCitationStringBtn');
     try {
-      await dispatch(
-        fetchProfileImportedPapers(IMPORT_SOURCE_TAB.BIBTEX, profileSlug, params.citationString, isOnboarding)
-      );
+      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.BIBTEX, profileSlug, params.citationString));
       setIsLoading(false);
 
       trackImportFromCitationString('successSubmitCitationString');
@@ -190,7 +185,7 @@ const PaperImportDialog: React.FC = () => {
         return authorUrl.split(SCINAPSE_AUTHOR_SHOW_PREFIX)[1];
       });
 
-      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.AUTHOR_URLS, profileSlug, authorIds, isOnboarding));
+      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.AUTHOR_URLS, profileSlug, authorIds));
       setIsLoading(false);
 
       trackImportFromAuthorUrls('successSubmitAuthorUrls');

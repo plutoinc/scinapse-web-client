@@ -25,7 +25,7 @@ const profilePaperListSlice = createSlice({
   name: 'profilePageSlice',
   initialState: PROFILE_PAPER_LIST_INITIAL_STATE,
   reducers: {
-    getPapers(state, action: PayloadAction<GetPapersPayload>) {
+    getAllPapers(state, action: PayloadAction<GetPapersPayload>) {
       state.currentPage = action.payload.page;
       state.totalCount = action.payload.totalElements;
       state.maxPage = action.payload.totalPages;
@@ -38,6 +38,6 @@ const profilePaperListSlice = createSlice({
   },
 });
 
-export const { getPapers, addPaper } = profilePaperListSlice.actions;
+export const { getAllPapers, addPaper } = profilePaperListSlice.actions;
 
 export default profilePaperListSlice.reducer;
