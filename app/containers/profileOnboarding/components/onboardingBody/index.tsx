@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { CURRENT_ONBOARDING_PROGRESS_STEP } from '../../types';
 import UploadPublicationList from '../uploadPublicationList';
-import MatchUnsyncedPublications from '../MatchUnsyncedPublications';
+import MatchUnsyncedPublications from '../matchUnsyncedPublications';
 import SelectRepresentativePublications from '../selectRepresentativePublications';
 
 interface OnboardingBodyProps {
