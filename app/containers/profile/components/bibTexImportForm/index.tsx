@@ -3,6 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import { Button } from '@pluto_network/pluto-design-elements';
 import FormikInput from '../../../../components/common/formikInput';
 import Icon from '../../../../icons';
+import { HandleImportPaperListParams, IMPORT_SOURCE_TAB } from '../../types';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./bibTexImportForm.scss');
@@ -13,7 +14,7 @@ export interface BibTexFormState {
 
 interface BibTexImportFormProps {
   isLoading: boolean;
-  onSubmitBibtex: (params: BibTexFormState) => void;
+  onSubmitBibtex: (params: HandleImportPaperListParams) => void;
 }
 
 const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
@@ -42,7 +43,7 @@ const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
     <div className={s.formWrapper}>
       <Formik
         initialValues={{ bibTexString: bibTexString }}
-        onSubmit={onSubmitBibtex}
+        onSubmit={(values) => onSubmitBibtex({ type: IMPORT_SOURCE_TAB.BIBTEX, importedContext: values.bibTexString })}
         enableReinitialize
         validateOnChange={false}
         validateOnBlur={false}
@@ -65,8 +66,8 @@ const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
                           <Icon icon="CLOUD_UPLOAD" className={s.uploadIcon} />Drop BibTex file here or upload a file.
                         </span>
                       ) : (
-                        targetFile.name
-                      )}
+                          targetFile.name
+                        )}
                     </div>
                   </div>
                   <label htmlFor="bibTexFile" className={s.bibTexFileUploaderButton}>
