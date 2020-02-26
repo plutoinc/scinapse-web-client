@@ -24,6 +24,8 @@ export type ImportedPaperListResponse = {
   allPapers: Paper[];
   allPaperPage: PageObjectV2;
   pendingPapers: PendingPaper[];
+  representativePapers: Paper[];
+  representativePaperPage: PageObjectV2;
 };
 
 interface ProfileRequestParams {

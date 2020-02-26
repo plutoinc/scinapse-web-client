@@ -181,29 +181,34 @@ export function fetchProfileImportedPapers(
       data: { content: res.allPapers, page: res.allPaperPage },
     } as PaginationResponseV2<Paper[]>;
     const allPapers = allPapersRes.data.content;
-    const entity = normalize(allPapers, [paperSchema]);
+    const allPapersEntity = normalize(allPapers, [paperSchema]);
 
-    dispatch(ActionCreators.addEntity(entity));
+    dispatch(ActionCreators.addEntity(allPapersEntity));
 
-    if (!!markRepresentative) {
-      dispatch(
-        getRepresentativePapers({
-          paperIds: entity.result,
-          totalPages: allPapersRes.data.page!.totalPages,
-          page: allPapersRes.data.page!.page,
-          totalElements: allPapersRes.data.page!.totalElements,
-        })
-      );
-    } else {
-      dispatch(
-        getAllPapers({
-          paperIds: entity.result,
-          totalPages: allPapersRes.data.page!.totalPages,
-          page: allPapersRes.data.page!.page,
-          totalElements: allPapersRes.data.page!.totalElements,
-        })
-      );
-    }
+    dispatch(
+      getAllPapers({
+        paperIds: allPapersEntity.result,
+        totalPages: allPapersRes.data.page!.totalPages,
+        page: allPapersRes.data.page!.page,
+        totalElements: allPapersRes.data.page!.totalElements,
+      })
+    );
+
+    const representativePapersRes = {
+      data: { content: res.representativePapers, page: res.representativePaperPage },
+    } as PaginationResponseV2<Paper[]>;
+    const representativePapers = representativePapersRes.data.content;
+    const representativePapersEntity = normalize(representativePapers, [paperSchema]);
+
+    dispatch(ActionCreators.addEntity(representativePapersEntity));
+    dispatch(
+      getRepresentativePapers({
+        paperIds: representativePapersEntity.result,
+        totalPages: representativePapersRes.data.page!.totalPages,
+        page: representativePapersRes.data.page!.page,
+        totalElements: representativePapersRes.data.page!.totalElements,
+      })
+    );
 
     const pendingPapersRes = { data: { content: res.pendingPapers } } as PaginationResponseV2<PendingPaper[]>;
     const pendingPapers = pendingPapersRes.data.content;

@@ -6,19 +6,25 @@ import OnboardingFooter from './components/onboardingFooter';
 import OnboardingBody from './components/onboardingBody';
 import { AppState } from '../../reducers';
 import PaperImportDialog from '../profile/components/paperImportDialog';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./profileOnboarding.scss');
 
 const ProfileOnboarding: FC = () => {
   useStyles(s);
+  const history = useHistory();
+
   const profileSlug = useSelector((state: AppState) => state.currentUser.profileSlug);
   const { activeStep, skipped } = useSelector((state: AppState) => ({
     activeStep: state.profileOnboardingState.activeStep,
     skipped: state.profileOnboardingState.skipped,
   }));
 
-  if (!profileSlug) return null;
+  if (!profileSlug) {
+    history.push('/');
+    return null;
+  }
 
   return (
     <>

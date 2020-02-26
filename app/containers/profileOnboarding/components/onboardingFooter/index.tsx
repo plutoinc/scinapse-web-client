@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@pluto_network/pluto-design-elements';
 import { ONBOARDING_STEPS, CURRENT_ONBOARDING_PROGRESS_STEP } from '../../types';
@@ -12,8 +12,10 @@ interface OnboardingFooterProps {
 
 const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep }) => {
   const dispatch = useDispatch();
-  const { totalImportedCount } = useSelector((appState: AppState) => ({
+  const { totalImportedCount, successCount, pendingCount } = useSelector((appState: AppState) => ({
     totalImportedCount: appState.importPaperDialogState.totalImportedCount,
+    successCount: appState.importPaperDialogState.successCount,
+    pendingCount: appState.importPaperDialogState.pendingCount,
   }));
 
   const showFooterButtons =
@@ -27,25 +29,45 @@ const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep }) => {
     }
   };
 
+  const importPublicationCount = useMemo(
+    () => (
+      <div>
+        <div>
+          Total upload count<span>{`(${totalImportedCount})`}</span>
+        </div>
+        <div>
+          Success <span>{`(${successCount})`}</span>
+          {` | `}
+          Pending <span>{`(${pendingCount})`}</span>
+        </div>
+      </div>
+    ),
+    [totalImportedCount, successCount, pendingCount]
+  );
+
   return (
     <div>
       {showFooterButtons && (
         <div>
-          <div>
-            <Button elementType="button" onClick={() => dispatch(clickPrevStep())}>
-              Prev
+          <Button elementType="button" onClick={() => dispatch(clickPrevStep())}>
+            Prev
+          </Button>
+          {activeStep === CURRENT_ONBOARDING_PROGRESS_STEP.MATCH_UNSYNCED_PUBS && importPublicationCount}
+          {isStepOptional(activeStep) && (
+            <Button
+              variant="contained"
+              elementType="button"
+              onClick={() => {
+                if (activeStep === CURRENT_ONBOARDING_PROGRESS_STEP.MATCH_UNSYNCED_PUBS) {
+                  return onClickNextBtn();
+                }
+
+                dispatch(clickSkipStep());
+              }}
+            >
+              {activeStep === ONBOARDING_STEPS.length ? 'Done' : 'Next'}
             </Button>
-            {isStepOptional(activeStep) && (
-              <Button variant="contained" elementType="button" onClick={() => dispatch(clickSkipStep())}>
-                Skip
-              </Button>
-            )}
-            {!isStepOptional(activeStep) && (
-              <Button variant="contained" elementType="button" onClick={onClickNextBtn}>
-                {activeStep === CURRENT_ONBOARDING_PROGRESS_STEP.RESULT ? 'Done' : 'Next'}
-              </Button>
-            )}
-          </div>
+          )}
         </div>
       )}
     </div>
