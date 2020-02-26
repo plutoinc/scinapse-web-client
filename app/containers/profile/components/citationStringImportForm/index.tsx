@@ -2,6 +2,7 @@ import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Button } from '@pluto_network/pluto-design-elements';
 import FormikInput from '../../../../components/common/formikInput';
+import { HandleImportPaperListParams, IMPORT_SOURCE_TAB } from '../../types';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./citationStringImportForm.scss');
@@ -12,7 +13,7 @@ export interface CitationStringFormState {
 
 interface CitationStringImportFormProps {
   isLoading: boolean;
-  onSubmitCitationString: (params: CitationStringFormState) => void;
+  onSubmitCitationString: (params: HandleImportPaperListParams) => void;
 }
 
 const CitationStringImportForm: React.FC<CitationStringImportFormProps> = props => {
@@ -24,10 +25,7 @@ const CitationStringImportForm: React.FC<CitationStringImportFormProps> = props 
     <div className={s.formWrapper}>
       <Formik
         initialValues={{ citationString: '' }}
-        onSubmit={onSubmitCitationString}
-        enableReinitialize
-        validateOnChange={false}
-        validateOnBlur={false}
+        onSubmit={(values) => onSubmitCitationString({ type: IMPORT_SOURCE_TAB.CITATION, importedContext: values.citationString })}
         render={({ errors }) => (
           <Form autoComplete="off">
             <div>

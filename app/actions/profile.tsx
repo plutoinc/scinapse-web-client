@@ -8,13 +8,7 @@ import { PaginationResponseV2 } from '../api/types/common';
 import { Paper, paperSchema } from '../model/paper';
 import { ActionCreators } from './actionTypes';
 import { getPapers, addPaper } from '../reducers/profilePaperList';
-import {
-  getPendingPapers,
-  PendingPaper,
-  removePendingPaper,
-  markTryAgainPendingPaper,
-  changeLoadingStatus,
-} from '../reducers/profilePendingPaperList';
+import { getPendingPapers, PendingPaper, removePendingPaper, markTryAgainPendingPaper, changeLoadingStatus, } from '../reducers/profilePendingPaperList';
 import { IMPORT_SOURCE_TAB, CURRENT_IMPORT_PROGRESS_STEP } from '../containers/profile/types';
 import { changeProgressStep, fetchPaperImportResult } from '../reducers/importPaperDialog';
 import { getRepresentativePapers } from '../reducers/profileRepresentativePaperList';

@@ -5,6 +5,7 @@ import { Button } from '@pluto_network/pluto-design-elements';
 import Icon from '../../../../icons';
 import AuthorUrlsImportField from '../authorUrlsImportField';
 import AuthorAPI from '../../../../api/author';
+import { HandleImportPaperListParams, IMPORT_SOURCE_TAB } from '../../types';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./authorUrlsImportForm.scss');
@@ -18,7 +19,7 @@ export interface AuthorUrlsFormState {
 
 interface AuthorUrlsImportFormProps {
   isLoading: boolean;
-  onSubmitAuthorUrls: (params: AuthorUrlsFormState) => void;
+  onSubmitAuthorUrls: (params: HandleImportPaperListParams) => void;
 }
 
 const schema = object().shape({
@@ -63,7 +64,7 @@ const AuthorUrlsImportForm: React.FC<AuthorUrlsImportFormProps> = ({ isLoading, 
       </div>
       <Formik
         initialValues={{ authorUrls: ['', '', ''] }}
-        onSubmit={onSubmitAuthorUrls}
+        onSubmit={(values) => onSubmitAuthorUrls({ type: IMPORT_SOURCE_TAB.AUTHOR_URLS, importedContext: values.authorUrls })}
         validationSchema={schema}
         render={({ values, errors }) => (
           <Form autoComplete="off">
