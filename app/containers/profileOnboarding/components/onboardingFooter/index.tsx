@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button } from '@pluto_network/pluto-design-elements';
+import { Button, GroupButton } from '@pluto_network/pluto-design-elements';
 import { ONBOARDING_STEPS, CURRENT_ONBOARDING_PROGRESS_STEP } from '../../types';
 import { clickPrevStep, clickSkipStep, clickNextStep } from '../../../../reducers/profileOnboarding';
 import { isStepOptional } from '../../helper';
@@ -45,6 +45,22 @@ const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep }) => {
     [totalImportedCount, successCount, pendingCount]
   );
 
+  const skipButton = (
+    <Button
+      variant="contained"
+      elementType="button"
+      onClick={() => {
+        if (activeStep === CURRENT_ONBOARDING_PROGRESS_STEP.MATCH_UNSYNCED_PUBS) {
+          return onClickNextBtn();
+        }
+
+        dispatch(clickSkipStep());
+      }}
+    >
+      Skip
+    </Button>
+  );
+
   return (
     <div>
       {showFooterButtons && (
@@ -53,21 +69,12 @@ const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep }) => {
             Prev
           </Button>
           {activeStep === CURRENT_ONBOARDING_PROGRESS_STEP.MATCH_UNSYNCED_PUBS && importPublicationCount}
-          {isStepOptional(activeStep) && (
-            <Button
-              variant="contained"
-              elementType="button"
-              onClick={() => {
-                if (activeStep === CURRENT_ONBOARDING_PROGRESS_STEP.MATCH_UNSYNCED_PUBS) {
-                  return onClickNextBtn();
-                }
-
-                dispatch(clickSkipStep());
-              }}
-            >
-              {activeStep === ONBOARDING_STEPS.length ? 'Done' : 'Next'}
+          <GroupButton>
+            {isStepOptional(activeStep) && skipButton}
+            <Button variant="contained" elementType="button" onClick={() => dispatch(clickNextStep())}>
+              {activeStep === ONBOARDING_STEPS.length - 1 ? 'Done' : 'Next'}
             </Button>
-          )}
+          </GroupButton>
         </div>
       )}
     </div>
