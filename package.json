@@ -195,6 +195,7 @@
     "reselect": "3.0.1",
     "shave": "2.5.3",
     "store": "2.0.12",
+    "swr": "^0.1.17",
     "ua-parser-js": "0.7.17",
     "uuid": "3.3.2",
     "webfontloader": "1.6.28"

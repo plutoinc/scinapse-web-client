@@ -5,6 +5,7 @@ import { PaginationResponseV2, PageObjectV2 } from './types/common';
 import { AvailableCitationType } from '../containers/paperShow/records';
 import { PaperAuthor } from '../model/author';
 import { getIdSafePaperAuthor } from '../helpers/getIdSafeData';
+import { getAxiosInstance } from './axios';
 
 export interface GetReferenceOrCitedPapersResult extends PageObjectV2 {
   entities: { papers: { [paperId: string]: Paper } };
@@ -67,6 +68,11 @@ interface RequestLibraryLinkResult {
   email: string;
   affiliationName: string;
   totalRequestCount: number;
+}
+
+export async function getPaper(id: string) {
+  const res = await getAxiosInstance().get(`/papers/${id}`);
+  return res.data;
 }
 
 class PaperAPI extends PlutoAxios {

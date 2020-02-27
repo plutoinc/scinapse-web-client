@@ -1,35 +1,26 @@
-import React, { FC, useEffect, useRef } from 'react';
-import Axios from 'axios';
+import React, { FC, useEffect } from 'react';
+import useSWR from 'swr'
 import { isEqual } from 'lodash';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { PaperShowMatchParams } from './types';
+import { getPaper } from '../../api/paper';
 import { AppState } from '../../reducers';
 import { UserDevice } from '../../components/layouts/reducer';
 import MobilePaperShow from '../../components/mobilePaperShow/mobilePaperShow';
 import PaperShow from '../../components/paperShow';
 import { getMemoizedPaper } from './select';
-import { fetchPaperShowDataAtClient } from '../../actions/paperShow';
 import ActionTicketManager from '../../helpers/actionTicketManager';
-import { useThunkDispatch } from '../../hooks/useThunkDispatch';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 import { useFetchRefCitedPapers } from '../../hooks/useFetchRefCited';
+import { Paper } from '../../model/paper';
 
 type Props = RouteComponentProps<PaperShowMatchParams>;
 
-const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
-  const dispatch = useThunkDispatch();
-  const shouldFetch = useSelector(
-    (state: AppState) => !state.configuration.succeedAPIFetchAtServer || state.configuration.renderedAtClient
-  );
-  const lastShouldFetch = useRef(shouldFetch);
-
-  const paper = useSelector((state: AppState) => getMemoizedPaper(state), isEqual);
+const PaperShowContainer: FC<Props> = ({ location, match }) => {
+  const initialPaper = useSelector<AppState, Paper | undefined>((state) => getMemoizedPaper(state), isEqual);
   const isMobile = useSelector((state: AppState) => state.layout.userDevice === UserDevice.MOBILE);
-  const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
   const matchedPaperId = match.params.paperId;
-  const paperId = paper && paper.id;
-
   const queryParams = getQueryParamsObject(location.search);
   const refPage = queryParams['ref-page'];
   const refQuery = queryParams['ref-query'] || '';
@@ -55,54 +46,26 @@ const PaperShowContainer: FC<Props> = ({ location, match, history }) => {
   });
 
   useEffect(() => {
-    if (paperId) {
+    if (matchedPaperId) {
       ActionTicketManager.trackTicket({
         pageType: 'paperShow',
         actionType: 'view',
         actionArea: '200',
         actionTag: 'pageView',
-        actionLabel: String(paperId),
+        actionLabel: matchedPaperId,
       });
     }
-  }, [paperId]);
+  }, [matchedPaperId]);
 
-  useEffect(() => {
-    const cancelToken = Axios.CancelToken.source();
-    // NOTE: prevent fetching from the change of shouldFetch variable
-    if (shouldFetch && !lastShouldFetch.current) {
-      lastShouldFetch.current = true;
-      return;
-    }
-    // NOTE: prevent double fetching
-    if (!shouldFetch) return;
-
-    dispatch(
-      fetchPaperShowDataAtClient({
-        paperId: matchedPaperId,
-        cancelToken: cancelToken.token,
-      })
-    ).catch(err => {
-      console.error(err);
-      ActionTicketManager.trackTicket({
-        pageType: 'paperShow',
-        actionType: 'view',
-        actionArea: String(err.status),
-        actionTag: 'pageView',
-        actionLabel: String(matchedPaperId),
-      });
-      history.push(`/${err.status}`);
-    });
-
-    return () => {
-      cancelToken.cancel();
-    };
-  }, [location.pathname, currentUser.isLoggedIn, dispatch, matchedPaperId, shouldFetch, history]);
+  const initialData = (initialPaper && initialPaper.id === matchedPaperId) ? initialPaper : undefined;
+  const { data: paper } = useSWR([`/papers/${matchedPaperId}`, matchedPaperId], (_url, id) => getPaper(id), {
+    revalidateOnFocus: false,
+    initialData,
+  });
 
   if (!paper) return null;
-
   if (isMobile) return <MobilePaperShow paper={paper} />;
-
-  return <PaperShow />;
+  return <PaperShow paper={paper} />;
 };
 
 export default withRouter(PaperShowContainer);

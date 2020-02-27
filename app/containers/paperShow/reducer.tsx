@@ -61,10 +61,6 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
       return { ...state, ...{ isLoadingCitedPapers: false, isFailedToGetCitedPapers: true } };
     }
 
-    case ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE: {
-      return PAPER_SHOW_INITIAL_STATE;
-    }
-
     default:
       return state;
   }

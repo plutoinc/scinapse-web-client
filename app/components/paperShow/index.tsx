@@ -10,7 +10,6 @@ import ArticleSpinner from '../common/spinner/articleSpinner';
 import ActionBar from '../../containers/paperShowActionBar';
 import DesktopRefCitedPapers from './refCitedPapers/desktopRefCitedPapers';
 import PaperShowRefCitedTab from './refCitedTab';
-import { getMemoizedPaper } from '../../containers/paperShow/select';
 import { formulaeToHTMLStr } from '../../helpers/displayFormula';
 import ErrorPage from '../error/errorPage';
 import EnvChecker from '../../helpers/envChecker';
@@ -31,6 +30,7 @@ import ImprovedFooter from '../layouts/improvedFooter';
 import PaperShowFigureList from './components/paperShowFigureList';
 import { UserDevice } from '../layouts/reducer';
 import FindInLibraryDialog from '../findInLibraryDialog';
+import { Paper } from '../../model/paper';
 const styles = require('./paperShow.scss');
 
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10) + 1;
@@ -42,23 +42,23 @@ function mapStateToProps(state: AppState) {
     configuration: getMemoizedConfiguration(state),
     currentUser: getMemoizedCurrentUser(state),
     paperShow: getMemoizedPaperShow(state),
-    paper: getMemoizedPaper(state),
     PDFViewerState: getMemoizedPDFViewerState(state),
   };
 }
 
 export type PaperShowProps = RouteComponentProps<PaperShowMatchParams> &
   ReturnType<typeof mapStateToProps> & {
+    paper: Paper;
     dispatch: Dispatch<any>;
   };
 
 interface PaperShowStates
   extends Readonly<{
-      isAboveRef: boolean;
-      isOnRef: boolean;
-      isOnCited: boolean;
-      isOnFullText: boolean;
-    }> {}
+    isAboveRef: boolean;
+    isOnRef: boolean;
+    isOnCited: boolean;
+    isOnFullText: boolean;
+  }> { }
 
 const Title: React.FC<{ title: string }> = React.memo(({ title }) => {
   return <h1 className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(title) }} />;
