@@ -1,0 +1,47 @@
+.onboardingResultWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-align: center;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 1.75;
+  color: $black0;
+  padding: 24px 0 48px 0;
+}
+
+.paperStatsWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.paperStatsItemWrapper {
+  & + & {
+    margin-left: 16px;
+  }
+
+  .paperStatsItemHeader {
+    font-size: 18px;
+    line-height: 1.75;
+    color: $gray800;
+    border-bottom: 1px solid $gray300;
+    padding: 8px 24px;
+  }
+
+  .paperStatsItemBody {
+    font-size: 24px;
+    color: $gray800;
+    font-weight: 500;
+    line-height: 1.5;
+    padding: 12px 24px;
+  }
+}
+
+.ctaButtonWrapper {
+  padding: 0 48px;
+}

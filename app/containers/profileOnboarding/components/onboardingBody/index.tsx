@@ -20,7 +20,7 @@ const OnboardingBody: FC<OnboardingBodyProps> = ({ activeStep, profileSlug }) =>
   if (activeStep === CURRENT_ONBOARDING_PROGRESS_STEP.SELECT_REPRESENTATIVE_PUBS)
     return <SelectRepresentativePublications profileSlug={profileSlug} />;
 
-  if (isStepFinal(activeStep)) return <OnboardingResult />;
+  if (isStepFinal(activeStep)) return <OnboardingResult profileSlug={profileSlug} />;
 
   return <div />;
 };

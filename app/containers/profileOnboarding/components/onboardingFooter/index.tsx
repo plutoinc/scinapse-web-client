@@ -75,7 +75,7 @@ const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep, shouldShow })
         <Icon icon="ARROW_LEFT" />
         <span>PREV</span>
       </Button>
-      {activeStep === CURRENT_ONBOARDING_PROGRESS_STEP.MATCH_UNSYNCED_PUBS && importPublicationCount}
+      {activeStep !== CURRENT_ONBOARDING_PROGRESS_STEP.UPLOAD_PUB_LIST && importPublicationCount}
       <GroupButton variant="text" color="gray">
         {isStepOptional(activeStep) && skipButton}
         <Button
