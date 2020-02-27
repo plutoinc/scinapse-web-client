@@ -5,11 +5,17 @@ import { ONBOARDING_STEPS, CURRENT_ONBOARDING_PROGRESS_STEP } from '../../types'
 import { clickPrevStep, clickSkipStep, clickNextStep } from '../../../../reducers/profileOnboarding';
 import { isStepOptional } from '../../helper';
 import { AppState } from '../../../../reducers';
-import Icon from '../../../../icons';
 import { UserDevice } from '../../../../components/layouts/reducer';
+import Icon from '../../../../icons';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./onboardingFooter.scss');
+
+enum BUTTON_ACTION {
+  NEXT,
+  SKIP,
+  PREV,
+}
 
 interface OnboardingFooterProps {
   activeStep: CURRENT_ONBOARDING_PROGRESS_STEP;
@@ -27,8 +33,16 @@ const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep, shouldShow })
     isMobile: appState.layout.userDevice === UserDevice.MOBILE,
   }));
 
-  const onClickNextBtn = () => {
-    dispatch(clickNextStep());
+  const onClickActionBtn = (type: BUTTON_ACTION) => {
+    if (type === BUTTON_ACTION.PREV) {
+      return dispatch(clickPrevStep());
+    }
+
+    if (type === BUTTON_ACTION.NEXT) {
+      dispatch(clickNextStep());
+    } else {
+      dispatch(clickSkipStep());
+    }
 
     if (activeStep === CURRENT_ONBOARDING_PROGRESS_STEP.MATCH_UNSYNCED_PUBS && totalImportedCount < 10) {
       dispatch(clickSkipStep());
@@ -57,7 +71,7 @@ const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep, shouldShow })
       variant="text"
       color="gray"
       size={isMobile ? 'small' : 'large'}
-      onClick={() => dispatch(clickSkipStep())}
+      onClick={() => onClickActionBtn(BUTTON_ACTION.SKIP)}
     >
       <span>SKIP</span>
     </Button>
@@ -72,7 +86,7 @@ const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep, shouldShow })
         variant="text"
         color="black"
         size={isMobile ? 'small' : 'large'}
-        onClick={() => dispatch(clickPrevStep())}
+        onClick={() => onClickActionBtn(BUTTON_ACTION.PREV)}
       >
         <Icon icon="ARROW_LEFT" />
         <span>PREV</span>
@@ -85,7 +99,7 @@ const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep, shouldShow })
           variant="text"
           color="black"
           size={isMobile ? 'small' : 'large'}
-          onClick={onClickNextBtn}
+          onClick={() => onClickActionBtn(BUTTON_ACTION.NEXT)}
         >
           <span>{activeStep === ONBOARDING_STEPS.length - 1 ? 'DONE' : 'NEXT'}</span>
           <Icon icon="ARROW_RIGHT" />
