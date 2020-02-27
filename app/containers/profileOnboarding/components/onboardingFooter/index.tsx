@@ -57,13 +57,7 @@ const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep, shouldShow })
       variant="text"
       color="gray"
       size={isMobile ? 'small' : 'large'}
-      onClick={() => {
-        if (activeStep === CURRENT_ONBOARDING_PROGRESS_STEP.MATCH_UNSYNCED_PUBS) {
-          return onClickNextBtn();
-        }
-
-        dispatch(clickSkipStep());
-      }}
+      onClick={() => dispatch(clickSkipStep())}
     >
       <span>SKIP</span>
     </Button>
