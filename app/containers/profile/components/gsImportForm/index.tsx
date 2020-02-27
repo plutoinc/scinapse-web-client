@@ -1,5 +1,5 @@
 import React from 'react';
-import { parse as QueryParse } from 'qs';
+import { parse as ParseQuery } from 'qs';
 import { parse as URLParse } from 'url';
 import { Formik, FormikErrors, Form, Field } from 'formik';
 import { Button } from '@pluto_network/pluto-design-elements';
@@ -30,7 +30,7 @@ function gsImportValidateForm(values: GSFormState) {
     return errors;
   }
 
-  const targetUrlQueryObj = QueryParse(targetUrlQuery, { ignoreQueryPrefix: true });
+  const targetUrlQueryObj = ParseQuery(targetUrlQuery, { ignoreQueryPrefix: true });
 
   if (!targetUrlQueryObj.user) {
     errors.url = 'Please enter google scholar profile url include user query value';
@@ -49,10 +49,9 @@ const GSImportForm: React.FC<GSImportFormProps> = props => {
       <Formik
         initialValues={{ url: '' }}
         validate={gsImportValidateForm}
-        onSubmit={(values) => { onSubmitGS({ type: IMPORT_SOURCE_TAB.GS, importedContext: values.url }) }}
-        enableReinitialize
-        validateOnChange={false}
-        validateOnBlur={false}
+        onSubmit={values => {
+          onSubmitGS({ type: IMPORT_SOURCE_TAB.GS, importedContext: values.url });
+        }}
         render={({ errors }) => (
           <Form autoComplete="off">
             <div>

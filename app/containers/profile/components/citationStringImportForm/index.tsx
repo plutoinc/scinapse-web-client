@@ -1,11 +1,13 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FormikErrors } from 'formik';
 import { Button } from '@pluto_network/pluto-design-elements';
 import FormikInput from '../../../../components/common/formikInput';
 import { HandleImportPaperListParams, IMPORT_SOURCE_TAB } from '../../types';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./citationStringImportForm.scss');
+
+const MIN_LENGTH_OF_BIBTEX_STRING = 3;
 
 export interface CitationStringFormState {
   citationString: string;
@@ -16,6 +18,16 @@ interface CitationStringImportFormProps {
   onSubmitCitationString: (params: HandleImportPaperListParams) => void;
 }
 
+const validateForm = (values: CitationStringFormState) => {
+  const errors: FormikErrors<CitationStringFormState> = {};
+
+  if (!values.citationString || values.citationString.length < MIN_LENGTH_OF_BIBTEX_STRING) {
+    errors.citationString = `Sorry. You should fill at least ${MIN_LENGTH_OF_BIBTEX_STRING} length of BibTex text.`;
+  }
+
+  return errors;
+};
+
 const CitationStringImportForm: React.FC<CitationStringImportFormProps> = props => {
   useStyles(s);
 
@@ -25,7 +37,10 @@ const CitationStringImportForm: React.FC<CitationStringImportFormProps> = props 
     <div className={s.formWrapper}>
       <Formik
         initialValues={{ citationString: '' }}
-        onSubmit={(values) => onSubmitCitationString({ type: IMPORT_SOURCE_TAB.CITATION, importedContext: values.citationString })}
+        onSubmit={values =>
+          onSubmitCitationString({ type: IMPORT_SOURCE_TAB.CITATION, importedContext: values.citationString })
+        }
+        validate={validateForm}
         render={({ errors }) => (
           <Form autoComplete="off">
             <div>

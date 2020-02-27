@@ -302,7 +302,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
               web_page: profileForm.website || null,
               affiliation_id: affiliationId,
               affiliation_name: affiliationName,
-              is_email_public: profileForm.isEmailPublic,
+              is_email_public: !profileForm.hideEmail,
             })
           );
           setIsUpdatingProfile(false);
@@ -315,7 +315,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
           bio: profile.bio || null,
           website: profile.webPage || null,
           email: profile.email,
-          isEmailPublic: profile.isEmailPublic || false,
+          hideEmail: !profile.isEmailPublic,
         }}
       />
       <PaperImportDialog />
