@@ -8,10 +8,16 @@ import { PaginationResponseV2 } from '../api/types/common';
 import { Paper, paperSchema } from '../model/paper';
 import { ActionCreators } from './actionTypes';
 import { getPapers, addPaper } from '../reducers/profilePaperList';
-import { getPendingPapers, PendingPaper, removePendingPaper, markTryAgainPendingPaper, changeLoadingStatus, } from '../reducers/profilePendingPaperList';
+import {
+  getPendingPapers,
+  PendingPaper,
+  removePendingPaper,
+  markTryAgainPendingPaper,
+  changeLoadingStatus,
+} from '../reducers/profilePendingPaperList';
 import { IMPORT_SOURCE_TAB, CURRENT_IMPORT_PROGRESS_STEP } from '../containers/profile/types';
 import { changeProgressStep, fetchPaperImportResult } from '../reducers/importPaperDialog';
-import { getRepresentativePapers } from '../reducers/profileRepresentativePaperList';
+import { getRepresentativePapers, addRepresentativePapers } from '../reducers/profileRepresentativePaperList';
 
 interface FetchProfilePaperListParams {
   profileSlug: string;
@@ -19,10 +25,14 @@ interface FetchProfilePaperListParams {
   page?: number;
 }
 
-export function fetchRepresentativePapers({ profileSlug, size = 10, page = 0 }: FetchProfilePaperListParams): AppThunkAction {
+export function fetchRepresentativePapers({
+  profileSlug,
+  size = 10,
+  page = 0,
+}: FetchProfilePaperListParams): AppThunkAction {
   return async (dispatch, _getState, { axios }) => {
     const res = await axios.get(`/profiles/${profileSlug}/papers/representative`, {
-      params: { page: page }
+      params: { page: page },
     });
     const result: PaginationResponseV2<Paper[]> = res.data;
     const normalizedPapers = normalize(result.data.content, [paperSchema]);
@@ -35,7 +45,7 @@ export function fetchRepresentativePapers({ profileSlug, size = 10, page = 0 }: 
         totalElements: result.data.page!.totalElements,
       })
     );
-  }
+  };
 }
 
 export function fetchProfileData(profileSlug: string): AppThunkAction {
@@ -97,14 +107,20 @@ export function fetchProfilePendingPapers(profileSlug: string): AppThunkAction {
   };
 }
 
-export function fetchProfileImportedPapers(
-  importSource: IMPORT_SOURCE_TAB,
-  profileSlug: string,
-  importedContext: string | string[]
-): AppThunkAction {
+interface FetchProfileImportedPapersParams {
+  importSource: IMPORT_SOURCE_TAB;
+  profileSlug: string;
+  importedContext: string | string[];
+  isRepresentativeImporting?: boolean;
+}
+export function fetchProfileImportedPapers({
+  importSource,
+  profileSlug,
+  importedContext,
+  isRepresentativeImporting,
+}: FetchProfileImportedPapersParams): AppThunkAction {
   return async (dispatch, _getState, { axios }) => {
     let rawRes;
-
     try {
       if (importSource === IMPORT_SOURCE_TAB.GS) {
         rawRes = await axios.post(`/profiles/${profileSlug}/import-papers/gs`, {
@@ -113,10 +129,12 @@ export function fetchProfileImportedPapers(
       } else if (importSource === IMPORT_SOURCE_TAB.BIBTEX) {
         rawRes = await axios.post(`/profiles/${profileSlug}/import-papers/bibtex`, {
           bibtex_string: importedContext,
+          mark_representative: isRepresentativeImporting,
         });
       } else if (importSource === IMPORT_SOURCE_TAB.CITATION) {
         rawRes = await axios.post(`/profiles/${profileSlug}/import-papers/citation`, {
           citation_string: importedContext,
+          mark_representative: isRepresentativeImporting,
         });
       } else if (importSource === IMPORT_SOURCE_TAB.AUTHOR_URLS) {
         rawRes = await axios.post(`/profiles/${profileSlug}/import-papers/author`, {
@@ -146,6 +164,11 @@ export function fetchProfileImportedPapers(
         totalElements: allPapersRes.data.page!.totalElements,
       })
     );
+
+    if (isRepresentativeImporting)
+      dispatch(
+        addRepresentativePapers({ paperIds: entity.result, totalCount: res.representativePaperPage.totalElements })
+      );
 
     const pendingPapersRes = { data: { content: res.pendingPapers } } as PaginationResponseV2<PendingPaper[]>;
     const pendingPapers = pendingPapersRes.data.content;

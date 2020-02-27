@@ -21,7 +21,13 @@ import ProfileShowPageHelmet from './components/helmet';
 import RepresentativePaperListSection from './components/representativePapers';
 // import { Paper } from '../../model/paper';
 import { selectHydratedProfile, Profile } from '../../model/profile';
-import { fetchProfileData, updateProfile, fetchProfilePapers, fetchProfilePendingPapers, fetchRepresentativePapers } from '../../actions/profile';
+import {
+  fetchProfileData,
+  updateProfile,
+  fetchProfilePapers,
+  fetchProfilePendingPapers,
+  fetchRepresentativePapers,
+} from '../../actions/profile';
 import getQueryParamsObject from '../../helpers/getQueryParamsObject';
 import { PendingPaper } from '../../reducers/profilePendingPaperList';
 import PendingPaperList from './components/pendingPaperList';
@@ -59,8 +65,13 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
     isEqual
   );
   const paperIds = useSelector<AppState, string[]>(state => state.profilePaperListState.paperIds, isEqual);
-  const representativePaperIds = useSelector<AppState, string[]>(state => state.profileRepresentativePaperListState.paperIds, isEqual);
-  const totalRepresentativePaperCount = useSelector<AppState, number>(state => state.profileRepresentativePaperListState.totalCount);
+  const representativePaperIds = useSelector<AppState, string[]>(
+    state => state.profileRepresentativePaperListState.paperIds,
+    isEqual
+  );
+  const totalRepresentativePaperCount = useSelector<AppState, number>(
+    state => state.profileRepresentativePaperListState.totalCount
+  );
   const currentUser = useSelector((state: AppState) => state.currentUser, isEqual);
   const [isOpenModifyProfileDialog, setIsOpenModifyProfileDialog] = useState(false);
   const [isOpenPendingDescriptionDialog, setIsOpenPendingDescriptionDialog] = useState(false);
@@ -91,7 +102,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
     dispatch(fetchProfilePapers({ profileSlug, page: currentPage }));
   }, [profileSlug, currentPage, dispatch, currentUser]);
 
-  if (!profile) return null;
+  if (!profile || !profileSlug) return null;
 
   return (
     <div className={s.authorShowPageWrapper}>
@@ -145,6 +156,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
               <>
                 <div className={s.leftContentWrapper}>
                   <RepresentativePaperListSection
+                    profileSlug={profileSlug}
                     paperIds={representativePaperIds}
                     isEditable={profile.isEditable}
                     totalCount={totalRepresentativePaperCount}

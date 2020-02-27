@@ -9,6 +9,7 @@ interface ImportPaperDialogState {
   successCount: number;
   pendingCount: number;
   profileSlug?: string;
+  isRepresentativeImporting: boolean;
 }
 
 export const IMPORT_PAPER_DIALOG_INITIAL_STATE: ImportPaperDialogState = {
@@ -19,6 +20,7 @@ export const IMPORT_PAPER_DIALOG_INITIAL_STATE: ImportPaperDialogState = {
   totalImportedCount: 0,
   successCount: 0,
   pendingCount: 0,
+  isRepresentativeImporting: false,
 };
 
 const importPaperDialogSlice = createSlice({
@@ -27,7 +29,11 @@ const importPaperDialogSlice = createSlice({
   reducers: {
     openImportPaperDialog(
       state,
-      action: PayloadAction<{ activeImportSourceTab: IMPORT_SOURCE_TAB; profileSlug?: string }>
+      action: PayloadAction<{
+        activeImportSourceTab: IMPORT_SOURCE_TAB;
+        profileSlug?: string;
+        isRepresentativeImporting?: boolean;
+      }>
     ) {
       return {
         ...state,
@@ -37,18 +43,11 @@ const importPaperDialogSlice = createSlice({
         totalImportedCount: 0,
         successCount: 0,
         pendingCount: 0,
+        isRepresentativeImporting: !!action.payload.isRepresentativeImporting,
       };
     },
-    closeImportPaperDialog(state) {
-      return {
-        ...state,
-        isOpen: false,
-        inProgressStep: CURRENT_IMPORT_PROGRESS_STEP.PROGRESS,
-        activeImportSourceTab: IMPORT_SOURCE_TAB.BIBTEX,
-        totalImportedCount: 0,
-        successCount: 0,
-        pendingCount: 0,
-      };
+    closeImportPaperDialog() {
+      return IMPORT_PAPER_DIALOG_INITIAL_STATE;
     },
     changeImportSourceTab(state, action: PayloadAction<{ activeImportSourceTab: IMPORT_SOURCE_TAB }>) {
       return {

@@ -12,5 +12,5 @@ export enum CURRENT_IMPORT_PROGRESS_STEP {
 
 export interface HandleImportPaperListParams {
   type: IMPORT_SOURCE_TAB;
-  importedContext: string | string[]
+  importedContext: string | string[];
 }

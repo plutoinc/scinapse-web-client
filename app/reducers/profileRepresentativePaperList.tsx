@@ -31,13 +31,13 @@ const profileRepresentativePaperListSlice = createSlice({
       state.maxPage = action.payload.totalPages;
       state.paperIds = action.payload.paperIds;
     },
-    addPaper(state, action: PayloadAction<{ paperId: string }>) {
-      state.totalCount = state.totalCount + 1;
-      state.paperIds = [action.payload.paperId, ...state.paperIds];
+    addRepresentativePapers(state, action: PayloadAction<{ paperIds: string[]; totalCount: number }>) {
+      state.paperIds = Array.from(new Set([...action.payload.paperIds, ...state.paperIds]));
+      state.totalCount = action.payload.totalCount;
     },
   },
 });
 
-export const { getRepresentativePapers, addPaper } = profileRepresentativePaperListSlice.actions;
+export const { getRepresentativePapers, addRepresentativePapers } = profileRepresentativePaperListSlice.actions;
 
 export default profileRepresentativePaperListSlice.reducer;

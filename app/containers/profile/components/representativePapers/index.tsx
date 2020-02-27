@@ -2,17 +2,22 @@ import React, { FC, memo } from 'react';
 import { Button } from '@pluto_network/pluto-design-elements';
 import FullPaperItem from '../../../../components/common/paperItem/fullPaperItem';
 import Icon from '../../../../icons';
+import { useThunkDispatch } from '../../../../hooks/useThunkDispatch';
+import { openImportPaperDialog } from '../../../../reducers/importPaperDialog';
+import { IMPORT_SOURCE_TAB } from '../../types';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('../../connectedAuthor.scss');
 
 interface Props {
+  profileSlug: string;
   paperIds: string[];
   totalCount: number;
   isEditable: boolean;
 }
 
-const RepresentativePaperListSection: FC<Props> = memo(({ paperIds, isEditable, totalCount }) => {
+const RepresentativePaperListSection: FC<Props> = memo(({ paperIds, isEditable, totalCount, profileSlug }) => {
   useStyles(s);
+  const dispatch = useThunkDispatch();
 
   let paperList;
   if (!paperIds.length) {
@@ -40,12 +45,19 @@ const RepresentativePaperListSection: FC<Props> = memo(({ paperIds, isEditable, 
                 color="gray"
                 variant="outlined"
                 title="Import Representative Publications"
-                onClick={() => { }}
+                onClick={() =>
+                  dispatch(
+                    openImportPaperDialog({
+                      activeImportSourceTab: IMPORT_SOURCE_TAB.BIBTEX,
+                      profileSlug,
+                      isRepresentativeImporting: true,
+                    })
+                  )
+                }
               >
                 <Icon icon="ADD_NOTE" />
                 <span>Import Representative Publications</span>
               </Button>
-
             )}
           </div>
         </div>
@@ -57,7 +69,15 @@ const RepresentativePaperListSection: FC<Props> = memo(({ paperIds, isEditable, 
               elementType="button"
               variant="outlined"
               color="gray"
-              onClick={() => { }}
+              onClick={() =>
+                dispatch(
+                  openImportPaperDialog({
+                    activeImportSourceTab: IMPORT_SOURCE_TAB.BIBTEX,
+                    profileSlug,
+                    isRepresentativeImporting: true,
+                  })
+                )
+              }
               style={{
                 marginTop: '16px',
               }}
