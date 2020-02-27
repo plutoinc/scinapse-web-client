@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { Formik, Form, Field, FormikErrors } from 'formik';
 import { Button } from '@pluto_network/pluto-design-elements';
 import FormikInput from '../../../../components/common/formikInput';
+import { HandleImportPaperListParams, IMPORT_SOURCE_TAB } from '../../types';
 import Icon from '../../../../icons';
+
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./bibTexImportForm.scss');
 
@@ -14,7 +16,7 @@ export interface BibTexFormState {
 
 interface BibTexImportFormProps {
   isLoading: boolean;
-  onSubmitBibtex: (params: BibTexFormState) => void;
+  onSubmitBibtex: (params: HandleImportPaperListParams) => void;
 }
 
 const validateForm = (values: BibTexFormState) => {
@@ -53,8 +55,8 @@ const BibTexImportForm: React.FC<BibTexImportFormProps> = props => {
     <div className={s.formWrapper}>
       <Formik
         initialValues={{ bibTexString: bibTexString }}
-        onSubmit={onSubmitBibtex}
         validate={validateForm}
+        onSubmit={values => onSubmitBibtex({ type: IMPORT_SOURCE_TAB.BIBTEX, importedContext: values.bibTexString })}
         enableReinitialize
         render={({ errors, touched }) => (
           <Form autoComplete="off">

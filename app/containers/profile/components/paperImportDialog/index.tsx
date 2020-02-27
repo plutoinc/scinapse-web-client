@@ -3,20 +3,28 @@ import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import Dialog from '@material-ui/core/Dialog';
 import Icon from '../../../../icons';
-import { GSFormState } from '../gsImportForm';
-import { BibTexFormState } from '../bibTexImportForm';
-import { CitationStringFormState } from '../citationStringImportForm';
-import ActionTicketManager from '../../../../helpers/actionTicketManager';
 import DialogBody from '../paperImportDialogBody';
 import { fetchProfileImportedPapers } from '../../../../actions/profile';
 import alertToast from '../../../../helpers/makePlutoToastAction';
-import { AuthorUrlsFormState, SCINAPSE_AUTHOR_SHOW_PREFIX } from '../authorUrlsImportForm';
 import { AppState } from '../../../../reducers';
 import { closeImportPaperDialog, changeImportSourceTab } from '../../../../reducers/importPaperDialog';
-import { IMPORT_SOURCE_TAB, CURRENT_IMPORT_PROGRESS_STEP } from '../../types';
-
+import { IMPORT_SOURCE_TAB, CURRENT_IMPORT_PROGRESS_STEP, HandleImportPaperListParams } from '../../types';
+import trackImportAction from './helpers/trackImportAction';
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./paperImportDialog.scss');
+
+interface HeaderItemProps {
+  active: boolean;
+  text: string;
+  onClick: () => void;
+}
+const HeaderItem: React.FC<HeaderItemProps> = ({ active, onClick, text }) => {
+  return (
+    <span onClick={onClick} className={classNames({ [`${s.tabItem}`]: true, [`${s.active}`]: active })}>
+      {text}
+    </span>
+  );
+};
 
 const Header: React.FC<{
   activeTab: IMPORT_SOURCE_TAB;
@@ -25,86 +33,30 @@ const Header: React.FC<{
   return (
     <div className={s.tabBoxWrapper}>
       <div className={s.normalTabWrapper}>
-        <span
+        <HeaderItem
+          text="BibTex"
+          active={activeTab === IMPORT_SOURCE_TAB.BIBTEX}
           onClick={() => onClickTab(IMPORT_SOURCE_TAB.BIBTEX)}
-          className={classNames({
-            [`${s.tabItem}`]: true,
-            [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.BIBTEX,
-          })}
-        >
-          BibTex
-        </span>
-        <span
+        />
+        <HeaderItem
+          text="Citation Text"
+          active={activeTab === IMPORT_SOURCE_TAB.CITATION}
           onClick={() => onClickTab(IMPORT_SOURCE_TAB.CITATION)}
-          className={classNames({
-            [`${s.tabItem}`]: true,
-            [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.CITATION,
-          })}
-        >
-          Citation Text
-        </span>
-        <span
+        />
+        <HeaderItem
+          text="Google Scholar"
+          active={activeTab === IMPORT_SOURCE_TAB.GS}
           onClick={() => onClickTab(IMPORT_SOURCE_TAB.GS)}
-          className={classNames({
-            [`${s.tabItem}`]: true,
-            [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.GS,
-          })}
-        >
-          Google Scholar
-        </span>
-        <span
+        />
+        <HeaderItem
+          text="Author URL"
+          active={activeTab === IMPORT_SOURCE_TAB.AUTHOR_URLS}
           onClick={() => onClickTab(IMPORT_SOURCE_TAB.AUTHOR_URLS)}
-          className={classNames({
-            [`${s.tabItem}`]: true,
-            [`${s.active}`]: activeTab === IMPORT_SOURCE_TAB.AUTHOR_URLS,
-          })}
-        >
-          Author URL
-        </span>
+        />
       </div>
     </div>
   );
 };
-
-function trackImportFromGS(actionLabel: string) {
-  ActionTicketManager.trackTicket({
-    pageType: 'profileShow',
-    actionType: 'fire',
-    actionArea: 'paperImportFromGSDialog',
-    actionTag: 'clickSubmitGSBtn',
-    actionLabel: actionLabel,
-  });
-}
-
-function trackImportFromBibtex(actionLabel: string) {
-  ActionTicketManager.trackTicket({
-    pageType: 'profileShow',
-    actionType: 'fire',
-    actionArea: 'paperImportFromBibtexDialog',
-    actionTag: 'clickSubmitBibtexBtn',
-    actionLabel: actionLabel,
-  });
-}
-
-function trackImportFromCitationString(actionLabel: string) {
-  ActionTicketManager.trackTicket({
-    pageType: 'profileShow',
-    actionType: 'fire',
-    actionArea: 'paperImportFromCitationStringDialog',
-    actionTag: 'clickSubmitCitationStringBtn',
-    actionLabel: actionLabel,
-  });
-}
-
-function trackImportFromAuthorUrls(actionLabel: string) {
-  ActionTicketManager.trackTicket({
-    pageType: 'profileShow',
-    actionType: 'fire',
-    actionArea: 'paperImportFromAuthorUrlsDialog',
-    actionTag: 'clickSubmitAuthorUrlsBtn',
-    actionLabel: actionLabel,
-  });
-}
 
 const PaperImportDialog: React.FC = () => {
   useStyles(s);
@@ -120,85 +72,21 @@ const PaperImportDialog: React.FC = () => {
 
   if (!profileSlug) return null;
 
-  const handleSubmitGS = async (params: GSFormState) => {
-    setIsLoading(true);
-
-    trackImportFromGS('clickSubmitGSBtn');
-
+  async function handleImportPaperList({ type, importedContext }: HandleImportPaperListParams) {
     try {
-      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.GS, profileSlug, params.url));
+      setIsLoading(true);
+      trackImportAction({ importSource: type, actionLabel: 'click' });
+      await dispatch(fetchProfileImportedPapers(type, profileSlug!, importedContext));
       setIsLoading(false);
-
-      trackImportFromGS('successSubmitGS');
+      trackImportAction({ importSource: type, actionLabel: 'success' });
     } catch (err) {
-      setIsLoading(false);
-      trackImportFromGS('failureSubmitGS');
       alertToast({
         type: 'error',
         message: 'we had an error during importing papers. please refresh this page & try it again.',
       });
+      trackImportAction({ importSource: type, actionLabel: 'failed' });
     }
-  };
-
-  const handleSubmitBibTex = async (params: BibTexFormState) => {
-    setIsLoading(true);
-    trackImportFromBibtex('clickSubmitBibtexBtn');
-    try {
-      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.BIBTEX, profileSlug, params.bibTexString));
-      setIsLoading(false);
-
-      trackImportFromBibtex('successSubmitBibtex');
-    } catch (err) {
-      setIsLoading(false);
-      trackImportFromBibtex('failureSubmitBibtex');
-      alertToast({
-        type: 'error',
-        message: 'we had an error during importing papers. please refresh this page & try it again.',
-      });
-    }
-  };
-
-  const handleSubmitCitationString = async (params: CitationStringFormState) => {
-    setIsLoading(true);
-    trackImportFromCitationString('clickSubmitCitationStringBtn');
-    try {
-      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.CITATION, profileSlug, params.citationString));
-      setIsLoading(false);
-
-      trackImportFromCitationString('successSubmitCitationString');
-    } catch (err) {
-      setIsLoading(false);
-      trackImportFromCitationString('failureSubmitCitationString');
-
-      alertToast({
-        type: 'error',
-        message: 'we had an error during importing papers. please refresh this page & try it again.',
-      });
-    }
-  };
-
-  const handleSubmitAuthorUrls = async (params: AuthorUrlsFormState) => {
-    setIsLoading(true);
-    trackImportFromAuthorUrls('clickSubmitAuthorUrlsBtn');
-    try {
-      const authorIds = params.authorUrls.map(authorUrl => {
-        return authorUrl.split(SCINAPSE_AUTHOR_SHOW_PREFIX)[1];
-      });
-
-      await dispatch(fetchProfileImportedPapers(IMPORT_SOURCE_TAB.AUTHOR_URLS, profileSlug, authorIds));
-      setIsLoading(false);
-
-      trackImportFromAuthorUrls('successSubmitAuthorUrls');
-    } catch (err) {
-      setIsLoading(false);
-      trackImportFromAuthorUrls('failureSubmitAuthorUrls');
-
-      alertToast({
-        type: 'error',
-        message: 'we had an error during importing papers. please refresh this page & try it again.',
-      });
-    }
-  };
+  }
 
   return (
     <Dialog
@@ -225,10 +113,7 @@ const PaperImportDialog: React.FC = () => {
             isLoading={isLoading}
             currentStep={inProgressStep}
             activeTab={activeTab}
-            onSubmitGS={handleSubmitGS}
-            onSubmitBibTex={handleSubmitBibTex}
-            onSubmitCitationString={handleSubmitCitationString}
-            onSubmitAuthorUrls={handleSubmitAuthorUrls}
+            onSubmit={handleImportPaperList}
           />
         </div>
       </div>
