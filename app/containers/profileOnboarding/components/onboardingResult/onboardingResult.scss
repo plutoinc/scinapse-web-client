@@ -45,3 +45,19 @@
 .ctaButtonWrapper {
   padding: 0 48px;
 }
+
+@media (max-width: $mobile_width) {
+  .title {
+    font-size: 24px;
+  }
+
+  .paperStatsItemWrapper {
+    .paperStatsItemHeader {
+      font-size: 16px;
+    }
+
+    .paperStatsItemBody {
+      font-size: 20px;
+    }
+  }
+}

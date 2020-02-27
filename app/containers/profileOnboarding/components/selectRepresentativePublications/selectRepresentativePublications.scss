@@ -24,6 +24,7 @@
   max-width: 400px;
   width: 100%;
   margin: 0 auto;
+  padding: 48px 0;
 }
 
 .guideContext {
@@ -43,5 +44,23 @@
   svg {
     width: 24px;
     height: 24px;
+  }
+}
+
+@media (max-width: $mobile_width) {
+  .title {
+    font-size: 24px;
+  }
+
+  .subContext {
+    font-size: 16px;
+  }
+
+  .mainContainer {
+    padding: 24px 24px 60px 24px;
+  }
+
+  .guideContext {
+    font-size: 13px;
   }
 }

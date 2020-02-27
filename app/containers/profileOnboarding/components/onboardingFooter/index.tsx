@@ -6,6 +6,7 @@ import { clickPrevStep, clickSkipStep, clickNextStep } from '../../../../reducer
 import { isStepOptional } from '../../helper';
 import { AppState } from '../../../../reducers';
 import Icon from '../../../../icons';
+import { UserDevice } from '../../../../components/layouts/reducer';
 
 const useStyles = require('isomorphic-style-loader/useStyles');
 const s = require('./onboardingFooter.scss');
@@ -19,10 +20,11 @@ const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep, shouldShow })
   useStyles(s);
 
   const dispatch = useDispatch();
-  const { totalImportedCount, successCount, pendingCount } = useSelector((appState: AppState) => ({
+  const { totalImportedCount, successCount, pendingCount, isMobile } = useSelector((appState: AppState) => ({
     totalImportedCount: appState.importPaperDialogState.totalImportedCount,
     successCount: appState.importPaperDialogState.successCount,
     pendingCount: appState.importPaperDialogState.pendingCount,
+    isMobile: appState.layout.userDevice === UserDevice.MOBILE,
   }));
 
   const onClickNextBtn = () => {
@@ -54,7 +56,7 @@ const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep, shouldShow })
       elementType="button"
       variant="text"
       color="gray"
-      size="large"
+      size={isMobile ? 'small' : 'large'}
       onClick={() => {
         if (activeStep === CURRENT_ONBOARDING_PROGRESS_STEP.MATCH_UNSYNCED_PUBS) {
           return onClickNextBtn();
@@ -71,7 +73,13 @@ const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep, shouldShow })
 
   return (
     <div className={s.onboardingFooterWrapper}>
-      <Button elementType="button" variant="text" color="black" size="large" onClick={() => dispatch(clickPrevStep())}>
+      <Button
+        elementType="button"
+        variant="text"
+        color="black"
+        size={isMobile ? 'small' : 'large'}
+        onClick={() => dispatch(clickPrevStep())}
+      >
         <Icon icon="ARROW_LEFT" />
         <span>PREV</span>
       </Button>
@@ -82,7 +90,7 @@ const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep, shouldShow })
           elementType="button"
           variant="text"
           color="black"
-          size="large"
+          size={isMobile ? 'small' : 'large'}
           onClick={() => dispatch(clickNextStep())}
         >
           <span>{activeStep === ONBOARDING_STEPS.length - 1 ? 'DONE' : 'NEXT'}</span>
