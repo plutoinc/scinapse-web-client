@@ -85,7 +85,7 @@ const OnboardingFooter: FC<OnboardingFooterProps> = ({ activeStep, shouldShow })
           variant="text"
           color="black"
           size={isMobile ? 'small' : 'large'}
-          onClick={() => dispatch(clickNextStep())}
+          onClick={onClickNextBtn}
         >
           <span>{activeStep === ONBOARDING_STEPS.length - 1 ? 'DONE' : 'NEXT'}</span>
           <Icon icon="ARROW_RIGHT" />

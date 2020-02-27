@@ -32,6 +32,16 @@ const ProgressStepper: FC<ProgressStepperProps> = ({ activeStep, progressSteps, 
         active: {},
         completed: {},
       },
+      MuiStepLabel: {
+        label: {
+          '&$completed': {
+            color: '#9aa3b5',
+          },
+          '&$active': {
+            color: 'rgba(30, 42, 53, 0.8)',
+          },
+        },
+      },
     },
   });
 
