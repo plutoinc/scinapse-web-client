@@ -13,7 +13,7 @@ interface MoreDropdownButtonProps {
   dropdownContents?: React.ReactElement[];
 }
 
-const MoreDropdownButton: React.FC<MoreDropdownButtonProps> = ({ dropdownContents = [], paper }) => {
+const MoreDropdownButton: React.FC<MoreDropdownButtonProps> = ({ dropdownContents, paper }) => {
   useStyles(s);
   const buttonAnchor = React.useRef<HTMLDivElement | null>(null);
   const [isOpen, setIsOpen] = React.useState(false);
@@ -25,16 +25,18 @@ const MoreDropdownButton: React.FC<MoreDropdownButtonProps> = ({ dropdownContent
       onClick={() => {
         window.open(
           // tslint:disable-next-line:max-line-length
-          `https://docs.google.com/forms/d/e/1FAIpQLScS76iC1pNdq94mMlxSGjcp_BuBM4WqlTpfPDt19LgVJ-t7Ng/viewform?usp=pp_url&entry.130188959=${
-            paper.id
-          }&entry.1298741478`,
+          `https://docs.google.com/forms/d/e/1FAIpQLScS76iC1pNdq94mMlxSGjcp_BuBM4WqlTpfPDt19LgVJ-t7Ng/viewform?usp=pp_url&entry.130188959=${paper.id}&entry.1298741478`,
           '_blank'
         );
       }}
     />
   );
 
-  const contents = [...dropdownContents, defaultDropdownContent].map((comp, i) => (
+  const finalDropdownContents = !dropdownContents
+    ? [defaultDropdownContent]
+    : [...dropdownContents, defaultDropdownContent];
+
+  const contents = finalDropdownContents.map((comp, i) => (
     <div onClick={() => setIsOpen(false)} key={i}>
       {comp}
     </div>

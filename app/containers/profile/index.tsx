@@ -155,6 +155,9 @@ const ProfilePage: FC<ProfilePageProps> = ({ match }) => {
                     paperIds={representativePaperIds}
                     isEditable={profile.isEditable}
                     totalCount={totalRepresentativePaperCount}
+                    fetchProfileShowData={() =>
+                      fetchAuthorShowPageData({ dispatch, match, pathname: location.pathname })
+                    }
                   />
                   {pendingPapers.length > 0 && profile.isEditable && (
                     <>
