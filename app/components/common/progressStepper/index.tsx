@@ -2,7 +2,6 @@ import React, { FC, useMemo } from 'react';
 import Stepper from '@material-ui/core/Stepper';
 import Step, { StepProps } from '@material-ui/core/Step';
 import StepLabel, { StepLabelProps } from '@material-ui/core/StepLabel';
-import Typography from '@material-ui/core/Typography';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { isStepOptional } from '../../../containers/profileOnboarding/helper';
 
@@ -53,7 +52,7 @@ const ProgressStepper: FC<ProgressStepperProps> = ({ activeStep, progressSteps, 
         const stepProps: StepProps = {};
         const labelProps: StepLabelProps = { children: label };
         if (isStepOptional(index)) {
-          labelProps.optional = <Typography variant="caption">Optional</Typography>;
+          labelProps.optional = <span className={s.optionalLabel}>Optional</span>;
         }
         if (activeSkipped.has(index)) {
           stepProps.completed = false;

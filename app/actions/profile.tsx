@@ -116,8 +116,11 @@ export function controlStepAfterImportPaper(): AppThunkAction {
     const { isOnboarding, totalImportedCount, pendingCount } = importPaperDialogState;
     const activeStep = getState().profileOnboardingState.activeStep;
 
-    if (totalImportedCount === 0) {
-      throw new Error('Try again');
+    if (totalImportedCount === 0 || totalImportedCount === pendingCount) {
+      return alertToast({
+        type: 'error',
+        message: 'Had no result from imported paper. Try again',
+      });
     }
 
     if (!isOnboarding) {
